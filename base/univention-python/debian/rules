@@ -28,7 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
+PACKAGE_NAME=univention
+MODULE_NAME=univention
+
+DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
+        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+
+PYVERS=$(shell pyversions -vr)
 
 configure: configure-stamp
 configure-stamp:
@@ -36,28 +42,36 @@ configure-stamp:
 	touch configure-stamp
 
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-ext-%)
 	dh_testdir
-	make
-	touch build-stamp
+	touch $@
+build-ext-%:
+	dh_testdir
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
-	make clean
+	rm -f build-stamp configure-stamp build-ext-2.4
 	dh_clean
 
-D=$(CURDIR)/debian/python2.4-univention
+D=$(CURDIR)/debian/tmp
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	make clean
-	PYTHON=python2.4 make install DESTDIR=$(CURDIR)/debian/python2.4-univention
+	install -d debian/python-univention/usr/lib/python2.4/site-packages/univention/
+	install -m 0644 modules/__init__.py debian/python-univention/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/dns.py debian/python-univention/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/logging.py debian/python-univention/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/misc.py debian/python-univention/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/uldap.py debian/python-univention/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/utf8.py debian/python-univention/usr/lib/python$*/site-packages/univention/
 
 binary-arch: build install
 
@@ -71,6 +85,8 @@ binary-indep: build install
 	dh_installman
 	dh_installinfo
 	dh_installchangelogs
+	dh_install --sourcedir=debian/tmp
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress
@@ -80,6 +96,7 @@ binary-indep: build install
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb
+
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure

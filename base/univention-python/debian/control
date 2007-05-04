@@ -2,26 +2,17 @@ Source: univention-python
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), python2.4-dev
-Standards-Version: 3.5.2
+Build-Depends: debhelper, python, python-all-dev, python-central
+XS-Python-Version: all
 
-Package: python2.4-univention
+Package: python-univention
 Architecture: all
-Depends: python2.4, python2.4-ldap, python-dns, python2.4-univention-debug, univention-config
-Conflicts: univention-dhcp (<< 1.2), univention-dns, python2.3-univention
-Description: UCS - common Python modules (for Python 2.4)
- This package contains Python modules used by various
- components of UCS.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-python
-Architecture: all
-Depends: python2.4-univention, python
-Description: UCS - common Python modules meta package
+Depends: ${python:Depends}, python-ldap, python-dns, python-univention-debug, univention-config
+Conflicts: univention-python, univention-dhcp (<< 1.2), univention-dns, python2.3-univention, python2.4-univention
+Replaces: univention-python, python2.4-univention
+Provides: ${python:Provides}, univention-python, python2.4-univention
+XB-Python-Version: ${python:Versions}
+Description: UCS - common Python modules
  This package contains Python modules used by various
  components of UCS.
  .

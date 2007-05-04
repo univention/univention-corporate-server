@@ -1,6 +1,7 @@
+#!/bin/sh
 #
 # Univention Python
-#  Makefile for the debian package
+#  postinst script for the debian package
 #
 # Copyright (C) 2002, 2003, 2004, 2005, 2006 Univention GmbH
 #
@@ -27,23 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-DESTDIR=/tmp/foo
-MODS=$(shell find modules -name '*.py' | sed 's/\.py/\.pyo/g')
+#DEBHELPER#
 
-%.pyo:	%.py
-	$(PYTHON) -OO ./py_compile $< $@
+univention-baseconfig set ldap/binaryattributes?"krb5Key,userCertificate;binary"
 
-%.mo:	%.po
-	msgfmt -o $@ $<
-
-all:	$(MODS)
-
-clean:
-	find modules -name '*.pyo' -exec rm \{\} \;
-
-install: all
-	@for i in $(MODS); do\
-		o=$(DESTDIR)/usr/lib/$(PYTHON)/site-packages/univention/$${i#modules/};\
-		install -d "`dirname $$o`";\
-		install -m755 $$i $$o;\
-	done
