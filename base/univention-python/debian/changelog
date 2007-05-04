@@ -1,0 +1,141 @@
+univention-python (1.20-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Sun,  3 Dec 2006 11:52:52 +0100
+
+univention-python (1.19-6) unstable; urgency=low
+
+  * Uniquify values of add lists before running ldap.add_s.
+    This prevents "value #x provided more than once" errors.
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue,  5 Sep 2006 17:02:31 +0200
+
+univention-python (1.19-5) unstable; urgency=low
+
+  * read ignorelist from baseconfig an use it also in decode
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 19 May 2006 10:16:17 +0200
+
+univention-python (1.19-4) unstable; urgency=low
+
+  * getPolicies failed if policy tried to set an attribute empty which was 
+    not inherited earlier
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Apr 2006 12:05:34 +0200
+
+univention-python (1.19-3) unstable; urgency=low
+
+  * don't treat ldap attribute as unicode if ldap/binaryattributes
+    contains it
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu, 30 Mar 2006 15:49:15 +0200
+
+univention-python (1.19-2) unstable; urgency=low
+
+  * set debug level for ldap operation to INFO
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  1 Mar 2006 11:21:10 +0100
+
+univention-python (1.19-1) unstable; urgency=low
+
+  * increase version number above the one of the UGS release
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 16:54:46 +0100
+
+univention-python (1.17-2) unstable; urgency=low
+
+  * do not decode userCertificate
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 19 Jan 2006 14:25:43 +0100
+
+univention-python (1.16) unstable; urgency=low
+
+  * added dependency for the package python 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  8 Dec 2005 08:23:38 +0100
+
+univention-python (1.13) unstable; urgency=low
+
+  * provide python2.3-univention
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Oct 2005 07:49:04 +0200
+
+univention-python (1.12) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:24:32 +0200
+
+univention-python (1.11) unstable; urgency=low
+
+  * added parameter decode_ignorelist to getAdminConnection
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Jul 2005 11:47:48 +0200
+
+univention-python (1.10) unstable; urgency=low
+
+  * fix another encoding failure in modrdn
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 28 Jul 2005 10:08:37 +0200
+
+univention-python (1.9) unstable; urgency=low
+
+  * fix encoding of dn in rename
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  7 Jun 2005 07:53:47 +0200
+
+univention-python (1.8) unstable; urgency=low
+
+  * support for tls_cacertfile in access class
+  * support for ldap controls
+  * support for dn-rename
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 20 Jan 2005 14:41:20 +0100
+
+univention-python (1.7) unstable; urgency=low
+
+  * Build Python 2.1 package for listener.
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 27 Apr 2004 14:58:10 +0200
+
+univention-python (1.6) unstable; urgency=low
+
+  * Updated for Python 2.3.
+  * Renamed univention-python to python2.3-univention.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 17 Feb 2004 16:09:45 +0100
+
+univention-python (1.5) unstable; urgency=low
+
+  * Remove existing connection optimization. It doesn't seem to be
+    needed anymore.
+  * Add bind function to upgrade anonymous connections.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 11 Feb 2004 09:31:15 +0100
+
+univention-python (1.4) unstable; urgency=low
+
+  * added support for start_tls
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Sat, 11 Oct 2003 10:53:44 +0200
+
+univention-python (1.3) unstable; urgency=low
+
+  * added uldap, logging and utf8 modules
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 May 2003 15:19:42 +0200
+
+univention-python (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:43 +0200
+
+univention-python (0.1) unstable; urgency=low
+
+  * Initial release
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 09 Oct 2002 16:22:45 +0200
+
