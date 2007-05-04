@@ -1,0 +1,239 @@
+[proxy/http]
+Description[de]=Proxy für HTTP-Verbindungen
+Description[en]=Proxy for HTTP connections
+Type=str
+Categories=Network
+
+[locale/default]
+Description[de]=Standardsprache
+Description[en]=default locale
+Type=str
+Categories=Misc
+
+[sshd/port]
+Description[de]=Port für den SSH-Dienst
+Description[en]=Port for the SSH daemon
+Type=str
+Categories=Network
+
+[sshd/permitroot]
+Description[de]=root Zugang per SSH erlauben
+Description[en]=permit root access via SSH
+Type=str
+Categories=Network
+
+[sshd/xforwarding]
+Description[de]=Portweiterleitung für die X-Sitzung
+Description[en]=Port forwarding for the X session
+Type=str
+Categories=Network
+
+[sshd/xdisplayoffset]
+Description[de]=Erster Port für die Weiterleitung der X-Sitzung
+Description[en]=First port for forwarded X sessions
+Type=str
+Categories=Network
+
+[sshd/xuselocalhost]
+Description[de]=Den lokalen Rechner die Weiterleitung verwenden
+Description[en]=Use localhost for the port forwarding
+Type=str
+Categories=Network
+
+[domainname]
+Description[de]=DNS-Domäne
+Description[en]=DNS domain
+Type=str
+Categories=Network
+
+[domain/search]
+Description[de]=Automatisch zu durchsuchende DNS-Domänen
+Description[en]=Automatically searched DNS domains
+Type=str
+Categories=Network
+
+[gateway]
+Description[de]=Gateway
+Description[en]=Gateway
+Type=str
+Categories=Network
+
+[hostname]
+Description[de]=Name des Rechners
+Description[en]=Name of the computer
+Type=str
+Categories=Network
+
+[interfaces/eth.*/type]
+Description[de]=Netztypen für die einzelnen Interfaces
+Description[en]=Type of network for each the network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/address]
+Description[de]=IP-Adresse des Netz-Interfaces
+Description[en]=IP address of the network interface
+Type=str
+Categories=Network
+
+[kernel/modules]
+Description[de]=Kernel Module die geladen werden sollen
+Description[en]=Kernel modules to load
+Type=str
+Categories=System
+
+[ldap/backup]
+Description[de]=Das UCS Backup-System der Domäne
+Description[en]=The UCS backup system of the domain
+Type=str
+Categories=LDAP
+
+[ldap/master]
+Description[de]=Das UCS Master-System der Domäne
+Description[en]=The UCS master system of the domain
+Type=str
+Categories=LDAP
+
+[lilo/append]
+Description[de]=Weitere Kommandozeilenparameter von Lilo
+Description[en]=Additional parameters for lilo
+Type=str
+Categories=System
+
+[lilo/append/.*acpi]
+Description[de]=Hinzufügen von ACPI Option für Lilo
+Description[en]=Add ACPI options for lilo
+Type=str
+Categories=System
+
+[lilo/boot]
+Description[de]=Wo lilo installiert werden soll
+Description[en]=Where to install lilo
+Type=str
+Categories=System
+
+[lilo/compact]
+Description[de]=Beschleunigung des Bootvorgangs mt Lilo
+Description[en]=Increase speed for boot process with lilo
+Type=str
+Categories=System
+
+[lilo/default]
+Description[de]=Standardkernel
+Description[en]=Default kernel
+Type=str
+Categories=Network
+
+[lilo/root]
+Description[de]=root-Partition
+Description[en]=root partition
+Type=str
+Categories=System
+
+[lilo/vga]
+Description[de]=Graphikmodus in Lilo
+Description[en]=Graphics mode for lilo
+Type=str
+Categories=System
+
+[locale]
+Description[de]=Spracheinstellung
+Description[en]=Language setting
+Type=str
+Categories=System
+
+[log/rotate/weeks]
+Description[de]=Nach wievielen Wochen die Log-Dateien rotiert werden
+Description[en]=After how many weeks the log files will be rotated
+Type=str
+Categories=System
+
+[nameserver1]
+Description[de]=1. DNS-Server
+Description[en]=1. DNS server
+Type=str
+Categories=Network
+
+[nameserver2]
+Description[de]=2. DNS-Server
+Description[en]=2. DNS server
+Type=str
+Categories=Network
+
+[nameserver3]
+Description[de]=3. DNS-Server
+Description[en]=3. DNS server
+Type=str
+Categories=Network
+
+[nameserver/option/timeout]
+Description[de]=Nach wievielen Sekunden der nächste DNS-Server gefragt wird
+Description[en]=After how may seconds the next DNS servers is used
+Type=str
+Categories=Network
+
+[pkgdb/overwrite/joincheck]
+Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenabnk
+Description[en]=The software monitor does not check the join status before updating the database
+Type=str
+Categories=Misc
+
+[pkgdb/scan]
+Description[de]=Soll die Software-Datenbank aktualisiert werden
+Description[en]=Should the software database be updated
+Type=str
+Categories=Misc
+
+[proxy/password]
+Description[de]=Passwort für die Authentisierung beim Proxy
+Description[en]=Password for the proxy authentication
+Type=str
+Categories=Network
+
+[proxy/username]
+Description[de]=Benutzername für doe Authentication beim Proxy
+Description[en]=Username for the proxy authentication
+Type=str
+Categories=Network
+
+[server/role]
+Description[de]=Systemrolle
+Description[en]=System role
+Type=str
+Categories=System
+
+[timeserver]
+Description[de]=Der erste NTP-Server
+Description[en]=The first NTP server
+Type=str
+Categories=Network
+
+[timeserver2]
+Description[de]=Der zweite NTP-Server
+Description[en]=The second NTP server
+Type=str
+Categories=Network
+
+[timeserver3]
+Description[de]=Der dritte NTP-Server
+Description[en]=The third NTP server
+Type=str
+Categories=Network
+
+[version/patchlevel]
+Description[de]=Patchlevel der UCS Version
+Description[en]=Patchlevel of the UCS version
+Type=str
+Categories=System
+
+[version/security-patchlevel]
+Description[de]=Security-Patchlevel der UCS Version
+Description[en]=Security patchlevel of the UCS version
+Type=str
+Categories=System
+
+[version/version]
+Description[de]=Hauptversion Version von UCS
+Description[en]=Major version of UCS
+Type=str
+Categories=System

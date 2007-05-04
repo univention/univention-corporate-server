@@ -1,0 +1,4 @@
+files
+univention-baseconfig
+univention-baseconfig.prerm.debhelper
+univention-baseconfig.postinst.debhelper

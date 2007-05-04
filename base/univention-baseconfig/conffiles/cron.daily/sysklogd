@@ -1,0 +1,58 @@
+#! /bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/cron.daily/sysklogd
+#
+
+# sysklogd	Cron script to rotate system log files daily.
+#
+#		If you want to rotate other logfiles daily, edit
+#		this script.  An easy way is to add files manually,
+#		to add -a (for all log files) to syslogd-listfiles and
+#		add some grep stuff, or use the -s pattern argument to
+#		specify files that must not be listed.
+#
+#		This is a configration file.  You are invited to edit
+#		it and maintain it on your own.  You'll have to do
+#		that if you don't like the default policy
+#		wrt. rotating logfiles (i.e. with large logfiles
+#		weekly and daily rotation may interfere).  If you edit
+#		this file and don't let dpkg upgrade it, you have full
+#		control over it.  Please read the manpage to
+#		syslogd-listfiles.
+#
+#		Written by Martin Schulze <joey@debian.org>.
+#		$Id: sysklogd,v 1.1.2.1 2006/03/06 14:23:54 stefan Exp $
+
+test -x /usr/sbin/syslogd-listfiles || exit 0
+test -x /sbin/syslogd || exit 0
+test -f /usr/share/sysklogd/dummy || exit 0
+
+set -e
+
+cycle=$((@%@log/rotate/weeks@%@*7))
+cd /var/log
+for LOG in `syslogd-listfiles`
+do
+   if [ -s $LOG ]; then
+      savelog -g adm -m 640 -u root -c $cycle $LOG >/dev/null
+   fi
+done
+
+for LOG in `syslogd-listfiles --auth`
+do
+   if [ -f $LOG ]; then
+      chown root:adm $LOG
+      chmod o-rwx $LOG
+   fi
+done
+
+# Restart syslogd
+#
+/etc/init.d/sysklogd reload-or-restart > /dev/null

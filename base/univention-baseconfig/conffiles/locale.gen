@@ -1,0 +1,32 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/locale.gen
+#
+
+
+# This file lists locales that you wish to have built. You can find a list
+# of valid supported locales at /usr/share/i18n/SUPPORTED. Other
+# combinations are possible, but may not be well tested. If you change
+# this file, you need to rerun locale-gen.
+#
+# XXX GENERATED XXX
+#
+# NOTE!!! If you change this file by hand, and want to continue
+# maintaining manually, remove the above line. Otherwise, use the command
+# "dpkg-reconfigure locales" to manipulate this file. You can manually
+# change this file without affecting the use of debconf, however, since it
+# does read in your changes.
+
+
+
+@!@
+if baseConfig.has_key('locale') and baseConfig['locale']:
+	for l in baseConfig['locale'].split(' '):
+		print l.replace(':', ' ')
+@!@
+

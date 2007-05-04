@@ -1,0 +1,50 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#         /etc/univention/templates/files/etc/ssh/sshd_config
+#
+
+Protocol 2,1
+HostKey /etc/ssh/ssh_host_key
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+UsePrivilegeSeparation yes
+KeyRegenerationInterval 3600
+ServerKeyBits 768
+SyslogFacility AUTH
+LogLevel INFO
+LoginGraceTime 600
+StrictModes yes
+RSAAuthentication yes
+PubkeyAuthentication yes
+IgnoreRhosts yes
+RhostsRSAAuthentication no
+HostbasedAuthentication no
+PermitEmptyPasswords no
+PasswordAuthentication yes
+KerberosAuthentication yes
+KerberosTicketCleanup yes
+GSSAPIAuthentication yes
+GSSAPIKeyExchange yes
+GSSAPIUseSessionCredCache yes
+X11DisplayOffset 10
+PrintMotd no
+PrintLastLog yes
+KeepAlive yes
+Subsystem       sftp    /usr/lib/sftp-server
+UsePAM yes
+
+Port @%@sshd/port@%@
+PermitRootLogin @%@sshd/permitroot@%@
+X11Forwarding @%@sshd/xforwarding@%@
+@!@
+if baseConfig.has_key('sshd/xdisplayoffset') and baseConfig['sshd/xdisplayoffset']:
+	print "X11DisplayOffset %s" % baseConfig['sshd/xdisplayoffset']
+if baseConfig.has_key('sshd/xuselocalhost') and baseConfig['sshd/xuselocalhost']:
+	print "X11UseLocalhost %s" % baseConfig['sshd/xuselocalhost']
+@!@
+

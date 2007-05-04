@@ -1,0 +1,162 @@
+Type: file
+File: etc/profile
+Variables: proxy/http
+Variables: locale/default
+Variables: umask
+
+Type: file
+File: etc/ssh/sshd_config
+Variables: sshd/port
+Variables: sshd/permitroot
+Variables: sshd/xforwarding
+Variables: sshd/xdisplayoffset
+Variables: sshd/xuselocalhost
+
+Type: file
+File: etc/init.d/sysklogd
+
+Type: file
+File: etc/init.d/klogd
+
+Type: file
+File: etc/init.d/rdate
+
+Type: file
+File: etc/networks
+
+Type: file
+File: etc/hostname
+
+Type: file
+File: etc/inputrc
+
+Type: file
+File: etc/ntp.conf
+Variables: ldap/master
+Variables: ldap/backup
+Variables: server/role
+Variables: timeserver
+Variables: timeserver2
+Variables: timeserver3
+
+Type: file
+File: etc/default/ntpdate
+Variables: ldap/master
+Variables: ldap/backup
+Variables: timeserver
+Variables: timeserver2
+Variables: timeserver3
+
+Type: file
+File: etc/lilo.conf
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact
+
+Type: file
+File: boot/boot.msg
+
+Type: file
+File: etc/modules
+Variables: kernel/modules
+
+Type: file
+File: etc/apt/apt.conf.d/80proxy
+Variables: proxy/http
+Variables: proxy/username
+Variables: proxy/password
+
+Type: file
+File: etc/apt/apt.conf.d/60invoke
+Variables: pkgdb/scan
+Variables: pkgdb/overwrite/joincheck
+
+Type: file
+File: etc/network/interfaces
+Preinst: interfaces.py
+Postinst: interfaces.py
+Variables: interfaces/eth.*
+Variables: gateway
+
+Type: multifile
+Multifile: etc/hosts
+Variables: interfaces/eth0/type
+Variables: interfaces/eth.*/address
+Variables: hostname
+Variables: domainname
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/00-base
+Variables: interfaces/eth.*/address
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/logrotate.conf
+Variables: log/rotate/weeks
+
+Type: file
+File: etc/cron.weekly/sysklogd
+Variables: log/rotate/weeks
+
+Type: file
+File: etc/cron.daily/sysklogd
+Variables: log/rotate/weeks
+
+Type: file
+File: etc/resolv.conf
+Variables: domainname
+Variables: nameserver1
+Variables: nameserver2
+Variables: nameserver3
+Variables: nameserver/option/timeout
+Variables: domain/domainname
+Variables: domain/search
+
+Type: file
+File: etc/locale.gen
+Variables: locale
+
+Type: file
+File: etc/issue
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+
+Type: file
+File: etc/issue.net
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+
+Type: file
+File: etc/bash.bashrc
+
+Type: module
+Module: route.py
+Variables: gateway
+
+Type: module
+Module: locale.py
+Variables: locale
+
+Type: module
+Module: lilo.py
+Variables: lilo/root
+Variables: lilo/boot
+Variables: lilo/vga
+Variables: lilo/append
+Variables: lilo/append/acpi
+Variables: lilo/append/pci_acpi
+Variables: lilo/default
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: lilo/compact

@@ -1,0 +1,68 @@
+univention-baseconfig
+---------------------
+
+Konfigurationsdateien (file):
+
+ - werden in /etc/univention/templates/files/ vom Paket installiert
+
+ - Fuer eigene Eintraege in der base.conf, sollte das postinst default
+   Werte festlegen:
+
+   univention-baseconfig set key?value
+
+   Das Fragezeichen gibt an, dass der Schluessel "key" nur ueberschrieben
+   wird, wenn noch kein Wert gesetzt ist.
+
+ - Befindet sich ein zu der Konfigurationsdatei gleichnamiges Skript in
+   /var/lib/univention-baseconfig/scripts, so wird dies nach der Installation
+   der Konfigurationsdatei aufgerufen
+
+ - Variablen der Form @%@variable@%@ werden durch ihren Wert ersetzt.
+   Inline Python Code wird innerhalb von @!@...@!@ geschrieben. Es steht
+   dort das Objekt baseConfig zur Verfuegung.
+
+ - werden in /etc/univention/templates/info/ bekannt gemacht
+
+   Type: file
+   File: etc/init.d/slapd
+   [Variables: ldap/server]
+
+   Die Variables Variable ist optional. Sie ist nur notwendig, wenn die
+   Konfigurationsdatei von der inline-Python Funktion gebrauch macht, und
+   deshalb die Variables nicht automatisch erkannt werden koennen.
+
+Skripte (script):
+
+ - werden in /var/lib/univention-baseconfig/scripts vom Paket installiert
+
+ - werden in einer RFC822-artigen Datei in /var/lib/univention-baseconfig/info/
+   bekannt gemacht. Es muessen auch die Variablen, bei deren Aenderung das
+   Skript aufgerufen werden soll aufgefuehrt werden
+
+   Type: script
+   Script: foo.sh
+   Variables: interfaces/eth0/address
+   Variables: interfaces/eth0/network
+
+Konfigurationsdateien auf mehreren Dateien (multifile):
+
+   Type: subfile
+   Multifile: etc/ldap/slapd.conf
+   Subfile: etc/ldap/slapd.conf.d/10schema-core
+
+   Type: multifile
+   Multifile: etc/ldap/slapd.conf
+
+Implementationsluecken / Einschraenkungen:
+
+ - nach dem hinzufuegen neuer Konfigurationsdateien, muss
+   univention-baseconfig update aufgerufen werden, sodass die neuen
+   Konfigurationsdateien oder Skripte in den Cache aufgenommen werden
+
+ - Nach dem Aendern von base.conf oder nach dem hinzufuegen von
+   Konfigurationsdateien muss univention-baseconfig commit aufgerufen werden,
+   sodass alle Konfigurationsdateien neu geschrieben werden
+
+   (TODO: commit muss feingradiger werden)
+
+ - Skripte zum Starten von Netz, etc. sind noch nicht vorhanden

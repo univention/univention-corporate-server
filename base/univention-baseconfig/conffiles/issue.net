@@ -1,0 +1,23 @@
+@!@
+
+menutitle=''
+
+if   baseConfig['server/role'] == 'fatclient':
+	menutitle="Univention Managed Client"
+elif baseConfig['server/role'] =='mobileclient':
+	menutitle="Univention Mobile Client"
+elif baseConfig['server/role'] =='domaincontroller_master':
+	menutitle="Univention DC Master"
+elif baseConfig['server/role'] =='domaincontroller_backup':
+	menutitle="Univention DC Backup"
+elif baseConfig['server/role'] =='domaincontroller_slave':
+	menutitle="Univention DC Slave"
+elif baseConfig['server/role'] =='memberserver':
+	menutitle="Univention Memberserver"
+else:
+	menutitle="Univention Corporate Server"
+
+print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
+							
+@!@
+

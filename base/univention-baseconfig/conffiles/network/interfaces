@@ -1,0 +1,79 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/network/interfaces
+#
+
+
+auto lo
+iface lo inet loopback
+
+@!@
+def check_gateway (ip, netmask, gateway):
+	if not gateway:
+		return 0
+	samenet=1
+	for k in range(0,4):
+		if not (int(ip[k])&int(netmask[k])) == (int(gateway[k])&int(netmask[k])):
+			samenet=0
+	if samenet == 0:
+		return 0
+	if samenet == 1:
+		return 1
+		
+
+gateway=False
+for i in range(0,4):
+	if baseConfig.has_key('interfaces/eth%s/type' % i) and baseConfig['interfaces/eth%s/type' % i] == 'dhcp':
+		if baseConfig.has_key('server/role') and ( baseConfig['server/role'] == 'mobileclient' or baseConfig['server/role'] == 'fatclient' ) and not (baseConfig.has_key('interfaces/eth%s/ifplugd' % i) and baseConfig['interfaces/eth%s/ifplugd' % i] == 'no'):
+			pass
+		else:
+			print 'auto eth%s' % i
+		print 'iface eth%s inet dhcp' % i
+	elif  baseConfig['interfaces/eth%s/address' % i]:
+		if baseConfig.has_key('server/role') and ( baseConfig['server/role'] == 'mobileclient' or baseConfig['server/role'] == 'fatclient' ) and not (baseConfig.has_key('interfaces/eth%s/ifplugd' % i) and baseConfig['interfaces/eth%s/ifplugd' % i] == 'no'):
+			pass
+		else:
+			print 'auto eth%s' % i
+		print 'iface eth%s inet static' % i
+		print 'address '+baseConfig['interfaces/eth%s/address' % i]
+		if baseConfig['interfaces/eth%s/network' % i]:
+			print 'network '+baseConfig['interfaces/eth%s/network' % i]
+		if baseConfig['interfaces/eth%s/netmask' % i]:
+			print 'netmask '+baseConfig['interfaces/eth%s/netmask' % i]
+		if baseConfig['interfaces/eth%s/broadcast' % i]:
+			print 'broadcast '+baseConfig['interfaces/eth%s/broadcast' % i]
+		if baseConfig['interfaces/eth%s/address' % i] and baseConfig['interfaces/eth%s/netmask' % i] and baseConfig['gateway'] and not gateway:
+			if check_gateway(baseConfig['interfaces/eth%s/address' % i].split('.'), baseConfig['interfaces/eth%s/netmask' % i].split('.'), baseConfig['gateway'].split('.')):
+				print 'gateway '+baseConfig['gateway']
+				gateway=True
+
+	for j in range(0,4):
+		if baseConfig.has_key('interfaces/eth%s_%s/type' % (i,j)) and baseConfig['interfaces/eth%s_%s/type' % (i,j) ] == 'dhcp':
+			if baseConfig.has_key('server/role') and ( baseConfig['server/role'] == 'mobileclient' or baseConfig['server/role'] == 'fatclient' ) and not (baseConfig.has_key('interfaces/eth%s_%s/ifplugd' % (i,j)) and baseConfig['interfaces/eth%s_%s/ifplugd' % (i,j)] == 'no'):
+				pass
+			else:
+				print 'auto eth%s:%s' % (i,j)
+			print 'iface eth%s:%s inet dchp' % (i,j)
+		elif baseConfig['interfaces/eth%s_%s/address' % (i,j) ]:
+			if baseConfig.has_key('server/role') and ( baseConfig['server/role'] == 'mobileclient' or baseConfig['server/role'] == 'fatclient' ) and not (baseConfig.has_key('interfaces/eth%s_%s/ifplugd' % (i,j)) and baseConfig['interfaces/eth%s_%s/ifplugd' % (i,j)] == 'no'):
+				pass
+			else:
+				print 'auto eth%s:%s' % (i,j)
+			print 'iface eth%s:%s inet static' % (i,j)
+			print 'address '+baseConfig['interfaces/eth%s_%s/address' % (i,j) ]
+			if baseConfig['interfaces/eth%s_%s/network' % (i,j) ]:
+				print 'network '+baseConfig['interfaces/eth%s_%s/network' % (i,j) ]
+			if baseConfig['interfaces/eth%s_%s/netmask' % (i,j) ]:
+				print 'netmask '+baseConfig['interfaces/eth%s_%s/netmask' % (i,j) ]
+			if baseConfig['interfaces/eth%s_%s/broadcast' % (i,j) ]:
+				print 'broadcast '+baseConfig['interfaces/eth%s_%s/broadcast' % (i,j) ]
+			if baseConfig['interfaces/eth%s_%s/address' % (i,j)] and baseConfig['interfaces/eth%s_%s/netmask' % (i,j)] and baseConfig['gateway'] and not gateway:
+				if check_gateway(baseConfig['interfaces/eth%s_%s/address' % (i,j)].split('.'), baseConfig['interfaces/eth%s_%s/netmask' % (i,j)].split('.'), baseConfig['gateway'].split('.')):
+					print 'gateway '+baseConfig['gateway']
+					gateway=True
+@!@

@@ -1,0 +1,131 @@
+#!/usr/bin/python2.4
+#
+# Univention Baseconfig
+#  install baseconfig information files
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys, string
+import univention_baseconfig_info as ub_info
+
+def debhelper_files():
+	return ( os.path.join( 'debian', package + 'postinst.debhelper' ),
+			 os.path.join( 'debian', package + 'preinst.debhelper'),
+			 os.path.join( 'debian', package + 'postrm.debhelper'),
+			 os.path.join( 'debian', package + 'prerm.debhelper') )
+
+def binary_packages():
+	_prefix = 'Package: '
+	packages = []
+	fp = open( 'debian/control' )
+	for line in fp.readlines():
+		if not line.startswith( _prefix ):
+			continue
+		packages.append( line[ len( _prefix ) :  -1 ] )
+	fp.close()
+	return packages
+
+def divert_add( fd, dest ):
+	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert "%s" --add "%s" || true\n' % ( dest + '.debian', dest ) )
+
+def divert_remove( fd, dest ):
+	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert %s --remove "%s" || true\n' % ( dest + '.debian', dest ) )
+
+if __name__ == '__main__':
+	info = ub_info.BaseconfigInfo( install_mode = True )
+	for package in binary_packages():
+		# package's conffiles
+		conffilename = os.path.join( 'debian', package + '.conffiles' )
+		try:
+			current_conffiles = open( conffilename ).readlines()
+		except IOError:
+			current_conffiles = []
+
+		conffiles = open( conffilename, 'a' )
+
+		# helper
+		postinst, preinst, postrm, prerm = debhelper_files()
+
+		preinst_fd = open( preinst, 'a' )
+		postinst_fd = open( postinst, 'a' )
+
+		# categories
+		source = os.path.join( 'debian',
+								 package + '.univention-baseconfig-categories' )
+
+		if not os.path.exists( source ):
+			continue
+
+		info.read_categories( source )
+		failed = info.check_categories()
+		if failed:
+			print >>sys.stderr, 'The following category definitions are invalid: %s' % ', '.join( failed )
+			sys.exit( 1 )
+		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
+								  ub_info.BaseconfigInfo.CATEGORIES )
+		dest = os.path.join( dest_path, package + '.cfg' )
+
+		os.system( 'install -m 755 -d %s' % dest_path )
+		os.system( 'install -m 644 %s %s' % ( source, dest ) )
+
+		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.CATEGORIES,
+									  package + '.cfg' )
+		if not real_conffile + '\n' in current_conffiles:
+			conffiles.write( real_conffile + '\n' )
+
+		divert_add( preinst_fd, dest )
+		divert_remove( postinst_fd, dest )
+
+		# variables
+		source = os.path.join( 'debian',
+							   package + '.univention-baseconfig-variables' )
+		if not os.path.exists( source ):
+			continue
+
+		info.read_variables( source )
+		failed = info.check_variables()
+		if failed:
+			print >>sys.stderr, 'The following variable definition are invalid: %s' ', '.join( failed )
+			sys.exit( 1 )
+		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
+								  ub_info.BaseconfigInfo.VARIABLES )
+		dest = os.path.join( dest_path, package + '.cfg' )
+
+		os.system( 'install -m 755 -d %s' % dest_path )
+		os.system( 'install -m 644 %s %s' % ( source, dest ) )
+
+		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.VARIABLES,
+									  package + '.cfg' )
+		if not real_conffile + '\n' in current_conffiles:
+			conffiles.write( real_conffile + '\n' )
+
+		divert_add( preinst_fd, dest )
+		divert_remove( postinst_fd, dest )
+
+		# close files
+		preinst_fd.close()
+		postinst_fd.close()
+		conffiles.close()

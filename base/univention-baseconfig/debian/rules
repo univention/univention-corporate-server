@@ -1,0 +1,124 @@
+#!/usr/bin/make -f
+#
+# Univention Baseconfig
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+
+version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+copyrightyear=`date +%Y`
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	aclocal
+	autoconf
+	automake -a
+	./configure --prefix=/usr
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	make
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	test -f Makefile && make distclean || true
+	find -name Makefile.in -o -name Makefile | xargs rm -f
+	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
+	dh_clean
+
+D=$(CURDIR)/debian/univention-baseconfig
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	make install DESTDIR=`pwd`/debian/tmp
+
+	chmod 700 debian/univention-baseconfig/var/log/univention
+	install -m 755 jitter debian/univention-config/usr/sbin
+	install -m 755 ldapsearch-wrapper debian/univention-config/usr/bin
+	install -m 755 univention-keyboardmapping debian/univention-config/usr/bin
+	
+	cat univention-sysinfo | sed -e "s/@%@package_version@%@/${version}/" > univention-sysinfo_tmp
+	cat univention-sysinfo_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-sysinfo_tmp2
+	install -m 755 univention-sysinfo_tmp2 debian/univention-config/usr/bin/univention-sysinfo
+	rm univention-sysinfo_tmp*
+	
+	install -m 755 univention-baseconfig debian/univention-config/usr/sbin
+	
+	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/" > univention_baseconfig.py_tmp
+	cat univention_baseconfig.py_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention_baseconfig.py_tmp2
+	install -m 755 univention_baseconfig_info.py debian/univention-config/usr/lib/site-python/univention_baseconfig_info.py
+	install -m 755 univention_baseconfig.py_tmp2 debian/univention-config/usr/lib/site-python/univention_baseconfig.py
+	install -m 755 univention-install-baseconfig debian/univention-config-dev/usr/bin
+	install -m 755 univention-install-baseconfig-info debian/univention-config-dev/usr/bin
+	rm univention_baseconfig.py_tmp*
+	
+	install -m 755 etc/X11/Xsession.d/33-univention-environment ${D}/etc/X11/Xsession.d/33-univention-environment
+
+	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-baseconfig/usr/lib/univention-ldap-policy/nfsmounts
+
+
+	chmod 755 ./univention-install-baseconfig
+	chmod 755 ./univention-install-baseconfig-info
+	./univention-install-baseconfig
+	./univention-install-baseconfig-info
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_movefiles
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

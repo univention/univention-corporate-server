@@ -1,0 +1,37 @@
+#!/bin/sh
+
+PATH=/sbin:/bin
+
+test -f /usr/sbin/rdate || exit 0
+
+if test -f /etc/default/ntpdate ; then
+	. /etc/default/ntpdate
+else
+	NTPSERVERS="pool.ntp.org"
+fi
+
+test -n "$NTPSERVERS" || exit 0
+
+
+case "$1" in
+	start|restart)
+		echo -n "Running rdate to synchronize clock:"
+		for srv in $NTPSERVERS; do
+			if /bin/netcat -q0 -w4 $srv time </dev/null >/dev/null 2>&1; then
+				if /usr/sbin/rdate $srv >/dev/null 2>&1; then
+					echo " done."
+					exit 0
+				fi
+			fi
+		done
+		echo " failed!"
+		;;
+	stop)
+		;;
+	*)
+		echo "Usage: /etc/init.d/ntpdate {start|stop|restart}"
+		exit 1
+		;;
+esac
+
+exit 0

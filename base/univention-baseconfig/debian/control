@@ -1,0 +1,70 @@
+Source: univention-baseconfig
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), python2.4, autoconf, automake, locales, libtool, libunivention-debug-dev
+Standards-Version: 3.5.2
+
+Package: univention-baseconfig
+Architecture: all
+Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils
+Description: UCS - base configuration
+ This package contains the base configuration for UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-config
+Architecture: all
+Conflicts: univention-baseconfig (<< 1.0)
+Replaces: univention-baseconfig (<< 1.0)
+Depends: python2.4
+Description: UCS - configuration manager
+ This package contains the univention-config configuration
+ manager, primarily used by the UCS base configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-config-dev
+Architecture: all
+Provides: univention-baseconfig-dev
+Replaces: univention-baseconfig-dev
+Conflicts: univention-baseconfig-dev
+Depends: python2.4, univention-config
+Description: UCS - configuration manager (development files)
+ This package contains the files needed to develop packages
+ that use univention-config.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-config0
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: UCS - C interface to configuration manager
+ The included library provides a C API to access the
+ UCS configuration manager.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-config-dev
+Architecture: all
+Depends: libunivention-config0
+Description: UCS - C interface to configuration manager (development files)
+ This package includes the development files to access
+ the UCS configuration manager from C.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

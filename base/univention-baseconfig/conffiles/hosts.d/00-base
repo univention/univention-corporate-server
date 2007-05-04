@@ -1,0 +1,29 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig ueberschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/hosts.d/00-base
+#
+
+@!@
+if baseConfig.has_key('interfaces/eth0/type') and baseConfig['interfaces/eth0/type'] == 'dhcp' and baseConfig.has_key('hostname'):
+		if baseConfig.has_key('domainname'):
+			print '127.0.0.1	%s.%s %s localhost'%(baseConfig['hostname'],baseConfig['domainname'],baseConfig['hostname'])
+		else:
+			print '127.0.0.1	localhost %s'%(baseConfig['hostname'])
+else:
+	print '127.0.0.1	localhost'
+
+for i in range(0,4):
+	if baseConfig['interfaces/eth%s/address' % i]:
+		print '%s\t%s.%s %s' % (baseConfig['interfaces/eth%s/address' % i],baseConfig['hostname'],baseConfig['domainname'],baseConfig['hostname'])
+
+for i in range(0,4):
+	for j in range(0,4):
+		if baseConfig['interfaces/eth%s_%s/address' % (i,j)]:
+			print '%s\t%s.%s %s' % (baseConfig['interfaces/eth%s_%s/address' % (i,j)],baseConfig['hostname'],baseConfig['domainname'],baseConfig['hostname'])
+
+@!@

@@ -1,0 +1,166 @@
+#!/bin/sh
+#
+# Univention Baseconfig
+#  postinst file
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/cache"
+
+univention-baseconfig set ldap/base?dc=univention,dc=unconfigured
+
+univention-baseconfig set ldap/server/name?ds1
+univention-baseconfig set ldap/server/ip?127.0.0.1
+
+univention-baseconfig set ldap/binaryattributes?""
+
+univention-baseconfig set browser-cache?0
+
+univention-baseconfig set lilo/append/acpi?on
+univention-baseconfig set lilo/append/pci_acpi?off
+univention-baseconfig set lilo/default\?newest
+univention-baseconfig set lilo/vga?785
+univention-baseconfig set lilo/compact?no
+
+univention-baseconfig set log/rotate/weeks?12
+
+univention-baseconfig set nameserver/option/timeout?2
+
+# this must be done _before_ dephelper runs
+if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then
+	newestkernel=`readlink /vmlinuz`
+	if [ -z "$newestkernel" ]; then newestkernel=boot/vmlinuz-`uname -r`; fi
+	newestinitrd=`readlink /initrd.img`
+	if [ -z "$newestinitrd" ]; then newestinitrd=boot/initrd.img-`uname -r`; fi
+	if [ -n "$newestkernel" -a -n "$newestinitrd" ]; then
+		ln -s $newestkernel /vmlinuz.install
+		ln -s $newestinitrd /initrd.img.install
+	fi
+fi
+
+#DEBHELPER#
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.5; then
+	eval `univention-baseconfig shell nameserver`
+	if [ -n "$nameserver" ]; then
+		univention-baseconfig set nameserver1=$nameserver
+		univention-baseconfig unset nameserver
+	fi
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.9; then
+	find /var/log/univention/ -name *.log.[0-9].* | xargs rm -f
+	find /var/log/univention/ -name *.log.[0-9][0-9].* | xargs rm -f
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.17;  then
+	killall ntpd >/dev/null 2>&1 || true
+	rm -f /etc/init.d/ntp || true
+	update-rc.d -f ntp remove >/dev/null 2>&1 || true
+	/etc/init.d/ntp-server start >/dev/null 2>&1 || true
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.30; then
+	sshdconf="/etc/ssh/sshd_config.debian"
+
+	if [ -e "$sshdconf" ]; then
+		port=`egrep "Port" $sshdconf | awk '{print $2}'` #22
+        	permroot=`egrep "PermitRootLogin" $sshdconf | awk '{print $2}'` #yes
+	        xforw=`egrep "X11Forwarding" $sshdconf | awk '{print $2}'` #no
+	else
+		port="22"
+		permroot="yes"
+		xforw="no"
+	fi
+	univention-baseconfig set sshd/port?$port
+	univention-baseconfig set sshd/permitroot?$permroot
+	univention-baseconfig set sshd/xforwarding?$xforw
+fi
+
+univention-baseconfig set sshd/port?22
+univention-baseconfig set sshd/permitroot?yes
+univention-baseconfig set sshd/xforwarding?no
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
+	chown root:root /tmp/
+	chmod 1777 /tmp/
+fi
+
+if [ -x /etc/init.d/ntpdate -a -x /etc/rcS.d/S51ntpdate ]; then
+	update-rc.d -f ntpdate remove >/dev/null 2>&1 || true
+	update-rc.d  ntpdate defaults 22 >/dev/null 2>&1 || true
+fi
+
+if [ -e /etc/init.d/rdate ]; then
+	chmod +x /etc/init.d/rdate
+fi
+
+if [ "$locale" = "de_DE@euro" ]; then
+	univention-baseconfig set locale="de_DE@euro:ISO-8859-15"
+elif [ "$locale" = "de_DE" ]; then
+	univention-baseconfig set locale="de_DE:ISO-8859-15"
+fi
+
+eval `univention-baseconfig shell locale`
+if [ -n "$locale" ]; then
+	/usr/sbin/locale-gen || true
+fi
+
+update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
+
+if [ "$1" = configure -a -n "$2" ]; then
+	eval `univention-baseconfig shell`
+	if [ -n "$interfaces_eth0_type" ]; then
+		if [ "$interfaces_eth0_type" == "dhcp" ]; then
+			dhclient eth0 || true
+		fi
+	fi
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; then
+    eval `univention-baseconfig shell proxy/address proxy/port proxy/http`
+    if [ -n "$proxy_http" ];
+	then
+	echo "remove deprecated baseconfig-variables proxy/address and proxy/port in favor to proxy/http"
+	univention-baseconfig set proxy/port="" proxy/address=""
+    else
+	if [ -n "$proxy_address" ];
+	    then
+	    proxy_http="http://"$proxy_address
+	fi
+	if [ -n "$proxy_port" ];
+	    then
+	    proxy_http="$proxy_http":"$proxy_port"
+	fi
+	univention-baseconfig set proxy/port="" proxy/address="" proxy/http="$proxy_http"
+    fi
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.54-35; then
+    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
+fi
+
+exit 0

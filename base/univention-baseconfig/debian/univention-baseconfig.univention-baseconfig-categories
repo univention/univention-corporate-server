@@ -1,0 +1,13 @@
+[System]
+name=System
+icon=desktop.gif
+
+[Network]
+name[de]=Netz
+name[en]=Network
+icon=network.gif
+
+[Misc]
+name[de]=Sonstiges
+name[en]=Miscellaneous
+icon=misc.gif

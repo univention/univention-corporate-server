@@ -1,0 +1,11 @@
+@!@
+if baseConfig.has_key('pkgdb/scan') and baseConfig['pkgdb/scan'] == 'yes':
+	print 'DPkg'
+	print '{'
+	if baseConfig.has_key('pkgdb/overwrite/joincheck') and baseConfig['pkgdb/overwrite/joincheck'] == 'yes':
+		print '\tPost-Invoke {"test -x /usr/sbin/univention-pkgdb-scan && /usr/sbin/univention-pkgdb-scan || true";};'
+	else:
+		print '\tPost-Invoke {"test -e /usr/share/univention-join/.joined && test -x /usr/sbin/univention-pkgdb-scan && /usr/sbin/univention-pkgdb-scan || true";};'
+	print '}'
+@!@
+

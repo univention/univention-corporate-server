@@ -1,0 +1,145 @@
+#!/usr/bin/python2.4
+#
+# Univention Baseconfig
+#  install baseconfig script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys, string
+import univention_baseconfig
+
+#  we need a way to allow spaces in directory and file names
+def doIt(argv):
+	print '%s' % string.join(argv, ' ')
+	os.spawnvp(os.P_WAIT, argv[0], argv)
+
+def getPackages():
+	packages = []
+	fp = open('debian/control')
+	for line in fp.readlines():
+		if not line.startswith('Package: '):
+			continue
+		line = line[0:-1]
+		field, value = line.split(': ')
+		packages.append(value)
+	fp.close()
+	return packages
+
+def tmpDir(package):
+	return 'debian/'+package
+
+def extFile(package, ext):
+	return 'debian/'+package+'.'+ext
+
+def srcPath(file):
+	f = 'conffiles/'+file
+	if os.path.exists(f): return f
+	f = file
+	if os.path.exists(f): return f
+	if file.startswith('etc/'):
+		f = 'conffiles/'+file[4:]
+		if os.path.exists(f): return f
+	print "file "+file+" was not found"
+	sys.exit(1)
+
+def destPath(file, package, type='files'):
+	return tmpDir(package)+'/etc/univention/templates/'+type+'/'+file
+
+def destDir(file, package, type='files'):
+	return tmpDir(package)+'/etc/univention/templates/'+type+'/'+os.path.dirname(file)
+
+def typeDir(type):
+	if type == 'script':
+		return type
+	else:
+		return 'file'
+
+if __name__ == '__main__':
+	for package in getPackages():
+		file = extFile(package, 'univention-baseconfig')
+		if not os.path.exists(file):
+			continue
+	
+		postinst = open(extFile(package, 'postinst.debhelper'), 'a')
+		preinst = open(extFile(package, 'preinst.debhelper'), 'a')
+		postrm = open(extFile(package, 'postrm.debhelper'), 'a')
+		prerm = open(extFile(package, 'prerm.debhelper'), 'a')
+		try:	bla=open('debian/'+package+'.conffiles').readlines()
+		except IOError:	bla=[]
+		conffiles = open('debian/'+package+'.conffiles','a')
+		fp = open(file)
+		for item in univention_baseconfig.parseRfc822(fp.read()):
+			if item['Type'][0] == 'file':
+				f = item['File'][0]
+				doIt(['install', '-d', destDir(f, package)])
+				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+				for key in ('Preinst', 'Postinst'):
+					if item.has_key(key):
+						mod = item[key][0]
+						doIt(['install', '-d', destDir(mod, package, 'modules')])
+						doIt(['cp', '-a', srcPath(mod), destPath(mod, package, 'modules')])
+						doIt(['chmod', 'a+x', destPath(mod, package, 'modules')])					
+			elif item['Type'][0] == 'subfile':
+				f = item['Subfile'][0]
+				doIt(['install', '-d', destDir(f, package)])
+				doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+			elif item['Type'][0] == 'multifile':
+				f = item['Multifile'][0]
+				if os.path.exists(f):
+					doIt(['install', '-d', destDir(f, package)])
+					doIt(['cp', '-a', srcPath(f), destPath(f, package)])
+			elif item['Type'][0] == 'script':
+				f = item['Script'][0]
+				doIt(['install', '-d', destDir(f, package, 'scripts')])
+				doIt(['cp', '-a', srcPath(f), destPath(f, package, 'scripts')])
+				doIt(['chmod', 'a+x', destPath(f, package, 'scripts')])
+			elif item['Type'][0] == 'module':
+				f = item['Module'][0]
+				doIt(['install', '-d', destDir(f, package, 'modules')])
+				doIt(['cp', '-a', srcPath(f), destPath(f, package, 'modules')])
+				doIt(['chmod', 'a+x', destPath(f, package, 'modules')])
+			dpath = '/etc/univention/templates/'+typeDir(item['Type'][0])+'s/'+f
+			print dpath
+			if not dpath+"\n" in bla and os.path.exists(destPath(f, package)):
+				conffiles.write(dpath+"\n")
+			if item.has_key('File'):
+				for f in item['File']:
+					if f[0] != '/':
+						f = '/'+f
+					preinst.write('test "$1" = "install" && dpkg-divert --rename --divert %s --add %s || true\n' % (f+'.debian', f))
+					postrm.write('test "$1" = "remove" && dpkg-divert --rename --divert %s --remove %s || true\n' % (f+'.debian', f))
+		fp.close()
+
+		doIt(['install', '-d', destDir('', package, 'info')])
+		doIt(['install', '-m644', file, destPath(package+'.info', package, 'info')])
+
+		postinst.write('test -x /usr/sbin/univention-baseconfig && univention-baseconfig register %s || true\n' % package)
+
+		prerm.write('\n')
+		prerm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
+		prerm.write('	test -x /usr/sbin/univention-baseconfig && univention-baseconfig unregister %s || true\n' % package)
+		prerm.write('fi\n')
+		prerm.write('\n')

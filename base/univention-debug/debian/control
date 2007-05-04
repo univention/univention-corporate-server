@@ -1,0 +1,68 @@
+Source: univention-debug
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, autoconf, automake, libtool, python2.4-dev
+
+Package: libunivention-debug0
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: UCS - debugging and logging library
+ This package includes the Univention debugging and logging
+ library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-debug-dev
+Architecture: all
+Depends: libunivention-debug0
+Description: UCS - debugging and logging library (development files)
+ This package includes the development files for the
+ Univention debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+
+Package: python-univention-debug
+Architecture: any
+Description: UCS - debugging and logging meta package
+ This package includes the Python interface to the
+ Univention debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python2.4-univention-debug
+Architecture: any
+Depends: ${shlibs:Depends}
+Conflicts: python2.3-univention-debug, python2.1-univention-debug
+Description: UCS - debugging and logging library (Python interface)
+ This package includes the Python interface to the
+ Univention debugging and logging  library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-debug-tools
+Architecture: all
+Depends: python
+Description: UCS - tools for debugging and logging data
+ This package contains the univention-viewlog tool to
+ filter and view log files from the Univention debugging
+ and logging library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

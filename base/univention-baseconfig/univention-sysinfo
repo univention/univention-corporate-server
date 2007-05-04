@@ -1,0 +1,152 @@
+#!/bin/bash
+#
+# Univention Baseconfig
+#  collects informations about the hardware, the configuration and the installed packages
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+TEMPSUBDIR=$HOSTNAME-`date +%Y-%m-%d`
+TEMPDIR=/tmp/$TEMPSUBDIR
+
+
+PROCFILES="cpuinfo devices dma filesystems interrupts loadavg meminfo partitions uptime version scsi/scsi mounts"
+PROGRAMMS="lspci__-v uptime uname__-a univention-baseconfig__dump lsmod"
+
+collect_from_procfile() {
+	if [ -e /proc/$1 ]
+		then
+		echo -n ": $1"
+		filename=`echo $1 | sed -e 's|/|_|g'`
+		cat "/proc/$1" > "$TEMPDIR/proc/$filename"
+	fi
+}
+
+collect_from_programm() {
+	cmd=`echo $1 | sed -e 's/__/ /g'`
+	$cmd > "$TEMPDIR/$1"
+	echo -n ": $cmd"
+}
+
+display_help() {
+	display_header
+	cat <<-EOL
+	Syntax:
+	  univention-sysinfo [options]
+
+	Options:
+	  -h | --help | -?:
+	    print this usage message and exit program
+
+	  --version
+	    print version information and exit program
+
+	Description:
+	  univention-sysinfo collects some hardware-related informations
+	  about your system, e.g. CPU, memory and filesystems.
+
+	Known-Bugs:
+	  -None-
+
+	EOL
+	exit 0
+}
+
+display_header() {
+	echo "univention-sysinfo: collect information about your system"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "univention-sysinfo @%@package_version@%@"
+	exit 0
+}
+
+if [ "$#" -gt "0" ]; then
+	case $1 in
+		--version)
+			display_version
+			;;
+		*)
+			display_help
+			;;
+	esac
+fi
+
+display_header
+echo " If available please insert Informations about "
+echo " the System (one line each):"
+echo ""
+read -p " Manufacturer: " MANUFACTURER
+read -p " Model:        " MODELL
+read -p " Description:  " DESCRIPTION
+echo ""
+
+if [ -e $TEMPDIR ]
+	then
+	echo " ERROR: can not create directory, file exists: $TEMPDIR"
+	echo " please delete/move the file"
+	exit 1
+fi
+
+if [ -e $TEMPDIR.tgz ]
+	then
+	echo " ERROR: can not create directory, file exists: $TEMPDIR.tgz"
+	echo " please delete/move the file"
+	exit 1
+fi
+
+mkdir $TEMPDIR > /dev/null 2>&1
+mkdir $TEMPDIR/proc > /dev/null 2>&1
+
+echo " Collect system-information:"
+
+echo -n " /proc    "
+for proc in $PROCFILES
+  do
+  collect_from_procfile $proc
+done
+echo ""
+
+echo -n " programm "
+for prog in $PROGRAMMS
+  do
+  collect_from_programm $prog
+done
+echo ""
+
+echo " Manufacturer: "$MANUFACTURER > $TEMPDIR/manual_info
+echo " Model:        "$MODELL >> $TEMPDIR/manual_info
+echo " Description:  "$DESCRIPTION >> $TEMPDIR/manual_info
+
+cd /tmp
+tar czf $TEMPSUBDIR.tgz $TEMPSUBDIR > /dev/null 2>&1
+rm -rf $TEMPSUBDIR
+
+echo ""
+echo " Collection of system-information finished. Please send"
+echo " $TEMPDIR.tgz to support@univention.de"
+echo ""
