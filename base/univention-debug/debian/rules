@@ -28,6 +28,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+# export DH_VERBOSE=1
+
+PACKAGE_NAME=univention-debug
+MODULE_NAME=univention-debug
+
+DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
+        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+
+PYVERS=$(shell pyversions -vr)
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -38,15 +48,19 @@ configure-stamp:
 	touch configure-stamp
 
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-ext-%)
 	dh_testdir
-	make
-	touch build-stamp
+	touch $@
+build-ext-%:
+	dh_testdir
+	PYTHON=python$* make
+	touch $@
+
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp configure-stamp build-ext-2.4
 	rm -f *~
 	test -f Makefile && make distclean || true
 	find -name Makefile.in -o -name Makefile -path './python' -prune | xargs rm -f
@@ -54,39 +68,44 @@ clean:
 	(cd python && make clean)
 	dh_clean
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	(cd python && PYTHON=python2.4 make clean _debug.so)
-	install -m 0644 python/_debug.so python/debug.py debian/python2.4-univention-debug/usr/lib/python2.4/site-packages/univention/
+	(cd python && PYTHON=python$* make clean _debug.so)
 	make install DESTDIR=`pwd`/debian/tmp
 	install -m 0755 tools/univention-debug-viewlog debian/univention-debug-tools/usr/bin/
+	install -d debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
+	install -m 0644 python/_debug.so python/debug.py debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
+
 
 binary-indep: build install
 
 binary-arch: build install
-	dh_testdir
-	dh_testroot
-	dh_movefiles
-	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
-	dh_installchangelogs
-	dh_link
-	dh_strip
-	dh_compress
-	dh_fixperms
-	dh_installdeb
-	dh_shlibdeps
-	dh_gencontrol
-	dh_md5sums
-	dh_builddeb
+	dh_testdir -a
+	dh_testroot -a
+	dh_movefiles -a
+	dh_installdocs -a
+	dh_installexamples -a
+	dh_installmenu -a
+	dh_installcron -a
+	dh_installman -a
+	dh_installinfo -a
+	dh_installchangelogs -a
+	dh_install --sourcedir=debian/tmp
+	dh_pycentral -a
+	dh_link -a
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure

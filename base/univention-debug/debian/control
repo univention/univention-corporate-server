@@ -3,7 +3,8 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, autoconf, automake, libtool, python2.4-dev
+Build-Depends: debhelper, autoconf, automake1.4, libtool, python, python-all-dev, python-central
+XS-Python-Version: all
 
 Package: libunivention-debug0
 Architecture: any
@@ -32,19 +33,10 @@ Description: UCS - debugging and logging library (development files)
 
 Package: python-univention-debug
 Architecture: any
-Description: UCS - debugging and logging meta package
- This package includes the Python interface to the
- Univention debugging and logging  library.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: python2.4-univention-debug
-Architecture: any
-Depends: ${shlibs:Depends}
-Conflicts: python2.3-univention-debug, python2.1-univention-debug
+Replaces: python2.3-univention-debug, python2.4-univention-debug,
+Conflicts: python2.3-univention-debug, python2.4-univention-debug,
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
 Description: UCS - debugging and logging library (Python interface)
  This package includes the Python interface to the
  Univention debugging and logging  library.
