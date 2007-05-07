@@ -85,27 +85,27 @@ install-ext-%:
 binary-indep: build install
 
 binary-arch: build install
-	dh_testdir -a
-	dh_testroot -a
-	dh_movefiles -a
-	dh_installdocs -a
-	dh_installexamples -a
-	dh_installmenu -a
-	dh_installcron -a
-	dh_installman -a
-	dh_installinfo -a
-	dh_installchangelogs -a
+	dh_testdir
+	dh_testroot
+	dh_movefiles
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
 	dh_install --sourcedir=debian/tmp
-	dh_pycentral -a
-	dh_link -a
-	dh_strip -a
-	dh_compress -a
-	dh_fixperms -a
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-	dh_md5sums -a
-	dh_builddeb -a
+	dh_pycentral
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
