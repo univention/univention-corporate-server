@@ -71,7 +71,7 @@ Description: UCS - C interface to configuration manager (development files)
  refer to: http://www.univention.de/
 
 Package: python-univention-baseconfig
-Architecture: any
+Architecture: all
 Depends: ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}

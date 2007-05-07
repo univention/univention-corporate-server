@@ -34,9 +34,6 @@ copyrightyear=`date +%Y`
 PACKAGE_NAME=univention-baseconfig
 MODULE_NAME=univention-baseconfig
 
-DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
-        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
-
 PYVERS=$(shell pyversions -vr)
 
 configure: configure-stamp
@@ -108,13 +105,13 @@ install-ext-%:
 	./python/univention-install-baseconfig
 	./python/univention-install-baseconfig-info
 
-binary-arch: build install
 
 binary-indep: build install
+
+binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_movefiles
-	dh_pycentral
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
@@ -122,7 +119,8 @@ binary-indep: build install
 	dh_installman
 	dh_installinfo
 	dh_installchangelogs
-	dh_install
+	dh_install --sourcedir=debian/tmp
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress
