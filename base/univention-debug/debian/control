@@ -35,6 +35,7 @@ Package: python-univention-debug
 Architecture: any
 Replaces: python2.3-univention-debug, python2.4-univention-debug,
 Conflicts: python2.3-univention-debug, python2.4-univention-debug,
+Depends: ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS - debugging and logging library (Python interface)
