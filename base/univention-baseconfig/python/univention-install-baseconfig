@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention_baseconfig
+import univention.baseconfig
 
 #  we need a way to allow spaces in directory and file names
 def doIt(argv):
@@ -91,7 +91,7 @@ if __name__ == '__main__':
 		except IOError:	bla=[]
 		conffiles = open('debian/'+package+'.conffiles','a')
 		fp = open(file)
-		for item in univention_baseconfig.parseRfc822(fp.read()):
+		for item in univention.baseconfig.parseRfc822(fp.read()):
 			if item['Type'][0] == 'file':
 				f = item['File'][0]
 				doIt(['install', '-d', destDir(f, package)])

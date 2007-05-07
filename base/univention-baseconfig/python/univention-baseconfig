@@ -31,5 +31,5 @@
 import os, sys, univention.baseconfig
 
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig'):
-	univention_baseconfig.main(sys.argv[1:])
+	univention.baseconfig.main(sys.argv[1:])
 

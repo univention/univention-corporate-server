@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention_baseconfig_info as ub_info
+import univention.baseconfig_info as ub_info
 
 def debhelper_files():
 	return ( os.path.join( 'debian', package + 'postinst.debhelper' ),
