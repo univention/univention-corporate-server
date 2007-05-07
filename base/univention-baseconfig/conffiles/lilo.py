@@ -39,7 +39,8 @@ def lock():
 
 def lilo():
 	time.sleep(2)
-	os.system('/sbin/lilo')
+	if os.path.exists('/sbin/lilo'):
+		os.system('/sbin/lilo')
 
 def unlock():
 	os.remove(lockfile)

@@ -30,9 +30,8 @@
 
 test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/cache"
 
-
-dpkg-statusoverwrite --add root adm 0750 /var/log/
-dpkg-statusoverwrite --add root adm 0750 /var/log/univention
+dpkg-statoverride --add root adm 0750 /var/log/
+dpkg-statoverride --add root adm 0750 /var/log/univention
 
 univention-baseconfig set ldap/base?dc=univention,dc=unconfigured
 
