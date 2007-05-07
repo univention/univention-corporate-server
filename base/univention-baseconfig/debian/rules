@@ -92,6 +92,7 @@ install-ext-%:
 	install -d debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/
 	install -m 0644 python/univention/baseconfig_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig_info.py
 	install -m 0644 python/univention/baseconfig.py_tmp debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig.py
+	install -m 0644 python/univention_baseconfig.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention_baseconfig.py
 
 	install -m 755 python/univention-baseconfig debian/univention-config/usr/sbin
 	install -m 755 python/univention-install-baseconfig debian/univention-config-dev/usr/bin
