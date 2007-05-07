@@ -30,3 +30,5 @@
 
 rm -f /var/cache/univention-config/cache
 
+#DEBHELPER#
+

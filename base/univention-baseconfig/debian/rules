@@ -87,7 +87,7 @@ install-ext-%:
 	install -m 755 univention-sysinfo_tmp debian/univention-config/usr/bin/univention-sysinfo
 	rm univention-sysinfo_tmp*
 	
-	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/baseconfig.py_tmp
+	cat python/univention/baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/baseconfig.py_tmp
 
 	install -d debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/
 	install -m 0644 python/univention/baseconfig_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig_info.py
