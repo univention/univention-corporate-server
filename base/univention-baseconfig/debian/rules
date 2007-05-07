@@ -31,7 +31,7 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
-PACKAGE_NAME=univention-baseconfig
+PACKAGE_NAME=python-univention-baseconfig
 MODULE_NAME=univention-baseconfig
 
 PYVERS=$(shell pyversions -vr)
@@ -120,7 +120,7 @@ binary-arch: build install
 	dh_installinfo
 	dh_installchangelogs
 	dh_install --sourcedir=debian/tmp
-	dh_pycentral
+	dh_pycentral --no-package=univention-baseconfig
 	dh_link
 	dh_strip
 	dh_compress
