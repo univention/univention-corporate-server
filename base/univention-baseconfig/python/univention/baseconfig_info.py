@@ -34,7 +34,7 @@ import os
 import re
 import string
 
-import univention_baseconfig
+import univention.baseconfig
 
 # default locale
 _locale = 'de'
@@ -156,7 +156,7 @@ class BaseconfigInfo( object ):
 		self.variables = {}
 		self.__patterns = {}
 		if not install_mode:
-			self.__baseConfig = univention_baseconfig.baseConfig()
+			self.__baseConfig = univention.baseconfig.baseConfig()
 			self.__baseConfig.load()
 			self.__load_categories()
 			self.__load_variables()
