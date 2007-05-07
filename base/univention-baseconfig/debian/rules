@@ -3,7 +3,7 @@
 # Univention Baseconfig
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,8 +27,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-export DH_COMPAT=3
 
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
@@ -68,23 +66,23 @@ install: build
 	make install DESTDIR=`pwd`/debian/tmp
 
 	chmod 700 debian/univention-baseconfig/var/log/univention
-	install -m 755 jitter debian/univention-config/usr/sbin
-	install -m 755 ldapsearch-wrapper debian/univention-config/usr/bin
-	install -m 755 univention-keyboardmapping debian/univention-config/usr/bin
+
+	install -m 755 scripts/jitter debian/univention-config/usr/sbin
+	install -m 755 scripts/ldapsearch-wrapper debian/univention-config/usr/bin
+	install -m 755 scripts/univention-keyboardmapping debian/univention-config/usr/bin
 	
-	cat univention-sysinfo | sed -e "s/@%@package_version@%@/${version}/" > univention-sysinfo_tmp
-	cat univention-sysinfo_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-sysinfo_tmp2
-	install -m 755 univention-sysinfo_tmp2 debian/univention-config/usr/bin/univention-sysinfo
+	cat scripts/univention-sysinfo | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-sysinfo_tmp
+	install -m 755 univention-sysinfo_tmp debian/univention-config/usr/bin/univention-sysinfo
 	rm univention-sysinfo_tmp*
 	
-	install -m 755 univention-baseconfig debian/univention-config/usr/sbin
+	install -m 755 scripts/univention-baseconfig debian/univention-config/usr/sbin
 	
-	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/" > univention_baseconfig.py_tmp
-	cat univention_baseconfig.py_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention_baseconfig.py_tmp2
-	install -m 755 univention_baseconfig_info.py debian/univention-config/usr/lib/site-python/univention_baseconfig_info.py
-	install -m 755 univention_baseconfig.py_tmp2 debian/univention-config/usr/lib/site-python/univention_baseconfig.py
-	install -m 755 univention-install-baseconfig debian/univention-config-dev/usr/bin
-	install -m 755 univention-install-baseconfig-info debian/univention-config-dev/usr/bin
+	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention_baseconfig.py_tmp
+
+	install -m 755 univention_baseconfig_info.py debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig_info.py
+	install -m 755 univention_baseconfig.py_tmp debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig.py
+	install -m 755 scripts/univention-install-baseconfig debian/univention-config-dev/usr/bin
+	install -m 755 scripts/univention-install-baseconfig-info debian/univention-config-dev/usr/bin
 	rm univention_baseconfig.py_tmp*
 	
 	install -m 755 etc/X11/Xsession.d/33-univention-environment ${D}/etc/X11/Xsession.d/33-univention-environment
@@ -92,8 +90,8 @@ install: build
 	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-baseconfig/usr/lib/univention-ldap-policy/nfsmounts
 
 
-	chmod 755 ./univention-install-baseconfig
-	chmod 755 ./univention-install-baseconfig-info
+	chmod 755 ./univention-install-baseconfig ./univention-install-baseconfig-info
+
 	./univention-install-baseconfig
 	./univention-install-baseconfig-info
 

@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, univention_baseconfig
+import os, sys, univention.baseconfig
 
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig'):
 	univention_baseconfig.main(sys.argv[1:])
