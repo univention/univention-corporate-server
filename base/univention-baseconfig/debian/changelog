@@ -1,3 +1,9 @@
+univention-baseconfig (2.0-0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 May 2007 09:38:03 +0200
+
 univention-baseconfig (1.54-46) unstable; urgency=low
 
   * don't set LC_ALL in /etc/profile, fix setting of LANG in /etc/profile

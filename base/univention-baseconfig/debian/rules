@@ -31,6 +31,14 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
+PACKAGE_NAME=univention-baseconfig
+MODULE_NAME=univention-baseconfig
+
+DEB_UPSTREAM_VERSION=$(shell dpkg-parsechangelog \
+        | grep ^Version: | cut -d ' ' -f 2 | cut -d '-' -f 1)
+
+PYVERS=$(shell pyversions -vr)
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -41,15 +49,19 @@ configure-stamp:
 	touch configure-stamp
 
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-ext-%)
 	dh_testdir
-	make
-	touch build-stamp
+	touch $@
+build-ext-%:
+	dh_testdir
+	PYTHON=python$* make
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp
+	rm -f build-stamp configure-stamp build-ext-2.4
+	rm -f *~
 	test -f Makefile && make distclean || true
 	find -name Makefile.in -o -name Makefile | xargs rm -f
 	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
@@ -57,13 +69,15 @@ clean:
 
 D=$(CURDIR)/debian/univention-baseconfig
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	make install DESTDIR=`pwd`/debian/tmp
+	PYTHON=$* make install DESTDIR=`pwd`/debian/tmp
 
 	chmod 700 debian/univention-baseconfig/var/log/univention
 
@@ -77,10 +91,15 @@ install: build
 	
 	install -m 755 scripts/univention-baseconfig debian/univention-config/usr/sbin
 	
-	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention_baseconfig.py_tmp
+	cat univention_baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention_baseconfig.py_tmp
 
-	install -m 755 univention_baseconfig_info.py debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig_info.py
-	install -m 755 univention_baseconfig.py_tmp debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig.py
+	# install -m 755 univention_baseconfig_info.py debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig_info.py
+	# install -m 755 univention_baseconfig.py_tmp debian/univention-config/usr/lib/python2.4/site-packages/univention/baseconfig.py
+
+	install -d debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
+	install -m 0644 python/univention_baseconfig_info.py debian/python-univention-debug/usr/lib/python$*/site-packages/univention/baseconfig_info,py
+	install -m 0644 python/univention_baseconfig.py_tmp debian/python-univention-debug/usr/lib/python$*/site-packages/univention/baseconfig.py
+
 	install -m 755 scripts/univention-install-baseconfig debian/univention-config-dev/usr/bin
 	install -m 755 scripts/univention-install-baseconfig-info debian/univention-config-dev/usr/bin
 	rm univention_baseconfig.py_tmp*
@@ -90,10 +109,10 @@ install: build
 	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-baseconfig/usr/lib/univention-ldap-policy/nfsmounts
 
 
-	chmod 755 ./univention-install-baseconfig ./univention-install-baseconfig-info
+	chmod 755 scripts/univention-install-baseconfig scripts/univention-install-baseconfig-info
 
-	./univention-install-baseconfig
-	./univention-install-baseconfig-info
+	./scripts/univention-install-baseconfig
+	./scripts/univention-install-baseconfig-info
 
 binary-arch: build install
 

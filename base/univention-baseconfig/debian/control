@@ -2,8 +2,9 @@ Source: univention-baseconfig
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), python2.4, autoconf, automake, locales, libtool, libunivention-debug-dev
+Build-Depends: debhelper, autoconf, automake1.4, locales, libtool, libunivention-debug-dev,  python, python-all-dev, python-central
 Standards-Version: 3.5.2
+XS-Python-Version: all
 
 Package: univention-baseconfig
 Architecture: all
@@ -20,7 +21,7 @@ Package: univention-config
 Architecture: all
 Conflicts: univention-baseconfig (<< 1.0)
 Replaces: univention-baseconfig (<< 1.0)
-Depends: python2.4
+Depends: python-univention-baseconfig
 Description: UCS - configuration manager
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
@@ -63,6 +64,20 @@ Depends: libunivention-config0
 Description: UCS - C interface to configuration manager (development files)
  This package includes the development files to access
  the UCS configuration manager from C.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python-univention-baseconfig
+Architecture: any
+Depends: ${python:Depends}
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Description: UCS - Python interface to configuration manager
+ This package includes the Python interface to the
+ UCS configuration manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
