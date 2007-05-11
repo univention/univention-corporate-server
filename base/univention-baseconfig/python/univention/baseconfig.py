@@ -452,7 +452,11 @@ class configHandlers:
 			if not entry.has_key('Multifile') or not entry.has_key('Subfile'):
 				return None
 			mfile = entry['Multifile'][0]
-			qentry = (os.path.join(file_dir, entry['Subfile'][0]), grepVariables(open(os.path.join(file_dir, entry['Subfile'][0])).read()))
+			try:
+				qentry = (os.path.join(file_dir, entry['Subfile'][0]), grepVariables(open(os.path.join(file_dir, entry['Subfile'][0])).read()))
+			except IOError:
+				print "The following Subfile doesnt exist: \n%s \nunivention-baseconfig commit aborted" %(os.path.join(file_dir, entry['Subfile'][0]))
+				sys.exit(1)
 			# if multifile object does not exist jet, queue subfiles
 			if self._multifiles.has_key(mfile):
 				self._multifiles[mfile].addSubfiles([qentry])
