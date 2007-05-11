@@ -106,13 +106,15 @@ class baseConfig(dict):
 			comment = line.find('#')
 			if comment != -1:
 				line = line[:comment]
-			line = line.strip()
 			if line == '':
 				continue
 			if line.find(': ') == -1:
 				continue
 
 			key, value = line.split(': ')
+			if len(value) == 0: #if variable was set without an value 
+				value = ''
+
 			self[key] = value
 			
 		fp.close()
