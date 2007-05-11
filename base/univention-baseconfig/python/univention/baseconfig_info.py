@@ -98,13 +98,18 @@ class LocalizedDictionary( dict ):
 		if matches:
 			grp = matches.groupdict()
 			if self.has_key( grp[ 'key' ] ):
-				value = dict.__getitem__( self,grp[ 'key' ] )
+				value = dict.__getitem__( self, grp[ 'key' ] )
 				return value.get( value, grp[ 'lang' ] )
 		else:
 			if self.has_key( key ):
 				return dict.__getitem__( self, key ).get()
 
 		return None
+
+	def get( self, key, default = None ):
+		if self.has_key( key ):
+			return self.__getitem__( key )
+		return default
 
 	def has_key( self, key ):
 		return dict.has_key( self, string.lower( key ) )
@@ -122,14 +127,23 @@ class LocalizedDictionary( dict ):
 
 		return temp
 
+	def get_dict( self, key ):
+		if not self.has_key( key ):
+			return {}
+		return dict.__getitem__( self, key )
+
 class Variable( LocalizedDictionary ):
-	def __init__( self ):
+	def __init__( self, registered = True ):
 		LocalizedDictionary.__init__( self )
 		self.value = None
+		self._registered = registered
 
 	def check( self ):
+		if not self._registered:
+			return True
+
 		for key in ( 'description', 'type', 'categories' ):
-			if not self.has_key( key ) or not self[ key ]:
+			if not self.get( key, None ):
 				return False
 
 		return True
@@ -149,17 +163,18 @@ class BaseconfigInfo( object ):
 	BASE_DIR = '/etc/univention/base.info'
 	CATEGORIES = 'categories'
 	VARIABLES = 'variables'
+	CUSTOMIZED = '_customized'
 	FILE_SUFFIX = '.cfg'
 
-	def __init__( self, install_mode = False ):
+	def __init__( self, install_mode = False, load_unregistered = False ):
 		self.categories = {}
 		self.variables = {}
 		self.__patterns = {}
 		if not install_mode:
 			self.__baseConfig = univention.baseconfig.baseConfig()
 			self.__baseConfig.load()
-			self.__load_categories()
-			self.__load_variables()
+			self.load_categories()
+			self.__load_variables( load_unregistered )
 		else:
 			self.__baseConfig = None
 
@@ -190,7 +205,7 @@ class BaseconfigInfo( object ):
 				cat[ name ] = value
 			self.categories[ cat_name ] = cat
 
-	def __load_categories( self ):
+	def load_categories( self ):
 		path = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.CATEGORIES )
 		for filename in os.listdir( path ):
 			self.read_categories( os.path.join( path, filename ) )
@@ -223,12 +238,16 @@ class BaseconfigInfo( object ):
 		# all patterns processed
 		self.__patterns = {}
 
-	def write_variables( self, filename = None, package = None ):
+	def write_customized( self ):
+		filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
+								 BaseconfigInfo.CUSTOMIZED )
+		self.write_variables( filename )
+
+	def __write_variables( self, filename = None, package = None ):
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
-			filename = os.path.join( BaseconfigInfo.BASE_DIR,
-									 BaseconfigInfo.VARIABLES,
+			filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
 									 package + BaseconfigInfo.FILE_SUFFIX )
 		try:
 			fd = open( filename, 'w' )
@@ -248,12 +267,16 @@ class BaseconfigInfo( object ):
 
 		return True
 
-	def read_variables( self, filename = None, package = None ):
+	def read_customized( self ):
+		filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
+								 BaseconfigInfo.CUSTOMIZED )
+		self.read_variables( filename, override = True )
+
+	def read_variables( self, filename = None, package = None, override = False ):
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
-			filename = os.path.join( BaseconfigInfo.BASE_DIR,
-									 BaseconfigInfo.VARIABLES,
+			filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
 									 package + BaseconfigInfo.FILE_SUFFIX )
 		cfg = ConfigParser.ConfigParser()
 		cfg.read( filename )
@@ -263,7 +286,7 @@ class BaseconfigInfo( object ):
 				self.__patterns[ sec ] = cfg.items( sec )
 				continue
 			# variable already known?
-			if sec in self.variables.keys():
+			if not override and sec in self.variables.keys():
 				continue
 			var = Variable()
 			for name, value in cfg.items( sec ):
@@ -272,23 +295,32 @@ class BaseconfigInfo( object ):
 				var.value = self.__baseConfig[ sec ]
 			self.variables[ sec ] = var
 
-	def __load_variables( self ):
+	def __load_variables( self, load_unregistered = False ):
 		path = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES )
 		for entry in os.listdir( path ):
 			cfgfile = os.path.join( path, entry )
-			if os.path.isfile( cfgfile ):
+			if os.path.isfile( cfgfile ) and entry != BaseconfigInfo.CUSTOMIZED:
 				self.read_variables( cfgfile )
 		self.check_patterns()
+		if load_unregistered:
+			for key, value in self.__baseConfig.items():
+				if self.variables.has_key( key ):
+					continue
+				var = Variable( registered = False )
+				var.value = value
+				self.variables[ key ] = var
+		# read customized infos afterwards to override existing entries
+		self.read_customized()
 
 	def get_categories( self ):
-		'''returns a list fo category names'''
+		'''returns a list of category names'''
 		return self.categories.keys()
 
 	def get_category( self, name ):
-		'''returns a category object assoziated with the given name or
+		'''returns a category object associated with the given name or
 		None'''
-		if self.categories.has_key( name ):
-			return self.categories[ name ]
+		if self.categories.has_key( string.lower( name ) ):
+			return self.categories[ string.lower( name ) ]
 		return None
 
 	def get_variables( self, category = None ):
@@ -296,7 +328,7 @@ class BaseconfigInfo( object ):
 			return self.variables
 		temp = {}
 		for name, var in self.variables.items():
-			if category in var[ 'categories' ].split( ',' ):
+			if category in map( lambda x: string.lower( x ), var[ 'categories' ].split( ',' ) ):
 				temp[ name ] = var
 		return temp
 
@@ -313,17 +345,14 @@ def set_language( lang ):
 if __name__ == '__main__':
 	import sys
 
-	if len( sys.argv ) > 1:
-		info = BaseconfigInfo( install_mode = False )
-		info.read_variables( sys.argv[ 1 ] )
-		var = Variable()
-		var[ 'description[de]' ] = 'Ein Test'
-		var[ 'description[en]' ] = 'A Test'
-		var[ 'type' ] = 'str'
-		var[ 'categories' ] = 'TestCat'
-		info.add_variable( 'test/1', var )
-		info.write_variables( package = 'test-package' )
-	else:
-		info = BaseconfigInfo()
+	info = BaseconfigInfo( install_mode = False )
+	info.read_customized()
+	var = Variable()
+	var[ 'description[de]' ] = 'Ein Test'
+	var[ 'description[en]' ] = 'A Test'
+	var[ 'type' ] = 'str'
+	var[ 'categories' ] = 'TestCat'
+	info.add_variable( 'test/1', var )
+	info.write_customized()
 	print 'Variables:', info.variables.keys()
 	print 'Categories:', info.categories.keys()

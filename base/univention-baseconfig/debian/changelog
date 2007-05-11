@@ -1,10 +1,20 @@
-univention-baseconfig (2.0-1-5) unstable; urgency=low
+univention-baseconfig (2.0.2-1) unstable; urgency=low
+
+  * get variables of a specific category works again
+  * variable description may only be written to a specific file
+  * extend API for getting complete value dictionaries instead of single value
+    of the dictionary
+  * using 'get' method on localized dictiionaries is possible now
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 May 2007 11:46:52 +0200
+
+univention-baseconfig (2.0.1-1) unstable; urgency=low
 
   * import univention.baseconfig instead of univention_baseconfig
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 May 2007 12:40:30 +0200
 
-univention-baseconfig (2.0-0-5) unstable; urgency=low
+univention-baseconfig (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
 
