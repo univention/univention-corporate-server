@@ -241,7 +241,7 @@ class BaseconfigInfo( object ):
 	def write_customized( self ):
 		filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
 								 BaseconfigInfo.CUSTOMIZED )
-		self.write_variables( filename )
+		self.__write_variables( filename )
 
 	def __write_variables( self, filename = None, package = None ):
 		if not filename and not package:
