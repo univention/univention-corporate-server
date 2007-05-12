@@ -36,14 +36,8 @@ if  [ ! -e ../univention-setup/usr/sbin/univention-setup ]; then
 	exit
 fi
 
-if  [ ! -d ../univention-setup/debian/univention-setup ]; then
-	echo "Please build univention-setup, it creates links to it's submodules, which"
-	echo "contain i18n strings as well"
-	exit
-fi
 
-
-xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-setup/debian/univention-setup/usr/sbin/univention-setup*
+xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-setup/usr/sbin/univention-setup*
 
 grep "Content-Type: text/plain; charset=CHARSET" $po.pot.tmp
 

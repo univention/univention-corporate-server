@@ -134,6 +134,13 @@ if [ -n "$packages" ]; then
 		$PIPE dpkg --configure -a
 	done
 fi
+
+links=`echo $packages | grep links-ssl`
+if [ -z "\$links" ]; then
+		$PIPE apt-get remove links-ssl elinks lynx
+		$PIPE dpkg --configure -a
+fi
+
 if [ -n "$extra_packages" ]; then
 	for p in $extra_packages; do
 		$PIPE apt-get install \$p

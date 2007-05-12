@@ -28,6 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+. /tmp/installation_profile
 architecture=`/bin/uname -m`
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	architecture="powerpc"
@@ -73,26 +74,30 @@ if [ -n "$kernel_version" ]; then
 	if [ -n "$v" ]; then
 		kernel_package="univention-kernel-image"
 	else
-		# check for kernel 2.6.18
-		v=`echo $kernel_version | grep ^2.6.18`
-		if [ -n "$v" ]; then
-			kernel_package="univention-kernel-image-2.6.18"
-		else
-			kernel_package="univention-kernel-image-2.6"
-		fi
+		kernel_package="univention-kernel-image-$kernel_version"
 	fi
 else
 	boot_version=`uname -r | grep ^2.4`
 	if [ -n "$boot_version" ]; then
 		kernel_package="univention-kernel-image"
 	else
-		# check for kernel 2.6.18
-		boot_version=`uname -r | grep ^2.6.18`
-		if [ -n "$boot_version" ]; then
-			kernel_package="univention-kernel-image-2.6.18"
-		else
-			kernel_package="univention-kernel-image-2.6"
+
+		if [ "$system_role" = "managed_client" ]; then
+			kernel_extension="-managedclient"
+		elif [ "$system_role" = "mobile_client" ]; then
+			kernel_extension="-mobileclient"
 		fi
+
+		boot_version=`uname -r | awk -F"." '{printf "%s.%s.%s\n",$1,$2,$3}'`
+		if [ "$boot_version" = "2.6.14" ]; then
+			# booting the default kernel image
+			kernel_package="univention-kernel-image${kernel_extension}-2.6"
+			fallback_kernel_package="univention-kernel-image-2.6"
+		else
+			kernel_package="univention-kernel-image${kernel_extension}-${boot_version}"
+			fallback_kernel_package="univention-kernel-image-2.6"
+		fi
+			
 	fi
 fi
 
@@ -118,6 +123,21 @@ if [ "$architecture" = "powerpc" ]; then
 fi
 
 $PIPE apt-get install $kernel_package
+if [ "\$?" != "0" ]; then
+	if [ -n "$fallback_kernel_package" ]; then
+		$PIPE apt-get install $fallback_kernel_package
+	fi
+fi
+
+# check for the correct .install link
+
+new_kernel=\`readlink /vmlinuz\` 
+new_initrd=\`readlink /initrd.img\` 
+if [ -n "\$new_kernel" ] && [ -n "\$new_initrd" ]; then
+	ln -sf \$new_kernel /vmlinuz.install
+	ln -sf \$new_initrd /initrd.img.install
+fi
+/sbin/lilo
 
 univention-baseconfig commit
 

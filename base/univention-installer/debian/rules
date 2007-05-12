@@ -90,6 +90,7 @@ install: build
 	install -m 640 installer/package_list.py ${DD}/lib/univention-installer/
 	install -m 755 installer/usb-device.sh ${DD}/lib/univention-installer/
 
+	msgfmt -o installer/locale/de/LC_MESSAGES/installer.mo installer/locale/de/LC_MESSAGES/installer.po
 	install -m 640 installer/locale/de/LC_MESSAGES/installer.mo ${DD}/lib/univention-installer/locale/de/LC_MESSAGES/
 	install -m 640 installer/locale/de/LC_MESSAGES/installer.po ${DD}/lib/univention-installer/locale/de/LC_MESSAGES/
 
@@ -128,6 +129,7 @@ install: build
 
 	install -m 600 etc/inittab ${D}/etc/
 	install -m 600 etc/passwd  ${D}/etc/
+	install -m 644 etc/apt/sources.list  ${D}/etc/apt/
 
 	install -m 755 sbin/univention-installer ${D}/sbin/
 	install -m 755 sbin/univention-installer-startup ${D}/sbin/
