@@ -1,0 +1,96 @@
+#!/bin/sh
+#
+# Univention Setup
+#  software change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+is_variable_set "packages"
+
+if [ $? = 0 ]; then
+	exit 0
+fi
+
+eval `univention-baseconfig shell`
+
+packages_from_profile=`get_profile_var "packages"`
+
+packages_from_profile="$packages_from_profile "
+kolab=`echo $packages_from_profile | grep "univention-kolab2"`
+if [ -n "$kolab" ]; then
+	packages_from_profile=`echo $packages_from_profile | sed -e 's|univention-mail-postfix ||g;s|univention-mail-cyrus ||g'`
+fi
+
+
+to_remove=""
+
+packages_from_installer=`grep Packages /lib/univention-installer/package_list.py |grep "\[" | sed -e "s|.*\[||;s|'||g;s|,||g;s|]| |"`
+packages_from_installer="$packages_from_installer "
+
+for i in $packages_from_installer; do
+	res=`echo "$packages_from_profile" | grep "$i "`
+	if [ -z "$res" ]; then
+		res=`echo "$packages_from_profile" | grep "$i$"`
+		if [ -z "$res" ]; then
+			to_remove="$to_remove $i"
+		fi
+	fi
+done
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	base="univention-server-master+"
+elif [ $server_role = "domaincontroller_backup" ]; then
+	base="univention-server-backup+"
+elif [ $server_role = "domaincontroller_slave" ]; then
+	base="univention-server-slave+"
+elif [ $server_role = "memberserver" ]; then
+	base="univention-server-member+"
+elif [ $server_role = "managed_client" ]; then
+	base="univention-fat-client+"
+elif [ $server_role = "mobile_client" ]; then
+	base="univention-mobile-client+"
+fi
+
+
+export DEBIAN_FRONTEND=noninteractive
+
+for p in $to_remove; do
+	echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base " >>/var/log/univention/setup.log
+	apt-get install -o DPkg::Options::=--force-confold -y --force-yes  $p- $base
+done
+
+echo "apt-get install -o DPkg::Options::=--force-confold -y --force-yes $packages_from_profile " >>/var/log/univention/setup.log
+apt-get install -o DPkg::Options::=--force-confold -y --force-yes $packages_from_profile
+
+exit 0
+

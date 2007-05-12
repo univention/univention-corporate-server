@@ -1,0 +1,368 @@
+#!/bin/sh
+#
+# Univention Setup
+#  interfaces change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+to_change=""
+ifdown=""
+ifup=""
+ldap_available=1
+
+
+eval $(univention-baseconfig shell server/role)
+
+for interface in eth0 eth1 eth2 eth3; do
+	for type in address broadcast netmask network type; do
+		is_variable_set "interfaces/$interface/$type"
+
+		if [ $? = 0 ]; then
+			continue
+		fi
+
+		var=`get_profile_var "interfaces/$interface/$type"`
+		if [ -z "$var" ]; then
+			baseconfig_unset="$baseconfig_unset interfaces/$interface/$type"
+			if [ "$type" = "address" ]; then
+				ifdown="$ifdown $interface"
+			fi
+
+		else
+			if [ "$type" = "type" ]; then
+				baseconfig_set="$baseconfig_set interfaces/$interface/$type=dhcp"
+			else
+				baseconfig_set="$baseconfig_set interfaces/$interface/$type=$var"
+			fi
+			if [ "$type" = "address" ]; then
+				old_address=`univention-baseconfig get interfaces/$interface/address`
+				baseconfig_unset="$baseconfig_unset interfaces/$interface/type"
+				if [ -z "$old_address" ]; then
+					ifup="$ifup $interface"
+				fi
+			fi
+		fi
+
+		if [ "$type" = "address" ]; then
+			to_change="$to_change $interface"
+			if [ "$check_ldap_access" = "1" ]; then
+				if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+					exit 0
+				else
+					exit 1
+				fi
+			fi
+		fi
+	
+		
+	done
+
+done
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+if [ `cat /var/run/univention-setup.ldap` = "no-ldap" ]; then
+	ldap_available=0
+fi
+
+for interface in eth0 eth1 eth2 eth3; do
+	for virtual in 0 1 2 3; do
+		for type in address broadcast netmask network; do
+			is_variable_set "interfaces/${interface}_${virtual}/$type"
+			if [ $? = 0 ]; then
+				continue
+			fi
+			var=`get_profile_var "interfaces/${interface}_${virtual}/$type"`
+			if [ -z "$var" ]; then
+				baseconfig_unset="$baseconfig_unset interfaces/${interface}_${virtual}/$type"
+				if [ "$type" = "address" ]; then
+					ifdown="$ifdown ${interface}_${virtual}"
+				fi
+			else
+				baseconfig_set="$baseconfig_set interfaces/${interface}_${virtual}/$type=$var"
+				if [ "$type" = "address" ]; then
+					old_address=`univention-baseconfig get interfaces/${interface}_${virtual}/address`
+					if [ -z "$old_address" ]; then
+						ifup="$ifup ${interface}_${virtual}"
+					fi
+				fi
+			fi
+
+		done
+
+	done
+
+done
+
+if [ -x /usr/sbin/univention-dnsedit ]; then
+	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"
+else
+	UNIVENTION_DNSEDIT="/usr/share/univention-admin-tools/univention-dnsedit"
+fi
+
+oldvalues=""
+newvalues=""
+
+if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
+
+	binddn=`ldap_binddn`
+	bindpwd=`ldap_bindpwd`
+
+	eval $(univention-baseconfig shell)
+		
+	service_stop nscd samba cupsys
+
+	for device in "$to_change"; do
+		device=`echo "$device" | sed -e 's|^ *||'`
+		if [ -z "$device" ]; then continue; fi
+		new_ip=$(get_profile_var "interfaces/$device/address")
+		old_ip=$(univention-baseconfig get interfaces/$device/address)
+		new_network=$(get_profile_var "interfaces/$device/network")
+		old_network=$(univention-baseconfig get interfaces/$device/network)
+		old_netmask=$(univention-baseconfig get interfaces/$device/netmask)
+		# edit LDAP entry
+		if [ "$server_role" = "fatclient" ]; then
+			server_role="client"
+		fi
+
+		if [ $ldap_available = 1 ]; then
+		    ldap_dn=`univention-admin computers/$server_role list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(&(cn=$hostname)(aRecord=$old_ip))" | grep ^DN | sed -e 's|^DN: ||'`
+		    if [ -n "$ldap_dn" ]; then
+				#change the ldap entry
+				if [ -z "$new_ip" ]; then
+					univention-admin computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=""
+					mac=`/sbin/ifconfig $device | grep HWaddr | cut  -c 39-55`
+					univention-admin computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set mac="$mac"
+				fi
+				if [ -n "$new_ip" ]; then
+					# check reverse zone
+					new_netmask=`get_profile_var "interfaces/$device/netmask"`
+					if [ -z "$new_netmask" ]; then
+						new_netmask=`univention-baseconfig get interfaces/$device/netmask`
+					fi
+					subnet=`univention-ipcalc --netmask $new_netmask --ip $new_ip --output network --calcdns`
+					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $subnet add zone root.$domainname 1 28800 10800 604800 108001 $hostname.$domainname
+
+					ptr=`univention-ipcalc --netmask $new_netmask --ip $new_ip --output pointer --calcdns`
+					$UNIVENTION_DNSEDIT --binddn "$binddn" --bindpwd "$bindpwd" --ignore-exists --reverse $subnet add ptr $ptr $hostname.$domainname.
+
+					univention-admin computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_dn" --set ip=$new_ip
+
+					if [ -n "$new_network" ]; then
+						if [ "$server_role" = "domaincontroller_master" ]; then
+							echo "dn: cn=default,cn=networks,$ldap_base" >/var/cache/univention-setup/default-network.rename.ldif
+							echo "changetype: modify" >>/var/cache/univention-setup/default-network.rename.ldif
+							echo "replace: univentionNetwork" >>/var/cache/univention-setup/default-network.rename.ldif
+							echo "univentionNetwork: "$new_network >>/var/cache/univention-setup/default-network.rename.ldif
+							ldapmodify -x  -D "$binddn"  -w "$bindpwd" -f /var/cache/univention-setup/default-network.rename.ldif
+							rm /var/cache/univention-setup/default-network.rename.ldif
+						fi
+					fi
+				fi
+		    fi
+		fi
+		
+
+		oldvalues="$oldvalues#$device-$old_ip-$old_network-$old_netmask"
+		newvalues="$newvalues#$device-$new_ip-$new_network-$new_netmask"
+
+		# change ip in baseconfig
+		# change other values in baseconfig, for example ldap/server/ip
+		univention-baseconfig search --value "^$old_ip$" | sed -e 's|: .*||' | grep -v "interfaces/$device/address" | while read baseconfig_name; do
+			univention-baseconfig set "$baseconfig_name"="$new_ip"
+		done
+
+		# set value in /etc files
+		if [ -d /etc/bind/univention.conf.d ]; then
+			for i in /etc/bind/univention.conf.d/*; do
+				sed -i "s|$old_ip/|$new_ip/|g" $i
+			done
+		fi
+		if [ -d /var/lib/univention-client-boot/pxelinux.cfg ]; then
+			for i in /var/lib/univention-client-boot/pxelinux.cfg/*; do
+				sed -i "s|$old_ip:|$new_ip:|g" $i
+			done
+		fi
+
+		if [ -e /var/lib/samba/wins.dat ]; then
+			sed -i "s|$old_ip |$new_ip |g" /var/lib/samba/wins.dat
+		fi
+	done
+
+	if [ -n "$new_network" ]; then
+		net=$new_network
+	else
+		net=$old_network
+	fi
+
+	if [ -n "$new_netmask" ]; then
+		mask=$new_netmask
+	else
+		mask=$old_netmask
+	fi
+
+	#create new DHCP zone
+	if [ $ldap_available = 1 ]; then
+		univention-admin dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|^DN: ||' |while read super; do
+			univention-admin dhcp/subnet list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter cn=$old_network | grep ^DN | sed -e 's|DN: ||' | while read old_subnet_dn; do
+				univention-admin dhcp/subnet create --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --ignore_exists --set subnet="$net" --set subnetmask="$mask"
+			done
+		done
+	fi
+
+	admin_replace_ip ()
+	{
+		admin_module="$1"
+		ldap_attribute="$2"
+		admin_attribute="$3"
+		univention-admin $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "($ldap_attribute=$old_ip)" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+			if [ -n "$4" ]; then
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set $admin_attribute="$new_ip"
+			else
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append $admin_attribute="$new_ip" --remove $admin_attribute="$old_ip"
+			fi
+		done
+	}
+
+	if [ $ldap_available = 1 ]; then
+		admin_replace_ip "policies/thinclient" "univentionFileServer" "fileServer"
+		admin_replace_ip "policies/thinclient" "univentionAuthServer" "authServer"
+		admin_replace_ip "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
+		admin_replace_ip "policies/ldapserver" "univentionLDAPServer" "ldapServer"
+		admin_replace_ip "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server"
+		admin_replace_ip "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
+		admin_replace_ip "policies/dhcp_netbios" "univentionDhcpNetbiosNameServers" "netbios_name_servers"
+		admin_replace_ip "policies/dhcp_routing" "univentionDhcpRouters" "routers"
+		admin_replace_ip "policies/printserver" "univentionPrintServer" "printServer"
+		admin_replace_ip "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
+		admin_replace_ip "shares/share" "univentionShareHost" "host" "1"
+		admin_replace_ip "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
+	fi
+
+	old_pkgdb=$(univention-baseconfig get pgsql/pkgdb/network)
+	new_pkgnetwork=$(get_profile_var "interfaces/$device/network")
+
+	if [ "$old_pkgdb" = "$old_network" ]; then
+		if [ -n "$new_pkgnetwork" ]; then
+			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $new_pkgnetwork  >> /var/log/univention/setup.log
+			univention-baseconfig set pgsql/pkgdb/network=$new_pkgnetwork
+	    else
+			echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb  >> /var/log/univention/setup.log
+			univention-baseconfig set pgsql/pkgdb/network=$old_pkgdb
+	    fi
+	else
+		echo `date` : "Configure permitted pkgdb hosts in baseconfig : " $old_pkgdb >> /var/log/univention/setup.log
+		univention-baseconfig set pgsql/pkgdb/network=$old_pkgdb
+	fi
+
+	old_pkgnetmask=$(univention-baseconfig get pgsql/pkgdb/netmask)
+	new_pkgnetmask=$(get_profile_var "interfaces/$device/netmask")
+
+	if [ "$old_pkgnetmask" = "$old_netmask" ]; then
+		if [ -n "$new_pkgnetmask" ]; then
+			echo `date` : "Configure netmask for permitted pkgdb hosts in baseconfig : " $new_pkgnetmask >> /var/log/univention/setup.log
+			univention-baseconfig set pgsql/pkgdb/netmask=$new_pkgnetmask
+		else
+			echo `date` : "Configure netmask for permitted pkgdb hosts in baseconfig : " $old_pkgnetmask >> /var/log/univention/setup.log
+			univention-baseconfig set pgsql/pkgdb/netmask=$old_pkgnetmask
+		fi
+	else
+		univention-baseconfig set pgsql/pkgdb/network=$old_pkgnetmask
+	fi
+
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		if [ "$device" = "eth0" ];then
+			univention-admin networks/network remove --dn "cn=default,cn=networks,$ldap_base"
+			forwardZone=`univention-admin dns/forward_zone list --filter zone=\$domainname | grep DN | tail -1 | sed -e 's/DN: //g'`
+			reverseZone=`univention-admin dns/reverse_zone list | grep ^DN | tail -1 | sed -e 's|DN: ||'`
+			dhcpService=`univention-admin dhcp/service list | grep DN | tail -1 | sed -e 's/DN: //g'`
+			univention-admin networks/network create --position "cn=networks,$ldap_base" --set name=default --set netmask=$new_ip --set network=$net --set dnsEntryZoneForward=$forwardZone --set dnsEntryZoneReverse=$reverseZone --set dhcpEntryZone=$dhcpService
+		fi
+	fi
+
+	for i in $ifdown; do
+		ifdown `echo $i | sed -e 's|_|:|g'`
+	done
+
+	if [ -n "$baseconfig_unset" ]; then
+		univention-baseconfig unset $baseconfig_unset
+	fi
+
+	if [ -n "$baseconfig_set" ]; then
+		univention-baseconfig set $baseconfig_set
+	fi
+
+	for i in $ifup; do
+		ifup `echo $i | sed -e 's|_|:|g'`
+	done
+
+	if [ -x /usr/sbin/apachectl ]; then
+		/usr/sbin/apachectl stop
+		count=0
+		while pidof apache; do
+			sleep 1
+			count=$((count+1))
+			if [ $count -gt 20 ]; then
+				continue;
+			fi
+		done
+		/usr/sbin/apachectl start
+	fi
+	service_start nscd
+
+	# stop the dns server and remove the cache
+	service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc univention-ldap-listener
+	sleep 1
+	rm -f /var/cache/bind/*
+	service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-ldap-listener
+
+	if [ -x /usr/sbin/smbd ]; then
+	    for i in `pidof smbd`; do
+			kill -9 $i
+		done
+		sleep 1
+		for i in `pidof nmbd`; do
+			kill -9 $i
+		done
+		/etc/init.d/samba restart
+	fi
+
+fi
+
+if [ -d "/var/lib/univention-setup/interfaces.post" ]; then
+	run-parts /var/lib/univention-setup/interfaces.post --arg=$oldvalues --arg=$newvalues
+fi
+
+if [ $ldap_available = 1 ]; then
+	exit 0
+else
+	exit 100
+fi
+

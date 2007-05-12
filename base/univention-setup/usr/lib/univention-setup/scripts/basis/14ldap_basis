@@ -1,0 +1,136 @@
+#!/bin/sh
+#
+# Univention Setup
+#  ldap base change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+is_variable_set "ldap/base"
+
+if [ $? = 0 ]; then
+	exit 0
+fi
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+new_ldap_base=`get_profile_var "ldap/base"`
+
+ldap_available=1
+if [ `cat /var/run/univention-setup.ldap` = "no-ldap" ]; then
+    ldap_available=0
+fi
+
+if [ -z "$new_ldap_base" ]; then
+	exit 0
+fi
+
+eval $(univention-baseconfig shell)
+
+oldbn=$(univention-baseconfig get ldap/base)
+
+if [ -d "/var/lib/univention-setup/ldapbase.pre" ]; then
+    run-parts /var/lib/univention-setup/ldapbase.pre --arg=$oldbn --arg=$new_ldap_base
+fi
+
+# Remove old NFS exports and resync from LDAP
+sed -i "/$oldbn/d" /etc/exports
+rm /var/lib/univention-ldap-listener/nfs-shares
+
+service_stop nscd slapd univention-ldap-notifier heimdal-kdc
+
+d=`date +%Y%m%d%H%M%S`
+
+slapcat >/var/cache/univention-setup/ldif.$d
+
+cp -a /var/cache/univention-setup/ldif.$d /var/cache/univention-setup/ldif.$d.bak
+cp -a /var/lib/univention-ldap/notify/transaction /var/cache/univention-setup/transaction.$d
+
+/usr/lib/univention-setup/scripts/ldif_rewrite.py $ldap_base $new_ldap_base /var/cache/univention-setup/ldif.$d /var/cache/univention-setup/new_ldif.$d
+sed -i "s|$ldap_base |$new_ldap_base |" /var/lib/univention-ldap/notify/transaction
+
+rm -Rf /var/lib/univention-ldap/ldap/*
+
+
+univention-baseconfig set ldap/base="$new_ldap_base"
+
+for var in `univention-baseconfig search --value $oldbn | cut -f 1 -d ":"`; do
+	# the ldap/base is already set
+	if [ "$var" = "ldap/base" ]; then
+		continue
+	fi
+	old_value="`univention-baseconfig get $var`"
+	new_value=`echo $old_value | sed -e "s|$oldbn|$new_ldap_base|"`
+	echo "Replace baseconfig variable $var from $old_value to $new_value" >>/var/log/univention/setup.log
+	univention-baseconfig set $var="$new_value"
+done
+
+
+univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
+
+slapadd </var/cache/univention-setup/new_ldif.$d
+
+service_start slapd univention-ldap-notifier nscd heimdal-kdc
+
+eval $(univention-baseconfig shell samba/user ldap/hostdn)
+
+if  [ "$samba_user" = "cn=admin,$new_ldap_base" ]; then
+	passfile="/etc/ldap.secret"
+elif [ "$samba_user" = "$ldap_hostdn" ]; then
+	passfile="/etc/machine.secret"
+elif [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	passfile="/etc/ldap.secret"
+elif [ -e "/etc/machine.secret" ]; then
+	passfile="/etc/machine.secret"
+fi
+
+service_stop univention-bind univention-bind-proxy
+
+# set value in /etc files
+if [ -d /etc/bind/univention.conf.d ]; then
+	for i in /etc/bind/univention.conf.d/*; do
+		sed -i "s|,$oldbn |,$new_ldap_base |g" $i
+	done
+fi
+
+service_start univention-bind univention-bind-proxy
+
+if [ -n "$passfile" ]; then
+	if [ -x /usr/bin/smbpasswd ]; then
+		smbpasswd -w `cat $passfile`
+		service_stop samba; sleep 1; service_start samba
+	fi
+fi
+
+if [ -d "/var/lib/univention-setup/ldapbase.post" ]; then
+	run-parts /var/lib/univention-setup/ldapbase.post --arg=$oldbn --arg=$new_ldap_base
+fi
+
+exit 0
+

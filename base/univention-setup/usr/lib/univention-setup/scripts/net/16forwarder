@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Univention Setup
+#  forwarder change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+oldvalues=""
+newvalues=""
+
+for name in dns/forwarder1 dns/forwarder2 dns/forwarder3; do
+	is_variable_set "$name"
+	if [ $? = 0 ]; then
+		continue
+	fi
+
+	oldvalues="$oldvalues#$(univention-baseconfig get $name)"
+
+	var=`get_profile_var $name`
+
+	if [ -z "$var" ]; then
+		univention-baseconfig unset $name
+		newvalues="$newvalues#"
+	else
+		univention-baseconfig set $name=$var
+		newvalues="$newvalues#$var"
+	fi
+done
+
+if [ -d "/var/lib/univention-setup/dnsforwarder.post" ]; then
+	run-parts /var/lib/univention-setup/dnsforwarder.post --arg=$oldvalues --arg=$newvalues
+fi
+
+exit 0
+

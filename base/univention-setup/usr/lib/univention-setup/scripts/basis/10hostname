@@ -1,0 +1,531 @@
+#!/bin/sh
+#
+# Univention Setup
+#  hostname change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+
+is_variable_set "hostname"
+
+if [ $? = 0 ]; then
+	exit 0
+fi
+
+eval $(univention-baseconfig shell)
+
+
+if [ "$check_ldap_access" = "1" ]; then
+	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+		exit 0
+	else
+		exit 1
+	fi
+fi
+
+ldap_available=1
+if [ `cat /var/run/univention-setup.ldap` = "no-ldap" ]; then
+    ldap_available=0
+fi
+
+new_hostname=`get_profile_var "hostname"`
+if [ -z "$new_hostname" ]; then
+	exit 0
+fi
+old_hostname=$(univention-baseconfig get hostname)
+
+if [ -d "/var/lib/univention-setup/hostname.pre" ]; then
+    run-parts /var/lib/univention-setup/hostname.pre --arg=$old_hostname --arg=$new_hostname
+fi
+	
+service_stop nscd heimdal-kdc univention-ldap-notifier
+
+binddn=`ldap_binddn`
+bindpwd=`ldap_bindpwd`
+
+#fallback for old univention admin version
+ua_version=`dpkg -s univention-admin-tools | grep ^Version | sed -e 's|Version: ||'`
+
+if [ $ldap_available = 1 ]; then
+
+	dpkg --compare-versions $ua_version lt 1.10-1
+	if [ $? = 0 ]; then
+		echo `date` : "Configure Kerberos principal name in LDAP: " $new_hostname  >> /var/log/univention/setup.log
+		echo "dn: $ldap_hostdn" >/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "changetype: modify" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "replace: krb5PrincipalName" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "krb5PrincipalName: host/$new_hostname.$domainname@$kerberos_realm" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "-" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "replace: uid" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "uid: $new_hostname$" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "-" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "replace: sn" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "sn: $new_hostname" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		echo "-" >>/var/cache/univention-setup/krb5principal.rename.ldif
+		ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-setup/krb5principal.rename.ldif
+		rm /var/cache/univention-setup/krb5principal.rename.ldif
+
+
+		kerberos_ldap_dn=`ldapsearch -x cn="ldap/$old_hostname.$domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||'`
+		if [ -n "$kerberos_ldap_dn" ]; then
+			echo "dn: $kerberos_ldap_dn" >/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "changetype: modify" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "replace: sn" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "sn: ldap/$new_hostname.$domainname@$kerberos_realm" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "-" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "replace: krb5PrincipalName" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "krb5PrincipalName: ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			echo "-" >>/var/cache/univention-setup/kerberos_ldap_service.ldif
+			ldapmodify -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -f /var/cache/univention-setup/kerberos_ldap_service.ldif
+			rm /var/cache/univention-setup/kerberos_ldap_service.ldif
+
+			ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r $kerberos_ldap_dn cn=ldap/$new_hostname.$domainname@$kerberos_realm
+		fi
+
+		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "$ldap_hostdn" cn=$new_hostname
+
+
+		ldapsearch -x -D "$binddn" -w "$bindpwd"  "(&(objectClass=univentionGroup)(uniqueMember=$ldap_hostdn))" -LLL dn | ldapsearch-wrapper | grep "^dn: " | sed -e 's|^dn: ||' | while read dn; do
+			univention-admin groups/group modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append users="`echo $ldap_hostdn|sed -e"s|cn=$old_hostname,|cn=$new_hostname,|"`" --remove users=$ldap_hostdn
+		done
+
+		echo `date` : "Configure hostname for groupware account in LDAP: " $new_hostname.$domainname  >> /var/log/univention/setup.log
+
+		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "cn=$old_hostname.$domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$new_hostname.$domainname Groupware Account"
+
+	else
+		if [ "$server_role" = "fatclient" ]; then
+			server_role="client"
+		fi
+		echo `date` : "Configure hostname in LDAP : " $new_hostname  >> /var/log/univention/setup.log
+		univention-admin computers/$server_role modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$ldap_hostdn" --set name=$new_hostname
+
+		echo `date` : "Configure hostname for groupware account in LDAP: " $new_hostname.$domainname  >> /var/log/univention/setup.log
+		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -h "$ldap_master" -r "cn=$old_hostname.$domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$new_hostname.$domainname Groupware Account"
+
+
+	fi
+fi
+
+# modify ldap policies
+
+new_hostdn="`echo $ldap_hostdn | sed -e "s|cn=$old_hostname,|cn=$new_hostname,|"`"
+echo "new_hostdn=$new_hostdn"
+
+echo `date` : "Configure  host DN in baseconfig : " $new_hostdn  >> /var/log/univention/setup.log
+univention-baseconfig set ldap/hostdn="$new_hostdn"
+
+echo `date` : "Configure  hostname in baseconfig : " $new_hostname  >> /var/log/univention/setup.log
+univention-baseconfig set hostname=$new_hostname
+
+new_mailroot="`echo $mail_alias_root | sed -e "s|\@$old_hostname\.|\@$new_hostname\.|"`"
+echo `date` : "Configure  mail alias for root user in baseconfig : " $new_mailroot  >> /var/log/univention/setup.log
+univention-baseconfig set mail/alias/root=$new_mailroot
+
+
+set_baseconfig_variable ()
+{
+	if [ -n "$2" ]; then
+		if [ "$2" = "$old_hostname" ]; then
+			univention-baseconfig set $1="$new_hostname"
+		elif [ "$2" = "$old_hostname.$domainname" ]; then
+			univention-baseconfig set $1="$new_hostname.$domainname"
+		fi
+	fi
+}
+set_baseconfig_variable_mail ()
+{
+	if [ -n "$2" ]; then
+		univention-baseconfig set $1="`echo $2 | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|"`"
+	fi
+}
+set_baseconfig_variable_part ()
+{
+	if [ -n "$2" ]; then
+		change=0
+		for i in $2; do
+			if [ "$i" = "$old_hostname" ]; then
+				value="$new_hostname "
+				change=1
+			elif [ "$i" = "$old_hostname.$domainname" ]; then
+				value="$new_hostname.$domainname "
+				change=1
+			else
+				value="$i "
+			fi
+		done
+
+		if [ "$change" = "1" ]; then
+			univention-baseconfig set $1="$value"
+		fi
+	fi
+}
+set_baseconfig_variable_part_mail ()
+{
+	if [ -n "$2" ]; then
+		if [ "$2" = "$old_hostname.$domainname" ]; then
+			univention-baseconfig set $1="$new_hostname.$domainname"
+		fi
+	fi
+	if [ -n "$2" ]; then
+		for i in $2; do
+			if [ -n "$value" ]; then
+				value="$value `echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;"`"
+			else
+				value="`echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;"`"
+			fi
+		done
+
+		univention-baseconfig set $1="$value"
+	fi
+}
+
+echo `date` : "Configure  Kerberos key distribution center in baseconfig : " $kerberos_kdc  >> /var/log/univention/setup.log
+set_baseconfig_variable "kerberos/kdc" "$kerberos_kdc"
+echo `date` : "Configure  Kerberos admin server in baseconfig : " $kerberos_adminserver  >> /var/log/univention/setup.log
+set_baseconfig_variable "kerberos/adminserver" "$kerberos_adminserver"
+echo `date` : "Configure  CUPS print server in baseconfig : " $cups_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "cups/server" "$cups_server"
+echo `date` : "Configure LDAP master in baseconfig : " $ldap_master  >> /var/log/univention/setup.log
+set_baseconfig_variable "ldap/master" "$ldap_master"
+echo `date` : "Configure LDAP name  in baseconfig : " $ldap_name  >> /var/log/univention/setup.log
+set_baseconfig_variable "ldap/name" "$ldap_name"
+echo `date` : "Configure LDAP server name  in baseconfig : " $ldap_server_name  >> /var/log/univention/setup.log
+set_baseconfig_variable "ldap/server/name" "$ldap_server_name"
+echo `date` : "Configure server for Samba home directories  in baseconfig : " $samba_homedirserver  >> /var/log/univention/setup.log
+set_baseconfig_variable "samba/homedirserver" "$samba_homedirserver"
+echo `date` : "Configure server for Samba profiles  in baseconfig : " $samba_profileserver  >> /var/log/univention/setup.log
+set_baseconfig_variable "samba/profileserver" "$samba_profileserver"
+echo `date` : "Configure update server  in baseconfig : " $update_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "update/server" "$update_server"
+echo `date` : "Configure permitted mail hosts for Postfix in baseconfig : " $postfix_permithosts  >> /var/log/univention/setup.log
+set_baseconfig_variable_part "postfix/permithosts" "$postfix_permithosts"
+
+echo `date` : "Configure apt source for new hostname : " $new_hostname  >> /var/log/univention/setup.log
+sed -i "s|http://$old_hostname.|http://$new_hostname.|" /etc/apt/sources.list
+
+echo `date` : "Configure host name in /etc/group : " $new_hostname  >> /var/log/univention/setup.log
+sed -i "s|$old_hostname\\\$|$new_hostname\$|" /etc/group
+echo `date` : "Configure host name in /etc/gshadow : " $new_hostname  >> /var/log/univention/setup.log
+sed -i "s|$old_hostname\\\$|$new_hostname\$|" /etc/gshadow
+
+echo `date` : "Configure cups admin e-mail address in baseconfig : " $cups_admin  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "cups/admin" "$cups_admin"
+
+echo `date` : "Configure cups quota admin e-mail address in baseconfig : " $cups_quota_admin_mail  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "cups/quota/admin/mail" "$cups_quota_admin_mail"
+
+echo `date` : "Configure e-mail alias for root in baseconfig : " $mail_alias_root  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "mail/alias/root" "$mail_alias_root"
+
+echo `date` : "Configure e-mail globalfolder for spam in baseconfig : " $mail_antispam_globalfolder  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "mail/antispam/globalfolder" "$mail_antispam_globalfolder"
+
+echo `date` : "Configure the mail cyrus caluser in baseconfig : " $mail_cyrus_caluser  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "mail/cyrus/caluser" "$mail_cyrus_caluser"
+
+echo `date` : "Configure the mail cyrus admins in baseconfig : " $mail_cyrus_imap_admins  >> /var/log/univention/setup.log
+set_baseconfig_variable_part_mail "mail/cyrus/imap/admins" "$mail_cyrus_imap_admins"
+
+echo `date` : "Configure the virus admin email address in baseconfig : " $mail_antivir_virus_admin  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "mail/antivir/virus_admin" "$mail_antivir_virus_admin"
+
+echo `date` : "Configure the ssl email address in baseconfig : " $ssl_email  >> /var/log/univention/setup.log
+set_baseconfig_variable_mail "ssl/email" "$ssl_email"
+
+# change group membership, for example lpadmin
+echo `date` : "Commit changes to file managed by baseconfig"  >> /var/log/univention/setup.log
+univention-baseconfig commit /etc/pam.d/httpd \
+							 /etc/pam_ldap.conf \
+							 /etc/libnss-ldap.conf \
+							 /etc/samba/smb.conf \
+							 /etc/dhcp3/dhcpd.conf \
+							 /etc/ldap/ldap.conf \
+
+
+
+
+if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certificate
+	if [ ! -d /etc/univention/ssl/$new_hostname.$domainname ]; then
+		source /usr/share/univention-ssl/make-certificates.sh;
+		gencert $new_hostname.$domainname $new_hostname.$domainname
+	fi
+else # download certificate from master
+	if [ -x /usr/sbin/univention-scp ]; then
+		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
+		HOSTPWD="/etc/machine.secret"
+		HOSTACCOUNT="$new_hostname\$"
+		i=0
+		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$new_hostname /etc/univention/ssl/"
+		univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/"
+		while [ ! -d "/etc/univention/ssl/$new_hostname" ] &&  [ ! -d "/etc/univention/ssl/$new_hostname.$domainname" ]; do
+			i=$((i+1))
+			echo `date` : "Download host certificate (try: $i)"  >> /var/log/univention/setup.log
+			sleep 10
+			univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$new_hostname /etc/univention/ssl/"
+			univention-scp $HOSTPWD "-r $HOSTACCOUNT@$ldap_master:/etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/"
+			if [ "$i" -gt 30 ]; then
+				echo `date` : "Failed to download the host certificate"  >> /var/log/univention/setup.log
+				break
+			fi
+		done
+	else
+		echo `date` : "Couldn't download host certificate, univention-scp was not found"  >> /var/log/univention/setup.log
+	fi
+fi
+
+if [ -d /etc/univention/ssl/$new_hostname.$domainname ]; then
+	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
+	chown cyrus: /var/lib/cyrus/cert.pem
+	chmod 600 /var/lib/cyrus/cert.pem
+fi
+
+echo `date` : "Create new host certificate"  >> /var/log/univention/setup.log
+
+rm -f /etc/univention/ssl/$new_hostname
+ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_hostname
+
+
+if [ -d /var/lib/cyrus/ ]; then
+	echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
+	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
+	chown cyrus: /var/lib/cyrus/cert.pem
+	chmod 600 /var/lib/cyrus/cert.pem
+fi
+
+
+echo `date` : "Restart LDAP server"  >> /var/log/univention/setup.log
+service_stop slapd
+service_start slapd nscd heimdal-kdc
+
+
+#TODO: get keytab from dc master
+echo `date` : "Setting new hostname into effect for Kerberos"  >> /var/log/univention/setup.log
+rm -f /etc/krb5.keytab
+kadmin -l ext "host/$new_hostname.$domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`"
+kadmin -l ext "ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`"
+
+
+#DNS settings
+if [ $ldap_available = 1 ]; then
+
+	# Forward Zone
+	univention-admin dns/forward_zone list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|DN: ||' | while read super; do
+
+		# SRV records
+		univention-admin dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter sRVRecord="* $old_hostname.$domainname*" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+		
+			old_location=`univention-admin dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "$(echo $dn | sed -e 's|,.*||g')" |grep "location.* $old_hostname.$domainnmae" | sed -e 's|.* location: ||'`
+			if [ -z "$old_location" ]; then
+				continue
+			fi
+
+			new_location=`echo $old_location | sed -e "s| $old_hostname.$domainname| $new_hostname.$domainname|"`
+
+			echo `date` : "Configure DNS service record location :" $new_location  >> /var/log/univention/setup.log
+
+			univention-admin dns/srv_record modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --remove location="$old_location" --append location="$new_location"
+
+		done
+
+		univention-admin dns/alias list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "cNAMERecord=$old_hostname" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DNS alias :" $new_hostname  >> /var/log/univention/setup.log
+			univention-admin dns/alias modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set cname="$new_hostname"
+		done
+		univention-admin dns/alias list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "cNAMERecord=$old_hostname.$domainname" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DNS alias :" $new_hostname.$domainname  >> /var/log/univention/setup.log
+			univention-admin dns/alias modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set cname="$new_hostname.$domainname"
+		done
+		univention-admin dns/alias list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "cNAMERecord=$old_hostname.$domainname." | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DNS alias :" $new_hostname.$domainname  >> /var/log/univention/setup.log
+			univention-admin dns/alias modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set cname="$new_hostname.$domainname."
+		done
+
+		univention-admin dns/host_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "relativeDomainName=$old_hostname" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DNS host record alias :" $new_hostname  >> /var/log/univention/setup.log
+			univention-admin dns/host_record modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set name=$new_hostname
+		done
+
+		#Forward Zone
+		univention-admin dns/forward_zone list --binddn "$binddn" --bindpwd "$bindpwd" --filter nSRecord="$old_hostname.$domainname." | grep "^DN:" | sed -e 's|DN: ||' |  while read tmp; do
+			echo `date` : "Change DNS forward zone :" >> /var/log/univention/setup.log
+			echo `date` : "Remove DNS zone entry :" $old_hostname.$domainname.  >> /var/log/univention/setup.log
+			echo `date` : "Add DNS zone entry :" $new_hostname.$domainname.  >> /var/log/univention/setup.log
+			univention-admin dns/forward_zone modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$tmp" --append nameserver="$new_hostname.$domainname." --remove nameserver="$old_hostname.$domainname."
+		done
+	done
+
+	univention-admin dns/reverse_zone list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|DN: ||' | while read super; do
+		univention-admin dns/ptr_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "pTRRecord=$old_hostname.$domainname." | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DNS reverse entry (PTR record) :" $new_hostname.$domainname.  >> /var/log/univention/setup.log
+			univention-admin dns/ptr_record modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set ptr_record="$new_hostname.$domainname."
+		done
+	done
+
+	# Reverse Zone
+	univention-admin dns/reverse_zone list --binddn "$binddn" --bindpwd "$bindpwd" --filter nSRecord="$old_hostname.$domainname." | grep ^DN | sed -e 's|DN: ||' | while read dn; do
+		echo `date` : "Configure DNS reverse entry (PTR record) :" $new_hostname.$domainname.  >> /var/log/univention/setup.log
+		univention-admin dns/reverse_zone modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --remove nameserver="$old_hostname.$domainname." --append nameserver="$new_hostname.$domainname."
+	done
+
+
+	# DHCP Server
+	univention-admin dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|DN: ||' | while read super; do
+		univention-admin dhcp/server list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter server=$old_hostname | grep "^DN: " |sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Configure DHCP server :" $new_hostname  >> /var/log/univention/setup.log
+			univention-admin dhcp/server modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set server=$new_hostname
+		done
+	done
+
+	admin_replace_name ()
+	{
+		admin_module="$1"
+		ldap_attribute="$2"
+		admin_attribute="$3"
+		univention-admin $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(|($ldap_attribute=$old_hostname)($ldap_attribute=$old_hostname.$domainname))" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+			if [ -n "$4" ]; then
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set $admin_attribute="$new_hostname.$domainname"
+			else
+				echo `date` : "Configure admin attribute $admin_attribute :" $new_hostname.$domainname  >> /var/log/univention/setup.log
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append $admin_attribute="$new_hostname.$domainname" --remove $admin_attribute="$old_hostname" --remove $admin_attribute="$old_hostname.$domainname"
+			fi
+		done
+	}
+
+	admin_replace_name_part ()
+	{
+		admin_module="$1"
+		ldap_attribute="$2"
+		admin_attribute="$3"
+		univention-admin $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(|($ldap_attribute=$old_hostname*)($ldap_attribute=$old_hostname.$domainname*))" | grep ^DN | sed -e 's|^DN: ||' | while read dn; do
+			if [ -n "$4" ]; then
+				old_value=`univention-admin $admin_module list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(|($ldap_attribute=$old_hostname*)($ldap_attribute=$old_hostname.$domainname*))" | grep "$admin_module: "`
+				new_value=`echo $old_value | sed -e "s|$old_hostname|$new_hostname|g"`
+				echo `date` : "Configure admin attribute $admin_attribute :" $new_value  >> /var/log/univention/setup.log
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --set $admin_attribute="$new_value"
+			else
+				echo `date` : "Configure admin attribute $admin_attribute :" $new_value  >> /var/log/univention/setup.log
+				univention-admin $admin_module modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append $admin_attribute="$new_value" --remove $admin_attribute="$old_value"
+			fi
+		done
+	}
+
+	admin_replace_name "policies/thinclient" "univentionFileServer" "fileServer"
+	admin_replace_name "policies/thinclient" "univentionAuthServer" "authServer"
+	admin_replace_name "policies/thinclient" "univentionDesktopServer" "linuxTerminalServer"
+	admin_replace_name "policies/ldapserver" "univentionLDAPServer" "ldapServer"
+	admin_replace_name "policies/dhcp_boot" "univentionDhcpBootServer" "boot_server"
+	admin_replace_name "policies/dhcp_dns" "univentionDhcpDomainNameServers" "domain_name_servers"
+	admin_replace_name "policies/dhcp_netbios" "univentionDhcpNetbiosNameServers" "netbios_name_servers"
+	admin_replace_name "policies/dhcp_routing" "univentionDhcpRouters" "routers"
+	admin_replace_name "policies/printserver" "univentionPrintServer" "printServer"
+	admin_replace_name "policies/repositoryserver" "univentionRepositoryServer" "repositoryServer"
+	admin_replace_name "shares/share" "univentionShareHost" "host" "1"
+	admin_replace_name "shares/printer" "univentionPrinterSpoolHost" "spoolHost"
+	admin_replace_name "container/dc" "mailRelay" "mailRelay" "1"
+	admin_replace_name "users/user" "kolabHomeServer" "kolabHomeServer" "1"
+	admin_replace_name "settings/usertemplate" "kolabHomeServer" "kolabHomeServer" "1"
+	admin_replace_name "settings/default" "univentionDefaultKolabHomeServer" "defaultKolabHomeServer" "1"
+
+	share_container_dn=`univention-admin container/cn list --binddn "$binddn" --bindpwd "$bindpwd" --filter cn=$old_hostname.$domainname | grep DN | sed -e 's|DN: ||'`
+	if [ -n "$share_container_dn" ]; then
+		echo `date` : "Create share container for LDAP base " $ldap_base ":" $new_hostname.$domainname  >> /var/log/univention/setup.log
+		univention-admin container/cn create --binddn "$binddn" --bindpwd "$bindpwd" --position cn=shares,$ldap_base --set name=$new_hostname.$domainname
+
+		univention-admin shares/share list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN: | grep ",cn=$old_hostname.$domainname,cn=shares,$ldap_base" | sed -e 's|DN: ||' | while read dn; do
+			echo `date` : "Move share container :" cn=$new_hostname.$domainname,cn=shares,$ldap_base  >> /var/log/univention/setup.log
+			univention-admin shares/share move --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --position "cn=$new_hostname.$domainname,cn=shares,$ldap_base"
+
+		done
+		echo `date` : "Remove container :" $share_container_dn  >> /var/log/univention/setup.log
+		univention-admin container/cn remove --binddn "$binddn" --bindpwd "$bindpwd" --dn "$share_container_dn"
+
+	fi
+fi
+
+hostname -F /etc/hostname
+
+service_start univention-ldap-notifier
+if [ -x /usr/sbin/apachectl ]; then
+	/usr/sbin/apachectl stop
+	count=0
+	while pidof apache; do
+		sleep 1
+		count=$((count+1))
+		if [ $count -gt 20 ]; then
+			continue;
+		fi
+	done
+	/usr/sbin/apachectl start
+fi
+
+# stop the dns server and remove the cache
+service_stop univention-bind univention-bind-proxy heimdal-kdc
+sleep 1
+rm -f /var/cache/bind/*
+service_start univention-bind univention-bind-proxy heimdal-kdc
+
+#invalidate the hosts cache
+nscd -i hosts
+
+if [ -x /usr/sbin/postmap ] && [ -e /etc/postfix/transport ]; then
+	/usr/sbin/postmap /etc/postfix/transport
+fi
+
+if [ -x /usr/bin/newaliases ]; then
+	/usr/bin/newaliases
+fi
+
+if [ -x /etc/init.d/postfix ]; then
+	/etc/init.d/postfix reload
+fi
+
+eval $(univention-baseconfig shell samba/user ldap/hostdn)
+
+if  [ "$samba_user" = "cn=admin,$ldap_base" ]; then
+	passfile="/etc/ldap.secret"
+elif [ "$samba_user" = "$ldap_hostdn" ]; then
+	passfile="/etc/machine.secret"
+elif [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	passfile="/etc/ldap.secret"
+elif [ -e "/etc/machine.secret" ]; then
+	passfile="/etc/machine.secret"
+fi
+if [ -n "$passfile" ]; then
+	smbpasswd -w `cat $passfile`
+	service_stop samba; sleep 1; service_start samba
+fi
+
+service_stop univention-ldap-listener; sleep 1; service_start univention-ldap-listener
+
+if [ -d "/var/lib/univention-setup/hostname.post" ]; then
+	run-parts /var/lib/univention-setup/hostname.post --arg=$old_hostname --arg=$new_hostname
+fi
+
+exit 0
+

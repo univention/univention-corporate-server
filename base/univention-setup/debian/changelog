@@ -1,0 +1,443 @@
+univention-setup (0.4.6) unstable; urgency=low
+
+  * copy DNS txt records to the new dns domain
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Dec 2006 13:55:10 +0100
+
+univention-setup (0.4.1) unstable; urgency=low
+
+  * change ldap base in bind config files
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Dec 2006 14:12:34 +0100
+
+univention-setup (0.3.90) unstable; urgency=low
+
+  * don't set the language short form for gdm/language
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Dec 2006 10:23:03 +0100
+
+univention-setup (0.3.89) unstable; urgency=low
+
+  * only modify default network if the network value was changed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Dec 2006 09:39:44 +0100
+
+univention-setup (0.3.88) unstable; urgency=low
+
+  * use the old network value if the new network wasn't changed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 19:36:08 +0100
+
+univention-setup (0.3.87) unstable; urgency=low
+
+  * stop cupsys before changing the ip address
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 17:02:09 +0100
+
+univention-setup (0.3.86) unstable; urgency=low
+
+  * create the reverse zone before change the ip address of the admin object
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Dec 2006 11:24:21 +0100
+
+univention-setup (0.3.85) unstable; urgency=low
+
+  * more cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Dec 2006 10:37:28 +0100
+
+univention-setup (0.3.84) unstable; urgency=low
+
+  * create dns service and alias records in the new dns zone
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Dec 2006 08:21:17 +0100
+
+univention-setup (0.3.83) unstable; urgency=low
+
+  * updated english text and german translation 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:28:32 +0100
+
+univention-setup (0.3.82) unstable; urgency=low
+
+  * only show ldap user and password dialog if the ldap server is available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Dec 2006 08:22:00 +0100
+
+univention-setup (0.3.79) unstable; urgency=low
+
+  * add GPL headers
+  * code cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 10:03:17 +0100
+
+univention-setup (0.3.78) unstable; urgency=low
+
+  * invalidate hosts cache after changing the hostname
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 15:48:40 +0100
+
+univention-setup (0.3.77) unstable; urgency=low
+
+  * remove the dhcp server before adding the new dhcp server
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 15:31:35 +0100
+
+univention-setup (0.3.76) unstable; urgency=low
+
+  * change default network on a DC Master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 09:20:34 +0100
+
+univention-setup (0.3.74) unstable; urgency=low
+
+  * try 5 minutes to download the host certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Nov 2006 14:42:04 +0100
+
+univention-setup (0.3.71) unstable; urgency=low
+
+  * Don't try to download the host certificate if univention-scp isn't
+  available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Nov 2006 14:06:23 +0100
+
+univention-setup (0.3.70) unstable; urgency=low
+
+  * Fetch certificates from master if the hostname has been changed.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Oct 2006 11:37:56 +0100
+
+univention-setup (0.3.69) unstable; urgency=low
+
+  * Make univention-setup abortable with F8. Ctrl+C doesn't work if it it started
+    as part of the boot process with univention-setup-boot as SIGINT signals are
+    blocked by the shell during boot.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 26 Oct 2006 13:23:33 +0200
+
+univention-setup (0.3.68) unstable; urgency=low
+
+  * Allow application-specific triggers for events like changed hostname etc.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 Oct 2006 15:08:32 +0200
+
+univention-setup (0.3.67) unstable; urgency=low
+
+  * Prevent duplicated /etc/exports entries when modifying the LDAP base
+  * Two more checks to handle an unaccessible LDAP server
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 Oct 2006 14:05:32 +0200
+
+univention-setup (0.3.66) unstable; urgency=low
+
+  * Rewrite netmask for pgkdb entries.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 20 Oct 2006 15:00:18 +0200
+
+univention-setup (0.3.65) unstable; urgency=low
+
+  * Handle unaccessible LDAP server.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 20 Oct 2006 14:08:02 +0200
+
+univention-setup (0.3.64) unstable; urgency=low
+
+  * Alter share definitions when changing the hostname
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 19 Oct 2006 17:09:49 +0200
+
+univention-setup (0.3.63) unstable; urgency=low
+
+  * fix variable substitution to change the hostname in /etc/group
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Oct 2006 16:49:45 +0200
+
+univention-setup (0.3.62) unstable; urgency=low
+
+  * Generate locales when selecting them in univention-setup-language
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  9 Oct 2006 15:56:40 +0200
+
+univention-setup (0.3.61) unstable; urgency=low
+
+  * Support boot/setup/modules=all baseconfig setting to run all available modules
+  * Allow direct configuration of network interface settings with the new
+    --interface command.	
+	
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  9 Oct 2006 11:09:24 +0200
+
+univention-setup (0.3.60) unstable; urgency=low
+
+  * Print an warning if a user calls univention-setup without a module name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Oct 2006 15:28:58 +0200
+
+univention-setup (0.3.59) unstable; urgency=low
+
+  * Fix superflous univention-setup-boot error message when halting system
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Oct 2006 15:06:43 +0200
+
+univention-setup (0.3.58) unstable; urgency=low
+
+  * Fix a cornercase, where the new value for the pkgdb might not be present in the
+    profile data.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  5 Oct 2006 13:12:12 +0200
+
+univention-setup (0.3.57) unstable; urgency=low
+
+  * did some work on messages and translations
+
+ -- Arne Brix <arne@billy.knut.univention.de>  Tue, 29 Aug 2006 09:47:51 +0200
+
+univention-setup (0.3.56) unstable; urgency=low
+
+  * Change default network when modifying the network setting in the interfaces
+    dialog.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 17 Aug 2006 11:50:17 +0200
+
+univention-setup (0.3.55) unstable; urgency=low
+
+  * Fix rewrite of pkgdb entries.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 14:11:51 +0200
+
+univention-setup (0.3.54) unstable; urgency=low
+
+  * Fix build, file was missing
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 14:11:49 +0200
+
+univention-setup (0.3.53) unstable; urgency=low
+
+  * Rewrite pkgdb network entry
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 14 Aug 2006 13:19:39 +0200
+
+univention-setup (0.3.52) unstable; urgency=low
+
+  * Display a message if the LDAP server could not be contacted
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 11 Aug 2006 14:32:56 +0200
+
+univention-setup (0.3.51) unstable; urgency=low
+
+  * Rewrite pkgdb network entry.
+  * Make startup message less confusing.
+  * Add header line to startup message.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Jul 2006 09:23:04 +0200
+
+univention-setup (0.3.50) unstable; urgency=low
+
+  * Kill Samba before restarting it, otherwise Windows client join fails.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 27 Jul 2006 14:53:35 +0200
+
+univention-setup (0.3.49) unstable; urgency=low
+
+  * Restart Samba when the IP address has been changed.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Jul 2006 17:20:08 +0200
+
+univention-setup (0.3.48) unstable; urgency=low
+
+  * Add popup note if configured for univention-setup-boot run
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Jul 2006 12:08:05 +0200
+
+univention-setup (0.3.47) unstable; urgency=low
+
+  * restart apache
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 Jul 2006 13:27:35 +0200
+
+univention-setup (0.3.46) unstable; urgency=low
+
+  * added to ip to wins.dat
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jul 2006 12:04:36 +0200
+
+univention-setup (0.3.43) unstable; urgency=low
+
+  * use /usr/sbin/apachectl instead of apache init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jul 2006 17:24:36 +0200
+
+univention-setup (0.3.40) unstable; urgency=low
+
+  * create dhcp subnet
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Jul 2006 10:15:20 +0200
+
+univention-setup (0.3.29) unstable; urgency=low
+
+  * Copy cert to Cyrus
+  * Fetch cert from master if renamed host is not a master
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Jul 2006 16:38:18 +0200
+
+univention-setup (0.3.26) unstable; urgency=low
+
+  * move some internal tools from /usr/sbin to /usr/share
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:58:15 +0200
+
+univention-setup (0.3.19) unstable; urgency=low
+
+  * remove debug output from stdout
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 08:05:43 +0200
+
+univention-setup (0.3.17) unstable; urgency=low
+
+  * Add logging for domain name changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Jul 2006 16:57:24 +0200
+
+univention-setup (0.3.16) unstable; urgency=low
+
+  * Add logging for hostname changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Jul 2006 15:11:36 +0200
+
+univention-setup (0.3.15) unstable; urgency=low
+
+  * Tighten rewrite of mail address
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Jul 2006 13:35:38 +0200
+
+univention-setup (0.3.14) unstable; urgency=low
+
+  * Fix multiple bugs after changing the domain name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 13 Jul 2006 15:34:24 +0200
+
+univention-setup (0.3.13) unstable; urgency=low
+
+  * Fix i18n string in "Updating configuration".
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 11 Jul 2006 12:53:17 +0200
+
+univention-setup (0.3.12) unstable; urgency=low
+
+  * Disable univention-setup-modules.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 11 Jul 2006 11:33:37 +0200
+
+univention-setup (0.3.11) unstable; urgency=low
+
+  * Fix copy&paste bug in interface changes.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  6 Jul 2006 09:50:00 +0200
+
+univention-setup (0.3.10) unstable; urgency=low
+
+  * Change DNS service records if the domain name has been changed.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  5 Jul 2006 08:58:04 +0200
+
+univention-setup (0.3.9) unstable; urgency=low
+
+  * Configure MAC and IP address in LDAP when configuring a host from static
+    to dynamic IP
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Mon, 19 Jun 2006 15:51:31 +0200
+
+univention-setup (0.3.8) unstable; urgency=low
+
+  * Parse i18n strings directly from module information
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Fri, 16 Jun 2006 11:44:31 +0200
+
+univention-setup (0.3.7) unstable; urgency=low
+
+  * Include installer module names in i18n system
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Thu, 15 Jun 2006 15:40:55 +0200
+
+univention-setup (0.3.6) unstable; urgency=low
+
+  * Fix typo.
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 13:52:15 +0200
+
+univention-setup (0.3.5) unstable; urgency=low
+
+  * Rename default_locale to locale/default
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 11:57:03 +0200
+
+univention-setup (0.3.4) unstable; urgency=low
+
+  * Configure the language settings in GDM, univention-admin and
+    univention-console if the default locale is changed.
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 09:45:58 +0200
+
+univention-setup (0.3.3) unstable; urgency=low
+
+  * Allow configuration of default locale
+  * Fix color scheme in installer
+  * Copy SSL certificate to Cyrus if the base name of the system
+    has changed
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 09:22:25 +0200
+
+univention-setup (0.3.2) unstable; urgency=low
+
+  * stop and start univention-ldap-notifier
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 May 2006 14:51:04 +0200
+
+univention-setup (0.3.1) unstable; urgency=low
+
+  * support for dynamic interfaces
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 May 2006 10:51:35 +0200
+
+univention-setup (0.2.6) unstable; urgency=low
+
+  * added univention-setup-boot package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 May 2006 09:53:36 +0200
+
+univention-setup (0.2.4) unstable; urgency=low
+
+  * check for ldap username and ldap password
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 May 2006 16:00:04 +0200
+
+univention-setup (0.2.3) unstable; urgency=low
+
+  * support for ldap/base changes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 May 2006 10:20:43 +0200
+
+univention-setup (0.1.11) unstable; urgency=low
+
+  * added univention-setup-software
+
+ -- Stefan Gohmann <sgohmann@univention.de>  Fri, 12 May 2006 17:10:15 +0200
+
+univention-setup (0.1.10) unstable; urgency=low
+
+  * added hostname support for univention-setup-basis
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 May 2006 14:10:45 +0200
+
+univention-setup (0.1.5) unstable; urgency=low
+
+  * univention-setup-net does change ip, dns, nameserver and proxy settings
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 May 2006 08:23:44 +0200
+
+univention-setup (0.1.2) unstable; urgency=low
+
+  * create packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 May 2006 10:39:25 +0200
+

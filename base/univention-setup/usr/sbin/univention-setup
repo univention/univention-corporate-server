@@ -1,0 +1,846 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Setup
+#  main script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, os, string, getopt
+import types, traceback, thread
+import curses, curses.ascii
+import md5, apt_pkg, tempfile
+import univention_baseconfig
+
+sys.path.append("/lib/univention-installer")
+sys.path.append("/lib/univention-installer/modules")
+
+import objects
+from local import _
+from objects import *
+
+
+#initialize the global cmdline dictonary and parse the cmdline
+cmdline={}
+cmdline['mode']='setup'
+if len(sys.argv) > 1:
+
+	longopts=['noprobe', 'loadmodules=', 'excludemodules=',  'simple', 'modules=', 'lang=', 'interface=']
+	try:
+		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	files=[]
+	packages_dir=''
+	for opt, val in opts:
+		if opt == '--noprobe':
+			cmdline['noprobe']=1
+		elif opt == '--loadmodules':
+			cmdline['loadmodules']=val
+		elif opt == '--simple': # No extended ASC
+			cmdline['simple']=1
+		elif opt == '--interface':
+			cmdline['interface']=val
+		elif opt == '--modules':
+			cmdline['modules']=val
+		elif opt == '--lang':
+			cmdline['lang']=val
+
+
+
+# check for architecture and save the architecture in the cmdline dictonary
+f=os.popen('/bin/uname -m')
+architecture=f.readlines()[0].strip('\n')
+if architecture in ['powerpc', 'ppc', 'ppc64' ]:
+	cmdline['architecture']='powerpc'
+else:
+	cmdline['architecture']='x86'
+
+
+def exit_curses():
+	stdscr.keypad(0)
+	curses.nocbreak()
+	curses.echo()
+	curses.endwin()
+
+def abort(max_x,max_y):
+	text=_('Press F8 to exit or any key to continue.')
+	message=objects.warning(text, max_y, max_x)
+	message.draw()
+	c = stdscr.getch()
+	if c == curses.KEY_F8:
+		return True
+	elif c == 113:
+		return False
+	return 0
+
+def debug(text):
+	file='/tmp/installer.log'
+	f=open(file, 'a+')
+	f.write("(main) %s\n" % text)
+	f.close()
+
+
+class error_message(subwin):
+	def __init__(self,parent,pos_y,pos_x,width,height, message):
+		self.message=message
+		text = _( 'This error message is shown when an unexpected error occures '
+				'during the installation process. The best way is to reboot '
+				'the computer and retry the installation. Confirming this '
+				'message will restart the installation process without '
+				'rebooting.' )
+		self.comment = []
+		i = 0
+		while len( text ) > width - 4:
+			end = text.rfind( ' ', 0, width - 4 )
+			i += 1
+			self.comment.append( text[ : end ] )
+			text= text[ end + 1 : ]
+		self.comment.append( text[ : end ] )
+		height += i
+		y = ( max_y - height ) / 2
+		subwin.__init__( self,parent, y, pos_x, width, height )
+
+	def layout(self):
+		dict={}
+		self.elements.append(textline(_('A Python Exception has occured!'),self.pos_y+2,self.pos_x+2)) #0
+
+		count=0
+		f=open('/tmp/installation.error', 'a+')
+		for l in self.message:
+			l=l.replace('\n','')
+			l=l.replace('\r','')
+			l=l.strip(' ')
+			self.elements.append(textline(l[:60],self.pos_y+4+count,self.pos_x+2)) #0
+			count=count+1
+			f.write(str(l)+'\n')
+
+		self.elements.append(button(_('Ok'),self.pos_y+self.height-2,self.pos_x+(self.width/2),align='middle')) #2
+
+		f.close()
+
+	def input(self, key):
+		if key == 10:
+			return 1
+		elif key == 9:
+			self.tab()
+		else:
+			return self.elements[self.current].key_event(key)
+
+
+
+class start_popup(subwin):
+	def __init__(self,parent,pos_y,pos_x,width,height):
+		subwin.__init__( self,parent, ( max_y - height ) / 2, pos_x, width, height )
+
+	def layout(self):
+		self.elements.append(headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-7,max_x/2-31))
+		self.elements.append(textline(_('Univention Setup has been configured to be run on system start.') ,self.pos_y+4,self.pos_x+2))
+		self.elements.append(textline(_('It allows you to configure system settings.') ,self.pos_y+5,self.pos_x+2))
+		self.elements.append(textline(_('Currently supported are configuration of the time zone, keyboard') ,self.pos_y+6,self.pos_x+2))
+		self.elements.append(textline(_('layout, language support, the default language, host/LDAP names,') ,self.pos_y+7,self.pos_x+2))
+		self.elements.append(textline(_('network settings and installed software.') ,self.pos_y+8,self.pos_x+2))
+		self.elements.append(textline(_('Not all setup modules are enabled in system startup mode.') ,self.pos_y+9,self.pos_x+2))
+		self.elements.append(textline(_('The full selection is available through univention-setup-all.') ,self.pos_y+10,self.pos_x+2))
+		self.elements.append(button(_('Ok'),self.pos_y+self.height-2,self.pos_x+(self.width/2),align='middle')) #2
+
+
+	def input(self, key):
+		if key == 10:
+			return 1
+		elif key == 9:
+			self.tab()
+		else:
+			return self.elements[self.current].key_event(key)
+
+class ldap_popup(subwin):
+	def __init__(self,parent,pos_y,pos_x,width,height):
+		subwin.__init__( self,parent, ( max_y - height ) / 2, pos_x, width, height )
+
+	def layout(self):
+		self.elements.append(headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-7,max_x/2-31))
+		self.elements.append(textline(_('The LDAP server could not be contacted. You need to join the') ,self.pos_y+4,self.pos_x+2))
+		self.elements.append(textline(_('system into the domain with univention-setup at a later point.') ,self.pos_y+5,self.pos_x+2))
+		self.elements.append(button(_('Ok'),self.pos_y+self.height-2,self.pos_x+(self.width/2),align='middle')) #2
+
+	def input(self, key):
+		if key == 10:
+			return 1
+		elif key == 9:
+			self.tab()
+		else:
+			return self.elements[self.current].key_event(key)
+
+
+class mods:
+	def __init__(self,modules,max_x,max_y,initialized=1, cmdline={}):
+		self.max_x=max_x
+		self.max_y=max_y
+		self.modules=modules
+		self.cmdline=cmdline
+		self.result={} #internal result
+		self.profile={} #external results (sorted)
+		self.inst_mods={}
+		for m in self.modules:
+			self.inst_mods[m] = __import__(m)
+		self.current=0
+		self.obj=[]
+		self.modview=[]
+		last=(0,0)
+		for i in range(len(self.modules)):
+			if i == 0 and  i == len(self.modules)-1: # module is first and last
+				last=(0,0)
+			elif i == 0 and i != len(self.modules)-1: # module is first
+				last=(0,1)
+			elif i != 0 and i == len(self.modules)-1: # module is last
+				last=(1,0)
+			else: # module is not first or last
+				last=(1,1)
+			self.obj.append(self.inst_mods[self.modules[i]].object(self.max_y,self.max_x,last, file='/tmp/installer.log', cmdline=cmdline))
+		self.window=self.mainwin()
+		self.headerline=self.header()
+		self.footline1=self.footer((0,0)) # first and last
+		self.footline2=self.footer((0,1)) # first not last
+		self.footline3=self.footer((1,0)) # last not first
+		self.footline4=self.footer((1,1)) # not last not first
+		self.current_old=0
+		if not initialized:
+			self.obj[0].initialized=0
+		else:
+			self.obj[0].initialized=1
+		self.left_menu()
+
+		#copy result start
+		self.baseconfig={}
+
+		self.load_values()
+		self.obj[self.current].put_result(self.result)
+		self.obj[self.current].draw()
+		self.obj[self.current].tab_reverse()
+
+	def load_values(self):
+		mapping={
+			'server/role':			'system_role',
+			'ldap/base':			'ldap_base',
+			'windows/domain':		'windows_domain',
+			'nameserver1':			'nameserver_1',
+			'nameserver2':			'nameserver_2',
+			'nameserver3':			'nameserver_3',
+			'dns/forwarder1':		'dns_forwarder_1',
+			'dns/forwarder2':		'dns_forwarder_2',
+			'dns/forwarder3':		'dns_forwarder_3',
+			'proxy/http':			'http_proxy',
+			'locale/default':		'locale_default',
+			'locale':				'locales',
+		}
+		for i in range(0,4):
+			mapping['interfaces/eth%d/type' % (i)]='eth%d_type' % (i)
+			mapping['interfaces/eth%d/address' % (i)]='eth%d_ip' % (i)
+			mapping['interfaces/eth%d/broadcast' % (i)]='eth%d_broadcast' % (i)
+			mapping['interfaces/eth%d/netmask' % (i)]='eth%d_netmask' % (i)
+			mapping['interfaces/eth%d/network' % (i)]='eth%d_network' % (i)
+			for j in range(0,4):
+				mapping['interfaces/eth%d_%d/address' % (i,j)]='eth%d_%d_ip' % (i,j)
+				mapping['interfaces/eth%d_%d/broadcast' % (i,j)]='eth%d_%d_broadcast' % (i,j)
+				mapping['interfaces/eth%d_%d/netmask' % (i,j)]='eth%d_%d_netmask' % (i,j)
+				mapping['interfaces/eth%d_%d/network' % (i,j)]='eth%d_%d_network' % (i,j)
+
+		baseConfig=univention_baseconfig.baseConfig()
+		baseConfig.load()
+
+		self.mapping_reverse={}
+		for k in mapping.keys():
+			self.mapping_reverse[mapping[k]]=k
+
+		for k in baseConfig.keys():
+			if mapping.has_key(k):
+				self.baseconfig[mapping[k]]=baseConfig[k]
+			else:
+				self.baseconfig[k]=baseConfig[k]
+
+		#other values
+		self.baseconfig['root_password']='*************'
+
+		# get timezone
+		if os.path.exists('/etc/timezone'):
+			f=open('/etc/timezone')
+			self.baseconfig['timezone']=f.readline().strip()
+			f.close()
+		else:
+			self.baseconfig['timezone']=''
+
+
+		# get keymap
+		# the only known way to get the keyboard is to check the boottime keymap
+		if os.path.exists('/etc/console/boottime.kmap.gz'):
+			md5_dictonary={}
+			boottime_md5=md5.md5(string.join(open('/etc/console/boottime.kmap.gz').readlines())).hexdigest()
+			for dir in os.listdir('/usr/share/keymaps/i386/'):
+				if os.path.isdir(os.path.join('/usr/share/keymaps/i386/', dir)):
+					for file in os.listdir(os.path.join('/usr/share/keymaps/i386/', dir)):
+						filename=os.path.join(os.path.join('/usr/share/keymaps/i386/', dir), file)
+						md5_sum=md5.md5(string.join(open(filename).readlines())).hexdigest()
+						md5_dictonary[md5_sum]=file
+
+			if md5_dictonary.has_key(boottime_md5):
+				self.baseconfig['keymap']=md5_dictonary[boottime_md5].split('.')[0]
+			else:
+				self.baseconfig['keymap']=''
+
+
+		#             scan packages:
+		self.baseconfig['packages']=[]
+
+		installed_packages=[]
+		packages = package_cache.Packages
+		for package in packages:
+			if package.CurrentState == 6 and package.InstState == 0:
+				installed_packages.append(package.Name)
+
+		import package_list
+		for category in package_list.PackageList:
+			for component in category['Packages']:
+				for p in component['Packages']:
+					debug('p=%s' % p )
+					if p in installed_packages:
+						self.baseconfig['packages'].append(p)
+
+		self.result=copy.deepcopy(self.baseconfig)
+
+	def mainwin(self):
+		window = curses.newpad(25,80)
+		window.bkgd(" ",curses.color_pair(4))
+		window.border(' ',' ',curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE,curses.ACS_HLINE)
+		return window
+
+	def header(self):
+		return objects.headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-12,max_x/2-35)
+
+	def footer(self, last):
+		if last[0]==0: # first
+			if last[1]==0: # last
+				text = _(' F1-Help | F12-Accept changes | F8-Exit')
+			elif last[1]==1: # not last
+				text = _(' F1-Help | F12-Next | F8-Exit')
+		elif last[0]==1: # not first
+			if last[1]==0: # last
+				text = _(' F1-Help | F11-Back | F12-Accept changes | F8-Exit')
+			elif last[1]==1: # not last
+				text = _(' F1-Help | F11-Back | F12-Next | F8-Exit')
+
+		return objects.footline(text,max_y/2+12,max_x/2-(len(text)/2))
+
+
+	def draw(self):
+		for i in range(len(self.modview)):
+			if self.obj[self.current].modheader() == self.modview[i][0].text:
+				self.modview[i][0].active()
+			else:
+				self.modview[i][0].bgcolor()
+			self.modview[i][0].draw()
+		if self.current == len(self.modules)-1 and self.current == 0:
+			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.footline1.draw()
+		elif self.current == 0:
+			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.footline2.draw()
+		elif self.current == len(self.modules)-1:
+			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.footline3.draw()
+		else:
+			self.window.refresh(0,0,self.max_y/2+12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+			self.footline4.draw()
+		self.obj[self.current].draw()
+
+	def draw_all(self):
+		self.window.refresh(0,0,self.max_y/2-12,self.max_x/2-40,self.max_y/2+12,self.max_x/2+40)
+		self.headerline.draw()
+		if self.current == len(self.modules)-1 and self.current == 0:
+			self.footline1.draw()
+		elif self.current == 0:
+			self.footline2.draw()
+		elif self.current == len(self.modules)-1:
+			self.footline3.draw()
+		else:
+			self.footline4.draw()
+		self.draw()
+
+	def left_menu(self):
+		self.modview=[]
+		count=0
+		for i in range(len(self.modules)):
+			depends=self.obj[i].mod_depends()
+			if len(depends) > 0:
+				for key in depends.keys():
+					if self.result.has_key(key):
+						for l in depends[key]:
+							if l in self.result[key]:
+								self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+								count=count+1
+								break
+			else:
+				self.modview.append((objects.modline(self.obj[i].modheader(),self.max_y/2-10+count,self.max_x/2-38),self.obj[i].mod_depends()))
+				count=count+1
+
+	def result_update(self):
+		self.result.update(self.obj[self.current].get_result())
+		# external result (sorted)
+		self.profile[self.obj[self.current].modheader()]=self.obj[self.current].get_result()
+		self.obj[self.current].put_result(self.result)
+
+	def check_depends(self, number):
+		if number >= len(self.modules):
+			return 0
+		dep=[]
+		dep=self.obj[number].mod_depends()
+		if len(dep) > 0:
+			found=0
+			for key in dep.keys():
+				if self.result.has_key(key):
+					for entry in dep[key]:
+						if entry in self.result[key]:
+							found=1
+			if not found:
+				return 1
+			else:
+				return 0
+		else:
+			return 0
+
+	def chg_current(self,diff):
+		if self.current+diff >= len(self.modules):
+			self.write_profile()
+			return 1
+		self.current += diff
+		self.obj[self.current].put_result(self.result)
+		self.left_menu()
+		self.draw_all()
+
+	def tab(self):
+		self.obj[self.current].tab()
+
+	def tab_reverse(self):
+		self.obj[self.current].tab_reverse()
+
+	def help(self):
+		self.obj[self.current].help()
+		while 1:
+			c = stdscr.getch()
+			if not self.obj[self.current].help_input(c):
+				break
+		self.draw_all()
+
+	def input(self,key):
+		if key == 27 and hasattr(self.obj[self.current],"sub"):
+			self.obj[self.current].kill_subwin()
+		else:
+			return self.obj[self.current].input(key)
+
+	def write_profile(self, profile_mode=0):
+		cache_file=open('/var/cache/univention-setup/profile',"w+")
+		for key in self.result.keys():
+			if self.mapping_reverse.has_key(key):
+				bkey=self.mapping_reverse[key]
+			else:
+				bkey=key
+			if not self.baseconfig.has_key(key):
+ 				if self.result[key]:
+					cache_file.write('%s="%s" # new\n\n' % (bkey,self.result[key]))
+			elif self.baseconfig[key] != self.result[key]:
+				cache_file.write('%s="%s" # changed\n\n' % (bkey,self.result[key]))
+		cache_file.close()
+
+class run_script(act_win):
+	def __init__(self,parent,header,text,name='sub', path=''):
+		self.path=path
+		act_win.__init__(self,parent, header, text, name)
+
+	def function(self):
+		os.system('run-parts %s >>/var/log/univention/setup.log 2>&1' % self.path)
+		self.stop()
+
+def next_screen():
+	if hasattr(installer.obj[installer.current], 'postrun'):
+		installer.obj[installer.current].postrun()
+	missing=installer.obj[installer.current].incomplete()
+	if missing:
+		if type(missing) == type(1):
+			return 0
+		message=objects.warning(missing,installer.max_y,installer.max_x)
+		message.draw()
+		stdscr.getch()
+		installer.draw_all()
+	else:
+		installer.result_update()
+		i=1
+		while installer.check_depends(installer.current+i):
+			i=i+1
+		if installer.chg_current(i):
+			return 1
+		return 0
+
+def prev_screen():
+	i=1
+
+	if installer.current == 0:
+		return 0
+
+	while installer.check_depends(installer.current-i):
+		i=i+1
+	if installer.chg_current(-i):
+		return 1
+	return 0
+
+class ldap_access_window(subwin):
+	def layout(self):
+		self.elements.append(textline(_(''),self.pos_y+2,self.pos_x+2)) #0
+		self.elements.append(textline(_('LDAP Username'),self.pos_y+3,self.pos_x+2)) #1
+		self.elements.append(input("Administrator",self.pos_y+3,self.pos_x+20,25)) #2
+		self.elements.append(textline(_('LDAP Password'),self.pos_y+5,self.pos_x+2)) #3
+		self.elements.append(password("",self.pos_y+5,self.pos_x+20,25)) #4
+
+		self.elements.append(button('F12-'+_('Ok'),self.pos_y+7,self.pos_x+(self.width)-8,align="right")) #5
+		self.elements.append(button('ESC-'+_('Reset'),self.pos_y+7,self.pos_x+8, 13)) #6
+
+		self.current=4
+		self.elements[self.current].set_on()
+	def put_result(self):
+		cache_file=open('/var/cache/univention-setup/profile',"a+")
+		cache_file.write('ldap_username="%s"\n\n' % (self.elements[2].get_text()))
+		cache_file.write('ldap_password="%s"\n\n' % (self.elements[4].get_text()))
+		cache_file.close()
+		pass
+	def input(self,key):
+		debug('key=%d' % key)
+		if ( key in [ 10, 32 ] and ( ( self.elements[5].usable() and self.elements[5].get_status() ) or ( self.elements[4].usable() and self.elements[4].get_status()) ) ) or key == 276: #Ok
+			self.put_result()
+			return 'next'
+		elif key in [ 10, 32 ] and self.elements[6].usable() and self.elements[6].get_status(): #Cancel
+			return 'prev'
+		elif key == 10 and self.elements[self.current].usable():
+			return self.elements[self.current].key_event(key)
+		elif self.elements[self.current].usable():
+			self.elements[self.current].key_event(key)
+		return 1
+
+
+#redirect stdout
+tmp_file1=os.open(tempfile.mktemp(), os.O_RDWR | os.O_CREAT)
+tmp_file2=os.open(tempfile.mktemp(), os.O_RDWR | os.O_CREAT)
+
+#save old stdout
+os.dup2(1, tmp_file2)
+os.dup2(tmp_file1, 1)
+
+apt_pkg.init()
+package_cache = apt_pkg.GetCache()
+
+os.dup2(tmp_file2, 1)
+os.close(tmp_file1)
+os.close(tmp_file2)
+
+
+# create a window-object
+stdscr = curses.initscr()
+
+if cmdline.has_key('simple'):
+	curses.MY_VLINE='|'
+	curses.MY_HLINE='-'
+	curses.MY_BOARD='#'
+	curses.MY_PLUS='+'
+	curses.EDGE_TL=' '
+	curses.EDGE_TR=' '
+	curses.EDGE_BL=' '
+	curses.EDGE_BR=' '
+else:
+	curses.MY_VLINE=curses.ACS_VLINE
+	curses.MY_HLINE=curses.ACS_HLINE
+	curses.MY_BOARD=curses.ACS_BOARD
+	curses.MY_PLUS=curses.ACS_PLUS
+	curses.EDGE_TL=curses.ACS_ULCORNER
+	curses.EDGE_TR=curses.ACS_URCORNER
+	curses.EDGE_BL=curses.ACS_LLCORNER
+	curses.EDGE_BR=curses.ACS_LRCORNER
+
+
+# use color
+curses.start_color()
+
+if curses.can_change_color():
+	# init_color(color_number, r, g, b)
+	curses.init_color(7, 960 , 930 , 910)
+	#curses.init_color(1, 870 , 160 , 0)
+	curses.init_color(1, 816 , 0 , 204)
+	#curses.init_color(1, 870 , 160 , 0)
+	curses.init_color(3, 816 , 0 , 204)
+	#curses.init_color(3, 204 , 0 , 51)
+	#curses.init_color(3, 930 , 470 , 60)
+# create color_pair(number, fg, bg)
+curses.init_pair(1,curses.COLOR_WHITE, curses.COLOR_BLACK)
+curses.init_pair(2,curses.COLOR_RED, curses.COLOR_WHITE)
+curses.init_pair(3,curses.COLOR_WHITE, curses.COLOR_RED)
+curses.init_pair(4,curses.COLOR_BLACK, curses.COLOR_WHITE)
+curses.init_pair(5,curses.COLOR_RED, curses.COLOR_WHITE)
+# 0 COLOR_BLACK # 4 COLOR_BLUE # 6 COLOR_CYAN # 2 COLOR_GREEN
+# 5 COLOR_MAGENTA # 1 COLOR_RED # 7 COLOR_WHITE # 3 COLOR_YELLOW
+
+# turn off echo
+curses.noecho()
+
+# diables cursor
+curses.curs_set(0)
+
+# enable/disable cbreak-mode
+curses.cbreak()
+
+# enable/disable keypad for returning a special value such as curses.KEY_LEFT
+stdscr.keypad(1)
+
+#disable background
+#stdscr.bkgd(curses.MY_PLUS,curses.color_pair(1))
+max_y, max_x = stdscr.getmaxyx()
+if max_y == 24:
+	max_y=23
+
+# refresh screen
+stdscr.refresh()
+
+
+cmdline['loaded_modules']=[]
+
+# these modules are disabled at the moment
+#				'partition':		'12_partition',
+#				'modules':			'01_modules',
+#				'role':				'10_role',
+#				'ssl':				'30_ssl',
+#				'join':				'31_join',
+#				'system_settings':	'70_system_settings'
+
+name_mapping={  'timezone':			'04_timezone',
+				'keyboard':			'05_keyboard',
+				'language':			'06_language',
+				'defaultlocale':		'07_dl',
+				'basis':			'11_basis',
+				'net':				'20_net',
+				'software':			'60_software' }
+
+if cmdline.has_key('modules'):
+	for i in cmdline['modules'].split(','):
+		if i.strip() == 'all':
+			cmdline['modules'] = 'timezone, keyboard,language,defaultlocale,basis,net,software'
+
+debug( '[%s] Calling %s' % (time.ctime(),sys.argv))
+if sys.argv[0].split('/')[-1] == 'univention-setup':
+	if cmdline.has_key('modules'):
+		for val in cmdline['modules'].split(','):
+			if name_mapping.has_key(val):
+				cmdline['loaded_modules'].append(name_mapping[val])
+else:
+	mode_name=sys.argv[0].split('-')[-1]
+	if name_mapping.has_key(mode_name):
+		cmdline['loaded_modules']=[name_mapping[mode_name]]
+	elif mode_name == 'all':
+		for key in name_mapping.keys():
+			cmdline['loaded_modules'].append(name_mapping[key])
+
+if len(cmdline['loaded_modules']) < 1:
+	exit_curses()
+	print "Please run the individual univention-setup-MODULE scripts"
+	print "or univention-setup-all for the complete selection."
+	sys.exit(1)
+
+try:
+
+	cmdline['loaded_modules'].sort()
+
+	if cmdline.has_key('lang'):
+		os.environ['LANGUAGE'] = "%s" % cmdline['lang']
+		debug('Setting language to %s\n' % cmdline['lang'].strip())
+
+
+	err_height=15
+	err_width=66
+	err_min_x=(max_x/2)-(err_width/2)
+	err_min_y=(max_y/2)-(err_height/2)
+
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if baseConfig.has_key("boot/setup/start"):
+		if baseConfig["boot/setup/start"] == "true":
+			error=start_popup(None, err_min_y, err_min_x, err_width+2, err_height)
+			error.draw()
+			while 1:
+				c = stdscr.getch()
+				if error.input(c):
+					break
+
+	# init main window
+	installer=mods(cmdline['loaded_modules'],max_x,max_y, cmdline=cmdline)
+	installer.draw_all()
+	view_warning=0
+	out=False
+	while 1:
+		while 1:
+			try:
+				c = stdscr.getch()
+				if c == 275: # F11 -> back
+					prev_screen()
+				elif c == 276: # F12 -> next
+					if hasattr( installer.obj[ installer.current ], 'sub' ):
+						if installer.obj[ installer.current ].input( c ) == 'next':
+							if next_screen():
+								break
+					elif next_screen():
+						break
+				elif c == curses.KEY_F1: # F1 -> help
+					installer.help()
+				elif c == curses.KEY_F8: # F8 -> abort
+					if abort(max_x,max_y):
+						exit_curses()
+						os._exit(0)
+					else:
+						installer.draw_all()
+				elif c == 9: # Tab
+					installer.tab()
+				elif c == 353: #SHIFT TAB
+					installer.tab_reverse()
+				else:
+					act = installer.input(c)
+					if act == 'next':
+						if next_screen():
+							break
+					elif act == 'prev':
+						prev_screen()
+					elif act == 'tab':
+						installer.tab()
+
+			except KeyboardInterrupt:
+				c = stdscr.getch()
+				if abort(max_x,max_y):
+					break
+				else:
+					installer.draw_all()
+
+		installer.result_update()
+		installer.write_profile()
+
+		ldap_access=False
+ 		ldap_availability=True
+		for dir in os.listdir('/usr/lib/univention-setup/scripts'):
+			directory=os.path.join('/usr/lib/univention-setup/scripts', dir)
+			if os.path.exists(directory) and os.path.isdir(directory):
+				for file in os.listdir(directory):
+					script=os.path.join(directory,file)
+					if os.path.exists(script) and os.path.isfile(script):
+						if os.system('%s --check_ldap_access' % (script)) == 256:
+							ldap_access=True
+
+		testpipe = os.popen('/usr/lib/univention-setup/scripts/ldap_available.sh')
+		ldap_server_available=testpipe.readlines()[0].strip('\n')
+
+		if ldap_server_available == "LDAP master not available":
+ 			ldap_availability=False
+ 			error=ldap_popup(None, err_min_y, err_min_x, err_width+2, err_height)
+ 			error.draw()
+ 			while 1:
+ 				c = stdscr.getch()
+ 				if error.input(c):
+ 					break
+
+		if ldap_access and ldap_availability:
+			ldap_subwindow=ldap_access_window(installer.obj[0], installer.obj[0].minY+4, installer.obj[0].minX+3, installer.obj[0].maxWidth-10,installer.obj[0].maxHeight-8)
+			ldap_subwindow.draw()
+			while 1:
+				try:
+					c = stdscr.getch()
+					if c == 9: # Tab
+						ldap_subwindow.tab()
+					elif c == 353: #SHIFT TAB
+						ldap_subwindow.tab_reverse()
+					else:
+						act = ldap_subwindow.input(c)
+						if act == 'next':
+							out=True
+							break
+						elif act == 'prev':
+							installer.draw_all()
+							break
+
+				except KeyboardInterrupt:
+					c = stdscr.getch()
+					if abort(max_x,max_y):
+						break
+					else:
+						ldap_subwindow.draw_all()
+			if out:
+				break
+		else:
+			break
+
+
+	mod_count = 0
+	for mod in cmdline['loaded_modules']:
+		# we need the key instead of the module name, e.g. we need timezone instead of 12_timezone
+		for nm_key in name_mapping:
+			if name_mapping[nm_key] == mod:
+				module_name=nm_key
+
+		if os.path.exists(os.path.join('/usr/lib/univention-setup/scripts', module_name)):
+			installer.obj[installer.current].sub = run_script(installer.obj[installer.current],_('Updating configuration '),_('Updating %s configuration') % installer.obj[mod_count].modheader(), path=os.path.join('/usr/lib/univention-setup/scripts', module_name))
+			installer.obj[installer.current].sub.draw()
+		mod_count += 1
+
+except KeyboardInterrupt:
+	exit_curses()
+	sys.exit(0)
+except:
+	info = sys.exc_info()
+
+	err_height=15
+	err_width=66
+	err_min_x=(max_x/2)-(err_width/2)
+	err_min_y=(max_y/2)-(err_height/2)
+	try:
+		error=error_message(None, err_min_y, err_min_x, err_width+2, err_height, apply(traceback.format_exception,info))
+		for line in apply(traceback.format_exception,info):
+			debug(line)
+		error.draw()
+		while 1:
+			c = stdscr.getch()
+			if error.input(c):
+				break
+		exit_curses()
+		sys.exit(0)
+	except:
+		exit_curses()
+		sys.exit(0)
+
+exit_curses()
+
+os.system('clear')

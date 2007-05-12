@@ -1,0 +1,84 @@
+#!/bin/sh
+#
+# Univention Setup
+#  windows domain change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+is_variable_set "windows/domain"
+
+if [ $? = 0 ]; then
+	exit 0
+fi
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+ldap_available=1
+
+if [ `cat /var/run/univention-setup.ldap` = "no-ldap" ]; then
+    ldap_available=0
+fi
+
+new_windows_domain=`get_profile_var "windows/domain"`
+
+if [ -z "$new_windows_domain" ]; then
+	univention-baseconfig unset windows/domain
+	exit 0
+fi
+
+old_windows_domain=$(univention-baseconfig get windows/domain)
+if [ -d "/var/lib/univention-setup/windowsdomain.pre" ]; then
+	run-parts /var/lib/univention-setup/windowsdomain.pre --arg=$old_windows_domain --arg=$new_windows_domain
+fi
+
+service_stop samba
+
+eval $(univention-baseconfig shell)
+
+if [ $ldap_available = 1 ]; then
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-admin settings/sambadomain list --filter sambaDomainName="$windows_domain" | grep "^DN:" | sed -e 's|DN: ||' | while read dn; do
+			univention-admin settings/sambadomain modify --dn "$dn" --set name="$new_windows_domain"
+		done
+	fi
+fi
+
+univention-baseconfig set windows/domain="$new_windows_domain"
+
+service_start samba
+sleep 1
+service_start samba
+
+if [ -d "/var/lib/univention-setup/windowsdomain.post" ]; then
+	run-parts /var/lib/univention-setup/windowsdomain.post --arg=$old_windows_domain --arg=$new_windows_domain
+fi
+
+exit 0
+

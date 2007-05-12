@@ -1,0 +1,8 @@
+usr/sbin/univention-setup usr/sbin/univention-setup-all
+usr/sbin/univention-setup usr/sbin/univention-setup-timezone
+usr/sbin/univention-setup usr/sbin/univention-setup-keyboard
+usr/sbin/univention-setup usr/sbin/univention-setup-language
+usr/sbin/univention-setup usr/sbin/univention-setup-defaultlocale
+usr/sbin/univention-setup usr/sbin/univention-setup-basis
+usr/sbin/univention-setup usr/sbin/univention-setup-net
+usr/sbin/univention-setup usr/sbin/univention-setup-software

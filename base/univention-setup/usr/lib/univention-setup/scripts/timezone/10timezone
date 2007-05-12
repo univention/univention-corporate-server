@@ -1,0 +1,58 @@
+#!/bin/sh -e
+#
+# Univention Setup
+#  timezone change script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-setup/scripts/setup_utils.sh
+
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+timezone=`get_profile_var timezone`
+
+if [ -z "$timezone" ]; then
+	exit 0
+fi
+
+if [ -e /etc/timezone ]; then
+	old_timezone=`cat /etc/timezone`
+	if [ "$old_timezone" = "$timezone" ]; then
+		exit 0
+	fi
+fi
+
+echo "$timezone" >/etc/timezone
+ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+
+test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server stop
+test -x /etc/init.d/ntpdate && /etc/init.d/ntpdate restart
+test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server start
+
+exit 0
