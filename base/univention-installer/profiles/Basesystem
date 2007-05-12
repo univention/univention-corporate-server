@@ -1,0 +1,28 @@
+#### UCS-Basesystem-Profile ####
+to_check="partition"
+
+# [Optionen]
+hostname="basesystem"
+#root_password=''
+domainname="test.univention.de"
+
+# [System-Optionen]
+local_repository="false"
+
+# [Sprache]
+locales="de_DE@euro:ISO-8859-15"
+
+# [Standardsprache]
+locale_default="de_DE@euro:ISO-8859-15"
+
+# [Tastatur]
+keymap="de-latin1"
+
+# [Systemrolle]
+system_role="Base"
+
+# [Zeitzone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="ssh-krb5 dhcp-client vim links-ssl wget xtightvncviewer"

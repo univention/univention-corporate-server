@@ -1,0 +1,174 @@
+#!/usr/bin/make -f
+#
+# Univention Installer
+#  rules file for the univention installer debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+	make -C parted/
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	dh_clean
+
+D=$(CURDIR)/debian/univention-installer
+DD=$(CURDIR)/debian/univention-installer-modules
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+
+	# install installer-modules
+	install -m 640 installer/modules/01_modules.py	${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/03_hardware.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/04_profile.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/04_timezone.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/05_keyboard.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/06_language.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/07_dl.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/10_role.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/11_basis.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/12_partition.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/15_bootloader.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/20_net.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/30_ssl.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/31_join.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/60_software.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/70_system_settings.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/95_overview.py ${DD}/lib/univention-installer/modules/
+
+
+	install -m 640 installer/modules/kernel-2.4 ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/kernel-2.6 ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/filesystem ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/keymap ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/languages ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/timezone ${DD}/lib/univention-installer/modules/
+
+	install -m 755 installer/network.sh ${DD}/lib/univention-installer/
+	install -m 640 installer/objects.py ${DD}/lib/univention-installer/
+	install -m 640 installer/package_list.py ${DD}/lib/univention-installer/
+	install -m 755 installer/usb-device.sh ${DD}/lib/univention-installer/
+
+	install -m 640 installer/locale/de/LC_MESSAGES/installer.mo ${DD}/lib/univention-installer/locale/de/LC_MESSAGES/
+	install -m 640 installer/locale/de/LC_MESSAGES/installer.po ${DD}/lib/univention-installer/locale/de/LC_MESSAGES/
+
+	install -m 640 installer/local.py ${DD}/lib/univention-installer/
+	install -m 755 installer/main.py ${DD}/lib/univention-installer/
+
+
+	#install installer scripts
+	install -m755 scripts/00_scripts.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/02_disk_check.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/03_pre_mount.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/04_mounting.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/06_network.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/10_debootstrap.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/12_fstab.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/14_sources_list.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/20_preconfigure.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/25_install_baseconfig.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/28_postconfigure_baseconfig.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/31_preinst_hook.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/35_kernel.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/50_packages.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/69_repository.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/75_join.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/80_ldap.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/85_postinst_hook.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/86_defaultlocale.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/87_locales.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/90_reboot.sh ${D}/lib/univention-installer-scripts.d/
+
+	install -m 755 startup-scripts/S02mount ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S20syslogd ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S50usbhid ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S88keyboard ${D}/lib/univention-installer-startup.d/
+	install -m 755 startup-scripts/S89cciss ${D}/lib/univention-installer-startup.d/
+
+	install -m 600 etc/inittab ${D}/etc/
+	install -m 600 etc/passwd  ${D}/etc/
+
+	install -m 755 sbin/univention-installer ${D}/sbin/
+	install -m 755 sbin/univention-installer-startup ${D}/sbin/
+	install -m 755 parted/PartedCreate ${D}/sbin/
+
+	install -m 644 profiles/Basesystem ${D}/profiles/
+	install -m 644 profiles/DC_Backup ${D}/profiles/
+	install -m 644 profiles/DC_Master ${D}/profiles/
+	install -m 644 profiles/DC_Slave ${D}/profiles/
+	install -m 644 profiles/Managed_Client ${D}/profiles/
+	install -m 644 profiles/Memberserver ${D}/profiles/
+	install -m 644 profiles/Mobile_Client ${D}/profiles/
+	install -m 644 profiles/UGS ${D}/profiles/
+
+	install -m 644 boot/grub/menu.lst ${D}/boot/grub/menu.lst
+	install -m 644 boot/grub/menu-recover.lst ${D}/boot/grub/menu-recover.lst
+	install -m 644 boot/grub/uniboot.xpm.gz ${D}/boot/grub/uniboot.xpm.gz
+
+	dh_install
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

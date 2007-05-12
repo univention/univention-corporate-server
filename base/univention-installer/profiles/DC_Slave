@@ -1,0 +1,34 @@
+#### UCS-Slave-Profile ####
+to_check="partition"
+
+# [Optionen]
+windows_domain="TEST"
+hostname="dc-slave"
+#root_password=''
+domainname="test.univention.de"
+
+# [System-Optionen]
+local_repository="true"
+create_home_share="true"
+
+# [Sprache]
+locales="de_DE@euro:ISO-8859-15"
+
+# [Standardsprache]
+locale_default="de_DE@euro:ISO-8859-15"
+
+# [Tastatur]
+keymap="de-latin1"
+
+# [Join-Optionen]
+domain_controller_account="root"
+#domain_controller_password=''
+
+# [Systemrolle]
+system_role="domaincontroller_slave"
+
+# [Zeitzone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="univention-samba univention-printserver univention-printquota univention-bind univention-bind-proxy univention-dhcp univention-console ssh-krb5 dhcp-client vim links-ssl wget xtightvncviewer"  

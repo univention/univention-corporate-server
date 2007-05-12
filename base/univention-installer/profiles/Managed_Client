@@ -1,0 +1,30 @@
+#### UCS-ManagedClient-Profile ####
+to_check="partition"
+
+# [Language]
+locales="de_DE@euro:ISO-8859-15"
+
+# [Default language]
+locale_default="de_DE@euro:ISO-8859-15"
+
+# [System role]
+system_role="managed_client"
+
+# [Settings]
+windows_domain="TEST"
+hostname="managed-client"
+#root_password=''
+domainname="test.univention.de"
+
+# [Join-Settings]
+domain_controller_account="root"
+#domain_controller_password=''
+
+# [Keyboard]
+keymap="de-latin1"
+
+# [Timezone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="univention-kde univention-ooffice univention-mozilla-firefox mozilla-firefox-locale-de acroread acroread-plugins mozilla-acroread univention-console univention-x-core univention-gdm univention-gdm-sessions gimp dhcp-client ssh-krb5 dhcp-client vim links-ssl wget xtightvncviewer"     

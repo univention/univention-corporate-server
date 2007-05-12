@@ -1,0 +1,478 @@
+univention-installer (0.6.14) unstable; urgency=low
+
+  * don't set the language short form for gdm/language
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Dec 2006 10:23:51 +0100
+
+univention-installer (0.6.13) unstable; urgency=low
+
+  * added real services to the package lists of the meta packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 17:29:50 +0100
+
+univention-installer (0.6.11) unstable; urgency=low
+
+  * evaluate the default language
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 15:37:27 +0100
+
+univention-installer (0.6.10) unstable; urgency=low
+
+  * use /var/log/syslogd instead of dmesg output
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Dec 2006 14:23:38 +0100
+
+univention-installer (0.6.7) unstable; urgency=low
+
+  * updated english text and german translation 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:26:37 +0100
+
+univention-installer (0.6.3) unstable; urgency=low
+
+  * check for kernel 2.4 during boot device search
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Dec 2006 14:27:27 +0100
+
+univention-installer (0.5.102) unstable; urgency=low
+
+  * update list of possible default languages when selection of installed
+    languages has changed
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  7 Dec 2006 13:02:51 +0100
+
+univention-installer (0.5.101) unstable; urgency=low
+
+  * update translation mo file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Dec 2006 08:06:18 +0100
+
+univention-installer (0.5.100) unstable; urgency=low
+
+  * revise the translation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Dec 2006 07:51:29 +0100
+
+univention-installer (0.5.98) unstable; urgency=low
+
+  * added python2.4-univention-license to cdrom profiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Dec 2006 14:18:37 +0100
+
+univention-installer (0.5.96) unstable; urgency=low
+
+  * cleanup rules file
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 08:09:07 +0100
+
+univention-installer (0.5.95) unstable; urgency=low
+
+  * enhanced german error message
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 30 Nov 2006 14:51:05 +0100
+
+univention-installer (0.5.94) unstable; urgency=low
+
+  * support univention-setup-software on basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Nov 2006 10:39:09 +0100
+
+univention-installer (0.5.93) unstable; urgency=low
+
+  * add GPL headers
+  * code cleanup
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Nov 2006 17:36:28 +0100
+
+univention-installer (0.5.92) unstable; urgency=low
+
+  * load usbhid kernel module if nousbhid wasn't given at the grub boot menu
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Nov 2006 06:40:22 +0100
+
+univention-installer (0.5.88) unstable; urgency=low
+
+  * remove recover from grub menu
+  * cat f12 event and send to the subwindow in the partition edit dialog
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Nov 2006 06:35:14 +0100
+
+univention-installer (0.5.87) unstable; urgency=low
+
+  * write the partition start and end point as MB value into the profile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Nov 2006 08:03:30 +0100
+
+univention-installer (0.5.85) unstable; urgency=low
+
+  * read bootloader settings from profile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Nov 2006 20:54:53 +0100
+
+univention-installer (0.5.82) unstable; urgency=low
+
+  * support for a recover cdrom
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Nov 2006 22:42:12 +0100
+
+univention-installer (0.5.73) unstable; urgency=low
+
+  * check for Kernel 2.6.18
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Nov 2006 15:09:28 +0100
+
+univention-installer (0.5.72) unstable; urgency=low
+
+  * in the profile mode send the F12 key event to the network subwindow
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Nov 2006 14:46:46 +0100
+
+univention-installer (0.5.71) unstable; urgency=low
+
+  * kill the subwindow after sending the F12 key event
+  * added the default language to the profiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Nov 2006 21:04:28 +0100
+
+univention-installer (0.5.69) unstable; urgency=low
+
+  * in the profile mode send the F12 key event to the subwindow
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Nov 2006 13:00:50 +0100
+
+univention-installer (0.5.68) unstable; urgency=low
+
+  * Shorten one of the i18n strings.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Nov 2006 13:47:36 +0100
+
+univention-installer (0.5.67) unstable; urgency=low
+
+  * Fix package name of Acrobat Reader Mozilla plugin.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Oct 2006 15:21:32 +0100
+
+univention-installer (0.5.66) unstable; urgency=low
+
+  * fixed spelling in installer.po
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 31 Oct 2006 11:35:52 +0100
+
+univention-installer (0.5.65) unstable; urgency=low
+
+  * Update translation in the MO file as well.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Oct 2006 14:51:51 +0100
+
+univention-installer (0.5.64) unstable; urgency=low
+
+  * Fix typo.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Oct 2006 14:14:59 +0100
+
+univention-installer (0.5.63) unstable; urgency=low
+
+  * Fix typo.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Oct 2006 14:03:32 +0100
+
+univention-installer (0.5.62) unstable; urgency=low
+
+  * Reject back slashes when configuring the root password.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Oct 2006 11:40:13 +0100
+
+univention-installer (0.5.61) unstable; urgency=low
+
+  * Fix tab completion in interface configuration for system roles
+    other than domaincontroller_master.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Oct 2006 11:32:01 +0100
+
+univention-installer (0.5.60) unstable; urgency=low
+
+  * support for the german adobe reader version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Oct 2006 08:53:57 +0200
+
+univention-installer (0.5.59) unstable; urgency=low
+
+  * create /dev/iseries/ devices in powerpc chroot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Oct 2006 05:49:44 +0200
+
+univention-installer (0.5.57) unstable; urgency=low
+
+  * added the profiles to the cd
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Oct 2006 16:50:23 +0200
+
+univention-installer (0.5.56) unstable; urgency=low
+
+  * use "deb file:" on a basesystem with local repository
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 17 Oct 2006 14:51:48 +0200
+
+univention-installer (0.5.55) unstable; urgency=low
+
+  * changed Error-Message for better understanding
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Oct 2006 14:26:45 +0200
+
+univention-installer (0.5.54) unstable; urgency=low
+
+  * Allow direct editing of interfaces with --interface IFNAME
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  9 Oct 2006 14:39:26 +0200
+
+univention-installer (0.5.53) unstable; urgency=low
+
+  * evaluate the installation boot parameter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  7 Oct 2006 20:22:24 +0200
+
+univention-installer (0.5.52) unstable; urgency=low
+
+  * don't overwrite the ldap base from the installation profile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  7 Oct 2006 20:10:00 +0200
+
+univention-installer (0.5.51) unstable; urgency=low
+
+  * remove acpi=off from default kernel
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  7 Oct 2006 19:07:42 +0200
+
+univention-installer (0.5.50) unstable; urgency=low
+
+  * use the first disk from /proc/partition as MBR
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Oct 2006 16:30:39 +0200
+
+univention-installer (0.5.48) unstable; urgency=low
+
+  * Fix redrawing problems when switching computer roles
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Oct 2006 13:28:14 +0200
+
+univention-installer (0.5.47) unstable; urgency=low
+
+  * Display only the previously selected languages in the selection of the default
+    language and do not override it with the exported LANG.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  6 Oct 2006 12:53:20 +0200
+
+univention-installer (0.5.46) unstable; urgency=low
+
+  * Fix CVS merge error and commit the actual fix for 0.5.45
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  5 Oct 2006 15:05:12 +0200
+
+univention-installer (0.5.45) unstable; urgency=low
+
+  * Fix backtrace in curses window creation.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  5 Oct 2006 14:50:00 +0200
+
+univention-installer (0.5.44) unstable; urgency=low
+
+  * did some work on messages and translations
+
+ -- Arne Brix <brix@univention.de>  Tue, 29 Aug 2006 09:57:42 +0200
+
+univention-installer (0.5.42) unstable; urgency=low
+
+  * fixed wrong translation
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 21 Aug 2006 16:47:16 +0200
+
+univention-installer (0.5.40) unstable; urgency=low
+
+  * Fix configuration of network settings on managed clients
+  * Fix backtrace as Proxy settings can be undefined.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Aug 2006 10:49:20 +0200
+
+univention-installer (0.5.39) unstable; urgency=low
+
+  * Typo in net module prevented dynamic network configuration of managed clients
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 17 Aug 2006 15:11:52 +0200
+
+univention-installer (0.5.38) unstable; urgency=low
+
+  * fixed wrong translation
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 14 Aug 2006 16:46:04 +0200
+
+univention-installer (0.5.37) unstable; urgency=low
+
+  * fixed button size for bootloader and translation for bootloader module
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 14 Aug 2006 15:22:11 +0200
+
+univention-installer (0.5.36) unstable; urgency=low
+
+  * added bootloader configuration screen
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Aug 2006 10:13:58 +0200
+
+univention-installer (0.5.28) unstable; urgency=low
+
+  * Fix installer breakage.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  9 Aug 2006 08:30:32 +0200
+
+univention-installer (0.5.27) unstable; urgency=low
+
+  * using parameter --script for parted calls
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Aug 2006 19:59:05 +0200
+
+univention-installer (0.5.26) unstable; urgency=low
+
+  * Refresh screen in final installer overview
+  * Fix window header of language selection
+  * Fix window header of error message screen
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  1 Aug 2006 10:55:19 +0200
+
+univention-installer (0.5.25) unstable; urgency=low
+
+  * Tighten German translation.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Jul 2006 15:58:24 +0200
+
+univention-installer (0.5.24) unstable; urgency=low
+
+  * New i18n strings.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 28 Jul 2006 09:22:25 +0200
+
+univention-installer (0.5.23) unstable; urgency=low
+
+  * Add i18n strings for new startup popup.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Jul 2006 13:11:32 +0200
+
+univention-installer (0.5.22) unstable; urgency=low
+
+  * Handle invalid IP adresses gracefully
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 26 Jul 2006 11:09:58 +0200
+
+univention-installer (0.5.21) unstable; urgency=low
+
+  * Fix auto completion if net masks
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Jul 2006 13:56:03 +0200
+
+univention-installer (0.5.20) unstable; urgency=low
+
+  * Deny password with blanks or quote marks.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Jul 2006 13:56:01 +0200
+
+univention-installer (0.5.19) unstable; urgency=low
+
+  * on x86 use reboot and on powerpc use halt
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jul 2006 08:33:28 +0200
+
+univention-installer (0.5.17) unstable; urgency=low
+
+  * if pressed ctrl alt del then call reboot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jul 2006 08:21:20 +0200
+
+univention-installer (0.5.16) unstable; urgency=low
+
+  * only allow four primary partitions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jul 2006 17:10:06 +0200
+
+univention-installer (0.5.15) unstable; urgency=low
+
+  * Fis auto completion for creating network interfaces
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Jul 2006 16:36:56 +0200
+
+univention-installer (0.5.14) unstable; urgency=low
+
+  * Rename intemal default locale id
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Jul 2006 16:36:54 +0200
+
+univention-installer (0.5.13) unstable; urgency=low
+
+  * Disallow configuration of network interfaces to DHCP if run on
+    master, slave, backup or member.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 19 Jul 2006 15:54:28 +0200
+
+univention-installer (0.5.12) unstable; urgency=low
+
+  * added grub boot menu and image
+  * .i
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 19 Jul 2006 15:54:26 +0200
+
+univention-installer (0.5.11) unstable; urgency=low
+
+  * Bump version for new i18n strings.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 17 Jul 2006 09:24:29 +0200
+
+univention-installer (0.5.8) unstable; urgency=low
+
+  * Fix refresh-i18n.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 11 Jul 2006 12:52:12 +0200
+
+univention-installer (0.5.7) unstable; urgency=low
+
+  * Really introduce fixed translation
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Fri, 16 Jun 2006 14:34:40 +0200
+
+univention-installer (0.5.6) unstable; urgency=low
+
+  * Bump version number for rebuild
+
+ -- Moritz Mühlenhoff <jmm@billy.knut.univention.de>  Fri, 16 Jun 2006 14:33:04 +0200
+
+univention-installer (0.5.5) unstable; urgency=low
+
+  * Rename profile as well
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 12:56:56 +0200
+
+univention-installer (0.5.4) unstable; urgency=low
+
+  * New installer module to configure the default locale
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Wed, 14 Jun 2006 10:23:15 +0200
+
+univention-installer (0.5.3) unstable; urgency=low
+
+  * translated F12-Accept changes
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri,  2 Jun 2006 16:50:26 +0200
+
+univention-installer (0.5.2) unstable; urgency=low
+
+  * remove python2.4 dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 May 2006 11:20:42 +0200
+
+univention-installer (0.5.1) unstable; urgency=low
+
+  * added some missing files
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 May 2006 13:01:04 +0200
+
+univention-installer (0.1) unstable; urgency=low
+
+  * create packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 May 2006 10:39:25 +0200

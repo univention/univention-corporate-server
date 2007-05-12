@@ -1,0 +1,134 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention Installer
+#  installer module: bootloader configuration and installation
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#
+# Results of previous modules are placed in self.all_results (dictionary)
+# Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
+#
+
+import objects
+from objects import *
+from local import _
+
+import os
+
+class object(content):
+	def __init__(self, max_y, max_x, last, file, cmdline):
+		self.guessed = {}
+		content.__init__(self, max_y, max_x, last, file, cmdline)
+
+	def checkname(self):
+		return ['bootloader_record', 'bootloader_device']
+
+	def modvars(self):
+		return ['bootloader_record', 'bootloader_device' ]
+
+	def profile_complete(self):
+		if self.check('bootloader_record') and self.check('bootloader_device'):
+			return False
+		if (self.all_results.has_key('bootloader_record') and self.all_results['bootloader_record'] ) or ( self.all_results.has_key('bootloader_device') and self.all_results['bootloader_device'] ):
+			return True
+		else:
+			if self.ignore('bootloader_record') or self.ignore('bootloader_device'):
+				return True
+			return False
+		return True
+
+	def layout(self):
+
+		self.elements.append(textline(_('Install the boot loader record on:'),self.minY,self.minX)) #2
+		self.elements.append(checkbox({_('Master Boot Record'): ["mbr", 1]},self.minY+2,self.minX+2,19,1,[0]))#3
+		self.elements.append(textline(_('Device:'),self.minY+4,self.minX+7)) #4
+		if self.all_results.has_key( 'bootloader_record' ) and len(self.all_results[ 'bootloader_record']) > 0:
+			boot_device = self.all_results[ 'bootloader_record' ]
+		else:
+			file=open('/proc/partitions')
+			proc_partitions=file.readlines()
+			uname=os.popen('/bin/uname -r')
+			kernelversion=uname.readline().strip()
+			if kernelversion.startswith('2.4'):
+				boot_device = '/dev/%s' % proc_partitions[2].split()[3].strip('\n')
+			else:
+				line = proc_partitions[2:]
+				boot_device = '/dev/%s' % line[0].split(' ')[-1].strip('\n')
+
+		self.elements.append(input( boot_device,self.minY+4,self.minX+20,20)) #5
+		self.elements.append(checkbox({_('First sector of boot partition'): ['sector', 0]}, self.minY+7, self.minX+2, 40, 1, [])) #6
+		self.elements.append(textline(_('Partition:'),self.minY+9,self.minX+7)) #7
+		if self.all_results.has_key( 'bootloader_partition' ) and len(self.all_results['bootloader_partition']) > 0:
+			boot_partition = '/%s' % self.all_results[ 'bootloader_partition' ].replace( '_', '/' )
+		else:
+			boot_partition = '%s1' % boot_device
+
+		self.elements.append(input( boot_partition,self.minY+9,self.minX+20,20)) #8
+
+		self.elements[8].disable()
+
+	def input(self,key):
+		if key in [ 10, 32 ] and self.btn_next():
+			return 'next'
+		elif key in [ 10, 32 ] and self.btn_back():
+			return 'prev'
+		elif key in [ 10, 32 ] and self.elements[3].active:
+			if not self.elements[3].result():
+				self.elements[3].key_event(key)
+				self.elements[6].key_event(key)
+				self.elements[5].enable()
+				self.elements[8].disable()
+			self.draw()
+		elif key in [ 10, 32 ] and self.elements[6].active:
+			if not self.elements[6].result():
+				self.elements[6].key_event(key)
+				self.elements[3].key_event(key)
+				self.elements[8].enable()
+				self.elements[5].disable()
+			self.draw()
+		else:
+			return self.elements[self.current].key_event(key)
+
+	def incomplete(self):
+		return 0
+
+	def helptext(self):
+		return _('Bootloader \nSelect where you want the boot loader to be installed. \n ')
+
+	def modheader(self):
+		return _('Bootloader')
+
+	def result(self):
+		result={}
+		if not self.elements[6].result():
+			#MBR
+			result['bootloader_record']='%s'%self.elements[5].result()
+		elif not self.elements[3].result():
+			#First Sector
+			result['bootloader_device']='%s'%self.elements[8].result()
+		return result

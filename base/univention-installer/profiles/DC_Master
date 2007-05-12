@@ -1,0 +1,39 @@
+#### UCS-Master-Profile ####
+to_check="partition"
+
+# [Optionen]
+windows_domain="TEST"
+hostname="dc-master"
+ldap_base="dc=test,dc=univention,dc=de"
+#root_password=''
+domainname="test.univention.de"
+
+# [System-Optionen]
+local_repository="true"
+create_home_share="true"
+
+# [Sprache]
+locales="de_DE@euro:ISO-8859-15"
+
+# [Standardsprache]
+locale_default="de_DE@euro:ISO-8859-15"
+
+# [Zertifikat]
+ssl_country="DE"
+ssl_state="Bremen"
+ssl_locality="Bremen"
+ssl_organization="Univention GmbH"
+ssl_organizationalunit="Test"
+ssl_email="ssl@test.univention.de"
+
+# [Tastatur]
+keymap="de-latin1"
+
+# [Systemrolle]
+system_role="domaincontroller_master"
+
+# [Zeitzone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="univention-samba univention-mail-postfix univention-mail-cyrus univention-spamassassin univention-printserver univention-printquota univention-bind univention-bind-proxy univention-dhcp univention-application-server univention-thin-client univention-kde univention-ooffice univention-mozilla-firefox mozilla-firefox-locale-de univention-admin python2.4-univention-license univention-console univention-pkgdb univention-net-installer ssh-krb5 dhcp-client vim links-ssl wget xtightvncviewer"   

@@ -1,0 +1,59 @@
+#!/bin/sh
+
+recover=`cat /proc/cmdline | grep " recover"`
+params=""
+
+
+#check architecture
+architecture=`uname -m`
+
+if [ -n "$architecture" ] && [ "$architecture" = "ppc64" ]; then
+	params="--simple"
+fi
+
+if [ -n "$recover" ]; then
+
+
+	/bin/python -OO /lib/univention-installer/main.py $params
+	echo "Starting recover shell"
+	echo ""
+	/bin/sh
+else
+	while [ ! -e /tmp/installation_profile ]; do
+
+		/bin/python -OO /lib/univention-installer/main.py $params
+
+		if [ ! -e /tmp/installation_profile ]; then
+			echo "Press Return to restart the installer program."
+			read $foo
+			continue
+		fi
+
+		lib/univention-installer-scripts.d/00_scripts.sh
+		for i in lib/univention-installer-scripts.d/*; do
+			if [ "$i" = lib/univention-installer-scripts.d/00_scripts.sh ]; then
+				continue
+			fi
+			if [ -e /tmp/logging ]; then
+				mkdir -p /instmnt/var/log/univention/
+				touch installation.log
+			fi
+			if [ -x "$i" ]; then
+				if [ -e /tmp/logging ]; then
+					$i 2>&1 | tee -a /instmnt/var/log/univention/installation.log
+				else
+					$i 
+				fi
+			elif [ -e "$i" ]; then
+				if [ -e /tmp/logging ]; then
+					. $i 2>&1 | tee -a /instmnt/var/log/univention/installation.log 
+				else
+					. $i 
+				fi
+			fi
+		done
+
+	done
+fi
+
+

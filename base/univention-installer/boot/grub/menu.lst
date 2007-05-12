@@ -1,0 +1,56 @@
+default 0
+timeout 60
+splashimage (cd)/boot/grub/uniboot.xpm.gz
+
+#Change foreground and background of grubs font
+foreground = FFFFFF
+background = 000000
+
+#or change colors like this
+#color cyan/blue white/blue
+
+
+title UCS Installation Kernel 2.6
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux text
+initrd (cd)/boot/linux26.bin
+
+title UCS Installation Kernel 2.6 Profil 
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux profile
+initrd (cd)/boot/linux26.bin
+
+title UCS Installation Kernel 2.6 Profil Floppy
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux profile floppy
+initrd (cd)/boot/linux26.bin
+
+title UCS Installation Kernel 2.6 Profil USB
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux profile usb
+initrd (cd)/boot/linux26.bin
+
+title UCS Installation Kernel 2.4
+kernel (cd)/boot/linux24 root=/dev/ram ro ramdisk_size=65536 pci=noacpi flavor=linux text
+initrd (cd)/boot/linux24.bin
+
+title UCS Installation Kernel 2.4 Profil 
+kernel (cd)/boot/linux24 root=/dev/ram ro ramdisk_size=65536 pci=noacpi flavor=linux profile
+initrd (cd)/boot/linux24.bin
+
+title UCS Installation Kernel 2.4 Profil Floppy
+kernel (cd)/boot/linux24 root=/dev/ram ro ramdisk_size=65536 pci=noacpi flavor=linux profile floppy
+initrd (cd)/boot/linux24.bin
+
+title UCS Installation Kernel 2.4 Profil USB
+kernel (cd)/boot/linux24 root=/dev/ram ro ramdisk_size=65536 pci=noacpi flavor=linux profile usb
+initrd (cd)/boot/linux24.bin
+
+title UCS Installation Kernel 2.6 pci=noacpi
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 pci=noacpi flavor=linux text
+initrd (cd)/boot/linux26.bin
+
+title UCS Installation Kernel 2.6 acpi=off
+kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 acpi=off flavor=linux text
+initrd (cd)/boot/linux26.bin
+
+title Boot from first harddisk partition
+rootnoverify (hd0)
+chainloader +1
+

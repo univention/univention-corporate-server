@@ -1,0 +1,41 @@
+#### UGS-Master-Profile ####
+to_check="partition"
+
+# [Optionen]
+windows_domain="UGS"
+hostname="ugs-master"
+ldap_base="dc=test,dc=univention,dc=de"
+#root_password=''
+domainname="ugs.univention.de"
+
+# [System-Optionen]
+local_repository="true"
+create_home_share="true"
+
+# [Sprache]
+locales="de_DE@euro:ISO-8859-15"
+
+# [Standardsprache]
+locale_default="de_DE@euro:ISO-8859-15"
+
+# [Zertifikat]
+ssl_country="de"
+ssl_state="Bremen"
+ssl_locality="Bremen"
+ssl_organization="Univention GmbH"
+ssl_organizationalunit="UGS Test Installation"
+ssl_email="ssl@univention.de"
+
+# [Tastatur]
+keymap="de-latin1"
+
+# [Systemrolle]
+system_role="domaincontroller_master"
+
+# [Zeitzone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="univention-samba univention-dhcp univention-bind univention-bind-proxy ssh-krb5 wget links-ssl xtightvncviewer vim univention-admin python2.4-univention-license univention-console univention-pkgdb univention-printserver univention-printquota univention-kolab2 univention-mail-postfix-kolab2 univention-mail-cyrus-kolab2 univention-net-installer"
+
+

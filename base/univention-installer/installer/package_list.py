@@ -1,0 +1,520 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention Installer
+#  definitions of package lists
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+from local import _
+
+PackageList=[
+{
+	'Category': _('Services for Windows'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _("Windows Components"),
+	'Packages':
+			[
+				{
+					'Name': _('Samba'),
+					'Packages': ['univention-samba', 'samba'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
+					'Description': _("Samba Services"),
+				},
+				{
+					'Name': _('Windows Installer 4'),
+					'Packages': ['univention-windows-installer'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _("Automatic Installation for Windows Clients"),
+				},
+				{
+					'Name': _('DC Slave as Samba PDC'),
+					'Packages': ['univention-samba-slave-pdc'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _("Samba as PDC on a DC Slave"),
+				},
+				{
+					'Name': _('Winbind'),
+					'Packages': ['winbind'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ 'memberserver' ],
+					'Possible': ['all'],
+					'Description': _("Winbind Service"),
+				},
+			],
+},
+{
+	'Category': _('Groupware'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
+	'Description': _('Groupware Component'),
+	'Packages':
+			[
+				{
+					'Name': _('UGS - Kolab 2'),
+					'Packages': ['univention-kolab2', 'univention-kolab2-framework', 'univention-mail-postfix-kolab2', 'univention-mail-cyrus-kolab2'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [], #disble for ugs
+					#'Active': ['domaincontroller_master', domaincontroller_backup', 'domaincontroller_slave' ], #enable for ugs
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
+					'Description': _('Groupware based on Kolab2'),
+				},
+			],
+},
+{
+	'Category': _('Mail Services'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Mailserver Components'),
+	'Packages':
+			[
+				{
+					'Name': _('Postfix'),
+					'Packages': ['univention-mail-postfix', 'postfix'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master'], #disable for ugs
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Description': _('SMTP Mail Server'),
+				},
+				{
+					'Name': _('Cyrus IMAP Server '),
+					'Packages': ['univention-mail-cyrus', 'cyrus22-admin'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master'], #disable for ugs
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Description': _('IMAP/POP3 Server'),
+				},
+				{
+					'Name': _('Spamassassin'),
+					'Packages': ['univention-spamassassin', 'spamassassin'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master'], #disable for ugs
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Description': _('Spamassassin Spamfilter'),
+				},
+
+			],
+},
+{
+	'Category': _('Print Services'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Printserver Components'),
+	'Packages':
+			[
+				{
+					'Name': _('Print Server'),
+					'Packages': ['univention-printserver', 'cupsys'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['all'],
+					'Description': _('Print Server'),
+				},
+				{
+					'Name': _('Print Quota'),
+					'Packages': ['univention-printquota', 'pykota', 'univention-printquotadb'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['all'],
+					'Description': _('Print Quota Support'),
+				},
+			],
+},
+{
+	'Category': _('IP Management'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _("Several IP Components"),
+	'Packages':
+			[
+				{
+					'Name': _('DNS'),
+					'Packages': ['univention-bind', 'univention-bind-proxy', 'bind9'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
+					'Description': _("DNS Server and Proxy"),
+				},
+				{
+					'Name': _('DHCP'),
+					'Packages': ['univention-dhcp', 'dhcp3-server'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _("DHCP Server"),
+				},
+
+			],
+},
+{
+	'Category': _('Services'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _("Additional Services"),
+	'Packages':
+			[
+				{
+					'Name': _('Squid Proxyserver'),
+					'Packages': ['univention-squid', 'squid'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('Web Proxy Services'),
+				},
+
+			],
+},
+{
+	'Category': _('Terminal Service'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Terminal Service Components, required for ThinClients'),
+	'Packages':
+			[
+				{
+					'Name': _('X11 Applications'),
+					'Packages': ['univention-application-server'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _('X-Window-System Client for Terminal Services'),
+				},
+				{
+					'Name': _('Thinclient Environment'),
+					'Packages': ['univention-thin-client'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _('ThinClient Interface'),
+				},
+				{
+					'Name': _('KDE'),
+					'Packages': ['univention-kde'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('KDE - K Desktop Environment'),
+				},
+				{
+					'Name': _('OpenOffice.org'),
+					'Packages': ['univention-ooffice'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('OpenOffice.org Office Suite'),
+				},
+				{
+					'Name': _('Mozilla Firefox'),
+					'Packages': ['univention-mozilla-firefox', 'mozilla-firefox-locale-de-de'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Firefox Webbrowser'),
+				},
+				{
+					'Name': _('Gimp'),
+					'Packages': ['gimp'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Gimp'),
+				},
+				{
+					'Name': _('Acrobat Reader'),
+					'Packages': ['acroread-de', 'acroread-de-plugins'],
+					'Architecture': [ 'x86' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('PDF Viewer'),
+				},
+				{
+					'Name': _('Java'),
+					'Packages': ['univention-java'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Java Virtual Machine'),
+				},
+				{
+					'Name': _('Flashplugin'),
+					'Packages': ['univention-flashplugin'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Flashplugin for webbrowsers'),
+				},
+				{
+					'Name': _('Fax Client'),
+					'Packages': ['univention-fax-client'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Fax Client'),
+				},
+			],
+},
+{
+	'Category': _('Fax/ISDN Services'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Fax and ISDN Components'),
+	'Packages':
+			[
+				{
+					'Name': _('Fax Server'),
+					'Packages': ['univention-fax-server'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('Fax Server'),
+				},
+				{
+					'Name': _('ISDN-Administration'),
+					'Packages': ['univention-isdn'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('ISDN-Administration'),
+				},
+			],
+},
+{
+	'Category': _('Administration'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Administration Tools'),
+	'Packages':
+			[
+				{
+					'Name': _('Univention Admin'),
+					'Packages': ['univention-admin', 'python2.4-univention-license'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Description': _('Univention Admin Webfrontend'),
+				},
+				{
+					'Name': _('Univention Console'),
+					'Packages': ['univention-console'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Configuration Frontend for Servers and Clients'),
+				},
+				{
+					'Name': _('Univention Software Monitor'),
+					'Packages': ['univention-pkgdb'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master'],
+					'Possible': ['all'],
+					'Description': _('Univention packagestatus database'),
+				},
+			],
+},
+{
+	'Category': _('Backup'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Backup Tools'),
+	'Packages':
+			[
+				{
+					'Name': _('Unidump'),
+					'Packages': ['unidump'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Tape Backup Software'),
+				},
+				{
+					'Name': _('Remote Backup'),
+					'Packages': ['univention-remote-backup'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Backup Software based on rsync'),
+				},
+			],
+},
+{
+	'Category': _('Network Installation'),
+	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+	'Description': _('Tools for installing UCS over the network'),
+	'Packages':
+			[
+				{
+					'Name': _('Network Installer'),
+					'Packages': ['univention-net-installer'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['all'],
+					'Description': _('Install UCS over the network'),
+				},
+			],
+},
+{
+	'Category': _('Programs'),
+	'CategoryShow': ['all'],
+	'Description': _('Applications'),
+	'Packages':
+			[
+				{
+					'Name': _('X-Core'),
+					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions', 'univention-kde'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Core Packages for a Graphical Desktop Environment'),
+				},
+				{
+					'Name': _('OpenOffice.org'),
+					'Packages': ['univention-ooffice'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('OpenOffice.org Office Suite'),
+				},
+				{
+					'Name': _('Mozilla Firefox'),
+					'Packages': ['univention-mozilla-firefox', 'mozilla-firefox-locale-de-de'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Firefox Webbrowser'),
+				},
+				{
+					'Name': _('Gimp'),
+					'Packages': ['gimp'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Gimp'),
+				},
+				{
+					'Name': _('Acrobat Reader'),
+					'Packages': ['acroread-de'],
+					'Architecture': [ 'x86' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('PDF Viewer'),
+				},
+				{
+					'Name': _('Fax Client'),
+					'Packages': ['univention-fax-client'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Fax Client'),
+				},
+			],
+},
+{
+	'Category': _('Tools'),
+	'CategoryShow': ['all'],
+	'Description': _("Extra Tools"),
+	'Packages':
+			[
+				{
+					'Name': _('SSH'),
+					'Packages': ['ssh-krb5'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ 'all' ],
+					'Possible': [ 'all' ],
+					'Description': _("Secure Shell"),
+				},
+				{
+					'Name': _('DHCP Client'),
+					'Packages': ['dhcp-client'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': [ 'all' ],
+					'Description': _("Dynamic IP configuration"),
+				},
+				{
+					'Name': _('Vim'),
+					'Packages': ['vim'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ 'all' ],
+					'Possible': [ 'all' ],
+					'Description': _("An Editor"),
+				},
+				{
+					'Name': _('Links-SSL'),
+					'Packages': ['links-ssl'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['all'],
+					'Possible': ['all'],
+					'Description': _('A SSL-ready text browser'),
+				},
+				{
+					'Name': _('Wget'),
+					'Packages': ['wget'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['all'],
+					'Possible': ['all'],
+					'Description': _('A Web getter'),
+				},
+				{
+					'Name': _('Java'),
+					'Packages': ['univention-java'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Java Virtual Machine'),
+				},
+				{
+					'Name': _('Flashplugin'),
+					'Packages': ['univention-flashplugin'],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Flashplugin for Web Browsers'),
+				},
+				{
+					'Name': _('VNC Server'),
+					'Packages': ['tightvncserver', 'univention-fonts'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [  ],
+					'Possible': [ 'all' ],
+					'Description': _("Server for remote desktop access"),
+				},
+				{
+					'Name': _('VNC Viewer'),
+					'Packages': ['xtightvncviewer'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ 'all' ],
+					'Possible': [ 'all' ],
+					'Description': _("Client for remote desktop Access"),
+				},
+				{
+					'Name': _('Microsoft Fonts'),
+					'Packages': ['msttcorefonts'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': [ ],
+					'Possible': [ 'all' ],
+					'Description': _("Microsoft Fonts"),
+				},
+			]
+
+},
+]
