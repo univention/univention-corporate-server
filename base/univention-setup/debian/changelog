@@ -1,3 +1,9 @@
+univention-setup (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 May 2007 13:37:20 +0200
+
 univention-setup (0.4.6) unstable; urgency=low
 
   * copy DNS txt records to the new dns domain
