@@ -185,7 +185,7 @@ class ldap_popup(subwin):
 	def layout(self):
 		self.elements.append(headline(_(' Univention Corporate Server - Setup Tools'),max_y/2-7,max_x/2-31))
 		self.elements.append(textline(_('The LDAP server could not be contacted. You need to join the') ,self.pos_y+4,self.pos_x+2))
-		self.elements.append(textline(_('system into the domain with univention-setup at a later point.') ,self.pos_y+5,self.pos_x+2))
+		self.elements.append(textline(_('system into the domain with univention-join at a later point.') ,self.pos_y+5,self.pos_x+2))
 		self.elements.append(button(_('Ok'),self.pos_y+self.height-2,self.pos_x+(self.width/2),align='middle')) #2
 
 	def input(self, key):
@@ -476,12 +476,16 @@ class mods:
 		cache_file.close()
 
 class run_script(act_win):
-	def __init__(self,parent,header,text,name='sub', path=''):
+	def __init__(self,parent,header,text,name='sub', path='', run_parts=True):
 		self.path=path
+		self.run_parts=run_parts
 		act_win.__init__(self,parent, header, text, name)
 
 	def function(self):
-		os.system('run-parts %s >>/var/log/univention/setup.log 2>&1' % self.path)
+		if self.run_parts:
+			os.system('run-parts %s >>/var/log/univention/setup.log 2>&1' % self.path)
+		else:
+			os.system('%s >>/var/log/univention/setup.log 2>&1' % self.path)
 		self.stop()
 
 def next_screen():
@@ -518,7 +522,7 @@ def prev_screen():
 
 class ldap_access_window(subwin):
 	def layout(self):
-		self.elements.append(textline(_(''),self.pos_y+2,self.pos_x+2)) #0
+		self.elements.append(textline('',self.pos_y+2,self.pos_x+2)) #0
 		self.elements.append(textline(_('LDAP Username'),self.pos_y+3,self.pos_x+2)) #1
 		self.elements.append(input("Administrator",self.pos_y+3,self.pos_x+20,25)) #2
 		self.elements.append(textline(_('LDAP Password'),self.pos_y+5,self.pos_x+2)) #3
@@ -677,11 +681,10 @@ if len(cmdline['loaded_modules']) < 1:
 try:
 
 	cmdline['loaded_modules'].sort()
-
+	
 	if cmdline.has_key('lang'):
 		os.environ['LANGUAGE'] = "%s" % cmdline['lang']
 		debug('Setting language to %s\n' % cmdline['lang'].strip())
-
 
 	err_height=15
 	err_width=66
@@ -690,6 +693,11 @@ try:
 
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
+
+	if not os.environ.get('LANGUAGE') and baseConfig.has_key("boot/setup/language"):
+		os.environ['LANGUAGE'] = "%s" % baseConfig.get("boot/setup/language")
+		debug('Setting language to %s\n' % baseConfig.get("boot/setup/language"))
+
 
 	if baseConfig.has_key("boot/setup/start"):
 		if baseConfig["boot/setup/start"] == "true":
@@ -815,6 +823,17 @@ try:
 			installer.obj[installer.current].sub = run_script(installer.obj[installer.current],_('Updating configuration '),_('Updating %s configuration') % installer.obj[mod_count].modheader(), path=os.path.join('/usr/lib/univention-setup/scripts', module_name))
 			installer.obj[installer.current].sub.draw()
 		mod_count += 1
+	
+	#check for postrun scripts
+	if os.path.exists('/var/cache/univention-setup/postrun'):
+		scripts=os.listdir('/var/cache/univention-setup/postrun')
+		if scripts:
+			scripts.sort()
+			for script in scripts:
+				cmd = os.path.join('/var/cache/univention-setup/postrun', script)
+				installer.obj[installer.current].sub = run_script(installer.obj[installer.current],_('Processing postrun scripts '),_('Processing %s ' % script), path=cmd, run_parts=False)
+				installer.obj[installer.current].sub.draw()
+				os.remove(cmd)
 
 except KeyboardInterrupt:
 	exit_curses()

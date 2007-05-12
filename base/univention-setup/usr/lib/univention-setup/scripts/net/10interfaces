@@ -338,10 +338,10 @@ if [ -n "$baseconfig_set" -o -n "$baseconfig_unset" ]; then
 	service_start nscd
 
 	# stop the dns server and remove the cache
-	service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc univention-ldap-listener
+	service_stop univention-bind univention-bind-proxy univention-dhcp heimdal-kdc univention-ldap-listener postgresql
 	sleep 1
 	rm -f /var/cache/bind/*
-	service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-ldap-listener
+	service_start univention-bind univention-bind-proxy univention-dhcp heimdal-kdc cupsys samba univention-ldap-listener postgresql
 
 	if [ -x /usr/sbin/smbd ]; then
 	    for i in `pidof smbd`; do

@@ -75,9 +75,9 @@ elif [ $server_role = "domaincontroller_slave" ]; then
 	base="univention-server-slave+"
 elif [ $server_role = "memberserver" ]; then
 	base="univention-server-member+"
-elif [ $server_role = "managed_client" ]; then
+elif [ $server_role = "fatclient" ]; then
 	base="univention-fat-client+"
-elif [ $server_role = "mobile_client" ]; then
+elif [ $server_role = "mobileclient" ]; then
 	base="univention-mobile-client+"
 fi
 
