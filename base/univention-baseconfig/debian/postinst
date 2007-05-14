@@ -42,12 +42,6 @@ univention-baseconfig set ldap/binaryattributes?""
 
 univention-baseconfig set browser-cache?0
 
-univention-baseconfig set lilo/append/acpi?on
-univention-baseconfig set lilo/append/pci_acpi?off
-univention-baseconfig set lilo/default\?newest
-univention-baseconfig set lilo/vga?785
-univention-baseconfig set lilo/compact?no
-
 univention-baseconfig set log/rotate/weeks?12
 
 univention-baseconfig set nameserver/option/timeout?2

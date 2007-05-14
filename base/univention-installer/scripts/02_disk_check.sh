@@ -157,8 +157,6 @@ set | grep "^dev_" | while read line; do
 		python2.4 -OOO /sbin/univention-baseconfig set installer/device/0/name=$device_num
 		python2.4 -OOO /sbin/univention-baseconfig set installer/device/0/fs=$device_fs
 		python2.4 -OOO /sbin/univention-baseconfig set installer/device/0/mp=$device_mp
-		lilo_boot_fallback=$disk
-		python2.4 -OOO /sbin/univention-baseconfig set lilo/root=$device_num
 	else
 		python2.4 -OOO /sbin/univention-baseconfig set installer/device/$count/name=$device_num
 		python2.4 -OOO /sbin/univention-baseconfig set installer/device/$count/fs=$device_fs
@@ -169,7 +167,7 @@ done
 echo "Done"
 
 if [ -n "$bootloader_record" ]; then
-	python2.4 -OOO /sbin/univention-baseconfig set lilo/boot=$bootloader_record
+	python2.4 -OOO /sbin/univention-baseconfig set grub/boot=$bootloader_record
 else
-	python2.4 -OOO /sbin/univention-baseconfig set lilo/boot=$lilo_boot_fallback
+	python2.4 -OOO /sbin/univention-baseconfig set grub/boot=$grub_boot_fallback
 fi

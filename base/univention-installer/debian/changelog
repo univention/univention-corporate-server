@@ -1,3 +1,9 @@
+univention-installer (1.0.0-4) unstable; urgency=low
+
+  * migrate from lilo to grub
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 18:19:44 +0200
+
 univention-installer (1.0.0-3) unstable; urgency=low
 
   * added missing file sources.list

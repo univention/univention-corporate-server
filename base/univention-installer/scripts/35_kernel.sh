@@ -112,7 +112,7 @@ fi
 if [ "$architecture" = "powerpc" ]; then
 	$PIPE apt-get install initramfs-tools parted
 else
-	$PIPE apt-get install lilo univention-initrd
+	$PIPE apt-get install univention-grub univention-initrd
 fi
 
 echo "do_initrd = Yes" >>/etc/kernel-img.conf
@@ -128,16 +128,6 @@ if [ "\$?" != "0" ]; then
 		$PIPE apt-get install $fallback_kernel_package
 	fi
 fi
-
-# check for the correct .install link
-
-new_kernel=\`readlink /vmlinuz\` 
-new_initrd=\`readlink /initrd.img\` 
-if [ -n "\$new_kernel" ] && [ -n "\$new_initrd" ]; then
-	ln -sf \$new_kernel /vmlinuz.install
-	ln -sf \$new_initrd /initrd.img.install
-fi
-/sbin/lilo
 
 univention-baseconfig commit
 

@@ -35,7 +35,7 @@ architecture=`/bin/uname -m`
 acpi_off=`grep "acpi=off" /proc/cmdline`
 pci_acpi_off=`grep "pci=noacpi" /proc/cmdline`
 pci_acpi_on=`grep "pci=acpi" /proc/cmdline`
-lilo_append=`cat /proc/cmdline | sed -e 's|.* profile||;s|.* usb||;s|.* floppy||;s|.* text||'`
+grub_append=`cat /proc/cmdline | sed -e 's|.* profile||;s|.* usb||;s|.* floppy||;s|.* text||'`
 version_version=`cat /instmnt/sourcedevice/.univention_install | grep VERSION | sed -e 's|VERSION=||'`
 version_patchlevel=`cat /instmnt/sourcedevice/.univention_install | grep PATCHLEVEL | sed -e 's|PATCHLEVEL=||'`
 
@@ -158,21 +158,15 @@ if [ -n "$ssl_email" ]; then
 fi
 
 if [ -n "$acpi_off" ]; then
-	univention-baseconfig set lilo/append/acpi=off
+	univention-baseconfig set "$(univention-baseconfig get grub/append) acpi=off"
 fi
 
 if [ -n "$pci_acpi_off" ]; then
-	univention-baseconfig set lilo/append/pci_acpi=off
-else
-	univention-baseconfig set lilo/append/pci_acpi=on
+	univention-baseconfig set "$(univention-baseconfig get grub/append) pci=noacpi"
 fi
 
-if [ -n "$pci_acpi_on" ]; then
-	univention-baseconfig set lilo/append/pci_acpi=on
-fi
-
-if [ -n "$lilo_append" ]; then
-	univention-baseconfig set lilo/append="$lilo_append"
+if [ -n "$grub_append" ]; then
+	univention-baseconfig set grub/append="$grub_append"
 fi
 
 univention-baseconfig set locale="$locales"

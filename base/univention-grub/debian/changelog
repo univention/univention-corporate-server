@@ -1,3 +1,9 @@
+univention-grub (1.0.1-1) unstable; urgency=low
+
+  * more migration issues
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 18:16:13 +0200
+
 univention-grub (1.0.0-1) unstable; urgency=low
 
   * initial release
