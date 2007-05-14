@@ -1,4 +1,4 @@
-univention-ldap (1.43-20) unstable; urgency=low
+univention-ldap (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
 
