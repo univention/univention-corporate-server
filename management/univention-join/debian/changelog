@@ -1,3 +1,9 @@
+univention-join (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 11:51:50 +0200
+
 univention-join (0.21-19) unstable; urgency=low
 
   * invalidate the nscd hosts cache during the join for all server roles
