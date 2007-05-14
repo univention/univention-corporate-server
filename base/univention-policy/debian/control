@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, libldap2-dev, libsasl2-dev, autoconf, automake, libtool, libunivention-debug-dev, libunivention-config-dev
+Build-Depends: debhelper, libldap2-dev, libsasl2-dev, autoconf, automake1.4, libtool, libunivention-debug-dev, libunivention-config-dev
 
 Package: libunivention-policy0
 Architecture: any
