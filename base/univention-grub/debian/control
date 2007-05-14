@@ -1,0 +1,18 @@
+Source: univention-grub
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-grub
+Architecture: all
+Depends: grub
+Conflicts: lilo
+Description: Meta package for the grub configuration
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

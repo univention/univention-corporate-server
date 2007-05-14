@@ -1,0 +1,5 @@
+univention-grub (1.0.0-1) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 16:02:09 +0200

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+eval $(univention-baseconfig shell)
+
+if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
+
+	vars="grub/timeout=5 "
+
+	if [ -n "$lilo_vga" ]; then
+		vars="$vars grub/vga=\"lilo_vga\" "
+	fi
+
+	if [ -n "$lilo_append" ]; then
+		grub_append="$grub_append $lilo_append"
+	fi
+
+	if [ -n "$lilo_root" ]; then
+		grub_append="$grub_append root=$lilo_root"
+	fi
+
+	if [ -n "$lilo_append_acpi" ] && [ "$lilo_append_acpi" = "off" ]; then
+		grub_append="$grub_append acpi=off "
+	fi
+
+	if [ -n "$lilo_append_pci_acpi" ] && [ "$lilo_append_pci_acpi" = "off" ]; then
+		grub_append="$grub_append pci=noacpi "
+	fi
+
+	root2fstype=$(grep -w / /etc/fstab | awk '{print $3}')
+	if [ -n "$root2fstype" ]; then
+		grub_append="$grub_append root2fstype=$root2fstype "
+	fi
+
+	if [ -n "$grub_append" ]; then
+		vars="$grub grub/append=\"$grub_append\" "
+	fi
+
+	univention-baseconfig set $vars grub/memtest=true
+
+	univention-baseconfig unset lilo/append/acpi \
+								lilo/append/pci_acpi \
+								lilo/append \
+								lilo/boot \
+								lilo/compact \
+								lilo/default \
+								lilo/root \
+								lilo/vga
+
+
+elif [ -z "$2" ]; then
+	# root fs type for quota support on xfs
+	root2fstype=$(grep -w / /etc/fstab | awk '{print $3}')
+	if [ -n "$root2fstype" ]; then
+		append="$append root2fstype=$root2fstype "
+	fi
+
+	rootdevice=$(grep -w / /etc/fstab | awk '{print $1}')
+	if [ -n "$root2fstype" ]; then
+		append="$append root=$rootdevice "
+	fi
+
+	univention-baseconfig set grub/timeout?5 \
+							grub/append="$append" \
+							grub/vga=785
+							grub/memtest86=true
+						
+fi
+
+update-grub -y
+
+exit 0
+
