@@ -1,3 +1,9 @@
+univention-ldap-listener (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 May 2007 11:55:58 +0200
+
 univention-ldap-listener (1.31) unstable; urgency=low
 
   * added helper script get_notifier_id.py for reading the notifier id from
