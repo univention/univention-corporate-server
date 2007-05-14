@@ -1,0 +1,60 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+attributetype ( 1.3.6.1.4.1.10176.1195
+	NAME 'univentionDhcpFixedAddress'
+	EQUALITY caseIgnoreIA5Match
+	DESC 'fixed-address'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1196
+	NAME 'univentionDhcpFailoverPeer'
+	EQUALITY caseIgnoreIA5Match
+	DESC 'failover peer'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.1197
+	NAME 'univentionDhcpService'
+	DESC 'Service object that represents the actual DHCP Service configuration. This is a container object.'
+	SUP top
+	MUST (cn )
+	MAY ( dhcpPrimaryDN $ dhcpSecondaryDN $ dhcpSharedNetworkDN $ dhcpSubnetDN $
+		dhcpGroupDN $ dhcpHostDN $  dhcpClassesDN $ dhcpOptionsDN $
+		dhcpStatements ) )
+
+objectclass ( 1.3.6.1.4.1.10176.1193
+	NAME 'univentionDhcpPool'
+	DESC 'This stores configuration information about a pool.'
+	SUP top
+	MUST ( cn $ dhcpRange )
+	MAY (dhcpClassesDN $ dhcpPermitList $ dhcpLeasesDN $ dhcpOptionsDN $
+		univentionDhcpFailoverPeer)
+	X-NDS_CONTAINMENT ('dhcpSubnet' 'dhcpSharedNetwork') )
+
+objectclass ( 1.3.6.1.4.1.10176.1198
+	NAME 'univentionDhcpHost'
+	DESC 'This represents information about a particular client'
+	SUP top
+	MUST (cn $ dhcpHWAddress )
+	MAY  (dhcpLeaseDN $ dhcpOptionsDN $ dhcpStatements $ univentionDhcpFixedAddress )
+	X-NDS_CONTAINMENT ('dhcpService' 'dhcpSubnet' 'dhcpGroup') )
+
+attributetype ( 1.3.6.1.4.1.1016.1199.1
+	NAME 'univentionDhcpBroadcastAddress'
+	EQUALITY caseIgnoreIA5Match
+	DESC 'Option Broadcast Address'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.1016.1199
+	NAME 'univentionDhcpSubnet'
+	DESC 'This class defines a subnet. This is a container object.'
+	SUP top
+	MUST ( cn $ dhcpNetMask )
+	MAY ( univentionDhcpBroadcastAddress $ dhcpRange $ dhcpPoolDN $ dhcpGroupDN $ dhcpHostDN $
+		dhcpClassesDN $ dhcpLeasesDN $ dhcpOptionsDN $ dhcpStatements)
+	X-NDS_CONTAINMENT ('dhcpService' 'dhcpSharedNetwork') )
+
+objectclass ( 1.3.6.1.4.1.1016.1199.2
+	NAME 'univentionDhcpSharedSubnet'
+	DESC 'This class defines a shared subnet'
+	SUP top AUXILIARY
+	)

@@ -1,0 +1,135 @@
+#! /bin/sh
+#
+# Univention LDAP Server
+#  join script
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-ldap-server successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+subnet=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output network --calcdns`
+
+sleep 5
+if [ "$server_role" != "domaincontroller_master" ]; then
+	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+fi
+/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv ldap tcp 0 0 389 $hostname.$domainname.
+if [ $? != 0 ]; then exit 1; fi
+
+sleep 5
+if [ "$server_role" != "domaincontroller_master" ]; then
+	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+fi
+/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $subnet add zone root.$domainname 1 28800 10800 604800 108001 $hostname.$domainname
+if [ $? != 0 ]; then exit 1; fi
+sleep 5
+if [ "$server_role" != "domaincontroller_master" ]; then
+	continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+fi
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	forwardZone=`univention-admin dns/forward_zone list $@ --filter zone=$domainname | grep DN | head -1 | sed -e 's/DN: //g'`
+	reverseZone=`univention-admin dns/reverse_zone list $@ --filter subnet=$subnet | grep DN | head -1 | sed -e 's/DN: //g'`
+
+	if [ -z "$forwardZone" ]; then echo "DNS forward zone not found"; exit 1; fi
+	if [ -z "$reverseZone" ]; then echo "DNS reverse zone not found"; exit 1; fi
+
+	computerPassword=`makepasswd --chars 8`
+
+	searchResult=`univention-admin computers/domaincontroller_master list $@ | grep name | grep $hostname`
+	if [ -z "$searchResult" -a $server_role = "domaincontroller_master" ]; then
+		univention-admin computers/domaincontroller_master create --tls 0 --position "cn=dc,cn=computers,$ldap_base" --set name=$hostname  --set domain=$domainname --set ip=$interfaces_eth0_address --set dnsEntryZoneForward=$forwardZone --set dnsEntryZoneReverse=$reverseZone --set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="cn=DC Backup Hosts,cn=groups,$ldap_base"
+		#if [ $? != 0 ]; then exit 1; fi
+
+		univention-baseconfig set ldap/hostdn="cn=$hostname,cn=dc,cn=computers,$ldap_base"
+
+		if [ -e /etc/machine.secret ]; then
+			cat /etc/machine.secret >>/etc/machine.secret.SAVE
+		fi
+
+		touch /etc/machine.secret
+		chmod 600 /etc/machine.secret
+
+		echo "$computerPassword" >>/etc/machine.secret
+	fi
+	sleep 5
+	if [ "$server_role" != "domaincontroller_master" ]; then
+		continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+	fi
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv domaincontroller_master tcp 0 0 0 $hostname.$domainname.
+
+
+	sleep 5
+	if [ "$server_role" != "domaincontroller_master" ]; then
+		continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
+	fi
+	univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Univention \
+							--append packageList=univention-samba \
+							--append packageList=univention-windows-installer \
+							--append packageList=univention-dhcp \
+							--append packageList=univention-bind \
+							--append packageList=univention-bind-proxy \
+							--append packageList=univention-thin-client \
+							--append packageList=univention-application-server \
+							--append packageList=univention-kde \
+							--append packageList=univention-ooffice \
+							--append packageList=univention-mozilla \
+							--append packageList=univention-mozilla-german \
+							--append packageList=univention-fax-client \
+							--append packageList=univention-fax-server \
+							--append packageList=univention-mail-postfix \
+							--append packageList=univention-mail-cyrus \
+							--append packageList=univention-squid \
+							--append packageList=univention-spamassassin \
+							--append packageList=univention-admin \
+							--append packageList=unidump \
+							--append packageList=univention-printserver \
+							--append packageList=univention-x-core \
+							--append packageList=univention-net-installer \
+							--append packageList=univention-isdn \
+							--append packageList=univention-5250 \
+							--append packageList=univention-printclient \
+							--append packageList=univention-samba-slave-pdc
+
+	univention-admin settings/packages create --superordinate "cn=packages,cn=univention,$ldap_base" --set name=Debian \
+							--append packageList=mutt \
+							--append packageList=mc \
+							--append packageList=build-essential \
+							--append packageList=rdesktop
+fi
+
+test -n "`grep "univention-ldap-server successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-server successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

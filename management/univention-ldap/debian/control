@@ -1,0 +1,72 @@
+Source: univention-ldap
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-ldap-server
+Architecture: all
+Pre-Depends: slapd (>>2.1), univention-ldap-client
+Depends: db4.2-util, univention-baseconfig (>=1.2), univention-ssl, univention-ldap-config, whois, makepasswd, univention-admin-tools (>>0.46-76) | univention-admin-tools-2005 (>>0.44-16), univention-newsid, univention-ipcalc, univention-ldap-acl-master | univention-ldap-acl-slave, bind9-host
+Conflicts: univention-ldap-replication (<< 0.5), univention-5250 (<< 0.5), univention-mail-cyrus-quota-master
+Replaces: univention-mail-cyrus-quota-master
+Description: UCS - LDAP server configuration
+ This package contains the configuration for the OpenLDAP
+ server.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ldap-client
+Architecture: all
+Depends: ldap-utils, univention-baseconfig (>=0.06), libldap2 (>> 2.1), univention-pam
+Description: UCS - LDAP client configuration
+ This package contains the configuration for the OpenLDAP
+ client tools.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ldap-config
+Architecture: all
+Pre-Depends: slapd
+Conflicts: univention-5250 (<< 0.5.23), univention-5250-powerterm (<< 1.4.11), univention-mail-cyrus-quota-master
+Replaces: univention-mail-cyrus-quota-master
+Description: UCS - common LDAP configuration
+ This package contains the general configuration for the
+ OpenLDAP server such as the base LDIF file and the
+ schema.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ldap-acl-master
+Architecture: all
+Conflicts: univention-ldap-acl-slave
+Description: UCS - LDAP server ACLs for master servers
+ This package contains the OpenLDAP server ACLs for master
+ and backup domain controllers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ldap-acl-slave
+Architecture: all
+Conflicts: univention-ldap-acl-master
+Description: UCS - LDAP server ACLs for slave servers
+ This package contains the OpenLDAP server ACLs for slave
+ domain controllers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

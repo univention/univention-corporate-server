@@ -1,0 +1,17 @@
+Kommunikation von Listener zu Notifier: >>>
+Kommunikation von Notifier zu Listener: <<<
+
+
+Listener gibt letzte ID bekannt:
+>>> last_id=9
+
+Notifier gibt Status der Verbindung bekannt:
+<<< [32-Bit Integer, Little Endian, Laenge der Meldung]invalid credentials
+oder
+<<< [32-Bit Integer, Little Endian, Laenge der Meldung]authentication successfull
+                                                            Achtung: mit Fehler
+
+Notifier gibt jetzt pro Zeile eine DN bekannt:
+<<< 10 cn=foo,cn=bar m
+<<< 11 cn=bar,cn=bar c
+Das letzte Zeichen ist dabei entweder c (Create), m (Modify) oder d (Delete)

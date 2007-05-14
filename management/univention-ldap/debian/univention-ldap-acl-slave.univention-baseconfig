@@ -1,0 +1,11 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/replog
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-slave
+Variables: ldap/base
+Variables: ldap/replog

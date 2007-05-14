@@ -1,0 +1,12 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+attributetype ( 1.3.6.1.4.1.10176.2.899 NAME 'as400screen'
+	DESC 'AS400 Screen'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+objectclass ( 1.3.6.1.4.1.10176.1.899 NAME 'as400term'
+	DESC 'AS400 Terminal'
+	SUP top AUXILIARY
+	MAY ( as400screen ) )

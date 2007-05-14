@@ -1,0 +1,8 @@
+usr/sbin
+etc/init.d
+var/lib/univention-ldap/replog-slurpd
+var/lib/univention-ldap/notify
+var/lib/univention-ldap/save
+etc/runit/univention
+etc/runit/univention-ldap-notifier
+etc/univention/daemons

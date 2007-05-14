@@ -1,0 +1,60 @@
+# Copyright (C) 2005, 2006 Univention GmbH
+
+attributetype ( 1.3.6.1.4.1.10176.4 NAME 'quotablockhard'
+	DESC 'Softlimit for Block usage quota'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.5 NAME 'quotablocksoft'
+	DESC 'Hard limit for Block usage quota'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.6 NAME 'quotafilehard'
+	DESC 'Soft limit for Inode usage quota'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.7 NAME 'quotafilesoft'
+	DESC 'Hard limit for Inode usage quota'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.10 NAME 'groupDirectory'
+	DESC 'The absolute path to the group directory'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.11 NAME 'virtual'
+	DESC 'Is this account a vitual one'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.12 NAME 'temporary'
+	DESC 'This account has a temporary home dir'
+	EQUALITY booleanMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
+	DESC 'Additional univention-vars for Person/Account'
+	SUP top AUXILIARY
+	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $
+	      temporary $ virtual)
+	)
+
+objectclass ( 1.3.6.1.4.1.10176.9 NAME 'univentionGroup'
+	DESC 'Additional univention-vars for Groups'
+	SUP top AUXILIARY
+	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $ groupDirectory $ uniqueMember $ mailPrimaryAddress )
+	)
+
+attributetype ( 1.3.6.1.4.1.10176.13 NAME 'pwhistory'
+	DESC 'most recent used passwords'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.14 NAME 'univentionPWHistory'
+	DESC 'PW History for an account'
+	SUP top AUXILIARY
+	MAY ( pwhistory )
+	)

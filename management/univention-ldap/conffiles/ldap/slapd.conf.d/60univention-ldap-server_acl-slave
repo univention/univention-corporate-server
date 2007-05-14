@@ -1,0 +1,30 @@
+sasl-regexp
+    uid=(.*),cn=gssapi,cn=auth
+    ldap:///"@%@ldap/base@%@"??sub?uid=$1
+
+# allow authentication 
+access to attrs=userPassword
+    by anonymous auth
+    by * none break
+
+access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory
+   by sockname="PATH=/var/run/ldapi" read
+   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" read
+   by dn.base="uid=root,cn=users,@%@ldap/base@%@" read
+@!@
+if baseConfig['ldap/hostdn']:
+	print '   by dn.base="%s" read' % baseConfig['ldap/hostdn']
+@!@   by * none
+
+access to *
+   by * read
+
+@!@
+if baseConfig['ldap/server/type']=="master":
+	print "replogfile /var/lib/univention-ldap/replog/replog"
+elif baseConfig.has_key('ldap/replog') and (baseConfig['ldap/replog'].lower == 'true' or baseConfig['ldap/replog'].lower == 'yes'):
+	print "replogfile /var/lib/univention-ldap/replog/replog"
+@!@
+
+include "/etc/ldap/replica.conf"
+

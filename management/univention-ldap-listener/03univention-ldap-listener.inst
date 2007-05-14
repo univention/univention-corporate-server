@@ -1,0 +1,123 @@
+#!/bin/sh
+#
+# Univention LDAP Listener
+#  join script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+touch /usr/lib/univention-install/.index.txt
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+
+listener_pid=`pidof univention-ldap-listener`
+if [ -n "$listener_pid" ]; then
+	runsvctrl d /etc/runit/univention-ldap-listener
+fi
+
+if [ -e "/var/lib/univention-ldap-listener" ]; then
+	rm -Rf /var/lib/univention-ldap-listener/*
+fi
+
+if [ -e "/var/lib/univention-ldap-replication" ]; then
+	rm -Rf /var/lib/univention-ldap-replication/*
+fi
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener successful" >>/usr/lib/univention-install/.index.txt
+	exit 0
+fi
+cachedir=/var/lib/univention-ldap-listener
+moduledir=/usr/lib/univention-ldap-listener/system
+
+if [ "$server_role" != "domaincontroller_master" ]; then
+	if [ -e "/var/lib/univention-ldap/listener/listener" ]; then
+		chown listener /var/lib/univention-ldap/listener/listener*
+		options="-o"
+	fi
+fi
+
+univention-baseconfig set ldap/database/ldbm/dbsync="10" >>/var/log/univention/join.log 2>&1
+
+if [ "`echo $ldap_master_bind | tr A-Z a-z`" = "gssapi" ]; then
+	options="$options -K"
+else
+	options="$options -x"
+fi
+options="$options -ZZ -d 1"
+
+options="$options -i -h $ldap_master -b \"$ldap_base\" -m $moduledir -c $cachedir"
+
+if [ -n "$server_role" ]; then
+
+	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+		/usr/sbin/univention-ldap-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret >>/var/log/univention/join.log 2>&1
+	else
+		/usr/sbin/univention-ldap-listener $options -D "`univention-baseconfig get ldap/hostdn`" -y /etc/machine.secret >>/var/log/univention/join.log 2>&1
+	fi
+	
+else
+	/usr/sbin/univention-ldap-listener $options >>/var/log/univention/join.log 2>&1
+fi
+
+exit_status=$?
+
+univention-baseconfig set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync >>/var/log/univention/join.log 2>&1
+
+# needed for db sync
+sleep 15
+
+if [ -f /etc/init.d/slapd ]
+    then
+    /etc/init.d/slapd restart >>/var/log/univention/join.log 2>&1
+fi
+
+if [ $exit_status != 0 ]; then
+	exit 1
+fi
+
+if test -e "/var/lib/univention-ldap-listener/handler/replication"; then
+	res=`cat /var/lib/univention-ldap-listener/handler/replication`
+	if [ $res != "1" -a "$res" != "3" ]; then
+		exit 1
+	fi
+fi
+
+test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
+test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
+
+test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
+
+

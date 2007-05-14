@@ -1,0 +1,393 @@
+/*
+ * Univention LDAP Listener
+ *  abstract change handling
+ *
+ * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * Binary versions of this file provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+/*
+ * The name change might be misleading. This is more of an abstraction
+ * layer to run handlers (and do a few more tweaks such as updating the
+ * schema beforehand). Functions generally take LDAP entries or DNs as
+ * input.
+ */
+
+#include <stdlib.h>
+#include <string.h>
+#include <db.h>
+
+#include <univention/debug.h>
+#include <univention/config.h>
+
+#include "common.h"
+#include "change.h"
+#include "cache.h"
+#include "handlers.h"
+#include "signals.h"
+#include "network.h"
+
+extern Handler *handlers;
+
+struct dn_list{
+	char *dn;
+	long size;
+};
+
+int dn_size_compare ( struct dn_list *dn1, struct dn_list *dn2 )
+{
+	if ( dn1->size > dn2->size ) {
+		return 1;
+	} else if ( dn1->size < dn2->size ) {
+		return -1;
+	} else {
+		return 0;
+	}
+
+}
+
+/* initialize module */
+int change_init_module(univention_ldap_parameters_t *lp, Handler *handler)
+{
+	LDAPMessage *res, *cur;
+	char *attrs[]={"*", "+", NULL};
+	struct filter **f;
+	int rv;
+	CacheEntry cache_entry, old_cache_entry;
+	DBC *dbc_cur;
+	char *dn;
+	int i;
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
+			"initializing module %s", handler->name);
+	
+	memset(&old_cache_entry, 0, sizeof(CacheEntry));
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"call handler_clean for module %s", handler->name);
+	handler_clean(handler);
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"call handler_initialize for module %s", handler->name);
+	handler_initialize(handler);
+	
+	/* remove old entries for module */
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"remove old entries for module %s", handler->name);
+	for (rv=cache_first_entry(&dbc_cur, &dn, &cache_entry); rv != DB_NOTFOUND;
+			rv=cache_next_entry(&dbc_cur, &dn, &cache_entry)) {
+		if (rv == -1) continue;
+		if (rv < 0) break;
+		
+		cache_entry_module_remove(&cache_entry, handler->name);
+		cache_update_or_deleteifunused_entry(0, dn, &cache_entry);
+		cache_free_entry(&dn, &cache_entry);
+	}
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"call cache_free_cursor for module %s", handler->name);
+	cache_free_cursor(dbc_cur);
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"initialize schema for module %s", handler->name);
+	/* initialize schema; if it's not in cache yet (it really should be), it'll
+	   be initialized on the regular schema check after ldapsearches */
+	if ((rv=cache_get_entry(0, "cn=Subschema", &cache_entry)) != 0 &&
+			rv != DB_NOTFOUND) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN,
+				"error while reading from database");
+		return LDAP_OTHER;
+	} else if (rv == 0) {
+		signals_block();
+		handler_update("cn=Subschema", &cache_entry, &old_cache_entry, handler, 'n');
+		cache_update_entry(0, "cn=Subschema", &cache_entry);
+		signals_unblock();
+		cache_free_entry(NULL, &cache_entry);
+	}
+
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO,
+			"module %s for relating objects", handler->name);
+	for (f = handler->filters; f != NULL && *f != NULL; f++) {
+		/* When initializing a module, only search for the DNs. If the
+		   entry for a DN is already in our cache, we use that one,
+		   instead of fetching it from LDAP. It's not only faster, but
+		   more importantly we don't need to care about running all
+		   other handlers that use the entry since it might have changed.
+		   It's not a problem that a newer entry is possibly available;
+		   we'll update it later anyway */
+		if ((rv = ldap_search_s(lp->ld, (*f)->base, (*f)->scope, (*f)->filter, NULL, 1, &res)) != LDAP_SUCCESS) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DNs when initializing %s: %s", handler->name, ldap_err2string(rv));
+			return rv;
+		}
+
+
+		long dn_count=0;
+		struct dn_list *dns;
+
+		dn_count = ldap_count_entries(lp->ld, res );
+		if ( dn_count > 0 ) {
+			dns = malloc(dn_count * sizeof(struct dn_list));
+		}
+
+		i=0;
+		for (cur = ldap_first_entry(lp->ld, res); cur != NULL; cur = ldap_next_entry(lp->ld, cur)) {
+			dns[i].dn = ldap_get_dn(lp->ld, cur);
+			dns[i].size = strlen(dns[i].dn);
+			i+=1;
+		}
+		
+		if ( dn_count > 1 ) {
+			qsort(dns, dn_count, sizeof(struct dn_list), &dn_size_compare);
+		}
+
+		if ((rv = change_update_schema(lp)) != LDAP_SUCCESS) {
+			ldap_msgfree(res);
+			return rv;
+		}	
+
+		for (i=0; i<dn_count; i++) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "DN: %s", dns[i].dn);
+
+			if ((rv=cache_get_entry(0, dns[i].dn, &cache_entry)) == DB_NOTFOUND) { /* XXX */
+				LDAPMessage *res2, *first;
+				if ((rv = ldap_search_s(lp->ld, dns[i].dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &res2)) == LDAP_SUCCESS) {
+					first = ldap_first_entry(lp->ld, res2);
+					cache_new_entry_from_ldap(NULL, &cache_entry, lp->ld, first);
+					ldap_msgfree(res2);
+				} else if (rv != LDAP_NO_SUCH_OBJECT) {
+					univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not get DN %s for handler %s: %s", dns[i].dn, handler->name, ldap_err2string(rv));
+					cache_free_entry(NULL, &cache_entry);
+					return rv;
+				}
+				/* Ignore LDAP_NO_SUCH_OBJECT. An object can be
+				   deleted after we do the ldapsearch. We
+				   shouldn't need to care here. */
+			} else if (rv != 0) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+				rv = LDAP_OTHER;
+				break;
+			}
+	
+			signals_block();
+			handler_update(dns[i].dn, &cache_entry, &old_cache_entry, handler, 'n');
+			cache_update_entry(0, dns[i].dn, &cache_entry);
+			signals_unblock();
+			cache_free_entry(NULL, &cache_entry);
+		}
+		for(i=0; i<dn_count; i++) {
+			ldap_memfree(dns[i].dn);
+		}
+		if ( dn_count > 1) {
+		  free(dns);
+		}
+		ldap_msgfree(res);
+	}
+	return rv;
+}
+
+/* Check if there are modules not initialized yet, and initialize them. */
+int change_new_modules(univention_ldap_parameters_t *lp)
+{
+	Handler	*handler;
+
+	for (handler = handlers; handler != NULL; handler = handler->next) {
+		if ((handler->state & HANDLER_READY) != HANDLER_READY) {
+			handler->state |= HANDLER_READY;
+
+			if (change_init_module(lp, handler) == LDAP_SUCCESS)
+				handler->state |= HANDLER_INITIALIZED;
+			else
+				handler->state ^= HANDLER_READY;
+		}
+	}
+
+	return 0;
+}
+
+/* This function should be called when a LDAP entry changes. It takes the
+   new entry as input, gets the old entry from cache, and then calls the
+   handlers.*/
+int change_update_entry(univention_ldap_parameters_t *lp, NotifierID id, LDAPMessage *ldap_entry, char command)
+{
+	char *dn;
+	CacheEntry cache_entry, old_cache_entry;
+	int rv = 0;
+
+	memset(&cache_entry, 0, sizeof(CacheEntry));
+	memset(&old_cache_entry, 0, sizeof(CacheEntry));
+
+	if ((rv=cache_new_entry_from_ldap(&dn, &cache_entry, lp->ld, ldap_entry)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while converting LDAP entry to cache entry");
+		goto result;
+	}
+	if ((rv=cache_get_entry(id-1, dn, &old_cache_entry)) != 0 && rv != DB_NOTFOUND) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while reading from database");
+		rv = LDAP_OTHER;
+	} else {
+		signals_block();
+		handlers_update(dn, &cache_entry, &old_cache_entry, command);
+		if ((rv=cache_update_entry(id, dn, &cache_entry)) != 0) {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "error while writing to database");
+		}
+		signals_unblock();
+	}
+
+result:
+	cache_free_entry(&dn, &cache_entry);
+	cache_free_entry(NULL, &old_cache_entry);
+	
+	return rv;
+}
+
+/* Call this function to remove a DN. */
+int change_delete_dn(NotifierID id, char *dn, char command)
+{
+	CacheEntry entry;
+	int rv;
+	
+	if ((rv=cache_get_entry(id-1, dn, &entry)) == DB_NOTFOUND) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "not in cache: %s", dn);
+		return LDAP_SUCCESS;
+	} else if (rv != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "reading from cache failed: %s", dn);
+		return LDAP_OTHER;
+	}
+	
+	signals_block();
+	if (handlers_delete(dn, &entry, command) == 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "deleted from cache: %s", dn);
+		cache_delete_entry(id, dn);
+	} else {
+		/* update information which modules failed and are still to be run */
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_WARN, "at least one delete handler failed");
+		cache_update_entry(id, dn, &entry);
+	}
+	signals_unblock();
+	cache_free_entry(NULL, &entry);
+	
+	return LDAP_SUCCESS;
+}
+
+/* Make sure schema is up-to-date */
+int change_update_schema(univention_ldap_parameters_t *lp)
+{
+#ifdef WITH_DB42
+	CacheMasterEntry	 master_entry;
+#else
+	NotifierID		 id = 0;
+#endif
+	NotifierID		 new_id = 0;
+	LDAPMessage		*res,
+				*cur;
+	char			*attrs[]={"*", "+", NULL};
+	int			 rv = 0;
+	struct timeval timeout;
+	char *server_role;
+
+	server_role = univention_config_get_string("server/role");
+
+	if ( !strcmp(server_role, "domaincontroller_master") ) {
+		free(server_role);
+		return LDAP_SUCCESS;
+	}
+
+	free(server_role);
+	/* max wait for 5 minutes */
+	timeout.tv_sec = 300;
+	timeout.tv_usec = 0;
+
+#ifdef WITH_DB42
+	if ((rv=cache_get_master_entry(&master_entry)) == DB_NOTFOUND) {
+		master_entry.id = 0;
+		master_entry.schema_id = 0;
+	 } else if (rv != 0)
+		return rv;
+#else
+	cache_get_schema_id("notifier_schema_id", &id, 0);
+#endif
+	if ((notifier_get_schema_id_s(NULL, &new_id)) != 0) {
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "failed to get schema DN");
+		return LDAP_OTHER;
+	}
+
+#ifdef WITH_DB42
+	if (new_id > master_entry.schema_id) {
+#else
+	if (new_id > id) {
+#endif
+		if ((rv=ldap_search_st(lp->ld, "cn=Subschema", LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &timeout, &res)) == LDAP_SUCCESS) {
+			if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
+				univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "got no entry for schema");
+				return LDAP_OTHER;
+			} else {
+				rv = change_update_entry(lp, new_id, cur, 'n');
+			}
+			ldap_memfree(res);
+		} else {
+			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "could not receive schema (%s)", ldap_err2string(rv));
+		}
+
+#ifndef WITH_DB42
+		if (rv == 0)
+			cache_set_schema_id("notifier_schema_id", new_id);
+#endif
+	}
+	
+	return rv;
+}
+
+/* Update DN from LDAP; this is a higher level interface for
+   change_update_entry  */
+int change_update_dn(univention_ldap_parameters_t *lp, NotifierID id, char *dn, char command)
+{
+	LDAPMessage	*res,
+			*cur;
+	char		*attrs[]={"*", "+", NULL};
+	int		 rv;
+	struct timeval timeout;
+	
+	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_INFO, "updating %s", dn);
+	
+	/* max wait for 5 minutes */
+	timeout.tv_sec = 300;
+	timeout.tv_usec = 0;
+
+	if ((rv=ldap_search_st(lp->ld, dn, LDAP_SCOPE_BASE, "(objectClass=*)", attrs, 0, &timeout, &res)) == LDAP_NO_SUCH_OBJECT) {
+		rv = change_delete_dn(id, dn, command);
+	} else if (rv == LDAP_SUCCESS) {
+		
+		if ((cur=ldap_first_entry(lp->ld, res)) == NULL) {
+			/* entry exists (since we didn't get NO_SUCH_OBJECT),
+			 * but was probably excluded thru ACLs which makes it
+			 * non-existent for us */
+			rv = change_delete_dn(id, dn, command);
+		} else {
+			/* entry exists, so make sure the schema is up-to-date and
+			 * then update it */
+			if ((rv = change_update_schema(lp)) == LDAP_SUCCESS)
+				rv = change_update_entry(lp, id, cur, command);
+		}
+	}
+
+	ldap_msgfree(res);
+	return rv;
+}

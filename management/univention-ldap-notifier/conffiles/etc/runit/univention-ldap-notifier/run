@@ -1,0 +1,36 @@
+#!/bin/sh -e
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" != "domaincontroller_master" ]; then
+	options="-o"
+fi
+
+if grep -q '^replica' "/etc/ldap/replica.conf" > /dev/null 2>&1 ; then
+	options="$options -r"
+fi
+
+
+if [ "$notifier_debug_level" != 0 ]; then
+	options="$options -d $notifier_debug_level"
+fi
+
+if [ -n "$notifier_replog_sleep" ]; then
+	options="$options -S $notifier_replog_sleep"
+fi
+
+if [ -n "$notifier_cache_size" ]; then
+	options="$options -C $notifier_cache_size"
+fi
+
+if [ -n "$notifier_lock_count" ]; then
+	options="$options -L $notifier_lock_count"
+fi
+if [ -n "$notifier_lock_time" ]; then
+	options="$options -T $notifier_lock_time"
+fi
+
+options="$options -F"
+
+exec /usr/sbin/univention-ldap-notifier $options >>/var/log/univention/notifier.log 2>&1
+

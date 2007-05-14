@@ -1,0 +1,69 @@
+# database definition
+modulepath	/usr/lib/ldap
+moduleload	back_@%@ldap/database/type@%@.so
+
+database	@%@ldap/database/type@%@
+suffix		"@%@ldap/base@%@"
+
+cachesize   @%@ldap/cachesize@%@
+threads		@%@ldap/threads@%@
+
+page-results @%@ldap/page-results@%@
+
+@!@
+if baseConfig['ldap/database/type'] == "ldbm":
+	print 'dbcachesize     10000000\n'
+	if baseConfig.has_key('ldap/database/ldbm/dbsync') and baseConfig['ldap/database/ldbm/dbsync']:
+		print 'dbsync %s'%baseConfig['ldap/database/ldbm/dbsync']
+if baseConfig['ldap/database/type'] == "bdb":
+	if baseConfig.has_key('ldap/database/bdb/checkpoint') and baseConfig['ldap/database/bdb/checkpoint']:
+		print 'checkpoint %s'%baseConfig['ldap/database/bdb/checkpoint']
+	else:
+		print 'checkpoint 1024 30'
+
+index_attrs={}
+indextypes=['eq','pres','sub','approx']
+
+for indextype in indextypes:
+	if baseConfig.has_key('ldap/index/%s'%indextype):
+		# ignore dummy entries for indeces
+		if not baseConfig['ldap/index/%s'%indextype].strip()=="none":
+			index_attrs['%s'%indextype]=baseConfig['ldap/index/%s'%indextype].split(',')
+		else:
+			index_attrs['%s'%indextype]=[]
+	else:
+		index_attrs['%s'%indextype]=[]
+
+indexcombinations=[['pres','eq','sub','approx'],['pres','eq','approx'],['pres','eq','sub'],['eq','approx'],['sub','approx'],['pres','eq'],['eq'],['sub'],['approx']]
+
+found_attribs=[]
+for indexcombination in indexcombinations:
+	attribs=[]
+	indexes=[]
+	for index in indexcombination:
+		indexes.append(index)
+		for attr in index_attrs[index]:
+			if not attr in found_attribs:
+				in_all_indexes=1
+				for searchindex in indexcombination:
+					if not attr in index_attrs[searchindex]:
+						in_all_indexes=0
+				if in_all_indexes==1:
+					attribs.append(attr)
+					found_attribs.append(attr)
+	if not attribs==[] and not indexes==[]:
+		print 'index\t%s %s'%(','.join(attribs),','.join(indexes))
+@!@
+
+limits users time.soft=-1 time.hard=-1
+
+@!@
+if baseConfig['ldap/server/type'] == "slave":
+	print 'rootdn\t"cn=update,%s"'%baseConfig['ldap/base']
+	print 'include\t"/etc/ldap/rootpw.conf"'
+	print 'updatedn\t"cn=update,%s"'%baseConfig["ldap/base"]
+	print 'updateref\tldap://%s'%baseConfig["ldap/master"]
+@!@
+
+directory	"/var/lib/univention-ldap/ldap"
+lastmod		on

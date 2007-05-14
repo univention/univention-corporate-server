@@ -1,0 +1,116 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# univention owns the namespace 10176.
+
+attributetype ( 1.3.6.1.4.1.10176.210 NAME 'univentionDefaultGroup'
+	DESC 'The default group for users'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.209 NAME 'univentionDefaultComputerGroup'
+	DESC 'The default group for windows computers'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.211 NAME 'univentionDefaultDomainControllerGroup'
+	DESC 'The default group for dc slaves'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.212 NAME 'univentionDefaultMemberserverGroup'
+	DESC 'The default group for member server'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.213 NAME 'univentionDefaultClientGroup'
+	DESC 'The default group for clients'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.214 NAME 'univentionDefaultDomainControllerMasterGroup'
+	DESC 'The default group for domain controller master and backup'
+	EQUALITY uniqueMemberMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.34 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.208 NAME 'univentionDefaultKdeProfiles'
+	DESC 'KDE Profile Paths'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.215 NAME 'univentionDefaultKolabHomeServer'
+	DESC 'Kolab Home Server'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.216 NAME 'univentionDefaultScalixMailnode'
+	DESC 'Scalix Mailnode'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+objectclass	( 1.3.6.1.4.1.10176.201 NAME 'univentionDefault'
+	DESC 'Default user entries'
+	SUP top  STRUCTURAL
+	MUST cn
+	MAY ( univentionDefaultGroup $ univentionDefaultComputerGroup $ univentionDefaultDomainControllerGroup $ univentionDefaultKdeProfiles $ univentionDefaultMemberserverGroup $ univentionDefaultClientGroup $ univentionDefaultDomainControllerMasterGroup $ univentionDefaultKolabHomeServer $ univentionDefaultScalixMailnode ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.1 NAME 'univentionXResolutionChoices'
+	DESC 'X resolution [client]'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.2 NAME 'univentionXColorDepthChoices'
+	DESC 'X color depth [client]'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.3 NAME 'univentionXMouseProtocolChoices'
+	DESC 'X mouse protocol [client]'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.4 NAME 'univentionXMouseDeviceChoices'
+	DESC 'X mouse device [client]'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.5 NAME 'univentionXKeyboardLayoutChoices'
+	DESC 'X keyboard layout [client]'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.6 NAME 'univentionXKeyboardVariantChoices'
+	DESC 'X keyboard variant [client]'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.7 NAME 'univentionXHSyncChoices'
+	DESC 'X horizontal sync rate [client]'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.8 NAME 'univentionXVRefreshChoices'
+	DESC 'X vertical refresh rate [client]'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.9 NAME 'univentionXModuleChoices'
+	DESC 'X module (4.x) or X server (3.x)'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+attributetype ( 1.3.6.1.4.1.10176.1030.3.1.10 NAME 'univentionXDisplaySizeChoices'
+	DESC 'Display Size [client]'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+
+objectclass ( 1.3.6.1.4.1.10176.1030.3.2.1 NAME 'univentionXConfigurationChoices'
+	SUP 'top' STRUCTURAL
+	DESC 'X configuration choices object'
+	MUST ( cn )
+	MAY ( univentionXResolutionChoices $
+	      univentionXColorDepthChoices $ univentionXMouseProtocolChoices $
+	      univentionXMouseDeviceChoices $ univentionXKeyboardLayoutChoices $
+	      univentionXKeyboardVariantChoices $ univentionXHSyncChoices $
+	      univentionXVRefreshChoices $ univentionXModuleChoices $
+		  univentionXDisplaySizeChoices ))

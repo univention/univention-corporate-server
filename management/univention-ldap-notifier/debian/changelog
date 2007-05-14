@@ -1,0 +1,118 @@
+univention-ldap-notifier (1.14) unstable; urgency=low
+
+  * add GPL headers
+  * code cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Nov 2006 14:29:47 +0100
+
+univention-ldap-notifier (1.12) unstable; urgency=low
+
+  * check for empty transaction file on powerpc architecture
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Feb 2006 16:17:30 +0100
+
+univention-ldap-notifier (1.10) unstable; urgency=low
+
+  * update to UCS 1.3
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Dec 2005 13:42:15 +0100
+
+univention-ldap-notifier (1.9) unstable; urgency=low
+
+  * evaluate notifier/replog/sleep on Notifier Slave System
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jun 2005 14:06:24 +0200
+
+univention-ldap-notifier (1.7) unstable; urgency=low
+
+  * support modrdn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 May 2005 14:05:02 +0200
+
+univention-ldap-notifier (1.6) unstable; urgency=low
+
+  * added baseconfig var for usleep replog pasrsing
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2005 20:46:11 +0100
+
+univention-ldap-notifier (1.5) unstable; urgency=low
+
+  * set listener baseconfig var listener/supply/notifier
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Mar 2005 12:59:18 +0100
+
+univention-ldap-notifier (1.4) unstable; urgency=low
+
+  * support for move ldap objects
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Jan 2005 16:47:25 +0100
+
+univention-ldap-notifier (1.3) unstable; urgency=low
+
+  * sleep 0,5 seconds before reading the replog file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Jan 2005 14:14:56 +0100
+
+univention-ldap-notifier (1.2) unstable; urgency=low
+
+  * fixed schema id bug
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Dec 2004 07:46:23 +0100
+
+univention-ldap-notifier (1.1) unstable; urgency=low
+
+  * use semaphore for critical sections
+  * open socket before parsing replog (so that we don't parse the
+    replog before realizing that another notifier is already running)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Jun 2004 12:56:23 +0200
+
+univention-ldap-notifier (1.0) unstable; urgency=low
+
+  * Add an ID index for the transaction file; this speeds up
+    requests significantly.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 10 Jun 2004 15:20:49 +0200
+
+univention-ldap-notifier (0.06) unstable; urgency=low
+
+  * new protocol v2
+  * support for schema replication
+  * internal cache added
+  * add proper package description
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Apr 2004 16:23:43 +0200
+
+univention-ldap-notifier (0.05) unstable; urgency=low
+
+  * waiting for lock file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Mar 2004 17:56:52 +0100
+
+univention-ldap-notifier (0.04) unstable; urgency=low
+
+  * write slurpd replog file (bugfix)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  8 Mar 2004 17:03:19 +0100
+
+univention-ldap-notifier (0.03) unstable; urgency=low
+
+  * increment last id
+  * restart notifier on update
+  * don't send notifications to all listener if one listener ask
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Feb 2004 08:30:20 +0100
+
+univention-ldap-notifier (0.02) unstable; urgency=low
+
+  * added init.d start script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Feb 2004 14:13:43 +0100
+
+univention-ldap-notifier (0.01) unstable; urgency=low
+
+  * Initial release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Sep 2003 13:03:44 +0200
+
+

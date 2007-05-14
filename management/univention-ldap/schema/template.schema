@@ -1,0 +1,54 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.1 NAME 'userDisabledPreset'
+	DESC 'Preset Disable in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.2 NAME 'userHomeSharePreset'
+    DESC 'Preset Homeshare in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.3 NAME 'userPrimaryGroupPreset'
+    DESC 'Preset primaryGroup in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.4 NAME 'userGroupsPreset'
+    DESC 'Preset groups in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.5 NAME 'userPwdMustChangePreset'
+	DESC 'Preset Disable in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.6 NAME 'userHomeSharePathPreset'
+    DESC 'Preset Homeshare in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.12.1.7 NAME 'userOptionsPreset'
+	DESC 'Preset options in univentionUserTemplate'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.1001.1.1.1 NAME 'univentionUserTemplate'
+	DESC 'univention Template for users'
+	SUP top STRUCTURAL
+	MUST ( cn )
+	MAY ( description $ title $ o $ mail $ homeDirectory $ sambaHomePath $ sambaHomeDrive $ sambaLogonScript $
+          sambaProfilepath $ sambaAcctFlags $ sambaKickoffTime $ sambaPwdMustChange $ shadowMax $ shadowLastChange $ shadowExpire $
+	  loginShell $ userDisabledPreset $ userHomeSharePreset $ userPrimaryGroupPreset $ userGroupsPreset $
+	  userPwdMustChangePreset $ userHomeSharePathPreset $ street $ postalCode $ l $ mail $ telephoneNumber $
+	  employeeType $ secretary $ mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder $
+	  kolabHomeServer $ univentionKolabForwardActive  $ kolabForwardAddress $ kolabForwardKeepCopy $
+	  kolabForwardUCE $ univentionKolabDeliveryToFolderActive  $ univentionKolabDeliveryToFolderName $
+	  kolabDelegate $ univentionKolabVacationActive $ univentionKolabVacationText $
+	  kolabVacationResendInterval $ kolabVacationReplyToUCE $ kolabVacationAddress $
+	  kolabVacationReactDomain $ univentionKolabVacationNoReactDomain $ kolabInvitationPolicy $
+	  userOptionsPreset $ sambaMungedDial
+        )
+	)

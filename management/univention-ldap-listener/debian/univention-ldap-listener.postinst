@@ -1,0 +1,77 @@
+#!/bin/sh
+#
+# Univention LDAP Listener
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+adduser --quiet --system --home /var/lib/univention-ldap-listener listener
+
+if [ ! -e "/var/log/univention/listener.log" ]; then
+	touch /var/log/univention/listener.log
+	chmod 600 /var/log/univention/listener.log
+fi
+
+mkdir -p /var/lib/univention-ldap/listener
+if [ ! -e /var/lib/univention-ldap/listener/listener ]; then
+	touch /var/lib/univention-ldap/listener/listener
+	touch /var/lib/univention-ldap/listener/listener.lock
+	chown listener /var/lib/univention-ldap/listener/listener*
+fi
+
+# Scriptposition changed, force remove old
+update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
+
+#DEBHELPER#
+
+univention-baseconfig set listener/debug/level?2
+
+mkdir -p /var/lib/univention-ldap/schema/id/
+
+if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then
+	touch /var/lib/univention-ldap/schema/id/id
+fi
+
+if [ -e /var/lib/univention-ldap/schema/id/id ]; then
+	chown listener /var/lib/univention-ldap/schema/id/id
+fi
+
+if [ -e /var/lib/univention-ldap/replog/replog ]; then
+	chmod 600 /var/lib/univention-ldap/replog/replog
+fi
+
+/usr/lib/univention-install/03univention-ldap-listener.inst || true
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt 1.12; then
+		/etc/init.d/univention-ldap-listener restart
+	else
+		/etc/init.d/univention-ldap-listener crestart
+	fi
+fi
+
+

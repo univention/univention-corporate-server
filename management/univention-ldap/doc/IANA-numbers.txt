@@ -1,0 +1,18 @@
+
+To Univention the namespace 10176 was assigned.
+
+That means that everything goes below 
+
+1.3.6.1.4.1.10176
+
+----------------------------------------------
+
+Assigned are:
+
+attributetype ( 1.3.6.1.4.1.10176.3 NAME 'templateobjectClass'
+
+objectclass	( 1.3.6.1.4.1.10176.1 NAME 'univentionPersonTemplate'
+
+objectclass	( 1.3.6.1.4.1.10176.2  NAME 'univentionGroupTemplate'
+
+(010919 thk) 

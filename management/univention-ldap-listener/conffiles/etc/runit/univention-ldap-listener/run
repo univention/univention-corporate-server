@@ -1,0 +1,49 @@
+#!/bin/sh -e
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/runit/univention-ldap-listener/run
+#
+
+
+# check if startup is in progress, need to wait then
+test ! -f /etc/nologin || exit 0
+
+cachedir=/var/lib/univention-ldap-listener
+moduledir=/usr/lib/univention-ldap-listener/system
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" != "domaincontroller_master" ]; then
+	if [ -e "/var/lib/univention-ldap/notify/transaction" ]; then
+		chown listener /var/lib/univention-ldap/notify/transaction
+		options="-o"
+	fi
+fi
+
+
+if [ -n "$listener_debug_level" ]; then
+	options="$options -d $listener_debug_level"
+fi
+
+options="$options -x -ZZ"
+
+if [ -n "$listener_ignoremaster" -a "$listener_ignoremaster" = "yes" ]; then
+	options="$options -B"
+fi
+
+if [ -n "$server_role" ]; then
+	if [ "@%@server/role@%@" = "domaincontroller_master" -o "@%@server/role@%@" = "domaincontroller_backup" ]; then
+		exec /usr/sbin/univention-ldap-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D cn=admin,@%@ldap/base@%@ -y /etc/ldap.secret >>/var/log/univention/listener.log 2>&1
+	else
+		exec /usr/sbin/univention-ldap-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options -D "@%@ldap/hostdn@%@" -y /etc/machine.secret >>/var/log/univention/listener.log 2>&1
+	fi
+else
+	exec /usr/sbin/univention-ldap-listener -F -b "@%@ldap/base@%@" -m "$moduledir" -c "$cachedir" $options >>/var/log/univention/listener.log 2>&1
+fi
+

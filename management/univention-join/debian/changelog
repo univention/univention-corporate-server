@@ -1,0 +1,185 @@
+univention-join (0.21-19) unstable; urgency=low
+
+  * invalidate the nscd hosts cache during the join for all server roles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Dec 2006 08:36:53 +0100
+
+univention-join (0.21-18) unstable; urgency=low
+
+  * invalidate the nscd hosts cache during the join
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Dec 2006 14:24:28 +0100
+
+univention-join (0.21-13) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 13:01:44 +0100
+
+univention-join (0.21-11) unstable; urgency=low
+
+  * don't fail if the dns forward zone does not exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Oct 2006 17:06:21 +0200
+
+univention-join (0.21-10) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:07:31 +0200
+
+univention-join (0.21-9) unstable; urgency=low
+
+  * fixed typo in univention-join
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 19 Jun 2006 16:14:46 +0200
+
+univention-join (0.21-8) unstable; urgency=low
+
+  * change domain if the host account alredy exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jun 2006 07:03:55 +0200
+
+univention-join (0.21-6) unstable; urgency=low
+
+  * added -domainname parameter to univention-server-join
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Jun 2006 06:47:25 +0200
+
+univention-join (0.21-4) unstable; urgency=low
+
+  * avoid chmod on not existing files
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Apr 2006 14:46:05 +0200
+
+univention-join (0.21-2) unstable; urgency=low
+
+  * implemented first support for join without root-priviledges in the master
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  3 Apr 2006 08:58:13 +0200
+
+univention-join (0.20) unstable; urgency=low
+
+  * fix wrong ldap-filter for user-account
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  9 Mar 2006 13:43:43 +0100
+
+univention-join (0.19) unstable; urgency=low
+
+  * fix typo in ssl certificate sync
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 09:53:59 +0100
+
+univention-join (0.18) unstable; urgency=low
+
+  * set kerberos realm from master when joining
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 17:20:39 +0100
+
+univention-join (0.17) unstable; urgency=low
+
+  * ignore admin-settings-object during join
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 24 Feb 2006 14:14:20 +0100
+
+univention-join (0.16) unstable; urgency=low
+
+  * write /etc/resolv.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Sep 2005 07:51:23 +0200
+
+univention-join (0.15) unstable; urgency=low
+
+  * proper error description
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Jul 2005 11:25:02 +0200
+
+univention-join (0.14) unstable; urgency=low
+
+  * check configured install files
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Jul 2005 10:12:16 +0200
+
+univention-join (0.13) unstable; urgency=low
+
+  * don't set ldap/server
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Apr 2005 08:09:54 +0200
+
+univention-join (0.12) unstable; urgency=low
+
+  * support for notifier on DC Slaves
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 20 Mar 2005 20:26:04 +0100
+
+univention-join (0.11) unstable; urgency=low
+
+  * more and better debug output
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 24 May 2004 13:27:21 +0200
+
+univention-join (0.10) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 10:28:13 +0200
+
+univention-join (0.9) unstable; urgency=low
+
+  * check ldap positions
+  * support for MAC
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Apr 2004 15:33:55 +0200
+
+univention-join (0.8) unstable; urgency=low
+
+  * remove root user warning
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Apr 2004 09:38:44 +0200
+
+univention-join (0.7) unstable; urgency=low
+
+  * reset permissons for /etc/univention/ssl
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Apr 2004 14:59:13 +0200
+
+univention-join (0.6) unstable; urgency=low
+
+  * cleanup code
+  * added support for managed clients
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Mar 2004 15:32:04 +0100
+
+univention-join (0.5) unstable; urgency=low
+
+  * added chech_join_status script
+
+ -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Tue, 10 Feb 2004 09:18:56 +0100
+
+univention-join (0.4) unstable; urgency=low
+
+  * check for dc listing
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Feb 2004 09:34:01 +0100
+
+univention-join (0.3) unstable; urgency=low
+
+  * added more debug output
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 24 Jan 2004 13:18:59 +0100
+
+univention-join (0.2) unstable; urgency=low
+
+  * move univention-ssh and univention-scp into univention-ssh package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 10 Dec 2003 07:49:42 +0200
+
+univention-join (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 01 Oct 2003 11:09:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

@@ -1,0 +1,21 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+attributetype ( 1.3.6.1.4.1.10176.92 NAME 'lockTime'
+	DESC 'time the lock was set in place in seconds since epoch'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 )
+
+objectclass ( 1.3.6.1.4.1.10176.94 NAME 'lock'
+        DESC 'Locks a value or component specified by cn. lockTime is the timestamp of the lock.'
+        MUST ( cn $ lockTime ))
+
+attributetype ( 1.3.6.1.4.1.10176.96 NAME 'univentionLastUsedValue'
+	DESC 'the last used value'
+	EQUALITY caseExactIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.98 NAME 'univentionLastUsed'
+        DESC 'save the last used value'
+	SUP top AUXILIARY
+        MUST ( cn )
+        MAY ( univentionLastUsedValue ) )

@@ -1,0 +1,61 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# 1.3.6.1.4.1.10176.1000
+
+# References
+attributetype ( 1.3.6.1.4.1.10176.1700 NAME ( 'univentionLicenseModule' )
+	DESC 'Licence Module'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1702 NAME ( 'univentionLicenseBaseDN' )
+	DESC 'Licenceesystem identify'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1703 NAME ( 'univentionLicenseEndDate' )
+	DESC 'License end date'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1705 NAME ( 'univentionLicenseSignature' )
+	DESC 'Licence Signature'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1706 NAME ( 'univentionLicenseAccounts' )
+	DESC 'License maximum number of users'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1707 NAME ( 'univentionLicenseClients' )
+	DESC 'License maximum number of clients'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1708 NAME ( 'univentionLicenseGroupwareAccounts' )
+	DESC 'License maximum number of groupware accounts'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1709 NAME ( 'univentionLicenseuniventionDesktops' )
+	DESC 'License maximum number of UCS managed desktops'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1710 NAME ( 'univentionLicenseType' )
+	DESC 'License type containing the products this license used for'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+
+
+objectclass ( 1.3.6.1.4.1.10176.1799 NAME ( 'univentionLicense' )
+	DESC 'univention Licence Object'
+	SUP 'top' STRUCTURAL
+	MUST (  cn $
+		univentionLicenseEndDate $ univentionLicenseModule $
+		univentionLicenseBaseDN $ univentionLicenseSignature )
+	MAY (	univentionLicenseAccounts $ univentionLicenseClients $
+		univentionLicenseGroupwareAccounts $
+		univentionLicenseUniventionDesktops $ univentionLicenseType ) )

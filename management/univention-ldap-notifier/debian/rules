@@ -1,0 +1,91 @@
+#!/usr/bin/make -f
+#
+# Univention LDAP Notifier
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+package=univention-ldap-notifier
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+	cd src; ${MAKE}; cd -
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	cd src; $(MAKE) clean; cd -
+
+	dh_clean
+
+install:
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+
+
+	install -m 700 src/univention-ldap-notifier debian/univention-ldap-notifier/usr/sbin
+
+	univention-install-baseconfig
+
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/finish
+	touch debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/down
+	ln -s /etc/runit/univention-ldap-notifier debian/univention-ldap-notifier/etc/runit/univention/univention-ldap-notifier
+
+	# add file to be used by univention-console
+	echo "Univention-LDAP-Notifier;univention-ldap-notifier;/usr/sbin/univention-ldap-notifier;20" > debian/univention-ldap-notifier/etc/univention/daemons/univention-ldap-notifier
+
+	dh_install
+
+binary-indep: build install
+	dh_testdir -a
+	dh_testroot -a
+	dh_installchangelogs -a
+	dh_installdocs -a
+	dh_installexamples -a
+	dh_installinit --no-start -r
+	dh_installman -a
+	dh_link -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_gencontrol -a
+	dh_md5sums -a
+	dh_builddeb -a
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

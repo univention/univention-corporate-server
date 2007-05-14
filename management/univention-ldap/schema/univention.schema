@@ -1,0 +1,295 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# univention namespace: 10176
+
+#attributetype ( 1.3.6.1.4.1.10176.41 NAME 'univentionDesktopServer'
+#	DESC 'terminal server (i.e. application server) to use [client]'
+#	EQUALITY caseIgnoreIA5Match
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.44 NAME 'univentionWindowsServer'
+#	DESC 'Univention windows server to use [client]'
+#	EQUALITY caseIgnoreIA5Match
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.45 NAME 'univentionWindowsDomain'
+#	DESC 'windows domain of windows server [client]'
+#	EQUALITY caseIgnoreIA5Match
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.46 NAME 'univentionFileServer'
+#	DESC 'Univention file server to use [client]'
+#	EQUALITY caseIgnoreIA5Match
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.56 NAME 'univentionLdapServer'
+#	DESC 'Univention ldap server to use [client]'
+#	EQUALITY caseIgnoreIA5Match
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.57 NAME 'univentionLdapBase'
+#	DESC 'base of ldap server'
+#	EQUALITY caseExactMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+#
+attributetype ( 1.3.6.1.4.1.10176.61 NAME 'univentionServerRole'
+	DESC 'server role of this machine [ldap master,ldap slave,...]'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+#attributetype ( 1.3.6.1.4.1.10176.62 NAME 'univentionKerberosRealm'
+#	DESC 'Kerberos REALM'
+#	EQUALITY caseExactMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+#
+#attributetype ( 1.3.6.1.4.1.10176.63 NAME 'univentionKerberosKDC'
+#	DESC 'Kerberos KDC Server'
+#	EQUALITY caseExactMatch
+#	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+#
+
+attributetype ( 1.3.6.1.4.1.10176.64 NAME 'univentionWindowsReinstall'
+	DESC 'schedule host to be reinstalled'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.65 NAME 'univentionServerReinstall'
+	DESC 'schedule host to be reinstalled'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.66 NAME 'univentionService'
+	DESC 'server services'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
+attributetype ( 1.3.6.1.4.1.10176.1000.11.1.1 NAME 'univentionServerInstallationProfile'
+	DESC 'Path of profile file. Must be present on installation server.'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.11.1.3 NAME 'univentionServerInstallationText'
+	DESC 'Use text installation'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.11.1.4 NAME 'univentionServerInstallationPath'
+	DESC 'Installation Path'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.11.1.2 NAME 'univentionNetworkLink'
+	DESC 'Path of network'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.11.1.5 NAME 'univentionInventoryNumber'
+	DESC 'Inventory number'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.70 NAME 'univentionHost'
+	SUP top AUXILIARY
+	DESC 'Univention host'
+	MUST ( cn )
+	MAY ( macAddress $ aRecord $ mXRecord $ cNAMERecord $ associatedDomain $ univentionNetworkLink $ univentionInventoryNumber))
+
+objectclass ( 1.3.6.1.4.1.10176.71 NAME 'univentionClient'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention client'
+	MUST ( cn )
+	MAY ( univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath ) )
+
+objectclass ( 1.3.6.1.4.1.10176.99 NAME 'univentionMacOSClient'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention MacOS X Client'
+	MUST ( cn ) )
+
+objectclass ( 1.3.6.1.4.1.10176.96 NAME 'univentionMobileClient'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention mobile client'
+	MUST ( cn )
+	MAY ( univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath ) )
+
+objectclass ( 1.3.6.1.4.1.10176.72 NAME 'univentionThinClient'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention thin client'
+	MUST ( cn ) )
+
+objectclass ( 1.3.6.1.4.1.10176.73 NAME 'univentionWindows'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention windows host'
+	MUST ( cn )
+	MAY ( univentionWindowsReinstall ) )
+
+objectclass ( 1.3.6.1.4.1.10176.74 NAME 'univentionMemberServer'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention member server'
+	MUST ( cn )
+	MAY ( univentionServerRole $ univentionService $ univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath ) )
+
+objectclass ( 1.3.6.1.4.1.10176.75 NAME 'univentionDomainController'
+	SUP 'univentionHost' AUXILIARY
+	DESC 'Univention domain controller'
+	MUST ( cn )
+	MAY ( univentionServerRole $ univentionService $ univentionServerReinstall $ univentionServerInstallationProfile $ univentionServerInstallationText $ univentionServerInstallationPath ) )
+
+objectclass ( 1.3.6.1.4.1.10176.78 NAME 'univentionDomain'
+	SUP ('domain' $ 'sambaDomain') STRUCTURAL
+	DESC 'Additional univention-vars for Groups' )
+
+objectclass ( 1.3.6.1.4.1.10176.79 NAME 'univentionBase'
+	SUP 'top' AUXILIARY
+	DESC 'Additional univention-vars for Groups' )
+
+attributetype ( 1.3.6.1.4.1.10176.81 NAME 'prohibitedUsername'
+	DESC 'Illegal usernames '
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.80 NAME 'univentionProhibitedUsernames'
+	MUST ( cn )
+	MAY ( prohibitedUsername )
+	DESC 'List of prohibited usernames' )
+
+attributetype ( 1.3.6.1.4.1.10176.83 NAME 'printerModel'
+	DESC 'Printer Model '
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.82 NAME 'univentionPrinterModels'
+	MUST ( cn )
+	MAY ( printerModel )
+	DESC 'Printer Model List' )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.300.1.1 NAME 'univentionPackageDefinition'
+	DESC 'Packages '
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+objectclass ( 1.3.6.1.4.1.10176.1000.300.2.1 NAME 'univentionPackageList'
+	MUST ( cn )
+	DESC 'Package List '
+	MAY ( univentionPackageDefinition))
+
+attributetype ( 1.3.6.1.4.1.10176.1000.301.1.1 NAME 'printerURI'
+	DESC 'Printer URI '
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.301.2.1 NAME 'univentionPrinterURIs'
+	MUST ( cn )
+	MAY ( printerURI )
+	DESC 'Printer URI List' )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.1 NAME 'univentionSambaPasswordHistory'
+	DESC 'Samba Password History '
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.2 NAME 'univentionSambaMinPasswordLength'
+	DESC 'Samba Password Length '
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.3 NAME 'univentionSambaMinPasswordAge'
+	DESC 'Samba Minimum Password Age '
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.4 NAME 'univentionSambaBadLockoutAttempts'
+	DESC 'Samba Bad Lockout Attempts '
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.5 NAME 'univentionSambaLogonToChangePW'
+	DESC 'Samba User must logon to change password'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.6 NAME 'univentionSambaMaxPasswordAge'
+	DESC 'Samba Maximum Password Age'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.7 NAME 'univentionSambaLockoutDuration'
+	DESC 'Samba Lockout Duration'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.8 NAME 'univentionSambaResetCountMinutes'
+	DESC 'Samba Reset Count Minutes'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.9 NAME 'univentionSambaDisconnectTime'
+	DESC 'Samba Disconnect Time'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.302.1.10 NAME 'univentionSambaRefuseMachinePWChange'
+	DESC 'Samba Refuse Machine Password Change'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.302.2.1 NAME 'univentionSambaConfig'
+	MUST ( cn )
+	MAY ( univentionSambaPasswordHistory $
+	      univentionSambaMinPasswordLength $
+	      univentionSambaMinPasswordAge $
+	      univentionSambaBadLockoutAttempts $
+	      univentionSambaLogonToChangePW $
+	      univentionSambaMaxPasswordAge $
+	      univentionSambaLockoutDuration $
+	      univentionSambaResetCountMinutes $
+	      univentionSambaDisconnectTime $
+	      univentionSambaRefuseMachinePWChange )
+	DESC 'Univention Samba LDAP Extensions' )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.303.2.1 NAME 'univentionServiceObject'
+	MUST ( cn )
+	DESC 'Univention Service Object' )
+
+
+# operations for univention console
+attributetype ( 1.3.6.1.4.1.10176.1000.304.1.1 NAME 'univentionConsoleOperation'
+	DESC 'Univention Console command'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.304.2.1 NAME 'univentionConsoleOperations'
+	MUST ( cn )
+	MAY ( description $ univentionConsoleOperation )
+	DESC 'Univention Console commands' )
+
+# ACLs for univention console
+attributetype ( 1.3.6.1.4.1.10176.1000.305.1.1 NAME 'univentionConsoleACLCategory'
+	DESC 'Univention Console ACL category'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.305.1.2 NAME 'univentionConsoleACLHost'
+	DESC 'Univention Console ACL host or host group'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.305.1.3 NAME 'univentionConsoleACLBase'
+	DESC 'Univention Console ldap base to find the hosts'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.305.1.4 NAME 'univentionConsoleACLCommand'
+	DESC 'Univention Console ACL command'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.305.2.1 NAME 'univentionConsoleACL'
+	MUST ( cn )
+	MAY ( description $ univentionConsoleACLCategory $ univentionConsoleACLHost $ univentionConsoleACLBase $ univentionConsoleACLCommand )
+	DESC 'Univention Console commands' )
+
+objectclass ( 1.3.6.1.4.1.10176.1000.306.2.1 NAME 'univentionConsoleCategory'
+	MUST ( cn )
+	MAY ( description )
+	DESC 'Univention Console category' )

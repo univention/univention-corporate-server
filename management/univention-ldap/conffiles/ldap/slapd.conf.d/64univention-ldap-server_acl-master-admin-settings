@@ -1,0 +1,14 @@
+@!@
+ldap_base=baseConfig['ldap/base']
+if baseConfig['ldap/server/type'] == 'master':
+	access = 'write'
+else:
+	access = 'read'
+
+dn = 'cn=admin-settings,cn=univention,%s' % ldap_base
+
+print 'access to dn.subtree="%s"' % dn
+print '   by users self%s' % access
+print '   by * none'
+
+@!@

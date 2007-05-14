@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Univention LDAP Notifier
+#  postinst
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+for i in replog-slurpd notify save; do
+	if [ ! -e /var/lib/univention-ldap/$i ]; then
+		mkdir -p /var/lib/univention-ldap/$i
+		chmod -R 700 /var/lib/univention-ldap/$i
+	fi
+done
+
+if [ ! -d /var/lib/univention-ldap/schema ]; then
+	mkdir -p /var/lib/univention-ldap/schema
+fi
+
+if [ ! -d /var/lib/univention-ldap/schema/id ]; then
+	mkdir -p /var/lib/univention-ldap/schema/id
+fi
+
+if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then
+	touch /var/lib/univention-ldap/schema/id/id
+	chown listener /var/lib/univention-ldap/schema/id/id >/dev/null 2>&1
+fi
+
+if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
+	touch /var/lib/univention-ldap/schema/md5
+fi
+
+for i in replog-slurpd/replog notify/transaction save/replog; do
+	if [ ! -e /var/lib/univention-ldap/$i ]; then
+		touch /var/lib/univention-ldap/$i
+	fi
+	if [ -e var/lib/univention-ldap/$i ]; then
+		chmod 600 /var/lib/univention-ldap/$i
+	fi
+	
+	if [ ! -e /var/lib/univention-ldap/$i.lock ]; then
+		touch /var/lib/univention-ldap/$i.lock
+		chmod 600 /var/lib/univention-ldap/$i.lock
+	fi
+done
+
+
+univention-baseconfig set notifier/debug/level?1
+univention-baseconfig set notifier/replog/sleep?500000
+
+univention-baseconfig set listener/supply/notifier?yes
+
+if [ ! -e "/var/log/univention/notifier.log" ]; then
+	#create log file
+	touch /var/log/univention/notifier.log
+	chmod 600 /var/log/univention/notifier.log
+fi
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt 1.10; then
+		/etc/init.d/univention-ldap-notifier restart
+	else
+		/etc/init.d/univention-ldap-notifier crestart
+	fi
+elif [ "$1" = "configure" ]; then
+	/etc/init.d/univention-ldap-notifier restart
+fi
+
+

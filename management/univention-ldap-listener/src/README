@@ -1,0 +1,55 @@
+References
+----------
+
++-- main.c
+    +-- signals.c
+    +-- notifier.c
+        +-- network.c
+        +-- change.c
+            +-- cache.c
+                +-- cache_lowlevel.c
+		+-- cache_entry.c
+            +-- handlers.c
+	        +-- filter.c
+	        +-- cache_entry.c
+        +-- transfile.c
+
++-- dump.c
+    +-- cache.c
+        +-- cache_lowlevel.c
+        +-- cache_entry.c
+    +-- base64.c
+
++-- demo.o
+    +-- network.c
+
++-- verify.o
+    +-- cache.c
+        +-- cache_lowlevel.c
+	+-- cache_entry.c
+
+Files
+-----
+
+base64.c    Base64 encoding and decoding methods
+cache.c     LDAP entries are cached here. If a modification takes place, the new
+	    LDAP entry is compared with the cache entry, and both, old and new
+	    entries, are passed to the handler modules.
+change.c    The name change might be misleading. This is more of an abstraction
+	    layer to run handlers (and do a few more tweaks such as updating the
+	    schema beforehand). Functions generally take LDAP entries or DNs as
+	    input.
+filter.c    Functions to match LDAP filters to cache entries. Currently, we
+	    don't use any schema information. However, to do this properly, we'd
+	    need to.
+handlers.c  The Python handlers (and possibly, C and Shell handlers in the
+            future) are initialized and run here.
+network.c   An asyncronous notifier client API.
+notifier.c  The name notifier might be misleading. The main function
+	    "notifier_listener" uses the listener network API (network.c) to
+	    receive updates from a notifier and calls the "change" functions.
+signals.c   Signal handlers are initialized and defined here.
+
+main.c      The listener daemon
+demo.c      Demo program for the notifier client API.
+dump.c      Tool to dump the cache.

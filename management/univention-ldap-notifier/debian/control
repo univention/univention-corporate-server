@@ -1,0 +1,23 @@
+Source: univention-ldap-notifier
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, libssl-dev, libldap2-dev, libunivention-debug-dev, libunivention-config-dev, univention-config-dev
+
+Package: univention-ldap-notifier
+Architecture: any
+Pre-Depends: univention-ssl
+Depends: libssl0.9.7, libldap2, libunivention-config0, libunivention-debug0, univention-runit
+Description: UCS - LDAP Notifier
+ Univention LDAP Notifier propagates changes on the LDAP
+ server to clients listening for them. In doing so, just the
+ DN of the altered object is transferred. Clients that need
+ to detect changes within an object are expected to keep a
+ local object cache themselves to do the comparison. As of
+ this version, the only client implementation is the
+ Univention LDAP Listener.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,51 @@
+Type: file
+File: etc/init.d/slapd
+Variables: ldap/server/type
+Variables: ldap/database/type
+
+Type: file
+File: etc/ldap/replica.conf
+
+Type: file
+File: var/lib/univention-ldap/ldap/DB_CONFIG
+Variables: ldap/database/bdb/*
+Variables: ldap/database/type
+
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/base
+Variables: ldap/databse/type
+Variables: ldap/database/bdb/checkpoint
+Variables: ldap/database/ldbm/dbsync
+Variables: ldap/index/eq
+Variables: ldap/index/pres
+Variables: ldap/index/sub
+Variables: ldap/index/approx
+Variables: ldap/replog
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/10univention-ldap-server_schema
+Variables: ldap/server/type
+Variables: ldap/master
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
+Variables: ldap/server/type
+Variables: ldap/master
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/40univention-ldap-server_database
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/base
+Variables: ldap/databse/type
+Variables: ldap/database/bdb/checkpoint
+Variables: ldap/database/ldbm/dbsync
+Variables: ldap/index/eq
+Variables: ldap/index/pres
+Variables: ldap/index/sub

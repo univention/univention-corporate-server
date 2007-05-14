@@ -1,0 +1,4 @@
+files
+*.conffiles
+*.substvars
+*.debhelper

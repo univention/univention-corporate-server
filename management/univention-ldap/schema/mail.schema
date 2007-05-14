@@ -1,0 +1,36 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# mail.schema
+# $OID: 1.3.6.1.4.1.10176.1010
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.1 NAME 'mailPrimaryAddress'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'Primary mailaddresses for the user'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.2 NAME 'mailAlternativeAddress'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'Secondary (alias) mailaddresses for the same user'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.3 NAME 'mailGlobalSpamFolder'
+	DESC 'Move Spam to global spam folder instead of local spam folder'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.1 NAME 'univentionMail'
+	DESC 'Univention Mail Prefernces' SUP top AUXILIARY
+	MUST ( uid )
+	MAY ( mailPrimaryAddress $ mailAlternativeAddress $ mailGlobalSpamFolder ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.10 NAME 'mailRelay'
+	SUBSTR caseIgnoreSubstringsMatch
+	DESC 'Domain Mail Relay'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.10 NAME 'univentionMailDomain'
+	DESC 'Univention Mail Domain Prefernces' SUP top AUXILIARY
+	MAY ( mailRelay ) )

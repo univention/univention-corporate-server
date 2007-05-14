@@ -1,0 +1,18 @@
+Source: univention-join
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends: debhelper
+
+Package: univention-join
+Architecture: all
+Depends: univention-baseconfig, univention-ssh, sysutils, ldap-utils
+Description: UCS - join domains
+ This packages allows for the joining of UCS computers to a
+ UCS domain.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

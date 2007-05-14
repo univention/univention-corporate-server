@@ -1,0 +1,89 @@
+Copyright 2001,2002,2003,2004,2005,2006 by
+
+Univention GmbH
+http://www.univention.de/
+
+All rights reserved.
+
+The source code of the software contained in this package
+as well as the source package itself are made available
+under the terms of the GNU General Public License version 2
+(GNU GPL V2) as published by the Free Software Foundation.
+
+Binary versions of this package provided by Univention to you as
+well as other copyrighted, protected or trademarked materials like
+Logos, graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between
+you and Univention.
+
+In the case you use the software under the terms of the GNU GPL V2,
+the program is provided in the hope hat it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License with
+the Debian GNU/Linux or Univention distribution in file
+/usr/share/common-licenses/GPL; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+On Univention and Debian systems, the complete text of the GNU General Public
+License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+
+=============================================================================
+
+This package contains LDAP schema definitions not created by Univention:
+
+kolab2.schema:
+
+# (c) 2003, 2004 Tassilo Erlewein <tassilo.erlewein@erfrakon.de>
+# (c) 2003, 2004 Martin Konold <martin.konold@erfrakon.de>
+# (c) 2003 Achim Frank <achim.frank@erfrakon.de>
+
+rfc2739.schema:
+
+# (c) 2004 Martin Konold <martin.konold@erfrakon.de>
+
+# This schema is derived from RFC 2739 and may act as a substitute
+# when used with OpenLDAP as the original schema from RFC 2739
+# is syntactically not accepted by OpenLDAP 2.2.14
+#
+# Copyright (C) The Internet Society (2000).  All Rights Reserved.
+#
+#  This document and translations of it may be copied and furnished to
+#  others, and derivative works that comment on or otherwise explain it
+#  or assist in its implementation may be prepared, copied, published
+#  and distributed, in whole or in part, without restriction of any
+#  kind, provided that the above copyright notice and this paragraph are
+#  included on all such copies and derivative works.  However, this
+#  document itself may not be modified in any way, such as by removing
+#  the copyright notice or references to the Internet Society or other
+#  Internet organizations, except as needed for the purpose of
+#  developing Internet standards in which case the procedures for
+#  copyrights defined in the Internet Standards process must be
+#  followed, or as required to translate it into languages other than
+#  English.
+#
+#  The limited permissions granted above are perpetual and will not be
+#  revoked by the Internet Society or its successors or assigns.
+#
+#  This document and the information contained herein is provided on an
+#  "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+#  TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+#  BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+#  HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+#  MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.
+
+scalix.schema:
+
+# Copyright (C) 2006 Scalix Corporation.  All rights reserved.
+
+solaris.schema:
+
+# Some correction on oid and attributetype
+# were made by Marc Bourget (bourget@up2.com)
+# Up2 Technologies (div. Teleglobe Communication Corp)
+# oid number and additional attributetype were taken from:
+# Solaris and LDAP Naming Service, Deploying LDAP in the Enterprise.
+# Tom Bialanski and Michael Haines, Sun Microsystems Press,
+# A Prentice Hall Title, 2001, ISBN 0-13-030678-9

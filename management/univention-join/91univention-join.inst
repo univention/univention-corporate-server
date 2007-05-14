@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# Univention Join
+#  join script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-join successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	if test -e /etc/slave-join.secret; then
+		slave_join_pwd=`cat /etc/slave-join.secret`
+	else
+		makepasswd --chars 8 >/etc/slave-join.secret
+		slave_join_pwd=`cat /etc/slave-join.secret`
+	fi
+	if test -e /etc/backup-join.secret; then
+		backup_join_pwd=`cat /etc/backup-join.secret`
+	else
+		makepasswd --chars 8 >/etc/backup-join.secret
+		backup_join_pwd=`cat /etc/backup-join.secret`
+	fi
+
+
+	univention-admin groups/group create $@ --ignore_exists --position "cn=groups,$ldap_base" --set name="Backup Join"     --set description="Group for joining domain controller backup servers"
+	univention-admin groups/group create $@ --ignore_exists --position "cn=groups,$ldap_base" --set name="Slave Join"      --set description="Group for joining domain controller slave servers"
+	if [ ${#backup_join_pwd} -gt 7 ]; then
+		univention-admin users/user   create $@ --ignore_exists --position "cn=users,$ldap_base"  --set username="join-backup" --set primaryGroup="cn=Backup Join,cn=groups,$ldap_base" --set unixhome="/dev/null" --set password="$backup_join_pwd" --set lastname="Joinuser" --append groups="cn=Slave Join,cn=groups,$ldap_base" --append groups="cn=DC Backup Hosts,cn=groups,$ldap_base" --append groups="cn=DC Slave Hosts,cn=groups,$ldap_base"
+	else
+		echo "join-backup PWD too short"
+	fi
+	if [ ${#slave_join_pwd} -gt 7 ]; then
+		univention-admin users/user   create $@ --ignore_exists --position "cn=users,$ldap_base"  --set username="join-slave"  --set primaryGroup="cn=Slave Join,cn=groups,$ldap_base"  --set unixhome="/dev/null" --set password="$slave_join_pwd"  --set lastname="Joinuser"  --append groups="cn=DC Slave Hosts,cn=groups,$ldap_base"
+	else
+		echo "join-slave PWD too short"
+	fi
+
+fi
+
+test -x /usr/sbin/nscd && nscd -i passwd
+test -x /usr/sbin/nscd && nscd -i group
+
+sleep 2
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
+	test -e /etc/backup-join.secret && chgrp "Backup Join" /etc/backup-join.secret && chmod 640 /etc/backup-join.secret
+	test -e /etc/slave-join.secret  && chgrp "Slave Join"  /etc/slave-join.secret  && chmod 640 /etc/slave-join.secret
+
+	chgrp "DC Backup Hosts" /etc/univention/ssl/
+
+	test -e /etc/univention/ssl/openssl.cnf && chgrp "DC Backup Hosts" /etc/univention/ssl/openssl.cnf    && chmod g+rw /etc/univention/ssl/openssl.cnf
+
+	test -e /etc/univention/ssl/password    && chgrp "DC Backup Hosts" /etc/univention/ssl/password       && chmod g+rw /etc/univention/ssl/password
+
+	test -d "/etc/univention/ssl/$hostname" && chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$hostname" && chmod g+rwx "/etc/univention/ssl/$hostname" && find "/etc/univention/ssl/$hostname/" -type f | xargs chmod g+rw
+
+	if [ -d /etc/univention/ssl/udsCA ]; then
+		chgrp -R "DC Backup Hosts" /etc/univention/ssl/udsCA
+		find /etc/univention/ssl/udsCA/ -type d | xargs chmod g+rwx
+		find /etc/univention/ssl/udsCA/ -type f | xargs chmod g+rw
+	fi
+
+	test -e /etc/ldap-backup.secret && chgrp "Slave Join"  /etc/ldap-backup.secret && chmod 644 /etc/ldap-backup.secret
+	test -e /etc/univention/ssl/udsCA/CAcert.pem && chgrp "DC Slave Hosts"  /etc/univention/ssl/udsCA/CAcert.pem && chmod 644 /etc/univention/ssl/udsCA/CAcert.pem
+
+	if [ -d "/etc/univention/ssl/univention-admin" ]; then
+		chgrp -R "DC Backup Hosts" /etc/univention/ssl/univention-admin
+		find /etc/univention/ssl/univention-admin/ -type d | xargs chmod g+rwx
+		find /etc/univention/ssl/univention-admin/ -type f | xargs chmod g+rw
+	fi
+
+	test -e /etc/ldap.secret && chgrp "Backup Join" /etc/ldap.secret && chmod 640 /etc/ldap.secret
+
+	if [ -d /var/lib/heimdal-kdc ]; then
+		chgrp -R "DC Backup Hosts" /var/lib/heimdal-kdc
+		find /var/lib/heimdal-kdc/ -type d | xargs chmod g+rwx
+		find /var/lib/heimdal-kdc/ -type f | xargs chmod g+rw
+	fi
+
+	if [ -e /etc/univention/ssl ]; then
+		res=`find /etc/univention/ssl/ -group root`
+		if [ -n "$res" ]; then
+			find /etc/univention/ssl/ -group root | xargs chown root."DC Backup Hosts"
+		fi
+	fi
+fi
+
+test -n "`grep "univention-join successful" /usr/lib/univention-install/.index.txt`" || echo "univention-join successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

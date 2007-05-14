@@ -1,0 +1,117 @@
+#!/usr/bin/make -f
+#
+# Univention LDAP
+#  rules file for the debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+package=univention-ldap-server
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install:
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 644 base.ldif debian/univention-ldap-config/usr/share/univention-ldap/
+	install -m 644 schema/as400.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/automount.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/courier.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/custom-attribute.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/dhcp.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/directory.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/dnszone.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/krb5-kdc.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/license.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/lock.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/network.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/oid.registry debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/policy.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/printer.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/samba.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/share.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/solaris.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/template.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention-default.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention-dhcp.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/user.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/mail.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/kolab2.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/rfc2739.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention-kolab2.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/scalix.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention-scalix.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/univention-syntax.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+	install -m 644 schema/admin-settings.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
+
+	install -m 755 univention-backup2master debian/univention-ldap-server/usr/lib/univention-ldap
+	install -m 755 univention-ldap-backup debian/univention-ldap-server/usr/sbin
+	univention-install-baseconfig
+	chmod 600 debian/univention-ldap-server/etc/univention/templates/files/etc/ldap/replica.conf
+	install -m 755 01univention-ldap-server-init.inst debian/univention-ldap-server/usr/lib/univention-install
+	install -m 755 04univention-ldap-client.inst debian/univention-ldap-client/usr/lib/univention-install
+	install -m 755 10univention-ldap-server.inst debian/univention-ldap-server/usr/lib/univention-install
+	install -m 744 scripts/convert_to_sharesSambaWriteable.py debian/univention-ldap-config/usr/share/univention-ldap
+	install -m 744 scripts/convert_shadowMax.py debian/univention-ldap-server/usr/share/univention-ldap
+
+	# add entry to start/stop slapd in univention-console
+	echo "Open LDAP-Server;slapd;/usr/sbin/slapd;19" > debian/univention-ldap-server/etc/univention/daemons/slapd
+
+	dh_install
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installcron -i
+	dh_installman -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

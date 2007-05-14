@@ -1,0 +1,83 @@
+/*
+ * Univention LDAP Notifier
+ *  network.h
+ *
+ * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ *
+ * http://www.univention.de/
+ *
+ * All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 as
+ * published by the Free Software Foundation.
+ *
+ * Binary versions of this file provided by Univention to you as
+ * well as other copyrighted, protected or trademarked materials like
+ * Logos, graphics, fonts, specific documentations and configurations,
+ * cryptographic keys etc. are subject to a license agreement between
+ * you and Univention.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ */
+
+#ifndef __NETWORK_H__
+#define __NETWORK_H__
+
+typedef int (*callback_remove_handler)(int fd);
+typedef int (*callback_handler)(int fd, callback_remove_handler);
+
+typedef struct network_client {
+
+	int fd;
+
+	callback_handler handler;
+
+	int notify;
+
+	int version;
+
+	int server;
+
+	int old_port;
+
+	int waiting;
+
+	unsigned long next_id;
+
+	unsigned long msg_id;
+
+	struct network_client *next;
+
+}NetworkClient_t;
+
+int network_create_socket( int port );
+
+int network_client_add ( int fd, callback_handler handler, int notify, int old_port);
+int network_client_del ( int fd );
+
+int network_client_main_loop ( );
+int network_client_init ( int port );
+
+int network_client_dump ( );
+
+int network_client_write ( int fd, char *buf, long l_buf);
+int network_client_all_write ( unsigned long id, char *buf, long l_buf);
+int network_client_set_next_id( int fd, unsigned long id );
+int network_client_set_msg_id( int fd, unsigned long msg_id );
+int network_client_set_version( int fd, int version );
+int network_client_get_version( int fd );
+unsigned long network_client_get_next_id( int fd);
+unsigned long network_client_get_msg_id( int fd);
+int network_client_waiting( int fd );
+int network_client_check_clients ( unsigned long last_known_id ) ;
+
+#endif
+

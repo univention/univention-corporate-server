@@ -1,0 +1,96 @@
+univention-ldap-replication (0.16) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 09:29:16 +0100
+
+univention-ldap-replication (0.15) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:10:09 +0200
+
+univention-ldap-replication (0.14) unstable; urgency=low
+
+  * add more ignored OIDs in schema-replication for new builtin definitions in openldap 2.2
+
+ -- Ingo Steuwer <steuwer@univention.de>  Sat, 12 Nov 2005 14:51:29 +0100
+
+univention-ldap-replication (0.12) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  3 Nov 2005 09:45:47 +0100
+
+univention-ldap-replication (0.11) unstable; urgency=low
+
+  * really set reconnect timeout to 5 minutes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2005 07:18:14 +0200
+
+univention-ldap-replication (0.10) unstable; urgency=low
+
+  * set reconnect timeout to 5 minutes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Dec 2004 08:06:41 +0100
+
+univention-ldap-replication (0.9) unstable; urgency=low
+
+  * disable ldif mode for constraint violation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Nov 2004 11:45:44 +0100
+
+univention-ldap-replication (0.8) unstable; urgency=low
+
+  * check in replication-resync if input is a regular file
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 18 Oct 2004 16:15:43 +0200
+
+univention-ldap-replication (0.7) unstable; urgency=low
+
+  * In LDIF mode, fold lines correctly and base64 encode
+    non-ASCII values.
+  * Fetch old entry from LDAP server, instead of relying on
+    the Listener to pass it correctly.
+  * Exclude subschemaSubentry and hasSuperordinates from
+    replication.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 11 Aug 2004 14:22:56 +0200
+
+univention-ldap-replication (0.6) unstable; urgency=low
+
+  * don't use old value on ldap.DELETE
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 May 2004 10:23:43 +0200
+
+univention-ldap-replication (0.5) unstable; urgency=low
+
+  * Support schema replication.
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon, 19 Apr 2004 16:35:00 +0200
+
+univention-ldap-replication (0.4) unstable; urgency=low
+
+  * new version policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2004 11:50:00 +0100
+
+univention-ldap-replication (0.03) unstable; urgency=low
+
+  * Import univention.utf8. 
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 20 Feb 2004 16:43:38 +0100
+
+univention-ldap-replication (0.02) unstable; urgency=low
+
+  * Use Python 2.3.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 18 Feb 2004 14:24:16 +0100
+
+univention-ldap-replication (0.01) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Sep 2003 16:31:24 +0200
+

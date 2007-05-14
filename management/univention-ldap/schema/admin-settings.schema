@@ -1,0 +1,18 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+objectclass ( 1.3.6.1.4.1.10176.2011 NAME 'univentionAdminUserSettings'
+	SUP 'top' STRUCTURAL
+	DESC 'User settings for Univention Admin'
+	MUST ( uid )
+	MAY ( univentionAdminListDNs $ univentionAdminListWizards $ univentionAdminListWebModules $
+		univentionAdminBaseDN $ univentionAdminMayOverrideSettings $ univentionAdminShowSelf $
+		univentionAdminSelfAttributes $ univentionPolicyObject $ univentionDnsObject $
+		univentionDhcpObject $ univentionUsersObject $ univentionGroupsObject $
+		univentionComputersObject $ univentionNetworksObject $ univentionSharesObject $
+		univentionPrintersObject $ univentionAdminListAttributes $ univentionAdminListBrowseAttributes))
+
+objectclass ( 1.3.6.1.4.1.10176.2012 NAME 'univentionAdminGlobalSettings'
+	SUP 'top' STRUCTURAL
+	DESC 'Global settings for Univention Admin'
+	MUST ( cn )
+	MAY ( univentionAdminListWizards $ univentionAdminListModules ))

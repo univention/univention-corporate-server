@@ -1,0 +1,8 @@
+Type: file
+File: etc/runit/univention-ldap-notifier/run
+Variables: notifier/debug/level
+Variables: server/role
+Variables: notifier/replog/sleep
+Variables: notifier/cache/size
+Variables: notifier/lock/count
+Variables: notifier/lock/time

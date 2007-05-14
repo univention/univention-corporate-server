@@ -1,0 +1,69 @@
+#!/bin/sh -e
+#
+# Univention LDAP Listener
+#  resync modules
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+usage()
+{
+	echo "$0: command [args]"
+	echo "Commands:"
+	echo "  resync module1...     Resyncronize modules"
+	exit 1
+}
+
+case "$1" in
+	resync)
+		shift
+		[ -z "$1" ] && usage
+		
+		runsvctrl down /etc/runit/univention-ldap-listener
+		i=0
+		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do
+			i=$((i+1))
+			if [ $i -gt 300 ]; then
+				echo "Sending SIGKILL"
+				pids=`pidof univention-ldap-listener`
+				if [ -n "$pids" ]; then
+					kill -9 $pids
+					i=0
+				fi
+			fi
+			sleep 1;
+			echo waiting for shutdown ;
+		done;
+		echo shutdown done
+		for i in $*; do
+			rm "/var/lib/univention-ldap-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
+		done
+		runsvctrl up /etc/runit/univention-ldap-listener
+		
+		;;
+	*)
+		usage
+		;;
+esac

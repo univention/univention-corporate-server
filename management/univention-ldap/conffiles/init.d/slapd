@@ -1,0 +1,157 @@
+#! /bin/sh
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/init.d/slapd
+# 
+#
+# Written by Miquel van Smoorenburg <miquels@drinkel.ow.org>.
+# Modified for Debian GNU/Linux by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+# Modified for Debian by Christoph Lameter <clameter@debian.org>
+# Modified for OpenLDAP by Ben Collins <bcollins@debian.org>
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/slapd
+SLURPD=/usr/sbin/slurpd
+PORT=389
+SLAPDCONF=/etc/ldap/slapd.conf
+REPLICACONF=/etc/ldap/replica.conf
+
+DBRECOVER=/usr/bin/db4.2_recover
+
+check_subschema ()
+{
+    sleep 5
+    tmpfile=`mktemp`
+    res=1
+	count=0
+    while [ $res != 0 ] ; do
+        ldapsearch -x -s base -b cn=Subschema 'objectClass=subschema' objectClasses attributeTypes matchingRules matichingRuleUse dITStructureRules dITContentRules nameForms ldapSyntaxes >$tmpfile
+		res=$?
+        if [ $res != 0 ]; then
+			count=$((count+1))
+			if [ $count = 2 ]; then
+				echo "Failed to search schema"
+				exit 1
+			fi
+            sleep 2
+        fi
+    done
+
+    md5=`md5sum $tmpfile | awk '{print $1}'`
+    if [ ! -d /var/lib/univention-ldap/schema ]; then
+        mkdir /var/lib/univention-ldap/schema
+    fi
+    if [ ! -e /var/lib/univention-ldap/schema/md5 ]; then
+        touch /var/lib/univention-ldap/schema/md5
+    fi
+    md5_old=`cat /var/lib/univention-ldap/schema/md5`
+    if [ "$md5" != "$md5_old" ]; then
+        if [ ! -d /var/lib/univention-ldap/schema/id ]; then
+           mkdir /var/lib/univention-ldap/schema/id
+        fi
+        if [ ! -e /var/lib/univention-ldap/schema/id/id ]; then
+           touch /var/lib/univention-ldap/schema/id/id
+        fi
+        id=`cat /var/lib/univention-ldap/schema/id/id`
+        if [ -z "$id" ]; then
+          id=0
+        fi
+        id=$((id+1))
+        echo "$md5" >/var/lib/univention-ldap/schema/md5
+        echo "$id" >/var/lib/univention-ldap/schema/id/id
+        chown listener /var/lib/univention-ldap/schema/id/id
+     else
+        id=`cat /var/lib/univention-ldap/schema/id/id`
+        if [ -z "$id" ]; then
+          echo "1" >/var/lib/univention-ldap/schema/id/id
+          chown listener /var/lib/univention-ldap/schema/id/id
+        fi
+    fi
+}
+
+
+if [ -f "$SLAPDCONF" ]; then
+    pidfile=`grep ^pidfile $SLAPDCONF | awk '{print $2}'`
+    if [ -z "$pidfile" ]; then
+	pidfile="/var/run/slapd.pid"
+    fi
+else
+    exit 0
+fi
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+  start)
+   @!@
+if baseConfig['ldap/database/type'] == 'bdb':
+	print 'echo -n "Check database: "'
+	print 'cd /var/lib/univention-ldap/ldap; $DBRECOVER'
+	print 'echo "done"'
+	print 'echo -n "  "'
+   @!@
+    echo -n "Starting ldap server(s):"
+    echo -n " slapd"
+    start-stop-daemon --start --quiet --pidfile "$pidfile" \
+		--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
+   @!@
+if baseConfig['ldap/server/type']=="master":	   
+    print "    replicas=`grep ^replica $REPLICACONF`"
+    print '    test -z "$replicas" || (echo -n " slurpd" && start-stop-daemon --start --quiet --name slurpd --exec $SLURPD -- -r /var/lib/univention-ldap/replog-slurpd/replog -t /var/lib/univention-ldap/slurpd)'
+    print 'check_subschema >/dev/null 2>&1'
+   @!@
+
+
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping ldap server(s):"
+    echo -n " slapd"
+	start-stop-daemon --stop --quiet --oknodo --retry 10 \
+	    --pidfile "$pidfile" \
+	    --exec /usr/sbin/slapd 2>&1
+    @!@
+if baseConfig['ldap/server/type']=="master":
+    print "    replicas=`grep ^replica $REPLICACONF`"
+    print '    test -z "$replicas" || (echo -n " slurpd" && killall slurpd > /dev/null 2>&1)'
+    @!@
+    echo "."
+    ;;
+  restart|force-reload)
+    echo "Restarting ldap server(s):"
+    echo -n "  "
+    $0 stop
+    sleep 2 # give it some time to die
+    echo -n "  "
+    $0 start
+    ;;
+  force-stop)
+    echo -n "Stopping ldap servers (force): "
+    killall slapd slurpd > /dev/null 2>&1
+    echo "done."
+    ;;
+  crestart)
+	if pidof slapd > /dev/null 2>&1
+		then
+		$0 restart
+	else
+		if pidof slurpd > /dev/null 2>&1
+			then
+			$0 restart
+		else
+			echo "No slapd or slurpd process found, don't need to restart"
+		fi
+	fi
+	;;
+  *)
+    echo "Usage: $0 {start|stop|restart|force-stop|crestart}"
+    exit 1
+    ;;
+esac
+
+exit 0

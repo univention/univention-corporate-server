@@ -1,0 +1,100 @@
+#! /bin/sh
+#
+# Univention LDAP Server
+#  join script
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-ldap-server-init successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+if [ -z "$ldap_server_type" ]; then
+	echo "ldap/server/type not set"
+	exit 1
+fi
+
+if ! test -e "/etc/ldap.secret"; then
+	LDAP_SECRET="not_founnd"
+fi
+
+if [ "$server_role" = "domaincontroller_slave" ]; then
+	touch /etc/ldap/rootpw.conf
+fi
+
+# initialize ldap
+
+files=`find /var/lib/univention-ldap/ldap/ -name "id2entry.*" -type f`
+if [ -z "$files" ] ; then
+	killall slapd >/dev/null 2>&1
+	killall slapd >/dev/null 2>&1
+	killall -9 slapd >/dev/null 2>&1
+
+	rm -f /var/lib/univention-ldap/ldap/*
+	univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
+
+	if [ -z "$LDAP_SECRET" ]; then
+		pw_crypt=`mkpasswd --hash=md5 -s < /etc/ldap.secret`
+	else
+		#if no ldap.secret is available, replication.py remove the ldap entries
+		pw_crypt="univention"
+	fi
+
+	backup_crypt=`mkpasswd --hash=md5 -s < /etc/ldap-backup.secret`
+	firstdc="`echo "$ldap_base" | sed -e 's|,.*||g;s|.*=||'`"
+	if [ -z "$windows_domain" ]; then
+		sambadomain=${domainname%%.*}
+	else
+		sambadomain=$windows_domain
+	fi
+	realm=`echo $domainname | sed -e 's/dc=//g' | sed -e 's/,/./g' | tr "[:lower:]" "[:upper:]"`
+	sid=`/usr/sbin/univention-newsid`
+	Domain=$domainname
+	cat /usr/share/univention-ldap/base.ldif | \
+		 sed -e \
+		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
+		univention-baseconfig filter | slapadd >/dev/null 2>&1
+
+
+	univention-baseconfig set windows/domain?$sambadomain
+	univention-baseconfig set kerberos/realm?$realm
+	/etc/init.d/slapd start
+
+	test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
+	test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
+
+fi
+
+test -n "`grep "univention-ldap-server-init successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-server-init successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

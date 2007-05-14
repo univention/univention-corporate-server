@@ -1,0 +1,110 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# Univention-specific extensions for kolab2-schema
+# using OIDs starting with 1.3.6.1.4.1.10176.1011
+
+# Enable vacation mails
+attributetype ( 1.3.6.1.4.1.10176.1011.1.1
+  NAME 'univentionKolabForwardActive'
+  DESC 'Enable forwarding of mails'
+  EQUALITY booleanMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
+
+# Text which is send in a vacation-email
+attributetype ( 1.3.6.1.4.1.10176.1011.1.2
+  NAME 'univentionKolabVacationText'
+  DESC 'Text used in vacation mails'
+  EQUALITY caseExactMatch
+  SUBSTR caseExactSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+# Enable vacation mails
+attributetype ( 1.3.6.1.4.1.10176.1011.1.3
+  NAME 'univentionKolabVacationActive'
+  DESC 'Enable vacation mails'
+  EQUALITY booleanMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
+
+# Email recipient domains which are not handled by the
+# vacation script. There can be multiple kolabVacationNoReactDomain
+# entries for each kolabInetOrgPerson
+# Default is empty.
+attributetype ( 1.3.6.1.4.1.10176.1011.1.4
+  NAME 'univentionKolabVacationNoReactDomain'
+  DESC 'Multivalued -- Email domain for vacation not to response upon'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} )
+
+# Deliver incomming mails into this folder instead of INBOX
+# The folder given relative to INBOX
+attributetype ( 1.3.6.1.4.1.10176.1011.1.5
+  NAME 'univentionKolabDeliveryToFolderName'
+  DESC 'Folder new mails will be delivered into'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256} SINGLE-VALUE)
+
+# Enable delivery into folder
+attributetype ( 1.3.6.1.4.1.10176.1011.1.6
+  NAME 'univentionKolabDeliveryToFolderActive'
+  DESC 'Enable delivery of mails into folder'
+  EQUALITY booleanMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
+
+# Disable sieve script by kolab
+attributetype ( 1.3.6.1.4.1.10176.1011.1.7
+  NAME 'univentionKolabDisableSieve'
+  DESC 'Do not write any sieve script by kolab'
+  EQUALITY booleanMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
+
+
+# univention-kolab2 account
+objectclass ( 1.3.6.1.4.1.10176.1011.2.1
+  NAME 'univentionKolabInetOrgPerson'
+  DESC 'Univention Extensions to Kolab Internet Organizational Person'
+  SUP top AUXILIARY
+  MAY ( univentionKolabVacationActive $
+	univentionKolabVacationText $
+	univentionKolabVacationNoReactDomain $
+	univentionKolabForwardActive $
+	univentionKolabDeliveryToFolderName $
+	univentionKolabDisableSieve $
+	univentionKolabDeliveryToFolderActive ) )
+
+# univention mail domain
+objectclass ( 1.3.6.1.4.1.10176.1012.2.1
+  NAME 'univentionMailDomainname'
+  DESC 'Univention mail domain'
+  SUP top STRUCTURAL
+  MUST ( cn ) )
+
+# mailinglist member
+attributetype ( 1.3.6.1.4.1.10176.1013.1.1
+  NAME 'univentionKolabMember'
+  DESC 'Mailinglist member'
+  EQUALITY caseIgnoreIA5Match
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{256})
+
+# univention mail group
+objectclass ( 1.3.6.1.4.1.10176.1013.2.1
+  NAME 'univentionKolabGroup'
+  DESC 'Univention mailinglist'
+  SUP top STRUCTURAL
+  MUST ( cn )
+  MAY (mailPrimaryAddress $ description $ univentionKolabMember) )
+
+# use namespace 'user' for shared folders
+attributetype ( 1.3.6.1.4.1.10176.1014.1.1
+  NAME 'univentionKolabUserNamespace'
+  DESC 'use namespace "user" instead of "shared" for shared folders'
+  EQUALITY booleanMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
+
+# univention shared folder
+objectclass ( 1.3.6.1.4.1.10176.1014.2.1
+  NAME 'univentionKolabSharedFolder'
+  DESC 'Univention shared folder'
+  SUP top AUXILIARY
+  MAY ( univentionKolabUserNamespace ) )

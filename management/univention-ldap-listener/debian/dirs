@@ -1,0 +1,10 @@
+usr/sbin
+etc/init.d
+usr/lib/python2.4/site-packages
+usr/share/univention-ldap-listener/
+usr/lib/univention-ldap-listener/system
+usr/lib/univention-ldap-listener/user
+etc/runit/univention
+etc/runit/univention-ldap-listener
+usr/lib/univention-install
+etc/univention/daemons

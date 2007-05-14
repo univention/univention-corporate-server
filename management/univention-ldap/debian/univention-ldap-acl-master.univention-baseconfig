@@ -1,0 +1,46 @@
+Type: multifile
+Multifile: etc/ldap/slapd.conf
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/debug/level
+Variables: ldap/replog
+Variables: ldap/acl/user/password/change
+Variables: ldap/acl/user/kolab2/change
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/60univention-ldap-server_acl-master
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: interfaces/eth0/address
+Variables: ldap/replog
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/63univention-ldap-server_acl-master-password
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: ldap/acl/user/password/change
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/64univention-ldap-server_acl-master-admin-settings
+Variables: ldap/server/type
+Variables: ldap/master
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/65univention-ldap-server_acl-master-kolab2
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: interfaces/eth0/address
+Variables: ldap/replog
+Variables: ldap/acl/user/kolab2/change
+
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/70univention-ldap-server_acl-master-end
+Variables: ldap/server/type
+Variables: ldap/master
+Variables: interfaces/eth0/address
+Variables: ldap/replog

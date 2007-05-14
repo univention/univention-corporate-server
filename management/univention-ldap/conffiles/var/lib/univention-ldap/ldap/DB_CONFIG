@@ -1,0 +1,23 @@
+@!@
+if baseConfig['ldap/database/type'] == "bdb":
+	if baseConfig.has_key('ldap/database/bdb/set_cachesize') and baseConfig['ldap/database/bdb/set_cachesize']:
+		print 'set_cachesize %s'%baseConfig['ldap/database/bdb/set_cachesize']
+	else:
+		print 'set_cachesize 0 90000000 1'
+	
+	if baseConfig.has_key('ldap/database/bdb/set_lg_bsize') and baseConfig['ldap/database/bdb/set_lg_bsize']:
+		print 'set_lg_bsize %s'%baseConfig['ldap/database/bdb/set_lg_bsize']
+	else:
+		print 'set_lg_bsize 262144'
+
+	if baseConfig.has_key('ldap/database/bdb/set_lg_max') and baseConfig['ldap/database/bdb/set_lg_max']:
+		print 'set_lg_max %s'%baseConfig['ldap/database/bdb/set_lg_max']
+	else:
+		print 'set_lg_max 1048576'
+
+	if baseConfig.has_key('ldap/database/bdb/db_config_options') and baseConfig['ldap/database/bdb/db_config_options']:
+		for option in baseConfig['ldap/database/bdb/db_config_options'].split(','):
+			if baseConfig.has_key('ldap/database/bdb/%s'%option) and baseConfig['ldap/database/bdb/%s'%option]:
+				print '%s %s'%(option,baseConfig['ldap/database/bdb/%s'%option])
+@!@
+

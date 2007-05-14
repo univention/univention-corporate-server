@@ -1,0 +1,56 @@
+Kommunikation von Listener zu Notifier: >>>
+Kommunikation von Notifier zu Listener: <<<
+
+
+Listener gibt Protokoll-Version und unterstuetzte Features bekannt:
+>>> Version: 2
+>>> Capabilities: STARTTLS
+>>>
+
+Ebenso der Notifier:
+<<< Version: 2
+<<< Capabilities: STARTTLS
+>>>
+
+Das Protokoll ist asynchron. Jede Anfrage wird mit einer eindeutigen
+Nachrichten ID (MSGID) versehen. Anworten sind immer an eine bestimmte
+MSGID Adressiert. Anfragen muesste nicht in der gleiche Reihenfolge
+beantwortet werden, in der sie gestellt werden.
+
+Abfrage einer DN mit der letzten Transaktions ID 9:
+>>> MSGID: 1
+>>> GET_DN 9
+>>>
+Notifier blockt bis eine neue Transaktion verfuegbar ist:
+<<< MSGID: 1
+<<< 10 cn=foo,dc=bar
+<<< 11 cn=bar,dc=bar
+<<<
+
+Abfrage des Schemas mit der letzten Schema Transaktions ID 5:
+>>> MSGID: 7
+>>> GET_SCHEMA_DN 5
+>>>
+Notifier blockt nicht. Falls eine Schema-Aenderung vorliegt:
+<<< MSGID: 7
+<<< 6 cn=Subschema
+<<<
+Andernfalls:
+<<< MSGID: 7
+<<<
+
+Abfrage der aktuellen Transaktions ID:
+>>> MSGID: 19
+>>> GET_ID
+>>>
+<<< MSGID: 19
+<<< 11
+<<<
+
+Abfrage der aktuellen Schema Transaktions ID:
+>>> MSGID: 78
+>>> GET_SCHEMA_ID
+>>>
+<<< MSGID: 78
+<<< 6
+<<<

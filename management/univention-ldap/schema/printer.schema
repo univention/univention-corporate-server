@@ -1,0 +1,62 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+# printer.schema
+
+# $OID: 1.3.6.1.4.1.10176.1002 (Printers) $
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.1 NAME 'univentionPrinterSpoolHost'
+	DESC 'URI'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.2 NAME 'univentionPrinterURI'
+	DESC 'URI'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.3 NAME 'univentionPrinterLocation'
+	DESC 'location of the printer'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.4 NAME 'univentionPrinterModel'
+	DESC 'URI'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.5 NAME 'univentionPrinterSambaName'
+	DESC 'Samba share name'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.8 NAME 'univentionPrinterQuotaSupport'
+	DESC 'Enable Quota'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.9 NAME 'univentionPrinterPricePerPage'
+	DESC 'Price per page'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.10 NAME 'univentionPrinterPricePerJob'
+	DESC 'Price per printjob'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1002.1.11 NAME 'univentionPrinterGroupMember'
+	DESC 'Member of Printergroup'
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( 1.3.6.1.4.1.10176.1002.2.1 NAME 'univentionPrinter'
+	STRUCTURAL
+	DESC 'share'
+	MUST ( cn $ univentionPrinterURI $ univentionPrinterSpoolHost )
+	MAY ( description $ univentionPrinterLocation $ univentionPrinterModel $ univentionPrinterSambaName $ univentionPrinterQuotaSupport $ univentionPrinterPricePerPage $ univentionPrinterPricePerJob))
+
+objectclass ( 1.3.6.1.4.1.10176.1002.2.2 NAME 'univentionPrinterGroup'
+	STRUCTURAL
+	DESC 'share'
+	MUST ( cn $ univentionPrinterSpoolHost )
+	MAY ( description $ univentionPrinterSambaName $ univentionPrinterQuotaSupport $ univentionPrinterPricePerPage $ univentionPrinterPricePerJob $ univentionPrinterGroupMember))

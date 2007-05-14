@@ -1,0 +1,103 @@
+#!/bin/sh
+#
+# Univention LDAP Server
+#  converts a UCS backup into a UCS master
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `univention-baseconfig shell`
+
+#remove replication listener modul
+dpkg-divert --divert /usr/lib/univention-ldap-listener/replication.py.divert --rename --add /usr/lib/univention-ldap-listener/system/replication.py
+
+# stop openldap, samba, kerberos, listener and notifier
+test -x /etc/init.d/slapd && /etc/init.d/slapd stop
+test -x /etc/init.d/samba && /etc/init.d/samba stop
+test -x /etc/init.d/heimdal-kdc && /etc/init.d/heimdal-kdc stop
+test -x /etc/init.d/univention-ldap-notifier && /etc/init.d/univention-ldap-notifier stop
+test -x /etc/init.d/univention-ldap-listener && /etc/init.d/univention-ldap-listener stop
+
+old_ldap_master="$ldap_master"
+# set baseconfig variables
+univention-baseconfig set ldap/master=$hostname.$domainname
+univention-baseconfig set ldap/server/type=master
+univention-baseconfig set server/role=domaincontroller_master
+univention-baseconfig set kerberos/adminserver=$hostname.$domainname
+univention-baseconfig set windows/wins-support=yes
+
+# start openldap, samba, kerberos, notifier and listener
+test -x /etc/init.d/slapd && /etc/init.d/slapd start
+test -x /etc/init.d/samba && /etc/init.d/samba start
+test -x /etc/init.d/heimdal-kdc && /etc/init.d/heimdal-kdc start
+test -x /etc/init.d/univention-ldap-notifier && /etc/init.d/univention-ldap-notifier start
+test -x /etc/init.d/univention-ldap-listener && /etc/init.d/univention-ldap-listener start
+
+/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists $domainname add srv kerberos-adm tcp 0 0 88 $hostname.$domainname.
+/usr/share/univention-admin-tools/univention-dnsedit --ignore-exists $domainname remove srv kerberos-adm tcp 0 0 88 $old_ldap_master.
+
+# set ServerRole to master
+temp_file=`mktemp`
+echo "dn: `univention-baseconfig get ldap/hostdn`"    >>$temp_file
+echo "changetype: modify"                             >>$temp_file
+echo "replace: univentionServerRole"                  >>$temp_file
+echo "univentionServerRole: master"                   >>$temp_file
+
+ldapmodify -x -D cn=admin,$ldap_base -w `cat /etc/ldap.secret` -f $temp_file
+
+rm $temp_file
+
+mailRelay=`univention-admin container/dc list --dn "$ldap_base" | grep ".*mailRelay: " | sed -e 's|.*mailRelay: ||'`
+if [ -n "$mailRelay" ]; then
+	if [ "$mailRelay" = "$old_ldap_master" ]; then
+		univention-admin container/dc modify --dn $ldap_base --set mailRelay="$hostname.$domainname"
+	fi
+fi
+
+srv_dn=`univention-admin dns/srv_record list --superordinate zoneName=$domainname,cn=dns,$ldap_base --filter relativeDomainName="_domaincontroller_master._tcp" | grep "^DN: " | sed -e 's|DN: ||'`
+univention-admin dns/srv_record modify --superordinate zoneName=$domainname,cn=dns,$ldap_base --dn "$srv_dn" --set location="0 0 0 $hostname.$domainname."
+
+old_ldap_master_hostname=`echo $old_ldap_master | awk -F '.' '{print $1}'`
+univention-admin computers/domaincontroller_master remove --filter name=$old_ldap_master_hostname --remove_referring
+
+res=`ldapsearch -x -LLL "(&(relativeDomainName=univention-admin)(cNameRecord=$old_ldap_master_hostname))"`
+if [ -n "$res" ]; then
+	 /usr/share/univention-admin-tools/univention-dnsedit --stoptls --overwrite $domainname add cname univention-admin $hostname
+fi
+
+res=`ldapsearch -x -LLL "(&(relativeDomainName=univention-repository)(cNameRecord=$old_ldap_master_hostname))"`
+if [ -n "$res" ]; then
+	 /usr/share/univention-admin-tools/univention-dnsedit --stoptls --overwrite $domainname add cname univention-repository $hostname
+fi
+
+univention-admin dns/forward_zone list --filter nameserver="$old_ldap_server." | grep ^DN | sed -e 's|DN: ||' | while read line; do
+	univention-admin dns/forward_zone modify --dn "$line" --append nameserver="$hostname.$domainname."
+	univention-admin dns/forward_zone modify --dn "$line" --remove nameserver="$old_ldap_server."
+done
+
+univention-admin dns/reverse_zone list --filter nameserver="$old_ldap_server." | grep ^DN | sed -e 's|DN: ||' | while read line; do
+	univention-admin dns/reverse_zone modify --dn "$line" --append nameserver="$hostname.$domainname."
+	univention-admin dns/reverse_zone modify --dn "$line" --remove nameserver="$old_ldap_server."
+done

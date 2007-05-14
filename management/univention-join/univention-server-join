@@ -1,0 +1,334 @@
+#!/bin/sh
+#
+# Univention Join
+#  joins a server to an univention domain
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin"
+
+ADMINOPTIONS=""
+LOGFILE="/var/log/univention/server-join.log"
+if [ "$USER" != "root" ]; then
+    if [ "$HOME" ]; then
+	LOGFILE="$HOME/.univention-server-join.log"
+    else
+	USERTMP=`mktemp -d`
+	LOGFILE="$USERTMP/.univention-server-join.log"
+    fi
+    ADMINOPTIONS="$ADMINOPTIONS --logfile $LOGFILE"
+fi
+
+display_help() {
+	display_header
+	cat <<-EOL
+	Syntax:
+	  univention-server-join -hostname <hostname> -role <role> [options]
+	  univention-server-join [--help] [--version]
+
+	Options:
+	  -role <role>:            [domaincontroller_master|domaincontroller_backup|
+	                            domaincontroller_slave|memberserver]
+	  -hostname <hostname>:    hostname of computer system
+	  -domainname <domainname>:    domainname of computer system
+	  -ip <ip-address>:        IP address of computer system
+	  -mac <mac-address>:      MAC address of computer system
+
+	  -bindaccount
+	  -bindpwfile:             UID and password for Univention Admin
+
+	  -h | --help | -?:        print this usage message and exit program
+	  --version:               print version information and exit program
+
+	Description:
+	  univention-server-join joins a server to an univention domain,
+	  e.g. univention-server-join -role memberserver -hostname membsrv -ip 1.2.3.4
+
+	Known-Bugs:
+	  -None-
+
+	EOL
+}
+
+display_header() {
+	echo "univention-server-join: joins a server to an univention domain"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "univention-server-join @%@package_version@%@"
+}
+
+
+log() {
+	if [ $1 = 1 ]; then
+		shift
+		echo "$@"				>>"$LOGFILE"
+		echo "$@"
+	else
+		shift
+		echo "$@"				>>"$LOGFILE"
+	fi
+}
+
+MAC=""
+BINDDN=""
+BINDPWFILE=""
+DOMAINNAME=""
+log 0 "univention-server-join called"
+echo "Parameter: $@" >>"$LOGFILE"
+
+while [ $# -gt 0 ]
+do
+	case "$1" in
+		"-role")
+			shift
+			ROLE=$1
+			shift
+			;;
+		"-hostname")
+			shift
+			HOSTNAME=$1
+			shift
+			;;
+		"-domainname")
+			shift
+			DOMAINNAME=$1
+			shift
+			;;
+		"-ip")
+			shift
+			IP=$1
+			shift
+			;;
+		"-certs")
+			shift
+			CERTS="$1"
+			shift
+			;;
+		"-mac")
+			shift
+			MAC="$1"
+			shift
+			;;
+		"-bindaccount")
+			shift
+			BINDACCOUNT="$1"
+			shift
+			;;
+		"-bindpwfile")
+			shift
+			BINDPWFILE="$1"
+			shift
+			;;
+		"-position")
+			shift
+			POSITION="$1"
+			shift
+			;;
+		"--version")
+			display_version
+			exit 1
+			;;
+		*)
+			display_help
+			exit 1
+			;;
+	esac
+done
+
+# extend options for univention-admin
+if [ "$BINDACCOUNT" ]; then
+    BINDDN=`ldapsearch -x "(&(uid=$BINDACCOUNT)(objectclass=posixAccount))" dn | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`
+    log 0 "found BINDDN: $BINDDN" >>$LOGFILE
+    if [ -z "$BINDDN" ]; then
+	log 1 "failed to get binddn for $BINDACCOUNT"
+	exit 1
+    fi
+fi
+
+if [ "$BINDDN" ]; then
+    ADMINOPTIONS="$ADMINOPTIONS --binddn $BINDDN"
+fi
+if [ "$BINDPWFILE" ]; then
+    ADMINOPTIONS="$ADMINOPTIONS --bindpw `cat $BINDPWFILE`"
+fi
+
+
+eval `univention-baseconfig shell`
+if [ -z "$ROLE" ]; then
+	log 1 "E: 	-role is missing"
+	display_help
+fi
+if [ -z "$HOSTNAME" ]; then
+	log 1 "E: 	-hostname is missing"
+	display_help
+fi
+
+if [ -z "$DOMAINNAME" ]; then
+	DOMAINNAME="$domainname"
+fi
+
+display_header
+create_entry () {
+# $1 desc
+# $2 module
+# $3 position
+# $4 primaryGroup
+# $5 group
+	log 0 "Join $1"
+
+	old_dn=`univention-admin $2 list --filter name=$HOSTNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep "DN: " | sed -e "s|.*DN: ||"`
+	if [ $? = 1 ]; then
+		log 1 "E: failed search $1 [$old_dn]"
+		exit 1
+	fi
+
+	if [ -z "$old_dn" ]; then
+		log 0 "	Create new $1 "
+
+		if [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/client" ]; then
+			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
+		elif [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/mobileclient" ]; then
+			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
+		elif [ -n "$MAC" ]; then
+			mac_cmd="--set mac=$MAC"
+		fi
+
+		if [ -n "$IP" ]; then
+			ip_cmd="--set ip=$IP"
+			if [ -n "$forwardZone" ]; then
+				ip_cmd="$ip_cmd --set dnsEntryZoneForward=$forwardZone "
+				if [ -n "$reverseZone" ]; then
+					ip_cmd="$ip_cmd --set dnsEntryZoneReverse=$reverseZone "
+				fi
+			fi
+		fi
+
+		rc=`univention-admin $2 create --position "$3"\
+			--set name=$HOSTNAME $ip_cmd \
+			--set domain=$DOMAINNAME \
+			--set password=$computerPassword --set unixhome=/dev/null --set shell=/bin/sh --set primaryGroup="$4" $mac_cmd $ADMINOPTIONS`
+		if [ $? = 1 ]; then
+			log 1 "E: failed to create $1 (1) [$rc]"
+			exit 1
+		fi
+
+		if [ -z "$rc" ]; then
+			log 1 "E: failed to create $1: no result"
+			exit 1
+		fi
+
+		ldap_dn=`echo $rc | grep "Object created:" | sed -e 's|Object created: ||'`
+		if [ -z "$ldap_dn" ]; then
+			log 1 "E: failed to create $1 (2) [$rc]"
+			exit 1
+		fi
+
+		echo "ldap_dn=\"$ldap_dn\""
+
+		if [ -n "$5" ]; then
+			rc=`univention-admin groups/group modify --dn="$5" --append users="$ldap_dn" $ADMINOPTIONS`
+		fi
+	else
+		log 0 "Modify $1 [$old_dn]"
+
+		if [ -n "$MAC" ]; then
+			mac_cmd="--set mac=$MAC"
+		fi
+		if [ -n "$IP" ]; then
+			ip_cmd="--set ip=$IP"
+		fi
+		rc=`univention-admin $2 modify --dn "$old_dn" --set password=$computerPassword --set domain=$DOMAINNAME $mac_cmd $ip_cmd $ADMINOPTIONS`
+
+		if [ $? = 1 ]; then
+			log 1 "E: failed to modify $1 $old_dn [$rc]"
+		fi
+
+		echo "ldap_dn=\"$old_dn\" "
+
+	fi
+
+
+}
+
+if [ -n "$IP" ]; then
+	subnet=`univention-ipcalc --ip $IP --netmask $interfaces_eth0_netmask --output network --calcdns`
+	log 0 "	Calculated subnet = $subnet"
+
+	forwardZone=`univention-admin dns/forward_zone list --filter zone=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	reverseZone=`univention-admin dns/reverse_zone list --filter subnet=$subnet  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+	dhcpEntry=`univention-admin dhcp/service list --filter name=$DOMAINNAME  $ADMINOPTIONS | ldapsearch-wrapper | grep DN | sed -e 's/DN: //g'`
+
+	log 0 "	forwardZone $forwardZone "
+	log 0 "	reverseZone $reverseZone "
+fi
+
+computerPassword=`makepasswd --chars=8`
+
+if [ "$ROLE" = "domaincontroller_master" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "DC Master" "computers/domaincontroller_master" "$POSITION" "cn=DC Backup Hosts,cn=groups,$ldap_base"
+	else
+		create_entry "DC Master" "computers/domaincontroller_master" "cn=dc,cn=computers,$ldap_base" "cn=DC Backup Hosts,cn=groups,$ldap_base"
+	fi
+
+elif [ "$ROLE" = "domaincontroller_backup" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "DC Backup" "computers/domaincontroller_backup" "$POSITION" "cn=DC Backup Hosts,cn=groups,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
+	else
+		create_entry "DC Backup" "computers/domaincontroller_backup" "cn=dc,cn=computers,$ldap_base" "cn=DC Backup Hosts,cn=groups,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
+	fi
+	kadmin -l add --random-key --use-defaults ldap/$HOSTNAME.$DOMAINNAME
+elif [ "$ROLE" = "domaincontroller_slave" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "DC Slave" "computers/domaincontroller_slave" "$POSITION" "cn=DC Slave Hosts,cn=groups,$ldap_base"
+	else
+		create_entry "DC Slave" "computers/domaincontroller_slave" "cn=dc,cn=computers,$ldap_base" "cn=DC Slave Hosts,cn=groups,$ldap_base"
+	fi
+	kadmin -l add --random-key --use-defaults ldap/$HOSTNAME.$DOMAINNAME
+elif [ "$ROLE" = "memberserver" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "Member Server" "computers/memberserver" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
+	else
+		create_entry "Member Server" "computers/memberserver" "cn=memberserver,cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
+	fi
+elif [ "$ROLE" = "client" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "Client" "computers/client" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
+	else
+		create_entry "Client" "computers/client" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
+	fi
+elif [ "$ROLE" = "mobileclient" ]; then
+	if [ -n "$POSITION" ]; then
+		create_entry "Client" "computers/mobileclient" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
+	else
+		create_entry "Client" "computers/mobileclient" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
+	fi
+fi
+
+echo "KerberosPasswd=\"$computerPassword\" "

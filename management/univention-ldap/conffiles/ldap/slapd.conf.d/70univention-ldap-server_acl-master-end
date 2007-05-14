@@ -1,0 +1,77 @@
+@!@
+ldap_base=baseConfig['ldap/base']
+address=baseConfig['interfaces/eth0/address']
+if baseConfig['ldap/server/type']=="master":
+	usr="write"
+else:
+	usr="read"
+
+
+print 'access to dn.regex="cn=.*,cn=dc,cn=computers,%s" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % ( ldap_base )
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by self %s' % ( usr )
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" read' % ( ldap_base )
+print '   by * none'
+
+print 'access to dn.regex="cn=.*,cn=memberserver,cn=computers,%s" attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange' % ( ldap_base )
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by self %s' % ( usr )
+print '   by * none'
+
+print 'access to dn.regex="cn=.*,cn=memberserver,cn=computers,%s" attrs=objectClass,sambaSID,sambaPrimaryGroupSID,displayName,sambaAcctFlags' % ( ldap_base )
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by * read break'
+
+print 'access to attrs=userPassword,krb5Key,krb5KDCFlags,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,krb5KeyVersionNumber,univentionWindowsReinstall,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory'
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
+print '   by dn.regex="[^,]+,cn=memberserver,cn=computers,%s" read' % ( ldap_base )
+print '   by * none'
+
+print 'access to dn.base="cn=idmap,cn=univention,%s"' % ( ldap_base )
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
+print '   by dn.regex="[^,]+,cn=memberserver,cn=computers,%s" write' % ( ldap_base )
+print '   by * none'
+
+print 'access to dn.regex=".*,cn=idmap,cn=univention,%s" filter="(|(&(objectClass=sambaUnixIdPool)(objectClass=organizationalRole)(objectClass=top))(&(objectClass=sambaIdmapEntry)(objectClass=sambaSidEntry)))"' % ( ldap_base )
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by dn.regex="[^,]+,cn=dc,cn=computers,%s" %s' % ( ldap_base, usr )
+print '   by dn.regex="[^,]+,cn=memberserver,cn=computers,%s" write' % ( ldap_base )
+print '   by * none'
+
+print 'access to *'
+print '   by dn.base="cn=admin,%s" %s' % ( ldap_base, usr )
+print '   by set="user & [cn=Domain Admins,cn=groups,%s]/uniqueMember*" %s' % ( ldap_base, usr )
+#print '   by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,%s" %s' % ( ldap_base, usr )
+print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
+print '   by * read'
+
+
+if baseConfig['ldap/server/type']=="master":
+	print "replogfile /var/lib/univention-ldap/replog/replog"
+elif baseConfig.has_key('ldap/replog') and (baseConfig['ldap/replog'].lower == 'true' or baseConfig['ldap/replog'].lower == 'yes'):
+	print "replogfile /var/lib/univention-ldap/replog/replog"
+
+print "include /etc/ldap/replica.conf"
+@!@

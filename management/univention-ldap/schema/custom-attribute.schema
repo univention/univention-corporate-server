@@ -1,0 +1,68 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+
+#using namespace 1.3.6.1.4.1.10176.200.*
+
+attributetype ( 1.3.6.1.4.1.10176.200.1 NAME 'univentionAdminPropertyModule'
+        DESC ' determines which ldap module(s) is(are) related to this custom attribute '
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.200.2 NAME 'univentionAdminPropertyShortDescription'
+        DESC ' short description for the attribute'
+        EQUALITY caseIgnoreMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.3 NAME 'univentionAdminPropertyLongDescription'
+        DESC ' some text describing the attribute eg.: "this is the numerical id of the user"'
+        EQUALITY caseIgnoreMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.4 NAME 'univentionAdminPropertySyntax'
+        DESC ' datatype of the attribute eg.: string'
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.5 NAME 'univentionAdminPropertyMultivalue'
+        DESC ' is this attribute a multivalue'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.6 NAME 'univentionAdminPropertyDefault'
+        DESC ' the default value for this attribute'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.7 NAME 'univentionAdminPropertyLdapMapping'
+        DESC ' determines which ldap attribute(s) is(are) related to this custom attribute '
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.8 NAME 'univentionAdminPropertyObjectClass'
+        DESC ' objectClass an Object must have '
+        EQUALITY caseExactMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.9 NAME 'univentionAdminPropertyDeleteValues'
+        DESC ' delete these attributes when object deleted'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
+
+attributetype ( 1.3.6.1.4.1.10176.200.10 NAME 'univentionAdminPropertyDeleteObjectClass'
+        DESC ' delete the objectclass'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.11 NAME 'univentionAdminPropertyLayoutTabName'
+        DESC ' delete the objectclass'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.200.12 NAME 'univentionAdminPropertyLayoutPosition'
+        DESC ' delete the objectclass'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+objectClass ( 1.3.6.1.4.1.10176.200.20 NAME 'univentionAdminProperty'
+        DESC ' defines a custom attribute for use in univention_ admin '
+        MUST ( cn $ univentionAdminPropertyModule $ univentionAdminPropertyShortDescription $ univentionAdminPropertyLdapMapping )
+        MAY ( univentionAdminPropertyLongDescription $ univentionAdminPropertySyntax $ univentionAdminPropertyMultivalue $ univentionAdminPropertyDefault $ univentionAdminPropertyObjectClass $ univentionAdminPropertyDeleteValues $ univentionAdminPropertyDeleteObjectClass $ univentionAdminPropertyLayoutTabName $ univentionAdminPropertyLayoutPosition ))

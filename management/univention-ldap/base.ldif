@@ -1,0 +1,643 @@
+@!@
+dn=baseConfig['ldap/base'].split('=')[0]
+print 'dn: %s' % baseConfig['ldap/base']
+print 'objectClass: top'
+print 'objectClass: krb5Realm'
+print 'objectClass: univentionPolicyReference'
+print 'objectClass: nisDomainObject'
+print 'objectClass: domainRelatedObject'
+if dn == 'dc':
+	print 'objectClass: domain'
+	print 'dc: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+
+if dn == 'o':
+	print 'objectClass: organization'
+	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+elif dn == 'ou':
+	print 'objectClass: organizationalRole'
+	print 'ou: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+elif dn == 'l':
+	print 'objectClass: organization'
+	print 'l: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+	print 'o: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+elif dn == 'cn':
+	print 'objectClass: organizationUnit'
+	print 'cn: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+elif dn == 'c':
+	print 'objectClass: country'
+	print 'c: %s' % baseConfig['ldap/base'].split('=')[1].split(',')[0]
+print 'objectClass: univentionBase'
+print 'krb5RealmName: %s' % baseConfig['domainname'].upper()
+print 'nisDomain: %s' % baseConfig['domainname']
+print 'associatedDomain: %s' % baseConfig['domainname']
+print 'univentionPolicyReference: cn=default-settings,cn=thinclient,cn=policies,%s' % baseConfig['ldap/base']
+print 'univentionPolicyReference: cn=default-settings,cn=boot,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
+print 'univentionPolicyReference: cn=default-settings,cn=dns,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
+print 'univentionPolicyReference: cn=default-settings,cn=routing,cn=dhcp,cn=policies,%s' % baseConfig['ldap/base']
+print 'univentionPolicyReference: cn=default-settings,cn=pwhistory,cn=users,cn=policies,%s' % baseConfig['ldap/base']
+print 'univentionPolicyReference: cn=default-users,cn=admin-settings,cn=users,cn=policies,%s' % baseConfig['ldap/base']
+print ''
+print 'dn: cn=samba,%s' % baseConfig['ldap/base']
+print 'objectClass: top'
+print 'objectClass: organizationalRole'
+print 'cn: samba'
+print ''
+print 'dn: sambaDomainName=@@%%@@sambadomain@@%%@@,cn=samba,%s' % ( baseConfig['ldap/base'])
+print 'sambaDomainName: @@%%@@sambadomain@@%%@@'
+print 'sambaSID: @@%%@@sid@@%%@@'
+print 'objectClass: sambaDomain'
+print 'sambaNextUserRid: 1000'
+print 'sambaNextGroupRid: 1000'
+@!@
+dn: cn=admin,@%@ldap/base@%@
+objectClass: top
+objectClass: person
+cn: admin
+sn: admin
+userPassword: {crypt}@@%%@@ldap.pw@@%%@@
+
+dn: cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: univention
+
+dn: cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: temporary
+
+dn: cn=packages,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: packages
+
+dn: cn=templates,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: templates
+
+dn: cn=default containers,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionDirectory
+cn: default containers
+univentionComputersObject: cn=computers,@%@ldap/base@%@
+univentionComputersObject: cn=memberserver,cn=computers,@%@ldap/base@%@
+univentionComputersObject: cn=dc,cn=computers,@%@ldap/base@%@
+univentionDnsObject: cn=dns,@%@ldap/base@%@
+univentionDhcpObject: cn=dhcp,@%@ldap/base@%@
+univentionPolicyObject: cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=desktop,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=shares,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=userquota,cn=shares,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=printquota,cn=shares,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=update,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=ldap,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=installation,cn=update,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=packages,cn=update,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=repository,cn=update,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=boot,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=dns,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=dnsupdate,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=leasetime,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=netbios,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=routing,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=scope,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=statements,cn=dhcp,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=sound,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=thinclient,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=xfree,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=mail,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=windowsinstallations,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=users,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
+univentionLicenseObject: cn=license,cn=univention,@%@ldap/base@%@
+univentionUsersObject: cn=users,@%@ldap/base@%@
+univentionGroupsObject: cn=groups,@%@ldap/base@%@
+univentionNetworksObject: cn=networks,@%@ldap/base@%@
+univentionSharesObject: cn=shares,@%@ldap/base@%@
+univentionPrintersObject: cn=printers,@%@ldap/base@%@
+univentionMailObject: cn=domain,cn=mail,@%@ldap/base@%@
+univentionMailObject: cn=mailinglists,cn=mail,@%@ldap/base@%@
+univentionMailObject: cn=folder,cn=mail,@%@ldap/base@%@
+
+dn: cn=custom attributes,cn=univention,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: custom attributes
+
+dn: cn=cups,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: cups
+
+dn: cn=printeruris,cn=cups,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPrinterURIs
+printerURI: lpd://
+printerURI: ipp://
+printerURI: http://
+printerURI: usb:/
+printerURI: socket://
+printerURI: parallel:/
+printerURI: file:/
+printerURI: smb://
+cn: printeruris
+
+dn: cn=sid,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: sid
+
+dn: cn=gidNumber,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionLastUsed
+cn: gidNumber
+univentionLastUsedValue: 5005
+
+dn: cn=uid,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: uid
+
+dn: cn=gid,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: gid
+
+dn: cn=groupName,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: groupName
+
+dn: cn=mailPrimaryAddress,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: mailPrimaryAddress
+
+dn: cn=uidNumber,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+objectClass: univentionLastUsed
+cn: uidNumber
+univentionLastUsedValue: 2000
+
+dn: cn=aRecord,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: aRecord
+
+dn: cn=mac,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: mac
+
+dn: cn=domainSID,cn=temporary,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: domainSID
+
+dn: cn=admin-settings,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: admin-settings
+
+dn: cn=default,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionDefault
+cn: default
+univentionDefaultGroup: cn=Domain Users,cn=groups,@%@ldap/base@%@
+univentionDefaultComputerGroup: cn=Windows Hosts,cn=groups,@%@ldap/base@%@
+univentionDefaultDomainControllerGroup: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
+univentionDefaultDomainControllerMasterGroup: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
+univentionDefaultClientGroup: cn=Computers,cn=groups,@%@ldap/base@%@
+univentionDefaultMemberserverGroup: cn=Computers,cn=groups,@%@ldap/base@%@
+
+dn: cn=license,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: license
+
+dn: cn=idmap,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: idmap
+
+dn: cn=nextUnixId,cn=idmap,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+objectClass: sambaUnixIdPool
+cn: nextUnixId
+uidNumber: 55000
+gidNumber: 55000
+
+dn: cn=users,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: users
+
+dn: cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: groups
+
+dn: cn=computers,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: computers
+
+dn: cn=dc,cn=computers,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: dc
+
+dn: cn=memberserver,cn=computers,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: memberserver
+
+dn: cn=shares,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: shares
+
+dn: cn=networks,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: networks
+
+dn: cn=printers,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: printers
+
+dn: cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: policies
+
+dn: cn=kerberos,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: kerberos
+
+dn: cn=mail,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: mail
+
+dn: cn=desktop,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: desktop
+
+dn: cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: shares
+
+dn: cn=userquota,cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: userquota
+
+dn: cn=printquota,cn=shares,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: printquota
+
+dn: cn=update,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: update
+
+dn: cn=ldap,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: ldap
+
+dn: cn=installation,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: installation
+
+dn: cn=packages,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: packages
+
+dn: cn=repository,cn=update,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: repository
+
+dn: cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: dhcp
+
+dn: cn=boot,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: boot
+
+dn: cn=default-settings,cn=boot,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyDhcpBoot
+cn: default-settings
+
+dn: cn=dns,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: dns
+
+dn: cn=default-settings,cn=dns,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyDhcpDns
+cn: default-settings
+
+dn: cn=dnsupdate,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: dnsupdate
+
+dn: cn=leasetime,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: leasetime
+
+dn: cn=netbios,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: netbios
+
+dn: cn=routing,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: routing
+
+dn: cn=default-settings,cn=routing,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyDhcpRouting
+cn: default-settings
+
+dn: cn=scope,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: scope
+
+dn: cn=statements,cn=dhcp,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: statements
+
+dn: cn=sound,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: sound
+
+dn: cn=thinclient,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: thinclient
+
+dn: cn=default-settings,cn=thinclient,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyThinClient
+cn: default-settings
+
+dn: cn=xfree,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: xfree
+
+dn: cn=mail,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: mail
+
+dn: cn=folder,cn=mail,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+description: Shared folders (Kolab 2)
+cn: folder
+
+dn: cn=domain,cn=mail,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: domain
+
+dn: cn=mailinglists,cn=mail,@%@ldap/base@%@
+objectClass: top
+objectClass: organizationalRole
+cn: mailinglists
+
+dn: cn=windowsinstallations,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: windowsinstallations
+
+dn: cn=dns,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: dns
+
+dn: cn=dhcp,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: dhcp
+
+dn: cn=users,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: users
+
+dn: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: pwhistory
+
+dn: cn=default-settings,cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyPWHistory
+cn: default-settings
+univentionPWHistoryLen: 3
+univentionPWLength: 8
+
+dn: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: admin-settings
+
+dn: cn=default-users,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
+cn: default-users
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyAdminSettings
+univentionAdminListWizards: None
+univentionAdminSelfAttributes: kolabVacationText
+univentionAdminSelfAttributes: kolabVacationActive
+univentionAdminSelfAttributes: kolabDeliveryToFolderActive
+univentionAdminSelfAttributes: kolabDeliveryToFolderName
+univentionAdminSelfAttributes: kolabForwardActive
+univentionAdminSelfAttributes: kolabForwardAddress
+univentionAdminSelfAttributes: kolabForwardKeepCopy
+univentionAdminSelfAttributes: kolabVacationAddress
+univentionAdminSelfAttributes: kolabVacationNoReactDomain
+univentionAdminSelfAttributes: kolabInvitationPolicy
+univentionAdminSelfAttributes: kolabForwardUCE
+univentionAdminListWebModules: modself
+univentionAdminMayOverrideSettings: 0
+
+dn: cn=default-admins,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionPolicy
+objectClass: univentionPolicyAdminSettings
+univentionAdminMayOverrideSettings: 1
+cn: default-admins
+emptyAttributes: univentionAdminListWizards
+emptyAttributes: univentionAdminListWebModules
+
+dn: cn=Domain Admins,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Domain Admins
+sambaSID: @@%%@@sid@@%%@@-512
+sambaGroupType: 2
+gidNumber: 5000
+
+dn: cn=Domain Users,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Domain Users
+sambaSID: @@%%@@sid@@%%@@-513
+sambaGroupType: 2
+gidNumber: 5001
+
+dn: cn=Domain Guests,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Domain Guests
+sambaSID: @@%%@@sid@@%%@@-514
+sambaGroupType: 2
+gidNumber: 5002
+
+dn: cn=Windows Hosts,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Windows Hosts
+sambaSID: @@%%@@sid@@%%@@-11011
+sambaGroupType: 2
+gidNumber: 1005
+
+dn: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: DC Backup Hosts
+sambaSID: @@%%@@sid@@%%@@-11012
+sambaGroupType: 2
+gidNumber: 5005
+
+dn: cn=DC Slave Hosts,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: DC Slave Hosts
+sambaSID: @@%%@@sid@@%%@@-11013
+sambaGroupType: 2
+gidNumber: 5006
+
+dn: cn=Computers,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Computers
+sambaSID: @@%%@@sid@@%%@@-11015
+sambaGroupType: 2
+gidNumber: 5007
+
+dn: cn=backup,@%@ldap/base@%@
+objectClass: top
+objectClass: person
+cn: backup
+sn: backup
+userPassword: {crypt}@@%%@@backup.pw@@%%@@
+
+dn: cn=Administrators,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Administrators
+sambaSID: S-1-5-32-544
+sambaGroupType: 5
+gidNumber: 5010
+
+dn: cn=Users,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Users
+sambaSID: S-1-5-32-545
+sambaGroupType: 5
+gidNumber: 5011
+
+dn: cn=Guests,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Guests
+sambaSID: S-1-5-32-546
+sambaGroupType: 5
+gidNumber: 5012
+
+dn: cn=Power Users,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Power Users
+sambaSID: S-1-5-32-547
+sambaGroupType: 5
+gidNumber: 5013
+
+dn: cn=Account Operators,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Account Operators
+sambaSID: S-1-5-32-548
+sambaGroupType: 5
+gidNumber: 5003
+
+dn: cn=System Operators,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: System Operators
+sambaSID: S-1-5-32-549
+sambaGroupType: 5
+gidNumber: 5015
+
+dn: cn=Printer-Admins,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Printer-Admins
+sambaSID: S-1-5-32-550
+sambaGroupType: 5
+gidNumber: 5016
+
+dn: cn=Backup Operators,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Backup Operators
+sambaSID: S-1-5-32-551
+sambaGroupType: 5
+gidNumber: 5017
+
+dn: cn=Replicators,cn=groups,@%@ldap/base@%@
+objectClass: top
+objectClass: posixGroup
+objectClass: univentionGroup
+objectClass: sambaGroupMapping
+cn: Replicators
+sambaSID: S-1-5-32-552
+sambaGroupType: 5
+gidNumber: 5018
