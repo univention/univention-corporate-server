@@ -70,7 +70,7 @@ done
 
 
 univention-baseconfig set notifier/debug/level?1
-univention-baseconfig set notifier/replog/sleep?500000
+univention-baseconfig unset notifier/replog/sleep
 
 univention-baseconfig set listener/supply/notifier?yes
 

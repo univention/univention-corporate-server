@@ -2,9 +2,11 @@
 
 eval `univention-baseconfig shell`
 
-if [ "$server_role" != "domaincontroller_master" ]; then
-	options="-o"
-fi
+#if [ "$server_role" != "domaincontroller_master" ]; then
+#	options="-o"
+#fi
+# Read from transactions log file in every case
+options="-o"
 
 if grep -q '^replica' "/etc/ldap/replica.conf" > /dev/null 2>&1 ; then
 	options="$options -r"

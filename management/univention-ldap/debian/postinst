@@ -59,6 +59,11 @@ univention-baseconfig set ldap/acl/user/password/change?no
 univention-baseconfig set ldap/database/bdb/db_config_options?"set_flags"
 univention-baseconfig set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
 
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	univention-baseconfig set ldap/translogfile?"/var/lib/univention-ldap/notify/transaction"
+fi
+
 test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then

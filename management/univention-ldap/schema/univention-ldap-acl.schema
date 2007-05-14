@@ -1,0 +1,42 @@
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+
+# schema definition for "interactive" LDAP-ACLs
+
+# namespace 1.3.6.1.4.1.10176.1041
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.1 NAME 'univentionLDAPAccessNone'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.2 NAME 'univentionLDAPAccessAuth'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.3 NAME 'univentionLDAPAccessCompare'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.4 NAME 'univentionLDAPAccessSearch'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.5 NAME 'univentionLDAPAccessRead'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1.6 NAME 'univentionLDAPAccessWrite'
+	DESC 'LDAP-DN of accounts who have write access to this object'
+	EQUALITY distinguishedNameMatch
+	SUP distinguishedName )
+
+objectclass ( 1.3.6.1.4.1.10176.1041.2.1 NAME 'univentionLDAPACL'
+	SUP top AUXILIARY
+	DESC 'Univention LDAP ACLs'
+	MAY ( univentionLDAPAccessNone $ univentionLDAPAccessAuth $ univentionLDAPAccessCompare $ 
+              univentionLDAPAccessSearch $ univentionLDAPAccessRead $ univentionLDAPAccessWrite ))
+

@@ -1,0 +1,174 @@
+# 
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# univention owns the namespace 10176.
+#
+#
+# Univention Nagios OID Prefix: 1.3.6.1.4.1.10176.1040.
+#
+#  1.3.6.1.4.1.10176.1040		Nagios-Objekte
+#  1.3.6.1.4.1.10176.1040.1		Timeperiod-Objekt
+#  1.3.6.1.4.1.10176.1040.2		Service-Objekt
+#  1.3.6.1.4.1.10176.1040.3		Host-Objekt
+#  1.3.6.1.4.1.10176.1040.1XXX	allgemeine Nagios-Attribute
+
+
+#
+# common attributes
+# 
+attributetype ( 1.3.6.1.4.1.10176.1040.1001 NAME 'univentionNagiosActiveChecksEnabled'
+	DESC 'active service checks enabled?'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1002 NAME 'univentionNagiosPassiveChecksEnabled'
+	DESC 'passive service checks enabled?'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1003 NAME 'univentionNagiosCheckCommand'
+	DESC 'name of the nagios plugin'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1004 NAME 'univentionNagiosCheckArgs'
+	DESC 'nagios plugin arguments'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256})
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1005 NAME 'univentionNagiosEventHandlerEnabled'
+	DESC 'event handler enabled?'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1006 NAME 'univentionNagiosCheckPeriod'
+	DESC 'checks are done within the given timeperiod'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1007 NAME 'univentionNagiosMaxCheckAttempts'
+	DESC 'maximum number of check attempts'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1008 NAME 'univentionNagiosNormalCheckInterval'
+	DESC 'time between to check under normal conditions'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1009 NAME 'univentionNagiosRetryCheckInterval'
+	DESC 'time until next check if previous check failed'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1010 NAME 'univentionNagiosContactGroup'
+	DESC 'notify this contact group'
+	EQUALITY distinguishedNameMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.12 )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1011 NAME 'univentionNagiosNotificationInterval'
+	DESC 'interval length between two notifications'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1012 NAME 'univentionNagiosNotificationPeriod'
+	DESC 'send notifications during this timeperiod'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1013 NAME 'univentionNagiosNotificationOptions'
+	DESC 'notification options'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1014 NAME 'univentionNagiosHostname'
+	DESC 'email address'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1015 NAME 'univentionNagiosEmail'
+	DESC 'email address'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1040.1016 NAME 'univentionNagiosEnabled'
+	DESC 'email address'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
+#
+# timeperiod specific attributes and timeperiod class
+#
+attributetype ( 1.3.6.1.4.1.10176.1040.1.2 NAME 'univentionNagiosTimeperiod'
+	DESC 'nagios timeperiod'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+objectclass	( 1.3.6.1.4.1.10176.1040.1.1 NAME 'univentionNagiosTimeperiodClass'
+	DESC 'Nagios Timeperiod Definition'
+	SUP top STRUCTURAL	
+	MUST ( cn $ description )
+	MAY ( univentionNagiosTimeperiod ) )
+
+
+
+
+
+#
+# service specific attributes and service class
+#
+attributetype ( 1.3.6.1.4.1.10176.1040.2.2 NAME 'univentionNagiosUseNRPE'
+	DESC 'activate usage of NRPE'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
+
+objectclass	( 1.3.6.1.4.1.10176.1040.2.1 NAME 'univentionNagiosServiceClass'
+	DESC 'Nagios Service Definition'
+	SUP top  STRUCTURAL	
+	MUST ( cn $ 
+			univentionNagiosCheckCommand $ 
+			univentionNagiosCheckPeriod $
+			univentionNagiosMaxCheckAttempts $ univentionNagiosNormalCheckInterval $
+			univentionNagiosRetryCheckInterval $
+			univentionNagiosNotificationInterval $ univentionNagiosNotificationPeriod $
+			univentionNagiosNotificationOptions  )
+	MAY ( description $ univentionNagiosHostname $ univentionNagiosCheckArgs $ univentionNagiosUseNRPE )
+	)
+
+
+
+
+
+#
+# host specific attributes and host class
+#
+attributetype ( 1.3.6.1.4.1.10176.1040.3.2 NAME 'univentionNagiosParent'
+	DESC 'parent hosts'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass	( 1.3.6.1.4.1.10176.1040.3.1 NAME 'univentionNagiosHostClass'
+	DESC 'Nagios Host Extension'
+	SUP top AUXILIARY
+	MUST ( cn )
+	MAY ( univentionNagiosEmail $ univentionNagiosParent $ univentionNagiosEnabled)
+	)

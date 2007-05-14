@@ -1,9 +1,19 @@
 # database definition
 modulepath	/usr/lib/ldap
 moduleload	back_@%@ldap/database/type@%@.so
+@!@
+if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
+	print "moduleload\ttranslog.so"
+@!@
 
 database	@%@ldap/database/type@%@
 suffix		"@%@ldap/base@%@"
+
+@!@
+if baseConfig.has_key('ldap/translogfile') and baseConfig['ldap/translogfile']:
+	print "overlay\t\ttranslog"
+	print "translog\t%s" % baseConfig['ldap/translogfile']
+@!@
 
 cachesize   @%@ldap/cachesize@%@
 threads		@%@ldap/threads@%@

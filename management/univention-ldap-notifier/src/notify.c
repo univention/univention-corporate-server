@@ -639,13 +639,15 @@ void notify_replog_change_callback(int sig, siginfo_t *si, void *data)
 	}
 	 /*
 	  * to be sure the modification is already in the ldap tree
-	  */
+	  *
 	signals_block();
 	int rc = 1;
 	while ( rc != 0 ) {
 		rc=usleep(replog_sleep);
 	}
 	signals_unblock();
+	 * we don't need to sleep anymore
+	 */
 
 
 
@@ -794,12 +796,16 @@ void notify_listener_change_callback(int sig, siginfo_t *si, void *data)
 		univention_debug(UV_DEBUG_TRANSFILE, UV_DEBUG_ERROR, "Could not open %s\n",FILE_NAME_LISTENER);
 	}
 
+	/*
+	 * why what are we waiting here
 	signals_block();
 	int rc = 1;
 	while ( rc != 0 ) {
 		rc=usleep(replog_sleep);
 	}
 	signals_unblock();
+	 *
+	 */
 
 
 	if( (stat(FILE_NAME_LISTENER, &stat_buf)) != 0 ) {

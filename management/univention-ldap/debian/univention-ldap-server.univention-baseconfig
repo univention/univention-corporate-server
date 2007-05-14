@@ -24,6 +24,7 @@ Variables: ldap/index/pres
 Variables: ldap/index/sub
 Variables: ldap/index/approx
 Variables: ldap/replog
+Variables: ldap/translogfile
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
