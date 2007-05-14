@@ -1,0 +1,52 @@
+Source: univention-policy
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, libldap2-dev, libsasl2-dev, autoconf, automake, libtool, libunivention-debug-dev, libunivention-config-dev
+
+Package: libunivention-policy0
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: UCS - group policy library
+ This library reads group policies from LDAP.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-policy-dev
+Architecture: all
+Suggests: libunivention-policy-krb5-dev
+Depends: libunivention-policy0, libldap2-dev
+Description: UCS - group policy library (development files)
+ This library reads group policies from LDAP.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-policy-krb5-dev
+Architecture: all
+Depends: libunivention-policy0, libunivention-policy-dev, libldap2-dev, heimdal-dev
+Description: UCS - group policy library (Kerberos 5 development files)
+ This library reads group policies from LDAP.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+ 
+Package: univention-policy-tools
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: UCS - tool to view group policies
+ This package includes the univention_policy_result tool
+ that displays all group policies for a given DN.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,81 @@
+univention-policy (0.7.1-1) unstable; urgency=low
+
+  * add GPL headers 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 Dec 2006 11:26:18 +0100
+
+univention-policy (0.6-1) unstable; urgency=low
+
+  * fixed a segfault of policy_result if a not inherited attribute was set
+    empty
+
+ -- Ingo Steuwer <steuwer@billy.knut.univention.de>  Wed, 19 Apr 2006 13:17:21 +0200
+
+univention-policy (0.5) unstable; urgency=low
+
+  * escape output
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Apr 2005 15:43:45 +0200
+
+univention-policy (0.4) unstable; urgency=low
+
+  * check for valid dn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 19 Dec 2004 14:57:28 +0100
+
+univention-policy (0.3) unstable; urgency=low
+
+  * Fix package versioning; we don't have any Debian revisions.
+  * Don't print random spaces in the output.
+  * Add symbolic link from univention-policy-result to
+    univention_policy_result.
+  * Fail to open policy if LDAP errors occur while resolving
+    references. This includes bad DNs and such.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue,  3 Aug 2004 16:51:39 +0200
+
+univention-policy (0.2-5) unstable; urgency=low
+
+  * Add support for emptyAttributes.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed,  2 Jun 2004 17:06:04 +0200
+
+univention-policy (0.2-4) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 11:06:24 +0200
+
+univention-policy (0.2-3) unstable; urgency=low
+
+  * build package without kerberos support
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Apr 2004 07:58:40 +0200
+
+univention-policy (0.2-2) unstable; urgency=low
+
+  * split dev package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Mar 2004 15:58:37 +0100
+
+univention-policy (0.2-1) unstable; urgency=low
+
+  * new function for admin connection
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Mar 2004 07:37:16 +0100
+
+univention-policy (0.2) unstable; urgency=low
+
+  * new version policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2004 11:50:49 +0100
+
+univention-policy (0.1.0) unstable; urgency=low
+
+  * initial release
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:40 +0200
+
+Local variables:
+mode: debian-changelog
+End:
