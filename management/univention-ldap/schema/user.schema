@@ -35,6 +35,12 @@ attributetype ( 1.3.6.1.4.1.10176.12 NAME 'temporary'
 	EQUALITY booleanMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE )
 
+attributetype ( 1.3.6.1.4.1.10176.15 NAME 'univentionAssignedPrinter'
+	DESC 'assigned printer'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 	DESC 'Additional univention-vars for Person/Account'
 	SUP top AUXILIARY
@@ -45,7 +51,7 @@ objectclass ( 1.3.6.1.4.1.10176.8 NAME 'univentionPerson'
 objectclass ( 1.3.6.1.4.1.10176.9 NAME 'univentionGroup'
 	DESC 'Additional univention-vars for Groups'
 	SUP top AUXILIARY
-	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $ groupDirectory $ uniqueMember $ mailPrimaryAddress )
+	MAY ( quotablocksoft $ quotablockhard $ quotafilesoft $ quotafilehard $ groupDirectory $ uniqueMember $ mailPrimaryAddress $ univentionAssignedPrinter )
 	)
 
 attributetype ( 1.3.6.1.4.1.10176.13 NAME 'pwhistory'

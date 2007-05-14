@@ -422,13 +422,24 @@ attributetype ( 1.3.6.1.4.1.10176.1000.7.1.7 NAME 'univentionDesktopProfile'
 	EQUALITY caseExactMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
+attributetype ( 1.3.6.1.4.1.10176.1000.7.1.8 NAME 'univentionDesktopLogonScripts'
+	DESC 'Scripts to execute on logon'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.1000.7.1.9 NAME 'univentionDesktopLogoutScripts'
+	DESC 'Scripts to execute on logout'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
 objectclass ( 1.3.6.1.4.1.10176.1000.7.2.1 NAME 'univentionPolicyDesktop'
 	SUP 'univentionPolicy' STRUCTURAL
 	DESC 'Desktop policy object'
 	MAY ( univentionDesktopLanguage $ univentionDesktopBackground
 	$ univentionDesktopIcons $ univentionDesktopTheme
 	$ univentionDesktopWindowBorders $ univentionDesktopIconsTheme
-	$ univentionDesktopProfile ))
+	$ univentionDesktopProfile $ univentionDesktopLogonScripts
+	$ univentionDesktopLogoutScripts ))
 
 # 1.3.6.1.4.1.10176.1000.8 (User Setting) $
 
@@ -828,3 +839,15 @@ objectclass ( 1.3.6.1.4.1.10176.1000.6.25.2.1 NAME 'univentionPolicyDhcpSunAuth'
     SUP 'univentionPolicy' STRUCTURAL
     DESC 'DHCP Sun Ray authentication policy object'
     MAY ( univentionDhcpSunAuth ))
+
+# nfs mounts
+attributetype ( 1.3.6.1.4.1.10176.1000.26.1.1 NAME 'univentionNFSMounts'
+    DESC 'NFS-Share to mount'
+    EQUALITY caseExactMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
+objectclass ( 1.3.6.1.4.1.10176.1000.6.26.2.1 NAME 'univentionPolicyNFSMounts'
+    SUP 'univentionPolicy' STRUCTURAL
+    DESC 'NFS-Shares policy object'
+    MAY ( univentionNFSMounts ))
+

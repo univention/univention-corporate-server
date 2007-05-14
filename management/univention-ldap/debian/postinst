@@ -61,8 +61,10 @@ univention-baseconfig set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
 
 test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
-/usr/lib/univention-install/01univention-ldap-server-init.inst || true
-/usr/lib/univention-install/10univention-ldap-server.inst || true
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/01univention-ldap-server-init.inst || true
+	/usr/lib/univention-install/10univention-ldap-server.inst || true
+fi
 
 if [ "$1" = "configure" -a -n "$2" ];
 	then
@@ -353,6 +355,21 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-18; t
 		/usr/share/univention-ldap/convert_shadowMax.py
 	fi
 
+fi
+
+# add DC Backup Hosts to the other computer groups
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-19.170; then
+	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-admin groups/group modify --dn "cn=DC Backup Hosts,cn=groups,$ldap_base" \
+			--append memberOf="cn=DC Slave Hosts,cn=groups,$ldap_base" \
+			--append memberOf="cn=Computers,cn=groups,$ldap_base" \
+			--append memberOf="cn=Windows Hosts,cn=groups,$ldap_base"
+
+		univention-admin container/cn create --ignore_exists \
+			--set name=nfsmounts \
+			--position=cn=policies,$ldap_base --set policyPath=1
+	fi
 fi
 
 exit 0

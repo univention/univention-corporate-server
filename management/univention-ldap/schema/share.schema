@@ -214,6 +214,26 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.33 NAME 'univentionShareSambaInheritP
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.34 NAME 'univentionShareSambaHostsAllow'
+	DESC 'define hosts that are allowed to connect'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.35 NAME 'univentionShareSambaHostsDeny'
+	DESC 'define a list of hosts that are not allowed to connect'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.36 NAME 'univentionShareSambaInvalidUsers'
+	DESC 'user'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.37 NAME 'univentionShareSambaMSDFS'
+	DESC 'is share msfds root'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
 objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	AUXILIARY
 	DESC 'Samba share'
@@ -238,6 +258,7 @@ objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	univentionShareSambaBlockSize $
 	univentionShareSambaCscPolicy $
 	univentionShareSambaValidUsers $
+	univentionShareSambaInvalidUsers $
 	univentionShareSambaForceUser $
 	univentionShareSambaForceGroup $
 	univentionShareSambaHideFiles $
@@ -248,8 +269,11 @@ objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	univentionShareSambaWriteable $
 	univentionShareSambaWriteList $
 	univentionShareSambaVFSObjects $
+	univentionShareSambaMSDFS $
 	univentionShareSambaInheritOwner $
-	univentionShareSambaInheritPermissions ))
+	univentionShareSambaInheritPermissions $
+	univentionShareSambaHostsAllow $
+	univentionShareSambaHostsDeny ))
 
 # $OID: 1.3.6.1.4.1.10176.1001.3 (Shares/NFS) $
 

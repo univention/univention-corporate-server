@@ -17,6 +17,7 @@ attributetype ( 1.3.6.1.4.1.10176.1002.1.2 NAME 'univentionPrinterURI'
 attributetype ( 1.3.6.1.4.1.10176.1002.1.3 NAME 'univentionPrinterLocation'
 	DESC 'location of the printer'
 	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1002.1.4 NAME 'univentionPrinterModel'

@@ -112,6 +112,7 @@ univentionPolicyObject: cn=windowsinstallations,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=nfsmounts,cn=policies,@%@ldap/base@%@
 univentionLicenseObject: cn=license,cn=univention,@%@ldap/base@%@
 univentionUsersObject: cn=users,@%@ldap/base@%@
 univentionGroupsObject: cn=groups,@%@ldap/base@%@
@@ -218,6 +219,25 @@ dn: cn=license,cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 cn: license
+
+dn: cn=admin,cn=license,cn=univention,@%@ldap/base@%@
+objectClass: top
+objectClass: univentionLicense
+univentionLicenseEndDate: unlimited
+univentionLicenseModule: admin
+univentionLicenseBaseDN: Free for personal use edition
+cn: admin
+univentionLicenseAccounts: 5
+univentionLicenseClients: 5
+univentionLicenseGroupwareAccounts: 5
+univentionLicenseuniventionDesktops: 5
+univentionLicenseType: UGS
+univentionLicenseType: UCS
+univentionLicenseSignature: HT+tjuXz74IZFKU4pVphvxY3sCPX5ILvdywFefgF5xIetI7Xcw
+ 5op/M3DHZRKw0GYL1qLu7YPlnKoGQv9HHty0u5nXOlvgcRXCGXCYDeQNC22cppLV2hMz80NFaGabD
+ 9i0B5qk2ICaWM50fjyjZ6qzoqr3zHga34Tcf7CmHt4LMr0OKl9LZVM634WFnv++VlQS6NV8A+PuQs
+ HjlK9GddNFpr2ubggGCYbxwRblZd+KQIk2cxZ/dDU1zupuHDPq3gbQWmrNjF3GIlYG2nQW1wdx2V0
+ L5LPYiHM81kblB32b46fwm81o55/2XRUsoDa5TifSk/uHcVJNFrCXGW4tqHKQ==
 
 dn: cn=idmap,cn=univention,@%@ldap/base@%@
 objectClass: top
@@ -446,6 +466,10 @@ dn: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
 cn: admin-settings
 
+dn: cn=nfsmounts,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: nfsmounts
+
 dn: cn=default-users,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
 cn: default-users
 objectClass: top
@@ -514,6 +538,7 @@ cn: Windows Hosts
 sambaSID: @@%%@@sid@@%%@@-11011
 sambaGroupType: 2
 gidNumber: 1005
+uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 
 dn: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 objectClass: top
@@ -534,6 +559,7 @@ cn: DC Slave Hosts
 sambaSID: @@%%@@sid@@%%@@-11013
 sambaGroupType: 2
 gidNumber: 5006
+uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 
 dn: cn=Computers,cn=groups,@%@ldap/base@%@
 objectClass: top
@@ -544,6 +570,7 @@ cn: Computers
 sambaSID: @@%%@@sid@@%%@@-11015
 sambaGroupType: 2
 gidNumber: 5007
+uniqueMember: cn=DC Backup Hosts,cn=groups,@%@ldap/base@%@
 
 dn: cn=backup,@%@ldap/base@%@
 objectClass: top

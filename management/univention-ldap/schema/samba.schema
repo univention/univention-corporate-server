@@ -195,6 +195,7 @@ attributetype ( 1.3.6.1.4.1.7165.2.1.25 NAME 'sambaNTPassword'
 attributetype ( 1.3.6.1.4.1.7165.2.1.26 NAME 'sambaAcctFlags'
 	DESC 'Account Flags'
 	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{16} SINGLE-VALUE )
 
 ##
