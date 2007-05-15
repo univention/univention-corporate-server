@@ -19,7 +19,7 @@ default         0
 timeout         @%@grub/timeout@%@
 
 # splash image
-splashimage (hd0)/boot/grub/uniboot.xpm.gz
+splashimage /boot/grub/uniboot.xpm.gz
 
 # Pretty colours
 foreground = FFFFFF

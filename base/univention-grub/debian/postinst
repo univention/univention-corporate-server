@@ -12,6 +12,10 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
                 vars="$vars grub/vga=$lilo_vga "
         fi
 
+		if [ -n "$lilo_boot" ]; then
+			vars="$vars grub/boot=$lilo_boot"
+		fi
+
         if [ -n "$lilo_append" ]; then
                 if [ -n "$grub_append" ]; then
                         grub_append="$grub_append $lilo_append"
