@@ -65,9 +65,8 @@ class object(content):
 			self.elements.append(checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))#2
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ]:
 			self.elements.append(checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[0]))#3
-		else:
+		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			self.elements.append(checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))#3
-
 
 	def input(self,key):
 		if key in [ 10, 32 ] and self.btn_next():

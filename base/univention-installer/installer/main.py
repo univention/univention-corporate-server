@@ -91,7 +91,7 @@ if len(sys.argv) > 1:
 		elif opt == '--cmdline':
 			read_cmdline = True
 
-elif len(sys.argv) < 1 or read_cmdline:
+if len(sys.argv) < 1 or read_cmdline:
 	f=open('/proc/cmdline', 'r')
 	lines=f.readlines()
 	f.close()
