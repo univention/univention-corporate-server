@@ -170,6 +170,17 @@ if [ -n "$grub_append" ]; then
 fi
 
 univention-baseconfig set locale="$locales"
+
+if [ -n "$locale_default" ]; then
+	short_form=`echo $locale_default | cut -c 1-2`
+
+	univention-baseconfig set "locale/default"="$locale_default"
+
+	univention-baseconfig set admin/web/language="\$short_form"
+	univention-baseconfig set console/web/language="\$short_form"
+	univention-baseconfig set gdm/language="\$locale_default"
+fi
+
 echo "$timezone" >/etc/timezone
 ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 

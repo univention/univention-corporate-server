@@ -115,7 +115,6 @@ install: build
 	install -m755 scripts/75_join.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/80_ldap.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/85_postinst_hook.sh ${D}/lib/univention-installer-scripts.d/
-	install -m755 scripts/86_defaultlocale.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/87_locales.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/90_reboot.sh ${D}/lib/univention-installer-scripts.d/
 
