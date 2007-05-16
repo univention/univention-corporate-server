@@ -81,6 +81,7 @@ PackageList=[
 				{
 					'Name': _('Scalix for UCS'),
 					'Packages': ['univention-scalix', 'univention-scalix-amavis' ],
+					'Edition': [ 'scalix' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
@@ -90,8 +91,8 @@ PackageList=[
 					'Name': _('UGS Server'),
 					'Packages': ['univention-kolab2', 'univention-kolab2-framework', 'univention-mail-postfix-kolab2', 'univention-mail-cyrus-kolab2'],
 					'Architecture': [ 'x86', 'powerpc' ],
-					#'Active': [], #disble for ugs
-					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ], #enable for ugs
+					'Edition': [ 'ugs' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Description': _('Groupware based on Kolab2'),
 				},
@@ -233,15 +234,6 @@ PackageList=[
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Description': _('Sync users and groups with Active Directory'),
 				},
-				{
-					'Name': _('Univention AD Connector'),
-					'Packages': ['univention-ad-connector'],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': [ ],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
-					'Description': _('Sync users and groups with Active Directory'),
-				},
-
 			],
 },
 {

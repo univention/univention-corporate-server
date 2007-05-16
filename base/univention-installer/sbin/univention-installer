@@ -1,14 +1,18 @@
 #!/bin/sh
 
 recover=`cat /proc/cmdline | grep " recover"`
-params=""
+params="--cmdline"
 
 
 #check architecture
 architecture=`uname -m`
 
 if [ -n "$architecture" ] && [ "$architecture" = "ppc64" ]; then
-	params="--simple"
+	params="$params --simple"
+fi
+
+if [ -e /.ucs-edition ]; then
+	params="$params --edition $(cat /.ucs-edition)"
 fi
 
 if [ -n "$recover" ]; then

@@ -42,6 +42,8 @@ import package_list
 from objects import *
 from local import _
 
+NewPackageList = []
+
 class object(content):
 
 	def draw(self):
@@ -63,7 +65,7 @@ class object(content):
 
 
 	def layout(self):
-		reload(package_list)
+		# reload(package_list)
 		self.debug('layout packages')
 		self.sub=self.packages(self,self.minY-2,self.minX-20,self.maxWidth+20,self.maxHeight+5)
 		self.sub.draw()
@@ -75,58 +77,129 @@ class object(content):
 			self.sub.sub.exit()
 		return ""
 
+	def start(self):
+		self.sub = self.active(self,_('Preparing Package List'),_('Please wait ...'))
+		self.sub.action='preparing-package-list'
+		self.sub.draw()
+
+	class active(act_win):
+		def function(self):
+			if self.action == 'preparing-package-list':
+				filter = True
+				PackagesList = []
+				if not ( self.parent.cmdline.has_key('mode') and self.parent.cmdline['mode'] == 'setup' ):
+					if self.parent.all_results.has_key('cdrom_device'):
+						cdrom_device=self.parent.all_results['cdrom_device']
+
+						if cdrom_device.startswith('nfs:'):
+							res = os.system('mount -t nfs %s /mnt >/dev/null 2>&1' % (cdrom_device.replace('nfs:', '')))
+						elif cdrom_device.startswith('smbfs:'):
+							res = os.system('mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
+						else:
+							res=os.system('mount %s /mnt >/dev/null 2>&1'%cdrom_device)
+					if os.path.exists('/mnt/packages/Packages'):
+						fp = open('/mnt/packages/Packages', 'r')
+						for line in fp.readlines():
+							if line.startswith('Package: '):
+								PackagesList.append(line.split(' ')[1].strip('\r\n'))
+						fp.close()
+					else:
+						PackagesList = 'INVALID'
+					res=os.system('umount /mnt >/dev/null 2>&1')
+
+
+				if os.path.exists('/usr/bin/apt-get'):
+					res = os.system('apt-get update >/dev/null 2>&1' )
+				for i in range(0,len( package_list.PackageList )):
+					failed = []
+					for j in range(0,len(package_list.PackageList[i]['Packages'])):
+						active = False
+						if package_list.PackageList[i]['Packages'][j].has_key('Edition'):
+							if self.parent.cmdline.has_key('edition'):
+								for ea in package_list.PackageList[i]['Packages'][j]['Edition']:
+									if ea in self.parent.cmdline['edition']:
+										active = True
+										break
+							else:
+								active = True
+						else:
+							active = True
+
+						if not active:
+							failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
+
+
+						for p in package_list.PackageList[i]['Packages'][j]['Packages']:
+							if os.path.exists('/usr/bin/apt-cache'):
+								res = os.system('apt-cache show %s >/dev/null 2>&1' % p )
+								if res != 0:
+									failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
+									break
+							else:
+								if not p in PackagesList and not PackagesList == 'INVALID':
+									failed.append(package_list.PackageList[i]['Packages'][j]['Name'])
+									break
+					if len(failed) < len(package_list.PackageList[i]['Packages']):
+						position=len(NewPackageList)
+						NewPackageList.append(copy.deepcopy(package_list.PackageList[i]))
+						NewPackageList[position]['Packages'] = []
+						for j in range(0,len(package_list.PackageList[i]['Packages'])):
+							if not package_list.PackageList[i]['Packages'][j]['Name'] in failed:
+								NewPackageList[position]['Packages'].append(package_list.PackageList[i]['Packages'][j])
+				
+			self.stop()
 
 	class packages(subwin):
 
 		def _init_categories(self):
 			self.categories={}
 			count=0
-			for i in range(0,len( package_list.PackageList )):
+			for i in range(0,len( NewPackageList )):
 				found=0
 				on=0
 				off=0
-				for j in range(0,len(package_list.PackageList[i]['Packages'])):
-					if 'all' in package_list.PackageList[i]['Packages'][j]['Possible'] or self.parent.all_results.has_key( 'system_role') and self.parent.all_results['system_role'] in package_list.PackageList[i]['Packages'][j]['Possible']:
-						if not package_list.PackageList[i]['Packages'][j].has_key('Architecture') or (package_list.PackageList[i]['Packages'][j].has_key('Architecture') and self.parent.cmdline['architecture'] in package_list.PackageList[i]['Packages'][j]['Architecture']):
+				for j in range(0,len(NewPackageList[i]['Packages'])):
+					if 'all' in NewPackageList[i]['Packages'][j]['Possible'] or self.parent.all_results.has_key( 'system_role') and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Possible']:
+						if not NewPackageList[i]['Packages'][j].has_key('Architecture') or (NewPackageList[i]['Packages'][j].has_key('Architecture') and self.parent.cmdline['architecture'] in NewPackageList[i]['Packages'][j]['Architecture']):
 							if self.parent.all_results.has_key('packages'):
-								if package_list.PackageList[i]['Packages'][j]['Packages'][0] in self.parent.all_results['packages']:
+								if NewPackageList[i]['Packages'][j]['Packages'][0] in self.parent.all_results['packages']:
 									on=on+1
 								else:
 									off=off+1
 							else:
-								if 'all' in package_list.PackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in package_list.PackageList[i]['Packages'][j]['Active']:
+								if 'all' in NewPackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Active']:
 									on=on+1
 								else:
 									off=off+1
 							found=1
 				if found==1:
 					if on and not off:
-						self.categories[package_list.PackageList[i]['Category']]=[package_list.PackageList[i]['Category'], count, 2, package_list.PackageList[i]['Description']]
+						self.categories[NewPackageList[i]['Category']]=[NewPackageList[i]['Category'], count, 2, NewPackageList[i]['Description']]
 					elif off and not on:
-						self.categories[package_list.PackageList[i]['Category']]=[package_list.PackageList[i]['Category'], count, 0, package_list.PackageList[i]['Description']]
+						self.categories[NewPackageList[i]['Category']]=[NewPackageList[i]['Category'], count, 0, NewPackageList[i]['Description']]
 					else:
-						self.categories[package_list.PackageList[i]['Category']]=[package_list.PackageList[i]['Category'], count, 1, package_list.PackageList[i]['Description']]
+						self.categories[NewPackageList[i]['Category']]=[NewPackageList[i]['Category'], count, 1, NewPackageList[i]['Description']]
 					count=count+1
 
 
 		def _init_packages(self):
 			self.packages=[]
-			for i in range(0,len( package_list.PackageList )):
+			for i in range(0,len( NewPackageList )):
 				p={}
 				count=0
-				for j in range(0,len(package_list.PackageList[i]['Packages'])):
-					if 'all' in package_list.PackageList[i]['Packages'][j]['Possible'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in package_list.PackageList[i]['Packages'][j]['Possible']:
-						if not package_list.PackageList[i]['Packages'][j].has_key('Architecture') or (package_list.PackageList[i]['Packages'][j].has_key('Architecture') and self.parent.cmdline['architecture'] in package_list.PackageList[i]['Packages'][j]['Architecture']):
+				for j in range(0,len(NewPackageList[i]['Packages'])):
+					if 'all' in NewPackageList[i]['Packages'][j]['Possible'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Possible']:
+						if not NewPackageList[i]['Packages'][j].has_key('Architecture') or (NewPackageList[i]['Packages'][j].has_key('Architecture') and self.parent.cmdline['architecture'] in NewPackageList[i]['Packages'][j]['Architecture']):
 							if self.parent.all_results.has_key('packages'):
-								if package_list.PackageList[i]['Packages'][j]['Packages'][0] in self.parent.all_results['packages']:
-									p[package_list.PackageList[i]['Packages'][j]['Name']]=[package_list.PackageList[i]['Packages'][j]['Name'], count, 1, package_list.PackageList[i]['Packages'][j]['Description'], package_list.PackageList[i]['Packages'][j]['Packages']]
+								if NewPackageList[i]['Packages'][j]['Packages'][0] in self.parent.all_results['packages']:
+									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 1, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 								else:
-									p[package_list.PackageList[i]['Packages'][j]['Name']]=[package_list.PackageList[i]['Packages'][j]['Name'], count, 0, package_list.PackageList[i]['Packages'][j]['Description'], package_list.PackageList[i]['Packages'][j]['Packages']]
+									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 0, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 							else:
-								if 'all' in package_list.PackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in package_list.PackageList[i]['Packages'][j]['Active']:
-									p[package_list.PackageList[i]['Packages'][j]['Name']]=[package_list.PackageList[i]['Packages'][j]['Name'], count, 1, package_list.PackageList[i]['Packages'][j]['Description'], package_list.PackageList[i]['Packages'][j]['Packages']]
+								if 'all' in NewPackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Active']:
+									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 1, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 								else:
-									p[package_list.PackageList[i]['Packages'][j]['Name']]=[package_list.PackageList[i]['Packages'][j]['Name'], count, 0, package_list.PackageList[i]['Packages'][j]['Description'], package_list.PackageList[i]['Packages'][j]['Packages']]
+									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 0, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 							count=count+1
 				if len(p) > 0:
 					self.packages.append(p)

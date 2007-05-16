@@ -49,9 +49,11 @@ from objects import *
 profile=0
 cmdline={}
 
+read_cmdline = False
+
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'edition=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -82,8 +84,14 @@ if len(sys.argv) > 1:
 			cmdline['simple']=1
 		elif opt == '--profile_file' and val:
 			cmdline['profile_file']=val
+		elif opt == '--edition' and val:
+			cmdline['edition']=[]
+			for e in val.split(','):
+				cmdline['edition'].append(e)
+		elif opt == '--cmdline':
+			read_cmdline = True
 
-else:
+elif len(sys.argv) < 1 or read_cmdline:
 	f=open('/proc/cmdline', 'r')
 	lines=f.readlines()
 	f.close()
