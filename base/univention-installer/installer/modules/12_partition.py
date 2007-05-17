@@ -761,7 +761,7 @@ class object(content):
 			col3=8
 			col4=6
 			col5=14
-			col6=8
+			col6=9
 
 			head1=self.get_col(_('Device'),col1,'l')
 			head2=self.get_col(_('Area(MB)'),col2)
