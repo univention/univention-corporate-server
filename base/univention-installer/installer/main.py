@@ -432,43 +432,6 @@ class mods:
 		else:
 			return 0
 
-#	def chg_current_profile(self,diff, recursion=1, profile_break=0):
-#		debug('start chg_current_profile')
-#
-#		if self.current+diff >= len(self.modules):
-#			#FIXME: check
-#			self.result.update(self.obj[self.current].get_result())
-#			self.profile[self.obj[self.current].modheader()]=self.obj[self.current].get_result()
-#			self.write_profile()
-#			return 1
-#
-#		if len(dep) > 0:
-#			found=0
-#			for key in dep.keys():
-#				if self.result.has_key(key):
-#					for entry in dep[key]:
-#						if entry in self.result[key]:
-#							debug('found')
-#							found=1
-#
-#			if not found:
-#				debug('not found')
-#				#os.system ('kdialog --msgbox "no"')
-#				self.current += diff
-#				self.obj[self.current_old].put_result(self.result)
-#				# start recursive
-#				self.chg_current_profile(diff,1)
-#				return 0
-#
-#		if not profile_break:
-#
-#			if self.obj[self.current].profile_complete():
-#				# das Profil ist nicht vollständig
-#
-#				return 0
-#			else:
-#				pass
-
 	def result_update(self):
 		self.result.update(self.obj[self.current].get_result())
 		# external result (sorted)
@@ -506,23 +469,6 @@ class mods:
 		self.obj[self.current].put_result(self.result)
 		self.left_menu()
 		self.draw_all()
-
-	#def chg_current_profile(self,diff):
-	#	if self.cmdline.has_key('profile') and self.obj[self.current].profile_complete():
-	#		debug('key profile')
-	#		if self.obj[self.current].profile_complete():
-	#			debug('profile_complete')
-	#
-	#
-	#			#self.current_old=self.current
-	#			self.obj[self.current].put_result(self.result)
-	#			self.profile[self.obj[self.current].modheader()]=self.obj[self.current].run_profiled()
-	#			self.result.update(self.obj[self.current].run_profiled())
-	#			self.current_old = self.current
-	#			self.current += diff
-	#			# start recursive
-	#			self.chg_current(diff,1)
-	#	pass
 
 	def tab(self):
 		self.obj[self.current].tab()
@@ -837,4 +783,3 @@ except:
 		sys.exit(0)
 
 exit_curses()
-#os.system("clear")
