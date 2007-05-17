@@ -4,8 +4,9 @@ univention-installer (1.1.0-4) unstable; urgency=low
   * remove the question for the homeshare on a basesystem
   * allow https in the proxy syntax
   * fix some installer layout bugs
+  * limit the allowed characters for the installer input fields
 
- -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 May 2007 10:46:00 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 May 2007 11:12:44 +0200
 
 univention-installer (1.0.0-3) unstable; urgency=low
 
