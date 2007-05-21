@@ -1,3 +1,9 @@
+univention-heimdal (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:05:02 +0200
+
 univention-heimdal (1.25) unstable; urgency=low
 
   * add GPL headers
