@@ -57,7 +57,7 @@ if [ "$1" = "configure" ]; then
 		univention-baseconfig set update/security/server="http://download.univention.de"
 	fi
 
-	univention-baseconfig set update/security/prefix?"updates/security"
+	univention-baseconfig set update/security/prefix="updates/security-desktop"
 	univention-baseconfig set update/directory?"ucs-updates"
 
 	univention-baseconfig set version/repository-version?$version_version
