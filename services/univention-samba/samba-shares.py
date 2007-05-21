@@ -66,6 +66,7 @@ def handler(dn, new, old):
 				print >>fp, 'path = %s' % new['univentionSharePath'][0]
 			mapping=[
 				('description', 'comment'),
+				('univentionShareSambaMSDFS', 'msdfs root'),
 				('univentionShareSambaWriteable', 'writeable'),
 				('univentionShareSambaBrowseable', 'browseable'),
 				('univentionShareSambaPublic', 'public'),
@@ -86,6 +87,7 @@ def handler(dn, new, old):
 				('univentionShareSambaBlockSize', 'block size'),
 				('univentionShareSambaCscPolicy', 'csc policy'),
 				('univentionShareSambaValidUsers', 'valid users'),
+				('univentionShareSambaInvalidUsers', 'invalid users'),
 				('univentionShareSambaForceUser', 'force user'),
 				('univentionShareSambaForceGroup', 'force group'),
 				('univentionShareSambaHideFiles', 'hide files'),
@@ -97,6 +99,8 @@ def handler(dn, new, old):
 				('univentionShareSambaVFSObjects', 'vfs objects'),
 				('univentionShareSambaInheritOwner', 'inherit owner'),
 				('univentionShareSambaInheritPermissions', 'inherit permissions'),
+				('univentionShareSambaHostsAllow', 'hosts allow'),
+				('univentionShareSambaHostsDeny', 'hosts deny'),
 
 			]
 			for attr, var in mapping:
@@ -104,7 +108,10 @@ def handler(dn, new, old):
 					continue
 				if attr == 'univentionShareSambaDirectoryMode' and new['univentionSharePath'] == '/tmp':
 					continue
-				print >>fp, '%s = %s' % (var, new[attr][0])
+				if attr in ( 'univentionShareSambaHostsAllow', 'univentionShareSambaHostsDeny' ) :
+					print >>fp, '%s = %s' % ( var, ', '.join( new[ attr ] ) )
+				else:
+					print >>fp, '%s = %s' % (var, new[attr][0])
 			# try to create directory to share
 			if new['univentionShareSambaName'][0] != 'homes':
 				directory = os.path.join('/', new['univentionSharePath'][0])

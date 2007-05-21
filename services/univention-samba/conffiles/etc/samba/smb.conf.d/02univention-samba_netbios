@@ -12,3 +12,7 @@ if baseConfig.has_key('samba/netbios/aliases') and baseConfig['samba/netbios/ali
 	print '\tnetbios aliases = %s' % baseConfig['samba/netbios/aliases']
 @!@
 
+@!@
+if baseConfig.has_key('samba/netbios/filter') and baseConfig['samba/netbios/filter']:
+	print '\tbrowse_dat filter = %s' % baseConfig['samba/netbios/filter']
+@!@

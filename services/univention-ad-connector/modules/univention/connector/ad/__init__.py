@@ -825,7 +825,10 @@ class ad(univention.connector.ucs):
 								   'objectSID=%s-%s'%(self.ad_sid,ad_group_rid),
 								   timeout=-1, sizelimit=0))
 
+			if not ldap_group_ad[0][0]:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "ad.set_primary_group_to_ucs_user: Primary Group in AD not found (not enough rights?), sync of this object will fail!")
 			ucs_group = self._object_mapping('group',{'dn':ldap_group_ad[0][0],'attributes':ldap_group_ad[0][1]}, object_type='con')
+
 
 			object_ucs['primaryGroup'] = ucs_group['dn']
 
@@ -1480,6 +1483,11 @@ class ad(univention.connector.ucs):
 		# welches hier bearbeitet wird und in das AD geschrieben wird.
 		# object ist brereits vom eingelesenen UCS-Objekt nach AD gemappt, old_dn ist die alte UCS-DN
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_from_ucs: sync object: %s"%object['dn'])
+
+		# if sync is read (sync from AD) or none, there is nothing to do
+		if self.property[property_type].sync_mode in ['read', 'none']:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_from_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+			return True
 
 		pre_mapped_ucs_old_dn = old_dn		
 		

@@ -81,6 +81,7 @@ def ssl_init(sd):
 	return ssl
 
 def set_password_in_ad(connector, samaccountname, pwd):
+	_d=univention.debug.function('ldap.ad.set_password_in_ad')
 	compatible_modstring = univention.connector.ad.compatible_modstring
 
 	a = array.array('c')
@@ -103,6 +104,7 @@ def set_password_in_ad(connector, samaccountname, pwd):
 
 
 def get_password_from_ad(connector, rid):
+	_d=univention.debug.function('ldap.ad.get_password_from_ad')
 	a = array.array('c')
 
 	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
@@ -125,6 +127,7 @@ def get_password_from_ad(connector, rid):
 
 
 def password_sync_ucs(connector, key, object):
+	_d=univention.debug.function('ldap.ad.password_sync_ucs')
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
 	
@@ -207,6 +210,7 @@ def password_sync_ucs(connector, key, object):
 
 
 def password_sync(connector, key, ucs_object):
+	_d=univention.debug.function('ldap.ad.password_sync')
 	# externes Programm zum holen des Hash aufrufen
 	# "kerberos_now"
 

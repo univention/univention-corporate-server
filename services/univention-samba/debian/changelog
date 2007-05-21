@@ -1,3 +1,11 @@
+univention-samba (0.69) unstable; urgency=low
+
+  * added baseconfig variable samba/winbind/nested/groups to configure
+  smb.conf option "winbind nested groups" and disable the option,
+  because of performance problems after upgrading samba to 3.0.23d.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Jan 2007 06:25:59 +0100
+
 univention-samba (0.68) unstable; urgency=low
 
   * the default for "host msdfs" and "msdfs root" was changed to yes in the

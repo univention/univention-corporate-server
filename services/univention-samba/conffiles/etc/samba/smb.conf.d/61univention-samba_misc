@@ -38,6 +38,10 @@ if baseConfig['server/role'] != 'memberserver':
 
 	time server = yes
 
-	host msdfs = no
-	msdfs root = no
-
+@!@
+if baseConfig.has_key('samba/enable-msdfs') and baseConfig['samba/enable-msdfs'] == 'yes':
+	print '\thost msdfs = yes'
+else:
+	print '\thost msdfs = no'
+	print '\tmsdfs root = no'
+@!@

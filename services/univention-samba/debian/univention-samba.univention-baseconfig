@@ -18,6 +18,7 @@ Variables: samba/homedirpath
 Variables: samba/homedirletter
 Variables: samba/logonscript
 Variables: samba/enable-privileges
+Variables: samba/enable-msdfs
 Variables: samba/role
 Variables: windows/wins-support
 Variables: windows/wins-server
@@ -38,6 +39,8 @@ Variables: samba/script/postusermodify
 Variables: samba/script/renameuser
 Variables: samba/preferred/master
 Variables: samba/local/master
+Variables: samba/netbios/filter
+Variables: samba/winbind/nested/groups
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -113,6 +116,7 @@ Variables: samba/profilepath
 Variables: samba/homedirserver
 Variables: samba/homedirpath
 Variables: samba/homedirletter
+Variables: samba/enable-msdfs
 
 Type: subfile
 Multifile: etc/samba/smb.conf

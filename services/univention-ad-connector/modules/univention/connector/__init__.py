@@ -348,10 +348,14 @@ class ucs:
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping UCS', self._encode_dn_as_config_option(dn_ucs.lower())))
 
 	def get_dn_by_ucs(self, dn_ucs):
+		if not dn_ucs:
+			return dn_ucs
 		return 	self._get_dn_by_ucs(dn_ucs)
 
 	def _get_dn_by_con(self, dn_con):
 		_d=univention.debug.function('ldap._get_dn_by_ucs')
+		if not dn_con:
+			return dn_con
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower())))
 
 	def get_dn_by_con(self, dn_con):
@@ -823,6 +827,11 @@ class ucs:
 		_d=univention.debug.function('ldap.sync_to_ucs')
 		# this function gets an object from the ad class, which should be converted into a ucs modul
 
+		# if sync is write (sync to AD) or none, there is nothing to do
+		if self.property[property_type].sync_mode in ['write', 'none']:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
+			return True
+		
 		old_object = self.get_ucs_object(property_type,object['dn'])
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
@@ -1075,7 +1084,7 @@ class ucs:
 					dn_mapping_stored.append(dntype)
 				if (object_type != 'ucs' and self._get_dn_by_con(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_con(object[dntype])
-					dn_mapping_stored.append(dntype)
+					dn_mapping_stored.append(dntype)		
 		
 		if hasattr(self.property[key], 'dn_mapping_function'):
 			# DN mapping functions
