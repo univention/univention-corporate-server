@@ -1,0 +1,211 @@
+#!/bin/sh
+#
+# chkconfig: 345 91 10
+#
+# description: \
+# This is the init script for starting up the Jakarta Tomcat server.
+#
+# To install this script on a RedHat or SuSE Linux system, follow these steps:
+#
+#   (1) log in as root
+#   (2) copy this script to /etc/init.d
+#   (3) enter "chmod 755 /etc/init.d/scalix-tomcat"
+#   (4) edit the script using vi or your favorite editor and ensure that
+#       CATALINA_HOME points to the location of your Tomcat 4 or 5 (or later)
+#       directory
+#   (5) enter "chkconfig --add scalix-tomcat"
+#
+#       Tomcat will now be configured to start as a system service when the
+#       machine boots.
+#
+#   (6) enter "/etc/init.d/scalix-tomcat start" to manually start Tomcat and
+#       "/etc/init.d/scalix-tomcat stop" to manually stop Tomcat.
+#
+
+@!@
+if baseConfig.has_key('locale/default') and baseConfig['locale/default']:
+	print 'export LC_ALL="%s"' % baseConfig['locale/default'].split(':')[0]
+@!@
+
+###### !! PLEASE CHANGE THE FOLLOWING 3 LINES TO MATCH YOUR ENVIRONMENT !! ######
+CATALINA_HOME="/opt/scalix-tomcat"
+###### !! YOU SHOULD NOT NEED TO CHANGE ANYTHING BELOW HERE !! ######
+
+export CATALINA_HOME
+
+# you do not need to change anything below here
+
+# detect the distribution:
+if [ -f /etc/redhat-release -o -f /etc/fedora-release ] ; then
+    DISTRIBUTION="redhat"
+elif [ -f /etc/SuSE-release ] ; then
+    DISTRIBUTION="suse"
+elif [ -f /etc/debian_version ] ; then
+    DISTRIBUTION="debian"
+else
+    echo "Error: unsupported distribution" >&2
+    exit 1
+fi
+
+# Source function library.
+[ "$DISTRIBUTION" = "redhat" ] && . /etc/init.d/functions
+[ "$DISTRIBUTION" = "suse" ] && . /etc/rc.status
+
+
+# test if network is up (redhat-only):
+if [ "$DISTRIBUTION" = "redhat" ] ; then
+    # Get config.
+    . /etc/sysconfig/network
+
+    # Check that networking is up.
+    [ "${NETWORKING}" = "no" ] && exit 0
+fi
+
+startup=$CATALINA_HOME/bin/startup.sh
+shutdown=$CATALINA_HOME/bin/sxtomcat-shutdown
+
+# Where the Scalix server admin commands live (for Scalix server installed locally)
+PATH=$PATH:/opt/scalix/bin; export PATH
+
+# Functions
+
+is_catalina_process_running() {
+    # returns 0 exit code if tomcat is running
+    tomcatpid=`cat $CATALINA_PID`
+    [ "`ps --pid $tomcatpid -o pid --no-heading | tr -d '[:space:]'`" = "$tomcatpid" ]
+}
+
+get_instance_status() {
+    # returns 0 exit code if instance is running
+    if [ -f "$CATALINA_PID" ] && is_catalina_process_running ; then
+		echo "Instance ($SCALIX_INSTANCE) is running"
+        return 0
+    else
+		echo "Instance ($SCALIX_INSTANCE) is not running"
+        return 3 # "not running" LSB code
+    fi
+}
+
+
+if [ "$DISTRIBUTION" = "redhat" ] ; then
+
+start() {
+        # Clear out any temporary files, especially lock files.
+        test -n "$CATALINA_BASE" && rm -f $CATALINA_BASE/temp/* >/dev/null 2>&1
+        action $"Starting Tomcat service ($SCALIX_INSTANCE): "  $startup
+        RETVAL=$?
+}
+
+stop() {
+        action $"Stopping Tomcat service ($SCALIX_INSTANCE): " $shutdown
+        RETVAL=$?
+}
+
+status() {
+        get_instance_status
+        RETVAL=$?
+}
+
+elif [ "$DISTRIBUTION" = "suse" ] ; then
+
+start() {
+        # Clear out any temporary files, especially lock files.
+        test -n "$CATALINA_BASE" && rm -f $CATALINA_BASE/temp/* >/dev/null 2>&1
+        echo -n "Starting Tomcat service ($SCALIX_INSTANCE)"
+        $startup
+        rc_status -v
+}
+
+stop() {
+        echo -n "Stopping Tomcat service ($SCALIX_INSTANCE)"
+        $shutdown
+        rc_status -v
+}
+
+status() {
+        get_instance_status
+        rc_status -v
+}
+
+elif [ "$DISTRIBUTION" = "debian" ] ; then
+
+start() {
+        # Clear out any temporary files, especially lock files.
+        test -n "$CATALINA_BASE" && rm -f $CATALINA_BASE/temp/* >/dev/null 2>&1
+        echo -n "Starting Tomcat service ($SCALIX_INSTANCE)"
+        $startup
+        RETVAL=$?
+}
+
+stop() {
+        echo -n "Stopping Tomcat service ($SCALIX_INSTANCE)"
+        $shutdown
+        RETVAL=$?
+}
+
+status() {
+        get_instance_status
+        RETVAL=$?
+}
+
+fi
+
+restart() {
+    if get_instance_status ; then
+        stop
+    fi
+    start
+}
+
+
+[ "$DISTRIBUTION" = "suse" ] && rc_reset
+
+# determine the instance (Scalix extension):
+if [ -n "$2" ] ; then
+    ALL_INSTANCES="$2"
+else
+    ALL_INSTANCES=`/opt/scalix-tomcat/bin/sxtomcat-get-mounted-instances`
+fi
+
+
+run_for_all_instances() {
+    for SCALIX_INSTANCE in $ALL_INSTANCES ; do
+        OMCURRENT="$SCALIX_INSTANCE"
+        export OMCURRENT
+        CATALINA_BASE="$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-dir $SCALIX_INSTANCE)"
+        export CATALINA_BASE
+        CATALINA_PID=$CATALINA_BASE/tomcat.pid
+        export CATALINA_PID
+
+        if [ ! -d "$CATALINA_BASE" ] ; then
+            echo "Error: instance $SCALIX_INSTANCE doesn't exist" >&2
+            exit 1
+        fi
+
+        # run the command:
+        $*
+    done
+}
+
+
+# See how we were called.
+case "$1" in
+  start)
+        run_for_all_instances start
+        ;;
+  stop)
+        run_for_all_instances stop
+        ;;
+  restart)
+        run_for_all_instances restart
+        ;;
+  status)
+        run_for_all_instances status
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|status}"
+        exit 1
+esac
+
+[ "$DISTRIBUTION" = "suse" ] && rc_exit
+exit $RETVAL

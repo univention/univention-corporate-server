@@ -1,0 +1,122 @@
+#!/usr/bin/make -f
+#
+# Univention AD Connector
+#  rules file for the ad connector debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -f *~
+	dh_clean
+
+AD_TOOLS_DEST=$(CURDIR)/debian/univention-ad-connector
+MODULES_CONNECTOR_DEST=$(CURDIR)/debian/python2.4-univention-connector
+MODULES_CONNECTOR_AD_DEST=$(CURDIR)/debian/python2.4-univention-connector-ad
+EXCHANGE_DEST=$(CURDIR)/debian/univention-ad-connector-exchange
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# AD Connector Tools
+	install -m755 univention-ad-connector ${AD_TOOLS_DEST}/usr/sbin
+	install -m755 univention-adsearch ${AD_TOOLS_DEST}/usr/sbin
+	install -m755 univention-connector-list-rejected ${AD_TOOLS_DEST}/usr/sbin
+	install -m600 conffiles/etc/univention/connector/ad/mapping.py ${AD_TOOLS_DEST}/etc/univention/connector/ad/mapping
+	
+	# Connector Modules
+	./univention-pycompile modules/univention/connector/__init__.py $(MODULES_CONNECTOR_DEST)/usr/lib/python2.4/site-packages/univention/connector/__init__.pyo
+
+	# AD Connector Modules
+	./univention-pycompile modules/univention/connector/ad/__init__.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/__init__.pyo
+	./univention-pycompile modules/univention/connector/ad/main.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/main.pyo
+	./univention-pycompile modules/univention/connector/ad/mapping.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/mapping.pyo
+	./univention-pycompile modules/univention/connector/ad/password.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/password.pyo
+	install -m644 ad-connector.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/univention-ldap-listener/system
+
+	#baseconfig metainfo
+	cp files/etc/univention/base.meta/connector* $(MODULES_CONNECTOR_AD_DEST)/etc/univention/base.meta
+	
+	# password daemon
+	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/ucs-ad-connector.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector.msi
+
+	# exchange extension
+	install -m644  files/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema $(EXCHANGE_DEST)/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema
+
+	find debian -name "*.pp" | xargs rm
+
+	univention-install-baseconfig
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf	
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+	dh_installinit --no-start -u"defaults 97"
+	dh_installcron
+	dh_installman
+	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

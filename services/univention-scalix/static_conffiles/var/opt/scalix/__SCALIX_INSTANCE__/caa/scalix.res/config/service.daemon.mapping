@@ -1,0 +1,53 @@
+#
+# DO NOT EDIT or CHANGE this file
+# format is key = abbrev, <D | S> , <0 | 1>, "Full name of the service or daemon"
+# D = indicates whether daemon
+# S = indicates whether service
+# 1 indicates whether it is a non-stop daemon; 0 otherwise
+#
+# list of controllable daemons
+# these daemons can be stopped via the omoff command
+#
+59  = ldap, D, 0, "LDAP Daemon"
+55  = omdbmon, D, 0, "Database Monitor"
+27  = drs, D, 0, "Directory Relay Server"
+102 = imap, D, 0, "IMAP Daemon Server"
+53  = iss, D, 0, "Item Structure Server"
+108 = mime, D, 0, "Mime Browser Controller"
+30  = ns, D, 0, "Notification Server"
+103 = smtpd, D, 0, "SMTPD Relay"
+#
+# list of non-stoppable daemons/services
+# these daemons cannot be stopped via the omoff command
+#
+52  = cam, D, 1, "Container Access Monitor"
+101 = idel,D, 1, "Item Delete Daemon"
+57  = lmd, D, 1, "License Monitor Daemon"
+33  = nfd, D, 1, "Notification Monitor"
+13  = pcmon, D, 1, "PC Monitor"
+100 = qmgr, D, 1, "Queue Manager"
+34  = sessd, D, 1, "Session Monitor"
+31  = smd, D, 1, "Shared Memory Daemon"
+500 = admin, S, 1, "Administration"
+501 = res, S, 1, "Remote Execution Service"
+502 = ubermanager, S, 1, "Ubermanager Service"
+#
+# list of services and interfaces that can be stopped/started with omon/omoff
+#
+4   = unix, S, 0, "Internet Mail Gateway"
+7   = sendmail, S, 0, "Sendmail Interface"
+8   = lci, S, 0, "Local Client Interface"
+9   = rci, S, 0, "Remote Client Interface"
+106 = pop, S, 0, "POP3 interface"
+56  = applink, S, 0, "Application Link Server"
+109 = archiver, S, 0, "Archive Server"
+32  = search, S, 0, "Background Search Service"
+26  = bbs, S, 0, "Bulletin Board Server"
+54  = cda, S, 0, "CDA Server"
+24  = dirsync, S, 0, "Directory Synchronization"
+3   = local, S, 0, "Local Delivery"
+107 = omscan, S, 0, "Omscan Server"
+22  = print, S, 0, "Print Server"
+18  = request, S, 0, "Request Server"
+2   = router, S, 0, "Service Router"
+10  = test, S, 0, "Test Server"

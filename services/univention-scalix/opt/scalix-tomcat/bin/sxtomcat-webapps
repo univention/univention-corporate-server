@@ -1,0 +1,341 @@
+#!/bin/sh
+#
+# This script adds or removes web apps to/from a Scalix Tomcat instance.
+#
+
+OMCHECKGC=/opt/scalix/bin/omcheckgc
+
+if [ "$#" -lt 3 ] ; then
+    echo "Usage: $0 [--add|--del] instance [ALL|app1 app2...]" >&2
+    exit 1
+fi
+
+action="$1"
+instance="$2"
+shift
+shift
+
+appsdir="/opt/scalix/web"
+instdir=$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-dir $instance)
+instappsdir="$instdir/conf/Catalina/localhost"
+connectordir="/etc/opt/scalix-tomcat/connector"
+
+configdirs="caa mobile platform res sis webmail"
+
+ssl_conf_possible_paths="/etc/httpd/conf.d/ssl.conf /etc/apache2/vhosts.d/vhost.conf"
+
+if [ ! -d "$instdir" ] ; then
+    echo "Error: instance $instance doesn't exist" >&2
+    exit 1
+fi
+
+get_ssl_conf_info() {
+    f=$1
+    key=$2
+    if [ -z "$f" ] || [ -z "$key" ] || [ ! -f "$f" ]; then
+       return 1
+    fi
+    value="`sed -n \"/^[ \t]*${key}/p\" $f | sed 's/[ \t]\{1,\}/ /g' | cut -d' ' -f2-`"
+    if [ 1 -ne `echo "$value" | wc -l` ]; then
+       return 1
+    fi
+    echo "$value"
+    return 0
+}
+
+#Call this before adding / upgrading a web app if SSL settings are needed for Apache.
+set_ssl_conf_defaults() {
+    if [ -z "$SXTOMCAT_CERTFILE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_CERTFILE=`get_ssl_conf_info $sslfile SSLCertificateFile`
+              if [ ! -z "$SXTOMCAT_CERTFILE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+    
+    if [ -z "$SXTOMCAT_KEYFILE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_KEYFILE=`get_ssl_conf_info $sslfile SSLCertificateKeyFile`
+              if [ ! -z "$SXTOMCAT_KEYFILE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+    
+    if [ -z "$SXTOMCAT_CIPHERSUITE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_CIPHERSUITE=`get_ssl_conf_info $sslfile SSLCipherSuite`
+              if [ ! -z "$SXTOMCAT_CIPHERSUITE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+
+    if [ -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_SSLPROTOCOL=`get_ssl_conf_info $sslfile SSLProtocol`
+              if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+
+    export SXTOMCAT_CERTFILE SXTOMCAT_KEYFILE SXTOMCAT_CIPHERSUITE SXTOMCAT_SSLPROTOCOL
+}
+
+ssl_has_ok_config() {
+    #1 = true, 0 = false
+    ret=1
+    if [ -z "$SXTOMCAT_CERTFILE" ] || \
+       [ -z "$SXTOMCAT_KEYFILE" ] || \
+       [ -z "$SXTOMCAT_CIPHERSUITE" ]; then
+       #It is OK if SXTOMCAT_SSLPROTOCOL is empty, as it has a default setting
+       ret=0
+    fi
+    if [ ! -e "$SXTOMCAT_CERTFILE" ] || \
+       [ ! -e "$SXTOMCAT_KEYFILE" ]; then
+       ret=0
+    fi
+    return $ret
+}
+
+get_config_dirs() {
+	if [ "$*" = "ALL" ]
+	then
+		echo $configdirs
+	else
+		dirs=""
+		for f in $*
+		do
+			case "$f" in
+				api) dirs="$dirs platform";;
+				m) dirs="$dirs mobile";;
+				sac) dirs="$dirs";;
+				*) dirs="$dirs $f" ;;
+			esac
+		done
+		echo "$dirs"
+	fi
+}
+
+get_webapps_list() {
+    appsdir="$1"
+    shift
+	apps=""
+
+    if [ -d "$appsdir" ] ; then
+       if [ "$*" = "ALL" ] ; then
+           for f in $appsdir/*.xml ; do
+               apps="$apps $(basename $f .xml)"
+           done
+       else
+           apps="$*"
+       fi
+
+       for a in $apps; do
+           if [ ! -f $appsdir/$a.xml ] ; then
+               echo "Error: application $a doesn't exist in $appsdir" >&2
+               exit 1
+           fi
+       done
+    fi
+
+    echo $apps
+}
+
+determine_instance_host() {
+    instance="$1"
+
+    if [ -f $OMCHECKGC ] ; then
+        OMCURRENT=$instance $OMCHECKGC -h
+    else
+        hostname -s
+    fi
+}
+
+add_webapp_connector() {
+    instance="$1"
+    app="$2"
+    tomcathost=$(determine_instance_host $instance)
+
+    # AJP:
+    echo "ProxyPass /${app} ajp://${tomcathost}:8009/${app}" \
+        >$connectordir/ajp/app-$instance.$app.conf
+
+    # JK:
+    echo "JkMount /${app}* ${instance}" \
+        >$connectordir/jk/app-$instance.$app.conf
+}
+
+update_mod_jk_workers() {
+    if [ -f $OMCHECKGC ] ; then
+       all_instances=$($OMCHECKGC -l)
+    else
+       all_instances=$(hostname -s)
+    fi
+    WORKER_LIST="JkWorkerProperty worker.list="
+
+    ssl_has_ok_config
+    should_do_ssl=$?
+    
+    ssl_proto_string=""
+    if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+        ssl_proto_string="SSLProtocol ${SXTOMCAT_SSLPROTOCOL}"
+    fi
+
+    for instance in $all_instances ; do
+        tomcathost=$(determine_instance_host $instance)
+        # AJP:
+        cat >$connectordir/ajp/instance-$instance.conf <<EOF
+<VirtualHost ${tomcathost}:80>
+    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+</VirtualHost>
+EOF
+
+    # AJP SSL
+    if [ $should_do_ssl -ne 0 ]; then
+        cat >>$connectordir/ajp/instance-$instance.conf <<EOF
+<VirtualHost ${tomcathost}:443>
+       SSLEngine on
+       $ssl_proto_string
+       SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
+       SSLCertificateFile ${SXTOMCAT_CERTFILE}
+       SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+       Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+</VirtualHost>
+EOF
+    fi
+
+        # JK:
+    cat >$connectordir/jk/instance-$instance.conf <<EOF
+<VirtualHost ${tomcathost}:80>
+    Include /etc/opt/scalix-tomcat/connector/jk/app-${instance}.*.conf
+</VirtualHost>
+EOF
+
+    # JK SSL
+    if [ $should_do_ssl -ne 0 ]; then
+        cat >>$connectordir/jk/instance-$instance.conf <<EOF
+<VirtualHost ${tomcathost}:443>
+       SSLEngine on
+       $ssl_proto_string
+       SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
+       SSLCertificateFile ${SXTOMCAT_CERTFILE}
+       SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+       Include /etc/opt/scalix-tomcat/connector/jk/app-$instance.*.conf
+</VirtualHost>
+EOF
+    fi
+
+    cat >>$connectordir/jk/instance-$instance.conf <<EOF
+JkWorkerProperty worker.${instance}.type=ajp13
+JkWorkerProperty worker.${instance}.host=${tomcathost}
+JkWorkerProperty worker.${instance}.port=8009
+JkWorkerProperty worker.${instance}.lbfactor=50
+JkWorkerProperty worker.${instance}.cachesize=10
+JkWorkerProperty worker.${instance}.cache_timeout=600
+JkWorkerProperty worker.${instance}.socket_keepalive=1
+JkWorkerProperty worker.${instance}.recycle_timeout=300
+
+EOF
+		WORKER_LIST="$WORKER_LIST${instance},"
+    done
+	echo "$WORKER_LIST" | sed "s/,$//" > $connectordir/jk/workers.conf
+}
+
+add_webapps() {
+    apps=$(get_webapps_list "$appsdir" $*)
+	config_dirs=$(get_config_dirs $*)
+    if [ ! -z "$apps" ] ; then
+        aw_count=0
+		for a in $apps ; do
+			ln -sf $appsdir/$a.xml $instappsdir/$a.xml
+			add_webapp_connector $instance $a
+		done
+		update_mod_jk_workers
+		tomcatdir=$(dirname $instdir)
+		for d in $config_dirs
+		do
+			if [ -d "/etc/opt/scalix/$d" -a -d "$(dirname $instdir)/$d" ]
+			then
+			    rm -Rf "/etc/opt/scalix/$d"
+			elif [ -d "/opt/scalix/web/template/$d" ]
+			then
+				# cp -pRf "/opt/scalix/web/template/$d" $(dirname $instdir)
+				# first copy the directory structure
+				for dd in $(find /opt/scalix/web/template/${d} -type d ); do
+					name=${dd#/opt/scalix/web/template/}
+					dir=$(dirname $instdir)
+					dest="${dir}/${name}"
+
+					if [ ! -x "${dest}" ]; then
+						mkdir -p ${dest}
+						chmod --reference=${dd} ${dest}
+					fi
+				done
+
+				for f in $(find /opt/scalix/web/template/$d -type f ); do
+					name=${f#/opt/scalix/web/template/}
+					dir=$(dirname $instdir)
+					dest="${dir}/${name}"
+					
+					if [ -e "${dest}" ]; then
+						cp -p $f ${dest}.dpkg-dist
+					else
+						cp -p $f ${dest}
+					fi
+				done
+			fi
+            aw_count=$((aw_count + 1))
+		done
+        if [ 0 -eq $aw_count ]
+        then
+            echo "INFO: No work done for ${apps}."
+        fi
+    fi
+
+}
+
+del_webapps() {
+    apps=$(get_webapps_list $instappsdir $*)
+	config_dirs=$(get_config_dirs $*)
+	if [ ! -z "$apps" ] ; then
+       for a in $apps ; do
+           rm -f $instappsdir/$a.xml
+           rm -f $connectordir/ajp/app-$instance.$a.conf
+           rm -f $connectordir/jk/app-$instance.$a.conf
+       done
+	   for d in $config_dirs
+	   do
+           rm -Rf $(dirname $instdir)/$d
+	   done
+       update_mod_jk_workers
+	fi
+}
+
+set_ssl_conf_defaults
+
+case "$action" in
+    --add )
+            add_webapps $*
+            ;;
+    --del )
+            del_webapps $*
+            ;;
+    * )
+            echo "Error: $action is not valid command" >&2
+            exit 1
+esac

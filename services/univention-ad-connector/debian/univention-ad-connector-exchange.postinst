@@ -1,0 +1,61 @@
+#!/bin/sh
+#
+# Univention AD Connector
+#  postinst script of the exchange extension
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+univention-baseconfig set connector/ad/mapping/user/primarymail=true
+univention-baseconfig set connector/ad/mapping/group/primarymail=true
+univention-baseconfig set connector/ad/mapping/user/exchange=true
+
+#DEBHELPER#
+
+if [ -x /etc/init.d/univention-ad-connector ]
+    then
+    /etc/init.d/univention-ad-connector crestart || true
+fi
+
+if [ -x /etc/init.d/slapd ]
+    then
+    /etc/init.d/slapd restart || true
+fi
+
+eval `univention-baseconfig shell`
+univention-admin container/cn create --ignore_exists --position="cn=custom attributes,cn=univention,$ldap_base" --set name="MS Exchange" --set description="Attributes for MS Exchange configuration (synced with UCS AD Connector)"
+
+CAPOSITION="cn=MS Exchange,cn=custom attributes,cn=univention,$ldap_base"
+
+univention-admin settings/customattribute create --ignore_exists --position="$CAPOSITION" --set name="Exchange-Homeserver" --set tabName="Exchange" --set tabPosition="1" --set objectClass="univentionADExchangeUser" --set ldapMapping="univentionADmsExchHomeServerName" --set longDescription="Exchange-Homeserver" --set shortDescription="Exchange-Homeserver" --set module="users/user"
+
+univention-admin settings/customattribute create --ignore_exists --position="$CAPOSITION" --set name="Exchange-homeMDB" --set tabName="Exchange" --set tabPosition="3" --set objectClass="univentionADExchangeUser" --set ldapMapping="univentionADhomeMDB" --set longDescription="Exchange-homeMDB" --set shortDescription="Exchange-homeMDB" --set module="users/user"
+
+univention-admin settings/customattribute create --ignore_exists --position="$CAPOSITION" --set name="Exchange-Nickname" --set tabName="Exchange" --set tabPosition="5" --set objectClass="univentionADExchangeUser" --set ldapMapping="univentionADmailNickname" --set longDescription="Exchange-Nickname" --set shortDescription="Exchange-Nickname" --append module="users/user" --append module="groups/group"
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.3-8; then
+    univention-admin settings/customattribute modify --dn "cn=Exchange-Nickname,$CAPOSITION" --append module="groups/group"
+fi

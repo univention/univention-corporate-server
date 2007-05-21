@@ -1,0 +1,161 @@
+#!/bin/sh
+# GenVer = 11.0.2.15
+
+# Copyright (C) 2003 Scalix Corporation.  All rights reserved.
+# (c) Copyright Hewlett-Packard Company 1989-1997.  All Rights Reserved.
+
+# @(#) Installation file for the HP Scalix ADM Component (OpC Admin Extensions)
+# @(#) 
+# Sccs_Id[] = "%W%";
+# This is best viewed with tabs set to 4.
+
+
+#------------------------------------------------------------------------------
+# LANG is set to C to avoid any problems with old message catalogues.
+#------------------------------------------------------------------------------
+
+LANG=C export LANG
+
+
+#------------------------------------------------------------------------------
+# Set up Scalix shell variables
+#
+# OMDATA:   the place where the data files for Scalix live.
+#------------------------------------------------------------------------------
+
+OMRP=/opt/scalix/bin/omrealpath
+[ ! -f $OMRP ] && OMRP=/usr/scalix/bin/omrealpath
+[ ! -f $OMRP ] && OMRP=omrealpath
+
+OMBIN=`$OMRP '~/bin'`
+PATH=$OMBIN:$PATH; export PATH
+
+OPTBASE=`omeval dirname $OMBIN`
+OMDATA=`omrealpath '~/'|sed 's%/$%%'`
+
+#------------------------------------------------------------------------------
+# Find the message catalog
+#------------------------------------------------------------------------------
+
+tempmsg=`omgetmsg -c mc_110 1 100`
+if [ $? -ne 0 ]
+then
+# current lang failed, try default lang
+        LANG=`omeval omdeflang`
+        export LANG
+        usermsg=`omgetmsg -c mc_110 1 100`
+        if [ $? -ne 0 ]
+        then
+                echo "[ OMINST 1 ] Cannot open Message catalog"  >&2
+				echo "             You must load at least one message catalog" >&2
+				echo "             and have your enviroment set correctly" >&2
+				echo "             before installing or running Scalix" >&2
+                exit 30
+        else
+                omgetmsg 1 4450 >&2
+        fi
+fi
+
+OMSYSTYPE=`omeval omsystype`
+
+#------------------------------------------------------------------------------
+# Ensure that the CORE package has been installed
+#------------------------------------------------------------------------------
+
+if	[ ! -f $OMBIN/omsetsvc ] || \
+	[ ! -f $OMBIN/omaddq ] || \
+	[ ! -f $OMBIN/omeval ]
+then
+# MSG no core
+	omgetmsg -c mc_110 1 155 ADM
+	exit 1
+fi
+
+
+if [ `omeval whoami` != "root" ]
+then
+	omgetmsg -c mc_110 1 110
+	exit 1
+fi
+
+
+if [ ! "`omeval pwget -n scalix`" ]
+then
+# MSG no scalix user
+	omgetmsg -c mc_110 1 195 scalix
+	omgetmsg -c mc_110 1 196
+	exit 1
+fi
+
+
+if [ ! "`omeval grget -n scalix`" ]
+then
+# MSG no scalix
+	omgetmsg -c mc_110 1 199 scalix
+	omgetmsg -c mc_110 1 196
+	exit 1
+fi
+
+
+#------------------------------------------------------------------------------
+# Install ADM config files 'audit.map', 'adm.ini' and 'omGateways.def'
+#------------------------------------------------------------------------------
+
+# files which should NOT be replaced.
+
+cfgfiles="adm.ini"
+for file in $cfgfiles
+do
+	if [ -f $OMDATA/sys/$file ]
+	then
+		:
+		# The file already exists, so do nothing.
+	else
+		cp $OMDATA/release.sys/$file $OMDATA/sys/$file
+		chown scalix $OMDATA/sys/$file
+		chgrp scalix $OMDATA/sys/$file
+	fi
+done
+
+# files which should be replaced - inform administrator
+# that they will need to re-apply changes.
+
+cfgfiles="audit.map omGateways.def"
+for FILE in $cfgfiles
+do
+	if cmp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE  >/dev/null 2>&1
+	then
+		:
+		# The file in place is the same as the new version.
+		# Don't do the copy so we don't lose the OLD version if there is one.
+	else
+		##################################################################
+		# changed by Univention GmbH, because we don't want to overwrite
+		# the customer settings
+		#
+		if [ -f $OMDATA/sys/$FILE ]
+		then
+			cp $OMDATA/release.sys/$FILE $OMDATA/sys/${FILE}.dpkg-dist
+			# MSG:  file has been replaced
+		#	omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+		#	mv $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+		else
+			# the file doesn't exists
+			cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
+
+			chown scalix $OMDATA/sys/$FILE
+			chgrp scalix $OMDATA/sys/$FILE
+		fi
+	fi
+done
+
+#------------------------------------------------------------------------------
+# Move the installation script
+#------------------------------------------------------------------------------
+
+mv $OMDATA/sys/install/OM-ADM.inst $OMDATA/sys/install/OM-ADM.fin
+
+chown scalix	$OMDATA/sys/install/OM-ADM.fin
+chgrp scalix	$OMDATA/sys/install/OM-ADM.fin
+
+exit 0

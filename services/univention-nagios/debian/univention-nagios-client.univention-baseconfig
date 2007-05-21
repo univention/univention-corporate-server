@@ -1,0 +1,7 @@
+Type: file
+File: etc/nagios/nrpe.cfg
+Variables: nagios/client/allowedhosts
+
+Type: file
+File: etc/cron.d/univention-nagios
+Variables: nagios/client/checkraid

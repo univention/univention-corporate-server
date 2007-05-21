@@ -1,0 +1,212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 2005-07-20 14:55+CEST\n"
+"PO-Revision-Date: 2006-06-23 10:32+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: modpkgdb.py:76
+msgid "Search systems"
+msgstr "Systeme suchen"
+
+#: modpkgdb.py:76
+msgid "System search"
+msgstr "Systeme suchen"
+
+#: modpkgdb.py:77
+msgid "Package search"
+msgstr "Pakete suchen"
+
+#: modpkgdb.py:77
+msgid "Search packages"
+msgstr "Pakete suchen"
+
+#: modpkgdb.py:78
+msgid "Problem identification"
+msgstr "Probleme erkennen"
+
+#: modpkgdb.py:79 modpkgdb.py:80
+msgid "Softwaremonitor"
+msgstr "Softwaremonitor"
+
+#: modpkgdb.py:79 modpkgdb.py:80
+msgid "software packages in all systems"
+msgstr "Softwarepakete in allen Systemen"
+
+#: modpkgdb.py:163 modpkgdb.py:535
+msgid "Save"
+msgstr "Speichern"
+
+#: modpkgdb.py:181 modpkgdb.py:553
+msgid "Delete"
+msgstr "Löschen"
+
+#: modpkgdb.py:200 modpkgdb.py:469 modpkgdb.py:577 modpkgdb.py:1028
+msgid "system-name"
+msgstr "System-Name"
+
+#: modpkgdb.py:201 modpkgdb.py:578
+msgid "system-type"
+msgstr "System-Typ"
+
+#: modpkgdb.py:202 modpkgdb.py:579
+msgid "ucs-version"
+msgstr "UCS-Version"
+
+#: modpkgdb.py:205 modpkgdb.py:582
+msgid "equal"
+msgstr "gleich"
+
+#: modpkgdb.py:206 modpkgdb.py:583
+msgid "not equal"
+msgstr "ungleich"
+
+#: modpkgdb.py:207 modpkgdb.py:584
+msgid "bigger"
+msgstr "größer"
+
+#: modpkgdb.py:208 modpkgdb.py:585
+msgid "lesser"
+msgstr "kleiner"
+
+#: modpkgdb.py:209 modpkgdb.py:586
+msgid "bigger or equal"
+msgstr "größer oder gleich"
+
+#: modpkgdb.py:210 modpkgdb.py:587
+msgid "lesser or equal"
+msgstr "kleiner oder gleich"
+
+#: modpkgdb.py:246 modpkgdb.py:632
+msgid "filterobject"
+msgstr "Filterobjekt"
+
+#: modpkgdb.py:253 modpkgdb.py:639
+msgid "filtercondition"
+msgstr "Filterbedingung"
+
+#: modpkgdb.py:256 modpkgdb.py:642
+msgid "filter_del"
+msgstr "Filter löschen"
+
+#: modpkgdb.py:266 modpkgdb.py:275 modpkgdb.py:283 modpkgdb.py:652
+#: modpkgdb.py:661 modpkgdb.py:670 modpkgdb.py:679 modpkgdb.py:688
+#: modpkgdb.py:696
+msgid "filtertext"
+msgstr "Filtertext"
+
+#: modpkgdb.py:295 modpkgdb.py:708
+msgid "filter_add"
+msgstr "Filter hinzufügen"
+
+#: modpkgdb.py:296 modpkgdb.py:709 modpkgdb.py:965
+msgid "results of page"
+msgstr "Ergebnisse pro Seite"
+
+#: modpkgdb.py:297 modpkgdb.py:710
+msgid "search"
+msgstr "Suche starten"
+
+#: modpkgdb.py:465 modpkgdb.py:902 modpkgdb.py:1021
+msgid "%d Search result(s):"
+msgstr "%d Suchergebniss(e):"
+
+#: modpkgdb.py:470 modpkgdb.py:1029
+msgid "ucs-role"
+msgstr "UCS-Rolle"
+
+#: modpkgdb.py:471 modpkgdb.py:1030
+msgid "current version"
+msgstr "vorhandene Version"
+
+#: modpkgdb.py:473 modpkgdb.py:909 modpkgdb.py:1031 modpkgdb.py:1038
+msgid "collect date"
+msgstr "Erfassungszeit"
+
+#: modpkgdb.py:572
+msgid "package-name"
+msgstr "Paket-Name"
+
+#: modpkgdb.py:573
+msgid "package-version"
+msgstr "Paket-Version"
+
+#: modpkgdb.py:574
+msgid "package-selected-state"
+msgstr "Paket-Auswahlstatus"
+
+#: modpkgdb.py:575
+msgid "package-inst-state"
+msgstr "Installationszustand"
+
+#: modpkgdb.py:576
+msgid "package-current-state"
+msgstr "aktueller Paketstatus"
+
+#: modpkgdb.py:906 modpkgdb.py:1035
+msgid "system"
+msgstr "System"
+
+#: modpkgdb.py:907 modpkgdb.py:1036
+msgid "package"
+msgstr "Paket"
+
+#: modpkgdb.py:908 modpkgdb.py:1037
+msgid "version"
+msgstr "Version"
+
+#: modpkgdb.py:910 modpkgdb.py:1039
+msgid "selectstate"
+msgstr "Paket- auswahlstatus"
+
+#: modpkgdb.py:911 modpkgdb.py:1040
+msgid "inststate"
+msgstr "Installations- zustand"
+
+#: modpkgdb.py:912 modpkgdb.py:1041
+msgid "currentstate"
+msgstr "aktueller Paketstatus"
+
+#: modpkgdb.py:951
+msgid "Not updated systems"
+msgstr "Nicht aktualisierte Systeme"
+
+#: modpkgdb.py:952
+msgid "Incomplete installed packages"
+msgstr "Unvollständig installierte Pakete"
+
+#: modpkgdb.py:963
+msgid "Check"
+msgstr "Überprüfung"
+
+#: modpkgdb.py:964
+msgid "Start check"
+msgstr "Überprüfung starten"
+
+#: modpkgdb.py:968
+msgid "To compare with version"
+msgstr "Vergleiche mit Version"
+
+#~ msgid "list of systems"
+#~ msgstr "Liste der Systeme"
+
+#~ msgid "menu_systems"
+#~ msgstr "Systeme"
+
+#~ msgid "menu_search"
+#~ msgstr "Suchen"
+
+#~ msgid "package-system-db"
+#~ msgstr "Paket-System-DB"
+
+#~ msgid "update version"
+#~ msgstr "aktualisierbare Version"

@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Univention Package Database
+#  prerm script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+set -e
+
+if [ "$1" = "remove" ]
+then
+
+if [ -e /etc/postgresql/pkgdb.secret ] ;then
+  rm /etc/postgresql/pkgdb.secret
+fi
+
+# remove db pkgdb
+pkgdb=`su - postgres -c "psql --list"|awk '/ pkgdb /{print $1}'`
+if [ "$pkgdb" ] ;then
+  # only, if database exists
+  su - postgres -c "dropdb pkgdb" 2>/dev/null || echo "Warning: Removal of pkgdb failed!"
+fi
+
+# remove user pkgdbu
+pkgdbu=`su - postgres -c "psql template1 -c \"select * from pg_user where usename='pkgdbu'\""|awk '/ pkgdbu /{print $1}'`
+if [ "$pkgdbu" ] ;then
+  # only, if pkgdbu exists
+  su - postgres -c "dropuser pkgdbu" 2>/dev/null || echo "Warning: Removal of database user pkgdbu failed!"
+fi
+
+# remove group pkgdbg
+pkgdbg=`su - postgres -c "psql template1 -c \"select * from pg_group where groname='pkgdbg'\""|awk '/ pkgdbg /{print $1}'`
+if [ "$pkgdbg" ] ;then
+  # only, if pkgdbg exists
+  su - postgres -c "psql template1 -c \"drop group pkgdbg;\"" 2>/dev/null || echo "Warning: Removal of database group pkgdbg failed!"
+fi
+
+fi
+
+#DEBHELPER#
+
+exit 0

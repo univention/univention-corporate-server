@@ -1,0 +1,32 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the files in the following directory instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig ueberschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
+#          folgendem Verzeichnis:
+#
+#       /etc/univention/templates/files/etc/samba/smb.conf.d
+#
+
+
+[global]
+
+	debug level = @%@samba/debug/level@%@
+	syslog = 0
+	max log size = 1000000
+
+@!@
+if baseConfig.has_key('samba/serverstring') and baseConfig['samba/serverstring']:
+	print '\tserver string = %s' % baseConfig['samba/serverstring']
+else:
+	print '\tserver string = %h univention corporate server'
+
+for key, smbstring in [('samba/interfaces','interfaces'),
+		       ('samba/charset/dos', 'dos charset'),
+		       ('samba/charset/unix', 'unix charset'),
+		       ('samba/charset/display', 'display charset'),
+		       ('samba/enable-privileges', 'enable privileges'),]:
+	if baseConfig.has_key(key) and baseConfig[key]:
+		print '\t%s = %s' % (smbstring, baseConfig[key])
+@!@

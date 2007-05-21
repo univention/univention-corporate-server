@@ -1,0 +1,9 @@
+-- to speed-up select
+create index systems_sysname_index on systems (sysname);
+create index systems_sysversion_index on systems (sysversion);
+create index systems_sysrole_index on systems (sysrole);
+create index packages_on_systems_sysname_index on packages_on_systems (sysname);
+create index packages_on_systems_pkgname_index on packages_on_systems (pkgname);
+create index packages_on_systems_selectedstate_index on packages_on_systems (selectedstate);
+create index packages_on_systems_inststate_index on packages_on_systems (inststate);
+create index packages_on_systems_currentstate_index on packages_on_systems (currentstate);

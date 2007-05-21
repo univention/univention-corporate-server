@@ -1,0 +1,90 @@
+#! /bin/sh
+#
+# Univention Bind Proxy
+#  join script
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+touch /usr/lib/univention-install/.index.txt
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+test -n "`grep "univention-bind successful" /usr/lib/univention-install/.index.txt`" || exit 1
+
+test -n "`grep "univention-bind-proxy successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
+	exit 1
+fi
+
+if [ -z "$nameserver_external" -o "$nameserver_external" = false -o "$nameserver_external" = no ]; then
+	if [ "$nameserver1" = "$dns_forwarder1" ]; then
+		univention-baseconfig unset nameserver1
+		unset nameserver1
+	fi
+	if [ "$nameserver2" = "$dns_forwarder2" ]; then
+		univention-baseconfig unset nameserver2
+		unset nameserver2
+	fi
+	if [ "$nameserver3" = "$dns_forwarder3" ]; then
+		univention-baseconfig unset nameserver3
+		unset nameserver3
+	fi
+
+	if [ "$interfaces_eth0_address" != "$nameserver1" ]; then
+
+		if [ -z "$nameserver1" ]; then
+			univention-baseconfig set nameserver1=$interfaces_eth0_address
+		elif [ -z "$nameserver2" ]; then
+			univention-baseconfig set nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+		elif [ -z "$nameserver3" ]; then
+			univention-baseconfig set nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+		else
+			univention-baseconfig set nameserver4=$nameserver3 nameserver3=$nameserver2 nameserver2=$nameserver1 nameserver1=$interfaces_eth0_address
+		fi
+
+	fi
+fi
+
+update-rc.d -f bind9 remove >/dev/null 2>&1
+update-rc.d -f bind remove >/dev/null 2>&1
+
+ln -s /etc/runit/univention-bind-proxy /etc/runit/univention/univention-bind-proxy
+
+old=`univention-admin policies/dhcp_dns list $@ --filter cn=default-settings | grep domain_name_servers | sed -e 's|.*domain_name_servers: ||'`
+if [ -z "$old" -o "$old" = "None" ]; then
+    univention-admin policies/dhcp_dns modify $@ --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
+fi
+
+
+test -n "`grep "univention-bind-proxy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind-proxy successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

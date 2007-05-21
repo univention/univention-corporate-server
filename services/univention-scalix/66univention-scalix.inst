@@ -1,0 +1,143 @@
+#! /bin/sh
+#
+# Univention Scalix
+#  join script
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+createca() {
+univention-admin settings/customattribute create \
+      --ignore_exists $creds \
+      --position="$CAPOSITION" \
+      --set tabName="Scalix" \
+      --set objectClass=$OC \
+      --set module="$1" \
+      --set ldapMapping="$2" \
+      --set name="$3" \
+      --set shortDescription="$4" \
+      --set longDescription="$4" \
+      --set tabPosition="$5" \
+      --set syntax="$6" \
+      --set multivalue="$7" \
+      --set default="$8"
+}
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-scalix successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
+
+	# if there is no scalix mailnode yet, set default mailnode
+	defNode=`univention-admin settings/default list --filter='cn=default' | grep defaultScalixMailnode | sed 's/ *defaultScalixMailnode: //'`
+	if [ "$defNode" = "None" ]; then
+		univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --set defaultScalixMailnode=$scalix_mailnode
+		defNode="--set default=$scalix_mailnode"
+	else
+		defNode="--set default=$defNode"
+	fi
+
+	# create custom attributes
+
+	univention-admin container/cn create $@ --ignore_exists --position="cn=custom attributes,cn=univention,$ldap_base" \
+        	--set name="Scalix" --set description="Attributes for Scalix configuration"
+	univention-admin container/cn create $@ --ignore_exists --position="cn=Scalix,cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="users" --set description="Attributes for Scalix user-configuration"
+	univention-admin container/cn create $@ --ignore_exists --position="cn=Scalix,cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="groups" --set description="Attributes for Scalix group-configuration"
+
+	OC="scalixUserClass"
+	CAPOSITION="cn=users,cn=Scalix,cn=custom attributes,cn=univention,$ldap_base"
+
+	univention-admin settings/syntax create $@ --ignore_exists --position="$CAPOSITION" --set viewonly=FALSE \
+		--set name=scalixMailnodes --set attribute="scalix/mailnode: name" --set value="scalix/mailnode: name" --set filter=objectClass=univentionScalixMailnode \
+		--set base=$ldap_base --set description="all Scalix Mailnodes"
+	univention-admin settings/customattribute create $@ --ignore_exists --position="$CAPOSITION" --set tabName=Scalix \
+		--set objectClass=$OC --set module=users/user --set ldapMapping=scalixMailnode --set name=Mailnode \
+		--set shortDescription=Mailnode --set longDescription=Mailnode --set tabPosition=5 --set syntax=scalixMailnodes \
+		--set multivalue=0 $defNode
+
+	univention-admin settings/syntax create $@ --ignore_exists --position="$CAPOSITION" --set viewonly=FALSE \
+		--set name=scalixMailboxClasses --set attribute="scalix/mailboxclass: name" --set value="scalix/mailboxclass: name" --set filter=objectClass=univentionScalixMailboxClass \
+		--set base=$ldap_base --set description="all Scalix Mailbox Classes"
+	univention-admin settings/customattribute create $@ --ignore_exists --position="$CAPOSITION" --set tabName=Scalix \
+		--set objectClass=$OC --set module=users/user --set ldapMapping=scalixMailboxClass --set name=MailboxClass \
+		--set shortDescription=Mailbox-Klasse --set longDescription=Mailbox-Klasse --set tabPosition=7 --set syntax=scalixMailboxClasses \
+		--set multivalue=0 --set default="full"
+
+	# needed in createca
+	creds=$@
+
+	createca "users/user" "scalixScalixObject" "ScalixObject" "Scalix-Objekt" "1" "TrueFalseUp" "0" "TRUE"
+	createca "users/user" "scalixLimitMailboxSize" "LimitMailboxSize" "Maximale Postfachgroesse" "8" "integer" "0" "0" # use server default
+	createca "users/user" "scalixHideUserEntry" "HideUserEntry" "nicht im Adressverzeichnis eintragen" "9" "TrueFalseUp" "0" "FALSE"
+	createca "users/user" "scalixLimitOutboundMail" "LimitOutboundMail" "Warnen bei bevorstehender Quotaueberschreitung fuer Postausgang" "10" "TrueFalseUp" "0" "FALSE"
+	# Correct long description: "Warnmeldung beiausgehenden Mails senden, sobald Beschraenkung erreicht wird; ausgehende Mails bei Ueberschreiten der Beschraenkung verweigern."
+	createca "users/user" "scalixLimitInboundMail" "LimitInboundMail" "Eingehende Mails bei Ueberschreiten der Beschraenkung ablehnen" "11" "TrueFalseUp" "0" "FALSE"
+	createca "users/user" "scalixLimitNotifyUser" "LimitNotifyUser" "Mail an Benutzer senden bei Ueberschreiten der Beschraenkung" "12" "TrueFalseUp" "0" "FALSE"
+	createca "users/user" "scalixAdministrator" "Administrator" "Volle Administratorrechte" "13" "TrueFalseUp" "0" "FALSE"
+	createca "users/user" "scalixMailboxAdministrator" "MailboxAdministrator" "Postfach-Administratorrechte" "14" "TrueFalseUp" "0" "FALSE"
+
+	# Groups
+	OC="scalixGroupClass"
+	CAPOSITION="cn=groups,cn=Scalix,cn=custom attributes,cn=univention,$ldap_base"
+
+	createca "groups/group" "scalixScalixObject" "ScalixObject" "Scalix-Object" "1" "TrueFalseUp" "0" "TRUE"
+	univention-admin settings/customattribute create $@ --ignore_exists --position="$CAPOSITION" --set tabName=Scalix \
+		--set objectClass=$OC --set module=groups/group --set ldapMapping=scalixMailnode --set name=Mailnode \
+		--set shortDescription=Mailnode --set longDescription=Mailnode --set tabPosition=3 --set syntax=scalixMailnodes \
+		--set multivalue=0 $defNode
+	createca "groups/group" "scalixHideUserEntry" "HideUserEntry" "nicht im Adressverzeichnis eintragen" "4" "TrueFalseUp" "0" "FALSE"
+
+	# create necessary containers
+	univention-admin container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=services
+	univention-admin container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=scalix
+	univention-admin container/cn create --ignore_exists $@ --position cn=scalix,cn=univention,$ldap_base --set name=classes
+	univention-admin container/cn create --ignore_exists $@ --position cn=scalix,cn=univention,$ldap_base --set name=nodes
+
+	# create default values for mailbox classes
+	univention-admin scalix/mailboxclass create --ignore_exists $@ --position cn=classes,cn=scalix,cn=univention,$ldap_base --set name=full
+	univention-admin scalix/mailboxclass create --ignore_exists $@ --position cn=classes,cn=scalix,cn=univention,$ldap_base --set name=limited
+
+	# create new service entry
+	univention-admin computers/$server_role modify $@ --dn $ldap_hostdn --append service="scalix"
+	univention-admin settings/service create  --ignore_exists $@ --position cn=services,cn=univention,$ldap_base --set name=scalix
+
+	# add mailnode to ldap
+	univention-admin scalix/mailnode create --ignore_exists $@ --position cn=nodes,cn=scalix,cn=univention,$ldap_base --set name=$scalix_mailnode --set server=$ldap_hostdn
+
+fi
+
+test -n "`grep "univention-scalix successful" /usr/lib/univention-install/.index.txt`" || echo "univention-scalix successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

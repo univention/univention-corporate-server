@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Univention Scalix
+#  preinst script for the debian package
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+test "$1" = "install" && (
+	# we need a working hostname -s during the installation, see Bug #8300
+	if [ -x /usr/sbin/nscd ]; then
+		/usr/sbin/nscd -i hosts
+	fi
+
+	# create scalix instance in /var/opt/scalix
+	if [ ! -f /etc/opt/scalix/instance.cfg ]; then
+		export PATH=$PATH:/opt/scalix/bin
+		ommakeom
+		if [ ! -f /etc/opt/scalix/instance.cfg ]; then
+			test -x /etc/init.d/nscd && /etc/init.d/nscd stop
+			ommakeom
+			test -x /etc/init.d/nscd && /etc/init.d/nscd start
+		fi
+	fi
+)
+
+
+if [ ! -f /etc/opt/scalix/instance.cfg ]; then
+	exit 1
+fi
+
+if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4-33; then
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
+elif [ "$1" = "install" ]; then
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
+fi
+
+if [ ! -e /usr/bin/cyrmaster ]; then
+	killall -9 cyrmaster
+fi
+
+#DEBHELPER#
+
+exit 0
+

@@ -1,0 +1,88 @@
+#! /bin/sh
+#
+# Univention Scalix Services
+#  init script
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Scalix Services"
+NAME=scalix
+SCRIPTNAME=/etc/init.d/univention-scalix
+
+# be sure, tha we start in a de_DE@euro environment
+export LC_ALL="de_DE@euro"
+
+#
+#	Function that starts the daemon/service.
+#
+d_start() {
+	/etc/init.d/scalix start
+	/etc/init.d/scalix-tomcat restart
+	/etc/init.d/scalix-postgres restart
+}
+
+#
+#	Function that stops the daemon/service.
+#
+d_stop() {
+	/etc/init.d/scalix stop
+	/etc/init.d/scalix-tomcat stop
+	/etc/init.d/scalix-postgres stop
+
+	while true ; do
+		ps aux | grep -q [s]calix.instance || break
+		sleep 1
+	done
+}
+
+case "$1" in
+  start)
+	echo -n "Starting $DESC: $NAME"
+	d_start
+	echo "."
+	;;
+  stop)
+	echo -n "Stopping $DESC: $NAME"
+	d_stop
+	echo "."
+	;;
+  restart)
+	echo -n "Restarting $DESC: $NAME"
+	d_stop
+	sleep 1
+	d_start
+	echo "."
+	;;
+  *)
+	# echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

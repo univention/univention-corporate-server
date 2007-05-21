@@ -1,0 +1,107 @@
+#!/usr/bin/make -f
+#
+# Univention Scalix
+#  preinst script for the debian package
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=4
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	dh_clean
+
+D=$(CURDIR)/debian/univention-scalix
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# join script
+	install -D 66univention-scalix.inst $(D)/usr/lib/univention-install/66univention-scalix.inst
+
+	# apache configuration
+	install -D 95scalix-jakarta.conf $(D)/etc/univention/apache/95scalix-jakarta.conf
+
+	# files for creation of static configuration files
+	install -D univention-scalix-conffile $(D)/usr/share/univention-scalix/univention-scalix-conffile
+	cp -a static_conffiles/* $(D)/usr/share/univention-scalix/conffiles/
+
+	# listener module
+	install -D scalix-user.py $(D)/usr/lib/univention-ldap-listener/system/scalix-user.py
+
+	# init scripts, univention console service entries
+	install -D etc/init.d/univention-scalix $(D)/etc/init.d/univention-scalix
+	install -D etc/init.d/univention-scalix-stunnel $(D)/etc/init.d/univention-scalix-stunnel
+	install -D etc/univention/daemons/univention-scalix $(D)/etc/univention/daemons/univention-scalix
+
+	# univention-setup hooks
+	install -m 0755 var/lib/univention-setup/domainname.post/univention-scalix ${D}/var/lib/univention-setup/domainname.post/
+	install -m 0755 var/lib/univention-setup/hostname.post/univention-scalix ${D}/var/lib/univention-setup/hostname.post/
+	install -m 0755 var/lib/univention-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-setup/ldapbase.post/
+	install -m 0755 var/lib/univention-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-setup/interfaces.post/
+
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
+	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
+	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
+
+	find $(D) -type d -name CVS | xargs rm -rf
+
+	univention-install-baseconfig
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

@@ -1,0 +1,73 @@
+#! /bin/sh -e
+#
+# Univention Nagios Server
+#  join script
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep 'univention-nagios-client successful' /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+# only register host to ldap if nagios/client/autoregister is not "no"
+if [ ! "$nagios_client_autoregister" = "no" ] ; then
+
+	# enable nagios for this host
+	univention-admin computers/${server_role} modify $@ --dn ${ldap_hostdn} --append-option="nagios"
+
+	# create default services
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_PING,cn=nagios,$ldap_base"
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_DISK_ROOT,cn=nagios,$ldap_base"
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_DNS,cn=nagios,$ldap_base"
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_NTP,cn=nagios,$ldap_base"
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_SMTP,cn=nagios,$ldap_base"
+	univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_REPLICATION,cn=nagios,$ldap_base"
+
+	# add ssl check only on role "domaincontroler_master/backup"
+	if [ "$server_role" = "domaincontroller_master" -o \
+         "$server_role" = "domaincontroller_backup" ] ; then
+		univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_SSL,cn=nagios,$ldap_base"
+	fi
+
+	# add ldap check only on role "domaincontroler_*"
+	if [ "$server_role" = "domaincontroller_master" -o \
+         "$server_role" = "domaincontroller_backup" -o \
+         "$server_role" = "domaincontroller_slave" ] ; then
+		univention-admin nagios/service modify $@ --append assignedHosts="${ldap_hostdn}" --dn "cn=UNIVENTION_LDAP,cn=nagios,$ldap_base"
+	fi
+fi
+
+test -n "`grep 'univention-nagios-client successful' /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-client successful" >>/usr/lib/univention-install/.index.txt
+
+
+exit 0

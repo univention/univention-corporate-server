@@ -1,0 +1,31 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/logrotate.d/samba
+#
+
+/var/log/samba/log.smbd {
+	weekly
+	missingok
+	rotate @%@log/rotate/weeks@%@
+	postrotate
+		invoke-rc.d --quiet samba reload > /dev/null
+	endscript
+	compress
+	notifempty
+}
+
+/var/log/samba/log.nmbd {
+	weekly
+	missingok
+	rotate @%@log/rotate/weeks@%@
+	postrotate
+		[ ! -f /var/run/samba/nmbd.pid ] || kill -HUP `cat /var/run/samba/nmbd.pid`
+	endscript
+	compress
+	notifempty
+}

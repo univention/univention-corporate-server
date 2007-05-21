@@ -1,0 +1,9 @@
+
+@!@
+if baseConfig.has_key('cups/server') and baseConfig['cups/server'] in ['127.0.0.1','localhost','%s' % baseConfig['hostname'],'%s.%s' % (baseConfig['hostname'],baseConfig['domainname'])]:
+    print '	; printing'
+    print '	load printers = yes'
+    print '	printing = cups'
+    print '	printcap name = cups '
+    print '	printer admin = @"Printer-Admins", root, Administrator'
+@!@

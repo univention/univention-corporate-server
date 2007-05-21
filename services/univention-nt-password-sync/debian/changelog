@@ -1,0 +1,19 @@
+univention-nt-password-sync (0.2-2) unstable; urgency=low
+
+  * add dependency on python2.4-m2crypto
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 23 Feb 2007 11:00:58 +0100
+
+univention-nt-password-sync (0.2-1) unstable; urgency=low
+
+  * sync only if passwords really changed
+  * install .msi-package and .exe file
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 23 Feb 2007 10:37:32 +0100
+
+univention-nt-password-sync (0.1-1) unstable; urgency=low
+
+  * initial release
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  19 Feb 2007 16:40:07 +0100
+

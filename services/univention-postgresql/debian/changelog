@@ -1,0 +1,24 @@
+univention-postgresql (0.5) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 Dec 2006 13:02:17 +0100
+
+univention-postgresql (0.4) unstable; urgency=low
+
+  * modified cron for vacuum full analyse every sunday
+
+ -- Thomas Kaminski <kaminski@univention.de>  Wed,  1 Jun 2005 09:15:45 +0200
+
+univention-postgresql (0.2) unstable; urgency=low
+
+  * pg_ident.conf now created like pg_hba.conf with univention-baseconfig commit
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed, 15 Dec 2004 11:11:57 +0100
+
+univention-postgresql (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu, 11 Nov 2004 17:23:07 +0100
+

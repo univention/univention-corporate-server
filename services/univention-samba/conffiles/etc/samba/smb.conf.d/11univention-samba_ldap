@@ -1,0 +1,24 @@
+
+	; ldap
+
+@!@
+if baseConfig.has_key('server/role') and baseConfig['server/role'] != 'memberserver':
+	print '\tpassdb backend = ldapsam:ldap://%s' % baseConfig['ldap/server/name']
+	print '\tauth methods = guest sam winbind'
+
+print '\tldap suffix = %s' % baseConfig['ldap/base']
+if baseConfig.has_key('samba/user'):
+	print '\tldap admin dn = "%s"' %  baseConfig['samba/user']
+elif baseConfig['server/role'] == 'domaincontroller_master':
+	print '\tldap admin dn = "cn=admin,%s"' % (baseConfig['ldap/base'])
+else:
+	print '\tldap admin dn = "cn=backup,%s"' % (baseConfig['ldap/base'])
+
+print '\tldap ssl = on'
+
+if baseConfig.has_key('server/role') and baseConfig['server/role'] != 'memberserver':
+	if baseConfig.has_key('samba/ldap/replication/sleep'):
+		print '\tldap replication sleep = %s' %  baseConfig['samba/ldap/replication/sleep']
+
+@!@
+

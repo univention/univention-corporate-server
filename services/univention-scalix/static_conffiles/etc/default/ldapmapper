@@ -1,0 +1,5 @@
+#
+# Scalix ldapmapper(8) options
+#
+LDAPMAPPER_OPTIONS="-L ldap://@%@hostname@%@.@%@domainname@%@:3890"
+

@@ -1,0 +1,8 @@
+Type: file
+File: etc/init.d/scalix-tomcat
+Variables: locale/default
+
+Type: module
+Module: sendmail-smarthost.py
+Variables: mail/sendmail/relayhost
+Variables: mail/sendmail/relayauth

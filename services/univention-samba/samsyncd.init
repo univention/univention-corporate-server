@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# Univention Samba BDC
+#  init script
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+case "$1" in
+	start)
+		echo -n "Starting samsync daemon: "
+		runsvctrl u /etc/runit/samsyncd
+		echo "done"
+		;;
+	stop)
+		echo -n "Stopping samsync daemon: "
+		runsvctrl d /etc/runit/samsyncd
+		echo "done"
+		;;
+	restart|force-reload)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+	crestart)
+		if runsvstat /etc/runit/samsyncd | grep pid > /dev/null 2>&1
+			then
+			$0 restart
+		else
+			echo "runsvstat return no running samsyncd, don't need to restart."
+		fi
+		;;
+	*)
+		echo "Usage: /etc/init.d/samsyncd {start|stop|restart|crestart|force-reload}"
+		exit 1
+		;;
+esac

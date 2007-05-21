@@ -1,0 +1,45 @@
+
+	; domain
+@!@
+if baseConfig['server/role'] != 'memberserver':
+	if baseConfig.has_key( 'samba/role' ) and baseConfig[ 'samba/role' ].lower() == 'bdc':
+		print '\tsecurity = user'
+		print '\tdomain logons = yes'
+		print '\tdomain master = no'
+		if baseConfig.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % baseConfig[ 'samba/preferred/master' ]
+		else:
+			print '\tpreferred master = yes'
+		if baseConfig.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % baseConfig[ 'samba/local/master']
+		else:
+			print '\tlocal master = yes'
+	else:
+		print '\tsecurity = user'
+		print '\tdomain logons = yes'
+		if baseConfig['server/role']=='domaincontroller_master' or (baseConfig.has_key('samba/domainmaster') and baseConfig['samba/domainmaster']=='yes'):
+			print '\tdomain master = yes'
+		else:
+			print '\tdomain master = no'
+		if baseConfig.has_key( 'samba/preferred/master' ):
+			print '\tpreferred master = %s' % baseConfig[ 'samba/preferred/master' ]
+		else:
+			print '\tpreferred master = yes'
+		if baseConfig.has_key( 'samba/local/master' ):
+			print '\tlocal master = %s' % baseConfig[ 'samba/local/master']
+		else:
+			print '\tlocal master = yes'
+else:
+	print '\tsecurity = domain'
+	print '\tdomain logons = no'
+	print '\tdomain master = no'
+	print '\tpreferred master = no'
+	print '\tlocal master = no'
+@!@
+
+	os level = @%@samba/os/level@%@
+	wins support = @%@windows/wins-support@%@
+@!@
+if baseConfig['windows/wins-support'] != 'yes' and baseConfig['windows/wins-server']:
+	print '	wins server = %s' % baseConfig['windows/wins-server'],
+@!@

@@ -1,0 +1,11 @@
+#%PAM-1.0
+auth     sufficient                         pam_unix.so
+auth     [success=done new_authtok_reqd=ok          user_unknown=ignore       service_err=die authinfo_unavail=die       default=die]         pam_heimdal.so use_first_pass
+auth     [success=done new_authtok_reqd=ok          user_unknown=die          service_err=die authinfo_unavail=die       default=die]         pam_ldap.so use_first_pass
+
+account  required               pam_access.so accessfile=/etc/security/access-admin.conf listsep=,
+account  sufficient             pam_unix.so
+account  sufficient             pam_heimdal.so
+account  required               pam_ldap.so
+
+session    required   pam_unix.so

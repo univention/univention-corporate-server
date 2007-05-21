@@ -1,0 +1,30 @@
+
+	; idmap/winbind
+@!@
+ldaphosts=[]
+if baseConfig.has_key('ldap/server/name') and baseConfig['ldap/server/name']:
+	ldaphosts.append(baseConfig['ldap/server/name'])
+if baseConfig.has_key('ldap/server/addition') and baseConfig['ldap/server/addition']:
+	addition=baseConfig['ldap/server/addition'].replace('"','').split(' ')
+	for a in addition:
+		ldaphosts.append(a)
+if ldaphosts:
+	print '\tidmap backend = ldap:"',
+	for i in ldaphosts:
+		print 'ldap://%s ' % i,
+	print '"'
+@!@
+	
+	#idmap backend = ldap:ldap://@%@ldap/server/name@%@
+	ldap idmap suffix = cn=idmap,cn=univention
+	idmap uid = 55000-64000
+	idmap gid = 55000-64000
+	winbind trusted domains only = yes
+	
+	winbind enum users = yes
+	winbind enum groups = yes
+	winbind separator = +
+	; winbind use default domain = yes
+	; winbind enable local accounts = yes
+	template shell = /bin/bash
+	template homedir = /home/%D-%U

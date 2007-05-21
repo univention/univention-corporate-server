@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# Univention Print Server
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `univention-baseconfig shell`
+
+univention-baseconfig set cups/server?$hostname.$domainname
+univention-baseconfig set cups/admin?"root@"$domainname
+univention-baseconfig set cups/systemgroup?"Printer-Admins,lp"
+univention-baseconfig set cups/location/base?"networks"
+univention-baseconfig set cups/location/admin?"networks"
+univention-baseconfig set cups/filedevice?yes
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2-1; then
+	if [ "`univention-baseconfig get cups/server`" = "$hostname" ]; then
+		univention-baseconfig set cups/server=$hostname.$domainname
+	fi
+fi
+
+#DEBHELPER#
+
+if [ "$server_role" = "domaincontroller_master" ]; then
+	if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.8; then
+		cat /var/lib/univention-install/.index | grep -v "univention-printserver" >/var/lib/univention-install/.index2
+		mv /var/lib/univention-install/.index2 /var/lib/univention-install/.index
+
+		univention-admin settings/printermodel remove --dn "cn=cupsModel,cn=univention,$ldap_base"
+	fi
+
+	/usr/lib/univention-install/79univention-printserver.inst || true
+fi
+
+if [ ! -d /var/lib/cups/certs ]; then
+	mkdir -p /var/lib/cups/certs
+fi
+
+getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
+
+if [ "$1" = "configure" ]; then
+	if test -f /etc/init.d/univention-ldap-listener
+		then
+		/etc/init.d/univention-ldap-listener crestart
+	fi
+
+fi
+
+
+if [ ! -e "/etc/cups/printers.conf" ]; then
+	touch /etc/cups/printers.conf
+fi
+
+if [ ! -e "/etc/cups/classes.conf" ]; then
+	touch /etc/cups/classes.conf
+fi
+
+if [ -x "/etc/init.d/cupsys" ]; then
+	/etc/init.d/cupsys restart
+fi
+
+# Version 0.9 may not update printers.conf
+# Version 0.17 may not set ppd's on added spoolhosts
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.18; then
+	/usr/sbin/univention-ldap-listener-ctrl resync cups-printers
+fi

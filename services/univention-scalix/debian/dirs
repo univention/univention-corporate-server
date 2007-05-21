@@ -1,0 +1,13 @@
+etc/init.d
+etc/univention/apache
+etc/univention/daemons
+usr/lib/univention-install
+usr/lib/univention-ldap-listener/system
+usr/lib/univention-scalix
+usr/share/univention-scalix/conffiles
+var/lib/univention-setup/hostname.post
+var/lib/univention-setup/domainname.post
+var/lib/univention-setup/ldapbase.post
+var/lib/univention-setup/interfaces.post
+opt/scalix-tomcat/bin
+opt/scalix/install

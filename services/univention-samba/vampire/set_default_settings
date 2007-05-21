@@ -1,0 +1,73 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Samba
+#  helper script: set default samba settings
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys
+import univention.debug
+univention.debug.init('/dev/null', 1, 1)
+
+import univention.admin.uldap
+import univention.admin.config
+import univention.admin.modules
+import univention.admin.allocators
+import univention.admin.handlers.settings.default
+
+lo, position = univention.admin.uldap.getAdminConnection()
+
+domain_sid=sys.argv[1]
+domain_users_sid=domain_sid+'-513'
+
+default=univention.admin.handlers.settings.default.lookup(None, lo, 'cn=default', required=1, unique=1)[0]
+
+res=lo.search(filter='(&(objectClass=sambaGroupMapping)(sambaSID=%s))' % domain_users_sid, scope='domain')
+if len(res) != 1:
+	print 'Not setting default users group: %d objects found' % len(res)
+else:
+	dn=res[0][0]
+	print 'Setting default users group to %s...' % repr(dn),
+	default['defaultGroup']=dn
+	print 'done'
+
+position.setDn(univention.admin.config.getDefaultContainer(lo, 'groups/group'))
+windows_hosts_group=univention.admin.handlers.groups.group.object(None, lo, position=position)
+windows_hosts_group.open()
+windows_hosts_group['name']='Windows Hosts'
+try:
+	windows_hosts_group.create()
+	groupdn = windows_hosts_group.dn
+except univention.admin.uexceptions.objectExists:
+	pass
+except univention.admin.uexceptions.groupNameAlreadyUsed:
+	groupdn = default['defaultComputerGroup']
+
+print 'Setting default computers group to %s...' % repr(groupdn),
+default['defaultComputerGroup']=groupdn
+print 'done'
+
+default.modify()

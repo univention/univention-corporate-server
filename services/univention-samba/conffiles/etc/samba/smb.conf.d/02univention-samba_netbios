@@ -1,0 +1,14 @@
+	netbios name = @!@
+if baseConfig.has_key('samba/netbios/name') and baseConfig['samba/netbios/name']:
+	print '%s' % baseConfig['samba/netbios/name']
+elif baseConfig.has_key('samba/ha/master') and baseConfig['samba/ha/master']:
+	print '%s' % baseConfig['samba/ha/master']
+else:
+	print '%s' % baseConfig['hostname']
+@!@
+
+@!@
+if baseConfig.has_key('samba/netbios/aliases') and baseConfig['samba/netbios/aliases']:
+	print '\tnetbios aliases = %s' % baseConfig['samba/netbios/aliases']
+@!@
+

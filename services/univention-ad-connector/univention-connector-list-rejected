@@ -1,0 +1,115 @@
+#!/usr/bin/python2.4 -OO
+# -*- coding: utf-8 -*-
+#
+# Univention AD Connector
+#  List all rejected objects
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import sys, string, os, time, signal, shutil
+
+sys.path=['/etc/univention/connector/ad/']+sys.path
+
+import ldap, traceback
+import univention
+import univention.connector
+import univention.connector.ad
+import univention.utf8
+
+import univention_baseconfig
+
+import mapping
+
+
+def main():
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if not baseConfig.has_key('connector/ad/ldap/host'):
+		print 'connector/ad/ldap/host not set'
+		sys.exit(1)
+	if not baseConfig.has_key('connector/ad/ldap/port'):
+		print 'connector/ad/ldap/port not set'
+		sys.exit(1)
+	if not baseConfig.has_key('connector/ad/ldap/base'):
+		print 'connector/ad/ldap/base not set'
+		sys.exit(1)
+	if not baseConfig.has_key('connector/ad/ldap/binddn'):
+		print 'connector/ad/ldap/binddn not set'
+		sys.exit(1)
+	if not baseConfig.has_key('connector/ad/ldap/bindpw'):
+		print 'connector/ad/ldap/bindpw not set'
+		sys.exit(1)
+	if not baseConfig.has_key('connector/ad/ldap/certificate'):
+		print 'connector/ad/ldap/certificate not set'
+		sys.exit(1)
+
+	if not baseConfig.has_key('connector/ad/listener/dir'):
+		print 'connector/ad/listener/dir not set'
+		sys.exit(1)
+
+	if not baseConfig.has_key('connector/ad/retryrejected'):
+		baseconfig_retry_rejected=10
+	else:
+		baseconfig_retry_rejected=baseConfig['connector/ad/retryrejected']
+
+	ad_ldap_bindpw=open(baseConfig['connector/ad/ldap/bindpw']).read()
+	if ad_ldap_bindpw[-1] == '\n':
+		ad_ldap_bindpw=ad_ldap_bindpw[0:-1]
+	
+	poll_sleep=int(baseConfig['connector/ad/poll/sleep'])
+
+
+	try:
+		ad=univention.connector.ad.ad(	mapping.ad_mapping, baseConfig, baseConfig['connector/ad/ldap/host'], baseConfig['connector/ad/ldap/port'],
+						baseConfig['connector/ad/ldap/base'], baseConfig['connector/ad/ldap/binddn'],
+						ad_ldap_bindpw, baseConfig['connector/ad/ldap/certificate'], baseConfig['connector/ad/listener/dir'])
+	except:
+		print "Failed to read Connector-Config. This may happen if the connector is running."
+		sys.exit(1)
+
+	found_rejected = False
+	print "\n\tUCS rejected\n"
+	for filename,dn in ad.list_rejected_ucs():
+		found_rejected = True
+		print "%s" % univention.connector.ad.encode_attrib(dn).encode('latin')
+		print "\t-> %s" % univention.connector.ad.encode_attrib(ad.get_dn_by_ucs(dn)).encode('latin')
+
+	print "\n\tAD rejected\n"
+	for id,dn in ad.list_rejected():
+		found_rejected = True
+		print "%s" % univention.connector.ad.encode_attrib(dn).encode('latin')
+		print "\t-> %s" % univention.connector.ad.encode_attrib(ad.get_dn_by_con(dn)).encode('latin')
+
+	if not found_rejected:
+		print "\nThere may be no rejected DNs if the connector is in progress, to be\nsure stop the connector before running this script.\n"
+
+	print "\n\tlast synced USN: %s" % ad.get_lastUSN()	
+
+if __name__ == "__main__":
+	main()
+

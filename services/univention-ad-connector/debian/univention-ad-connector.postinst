@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Univention AD Connector
+#  postinst script of the ad connector package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+univention-baseconfig set connector/ad/listener/dir?/var/lib/univention-connector/ad
+univention-baseconfig set connector/ad/poll/sleep?5
+univention-baseconfig set connector/ad/retryrejected?10
+univention-baseconfig set connector/ad/ldap/port?389
+univention-baseconfig set connector/debug/function?0
+univention-baseconfig set connector/debug/level?1
+univention-baseconfig set connector/ad/mapping/user/primarymail?false
+univention-baseconfig set connector/ad/mapping/group/primarymail?false
+
+if [ ! -d /var/lib/univention-connector/ad ]; then
+	mkdir -p /var/lib/univention-connector/ad
+	chown 0.0 /var/lib/univention-connector/ad
+fi
+
+/etc/init.d/univention-ad-connector crestart || true
+/etc/init.d/univention-ldap-listener crestart || true
+
+#DEBHELPER#
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.3-11; then
+    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
+fi

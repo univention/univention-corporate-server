@@ -1,0 +1,6 @@
+/etc/cups
+/usr/lib/univention-ldap-listener/system
+/usr/lib/univention-install/
+/usr/sbin/
+/usr/bin/
+/etc/samba/printers.conf.d

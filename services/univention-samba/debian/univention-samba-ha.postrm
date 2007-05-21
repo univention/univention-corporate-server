@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# Univention Samba HA
+#  postrm script for the debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# move lock-files back to /var/lib/samba
+if [ -z "$2" -a -d /ha/samba ]
+	then
+	if [ -h /var/lib/samba ]
+		then
+		rm /var/lib/samba
+		mv /ha/samba /var/lib/samba
+		if [ -h /var/lib/samba/secrets.tdb ]
+			then
+			rm /var/lib/samba/secrets.tdb
+			mv /var/lib/samba-local/secrets.tdb /var/lib/samba/
+			rmdir /var/lib/samba-local
+		else
+			echo "WARNING: /ha/samba/secrets.tdb seems to be no symbolic link to /var/lib/samba-local, I don't touch it. You may need to move it by yourself."
+		fi
+	else
+		echo "WARNING: /var/lib/samba seems to be no symbolic link to /ha/samba, I don't touch it. You may need to move it by yourself."
+	fi
+fi

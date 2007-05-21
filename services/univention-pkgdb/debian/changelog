@@ -1,0 +1,159 @@
+univention-pkgdb (0.21-1) unstable; urgency=low
+
+  * add GPL headers 
+
+ -- Andreas Büschin <buesching@univention.de>  Tue,  5 Dec 2006 10:41:43 +0100
+
+univention-pkgdb (0.20-3) unstable; urgency=low
+
+  * cleanup package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Oct 2006 14:49:44 +0200
+
+univention-pkgdb (0.19-6) unstable; urgency=low
+
+  * move some internal tools from /usr/sbin to /usr/share
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:53:17 +0200
+
+univention-pkgdb (0.19-5) unstable; urgency=low
+
+  * univention-webui restructure
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 27 Jun 2006 09:52:37 +0200
+
+univention-pkgdb (0.19-4) unstable; urgency=low
+
+  * added translations
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 23 Jun 2006 10:32:40 +0200
+
+univention-pkgdb (0.19-3) unstable; urgency=low
+
+  * fixed --version output in univention-pkgdb.py
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 11:33:24 +0200
+
+univention-pkgdb (0.19-2) unstable; urgency=low
+
+  * Change layout for redesigned Univention Console
+
+ -- Ingo Hoff <ingo@univention.de>  Thu, 18 May 2006 10:54:48 +0200
+
+univention-pkgdb (0.19-1) unstable; urgency=low
+
+  * mails upon addition and deletion of systems are now being suppressed 
+  * corrected dependencies on python2.4-packages
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 19 Oct 2005 11:20:44 +0200
+
+univention-pkgdb (0.18) unstable; urgency=low
+
+  * Added more python 2.4 dependencies 
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 20 Sep 2005 15:01:09 +0200
+
+univention-pkgdb (0.17) unstable; urgency=low
+
+  * python 2.4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Sep 2005 16:41:47 +0200
+
+univention-pkgdb (0.15) unstable; urgency=low
+
+  * basesystems can now be included in the database 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 17 Aug 2005 11:25:18 +0200
+
+univention-pkgdb (0.14) unstable; urgency=low
+
+  * speed of univention-pkgdb-scan was greatly improved
+  * clear-ups of database was moved to a cron job
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 12 Aug 2005 11:52:09 +0200
+
+univention-pkgdb (0.13) unstable; urgency=low
+
+  * add dialog to store and load searchrules
+  * integrate security-patchlevel in version
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 22 Jul 2005 16:08:30 +0200
+
+univention-pkgdb (0.12) unstable; urgency=low
+
+  * add search for systems
+  * optimize for speed in select
+
+ -- Thomas Kaminski <kaminski@univention.de>  Wed,  1 Jun 2005 18:07:27 +0200
+
+univention-pkgdb (0.11) unstable; urgency=low
+
+  * fixed typos in messages
+
+ -- Thomas Kaminski <kaminski@univention.de>  Thu, 24 Mar 2005 10:12:09 +0100
+
+univention-pkgdb (0.10) unstable; urgency=low
+
+  * fixed inclusion of translations 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 21 Mar 2005 16:17:10 +0100
+
+univention-pkgdb (0.9) unstable; urgency=low
+
+  * fix permissions (after postgresql sledgehammer-postinst)
+
+ -- Thomas Kaminski <kaminski@univention.de>  Tue,  8 Mar 2005 16:25:08 +0100
+
+univention-pkgdb (0.8) unstable; urgency=low
+
+  * installing precompiled module for UC instead of a *.py-file
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 28 Feb 2005 16:01:41 +0100
+
+univention-pkgdb (0.7) unstable; urgency=low
+
+  * more output for dumpsys
+
+ -- Thomas Kaminski <kaminski@univention.de>  Fri,  4 Feb 2005 11:59:05 +0100
+
+univention-pkgdb (0.6) unstable; urgency=low
+
+  * postgresql needs reload, restart is to heavy
+  * FatClient translate to ManagedClient
+
+ -- Thomas Kaminski <kaminski@univention.de>  Thu,  3 Feb 2005 16:29:22 +0100
+
+univention-pkgdb (0.5) unstable; urgency=low
+
+  * modify the DB, (need purge old deb)
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed, 17 Nov 2004 19:21:48 +0100
+
+univention-pkgdb (0.4) unstable; urgency=low
+
+  * use univention-postgresql
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Fri, 12 Nov 2004 08:54:10 +0100
+
+univention-pkgdb (0.3) unstable; urgency=low
+
+  * any searchvalues now are lists
+  * dbusers will be created by a cron job
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed, 10 Nov 2004 15:47:44 +0100
+
+univention-pkgdb (0.2) unstable; urgency=low
+
+  * more than one searchrow available
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed,  3 Nov 2004 19:01:58 +0100
+
+univention-pkgdb (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thomas Kaminski <kaminski@univention.de>  Wed, 20 Oct 2004 16:37:19 +0200
+
+Local variables:
+mode: debian-changelog
+End:

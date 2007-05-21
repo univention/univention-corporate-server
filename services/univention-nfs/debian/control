@@ -1,0 +1,34 @@
+Source: univention-nfs
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-nfs-server
+Architecture: all
+Depends: nfs-kernel-server, univention-ldap-listener (>= 0.4), univention-shares
+Description: UCS - NFS server
+ This package configures the Network FileSystem (NFS).
+ Shares, that are directories which can be accessed by
+ other computers on the network, can be managed with
+ the univention-share infrastructure.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-nfs-server-ha
+Architecture: all
+Depends: univention-nfs-server, univention-heartbeat
+Description: UCS - NFS server for HA installations
+ This package configures the Network FileSystem (NFS) 
+ to be started and stopped by heartbeat.
+ Shares, that are directories which can be accessed by
+ other computers on the network, can be managed with
+ the univention-share infrastructure.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

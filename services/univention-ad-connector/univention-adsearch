@@ -1,0 +1,131 @@
+#!/usr/bin/python2.4 -W ignore
+
+# -*- coding: utf-8 -*-
+#
+# Univention AD Connector
+#  comfortable search the Active Directory LDAP interface
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import sys, codecs, univention_baseconfig, os
+import ldap
+
+if len(sys.argv)<2 or len(sys.argv)>3:
+	print ""
+	print "This is univention-adsearch"
+	print ""
+	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
+	print ""
+	print "Usage:"
+	print "univention-adsearch filter <attributes>"
+	print ""
+	sys.exit(1)
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+if not (baseConfig.has_key('connector/ad/ldap/host')
+	and baseConfig.has_key('connector/ad/ldap/port')
+	and baseConfig.has_key('connector/ad/ldap/binddn')
+	and baseConfig.has_key('connector/ad/ldap/bindpw')
+	and baseConfig.has_key('connector/ad/ldap/base')):
+	print ""
+	print "This is univention-adsearch"
+	print ""
+	print "Univention-adsearch uses the settings of \"univention-ad-connector\" to ldap-search an Active-Directory Server."
+	print ""
+	print "The Settings are not complete, please check the following univention-baseconfig Values:"
+	print "connector/ad/ldap/host, connector/ad/ldap/port,"
+	print "connector/ad/ldap/binddn, connector/ad/ldap/bindpw,"
+	print "connector/ad/ldap/base"
+	sys.exit(1)
+	
+lo = ldap.open(baseConfig['connector/ad/ldap/host'],int(baseConfig['connector/ad/ldap/port']))
+lo.set_option(ldap.OPT_REFERRALS,0)
+login_dn = baseConfig['connector/ad/ldap/binddn']
+pw_file = baseConfig['connector/ad/ldap/bindpw']
+fp = open(pw_file,'r')
+login_pw = fp.readline()
+if login_pw[-1] == '\n':
+	login_pw = login_pw[:-1]
+
+lo.simple_bind_s(login_dn, login_pw)
+
+lc1 = ldap.create_control("LDAP_SERVER_SHOW_DELETED_OID")
+
+filter=sys.argv[1].decode('latin')
+
+if len(sys.argv)>2:
+	print sys.argv[1].split(',')
+	res = lo.search_ext_s(baseConfig['connector/ad/ldap/base'],ldap.SCOPE_SUBTREE,filter.encode('utf8'),sys.argv[2].split(','),serverctrls=[lc1])
+else:
+	res = lo.search_ext_s(baseConfig['connector/ad/ldap/base'],ldap.SCOPE_SUBTREE,filter.encode('utf8'),serverctrls=[lc1])
+
+n_results = len(res)
+n_referrals = 0
+
+print "#"
+print "# univention-adsearch"
+print "# filter: %s" % filter.encode('latin')
+print "#"
+
+for r in res:
+	if r[0] == None or r[0] == 'None':
+		n_referrals += 1
+		continue
+	print ""
+	print "%s: %s"%('DN',unicode(r[0],'utf8').encode('latin'))
+	for key in r[1]:
+		if key in ["objectGUID",'ipsecData','repsFrom','replUpToDateVector']:
+			print "%s: %s"%(key,r[1][key])
+			continue			
+		for val in r[1][key]:			
+			if key in ["objectSid"]:
+				value = r[1][key][0]
+				sid='S-'
+				sid+="%d" % ord(value[0])
+
+				sid_len=ord(value[1])
+	
+				sid+="-%d" % ord(value[7])
+	
+				for i in range(0,sid_len):
+					res=ord(value[8+(i*4)]) + (ord(value[9+(i*4)]) << 8) + (ord(value[10+(i*4)]) << 16) + (ord(value[11+(i*4)]) << 24)
+					sid+="-%u" % res
+				print "%s: %s"%(key,sid)		
+			else:
+				try:
+					print "%s: %s"%(key,unicode(val,'utf8').encode('latin'))
+				except:
+					print "failed: %s"%key
+
+print ""
+print "#"	
+print "# results: %s" % (n_results - n_referrals)
+print "#"
+print ""
+lo.unbind()

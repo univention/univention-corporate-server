@@ -1,0 +1,119 @@
+#!/usr/bin/python2.4
+#
+# Univention Bind
+#  join script
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+# dig axfr +nocomment +nostats +nocmd domain @server | \
+#  ./import-zone ldapbase zone ttl > zone.ldif
+#
+# dig axfr +nocomment +nostats +nocmd office.univention.de @localhost | ./import-zone dc=mkgbank,dc=de office.univention.de 604800
+
+import sys, re
+
+ldapbase=sys.argv[1]
+zone=sys.argv[2]
+ttl=sys.argv[3]
+
+ldap_types={
+	'NS':	'nSRecord',
+	'SOA':	'sOARecord',
+	'CNAME':'cNAMERecord',
+	'A':	'aRecord',
+	'MX':	'mXRecord',
+	'SRV':	'sRVRecord',
+	'TXT':	'tXTRecord',
+	'PTR':	'pTRRecord'
+}
+record_pattern=re.compile('^([^\t ]+)[\t ]+([0-9]+)[\t ]+([^\t ]+)[\t ]+([^\t ]+)[\t ]+(.+)$')
+
+all={}
+
+for line in sys.stdin.readlines():
+
+	line=line[0:-1]
+	records=record_pattern.findall(line)
+	if not records:
+		print 'WARNING:', line
+		continue
+	record=records[0]
+
+	r_full_name=record[0]
+
+	pos=r_full_name.rfind(zone+'.')
+	if pos == -1:
+		print 'WARNING: %s not in zone' % r_full_name
+		continue
+	r_name=r_full_name[:pos]
+	if r_name == '':
+		r_name='@'
+	elif r_name[-1]:
+		r_name=r_name[:-1]
+	else:
+		print 'WARNING: %s is not valid' % r_full_name
+
+	r_ttl=record[1]
+	r_class=record[2].upper()
+
+	r_type=record[3].upper()
+
+	r_record=record[4]
+
+	if not all.has_key(r_name):
+		all[r_name]={}
+	if not all[r_name].has_key(r_type):
+		all[r_name][r_type]=[]
+
+	if not r_record in all[r_name][r_type]:
+		all[r_name][r_type].append(r_record)
+
+	if r_ttl == ttl:
+		pass
+	elif all[r_name].has_key('ttl') and all[r_name]['ttl'] != r_ttl:
+		print 'WARNING: %s: TTLs do not match: %s %s' % (r_name, all[r_name]['ttl'], r_ttl)
+	else:
+		all[r_name]['ttl']=r_ttl
+
+
+def print_record(name, record):
+	print 'objectClass: top'
+	print 'objectClass: dNSZone'
+	print 'zoneName: %s' % zone
+	print 'relativeDomainName: %s' % name
+	for r_type, r_records in record.items():
+		ldap_type=ldap_types[r_type]
+		for r_record in r_records:
+			print '%s: %s' % (ldap_type, r_record)
+	print
+
+print 'dn: zoneName=%s,%s' % (zone, ldapbase)
+print_record('@', all['@'])
+for name, record in all.items():
+	if name == '@':
+		continue
+	print 'dn: relativeDomainName=%s,zoneName=%s,%s' % (name, zone, ldapbase)
+	print_record(name, record)

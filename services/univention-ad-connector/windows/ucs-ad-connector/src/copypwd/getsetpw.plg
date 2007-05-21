@@ -1,0 +1,58 @@
+<html>
+<body>
+<pre>
+<h1>Build Log</h1>
+<h3>
+--------------------Configuration: pwdump2 - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOKUME~1\ADMINI~1\LOKALE~1\Temp\RSP39.tmp" with contents
+[
+/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /Fp"Release/copypwd.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"W:\src\copypwd\copypwd.c"
+"W:\src\copypwd\getpid.c"
+]
+Creating command line "cl.exe @C:\DOKUME~1\ADMINI~1\LOKALE~1\Temp\RSP39.tmp" 
+Creating command line "link.exe kernel32.lib user32.lib advapi32.lib Netapi32.lib /nologo /subsystem:console /incremental:no /pdb:"Release/copypwd.pdb" /machine:I386 /out:"Release/copypwd.exe"  .\Release\copypwd.obj .\Release\getpid.obj "
+<h3>Output Window</h3>
+Compiling...
+copypwd.c
+getpid.c
+Linking...
+
+
+
+<h3>Results</h3>
+copypwd.exe - 0 error(s), 0 warning(s)
+<h3>
+--------------------Configuration: samdump - Win32 Release--------------------
+</h3>
+<h3>Command Lines</h3>
+Creating temporary file "C:\DOKUME~1\ADMINI~1\LOKALE~1\Temp\RSP3B.tmp" with contents
+[
+/nologo /MT /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /D "_USRDLL" /D "SAMDUMP_EXPORTS" /Fp"Release/getsetpw.pch" /YX /Fo"Release/" /Fd"Release/" /FD /c 
+"W:\src\copypwd\getsetpw.c"
+]
+Creating command line "cl.exe @C:\DOKUME~1\ADMINI~1\LOKALE~1\Temp\RSP3B.tmp" 
+Creating command line "link.exe kernel32.lib user32.lib gdi32.lib advapi32.lib Netapi32.lib /nologo /dll /incremental:no /pdb:"Release/copypwd.pdb" /machine:I386 /out:"Release/copypwd.dll" /implib:"Release/copypwd.lib"  .\Release\getsetpw.obj "
+<h3>Output Window</h3>
+Compiling...
+getsetpw.c
+W:\src\copypwd\getsetpw.c(94) : warning C4142: benign redefinition of type
+W:\src\copypwd\getsetpw.c(484) : warning C4101: 'i' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(505) : warning C4101: 'fp' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(496) : warning C4101: 'dwNumRet' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(490) : warning C4101: 'enum_rc' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(574) : warning C4101: 'wBuff' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(573) : warning C4101: 'szUserName' : unreferenced local variable
+W:\src\copypwd\getsetpw.c(575) : warning C4101: 'dwSize' : unreferenced local variable
+Linking...
+   Creating library Release/copypwd.lib and object Release/copypwd.exp
+
+
+
+<h3>Results</h3>
+copypwd.dll - 0 error(s), 8 warning(s)
+</pre>
+</body>
+</html>

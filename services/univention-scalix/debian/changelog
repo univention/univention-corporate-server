@@ -1,0 +1,332 @@
+univention-scalix (0.4-52) stable; urgency=low
+
+  * rewrite ldapmapper config file upon updates from earlier versions
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 16 May 2007 09:31:23 +0200
+
+univention-scalix (0.4-51) stable; urgency=low
+
+  * invalidate the nscd hosts cache
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 May 2007 16:43:05 +0200
+
+univention-scalix (0.4-49) stable; urgency=low
+
+  * don't create the scalix user administrator on a basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 May 2007 12:15:14 +0200
+
+univention-scalix (0.4-48) stable; urgency=low
+
+  * added BC module sendmail-smarthost.py that sets smarthost keyword in
+    sendmail cfg depending on BC variable 'mail/sendmail/relayhost'.
+    Also it does enable/disable relayauth settings depending on BC variable
+    'mail/sendmail/relayauth'
+  * additional dependency stunnel
+  * added /etc/init.d/univention-scalix-stunnel that starts stunnel for IMAPS
+    and POP3S if scalix/imaps and scalix/pop3s are set to 'yes'
+  * start univention-scalix-stunnel on startup/shutdown
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed,  9 May 2007 14:50:54 +0200
+
+univention-scalix (0.4-46) stable; urgency=low
+
+  * removed set cmd of BC var scalix/smtpfilter in postinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 13:28:07 +0200
+
+univention-scalix (0.4-45) stable; urgency=low
+
+  * added smtpd config file 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 11:43:43 +0200
+
+univention-scalix (0.4-44) stable; urgency=low
+
+  * include ldapmapper config file
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 12 Apr 2007 14:13:37 +0200
+
+univention-scalix (0.4-43) stable; urgency=low
+
+  * update to scalix 11.0.3
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Apr 2007 06:53:50 +0200
+
+univention-scalix (0.4-42) stable; urgency=low
+
+  * set default locale in the scalix-tomcat init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Mar 2007 13:59:04 +0100
+
+univention-scalix (0.4-40) stable; urgency=low
+
+  * we must start the scalix processes in a de_DE@euro environment
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Mar 2007 11:36:23 +0100
+
+univention-scalix (0.4-39) stable; urgency=low
+
+  * set the locale for the webmailer to en_US if the default locale is not set
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Mar 2007 13:05:36 +0100
+
+univention-scalix (0.4-38) stable; urgency=low
+
+  * package cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 Mar 2007 08:34:26 +0100
+
+univention-scalix (0.4-37) stable; urgency=low
+
+  * replace OM-UNIX.inst and OM-ADM.inst with not-overwrite versions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Mar 2007 07:53:44 +0100
+
+univention-scalix (0.4-34) stable; urgency=low
+
+  * univention-scalix-connffile copies the old and the current configuration file
+    into the /var/univention-backup/scalix directory
+  * added all scalix config files to the univention conffile mechanism
+  * replace sxtomcat-webapps and OM-LDAP.inst with versions, which don't
+    overwrite conffiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Feb 2007 08:42:47 +0100
+
+univention-scalix (0.4-30) stable; urgency=low
+
+  * don't overwrite the config files during an upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Feb 2007 09:18:40 +0100
+
+univention-scalix (0.4-27) stable; urgency=low
+
+  * modify the univention-setup scripts, see
+    http://www.scalix.com/wiki/index.php?title=HowTos/ChangeIP
+    http://www.scalix.com/wiki/index.php?title=HowTos/ChangeFQDN
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Feb 2007 08:42:40 +0100
+
+univention-scalix (0.4-23) stable; urgency=low
+
+  * sync univention groups into the scalix directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Feb 2007 11:33:35 +0100
+
+univention-scalix (0.4-21) stable; urgency=low
+
+  * fix errors in univention-setup scripts
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 14 Feb 2007 11:29:13 +0100
+
+univention-scalix (0.4-20) stable; urgency=low
+
+  * fix custom attribut LimitMailboxSize
+  * fix mapping of quota related attributes
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 14 Feb 2007 10:59:30 +0100
+
+univention-scalix (0.4-19) stable; urgency=low
+
+  * don't call omldapsync at the end of the postinst process, the listener
+    will do the initial sync
+  * don't overite the scalix.secret password when re-installing this package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Feb 2007 08:59:34 +0100
+
+univention-scalix (0.4-17) stable; urgency=low
+
+  * check for dots in the mailnode variable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Feb 2007 08:40:42 +0100
+
+univention-scalix (0.4-16) stable; urgency=low
+
+  * the listener module checks for more changed attributes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Feb 2007 08:21:16 +0100
+
+univention-scalix (0.4-15) stable; urgency=low
+
+  * added setup script for changing interface settings
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Feb 2007 15:53:25 +0100
+
+univention-scalix (0.4-13) stable; urgency=low
+
+  * don't install the whole var directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Feb 2007 15:24:06 +0100
+
+univention-scalix (0.4-12) stable; urgency=low
+
+  * create necessary locales at an earlier point in post install script,
+    preventing problems with import of users with umlauts
+  * add versioned dependency on univention-baseconfig
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 13 Feb 2007 15:06:31 +0100
+
+univention-scalix (0.4-11) stable; urgency=low
+
+  * remove all CVS directories from the binary package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Feb 2007 12:50:05 +0100
+
+univention-scalix (0.4-9) stable; urgency=low
+
+  * added baseconfig variable for omldapsync command line parameter:
+    scalix/omldapsync/parameter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Feb 2007 10:50:32 +0100
+
+univention-scalix (0.4-7) stable; urgency=low
+
+  * added univention-apache to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Feb 2007 16:02:02 +0100
+
+univention-scalix (0.4-6) stable; urgency=low
+
+  * add missing configuration file entry in swa.properties, which lead to swa
+    being disfunctional
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  8 Feb 2007 13:58:38 +0100
+
+univention-scalix (0.4-5) stable; urgency=low
+
+  * add univention-scalix-tomcat-connector to pre-depends of
+    univention-scalix, working around a weird error condition from apt
+  * fix error when setting default mailnode
+  * add support for univention-console daemon plug-in
+  * use german webmail frontend by default
+  * add admin account for Administrator in postinst
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue,  6 Feb 2007 08:56:17 +0100
+
+univention-scalix (0.4-4) stable; urgency=low
+
+  * always use de_DE.UTF-8@euro in listener module, create locale in 
+    postinst if necessary
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  1 Feb 2007 15:39:21 +0100
+
+univention-scalix (0.4-3) stable; urgency=low
+
+  * add hook scripts for univention-setup
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 24 Jan 2007 17:08:07 +0100
+
+univention-scalix (0.4-2) stable; urgency=low
+
+  * adjustments for scalix 11.0.1
+    - move configuration files to new location
+    - remove some stuff from postinst which is not needed anymore
+    - use address of eth0 instead of localhost in mod_jk config
+    - remove unneded links from univention-scalix.links, dynamically
+      add link in postinst
+    - make restart of services in postinst more robust
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 23 Jan 2007 15:47:06 +0100
+
+univention-scalix (0.4-0) stable; urgency=low
+
+  * more adjustments for transition from scalix 11 beta to final version:
+    - added adjustments as scalix now dynamically chooses the instance
+      directory for its data
+    - remove temporary fix for error in scalix translation file
+    - remove all diversions, don't ship
+      - sxpsql-init
+      - sxpsql-setpwd
+      - sxpsql-whitelist
+      - /etc/init.d/scalix-postgres
+      anymore
+    - don't create links to webapps anymore, this is done by the individual
+      packages
+  * fix creation of postgres configuration file in postinst
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri,  5 Jan 2007 14:52:47 +0100
+
+univention-scalix (0.3-4) stable; urgency=low
+
+  * add scalix-tomcat-connector dummy package
+  * adjust dependencies for new scalix packages
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  4 Jan 2007 11:54:46 +0100
+
+univention-scalix (0.3-2) stable; urgency=low
+
+  * use the new ldap attribute syntax
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Dec 2006 11:14:35 +0100
+
+univention-scalix (0.3-1) stable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 11:26:58 +0100
+
+univention-scalix (0.2-11) stable; urgency=low
+
+  * include postgresql configuration
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 27 Nov 2006 11:10:33 +0100
+
+univention-scalix (0.2-10) stable; urgency=low
+
+  * move custom attributes from univention-admin-scalix into this package
+  * adjust dependencies
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 16 Nov 2006 09:23:18 +0100
+
+univention-scalix (0.2-9) stable; urgency=low
+
+  * create mailnode and scalix objects in LDAP directory upon installation
+  * adjust dependencies to ensure existence of correct LDAP scheme and
+    univention admin modules
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 15 Nov 2006 13:17:31 +0100
+
+univention-scalix (0.2-6) stable; urgency=low
+
+  * enable ldap authentication
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon,  6 Nov 2006 15:20:33 +0100
+
+univention-scalix (0.2-5) stable; urgency=low
+
+  * minor cleanups
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon,  6 Nov 2006 13:51:38 +0100
+
+univention-scalix (0.2-4) stable; urgency=low
+
+  * scalix specific configuration files are not managed by univention baseconfig
+    anymore
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 30 Oct 2006 18:07:28 +0100
+
+univention-scalix (0.2-3) stable; urgency=low
+
+  * bump version
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 20 Oct 2006 09:59:15 +0200
+
+univention-scalix (0.2-1) stable; urgency=low
+
+  * modifications for scalix 11
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 19 Oct 2006 15:31:13 +0200
+
+univention-scalix (0.1-4) stable; urgency=low
+
+  * Fix some maintainer scripts
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 28 Sep 2006 10:29:10 +0200
+
+univention-scalix (0.1-3) stable; urgency=low
+
+  * Initial Release.
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue,  8 Aug 2006 18:26:06 +0200
+
+

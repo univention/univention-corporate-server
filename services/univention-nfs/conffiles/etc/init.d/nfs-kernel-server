@@ -1,0 +1,119 @@
+#!/bin/sh
+#
+# Univention NFS
+#  init script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+# nfs-kernel-server
+#		This shell script takes care of starting and stopping
+#               the kernel-mode NFS server.
+#
+# chkconfig: 345 60 20
+# description: NFS is a popular protocol for file sharing across TCP/IP \
+#              networks. This service provides NFS server functionality, \
+#              which is configured via the /etc/exports file.
+#
+
+PREFIX=/usr
+[ -x $PREFIX/sbin/rpc.nfsd ] || exit 0
+[ -x $PREFIX/sbin/rpc.mountd ] || exit 0
+[ -x $PREFIX/sbin/exportfs ] || exit 0
+
+# What is this?
+DESC="NFS kernel daemon"
+
+RPCNFSDCOUNT=8	# Number of servers to be started up by default
+RPCMOUNTDOPTS=
+
+# If we should be started by heartbeat exit here
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+if [ $nfsserver_ha_master ]
+	then
+	echo "nfs-server is managed by heartbeat"
+	exit 0
+fi
+
+# See how we were called.
+case "$1" in
+  start)
+	cd /	# daemons should have root dir as cwd
+	if egrep -q '^["]{0,1}/' /etc/exports
+	then
+		printf "Exporting directories for $DESC..."
+		$PREFIX/sbin/exportfs -r
+		echo "done."
+
+		printf "Starting $DESC:"
+		printf " nfsd"
+		start-stop-daemon --start --quiet \
+		    --exec $PREFIX/sbin/rpc.nfsd -- $RPCNFSDCOUNT
+		printf " mountd"
+		$PREFIX/bin/rpcinfo -u localhost nfs 3 >/dev/null 2>&1 ||
+		    RPCMOUNTDOPTS="$RPCMOUNTDOPTS --no-nfs-version 3"
+		start-stop-daemon --start --quiet \
+		    --exec $PREFIX/sbin/rpc.mountd -- $RPCMOUNTDOPTS
+		echo "."
+	else
+		echo "Not starting $DESC: No exports."
+	fi
+	;;
+
+  stop)
+	printf "Stopping $DESC: mountd"
+	start-stop-daemon --stop --oknodo --quiet \
+	    --name rpc.mountd --user 0
+	printf " nfsd"
+	start-stop-daemon --stop --oknodo --quiet \
+	    --name nfsd --user 0 --signal 2
+	echo "."
+
+	printf "Unexporting directories for $DESC..."
+	$PREFIX/sbin/exportfs -au
+	echo "done."
+	;;
+
+  reload | force-reload)
+	printf "Re-exporting directories for $DESC..."
+	$PREFIX/sbin/exportfs -r
+	echo "done."
+	;;
+
+  restart)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+
+  *)
+	echo "Usage: nfs-kernel-server {start|stop|reload|force-reload|restart}"
+	exit 1
+	;;
+esac
+
+exit 0

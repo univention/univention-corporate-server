@@ -1,0 +1,88 @@
+#! /bin/sh -e
+#
+# Univention Nagios Server
+#  join script
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `univention-baseconfig shell`
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep 'univention-nagios-server successful' /usr/lib/univention-install/.index.txt`" && exit 1
+
+# create nagios container
+univention-admin container/cn create $@ --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
+
+# create default timeperiod objects
+univention-admin nagios/timeperiod create $@ --ignore_exists --position="cn=nagios,$ldap_base" \
+                                          --set name="24x7"                   --set description="Default Timeperiod 24x7" \
+                                          --set periodMonday="00:00-24:00"    --set periodTuesday="00:00-24:00" \
+                                          --set periodWednesday="00:00-24:00" --set periodThursday="00:00-24:00" \
+                                          --set periodFriday="00:00-24:00"    --set periodSaturday="00:00-24:00" \
+                                          --set periodSunday="00:00-24:00"
+
+univention-admin nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
+                                          --set name="WorkHours"              --set description="Default Timeperiod WorkHours" \
+                                          --set periodMonday="08:00-16:00"    --set periodTuesday="08:00-16:00" \
+                                          --set periodWednesday="08:00-16:00" --set periodThursday="08:00-16:00" \
+                                          --set periodFriday="08:00-16:00"
+
+univention-admin nagios/timeperiod create $@  --ignore_exists --position="cn=nagios,$ldap_base" \
+                                          --set name="NonWorkHours"                       --set description="Default Timeperiod NonWorkHours" \
+                                          --set periodMonday="00:00-08:00,16:00-24:00"    --set periodTuesday="00:00-08:00,16:00-24:00" \
+                                          --set periodWednesday="00:00-08:00,16:00-24:00" --set periodThursday="00:00-08:00,16:00-24:00" \
+                                          --set periodFriday="00:00-08:00,16:00-24:00"    --set periodSaturday="00:00-24:00" \
+                                          --set periodSunday="00:00-24:00"
+
+# add default services
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_PING" --set description="Default Service: check if ${hostname} is alive" --set checkCommand="check_ping" --set checkArgs='50,20%!100,40%' --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DISK_ROOT" --set description="Default Service: check if / is out of diskspace" --set checkCommand="check_disk" --set checkArgs='25%!10%!/'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_DNS" --set description="Default Service: check if service dns is ok" --set checkCommand="check_univention_dns" --set checkArgs='www.univention.de'  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_LDAP" --set description="Default Service: check if service ldap is ok" --set checkCommand="check_ldap"  --set useNRPE="1" --set checkArgs="$ldap_base" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_NTP" --set description="Default Service: check if service ntp is ok" --set checkCommand="check_ntp" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SMTP" --set description="Default Service: check if service smtp is ok" --set checkCommand="check_smtp"  --set useNRPE="1" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_SSL" --set description="Default Service: check if ssl certificate is valid" --set checkCommand="check_univention_sslcert" --set checkArgs="20!40" --set useNRPE="1" --set normalCheckInterval="60" --set retryCheckInterval="5" --set maxCheckAttempts="3" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
+
+/etc/init.d/nagios2 restart 2> /dev/null > /dev/null || true
+
+test -n "`grep 'univention-nagios-server successful' /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-server successful" >>/usr/lib/univention-install/.index.txt
+
+
+exit 0

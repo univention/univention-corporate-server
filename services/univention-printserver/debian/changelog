@@ -1,0 +1,149 @@
+univention-printserver (0.22-1) unstable; urgency=low
+
+  * fixed support for attributes like location and description that might have
+    values containing whitespaces
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 20 Dec 2006 10:27:08 +0100
+
+univention-printserver (0.21-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:55:17 +0100
+
+univention-printserver (0.20-2) unstable; urgency=low
+
+  * update list of printer models
+  * add script to do that automatically
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 29 Mar 2006 16:42:21 +0200
+
+univention-printserver (0.20-1) unstable; urgency=low
+
+  * add optional support for filedevices (may be disabled by 
+    univention-baseconfig set cups/filedevice=no)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 29 Mar 2006 14:50:56 +0200
+
+univention-printserver (0.19) unstable; urgency=low
+
+  * fixed typo in cupsd.conf which broke the possibility to configure printers  
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  9 Nov 2005 11:21:04 +0100
+
+univention-printserver (0.18) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:48:34 +0200
+
+univention-printserver (0.17) unstable; urgency=low
+
+  * removed error message, added help message in case univention-cupsadmin is
+    called directly
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 12 Aug 2005 11:51:10 +0200
+
+univention-printserver (0.16) unstable; urgency=low
+
+  * added dependencies to foomatic-dbs for hbijs and gimpprint
+  * fixed bug which prevents the host-account to be added to group lp
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  1 Aug 2005 18:50:30 +0200
+
+univention-printserver (0.15) unstable; urgency=low
+
+  * resync cups-printers during join, printers replicated earlier 
+    may not be created 
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 25 Apr 2005 17:31:29 +0200
+
+univention-printserver (0.14) unstable; urgency=low
+
+  * added univention-versions of accept/reject/enable/disable
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 22 Apr 2005 15:42:47 +0200
+
+univention-printserver (0.13) unstable; urgency=low
+
+  * expect code checks for hostname only
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Mar 2005 19:56:39 +0100
+
+univention-printserver (0.12) unstable; urgency=low
+
+  * rename Gerneric to Generic
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Feb 2005 06:49:24 +0100
+
+univention-printserver (0.11) unstable; urgency=low
+
+  * Support for spaces in ldap base
+  * changed univention-lpadmin to match behaviour of new lpadmin
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Feb 2005 10:27:49 +0100
+
+univention-printserver (0.10) unstable; urgency=low
+
+  * rewrite cupsd.conf when network settings change
+  * fixed Bug in univention-lpadmin
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri,  3 Dec 2004 12:05:09 +0100
+
+univention-printserver (0.9) unstable; urgency=low
+
+  * removed useless reload command in postinst 
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 25 Nov 2004 11:37:29 +0100
+
+univention-printserver (0.8) unstable; urgency=low
+
+  * support for all defined networks
+  * remove absurd config options
+  * added support for Printer-Admins group
+  * added pam configuration for cups
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jun 2004 10:44:46 +0200
+
+univention-printserver (0.7) unstable; urgency=low
+
+  * Samba every reload after insert and delete.
+
+ -- Thomas Kaminski <kaminski@univention.de>  Tue, 11 May 2004 08:49:16 +0200
+
+univention-printserver (0.6) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 14:02:42 +0200
+
+univention-printserver (0.5) unstable; urgency=low
+
+  * Insert reload for after configure
+
+ -- Thomas Kaminski <kaminski@univention.de>  Thu, 25 Mar 2004 12:06:31 +0100
+
+univention-printserver (0.4) unstable; urgency=low
+
+  * Modify cupsd.conf for univention-admin with lpadmin
+
+ -- Thomas Kaminskit <kaminski@univention.de>  Mon, 22 Mar 2004 17:15:00 +0100
+
+univention-printserver (0.3) unstable; urgency=low
+
+  * Added ppd=None for virtual- and ppd=smb for Samba-Printer
+
+ -- Thomas Kaminskit <kaminski@univention.de>  Mon, 22 Mar 2004 14:21:04 +0100
+ 
+univention-printserver (0.2) unstable; urgency=low
+
+  * Added Listener module to manage printers in LDAP.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 18 Nov 2003 14:22:48 +0100
+
+univention-printserver (0.1) unstable; urgency=low
+
+  * Initial Release 
+
+ -- Thorsten Pesel <pesel@univention.de>  Wed,  2 Apr 2003 10:15:25 +0200
+

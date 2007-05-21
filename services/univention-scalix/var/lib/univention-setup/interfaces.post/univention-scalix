@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# oldip=$(echo $1 | sed -e 's|-.*||'`)
+# newip=$(echo $2 | sed -e 's|-.*||'`)
+
+/etc/init.d/univention-scalix stop
+
+if [ ! -e /var/cache/univention-setup/postrun/univention-scalix ]; then
+	mkdir -p /var/cache/univention-setup/postrun
+	echo "#!/bin/sh" >/var/cache/univention-setup/postrun/univention-scalix
+	echo "/etc/init.d/univention-scalix start" >/var/cache/univention-setup/postrun/univention-scalix
+	chmod +x /var/cache/univention-setup/postrun/univention-scalix
+fi
+
+exit 0
+

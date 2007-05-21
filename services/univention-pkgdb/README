@@ -1,0 +1,45 @@
+Packages-Status-DB
+
+Sinn dieses Programmpaketes ist das erfassen von installierten Paketen auf den
+einzelnen Rechnern in eine zentrale DB. Diese DB dient als Informationsquelle
+für den Softwarestatus der teilnehmenden Systeme.
+
+Status heißt Version, Installationsstatus und Zeitpunkt der 
+Installation/Deinstallation bzw Erfassung.>
+
+Installationsstatus ist Install/Removed/Purged/... was (dpkg -l so sagt).
+
+Die Packages-Status-DB wird in zwei Debian-Pakete aufgeteilt.
+
+1. DB+Webinferface
+Auf den Master wird eine DB installiert, die folgende Daten enthalten soll:
+
+a) Liste der zu betrachtenen Rechner und deren Info.
+b) Liste der möglichen Pakete und deren Info.
+c) Liste von Paketen in Rechnern mit deren Status.
+   Hat Referenzen zur Tabelle a und b.
+   
+Da in der DB nur statische Daten enthalten sind und keine Historien,
+wird nur der letzte Zeitpunkt einer Datensatzoperation mit in die
+jeweilige Tabelle gespeichert.
+
+Zur Rechnerinfo gehört auch die Letzte Rückmeldung von apt-get ...
+
+Als DB wird Postgres eingesetzt.
+Die Oberfläche wird wie bei univention-console gemacht.
+Zusätzlich werden kleine Scripte zur Kommandozeilenabfrage erstellt.
+
+Die DB und Webseite muß gegen unberechtigten Zugriff gesichert werden.
+
+
+2. DB-Erfassungsmodul
+Dieser Teil besteht nur aus ein oder mehreren Sripten zur Erfassung der
+Informationen über das System, das Paket oder die Pakete und dessen Stati.
+
+Optimal werden diese Scripte in dpkg (oder APT) eingebunden.
+Die Scripte schreiben mit dem Rechneraccount in die Datenbank. 
+
+
+Die Datenbank kann erstmal nur auf DC Master/DC Backup oder 
+Memberserver mit ldap/server/name auf DC Master oder DC Backup installiert werden.
+

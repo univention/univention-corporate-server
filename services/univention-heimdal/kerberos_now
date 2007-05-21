@@ -1,0 +1,93 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Heimdal
+#  kerberos_now
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import ldap
+import univention_baseconfig
+import univention.debug
+univention.debug.init('/dev/null', 1, 1)
+import univention.uldap
+
+baseConfig = univention_baseconfig.baseConfig()
+baseConfig.load()
+lo = univention.uldap.getAdminConnection()
+krbbase='ou=krb5,'+baseConfig['ldap/base']
+realm=baseConfig['kerberos/realm']
+
+def nt_password_to_arcfour_hmac_md5(nt_password):
+	
+	# all arcfour-hmac-md5 keys begin this way
+	key='0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+	
+	for i in range(0, 16):
+		o=nt_password[2*i:2*i+2]
+		key+=chr(int(o, 16))
+	return key
+
+for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=*)(!(objectClass=univentionWindows)))', attr=['uid', 'sambaNTPassword', 'objectClass']):
+	if not attrs['sambaNTPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
+
+		if attrs['uid'][0] == 'root':
+			print 'Skipping user root '
+			continue
+
+		principal=attrs['uid'][0]+'@'+realm
+	
+		ocs=[]
+		ml=[]
+		if not 'krb5Principal' in attrs['objectClass']:
+			ocs.append('krb5Principal')
+			ml.append(('krb5PrincipalName', None, principal))
+		if not 'krb5KDCEntry' in attrs['objectClass']:
+			ocs.append('krb5KDCEntry')
+			ml.extend([
+				('krb5MaxLife', None, '86400'),
+				('krb5MaxRenew', None, '604800'),
+				('krb5KDCFlags', None, '126'),
+				('krb5KeyVersionNumber', None, '1'),
+				('krb5Key', None, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0]))
+			])
+		
+		if not ocs:
+			continue
+		
+		print 'Adding Kerberos key for %s...' % repr(dn),
+	
+		ml.insert(0, ('objectClass', None, ocs))
+	
+		try:
+			lo.modify(dn, ml)
+		except ldap.ALREADY_EXISTS:
+			print 'already exists'
+		else:
+			print 'done'
+
+	else:
+		print 'Can not add Kerberos key for %s...' % repr(dn),
+		print 'no password set'

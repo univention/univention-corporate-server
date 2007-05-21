@@ -1,0 +1,321 @@
+#!/bin/sh
+#
+# Univention Samba
+#  takes over a Windows NT4 domain
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+LOGFILE=/var/log/univention/pdc-takeover.log
+
+samba_debug=0
+admin_debug=0
+netlogon_dir=/var/lib/samba/netlogon
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+display_help() {
+	cat <<-EOL
+	Syntax:
+	  univention-pdc-takeover [-h | --version | -D <domainname> -S <NT4PDCname> -U <adminlogin> -P <password> -w <WINS-Server-IP> -d <debug level> ]
+
+	Options:
+	  -h | --help | -?:
+	    print this usage message and exit program
+
+	  --version
+	    print version information and exit program
+
+	Description:
+		univention-pdc-takeover imports Accounts and Groups from a Windows-NT PDC
+		Enhanced Information ist appended to /var/log/univention/pdc-takeover.log
+
+		Called without arguments you will be asked.
+
+	Known-Bugs:
+	  -None-
+
+	EOL
+	exit 0
+}
+
+display_header() {
+	echo "univention-pdc-takeover: Import Accounts and Groups from Windows NT"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "univention-pdc-takeover @%@package_version@%@"
+	exit 0
+}
+
+info() {
+	echo "$1" >> $LOGFILE
+	echo $2 "$1"
+}
+
+error() {
+	echo ""
+	echo ""
+    echo "ERROR during takeover:" | tee -a $LOGFILE
+	echo "  $1" | tee -a $LOGFILE
+	echo ""
+    exit 1
+}
+
+
+display_header
+
+while [ "$#" -gt "0" ]; do
+	case $1 in
+		-h)
+			display_help
+			exit 0
+			;;
+		-v)
+			display_version
+			exit 0
+			;;
+		--version)
+			display_version
+			exit 0
+			;;
+		-D)
+			nt_domainname=$2
+			shift 2
+			;;
+		-S)
+			nt_pdc=$2
+			shift 2
+			;;
+		-U)
+			nt_account=$2
+			shift 2
+			;;
+		-P)
+			nt_password=$2
+			shift 2
+			;;
+		-w)
+			nt_wins_server=$2
+			shift 2
+			;;
+		-n)
+			netlogon_dir=$2
+			shift 2
+			;;
+		-ds)
+			samba_debug=$2
+			shift 2
+			;;
+		-du)
+			univention_debug=$2
+			shift 2
+			;;
+		*)
+			display_help
+			exit 0
+	esac
+done
+
+
+if [ -z "$nt_domainname" ]; then
+	read -p " Domainname:            " nt_domainname
+fi
+if [ -z "$nt_pdc" ]; then
+	read -p " PDC Hostname:          " nt_pdc
+fi
+if [ -z "$nt_account" ]; then
+	read -p " Administrator Account: " nt_account
+fi
+if [ -z "$nt_password" ]; then
+	read -s -p " Password:              " nt_password
+	echo ""
+fi
+
+
+info "stopping Samba PDC... " -n
+/etc/init.d/samba stop >> $LOGFILE 2>&1 || error "failed to stop samba (init-script failed)"
+info "OK."
+
+info "deleting local cache... " -n
+rm -f /var/run/samba/gencache.tdb >> $LOGFILE 2>&1  || error "failed to delete cache (/var/run/samba/gencache.tdb)"
+info "OK."
+
+info "looking up previous Windows PDC for \"$nt_domainname\"... " -n
+net lookup dc $nt_domainname  >> $LOGFILE 2>&1 || error "failed to lookup Windows PDC, check if Domain is reachable"
+info "OK."
+
+if [ -x "/etc/init.d/nscd" ]; then
+	info "restart nscd... " -n
+	if /etc/init.d/nscd restart >> $LOGFILE 2>&1; then
+		info "OK."
+	else
+		info "failed to restart nscd, ignored"
+	fi
+fi
+
+
+
+
+
+
+tmpdir=`mktemp -d`
+mkdir -m700 -p "$tmpdir"
+
+config=$tmpdir/smb.conf
+xml_out=$tmpdir/xml.out
+
+net_options="-s ${config} -w${nt_domainname} -S${nt_pdc} -U${nt_account}%${nt_password} -d$samba_debug_level"
+smbclient_options="-s ${config} -U${nt_account}%${nt_password}"
+
+
+cat <<EOF | univention-baseconfig filter > ${config}
+[global]
+
+	debug level = $samba_debug_level
+    log file = $LOGFILE
+	private dir = $tmpdir
+
+	netbios name = @%@hostname@%@
+	server string = %h univention_ desktop server
+	smb ports = 139
+
+	client use spnego = no
+
+	passdb backend = ldapsam:ldap://@%@ldap/server/name@%@ guest
+	ldap suffix = "@%@ldap/base@%@"
+    ldap admin dn = "cn=admin,@%@ldap/base@%@"
+	ldap ssl = off
+
+	oplocks = yes
+	kernel oplocks = yes
+	large readwrite = yes
+	deadtime = 15
+	read raw = yes
+	write raw = yes
+	max xmit = 65536
+	getwd cache = yes
+
+	workgroup = ${nt_domainname}
+	security = user
+	domain logons = yes
+	encrypt passwords = yes
+
+	os level = 65
+	domain master = no
+	prefered master = yes
+	local master = yes
+
+	wins server = $nt_wins_server
+
+	preserve case = yes
+	short preserve case = yes
+
+	invalid users = daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster
+
+EOF
+
+
+univention-baseconfig set windows/domain="$nt_domainname" >>/var/log/univention/pdc-takeover.log 2>&1
+
+info "Join into Domain..." -n
+net rpc join ${net_options}  >> $LOGFILE 2>&1 || error "Failed to join domain"
+info "OK"
+
+info "Vampire NT Domain..."
+net rpc vampire xml $xml_out ${net_options} >> $LOGFILE 2>&1 || error "Failed to vampire NT domain"
+
+if [ ! -e $xml_out ]; then
+	echo "Domain takeover wasn't successful (missing xml file). Check logfile /var/log/univention/pdc-takeover.log"
+	exit 1
+fi
+
+shutdown_notifier="yes"
+info "Do you want to stop the LDAP Notifier (this will increase the speed of the takeover)? [Y/n] " -n
+answer=
+while [ -z "$answer" ]; do
+	read answer
+	if [ -z $answer ]; then
+		answer="Y"
+	fi
+	case "$answer" in
+		Y | y) 	info "stopping LDAP Notifier ... " -n
+				/etc/init.d/univention-ldap-notifier stop >> $LOGFILE 2>&1 || error "failed to stop LDAP Notitifer"
+				info "OK."
+				;;
+		N | n)	shutdown_notifier="no"
+				;;
+		*)		info "not a valid answer: $answer"
+				answer=
+				;;
+	esac
+done
+
+/usr/share/univention-samba/xml-admin.py -f $xml_out
+
+if [ $? != 0 ]; then
+	echo "Domain takeover wasn't successful. Check logfile /var/log/univention/pdc-takeover.log"
+	exit 1
+fi
+
+info "Copying netlogon share..." -n
+smbclient "//$nt_pdc/NETLOGON" ${smbclient_options} -d0 -Tc - 2>>$LOGFILE | tar xv -C $netlogon_dir || echo "FAILED"
+info "OK"
+
+if [ "$shutdown_notifier" = "yes" ]; then
+	info "starting LDAP Notifier ... " -n
+	/etc/init.d/univention-ldap-notifier start >> $LOGFILE 2>&1 || error "failed to start LDAP Notifier"
+	info "OK."
+fi
+
+info "Takeover finished. Shut down previous Windows PDC and press Enter to continue" -n
+read
+info "Do you want to start Samba PDC now? [Y/n] " -n
+answer=
+while [ -z "$answer" ]; do
+	read answer
+	if [ -z $answer ]; then
+		answer="Y"
+	fi
+	case "$answer" in
+		Y | y) 	info "starting Samba PDC... " -n
+			/etc/init.d/samba start  >> $LOGFILE 2>&1 || error "failed to start samba after import"
+			info "OK."
+			info ""
+			info "Domain takeover was successful."
+			break
+			;;
+		N | n) 	info "Don\`t start Samba PDC !" -n
+			info "You can start Samba PDC manually using \"/etc/init.d/samba start\""
+			break
+			;;
+		*) 	info "Not a valid answer"
+			answer=""
+			;;
+	esac
+done
+info "----------------------------------------------------------------------"

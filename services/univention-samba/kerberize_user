@@ -1,0 +1,143 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Samba
+#  helper script: kerberize a user account
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import ldap, sys, getopt
+import univention_baseconfig
+import univention.debug
+univention.debug.init('/dev/null', 1, 1)
+import univention.uldap
+
+baseConfig = univention_baseconfig.baseConfig()
+baseConfig.load()
+lo = univention.uldap.getAdminConnection(decode_ignorelist = [ 'krb5Key' ])
+krbbase='ou=krb5,'+baseConfig['ldap/base']
+realm=baseConfig['kerberos/realm']
+
+def nt_password_to_arcfour_hmac_md5(nt_password):
+
+	# all arcfour-hmac-md5 keys begin this way
+	key='0\x1d\xa1\x1b0\x19\xa0\x03\x02\x01\x17\xa1\x12\x04\x10'
+
+	for i in range(0, 16):
+		o=nt_password[2*i:2*i+2]
+		key+=chr(int(o, 16))
+	return key
+
+
+if __name__ == '__main__':
+	username = None
+	optlist, mail_user = getopt.getopt(sys.argv[1:], 'u:')
+	for option, value in optlist:
+		if option == '-u':
+			username = value
+
+	if not username:
+		sys.exit(0)
+
+	for dn, attrs in lo.search(filter='(&(objectClass=sambaSamAccount)(sambaNTPassword=*)(uid=%s)(!(objectClass=univentionWindows)))' % username, attr=['uid', 'krb5Key', 'sambaNTPassword', 'sambaLMPassword', 'sambaAcctFlags', 'objectClass', 'userPassword', 'krb5KDCFlags']):
+		if 'univentionHost' in attrs[ 'objectClass' ]:
+			continue
+		if not attrs['sambaNTPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
+
+			if attrs['uid'][0] == 'root':
+				print 'Skipping user root '
+				continue
+
+			# check if the user was disabled
+			disabled = False
+			if attrs.has_key('sambaAcctFlags') and len(attrs['sambaAcctFlags']) > 0:
+				if 'D' in attrs['sambaAcctFlags'][0]:
+					disabled = True
+
+			principal=attrs['uid'][0]+'@'+realm
+
+			ocs=[]
+			ml=[]
+			if not 'krb5Principal' in attrs['objectClass']:
+				ocs.append('krb5Principal')
+				ml.append(('krb5PrincipalName', None, principal))
+
+			if disabled:
+				flag = '256'
+			else:
+				flag = '126'
+
+			if not 'krb5KDCEntry' in attrs['objectClass']:
+				ocs.append('krb5KDCEntry')
+				ml.extend([
+					('krb5MaxLife', None, '86400'),
+					('krb5MaxRenew', None, '604800'),
+					('krb5KeyVersionNumber', None, '1'),
+				])
+			if attrs.has_key( 'krb5KDCFlags' ):
+				old_flag = attrs[ 'krb5KDCFlags' ]
+			else:
+				old_flag = [ ]
+
+
+			if attrs.has_key( 'krb5Key' ):
+				old_keys = attrs[ 'krb5Key' ]
+			else:
+				old_keys = [ ]
+
+			ml.extend([
+				('krb5Key', old_keys, nt_password_to_arcfour_hmac_md5(attrs['sambaNTPassword'][0])),
+				('krb5KDCFlags', old_flag, flag)
+			])
+
+			if attrs.has_key( 'sambaLMPassword' ) and not attrs['sambaLMPassword'][0] == "NO PASSWORDXXXXXXXXXXXXXXXXXXXXX":
+				if attrs.has_key( 'userPassword' ):
+					old_password = attrs[ 'userPassword' ]
+				else:
+					old_password = [ ]
+				if disabled:
+					ml.extend([
+						('userPassword', old_password, [ '{LANMAN}!%s' % attrs['sambaLMPassword'][0]])
+					])
+				else:
+					ml.extend([
+						('userPassword', old_password, [ '{LANMAN}%s' % attrs['sambaLMPassword'][0]])
+					])
+
+
+			if ocs:
+				print 'Adding Kerberos key for %s...' % repr(dn),
+				ml.insert(0, ('objectClass', None, ocs))
+
+			try:
+				lo.modify(dn, ml)
+			except ldap.ALREADY_EXISTS:
+				print 'already exists'
+			else:
+				print 'done'
+
+		else:
+			print 'Can not add Kerberos key for %s...' % repr(dn),
+			print 'no password set'

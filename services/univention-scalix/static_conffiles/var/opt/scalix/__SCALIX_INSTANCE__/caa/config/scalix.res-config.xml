@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+    This is the configuration file for a CAA Service Module and is parsed by CAAConfigLoader
+    which attempts to load all the values into the system.
+
+    Copy this file and name it something using the convention <service-name>-config.xml,
+    make sure it goes in the webapps/caa/config directory, remove this comment and add your own
+    service config (see below).
+
+    Each service is in a tag of its own (e.g. <my-service> below).  There can be multiple services in this
+    file if you wish.
+
+    The following elements can be used:
+
+        <disabled>          - set this to true to make this service unavailable to clients
+
+    There are several "components" that can be configured:
+
+        <transformer>       - specifies the CAATransformer implementation class (mandatory)
+        <connection>        - specifies the CAAConnection implementation class (optional)
+        <service>           - specifies the CAAService implementation class (mandatory)
+        <session>           - specifies the CAASession implementation class (optional)
+        <securityProvider>  - specifies the CAASecurityProvider implementation class (optional)
+
+    All the mandatory component class files specified *must* exist in the classpath when the system is
+    started.
+
+    Each component can have further arbitrary configuration at the <class> level or by specifying
+    delegate configuration to another class using a <configurator> element.  This element can contain:
+
+        <class>             - specifies the CAAConfigurable implementation class (mandatory) that
+                              will be delegated to handle configuration for this component. The framework
+                              will call readConfig()on this class.                              
+        <params>            - an element containing arbitrary parameters to pass to the class specified
+                              in <class>.  This can be any valid XML and as long as the delegate can
+                              handle it OK, you should be OK.
+
+    Further help on how to implement the interfaces mentioned above can be found in the main
+    CAA Developer's Guide.
+
+    Enjoy!
+-->
+<caa-config>
+    <scalix.res>
+        <disabled>
+            false
+        </disabled>
+	<initializer>
+	   <class>
+		com.scalix.sac.ubermgr.caa.RESInitializer
+	   </class>
+	</initializer>
+        <transformer>
+            <class>
+		com.scalix.sac.ubermgr.caa.RESTransformer
+            </class>
+        </transformer>
+        <connection>
+            <class>
+		com.scalix.sac.ubermgr.caa.RESConnection
+            </class>
+	    <mode>1</mode>
+            <configurator>
+                <class>
+                    com.scalix.caa.framework.CAAConnectionPoolManager
+                </class>
+                <params>
+                    <minConnections>2</minConnections>
+                    <maxConnections>10</maxConnections>
+		    <maxLifeTime>86400000</maxLifeTime>
+                    <maxIdleTime>300000</maxIdleTime>
+                </params>
+            </configurator>
+        </connection>
+        <service>
+            <class>
+		com.scalix.sac.ubermgr.caa.RESService
+            </class>
+        </service>
+    </scalix.res>
+</caa-config>

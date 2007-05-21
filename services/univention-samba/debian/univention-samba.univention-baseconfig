@@ -1,0 +1,173 @@
+Type: multifile
+Multifile: etc/samba/smb.conf
+Variables: server/role
+Variables: samba/serverstring
+Variables: samba/charset*
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: samba/netbios/name
+Variables: samba/pam/restrictions
+Variables: samba/debug/level
+Variables: samba/interfaces
+Variables: samba/ha/master
+Variables: samba/netbios/aliases
+Variables: samba/profileserver
+Variables: samba/profilepath
+Variables: samba/homedirserver
+Variables: samba/homedirpath
+Variables: samba/homedirletter
+Variables: samba/logonscript
+Variables: samba/enable-privileges
+Variables: samba/role
+Variables: windows/wins-support
+Variables: windows/wins-server
+Variables: samba/ldap/replication/sleep
+Variables: ldap/server/name
+Variables: ldap/server/addition
+Variables: cups/server
+Variables: samba/password/checkscript
+Variables: samba/script/adduser
+Variables: samba/script/deleteuser
+Variables: samba/script/addgroup
+Variables: samba/script/deletegroup
+Variables: samba/script/addusertogroup
+Variables: samba/script/deleteuserfromgroup
+Variables: samba/script/addmachine
+Variables: samba/script/setprimarygroup
+Variables: samba/script/postusermodify
+Variables: samba/script/renameuser
+Variables: samba/preferred/master
+Variables: samba/local/master
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/01univention-samba_main
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: samba/serverstring
+Variables: samba/charset*
+Variables: samba/enable-privileges
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/11univention-samba_ldap
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: samba/ldap/replication/sleep
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/02univention-samba_netbios
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: samba/netbios/aliases
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/21univention-samba_winbind
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/31univention-samba_password
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/41univention-samba_printing
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: cups/server
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/51univention-samba_domain
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/52univention-samba_domainname
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/61univention-samba_misc
+Variables: server/role
+Variables: samba/logonscript
+Variables: samba/domainmaster
+Variables: samba/user
+Variables: samba/profileserver
+Variables: samba/profilepath
+Variables: samba/homedirserver
+Variables: samba/homedirpath
+Variables: samba/homedirletter
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/71univention-samba_users
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/81univention-samba_scripts
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/91univention-samba_shares
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/92univention-samba_shares
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/93univention-samba_local_shares
+Variables: server/role
+Variables: samba/domainmaster
+Variables: samba/user
+
+Type: file
+File: etc/samba/base.conf
+Variables: samba/share/home
+Variables: samba/share/groups
+Variables: samba/share/profiles
+Variables: server/role
+Variables: samba/domainmaster
+
+Type: file
+File: etc/samba/debian_config
+
+Type: file
+File: etc/pam.d/samba
+
+Type: file
+File: etc/init.d/samba
+
+Type: file
+File: etc/default/samba
+
+Type: file
+File: etc/logrotate.d/samba

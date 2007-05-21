@@ -1,0 +1,90 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Samba
+#  helper script: remove samba accounts matching the given filter
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, string, ldap, re, codecs, os, copy
+
+import univention.debug
+univention.debug.init('/var/log/univention/pdc-takeover.log', 1, 0)
+
+import univention.admin.uldap
+import univention_baseconfig
+
+if len(sys.argv) != 2:
+	print "Expect exactly one argument: LDAP-Filter matching the Objects to modify"
+	sys.exit(1)
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+ldap_base=baseConfig['ldap/base']
+
+secretFile=open('/etc/ldap.secret','r')
+pwdLine=secretFile.readline()
+pwd=re.sub('\n','',pwdLine)
+
+try:
+	lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=ldap_base, binddn='cn=admin,'+ldap_base, bindpw=pwd, start_tls=2)
+except Exception, e:
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
+	print 'authentication error: %s' % str(e)
+	sys.exit(1)
+
+tomod=lo.search(filter=sys.argv[1], base=ldap_base, attr=['objectClass'])
+
+for entry in tomod:
+	modlist = ''
+	if 'sambaSamAccount' in entry[1]['objectClass']:
+		attrs=lo.get(entry[0])
+		modlist=[("objectclass","sambaSamAccount","")]
+
+		for key in attrs.keys():
+			if key[:5] == 'samba' or key == 'displayName':
+				modlist.append((key,attrs[key],''))
+
+	if 'sambaGroupMapping' in entry[1]['objectClass']:
+		attrs=lo.get(entry[0])
+		if not modlist:
+			modlist=[("objectclass","sambaGroupMapping","")]
+			for key in attrs.keys():
+				if key[:5] == 'samba' or key == 'displayName':
+					modlist.append((key,attrs[key],''))
+		else:
+			modlist.append(("objectclass","sambaGroupMapping",''))
+
+
+	if modlist:
+		#print modlist
+		try:
+			lo.modify(entry[0],modlist)
+		except:
+			try:
+				print "failed to modify entry: %s"%entry[0]
+			except:
+				print "failed to modify entry"

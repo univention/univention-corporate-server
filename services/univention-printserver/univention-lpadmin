@@ -1,0 +1,76 @@
+#!/usr/bin/python2.4
+#
+# Univention Print Server
+#  wrapper script for lpadmin
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, string, re
+import pwd, os
+from pexpect import *
+import univention_baseconfig
+
+args=sys.argv[1:]
+
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+# read machine password
+secretFile=open('/etc/machine.secret','r')
+pwdLine=secretFile.readline()
+machine_password=re.sub('\n','',pwdLine)
+
+machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
+old_uid=os.getuid()
+os.setuid(machine_uid)
+child = spawn('/usr/sbin/lpadmin %s' % string.join(args, ' '))
+i=0
+timeout=60
+while not i == 3:
+	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+	if i in [0,1,2]:
+		child.sendline(machine_password)
+
+print 'testing group'
+
+if '-c' in args:
+	groupname = args[args.index('-c')+1]
+	print 'found %s' % groupname
+	i = 0
+	child = spawn('/usr/bin/enable %s' % groupname)
+	while not i == 3:
+		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+		print "enable %s" % i
+		if i in [0,1,2]:
+			child.sendline(machine_password)
+	i = 0
+	child = spawn('/usr/sbin/accept %s' % groupname)
+	while not i == 3:
+		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
+		print "accept %s" % i
+		if i in [0,1,2]:
+			child.sendline(machine_password)

@@ -1,0 +1,111 @@
+#! /bin/sh
+#
+# Univention Scalix Services
+#  init script
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Scalix SSL Services"
+NAME=scalix-stunnel
+SCRIPTNAME=/etc/init.d/univention-scalix-stunnel
+
+# be sure, tha we start in a de_DE@euro environment
+export LC_ALL="de_DE@euro"
+
+eval `univention-baseconfig shell`
+
+HOSTNAME=$(hostname -f)
+SET_USER=nobody
+SET_GROUP=nogroup
+
+merge_ssl_cert_and_key() {
+	cat /etc/univention/ssl/${HOSTNAME}/cert.pem > /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
+	echo "" >> /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
+	cat /etc/univention/ssl/${HOSTNAME}/private.key >> /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
+	chmod 0600 /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
+}
+
+start_stunnel() {
+	SRCPORT="$1"
+	DSTPORT="$2"
+	/usr/sbin/stunnel \
+        -p /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem \
+        -a /etc/univention/ssl/${HOSTNAME}/ \
+        -A /etc/univention/ssl/udsCA/CAcert.pem \
+        -s ${SET_USER} -g ${SET_GROUP} -d $SRCPORT -r $DSTPORT \
+		-P /var/run/stunnel_${SRCPORT}_${DSTPORT}.pid
+}
+
+d_start() {
+	merge_ssl_cert_and_key
+	if [ "$scalix_pop3s" = "yes" ] ; then
+		start_stunnel 995 110
+	fi
+	if [ "$scalix_imaps" = "yes" ] ; then
+		start_stunnel 993 143
+	fi
+}
+
+d_stop() {
+	for pidfile in `ls /var/run/stunnel_*.pid 2>/dev/null` ; do
+		if [ -n "`pgrep stunnel | grep "$(cat $pidfile)"`" ] ; then
+			echo -n "   pid $(cat $pidfile | tr -d '\n')"
+			kill -TERM $(cat $pidfile)
+		fi
+	done
+	for pidfile in `ls /var/run/stunnel_*.pid 2>/dev/null` ; do
+		rm -f "$pidfile"
+	done
+}
+
+case "$1" in
+	start)
+		echo -n "Starting $DESC: $NAME"
+		d_start
+		echo "."
+		;;
+	stop)
+		echo -n "Stopping $DESC: $NAME"
+		d_stop
+		echo "."
+		;;
+	restart)
+		echo -n "Restarting $DESC: $NAME"
+		d_stop
+		sleep 1
+		d_start
+		echo "."
+		;;
+	*)
+	# echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+		echo "Usage: $SCRIPTNAME {start|stop|restart}" >&2
+		exit 1
+		;;
+esac
+
+exit 0

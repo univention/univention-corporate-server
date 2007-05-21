@@ -1,0 +1,98 @@
+#!/bin/bash
+#
+# Univention Scalix
+#  tool for creating Scalix configuration files using
+#  Univention Baseconfig
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export RESPATH=/usr/share/univention-scalix/conffiles/
+
+cd $RESPATH || ( echo FATAL: $RESPATH not found ; exit 1 )
+
+# scalix initializes itself into /var/opt/scalix/INSTANCE/, we have
+# to find and substitute the actual path
+
+if [ ! -f /etc/opt/scalix/instance.cfg ]; then
+	echo ERROR: Could not determine scalix instance directory
+	exit 1
+fi
+
+. /etc/opt/scalix/instance.cfg
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+export INSTANCE=${INSTANCE/\/s/} 
+
+usage(){
+	echo Usage:
+	echo $0 [conffile1 conffile2 ...]
+}
+
+process(){
+	SRC=$RESPATH/$1
+	DEST=$1
+
+	DEST=${DEST/__SCALIX_INSTANCE__/$INSTANCE}
+	DEST_DIR=$(dirname $DEST)
+
+	if [ ! -d $DEST_DIR ]; then
+		echo WARNING: Target directory $DEST_DIR does not exist. Creating $DEST_DIR...
+		mkdir -p $DEST_DIR
+	fi
+
+	if [ ! -f $SRC ]; then
+		echo WARNING: Could not read source file $SRC
+	else
+		mkdir -p /var/univention-backup/scalix/`dirname $DEST`
+		cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
+		univention-baseconfig filter < $SRC > $DEST
+		if [ $? = 0 ]; then
+			echo "File: $DEST"
+			cp $DEST /var/univention-backup/scalix/$DEST.current
+		else
+			echo WARNING: Processing $DEST failed!
+		fi
+	fi
+}
+
+if [ "$1" = "--help" -o "$1" = "-?" ]; then
+	usage
+	exit 0
+fi
+
+if [ ! "$1" = "" ]; then
+	for file in $*; do
+		line=$(echo $file | sed "s|^\.||")
+		process $line
+	done
+	exit 0
+else
+	find . -type f |
+		while read line; do
+			line=$(echo $line | sed "s|^\.||")
+			process $line
+		done
+	exit 0
+fi

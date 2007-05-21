@@ -1,0 +1,164 @@
+#!/usr/bin/make -f
+#
+# Univention Print Server
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+export DH_COMPAT=4
+
+CFLAGS = -Wall -g
+
+ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -O0
+else
+	CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+build-stamp: configure-stamp
+	dh_testdir
+	touch build-stamp
+
+DS=$(CURDIR)/debian/univention-nagios-server
+DC=$(CURDIR)/debian/univention-nagios-client
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf ${DS} ${DC}
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+    # install nagios server
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.local.d
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/hosts
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/hostgrps
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/contacts
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/contactgrps
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/timeperiods
+	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/services
+	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-ldap-listener/system
+	install -m 755 nagios-server.py ${DS}/usr/lib/univention-ldap-listener/system
+
+	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-install
+	install -m 755 26univention-nagios-server.inst ${DS}/usr/lib/univention-install/26univention-nagios-server.inst
+
+    # add entry to start/stop nagios2 in univention-console
+	install -d -m 755 -o root -g root ${DC}/etc/univention/daemons
+	echo "Nagios Server;nagios2;/usr/sbin/nagios2 -d /etc/nagios2/nagios.cfg;30" > ${DC}/etc/univention/daemons/nagios2
+
+    # add univention icons
+	install -d -m 755 -o root -g root ${DS}/usr/share/univention-nagios-server/icons/
+	find usr/share/univention-nagios-server/icons/ -type f | xargs -n1 -i install -m 644 -o root -g root {} ${DS}/usr/share/univention-nagios-server/icons/
+
+    # copy theme nuvola
+	install -d -m 755 -o root -g root ${DS}/usr/share/nagios2/htdocs-nuvola
+	ln -s ../htdocs/contexthelp ${DS}/usr/share/nagios2/htdocs-nuvola/contexthelp
+	ln -s ../htdocs/docs ${DS}/usr/share/nagios2/htdocs-nuvola/docs
+	cp -ar usr/share/nagios2/htdocs-nuvola/* ${DS}/usr/share/nagios2/htdocs-nuvola
+	chown root:root -Rf ${DS}/usr/share/nagios2/htdocs-nuvola
+	find ${DS}/usr/share/nagios2/htdocs-nuvola -type f | xargs chmod -f 0444
+	find ${DS}/usr/share/nagios2/htdocs-nuvola -type d | xargs chmod -f 0755
+	chown -Rf root:root ${DS}/usr/share/nagios2/htdocs-nuvola
+
+	ln -s ../../../../nagios/htdocs/images/logos/andrade ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/andrade
+	ln -s ../../../../nagios/htdocs/images/logos/base ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/base
+	ln -s ../../../../nagios/htdocs/images/logos/bernhard ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/bernhard
+	ln -s ../../../../nagios/htdocs/images/logos/cook ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/cook
+	ln -s ../../../../nagios/htdocs/images/logos/didier ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/didier
+	ln -s ../../../../nagios/htdocs/images/logos/remus ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/remus
+	ln -s ../../../../nagios/htdocs/images/logos/satrapa ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/satrapa
+	ln -s ../../../../nagios/htdocs/images/logos/werschler ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/werschler
+	ln -s /usr/share/univention-nagios-server/icons ${DS}/usr/share/nagios2/htdocs-nuvola/images/logos/univention
+
+	install -d -m 755 -o root -g root ${DS}/usr/share/nagios2/htdocs/images/logos/
+	ln -s /usr/share/univention-nagios-server/icons ${DS}/usr/share/nagios2/htdocs/images/logos/univention
+
+
+    # install univention nagios plugins
+	install -d -m 755 -o root -g root ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_printerqueue ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_replication ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_i2o_raid ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_nfsstatus ${DC}/usr/lib/nagios/plugins/
+	install -m 755 -o root -g root usr/lib/nagios/plugins/check_univention_ssl_certificate ${DC}/usr/lib/nagios/plugins/
+
+	install -d -m 755 -o root -g root ${DC}/usr/share/nagios-plugins/templates-univention/
+	install -m 644 -o root -g root usr/share/nagios-plugins/templates-univention/univention.cfg ${DC}/usr/share/nagios-plugins/templates-univention/univention.cfg
+
+	install -d -m 755 -o root -g root ${DC}/var/lib/univention-nagios/
+
+    # install client listener
+	install -d -m 755 -o root -g root ${DC}/etc/nagios/nrpe.local.d
+	install -d -m 755 -o root -g root ${DC}/etc/nagios/nrpe.univention.d
+	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-ldap-listener/system
+	install -m 755 nagios-client.py ${DC}/usr/lib/univention-ldap-listener/system
+
+	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-install
+	install -m 755 30univention-nagios-client.inst ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
+
+    # add entry to start/stop nrpe in univention-console
+	install -d -m 755 -o root -g root ${DC}/etc/univention/daemons
+	echo "Nagios NRPE Server;nagios-nrpe-server;/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d;20" > ${DC}/etc/univention/daemons/nrped
+
+	univention-install-baseconfig
+	dh_install
+
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_installpam --name=httpd-nagios
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

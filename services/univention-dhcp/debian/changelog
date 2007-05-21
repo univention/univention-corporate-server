@@ -1,0 +1,78 @@
+univention-dhcp (1.14) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:01 +0100
+
+univention-dhcp (1.13) unstable; urgency=low
+
+  * Fix installation with debhelper 4 and 5.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 16:08:36 +0200
+
+univention-dhcp (1.12) unstable; urgency=low
+
+  * Really add conf files.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 15:47:43 +0200
+
+univention-dhcp (1.11) unstable; urgency=low
+
+  * Add univention.conf, used to maintain Univention-specific additions
+  * Add local.conf, allowing local admins to modify DHCP options.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 16 Aug 2006 15:19:24 +0200
+
+univention-dhcp (1.10) unstable; urgency=low
+
+  * divert old dhcp init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 May 2006 07:32:49 +0200
+
+univention-dhcp (1.8) unstable; urgency=low
+
+  * Support for spaces in ldap base
+  * Ability to disable dhcpd permanently by baseconfig-variable
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Wed, 29 Jun 2005 13:31:41 +0200
+
+univention-dhcp (1.6) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 15:05:01 +0200
+
+univention-dhcp (1.5) unstable; urgency=low
+
+  * modify default-settings in client-boot-pxe and bind-proxy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 14 Mar 2004 12:16:56 +0100
+
+univention-dhcp (1.4) unstable; urgency=low
+
+  * using runit finish script
+  * added init.d script
+
+ -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Sat, 14 Feb 2004 13:13:06 +0100
+
+univention-dhcp (1.3) unstable; urgency=low
+
+  * use runit
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 08 Nov 2003 13:49:40 +0200
+
+univention-dhcp (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:40 +0200
+
+univention-dhcp (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Mar 2003 08:38:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

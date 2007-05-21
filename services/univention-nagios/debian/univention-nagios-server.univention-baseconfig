@@ -1,0 +1,23 @@
+Type: file
+File: etc/nagios2/pam_ldap_nagios.conf
+Variables: ldap/server/name
+Variables: ldap/base
+
+Type: file
+File: etc/nagios2/apache2.conf
+Variables: nagios/server/theme
+
+Type: file
+File: etc/nagios2/cgi.cfg
+Variables: nagios/server/refreshrate
+Variables: nagios/server/authenticate
+Variables: nagios/server/user/systeminfo
+Variables: nagios/server/user/configinfo
+Variables: nagios/server/user/systemcmd
+Variables: nagios/server/user/allinfo
+Variables: nagios/server/user/allcmd
+Variables: nagios/server/theme
+
+Type: file
+File: etc/nagios2/nagios.cfg
+Variables: nagios/server/checkexternalcmd

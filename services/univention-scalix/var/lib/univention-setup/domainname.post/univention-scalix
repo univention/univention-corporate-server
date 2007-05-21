@@ -1,0 +1,50 @@
+#!/bin/sh
+
+export PATH=$PATH:/opt/scalix/bin/
+
+eval $(univention-baseconfig shell)
+
+olddomain=$1
+newdomain=$2
+
+oldfqdn="$hostname.$1"
+newfqdn="$hostname.$2"
+
+/etc/init.d/univention-scalix stop
+
+# get the instance directory
+. /etc/opt/scalix/instance.cfg
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+export INSTANCE=${INSTANCE/\/s/}
+
+
+if [ -x /opt/scalix/bin/sxmodfqdn ]; then
+	echo "Change Scalix config: /opt/scalix/bin/sxmodfqdn -o oldfqdn -n newfqdn"
+	/opt/scalix/bin/sxmodfqdn -o $oldfqdn -n $newfqdn
+fi
+
+/usr/share/univention-scalix/univention-scalix-conffile
+
+if [ -e /opt/scalix/global/config ]; then
+	echo "Change Scalix config: sed -i \"s|OMHOSTNAME=$oldfqdn|OMHOSTNAME=$newfqdn|\" /opt/scalix/global/config"
+	sed -i "s|OMHOSTNAME=$oldfqdn|OMHOSTNAME=$newfqdn|" /opt/scalix/global/config
+fi
+
+for dir in /var/opt/scalix/${INSTANCE} /opt/scalix /etc/opt/scalix /etc/opt/scalix-tomcat; do
+	if [ -d ${dir} ]; then
+		grep -iRl $oldfqdn ${dir} | grep -v "\.dat" | grep -v "\.key" | grep -v "log" | while read line; do
+			echo "Change Scalix config: sed -i \"s|$oldfqdn|$newfqdn|g\" $line;"
+			sed -i "s|$oldfqdn|$newfqdn|g" $line
+		done
+	fi
+done
+
+if [ ! -e /var/cache/univention-setup/postrun/univention-scalix ]; then
+	mkdir -p /var/cache/univention-setup/postrun
+	echo "#!/bin/sh" >/var/cache/univention-setup/postrun/univention-scalix
+	echo "/etc/init.d/univention-scalix start" >/var/cache/univention-setup/postrun/univention-scalix
+	chmod +x /var/cache/univention-setup/postrun/univention-scalix
+fi
+
+exit 0
+

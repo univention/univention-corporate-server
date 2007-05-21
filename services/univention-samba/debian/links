@@ -1,0 +1,2 @@
+ /usr/share/univention-samba/pdc-takeover.old /usr/sbin/univention-pdc-takeover.old
+ /usr/share/univention-samba/pdc-takeover /usr/sbin/univention-pdc-takeover

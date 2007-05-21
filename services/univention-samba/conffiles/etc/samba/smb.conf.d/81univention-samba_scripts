@@ -1,0 +1,27 @@
+
+@!@
+if baseConfig.has_key('samba/password/checkscript') and baseConfig['samba/password/checkscript']:
+	print ' check password script = %s' %  baseConfig['samba/password/checkscript']
+
+if baseConfig['server/role'] == 'domaincontroller_master':
+	if baseConfig.has_key( 'samba/script/adduser' ) and not baseConfig[ 'samba/script/adduser' ].lower( ) in [ "none", "false", "no" ]:
+		print '	add user script = /usr/share/univention-admin-tools/univention-adduser "%u"'
+	if baseConfig.has_key( 'samba/script/deleteuser' ) and not baseConfig[ 'samba/script/deleteuser' ].lower( ) in [ "none", "false", "no" ]:
+		print '	delete user script =  /usr/share/univention-admin-tools/univention-deluser "%u"'
+	if baseConfig.has_key( 'samba/script/addgroup' ) and not baseConfig[ 'samba/script/addgroup' ].lower( ) in [ "none", "false", "no" ]:
+		print '	add group script = /usr/share/univention-admin-tools/univention-addgroup "%g"'
+	if baseConfig.has_key( 'samba/script/deletegroup' ) and not baseConfig[ 'samba/script/deletegroup' ].lower( ) in [ "none", "false", "no" ]:
+		print '	delete group script =  /usr/share/univention-admin-tools/univention-delgroup "%g"'
+	if baseConfig.has_key( 'samba/script/addusertogroup' ) and not baseConfig[ 'samba/script/addusertogroup' ].lower( ) in [ "none", "false", "no" ]:
+		print '	add user to group script = /usr/share/univention-admin-tools/univention-adduser "%u" "%g"'
+	if baseConfig.has_key( 'samba/script/deleteuserfromgroup' ) and not baseConfig[ 'samba/script/deleteuserfromgroup' ].lower( ) in [ "none", "false", "no" ]:
+		print '	delete user from group script = /usr/share/univention-admin-tools/univention-deluser "%u" "%g"'
+	if baseConfig.has_key( 'samba/script/addmachine' ) and not baseConfig[ 'samba/script/addmachine' ].lower( ) in [ "none", "false", "no" ]:
+		print '	add machine script = /usr/share/univention-admin-tools/univention-addmachine "%u"'
+	if baseConfig.has_key( 'samba/script/setprimarygroup' ) and not baseConfig[ 'samba/script/setprimarygroup' ].lower( ) in [ "none", "false", "no" ]:
+		print ' set primary group script = /usr/share/univention-admin-tools/univention-setprimarygroup "%u" "%g"'
+	if baseConfig.has_key( 'samba/script/renameuser' ) and not baseConfig[ 'samba/script/renameuser' ].lower( ) in [ "none", "false", "no" ]:
+		print ' rename user script = /usr/share/univention-admin-tools/univention-renameuser "%u" "%x"'
+	if baseConfig.has_key( 'samba/script/postusermodify' ) and not baseConfig[ 'samba/script/postusermodify' ].lower( ) in [ "none", "false", "no" ]:
+		print ' post user modify script = /usr/share/univention-samba/kerberize_user -u "%u"'
+@!@

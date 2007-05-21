@@ -1,0 +1,43 @@
+	oplocks = yes
+	kernel oplocks = yes
+	large readwrite = yes
+	deadtime = 15
+	read raw = yes
+	write raw = yes
+	max xmit = 65535
+	getwd cache = yes
+
+	store dos attributes = yes
+	
+
+@!@
+if baseConfig['server/role'] != 'memberserver':
+	if ( not baseConfig['samba/homedirpath'] or baseConfig['samba/homedirpath']=='local') and baseConfig['samba/homedirserver'] and baseConfig['samba/homedirserver'] == 'local':
+		print '\tlogon home ='
+	elif baseConfig['samba/homedirserver'] and baseConfig['samba/homedirpath']:
+		print '\tlogon home = \\\\%s\%s' % (baseConfig['samba/homedirserver'],baseConfig['samba/homedirpath'])
+
+	if baseConfig['samba/homedirletter'] and len(baseConfig['samba/homedirletter']) == 1:
+		print '\tlogon drive = %s:' % baseConfig['samba/homedirletter']
+	elif baseConfig['samba/homedirletter'] and baseConfig['samba/homedirletter'] == 'local':
+		print '\tlogon drive = '
+		
+	if ( not baseConfig['samba/profilepath'] or baseConfig['samba/profilepath'] == 'local' ) and baseConfig['samba/profileserver'] and baseConfig['samba/profileserver'] == 'local':
+		print '\tlogon path ='
+	elif baseConfig['samba/profileserver'] and baseConfig['samba/profilepath']:
+		print '\tlogon path = \\\\%s\%s' % (baseConfig['samba/profileserver'],baseConfig['samba/profilepath'])
+
+	if baseConfig.has_key('samba/logonscript'):
+		print '\tlogon script = %s' % baseConfig['samba/logonscript']
+
+
+@!@
+
+	preserve case = yes
+	short preserve case = yes
+
+	time server = yes
+
+	host msdfs = no
+	msdfs root = no
+

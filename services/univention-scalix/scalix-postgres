@@ -1,0 +1,94 @@
+#!/bin/sh 
+
+set -e
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="Scalix Postgres"
+NAME=scalix-postgres
+
+PGENGINE=/usr/lib/postgresql/bin
+PGPORT=5733
+PGDATA=/var/opt/scalix-postgres/data
+PGLOG=/var/opt/scalix-postgres/pgstartup.log
+PIDFILE=$PGDATA/postmaster.pid
+
+export PGDATA
+export PGPORT
+
+script_result=0 
+
+#
+#       Function that starts the daemon/service.
+#
+d_start() {
+    PSQL_START="Starting ${NAME} service: "
+
+    # Make sure startup-time log file is valid
+    if [ ! -e "$PGLOG" -a ! -h "$PGLOG" ]
+    then
+        touch "$PGLOG" || exit 1
+        chown postgres:postgres "$PGLOG"
+        chmod go-rwx "$PGLOG"
+    fi
+
+    if grep -q '^8\.' "$PGDATA/PG_VERSION" ; then
+        extra_flags=""
+    else
+        extra_flags="-i"
+    fi
+
+    echo -n "$PSQL_START"
+    su - postgres -c "$PGENGINE/postmaster $extra_flags -p '$PGPORT' -D '$PGDATA' ${PGOPTS} &" >> "$PGLOG" 2>&1 < /dev/null
+    sleep 2
+    pid=`pidof -s "$PGENGINE/postmaster"`
+    if [ $pid ] && [ -f "$PIDFILE" ]
+    then
+        echo "OK"
+    else
+        echo "FAILED"
+        script_result=1
+    fi
+} 
+
+#
+#       Function that stops the daemon/service.
+#
+d_stop() {
+        echo -n $"Stopping ${NAME} service: "
+        su - postgres -c "$PGENGINE/pg_ctl stop -D '$PGDATA' -s -m fast" > /dev/null 2>&1 < /dev/null
+        ret=$? 
+        if [ $ret -eq 0 ]
+        then
+            echo "OK"
+        else
+            echo "FAILED"
+        fi
+}
+
+case "$1" in
+  start)
+        d_start
+        echo "."
+        ;;
+  stop)
+        d_stop
+        echo "."
+        ;;
+  restart|force-reload)
+        #
+        #       If the "reload" option is implemented, move the "force-reload"
+        #       option to the "reload" entry above. If not, "force-reload" is
+        #       just the same as "restart".
+        #
+        d_stop
+        sleep 1
+        d_start
+        echo "."
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}" >&2
+        exit 1
+        ;;
+esac 
+
+exit 0

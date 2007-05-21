@@ -1,0 +1,63 @@
+Source: univention-ad-connector
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, python2.4, univention-config-dev
+
+Package: python2.4-univention-connector
+Architecture: all
+Depends: python2.4-univention (>= 1.5) | python2.4-univention-2005, python2.4-univention-license, univention-server-master | univention-server-backup
+Pre-Depends: univention-baseconfig (>> 1.54-30)
+Conflicts: univention-server-slave, univention-server-member
+Description: UCS - Modules for connector sychronisation
+ This package contains the modules that implement the
+ features of Univention AD Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python2.4-univention-connector-ad
+Architecture: all
+Depends: python2.4-univention (>= 1.5) | python2.4-univention-2005, python2.4-univention-license, python2.4-univention-connector, python2.4-m2crypto
+Pre-Depends: univention-baseconfig (>> 1.54-30)
+Conflicts: python2.3-univention-connector
+Replaces: python2.3-univention-connector
+Description: UCS - Modules for connector sychronisation
+ This package contains the modules that implement the
+ features of Univention AD Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ad-connector
+Architecture: all
+Depends: python2.4-univention (>= 1.5) | python2.4-univention-2005, python2.4-univention-license, python2.4-univention-connector-ad
+Pre-Depends: univention-baseconfig (>> 1.54-30)
+Conflicts: python2.3-univention-connector-ad
+Replaces: python2.3-univention-connector-ad
+Description: UCS - Modules for sync ucs and active directory
+ This package contains the modules that implement the
+ features of Univention AD Connector.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-ad-connector-exchange
+Architecture: all
+Depends: univention-server-master
+Description: This package extends a configured AD-Connector
+ to sync Microsoft-Exchange attributes by adding
+ UCS LDAP-schema, custom attributes and activate
+ mapping in univention baseconfig.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

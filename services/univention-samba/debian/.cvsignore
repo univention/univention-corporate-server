@@ -1,0 +1,4 @@
+files
+univention-samba
+univention-samba.postinst.debhelper
+univention-samba.prerm.debhelper

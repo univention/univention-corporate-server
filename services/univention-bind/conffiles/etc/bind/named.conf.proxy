@@ -1,0 +1,59 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/bind/named.conf.proxy
+# 
+
+
+controls{
+        inet 127.0.0.1
+        port 953
+        allow { @%@dns/master/address@%@; };
+};			
+options {
+    directory "/var/cache/bind";
+};
+logging {
+   category lame-servers { null; };
+};
+@!@
+if baseConfig.has_key('dns/forwarder1') or baseConfig.has_key('dns/forwarder2') or baseConfig.has_key('dns/forwarder3'):
+	print 'zone "." {'
+	print '    type forward;'
+	print '    forwarders {'
+	if baseConfig['dns/forwarder1']:
+		print baseConfig['dns/forwarder1']+';'
+	if baseConfig['dns/forwarder2']:
+		print baseConfig['dns/forwarder2']+';'
+	if baseConfig['dns/forwarder3']:
+		print baseConfig['dns/forwarder3']+';'
+	print '};'
+	print '};'
+else:
+	print 'zone "." {'
+	print '    type master;'
+	print '    file "/etc/bind/db.root.fake";'
+	print '};'
+@!@
+zone "localhost" {
+    type master;
+    file "/etc/bind/db.local";
+};
+zone "127.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.127";
+};
+zone "0.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.0";
+};
+zone "255.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.255";
+};
+
+include "/etc/bind/univention.conf.proxy";

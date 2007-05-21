@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# Univention Package Database
+#  This Script tries to add or remove all valid machine accounts in
+#  PostgreSQL for pkgdb.  Normally this script is called by
+#  /etc/cron.d/univention-pkgdb-check
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if [ ! -e /etc/postgresql/pkgdb.secret ] ;then
+  # no chance to do anything
+  echo "missing /etc/postgresql/pkgdb.secret"
+  exit 1
+fi
+
+
+/usr/lib/site-python/univention_pkgdb.py --test-superuser
+if [ $? -ne 0 ] ;then
+  # or service record not found
+  echo "check the postgres installation, the command '/usr/lib/site-python/univention_pkgdb.py --test-superuser' failed"
+  exit 1
+fi
+
+find /var/lib/univention-pkgdb/add/ -type f | while read file; do
+	host=`basename $file`
+	/usr/lib/site-python/univention_pkgdb.py --add-system "$host"
+	ret=$?
+	if [ $ret = 0 ]; then
+		rm $file
+	else
+		echo "pkgdb: failed to remove $host"
+	fi
+done
+
+find /var/lib/univention-pkgdb/delete/ -type f | while read file; do
+	host=`basename $file`
+	/usr/lib/site-python/univention_pkgdb.py --del-system "$host"
+	ret=$?
+	if [ $ret = 0 ]; then
+		rm $file
+	else
+		echo "pkgdb: failed to add $host"
+	fi
+done
+
+exit 0

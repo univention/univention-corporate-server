@@ -1,0 +1,69 @@
+#!/bin/sh
+# 
+# Univention Admin
+#  postinst file for the admin debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+univention-baseconfig set 'nagios/client/checkraid?no' \
+						  'nagios/client/autostart?yes'
+
+#DEBHELPER#
+
+eval `univention-baseconfig shell`
+
+# create missing device file for raidutils
+if [ ! -e /dev/dpti0 ] ; then
+  mknod /dev/dpti0 c 151 0
+fi
+
+touch /var/lib/univention-nagios/check_univention_replication.cache
+chmod 644 /var/lib/univention-nagios/check_univention_replication.cache
+chown nagios:nagios /var/lib/univention-nagios/check_univention_replication.cache
+
+if [ "$1" = "configure" ]; then
+    cd /usr/share/nagios-plugins/templates-univention
+    for f in *cfg; do
+        ucf $f /etc/nagios-plugins/config/$f
+    done
+fi
+
+if [ "$1" = "configure" ]; then
+	if test -f /etc/init.d/univention-ldap-listener
+		then
+		/etc/init.d/univention-ldap-listener crestart
+	fi
+fi
+
+/etc/init.d/nagios-nrpe-server restart
+
+# call join script if installed on master or backup
+if [ "$server_role" = "domaincontroller_master" -o \
+	 "$server_role" = "domaincontroller_backup" ] ; then
+	/usr/lib/univention-install/30univention-nagios-client.inst || true
+fi
+
+exit 0

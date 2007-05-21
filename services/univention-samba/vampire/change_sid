@@ -1,0 +1,59 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Samba
+#  replace an old SID with a new one
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys
+
+import univention_baseconfig
+import univention.debug
+univention.debug.init('/dev/null', 1, 1)
+
+import univention.admin.uldap
+import univention.admin.config
+import univention.admin.modules
+import univention.admin.handlers.users.user
+import univention.admin.handlers.groups.group
+
+oldsid, newsid = sys.argv[1:]
+lo, position = univention.admin.uldap.getAdminConnection()
+
+for dn, attrs in lo.search(filter='(|(sambaSID=*)(sambaPrimaryGroupSID=*))', attr=['sambaSID','sambaPrimaryGroupSID']):
+	ml=[]
+	if attrs.has_key('sambaPrimaryGroupSID') and attrs['sambaPrimaryGroupSID'][0].startswith(oldsid):
+		oldval=attrs['sambaPrimaryGroupSID'][0]
+		newval=oldval.replace(oldsid, newsid)
+		ml.append(('sambaPrimaryGroupSID', oldval, newval))
+	if attrs.has_key('sambaSID') and attrs['sambaSID'][0].startswith(oldsid):
+		oldval=attrs['sambaSID'][0]
+		newval=oldval.replace(oldsid, newsid)
+		ml.append(('sambaSID', oldval, newval))
+	if ml:
+		print 'Changing SID in %s...' % repr(dn),
+		lo.modify(dn, ml)
+		print 'done'

@@ -1,0 +1,81 @@
+#!/usr/bin/python2.4
+#
+# Univention Print Server
+#  master script for several administrative task for the CUPS
+#  server. The performed task depends on the name it is invoked with
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, string, re
+import pwd, os, os.path
+from pexpect import *
+import univention_baseconfig
+
+args=sys.argv[1:]
+cmd=sys.argv[0]
+
+# check if we are called directly
+if cmd[-len("univention-cupsadmin"):]=="univention-cupsadmin":
+	print("univention-cupsadmin is not to be called directly, but rather by")
+	print("links from one of univention-cups-{accept,reject,enable,disalbe}.")
+	print("See man accept, man reject, man enable, and man disable for")
+	print("calling conventions")
+	sys.exit(1)
+
+# argv[0] should be something like .../univention-cups... Cut
+# univention-cups from it
+if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
+	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/")
+else:
+	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/")
+
+# check if target executable exists
+if not(os.path.exists(cmd)):
+	print("Target executable %s does not exist. Exiting."%cmd)
+	sys.exit(2)
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+# read machine password
+secretFile=open('/etc/machine.secret','r')
+pwdLine=secretFile.readline()
+machine_password=re.sub('\n','',pwdLine)
+
+machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
+old_uid=os.getuid()
+os.setuid(machine_uid)
+
+child = spawn('%s %s' % (cmd, string.join(args, ' ')))
+i=0
+timeout=60
+while not i == 2:
+	i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), 'localhost\?', EOF], timeout=timeout)
+	if i in [0,1]:
+		child.sendline(machine_password)
+	elif i == 2:
+		if child.before:
+			print child.before

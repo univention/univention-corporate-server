@@ -1,0 +1,122 @@
+#!/usr/bin/make -f
+#
+# Univention Samba
+#  rules file for the debian package
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+copyrightyear=`date +%Y`
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	dh_clean
+
+D	= ${CURDIR}/debian/univention-samba
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 755 samba-shares.py ${D}/usr/lib/univention-ldap-listener/system
+	install -m 755 samba-config.py ${D}/usr/lib/univention-ldap-listener/system
+	install -m 755 vampire/remove-samba-account ${D}/usr/share/univention-samba/
+	install -m 755 vampire/import_pdc ${D}/usr/share/univention-samba/
+	install -m 755 vampire/purge_users_and_groups ${D}/usr/share/univention-samba/
+	install -m 755 vampire/fix_primary_groups ${D}/usr/share/univention-samba/
+	install -m 755 vampire/set_domain_sid ${D}/usr/share/univention-samba/
+	install -m 755 vampire/fix_user_sids ${D}/usr/share/univention-samba/
+	install -m 755 vampire/set_default_settings ${D}/usr/share/univention-samba/
+	install -m 755 vampire/change_sid ${D}/usr/share/univention-samba/
+	install -m 755 vampire/query_domain_policy ${D}/usr/share/univention-samba/
+	install -m 755 vampire/set_account_policy_from_pdbedit ${D}/usr/share/univention-samba/
+	install -m 755 vampire/slave-sync ${D}/usr/share/univention-samba/
+	install -m 755 vampire/account-policy ${D}/usr/share/univention-samba/
+	install -m 755 vampire/password_check ${D}/usr/share/univention-samba/
+
+	cat vampire/pdc-takeover | sed -e "s/@%@package_version@%@/${version}/" > vampire/pdc-takeover_tmp
+	cat vampire/pdc-takeover_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > vampire/pdc-takeover_tmp2
+	install -m 755 vampire/pdc-takeover_tmp2 ${D}/usr/share/univention-samba/pdc-takeover.old
+	rm vampire/pdc-takeover_tmp*
+
+	install -m 755 26univention-samba.inst ${D}/usr/lib/univention-install/26univention-samba.inst
+	install -m 744 files/etc/heartbeat/resource.d/samba debian/univention-samba-ha/etc/heartbeat/resource.d/
+
+	cat vampire2/pdc-takeover | sed -e "s/@%@package_version@%@/${version}/" > vampire2/pdc-takeover_tmp
+	cat vampire2/pdc-takeover_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > vampire2/pdc-takeover_tmp2
+	install -m 755 vampire2/pdc-takeover_tmp2 ${D}/usr/share/univention-samba/pdc-takeover
+	rm vampire2/pdc-takeover_tmp*
+
+	install -m 755 vampire2/xml-admin.py ${D}/usr/share/univention-samba/xml-admin.py
+
+	install -m 755 samsyncd.run debian/univention-samba-bdc/etc/runit/samsyncd/run
+	install -m 755 samsyncd.init debian/univention-samba-bdc/etc/init.d/samsyncd
+
+	install -m 755 kerberize_user ${D}/usr/share/univention-samba/
+
+	echo "Samba;samba;/usr/sbin/smbd;20" > ${D}/etc/univention/daemons/samba
+
+	univention-install-baseconfig
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

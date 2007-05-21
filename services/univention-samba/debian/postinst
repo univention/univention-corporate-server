@@ -1,0 +1,132 @@
+#! /bin/sh
+#
+# Univention Samba
+#  postinst script for the debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `univention-baseconfig shell`
+
+if [ -z "$2" ]
+	then
+	mkdir -p /home/groups
+
+	mkdir -p /var/lib/samba/netlogon/scripts
+	if [ ! -e /var/lib/samba/netlogon/scripts/startup.cmd ]; then
+		cp /usr/share/doc/univention-samba/startup.cmd /var/lib/samba/netlogon/scripts/startup.cmd;
+	fi;
+
+	mkdir -p /etc/univention/skel/windows-profiles
+	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3}
+fi
+
+univention-baseconfig set samba/share/home?yes
+univention-baseconfig set samba/share/groups?no
+univention-baseconfig set samba/adminusers?administrator
+
+if [ "$server_role" != "memberserver" ]
+then
+	if [ -n "$samba_netbios_name" ]
+	then
+		tmphostname=$samba_netbios_name
+	elif [ -n "$samba_ha_master" ]
+	then
+		tmphostname="$samba_ha_master"
+	else
+		tmphostname="$hostname"
+	fi
+	univention-baseconfig set samba/profileserver?$tmphostname
+	univention-baseconfig set samba/profilepath?'%U\windows-profiles\%a'
+	univention-baseconfig set samba/homedirserver?$tmphostname
+	univention-baseconfig set samba/homedirpath?%U
+	univention-baseconfig set samba/homedirletter?I
+fi
+#DEBHELPER#
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.37; then
+	echo converting old policy descriptions
+	if [ -f /var/lib/samba/account_policy.tdb -a \( "`which tdbexport`" != "" -a "`which tdbimport`" != "" \) ]; then
+		export outfile=`mktemp`
+		tdbexport /var/lib/samba/account_policy.tdb | \
+		  sed "s/\ (seconds\ since\ 1970)//" > $outfile
+		tdbimport -o /var/lib/samba/account_policy.tdb < $outfile
+		rm $outfile
+	fi
+fi
+
+
+if [ -z "$windows_domain" ]; then
+	domain=`echo $domainname | cut -d"." -f 1 | tr "[:lower:]" "[:upper:]"`
+	univention-baseconfig set windows/domain=$domain
+fi
+
+univention-baseconfig set samba/debug/level?0
+univention-baseconfig set samba/os/level?65
+
+/usr/lib/univention-install/26univention-samba.inst || true
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.17; then
+	if [ "$server_role" = "memberserver" ]; then
+		univention-baseconfig set samba/user="$ldap_hostdn"
+		sleep 2
+		smbpasswd -w `cat /etc/machine.secret`
+	fi
+fi
+univention-baseconfig set samba/script/adduser?true \
+				samba/script/deleteuser?true \
+				samba/script/addgroup?true \
+				samba/script/deletegroup?true \
+				samba/script/addusertogroup?true \
+				samba/script/deleteuserfromgroup?true \
+				samba/script/addmachine?true \
+				samba/script/setprimarygroup?true \
+				samba/script/postusermodify?false
+
+if [ "$1" = "configure" -a -n "$2" ];
+	then
+	/etc/init.d/samba crestart
+fi
+
+if [ "$1" = configure -a -z "$2" ]; then
+# only set this for new installations
+	univention-baseconfig set samba/autostart="no"
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4; then
+
+	runsvctrl d /etc/runit/univention-ldap-listener
+	sleep 1
+	runsvctrl u /etc/runit/univention-ldap-listener
+	sleep 1
+	univention-ldap-listener-ctrl resync samba-shares
+fi
+
+
+if [ "$1" = "configure" ]; then
+	if test -f /etc/init.d/univention-ldap-listener
+		then
+		/etc/init.d/univention-ldap-listener crestart
+	fi
+fi

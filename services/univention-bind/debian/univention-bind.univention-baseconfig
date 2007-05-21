@@ -1,0 +1,5 @@
+Type: file
+File: etc/bind/named.conf
+
+Type: file
+File: etc/runit/univention-bind/run

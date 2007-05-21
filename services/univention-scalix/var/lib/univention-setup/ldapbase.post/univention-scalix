@@ -1,0 +1,26 @@
+#!/bin/sh
+
+oldldapbase=$1
+newldapbase=$2
+
+/etc/init.d/univention-scalix stop
+
+. /etc/opt/scalix/instance.cfg
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+export INSTANCE=${INSTANCE/\/s/}
+
+for file in /var/opt/scalix/${INSTANCE}/s/sys/om_ldap.conf \
+	/var/opt/scalix/${INSTANCE}/s/ldapsync/ucs2scalix/sync.cfg; do
+		echo "Change Scalix config: sed -i \"s|$oldldapbase|$newldapbase|g\" $file"
+		sed -i "s|$oldldapbase|$newldapbase|g" $file
+done
+
+if [ ! -e /var/cache/univention-setup/postrun/univention-scalix ]; then
+	mkdir -p /var/cache/univention-setup/postrun
+	echo "#!/bin/sh" >/var/cache/univention-setup/postrun/univention-scalix
+	echo "/etc/init.d/univention-scalix start" >/var/cache/univention-setup/postrun/univention-scalix
+	chmod +x /var/cache/univention-setup/postrun/univention-scalix
+fi
+
+exit 0
+

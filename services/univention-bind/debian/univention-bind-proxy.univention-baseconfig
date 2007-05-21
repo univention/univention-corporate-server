@@ -1,0 +1,5 @@
+Type: file
+File: etc/bind/named.conf.proxy
+Variables: dns/forwarder1
+Variables: dns/forwarder2
+Variables: dns/forwarder3

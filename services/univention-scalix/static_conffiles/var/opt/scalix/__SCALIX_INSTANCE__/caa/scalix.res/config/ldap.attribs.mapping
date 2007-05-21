@@ -1,0 +1,47 @@
+#
+# LDAP attributes mappings ---> Scalix world
+# The format is similar to Java properties file
+# name=value
+# '#' in the first column is considered a comment.
+# blanks lines are skipped
+surname=S
+givenName=G
+initials=I
+omcn=CN
+generationQualifier=Q
+omInternetAddr=INTERNET-ADDR
+#mail=mail
+#rfc822Mailbox=mailbox
+physicalDeliveryOfficeName=PD-OFFICE-NAME
+postalCode=POSTAL-CODE
+#postalAddress=POSTAL-ADDRESS-STR
+st=STATE-OR-PROVINCE
+street=STREET-ADDRESS
+c=CNTRY
+l=L
+homeTelephoneNumber=HOME-PHONE
+mobileTelephoneNumber=MOBILE-PHONE
+pagerTelephoneNumber=PAGER-PHONE
+facsimileTelephoneNumber=FAX
+omHomePhone2=HOME-PHONE2
+telephoneNumber=PHONE-1
+omPhone2=PHONE-2
+omUlCaps=UL-CAPS
+omUlAuthId=UL-AUTHID
+omGlobalUniqueId=GLOBAL-UNIQUE-ID
+omHostFqdn=HOST-FQDN
+omLocalUniqueId=LOCAL-UNIQUIE-ID
+omExCdaDirectory=EX-CDA-DIRECTORY
+omEmplOrg=EMPL-ORG
+omEmplDept=EMPL-DEPT
+title=TITLE
+description=ENTRY-DESC
+omForeignAddr=FOREIGN-ADDR
+omMailnode=MAILNODE
+omInternetAddr=INTERNET-ADDR
+omAdministeredBy=ADMINISTERED-BY
+omPrimaryS=PRIMARY-S
+omUlIl=UL-IL
+omUlClass=UL-CLASS
+omResourceFlags=RESOURCE-FLAGS
+omLegacyEmailAddresses=LEGACY-EMAIL-ADDR

@@ -1,0 +1,203 @@
+#!/bin/sh
+#
+# Univention Scalix
+#  postinst script for the debian package
+#
+# Copyright (C) 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+sighndl(){
+	export RET=1
+	trap 2
+}
+
+/usr/sbin/univention-baseconfig set scalix/version=11.0.3
+/usr/sbin/univention-baseconfig set scalix/pop3s?yes
+/usr/sbin/univention-baseconfig set scalix/imaps?yes
+
+#DEBHELPER#
+
+. /etc/opt/scalix/instance.cfg
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+INSTANCE=${INSTANCE/\/s/}
+
+eval $(univention-baseconfig shell)
+
+# We need de_DE.UTF-8@euro:UTF-8 and de_DE@euro:ISO-8859-15
+
+if [ "${locale/de_DE.UTF-8@euro:UTF-8//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE.UTF-8@euro:UTF-8"
+fi
+if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
+fi
+
+echo
+echo Trying to find a suitable name for the primary mailnode.
+echo -n Checking scalix/mailnode...
+
+if [ -z "$scalix_mailnode" ]; then
+	echo " Not set."
+else
+	echo $scalix_mailnode | grep -q "\."
+	if [ $? = 0 ]; then
+		echo " Not suitable (contains dots)."
+	else
+		export MAILNODE=$scalix_mailnode
+	fi
+fi
+
+if [ -z "$MAILNODE" ]; then
+	echo Using hostname for primary mailnode.
+	export MAILNODE=$hostname
+fi
+
+univention-baseconfig set scalix/mailnode=$MAILNODE
+
+echo
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/66univention-scalix.inst || true
+fi
+
+export PATH=$PATH:/opt/scalix/bin
+
+# set name creation rules
+# WARNING: if you change these rules, you have to edit general.cfg as well!
+sxconfig --set -t general.usrl_cn_rule='G S'
+sxconfig --set -t general.usrl_authid_rule='f.l@'
+sxconfig --set -t orniasys.name_part_1='"C" <f.l>' -t orniasys.domain_part_1="$domainname"
+
+# create mailnode
+omshowmn 2>/dev/null | grep -q "$MAILNODE" || omaddmn -m $MAILNODE
+
+# start server deamons, but keep mail delivery disabled
+omrc -n
+
+# add admin and ldap import user
+for FILE in /etc/scalix.secret /etc/scaliximport.secret; do
+      PW=$(cat $FILE 2>/dev/null) || true
+
+      if [ "$PW" = "" ]; then
+              touch $FILE
+              chmod 600 $FILE
+              makepasswd --chars 8 > $FILE
+      fi
+done
+
+# check if postgres exists before next command
+
+[ ! -d /var/opt/scalix-postgres/data ] && RM_PGDIR=true
+
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	# adjust configuration files
+	/usr/share/univention-scalix/univention-scalix-conffile
+
+	omaddu -n sxadmin/$MAILNODE --class limited -c admin -p $(cat /etc/scalix.secret) sxadmin || true
+
+	if [ ! -z "$server_role" -a "$server_role" != "basissystem" ]; then
+		# add admin account for Administrator (LDAP account)
+		omaddu -n Administrator/$MAILNODE --class limited -c admin --lock-password Administrator
+	fi
+
+	# setup sxadmin as Postmaster
+	omconfenu -n "sxadmin/$MAILNODE"
+
+	# exclude sxadmin from quota checks
+	omlimit -u "sxadmin/$MAILNODE" -o -i 0 -m 0
+
+	# create ldap query user
+	omaddu -n sxqueryadmin/$MAILNODE --clas limited -c admin -p $(cat /etc/scalix.secret) sxqueryadmin@$hostname.$domainname
+
+	# create ldap import user
+	omaddu -n ucsldapimport/$MAILNODE --class limited --swa N -C -c admin -p $(cat /etc/scaliximport.secret) ucsldapimport || true
+
+	# create standard scalix admin groups
+	omaddpdl -l ScalixUserAdmins/$MAILNODE
+	omaddpdl -l ScalixGroupAdmins/$MAILNODE
+	omaddpdl -l ScalixUserAttributesAdmins/$MAILNODE
+	omaddpdl -l ScalixAdmins/$MAILNODE
+
+	# link to password
+
+	ln -s /etc/scalix.secret /var/opt/scalix/$INSTANCE/caa/scalix.res/config/psdata
+
+	# scalix-postgres
+	/opt/scalix-postgres/bin/sxpsql-setpwd $(cat /etc/scalix.secret)
+	/opt/scalix-postgres/bin/sxpsql-whitelist $interfaces_eth0_address
+elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
+	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
+fi
+
+# stop all services
+/etc/init.d/scalix stop
+/etc/init.d/scalix-tomcat stop
+/etc/init.d/ldapmapper stop
+
+# wait for java process to be stopped
+
+echo Waiting for scalix-tomcat to be completely stopped...
+
+while true ; do
+	ps aux | grep -q [s]calix.instance || break
+	sleep 1
+done
+
+# remove old logfile, so we can see when tomcat has completed its
+# startup in the new logfile
+
+[ -f /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out ] && \
+mv /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out \
+/var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out.pre-inst
+
+/etc/init.d/scalix start
+/etc/init.d/scalix-tomcat restart
+/etc/init.d/ldapmapper start
+/etc/init.d/apache restart
+
+# initial ldapsync
+echo
+echo "Waiting for tomcat to be completely started. Please be patient,"
+echo "this might take a while... (Abort with Ctrl+C)"
+
+trap sighndl 2
+
+RET=0
+while [ $RET -ne 1 ]; do
+	grep -q "Server startup in" /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out && break
+	echo -n . || RET=1
+	sleep 1 || RET=1
+done
+
+if [ -x /etc/init.d/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener crestart
+fi
+
+# register and start SSL tunnel
+update-rc.d univention-scalix-stunnel defaults 55 15
+/etc/init.d/univention-scalix-stunnel restart
+
+
+exit 0

@@ -1,0 +1,355 @@
+univention-samba (0.68) unstable; urgency=low
+
+  * the default for "host msdfs" and "msdfs root" was changed to yes in the
+  samaba upstream package. This breaks the quota support.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Dec 2006 17:51:46 +0100
+
+univention-samba (0.67) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Mon,  4 Dec 2006 10:53:00 +0100
+
+univention-samba (0.65) unstable; urgency=low
+
+  * use samba/script/postusermodify with the samba-bdc package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Nov 2006 15:30:56 +0100
+
+univention-samba (0.64) unstable; urgency=low
+
+  * support the samba-bdc package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Nov 2006 16:37:13 +0100
+
+univention-samba (0.62) unstable; urgency=low
+
+  * added info to univention-pdc-takeover -?
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 26 Oct 2006 10:30:57 +0200
+
+univention-samba (0.61) unstable; urgency=low
+
+  * set samba/ldap/replication/sleep to an initial value of 4000 if it is not
+    set already
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Tue, 26 Sep 2006 07:56:05 +0200
+
+univention-samba (0.60) unstable; urgency=low
+
+  * some configuration updates for samba 3.0.23c
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Aug 2006 16:43:59 +0200
+
+univention-samba (0.59) unstable; urgency=low
+
+  * remove cron job line for /usr/share/univention-samba/account-policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Aug 2006 17:42:36 +0200
+
+univention-samba (0.58) unstable; urgency=low
+
+  * move some interal tools from /usr/sbin to /usr/share
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Jul 2006 09:26:36 +0200
+
+univention-samba (0.57) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:16:51 +0200
+
+univention-samba (0.56) unstable; urgency=low
+
+  * ACL support for netlogon-sync
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 19 Jun 2006 17:14:31 +0200
+
+univention-samba (0.55) unstable; urgency=low
+
+  * stop and start samba at the end of the join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  8 May 2006 17:55:02 +0200
+
+univention-samba (0.52) unstable; urgency=low
+
+  * depend on univention-admin-tools or univention-admin-tools-2005
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Apr 2006 15:26:46 +0200
+
+univention-samba (0.50) unstable; urgency=low
+
+  * replace ':' in lastname with ' ' as a ':' causes problems 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Mar 2006 01:49:27 +0100
+
+univention-samba (0.49) unstable; urgency=low
+
+  * don't start samba if samba/autostart is set to no
+  * don't start samba if its join script has not run successfully
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Thu, 16 Mar 2006 10:32:27 +0100
+
+univention-samba (0.48) unstable; urgency=low
+
+  * add baseconfig variable `samba/os/level' for samba os level
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 13 Mar 2006 17:42:45 +0100
+
+univention-samba (0.47) unstable; urgency=low
+
+  * ignore custom owner as well as permissions
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 13 Mar 2006 15:23:12 +0100
+
+univention-samba (0.46) unstable; urgency=low
+
+  * issue warning when overriding custom share permissions
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon,  6 Mar 2006 15:33:00 +0100
+
+univention-samba (0.45) unstable; urgency=low
+
+  * using baseconfig variable rotate time log/rotate/weeks for samba logfiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Mar 2006 15:25:12 +0100
+
+univention-samba (0.44) unstable; urgency=low
+
+  * always set mode '01777' for shared '/tmp'
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 27 Feb 2006 15:44:40 +0100
+
+univention-samba (0.43) unstable; urgency=low
+
+  * fixed filter expression
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 27 Feb 2006 14:18:05 +0100
+
+univention-samba (0.42) unstable; urgency=low
+
+  * add option to stop LDAP notifier before updating the LDAP tree and restart
+    it afterwards (merged from ucs1_2). 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 15:24:50 +0100
+
+univention-samba (0.39) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+  * merged changes from ucs1_2
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 27 Oct 2005 17:25:28 +0200
+
+univention-samba (0.38) unstable; urgency=low
+
+  * added missing name change for account policy 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 28 Sep 2005 11:03:05 +0200
+
+univention-samba (0.37) unstable; urgency=low
+
+  * added conversion routine for account-policies 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 24 Aug 2005 15:33:15 +0200
+
+univention-samba (0.36) unstable; urgency=low
+
+  * support for "minimum password age"-policy 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 18 Aug 2005 09:59:57 +0200
+
+univention-samba (0.35) unstable; urgency=low
+
+  * using xml vampire patch for takeover Windows NT
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 29 Jul 2005 08:03:18 +0200
+
+univention-samba (0.34) unstable; urgency=low
+
+  * added check password script
+  * more parameters from smb.conf in univention-baseconfig (charsets and server string)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 25 Jul 2005 15:00:41 +0200
+
+univention-samba (0.33) unstable; urgency=low
+
+  * fix pdbedit name changes (seconds since 1970)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 May 2005 07:11:36 +0200
+
+univention-samba (0.32) unstable; urgency=low
+
+  * analyze idmap server on memberserver
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Apr 2005 16:07:52 +0200
+
+univention-samba (0.31) unstable; urgency=low
+
+  * fix netlogon sync script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Apr 2005 08:28:18 +0200
+
+univention-samba (0.30) unstable; urgency=low
+
+  * enable spooling only if cups/server is set to myself
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 25 Apr 2005 11:45:59 +0200
+
+univention-samba (0.29) unstable; urgency=low
+
+  * increase version to avoid conflicts with older security-updates
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 19 Apr 2005 12:01:00 +0200
+
+univention-samba (0.24) unstable; urgency=low
+
+  * added support for write list parameter 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  7 Apr 2005 12:03:18 +0200
+
+univention-samba (0.23) unstable; urgency=low
+
+  * support multiple LDAP server, ldap/server/name and ldap/server/addition
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2005 09:09:50 +0100
+
+univention-samba (0.22) unstable; urgency=low
+
+  * added listener modul samba-config
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2005 18:40:12 +0100
+
+univention-samba (0.21) unstable; urgency=low
+
+  * added Univention Baseconfig variable for admin users (samba/adminusers)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Mar 2005 16:49:32 +0100
+
+univention-samba (0.20) unstable; urgency=low
+
+  * fix vampire-bug: takeover may stop on some groupnames
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  3 Mar 2005 13:29:16 +0100
+
+univention-samba (0.19) unstable; urgency=low
+
+  * added baseconfig variable samba/logonscript
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Jan 2005 17:44:58 +0100
+
+univention-samba (0.18) unstable; urgency=low
+
+  * support for idmap container and fix uid <-> sid mapping
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Jan 2005 06:29:00 +0100
+
+univention-samba (0.17) unstable; urgency=low
+
+  * Support for spaces in ldap base
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Dec 2004 18:53:57 +0100
+
+univention-samba (0.16) unstable; urgency=low
+
+  * improved output and debugging of pdc-takeover
+  * added baseconfig-variables samba/ldap/replication/sleep
+  * added support for removing exsisting samba-related attributes in LDAP
+  * added new baseconfig-variables for logon- and homeserver/-path
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 16 Nov 2004 10:33:51 +0100
+
+univention-samba (0.15) unstable; urgency=low
+
+  * added baseconfig variable samba/netbios/aliases
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Sep 2004 12:19:48 +0200
+
+univention-samba (0.14) unstable; urgency=low
+
+  * Correct Parameters for smbclient while pdc-takeover (copy of netlogon
+    share)
+  * Improved usage and feeback of univention-pdc-takeover
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 25 Aug 2004 08:43:58 +0200
+
+univention-samba (0.13) unstable; urgency=low
+
+  * Corrected name for "security mask" parameter (was "security mode").
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri,  4 Jun 2004 11:09:23 +0200
+
+univention-samba (0.12) unstable; urgency=low
+
+  * check for file /var/cache/samba/dont_start
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 May 2004 14:02:45 +0200
+
+univention-samba (0.11) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 11:03:27 +0200
+
+univention-samba (0.10) unstable; urgency=low
+
+  * merged listener module with HEAD
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 16 Apr 2004 09:39:06 +0200
+
+univention-samba (0.9) unstable; urgency=low
+
+  * netlogon write list
+  * root Administrator and Printer-Admins added to printer write list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Mar 2004 08:52:45 +0200
+
+univention-samba (0.8) unstable; urgency=low
+
+  * Add root and Administrator to 41univention-samba_printing
+
+ -- Thomas Kaminski <kaminski@univention.de>  Tue, 23 Mar 2004 14:35:14 +0100
+
+univention-samba (0.7) unstable; urgency=low
+
+  * "time server = yes" instead of "time server = on"
+  * restart smbd
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Mar 2004 13:34:11 +0100
+
+univention-samba (0.6) unstable; urgency=low
+
+  * restart listener
+  * added "time server = on" to 61univention-samba_mis
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Mar 2004 10:50:11 +0100
+
+univention-samba (0.5) unstable; urgency=low
+
+  * password chat binddn with ""
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  6 Mar 2004 12:43:00 +0100
+
+univention-samba (0.4) unstable; urgency=low
+
+  * handle home dirs in listener modul
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  6 Feb 2004 15:41:21 +0100
+
+univention-samba (0.3) unstable; urgency=low
+
+  * bugfix join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2004 07:48:27 +0100
+
+univention-samba (0.2) unstable; urgency=low
+
+  * adapted for Samba 3.0
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 11 Oct 2002 10:43:57 +0200
+
+univention-samba (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Peter H. Ganten <ganten@univention.de>  Wed, 22 Aug 2001 18:23:46 +0200

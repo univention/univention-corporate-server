@@ -1,0 +1,69 @@
+<html>
+<head>
+<script type="text/javascript" language="JavaScript1.2" src="config.js"></script>
+<title></title>
+<script language="JavaScript" type="text/javascript">
+<!--
+
+function newImage(arg)
+{
+	if (document.images)
+	{
+		rslt = new Image();
+		rslt.src = arg;
+		return rslt;
+	}
+}
+
+function preloadImages()
+{
+	if (document.images)
+	{
+		exanded = newImage("side/expand.gif");
+		collapsed = newImage("side/collapse.gif");
+		plus = newImage("side/plus.gif");
+		minus = newImage("side/minus.gif");
+	}
+}
+
+if ( treeType == "apytmenu" )
+{
+	document.write('<link rel="StyleSheet" href="side/apytmenu.css" type="text/css">');
+	document.write('<script type="text/javascript" language="JavaScript1.2" src="side/apytmenu.js"></script>');
+}
+else
+{
+	document.write('<link rel="StyleSheet" href="side/dtree.css" type="text/css">');
+	document.write('<script type="text/javascript" language="JavaScript1.2" src="side/dtree.js"></script>');
+
+}
+-->
+</script> 
+</head>
+<body bgcolor="#C3C7D3" topmargin="0" leftmargin="0" rightmargin="0" bottommargin="0" marginheight="0" marginwidth="0" onload="preloadImages();">
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('<form style="padding: 0px; margin:0px;" method="get" action="' + cgipath + 'status.cgi" target="main">');
+-->
+</script> 
+<div class="tree">
+<script language="JavaScript" type="text/javascript">
+<!--
+if ( treeType == "apytmenu" )
+{
+	document.write('<script type="text/javascript" language="JavaScript1.2" src="side/apytmenu_data.js"></script>');
+}
+else
+{
+	document.write('<script type="text/javascript" language="JavaScript1.2" src="side/dtree_data.js"></script>');
+}
+-->
+</script> 
+</div>
+<script language="JavaScript" type="text/javascript">
+<!--
+document.write('</form>');
+-->
+</script> 
+</body>
+</html>

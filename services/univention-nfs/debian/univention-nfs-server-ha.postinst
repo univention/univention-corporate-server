@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# Univention NFS HA
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# move lock-files to the ha-directory
+if [ "$1" = "configure" -a -z "$2" ]
+	then
+	if [ ! -d /ha/nfs ]
+		then
+		test -d /ha || mkdir /ha
+		if [ -d /var/lib/nfs ]
+			then
+			mv /var/lib/nfs /ha
+		fi
+		test -d /ha/nfs || mkdir /ha/nfs
+		ln -s /ha/nfs /var/lib/nfs
+		test -f /var/lib/nfs/rmtab || touch /var/lib/nfs/rmtab
+	fi
+fi
+
+univention-baseconfig commit /etc/init.d/nfs-kernel-server
+univention-baseconfig set nfsserver/ha/service?nfs-kernel-server

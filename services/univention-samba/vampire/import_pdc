@@ -1,0 +1,160 @@
+#!/bin/bash
+#
+# Univention Samba
+#  helper script: called by univention-pdc-takeover
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if [ "$#" -ne "5" ]; then
+    echo "Syntax: $0 <domainname> <NT4pdcname> <adminlogin> <password> <logfile>"
+    echo "This script should only be called by univention-pdc-takeover"
+    exit 1
+fi
+
+DOMAIN=$1
+PDC=$2
+USER=$3
+PASSWORD=$4
+LOGFILE=$5
+
+tmpdir=/tmp/pdc-import.$$
+config=$tmpdir/smb.conf
+eval `univention-baseconfig shell samba/debug/level`
+net_options="-s ${config} -w${DOMAIN} -S${PDC} -U${USER}%${PASSWORD} -d$samba_debug_level"
+smbclient_options="-s ${config} -U${USER}%${PASSWORD}"
+
+info() {
+	echo $2 "    $1"
+	echo "$1" >> $LOGFILE
+}
+
+mkdir -m700 $tmpdir
+
+info "reconfigure samba as BDC..." -n
+
+cat <<EOF | univention-baseconfig filter > ${config}
+[global]
+
+	debug level = @%@samba/debug/level@%@
+    log file = $LOGFILE
+	private dir = $tmpdir
+
+	netbios name = @%@hostname@%@
+	server string = %h univention_ desktop server
+	smb ports = 139
+
+	client use spnego = no
+
+	passdb backend = ldapsam:ldap://@%@ldap/server/name@%@ guest
+	ldap suffix = "@%@ldap/base@%@"
+	ldap admin dn = "cn=admin,@%@ldap/base@%@"
+	ldap ssl = off
+;	ldap port = 389
+
+	oplocks = yes
+	kernel oplocks = yes
+	large readwrite = yes
+	deadtime = 15
+	read raw = yes
+	write raw = yes
+	max xmit = 65536
+	getwd cache = yes
+
+	workgroup = ${DOMAIN}
+	security = user
+	domain logons = yes
+	encrypt passwords = yes
+
+	os level = 65
+	domain master = no
+	prefered master = yes
+	local master = yes
+	wins support = yes
+
+	preserve case = yes
+	short preserve case = yes
+
+	invalid users = daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster
+
+	add user script = /usr/sbin/univention-adduser "%u"
+	delete user script =  /usr/sbin/univention-deluser "%u"
+	add group script = /usr/sbin/univention-addgroup "%g"
+	delete group script =  /usr/sbin/univention-delgroup "%g"
+	add user to group script = /usr/sbin/univention-adduser "%u" "%g"
+	delete user from group script = /usr/sbin/univention-deluser "%u" "%g"
+	add machine script = /usr/sbin/univention-addmachine "%u"
+	set primary group script = /usr/sbin/univention-setprimarygroup "%u" "%g"
+EOF
+
+/etc/init.d/samba stop  >> $LOGFILE 2>&1
+rm -f /var/run/samba/gencache.tdb >> $LOGFILE 2>&1
+
+info "OK"
+
+info "Takeover SID for existing entries..." -n
+
+SID=$(net rpc getsid ${net_options} 2>>$LOGFILE| sed 's/.*\(S-1-5-[-0-9]*\).*/\1/')
+if [ -z "$SID" ]; then
+	echo "Could not get new SID. Aborting..." | tee -a $LOGFILE
+	exit 1
+fi
+oldSID=`ldapsearch -x objectClass=sambaDomain -LLL sambaSID | grep sambaSID | sed -e "s|sambaSID: ||"`
+if [ -z "$SID" ]; then
+	echo "Could not get old SID. Aborting..." | tee -a $LOGFILE
+	exit 2
+fi
+if [ "$oldSID" != "$SID" ]; then
+	/usr/share/univention-samba/set_domain_sid "$DOMAIN" "$SID" >> $LOGFILE 2>&1 || exit 3
+	/usr/share/univention-samba/change_sid "$oldSID" "$SID" >> $LOGFILE 2>&1 || exit 3
+fi
+
+info "OK"
+
+info "Join into Domain..." -n
+net rpc join ${net_options}  >> $LOGFILE 2>&1 || exit 4
+info "OK"
+
+info "Importing users..." -n
+net rpc vampire ${net_options} >> $LOGFILE 2>&1 || exit 5
+info "OK"
+
+if [ -e /usr/share/univention-heimdal/kerberos_now ]; then
+	info "Create Kerberos keys..." -n
+	/usr/share/univention-heimdal/kerberos_now >> $LOGFILE 2>&1 || exit 6
+	echo "OK"
+fi
+
+info "Check group and default settings..." -n
+/usr/share/univention-samba/fix_primary_groups >> $LOGFILE 2>&1 || exit 7
+/usr/share/univention-samba/fix_user_sids "$SID" >> $LOGFILE 2>&1 || exit 7
+/usr/share/univention-samba/set_default_settings >> $LOGFILE 2>&1 "$SID" || exit 7
+info "OK"
+
+info "Copying netlogon share..." -n
+smbclient "//$PDC/NETLOGON" ${smbclient_options} -d0 -Tc - 2>>$LOGFILE | tar xv -C /var/lib/samba/netlogon || exit 8
+info "OK"
+
+rm -rf ${tmpdir}

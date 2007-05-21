@@ -1,0 +1,9 @@
+#! /bin/sh -e
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+if [ -n "`echo $dhcpd_enable | egrep '(yes|true|1)'`" ]; then
+	exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log
+else
+	logger -p local0.notice -t UNIVENTION-DHCP "dhcpd disabled in baseconfig - not started."
+fi

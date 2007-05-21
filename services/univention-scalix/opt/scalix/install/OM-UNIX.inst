@@ -1,0 +1,197 @@
+#!/bin/sh
+# GenVer = 11.0.2.15
+
+# Copyright (C) 2003 Scalix Corporation.  All rights reserved.
+# (c) Copyright Hewlett-Packard Company 1989-1995.  All Rights Reserved.
+
+# @(#) Installation file for the HP Scalix Unix mail mapper
+# @(#) 
+# Sccs_Id[] = "%W%";
+# This is best viewed with tabs set to 4.
+	
+#------------------------------------------------------------------------------
+
+#------ START --  set up Scalix shell variables  --------------#
+
+OMRP=/opt/scalix/bin/omrealpath
+[ ! -f $OMRP ] && OMRP=/usr/scalix/bin/omrealpath
+[ ! -f $OMRP ] && OMRP=omrealpath
+
+OMBIN=`$OMRP '~/bin'`
+PATH=$OMBIN:$PATH; export PATH
+
+OPTBASE=`omeval dirname $OMBIN`
+OMDATA=`omrealpath '~/'|sed 's%/$%%'`
+
+#------ END   --  set up Scalix shell variables  --------------#
+
+export OMDATA
+
+# first try to find the message catalog
+
+tempmsg=`omgetmsg -c mc_110 1 100`
+if [ $? -ne 0 ]
+then
+# current lang failed, try default lang
+        LANG=`omeval omdeflang`
+        export LANG
+        usermsg=`omgetmsg -c mc_110 1 100`
+        if [ $? -ne 0 ]
+        then
+                echo "[ OMINST 1 ] Cannot open Message catalog" >&2
+				echo "             You must load at least one message catalog" >&2
+				echo "             and have your enviroment set correctly" >&2
+				echo "             before installing or running Scalix" >&2
+                exit 30
+        else
+                omgetmsg 1 4450 >&2
+        fi
+fi
+
+#------------------------------------------------------------------------------
+# Ensure that the CORE package has been installed
+#
+
+if	[ ! -f $OMBIN/omsetsvc ] || \
+	[ ! -f $OMBIN/omaddq ] || \
+	[ ! -f $OMBIN/omeval ]
+then
+# MSG no core
+	omgetmsg -c mc_110 1 155 UNIX
+	exit 1
+fi
+
+#------------------------------------------------------------------------------
+if [ `omeval whoami` != "root" ]
+then
+	omgetmsg -c mc_110 1 110
+	exit 1
+fi
+
+#------------------------------------------------------------------------------
+
+if [ ! "`omeval pwget -n scalix`" ]
+then
+# MSG no scalix user
+	omgetmsg -c mc_110 1 195 scalix
+	omgetmsg -c mc_110 1 196
+	exit 1
+fi
+
+#------------------------------------------------------------------------------
+
+if [ ! "`omeval grget -n scalix`" ]
+then
+# MSG no scalix
+	omgetmsg -c mc_110 1 199 scalix
+	omgetmsg -c mc_110 1 196
+	exit 1
+fi
+
+
+
+#------------------------------------------------------------------------------
+omaddq -q "UNIX"	&&
+omaddacl -t s -l UNIX -j
+if [ $? -ne 0 ]
+then
+# MSG q add failed
+	omgetmsg -c mc_110 1 225 UNIX
+	omgetmsg -c mc_110 1 320
+	exit 1
+fi
+
+
+#------------------------------------------------------------------------------
+if [ ! -f $OMDATA/sys/config ]
+then
+# MSG No config file
+	omgetmsg -c mc_110 135	$OMDATA/sys/config
+	exit 1
+else
+
+	# add_services
+	# Unix
+    if `omsetsvc -r 4 >/dev/null 2>&1`
+    then
+        :
+    else
+	    omsetsvc -s 4 1 1 1 "~/bin/unix.out" \
+			    "~/bin/shut.queue -q UNIX -d %d -s 4" "" "UNIX" 1 1
+	    if [ $? -ne 0 ]
+	    then
+            #MSG config error
+		    omgetmsg -c mc_110 1 240	$OMDATA/sys/config
+		    omgetmsg -c mc_110 1 320
+		    exit 1
+	    fi
+    fi
+fi
+
+#
+#------------------------------------------------------------------------------
+# Copy over customizable files; try to save originals in case they were changed
+
+# Note that if the following file list is edited to include any file more than
+# 13 characters long, the script will need changed, as it attempts to add an
+# 'O' (uppercase 'o') to the front when it saves an old version.
+
+FILES=" unixin.rules unixin.trust unixout.rules unixout.str unixin.str unix.mapper mimeout.str mapiclass.map tnefout.str mimein.str"
+
+for FILE in $FILES
+do
+	if cmp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE  >/dev/null 2>&1
+	then
+		:
+		# The file in place is the same as the new version.
+		# Don't do the copy so we don't lose the OLD version if there is one.
+	else
+		if [ -f $OMDATA/sys/$FILE ]
+		then
+			cp $OMDATA/release.sys/$FILE $OMDATA/sys/${FILE}.dpkg-dist
+			# MSG:	file has been replaced
+		#	omgetmsg -c mc_110 1 241 $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+		#	mv $OMDATA/sys/$FILE $OMDATA/sys/O$FILE
+		else
+			# the file doesn't exists
+			cp $OMDATA/release.sys/$FILE $OMDATA/sys/$FILE
+			chown scalix $OMDATA/sys/$FILE
+			chgrp scalix $OMDATA/sys/$FILE
+		fi
+	fi
+done
+
+
+#------------------------------------------------------------------------------
+# Remove old check file
+if [ -f $OMDATA/sys/check/dist.unix ]
+then
+	rm -f $OMDATA/sys/check/dist.unix
+fi
+
+
+#------------------------------------------------------------------------------
+# Remove old Message Catalog
+
+if [ -f /usr/lib/nls/n-computer/mc_102.cat ] 
+then
+	rm -f /usr/lib/nls/n-computer/mc_102.cat
+fi
+
+#------------------------------------------------------------------------------
+# Remove old fileset directory.
+if [ -d /system/OM_UNIX ] 
+then
+	rm -fr /system/OM_UNIX
+fi
+
+#------------------------------------------------------------------------------
+# Move the installation script
+#------------------------------------------------------------------------------
+
+mv $OMDATA/sys/install/OM-UNIX.inst $OMDATA/sys/install/OM-UNIX.fin
+
+chown scalix	$OMDATA/sys/install/OM-UNIX.fin
+chgrp scalix	$OMDATA/sys/install/OM-UNIX.fin
+
+exit 0

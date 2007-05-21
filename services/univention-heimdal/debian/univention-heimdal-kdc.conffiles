@@ -1,0 +1,5 @@
+/etc/univention/templates/files/etc/krb5.conf
+/etc/univention/templates/files/var/lib/heimdal-kdc/kdc.conf
+/etc/univention/templates/files/var/lib/heimdal-kdc/kadmind.acl
+/etc/univention/templates/files/etc/init.d/heimdal-kdc
+/etc/univention/templates/files/etc/logrotate.d/heimdal-kdc
