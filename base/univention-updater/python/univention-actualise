@@ -1,0 +1,278 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  actualise script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys, string, time, tempfile, univention_baseconfig, commands
+
+def usage():
+	print"univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
+	print"                      through policies"
+	print""
+	print"usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
+	print""
+	print"-?, --help	Show this message"
+	print"--dist-upgrade	Perform a dist-upgrade instead of a regular update"
+	print"--silent	Don't show normal output, but error messages only"
+	print"--check	Don't do anything, yust check if there is an update"
+
+def waitForLock():
+	# Wait for /var/run/apt-get.lock to vanish
+	count=0
+	while os.path.exists('/var/run/apt-get.lock') and count < 300:
+		print("Waiting for /var/run/apt-get.lock to vanish...")
+		time.sleep(1)
+		count=count+1
+
+def getUpdate():
+	# Small function waiting for apt lockfile to vanish then starts apt-get update
+	print("Running apt-get update")
+	waitForLock()
+	res=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/actualise.log 2>&1')
+	if os.path.exists('/var/run/apt-get.lock'):
+		os.unlink('/var/run/apt-get.lock')
+	if res != 0:
+		print >>sys.stderr, "E: failed to update"
+		sys.exit(res)
+
+def check(baseConfig, dist_upgrade=False):
+	# Just probe if there are packages to add or remove
+	
+	actualise = False
+	getUpdate()
+
+	# Probe for packages to actualise
+	if dist_upgrade:
+		cmd = 'dist-upgrade'
+	else:
+		cmd = 'upgrade'
+	
+	waitForLock()
+	res=commands.getoutput('touch /var/run/apt-get.lock && apt-get -us %s | egrep ".*[0-9] upgraded, [0-9].*"' %cmd)
+	if os.path.exists('/var/run/apt-get.lock'):
+		os.unlink('/var/run/apt-get.lock')
+	sres=res.split()
+	
+	# These ones are nicer to read
+	upgraded = int(sres[0])
+	newlyinstalled = int(sres[2])
+	remove = int(sres[5])
+	notupgraded = int(sres[9])
+	
+	# If there are any pakages to upgrade, install or remove
+	if upgraded != 0 or newlyinstalled != 0 or remove != 0:
+		actualise = True
+
+	# Probe for policies
+	rem_packages=getPackageList(baseConfig, 'remove')
+	add_packages=getPackageList(baseConfig, 'add')
+	
+	if rem_packages or add_packages or actualise:
+		return 1
+	else:
+		return 0
+
+def getPackageList(baseConfig, job):
+	# Get a list of packages to remove or add, depending on the value of job
+	# getPackageList(baseConfigObject, pkgdb, job={add,remove})
+	
+	packageList=[]
+	packages_name=""
+
+	if job == 'remove':
+		if baseConfig['server/role'] == 'fatclient':
+			packages_name='univentionClientPackagesRemove='
+		elif baseConfig['server/role'] == 'mobileclient':
+			packages_name='univentionMobileClientPackagesRemove='
+		elif baseConfig['server/role'] == 'memberserver':
+			packages_name='univentionMemberPackagesRemove='
+		elif baseConfig['server/role'] == 'domaincontroller_slave':
+			packages_name='univentionSlavePackagesRemove='
+		elif baseConfig['server/role'] == 'domaincontroller_master' or baseConfig['server/role'] == 'domaincontroller_backup':
+			packages_name='univentionMasterPackagesRemove='
+	elif job == 'add':
+		if baseConfig['server/role'] == 'fatclient':
+			packages_name='univentionClientPackages='
+		elif baseConfig['server/role'] == 'mobileclient':
+			packages_name='univentionMobileClientPackages='
+		elif baseConfig['server/role'] == 'memberserver':
+			packages_name='univentionMemberPackages='
+		elif baseConfig['server/role'] == 'domaincontroller_slave':
+			packages_name='univentionSlavePackages='
+		elif baseConfig['server/role'] == 'domaincontroller_master' or baseConfig['server/role'] == 'domaincontroller_backup':
+			packages_name='univentionMasterPackages='
+	else:
+		print >>sys.stderr, "E: no valid job defined"
+		sys.exit(1)
+	
+	tmpfile=tempfile.mktemp()
+	res=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], tmpfile))
+	if res != 0:
+		print >>sys.stderr, 'failed to execute univention_policy_result'
+		sys.exit(res)
+
+	file=open(tmpfile, 'r')
+
+	for line in file.readlines():
+		line=line.strip(' ').replace('"','')
+		if line.startswith(packages_name):
+			package=line.strip('\n').replace('%s' % packages_name, '').split('/')[-1]
+			packageList.append(package)
+	file.close()
+	os.remove(tmpfile)
+	return packageList
+
+def main():
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	pkgdb = None
+	silent = False
+	print_usage = False
+	dist_upgrade = False
+	check_only = False
+
+	try:
+		if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
+	
+			# parse arguments
+			for arg in sys.argv[1:]:
+				if arg == "--silent":
+					silent = True
+				elif arg == "-?" or arg=="--help":
+					print_usage = True
+				elif arg == "--dist-upgrade":
+					dist_upgrade = True
+				elif arg == '--check':
+					check_only = True
+				else:
+					# unknown parameter
+					print_usage=True
+	
+			if print_usage:
+				usage()
+				sys.exit(0)
+	
+			if silent:
+				# redirect stdout to /dev/null
+				sys.stdout = open("/dev/null", "w")
+
+			if check_only:
+				# Only probe for packages to add/remove
+				res=check(baseConfig, dist_upgrade)
+				sys.exit(res)
+
+
+			debug_file=open('/var/log/univention/actualise.log', 'a+')
+			debug_file.write('***** Starting univention-actualise at %s\n' % time.ctime())
+			debug_file.close()
+
+			getUpdate()
+			
+			if baseConfig.has_key('pkgdb/scan') and baseConfig['pkgdb/scan']:
+				pkgdb=baseConfig['pkgdb/scan']
+		
+			if pkgdb:
+				univention_baseconfig.handler_set(['pkgdb/scan=no'])
+
+			rem_packages=getPackageList(baseConfig, 'remove')
+			for package in rem_packages:
+				waitForLock()
+				print("Removing packages: %s" % package)
+				res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/actualise.log 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get remove --yes %s >>/var/log/univention/actualise.log 2>&1' % package)
+				if os.path.exists('/var/run/apt-get.lock'):
+					os.unlink('/var/run/apt-get.lock')
+				if res != 0:
+					print >>sys.stderr, "E: failed to remove %s" % package
+					file.close()
+					os.remove(tmpfile)
+					if pkgdb:
+						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+					sys.exit(res)
+
+				
+			add_packages=getPackageList(baseConfig, 'add')
+			for package in add_packages:
+				waitForLock()
+				print("Installing packages: %s" % package)
+				res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install %s >>/var/log/univention/actualise.log 2>&1' % package)
+				if os.path.exists('/var/run/apt-get.lock'):
+					os.unlink('/var/run/apt-get.lock')
+				if res != 0:
+					print >>sys.stderr, "E: failed to install %s" % package
+					file.close()
+					os.remove(tmpfile)
+					if pkgdb:
+						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+					sys.exit(res)
+
+			waitForLock()
+			
+			msg = "Upgrading system"
+			cmd = "upgrade"
+			if dist_upgrade:
+				msg = "Dist-upgrading system"
+				cmd = "dist-upgrade"
+				
+			print(msg)
+			# TODO: use mkstemp and close directly the file descriptor
+			tmpfile = tempfile.mkstemp()
+			os.close( tmpfile[ 0 ] )
+			res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u %s 2>&1 | tee -a /var/log/univention/actualise.log %s >/dev/null' % ( cmd, tmpfile[ 1 ] ) )
+			
+			if not silent:
+				#TODO: support for more languages
+				os.system( 'egrep "(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)" %s' % tmpfile[ 1 ] )
+			os.unlink( tmpfile[ 1 ] )
+			if os.path.exists('/var/run/apt-get.lock'):
+				os.unlink('/var/run/apt-get.lock')
+	
+			if res != 0:
+				print >>sys.stderr, "E: failed to upgrade"
+				if pkgdb:
+					univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+				sys.exit(res)
+	
+	finally:
+		if pkgdb:
+			univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
+			if not silent:
+				os.system('/usr/sbin/univention-pkgdb-scan')
+			else:
+				os.system('/usr/sbin/univention-pkgdb-scan > /dev/null')
+
+if __name__ == '__main__':
+	failure = '/var/lib/univention-updater/update-failed'
+	if os.path.exists(failure):
+		print 'univention-actualise: univention-updater failed, stopping...'
+		print '    remove `%s\' to proceed' % failure
+		sys.exit(2)
+	main()
+	sys.exit(0)

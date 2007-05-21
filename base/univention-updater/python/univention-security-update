@@ -1,0 +1,393 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  security update
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, string
+import shutil, sys
+import getopt
+import univention_baseconfig
+import httplib
+import mimetools
+import tempfile
+import time
+
+ALREADY_DOWNLOADED="/var/cache/univention-update/already.txt"
+NUM_STARS=40	# for progress dialog
+
+real_stdout=None
+extra_silent=False
+
+def copybinary(input, output, total_length):
+	"Taken from mimetools.copybinary, this also implements a progress bar"
+	BUFSIZE = 8192
+	byte_count=0.0
+	star_count=0
+	old_starcount=0
+	while 1:
+		line = input.read(BUFSIZE)
+		if not line: break
+		output.write(line)
+		if not extra_silent:
+			byte_count+=len(line)
+			star_count=int((byte_count/total_length)*NUM_STARS)
+			# only print new line if num_o_chars changed
+			if star_count!=old_starcount:
+				print >>real_stdout, "*"*star_count , "\r",
+				real_stdout.flush()
+				old_starcount=star_count
+	if not extra_silent:
+		# delete stars, otherwise they might show up in shell prompt (not good)
+		print >>real_stdout, " "*NUM_STARS, "\r",
+
+def dprint(str, fd=[], toStdout=False):
+	if len(fd) < 1:
+		print str
+	for i in range(0,len(fd)):
+		print >>fd[i], str
+		print str
+	if toStdout and not extra_silent:
+		print >>real_stdout, str
+
+def usage(fd=sys.stdout):
+	print >>fd, 'univention-security-update: tool for include security updates into local repository'
+	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, ''
+	print >>fd, 'Syntax:'
+	print >>fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent]'
+	print >>fd, '  univention-security-update [--help] '
+	print >>fd, ''
+	print >>fd, 'Known-Bugs:'
+	print >>fd, '  -None-'
+	print >>fd, ''
+
+def download_deb(conn, tempdir, line, file):
+	dprint('download %s' % file, [], True)
+
+	try:
+		conn.request("GET", file)
+	except Exception, msg:
+		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
+		sys.exit(1)
+
+	try:
+		resp = conn.getresponse()
+	except:
+		return False
+	
+	if  resp.status != 200:
+		dprint('failed to download %s' % file, [], True)
+		dprint(' %s: %s\n' % (resp.status,resp.reason), [], True)
+		return False
+
+	filepath=tempdir
+	dirlist=line.split('/')[:-1]
+	for dir in dirlist:
+		filepath=os.path.join(filepath,dir)
+		if not os.path.exists(filepath):
+			os.mkdir(filepath)
+	filepath=os.path.join(filepath,file.split('/')[-1])
+	
+	try:
+		debfile=open(filepath,'w+')
+		copybinary(resp,debfile, resp.length)
+		debfile.close()
+	except Exception, msg:
+		dprint("ERROR: File Failed: %s\n"% filepath, [], True)
+		return False
+	return True
+
+def write_local_repository_list(sourcedir, vv, vp):
+	sourcedir_with_path=os.path.join(sourcedir, '%s-%s' % (vv,vp))
+	if not os.path.exists(sourcedir_with_path):
+		os.mkdir(sourcedir_with_path)
+	os.system('cd %s; apt-ftparchive packages . >Packages; cd -' % (sourcedir_with_path))
+	source_line='deb file:%s/ ./' % (sourcedir_with_path)
+	f=open('/etc/apt/sources.list', 'r')
+	lines=f.readlines()
+	f.close()
+	found=0
+	for line in lines:
+		if source_line == line.strip(' ').strip('\n'):
+			found=1
+	if not found:
+		f=open('/etc/apt/sources.list', 'w+')
+		f.write(source_line+'\n')
+		for line in lines:
+			f.write(line)
+		f.close()
+
+	debfiles=[]
+	for root, dirs, files in os.walk(sourcedir_with_path):
+		if not dirs == []:
+			for dir in dirs:
+				debfiles += deblist(os.path.join(root, dir))
+
+	f=open(ALREADY_DOWNLOADED, "a")
+	for file in debfiles:
+		f.write("%s\n" % file.split('/')[-1])
+	f.close()
+
+def get_proxy():
+	if baseConfig.has_key('update/security/proxy') and baseConfig['update/security/proxy']:
+		return baseConfig['update/security/proxy'].lower().replace('http://','')
+	elif baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
+		return baseConfig['proxy/http'].lower().replace('http://','')
+	elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
+		return os.environ['http_proxy'].lower().replace('http://','')
+	else:
+		return None
+
+def create_download_url(server, *path_components):
+	if get_proxy():
+		print "download url: %s" % os.path.join('http://%s' % server, *path_components)
+		return os.path.join('http://%s' % server, *path_components)
+	else:
+		print "download url: %s" % os.path.join('/', *path_components)
+		return os.path.join('/', *path_components)
+
+def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
+	if get_proxy():
+		print "connect to proxy %s" % get_proxy()
+		conn = httplib.HTTPConnection(get_proxy())
+	else:
+		conn = httplib.HTTPConnection(server)
+	index_file = create_download_url(server, baseConfig['update/security/prefix'], 'index.txt')
+	try:
+		conn.request("GET", index_file)
+	except Exception, msg:	
+		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
+		sys.exit(1)
+	
+	print 'indexfile=%s' %index_file
+	resp_index = conn.getresponse()
+	if  resp_index.status != 200:
+		dprint('failed to download %s' % index_file,[],True)
+		dprint(' %s: %s\n' % (resp_index.status,resp_index.reason),[],True)
+		sys.exit(0)
+
+	resp_data = resp_index.read()
+
+	for line in resp_data.split('\n'):
+		if line:
+			found=0
+			failed='0'
+			try:
+				f=open(ALREADY_DOWNLOADED, 'r')
+			except:
+				f=open(ALREADY_DOWNLOADED, 'w+')
+				
+			for fline in f.readlines():
+				if fline:
+					if fline.strip('\n') == line.split('/')[-1]:
+						found=1
+						break
+			f.close()
+			if found:
+				dprint('skipping: %s' % fline.strip('\n'), [], True)
+				continue
+
+			dir=line.split('/')
+			for i in dir:
+				if failed == '1':
+					continue
+				if i == '.':
+					continue
+				version=i.split('-')
+				if len(version) < 2:
+					dprint('skipping (invalid version) %s' % line, [], True)
+					failed='1'
+					continue
+				elif float(version[0]) < float(repository_vv) or ( float(version[0]) == float(repository_vv) and float(version[1]) < float(repository_vp) ):
+					dprint('skipping (too old version) %s' % line, [], True)
+					failed='1'
+					continue
+				elif float(version[0]) <= float(vv) and float(version[1]) <= float(vp):
+					break
+				else:
+					dprint('skipping (newer update version) %s' % line, [], True)
+					failed='1'
+					continue
+
+			if failed == '0':
+				filename = create_download_url(server ,baseConfig['update/security/prefix'], line)
+				if not download_deb(conn, tempdir, line, filename):
+					dprint('failed to download %s: Try again' % file, [], True)
+					# try again
+					conn.close()
+					if get_proxy():
+						conn = httplib.HTTPConnection(get_proxy())
+					else:
+						conn = httplib.HTTPConnection(server)
+					if not download_deb(conn, tempdir, line, filename):
+						dprint('failed to download %s' % file, [], True)
+						sys.exit(2)
+				conn.close()
+		
+def deblist(directory):
+	"returns a list of all *.deb-file in the given directory"
+
+	try:
+		files = os.listdir(directory)
+	except:
+		return []
+	
+	debfiles = []
+	for file in files:
+		if file[-4:].lower()==".deb":
+			debfiles.append(os.path.join(directory,file))
+	
+	return debfiles
+
+if __name__ == '__main__':
+	# parse options
+
+	fp_debug=open('/var/log/univention/security-updates.log', 'a+')
+	stdout=sys.stdout
+	real_stdout = sys.stdout
+	sys.stdout=fp_debug
+
+	file=''
+
+	dprint('***** Starting univention-security-update at %s\n' % time.ctime())
+
+	if len(sys.argv) < 2:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(1)
+		
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(0)
+
+	if sys.argv[1] == 'net':
+		command='net'
+	elif sys.argv[1] == 'local':
+		command='local'
+	else:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(1)
+
+	longopts=['file=', 'silent' ]
+	try:
+		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
+	except getopt.error, msg:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(1)
+	for opt, val in opts:
+		if opt == '--file':
+			file=val
+		if opt == '--silent':
+			extra_silent=True
+	
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	vv=baseConfig['version/version']
+	vp=baseConfig['version/patchlevel']
+	if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes') and os.path.exists('/var/lib/univention-server-cdrom/ucs-updates/'):
+		#find lowest repository version
+		repository_vv=None
+		repository_vp=None
+		txt_files=os.listdir('/var/lib/univention-server-cdrom/ucs-updates/')
+		for f in txt_files:
+			if f.endswith('.txt') and f.startswith('ucs'):
+				r_vv=f.replace('.txt', '').replace('ucs', '').replace('_', '').split('-')[0]
+				r_vp=f.replace('.txt', '').replace('ucs', '').replace('_', '').split('-')[1]
+				if not repository_vv and  not repository_vp:
+					repository_vv=r_vv
+					repository_vp=r_vp
+				else:
+					if float(r_vv) <= float(repository_vv) and float(r_vp) <= float(repository_vp):
+						repository_vv=r_vv
+						repository_vp=r_vp
+
+
+		sourcedir=tempfile.mkdtemp()
+		if command == 'net':
+			dprint('***Server: %s\n***Version: %s-%s\n***Tmpdir: %s'%(str(baseConfig['update/security/server'].replace('http://','').split('/')[0]), str(vv), str(vp), str(sourcedir)))
+			if not repository_vv and  not repository_vp:
+				repository_vv=vv
+				repository_vp=vp
+			connection(baseConfig['update/security/server'].replace('http://','').split('/')[0],sourcedir, vv, vp, repository_vv, repository_vp)
+
+		elif command == 'local':
+			res=os.system('tar -C %s -xzvf %s >>/var/log/univention/security-updates.log 2>&1' % (sourcedir, file))
+			if res != 0:
+				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
+				fp_debug.close()
+				sys.exit(0)
+
+		for dir in os.listdir(sourcedir):
+			ucs_updates=dir.split('_')[0]
+			if not os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates/', ucs_updates)):
+				if os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates/', 'ucs_%s.txt' %ucs_updates)):
+					update_dir='packages'
+			else:
+				update_dir='ucs-updates/%s' % ucs_updates
+			
+			for root, dirs, files in os.walk(sourcedir):
+				if not dirs == []:
+					for dir in dirs:
+						if dir == ucs_updates or root[-len(ucs_updates):] == ucs_updates:
+							debfiles = deblist(os.path.join(root, dir))
+							if debfiles != []:
+								command='/usr/sbin/univention-repository-addpackage --dest %s --file %s'%(os.path.join('/var/lib/univention-server-cdrom', update_dir), string.join(debfiles,' '))
+								dprint('Adding packages to  %s'%(os.path.join('/var/lib/univention-server-cdrom', update_dir)), [], True)
+								add=os.system(command)
+								if add == 0:
+									f=open(ALREADY_DOWNLOADED, "a")
+									for file in debfiles:
+										f.write("%s\n" % file.split('/')[-1])
+									f.close()
+						
+			if sourcedir and len(sourcedir) > 1:
+				os.system('rm -Rf %s' % sourcedir)
+	else:
+		dprint('no local repository\n')
+
+		sourcedir='/var/lib/univention-security-update'
+		if not os.path.exists(sourcedir):
+			os.makedirs(sourcedir)
+		if command == 'net':
+			dprint('***Server: %s\n***Version: %s-%s\n***Tmpdir: %s'%(str(baseConfig['update/security/server'].replace('http://','').split('/')[0]), str(vv), str(vp), str(sourcedir)))
+			connection(baseConfig['update/security/server'].replace('http://','').split('/')[0],sourcedir, vv, vp, vv, vp)
+			write_local_repository_list(sourcedir, vv, vp)
+			
+
+		elif command == 'local':
+			res=os.system('tar -C %s -xzvf %s >>/var/log/univention/security-updates.log 2>&1' % (sourcedir, file))
+			if res != 0:
+				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
+				fp_debug.close()
+				sys.exit(0)
+			write_local_repository_list(sourcedir, vv, vp)
+

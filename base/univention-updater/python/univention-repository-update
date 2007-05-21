@@ -1,0 +1,507 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  repository update
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, string
+import shutil, sys
+import getopt
+import univention_baseconfig
+import httplib
+import mimetools
+import tempfile
+import gzip
+import time
+import univention_baseconfig
+import socket
+sources_list=[]
+PREFIX="univention-cdrom"
+
+def dprint(str, fd=[]):
+	if len(fd) < 1:
+		print str
+		sys.stdout.flush()
+	for i in range(0,len(fd)):
+		print >>fd[i], str
+		fd[i].flush()
+
+def usage(fd=sys.stdout):
+	print >>fd, 'univention-repository-update: tool for download packages into local repository'
+	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, ''
+	print >>fd, 'Syntax:'
+	print >>fd, '  univention-repository-update <net,cdrom,local> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--src <update dir>] [--file <update.tar.gz>]'
+	print >>fd, '  univention-repository-update [--help] '
+	print >>fd, ''
+	print >>fd, 'Known-Bugs:'
+	print >>fd, '  -None-'
+	print >>fd, ''
+
+def read_packagelist(packagelist):
+	try:
+		f=open('/var/lib/univention-server-cdrom/packages.list')
+		for line in f.readlines():
+			packagelist.append(line.strip('\n'))
+		f.close
+	except:
+		pass
+
+def download_deb(conn, file, new_file):
+	conn.request("GET", file)
+	resp = conn.getresponse()
+	if  resp.status != 200:
+		print 'failed to download %s' % (file)
+		print ' %s: %s' % (resp.status,resp.reason)
+		sys.exit(0)
+
+	
+	if not os.path.exists(new_file):
+		debfile=open(new_file,'w+')
+		mimetools.copybinary(resp,debfile)
+		debfile.close()
+	else:
+		print '%s exists' % new_file
+
+	conn.close()
+
+
+def download_packages(patchlevel, dir_name, packages_list):
+
+	conn = httplib.HTTPConnection(update_server)
+	
+	exists=1
+	while exists == 1:
+		p=os.path.join('/', 'univention-cdrom', patchlevel, 'Packages.lock')
+		conn.request("GET", p)
+		resp_p = conn.getresponse()
+		if  resp_p.status != 200:
+			exists=0
+		conn.close()
+
+	p=os.path.join('/', 'univention-cdrom', patchlevel, 'Packages.gz')
+	conn.request("GET", p)
+	resp_p = conn.getresponse()
+	if  resp_p.status != 200:
+		print 'failed to download %s' % p
+		print ' %s: %s' % (resp_p.status,resp_p.reason)
+		return
+
+	packages_name=os.path.join(dir_name, 'Packages.gz')
+	packages_file=open(packages_name,'w+')
+	mimetools.copybinary(resp_p,packages_file)
+	packages_file.close()
+
+	
+	gz=gzip.open(packages_name)
+	for line in gz.readlines():
+		if line.startswith('Filename: '):
+			packages_list.append(line.replace('Filename: ','',1).strip('\n'))
+	gz.close()
+			
+
+def download_sh_files(dir, show_debug=0):
+	for sh in ['preup.sh', 'postup.sh']:
+		if os.path.exists(os.path.join('/var/lib/univention-server-cdrom', dir, sh)):
+			continue
+		conn = httplib.HTTPConnection(update_server)
+		p=os.path.join('/', 'univention-cdrom', dir, sh)
+		conn.request("GET", p)
+		resp_p = conn.getresponse()
+		if  resp_p.status != 200:
+			if show_debug:
+				print 'failed to download %s' % p
+				print ' %s: %s' % (resp_p.status,resp_p.reason)
+			continue
+		resp_data=resp_p.read()
+		conn.close()
+		f=open(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 'w+', )
+		f.write(resp_data)
+		f.close()
+		os.chmod(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 0744)
+			
+
+def download_txt_files(actual,show_debug=0):
+	conn = httplib.HTTPConnection(update_server)
+
+	line='ucs_%s.txt' % actual
+	print line
+	p=os.path.join('/', 'univention-cdrom', 'ucs-updates/', line)
+	conn.request("GET", p)
+	resp_line = conn.getresponse()
+	if  resp_line.status != 200:
+		if show_debug:
+			print 'failed to download %s' % p
+			print ' %s: %s' % (resp_line.status,resp_line.reason)
+	else:
+		data=resp_line.read()
+		f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
+		f.write(data)
+		f.close()
+
+	conn.close()
+
+	p=os.path.join('/', 'univention-cdrom', 'ucs-updates/', 'index.list')
+	conn.request("GET", p)
+	resp_p = conn.getresponse()
+	if  resp_p.status != 200:
+		if show_debug:
+			print 'failed to download %s' % p
+			print ' %s: %s' % (resp_p.status,resp_p.reason)
+		return
+	resp_data=resp_p.read()
+	conn.close()
+
+
+	for line in resp_data.split('\n'):
+		if line:
+			line='ucs_%s.txt' % line
+			print line
+			p=os.path.join('/', 'univention-cdrom', 'ucs-updates/', line)
+			conn.request("GET", p)
+			resp_line = conn.getresponse()
+			if  resp_line.status != 200:
+				if show_debug:
+					print 'failed to download %s' % p
+					print ' %s: %s' % (resp_line.status,resp_line.reason)
+			else:
+				data=resp_line.read()
+				f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
+				f.write(data)
+				f.close()
+
+			conn.close()
+
+def download_sources_list(tempdir):
+
+	conn = httplib.HTTPConnection(update_server)
+
+	sources=os.path.join('/', 'univention-cdrom', 'sources.list')
+	conn.request("GET", sources)
+	resp_sources = conn.getresponse()
+	if  resp_sources.status != 200:
+		print 'failed to download %s' % sources
+		print ' %s: %s' % (resp_sources.status,resp_sources.reason)
+		sys.exit(0)
+
+	sources_data = resp_sources.read()
+
+	sources_list_name = os.path.join(tempdir,'sources.list')
+	f = open(sources_list_name,'w+')
+	for line in sources_data.split('\n'):
+		line = line.split('#')[0]
+		if line:
+			f.write('%s\n' % line)
+			splitline=line.split('/')
+			for i in range(0,len(splitline)):
+				if splitline[i] == 'univention-cdrom':
+					updatedir=splitline[i+1].split(' ')[0]
+					updatedir=string.join(splitline[i+1:],'/').split(' ')[0]
+			sources_list.append([line,updatedir])
+	f.close()
+
+
+def scan_packages(dir, packages_orig):
+	f_packages=open(os.path.join(dir,'Packages'), 'r')
+	for line in f_packages.readlines():
+		if line.startswith('Filename: '):
+			packages_orig.append(line.replace('Filename: ','',1).strip('\n'))
+	f_packages.close()
+	
+
+
+packagelist=[]
+cdrom_mount_point='/cdrom'
+sourcedir=''
+file=''
+
+if __name__ == '__main__':
+
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+	fp_debug=open('/var/log/univention/repository.log', 'a+')
+	stdout=sys.stdout
+	sys.stdout=fp_debug
+
+	print '***** Starting univention-univention-repository-update at %s\n' % time.ctime()
+
+	if len(sys.argv) < 2:
+		usage()
+		sys.exit(1)
+		
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage()
+		sys.exit(0)
+
+	if sys.argv[1] == 'net':
+		command='net'
+	elif sys.argv[1] == 'cdrom':
+		command='cdrom'
+	else:
+		usage()
+		sys.exit(1)
+
+	longopts=['device=', 'cdrom=', 'src=', 'file=']
+	try:
+		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	for opt, val in opts:
+		if opt == '--src':
+			sourcedir=val
+		elif opt == "--device":
+			cdrom_device=val
+		elif opt == "--cdrom":
+			cdrom_mount_point=val
+		elif opt == "--file":
+			file=val
+
+
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if not baseConfig.has_key('local/repository') or (baseConfig['local/repository'] == 'no' or baseConfig['local/repository'] == 'false'):
+		print >>stdout, 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
+		print 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
+		sys.exit(1)
+
+	update_server=baseConfig['update/server'].replace('http://','').split('/')[0]
+	print 'update_server = [%s]' % update_server
+
+	if command == 'net':
+		local_server='%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+
+		if update_server == local_server:
+			print 'Local server and update server are the same'
+			sys.exit(0)
+
+		print 'Read package list ...'
+		read_packagelist(packagelist)
+		print 'done'
+		print 'Create tempdir ...'
+		tempdir=tempfile.mkdtemp()
+		print 'done'
+		print 'Download sources.list ...'
+		try:
+			download_sources_list(tempdir)
+		except socket.gaierror:
+			print >>stdout, 'Failed to connect to server %s' % update_server
+			sys.exit(1)
+			
+		print 'done'
+
+		for i in range(0,len(sources_list)):
+			dir_name=os.path.join(tempdir,sources_list[i][1])
+			os.makedirs(dir_name)
+			sourcename=os.path.join(dir_name, 'sources.list')
+			f = open(sourcename, 'w+')
+			f.write('%s\n' % (sources_list[i][0]))
+			f.close()
+			if len(packagelist) < 1:
+				packages_new=[]
+				packages_orig=[]
+				to_copy=[]
+				to_remove=[]
+				download_packages(sources_list[i][1], dir_name, packages_new)
+
+				package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+
+				if os.path.exists(package_path) and os.path.exists(os.path.join(package_path,'Packages')):
+					scan_packages(package_path, packages_orig)
+
+					for p in packages_new:
+						if not p in packages_orig:
+							to_copy.append(p)
+					for p in packages_orig:
+						if not p in packages_new:
+							to_remove.append(p)
+				else:
+					try:
+						os.makedirs(package_path)
+					except OSError:
+						pass
+					for p in packages_new:
+						to_copy.append(p)
+
+				if len(to_copy) > 0 or len(to_remove) > 0:
+					if len(to_copy) > 0:
+						conn = httplib.HTTPConnection(update_server)
+						for package in to_copy:
+							print 'Download: %s' % package.strip('.').strip('/')
+							download_deb(conn, os.path.join('/univention-cdrom',sources_list[i][1],package), os.path.join(package_path,package))
+							print '    done'
+					os.chdir(package_path)
+
+					if len(to_remove) > 0:
+						for package in to_remove:
+							try:
+								os.unlink(package)
+							except:
+								pass
+
+					count=0
+					while os.path.exists('Packages.lock') and count < 300:
+						time.sleep(1)
+						count=count+1
+					out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
+					out.readlines()
+					out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
+					out.readlines()
+			else:
+
+				download=None
+				package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+				try:
+					os.makedirs(os.path.join(package_path,'partial'))
+				except:
+					pass
+				count=0
+				while os.path.exists('/var/run/apt-get.lock') and count < 300:
+					time.sleep(1)
+					count=count+1
+				res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s update  >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path))
+				if os.path.exists('/var/run/apt-get.lock'):
+					os.unlink('/var/run/apt-get.lock')
+				if res != 0:
+					dprint('E: Failed to execute apt-get update', [stdout, sys.stdout])
+					sys.exit(res)
+
+				for p in packagelist:
+					print 'Check: %s' % p
+					count=0
+					while os.path.exists('/var/run/apt-get.lock') and count < 300:
+						time.sleep(1)
+						count=count+1
+					res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s install -d --reinstall --yes %s >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path,p))
+					if os.path.exists('/var/run/apt-get.lock'):
+						os.unlink('/var/run/apt-get.lock')
+					if res != 0:
+						dprint('E: Failed to download package %s' % p, [stdout, sys.stdout])
+						sys.exit(res)
+					elif res == 0:
+						download=1
+				os.rmdir(os.path.join(package_path,'partial'))
+				if download:
+					os.chdir(package_path)
+					for j in os.listdir('.'):
+						if string.find(j,'%3a') > -1:
+							os.system('dpkg-name %s >>/var/log/univention/repository.log 2>&1' % j)
+					count=0
+					while os.path.exists('Packages.lock') and count < 300:
+						time.sleep(1)
+						count=count+1
+					out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
+					out.readlines()
+					out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
+					out.readlines()
+
+			download_sh_files(sources_list[i][1])
+
+
+		vv=baseConfig['version/version']
+		vp=baseConfig['version/patchlevel']
+		actual='%s-%s' % (vv,vp)
+
+		download_txt_files(actual)
+
+		print 'Remove tempdir ...'
+		res=os.system('rm -Rf "%s" >>/var/log/univention/repository.log 2>&1' % tempdir)
+		if res != 0:
+			dprint('E: Failed to remove tempdir %s' % tempdir, [stdout,sys.stdout])
+			sys.exit(res)
+
+	elif command == 'cdrom':
+		res=os.system('mount %s >>/var/log/univention/repository.log 2>&1' % (cdrom_mount_point))
+		if res != 0:
+			res=os.system('mount -l | grep " %s " >>/var/log/univention/repository.log 2>&1' % (cdrom_mount_point))
+			if res != 0:
+				dprint('E: Failed to mount cdrom %s' % cdrom_mount_point, [stdout, sys.stdout])
+				sys.exit(1)
+
+		if not os.path.exists('/var/lib/univention-server-cdrom/ucs-updates'):
+			os.mkdir('/var/lib/univention-server-cdrom/ucs-updates/')
+		if not os.path.exists(os.path.join(cdrom_mount_point, 'ucs-updates')):
+			dprint('E: This is not a valid UCS Update CD', [stdout,sys.stdout])
+			res=os.system('umount %s >>/var/log/univention/repository.log 2>&1' % cdrom_mount_point)
+			if res != 0:
+				dprint('E: Failed to umount %s' % cdrom_mount_point, [stdout,sys.stdout])
+				sys.exit(res)
+			sys.exit(1)
+		else:
+			os.popen('cp -a %s/ucs-updates/* /var/lib/univention-server-cdrom/ucs-updates/' % (cdrom_mount_point))
+
+		res=os.system('umount %s >>/var/log/univention/repository.log 2>&1' % cdrom_mount_point)
+		if res != 0:
+			dprint('E: Failed to umount %s' % cdrom_mount_point, [stdout,sys.stdout])
+			sys.exit(res)
+
+	elif command == 'local':
+		if len(sourcedir) > 0:
+			dir=sourcedir
+		elif len(file) > 0:
+			if not os.path.exists(file):
+				dprint('E: %s does not exists' % file, [stdout, sys.stdout])
+				usage()
+				sys.exit(1)
+			tempdir=tempfile.mkdtemp()
+			os.system('tar -C %s -xzvf %s>>/var/log/univention/repository.log 2>&1' % (tempdir, file))
+			dir=tempdir
+
+		if not os.path.exists('/var/lib/univention-server-cdrom/ucs-updates'):
+			os.mkdir('/var/lib/univention-server-cdrom/ucs-updates/')
+		if not os.path.exists(os.path.join(dir, 'ucs-updates')):
+			dprint('E: This is not a valid UCS Update', [stdout,sys.stdout])
+			sys.exit(1)
+		else:
+			os.system('cp -a %s/ucs-updates/* /var/lib/univention-server-cdrom/ucs-updates/' % (dir))
+
+		if len(file) > 0:
+			res=os.system('rm -Rf "%s" >>/var/log/univention/repository.log 2>&1' % dir)
+		if res != 0:
+			dprint('E: Failed to remove tempdir %s' % dir, [stdout,sys.stdout])
+			sys.exit(res)
+
+
+	if not os.path.exists('/var/lib/univention-server-cdrom/ucs-updates'):
+		os.mkdir('/var/lib/univention-server-cdrom/ucs-updates/')
+	dirs=os.listdir('/var/lib/univention-server-cdrom/ucs-updates')
+	f=open('/var/lib/univention-server-cdrom/ucs-updates/index.list', 'w')
+	f_sources=open('/var/lib/univention-server-cdrom/sources.list', 'w')
+	if os.path.exists('/var/lib/univention-server-cdrom/packages'):
+		f_sources.write('deb http://%s.%s/univention-cdrom/packages/ ./\n' % (baseConfig['hostname'], baseConfig['domainname']))
+	for d in dirs:
+		if not d.endswith('.txt') and not d.endswith('.list'):
+			f_sources.write('deb http://%s.%s/univention-cdrom/ucs-updates/%s ./\n' % (baseConfig['hostname'], baseConfig['domainname'], d))
+		if d.endswith('.txt'):
+			f.write('%s\n' % d.replace('ucs_','').replace('.txt',''))
+	f.close()
+	f_sources.close()
+
+
+
+

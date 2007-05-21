@@ -1,0 +1,122 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  repository delpackage
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, string
+import shutil, sys
+import getopt, time
+import univention_baseconfig
+
+def usage(fd=sys.stdout):
+	print >>fd, 'univention-repository-delpackage: tool for removing packages from local repository'
+	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, ''
+	print >>fd, 'Syntax:'
+	print >>fd, '  univention-repository-delpackage --file <debian_package> <debian_package>'
+	print >>fd, '  univention-repository-delpackage [--help] '
+	print >>fd, ''
+	print >>fd, 'Known-Bugs:'
+	print >>fd, '  -None-'
+	print >>fd, ''
+
+# parse options
+if __name__ == '__main__':
+
+	if len(sys.argv) < 2:
+		usage()
+		sys.exit(1)
+		
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage()
+		sys.exit(0)
+
+
+	longopts=['file=' ]
+	try:
+		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	files=[]
+	packages_dir=''
+	for opt, val in opts:
+		if opt == '--file':
+			files.append(val)
+
+	if len(files) > 0:
+		for i in args:
+			files.append(i)
+
+	if len(files) < 1:
+		usage()
+		sys.exit(1)
+
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if not baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'no' or baseConfig['local/repository'] == 'false'):
+		print 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
+		sys.exit(1)
+
+	dirs=[]
+
+	for file in files:
+		if file.endswith('.deb') and os.path.exists(file):
+			d=string.join(file.split('/')[:-1],'/')
+			if not d in dirs:
+				dirs.append(d)
+			os.unlink(file)
+			
+
+	for dir in dirs:
+		if dir:
+			os.chdir(dir)
+
+		count=0
+		while os.path.exists('Packages.lock') and count < 300:
+			time.sleep(1)
+			count=count+1
+
+		shutil.copyfile('Packages', 'Packages.SAVE')
+		shutil.copyfile('Packages.gz', 'Packages.gz.SAVE')
+
+		try:
+			out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
+			out.readlines()
+			out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
+			out.readlines()
+		except:
+			if os.path.exists('Packages.SAVE'):
+				shutil.copyfile('Packages.SAVE', 'Packages')
+			if os.path.exists('Packages..gz.SAVE'):
+				shutil.copyfile('Packages.gz.SAVE', 'Packages.gz')
+			if os.path.exists('Packages.lock'):
+				os.remove('Packages.lock')
+

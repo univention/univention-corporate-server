@@ -1,0 +1,182 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  read the repository server
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import datetime
+import os
+import shutil
+import urllib2
+import univention_baseconfig
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+sourcesList = '/etc/apt/sources.list'
+
+def exit(result, message = None):
+	import sys
+	script = os.path.basename(sys.argv[0])
+	if message:
+		print '%s: %s' % (script, message)
+	sys.exit(result)
+
+def query_baseconfig():
+	hostdn = None
+	if baseConfig.has_key('ldap/hostdn'):
+		hostdn = baseConfig['ldap/hostdn']
+	server = None
+	if baseConfig.has_key('update/server'):
+		server = baseConfig['update/server']
+	local  = '%s.%s' % (baseConfig['hostname'],baseConfig['domainname'])
+	repo   = baseConfig.has_key('local/repository') and \
+		 baseConfig['local/repository'].lower() in ('yes', 'true')
+	
+	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+	return hostdn, server, local, repo, fqdn
+
+def query_policy(dn):
+	server = None
+	update = None
+	policy = 'univention_policy_result'
+	pipe = os.popen('%s -s "%s"' % (policy, dn))
+	for line in pipe:
+		line = line.strip()
+		if line.startswith('univentionRepositoryServer='):
+			server = line.split('=', 1)[1].split('"',2)[1]
+		elif line.startswith('univentionUpdateVersion='):
+			update = line.split('=', 1)[1].split('"',2)[1]
+	result = pipe.close()
+	if result is not None:
+		exit(result, "FAIL: failed to execute `%s'" % policy)
+	if server and server.startswith('http://'):
+		server = server.replace('http://', '', 1)
+	return (server, update)
+
+def fetch_sourceslist(server):
+	path = os.path.join('/', 'univention-cdrom', 'ucs-updates', 'index.list')
+	url = 'http://%s%s' % (server, path)
+	file = urllib2.urlopen(url)
+	lines = [ line.strip() for line in file ]
+	file.close()
+	return lines
+
+def parse_sourceslist(server):
+	
+	serv = 'http://%s/univention-cdrom' % server
+	mark = 'end univention-updater section'
+	path = "/etc/apt/sources.list"
+
+	if os.path.exists(path):
+		file = open(path)
+		lines = [ line.strip() for line in file ]
+		file.close()
+		if [ line for line in lines
+		     if not line.startswith('#') and serv in line ]:
+			# new server already in sources.list
+			return False, [], []
+		comment = True
+		keep = []
+		for line in lines:
+			if mark in line:
+				comment = False
+				keep = []
+			else:
+				keep.append(line)
+		if comment:
+			return True, [], keep
+		return True, keep, []
+	return True, [], []
+
+def write_sourceslist(new, keep, cmnt, server, update):
+	mark = '#### end univention-updater section -- place changes after this line'
+	time = datetime.datetime.now().strftime('%y%m%d%k%M%S')
+	shutil.copyfile(sourcesList, '/tmp/sources.list.%s' % time)
+	first=True
+	file = open(sourcesList, 'w')
+	for line in new:
+		if line:
+			if first:
+				file.write('deb http://%s/univention-cdrom/packages ./\n' % server)
+				first=False
+			else:
+				file.write('deb http://%s/univention-cdrom/ucs-updates/%s/ ./\n' % (server, line))
+			if line == update:
+				break
+	file.write('%s\n' % mark)
+	for line in keep:
+		file.write('%s\n' % line)
+	for line in cmnt:
+		file.write('## %s\n' % line)
+	file.close()
+	pass
+
+def main():
+	restore_server = None
+	ldap_host_dn, old_server, local_server, local_repo, fqdn = query_baseconfig()
+	if not ldap_host_dn:
+		# can't query policy without host-dn
+		exit(0)
+	new_server, update = query_policy(ldap_host_dn)
+	if (not new_server or new_server == old_server) and not local_repo:
+		# no new server specified
+		exit(0)
+	elif not new_server and local_repo:
+		new_server=fqdn
+	elif not new_server:
+		exit(0)
+	if new_server == old_server:
+		exit(0)
+	univention_baseconfig.handler_set(['update/server=%s' % new_server])
+	if not local_repo:
+		restore_server = old_server
+	else:
+		new_server = local_server
+	try:
+		new_lines = fetch_sourceslist(new_server)
+	except IOError, err:
+		if restore_server:
+			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
+		exit(1, "WARN: failed to download data from new repository-server: %s" % err)
+	try:
+		write, keep, cmnt = parse_sourceslist(new_server)
+	except IOError, err:
+		if restore_server:
+			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
+		exit(1, "WARN: failed to read %s: %s" % (sourcesList, err))
+	try:
+		if write:
+			write_sourceslist(new_lines, keep, cmnt, new_server, update)
+			os.system('apt-get update')
+	except IOError, err:
+		if restore_server:
+			univention_baseconfig.handler_set(['update/server=%s' % restore_server])
+		exit(1, "WARN: failed to write %s: %s" % (sourcesList, err))
+	exit(0)
+
+if __name__ == '__main__':
+	main()

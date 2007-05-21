@@ -1,0 +1,115 @@
+#!/usr/bin/make -f
+#
+# Univention Updater
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+export DH_COMPAT=3
+
+version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+copyrightyear=`date +%Y`
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	touch configure-stamp
+
+
+build: build-stamp
+
+build-stamp: configure-stamp
+	dh_testdir
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	
+	cat python/univention-updater | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-updater_tmp
+	install -m 755 python/univention-updater_tmp debian/univention-updater/usr/sbin/univention-updater
+	rm python/univention-updater_tmp
+	
+	cat python/univention-repository-merge | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-merge_tmp
+	install -m 755 python/univention-repository-merge_tmp debian/univention-updater/usr/sbin/univention-repository-merge
+	rm python/univention-repository-merge_tmp
+	
+	cat python/univention-repository-update | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-update_tmp
+	install -m 755 python/univention-repository-update_tmp debian/univention-updater/usr/sbin/univention-repository-update
+	rm python/univention-repository-update_tmp
+	
+	cat python/univention-security-update | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-security-update_tmp
+	install -m 755 python/univention-security-update_tmp debian/univention-updater/usr/sbin/univention-security-update
+	rm python/univention-security-update_tmp
+	
+	cat python/univention-repository-delpackage | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-delpackage_tmp
+	install -m 755 python/univention-repository-delpackage_tmp debian/univention-updater/usr/sbin/univention-repository-delpackage
+	rm python/univention-repository-delpackage_tmp
+	
+	install -m 755 univention-ldap-policy/univention-policy-set-repository-server debian/univention-updater/usr/lib/univention-ldap-policy/
+	install -m 755 univention-ldap-policy/univention-policy-repository-sync debian/univention-updater/usr/lib/univention-ldap-policy/
+	install -m 755 univention-ldap-policy/univention-policy-maintenance debian/univention-updater/usr/lib/univention-ldap-policy/
+	install -m 755 python/univention-actualise debian/univention-updater/usr/sbin/
+	
+	cat python/univention-repository-addpackage | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-addpackage_tmp
+	install -m 755 python/univention-repository-addpackage_tmp debian/univention-updater/usr/sbin/univention-repository-addpackage
+	rm python/univention-repository-addpackage_tmp
+	
+	install -m 644 script/reboot.at debian/univention-updater/var/lib/univention-updater/
+	
+	test ${copyrightyear} != 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@/-${copyrightyear}/" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
+	
+	test ${copyrightyear} = 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@//" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
+
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

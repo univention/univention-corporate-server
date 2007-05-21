@@ -1,0 +1,97 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  read the maintenance settings
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, string, sys
+import tempfile
+import univention_baseconfig
+
+
+def write_cron_job(baseConfig, cron, updateto, reboot):
+	file=open('/etc/cron.d/univention-maintenance', 'w')
+	file.write('# cron job for update\n')
+	if cron != '* * * * * ':
+		file.write('%s root ' % cron)
+		if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'yes' or baseConfig['local/repository'] == 'true'):
+			target='local'
+		else:
+			target='net'
+		if updateto:
+			updateto='--updateto=%s' % updateto
+		if reboot:
+			reboot='--reboot=%s' % reboot
+		file.write('/usr/sbin/univention-updater %s %s %s | grep -v "System is up to date"; ' % (target, updateto, reboot))
+		file.write('/usr/sbin/univention-actualise --silent\n' )
+	file.close()
+
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+if os.path.exists('/etc/cron.d/univention-maintenance'):
+	os.unlink('/etc/cron.d/univention-maintenance')
+
+if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
+	tempfile=tempfile.mktemp()
+
+	result=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], tempfile))
+
+	if result != 0:
+		print 'failed to execute univention_policy_result'
+		sys.exit(result)
+
+	file=open(tempfile, 'r')
+
+	updateto=''
+	cron_active=''
+	reboot=''
+
+	for line in file.readlines():
+		line=line.strip(' ').strip('\n')
+		if line.startswith('univentionCronActive='):
+			cron_active=line.replace('univentionCronActive=', '').replace('"','')
+		elif line.startswith('univentionCron='):
+			cron=line.replace('univentionCron=', '').replace('"','')
+		elif line.startswith('univentionUpdateVersion='):
+			updateto=line.replace('univentionUpdateVersion=', '').replace('"','')
+		elif line.startswith('univentionInstallationReboot='):
+			reboot=line.replace('univentionInstallationReboot=', '').replace('"','')
+
+	file.close()
+
+	if cron_active and cron_active == '1':
+		if cron:
+			write_cron_job(baseConfig, cron, updateto, reboot)
+
+	os.remove(tempfile)
+
+
+sys.exit(0)
+
+

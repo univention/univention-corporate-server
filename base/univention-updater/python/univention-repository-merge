@@ -1,0 +1,188 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  merge repositories
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, string
+import shutil, sys
+import getopt, time
+
+l_package={}
+p_remove=[]
+destination_dir=''
+
+def usage(fd=sys.stdout):
+	print >>fd, 'univention-repository-merge: tool for merging packages directories'
+	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, ''
+	print >>fd, 'Syntax:'
+	print >>fd, '  univention-repository-merge --dest <destination_dir> --src <source_dir> [--src <source_dir>]'
+	print >>fd, '  univention-repository-merge [--help] '
+	print >>fd, ''
+	print >>fd, 'Known-Bugs:'
+	print >>fd, '  -None-'
+	print >>fd, ''
+
+
+def compare(version1, version2):
+	resultCode=os.system('dpkg --compare-versions %s gt %s >/dev/null 2>&1' % (version1, version2))
+	return resultCode == 0
+	
+
+def walking(arg, dirname, names):
+	counter=0
+	for f in names:
+		file=os.path.join(dirname, f)
+
+		if file.endswith('.deb'):
+			out=os.popen('dpkg -I %s' % file )
+
+			package=''
+			version=''
+			arch=''
+			for line in out.readlines():
+				line=line.strip()
+				if line.startswith('Package: '):
+					package=string.join(line.split(' ',1)[1:])
+				if line.startswith('Version: '):
+					version=string.join(line.split(' ',1)[1:])
+				if line.startswith('Architecture: '):
+					arch=string.join(line.split(' ',1)[1:])
+
+			key = (package, arch)
+			if l_package.has_key(key):
+				if compare(version, l_package[key][1]):
+					p_remove.append(l_package[key][0])
+					l_package[key]=[file, version, arg]
+				else:
+					p_remove.append(file)
+			else:
+				l_package[key]=[file, version, arg]
+	
+
+# parse options
+if __name__ == '__main__':
+
+	if len(sys.argv) < 2:
+		usage()
+		sys.exit(1)
+		
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage()
+		sys.exit(0)
+
+
+	longopts=['dest=', 'src=' ]
+	try:
+		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	source_dirs=[]
+	for opt, val in opts:
+		if opt == '--dest':
+			destination_dir=val
+		elif opt == '--src':
+			source_dirs.append(val)
+
+	if not destination_dir:
+		usage()
+		sys.exit(1)
+
+	if len(source_dirs) < 1:
+		usage()
+		sys.exit(1)
+
+	os.path.walk(destination_dir, walking, 1)
+
+	for dir in source_dirs:
+		os.path.walk(dir, walking, 0)
+
+	packages_dir=os.path.join(destination_dir)
+	if not os.path.exists(packages_dir):
+		os.mkdir(packages_dir)
+
+	for k in l_package.keys():
+		if l_package[k][2] == 0: #if not dest dir
+			shutil.copy(l_package[k][0], packages_dir)
+
+	for f in p_remove:
+		try:
+			os.remove(f)
+		except:
+			fp_debug=open('/var/log/univention/repository.log', 'a+')
+			fp_debug.write('Warning: failed to remove %s\n' % f)
+			fp_debug.close()
+
+	save_dir=os.path.realpath(os.path.curdir)
+
+	for dir in source_dirs:
+		if dir == packages_dir:
+			continue
+		os.chdir(save_dir)
+		os.chdir(dir)
+		for i in os.listdir('./'):
+			if i.endswith('.deb'):
+				try:
+					os.unlink(i)
+				except:
+					fp_debug=open('/var/log/univention/repository.log', 'a+')
+					fp_debug.write('Warning: failed to remove %s\n' % i)
+					fp_debug.close()
+
+		count=0
+		while os.path.exists('Packages.lock') and count < 300:
+			time.sleep(1)
+			count=count+1
+
+		out=os.popen('touch Packages.lock >>/var/log/univention/repository.log 2>&1 && apt-ftparchive packages .>Packages 2>>/var/log/univention/repository.log')
+		result=out.readlines()
+		if result:
+			print result
+		out=os.popen('gzip -c Packages >Packages.gz  2>>/var/log/univention/repository.log ; rm Packages.lock  >>/var/log/univention/repository.log 2>&1')
+		result=out.readlines()
+		if result:
+			print result
+
+	os.chdir(save_dir)
+	os.chdir(packages_dir)
+	count=0
+	while os.path.exists('Packages.lock') and count < 300:
+		time.sleep(1)
+		count=count+1
+
+	out=os.popen('touch Packages.lock  >>/var/log/univention/repository.log 2>&1&& apt-ftparchive packages .>Packages  2>>/var/log/univention/repository.log')
+	result=out.readlines()
+	if result:
+		print result
+	out=os.popen('gzip -c Packages >Packages.gz  2>>/var/log/univention/repository.log ; rm Packages.lock  >>/var/log/univention/repository.log 2>&1')
+	result=out.readlines()
+	if result:
+		print result
+

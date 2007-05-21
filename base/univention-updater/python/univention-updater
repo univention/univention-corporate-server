@@ -1,0 +1,535 @@
+#!/usr/bin/python2.4
+#
+# Univention Updater
+#  updater program
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Commands: local, cdrom, net
+
+import os, sys, time
+import string
+import getopt
+import httplib
+import mimetools
+import tempfile
+import socket
+import shutil
+
+import univention_baseconfig
+
+failure = '/var/lib/univention-updater/update-failed'
+reboot_required = '/var/lib/univention-updater/reboot-required'
+
+class UpdateError(Exception):
+	pass
+
+class UpToDateNoError(Exception):
+	def __init__(self, value=None):
+		Exception.__init__(self, value)
+		self.reboot = value
+
+def dprint(str, fd=[]):
+	if len(fd) < 1:
+		print str
+		sys.stdout.flush()
+	for i in range(0,len(fd)):
+		print >>fd[i], str
+		fd[i].flush()
+
+def usage(fd=sys.stdout):
+	print >>fd, 'univention-updater: tool for updating local system'
+	print >>fd, 'copyright (c) 2005-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >>fd, ''
+	print >>fd, 'Syntax:'
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
+	print >>fd, '  univention-updater [--help] '
+	print >>fd, ''
+	print >>fd, 'Known-Bugs:'
+	print >>fd, '  -None-'
+	print >>fd, ''
+
+def copy_sh_files(tempdir,path):
+	for sh in ['preup.sh', 'postup.sh']:
+		if os.path.exists(os.path.join(tempdir,sh)):
+			os.remove(os.path.join(tempdir,sh))
+		if os.path.exists(os.path.join(path,sh)):
+			shutil.copy(os.path.join(path,sh), os.path.join(tempdir,sh))
+			os.chmod(os.path.join(tempdir, sh), 0744)
+
+def download_sh_files(update_server, tempdir, level):
+	for sh in ['preup.sh', 'postup.sh']:
+		if os.path.exists(os.path.join(tempdir,sh)):
+			os.remove(os.path.join(tempdir,sh))
+		conn = httplib.HTTPConnection(update_server)
+		p=os.path.join('/', 'univention-cdrom/ucs-updates', level, sh)
+		conn.request("GET", p)
+		resp_p = conn.getresponse()
+		if  resp_p.status != 200:
+			dprint('failed to download %s' % p)
+			dprint(' %s: %s' % (resp_p.status,resp_p.reason))
+			continue
+		resp_data=resp_p.read()
+		conn.close()
+		f=open(os.path.join(tempdir, sh), 'w+' )
+		f.write(resp_data)
+		f.close()
+		os.chmod(os.path.join(tempdir, sh), 0744)
+
+def update_available(mode, baseConfig, cdrom_mount_point, stdout, sys_stdout, reboot, internal=1):
+	# Checks if there is an update available
+	
+	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, reboot=%s, internal=%s)' %(mode, cdrom_mount_point, str(reboot), str(internal)))
+
+	update=0
+	nextversion="none"
+
+	vv=baseConfig['version/version']
+	vp=baseConfig['version/patchlevel']
+
+	if mode == 'local':
+		dprint('Checking local repository', [stdout,sys_stdout])
+
+		if os.path.exists('/var/lib/univention-server-cdrom/ucs-updates/ucs_%s-%s.txt' % (vv,vp)):
+			f=open('/var/lib/univention-server-cdrom/ucs-updates/ucs_%s-%s.txt' % (vv,vp))
+			nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
+			f.close()
+			if nextversion == 'none':
+				update=0
+				dprint('System is up to date', [stdout,sys_stdout])
+				if internal:
+					sys_stdout.close()
+					raise UpToDateNoError(reboot)
+			else:
+				dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
+				update=1
+				
+		else:
+			dprint('Local repository not found', [stdout,sys_stdout])
+			dprint('System is up to date', [stdout,sys_stdout])
+			update=0
+			if internal:
+				sys_stdout.close()
+				raise UpToDateNoError(reboot)
+
+	elif mode == 'cdrom':
+		dprint('Mounting cdrom %s' % cdrom_mount_point, [stdout,sys_stdout])
+
+		resultCode=os.system('mount %s' % ( cdrom_mount_point))
+		if resultCode != 0:
+			res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+			if res != 0:
+				dprint('Failed to mount cdrom', [stdout,sys_stdout])
+				update=0
+				if internal:
+					sys_stdout.close()
+					raise UpdateError
+
+		if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
+			f=open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp))
+			nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
+			f.close()
+			if nextversion == 'none':
+				update=0
+				dprint('System is up to date', [stdout,sys_stdout])
+				# No raise because we need to return none
+			else:
+				dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
+				update=1
+		else:
+			update=0
+			dprint("CD-Rom is no UCS-Update media", [stdout,sys_stdout])
+			if internal:
+				sys_stdout.close()
+				raise UpdateError
+
+		resultCode=os.system('umount %s' % ( cdrom_mount_point))
+		if resultCode != 0:
+			res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+			if res != 0:
+				dprint('Failed to unmount cdrom', [stdout,sys_stdout])
+
+	elif mode == 'net':
+		dprint('Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+
+		conn = httplib.HTTPConnection(baseConfig['update/server'].replace('http://','').split('/')[0])
+		p=os.path.join('/', 'univention-cdrom', 'ucs-updates/', 'ucs_%s-%s.txt' % (vv,vp))
+		
+		try:
+			conn.request("GET", p)
+		except socket.gaierror:
+			update=0
+			dprint('Failed to connect to Server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+			if internal:
+				sys_stdout.close()
+				raise UpdateError
+			else:
+				update=0
+				return update
+
+		resp_p = conn.getresponse()
+		if  resp_p.status != 200:
+			update=0
+			dprint('E: failed to download %s' % p, [stdout,sys_stdout])
+			dprint(' %s: %s' % (resp_p.status,resp_p.reason), [stdout,sys_stdout])
+			dprint('Failed to download http://%s/%s' %(baseConfig['update/server'].replace('http://','').split('/')[0], p), [stdout,sys_stdout])
+			dprint('System seems to be up to date', [stdout,sys_stdout])
+			if internal:
+				sys_stdout.close()
+				raise UpdateError
+
+		resp_data=resp_p.read()
+		conn.close()
+		for line in resp_data.split('\n'):
+			if not line or not line.lower().startswith('nextupdate='):
+				continue
+			nextversion=string.lower(line.replace('nextupdate=',''))
+
+			if nextversion == 'none':
+				dprint('System is up to date', [stdout,sys_stdout])
+				update=0
+				if internal:
+					sys_stdout.close()
+					raise UpToDateNoError(reboot)
+			else:
+				dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
+				update=1
+
+	if internal:
+		return nextversion
+	else:
+		return update
+
+
+
+def main():
+	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+	
+	cdrom_device='/dev/cdrom'
+	cdrom_mount_point='/cdrom'
+
+	fp_debug=open('/var/log/univention/updater.log', 'a+')
+	stdout=sys.stdout
+	sys.stdout=fp_debug
+	
+	dprint('**** Starting univention-updater with parameter=%s' % sys.argv)
+
+	if len(sys.argv) < 2:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(2)
+	
+	if sys.argv[1] in ['-h', '-?', '--help']:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(0)
+
+	if sys.argv[1] == 'net':
+		command='net'
+	elif sys.argv[1] == 'cdrom':
+		command='cdrom'
+	elif sys.argv[1] == 'local':
+		command='local'
+	else:
+		usage(stdout)
+		fp_debug.close()
+		sys.exit(2)
+	
+	updateto=None
+	reboot = None
+	clean  = True
+	
+	longopts=['device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
+	try:
+		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
+	except getopt.error, msg:
+		dprint(msg, [stdout,sys.stdout])
+		fp_debug.close()
+		sys.exit(2)
+
+	import univention_baseconfig
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	for opt, val in opts:
+		if opt == '--src':
+			sourcedir=val
+		elif opt == "--device":
+			cdrom_device=val
+		elif opt == "--cdrom":
+			cdrom_mount_point=val
+		elif opt == "--updateto":
+			updateto=val
+		elif opt == '--reboot':
+			if val:
+				reboot = val
+			else:
+				reboot = 'now'
+
+		if opt == "--no-clean":
+			clean = False
+			dprint("Running updater without apt-get clean", [stdout,sys.stdout])
+		if opt == '--check':
+			update_available(command, baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot, 0)
+			sys.exit(0)
+
+	if clean:
+		os.system('apt-get clean')
+
+	vv=baseConfig['version/version']
+	vp=baseConfig['version/patchlevel']
+
+	if updateto:
+		actual='%s-%s' % (vv,vp)
+		if actual == updateto:
+			dprint('System is up to date', [stdout, sys.stdout])
+			fp_debug.close()
+			raise UpToDateNoError(reboot)
+
+	dprint('Version=%s' % vv)
+	dprint('Patchlevel=%s' % vp)
+
+	tempdir=tempfile.mktemp()
+	os.mkdir(tempdir)
+
+	dprint('using tempdir = %s' % tempdir)
+
+	if command == 'local':
+		dprint('starting local mode')
+
+		nextversion=update_available('local', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+
+		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
+		list=[]
+		f=open('/etc/apt/sources.list', 'r')
+		for line in f.readlines():
+			line=line.strip('\n')
+			if line:
+				list.append(line)
+		f.close()
+		new_line='deb file:/var/lib/univention-server-cdrom/ucs-updates/%s/ ./' %nextversion
+
+		if not new_line in list:
+			f=open('/etc/apt/sources.list', 'a+')
+			f.write('\ndeb file:/var/lib/univention-server-cdrom/ucs-updates/%s/ ./\n' % (nextversion))
+			dprint('added new update line = %s' % new_line)
+			f.close()
+
+	elif command == 'cdrom':
+		dprint('starting cdrom mode')
+
+		if baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
+			dprint('local/reposity active, copy cdrom and start local mode')
+			resultCode=os.system('/usr/sbin/univention-repository-update cdrom --cdrom %s' % (cdrom_mount_point))
+			if resultCode != 0:
+				dprint('Failed to execute univention-repository-update cdrom', [sys.stdout,stdout])
+				raise UpdateError
+
+			callupdateto=[sys.argv[0], 'local', '--updateto', updateto]
+			calllocal=[sys.argv[0], 'local']
+			
+			if not clean:
+				callupdateto.append('--no-clean')
+				calllocal.append('--no-clean')
+				
+			if updateto:
+				os.execv(sys.argv[0], callupdateto)
+			else:
+				os.execv(sys.argv[0], calllocal)
+
+		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+
+		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
+
+		copy_sh_files(tempdir,os.path.join(cdrom_mount_point,'ucs-updates', '%s' % nextversion ))
+
+		dprint('List tempdir = %s' % os.listdir(tempdir))
+
+		if  nextversion == 'none':
+			dprint('System is up to date', [stdout, sys.stdout])
+
+			if not (baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes')):
+				dprint('echo -e "\n%s" | apt-cdrom -d %s add' % (nextversion,cdrom_device))
+
+				resultCode=os.system('echo -e "\n%s-%s" | apt-cdrom -d %s add >> /var/log/univention/updater.log 2>&1' % (vv,vp,cdrom_mount_point))
+				if resultCode != 0:
+					dprint('Failed to execute apt-cdrom', [sys.stdout,stdout])
+					# If apt-cdrom fails we have to unmount the drive manually
+					resultCode=os.system('umount %s' % ( cdrom_mount_point))
+					if resultCode != 0:
+						res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+						if res != 0:
+							dprint('Failed to unmount cdrom', [stdout,sys_stdout])
+					raise UpdateError
+			
+			fp_debug.close()
+			raise UpToDateNoError(reboot)
+
+		dprint('echo "deb file:%s/ucs-updates/%s/ ./" >> /etc/apt/sources.list' % (cdrom_mount_point,nextversion))
+
+		resultCode=os.system('echo "deb file:%s/ucs-updates/%s/ ./" >> /etc/apt/sources.list' % (cdrom_mount_point,nextversion))
+		if resultCode != 0:
+			dprint('Failed to add cdrom to sources.list', [sys.stdout,stdout])
+			raise UpdateError
+
+	elif command == 'net':
+		dprint('starting net mode')
+		list=[]
+		if baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
+			dprint('local/reposity active, copy from net and start local mode')
+			resultCode=os.system('/usr/sbin/univention-repository-update net')
+			if resultCode != 0:
+				dprint('Failed to execute univention-repository-update net', [sys.stdout,stdout])
+				raise UpdateError
+			
+			callupdateto=[sys.argv[0], 'local', '--updateto', updateto]
+			calllocal=[sys.argv[0], 'local']
+
+			if not clean:
+				callupdateto.append('--no-clean')
+				calllocal.append('--no-clean')
+
+			if updateto:
+				os.execv(sys.argv[0], callupdateto)
+			else:
+				os.execv(sys.argv[0], calllocal)
+
+		nextversion=update_available('net', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+
+		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
+
+		download_sh_files(baseConfig['update/server'].replace('http://','').split('/')[0],tempdir,nextversion)
+		f=open('/etc/apt/sources.list', 'r')
+		for line in f.readlines():
+			line=line.strip('\n')
+			if line:
+				list.append(line)
+		f.close()
+		new_line='deb http://%s/univention-cdrom/ucs-updates/%s/ ./' % (baseConfig['update/server'].replace('http://','').split('/')[0], nextversion)
+		if not new_line in list:
+			dprint('added new update line = %s' % new_line)
+			f=open('/etc/apt/sources.list', 'a+')
+			f.write('\n%s\n' % (new_line))
+			f.close()
+
+		pass
+
+	if command == 'local':
+		if os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'preup.sh')):
+			os.chmod(os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'preup.sh'), 0744)
+			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'preup.sh'))
+			if resultCode != 0:
+				dprint('Failed to execute preup.sh', [sys.stdout,stdout])
+				raise UpdateError
+	else:
+		if os.path.exists(os.path.join(tempdir, 'preup.sh')):
+			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join(tempdir, 'preup.sh'))
+			if resultCode != 0:
+				dprint('Failed to execute preup.sh', [sys.stdout,stdout])
+				raise UpdateError
+
+	count=0
+	while os.path.exists('/var/run/apt-get.lock') and count < 300:
+		time.sleep(1)
+		count=count+1
+	resultCode=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/updater.log 2>&1')
+	if os.path.exists('/var/run/apt-get.lock'):
+		os.unlink('/var/run/apt-get.lock')
+	if resultCode != 0:
+		dprint('Failed to execute apt-get update', [sys.stdout,stdout])
+		raise UpdateError
+		
+
+	count=0
+	while os.path.exists('/var/run/apt-get.lock') and count < 300:
+		time.sleep(1)
+		count=count+1
+	resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade >>/var/log/univention/updater.log 2>&1')
+	if os.path.exists('/var/run/apt-get.lock'):
+		os.unlink('/var/run/apt-get.lock')
+	if resultCode != 0:
+		dprint('Failed to execute apt-get -u dist-upgrade', [sys.stdout,stdout])
+		raise UpdateError
+		
+
+	nvv=nextversion.split('-')[0]
+	nvp=nextversion.split('-')[1]
+
+	import univention_baseconfig
+	out=univention_baseconfig.handler_set(['version/version=%s' % nvv, 'version/patchlevel=%s' % nvp])
+
+	if command == 'local':
+		if os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'postup.sh')):
+			os.chmod(os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'postup.sh'), 0744)
+			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join('/var/lib/univention-server-cdrom/ucs-updates', nextversion, 'postup.sh'))
+			if resultCode != 0:
+				dprint('Failed to execute postup.sh', [sys.stdout,stdout])
+				raise UpdateError
+	else:
+		if os.path.exists(os.path.join(tempdir, 'postup.sh')):
+			dprint('running postup.sh')
+			resultCode=os.system('%s | tee -a /var/log/univention/updater.log 2>&1' % os.path.join(tempdir, 'postup.sh'))
+			if resultCode != 0:
+				dprint('Failed to execute postup.sh', [sys.stdout,stdout])
+				raise UpdateError
+
+	if os.path.exists('/usr/sbin/univention-pkgdb-scan'):
+		os.system('/usr/sbin/univention-pkgdb-scan >>/var/log/univention/updater.log 2>&1')
+
+	if command == 'cdrom' and not (baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes')):
+
+		dprint('umount %s' % cdrom_mount_point)
+		resultCode=os.system('umount %s' % (cdrom_mount_point))
+		if resultCode != 0:
+			dprint('Failed to umount cdrom', [sys.stdout,stdout])
+			raise UpdateError
+
+		dprint('mv /etc/apt/sources.list /etc/apt/sources.list_tempfile_univention_updater; cat /etc/apt/sources.list_tempfile_univention_updater | grep -v "deb file:%s/ucs-updates/%s/ ./" > /etc/apt/sources.list; rm /etc/apt/sources.list_tempfile_univention_updater' % (cdrom_mount_point,nextversion))
+		resultCode=os.system('mv /etc/apt/sources.list /etc/apt/sources.list_tempfile_univention_updater; cat /etc/apt/sources.list_tempfile_univention_updater | grep -v "deb file:%s/ucs-updates/%s/ ./" > /etc/apt/sources.list; rm /etc/apt/sources.list_tempfile_univention_updater' % (cdrom_mount_point,nextversion))
+		if resultCode != 0:
+			dprint('Failed to edit sources.list', [sys.stdout,stdout])
+			raise UpdateError
+
+	fp_debug.close()
+	if os.path.exists(failure):
+		os.unlink(failure)
+	os.system('touch %s' % reboot_required)
+	os.execv(sys.argv[0], sys.argv)
+
+if __name__ == '__main__':
+	try:
+		main()
+	except UpdateError:
+		os.system('touch %s' % failure)
+		sys.exit(1)
+	except UpToDateNoError, error:
+		if os.path.exists(failure):
+			os.unlink(failure)
+		if os.path.exists(reboot_required):
+			os.unlink(reboot_required)
+			if error.reboot is not None:
+				os.system('at -f /var/lib/univention-updater/reboot.at -- %s' % error.reboot)
+		sys.exit(0)

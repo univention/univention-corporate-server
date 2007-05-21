@@ -1,0 +1,16 @@
+Source: univention-updater
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper
+
+Package: univention-updater
+Architecture: all
+Depends: python2.4, dpkg-dev, univention-baseconfig, univention-ldap-policy, univention-security-update, netbrake, netcat, wget
+Description: UCS - system upgrading tool
+ Univention Updater can upgrade your version of UCS.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

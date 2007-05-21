@@ -1,0 +1,201 @@
+#!/bin/sh
+#
+# Univention Updater
+#  maintenance init script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+case "$1" in
+	start|restart|stop)
+
+		dmesg -n 1
+		eval `univention-baseconfig shell`
+		colourstart=""
+		colourend=""
+		if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
+			colourstart="\033[31;1m"
+			colourend="\033[0m"
+		fi
+		down="\033[5B"
+		clear="\033[2J"
+
+
+		function issue_warning () {
+			ttyname="$1"
+			warning_message=""
+			warning_message="$warning_message\n\r"
+			warning_message="$warning_message$colourstart"
+			if echo $update_warning_lang | egrep -i '^de$|^ger' > /dev/null 2>&1; then
+				warning_message="$warning_message!!!!!!!!!! Achtung\n\r"
+				warning_message="$warning_message!!!!!!!!!! die Aktualisierung des Systems kann je nach\n\r"
+				warning_message="$warning_message!!!!!!!!!! Umfang der Pakete eine lange Zeit in Anspruch\n\r"
+				warning_message="$warning_message!!!!!!!!!! nehmen.\n\r"
+				warning_message="$warning_message!!!!!!!!!!\n\r"
+				if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! Das System setzt den Startvorgang nach\n\r"
+					warning_message="$warning_message!!!!!!!!!! der Aktualisierung fort.\n\r"
+				elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! Schalten Sie das System erst aus, wenn die\n\r"
+					warning_message="$warning_message!!!!!!!!!! Ausgabe \"System halted!\" erscheint.\n\r"
+					warning_message="$warning_message!!!!!!!!!! Die meisten Systeme schalten sich\n\r"
+					warning_message="$warning_message!!!!!!!!!! selbstständig aus.\n\r"
+				elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! Das System wird nach der Aktualisierung\n\r"
+					warning_message="$warning_message!!!!!!!!!! automatisch neu gestartet.\n\r"
+				fi
+			else
+				warning_message="$warning_message!!!!!!!!!! Warning\n\r"
+				warning_message="$warning_message!!!!!!!!!! The update process might take a\n\r"
+				warning_message="$warning_message!!!!!!!!!! considerable amount of time depending on the\n\r"
+				warning_message="$warning_message!!!!!!!!!! number and size of installed packages.\n\r"
+				warning_message="$warning_message!!!!!!!!!!\n\r"
+				warning_message="$warning_message!!!!!!!!!! Do not switch off the system before\n\r"
+				warning_message="$warning_message!!!!!!!!!! update is completely finished.\n\r"
+				if /sbin/runlevel | grep '2$' > /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! System boot will continue after\n\r"
+					warning_message="$warning_message!!!!!!!!!! update is finished.\n\r"
+				elif /sbin/runlevel | grep '0$'> /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! System can be safely switched off when\n\r"
+					warning_message="$warning_message!!!!!!!!!! \"System halted!\" is displayed.\n\r"
+					warning_message="$warning_message!!!!!!!!!! Most modern systems switch off\n\r"
+					warning_message="$warning_message!!!!!!!!!! automatically.\n\r"
+				elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
+					warning_message="$warning_message!!!!!!!!!! System will reboot automatically\n\r"
+					warning_message="$warning_message!!!!!!!!!! after update finished.\n\r"
+
+				fi
+			fi
+			warning_message="$warning_message$colourend"
+			warning_message="$warning_message\n\r"
+			
+			echo -e "$down" > "$ttyname"
+			echo -e "$warning_message" > "$ttyname"
+		}
+		
+		/usr/sbin/univention-updater local --check >/dev/null 2>&1
+		upd_local=$?
+		/usr/sbin/univention-updater net --check >/dev/null 2>&1
+		upd_net=$?
+		/usr/sbin/univention-actualise --silent --check >/dev/null 2>&1
+		actualise=$?
+
+		if [ $upd_local = 1 -o $upd_net = 1 -o $actualise = 1 ]; then
+			continue
+		else
+			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
+				echo -e "\033[32;1mNothing to do for Univention Updater.\033[0m"
+			else
+				echo "Nothing to do for Univention Updater."
+			fi
+			exit 0
+		fi
+		
+		LOCKFILE="/var/lock/univention-maintenance_$RANDOM"
+		
+		if echo $update_warning | egrep -i 'yes|true' >/dev/null 2>&1; then
+			if [ -n "$update_warning_tty" ]; then
+				touch "$LOCKFILE"
+				while [ -f "$LOCKFILE" ]; do
+					for tty in $update_warning_tty
+					do
+						if [ -c "$tty" ]; then
+							issue_warning "$tty"
+						fi
+					done
+					sleep 2
+				done &
+				sleep 4
+			fi
+	
+			if [ -c "$SSH_TTY" ]; then
+				issue_warning "$SSH_TTY"
+			fi
+		else
+			if echo $update_warning_coloured | egrep -i 'yes|true' >/dev/null 2>&1; then
+				echo -e "\033[31;1mUnivention Updater is updating the system.\033[0m"
+			else
+				echo "Univention Updater is updating the system."
+			fi
+		fi
+		
+		echo -n "Starting Univention Updater: "
+
+		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+			if [ "$1" = "stop" ]; then
+				start=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionInstallationShutdown | sed -e 's|^ *||g;s|univentionInstallationShutdown=||;s|"||g'`
+			else
+				start=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionInstallationStartup | sed -e 's|^ *||g;s|univentionInstallationStartup=||;s|"||g'`
+			fi
+			updateto=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionUpdateVersion | sed -e 's|^ *||g;s|univentionUpdateVersion=||;s|"||g'`
+			updateactive=`univention_policy_result -s "$ldap_hostdn" 2>$1 | grep univentionUpdateActivate | sed -e 's|^ *||g;s|univentionUpdateActivate=||;s|"||g'`
+			if [ -n "$start" -a "$start" = "1" ]; then
+				if [ -n "$local_repository" ] && [ "$local_repository" = "yes" -o "$local_repository" = "true" ]; then
+					if [ -n "$updateto" ] && [ "$updateactive" = "TRUE" ]; then
+						echo -n "  updater [$updateto] "
+						/usr/sbin/univention-updater local --updateto $updateto >>/var/log/univention/updater.log 2>&1
+					elif [ "$updateactive" = "TRUE" ]; then
+						echo -n "  updater "
+						/usr/sbin/univention-updater local >>/var/log/univention/updater.log 2>&1
+					fi
+				else
+					update_server=`echo "$update_server" | sed -e 's|http://||' | sed -e 's|/.*||'`
+					if [ -n "$update_server" ]; then
+						ping -c 1 $update_server >/dev/null 2>&1
+						if [ $? != 0 ]; then
+							echo -n "  update/server not available"
+							exit 1
+						fi
+					fi
+					if [ -n "$updateto" ] && [ "$updateactive" = "TRUE" ]; then
+						echo -n "  updater [$updateto] "
+						/usr/sbin/univention-updater net --updateto $updateto >>/var/log/univention/updater.log 2>&1
+					elif [ "$updateactive" = "TRUE" ]; then
+						echo -n "  updater "
+						/usr/sbin/univention-updater net >>/var/log/univention/updater.log 2>&1
+					fi
+				fi
+	
+				echo -n "  actualise "
+				/usr/sbin/univention-actualise --silent >>/var/log/univention/updater.log 2>&1
+			fi
+		fi
+
+		if [ -f "$LOCKFILE" ]; then
+			rm "$LOCKFILE"
+		fi
+
+		echo "."
+		dmesg -n 8
+
+		;;
+	*)
+		echo "Usage: /etc/init.d/univention-maintenance {start|stop|restart}"
+		exit 1
+		;;
+esac
+
+exit 0

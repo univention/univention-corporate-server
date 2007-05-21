@@ -1,0 +1,270 @@
+#!/bin/sh
+# Univention Updater
+#  download from addon server
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+ADDON_LIST=""	# List of available addons.
+ADDON_OK=0	# = 1 if given addon is available.
+DEBUG=0		# Set to 1 (-v) for debug output.
+DEL=1		# Set to 0 (-dd) if you want to leave the temp files.
+
+REP_ROOT="/var/lib/univention-server-cdrom"	# Standard repository root.
+HOST_ARCH=`/usr/bin/dpkg-architecture -qDEB_HOST_ARCH 2>/dev/null`	# Get the hosts architecture.
+if [ "$HOST_ARCH" = "ppc64" ]; then
+	# PPC64 is handled as PowerPC
+	HOST_ARCH="powerpc"
+fi
+
+URL="http://apt.univention.de/addons/$version_version"	# The standard URL to the univention-apt repository.
+
+help() {
+	echo
+	echo "univention-addon-download: command line interface for apt.univention.de addons"
+	echo "copyright (c) 2006@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo
+	echo "Syntax:"
+	echo -e "\tunivention-addon-download [-t <Tempdir>] [-r <Reposditory>] [-dd] [-v] <addon>"
+	echo -e "\tunivention-addon-download -l"
+	echo
+	echo "Description:"
+	echo -e "\t-t, --tmpdir"
+	echo -e "\t\tdownload files to this existing directory."
+	echo
+	echo -e "\t-r, --repository"
+	echo -e "\t\tadd files to this existing UCS-Repository."
+	echo
+	echo -e "\t-dd, --dontdelete"
+	echo -e "\t\tleave downloaded deb-packages after adding."
+	echo
+	echo -e "\t-v, --verbose"
+	echo -e "\t\tverbose execution, extra debug information will be printed."
+	echo
+	echo -e "\t-l, --list"
+	echo -e "\t\tlist available UCS-addon's from apt.univention.de"
+	echo
+	echo "Exit codes:"
+	echo -e "\t1 Error parsing command line."
+	echo -e "\t2 File/path not exists."
+	echo -e "\t3 No local repository."
+	echo -e "\t4 Couldn't determine the right repository path."
+	echo -e "\t5 Given path is no UCS-Repository."
+	echo -e "\t6 Given addon is not available."
+	echo -e "\t7 Given URL is not available."
+	exit 0
+}
+
+locate_repos() {
+	# Try to find the right repository path.
+	if [ $DEBUG -eq 1 ]; then echo "Searching for repository path under $REP_ROOT"; fi
+	cd $REP_ROOT/ucs-updates/
+	for file in `ls ucs_*.txt`;
+	do
+		NEXTUPD=`cat $file | sed s'/.*=//'`
+		if [ "$NEXTUPD" = "none" ]; then
+			REP_VERSION=`echo $file | sed s'/.*_//' | sed s'/\.txt//'`
+			REP_PATH="$REP_ROOT/ucs-updates/$REP_VERSION/"
+			if [ $DEBUG -eq 1 ]; then echo "Using $REP_ROOT/ucs-updates/$REP_VERSION as repository path."; fi
+			if [ ! -d "$REP_PATH" ]; then
+				if [ $DEBUG -eq 1 ]; then echo "Using $REP_ROOT/packages as repository path."; fi
+				REP_PATH="$REP_ROOT/packages/"
+			fi
+		fi
+	done
+	if [ -z $REP_PATH ]; then
+		echo "Error: Couldn't determine the right repository path."
+		echo "Please define the repository path with \"-r /path/to/repository\"."
+		exit 4
+	fi
+}
+
+testurl() {
+	# Test if the given URL is available.
+	HTTP_ERR=`wget -S --spider "$1" 2>&1 | grep "^ 1" | tail -n 1 | awk '{print $3}'`
+	if [ -z $HTTP_ERR ]; then
+		echo "Error: Host not found"
+		return 1
+	else
+		if [ $HTTP_ERR -eq 404 ]; then
+			return 1
+		fi
+	fi
+	return 0
+}
+
+getindex() {
+	# Get the index.html and parse out the available UCS addons
+	testurl "$URL/"
+	for addon in `wget -q -O - "$URL/" | grep "DIR" | grep -v "Parent Directory" | sed s'/.*HREF=\"//' | sed s'/\/.*//'`
+	do
+		ADDON_LIST="$ADDON_LIST $addon"
+	done
+}
+
+listaddons() {
+	getindex
+	echo
+        echo "univention-addon-download: command line interface for apt.univention.de addons"
+        echo "copyright (c) 2006@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo
+	echo "Available UCS-addon's on apt.univention.de:"
+	echo
+	for addon in $ADDON_LIST
+	do
+		echo -e "\t- $addon"
+	done
+	echo
+}
+
+# If we got no args list addons
+if [ $# -eq 0 ]; then
+	listaddons
+	echo "To add one of the shown UCS-addon's use the following syntax:"
+	echo -e "\t\"univention-addon-download <addon>\""
+	echo
+	echo "For more information type \"univention-addon-download -h\""
+	exit 0
+fi
+while [ $# -gt 0 ]; do
+	LASTPARM=$1
+	case "$1" in
+	-v|--verbose)
+		DEBUG=1
+		;;
+	-t|--tmpdir)
+		TMPDIR="$2"
+		shift
+		if [ ! -d $TMPDIR ]; then
+			echo "Error: Supplied tmpdir doesn't exist!"
+			exit $E_TMPDIR
+		fi
+		;;
+	-r|--repository)
+		REP_PATH="$2"
+		shift
+		if [ ! -d $REP_PATH ]; then
+			echo "Error: Supplied repository path doesn't exist!"
+			exit $E_REP_PATH
+		else
+			# Check if the given path is a repository
+			if [ ! -f "$REP_PATH/Packages" -a ! -f "$REP_PATH/Packages.gz" ]; then
+				# No
+				echo "Error: The given path is no UCS-Repository."
+				exit 5
+			fi
+		fi
+		;;
+	-dd|--dontdelete)
+		DEL=0
+		;;
+	-l|--list)
+		listaddons
+		exit 0
+		;;
+	-?|-h|--help)
+		help
+		;;
+	esac
+	shift
+done
+
+# Test if local/repository is not set or no || false
+if [ -z $local_repository ]; then
+	echo "Error: No local repository."
+	exit 3
+elif [ "$local_repository" = "no" -o "$local_repository" = "false" ]; then
+	echo "Error: No local repository."
+	exit 3
+fi
+
+getindex
+# Check if the given addon (LASTPARM) is available
+for addon in $ADDON_LIST
+do
+	if [ "$addon" = "$LASTPARM" ]; then
+		ADDON_OK=1
+	fi
+done
+
+if [ $ADDON_OK -eq 0 ]; then
+	echo "Error: The given addon is not available"
+	exit 6
+else
+	# addon is in $ADDON_LIST. Go on...
+	if [ -z $REP_PATH ]; then
+		locate_repos
+	fi
+	if [ -z $TMPDIR ]; then
+		TMPDIR="/tmp/$RANDOM/"
+		mkdir "$TMPDIR"
+	fi
+	if [ $DEBUG -eq 1 ]; then
+		testurl "$URL/$LASTPARM/all/"
+		if [ $? -ne 0 ]; then
+			echo "Error: The given URL is not available"
+			exit 7
+		fi
+		wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -nv -A ".deb" "$URL/$LASTPARM/all/"
+		testurl "$URL/$LASTPARM/$HOST_ARCH/"
+		if [ $? -eq 0 ]; then
+			wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -nv -A ".deb" "$URL/$LASTPARM/$HOST_ARCH/"
+		fi
+	else
+		testurl "$URL/$LASTPARM/all/"
+		if [ $? -ne 0 ]; then
+			echo "Error: The given URL is not available"
+			exit 7
+		fi
+		wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -q -A ".deb" "$URL/$LASTPARM/all/"
+		testurl "$URL/$LASTPARM/$HOST_ARCH/"
+		if [ $? -eq 0 ]; then
+			wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -q -A ".deb" "$URL/$LASTPARM/$HOST_ARCH/"
+		fi
+	fi
+	/usr/sbin/univention-repository-addpackage --dest $REP_PATH --file $TMPDIR*.deb
+	ADDPKG_EXIT=$?
+	if [ $DEL -eq 1 ]; then
+		if [ $ADDPKG_EXIT -eq 0 -a -d $TMPDIR ]; then
+			rm -rf $TMPDIR
+			exit 0
+		else
+			if [ -w "${TMPDIR}robots.txt" ]; then
+				rm "${TMPDIR}robots.txt"
+			fi
+			echo "Error: univention-repository-addpackage returned an error."
+			echo "Not removing downloaded deb's in $TMPDIR, you may add them with following command:"
+			echo -e "\tunivention-repository-addpackage --dest $REP_PATH --file $TMPDIR*.deb:"
+			exit $ADDPKG_EXIT
+		fi
+	else
+		if [ -w "${TMPDIR}robots.txt" ]; then
+			rm "${TMPDIR}robots.txt"
+		fi
+		echo "Not removing downloaded deb's in $TMPDIR!"
+	fi
+fi
+

@@ -1,0 +1,502 @@
+univention-updater (1.36-49) unstable; urgency=low
+
+  * re-import univention-baseconfig
+  * tabbing cleanup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Dec 2006 09:29:34 +0100
+
+univention-updater (1.36-47) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 12:07:10 +0100
+
+univention-updater (1.36-46) unstable; urgency=low
+
+  * update message should be red
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 28 Nov 2006 10:46:35 +0100
+
+univention-updater (1.36-45) unstable; urgency=low
+
+  * dont print big warning messages per default, fixes Bug #6243
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 27 Nov 2006 17:17:47 +0100
+
+univention-updater (1.36-44) unstable; urgency=low
+
+  * stop if update server is not reachable
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 27 Nov 2006 16:05:21 +0100
+
+univention-updater (1.36-43) unstable; urgency=low
+
+  * catch more exceptions in univention-security-update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Oct 2006 17:04:35 +0200
+
+univention-updater (1.36-42) unstable; urgency=low
+
+  * moved up init script in init order to K05 so univention-maintenance is
+    "killed" before bind and ldap.
+  * check in postinst for old package version and remove the old rc.d
+    symlinks.
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue,  5 Sep 2006 11:37:16 +0200
+
+univention-updater (1.36-41) unstable; urgency=low
+
+  * script now creates lock file for warning loop and checks every tty
+    for existence
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon,  4 Sep 2006 18:21:51 +0200
+
+univention-updater (1.36-40) unstable; urgency=low
+
+  * added utf-8 umlauts
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 24 Aug 2006 17:47:16 +0200
+
+univention-updater (1.36-39) unstable; urgency=low
+
+  * removed debug output, added --check description to help
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 24 Aug 2006 17:35:55 +0200
+
+univention-updater (1.36-38) unstable; urgency=low
+
+  * implementet --check in univention-actualise
+  * univention-maintenance shows his warning only if there are jobs to do
+  * removed umlauts from changelog
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 24 Aug 2006 17:28:12 +0200
+
+univention-updater (1.36-37) unstable; urgency=low
+
+  * added brackets to make sense clearer
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 17 Aug 2006 10:06:21 +0200
+
+univention-updater (1.36-36) unstable; urgency=low
+
+  * fixed typo in univention-security-update
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 17 Aug 2006 10:03:27 +0200
+
+univention-updater (1.36-35) unstable; urgency=low
+
+  * removed bug ID from changelog
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 16 Aug 2006 12:57:15 +0200
+
+univention-updater (1.36-34) unstable; urgency=low
+
+  * implemented --check option and moved the repository probing code to
+    a function.
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 16 Aug 2006 12:49:26 +0200
+
+univention-updater (1.36-33) unstable; urgency=low
+
+  * fixed probing for local repository, see Bug #3556
+  * added some dot's to warning message
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 11 Aug 2006 14:12:15 +0200
+
+univention-updater (1.36-32) unstable; urgency=low
+
+  * added apt-get update for univention-policy-set-repository-server
+
+ -- Bastian Neumann <neumann@univention.de>  Fri, 11 Aug 2006 11:59:00 +0200
+
+univention-updater (1.36-31) unstable; urgency=low
+
+  * added apt-get clean handling to net and cdrom command
+
+ -- Bastian Neumann <neumann@univention.de>  Fri, 11 Aug 2006 09:52:09 +0200
+
+univention-updater (1.36-30) unstable; urgency=low
+
+  * added no-clean option to net and cdrom for second updater call
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 10 Aug 2006 16:13:21 +0200
+
+univention-updater (1.36-29) unstable; urgency=low
+
+  * fixed three small bugs in apt-get clean option
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Thu, 10 Aug 2006 14:40:23 +0200
+
+univention-updater (1.36-28) unstable; urgency=low
+
+  * added apt-get clean as an option
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Thu, 10 Aug 2006 13:55:21 +0200
+
+univention-updater (1.36-27) unstable; urgency=low
+
+  * check for univentionUpdateActivate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jul 2006 13:13:47 +0200
+
+univention-updater (1.36-26) unstable; urgency=low
+
+  * issue warnings during update repeatedly
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Fri, 14 Jul 2006 11:53:05 +0200
+
+univention-updater (1.36-25) unstable; urgency=low
+
+  * Filter out characters in Debian package names that are not HTTP URL
+    compliant
+
+ -- Moritz Muehlenhoff <jmm@univention.de>  Fri, 23 Jun 2006 15:25:48 +0200
+
+univention-updater (1.36-24) unstable; urgency=low
+
+  * suppress kernel messages on console during update
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Thu, 22 Jun 2006 13:56:05 +0200
+
+univention-updater (1.36-22) unstable; urgency=low
+
+  * print warning on all ttys
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Wed, 21 Jun 2006 09:53:24 +0200
+
+univention-updater (1.36-21) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 16:46:56 +0200
+
+univention-updater (1.36-20) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 15:49:46 +0200
+
+univention-updater (1.36-19) unstable; urgency=low
+
+  * added baseconfig variables for colour and language.
+
+ -- Lars Rehe <lars@billy.knut.univention.de>  Mon, 19 Jun 2006 11:38:12 +0200
+
+univention-updater (1.36-18) unstable; urgency=low
+
+  * added coloured warning when running univention-maintenance
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Mon, 19 Jun 2006 09:49:27 +0200
+
+univention-updater (1.36-17) unstable; urgency=low
+
+  * fixed typo in help output
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 23 May 2006 13:02:25 +0200
+
+univention-updater (1.36-16) unstable; urgency=low
+
+  * removed verbose output in non verbose mode
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 23 May 2006 12:53:40 +0200
+
+univention-updater (1.36-15) unstable; urgency=low
+
+  * fixed testurl()
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 22 May 2006 17:26:37 +0200
+
+univention-updater (1.36-14) unstable; urgency=low
+
+  * fixed searching for local repository
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 22 May 2006 16:02:40 +0200
+
+univention-updater (1.36-13) unstable; urgency=low
+
+  * fixed "Error: The given URL is not available" if there is only an
+    all dir
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 22 May 2006 15:29:07 +0200
+
+univention-updater (1.36-12) unstable; urgency=low
+
+  * only one recursion level in wget
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 22 May 2006 08:56:34 +0200
+
+univention-updater (1.36-11) unstable; urgency=low
+
+  * added the script univention-addon-download for adding apt.univention.de
+  * addons into the lokal repository
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue,  9 May 2006 14:24:00 +0200
+
+univention-updater (1.36-10) unstable; urgency=low
+
+  * try to preverse sources.list entries in univention-policy-set-repository-server
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 12 Apr 2006 16:33:53 +0200
+
+univention-updater (1.36-2) unstable; urgency=low
+
+  * make univentino-repository-merge aware of different package architectures
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed,  8 Mar 2006 14:27:17 +0100
+
+univention-updater (1.36-1) unstable; urgency=low
+
+  * reboot after update at startup if requested
+  * skip reboot if nothing was udpated
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon,  6 Mar 2006 16:16:50 +0100
+
+univention-updater (1.36-0) unstable; urgency=low
+
+  * fix adding update-cdrom to repository with alternative mount point
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 23 Feb 2006 16:10:17 +0100
+
+univention-updater (1.35) unstable; urgency=low
+
+  * update apt/sources.list after enabling/disabling the local repository
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 22 Feb 2006 12:54:31 +0100
+
+univention-updater (1.34) unstable; urgency=low
+
+  * add a way to schedule a computer to reboot after successfully running
+    `univention-updater'
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 15 Feb 2006 16:20:34 +0100
+
+univention-updater (1.33) unstable; urgency=low
+
+  * refuse to run unviention-actualise after univention-updater failed.
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 15 Feb 2006 12:53:53 +0100
+
+univention-updater (1.32) unstable; urgency=low
+
+  * re-added robustness for wrong parameters
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 13 Feb 2006 16:22:07 +0100
+
+univention-updater (1.31) unstable; urgency=low
+
+  * fixed --silent
+
+ -- Martin Kuehl <kuehl@univention.de>  Mon, 13 Feb 2006 16:00:03 +0100
+
+univention-updater (1.30) unstable; urgency=low
+
+  * remove bugs which prevented a correct update from CD without local
+    repository
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 13 Dec 2005 17:32:36 +0100
+
+univention-updater (1.29) unstable; urgency=low
+
+  * bugfix in updater which prevented running of pre/postup.sh on systems
+    without local repository
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 13 Dec 2005 07:45:31 +0100
+
+univention-updater (1.28) unstable; urgency=low
+
+  * univention-actualise does not return an error code any more if there no
+    packages to update
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 22 Nov 2005 09:36:33 +0100
+
+univention-updater (1.27) unstable; urgency=low
+
+  * increased version, otherwise 1.26 is higher than 1.26-3
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  8 Nov 2005 17:04:36 +0100
+
+univention-updater (1.26-3) unstable; urgency=low
+
+  * support for security updates without repository
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Nov 2005 14:44:44 +0100
+
+univention-updater (1.26-2) unstable; urgency=low
+
+  * use proxy for security-updates
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 28 Oct 2005 14:07:53 +0200
+
+univention-updater (1.26-0) unstable; urgency=low
+
+  * Changed default update server to the new download.univention.de
+
+ -- Arne Brix <arne@anton.knut.univention.de>  Tue,  4 Oct 2005 15:06:48 +0200
+
+univention-updater (1.25) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:35:08 +0200
+
+univention-updater (1.24) unstable; urgency=low
+
+  * added support for --help / -?
+  * fixed silent-mode
+  * now supports dist-upgrades through parameter --dist-upgrade
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 17 Aug 2005 10:58:45 +0200
+
+univention-updater (1.23) unstable; urgency=low
+
+  * depends on univention-security-patchlevel to set security-patchlevel in baseconfig
+  * check for standard sources.list
+  * univention-actualize is less verbose
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  1 Aug 2005 19:09:13 +0200
+
+univention-updater (1.22) unstable; urgency=low
+
+  * check for " in repository result
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 May 2005 17:05:02 +0200
+
+univention-updater (1.21) unstable; urgency=low
+
+  * added dependency to netcat
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 29 Apr 2005 15:22:46 +0200
+
+univention-updater (1.20) unstable; urgency=low
+
+  * check for " in repository result
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 27 Apr 2005 12:57:28 +0200
+
+univention-updater (1.19) unstable; urgency=low
+
+  * check for " in repository result
+  * write sources.list only if new repository-server is reachable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 25 Apr 2005 11:38:22 +0200
+
+univention-updater (1.18) unstable; urgency=low
+
+  * run /usr/sbin/univention-pkgdb-scan
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Apr 2005 08:58:12 +0200
+
+univention-updater (1.17) unstable; urgency=low
+
+  * proper return code check
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Apr 2005 17:46:26 +0200
+
+univention-updater (1.16) unstable; urgency=low
+
+  * rewrite univention-security-update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Apr 2005 16:44:02 +0200
+
+univention-updater (1.15) unstable; urgency=low
+
+  * create tempdir
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2005 13:22:39 +0100
+
+univention-updater (1.14) unstable; urgency=low
+
+  * univention-security-upddate and univention-actualise are now more verbose
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon,  7 Mar 2005 11:45:28 +0100
+
+univention-updater (1.13) unstable; urgency=low
+
+  * better lock file handling
+  * support for spaces in ldap/hostdn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun,  6 Feb 2005 15:04:13 +0100
+
+univention-updater (1.12) unstable; urgency=low
+
+  * redesign univention-updater
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Oct 2004 18:34:32 +0200
+
+univention-updater (1.11) unstable; urgency=low
+
+  * allow network bandwidth limitation
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon,  9 Aug 2004 08:52:46 +0200
+
+univention-updater (1.10) unstable; urgency=low
+
+  * fixed stderr redirection
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 24 Jun 2004 09:04:27 +0200
+
+univention-updater (1.9) unstable; urgency=low
+
+  * using wget instead of lynx
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jun 2004 10:02:52 +0200
+
+univention-updater (1.8) unstable; urgency=low
+
+  * Architecture: all (instead of any).
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 11:43:57 +0200
+
+univention-updater (1.7) unstable; urgency=low
+
+  * copy changelog to repository
+
+ -- Sven Dreyer <dreyer@univention.de>  Wed, 31 Mar 2004 11:17:36 +0200
+
+univention-updater (1.6) unstable; urgency=low
+
+  * set update/server in dependency to server/role
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Mar 2004 07:40:54 +0200
+
+univention-updater (1.5) unstable; urgency=low
+
+  * added --stopat parameter
+  * added preup/postup scripts
+  * retry apt-get update after 30 seconds if it failed
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 19 Mar 2004 16:34:42 +0100
+
+univention-updater (1.4) unstable; urgency=low
+
+  * added back package checking when new updates
+    appear in the local repository
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 16 Feb 2004 10:11:15 +0100
+
+univention-updater (1.3) unstable; urgency=low
+
+  * fixed wrong variables
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 16 Feb 2004 10:11:15 +0100
+
+univention-updater (1.2) unstable; urgency=low
+
+  * new version policy
+  * added source line in debian/control
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2004 15:47:34 +0100
+
+univention-updater (1.1-1) unstable; urgency=low
+
+  * various major changes, too much to specify
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon,  2 Feb 2004 10:06:14 +0100
+
+univention-updater (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
+
