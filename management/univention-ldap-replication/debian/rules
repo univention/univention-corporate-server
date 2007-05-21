@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # Univention LDAP Listener replication module
 
-export DH_COMPAT=3
 copyrightyear=`date +%Y`
 
 package=univention-ldap-replication
