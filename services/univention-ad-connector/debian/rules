@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
+PYVERS=$(shell pyversions -vr)
 
 configure: configure-stamp
 configure-stamp:
@@ -52,7 +52,9 @@ MODULES_CONNECTOR_DEST=$(CURDIR)/debian/python2.4-univention-connector
 MODULES_CONNECTOR_AD_DEST=$(CURDIR)/debian/python2.4-univention-connector-ad
 EXCHANGE_DEST=$(CURDIR)/debian/univention-ad-connector-exchange
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -65,25 +67,26 @@ install: build
 	install -m600 conffiles/etc/univention/connector/ad/mapping.py ${AD_TOOLS_DEST}/etc/univention/connector/ad/mapping
 	
 	# Connector Modules
-	./univention-pycompile modules/univention/connector/__init__.py $(MODULES_CONNECTOR_DEST)/usr/lib/python2.4/site-packages/univention/connector/__init__.pyo
+	install -d debian/python-univention-connector/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/univention/connector/__init__.py debian/python-univention-connector/usr/lib/python$*/site-packages/univention/
 
 	# AD Connector Modules
-	./univention-pycompile modules/univention/connector/ad/__init__.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/__init__.pyo
-	./univention-pycompile modules/univention/connector/ad/main.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/main.pyo
-	./univention-pycompile modules/univention/connector/ad/mapping.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/mapping.pyo
-	./univention-pycompile modules/univention/connector/ad/password.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/python2.4/site-packages/univention/connector/ad/password.pyo
-	install -m644 ad-connector.py $(MODULES_CONNECTOR_AD_DEST)/usr/lib/univention-ldap-listener/system
+	install -d debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/univention/connector/ad/__init__.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/univention/connector/ad/main.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/univention/connector/ad/mapping.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+	install -m 0644 modules/univention/connector/ad/password.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+
+	install -m 0644 ad-connector.py $(AD_TOOLS_DEST)/usr/lib/univention-ldap-listener/system
 
 	#baseconfig metainfo
-	cp files/etc/univention/base.meta/connector* $(MODULES_CONNECTOR_AD_DEST)/etc/univention/base.meta
+	# cp files/etc/univention/base.meta/connector* $(MODULES_CONNECTOR_AD_DEST)/etc/univention/base.meta
 	
 	# password daemon
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/ucs-ad-connector.msi $(AD_TOOLS_DEST)/usr/share/univention-ad-connector/ucs-ad-connector.msi
 
 	# exchange extension
 	install -m644  files/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema $(EXCHANGE_DEST)/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema
-
-	find debian -name "*.pp" | xargs rm
 
 	univention-install-baseconfig
 
@@ -106,6 +109,7 @@ binary-indep: build install
 	dh_installinfo
 #	dh_undocumented
 	dh_installchangelogs
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress

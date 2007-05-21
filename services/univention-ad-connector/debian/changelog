@@ -1,9 +1,15 @@
+univention-ad-connector (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:01:17 +0200
+
 univention-ad-connector (0.3-26) unstable; urgency=low
 
   * the old copypwd process breaks the lsass.exe process under windows 2003
   sp1. The new package fixes this behaviour
 
- -- Stefan Gohmann <stefan@billy.knut.univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Mar 2007 13:41:43 +0100
 
 univention-ad-connector (0.3-25) unstable; urgency=low
 
