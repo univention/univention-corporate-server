@@ -30,8 +30,6 @@
 # Sample debian/rules that uses debhelper.
 # GNU copyright 1997 to 1999 by Joey Hess.
 
-export DH_COMPAT=3
-
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
