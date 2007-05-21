@@ -1,3 +1,9 @@
+univention-nagios (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:06:23 +0200
+
 univention-nagios (0.31) unstable; urgency=low
 
   * fixed path to raidutil in baseconfig template

@@ -1,3 +1,9 @@
+univention-nt-password-sync (0.2-3) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:08:08 +0200
+
 univention-nt-password-sync (0.2-2) unstable; urgency=low
 
   * add dependency on python2.4-m2crypto

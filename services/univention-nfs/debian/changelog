@@ -1,3 +1,9 @@
+univention-nfs (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 May 2007 17:06:58 +0200
+
 univention-nfs (0.9-15) unstable; urgency=low
 
   * allowed nfs hosts is a mutlivalue attribute

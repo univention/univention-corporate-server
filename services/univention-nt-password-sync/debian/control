@@ -3,11 +3,11 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, python2.4, univention-config-dev
+Build-Depends: debhelper, python, univention-config-dev
 
 Package: univention-nt-password-sync
 Architecture: all
-Depends: python2.4-m2crypto, python2.4-univention (>= 1.5) | python2.4-univention-2005, python2.4-univention-license, univention-ldap-listener, univention-baseconfig
+Depends: python-m2crypto, python-univention, python-univention-license, univention-ldap-listener, univention-baseconfig
 Description: UCS - Windows NT Password synchronisation
  This packages implements a synchronisation of password changes
  applied to users in UCS to a Windows NT PDC, containing equaly
