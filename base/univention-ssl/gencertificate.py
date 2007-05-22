@@ -86,8 +86,8 @@ def handler(dn, new, old):
 				new_domain=baseConfig['domainname']
 
 			if new_domain != old_domain:
-				remove_certificate(old['cn'][0], domainname=domain)
-				create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=domain)
+				remove_certificate(old['cn'][0], domainname=old_domain)
+				create_certificate(new['cn'][0], int(new['uidNumber'][0]), domainname=new_domain)
 	finally:
 		set_privileges_cert(root=0)
 	return
