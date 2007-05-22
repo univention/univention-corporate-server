@@ -32,7 +32,7 @@
 import sys, os, string, getopt, DNS, time, tempfile, os.path
 import apt_pkg
 import pgdb, commands
-import univention_baseconfig
+import univention.baseconfig
 
 def usage():
 	print 'univention-pkgdb-scan: Scan all packages in the lokal system and send this data to the database pkgdb.'
@@ -228,7 +228,7 @@ def sql_create_localconnectstring( sysname  ):
 #	# ------------------------------------------------------------------------------
 #	# Baseconfig auslesen
 #	# ------------------------------------------------------------------------------
-#	baseConfig=univention_baseconfig.baseConfig()
+#	baseConfig=univention.baseconfig.baseConfig()
 #	baseConfig.load()
 #
 #	# ------------------------------------------------------------------------------
@@ -630,7 +630,7 @@ def main(args):
 	# ------------------------------------------------------------------------------
 	# Baseconfig auslesen
 	# ------------------------------------------------------------------------------
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig=univention.baseconfig.baseConfig()
 	baseConfig.load()
 
 	# ------------------------------------------------------------------------------

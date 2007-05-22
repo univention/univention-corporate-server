@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention_pkgdb
+import univention.pkgdb
 from pexpect import *
 
 args=sys.argv[1:]

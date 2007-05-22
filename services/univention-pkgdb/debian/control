@@ -2,8 +2,9 @@ Source: univention-pkgdb
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev
 Standards-Version: 3.5.2
+XS-Python-Version: all
 
 Package: univention-pkgdb
 Architecture: all
@@ -17,12 +18,16 @@ Description: UCS - PkgDB
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-pkgdb-lib
+Package: python-univention-pkgdb
 Architecture: all
-Pre-Depends: python2.4-apt, python2.4-pygresql, python2.4-dns
+Depends:  ${python:Depends}, python2.4-apt, python2.4-pygresql, python2.4-dns
 Depends: univention-baseconfig 
+Provides: ${python:Provides}, univention-pkgdb-lib
+XB-Python-Version: ${python:Versions}
+Conflicts: univention-pkgdb-lib
+Replaces: univention-pkgdb-lib
 Description: UCS - PkgDB
- This package contains libraries needed for all Univention package database components.
+ This package contains python libraries needed for all Univention package database components.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
@@ -31,7 +36,7 @@ Description: UCS - PkgDB
 
 Package: univention-pkgdb-tools
 Architecture: all
-Depends: univention-baseconfig, univention-pkgdb-lib (>> 0.18)
+Depends: univention-baseconfig, python-univention-pkgdb
 Recommends: postgresql-client
 Description: UCS - PkgDB-Tools
  This package contains client-side-tools for the Univention package database.

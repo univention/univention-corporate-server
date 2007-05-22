@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys
-import univention_pkgdb
+import univention.pkgdb
 
 if __name__=='__main__':
 	univention_pkgdb.main(sys.argv[1:])

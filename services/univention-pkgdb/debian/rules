@@ -28,11 +28,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 
+PYVERS=$(shell pyversions -vr)
+
 D=${CURDIR}/debian/univention-pkgdb
-DL=${CURDIR}/debian/univention-pkgdb-lib
 DT=${CURDIR}/debian/univention-pkgdb-tools
 
 build: build-stamp
@@ -50,16 +50,20 @@ clean:
 	rm -rf debian/univention-pkgdb-tools
 	dh_clean
 
-install: build
-	./py_compile ./modpkgdb.py
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
+	# don't install Univention Console module
+	# ./py_compile ./modpkgdb.py
+
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	msgfmt -o pkgdb.mo pkgdb.po
+	# msgfmt -o pkgdb.mo pkgdb.po
 
-	install -m 0644 pkgdb.mo ${D}/usr/share/locale/de/LC_MESSAGES
+	# install -m 0644 pkgdb.mo ${D}/usr/share/locale/de/LC_MESSAGES
 	install -m 0444 pkgdb.sql ${D}/var/lib/postgres
 	install -m 0500 pkgdb.bash ${D}/var/lib/postgres
 	install -m 0700 pkgdb.indexes ${D}/var/lib/postgres
@@ -67,13 +71,16 @@ install: build
 	install -m 0755 conffiles/etc/cron.weekly/univention-pkgdb-clean ${D}/etc/cron.weekly
 	install -m 0755 50univention-pkgdb.inst ${D}/usr/lib/univention-install
 	install -m 0755 pkgdb.py ${D}/usr/lib/univention-ldap-listener/system
-	install -m 0755 modpkgdb.pyo ${D}/usr/share/univention-console/uniconf
-	install -m 0755 pkgdb.gif ${D}/usr/share/univention-webui-style/icon
+
+	# don't install Univention Console Module
+	# install -m 0755 modpkgdb.pyo ${D}/usr/share/univention-console/uniconf
+	# install -m 0755 pkgdb.gif ${D}/usr/share/univention-webui-style/icon
+
 	install -m 0700 univention-pkgdb-check ${D}/usr/sbin
 
 #	 Set package_version
-	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > univention_pkgdb.py_tmp
-	install -m 0755 univention_pkgdb.py_tmp ${DL}/usr/lib/site-python/univention_pkgdb.py
+	install -d debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/
+	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/pkgdb.py
 
 	install -m 0700 univention-pkgdb-scan ${DT}/usr/sbin
 	install -m 0755 98univention-pkgdb-tools.inst ${DT}/usr/lib/univention-install
@@ -90,6 +97,7 @@ binary-arch: build install
 	dh_installlogrotate
 	dh_installcron
 	dh_installchangelogs
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress

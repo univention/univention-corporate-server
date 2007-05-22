@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 11:51:34 +0200
+
 univention-pkgdb (0.21-1) unstable; urgency=low
 
   * add GPL headers 
