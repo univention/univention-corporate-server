@@ -1520,9 +1520,10 @@ class modedit(unimodule.unimodule):
 						b2_atts = copy.deepcopy(attributes)
 
 						profile_choicelist=[]
-						for pn in profiles['univentionDefaultKdeProfiles']:
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, ('pn: %s' % pn))
-							profile_choicelist.append({'name': pn, 'description': pn})
+						if profiles.has_key('univentionDefaultKdeProfiles'):
+							for pn in profiles['univentionDefaultKdeProfiles']:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, ('pn: %s' % pn))
+								profile_choicelist.append({'name': pn, 'description': pn})
 
 						if not atts.get('width'):
 							atts['width']='450' # FIXME
@@ -2829,18 +2830,18 @@ class modedit(unimodule.unimodule):
 										acllists.append({'name': dn, 'description': attr['cn'][0]})
 
 									if not category in category_list:
-										aclcategories.append( {'name': class_name, 'description': category, 'selected': class_name} )
+										aclcategories.append( {'name': category, 'description': category, 'selected': class_name} )
 										category_list.append( category )
 								else:
 									if not category in category_list:
 										if category == 'Without Category':
 											aclcategories.append( {'name': 'Without Category', 'description': category} )
 										else:
-											aclcategories.append( {'name': class_name, 'description': category} )
+											aclcategories.append( {'name': category, 'description': category} )
 										category_list.append( category )
 									global_acllist.append({'name': dn, 'description': attr['description'][0]})
 
-							aclcategories.sort(compare_dicts_by_attr('description'))
+							aclcategories.sort( compare_dicts_by_attr( 'description' ) )
 
 							if value:
 								for v in value:
@@ -3706,14 +3707,26 @@ class modedit(unimodule.unimodule):
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [module_select]}))
 
 
-					elif property.syntax.name == 'groupDn' or property.syntax.name == 'userDn':
+					elif property.syntax.name == 'groupDn' or property.syntax.name == 'userDn' or property.syntax.name == 'hostDn' or property.syntax.name == 'nagiosServiceDn' or property.syntax.name == 'nagiosHostsEnabledDn':
 
+						fixedFilter=''
 						if property.syntax.name == 'userDn':
 							module_name = 'users/user'
 							dispattr="username"
-						else:
+						elif property.syntax.name == 'groupDn':
 							module_name = 'groups/group'
 							dispattr="name"
+						elif property.syntax.name == 'hostDn':
+							module_name = 'computers/computer'
+							dispattr="name"
+						elif property.syntax.name == 'nagiosServiceDn':
+							module_name = 'nagios/service'
+							dispattr="name"
+						elif property.syntax.name == 'nagiosHostsEnabledDn':
+							module_name = 'computers/computer'
+							dispattr="name"
+							fixedFilter='(&(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
+
 						search_module=univention.admin.modules.get( module_name )
 						search_property_name=self.save.get('membership_search_property')
 						filter=None
@@ -3727,8 +3740,14 @@ class modedit(unimodule.unimodule):
 								membership_search_value="*"
 							filter="(%s=%s)"%(search_property_name,membership_search_value)
 
-						if self.save.get("membership_search_ok") and not self.parent.input and search_property_name!="_": # we have no input
-							self.save.put("membership_search_ok",None)
+						if fixedFilter:
+							if filter:
+								filter='(&%s%s)' % (fixedFilter, filter)
+							else:
+								filter=fixedFilter
+
+						if self.save.get('membership_search_ok') and not self.parent.input and search_property_name!="_": # we have no input
+							self.save.put('membership_search_ok',None)
 							groups=[]
 							if filter:
 								gr=search_module.lookup(None,self.lo,filter,scope="domain",base=position.getDomain())
@@ -4003,17 +4022,21 @@ class modedit(unimodule.unimodule):
 							minput_rows.append( tablerow("",{},{"obs": col } ) )
 
 						# header
+
 						col = [ tablecol( '', {}, { 'obs': [ text( '', { 'type' : 'content_header' }, { 'text' : [ _( 'Object' ) ] } ) ] } ) ]
-						for entry in property.syntax.attributes:
-							attr = entry.split( ':', 1 )[ 1 ].strip()
-							if attr == 'dn':
-								title = _( 'DN' )
-							else:
-								title = headlines[ attr ]
-							if not title:
-								title = unicode( attr )
-							col.append( tablecol( '', {}, { 'obs': [ text( '', { 'type' : 'content_header' }, { 'text' : [ title ] } ) ] } ) )
-						minput_rows.insert( current_pos, tablerow("",{},{"obs": col } ) )
+						if property.syntax.values:
+							for entry in property.syntax.attributes:
+								attr = entry.split( ':', 1 )[ 1 ].strip()
+								if attr == 'dn':
+									title = _( 'DN' )
+								else:
+									title = headlines[ attr ]
+								if not title:
+									title = unicode( attr )
+								col.append( tablecol( '', {}, { 'obs': [ text( '', { 'type' : 'content_header' }, { 'text' : [ title ] } ) ] } ) )
+							minput_rows.insert( current_pos, tablerow("",{},{"obs": col } ) )
+						else:
+							minput_rows.append( tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[header(_("None"),{"type":"2"},{})]})]}) )
 
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
 					# edit multivalue property

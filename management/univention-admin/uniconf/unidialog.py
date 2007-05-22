@@ -108,7 +108,10 @@ class unidialog(unimodule.unimodule):
 				component_texts.append([_("Navigation"),
 						       _("Besides everything you can do with the wizards, the navigation provides you also an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Admin itself.")])
 				component_texts.append([_("Console"),_("The <a target=parent href=/console/>Univention Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Console for a machine can be found at the UCS object in the computer wizard.")])
+				if self.save.get( 'personal_use' ) == '1':
+					component_texts.append([_("License"),_("You are using the \"Free for personal use\" edition. Find more information on the about page.")])
 				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Admin and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])
+					
 
 				
 				self.subobjs.append(table("",

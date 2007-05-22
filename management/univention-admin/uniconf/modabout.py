@@ -41,6 +41,7 @@ from local import _
 import univention.admin.uldap
 import univention.admin.modules
 import univention_baseconfig
+import univention.debug
 
 def create(a,b,c):
 	return modabout(a,b,c)
@@ -158,6 +159,9 @@ class modabout(unimodule.unimodule):
  				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['base']]})]})
  				]}))
 
+			if object['base'] == 'Free for personal use edition':
+				self.save.put("personal_use","1")
+
  			rows.append(tablerow("",{},{"obs":[
  				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['accounts'].short_description]})]}),
  				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object['accounts']]})]})
@@ -191,6 +195,16 @@ class modabout(unimodule.unimodule):
   				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[object.descriptions['productTypes'].short_description]})]}),
 				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[productTypes[2:]]})]})
   				]}))
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "check for personal use: %s" % self.save.get( 'personal_use' ))
+			if self.save.get( 'personal_use' ) == '1':
+				rows.append(tablerow("",{},{"obs":[
+					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[_('License')]})]}),
+					tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[u'Die "Free For Personal Use" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten für private Zwecke ermöglicht wird. <br><br>\
+							Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie im Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu verwenden.  <br><br>\
+							Die Überlassung der "Free For Personal Use"-Ausgabe von UCS erfolgt im Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein Fall des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf hin, dass bei der "Free For Personal Use"-Ausgabe die Haftungs-, Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren kommerziellen Softwareverträgen ergeben, nicht gelten.  <br><br>\
+							Wir wünschen Ihnen viel Freude bei der Nutzung der "Free For Personal Use" Ausgabe von Univention Corporate Server und freuen uns über Ihr Feedback. Bei Fragen wenden Sie sich bitte an unser Forum, dass Sie im Internet unter <a target=parent href=http://forum.univention.de/>http://forum.univention.de/</a> erreichen.']})]})
+					]}))
  		else:
  			rows.append(tablerow("",{},{"obs":[
  				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[text('',{},{'text':[_('no licence found')]})]})

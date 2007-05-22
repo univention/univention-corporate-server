@@ -162,6 +162,9 @@ class modrelogin(unimodule.unimodule):
 			self.save.put('ldap_position', position)
 
 			user=self.save.get("user")
+
+			auth_ok = False
+			gpl_version = False
 			try:
 				if  user == 'admin':
 					self.usermessage(_("You can't login with the admin user"))
@@ -231,12 +234,16 @@ class modrelogin(unimodule.unimodule):
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseGPLversion:
-				self.usermessage(_('The license check is disabled. Your are using the GPL version without any support or maintenance by Univention.'))
-				self.userinfo(_("Login successful"))
-				self.save.put("uc_module","none")
-				self.save.put("auth_ok","1")
-				self.save.put("authfail",None)
+				self.usermessage(_('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.'))
+				gpl_version = True
+				auth_ok = True
+			except univention.admin.uexceptions.freeForPersonalUse:
+				self.save.put("personal_use","1")
+				auth_ok = True
 			else:
+				auth_ok = True
+
+			if auth_ok:
 				baseConfig=univention_baseconfig.baseConfig()
 				baseConfig.load()
 
@@ -244,7 +251,12 @@ class modrelogin(unimodule.unimodule):
 				days = int( baseConfig.get( 'ssl/validity/days', 0 ) )
 				now = int( time.time() / 60 / 60 / 24 )
 				if days and ( days - now ) < warning:
-					self.usermessage( _( "Your SSL certificate will expire in %d days." ) % ( days - now ) )
+					if gpl_version:
+						self.usermessage += "<br> "
+						self.usermessage += _( "Your SSL certificate will expire in %d days." ) % ( days - now )
+					else:
+						self.usermessage( _( "Your SSL certificate will expire in %d days." ) % ( days - now ) )
+
 					self.userinfo(_("Login successful"))
 					self.save.put( "uc_module", "none" )
 					self.save.put( "auth_ok", "1" )
