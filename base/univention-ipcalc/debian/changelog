@@ -1,3 +1,9 @@
+univention-ipcalc (0.4.2) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 16:15:01 +0200
+
 univention-ipcalc (0.4.1) unstable; urgency=low
 
   * add GPL headers
