@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-11 13:58+0200\n"
+"POT-Creation-Date: 2007-05-22 11:44+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,12 +15,16 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: installer/main.py:188
-msgid "Press Ctrl+c to exit or any key to continue."
+#: installer/main.py:196
+msgid ""
+"Press Ctrl+c to exit or any key to continue. After exiting the installer "
+"please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
 msgstr ""
-"Drücken Sie zum Verlassen Strg+c oder drücken Sie eine Taste zum Fortfahren."
+"Drücken Sie Ctrl+c um den Installer zu verlassen oder eine beliebige Taste "
+"um fortzufahren. Nachdem Sie den Installer abgebrochen haben, können Sie das "
+"System neu booten oder mittels Ctrl+Alt+F2 zu einer shell gelangen."
 
-#: installer/main.py:203 ../univention-setup/usr/sbin/univention-setup:112
+#: installer/main.py:211 ../univention-setup/usr/sbin/univention-setup:112
 msgid ""
 "This error message is shown when an unexpected error occures during the "
 "installation process. The best way is to reboot the computer and retry the "
@@ -33,15 +37,15 @@ msgstr ""
 "Fehlermeldung allerdings bestätigen, wird die Installation ohne Neustart des "
 "Rechner neu initialisiert."
 
-#: installer/main.py:222 ../univention-setup/usr/sbin/univention-setup:131
+#: installer/main.py:230 ../univention-setup/usr/sbin/univention-setup:131
 msgid "A Python Exception has occured!"
 msgstr "Ein Python Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:241 installer/main.py:272
+#: installer/main.py:249 installer/main.py:280
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
 #: installer/modules/04_profile.py:54 installer/modules/12_partition.py:1926
-#: installer/modules/12_partition.py:1940 installer/modules/20_net.py:661
-#: installer/modules/20_net.py:888
+#: installer/modules/12_partition.py:1940 installer/modules/20_net.py:665
+#: installer/modules/20_net.py:892
 #: ../univention-setup/usr/sbin/univention-setup:143
 #: ../univention-setup/usr/sbin/univention-setup:170
 #: ../univention-setup/usr/sbin/univention-setup:189
@@ -49,39 +53,39 @@ msgstr "Ein Python Ausnahmefehler ist aufgetreten!"
 msgid "Ok"
 msgstr "Ok"
 
-#: installer/main.py:260
+#: installer/main.py:268
 msgid "Available Installer Languages:"
 msgstr "Verfügbare Installer Sprachen:"
 
-#: installer/main.py:343
+#: installer/main.py:351
 msgid " Univention Groupware Server"
 msgstr " Univention Groupware Server"
 
-#: installer/main.py:344
+#: installer/main.py:352
 msgid " Univention Corporate Server"
 msgstr " Univention Corporate Server"
 
-#: installer/main.py:350
+#: installer/main.py:358
 msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Recover Shell | Strg+c-Abbruch"
 
-#: installer/main.py:352
+#: installer/main.py:360
 msgid " F1-Help | F12-Start Installation | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Starte Installation | Strg+c-Abbruch"
 
-#: installer/main.py:354
+#: installer/main.py:362
 msgid " F1-Help | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F12-Weiter | Strg+c-Abbruch"
 
-#: installer/main.py:358
+#: installer/main.py:366
 msgid " F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Recover Shell | Strg+c-Abbruch"
 
-#: installer/main.py:360
+#: installer/main.py:368
 msgid " F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
 
-#: installer/main.py:362
+#: installer/main.py:370
 msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
@@ -102,29 +106,29 @@ msgstr " Warnung"
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1093 installer/modules/12_partition.py:839
-#: installer/modules/60_software.py:312
+#: installer/objects.py:1083 installer/modules/12_partition.py:839
+#: installer/modules/60_software.py:342
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
-#: installer/objects.py:1097 installer/modules/60_software.py:305
+#: installer/objects.py:1087 installer/modules/60_software.py:335
 msgid "F12-Accept changes"
 msgstr "F12-Änderungen akzeptieren"
 
-#: installer/objects.py:1099
+#: installer/objects.py:1089
 msgid "F12-Start Recover Shell"
 msgstr "F12-Recover Shell starten"
 
-#: installer/objects.py:1101
+#: installer/objects.py:1091
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1104 installer/modules/12_partition.py:838
-#: installer/modules/60_software.py:308 installer/modules/60_software.py:313
+#: installer/objects.py:1094 installer/modules/12_partition.py:838
+#: installer/modules/60_software.py:338 installer/modules/60_software.py:343
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
-#: installer/objects.py:1170 installer/objects.py:1421
+#: installer/objects.py:1160 installer/objects.py:1411
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
@@ -180,337 +184,337 @@ msgstr "Groupware Komponenten"
 msgid "Scalix for UCS"
 msgstr ""
 
-#: installer/package_list.py:87
+#: installer/package_list.py:88
 msgid "The Scalix Groupware"
 msgstr "Scalix Groupware"
 
-#: installer/package_list.py:90
+#: installer/package_list.py:91
 msgid "UGS Server"
 msgstr "UGS Server"
 
-#: installer/package_list.py:96
+#: installer/package_list.py:97
 msgid "Groupware based on Kolab2"
 msgstr "Groupware basierend auf Kolab2"
 
-#: installer/package_list.py:99
+#: installer/package_list.py:100
 msgid "UGS Webclient"
 msgstr "UGS Webclient"
 
-#: installer/package_list.py:104
+#: installer/package_list.py:105
 msgid "Horde Webclient for UGS"
 msgstr "Horde Webclient für UGS"
 
-#: installer/package_list.py:109
+#: installer/package_list.py:110
 msgid "Mail Services"
 msgstr "Mail Dienste"
 
-#: installer/package_list.py:111
+#: installer/package_list.py:112
 msgid "Mailserver Components"
 msgstr "Mailserver Komponenten"
 
-#: installer/package_list.py:115
+#: installer/package_list.py:116
 msgid "Postfix"
 msgstr "Postfix"
 
-#: installer/package_list.py:120
+#: installer/package_list.py:121
 msgid "SMTP Mail Server"
 msgstr "SMTP Mail Server"
 
-#: installer/package_list.py:123
+#: installer/package_list.py:124
 msgid "Cyrus IMAP Server "
 msgstr "Cyrus IMAP Server"
 
-#: installer/package_list.py:128
+#: installer/package_list.py:129
 msgid "IMAP/POP3 Server"
 msgstr "IMAP/POP3 Server"
 
-#: installer/package_list.py:131
+#: installer/package_list.py:132
 msgid "Spamassassin"
 msgstr "Spamassassin"
 
-#: installer/package_list.py:136
+#: installer/package_list.py:137
 msgid "Spamassassin Spamfilter"
 msgstr "Spamassassin Spamfilter"
 
-#: installer/package_list.py:142
+#: installer/package_list.py:143
 msgid "Print Services"
 msgstr "Druck Dienste"
 
-#: installer/package_list.py:144
+#: installer/package_list.py:145
 msgid "Printserver Components"
 msgstr "Druckserver Komponenten"
 
-#: installer/package_list.py:148 installer/package_list.py:153
+#: installer/package_list.py:149 installer/package_list.py:154
 msgid "Print Server"
 msgstr "Druckserver"
 
-#: installer/package_list.py:156
+#: installer/package_list.py:157
 msgid "Print Quota"
 msgstr "Druck Quota"
 
-#: installer/package_list.py:161
+#: installer/package_list.py:162
 msgid "Print Quota Support"
 msgstr "Druck Quota Unterstützung"
 
-#: installer/package_list.py:166
+#: installer/package_list.py:167
 msgid "IP Management"
 msgstr "IP Verwaltung"
 
-#: installer/package_list.py:168
+#: installer/package_list.py:169
 msgid "Several IP Components"
 msgstr "Verschiedene IP Komponenten"
 
-#: installer/package_list.py:172
+#: installer/package_list.py:173
 msgid "DNS"
 msgstr "DNS"
 
-#: installer/package_list.py:177
+#: installer/package_list.py:178
 msgid "DNS Server and Proxy"
 msgstr "DNS Server und Proxy"
 
-#: installer/package_list.py:180
+#: installer/package_list.py:181
 msgid "DHCP"
 msgstr "DHCP"
 
-#: installer/package_list.py:185
+#: installer/package_list.py:186
 msgid "DHCP Server"
 msgstr "DHCP-Server"
 
-#: installer/package_list.py:191
+#: installer/package_list.py:192
 msgid "Services"
 msgstr "Dienste"
 
-#: installer/package_list.py:193
+#: installer/package_list.py:194
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:197
+#: installer/package_list.py:198
 msgid "Nagios Server"
 msgstr "Nagios Server"
 
-#: installer/package_list.py:202 installer/package_list.py:210
+#: installer/package_list.py:203 installer/package_list.py:211
 msgid "Host, service and network monitoring program "
 msgstr "Rechner, Dienste und Netzwerk Überwachungsdienst"
 
-#: installer/package_list.py:205
+#: installer/package_list.py:206
 msgid "Nagios Client"
 msgstr "Nagios Client"
 
-#: installer/package_list.py:213
+#: installer/package_list.py:214
 msgid "Squid Proxyserver"
 msgstr "Squid Proxyserver"
 
-#: installer/package_list.py:218
+#: installer/package_list.py:219
 msgid "Web Proxy Services"
 msgstr "Web Proxy Dienste"
 
-#: installer/package_list.py:221 installer/package_list.py:226
+#: installer/package_list.py:222 installer/package_list.py:227
 msgid "FreeNX Server"
 msgstr "FreeNX Server"
 
-#: installer/package_list.py:229 installer/package_list.py:237
+#: installer/package_list.py:230
 msgid "Univention AD Connector"
 msgstr "Univention AD Connector"
 
-#: installer/package_list.py:234 installer/package_list.py:242
+#: installer/package_list.py:235
 msgid "Sync users and groups with Active Directory"
 msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
-#: installer/package_list.py:248
+#: installer/package_list.py:240
 msgid "Terminal Service"
 msgstr "Terminal Dienste"
 
-#: installer/package_list.py:250
+#: installer/package_list.py:242
 msgid "Terminal Service Components, required for ThinClients"
 msgstr "Terminal Dienst Komponenten werden für Thin Clients benötigt"
 
-#: installer/package_list.py:254
+#: installer/package_list.py:246
 msgid "Terminalserver"
 msgstr "Terminalserver"
 
-#: installer/package_list.py:259
+#: installer/package_list.py:251
 msgid "X-Window-System Client for Terminal Services"
 msgstr "X-Window-System Client für Terminal Dienste"
 
-#: installer/package_list.py:262
+#: installer/package_list.py:254
 msgid "Thinclient Environment"
 msgstr "Thinclient Umgebung"
 
-#: installer/package_list.py:267
+#: installer/package_list.py:259
 msgid "ThinClient Interface"
 msgstr "Thin Client Schnittstelle"
 
-#: installer/package_list.py:270 installer/package_list.py:446
+#: installer/package_list.py:262 installer/package_list.py:438
 msgid "KDE"
 msgstr "KDE"
 
-#: installer/package_list.py:275 installer/package_list.py:451
+#: installer/package_list.py:267 installer/package_list.py:443
 msgid "KDE - K Desktop Environment"
 msgstr "KDE - K Desktop Umgebung"
 
-#: installer/package_list.py:278 installer/package_list.py:454
+#: installer/package_list.py:270 installer/package_list.py:446
 msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
-#: installer/package_list.py:283 installer/package_list.py:459
+#: installer/package_list.py:275 installer/package_list.py:451
 msgid "OpenOffice.org Office Suite"
 msgstr "OpenOffice.org Office Suite"
 
-#: installer/package_list.py:286 installer/package_list.py:462
+#: installer/package_list.py:278 installer/package_list.py:454
 msgid "Mozilla Firefox"
 msgstr "Mozilla Firefox"
 
-#: installer/package_list.py:291 installer/package_list.py:467
+#: installer/package_list.py:283 installer/package_list.py:459
 msgid "Firefox Webbrowser"
 msgstr "Firefox Webbrowser"
 
-#: installer/package_list.py:294 installer/package_list.py:470
+#: installer/package_list.py:286 installer/package_list.py:462
 msgid "Java Plugin/Runtime"
 msgstr "Java Plugin/Java Umgebung"
 
-#: installer/package_list.py:299 installer/package_list.py:475
-#: installer/package_list.py:595
+#: installer/package_list.py:291 installer/package_list.py:467
+#: installer/package_list.py:587
 msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
-#: installer/package_list.py:302 installer/package_list.py:478
+#: installer/package_list.py:294 installer/package_list.py:470
 msgid "Flash Plugin"
 msgstr "Flash Plugin"
 
-#: installer/package_list.py:307 installer/package_list.py:483
+#: installer/package_list.py:299 installer/package_list.py:475
 msgid "Flashplugin for webbrowsers"
 msgstr "Flashplugin für Webbrowser"
 
-#: installer/package_list.py:310 installer/package_list.py:486
+#: installer/package_list.py:302 installer/package_list.py:478
 msgid "Mplayer Plugin"
 msgstr "Mplayer Plugin"
 
-#: installer/package_list.py:315 installer/package_list.py:491
+#: installer/package_list.py:307 installer/package_list.py:483
 msgid "Mplayer for webbrowsers"
 msgstr "Mplayer für Webbrowser"
 
-#: installer/package_list.py:318 installer/package_list.py:323
-#: installer/package_list.py:494 installer/package_list.py:499
+#: installer/package_list.py:310 installer/package_list.py:315
+#: installer/package_list.py:486 installer/package_list.py:491
 msgid "Gimp"
 msgstr "Gimp"
 
-#: installer/package_list.py:326 installer/package_list.py:502
+#: installer/package_list.py:318 installer/package_list.py:494
 msgid "Acrobat Reader"
 msgstr "Acrobat Reader"
 
-#: installer/package_list.py:331 installer/package_list.py:507
+#: installer/package_list.py:323 installer/package_list.py:499
 msgid "PDF Viewer"
 msgstr "PDF Betrachter"
 
-#: installer/package_list.py:336
+#: installer/package_list.py:328
 msgid "Fax/ISDN Services"
 msgstr "Fax/ISDN Dienste"
 
-#: installer/package_list.py:338
+#: installer/package_list.py:330
 msgid "Fax and ISDN Components"
 msgstr "Fax und ISDN Komponenten"
 
-#: installer/package_list.py:342 installer/package_list.py:347
+#: installer/package_list.py:334 installer/package_list.py:339
 msgid "Fax Server"
 msgstr "Fax Server"
 
-#: installer/package_list.py:350 installer/package_list.py:355
+#: installer/package_list.py:342 installer/package_list.py:347
 msgid "ISDN-Administration"
 msgstr "ISDN Administration"
 
-#: installer/package_list.py:360
+#: installer/package_list.py:352
 msgid "Administration"
 msgstr "Administration"
 
-#: installer/package_list.py:362
+#: installer/package_list.py:354
 msgid "Administration Tools"
 msgstr "Administrations Werkzeuge"
 
-#: installer/package_list.py:366
+#: installer/package_list.py:358
 msgid "Univention Admin"
 msgstr "Univention Admin"
 
-#: installer/package_list.py:371
+#: installer/package_list.py:363
 msgid "Univention Admin Webfrontend"
 msgstr "Univention Admin Weboberfläche"
 
-#: installer/package_list.py:374
+#: installer/package_list.py:366
 msgid "Univention Console"
 msgstr "Univention Console"
 
-#: installer/package_list.py:379
+#: installer/package_list.py:371
 msgid "Configuration Frontend for Servers and Clients"
 msgstr "Konfigurationsioberfläche für Server und Clients"
 
-#: installer/package_list.py:382
+#: installer/package_list.py:374
 msgid "Univention Software Monitor"
 msgstr "Univention Software Monitor"
 
-#: installer/package_list.py:387
+#: installer/package_list.py:379
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
-#: installer/package_list.py:392
+#: installer/package_list.py:384
 msgid "Backup"
 msgstr "Backup"
 
-#: installer/package_list.py:394
+#: installer/package_list.py:386
 msgid "Backup Tools"
 msgstr "Backup Werkzeuge"
 
-#: installer/package_list.py:398
+#: installer/package_list.py:390
 msgid "Unidump"
 msgstr "Unidump"
 
-#: installer/package_list.py:403
+#: installer/package_list.py:395
 msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
-#: installer/package_list.py:406
+#: installer/package_list.py:398
 msgid "Remote Backup"
 msgstr "Remote Backup"
 
-#: installer/package_list.py:411
+#: installer/package_list.py:403
 msgid "Backup Software based on rsync"
 msgstr "Backup Software basierend auf rsync"
 
-#: installer/package_list.py:416
+#: installer/package_list.py:408
 msgid "Network Installation"
 msgstr "Netzwerk Installation"
 
-#: installer/package_list.py:418
+#: installer/package_list.py:410
 msgid "Tools for installing UCS over the network"
 msgstr "Werkzeuge für die Netzwerkinstallation von UCS"
 
-#: installer/package_list.py:422
+#: installer/package_list.py:414
 msgid "Network Installer"
 msgstr "Netzwerk Installationsserver"
 
-#: installer/package_list.py:427
+#: installer/package_list.py:419
 msgid "Install UCS over the network"
 msgstr "Netzwerkinstallation von UCS"
 
-#: installer/package_list.py:432
+#: installer/package_list.py:424
 msgid "Programs"
 msgstr "Programme"
 
-#: installer/package_list.py:434
+#: installer/package_list.py:426
 msgid "Applications"
 msgstr "Anwendungen"
 
-#: installer/package_list.py:438
+#: installer/package_list.py:430
 msgid "Graphical User Interface"
 msgstr "Grafische Benutzeroberfläche"
 
-#: installer/package_list.py:443
+#: installer/package_list.py:435
 msgid "Core Packages for a Graphical Desktop Environment"
 msgstr "Basispakete für die grafische Desktop Umgebung"
 
-#: installer/package_list.py:510
+#: installer/package_list.py:502
 msgid "Additional KDE Applications"
 msgstr "Weitere KDE Anwendungen"
 
-#: installer/package_list.py:515
+#: installer/package_list.py:507
 msgid ""
 "More KDE applications, like k3b, kdegraphics, kdeadmin, kdeartwork, kdetoys "
 "or kdeutils"
@@ -518,95 +522,95 @@ msgstr ""
 "Weitere KDE Applikationen, wie k3b, kdegraphics, kdeadmin, kdeartwork, "
 "kdetoys oder kdeutils"
 
-#: installer/package_list.py:518
+#: installer/package_list.py:510
 msgid "Multimedia Applications"
 msgstr "Multimedia Anwendungen"
 
-#: installer/package_list.py:523
+#: installer/package_list.py:515
 msgid "Multimedia applications, like amarok, kmplayer or mplayer"
 msgstr "Multimedia Anwendungen, wie amarok, kmplayer oder mplayer"
 
-#: installer/package_list.py:526 installer/package_list.py:531
+#: installer/package_list.py:518 installer/package_list.py:523
 msgid "Fax Client"
 msgstr "Fax Client"
 
-#: installer/package_list.py:534
+#: installer/package_list.py:526
 msgid "Evolution"
 msgstr "Evolution"
 
-#: installer/package_list.py:539
+#: installer/package_list.py:531
 msgid "The GNOME Mailer"
 msgstr "Das GNOME Milprogramm"
 
-#: installer/package_list.py:544
+#: installer/package_list.py:536
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: installer/package_list.py:546
+#: installer/package_list.py:538
 msgid "Extra Tools"
 msgstr "Zusatz Werkzeuge"
 
-#: installer/package_list.py:550
+#: installer/package_list.py:542
 msgid "SSH"
 msgstr "SSH"
 
-#: installer/package_list.py:555
+#: installer/package_list.py:547
 msgid "Secure Shell"
 msgstr "Secure Shell"
 
-#: installer/package_list.py:558
+#: installer/package_list.py:550
 msgid "DHCP Client"
 msgstr "DHCP Client"
 
-#: installer/package_list.py:563
+#: installer/package_list.py:555
 msgid "Dynamic IP configuration"
 msgstr "Dynamische IP Konfiguration"
 
-#: installer/package_list.py:566
+#: installer/package_list.py:558
 msgid "Vim"
 msgstr "Vim"
 
-#: installer/package_list.py:571
+#: installer/package_list.py:563
 msgid "An Editor"
 msgstr "Ein Editor"
 
-#: installer/package_list.py:574
+#: installer/package_list.py:566
 msgid "Links-SSL"
 msgstr "Links-SSL"
 
-#: installer/package_list.py:579
+#: installer/package_list.py:571
 msgid "A SSL-ready text browser"
 msgstr "Ein SSL-fähiger Text Browser"
 
-#: installer/package_list.py:582
+#: installer/package_list.py:574
 msgid "Wget"
 msgstr "Wget"
 
-#: installer/package_list.py:587
+#: installer/package_list.py:579
 msgid "A Web getter"
 msgstr ""
 
-#: installer/package_list.py:590
+#: installer/package_list.py:582
 msgid "Java"
 msgstr "Java"
 
-#: installer/package_list.py:598
+#: installer/package_list.py:590
 msgid "VNC Server"
 msgstr "VNC Server"
 
-#: installer/package_list.py:603
+#: installer/package_list.py:595
 msgid "Server for remote desktop access"
 msgstr "Server für den Zugriff auf entferte Benutzeroberflächen"
 
-#: installer/package_list.py:606
+#: installer/package_list.py:598
 msgid "VNC Viewer"
 msgstr "VNC Betrachter"
 
-#: installer/package_list.py:611
+#: installer/package_list.py:603
 msgid "Client for remote desktop Access"
 msgstr "Client für den Zugriff auf entfernte Benutzeroberflächen"
 
-#: installer/package_list.py:614 installer/package_list.py:619
+#: installer/package_list.py:606 installer/package_list.py:611
 msgid "Microsoft Fonts"
 msgstr "Microsoft Schriften"
 
@@ -633,8 +637,8 @@ msgstr "Speichern"
 #: installer/modules/01_modules.py:116 installer/modules/03_hardware.py:259
 #: installer/modules/03_hardware.py:293 installer/modules/04_profile.py:55
 #: installer/modules/12_partition.py:1681
-#: installer/modules/12_partition.py:1729 installer/modules/20_net.py:662
-#: installer/modules/20_net.py:889
+#: installer/modules/12_partition.py:1729 installer/modules/20_net.py:666
+#: installer/modules/20_net.py:893
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -703,7 +707,7 @@ msgid "Check devices for UCS CD:"
 msgstr "Suche nach UCS-Medium"
 
 #: installer/modules/03_hardware.py:149 installer/modules/03_hardware.py:155
-#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:368
+#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:372
 msgid "F2-Add"
 msgstr "F2-Neu"
 
@@ -1102,8 +1106,8 @@ msgstr "Schreibe Partitionen"
 msgid " Partition dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/12_partition.py:766 installer/modules/20_net.py:783
-#: installer/modules/20_net.py:785
+#: installer/modules/12_partition.py:766 installer/modules/20_net.py:787
+#: installer/modules/20_net.py:789
 msgid "Device"
 msgstr "Gerät"
 
@@ -1147,11 +1151,11 @@ msgstr "unbekannt"
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
-#: installer/modules/12_partition.py:833 installer/modules/20_net.py:369
+#: installer/modules/12_partition.py:833 installer/modules/20_net.py:373
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
-#: installer/modules/12_partition.py:834 installer/modules/20_net.py:370
+#: installer/modules/12_partition.py:834 installer/modules/20_net.py:374
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
@@ -1378,7 +1382,7 @@ msgstr "Installiere den Bootloader in:"
 msgid "Master Boot Record"
 msgstr ""
 
-#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:624
+#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:628
 msgid "Device:"
 msgstr "Gerät:"
 
@@ -1404,67 +1408,67 @@ msgstr ""
 msgid "Bootloader"
 msgstr ""
 
-#: installer/modules/20_net.py:136 installer/modules/20_net.py:474
+#: installer/modules/20_net.py:136 installer/modules/20_net.py:478
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:140 installer/modules/20_net.py:373
-#: installer/modules/20_net.py:477
+#: installer/modules/20_net.py:140 installer/modules/20_net.py:377
+#: installer/modules/20_net.py:481
 msgid "Gateway"
 msgstr "Gateway"
 
-#: installer/modules/20_net.py:145 installer/modules/20_net.py:380
-#: installer/modules/20_net.py:453 installer/modules/20_net.py:480
+#: installer/modules/20_net.py:145 installer/modules/20_net.py:384
+#: installer/modules/20_net.py:457 installer/modules/20_net.py:484
 msgid "Nameserver"
 msgstr "Nameserver"
 
-#: installer/modules/20_net.py:150 installer/modules/20_net.py:388
-#: installer/modules/20_net.py:460 installer/modules/20_net.py:483
+#: installer/modules/20_net.py:150 installer/modules/20_net.py:392
+#: installer/modules/20_net.py:464 installer/modules/20_net.py:487
 msgid "DNS-Forwarder"
 msgstr "DNS-Forwarder"
 
-#: installer/modules/20_net.py:156 installer/modules/20_net.py:162
-#: installer/modules/20_net.py:489 installer/modules/20_net.py:493
+#: installer/modules/20_net.py:156 installer/modules/20_net.py:166
+#: installer/modules/20_net.py:493 installer/modules/20_net.py:497
 msgid "Proxy, example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/20_net.py:167 installer/modules/20_net.py:171
-#: installer/modules/20_net.py:496 installer/modules/20_net.py:498
+#: installer/modules/20_net.py:171 installer/modules/20_net.py:175
+#: installer/modules/20_net.py:500 installer/modules/20_net.py:502
 msgid "Proxy, for example http://10.201.1.1:8080"
 msgstr "Proxy, z.B. http://10.201.1.1:8080"
 
-#: installer/modules/20_net.py:201
+#: installer/modules/20_net.py:205
 msgid "You have to add one or more Network interfaces."
 msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
 
-#: installer/modules/20_net.py:222 installer/modules/20_net.py:223
-#: installer/modules/20_net.py:236 installer/modules/20_net.py:237
-#: installer/modules/20_net.py:328 installer/modules/20_net.py:349
+#: installer/modules/20_net.py:226 installer/modules/20_net.py:227
+#: installer/modules/20_net.py:240 installer/modules/20_net.py:241
+#: installer/modules/20_net.py:332 installer/modules/20_net.py:353
 msgid "New Virtual Device"
 msgstr "Neues virtuelles Interface"
 
-#: installer/modules/20_net.py:239 installer/modules/20_net.py:240
-#: installer/modules/20_net.py:325 installer/modules/20_net.py:347
+#: installer/modules/20_net.py:243 installer/modules/20_net.py:244
+#: installer/modules/20_net.py:329 installer/modules/20_net.py:351
 msgid "New Device"
 msgstr "Neues Interface"
 
-#: installer/modules/20_net.py:364
+#: installer/modules/20_net.py:368
 msgid "Device        IP               Netmask"
 msgstr "Interface     IP               Netzmaske"
 
-#: installer/modules/20_net.py:385 installer/modules/20_net.py:393
+#: installer/modules/20_net.py:389 installer/modules/20_net.py:397
 msgid "More"
 msgstr "Mehr"
 
-#: installer/modules/20_net.py:396
+#: installer/modules/20_net.py:400
 msgid "HTTP-Proxy"
 msgstr "HTTP-Proxy"
 
-#: installer/modules/20_net.py:501
+#: installer/modules/20_net.py:505
 msgid "You have to add one or more network interfaces."
 msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben."
 
-#: installer/modules/20_net.py:505
+#: installer/modules/20_net.py:509
 msgid ""
 "Network \n"
 " \n"
@@ -1543,77 +1547,77 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/20_net.py:508 installer/modules/20_net.py:805
-#: installer/modules/20_net.py:807
+#: installer/modules/20_net.py:512 installer/modules/20_net.py:809
+#: installer/modules/20_net.py:811
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/20_net.py:631
+#: installer/modules/20_net.py:635
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/20_net.py:631 installer/modules/20_net.py:634
+#: installer/modules/20_net.py:635 installer/modules/20_net.py:638
 msgid "Static"
 msgstr "Statisch"
 
-#: installer/modules/20_net.py:637
+#: installer/modules/20_net.py:641
 msgid "IP address:"
 msgstr "IP-Adresse:"
 
-#: installer/modules/20_net.py:643
+#: installer/modules/20_net.py:647
 msgid "Netmask:"
 msgstr "Netzmaske:"
 
-#: installer/modules/20_net.py:649
+#: installer/modules/20_net.py:653
 msgid "Broadcast:"
 msgstr "Broadcast:"
 
-#: installer/modules/20_net.py:655
+#: installer/modules/20_net.py:659
 msgid "Network:"
 msgstr "Netzwerk:"
 
-#: installer/modules/20_net.py:763
+#: installer/modules/20_net.py:767
 msgid " Interface configuration"
 msgstr " Interface Konfiguration"
 
-#: installer/modules/20_net.py:777 installer/modules/20_net.py:914
+#: installer/modules/20_net.py:781 installer/modules/20_net.py:918
 #: installer/modules/30_ssl.py:63 installer/modules/30_ssl.py:165
 #: installer/modules/31_join.py:49 installer/modules/31_join.py:136
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/20_net.py:778 installer/modules/20_net.py:915
+#: installer/modules/20_net.py:782 installer/modules/20_net.py:919
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:790 installer/modules/20_net.py:792
+#: installer/modules/20_net.py:794 installer/modules/20_net.py:796
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: installer/modules/20_net.py:795 installer/modules/20_net.py:797
+#: installer/modules/20_net.py:799 installer/modules/20_net.py:801
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: installer/modules/20_net.py:800 installer/modules/20_net.py:802
+#: installer/modules/20_net.py:804 installer/modules/20_net.py:806
 msgid "Broadcast"
 msgstr "Broadcast"
 
-#: installer/modules/20_net.py:863
+#: installer/modules/20_net.py:867
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/20_net.py:872
+#: installer/modules/20_net.py:876
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/20_net.py:880
+#: installer/modules/20_net.py:884
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/20_net.py:896
+#: installer/modules/20_net.py:900
 #, python-format
 msgid " More %ss"
 msgstr "Mehr %ss"
@@ -1746,19 +1750,19 @@ msgstr "Join-Optionen"
 msgid "Preparing Package List"
 msgstr "Bereite Paketliste vor"
 
-#: installer/modules/60_software.py:291
+#: installer/modules/60_software.py:321
 msgid "Components"
 msgstr "Komponenten"
 
-#: installer/modules/60_software.py:292
+#: installer/modules/60_software.py:322
 msgid "Packages"
 msgstr "Pakete"
 
-#: installer/modules/60_software.py:417
+#: installer/modules/60_software.py:447
 msgid "No helptext available."
 msgstr "Keine Hilfe verfügbar"
 
-#: installer/modules/60_software.py:447
+#: installer/modules/60_software.py:477
 msgid ""
 "Software \n"
 " \n"
@@ -1770,7 +1774,7 @@ msgstr ""
 " Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
 "können in den folgenden Schritten die Details für manche Module ändern."
 
-#: installer/modules/60_software.py:450
+#: installer/modules/60_software.py:480
 msgid "Software"
 msgstr "Software"
 
@@ -1784,7 +1788,7 @@ msgstr "Lokales Repository erstellen"
 msgid "Create home share"
 msgstr "Heimatverzeichnis Freigabe"
 
-#: installer/modules/70_system_settings.py:84
+#: installer/modules/70_system_settings.py:83
 msgid ""
 "System-Settings  \n"
 " \n"
@@ -1794,7 +1798,7 @@ msgstr ""
 " \n"
 " Verschiedene System Einstellungen"
 
-#: installer/modules/70_system_settings.py:87
+#: installer/modules/70_system_settings.py:86
 msgid "System-Settings"
 msgstr "System-Optionen"
 
@@ -1926,6 +1930,11 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "Press Ctrl+c to exit or any key to continue."
+#~ msgstr ""
+#~ "Drücken Sie zum Verlassen Strg+c oder drücken Sie eine Taste zum "
+#~ "Fortfahren."
 
 #~ msgid "UGS - Kolab 2"
 #~ msgstr "UGS - Kolab 2"

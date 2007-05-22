@@ -193,7 +193,7 @@ def exit_curses():
 	curses.endwin()
 
 def abort(max_x,max_y):
-	text=_('Press Ctrl+c to exit or any key to continue.')
+	text=_('Press Ctrl+c to exit or any key to continue. After exiting the installer please reboot the system or press Ctrl+Alt+F2 to get an shell prompt.')
 	message=objects.warning(text, max_y, max_x)
 	message.draw()
 	c = stdscr.getch()
