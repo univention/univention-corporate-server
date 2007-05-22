@@ -1,0 +1,88 @@
+#!/bin/sh
+#
+# Univention Admin
+#  postinst file for the admin debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+modules-config apache enable mod_php4
+
+/usr/lib/univention-install/25univention-admin.inst || true
+
+univention-baseconfig set admin/timeout?300
+univention-baseconfig set admin/web/language?de
+univention-baseconfig set ssl/validity/check?yes
+
+eval `univention-baseconfig shell`
+if [ -e /etc/univention/ssl/univention-admin ]; then
+	mv /etc/univention/ssl/univention-admin "/etc/univention/ssl/univention-admin.$domainname"
+fi
+
+for path in /usr/share/univention-admin/www/icon /usr/share/univention-admin/www/style /usr/share/univention-admin/www/includes; do
+    if [ -d $path -a ! -h $path ]; then
+	rm -r $path
+    fi
+done
+
+test -h /usr/share/univention-admin/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-admin/www
+test -h /usr/share/univention-admin/www/file.php || ln -s /usr/share/univention-webui/www/file.php /usr/share/univention-admin/www
+test -h /usr/share/univention-admin/www/includes || ln -s /usr/share/univention-webui/www/includes /usr/share/univention-admin/www
+test -h /usr/share/univention-admin/www/style || ln -s /usr/share/univention-webui-style/style /usr/share/univention-admin/www
+test -h /usr/share/univention-admin/www/icon || ln -s /usr/share/univention-webui-style/icon /usr/share/univention-admin/www
+
+
+univention-baseconfig set admin/web/debug/level?0
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+
+	if test -e /etc/univention/ssl/univention-admin.$domainname/cert.pem; then
+		chmod g+rx /etc/univention/ssl/univention-admin.$domainname
+		chmod g+r /etc/univention/ssl/univention-admin.$domainname/*
+	fi
+
+	apache_pids=`pidof apache`
+	/etc/init.d/apache stop || true
+	sleep 1
+
+	for i in `ps -ef | grep "/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.pyo" | awk '{print $2}'`; do
+		kill $i >/dev/null 2>&1
+	done
+
+	for i in `pidof apache`; do
+		kill -9 $i >/dev/null 2>&1
+	done
+
+
+	sleep 1
+
+	if [ -n "$apache_pids" ]; then
+		/etc/init.d/apache start || true
+	fi
+else
+	/etc/init.d/apache restart || true
+fi

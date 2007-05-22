@@ -1,0 +1,19 @@
+Type: file
+File: etc/univention/apache/91univention-admin
+
+Type: multifile
+Multifile: etc/hosts
+Variables: interfaces/eth.*/address
+Variables: domainname
+
+Type: subfile
+Multifile: etc/hosts
+Subfile: etc/hosts.d/10-admin
+Variables: interfaces/eth.*/address
+Variables: domainname
+
+Type: file
+File: usr/share/univention-admin/www/config
+Variables: admin/web/debug/level
+Variables: admin/web/language
+Variables: admin/timeout

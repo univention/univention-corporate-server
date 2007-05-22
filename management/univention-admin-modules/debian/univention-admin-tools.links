@@ -1,0 +1,10 @@
+usr/share/univention-admin-tools/univention-cli-client usr/sbin/univention-admin
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-passwd
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-adduser
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-deluser
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-addgroup
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-delgroup
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-addmachine
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-delmachine
+usr/share/univention-admin-tools/univention-cli-client usr/share/univention-admin-tools/univention-setprimarygroup
+usr/share/univention-admin-tools/univention-cli-client usr/sbin/univention-license-check

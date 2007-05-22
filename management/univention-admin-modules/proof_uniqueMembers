@@ -1,0 +1,140 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Admin Modules
+#  check if users are member of their primary group
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import ldap, string
+
+import univention_baseconfig
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+
+baseDN=baseConfig['ldap/base']
+
+lo=ldap.open('localhost', 389)
+bindpw=open('/etc/ldap.secret').read()
+if bindpw[-1] == '\n':
+	bindpw=bindpw[0:-1]
+lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+
+count_changes = 0
+warning = 0
+
+
+print "\n  proof if users are member of their primary group"
+# GID's will only be found in posixAccount
+res_pA=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber'])
+
+for i in range(0,len(res_pA)):
+	gidNumber_pA=''
+	dn_pA=res_pA[i][0]
+	if res_pA[i][1].has_key('gidNumber'):
+		gidNumber_pA=res_pA[i][1]['gidNumber'][0]
+	else:
+		print "Warning, posixAccount without gidNumber",res_pA[i]
+		warning = warning + 1
+
+	# search corresponding group
+	res_uG=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember'])
+
+	# there must be excactly one group with this gid
+	if len(res_uG)>1:
+		print "Warning: found more than one univentionGroup for",dn_pA,"gidNumber",gidNumber_pA,"!"
+		warning = warning + 1
+	if len(res_uG)<1 and not gidNumber_pA=="0":
+		print "Warning: found no univentionGroup for",dn_pA,"gidNumber",gidNumber_pA,"!"
+		warning = warning +1
+	# well change all if there are more -- the user needs to delete all but one of them
+	for i in range(0,len(res_uG)):
+		uniqueMember_uG = ()
+		dn_uG=res_uG[i][0]
+		found_uM = 0
+		# look for the needed entry
+		if res_uG[i][1].has_key('uniqueMember'):
+			uniqueMember_uG = res_uG[i][1]['uniqueMember']
+			for el in uniqueMember_uG:
+				if el == dn_pA: found_uM = 1
+		# no entry found, gonna add one
+		if not found_uM:
+			print "add uniqueMember entry for",dn_pA,"in",dn_uG
+			modlist = [(ldap.MOD_ADD,'uniqueMember',dn_pA)]
+			try:
+				lo.modify_s(dn_uG,modlist)
+				count_changes = count_changes +1
+			except:
+				print "Warning: failed to modify Group %s"%dn_uG
+				warning = warning + 1
+
+print "  proof of",len(res_pA),"posixAccounts finished, changed",count_changes,"of them.\n"
+
+
+count_changes=0
+print "  proof if group-members exist"
+res_pG=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixGroup', ['uniqueMember'])
+for i in range(0,len(res_pG)):
+	dn_pG = res_pG[i][0]
+	members = []
+	if res_pG[i][1].has_key('uniqueMember'):
+		members = res_pG[i][1]['uniqueMember']
+
+	remmembers=[]
+	
+	for member in members:
+		n=string.find(member,',')
+		base=member[n+1:]
+		filter=member[:n]
+
+		try:
+			res_pU=lo.search_s(base, ldap.SCOPE_ONELEVEL, filter, ['objectClass'])
+			if len(res_pU) > 1:
+				print "Warning: more than one object found while searching for %s of group %s -- clear manually"%(member,dn_pG)
+				warning+=1
+			elif len(res_pU) < 1:
+				print "  no object found while searching for %s, will be removed"%member
+				remmembers.append(member)
+		except:
+			print "Warning: Search for member %s of group %s failed -- clear manually"%(member,dn_pG)
+			warning+=1
+
+
+	for member in remmembers:
+		modlist = [(ldap.MOD_DELETE,'uniqueMember',member)]
+		try:
+			lo.modify_s(dn_pG,modlist)
+			count_changes = count_changes +1
+		except:
+			print "Warning: failed to remove %s from Group %s"%(member,dn_pG)
+			warning = warning + 1
+			
+print "  proof of",len(res_pG),"posixGroups finished, changed",count_changes,"of them.\n"
+
+
+if warning: print "There were %s warning(s) !"%warning
+

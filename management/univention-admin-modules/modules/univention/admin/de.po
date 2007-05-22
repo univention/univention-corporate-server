@@ -1,0 +1,897 @@
+# Copyright (C) 2006 Univention GmbH
+# Univention GmbH <packages@univention.de>
+# This file is distributed under the same license as this package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-12-11 08:33+0100\n"
+"PO-Revision-Date: 2006-08-30 16:43+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: ENCODING\n"
+"Generated-By: pygettext.py 1.3\n"
+
+#: allocators.py:132 allocators.py:158 locking.py:66
+#, python-format
+msgid ": type was %s"
+msgstr ": Typ war %s"
+
+#: modules.py:159
+msgid "Custom"
+msgstr "Benutzerdefiniert"
+
+#: modules.py:549
+msgid "Find"
+msgstr "Suchen"
+
+#: modules.py:549
+msgid "Find Object(s)"
+msgstr "Objekt(e) suchen"
+
+#: modules.py:549
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: modules.py:549
+msgid "Add Object(s)"
+msgstr "Objekt(e) hinzufügen"
+
+#: mungeddial.py:40
+msgid "CTX Present"
+msgstr "CTX Present"
+
+#: mungeddial.py:51
+msgid "Allow Logon to Terminal Server"
+msgstr "Anmeldung am Terminalserver zulassen"
+
+#: mungeddial.py:62
+msgid "Connect client drives at Logon"
+msgstr "Client-Laufwerke beim Anmelden verbinden"
+
+#: mungeddial.py:73
+msgid "Connect client printers at Logon"
+msgstr "Client-Drucker beim Anmelden verbinden"
+
+#: mungeddial.py:84
+msgid "Default to main client printer"
+msgstr "Standardmäßig der Client Hauptdrucker"
+
+#: mungeddial.py:95
+msgid "CTX Flags1"
+msgstr "CTX Flags1"
+
+#: mungeddial.py:106
+msgid "CTX Callback"
+msgstr "CTX Callback"
+
+#: mungeddial.py:117
+msgid "CTX Shadow"
+msgstr "CTX Spiegelung"
+
+#: mungeddial.py:128
+msgid "Broken or Timed out Session"
+msgstr "Beendete oder abgelaufene Verbindungen"
+
+#: mungeddial.py:139
+msgid "Reconnect Session"
+msgstr "Wiederherstellung von beendeten Verbindungen"
+
+#: mungeddial.py:150
+msgid "CTX Maximum Connection Time"
+msgstr "CTX maximale Verbindungsdauer"
+
+#: mungeddial.py:161
+msgid "CTX Maximum Disconnection Time"
+msgstr "CTX maximale Verbindungstrennungsdauer"
+
+#: mungeddial.py:172
+msgid "CTX Maximum Idle Time"
+msgstr "CTX Maximale Untätigkeitsdauer"
+
+#: mungeddial.py:183
+msgid "Keyboard Layout"
+msgstr "Tastaturlayout"
+
+#: mungeddial.py:194
+msgid "CTX Minimal Encryption Level"
+msgstr "CTX minimales Verschlüssungslevel"
+
+#: mungeddial.py:205
+msgid "Start Program Work Directory"
+msgstr "Startprogramm Arbeitsverzeichnis"
+
+#: mungeddial.py:216
+msgid "CTX NW Logon Server"
+msgstr "CTX NW Logon Server"
+
+#: mungeddial.py:227
+msgid "Terminal Server Base Directory"
+msgstr "Basisverzeichnis des Terminalservers"
+
+#: mungeddial.py:238
+msgid "Terminal Server Base Directory Drive Letter"
+msgstr "Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers"
+
+#: mungeddial.py:249
+msgid "Windows Terminal Server Profile Path"
+msgstr "Windows Terminalserver Profilpfad"
+
+#: mungeddial.py:260
+msgid "Start Program Use Client Configuration"
+msgstr "Client Konfiguration übernehmen für das Startprogramm"
+
+#: mungeddial.py:271
+msgid "Start Program Commandline"
+msgstr "Startprogramm Befehlszeile"
+
+#: mungeddial.py:282
+msgid "CTX Callback Number"
+msgstr "CTX Callback Number"
+
+#: mungeddial.py:294
+msgid "Windows Advanced"
+msgstr "Windows Erweiterungen"
+
+#: mungeddial.py:294
+msgid "Windows Terminal Server Settings"
+msgstr "Windows Terminalservereinstellungen"
+
+#: syntax.py:80
+msgid "not enough arguments"
+msgstr "Nicht genug Parameter"
+
+#: syntax.py:84
+msgid "too many arguments"
+msgstr "Zu viele Parameter"
+
+#: syntax.py:91
+msgid "Invalid syntax"
+msgstr "Falsche Syntax"
+
+#: syntax.py:190
+msgid "Value must be a number!"
+msgstr "Der Wert muss eine Zahl sein."
+
+#: syntax.py:202
+msgid "Value must be 0 or 1"
+msgstr "Der Wert muss 0 oder 1 sein."
+
+#: syntax.py:214
+msgid ""
+"Value must be an integer followed by one of GB,MB,KB,B or nothing (equals B)!"
+msgstr ""
+"Der Wert muss eine Zahl sein. Optional kann noch eine Einheit mittels GB,MB,"
+"KB oder B angegeben werden."
+
+#: syntax.py:221
+msgid "Value may not contain whitespace or exclamation mark !"
+msgstr "Der Wert darf keine Leerzeichen oder Ausrufezeichen enthalten."
+
+#: syntax.py:234 syntax.py:258 syntax.py:294 syntax.py:548 syntax.py:557
+#: syntax.py:567
+msgid "Value may not contain other than numbers, letters and dots!"
+msgstr "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten."
+
+#: syntax.py:245
+msgid "Value may not contain other than numbers, letters, dots and spaces!"
+msgstr ""
+"Der Wert darf nur Zahlen, Buchstaben, Leerzeichen und Punkte enthalten."
+
+#: syntax.py:270 syntax.py:282
+msgid ""
+"Value may not contain other than numbers, letters and dots, and may not be "
+"admin!"
+msgstr ""
+"Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten. Ausnahme ist die "
+"Bezeichnug 'admin', die auch nicht verwendet werden darf"
+
+#: syntax.py:302
+msgid ", a path must begin with \"/\"!"
+msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
+
+#: syntax.py:306
+msgid "Value may not contain double quotes (\")!"
+msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
+
+#: syntax.py:320
+msgid "The password is to short, at least 8 characters needed."
+msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
+
+#: syntax.py:328
+msgid "Empty password not allowed!"
+msgstr "Ein leeres Passwort ist nicht erlaubt!"
+
+#: syntax.py:341
+msgid "Not a valid hostname!"
+msgstr "Kein gültiger Hostname"
+
+#: syntax.py:355
+msgid "Not a valid windows hostname!"
+msgstr "Kein gültiger Windows-Hostname"
+
+#: syntax.py:367 syntax.py:370
+msgid "Not a valid IP address!"
+msgstr "Keine gültige IP-Adresse"
+
+#: syntax.py:398
+msgid "Not a valid hostname or IP address!"
+msgstr "Kein gültiger Hostname oder IP-Adresse"
+
+#: syntax.py:441
+msgid "Not a valid netmask!"
+msgstr "Keine gültige Netzwerkmaske."
+
+#: syntax.py:445
+msgid "First Address"
+msgstr "Erste Adresse"
+
+#: syntax.py:445
+msgid "Last Address"
+msgstr "Letzte Adresse"
+
+#: syntax.py:456
+msgid "tcp"
+msgstr ""
+
+#: syntax.py:456
+msgid "udp"
+msgstr ""
+
+#: syntax.py:468
+msgid "Not an absolute path!"
+msgstr "Keine absolute Pfadangabe"
+
+#: syntax.py:479 syntax.py:490
+msgid "Not a valid email address!"
+msgstr "Keine gültige E-Mail-Adresse"
+
+#: syntax.py:508
+msgid "Not a valid Date"
+msgstr "Kein gültiges Datum"
+
+#: syntax.py:522
+msgid ""
+"An IP subnet consists of one to three numbers ranging from 0 to 255 "
+"separated by dots."
+msgstr ""
+"Ein IP-Subnetz muss mit ein bis drei Zahlen zwischen 0 und 255 angegeben "
+"werden, die mit einem Punkt getrennt werden."
+
+#: syntax.py:537
+msgid ""
+"The name of a reverse zone consists of the reversed subnet address followed "
+"by .in-addr.arpa. Example: \"0.168.192.in-addr.arpa\""
+msgstr ""
+"Der Name einer Reverse Lookup Zone besteht aus dem inversen Subnetz, gefolgt "
+"von .in-addr.arpa. z.B.: \"0.168.192.in-addr.arpa\""
+
+#: syntax.py:545
+msgid "Missing value!"
+msgstr "Fehlender Wert!"
+
+#: syntax.py:572 syntax.py:582
+msgid "Priority"
+msgstr "Priorität"
+
+#: syntax.py:572
+msgid "Mail Server"
+msgstr "Mail-Server"
+
+#: syntax.py:577
+msgid "Service"
+msgstr "Dienst"
+
+#: syntax.py:577
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: syntax.py:582
+msgid "Weight"
+msgstr "Gewichtung"
+
+#: syntax.py:582
+msgid "Port"
+msgstr "Port"
+
+#: syntax.py:582
+msgid "Server"
+msgstr "Server"
+
+#: syntax.py:592
+msgid "Not a valid time format"
+msgstr "Keine gültige Zeitangabe"
+
+#: syntax.py:605
+msgid "Not a valid time interval"
+msgstr "Kein gültiges Zeitintervall"
+
+#: syntax.py:611
+msgid "Ethernet"
+msgstr "Ethernet"
+
+#: syntax.py:611
+msgid "FDDI"
+msgstr "FDDI"
+
+#: syntax.py:611
+msgid "Token-Ring"
+msgstr "Token-Ring"
+
+#: syntax.py:620 syntax.py:636
+msgid ""
+"Value must have 6 two digit hexadecimal numbers separated by \"-\" or \":\" !"
+msgstr ""
+"Der Wert muss 6 mal 2 Hexadezimalwerte beinhalten, die mit einem \"-\" oder "
+"\":\"getrennt werden"
+
+#: syntax.py:640
+msgid "Type"
+msgstr "Typ"
+
+#: syntax.py:640
+msgid "Address"
+msgstr "Adresse"
+
+#: syntax.py:653
+msgid ""
+"Value may not contain other than numbers, letters, underscore (\"_\") and "
+"minus (\"-\")!"
+msgstr ""
+"Der Wert darf nur Zahlen, Buchstaben, Unterstriche (\"_\") und Minuszeichen "
+"(\"-\") enthalten."
+
+#: syntax.py:657
+msgid "Driver"
+msgstr "Treiber"
+
+#: syntax.py:657
+msgid "Description"
+msgstr "Beschreibung"
+
+#: syntax.py:681 syntax.py:746
+msgid "Not a valid LDAP DN"
+msgstr "Kein gültiger LDAP-DN"
+
+#: syntax.py:712
+msgid "Invitation Policy"
+msgstr "Richtlinie für Einladungen"
+
+#: syntax.py:719
+msgid "Shared folder user ACL"
+msgstr "Benutzer ACLs für gemeinsame Ordner"
+
+#: syntax.py:724 syntax.py:735
+msgid "Not a valid shared folder ACL"
+msgstr "Keine gültige ACL für gemeinsame Ordner"
+
+#: syntax.py:730
+msgid "Shared folder group ACL"
+msgstr "Gruppen ACLs für gemeinsame Ordner"
+
+#: syntax.py:767
+msgid ""
+"Value consists of two integer numbers separated by an \"x\" (e.g. \"1024x768"
+"\")"
+msgstr ""
+"Der Wert muss zwei ganzzahlige Werte mit einem \"x\" dazwischen beinhalten (z."
+"B. \"1024x768\")"
+
+#: syntax.py:776
+msgid ""
+"Value consists of two integer numbers separated by a \"-\" (e.g. \"30-70\")"
+msgstr ""
+"Der Wert muss aus zwei durch ein \"-\" getrennte ganzzahlige Werte bestehen "
+"(z.B. \"30-70\")"
+
+#: syntax.py:1000
+msgid "User ID"
+msgstr "Benutzer-ID"
+
+#: syntax.py:1005
+msgid "Group ID"
+msgstr "Gruppen-ID"
+
+#: syntax.py:1025 syntax.py:1030
+msgid "Primary Group"
+msgstr "Primäre Gruppe"
+
+#: syntax.py:1035
+msgid "Network"
+msgstr "Netzwerk"
+
+#: syntax.py:1041 syntax.py:1056
+msgid "DNS Entry"
+msgstr "DNS-Eintrag"
+
+#: syntax.py:1046 syntax.py:1061
+msgid "DNS Entry Reverse"
+msgstr "Reverse Lookup DNS-Eintrag"
+
+#: syntax.py:1051 syntax.py:1066
+msgid "DHCP Entry"
+msgstr "DHCP-Eintrag"
+
+#: syntax.py:1071
+msgid "Share"
+msgstr "Freigabe"
+
+#: syntax.py:1336 syntax.py:1355 syntax.py:1369 syntax.py:1408 syntax.py:1439
+msgid "all"
+msgstr "Alle"
+
+#: syntax.py:1337
+msgid "January"
+msgstr "Januar"
+
+#: syntax.py:1338
+msgid "February"
+msgstr "Februar"
+
+#: syntax.py:1339
+msgid "March"
+msgstr "März"
+
+#: syntax.py:1340
+msgid "April"
+msgstr "April"
+
+#: syntax.py:1341
+msgid "May"
+msgstr "Mai"
+
+#: syntax.py:1342
+msgid "June"
+msgstr "Juni"
+
+#: syntax.py:1343
+msgid "July"
+msgstr "Juli"
+
+#: syntax.py:1344
+msgid "August"
+msgstr "August"
+
+#: syntax.py:1345
+msgid "September"
+msgstr "September"
+
+#: syntax.py:1346
+msgid "October"
+msgstr "Oktober"
+
+#: syntax.py:1347
+msgid "November"
+msgstr "November"
+
+#: syntax.py:1348
+msgid "December"
+msgstr "Dezember"
+
+#: syntax.py:1356
+msgid "Monday"
+msgstr "Montag"
+
+#: syntax.py:1357
+msgid "Tuesday"
+msgstr "Dienstag"
+
+#: syntax.py:1358
+msgid "Wednesday"
+msgstr "Mittwoch"
+
+#: syntax.py:1359
+msgid "Thursday"
+msgstr "Donnerstag"
+
+#: syntax.py:1360
+msgid "Friday"
+msgstr "Freitag"
+
+#: syntax.py:1361
+msgid "Saturday"
+msgstr "Samstag"
+
+#: syntax.py:1362
+msgid "Sunday"
+msgstr "Sonntag"
+
+#: syntax.py:1465
+msgid "Domain Group"
+msgstr "Globale Gruppe"
+
+#: syntax.py:1466
+msgid "Local Group"
+msgstr "Lokale Gruppe"
+
+#: syntax.py:1467
+msgid "Well-Known Group"
+msgstr "Bekannte Gruppe"
+
+#: syntax.py:1476 syntax.py:1483 syntax.py:1490
+msgid "Soft-Limit"
+msgstr "Soft-Limit"
+
+#: syntax.py:1476 syntax.py:1483 syntax.py:1490
+msgid "Hard-Limit"
+msgstr "Hard-Limit"
+
+#: syntax.py:1476 syntax.py:1490
+msgid "Group"
+msgstr "Gruppe"
+
+#: syntax.py:1483
+msgid "User"
+msgstr "Benutzer"
+
+#: syntax.py:1506
+msgid "synchronous"
+msgstr "synchron"
+
+#: syntax.py:1507
+msgid "asynchronous"
+msgstr "asynchron"
+
+#: syntax.py:1518
+#, python-format
+msgid "\"%s\" is not a Univention Admin Module."
+msgstr "\"%s\" ist kein Univention Admin Modul"
+
+#: syntax.py:1556
+msgid "None"
+msgstr "Keine"
+
+#: syntax.py:1561
+msgid "About"
+msgstr "Über"
+
+#: syntax.py:1561
+msgid "Browse"
+msgstr "Navigation"
+
+#: syntax.py:1561
+msgid "Wizards"
+msgstr "Assistenten"
+
+#: syntax.py:1561
+msgid "Personal Settings"
+msgstr "Persönliche Einstellungen"
+
+#: syntax.py:1575
+msgid "No Reboot"
+msgstr "Nicht neu starten"
+
+#: syntax.py:1576
+msgid "Immediately"
+msgstr "Sofort"
+
+#: syntax.py:1582
+msgid "Groupware Account"
+msgstr "Groupware Konto"
+
+#: syntax.py:1583
+msgid "Kerberos Principal"
+msgstr "Kerberos Prinzipal"
+
+#: syntax.py:1584
+msgid "Personal Information"
+msgstr "Persönliche Information"
+
+#: syntax.py:1585
+msgid "Samba Account"
+msgstr "Samba Konto"
+
+#: syntax.py:1586
+msgid "Posix Account"
+msgstr "Posix Konto"
+
+#: syntax.py:1587
+msgid "Mail Account"
+msgstr "Mail Konto"
+
+#: syntax.py:1595
+msgid "Disconnect"
+msgstr "Trennen"
+
+#: syntax.py:1596
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: syntax.py:1604
+msgid "All Clients"
+msgstr "Von jedem Client"
+
+#: syntax.py:1605
+msgid "Previously used Client"
+msgstr "Nur von vorherigem Client"
+
+#: syntax.py:1613
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: syntax.py:1614
+msgid "Enabled: Input: on, Message: on"
+msgstr "Aktiviert: Eingabe: ein, Benachrichtigen: ein"
+
+#: syntax.py:1615
+msgid "Enabled: Input: on, Message: off"
+msgstr "Aktiviert: Eingabe: an, Benachrichtigen: aus"
+
+#: syntax.py:1616
+msgid "Enabled: Input: off, Message: on"
+msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: an"
+
+#: syntax.py:1617
+msgid "Enabled: Input: off, Message: off"
+msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: aus"
+
+#: uexceptions.py:41
+msgid "Object exists."
+msgstr "Das Objekt existiert bereits."
+
+#: uexceptions.py:44
+msgid "No such object."
+msgstr "Das Objekt existiert nicht."
+
+#: uexceptions.py:47
+msgid "Permission denied."
+msgstr "Zugriff verweigert."
+
+#: uexceptions.py:50
+msgid "LDAP Error"
+msgstr "LDAP-Fehler"
+
+#: uexceptions.py:53
+msgid "Information provided is not sufficient."
+msgstr "Die angegebenen Informationen reichen nicht aus."
+
+#: uexceptions.py:56
+msgid "No such property."
+msgstr "Die Eigenschaft existiert nicht."
+
+#: uexceptions.py:62
+msgid "Value may not change."
+msgstr "Der Wert darf nicht verändert werden."
+
+#: uexceptions.py:65
+msgid "Invalid syntax."
+msgstr "Falsche Syntax."
+
+#: uexceptions.py:68
+msgid "Value is required."
+msgstr "Ein Wert wird benötigt."
+
+#: uexceptions.py:71
+msgid "Values do not match."
+msgstr "Die Werte sind nicht gleich."
+
+#: uexceptions.py:74
+msgid "Could not acquire lock."
+msgstr "Exklusiver Zugriff nicht möglich."
+
+#: uexceptions.py:77
+msgid "Authentication Failed."
+msgstr "Authentisierung fehlgeschlagen"
+
+#: uexceptions.py:80
+msgid "The username is already in use."
+msgstr "Der Benutzername wird bereits verwendet."
+
+#: uexceptions.py:83
+msgid "The groupname is already in use."
+msgstr "Der Gruppenname wird bereits verwendet."
+
+#: uexceptions.py:86
+msgid "Prohibited username."
+msgstr "Verbotener Benutzername."
+
+#: uexceptions.py:89
+msgid "IP address is already in use."
+msgstr "Die IP-Adresse wird bereits verwendet."
+
+#: uexceptions.py:92
+msgid ""
+"The DHCP entry for this host should contain the zone DN, the IP address and "
+"the MAC address."
+msgstr "Der DHCP-Eintrag für diesen Rechner sollte den Zonen-DN, die IP-"
+"und die MAC-Adresse enthalten."
+
+#: uexceptions.py:95
+msgid "Next IP address not found."
+msgstr "Die nächste IP-Adresse wurde nicht gefunden."
+
+#: uexceptions.py:98
+msgid "The given IP address is not within the range of the selected network"
+msgstr "Die angegebene IP ist nicht im Bereich des zugeordneten Netzwerks."
+
+#: uexceptions.py:101
+msgid "The MAC address is already in use."
+msgstr "Die MAC-Adresse wird bereits verwendet."
+
+#: uexceptions.py:104
+msgid "The mail address is already in use."
+msgstr "Die Mail-Adresse wird bereits verwendet."
+
+#: uexceptions.py:107
+msgid "DHCP server name already used: "
+msgstr "Der DHCP-Servername wird bereits verwendet."
+
+#: uexceptions.py:110
+msgid "Default Kolab home server does not exist"
+msgstr "Der Standard Kolab Home Server existiert nicht."
+
+#: uexceptions.py:113
+msgid "Default primary group does not exist"
+msgstr "Die primäre Standardgruppe existiert nicht."
+
+#: uexceptions.py:116
+msgid "This is a primary group"
+msgstr "Das ist eine primäre Gruppe."
+
+#: uexceptions.py:122
+msgid "The requested group not be found."
+msgstr "Die angeforderte Gruppe wurde nicht gefunden."
+
+#: uexceptions.py:125
+msgid "The DHCP entry was not found."
+msgstr "Der DHCP-Eintrag wurde nicht gefunden."
+
+#: uexceptions.py:128
+msgid "The DNS entry was not found"
+msgstr "Der DNS-Eintrag wurde nicht gefunden."
+
+#: uexceptions.py:131
+msgid ""
+"The FQDN of this object is too long, it must have less than 64 characters."
+msgstr ""
+"Der FQDN dieses Objekts ist zu lang, er darf nicht mehr als 64 Zeichen haben."
+
+#: uexceptions.py:134
+msgid "Not all needed information was entered."
+msgstr "Nicht alle benötigten Informationen wurden angegeben."
+
+#: uexceptions.py:137
+msgid "Cannot overwrite a fixed attribute."
+msgstr "Kann kein unveränderliches Attribut überschreiben."
+
+#: uexceptions.py:140
+msgid "Dynamic BOOTP leases are not compatible with failover."
+msgstr "Dynamic BOOTP ist nicht kompatibel mit Failover."
+
+#: uexceptions.py:143
+msgid "No license found."
+msgstr "Es wurde keine Lizenz gefunden."
+
+#: uexceptions.py:146
+msgid "The license is invalid."
+msgstr "Die Lizenz ist ungültig."
+
+#: uexceptions.py:149
+msgid "The license is expired."
+msgstr "Die Lizenz ist abgelaufen."
+
+#: uexceptions.py:152
+msgid "The license is invalid for the current base DN."
+msgstr "Die Lizenz ist ungültig für den aktuellen Basis-DN."
+
+#: uexceptions.py:155
+msgid ""
+"The license check is disabled. Your are using the GPL version without any "
+"support or maintenance by Univention."
+msgstr ""
+"Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
+"die Support oder Maintenance Unterstüzung von Univention."
+
+#: uexceptions.py:158
+msgid "Too many user accounts"
+msgstr "Zu viele Benutzerkonten"
+
+#: uexceptions.py:160
+msgid "Too many client accounts"
+msgstr "Zu viele Client Konten"
+
+#: uexceptions.py:162
+msgid "Too many desktop accounts"
+msgstr "Zu viele Desktop Konten"
+
+#: uexceptions.py:164
+msgid "Too many groupware accounts"
+msgstr "Zu viele Groupware Konten"
+
+#: uexceptions.py:166
+msgid "During this session add and modify are disabled"
+msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
+
+#: uexceptions.py:169
+msgid "Password has been used before. Please choose a different one."
+msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
+
+#: uexceptions.py:172
+msgid "The password is to short, at least 8 character!"
+msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
+
+#: uexceptions.py:175
+msgid "Network and IP range are incompatible."
+msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
+
+#: uexceptions.py:178
+msgid "The IP range contains its network address. That is not permitted!"
+msgstr ""
+"Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
+"zulässig!"
+
+#: uexceptions.py:181
+msgid "The IP range contains its broadcast address. That is not permitted!"
+msgstr ""
+"Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
+"zulässig!"
+
+#: uexceptions.py:184
+msgid "Overlapping IP ranges"
+msgstr "Überschneidung in den IP-Adressbereichen"
+
+#: uexceptions.py:187
+msgid "Invalid combination of options."
+msgstr "Unzulässige Zusammenstellung von Optionen."
+
+#: uexceptions.py:190
+msgid "Password policy error: "
+msgstr "Fehler in der Passwort-Richtlinie: "
+
+#: uexceptions.py:193
+msgid "This operation is not allowed on this object."
+msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
+
+#: uexceptions.py:196
+msgid "Empty printer groups are not possible."
+msgstr "Leere Druckergruppen sind nicht möglich."
+
+#: uexceptions.py:199
+msgid ""
+"Printer groups with quota support can only have members with quota support."
+msgstr ""
+"Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
+"Drucker mit Quota haben."
+
+#: uexceptions.py:202
+msgid "Only printer objects can be members of a printer group."
+msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
+
+#: uexceptions.py:205
+msgid "Only existing groups are allowed."
+msgstr "Nur existierende Gruppen sind erlaubt."
+
+#: uexceptions.py:208
+msgid "Only existing users are allowed."
+msgstr "Nur existierende Benutzer sind erlaubt."
+
+#: uexceptions.py:211
+#, python-format
+msgid "Invalid syntax in default value. Check these templates: %s."
+msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
+
+#: uldap.py:71
+msgid "There was no LDAP base specified."
+msgstr "Es wurde keine LDAP Basis angegeben."
+
+#: uldap.py:122
+#, python-format
+msgid "DN not found: %s."
+msgstr "DN nicht gefunden: %s."
+
+#: uldap.py:232 uldap.py:234 uldap.py:249 uldap.py:251
+msgid "Authentication failed"
+msgstr "Authentisierung fehlgeschlagen"
+
+#: uldap.py:346
+msgid "Moving childs is not supported."
+msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+
+#~ msgid "TCP"
+#~ msgstr "TCP"
+
+#~ msgid "UDP"
+#~ msgstr "UDP"

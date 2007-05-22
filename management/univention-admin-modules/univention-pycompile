@@ -1,0 +1,80 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Admin Modules
+#  a python preprocessor
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import os, sys, getopt, re, py_compile
+
+define=[]
+opts, args=getopt.getopt(sys.argv[1:], 'D:')
+for opt, val in opts:
+	if opt == '-D':
+		define.append(val)
+
+input, output=args
+
+print 'byte-compiling: %s' % input
+if os.path.exists(output):
+	os.unlink(output)
+
+if output.endswith('.pyo'):
+	output_pp=open(output+'.pp', 'w')
+else:
+	output_pp=open(output, 'w')
+
+ifdef_pattern=re.compile('^#ifdef (.*)')
+endif_pattern=re.compile('^#endif *(/\*.*\*/)*')
+
+hide_depth=0
+depth=0
+hide=0
+
+for line in open(input).readlines():
+	line=line[0:-1]
+	
+	if ifdef_pattern.match(line):
+		var=ifdef_pattern.findall(line)[0]
+		depth+=1
+		if not hide:
+			hide=not var in define
+			hide_depth=depth
+	elif endif_pattern.match(line):
+		if depth == hide_depth:	
+			hide=0
+		depth-=1
+	elif not hide:
+		print >>output_pp, line
+output_pp.close()
+
+if output.endswith('.pyo'):
+	e=py_compile.compile(output+'.pp', output, input)
+	#os.unlink(output+'.pp')
+	
+if not os.path.exists(output):
+	sys.exit(1)
