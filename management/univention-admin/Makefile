@@ -29,10 +29,7 @@
 #
 
 DESTDIR=/tmp/foo
-UNICONF=$(shell find uniconf -name '*.py' | sed 's/\.py/\.pyo/g')
-
-%.pyo:	%.py
-	@./py_compile $< $@
+UNICONF=$(shell find uniconf -name '*.py')
 
 %.mo:	%.po
 	msgfmt -o $@ $<
