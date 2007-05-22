@@ -204,7 +204,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Nagios Client'),
-					'Packages': ['univention-nagios-server'],
+					'Packages': ['univention-nagios-client'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
