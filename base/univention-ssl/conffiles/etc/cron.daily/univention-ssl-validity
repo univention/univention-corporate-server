@@ -1,0 +1,16 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/cron.daily/univention-ssl-validity
+#
+
+# store SSL certificate validity information in Univention Baseconfig
+@!@
+if baseConfig.has_key('ssl/validity/check') and baseConfig['ssl/validity/check'] == 'yes':
+        print '/usr/sbin/univention-certificate-check-validity'
+@!@

@@ -1,0 +1,46 @@
+univention-ssh (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 11:28:34 +0100
+
+univention-ssh (0.6) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:21:56 +0200
+
+univention-ssh (0.5) unstable; urgency=low
+
+  * need python2.4-pexpect
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Oct 2005 10:26:03 +0200
+
+univention-ssh (0.4) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:32:50 +0200
+
+univention-ssh (0.3) unstable; urgency=low
+
+  * removed minor mistake in help message
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 12 Aug 2005 14:55:50 +0200
+
+univention-ssh (0.2) unstable; urgency=low
+
+  * added timeout parameter
+  * default timeout set to 3600 seconds
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Jan 2004 15:21:41 +0100
+
+univention-ssh (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 09 Dec 2003 22:32:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

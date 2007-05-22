@@ -1,0 +1,133 @@
+#!/usr/bin/python2.4
+#
+# Univention SSH
+#  ssh wrapper script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys
+
+from pexpect import *
+
+def ssh_exec(password, timeout, param):
+	global command
+	s=''
+	if type(param) == type([]):
+		for i in range(0,len(param)):
+			s+=param[i]
+			s+=' '
+	else:
+		s=param
+
+	child = spawn('%s %s' % (command,s))
+
+	i=0
+	while not i == 2:
+		i = child.expect(['(yes/no)', 'assword:', EOF], timeout=timeout)
+		if i == 0:
+			child.sendline('yes')
+		elif i == 1:
+			child.sendline(password)
+		else:
+			if child.before:
+				print child.before
+
+def display_header():
+	print '%s: internal managing tool for UCS clients' % cmd
+	print 'copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print ''
+
+def display_help():
+	display_header()
+	print 'Syntax:'
+	print '  %s [-timeout timeout] <pwd_file> [user@]host <command>' % cmd
+	print '  %s [--help] [--version]' % cmd
+	print ''
+	print 'Parameters:'
+	print '  %-32s %s' % ('pwd_file', 'file containing the password')
+	if cmd == 'univention-ssh':
+		print '  %-32s %s' % ('command', 'command to be executed on remote system')
+	else:
+		print '  %-32s %s' % ('command', 'source/destination and any parameters')
+	print '  %-32s %s' % ('user', 'user to log in as on the remote system')
+	print '  %-32s %s' % ('host', 'name or ip address of the remote system')
+	print ''
+	print 'Options:'
+	print '  %-32s %s' % ('-timeout:', 'timeout for operation in seconds')
+	print ''
+	print '  %-32s %s' % ('-h | --help | -?:', 'print this usage message')
+	print '  %-32s %s' % ('--version:', 'print version information')
+	print ''
+	print 'Description:'
+	print '  %s is an internal managing tool which is used to' % cmd
+	if cmd == 'univention-ssh':
+		print '  execute commands on remote computer systems,'
+		print '  e.g. %s -timeout 360 /tmp/pwd root@192.168.0.31 ls -la /' % cmd
+	else:
+		print '  copy files from/to remote computer systems,'
+		print '  e.g. %s -timeout 360 /tmp/pwd file.txt root@192.168.0.31:' % cmd
+	print ''
+	print 'Known-Bugs:'
+	print '  -None-'
+	print ''
+
+def display_version():
+	print '%s @%@package_version@%@' % cmd
+
+command=''
+cmd=os.path.basename(sys.argv[0])
+if cmd == 'univention-ssh':
+	command="ssh"
+elif cmd == 'univention-scp':
+	command="scp"
+elif cmd == 'univention-ssh-rsync':
+	command="rsync"
+
+timeout=3600
+arg_start=2
+
+if len(sys.argv) > 1 and sys.argv[1] == '--version':
+	display_version()
+	sys.exit(1)
+
+if len(sys.argv) < 3 or sys.argv[1] in ['-?', '--help', '-h']:
+	display_help()
+	sys.exit(1)
+
+if sys.argv[1] == '-timeout':
+	timeout=int(sys.argv[2])
+	arg_start=4
+
+try:
+	password=open(sys.argv[arg_start-1]).read()
+	if password[-1] == '\n':
+		password=password[0:-1]
+except:
+	print "Failed to read password from %s" % (sys.argv[arg_start-1])
+	sys.exit(1)
+
+ssh_exec(password, timeout, sys.argv[arg_start:])
+
