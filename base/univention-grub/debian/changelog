@@ -1,3 +1,9 @@
+univention-grub (1.0.2-1) unstable; urgency=low
+
+  * save the lilo/boot variable into grub/boot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 13:28:16 +0200
+
 univention-grub (1.0.1-1) unstable; urgency=low
 
   * more migration issues

@@ -91,6 +91,7 @@ elif [ -z "$2" ]; then
 
 fi
 
+eval $(univention-baseconfig shell)
 
 if [ "$1" = configure -a -z "$2" ]; then
 	update-grub -y
