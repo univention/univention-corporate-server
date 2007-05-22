@@ -1,0 +1,17 @@
+Source: univention-ipcalc
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends: debhelper
+
+Package: univention-ipcalc
+Architecture: all
+Depends: python2.4
+Description: UCS - ipcalc tool for network
+ This package contain the ipcalc tool.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

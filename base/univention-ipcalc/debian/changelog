@@ -1,0 +1,28 @@
+univention-ipcalc (0.4.1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 08:13:21 +0100
+
+univention-ipcalc (0.3) unstable; urgency=low
+
+  * Switched to python 2.4 (support older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 13:14:19 +0200
+
+univention-ipcalc (0.2) unstable; urgency=low
+
+  * added parameter --full
+  * added broadcast output
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Feb 2004 14:58:49 +0100
+
+univention-ipcalc (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 nov 2003 11:09:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

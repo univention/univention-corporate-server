@@ -1,0 +1,147 @@
+#!/usr/bin/python2.4
+#
+# Univention IP Calculator
+#  helper script: base on IP adress and network mask the script
+#  calculates brodcast address, network address and DNS entries
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import string, os, sys, getopt, copy
+
+
+longopts=['ip=', 'netmask=', 'quiet', 'output=', 'full', 'calcdns']
+
+full=0
+ip=None
+netmask=None
+quiet=None
+calcdns=0
+output='all'
+
+
+try:
+	opts, args=getopt.getopt(sys.argv[1:], '', longopts)
+except getopt.error, msg:
+	print msg
+	sys.exit(1)
+
+for opt, val in opts:
+	if opt == '--ip':
+		ip=val
+	elif opt == '--netmask':
+		netmask=val
+	elif opt == '--quiet':
+		quiet='1'
+	elif opt == '--output':
+		output=val
+	elif opt == '--full':
+		full=1
+	elif opt == '--calcdns':
+		calcdns=1
+
+if not ip or not netmask:
+	if not quiet:
+		print "Needed --ip and --netmask"
+	sys.exit(1)
+
+ip_list=ip.split('.')
+netmask_list=netmask.split('.')
+
+if len(ip_list) != 4:
+	if not quiet:
+		print 'Invalid ip'
+	sys.exit(1)
+if len(netmask_list) != 4:
+	if not quiet:
+		print 'Invalid netmask'
+	sys.exit(1)
+
+net=[]
+wildcard=[]
+pointerok=0
+broadcast=[]
+
+if not calcdns:
+	for i in range(4):
+		if netmask_list[i] == '255':
+			net.append(ip_list[i])
+			wildcard.append(0)
+			broadcast.append(ip_list[i])
+		else:
+			net.append(str(int(ip_list[i]) & int(netmask_list[i])))
+			if not pointerok:
+				pointer=ip_list[i:]
+				pointerok=1
+			pointer.reverse()
+			calc = 255 - int(netmask_list[i])
+			if not calc:
+				wildcard.append(0)
+			wildcard.append(calc)
+			calc = int(wildcard[i]) ^ int(net[i])
+			if calc == '0' and i == '4':
+				broadcast.append(str('255'))
+			else:
+				broadcast.append(str(calc))
+else:
+	for i in range(4):
+		#TODO: check for other values
+		if netmask_list[i] == '255':
+			net.append(ip_list[i])
+		else:
+			pointer=ip_list[i:]
+			pointer.reverse()
+			break
+	broadcast=copy.copy(net)
+	while len(broadcast) < 4:
+		broadcast.append('255')
+
+if output == 'all':
+	print 'Network: %s' % string.join(net,'.')
+	net.reverse()
+	print 'Reverse: %s' % string.join(net,'.')
+	print 'Pointer: %s' % string.join(pointer,'.')
+	net.reverse()
+	if full:
+		netpart=copy.copy(netpart)
+		while len(netpart) < 4:
+			netpart.append('0')
+		print 'Network full: %s' % string.join(netpart,'.')
+	print 'Broadcast: %s' % string.join(broadcast,'.')
+elif output == 'network':
+	if full:
+		while len(net) < 4:
+			net.append('0')
+		print '%s' % string.join(net,'.')
+	else:
+		print '%s' % string.join(net,'.')
+elif output == 'reverse':
+	print '%s' % string.join(net,'.')
+elif output == 'pointer':
+	print '%s' % string.join(pointer,'.')
+elif output == 'broadcast':
+	while len(net) < 4:
+		net.append('255')
+	print '%s' % string.join(broadcast,'.')
