@@ -1,7 +1,5 @@
 #!/bin/sh
 
-#DEBHELPER#
-
 eval $(univention-baseconfig shell)
 
 if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
@@ -93,9 +91,15 @@ fi
 
 eval $(univention-baseconfig shell)
 
+#DEBHELPER#
+
+
 if [ "$1" = configure -a -z "$2" ]; then
-	update-grub -y
+	# source the update-grub file, so we could use the grub helper functions
+	. /usr/sbin/update-grub
 	if [ -n "$grub_boot" ]; then
+		groot=$(convert $grub_root)
+		univention-baseconfig set grub/groot="$groot"
 		grub-install --no-floppy $grub_boot
 	fi
 fi

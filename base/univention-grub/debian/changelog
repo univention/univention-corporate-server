@@ -1,3 +1,9 @@
+univention-grub (1.0.3-1) unstable; urgency=low
+
+  * added baseconfig variable grub/groot to add the default grub root device
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 15:03:58 +0200
+
 univention-grub (1.0.2-1) unstable; urgency=low
 
   * save the lilo/boot variable into grub/boot

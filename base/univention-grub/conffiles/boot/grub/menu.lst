@@ -54,7 +54,7 @@ background = 000000
 
 ## default grub root device
 ## e.g. groot=(hd0,0)
-# groot=(hd0,0)
+# groot=@%@grub/groot@%@
 
 ## should update-grub create alternative automagic boot options
 ## e.g. alternative=true
