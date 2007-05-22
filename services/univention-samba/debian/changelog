@@ -1,3 +1,9 @@
+univention-samba (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 12:10:34 +0200
+
 univention-samba (0.69) unstable; urgency=low
 
   * added baseconfig variable samba/winbind/nested/groups to configure

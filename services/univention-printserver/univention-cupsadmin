@@ -32,7 +32,7 @@
 import sys, string, re
 import pwd, os, os.path
 from pexpect import *
-import univention_baseconfig
+import univention.baseconfig
 
 args=sys.argv[1:]
 cmd=sys.argv[0]
@@ -57,7 +57,7 @@ if not(os.path.exists(cmd)):
 	print("Target executable %s does not exist. Exiting."%cmd)
 	sys.exit(2)
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univention.baseconfig.baseConfig()
 baseConfig.load()
 
 # read machine password

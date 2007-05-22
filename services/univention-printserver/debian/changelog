@@ -1,3 +1,9 @@
+univention-printserver (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 12:09:34 +0200
+
 univention-printserver (0.22-1) unstable; urgency=low
 
   * fixed support for attributes like location and description that might have

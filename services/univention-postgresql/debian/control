@@ -7,8 +7,6 @@ Build-Depends: debhelper, univention-config-dev
 Package: univention-postgresql
 Architecture: all
 Depends: univention-baseconfig, postgresql
-Replaces:
-Conflicts:
 Description: UCS - postgresql configuration
  This package contains the configuration for the 
  postgresql package.

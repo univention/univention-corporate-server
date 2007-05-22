@@ -1,3 +1,9 @@
+univention-postgresql (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 May 2007 12:07:48 +0200
+
 univention-postgresql (0.5) unstable; urgency=low
 
   * add GPL headers
