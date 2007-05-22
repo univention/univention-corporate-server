@@ -23,6 +23,7 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
         fi
 
         if [ -n "$lilo_root" ]; then
+				vars="$vars grub/root=$lilo_root"
                 if [ -n "$grub_append" ]; then
                         grub_append="$grub_append root=$lilo_root"
                 else
@@ -96,12 +97,13 @@ eval $(univention-baseconfig shell)
 
 if [ "$1" = configure -a -z "$2" ]; then
 	# source the update-grub file, so we could use the grub helper functions
-	. /usr/sbin/update-grub
 	if [ -n "$grub_boot" ]; then
+		grub-install --no-floppy $grub_boot
+		. /usr/sbin/update-grub
 		groot=$(convert $grub_root)
 		univention-baseconfig set grub/groot="$groot"
-		grub-install --no-floppy $grub_boot
 	fi
+	update-grub -y
 fi
 
 exit 0
