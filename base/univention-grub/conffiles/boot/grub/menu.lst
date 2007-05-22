@@ -69,7 +69,12 @@ background = 000000
 ## additional options to use with the default boot option, but not with the
 ## alternatives
 ## e.g. defoptions=vga=791 resume=/dev/hda5
-# defoptions=
+# defoptions=@!@
+defoptions=''
+if baseConfig.has_key('grub/vga'):
+	defoptions += ' vga=%s' % baseConfig['grub/vga']
+print defoptions
+@!@
 
 ## should update-grub lock old automagic boot options
 ## e.g. lockold=false

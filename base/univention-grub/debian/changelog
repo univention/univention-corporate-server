@@ -1,4 +1,4 @@
-univention-grub (1.0.4-1) unstable; urgency=low
+univention-grub (1.0.5-1) unstable; urgency=low
 
   * added baseconfig variable grub/groot to add the default grub root device
 
