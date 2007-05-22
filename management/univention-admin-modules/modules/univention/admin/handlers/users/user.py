@@ -1461,7 +1461,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 					if loadGroups: # this is optional because it can take much time on larger installations, default is true
 						self.groupsLoaded=1
-						self['groups']=self.lo.searchDn(filter='(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))' % self.dn)
+						self['groups']=self.lo.searchDn(filter='(&(cn=*)(|(objectClass=univentionGroup)(objectClass=sambaGroupMapping))(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
 					else:
 						self.groupsLoaded=0
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: open with loadGroups=false for user %s'%self['username'])
@@ -1968,6 +1968,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
+		shadowLastChangeValue = ''
+		sambaPwdLastSetValue = ''
+
 		# `self.oldattr' is `False' while adding the object.
 		# Don't mess with the objectClass while adding.
 		if self.oldattr and self.options != self.old_options:
@@ -1991,7 +1994,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				for key in [ 'kolabHomeServer', 'univentionKolabForwardActive', 'kolabForwardAddress', 'kolabForwardKeepCopy', 'kolabForwardUCE',\
 							'univentionKolabDeliveryToFolderActive', 'univentionKolabDeliveryToFolderName', 'kolabDelegate', 'univentionKolabVacationActive', \
 							'univentionKolabVacationText', 'kolabVacationResendInterval', 'kolabVacationReplyToUCE', 'kolabVacationAddress', \
-							'kolabVacationReactDomain', 'univentionKolabVacationNoReactDomain', 'kolabInvitationPolicy']:
+							'kolabVacationReactDomain', 'univentionKolabVacationNoReactDomain', 'kolabInvitationPolicy', 'univentionKolabDisableSieve']:
 					ml=self._remove_attr(ml,key)
 			# pki option add / remove
 			if 'pki' in self.options and not 'pki' in self.old_options:
@@ -2064,13 +2067,19 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					expiryInterval=-1
 				if 'posix' in self.options or 'mail' in self.options:
 					if pwd_change_next_login == 1:
-						shadowMax = "1"
 						old_shadowLastChange=self.oldattr.get('shadowLastChange', '')
-						if old_shadowLastChange:
-							ml.append(('shadowLastChange',old_shadowLastChange, [str(int(old_shadowLastChange[0])-2)]))
+						if expiryInterval == -1:
+							shadowMax = "1"
+							shadowLastChangeValue = str(int(old_shadowLastChange[0])-2)
+						else:
+							shadowMax="%d" % expiryInterval
+							now=(long(time.time())/3600/24)
+							shadowLastChangeValue = str(int(now) - expiryInterval -1)
 					else:
 						if not expiryInterval==-1:
 							shadowMax="%d" % expiryInterval
+							now=(long(time.time())/3600/24)
+							shadowLastChangeValue = str(int(now))
 						else:
 							shadowMax=''
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
@@ -2080,12 +2089,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if 'samba' in self.options:
 					if pwd_change_next_login == 1:
 						sambaPwdMustChange="%d" % long(time.time())
-						ml.append(("sambaPwdCanChange", "-1", sambaPwdMustChange))
+						ml.append(("sambaPwdMustChange", "-1", sambaPwdMustChange))
 					else:
-						if expiryInterval==-1:
+						if expiryInterval==-1 or expiryInterval == 0:
 							sambaPwdMustChange=''
 						else:
-							sambaPwdMustChange="%d" % long(time.time()+(expiryInterval)*3600*24)
+							sambaPwdMustChange="%d" % long(time.time()+(expiryInterval*3600*24))
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sambaPwdMustChange: %s' % sambaPwdMustChange)
 					old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
 					if old_sambaPwdMustChange != sambaPwdMustChange:
@@ -2094,10 +2103,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if pwd_change_next_login == 1:
 						expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()))))
 					else:
-						if expiryInterval==-1:
+						if expiryInterval==-1 or expiryInterval == 0:
 							expiry='0'
 						else:
-							expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time())+long(expiryInterval)*3600*24)))
+							expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()) + (expiryInterval*3600*24))))
 					if expiry == '0':
 						krb5PasswordEnd='0'
 					else:
@@ -2110,12 +2119,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					pwd_change_next_login=0
 			else:
 				if 'posix' in self.options or 'mail' in self.options:
-					old_shadowMax=self.oldattr.get('shadowMax', '')
-					if old_shadowMax:
-						ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], 1))
-						old_shadowLastChange=self.oldattr.get('shadowLastChange', '')
-						if old_shadowLastChange:
-							ml.append(('shadowLastChange',old_shadowLastChange, [str(int(old_shadowLastChange[0])-2)]))
+					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], ''))
+					shadowLastChangeValue = ''
 				if 'samba' in self.options:
 					old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
 					if old_sambaPwdMustChange:
@@ -2132,23 +2137,23 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if self["disabled"] == "1":
 				acctFlags.set('D')
 				krb_kdcflags='254'
-				disabled="1"
+				disabled="!"
 
 			#                             FIXME: required for join user root
 			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
 				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
-				shadowlastchange=str(long(time.time())/3600/24)
+				#shadowlastchange=str(long(time.time())/3600/24)
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-				if 'posix' in self.options:
-					if pwd_change_next_login != 1:
-						ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange',[''])[0], shadowlastchange))
+				#if 'posix' in self.options:
+				#	if pwd_change_next_login != 1:
+				#		shadowLastChangeValue = shadowlastchange
 			if 'samba' in self.options:
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				if str(self.oldattr.get('sambaAcctFlags', [''])[0]) != str(acctFlags.decode()):
 					ml.append(('sambaAcctFlags', self.oldattr.get('sambaAcctFlags', [''])[0], acctFlags.decode()))
 				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 				ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
-				ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], str(long(time.time()))))
+				sambaPwdLastSetValue = str(long(time.time()))
 
 				smbpwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
 				if smbpwhistoryPolicy != None and smbpwhistoryPolicy['length'] != None:
@@ -2255,14 +2260,33 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if pwd_change_next_login == 1:
 			if 'posix' in self.options or 'mail' in self.options:
-				shadowMax = "1"
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
+				pwhistoryPolicy = self.loadPolicyObject('policies/pwhistory')
+				if pwhistoryPolicy != None and pwhistoryPolicy['expiryInterval'] != None and len(pwhistoryPolicy['expiryInterval']) > 0:
+					try:
+						expiryInterval=int(pwhistoryPolicy['expiryInterval'])
+					except:
+						# expiryInterval is empty or no legal int-string
+						pwhistoryPolicy['expiryInterval']=''
+						expiryInterval=-1
+				else:
+					# expiryInterval is empty or no legal int-string
+					pwhistoryPolicy['expiryInterval']=''
+					expiryInterval=-1
+
+				if expiryInterval == -1:
+					shadowMax = "1"
+					now=(long(time.time())/3600/24) - 2
+				else:
+					now=(long(time.time())/3600/24) - expiryInterval -1
+					shadowMax="%d" % expiryInterval
+
+				now=(long(time.time())/3600/24)
+				shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
+
 				old_shadowMax=self.oldattr.get('shadowMax', '')
 				if old_shadowMax != shadowMax:
 					ml.append(('shadowMax',self.oldattr.get('shadowMax', [''])[0], shadowMax))
-					old_shadowLastChange=self.oldattr.get('shadowLastChange', '')
-					if old_shadowLastChange:
-						ml.append(('shadowLastChange',old_shadowLastChange, [str(int(old_shadowLastChange[0])-2)]))
+
 			if 'samba' in self.options:
 				sambaPwdMustChange="%d" % long(time.time())
 				ml.append(('sambaPwdCanChange', '-1', sambaPwdMustChange))
@@ -2270,6 +2294,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				old_sambaPwdMustChange=self.oldattr.get('sambaPwdMustChange', '')
 				if old_sambaPwdMustChange != sambaPwdMustChange:
 					ml.append(('sambaPwdMustChange',self.oldattr.get('sambaPwdMustChange', [''])[0], sambaPwdMustChange))
+				# set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
+				sambaPwdLastSetValue='1'
+				
 			if 'kerberos' in self.options:
 				expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()))))
 				krb5PasswordEnd="%s" % "20"+expiry[6:8]+expiry[3:5]+expiry[0:2]+"000000Z"
@@ -2331,6 +2358,11 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if sambaMunged:
 				ml.append(('sambaMungedDial', self.oldattr.get('sambaMungedDial', ['']), [sambaMunged]))
 			pass
+
+		if sambaPwdLastSetValue:
+			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
+
+		ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange', ''), shadowLastChangeValue))
 
 		return ml
 
@@ -2525,6 +2557,11 @@ def rewrite(filter, mapping):
 			filter.value='254'
 		else:
 			filter.value='126'
+	elif filter.variable == 'locked':
+		filter.variable='sambaAcctFlags'
+		if filter.value != '1':
+			filter.operator='!='
+		filter.value = '*L*'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
 

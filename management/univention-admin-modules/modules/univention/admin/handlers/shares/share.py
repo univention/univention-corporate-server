@@ -79,6 +79,16 @@ property_descriptions={
 			may_change=0,
 			identifies=1
 		),
+	'printablename': univention.admin.property(
+			short_description=_('Printable Name'),
+			long_description=_('Printable Name'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'host': univention.admin.property(
 			short_description=_('Host'),
 			long_description=_('The computer that exports this share'),
@@ -412,8 +422,38 @@ property_descriptions={
 			identifies=0,
 			default='manual'
 		),
+	'sambaHostsAllow': univention.admin.property(
+			short_description=_('Allowed Hosts'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'sambaHostsDeny': univention.admin.property(
+			short_description=_('Denied Hosts'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'sambaValidUsers': univention.admin.property(
 			short_description=_('Valid Users'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'sambaInvalidUsers': univention.admin.property(
+			short_description=_('Invalid Users'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -514,6 +554,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'sambaMSDFSRoot': univention.admin.property(
+			short_description=_('MSDFS Root'),
+			long_description=_('Export share as MSDFS root'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default='0'
+		),
 	'sambaInheritOwner': univention.admin.property(
 			short_description=_('Inherit Owner'),
 			long_description=_('Ownership for new files and directories is controlled by the ownership of the parent directory.'),
@@ -553,18 +604,21 @@ layout=[
 			[univention.admin.field('sambaName'), univention.admin.field('sambaWriteable')],
 			[univention.admin.field('sambaBrowseable'), univention.admin.field('sambaPublic')],
 			[univention.admin.field('sambaPostexec'), univention.admin.field('sambaPreexec')],
-			[univention.admin.field('sambaVFSObjects'), ],
+			[univention.admin.field('sambaVFSObjects'), univention.admin.field('sambaMSDFSRoot') ],
 		]),
 	univention.admin.tab(_('Samba Permissions'),_('Samba Permission Settings'),[
+			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
+			[univention.admin.field('sambaValidUsers'), univention.admin.field('sambaInvalidUsers') ],
+			[univention.admin.field('sambaHostsAllow'), univention.admin.field('sambaHostsDeny') ],
+			[univention.admin.field('sambaWriteList'), univention.admin.field('sambaHideFiles') ],
+			[univention.admin.field('sambaNtAclSupport'), univention.admin.field('sambaInheritAcls')],
+			[univention.admin.field('sambaInheritOwner'), univention.admin.field('sambaInheritPermissions')],
+		]),
+	univention.admin.tab(_('Samba Extended Permissions'),_('Samba Extended Permission Settings'),[
 			[univention.admin.field('sambaCreateMode'), univention.admin.field('sambaDirectoryMode')],
 			[univention.admin.field('sambaForceCreateMode'), univention.admin.field('sambaForceDirectoryMode')],
 			[univention.admin.field('sambaSecurityMode'), univention.admin.field('sambaDirectorySecurityMode')],
 			[univention.admin.field('sambaForceSecurityMode'), univention.admin.field('sambaForceDirectorySecurityMode')],
-			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
-			[univention.admin.field('sambaValidUsers'), univention.admin.field('sambaHideFiles')],
-			[univention.admin.field('sambaWriteList'), ],
-			[univention.admin.field('sambaNtAclSupport'), univention.admin.field('sambaInheritAcls')],
-			[univention.admin.field('sambaInheritOwner'), univention.admin.field('sambaInheritPermissions')],
 		]),
 	univention.admin.tab(_('Samba Performance'),_('Samba Performance Settings'),[
 			[univention.admin.field('sambaLocking'), univention.admin.field('sambaBlockingLocks')],
@@ -638,7 +692,10 @@ mapping.register('sambaLevel2Oplocks', 'univentionShareSambaLevel2Oplocks', None
 mapping.register('sambaFakeOplocks', 'univentionShareSambaFakeOplocks', None, univention.admin.mapping.ListToString)
 mapping.register('sambaBlockSize', 'univentionShareSambaBlockSize', None, univention.admin.mapping.ListToString)
 mapping.register('sambaCscPolicy', 'univentionShareSambaCscPolicy', None, univention.admin.mapping.ListToString)
-mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', None, univention.admin.mapping.ListToString)
+mapping.register('sambaValidUsers', 'univentionShareSambaValidUsers', None, univention.admin.mapping.ListToString )
+mapping.register('sambaInvalidUsers', 'univentionShareSambaInvalidUsers', None, univention.admin.mapping.ListToString )
+mapping.register('sambaHostsAllow', 'univentionShareSambaHostsAllow' )
+mapping.register('sambaHostsDeny', 'univentionShareSambaHostsDeny' )
 mapping.register('sambaForceUser', 'univentionShareSambaForceUser', None, univention.admin.mapping.ListToString)
 mapping.register('sambaForceGroup', 'univentionShareSambaForceGroup', None, univention.admin.mapping.ListToString)
 mapping.register('sambaHideFiles', 'univentionShareSambaHideFiles', None, univention.admin.mapping.ListToString)
@@ -649,6 +706,7 @@ mapping.register('sambaPreexec', 'univentionShareSambaPreexec', None, univention
 mapping.register('sambaWriteable', 'univentionShareSambaWriteable', boolToString, stringToBool)
 mapping.register('sambaWriteList', 'univentionShareSambaWriteList', insertQuotes, univention.admin.mapping.ListToString)
 mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', None, univention.admin.mapping.ListToString)
+mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool)
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool)
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
 
@@ -684,6 +742,10 @@ class object(univention.admin.handlers.simpleLdap):
 				self.options.append( 'samba' )
 			if 'univentionShareNFS' in self.oldattr['objectClass']:
 				self.options.append( 'nfs' )
+			try:
+				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
+			except:
+				pass
 
 		self.save()
 

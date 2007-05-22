@@ -61,9 +61,24 @@ def moreGroupware(license):
 modules = {
 	'computers/client': Attributes( UCS ),
 	'computers/computer': Attributes(),
-	'computers/domaincontroller_backup': Attributes(),
-	'computers/domaincontroller_master': Attributes(),
-	'computers/domaincontroller_slave': Attributes(),
+	'computers/domaincontroller_backup': Attributes( options =
+				{
+					( UCS, ) : ( ( 'nagios', (False, False) ), ),
+					( UGS, ) : ( ( 'nagios', (True, False) ), ),
+					( UCS, UGS ) : ( ( 'nagios', (False, False) ), ),
+				} ),
+	'computers/domaincontroller_master': Attributes( options =
+				{
+					( UCS, ) : ( ( 'nagios', (False, False) ), ),
+					( UGS, ) : ( ( 'nagios', (True, False) ), ),
+					( UCS, UGS ) : ( ( 'nagios', (False, False) ), ),
+				} ),
+	'computers/domaincontroller_slave': Attributes( options =
+				{
+					( UCS, ) : ( ( 'nagios', (False, False) ), ),
+					( UGS, ) : ( ( 'nagios', (True, False) ), ),
+					( UCS, UGS ) : ( ( 'nagios', (False, False) ), ),
+				} ),
 	'computers/ipmanagedclient': Attributes( UCS ),
 	'computers/macos': Attributes( UCS ),
 	'computers/memberserver': Attributes( UCS ),
@@ -97,6 +112,9 @@ modules = {
 	'mail/lists': Attributes( UGS ),
 	'mail/mail': Attributes( UGS ),
 	'networks/network': Attributes( UCS ),
+	'nagios/nagios': Attributes( UCS ),
+	'nagios/service': Attributes( UCS ),
+	'nagios/timeperiod': Attributes( UCS ),
 	'policies/admin_container': Attributes(),
 	'policies/admin_user': Attributes(),
 	'policies/autostart': Attributes( UCS ),

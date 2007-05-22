@@ -34,6 +34,7 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uldap
+import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
@@ -255,6 +256,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'groups': univention.admin.property(
+			short_description=_('Groups'),
+			long_description='',
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
@@ -285,6 +297,9 @@ layout=[
 	univention.admin.tab(_('Deployment'),_('Deployment'),[
 			[univention.admin.field("reinstall"), univention.admin.field('reinstalltext')],
 			[univention.admin.field("instprofile")]
+		]),
+	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+			[univention.admin.field("groups")],
 		])
 ]
 
@@ -304,7 +319,11 @@ mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.Lis
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
 
-class object(univention.admin.handlers.simpleComputer):
+# add Nagios extension
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+
+
+class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
@@ -324,12 +343,14 @@ class object(univention.admin.handlers.simpleComputer):
 		self.ipRequest=0
 
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
+		self.options = []
+		nagios.Support.__init__(self)
 
 	def open(self):
 		global options
 		univention.admin.handlers.simpleComputer.open( self )
+		self.nagios_open()
 
-		self.options = []
 		if self.oldattr.has_key('objectClass'):
 			ocs=self.oldattr['objectClass']
 			if 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs:
@@ -373,11 +394,11 @@ class object(univention.admin.handlers.simpleComputer):
 				res=univention.admin.config.getDefaultValue(self.lo, 'univentionDefaultMemberserverGroup', position=self.position)
 				if res:
 					self['primaryGroup']=res
-				
+
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		if not self['password']:
@@ -418,7 +439,7 @@ class object(univention.admin.handlers.simpleComputer):
 			ocs.extend(['posixAccount','shadowAccount'])
 			al.append(('uidNumber', [self.uidNum]))
 			al.append(('gidNumber', [gidNum]))
-		
+
 		if self.modifypassword or self['password']:
 			krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
 			al.append(('krb5Key', self.oldattr.get('password', ['1']), krb_keys))
@@ -439,6 +460,7 @@ class object(univention.admin.handlers.simpleComputer):
 			univention.admin.handlers.simpleComputer.primary_group( self )
 			univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_create( self )
+		self.nagios_ldap_post_create()
 
 	def _ldap_pre_remove(self):
 		self.open()
@@ -456,6 +478,8 @@ class object(univention.admin.handlers.simpleComputer):
 				if self.dn in groupObjects[i]['users']:
 					groupObjects[i]['users'].remove(self.dn)
 					groupObjects[i].modify(ignore_license=1)
+
+		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
 
 	def krb5_principal(self):
@@ -477,6 +501,7 @@ class object(univention.admin.handlers.simpleComputer):
 		univention.admin.handlers.simpleComputer.primary_group( self )
 		univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
+		self.nagios_ldap_post_modify()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
@@ -488,11 +513,15 @@ class object(univention.admin.handlers.simpleComputer):
 				self.modifypassword=0
 			else:
 				self.modifypassword=1
+
+		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
 
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
+
+		self.nagios_ldap_modlist(ml)
 
 		if self.modifypassword and self['password']:
 			krb_keys=univention.admin.password.krb5_asn1(self.krb5_principal(), self['password'])
@@ -501,7 +530,7 @@ class object(univention.admin.handlers.simpleComputer):
 			ml.append(('krb5KeyVersionNumber', self.oldattr.get('krb5KeyVersionNumber', []), krb_key_version))
 			password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 			ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-																																			
+
 		if self.hasChanged('name'):
 			if hasattr(self, 'uidNum'):
 				univention.admin.allocators.confirm(self.lo, self.position, 'uidNumber', self.uidNum)
@@ -522,8 +551,8 @@ class object(univention.admin.handlers.simpleComputer):
 
 
 	def cleanup(self):
-
 		self.open()
+		self.nagios_cleanup()
 		univention.admin.handlers.simpleComputer.cleanup( self )
 
 	def cancel(self):
@@ -536,7 +565,7 @@ class object(univention.admin.handlers.simpleComputer):
 			return [{'name':'console','url':'https://%s/console/'%self['ip'][ 0 ]}]
 		elif self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
 			zone=self['dnsEntryZoneForward'][('%s'%self['dnsEntryZoneForward'][ 0 ]).find('=')+1:('%s'%self['dnsEntryZoneForward'][ 0 ]).find(',')]
-			return [{'name':'console','url':'https://%s.%s/console/'%(self['name'],zone)}]	
+			return [{'name':'console','url':'https://%s.%s/console/'%(self['name'],zone)}]
 
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':
@@ -562,6 +591,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionMemberServer' in attr.get('objectClass', [])
-

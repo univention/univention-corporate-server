@@ -38,6 +38,7 @@ _=translation.translate
 
 module='scalix/mailboxclass'
 operations=['add','remove','search','move']
+superordinate='settings/cn'
 usewizard=0
 
 childs=0

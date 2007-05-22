@@ -29,6 +29,7 @@
 
 import copy, types, sys, re, string, ldap
 import univention.debug
+import univention.admin.filter
 import univention.admin.uldap
 import univention.admin.mapping
 import univention.admin.modules
@@ -657,7 +658,7 @@ class simpleLdap(base):
 		return self.dn
 
 	def _move_in_subordinates(self, olddn):
-		searchFilter='(&(objectclass=person)(secretary=%s))'%olddn
+		searchFilter='(&(objectclass=person)(secretary=%s))'% univention.admin.filter.escapeForLdapFilter(olddn)
 		result=self.lo.search(base=self.lo.base, filter=searchFilter, attr=['dn'])
 		for subordinate, attr in result:
 			self.lo.modify(subordinate, [('secretary', olddn, self.dn)])
@@ -769,6 +770,8 @@ class simpleLdap(base):
 				if univention.admin.modules.name(module) == policy_type:
 					self.policyObjects[policy_type]=univention.admin.objects.get(module, None, self.lo, policy_position, dn=dn)
 					self.policyObjects[policy_type].clone(self)
+					self._init_ldap_search( self.policyObjects[ policy_type ] )
+
 					return self.policyObjects[policy_type]
 			if not modules:
 				self.policies.remove(dn)
@@ -776,10 +779,23 @@ class simpleLdap(base):
 		if not self.policyObjects.get(policy_type, None) or reset:
 			self.policyObjects[policy_type]=univention.admin.objects.get(policy_module, None, self.lo, policy_position)
 			self.policyObjects[policy_type].copyIdentifier(self)
+			self._init_ldap_search( self.policyObjects[ policy_type ] )
 		else:
 			pass
 
 		return self.policyObjects[policy_type]
+
+	def _init_ldap_search( self, policy ):
+		properties = {}
+		if hasattr( policy, 'property_descriptions' ):
+			properties = policy.property_descriptions
+		elif hasattr( policy, 'descriptions' ):
+			properties = policy.descriptions
+		for pname, prop in properties.items():
+			if prop.syntax.name == 'LDAP_Search':
+				prop.syntax._load( self.lo )
+				if prop.syntax.viewonly:
+					policy.mapping.unregister( pname )
 
 	def _update_policies(self):
 		_d=univention.debug.function('admin.handlers.simpleLdap._update_policies')
@@ -851,6 +867,7 @@ class simpleComputer( simpleLdap ):
 		self[ 'dnsEntryZoneForward' ] = [ ]
 		self[ 'dnsEntryZoneReverse' ] = [ ]
 		self[ 'dhcpEntryZone' ] = [ ]
+		self[ 'groups' ] = [ ]
 
 		# search forward zone and insert into the object
 		if self [ 'name' ]:
@@ -936,6 +953,11 @@ class simpleComputer( simpleLdap ):
 		if self.dn:
 			if self.has_key( 'network' ):
 				self.old_network = self[ 'network' ]
+
+			# get groupmembership
+			searchFilter='(&(objectclass=univentionGroup)(uniqueMember=%s))'% univention.admin.filter.escapeForLdapFilter(self.dn)
+			result=self.lo.search(base=self.lo.base, filter=searchFilter, attr=['dn'])
+			self['groups'] = [(x[0]) for x in result]
 
 		if len( open_warnings ) > 0:
 			self.open_warning = ''
@@ -1102,8 +1124,7 @@ class simpleComputer( simpleLdap ):
 				zone = univention.admin.handlers.dns.reverse_zone.object( self.co, self.lo, self.position, dnsEntryZoneReverse )
 				zone.open( )
 				zone.modify( )
-		else:
-			# TODO
+		elif ip:
 			tmppos = univention.admin.uldap.position( self.position.getDomain( ) )
 			results = self.lo.search( base = tmppos.getBase( ), scope = 'domain', attr = [ 'zoneDn' ], filter = '(&(objectClass=dNSZone)(|(pTRRecord=%s)(pTRRecord=%s.*)))' % ( name, name ), unique = 0 )
 			for dn, attr in results:
@@ -1356,6 +1377,7 @@ class simpleComputer( simpleLdap ):
 				if macAddress:
 					univention.admin.allocators.confirm( self.lo, self.position, 'mac', macAddress )
 
+		self.update_groups()
 
 
 	def _ldap_modlist( self ):
@@ -1555,6 +1577,8 @@ class simpleComputer( simpleLdap ):
 					if len( self[ 'mac' ] ) > 0:
 						self.__modify_dhcp_object( dn, self[ 'name' ], mac = self[ 'mac' ][ 0 ], ip = entry )
 
+		self.update_groups()
+
 	def _ldap_post_remove(self):
 		if self['mac']:
 			for macAddress in self['mac']:
@@ -1565,8 +1589,19 @@ class simpleComputer( simpleLdap ):
 				if ipAddress:
 					univention.admin.allocators.release( self.lo, self.position, 'aRecord', ipAddress )
 
+		# remove computer from groups
+		for grpdn in self['groups']:
+			members=self.lo.getAttr(grpdn, 'uniqueMember')
+			if not self.dn in members:
+				continue
+			newmembers=copy.deepcopy(members)
+			newmembers.remove(self.dn)
+			self.lo.modify(grpdn, [('uniqueMember', oldmembers, newmembers)])
+
 	def update_groups(self):
-		if not self.hasChanged('groups') and not self.oldPrimaryGroupDn and not self.newPrimaryGroupDn:
+		if not self.hasChanged('groups') and \
+			   not ('oldPrimaryGroupDn' in self.__dict__ and self.oldPrimaryGroupDn) and \
+			   not ('newPrimaryGroupDn' in self.__dict__ and self.newPrimaryGroupDn):
 			return
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'updating groups')
 
@@ -1579,10 +1614,18 @@ class simpleComputer( simpleLdap ):
 			if not group in self.oldinfo.get('groups', []):
 				add_to_group.append(group)
 
-		if self.oldPrimaryGroupDn:
-			remove_from_group.append(self.oldPrimaryGroupDn)
-		if self.newPrimaryGroupDn:
-			add_to_group.append(self.newPrimaryGroupDn)
+		if 'oldPrimaryGroupDn' in self.__dict__:
+			if self.oldPrimaryGroupDn:
+				remove_from_group.append(self.oldPrimaryGroupDn)
+		if 'newPrimaryGroupDn' in self.__dict__:
+			if self.newPrimaryGroupDn:
+				add_to_group.append(self.newPrimaryGroupDn)
+
+		# prevent machineAccountGroup from being removed
+		if self.has_key('machineAccountGroup'):
+			add_to_group.append(self['machineAccountGroup'])
+			if self['machineAccountGroup'] in remove_from_group:
+				remove_from_group.remove(self['machineAccountGroup'])
 
 		for group in add_to_group:
 			members=self.lo.getAttr(group, 'uniqueMember')

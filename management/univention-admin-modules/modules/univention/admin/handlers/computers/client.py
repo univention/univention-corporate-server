@@ -34,6 +34,7 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uldap
+import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
@@ -235,6 +236,17 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'groups': univention.admin.property(
+			short_description=_('Groups'),
+			long_description='',
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
@@ -262,6 +274,9 @@ layout=[
 	univention.admin.tab(_('Deployment'),_('Deployment'),[
 			[univention.admin.field("reinstall"), univention.admin.field('reinstalltext')],
 			[univention.admin.field("instprofile")]
+		]),
+	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+			[univention.admin.field("groups")],
 		])
 ]
 
@@ -279,7 +294,11 @@ mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapp
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 
-class object(univention.admin.handlers.simpleComputer):
+# add Nagios extension
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+
+
+class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
@@ -315,9 +334,13 @@ class object(univention.admin.handlers.simpleComputer):
 
 		self.modifypassword=0
 
+		nagios.Support.__init__(self)
+
 		self.save( )
+
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
+		self.nagios_open()
 
 		# if not self.dn:
 		#	return
@@ -419,6 +442,7 @@ class object(univention.admin.handlers.simpleComputer):
 			univention.admin.handlers.simpleComputer.primary_group( self )
 			univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_create( self )
+		self.nagios_ldap_post_create()
 
 	def _ldap_pre_remove(self):
 		self.open()
@@ -437,6 +461,7 @@ class object(univention.admin.handlers.simpleComputer):
 				if self.dn in groupObjects[i]['users']:
 					groupObjects[i]['users'].remove(self.dn)
 					groupObjects[i].modify(ignore_license=1)
+		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
 
 	def krb5_principal(self):
@@ -454,6 +479,7 @@ class object(univention.admin.handlers.simpleComputer):
 		univention.admin.handlers.simpleComputer.primary_group( self )
 		univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
+		self.nagios_ldap_post_modify()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
@@ -465,11 +491,13 @@ class object(univention.admin.handlers.simpleComputer):
 				self.modifypassword=0
 			else:
 				self.modifypassword=1
+		self.nagios_ldap_pre_modify()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
 
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
+		self.nagios_ldap_modlist(ml)
 
 		if self.modifypassword and self['password']:
 			if 'kerberos' in self.options:
@@ -501,8 +529,8 @@ class object(univention.admin.handlers.simpleComputer):
 
 
 	def cleanup(self):
-
 		self.open()
+		self.nagios_cleanup()
 		univention.admin.handlers.simpleComputer.cleanup( self )
 
 	def cancel(self):
@@ -512,9 +540,9 @@ class object(univention.admin.handlers.simpleComputer):
 
 	def link(self):
 		if self['ip']:
-			return [{'name':'console','url':'https://%s/console/'%self['ip']}]
+			return [{'name':'console','url':'https://%s/console/'%self['ip'][ 0 ]}]
 		elif self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
-			zone=self['dnsEntryZoneForward'][('%s'%self['dnsEntryZoneForward']).find('=')+1:('%s'%self['dnsEntryZoneForward']).find(',')]
+			zone=self['dnsEntryZoneForward'][0][('%s'%self['dnsEntryZoneForward'][0]).find('=')+1:('%s'%self['dnsEntryZoneForward'][0]).find(',')]
 			return [{'name':'console','url':'https://%s.%s/console/'%(self['name'],zone)}]
 	
 

@@ -1,8 +1,8 @@
 #
 # Univention Admin Modules
-#  admin policy for the desktop settings
+#  admin policy for nfs mounts
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -39,23 +39,22 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
 
-class desktopFixedAttributes(univention.admin.syntax.select):
-	name='desktopFixedAttributes'
-	choices=[(('univentionDesktopLanguage'),_('Desktop Language')),
-			 (('univentionDesktopProfile'),_('Desktop Profile'))
-			 ]
-			
+class ldapServerFixedAttributes(univention.admin.syntax.select):
+	name='updateFixedAttributes'
+	choices=[
+		('univentionNFSMounts',_('Mount NFS Shares')),
+		]
 
-module='policies/desktop'
+module='policies/nfsmounts'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionPolicyDesktop'
-policy_apply_to=["users/user"]
-policy_position_dn_prefix="cn=desktop"
-usewizard=1
+policy_oc='univentionPolicyNFSMounts'
+policy_apply_to=["computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/client", "computers/mobileclient"]
+policy_position_dn_prefix="cn=nfsmounts"
+
 childs=0
-short_description=_('Policy: Desktop')
-policy_short_description=_('Desktop Settings')
+short_description=_('Policy: NFS Mounts')
+policy_short_description=_('NFS Mounts')
 long_description=''
 options={
 }
@@ -70,40 +69,10 @@ property_descriptions={
 			may_change=0,
 			identifies=1,
 		),
-	'language': univention.admin.property(
-			short_description=_('Desktop Language'),
+	'nfsMounts': univention.admin.property(
+			short_description=_('NFS Shares to mount'),
 			long_description='',
-			syntax=univention.admin.syntax.language,
-			multivalue=0,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'profile': univention.admin.property(
-			short_description=_('Desktop Profile'),
-			long_description='',
-			syntax=univention.admin.syntax.kdeProfiles,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'logonScripts': univention.admin.property(
-			short_description=_('Logon Scripts'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'logoutScripts': univention.admin.property(
-			short_description=_('Logout Scripts'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.nfsMounts,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -133,7 +102,7 @@ property_descriptions={
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed Attributes'),
 			long_description='',
-			syntax=desktopFixedAttributes,
+			syntax=ldapServerFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -143,7 +112,7 @@ property_descriptions={
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty Attributes'),
 			long_description='',
-			syntax=desktopFixedAttributes,
+			syntax=ldapServerFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -162,24 +131,31 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Desktop Settings'), [
-		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('language'), univention.admin.field("filler", hide_in_normalmode=1) ],
-		[univention.admin.field('profile'), univention.admin.field("filler")],
-		[univention.admin.field('logonScripts'), univention.admin.field("filler")],
-		[univention.admin.field("logoutScripts"), univention.admin.field("filler")],
+	univention.admin.tab(_('General'),_('Basic Values'), [
+		[univention.admin.field('name', hide_in_resultmode=1) ],
+		[univention.admin.field('nfsMounts') ]
 	]),
 	univention.admin.tab(_('Object'),_('Object'), [
 		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field("emptyAttributes")]
+		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
 	]),
 ]
 
+def unmapMounts(old):
+	new=[]
+	for i in old:
+		new.append(i.split(' '))
+	return new
+
+def mapMounts(old):
+	new=[]
+	for i in old:
+		new.append(string.join(i, ' '))
+	return new
+
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('language', 'univentionDesktopLanguage', None, univention.admin.mapping.ListToString)
-mapping.register('profile', 'univentionDesktopProfile')
-mapping.register('logonScripts', 'univentionDesktopLogonScripts')
-mapping.register('logoutScripts', 'univentionDesktopLogoutScripts')
+mapping.register('nfsMounts', 'univentionNFSMounts', mapMounts, unmapMounts)
 mapping.register('requiredObjectClasses', 'requiredObjectClasses')
 mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
 mapping.register('fixedAttributes', 'fixedAttributes')
@@ -209,12 +185,12 @@ class object(univention.admin.handlers.simplePolicy):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyDesktop']) ]
+		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyNFSMounts']) ]
 	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
-		univention.admin.filter.expression('objectClass', 'univentionPolicyDesktop')
+		univention.admin.filter.expression('objectClass', 'univentionPolicyNFSMounts')
 		])
 
 	if filter_s:
@@ -231,4 +207,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	return 'univentionPolicyDesktop' in attr.get('objectClass', [])
+	return 'univentionPolicyNFSMounts' in attr.get('objectClass', [])

@@ -124,6 +124,17 @@ property_descriptions={
 			dontsearch=1,
 			identifies=0
 		),
+	'hosts': univention.admin.property(
+			short_description=_('Hosts'),
+			long_description='',
+			syntax=univention.admin.syntax.hostDn,
+			multivalue=1,
+			options=['posix'],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
 	'mailAddress': univention.admin.property(
 			short_description=_('Mail Address'),
 			long_description='',
@@ -167,6 +178,9 @@ layout=[
 	] ),
 	univention.admin.tab(_('Members'),_('Members of this Group'),[
 		[univention.admin.field("users")]
+	] ),
+	univention.admin.tab(_('Host Members'),_('Host Members of this Group'),[
+		[univention.admin.field("hosts")]
 	] ),
 	univention.admin.tab(_('Nested Groups'),_('Membership of other Groups'),[
 		[univention.admin.field("nestedGroup")]
@@ -224,21 +238,33 @@ class object(univention.admin.handlers.simpleLdap):
 			self.info['sambaRID'] = sid[pos+1:]
 
 		if self.dn:
-			self['memberOf']=self.lo.searchDn(filter='(&(objectClass=posixGroup)(uniqueMember=%s))' % self.dn)
+			self['memberOf']=self.lo.searchDn(filter='(&(objectClass=posixGroup)(uniqueMember=%s))' % univention.admin.filter.escapeForLdapFilter(self.dn))
 
-			self['users']=self['nestedGroup']=[]
+			self['users']=self['hosts']=self['nestedGroup']=[]
 			if self.oldattr.has_key('uniqueMember'):
 				groupMembers=self.oldattr['uniqueMember']
 
 				for i in groupMembers:
+					saved=0
 					try:
 						result = self.lo.searchDn(base=i, filter = 'objectClass=univentionGroup', unique=0)
 						if result:
 							self['nestedGroup'].append(i)
-						else:
-							self['users'].append(i)
+							saved=1
 					except univention.admin.uexceptions.noObject:
+						pass
+
+					try:
+						result = self.lo.searchDn(base=i, filter = 'objectClass=univentionHost', unique=0)
+						if result:
+							self['hosts'].append(i)
+							saved=1
+					except univention.admin.uexceptions.noObject:
+						pass
+
+					if not saved:
 						self['users'].append(i)
+
 			self.save()
 
 
@@ -355,8 +381,8 @@ class object(univention.admin.handlers.simpleLdap):
 					self.cancel()
 					raise univention.admin.uexceptions.mailAddressUsed
 
-		old = self.oldinfo.get( 'users', [] ) + self.oldinfo.get('nestedGroup', [])
-		new = self.info.get('users', []) + self.info.get('nestedGroup', [])
+		old = self.oldinfo.get( 'users', [] ) + self.oldinfo.get('hosts', []) + self.oldinfo.get('nestedGroup', []) 
+		new = self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', [])
 		if old != new:
 			ml.append( ( 'uniqueMember', old, new ) )
 

@@ -31,6 +31,7 @@ import sys, string, ldap
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.host_record
@@ -142,6 +143,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'groups': univention.admin.property(
+			short_description=_('Groups'),
+			long_description='',
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			dontsearch=1,
+			identifies=0
+		),
+	'domain': univention.admin.property(
+			short_description=_('Domain'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
@@ -158,6 +179,9 @@ layout=[
 		]),
 	univention.admin.tab(_('DHCP'),_('DHCP'),[
 			[univention.admin.field("dhcpEntryZone")]
+		]),
+	univention.admin.tab(_('Groups'),_('Group Memberships'),[
+			[univention.admin.field("groups")],
 		])
 ]
 
@@ -168,8 +192,13 @@ mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('mac', 'macAddress' )
 mapping.register('ip', 'aRecord' )
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
+mapping.register('domain', 'associatedDomain', None, univention.admin.mapping.ListToString)
 
-class object(univention.admin.handlers.simpleComputer):
+# add Nagios extension
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
+
+
+class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
@@ -185,16 +214,19 @@ class object(univention.admin.handlers.simpleComputer):
 		self.descriptions=property_descriptions
 
 		self.alloc=[]
+		self.options = []
 
 		self.ipRequest=0
 
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate)
+		nagios.Support.__init__(self)
 
 		self.save( )
 
 	def open(self):
 
 		univention.admin.handlers.simpleComputer.open( self )
+		self.nagios_open()
 
 		if not self.dn:
 			return
@@ -208,24 +240,33 @@ class object(univention.admin.handlers.simpleComputer):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		univention.admin.handlers.simpleComputer._ldap_pre_create( self )
 
+	def _ldap_pre_modify(self):
+		self.nagios_ldap_pre_modify()
+		super(object, self)._ldap_pre_modify()
+
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'person', 'univentionHost', 'univentionThinClient']) ]
 
 	def _ldap_post_create(self):
 		univention.admin.handlers.simpleComputer._ldap_post_create( self )
+		self.nagios_ldap_post_create()
 
 	def _ldap_post_modify(self):
 		super(object, self)._ldap_post_modify()
+		self.nagios_ldap_post_modify()
 
 	def _ldap_post_remove(self):
+		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
 
 	def _ldap_modlist(self):
 		ml=super(object, self)._ldap_modlist()
+		self.nagios_ldap_modlist(ml)
 		return ml
 
 	def cleanup(self):
 		self.open()
+		self.nagios_cleanup()
 		univention.admin.handlers.simpleComputer.cleanup( self )
 
 	def cancel(self):

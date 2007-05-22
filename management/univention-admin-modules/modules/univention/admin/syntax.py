@@ -86,7 +86,10 @@ class complex:
 
 		for i in range(0, len(self.subsyntaxes)):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: self.subsyntax[%s] is %s, texts is %s' % (i,self.subsyntaxes[i],  texts))
-			s=self.subsyntaxes[i][1]()
+			if type( self.subsyntaxes[i][1] ) == types.InstanceType:
+				s=self.subsyntaxes[i][1]
+			else:
+				s=self.subsyntaxes[i][1]()
 			if texts[i] == None:
 				raise univention.admin.uexceptions.valueInvalidSyntax, _("Invalid syntax")
 			p=s.parse(texts[i])
@@ -101,9 +104,13 @@ class complex:
 		if len(self.subsyntaxes) != len(texts):
 			return ''
 		else:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: text: %s' % str(texts) )
 			for i in range(0,len(texts)):
 				if  texts[i]:
-					res=self.subsyntaxes[i][1]().parse(texts[i])
+					if type( self.subsyntaxes[i][1] ) == types.InstanceType:
+						res=self.subsyntaxes[i][1].parse(texts[i])
+					else:
+						res=self.subsyntaxes[i][1]().parse(texts[i])
 					if res:
 						newTexts.append(res)
 				elif self.all_required == 1:
@@ -116,13 +123,20 @@ class complex:
 	def new(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			s.append(syntax().new())
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'syntax.py: syntax is %s, text is %s, type is %s' % (syntax, desc, type(syntax)) )
+			if type( syntax ) == types.InstanceType:
+				s.append(syntax.new())
+			else:
+				s.append(syntax().new())
 		return s
 
 	def any(self):
 		s=[]
 		for desc, syntax in self.subsyntaxes:
-			s.append(syntax().any())
+			if type( syntax ) == types.InstanceType:
+				s.append(syntax.any())
+			else:
+				s.append(syntax().any())
 		return s
 
 class none(simple):
@@ -994,6 +1008,9 @@ class groupDn(ldapDn):
 class userDn(ldapDn):
 	name='userDn'
 
+class hostDn(ldapDn):
+	name='hostDn'
+
 class userID(integer):
 	name='userID'
 	searchFilter='(&(uid=*)(objectClass=posixAccount)(!(objectClass=univentionHost)))'
@@ -1432,11 +1449,57 @@ class Hour(select):
 		('23', '23'),
 	]
 
+class HourSimple(select):
+	name='hour'
+	choices=[
+		('00', '0'),
+		('1', '1'),
+		('2', '2'),
+		('3', '3'),
+		('4', '4'),
+		('5', '5'),
+		('6', '6'),
+		('7', '7'),
+		('8', '8'),
+		('9', '9'),
+		('10', '10'),
+		('11', '11'),
+		('12', '12'),
+		('13', '13'),
+		('14', '14'),
+		('15', '15'),
+		('16', '16'),
+		('17', '17'),
+		('18', '18'),
+		('19', '19'),
+		('20', '20'),
+		('21', '21'),
+		('22', '22'),
+		('23', '23'),
+	]
+
 class Minute(select):
 	name='minute'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
+		('00', '0'),
+		('5', '5'),
+		('10', '10'),
+		('15', '15'),
+		('20', '20'),
+		('25', '25'),
+		('30', '30'),
+		('35', '35'),
+		('40', '40'),
+		('45', '45'),
+		('50', '50'),
+		('55', '55'),
+	]
+
+class MinuteSimple(select):
+	name='minute'
+	choices=[
 		('00', '0'),
 		('5', '5'),
 		('10', '10'),
@@ -1617,6 +1680,19 @@ class CTX_Shadow( select ):
 		( '04000000', _( 'Enabled: Input: off, Message: off' ) ),
 		)
 
+
+class nagiosHostsEnabledDn(simple):
+	name='nagiosHostsEnabledDn'
+	def parse(self, text):
+		return text
+
+
+class nagiosServiceDn(simple):
+	name='nagiosServiceDn'
+	def parse(self, text):
+		return text
+
+
 class LDAP_Search( select ):
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
 
@@ -1675,3 +1751,9 @@ class LDAP_Search( select ):
 				self.values.append( ( dn, self.__value, self.attributes[ 0 ] ) )
 			else:
 				self.values.append( ( dn, self.attributes ) )
+
+class nfsMounts(complex):
+	name='nfsMounts'
+	subsyntaxes=[(_('NFS-Share'), LDAP_Search( filter = 'objectClass=univentionShareNFS', attribute = [ 'shares/share: printablename' ], value = 'shares/share: dn' )), ('Mount point', string)]
+	all_required=1
+

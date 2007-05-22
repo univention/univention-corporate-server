@@ -228,6 +228,11 @@ def init(lo, position, module, template_object=None):
 			prop.syntax._load( lo )
 			if prop.syntax.viewonly:
 				module.mapping.unregister( pname )
+		elif prop.syntax.type == 'complex' and hasattr( prop.syntax, 'subsyntaxes' ):
+			for text, subsyn in prop.syntax.subsyntaxes:
+				if subsyn.name == 'LDAP_Search':
+					subsyn._load( lo )
+				
 
 	module.initialized=1
 

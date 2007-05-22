@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-11-07 16:14+0100\n"
-"PO-Revision-Date: 2005-04-04 11:34+0200\n"
+"POT-Creation-Date: 2007-04-18 09:42+0200\n"
+"PO-Revision-Date: 2007-04-18 09:53+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,103 +15,115 @@ msgstr ""
 "Content-Transfer-Encoding: ENCODING\n"
 "Generated-By: pygettext.py 1.3\n"
 
-#: group.py:16
+#: group.py:42
 msgid "Groups"
 msgstr "Gruppen"
 
-#: group.py:17
+#: group.py:43
 msgid "Add, edit and delete groups"
 msgstr "Hinzufügen, Bearbeiten und Löschen von Gruppen"
 
-#: group.py:18
+#: group.py:44
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: group.py:18
+#: group.py:44
 msgid "Add Group Object"
 msgstr "Gruppe hinzufügen"
 
-#: group.py:18
+#: group.py:44
 msgid "Find"
 msgstr "Suchen"
 
-#: group.py:18
+#: group.py:44
 msgid "Find Group Object(s)"
 msgstr "Suche Gruppen Objekt(e)"
 
-#: group.py:21
+#: group.py:47
 msgid "Group: Group"
 msgstr "Gruppe: Gruppe"
 
-#: group.py:25
+#: group.py:51
 msgid "Posix Group"
 msgstr "Posix-Gruppe"
 
-#: group.py:29
+#: group.py:55
 msgid "Samba Group"
 msgstr "Samba-Gruppe"
 
-#: group.py:40
+#: group.py:66
 msgid "Name"
 msgstr "Name"
 
-#: group.py:50
+#: group.py:76
 msgid "Group ID"
 msgstr "Gruppen ID"
 
-#: group.py:60
+#: group.py:86
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: group.py:70
+#: group.py:96
 msgid "Samba Group Type"
 msgstr "Samba Gruppentyp"
 
-#: group.py:81
+#: group.py:107
 msgid "Description"
 msgstr "Beschreibung"
 
-#: group.py:91
+#: group.py:117
 msgid "Users"
 msgstr "Benutzer"
 
-#: group.py:102
+#: group.py:128
+msgid "Hosts"
+msgstr "enthaltene Rechner"
+
+#: group.py:139
 msgid "Mail Address"
 msgstr "Mail-Adresse"
 
-#: group.py:113 group.py:148
+#: group.py:150 group.py:188
 msgid "Member Of"
 msgstr "Mitglied von"
 
-#: group.py:124
+#: group.py:161
 msgid "Nested Group"
 msgstr "enthaltene Gruppe"
 
-#: group.py:137
+#: group.py:174
 msgid "General"
 msgstr "Allgemein"
 
-#: group.py:137
+#: group.py:174
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
-#: group.py:142
+#: group.py:179
 msgid "Members"
 msgstr "Mitglieder"
 
-#: group.py:142
+#: group.py:179
 msgid "Members of this Group"
 msgstr "Mitglieder dieser Gruppe"
 
-#: group.py:145
+#: group.py:182
+msgid "Host Members"
+msgstr "enthaltene Rechner"
+
+#: group.py:182
+msgid "Host Members of this Group"
+msgstr "in dieser Gruppe enthaltene Rechner"
+
+#: group.py:185
 msgid "Nested Groups"
 msgstr "enthaltene Gruppen"
 
-#: group.py:145
+#: group.py:185
 msgid "Membership of other Groups"
 msgstr "Mitgliedschaft von weiteren Gruppen"
 
-#: group.py:148
+#: group.py:188
 msgid "Membership in other Groups"
 msgstr "Mitgliedschaft in weiteren Gruppen"
 

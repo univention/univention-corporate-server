@@ -269,6 +269,9 @@ class access:
 			elif res == 4:
 				self.allow_modify=0
 				raise univention.admin.uexceptions.licenseGroupware
+			elif res == 5:
+				# Free for personal use edition
+				raise univention.admin.uexceptions.freeForPersonalUse
 
 	def requireLicense(self, require=1):
 		self.require_license=require

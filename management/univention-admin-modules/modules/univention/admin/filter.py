@@ -29,6 +29,11 @@
 
 import string, types
 
+def escapeForLdapFilter(txt):
+	# parenthesis mess up ldap filters - they should be escaped
+	return txt.replace('(', '\(').replace(')', '\)')
+
+
 class conjunction:
 	_type_='conjunction'
 	def __init__(self, type, expressions):
@@ -45,8 +50,12 @@ class expression:
 		self.variable=variable
 		self.value=value
 		self.operator='='
+
 	def __str__(self):
-		return '(%s=%s)' % (self.variable, self.value)
+		if self.operator == '!=':
+			return '(!(%s=%s))' % ( self.variable, self.value )
+		else:
+			return '(%s=%s)' % ( self.variable, self.value )
 
 def parse(filter_s, begin=0, end=-1):
 	def split(str):
@@ -108,4 +117,3 @@ if __name__ == '__main__':
 	print filter
 	p=parse(filter)
 	print p
-

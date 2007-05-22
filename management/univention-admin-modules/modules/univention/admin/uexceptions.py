@@ -153,6 +153,8 @@ class licenseWrongBaseDn(base):
 
 class licenseGPLversion(base):
 	message=_('The license check is disabled. Your are using the GPL version without any support or maintenance by Univention.')
+class freeForPersonalUse(base):
+	message=_('Free for personal use edition.')
 
 class licenseAccounts(base):
 	message=_('Too many user accounts')
@@ -205,9 +207,18 @@ class notValidGroup(base):
 	message=_('Only existing groups are allowed.')
 
 class notValidUser(base):
-        message=_('Only existing users are allowed.')
+	message=_('Only existing users are allowed.')
 
 class templateSyntaxError(base):
 	message=_('Invalid syntax in default value. Check these templates: %s.')
 	def __init__(self, templates):
 		self.templates = templates
+
+class nagiosTimeperiodUsed(base):
+	message=_('Timeperiod Object still in use!')
+
+class nagiosARecordRequired(base):
+	message=_('IP address entry required to assign nagios services!')
+
+class nagiosDNSForwardZoneEntryRequired(base):
+	message=_('DNS Forward Zone entry required to assign nagios services!')

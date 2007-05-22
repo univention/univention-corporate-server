@@ -38,6 +38,7 @@ _=translation.translate
 
 module='scalix/mailnode'
 operations=['add','edit','remove','search','move']
+superordinate='settings/cn'
 usewizard=0
 
 childs=0
