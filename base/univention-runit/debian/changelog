@@ -1,3 +1,9 @@
+univention-runit (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2007 16:09:19 +0200
+
 univention-runit (0.8) unstable; urgency=low
 
   * don't restart the daemon during an upgrade
