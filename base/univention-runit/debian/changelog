@@ -1,0 +1,33 @@
+univention-runit (0.8) unstable; urgency=low
+
+  * don't restart the daemon during an upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Dec 2006 07:47:55 +0100
+
+univention-runit (0.4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 08:19:59 +0100
+
+univention-runit (0.3) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 14:06:21 +0200
+
+univention-runit (0.2) unstable; urgency=low
+
+  * insert sleep-dynamic script for ./finish
+
+ -- Thomas Kaminski <thomas@ds-work.office.univention.de>  Mon,  9 Feb 2004 15:52:47 +0100
+
+univention-runit (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Mar 2003 11:09:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

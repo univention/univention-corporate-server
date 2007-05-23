@@ -1,0 +1,66 @@
+#!/bin/bash
+#
+# Univention RunIt
+#  delays execution for at least MIN_DELAY, but not longer than
+#  MAX_DELAY. Also checks that it is not execute to fast after last
+#  run. Waits at least 2 * delay.
+#
+# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+TIMEFILE=timefile
+MIN_DELAY=5
+MAX_DELAY=60
+
+DELAY=${TIMEFILE}.delay
+
+if [ -e ${TIMEFILE} ]; then
+	touch ${DELAY}
+	time_old=`stat -c"%X" ${TIMEFILE}`
+	time_new=`stat -c"%X" ${DELAY}`
+	time_diff=$((${time_new} - ${time_old}))
+	read time_delay <${DELAY}
+
+	time_delay=$((${time_delay:=${MIN_DELAY}} * 2))
+
+	if [ ${time_diff} -gt ${time_delay} ]; then
+		rm ${TIMEFILE}
+		rm ${DELAY}
+		time_delay=${MIN_DELAY}
+	else
+		if [ ${time_delay} -gt ${MAX_DELAY} ]; then
+			time_delay=${MAX_DELAY}
+		fi
+
+		touch ${TIMEFILE}
+		echo ${time_delay} >${DELAY}
+	fi;
+
+else
+	touch ${TIMEFILE}
+	time_delay=${MIN_DELAY}
+fi
+
+sleep ${time_delay}
