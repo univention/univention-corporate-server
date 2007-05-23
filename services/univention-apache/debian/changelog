@@ -1,0 +1,134 @@
+univention-apache (1.9.1-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 17:39:43 +0100
+
+univention-apache (1.9-12) unstable; urgency=low
+
+  * catch io exceptions when opening php.ini
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Oct 2006 16:56:57 +0200
+
+univention-apache (1.9-11) unstable; urgency=low
+
+  * fixed generation of memory limit option in php.ini
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Oct 2006 16:32:45 +0200
+
+univention-apache (1.9-10) unstable; urgency=low
+
+  * added Template-Header in index.html
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Oct 2006 14:12:12 +0200
+
+univention-apache (1.9-9) unstable; urgency=low
+
+  * fixed wrong condition for baseconfig key in extension.py
+
+ -- Bastian Neumann <neumann@univention.de>  Mon,  2 Oct 2006 11:19:28 +0200
+
+univention-apache (1.9-8) unstable; urgency=low
+
+  *removed php.ini from univention-apache
+  *fixed search for key word in extension.py
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 13 Sep 2006 16:57:49 +0200
+
+univention-apache (1.9-7) unstable; urgency=low
+
+  *added extension.py Script to conffiles
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 13 Sep 2006 14:58:11 +0200
+
+univention-apache (1.9-6) unstable; urgency=low
+
+  * added baseconfig header to php.ini
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Tue,  8 Aug 2006 11:19:05 +0200
+
+univention-apache (1.9-5) unstable; urgency=low
+
+  * added dependency for php
+  * added etc/php4/apache/php.ini
+  * added baseconfig variable for php/memory/limit
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Tue,  8 Aug 2006 10:54:58 +0200
+
+univention-apache (1.9-4) unstable; urgency=low
+
+  * use debhelper for postrm script
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 11:46:52 +0100
+
+univention-apache (1.9-2) unstable; urgency=low
+
+  * set DocumentRoot using univention-baseconfig
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 19 Jan 2006 08:09:45 +0100
+
+univention-apache (1.9-1) unstable; urgency=low
+
+  * set userDir and accessfilename using univention baseconfig
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 17 Jan 2006 18:42:31 +0100
+
+univention-apache (1.9-0) unstable; urgency=low
+
+  * integrated httpd-pam-configuration
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 30 Sep 2005 13:32:41 +0200
+
+univention-apache (1.8) unstable; urgency=low
+
+  * Switched to python 2.4
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 20 Sep 2005 12:01:41 +0200
+
+univention-apache (1.7) unstable; urgency=low
+
+  * remove univention-apache modules register script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jul 2004 09:13:02 +0200
+
+univention-apache (1.6) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 11:40:23 +0200
+
+univention-apache (1.5) unstable; urgency=low
+
+  * added SSLCARevocationFile
+  * removed SSLCARevocationFile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Apr 2004 16:21:08 +0200
+
+univention-apache (1.4) unstable; urgency=low
+
+  * default startpage added
+
+ -- Arne Brix <arne@ds-work.office.univention.de>  Tue, 23 Mar 2004 15:27:32 +0100
+
+univention-apache (1.3) unstable; urgency=low
+
+  * Change Depends: python2.1 to Depends: python (>= 2.1) since no version
+    specific features are used.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon, 23 Feb 2004 09:45:41 +0100
+
+univention-apache (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:37 +0200
+
+univention-apache (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon,  8 Oct 2001 13:47:19 +0200
+
+Local variables:
+mode: debian-changelog
+End:

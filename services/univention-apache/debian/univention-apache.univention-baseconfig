@@ -1,0 +1,42 @@
+Type: file
+File: etc/apache/access.conf
+
+Type: file
+File: etc/apache/httpd.conf
+
+Type: file
+File: etc/apache/srm.conf
+
+Type: file
+File: etc/univention/apache/00head
+Variables: domainname
+
+Type: file
+File: etc/univention/apache/20logging
+
+Type: file
+File: etc/univention/apache/30server
+
+Type: file
+File: etc/univention/apache/40ssl
+
+Type: file
+File: etc/univention/apache/50srm
+Variables: apache/accessfilename
+Variables: apache/userdir
+Variables: apache/documentroot
+
+Type: file
+File: etc/univention/apache/60access
+Variables: apache/documentroot
+
+Type: file
+File: var/www/index.html
+Variables: hostname
+
+Type: file
+File: etc/pam.d/httpd
+
+Type: module
+Module: extension.py
+Variables: php/memory/limit

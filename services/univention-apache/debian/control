@@ -1,0 +1,19 @@
+Source: univention-apache
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.5
+
+Package: univention-apache
+Architecture: all
+Pre-Depends: apache
+Depends: univention-ssl, libapache-mod-ssl, libapache-mod-auth-pam, python2.4, univention-baseconfig (>=0.06), php4 (>= 4.3)
+Description: UCS - Apache configuration
+ This packages provides the basic configuration for the
+ Apache web server.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

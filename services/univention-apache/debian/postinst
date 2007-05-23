@@ -1,0 +1,92 @@
+#! /bin/sh
+#
+# Univention Apache
+#  postinst file for the univention-apache debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+set -e
+
+package="univention-apache"
+#univention-apache registermodule $package mod_log_config mod_mime \
+#	mod_negotiation mod_status mod_autoindex mod_dir mod_cgi \
+#	mod_actions mod_userdir mod_alias mod_rewrite mod_access \
+#	mod_auth mod_expires mod_unique_id mod_setenvif mod_ssl
+#univention-apache commit
+
+update-rc.d -f apache remove
+update-rc.d apache defaults 33
+
+#if [ ! -f /etc/aliases ]; then  # no /etc/aliases
+#    echo "# See man 5 aliases for format"  > /etc/aliases
+#    echo "webmaster:    root"  >> /etc/aliases
+#fi
+#
+#if [ ! `grep webmaster /etc/aliases | awk '{print $1}'` ]; then # no webmaster alias
+#	echo "webmaster:     root" >> /etc/aliases
+#fi
+
+univention-baseconfig set mail/alias/webmaster?root
+univention-baseconfig set apache/accessfilename?".htaccess" apache/userdir?"public_html" apache/documentroot?"/var/www"
+
+#DEBHELPER#
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.7; then
+
+	modules==`cat /etc/univention/apache/10modules  | awk '{print $2}'`
+
+	mv /etc/univention/apache/10modules /etc/univention/apache_10modules.old
+
+	ln -sf /etc/apache/modules.conf /etc/univention/apache/10modules
+
+	for m in $modules; do
+		if [ "$m" = "ssl_module" ]; then
+			mod=mod_ssl
+		elif [ "$m" = "php4_module" ]; then
+			mod=mod_php4
+		fi
+
+		if [ -n "$mod" ]; then
+			modules-config apache enable $mod
+		fi
+
+	done
+
+elif [ -z "$2" ]; then
+	ln -sf /etc/apache/modules.conf /etc/univention/apache/10modules
+fi
+
+modules-config apache enable mod_unique_id
+modules-config apache enable mod_ssl
+modules-config apache enable mod_auth_pam
+
+
+
+if [ -x /etc/init.d/apache ]; then
+	/etc/init.d/apache stop || true
+	sleep 2
+	/etc/init.d/apache start || true
+fi
