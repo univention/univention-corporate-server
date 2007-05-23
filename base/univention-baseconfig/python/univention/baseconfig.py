@@ -112,6 +112,7 @@ class baseConfig(dict):
 				continue
 
 			key, value = line.split(': ')
+			value = value.strip()
 			if len(value) == 0: #if variable was set without an value 
 				value = ''
 

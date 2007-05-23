@@ -1,3 +1,9 @@
+univention-baseconfig (2.0.2-5) unstable; urgency=low
+
+  * baseconfig variables can be set without an value 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 23 May 2007 15:11:14 +0200
+
 univention-baseconfig (2.0.2-4) unstable; urgency=low
 
   * migrate from lilo to grub
