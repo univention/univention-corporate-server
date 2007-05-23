@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.0-1) unstable; urgency=low
+
+  * update sshd configuration to the new openssh-server package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 May 2007 15:34:54 +0200
+
 univention-baseconfig (2.0.2-5) unstable; urgency=low
 
   * baseconfig variables can be set without an value 

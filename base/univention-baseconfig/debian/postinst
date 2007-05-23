@@ -100,6 +100,7 @@ fi
 univention-baseconfig set sshd/port?22
 univention-baseconfig set sshd/permitroot?yes
 univention-baseconfig set sshd/xforwarding?no
+univention-baseconfig set sshd/challengeresponse?no
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/

@@ -25,18 +25,26 @@ IgnoreRhosts yes
 RhostsRSAAuthentication no
 HostbasedAuthentication no
 PermitEmptyPasswords no
+
+# Change to yes to enable challenge-response passwords (beware issues with
+# some PAM modules and threads)
+ChallengeResponseAuthentication @%@sshd/challengeresponse@%@
 PasswordAuthentication yes
+
+# Kerberos options
 KerberosAuthentication yes
 KerberosTicketCleanup yes
 GSSAPIAuthentication yes
 GSSAPIKeyExchange yes
-GSSAPIUseSessionCredCache yes
 X11DisplayOffset 10
 PrintMotd no
 PrintLastLog yes
 KeepAlive yes
 Subsystem       sftp    /usr/lib/sftp-server
 UsePAM yes
+
+# Allow client to pass locale environment variables
+AcceptEnv LANG LC_*
 
 Port @%@sshd/port@%@
 PermitRootLogin @%@sshd/permitroot@%@
