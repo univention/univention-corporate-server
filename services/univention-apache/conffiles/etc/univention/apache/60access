@@ -79,7 +79,7 @@ Options ExecCGI FollowSymLinks
 
 # Debian Policy assumes /usr/doc is "/doc/", at least from the localhost.
 
-<Directory /usr/doc>
+<Directory /usr/share/doc>
 Options Indexes FollowSymLinks
 AllowOverride None
 order deny,allow

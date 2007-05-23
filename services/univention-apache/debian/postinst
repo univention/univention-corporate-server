@@ -75,7 +75,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.7; then
 
 	done
 
-elif [ -z "$2" ]; then
+else
 	ln -sf /etc/apache/modules.conf /etc/univention/apache/10modules
 fi
 

@@ -19,6 +19,10 @@ File: etc/univention/apache/30server
 
 Type: file
 File: etc/univention/apache/40ssl
+Variables: interfaces/eth.*/type
+Variables: interfaces/eth.*/address
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/univention/apache/50srm
