@@ -30,23 +30,21 @@
 
 #DEBHELPER#
 
-modules-config apache enable mod_php4
+eval `univention-baseconfig shell`
 
-/usr/lib/univention-install/25univention-admin.inst || true
+if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/25univention-admin.inst || true
+fi
 
 univention-baseconfig set admin/timeout?300
 univention-baseconfig set admin/web/language?de
 univention-baseconfig set ssl/validity/check?yes
 
-eval `univention-baseconfig shell`
-if [ -e /etc/univention/ssl/univention-admin ]; then
-	mv /etc/univention/ssl/univention-admin "/etc/univention/ssl/univention-admin.$domainname"
-fi
 
 for path in /usr/share/univention-admin/www/icon /usr/share/univention-admin/www/style /usr/share/univention-admin/www/includes; do
-    if [ -d $path -a ! -h $path ]; then
-	rm -r $path
-    fi
+	if [ -d $path -a ! -h $path ]; then
+		rm -r $path
+	fi
 done
 
 test -h /usr/share/univention-admin/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-admin/www
@@ -55,34 +53,20 @@ test -h /usr/share/univention-admin/www/includes || ln -s /usr/share/univention-
 test -h /usr/share/univention-admin/www/style || ln -s /usr/share/univention-webui-style/style /usr/share/univention-admin/www
 test -h /usr/share/univention-admin/www/icon || ln -s /usr/share/univention-webui-style/icon /usr/share/univention-admin/www
 
+test -h /var/www/univention-admin || ln -s /usr/share/univention-admin/www /var/www/univention-admin
+
 
 univention-baseconfig set admin/web/debug/level?0
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 
-	if test -e /etc/univention/ssl/univention-admin.$domainname/cert.pem; then
-		chmod g+rx /etc/univention/ssl/univention-admin.$domainname
-		chmod g+r /etc/univention/ssl/univention-admin.$domainname/*
-	fi
-
-	apache_pids=`pidof apache`
-	/etc/init.d/apache stop || true
-	sleep 1
-
 	for i in `ps -ef | grep "/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.pyo" | awk '{print $2}'`; do
 		kill $i >/dev/null 2>&1
 	done
 
-	for i in `pidof apache`; do
-		kill -9 $i >/dev/null 2>&1
-	done
-
-
 	sleep 1
 
-	if [ -n "$apache_pids" ]; then
-		/etc/init.d/apache start || true
-	fi
+	/etc/init.d/apache2 reload || true
 else
-	/etc/init.d/apache restart || true
+	/etc/init.d/apache2 reload || true
 fi
