@@ -8,6 +8,10 @@ Variables: interfaces/eth.*/address
 Variables: hostname
 Variables: domainname
 
+Type: file
+File: var/www/index.html
+Variables: hostname
+
 Type: module
 Module: extension.py
 Variables: php/memory/limit
