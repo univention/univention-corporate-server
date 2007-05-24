@@ -1,3 +1,9 @@
+univention-webui (1.0-0-2) unstable; urgency=low
+
+  * change dependency from php4-gd to php5-gd
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 08:39:33 +0200
+
 univention-webui (1.0-0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
