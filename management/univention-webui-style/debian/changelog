@@ -1,0 +1,42 @@
+univention-webui-style (0.2-2-4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 14:50:31 +0100
+
+univention-webui-style (0.2-2-3) unstable; urgency=low
+
+  * fix urls for some images
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Oct 2006 16:41:25 +0200
+
+univention-webui-style (0.2-2-2) unstable; urgency=low
+
+  * fix static path-vakues for images
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 21 Sep 2006 15:55:10 +0200
+
+univention-webui-style (0.2-2-1) unstable; urgency=low
+
+  * additional icons and stylesheet for umc
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Aug 2006 09:56:56 +0200
+
+univention-webui-style (0.2-2-0) unstable; urgency=low
+
+  * added slogan.gif for white background
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Jul 2006 10:08:11 +0200
+
+univention-webui-style (0.2-1-0) unstable; urgency=low
+
+  * modifications for a menuless layout
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 29 Jun 2006 16:12:32 +0200
+
+univention-webui-style (0.2-0-0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 27 Jun 2006 07:23:27 +0200
+

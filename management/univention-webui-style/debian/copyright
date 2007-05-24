@@ -1,0 +1,85 @@
+Copyright 2001,2002,2003,2004,2005,2006 by
+
+Univention GmbH
+http://www.univention.de/
+
+All rights reserved.
+
+The source code of the software contained in this package
+as well as the source package itself are made available
+under the terms of the GNU General Public License version 2
+(GNU GPL V2) as published by the Free Software Foundation.
+
+Binary versions of this package provided by Univention to you as
+well as other copyrighted, protected or trademarked materials like
+Logos, graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between
+you and Univention.
+
+In the case you use the software under the terms of the GNU GPL V2,
+the program is provided in the hope hat it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License with
+the Debian GNU/Linux or Univention distribution in file
+/usr/share/common-licenses/GPL; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ 
+On Univention and Debian systems, the complete text of the GNU General Public
+License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+
+**********************************************
+
+This package contains grahics from the KDE packages, which are either under
+the GPL or LGPL license.
+
+**********************************************
+The following files are excluded from the GPL license:
+ - style/cancel.gif
+ - style/add.gif
+ - style/blank_spacer.gif
+ - style/down.gif
+ - style/favicon.ico
+ - style/header_admin.gif
+ - style/header_background.gif
+ - style/header_console.gif
+ - style/header_spacer.jpg
+ - style/info.gif
+ - style/l_ar.gif
+ - style/l_arrow.gif
+ - style/left.gif
+ - style/logo_univention.gif
+ - style/multi_background.gif
+ - style/navi_background.gif
+ - style/navi_background_01.gif
+ - style/navi_background_01_cut.gif
+ - style/navi_background_02.gif
+ - style/navi_background_02_cut.gif
+ - style/no_ar.gif
+ - style/no_arrow.gif
+ - style/ok.gif
+ - style/overwrite_background.gif
+ - style/r_ar.gif
+ - style/r_arrow.gif
+ - style/reiter_grau18x24.gif
+ - style/reiter_graugrau18x24.gif
+ - style/reiter_graurot18x24.gif
+ - style/reiter_rot18x24.gif
+ - style/reiter_rotgrau18x24.gif
+ - style/remove.gif
+ - style/right.gif
+ - style/slogan.gif
+ - style/space.gif
+ - style/stylesheet.css
+ - style/tip.js
+ - style/up.gif
+ - style/warning.gif
+ - style/slogan_whitebg.gif
+ - style/category_activearrow.gif
+ - style/category_end.gif
+ - style/category_start.gif
+ - icon/about.gif
+ - icon/welcome.gif
+
