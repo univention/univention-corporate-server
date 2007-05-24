@@ -30,8 +30,6 @@
 
 #export DH_VERBOSE=1
 
-export DH_COMPAT=3
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
