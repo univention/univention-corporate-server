@@ -35,71 +35,72 @@
 
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
-export DH_COMPAT=3
 
-build: build-stamp
-build-stamp:
+PACKAGE_NAME=python-univention-heimdal
+MODULE_NAME=python-univention-heimdal
+
+PYVERS=$(shell pyversions -vr)
+
+configure: configure-stamp
+configure-stamp:
 	dh_testdir
+	touch configure-stamp
 
+build: configure-stamp build-stamp
+build-stamp: $(PYVERS:%=build-ext-%)
+	dh_testdir
+	touch $@
+build-ext-%:
+	dh_testdir
 	# Build the package for each version of python we support.
-	/usr/bin/python2.4 setup.py clean --all --build-lib build2.4
-	/usr/bin/python2.4 setup.py build --build-lib build2.4
-
-	touch build-stamp
+	/usr/bin/python$* setup.py clean --all --build-lib build$*
+	/usr/bin/python$* setup.py build --build-lib build$*
+	touch $@
 
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp
-
+	rm -f build-stamp configure-stamp build-ext-2.4
 	/usr/bin/python2.4 setup.py clean --all --build-lib build2.4
 	-rm -fr build build2.4 html icons
-
 	dh_clean
 
-# Build architecture-independent files here.
-binary-indep: build
-	dh_testdir -i
-	dh_testroot -i
-	dh_clean -k -i
-	dh_installdirs -A -i
-	dh_installchangelogs -i
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
 
-	dh_compress -i
-	dh_fixperms -i
-	dh_installdeb -i
-	dh_shlibdeps -i
-	dh_gencontrol -i
-	dh_md5sums -i
-	dh_builddeb -i
+	/usr/bin/python$* setup.py install --prefix=`pwd`/debian/python-univention-heimdal/usr --no-compile
 
 
-# Build architecture-dependent files here.
-binary-arch: build
-#	dh_testversion
-	dh_testdir -a
-	dh_testroot -a
-	dh_clean -k -a
-	dh_installdirs -A -a
 
-	/usr/bin/python2.4 setup.py install --prefix=`pwd`/debian/python2.4-heimdal/usr --no-compile
+binary-arch: build install
 
-#	dh_installmenu
-#	dh_installinit
-#	dh_installcron
-#	dh_undocumented
-	dh_strip -a
-	dh_compress -a
-	dh_fixperms -a
-	dh_installdeb -a
-	dh_shlibdeps -a
-	dh_gencontrol -a
-#	dh_makeshlibs
-	dh_md5sums -a
-	dh_builddeb -a
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_install --sourcedir=debian/tmp
+	dh_pycentral
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
-source diff:
-	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
 
 binary: binary-indep binary-arch
-.PHONY: build clean binary-indep binary-arch binary
+.PHONY: build clean binary-indep binary-arch binary install configure
