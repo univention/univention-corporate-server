@@ -1,0 +1,161 @@
+#!/usr/bin/python2.4
+#
+# Univention Skel
+#  skel script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys, md5, string
+
+home=os.getenv('HOME')
+if not home or not os.path.isdir(home):
+	print >>sys.stderr, 'Invalid home directory'
+	sys.exit(1)
+	
+userconfig_templates='/etc/univention/skel'
+userconfig_base=os.path.join(home, '.univention-skel')
+
+class Stamps:
+	base=''
+	files={}
+	dirs=[]
+	def read(self, base):
+		self.base=base
+		self.files={}
+		self.dirs=[]
+		if os.path.exists(os.path.join(base, 'dirs')):
+			fp=open(os.path.join(base, 'dirs'))
+			for line in fp.readlines():
+				dir=line[0:-1]
+				self.dirs.append(dir)
+			fp.close()
+		if os.path.exists(os.path.join(base, 'files')):
+			fp=open(os.path.join(base, 'files'))
+			for line in fp.readlines():
+				(file,md5sum)=line[0:-1].split('@%@')
+				self.files[file]=md5sum
+			fp.close()
+	def write(self):
+		if not os.path.exists(self.base):
+			os.mkdir(self.base)
+		fp=open(os.path.join(self.base, 'dirs'), 'w')
+		for dir in self.dirs:
+			fp.write(dir+'\n')
+		fp.close()
+		fp=open(os.path.join(self.base, 'files'), 'w')
+		for file in self.files.items():
+			fp.write(string.join(file, '@%@')+'\n')
+		fp.close()
+
+def md5sum(file):
+	return md5.md5(open(file).read()).hexdigest()
+
+def i2h_file(file):
+	return file.replace(userconfig_templates, home)
+def h2i_file(file):
+	return file.replace(home, userconfig_templates)
+	
+def install_files(stamps, dir, files):
+	hstamps, istamps = stamps
+	hdir = i2h_file(dir)
+	istamps.dirs.append(dir)
+	#print hdir
+	if not os.path.exists(hdir):
+		if hdir in hstamps.dirs:
+			pass
+		else:
+			hstamps.dirs.append(hdir)
+			print 'mkdir', hdir
+			os.mkdir(hdir)
+	for file in files:
+		ifile = os.path.join(dir, file)
+		hfile = os.path.join(hdir, file)
+		if not os.path.isfile(ifile):
+			if os.path.islink(ifile):
+				if not os.path.exists(hfile):
+					print 'create_link %s' % hfile
+					os.symlink(os.readlink(ifile), hfile)
+				if (os.path.exists(hfile) and os.readlink(hfile) != os.readlink(ifile)):
+					print 'create_link %s' % hfile
+					os.unlink(hfile)
+					os.symlink(os.readlink(ifile), hfile)
+				hstamps.files[hfile] = 'symlink'
+				istamps.files[ifile] = 'symlink'
+			continue
+		istamps.files[ifile] = md5sum(ifile)
+		# no path exist should be a secure condition to provide a new file
+		if (not os.path.exists(hfile)) or (not hstamps.files.has_key(hfile)) or\
+				(os.path.exists(hfile) and md5sum(hfile) == hstamps.files.get(hfile, '') and
+				hstamps.files[hfile] != istamps.files[ifile]):
+			print 'create', hfile
+			rfp=open(ifile)
+			wfp=open(hfile, 'w')
+			wfp.write(rfp.read())
+			wfp.close()
+			rfp.close()
+			hstamps.files[hfile] = md5sum(hfile)
+		else:
+			#file exists
+			pass
+
+	
+hstamps = Stamps()
+hstamps.read(userconfig_base)
+istamps = Stamps()
+
+os.path.walk(userconfig_templates, install_files, (hstamps, istamps))
+
+delete_files=[]
+for hfile in hstamps.files.keys():
+	ifile = h2i_file(hfile)
+	if os.path.islink(hfile) and not istamps.files.has_key(ifile) and os.path.exists(hfile):
+		print 'delete_link', hfile
+		delete_files.append(hfile)
+		os.unlink(hfile)
+	if not os.path.islink(ifile) and not istamps.files.has_key(ifile) and os.path.exists(hfile) and \
+			hstamps.files[hfile] == md5sum(hfile):
+		print 'delete', hfile
+		delete_files.append(hfile)
+		os.unlink(hfile)
+for file in delete_files:
+	del hstamps.files[file]
+
+hstamps.dirs.sort()
+hstamps.dirs.reverse()
+delete_dirs=[]
+for hdir in hstamps.dirs:
+	idir = h2i_file(hdir)
+	if not idir in istamps.dirs and os.path.exists(hdir):
+		print 'delete', hdir
+		delete_dirs.append(hdir)
+		try:
+			os.rmdir(hdir)
+		except OSError:
+			print 'directory not empty'
+for dir in delete_dirs:
+	hstamps.dirs.remove(dir)
+
+hstamps.write()

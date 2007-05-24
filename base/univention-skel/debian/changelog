@@ -1,0 +1,40 @@
+univention-skel (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 10:47:13 +0100
+
+univention-skel (0.6) unstable; urgency=low
+
+  * postinst return 0, also if .bashrc is not available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jul 2005 10:13:23 +0200
+
+univention-skel (0.4) unstable; urgency=low
+
+  * copy bashrc and bash_profile from existing skel
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 13 Apr 2005 19:35:15 +0200
+
+univention-skel (0.3) unstable; urgency=low
+
+  * change condition to create a new file, no path exist should be a secure
+    condition to provide a new file
+
+ -- Thomas Kaminski <kaminski@univention.de>  Tue, 15 Feb 2005 12:54:57 +0100
+
+univention-skel (0.2) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 11:23:26 +0200
+
+univention-skel (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Gerold Janssen <gerold@ds-work.office.univention.de>  Wed, 19 Nov 2003 15:21:10 +0100
+
+Local variables:
+mode: debian-changelog
+End:
