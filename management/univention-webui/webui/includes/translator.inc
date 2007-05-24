@@ -53,6 +53,12 @@ class webui_translator{
 
 
 	function start(&$tag, &$attribute, $byteindex){
+		$layout_type = "menu";
+		if($this->config->layout_type && $this->config->layout_type=='menuless')
+		   {
+			$layout_type = "menuless";
+		   }
+
 		if($this->extra){
 			$this->extra->put_start($tag,$attribute,$byteindex);
 		}
@@ -69,7 +75,6 @@ class webui_translator{
 			    			case 'type':$h_size = $value + 1; break;
 						case 'wide': if(trim($tag)=='dialog') $this->config->wide=1024; break;
 						case 'site_title': if(trim($tag)=='dialog') $this->conti_ref->site_title=$value; break;
-						case 'layout_type': if(trim($tag)=='dialog') $this->conti_ref->layout_type=$value; break;
 						case 'header_img': if(trim($tag)=='dialog') $this->conti_ref->header_img=$value; break;
 						case 'refresh': if(trim($tag)=='dialog') $this->config->refresh=$value; break;
 						case 'warning': $this->warn = 'warning'; break;
@@ -86,17 +91,27 @@ class webui_translator{
 							$tag="<div class=\"h7\">"; $close="</div>"; break;
 					case 'headertext':$this->conti_ref->set_current("headertext");
 							$tag=""; $close=""; break;
-					case 'icon':	$tag="<img class=\"icon\" $attrib_str align=\"baseline\">"; $close=""; break;
+					case 'icon':	$tag="<img class=\"icon\" $attrib_str align=\"baseline\"></img>"; $close=""; break;
 					case 'header':  $tag="<span class=\"h$h_size\">"; $close="</span>"; break;
 					case 'paragraph':
 					case 'bbreak':  $tag=""; $close="<br><br>"; break;
 					case 'break':  $tag=""; $close="<br>"; break;
-					case 'space':   $tag=""; $close="<img src=\"style/space.gif\" alt=\"\" width=\"".(5*$size)."\" />"; break;
+					case 'space':   $tag=""; $close="<img src=\"style/space.gif\" alt=\"\" width=\"".(5*$size)."\"></img>"; break;
 					case 'emphatize':  $tag="<i>"; $close="</i>";  break;
 					case 'important':  $tag="<b>"; $close="</b>";  break;
 					case 'htmltext':  $tag="<div>"; $close="</div>";  break;
-					case 'info':	$tag = "<div class=\"info\">"; $close="</div>"; $this->conti_ref->set_current("info"); break;
-					case 'info2':	$tag = "<div class=\"info\">"; $close="</div>"; $this->conti_ref->set_current("info2"); break;
+					case 'info':	$tag = "<div class=\"info\">"; 
+							$close="</div>"; 
+							$this->conti_ref->set_current("info");  
+							if ($layout_type == "menuless") 
+							  {$tag=$tag."<b>";$close="</b>".$close;}; 
+							break;
+					case 'info2':	$tag = "<div class=\"info\">"; 
+							$close="</div>"; 
+							$this->conti_ref->set_current("info2"); 
+							if ($layout_type == "menuless") 
+							  {$tag=$tag."<b>";$close="</b>".$close;}; 
+							break;
 					case 'dialog': $tag = ""; $close=$tag; $this->conti_ref->set_current("content");break;
 					case 'menuitem': $tag=""; $close="";
 						if($this->config->browser == 'Text') $close="<br />";break;

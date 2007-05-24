@@ -46,6 +46,7 @@ class webui_config{
 	var $position;
 	var $language;
 	var $refresh;
+	var $layout_type;
 
 	function webui_config($browser, $session_id = FALSE){
 		require("config");
@@ -68,6 +69,7 @@ class webui_config{
 		$this->wide=860;
 		$this->position=FALSE;
 		$this->refresh=FALSE;
+		$this->layout_type=$layout_type;
 		
 		if($session_id){
 			$sess=split("_",$session_id);
@@ -93,6 +95,10 @@ class webui_config{
 	function set_js($is_js=FALSE){
 		if($this->browser=="Text") $this->is_js = FALSE;
 		else $this->is_js = TRUE;
+	}
+	
+	function set_layout_type($layout_type=''){
+		$this->layout_type = $layout_type;
 	}
 	
 	function check_temp_dir(){

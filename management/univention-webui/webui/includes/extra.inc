@@ -171,10 +171,10 @@ class question_date extends extra{
 		$str .= ">\n";
 		$str .= "<tr><td colspan=\"6\">\n<table border=\"0\" cellspadding=\"0\">\n";
 		$str .= "<tr><td class=\"description\" height=\"20\" valign=\"bottom\">\n";
-		$str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\">\n";
+		$str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n";
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= $this->basket["description"]."\n</td>\n";
-		if($this->warn) $str .= "<td><img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></td>\n";
+		if($this->warn) $str .= "<td><img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img></td>\n";
 		$str .= "</tr>\n</table>\n</td>\n";
 		$str .= "</tr>\n<tr><td width=\"40\">\n";
 		$content = explode('.',$this->basket["content"]);
@@ -182,13 +182,13 @@ class question_date extends extra{
 		if($this->warn)	$class="class=\"date_warn\"";
 		$attribs="maxlength=\"2\" $class $access type=\"text\" ";
 		$str .= "<input tabindex=\"".$this->tabindex."\" ".$attribs;
-		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[0]."\" />\n";
+		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[0]."\"></input>\n";
 		$str .= "</td><td width=\"8\">&nbsp;</td><td width=\"40\">\n";
 		$str .= "<input tabindex=\"".$this->tabindex."\" ".$attribs;
-		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[1]."\" />\n";
+		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[1]."\"></input>\n";
 		$str .= "</td><td width=\"8\">&nbsp;</td><td width=\"40\">\n";
 		$str .= "<input tabindex=\"".$this->tabindex."\" ".$attribs;
-		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[2]."\" />\n";
+		$str .= "name=\"usrinput[date#".$this->byteindex."][]\" value=\"".$content[2]."\"></input>\n";
 		$str .= "</td><td>\n";
 		if(isset($this->basket["update"])) $str .= $this->basket["update"];
 		$str .= "</td></tr>\n";
@@ -203,9 +203,9 @@ class question_text extends extra{
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
 		if($this->basket["description"]) {
-			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\">\n";
+			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n";
 			$str .= $this->basket["description"];
-			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 			$str .= "</td></tr>\n";
 			}
 		$str .= "<tr><td>\n";
@@ -214,7 +214,7 @@ class question_text extends extra{
 		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
 		if($this->warn) $str .= " class=\"text_warn\" ";
 		else $str .= " class=\"text\" ";
-		$str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+		$str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
 		$str .= "</td></tr>\n</table>\n";
 		return $str;
@@ -228,19 +228,19 @@ class question_file extends extra{
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
 		if($this->basket["description"]) {
-			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\">\n";
+			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n";
 			$str .= $this->basket["description"];
-			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 			$str .= "</td></tr>\n";
 			}
 		$str .= "<tr><td>\n";
-		$str .= "<input type=\"hidden\" name=\"file\" value=\"".$this->byteindex."\">\n";
+		$str .= "<input type=\"hidden\" name=\"file\" value=\"".$this->byteindex."\"></input>\n";
 		$str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" \n";
 		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" \n";
 		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" \n";
 		if($this->warn) $str .= " class=\"file_warn\" \n";
 		else $str .= " class=\"file\" ";
-		$str .= " type=\"file\" $access name=\"userfile\">\n";
+		$str .= " type=\"file\" $access name=\"userfile\"></input>\n";
 		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
 		$str .= "</td></tr>\n</table>\n";
 		return $str;
@@ -254,8 +254,8 @@ class question_ltext extends extra{
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
 		if($this->basket["description"]){
-			$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\">\n".$this->basket["description"];
-			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+			$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n".$this->basket["description"];
+			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 			$str .= "</td></tr>\n";
 			}
 		$str .= "<tr><td>\n";
@@ -285,15 +285,15 @@ class question_secure extends extra{
 	function show(){
 		if(isset($this->attribute["passive"])) $access = "disabled";
     		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\">\n".$this->basket["description"];
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n".$this->basket["description"];
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 		$str .= "</td></tr>\n";
 		$str .= "<tr><td><input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
 		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
 		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
 		if($this->warn) $str .= " class=\"text_warn\" ";
 		else $str .= " class=\"text\" ";
-		$str .= "type=\"password\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+		$str .= "type=\"password\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
 		$str .= "</td></tr>\n</table>\n";
 		return $str;
@@ -309,15 +309,15 @@ class question_bool extends extra{
 		$str .= "<td valign=\"middle\">\n";
 		$str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" class=\"bool\" type=\"checkbox\" $access ";
 		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		$str .= "name=\"usrinput[".$this->byteindex."]\" value=\"checked\" $is /></td>\n";
+		$str .= "name=\"usrinput[".$this->byteindex."]\" value=\"checked\" $is></input></td>\n";
 		if(trim($this->basket["description"]) != ''){
 			$str .= "<td class=\"description\" align=\"left\" valign=\"middle\">\n";
-			$str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\">\n";
+			$str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n";
 			$str .= $this->basket["description"]."\n";
 			$str .= "</td>\n";
 			}
 		$str .= "<td>\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 		if(isset($this->basket["update"])) $str .= $this->basket["update"];
 		$str .= "</td></tr>\n</table>\n";
 		$is='';
@@ -329,10 +329,10 @@ class reset extends extra{
 	function show(){
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$class=$this->status;
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
       		$str .=  "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" id=\"button".$this->tabindex."\" ";
 		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
-		$str .= "class=\"button$class\" type=\"reset\" name=\"usrinput[".$this->byteindex."]\" $access value=\" ".$this->basket["text"]."\" >\n";
+		$str .= "class=\"button$class\" type=\"reset\" name=\"usrinput[".$this->byteindex."]\" $access value=\" ".$this->basket["text"]."\" ></input>\n";
 		return $str;
 	}
 
@@ -343,7 +343,8 @@ class button extends extra{
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$class=$this->status;
 		if(isset($this->attribute["active"])) $class .= "_on";
-		if($this->js && isset($this->attribute["icon"])){
+
+		if($this->js && $class != 'notebook' && $class != 'categoryitem' && isset($this->attribute["icon"])){
 
 		  // define form-contens
 		  if(!isset($this->attribute["passive"])){
@@ -354,17 +355,17 @@ class button extends extra{
 
 		    $href .= " title=\"".$this->basket["helptext"]."\" ";
 		
-		    $img = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\" />\n";
+		    $img = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
 		
 		    $link = $href.">\n";
 		    $link .= "<span class=\"$class\">".$this->basket["text"]."</span></a>\n";
 		
 
-		    $inp = "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+		    $inp = "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		  }
 		  else
 		    {	
-		      $img = "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\">\n";
+		      $img = "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>\n";
 		      $link = "<span class=\"$class\">".$this->basket["text"]."</span>\n";
 		      $inp = "";
 		    }
@@ -424,7 +425,7 @@ class button extends extra{
 			else	$str .= "<a class=\"$class\" onClick=\"sendForm2(".$this->byteindex.")\"";
 			$str .= " title=\"".$this->basket["helptext"]."\">\n";
 			$str .= $this->basket["text"]."</a>\n";
-			$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+			$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		}elseif($this->js && strstr($this->status, 'menu')) {
 			if($this->basket["active"]) $class .= "_on";
 			if(isset($this->attribute["passive"])){
@@ -434,20 +435,51 @@ class button extends extra{
 				$str .= "<div id=\"div".$this->byteindex."\" class=\"link$class\" ";
 				if(!$this->basket["active"]) $str .= "onMouseOver=\"setBG('div".$this->byteindex."',1)\" onMouseOut=\"setBG('div".$this->byteindex."',0)\">\n";
 				$str .= "<a class=\"$class\" onClick=\"sendForm2(".$this->byteindex.")\" title=\"".$this->basket["helptext"]."\">\n";
-				if(strstr($this->status, '3') && strstr($this->status, 'menu')) $str .= "<img class=\"sub\" src=\"style/sub_mark.png\" align=\"middle\" alt=\"\">\n";
+				if(strstr($this->status, '3') && strstr($this->status, 'menu')) $str .= "<img class=\"sub\" src=\"style/sub_mark.png\" align=\"middle\" alt=\"\"></img>\n";
 				$str .= $this->basket["text"];
 
 				$str .= "</a></div>\n";
-				$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+				$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 				}
 		}
 		elseif($this->js && $class == 'categoryitem')
 		  {
-		    $str .= "<a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
-		    $str .= " title=\"".$this->basket["helptext"]."\">&nbsp;";
-		    $str .= $this->basket["text"];
-		    $str .= "</a>\n";
-		    $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+		    $cssclass = $class;
+		    if ($this->basket[active])
+      		       $cssclass .= "active";
+
+
+		    if (isset($this->attribute["closebutton"]) && ($this->attribute["closebutton"] == "1"))
+ 		     {
+		       // closebutton -- just an icon
+		      if ($this->basket[active]) {
+			  	$icon_str = "/icon/close_tab_active.gif";
+			  } else {
+			  	$icon_str = "/icon/close_tab_inactive.gif";
+			  }
+		      $cssclass .= "closeableend"; // closebuttons are always the last in a closable categoryitem
+		      $img_str = "<input src=\"".$icon_str."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
+		      $str .= "<a class=\"$cssclass\" onClick=\"sendForm(".$this->byteindex.")\"";
+		      $str .= " title=\"".$this->basket["helptext"]."\">".$img_str;
+		      $str .= "</a>\n";
+		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
+		     }
+		    else
+		     {
+		      $img_str = "";
+		      $close_str = "";
+		      if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1")) 
+		        $cssclass .= "closeablestart";
+		      if (isset($this->attribute["icon"])) 
+		       {
+		         $img_str = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
+		       }
+		      $str .= "<a class=\"$cssclass\" onClick=\"sendForm(".$this->byteindex.")\"";
+		      $str .= " title=\"".$this->basket["helptext"]."\">".$img_str."&nbsp;";
+		      $str .= $this->basket["text"];
+		      $str .= "</a>\n";
+		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
+		     }
 		  }
 		elseif($this->js && $class == 'notebook'){
 		  $tdclass="tab";
@@ -464,12 +496,21 @@ class button extends extra{
 		    }
 		  else
 		    {
-		      $str .= "<td class=\"$tdclass\">\n";
+		      $str .= "<td class=\"$tdclass\" nowrap>\n";
 		      $str .= "<a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
-		      $str .= " title=\"".$this->basket["helptext"]."\">&nbsp;";
+				if (  isset( $this->attribute[ "icon" ] ) ) {
+					$str .= " title=\"".$this->basket["helptext"]."\">";
+					$str .= "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>";
+				} else {
+					$str .= " title=\"".$this->basket["helptext"]."\">";
+				}
+				$str .= "&nbsp;";
 		      $str .= $this->basket["text"];
+				if (  isset( $this->attribute[ "statusicon" ] ) ) {
+					$str .= "<img class=\"$class\" src=\"".$this->attribute["statusicon"]."\" alt=\"\"></img>";
+				}
 		      $str .= "</a>\n";
-		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		      $str .= "</td>\n";
 		    }
 		}
@@ -480,7 +521,7 @@ class button extends extra{
 		    if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
 		    $str .= "class=\"button$class\" type=\"submit\" name=\"usrinput[".$this->byteindex."]\" value=\" ".$this->basket["text"]."\"";
 		    if($csslength) $str .=  " style=\"width:".$csslength."px;\" ";
-		    $str .=  " title=\"".$this->basket["helptext"]."\">\n";
+		    $str .=  " title=\"".$this->basket["helptext"]."\"></input>\n";
 		  }
 		return $str;
 	}
@@ -489,13 +530,13 @@ class button extends extra{
 class update_button extends extra{
 	function show(){
 		if($this->js){
-			$str .=  "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\">\n";
+			$str .=  "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 			}
 	  	else{	$class=$this->status;
 	   		$this->tabindex++;
         		$str .=  "<input tabindex=\"".$this->tabindex."\" id=\"button".$this->tabindex."\"";
 			$str .=  " class=\"button$class\" type=\"submit\" name=\"usrinput[".$this->byteindex."]\" value=\" ";
-			$str .=  $this->basket["text"]."\" >\n";
+			$str .=  $this->basket["text"]."\" ></input>\n";
 			}
 		return $str;
 	}
@@ -517,8 +558,8 @@ class question_select extends extra_multi{
 		$appendstr = "";
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\">".$this->basket["description"]."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 		$str .= "</td></tr>\n<tr><td>\n";
         	$str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
 		if($this->warn) $str .= " class=\"select_warn\" ";
@@ -534,7 +575,7 @@ class question_select extends extra_multi{
 					$is='selected';
 					if ($access == "disabled") {
 						$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-						$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\">\n";
+						$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
 					}
 				}
 				for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
@@ -556,8 +597,8 @@ class question_mselect extends extra_multi{
 	function show(){
 		if(isset($this->attribute["passive"])) $access = "disabled";
 		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\">".$this->basket["description"]."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
 		$str .= "</td></tr><tr><td>\n";
         	$str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
 		if($this->warn) $str .= " class=\"mselect_warn\" ";
@@ -593,13 +634,13 @@ class question_choice extends extra_multi{
 		$str .= "<div title=\"".$this->basket["helptext"]."\" >\n";
 		if (isset($this->basket["description"]) && trim($this->basket["description"]) != "")
 			$str .= $this->basket["description"]."<br />\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
         	 foreach($this->basket["choice"] as $key=>$val)
         		{
         		if(trim($this->basket["var"][$key]["content"])!="")$is='checked';
       			$str .= "<input tabindex=\"".$this->tabindex."\" class=\"choice\" ";
 			if($this->js && isset($this->basket["update"])) $str .= "onClick=\"sendForm(".$this->update_byteindex.")\" ";
-			$str .= "type=\"radio\" name=\"usrinput[multiple#".$this->tabindex."][]\" $access value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>\n";
+			$str .= "type=\"radio\" name=\"usrinput[multiple#".$this->tabindex."][]\" $access value=\"".$this->basket["var"][$key]["byteindex"]."\" $is></input>\n";
         		$str .= $this->basket["choice"][$key]["description"]."<br />\n";
         		$is='';
         		}
@@ -628,7 +669,7 @@ class session_data{
 	else return FALSE;
 	}
 	function show(){
-	return "<input type=\"hidden\" name=\"session_data[".$this->name."]\" value=\"".$this->value."\">\n";
+	return "<input type=\"hidden\" name=\"session_data[".$this->name."]\" value=\"".$this->value."\"></input>\n";
 	}
 	
 }
@@ -636,6 +677,7 @@ class session_data{
 class categorylist{
 
   var $category_buttons;
+  var $category_close_buttons;
   var $tag;
   var $container;
   var $unsort;
@@ -656,14 +698,26 @@ class categorylist{
 
   function put_start(&$tag, &$attribute, $byteindex)
   {
+    $close_attribute = $attribute;
+    //$close_attribute["closebutton"] = "1";
     if(trim($tag) == 'button')
-      $this->category_buttons[++$this->count] = new button($tag, $this->container, $this->config, $this->warn);
+     {
+      $this->category_buttons[++$this->count] = new button($tag, $this->container, $this->config, $attribute, $this->warn);      
+      //$this->category_close_buttons[$this->count] = new button($tag, $this->container, $this->config, $close_attribute, $this->warn);
+     }
     elseif(is_object($this->category_buttons[$this->count]))
-      $this->category_buttons[$this->count]->put_start($tag, $attribute, $byteindex);
+    {
+      $this->category_buttons[$this->count]->put_start($tag, $attribute, $byteindex);      
+      //$this->category_close_buttons[$this->count]->put_start($tag, $attribute, $byteindex+1); # wouldn't call this a clean "byteindex"...
+     }
   }
 
   function put_value(&$value)
   {
+    if(is_object($this->category_close_buttons[$this->count]))
+      {
+      $this->category_buttons[$this->count]->basket['closed'] = $this->category_close_buttons[$this->count]->basket['pressed'];      
+      }
     if(is_object($this->category_buttons[$this->count]))
       $this->category_buttons[$this->count]->put_value($value);
   }
@@ -678,26 +732,32 @@ class categorylist{
 
   function show()
   {
-    $str_start = "<div id=\"category\">\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n<tr>\n<td valign=\"top\"><div id=\"categorystart\">&nbsp;</div></td>\n<td>\n<div id=\"categorycenter\">\n";
-    $str_end = "</div>\n</td>\n<td valign=\"top\"><div id=\"categoryend\">&nbsp;</div></td>\n</tr>\n</table>\n</div>\n";
+    $str_start = "\n\n<!-- start of categorylist--> \n<div id=\"category\">\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+    $str_start .= "<tr><td nowrap valign=\"top\">\n<div id=\"categorystart\">&nbsp;</div>\n</td><td nowrap >\n<div id=\"categorycenter\">\n";
+    $str_end = "</div>\n</td><td nowrap valign=\"top\">\n<div id=\"categoryend\">&nbsp;</div>\n</td></tr>\n</table>\n</div>\n<!-- end of categorylist-->\n\n";
     $str_buttons = "";
     for($i=1; $i < $this->count+1; $i++) # i is index for button-object-array
       {
-	if($this->category_buttons[$i]->basket[active])
+        if ( $this->category_buttons[$i]->attribute["closeable"] )
+	  $cssclass = "categoryitemactiveclosable";
+	else
+	  $cssclass = "categoryitem-active";
+	if( $this->category_buttons[$i]->basket[active] )
 	  { // active button
+	  if(!$this->category_buttons[$i]->attribute["closebutton"] == "1")
 	    $str_buttons .= "<span class=\"categoryitem-active\">\n";
 	  }
 
 	// the button
 	$str_buttons .= $this->category_buttons[$i]->show();
 
-	if($this->category_buttons[$i]->basket[active])
-	  { // active button
-	    $str_buttons .= "</span>\n";
-	  }
-	// be readable
-	$str_buttons .= "\n";
-      }							
+	if( $this->category_buttons[$i]->basket[active] )
+	   { // active button
+	     if($this->category_buttons[$i]->attribute["closebutton"] == "1" || !$this->category_buttons[$i]->attribute["closeable"])
+	       $str_buttons .= "</span>\n";
+	   }
+	}
+
     return $str_start.$str_buttons.$str_end;
   }
 }
@@ -724,7 +784,7 @@ class notebook{
 	}
 	function put_start(&$tag, &$attribute, $byteindex){
 		if(trim($tag) == 'button')
-			$this->all_notebook[++$this->count] = new button($tag, $this->container, $this->config, $this->warn);
+			$this->all_notebook[++$this->count] = new button($tag, $this->container, $this->config, $attribute, $this->warn);
 		elseif(is_object($this->all_notebook[$this->count]))
 			$this->all_notebook[$this->count]->put_start($tag, $attribute, $byteindex);
 	}
@@ -813,10 +873,10 @@ class notebook{
 					    $last_on=FALSE; // need to know for next button
 					  }
 				
-					if($img != '') $image = '<img class="note" src="style/'.$img.'" alt="">';
+					if($img != '') $image = '<img class="note" src="style/'.$img.'" alt=""></img>';
 					else $image = '';
 
-					if($img_end != '') $image_end='<img class="note" src="style/'.$img_end.'" alt="">';
+					if($img_end != '') $image_end='<img class="note" src="style/'.$img_end.'" alt=""></img>';
 					else $image_end='';
 
 					$this->all_notebook[$j]->tabindex++;
@@ -928,7 +988,7 @@ class question_group{
 	}
 	function show(){
 		$group .= "<table class=\"group\">\n<tr>\n";
-		if($this->warn) $group .= "<td>\n<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\">\n</td>\n";
+		if($this->warn) $group .= "<td>\n<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n</td>\n";
 		foreach($this->group as $key => $value)
 			$group .= "<td>\n".$value."\n</td>\n";
 		$group .= "</tr>\n</table>\n";
@@ -1099,7 +1159,9 @@ function show(){
 		if($this->attribute["border"]=="1")$attrib_str .= " class=\"border\"";
 		if($this->attribute["border"]=="0")$attrib_str .= " class=\"plain\"";
 		}
-	$row="<tr>".$this->conti_ref->show_all()."</tr>\n";
+    	if(isset($this->attribute["type"]))
+		$attrib_str = "class=\"".$this->attribute["type"]."\"";
+	$row="<tr $attrib_str>".$this->conti_ref->show_all()."</tr>\n";
 	return $row;
 	}
 }
@@ -1251,40 +1313,40 @@ function wrap_view(){
 		$str .= "<!-- script -->\n";
 		
 		if ($first > 1)
-		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<<\">\n";
+		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<<\"></input>\n";
 		else 	
-		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 		
 		if ($current > 1) 	
-		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<\">\n";
+		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<\"></input>\n";
 		else	
-		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 		
 		for ($y=$first; $y <= $last; $y++)
 		  {
 		    if ($y==$current)
-		      $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" disabled>\n";
+		      $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" disabled></input>\n";
 		    else
-		      $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" style=\"color:#000000\">\n";
+		      $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" style=\"color:#000000\"></input>\n";
 		  }
 		
 		$str .= "</td><td>\n";
 		
 		if ($current < $max) 	
-		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">\">\n";
+		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">\"></input>\n";
 		else	
-		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 		
 		if ($last < $max)
-		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">>\">\n";
+		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">>\"></input>\n";
 		else
-		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 	      }
 	    else
@@ -1293,20 +1355,20 @@ function wrap_view(){
 		if($first > 1)
 		  {
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','<<')\">\n";
-		    $str .= "<img class=\"icon\" src=\"style/l_arrow.gif\" style=\"margin:4px\" alt=\"\"></a>\n";
+		    $str .= "<img class=\"icon\" src=\"style/l_arrow.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
 		else 	
-		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 
 		if ($current > 1)
 		  {
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current - 1)."')\">\n";
-		    $str .= "<img class=\"icon\" src=\"style/l_ar.gif\" style=\"margin:4px\" alt=\"\"></a>\n";
+		    $str .= "<img class=\"icon\" src=\"style/l_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
 		else	
-		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 
@@ -1327,30 +1389,30 @@ function wrap_view(){
 		if ($current < $max)
 		  {
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current + 1)."')\">\n";
-		    $str .= "<img class=\"icon\" src=\"style/r_ar.gif\" style=\"margin:4px\" alt=\"\"></a>\n";
+		    $str .= "<img class=\"icon\" src=\"style/r_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
 		else	
-		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
 		$str .= "</td><td>\n";
 
 		if ($last < $max)
 		  {
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','>>')\">\n";
-		    $str .= "<img class=\"icon\" src=\"style/r_arrow.gif\" style=\"margin:4px\" alt=\"\"></a>\n";
+		    $str .= "<img class=\"icon\" src=\"style/r_arrow.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
 		else
-		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\">\n";
+		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
 		
-		$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"long_table[".$this->byteindex."]\" value=\"\">\n";
+		$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"long_table[".$this->byteindex."]\" value=\"\"></input>\n";
 		
 	      }
 	    $str .= "</td></tr>\n</table>\n";
 	
-	    $str .= "<input type=\"hidden\" name=\"current\" value=\"".$current."\">\n";
-	    $str .= "<input type=\"hidden\" name=\"visible\" value=\"".$this->visible."\">\n";
-	    $str .= "<input type=\"hidden\" name=\"previous\" value=\"".$first."\">\n";
-	    $str .= "<input type=\"hidden\" name=\"next\" value=\"".$last."\">\n";
+	    $str .= "<input type=\"hidden\" name=\"current\" value=\"".$current."\"></input>\n";
+	    $str .= "<input type=\"hidden\" name=\"visible\" value=\"".$this->visible."\"></input>\n";
+	    $str .= "<input type=\"hidden\" name=\"previous\" value=\"".$first."\"></input>\n";
+	    $str .= "<input type=\"hidden\" name=\"next\" value=\"".$last."\"></input>\n";
 	  }
 	return $str;
 }

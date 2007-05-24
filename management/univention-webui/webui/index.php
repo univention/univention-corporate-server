@@ -59,8 +59,6 @@ if(is_array($_FILES['userfile'])){
 }
 
 
-
-
 if(!isset($logout))
 {
   if(!isset($session_id))
@@ -137,6 +135,7 @@ if(!isset($logout))
 else
 {
   $container = new webui_container($config, $glob_tabindex);
+  $this->config = $config;
   $container->logout($logout, $session_id);
 }
 

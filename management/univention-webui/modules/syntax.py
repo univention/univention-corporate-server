@@ -284,6 +284,40 @@ class question_syntax(uniconf.uniconf):
 
 		elif self.syntax.type == 'select':
 
+			if self.syntax.name == 'LDAP_Search':
+				obj = self.save.get( 'edit_object', None )
+				filter = self.syntax.filter
+				if obj:
+					prop = univention.admin.property()
+					filter = prop._replace( filter, obj )
+				self.syntax._prepare( self.lo, filter )
+				for dn, val, attr in self.syntax.values:
+					val = val.split( ':', 1 )[ 1 ].strip()
+					attr = attr.split( ':', 1 )[ 1 ].strip()
+					attrs = self.lo.get( dn )
+					mod = univention.admin.modules.identify( dn, attrs )
+					object = univention.admin.objects.get( mod[ 0 ], None, self.lo, None, dn )
+					univention.admin.objects.open( object )
+					try:
+						if val == 'dn':
+							val = dn
+						else:
+							val = object[ val ]
+							if isinstance( val, ( list, tuple ) ):
+								val = val[ 0 ]
+					except:
+						val = ''
+					try:
+						if attr == 'dn':
+							attr = dn
+						else:
+							attr = object[ attr ]
+							if isinstance( attr, ( list, tuple ) ):
+								attr = attr[ 0 ]
+					except:
+						attr = ''
+					self.syntax.choices.append( ( val, attr ) )
+
 			choicelist=[]
 			if self.search:
 				choicelist.append({'name': '*', 'description': _('any')})
@@ -330,6 +364,7 @@ class question_syntax(uniconf.uniconf):
 													   'value':value[index],
 													   "helptext":self.args.get('helptext', ''),
 													   'name': desc,
+													   'lo' : self.lo,
 													   'search': self.search}))
 
 				rows.append(tablerow("",{},{"obs":[

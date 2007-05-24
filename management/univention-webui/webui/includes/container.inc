@@ -128,12 +128,11 @@ class webui_container{
 		echo "<head>\n";
 
 		echo "<title>".$this->site_title."   ".$this->title."</title>\n";
-		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\">\n";
-		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\">\n";
-		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\">\n";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"></meta>\n";
+		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\"></link>\n";
+		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
 		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
 		echo "</head>\n\n";
-
 		if($this->ref_config->refresh)
 			echo"<body onload=\"doRefresh(".($this->ref_config->refresh)."); clear_cached(); \">\n";
 		else
@@ -145,37 +144,44 @@ class webui_container{
 		echo "    <td class=\"global_head_spacer\" colspan=\"4\"></td>\n";
 		echo "  </tr>\n";
 		echo "  <tr class=\"global_head\">\n"; //line 2
-		echo "    <td height=\"33\"><img src=\"style/logo_univention.gif\" alt=\"".$this->site_title."\" width=\"180\" height=\"33\" border=\"0\">\n";
+		echo "    <td height=\"33\"><img src=\"style/logo_univention.gif\" alt=\"".$this->site_title."\" width=\"180\" height=\"33\" border=\"0\"></img>\n";
 		echo "	</td>\n";
 
 		echo "    <td width=\"15\" height=\"33\"></td>\n";
 		echo "    <td width=\"100\" height=\"33\">\n";
-		echo "     <img src=\"".$this->header_img."\" alt=\"\" height=\"33\" border=\"0\"></td>\n";
+		if (isset($this->header_img) && ($this->header_img != "")) {
+			echo "     <img src=\"".$this->header_img."\" alt=\"\" height=\"33\" border=\"0\"></td>\n";
+		}
 		echo "    <td width=\"722\"><span class=\"Stil2\">".$this->headertext."</span></td>\n";
 		echo "  </tr>\n";
-		if($this->layout_type && $this->layout_type=='menuless')
-		  {
+		
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
+		  {		    
 		    echo "  <tr>\n"; //line 3
 		    echo "   <td colspan=\"4\">\n";
 		    echo "   <!-- layout is menuless -->\n";
 		    echo "    <table width=\"98%\" class=\"global_menu\" cellspacing=\"0\" cellpadding=\"0\">\n"; // table2
 		    echo "      <tr class=\"global_menu\">\n";
 		    echo "        <td class=\"global_menu_slogan\" align=\"top\">\n";
-		    echo "          <img src=\"style/slogan_whitebg.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\">\n";
+		    echo "          <img src=\"style/slogan_whitebg.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\"></img>\n";
 		    echo "        </td>\n";
 		    echo "        <td align=\"right\">\n";
-		    echo "\n\n<!-- ####### info ####### -->\n\n";
-		    echo "        &nbsp;&nbsp;\n";
-		    echo $this->info;
-		    echo "\n\n<!-- ####### end of info ####### -->\n\n";
 		    echo "\n\n<!-- ####### info2 ####### -->\n\n";
-		    echo "        &nbsp;&nbsp;\n";
-		    echo $this->info2;
+		    if ($this->info2 && $this->info2 != "")
+		       echo $this->info2;
+		    else
+		       echo "        &nbsp;&nbsp;\n";
 		    echo "\n\n<!-- ####### end of info2 ####### -->\n\n";
+		    echo "\n\n<!-- ####### info ####### -->\n\n";
+		    if ($this->info && $this->info != "")
+		       echo $this->info;
+		    else
+		       echo "        &nbsp;&nbsp;";
+		    echo "\n\n<!-- ####### end of info ####### -->\n\n";
 		    # include menu-form which is called by several javascripts
 		    echo "      <form class=\"menu\" name=\"menu\" method=\"post\" action=\"$port://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php\">\n";
-		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\">\n";
-		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\">\n";
+		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
+		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
 		    echo "      </form>\n";
 		    echo "          </td>\n";
 		    echo "        </tr>\n";
@@ -189,7 +195,7 @@ class webui_container{
 		    echo "    <td class=\"global_left\" >\n";
 		    echo "      <table class=\"global_menu\" cellspacing=\"0\" cellpadding=\"0\">\n"; // table2
 		    echo "      <tr class=\"global_menu\">\n";
-		    echo "        <td colspan=\"2\" class=\"global_menu_slogan\"><img src=\"style/slogan.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\"></td>\n";
+		    echo "        <td colspan=\"2\" class=\"global_menu_slogan\"><img src=\"style/slogan.gif\" alt=\"linux for your business\" width=\"180\" height=\"29\" border=\"0\"></img></td>\n";
 		    echo "        </tr>\n";
 		    echo "      <tr>\n";
 		    echo "        <td width=\"35\" height=\"25\" class=\"global_menu\">&nbsp;</td>\n";
@@ -224,8 +230,8 @@ class webui_container{
 		    echo "        </td></tr>";
 
 		    echo "        </table>\n"; // table3
-		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\">\n";
-		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\">\n";
+		    echo "      <input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
+		    echo "      <input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
 		    echo "      </form>\n";
 		    echo "      </td></tr>\n";
 		    echo "      <tr><td colspan=\"3\" class=\"menu_foot\">&nbsp;</td></tr>";
@@ -233,7 +239,7 @@ class webui_container{
 		    echo "	</td>\n";
 		  }
 
-		if($this->layout_type && $this->layout_type=='menuless')
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
 		  {
 		    echo "    <tr><td colspan=\"4\" valign=\"top\">\n";
 		    echo "    <table class=\"global_content_menuless\" cellpadding=\"0\" cellspacing=\"0\">\n"; // table2
@@ -258,7 +264,7 @@ class webui_container{
 		  echo "<div class=\"header\">".$this->header."</div>\n";
 
 		echo"<form class=\"content\" name=\"content\" method=\"post\" enctype=\"multipart/form-data\" action=\"$port://".$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/index.php\">\n";
-		if($this->layout_type && $this->layout_type=='menuless')
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
 		  {
 		    echo "    <table class=\"global\"><tr><td width=\"20\" height=\"100\"></td><td>\n";
 		  }
@@ -267,13 +273,13 @@ class webui_container{
 		echo $this->content;
 		echo"\n\n<!-- ####### end of content ####### -->\n\n";
 
-		if($this->layout_type && $this->layout_type=='menuless')
+		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
 		  {
 		    echo "\n    </td></tr></table>\n";
 		  }
 
-		echo"<input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\">\n";
-		echo"<input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\">\n";
+		echo"<input type=\"hidden\" name=\"session_id\" value=\"".$this->ref_config->number."_".$this->ref_config->session_id."\"></input>\n";
+		echo"<input type=\"hidden\" name=\"is_js\" value=\"".$this->ref_config->is_js."\"></input>\n";
 		echo"</form>\n";
 
 		echo "      </td></tr>\n";
@@ -284,7 +290,7 @@ class webui_container{
 
                 echo"\n\n<!-- ####### cache-control ####### -->\n\n ";
                 echo"<form name=\"cache\" method=\"post\" action=\"\">";
-                echo"<input type=\"hidden\" value=\"\" name=\"cache\">";
+                echo"<input type=\"hidden\" value=\"\" name=\"cache\"></input>";
                 echo"</form>";
                 echo"\n\n<!-- ####### end of cache-control ####### -->\n\n ";
 

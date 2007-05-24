@@ -344,9 +344,9 @@ class session:
 
 	# This method takes the input XML and session number as input and returns
 	# the output XML.
-	def startRequest(self, xmltext, number):
+	def startRequest(self, xmltext, number, ignore_ldap_connection = False):
 
-		if not self.uaccess:
+		if not ignore_ldap_connection and not self.uaccess:
 			return genErrorMessage(_("No connection to the LDAP server"),[_("The LDAP server could not be contacted. Please try again later.")])
 
 		# parse XML

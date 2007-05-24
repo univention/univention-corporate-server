@@ -89,18 +89,27 @@ class notebook(uniconf):
 		valuetext=xmlob.createTextNode(str(self.args.get("selected","0")))
 		value.appendChild(valuetext)
 		for button in self.args.get("buttons",[]):
+			if len(button) == 4: # specific for UMC
+				text, help, icon, statusicon = button
+			else: # Univention Admin
+				text, help = button
+				icon, statusicon = "", ""
 			tag=xmlob.createElement("button")
+			if icon:
+				tag.setAttribute( 'icon', icon )
+			if statusicon:
+				tag.setAttribute( 'statusicon', statusicon )
 			node.appendChild(tag)
 			if self.args.get("selected"):
 				if int(self.args["selected"])==number:
-					xmlob=self.butrepr(xmlob,tag,button[0],button[1],1)
+					xmlob=self.butrepr(xmlob,tag,text,help,1)
 				else:
-					xmlob=self.butrepr(xmlob,tag,button[0],button[1],0)
+					xmlob=self.butrepr(xmlob,tag,text,help,0)
 			else:
 				if number==0:
-					xmlob=self.butrepr(xmlob,tag,button[0],button[1],1)
+					xmlob=self.butrepr(xmlob,tag,text,help,1)
 				else:
-					xmlob=self.butrepr(xmlob,tag,button[0],button[1],0)
+					xmlob=self.butrepr(xmlob,tag,text,help,0)
 			number+=1
 		return xmlob
 					
