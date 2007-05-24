@@ -8,8 +8,8 @@ Standards-Version: 3.5.5
 Package: univention-apache
 Architecture: all
 Pre-Depends: apache
-Depends: univention-ssl, libapache-mod-ssl, libapache-mod-auth-pam, python2.4, univention-baseconfig (>=0.06), php4 (>= 4.3)
-Description: UCS - Apache configuration
+Depends: univention-ssl, apache2, libapache2-mod-auth-pam, python, univention-baseconfig, php5
+Description: UCS - Apache2 configuration
  This packages provides the basic configuration for the
  Apache web server.
  .

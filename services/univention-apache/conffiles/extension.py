@@ -36,7 +36,7 @@ def handler(bc,changes):
 		if memlimit[-1:].lower() == 'm':
 			memlimit = memlimit[:-1]
 		try:
-			f = open('/etc/php4/apache/php.ini', 'r')
+			f = open('/etc/php5/apache2/php.ini', 'r')
 		except IOError, e:
 			print e
 			sys.exit(1)
@@ -52,7 +52,7 @@ def handler(bc,changes):
 		f.close()
 		# rewrite file
 		try:
-			f = open('/etc/php4/apache/php.ini', 'w')
+			f = open('/etc/php5/apache2/php.ini', 'w')
 		except IOError, e:
 			print e
 			sys.exit(1)
