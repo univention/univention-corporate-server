@@ -1,3 +1,9 @@
+univention-pam (1.1.0-1) unstable; urgency=low
+
+  * switch to pam-heimdal package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 15:43:18 +0200
+
 univention-pam (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 polcies

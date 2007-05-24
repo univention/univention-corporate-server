@@ -19,7 +19,7 @@ auth     sufficient                         pam_unix.so
 # - isn't aware of the user, proceed with the next service
 @!@
 pam_krb5='''
-auth	sufficient			pam_heimdal.so use_first_pass'''
+auth	sufficient			pam_krb5.so use_first_pass'''
 pam_ldap='''
 auth 	sufficient 			pam_ldap.so use_first_pass'''
 pam_winbind=''' 

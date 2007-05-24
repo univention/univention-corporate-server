@@ -7,7 +7,7 @@ pam_krb5='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<fail>]                         pam_heimdal.so use_first_pass'''
+         default=<fail>]                         pam_krb5.so use_first_pass'''
 pam_ldap='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \

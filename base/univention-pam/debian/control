@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-pam
 Architecture: all
-Depends: univention-baseconfig, libpam-ldap (>=161), libnss-ldap (>=204), libpam-smbpass | libpam-smbpass-bdc, libpam-heimdal (>= 1.3-3.rc6-univention-1.8), libpam-krb5 (>= 1.0-8.6), libpam-cracklib, pam-runasroot, univention-skel, nscd, univention-home-mounter
+Depends: univention-baseconfig, libpam-ldap (>=161), libnss-ldap (>=204), libpam-smbpass | libpam-smbpass-bdc, libpam-heimdal, libpam-cracklib, pam-runasroot, univention-skel, nscd, univention-home-mounter
 Replaces: univention-ldap-client (<< 1.15), univention-ldap-server (<< 1.15)
 Conflicts: univention-ldap-client (<< 1.15), univention-ldap-server (<< 1.15)
 Description: UCS - login configuration

@@ -17,7 +17,7 @@ account  sufficient                         pam_unix.so
 # - isn't aware of the user, proceed with the next service
 @!@
 pam_krb5='''
-account  <action>                         pam_heimdal.so'''
+account  <action>                         pam_krb5.so'''
 pam_ldap='''
 account  <action>                         pam_ldap.so'''
 pam_winbind='''
