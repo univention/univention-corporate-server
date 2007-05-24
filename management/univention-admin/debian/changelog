@@ -1,3 +1,9 @@
+univention-admin (3.1.2-1) unstable; urgency=low
+
+  * added apache redirection for ua and admin
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 13:07:20 +0200
+
 univention-admin (3.1.1-1) unstable; urgency=low
 
   * use /var/www/ as document root

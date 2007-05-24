@@ -14,3 +14,6 @@ File: usr/share/univention-admin/www/config.php
 Variables: admin/web/debug/level
 Variables: admin/web/language
 Variables: admin/timeout
+
+Type: file
+File: etc/apache2/sites-available/univention-admin
