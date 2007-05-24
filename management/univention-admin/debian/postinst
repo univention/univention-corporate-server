@@ -49,9 +49,6 @@ done
 
 test -h /usr/share/univention-admin/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-admin/www
 test -h /usr/share/univention-admin/www/file.php || ln -s /usr/share/univention-webui/www/file.php /usr/share/univention-admin/www
-test -h /usr/share/univention-admin/www/includes || ln -s /usr/share/univention-webui/www/includes /usr/share/univention-admin/www
-test -h /usr/share/univention-admin/www/style || ln -s /usr/share/univention-webui-style/style /usr/share/univention-admin/www
-test -h /usr/share/univention-admin/www/icon || ln -s /usr/share/univention-webui-style/icon /usr/share/univention-admin/www
 
 test -h /var/www/univention-admin || ln -s /usr/share/univention-admin/www /var/www/univention-admin
 

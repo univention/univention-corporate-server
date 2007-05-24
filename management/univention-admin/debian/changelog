@@ -1,4 +1,4 @@
-univention-admin (3.1.2-1) unstable; urgency=low
+univention-admin (3.1.3-1) unstable; urgency=low
 
   * added apache redirection for ua and admin
 
