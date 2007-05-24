@@ -1,0 +1,105 @@
+#!/usr/bin/make -f
+#
+# Python Heimdal
+#  rules file for the python-heimdal debian package
+#
+# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+# Made with the aid of dh_make, by Craig Small
+# debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
+# Some lines taken from debmake, by Cristoph Lameter.
+# Modified for python-heimdal, by Roland Bauerschmidt 2003.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+export DH_COMPAT=3
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	# Build the package for each version of python we support.
+	/usr/bin/python2.4 setup.py clean --all --build-lib build2.4
+	/usr/bin/python2.4 setup.py build --build-lib build2.4
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	/usr/bin/python2.4 setup.py clean --all --build-lib build2.4
+	-rm -fr build build2.4 html icons
+
+	dh_clean
+
+# Build architecture-independent files here.
+binary-indep: build
+	dh_testdir -i
+	dh_testroot -i
+	dh_clean -k -i
+	dh_installdirs -A -i
+	dh_installchangelogs -i
+
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_shlibdeps -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+
+# Build architecture-dependent files here.
+binary-arch: build
+#	dh_testversion
+	dh_testdir -a
+	dh_testroot -a
+	dh_clean -k -a
+	dh_installdirs -A -a
+
+	/usr/bin/python2.4 setup.py install --prefix=`pwd`/debian/python2.4-heimdal/usr --no-compile
+
+#	dh_installmenu
+#	dh_installinit
+#	dh_installcron
+#	dh_undocumented
+	dh_strip -a
+	dh_compress -a
+	dh_fixperms -a
+	dh_installdeb -a
+	dh_shlibdeps -a
+	dh_gencontrol -a
+#	dh_makeshlibs
+	dh_md5sums -a
+	dh_builddeb -a
+
+source diff:
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

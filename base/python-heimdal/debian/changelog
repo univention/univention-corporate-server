@@ -1,0 +1,29 @@
+python-heimdal (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 15:04:40 +0100
+
+python-heimdal (0.6) unstable; urgency=low
+
+  * provide python2.3-heimdal
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Oct 2005 07:50:55 +0200
+
+python-heimdal (0.4) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 13:51:51 +0200
+
+python-heimdal (0.2) unstable; urgency=low
+
+  * new version policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Feb 2004 11:46:42 +0100
+
+python-heimdal (0.1-1) unstable; urgency=low
+
+  * Initial version
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 26 Sep 2003 13:33:17 +0200
