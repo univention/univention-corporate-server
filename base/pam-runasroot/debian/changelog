@@ -1,0 +1,28 @@
+pam-runasroot (1.0-7) unstable; urgency=low
+
+  * updated GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 13:45:33 +0100
+
+pam-runasroot (1.0-4) unstable; urgency=low
+
+  * don't call getpwnam if unused
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  3 May 2006 14:59:58 +0200
+
+pam-runasroot (1.0-2) unstable; urgency=low
+
+  * change version
+  * activate pam_sm_setcred
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Oct 2003 15:25:17 +0200
+
+pam-runasroot (1.0-1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Peter H. Ganten <ganten@univention.de>  Wed, 19 Dec 2001 14:58:09 +0100
+
+Local variables:
+mode: debian-changelog
+End:
