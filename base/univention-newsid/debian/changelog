@@ -1,3 +1,9 @@
+univention-newsid (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 14:22:33 +0200
+
 univention-newsid (0.1.2) unstable; urgency=low
 
   * add GPL headers
