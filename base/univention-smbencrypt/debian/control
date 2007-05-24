@@ -1,0 +1,22 @@
+Source: univention-smbencrypt
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper(>> 3.0.0)
+
+Package: univention-smbencrypt
+Replaces: smbencrypt
+Conflicts: smbencrypt
+Provides: smbencrypt
+Architecture: all
+Depends: libcrypt-smbhash-perl
+Description: UCS - generate LM/NT-Hashes for passwords
+ This package contain a tool to generate pasword-hashes to use
+ with samba.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
