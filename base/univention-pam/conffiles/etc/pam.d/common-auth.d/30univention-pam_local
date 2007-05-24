@@ -1,0 +1,5 @@
+auth     requisite                          pam_nologin.so
+
+# local unix authentification; don't cache passwords
+auth     sufficient                         pam_unix.so
+

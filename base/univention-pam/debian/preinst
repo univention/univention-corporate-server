@@ -1,0 +1,86 @@
+#!/bin/sh
+#
+# Univention PAM
+#  preinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# dpkg doesn't handle moving configuration files correctly
+if [ -z "$2" ]; then
+	cat <<EOF | while read file origsum; do
+/etc/univention/templates/files/etc/pam_ldap.conf 97c81abb9b8d1a532ea13976aaabc3cf
+/etc/univention/templates/files/etc/libnss-ldap.conf 62776b38e97aa5e49a2e748aa4a2643a
+/etc/univention/templates/files/etc/nsswitch.conf b583d911ea6d9370afe6f1360a58f61d
+/etc/univention/templates/files/etc/pam.d/admin-account 0f344954ea6901274f8bcaa78db146a5
+/etc/univention/templates/files/etc/pam.d/admin-auth 796deafd112bd8d187eb235afc3c8af5
+/etc/univention/templates/files/etc/pam.d/admin-password 1d7c2d2ce211b1343273f77ce8b761ab
+/etc/univention/templates/files/etc/pam.d/admin-session 8caa429771513de29e65d935ac4ffce4
+/etc/univention/templates/files/etc/pam.d/chfn 2c8a1d8aa85c945e2387740a0c25f8e7
+/etc/univention/templates/files/etc/pam.d/chsh 4aee4a148facc422e06c773e1ddf9c98
+/etc/univention/templates/files/etc/pam.d/common-account c2a5063cb26e4c7a0afbc195d3abbf0c
+/etc/univention/templates/files/etc/pam.d/common-auth 51a23cbf7025632105f7a96caf36eeb8
+/etc/univention/templates/files/etc/pam.d/common-password 817b53a3d8133dff37065a8c6f9745e3
+/etc/univention/templates/files/etc/pam.d/common-session 4dd99fd8f9dc8117ab0d2159cd83760a
+/etc/univention/templates/files/etc/pam.d/cron 3fa40fc573dd0aa5921b3bb11281dbd1
+/etc/univention/templates/files/etc/pam.d/ftp b1c8c2bb7af7f8c3d372de4b3403aa26
+/etc/univention/templates/files/etc/pam.d/gdm 8cb19d7a542a243b0299ecbecf2a25fe
+/etc/univention/templates/files/etc/pam.d/kcheckpass b8c3cceaa5023d9ab7a2c06fd1c7bc94
+/etc/univention/templates/files/etc/pam.d/kde 729f032067f3055a70e0728c3f41ecc1
+/etc/univention/templates/files/etc/pam.d/kscreensaver 9abad36a222603fb7589a1d0dae4f405
+/etc/univention/templates/files/etc/pam.d/login 0cd897495dd644b334dde13b3ee36523
+/etc/univention/templates/files/etc/pam.d/other f8d726de2d8590a356a9c84bc7283a9c
+/etc/univention/templates/files/etc/pam.d/passwd 92b9fec4ac27b08bb3291537b2641b1b
+/etc/univention/templates/files/etc/pam.d/ppp 648e96ef27a49d8c667ce6088e1a5517
+/etc/univention/templates/files/etc/pam.d/rlogin 11fa55c529b9a5e15444a120488fb19e
+/etc/univention/templates/files/etc/pam.d/rsh 515179ecaf04f43d3abadc9aef7851f2
+/etc/univention/templates/files/etc/pam.d/screen b5ef3a7dd2cabd1cd66b859cb3103df3
+/etc/univention/templates/files/etc/pam.d/ssh 896145cc12eb8209da381614dd0eaf0b
+/etc/univention/templates/files/etc/pam.d/su d8207f1bdbf37e32ce8deec25aa26e9a
+/etc/univention/templates/files/etc/pam.d/sudo 2c615cadd6bd34aec3822154dfb3d31b
+EOF
+		if ! [ -e "$file" ]; then
+			continue
+		fi
+
+		nowsum=`md5sum "$file" | cut -d ' ' -f 1`
+		if [ "$nowsum" = "$origsum" ]; then
+			rm -f "$file"
+		fi
+	done
+
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
+	if [ -e "/etc/pam.d/ssh" ]; then
+		res=`grep "auth.*required.*pam_listfile.so.*onerr=succeed.*item=user.*sense=deny.*file=" /etc/pam.d/ssh`
+		if [ -n "$res" ]; then
+			univention-baseconfig set ssh/rootlogin=disallow
+		fi
+	fi
+fi
+
+
+#DEBHELPER#

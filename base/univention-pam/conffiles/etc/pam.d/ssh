@@ -1,0 +1,28 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/pam.d/ssh
+# 
+
+@!@
+if 'ssh' in baseConfig['auth/user/services'].split(' '):
+	scheme='common'
+elif 'ssh' in baseConfig['auth/admin/services'].split(' '):
+	scheme='admin'
+else:
+	scheme='deny'
+
+print '@include %s-account' % scheme
+if baseConfig.has_key('ssh/rootlogin') and baseConfig['ssh/rootlogin'] == 'disallow':
+	print 'auth       required     pam_listfile.so onerr=succeed item=user sense=deny file=/etc/security/nopasswdusers'
+print '@include %s-auth' % scheme
+print '@include %s-session' % scheme
+print 'session    optional   pam_lastlog.so'
+print 'session    optional   pam_mail.so standard noenv'
+print 'session    optional   pam_motd.so'
+print '@include %s-password' % scheme
+@!@

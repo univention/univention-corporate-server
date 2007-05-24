@@ -1,0 +1,29 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig ueberschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/pam.d/common-session
+# 
+
+session    required   pam_unix.so
+@!@
+methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind'], baseConfig['auth/user/methods'].split(' '))
+if 'winbind' in methods:
+	print 'session    optional   pam_winbind.so'
+@!@
+session    required   pam_limits.so
+@!@
+if not baseConfig.has_key('homedir/create') or not baseConfig['homedir/create'] == 'no':
+	if not baseConfig.has_key('homedir/mount') or not baseConfig['homedir/mount'] == 'no':
+		print 'session	   required   pam_runasroot.so program=/usr/sbin/univention-mount-homedir'
+	print 'session    required   pam_mkhomedir.so skel=/etc/skel umask=0066'
+	print 'session    optional   pam_runasroot.so user program=/usr/bin/univention-skel'
+
+	if baseConfig.has_key('auth/kdeprofile') and baseConfig['auth/kdeprofile'].lower() in ['true', 'yes']:
+		print 'session required pam_runasroot.so user program=/usr/share/univention-kde/univention-set-kdedirs'
+		print 'session required pam_env.so envfile=$HOME/.univention-environment'
+@!@
+

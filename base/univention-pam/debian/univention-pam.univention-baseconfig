@@ -1,0 +1,203 @@
+Type: multifile
+Multifile: etc/pam.d/common-session
+Variables: homedir/create
+Variables: homedir/mount
+Variables: quota/userdefault
+Variables: auth/kdeprofile
+
+Type: subfile
+Multifile: etc/pam.d/common-session
+Subfile: etc/pam.d/common-session.d/10univention-pam_common
+Variables: homedir/create
+Variables: homedir/mount
+Variables: auth/kdeprofile
+
+Type: file
+File: etc/nscd.conf
+Variables: nscd/passwd/size
+Variables: nscd/group/size
+Variables: nscd/hosts/size
+
+Type: file
+File: etc/libnss-ldap.conf
+Variables: ldap/server/name
+Variables: ldap/server/addition
+
+Type: file
+File: etc/nsswitch.conf
+Variables: auth/user/methods
+Variables: auth/admin/methods
+Variables: nsswitch/ldap
+
+Type: file
+File: etc/pam_ldap.conf
+Variables: ldap/server/name
+Variables: ldap/server/addition
+
+Type: file
+File: etc/security/limits.conf
+
+Type: file
+File: etc/security/access-admin.conf
+
+Type: file
+File: etc/security/pam_env.conf
+Variables: auth/kdeprofile
+
+Type: file
+File: etc/pam.d/admin-account
+Variables: auth/admin/methods
+
+Type: file
+File: etc/pam.d/admin-auth
+Variables: auth/admin/methods
+
+Type: file
+File: etc/pam.d/admin-auth-nowrite
+Variables: auth/admin/methods
+
+Type: file
+File: etc/pam.d/admin-password
+
+Type: file
+File: etc/pam.d/admin-session
+Variables: homedir/mount
+Variables: auth/kdeprofile
+
+Type: file
+File: etc/pam.d/common-account
+Variables: auth/user/methods
+
+Type: multifile
+Multifile: etc/pam.d/common-auth
+Variables: auth/user/methods
+
+Type: subfile
+Multifile: etc/pam.d/common-auth
+Subfile: etc/pam.d/common-auth.d/10univention-pam_header
+
+Type: subfile
+Multifile: etc/pam.d/common-auth
+Subfile: etc/pam.d/common-auth.d/30univention-pam_local
+
+Type: subfile
+Multifile: etc/pam.d/common-auth
+Subfile: etc/pam.d/common-auth.d/50univention-pam_general
+Variables: auth/user/methods
+
+Type: subfile
+Multifile: etc/pam.d/common-auth
+Subfile: etc/pam.d/common-auth.d/70univention-pam_env
+
+Type: file
+File: etc/pam.d/common-auth-nowrite
+Variables: auth/user/methods
+
+Type: file
+File: etc/pam.d/common-password
+
+Type: file
+File: etc/pam.d/deny-account
+
+Type: file
+File: etc/pam.d/deny-auth
+
+Type: file
+File: etc/pam.d/deny-auth-nowrite
+
+Type: file
+File: etc/pam.d/deny-password
+
+Type: file
+File: etc/pam.d/deny-session
+
+Type: file
+File: etc/pam.d/chfn
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/chsh
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/cron
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/ftp
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/gdm
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/kcheckpass
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/kde
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/kscreensaver
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/login
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/other
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/passwd
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/ppp
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/rlogin
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/rsh
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/screen
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/ssh
+Variables: auth/user/services
+Variables: auth/admin/services
+Variables: ssh/rootlogin
+
+Type: file
+File: etc/pam.d/su
+Variables: auth/user/services
+Variables: auth/admin/services
+
+Type: file
+File: etc/pam.d/sudo
+Variables: auth/user/services
+Variables: auth/admin/services

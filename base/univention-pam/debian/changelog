@@ -1,0 +1,129 @@
+univention-pam (0.15.1-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 18:58:41 +0100
+
+univention-pam (0.14-1) unstable; urgency=low
+
+  * support for samba bdc packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Nov 2006 14:59:14 +0100
+
+univention-pam (0.14-0) unstable; urgency=low
+
+  * switch common-auth to multifile-template
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  1 Nov 2006 10:31:31 +0100
+
+univention-pam (0.13-6) unstable; urgency=low
+
+  * added Template-Header in nscd.conf
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Oct 2006 13:43:04 +0200
+
+univention-pam (0.13-5) unstable; urgency=low
+
+  * run univention-set-kdeprofile in pam session stack
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Jul 2006 16:50:59 +0200
+
+univention-pam (0.13-3) unstable; urgency=low
+
+  * added bind_policy parameter to libnss-ldap.conf template
+
+ -- Lars Rehe <lars@billy.knut.univention.de>  Mon, 22 May 2006 16:13:18 +0200
+
+univention-pam (0.13-2) unstable; urgency=low
+
+  * remove minimum password length
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  9 Mar 2006 16:47:16 +0100
+
+univention-pam (0.13-1) unstable; urgency=low
+
+  * add baseconfig variable homedir/create
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 22 Feb 2006 14:13:49 +0100
+
+univention-pam (0.13-0) unstable; urgency=low
+
+  * merged to UCS 1.3
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 16 Nov 2005 11:23:41 +0100
+
+univention-pam (0.12) unstable; urgency=high
+
+  * remove bug in template for common auth, which may allowed to set arbitrary
+    passwords for system-users in passwd_cache if no connection to an ldap-
+    server is present
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 16 Nov 2005 10:45:34 +0100
+
+univention-pam (0.11) unstable; urgency=low
+
+  * added baseconfig variable ssh/rootlogin
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jul 2005 13:58:32 +0200
+
+univention-pam (0.10) unstable; urgency=low
+
+  * support multiple LDAP server, ldap/server/name and ldap/server/addition
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Mar 2005 08:02:54 +0100
+
+univention-pam (0.9) unstable; urgency=low
+
+  * fix login bug on managed/mobile client
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  2 Mar 2005 14:51:02 +0100
+
+univention-pam (0.8) unstable; urgency=low
+
+  * common-auth as baseconfg-multifile (for univention-quota)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 17 Aug 2004 13:51:13 +0200
+
+univention-pam (0.7) unstable; urgency=low
+
+  * mount home directory from users fileserver
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Jul 2004 13:13:22 +0200
+
+univention-pam (0.6) unstable; urgency=low
+
+  * die on user_unknown during last pam module
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Jul 2004 06:50:53 +0200
+
+univention-pam (0.5) unstable; urgency=low
+
+  * Split home mounting into separate package: univention-home-mounter.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 18 May 2004 13:51:10 +0200
+
+univention-pam (0.4) unstable; urgency=low
+
+  * readded nsswitch/ldap baseconfig variable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 12 May 2004 09:13:13 +0200
+
+univention-pam (0.3) unstable; urgency=low
+
+  * Workaround for dpkg bug: Remove old configuration files from
+    univention-ldap-client before installation.
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 28 Apr 2004 11:29:35 +0200
+
+univention-pam (0.2) unstable; urgency=low
+
+  * nscd.conf include in univention-baseconf
+
+ -- Thomas Kaminski <thomas@ds-work.office.univention.de>  Fri,  2 Apr 2004 10:26:56 +0200
+
+univention-pam (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Wed, 17 Mar 2004 13:30:38 +0100
