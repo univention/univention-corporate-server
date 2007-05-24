@@ -48,6 +48,13 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; the
 	fi
 fi
 
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25.22; then
+	mv /etc/logrotate.d/heimdal-kdc /etc/logrotate.d/heimdal-kdc.new
+	dpkg-divert --rename --divert /etc/logrotate.d/heimdal-kdc.debian --remove /etc/logrotate.d/heimdal-kdc || true
+	dpkg-divert --rename --divert /etc/logrotate.d_heimdal-kdc.debian --add /etc/logrotate.d/heimdal-kdc || true
+	mv /etc/logrotate.d/heimdal-kdc.new /etc/logrotate.d/heimdal-kdc
+fi
+
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-ldap-listener
 		then
