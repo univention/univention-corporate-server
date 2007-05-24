@@ -2,7 +2,7 @@ Source: univention-webui
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, python2.4, python2.4-xml
+Build-Depends: debhelper, python2.4, python-xml
 Standards-Version: 3.5.5
 
 Package: univention-webui

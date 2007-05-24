@@ -27,10 +27,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 DESTDIR=/tmp/foo
-MODULES=$(shell find modules -name '*.py' | sed 's/\.py/\.pyo/g')
-
-%.pyo:	%.py
-	@./py_compile $< $@
+MODULES=$(shell find modules -name '*.py')
 
 all:	$(MODULES)
 
