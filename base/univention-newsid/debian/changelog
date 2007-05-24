@@ -1,0 +1,15 @@
+univention-newsid (0.1.2) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 14:07:39 +0100
+
+univention-newsid (0.1.0) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 09 Sep 2003 17:10:40 +0200
+
+Local variables:
+mode: debian-changelog
+End:
