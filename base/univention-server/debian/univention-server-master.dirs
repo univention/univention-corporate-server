@@ -1,0 +1,6 @@
+/usr/lib/univention-server
+/usr/lib/univention-server/update_scripts
+/usr/lib/univention-server/update_scripts/v1_1.20
+etc/univention/daemons
+etc/bootsplash/themes/domaincontroller_master/images
+etc/bootsplash/themes/domaincontroller_master/config

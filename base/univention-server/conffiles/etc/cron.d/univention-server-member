@@ -1,0 +1,1 @@
+ 0 1 * * * root /usr/sbin/jitter 600 /usr/lib/univention-server/server_password_change

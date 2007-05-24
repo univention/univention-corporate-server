@@ -1,0 +1,5 @@
+/usr/lib/univention-server
+etc/univention/daemons
+etc/bootsplash/themes/domaincontroller_backup/images
+etc/bootsplash/themes/domaincontroller_backup/config
+

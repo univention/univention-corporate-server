@@ -1,0 +1,4 @@
+/usr/lib/univention-server
+etc/univention/daemons
+etc/bootsplash/themes/domaincontroller_slave/images
+etc/bootsplash/themes/domaincontroller_slave/config
