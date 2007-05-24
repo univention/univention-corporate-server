@@ -70,7 +70,7 @@ if(!isset($logout))
 	fwrite($fp, $config->socket_filename);
 	fclose($fp);
 
-	$pipe=fsockopen($config->socket_filename, 0);
+	$pipe=fsockopen("unix://".$config->socket_filename, 0);
         if(isset($module)){
 		fwrite($pipe, "jumpurl: ".$module."\n");
 	}
