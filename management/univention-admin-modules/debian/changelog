@@ -1,3 +1,9 @@
+univention-admin-modules (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 May 2007 13:47:05 +0200
+
 univention-admin-modules (0.48.10-1) unstable; urgency=low
 
   * add description and location attribute to shares/printer

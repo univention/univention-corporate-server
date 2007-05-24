@@ -28,7 +28,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
+PACKAGE_NAME=univention-admin
+MODULE_NAME=univention-admin
+
+PYVERS=$(shell pyversions -vr)
+
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
@@ -40,7 +44,6 @@ configure-stamp:
 build: configure-stamp build-stamp
 build-stamp:
 	dh_testdir
-	make
 	touch build-stamp
 
 clean:
@@ -48,45 +51,63 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	rm -f *~
-	make clean
 	dh_clean
 
 TOOLS_DEST=$(CURDIR)/debian/univention-admin-tools
-MODULES_DEST=$(CURDIR)/debian/python2.4-univention-admin
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
 	install -m755 univention-dnsedit ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_uniqueMembers ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_policies ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_kerberos_deactivation ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_sambaAccountFlags ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_class_b_reverse ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-admin-tools
-	install -m755 proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_uniqueMembers ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_policies ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_kerberos_deactivation ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_sambaAccountFlags ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_class_b_reverse ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-admin-tools
+	install -m755 scripts/proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-admin-tools
 
 	# new tools with daemon mode
 	install -m755 univention-cli-client $(TOOLS_DEST)/usr/share/univention-admin-tools/univention-cli-client
 	install -m755 univention-cli-server $(TOOLS_DEST)/usr/share/univention-admin-tools/univention-cli-server
 
-	# compile and install admin modules 
+	# install admin modules 
 
-	make install DESTDIR=${MODULES_DEST}
-	find ${MODULES_DEST} -type d -name CVS | xargs rm -rf
+	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
+		o=debian/python-univention-admin/usr/lib/python$*/site-packages/$${i#modules/};\
+		install -d "`dirname $$o`";\
+		install -m755 $$i $$o;\
+	done
+	@for i in modules/univention/admin/handlers/*/*.gif; do\
+		o=debian/python-univention-admin/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
+	@for i in $(MOFILES); do\
+		lang=`basename $$i .mo`;\
+		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/python-univention-admin/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
 
 	# install admin-cli modules
 	cat modules/univention/admincli/admin.py| sed -e "s/@%@package_version@%@/${version}/" > modules/univention/admincli/admin.py_tmp
 	cat modules/univention/admincli/admin.py_tmp| sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > modules/univention/admincli/admin.py_tmp2
-	install -m644 modules/univention/admincli/admin.py_tmp2 ${MODULES_DEST}/usr/lib/python2.4/site-packages/univention/admincli/admin.py
+
+	#admin cli package
+	install -d -m755 debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli
+	install -m644 modules/univention/admincli/admin.py_tmp2 debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli/admin.py
 	rm modules/univention/admincli/admin.py_tmp*
-	install -m644 modules/univention/admincli/adduser.py ${MODULES_DEST}/usr/lib/python2.4/site-packages/univention/admincli/adduser.py
-	install -m644 modules/univention/admincli/passwd.py ${MODULES_DEST}/usr/lib/python2.4/site-packages/univention/admincli/passwd.py
-	install -m644 modules/univention/admincli/license_check.py ${MODULES_DEST}/usr/lib/python2.4/site-packages/univention/admincli/license_check.py
-	install -m644 modules/univention/admincli/__init__.py ${MODULES_DEST}/usr/lib/python2.4/site-packages/univention/admincli/__init__.py
+	install -m644 modules/univention/admincli/adduser.py debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli/adduser.py
+	install -m644 modules/univention/admincli/passwd.py debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli/passwd.py
+	install -m644 modules/univention/admincli/license_check.py debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli/license_check.py
+	install -m644 modules/univention/admincli/__init__.py debian/python-univention-admin-cli/usr/lib/python$*/site-packages/univention/admincli/__init__.py
 	dh_install
 
 binary-arch: build install
@@ -101,6 +122,7 @@ binary-indep: build install
 	dh_installman
 	dh_installinfo
 	dh_installchangelogs 
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress
