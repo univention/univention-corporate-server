@@ -1,0 +1,154 @@
+#! /bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/init.d/heimdal-kdc
+#
+
+#
+# skeleton	example file to build /etc/init.d/ scripts.
+#		This file should be used to construct scripts for /etc/init.d.
+#
+#		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+#		Modified for Debian GNU/Linux
+#		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+#
+# Version:	@(#)skeleton  1.8  03-Mar-1998  miquels@cistron.nl
+#
+# This file was automatically customized by dh-make on Wed,  8 Dec 1999 11:54:13 +1100
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON1=/usr/lib/heimdal-servers/kdc
+NAME1=heimdal-kdc
+DESC1="Heimdal KDC"
+PARAMS1=""
+DAEMON2=/usr/lib/heimdal-servers/kpasswdd
+NAME2=kpasswdd
+DESC2="Heimdal password server"
+PARAMS2=""
+#PARAMS2="--check-library=/usr/lib/libuniventionchkpwhistory.so --check-function=univention_chkpwhistory"
+
+START_KDC=yes
+START_KPASSWDD=yes
+START_MASTER=no
+START_SLAVE=no
+
+test -f $DAEMON1 || exit 0
+test -f $DAEMON2 || exit 0
+
+set -e
+
+case "$1" in
+  start)
+	if [ "$START_KDC" = "yes" ];
+	then
+		echo -n "Starting $DESC1: "
+		start-stop-daemon --start --quiet --background \
+			--make-pidfile --pidfile /var/run/$NAME1.pid \
+			--exec $DAEMON1 -- $PARAMS1
+		echo "$NAME1."
+	fi
+	if [ "$START_KPASSWDD" = "yes" ];
+	then
+		echo -n "Starting $DESC2: "
+		start-stop-daemon --start --quiet --background \
+			--make-pidfile --pidfile /var/run/$NAME2.pid \
+			--exec $DAEMON2 -- $PARAMS2
+		echo "$NAME2."
+	fi
+	if [ "$START_MASTER" = "yes" ];
+	then
+		echo -n "Starting incremental propagation master: "
+		start-stop-daemon --start --quiet --background \
+			--make-pidfile --pidfile /var/run/ipropd-master.pid \
+			--exec /usr/sbin/ipropd-master --
+		echo "ipropd-master."
+	fi
+	if [ "$START_SLAVE" = "yes" ];
+	then
+		echo -n "Starting incremental propagation slave: "
+		start-stop-daemon --start --quiet --background \
+			--make-pidfile --pidfile /var/run/ipropd-slave.pid \
+			--exec /usr/sbin/ipropd-slave --
+		echo "ipropd-slave."
+	fi
+	;;
+  stop)
+	if [ "$START_KDC" = "yes" ];
+	then
+		echo -n "Stopping $DESC2: "
+		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME2.pid \
+			--exec $DAEMON2 -- $PARAMS2
+		echo "$NAME2."
+	fi
+	if [ "$START_KPASSWDD" = "yes" ];
+	then
+		echo -n "Stopping $DESC1: "
+		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME1.pid \
+			--exec $DAEMON1 -- $PARAMS1
+		echo "$NAME1."
+	fi
+	if [ "$START_MASTER" = "yes" ];
+	then
+		echo -n "Stopping incremental propagation master: "
+		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/ipropd-master.pid \
+			--exec /usr/sbin/ipropd-master --
+		echo "ipropd-master."
+	fi
+	if [ "$START_SLAVE" = "yes" ];
+	then
+		echo -n "Stopping incremental propagation slave: "
+		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/ipropd-slave.pid \
+			--exec /usr/sbin/ipropd-slave --
+		echo "/usr/sbin/ipropd-slave."
+	fi
+	;;
+  #reload)
+	#
+	#	If the daemon can reload its config files on the fly
+	#	for example by sending it SIGHUP, do it here.
+	#
+	#	If the daemon responds to changes in its config file
+	#	directly anyway, make this a do-nothing entry.
+	#
+	# echo "Reloading $DESC configuration files."
+	# start-stop-daemon --stop --signal 1 --quiet --pidfile \
+	#	/var/run/$NAME.pid --exec $DAEMON
+  #;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	/etc/init.d/heimdal-kdc stop
+	sleep 1
+	/etc/init.d/heimdal-kdc start
+	;;
+  crestart)
+	if pidof $NAME1 > /dev/null 2>&1
+		then
+		$0 restart
+	else
+		if pidof $NAME2 > /dev/null 2>&1
+			then
+			$0 restart
+		else
+			echo "No running $NAME1 or $NAME2 found, no need to restart"
+		fi
+	fi
+	;;
+  *)
+	N=/etc/init.d/$NAME
+	# echo "Usage: $N {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $N {start|stop|restart|crestart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0
