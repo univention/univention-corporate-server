@@ -48,6 +48,7 @@ print 'sambaSID: @@%%@@sid@@%%@@'
 print 'objectClass: sambaDomain'
 print 'sambaNextUserRid: 1000'
 print 'sambaNextGroupRid: 1000'
+print 'description: Default Samba Container'
 @!@
 dn: cn=admin,@%@ldap/base@%@
 objectClass: top
@@ -59,6 +60,7 @@ userPassword: {crypt}@@%%@@ldap.pw@@%%@@
 dn: cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default System Settings Container
 cn: univention
 
 dn: cn=temporary,cn=univention,@%@ldap/base@%@
@@ -260,16 +262,19 @@ gidNumber: 55000
 dn: cn=users,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Users Container
 cn: users
 
 dn: cn=groups,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Groups Container
 cn: groups
 
 dn: cn=computers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Computers Container
 cn: computers
 
 dn: cn=dc,cn=computers,@%@ldap/base@%@
@@ -285,30 +290,36 @@ cn: memberserver
 dn: cn=shares,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Shares Container
 cn: shares
 
 dn: cn=networks,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Networks Container
 cn: networks
 
 dn: cn=printers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Printers Container
 cn: printers
 
 dn: cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
+description: Default Policies Container
 cn: policies
 
 dn: cn=kerberos,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Kerberos Container
 cn: kerberos
 
 dn: cn=mail,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
+description: Default Mail Container
 cn: mail
 
 dn: cn=desktop,cn=policies,@%@ldap/base@%@
@@ -445,10 +456,12 @@ cn: windowsinstallations
 
 dn: cn=dns,@%@ldap/base@%@
 objectClass: organizationalRole
+description: Default DNS Container
 cn: dns
 
 dn: cn=dhcp,@%@ldap/base@%@
 objectClass: organizationalRole
+description: Default DHCP Container
 cn: dhcp
 
 dn: cn=users,cn=policies,@%@ldap/base@%@
