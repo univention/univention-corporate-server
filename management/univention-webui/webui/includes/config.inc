@@ -49,7 +49,7 @@ class webui_config{
 	var $layout_type;
 
 	function webui_config($browser, $session_id = FALSE){
-		require("config");
+		require("config.php");
 
 		if(preg_match("/MSIE/i",$browser)) $this->browser = "IE";
 		elseif(preg_match("/Gecko/i",$browser)) $this->browser = "Gecko";
