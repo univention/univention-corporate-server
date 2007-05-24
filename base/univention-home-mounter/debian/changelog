@@ -1,0 +1,39 @@
+univention-home-mounter (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:56 +0100
+
+univention-home-mounter (0.6) unstable; urgency=low
+
+  * allow username with first numeric char
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 May 2005 08:08:54 +0200
+
+univention-home-mounter (0.5) unstable; urgency=low
+
+  * check for thin client with baseconfig var server/role instead for
+  ldap/mydn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Apr 2005 13:56:11 +0200
+
+univention-home-mounter (0.4) unstable; urgency=low
+
+  * remove "getent passwd | grep" from mount homedir script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Apr 2005 18:55:07 +0200
+
+univention-home-mounter (0.3) unstable; urgency=low
+
+  * Do not attempt to create home directory for system users.
+  * Add dependency on univention-config.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Jul 2004 10:14:10 +0200
+
+univention-home-mounter (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 21 May 2004 15:33:51 +0200
+
+

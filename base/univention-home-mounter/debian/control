@@ -1,0 +1,21 @@
+Source: univention-home-mounter
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-home-mounter
+Architecture: all
+Depends: nfs-common, liblockfile1, univention-config
+Conflicts: univention-pam (<< 0.5)
+Description: UCS - mount home directories from other servers
+ This package mounts users' home directories from other
+ servers upon login. The remote server will need to export
+ the home directories via NFS, and the location of the home
+ directories will need to be specified in the users' LDAP
+ objects.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

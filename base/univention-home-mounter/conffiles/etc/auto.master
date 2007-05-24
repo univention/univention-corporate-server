@@ -1,0 +1,1 @@
+/var/lib/univention-home-mounter/home.auto	ldap:@%@ldap/server/name@%@:cn=users,@%@ldap/base@%@ rsize=8192,wsize=8192

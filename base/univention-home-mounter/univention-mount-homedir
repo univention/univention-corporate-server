@@ -1,0 +1,185 @@
+#!/bin/sh -e
+#
+# Univention Home Mounter
+#  mount the homedir
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+if [ -n "$1" ]; then
+	username=$1
+	USER=$1
+else
+	username=$USER
+fi
+
+# Get the passwd line for current user.
+# If a user has a numerical username, getent would treat the name
+# as the uid and deliver consequently a wrong or an empty result.
+
+numeric=""
+numeric=`echo "$username" | egrep ^[0-9]+$` || true
+first_numeric=`echo "$username" | egrep ^[0-9].*$` || true
+
+if [ -z "$numeric" ] && [ -z "$first_numeric" ]; then
+	pw_entry=`getent passwd $username `
+
+	for i in 1 2 3 4 5 6; do
+		pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
+	done
+
+	HOME=${pw_fields[6]}
+	UID_NUMBER=${pw_fields[3]}
+	GID_NUMBER=${pw_fields[4]}
+else
+	ldap_result=`ldapsearch -x -LLL uid="$username" homeDirectory uidNumber gidNumber`
+	if [ $? = 0 ]; then
+		HOME=`echo "$ldap_result" | grep ^homeDirectory | sed -e 's|homeDirectory: ||'`
+		UID_NUMBER=`echo "$ldap_result" | grep ^uidNumber | sed -e 's|uidNumber: ||'`
+		GID_NUMBER=`echo "$ldap_result" | grep ^gidNumber | sed -e 's|gidNumber: ||'`
+	else
+		pw_entry=`grep ^$username /etc/passwd`
+
+		for i in 1 2 3 4 5 6; do
+			pw_fields[$i]=`echo $pw_entry | awk -F ':' '{ print $'$i' }'`
+		done
+
+		HOME=${pw_fields[6]}
+		UID_NUMBER=${pw_fields[3]}
+		GID_NUMBER=${pw_fields[4]}
+	fi
+
+fi
+
+test -z "$USER" && exit 1
+test -z "$HOME" && exit 1
+
+mounted_directories() {
+	cut -d ' ' -f 2 < /proc/mounts
+}
+mount_source() {
+	awk -F ' ' "\$2 == \"$1\" { print \$1 }" < /proc/mounts
+}
+
+REALHOME=`readlink -f "$HOME"` || true
+if [ "$UID_NUMBER" -lt 1000 ] || \
+		([ -n "$REALHOME" ] && mounted_directories | grep -q "^$REALHOME"); then
+	exit 0
+fi
+
+if [ ! -x /usr/bin/univention_policy_result ] && [ ! -x /usr/bin/univention-policy-result ]; then
+	logger "missing /usr/bin/univention_policy_result"
+	exit 0
+fi
+
+# XXX: This will mount /home from the file server. Afterwards, /home/foo
+# will be created if it doesn't exist yet. However, I think we should only
+# mount /home/foo rather than /home. The only problem is, that if /home/foo
+# doesn't exist yet, this will fail. We could probably login via krsh before
+# to make sure it exists and mount it then. Running krsh here isn't pretty
+# though.
+homeattr=`ldapsearch -x -z 1 "(&(objectClass=posixAccount)(objectClass=automount)(uid=$USER))" automountInformation -LLL | /usr/bin/ldapsearch-wrapper | sed -n 's/automountInformation: \(.*\)/\1/p'`
+if [ -z "$homeattr" ]; then
+	eval `univention-baseconfig shell server/role`
+
+	if [ -z "$server_role" ]; then
+		# Thin Client
+		eval `univention-baseconfig shell ldap/mydn`
+		for server in `univention_policy_result -s $ldap_mydn | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
+			if [ -n "$server" ] && [ ! `mounted_directories | grep -q "/ramdisk/home"` ]; then
+				# mount in heartbeat-situations needs to be done from /ha/home, but normally /home fits
+				if mount -t nfs $server:/home /ramdisk/home || mount -t nfs $server:/ha/home /ramdisk/home
+					then
+					dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
+					echo "/ramdisk/home "`date +%s` >> /var/lib/univention-home-mounter/mounts
+					dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
+					logger "Mounted home directory: $server:/home"
+					exit 0
+				else
+					logger "Failed to mount home directory: $server:/home"
+				fi
+			fi
+		done
+		logger "Failed to mount home directory"
+		exit 1
+	else
+		# create home dir, if started from rshd
+		if [ -z "$REALHOME" ]; then
+			REALHOME="$HOME"
+		fi
+
+		if ! [ -e "$REALHOME" ]; then
+		        logger "Need to create homdir $REALHOME"
+			mkdir -p "$REALHOME"
+			# Use the username as owner instead of the uid.
+			# In case a numerical username identical with the
+			# given uid exists, chown would set the numerical username
+			# as owner.
+			chown $username:$GID_NUMBER "$REALHOME"
+			chmod go-rw "$REALHOME"
+		fi
+		exit 0
+	fi
+	
+	exit 0
+fi
+
+if [ -z "$REALHOME" ]; then
+	REALHOME="$HOME"
+fi
+
+host=`echo "$homeattr" | sed 's/.* \([^ ]*\):\([^ ]*\)/\1/'`
+path=`echo "$homeattr" | sed 's/.* \([^ ]*\):\([^ ]*\)/\2/'`
+if [ -z "$host" ] || [ -z "$path" ]; then
+	logger "Bad information in LDAP. Not mounting home directory."
+	exit 1
+fi
+
+if ( [ "$host" = "`hostname -f`" ] || [ "$host" = "`hostname -s`" ] ) && \
+		[ "`readlink -f \"$path\"`" = "$REALHOME" ]; then
+	logger "Home directory is local."
+	exit 0
+fi
+
+if ! [ -e "$REALHOME" ]; then
+        logger "Create homdir $REALHOME"
+	mkdir -p "$REALHOME"
+	# Use the username as owner instead of the uid.
+	# In case a numerical username identical with the
+	# given uid exists, chown would set the numerical username
+	# as owner.
+	chown $username:$GID_NUMBER "$REALHOME"
+	chmod go-rw "$REALHOME"
+fi
+
+if mount -t nfs "$host:$path" "$REALHOME"; then
+	dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
+	echo "$REALHOME "`date +%s` >> /var/lib/univention-home-mounter/mounts
+	dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
+else
+	logger "Failed to mount home directory: $HOME"
+	exit 1
+fi

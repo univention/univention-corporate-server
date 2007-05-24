@@ -1,0 +1,49 @@
+#!/bin/sh -e
+#
+# Univention Home Mounter
+#  unmount the home dirs
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+test -f /var/lib/univention-home-mounter/mounts || exit 0
+
+mps=`tempfile`
+cat /var/lib/univention-home-mounter/mounts > $mps
+cat $mps | while read mp seconds; do
+	if [ $((seconds+300)) -lt `date +%s` ]
+		then
+		failed=0
+		result=`umount "$mp" 2>&1` || failed=1
+		if [ "$failed" = 0 ] || echo $result | grep -q 'not mounted'; then
+			dotlockfile -l /var/lib/univention-home-mounter/mounts.lock
+			cat /var/lib/univention-home-mounter/mounts | grep -v "^$mp$" > /var/lib/univention-home-mounter/mounts.new || true
+			mv /var/lib/univention-home-mounter/mounts.new /var/lib/univention-home-mounter/mounts
+			dotlockfile -u /var/lib/univention-home-mounter/mounts.lock
+		fi
+	fi
+done
+rm -f "$mps"
+
