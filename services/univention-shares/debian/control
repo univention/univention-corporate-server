@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-shares
 Architecture: all
-Depends: rsync, univention-python | univention-python-2005
+Depends: rsync, python-univention
 Suggests: univention-samba, univention-nfs
 Description: UCS - core infrastructure for shared directories
  This package contains the core infrastructure to manage
