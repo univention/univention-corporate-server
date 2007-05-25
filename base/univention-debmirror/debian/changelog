@@ -1,3 +1,9 @@
+univention-debmirror (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 07:34:43 +0200
+
 univention-debmirror (0.1.5) unstable; urgency=low
 
   * add GPL headers
