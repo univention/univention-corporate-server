@@ -1,0 +1,19 @@
+univention-shares (0.4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 10:37:36 +0100
+
+univention-shares (0.3) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Apr 2004 11:31:09 +0200
+
+univention-shares (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 11 Sep 2003 16:31:24 +0200
+
+

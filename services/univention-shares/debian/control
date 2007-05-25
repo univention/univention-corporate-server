@@ -1,0 +1,21 @@
+Source: univention-shares
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-shares
+Architecture: all
+Depends: rsync, univention-python | univention-python-2005
+Suggests: univention-samba, univention-nfs
+Description: UCS - core infrastructure for shared directories
+ This package contains the core infrastructure to manage
+ directories that can be accessed by other computers over
+ the network. Most certainly, you will need at least
+ univention-samba or univention-nfs so that other computers
+ can actually access the shared directories.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
