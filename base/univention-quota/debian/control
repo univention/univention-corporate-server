@@ -1,0 +1,20 @@
+Source: univention-quota
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-quota
+Architecture: all
+Depends: univention-pam (>> 0.8), univention-config, univention-policy-tools, ldap-utils, quota
+Description: UCS - set default-quotas for users
+ This package can set default-quotas for a user at login.
+ The quotas are set by resolving the shares corresponding
+ to a local filesystem an look which policies are set for 
+ this share. Quotas are only set if the filesystem supports 
+ them and they are not already set for this user.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

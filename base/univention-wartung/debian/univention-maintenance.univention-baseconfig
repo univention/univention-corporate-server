@@ -1,0 +1,3 @@
+Type: file
+File: etc/cron.d/univention-mrtg
+Variables: mrtg/cron

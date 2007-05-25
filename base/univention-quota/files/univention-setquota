@@ -1,0 +1,81 @@
+#!/bin/bash
+#
+# Univention Quota
+#  set quota-settings if edited by samba
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+date >> $LOGFILE
+echo "$@" >> $LOGFILE
+
+# cut leading and trailing " from filesystem
+share=`echo $1 | sed -e 's/"//g'`
+
+stype=$2
+sid=$3
+sstate=$4
+sbsoft=$5
+sbhard=$6
+sisoft=$7
+sihard=$8
+
+if [ $# -gt 8 ]
+	then
+	sblocks=$9
+else
+	sblocks=1024
+fi
+
+case $stype in # select type
+	2)
+		type="-u"
+		;;
+	4)
+		type="-g"
+		;;
+	*)
+		exit 1
+		;;
+esac
+
+#disabling of quotas is documented as $4=0 - but $4 seems to be always 0
+blocksoft=$sbsoft
+blockhard=$sbhard
+inodesoft=$sisoft
+inodehard=$sihard
+
+len=0
+
+#search for mountpoint
+for mpoint in `cat /etc/mtab | awk '{print $2}'`; do if [ `echo "$share" | sed -e "s|^$mpoint||"` != "$share" -a $len -lt `echo $mpoint | wc -m` ]; then len=`echo $mpoint | wc -m`; filesystem=$mpoint; fi; done
+
+echo "/usr/sbin/setquota $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem" >> $LOGFILE
+if /usr/sbin/setquota $type $sid $blocksoft $blockhard $inodesoft $inodehard $filesystem >>  /dev/null 2>&1
+	then
+	echo "univention-setquota: done"
+else
+	exit 1
+fi

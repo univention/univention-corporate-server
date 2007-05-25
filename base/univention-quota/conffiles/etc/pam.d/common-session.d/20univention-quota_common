@@ -1,0 +1,4 @@
+@!@
+if not baseConfig.has_key('quota/userdefault') or not baseConfig['quota/userdefault'] == 'no':
+	print 'session	   optional   pam_runasroot.so program=/usr/sbin/univention-user-quota'
+@!@

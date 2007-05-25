@@ -1,0 +1,11 @@
+Type: subfile
+Multifile: etc/pam.d/common-session
+Subfile: etc/pam.d/common-session.d/20univention-quota_common
+Variables: quota/userdefault
+
+Type: subfile
+Multifile: etc/samba/smb.conf
+Subfile: etc/samba/smb.conf.d/81univention-quota_scripts
+
+Type: file
+File: etc/init.d/quotarpc

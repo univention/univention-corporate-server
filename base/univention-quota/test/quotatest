@@ -1,0 +1,370 @@
+#!/bin/bash
+#
+# Univention Quota
+#  test script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+SCRIPT="$(basename $0)"
+DEBUG=""
+
+eval "$(univention-baseconfig shell ldap/base ldap/server/name)"
+temp="$(makepasswd --chars=4 --string=abcdefghijklmnopqrstuvwxyz)"
+local_user="loc_$temp"
+policy_user="pol_$temp"
+local_hard=1000
+local_soft=500 #$(expr $local_hard / 2)
+policy_hard=20000
+policy_soft=10000 #$(expr $policy_hard / 2)
+clean_up=1
+declare -a args parts
+declare -a tmpfiles tmpdirs umountdirs remountdirs xremountdirs
+
+usage() {
+cat <<EOF
+        Syntax:
+          $SCRIPT [options] <partitions>
+
+        Options:
+          --policylimit <bytes>:   use this as limit for policy quota test
+          --locallimit <kbytes>:   use this as limit for local quota test
+          --policyuser   <user>:   use this user for policy quota test
+          --localuser    <user>:   use this user for local quota test
+          --no-delete:             do not delete temporary data (users, shares, policies)
+
+          -h | --help:             display this message and exit
+          -v | --verbose:          display messages while running
+
+        Description:
+          $SCRIPT tests user quota on selected partitions.
+          e.g. $SCRIPT --no-delete /shares/*
+
+        Known bugs:
+          * Mount options of checked volumes aren't properly restored
+          * Mounting XFS volumes with quotas enabled doesn't work reliably
+EOF
+}
+
+okfail() {
+	if [[ -n "$DEBUG" ]]; then
+		if [[ $1 -eq 0 ]]; then
+			echo "ok"
+		else
+			echo "fail"
+		fi
+	fi
+}
+
+dot() {
+	if [[ -n "$DEBUG" ]]; then
+		echo -n "."
+	fi
+}
+
+debug() {
+	if [[ -n "$DEBUG" ]]; then
+		echo -n "$SCRIPT: "
+		echo "$@"
+	fi
+}
+
+warn() {
+	echo -n "$SCRIPT: "
+	echo "$@"
+}
+
+_mount() {
+	local fs="$1"
+	if mount | grep "on $fs type" | grep -q "usrquota" ; then
+		debug "$fs mounted with quota, okay"
+		return 0
+	elif mount | grep -q "on $fs type xfs" ; then
+		if [[ "$fs" != "/" ]]; then
+			if grep -q "[[:space:]]$fs/\?[[:space:]]" /etc/fstab ; then
+				debug -n "$fs mounted, remounting with quota... "
+				xremountdirs=( ${xremountdirs[@]} "$fs" )
+				umount $fs && mount -o usrquota "$fs"
+				rc=$?
+				okfail $rc
+				return $rc
+			else
+				warn "$fs of type xfs found in /etc/mtab but not /etc/fstab"
+				warn "try manually mounting $fs with \`-o usrquota'"
+			fi
+		else
+			debug -n "$fs mounted, remounting with quota... "
+			remountdirs=( ${remountdirs[@]} "$fs" )
+			mount -o remount,usrquota "$fs"
+			rc=$?
+			okfail $rc
+			if [[ $rc -ne 0 ]]; then
+				warn "could not remount $fs with quota"
+				warn "try appending \`root2flags=quota' to \`lilo/append' and reboot"
+			fi
+			return $rc
+		fi
+	elif mount | grep -q "on $fs type" ; then
+		debug -n "$fs mounted, remounting with quota... "
+		remountdirs=( ${remountdirs[@]} "$fs" )
+		mount -o remount,usrquota "$fs"
+		rc=$?
+		okfail $rc
+		if [[ "$fs" == "/" && $rc -ne 0 ]]; then
+			warn "could not remount $fs with quota"
+			warn "try appending \`root2flags=quota' to \`lilo/append' and reboot"
+		fi
+		return $rc
+	elif grep -q "[[:space:]]$fs/\?[[:space:]]" /etc/fstab ; then
+		debug -n "$fs found in /etc/fstab, mounting... "
+		umountdirs=( ${umountdirs[@]} "$fs" )
+		mount -o usrquota "$fs"
+		rc=$?
+		okfail $rc
+		return $rc
+	else
+		warn "$fs not found in /etc/fstab or /etc/mtab"
+		return 1
+	fi
+}
+
+__quota() {
+	local    rc=0
+	local  user="$1"; shift
+	local  file="$1"; shift
+	local limit="$1"; shift
+	local bsize="$1"; shift
+	if [[ -n "$bsize" ]]; then
+		bsize="obs=$bsize"
+	fi
+	tmpfiles=( ${tmpfiles[@]} "$file")
+	su "$user" -c "touch $file" &> /dev/null
+	rc=$?
+	if [ "$rc" -ne 0 ]
+	then
+		warn "Could not even touch file \"$file\"!"
+		return 1
+	fi
+	su "$user" -c "dd if=/dev/zero of=$file $bsize" &> /dev/null
+	local size="$(du -B 1024 $file | cut -f 1)"
+	if [[ $size -le $limit && $size -ne 0 ]]; then
+		:
+	else
+		rc=1
+		warn "size of test file $file is $size, limit is $limit"
+	fi
+	rm -f "$file"
+	return $rc
+}
+
+_quota() {
+	local	 rc=0
+	local    fs="$1"; shift
+	local mtype="$1"; shift
+	local qtype="$1"; shift
+	local  file="$mtype_qtype_$temp"
+	local  user=""
+	local limit=""
+	local  soft=""
+	local   msg="$mtype quota on $fs"
+	case "$qtype" in
+		local)
+			user="$local_user"
+			limit="$local_hard"
+			soft="$local_soft"
+			;;
+		policy)
+			user="$policy_user"
+			limit="$policy_hard"
+			soft="$policy_soft"
+			msg="$msg with policy"
+			;;
+	esac
+	debug "checking $msg for user $user with limit $limit..."
+	case "$mtype" in
+		local)
+			if [[ "$qtype" == "local" ]]; then
+				setquota -u "$user" "$soft" "$limit" 0 0 "$fs"
+			fi
+			__quota "$user" "$fs/$file" "$limit"
+			rc=$?
+			;;
+		nfs)
+			local mdir="$(mktemp -d -t quotatest.XXXXXX)"
+			tmpdirs=( ${tmpdirs[@]} "$mdir" )
+			mount -o sync -t nfs "$ldap_server_name:$fs" "$mdir"
+			rc=$?
+			if [[ $rc -eq 0 ]]; then
+				__quota "$user" "$mdir/$file" "$limit" 1024 # -> obs=1024
+				rc=$?
+				umount "$mdir"
+			else
+				warn "mount $ldap_server_name:$fs failed"
+			fi
+			rmdir "$mdir"
+			;;
+	esac
+	if [[ $rc -eq 0 ]]; then
+		debug "$msg: ok"
+	else
+		warn "$msg: fail"
+	fi
+	return $rc
+}
+
+setup() {
+	debug -n "creating users and policies."
+	for u in $local_user $policy_user; do
+		univention-admin users/user create --position="cn=users,$ldap_base" --ignore_exists \
+			--set username="$u" --set lastname="quota_test" --set password="univention" &> /dev/null
+		dot
+	done
+	univention-admin policies/share_userquota create --position="cn=userquota,cn=shares,cn=policies,$ldap_base" \
+		--set softLimitSpace="$policy_soft" --set hardLimitSpace="$policy_hard" --set name="quota_test" &> /dev/null
+	dot
+	univention-admin container/cn create --position="cn=shares,$ldap_base" --set name="quotatest" &> /dev/null
+	dot
+	echo ""
+	for fs in ${args[@]} ; do
+		debug "trying to mount $fs with quota"
+		if _mount "$fs" ; then
+			parts=( ${parts[@]} "$fs" )
+			name="$(basename $fs)"
+			if [[ "$fs" == "/" ]]; then
+				name="tmproot"
+			fi
+			debug "creating share for $fs"
+			univention-admin shares/share create --position="cn=quotatest,cn=shares,$ldap_base" \
+				--set name="$name" --set host="$ldap_server_name" --set path="$fs" \
+				--set writeable=1 --set directorymode="0775" --set group=5001 &> /dev/null
+
+		else
+			warn "could not mount $fs with quota, skipping"
+		fi
+	done
+	/etc/init.d/quota restart &> /dev/null
+	debug "waiting for nfs (60 sec)..."
+	sleep 60
+}
+
+resetup() {
+	debug "setting policy reference for share container..."
+	univention-admin container/cn modify --dn="cn=quotatest,cn=shares,$ldap_base" \
+		--policy-reference="cn=quota_test,cn=userquota,cn=shares,cn=policies,$ldap_base" &>/dev/null
+	/etc/init.d/quota restart &> /dev/null
+	debug "waiting for nfs (60 sec)..."
+	sleep 60
+
+}
+
+cleanup() {
+	debug -n "cleaning up leftovers."
+	for u in $local_user $policy_user; do
+		univention-admin users/user remove --dn="uid=$u,cn=users,$ldap_base" &> /dev/null
+		dot
+	done
+	univention-admin policies/share_userquota remove --dn="cn=quota_test,cn=userquota,cn=shares,cn=policies,$ldap_base" &> /dev/null
+	dot
+	univention-admin container/cn remove --dn="cn=quotatest,cn=shares,$ldap_base" &> /dev/null
+	dot
+	for fs in ${parts[@]} ; do
+		name="$fs"
+		if [[ "$fs" == "/" ]]; then
+			name="tmproot"
+		fi
+		univention-admin shares/share remove --dn="cn=$name,cn=quotatest,cn=shares,$ldap_base" &> /dev/null
+		dot
+	done
+	for d in ${umountdirs[@]} ; do
+		umount "$d" &> /dev/null
+		dot
+	done
+	for d in ${remountdirs[@]} ; do
+		mount -o remount,defaults "$d" &> /dev/null
+		dot
+	done
+	for d in ${xremountdirs[@]} ; do
+		umount "$d" &> /dev/null
+		mount "$d" &> /dev/null
+		dot
+	done
+	for f in ${tmpfiles[@]} ; do
+		rm -f "$f" &> /dev/null
+		dot
+	done
+	for d in ${tmpdirs[@]} ; do
+		rmdir "$d" &> /dev/null
+		dot
+	done
+	echo ""
+}
+
+_getopt() {
+	opts=$(getopt -o hv -l help,debug,verbose,no-delete,policylimit:,locallimit:,policyuser:,localuser: -n "$SCRIPT" -- "$@")
+	if [[ $? -ne 0 ]]; then
+		usage
+		exit 1
+	fi
+	eval set -- "$opts"
+	while true ; do
+		case "$1" in
+			-h|--help)	usage ; exit 0 ;;
+			-v|--verbose)	DEBUG=t ; shift ;;
+			--debug)	set -x ; shift ;;
+			--no-delete)	clean_up=0 ; shift ;;
+			--locallimit)	 local_hard="$2" ; shift 2 ;;
+			--localuser)	 local_user="$2" ; shift 2 ;;
+			--policylimit)  policy_hard="$2" ; shift 2 ;;
+			--policyuser)	policy_user="$2" ; shift 2 ;;
+			--) shift ; break ;;
+			*) warn "getopt error!" ; exit 1 ;;
+		esac
+	done
+	local_soft=$(expr $local_hard / 2)
+	policy_soft=$(expr $policy_hard / 2)
+	args=( $@ )
+	if [[ $clean_up -ne 0 ]]; then
+		trap "cleanup; exit 1" 1 2 15  # cleanup on signal
+		trap "cleanup; exit 0" 0       # cleanup lock on exit
+	fi
+}
+
+_getopt "$@"
+
+setup
+
+debug "starting quota tests on ${parts[@]}"
+for fs in ${parts[@]} ; do
+	_quota "$fs" local local
+	_quota "$fs" nfs   local
+done
+
+resetup
+
+debug "starting quota tests with policies on ${parts[@]}"
+for fs in ${parts[@]} ; do
+	_quota "$fs" local policy
+	_quota "$fs" nfs   policy
+done

@@ -1,0 +1,132 @@
+#!/bin/bash
+#
+# Univention Maintenance
+#  maintenance script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# Name der Konfigurationsdatei
+configfile="/etc/univention/univention-maintenance.conf"
+
+# Konfigurationsdatei suchen und Werte prüfen
+test -e $configfile || {
+    echo
+    echo "FEHLER: Konfigurationsdatei \"$configfile\" nicht gefunden!"
+    echo
+    exit 2;
+}
+
+. $configfile
+
+test -z "$mrtg_config" && touch "$mrtg_config" 2>/dev/null && {
+    echo
+    echo "FEHLER: Konfigurationsvariable \"\$mrtg_config\" nicht gesetzt"
+    echo "oder Datei kann nicht angelegt werden!"
+    echo
+    exit 2;
+}
+test -z "$wwwdir" && mkdir -p "$wwwdir" 2>/dev/null && {
+    echo
+    echo "FEHLER: Konfigurationsvariable \"\$wwwdir\" nicht gesetzt!"
+    echo
+    exit 2;
+}
+test -z $indexhtm && {
+    echo
+    echo "FEHLER: Konfigurationsvariable \"\$indexhtm\" nicht gesetzt!"
+    echo
+    exit 2;
+}
+
+# Alte MRTG-Dateien löschen
+rm -f $wwwdir/uds_*.png $wwwdir/uds_*.txt
+
+# Prozessorlast der letzten 15 Minuten prüfen
+loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
+mrtgname="uds_0load"
+echo "WorkDir: $wwwdir" > $mrtg_config
+echo "Language: german" >> $mrtg_config
+echo "Interval: 15" >> $mrtg_config
+echo "Target[$mrtgname]: \`echo -e \"$loadavg\n0\nunused\nunused\"\`" >> $mrtg_config
+echo "Options[$mrtgname]: growright,noo,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
+echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
+echo "MaxBytes[$mrtgname]: 100" >> $mrtg_config
+echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
+echo "Title[$mrtgname]: " >> $mrtg_config
+echo "Ylegend[$mrtgname]: Systemlast %" >> $mrtg_config
+echo "LegendI[$mrtgname]: Last&nbsp;" >> $mrtg_config
+echo "ShortLegend[$mrtgname]: Last" >> $mrtg_config
+echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
+echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
+echo "PageTop[$mrtgname]: <H1>Systemlast</H1>" >> $mrtg_config
+mrtg "$mrtg_config" 2>/dev/null
+rm -f $mrtg_config $wwwdir/uds_*.htm*
+echo "Systemlast $loadavg%" >$wwwdir/$mrtgname.txt
+
+# Anzahl der Sessions prüfen
+nrsessions="`ps -C univention-sess | grep -ic univention-sess`"
+mrtgname="uds_1sessions"
+echo "WorkDir: $wwwdir" > $mrtg_config
+echo "Language: german" >> $mrtg_config
+echo "Interval: 15" >> $mrtg_config
+echo "Target[$mrtgname]: \`echo -e \"$nrsessions\n0\nunused\nunused\"\`" >> $mrtg_config
+echo "Options[$mrtgname]: growright,noo,gauge,nobanner,noborder,nolegend,noinfo" >> $mrtg_config
+echo "Unscaled[$mrtgname]: dwmy" >> $mrtg_config
+echo "MaxBytes[$mrtgname]: 10" >> $mrtg_config
+echo "AbsMax[$mrtgname]: 99999" >> $mrtg_config
+echo "Title[$mrtgname]: " >> $mrtg_config
+echo "Ylegend[$mrtgname]: Sessions" >> $mrtg_config
+echo "LegendI[$mrtgname]: Sessions&nbsp;" >> $mrtg_config
+echo "ShortLegend[$mrtgname]: Sessions" >> $mrtg_config
+echo "Colours[$mrtgname]: blau#6666ff,unused#000000,unused#000000,unused#000000" >> $mrtg_config
+echo "Background[$mrtgname]: #ffffff" >> $mrtg_config
+echo "PageTop[$mrtgname]: <H1>Sessions</H1>" >> $mrtg_config
+mrtg "$mrtg_config" 2>/dev/null
+rm -f $mrtg_config $wwwdir/uds_*.htm*
+echo "Session(s) $nrsessions" >$wwwdir/$mrtgname.txt
+
+# Statistik-HTML schreiben
+cat <<__ENDE__ >$wwwdir/$indexhtm
+<HTML>
+<HEAD>
+</HEAD>
+<BODY BGCOLOR="#F0F0F0">
+__ENDE__
+for file in $wwwdir/*-day.png; do
+    echo "<P ALIGN=\"center\"><FONT FACE=\"ARIAL\">" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-year.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-month.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file -day.png`-week.png\"><BR>" >>$wwwdir/$indexhtm
+    echo "<IMG SRC=\"`basename $file`\"><BR>" >>$wwwdir/$indexhtm
+    cat "`echo \"$file\" | sed \"s/-day.png/.txt/\"`" >>$wwwdir/$indexhtm
+    echo "</FONT></P>" >>$wwwdir/$indexhtm
+    echo "<BR>" >>$wwwdir/$indexhtm
+done
+cat <<__ENDE__ >>$wwwdir/$indexhtm
+</BODY>
+</HTML>
+__ENDE__
+

@@ -1,0 +1,20 @@
+univention-quota (0.5) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sun,  3 Dec 2006 12:09:48 +0100
+
+univention-quota (0.4) unstable; urgency=low
+
+  * added setquota-script for samba
+  * modified quotarpc-initscript to start if xfs is used
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 16 Nov 2004 09:50:18 +0100
+
+univention-quota (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 17 Aug 2004 13:55:45 +0200
+
+

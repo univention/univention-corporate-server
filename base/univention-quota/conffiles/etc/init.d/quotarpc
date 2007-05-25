@@ -1,0 +1,84 @@
+#!/bin/sh
+#
+# Univention Quota
+#  init script
+#
+# Copyright (C) 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME=rpc.rquotad
+DESC="quota service"
+
+# names of binaries
+DAEMON=/usr/sbin/rpc.rquotad
+
+# check if quota are enabled
+need_rquotad=0
+if test -f /etc/exports && grep -q '^/' /etc/exports; then
+	if grep -q '^[^#]*quota' /etc/fstab || grep -q '^[^#]*xfs' /etc/fstab
+	then
+		need_rquotad=1
+	fi
+fi
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+  start)
+	# The daemon
+	if [ -x $DAEMON -a $need_rquotad = 1 ]; then
+	   echo -n "Starting $DESC: "
+	   if start-stop-daemon --start --quiet --exec $DAEMON
+	   then
+		echo "rpc.rquotad."
+	   else
+		echo "."
+	   fi
+	fi
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
+	echo "$NAME."
+	;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

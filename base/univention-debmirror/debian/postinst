@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Univention Debmirror
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+/usr/lib/univention-install/77univention-debmirror.inst || true
+
+#FIXME
+if [ "$1" = "configure" -a -n "$2" ]; then
+	apache_pids=`pidof apache`
+
+	/etc/init.d/apache stop || true
+	sleep 5
+	apache_pid=`pidof apache`
+	if [ -n "$apache_pid" ]; then
+		kill -9 $apache_pid
+		sleep 2
+	fi
+
+	/etc/init.d/apache start || true
+else
+	/etc/init.d/apache restart || true
+fi
+

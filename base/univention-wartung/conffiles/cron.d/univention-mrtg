@@ -1,0 +1,18 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/cron.d/univention-mrtg
+#
+
+# Create mrtg statistics
+@!@
+if baseConfig.has_key('mrtg/cron') and not baseConfig['mrtg/cron'] == '':
+        print '@%@mrtg/cron@%@ root /usr/sbin/univention-mrtg'
+else:
+        print '#* * * * * root /usr/sbin/univention-mrtg'
+@!@
+

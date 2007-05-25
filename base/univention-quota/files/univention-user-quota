@@ -1,0 +1,249 @@
+#!/bin/bash
+#
+# Univention Quota
+#  read default quota-settings and write into quota-table
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+LOGFILE="/dev/null"
+
+if [ -n "$2" ]
+	then
+	LOGFILE=$2
+fi
+
+echo "$$ -------------------------------------------------------- start" >> $LOGFILE
+echo "$$" `date` >> $LOGFILE
+
+get_blocksize () {
+	echo 1024
+}
+
+# calc blocks with blocksize and value of g,gb,m,mb,k,kb (case insensitive)
+get_blocks () {
+	# convert to upper case
+	size=`echo $2 | sed -e 'y/gmkb/GMKB/'`
+	# delete last B if G/M/K is second-last
+	slchar=`echo $size | rev | cut -c 1`
+	if [  "$slchar" = 'B' ]
+		then
+		size=`echo $size | sed -e 's/B//'`
+	fi
+	case `echo $size | rev | cut -c 1` in # cut can only cut the first letter (not the last), so rev is used
+		B)
+			bytes=`echo $size | sed -e 's/B//'`
+			blocks=$(($bytes/$1))
+			;;
+		K)
+			bytes=`echo $size | sed -e 's/K//'`
+			blocks=$(($bytes*1024/$1))
+			;;
+		M)
+			bytes=`echo $size | sed -e 's/M//'`
+			blocks=$(($bytes*1024*1024/$1))
+			;;
+		G)
+			bytes=`echo $size | sed -e 's/G//'`
+			blocks=$(($bytes*1024*1024*1024/$1))
+			;;
+		[0-9])
+			blocks=$(($size/$1))
+			;;
+		*)
+			echo "$$ WARNING: unknown type for quota-size" >> $LOGFILE
+			blocks=$(($size/$1))
+			;;
+	esac
+	echo "$$ $1/$2 ($bytes bytes) equals $blocks blocks" >> $LOGFILE
+	echo $blocks
+}
+
+
+if [ -n "$1" ]; then
+	USER=$1
+fi
+
+if [ -z "$USER" ]
+	then
+	echo "$$ need one parameter (username)" >> $LOGFILE
+	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
+	exit 1
+fi
+
+userid=`/usr/bin/id -u $USER`
+if [ $userid -lt 1000 ]
+	then
+	echo "$$ woun't set quota for system-users ($USER has UID $userid)" >> $LOGFILE
+	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
+	exit 0
+fi
+
+echo "$$ set default quota for $USER" >> $LOGFILE
+
+eval `/usr/sbin/univention-baseconfig shell`
+echo "$$ host ist $hostname.$domainname" >> $LOGFILE
+
+# get all mountpoints with quota-support and without already set quota
+i=0
+for fs in `cat /etc/mtab | grep usrquota | awk '{print $1}'`
+  do
+  quota_set=0
+  quota -v $USER | egrep "[0-9]+[ ]+0[ ]+0[ ]+[0-9]+[ ]+0[ ]+0" | grep -q "$fs" || quota_set=1;
+  if [ $quota_set -lt 1 ]
+	  then
+	  mpoint[$i]=`cat /etc/mtab | grep usrquota | grep "$fs" | awk '{print $2}'`
+	  mpointfs[$i]=$fs
+	  mpointsls[$i]=0
+	  mpointhli[$i]=0
+	  mpointsli[$i]=0
+	  mpointhls[$i]=0
+	  i=$((i+1))
+	  nmpoints=$i
+  else
+	  echo "$$ quota for fs $fs already set" >> $LOGFILE
+  fi
+done
+
+# exit if all quotas are set
+if [ -z "$nmpoints" ]
+	then
+	echo "$$ all quotas are already set" >> $LOGFILE
+	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
+	exit 0
+fi
+
+# shares, first line is dn, second is path
+i=0
+oldi=-1
+for s in `/usr/bin/ldapsearch -x -h $ldap_server_name "(&(objectClass=univentionShare)(univentionShareHost=$hostname.$domainname))" | ldapsearch-wrapper | grep "^dn:\|^univentionSharePath:" | awk '{print $2}'`
+  do
+  if [ $oldi -lt $i ] # dn
+	  then
+	  univentionQuotaSoftLimitSpace=0
+	  univentionQuotaHardLimitInodes=0
+	  univentionQuotaSoftLimitInodes=0
+	  univentionQuotaHardLimitSpace=0
+	  eval `/usr/bin/univention_policy_result -s $s`
+	  sharedn[$i]=$s
+	  sharehli[$i]=$univentionQuotaHardLimitInodes
+	  sharesli[$i]=$univentionQuotaSoftLimitInodes
+	  sharehls[$i]=$univentionQuotaHardLimitSpace
+	  sharesls[$i]=$univentionQuotaSoftLimitSpace
+	  oldi=$i
+  else # path
+	  sharepath[$i]=$s
+	  i=$((i+1))
+	  nshares=$i
+  fi
+done
+
+
+# exit if all quotas are set
+if [ -z "$nshares" ]
+	then
+	echo "$$ no shares found" >> $LOGFILE
+	echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
+	exit 0
+fi
+
+echo "$$ found $nshares shares and $nmpoints mountpoints" >> $LOGFILE
+
+# search share corresponding to a mointpoint and set Limits
+
+i=0
+while [ $i -lt $nmpoints ]
+  do
+  pathdifflen=66000
+  s=0
+  blocksize=`get_blocksize ${mpointfs[$i]}`
+  while [ $s -lt $nshares ]
+	do
+	pathdiff=`echo ${sharepath[$s]} | sed -e "s|^${mpoint[$i]}||"`
+	if [ "$pathdiff" != "${sharepath[$s]}" ] # share is deeper than or equal to mointpoint
+		then
+
+		pathdifflen=`echo "$pathdiff" | wc -m `
+		continue_settings=1
+		for mp in `cat /etc/mtab | awk '{print $2}'`
+		do # check if a deeper mountpoint in this share-path exists, must be "closer" to the sharepath
+			if [ $(echo $mp | wc -m) -gt $(echo ${mpoint[$i]} | wc -m) ]
+			then
+				echo ${sharepath[$s]} | grep -q "$mp/" && continue_settings=0 # mount-point is part of this sharepath
+				if [ $mp = ${sharepath[$s]} ] # mount point is sharepath
+				then
+					continue_settings=0
+				fi
+			fi
+		done
+
+		if [ $continue_settings = 1 ]
+		then
+			echo "$$ use ${sharepath[$s]} for mointpoint ${mpoint[$i]}" >> $LOGFILE
+			sharehls_blocks=`get_blocks $blocksize ${sharehls[$s]}`
+			sharesls_blocks=`get_blocks $blocksize ${sharesls[$s]}`
+			if [ ${mpointsli[$i]} = "0" -o \( ${sharesli[$s]} -lt ${mpointsli[$i]} -a ${sharesli[$s]} -gt "0" \) ]
+			then
+				if [ ${sharesli[$s]} -gt 0 ];
+				then mpointsli[$i]=${sharesli[$s]};
+				fi
+			fi
+			if [ ${mpointhli[$i]} = "0" -o \( ${sharehli[$s]} -lt ${mpointhli[$i]} -a ${sharesli[$s]} -gt "0" \) ]
+			then
+				if [ ${sharehli[$s]} -gt 0 ];
+				then
+					mpointhli[$i]=${sharehli[$s]};
+				fi
+			fi
+			if [ ${mpointsls[$i]} = "0" -o \( $sharesls_blocks -lt ${mpointsls[$i]} -a $sharesls_blocks -gt "0" \) ]
+			then
+				if [ $sharesls_blocks -gt 0 ];
+				then
+					mpointsls[$i]=$sharesls_blocks;
+				fi
+			fi
+			if [ ${mpointhls[$i]} = "0" -o \( $sharehls_blocks -lt ${mpointhls[$i]} -a $sharehls_blocks -gt "0" \) ]
+			then
+				if [ $sharehls_blocks -gt 0 ];
+				then
+					mpointhls[$i]=$sharehls_blocks;
+				fi
+			fi
+		fi
+	fi
+
+	s=$((s+1))
+  done
+  if [ ${mpointsls[$i]} -gt 0 -o ${mpointhls[$i]} -gt 0 -o ${mpointsli[$i]} -gt 0 -o ${mpointhli[$i]} -gt 0 ]
+	  then
+	  echo "$$ setquota -u $USER ${mpointsls[$i]} ${mpointhls[$i]} ${mpointsli[$i]} ${mpointhli[$i]} ${mpoint[$i]}" >> $LOGFILE
+	  /usr/sbin/setquota -u $USER ${mpointsls[$i]} ${mpointhls[$i]} ${mpointsli[$i]} ${mpointhli[$i]} ${mpoint[$i]} >> $LOGFILE 2>&1
+  else
+	  echo "$$ no quota for ${mpoint[$i]}" >> $LOGFILE
+  fi
+  i=$((i+1))
+done
+
+echo "$$ -------------------------------------------------------- exit" >> $LOGFILE
