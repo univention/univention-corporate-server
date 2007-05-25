@@ -1,10 +1,40 @@
 #!/usr/bin/make -f
-# Sample debian/rules that uses debhelper.
-# GNU copyright 1997 to 1999 by Joey Hess.
+#
+# Univention License
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
+PACKAGE_NAME=univention-license
+MODULE_NAME=univention-license
+
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
+
+PYVERS=$(shell pyversions -vr)
 
 manpages: manpages-stamp
 manpages-stamp:
@@ -22,12 +52,15 @@ configure-stamp:
 	touch configure-stamp
 
 build: configure-stamp build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-ext-%)
+	dh_testdir
+	touch $@
+build-ext-%:
 	dh_testdir
 	make
-	(cd python && make)
+	(cd python && PYTHON=python$* make)
 	(cd internal-tools && make)
-	touch build-stamp
+	touch $@
 
 clean:
 	dh_testdir
@@ -41,14 +74,16 @@ clean:
 	(cd python && make clean)
 	dh_clean
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 	make install DESTDIR=`pwd`/debian/tmp
 
-	install -m 0644 python/license.so debian/python2.4-univention-license/usr/lib/python2.4/site-packages/univention/
+	install -m 0644 python/license.so debian/python-univention-license/usr/lib/python$*/site-packages/univention
 
 	install -m 0755 internal-tools/univentionLicenseCreateSignature debian/univention-license-tools/usr/sbin/
 	install -m 0755 internal-tools/univentionLicenseGenerate debian/univention-license-tools/usr/sbin/
@@ -78,6 +113,7 @@ binary-arch: build install manpages
 	dh_installcron
 	dh_installman
 	dh_installinfo
+	dh_pycentral
 #	dh_undocumented
 	dh_installchangelogs 
 	dh_link

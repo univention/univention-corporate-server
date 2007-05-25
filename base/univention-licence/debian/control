@@ -3,7 +3,8 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, autoconf, automake, libtool, doxygen, libssl-dev, python2.4-dev, libunivention-debug-dev, libunivention-config-dev, libldap2-dev, python2.4-tk
+Build-Depends: debhelper, autoconf, automake1.4, libtool, doxygen, libssl-dev, python, python-all-dev, python-central libunivention-debug-dev, libunivention-config-dev, libldap2-dev, python-tk
+XS-Python-Version: all
 
 Package: libunivention-license0
 Architecture: any
@@ -28,10 +29,13 @@ Description: UCS - license validation library (development files)
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: python2.4-univention-license
+Package: python-univention-license
 Architecture: any
-Depends: ${shlib:Depends}, libunivention-license0
-Conflicts: python2.3-univention-license
+Replaces: python2.4-univention-license
+Depends: ${shlib:Depends}, ${python:Depends}, libunivention-license0
+Provides: ${python:Provides}
+XB-Python-Version: ${python:Versions}
+Conflicts: python2.3-univention-license, python2.4-univention-licenese
 Description: UCS - license validation library (Python interface)
  This package contains a Python interface to the UCS
  license validation library.

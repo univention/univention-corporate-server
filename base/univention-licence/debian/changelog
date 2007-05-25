@@ -1,3 +1,9 @@
+univention-licence (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 polcies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 08:08:06 +0200
+
 univention-licence (0.19) unstable; urgency=low
 
   * fixed replacing of version number and copyright year
