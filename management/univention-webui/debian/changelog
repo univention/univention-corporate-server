@@ -1,3 +1,9 @@
+univention-webui (1.1.2-1) unstable; urgency=low
+
+  * php5 migration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 07:01:16 +0200
+
 univention-webui (1.1.1-1) unstable; urgency=low
 
   * document root changes
