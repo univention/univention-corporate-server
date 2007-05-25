@@ -1,3 +1,9 @@
+univention-quota (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 07:33:15 +0200
+
 univention-quota (0.5) unstable; urgency=low
 
   * add GPL headers
