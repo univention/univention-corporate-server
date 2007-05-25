@@ -1,0 +1,337 @@
+#include <univention/license.h>
+/*! @file license_key.c
+	@brief key handling functions for lib license
+*/
+
+/*!the static number of included public key strings. change the number of public keys here*/
+#define NUM_PUBLIC_KEYS 2
+
+/*! the number of installed public keys */
+int public_keys_installed = 0;
+
+/*! the array of loaded publicKeys */
+RSA** rsa_public = NULL;
+/*! the array of public_key strings */
+char** public_keys = NULL;
+
+/*! the loaded private key*/
+RSA* rsa_private = NULL;
+
+/******************************************************************************/
+/*!
+	@brief	initalizte the keyhandling part of the lib
+	
+	this loads and inialitze all publickeys
+	to add new public key add here the new publicKey strings.
+	change #define NUM_PUBLIC_KEYS to the new number of public_keys
+	example - the new keystring:
+	public_keys[3] = strdup("the text from the publicKey file\n\
+	with `\n\` at every line end. every!\n\
+	");
+
+	@retval 1 if successfull
+	@retval 0 on error
+*/
+int univention_license_key_init(void)
+{
+	int i;
+	public_keys = malloc(NUM_PUBLIC_KEYS * (sizeof(char*)));
+	//setup public key strings
+	/*add here new publicKeys*/
+	/*don't forget to add '\n\' to each line end, and don't reformate the string.*/
+	public_keys[0] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
+MIIBCgKCAQEA0jQVFvjqhr2mEUPsG5g2kQA58uq7QMb0gFYOfhAQsQgMuhp2sjXs\n\
+dkLG2QSLKhQf9RDZBbgZBffvU3DvRvafWVdX+iAR2AhYGy6pE5Mrj+iXgVcFrlxM\n\
+DpVK5PF1N4iGwQpkMS6dgjgfVl+0b4kr99BCU+bZoc/t/KlmGoXVrfPNEZMKa2fQ\n\
+bsHkPxTtGq2ylLP2JvGwlEOeUvsbm5H0iOUzDwl35fQYK3um19VKxCIMLvtV95fJ\n\
+ZvoZYJYb3sbI0bq3pJxUi/nLi0p1xGYzxSA5nUf5FK53qFN+w9j6OA37URXo19Yj\n\
+Ui0mrXNTr7ZiehGobPvKHBdBBtl7LuYLhQIDAQAB\n\
+-----END RSA PUBLIC KEY-----\n\
+");
+	public_keys[1] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
+MIIBCgKCAQEA06fyc7AmDJg3nzCEB4vPHDBhkTJcMof5fdhWsp049JgQxCcXnbkF\n\
+o10RBHT9TxlMjN4ZJ38QkMwh5E0wTc2A/CRqJkVjghTUllPY/MqciftcSyDI0bEf\n\
+QEi9rUluomMO615+spmLOWBGcnYH3JJUkHwFOF/TYYkqZeFVbBqVtiGBOUXlSWbG\n\
+BGAGVR15TfEuEUt0txjfQReIb+/d7/eiAbX/rgiaq0E1iHOT3Lbqi+sUId31ti6G\n\
+3WmuNVln+b5k0YruC9T5IIoOud/lz6A8XaaAIS3eujulP79Xmw6yP+KVIHSFz2KR\n\
+VGvSnWgKOyhuFR9/3hAyTeaSGFwRplENCQIDAQAB\n\
+-----END RSA PUBLIC KEY-----\n\
+");
+	
+	//setup public key memory
+	rsa_public = malloc(NUM_PUBLIC_KEYS * (sizeof(RSA*)));
+	for (i=0; i < NUM_PUBLIC_KEYS; i++)
+		rsa_public[i] = NULL;
+
+	if (!public_keys_installed)
+	{	
+		if (!univention_license_key_public_key_load())
+		{
+			univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Error can't load PublicKey!\n");
+			return 0;
+		}
+	}
+	return 1;
+}
+
+/******************************************************************************/
+/*!
+	@brief	cleanup all public and posible private keys
+*/
+void univention_license_key_free(void)
+{
+	if (rsa_public != NULL)
+	{
+		int i;
+		for(i=0; i < NUM_PUBLIC_KEYS; i++)
+		{
+			if (rsa_public[i] != NULL)
+			{
+				RSA_free(rsa_public[i]);
+				rsa_public[i] = NULL;
+			}
+		}
+		free(rsa_public);
+		rsa_public = NULL;
+	}
+	
+	if(public_keys != NULL)
+	{
+		int i;
+		for(i=0; i < NUM_PUBLIC_KEYS; i++)
+		{
+			if (public_keys[i] != NULL)
+			{			
+				free(public_keys[i]);
+				public_keys[i] = NULL;
+			}
+		}
+		free(public_keys);
+		public_keys = NULL;
+	}
+
+	if (rsa_private != NULL)
+	{
+		RSA_free(rsa_private);
+		rsa_private = NULL;
+		EVP_cleanup(); //cleans the encryption chiper of the private key
+	}
+	
+}
+
+/******************************************************************************/
+/*!
+	@brief	checks if a privateKey is installed
+	@retval	1 if a valid privateKey is installed
+	@retval	0 on error
+*/
+int univention_license_key_private_key_installed(void)
+{
+	if (rsa_private != NULL)
+	{	
+		if (RSA_check_key(rsa_private))
+		{
+			return 1;
+		}
+		univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "PrivateKey not valid!");
+	}
+	univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "PrivateKey not installed!");
+	return 0;
+}
+
+/******************************************************************************/
+/*!
+	@brief	checks if the public_keys are installed
+	@retval	1 if publicKeys are installed
+	@retval	0 on error
+*/
+int univention_license_key_public_key_installed(void)
+{
+	if (public_keys_installed == 1)
+	{
+		return 1;
+	}
+	else
+		univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "PublicKey not installed!");
+	
+	return 0;
+}
+
+/******************************************************************************/
+/*!
+	@brief load the defined number(NUM_PUBLIC_KEYS) of publicKeys
+	@retval	1 if all publicKey could be installed
+	@retval	0 on error
+*/
+int	univention_license_key_public_key_load(void)
+{
+	int i;
+	public_keys_installed = 1;
+	for(i=0; ((i < NUM_PUBLIC_KEYS) && public_keys_installed); i++)
+	{
+		BIO *memReadBIO = NULL;
+		if (rsa_public[i] != NULL)
+		{
+			RSA_free(rsa_public[i]);
+		}
+
+		memReadBIO = BIO_new_mem_buf(public_keys[i], -1);
+		if (memReadBIO != NULL)
+		{
+			BIO_set_close(memReadBIO, BIO_NOCLOSE);// So BIO_free() leaves BUF_MEM alone
+			PEM_read_bio_RSAPublicKey(memReadBIO, &rsa_public[i], 0, NULL);
+	
+			BIO_free(memReadBIO);
+	
+			if (rsa_public[i] == NULL)
+			{
+				public_keys_installed = 0;
+				univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Can't read PublicKey Nr. %i from memory.",i);
+			}
+		}
+		else
+		{
+			public_keys_installed = 0;
+			univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Can't create a 'read from memory' BIO.");
+		}
+	}	
+	return public_keys_installed;
+}
+
+/******************************************************************************/
+/*!
+	@brief	try load a private key from file
+	@param	filename	the file that should be loaded
+	@param	passwd		the password to decode the privatekey
+		if NULL the pem password question is used automatic
+	@retval	1 if the privateKey could be installed
+	@retval	0 on error
+*/
+int univention_license_key_private_key_load_file(char* filename, char* passwd)
+{
+	if (univention_license_init())
+	{
+		if (rsa_private == NULL)
+		{
+			FILE* fp = fopen(filename,"r");
+			if (fp != NULL)
+			{
+				/*setup chiper for private key loading*/
+				EVP_add_cipher(EVP_des_ede3_cbc());
+			
+				/*read from file*/
+				PEM_read_RSAPrivateKey(fp, &rsa_private, NULL, passwd);
+				
+				fclose(fp);
+		
+				if (rsa_private != NULL)
+				{
+					if (RSA_check_key(rsa_private) == 1)
+					{
+						return 1;
+					}
+					else
+					{
+						univention_debug(UV_DEBUG_SSL, 0, "Can't valide PrivateKey.");
+						RSA_free(rsa_private);
+						rsa_private = NULL;
+					}
+				}
+				else
+					univention_debug(UV_DEBUG_SSL, 0, "Can't read PrivateKey from file.");
+			}
+			else
+				univention_debug(UV_DEBUG_LICENSE, 0, "Can't open file '%s'.",filename);
+		}
+		else
+			univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "PublicKey already installed!");	
+	}
+	return 0;
+}
+
+/******************************************************************************/
+/*!
+	@brief verify data with signature
+	a verify with all publicKeys are tryed
+
+	@param	data		the data to verify
+	@param	signature	the base64 encoded signature for this data
+	@retval	1 if successfull verified the data
+	@retval	0 on error
+*/
+int univention_license_verify (char* data, char* signature)
+{
+	int ret = 0;
+	if (univention_license_key_public_key_installed())
+	{
+		if (signature != NULL && data != NULL)
+		{
+			char hash[SHA_DIGEST_LENGTH];
+			int signaturelen = 0;
+			char* rawsignature = NULL;
+			int i=0;
+			
+			//hash
+			SHA1(data, strlen(data), hash);
+
+			//convert base64signature to rawsignature
+			signaturelen = univention_license_base64_to_raw(signature, &rawsignature);
+			
+			//verify
+			while (i < NUM_PUBLIC_KEYS && !ret)
+			{
+				ret = RSA_verify(NID_sha1, hash, SHA_DIGEST_LENGTH, rawsignature, signaturelen, rsa_public[i]);
+				i++;
+			}			
+			free(rawsignature);
+		}
+		else
+			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Can't veriy Data(%s) with Signature(%s).",data,signature);
+	}
+	return ret;
+}
+
+/******************************************************************************/
+/*!
+	@brief	sign data with the current installed privateKey 
+	@param	data the data that should be signed
+	@retval	char the base64 encoded signatur
+	@retval	NULL on error
+*/
+char* univention_license_sign (char* data)
+{
+	char* ret = NULL;
+	if (univention_license_init())
+	{
+		if (univention_license_key_private_key_installed())
+		{
+			char hash[SHA_DIGEST_LENGTH];
+			char* temp = NULL;
+			int templen = 0;
+			
+			temp = malloc(RSA_size(rsa_private));
+			if (temp != NULL)
+			{
+				//hash
+				SHA1(data, strlen(data), hash);
+
+				//sign
+				if (RSA_sign(NID_sha1, hash, SHA_DIGEST_LENGTH, temp, &templen, rsa_private))
+				{
+					//convert to base64
+					ret = univention_license_raw_to_base64(temp,templen);
+				}
+				else
+					univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Signing failed!");		
+
+				free(temp);
+			}
+			else
+				univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "Can't get memory.");
+		}
+		else
+			univention_debug(UV_DEBUG_SSL, UV_DEBUG_ERROR, "No PrivateKey installed!");
+	}
+	return ret;
+}
+/*eof*/

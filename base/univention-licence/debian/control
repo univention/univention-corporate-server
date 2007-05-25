@@ -1,0 +1,66 @@
+Source: univention-licence
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, autoconf, automake, libtool, doxygen, libssl-dev, python2.4-dev, libunivention-debug-dev, libunivention-config-dev, libldap2-dev, python2.4-tk
+
+Package: libunivention-license0
+Architecture: any
+Depends: ${shlibs:Depends}
+Description: UCS - license validation library
+ This library validates UCS licenses.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: libunivention-license-dev
+Architecture: all
+Depends: libunivention-license0
+Description: UCS - license validation library (development files)
+ This package includes the development files to use the
+ UCS license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python2.4-univention-license
+Architecture: any
+Depends: ${shlib:Depends}, libunivention-license0
+Conflicts: python2.3-univention-license
+Description: UCS - license validation library (Python interface)
+ This package contains a Python interface to the UCS
+ license validation library.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-license-tools
+Architecture: any
+Depends: ${shlib:Depends}
+Description: UCS - tools to create and sign licenses
+ This packages contains tools to create and sign licenses
+ to be used with UCS.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-license-import
+Architecture: all
+Depends: univention-baseconfig, univention-config (>= 1.20), ldap-utils, sysutils
+Description: UCS - tool to import new licenses
+ This packages contains the tool to import new UCS
+ licenses.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

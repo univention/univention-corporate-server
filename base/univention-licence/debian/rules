@@ -1,0 +1,96 @@
+#!/usr/bin/make -f
+# Sample debian/rules that uses debhelper.
+# GNU copyright 1997 to 1999 by Joey Hess.
+
+export DH_COMPAT=3
+version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+copyrightyear=`date +%Y`
+
+manpages: manpages-stamp
+manpages-stamp:
+	dh_testdir
+	./dh_doxygen create
+	touch manpages-stamp
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	aclocal
+	autoconf
+	automake -a
+	./configure --prefix=/usr
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	make
+	(cd python && make)
+	(cd internal-tools && make)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp manpages-stamp
+	rm -f *~
+	test -f Makefile && make distclean || true
+	find -name Makefile.in -o -name Makefile -path './python' -prune | xargs rm -f
+	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs configure
+	./dh_doxygen clean
+	(cd python && make clean)
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	make install DESTDIR=`pwd`/debian/tmp
+
+	install -m 0644 python/license.so debian/python2.4-univention-license/usr/lib/python2.4/site-packages/univention/
+
+	install -m 0755 internal-tools/univentionLicenseCreateSignature debian/univention-license-tools/usr/sbin/
+	install -m 0755 internal-tools/univentionLicenseGenerate debian/univention-license-tools/usr/sbin/
+	install -m 0755 internal-tools/make_license.sh debian/univention-license-tools/usr/sbin/univention_make_license
+	install -m 0755 frontend/tklicensegen.py debian/univention-license-tools/usr/bin/tklicensegen
+	
+	cat tools/univention-license-import | sed -e "s/@%@package_version@%@/${version}/" > tools/univention-license-import_tmp
+	cat tools/univention-license-import_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > tools/univention-license-import_tmp2
+	install -m 0755 tools/univention-license-import_tmp2 debian/univention-license-import/usr/sbin/univention-license-import
+	rm tools/univention-license-import_tmp*
+
+binary-indep: build install manpages
+
+binary-arch: build install manpages
+	dh_testdir
+	dh_testroot
+	dh_movefiles
+#	dh_installdebconf	
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+	dh_installcron
+	dh_installman
+	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

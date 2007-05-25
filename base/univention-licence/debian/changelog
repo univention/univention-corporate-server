@@ -1,0 +1,139 @@
+univention-licence (0.19) unstable; urgency=low
+
+  * fixed replacing of version number and copyright year
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu,  7 Sep 2006 15:12:48 +0200
+
+univention-licence (0.18) unstable; urgency=low
+
+  * added a new public key
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Aug 2006 14:16:36 +0200
+
+univention-licence (0.17) unstable; urgency=low
+
+  * changed some univentionLicense debug output to level warning
+
+ -- Janis Meybohm <janis@billy.knut.univention.de>  Mon,  7 Aug 2006 14:34:33 +0200
+
+univention-licence (0.16) unstable; urgency=low
+
+  * add -H to specify an LDAP-server to work on for make_license.sh 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 14 Jul 2006 16:03:11 +0200
+
+univention-licence (0.15) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:12:40 +0200
+
+univention-licence (0.14) unstable; urgency=low
+
+  * fix architecture field in contrl file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Feb 2006 10:44:22 +0100
+
+univention-licence (0.13) unstable; urgency=low
+
+  * provide python2.3-univention-license
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Oct 2005 08:05:07 +0200
+
+univention-licence (0.10) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 13:36:09 +0200
+
+univention-licence (0.7) unstable; urgency=low
+
+  * cleanup debug (no more "Can't get Attribute 'univentionLicenseObject'"
+    messages)
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon,  7 Mar 2005 16:07:14 +0100
+
+univention-license (0.6) unstable; urgency=low
+
+  * univention-license-import: Convert license file to Unix encoding.
+  * make_license.sh: add new options: -c, -a, -g and -m.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 29 Jul 2004 09:08:22 +0200
+
+univention-license (0.5) unstable; urgency=low
+
+  * Add new package univention-license-import that includes a tool
+    to import licenses.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 Jul 2004 10:56:09 +0200
+
+univention-license (0.4) unstable; urgency=low
+
+  * Add proper package description.
+  * Use ${shlib:Depends} instead of hardcoded dependency.
+  * Fixed Architecture: all/any.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 09:54:12 +0200
+
+univention-license (0.3) unstable; urgency=low
+
+  * merged with HEAD
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Apr 2004 12:55:57 +0200
+
+univention-license (0.2) unstable; urgency=low
+
+  * cleanup debug
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Mar 2004 13:56:21 +0100
+
+univention-license (0.1.2) unstable; urgency=low
+
+  * rewrite enddate check
+  * move univentionLicenseGenerate to internal_tools
+
+ -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Fri, 19 Mar 2004 12:09:32 +0100
+
+univention-license (0.1.1) unstable; urgency=low
+
+  * split packages
+  * added script make_license from peter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Mar 2004 08:31:31 +0100
+
+univention-license (0.2) unstable; urgency=low
+
+  * cleanup debug
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Mar 2004 13:56:21 +0100
+
+univention-license (0.1.2) unstable; urgency=low
+
+  * rewrite enddate check
+  * move univentionLicenseGenerate to internal_tools
+
+ -- Stefan Gohmann <stefan@ds-work.office.univention.de>  Fri, 19 Mar 2004 12:09:32 +0100
+
+univention-license (0.1.1) unstable; urgency=low
+
+  * Updated for Python 2.3.
+  * python2.3-univention-license replaces libunivention-license-python.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 17 Feb 2004 16:08:08 +0100
+
+univention-license (0.1.1) unstable; urgency=low
+
+  * split packages
+  * added script make_license from peter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Mar 2004 08:31:31 +0100
+
+univention-license (0.1.0) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 May 2003 13:49:40 +0200
+
+Local variables:
+mode: debian-changelog
+End:

@@ -1,0 +1,74 @@
+#!/bin/bash
+function create_doc()
+{
+	if test -e ${debdir}/default.doxcfg;
+	then	
+		for package in `dh_listpackages | grep "${targetfilter}"`;
+		do
+			if test -e ${debdir}/${package}.files; 
+			then
+				echo "Create manpages for ${package}..."
+		
+				#parse the .files for the input of doxygen
+				input=''
+				for line in `cat ${debdir}/${package}.files`;
+				do
+					temp=`echo "${tardir}/${line}"`
+					input=`echo "${input} ${temp}"`
+				done;
+				echo "Input: ${input}"
+				
+				#create the doxcfg file for this package
+				echo "@INCLUDE_PATH = ${debdir}" >   ${doxfile}
+				echo "@INCLUDE = default.doxcfg" >>  ${doxfile}
+				echo "INPUT = ${input}" 	 >> ${doxfile}
+				echo "OUTPUT_DIRECTORY = ${tardir}/${package}.manpages" >> ${doxfile}
+			
+				#generate the manpages
+				doxygen `echo ${doxfile}`
+			
+				#create the .manpage file for 'dh_installman'
+				#each file must be write.
+				echo "" > ${debdir}/${package}.manpages
+				for filename in `ls ${tardir}/${package}.manpages/man/man3/`;
+				do
+					echo "debian/tmp/${package}.manpages/man/man3/${filename}" >> ${debdir}/${package}.manpages
+				done;
+			else
+				echo "File ${package}.files not found. Don't create manpage."
+			fi;
+		done;
+	else
+		echo "debian/default.doxcfg not found. Don't create manpages."
+	fi;
+}
+
+function clean_doc()
+{
+	#clean up
+	rm -f  `echo ${doxfile}`
+	rm -rf `echo "${tardir}/*.manpages/"`
+	rm -f  `echo "${debdir}/*.manpages/"`
+}
+
+#main
+pwd=`pwd`
+tardir=`echo ${pwd}/debian/tmp`
+debdir=`echo ${pwd}/debian`
+targetfilter="dev"
+
+doxfile=`echo "${debdir}/current.doxcfg"`
+
+case "$1" in
+	create)
+		create_doc
+	;;
+
+	clean)
+		clean_doc
+	;;
+	*)
+		echo "Usage: dh_doxygen [create|clean]"
+	;;
+esac
+

@@ -1,0 +1,111 @@
+#!/bin/sh -e
+
+PATH="/usr/sbin:/usr/bin:/sbin:/bin"
+
+display_help() {
+	display_header
+	echo "Syntax:"
+	echo "  univention-license-import <license file>"
+	echo "  univention-license-import [--help] [--version]"
+	echo ""
+	echo "Options:"
+	echo "  '-h | --help | -?:           print this usage message"
+	echo "  '--version:                  print version information"
+	echo ""
+	echo "Description:"
+	echo "  univention-license-import is a tool for importing license keys"
+	echo "  for UCS from file."
+	echo ""
+	echo "Known-Bugs:"
+	echo "  -None-"
+	echo ""
+}
+
+display_header() {
+	echo "univention-license-import: import license key for UCS"
+	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+}
+
+display_version() {
+	echo "univention-license-import @%@package_version@%@"
+}
+
+#if [ "`id -u`" != "0" ]; then
+#	echo "You need to be root to install a new license." >&2
+#	exit 1
+if [ -z "$1" ]; then
+	display_help
+	exit 1
+else
+	case $1 in
+		--version)
+			display_version
+			exit 1
+			;;
+		-h)
+			display_help
+			exit 1
+			;;
+		--help)
+			display_help
+			exit 1
+			;;
+		-\?)
+			display_help
+			exit 1
+			;;
+		*)
+			if ! [ -f "$1" ]; then
+				echo "E: '$1' is not a valid file" >&2
+				exit 1
+			fi
+			;;
+	esac
+fi
+
+# extract DN and check that only one DN has been found
+file="$1"
+for i in $(cat "$file" | fromdos | \
+		ldapsearch-wrapper | sed -n "s/^dn: //p"); do
+	if [ "$dn" ]; then
+		echo "E: License file contains more than one DN." >&2
+		exit 1
+	fi
+	dn="$i"
+done
+if [ -z "$dn" ]; then
+	echo "E: License file does not contain DN." >&2
+	exit 1
+fi
+
+eval `univention-baseconfig shell ldap/base ldap/master`
+if ! echo "$dn" | grep -q "$ldap_base\$"; then
+	echo "E: Your system is configured to use the LDAP base DN" >&2
+	echo "E:   $ldap_base" >&2
+	echo "E: but the given license file was created for" >&2
+	dn_base=$(echo "$dn" | sed 's/^.*,cn=license,cn=univention,//')
+	echo "E:   $dn_base" >&2
+	echo >&2
+	echo "Please reinstall your system with the LDAP base DN" >&2
+	echo "matching your license file or get in contact with" >&2
+	echo "Univention to request a new license file matching your" >&2
+	echo "system's LDAP base DN." >&2
+	exit 1
+fi
+
+# ldapadd and ldapmodify work correctly with DOS linebreaks
+err=`ldapadd -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file" 2>&1` || rv=$?
+if [ "$rv" = "68" ]; then
+	err=`ldapmodify -x -h "$ldap_master" -ZZ -D "cn=admin,$ldap_base" -w $(cat /etc/ldap.secret) -f "$file" 2>&1` || rv=$?
+	if [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
+		echo "$err" >&2
+		exit 1
+	fi
+	echo "Replaced license."
+elif [ "$rv" != 0 ] && [ "$rv" != 89 ]; then
+	echo "$err" >&2
+	exit 1
+else
+	echo "Added license."
+fi
