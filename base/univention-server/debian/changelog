@@ -1,3 +1,9 @@
+univention-server (2.0.0-2) unstable; urgency=low
+
+  * remove univention-basetools from dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 07:45:42 +0200
+
 univention-server (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
