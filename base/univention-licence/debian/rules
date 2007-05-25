@@ -83,6 +83,7 @@ install-ext-%:
 	dh_installdirs
 	make install DESTDIR=`pwd`/debian/tmp
 
+	install -d debian/python-univention-license/usr/lib/python$*/site-packages/univention
 	install -m 0644 python/license.so debian/python-univention-license/usr/lib/python$*/site-packages/univention
 
 	install -m 0755 internal-tools/univentionLicenseCreateSignature debian/univention-license-tools/usr/sbin/

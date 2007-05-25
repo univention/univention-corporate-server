@@ -3,7 +3,7 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, autoconf, automake1.4, libtool, doxygen, libssl-dev, python, python-all-dev, python-central libunivention-debug-dev, libunivention-config-dev, libldap2-dev, python-tk
+Build-Depends: debhelper, autoconf, automake1.4, libtool, doxygen, libssl-dev, python, python-all-dev, python-central, libunivention-debug-dev, libunivention-config-dev, libldap2-dev
 XS-Python-Version: all
 
 Package: libunivention-license0

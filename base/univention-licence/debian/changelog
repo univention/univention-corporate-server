@@ -1,3 +1,9 @@
+univention-licence (1.0.0-2) unstable; urgency=low
+
+  * remove python-tk from the build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 08:15:42 +0200
+
 univention-licence (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 polcies
