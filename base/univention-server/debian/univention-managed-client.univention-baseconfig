@@ -1,0 +1,6 @@
+Type: file
+File: etc/cron.d/univention-managed-client
+
+Type: file
+File: etc/default/ifplugd
+Variables: interfaces/eth.*

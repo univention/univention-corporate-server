@@ -58,3 +58,31 @@ Description: UCS - member server
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: univention-mobile-client
+Architecture: all
+Pre-Depends: univention-baseconfig (>=0.06), univention-pam
+Conflicts: univention-application-server
+Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-ldap-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, less, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-ldap-policy, univention-console, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-admin
+Description: UCS - Mobile Client
+ This is a Meta-package, that sets up a UCS mobile client
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-managed-client
+Architecture: all
+Pre-Depends: univention-baseconfig (>=0.06), univention-pam
+Conflicts: univention-application-server, univention-fat-client, univention-fat-client-small
+Replaces: univention-fat-client, univention-fat-client-small
+Provides: univention-fat-client, univention-fat-client-small
+Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-ldap-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, less, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-basetools, univention-ldap-policy, univention-console, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python2.4-univention-admin | python2.4-univention-admin-2005
+Description: UCS - Managed Client
+ This is a Meta-package, that sets up a UCS fat client
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

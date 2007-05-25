@@ -55,21 +55,41 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_master/config/*cfg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/config/
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_master/images/*jpg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/images/
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_backup/config/*cfg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/config/
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_backup/images/*jpg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/images/
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_slave/config/*cfg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/config/
-	install -m 644 conffiles/etc/bootsplash/themes/domaincontroller_slave/images/*jpg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/images/
-	install -m 644 conffiles/etc/bootsplash/themes/memberserver/config/*cfg debian/univention-server-member/etc/bootsplash/themes/memberserver/config/
-	install -m 644 conffiles/etc/bootsplash/themes/memberserver/images/*jpg debian/univention-server-member/etc/bootsplash/themes/memberserver/images/
+	install -m 644 etc/bootsplash/themes/domaincontroller_master/config/*cfg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/config/
+	install -m 644 etc/bootsplash/themes/domaincontroller_master/images/*jpg debian/univention-server-master/etc/bootsplash/themes/domaincontroller_master/images/
+	install -m 644 etc/bootsplash/themes/domaincontroller_backup/config/*cfg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/config/
+	install -m 644 etc/bootsplash/themes/domaincontroller_backup/images/*jpg debian/univention-server-backup/etc/bootsplash/themes/domaincontroller_backup/images/
+	install -m 644 etc/bootsplash/themes/domaincontroller_slave/config/*cfg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/config/
+	install -m 644 etc/bootsplash/themes/domaincontroller_slave/images/*jpg debian/univention-server-slave/etc/bootsplash/themes/domaincontroller_slave/images/
+	install -m 644 etc/bootsplash/themes/memberserver/config/*cfg debian/univention-server-member/etc/bootsplash/themes/memberserver/config/
+	install -m 644 etc/bootsplash/themes/memberserver/images/*jpg debian/univention-server-member/etc/bootsplash/themes/memberserver/images/
 
+	install -m 644 etc/bootsplash/themes/mobileclient/config/*cfg debian/univention-mobile-client/etc/bootsplash/themes/mobileclient/config/
+	install -m 644 etc/bootsplash/themes/mobileclient/images/*jpg debian/univention-mobile-client/etc/bootsplash/themes/mobileclient/images/
+
+	install -m 644 etc/bootsplash/themes/managedclient/config/*cfg debian/univention-managed-client/etc/bootsplash/themes/managedclient/config/
+	install -m 644 etc/bootsplash/themes/managedclient/images/*jpg debian/univention-managed-client/etc/bootsplash/themes/managedclient/images/
 
 	install -m 0755 server_password_change debian/univention-server-master/usr/lib/univention-server/
 	install -m 0755 server_password_change debian/univention-server-backup/usr/lib/univention-server/
 	install -m 0755 server_password_change debian/univention-server-slave/usr/lib/univention-server/
 	install -m 0755 server_password_change debian/univention-server-member/usr/lib/univention-server/
 	install -m 0755 univention-ldap-policy/univention-set-ldap-server debian/univention-server-member/usr/lib/univention-ldap-policy/
+
+	install -m 755 managed-client debian/univention-managed-client/etc/init.d/
+	install -m 755 univention-domain-connection debian/univention-managed-client/usr/bin/
+	install -m 755 etc/ifplugd/action.d/nscd debian/univention-managed-client/etc/ifplugd/action.d/nscd
+	install -m 755 etc/ifplugd/action.d/gdm debian/univention-managed-client/etc/ifplugd/action.d/gdm
+	install -m 755 etc/ifplugd/action.d/mount debian/univention-managed-client/etc/ifplugd/action.d/mount
+	install -m 755 univention-ldap-policy/univention-set-ldap-server debian/univention-managed-client/usr/lib/univention-ldap-policy/
+	install -m 755 check_connection debian/univention-managed-client/usr/share/univention-managed-client/
+
+	install -m 755 mobile-client debian/univention-mobile-client/etc/init.d/
+	install -m 755 check_connection debian/univention-mobile-client/usr/share/univention-mobile-client/
+	install -m 755 etc/ifplugd/action.d/nscd debian/univention-mobile-client/etc/ifplugd/action.d/nscd
+	install -m 755 etc/ifplugd/action.d/gdm debian/univention-mobile-client/etc/ifplugd/action.d/gdm
+	install -m 755 etc/ifplugd/action.d/mount debian/univention-mobile-client/etc/ifplugd/action.d/mount
+	install -m 755 univention-ldap-policy/univention-set-ldap-server debian/univention-mobile-client/usr/lib/univention-ldap-policy/
 
 	# add ntpd information used by univention-console
 	echo "Timeserver;ntp-server;/usr/sbin/ntpd;23" > debian/univention-server-master/etc/univention/daemons/ntpd

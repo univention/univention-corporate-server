@@ -1,0 +1,129 @@
+#!/bin/sh
+#
+# Univention Mobile Client
+#  init script for the mobile client
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+getXModul()
+{
+	card=`kudzu -p --class=video | grep ^driver | sed -e 's/driver: Card://g'`
+	if [ -z "$card" ]; then
+		echo "vesa"
+		return
+	fi
+
+	driver=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep CHIPSET | sed -e 's/CHIPSET //g'`
+	if [ -z "$driver" ]; then
+		card=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep SEE | sed -e 's/SEE //g'`
+		if [ -z "$card" ]; then
+			if [ -n "`kudzu -p --class=video | grep 'desc: "VMWare Inc|unknown'`" ]; then
+				echo "vmware"
+			else
+				echo "vesa"
+			fi
+			return
+		fi
+		driver=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep CHIPSET | sed -e 's/CHIPSET //g'`
+		if [ -z "$driver" ] ; then
+			echo "vesa"
+			return
+		fi
+	else
+		driver=`cat /usr/share/hwdata/Cards | grep -2 "^NAME $card$" | grep DRIVER | sed -e 's/DRIVER //g'`
+	fi
+
+	echo "$driver" | head -1 |  tr [:upper:] [:lower:]
+}
+
+
+case $1 in
+	start)
+		univention-baseconfig set domain/connection=false >/dev/null 2>&1
+
+		echo -n "Setting up Mobile Client "
+		echo "Setting up Mobile Client `date`" $LOG>>/var/log/univention/mobile-client.log 2>&1
+
+		eval `univention-baseconfig shell`
+
+		if [ -x /usr/share/univention-mobile-client/check_connection ]; then
+			/usr/share/univention-mobile-client/check_connection
+		fi
+
+		# check configuration
+		if [ -z "$ldap_server_name" -o -z "$ldap_base" -o -z "$ldap_hostdn" ]; then
+			echo "setup failed"
+			echo "setup failed" >>/var/log/univention/mobile-client.log 2>&1
+			exit 1
+		fi
+
+		# check for ldap server
+		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+			ldapsearch -x -h $ldap_server_name -b $ldap_base -s BASE | ldapsearch-wrapper>>/var/log/univention/mobile-client.log 2>&1
+			if [ $? = 0 ]; then
+				univention-baseconfig set domain/connection=true >/dev/null 2>&1
+
+				if [ -z "$ldap_mydn" ]; then
+					ldap_mydn=`ldapsearch -x -h $ldap_server_name -b $ldap_base "(&(objectClass=univentionMobileClient)(objectClass=univentionHost)(cn=$hostname))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||'`
+				fi
+
+
+				if [ -n "$ldap_hostdn" ]; then
+					use_dn="$ldap_hostdn"
+				elif [ -n "$ldap_mydn" ]; then
+					use_dn="$ldap_mydn"
+				fi
+
+				if [ -n "$use_dn" ]; then
+					# get policy result
+					univention-baseconfig unset univentionAutoStartScript
+					univention-baseconfig set ldap/mydn="$use_dn" >/dev/null 2>&1
+					univention_policy_result "$use_dn" -s | xargs univention-baseconfig set >>/var/log/univention/mobile-client.log 2>&1
+				fi
+			else
+				echo "E: connection to $ldap_server_name failed" >>/var/log/univention/mobile-client.log 2>&1
+			fi
+		else
+			echo "E: connection to $ldap_server_name failed" >>/var/log/univention/mobile-client.log 2>&1
+		fi
+
+		scan=`univention-baseconfig get hardware/scan_on_boot`
+		if [ "$scan" = "True" -o "$scan" = "true" ]; then
+			univention-baseconfig set univentionXModule=`eval getXModul` >/dev/null 2>&1
+			univention-baseconfig set hardware/scan_on_boot=false
+		fi
+
+		if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]; then
+			modprobe mousedev
+		fi
+
+
+		echo "done"
+
+		;;
+esac
+
+exit 0

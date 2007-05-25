@@ -1,0 +1,9 @@
+etc/init.d
+etc/cron.d
+usr/bin
+etc/ifplugd/action.d/
+etc/bootsplash/themes/managedclient/images
+etc/bootsplash/themes/managedclient/config
+usr/share/apps/kdesktop/DesktopLinks
+usr/lib/univention-ldap-policy
+usr/share/univention-managed-client

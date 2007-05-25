@@ -1,0 +1,18 @@
+@%@BCWARNING=# @%@
+@!@
+interfaces = ""
+for i in range(10):
+	if (baseConfig.has_key('interfaces/eth%s/address' % i) or (baseConfig.has_key('interfaces/eth%s/type'%i) and baseConfig['interfaces/eth%s/type'%i] == 'dhcp')) and (not baseConfig.has_key('interfaces/eth%s/ifplugd' % i) or not baseConfig['interfaces/eth%s/ifplugd' % i] == 'no'):
+		interfaces = "%s eth%s" % (interfaces, i)
+	for j in range(10):
+		if (baseConfig.has_key('interfaces/eth%s_%s/address' % (i,j)) or (baseConfig.has_key('interfaces/eth%s_%s/type'%(i,j) and baseConfig['interfaces/eth%s_%s/type'%(i,j)] == 'dhcp'))) and (not baseConfig.has_key('interfaces/eth%s_%s/ifplugd' % (i,j)) or not baseConfig['interfaces/eth%s_%s/ifplugd' % (i,j)] == 'no'):
+			interfaces = "%s eth%s_%s" % (interfaces, i, j)
+
+
+if len(interfaces) > 1:
+	interfaces = interfaces[1:]
+print 'INTERFACES="%s"' % interfaces
+@!@
+HOTPLUG_INTERFACES="all"
+ARGS="-q -f -u0 -d10 -w -I"
+SUSPEND_ACTION="stop"

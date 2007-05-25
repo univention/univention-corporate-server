@@ -65,7 +65,8 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 						else:
 							addition.append(new_ldap_server)
 				if addition:
-					out=univention_baseconfig.handler_set(['ldap/server/addition=%s' % string.join(addition,' ')])
+					if baseConfig.has_key( 'ldap/server/addition' ):
+						out=univention_baseconfig.handler_set(['ldap/server/addition=%s' % string.join(addition,' ')])
 				else:
 					out=univention_baseconfig.handler_unset(['ldap/server/addition'])
 

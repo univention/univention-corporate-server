@@ -1,0 +1,9 @@
+etc/init.d
+usr/bin
+etc/ifplugd/action.d/
+etc/bootsplash/themes/mobileclient
+etc/bootsplash/themes/mobileclient/images
+etc/bootsplash/themes/mobileclient/config
+usr/share/apps/kdesktop/DesktopLinks
+usr/lib/univention-ldap-policy
+usr/share/univention-mobile-client

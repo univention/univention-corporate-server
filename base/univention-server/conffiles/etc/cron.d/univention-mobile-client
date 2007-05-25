@@ -1,0 +1,2 @@
+@%@ldap/connection/check@%@ root /usr/share/univention-mobile-client/check_connection
+@reboot /usr/share/univention-mobile-client/check_connection

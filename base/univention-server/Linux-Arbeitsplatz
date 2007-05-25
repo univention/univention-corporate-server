@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Univention Mobile Client
+#  GDM session script for the KDE desktop
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+if [ -z "$ldap_port" ]; then
+	ldap_port=389
+fi
+
+userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | grep dn | sed -e 's/dn: //g'`
+eval `univention_policy_result -h $ldap_server_name -s $userdn`
+
+LANG="de_DE@euro"
+if [ "$univentionDesktopLanguage" ]; then
+	LANG="$univentionDesktopLanguage"
+fi;
+
+export LANG
+export G_BROKEN_FILENAMES=1
+
+KDEDIRS="/usr/share/univention-kde-profiles/default/.kde"
+if [ -n "$univentionDesktopProfile" ]; then
+	if [ "$univentionDesktopProfile" != "none" ]; then
+		KDEDIRS="$KDEDIRS:$univentionDesktopProfile/.kde"
+	fi
+fi
+export KDEDIRS="$KDEDIRS"
+
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+
+if [ -e $HOME/.kde/share/config/ksmserverrc ]
+then
+	mv $HOME/.kde/share/config/ksmserverrc $HOME/.kde/share/config/ksmserverrc_SAVE
+	cat $HOME/.kde/share/config/ksmserverrc_SAVE | sed -e 's/=evolution,/=kshell,evolution,/' > $HOME/.kde/share/config/ksmserverrc
+	rm $HOME/.kde/share/config/ksmserverrc_SAVE
+fi
+univention-skel
+
+exec startkde

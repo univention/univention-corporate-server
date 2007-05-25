@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Univention Mobile/Managed Client
+#  helper script: checks the connection to the LDAP server. If the
+#  connection fails 'ldap' is removed from the list of possible
+#  authentication methods
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+if [ -z "$auth_admin_methods_default" ]; then
+	/usr/sbin/univention-baseconfig set auth/admin/methods/default="$auth_admin_methods"
+fi
+if [ -z "$auth_user_methods_default" ]; then
+	/usr/sbin/univention-baseconfig set auth/user/methods/default="$auth_user_methods"
+fi
+
+
+action () {
+	/etc/ifplugd/ifplugd.action all $1
+}
+
+connection_okay=0
+
+if [ -n "$ldap_server_name" ]; then
+	if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+		connection_okay=1
+	fi
+fi
+
+if [ -n "$ldap_server_addition" ] && [ $connection_okay = 0 ]; then
+	for h in  $ldap_server_addition; do
+		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+			connection_okay=1
+			break
+		fi
+	done
+fi
+
+if [ $connection_okay = 1 ]; then
+	res="`echo $auth_user_methods | grep ldap`"
+	if [ -z "$res" ]; then
+		/usr/sbin/univention-baseconfig set auth/user/methods="$auth_user_methods_default"
+		/usr/sbin/univention-baseconfig set auth/admin/methods="$auth_admin_methods_default"
+		action up
+	fi
+else
+	res="`echo $auth_user_methods | grep ldap`"
+	if [ -n "$res" ]; then
+		/usr/sbin/univention-baseconfig set auth/user/methods=cache
+		/usr/sbin/univention-baseconfig set auth/admin/methods=cache
+		action down
+	fi
+
+fi

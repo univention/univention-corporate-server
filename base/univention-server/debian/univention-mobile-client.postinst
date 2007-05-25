@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# Univention Mobile Client
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if [ "$1" = configure -a -z "$2" ]; then
+
+	update-rc.d mobile-client defaults 32
+
+fi
+
+eval `univention-baseconfig shell`
+
+realm=`echo $domainname | sed -e 's/dc=//g' | sed -e 's/,/./g' | tr "[:lower:]" "[:upper:]"`
+
+univention-baseconfig set kerberos/realm?$realm
+
+univention-baseconfig set kerberos/adminserver?$ldap_master
+
+univention-baseconfig set hardware/scan_on_boot=false
+
+univention-baseconfig set ldap/port?389
+
+univention-baseconfig set homedir/mount?no
+
+admin_auth=`echo $auth_admin_methods | grep cache`
+if [ -z "$admin_auth" ]; then
+	univention-baseconfig set auth/admin/methods="$auth_admin_methods cache"
+fi
+
+users_auth=`echo $auth_user_methods | grep cache`
+if [ -z "$users_auth" ]; then
+	univention-baseconfig set auth/user/methods="krb5 ldap unix cache"
+fi
+
+admin_services=`echo $auth_admin_services | grep gdm`
+if [ -n "$admin_services" ]; then
+	univention-baseconfig set auth/admin/services="`echo $auth_admin_services | sed -e 's|gdm||'`"
+fi
+user_services=`echo $auth_user_services | grep gdm`
+if [ -z "$user_services" ]; then
+	univention-baseconfig set auth/user/services="$auth_user_services gdm"
+fi
+
+univention-baseconfig set gdm/menu/system=true
+univention-baseconfig set splash/theme=mobileclient
+
+univention-baseconfig set ldap/connection/check?"*/3 * * * *"
+
+if [ "$1" = "configure" -a -z "$2" ]; then
+	update-inetd --debug --comment-chars '#' --enable time
+	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
+		/usr/lib/univention-bootsplash/univention-appendsplash
+		if [ -x /sbin/lilo ]; then
+			/sbin/lilo
+		fi
+	fi
+elif [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 0.10; then
+	if [ -x /usr/sbin/mkinitrd ]; then
+		/usr/sbin/mkinitrd -o /initrd.img `ls -l /initrd.img  | sed -e 's|.*boot/initrd.img-||'`
+		if [ -x /sbin/lilo ]; then
+			/sbin/lilo
+		fi
+	else
+		echo "E: could not find mkinitrd to create a new initrd image"
+		exit 1
+	fi
+fi
+
+univention-baseconfig set ifplugd/action/mount?yes
+
+#DEBHELPER#
