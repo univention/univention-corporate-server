@@ -1,3 +1,9 @@
+univention-maintenance (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 polices
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 May 2007 07:26:28 +0200
+
 univention-wartung (1.0-12) unstable; urgency=low
 
   * add GPL headers

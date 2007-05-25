@@ -1,5 +1,5 @@
 Section: univention
-Source: univention-wartung
+Source: univention-maintenance
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, univention-config-dev
