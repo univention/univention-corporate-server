@@ -1,3 +1,9 @@
+univention-automount (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 May 2007 10:56:32 +0200
+
 univention-automount (1.4.6) unstable; urgency=low
 
   * add GPL headers
