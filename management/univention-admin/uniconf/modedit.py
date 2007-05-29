@@ -2216,7 +2216,7 @@ class modedit(unimodule.unimodule):
 						if name:
 							host_choicelist=[]
 
-							for dn, attr in self.lo.search('(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))', attr=['objectClass', 'aRecord', 'cn']):
+							for dn, attr in self.lo.search('(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)(objectClass=univentionMobileClient)(objectClass=univentionClient))', attr=['objectClass', 'aRecord', 'cn']):
 								# TODO: ckeck for multiple aRecord?
 								if attr.has_key('aRecord') and attr['aRecord'][0]:
 									res=self.lo.search('(&(objectClass=dNSZone)(aRecord=%s)(zoneName=*)(relativeDomainName=*))' % attr['aRecord'][0])
