@@ -1,0 +1,22 @@
+pam-univentionmailcyrus (0.3) unstable; urgency=low
+
+  * add GPL headers and copyright information
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 14:22:33 +0100
+
+pam-univentionmailcyrus (0.2) unstable; urgency=low
+
+  * close the connection to the LDAP server when an error has occured
+    after a connection has been established successfully
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Oct 2005 13:21:10 +0200
+
+pam-univentionmailcyrus (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 22 Mar 2005 09:36:50 +0100
+
+Local variables:
+mode: debian-changelog
+End:
