@@ -83,7 +83,7 @@ Subfile: etc/pam.d/common-auth.d/30univention-pam_local
 Type: subfile
 Multifile: etc/pam.d/common-auth
 Subfile: etc/pam.d/common-auth.d/50univention-pam_general
-Variables: auth/max_user
+Variables: auth/passwdcache/max_user
 Variables: auth/user/methods
 
 Type: subfile
