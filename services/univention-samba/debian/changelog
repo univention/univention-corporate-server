@@ -1,3 +1,9 @@
+univention-samba (1.0.0-3) unstable; urgency=low
+
+  * socket options are managed by univention Baseconfig
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 29 May 2007 09:35:31 +0200
+
 univention-samba (1.0.0-2) unstable; urgency=low
 
   * added auto-generated header to /etc/samba/shares.conf 

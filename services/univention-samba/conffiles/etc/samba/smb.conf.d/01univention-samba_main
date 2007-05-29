@@ -29,4 +29,7 @@ for key, smbstring in [('samba/interfaces','interfaces'),
 		       ('samba/enable-privileges', 'enable privileges'),]:
 	if baseConfig.has_key(key) and baseConfig[key]:
 		print '\t%s = %s' % (smbstring, baseConfig[key])
+
+if baseConfig.has_key('samba/socket_options') and baseConfig['samba/socket_options']:
+	print '\tsocket options = %s' % baseConfig['samba/socket_options']
 @!@

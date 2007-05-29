@@ -20,6 +20,7 @@ Variables: samba/logonscript
 Variables: samba/enable-privileges
 Variables: samba/enable-msdfs
 Variables: samba/role
+Variables: samba/socket_options
 Variables: windows/wins-support
 Variables: windows/wins-server
 Variables: samba/ldap/replication/sleep
@@ -51,6 +52,7 @@ Variables: samba/user
 Variables: samba/serverstring
 Variables: samba/charset*
 Variables: samba/enable-privileges
+Variables: samba/socket_options
 
 Type: subfile
 Multifile: etc/samba/smb.conf
