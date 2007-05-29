@@ -1,3 +1,9 @@
+unidump (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 May 2007 10:33:53 +0200
+
 unidump (0.6-19) unstable; urgency=low
 
   * switch `unihrest' to /bin/sh
