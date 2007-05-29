@@ -1,0 +1,78 @@
+#!/usr/bin/perl
+# 	$Id: restore_wrapper,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use strict;
+use Expect;
+
+unless($ARGV[0] =~ /^-/) {	# first arg is the command name
+  my $cmd = shift(@ARGV);
+  restore($cmd, @ARGV);
+} else {
+  restore("restore", @ARGV);
+}
+
+sub restore {
+  my $cmd  = shift;
+  my @args = @_;
+
+  my $exp = Expect->spawn($cmd, @args) || die "cannot spawn process: $!";
+  my $pid = $exp->exp_pid();
+
+  $exp->debug(0);
+  $exp->exp_internal(0);
+  $exp->log_user(1);
+  
+  my ($i, $volume) = (0, 0);
+  for(;;) {			# loop forever
+  
+    if(defined $exp->exp_exitstatus) {	# this is not very likely
+      exit $exp->exp_exitstatus;
+    }
+
+    if($i > 99) {		# give up in case of more than 100 prompts 
+      $exp->soft_close();
+    }
+    
+    if($i > 100) {		# oups? still alive? 
+      $exp->hard_close();
+    }
+
+    my ($pos, $err, $string) = 
+      $exp->expect
+	(undef,
+	 "-re", "Specify next volume #.*: ",       # (1) 
+	 "set owner/mode for '.'? [yn] ",          # (2)
+	 "restore interrupted, continue? [yn] ",   # (3)
+	 "continue? [yn] ",                        # (4)
+	 "abort? [yn] ",                           # (5)
+	 "dump core? [yn] ",                       # (6)
+	 "[yn] ",                                  # (7)
+	 "-re", ".*\r?\n");                        # (8)
+
+#   warn "pos=$pos  err=$err  string=>>$string<<";
+
+    if($err) {
+      for($err) {
+	my $rc = -1;
+	$rc = $exp->exp_exitstatus if defined($exp->exp_exitstatus);
+	/^1:/ and die "unexpected errorcode from expect: $'";
+	/^2:/ and exit($rc);
+	/^3:/ and exit($rc);
+	/^4:/ and die "spawned process sent error: $'\n";
+      }
+    }
+
+
+  SWITCH: {
+    $pos == 1 and $exp->send(++$volume . "\r"), $i++, last;
+    $pos == 2 and $exp->send("n\r"), $i++, last;
+    $pos == 3 and $exp->send("n\r"), $i++, last;
+    $pos == 4 and $exp->send("y\r"), $i++, last; 
+    $pos == 5 and $exp->send("y\r"), $i++, last;
+    $pos == 6 and $exp->send("n\r"), $i++, last;
+    $pos == 7 and $exp->send("n\r"), $i++, last;
+    $pos == 8 and last;
+  }
+
+  }
+}
+

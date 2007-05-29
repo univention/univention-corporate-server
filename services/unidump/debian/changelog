@@ -1,0 +1,213 @@
+unidump (0.6-19) unstable; urgency=low
+
+  * switch `unihrest' to /bin/sh
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed,  8 Mar 2006 14:08:34 +0100
+
+unidump (0.6-18) unstable; urgency=low
+
+  * fixed wrong check of tapeindex
+
+ -- Ingo Hoff <hoff@univention.de>  Fri,  2 Dec 2005 12:48:56 +0100
+
+unidump (0.6-17) unstable; urgency=low
+
+  * holdingproper.sh now produces all english output
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 18 Feb 2005 10:51:54 +0100
+
+unidump (0.6-16) unstable; urgency=low
+
+  * Bugfix 1124: excludes argument for ext2dump
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu,  1 Jul 2004 15:18:35 +0200
+
+unidump (0.6-15) unstable; urgency=low
+
+  * remove -w from first unilist/unirest line
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 Apr 2004 12:26:59 +0200
+
+unidump (0.6-14) unstable; urgency=low
+
+  * holdingproper.sh included.
+  this script removes obsolete holdingdisk entries from history.txt
+  
+
+ -- Thorsten Pesel <pesel@univention.de>  Tue, 11 Nov 2003 15:58:53 +0100
+
+unidump (0.6-13) unstable; urgency=low
+
+  * RAID Identification added with identification of "nfs-raidfailover-init"
+    debugging and fixing the function
+    
+  * Bugfix: remove lost+found, after making filesystem, because sometime are
+    files in lost+found, wich are backuped to tape and can't restore, until
+    the new lost+found is in the way.
+    
+  * sort directorys reverse. we must restore /var first, then the other
+    nonroot parts.
+
+  * copy back the history.txt from restore to the origin is now the job for
+    restore_nonroot.sh, if all partitions are restored, mount all partitions,
+    copy the history.txt and unmount all (not busy) partions.
+
+ -- Thorsten Pesel <pesel@univention.de>  Thu, 30 Oct 2003 11:58:36 +0100
+
+unidump (0.6-12) unstable; urgency=low
+
+  * bugfix in History.pm (compression for Tapes ist datcompression);
+    bugfix in functions.sh Line 223 (was :   is now :; )
+    cronjob in debian/cron.d created
+    restore_root.sh copies the magic file to the root fs
+    restore_nonroot.sh umounted all non-busy devices to restore it ;-)
+    Package unidump-addon created 
+    (wich contains the individual confs for customers)
+
+    we need a special Version to restore a NBD or restore the data to another
+    alternate device ?!
+    
+
+ -- Thorsten Pesel <pesel@univention.de>  Wed, 22 Oct 2003 11:20:17 +0200
+
+unidump (0.6-11) unstable; urgency=low
+
+  * added /boot partition support debian/changelog
+
+ -- Joerg Ungethuem <ju@enersim.de>  Mon,  8 Jul 2002 11:34:43 +0200
+
+unidump (0.6-10) unstable; urgency=low
+
+  * minor bugfix debian/changelog
+
+ -- Joerg Ungethuem <ju@enersim.de>  Thu, 27 Jun 2002 14:50:52 +0200
+
+unidump (0.6-9) unstable; urgency=low
+
+  * new Expact package required debian/changelog
+
+ -- Joerg Ungethuem <ju@enersim.de>  Wed, 26 Jun 2002 21:09:53 +0200
+
+unidump (0.6-8) unstable; urgency=low
+
+  *   debian/changelog
+
+ -- Joerg Ungethuem <ju@enersim.de>  Wed, 26 Jun 2002 20:52:03 +0200
+
+unidump (0.6-7) unstable; urgency=low
+
+  * fixed bug in restore_wrapper debian/changelog
+
+ -- Joerg Ungethuem <ju@enersim.de>  Tue, 25 Jun 2002 20:56:06 +0200
+
+unidump (0.6-6) unstable; urgency=low
+
+  * fixed bug related to spaces in paths debian/changelog
+
+ -- Debian User <ju@enersim.de>  Mon, 24 Jun 2002 11:47:43 +0200
+
+unidump (0.6-5) unstable; urgency=low
+
+  * fixed locale bug debian/changelog
+
+ -- Debian User <ju@haake.enersim.de>  Mon, 17 Jun 2002 19:40:26 +0200
+
+unidump (0.6-4) unstable; urgency=low
+
+  * new feature: exclude lists
+
+ -- Debian User <ju@haake.enersim.de>  Sun,  2 Jun 2002 08:49:53 +0200
+
+unidump (0.6-3) unstable; urgency=low
+
+  * fixed bug in restorelist generation
+
+ -- Debian User <ju@haake.enersim.de>  Sat,  1 Jun 2002 13:17:36 +0200
+
+unidump (0.6-2) unstable; urgency=low
+
+  * added README
+
+ -- Debian User <ju@haake.enersim.de>  Fri, 24 May 2002 20:15:21 +0200
+
+unidump (0.6-1) unstable; urgency=low
+
+  * new version
+
+ -- Debian User <ju@haake.enersim.de>  Fri, 24 May 2002 19:45:42 +0200
+
+unidump (0.5-1) unstable; urgency=low
+
+  * new version
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 17 Apr 2002 14:51:33 +0200
+
+unidump (0.4-10) unstable; urgency=low
+
+  * debian/changelog ?
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Thu, 11 Apr 2002 14:56:17 +0200
+
+unidump (0.4-9) unstable; urgency=low
+
+  * <none>
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 21:54:48 +0200
+
+unidump (0.4-8) unstable; urgency=low
+
+  * fixed bug in Tape.pm
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 20:42:51 +0200
+
+unidump (0.4-7) unstable; urgency=low
+
+  * fixed bug in scripts/unidump
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 20:32:03 +0200
+
+unidump (0.4-6) unstable; urgency=low
+
+  * fixed bug in scripts/unilabel
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 17:32:00 +0200
+
+unidump (0.4-5) unstable; urgency=low
+
+  * added magic in debina/rules
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 17:09:19 +0200
+
+unidump (0.4-4) unstable; urgency=low
+
+  * fixed bug in Tape.pm
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 16:51:59 +0200
+
+unidump (0.4-3) unstable; urgency=low
+
+  * fixed bug in Tape.pm
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 16:36:25 +0200
+
+unidump (0.4-2) unstable; urgency=low
+
+  * debian/dirs corrected
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 15:55:26 +0200
+
+unidump (0.4-1) unstable; urgency=low
+
+  * new version
+
+ -- Joerg Ungethuem <joerg.ungethuem@enersim.de>  Wed, 10 Apr 2002 15:52:11 +0200
+
+unidump (0.3-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Joerg Ungethuem <ju@holsten.enersim.de>  Wed, 10 Apr 2002 13:55:44 +0200
+
+Local variables:
+mode: debian-changelog
+End:

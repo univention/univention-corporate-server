@@ -1,0 +1,204 @@
+#!/usr/bin/perl
+# 	$Id: unilist,v 1.2.8.1 2004/04/06 10:27:42 stefan Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use Fcntl;
+use Date::Parse;
+use Unidump::Config;
+use Unidump::Dumper;
+use Unidump::GenericDumper;
+use Unidump::History qw(:all);
+use AppConfig qw(:expand :argcount);
+# use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+$conf->define("date" => { DEFAULT => scalar localtime(),
+			  ARGCOUNT => ARGCOUNT_ONE,
+			  VALIDATE => sub {	
+			    shift; 
+			    return(str2time(@_) ? 1 : 0); 
+			  }});
+
+$conf->define("depth" => { ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("type" => { ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("directory" => { ALIAS => "dir",
+			       ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("historydir" => { ARGCOUNT => ARGCOUNT_ONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+# setting up the global logger 
+$Unidump::Logger::debug = $conf->debug;
+$Unidump::History::historydir = 
+  $conf->historydir ? $conf->historydir : $conf->unidir;
+
+# which dirs should be listed? 
+# the dirs may be given on commandline or we 
+# take all available dirs from the history file
+
+my $dir      = $conf->directory;
+my $pattern  = shift(@ARGV);
+$pattern     =~ s@/$@@ if $pattern; # be user-friendly
+my $date     = str2time($conf->date);
+my $depth    = $conf->depth;
+my $type     = $conf->type;
+$type = '-' if (defined $type and $type eq 'f');
+#my @table;
+my %table;
+
+unless ($dir) {
+  warn "usage: unilist -dir <dir> [pattern]\n";
+  exit 1;
+}
+
+# lookup the entries in the tocfile, save the newest found
+foreach (reverse hist_get_restorelist({ directory => $dir,
+					starttime => $date,
+					dumplevel => "[0-9]" })) {
+
+  # create dumper object using global-only config
+  my %conf = $conf->varlist('[^_]');
+  my $dumper = Unidump::GenericDumper->new
+    ({%conf,
+      dumpid => $_,
+      starttime => hist_get_starttime($_) });
+  
+  # now read the tocfile:
+  my $tocfile = $dumper->dumptocfile;
+  if(-f $tocfile) {
+    my $dumpid = $dumper->dumpid;
+    open(TOC, $tocfile) or die "cannot open tocfile: $tocfile";
+#    foreach($dumper->list) {
+    my $i;
+    while(<TOC>) {
+      s/\015//g;	# remove \r from input (should not be there)
+      chomp;
+      #my $t = substr($_, 0, 1);
+      #s/^. //;
+      my($t, $f) = split(' ', $_, 2);
+      if(defined $pattern) {
+	next unless ($f =~ /$pattern/o); # precompile pattern for speed
+      }
+      if(defined $type) {
+	next unless ($type eq $t);
+      }
+      if(defined $depth) {
+	my $n = @_ = split('/', $f);
+	next unless ($n <= $depth);
+      }
+      
+      if($table{$f}) {
+	if($table{$f} =~ /^d/ && $t eq 'd') {
+	  $table{$f} .= ",$dumpid";
+	}
+      } else {
+	$table{$f} = "$t $dumpid";
+      }
+#      push(@table, "$_\0$dumpid\0$t");
+      
+    }
+    close(TOC);
+  } else {
+    my $tapeid = hist_get_tapeid($_);
+    my $tapelabel = hist_get_tapelabel($_);
+    warn 
+      "sorry, tocfile $tocfile not found\n"
+	. "  please insert tape $tapeid (label $tapelabel) and run unitoc";
+    exit 0x08;
+  }
+}
+
+foreach (sort keys %table) {
+  print $table{$_}, " $_\n";
+}
+
+
+__END__
+
+=head1 NAME
+
+ unilist - list dumps containing data
+
+=head1 SYNOPSIS
+
+ unilist -dir <dir> [-date <date>] [-depth <n>] [-type <d|f>]  
+         [-unidump_options] [pattern]
+
+=head1 DESCRIPTION
+
+unilist prints a list of files and/or directories that can be used as
+input for unirest. This is the format of the list:
+
+ d 3cbbde0c-3336,3c9b7a23-1230 ./ju/tmp
+ - 3cbbde0c-3336 ./ju/tmp/x.pl
+
+ 1. 'd' or '-' signing a directory or a file (exact: a non-directory)
+ 2. a comma-separated list of dumps, that must be restored to get that
+    data back	 
+ 3. a path relative to the origin of the dump, starting with '.'
+
+The list can be piped into unirest, or might be edited (remove
+complete lines only). unirest will prompt for the needed tapes.
+
+   
+=head2 Options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+
+=over 2
+
+=item -dir <dir> 
+
+it is necessary to specify the mountpoint of the data to be listed. 
+
+=item -date <date> 
+
+specify the date of operation. Default is the current date (to restore
+the last backup made) valid formats are:
+
+  "Wed, 17 Apr 2002 12:52:57 +0200"
+  2002-02-15
+  2002/04/15
+
+
+=item -depth <n>
+
+specify the maximum depth of paths to list. depth 1 gives only the the
+entry '.'. 
+
+  unilist -dir /home -depth 2
+  d 3cbbde0c-3336,3c9b9c44-137c,3c9b7a23-1230 .
+  d 3cbbde0c-3336,3c9b9c44-137c,3c9b7a23-1230 ./cvs
+  d 3cbbde0c-3336,3c9b9c44-137c,3c9b7a23-1230 ./ju
+  d 3c9b7a23-1230 ./lost+found
+  d 3c9b7a23-1230 ./postfix
+
+=item -type <d|f>
+
+list directory/files only 
+
+
+=item [pattern]
+
+a perlregex that will be matched against the path.
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 tocfile not found (run unitoc)
+ 255 internal error

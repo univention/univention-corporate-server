@@ -1,0 +1,18 @@
+Source: unidump
+Section: interpreters
+Priority: optional
+Build-Depends: debhelper (>= 3.0.5), perl (>= 5.6.0-17), fileutils
+Maintainer: Joerg Ungethuem <joerg.ungethuem@enersim.de>
+Standards-Version: 3.5.1
+
+Package: unidump
+Architecture: all
+Depends: ${perl:Depends}, libappconfig-perl, libclass-accessor-perl, libdata-showtable-perl, libfile-remove-perl, libtimedate-perl, libexpect-perl (>= 1.15-2), libunix-syslog-perl, dump, tar, bash, xfsdump
+Description: UCS - Perl extension for scheduled backup and restore
+ This package contains both the perl modules and the perl scripts of
+ the UNIDUMP system.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

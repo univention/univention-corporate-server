@@ -1,0 +1,7 @@
+usr/bin
+var/lib/unidump
+var/lib/unidump/scripts
+var/lib/unidump/hd
+var/lib/unidump/log
+var/lib/unidump/toc
+etc

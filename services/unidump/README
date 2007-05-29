@@ -1,0 +1,279 @@
+UNIDUMP (Kurzanleitung)
+=======================
+
+Installation
+------------
+
+folgende Debian-Pakete werden benötigt:
+
+Aus CPAN-Modulen erstellte Pakete (dh-make-perl):
+libappconfig-perl_1.52-1_all.deb
+libclass-accessor-perl_0.17-1_all.deb
+libdata-showtable-perl_3.3-1_all.deb
+libfile-remove-perl_0.20-1_all.deb
+libuuid-perl_0.02-1_i386.deb
+libio-stty-perl_0.02-1_all.deb
+libunix-syslog-perl_0.98-1_i386.deb
+libio-tty-perl_1.01-1_i386.deb
+libexpect-perl_1.15-2_all.deb
+
+die UNIDUMP-Pakete
+libunidump-perl_0.3-1_all.deb
+unidump_0.3-1_i386.deb
+
+
+enthaltene Programme in /usr/bin:
+unidump  uniflush  unihist  unihrest  unilabel  unilib  
+unilist  uniproper  uniq  unirest  unistat  unitoc
+
+Administrationsdaten in /var/lib/unidump
+Konfigurationsfile /etc/unidump.conf
+
+
+Änderungen im Konfigurationsfile /etc/unidump.conf
+
+#globaler Teil:
+
+# Spezifikation des non-rewinding Tapedevice
+ntapedevice = /dev/nst0
+
+# zu verwendende Backup-Strategie (distrib oder simple)
+strategy = simple
+
+# der dump soll bei späteren dumps mit höherem Level berücksichtigt werden
+# dies sollte bei den regelmäßigen Sicherungen gesetzt werden
+regulardump = 1
+
+# Protokollierung in eigenes Logfile
+useunilog = 1
+
+# Protokollierung nach syslog
+usesylog = 1
+
+# Erstellung von Quick-File-Access-Dateien, soweit möglich (nur dump)
+useqfa = 1
+
+
+# Im unteren Teil werden sog. DISK spezifiziert:
+# ein beliebiger Name für die DISK (entspricht einer Partitiion)
+[home] 
+
+# der Mountpoint der Partition
+directory = /home
+
+# das zu verwendende dump-utility
+dumper = xfsdump  
+
+
+# hier das gleiche für die Root-Partition
+
+[system]
+directory = /
+dumper = ext2dump
+
+
+# Die dump-Version der debian "potato" hat einen Bug, weswegen dort
+# fogender Eintrag notwendig ist:
+eotcommand      =       "sh -c 'exit 1'"
+
+Labeln der Tapes
+----------------
+Jedes Tape erhält ein Label und eine ID. Das Label muss entsprechend der 
+Backup-Strategie gewählt werden, die ID wird automatisch generiert. 
+Wird das Label eines Tapes geändert, bleibt die ID erhalten. Für die
+Strategie "simple" werden 9 Tapes mit folgenden Labels versehen:
+Monday
+Tuesday
+Wednesday
+Thursday
+Friday_week1
+Friday_week2
+Friday_week3
+Friday_week4
+Friday_week5
+
+Zum labeln wird das Programm unilabel verwendet. Bei einem
+nicht-UNIDUMP Tape ist die Option -force notwendig:
+
+# unilabel -label Wednesday -force
+tapelabel: Wednesday
+tapeid:    3ca41ab8-0959
+tapecycle: 0
+
+
+unilabel ohne Argumente gibt das aktuelle Label, die ID und den
+Tapecounter aus:
+# unilabel
+tapelabel: Wednesday
+tapeid:    3ca41ab8-0959
+tapecycle: 0
+
+BTW: mit unilabel kann auch die Tape-ID und der Tapecounter gesetzt
+werden, was aber i.d.R. nicht gemacht werden sollte.
+# unilabel -tapeid "myfancytapeidwhichshouldbeuniq" -tapecycle 99
+
+
+Eine Liste aller jemals gelabelten Tapes wird in
+/var/lib/unidump/tapelib.txt geführt. Sie kann mit dem Programm unilib
+ausgegeben werden.
+# unilib
+                TAPEID                     TAPELABEL       CYCLE
+ ------------------------------------  ------------------  -----
+ 3ca41ab8-0959                         Wednesday               0
+
+
+
+
+
+Backup
+------
+Das Backup wird mit 
+
+# unidump
+
+gestartet. Entsprechend der Strategie muss ein richtig gelabeltes Tape
+eingelegt sein. Es werden dann alle konfigurierten DISK mit dem
+Dumplevel, der sich aus der Strategie ergibt hintereinander aufs Tape
+geschrieben. Soll stattdessen nur die DISK "home" gesichert werden,
+geht das so:
+
+# unidump home
+
+
+Über die Dumps wird Protokoll in /var/lib/unidump/history.txt
+geführt. Dieses File kann mit unihist abgefragt werden:
+
+# unihist
+
+    DUMPID      DIRECTORY  LEV     TLABEL     TIDX   TAPEID/FILE      DATE         OPTIONS
+ -------------  ---------  ---  ------------  ----  -------------  ----------  ----------------
+ 3cab658b-1a58  /home      0    archiv_haake  1     3ca21a70-2beb  2002-04-03  xfsdump,10k
+ 3cab69a0-1a58  /vmware    0    archiv_haake  3     3ca21a70-2beb  2002-04-03  ext2dump,10k
+
+
+
+Falls irgendetwas beim Zugriff auf das Tape schiefgeht (falsches tape
+oder so), wird der dump auf die 'Holdingdisk' geschrieben. Dazu muss
+im Konfigfile 
+
+holdingdisksize = irgendwas_ungleich_Null
+
+gesetzt werden. Am besten liegt die Holdingdisk auf einer eigenen
+Partition. Sonst muss sie vom Backup ausgenommen werden:
+# chattr +d /var/lib/unidump/hd    # bei ext2
+# attr -s SGI_XFSDUMP_SKIP_FILE -V 1 /var/lib/unidump/hd  # bei xfs
+
+
+Im Konfigfile kann die Option "verify" angegeben werden. Damit wird
+jeder Dump nach dem Schreiben in einem extra Lauf überprüft. ext2dump
+kann das selbst (dump -C), beim xfsdump geht das so:
+Der Dump wird wieder restauriert und dann per "diff" mit dem
+Original verglichen. Bei inkrementellen Dumps, werden nur die
+geänderten Dateien verglichen. Um Platz zu sparen, wird der Dump nicht
+komplett restauriert sondern stückweise, indem jeweils die erste Ebene
+von Unterverzeichnissen einzeln restauiert wird. Also z.B.
+/home/foo: restauriern -- verglechen -- löschen
+/home/bar: restauriern -- verglechen -- löschen
+...
+Das spart natürlich nur dann Platz, wenn tatsächlich mehr als ein
+Unterverzeichnis existiert.
+
+
+Restore
+-------
+
+restore erfolgt in 2 Schritte: 
+1) dump(s) suchen, auf dem die gewünschtem Daten sind
+2) zurückkopieren der Daten
+
+Der 1. Schritt wird mit unilist erledigt:
+Werden z.B. Daten aus dem verzeichnis (entspricht Mountpoint) /home
+vom 20.3.2002 benötigt, dann:
+
+# unilist -dir /home -date 2002-03-20
+
+... a long list here ...
+
+Ohne Datumsangabe weggelassen wird, wird das aktuelle Datum eingesetzt
+(damit bekommt man die Daten der letzten Sicherung).
+Die so erzeugt Liste ist s--e--h--r   l--a--n--g. Besser ist, eine
+zusätzliche Perl-Regular Expression anzugeben, wie z.B.:
+
+# unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" > /tmp/list
+
+Die so erzeugt Liste kann vollständig oder teilweise an unirest
+übergeben werden. unirest fordert dann die notwendigen Tapes an und
+restauriert die gewünschten Daten.
+
+# unirest  /tmp/list
+
+oder
+
+# unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
+
+i.d.R. wird mehr als ein Tape benötigt. unirest liest die Daten des
+ersten Tapes und beendet sich dann. Es wird ein Meldung ausgegeben,
+welches Tape als nächstes gebraucht wird und mit welchem Parameter
+unirest neu zu starten ist (der Programmstatus wird einfach in einem 
+Temporärfile zwischengespeichert)
+
+# unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
+To restore I will need the following dump(s) in that order:
+dump 3c9610b5-1281 on tape DEBDED72-1DD1-11B2-A37F-D46F35FFE6B9 label "archiv_home"
+the tape in drive is: 3ca41ab8-0959, label "Wednesday"
+please insert now tape DEBDED72-1DD1-11B2-A37F-D46F35FFE6B9 label "archiv_home" and restart with
+unirest -sessionfile /tmp/fileNRRXEH
+
+
+
+# unirest -archiv zip 
+oder
+# unirest -archiv tar
+oder
+# unirest -archiv star
+machen außerdem zip bzw. tar-Archive von den restaurierten Daten.
+
+
+
+
+Administration
+--------------
+
+unidump schreibt normalerweise toc-Files (Table-Of-Contents) nach
+/var/lib/unidump/toc. Diese werden zum Restaurieren einzelner Dateien
+benötigt. Sie können mit unitoc widerhergestellt werden. Einfach Tape
+einlegen und
+
+# unitoc
+
+
+Die Datei /var/lib/unidump/history.txt enthält die Informationen,
+welcher Dump auf welchem Tape ist. Diese Datei befindet sich auf jedem
+Tape als letzes tapefile (als GNU tar). Sie kann mit 
+
+# unihrest
+
+vom Tape geholt werden (unihrest schreibt nach stdout). 
+
+
+Dumps, die auf die Holdingdisk geschrieben wurden, sollten möglichst
+bald auf ein Tape kopiert werden. Dazu dient uniflush.
+
+# uniflush
+
+
+Informationen über die Konfiguration, Holdingdisk, etc können mit 
+
+# unistat 
+
+abgefragt werden.
+
+Von der Holdingdisk, dem Verzeichnis der Dump-Logfiles und der History
+(/var/lib/unidump/history.txt) können mit 
+
+# uniproper [-force]
+
+überflüssige Einträge entfernt werden. 
+
+
+

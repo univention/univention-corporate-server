@@ -1,0 +1,109 @@
+#!/usr/bin/perl -w
+# 	$Id: unisched,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use Data::ShowTable;
+use Unidump::Config;
+use Unidump::Strategy qw(nextdump);
+use AppConfig qw(:expand :argcount);
+#use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+$conf->define("html" => { ALIAS => "h|ht", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("box" => { ALIAS => "b", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("list" => { ALIAS => "l", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("count" => { ALIAS => "n", ARGCOUNT => ARGCOUNT_ONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+my %dumphash = $conf->dumphash;
+my %dump = $conf->varlist(q/_directory$/, 1);
+
+my $style="-simple";
+$style = "-html" if $conf->html;
+$style = "-box" if $conf->box;
+$style = "-list" if $conf->list;
+my $count = $conf->count || 1;
+my $sign  = $count < 0 ? -1 : 1;
+my $title = join(",", "DATE", "TAPELABEL", keys %dump);
+my $today = time;
+
+open(PIPE, "| showtable -strip $style -title=$title") 
+  or die "cannot open pipe: $!";
+
+for(my $i=0; $i<abs($count); $i++) {
+  my $time = $today + $sign*$i*24*3600;
+  my $date = POSIX::strftime("%a %d.%m.%Y", localtime($time));
+  my (undef, $label) = nextdump($conf->strategy, '', $time);
+  print PIPE "$date\t$label";
+  foreach my $i (keys %dump) {
+    my $group = $dumphash{$i}->{group};
+    my $level = nextdump($conf->strategy, $group, $time);
+    print PIPE "\t$level";
+  }
+  print PIPE "\n";
+}
+close(PIPE);
+
+__END__
+
+=head1 NAME
+
+  unisched - list which dumps are scheduled
+
+=head1 SYNOPSIS
+
+ unisched [-n <n>] [-html] [-box] [-list] [-unidump_options]
+
+=head1 DESCRIPTION
+
+unisched prints a table of the next n (default 1) day dumps. if n is
+negagive, count backwards. 
+
+ DATE      date 
+ TAPELABEL needed tape on date DATE
+ <disk>    dumplevel of <disk>
+
+
+=head2 Options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+
+=over 2
+
+=item -n <n>
+
+print the next <n> days
+
+=item -html
+
+output html code 
+
+=item -box
+
+output an ascii-text box format
+
+
+=item -list (default)
+
+output a simple list format
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

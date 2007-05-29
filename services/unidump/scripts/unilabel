@@ -1,0 +1,224 @@
+#!/usr/bin/perl -w
+# 	$Id: unilabel,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use Fcntl;
+use AppConfig qw(:expand :argcount);
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::Tapelib qw(:all);
+use Unidump::History qw(:all);
+use Unidump::Logger;
+#use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+$conf->define("tapelabel" => { ALIAS => "label",
+			       ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("tapeid" => { ALIAS => "id",
+			    ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("tapecycle" => { ALIAS => "cycle|writecycle",
+			       ARGCOUNT => ARGCOUNT_ONE });
+
+$conf->define("force" => { ARGCOUNT => ARGCOUNT_NONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || 
+  die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+$Unidump::Logger::debug = $conf->debug;
+
+my $exitcode = 0;
+my %dumphash = $conf->dumphash;
+$Unidump::Tapelib::tapelibdir = $conf->unidir;
+
+# create a new tape object
+my $tape = Unidump::Tape->new({$conf->varlist('[^_]')});
+
+# check if we have a tape
+unless($tape->check) {
+  warn "ERROR: Tape not ready\n";
+  $exitcode |= 0x10;
+  exit $exitcode;
+}
+
+$tape->init;
+
+# check if we have a UNIDUMP tape
+my $is_unidump;
+eval {
+  # this will fail on a new tape
+  $is_unidump = $tape->parse_tapelabel($tape->ddreadblock); 
+};
+if($@) {
+  unless($conf->force) {
+    print STDERR 
+      "I cannot read any data on this tape. This might be:\n",
+      " (a) This tape was written by a different drive using an",
+      " unknown format.\n",
+      " (b) This is a brand-new (or completely erased) tape.\n",
+      "If you really want to write a new label on this tape,",
+      " please use the -force option.\n";
+    $exitcode |= 0x08;
+    exit $exitcode;
+  }
+}
+$tape->rewind;
+
+
+$tape->tapeid($conf->tapeid) if defined $conf->tapeid;
+$tape->tapeid(tapeid()) unless $tape->tapeid;
+$tape->tapecycle($conf->tapecycle) if defined $conf->tapecycle;
+$tape->tapecycle(0) unless $tape->tapecycle;
+$tape->tapelabel($conf->tapelabel) if defined $conf->tapelabel;
+
+if(defined $conf->tapeid 
+   || defined $conf->tapecycle 
+   || defined $conf->tapelabel) {
+
+  # check if the tape is writable
+  if(my $err = $tape->is_writeprotected) {
+    warn("Tape is writeprotected: $err\n");
+    $exitcode |= 0x20;
+    exit $exitcode;
+  }
+
+  my (%hist, @overwrite, @useless, $key);
+  %hist = hist_lookup({tapeid => $tape->tapeid});
+  foreach $key (keys %hist) {
+    push(@overwrite, $key) if hist_dump_exist($key);
+  }
+  foreach $key (@overwrite) {
+    push(@useless, hist_get_descendants($key));
+  }
+  
+  if(@overwrite) {
+    print
+      "\n\n",
+      "WARNING +++ WARNING +++ WARNING +++ WARNING +++ WARNING +++ WARNING\n",
+      "the following exiting dumps will be overwritten by this operation:\n";
+    foreach $key (@overwrite) {
+      print "$key ", join(" ", hist_get($key)), "\n"; 
+    }
+    
+    if(@useless) {
+      print
+	"\n\n",
+	"WARNING +++ WARNING +++ WARNING +++ WARNING +++ WARNING +++ WARNING\n",
+	"the following exiting dumps will become useless by this operation:\n";
+      foreach $key (@useless) {
+	print "$key ", join(" ", hist_get($key)), "\n"; 
+      }
+    }
+    
+    unless($conf->force) {
+      print
+	"\nIf you really want to do this, please use the `-force' option\n\n";
+      $exitcode |= 0x40;
+      exit $exitcode;
+    } 
+  }
+
+  $tape->rewind;
+  $tape->ddwriteblock($tape->gen_tapelabel);
+
+  $tape->rewind;
+  $is_unidump = $tape->parse_tapelabel($tape->ddreadblock);
+
+  tapelib_insert($tape->tapeid, $tape->tapelabel, $tape->tapecycle);
+}
+
+if($is_unidump) {
+  print 
+    "tapelabel: ", $tape->tapelabel, "\n",
+    "tapeid:    ", $tape->tapeid, "\n",
+    "tapecycle: ", $tape->tapecycle, "\n";
+} else {
+  print
+    "this is not an UNIDUMP tape\n";
+}
+
+$tape->finalize;
+exit $exitcode;
+
+sub tapeid {
+  my $self = shift;
+  my $id;
+  sleep(1);
+  $id = sprintf("%08x-%04x",time(),$$); 
+  return $id;
+}
+
+__END__
+
+=head1 NAME
+
+unilabel - write/read an UNIDUMP label on tape
+
+=head1 SYNOPSIS
+
+ unilabel [-label <tapelabel>] [-id <tapeid>] [-cycle <tapecycle>] 
+	  [-force] [-unidump_options]
+
+=head1 DESCRIPTION
+
+Without any option, unilabel reads the UNIDUMP label from the
+currently mounted tape. With any of the -label, -id or -cycle option
+given, write a new label, overwriting only the specified entry. 
+
+Labeling a tape makes all data on this tape inaccessible! Depending on
+the data on the tape, this might make other dumps useless too. In this
+case, a warning is issued and the label is overwritten only if the
+-force switch was given.
+   
+It is legal and supported to re-label a tape, but never set the id as
+long as you know what you are doing! The tapeid should be a uniq
+constant during the whole lifetime of a tape. Even if the tape was
+completely overwritten (e.g. using another backup tool), the tapeid
+should not be set to the old value. Just let unilabel generate an new
+uniq id. UNIDUMP will accept this tape a new, blank tape.
+
+=head2 Options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+
+=over 2
+
+=item -label <tapelabel>
+
+write label "tapelabel". "tapelabel" should be choosen according to
+the backup strategy (see L<Unidump::Strategy>).
+
+=item -id <tapeid>
+
+write the id "tapeid". As the tapeid _must_ be uniq this should not be
+done. A uniq tapeid is generated if needed. 
+
+
+=item -cycle <tapecycle>
+
+set the cycle counter to "tapecycle" (an integer). The tapecounter is
+incremented everytime the tape is written. unidump will issue a
+warning if the tapecounter reaches 100.
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 unknown tape (not UNIDUMP)
+  16 tape drive not ready
+  32 tape is writeprotected
+  64 label not overwritten (no -force)
+ 255 internal error

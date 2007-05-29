@@ -1,0 +1,741 @@
+=head1 UNIDUMP Kurzanleitung
+
+
+=head1 Installation
+
+=over 2
+
+=item Standard-Debian Pakete:
+
+ perl
+ libappconfig-perl
+ libdata-showtable-perl
+ libtimedate-perl
+ libexpect-perl
+ libunix-syslog-perl
+ stat
+ dump
+ tar
+ bash
+
+=item Aus CPAN-Modulen erstellte Pakete
+
+ libclass-accessor-perl
+ libfile-remove-perl
+
+=item Das UNIDUMP-Paket
+
+ unidump
+
+=back
+
+
+=head1 Konfiguration
+
+UNIDUMP legt seine eigene Verzeichnisstruktur standardmäßig unter
+/var/lib/unidump an (Konfiguartionsparameter "unidir"). Das
+Konfigurationsfile ist standardmäßig /etc/unidump.conf, es wird in
+jedem Falle benötigt. Per Kommandozeilenoption kann ein anderes
+Konfigurationsfile verwendet werden (-config /my/config/file)
+
+
+=head2 Das Konfigurationsfile 
+
+Alle Optionen sind in l<Unidump::Config> dokumentiert. Das Konfigfile
+teilt sich in einen globalen oberen und disk-spezifischen unteren
+Teil. Globale Parameter können auch als Kommandozeilenoptionen
+angegeben werden. 
+
+ Flags:  
+  unidump -diskmode 
+  unidump -nodiskmode
+
+ Optionen mit Argument
+  unidump -strategy archiv
+  unidump -level 0
+
+Innerhalb der Konfigurationsfiles können alle Optionen mit Argument
+angegeben werden (bei Flags 0 oder 1). Weitere Hinweise in l<AppConfig>.
+
+=over 2
+
+=item globaler Teil des Konfigurationsfiles
+
+=over 2
+
+=item unidir /var/lib/unidump
+
+unidir gibt den Pfad zu den UNIDUMP Administrationsfiles an. Diese
+müssen auf der root-Partition liegen. Gegebenenfalls ist ein anderer
+Pfad zu wählen (z.B. /unidump).
+
+=item  ntapedevice /dev/nst0
+
+ntapedevice gibt das zu verwendente Tapedevice an. Es _muss_ das
+non-rewinding Device angegeben werden. Manche Tapes stellen
+unterschiedliche Devices mit oder ohne Hardware-Komprimierung zur
+Verfügung. In diesem Fall wird, falls Hardware-Komprimierung gewünscht
+ist, das entsprechende Device angegeben. Der Parameter "hwcompression"
+wird dann auf "0" gesetzt (!). Dies trifft z.B. auf Floppy-Tapes zu
+(Tapedevice mit Hardware-Komprinierung ist z.B. /dev/nzqft0). SCSI-DAT
+Laufwerke stellen keine speziellen komprimierenden Devices zur
+Verfügung. Bei diese muss statt dessen der Parameter "hwcompression"
+auf "1" gestzt werden. 
+
+
+=item hwcompression (Flag)
+
+Dieser Parameter schaltet die Hardware-Komprimierung bei SCSI-Tapes
+ein. 
+
+=item softcompression 0
+
+Dieser Parameter schaltet die Software-Komprimierung ein. Wie diese
+realisiert wird, ist vom verwendeten Backend abhängig. GNU-tar, Star
+und dump komprimieren intern (mit Hilfe der libz oder gzip), bei
+xfsdump muss extern mit gzip komprimiert werden. Dieses führt zu
+höheren Zugriffzeiten auf einzelne Dateien eines komprimierten
+xfs-Dump. Dieser Parameter ist auch im disk-spezifischen Teil
+zulässig. 
+
+=item strategy gfa
+
+Spezifikation der Backup-Strategie (distrib oder gfa),
+l<Unidump::Strategy>.
+
+
+=item level <undef>
+
+Unabhängig von der Strategie kann mit diesem Parameter der Dumplevel
+gesetzt werden.  Dieser Parameter sollte nur auf der Kommandozeile
+verwendet werden. 
+
+=item blocksize 60k
+
+Spezifikation der zu verwendende Blockgröße. Manche Tapes benötigen
+bestimmte Blockgrößen, z.B. arbeitet der zftape-Treiber standardmäßig
+nur mit vielfachen von 10k.  DAT-Laufwerke arbeiten i.d.R. mit
+beliebigen Blockgrößen, jedoch verbessern große Blöcke die
+Performance. Die Blockgröße darf aber zumindest bei der Verwendung von
+dump maximal 64k betragen (l<dump>). 
+
+=item regulardump (Flag)
+
+Dieser Parameter wird i.d.R. im Konfigurationsfile gesetzt. Damit
+können Dumps als Basis für spätere Dumps mit höherem Level verwendet. 
+Dies sollte bei den regelmäßigen Sicherungen gesetzt werden. In
+Ausnahmefällen können auch Dumps erstellt werden, die bei späteren
+inkrementellen Sicherungen unberücksichtigt bleiben. Für diese wird
+regulardump auf "0" gesetzt (z.B. per Kommandozeilenoption
+-noregulardump). Dieser Parameter ist auch im disk-spezifischen Teil
+zulässig. 
+
+=item useunilog (Flag)
+
+Protokollierung erfolgt in ein eigenes Logfile (unidump.log). 
+
+
+=item logfiledir /var/lib/unidump
+
+Verzeichnis in dem das eigene Logfile angelegt wird.
+
+=item usesylog (Flag)
+
+Protokollierung erfolgt zum syslogd.
+
+
+=item useqfa (Flag)
+
+Bewirkt die Erstellung von Quick-File-Access-Dateien, die den Zugriff
+auf einzelne Dateien des Archivs drastisch beschleunigen. Dieser
+Parameter ist auch im disk-spezifischen Teil zulässig. QFA-Files
+werden bisher nur von dump unterstützt. 
+
+=back
+
+
+=item disk-spezifischer Teil des Konfigurationsfiles
+
+Im unteren Teil werden sog. DISK spezifiziert. Eine Disk besteht aus
+einem Verzeichnis, das gesichert werden soll und dazugehörigen
+Spezifikationen. Das Verzeichnis muss ein Mountpunkt sein, wenn dump
+oder xfsdump verwendet wird. Jede Disk erhält einen eindeutigen
+alphanumerischen Namen. Ein disk-spezifischer Abschnitt im
+Konfigurationsfile beginnt mit dem Namen der Disk in [eckigen
+Klammern]. Es folgen Spezifikationen, die jeweils nur für diese Disk
+gelten. Die einzige notwendige Angabe ist "directory", alles anndere
+ist optional. 
+
+=over 2
+
+=item [diskname] 
+
+Der frei wählbare Name leitet einen disk-spezifischen Abschnitt
+ein. Eine Disk wird damit automatisch definiert. Der Name der Disk ist
+Case-Insensitive.
+
+
+=item directory /home
+
+Das zu sichernde Verzeichnis, i.d.R. ein Mountpoint einer
+Partition. Der Mount muss in /etc/fstab eingetragen sein.  Wenn nur
+tar zur Datensicherung verwendet wird, muss nicht 
+notwendig ein Mountpoint gewählt werden. 
+
+
+=item dumper  xfsdump
+
+Spezifikation des zu verwendende dump-utilities (dump, xfsdump, gtar).
+
+=item exclude 
+
+Liste von Dateien/Verzeichnissen, die aus dem Backup ausgenommen
+werden sollen. Die Pfade werden relativ zum zu sichernden Verzeichnis
+ausgewertet. Z.B: tmp:usr/tmp:var:tmp:var/lib/unidump/hd
+
+ ACHTUNG: diese Option wird von xfsdump ignoriert!
+
+
+
+=item writeflags 
+
+Zusätzliche Optionen, die dem Dump-Kommando übergeben
+werden.
+
+=item readflags
+
+Zusätzliche Optionen, die dem Restore-Kommando übergeben
+werden. 
+
+=item precommand
+
+Kommando, das unmittelbar vor dem Start eines Backups ausgeführt wird.
+
+=item postcommand
+
+Kommando, das unmittelbar nach dem Ende eines Backups ausgeführt wird.
+
+
+
+=back
+
+=back
+
+
+
+=head2 Kommandozeilenoptionen
+
+Allen uni* Skripte können die Optionen aus dem Konfigurationsfile auch
+als Kommandozeilenoptionen übergeben werden. Datei gilt folgende
+Syntax:
+
+ Optionen mit Argument: unixxx -option <arg>
+ z.B.: unidump -precommand 'modprobe zftape; modprobe zft-compressor'
+
+ Optionen ohne Argument (Flags): unixxx -option -nooption
+ z.B.: unidump -diskmode -noregulardump
+
+Bei globalen Optionen wird überschreibt die Kommandozeile immer die
+Angabe im Konfigfile. Bei Disk-spezifischen Optionen überschreibt die
+Kommandozeile nur den globalen Default im Konfigfile. Eine
+Disk-spezifische Angabe im Konfigfile hat immer höhere Priorität. 
+Z.B. Konfigfile:
+
+ softcompression 0
+ [home]
+ directory /home
+ [system]
+ directory /
+ softcompression 0
+
+Mit der Kommandozeile
+
+ unidump -softcompression
+
+wird lediglich /home komprimiert, / aber nicht.
+
+
+
+=head1 Labeln der Tapes
+
+Jedes Tape erhält ein Label und eine ID. Das Label muss entsprechend der 
+Backup-Strategie gewählt werden, die ID wird automatisch generiert. 
+Wird das Label eines Tapes geändert, bleibt die ID erhalten. Für die
+Strategie "gfa" werden 9 Tapes mit folgenden Labels versehen: 
+ Monday
+ Tuesday
+ Wednesday
+ Thursday
+ Friday_week1
+ Friday_week2
+ Friday_week3
+ Friday_week4
+ Friday_week5
+
+
+Zum Labeln wird das Programm B<unilabel> verwendet. 
+Mit der Option "-label" wird ein neues Label geschrieben. 
+Bei einem nicht-UNIDUMP Tape ist die Option -force notwendig:
+
+ # unilabel -label Wednesday -force
+ tapelabel: Wednesday
+ tapeid:    3ca41ab8-0959
+ tapecycle: 0
+
+
+B<unilabel> ohne Argumente gibt das aktuelle Label, die ID und den
+Tapecounter aus:
+
+ # unilabel
+ tapelabel: Wednesday
+ tapeid:    3ca41ab8-0959
+ tapecycle: 0
+
+Mit B<unilabel> kann auch die Tape-ID und der Tapecounter gesetzt
+werden, was aber i.d.R. nicht gemacht werden sollte.
+
+ # unilabel -tapeid "myfancytapeidwhichshouldbeuniq" -tapecycle 99
+ tapelabel: Wednesday
+ tapeid:    myfancytapeidwhichshouldbeuniq
+ tapecycle: 99
+
+
+Eine Liste aller jemals gelabelten Tapes wird in 
+F</var/lib/unidump/tapelib.txt> geführt. Sie kann mit dem Programm
+B<unilib> ausgegeben werden.
+
+ # unilib
+    TAPEID       TAPELABEL    CYCLE
+ -------------  ------------  -----
+ 3ca2e1fc-01a0  Thursday          7
+ 3ca21a70-2beb  archiv_haake     12
+ 3ca41ab8-0959  Wednesday         0
+
+
+
+=head1 Backup
+
+Das Backup wird mit B<unidump> gestartet. Entsprechend der Strategie
+muss ein richtig gelabeltes Tape 
+eingelegt sein. Es werden dann alle konfigurierten Disk mit dem
+Dumplevel, der sich aus der Strategie ergibt hintereinander aufs Tape
+geschrieben. Sollen stattdessen nur einzelne Disk gesichert werden,
+werden diese einfach als Parameter angegeben.
+
+ # unidump foodisk bardisk
+
+Über die Dumps wird Protokoll in F</var/lib/unidump/history.txt>
+geführt. Dieses File kann mit B<unihist> abgefragt werden:
+
+ # unihist
+
+    DUMPID     DIRECTORY LEV  TLABEL   TIDX TAPEID/FILE     DATE      OPTIONS
+ ------------- --------- --- -------- ---- ------------- ---------- ------------
+ 3cac0b59-2214 /         1   Thursday   4  3ca2e1fc-01a0 2002-04-04 ext2dump,10k
+ 3cab8a54-1de2 /         0   archiv     4  3ca21a70-2beb 2002-04-04 ext2dump,10k
+ 3cab840e-1de2 /home     0   archiv     1  3ca21a70-2beb 2002-04-04 xfsdump,10k
+ 3cac0a65-2214 /home     1   Thursday   1  3ca2e1fc-01a0 2002-04-04 xfsdump,10k
+ 3cab8819-1de2 /vmware   0   archiv     3  3ca21a70-2beb 2002-04-04 ext2dump,10k
+ 3cac0af0-2214 /vmware   1   Thursday   3  3ca2e1fc-01a0 2002-04-04 ext2dump,10k
+
+
+Falls irgendetwas beim Zugriff auf das Tape schiefgeht (falsches 
+Tape, ...), wird der dump auf die 'Holdingdisk' geschrieben. Dazu muss 
+im Konfigfile 
+
+ holdingdisksize = irgendwas_ungleich_Null
+
+gesetzt werden. Am besten liegt die Holdingdisk auf einer eigenen
+Partition. Sonst muss sie vom Backup ausgenommen werden:
+
+ # chattr +d /var/lib/unidump/hd    # bei ext2
+ # attr -s SGI_XFSDUMP_SKIP_FILE -V 1 /var/lib/unidump/hd  # bei xfs
+
+Alternativ kann sie per exclude-Option ausgenommen werden (aber nicht
+bei xfsdump). 
+
+ [system]
+ directory = /
+ exclude = var/lib/unidump/hd
+
+
+Im Konfigfile kann die Option "verify" angegeben werden. Damit wird
+jeder Dump nach dem Schreiben in einem extra Lauf überprüft. ext2dump
+kann das intern (dump -C), beim xfsdump geht das so:
+Der Dump wird wieder restauriert und dann per "diff" mit dem
+Original verglichen. Bei inkrementellen Dumps, werden nur die
+geänderten Dateien verglichen. Um Platz zu sparen, wird der Dump nicht
+komplett restauriert sondern stückweise, indem jeweils die erste Ebene
+von Unterverzeichnissen einzeln restauiert wird. Also z.B.
+/home/foo: restauriern -- verglechen -- löschen
+/home/bar: restauriern -- verglechen -- löschen
+...
+Das spart natürlich nur dann Platz, wenn tatsächlich mehr als ein
+Unterverzeichnis existiert.
+Bei Verwendung von gtar kann die Option "--verify" bei den "writeflags"
+angegeben werden. Tar verifiziert damit direkt beim Schreiben des
+Archives. Allerdings funktioniert das nicht bei allen Tapes.
+
+
+Versäumte Backups können nachgeholt werden, indem unidump explizit die
+Zeit (in Sekunden seit 1.1.1970 siehe l<date>) übergeben wird, zu der
+die Strategie ausgewertet werden soll. Z.B. zieht
+
+ unidump -starttime 1009839600
+
+die Dumps so, als wäre der 1. Jan 2002.
+
+Welche Dumps nachgeholt werden können, kann mit B<uniresume>
+festgestellt werden. 
+ 
+ uniresume -human-readable
+
+liefert eine Liste, welche Dumps nachgeholt werden können. mit 
+
+  unidump -starttime `uniresume`
+
+werden diese Dumps angestoßen. 
+
+
+=head1 Restore
+
+restore erfolgt in 2 Schritte: 
+
+=over 2
+
+=item 1 dump(s) suchen, auf dem die gewünschtem Daten sind
+
+=item 2 zurückkopieren der Daten
+
+=back
+
+
+Schritt 1 wird mit B<unilist> erledigt:
+Werden z.B. Daten aus dem Verzeichnis (entspricht Mountpoint) /home
+vom 20.3.2002 benötigt, dann:
+
+ # unilist -dir /home -date 2002-03-20
+
+ ... a long list here ...
+
+
+Wenn die Datumsangabe weggelassen wird, wird das aktuelle Datum eingesetzt
+(damit bekommt man die Daten der letzten Sicherung).
+Die so erzeugt Liste ist i.d.R. sehr lang. Besser ist, eine
+zusätzliche Perl-Regular Expression anzugeben, wie z.B.:
+
+ # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" > /tmp/list
+
+Die so erzeugt Liste kann vollständig oder teilweise an B<unirest>
+übergeben werden. B<unirest> fordert dann die notwendigen Tapes an und
+restauriert die gewünschten Daten.
+
+ # unirest  /tmp/list
+
+oder
+
+ # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
+
+i.d.R. wird mehr als ein Tape benötigt. B<unirest> liest die Daten des
+ersten Tapes und beendet sich dann. Es wird ein Meldung ausgegeben,
+welches Tape als nächstes gebraucht wird und mit welchem Parameter
+unirest neu zu starten ist (der Programmstatus wird einfach in einem 
+Temporärfile zwischengespeichert).
+
+ # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
+ To restore I will need the following dump(s) in that order:
+ dump 3c9610b5-1281 on tape DEBDED72-1DD1-11B2-A37F-D46F35FFE6B9 label "archiv_home"
+ the tape in drive is: 3ca41ab8-0959, label "Wednesday"
+ please insert now tape DEBDED72-1DD1-11B2-A37F-D46F35FFE6B9 label "archiv_home" and restart with
+ unirest -sessionfile /tmp/fileNRRXEH
+
+ # unirest -archiv zip 
+ # unirest -archiv tar
+ # unirest -archiv star
+
+machen außerdem zip bzw. tar-Archive von den restaurierten Daten.
+
+
+=head1 Recovery
+
+Das vollständige Recovery eines Systems läuft in folgenden Schritten ab. 
+
+=over 2
+
+=item 1 
+
+Booten des Systems mit einer Rescue-Disk
+
+=item 2 
+
+Vom zuletzt geschriebenen UNIDUMP Tape werden Restore-Skripte und eine
+History-Datei gelesen. Dazu kann das Skript B<unihrest> benutzt
+werden, wennn es auf der Rescue-Disk vorhanden ist. 
+
+ # unihrest -all -f /dev/nst0
+
+B<unihrest> legt mehrere Files im aktuellen Verzeichnis an, das daher
+schreibbar sein muss. Dafür kann z.B. ein ramfs verwendet werden:
+
+ # mount -t ramfs /dev/ram /mnt
+ # cd /mnt
+
+Notfalls kann aber auch eine Diskette verwendet werden:
+
+ # mke2fs /dev/fd0
+ # mount /dev/fd0 /mnt
+ # cd /mnt
+
+
+Falls B<unihrest> nicht zur Verfügung steht, können die Files auch von
+Hand restauriert werden. Sie befinden sich in einem
+nicht-komprimierten GNU-tar Archiv am Ende jedes UNIDUMP Tapes. Man
+findet dieses Archiv wie folgt:
+
+ # mt -f /dev/nst0 eod
+ # mt -f /dev/nst0 status
+ SCSI 2 tape drive:
+ File number=3, block number=0, partition=0.
+ Tape block size 0 bytes. Density code 0x13 (DDS (61000 bpi)).
+ Soft error count since last status=0
+ General status bits on (89010000):
+ EOF EOD ONLINE IM_REP_EN
+ 
+Das letzte Kommando liefert bei End-Of-Data "File number=3", d.h. es
+gibt 2 Files auf dem Tape. Damit ist das gesuchte File das 2. auf dem
+Band.
+
+  # mt -f /dev/nst0 asf 2
+  # tar -x -v -f /dev/nst0 
+
+Ggf. muss noch ein Blocksize angegeben werden. Falls dieser unbekannt
+ist, kann er wie folgt ermittelt werden:
+
+ # mt -f /dev/nst0 asf 2
+ # dd if=/dev/nst0 of=testfile bs=256k count=1
+ # ls -l testfile
+ 
+Die Größe des testfile entspricht dem Blocksize. 
+Das Verfahren beruht darauf, dass der Blocksize sicher kleiner als
+256k ist. Ergibt sich ein Blocksize von z.B. 10240, so wird dieser
+Wert noch durch 512 geteilt und dann als Option an tar übergeben.
+
+ # mt -f /dev/nst0 asf 2
+ # tar -x -v -f /dev/nst0 -b 20
+
+
+=item 3
+
+Zur Restaurierung des Root-Dateisystems wird das Skript
+B<restore_root.sh> ausgeführt. Diese fragt interaktiv ab, ob die
+Festplatte, auf der sich die Root-Partition befand, neu partitioniert
+werden soll. Die Partitionierung kann automatisch erfolgen. Falls eine
+andere Partitionierung gewählt werden soll oder die neue Festplatte
+eine andere Geometrie als die Originalplatte hat, muss die
+Partitionierung von Hand mit B<cfdisk> oder B<fdisk> erfolgen. 
+
+ # ./restore_root.sh
+
+Das Skript partitioniert die Platte, erzeugt ein Dateisystem auf der
+Root-Partition und restauriert die Daten der Root-Partition. Am Ende
+werden die noch benötigten Skripte auf die restaurierte Partition
+kopiert und diese bootfähig gemacht. 
+
+=item 4
+
+Reboot des Systems mit der restaurierten Partition als Root-Partition
+und login als root. Die Maschine bootet in den Single-User Mode.
+Die nun benötigten Skripte liegen im Wurzelverzeichnis der
+Root-Partition: 
+ 
+ # cd /
+
+=item 5
+
+Falls mehrere Platten im System eingebaut sind (und waren), können
+diese mit dem Skript B<part_nonroot.sh> neu partitioniert werden. 
+
+ # ./part_nonroot.sh
+
+
+=item 6
+
+Das Logical-Volume-Management wird mit dem Skript B<restore_lvm.sh>
+wiederhergestellt. 
+ 
+ # ./restore_lvm.sh
+
+=item 7
+
+Die Swap-Partitionen werden mit dem Skript B<restore_swap.sh>
+wiederhergestellt. 
+
+ # ./restore_swap.sh
+
+=item 8
+
+Nun können die restlichen Daten wiederhergestellt werden, wozu das
+Skript B<restore_nonroot.sh> dient.
+
+ # ./restore_nonroot.sh
+
+=item 9
+
+Das Historyfile im UNIDUMP-verzeichnis wird durch die aktuelle Version
+ersetzt. 
+
+ # cp history.txt /var/lib/unidump
+
+=item 10
+
+Reboot der Maschine.
+
+=back
+
+
+=head1 Administration
+
+=head2  toc-Files
+
+B<unidump> schreibt normalerweise toc-Files (Table-Of-Contents) nach
+F</var/lib/unidump/toc>. Diese werden zum Restaurieren einzelner Dateien
+benötigt. Sie können mit B<unitoc> widerhergestellt werden, falls sie
+versehentlich gelöscht wurden. dazu ein  Tape einlegen und B<unitoc>
+starten. B<unitoc> erzeugt dann neue toc-Files von allen Dumps des
+Tapes. 
+
+=head2 History
+
+Die Datei F</var/lib/unidump/history.txt> enthält die Informationen,
+welcher Dump auf welchem Tape ist. Diese Datei befindet sich auf jedem
+Tape als letzes tapefile (als GNU tar). Sie kann mit B<unihrest>
+vom Tape geholt werden (unihrest schreibt nach stdout). 
+B<unihrest> ist ein Shellscript, das nicht auf die UNIDUMP
+Verwaltungsdateien zugreift. Es muss daher das tapedevice explizit
+angegeben werden. 
+
+ # unihrest -f /dev/nst0
+
+
+=head2 Holdingdisk
+
+Dumps, die auf die Holdingdisk geschrieben wurden, sollten möglichst
+bald auf ein Tape kopiert werden. Dazu dient uniflush.
+
+ # uniflush
+
+
+=head2 Statusinformationen
+
+Informationen über die Konfiguration, Holdingdisk, etc können mit 
+
+ # unistat 
+
+abgefragt werden.
+Von der Holdingdisk, dem Verzeichnis der Dump-Logfiles und der History
+(F</var/lib/unidump/history.txt>) können mit 
+
+ # uniproper 
+
+überflüssige Einträge entfernt werden. 
+
+
+
+=head1 Beispiel
+
+=head2 Das Konfigfile
+
+ ntapedevice    = /dev/nst0
+ holdingdisksize= 1G
+ strategy       = gfs
+ regulardump    = 1
+ softcompression= 0
+ hwcompression  = 1
+ useqfa         = 1
+ useunilog      = 1
+ usesyslog      = 1
+ usestderr      = 0
+
+ [system]
+ dumper          = ext2dump
+ directory       = /
+ group		 = "+1"
+ exclude         = var/lib/unidump/hd:var/lock/subsys
+
+ [home]
+ dumper          = xfsdump
+ directory       = /home
+ group		 = "+1"
+
+
+=head2 Initialisierung
+
+Jedes Backup beginnt mit einem Level 0 Dump. I.d.R. sollten von allen
+Disk's diese Dumps explizit erzeugt werden. Diese Dumps können auf
+mehrere Tapes verteilt werden. Im beispiel werden zwei Tapes
+verwendet, eines für "system" und eines für "home". Dazu werden zwei
+Tapes gelabelt:
+
+ unilabel -force -label archiv_system
+
+ unilabel -force -label archiv_home
+
+Die Option -force ist notwendig, wenn nicht-UNIDUMP Tapes gelabelt
+werden. 
+
+
+Als nächstes werden Level 0 Dumps von den beiden Disk's gezogen:
+
+ unidump -strategy archiv_system system
+
+ unidump -strategy archiv_home home
+
+
+Wobei natürlich jeweils das entsprechende Tape eingelegt wird. Diese
+Archiv-Dumps werden automatisch mit Level 0 gemacht (der Dumplevel
+kann sonst auch mit der Option -level X erzwungen werden). 
+Die History sieht jetzt so aus:
+
+ unihist
+    DUMPID      DIRECTORY  LEV   TLABEL       TIDX   TAPEID/FILE    DATE         OPTIONS
+ -------------  ---------  ---  ---------     ----  -------------  ----------  -------------------
+ 3ceb6298-09a8  /          0    archiv_system 1     3ceb5afa-04b0  2002-05-22  ext2dump,64k,hw,qfa
+ 3ceb621b-09a8  /home      0    archiv_home   1     3cecb63d-02c7  2002-05-22  xfsdump,64k,hw
+
+
+=head2 regelmäßige Backups
+
+Die Tapes für die täglichen und die wöchentlichen Dumps werden
+folgendermaßen gelabelt:
+  
+ unilabel -force -label Monday
+ unilabel -force -label Tuesday
+ unilabel -force -label Wednesday
+ unilabel -force -label Thursday
+ unilabel -force -label Friday_week1
+ unilabel -force -label Friday_week2
+ unilabel -force -label Friday_week3
+ unilabel -force -label Friday_week4
+ unilabel -force -label Friday_week5
+
+Nun wird unidump täglich einmal ohne weitere Optionen gestartet,
+z.B. mit folgendem Skript per cron:
+
+ #!/bin/sh
+
+ TMP=${TMPDIR:-/tmp}/unidump.sh.$$
+ trap "rm $TMP* 2>/dev/null" EXIT
+
+ MAILTO=root
+
+ unidump > $TMP
+
+ case $?
+ 0) cat $TMP | mail -s "UNIDUMP results (OK)" $MAILTO;;
+ *) cat $TMP | mail -s "UNIDUMP results (FAILURE)" $MAILTO;;
+ esac
+
+ # EOF
+
+
+ 

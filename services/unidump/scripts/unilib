@@ -1,0 +1,97 @@
+#!/usr/bin/perl -w
+# 	$Id: unilib,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use Fcntl;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::Tapelib qw(tapelib_get);
+use AppConfig qw(:expand :argcount);
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)";
+
+$conf->define("html" => { ALIAS => "h|ht", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("box" => { ALIAS => "b", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("list" => { ALIAS => "l", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("libdir" => { ARGCOUNT => ARGCOUNT_ONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config(); 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)";
+
+#$Unidump::Tapelib::tapelibdir = $conf->unidir;
+$Unidump::Tapelib::tapelibdir =
+  $conf->tapelibdir ? $conf->tapelibdir : $conf->unidir;
+
+my $style="-simple";
+$style = "-html" if $conf->html;
+$style = "-box" if $conf->box;
+$style = "-list" if $conf->list;
+my $title = "TAPEID,TAPELABEL,CYCLE";
+
+my %h = tapelib_get();		# fetch the whole library
+
+open(PIPE, "| showtable -break=' '  -strip $style -title=$title") 
+  or die "cannot open pipe: $!";
+my ($key, $val);
+foreach $key (sort {$h{$a} cmp $h{$b}} keys %h) {
+  $val = $h{$key};
+  print PIPE "$key  $val\n";
+}
+close(PIPE);
+
+__END__
+
+=head1 NAME
+
+unilib - list all known tapes 
+
+=head1 SYNOPSIS
+
+unilib  [-html] [-box] [-list] [-unidump_options]
+
+=head1 DESCRIPTION
+
+unilib prints a table of all known tapes. Columns are:
+
+   TAPEID    a uniq ID of the tape
+   TAPELABEL the label of the tape (see L<Unidump::Strategy>)
+   CYCLE     a counter showing the age of the tape
+
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+
+=head2 Output format options
+
+=over 2
+
+=item -html
+
+output html code 
+
+=item -box
+
+output an ascii-text box format
+
+
+=item -list (default)
+
+output a simple list format
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

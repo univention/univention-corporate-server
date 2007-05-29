@@ -1,0 +1,216 @@
+#!/usr/bin/perl -w
+#
+# ToDo:
+# uniflush -clean
+# clean the history.txt from obsolete entrys, which are no longer on the Holdingdisk
+# (the function fromholdingproper.sh)
+# ---------------------------------------------------------------------------------- 
+# 	$Id: uniflush,v 1.4 2003/11/11 15:02:10 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::History qw(:all);
+use Unidump::Tapelib qw(:all);
+use AppConfig qw(:expand :argcount);
+use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+$Unidump::Logger::debug = $conf->debug;
+$Unidump::History::historydir = $conf->unidir;
+$Unidump::Tapelib::tapelibdir = $conf->unidir;
+
+my $exitcode = 0;
+my %dumps_to_flush;
+my %dumps_on_hd = hist_lookup({tapeidx => '[^\d]'});
+foreach my $dumpid (keys %dumps_on_hd) {
+  if(hist_dump_is_obsolete($dumpid)) {
+    # do something here
+    next;
+  }
+  my $tlabel = hist_get_tapelabel($dumpid);
+  push(@{$dumps_to_flush{$tlabel}}, $dumpid);
+}
+
+
+# check if there is anything to do
+unless(%dumps_to_flush) {
+  print 
+    "there are currently no dumps to flush on tape\n";
+  $exitcode |= 0x08;
+  exit $exitcode;
+}
+
+# create a new tape object
+my $tape = Unidump::Tape->new({$conf->varlist('[^_]')});
+
+# check if we can access a tape
+unless($tape->check) {
+  print 
+    "ERROR: Tape not ready; ",
+    "please insert one of the following tapes in drive and restart\n";
+  foreach (keys %dumps_to_flush) {
+    print "\ttape labeled \"$_\"\n";
+  }
+  $exitcode |= 0x10;
+  exit $exitcode;
+}
+   
+# initialize the tape, read the tape header
+$tape->init;
+unless($tape->parse_tapelabel($tape->ddreadblock)) {
+  print 
+    "the tape in drive does not look like an UNIDUMP tape\n",
+    "please insert one of the following tapes in drive and restart\n";
+  foreach (keys %dumps_to_flush) {
+    print "\ttape labeled \"$_\"\n";
+  }
+  $tape->finalize;
+  $exitcode |= 0x10;
+  exit $exitcode;
+}
+
+
+# check if we have a proper tape
+unless($dumps_to_flush{$tape->tapelabel}) {  
+  print 
+    "there is currently no dump to flush on this tape\n",
+    "please insert one of the following tapes in drive and restart\n";
+  foreach (keys %dumps_to_flush) {
+    print "\ttape labeled \"$_\"\n";
+  }
+  $tape->finalize;
+  $exitcode |= 0x20;
+  exit $exitcode;
+}
+
+
+my $tidx  = 0;
+my $tlabel = $tape->tapelabel;
+print "flushing dumps to tape labeled \"$tlabel\"\n";
+
+foreach my $dumpid (@{$dumps_to_flush{$tlabel}}) {
+  # which tapeidx should we use?
+  unless($tidx) {
+    my $stime = hist_get_starttime($dumpid);
+    my %dumps_on_tape = hist_lookup({tapelabel => $tlabel,
+				     after => $stime - 1});
+    foreach my $did (keys %dumps_on_tape) {
+      my $tmp = hist_get_tapeidx($did);
+      next unless $tmp =~ /^\d$/;
+      $tidx = $tmp if($tmp > $tidx); # isn't there a "max" function???
+    }
+  }
+  
+  if($tidx == 0) {
+    # as we will overwrite the whole tape, we increase the 
+    # tapecounter here
+    $tape->rewind;
+    $tape->tapecycle($tape->tapecycle + 1);
+    $tape->ddwriteblock($tape->gen_tapelabel);
+    tapelib_insert($tape->tapeid, $tape->tapelabel, $tape->tapecycle);
+  }
+
+  $tidx++;
+  print "\tflushing dump $dumpid on tape \"$tlabel\" file $tidx\n";
+  $tape->fileno($tidx);
+  my $dd = $conf->dd;
+  my $of = $conf->ntapedevice;
+  my @opts = split(/,/, hist_get_options($dumpid));
+  my $block = '';
+  if(grep { /^\d+/ } @opts) {
+    my @bs = grep { /^\d+/ } @opts;
+    $block = "bs=@bs";
+  }
+  my $if = hist_get_tapeid($dumpid);
+  my $rc = system("$dd $block if=$if of=$of 2> /dev/null");
+  if($rc) {
+    print "\tflush () FAILED with error $rc: $!\n";
+    print "\tcommand was: $dd $block if=$if of=$of 2> /dev/null\n";
+    $exitcode |= 0x40;
+    exit $exitcode;
+  } else {
+    print "\tflush done, ok\n";
+  }
+
+  my @dump = hist_get($dumpid);
+  $dump[3] = $tidx;
+  $dump[4] = $tape->tapeid;
+  hist_insert($dumpid, @dump);
+
+  hist_history_save($conf->gtar, $conf->ntapedevice, $conf->unidir);
+
+# $tape->dump_history();
+# wo kommt diese Funktion denn her ???
+# ich kommentier die mal aus, da sie nur eine Fehlermeldung erzeugt
+  
+# aber hier kann das Tape geschlossen werden ...
+  $tape->finalize;
+  $tape->eject;
+}
+
+# remove the finished tape from the hash and ask for
+# the next tape unless we are done
+delete($dumps_to_flush{$tlabel});
+if(%dumps_to_flush) {  
+  print 
+    "please insert one of the following tapes in drive and restart\n";
+  foreach (keys %dumps_to_flush) {
+    print "\ttape labeled \"$_\"\n";
+  }
+  $tape->finalize;
+  $exitcode |= 0x80;
+  exit $exitcode;
+}
+
+
+exit $exitcode;
+
+__END__
+
+=head1 NAME
+
+uniflush - flush dumps from holdingdisk to tape
+
+=head1 SYNOPSIS
+
+uniflush [-unidump_options]
+
+=head1 DESCRIPTION
+
+uniflush reads the history file for dumps that was gone to
+holdingdisk. These dumps are flushed to disk. unidump prompts for a
+proper tape. All common unidump options are legal (but might be
+useless). As dumps on holdingdisk are softcompressed, this holds even
+for the flushed dump. It is possible to use hardwarecompression
+anyway. No QFA-file will be generated (quick-file-access, see
+L<dump>).  
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 no dumps to flush
+  16 tape drive not ready
+  32 wrong tape in drive
+  64 flush command failed
+ 128 flush was ok, next tape needed
+ 255 internal error

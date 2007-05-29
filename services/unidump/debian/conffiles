@@ -1,0 +1,3 @@
+/etc/unidump.conf
+/var/lib/unidump/history.txt
+/var/lib/unidump/tapelib.txt

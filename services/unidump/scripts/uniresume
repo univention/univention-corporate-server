@@ -1,0 +1,140 @@
+#!/usr/bin/perl -w
+# 	$Id: uniresume,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use Time::Local;
+use Date::Parse;
+use Unidump::Config;
+use Unidump::History qw(hist_lookup);
+use Unidump::Strategy qw(nextdump);
+use AppConfig qw(:expand :argcount);
+use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+$conf->define("date" => { DEFAULT => scalar localtime(),
+			  ARGCOUNT => ARGCOUNT_ONE,
+			  VALIDATE => sub { 
+			    shift; 
+			    return(str2time(@_) ? 1 : 0); 
+			  }});
+
+$conf->define("human" => { ARGCOUNT => ARGCOUNT_NONE, 
+			   ALIAS => "human-readable|h" });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+$Unidump::History::historydir = $conf->unidir;
+
+# calculate unixtimes 
+my $time = str2time($conf->date);
+my $day_start = timelocal(0, 0, 0, (localtime($time))[3..5]);
+my $day_end   = $day_start + 3600*24 - 1;
+
+# which disk should be dumped? 
+# take all disks from the config file
+my %dumphash = $conf->dumphash;
+my @dumplist;
+my %dumplevel;
+my %dumplabel;
+while(my($k, $v) = each %dumphash) {
+  if($v) {
+    my ($level, $label) = nextdump($v->{strategy}, $v->{group}, $time);
+    next if $label eq '<none>';
+    my %h = hist_lookup({directory => $v->{directory},
+			 dumplevel => $level,
+			 tapelabel => $label,
+			 after     => $day_start - 1,
+			 before    => $day_end + 1});
+#    print strftime("%Y-%m-%d %T\n", localtime($day_start));
+#    print strftime("%Y-%m-%d %T\n", localtime($day_end));
+#    print Dumper \%h;
+    push(@dumplist, $k) unless %h;
+    $dumplevel{$k} = $level;
+    $dumplabel{$k} = $label;
+  }
+}
+
+
+
+if($conf->human) {
+  $time = localtime($time);
+  print "date of dump to resume: $time\n";
+  foreach my $k (@dumplist) {
+    print 
+      "dump: \"$k\" level ", $dumplevel{$k}, 
+      " tapelabel \"",  $dumplabel{$k}, "\"\n";
+  }
+} else {
+  print "$time @dumplist\n";
+}
+
+exit 0;
+
+__END__
+
+=head1 NAME
+
+  unireume - resume which dump should had be done
+
+=head1 SYNOPSIS
+
+ uniresume [-human-readable] [-date <date>] [-unidump_options]
+ unidump -starttime `uniresume`
+
+=head1 DESCRIPTION
+
+resume which dump should had be done on <date> (default today) but was
+not done or failed. This can be used to recreate a dump that was
+failed. 
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=over 2
+
+=item -human-readable
+
+print results in human-readable form. 
+
+=back
+
+
+
+=head2 EXAMPLE
+
+Think of four disk that are defined: system, home, foo, bar
+Today is Tuesday, the dumps of system and home were fine last
+night. They are on the tape "Monday". Dumps foo and bar failed for
+some reason. Running 
+ 
+ uniresume -date '2002-03-10'
+
+will produce '1015714800 foo bar' (with a different number, as this is
+the unixtime). To recreate this dumps, label a new
+tape "Monday_a" (or something else starting with "Monday".  Do not use
+your regular "Monday" tape for this! Now run 
+
+ unidump -starttime 1018994400 foo bar
+
+This will create the two dumps, making the strategy evaluated with the
+given time. Note, that the content of the dumps is the current,  _not_
+that of the given date. 
+   
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

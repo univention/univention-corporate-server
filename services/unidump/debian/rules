@@ -1,0 +1,125 @@
+#!/usr/bin/make -f
+#-*- makefile -*-
+# Made with the aid of dh_make, by Craig Small
+# Sample debian/rules that uses debhelper. GNU copyright 1997 by Joey Hess.
+# Some lines taken from debmake, by Christoph Lameter.
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+export DH_COMPAT=3
+
+PACKAGE=$(shell dh_listpackages)
+
+ifndef PERL
+PERL = /usr/bin/perl
+endif
+
+ifndef DESTDIR
+DESTDIR=..
+endif
+TMP     =`pwd`/debian/$(PACKAGE)
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+
+	# Add here commands to compile the package.
+	$(PERL) Makefile.PL INSTALLDIRS=vendor
+	$(MAKE) OPTIMIZE="-O2 -g -Wall"
+	$(MAKE) -C doc
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+
+	# Add here commands to clean up after the build process.
+	-$(MAKE) realclean
+	-$(MAKE) -C doc realclean
+
+	dh_clean
+
+install: 
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	# Add here commands to install the package into debian/tmp.
+	#$(MAKE) install DESTDIR=`pwd`/debian/tmp
+	$(MAKE) install PREFIX=$(TMP)/usr
+
+
+
+#       install -m 755 scripts/unidump    $(TMP)/usr/bin
+#       install -m 755 scripts/uniflush   $(TMP)/usr/bin
+#       install -m 755 scripts/unihist    $(TMP)/usr/bin
+#       install -m 755 scripts/unihrest   $(TMP)/usr/bin
+#       install -m 755 scripts/unilabel   $(TMP)/usr/bin
+#       install -m 755 scripts/unilib     $(TMP)/usr/bin
+#       install -m 755 scripts/unilist    $(TMP)/usr/bin
+#       install -m 755 scripts/uniproper  $(TMP)/usr/bin
+#       install -m 755 scripts/unirest    $(TMP)/usr/bin
+#       install -m 755 scripts/uniresume  $(TMP)/usr/bin
+#       install -m 755 scripts/unisched   $(TMP)/usr/bin
+#       install -m 755 scripts/unistat    $(TMP)/usr/bin
+#       install -m 755 scripts/unitoc     $(TMP)/usr/bin
+
+	install -m 755 -d $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/dump_wrapper $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/restore_wrapper $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/exit0 $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/exit1 $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/exit2 $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/restore_root.sh $(TMP)/var/lib/unidump/scripts
+	install -m 644 scripts/functions.sh $(TMP)/var/lib/unidump/scripts
+	install -m 755 scripts/holdingproper.sh $(TMP)/var/lib/unidump/scripts
+
+	install -m 644 unidump.conf $(TMP)/etc
+	install -m 644 magic $(TMP)/var/lib/unidump
+
+	touch $(TMP)/var/lib/unidump/history.txt
+	touch $(TMP)/var/lib/unidump/tapelib.txt
+
+	install -m 755 -d $(TMP)/usr/share/doc/unidump
+	install -m 644 doc/README.* $(TMP)/usr/share/doc/unidump
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+#	dh_testversion
+	dh_testdir
+	dh_testroot
+	dh_installdocs 
+	dh_installexamples
+	dh_installmenu
+#	dh_installemacsen
+#	dh_installinit
+	dh_installcron
+	dh_installman
+#	dh_undocumented
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+	dh_perl 
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb --destdir=$(DESTDIR)
+
+source diff:                                                                  
+	@echo >&2 'source and diff are obsolete - use dpkg-source -b'; false
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary

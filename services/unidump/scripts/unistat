@@ -1,0 +1,153 @@
+#!/usr/bin/perl -w
+# 	$Id: unistat,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use AppConfig qw(:expand :argcount);
+use Unidump::Config;
+#use Unidump::Tapelib qw(:all);
+use Unidump::History qw(:all);
+use Data::Dumper;
+
+# prototypes
+sub header( $ );
+sub print_config( $ );
+sub print_hd( $ );
+
+# this script knows a few options that are unknown to the others
+my $statconf = AppConfig->new;
+$statconf->define("config|conf|c!");
+$statconf->define("holdingdisk|hd|h!");
+$statconf->args() || die "error parsing commandline\n";
+
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+unless($statconf->config || $statconf->holdingdisk) {
+  $statconf->config(1);
+  $statconf->holdingdisk(1);
+}
+
+$Unidump::History::historydir = $conf->unidir;
+
+print_config($conf) if $statconf->config;
+print_hd($conf) if $statconf->holdingdisk;
+
+
+
+sub header ($) {
+  my $txt = shift;
+  my $l1 = length($txt)/2;
+  my $l2 = length($txt) - $l1;
+  my $str =  "+" x 80 . "\n";
+  $str .= " " x $l1 . $txt . " " x $l2 . "\n";
+  $str .= "+" x 80 . "\n";
+}
+
+
+sub print_config ($) {
+  my $conf = shift;
+  my %conf;
+  print header("here is your unidump configuration");
+  %conf = $conf->varlist(q/^[^_]+$/);
+  print Data::Dumper->Dump([\%conf], ["*GLOBAL"]);
+
+  my %dumphash = $conf->dumphash;
+  foreach(sort keys %dumphash) {
+    %conf = $conf->varlist("^$_" . "_", 1);
+    print Data::Dumper->Dump([\%conf], ["*$_"]);
+  }
+  print "\n";
+}
+
+sub print_hd($) {
+  my $conf = shift;
+  my $hd = $conf->holdingdisk;
+  my $dumptime = sub { 
+    unless(hist_get($_[0])) { return 0; }
+    return hist_get_starttime($_[0]); 
+  };
+  print header("here is your holdingdisk");
+  my @dumplist = <$hd/*.dump>;
+  if(@dumplist) {
+    printf 
+      "%42s %10s %10s\n", "DUMP" . " " x 10, "DATE   ", "COMMENT";
+  } else {
+    print(" (holdingdisk is empty)\n");
+  }
+  foreach(sort @dumplist) {
+    s@.*/@@; 
+    s@\.dump$@@;
+    my $name = $`;
+    next unless $name;
+    my $date = &$dumptime($name);
+    my $need;
+    if($name =~ /^[\da-fA-F-]+$/) {
+      unless(hist_get($name)) {
+	$need = "not found in history";
+      } else {
+	if(hist_dump_is_obsolete($name)) {
+	  $need = "is obsolete, not needed anymore";
+	} else {
+	  if(hist_get_tapeidx($name) =~ /^\d$/) {
+	    $need = "has been flushed to tape \"" . hist_get_tapelabel($name)
+	      . "\", not needed anymore";
+	  } else {
+	    $need = "should be flushed on tape " . hist_get_tapelabel($name);
+	  }
+	}
+      }
+    } else {
+      $need = "not an UNIDUMP dump";
+    }
+    printf 
+      "%42s %s %s\n", "$name.dump", 
+    POSIX::strftime("%Y-%m-%d", localtime($date)), "($need)";
+  }
+  print "\n";
+}
+
+
+__END__
+
+=head1 NAME
+
+  unistat - print UNIDUMP status
+
+=head1 SYNOPSIS
+
+  unistat [-config] [-holdingdisk]
+
+=head1 DESCRIPTION
+
+unistat prints the current configuration and the contents of the
+holdingdisk.  
+   
+=head2 Options
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=over 2
+
+=item -config 
+
+print configuration only
+
+=item -holdingdisk
+
+print contents of holdingdisk only
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

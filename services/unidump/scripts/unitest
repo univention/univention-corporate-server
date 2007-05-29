@@ -1,0 +1,25 @@
+#!/usr/bin/perl -w
+# 	$Id: unitest,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use Fcntl;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::History qw(hist_lookup);
+use AppConfig qw(:expand :argcount);
+
+my $conf = Unidump::Config->new;
+$conf->default || warn "error in default config (BAD!)\n";
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  warn "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || warn "error parsing commandline (parse2)\n";
+
+$conf->_dump;

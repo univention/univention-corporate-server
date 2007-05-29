@@ -1,0 +1,367 @@
+#!/usr/bin/perl
+# 	$Id: unirest,v 1.2.8.1.16.1 2005/12/02 11:50:51 ingo Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use AppConfig qw(:expand :argcount);
+#use UUID;
+use POSIX;
+use Fcntl;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::Dumper;
+use Unidump::History qw(:all);
+use Data::Dumper;
+use vars qw($VERSION);
+$VERSION = do{my @r = split(" ",qq$Revision: 1.2.8.1.16.1 $ );$r[1];};
+
+# these variables are read in by "do", so they cannot be lexical
+use vars qw($archiv $history %resttable @dumplist);
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+#$conf->define("uuid" => { ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("sessionfile" => { ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("archiv" => { ARGCOUNT => ARGCOUNT_ONE });
+$conf->define("history" => { ARGCOUNT => ARGCOUNT_NONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+# setting up the global logger 
+$Unidump::Logger::unilogfile = $conf->logfile;
+$Unidump::Logger::usestderr = $conf->usestderr;
+$Unidump::Logger::useunilog = $conf->useunilog;
+$Unidump::Logger::usesyslog = $conf->usesyslog;
+$Unidump::Logger::debug = $conf->debug;
+$Unidump::History::historydir = $conf->unidir;
+
+#my $uuid;
+my $restoredir = $conf->restoredir;
+$archiv = $conf->archiv;
+$history = $conf->history;
+
+my $exitcode = 0;
+my $sessionfile;
+if($conf->sessionfile) {
+  $sessionfile = $conf->sessionfile;
+} else {
+  do { 
+    $sessionfile = POSIX::tmpnam; 
+  } until sysopen(F, $sessionfile, O_RDWR | O_CREAT | O_EXCL);
+  chmod 0600, $sessionfile;
+  close(F);
+}
+
+#  ensure the restoredir exist and is writable
+unless(-d $restoredir) {
+  unless(mkdirhier($restoredir, 0700)) {
+    warn "cannot create restoredir $restoredir: $!\n";
+    $exitcode |= 0x08;
+    exit $exitcode;
+  }
+}
+  
+my $rebuildmode;
+unless($conf->sessionfile) {
+  while(<>) {			# read the list of files to restore
+    chomp;
+    s/^[dbclf-]\s+//;
+    my ($dumpid, $file) = split(' ', $_, 2);
+    foreach (@_ = split(/,/, $dumpid)) {
+      push(@{$resttable{$_}}, $file);
+    }
+  }
+
+  @dumplist = sort { 
+    hist_get_starttime($a) <=>  hist_get_starttime($b);
+  } keys %resttable;
+
+
+  # in case of rebuilding a whole filesystem (which means restore ".")
+  # we have to restore our dumps in reverse order (oldes first)
+  # restore will be called with the "-r" swich (instead of "-x")
+  # this is done by the GenericDumper if we give an undef value
+  # as restorelist
+ 
+  while(my($k, $v) = each %resttable) {
+    if(grep { /^\.$/ } @$v) {
+      $rebuildmode = 1;
+      $resttable{$k} = [];
+    }
+  }
+
+  if($rebuildmode) {
+    @dumplist = reverse @dumplist;
+  }
+  
+  print "To restore I will need the following dump(s) in that order:\n";
+  foreach my $did (reverse @dumplist) {
+    my $tid    = hist_get_tapeid($did);
+    my $tidx   = hist_get_tapeidx($did);
+    my $tlabel = hist_get_tapelabel($did);
+    if($tidx =~ /^\d+$/) {
+      print  "dump $did on tape $tid label \"$tlabel\"\n";
+    } else {
+      print  "dump $did on holdingdisk (no tape needed)\n";
+    }
+  }
+  
+  # write the data we need in the next run to sessionfile
+  open(F, "> $sessionfile") or die "cannot open sessionfile: $!";
+  chmod 0600, $sessionfile;
+  print F Data::Dumper->Dump
+    ([$archiv, $history, \%resttable, \@dumplist], 
+     [qw(archiv history *resttable *dumplist)]);
+  close(F);
+}
+
+
+# eval the sessionfile (here we get restoretable, dumplist and tapelist
+if(-f $sessionfile) {
+  do($sessionfile);
+  if($@) {
+    warn "error while reading $sessionfile: $@";
+    $exitcode |= 0x40;
+    exit $exitcode;
+  }
+}
+
+
+
+while(my $dumpid = pop(@dumplist)) {
+   
+  my $tape;
+  my $tid      = hist_get_tapeid($dumpid);
+  my $tidx     = hist_get_tapeidx($dumpid);
+  my $tlabel   = hist_get_tapelabel($dumpid);
+  my @dumpopts = split(/,/, hist_get_options($dumpid));
+  
+  warn "dumpid: $dumpid  dumpopts: @dumpopts";
+
+  # create a new dumper object
+  my $dumper = Unidump::Dumper->new({$conf->varlist('[^_]'),
+				     dumper => shift(@dumpopts)});
+
+  $dumper->dumpid($dumpid);
+  $dumper->diskmode(0);
+  $dumper->softcompression(0);
+  $dumper->internalcompression(0);
+  $dumper->blocksize(0);
+
+  unless($tidx =~ /^\d+$/) {	# dump is on disk
+    $dumper->diskmode(1);
+    $dumper->dumpfile($tid);	# tapeid contains the dumpfile here
+  } else {
+    $dumper->tapeidx($tidx);
+  }
+  
+  $dumper->softcompression(1) if grep { /^z|gzip$/ } @dumpopts;
+  $dumper->internalcompression(1) if grep { /^z$/ } @dumpopts;
+  $dumper->useqfa(1) if grep { /^qfa$/ } @dumpopts;
+  if(my @bs = grep { /^\d+[kMGT]?$/ } @dumpopts) {
+    $dumper->blocksize(shift @bs);
+  }
+  
+  unless($dumper->diskmode) {
+    $tape = Unidump::Tape->new({$conf->varlist('[^_]'),
+				hwcompression => 0});
+    $tape->hwcompression(1) if grep { /^hw$/ } @dumpopts;
+
+    # give the dumper access to the tape
+    $dumper->tape($tape);
+    
+    # check if we can access a tape
+    unless($tape->check) {
+      print 
+	"tape drive not ready\n",
+	"please insert tape $tid label \"$tlabel\" in drive and restart with\n",
+	"$0 -sessionfile $sessionfile\n";
+      $exitcode |= 0x10;
+      exit $exitcode;
+    }
+    
+    # initialize the tape, read the tape header
+    $tape->init;
+    unless($tape->parse_tapelabel($tape->ddreadblock)) {
+      print 
+	"the tape in drive does not look like an UNIDUMP tape\n",
+	"please insert tape $tid label \"$tlabel\" in drive and restart with\n",
+	"$0 -sessionfile $sessionfile\n";
+      $tape->finalize;
+      $exitcode |= 0x20;
+      exit $exitcode;
+    }
+
+    # check we have the right tape
+    unless($tape->tapeid eq $tid) {
+      my ($i, $l) = ($tape->tapeid, $tape->tapelabel);
+      print
+	"the tape in drive is: $i, label \"$l\"\n",
+	"please insert now tape $tid label \"$tlabel\" and restart with\n",
+	"$0 -sessionfile $sessionfile\n";
+      $tape->finalize;
+      $exitcode |= 0x20;
+      exit $exitcode;
+    }
+
+  }
+
+  # restore the data
+  my($rc, $mesg) = $dumper->restore(@{$resttable{$dumpid}});
+  if($rc) {
+    print
+      "restore of dump $dumpid (tape $tid, label \"$tlabel\") FAILED\n",
+      "\tthe restore program exit code: $rc mesg: $mesg\n";
+    $tape->finalize unless $dumper->diskmode;
+    $exitcode |= 0x80;
+    exit $exitcode;
+  }
+  $tape->finalize unless $dumper->diskmode;
+
+  # resume what we have done
+  delete($resttable{$dumpid});
+
+  # write the data we need in the next run to sessionfile
+  open(F, "> $sessionfile") or die "cannot open sessionfile: $!";
+  chmod 0600, $sessionfile;
+  print F Data::Dumper->Dump
+    ([$archiv, $history, \%resttable, \@dumplist], 
+     [qw(archiv history *resttable *dumplist)]);
+  close(F);
+
+}
+
+unlink($sessionfile);
+
+# we are done with our restore-job
+# now we might buid an archiv if requested
+if($archiv) {
+  my $arc = "restore";
+  chdir $restoredir or die "cannot cd to $restoredir: $!";
+ SWITCH: for($archiv) {
+   /^zip$/  and do { 
+     my $cmd = $conf->zip;
+     if(system("$cmd -q -r -m $arc .")) {
+       undef $arc;
+     } else {
+       $arc="restore.zip";
+     }
+   };
+   /^star$/ and do { 
+     my $cmd = $conf->star;
+     $arc="restore.tar.gz";
+     if(system("$cmd -c -acl -H=exustar -f $arc -sparse -z .")) {
+       undef $arc;
+     }
+   };
+   /^g?tar$/ and do { 
+     my $cmd = $conf->gtar;
+     $arc="restore.tar.gz";
+     if(system("$cmd -c -f $arc -S -z --remove-files .")) {
+       undef $arc;
+     }
+   };
+   /^tgz$/ and do { 
+     my $cmd = $conf->gtar;
+     $arc="restore.tgz";
+     if(system("$cmd -c -f $arc -S -z --remove-files .")) {
+       undef $arc;
+     }
+   };
+ }
+  
+  if($arc) {
+    print 
+      "RESTORE DONE your resulting archive is $restoredir/$arc\n",
+      "PLEASE NOTE all data in /tmp will be wiped out during the next boot\n";
+  } else {
+    print 
+      "RESTORE DONE but the creation of an archiv failed\n",
+      "you migth get happy with $restoredir\n",
+      "PLEASE NOTE all data in /tmp will be wiped out during the next boot\n";
+  }
+  
+} else {
+  print 
+    "RESTORE DONE your resulting directory is $restoredir\n",
+    "PLEASE NOTE all data in /tmp will be wiped out during the next boot\n";
+}
+
+exit $exitcode;
+
+sub mkdirhier {
+  my ($dir, $mask) = @_;
+  $mask = 0777 unless $mask;
+  my $path = "";
+  foreach(@_ = split('/', $dir)) {
+    $path .= "$_/";
+    unless(-d $path) {
+      mkdir $path, $mask or return;
+    }
+  }
+  return $path;
+}
+
+#  sub newuuid {
+#    my($u, $s);
+#   UUID::generate($u);
+#   UUID::unparse($u, $s);
+#    return $s;
+#  }
+
+
+__END__
+
+=head1 NAME
+
+  unirest - restore data
+
+=head1 SYNOPSIS
+
+ unirest [-archiv <tar|gtar|star|tgz|zip>] [-unidump_options] <list_file>
+ unilist [...] | unirest [-archiv <tar|gtar|star|zip>] [-unidump_options] 
+ unirest -sessionfile <file>
+
+=head1 DESCRIPTION
+
+unirest restores the data specified by a list in the unilist output
+format (see L<unilist>). If the list is not given as file argument it
+will be read from stdin. The resulting data might be packed into an 
+tar or zip archiv. 
+   
+=head2 Options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=over 2
+
+=item -archiv <tar|gtar|star|tgz|zip>
+
+pack restored data into an archiv of the given format. Note, that some
+information might be lost in this step (ACL's, extended attributes).
+
+=item -sessionfile <file>
+
+unirest prompts to be restart using this option.
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 cannot create restoredir
+  16 tape drive not ready
+  32 wrong tape in drive
+  64 error while reading sessionfile
+ 128 restore failed
+ 255 internal error

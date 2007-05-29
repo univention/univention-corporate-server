@@ -1,0 +1,124 @@
+#!/usr/bin/perl -w
+# 	$Id: unihist,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use Fcntl;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::History qw(hist_lookup);
+use AppConfig qw(:expand :argcount);
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+$conf->define("html" => { ALIAS => "h|ht", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("box" => { ALIAS => "b", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("list" => { ALIAS => "l", ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("historydir" => { ARGCOUNT => ARGCOUNT_ONE });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+#$Unidump::History::historydir = $conf->unidir;
+$Unidump::History::historydir =
+  $conf->historydir ? $conf->historydir : $conf->unidir;
+
+my $style="-simple";
+$style = "-html" if $conf->html;
+$style = "-box" if $conf->box;
+$style = "-list" if $conf->list;
+my $title = 
+  "DUMPID,DIRECTORY,LEV,TLABEL,TIDX,TAPEID/FILE,DATE,OPTIONS";
+
+open(PIPE, "| showtable -break=' '  -strip $style -title=$title") 
+  or die "cannot open pipe: $!";
+  
+my $dirre = (".*");
+if(@ARGV) {
+  $dirre = join("|", grep { s@(?<=.)/$@@;s/.*/^$&\$/ } @ARGV);
+}
+
+my (%hist, $key, $val, %skey);
+%hist = hist_lookup({directory => $dirre});
+while(($key, $val) = each %hist) {
+  my ($dir, $time) = (split(' ', $val))[0,5];
+  $skey{$key} = "$dir " . POSIX::strftime("%Y-%m-%d", localtime($time));
+}
+
+foreach $key (sort { $skey{$a} cmp $skey{$b} } keys %hist) {
+  $val = $hist{$key};
+  my ($dir, $level, $tlabel, $tidx, $tid, $time, $opt) = 
+    split(' ', $val);
+  my $date = POSIX::strftime("%Y-%m-%d", localtime($time));
+  $opt = "" unless defined $opt;
+  print PIPE "$key $dir $level $tlabel $tidx $tid $date $opt\n";
+}
+close(PIPE);
+
+
+__END__
+
+=head1 NAME
+
+unihist - print the UNIDUMP backup history
+
+=head1 SYNOPSIS
+
+unihist [-html] [-box] [-list] [-unidump_options] [directory ...]
+
+=head1 DESCRIPTION
+
+unihist reads the UNIDUMP history file and prints the result to
+stdout. Columns are:
+
+  DUMPID      a uniq ID of the dump which is also the dumplabel
+  DIRECTORY   the mountpoint of the dumped disk
+  LEV         the dumplevel [0-9]
+  TLABEL      the label of the tape (see L<Unidump::Strategy>)
+  TIDX        the index of the tapefile, starting with 0
+  TAPEID/FILE a uniq ID of the tape
+  DATE        the date of the dump
+  OPTIONS     a comma-separated optionstring:
+              1st entry is the dumper (ext2dump, xfsdump, gtar, star)
+	      gzip dump was piped through gzip
+	      z dump was compressed by an internal method (e.g. libz)
+	      qfa a quick-file-access table was generated
+	      [0-9]+[kM] the blocksize of the dump (e.g. 64k)
+
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=head2 Output format options
+
+=over 2
+
+=item -html
+
+output html code 
+
+=item -box
+
+output an ascii-text box format
+
+
+=item -list (default)
+
+output a simple list format
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

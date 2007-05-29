@@ -1,0 +1,89 @@
+#!/bin/sh
+# 	$Id: unihrest,v 1.4.24.1 2006/03/08 13:13:11 martin Exp $	
+
+tape=/dev/tape
+blocksize="";
+what="history";
+
+while [ "X$1" != "X" ];
+do
+    case $1 in
+    -f)
+	tape=$2;
+	shift 2;
+	;;
+    
+    -f*)
+	tape=`echo $1 | sed -e 's/^-f//'`;
+	shift;
+	;;
+    -b)
+	blocksize="$2";
+	shift 2;
+	;;
+    
+    -b*)
+	blocksize=`echo $1 | sed -e 's/^-b//'`;
+	shift;
+	;;
+	
+    -a|-all)
+	what="all";
+	shift;
+	;;
+    *)
+	echo "unknown option: $1";
+	shift;
+	exit 1;
+	;;
+    esac
+done
+
+case "$blocksize" in
+[0-9]*k)
+    blocksize=`echo $blocksize | sed -e 's/k//'`;
+    blocksize=`expr $blocksize \* 1024`;
+    #blocksize=$((blocksize * 1024));
+    ;;
+[0-9]*M)
+    blocksize=`echo $blocksize | sed -e 's/M//'`;
+    blocksize=`expr $blocksize \* 1048576`;
+    #blocksize=$((blocksize * 1048576));
+    ;;
+esac
+if [ "X$blocksize" != "X" ]; then
+    blocksize=`expr $blocksize / 512`;		# tar's unit is 512 byte
+    #blocksize=$((blocksize / 512));
+fi
+
+
+# modprobe auf st
+#modprobe st 2>/dev/null 1>&2 || {
+#    echo "Sorry, konnte Modul für Streamer-Tape (st) nicht laden.";
+#    echo "Bitte laden Sie die entsprechenden SCSI Module und starten sie $0 dann erneut.";
+#    echo "Stop.";
+#}
+
+#mt -f $tape eod
+#file=`mt -f $tape status | sed 's/, */\
+#/g' | sed -n '/^file.*number/I { s/.*\([0-9][0-9]*\).*/\1/i; p; }'`
+#file=$((file - 1));
+
+file=0
+mt -f $tape rewind
+while mt -f $tape fsf 2> /dev/null; do
+    file=`expr $file + 1`
+    #file=$((file + 1));
+done
+file=`expr $file - 1`
+#file=$((file - 1));
+
+mt -f $tape asf $file
+case "$what" in
+    "history") tar -x -O -f $tape $blocksize ./history.txt;;
+    "all")     tar -x -f $tape $blocksize;;
+esac
+mt -f $tape rewind
+
+
+

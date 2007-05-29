@@ -1,0 +1,184 @@
+#!/usr/bin/perl -w
+# 	$Id: uniproper,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use POSIX;
+use AppConfig qw(:expand :argcount);
+use Unidump::Config;
+use Unidump::Tapelib qw(:all);
+use Unidump::History qw(:all);
+use Data::Dumper;
+
+# prototypes
+sub clear_hd ( $ );
+sub clear_log ( $ );
+sub clear_toc ( $ );
+sub clear_hist ( $ );
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+$conf->define("force" => { ARGCOUNT => ARGCOUNT_NONE });
+$conf->define("dryrun" => { ARGCOUNT => ARGCOUNT_NONE, ALIAS => 'dry-run|dry' });
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+# setting up the global history
+$Unidump::History::historydir = $conf->unidir;
+
+
+clear_hd($conf);
+clear_log($conf);
+clear_toc($conf);
+clear_hist($conf);
+
+
+
+
+sub clear_hd ($) {
+  my $conf  = shift;
+  my $force = $conf->force;
+  my $dryrun= $conf->dryrun;
+  my $hd    = $conf->holdingdisk;
+  print "removing obsolete dumps from holdingdisk:\n";
+  foreach my $file (<$hd/*.dump>) {
+    my $id = do { $file =~ m@.*/([^/]+)\.dump@; $1; };
+    next unless $id =~ /^[a-fA-F0-9\-]+$/;
+    unless(hist_get($id) || $force) {
+      print "unknown file $file (no dump $id in history, use -force to unlink it)\n";
+      next;
+    }
+    unless(hist_get_tapeidx($id) =~ /^\d$/) {
+      next unless hist_dump_is_obsolete($id);
+    }
+    print "unlink $file ...";
+    unless($dryrun) {
+      print(do{ unlink $file } ? " ok\n" : " FAILED: $!\n");
+    } else {
+      print " not done (dryrun)\n";
+    }
+  }
+  print "\n";
+}
+
+sub clear_log ($) {
+  my $conf  = shift;
+  my $force = $conf->force;
+  my $dryrun = $conf->dryrun;
+  my $logdir= $conf->unidir . "/log";
+  print "removing obsolete logfiles:\n";
+  foreach my $file (<$logdir/*.*log>) {
+    my $id = do { $file =~ m@.*/([^/]+)\..*log@; $1; };
+    next unless $id =~ /^[\da-fA-F-]+$/;
+    unless(hist_get($id) || $force) {
+      print "unknown file $file (no dump $id in history, use -force to unlink it)\n";
+      next;
+    }
+    next unless hist_dump_is_obsolete($id);
+    print "unlink $file ...";
+    unless($dryrun) {
+      print(do{ unlink $file } ? " ok\n" : " FAILED: $!\n");
+    } else {
+      print " not done (dryrun)\n";
+    }
+  }
+  print "\n";
+}
+
+sub clear_toc ($) {
+  my $conf  = shift;
+  my $force = $conf->force;
+  my $dryrun = $conf->dryrun;
+  my $tocdir= $conf->unidir . "/toc";
+  print "removing obsolete toc/qfa-files:\n";
+  foreach my $file (<$tocdir/*.toc $tocdir/*.qfa>) {
+    my $id = do { $file =~ m@.*/([^/]+)\.((toc)|(qfa))@; $1; };
+    next unless $id =~ /^[\da-fA-F-]+$/;
+    unless(hist_get($id) || $force) {
+      print "unknown file $file (no dump $id in history, use -force to unlink it)\n";
+      next;
+    }
+    next unless hist_dump_is_obsolete($id);
+    print "unlink $file ...";
+    unless($dryrun) {
+      print(do{ unlink $file } ? " ok\n" : " FAILED: $!\n");
+    } else {
+      print " not done (dryrun)\n";
+    }
+  }
+  print "\n";
+}
+
+sub clear_hist ($) {
+  my $conf  = shift;
+  my $force = $conf->force;
+  my $dryrun = $conf->dryrun;
+  my @gonners;
+  foreach my $dump (hist_get()) {
+    push(@gonners, $dump) if hist_dump_is_obsolete($dump);
+  }
+  print "removing dumps from historyfile: ...\n";
+  foreach my $dump (@gonners) {
+    printf("%-42s  %-16s  %-16s  %10s\n",
+	   $dump, hist_get_directory($dump),
+	   hist_get_tapelabel($dump),
+	 POSIX::strftime("%Y-%m-%d", 
+			 localtime(hist_get_starttime($dump))));
+  }
+  if(@gonners) {
+    unless($dryrun) {
+      print(do{ hist_delete(@gonners) } ? " ... ok\n" : " ... FAILED: $!\n");
+    } else {
+      print " ... not done (dryrun)\n";
+    }
+  } else {
+    print " (nothing to do)\n";
+  }
+  print "\n";
+}
+
+__END__
+
+=head1 NAME
+
+ uniproper - remove obsolete entries from unidir
+
+=head1 SYNOPSIS
+
+ uniproper [-dryrun] [-force] [-unidump_options]
+
+=head1 DESCRIPTION
+
+uniproper removes everything that is obsolete from the UNIDUMP
+directory. That is logfiles,  toc/qfa-files, entries from historyfile
+for dumps that were overwritten. 
+   
+=head2 Options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=over 2
+
+=item -dryrun
+
+uniproper does not touch anything if this option is given.
+
+=item -force
+
+uniproper removes even dumpfiles and logfiles that are not found in the history.
+
+
+=back
+
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+ 255 internal error

@@ -1,0 +1,22 @@
+Document: unidump
+Title: Debian unidump Manual
+Author: <insert document author here>
+Abstract: This manual describes what unidump is
+ and how it can be used to
+ manage online manuals on Debian systems.
+Section: unknown
+
+Format: debiandoc-sgml
+Files: /usr/doc/unidump/unidump.sgml.gz
+
+Format: postscript
+Files: /usr/doc/unidump/unidump.ps.gz
+
+Format: text
+Files: /usr/doc/unidump/unidump.text.gz
+
+Format: HTML
+Index: /usr/doc/unidump/html/index.html
+Files: /usr/doc/unidump/html/*.html
+
+  

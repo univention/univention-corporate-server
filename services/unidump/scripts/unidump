@@ -1,0 +1,342 @@
+#!/usr/bin/perl
+# 	$Id: unidump,v 1.4 2003/11/04 17:34:36 sven Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::Dumper;
+use Unidump::Ext2Dumper;
+use Unidump::History qw(hist_history_save);
+use Unidump::Logger qw(logmessage logmessage_debug);
+use Unidump::Tapelib qw(tapelib_set_tapecycle tapelib_insert);
+use Data::Dumper;
+
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+# setting up the global logger 
+$Unidump::Logger::usestderr = $conf->usestderr;
+$Unidump::Logger::unilogfile = $conf->logfile;
+$Unidump::Logger::useunilog = $conf->useunilog;
+$Unidump::Logger::usesyslog = $conf->usesyslog;
+$Unidump::Logger::debug = $conf->debug;
+$Unidump::History::historydir = $conf->unidir;
+$Unidump::Tapelib::tapelibdir = $conf->unidir;
+
+# create a new tape object
+my $tape = Unidump::Tape->new({$conf->varlist('[^_]')});
+
+my (undef, $tlabel) = Unidump::Strategy::nextdump
+  ($conf->strategy, "", $conf->starttime);
+if($tlabel eq "<none>") {
+  $! = 8;
+  die "strategy does not require a dump today\n";
+}
+
+ TAPESETUP: {
+   unless($conf->diskmode) {
+   
+     # check if we can access a tape
+     unless($tape->check) {
+       $conf->diskmode(1);
+       logmessage("ERROR: Tape not ready: enter diskmode");
+       last TAPESETUP;
+     }
+   
+     # check if the tape is writable
+     if($tape->is_writeprotected) {
+       $conf->diskmode(1);
+       logmessage("ERROR: Tape is writeprotected: enter diskmode");
+       $tape->offline;
+       last TAPESETUP;
+     }
+     
+     # initialize the tape, read the tape header
+     $tape->init;
+     unless($tape->parse_tapelabel($tape->ddreadblock)) {
+       $conf->diskmode(1);
+       logmessage("ERROR: Not a UNIDUMP Tape: enter diskmode");
+       $tape->offline;
+       last TAPESETUP;
+     }
+     $tape->rewind;
+     
+     # check if we got the correct tape
+     (undef, $tlabel) = Unidump::Strategy::nextdump
+       ($conf->strategy, $conf->group, $conf->starttime);
+     unless ($tape->tapelabel =~ /^$tlabel/) {
+       # wrong tape, do not overwrite this!
+       $conf->diskmode(1);
+       logmessage
+	 ("DUMP: enter diskmode: expected tape $tlabel, found tape " 
+	  . $tape->tapelabel);
+       $tape->offline;
+       last TAPESETUP;
+     }
+     $tape->rewind;
+     
+     # we increase the tapecycle counter an write back the header
+     $tape->tapecycle($tape->tapecycle + 1);
+     $tape->ddwriteblock($tape->gen_tapelabel);
+     
+     # the new tapecycle goes to tapelib also
+     #tapelib_set_tapecycle($tape->tapeid, $tape->tapecycle);
+     tapelib_insert($tape->tapeid, $tape->tapelabel, $tape->tapecycle);
+
+   }
+ }				# last TAPESETUP goes here
+
+# which disk should be dumped? 
+# the disks may be given on commandline or we 
+# take all disks from the config file
+my %dumphash = $conf->dumphash;
+my @dumplist;
+if(@ARGV) {
+  foreach my $i (@ARGV) {
+    push(@dumplist, lc($i));
+  }
+} else {
+  while(my($k, $v) = each %dumphash) {
+    push(@dumplist, $k) if $v;
+  }
+}
+
+my $rootrestorecmd="restore -r -f " . $conf->ntapedevice;
+
+# we check all disks before we start any dump:
+foreach (@dumplist) {
+  unless(defined $dumphash{$_}) {
+    $! = 2;
+    die "no such DISK:  $_\n";
+  }
+  my $dumper = Unidump::Dumper->new($dumphash{$_});
+  $dumper->check;
+  undef($dumper);
+}
+
+# this is the main loop: process all dumps
+my $dump;			# this holds the dump title 
+my (%dumprc, %dumpmesg, %comparerc, %comparemesg); # the results
+my $tapeidx = 1;		# the file number on tape: 
+				# file 0 holds the label, so 
+				# the first dump is file 1 
+
+ DUMPLOOP: foreach $dump (@dumplist) {
+   # create a new dumper object
+   my $dumper = Unidump::Dumper->new($dumphash{$dump});
+
+   # give the dumper object access to the tape
+   $dumper->tape($tape);
+
+   # apply global-only options by overwriting any 
+   # disk-specific options
+   $dumper->ntapedevice($conf->ntapedevice);
+   $dumper->strategy($conf->strategy);
+   $dumper->diskmode($conf->diskmode) if $conf->diskmode;
+
+   # the strategy gives us the desired tapelabel
+   # and the dumplevel to perfom
+   $dumper->apply_strategy;
+   $dumper->dumplevel($conf->level) if defined $conf->level;
+
+   # we need a statement label here 
+ DUMP:
+   
+   # get the fileno (note: xfsdump writes more than a single file on tape!)
+   # skip this if we are in diskmode
+   unless ($dumper->diskmode) {
+     $tape->fileno($tapeidx) 
+       unless(scalar($tape->fileno) == $tapeidx);
+     $dumper->tapeidx(scalar $tape->fileno);
+     $dumper->tapeid($tape->tapeid); # the tapeid  will be saved in history
+   } else {
+     $dumper->tapeidx("-");  
+     # save the name of the dumpfile instead of tapeid
+     $dumper->tapeid($dumper->dumpfile); 
+   }
+  
+   if($dumper->diskmode){
+     $dumper->softcompression(1);
+     $dumpmesg{"$dump"} = "dump to holdingdisk: ";
+     unless($dumper->holdingdisk_ok) {
+       if($dumper->holdingdisksize) {
+	 $dumpmesg{"$dump"} .= "insufficient space, dump ABORTED!"; 
+	 logmessage("DUMP: insufficient space, dump ABORTED!"); 
+       } else {
+	 $dumpmesg{"$dump"} .= "no holdingdisk defined, dump ABORTED!"; 
+	 logmessage("DUMP: no holdingdisk defined, dump ABORTED!"); 
+       }
+       $dumprc{"$dump"}   = -1;
+       next DUMPLOOP;
+     } else {
+       $dumpmesg{"$dump"} .= $dumper->dumpfile; 
+     }
+   } else {
+     my ($id, $label) = ($dumper->tapeid, $dumper->tapelabel);
+     $dumpmesg{"$dump"} =  "dump to tape: $id $label";
+   }
+
+   # perfom another self-check (should be useless, we did it)
+   $dumper->check;
+   $dumper->init;
+
+
+   # do it!
+   my($rc, $mesg) = $dumper->dump;
+   $dumprc{"$dump"}   =  $rc;
+   $dumpmesg{"$dump"} .= " ($mesg)"; 
+   unless($dumper->diskmode) {
+     $tapeidx = scalar $tape->fileno;
+     $dumper->tape->rewind;
+   } 
+
+#   # check if parent dump exist
+#   my $ptime = $dump->parenttime;
+
+   unless($rc) {		# dump was fine, go ahead
+     # generate a tape listing
+     unless ($dumper->diskmode) {
+       $tape->fileno($dumper->tapeidx);
+     }
+     $dumper->tocfile;
+     if($dumper->verify) {
+       $tape->fileno($dumper->tapeidx) unless $dumper->diskmode;
+       ($rc, $mesg) = $dumper->compare;
+       $comparerc{"$dump"}   =  $rc;
+       $comparemesg{"$dump"} .= $mesg; 
+     }
+   } else {			# an error occured, should we try diskmode?
+     unless($dumper->diskmode) {
+       $tape->fileno($tapeidx);	# space back where be startet
+       $dumper->diskmode(1);
+       $dumper->dumpid(0);	# force a new dumpid
+       $dumper->dumpid();
+       $dumpmesg{"$dump"} = "dump failed, retry dump to holdingdisk:\n";
+       goto DUMP;
+     }
+   }
+
+   $tape->fileno($tapeidx) unless $dumper->diskmode;
+   $dumper->finalize;
+ }				# end of DUMPLOOP
+
+unless($conf->diskmode) {
+  hist_history_save($conf->gtar, $conf->ntapedevice, $conf->unidir);
+  $tape->finalize;
+  $tape->eject;
+}
+
+my $exitcode = 0;
+my $mark = "+" x 6;
+print "\n $mark UNIDUMP Backup results ",
+  scalar localtime($conf->starttime), " $mark\n\n";
+
+if(($tape->tapecycle||0) > 100) {
+  my $i = $tape->tapeid;
+  my $l = $tape->label;
+  my $c = $tape->tapecycle;
+  print 
+    " NOTE tape $i (label $l) reached $c writecycles\n",
+    " you should replace it soon.";
+  $exitcode |= 0x10;
+}
+
+foreach $dump (@dumplist) {
+  if($dumprc{$dump} == 0 and $dumpmesg{$dump} =~ /holdingdisk/) {
+    print 
+      " WARNING some dumps went to holdingdisk, flush them to tape soon!\n\n";
+    last;
+    $exitcode |= 0x20;
+  }
+}
+
+foreach $dump (@dumplist) {
+  my $ok = "OK";
+  if($dumprc{$dump} != 0) {
+    $ok = "FAILURE";
+    $exitcode |= 0x40;
+  }
+  printf "%10s %7s --> %s\n\n", $dump, $ok, $dumpmesg{$dump};
+}
+
+print "\n\n";
+foreach $dump (@dumplist) {
+  if(defined $comparerc{$dump}) {
+    my $ok = "OK";
+    if($comparerc{$dump} != 0) {
+      $ok = "FAILURE";
+      $exitcode |= 0x80;
+    }
+    print " $mark verify output of disk $dump ($ok): $mark\n";
+    print $comparemesg{$dump}, "\n\n";
+  }
+}
+
+exit $exitcode;
+
+__END__
+
+=pod
+
+=head1 NAME
+
+  unidump - a backup program
+
+=head1 SYNOPSIS
+
+  unidump [-unidump_options]
+
+=head1 DESCRIPTION
+
+  C<unidump> starts the backup process. All option can be given on
+  commandline or in the configuration file (F</etc/unidump.conf> by
+  default). 
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+=head2 Configfile
+
+The configfile is a simple ascii textfile using <key>/<value>
+pairs. Lines starting with # (hash) are comments. The configfiles is
+parsed using the perl C<AppConfig> module. See L<Unidump::Config> for a
+discription of all valid config file entries.
+
+
+=head2 Variables
+
+=over 2
+
+=item UNIDUMP_PERL 
+
+If set to a valid directory, the Unidump perl modules will be searched
+there preceding the standard perl @INC.
+
+=back
+
+
+  
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 strategy does not require a dump today
+  16 tapecycle > 100
+  32 dumps went to holdingdisk
+  64 dump failed
+ 128 verify failed (diffs found)
+ 255 internal error
+

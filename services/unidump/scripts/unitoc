@@ -1,0 +1,265 @@
+#!/usr/bin/perl -w
+# 	$Id: unitoc,v 1.2 2003/09/08 07:14:37 thorsten Exp $	
+use lib $ENV{UNIDUMP_PERL} || @INC;
+use strict;
+use Fcntl;
+use Unidump::Config;
+use Unidump::Tape;
+use Unidump::Dumper;
+use Unidump::GenericDumper;
+use Unidump::History qw(:all);
+use AppConfig qw(:expand :argcount);
+#use Data::Dumper;
+
+my $conf = Unidump::Config->new;
+$conf->default || die "error in default config (BAD!)\n";
+
+# read commandline because of -f <configfile> 
+$conf->args([grep {!/^-.*_/} @ARGV]) || die "error parsing commandline (parse1)\n";
+
+# read configfile
+$conf->file($conf->config()) || 
+  die "error parsing configfile " . $conf->config() . "\n"; 
+
+# read commandline again to overwrite configfile options
+$conf->args() || die "error parsing commandline (parse2)\n";
+
+# setting up the global logger 
+$Unidump::Logger::debug = $conf->debug;
+$Unidump::History::historydir = $conf->unidir;
+
+my $exitcode = 0;
+# create a new tape object
+my $tape = Unidump::Tape->new({$conf->varlist('[^_]')});
+
+# check if we can access a tape
+unless($tape->check) {
+  warn "ERROR: Tape not ready\n";
+  $exitcode |= 0x10;
+  exit $exitcode;
+}
+
+# initialize the tape, read the tape header
+$tape->init;
+eval {
+  # this will fail on a new tape
+  $tape->parse_tapelabel($tape->ddreadblock); 
+};
+if($@) {
+  warn "tape header not readable, not a UNIDUMP tape?";
+  $exitcode |= 0x20;
+  exit $exitcode;
+}
+
+print STDERR "found tape ", $tape->tapeid, " label \"", 
+  $tape->tapelabel, "\"\n";
+
+# build a list @file of dumpid's
+my @file = ($tape->tapeid);	# ordered list of dumps on tape
+my %file = hist_lookup({tapeid => $tape->tapeid});
+print STDERR "the following dump(s) should be on this tape:\n";
+foreach my $k (keys %file) {
+  unless(hist_dump_exist($k)) {
+    delete($file{$k});
+    next;
+  }
+  $file[hist_get_tapeidx($k)] = $k;
+  print STDERR " $k";
+}
+print STDERR "\n";
+
+
+# this is the main loop: process all dumps that we expect on tape
+foreach my $dumpid (keys %file) {
+  
+  my $tapeidx = hist_get_tapeidx($dumpid);
+
+  # space to the beginning of the next file
+  eval {
+    $tape->fileno($tapeidx); 
+  };
+  if($@) {
+    warn "ERROR: cannot access dump $dumpid\n";
+    $exitcode |= 0x08;
+    next;
+  }
+
+  my(@options, $dumptyp, $blocksize);
+  @options = split(/,/, hist_get_options($dumpid));
+  $dumptyp = shift(@options);
+  if(my @bs = grep { /^\d+[kMGT]?$/ } @options) {
+    $blocksize = shift @bs;
+    $tape->blocksize($blocksize);
+  }
+
+  # create a dumper object 
+  my $dumper = Unidump::Dumper->new({$conf->varlist('[^_]'),
+				     dumper => $dumptyp,
+				     dumpid => $dumpid,
+				     tapeidx => $tapeidx,
+				     tape => $tape});
+  $dumper->softcompression(1) if grep { /^(z|gzip)$/ } @options;
+  if(grep { /^hw$/ } @options) {
+    $dumper->hwcompression(1);
+    $dumper->tape->enable_hwcompression;
+  }
+  
+  my ($t_dumptype, $t_dumpid, $t_compression) = $tape->dumptype;
+  unless($t_dumpid eq $dumpid) {
+    warn "WARNING: expected dump $dumpid, found $t_dumpid (skipping)\n";
+    $exitcode |= 0x20;
+    next;
+  }
+
+  print STDERR "found dump $dumpid, fetching filelist ...";
+
+  if($dumper->tocfile) {
+    print STDERR " ERROR\n";
+  } else {
+    print STDERR " done\n";
+  }
+  
+}
+
+$tape->finalize;
+exit $exitcode;
+
+
+__END__
+
+# this is the main loop: process all dumps on tape
+my $last_dumpid = "";
+my $tapeidx = 1;		# the file number on tape: 
+				# file 0 holds the label, so 
+				# the first dump is file 1 
+
+
+READLOOP: for(;;) {
+
+  last if $tape->is_eod;
+
+  # space to the beginning of the next file
+  # we do this inside an error handler, because the tape
+  # might throw an error if we reached the EOT
+  eval {
+    $tape->fileno($tapeidx) 
+      unless(scalar($tape->fileno) == $tapeidx);
+  };
+  last if $@;
+
+  # fetch what we expect from history
+  my(@h_options, $h_dumptyp);
+  if($file[$tapeidx]) {
+    @h_options = hist_get_options($file[$tapeidx]);
+    $h_dumptyp = shift(@h_options);
+    if(my @bs = grep { /^\d+[kMGT]?$/ } @h_options) {
+      $tape->blocksize(shift @bs);
+    }
+  }
+  
+  # guess the filetype
+  my ($dumptype, $dumpid, $compression) = $tape->dumptype; 
+  unless ($dumptype) {
+    print STDERR "unknown tapefile, skipping it\n";
+    $tapeidx++;
+    eval {
+      $tape->fileno("+1");
+    };
+    last if $@;
+    next READLOOP;
+  }
+  if ($dumptype eq "empty") {
+    # empty tapefile, probably End-Of-Tape, let me see
+    $tapeidx++;
+    eval {
+      $tape->fileno("+1");
+    };
+    if($@) {
+      if ($tape->is_eod) {
+	print STDERR "reached End-Of-Tape, rewinding it\n";
+	$tape->rewind;
+	last READLOOP;
+      }
+      # ERROR, but not at EOD? no idea. 
+      die "ERROR: unecpected error: $@\n";
+    }
+    # seems there is an empty tapefile in the middle of the tape
+    print STDERR "WARNING seems like an empty file on the tape\n";
+    next READLOOP;
+  }
+
+  if(($dumpid eq $last_dumpid) && ($dumptype eq "xfsdump")) {
+    $tapeidx++;
+    $tape->fileno("+1");
+    next READLOOP;
+  }
+
+  if($dumptype eq "gtar" and $tapeidx > scalar(@file)) { # probably history file
+    $tapeidx++;
+    $tape->fileno("+1");
+    next READLOOP;
+  }
+  
+  unless($dumpid eq $file[$tapeidx]) {
+    print STDERR 
+      "WARNING: expected dump $file[$tapeidx], "
+	. "found $dumpid at tapefile $tapeidx\n";
+  }
+
+  print STDERR "found dump $dumpid, fetching filelist ...";
+
+  my $dumper = Unidump::Dumper->new({$conf->varlist('[^_]'),
+				     dumper => $dumptype,
+				     dumpid => $dumpid,
+				     softcompression => $compression,
+				     tapeidx => $tapeidx,
+				     tape => $tape});
+  
+  if($dumper->tocfile) {
+    print STDERR " ERROR\n";
+  } else {
+    print STDERR " done\n";
+  }
+  undef($dumper);
+  
+  
+  $tapeidx++;
+  eval {
+    $tape->fileno("+1");
+  };
+  last if $@;
+
+  $last_dumpid = $dumpid;
+}
+
+$tape->finalize;
+
+__END__
+
+=head1 NAME
+
+  unitoc - recreate table-of-contents file
+
+=head1 SYNOPSIS
+
+  unitoc [-unidump_options]
+
+=head1 DESCRIPTION
+
+unitoc reads the currently mounted tape and recreates the toc-files of
+all dumps. 
+
+=head2 Commandline options
+
+Global options as specified in L<Unidump::Config> might be given
+as commandline options. 
+
+   
+=head1 EXIT CODES
+
+   1 error parsing command line or error parsing config file
+   2 no such DISK defined
+   8 cannot access tapefile
+  16 tape drive not ready
+  32 wrong dump on tape
+ 255 internal error

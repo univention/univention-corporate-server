@@ -1,0 +1,187 @@
+#!/bin/sh 
+
+# define global variables
+DISK=;
+SFDISKFLAGS="--Linux";
+VGNAME="vg02";
+PARTTABLE=`cat <<EOF
+@PARTTABLE@
+EOF`;
+
+
+# the partition table (unit is MB) 
+# create 3 partitions: SWAP, Linux (for rootfs), LVM
+##  /dev/hdb1          0+     99     100-    32999+  82  Linux swap
+##  /dev/hdb2   *    100     720     621    204930   83  Linux
+##  /dev/hdb3        721    1009     289     95370   8e  Linux LVM
+##  /dev/hdb4          0       -       0         0    0  Empty
+
+LVMPART=3;
+
+#the next block would create the LVM partition on hdX5 (extended)
+##  /dev/hdb1          0+     99     100-    32999+  82  Linux swap
+##  /dev/hdb2        100    1009     910    300300    5  Extended
+##  /dev/hdb3          0       -       0         0    0  Empty
+##  /dev/hdb4          0       -       0         0    0  Empty
+##  /dev/hdb5        100+   1009     910-   300299+  8e  Linux LVM
+#  LVMPART=5;
+#  PARTTABLE=`cat <<EOF
+#      0,  32,  82,   -;\n
+#       ,    ,   5,   -;\n
+#  ;\n
+#  ;\n
+#       ,    ,  8e,   -;\n
+#  EOF`;
+
+
+
+# define return values 
+OK=0; FAIL=1;
+
+# internal use only
+MYSELF=`basename $0`;
+
+sfdisk() { /sbin/sfdisk $SFDISKFLAGS "$@"; }
+
+# usage
+usage() {
+    echo "usage: unirebuild <disk>" 1>&2;
+}
+
+error_exit() {
+    # usage: error_exit <rc> <mesgstr>
+    local rc;
+    local msg;
+    rc=$1; msg=$2;
+    if [ "X$msg" != "X" ]; then
+	echo -e "$MYSELF: $msg" >&2;
+    fi
+    exit $rc;
+}
+
+usage_error() {
+    # usage: usage_error [rc]
+    local rc;
+    rc=1;
+    if [ "$#" -gt 0 ]; then 
+	rc=$1;
+    fi
+    usage;
+    error_exit $rc;
+}
+
+
+# check if the argument is a valid disk device
+is_disk_device() {
+    # usage: id_disk_device <disk>
+    local disk;
+    local rc;
+    disk=$1; rc=$FAIL;
+    sfdisk -n -g $disk >/dev/null 2>&1 && rc=$OK;
+    return $rc;
+} 
+
+# this function checks if there is anything on disk
+is_disk_clean() {
+    # usage: is_disk_clean <disk>
+    local disk;
+    local i;
+    local id;
+    disk=$1;
+    for i in 1 2 3 4; do
+	id=`sfdisk --print-id $disk $i 2>/dev/null`;
+	if [ "$id" != "0" ]; then
+	    return $FAIL;	# return FAIL if we found any primary partition
+	fi
+    done
+    return $OK;
+}
+
+# create a logical volume
+create_lv() {
+    # usage: create_lv <volumegroup> <lvname> <lvsize>
+    local vg=$1;
+    local name=$2;
+    local size=$3;
+    local rc=$FAIL;
+    lvcreate -n $name -L $size $vg && rc=$OK;
+    return $rc;
+}
+
+create_fs() {
+    # usage: create_fs  <volumegroup> <lvname> <dummy> <fstype> [<opts>, ...]
+    local vg=$1;
+    local lvname=$2;
+    local fstype=$4;
+    shift 4;
+    local rc=$FAIL;
+    mkfs -t $fstype "$@" /dev/$vg/$lvname && rc=$OK;
+    return $rc;
+}
+
+
+# main starts here
+if [ "$#" != 1 ]; then
+    usage_error;
+fi
+DISK=$1;
+
+# check if we got a valid disk device
+is_disk_device "$DISK";
+if [ "$?" != "$OK" ]; then
+    error_exit 2 "$DISK is not a valid disk device";
+fi
+
+# we do not overwrite any partition table, check this
+is_disk_clean "$DISK";
+if [ "$?" != "$OK" ]; then
+    error_exit 3 "cannot overwrite existing partition table on $DISK";
+fi
+
+# write the new partition table
+echo -e -n $PARTTABLE | sfdisk -uM $DISK;
+if [ "$?" != "$OK" ]; then
+    error_exit 4 "error while writing partition table on $DISK";
+fi
+
+# create the pysical volume
+pvcreate "$DISK$LVMPART";
+if [ "$?" != "$OK" ]; then
+    error_exit 5 "error while creating physical volume on $DISK$LVMPART";
+fi
+
+# create the volume group 
+vgcreate $VGNAME "$DISK$LVMPART";
+if [ "$?" != "$OK" ]; then
+    error_exit 6 "error while creating volumegroup $VGNAME on $DISK$LVMPART";
+fi
+
+# create logical volumes
+i=0;
+while [ 1 == 1 ]; do
+    i=`expr $i '+' 1`;
+    lv=`eval echo '$LV_'${i}`;
+    
+    if [ "X" == "X$lv" ]; then
+	break;
+    fi
+    
+    create_lv $VGNAME $lv;
+    if [ "$?" != "$OK" ]; then
+	error_exit 7 "error while creating logical volume $lv in $VGNAME";
+    fi
+    
+    create_fs $VGNAME $lv;
+    if [ "$?" != "$OK" ]; then
+	error_exit 8 "error while creating filesystem $lv in $VGNAME";
+    fi
+
+done
+
+
+
+
+
+
+
+
