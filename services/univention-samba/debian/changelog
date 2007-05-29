@@ -1,3 +1,9 @@
+univention-samba (1.0.0-2) unstable; urgency=low
+
+  * added auto-generated header to /etc/samba/shares.conf 
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 29 May 2007 09:05:22 +0200
+
 univention-samba (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
