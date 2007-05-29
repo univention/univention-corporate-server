@@ -1,3 +1,9 @@
+univention-bootsplash (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 polcies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 May 2007 11:00:36 +0200
+
 univention-bootsplash (0.3-6) unstable; urgency=low
 
   * add GPL headers
