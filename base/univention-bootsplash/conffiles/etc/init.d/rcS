@@ -1,0 +1,97 @@
+#! /bin/sh
+#
+# rcS		Call all S??* scripts in /etc/rcS.d in
+#		numerical/alphabetical order.
+#
+# Version:	@(#)/etc/init.d/rcS  2.76  19-Apr-1999  miquels@cistron.nl
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+runlevel=S
+prevlevel=N
+umask 022
+export PATH runlevel prevlevel
+
+#
+#	See if system needs to be setup. This is ONLY meant to
+#	be used for the initial setup after a fresh installation!
+#
+if [ -x /sbin/unconfigured.sh ]
+then
+  /sbin/unconfigured.sh
+fi
+
+#
+#	Source defaults.
+#
+. /etc/default/rcS
+export VERBOSE
+
+#
+#	Trap CTRL-C &c only in this shell so we can interrupt subprocesses.
+#
+trap ":" INT QUIT TSTP
+
+#
+#	Call all parts in order.
+#
+
+splash=0
+progress=0
+stepping=0
+
+rcnr=`find /etc/rc[S2].d -maxdepth 1 -name "S[0-9][0-9]*" | wc -l`
+progress=0
+stepping=`expr 65500 / \( $rcnr - 1 \)`
+
+for i in /etc/rcS.d/S??*
+do
+	
+	if [ -e /proc/splash ] ; then
+		if `grep silent /proc/splash >/dev/null 2>&1` ; then
+			splash=1
+		fi
+	fi
+
+	if [ "$splash" -eq "1" ]; then
+		let progress=progress+$stepping
+		echo "show $progress" > /proc/splash
+	fi
+		
+	# Ignore dangling symlinks for now.
+	[ ! -f "$i" ] && continue
+
+	case "$i" in
+		*.sh)
+			# Source shell script for speed.
+			(
+				trap - INT QUIT TSTP
+				set start
+				. $i
+			)
+			;;
+		*)
+			# No sh extension, so fork subprocess.
+			$i start
+			;;
+	esac
+done
+
+if [ "$splash" -eq "1" ]; then
+	echo $progress > /tmp/progress
+fi
+
+#
+#	For compatibility, run the files in /etc/rc.boot too.
+#
+[ -d /etc/rc.boot ] && run-parts /etc/rc.boot
+
+#
+#	Finish setup if needed. The comment above about
+#	/sbin/unconfigured.sh applies here as well!
+#
+if [ -x /sbin/setup.sh ]
+then
+  /sbin/setup.sh
+fi
+

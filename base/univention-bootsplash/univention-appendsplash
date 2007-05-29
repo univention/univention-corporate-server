@@ -1,0 +1,120 @@
+#!/bin/bash
+#
+# Univention Bootsplash
+#  append a bootsplash image to an initrd file
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+eval `univention-baseconfig shell`
+
+themedir="/etc/bootsplash/themes"
+parm1="$1"
+parm2="$2"
+
+if [ ! -e /usr/sbin/splash ] ; then
+	echo "E: bootsplash tool splash not installed"
+	exit 1
+fi
+splash="/usr/sbin/splash"
+
+tempfile=`mktemp`
+#echo "D: Tempfile: $tempfile"
+
+function help() {
+	echo "univention-appendsplash: tool to append bootsplash images to initrd"
+	echo "copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+	echo ""
+	echo " Syntax:"
+	echo "  univention-appendsplash [-i <initrd>]"
+	echo ""
+	echo "  -i                  append to <initrd>"
+	echo ""
+}
+
+#if [ -z "$parm1" ] ; then
+#	help
+#	exit 1
+#fi
+
+#initrd="/boot/initrd.img-`uname -r`"
+initrd="/"`ls -l /initrd.img | awk '{print $11}'`
+if [ -n "$parm1" ] ; then
+	if [ "$parm1" == "-i" ] ; then
+		initrd="$parm2"
+	 else
+		help
+		exit 0
+	fi
+	if [ "$parm1" == "-h" ] || [ "$parm1" == "--help" ] || [ "$parm1" == "-?" ]; then
+		help
+		exit 0
+	fi
+fi
+
+echo "Setting up univention-bootsplash for initrd $initrd"
+
+if [ -z "$splash_theme" ] ; then
+	echo "E: no variable splash/theme, aborting"
+	exit 1
+fi
+if [ "$splash_theme" == "None" ] || [ "$splash_theme" == "none" ] || [ "$splash_theme" == "off" ] ; then
+	echo "* splash/theme set to $splash_theme, not adding splashimages"
+	exit 0
+fi
+theme="$splash_theme"
+
+#echo "D: * using initrd: $initrd"
+
+if [ -d $themedir/$theme/config/ ] ; then
+		confexists=0
+		for i in $themedir/$theme/config/*cfg ; do
+			if [ -e $i ] ; then
+				confexists=1
+			fi
+		done
+fi
+
+if [ $confexists == 0 ] ; then
+	echo "E: There is no themeconfig at $themedir/$theme/config/"
+	exit 1
+fi
+
+echo "* Theme set to $theme"
+
+problem=""
+echo "* Adding splashimages:"
+for i in $themedir/$theme/config/*cfg ; do
+	echo " # added $i"
+	$splash -s -f $i >> $tempfile || problem="$i $problem"
+done
+
+if [ ! -z "$problem" ] ; then
+	echo "E: Problem at $problem. Not adding Splashimages."
+	exit 1
+fi
+
+cat $tempfile >> $initrd
+rm $tempfile

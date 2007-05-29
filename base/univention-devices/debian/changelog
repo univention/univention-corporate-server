@@ -1,0 +1,33 @@
+univention-devices (0.6) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:01:53 +0100
+
+univention-devices (0.5) unstable; urgency=low
+
+  * added creation of /usb to postinst
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Fri,  2 Jun 2006 11:26:19 +0200
+
+univention-devices (0.3) unstable; urgency=low
+
+  * addedd dependency on univention-kernel-image-2.6 for fuse modules
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Fri,  2 Jun 2006 08:56:10 +0200
+
+univention-devices (0.2) unstable; urgency=low
+
+  * added configuration for usb devices
+
+ -- Lars Rehe <lars@billy.knut.univention.de>  Thu,  1 Jun 2006 16:59:56 +0200
+
+univention-devices (0.1) unstable; urgency=low
+
+  * Initial Release
+
+ -- Stefan Gohmann <stegoh@Spud>  Wed, 27 Jul 2005 08:02:50 +0200
+
+Local variables:
+mode: debian-changelog
+End:

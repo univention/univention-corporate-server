@@ -1,0 +1,3 @@
+etc/init.d
+etc/univention-bootsplash
+usr/lib/univention-bootsplash

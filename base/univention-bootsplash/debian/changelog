@@ -1,0 +1,52 @@
+univention-bootsplash (0.3-6) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri, 24 Nov 2006 10:07:27 +0100
+
+univention-bootsplash (0.3-4) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 14:03:19 +0200
+
+univention-bootsplash (0.3-3) unstable; urgency=low
+
+  * divert the init script console-screen.sh to ensure that this service does
+    not interrupt the bootsplash
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Dec 2005 08:53:49 +0100
+
+univention-bootsplash (0.3-2) unstable; urgency=low
+
+  * always remove console-screen.sh from the runlevel scripts in postinst
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Dec 2005 18:01:11 +0100
+
+univention-bootsplash (0.3-1) unstable; urgency=low
+
+  * convert relative symbolic link to initrd image to a absolute path
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Dec 2005 08:58:03 +0100
+
+univention-bootsplash (0.3-0) unstable; urgency=low
+
+  * detect availability of splash in UCS 1.3
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 22 Nov 2005 16:16:09 +0100
+
+univention-bootsplash (0.2) unstable; urgency=low
+
+  * fixed "/proc/splash not found" error
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon,  2 May 2005 17:02:09 +0200
+
+univention-bootsplash (0.1) unstable; urgency=low
+
+  * initial release
+
+ -- Felix Meier <meier@univention.de>  Fri,  3 Dec 2004 17:02:27 +0100
+
+Local variables:
+mode: debian-changelog
+End:

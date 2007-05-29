@@ -1,0 +1,18 @@
+Source: univention-devices
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: univention-devices
+Architecture: all
+Depends: fuse-utils (>=2.3), univention-kernel-image-2.6|univention-kernel-image-2.6-64gb|univention-fuse-module, univention-automount (>=1.4)
+Description: UCS - access devices
+ This package provides the facilities to access devices.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

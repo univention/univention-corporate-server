@@ -1,0 +1,83 @@
+#!/usr/bin/make -f
+#
+# Univention Bootsplash
+#  rules file for the univention-bootsplash debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+export DH_COMPAT=3
+copyrightyear=`date +%Y`
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp
+	dh_testdir
+
+clean:
+	dh_testdir
+	dh_testroot
+	dh_clean
+
+B=$(CURDIR)/debian/univention-bootsplash
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -d -m 0755 $B/usr/share/univention-bootsplash
+	install -d -m 0755 $B/etc/init.d
+	cat univention-appendsplash | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-appendsplash_tmp
+	install -m 0755 univention-appendsplash_tmp $B/usr/lib/univention-bootsplash/univention-appendsplash
+	rm univention-appendsplash_tmp
+	install -m 0755 conffiles/etc/init.d/rc $B/etc/init.d/rc.ucs
+	install -m 0755 conffiles/etc/init.d/rcS $B/etc/init.d/rcS.ucs
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

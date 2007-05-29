@@ -1,0 +1,18 @@
+Source: univention-automount
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), libfuse-dev (> 2.3.0)
+Standards-Version: 3.5.2
+
+Package: univention-automount
+Architecture: any
+Depends: ${shlibs:Depends}
+Recommends: fuse-module
+Description: UCS - Automount Daemon
+ A simple automount daemon.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

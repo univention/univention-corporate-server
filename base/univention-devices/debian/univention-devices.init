@@ -1,0 +1,119 @@
+#!/bin/sh
+#
+# Univention Devices
+#  init script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval $(univention-baseconfig shell)
+
+case $1 in
+	start)
+		
+		echo -n "Starting autofs: "
+
+		modprobe fuse >>/var/log/univention/fuse.log 2>&1
+
+		if [ -n "$fuse_user" ]; then
+			f_user=`id -u $fuse_user`
+		else
+			f_user=0
+		fi
+
+		if [ -z "$fuse_group" -a -z "$fuse_user" ]; then
+			f_group=0
+		else
+			if [ -z "$fuse_group" ]; then
+				f_group=`id -g $fuse_user`
+			else
+				f_group=`getent group $fuse_group | awk -F ':' '{ print $3 }'`
+			fi
+		fi
+
+		if [ -n "$fuse_devices" ]; then
+			for i in $fuse_devices; do
+				device=`echo $i | awk -F':' '{print $1}'`
+				mp=`echo $i | awk -F':' '{print $2}'`
+				fs=`echo $i | awk -F':' '{print $3}'`
+				rw=`echo $i | awk -F':' '{print $4}'`
+				if echo $mp | grep '/'>/dev/null; then
+					logmp=`echo $mp|cut -b 2-`
+				else
+					logmp=`echo $mp`
+				fi
+
+				mkdir -p $mp /tmp/$device >>/var/log/univention/fuse.log 2>&1
+				echo -n " $mp"
+				/usr/lib/univention-automount/autofs $device $mp /tmp${device} $fs $rw uid=$f_user,gid=$f_group allow_other >>/var/log/univention/fuse-$logmp.log 2>&1 &
+			done
+		else
+			mkdir -p /tmp/floppy /floppy >>/var/log/univention/fuse.log 2>&1
+			echo -n " floppy "
+			/usr/lib/univention-automount/autofs /dev/fd0 /floppy /tmp/floppy vfat rw uid=$f_user,gid=$f_group allow_other >>/var/log/univention/fuse-floppy.log 2>&1 &
+
+			cdrom_device=`cat /etc/fstab  | grep "/cdrom " | awk '{print $1}'`
+			if [ -n "$cdrom_device" ]; then
+				mkdir -p /tmp/cdrom  /cdrom >>/var/log/univention/fuse.log 2>&1
+				echo -n " cdrom"
+				/usr/lib/univention-automount/autofs $cdrom_device /cdrom /tmp/cdrom iso9660 ro uid=$f_user,gid=$f_group allow_other >>/var/log/univention/fuse-cdrom.log 2>&1 &
+				echo $cdrom_device /cdrom /tmp/cdrom iso9660 ro uid=$f_user,gid=$f_group >> /var/log/univention/fuse-cdrom.log
+			fi
+		fi
+		echo ""
+		;;
+	stop)
+		echo -n "unmounting "
+		if [ -n "$fuse_devices" ]; then
+			for i in $fuse_devices; do
+				device=`echo $i | awk -F':' '{print $1}'`
+				mp=`echo $i | awk -F':' '{print $2}'`
+				echo -n "$device "
+				fusermount -u $mp
+			done
+		else
+			echo -n "cdrom "
+			fusermount -u /cdrom
+			echo -n "floppy "
+			fusermount -u /floppy
+		fi
+		echo "done"
+
+		echo -n "Stopping autofs "
+		killall /usr/lib/univention-automount/autofs >>/var/log/univention/fuse.log 2>&1
+		echo "done"
+		;;
+	restart)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+  *)
+    echo "Usage: /etc/init.d/univention-devices {start|stop|restart}"
+    exit 1
+esac
+
+exit 0
+	
