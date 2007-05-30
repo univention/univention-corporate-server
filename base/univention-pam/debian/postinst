@@ -32,9 +32,9 @@ univention-baseconfig set \
 	nscd/passwd/size?3001 \
 	nscd/group/size?211 \
 	nscd/hosts/size?3001 \
-	nscd/passwd/positive-time-to-live?600 \
-	nscd/group/positive-time-to-live?3600 \
-	nscd/hosts/positive-time-to-live?3600 \
+	nscd/passwd/positive_time_to_live?600 \
+	nscd/group/positive_time_to_live?3600 \
+	nscd/hosts/positive_time_to_live?3600 \
 	auth/user/methods?"krb5 ldap unix" \
 	auth/user/services?"kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
 	auth/admin/methods?"krb5 ldap unix" \

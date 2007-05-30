@@ -1,3 +1,9 @@
+univention-pam (1.1.0-5) unstable; urgency=low
+
+  * added underscores to baseconfig variables positive_time_to_live
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 30 May 2007 11:13:24 +0200
+
 univention-pam (1.1.0-4) unstable; urgency=low
 
   * added baseconfig-variables nscd/group/positive-time-to-live,
