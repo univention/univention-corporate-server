@@ -1,3 +1,10 @@
+univention-pam (1.1.0-4) unstable; urgency=low
+
+  * added baseconfig-variables nscd/group/positive-time-to-live,
+    nscd/hosts/positive-time-to-live, nscd/passwd/positive-time-to-live
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 30 May 2007 10:28:26 +0200
+
 univention-pam (1.1.0-3) unstable; urgency=low
 
   * changed name of baseconfig variable auth/max_user to

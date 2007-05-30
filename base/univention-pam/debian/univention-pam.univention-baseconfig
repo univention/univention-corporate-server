@@ -17,6 +17,9 @@ File: etc/nscd.conf
 Variables: nscd/passwd/size
 Variables: nscd/group/size
 Variables: nscd/hosts/size
+Variables: nscd/passwd/positive-time-to-live
+Variables: nscd/group/positive-time-to-live
+Variables: nscd/hosts/positive-time-to-live
 
 Type: file
 File: etc/libnss-ldap.conf
