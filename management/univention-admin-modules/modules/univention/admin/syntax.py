@@ -485,7 +485,7 @@ class emailAddress(simple):
 	name='emailAddress'
 	min_length=4
 	max_length=256
-	_re = re.compile('((^[a-zA-Z])[a-zA-Z0-9._-]*)@[a-zA-Z0-9._-]+$')
+	_re = re.compile('((^[a-zA-Z0-9])[a-zA-Z0-9._-]*)@[a-zA-Z0-9._-]+$')
 
 	def parse(self, text):
 		if self._re.match(text) != None:

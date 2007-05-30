@@ -1,3 +1,9 @@
+univention-admin-modules (1.0.0-4) unstable; urgency=low
+
+  * primary Mailadress starting with an digit are allowed 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 30 May 2007 08:21:01 +0200
+
 univention-admin-modules (1.0.0-3) unstable; urgency=low
 
   * added error handling and help option 
