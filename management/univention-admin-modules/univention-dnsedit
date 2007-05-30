@@ -48,7 +48,11 @@ import univention.admin.handlers.dns.alias
 import univention.admin.uexceptions
 
 def usage():
-	print >>sys.stderr, 'Usage: %s domain command [args]' % sys.argv[0]
+	print >>sys.stderr, 'Usage: %s domain option [args]' % sys.argv[0]
+	print >>sys.stderr, 'Valid Options are:'
+	for elements in options.keys():
+		print >>sys.stderr, '%s' %elements
+		sys.exit(1)
 
 options={}
 options['ignore_missing_zone']=0
@@ -59,8 +63,14 @@ options['overwrite']=0
 options['stoptls']=0
 options['binddn']=0
 options['bindpwd']=0
+options['help']=0
 
-opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite'])
+try:
+	opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
+except:
+	print >>sys.stderr, 'Option not recognized. Please enter a valid Option' % sys.argv[1:]
+	print >>sys.stderr, 'For valid use of univention-dnsedit, try --help for Information'
+	sys.exit(1)
 
 if len(args) < 3:
 	usage()
@@ -83,6 +93,8 @@ for opt, val in opts:
 		options['binddn']=val
 	elif opt == '--bindpwd':
 		options['bindpwd']=val
+	elif opt == '--help':
+		options['help']=1
 
 co=None
 lo=None
@@ -102,7 +114,9 @@ def bind():
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
 		print err
 		sys.exit(1)
-	if options['binddn'] and options['bindpwd']:
+	if options['help']:
+		usage()
+	elif options['binddn'] and options['bindpwd']:
 		try:
 			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
 			position=univention.admin.uldap.position(lo.base)
