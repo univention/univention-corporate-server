@@ -97,8 +97,10 @@ def cron_create(cronlist):
 					else:
 						string+='%s' % cronlist[key][i]
 		else:
-			string+='*'
-
+			if key == 'minute':
+				string+='00'
+			else:
+				string+='*'
 		string+=' '
 	return string
 
