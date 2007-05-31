@@ -1,3 +1,9 @@
+univention-admin (3.1.4-2) unstable; urgency=low
+
+  * create link to the webui-style icons
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 16:06:30 +0200
+
 univention-admin (3.1.4-1) unstable; urgency=low
 
   * added more apache redirection
