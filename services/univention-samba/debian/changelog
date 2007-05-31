@@ -1,3 +1,9 @@
+univention-samba (1.0.0-5) unstable; urgency=low
+
+  * uncommented variables in smb.conf-template
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 31 May 2007 16:44:59 +0200
+
 univention-samba (1.0.0-4) unstable; urgency=low
 
   * added several baseconfig variables for smb.conf
