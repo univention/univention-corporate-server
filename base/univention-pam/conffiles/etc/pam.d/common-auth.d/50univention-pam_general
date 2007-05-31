@@ -18,10 +18,10 @@ auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
          default=<fail>]                         pam_winbind.so use_first_pass'''
+@!@
 pam_cache='''
 # cache password (on successful authentification)
 auth     [success=done new_authtok_reqd=ok \
-@!@
 if baseConfig.has_key('auth/passwdcache/max_user') and baseConfig['auth/passwdcache/max_user']:
 	print '         ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%s' %  baseConfig['auth/passwdcache/max_user'].strip('"    ')
 else:
