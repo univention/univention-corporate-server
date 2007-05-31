@@ -1,8 +1,0 @@
-Type: file
-File: etc/krb5.conf
-Variables: kerberos/realm
-Variables: ldap/server/name
-Variables: ldap/server/addition
-Variables: kerberos/kdc
-Variables: kerberos/v4tickets
-Variables: kerberos/adminserver
