@@ -8,7 +8,7 @@ access to attrs=userPassword
     by * none break
 
 access to attrs=userPassword,krb5Key,sambaNTPassword,sambaLMPassword,sambaPwdLastSet,pwhistory,sambaPwdCanChange,sambaPwdMustChange,sambaPasswordHistory
-   by sockname="PATH=/var/run/ldapi" read
+   by sockname="PATH=/var/run/slapd/ldapi" read
    by group/univentionGroup/uniqueMember="cn=Domain Admins,cn=groups,@%@ldap/base@%@" read
    by dn.base="uid=root,cn=users,@%@ldap/base@%@" read
 @!@

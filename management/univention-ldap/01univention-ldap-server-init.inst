@@ -83,7 +83,7 @@ if [ -z "$files" ] ; then
 	cat /usr/share/univention-ldap/base.ldif | \
 		 sed -e \
 		"s|@@%%@@ldap\.pw@@%%@@|$pw_crypt|;s|@@%%@@backup\.pw@@%%@@|$backup_crypt|;s|@@%%@@sambadomain@@%%@@|$sambadomain|;s|@@%%@@firstdc@@%%@@|$firstdc|;s|@@%%@@realm@@%%@@|$realm|;s|@@%%@@sid@@%%@@|$sid|;s|@@%@@domain@@%@@|$Domain|" | \
-		univention-baseconfig filter | slapadd >/dev/null 2>&1
+		univention-baseconfig filter | slapadd
 
 
 	univention-baseconfig set windows/domain?$sambadomain

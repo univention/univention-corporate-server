@@ -22,7 +22,7 @@ print '    by * none'
 print ''
 
 print 'access to *'
-print '    by sockname="PATH=/var/run/ldapi" %s' % (usr)
+print '    by sockname="PATH=/var/run/slapd/ldapi" %s' % (usr)
 print '    by * none break'
 print ''
 

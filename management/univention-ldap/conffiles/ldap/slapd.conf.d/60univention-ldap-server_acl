@@ -21,7 +21,7 @@ print '   by dn.base="cn=backup,%s" read' % (ldap_base)
 print '   by dn.base="uid=join-user,cn=users,%s" read' % (ldap_base)
 print '   by dn.base="uid=Administrator,cn=users,%s" %s' % (ldap_base, usr)
 print '   by dn.base="uid=root,cn=users,%s" %s' % (ldap_base, usr)
-print '   by sockname="PATH=/var/run/ldapi" %s' % (usr)
+print '   by sockname="PATH=/var/run/slapd/ldapi" %s' % (usr)
 print '   by * none break'
 print
 
