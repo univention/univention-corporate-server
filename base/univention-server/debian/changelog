@@ -1,3 +1,9 @@
+univention-server (2.1.0-5) unstable; urgency=low
+
+  * add univention-bind to the univention-server-master dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 15:11:21 +0200
+
 univention-server (2.1.0-4) unstable; urgency=low
 
   * set package priority from required to optional
