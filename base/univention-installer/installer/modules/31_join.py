@@ -80,7 +80,7 @@ class object(content):
 		self.elements.append(input('',self.minY+7,self.minX+2,30)) #7
 
 		self.elements.append(textline(_('Join-Account'),self.minY+9,self.minX+2)) #8
-		self.elements.append(input('root',self.minY+10,self.minX+2,30)) #9
+		self.elements.append(input('Administrator',self.minY+10,self.minX+2,30)) #9
 
 		self.elements.append(textline(_('Password'),self.minY+12,self.minX+2)) #10
 		self.elements.append(password('',self.minY+13,self.minX+2,30)) #11

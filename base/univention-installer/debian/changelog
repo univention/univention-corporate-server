@@ -1,3 +1,9 @@
+univention-installer (1.1.1-1) unstable; urgency=low
+
+  * we no longer need the root user in the ldap
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 15:33:10 +0200
+
 univention-installer (1.1.0-5) unstable; urgency=low
 
   * added more Information to Dialog when Installer is aborted
