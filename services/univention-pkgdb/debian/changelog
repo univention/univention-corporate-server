@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.0-2) unstable; urgency=low
+
+  * change python dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 15:26:05 +0200
+
 univention-pkgdb (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

@@ -20,7 +20,7 @@ Description: UCS - PkgDB
 
 Package: python-univention-pkgdb
 Architecture: all
-Depends:  ${python:Depends}, python2.4-apt, python2.4-pygresql, python2.4-dns
+Depends:  ${python:Depends}, python-apt, python-pygresql, python-dns
 Depends: univention-baseconfig 
 Provides: ${python:Provides}, univention-pkgdb-lib
 XB-Python-Version: ${python:Versions}
