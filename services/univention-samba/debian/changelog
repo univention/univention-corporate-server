@@ -1,3 +1,9 @@
+univention-samba (1.0.0-4) unstable; urgency=low
+
+  * added several baseconfig variables for smb.conf
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 31 May 2007 16:36:08 +0200
+
 univention-samba (1.0.0-3) unstable; urgency=low
 
   * socket options are managed by univention Baseconfig

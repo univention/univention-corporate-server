@@ -76,6 +76,7 @@ Subfile: etc/samba/smb.conf.d/21univention-samba_winbind
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
+Variables: samba/winbind_trusted_domains_only
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -83,6 +84,9 @@ Subfile: etc/samba/smb.conf.d/31univention-samba_password
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
+Variables: samba/encrypt_passwords
+Variables: samba/use_spnego
+Variables: samba/client_use_spnego
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -119,6 +123,18 @@ Variables: samba/homedirserver
 Variables: samba/homedirpath
 Variables: samba/homedirletter
 Variables: samba/enable-msdfs
+Variables: samba/oplocks
+Variables: samba/kernel_oplocks
+Variables: samba/large_readwrite
+Variables: samba/deadtime
+Variables: samba/read_raw
+Variables: samba/write_raw
+Variables: samba/max_xmit
+Variables: samba/getwd_cache
+Variables: samba/store_dos_attributes
+Variables: samba/preserve_case
+Variables: samba/short_preserve_case
+Variables: samba/time_server
 
 Type: subfile
 Multifile: etc/samba/smb.conf
@@ -126,6 +142,9 @@ Subfile: etc/samba/smb.conf.d/71univention-samba_users
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
+Variables: samba/guest_account
+Variables: samba/map_to_guest
+Variables: samba/invalid_users
 
 Type: subfile
 Multifile: etc/samba/smb.conf

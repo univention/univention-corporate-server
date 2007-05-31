@@ -1,13 +1,13 @@
-	oplocks = yes
-	kernel oplocks = yes
-	large readwrite = yes
-	deadtime = 15
-	read raw = yes
-	write raw = yes
-	max xmit = 65535
-	getwd cache = yes
+	oplocks = @%@samba/oplocks%@
+	kernel oplocks = @%@samba/kernel_oplocks@%@
+	large readwrite = @%@samba/large_readwrite@%@
+	deadtime = @%@samba/deadtime@%@
+	read raw = @%@samba/read_raw@%@
+	write raw = @%@samba/write_raw@%@
+	max xmit = @%@samba/max_xmit@%@
+	getwd cache = @%@samba/getwd_cache@%@
 
-	store dos attributes = yes
+	store dos attributes = @%@samba/store_dos_attributes@%@
 	
 
 @!@
@@ -33,10 +33,10 @@ if baseConfig['server/role'] != 'memberserver':
 
 @!@
 
-	preserve case = yes
-	short preserve case = yes
+	preserve case = @%@samba/preserve_case@%@
+	short preserve case = @%@samba/short_preserve_case@%@
 
-	time server = yes
+	time server = @%@samba/time_server@%@
 
 @!@
 if baseConfig.has_key('samba/enable-msdfs') and baseConfig['samba/enable-msdfs'] == 'yes':
