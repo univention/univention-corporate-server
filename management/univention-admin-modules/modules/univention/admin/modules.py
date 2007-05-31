@@ -49,10 +49,9 @@ def update():
 	def _walk(root, dir, files):
 		global modules
 		for file in files:
-			if not file.endswith('.pyo') or file.startswith('__'):
+			if not file.endswith('.py') or file.startswith('__'):
 				continue
-			# FIXME
-			p=os.path.join(dir, file).replace(root, '').replace('.pyo', '')
+			p=os.path.join(dir, file).replace(root, '').replace('.py', '')
 			p=p[1:]
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.modules.update: importing "%s"' % p)
 			m=__import__(p)
