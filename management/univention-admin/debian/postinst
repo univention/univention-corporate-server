@@ -55,6 +55,12 @@ test -h /var/www/univention-admin || ln -s /usr/share/univention-admin/www /var/
 
 univention-baseconfig set admin/web/debug/level?0
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.4-1; then
+	a2ensite univention-admin
+elif [ "$1" = configure -a -z "$2" ]; then
+	a2ensite univention-admin
+fi
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 
 	for i in `ps -ef | grep "/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.pyo" | awk '{print $2}'`; do

@@ -10,4 +10,4 @@
 RedirectMatch ^/ua(/$|$) /univention-admin/
 RedirectMatch ^/admin(/$|$) /univention-admin/
 RedirectMatch ^/univention-admin$ /univention-admin/
-
+RedirectMatch ^/univention-admin/style/(.*) /style/$1
