@@ -32,4 +32,4 @@ import os, sys
 import univention.pkgdb
 
 if __name__=='__main__':
-	univention_pkgdb.main(sys.argv[1:])
+	univention.pkgdb.main(sys.argv[1:])
