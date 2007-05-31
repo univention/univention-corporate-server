@@ -6,8 +6,8 @@ argsfile		/var/run/slapd.args
 loglevel		@%@ldap/debug/level@%@
 allow			bind_v2 update_anon
 
-TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@/cert.pem
-TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@/private.key
+TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
+TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
 TLSCACertificateFile	/etc/univention/ssl/udsCA/CAcert.pem
 
 sizelimit		@%@ldap/sizelimit@%@

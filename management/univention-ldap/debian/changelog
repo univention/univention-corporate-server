@@ -1,3 +1,11 @@
+univention-ldap (2.2.1-1) unstable; urgency=low
+
+  * remove the german description from the standard container
+  * remove the description from the sambaDomainName object
+  * use the fqdn for the certificate name
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 14:49:13 +0200
+
 univention-ldap (2.2.0-3) unstable; urgency=low
 
   * added German Translation for Standard Container Description 

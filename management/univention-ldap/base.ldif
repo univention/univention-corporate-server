@@ -48,8 +48,6 @@ print 'sambaSID: @@%%@@sid@@%%@@'
 print 'objectClass: sambaDomain'
 print 'sambaNextUserRid: 1000'
 print 'sambaNextGroupRid: 1000'
-print 'description: Default Samba Container'
-print 'description;lang-de: Standard Samba Container'
 @!@
 dn: cn=admin,@%@ldap/base@%@
 objectClass: top
@@ -62,7 +60,6 @@ dn: cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default System Settings Container
-description;lang-de: Standard Container für System Einstellungen
 cn: univention
 
 dn: cn=temporary,cn=univention,@%@ldap/base@%@
@@ -265,21 +262,18 @@ dn: cn=users,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Users Container
-description;lang-de: Standard Benutzer Container
 cn: users
 
 dn: cn=groups,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Groups Container
-description;lang-de: Standard Gruppen Container
 cn: groups
 
 dn: cn=computers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Computers Container
-description;lang-de: Standard Computer Container
 cn: computers
 
 dn: cn=dc,cn=computers,@%@ldap/base@%@
@@ -296,41 +290,35 @@ dn: cn=shares,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Shares Container
-description;lang-de: Standard Shares Container
 cn: shares
 
 dn: cn=networks,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Networks Container
-description;lang-de: Standard Netzwerk Container
 cn: networks
 
 dn: cn=printers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Printers Container
-description;lang-de: Standard Drucker Container
 cn: printers
 
 dn: cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
 description: Default Policies Container
-description;lang-de: Standard Drucker Container
 cn: policies
 
 dn: cn=kerberos,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Kerberos Container
-description;lang-de: Standard Kerberos Container
 cn: kerberos
 
 dn: cn=mail,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
 description: Default Mail Container
-description;lang-de: Standard Mail Container
 cn: mail
 
 dn: cn=desktop,cn=policies,@%@ldap/base@%@
@@ -468,13 +456,11 @@ cn: windowsinstallations
 dn: cn=dns,@%@ldap/base@%@
 objectClass: organizationalRole
 description: Default DNS Container
-description;lang-de: Standard DNS Container
 cn: dns
 
 dn: cn=dhcp,@%@ldap/base@%@
 objectClass: organizationalRole
 description: Default DHCP Container
-description;lang-de: Standard DHCP Container
 cn: dhcp
 
 dn: cn=users,cn=policies,@%@ldap/base@%@
