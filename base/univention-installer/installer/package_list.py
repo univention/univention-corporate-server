@@ -51,7 +51,7 @@ PackageList=[
 					'Packages': ['univention-windows-installer'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
 					'Description': _("Automatic Installation for Windows Clients"),
 				},
 				{
