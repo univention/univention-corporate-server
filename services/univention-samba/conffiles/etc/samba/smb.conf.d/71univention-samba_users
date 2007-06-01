@@ -1,6 +1,6 @@
-
-	guest account = @%@samba/guest_account@%@
-	map to guest = @%@samba/map_to_guest@%@
+@!@
+print '\tguest account = %s' % baseConfig.get('samba/guest_account', 'nobody')	
+print '\tmap to guest = %s' % baseConfig.get('samba/map_to_guest', 'Bad User')	
+print '\tinvalid users = %s' % baseConfig.get('samba/invalid_users', 'daemon bin sys sync games man lp mail news uucp proxy majordom postgres www-data backup msql operator list irc gnats alias qmaild qmails qmailr qmailq qmaill qmailp telnetd identd ftp rwhod gdm fetchmail faxmaster')	
+@!@
 	admin users = @%@samba/adminusers@%@
-	invalid users = @%@samba/invalid_users@%@
-

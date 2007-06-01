@@ -1,16 +1,15 @@
-	oplocks = @%@samba/oplocks@%@
-	kernel oplocks = @%@samba/kernel_oplocks@%@
-	large readwrite = @%@samba/large_readwrite@%@
-	deadtime = @%@samba/deadtime@%@
-	read raw = @%@samba/read_raw@%@
-	write raw = @%@samba/write_raw@%@
-	max xmit = @%@samba/max_xmit@%@
-	getwd cache = @%@samba/getwd_cache@%@
-
-	store dos attributes = @%@samba/store_dos_attributes@%@
-	
-
 @!@
+print '\toplocks = %s' % baseConfig.get('samba/oplocks', 'yes')
+print '\tkernel oplocks = %s' % baseConfig.get('samba/kernel_oplocks', 'yes')
+print '\tlarge readwrite = %s' % baseConfig.get('samba/large_readwrite', 'yes')
+print '\tdeadtime = %s' % baseConfig.get('samba/deadtime', '15')
+print '\tread raw = %s' % baseConfig.get('samba/read_raw', 'yes')
+print '\twrite raw = %s' % baseConfig.get('samba/write_raw', 'yes')
+print '\tmax xmit = %s' % baseConfig.get('samba/max_xmit', '65535')
+print '\tgetwd cache = %s' % baseConfig.get('samba/getwd_cache', 'yes')
+
+print '\tstore dos attributes = %s' % baseConfig.get('samba/store_dos_attributes', 'yes')
+
 if baseConfig['server/role'] != 'memberserver':
 	if ( not baseConfig['samba/homedirpath'] or baseConfig['samba/homedirpath']=='local') and baseConfig['samba/homedirserver'] and baseConfig['samba/homedirserver'] == 'local':
 		print '\tlogon home ='
@@ -31,14 +30,12 @@ if baseConfig['server/role'] != 'memberserver':
 		print '\tlogon script = %s' % baseConfig['samba/logonscript']
 
 
-@!@
 
-	preserve case = @%@samba/preserve_case@%@
-	short preserve case = @%@samba/short_preserve_case@%@
+print '\tpreserve case = %s' % baseConfig.get('samba/preserve_case', 'yes')
+print '\tshort preserve case = %s' % baseConfig.get('samba/short_preserve_case', 'yes')
 
-	time server = @%@samba/time_server@%@
+print '\ttime server = %s' % baseConfig.get('samba/time_server', 'yes')
 
-@!@
 if baseConfig.has_key('samba/enable-msdfs') and baseConfig['samba/enable-msdfs'] == 'yes':
 	print '\thost msdfs = yes'
 else:
