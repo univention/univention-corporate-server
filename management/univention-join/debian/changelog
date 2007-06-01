@@ -1,6 +1,6 @@
 univention-join (1.0.1-1) unstable; urgency=low
 
-  * restart ldap listener after joining on managed and mobile clients
+  * restart listener and notifier after joining the domain
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:43:28 +0200
 

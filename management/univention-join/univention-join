@@ -330,6 +330,28 @@ if [ -e "/etc/univention/ssl" ]; then
 	mkdir /etc/univention/ssl
 fi
 
+# Stop Notifier
+notifier_pid=`pidof univention-ldap-notifier`
+if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
+	echo -n "shutdown univention-ldap-notifier "
+	while ! runsvstat /etc/runit/univention-ldap-notifier | grep "/etc/runit/univention-ldap-notifier: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+fi
+
+# Stop Listener
+listener_pid=`pidof univention-ldap-listener`
+if [ -d /etc/runit/univention-ldap-listener ]; then
+	echo -n "shutdown univention-ldap-listener "
+	/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
+	echo -n "."
+	sleep 3
+	if [ -n "$listener_pid" ]; then
+		kill -9 "$listener_pid" >/dev/null 2>&1
+		sleep 3
+	fi
+	while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+fi
+rm -Rf /var/lib/univention-ldap-listener/*
+
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
 	if [ -e "/etc/ldap.secret" ]; then cat /etc/ldap.secret >>/etc/ldap.secret.SAVE; fi
@@ -381,27 +403,6 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	univention-scp $DCPWD -r $DCACCOUNT@$DCNAME:/var/lib/heimdal-kdc/* /var/lib/heimdal-kdc/ >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
 
-	notifier_pid=`pidof univention-ldap-notifier`
-
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		echo -n "shutdown univention-ldap-notifier "
-		while ! runsvstat /etc/runit/univention-ldap-notifier | grep "/etc/runit/univention-ldap-notifier: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-
-	listener_pid=`pidof univention-ldap-listener`
-	if [ -d /etc/runit/univention-ldap-listener ]; then
-		echo -n "shutdown univention-ldap-listener "
-		/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-		echo -n "."
-		sleep 3
-		if [ -n "$listener_pid" ]; then
-			kill -9 "$listener_pid" >/dev/null 2>&1
-			sleep 3
-		fi
-		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-
-	rm -Rf /var/lib/univention-ldap-listener/*
 
 	# invalidate the nscd hosts cache
 	nscd -i hosts
@@ -448,13 +449,6 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 		done
 	fi
 
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		/etc/init.d/univention-ldap-notifier restart >>/var/log/univention/join.log 2>&1
-	fi
-	sleep 3
-	if [ -n "$listener_pid" -a -d /etc/runit/univention-ldap-listener ]; then
-		/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
-	fi
 
 elif [ "$server_role" = "domaincontroller_slave" ]; then
 
@@ -487,27 +481,6 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	echo -n "Sync Kerberos settings: "
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/var/lib/heimdal-kdc/* /var/lib/heimdal-kdc/" >>/var/log/univention/join.log 2>&1
 	echo -e "\033[60Gdone"
-
-	notifier_pid=`pidof univention-ldap-notifier`
-
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		echo -n "shutdown univention-ldap-notifier "
-		while ! runsvstat /etc/runit/univention-ldap-notifier | grep "/etc/runit/univention-ldap-notifier: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-
-	listener_pid=`pidof univention-ldap-listener`
-	if [ -d /etc/runit/univention-ldap-listener ]; then
-		echo -n "shutdown univention-ldap-listener "
-		/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-		echo -n "."
-		sleep 3
-		if [ -n "$listener_pid" ]; then
-			kill -9 "$listener_pid" >/dev/null 2>&1
-			sleep 3
-		fi
-		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-	rm -Rf /var/lib/univention-ldap-listener/*
 
 	mkdir -p /var/lib/univention-ldap/notify/
 
@@ -550,14 +523,6 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 		done
 	fi
 
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		/etc/init.d/univention-ldap-notifier restart >>/var/log/univention/join.log 2>&1
-	fi
-	sleep 3
-	if [ -n "$listener_pid" -a -d /etc/runit/univention-ldap-listener ]; then
-		/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
-	fi
-
 
 elif [ "$server_role" = "memberserver" ]; then
 	mkdir -p /etc/univention/ssl/udsCA
@@ -567,27 +532,6 @@ elif [ "$server_role" = "memberserver" ]; then
 
 	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
 	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/udsCA/CAcert.pem" >>/etc/ldap/ldap.conf
-
-	notifier_pid=`pidof univention-ldap-notifier`
-
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		echo -n "shutdown univention-ldap-notifier "
-		while ! runsvstat /etc/runit/univention-ldap-notifier | grep "/etc/runit/univention-ldap-notifier: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-
-	listener_pid=`pidof univention-ldap-listener`
-	if [ -d /etc/runit/univention-ldap-listener ]; then
-		echo -n "shutdown univention-ldap-listener "
-		/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-		echo -n "."
-		sleep 3
-		if [ -n "$listener_pid" ]; then
-			kill -9 "$listener_pid" >/dev/null 2>&1
-			sleep 3
-		fi
-		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-	rm -Rf /var/lib/univention-ldap-listener/*
 
 	# invalidate the nscd hosts cache
 	nscd -i hosts
@@ -615,30 +559,9 @@ elif [ "$server_role" = "memberserver" ]; then
 		done
 	fi
 
-	if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-		/etc/init.d/univention-ldap-notifier restart >>/var/log/univention/join.log 2>&1
-	fi
-	sleep 3
-	if [ -n "$listener_pid" -a -d /etc/runit/univention-ldap-listener ]; then
-		/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
-	fi
-
 else
 # Client and Mobile Client
 
-	listener_pid=`pidof univention-ldap-listener`
-	if [ -d /etc/runit/univention-ldap-listener ]; then
-		echo -n "shutdown univention-ldap-listener "
-		/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-		echo -n "."
-		sleep 3
-		if [ -n "$listener_pid" ]; then
-			kill -9 "$listener_pid" >/dev/null 2>&1
-			sleep 3
-		fi
-		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
-	fi
-	rm -Rf /var/lib/univention-ldap-listener/*
 
 	mkdir -p /etc/univention/ssl/udsCA
 
@@ -674,10 +597,15 @@ else
 		done
 	fi
 
-	if [ -n "$listener_pid" -a -d /etc/runit/univention-ldap-listener ]; then
-		/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
-	fi
+fi
 
+if [ -d /etc/runit/univention-ldap-notifier ]; then
+	/etc/init.d/univention-ldap-notifier restart >>/var/log/univention/join.log 2>&1
+	sleep 3
+fi
+
+if [ -d /etc/runit/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
 fi
 
 if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then
