@@ -38,19 +38,20 @@ log_warn ()
 	echo "Warning: $1"
 }
 
+echo "Start $0 at $(date)" >>/var/log/univention/check_join_status.log
 eval `univention-baseconfig shell`
 
 if [ ! -e /etc/machine.secret ]; then
 	log_error "/etc/machine.secret not found"
 fi
 
-ldapsearch -x -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base
+ldapsearch -x -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
 if [ $? != 0 ]; then
 	log_error "ldapsearch -x failed"
 fi
 
 
-ldapsearch -x -ZZ -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base
+ldapsearch -x -ZZ -h "$ldap_master" -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
 if [ $? != 0 ]; then
 	log_error "ldapsearch -x -ZZ failed"
 fi
@@ -59,7 +60,7 @@ if [ ! -e /usr/share/univention-join/.joined ]; then
 	log_error "/usr/share/univention-join/.joined not found"
 fi
 
-ldapsearch -x -ZZ -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base
+ldapsearch -x -ZZ -D "$ldap_hostdn" -w `cat /etc/machine.secret` -b $ldap_base -s base >>/var/log/univention/check_join_status.log 2>&1
 if [ $? != 0 ]; then
 	log_error "localhost ldapsearch failed"
 fi

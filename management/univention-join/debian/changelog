@@ -1,3 +1,9 @@
+univention-join (1.0.2-1) unstable; urgency=low
+
+  * update the check_join_status.sh script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 14:50:46 +0200
+
 univention-join (1.0.1-1) unstable; urgency=low
 
   * restart listener and notifier after joining the domain
