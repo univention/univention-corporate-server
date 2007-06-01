@@ -1,3 +1,9 @@
+univention-pam (1.1.0-7) unstable; urgency=low
+
+  * fixed syntax error in common-auth
+
+ -- Bastian Neumann <neumann@univention.de>  Fri,  1 Jun 2007 14:50:21 +0200
+
 univention-pam (1.1.0-6) unstable; urgency=low
 
   * fixed syntax in common-auth
