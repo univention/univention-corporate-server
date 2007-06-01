@@ -184,7 +184,7 @@ class request:
 	# This method waits until the thread has finished or the timeout elapses.
 	def wait(self, timeout=3.0):
 
-		self.thread_event.wait(timeout)
+		self.thread_event.wait( timeout )
 		return self.xmlout or self.thread_exception
 
 	# If an exception has occured inside the thread, this method returns it.
@@ -344,7 +344,7 @@ class session:
 
 	# This method takes the input XML and session number as input and returns
 	# the output XML.
-	def startRequest(self, xmltext, number, ignore_ldap_connection = False):
+	def startRequest(self, xmltext, number, ignore_ldap_connection = False, timeout = 2):
 
 		if not ignore_ldap_connection and not self.uaccess:
 			return genErrorMessage(_("No connection to the LDAP server"),[_("The LDAP server could not be contacted. Please try again later.")])
@@ -399,7 +399,7 @@ class session:
 
 				req = request(self.save, self.uaccess, xmlin)
 				req.start()
-				if self.save.get('background_request') or not req.wait(timeout=2):
+				if self.save.get('background_request') or not req.wait(timeout = timeout):
 					self.save.put('background_request', '')
 					self.background_request = req
 					self.before_background_number = number

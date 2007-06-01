@@ -103,7 +103,7 @@ class extra_multi extends extra{
 	var $area;
 	var $name;
 	var $sub_attribute;
-	
+
 	function put_start(&$tag, &$attribute, $byteindex){
 		if($this->update_button){
 			$this->update_button->put_start($tag,$attribute,$byteindex);
@@ -354,17 +354,17 @@ class button extends extra{
 		      $href = "<a class=\"$class\" onClick=\"sendForm2(".$this->byteindex.")\"";
 
 		    $href .= " title=\"".$this->basket["helptext"]."\" ";
-		
+
 		    $img = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
-		
+
 		    $link = $href.">\n";
 		    $link .= "<span class=\"$class\">".$this->basket["text"]."</span></a>\n";
-		
+
 
 		    $inp = "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		  }
 		  else
-		    {	
+		    {
 		      $img = "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>\n";
 		      $link = "<span class=\"$class\">".$this->basket["text"]."</span>\n";
 		      $inp = "";
@@ -416,8 +416,8 @@ class button extends extra{
 		        $str .= "</td><td class=\"button_link\">".$link."</td><td>&nbsp;\n";
 		      $str .= "</td></tr>\n</table>\n";
 		    }
-		  		
-		
+
+
 		  /* no icon */
 		}elseif($this->js && isset($this->attribute["link"])){
 			if (isset($this->attribute["type"])) $str .= "<a class=\"".$this->attribute["type"]."\" onClick=\"sendForm(".$this->byteindex.")\"";
@@ -468,9 +468,9 @@ class button extends extra{
 		     {
 		      $img_str = "";
 		      $close_str = "";
-		      if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1")) 
+		      if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1"))
 		        $cssclass .= "closeablestart";
-		      if (isset($this->attribute["icon"])) 
+		      if (isset($this->attribute["icon"]))
 		       {
 		         $img_str = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
 		       }
@@ -497,7 +497,8 @@ class button extends extra{
 		  else
 		    {
 		      $str .= "<td class=\"$tdclass\" nowrap>\n";
-		      $str .= "<a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
+			  $str .= "<table style=\"padding: 0px;\"><tr>";
+		      $str .= "<td><a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
 				if (  isset( $this->attribute[ "icon" ] ) ) {
 					$str .= " title=\"".$this->basket["helptext"]."\">";
 					$str .= "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>";
@@ -506,12 +507,12 @@ class button extends extra{
 				}
 				$str .= "&nbsp;";
 		      $str .= $this->basket["text"];
+		      $str .= "</a></td>\n";
 				if (  isset( $this->attribute[ "statusicon" ] ) ) {
-					$str .= "<img class=\"$class\" src=\"".$this->attribute["statusicon"]."\" alt=\"\"></img>";
+					$str .= "<td><img class=\"$class\" src=\"".$this->attribute["statusicon"]."\" alt=\"\"></img></td>";
 				}
-		      $str .= "</a>\n";
 		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
-		      $str .= "</td>\n";
+		      $str .= "</tr></table></td>\n";
 		    }
 		}
 		else
@@ -654,7 +655,7 @@ class session_data{
 	var $name;
 	var $value;
 	var $byteindex;
-	
+
 	function session_data($name){
 	$this->name = $name;
 	}
@@ -671,7 +672,7 @@ class session_data{
 	function show(){
 	return "<input type=\"hidden\" name=\"session_data[".$this->name."]\" value=\"".$this->value."\"></input>\n";
 	}
-	
+
 }
 
 class categorylist{
@@ -702,12 +703,12 @@ class categorylist{
     //$close_attribute["closebutton"] = "1";
     if(trim($tag) == 'button')
      {
-      $this->category_buttons[++$this->count] = new button($tag, $this->container, $this->config, $attribute, $this->warn);      
+      $this->category_buttons[++$this->count] = new button($tag, $this->container, $this->config, $attribute, $this->warn);
       //$this->category_close_buttons[$this->count] = new button($tag, $this->container, $this->config, $close_attribute, $this->warn);
      }
     elseif(is_object($this->category_buttons[$this->count]))
     {
-      $this->category_buttons[$this->count]->put_start($tag, $attribute, $byteindex);      
+      $this->category_buttons[$this->count]->put_start($tag, $attribute, $byteindex);
       //$this->category_close_buttons[$this->count]->put_start($tag, $attribute, $byteindex+1); # wouldn't call this a clean "byteindex"...
      }
   }
@@ -716,7 +717,7 @@ class categorylist{
   {
     if(is_object($this->category_close_buttons[$this->count]))
       {
-      $this->category_buttons[$this->count]->basket['closed'] = $this->category_close_buttons[$this->count]->basket['pressed'];      
+      $this->category_buttons[$this->count]->basket['closed'] = $this->category_close_buttons[$this->count]->basket['pressed'];
       }
     if(is_object($this->category_buttons[$this->count]))
       $this->category_buttons[$this->count]->put_value($value);
@@ -733,7 +734,7 @@ class categorylist{
   function show()
   {
     $str_start = "\n\n<!-- start of categorylist--> \n<div id=\"category\">\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-    $str_start .= "<tr><td nowrap valign=\"top\">\n<div id=\"categorystart\">&nbsp;</div>\n</td><td nowrap >\n<div id=\"categorycenter\">\n";
+    $str_start .= "<tr><td nowrap valign=\"top\">\n<div id=\"categorystart\">&nbsp;</div>\n</td><td width=\"100%\">\n<div id=\"categorycenter\">\n";
     $str_end = "</div>\n</td><td nowrap valign=\"top\">\n<div id=\"categoryend\">&nbsp;</div>\n</td></tr>\n</table>\n</div>\n<!-- end of categorylist-->\n\n";
     $str_buttons = "";
     for($i=1; $i < $this->count+1; $i++) # i is index for button-object-array
@@ -853,7 +854,7 @@ class notebook{
 
 					if($this->all_notebook[$j]->basket[active])
 					  { // active button
-					
+
 					    if($j==$end-1)
 						  {
 						    // last in line
@@ -872,7 +873,7 @@ class notebook{
 					    //$bg='bg_off.gif';
 					    $last_on=FALSE; // need to know for next button
 					  }
-				
+
 					if($img != '') $image = '<img class="note" src="style/'.$img.'" alt=""></img>';
 					else $image = '';
 
@@ -1075,7 +1076,7 @@ class table extends webui_translator
 	    $this->end($tag);
 	  }
 	else
-	  {	
+	  {
 	    if ($tag=="table")
 	      return TRUE;
 	    else
@@ -1279,7 +1280,7 @@ function show_all(){
 		}
 	unset($this->content);
 	return $str;
-	}	
+	}
 
 function show(){
 	foreach($this->content as $key => $value){
@@ -1303,29 +1304,29 @@ function wrap_view(){
 	  $first++;
 	if ($last > $max)
 	  $last = $max;
-	
+
 	if($first != $last || $current > 1)
 	  {
 	    $str .= "<table>\n<tr><td>\n";
-	
+
 	    if(!$this->ref_config->is_js)
 	      {
 		$str .= "<!-- script -->\n";
-		
+
 		if ($first > 1)
 		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<<\"></input>\n";
-		else 	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
-		
-		if ($current > 1) 	
+
+		if ($current > 1)
 		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"<\"></input>\n";
-		else	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
-		
+
 		for ($y=$first; $y <= $last; $y++)
 		  {
 		    if ($y==$current)
@@ -1333,33 +1334,33 @@ function wrap_view(){
 		    else
 		      $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\"$y\" style=\"color:#000000\"></input>\n";
 		  }
-		
+
 		$str .= "</td><td>\n";
-		
-		if ($current < $max) 	
+
+		if ($current < $max)
 		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">\"></input>\n";
-		else	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
-		
+
 		if ($last < $max)
 		  $str .= "<input class=\"buttoncontent\" type=\"submit\" name=\"long_table[".$this->byteindex."]\" value=\">>\"></input>\n";
 		else
 		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 	      }
 	    else
-	      {	
+	      {
 		$str .= "<!-- no script -->\n";
 		if($first > 1)
 		  {
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','<<')\">\n";
 		    $str .= "<img class=\"icon\" src=\"style/l_arrow.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
-		else 	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
 
 		if ($current > 1)
@@ -1367,9 +1368,9 @@ function wrap_view(){
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current - 1)."')\">\n";
 		    $str .= "<img class=\"icon\" src=\"style/l_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
-		else	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
 
 		for ($y=$first; $y <= $last; $y++)
@@ -1383,7 +1384,7 @@ function wrap_view(){
 			$str .= "</a>\n";
 		      }
 		  }
-		
+
 		$str .= "</td><td>\n";
 
 		if ($current < $max)
@@ -1391,9 +1392,9 @@ function wrap_view(){
 		    $str .= "<a class=\"$class\" onClick=\"sendForm('".$this->byteindex."','".($current + 1)."')\">\n";
 		    $str .= "<img class=\"icon\" src=\"style/r_ar.gif\" style=\"margin:4px\" alt=\"\"></img></a>\n";
 		  }
-		else	
+		else
 		  $str .= "<img class=\"icon\" src=\"style/no_ar.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "</td><td>\n";
 
 		if ($last < $max)
@@ -1403,12 +1404,12 @@ function wrap_view(){
 		  }
 		else
 		  $str .= "<img class=\"icon\" src=\"style/no_arrow.gif\" style=\"margin:4px\" alt=\"\"></img>\n";
-		
+
 		$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"long_table[".$this->byteindex."]\" value=\"\"></input>\n";
-		
+
 	      }
 	    $str .= "</td></tr>\n</table>\n";
-	
+
 	    $str .= "<input type=\"hidden\" name=\"current\" value=\"".$current."\"></input>\n";
 	    $str .= "<input type=\"hidden\" name=\"visible\" value=\"".$this->visible."\"></input>\n";
 	    $str .= "<input type=\"hidden\" name=\"previous\" value=\"".$first."\"></input>\n";

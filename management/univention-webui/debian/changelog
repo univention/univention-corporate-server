@@ -1,3 +1,9 @@
+univention-webui (1.1.2-2) unstable; urgency=low
+
+  * applied modifications from UMC-Scope 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:49:25 +0200
+
 univention-webui (1.1.2-1) unstable; urgency=low
 
   * php5 migration
