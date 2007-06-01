@@ -279,7 +279,7 @@ tr.tab,
 tr.tab_on,
 tr.notebook,
 tr.notebook_on{
-height:24px;
+height:22px;
 }
 
 /* ################# Cols  ################# */
@@ -538,7 +538,7 @@ td.tab,
 td.tab_on,
 td.notebook,
 td.notebook_on{
-line-height:24px !important;
+line-height:22px !important;
 }
 
 td.global_menu_slogan,
@@ -1111,7 +1111,6 @@ tr.desktopicon,td.desktopicon {
 	padding-right: 25px;
 	padding-top: 5px;
 	padding-bottom: 5px;
-/*	border: 1px solid black; */
 }
 
 .umc_list_element_number {

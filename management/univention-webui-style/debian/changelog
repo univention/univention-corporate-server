@@ -1,3 +1,9 @@
+univention-webui-style (1.0.2-1) unstable; urgency=low
+
+  * applied modifications from UMC scope
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:57:19 +0200
+
 univention-webui-style (1.0.1-1) unstable; urgency=low
 
   * document root changes
