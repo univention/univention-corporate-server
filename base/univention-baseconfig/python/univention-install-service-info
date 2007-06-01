@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention.baseconfig_info as ub_info
+import univention.service_info as us_info
 
 def debhelper_files():
 	return ( os.path.join( 'debian', package + 'postinst.debhelper' ),
@@ -55,7 +55,7 @@ def divert_remove( fd, dest ):
 	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert %s --remove "%s" || true\n' % ( dest + '.debian', dest ) )
 
 if __name__ == '__main__':
-	info = ub_info.BaseconfigInfo( install_mode = True )
+	info = us_info.ServiceInfo( install_mode = True )
 	for package in binary_packages():
 		# package's conffiles
 		conffilename = os.path.join( 'debian', package + '.conffiles' )
@@ -72,54 +72,28 @@ if __name__ == '__main__':
 		preinst_fd = open( preinst, 'a' )
 		postinst_fd = open( postinst, 'a' )
 
-		# categories
-		source = os.path.join( 'debian', package + '.univention-baseconfig-categories' )
+		# services
+		source = os.path.join( 'debian', package + '.univention-service' )
 
 		if not os.path.exists( source ):
 			continue
 
-		info.read_categories( source )
-		failed = info.check_categories()
+		info.read_services( source )
+		failed = info.check_services()
 		if failed:
-			print >>sys.stderr, 'The following category definitions are invalid: %s' % \
+			print >>sys.stderr, 'The following services definitions are invalid: %s' % \
 				  ', '.join( failed )
 			sys.exit( 1 )
-		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
-								  ub_info.BaseconfigInfo.CATEGORIES )
-		dest = os.path.join( dest_path, package + '.cfg' )
+		dest_path = os.path.join( 'debian', package, us_info.ServiceInfo.BASE_DIR[ 1 : ],
+					  us_info.ServiceInfo.SERVICES )
+		dest = os.path.join( dest_path, package + us_info.ServiceInfo.FILE_SUFFIX )
 
 		os.system( 'install -m 755 -d %s' % dest_path )
 		os.system( 'install -m 644 %s %s' % ( source, dest ) )
 
-		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.CATEGORIES,
-									  package + '.cfg' )
-		if not real_conffile + '\n' in current_conffiles:
-			conffiles.write( real_conffile + '\n' )
-
-		divert_add( preinst_fd, dest )
-		divert_remove( postinst_fd, dest )
-
-		# variables
-		source = os.path.join( 'debian',
-							   package + '.univention-baseconfig-variables' )
-		if not os.path.exists( source ):
-			continue
-
-		info.read_variables( source )
-		failed = info.check_variables()
-		if failed:
-			print >>sys.stderr, 'The following variable definition are invalid: %s' % \
-				  ', '.join( failed )
-			sys.exit( 1 )
-		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
-								  ub_info.BaseconfigInfo.VARIABLES )
-		dest = os.path.join( dest_path, package + '.cfg' )
-
-		os.system( 'install -m 755 -d %s' % dest_path )
-		os.system( 'install -m 644 %s %s' % ( source, dest ) )
-
-		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.VARIABLES,
-									  package + '.cfg' )
+		real_conffile = os.path.join( us_info.ServiceInfo.BASE_DIR,
+					      us_info.ServiceInfo.SERVICES,
+					      package + us_info.ServiceInfo.FILE_SUFFIX )
 		if not real_conffile + '\n' in current_conffiles:
 			conffiles.write( real_conffile + '\n' )
 

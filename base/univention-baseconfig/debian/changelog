@@ -1,3 +1,10 @@
+univention-baseconfig (2.1.1-1) unstable; urgency=low
+
+  * updated baseconfig_info module
+  * add service information module and installation script
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:30:27 +0200
+
 univention-baseconfig (2.1.0-1) unstable; urgency=low
 
   * update sshd configuration to the new openssh-server package
