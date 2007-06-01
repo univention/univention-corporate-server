@@ -119,6 +119,7 @@ univentionPolicyObject: cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=default-settings,cn=pwhistory,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
 univentionPolicyObject: cn=nfsmounts,cn=policies,@%@ldap/base@%@
+univentionPolicyObject: cn=printservers,cn=policies,@%@ldap/base@%@
 univentionLicenseObject: cn=license,cn=univention,@%@ldap/base@%@
 univentionUsersObject: cn=users,@%@ldap/base@%@
 univentionGroupsObject: cn=groups,@%@ldap/base@%@
@@ -486,6 +487,10 @@ cn: admin-settings
 dn: cn=nfsmounts,cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
 cn: nfsmounts
+
+dn: cn=printservers,cn=policies,@%@ldap/base@%@
+objectClass: organizationalRole
+cn: printservers
 
 dn: cn=default-users,cn=admin-settings,cn=users,cn=policies,@%@ldap/base@%@
 cn: default-users

@@ -376,5 +376,11 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.43-19.17
 			--position=cn=policies,$ldap_base --set policyPath=1
 	fi
 fi
-
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; then
+	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-admin container/cn create --ignore_exists \
+			--set name=printservers \
+			--position=cn=policies,$ldap_base --set policyPath=1
+	fi
 exit 0
