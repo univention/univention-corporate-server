@@ -1,3 +1,9 @@
+univention-join (1.0.1-1) unstable; urgency=low
+
+  * restart ldap listener after joining on managed and mobile clients
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Jun 2007 13:43:28 +0200
+
 univention-join (1.0.0-2) unstable; urgency=low
 
   * remove sysutils dependency

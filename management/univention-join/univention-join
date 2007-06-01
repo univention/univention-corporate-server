@@ -625,6 +625,21 @@ elif [ "$server_role" = "memberserver" ]; then
 
 else
 # Client and Mobile Client
+
+	listener_pid=`pidof univention-ldap-listener`
+	if [ -d /etc/runit/univention-ldap-listener ]; then
+		echo -n "shutdown univention-ldap-listener "
+		/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
+		echo -n "."
+		sleep 3
+		if [ -n "$listener_pid" ]; then
+			kill -9 "$listener_pid" >/dev/null 2>&1
+			sleep 3
+		fi
+		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+	fi
+	rm -Rf /var/lib/univention-ldap-listener/*
+
 	mkdir -p /etc/univention/ssl/udsCA
 
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/udsCA/" >>/var/log/univention/join.log 2>&1
@@ -657,6 +672,10 @@ else
 				echo -e "\033[60Gdone"
 			fi
 		done
+	fi
+
+	if [ -n "$listener_pid" -a -d /etc/runit/univention-ldap-listener ]; then
+		/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
 	fi
 
 fi
