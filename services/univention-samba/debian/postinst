@@ -107,7 +107,7 @@ univention-baseconfig set samba/script/adduser?true \
 				samba/winbind_trusted_domains_only?yes \
 				samba/encrypt_passwords?yes \
 				samba/use_spnego?yes \
-				samba/client_use_spnego?no \
+				samba/client_use_spnego?yes \
 				samba/oplocks?yes \
 				samba/kernel_oplocks?yes \
 				samba/large_readwrite?yes \

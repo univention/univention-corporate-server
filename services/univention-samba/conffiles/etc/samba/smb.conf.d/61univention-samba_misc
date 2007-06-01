@@ -1,4 +1,4 @@
-	oplocks = @%@samba/oplocks%@
+	oplocks = @%@samba/oplocks@%@
 	kernel oplocks = @%@samba/kernel_oplocks@%@
 	large readwrite = @%@samba/large_readwrite@%@
 	deadtime = @%@samba/deadtime@%@
