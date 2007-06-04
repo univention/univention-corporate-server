@@ -205,14 +205,16 @@ def main():
 			rem_packages=getPackageList(baseConfig, 'remove')
 			for package in rem_packages:
 				waitForLock()
-				print("Removing packages: %s" % package)
-				res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/actualise.log 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get remove --yes %s >>/var/log/univention/actualise.log 2>&1' % package)
+				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) #ein Packet muss nur dann entfernt werden, wenn es auch existiert.
+				if res==0:
+					print("Removing packages: %s" % package)
+					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/actualise.log 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get remove --yes %s >>/var/log/univention/actualise.log 2>&1' % package)
+				else:
+					res=0
 				if os.path.exists('/var/run/apt-get.lock'):
 					os.unlink('/var/run/apt-get.lock')
 				if res != 0:
 					print >>sys.stderr, "E: failed to remove %s" % package
-					file.close()
-					os.remove(tmpfile)
 					if pkgdb:
 						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
@@ -227,8 +229,6 @@ def main():
 					os.unlink('/var/run/apt-get.lock')
 				if res != 0:
 					print >>sys.stderr, "E: failed to install %s" % package
-					file.close()
-					os.remove(tmpfile)
 					if pkgdb:
 						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)

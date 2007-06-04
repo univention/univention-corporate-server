@@ -1,3 +1,9 @@
+univention-updater (2.0.3-1) unstable; urgency=low
+
+  * imported patch to fix Bug #8065 
+
+ -- Arne Brix <arne@magiker.knut.univention.de>  Mon,  4 Jun 2007 13:52:13 +0200
+
 univention-updater (2.0.2-1) unstable; urgency=low
 
   * small change in preup.sh, fixes Bug #8062
