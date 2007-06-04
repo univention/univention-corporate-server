@@ -30,15 +30,13 @@ check_space(){
 		then 
 		echo -e "Space on $partition:\t OK"
 	else
-		echo "WARNING: not enough space in $partition, need at least $usersize."
+		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
-    	echo "         I will wait 300 seconds until starting the update. If you are not sure press Strg+C to quit."
-		for i in `seq 1 300`
-		  do
-		  echo -n "."
-		  sleep 1
-		done
+    	echo "         If neccessary you can skip this check by setting the value of the"
+		echo "         baseconfig variable update13_checkfilesystems to \"no\"."
+		echo "         But be aware that this is not recommended!"
 		echo ""
+		exit 1
 	fi
 }
 
