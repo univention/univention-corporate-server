@@ -1,0 +1,7 @@
+Type: file
+File: etc/pam.d/univention-management-console
+
+Type: file
+File: etc/runit/univention-management-console-server/run
+Variables: umc/server/debug/level
+Variables: umc/web/language

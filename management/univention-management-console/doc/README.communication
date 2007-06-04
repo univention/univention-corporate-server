@@ -1,0 +1,223 @@
+In den Request-/Response-Objekten müssen zwei Arten Kommunikation abgewickelt werden:
+ Frontend <-> Daemon
+ Daemon <-> Daemon
+
+Die Kommunikation zwischen Daemon und Frontend muss folgende Aufgaben erfüllen:
+
+- das Fronted sendet Anfragen und Kommandos
+- der Daemon sendet dem Frontend Informationen:
+	* Modulliste
+	* Rechnerliste
+- der Daemon sendet dem Frontend Inhalte:
+	* Teilresponses mit Statusinfos
+	* Responses mit neuen Inhalten
+- der Daemon sendet dem Frontend Formulare:
+	* baseconfig-Einstellungen
+	* Modul-Einstellungen
+	* Wizard-Konfigurationen
+
+=== RESPONSE ===
+
+Aufbau der Antworten (Response):
+
+Die Antworten der meisten Requests enthalten "dialog"-Elemente zur
+Darstellung von Inhalten im Frontend. Darin beschrieben werden Struktur
+und Inhalte der Darstellung. Ausnahmen bilden besondere Requests zum
+Austausch zwischen Frontend und Daemon (z.B. auth, Abfrage der
+Modulliste etc.). Zusaetzlich wird mit dem key "module"
+Statusinformation zum Modul gegeben (u.a. ob das Modul aktiv ist oder
+Nachrichten vorhaelt).
+
+Aufbau module:
+- Name, Beschreibung als string
+- status: liste von "Flags", moeglich ist "active" (modul kann seinen
+  status ohne erneuten request aendern), "message" (modul hat
+  Nachrichten fuer den User), "warning" (modul hat wichtige Nachrichten
+  fuer den User)
+- categories: Unterkategorien und Requests um diese zu erreichen, bilden
+  das submenue im Modul
+
+Aufbau dialog:
+- content: dict, enhält Inhaltselemente,der key wird aus structure
+  referenziert
+- options: dict, enthaelt spezifische Infos,
+- dependencies: definiert Abhaengigkeiten der Inhaltselemente
+- structure: enthaelt Strukturelemene, bei Bedarf ineinander
+  verschachtelt
+
+
+Aufbau Strukturelmente:
+- type: definiert den Typ
+- content: Liste, abhaengig vom Typ, einfache Strings sind keys aus dem
+  content-Bereich von "dialog"
+- mögliche Struktur-Typen:
+* list: Liste von Elementen, content ist eine verschachtelte Liste, alle
+  "Zeilen" sollten eine identische Anzahl von Elementen haben, options
+  kann "headline" als Liste von Überschriftelementen enthalten.
+* table: Tabelle, content enhält eine Liste von Elementen vom Typ
+  tablerow
+* tablerow: "options" kann "rowspan":Nr und "head" enthalten, content
+  eine Liste von Elementen vom Typ tablecol
+* tablecol: "options" kann "colspan":Nr enthalten, content eine Liste
+  von Inhalten
+
+Aufbau Inhalte:
+- type: definiert den Typ, angelegt an univention.admin.syntax (Verweise
+  sind moeglich und gewuenscht), moegliche einfache Typen:
+* text: einfacher Text, options kann "bold" oder "head":Nr sein
+* icon: Icon,
+* Fomularfelder (Eingabefelder, Drop-Downs, Multivalues, definiert per
+  admin-syntax)
+- request: erzeugt Links mit dem hinterlegtem Request (Schrift = text
+  mit option "link", Icons, Buttons), bei Buttons wird an den Request
+  die aktuelle "content"-Liste des dialogs mit gesetzten Werten gehaengt
+- syntax: Verweis auf univention.admin.syntax oder basis-elemente (text,
+  icon, button)
+
+Im Datenformat müssen unterschiedliche Inhaltselemente entsprechend der
+syntax.py aus univention-webui definiert werden können. Dazu können
+viele der syntax-routinen aus modedit geholt werden.
+
+Beispiel Druckerübersicht:
+
+import univention.management.console.dialog as umcd
+import univention.management.console.protocol as umcp
+Body:
+  module: {
+	'name': 'cups', 'status': ['active','message'],
+	}
+  dialog: [
+		umcd.List(
+				headline = [ umcd.Text( 'Server' ), umcd.Text( 'Drucker' ), umcd.Text( 'Jobs' ) ],
+				content = [ [ umcd.Link( text = 'MyServer', link = umcp.Request() ),
+							  umcd.Link( text = 'MyPrinter', link = umcp.Request() ),
+							  umcd.Link( text = '0 Jobs', link = umcp.Request() )
+							  ],
+							[ umcd.Link( text = 'MyServer', link = umcp.Request() ),
+							  umcd.Link( text = 'MySecondPrinter', link = umcp.Request() ),
+							  umcd.Link( text = '3 Jobs', link = umcp.Request() )
+							  ], ]
+		),
+	]
+
+Beispiel Druckerwizard:
+
+Body:
+  module: {	'name': 'cups', 'status': ['active','message'],
+		'categories': [
+			{'name':'Printjobs', 'description': 'List all Printjobs', 'request':{REQUEST}},
+			{'name':'Printer', 'description': 'List all Printer', 'request':{REQUEST}},
+			{'name':'Configure', 'description': 'Configure Printserver', 'request':{REQUEST}}
+	]}
+  dialog: {
+	content: {
+		'cups/server': {
+				'type':'queryText',
+				'short_description':'printserver baseconfig setting',
+				'content':'localhost',
+				'syntax':'univention.admin.syntax.hostname',
+				},
+		'cups/server/protocol': {
+				'type':'queryText',
+				'short_description':'printserver baseconfig setting',
+				'content':'ipp',
+				'syntax':'univention.admin.syntax.protocol',
+				'dependencies': { 'active': { 'hasContent': ['cups/server'] } },
+				},
+		'cups/server/port': {
+				'type':'queryText',
+				'short_description':'printserver port baseconfig setting ',
+				'content':'631', # default if not overwritten by dependencies['default']
+				'syntax':'univention.admin.syntax.integer',}
+				'dependencies': { 'active': { 'hasContent': ['cups/server'] },
+						  'default': { 'case': { 'field':'cups/server/protocol', 'mapping' : { 'http':'361', 'ipp':'361', 'lpd','515' }  } }
+						},
+				}
+	}
+	structure: {
+		'type': 'table',
+		'content': [
+			{ 'type':'tablerow' ....},
+			{ 'type':'tablerow' ....},
+			{ 'type':'tablerow', 'content': [
+				{ 'type':'tablecol', 'content': [ 'cups/server', 'cups/server/port']
+				}
+			]}
+		]
+	}
+  }
+}
+
+Beispiel GET modules/list:
+
+Body:
+
+'modules':
+	{	'baseconfig':	
+			{	'name': 'baseconfig',
+				'categories': ['services', 'bla'],
+				'long_description': '...',
+				'short_description': 'Set, get, search and remove Univention Baseconfig variables',
+				'commands': {
+					'baseconfig/get': {'short_description': None },
+					'baseconfig/unset': {'short_description': None },
+					'baseconfig/search': {'short_description': None },
+					'baseconfig/set': {'short_description': None },
+				},
+			},
+		'services':
+			{	
+				'short_description': 'controls system services',
+				'commands': {
+					'service/stop': {'short_description': None },
+					'service/restart': {'short_description': None },
+					'service/status': {'short_description': None },
+					'service/start': {'short_description': None },
+					'service/reload': {'short_description': None },
+				},
+				'name': 'services',
+				'categories': ['services', 'bla'],
+				'long_description': '...'
+			},
+	}
+
+Einfuegen von Formularinhalten in Requests:
+Die Formularinhalte eines Dialogs muessen an den Daemon uebergeben
+werden. Dazu werden die aktuellen Formularfelder mit Inhalten an den
+Request gehaengt. Im einfachen Wizard-Dialog wird an
+dialog['options']['submitRequest']['body'] ein Liste 'content' mit den
+aktuellen content-Elementen angehaengt.
+
+=== REQUESTS ===
+
+Mögliche Requests:
+- Modulspezifisch: werden von den Modulen erzeugt und in die Responses
+  gepackt
+* Daemon <-> Frontend: die Requests werden vom Modul generiert und in
+  dem Response an Aktionen (Button, Link etc.) gehängt
+* Daemon <-> Daemon: es kann Modulspezifische Requests und Responses
+  geben, um Seiten zu erstellen auf denen Informationen von mehreren
+  Daemons gesammelt dargestellt werden
+* command ist COMMAND, CANCEL
+
+- Generisch: werden vom Frontend erzeugt, z.B.:
+* VERSION
+* AUTH
+* Liste der Module die am User angezeigt werden dürfen (command GET)
+* CLOSE
+
+Aufbau der Modulspezifischen Requests:
+- <command> ist "COMMAND"
+- Modulname
+- Befehl
+- Optionen (Variablen-Wert-Paare)
+Beispiele:
+Body:
+  module: cups
+  command: listLocalPrinters
+  options: {}
+
+Body:
+  module: cups
+  command: enablePrinter
+  options: {"name": "myPrinter"}

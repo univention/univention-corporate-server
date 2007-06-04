@@ -1,0 +1,65 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+eval $( univention-baseconfig shell)
+
+# debug level for UMC server and module process
+univention-baseconfig set umc/server/debug/level?1
+univention-baseconfig set umc/module/debug/level?1
+
+if [ "$umc_title_image" = "themes/images/default/management-console-beta.gif" ]; then
+	univention-baseconfig set umc/title/image=themes/images/default/management-console.gif
+fi
+if [ "$umc_title" = "Univention Management Console (Beta-Version)" ]; then
+	univention-baseconfig set umc/title="Univention Management Console"
+fi
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+
+	echo "kill all running univention-cli-server"
+
+	pkill -f '/usr/bin/python.*univention-admin-tools.*univention-cli-server'
+
+	/usr/lib/univention-install/34univention-management-console-server.inst
+fi
+
+if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
+fi
+
+# default directory for UNIX sockets daemon <-> module
+socket_dir=/var/run/univention-management-console/
+mkdir -p $socket_dir &>/dev/null
+chmod 700 $socket_dir
+
+# kill all running modules
+pkill -f "/usr/bin/python.* /usr/sbin/univention-management-console-module -m .*"
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+
+	/etc/init.d/univention-management-console-server crestart
+
+elif [ "$1" = "configure" ]; then
+
+	if test -e "/usr/share/univention-join/.joined"; then
+		ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
+	fi
+
+	echo "wait for runsv to sync..."
+	count=0
+	until runsvstat /etc/runit/univention-management-console-server > /dev/null 2>&1 || test $count -gt 10; do
+		sleep 1
+		((count=count+1))
+	done
+    # runsv has 10 seconds to sync, if it hasn't there will be a warning
+	/etc/init.d/univention-management-console-server start
+fi
+
+# added the php4 module to the apache modules list
+apache-modconf apache enable mod_php4
+
+/etc/init.d/apache stop
+/etc/init.d/apache start
+
+exit 0

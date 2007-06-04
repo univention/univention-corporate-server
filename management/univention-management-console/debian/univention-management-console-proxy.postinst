@@ -1,0 +1,31 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+eval $( univention-baseconfig shell server/role )
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	univention-baseconfig set umc/proxy/autostart?yes
+else
+	univention-baseconfig set umc/proxy/autostart?no
+fi
+
+# default directory for UNIX sockets server <-> module
+socket_dir=/var/run/univention-management-console/
+mkdir -p $socket_dir &>/dev/null
+chmod 700 $socket_dir
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	/etc/init.d/univention-management-console-proxy crestart
+elif [ "$1" = "configure" ]; then
+	echo "wait for runsv to sync..."
+	count=0
+	until runsvstat /etc/runit/univention-management-console-proxy > /dev/null 2>&1 || test $count -gt 10; do
+		sleep 1
+		((count=count+1))
+	done
+    # runsv has 10 seconds to sync, if it hasn't there will be a warning
+	/etc/init.d/univention-management-console-proxy start
+fi
+
+exit 0

@@ -1,0 +1,231 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-01 14:25+0200\n"
+"PO-Revision-Date: 2007-06-01 14:29+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: modconsole.py:107
+msgid "Username"
+msgstr "Benutzername"
+
+#: modconsole.py:107
+msgid "Please enter your uid."
+msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+
+#: modconsole.py:108
+msgid "Password"
+msgstr "Passwort"
+
+#: modconsole.py:108
+msgid "please enter your password."
+msgstr "Bitte geben Sie Ihr Passwort ein."
+
+#: modconsole.py:109
+msgid "OK"
+msgstr "OK"
+
+#: modconsole.py:109 modconsole.py:121
+msgid "Login"
+msgstr "Anmeldung"
+
+#: modconsole.py:110 modconsole.py:134
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: modconsole.py:110
+msgid "Abort Login"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:133 modconsole.py:145
+msgid "Logout"
+msgstr "Abmeldung"
+
+#: modconsole.py:134
+msgid "abort logout"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:138
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: modconsole.py:169
+msgid "Update status"
+msgstr "Status aktualisieren"
+
+#: modconsole.py:201
+msgid ""
+"Authentication failed: A connection to the UMC daemon could not be "
+"established."
+msgstr ""
+"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
+"hergestellt werden"
+
+#: modconsole.py:277
+#, python-format
+msgid "Authentication failed: %s"
+msgstr "Authentisierungsfehler: %s"
+
+#: modconsole.py:290
+msgid "Logout successful."
+msgstr "Abmeldung erfolgreich"
+
+#: unidialog.py:118
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+
+#: mapping/buttons.py:145
+msgid "Do"
+msgstr "Ausführen"
+
+#: mapping/buttons.py:146
+msgid "Do action with selected objects."
+msgstr "Aktion mit ausgewählten Objekten ausführen"
+
+#: mapping/buttons.py:148
+msgid "Invert Selection"
+msgstr "Auswahl umkehren"
+
+#: mapping/buttons.py:149
+msgid "Select All"
+msgstr "Alle auswählen"
+
+#: mapping/buttons.py:152 mapping/buttons.py:154
+msgid "Do with selected objects ..."
+msgstr "Ausgewählte Objekte ..."
+
+#: mapping/buttons.py:216
+msgid "Select"
+msgstr "Auswählen"
+
+#: mapping/buttons.py:217
+msgid "Select entry"
+msgstr "Auswählen eines Eintrags"
+
+#: mapping/dynamics.py:79
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mapping/dynamics.py:165
+msgid "Entries:"
+msgstr "Einträge:"
+
+#: mapping/dynamics.py:166
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Eintäge für '%s'"
+
+#: mapping/dynamics.py:276
+msgid "any"
+msgstr "Alle"
+
+#: mapping/dynamics.py:277
+msgid "none"
+msgstr "Keine"
+
+#: mapping/dynamics.py:290
+msgid "enter search filter"
+msgstr "Suchfilter"
+
+#: mapping/dynamics.py:298
+msgid "go ahead"
+msgstr "Anzeigen"
+
+#: mapping/dynamics.py:299
+msgid "property"
+msgstr "Eigenschaft"
+
+#: mapping/dynamics.py:299
+msgid "select attribute"
+msgstr "Wählen Sie ein Attribut aus"
+
+#: mapping/dynamics.py:419
+msgid "All"
+msgstr "Alles"
+
+#: mapping/dynamics.py:419
+msgid "choose objects to add"
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
+
+#: mapping/dynamics.py:420
+msgid "Current"
+msgstr "Aktuell"
+
+#: mapping/dynamics.py:420
+msgid "choose objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
+#: pages/about.py:19
+msgid "About"
+msgstr "Über"
+
+#: pages/about.py:32
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
+
+#: pages/about.py:37
+msgid "Version"
+msgstr "Version"
+
+#: pages/about.py:42
+msgid "Build"
+msgstr "Build"
+
+#: pages/about.py:52
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: pages/about.py:65
+msgid "local Installation"
+msgstr "Lokale Installation"
+
+#: pages/about.py:66
+msgid "UCS Version"
+msgstr "UCS Version"
+
+#: pages/about.py:76
+msgid "Contact"
+msgstr "Kontakt"
+
+#: pages/about.py:88
+msgid "ALL RIGHTS RESERVED"
+msgstr "ALL RIGHTS RESERVED"
+
+#: pages/about.py:103 pages/overview.py:86
+msgid "Logout from Univention Management Console"
+msgstr "Abmelden von Univention Management Console"
+
+#: pages/module.py:210
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+
+#: pages/module.py:211
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/overview.py:22
+msgid "Overview"
+msgstr "Überblick"
+
+#: pages/overview.py:54
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: pages/overview.py:54
+msgid "Favorite Univention Management Console Modules"
+msgstr "Am häufigsten genutzte Module"
+
+#: pages/startup.py:54
+msgid "An Error has occured"
+msgstr "Ein Fehler ist aufgetreten"

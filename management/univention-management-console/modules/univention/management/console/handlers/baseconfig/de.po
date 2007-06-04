@@ -1,0 +1,133 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-13 18:30+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: __init__.py:53
+msgid "Univention Baseconfig"
+msgstr "Univention Baseconfig"
+
+#: __init__.py:54
+msgid "Add, modify and search Univention Baseconfig variables"
+msgstr "Hinzufügen, Beareiten und Suchen von Baseconfig Variablen"
+
+#: __init__.py:59
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: __init__.py:60
+msgid "Add a new baseconfig variable"
+msgstr "Hinzufügen einer neuen Baseconfig Variable"
+
+#: __init__.py:71
+msgid "Show"
+msgstr "Anzeigen"
+
+#: __init__.py:72
+msgid "Display Information about a baseconfig variable"
+msgstr "Anzeigen von Informationen zu einer Baseconfig Variable"
+
+#: __init__.py:77
+msgid "Remove"
+msgstr "Entfernen"
+
+#: __init__.py:78
+msgid "Unset a baseconfig value"
+msgstr "Entfernen eines Baseconfig Wertes"
+
+#: __init__.py:83
+msgid "Search"
+msgstr "Suchen"
+
+#: __init__.py:84
+msgid "Search for a baseconfig value"
+msgstr "Suchen eines Baseconfig Wertes"
+
+#: _revamp.py:74 _types.py:89
+msgid "Variable"
+msgstr "Variable"
+
+#: _revamp.py:74 _types.py:89 _types.py:97
+msgid "Value"
+msgstr "Wert"
+
+#: _revamp.py:74 _revamp.py:176 _types.py:90 _types.py:103
+msgid "Description"
+msgstr "Beschreibung"
+
+#: _revamp.py:75
+msgid "Categories"
+msgstr "Kategorien"
+
+#: _revamp.py:113
+#, python-format
+msgid "Variable: %(key)s"
+msgstr "Variable: %(key)s"
+
+#: _revamp.py:117
+msgid "No Baseconfig variables were found."
+msgstr "Es wurden keine Baseconfig Variablen gefunden."
+
+#: _revamp.py:119
+msgid "Search Result"
+msgstr "Suchergebnis"
+
+#: _revamp.py:176 _types.py:104
+msgid "Language"
+msgstr "Sprache"
+
+#: _revamp.py:190
+msgid "Modify Baseconfig Variable"
+msgstr "Bearbeiten einer Baseconfig Variable"
+
+#: _revamp.py:192
+msgid "Add Baseconfig Variable"
+msgstr "Hinzufügen einer Baseconfig Variable"
+
+#: _types.py:40
+msgid "Category"
+msgstr "Kategorie"
+
+#: _types.py:61
+msgid "All (incl. not registered)"
+msgstr "Alle (inkl. nicht registrierter)"
+
+#: _types.py:62
+msgid "All"
+msgstr "Alle"
+
+#: _types.py:70
+msgid "List of Categories"
+msgstr "Liste der Kategorien"
+
+#: _types.py:77
+msgid "Types"
+msgstr "Typen"
+
+#: _types.py:80
+msgid "String"
+msgstr "Zeichenkette"
+
+#: _types.py:86
+msgid "Search Key"
+msgstr "Suchmaske"
+
+#: _types.py:95
+msgid "Key"
+msgstr "Schlüssel"
+
+#: _types.py:105
+msgid "Multilinugal Description"
+msgstr "Mehrsprachige Beschreibung"

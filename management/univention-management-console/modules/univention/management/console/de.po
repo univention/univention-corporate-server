@@ -1,0 +1,60 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-13 18:36+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: categories.py:74
+msgid "All Modules"
+msgstr "Alle Module"
+
+#: categories.py:75
+msgid "Configuration and monitoring of system services"
+msgstr "Konfiguration und Überwachung von System-Diensten"
+
+#: categories.py:76
+msgid "Miscellaneous"
+msgstr "Verschiedenes"
+
+#: categories.py:77
+msgid "Everything else"
+msgstr "Nicht zugeordnete Module"
+
+#: values.py:71
+msgid "value contains invalid characters"
+msgstr "Der Wert enthält ungültige Zeichen"
+
+#: values.py:130
+msgid "Value is not a valid integer number."
+msgstr "Der Wert ist keine gültige Zahl."
+
+#: values.py:145
+msgid "invalid value."
+msgstr "Ungültiger Wert."
+
+#: values.py:150
+msgid "At least one entry is required."
+msgstr "Mindestens ein Einträg wird benötigt."
+
+#: values.py:166
+msgid "German"
+msgstr "Deutsch"
+
+#: values.py:166
+msgid "English"
+msgstr "Englisch"
+
+#: values.py:189
+msgid "A value is required."
+msgstr "Ein Wert wird benötigt."

@@ -1,0 +1,3 @@
+usr/share/univention-management-console/www/
+usr/share/locale/de/LC_MESSAGES
+var/lib/univention-management-console

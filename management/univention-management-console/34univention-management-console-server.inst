@@ -1,0 +1,199 @@
+#!/bin/sh
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-management-console-server successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval $( univention-baseconfig shell ldap/base )
+
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+
+
+# create baseconfig operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig \
+																				 --set description="Univention Baseconfig operations" \
+																				 --append operation="baseconfig/*" \
+																				 --append operation="baseconfig/set" \
+																				 --append operation="baseconfig/get"
+
+# create service operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=service \
+																				 --set description="Service Operations" \
+																				 --append operation="service/*" \
+																				 --append operation="service/start" \
+																				 --append operation="service/stop"
+
+# create CUPS operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups \
+																				 --set description="CUPS operations" \
+																				 --append operation="cups/*" \
+																				 --append operation="cups/list" \
+																				 --append operation="cups/printer/*" \
+																				 --append operation="cups/printer/show" \
+																				 --append operation="cups/printer/disable" \
+																				 --append operation="cups/printer/enable" \
+																				 --append operation="cups/job/*" \
+																				 --append operation="cups/job/list" \
+																				 --append operation="cups/job/cancel" \
+																				 --append operation="cups/job/move"
+
+# create quota operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota \
+																				 --set description="Quota operations" \
+																				 --append operation="quota/*" \
+																				 --append operation="quota/list" \
+																				 --append operation="quota/partition/*" \
+																				 --append operation="quota/partition/show" \
+																				 --append operation="quota/partition/set" \
+																				 --append operation="quota/user/*" \
+																				 --append operation="quota/user/show" \
+																				 --append operation="quota/user/set"
+
+# create baseconfig acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-get \
+																				 --set category="Univention Baseconfig" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command=baseconfig/get \
+																				 --set description="Read all Univention Baseconfig variables"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-all \
+																				 --set category="Univention Baseconfig" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command=baseconfig/set \
+																				 --set description="Set all Univention Baseconfig variables"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-all \
+																				 --set category="Univention Baseconfig" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command="baseconfig/*" \
+																				 --set description="All Univention Baseconfig variable operations"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-net \
+																				 --set category="Univention Baseconfig" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="baseconfig/set:key=interfaces/*" \
+																				 --append command="baseconfig/set:key=gateway" \
+																				 --append command="baseconfig/set:key=nameserver1" \
+																				 --append command="baseconfig/set:key=nameserver2" \
+																				 --append command="baseconfig/set:key=nameserver3" \
+																				 --set description="Set network based Univention Baseconfig variables"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=baseconfig-set-samba \
+																				 --set category="Univention Baseconfig" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="baseconfig/set:key=samba/*" \
+																				 --append command="baseconfig/set:key=windows/*" \
+																				 --set description="Set samba and windows based Univention Baseconfig variables"
+
+# create service acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=service-all \
+																				 --set category="Dienste" \
+																				 --set ldapbase="$ldap_base" \
+																				 --set command="service/*" \
+																				 --set description="All Operations on Services"
+
+# create CUPS acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-all \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/*" \
+																				 --set description="Alle Druckserver-Operationen"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-list \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/list" \
+																				 --set description="Druckerliste anzeigen"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-printer \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/printer/*" \
+																				 --set description="Drucker anhalten und neustarten"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-jobs \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/job/*" \
+																				 --set description="Druckaufträge anzeigen, löschen und verschieben"
+
+
+# create quota acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-all \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/*" \
+																				 --set description="Alle Quota-Operationen"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-list \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/list" \
+																				 --set description="Quota anzeigen"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-partition \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/partition/*" \
+																				 --set description="Quota (de)aktivieren"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-user \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/user/*" \
+																				 --set description="Benutzer-Quota setzen"
+
+
+# policy container
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
+
+# default policies
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
+univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin \
+	--append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base
+univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+	--set name=baseconfig-admin --append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
+univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
+univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+	--set name=quota-admin --append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+# join default admin policy to the domain admins
+univention-admin groups/group modify $@ --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
+	--policy-reference="cn=default-admin,cn=console,cn=policies,$ldap_base"
+
+
+ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
+
+test -n "`grep "univention-management-console-server successful" /usr/lib/univention-install/.index.txt`" || echo "univention-management-console-server successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

@@ -1,0 +1,113 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-23 15:29+0200\n"
+"PO-Revision-Date: 2007-05-23 15:30+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: definitions.py:51
+msgid "OK, operation successful"
+msgstr "OK, Operation erfolgreich"
+
+#: definitions.py:52
+msgid "OK, partial response"
+msgstr "OK, Teilantwort"
+
+#: definitions.py:53
+msgid "command currently not available/possible"
+msgstr "Das Kommando ist momentan nicht verfügbar "
+
+#: definitions.py:54
+msgid "invalid UMCP message"
+msgstr "Ungültige UMCP Nachricht"
+
+#: definitions.py:55
+msgid "unknown command"
+msgstr "Unbekanntes Kommando"
+
+#: definitions.py:56
+msgid "invalid command arguments"
+msgstr "Ungültige Kommando-Parameter"
+
+#: definitions.py:57
+msgid "incomplete command"
+msgstr "Unvollständiges Kommando"
+
+#: definitions.py:58
+msgid "invalid body object"
+msgstr "Ungültiger Nachrichtenrumpf"
+
+#: definitions.py:59
+msgid "unparsable message header"
+msgstr "Formatfehler im Nachrichtenkopf"
+
+#: definitions.py:60
+msgid "unauthorized"
+msgstr "Nicht autorisiert"
+
+#: definitions.py:61
+msgid "authentication failed"
+msgstr "Authentisierung fehlgeschlagen"
+
+#: definitions.py:62
+msgid "account is expired"
+msgstr "Konto ist abgelaufen"
+
+#: definitions.py:63
+msgid "account is disabled"
+msgstr "Konto ist deaktiviert"
+
+#: definitions.py:64
+msgid "access to console daemon is prohibited"
+msgstr "Zugriff auf UMC ist nicht erlaubt"
+
+#: definitions.py:65
+msgid "command execution prohibited"
+msgstr "Ausführung des Kommandos ist nicht erlaubt"
+
+#: definitions.py:66
+msgid "internal error"
+msgstr "Interner Fehler"
+
+#: definitions.py:67
+msgid "request could not be found"
+msgstr "Die Anfrage konnte nicht gefunden werden"
+
+#: definitions.py:68
+msgid "module process died unexpectedly"
+msgstr "Module Prozess wurde unerwartet beendet"
+
+#: definitions.py:69
+msgid "connection to module process failed"
+msgstr "Verbindung zum Modul-Prozess ist fehlgeschlagen"
+
+#: definitions.py:70
+msgid "SSL server certificate is not trustworthy"
+msgstr "SSL-Server-Zertifikat ist nicht vertrauenswürdig"
+
+#: definitions.py:71
+msgid "error occuried during command processing"
+msgstr "Fehler während der Kommandoverarbeitung"
+
+#: definitions.py:72
+msgid "specified locale is not available"
+msgstr "Die gesetzten Spracheinstellungen können nicht verwendet werden."
+
+#: definitions.py:98
+msgid "Unknown Status"
+msgstr "Unbekannter Status"
+
+#: message.py:137
+#, python-format
+msgid "The command '%s' do not have any arguments"
+msgstr "Das Kommando'%s' hat keine Argumente"

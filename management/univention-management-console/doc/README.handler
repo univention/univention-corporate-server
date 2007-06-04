@@ -1,0 +1,51 @@
+Univention Management Console Daemon Handler
+============================================
+
+Ein Daemon soll die Fähigkeit besitzen mehrere Module bzw. mehrere
+Funktionen dieser Module gleichzeitig auszuführen. Diese Fähigkeit soll
+in einer möglichst Thread freien Architektur realisiert werden.
+
+Architektur
+-----------
+
+Um das Blockieren des UMC-Daemon Prozesses zu verhindern, wenn eine
+Modul-Funktion ausgeführt wird, wird pro Sitzung ein Modul-Prozess
+gestartet. Dieser kommuniziert über eine Socket (named pipe oder
+vielleicht sogar richtige socket?) mit dem Daemon-Prozess. Darüber
+werden einseits die Instruktionen erhalten (welche Funktionen ausgeführt
+werden soll) und andererseits ist es möglich Statusinformationen vom
+Modul-Prozess abzufragen. Dabei soll der Modul-Prozess fähig sein
+mehrere Funktionen gleichzeitig zu bearbeiten.
+
+Zwischen dem Daemon und dem Module-Prozess werden die Information mit
+dem Protokoll UMCP ausgetauscht. Dabei wird die Anfrage des
+Frontend-Daemon einfach nur weitergeleitet und die Status-Informationen
+können mittels des UMCP-COMMAND Requests angefragt werden (auch diese
+Nachricht wird voraussichtlich nur weitergeleitet sein).
+
+Bei der Implementierung der Modul-Prozesse muß auf folgendes geachtet werden:
+
+1. Die Bearbeitung einer Aufgabe darf den Prozess nicht lange
+   blockieren. Um externe Programme zu starten und deren Ausgabe
+   auszuwerten wird simpleHandler eine Funktion bereitstellen, die den
+   externen Prozess über einen Thread startet, die Ausgabe einsammelt
+   und am Ende zurückgibt.
+
+2. Lokale Informationen, die der Klassen-Instanz des Handler gehören
+   werden zwischen den verschiedenen Funktionen geteilt, d.h. hier muß
+   darauf geachtet werden, dass diese nur dann und so geändert werden,
+   dass andere Funktionen in ihrer Arbeit nicht behindert
+   werden. Beispielsweise sollte die Funktion 'getPrinterList' zu Beginn
+   nicht die Druckerliste leeren, sondern erst die fertige neue Liste in
+   einer lokalen Variable zusammenbauen und erst abschließend die
+   Objektvariable aktualisieren.
+
+Ein Modul Prozess sollte bis zu einem konfigurierbaren Timeout auf
+weitere Aufgaben warten. Danach sollte sich der Prozess beenden und der
+Daemon wird bei Bedarf eine neue Instanz starten.
+
+univention-management-console-module --help
+
+-p port to connect to
+-m module to load
+-t timeout

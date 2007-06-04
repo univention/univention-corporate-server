@@ -1,0 +1,79 @@
+Source: univention-management-console
+Section: univention
+Priority: optional
+Maintainer: Stefan Gohmann, Univention <gohmann@univention.de>
+Build-Depends: debhelper, python2.4, python2.4-xml, univention-config-dev
+Standards-Version: 3.5.5
+
+Package: univention-management-console
+Architecture: all
+Depends: python2.4-xml, python2.4-univention-management-console, univention-webui, univention-management-console-server, univention-management-console-themes, python2.4-pyopenssl, openssl
+Description: Univention Management Console - Web based computer administration tool
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the web-frontend, which
+ can be installed to provide access to one or several daemons.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-server
+Architecture: all
+Depends: python2.4-univention-management-console, python2.4-apt, python2.4-pam, pynotifier (>=0.5.8), libpam-passwdcache, libnss-passwdcache, univention-runit, python2.4-pyopenssl, procps
+Description: Univention Management Console - server
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the backend-daemon, which
+ can be installed on any UCS-system to provide functionalities
+ for univention-management-console
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-proxy
+Architecture: all
+Depends: python2.4-univention-management-console, python2.4-apt, python2.4-pam, pynotifier (>=0.5.8), libpam-passwdcache, libnss-passwdcache, univention-runit, python2.4-pyopenssl
+Description: Univention Management Console - Web based computer administration tool
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the backend-daemon, which
+ can be installed on any UCS-system to provide functionalities
+ for univention-management-console
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: python2.4-univention-management-console
+Architecture: all
+Depends: python2.4, univention-baseconfig, python2.4-univention, python2.4-univention-admin | python2.4-univention-admin-2005, python2.4-pyopenssl, pynotifier (>=0.5.8)
+Description: Univention Management Console - Python Modules
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the backend-daemon, which
+ can be installed on any UCS-system to provide functionalities
+ for univention-management-console
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-management-console-themes
+Architecture: all
+Description: Univention Management Console - Theme Files
+ Univention Console is a web based program to manage computers.
+ It has an extensible architecture, using modules to implement
+ its features. This package contains the backend-daemon, which
+ can be installed on any UCS-system to provide functionalities
+ for univention-management-console
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

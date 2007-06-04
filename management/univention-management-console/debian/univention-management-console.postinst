@@ -1,0 +1,24 @@
+#!/bin/sh
+
+for path in /usr/share/univention-management-console/www/icon /usr/share/univention-management-console/www/style /usr/share/univention-management-console/www/includes; do
+    if [ -d $path -a ! -h $path ]; then
+        rm -r $path
+    fi
+done
+
+test -h /usr/share/univention-management-console/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-management-console/www
+test -h /usr/share/univention-management-console/www/includes || ln -s /usr/share/univention-webui/www/includes /usr/share/univention-management-console/www
+test -h /usr/share/univention-management-console/www/style || ln -s /usr/share/univention-webui-style/style /usr/share/univention-management-console/www
+test -h /usr/share/univention-management-console/www/icon || ln -s /usr/share/univention-webui-style/icon /usr/share/univention-management-console/www
+
+univention-baseconfig set umc/web/timeout?300
+univention-baseconfig set umc/web/language?de_DE@euro
+univention-baseconfig set umc/web/debug/level?1
+
+
+touch /var/log/univention/management-console-web.log
+chown www-data:www-data /var/log/univention/management-console-web.log
+
+#DEBHELPER#
+
+/etc/init.d/apache restart > /dev/null

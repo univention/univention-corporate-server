@@ -1,0 +1,86 @@
+#!/usr/bin/make -f
+
+package=univention-management-console
+
+export DH_COMPAT=3
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	make
+
+	./univention-pycompile admin-modules/policies/console_access.py admin-modules/policies/console_access.pyo
+	./univention-pycompile admin-modules/settings/console_acl.py admin-modules/settings/console_acl.pyo
+	./univention-pycompile admin-modules/settings/console_operation.py admin-modules/settings/console_operation.pyo
+
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -rf *~ debian/tmp debian/*~ debian/files* debian/substvars
+	make clean
+	rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	make install-frontend DESTDIR=debian/univention-management-console/
+	make install-locales-frontend DESTDIR=debian/univention-management-console/
+	make install-images DESTDIR=debian/univention-management-console-themes/
+	make install-modules DESTDIR=debian/python2.4-univention-management-console/
+	make install-locales-backend DESTDIR=debian/python2.4-univention-management-console/
+	make install-locales-admin DESTDIR=debian/python2.4-univention-management-console/
+#	find debian/univention-management-console -name CVS | xargs rm -rf
+#	find debian/univention-management-console-daemon -name CVS | xargs rm -rf
+	echo -n "`date +"%d.%m.%Y"`" > debian/univention-management-console/usr/share/univention-management-console/frontend/builddate
+	cat debian/changelog | head -1 > debian/univention-management-console/usr/share/univention-management-console/frontend/buildversion
+
+#	msgfmt -o uniconf/locale/de/LC_MESSAGES/univention-management-console.mo uniconf/locale/de/LC_MESSAGES/univention-management-console.po
+#	install -m 0644 uniconf/locale/de/LC_MESSAGES/univention-management-console.mo debian/univention-admin/usr/share/locale/de/LC_MESSAGES/univention-management-console.mo
+
+	install -m 0744 usr/sbin/univention-management-console-proxy.py debian/univention-management-console-proxy/usr/sbin/univention-management-console-proxy
+
+	install -m 0744 usr/sbin/univention-management-console-server.py debian/univention-management-console-server/usr/sbin/univention-management-console-server
+	install -m 0744 usr/sbin/univention-management-console-client.py debian/univention-management-console-server/usr/sbin/univention-management-console-client
+	install -m 0744 usr/sbin/univention-management-console-module.py debian/univention-management-console-server/usr/sbin/univention-management-console-module
+
+	install -m 0644 admin-modules/policies/console_access.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/policies/
+	install -m 0644 admin-modules/settings/console_acl.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/settings/
+	install -m 0644 admin-modules/settings/console_operation.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/settings/
+
+	install -m 0755 34univention-management-console-server.inst debian/univention-management-console-server/usr/lib/univention-install/
+	install -m 0755 35univention-management-console-proxy.inst debian/univention-management-console-proxy/usr/lib/univention-install/
+
+	touch debian/univention-management-console-server/etc/runit/univention-management-console-server/down
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-management-console-server/etc/runit/univention-management-console-server/finish
+
+	touch debian/univention-management-console-proxy/etc/runit/univention-management-console-proxy/down
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-management-console-proxy/etc/runit/univention-management-console-proxy/finish
+
+	univention-install-baseconfig
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installinit --no-start -r
+	dh_installman -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

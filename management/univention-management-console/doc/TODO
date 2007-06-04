@@ -1,0 +1,12 @@
+
+* Wir sollten in der PAM Konfiguration von Univention Console
+univention-passwd-cache verwenden. Damit können wir uns an weiterhin an
+Univention Console anmelden, auch wenn LDAP nicht erreichbar ist.
+
+
+* Es wird ein LDAP Handle benötigt, der muss der ACL Klasse übergeben werden,
+zusätzlich können die Module den Handle anfordern.
+
+
+* SSL Verschlüsselung der Kommunikation
+

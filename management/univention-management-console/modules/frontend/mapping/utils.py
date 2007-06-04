@@ -1,0 +1,101 @@
+#!/usr/bin/python2.4 -OO
+#
+# Univention Management Console
+#  maps dynamic elements
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import univention.management.console.tools as umc_tools
+
+import univention.debug as ud
+
+from uniparts import *
+
+def attributes( umcp_part ):
+	# check attributes
+	if umcp_part.has_attributes():
+		return umcp_part.attributes()
+	return {}
+
+def default( umcp_part ):
+	# default value to use
+	if getattr( umcp_part, 'cached', None ):
+		return umcp_part.cached
+	elif getattr( umcp_part, 'default', None ):
+		return umcp_part.default
+
+	return None
+
+def layout_attrs( storage, umcp_part ):
+	args = storage.create_tag_attributes( umcp_part )
+	if umcp_part.has_attributes():
+		attrs = umcp_part.attributes()
+		for key in ( 'colspan', 'rowspan', 'align', 'type', 'width', 'warning' ):
+			if attrs.has_key( key ):
+				args[ key ] = attrs[ key ]
+	return args
+
+def check_syntax( umcp, value ):
+	if not umcp.syntax:
+		return True
+	return umcp.syntax.is_valid( value )
+
+def __icon_button( image, text, size = umc_tools.SIZE_SMALL ):
+	icon = { 'icon' : umc_tools.image_get( image, size ) }
+	return button( '', icon, { 'helptext' : text } )
+
+def button_add( what = None ):
+	if what:
+		return __icon_button( 'actions/add', 'Add %s' % what )
+	else:
+		return __icon_button( 'actions/add', 'Add' )
+
+def button_remove( what = None ):
+	if what:
+		return __icon_button( 'actions/remove', 'Remove %s' % what )
+	else:
+		return __icon_button( 'actions/remove', 'Remove' )
+
+def button_up():
+	return __icon_button( 'actions/up', 'Up' )
+
+def button_down():
+	return __icon_button( 'actions/down', 'Down' )
+
+def button_left( what = None ):
+	if what:
+		return __icon_button( 'actions/left', what )
+	else:
+		return __icon_button( 'actions/left', 'Left' )
+
+def button_right( what = None ):
+	if what:
+		return __icon_button( 'actions/right', what )
+	else:
+		return __icon_button( 'actions/right', 'Right' )
+
+def button_search( what = None ):
+	return __icon_button( 'actions/search', 'Search', umc_tools.SIZE_MEDIUM )

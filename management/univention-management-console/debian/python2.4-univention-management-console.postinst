@@ -1,0 +1,10 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+if [ ! -d /var/cache/univention-management-console/acls ]; then
+	mkdir -p /var/cache/univention-management-console/acls
+fi
+
+exit 0
+

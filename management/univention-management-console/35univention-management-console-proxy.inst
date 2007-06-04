@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-management-console-proxy successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+ln -s /etc/runit/univention-management-console-proxy /etc/runit/univention/univention-management-console-proxy >/dev/null 2>&1
+
+test -n "`grep "univention-management-console-proxy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-management-console-proxy successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
+

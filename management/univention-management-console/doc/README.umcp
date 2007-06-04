@@ -1,0 +1,160 @@
+UMCP - Univention Management Console Protocol
+
+The UMCP describes the communication between the Univention Management
+Console Frontend and the Univention Management Console Daemon. The
+protocol is based on a simple server/client architecture, where the
+frontend is the client that send requests to the daemon, representing
+the server, that performs the tasks and afterwards sends a response
+with a status and the result data. The following describes the message
+format used for requests and responses and lists the available request
+commands that a server MUST support.
+
+A message (request or response) consists of two parts: a header and a
+body. The header is human readable text and the body is a Python
+Pickle object that contains a dict. To separate header and body a line
+break ('\n') is inserted after the header.
+
+The Header
+==========
+
+(REQUEST|RESPONSE)/<id>/<body length>: <command>[ <command arguments>]
+
+Each message MUST start with the keyword REQUEST or RESPONSE
+identifying the type of the message. The <id>, following after a '/',
+is a unique number that MUST be generated for each new request
+message, while a response message MUST use the same number as the
+corresponding request. After another '/' the length of the body in
+bytes is given to ensure the completeness of a message. The next field
+<command> specifies the UVCP command that MUST be one of the
+following:
+
+AUTH - authenticates the client (user)
+VERSION - retrieves the UVCP protocol version
+GET - retrieves a few basic information about what actions can be performed
+SET - ?
+COMMAND - runs an operation
+STATUS - retrieves the current status of an operation request with COMMAND
+CANCEL - cancels a currently running operation that was initiated with COMMAND
+CLOSE - closes the connection to the daemon
+
+A detailed description of the commands and their arguments will follow
+later on.
+
+The last field is optional too and MAY specify a space separated list
+of strings used as command agruments. The usage of this list depends
+on request command.
+
+The Body
+========
+
+The body is, as described before, a python Pickle object using the
+ASCII encoding. The decoded object MUST contain a Python dict object
+and nothing else. The keys and and values in the dict object are
+defined by the request command. Just a few keys will be available in
+all responses:
+
+_status - a number representing the success or failure of the
+	  request. predefined values are:
+
+  	200 - OK, successful
+	210 - OK, partial response
+	300 - command currently not available/possible
+    400 - invalid UVCP message
+	401 - unknown command
+	402 - invalid command arguments
+	403 - incomplete command
+	404 - invalid body object
+    405 - unparsable message header
+	410 - unauthorized
+	411 - authentication failed
+	412 - account is expired
+	413 - account is disabled
+	414 - access to console daemon is prohibited
+          The user could be authenticated, but has no access
+          to the console daemon.
+    500 - request could not be found
+
+_hosts - a list of FQDNs. This is the list of the destination hosts
+	  where the command will be performed. If this key is not set the
+	  command will be performed on localhost
+
+_dialog - defines the "answer" of the console command
+	  for details see README.communication
+
+Commands
+========
+
+When a new connection is established the first command send by a
+client MUST be the AUTH command. Otherwise a server will send a
+response with a status 410 and close the connection.  If the
+authentication was successful a client send any available UMCP command
+until the connection is closed with the CLOSED command.
+
+The following provides a complete list of all UMCP commands, the
+argments and the keys and values used in the bodies of request and
+response messages.
+
+AUTH
+----
+* Request:
+  Body:
+    username: the account name
+    password: the password to authenticate the user
+* Response:
+
+GET
+---
+
+* Arguments
+  modules/list - retrieves a list of all allowed console daemon modules
+  hosts/list - retrieves a list of available hosts according to the given authentication credentials
+    
+SET
+---
+
+* Arguments
+  language - set the language that should be used for the responses
+
+CLOSE
+-----
+
+* Request:
+  Body:
+    cancel: (True|False)
+      if True all runnings commands of the clients are cancelled,
+      otherwise if there are running commands the CLOSE command MUST
+      respond with a status 300.
+* Response:
+  Body:
+    id: list of request ids.
+        If there are still running operations and the cancel attribute
+        in the request was True, this key contains the list of ids of
+        still running operations.
+
+CANCEL
+------
+
+* Request
+  Body:
+    id: a list of reuqest ids to cancel. If one of the ids could not
+        be found the daemons SHOULD send a response with a status 500
+        and a list of ids that could not be cancelled (key id).
+* Response
+  Body:
+    id: list of ids that could not be cancelled. Only available if the
+        status code is 500.
+
+STATUS
+------
+
+* Request
+  Body:
+    id: a list of ids.
+        For each id in this list a human readable status is returned
+
+COMMAND
+-------
+
+* Arguments
+  <module command> - any available module command
+
