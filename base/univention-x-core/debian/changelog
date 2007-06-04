@@ -1,0 +1,72 @@
+univention-x-core (0.7-11) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 15:29:29 +0100
+
+univention-x-core (0.7-9) unstable; urgency=low
+
+  * added missing monitoring for univentionXKeyboard
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Mon, 10 Apr 2006 11:47:49 +0200
+
+univention-x-core (0.7-8) unstable; urgency=low
+
+  * added missing baseConfig univentionXKeyboard
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Mon, 27 Mar 2006 13:20:02 +0200
+
+univention-x-core (0.7-5) unstable; urgency=low
+
+  * move vnc module for x.org into package univention-x-core-vncmodule
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Feb 2006 09:28:37 +0100
+
+univention-x-core (0.7-2) unstable; urgency=low
+
+  * fixed an format string error for the VideoRAM option in xorg.conf
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Dec 2005 16:30:23 +0100
+
+univention-x-core (0.7-1) unstable; urgency=low
+
+  * Adapted to xorg (changing filenames and paths)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Fri, 25 Nov 2005 09:30:28 +0100
+
+univention-x-core (0.7-0) unstable; urgency=low
+
+  * remove dependencie on ssh
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Nov 2005 13:09:13 +0100
+
+univention-x-core (0.6) unstable; urgency=low
+
+  * add support for variable univentionXVideoRam
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2005 17:20:15 +0100
+
+univention-x-core (0.5) unstable; urgency=low
+
+  * remove msttcorefonts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 28 Apr 2005 08:41:46 +0200
+
+univention-x-core (0.3) unstable; urgency=low
+
+  * added displaySize
+  * added support for remote-vnc-access
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Jan 2005 13:20:35 +0100
+
+univention-x-core (0.2) unstable; urgency=low
+
+  * set h sync and v refresh
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Mar 2004 15:35:28 +0100
+
+univention-x-core (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Jan 2004 15:12:41 +0100
