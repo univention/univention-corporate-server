@@ -91,8 +91,8 @@ install: build
 	
 	install -m 644 script/reboot.at debian/univention-updater/var/lib/univention-updater/
 
-	install -m 644 scripts/preup.sh debian/univention-updater/usr/share/univention-updater/
-	install -m 644 scripts/postup.sh debian/univention-updater/usr/share/univention-updater/
+	install -m 644 script/preup.sh debian/univention-updater/usr/share/univention-updater/
+	install -m 644 script/postup.sh debian/univention-updater/usr/share/univention-updater/
 	
 	test ${copyrightyear} != 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@/-${copyrightyear}/" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
 	
