@@ -1,0 +1,29 @@
+univention-passwd-cache (0.3.1-1) unstable; urgency=low
+
+  * first import for UCS 2.0
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 10:33:40 +0200
+
+univention-passwd-cache (0.3.0-2) unstable; urgency=low
+
+  * add GPL headers 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 Dec 2006 10:11:24 +0100
+
+univention-passwd-cache (0.2) unstable; urgency=low
+
+  * Add Suggests: and Recommends:
+  * Adapted description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 13:56:13 +0200
+
+univention-passwd-cache (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thomas Kaminski <kaminski@univention.de>  Thu, 05 Feb 2004 09:57:12 +0100
+
+Local variables:
+mode: debian-changelog
+End:
+
