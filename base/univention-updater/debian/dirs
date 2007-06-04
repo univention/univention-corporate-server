@@ -2,3 +2,4 @@ usr/sbin
 usr/lib/univention-ldap-policy/
 etc/init.d
 var/lib/univention-updater/
+usr/share/univention-updater
