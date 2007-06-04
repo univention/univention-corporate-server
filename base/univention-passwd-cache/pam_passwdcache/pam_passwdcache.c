@@ -1049,7 +1049,19 @@ static int _insert_new_user( const char *user, char *pw )
     return PAM_SYSTEM_ERR;
   }
   new_spent->sp_pwdp = pw;
+  
+  /* shadow data is not to be cached, thus the entries are overwritten with -1 which
+   * putspnam translates to an empty field
+   * */
+  /* { */
+  new_spent->sp_lstchg=-1;
+  new_spent->sp_max=-1; 
+  new_spent->sp_warn=-1; 
+  new_spent->sp_inact=-1; 
+  new_spent->sp_expire=-1;
+  /* } */
 
+  
   /* ------------------------------------------------------------------------------ */
   /* passwd                                                                         */
   /* ------------------------------------------------------------------------------ */

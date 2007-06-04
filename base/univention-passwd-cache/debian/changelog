@@ -1,3 +1,9 @@
+univention-passwd-cache (0.3.2-1) unstable; urgency=low
+
+  * applied patch from management scope
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 10:53:58 +0200
+
 univention-passwd-cache (0.3.1-1) unstable; urgency=low
 
   * first import for UCS 2.0
