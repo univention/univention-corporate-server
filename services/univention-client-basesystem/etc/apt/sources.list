@@ -1,13 +1,6 @@
 
-deb http://192.168.0.3/build2/ ucs_1.3-0/all/
-deb http://192.168.0.3/build2/ ucs_1.3-0/i386/
-deb http://192.168.0.3/build2/ ucs_1.3-0/extern/
+deb http://192.168.0.3/build2/ ucs_2.0-0/all/
+deb http://192.168.0.3/build2/ ucs_2.0-0/i386/
 
-deb http://192.168.0.3/build2/ ucs_1.3-1/all/
-deb http://192.168.0.3/build2/ ucs_1.3-1/i386/
-deb http://192.168.0.3/build2/ ucs_1.3-1/extern/
-
-deb http://192.168.0.3/build2/ ucs_1.3-2/all/
-deb http://192.168.0.3/build2/ ucs_1.3-2/i386/
-deb http://192.168.0.3/build2/ ucs_1.3-2/extern/
+deb http://ftp2.de.debian.org/debian etch main
 

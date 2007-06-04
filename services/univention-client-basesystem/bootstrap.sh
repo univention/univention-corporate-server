@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
 export suite=univention
-mirror=http://192.168.0.3/build2/ucs_1.3-0/
+mirror=http://192.168.0.10/build2/ucs_2.0-0/
 
 # fixme: univention-python
 export packages="univention-config python2.4-univention libnss-ldap libpam-ldap nfs-common rsh-client gdm samba samba-common univention-x-core univention-fonts python2.4 bind9-host devfsd pam-runasroot ntpdate ntp less rdesktop fuse-utils univention-automount arts kcontrol dhcp3-client libpam-heimdal libpam-krb5 heimdal-clients cupsys univention-policy-tools libunivention-policy0 libldap2 ldap-utils python2.4-dns kudzu univention-gdm lynx locales univention-xnumlock univention-home-mounter rdate netcat fuse-utils smbfs univention-automount univention-client-devices-client univention-bootsplash univention-kde-setdirs"
