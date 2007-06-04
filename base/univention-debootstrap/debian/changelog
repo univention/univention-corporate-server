@@ -1,3 +1,9 @@
+univention-debootstrap (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 polcies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Jun 2007 14:42:54 +0200
+
 univention-debootstrap (0.1.9) unstable; urgency=low
 
   * add GPL headers
