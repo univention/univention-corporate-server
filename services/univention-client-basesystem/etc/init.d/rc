@@ -1,0 +1,160 @@
+#! /bin/sh
+#
+# Univention Client Basesystem
+#  init script: This file is responsible for starting/stopping services
+#  when the runlevel changes.
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+# rc	This file is responsible for starting/stopping
+#		services when the runlevel changes.
+#
+#		Optimization feature:
+#		A startup script is _not_ run when the service was
+#		running in the previous runlevel and it wasn't stopped
+#		in the runlevel transition (most Debian services don't
+#		have K?? links in rc{1,2,3,4,5} )
+#
+# Author:	Miquel van Smoorenburg <miquels@cistron.nl>
+#		Bruce Perens <Bruce@Pixar.com>
+#
+# Version:	@(#)rc  2.78  07-Nov-1999  miquels@cistron.nl
+#
+
+# Un-comment the following for debugging.
+# debug=echo
+
+splash=0
+progress=0
+stepping=0
+if [ -e /proc/splash ] ; then
+	if `grep silent /proc/splash >/dev/null 2>&1` ; then
+		splash=1
+	fi
+fi
+
+if [ $splash==1 ] ; then
+	if [ -e /tmp/progress ] ; then
+		progress=`cat /tmp/progress`
+	else
+		progress=0
+	fi
+	rcnr=`find /etc/rc[S2].d -maxdepth 1 -name "S[0-9][0-9]*" | wc -l`
+	stepping=`expr 65500 / \( $rcnr - 1 \)`
+fi
+
+#
+# Start script or program.
+#
+startup() {
+  case "$1" in
+	*.sh)
+		$debug sh "$@"
+		;;
+	*)
+		$debug "$@"
+		;;
+  esac
+}
+
+  # Ignore CTRL-C only in this shell, so we can interrupt subprocesses.
+  trap ":" INT QUIT TSTP
+
+  # Set onlcr to avoid staircase effect.
+  stty onlcr 0>&1
+
+  # Now find out what the current and what the previous runlevel are.
+
+  runlevel=$RUNLEVEL
+  # Get first argument. Set new runlevel to this argument.
+  [ "$1" != "" ] && runlevel=$1
+  if [ "$runlevel" = "" ]
+  then
+	echo "Usage: $0 <runlevel>" >&2
+	exit 1
+  fi
+  previous=$PREVLEVEL
+  [ "$previous" = "" ] && previous=N
+
+  export runlevel previous
+
+  # Is there an rc directory for this new runlevel?
+  if [ -d /etc/rc$runlevel.d ]
+  then
+	# First, run the KILL scripts.
+	if [ $previous != N ]
+	then
+		for i in /etc/rc$runlevel.d/K[0-9][0-9]*
+		do
+			# Check if the script is there.
+			[ ! -f $i ] && continue
+
+			# Stop the service.
+			startup $i stop
+		done
+	fi
+	# Now run the START scripts for this runlevel.
+	for i in /etc/rc$runlevel.d/S*
+	do
+		[ ! -f $i ] && continue
+
+		if [ $previous != N ] && [ $previous != S ]
+		then
+			#
+			# Find start script in previous runlevel and
+			# stop script in this runlevel.
+			#
+			suffix=${i#/etc/rc$runlevel.d/S[0-9][0-9]}
+			stop=/etc/rc$runlevel.d/K[0-9][0-9]$suffix
+			previous_start=/etc/rc$previous.d/S[0-9][0-9]$suffix
+			#
+			# If there is a start script in the previous level
+			# and _no_ stop script in this level, we don't
+			# have to re-start the service.
+			#
+			[ -f $previous_start ] && [ ! -f $stop ] && continue
+		fi
+
+		if [ $splash==1 ] ; then
+			let progress=progress+$stepping
+			echo "show $progress" > /proc/splash
+		fi
+
+		case "$runlevel" in
+			0|6)
+				startup $i stop
+				;;
+			*)
+				startup $i start
+				;;
+		esac
+	done
+  fi
+
+if [ $splash==1 ] ; then
+	echo "show 65500" > /proc/splash
+	rm -f /tmp/progress
+	echo "verbose" > /proc/splash
+fi
