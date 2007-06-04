@@ -1,3 +1,9 @@
+univention-x-core (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Jun 2007 11:06:15 +0200
+
 univention-x-core (0.7-11) unstable; urgency=low
 
   * add GPL headers
