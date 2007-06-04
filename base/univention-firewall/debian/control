@@ -1,0 +1,20 @@
+Source: univention-firewall
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Architecture: i386
+Build-Depends: debhelper, python2.3, univention-config-dev
+
+Package: univention-firewall
+Architecture: all
+Depends: univention-baseconfig, python, iptables
+Description: UCS - firewall integration
+ This package contains scripts to combine iptables with
+ univention-baseconfig
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

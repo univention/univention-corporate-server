@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#univention-baseconfig set connector/ad/listener/dir?/var/lib/univention-connector/ad
+#univention-baseconfig set connector/ad/poll/sleep?5
+#univention-baseconfig set connector/ad/retryrejected?10
+#univention-baseconfig set connector/ad/ldap/port?389
+#univention-baseconfig set connector/debug/function?0
+#univention-baseconfig set connector/debug/level?1
+
+# Do some basic firewall setup
+
+/etc/init.d/univention-firewall restart || true
