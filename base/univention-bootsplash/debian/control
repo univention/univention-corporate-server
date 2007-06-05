@@ -1,6 +1,6 @@
 Source: univention-bootsplash
 Section: univention
-Priority: required
+Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 3.0.0), univention-config-dev
 Standards-Version: 3.5.2
