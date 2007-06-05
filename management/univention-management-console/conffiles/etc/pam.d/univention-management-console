@@ -1,15 +1,15 @@
-# Warning: This file is auto-generated and might be overwritten by 
+# Warning: This file is auto-generated and might be overwritten by heim
 #          univention-baseconfig.
 #          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch 
-#          univention-baseconfig überschrieben werden. 
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-# 
+#
 # 	/etc/univention/templates/files/etc/pam.d/univention-management-console
-# 
+#
 
 auth     sufficient                         pam_unix.so
-auth     [success=done new_authtok_reqd=ok          user_unknown=ignore          service_err=die authinfo_unavail=die          default=die]                         pam_heimdal.so use_first_pass
+auth     [success=done new_authtok_reqd=ok          user_unknown=ignore          service_err=die authinfo_unavail=die          default=die]                         pam_krb5.so use_first_pass
 auth     [success=done new_authtok_reqd=ok          user_unknown=die          service_err=die authinfo_unavail=die          default=die]                         pam_ldap.so use_first_pass
 
 # cache password (on successful authentification)
@@ -20,7 +20,7 @@ auth     required                           pam_passwdcache.so try_first_pass de
 auth     required                         pam_passwdcache.so try_first_pass
 
 account  sufficient             pam_unix.so
-account  sufficient             pam_heimdal.so
+account  sufficient             pam_krb5.so
 account  required               pam_ldap.so
 
 session    required   pam_unix.so

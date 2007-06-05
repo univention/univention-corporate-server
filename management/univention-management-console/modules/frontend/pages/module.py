@@ -177,7 +177,7 @@ class Module( base.Page ):
 				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog' )
 				self.__startups[ self.selected ].cache = copy.deepcopy( self.__layout )
 				error_dialog = self.__startups[ self.selected ].error_message( '\n'.join( reports ) )
-
+				self.active.reset()
 			# received a _final_ response
 			if not self.active:
 				self._refresh = False
@@ -210,9 +210,9 @@ class Module( base.Page ):
 							   _( 'Operation still in progress. Please wait ...' ) ] )
 				frame = umcd.Frame( [ lst ], _( 'Information' ) )
 				self.__in_progress = umcd.Dialog( [ frame ] )
-				self.__layout = self.__in_progress
+# 				self.__layout = self.__in_progress
 				self.__storage.clear()
-				self.__dialog = self.__storage.to_uniparts( self.__layout )
+				self.__dialog = self.__storage.to_uniparts( self.__in_progress )
 				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ]})
 				row = uniparts.tablerow( '', {}, { 'obs' : [ col ]})
 				rows.append( row )

@@ -1,3 +1,16 @@
+univention-management-console (0.7.1-1) unstable; urgency=low
+
+  * update paackaging for UCS 2.0
+  * applied bug fixes
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 05 Jun 2007 08:35:19 +0200
+
+univention-management-console (0.7.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 13:54:44 +0200
+
 univention-management-console (0.6.26-1) unstable; urgency=low
 
   * added LdapConnection singleton

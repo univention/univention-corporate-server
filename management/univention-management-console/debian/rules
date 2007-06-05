@@ -1,18 +1,48 @@
 #!/usr/bin/make -f
+#
+# Univention Management Console
+#  rules file for the debian package
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-management-console
+version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
+copyrightyear=`date +%Y`
 
-export DH_COMPAT=3
+PACKAGE_NAME=python-univention-management-console
+MODULE_NAME=univention-management-console
+# DESTDIR=debian/tmp
+
+PYVERS=$(shell pyversions -vr)
 
 build: build-stamp
-build-stamp:
+build-stamp: $(PYVERS:%=build-ext-%)
+build-ext-%:
 	dh_testdir
+	touch $@
 	make
-
-	./univention-pycompile admin-modules/policies/console_access.py admin-modules/policies/console_access.pyo
-	./univention-pycompile admin-modules/settings/console_acl.py admin-modules/settings/console_acl.pyo
-	./univention-pycompile admin-modules/settings/console_operation.py admin-modules/settings/console_operation.pyo
-
 	touch build-stamp
 
 clean:
@@ -23,35 +53,28 @@ clean:
 	rm -f build-stamp
 	dh_clean
 
-install: build
+install: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
 
-	make install-frontend DESTDIR=debian/univention-management-console/
-	make install-locales-frontend DESTDIR=debian/univention-management-console/
-	make install-images DESTDIR=debian/univention-management-console-themes/
-	make install-modules DESTDIR=debian/python2.4-univention-management-console/
-	make install-locales-backend DESTDIR=debian/python2.4-univention-management-console/
-	make install-locales-admin DESTDIR=debian/python2.4-univention-management-console/
-#	find debian/univention-management-console -name CVS | xargs rm -rf
-#	find debian/univention-management-console-daemon -name CVS | xargs rm -rf
+	make PACKAGE=univention-management-console-themes install-images
+	make PACKAGE=univention-management-console install-frontend
+	make PACKAGE=univention-management-console install-locales-frontend
+	make PACKAGE=python-univention-management-console install-modules
+	make PACKAGE=python-univention-management-console install-locales-backend
+	make PACKAGE=python-univention-management-console install-admin-modules
+	make PACKAGE=python-univention-management-console install-locales-admin
+
 	echo -n "`date +"%d.%m.%Y"`" > debian/univention-management-console/usr/share/univention-management-console/frontend/builddate
 	cat debian/changelog | head -1 > debian/univention-management-console/usr/share/univention-management-console/frontend/buildversion
 
-#	msgfmt -o uniconf/locale/de/LC_MESSAGES/univention-management-console.mo uniconf/locale/de/LC_MESSAGES/univention-management-console.po
-#	install -m 0644 uniconf/locale/de/LC_MESSAGES/univention-management-console.mo debian/univention-admin/usr/share/locale/de/LC_MESSAGES/univention-management-console.mo
-
 	install -m 0744 usr/sbin/univention-management-console-proxy.py debian/univention-management-console-proxy/usr/sbin/univention-management-console-proxy
-
 	install -m 0744 usr/sbin/univention-management-console-server.py debian/univention-management-console-server/usr/sbin/univention-management-console-server
 	install -m 0744 usr/sbin/univention-management-console-client.py debian/univention-management-console-server/usr/sbin/univention-management-console-client
 	install -m 0744 usr/sbin/univention-management-console-module.py debian/univention-management-console-server/usr/sbin/univention-management-console-module
-
-	install -m 0644 admin-modules/policies/console_access.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/policies/
-	install -m 0644 admin-modules/settings/console_acl.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/settings/
-	install -m 0644 admin-modules/settings/console_operation.pyo debian/univention-management-console-server/usr/lib/python2.4/site-packages/univention/admin/handlers/settings/
 
 	install -m 0755 34univention-management-console-server.inst debian/univention-management-console-server/usr/lib/univention-install/
 	install -m 0755 35univention-management-console-proxy.inst debian/univention-management-console-proxy/usr/lib/univention-install/
@@ -68,6 +91,7 @@ binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
 	dh_installchangelogs -i
+	dh_pycentral -Nunivention-management-console -Nunivention-management-console-server -Nunivention-management-console-themes
 	dh_installdocs -i
 	dh_installexamples -i
 	dh_installinit --no-start -r
@@ -81,6 +105,7 @@ binary-indep: build install
 	dh_builddeb -i
 
 binary-arch: build install
+	dh_pycentral
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install

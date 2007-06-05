@@ -1,8 +1,8 @@
 Type: file
-File: usr/share/univention-management-console/www/config
+File: usr/share/univention-management-console/www/config.php
 Variables: umc/web/debug/level
 Variables: umc/web/language
 Variables: umc/web/timeout
 
 Type: file
-File: etc/univention/apache/93univention-management-console
+File: etc/apache2/sites-available/univention-management-console

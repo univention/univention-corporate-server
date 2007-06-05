@@ -56,10 +56,9 @@ elif [ "$1" = "configure" ]; then
 	/etc/init.d/univention-management-console-server start
 fi
 
-# added the php4 module to the apache modules list
-apache-modconf apache enable mod_php4
+# added the php5 module to the apache2 modules list
+a2enmod php5 || true
 
-/etc/init.d/apache stop
-/etc/init.d/apache start
+/etc/init.d/apache2 reload || true
 
 exit 0

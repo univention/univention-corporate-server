@@ -1,5 +1,3 @@
 etc/runit/univention-management-console-server/
 usr/sbin/
 usr/lib/univention-install/
-usr/lib/python2.4/site-packages/univention/admin/handlers/policies/
-usr/lib/python2.4/site-packages/univention/admin/handlers/settings/

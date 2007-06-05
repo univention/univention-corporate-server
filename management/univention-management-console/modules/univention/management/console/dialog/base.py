@@ -98,8 +98,11 @@ class Number( Text ):
 		Text.__init__( self, number, attributes )
 
 class Fill( Text ):
-	def __init__( self, columns = 2, text = '' ):
-		Text.__init__( self, text, { 'colspan' : str( columns ) } )
+	def __init__( self, columns = 2, text = '', vertical = False ):
+		if not vertical:
+			Text.__init__( self, text, { 'colspan' : str( columns ) } )
+		else:
+			Text.__init__( self, text, { 'rowspan' : str( columns ) } )
 
 TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( Fill() ) )
 

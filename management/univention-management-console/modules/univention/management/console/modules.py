@@ -85,10 +85,11 @@ class Manager( object ):
 					self._modules[ os.path.basename( p ) ] = m
 
 		for p in sys.path:
-			dir=os.path.join(p, 'univention/management/console/handlers')
-			if not os.path.isdir(dir):
-				continue
-			os.path.walk(dir, _walk, p)
+			for type in ( 'handlers', 'wizards' ):
+				dir = os.path.join( p, 'univention/management/console/%s' % type )
+				if not os.path.isdir( dir ):
+					continue
+				os.path.walk( dir, _walk, p )
 
 	def get_command_descriptions( self, hostname, acls ):
 

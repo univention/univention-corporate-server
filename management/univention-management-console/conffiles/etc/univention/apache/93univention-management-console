@@ -1,5 +1,0 @@
-RewriteEngine on 
-RewriteCond %{SERVER_PORT} 80
-RewriteRule ^(/umc(/.*)?)$ https://%{HTTP_HOST}$1 [R,L]
-
-Alias /umc /usr/share/univention-management-console/www

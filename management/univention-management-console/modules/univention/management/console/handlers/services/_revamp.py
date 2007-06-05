@@ -44,12 +44,23 @@ class Web( object ):
 	def _web_service_list( self, object, res ):
 		lst = umcd.List()
 		servs = res.dialog
+		boxes = []
 		lst.set_header( [ _( 'Name' ), _( 'Status' ), _( 'Description' ) ] )
 		for name, srv in servs.items():
 			if srv.running:
 				status = _( 'running' )
 			else:
 				status = _( 'stopped' )
-			lst.add_row( [ name, status, _utf8( srv[ 'description' ] ) ] )
+				chk = umcd.Checkbox( static_options = { 'service' : name } )
+				boxes.append( chk.id() )
+			lst.add_row( [ name, status, _utf8( srv[ 'description' ] ), chk ] )
+		req = umcp.Command( args = [], opts= { 'printers' : [] } )
+		req_list = umcp.Command( args = [ 'cups/list' ],
+								 opts = { 'filter' : filter, 'key' : key } )
+		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
+		choices = [ ( 'service/start', _( 'Start Services' ) ),
+					( 'service/stop', _( 'Stop Services' ) ) ]
+		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
+		lst.add_row( [ umcd.Fill( 3 ), select ] )
 		res.dialog = [ lst ]
 		self.revamped( object.id(), res )

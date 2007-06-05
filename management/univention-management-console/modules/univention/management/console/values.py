@@ -118,6 +118,27 @@ class Text( Value ):
 		Value.__init__( self, label, basestring, required = required, regex = regex,
 						may_change = may_change )
 
+class EMailAddress( String ):
+	def __init__( self, label = _( 'E-Mail Address' ), required = True, may_change = True ):
+		String.__init__( self, label = label, regex = '[a-zA-Z.-]+@[a-zA-Z.]+',
+						 required = required, may_change = may_change )
+
+class IP_Address( String ):
+	def __init__( self, label = _( 'IP Address' ), required = True, may_change = True ):
+		String.__init__( self, label = label,
+						 regex = '(?P<a>[0-9]{1,3})\.(?P<b>[0-9]{1,3})\.(?P<a>[0-9]{1,3})\.(?P<b>[0-9]{1,3})',
+						 required = required, may_change = may_change )
+
+	def is_valid( self, value ):
+		ret = String.is_valid( value )
+		if ret:
+			m = self.regex( value ).groupdict()
+			for net, val in m.items():
+				if not 0 <= int( val ) <= 255:
+					self.error = _( 'Invalid number (%s). Must be between 0 and 255' % val )
+					return False
+		return ret
+
 class Integer( Value ):
 	def __init__( self, label, required = True, may_change = True ):
 		Value.__init__( self, label, int, required = required, may_change = may_change )
@@ -214,4 +235,3 @@ class StringList( MultiValue ):
 class ObjectDNList( StringList ):
 	def __init__( self, label, required = True, may_change = True ):
 		StringList.__init__( self, label, required = required, may_change = may_change )
-

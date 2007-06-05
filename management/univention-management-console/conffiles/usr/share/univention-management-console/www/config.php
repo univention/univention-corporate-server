@@ -15,7 +15,7 @@ $temp_mode=0700;
 #$run="./examples/dummy.pl";
 
 @!@
-run='$run="/usr/bin/python2.4 -O /usr/share/univention-management-console/frontend/univention-console-frontend.pyo '
+run='$run="/usr/bin/python2.4 /usr/share/univention-management-console/frontend/univention-console-frontend.py '
 if baseConfig.has_key('console/web/debug/level'):
 	debug='-d %s '%baseConfig['umc/web/debug/level']
 else:
