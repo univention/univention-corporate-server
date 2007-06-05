@@ -11,9 +11,11 @@
 @!@
 if baseConfig.has_key( 'gdm/language' ):
 	print 'LANG=%s' % baseConfig[ 'gdm/language' ]
-elif baseConfig.has_key( 'locale' ):
+
+elif baseConfig.has_key( 'locale/default' ):
 	try:
-		print 'LANG=%s' % baseConfig[ 'locale' ].split( ':' )[ 0 ]
+		print 'LANG=%s' % baseConfig[ 'locale/default' ].split(':')[0]
+
 	except:
 		pass	
 @!@
