@@ -1,0 +1,747 @@
+<?xml version="1.0"?>
+<ScrollKeeperContentsList>
+
+<!--
+    ScrollKeeper Category Tree
+    Maintained by the ScrollKeeper project
+    http://scrollkeeper.sourceforge.net
+    Version: 0.1.0
+    Last Modified: Feb 14, 2001
+-->
+
+  <sect categorycode="Applications">
+    <title>Programma's</title>
+    <sect>
+      </sect>
+    <sect categorycode="ApplicationsEducation">
+      <title>Opleiding</title>
+      <sect categorycode="ApplicationsEducationArts">
+        <title>Informatica</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationComputer Science">
+        <title>Engels</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationEnglish">
+        <title>Taal</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationLanguage">
+        <title>Wiskunde</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMaths">
+        <title>Muziek</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMusic">
+        <title>Wetenschap</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationScience">
+        <title>Technologie</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTechnology">
+        <title>Test</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTesting">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsGames">
+      <title>Arcade</title>
+      <sect categorycode="ApplicationsGamesArcade">
+        <title>Bordspelletjes</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesBoard">
+        <title>3D schietspellen</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesFirst Person Shooters">
+        <title>Puzzels</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesPuzzles">
+        <title>Vechten</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesFighting">
+        <title>Rollenspel</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesRole-Playing">
+        <title>Simulatie</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesSimulation">
+        <title>Strategie</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesStrategy">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsInternet">
+      <title>Chat</title>
+      <sect categorycode="ApplicationsInternetChat">
+        <title>Email</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetEmail">
+        <title>Fax</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFax">
+        <title>Bestandsdeling</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFile Sharing">
+        <title>FTP</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFTP">
+        <title>Internet telefoon</title>
+      </sect>
+      <sect categorycode="ApplicationsInternetInternet Phone">
+        <title>Mededelen</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetMessaging">
+        <title>Niews</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetNews">
+        <title>Video vergadering</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetVideo Conferencing">
+        <title>Web</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetWeb">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsMultimedia">
+      <title>Plaatjes</title>
+      <sect categorycode="ApplicationsMultimediaGraphics">
+        <title>3D Modellering</title>
+        <sect categorycode="ApplicationsMultimediaGraphics3D Modelling">
+          <title>3D rendering</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphics3D Rendering">
+          <title>CAD</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsCAD">
+          <title>Opvangen</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsCapture">
+          <title>Convertering</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsConversion">
+          <title>Tekening</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsDrawing">
+          <title>Bewerking</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsEditing">
+          <title>Viewing</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsViewing">
+          <title>Andere</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsOther">
+          <title>Spelletjes</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaSound">
+        <title>Analyse</title>
+        <sect categorycode="ApplicationsMultimediaSoundAnalysis">
+          <title>CD fabricatie</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundCD Mastering">
+          <title>Convertering</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundConversion">
+          <title>Tekening</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundEditing">
+          <title>Viewing</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundMIDI">
+          <title>Mixers</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundMixers">
+          <title>Afspelers</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundPlayers">
+          <title>Opnemen</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundRecording">
+          <title>Spraak</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundSpeech">
+          <title>Andere</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundOther">
+          <title>Spelletjes</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaVideo">
+        <title>Opvangen</title>
+        <sect categorycode="ApplicationsMultimediaVideoCapture">
+          <title>Convertering</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoConversion">
+          <title>Tekening</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoDisplay">
+          <title>Bewerken</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoEditing">
+          <title>Viewing</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoOther">
+          <title>Spelletjes</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsOffice">
+      <title>Kalender</title>
+      <sect categorycode="ApplicationsOfficeCalendar">
+        <title>Dataverwerking</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeData Processing">
+        <title>Database</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeDatabase">
+        <title>Email</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeEmail">
+        <title>Fax</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeFinancial">
+        <title>Personlijke planning</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePIM">
+        <title>Plotting</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePlotting">
+        <title>Presentatie</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePresentation">
+        <title>Publiceren</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePublishing">
+        <title>Webpubliceren</title>
+        <sect categorycode="ApplicationsOfficePublishingWeb Publishing">
+          <title>Tekstverwerken</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsOfficeWord Processing">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsScientific">
+      <title>Astronomie</title>
+      <sect categorycode="ApplicationsScientificAstronomy">
+        <title>Sterrenkunde</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificAstrophysics">
+        <title>Biologie</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificBiology">
+        <title>Scheikunde</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificChemistry">
+        <title>EDA</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificEDA">
+        <title>Genetica</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificGenetics">
+        <title>Wiskunde</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificMath">
+        <title>Natuurkunde</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificPhysics">
+        <title>Visualisatie</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificVisualisation">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsSecurity">
+      <title>Geheimschrift</title>
+      <sect categorycode="ApplicationsSecurityCryptography">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsSecurityOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsText Editors">
+      <title>CLI</title>
+      <sect categorycode="ApplicationsText EditorsCLI">
+        <title>Grafische gebruikers interface</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsGUI">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsUtilities">
+      <title>Archiveren</title>
+      <sect categorycode="ApplicationsUtilitiesArchiving">
+        <title>Berekenen</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCalculating">
+        <title>Klokken</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesClocks">
+        <title>Comprimeren</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCompression">
+        <title>Bestands hulpmiddelen</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesFile Utilities">
+        <title>Monitoren</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesMonitors">
+        <title>Printen</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesPrinting">
+        <title>Terminals</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesTerminals">
+        <title>Tekst hulpmiddelen</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesText Utilities">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsX">
+      <title>Configuratie</title>
+      <sect categorycode="ApplicationsXConfiguration">
+        <title>Lettertypen</title>
+        </sect>
+      <sect categorycode="ApplicationsXFonts">
+        <title>Inlog-managers</title>
+        </sect>
+      <sect categorycode="ApplicationsXLogin Managers">
+        <title>Screensavers</title>
+        </sect>
+      <sect categorycode="ApplicationsXScreensavers">
+        <title>Venstermanagers</title>
+        </sect>
+      <sect categorycode="ApplicationsXWindow Managers">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="ApplicationsXOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+  </sect>
+
+  <sect categorycode="CDE">
+    <title>Ontwikkeling</title>
+    </sect>
+
+  <sect categorycode="Development">
+    <title>Databases</title>
+    <sect categorycode="DevelopmentDatabases">
+      <title>Ontwikkelingshulpmiddelen</title>
+      </sect>
+    <sect categorycode="DevelopmentDevelopment Tools">
+      <title>Bouwhulpmiddelen</title>
+      <sect categorycode="DevelopmentDevelopment ToolsBuild Tools">
+        <title>Codegeneratoren</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsCode Generators">
+        <title>Configuratie</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsConfiguration">
+        <title>Lettertypen</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsDebuggers">
+        <title>Ge&#xEF;ntegreerde ontwikkelingsomgeving</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsIDEs">
+        <title>Inpakken</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsPackaging">
+        <title>Profiling</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsProfiling">
+        <title>RAD</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsRAD">
+        <title>Versiebesturing</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsVersion Control">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentEnvironments">
+      <title>ADA</title>
+      <sect categorycode="DevelopmentEnvironmentsADA">
+        <title>C</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsC">
+        <title>C++</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsC++">
+        <title>GNOME</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsGNOME">
+        <title>GTK+</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsGTK+">
+        <title>gtk++</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsgtk++">
+        <title>Java</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsJava">
+        <title>KDE</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsKDE">
+        <title>Perl</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsPerl">
+        <title>Python</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsPython">
+        <title>Qt</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsQt">
+        <title>Tcl/Tk</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsTcl/Tk">
+        <title>WebML</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsWebML">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentKernels">
+      <title>FreeBSD</title>
+      <sect categorycode="DevelopmentKernelsFreeBSD">
+        <title>Linux</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsLinux">
+        <title>NetBSD</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsNetBSD">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentLibraries">
+      <title>Systeem calls</title>
+      </sect>
+    <sect categorycode="DevelopmentSystem Calls">
+      <title>Andere</title>
+      </sect>
+    <sect categorycode="DevelopmentOther">
+      <title>Spelletjes</title>
+      </sect>
+  </sect>
+  <sect categorycode="General">
+    <title>Licensies</title>
+    <sect categorycode="GeneralLicenses">
+      <title>Linux</title>
+      </sect>
+    <sect categorycode="GeneralLinux">
+      <title>NetBSD</title>
+      <sect categorycode="GeneralLinuxDistributions">
+        <title>Caldera</title>
+        <sect categorycode="GeneralLinuxDistributionsCaldera">
+          <title>Debian</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsDebian">
+          <title>Mandrake</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsMandrake">
+          <title>Red Flag</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsRed Flag">
+          <title>Red Hat</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsRed Hat">
+          <title>Slackware</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsSlackware">
+          <title>SuSE</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsSuSE">
+          <title>Andere</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsOther">
+          <title>Spelletjes</title>
+          </sect>
+      </sect>
+      <sect categorycode="GeneralLinuxGeneral">
+        <title>Licensies</title>
+        </sect>
+      <sect categorycode="GeneralLinuxOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="GeneralOther">
+      <title>Spelletjes</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="GNOME">
+    <title>GTK+</title>
+    <sect categorycode="GNOMECore Desktop">
+      <title>Programmatjes</title>
+      </sect>
+    <sect categorycode="GNOMEApplets">
+      <title>Amusement</title>
+      <sect>
+        </sect>
+      <sect categorycode="GNOMEAppletsClock">
+        <title>Monitoren</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMonitors">
+        <title>Printen</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMultimedia">
+        <title>Plaatjes</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsNetwork">
+        <title>Hulpmiddel</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsUtility">
+        <title>Programma's</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEApplications">
+      <title>Programma's</title>
+      </sect>
+    <sect categorycode="GNOMEUtilities">
+      <title>Archiveren</title>
+      </sect>
+    <sect categorycode="GNOMEDevelopment">
+      <title>Databases</title>
+      <sect categorycode="GNOMEDevelopmentApplications">
+        <title>Programma's</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentIntroductory">
+        <title>Aanwijzing</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentTutorials">
+        <title>Beschrijving</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentWhite Papers">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEGames">
+      <title>Arcade</title>
+      </sect>
+    <sect categorycode="GNOMEGraphics">
+      <title>3D Modellering</title>
+      </sect>
+    <sect categorycode="GNOMEInternet">
+      <title>Chat</title>
+      </sect>
+    <sect categorycode="GNOMEMultimedia">
+      <title>Plaatjes</title>
+      </sect>
+    <sect categorycode="GNOMESettings">
+      <title>Systeem</title>
+      </sect>
+    <sect categorycode="GNOMESystem">
+      <title>Andere</title>
+      </sect>
+    <sect categorycode="GNOMEOther">
+      <title>Spelletjes</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="KDE">
+    <title>Perl</title>
+    <sect categorycode="KDEUtilities">
+      <title>Archiveren</title>
+      </sect>
+    <sect categorycode="KDEApplications">
+      <title>Programma's</title>
+      </sect>
+    <sect categorycode="KDEGames">
+      <title>Arcade</title>
+      </sect>
+    <sect categorycode="KDEGraphics">
+      <title>3D Modellering</title>
+      </sect>
+    <sect categorycode="KDEInternet">
+      <title>Chat</title>
+      </sect>
+    <sect categorycode="KDEMultimedia">
+      <title>Plaatjes</title>
+      </sect>
+    <sect categorycode="KDESettings">
+      <title>Systeem</title>
+      </sect>
+    <sect categorycode="KDESystem">
+      <title>Andere</title>
+      </sect>
+    <sect categorycode="KDEPrograms">
+      <title>Ontwikkeling</title>
+      </sect>
+    <sect categorycode="KDEDevelopment">
+      <title>Databases</title>
+      </sect>
+    <sect categorycode="KDEOther">
+      <title>Spelletjes</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="System">
+    <title>Andere</title>
+    <sect categorycode="SystemAdministration">
+      <title>Backups</title>
+      <sect categorycode="SystemAdministrationBackups">
+        <title>Plaatselijk</title>
+        <sect categorycode="SystemAdministrationBackupsLocal">
+          <title>Niet-plaatselijk</title>
+          </sect>
+        <sect categorycode="SystemAdministrationBackupsRemote">
+          <title>Bestandsystemen</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationFilesystems">
+        <title>Netwerken</title>
+        </sect>
+      <sect categorycode="SystemAdministrationNetworking">
+        <title>AppleTalk</title>
+        <sect categorycode="SystemAdministrationNetworkingAppleTalk">
+          <title>PPP</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingPPP">
+          <title>SMB</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingSMB">
+          <title>TCP/IP</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingTCP/IP">
+          <title>DNS</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingDNS">
+          <title>Andere</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingOther">
+          <title>Spelletjes</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationUsers">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="SystemAdministrationOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemConfiguration">
+      <title>Lettertypen</title>
+      <sect categorycode="SystemConfigurationConfig Files">
+        <title>Configuratiehulpmiddelen</title>
+        </sect>
+      <sect categorycode="SystemConfigurationConfiguration Tools">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="SystemConfigurationOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemHardware">
+      <title>Processor</title>
+      <sect categorycode="SystemHardwareProcessor">
+        <title>Opslagplaats</title>
+        </sect>
+      <sect categorycode="SystemHardwareStorage">
+        <title>Video</title>
+        </sect>
+      <sect categorycode="SystemHardwareVideo">
+        <title>Opvangen</title>
+        </sect>
+      <sect categorycode="SystemHardwareInput Devices">
+        <title>Netwerken</title>
+        </sect>
+      <sect categorycode="SystemHardwareNetworking">
+        <title>AppleTalk</title>
+        </sect>
+      <sect categorycode="SystemHardwarePCI/ISA/PCMCIA">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="SystemHardwareOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemPackage Management">
+      <title>Beveileging</title>
+      </sect>
+    <sect categorycode="SystemSecurity">
+      <title>Geheimschrift</title>
+      <sect categorycode="SystemSecurityFirewall">
+        <title>Inbraakdetectie</title>
+        </sect>
+      <sect categorycode="SystemSecurityIntrusion Detection">
+        <title>Virus</title>
+        </sect>
+      <sect categorycode="SystemSecurityVirus">
+        <title>Andere</title>
+        </sect>
+      <sect categorycode="SystemSecurityOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemServices">
+      <title>HTTP</title>
+      <sect categorycode="SystemServicesHTTP">
+        <title>FTP</title>
+        </sect>
+      <sect categorycode="SystemServicesFTP">
+        <title>Internet telefoon</title>
+      </sect>
+      <sect categorycode="SystemServicesSMB">
+        <title>TCP/IP</title>
+        </sect>
+      <sect categorycode="SystemServicesSSH">
+        <title>Telnet</title>
+        </sect>
+      <sect categorycode="SystemServicesTelnet">
+        <title>Syslog</title>
+        </sect>
+      <sect categorycode="SystemServicesSyslog">
+        <title>BIND</title>
+        </sect>
+      <sect categorycode="SystemServicesBIND">
+        <title>Printen</title>
+        </sect>
+      <sect categorycode="SystemServicesPrinting">
+        <title>Terminals</title>
+        </sect>
+      <sect categorycode="SystemServicesOther">
+        <title>Spelletjes</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemOther">
+      <title>Spelletjes</title>
+      </sect>
+  </sect>
+</ScrollKeeperContentsList>

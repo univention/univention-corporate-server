@@ -1,0 +1,99 @@
+#! /bin/sh
+#
+# Univention Client Basesystem
+#  init script: setting up and starting GDM
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+# Originally based on:
+# Version:	@(#)skeleton  1.8  03-Mar-1998  miquels@cistron.nl
+#
+# Modified for gdm, Steve Haslam <steve@arise.dmeon.co.uk> 14mar99
+# modified to remove --exec, as it does not work on upgrades. 18jan2000
+# modified to use --name, to detect stale PID files 18mar2000
+# sleep until gdm dies, then restart it 16jul2000
+# get along with other display managers (Branden Robinson, Ryan Murray) 05sep2001
+
+set -e
+
+# To start gdm even if it is not the default display manager, change
+# HEED_DEFAULT_DISPLAY_MANAGER to "false."
+HEED_DEFAULT_DISPLAY_MANAGER=true
+DEFAULT_DISPLAY_MANAGER_FILE=/etc/X11/default-display-manager
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/bin/gdm
+PIDFILE=/var/run/gdm.pid
+UPGRADEFILE=/var/run/gdm.upgrade
+
+if [ -e $UPGRADEFILE -a "$1" != "restart" -a "$1" != "force-reload" ]; then
+	SSD_ARG="--startas $DAEMON"
+	rm -f $UPGRADEFILE
+else
+	SSD_ARG="--exec $DAEMON"
+fi
+
+test -x $DAEMON || exit 0
+
+if [ -r /etc/default/gdm ]; then
+  . /etc/default/gdm
+  if [ -z "$LANG" ]; then
+    :
+  else
+    export LANG
+  fi
+fi
+
+case "$1" in
+  start)
+  	if [ -e "$DEFAULT_DISPLAY_MANAGER_FILE" -a "$HEED_DEFAULT_DISPLAY_MANAGER" = "true" -a "$(cat $DEFAULT_DISPLAY_MANAGER_FILE)" != "$DAEMON" ]; then
+		echo "Not starting GNOME Display Manager (gdm); it is not the default display manager."
+	else
+		echo -n "Starting GNOME Display Manager: gdm"
+		start-stop-daemon --start --quiet --pidfile $PIDFILE --name gdm $SSD_ARG || echo -n " already running"
+		echo "."
+	fi
+  ;;
+  stop)
+	echo -n "Stopping GNOME Display Manager: gdm"
+	start-stop-daemon --stop  --quiet --pidfile $PIDFILE --name gdm $SSD_ARG --retry 30 || echo -n " not running"
+	echo "."
+  ;;
+  reload)
+	echo "Reloading GNOME Display Manager configuration.  Changes will take effect"
+	echo "when all current X sessions have ended."
+	start-stop-daemon --stop --signal USR1 --quiet --pidfile \
+		$PIDFILE --name gdm $SSD_ARG
+  ;;
+  restart|force-reload)
+	$0 stop
+	$0 start
+  ;;
+  *)
+	echo "Usage: /etc/init.d/gdm {start|stop|restart|reload|force-reload}"
+	exit 1
+  ;;
+esac
+
+exit 0

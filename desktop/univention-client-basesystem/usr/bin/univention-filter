@@ -1,0 +1,144 @@
+#!/usr/bin/python2.4
+#
+# Univention Client Basesystem
+#  helper script that replaces values in templates
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+import sys, string, re
+
+# generate a random salt and crypt password with it
+def docrypt(password):
+	import crypt
+	valid = [ '.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+		'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
+		'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
+		'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+		'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5',
+		'6', '7', '8', '9' ]
+	salt = ''
+	urandom = open("/dev/urandom", "r")
+	for i in range(0,8):
+		o = urandom.read(1)
+		salt = salt + valid[(ord(o) % 64)]
+	urandom.close()
+	return crypt.crypt(password, '$1$%s$' % salt)
+
+def xopen(file, mode):
+	if file == '-' and mode == 'r':
+		return sys.stdin
+	elif file == '-' and mode == 'w':
+		return sys.stdout
+	else:
+		fp = open(file, mode)
+		return fp
+
+# directory like class that 'finds' the information from different
+# locations like default-config or ldap
+class substitute:
+	def __init__(self, conffile, host='global'):
+		self.subs = {}
+		defconf = xopen(conffile, "r")
+		curhost = 'global'
+		for line in defconf.readlines():
+
+			hostSection = re.compile('^\[(.*)\]$')
+			sections = hostSection.findall(line)
+			if len(sections) == 1:
+				curhost = sections[0]
+
+			var = string.strip(line[0:string.find(line, '=')])
+			if var == "": continue
+			if var[0] == "#": continue
+			val = line[string.find(line,'=')+1:-1]
+			while val[0] == ' ': val = val [1:]
+
+			if (not self.subs.has_key(var) and curhost == 'global') \
+			   or curhost == host:
+				self.subs[var] = val
+		defconf.close()
+	def __getitem__(self, index):
+		if self.subs.has_key(index):
+			str = self.subs[index]
+		else:
+			# we don't want to raise an exception here...
+			return ''
+		method = 'source'
+		#colon = string.find(str, ':')
+		#if colon != -1:
+		#	method = str[0:colon]
+		#	str = str[colon+1:]
+		if method == 'ldap':
+			return ldapget(str)
+		else:
+			return str
+
+# based on the action string decide what to do with the string
+def action(act, string):
+	if act == 'crypt':
+		return docrypt(string)
+	else:
+		return string
+
+if __name__ == '__main__':
+	import getopt
+	try:
+		optlist, args = getopt.getopt(sys.argv[1:], 'c:i:o:h:')
+	except getopt.error, msg:
+		print "univention-filter: " + msg
+		sys.exit(1)
+
+	opts = {}
+	opts['c'] = '/etc/univention/default-config'
+	opts['i'] = '-'
+	opts['o'] = '-'
+	opts['h'] = 'global'
+	for option, arg in optlist:
+		opts[option[1:]] = arg
+
+	subs = substitute(opts['c'], opts['h'])
+
+	# process stdin line by line and character by character...
+	infile = xopen(opts['i'], 'r')
+	outfile = xopen(opts['o'], 'w')
+	host = 'default'
+
+	variableMatch = re.compile('@%@([^@]+)@%@')
+	actionMatch = re.compile(':')
+	file = infile.read()
+
+	for v in variableMatch.findall(file):
+		e = actionMatch.split(v)
+		if len(e) == 2:
+			act = e[0]
+			var = e[1]
+		else:
+			act = 'print'
+			var = e[0]
+			val = action(act, subs[var])
+			file = file.replace('@%@'+v+'@%@', val)
+
+	outfile.write(file)
