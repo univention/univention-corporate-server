@@ -1,3 +1,9 @@
+univention-fonts (1.0.0-2) unstable; urgency=low
+
+  * remove xfonts-base-transcoded from the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 20:53:20 +0200
+
 univention-fonts (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

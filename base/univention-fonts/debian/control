@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-fonts
 Architecture: all
-Depends: xfonts-100dpi, xfonts-100dpi-transcoded, xfonts-75dpi, xfonts-75dpi-transcoded, xfonts-base-transcoded, xfonts-base, xfonts-scalable
+Depends: xfonts-100dpi, xfonts-100dpi-transcoded, xfonts-75dpi, xfonts-75dpi-transcoded, xfonts-base, xfonts-scalable
 Description: UCS - X Fonts
  This package contain a meta-package, that installs the fonts.
  .
