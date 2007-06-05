@@ -1,0 +1,39 @@
+univention-client-devices (0.7.2) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Nov 2006 11:48:01 +0100
+
+univention-client-devices (0.6) unstable; urgency=low
+
+  * support for the samba-bdc packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Nov 2006 15:54:51 +0100
+
+univention-client-devices (0.5) unstable; urgency=low
+
+  * fixed error when drive to be imported is not present
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue,  8 Nov 2005 14:44:01 +0100
+
+univention-client-devices (0.3) unstable; urgency=low
+
+  * init fuse with new standards
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  7 Sep 2005 18:04:18 +0200
+
+univention-client-devices (0.2) unstable; urgency=low
+
+  * Fix up package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 14:14:58 +0200
+
+univention-client-devices (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Peter H. Ganten <ganten@univention.de>  Tue, 14 Aug 2001 17:13:35 +0200
+
+Local variables:
+mode: debian-changelog
+End:

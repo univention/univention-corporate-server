@@ -1,0 +1,30 @@
+Source: univention-client-devices
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: univention-client-devices-server
+Architecture: any
+Depends: univention-client-basesystem, smbfs | smbfs-bdc
+Description: UCS - access client devices
+ This package provides the facilities to access devices
+ exported by clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-client-devices-client
+Architecture: any
+Depends: samba
+Description: UCS - allow server to access devices
+ This package allows UCS servers to access the local
+ floppy and CD-ROM devices.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
