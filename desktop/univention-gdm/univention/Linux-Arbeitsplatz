@@ -1,0 +1,147 @@
+#!/bin/sh
+#
+# Univention GDM
+#  Linux Arbeitsplatz session script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+unset univentionDesktopProfile
+# remove quotes from startup script filename
+univentionAutoStartScript=`echo $univentionAutoStartScript | sed 's/^"//;s/"$//'`
+
+function other() {
+
+	if [ -z "$ldap_port" ]; then
+		ldap_port=389
+	fi
+
+	if /bin/netcat -q0 -w4 $ldap_server_name $ldap_port </dev/null >/dev/null 2>&1; then
+		userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | ldapsearch-wrapper | grep dn | sed -e 's/dn: //g'`
+		eval `univention_policy_result -h $ldap_server_name -s $userdn`
+	fi
+
+	export G_BROKEN_FILENAMES=1
+
+	if [ -z "$LANG" ]; then
+		export LANG=de_DE@euro
+	fi
+	if [ $USER = "root" ]; then
+    	export PATH=/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+	else
+    	export PATH=/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+	fi
+
+	if [ -e $HOME/.kde/share/config/ksmserverrc ]
+	then
+		mv $HOME/.kde/share/config/ksmserverrc $HOME/.kde/share/config/ksmserverrc_SAVE
+		cat $HOME/.kde/share/config/ksmserverrc_SAVE | sed -e 's/=evolution,/=kshell,evolution,/' > $HOME/.kde/share/config/ksmserverrc
+		rm $HOME/.kde/share/config/ksmserverrc_SAVE
+	fi
+	univention-skel
+
+	if [ -z "$univentionAutoStartScript" ]
+	then
+		exec startkde
+	else
+		/etc/gdm/Autostart/$univentionAutoStartScript
+	fi
+
+}
+
+function thinclient() {
+
+	if test -e /tmp/passwd; then
+		PASSWD=`cat /tmp/passwd`
+		export PASSWD
+	fi
+	export SESSION_HOST=`/usr/sbin/univention-findserver.sh`
+
+
+	# kerberos or simple login
+	if klist > /dev/null 2> /dev/null; then
+		export SESSION_RSH=krsh
+	else
+		export SESSION_RSH=rsh
+	fi
+
+	# debug
+	echo "Settings:"
+	/usr/sbin/univention-baseconfig dump
+	echo "SESSION_HOST: $SESSION_HOST"
+	echo "SESSION_RSH: $SESSION_RSH"
+	echo ""
+
+	# start sound server
+	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
+		/usr/bin/artswrapper -n -F 5 -S 8192 &
+		artspid="$!"
+	fi
+
+	eval `/usr/sbin/univention-baseconfig shell univentionClientDevicesActivate`
+
+	if [ -n "$univentionClientDevicesActivate" -a "$univentionClientDevicesActivate" = "1" ]; then
+		# export client devices
+		test -x /usr/bin/export-devices && export-devices start
+		export clientDevices="true"
+	else
+		export clientDevices="false"
+	fi
+
+	if test -e /tmp/passwd; then
+		rm -rf /tmp/passwd
+	fi
+
+	# establish session to application server
+	if [ -z "$univentionAutoStartScript" ]
+	then
+		timeout=`$SESSION_RSH $SESSION_HOST /usr/sbin/univention-baseconfig get thinclient/session/startup`
+		timeout=`echo $timeout | egrep "^([0-9])+$"`
+		if [ -n "$timeout" ]; then
+			univention-client -t$timeout -p /etc/univention/KDE.Session
+		else
+			univention-client -p /etc/univention/KDE.Session
+		fi
+	else
+		echo starting "$univentionAutoStartScript"
+		/etc/gdm/Autostart/$univentionAutoStartScript
+	fi
+
+	if [ -n "$univentionClientDevicesActivate" -a "$univentionClientDevicesActivate" = "1" ]; then
+		# stop exporting client devices
+		test -x /usr/bin/export-devices && export-devices stop
+	fi
+
+	# stop sound server
+	test "$artspid" && kill "$artspid"
+}
+
+if [ -z $server_role ]; then
+	thinclient
+else
+	other
+fi
+

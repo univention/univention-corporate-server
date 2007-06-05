@@ -1,0 +1,231 @@
+univention-gdm (0.46) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:38 +0100
+
+univention-gdm (0.40) unstable; urgency=low
+
+  * added Template-Header in gdm.conf
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Oct 2006 13:50:47 +0200
+
+univention-gdm (0.39) unstable; urgency=low
+
+  * Login Error-message is now paged
+
+ -- Tobias Scherer <tscherer@univention.de>  Thu,  3 Aug 2006 14:15:58 +0200
+
+univention-gdm (0.37) unstable; urgency=low
+
+  * use /usr/share/univeniton-kde/univention-set-kdedirs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jul 2006 09:30:10 +0200
+
+univention-gdm (0.36) unstable; urgency=low
+
+  * fixed Bug for system shut down at gdm for all server roles
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Wed, 19 Jul 2006 15:14:41 +0200
+
+univention-gdm (0.35) unstable; urgency=low
+
+  * fixed bug in univention-gdm.postinst for version check
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Tue, 18 Jul 2006 17:18:30 +0200
+
+univention-gdm (0.34) unstable; urgency=low
+
+  * added baseconfig variables for gdm/allowremoteroot
+  * default is false
+  * added check for baseconfig variables in univention-gdm.postinst
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Tue, 18 Jul 2006 17:00:21 +0200
+
+univention-gdm (0.33) unstable; urgency=low
+
+  * added baseconfig variables for gdm/allowroot
+  * default for root login at gdm is false
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Tue, 18 Jul 2006 15:39:39 +0200
+
+univention-gdm (0.32) unstable; urgency=low
+
+  * added autostart script to gdm.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  5 May 2006 17:04:59 +0200
+
+univention-gdm (0.31) unstable; urgency=low
+
+  * fixed nx autostart skript
+
+ -- Lars Rehe <lars@billy.knut.univention.de>  Fri,  5 May 2006 09:50:17 +0200
+
+univention-gdm (0.29) unstable; urgency=low
+
+  * cleanup nx autostart session
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  3 May 2006 07:53:50 +0200
+
+univention-gdm (0.27) unstable; urgency=low
+
+
+  * create autostart user in postinst von mobile and managed clients
+  * register baseconfig variable univentionAutostartSript for configuration
+    file /etc/gdm/gdm.conf
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Apr 2006 14:28:06 +0200
+
+univention-gdm (0.26) unstable; urgency=low
+
+  * modified auto-start behaviour of managed clients: setting the autostart
+    script in the policy is enough no further variable must been set.
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Apr 2006 19:53:12 +0200
+
+univention-gdm (0.25) unstable; urgency=low
+
+  * ad `-br' (black root) to default server options
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed, 29 Mar 2006 10:13:09 +0200
+
+univention-gdm (0.22) unstable; urgency=low
+
+  * add PAM module for GDM autologin
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Feb 2006 20:28:10 +0100
+
+univention-gdm (0.21) unstable; urgency=low
+
+  * adaption for the new behaviour of gdm during autologin sessions
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Feb 2006 18:04:30 +0100
+
+univention-gdm (0.20) unstable; urgency=low
+
+  * new background image und adaption of colors and text positions
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Dec 2005 11:08:10 +0100
+
+univention-gdm (0.19) unstable; urgency=low
+
+  * change systemmenu and added gdm/menu/securesystem for enable/disable
+    normal user shutdown
+
+ -- Ingo Hoff <hoff@univention.de>  Mon,  5 Dec 2005 15:24:00 +0100
+
+univention-gdm (0.18) unstable; urgency=low
+
+  * fixed the position of the headline of the login box in different
+    resolutions
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  3 Nov 2005 17:30:31 +0100
+
+univention-gdm (0.16) unstable; urgency=low
+
+  * updated theme:
+  	updated XML file to work with new gdm version
+    the text "Anmeldung" is no longer part of the background image
+  * add template file etc/default/gdm: contains the language used for gdm.
+    if gdm/language is set, it defines the language otherwise locale is used.
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  1 Nov 2005 17:13:26 +0100
+
+univention-gdm (0.15) unstable; urgency=low
+
+  * set default session back to Linux-Arbeitsplatz.desktop
+    (UCS.desktop does not exist)
+  * fixed Linux-Arbeitsplatz.desktop to search for Linux-Arbeitsplatz at the
+    right place
+  * add /etc/gdm/Sessions to the search path for desktop sessions
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  1 Nov 2005 13:21:16 +0100
+
+univention-gdm (0.14) unstable; urgency=low
+
+  * Now depends on gdm >= 2.6
+
+ -- Ingo Hoff <hoff@univention.de>  Thu, 20 Oct 2005 09:00:12 +0200
+
+univention-gdm (0.13) unstable; urgency=low
+
+  * new gdm version
+
+ -- Ingo Hoff <hoff@univention.de>  Fri,  7 Oct 2005 11:24:33 +0200
+
+univention-gdm (0.12) unstable; urgency=low
+
+  * added baseconfig variables gdm/theme and gdm/theme/dir
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Aug 2005 11:06:36 +0200
+
+univention-gdm (0.11) unstable; urgency=low
+
+  * check for connection to ldap/server/name
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jun 2005 10:19:43 +0200
+
+univention-gdm (0.10) unstable; urgency=low
+
+  * save kde desktop profile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Jun 2005 10:30:50 +0200
+
+univention-gdm (0.9) unstable; urgency=low
+
+  * bugfix for too long user dn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Apr 2005 07:56:17 +0200
+
+univention-gdm (0.8) unstable; urgency=low
+
+  * gdm can now be started and stopped through univention-console
+  * Add 'nx' autostart script.
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 21 Mar 2005 11:12:48 +0100
+
+univention-gdm (0.7) unstable; urgency=low
+
+  * added support for various keyboard maps
+
+ -- Sven Dreyer <dreyer@univention.de>  Wed,  2 Mar 2005 12:37:42 +0100
+
+univention-gdm (0.6) unstable; urgency=low
+
+  * set clientDevices true or false
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Feb 2005 17:58:58 +0100
+
+univention-gdm (0.5) unstable; urgency=low
+
+  * initial release of univention-gdm-sessions
+
+ -- Felix Meier <felix@anton.knut.univention.de>  Tue, 30 Nov 2004 14:34:42 +0100
+
+univention-gdm (0.4) unstable; urgency=low
+
+  * add univention/x/gdmsystemmenu for enable or disable Systemmenu in gdm
+
+ -- Thomas Kaminski <kaminski@univention.de>  Thu, 29 Apr 2004 15:23:42 +0200
+
+univention-gdm (0.3) unstable; urgency=low
+
+  * change pam error message font size from 14 pt to 12 pt
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 18 Apr 2004 13:26:00 +0200
+
+univention-gdm (0.2) unstable; urgency=low
+
+  * new design
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 21 Oct 2003 07:49:42 +0200
+
+univention-gdm (0.1.0) unstable; urgency=low
+
+  * initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Aug 2003 17:10:40 +0200
+
+Local variables:
+mode: debian-changelog
+End:

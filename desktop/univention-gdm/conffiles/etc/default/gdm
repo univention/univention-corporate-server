@@ -1,0 +1,19 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/default/gdm
+#
+
+@!@
+if baseConfig.has_key( 'gdm/language' ):
+	print 'LANG=%s' % baseConfig[ 'gdm/language' ]
+elif baseConfig.has_key( 'locale' ):
+	try:
+		print 'LANG=%s' % baseConfig[ 'locale' ].split( ':' )[ 0 ]
+	except:
+		pass	
+@!@

@@ -1,0 +1,21 @@
+Type: file
+File: etc/gdm/gdm.conf
+Variables: gdm/menu/system
+Variables: gdm/menu/securesystem
+Variables: gdm/theme
+Variables: gdm/theme/dir
+Variables: univentionAutoStartScript
+Variables: gdm/allowroot
+Variables: gdm/allowremoteroot
+
+Type: file
+File: etc/default/gdm
+Variables: gdm/language
+
+Type: file
+File: etc/pam.d/gdm-autologin
+
+Type: file
+File: usr/share/gdm/themes/univention/univention.xml
+Variables: gdm/menu/system
+Variables: gdm/menu/language

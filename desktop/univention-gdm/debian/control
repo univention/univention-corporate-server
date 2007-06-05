@@ -1,0 +1,32 @@
+Source: univention-gdm
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-gdm
+Architecture: all
+Depends: gdm (>= 2.6), univention-x-core (>>0.7-2)
+Conflicts: univention-fat-client (<< 0.5.59), univention-mobile-client (<< 0.2)
+Description: UCS - GDM configuration
+ The GNOME Display Manager (GDM) provides a graphical login
+ prompt. This package provides the UCS configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-gdm-sessions
+Architecture: all
+Pre-Depends: univention-gdm
+Conflicts: univention-fat-client (<< 0.5.59), univention-mobile-client (<< 0.2)
+Description: UCS - GDM DefaultWM
+ This is a Meta-package, that sets up the default WM for GDM
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

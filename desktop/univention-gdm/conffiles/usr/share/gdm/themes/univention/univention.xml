@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright (C) 2004, 2005, 2006 Univention GmbH -->
+<!DOCTYPE greeter SYSTEM "greeter.dtd">
+<greeter>
+  <item type="pixmap">
+    <normal file="univention.png"/>
+    <pos x="0" y="0" width="100%" height="100%"/>
+  </item>
+
+  <item type="label" id="clock">
+    <normal color="#ffffff" font="Sans Bold 14"/>
+    <pos x="-20" y="20" anchor="e"/>
+    <text>%c</text>
+  </item>
+				
+  <item type="rect" id="caps-lock-warning">
+    <normal color="#FFFFFF" alpha="0.5"/>
+    <pos anchor="c" x="50%" y="75%" width="box" height="box"/>
+    <box orientation="vertical" min-width="400" xpadding="10" ypadding="5" spacing="0">
+      <item type="label">
+        <normal color="#000000" font="Sans Bold 14"/>
+        <pos x="50%" anchor="n"/>
+	<!-- Stock label for: You've got capslock on! -->
+	<stock type="caps-lock-warning"/>
+      </item>
+    </box>
+  </item>
+
+  <item type="rect">
+    <show type="timed"/>
+    <normal color="#FFFFFF" alpha="0.5"/>
+    <pos anchor="c" x="50%" y="25%" width="box" height="box"/>
+    <box orientation="vertical" min-width="400" xpadding="10" ypadding="5" spacing="0">
+      <item type="label" id="timed-label">
+        <normal color="#000000" font="Sans 12"/>
+        <pos x="50%" anchor="n"/>
+	<!-- Stock label for: User %s will login in %d seconds -->
+	<stock type="timed-label"/>
+      </item>
+    </box>
+  </item>
+
+  <item type="rect">
+    <pos anchor="c" x="40.5%" y="36.5%" width="box" height="box"/>
+    <box orientation="vertical" min-width="340" xpadding="30" ypadding="30" spacing="10">
+      <item type="label" id="login">
+        <pos anchor="n" x="50%"/>
+        <normal color="#ffffff" font="Sans 20"/>
+		<text>Login</text>
+		<text xml:lang="de">Anmeldung</text>
+      </item>
+	</box>
+  </item>
+  <item type="rect">
+    <pos anchor="c" x="50%" y="47%" width="23%" height="box"/>
+    <box orientation="vertical" min-width="320" xpadding="5" ypadding="5" spacing="5">
+		<item type="label" id="pam-prompt">
+        	<pos anchor="nw" x="10%" y="-10%"/>
+        	<normal color="#000000" font="Sans Bold 14"/>
+    		<!-- Stock label for: Username: -->
+	    	<stock type="username-label"/>
+     	</item>
+     	<item type="rect">
+	 		<normal color="#000000"/>
+        	<pos anchor="n" x="50%" height="24" width="80%"/>
+			<fixed>
+	  			<item type="entry" id="user-pw-entry">
+            		<normal color="#000000" font="Sans 12"/>
+            		<pos anchor="nw" x="1" y="1" height="-2" width="-2"/>
+				</item>
+			</fixed>
+			
+     	</item>
+      <item type="label" id="pam-error">
+        <pos anchor="n" x="50%" y="-5%"/>
+        <normal color="#000000" font="Sans 12"/>
+        <text></text>
+      </item>
+    </box>
+  </item>
+
+  <item type="rect" id="session_button" button="true">
+@!@
+if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
+	print '    <pos x="85%" y="75%" width="100%" height="1"/>'
+elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
+	print '    <pos x="85%" y="95%" width="100%" height="1"/>'
+else:
+	print '    <pos x="85%" y="85%" width="100%" height="1"/>'
+@!@
+    <box orientation="horizontal" spacing="10" xpadding="10">
+      <item type="pixmap">
+	    <normal file="session.png" tint="#dddddd"/>
+		<prelight file="session-prelight.png"/>
+		<active file="session-prelight.png" tint="#dddddd"/>
+		<pos y="50%" anchor="w"/>
+	  </item>
+	  <item type="label">
+	    <normal color="#000000" font="Sans Bold 12"/>
+		<prelight color="#dd1144" font="Sans Bold 12"/>
+		<active color="#cc0033" font="Sans Bold 12"/>
+		<pos y="50%" anchor="w"/>
+		<!-- Stock label for: _Session -->
+		<stock type="session"/>
+	  </item>
+	</box>
+  </item>
+		
+@!@
+if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
+ 	print '  <item type="rect" id="language_button" button="true">'
+	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
+		print '    <pos x="85%" y="95%" width="100%" height="1"/>'
+	else:
+		print '    <pos x="85%" y="85%" width="100%" height="1"/>'
+ 	print '    <box orientation="horizontal" spacing="10" xpadding="10">'
+ 	print '  	  <item type="pixmap">'
+ 	print '  	    <normal file="language.png" tint="#dddddd"/>'
+ 	print '  	    <prelight file="language-prelight.png"/>'
+ 	print '  	    <active file="language-prelight.png" tint="#dddddd"/>'
+ 	print '  	    <pos y="50%" anchor="w"/>'
+ 	print '  	  </item>'
+ 	print '  	  <item type="label">'
+ 	print '  	    <normal color="#000000" font="Sans Bold 12"/>'
+ 	print '  	    <prelight color="#dd1144" font="Sans Bold 12"/>'
+ 	print '  	    <active color="#cc0033" font="Sans Bold 12"/>'
+ 	print '  	    <pos y="50%" anchor="w"/>'
+ 	print '  	    <!-- Stock label for: _Language -->'
+ 	print '  	    <stock type="language"/>'
+ 	print '  	  </item>'
+  	print '   </box>'
+  	print ' </item>'
+
+if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
+	print ' <item type="rect" id="system_button" button="true">'
+	print '   <pos x="85%" y="95%" width="100%" height="1"/>'
+	print '   <box orientation="horizontal" spacing="10" xpadding="10">'
+	print ' 	  <item type="pixmap">'
+	print ' 	    <normal file="system.png" tint="#dddddd"/>'
+	print ' 	    <pos y="50%" anchor="w"/>'
+	print ' 	  </item>'
+	print ' 	  <item type="label">'
+	print ' 	    <normal color="#000000" font="Sans Bold 12"/>'
+	print ' 	    <prelight color="#dd1144" font="Sans Bold 12"/>'
+	print ' 	    <active color="#cc0033" font="Sans Bold 12"/>'
+	print ' 	    <pos y="50%" anchor="w"/>'
+	print ' 	    <!-- Stock label for: _System -->'
+	print ' 	    <stock type="system"/>'
+	print ' 	  </item>'
+	print '   </box>'
+	print ' </item>'
+@!@
+
+</greeter>
+
+

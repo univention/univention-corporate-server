@@ -1,0 +1,186 @@
+#!/bin/bash
+#
+# Univention GDM
+#  nx start script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+NX_DIR="/ramdisk/tmp/nx"
+
+mkdir -p $NX_DIR/config $NX_DIR/temp
+
+univention-policy-result -s $ldap_mydn | while read line; do
+
+	host=${line#univentionDesktopServer=}
+	if [ "$host" = "$line" ]; then
+		continue
+	fi
+
+	host=`echo $host | sed -e 's|^"||g;s|"$||g'`
+
+	if [ -z "$last_session" ]; then
+		last_session=$host
+	fi
+
+	cat <<EOF > $NX_DIR/config/$host.nxs
+<!DOCTYPE NXClientSettings>
+<NXClientSettings application="nxclient" version="1.3" >
+<group name="Advanced" >
+<option key="Cache size" value="8" />
+<option key="Cache size on disk" value="32" />
+<option key="Current keyboard" value="true" />
+<option key="Custom keyboard layout" value="" />
+<option key="Disable TCP no-delay" value="false" />
+<option key="Disable ZLIB stream compression" value="false" />
+<option key="Enable SSL encryption" value="true" />
+<option key="Restore cache" value="true" />
+<option key="StreamCompression" value="" />
+</group>
+<group name="Environment" >
+<option key="CUPSD path" value="/usr/sbin/cupsd" />
+</group>
+<group name="General" >
+<option key="Automatic reconnect" value="true" />
+<option key="Backingstore" value="never" />
+<option key="Command line" value="" />
+<option key="Custom Unix Desktop" value="console" />
+<option key="Desktop" value="kde" />
+<option key="Link speed" value="wan" />
+<option key="Remember password" value="false" />
+<option key="Resolution" value="fullscreen" />
+<option key="Resolution height" value="600" />
+<option key="Resolution width" value="800" />
+<option key="Server host" value="$host" />
+<option key="Server port" value="22" />
+<option key="Session" value="unix" />
+<option key="Use default image encoding" value="0" />
+<option key="Use render" value="true" />
+<option key="Use taint" value="true" />
+<option key="Virtual desktop" value="true" />
+<option key="XAgent encoding" value="true" />
+<option key="displaySaveOnExit" value="true" />
+<option key="xdm broadcast port" value="177" />
+<option key="xdm list host" value="localhost" />
+<option key="xdm list port" value="177" />
+<option key="xdm mode" value="server decide" />
+<option key="xdm query host" value="localhost" />
+<option key="xdm query port" value="177" />
+</group>
+<group name="Images" >
+<option key="Disable JPEG Compression" value="0" />
+<option key="Disable all image optimisations" value="false" />
+<option key="Image Compression Type" value="0" />
+<option key="Image Encoding Type" value="0" />
+<option key="Image JPEG Encoding" value="false" />
+<option key="JPEG Quality" value="6" />
+<option key="RDP optimization for low-bandwidth link" value="false" />
+<option key="Reduce colors to" value="" />
+<option key="Use PNG Compression" value="true" />
+<option key="VNC images compression" value="0" />
+<option key="Windows Image Compression" value="1" />
+</group>
+<group name="Login" >
+<option key="Auth" value="EMPTY_PASSWORD" />
+<option key="User" value="" />
+<option key="Public Key" value="-----BEGIN DSA PRIVATE KEY-----
+MIIBuwIBAAKBgQCXv9AzQXjxvXWC1qu3CdEqskX9YomTfyG865gb4D02ZwWuRU/9
+C3I9/bEWLdaWgJYXIcFJsMCIkmWjjeSZyTmeoypI1iLifTHUxn3b7WNWi8AzKcVF
+aBsBGiljsop9NiD1mEpA0G+nHHrhvTXz7pUvYrsrXcdMyM6rxqn77nbbnwIVALCi
+xFdHZADw5KAVZI7r6QatEkqLAoGBAI4L1TQGFkq5xQ/nIIciW8setAAIyrcWdK/z
+5/ZPeELdq70KDJxoLf81NL/8uIc4PoNyTRJjtT3R4f8Az1TsZWeh2+ReCEJxDWgG
+fbk2YhRqoQTtXPFsI4qvzBWct42WonWqyyb1bPBHk+JmXFscJu5yFQ+JUVNsENpY
++Gkz3HqTAoGANlgcCuA4wrC+3Cic9CFkqiwO/Rn1vk8dvGuEQqFJ6f6LVfPfRTfa
+QU7TGVLk2CzY4dasrwxJ1f6FsT8DHTNGnxELPKRuLstGrFY/PR7KeafeFZDf+fJ3
+mbX5nxrld3wi5titTnX+8s4IKv29HJguPvOK/SI7cjzA+SqNfD7qEo8CFDIm1xRf
+8xAPsSKs6yZ6j1FNklfu
+-----END DSA PRIVATE KEY-----
+" />
+</group>
+<group name="Services" >
+<option key="Audio" value="false" />
+<option key="IPPPort" value="631" />
+<option key="IPPPrinting" value="false" />
+<option key="Shares" value="false" />
+</group>
+<group name="VNC Session" >
+<option key="Display" value="0" />
+<option key="Remember" value="false" />
+<option key="Server" value="" />
+</group>
+<group name="Windows Session" >
+<option key="Application" value="" />
+<option key="Authentication" value="2" />
+<option key="Color Depth" value="8" />
+<option key="Domain" value="" />
+<option key="Image Cache" value="true" />
+<option key="Password" value="EMPTY_PASSWORD" />
+<option key="Remember" value="true" />
+<option key="Run application" value="false" />
+<option key="Server" value="" />
+<option key="User" value="" />
+</group>
+<group name="share chosen" >
+<option key="Share number" value="0" />
+</group>
+</NXClientSettings>
+EOF
+done
+
+cat <<EOF > $NX_DIR/config/nxclient.conf
+<!DOCTYPE NXClientSettings>
+<NXClientSettings application="nxclient" version="1.3" >
+<group name="General" >
+<option key="CUPS Password" value="" />
+<option key="CUPS Port" value="1" />
+<option key="Default font" value="Helvetica,12,-1,5,50,0,0,0,0,0" />
+<option key="Hide Full Screen Info" value="false" />
+<option key="Last session" value="$last_session" />
+<option key="Permit Root Login" value="false" />
+<option key="Personal NX dir" value="/ramdisk/tmp/nx" />
+<option key="Remove old sessions" value="true" />
+<option key="System NX dir" value="/usr/NX" />
+</group>
+</NXClientSettings>
+EOF
+
+cp -a /ramdisk/tmp/nx /ramdisk/tmp/.nx
+
+if [ ! -x /usr/NX/bin/nxclient ]; then
+	xmessage " nxclient not found "
+	echo "nxclient not found"
+	exit 1
+fi
+
+#/usr/NX/bin/nxclient --config $NX_DIR/config
+/usr/NX/bin/nxclient
+
+# Unfortunately, nxclient disattaches from the parent process when
+# the connection is established. Hence, we need to poll if NX is
+# still running.
+while [ -n "`pidof nxssh`" ]; do sleep 2; done
+
