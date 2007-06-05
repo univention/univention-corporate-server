@@ -18,3 +18,7 @@ File: etc/univention/skel/.mcoprc
 
 Type: file
 File: usr/share/apps/kdeprint/specials.desktop
+
+Type: file
+File: etc/dbus-1/system.d/devices.conf
+Variables: hal/devices/group

@@ -37,5 +37,6 @@ rm -f /etc/kde3/debian/debian.desktop
 /usr/lib/univention-install/78univention-kde.inst || true
 
 univention-baseconfig set auth/kdeprofile?true
+univention-baseconfig set "hal/devices/group?Domain Users"
 
 ldconfig

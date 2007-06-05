@@ -1,0 +1,62 @@
+#!/bin/sh
+
+# -name <profile-name>            The profilename e.g "test-123" (required !)
+# -path <profile-path>            The path to configured profile e.g. "/home/user" (required !)
+# -no-delete                      Set if you need the package-directory and other build files (optional)
+# -version <number>               The Versionnumber, default is 0.1 (optional)
+# -desktop <locked/restricted>    Desktop could be locked or restricted for user (required !)
+
+# check requirements
+if ! hash -r /usr/sbin/univention-kde-profile-builder; then
+	echo "error: could not find univention-kde-profile-builder"
+	exit 1
+fi
+
+if ! hash -r kdialog; then
+	echo "error: could not find kdialog"
+	exit 1
+fi
+
+if [ ! $UID -eq 0 ]; then
+	kdialog --error "Dieses Programm kann nur als root gestartet werden!"
+	exit 1
+fi
+
+cmd=kdialog
+
+if [ -n "$HOME" ]; then
+	default_path=$HOME
+else
+	default_path="/home"
+fi
+
+tmpfile=`mktemp`
+# get name
+$cmd --inputbox "Name des Profils" "profile1" 2>/dev/null >$tmpfile
+if [ $? -ne 0 ]; then exit 1; fi
+name=`cat $tmpfile | grep -v KWrited | tail -n -1`
+echo "NAME:" $name
+
+kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewählt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
+
+$cmd --title "Auswahl des Heimatverzeichnisses" --getexistingdirectory $default_path 2>/dev/null >$tmpfile
+if [ $? -ne 0 ]; then exit 1; fi
+path=`cat $tmpfile | grep -v KWrited | tail -n -1`
+
+$cmd --inputbox "Versionsnummer des Profils" "0.1" 2>/dev/null >$tmpfile
+if [ $? -ne 0 ]; then exit 1; fi
+version=`cat $tmpfile | grep -v KWrited | tail -n -1`
+
+$cmd --radiolist "Art des Profils" restricted "Veränderbare Vorgabe" off locked "Unveränderbare Vorgabe" on 2>/dev/null >$tmpfile
+if [ $? -ne 0 ]; then exit 1; fi
+desktop=`cat $tmpfile | grep -v KWrited | tail -n -1`
+
+rm $tmpfile
+
+echo /usr/sbin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop"
+
+if /usr/sbin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop" | grep "pkg-deb: .*univention-kde-profile-$name"; then
+	kdialog --msgbox "das Profil-Paket wurde erfolgreich erstellt und im aktuellen Verzeichnis ($PWD) abgelegt."
+else
+	kdialog --error "Leider ist die Erstellung des Profil-Paketes fehlgeschlagen"
+fi

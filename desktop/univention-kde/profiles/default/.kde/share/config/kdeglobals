@@ -1,0 +1,29 @@
+[General]
+BrowserApplication=!firefox
+
+[KFileDialog Settings]
+Automatically select filename extension=true
+LocationCombo Completionmode=5
+PathCombo Completionmode=5
+Recent URLs=/home/
+Separate Directories=false
+Show Bookmarks=false
+Show Speedbar=true
+Show hidden files=false
+Sort by=Name
+Sort case insensitively=true
+Sort directories first=true
+Sort reversed=false
+View Style=Simple
+Width 800=771
+Width 1024=771
+Width 1280=771
+Width 1440=771
+Width 1600=771
+Height 600=370
+Height 768=370
+Height 1024=370
+Height 1050=370
+Height 1200=370
+
+
