@@ -3,7 +3,7 @@
 auth		sufficient	pam_rootok.so
 auth		required	pam_nologin.so
 auth		required	pam_env.so
-auth		sufficient	pam_heimdal.so forwardable
+auth		sufficient	pam_krb5.so forwardable
 auth		required	pam_unix.so use_first_pass
 
 account		sufficient	pam_unix.so

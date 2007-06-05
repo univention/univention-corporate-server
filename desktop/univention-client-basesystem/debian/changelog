@@ -1,3 +1,9 @@
+univention-client-basesystem (2.0.3-1) unstable; urgency=low
+
+  * don't install libpam-krb5 with UCS 2.0 we use libpam-heimdal
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 21:08:16 +0200
+
 univention-client-basesystem (2.0.2-1) unstable; urgency=low
 
   * install kudzu-2.6 instead of kudzu

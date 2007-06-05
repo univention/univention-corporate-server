@@ -3,13 +3,13 @@
 auth		required	pam_nologin.so
 auth		required	pam_env.so
 auth		sufficient	pam_unix.so
-auth		required	pam_heimdal.so forwardable use_first_pass
+auth		required	pam_krb5.so forwardable use_first_pass
 auth		required	pam_runasroot.so save_pass
 
 account		sufficient	pam_unix.so
 account		required	pam_ldap.so
 
-password	required	pam_heimdal.so
+password	required	pam_krb5.so
 
 session		required	pam_unix.so
 session		required	pam_limits.so
