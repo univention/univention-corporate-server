@@ -1,0 +1,11 @@
+univention-fonts (0.2) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:31 +0100
+
+univention-fonts (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Sep 2004 10:24:59 +0200
