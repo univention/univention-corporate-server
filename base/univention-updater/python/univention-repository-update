@@ -260,6 +260,8 @@ if __name__ == '__main__':
 		command='net'
 	elif sys.argv[1] == 'cdrom':
 		command='cdrom'
+	elif sys.argv[1] == 'local':
+		command='local'
 	else:
 		usage()
 		sys.exit(1)

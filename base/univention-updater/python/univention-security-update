@@ -305,6 +305,15 @@ if __name__ == '__main__':
 	for opt, val in opts:
 		if opt == '--file':
 			file=val
+			if command=='net':
+				dprint("Parameter \"--file\" only valid when running locally.")
+				fp_debug.close()
+				sys.exit(1)						
+			if not val:
+				dprint("Parameter \"--file\" needs an argument.")
+				fp_debug.close()
+				sys.exit(1)	
+
 		if opt == '--silent':
 			extra_silent=True
 	
@@ -369,8 +378,8 @@ if __name__ == '__main__':
 										f.write("%s\n" % file.split('/')[-1])
 									f.close()
 						
-			if sourcedir and len(sourcedir) > 1:
-				os.system('rm -Rf %s' % sourcedir)
+		if sourcedir and len(sourcedir) > 1:
+			os.system('rm -Rf %s' % sourcedir)
 	else:
 		dprint('no local repository\n')
 

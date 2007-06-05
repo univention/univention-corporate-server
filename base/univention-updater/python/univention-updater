@@ -65,7 +65,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'copyright (c) 2005-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
+	print >>fd, '  univention-updater <local,net,cdrom,directory> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--src <sourcedir>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
@@ -99,10 +99,10 @@ def download_sh_files(update_server, tempdir, level):
 		f.close()
 		os.chmod(os.path.join(tempdir, sh), 0744)
 
-def update_available(mode, baseConfig, cdrom_mount_point, stdout, sys_stdout, reboot, internal=1):
+def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys_stdout, reboot, internal=1):
 	# Checks if there is an update available
 	
-	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, reboot=%s, internal=%s)' %(mode, cdrom_mount_point, str(reboot), str(internal)))
+	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, directory=%s, reboot=%s, internal=%s)' %(mode, cdrom_mount_point,sourcedir, str(reboot), str(internal)))
 
 	update=0
 	nextversion="none"
@@ -147,7 +147,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, stdout, sys_stdout, re
 				if internal:
 					sys_stdout.close()
 					raise UpdateError
-
+	
 		if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
 			f=open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp))
 			nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
@@ -171,6 +171,27 @@ def update_available(mode, baseConfig, cdrom_mount_point, stdout, sys_stdout, re
 			res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
 			if res != 0:
 				dprint('Failed to unmount cdrom', [stdout,sys_stdout])
+		
+
+	elif mode == 'directory':
+		if os.path.exists('%s/ucs-updates/' % sourcedir):
+			f=open('%s/ucs-updates/ucs_%s-%s.txt' % (sourcedir,vv,vp))
+			nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
+			f.close()
+			if nextversion == 'none':
+				update=0
+				dprint('System is up to date', [stdout,sys_stdout])
+				# No raise because we need to return none
+			else:
+				dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
+				update=1
+		else:
+			update=0
+			dprint("Directory does not contain a ucs-updates subdirectory.", [stdout,sys_stdout])
+			if internal:
+				sys_stdout.close()
+				raise UpdateError
+
 
 	elif mode == 'net':
 		dprint('Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
@@ -253,6 +274,8 @@ def main():
 		command='cdrom'
 	elif sys.argv[1] == 'local':
 		command='local'
+	elif sys.argv[1] == 'directory':
+		command='directory'
 	else:
 		usage(stdout)
 		fp_debug.close()
@@ -262,7 +285,7 @@ def main():
 	reboot = None
 	clean  = True
 	
-	longopts=['device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
+	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -293,7 +316,7 @@ def main():
 			clean = False
 			dprint("Running updater without apt-get clean", [stdout,sys.stdout])
 		if opt == '--check':
-			update_available(command, baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot, 0)
+			update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0)
 			sys.exit(0)
 
 	if clean:
@@ -320,7 +343,7 @@ def main():
 	if command == 'local':
 		dprint('starting local mode')
 
-		nextversion=update_available('local', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+		nextversion=update_available('local', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
 
 		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
 		list=[]
@@ -360,7 +383,7 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
 
 		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
 
@@ -394,6 +417,46 @@ def main():
 		if resultCode != 0:
 			dprint('Failed to add cdrom to sources.list', [sys.stdout,stdout])
 			raise UpdateError
+	
+	
+	elif command == 'directory':
+		dprint('starting directory mode')
+
+		if baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
+			dprint('local/reposity active, copy dir and start local mode')
+			sys.stderr.write( sourcedir + "<----------------------------------------------------------")
+			resultCode=os.system('/usr/sbin/univention-repository-update local --src %s' % (sourcedir))
+			if resultCode != 0:
+				dprint('Failed to execute univention-repository-update local', [sys.stdout,stdout])
+				raise UpdateError
+
+			callupdateto=[sys.argv[0], 'local', '--updateto', updateto]
+			calllocal=[sys.argv[0], 'local']
+			
+			if not clean:
+				callupdateto.append('--no-clean')
+				calllocal.append('--no-clean')
+				
+			if updateto:
+				os.execv(sys.argv[0], callupdateto)
+			else:
+				os.execv(sys.argv[0], calllocal)
+
+		nextversion=update_available('directory', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
+
+		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
+
+		copy_sh_files(tempdir,os.path.join(cdrom_mount_point,'ucs-updates', '%s' % nextversion ))
+
+		dprint('List tempdir = %s' % os.listdir(tempdir))
+
+		if  nextversion == 'none':
+			dprint('System is up to date', [stdout, sys.stdout])
+
+			
+			fp_debug.close()
+			raise UpToDateNoError(reboot)
+
 
 	elif command == 'net':
 		dprint('starting net mode')
@@ -417,7 +480,7 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		nextversion=update_available('net', baseConfig, cdrom_mount_point, stdout, sys.stdout, reboot)
+		nextversion=update_available('net', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
 
 		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
 
