@@ -1,3 +1,9 @@
+univention-xnumlock (2.0.0-3) unstable; urgency=low
+
+  * added libxtst-dev to build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 15:17:52 +0200
+
 univention-xnumlock (2.0.0-2) unstable; urgency=low
 
   * change build dependency from xlibs-dev to xlibs-static-dev
