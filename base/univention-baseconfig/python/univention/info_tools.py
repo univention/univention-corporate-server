@@ -135,6 +135,8 @@ class LocalizedDictionary( dict ):
 		return dict.__getitem__( self, key )
 
 	def __eq__( self, other ):
+		if not isinstance( other, dict ):
+			return False
 		me = self.normalize()
 		you = other.normalize()
 		return dict.__eq__( me, you )

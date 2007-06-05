@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.2-2) unstable; urgency=low
+
+  * fixed a crash in the __eq__ operator of LocalizedDictionary
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 Jun 2007 22:06:58 +0200
+
 univention-baseconfig (2.1.2-1) unstable; urgency=low
 
   * update logrotate configuration
