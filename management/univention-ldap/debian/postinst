@@ -383,4 +383,5 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; t
 			--set name=printservers \
 			--position=cn=policies,$ldap_base --set policyPath=1
 	fi
+fi
 exit 0
