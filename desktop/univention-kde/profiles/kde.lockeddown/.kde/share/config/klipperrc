@@ -1,0 +1,7 @@
+[$i]
+[$Version]
+update_info=klippershortcuts.upd:04112002,klipperrc.upd:25082001,klipperrc.upd:kde3.1
+
+[General]
+AutoStart=true
+SynchronizeClipboards=false

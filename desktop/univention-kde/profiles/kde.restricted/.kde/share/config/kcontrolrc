@@ -1,0 +1,9 @@
+[General]
+InitialHeight 768=576
+InitialWidth 1024=768
+SplitterSizes=202,400
+UseSystemBell=false
+
+[Index]
+IconSize=Medium
+ViewMode=Tree

@@ -1,0 +1,6 @@
+[Desktop Entry]
+Icon=002_text_document.xpm
+Name=beispieltext.sxw
+Type=Link
+URL=file:/usr/share/univention-kde-profiles/kde.restricted/beispieltext.sxw
+X-KDE-LastOpenedWith=openoffice

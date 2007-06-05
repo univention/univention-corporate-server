@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=
+Exec=evolution
+GenericName=
+Icon=/usr/share/pixmaps/evolution.png
+Name=Evolution
+Path=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

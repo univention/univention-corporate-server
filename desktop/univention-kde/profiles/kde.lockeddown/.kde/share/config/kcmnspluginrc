@@ -1,0 +1,4 @@
+[$i]
+[Misc]
+firstTime=false
+scanPaths=$HOME/.mozilla/plugins,$HOME/.netscape/plugins,/usr/lib64/browser-plugins,/usr/lib/browser-plugins,/usr/local/netscape/plugins,/opt/mozilla/plugins,/opt/mozilla/lib/plugins,/opt/netscape/plugins,/opt/netscape/communicator/plugins,/usr/lib/netscape/plugins,/usr/lib/netscape/plugins-libc5,/usr/lib/netscape/plugins-libc6,/usr/lib/mozilla/plugins,/usr/lib64/netscape/plugins,/usr/lib64/mozilla/plugins,$MOZILLA_HOME/plugins

@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=Archive
+Exec=ark
+GenericName=
+Icon=ark
+Name=Ark
+Path=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

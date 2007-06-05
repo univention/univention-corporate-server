@@ -1,0 +1,9 @@
+[$i]
+[$Version]
+update_info=kfmclient_3_2.upd:kfmclient_3_2
+
+[FMSettings]
+UnderlineLinks=true
+
+[Settings]
+BgImage=kde4ever.png

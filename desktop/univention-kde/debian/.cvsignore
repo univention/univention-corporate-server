@@ -1,0 +1,4 @@
+files
+univention-kde
+univention-kde.postinst.debhelper
+univention-kde.prerm.debhelper

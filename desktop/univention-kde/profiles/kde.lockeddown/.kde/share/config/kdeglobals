@@ -1,0 +1,195 @@
+[$Version]
+update_info=kded.upd:kde3.0,kaccel.upd:kde3.1/r3,socks.upd:kde3.0/r1,klippershortcuts.upd:04112002
+
+[DesktopIcons]
+ActiveEffect=none
+Animated=false
+GridXSpacing=50
+Size=32
+
+[Desktops]
+Name_1=
+Name_2=
+Name_3=
+Name_4=
+Number=4
+
+[General]
+background=238,238,230
+buttonBackground=238,234,222
+buttonForeground=0,0,0
+foreground=0,0,0
+linkColor=0,0,192
+selectBackground=255,221,118
+selectForeground=0,0,0
+visitedLinkColor=128,0,128
+widgetStyle=plastik
+windowBackground=255,255,255
+windowForeground=0,0,0
+
+[Global Shortcuts]
+Desktop Screenshot=default(Ctrl+Print)
+Enable/Disable Clipboard Actions=default(Alt+Ctrl+X)
+Halt Computer=none
+Halt without Confirmation=none
+Kill Window=default(Alt+Ctrl+Escape)
+Lock Screen=default(Alt+Ctrl+L)
+Logout=default(Alt+Ctrl+Delete)
+Logout without Confirmation=default(Alt+Ctrl+Shift+Delete)
+Manually Invoke Action on Current Clipboard=default(Alt+Ctrl+R)
+Mouse Emulation=default(Alt+F12)
+Popup Launch Menu=default(Alt+F1)
+Reboot Computer=none
+Reboot without Confirmation=none
+Run Command=default(Alt+F2)
+Show Klipper Popup-Menu=default(Alt+Ctrl+V)
+Show Taskmanager=default(Ctrl+Escape)
+Show Window List=default(Alt+F5)
+Switch One Desktop Down=none
+Switch One Desktop Up=none
+Switch One Desktop to the Left=none
+Switch One Desktop to the Right=none
+Switch to Desktop 1=default(Ctrl+F1)
+Switch to Desktop 10=default(Ctrl+F10)
+Switch to Desktop 11=default(Ctrl+F11)
+Switch to Desktop 12=default(Ctrl+F12)
+Switch to Desktop 13=default(Ctrl+Shift+F1)
+Switch to Desktop 14=default(Ctrl+Shift+F2)
+Switch to Desktop 15=default(Ctrl+Shift+F3)
+Switch to Desktop 16=default(Ctrl+Shift+F4)
+Switch to Desktop 2=default(Ctrl+F2)
+Switch to Desktop 3=default(Ctrl+F3)
+Switch to Desktop 4=default(Ctrl+F4)
+Switch to Desktop 5=default(Ctrl+F5)
+Switch to Desktop 6=default(Ctrl+F6)
+Switch to Desktop 7=default(Ctrl+F7)
+Switch to Desktop 8=default(Ctrl+F8)
+Switch to Desktop 9=default(Ctrl+F9)
+Switch to Next Desktop=none
+Switch to Next Keyboard Layout=default(Alt+Ctrl+K)
+Switch to Previous Desktop=none
+Toggle Showing Desktop=default(Alt+Ctrl+D)
+Toggle Window Raise/Lower=none
+Walk Through Desktop List=default(Ctrl+Tab)
+Walk Through Desktop List (Reverse)=default(Ctrl+Shift+Tab)
+Walk Through Desktops=none
+Walk Through Desktops (Reverse)=none
+Walk Through Windows=default(Alt+Tab)
+Walk Through Windows (Reverse)=default(Alt+Shift+Tab)
+Window Close=default(Alt+F4)
+Window Iconify=none
+Window Lower=none
+Window Maximize=none
+Window Maximize Horizontal=none
+Window Maximize Vertical=none
+Window Move=none
+Window Operations Menu=default(Alt+F3)
+Window Raise=none
+Window Resize=none
+Window Screenshot=default(Alt+Print)
+Window Shade=none
+Window to Desktop 1=none
+Window to Desktop 10=none
+Window to Desktop 11=none
+Window to Desktop 12=none
+Window to Desktop 13=none
+Window to Desktop 14=none
+Window to Desktop 15=none
+Window to Desktop 16=none
+Window to Desktop 2=none
+Window to Desktop 3=none
+Window to Desktop 4=none
+Window to Desktop 5=none
+Window to Desktop 6=none
+Window to Desktop 7=none
+Window to Desktop 8=none
+Window to Desktop 9=none
+Window to Next Desktop=none
+Window to Previous Desktop=none
+
+[KDE]
+ChangeCursor=true
+EffectAnimateCombo=false
+EffectFadeMenu=false
+EffectFadeTooltip=false
+EffectsEnabled=false
+ShowIconsOnPushButtons=false
+SingleClick=true
+colorScheme=<default>
+contrast=7
+macStyle=false
+
+[KFileDialog Settings]
+Height 768=307
+LocationCombo Completionmode=2
+PathCombo Completionmode=2
+Recent URLs=/usr/share/wallpapers/
+Separate Directories=false
+Show Preview=true
+Show Speedbar=true
+Show hidden files=false
+Sort by=Name
+Sort case insensitively=true
+Sort directories first=true
+Sort reversed=false
+View Style=Simple
+Width 1024=574
+
+[Locale]
+Country[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 1)
+Language[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 2)
+
+[PanelIcons]
+ActiveEffect=none
+
+[Paths]
+Trash=$HOME/Desktop/Mülleimer/
+Desktop=/usr/share/univention-kde-profiles/kde.lockeddown/Desktop
+
+[PreviewSettings]
+BoostSize=true
+MaximumSize=1048576
+UseFileThumbnails=true
+devices=true
+file=true
+fish=true
+floppy=true
+ftp=true
+imap=true
+imaps=true
+ldap=true
+mac=true
+man=true
+nfs=true
+nntp=true
+pop3=true
+pop3s=true
+print=true
+sftp=true
+smb=true
+smtp=true
+smtps=true
+tar=true
+webdav=true
+webdavs=true
+zip=true
+
+[WM]
+activeBackground=62,145,235
+activeBlend=62,145,235
+activeForeground=255,255,255
+activeTitleBtnBg=238,238,230
+inactiveBackground=143,159,180
+inactiveBlend=143,159,180
+inactiveForeground=255,255,255
+inactiveTitleBtnBg=238,238,230
+
+[KDE Action Restrictions]
+action/help_about_kde=false
+custom_config=false
+icon=false
+movable_toolbars=false
+run_command=false
+run_desktop_files=true
+shell_access=false
+

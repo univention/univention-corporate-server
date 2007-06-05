@@ -1,0 +1,109 @@
+#!/bin/sh
+#
+# Univention KDE
+#  helper script: set KDE profile for a user
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+eval `/usr/sbin/univention-baseconfig shell`
+
+touch $HOME/.univention-environment
+
+if [ -z "$ldap_port" ]; then
+	ldap_port=389
+fi
+
+if /bin/netcat -q0 -w4 $ldap_server_name $ldap_port </dev/null >/dev/null 2>&1; then
+	userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | ldapsearch-wrapper | grep ^dn | sed -e 's|^dn: ||'`
+	result=`univention_policy_result -h $ldap_server_name -s $userdn`
+	if [ -n "$result" ]; then
+		univentionDesktopLanguage=`echo "$result" | grep univentionDesktopLanguage | sed -e 's|.*univentionDesktopLanguage=||;s|"||g'`
+		for profile in `echo "$result" | grep univentionDesktopProfile | sed -e 's|.*univentionDesktopProfile=||g;s|"||g' `; do
+			if [ -z "$univentionDesktopProfile" ]; then
+				univentionDesktopProfile="$profile"
+			else
+				univentionDesktopProfile="$univentionDesktopProfile $profile"
+			fi
+		done
+	fi
+fi
+
+if [ "$univentionDesktopLanguage" ]; then
+	LANG="$univentionDesktopLanguage"
+fi;
+
+
+KDEDIRS="/usr/share/univention-kde-profiles/default/.kde"
+if [ -n "$univentionDesktopProfile" ]; then
+	if [ "$univentionDesktopProfile" != "none" ]; then
+		for i in $univentionDesktopProfile; do
+			KDEDIRS="$KDEDIRS:$i/.kde"
+		done
+		echo -n "$univentionDesktopProfile" >$HOME/.kdeprofile
+	fi
+else
+	if [ -e "$HOME/.kdeprofile" ]; then
+		profile=`cat $HOME/.kdeprofile`
+		export univentionDesktopProfile="$profile"
+		if [ -n "$profile" ]; then
+			for i in $profile; do
+				KDEDIRS="$KDEDIRS:$profile/.kde"
+			done
+		fi
+	fi
+fi
+
+XDG_CONFIG_DIRS="/etc/xdg/:/usr/share/univention-kde-profiles/default/.config"
+if [ -n "$univentionDesktopProfile" ]; then
+	if [ "$univentionDesktopProfile" != "none" ]; then
+		for i in $univentionDesktopProfile; do
+			XDG_CONFIG_DIRS="$XDG_CONFIG_DIRS:$i/.config"
+		done
+	fi
+fi
+
+XDG_DATA_DIRS="/usr/share:/usr/share/univention-kde-profiles/default/.local/share"
+if [ -n "$univentionDesktopProfile" ]; then
+	if [ "$univentionDesktopProfile" != "none" ]; then
+		for i in $univentionDesktopProfile; do
+			XDG_DATA_DIRS="$XDG_DATA_DIRS:$i/.local/share"
+		done
+	fi
+fi
+
+if [ -n "$XDG_DATA_DIRS" ] && [ -n "$XDG_CONFIG_DIRS" ] && [ -n "$KDEDIRS" ]; then
+	if [ -e $HOME/.univention-environment ]; then
+		sed -i 's|^export XDG_DATA_DIRS.*||g;s|^export XDG_CONFIG_DIRS.*||g;s|^export KDEDIRS.*||g;s|^export LANG.*||g' $HOME/.univention-environment
+		#remove empty lines
+		sed -i '/^$/d' $HOME/.univention-environment
+	fi
+	echo "export XDG_DATA_DIRS=$XDG_DATA_DIRS" >>$HOME/.univention-environment
+	echo "export XDG_CONFIG_DIRS=$XDG_CONFIG_DIRS" >>$HOME/.univention-environment
+	echo "export KDEDIRS=$KDEDIRS" >>$HOME/.univention-environment
+	if [ -n "$LANG" ]; then
+		echo "export LANG=$LANG" >>$HOME/.univention-environment
+	fi
+fi

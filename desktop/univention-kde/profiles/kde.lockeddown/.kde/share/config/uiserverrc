@@ -1,0 +1,9 @@
+[$i]
+[UIServer]
+InitialHeight=150
+InitialWidth=460
+KeepListOpen=false
+ShowList=false
+ShowStatusBar=false
+ShowSystemTray=false
+ShowToolBar=true

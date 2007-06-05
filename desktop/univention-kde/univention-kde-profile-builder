@@ -1,0 +1,373 @@
+#!/bin/bash
+#
+# Univention KDE
+#  creates a Debian packageof KDE profiles
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+usage ()
+{
+cat << EndOfMessage
+Unknown $unknown
+Usage: $0 [options]
+
+options are:	-name <profile-name>		The profilename e.g "test-123" (required !)
+		-path <profile-path>		The path to configured profile e.g. "/home/user" (required !)
+		-no-delete 			Set if you need the package-directory and other build files (optional)
+		-version <number>		The Versionnumber, default is 0.1 (optional)
+		-desktop <locked/restricted>	Desktop could be locked or restricted for user (required !)
+EndOfMessage
+}
+
+
+while [ "$#" -gt "0" ]; do
+	case $1 in
+		-name) pkg_name="univention-kde-profile-$2"
+		profile_name=$2
+		shift 2
+		;;
+		-path) 	here=`pwd`
+			cd $2
+			path=`pwd`
+			cd $here
+		shift 2
+		;;
+		-no-delete) no_delete="1"
+		shift 1
+		;;
+		-version) version=$2
+		shift 2
+		;;
+		-desktop) desktop=$2
+		shift 2
+		;;
+		*)
+		unknown=$1
+		usage
+		exit 0
+		;;
+	esac
+done
+
+if [ -z "$profile_name" ]
+then
+	usage
+	exit 0
+elif [ -z "$path" ]
+then
+	usage
+	exit 0
+
+elif [[ ! "$desktop" == "locked" && ! "$desktop" == "restricted" ]]
+then
+	usage
+	exit 0
+fi
+
+if [ -z "$version" ]
+then
+	version="0.1"
+fi
+
+if [ ! -d "$path/.kde" ]
+then
+	echo "Can not find profile-directory .kde in $path"
+	exit 0
+fi
+
+echo "___ Create Temp-Directory"
+tmp=`mktemp -d`
+echo "___ $tmp"
+cd $tmp
+
+mkdir $pkg_name
+cd $pkg_name
+
+mkdir profiles
+cd profiles
+
+mkdir $pkg_name
+
+echo "___ Copy .kde"
+cp -a  "$path/.kde" $pkg_name/
+
+echo -e "___ Copy Desktop"
+if [ "$desktop" == "restricted" ]; then
+	mkdir -p $pkg_name/.kde/share/apps/kdesktop/
+	cp -a $path/Desktop $pkg_name/.kde/share/apps/kdesktop/DesktopLinks
+elif [ "$desktop" == "locked" ]; then
+	cp -a  $path/Desktop $pkg_name/
+	if [ -e "$pkg_name/.kde/share/config/kdeglobals" ]; then
+		cp -a "$pkg_name/.kde/share/config/kdeglobals" "$pkg_name/.kde/share/config/kdeglobals.tmp"
+		echo -n > "$pkg_name/.kde/share/config/kdeglobals"
+		cat  "$pkg_name/.kde/share/config/kdeglobals.tmp" | while read line; do
+			if [ "$line" = "[Paths]" ]; then
+				echo "$line" >>"$pkg_name/.kde/share/config/kdeglobals"
+				echo "Desktop=/usr/share/univention-kde-profiles/$pkg_name/Desktop/" >>"$pkg_name/.kde/share/config/kdeglobals"
+			else
+				echo "$line" >>"$pkg_name/.kde/share/config/kdeglobals"
+			fi
+		done
+		rm -f "$pkg_name/.kde/share/config/kdeglobals.tmp"
+	fi
+	# insert [$i] into all KDE config files, execpt 'kdeglobals'
+	find "$pkg_name/.kde/share/config/" -type f ! -name kdeglobals | while read file; do
+		grep '\[$i\]' "$file" >/dev/null && continue
+		cp -a "$file" "$file.tmp"
+		echo '[$i]' >"$file"
+		cat "$file.tmp" >>"$file"
+		rm -f "$file.tmp"
+	done
+fi
+# replace dirnames in all KDE config files
+find "$pkg_name/.kde/share/config/" -type f | while read file; do
+	grep "$path" "$file" >/dev/null || continue
+	sed -i "s@$path@/usr/share/univention-kde-profiles/$pkg_name@g" "$file"
+done
+
+if [ -f $path/.kderc ]; then
+	echo "___ Copy .kderc"
+	cp -a "$path/.kderc" $pkg_name/
+fi
+
+if [ -d "$path/.config" ]; then
+        echo "___ Copy .config/"
+        cp -ar "$path/.config/" $pkg_name/
+fi
+if [ -d "$path/.local" ]; then
+        echo "___ Copy .local/"
+        cp -ar "$path/.local/" $pkg_name/
+fi
+
+
+
+echo "___ Remove Symlinks"
+find "$pkg_name/.kde" -type l -exec rm {} \;
+
+echo "___ Cleaning Trashbin"
+find "$pkg_name" -type f -name .directory | while read file; do
+	if grep "^Name=Trash$" "$file" >/dev/null; then
+		find $(dirname "$file")/ -maxdepth 1 ! -name .directory ! -name "" ! -name "." -exec rm -rf {} \;
+	fi
+done
+
+if [ -d "$pkg_name/.kde/cache" ]
+then
+	rm -r $pkg_name/.kde/cache
+fi
+
+chown -R root:root $pkg_name
+chmod -R 0755 $pkg_name
+
+cd ..
+mkdir debian
+cd debian
+
+
+echo "___ Create debian/rules"
+# creating rules
+cat << \EndOfFile |sed -e "s/@@@pkgname@@@/$pkg_name/g" -e "s/@@@profile_name@@@/$profile_name/g" > rules
+#!/usr/bin/make -f
+
+# This is the debhelper compatibility version to use.
+export DH_COMPAT=3
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	(cd profiles && find . ! -path "*CVS*" -type d -exec install  -d "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find . ! -path "*CVS*" -type f -exec install {} "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
+	install -m 0755 80univention-kde-profile_@@@profile_name@@@.inst debian/@@@pkgname@@@/usr/lib/univention-install/
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf
+	dh_installdocs
+#	dh_installexamples
+#	dh_installmenu
+#	dh_installlogrotate
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installmime
+#	dh_installinit
+#	dh_installcron
+#	dh_installman
+#	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+#	dh_movefiles
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure
+EndOfFile
+
+chmod +x rules
+
+
+echo "___ Create debian/postinst"
+# Creating postinst
+cat << 'EndOfFile' |sed s/@@@profile_name@@@/$profile_name/g > postinst
+#!/bin/sh
+
+#DEBHELPER#
+
+eval $(univention-baseconfig shell)
+
+if [ $server_role = domaincontroller_master -o $server_role = domaincontroller_backup ]; then
+	/usr/lib/univention-install/80univention-kde-profile_@@@profile_name@@@.inst || true
+fi
+EndOfFile
+
+
+echo "___ Create debian/dirs"
+# Creating dirs
+cat << 'EndOfFile' > dirs
+usr/lib/univention-install
+EndOfFile
+
+
+echo "___ Create debian/changelog"
+# Creating changelog
+date=`date +%a," "%e" "%b" "%Y" "%X" "%z`
+
+cat << 'EndOfFile' | sed -e "s/@@@pkgname@@@/$pkg_name/g" -e "s/@@@date@@@/$date/g" -e "s/@@@version@@@/$version/g"> changelog
+@@@pkgname@@@ (@@@version@@@) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Univention GmbH <packages@univention.de>  @@@date@@@
+EndOfFile
+
+
+echo "___ Create debian/copyright"
+# Creating copyright
+cat << 'EndOfFile' > copyright
+Copyright (C) 2000-2004 Univention GmbH. All rights reserved.
+http://www.univention.de/
+EndOfFile
+
+
+echo "___ Create debian/control"
+# Creating control
+cat << 'EndOfFile' |sed s/@@@pkgname@@@/$pkg_name/g > control
+Source: @@@pkgname@@@
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+
+Package: @@@pkgname@@@
+Architecture: all
+Description: UCS - KDE profile builder
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+EndOfFile
+
+
+cd ..
+
+
+echo "___ Create 80univention-kde-profile_$profile_name.inst"
+# Creating 80univention-kde.inst
+cat << 'EndOfFile' |sed -e "s/@@@profile_name@@@/$profile_name/g" -e "s/@@@pkg_name@@@/$pkg_name/g" > 80univention-kde-profile_"$profile_name".inst
+#!/bin/sh
+
+eval `univention-baseconfig shell`
+
+if [ $server_role = domaincontroller_master -o $server_role = domaincontroller_slave ]; then
+	if ! test -e "/usr/share/univention-join/.joined"; then
+	        echo "The server has not joined yet"
+	        exit 1
+	fi
+
+	touch /usr/lib/univention-install/.index.txt
+
+	test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+	univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --append defaultKdeProfiles="/usr/share/univention-kde-profiles/@@@pkg_name@@@"
+
+	test -n "`grep "univention-kde-profile_@@@profile_name@@@ successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_@@@profile_name@@@ successful" >>/usr/lib/univention-install/.index.txt
+fi
+
+exit 0
+EndOfFile
+
+
+
+# Building package
+echo "___ Execute dpkg-buildpackage"
+dpkg-buildpackage
+
+cd ..
+echo "___ Copy "$pkg_name"_"$version"_all.deb from $tmp to $here"
+cp $pkg_name"_"$version"_all.deb" $here"/"
+
+cd $here
+
+if [ ! "$no_delete" == "1" ]
+then
+	echo "___ Delete $tmp"
+	rm -r $tmp
+else
+	echo "___ You choose 'no-delete', so the temporary files can be found here: $tmp"
+fi
+
+exit 0

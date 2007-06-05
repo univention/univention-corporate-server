@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Betrachter für Netscape-Plugins
+Type=Service
+Icon=netscape
+Comment=Betrachter für Netscape-Plugins
+X-KDE-Library=libnsplugin
+InitialPreference=0
+ServiceTypes=KParts/ReadOnlyPart,Browser/View
+X-KDE-BrowserView-PluginsInfo=nsplugins/pluginsinfo
+MimeType=application/pdf;application/x-shockwave-flash;application/futuresplash

@@ -1,0 +1,14 @@
+[DesktopIcons]
+Size=48
+
+[General]
+FirstLogin=false
+
+[MainToolbarIcons]
+Size=22
+
+[SmallIcons]
+Size=16
+
+[ToolbarIcons]
+Size=22

@@ -1,0 +1,6 @@
+[$i]
+[$Version]
+update_info=kmail.upd:1,kmail.upd:4,kmail.upd:5,kmail.upd:6,kmail.upd:7,kmail.upd:8,kmail.upd:9,kmail.upd:3.1-update-identities,kmail.upd:3.1-use-identity-uoids,kmail.upd:3.1-new-mail-notification,kmail.upd:3.2-update-loop-on-goto-unread-settings,kmail.upd:3.1.4-dont-use-UOID-0-for-any-identity,kmail.upd:3.2-misc,kmail.upd:3.2-moves,kmail.upd:3.3-use-ID-for-accounts,kmail.upd:3.3-move-identities-to-own-file,kmail.upd:3.3-aegypten-kpgprc-to-kmailrc,kmail.upd:3.3-misc,kmail.upd:3.3b1-misc,kmail.upd:3.3-update-filter-rules
+
+[Composer]
+previous-identity=
