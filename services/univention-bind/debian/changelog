@@ -1,3 +1,9 @@
+univention-bind (2.0.0-2) unstable; urgency=low
+
+  * update dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jun 2007 10:22:02 +0200
+
 univention-bind (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

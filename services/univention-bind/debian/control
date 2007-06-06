@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-bind
 Architecture: all
-Depends: univention-baseconfig (>=0.07), univention-python | univention-python-2005, bind9, univention-admin-tools | univention-admin-tools-2005, ldap-utils, univention-runit (>= 0.2), univention-ipcalc, univention-ldap-listener (>= 0.4), patch
+Depends: univention-baseconfig (>=0.07), python-univention, bind9, univention-admin-tools, ldap-utils, univention-runit (>= 0.2), univention-ipcalc, univention-ldap-listener (>= 0.4), patch
 Conflicts: univention-dns
 Replaces: univention-dns
 Description: UCS - DNS server
@@ -21,7 +21,7 @@ Description: UCS - DNS server
 
 Package: univention-bind-proxy
 Architecture: all
-Depends: univention-baseconfig (>=0.07), univention-python | univention-python-2005, bind9, univention-admin-tools | univention-admin-tools-2005, ldap-utils, univention-runit (>= 0.2), univention-ipcalc
+Depends: univention-baseconfig (>=0.07), python-univention, bind9, univention-admin-tools, ldap-utils, univention-runit (>= 0.2), univention-ipcalc
 Conflicts: univention-dns
 Replaces: univention-dns
 Description: UCS - DNS proxy server
