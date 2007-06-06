@@ -1,0 +1,19 @@
+Source: univention-local-users
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper
+
+Package: univention-local-users
+Architecture: all
+Depends: univention-ldap-listener (>=0.4), univention-python | univention-python-2005, univention-baseconfig
+Description: UCS - Replicates users from LDAP to flat files
+ The included Univention LDAP Listener module replicates
+ a selected group of LDAP users to /etc/passwd. This can is
+ useful for globally managed maintainance users that can
+ also be used when the LDAP server is unavailable.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

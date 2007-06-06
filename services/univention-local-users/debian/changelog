@@ -1,0 +1,38 @@
+univention-local-users (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 09:58:39 +0100
+
+univention-local-users (0.6) unstable; urgency=low
+
+  * append sambaNTPassword and sambaLMPassword
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Jun 2005 17:26:55 +0200
+
+univention-local-users (0.4) unstable; urgency=low
+
+  * optional run program
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 May 2005 08:12:02 +0200
+
+univention-local-users (0.3) unstable; urgency=low
+
+  * check against (local) ldap/server/name
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Sep 2004 08:55:33 +0200
+
+univention-local-users (0.2) unstable; urgency=low
+
+  * Remove manual manipulation of sys.path.
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon, 26 Apr 2004 11:21:15 +0200
+
+univention-local-users (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 20 Nov 2003 16:14:59 +0100
+
+
