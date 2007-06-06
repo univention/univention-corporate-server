@@ -57,6 +57,7 @@ case "$1" in
 
 	mkdir -p $destdir/etc/apt/
 	cp -a "etc/apt/sources.list" "$destdir/etc/apt/"
+	cp -a "etc/apt/apt.conf" "$destdir/etc/apt/"
 
 	install -m755 bootstrap.sh "$destdir/bootstrap.sh"
 	touch "$destdir/.univention-bootstrap"
