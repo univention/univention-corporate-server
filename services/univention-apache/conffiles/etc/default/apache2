@@ -1,0 +1,21 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/default/apache2
+# 
+
+
+# 0 = start on boot; 1 = don't start on boot
+
+@!@
+val = baseConfig.get('apache2/autostart', 'yes')
+if val.lower() in [ '1', 'true', 'yes' ]; then
+	print 'NO_START=0'
+else:
+	print 'NO_START=1'
+@!@
+

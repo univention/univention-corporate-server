@@ -15,3 +15,7 @@ Variables: hostname
 Type: module
 Module: extension.py
 Variables: php/memory/limit
+
+Type: file
+File: etc/default/apache2
+Variables: apache2/autostart
