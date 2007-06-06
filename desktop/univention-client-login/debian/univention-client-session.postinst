@@ -33,3 +33,5 @@ set -e
 #DEBHELPER#
 
 (cd /etc/gdm/Sessions/ && ln -sf Linux-Arbeitsplatz Default)
+
+exit 0
