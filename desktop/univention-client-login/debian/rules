@@ -1,0 +1,111 @@
+#!/usr/bin/make -f
+#
+# Univention Client Login
+#  rules file for the debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: configure-stamp
+	dh_testdir
+
+	cd src; ${MAKE}; cd -
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	cd src; $(MAKE) clean; cd -
+	rm -f *~ univention-name-to-unicode
+
+	dh_clean
+
+S=$(CURDIR)/debian/univention-session
+C=$(CURDIR)/debian/univention-client-session
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -d -m 0755 \
+		${C}/etc/gdm/Sessions \
+		${C}/etc/univention/ \
+		${C}/usr/bin/ \
+		${C}/usr/share/univention-client-login \
+		${S}/usr/bin/ \
+		${S}/usr/share/univention-client-login
+
+	install -m 4755 src/client $C/usr/bin/univention-client
+	install -m 4755 src/server $S/usr/bin/univention-session
+
+	install -m 755 demo-cleanup.sh $C/usr/share/univention-client-login/cleanup-demo.sh
+
+	install -m 0644 sessions/kill-process-by-display ${S}/usr/share/univention-client-login
+	install -m 0755 sessions/client_login.sh ${S}/usr/share/univention-client-login
+
+	install -m 0755 sessions/KDE.Session ${C}/etc/univention/
+	install -m 0755 sessions/KDE.Shutdown ${S}/usr/share/univention-client-login
+
+	install -m 0755 sessions/Windows-Arbeitsplatz ${C}/etc/gdm/Sessions
+	install -m 0755 sessions/Windows-Arbeitsplatz.desktop ${C}/etc/gdm/Sessions
+	install -m 0755 sessions/rdesktop.Session ${C}/etc/univention
+	install -m 0755 sessions/rdesktop.Shutdown ${S}/usr/share/univention-client-login
+
+	univention-install-baseconfig
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+	dh_installcron
+	dh_installman
+	dh_installinfo
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms -X usr/bin/univention-
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

@@ -1,0 +1,4 @@
+files
+univention-client-login
+univention-client-login.postinst.debhelper
+univention-client-login.prerm.debhelper

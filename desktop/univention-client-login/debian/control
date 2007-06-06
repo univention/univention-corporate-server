@@ -1,0 +1,38 @@
+Source: univention-client-login
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, libunivention-config-dev, libunivention-debug-dev
+Standards-Version: 3.5.2
+
+Package: univention-session
+Architecture: any
+Replaces: univention-client-login
+Conflicts: univention-client-login
+Depends: ${shlib:Depends}, univention-skel
+Description: UCS - session manager (server part)
+ Univention Session manages desktop sessions. It keeps
+ track of processes started and terminates them when the
+ session is over. Server and client exchange alive messages
+ so that it can quickly be detect when either one becomes
+ unavailable.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-client-session
+Architecture: any
+Depends: ${shlib:Depends}, rsh-client
+Description: UCS - session manager (client part)
+ Univention Session manages desktop sessions. It keeps
+ track of processes started and terminates them when the
+ session is over. Server and client exchange alive messages
+ so that it can quickly be detect when either one becomes
+ unavailable.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
