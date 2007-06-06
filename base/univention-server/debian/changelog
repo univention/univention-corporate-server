@@ -1,3 +1,9 @@
+univention-server (2.1.0-6) unstable; urgency=low
+
+  * remove univention-local-users from the DC Slave dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jun 2007 08:59:50 +0200
+
 univention-server (2.1.0-5) unstable; urgency=low
 
   * add univention-bind to the univention-server-master dependency

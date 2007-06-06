@@ -34,7 +34,7 @@ Description: UCS - backup domain controller
 
 Package: univention-server-slave
 Architecture: all
-Depends: univention-baseconfig, univention-join, univention-ldap-server, univention-maintenance,, univention-showload, univention-heimdal-kdc, univention-ldap-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-replication, univention-ldap-client, univention-ldap-acl-slave, univention-local-users, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup
+Depends: univention-baseconfig, univention-join, univention-ldap-server, univention-maintenance,, univention-showload, univention-heimdal-kdc, univention-ldap-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-replication, univention-ldap-client, univention-ldap-acl-slave, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup
 Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
