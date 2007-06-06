@@ -1,3 +1,9 @@
+univention-initrd (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jun 2007 10:55:09 +0200
+
 univention-initrd (0.4.2) unstable; urgency=low
 
   * added pre dependency to modutils package
