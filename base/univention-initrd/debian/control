@@ -1,0 +1,18 @@
+Source: univention-initrd
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.2
+Build-Depends: debhelper, univention-config-dev, initrd-tools
+
+Package: univention-initrd
+Architecture: all
+Pre-Depends: univention-baseconfig, univention-bootsplash, modutils (>= 2.4.26)
+Depends: initrd-tools, e2fsprogs
+Description: UCS - initrd scripts
+ This package contain the initrd scripts.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

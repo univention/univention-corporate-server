@@ -1,0 +1,23 @@
+univention-initrd (0.4.2) unstable; urgency=low
+
+  * added pre dependency to modutils package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Dec 2006 16:56:55 +0100
+
+univention-initrd (0.4.1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Nov 2006 16:33:45 +0100
+
+univention-initrd (0.3) unstable; urgency=low
+
+  * added diversion off initrd's init file
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 15 Oct 2004 09:14:27 +0200
+
+univention-initrd (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 06 Nov 2003 17:09:12 +0200

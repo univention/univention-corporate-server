@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# Univention Initrd
+#  helper script for append the bootsplash image
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+DIR=$1
+FILE=$2
+
+if [ -z "$DIR" ]; then exit 1; fi
+if [ -z "$FILE" ]; then exit 1; fi
+
+dir_size=`du -s $DIR | awk '{print int($1*1.1)}'`
+
+temp_file=`tempfile`
+temp_dir="$temp_file"_dir
+
+dd if=/dev/zero of=$temp_file bs=1024 count=$dir_size
+
+mke2fs -q -F -b 1024 -i $dir_size "$temp_file"
+
+mkdir -p "$temp_dir"
+
+mount -o loop "$temp_file" "$temp_dir"
+
+cp -r "$DIR"/* "$temp_dir"
+
+umount "$temp_dir"
+
+gzip -c "$temp_file" >$FILE
+
+# appendsplash addon
+eval `/usr/sbin/univention-baseconfig shell`
+if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
+	if [ ! -z $splash_theme ] ; then
+		/usr/lib/univention-bootsplash/univention-appendsplash -i $FILE
+	fi
+fi
