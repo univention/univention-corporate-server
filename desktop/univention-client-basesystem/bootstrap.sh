@@ -215,15 +215,14 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d disklesshardware.sh start 12 2 .
 	update-rc.d disklessfinish.sh start 98 2 .
 	update-rc.d portmap start 80 2 .
-	update-rc.d ntpdate start 98 2 .
 	update-rc.d xsession start 99 2 .
 
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
 	# set keyboard to German
-	ln -fs ../../usr/share/keymaps/i386/quertz/de-latin1.kmap.gz /etc/console/boottime.kmap.gz
-	ln -sf ../../usr/share/zoneinfo/Europe/Berlin /etc/localtime
-	/usr/sbin/univention-baseconfig set locale='de_DE@euro:ISO-8859-15'; locale-gen
+	ln -sf ../../usr/share/keymaps/i386/qwertz/de-latin1.kmap.gz /etc/console/boottime.kmap.gz || true
+	ln -sf ../../usr/share/zoneinfo/Europe/Berlin /etc/localtime || true
+	/usr/sbin/univention-baseconfig set locale='de_DE.UTF-8'; locale-gen
 	apt-get clean
 
 	umount -f -n /proc || true

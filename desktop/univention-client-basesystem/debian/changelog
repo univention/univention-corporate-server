@@ -1,3 +1,9 @@
+univention-client-basesystem (2.0.5-1) unstable; urgency=low
+
+  * some more ucs 2.0 updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jun 2007 08:44:54 +0200
+
 univention-client-basesystem (2.0.4-1) unstable; urgency=low
 
   * added apt.conf file to install unauthenticated packages
