@@ -1,0 +1,5 @@
+[LDAP]
+NumSelectedHosts=1
+SelectedBase0[$ie]=$(/usr/bin/ugs-kde-settings LDAP_SERVERNAME)
+SelectedHost0[$ie]=$(/usr/bin/ugs-kde-settings SERVERNAME)
+SelectedPort0=389

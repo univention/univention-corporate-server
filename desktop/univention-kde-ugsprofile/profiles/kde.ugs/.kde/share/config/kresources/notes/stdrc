@@ -1,0 +1,10 @@
+[General]
+ResourceKeys=gZMyJeDgiQ
+Standard=gZMyJeDgiQ
+
+[Resource_gZMyJeDgiQ]
+ResourceIdentifier=gZMyJeDgiQ
+ResourceIsActive=true
+ResourceIsReadOnly=false
+ResourceName=UGS Server
+ResourceType=kolab

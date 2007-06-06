@@ -1,0 +1,108 @@
+#!/usr/bin/python2.4
+#
+# Univention KDE UGS Profiles
+#  helper script: set KDE UGS profile for the given user
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, ldap, univention_baseconfig, os
+
+try:
+	#benutzername herausfinden
+	ldapuser = "uid=" + os.environ['USER']
+
+	#ldap_servername herausfinden
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+	ldapbase = baseConfig['ldap/base']
+	ldapservername = baseConfig['ldap/server/name']
+	ldapserverport = baseConfig['ldap/port']
+	ldapserver = ldapservername + ":" + ldapserverport
+
+	l = ldap.open(ldapserver)
+	l.protocol_version = ldap.VERSION3
+	l.simple_bind_s('','')
+
+	#alle informationen zu ldapuser aus dem ldap holen
+	query = l.search_s(ldapbase, ldap.SCOPE_SUBTREE, ldapuser)
+
+	username = query[0][1]['uid'][0]
+	try:
+		emailaddress = query[0][1]['mailPrimaryAddress'][0]
+	except KeyError, e:
+		emailaddress = ''
+	try:
+		mailserver = query[0][1]['kolabHomeServer'][0]
+	except KeyError, e:
+		mailserver =''
+	try:
+		fullname = query[0][1]['displayName'][0]
+	except KeyError, e:
+		fullname =''
+
+except ldap.LDAPError, e:
+	sys.exit(1)
+
+kolabwiz = {"EMAILADDRESS": emailaddress,
+"USERNAME": username,
+"SERVERNAME": mailserver,
+"LDAPBASE": ldapbase,
+"FREEBUSYURL":("https://"+mailserver+"/freebusy/%25EMAIL%25.ifb"),
+"FULLNAME": fullname
+}
+
+if kolabwiz["SERVERNAME"] is "":
+	kolabwiz["FREEBUSYURL"] = ""
+
+if len(sys.argv) < 2:
+	sys.exit(0)
+
+del sys.argv[0]
+
+home=os.environ['HOME']
+
+kresources_dir=os.path.join(home, '.kde/share/config/kresources')
+if not os.path.exists(kresources_dir):
+	os.system('cp -a /usr/share/univention-kde-profiles/kde.ugs/.kde/share/config/kresources %s' % kresources_dir)
+else:
+	create=False
+	for dir in ['calendar', 'contact', 'notes', 'kolab']:
+		if not os.path.exists(os.path.join(kresources_dir, dir)):
+			create=True
+	if create:
+		for dir in ['calendar', 'contact', 'notes', 'kolab']:
+			os.system('cp -a /usr/share/univention-kde-profiles/kde.ugs/.kde/share/config/kresources/%s %s' % (dir,kresources_dir))
+
+
+if "SHOWALL" in sys.argv:
+	index = kolabwiz.keys()
+	for i in index:
+		print (i + "='" + kolabwiz[i] + "'")
+	sys.exit(1)
+
+for element in sys.argv:
+	if element in kolabwiz:
+		print (kolabwiz[element])

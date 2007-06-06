@@ -1,0 +1,25 @@
+[$Version]
+update_info=kmail.upd:3.3-move-identities-to-own-file,kmail.upd:3.3-aegypten-emailidentities-split-sign-encr-keys
+
+[General]
+Default Identity=241554088
+
+[Identity #0]
+Bcc=
+Dictionary=
+Drafts=
+Email Address[$ie]=$(/usr/bin/ugs-kde-settings EMAILADDRESS)
+Fcc=
+Identity=Standard
+Name[$ie]=$(/usr/bin/ugs-kde-settings FULLNAME)
+Organization=
+PGP Encryption Key=
+PGP Signing Key=
+Preferred Crypto Message Format=auto
+Reply-To Address=
+SMIME Encryption Key=
+SMIME Signing Key=
+Signature Type=disabled
+Transport=
+VCardFile=
+uoid=241554088

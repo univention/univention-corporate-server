@@ -1,0 +1,31 @@
+univention-ooffice2 (0.5) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 18:28:14 +0100
+
+univention-ooffice2 (0.4) unstable; urgency=low
+
+  *  sed s|==|=|
+
+ -- Janis Meybohm <janis@anton.knut.univention.de>  Thu, 10 Aug 2006 14:21:21 +0200
+
+univention-ooffice2 (0.3) unstable; urgency=low
+
+  * added baseconfig variable for disabling cups support in
+    openoffice.org2, fixes Bug #6410
+
+ -- Janis Meybohm <janis@anton.knut.univention.de>  Thu, 10 Aug 2006 14:15:10 +0200
+
+univention-ooffice2 (0.2) unstable; urgency=low
+
+  * quote parameters for real ooo-wrapper script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 May 2006 16:25:58 +0200
+
+univention-ooffice2 (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 26 Apr 2006 10:12:32 +0200
+

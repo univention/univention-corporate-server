@@ -1,0 +1,18 @@
+univention-kde-ugsprofile-mixed (0.4.0-1) unstable; urgency=low
+
+  * add GPL headers 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  6 Dec 2006 13:16:42 +0100
+
+univention-kde-ugsprofile-mixed (0.2) unstable; urgency=low
+
+  * added show only locally subscribed folders
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 15 Sep 2006 12:02:53 +0200
+
+univention-kde-ugsprofile-mixed (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 30 Aug 2006 15:47:32 +0200
+

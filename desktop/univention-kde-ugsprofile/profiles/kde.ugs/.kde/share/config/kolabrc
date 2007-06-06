@@ -1,0 +1,5 @@
+[General]
+Password=
+RealName[$e]=$(/usr/bin/ugs-kde-settings USERNAME)
+Server[$e]=$(/usr/bin/ugs-kde-settings SERVERNAME)
+User[$e]=$(/usr/bin/ugs-kde-settings EMAILADDRESS)

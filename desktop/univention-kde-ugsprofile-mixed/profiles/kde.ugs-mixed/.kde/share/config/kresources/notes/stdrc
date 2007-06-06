@@ -1,0 +1,11 @@
+[General]
+PassiveResourceKeys=
+ResourceKeys=Z3CpMlubZJ
+Standard=Z3CpMlubZJ
+
+[Resource_Z3CpMlubZJ]
+ResourceIdentifier=Z3CpMlubZJ
+ResourceIsActive=true
+ResourceIsReadOnly=false
+ResourceName=UGS Server
+ResourceType=kolab

@@ -1,0 +1,17 @@
+[FreeBusy]
+FreeBusyFullDomainRetrieval=true
+FreeBusyPublishAuto=false
+FreeBusyPublishPassword=
+FreeBusyPublishSavePassword=false
+FreeBusyPublishUser[$e]=$(/usr/bin/ugs-kde-settings EMAILADDRESS)
+FreeBusyRetrieveAuto=true
+FreeBusyRetrievePassword=
+FreeBusyRetrieveSavePassword=false
+FreeBusyRetrieveUrl[$e]=$(/usr/bin/ugs-kde-settings FREEBUSYURL)
+FreeBusyRetrieveUser[$e]=$(/usr/bin/ugs-kde-settings EMAILADDRESS)
+
+[Group Scheduling]
+Use Groupware Communication=true
+
+[Personal Settings]
+Use Control Center Email=true
