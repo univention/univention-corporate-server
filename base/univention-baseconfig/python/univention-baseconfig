@@ -28,8 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, univention.baseconfig
+import os, sys
+
+try:
+	import univention.baseconfig as ub
+except ImportError:
+	import univention_baseconfig as ub
 
 if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig'):
-	univention.baseconfig.main(sys.argv[1:])
+	ub.main(sys.argv[1:])
 

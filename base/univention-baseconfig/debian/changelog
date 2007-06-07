@@ -1,3 +1,10 @@
+univention-baseconfig (2.1.3-1) unstable; urgency=low
+
+  * when the package isn't fully installed we use the old univention
+    baseconfig import way
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Jun 2007 07:31:38 +0200
+
 univention-baseconfig (2.1.2-2) unstable; urgency=low
 
   * fixed a crash in the __eq__ operator of LocalizedDictionary
