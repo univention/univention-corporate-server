@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+# it might be possible that python-univention isn't installed at this time
+touch /usr/lib/python2.4/site-packages/univention/__init__.py
+
+exit 0
+
