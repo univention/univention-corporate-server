@@ -1,3 +1,9 @@
+univention-python (2.0-1-2) unstable; urgency=low
+
+  * added python-univention-baseconfig to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  9 Jun 2007 22:04:20 +0200
+
 univention-python (2.0-1-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
