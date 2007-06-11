@@ -1,3 +1,9 @@
+univention-kde (2.0.1-2) unstable; urgency=low
+
+  * added alsa-base to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Jun 2007 15:02:41 +0200
+
 univention-kde (2.1.0-1) unstable; urgency=low
 
   * apply desktop scope patches
