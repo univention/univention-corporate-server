@@ -136,14 +136,14 @@ def getPackageList(baseConfig, job):
 		print >>sys.stderr, 'failed to execute univention_policy_result'
 		sys.exit(res)
 
-	file=open(tmpfile, 'r')
+	tfile=open(tmpfile, 'r')
 
-	for line in file.readlines():
+	for line in tfile.readlines():
 		line=line.strip(' ').replace('"','')
 		if line.startswith(packages_name):
 			package=line.strip('\n').replace('%s' % packages_name, '').split('/')[-1]
 			packageList.append(package)
-	file.close()
+	tfile.close()
 	os.remove(tmpfile)
 	return packageList
 

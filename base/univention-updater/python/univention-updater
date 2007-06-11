@@ -149,16 +149,23 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 					raise UpdateError
 	
 		if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
-			f=open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp))
-			nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
-			f.close()
-			if nextversion == 'none':
-				update=0
-				dprint('System is up to date', [stdout,sys_stdout])
-				# No raise because we need to return none
+			if os.path.exists('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp)):
+				f=open('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp))
+				nextversion=string.lower(f.readline().strip('\n').replace('nextupdate=',''))
+				f.close()
+				if nextversion == 'none':
+					update=0
+					dprint('System is up to date', [stdout,sys_stdout])
+					# No raise because we need to return none
+				else:
+					dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
+					update=1
 			else:
-				dprint('Next version is %s' % nextversion, [stdout,sys_stdout])
-				update=1
+				update=0
+				dprint("CD-Rom does not contain update for version %s-%s."%(vv,vp), [stdout,sys_stdout])
+				if internal:
+					sys_stdout.close()
+					raise UpdateError
 		else:
 			update=0
 			dprint("CD-Rom is no UCS-Update media", [stdout,sys_stdout])
@@ -201,7 +208,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 		
 		try:
 			conn.request("GET", p)
-		except socket.gaierror:
+		except socket.error:
 			update=0
 			dprint('Failed to connect to Server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
 			if internal:
@@ -285,7 +292,7 @@ def main():
 	reboot = None
 	clean  = True
 	
-	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
+	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot', 'no-clean', 'check']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -296,7 +303,7 @@ def main():
 	import univention_baseconfig
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
-
+	sourcedir=None
 	for opt, val in opts:
 		if opt == '--src':
 			sourcedir=val
@@ -311,13 +318,21 @@ def main():
 				reboot = val
 			else:
 				reboot = 'now'
-
-		if opt == "--no-clean":
+		elif opt == "--no-clean":
 			clean = False
 			dprint("Running updater without apt-get clean", [stdout,sys.stdout])
-		if opt == '--check':
+		elif opt == '--check':
 			update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0)
 			sys.exit(0)
+		else:
+			dprint('Unknown Parameter: "%s"'%opt, [stdout,sys.stdout])
+			fp_debug.close()
+			sys.exit(2)
+
+	if command=="directory" and not sourcedir:
+		dprint("In directory mode a sourcedir must be specified by the --src parameter.", [stdout,sys.stdout])
+		fp_debug.close()
+		sys.exit(2)
 
 	if clean:
 		os.system('apt-get clean')

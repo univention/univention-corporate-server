@@ -93,6 +93,7 @@ def download_deb(conn, tempdir, line, file):
 		conn.request("GET", file)
 	except Exception, msg:
 		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
+		os.system('rm -Rf %s' % sourcedir)
 		sys.exit(1)
 
 	try:
@@ -182,6 +183,7 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 		conn.request("GET", index_file)
 	except Exception, msg:	
 		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
+		os.system('rm -Rf %s' % sourcedir)
 		sys.exit(1)
 	
 	print 'indexfile=%s' %index_file
@@ -189,6 +191,7 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 	if  resp_index.status != 200:
 		dprint('failed to download %s' % index_file,[],True)
 		dprint(' %s: %s\n' % (resp_index.status,resp_index.reason),[],True)
+		os.system('rm -Rf %s' % sourcedir)
 		sys.exit(0)
 
 	resp_data = resp_index.read()
@@ -246,6 +249,7 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 						conn = httplib.HTTPConnection(server)
 					if not download_deb(conn, tempdir, line, filename):
 						dprint('failed to download %s' % file, [], True)
+						os.system('rm -Rf %s' % sourcedir)
 						sys.exit(2)
 				conn.close()
 		
@@ -353,6 +357,7 @@ if __name__ == '__main__':
 			if res != 0:
 				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
 				fp_debug.close()
+				os.system('rm -Rf %s' % sourcedir)
 				sys.exit(0)
 
 		for dir in os.listdir(sourcedir):
@@ -397,6 +402,7 @@ if __name__ == '__main__':
 			if res != 0:
 				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
 				fp_debug.close()
+				os.system('rm -Rf %s' % sourcedir)
 				sys.exit(0)
 			write_local_repository_list(sourcedir, vv, vp)
 

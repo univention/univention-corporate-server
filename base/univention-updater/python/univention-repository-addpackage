@@ -32,6 +32,7 @@ import os, string
 import shutil, sys
 import getopt, time
 import univention_baseconfig
+import exceptions
 
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-repository-addpackage: tool for adding packages to local repository'
@@ -114,9 +115,16 @@ if __name__ == '__main__':
 		if file.endswith('.deb') and os.path.exists(file):
 			fileProcessed = True
 			try:
-				shutil.copyfile(os.path.join(file), os.path.join(packages_dir, rewrite_url(file.split('/')[-1])))
+				targetfilename=os.path.join(packages_dir, rewrite_url(file.split('/')[-1]))
+				shutil.copyfile(os.path.join(file), targetfilename)
 			except Exception, e:
 				print >>sys.stdout, "Warning: copying of %s failed: %s" % (file, str(e))
+				if os.path.exists(targetfilename):
+					os.remove(targetfilename) #remove incomplete package file
+					print >>sys.stdout, "Incomplete file removed"
+				if isinstance(e,exceptions.KeyboardInterrupt):
+					print >>sys.stdout, "Interrupted by user."
+					sys.exit(1)
 	
 	if not fileProcessed:
 		print >>sys.stdout, "Warning: No packages found, no packages added"
@@ -127,16 +135,15 @@ if __name__ == '__main__':
 	os.chdir(packages_dir)
 
 	count=0
-	while os.path.exists('Packages.lock') and count < 300:
+	if os.path.exists('Packages.lock') and count < 300:
 		time.sleep(1)
 		count=count+1
 
-	try:
 		# these might not exist if creating a new repository
+	if os.path.exists('Packages'):
 		shutil.copyfile('Packages', 'Packages.SAVE')
+	if os.path.exists('Packages.gz'):
 		shutil.copyfile('Packages.gz', 'Packages.gz.SAVE')
-	except:
-		pass
 
 	try:
 		out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
