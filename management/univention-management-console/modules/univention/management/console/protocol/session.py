@@ -41,6 +41,7 @@ import univention.uldap
 from message import *
 from client import *
 from version import *
+from definitions import *
 
 from univention.management.console.modules import Manager
 from univention.management.console.auth import AuthHandler
@@ -256,6 +257,7 @@ class Processor( signals.Provider ):
 		if not module_name:
 			res = Response( msg )
 			res.status( 401 ) # unknown command
+			res.report = status_information( 401 )
 			self.signal_emit( 'response', res )
 			return None
 
@@ -347,6 +349,7 @@ class Processor( signals.Provider ):
 	def handle_request_unknown( self, msg ):
 		res = Response( msg )
 		res.status( 401 ) # unknown command
+		res.report = status_information( 401 )
 
 		self.signal_emit( 'response', res )
 

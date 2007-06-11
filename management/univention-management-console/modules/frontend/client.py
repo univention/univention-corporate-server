@@ -50,16 +50,24 @@ class UMCP_Client( object ):
 	def __init__( self ):
 		ud.debug( ud.ADMIN, ud.INFO, "creating new UMCP client" )
 		self._client = None
-		self.__init_client()
+		if not self.__init_client():
+			return
 		# check queue for new requests
 		notifier.dispatcher_add( self._check_queue )
 		ud.debug( ud.ADMIN, ud.INFO, "created new UMCP client" )
 		self.kill = False
+	
+	def __nonzero__( self ):
+		return self._client != None
 
 	def __init_client( self ):
 		if self._client:
 			del self._client
 		self._client = umcp.Client()
+		if not self._client:
+		  	self._client = None
+			error_set( ERROR_CONNECT )
+			return False
 		# handling authentication
 		self._client.signal_connect( 'authenticated', self._authenticated )
 		self._auth_response = None
@@ -70,6 +78,8 @@ class UMCP_Client( object ):
 		# handle lost connection
 		self._client.signal_connect( 'closed', self._closed )
 		error_set( ERROR_CONNECT )
+
+		return True
 
 	def connect( self ):
 		ud.debug( ud.ADMIN, ud.INFO, "connecting to UMCP server" )
@@ -140,17 +150,19 @@ _client = None
 _thread = None
 
 def __loop():
-	global _client
-	notifier.init( notifier.GENERIC )
-
-	_client = UMCP_Client()
-
 	notifier.loop()
 
 def run():
-	global _thread
+	global _thread, _client
+
+	notifier.init( notifier.GENERIC )
+	_client = UMCP_Client()
+	if not _client:
+		return False
 	_thread = threading.Thread( target = __loop )
 	_thread.start()
+
+	return True
 
 def stop():
 	global _client

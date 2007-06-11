@@ -108,7 +108,8 @@ def checkbox_map( storage, umcp_part ):
 		value = ''
 
 	attributes.update( { 'usertext' : value, 'helptext' : '' } )
-	quest = question_bool( str( umcp_part ), utils.layout_attrs( storage, umcp_part ), attributes )
+	quest = question_bool( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
+						   attributes )
 	storage[ umcp_part.id() ] = ( quest, umcp_part )
 
 	return quest

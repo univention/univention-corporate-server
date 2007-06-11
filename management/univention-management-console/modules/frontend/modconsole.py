@@ -282,6 +282,9 @@ class modconsole(unimodule.unimodule):
 				self.save.put( 'logout', None )
 			if self.okbut.pressed():
 				client.disconnect()
+				ldapc = umc.LdapConnection()
+				if ldapc:
+					ldapc.disconnect()
 				self.save.put( 'consolemode', 'login' )
 				self.save.put( 'logout', None )
 				self.save.put( 'auth_ok', None )

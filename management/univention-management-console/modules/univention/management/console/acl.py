@@ -187,19 +187,18 @@ class ACLs:
 		match = ACLs.MATCH_FULL
 		for key, value in opt_pattern.items():
 			if opts.has_key( key ):
-				if not value[ -1 ] == '*':
-					if value != opts[ key ]:
+				if isinstance( opts[ key ], basestring ):
+					options = ( opts[ key ], )
+				else:
+					options = opts[ key ]
+				for option in options:
+					if not value[ -1 ] == '*':
+						if value != option:
+							return ACLs.MATCH_NONE
+					elif not option.startswith( value[ : -1 ] ):
 						return ACLs.MATCH_NONE
 				else:
-					if isinstance( opts[ key ], basestring ):
-						options = ( opts[ key ], )
-					else:
-						options = opts[ key ]
-					for option in options:
-						if not option.startswith( value[ : -1 ] ):
-							return ACLs.MATCH_NONE
-					else:
-						match = ACLs.MATCH_PART
+					match = ACLs.MATCH_FULL
 
 		return match
 
@@ -240,7 +239,9 @@ class ACLs:
 		for allow in self.acls[ 'allow' ]:
 			if not hostname or allow[ 'host' ] == hostname:
 				match = self.__command_match( allow[ 'command' ], command )
+				ud.debug( ud.ADMIN, ud.INFO, "command match: %s" % match )
 				opt_match = self.__option_match( allow[ 'options' ], options )
+				ud.debug( ud.ADMIN, ud.INFO, "option match: %s" % opt_match )
 				if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
 					# if allow[ 'command' ] == command:
 					if [ 'fromUser' ]:

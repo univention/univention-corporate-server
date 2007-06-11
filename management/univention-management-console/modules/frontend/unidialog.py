@@ -30,7 +30,7 @@
 import sys, os, re, string, copy, types
 ldir = '/usr/share/univention-webui/modules'
 sys.path.append(ldir)
-os.chdir(ldir)
+# os.chdir(ldir)
 import univention.debug
 import univention_baseconfig
 

@@ -52,7 +52,7 @@ STATUSINFORMATION = {
 	210 : _( 'OK, partial response' ),
 	300 : _( 'command currently not available/possible' ),
 	400 : _( 'invalid UMCP message' ),
-	401 : _( 'unknown command' ),
+	401 : _( 'unknown command or not permitted to run' ),
 	402 : _( 'invalid command arguments' ),
 	403 : _( 'incomplete command' ),
 	404 : _( 'invalid body object' ),

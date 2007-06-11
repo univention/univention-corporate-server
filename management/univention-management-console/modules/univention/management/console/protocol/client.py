@@ -61,25 +61,21 @@ class Client( signals.Provider ):
 			self.signal_emit( 'authenticated', False, 504, status_information( 504 ) )
 		return ok
 
-#	def __info_callback( self, conn, fkt, status ):
-#		ud.debug( ud.ADMIN, ud.INFO, '__info_cb: fkt=%s  status=%s' % (fkt, status) )
-#		return ok
-
 	def __init__( self, servername = 'localhost', port = 6670, unix = None,
 				  ssl = True, auth = True ):
 		'''Initialize a socket-connection to the server.'''
 		signals.Provider.__init__( self )
 		self.__authenticated = ( not auth )
 		self.__auth_id = None
-		self.__crypto_context = SSL.Context(SSL.SSLv23_METHOD)
-#		self.__crypto_context.set_info_callback(self.__info_callback)
-		self.__crypto_context.set_cipher_list('DEFAULT')
-		self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
-#		dir = '/etc/univention/ssl/%s' % umc.baseconfig[ 'hostname' ]
-#		self.__crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
-#		self.__crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
-		self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
-
+		if ssl and not unix:
+			self.__crypto_context = SSL.Context(SSL.SSLv23_METHOD)
+			self.__crypto_context.set_cipher_list('DEFAULT')
+			self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
+			try:
+				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+			except Exception, e:
+				ud.debug( ud.ADMIN, ud.ERROR, 'Client.__init__: Crypto Context initialisation failed: %s' % str( e ) )
+				self.__crypto_context = None
 		self.__port = port
 		self.__server = servername
 		self.__unix = unix
@@ -95,6 +91,11 @@ class Client( signals.Provider ):
 		self.signal_new( 'authenticated' )
 		self.signal_new( 'error' )
 		self.signal_new( 'closed' )
+
+	def __nonzero__( self ):
+		if self.__ssl and not self.__crypto_context:
+			return False
+		return True
 
 	def _init_socket( self ):
 		if self.__unix:

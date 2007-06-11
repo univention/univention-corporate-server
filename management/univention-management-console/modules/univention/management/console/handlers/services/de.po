@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-10-27 13:17+0200\n"
+"POT-Creation-Date: 2007-06-06 17:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,59 +15,80 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: __init__.py:18
+#: __init__.py:48
 msgid "System Services"
 msgstr "System-Dienste"
 
-#: __init__.py:19
+#: __init__.py:49
 msgid "controls system services"
 msgstr "Kontrolle über System-Dienste"
 
-#: __init__.py:24
-msgid "Service init script"
-msgstr "Dienst-Startprogramm"
+#: __init__.py:52
+msgid "Service"
+msgstr "Dienst"
 
-#: __init__.py:34
+#: __init__.py:56
 msgid "Start a service"
 msgstr "Starten eines Dienstes"
 
-#: __init__.py:40 __init__.py:58
+#: __init__.py:61 __init__.py:76
 msgid "Stop a service"
 msgstr "Stoppen eines Dienstes"
 
-#: __init__.py:46
+#: __init__.py:66
 msgid "Restart a service"
 msgstr "Neustart eines Dienstes"
 
-#: __init__.py:52
+#: __init__.py:71
 msgid "Reload a service"
 msgstr "Reinitialisierung eines Dienstes"
 
-#: __init__.py:64
+#: __init__.py:81
 msgid "Remove a service"
 msgstr "Dienst entfernen"
 
-#: __init__.py:70
+#: __init__.py:86
 msgid "Add a service"
 msgstr "Dienst hinzufügen"
 
-#: __init__.py:76
+#: __init__.py:91
 msgid "List all services"
 msgstr "Liste aller Dienste"
 
-#: __init__.py:107
-msgid "Service started successfully."
-msgstr ""
+#: __init__.py:134
+#, python-format
+msgid "Starting the following services failed: %(services)s"
+msgstr "Das Starten der folgenden Dienste ist fehlgeschlagen: %(services)s"
 
-#: __init__.py:110
-#, fuzzy
-msgid "Failed to start service."
-msgstr "Neustart eines Dienstes"
+#: __init__.py:140 __init__.py:152
+msgid "You are not permitted to run this command."
+msgstr "Sie haben keine Berechtigungen dieses Kommando auszuführen"
 
-#: __init__.py:151 __init__.py:173
+#: __init__.py:146
+#, python-format
+msgid "Stopping the following services failed: %(services)s"
+msgstr "Das Stoppen der folgenden Dienste ist fehlgeschlagen: %(services)s"
+
+#: _revamp.py:49
 msgid "Name"
 msgstr "Name"
 
-#: __init__.py:151 __init__.py:173
+#: _revamp.py:49
 msgid "Status"
 msgstr "Status"
+
+#: _revamp.py:49
+msgid "Description"
+msgstr "Beschreibung"
+
+#: _revamp.py:63
+msgid "Start Services"
+msgstr "Dienste starten"
+
+#: _revamp.py:64
+msgid "Stop Services"
+msgstr "Dienste stoppen"
+
+#: _revamp.py:65
+msgid "Select the Operation"
+msgstr "Operation auswählen"

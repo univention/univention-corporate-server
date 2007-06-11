@@ -30,6 +30,7 @@
 import string
 
 import univention.management.console as umc
+import univention.management.console.tools as umct
 import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
 
@@ -45,22 +46,23 @@ class Web( object ):
 		lst = umcd.List()
 		servs = res.dialog
 		boxes = []
-		lst.set_header( [ _( 'Name' ), _( 'Status' ), _( 'Description' ) ] )
+		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Description' ) ] )
 		for name, srv in servs.items():
 			if srv.running:
-				status = _( 'running' )
+				icon = umcd.Image( 'services/start', umct.SIZE_SMALL )
 			else:
-				status = _( 'stopped' )
-				chk = umcd.Checkbox( static_options = { 'service' : name } )
-				boxes.append( chk.id() )
-			lst.add_row( [ name, status, _utf8( srv[ 'description' ] ), chk ] )
-		req = umcp.Command( args = [], opts= { 'printers' : [] } )
-		req_list = umcp.Command( args = [ 'cups/list' ],
-								 opts = { 'filter' : filter, 'key' : key } )
+				icon = umcd.Image( 'services/stop', umct.SIZE_SMALL )
+			chk = umcd.Checkbox( static_options = { 'service' : name } )
+			boxes.append( chk.id() )
+			image = umcd.Image( 'services/default', umct.SIZE_MEDIUM )
+			lst.add_row( [ image, name, icon, _utf8( srv[ 'description' ] ), chk ] )
+		req = umcp.Command( args = [], opts= { 'service' : [] } )
+		req_list = umcp.Command( args = [ 'service/list' ],
+								 opts = {} )
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
 		choices = [ ( 'service/start', _( 'Start Services' ) ),
 					( 'service/stop', _( 'Stop Services' ) ) ]
 		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
-		lst.add_row( [ umcd.Fill( 3 ), select ] )
+		lst.add_row( [ umcd.Fill( 4 ), select ] )
 		res.dialog = [ lst ]
 		self.revamped( object.id(), res )

@@ -31,6 +31,8 @@ import re
 
 import locales
 
+import univention.debug as ud
+
 _ = locales.Translation( 'univention.management.console' ).translate
 
 class Value( object ):
@@ -86,6 +88,9 @@ class Value( object ):
 		else:
 			return self._item_valid( value, self.syntax )
 
+	def convert( self, value ):
+		return value
+
 class SyntaxError( Exception ):
 	def __init__( self, *args ):
 		Exception.__init__( self, *args )
@@ -101,12 +106,14 @@ class Boolean( Value ):
 		Value.__init__( self, label, bool, required = required, may_change = may_change )
 
 	def is_valid( self, value ):
-		if isinstance( value, basestring ):
-			if value == "0":
-				value = False
-			else:
-				value = True
-		return Value.is_valid( self, value )
+		if value in ( '0', None, '1', 'checked' ):
+			return True
+		return False
+
+	def convert( self, value ):
+		if value in ( '0', None ):
+			return False
+		return True
 
 class String( Value ):
 	def __init__( self, label, required = True, regex = None, may_change = True ):

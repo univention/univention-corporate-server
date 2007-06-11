@@ -1,9 +1,9 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
 #
 # Univention Management Console
-#  sub-module defining classes for the description auf UMCP answers
+#  wizard table for UMCP dialogs
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,17 +28,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from base import *
-from link import *
-from image import *
-from dialog import *
-from button import *
-from dynamic import *
-from widget import *
-from input import *
-from helper import *
-from wizard import *
+import base
 
-DynamicElementTypes = DynamicTypes
-StructuralTypes = DialogTypes + ListTypes + WizardTypes
-ElementTypes = InputTypes + TextTypes + LinkTypes + ImageTypes + ButtonTypes + HelperTypes
+class Wizard( base.Element ):
+	def __init__( self, title = '' ):
+		base.Element.__init__( self )
+		self._title = title
+		self._content = base.List()
+		self._image = None
+
+	def set_image( self, image ):
+		self._image = image
+
+	def add_option( self, text, option ):
+		self._content.add_row( [ option, text ] )
+
+	def add_buttons( self, *args ):
+		self._content.add_row( [ base.Fill( 2 ) ] )
+		self._content.add_row( [ '', args ] )
+
+	def setup( self ):
+		self._image[ 'width' ] = '100'
+		return base.Frame( [ base.List( content = [ [ self._image, self._content ] ] ) ], self._title )
+
+WizardTypes = ( type( Wizard() ), )

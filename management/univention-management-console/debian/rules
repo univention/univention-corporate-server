@@ -91,7 +91,7 @@ binary-indep: build install
 	dh_testdir -i
 	dh_testroot -i
 	dh_installchangelogs -i
-	dh_pycentral -Nunivention-management-console -Nunivention-management-console-server -Nunivention-management-console-themes
+	dh_pycentral -Nunivention-management-console -Nunivention-management-console-server -Nunivention-management-console-themes -Nunivention-management-console-proxy
 	dh_installdocs -i
 	dh_installexamples -i
 	dh_installinit --no-start -r

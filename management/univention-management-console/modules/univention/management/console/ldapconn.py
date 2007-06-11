@@ -27,6 +27,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+import ldap
+
 import univention_baseconfig
 import univention.uldap
 import univention.debug as ud
@@ -47,6 +49,8 @@ class LdapConnection:
 	def get_binddn(self):
 		return LdapConnection.__binddn
 
+	def __nonzero__( self ):
+		return LdapConnection.__lo != None
 
 	def __getattr__(self, attr):
 		""" Delegate access to implementation """
@@ -89,3 +93,8 @@ class LdapConnection:
 			ud.debug( ud.LDAP, ud.INFO, 'ldapconn: got new connection to ldap server (binddn="%s")' % binddn )
 			LdapConnection.__binddn = binddn
 			LdapConnection.__bindpw = bindpw
+
+	def disconnect( self ):
+		if self:
+			LdapConnection.__lo.lo.unbind()
+			LdapConnection.__lo = None

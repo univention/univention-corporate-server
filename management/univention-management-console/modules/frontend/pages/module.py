@@ -176,8 +176,10 @@ class Module( base.Page ):
 			if reports:
 				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog' )
 				self.__startups[ self.selected ].cache = copy.deepcopy( self.__layout )
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog: %s' % '\n'.join( reports ))
 				error_dialog = self.__startups[ self.selected ].error_message( '\n'.join( reports ) )
 				self.active.reset()
+
 			# received a _final_ response
 			if not self.active:
 				self._refresh = False
@@ -380,7 +382,7 @@ class Module( base.Page ):
 						self.selected = idx
 						self.__layout = cmd.cache
 					else:
-						requests.append( referrer )
+						requests = [ referrer ]
 
 				if not self.__restore_referrer:
 					req = requests[ -1 ]

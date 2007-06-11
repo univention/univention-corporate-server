@@ -1,0 +1,111 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-06-05 21:13+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: __init__.py:50 __init__.py:56 __init__.py:64
+msgid "Mail Server"
+msgstr "Mail-Server Konfiguration"
+
+#: __init__.py:51
+msgid "Mail Server Configuration"
+msgstr "Mail-Server Konfiguration"
+
+#: __init__.py:57
+msgid "View mail server configuration"
+msgstr "Anzeigen der Mail-Server Konfiguration"
+
+#: __init__.py:65
+msgid "Set mail server configuration"
+msgstr "Setzen der Mail-Server Konfiguration"
+
+#: __init__.py:67
+msgid "SPAM Filtering"
+msgstr "SPAM Filterung"
+
+#: __init__.py:68
+msgid "Virus Filtering"
+msgstr "Viren Filterung"
+
+#: __init__.py:69
+msgid "IMAP Access"
+msgstr "IMAP-Zugriff"
+
+#: __init__.py:70
+msgid "IMAP Quota Support"
+msgstr "IMAP Quota Unterstützung"
+
+#: __init__.py:71
+msgid "POP3 Access"
+msgstr "POP3-Zugriff"
+
+#: __init__.py:72
+msgid "Maximum Message Size"
+msgstr "Maximale Nachrichtengröße"
+
+#: __init__.py:73
+msgid "Alias E-Mail Address for root"
+msgstr "Alternative E-Mail-Adresse für root"
+
+#: _revamp.py:42
+msgid "Mail Server Configration"
+msgstr "Mail-Server Konfiguration"
+
+#: _revamp.py:46
+msgid ""
+"The mail server has the possibility to provide filtering of SPAM mails. It "
+"is recommended to activate this option"
+msgstr ""
+
+#: _revamp.py:50
+msgid ""
+"To avoid the delivery of virus infected mails the mail server can check "
+"incoming and outgoing mails for known virus signatures. This increases the "
+"security and it is highly recommanded to activate this option"
+msgstr ""
+
+#: _revamp.py:54
+msgid ""
+"IMAP is the most common protocol to access a mail server. It is recommended "
+"to activate this option"
+msgstr ""
+
+#: _revamp.py:59
+msgid ""
+"To restrict the amount of mails that a user can store on the mail server it "
+"si required to activate this option. Via Univention Admin it is possible to "
+"define the amount of mails that can be stored by a user (policy mail quota)"
+msgstr ""
+
+#: _revamp.py:63
+msgid ""
+"POP3 is another protocol that can be used to access a mail server. Whne "
+"using Outlook as client for UGS, this option must be activate"
+msgstr ""
+
+#: _revamp.py:69
+msgid ""
+"The following option provides the possibility to set a maximum size of "
+"incoming and outgoing mails. To large mails may cause a high load on the "
+"mail server and thereby may increase respone times. The default value should "
+"work well in most scenarios"
+msgstr ""
+
+#: _revamp.py:74
+msgid ""
+"Any information regarding problems or warning an a system are send to an "
+"local email account. These mail can be redirected to another global account "
+"by setting this option to a valid e-mail address"
+msgstr ""

@@ -32,8 +32,6 @@ import univention.management.console as umc
 import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
-import univention.management.console.categories as umcc
-
 
 import os
 
@@ -50,8 +48,6 @@ icon = 'services/module'
 short_description = _( 'System Services' )
 long_description = _( 'controls system services' )
 categories = [ 'all', 'services' ]
-
-umcc.insert( umcc.Category( 'services', _( 'Services' ), _( 'Control Services' ), priority = 10 ) )
 
 service_type = umc.String( _( 'Service' ) )
 
@@ -125,11 +121,44 @@ class handler( umch.simpleHandler, _revamp.Web ):
 # 			cb = notifier.Callback( self._done, object.id(), umcd.Dialog() )
 # 			self.__execute_service( object.options[ 'service' ], 'start', cb )
 
-# 	def service_start( self, object ):
-# 		self.__doit( object, 'start' )
+	def _run_it( self, services, action ):
+		failed = []
+		for srv in services:
+			if os.system( '/etc/init.d/%s %s' % ( srv, action ) ):
+				failed.append( srv )
+		return failed
 
-# 	def service_stop( self, object ):
-# 		self.__doit( object, 'stop' )
+	def service_start( self, object ):
+		if self.permitted( 'service/start', options = object.options ):
+			cb = notifier.Callback( self._service_changed, object,
+									_( 'Starting the following services failed: %(services)s' ) )
+			func = notifier.Callback( self._run_it, object.options[ 'service' ], 'start' )
+			thread = notifier.threads.Simple( 'service', func, cb )
+			thread.run()
+		else:
+			self.finished( object.id(), {},
+						   report = _( 'You are not permitted to run this command.' ),
+						   success = False )
+
+	def service_stop( self, object ):
+		if self.permitted( 'service/stop', options = object.options ):
+			cb = notifier.Callback( self._service_changed, object,
+									_( 'Stopping the following services failed: %(services)s' ) )
+			func = notifier.Callback( self._run_it, object.options[ 'service' ], 'stop' )
+			thread = notifier.threads.Simple( 'service', func, cb )
+			thread.run()
+		else:
+			self.finished( object.id(), {},
+						   report = _( 'You are not permitted to run this command.' ),
+						   success = False )
+
+	def _service_changed( self, thread, result, object, error_message ):
+		if result:
+			self.finished( object.id(), {},
+						   report = error_message % { 'services' : ', '.join( result ) },
+						   success = False )
+		else:
+			self.finished( object.id(), {} )
 
 # 	def service_reload( self, object ):
 # 		self.__doit( object, 'reload' )

@@ -15,6 +15,26 @@ univention-admin container/cn create $@ --ignore_exists --position cn=univention
 univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
 univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
 
+# create mail wizard operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-mailserver \
+	--set description="Mail Server Wizard" \
+	--append operation="wizard/mailserver/*"
+
+# create nagios operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-nagios \
+	--set description="Nagios Wizard" \
+	--append operation="wizard/nagios/*"
+
+# create nagios operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-basis \
+	--set description="Basis Wizard" \
+	--append operation="wizard/basis/*"
 
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -25,12 +45,14 @@ univention-admin settings/console_operation create $@ --ignore_exists --position
 																				 --append operation="baseconfig/get"
 
 # create service operations
-univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
-																				 --set name=service \
-																				 --set description="Service Operations" \
-																				 --append operation="service/*" \
-																				 --append operation="service/start" \
-																				 --append operation="service/stop"
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=service \
+	--set description="Service Operations" \
+	--append operation="service/*" \
+	--append operation="service/list" \
+	--append operation="service/start" \
+	--append operation="service/stop"
 
 # create CUPS operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -59,6 +81,30 @@ univention-admin settings/console_operation create $@ --ignore_exists --position
 																				 --append operation="quota/user/*" \
 																				 --append operation="quota/user/show" \
 																				 --append operation="quota/user/set"
+
+# create mail server wizard acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-mailserver-all \
+	--set category="Wizard Mail Server" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/mailserver/*" \
+	--set description="Mail Server Wizard"
+
+# create nagios wizard acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-nagios-all \
+	--set category="Wizard Nagios" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/nagios/*" \
+	--set description="Nagios Wizard"
+
+# create basis wizard acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-basis-all \
+	--set category="Wizard Basis" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/basis/*" \
+	--set description="Basis Wizard"
 
 # create baseconfig acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -174,17 +220,28 @@ univention-admin container/cn create $@ --ignore_exists --position cn=policies,$
 
 # default policies
 univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
-univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin \
 	--append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base
-univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
-	--set name=baseconfig-admin --append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
-univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=wizard-mailserver-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=baseconfig-admin \
+	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
 	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
-univention-admin policies/console_access create $@ --ignore_exists --position cn=console,cn=policies,$ldap_base \
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
 	--set name=quota-admin --append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 # join default admin policy to the domain admins

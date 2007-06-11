@@ -63,6 +63,9 @@ def check_syntax( umcp, value ):
 		return True
 	return umcp.syntax.is_valid( value )
 
+def convert( umcp, value ):
+	return umcp.syntax.convert( value )
+
 def __icon_button( image, text, size = umc_tools.SIZE_SMALL ):
 	icon = { 'icon' : umc_tools.image_get( image, size ) }
 	return button( '', icon, { 'helptext' : text } )

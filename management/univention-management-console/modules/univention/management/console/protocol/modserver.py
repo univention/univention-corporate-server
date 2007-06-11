@@ -30,6 +30,7 @@
 
 from server import *
 from message import *
+from definitions import *
 
 import univention.management.console.acl as umc_acl
 
@@ -63,8 +64,16 @@ class ModuleServer( Server ):
 
 	def _load_module( self ):
 		try:
-			file = 'univention.management.console.handlers.%s' % self.__module
-			self.__module = __import__( file, [], [], self.__module )
+			modname = self.__module
+			self.__module = None
+			for type in ( 'handlers', 'wizards' ):
+				try:
+					file = 'univention.management.console.%s.%s' % ( type, modname )
+					self.__module = __import__( file, [], [], modname )
+				except:
+					pass
+			if not self.__module:
+				raise Exception( "Module '%s' could not be found. Exiting ..." )
 			self.__handler = self.__module.handler()
 			self.__handler.set_interface( self.__interface )
 			self.__commands = self.__module.command_description
@@ -168,8 +177,10 @@ class ModuleServer( Server ):
 				resp = Response( msg )
 				if not self.__commands.has_key( cmd ):
 					resp.status( 401 ) # unknown command
+					resp.report = status_information( 401 )
 				else:
 					resp.status( 415 ) # command not allowed
+					resp.report = status_information( 415 )
 				self.response( resp )
 
 		if not self.__active_requests:

@@ -32,8 +32,8 @@ msgid "invalid UMCP message"
 msgstr "Ungültige UMCP Nachricht"
 
 #: definitions.py:55
-msgid "unknown command"
-msgstr "Unbekanntes Kommando"
+msgid "unknown command or not permitted to run"
+msgstr "Unbekanntes Kommando oder fehlende Berechtigungen"
 
 #: definitions.py:56
 msgid "invalid command arguments"

@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
 #
 # Univention Management Console
 #  web interface daemon
@@ -38,9 +38,9 @@ os.chdir(ldir)
 
 import univention.debug as ud
 
-import univention_baseconfig
+import univention.baseconfig
 
-baseConfig = univention_baseconfig.baseConfig()
+baseConfig = univention.baseconfig.baseConfig()
 baseConfig.load()
 
 def daemonize():
@@ -129,7 +129,7 @@ def main(argv):
 			daemonize()
 
 		# initialize UMCP client
-		client.run()
+		print 'CLIENT', client.run()
 
 		while 1:
 			rfds, wfds, xfds = \
@@ -186,7 +186,8 @@ def main(argv):
 			session.finishRequest(number)
 	except Exception, e:
 		import traceback
-		ud.debug( ud.ADMIN, ud.ERROR, traceback.format_exc())
+		ud.debug( ud.ADMIN, ud.ERROR, "EXCEPTION: %s" % str( e ) )
+		ud.debug( ud.ADMIN, ud.ERROR, traceback.format_exc() )
 
 	os.unlink(options.socket)
 	# kill process, because the UMCP client thread keeps it alive

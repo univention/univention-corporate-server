@@ -73,9 +73,9 @@ class IButtonMap( object ):
 							raise umc.SyntaxError( umcp )
 					if req.options.has_key( umcp.option ) and \
 						   isinstance( req.options[ umcp.option ], list ):
-						req.options[ umcp.option ].append( value )
+						req.options[ umcp.option ].append( utils.convert( umcp, value ) )
 					else:
-						req.options[ umcp.option ] = value
+						req.options[ umcp.option ] = utils.convert( umcp, value )
 				# check for static options and apply them. If option
 				# is not set check whether the input field is to
 				# 'True', otherwise skip the static options too
@@ -296,9 +296,14 @@ class ResetButtonMap( ButtonMap, mapper.IMapper ):
 
 	def apply( self, storage, umcp_part, parameters, *args ):
 		if parameters.pressed():
-			for id, default in umcp_part.fields.items():
-				uni_part, umcp_item = storage.find_by_umcp_id( id )
-				umcp_item.cached = default
+			if isinstance( umcp_part.fields, dict ):
+				for id, default in umcp_part.fields.items():
+					uni_part, umcp_item = storage.find_by_umcp_id( id )
+					umcp_item.cached = default
+			elif isinstance( umcp_part.fields, ( list, tuple ) ):
+				for id in umcp_part.fields:
+					uni_part, umcp_item = storage.find_by_umcp_id( id )
+					umcp_item.cached = umcp_item.default
 			return umcp_part.actions
 		else:
 			return []

@@ -1,6 +1,13 @@
+univention-management-console (0.7.2-1) unstable; urgency=low
+
+  * merge with CVS branch ucs1_3_umc 
+  * better error handling if web client could not read CA certificate
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 22:35:40 +0200
+
 univention-management-console (0.7.1-1) unstable; urgency=low
 
-  * update paackaging for UCS 2.0
+  * update packaging for UCS 2.0
   * applied bug fixes
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 05 Jun 2007 08:35:19 +0200

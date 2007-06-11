@@ -78,6 +78,8 @@ def _text_input( option, **kwargs ):
 
 register( values.String, _text_input )
 register( values.Integer, _text_input )
+register( values.EMailAddress, _text_input )
+register( values.IP_Address, _text_input )
 
 # longer text fields
 
@@ -90,7 +92,7 @@ register( values.Text, _long_text_input )
 def _bool_input( option, **kwargs ):
 	return input.Checkbox( option, **kwargs )
 
-register( values.Boolean, _text_input )
+register( values.Boolean, _bool_input )
 
 # Selection
 def _select_input( option, **kwargs ):
