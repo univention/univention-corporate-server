@@ -3,4 +3,4 @@ usr/share/pixmaps
 usr/share/univention-kde-profiles/
 usr/share/univention-kde/
 usr/lib/univention-install
-usr/sbin
+usr/bin
