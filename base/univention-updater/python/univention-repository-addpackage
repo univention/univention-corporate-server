@@ -123,16 +123,16 @@ if __name__ == '__main__':
 					os.remove(targetfilename) #remove incomplete package file
 					print >>sys.stdout, "Incomplete file removed"
 				if isinstance(e,exceptions.KeyboardInterrupt):
+					out=os.popen('touch Packages.lock')
 					print >>sys.stdout, "Interrupted by user."
 					sys.exit(1)
 	
-	if not fileProcessed:
+	os.chdir(packages_dir)
+	
+	if not fileProcessed and not os.path.exists('Packages.lock'):
 		print >>sys.stdout, "Warning: No packages found, no packages added"
 		# shortcut exit, since there's nothing left to be done
-		sys.exit(0)
-			
-
-	os.chdir(packages_dir)
+		sys.exit(0)		
 
 	count=0
 	if os.path.exists('Packages.lock') and count < 300:
