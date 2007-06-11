@@ -1,9 +1,15 @@
+univention-admin-modules (1.1.0-2) unstable; urgency=low
+
+  * advanced error handling in univention-dnsedit
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 11 Jun 2007 10:14:02 +0200
+
 univention-admin-modules (1.1.0-1) unstable; urgency=low
 
   * include all py files instead of pyo files
 
  -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 15:18:01 +0200
-
+ 
 univention-admin-modules (1.0.0-5) unstable; urgency=low
 
   * default Value for cron package maintenance process 
