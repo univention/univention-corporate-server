@@ -32,8 +32,9 @@ import locale
 import os
 import re
 import string
+import shlex
 
-import univention.info_tools as uit
+import univention_info_tools as uit
 
 class Service( uit.LocalizedDictionary ):
 	def __init__( self ):
@@ -67,9 +68,18 @@ def pidof( name ):
 		# kernel thread
 		if not cmd:
 			continue
-		cmd = cmd.split( '\x00', 1 )[ 0 ]
-		if cmd.endswith( name ):
-			result.append( file )
+		args = cmd.split( '\x00' )
+		cmd = shlex.split( name.encode( 'iso-8859-1' ) )
+		if args[ 0 ].endswith( cmd[ 0 ] ):
+			if len( cmd ) > 1 and len( args ) >= len( cmd ):
+				for i in range( 1, len( cmd ) ):
+					print cmd[ i ], args[ i ]
+					if cmd[ i ] != args[ i ]:
+						break
+				else:
+					result.append( file )
+			else:
+				result.append( file )
 
 	return result
 
