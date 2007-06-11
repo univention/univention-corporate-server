@@ -1,3 +1,9 @@
+univention-python (2.1.0-1) unstable; urgency=low
+
+  * move univention/__init__.py to package python-univention-baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Jun 2007 12:10:40 +0200
+
 univention-python (2.0-1-2) unstable; urgency=low
 
   * added python-univention-baseconfig to the dependency list

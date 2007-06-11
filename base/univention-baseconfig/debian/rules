@@ -87,6 +87,7 @@ install-ext-%:
 	cat python/univention/baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/baseconfig.py_tmp
 
 	install -d debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/
+	install -m 0644 python/univention/__init__.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/__init__.py
 	install -m 0644 python/univention/info_tools.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/info_tools.py
 	install -m 0644 python/univention/baseconfig_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig_info.py
 	install -m 0644 python/univention/service_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/service_info.py

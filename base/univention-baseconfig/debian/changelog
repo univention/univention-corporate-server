@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.4-1) unstable; urgency=low
+
+  * move univention/__init__.py from package python-univention
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Jun 2007 12:12:40 +0200
+
 univention-baseconfig (2.1.3-3) unstable; urgency=low
 
   * added debian/python-univention-baseconfig.postinst
