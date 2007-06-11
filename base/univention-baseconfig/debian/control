@@ -24,7 +24,6 @@ Replaces: univention-baseconfig (<< 1.0)
 Pre-Depends: python-univention-baseconfig
 Depends: python-univention
 Description: UCS - configuration manager
-
  This package contains the univention-config configuration
  manager, primarily used by the UCS base configuration.
  .
