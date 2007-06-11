@@ -99,13 +99,13 @@ def usage():
 	out.append('  --%-30s %s' % ('dn', 'Remove object with DN'))
 	out.append('  --%-30s %s' % ('superordinate', 'Use superordinate module'))
 	out.append('  --%-30s %s' % ('arg', 'Remove object with ARG'))
-	out.append('  --%-30s %s' % ('filter', 'Lookup filter'))
+	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('tls', '0 (no); 1 (try); 2 (must)'))
 	out.append('  --%-30s %s' % ('remove_referring', 'remove referring objects'))
 	out.append('  --%-30s %s' % ('recursive', 'remove objects and their sub-objects'))
 	out.append('')
 	out.append('list options:')
-	out.append('  --%-30s %s' % ('filter', 'Lookup filter'))
+	out.append('  --%-30s %s' % ('filter', 'Lookup filter e.g. foo=bar'))
 	out.append('  --%-30s %s' % ('policies', 'List policy-based settings:'))
 	out.append('    %-30s %s' % ('', '0:short, 1:long (with policy-DN)'))
 	out.append('')
@@ -457,7 +457,12 @@ def doit(arglist):
 		elif opt == '--append-option':
 			parsed_append_options.append(val)
 		elif opt == '--filter':
-			filter=val
+			if '=' in val:
+				filter=val
+			else:
+				msg="Filter is not valid"
+				out.append(msg)
+				return out + usage() + ["OPERATION FAILED"]
 		elif opt == '--customattribute':
 			pos=val.find('=')
 			name=val[:pos]
