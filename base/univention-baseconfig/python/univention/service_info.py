@@ -34,7 +34,7 @@ import re
 import string
 import shlex
 
-import univention_info_tools as uit
+import univention.info_tools as uit
 
 class Service( uit.LocalizedDictionary ):
 	def __init__( self ):
