@@ -14,10 +14,6 @@ title UCS Recover Kernel 2.6
 kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux recover
 initrd (cd)/boot/linux26-recover.bin
 
-title UCS Recover Kernel 2.4
-kernel (cd)/boot/linux24 root=/dev/ram ro ramdisk_size=65536 flavor=linux recover
-initrd (cd)/boot/linux24-recover.bin
-
 title Boot from first harddisk partition
 rootnoverify (hd0)
 chainloader +1

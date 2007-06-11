@@ -1,3 +1,9 @@
+univention-installer (1.1.3-1) unstable; urgency=low
+
+  * remove kernel 2.4 from boot menu
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Jun 2007 11:32:38 +0200
+
 univention-installer (1.1.2-1) unstable; urgency=low
 
   * don't install univention-windows-installer on a memberserver
