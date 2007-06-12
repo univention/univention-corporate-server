@@ -1,3 +1,9 @@
+univention-installer (1.1.4-1) unstable; urgency=low
+
+  * save the module list into mkinitrd/modules variable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 13:12:07 +0200
+
 univention-installer (1.1.3-1) unstable; urgency=low
 
   * remove kernel 2.4 from boot menu

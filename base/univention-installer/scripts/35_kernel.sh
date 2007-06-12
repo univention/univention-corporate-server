@@ -106,7 +106,7 @@ cat >>/instmnt/install_kernel.sh <<__EOT__
 export DEBIAN_FRONTEND=noninteractive
 
 if [ -n "$module" ]; then
-	univention-baseconfig set kernel/modules="$module"
+	univention-baseconfig set mkinird/modules="$module"
 fi
 
 if [ "$architecture" = "powerpc" ]; then
