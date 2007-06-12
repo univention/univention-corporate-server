@@ -1,3 +1,9 @@
+univention-gdm (1.0.1-1) unstable; urgency=low
+
+  * change gdmgreeter path to /usr/lib/gdm
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 13:58:32 +0200
+
 univention-gdm (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
