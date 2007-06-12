@@ -59,14 +59,125 @@ getXModul()
 	echo "$driver" | head -1 |  tr [:upper:] [:lower:]
 }
 
-univention-baseconfig set univentionXModule?`eval getXModul`
-univention-baseconfig set univentionXResolution?1024x768
-univention-baseconfig set univentionXMouseProtocol?auto
-univention-baseconfig set univentionXKeyboardLayout?de
-univention-baseconfig set univentionXColorDepth?16
-univention-baseconfig set univentionXHSync?30-70
-univention-baseconfig set univentionXVRefresh?50-90
 univention-baseconfig set univention/x/defaultsession?KDE
+
+eval $(univention-baseconfig shell)
+
+if [ -n "$univentionXModule" ]; then
+	univention-baseconfig set xorg/device/driver?$univentionXModule
+	univention-baseconfig unset univentionXModule
+fi
+
+if [ -n "$univentionXResolution" ]; then
+	univention-baseconfig set xorg/resolution?$univentionXResolution
+	univention-baseconfig unset univentionXResolution
+fi
+
+if [ -n "$univentionXColorDepth" ]; then
+	univention-baseconfig set xorg/screen/DefaultDepth?$univentionXColorDepth
+	univention-baseconfig unset univentionXColorDepth
+fi
+if [ -n "$univentionXHSync" ]; then
+	univention-baseconfig set xorg/monitor/HorizSync?$univentionXHSync
+	univention-baseconfig unset univentionXHSync
+fi
+if [ -n "$univentionXVRefresh" ]; then
+	univention-baseconfig set xorg/monitor/VertRefresh?$univentionXVRefresh
+	univention-baseconfig unset univentionVertRefresh
+fi
+if [ -n "$univentionXVNCExportType" ]; then
+	univention-baseconfig set xorg/vnc/exporttype?$univentionXVNCExportType
+	univention-baseconfig unset univentionXVNCExportType
+fi
+if [ -n "$X_VNC_Export_Type" ]; then
+	univention-baseconfig set xorg/vnc/exporttype?$X_VNC_Export_Type
+	univention-baseconfig unset X/VNC/ExportType
+fi
+if [ -n "$univentionXVNCExportViewonly" ]; then
+	univention-baseconfig set xorg/vnc/viewonly?$univentionXVNCExportViewonly
+	univention-baseconfig unset univentionXVNCExportViewonly
+fi
+
+if [ -n "$univentionXMouseDevice" ]; then
+	univention-baseconfig set xorg/mouse/device?$univentionXMouseDevice
+	univention-baseconfig unset univentionXMouseDevice
+fi
+if [ -n "$X_Mouse_Device" ]; then
+	univention-baseconfig set xorg/mouse/device?$X_Mouse_Device
+	univention-baseconfig unset X/Mouse/Device
+fi
+if [ -n "$univentionXDisplaySize" ]; then
+	univention-baseconfig set xorg/monitor/DisplaySize?$univentionXDisplaySize
+	univention-baseconfig unset univentionXDisplaySize
+fi
+if [ -n "$X_Monito_DisplaySize" ]; then
+	univention-baseconfig set xorg/monitor/DisplaySize?$X_Monito_DisplaySize
+	univention-baseconfig unset X/Monitor/DisplaySize
+fi
+if [ -n "$univentionXVideoRam" ]; then
+	univention-baseconfig set xorg/device/options/VideoRam?$univentionXVideoRam
+	univention-baseconfig unset univentionXVideoRam
+fi
+
+if [ -n "$univentionXKeyboardVariant" ]; then
+	univention-baseconfig set xorg/keyboard/options/XkbVariant?$univentionXKeyboardVariant
+	univention-baseconfig unset univentionXKeyboardVariant
+fi
+if [ -n "$univentionXKeyboardLayout" ]; then
+	univention-baseconfig set xorg/keyboard/options/XkbLayout?$univentionXKeyboardLayout
+	univention-baseconfig unset univentionXKeyboardLayout
+fi
+
+
+univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
+							xorg/resolution?1024x768 \
+							xorg/screen/DefaultDepth?16 \
+							xorg/monitor/HorizSync?30-70 \
+							xorg/monitor/VertRefresh?50-90 \
+							xorg/serverflags/options/AllowMouseOpenFail?true \
+							xorg/keyboard/options/XkbLayout?de \
+							xorg/keyboard/options/XkbRules?xorg \
+							xorg/keyboard/options/XkbModel?pc105 \
+							\
+							xorg/mouse/serial1/Identifier?"Serial Mouse" \
+							xorg/mouse/serial1/Driver?mouse \
+							xorg/mouse/serial1/options/protocol?"auto" \
+							xorg/mouse/serial1/options/device?"/dev/ttyS0" \
+							xorg/mouse/serial1/options/Emulate3Buttons?true \
+							xorg/mouse/serial1/options/Emulate3Timeout?70 \
+							xorg/mouse/serial1/options/SendCoreEvents?true \
+							\
+							xorg/mouse/serial2/Identifier?"Serial Mouse ttyS1" \
+							xorg/mouse/serial2/Driver?mouse \
+							xorg/mouse/serial2/options/protocol?"auto" \
+							xorg/mouse/serial2/options/device?"/dev/ttyS1" \
+							xorg/mouse/serial2/options/Emulate3Buttons?true \
+							xorg/mouse/serial2/options/Emulate3Timeout?70 \
+							xorg/mouse/serial2/options/SendCoreEvents?true \
+							\
+							xorg/mouse/psaux/Identifier?"PS/2 Mouse" \
+							xorg/mouse/psaux/Driver?mouse \
+							xorg/mouse/psaux/options/protocol?"auto" \
+							xorg/mouse/psaux/options/device?"/dev/psaux" \
+							xorg/mouse/psaux/options/Emulate3Buttons?true \
+							xorg/mouse/psaux/options/Emulate3Timeout?70 \
+							xorg/mouse/psaux/options/SendCoreEvents?true \
+							xorg/mouse/psaux/options/Buttons?5 \
+							xorg/mouse/psaux/options/ZAxisMapping?"4 5" \
+							\
+							xorg/mouse/usb/Identifier?"USB Mouse" \
+							xorg/mouse/usb/Driver?mouse \
+							xorg/mouse/usb/options/protocol?"auto" \
+							xorg/mouse/usb/options/device?"/dev/input/mice" \
+							xorg/mouse/usb/options/SendCoreEvents?true \
+							xorg/mouse/usb/options/Buttons?5 \
+							xorg/mouse/usb/options/ZAxisMapping?"4 5" \
+							\
+							xorg/device/VendorName?All \
+							xorg/device/BoardName?All \
+							xorg/module/load?"bitmap;ddc;dri;extmod;freetype;glx;int10;vbe;dbe;GLcore;xie;pex5;speedo;type1;record"
+
+
 
 #DEBHELPER#
 

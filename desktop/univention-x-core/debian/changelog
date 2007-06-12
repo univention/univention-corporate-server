@@ -1,3 +1,10 @@
+univention-x-core (1.0.0-2) unstable; urgency=low
+
+  * update the xorg.conf file to the new x.org version
+  * using more univention baseconfig variables in the xorg.conf template
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 11:38:13 +0200
+
 univention-x-core (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
