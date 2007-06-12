@@ -3,4 +3,8 @@ File: etc/mkinitrd/mkinitrd.conf
 Variables: mkinitrd/root
 
 Type: file
+File: etc/mkinitrd/modules
+Variables: mkinitrd/modules
+
+Type: file
 File: usr/share/initrd-tools/init
