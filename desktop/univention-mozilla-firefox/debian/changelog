@@ -1,3 +1,9 @@
+univention-mozilla-firefox (1.2-6) unstable; urgency=low
+
+  * Readded missing files
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 12 Jun 2007 16:13:10 +0200
+
 univention-mozilla-firefox (1.2-5) unstable; urgency=low
 
   * added update-alternatives call to postinst to make firefox the default x-www-browser
