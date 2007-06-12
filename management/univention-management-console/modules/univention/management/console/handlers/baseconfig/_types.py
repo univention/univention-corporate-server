@@ -31,7 +31,7 @@
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
-from univention_baseconfig_info import BaseconfigInfo, Variable
+from univention.baseconfig_info import BaseconfigInfo, Variable
 
 _ = umc.Translation( 'univention.management.console.handlers.baseconfig' ).translate
 

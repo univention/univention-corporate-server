@@ -37,7 +37,7 @@ import os
 
 import notifier.popen
 
-import univention_service_info as usi
+import univention.service_info as usi
 
 import _revamp
 
@@ -47,7 +47,7 @@ name = 'services'
 icon = 'services/module'
 short_description = _( 'System Services' )
 long_description = _( 'controls system services' )
-categories = [ 'all', 'services' ]
+categories = [ 'all' ]
 
 service_type = umc.String( _( 'Service' ) )
 

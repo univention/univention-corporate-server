@@ -124,6 +124,7 @@ class Module( base.Page ):
 		rows = base.Page.layout( self )
 		if not self.active:
 			ud.debug(ud.ADMIN, ud.INFO, 'Module.layout: no action yet (might be okay)' )
+			ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: not active')
 			# TODO: partial response
 # 			if self.__layout_in_progress:
 # 				self.__storage.clear()
@@ -139,6 +140,8 @@ class Module( base.Page ):
 				self.__layout = self.__startups[ self.selected ].error_message()
 			# show old content
 			if self.__layout:
+				self.__restore_referrer = False
+				ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: layout exists')
 				ud.debug(ud.ADMIN, ud.INFO, 'Module.layout: show cached layout' )
 				self.__storage.clear()
 				self.__dialog = self.__storage.to_uniparts( self.__layout )
@@ -148,6 +151,7 @@ class Module( base.Page ):
 		else:
 			ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: active action!! %s' % self.active )
 			responses = self.active.waitFor( timeout = 2 )
+			ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: action')
 
 			# TODO: partial response
 # 			if responses and responses[ -1 ].status() == 210:
@@ -192,6 +196,7 @@ class Module( base.Page ):
 					ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: normal layout' )
 					cmd = self.__startups[ self.selected ]
 					if self.__restore_referrer:
+						ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: restore referrer')
 						self.__layout = cmd.cache
 						self.__restore_referrer = False
 					else:
@@ -360,6 +365,7 @@ class Module( base.Page ):
 					continue
 				# was it a cancel button?
 				elif requests[ -1 ] == '::cancel':
+					ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: pressed!')
 					requests = []
 				# error message
 				elif requests[ -1 ] == '::error':
@@ -372,19 +378,23 @@ class Module( base.Page ):
 
 				# is current category a startup dialog that must be closed?
 				if self.__startups[ self.selected ].dialog() and umcp_part.close_dialog:
+					ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: close dialog')
 					referrer = self.__startups[ self.selected ].referrer
 					self.__startups.remove( self.selected )
 					self.categories = self.__startups.categories()
 					idx = self.__startups.find( referrer )
 					cmd = self.__startups[ idx ]
 					if cmd.caching and cmd.cache:
+						ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: is cached')
 						self.__restore_referrer = True
 						self.selected = idx
 						self.__layout = cmd.cache
 					else:
+						ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: no cache')
 						requests = [ referrer ]
 
 				if not self.__restore_referrer:
+					ud.debug( ud.ADMIN, ud.INFO, 'CANCEL: restore cache')
 					req = requests[ -1 ]
 					# is a startup request?
 					self.__startup_request( req )

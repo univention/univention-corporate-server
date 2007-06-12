@@ -38,8 +38,8 @@ import univention.management.console.tools as umct
 
 import univention.debug as ud
 
-import univention_baseconfig
-from univention_baseconfig_info import BaseconfigInfo, Variable
+import univention.baseconfig
+from univention.baseconfig_info import BaseconfigInfo, Variable
 
 import notifier.popen
 
@@ -137,7 +137,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			if value == None:
 				value = ''
 			arg = [ '%s=%s' % ( object.options[ 'key' ].encode(), value.encode() ) ]
-			univention_baseconfig.handler_set( arg )
+			univention.baseconfig.handler_set( arg )
 			if object.options.get( 'descriptions', '' ) and object.options.get( 'type', '' ) and \
 				   object.options.get( 'categories', '' ):
 				self.__create_variable_info( object.options )
@@ -150,7 +150,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def baseconfig_unset( self, object ):
 		if object.options.has_key( 'key' ):
-			univention_baseconfig.handler_set( object.options[ 'key' ] )
+			univention.baseconfig.handler_set( object.options[ 'key' ] )
 
 		self.finished( object.id(), {} )
 

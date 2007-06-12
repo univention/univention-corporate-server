@@ -1,3 +1,10 @@
+univention-management-console (0.7.3-1) unstable; urgency=low
+
+  * fixed imports of univention.(baseconfig|service)_info in serveral modules
+  * closes categories with the cancel button works again
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 10:22:26 +0200
+
 univention-management-console (0.7.2-1) unstable; urgency=low
 
   * merge with CVS branch ucs1_3_umc 

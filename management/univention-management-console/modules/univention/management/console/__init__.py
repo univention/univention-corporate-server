@@ -32,7 +32,7 @@ from daemon import *
 from values import *
 from ldapconn import *
 
-import univention_baseconfig
+import univention.baseconfig
 
-baseconfig = univention_baseconfig.baseConfig()
+baseconfig = univention.baseconfig.baseConfig()
 baseconfig.load()

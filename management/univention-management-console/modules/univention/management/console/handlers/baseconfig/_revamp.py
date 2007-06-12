@@ -36,7 +36,7 @@ import univention.management.console.protocol as umcp
 
 import univention.debug as ud
 
-from univention_baseconfig_info import BaseconfigInfo
+from univention.baseconfig_info import BaseconfigInfo
 
 import _types
 
