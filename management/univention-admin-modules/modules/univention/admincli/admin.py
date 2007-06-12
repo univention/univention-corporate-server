@@ -860,8 +860,11 @@ def doit(arglist):
 						object.options.append(option)
 				try:
 					out.extend(object_input(module, object, input, append, remove))
-				except univention.admin.uexceptions.valueMayNotChange:
-					out.append('E: Operation not allowed. Attribute is not editable.')
+				except univention.admin.uexceptions.valueMayNotChange,e:
+					a=''
+					for char in e:
+						a= unicode(a+char)
+						out.append(a)
 					return out + ["OPERATION FAILED"]
 				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_options:
 					try:
