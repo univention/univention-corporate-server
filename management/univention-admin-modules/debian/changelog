@@ -1,3 +1,9 @@
+univention-admin-modules (1.1.0-4) unstable; urgency=low
+
+  * changed error handling in univention-admin for uneditable samba attributes 
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 12 Jun 2007 08:50:52 +0200
+
 univention-admin-modules (1.1.0-3) unstable; urgency=low
 
   * added error handling for wrong use of --filter in univention-admin
