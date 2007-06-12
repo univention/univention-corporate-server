@@ -861,10 +861,7 @@ def doit(arglist):
 				try:
 					out.extend(object_input(module, object, input, append, remove))
 				except univention.admin.uexceptions.valueMayNotChange,e:
-					a=''
-					for char in e:
-						a= unicode(a+char)
-						out.append(a)
+						out.append(unicode(e[0]))
 					return out + ["OPERATION FAILED"]
 				if object.hasChanged(input.keys()) or object.hasChanged(append.keys()) or object.hasChanged(remove.keys()) or parsed_append_options or parsed_options:
 					try:
