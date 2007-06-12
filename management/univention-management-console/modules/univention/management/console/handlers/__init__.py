@@ -95,12 +95,16 @@ class simpleHandler( signals.Provider ):
 		func = getattr( self, symbol, None )
 
 		if not func:
-			return False
+			return None
 
-		if isinstance( args, tuple ):
-			func( *args )
-		else:
-			func( args )
+		try:
+			if isinstance( args, tuple ):
+				func( *args )
+			else:
+				func( args )
+		except Exception, e:
+			import traceback
+			return traceback.format_exc()
 
 		return True
 
@@ -125,13 +129,24 @@ class simpleHandler( signals.Provider ):
 	def execute( self, method, object ):
 # 		self._start_response_timer( object.id(), self.__message )
 		self.__requests[ object.id() ] = ( object, method )
-		self._exec_if( '_pre', method, object )
+		ret = self._exec_if( '_pre', method, object )
+		if ret != True:
+			self.__execution_failed( object, ret )
+			return
+
 		try:
 			func = getattr( self, method )
 			func( object )
 		except Exception, e:
 			import traceback
-			traceback.print_exc()
+
+			res = umcp.Response( object )
+			res.dialog = None
+			res.report = _( "Execution of command '%(command)s' has failed: %(text)s" ) % \
+							{ 'command' : object.arguments[ 0 ],
+							  'text' : unicode( traceback.format_exc() ) }
+			res.status( 600 )
+			self.signal_emit( 'failure', res )
 			del self.__requests[ object.id() ]
 
 	def __partial( self, id, dialog, type ):
@@ -168,6 +183,16 @@ class simpleHandler( signals.Provider ):
 			else:
 				return umcd.Dialog( [ dialog ] )
 
+	def __execution_failed( self, object, text ):
+		res = umcp.Response( object )
+		res.dialog = None
+		res.report = _( "Execution of command '%(command)s' has failed: %(text)s" ) % \
+						{ 'command' : object.arguments[ 0 ],
+						  'text' : unicode( text ) }
+		res.status( 600 )
+		self.signal_emit( 'failure', res )
+		del self.__requests[ object.id() ]
+
 	def finished( self, id, dialog, report = None, success = True ):
 		"""thss method should be invoked by module to finish the
 		processing of a request. 'id' is the request command identifier,
@@ -180,8 +205,12 @@ class simpleHandler( signals.Provider ):
 		in a dialog and send to the client."""
 		if self.__requests.has_key( id ):
 			object, method = self.__requests[ id ]
-			self._exec_if( '_post', method, object )
 			res = umcp.Response( object )
+
+			ret = self._exec_if( '_post', method, object )
+			if ret != True:
+				self.__execution_failed( object, ret )
+				return
 			res.dialog = dialog
 			if report:
 				res.report = report
@@ -189,10 +218,16 @@ class simpleHandler( signals.Provider ):
 				res.status( 200 )
 			else:
 				res.status( 600 )
-			if not self._exec_if( '_%s' % self.__interface, method,
-								  ( object, res ) ):
+
+			ret =  self._exec_if( '_%s' % self.__interface, method, ( object, res ) )
+			if ret == None:
 				res.dialog = self.__verify_dialog( dialog )
 				self.result( res )
+			elif ret != True:
+				self.__execution_failed( object, ret )
+				return
+
+
 
 	def revamped( self, id, res ):
 		"""this method should in invoked by '_revamp' functions that are
