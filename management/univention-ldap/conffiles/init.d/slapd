@@ -95,10 +95,25 @@ if baseConfig['ldap/database/type'] == 'bdb':
 	print 'echo "done"'
 	print 'echo -n "  "'
    @!@
+
+	if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
+    	echo -n "Found failed.ldif. Importing ..."
+		test -x /usr/sbin/univention-ldap-replication-resync && /usr/sbin/univention-ldap-replication-resync /var/lib/univention-ldap-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
+		if [ $? = 0 ]; then
+			echo " done"
+		else
+			echo " failed. Please check /var/log/univention/listener.log"
+			exit 1
+		fi
+	fi
+	
     echo -n "Starting ldap server(s):"
     echo -n " slapd"
     start-stop-daemon --start --quiet --pidfile "$pidfile" \
 		--exec $DAEMON -- -h "ldap:/// ldapi:/// ldaps:///"
+
+	test -e /var/run/slapd/ldapi && ln -sf /var/run/slapd/ldapi /var/run/ldapi
+
    @!@
 if baseConfig['ldap/server/type']=="master":	   
     print "    replicas=`grep ^replica $REPLICACONF`"

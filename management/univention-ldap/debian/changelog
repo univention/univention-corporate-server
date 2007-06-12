@@ -1,3 +1,10 @@
+univention-ldap (2.2.3-3) unstable; urgency=low
+
+  * importing failed.ldif during slapd start
+  * creating /var/run/ldapi link
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Jun 2007 15:17:08 +0200
+
 univention-ldap (2.2.3-2) unstable; urgency=low
 
   * fixed a typo in debian/postinst
