@@ -49,7 +49,7 @@ class webui_in{			# Python ---> PHP
 	  		$config->debug_put("New XML: ".filesize($file)."Byte");
     			$p = xml_parser_create($config->encoding);
     			xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
-	    		xml_parser_set_option($p, XML_OPTION_TARGET_ENCODING, 'ISO-8859-1');
+	    		xml_parser_set_option($p, XML_OPTION_TARGET_ENCODING, 'UTF-8');
     			xml_parser_set_option($p,XML_OPTION_SKIP_WHITE,1);
     			xml_set_object($p, $this);
 	    		xml_set_element_handler($p, 'startTag', 'closeTag');
@@ -101,7 +101,7 @@ class webui_out{			# PHP ---> Python
 	var $session_data;
 
 	function webui_out(&$config,&$usrinput,&$session_data)
-	{	
+	{
 		$this->change='';
   		$this->session_data=&$session_data;
 		$this->valid=FALSE;
@@ -110,20 +110,20 @@ class webui_out{			# PHP ---> Python
 		$this->input($usrinput);
 		$file = $config->session_dir.($config->number-1);
 		$this->pipe=fsockopen("unix://".$config->socket_filename, 0);  	# Python Backend
-		
+
 		if (file_exists($file) && is_file($file) && $this->pipe){
 
 			fwrite($this->pipe, "Number: ".($config->number-1)."\n\n"); # Python Backend
-			
-		
+
+
 			$config->debug_put("Oeffne Pipe: ".$config->run);
-		
+
 			$fp=fopen($file,'r+');
 			if(!flock($fp,LOCK_EX)) $config->debug_put("F-Lock fehlgeschlagen");
 	  		$config->debug_put("Old XML: ".filesize($file)."Byte");
     			$p = xml_parser_create($config->encoding);
     			xml_parser_set_option($p, XML_OPTION_CASE_FOLDING, 0);
-	    		xml_parser_set_option($p, XML_OPTION_TARGET_ENCODING, 'ISO-8859-1');
+	    		xml_parser_set_option($p, XML_OPTION_TARGET_ENCODING, 'UTF-8');
     			xml_parser_set_option($p,XML_OPTION_SKIP_WHITE,1);
     			xml_set_object($p, $this);
 			$config->debug_put("Fuege Inhalte in ".$file." ein");
@@ -137,7 +137,7 @@ class webui_out{			# PHP ---> Python
 	    		xml_parser_free($p);
 			flock($fp,LOCK_UN);
     			fclose($fp);
-	
+
 			fwrite($this->pipe, "\0");		# Python Backend
 			$fp=fopen($config->session_dir.$config->number, "w");
 			while (($buf = fread($this->pipe, 1024))) {
@@ -162,7 +162,7 @@ class webui_out{			# PHP ---> Python
 				$type=split("#",$key);
 				switch($type[0]){
 				case 'date':
-					
+
 					$this->input[$type[1]] = $value[0].".".trim($value[1]).".".$value[2];
                                         if(trim($this->input[$type[1]])=="..")$this->input[$type[1]]="";
 					break;
