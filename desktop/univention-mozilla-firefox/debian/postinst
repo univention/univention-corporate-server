@@ -1,0 +1,16 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+univention-baseconfig set firefox/prefs/mailto?kmail
+univention-baseconfig set firefox/prefs/checkdefaultbrowser?false
+univention-baseconfig set firefox/prefs/homepage?http://www.univention.de/ucd-welcome-1_3-2.html
+
+update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 101
+
+if [ "$1" = "configure" ] && [ -z "$2" ]; then
+	univention-baseconfig set firefox/prefs/printing?kprinter
+fi
+
+exit 0
+
