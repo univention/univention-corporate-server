@@ -1,0 +1,39 @@
+univention-mozilla-firefox (1.2-4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 15:21:17 +0100
+
+univention-mozilla-firefox (1.2-3) unstable; urgency=low
+
+  * removed newline
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon,  6 Nov 2006 14:54:22 +0100
+
+univention-mozilla-firefox (1.2-2) unstable; urgency=low
+
+  * Made firefox.js a baseconfig template
+  * Added the baseconfig variable firefox/prefs/conffile to set a global
+    configuration file
+  * Fixed copyright, paket maintainer and build-deps
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon,  6 Nov 2006 14:37:52 +0100
+
+univention-mozilla-firefox (1.2-1) unstable; urgency=low
+
+  * added dependencies to acroread-plugin, univention-flashplugin, univention-java
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 18 Nov 2005 08:45:42 +0100
+
+univention-mozilla-firefox (1.1) unstable; urgency=low
+
+  * Changed Firefox config variable names 
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 28 Feb 2005 13:40:19 +0100
+
+univention-mozilla-firefox (1.0) unstable; urgency=low
+
+  * Initial Release. 
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 29 Nov 2004 14:03:56 +0100
+
