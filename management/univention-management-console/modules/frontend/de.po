@@ -7,12 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-01 14:25+0200\n"
+"POT-Creation-Date: 2007-06-12 14:15+0200\n"
 "PO-Revision-Date: 2007-06-01 14:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: modconsole.py:107
@@ -57,7 +57,7 @@ msgstr "Anmeldung abbrechen"
 
 #: modconsole.py:138
 msgid "Do you really want to logout?"
-msgstr "Mˆchten Sie sich wirklich abmelden?"
+msgstr "M√∂chten Sie sich wirklich abmelden?"
 
 #: modconsole.py:169
 msgid "Update status"
@@ -68,7 +68,7 @@ msgid ""
 "Authentication failed: A connection to the UMC daemon could not be "
 "established."
 msgstr ""
-"Authentisierungfehler: Eine Verbindung zum UMC-D‰mon konnte nicht "
+"Authentisierungfehler: Eine Verbindung zum UMC-D√§mon konnte nicht "
 "hergestellt werden"
 
 #: modconsole.py:277
@@ -76,99 +76,37 @@ msgstr ""
 msgid "Authentication failed: %s"
 msgstr "Authentisierungsfehler: %s"
 
-#: modconsole.py:290
+#: modconsole.py:293
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
 
-#: unidialog.py:118
-#, python-format
-msgid "error while modifying: %s %s"
-msgstr "W‰hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+#: pages/overview.py:22
+msgid "Overview"
+msgstr "√úberblick"
 
-#: mapping/buttons.py:145
-msgid "Do"
-msgstr "Ausf¸hren"
+#: pages/overview.py:54
+msgid "Favorites"
+msgstr "Favoriten"
 
-#: mapping/buttons.py:146
-msgid "Do action with selected objects."
-msgstr "Aktion mit ausgew‰hlten Objekten ausf¸hren"
+#: pages/overview.py:54
+msgid "Favorite Univention Management Console Modules"
+msgstr "Am h√§ufigsten genutzte Module"
 
-#: mapping/buttons.py:148
-msgid "Invert Selection"
-msgstr "Auswahl umkehren"
+#: pages/overview.py:86 pages/about.py:103
+msgid "Logout from Univention Management Console"
+msgstr "Abmelden von Univention Management Console"
 
-#: mapping/buttons.py:149
-msgid "Select All"
-msgstr "Alle ausw‰hlen"
+#: pages/module.py:218
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
 
-#: mapping/buttons.py:152 mapping/buttons.py:154
-msgid "Do with selected objects ..."
-msgstr "Ausgew‰hlte Objekte ..."
-
-#: mapping/buttons.py:216
-msgid "Select"
-msgstr "Ausw‰hlen"
-
-#: mapping/buttons.py:217
-msgid "Select entry"
-msgstr "Ausw‰hlen eines Eintrags"
-
-#: mapping/dynamics.py:79
-msgid "Add"
-msgstr "Hinzuf¸gen"
-
-#: mapping/dynamics.py:165
-msgid "Entries:"
-msgstr "Eintr‰ge:"
-
-#: mapping/dynamics.py:166
-#, python-format
-msgid "Current entries for '%s'"
-msgstr "Existierende Eint‰ge f¸r '%s'"
-
-#: mapping/dynamics.py:276
-msgid "any"
-msgstr "Alle"
-
-#: mapping/dynamics.py:277
-msgid "none"
-msgstr "Keine"
-
-#: mapping/dynamics.py:290
-msgid "enter search filter"
-msgstr "Suchfilter"
-
-#: mapping/dynamics.py:298
-msgid "go ahead"
-msgstr "Anzeigen"
-
-#: mapping/dynamics.py:299
-msgid "property"
-msgstr "Eigenschaft"
-
-#: mapping/dynamics.py:299
-msgid "select attribute"
-msgstr "W‰hlen Sie ein Attribut aus"
-
-#: mapping/dynamics.py:419
-msgid "All"
-msgstr "Alles"
-
-#: mapping/dynamics.py:419
-msgid "choose objects to add"
-msgstr "W‰hlen Sie die Objekte zum Hinzuf¸gen aus."
-
-#: mapping/dynamics.py:420
-msgid "Current"
-msgstr "Aktuell"
-
-#: mapping/dynamics.py:420
-msgid "choose objects to remove"
-msgstr "W‰hlen Sie die zu entfernenden Objekte aus."
+#: pages/module.py:219
+msgid "Information"
+msgstr "Hinweis"
 
 #: pages/about.py:19
 msgid "About"
-msgstr "‹ber"
+msgstr "√úber"
 
 #: pages/about.py:32
 msgid "Univention Management Console"
@@ -202,30 +140,123 @@ msgstr "Kontakt"
 msgid "ALL RIGHTS RESERVED"
 msgstr "ALL RIGHTS RESERVED"
 
-#: pages/about.py:103 pages/overview.py:86
-msgid "Logout from Univention Management Console"
-msgstr "Abmelden von Univention Management Console"
+#: pages/startup.py:42
+msgid "Bugreport: Univention Management Console"
+msgstr "Fehlerbericht: Univention Management Console"
 
-#: pages/module.py:210
-msgid "Operation still in progress. Please wait ..."
-msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+#: pages/startup.py:43
+msgid ""
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
+msgstr ""
+"\n"
+"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen einzutragen\n"
+"\n"
+"1) Schritte, um den Fehler zu reproduzieren\n"
+"\n"
+"2) Erwartetes Ergebnis\n"
+"\n"
+"3) Beobachtetes Ergebnis\n"
+"\n"
 
-#: pages/module.py:211
-msgid "Information"
-msgstr "Hinweis"
+#: pages/startup.py:76
+msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+msgstr ""
+"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
 
-#: pages/overview.py:22
-msgid "Overview"
-msgstr "‹berblick"
-
-#: pages/overview.py:54
-msgid "Favorites"
-msgstr "Favoriten"
-
-#: pages/overview.py:54
-msgid "Favorite Univention Management Console Modules"
-msgstr "Am h‰ufigsten genutzte Module"
-
-#: pages/startup.py:54
+#: pages/startup.py:79
 msgid "An Error has occured"
 msgstr "Ein Fehler ist aufgetreten"
+
+#: unidialog.py:118
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "W√§hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+
+#: mapping/dynamics.py:79
+msgid "Add"
+msgstr "Hinzuf√ºgen"
+
+#: mapping/dynamics.py:165
+msgid "Entries:"
+msgstr "Eintr√§ge:"
+
+#: mapping/dynamics.py:166
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Eint√§ge f√ºr '%s'"
+
+#: mapping/dynamics.py:276
+msgid "any"
+msgstr "Alle"
+
+#: mapping/dynamics.py:277
+msgid "none"
+msgstr "Keine"
+
+#: mapping/dynamics.py:290
+msgid "enter search filter"
+msgstr "Suchfilter"
+
+#: mapping/dynamics.py:298
+msgid "go ahead"
+msgstr "Anzeigen"
+
+#: mapping/dynamics.py:299
+msgid "property"
+msgstr "Eigenschaft"
+
+#: mapping/dynamics.py:299
+msgid "select attribute"
+msgstr "W√§hlen Sie ein Attribut aus"
+
+#: mapping/dynamics.py:419
+msgid "All"
+msgstr "Alles"
+
+#: mapping/dynamics.py:419
+msgid "choose objects to add"
+msgstr "W√§hlen Sie die Objekte zum Hinzuf√ºgen aus."
+
+#: mapping/dynamics.py:420
+msgid "Current"
+msgstr "Aktuell"
+
+#: mapping/dynamics.py:420
+msgid "choose objects to remove"
+msgstr "W√§hlen Sie die zu entfernenden Objekte aus."
+
+#: mapping/buttons.py:146
+msgid "Do"
+msgstr "Ausf√ºhren"
+
+#: mapping/buttons.py:147
+msgid "Do action with selected objects."
+msgstr "Aktion mit ausgew√§hlten Objekten ausf√ºhren"
+
+#: mapping/buttons.py:149
+msgid "Invert Selection"
+msgstr "Auswahl umkehren"
+
+#: mapping/buttons.py:150
+msgid "Select All"
+msgstr "Alle ausw√§hlen"
+
+#: mapping/buttons.py:153 mapping/buttons.py:155
+msgid "Do with selected objects ..."
+msgstr "Ausgew√§hlte Objekte ..."
+
+#: mapping/buttons.py:217
+msgid "Select"
+msgstr "Ausw√§hlen"
+
+#: mapping/buttons.py:218
+msgid "Select entry"
+msgstr "Ausw√§hlen eines Eintrags"

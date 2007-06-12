@@ -165,7 +165,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			if vars.has_key( object.options[ 'key' ] ):
 				self.finished( object.id(), vars[ object.options[ 'key' ] ] )
 			else:
-				self.finished( objectid(), None, success = False )
+				self.finished( object.id(), None, success = False )
 		else:
 			self.finished( object.id(), None, success = False )
 

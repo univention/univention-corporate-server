@@ -287,10 +287,11 @@ class Processor( signals.Provider ):
 		ud.debug( ud.ADMIN, ud.PROCESS, 'trying to connect' )
 		if not mod.connect():
 			ud.debug( ud.ADMIN, ud.PROCESS, 'failed' )
-			if mod._connect_retries > 10:
+			if mod._connect_retries > 20:
 				ud.debug( ud.ADMIN, ud.ERROR, 'connection to module process failed')
 				res = Response( msg )
 				res.status( 503 ) # error connecting to module process
+				res.report = _( 'The connection to the newly started module process failed.' )
 				self.signal_emit( 'response', res )
 			else:
 				mod._connect_retries += 1

@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: __init__.py:50 __init__.py:56 __init__.py:64
@@ -37,11 +37,11 @@ msgstr "Rechnername"
 
 #: __init__.py:68
 msgid "Domain Name"
-msgstr "Dom‰ne"
+msgstr "Dom√§ne"
 
 #: __init__.py:69
 msgid "Windows Domain"
-msgstr "Windows Dom‰ne"
+msgstr "Windows Dom√§ne"
 
 #: __init__.py:70
 msgid "LDAP Basis"
@@ -62,7 +62,7 @@ msgstr "Der Name des Rechners"
 
 #: _revamp.py:52
 msgid "The DNS domain name for the computer network"
-msgstr "Die DNS-Dom‰ne des Netzes"
+msgstr "Die DNS-Dom√§ne des Netzes"
 
 #: _revamp.py:57
 msgid "The LDAP base for the management database"
@@ -70,4 +70,4 @@ msgstr "Die LDAP-Basis der Management-Datenbank"
 
 #: _revamp.py:62
 msgid "The Windows domain provided by the Samba server"
-msgstr "Die Windows-Dom‰ne des Samba-Dienstes"
+msgstr "Die Windows-Dom√§ne des Samba-Dienstes"

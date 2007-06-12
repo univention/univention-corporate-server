@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: __init__.py:51
@@ -22,7 +22,7 @@ msgstr "Drucker Administration"
 #: __init__.py:52
 msgid "Manages printers controlled by the CUPS server"
 msgstr ""
-"Ermöglicht die Administration aller Drucker, die auf dem CUPS Server "
+"ErmÃ¶glicht die Administration aller Drucker, die auf dem CUPS Server "
 "konfiguriert sind"
 
 #: __init__.py:57
@@ -31,7 +31,7 @@ msgstr "Drucker auflisten"
 
 #: __init__.py:58
 msgid "Lists all available printers"
-msgstr "Liste aller verfügbaren Drucker"
+msgstr "Liste aller verfÃ¼gbaren Drucker"
 
 #: __init__.py:67
 msgid "Show Printer"
@@ -63,7 +63,7 @@ msgstr "Benutzer Druck-Quota-Einstellungen"
 
 #: __init__.py:94
 msgid "Show print quota settings for a user"
-msgstr "Druck-Quota-Einstellungen für einen Benutzer"
+msgstr "Druck-Quota-Einstellungen fÃ¼r einen Benutzer"
 
 #: __init__.py:100
 msgid "Set/Modify User Print Quota"
@@ -75,11 +75,11 @@ msgstr "Bearbeiten von Druck-Quota-Einstellungen eines Benutzers"
 
 #: __init__.py:109
 msgid "Reset User Print Quota"
-msgstr "Zurücksetzen von Benutzer Druck-Quota-Einstellungen"
+msgstr "ZurÃ¼cksetzen von Benutzer Druck-Quota-Einstellungen"
 
 #: __init__.py:110
 msgid "reset printer quota for a user"
-msgstr "Zurücksetzen von Druck-Quota-Einstellungen für einen Benutzer"
+msgstr "ZurÃ¼cksetzen von Druck-Quota-Einstellungen fÃ¼r einen Benutzer"
 
 #: __init__.py:116
 msgid "Cancel Print Jobs"
@@ -87,7 +87,7 @@ msgstr "Druckauftrag abbrechen"
 
 #: __init__.py:117
 msgid "Cancels all given print jobs."
-msgstr "Alle ausgewählten Druckaufträge abbrechen"
+msgstr "Alle ausgewÃ¤hlten DruckauftrÃ¤ge abbrechen"
 
 #: __init__.py:122
 msgid "Move Print Jobs"
@@ -95,11 +95,11 @@ msgstr "Druckauftrag verschieben"
 
 #: __init__.py:123
 msgid "Moves a list of print jobs from one printer to another."
-msgstr "Verschiebt Druckaufträge von einem Drucker zu einem anderen"
+msgstr "Verschiebt DruckauftrÃ¤ge von einem Drucker zu einem anderen"
 
 #: _printer.py:157
 msgid "Successfully set print quota settings"
-msgstr "Druck-Quota-Einstellungen für einen Benutzer erfolgreich gesetzt"
+msgstr "Druck-Quota-Einstellungen fÃ¼r einen Benutzer erfolgreich gesetzt"
 
 #: _printer.py:160
 #, python-format
@@ -107,18 +107,18 @@ msgid ""
 "Failed to modify print quota settings for user %(user)s on printer %(printer)"
 "s"
 msgstr ""
-"Das Setzen der Druck-Quota-Einstellungen für den Benutzer %(user)s auf dem "
+"Das Setzen der Druck-Quota-Einstellungen fÃ¼r den Benutzer %(user)s auf dem "
 "Drucker %(printer)s ist fehlgeschlagen"
 
 #: _printer.py:173
 msgid "Successfully reset print quota"
-msgstr "Die Druck-Quota-Einstellungen wurden erfolgreich zurückgesetzt"
+msgstr "Die Druck-Quota-Einstellungen wurden erfolgreich zurÃ¼ckgesetzt"
 
 #: _printer.py:176
 #, python-format
 msgid "Failed to reset print quota for user %(user)s on printer %(printer)s"
 msgstr ""
-"Das Zurücksetzen der Druck-Quota-Einstellungen für den Benutzer %(user)s auf "
+"Das ZurÃ¼cksetzen der Druck-Quota-Einstellungen fÃ¼r den Benutzer %(user)s auf "
 "dem Drucker %(printer)s ist fehlgeschlagen"
 
 #: _revamp.py:54 _revamp.py:109 _revamp.py:147
@@ -188,7 +188,7 @@ msgstr "Besitzer"
 
 #: _revamp.py:117
 msgid "Size"
-msgstr "Größe"
+msgstr "GrÃ¶ÃŸe"
 
 #: _revamp.py:117
 msgid "Date"
@@ -200,7 +200,7 @@ msgstr "Druckauftrag abbrechen"
 
 #: _revamp.py:132
 msgid "No jobs in the queue"
-msgstr "Keine Aufträge in der Warteschlange"
+msgstr "Keine AuftrÃ¤ge in der Warteschlange"
 
 #: _revamp.py:134 _revamp.py:210
 msgid "Information"
@@ -228,16 +228,16 @@ msgstr "Hard-Limit"
 
 #: _revamp.py:162
 msgid "Lifetime page counter"
-msgstr "Seitenzähler"
+msgstr "SeitenzÃ¤hler"
 
 #: _revamp.py:185
 #, python-format
 msgid "Edit Print Quota for %(user)s"
-msgstr "Druck-Quota für %(user)s bearbeiten"
+msgstr "Druck-Quota fÃ¼r %(user)s bearbeiten"
 
 #: _revamp.py:196
 msgid "Reset User Quota"
-msgstr "Druck-Quota zurücksetzen"
+msgstr "Druck-Quota zurÃ¼cksetzen"
 
 #: _revamp.py:200
 msgid "No quota settings available"
@@ -250,7 +250,7 @@ msgstr "Benutzer-Quota am Drucker %(printer)s"
 
 #: _revamp.py:208
 msgid "Add Quota Entry"
-msgstr "Quota-Eintrag hinzufügen"
+msgstr "Quota-Eintrag hinzufÃ¼gen"
 
 #: _revamp.py:211
 msgid "Print Quota"
@@ -260,13 +260,13 @@ msgstr "Druck-Quota"
 #, python-format
 msgid "Modify Print Quota Setting for User '%(user)s' on Printer %(printer)s"
 msgstr ""
-"Bearbeiten der Druck-Quota für den Benutzer '%(user)s' auf dem Drucker '%"
+"Bearbeiten der Druck-Quota fÃ¼r den Benutzer '%(user)s' auf dem Drucker '%"
 "(printer)s'"
 
 #: _revamp.py:222
 #, python-format
 msgid "Add Print Quota Entry on printer %(printer)s"
-msgstr "Hinzufügen eines Druck-Quota-Eintrags am Drucker %(printer)s"
+msgstr "HinzufÃ¼gen eines Druck-Quota-Eintrags am Drucker %(printer)s"
 
 #: _types.py:38
 msgid "Search Key"

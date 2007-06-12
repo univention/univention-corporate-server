@@ -8,12 +8,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-22 16:46+0200\n"
+"POT-Creation-Date: 2007-06-12 14:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: modconsole.py:107
@@ -70,12 +70,12 @@ msgid ""
 "established."
 msgstr ""
 
-#: modconsole.py:269
+#: modconsole.py:277
 #, python-format
 msgid "Authentication failed: %s"
 msgstr ""
 
-#: modconsole.py:282
+#: modconsole.py:293
 msgid "Logout successful."
 msgstr ""
 
@@ -95,11 +95,11 @@ msgstr ""
 msgid "Logout from Univention Management Console"
 msgstr ""
 
-#: pages/module.py:210
+#: pages/module.py:218
 msgid "Operation still in progress. Please wait ..."
 msgstr ""
 
-#: pages/module.py:211
+#: pages/module.py:219
 msgid "Information"
 msgstr ""
 
@@ -139,7 +139,28 @@ msgstr ""
 msgid "ALL RIGHTS RESERVED"
 msgstr ""
 
-#: pages/startup.py:51
+#: pages/startup.py:42
+msgid "Bugreport: Univention Management Console"
+msgstr ""
+
+#: pages/startup.py:43
+msgid ""
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
+msgstr ""
+
+#: pages/startup.py:76
+msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+msgstr ""
+
+#: pages/startup.py:79
 msgid "An Error has occured"
 msgstr ""
 
@@ -148,43 +169,83 @@ msgstr ""
 msgid "error while modifying: %s %s"
 msgstr ""
 
-#: mapping/dynamics.py:75
+#: mapping/dynamics.py:79
 msgid "Add"
 msgstr ""
 
-#: mapping/dynamics.py:161
+#: mapping/dynamics.py:165
 msgid "Entries:"
 msgstr ""
 
-#: mapping/dynamics.py:162
+#: mapping/dynamics.py:166
 #, python-format
 msgid "Current entries for '%s'"
 msgstr ""
 
-#: mapping/buttons.py:145
-msgid "Do"
+#: mapping/dynamics.py:276
+msgid "any"
+msgstr ""
+
+#: mapping/dynamics.py:277
+msgid "none"
+msgstr ""
+
+#: mapping/dynamics.py:290
+msgid "enter search filter"
+msgstr ""
+
+#: mapping/dynamics.py:298
+msgid "go ahead"
+msgstr ""
+
+#: mapping/dynamics.py:299
+msgid "property"
+msgstr ""
+
+#: mapping/dynamics.py:299
+msgid "select attribute"
+msgstr ""
+
+#: mapping/dynamics.py:419
+msgid "All"
+msgstr ""
+
+#: mapping/dynamics.py:419
+msgid "choose objects to add"
+msgstr ""
+
+#: mapping/dynamics.py:420
+msgid "Current"
+msgstr ""
+
+#: mapping/dynamics.py:420
+msgid "choose objects to remove"
 msgstr ""
 
 #: mapping/buttons.py:146
+msgid "Do"
+msgstr ""
+
+#: mapping/buttons.py:147
 msgid "Do action with selected objects."
 msgstr ""
 
-#: mapping/buttons.py:148
+#: mapping/buttons.py:149
 msgid "Invert Selection"
 msgstr ""
 
-#: mapping/buttons.py:149
+#: mapping/buttons.py:150
 msgid "Select All"
 msgstr ""
 
-#: mapping/buttons.py:152 mapping/buttons.py:154
+#: mapping/buttons.py:153 mapping/buttons.py:155
 msgid "Do with selected objects ..."
 msgstr ""
 
-#: mapping/buttons.py:216
+#: mapping/buttons.py:217
 msgid "Select"
 msgstr ""
 
-#: mapping/buttons.py:217
+#: mapping/buttons.py:218
 msgid "Select entry"
 msgstr ""

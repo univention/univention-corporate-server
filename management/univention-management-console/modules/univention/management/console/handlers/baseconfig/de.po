@@ -12,7 +12,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: __init__.py:53
@@ -21,15 +21,15 @@ msgstr "Univention Baseconfig"
 
 #: __init__.py:54
 msgid "Add, modify and search Univention Baseconfig variables"
-msgstr "Hinzufügen, Beareiten und Suchen von Baseconfig Variablen"
+msgstr "HinzufÃ¼gen, Beareiten und Suchen von Baseconfig Variablen"
 
 #: __init__.py:59
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: __init__.py:60
 msgid "Add a new baseconfig variable"
-msgstr "Hinzufügen einer neuen Baseconfig Variable"
+msgstr "HinzufÃ¼gen einer neuen Baseconfig Variable"
 
 #: __init__.py:71
 msgid "Show"
@@ -94,7 +94,7 @@ msgstr "Bearbeiten einer Baseconfig Variable"
 
 #: _revamp.py:192
 msgid "Add Baseconfig Variable"
-msgstr "Hinzufügen einer Baseconfig Variable"
+msgstr "HinzufÃ¼gen einer Baseconfig Variable"
 
 #: _types.py:40
 msgid "Category"
@@ -126,7 +126,7 @@ msgstr "Suchmaske"
 
 #: _types.py:95
 msgid "Key"
-msgstr "Schlüssel"
+msgstr "SchlÃ¼ssel"
 
 #: _types.py:105
 msgid "Multilinugal Description"

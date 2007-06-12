@@ -171,14 +171,19 @@ class Module( base.Page ):
 			# check if any of the repsonses is an error:
 			reports = []
 			error_dialog = None
+			exception = False
 			for response in responses:
 				if response.status() != 200:
 					reports.append( response.report )
+					if response.status() == 500:
+						exception = True
+						break
 			if reports:
-				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog' )
-				self.__startups[ self.selected ].cache = copy.deepcopy( self.__layout )
-				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog: %s' % '\n'.join( reports ))
-				error_dialog = self.__startups[ self.selected ].error_message( '\n'.join( reports ) )
+				ud.debug( ud.ADMIN, ud.INFO, 'Module.layout: setup error dialog: %s' % \
+						  '\n'.join( reports ) )
+				cur = self.__startups[ self.selected ]
+				cur.cache = copy.deepcopy( self.__layout )
+				error_dialog = cur.error_message( '\n'.join( reports ), exception = exception )
 				self.active.reset()
 
 			# received a _final_ response

@@ -97,6 +97,10 @@ class Number( Text ):
 			number = str( number )
 		Text.__init__( self, number, attributes )
 
+class HTML( Text ):
+	def __init__( self, text = '', attributes = {} ):
+		Text.__init__( self, text, attributes )
+
 class Fill( Text ):
 	def __init__( self, columns = 2, text = '', vertical = False ):
 		if not vertical:
@@ -104,7 +108,7 @@ class Fill( Text ):
 		else:
 			Text.__init__( self, text, { 'rowspan' : str( columns ) } )
 
-TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( Fill() ) )
+TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( HTML() ), type( Fill() ) )
 
 def _verify_list_items( sequence ):
 	# map strings to umcd.Text

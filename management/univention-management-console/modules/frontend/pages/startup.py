@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  base class for UMC module pages
@@ -32,9 +33,25 @@ import univention.management.console as umc
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umc_tools
 
+from urllib import quote, urlencode
+from urlparse import urlunparse
+
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 class Command( object ):
+	MAIL_ADDRESS = quote( 'Univention Feedback <feedback@univention.de>' )
+	MAIL_SUBJECT = _( 'Bugreport: Univention Management Console' )
+	MAIL_TEXT = _( '''
+Please take a second to provide the following information
+
+1) Steps to reproduce the failure
+
+2) Expected result
+
+3) Actual result
+
+''' )
+
 	def __init__( self, request, name, description, priority, caching ):
 		self.request = request
 		self.priority = priority
@@ -45,11 +62,24 @@ class Command( object ):
 		self.referrer = None
 		self.__error_dialog = None
 
-	def error_message( self, report = None ):
+	def __mail_report_link( self, report ):
+		body = Command.MAIL_TEXT + report
+		url = urlunparse( ( 'mailto', '', Command.MAIL_ADDRESS, '',
+							urlencode( { 'subject' : unicode( Command.MAIL_SUBJECT ),
+										 'body' : unicode( body ) } ), '' ) )
+		return url.replace( '+', '%20' )
+
+	def error_message( self, report = None, exception = False ):
 		rows = []
 		if report:
 			lst = umcd.List()
-			lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ), report ] )
+			if exception:
+				lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ),
+							   umcd.HTML( '<pre>%s</pre>' % report ) ] )
+				text = _( 'Report this error to Univention Feedback &lt;feedback@univention.de&gt;' )
+				lst.add_row( [ '', umcd.Link( text, self.__mail_report_link( report ) ) ] )
+			else:
+				lst.add_row( [ umcd.Image( 'actions/critical', umc_tools.SIZE_MEDIUM ), report ] )
 			lst.add_row( [ '', umcd.ErrorButton() ] )
 			frame = umcd.Frame( [ lst ], _( 'An Error has occured' ) )
 			self.__error_dialog = umcd.Dialog( [ frame ] )

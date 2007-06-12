@@ -1,4 +1,4 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console

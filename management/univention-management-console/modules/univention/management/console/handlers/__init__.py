@@ -37,7 +37,7 @@ import univention.management.console.dialog as umcd
 
 import univention.debug as ud
 
-_ = umc.Translation( 'univention.management.console' ).translate
+_ = umc.Translation( 'univention.management.console.handlers' ).translate
 
 # UMC module command
 class command( object ):
@@ -104,6 +104,7 @@ class simpleHandler( signals.Provider ):
 				func( args )
 		except Exception, e:
 			import traceback
+			ud.debug( ud.ADMIN, ud.INFO, "EXCEPTION: %s" % traceback.format_exc() )
 			return traceback.format_exc()
 
 		return True
@@ -130,7 +131,7 @@ class simpleHandler( signals.Provider ):
 # 		self._start_response_timer( object.id(), self.__message )
 		self.__requests[ object.id() ] = ( object, method )
 		ret = self._exec_if( '_pre', method, object )
-		if ret != True:
+		if isinstance( ret, basestring ):
 			self.__execution_failed( object, ret )
 			return
 
@@ -142,7 +143,7 @@ class simpleHandler( signals.Provider ):
 
 			res = umcp.Response( object )
 			res.dialog = None
-			res.report = _( "Execution of command '%(command)s' has failed: %(text)s" ) % \
+			res.report = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
 							{ 'command' : object.arguments[ 0 ],
 							  'text' : unicode( traceback.format_exc() ) }
 			res.status( 600 )
@@ -186,15 +187,14 @@ class simpleHandler( signals.Provider ):
 	def __execution_failed( self, object, text ):
 		res = umcp.Response( object )
 		res.dialog = None
-		res.report = _( "Execution of command '%(command)s' has failed: %(text)s" ) % \
-						{ 'command' : object.arguments[ 0 ],
-						  'text' : unicode( text ) }
-		res.status( 600 )
+		res.report = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
+						{ 'command' : object.arguments[ 0 ], 'text' : unicode( text ) }
+		res.status( 500 )
 		self.signal_emit( 'failure', res )
 		del self.__requests[ object.id() ]
 
 	def finished( self, id, dialog, report = None, success = True ):
-		"""thss method should be invoked by module to finish the
+		"""this method should be invoked by module to finish the
 		processing of a request. 'id' is the request command identifier,
 		'dialog' should contain the result as UMC dialog and 'success'
 		defines if the request could be fulfilled or not. If there is a
@@ -208,7 +208,7 @@ class simpleHandler( signals.Provider ):
 			res = umcp.Response( object )
 
 			ret = self._exec_if( '_post', method, object )
-			if ret != True:
+			if isinstance( ret, basestring ):
 				self.__execution_failed( object, ret )
 				return
 			res.dialog = dialog
@@ -223,7 +223,7 @@ class simpleHandler( signals.Provider ):
 			if ret == None:
 				res.dialog = self.__verify_dialog( dialog )
 				self.result( res )
-			elif ret != True:
+			elif isinstance( ret, basestring ):
 				self.__execution_failed( object, ret )
 				return
 

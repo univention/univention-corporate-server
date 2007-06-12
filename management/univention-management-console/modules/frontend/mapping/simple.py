@@ -47,6 +47,11 @@ def text_map( storage, umcp_part ):
 for t in umcd.TextTypes:
 	mapper.add( t, text_map )
 
+def html_map( storage, umcp_part ):
+	return htmltext( '', utils.layout_attrs( storage, umcp_part ),
+					 { 'htmltext' : [ umcp_part.get_text() ] } )
+
+mapper.add( umcd.HTML, html_map )
 
 def icon_map( storage, umcp_part ):
 	return icon( '', { 'url' : umcp_part.get_image() }, {} )
