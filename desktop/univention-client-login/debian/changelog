@@ -1,3 +1,9 @@
+univention-client-login (2.0.0-2) unstable; urgency=low
+
+  * added -a 16 switch to rdesktop call
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 12 Jun 2007 17:10:33 +0200
+
 univention-client-login (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

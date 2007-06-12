@@ -46,7 +46,7 @@ case "$1" in
     echo "cleanup /usr/share/univention-client-login/rdesktop.Shutdown"
     echo start univention-skel
 
-    echo "$PASSWD" | rdesktop -u "$USER" -N -d "$univentionWindowsDomain" -p - -k "$rdpKeyboard" -f "$univentionWindowsTerminalServer"
+    echo "$PASSWD" | rdesktop -a 16 -u "$USER" -N -d "$univentionWindowsDomain" -p - -k "$rdpKeyboard" -f "$univentionWindowsTerminalServer"
     echo "exit"
 
     ;;
