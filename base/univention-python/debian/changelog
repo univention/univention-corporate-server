@@ -1,3 +1,9 @@
+univention-python (2.1.1-1) unstable; urgency=low
+
+  * add sitecustomize.py to set default encoding for python processes to utf-8
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 15:38:11 +0200
+
 univention-python (2.1.0-1) unstable; urgency=low
 
   * move univention/__init__.py to package python-univention-baseconfig
@@ -37,7 +43,7 @@ univention-python (1.19-5) unstable; urgency=low
 
 univention-python (1.19-4) unstable; urgency=low
 
-  * getPolicies failed if policy tried to set an attribute empty which was 
+  * getPolicies failed if policy tried to set an attribute empty which was
     not inherited earlier
 
  -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Apr 2006 12:05:34 +0200
@@ -53,7 +59,7 @@ univention-python (1.19-2) unstable; urgency=low
 
   * set debug level for ldap operation to INFO
 
- -- Andreas B�sching <buesching@univention.de>  Wed,  1 Mar 2006 11:21:10 +0100
+ -- Andreas Büsching <buesching@univention.de>  Wed,  1 Mar 2006 11:21:10 +0100
 
 univention-python (1.19-1) unstable; urgency=low
 
@@ -69,7 +75,7 @@ univention-python (1.17-2) unstable; urgency=low
 
 univention-python (1.16) unstable; urgency=low
 
-  * added dependency for the package python 
+  * added dependency for the package python
 
  -- Wolf Wiegand <wiegand@univention.de>  Thu,  8 Dec 2005 08:23:38 +0100
 
@@ -156,4 +162,3 @@ univention-python (0.1) unstable; urgency=low
   * Initial release
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Thu, 09 Oct 2002 16:22:45 +0200
-

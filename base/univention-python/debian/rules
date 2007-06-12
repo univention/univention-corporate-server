@@ -66,6 +66,7 @@ install-ext-%:
 	dh_installdirs
 
 	install -d debian/python-univention/usr/lib/python2.4/site-packages/univention/
+	install -m 0644 modules/sitecustomize.py debian/python-univention/usr/lib/python$*/site-packages/
 	install -m 0644 modules/dns.py debian/python-univention/usr/lib/python$*/site-packages/univention/
 	install -m 0644 modules/logging.py debian/python-univention/usr/lib/python$*/site-packages/univention/
 	install -m 0644 modules/misc.py debian/python-univention/usr/lib/python$*/site-packages/univention/
