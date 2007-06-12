@@ -1,3 +1,9 @@
+univention-gdm (1.0.1-2) unstable; urgency=low
+
+  * added -a 16 switch to rdesktop call
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 12 Jun 2007 17:11:46 +0200
+
 univention-gdm (1.0.1-1) unstable; urgency=low
 
   * change gdmgreeter path to /usr/lib/gdm

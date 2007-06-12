@@ -36,9 +36,9 @@ while true
 do
 	if [ -n "$univentionWindowsDomain" ]
 	then
-		rdesktop -u "" -k $rdpKeyboard -f -n "$hostname" -d "$univentionWindowsDomain" "$univentionWindowsTerminalServer"
+		rdesktop -a 16 -u "" -k $rdpKeyboard -f -n "$hostname" -d "$univentionWindowsDomain" "$univentionWindowsTerminalServer"
 	else
-		rdesktop -u "" -k $rdpKeyboard -f -n "$hostname" "$univentionWindowsTerminalServer"
+		rdesktop -a 16 -u "" -k $rdpKeyboard -f -n "$hostname" "$univentionWindowsTerminalServer"
 	fi
 done
 
