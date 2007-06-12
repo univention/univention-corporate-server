@@ -1,3 +1,20 @@
 Type: file
+File: opt/firefox/defaults/pref/firefox.js
+Variables: firefox/prefs/conffile
+Variables: firefox/prefs/mailto
+Variables: firefox/prefs/checkdefaultbrowser
+Variables: firefox/prefs/printing
+
+Type: file
+File: opt/firefox/browserconfig.properties
+Variables: firefox/prefs/homepage
+
+Type: file
 File: etc/mozilla-firefox/pref/firefox.js
 Variables: firefox/prefs/conffile
+Variables: firefox/prefs/mailto
+
+Type: file
+File: etc/iceweasel/pref/iceweasel.js
+Variables: firefox/prefs/conffile
+Variables: firefox/prefs/mailto

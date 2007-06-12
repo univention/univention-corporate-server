@@ -31,8 +31,11 @@ pref("print.print_command", "kprinter");
 pref("print.postscript.print_command", "kprinter");
 pref("print.postscript.paper_size", "A4");
 
-pref("network.protocol-handler.app.mailto", "evolution");
 @!@
+if baseConfig.has_key('firefox/prefs/mailto') and baseConfig['firefox/prefs/mailto']:
+	print 'pref("network.protocol-handler.app.mailto", "%s");' % baseConfig['firefox/prefs/mailto']
+
 if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
 	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
 @!@
+
