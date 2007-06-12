@@ -3,7 +3,7 @@
 # Univention LDAP Replication
 #  re-synchronize the local LDAP directory
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,6 +38,7 @@ display_header() {
         echo ""
         echo "univention-ldap-replication-resync: Resync local LDAP using a failed.ldif"
         echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
+		echo "usage: $0 <failed.ldif>"
         echo ""
 }
 
@@ -69,50 +70,54 @@ getdns()
 	}
 }
 
-display_header
-
-if [ -n "$1" ]
-then
-	if ! pidof slapd > /dev/null 2>&1
-		then
-		echo "No slapd-process found, resync is not possible."
-		echo "run /etc/init.d/slapd start"
-		exit 1
-	fi
-
-	if ! test -f $1
-		then
-		echo "Input $1 is no regular file"
-		exit 1
-	fi
-
-	date >> /var/log/univention/ldap-replication-resync.log
-	echo "Try to sync changes stored in $1 into local LDAP" | tee -a /var/log/univention/ldap-replication-resync.log
-	runsvctrl down /etc/runit/univention-ldap-listener
-	echo -n "waiting for listener-shutdown "
-	while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null
-	  do sleep 1
-	  echo -n " ."
-	done
-	echo " shutdown done"
-
-	echo "replay stored changes ..."
-	if ldapmodify -x -w`cat /etc/ldap/rootpw.conf |cut -d'"' -f 2` -D "cn=update,${ldap_base}" -c -S"${faileddns}" -f "$1" >> /var/log/univention/ldap-replication-resync.log 2>&1
-	then
-		echo ""
-		d=`date +%F-%X`
-		echo "Restored modifies sucessfuly, the ldif-file will be moved to /tmp/replayed.ldif_$d"
-		rm "${faileddns}"
-		mv $1 /tmp/replayed.ldif_$d
-		/etc/init.d/univention-ldap-listener start
-	else
-		echo "some DNs have failed and have to be synced manually:"
-		getdns "${faileddns}"
-		echo ""
-		echo "You can find the failed modifications in ${faileddns}"
-		echo "Check them for being sync with the master-LDAP, then delete $1 and start the listener again typing:"
-		echo "/etc/init.d/univention-ldap-listener start"
-	fi
-else
-	echo "usage: $0 <failed.ldif>"
+if [ -z "$1" ] || [ "$1" = "-h" -o "$1" = "--help" ]; then
+	display_header
+	exit 1
 fi
+
+if ! pidof slapd > /dev/null 2>&1
+	then
+	echo "No slapd-process found, resync is not possible."
+	echo "run /etc/init.d/slapd start"
+	exit 1
+fi
+
+if ! test -f $1
+	then
+	echo "Input $1 is no regular file"
+	exit 1
+fi
+
+date >> /var/log/univention/ldap-replication-resync.log
+echo "Try to sync changes stored in $1 into local LDAP" | tee -a /var/log/univention/ldap-replication-resync.log
+runsvctrl down /etc/runit/univention-ldap-listener
+echo -n "waiting for listener-shutdown "
+while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null
+  do sleep 1
+  echo -n " ."
+done
+echo " shutdown done"
+
+echo "replay stored changes ..."
+if ldapmodify -x -w`cat /etc/ldap/rootpw.conf |cut -d'"' -f 2` -D "cn=update,${ldap_base}" -c -S"${faileddns}" -f "$1" >> /var/log/univention/ldap-replication-resync.log 2>&1
+then
+	echo ""
+	d=`date +%F-%X`
+	echo "Restored modifies sucessfuly, the ldif-file will be moved to /tmp/replayed.ldif_$d"
+	rm "${faileddns}"
+	if [ ! -d /var/lib/univention-ldap-replication ]; then
+		mkdir -p /var/lib/univention-ldap-replication; chmod -R 700 /var/lib/univention-ldap-replication
+	fi
+	mv $1 /var/lib/univention-ldap-replication/replayed.ldif_$d; chmod 600 /var/lib/univention-ldap-replication/replayed.ldif_$d
+	/etc/init.d/univention-ldap-listener start
+	exit 0
+else
+	echo "some DNs have failed and have to be synced manually:"
+	getdns "${faileddns}"
+	echo ""
+	echo "You can find the failed modifications in ${faileddns}"
+	echo "Check them for being sync with the master-LDAP, then delete $1 and start the listener again typing:"
+	echo "/etc/init.d/univention-ldap-listener start"
+	exit 1
+fi
+
