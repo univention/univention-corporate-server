@@ -1,5 +1,5 @@
 #!/usr/bin/python2.4
-# -*- coding: iso-8859-1 -*-
+# -*- coding: utf-8 -*-
 #
 # Univention Baseconfig
 #  main baseconfig classes
@@ -51,7 +51,7 @@ warning_text='''Warning: This file is auto-generated and might be overwritten by
          univention-baseconfig.
          Please edit the following file(s) instead:
 Warnung: Diese Datei wurde automatisch generiert und kann durch
-         univention-baseconfig überschrieben werden.
+         univention-baseconfig Ã¼berschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
 sys.path.insert(0, '')
@@ -704,13 +704,13 @@ def replaceDict(line, dict):
 	return result
 
 def replaceUmlaut(line):
-	umlauts = { 'Ä': 'Ae',
-		    'ä': 'ae',
-		    'Ö': 'Oe',
-		    'ö': 'oe',
-		    'Ü': 'Ue',
-		    'ü': 'ue',
-		    'ß': 'ss', }
+	umlauts = { 'Ã„': 'Ae',
+		    'Ã¤': 'ae',
+		    'Ã–': 'Oe',
+		    'Ã¶': 'oe',
+		    'Ãœ': 'Ue',
+		    'Ã¼': 'ue',
+		    'ÃŸ': 'ss', }
 	return replaceDict(line, umlauts)
 
 def shellEscape(line):
@@ -737,7 +737,7 @@ def validateKey(k):
 		return 0
 	
 	if len(k) > 0:
-		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\\\]');
+		regex = re.compile('[\!\"\Â§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\\\]');
 		match = regex.search(k);
 		
 		if not match:

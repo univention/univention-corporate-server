@@ -8,7 +8,7 @@ univention-ssl (1.10.4-1) unstable; urgency=low
 
   * add shebang line to cron script 
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 20 Dec 2006 08:48:33 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 08:48:33 +0100
 
 univention-ssl (1.10.3-2) unstable; urgency=low
 
@@ -18,7 +18,7 @@ univention-ssl (1.10.3-2) unstable; urgency=low
     ssl/validity/check=yes
   * add #DEBHELPER# to postinst 
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 19 Dec 2006 18:01:23 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 19 Dec 2006 18:01:23 +0100
 
 univention-ssl (1.10-7) unstable; urgency=low
 

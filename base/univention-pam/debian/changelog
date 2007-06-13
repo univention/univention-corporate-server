@@ -52,7 +52,7 @@ univention-pam (0.15.1-1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 18:58:41 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat,  2 Dec 2006 18:58:41 +0100
 
 univention-pam (0.14-1) unstable; urgency=low
 

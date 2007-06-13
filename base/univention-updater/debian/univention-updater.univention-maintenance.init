@@ -62,7 +62,7 @@ case "$1" in
 					warning_message="$warning_message!!!!!!!!!! Schalten Sie das System erst aus, wenn die\n\r"
 					warning_message="$warning_message!!!!!!!!!! Ausgabe \"System halted!\" erscheint.\n\r"
 					warning_message="$warning_message!!!!!!!!!! Die meisten Systeme schalten sich\n\r"
-					warning_message="$warning_message!!!!!!!!!! selbstständig aus.\n\r"
+					warning_message="$warning_message!!!!!!!!!! selbststÃ¤ndig aus.\n\r"
 				elif /sbin/runlevel | grep '6$'> /dev/null 2>&1; then
 					warning_message="$warning_message!!!!!!!!!! Das System wird nach der Aktualisierung\n\r"
 					warning_message="$warning_message!!!!!!!!!! automatisch neu gestartet.\n\r"

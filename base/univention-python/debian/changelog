@@ -2,7 +2,7 @@ univention-python (2.1.1-1) unstable; urgency=low
 
   * add sitecustomize.py to set default encoding for python processes to utf-8
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 15:38:11 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 15:38:11 +0200
 
 univention-python (2.1.0-1) unstable; urgency=low
 
@@ -26,7 +26,7 @@ univention-python (1.20-1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Sun,  3 Dec 2006 11:52:52 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun,  3 Dec 2006 11:52:52 +0100
 
 univention-python (1.19-6) unstable; urgency=low
 
@@ -59,7 +59,7 @@ univention-python (1.19-2) unstable; urgency=low
 
   * set debug level for ldap operation to INFO
 
- -- Andreas Büsching <buesching@univention.de>  Wed,  1 Mar 2006 11:21:10 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed,  1 Mar 2006 11:21:10 +0100
 
 univention-python (1.19-1) unstable; urgency=low
 

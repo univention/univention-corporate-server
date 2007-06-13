@@ -45,7 +45,7 @@ univention-server (1.22) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 12:03:22 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon,  4 Dec 2006 12:03:22 +0100
 
 univention-server (1.21) unstable; urgency=low
 
@@ -76,13 +76,13 @@ univention-server (1.16) unstable; urgency=low
   * modified postinst script: recreate initrd image when the installation is
     an update otherwise just append bootsplash images
 
- -- Andreas B�sching <buesching@univention.de>  Tue, 13 Dec 2005 11:00:06 +0100
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Dec 2005 11:00:06 +0100
 
 univention-server (1.13) unstable; urgency=low
 
   * new background images for the bootsplash 
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 12 Dec 2005 11:25:06 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Dec 2005 11:25:06 +0100
 
 univention-server (1.12) unstable; urgency=low
 

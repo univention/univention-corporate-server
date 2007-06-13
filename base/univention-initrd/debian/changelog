@@ -20,7 +20,7 @@ univention-initrd (0.4.1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 28 Nov 2006 16:33:45 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 28 Nov 2006 16:33:45 +0100
 
 univention-initrd (0.3) unstable; urgency=low
 

@@ -2,19 +2,19 @@ univention-passwd-cache (0.3.2-1) unstable; urgency=low
 
   * applied patch from management scope
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 10:53:58 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 04 Jun 2007 10:53:58 +0200
 
 univention-passwd-cache (0.3.1-1) unstable; urgency=low
 
   * first import for UCS 2.0
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 10:33:40 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 04 Jun 2007 10:33:40 +0200
 
 univention-passwd-cache (0.3.0-2) unstable; urgency=low
 
   * add GPL headers 
 
- -- Andreas Büsching <buesching@univention.de>  Tue,  5 Dec 2006 10:11:24 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue,  5 Dec 2006 10:11:24 +0100
 
 univention-passwd-cache (0.2) unstable; urgency=low
 

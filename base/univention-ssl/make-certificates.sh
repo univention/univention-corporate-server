@@ -367,7 +367,7 @@ revoke_cert () {
 
 
 # Parameter 1: Name des Unterverzeichnisses, in dem das neue Zertifikat abgelegt werden soll
-# Parameter 2: Name des CN für den das Zertifikat ausgestellt wird.
+# Parameter 2: Name des CN fÃ¼r den das Zertifikat ausgestellt wird.
 
 gencert () {
 	local name="$1"

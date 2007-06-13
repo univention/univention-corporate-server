@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Baseconfig
 #  dictionary class for localized keys

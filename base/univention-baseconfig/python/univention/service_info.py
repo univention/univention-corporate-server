@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Baseconfig
 #  Service information: read information about registered Baseconfig

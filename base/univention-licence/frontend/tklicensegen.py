@@ -58,7 +58,7 @@ class tkLicenseGen:
 		self.eexm.pack(side=LEFT)		
 		self.eexy=Entry(self.lfdate,textvariable=self.exyear,width=2)
 		self.eexy.pack(side=LEFT)	
-		self.chkdate=Checkbutton(self.lfdate,text='Unbeschränkt',variable=self.chkdvar)
+		self.chkdate=Checkbutton(self.lfdate,text='UnbeschrÃ¤nkt',variable=self.chkdvar)
 		self.chkdate.pack(side=RIGHT)
 			
 
@@ -114,22 +114,22 @@ class tkLicenseGen:
 
 		self.emaxacc=Entry(self.lfmaxacc,textvariable=self.kmaxacc)
 		self.emaxacc.pack(side=LEFT)
-		self.chkmaxacc=Checkbutton(self.lfmaxacc,text='Unbeschränkt',variable=self.chkmaxaccvar)
+		self.chkmaxacc=Checkbutton(self.lfmaxacc,text='UnbeschrÃ¤nkt',variable=self.chkmaxaccvar)
 		self.chkmaxacc.pack(side=LEFT)
 
 		self.emaxgacc=Entry(self.lfmaxgacc,textvariable=self.kmaxgacc)
 		self.emaxgacc.pack(side=LEFT)
-		self.chkmaxgacc=Checkbutton(self.lfmaxgacc,text='Unbeschränkt',variable=self.chkmaxgaccvar)
+		self.chkmaxgacc=Checkbutton(self.lfmaxgacc,text='UnbeschrÃ¤nkt',variable=self.chkmaxgaccvar)
 		self.chkmaxgacc.pack(side=LEFT)
 
 		self.emaxcli=Entry(self.lfmaxcli,textvariable=self.kmaxcli)
 		self.emaxcli.pack(side=LEFT)
-		self.chkmaxcli=Checkbutton(self.lfmaxcli,text='Unbeschränkt',variable=self.chkmaxclivar)
+		self.chkmaxcli=Checkbutton(self.lfmaxcli,text='UnbeschrÃ¤nkt',variable=self.chkmaxclivar)
 		self.chkmaxcli.pack(side=LEFT)
 
 		self.emaxdesk=Entry(self.lfmaxdesk,textvariable=self.kmaxdesk)
 		self.emaxdesk.pack(side=LEFT)
-		self.chkmaxdesk=Checkbutton(self.lfmaxdesk,text='Unbeschränkt',variable=self.chkmaxdeskvar)
+		self.chkmaxdesk=Checkbutton(self.lfmaxdesk,text='UnbeschrÃ¤nkt',variable=self.chkmaxdeskvar)
 		self.chkmaxdesk.pack(side=LEFT)
 
 		self.bexit=Button(self.bframe,text='Beenden',command=self.quit)
@@ -184,7 +184,7 @@ class tkLicenseGen:
 				else:
 					showinfo('Fehler','Errorcode: "%s"\nEin unbekannter Fehler ist aufgetreten!\nBitte senden Sie eine komplette Fehlerbeschreibung an "support@univention.de"'%repr(i[0]))
 			else:
-				showinfo('Lizenz Erstellt!','Die Lizenz für %s wurde erfolgreich erstellt!'%self.kname.get())
+				showinfo('Lizenz Erstellt!','Die Lizenz fÃ¼r %s wurde erfolgreich erstellt!'%self.kname.get())
 			#print makelicense
 			#print '-->ErrorCode: %d'%i[0]
 			#print i[1]

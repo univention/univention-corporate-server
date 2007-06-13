@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Heimdal
 #  listener script for generating memberserver keytab entry

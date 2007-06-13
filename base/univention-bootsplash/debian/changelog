@@ -14,7 +14,7 @@ univention-bootsplash (0.3-6) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 24 Nov 2006 10:07:27 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 24 Nov 2006 10:07:27 +0100
 
 univention-bootsplash (0.3-4) unstable; urgency=low
 
@@ -27,19 +27,19 @@ univention-bootsplash (0.3-3) unstable; urgency=low
   * divert the init script console-screen.sh to ensure that this service does
     not interrupt the bootsplash
 
- -- Andreas B�sching <buesching@univention.de>  Thu, 15 Dec 2005 08:53:49 +0100
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Dec 2005 08:53:49 +0100
 
 univention-bootsplash (0.3-2) unstable; urgency=low
 
   * always remove console-screen.sh from the runlevel scripts in postinst
 
- -- Andreas B�sching <buesching@univention.de>  Wed, 14 Dec 2005 18:01:11 +0100
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Dec 2005 18:01:11 +0100
 
 univention-bootsplash (0.3-1) unstable; urgency=low
 
   * convert relative symbolic link to initrd image to a absolute path
 
- -- Andreas B�sching <buesching@univention.de>  Tue, 13 Dec 2005 08:58:03 +0100
+ -- Andreas Büsching <buesching@univention.de>  Tue, 13 Dec 2005 08:58:03 +0100
 
 univention-bootsplash (0.3-0) unstable; urgency=low
 

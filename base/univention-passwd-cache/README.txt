@@ -80,27 +80,27 @@ Ergebnis:
 
   Im Debian-Source univention-passwd-cache sind
   die Packages nss-passwdcache und pam-passwdcache enthalten.
-  Diese können mit dpkg installiert werden.
+  Diese kÃ¶nnen mit dpkg installiert werden.
   Die Pakete werden aber nicht konfiguriert.
   
   NSS-Modul:
   ----------
-  Das NSS-Modul ist für den Nameserverswitch der glibc. 
-  Dieses Modul dient der Namensauflösung für passwd, shadow und group 
+  Das NSS-Modul ist fÃ¼r den Nameserverswitch der glibc. 
+  Dieses Modul dient der NamensauflÃ¶sung fÃ¼r passwd, shadow und group 
   aus den Datenbanken
   /etc/univention/passwdcache/passwd
   /etc/univention/passwdcache/shadow
   /etc/univention/passwdcache/group
 
   Diese Textdateien haben die gleiche Struktur wie /etc/passwd usw.
-  Diese können durch kopieren hergestellt werden.
+  Diese kÃ¶nnen durch kopieren hergestellt werden.
   Das NSS-Modul greift auf die Dateien nur lesend zu. Wenn keine Dateien
   vorhanden sind, so wird nichts gelesen und kein Fehler verursacht.
   
   Zum Konfigurieren wird die Datei /etc/nsswitch.conf verwendet.
   Siehe dazu auch "man nsswitch.conf".
 
-  Ein Beispiel für /etc/nsswitch.conf ist:
+  Ein Beispiel fÃ¼r /etc/nsswitch.conf ist:
   
   passwd:         compat ldap passwdcache
   group:          compat ldap passwdcache
@@ -124,11 +124,11 @@ Ergebnis:
   ----------
   Das Pluggable Authentication Module dient dem Authentifizieren der Benutzer.
   Das PAM-Modul erstellt automatisch die cache-Dateien und die Pflegt die
-  Einträge. Solange eine Autentifizierung über ein anderes PAM-Modul erfolgreich
-  ist, werden gültige Benutzer hinzugefügt oder aktualisiert und
-  ungültige Benutzer entfernt. Wenn keine anderes PAM-Modul den Benutzer
-  autentifizieren kann, wird gegen den Cache geprüft.
-  Der Cache wird dann in diesen Fall nicht verändert. 
+  EintrÃ¤ge. Solange eine Autentifizierung Ã¼ber ein anderes PAM-Modul erfolgreich
+  ist, werden gÃ¼ltige Benutzer hinzugefÃ¼gt oder aktualisiert und
+  ungÃ¼ltige Benutzer entfernt. Wenn keine anderes PAM-Modul den Benutzer
+  autentifizieren kann, wird gegen den Cache geprÃ¼ft.
+  Der Cache wird dann in diesen Fall nicht verÃ¤ndert. 
   
   Das Konfigurieren der PAM-Module ist nicht einfach,
   da die einfache Schreibweise nicht ausreichend ist.
@@ -138,22 +138,22 @@ Ergebnis:
   Debug schalte ein geringes Logging hinzu.
   Das Ergebnis kann in /var/log/auth verfolgt werden.
 
-  "Insert" teilt dem Modul mit, das eine Verbindung zum Master verfügbar ist,
-  und der sich anmeldene Benutzer gültig ist.
-  Dieser wird in den Cache hinzugefügt oder aktualisiert.
+  "Insert" teilt dem Modul mit, das eine Verbindung zum Master verfÃ¼gbar ist,
+  und der sich anmeldene Benutzer gÃ¼ltig ist.
+  Dieser wird in den Cache hinzugefÃ¼gt oder aktualisiert.
 
-  "Delete" teilt dem Modul mit, das eine Verbindung zum Master verfügbar ist,
+  "Delete" teilt dem Modul mit, das eine Verbindung zum Master verfÃ¼gbar ist,
   und der Benutzer aus den Cache entfernt werden soll.
 
-  Ohne "Insert" oder "Delete" wird der Cache nicht verändert.
+  Ohne "Insert" oder "Delete" wird der Cache nicht verÃ¤ndert.
   Der Cache wird dann aber zum Authentifizieren verwendet.
   
   max_user limitiert die Anzahl der Benutzer im Cache. Wenn weitere Benutzer
-  hinzukommen werden automatisch die ältesten entfernt.
-  Der neueste Benutzer wird am Ende der Datei eingefügt.
-  Am Anfang der Datei ist der älteste Benutzer.
+  hinzukommen werden automatisch die Ã¤ltesten entfernt.
+  Der neueste Benutzer wird am Ende der Datei eingefÃ¼gt.
+  Am Anfang der Datei ist der Ã¤lteste Benutzer.
 
-  Ein Beispiel für /etc/pam.d/common-auth ist (Achtung, breite Zeilen):
+  Ein Beispiel fÃ¼r /etc/pam.d/common-auth ist (Achtung, breite Zeilen):
 
 
   auth sufficient                                                                               pam_unix.so debug

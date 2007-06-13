@@ -85,7 +85,7 @@ univention-installer (0.6.7) unstable; urgency=low
 
   * updated english text and german translation 
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:26:37 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 13:26:37 +0100
 
 univention-installer (0.6.3) unstable; urgency=low
 
@@ -98,7 +98,7 @@ univention-installer (0.5.102) unstable; urgency=low
   * update list of possible default languages when selection of installed
     languages has changed
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  7 Dec 2006 13:02:51 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu,  7 Dec 2006 13:02:51 +0100
 
 univention-installer (0.5.101) unstable; urgency=low
 
@@ -122,7 +122,7 @@ univention-installer (0.5.96) unstable; urgency=low
 
   * cleanup rules file
 
- -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 08:09:07 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri,  1 Dec 2006 08:09:07 +0100
 
 univention-installer (0.5.95) unstable; urgency=low
 
@@ -141,7 +141,7 @@ univention-installer (0.5.93) unstable; urgency=low
   * add GPL headers
   * code cleanup
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 28 Nov 2006 17:36:28 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 28 Nov 2006 17:36:28 +0100
 
 univention-installer (0.5.92) unstable; urgency=low
 
@@ -498,7 +498,7 @@ univention-installer (0.5.6) unstable; urgency=low
 
   * Bump version number for rebuild
 
- -- Moritz Mühlenhoff <jmm@billy.knut.univention.de>  Fri, 16 Jun 2006 14:33:04 +0200
+ -- Moritz MÃŒhlenhoff <jmm@billy.knut.univention.de>  Fri, 16 Jun 2006 14:33:04 +0200
 
 univention-installer (0.5.5) unstable; urgency=low
 

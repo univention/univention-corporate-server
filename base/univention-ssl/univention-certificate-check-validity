@@ -1,5 +1,5 @@
-#!/usr/bin/python2.4 -OO
-# -*- mode: python-mode -*-
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention SSL
 #  checks validity of the local SSL certificate

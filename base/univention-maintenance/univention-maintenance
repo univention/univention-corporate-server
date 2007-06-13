@@ -31,7 +31,7 @@
 # Name der Konfigurationsdatei
 configfile="/etc/univention/univention-maintenance.conf"
 
-# Konfigurationsdatei suchen und Werte prüfen
+# Konfigurationsdatei suchen und Werte prÃ¼fen
 test -e $configfile || {
     echo
     echo "FEHLER: Konfigurationsdatei \"$configfile\" nicht gefunden!"
@@ -61,10 +61,10 @@ test -z $indexhtm && {
     exit 2;
 }
 
-# Alte MRTG-Dateien löschen
+# Alte MRTG-Dateien lÃ¶schen
 rm -f $wwwdir/uds_*.png $wwwdir/uds_*.txt
 
-# Prozessorlast der letzten 15 Minuten prüfen
+# Prozessorlast der letzten 15 Minuten prÃ¼fen
 loadavg="`echo \`cat /proc/loadavg |awk '{print $3}'\`*100 | bc | cut -f1 -d"."`"
 mrtgname="uds_0load"
 echo "WorkDir: $wwwdir" > $mrtg_config
@@ -86,7 +86,7 @@ mrtg "$mrtg_config" 2>/dev/null
 rm -f $mrtg_config $wwwdir/uds_*.htm*
 echo "Systemlast $loadavg%" >$wwwdir/$mrtgname.txt
 
-# Anzahl der Sessions prüfen
+# Anzahl der Sessions prÃ¼fen
 nrsessions="`ps -C univention-sess | grep -ic univention-sess`"
 mrtgname="uds_1sessions"
 echo "WorkDir: $wwwdir" > $mrtg_config

@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Baseconfig
 #  add and remove nfs shares from the LDAP directory to /etc/fstab

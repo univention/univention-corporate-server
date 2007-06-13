@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Python
 #  UTF-8 helper functions
