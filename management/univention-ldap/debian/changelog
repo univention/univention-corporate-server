@@ -1,3 +1,9 @@
+univention-ldap (2.2.3-4) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:33 +0200
+
 univention-ldap (2.2.3-3) unstable; urgency=low
 
   * importing failed.ldif during slapd start
@@ -67,7 +73,7 @@ univention-ldap (1.43-19) unstable; urgency=low
 
   * use UTF-8 string type for location attribute of univentionPrinter objectclass 
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 20 Dec 2006 09:41:38 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 09:41:38 +0100
 
 univention-ldap (1.43-18) unstable; urgency=low
 
@@ -85,13 +91,13 @@ univention-ldap (1.43-16) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 30 Nov 2006 09:04:11 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 30 Nov 2006 09:04:11 +0100
 
 univention-ldap (1.43-15) unstable; urgency=low
 
   * converted univentionSyntaxLDAPAttribute to a multi-value attribute
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 27 Nov 2006 11:41:47 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 27 Nov 2006 11:41:47 +0100
 
 univention-ldap (1.43-14) unstable; urgency=low
 
@@ -135,7 +141,7 @@ univention-ldap (1.43-7) unstable; urgency=low
 
   * add sambaMungedDial attribute to univentionUserTemplate
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 13 Nov 2006 16:50:25 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 13 Nov 2006 16:50:25 +0100
 
 univention-ldap (1.43-6) unstable; urgency=low
 
@@ -160,14 +166,14 @@ univention-ldap (1.43-3) unstable; urgency=low
   * add attribute univentionSyntaxViewOnly. If true the assoziated attribute
     is not stored with the LDAP object but displayed as a list of buttons
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 Oct 2006 16:34:39 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 13 Oct 2006 16:34:39 +0200
 
 univention-ldap (1.43-1) unstable; urgency=low
 
   * add a new schema file containing the object class and attributes for a
     generic syntax definition
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 12 Oct 2006 11:20:55 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 12 Oct 2006 11:20:55 +0200
 
 univention-ldap (1.42-37) unstable; urgency=low
 
@@ -360,7 +366,7 @@ univention-ldap (1.40-6) unstable; urgency=low
   * add attribute univentionXVideoRam to object univentionPolicyXConfiguration
     to store the amount of RAM of a graphics board
 
- -- Andreas B�sching <buesching@univention.de>  Thu, 17 Nov 2005 09:02:53 +0100
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2005 09:02:53 +0100
 
 univention-ldap (1.40-5) unstable; urgency=low
 

@@ -12,8 +12,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: console_acl.py:21
 msgid "Settings: UMC ACLs"
@@ -21,7 +21,7 @@ msgstr "Einstellungen: UMC ACLs"
 
 #: console_acl.py:22
 msgid "List of ACLs for Univention Management Console"
-msgstr "Liste der ACLs für Univention Management Console"
+msgstr "Liste der ACLs fÃ¼r Univention Management Console"
 
 #: console_acl.py:27 console_acl.py:28 console_operation.py:27
 #: console_operation.py:28
@@ -47,7 +47,7 @@ msgstr "Rechner"
 
 #: console_acl.py:60
 msgid "Hosts or host group for this ACL"
-msgstr "Rechner oder Rechnergruppe für die ACLs"
+msgstr "Rechner oder Rechnergruppe fÃ¼r die ACLs"
 
 #: console_acl.py:70 console_acl.py:71
 msgid "LDAP search base"
@@ -75,7 +75,7 @@ msgstr "Einstellungen: UMC Operationen"
 
 #: console_operation.py:22
 msgid "List of Operations for Univention Management Console"
-msgstr "Liste von Operationen für Univention Management Console"
+msgstr "Liste von Operationen fÃ¼r Univention Management Console"
 
 #: console_operation.py:48
 msgid "Operation"

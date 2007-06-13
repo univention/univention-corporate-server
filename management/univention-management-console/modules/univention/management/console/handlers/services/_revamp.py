@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  service module: revamps dialog result for the web interface

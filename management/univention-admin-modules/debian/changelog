@@ -1,3 +1,9 @@
+univention-admin-modules (1.1.0-8) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:32 +0200
+
 univention-admin-modules (1.1.0-7) unstable; urgency=low
 
   * advanced error handling for wrong use of attributes in dhcp/sharedsubnet 
@@ -74,7 +80,7 @@ univention-admin-modules (0.48.10-1) unstable; urgency=low
 
   * add description and location attribute to shares/printer
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 20 Dec 2006 09:59:40 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 09:59:40 +0100
  
 univention-admin-modules (0.48.9-1) unstable; urgency=low
 
@@ -83,14 +89,14 @@ univention-admin-modules (0.48.9-1) unstable; urgency=low
   * univention-licence-check: an error is shown if there are more objects
     than allowed by the license
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 19 Dec 2006 14:49:43 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 19 Dec 2006 14:49:43 +0100
 
 univention-admin-modules (0.48.7-7) unstable; urgency=low
 
   * set default value for CtxShadow attribute when not defined by user
     template
 
- -- Andreas Büsching <buesching@univention.de>  Sun, 17 Dec 2006 16:49:18 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun, 17 Dec 2006 16:49:18 +0100
 
 univention-admin-modules (0.48.7-5) unstable; urgency=low
 
@@ -122,20 +128,20 @@ univention-admin-modules (0.48.7-1) unstable; urgency=low
     arguments of the constructor instead of a syntax definition object to
     define the search parameters
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 16:09:19 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 16:09:19 +0100
 
 univention-admin-modules (0.48.3-1) unstable; urgency=low
 
   * updated english text and german translation 
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 10:23:38 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 10:23:38 +0100
 
 univention-admin-modules (0.48.2-3) unstable; urgency=low
 
   * fixed a bug that caused the removal of group members when nested groups were
     changed
 
- -- Andreas Büsching <buesching@univention.de>  Fri,  8 Dec 2006 15:06:31 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri,  8 Dec 2006 15:06:31 +0100
 
 univention-admin-modules (0.48.2-2) unstable; urgency=low
 
@@ -147,7 +153,7 @@ univention-admin-modules (0.48.2-1) unstable; urgency=low
 
   * handle policy information dicts without the attribute 'fixed'
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  7 Dec 2006 08:51:02 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu,  7 Dec 2006 08:51:02 +0100
 
 univention-admin-modules (0.48.1-4) unstable; urgency=low
 
@@ -159,7 +165,7 @@ univention-admin-modules (0.48.1-1) unstable; urgency=low
 
   * updated copyright information in translation files 
 
- -- Andreas Büsching <buesching@univention.de>  Tue,  5 Dec 2006 19:19:29 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue,  5 Dec 2006 19:19:29 +0100
 
 univention-admin-modules (0.48-1) unstable; urgency=low
 
@@ -177,14 +183,14 @@ univention-admin-modules (0.47-75) unstable; urgency=low
 
   * corrected some translations
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 30 Nov 2006 09:20:41 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 30 Nov 2006 09:20:41 +0100
 
 univention-admin-modules (0.47-72) unstable; urgency=low
 
   * modified the syntax class LDAP_Search to use admin module attributes
     instead of LDAP attributes
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 28 Nov 2006 16:05:58 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 28 Nov 2006 16:05:58 +0100
 
 univention-admin-modules (0.47-71) unstable; urgency=low
 
@@ -215,13 +221,13 @@ univention-admin-modules (0.47-67) unstable; urgency=low
 
   * rewrote code for modifying ACLs of IMAP folders
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 09:24:42 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 23 Nov 2006 09:24:42 +0100
 
 univention-admin-modules (0.47-66) unstable; urgency=low
 
   * fixed a translation bug
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 21 Nov 2006 19:29:41 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 21 Nov 2006 19:29:41 +0100
 
 univention-admin-modules (0.47-64) unstable; urgency=low
 
@@ -229,7 +235,7 @@ univention-admin-modules (0.47-64) unstable; urgency=low
     no syntax class with the given name, a syntax definition object is search
     for and as a last fallback string is used as the syntax for the attribute.
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 21 Nov 2006 17:03:08 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 21 Nov 2006 17:03:08 +0100
 
 univention-admin-modules (0.47-63) unstable; urgency=low
 
@@ -268,7 +274,7 @@ univention-admin-modules (0.47-57) unstable; urgency=low
     attributes that are selected for displaying and storing, otherwise they are
     removed from the list of valid values
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 15 Nov 2006 11:13:53 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 15 Nov 2006 11:13:53 +0100
 
 univention-admin-modules (0.47-56) unstable; urgency=low
 
@@ -281,7 +287,7 @@ univention-admin-modules (0.47-54) unstable; urgency=low
   * add support for the following munged dial flags: CTXShadow, "Reconnect
     sessions", "on broken or timed out sessions"
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 13 Nov 2006 11:55:36 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 13 Nov 2006 11:55:36 +0100
 
 univention-admin-modules (0.47-52) unstable; urgency=low
 
@@ -291,7 +297,7 @@ univention-admin-modules (0.47-52) unstable; urgency=low
   * a new tab was added to the policy objects showing a list of objects that
     have a reference to this policy object
 
- -- Andreas Büsching <buesching@univention.de>  Wed,  8 Nov 2006 11:52:15 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed,  8 Nov 2006 11:52:15 +0100
 
 univention-admin-modules (0.47-51) unstable; urgency=low
 
@@ -327,7 +333,7 @@ univention-admin-modules (0.47-45) unstable; urgency=low
 
   *  add handling for module attribute default_containers
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 25 Oct 2006 15:02:09 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 25 Oct 2006 15:02:09 +0200
 
 univention-admin-modules (0.47-44) unstable; urgency=low
 
@@ -369,14 +375,14 @@ univention-admin-modules (0.47-33) unstable; urgency=low
 
   * add viewonly attribute to module settings/syntax
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 Oct 2006 16:44:21 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 13 Oct 2006 16:44:21 +0200
 
 univention-admin-modules (0.47-31) unstable; urgency=low
 
   * add new syntax class LDAP_Search that provides a generic way to define
     selection lists based on attributes of LDAP objects
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 12 Oct 2006 11:36:26 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 12 Oct 2006 11:36:26 +0200
 
 univention-admin-modules (0.47-29) unstable; urgency=low
 
@@ -564,7 +570,7 @@ univention-admin-modules (0.46-79) unstable; urgency=low
   * moved debian/links to debian/univention-admin-tools.links
   * /home/jmm/.profile
 
- -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Fri, 28 Jul 2006 13:25:47 +0200
+ -- Moritz MÃŒhlenhoff <jmm@anton.knut.univention.de>  Fri, 28 Jul 2006 13:25:47 +0200
 
 univention-admin-modules (0.46-78) unstable; urgency=low
 
@@ -797,21 +803,21 @@ univention-admin-modules (0.46-34) unstable; urgency=low
   * when editing boolean policy attributes check if the value is equal to
     default; in that case ignore the "change"
 
- -- Andreas B�sching <buesching@univention.de>  Tue,  2 May 2006 11:07:40 +0200
+ -- Andreas Büsching <buesching@univention.de>  Tue,  2 May 2006 11:07:40 +0200
 
 univention-admin-modules (0.46-33) unstable; urgency=low
 
   * modified simplePolicy::__setitem__ to save attributes that exist in the
     current object and are reset to the value of the parent policy.
 
- -- Andreas B�sching <buesching@univention.de>  Fri, 28 Apr 2006 10:26:55 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Apr 2006 10:26:55 +0200
 
 univention-admin-modules (0.46-31) unstable; urgency=low
 
   * create user's admin settings object when user modifies her settings
   * settings/user inherits settings from policy
 
- -- Andreas B�sching <buesching@univention.de>  Tue, 25 Apr 2006 14:06:43 +0200
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Apr 2006 14:06:43 +0200
 
 univention-admin-modules (0.46-27) unstable; urgency=low
 
@@ -825,7 +831,7 @@ univention-admin-modules (0.46-26) unstable; urgency=low
   * copy admin settings policy when creating the user's own admin settings
     object
 
- -- Andreas B�sching <buesching@univention.de>  Fri, 21 Apr 2006 11:40:54 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Apr 2006 11:40:54 +0200
 
 univention-admin-modules (0.46-23) unstable; urgency=low
 
@@ -853,7 +859,7 @@ univention-admin-modules (0.46-18) unstable; urgency=low
 
   * policies/autostart also applies to managed and mobile clients
 
- -- Andreas B�sching <buesching@univention.de>  Fri,  7 Apr 2006 19:58:22 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Apr 2006 19:58:22 +0200
 
 univention-admin-modules (0.46-17) unstable; urgency=low
 
@@ -1080,20 +1086,20 @@ univention-admin-modules (0.44-7) unstable; urgency=low
 
   * add attribute univentionXVideoRam to xfree policy
 
- -- Andreas B�sching <buesching@univention.de>  Thu, 17 Nov 2005 08:42:20 +0100
+ -- Andreas Büsching <buesching@univention.de>  Thu, 17 Nov 2005 08:42:20 +0100
 
 univention-admin-modules (0.44-5) unstable; urgency=low
 
   * license check does not fail anymore when the number of clients and account
     licenses are equal
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 31 Oct 2005 13:14:37 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 13:14:37 +0100
 
 univention-admin-modules (0.44-4) unstable; urgency=low
 
   * counting Mac OS clients for license check
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 31 Oct 2005 11:30:40 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 11:30:40 +0100
 
 univention-admin-modules (0.44-3) unstable; urgency=low
 

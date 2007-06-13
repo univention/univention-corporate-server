@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
 #  functions for checking/manipulating ip addresses and ranges

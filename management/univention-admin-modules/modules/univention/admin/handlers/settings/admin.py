@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
 #  admin module for the global univention admin settings

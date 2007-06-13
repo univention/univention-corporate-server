@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Admin
 #  this class reads the user specific settings

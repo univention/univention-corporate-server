@@ -1,6 +1,6 @@
 
 
-Dieses Dokument beschreibt die benutzerbezogenen Einstellungen für die neue
+Dieses Dokument beschreibt die benutzerbezogenen Einstellungen fÃŒr die neue
 Univention Console. Im Unterschied zu den Univention Admin Einstellungen wird
 es hier keine vorgegebenen Ansichten geben.
 Die benutzerbegogenen Einstellungen werden im LDAP gespeichert, per default
@@ -12,7 +12,7 @@ Gespeichert werden sollen im ersten Schritt die folgenden Einstellungen:
  - Rechnerobjekte
  - Favoriten Rechner
  - Favoriten Module
- - Beim Starten die lokalen oder domänen Objekte
+ - Beim Starten die lokalen oder domÃ€nen Objekte
  - Evtl. ein generisches Objekt abspeichern, welches beim Start von Univention
    Console ausgelese wird, u.a. letzte Suchfilter, letzt Ansicht usw.
 

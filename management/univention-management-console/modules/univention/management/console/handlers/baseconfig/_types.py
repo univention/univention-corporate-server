@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  module: manages Univention Baseconfig variables

@@ -11,8 +11,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: container.inc:39
 msgid "Session closed"
@@ -24,14 +24,14 @@ msgstr "Ihre aktuelle Sitzung wurde beendet."
 
 #: container.inc:45
 msgid "Invalid credentials"
-msgstr "Kennung ungültig"
+msgstr "Kennung ungÃ¼ltig"
 
 #: container.inc:46
 msgid ""
 "Your credentials are not valid anymore.<br /><br />Please login "
 "again."
 msgstr ""
-"Ihre aktuelle Kennung ist nicht mehr gültig.<br /><br />Bitte melden Sie "
+"Ihre aktuelle Kennung ist nicht mehr gÃ¼ltig.<br /><br />Bitte melden Sie "
 "sich erneut an."
 
 #: container.inc:73

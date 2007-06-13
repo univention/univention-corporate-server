@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  class representing a link object within a UMCP dialog

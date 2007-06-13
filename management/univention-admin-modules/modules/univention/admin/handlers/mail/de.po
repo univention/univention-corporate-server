@@ -11,12 +11,12 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: domain.py:44
 msgid "Mail: Mail Domain"
-msgstr "Mail: Mail-Domäne"
+msgstr "Mail: Mail-DomÃ¤ne"
 
 #: domain.py:53 folder.py:54 lists.py:51 mail.py:62
 msgid "Name"
@@ -36,7 +36,7 @@ msgstr "Mail: IMAP Ordner"
 
 #: folder.py:63
 msgid "Mail Domain"
-msgstr "Mail-Domäne"
+msgstr "Mail-DomÃ¤ne"
 
 #: folder.py:72
 msgid "User ACL"
@@ -56,11 +56,11 @@ msgstr "Kolab-Home-Server"
 
 #: folder.py:108
 msgid "Should Be Visible For Outlook"
-msgstr "Soll für Outlook sichtbar sein"
+msgstr "Soll fÃ¼r Outlook sichtbar sein"
 
 #: folder.py:109
 msgid "Outlook does not display folders outside of the 'user' namespace."
-msgstr " Outlook kann keine Ordner außerhalb des 'user' Namensraum anzeigen."
+msgstr " Outlook kann keine Ordner auÃŸerhalb des 'user' Namensraum anzeigen."
 
 #: folder.py:125
 msgid "Access Rights"
@@ -68,7 +68,7 @@ msgstr "Zugriffsrechte"
 
 #: folder.py:125
 msgid "Access rights for shared folder"
-msgstr "Zugriffsrechte für gemeinsamen Ordner"
+msgstr "Zugriffsrechte fÃ¼r gemeinsamen Ordner"
 
 #: lists.py:44
 msgid "Mail: Mailing Lists"
@@ -92,15 +92,15 @@ msgstr "Mail"
 
 #: mail.py:52
 msgid "Add, edit and delete Mail Objects"
-msgstr "Hinzufügen, bearbeiten und löschen von Mail-Objekten"
+msgstr "HinzufÃ¼gen, bearbeiten und lÃ¶schen von Mail-Objekten"
 
 #: mail.py:53
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: mail.py:53
 msgid "Add Mail Object"
-msgstr "Mail-Objekt hinzufügen"
+msgstr "Mail-Objekt hinzufÃ¼gen"
 
 #: mail.py:53
 msgid "Find"

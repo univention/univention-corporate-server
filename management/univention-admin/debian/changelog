@@ -1,3 +1,9 @@
+univention-admin (3.1.4-3) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:31 +0200
+
 univention-admin (3.1.4-2) unstable; urgency=low
 
   * create link to the webui-style icons
@@ -46,7 +52,7 @@ univention-admin (2.16-78) unstable; urgency=low
   * show warning if validity of SSL certificate is less than
     ssl/validity/warning (by default 30 days)
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 14 Dec 2006 13:01:26 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 14 Dec 2006 13:01:26 +0100
 
 univention-admin (2.16-76) unstable; urgency=low
 
@@ -59,21 +65,21 @@ univention-admin (2.16-74) unstable; urgency=low
   * LDAP_Search: fixed bug that caused a traceback when none of the found
     objects has one the displayed attributes
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 30 Nov 2006 09:16:48 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 30 Nov 2006 09:16:48 +0100
 
 univention-admin (2.16-72) unstable; urgency=low
 
   * LDAP_Search: remove object from list that do not have the required
     attribute for saving
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 14:35:36 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 29 Nov 2006 14:35:36 +0100
 
 univention-admin (2.16-69) unstable; urgency=low
 
   * Attributes with LDAP_Search as their syntax definition may now display
     several attributes if the view only mode is selected.
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 27 Nov 2006 11:40:10 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 27 Nov 2006 11:40:10 +0100
 
 univention-admin (2.16-68) unstable; urgency=low
 
@@ -86,7 +92,7 @@ univention-admin (2.16-67) unstable; urgency=low
   * show user-defined attributes in user and group listings that are displayed
     in the user and group wizards for the group membership configuration
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 21 Nov 2006 11:40:28 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 21 Nov 2006 11:40:28 +0100
 
 univention-admin (2.16-64) unstable; urgency=low
 
@@ -111,7 +117,7 @@ univention-admin (2.16-61) unstable; urgency=low
 
   * add handling for module attribute default_containers
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 25 Oct 2006 15:03:11 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 25 Oct 2006 15:03:11 +0200
 
 univention-admin (2.16-60) unstable; urgency=low
 
@@ -123,13 +129,13 @@ univention-admin (2.16-59) unstable; urgency=low
 
   * add handling for new syntax LDAP_Search including the view-only mode
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 Oct 2006 16:42:21 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 13 Oct 2006 16:42:21 +0200
 
 univention-admin (2.16-58) unstable; urgency=low
 
   * add handling for new syntax class LDAP_Search
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 12 Oct 2006 11:32:56 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 12 Oct 2006 11:32:56 +0200
 
 univention-admin (2.16-57) unstable; urgency=low
 
@@ -303,13 +309,13 @@ univention-admin (2.16-9) unstable; urgency=low
 
   * fixed typo that caused an error in the univention admin settings
 
- -- Andreas B�sching <buesching@univention.de>  Fri, 21 Apr 2006 11:44:59 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Apr 2006 11:44:59 +0200
 
 univention-admin (2.16-8) unstable; urgency=low
 
   * fixed reformating of strings for insertation in XML file
 
- -- Andreas B�sching <buesching@univention.de>  Thu, 13 Apr 2006 23:44:11 +0200
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Apr 2006 23:44:11 +0200
 
 univention-admin (2.16-6) unstable; urgency=low
 
@@ -366,7 +372,7 @@ univention-admin (2.15-2) unstable; urgency=low
   * use single edit mode in module browse and wizard if just one single object
     is selected.
 
- -- Andreas B�sching <buesching@univention.de>  Tue, 27 Dec 2005 22:03:59 +0100
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Dec 2005 22:03:59 +0100
 
 univention-admin (2.15-0) unstable; urgency=low
 

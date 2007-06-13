@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
 #  unit tests: groups/group tests

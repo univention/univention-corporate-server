@@ -1,8 +1,14 @@
+univention-webui-style (1.0.2-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:37 +0200
+
 univention-webui-style (1.0.2-1) unstable; urgency=low
 
   * applied modifications from UMC scope
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:57:19 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 01 Jun 2007 13:57:19 +0200
 
 univention-webui-style (1.0.1-1) unstable; urgency=low
 

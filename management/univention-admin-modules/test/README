@@ -4,22 +4,22 @@ Status
 Vergleich mit dem Testskript
 ----------------------------
 
-Einige der Testfälle des Testskripts werden noch nicht vom Unittest Framework
+Einige der TestfÃ¤lle des Testskripts werden noch nicht vom Unittest Framework
 abgedeckt, teilweise konkret, teilweise konzeptionell.  Und zwar sind das:
 
-- Tests für computers/* Objekte
+- Tests fÃ¼r computers/* Objekte
 
-  Es gibt bisher einen Testfall für eins dieser Objekte im TestComputers.py
+  Es gibt bisher einen Testfall fÃ¼r eins dieser Objekte im TestComputers.py
   Modul.  Dieses muss so ausgebaut werden, dass es mit dem Computertypen
-  parametrisiert ist (s. TestContainers.py für ein Beispiel der Technik), dann
-  können Unterklassen für jeden Computertypen definiert werden.
+  parametrisiert ist (s. TestContainers.py fÃ¼r ein Beispiel der Technik), dann
+  kÃ¶nnen Unterklassen fÃ¼r jeden Computertypen definiert werden.
 
-  Außerdem muss der Umgang mit verschiedenen Optionen implementiert werden
-  (Posix und Kerberos, s. TestSharesShare.py für ein Beispiel dazu), für die
-  dann ebenfalls Unterklassen definiert werden können.  Hierbei ist zu
-  beachten, dass einige Kombinationen aus Hosttyp und Optionen ungültig sind
+  AuÃŸerdem muss der Umgang mit verschiedenen Optionen implementiert werden
+  (Posix und Kerberos, s. TestSharesShare.py fÃ¼r ein Beispiel dazu), fÃ¼r die
+  dann ebenfalls Unterklassen definiert werden kÃ¶nnen.  Hierbei ist zu
+  beachten, dass einige Kombinationen aus Hosttyp und Optionen ungÃ¼ltig sind
   und entweder ausgelassen werden oder auf erwartete Fehler getestet werden
-  (s. TestGroups für ein Beispiel hierfür).
+  (s. TestGroups fÃ¼r ein Beispiel hierfÃ¼r).
 
   Momentan fehlen im Computer Testfall zudem die Locking-Tests, also die
   Tests, ob es verboten ist, ein Objekt mit z.B. der selben Mac-Adresse
@@ -27,15 +27,15 @@ abgedeckt, teilweise konkret, teilweise konzeptionell.  Und zwar sind das:
 
   Desweiteren testet das Testskript Computerobjekte sowohl mit einem
   Netzwerkparameter als auch mit direkter Angabe von IP, DHCP Dienst und DNS
-  Zonen; hierfür sollte eine weitere Basisklasse definiert werden (analog zur
-  bestehenden in TestComputers.py), für die dann wiederum Unterklassen
-  definiert werden müssen. (Alternativ können die vorher definierten
-  Unterklassen darüber parametrisiert werden, von welcher der beiden
+  Zonen; hierfÃ¼r sollte eine weitere Basisklasse definiert werden (analog zur
+  bestehenden in TestComputers.py), fÃ¼r die dann wiederum Unterklassen
+  definiert werden mÃ¼ssen. (Alternativ kÃ¶nnen die vorher definierten
+  Unterklassen darÃ¼ber parametrisiert werden, von welcher der beiden
   Unterklassen sie erben; Metaclass Hacking ist Geschmackssache :-)
 
   Zum Ende muss entschieden werden, welche Kombinationen aus Hosttyp und
-  Optionen für die simple und welche für die "extended" Testsuite verwandt
-  werden (s. hierfür TestUsers.py als Beispiel).
+  Optionen fÃ¼r die simple und welche fÃ¼r die "extended" Testsuite verwandt
+  werden (s. hierfÃ¼r TestUsers.py als Beispiel).
 
 - Mehr Kombinationen aus Optionen bei Benutzern
 
@@ -43,89 +43,89 @@ abgedeckt, teilweise konkret, teilweise konzeptionell.  Und zwar sind das:
   die eine feste Kombination aus Optionen festlegen.  Hier fehlen noch diverse
   Kombinationen (momentan sind es: a) keine Optionen, b) alle Optionen, c)
   eine Option, d) alle bis auf eine Option).  Alternativ zu Unterklassen
-  könnten die Kombinationen algorithmisch erzeugt und die Basisklasse darüber
+  kÃ¶nnten die Kombinationen algorithmisch erzeugt und die Basisklasse darÃ¼ber
   parametrisiert werden (s. dazu TestModuleList.py als Beispiel).
 
 - Schemaerweiterungen und Custom Attributes
 
-  Es fehlt bisher eine einfache Möglichkeit, Schemaerweiterungen innerhalb der
-  Tests in den laufenden LDAP Server einzuspeisen; diese müsste implementiert
-  werden.  Danach können für die betroffenen Klassen Unterklassen erzeugt
-  werden, die die `setUp' Methode überladen und die Custom Attributes in die
-  Properties einfügen.
+  Es fehlt bisher eine einfache MÃ¶glichkeit, Schemaerweiterungen innerhalb der
+  Tests in den laufenden LDAP Server einzuspeisen; diese mÃ¼sste implementiert
+  werden.  Danach kÃ¶nnen fÃ¼r die betroffenen Klassen Unterklassen erzeugt
+  werden, die die `setUp' Methode Ã¼berladen und die Custom Attributes in die
+  Properties einfÃ¼gen.
 
-  Das Ganze gehört natürlich in die "extended" Testsuiten; evtl. könnten die
-  notwendige Schemaänderungen vom CLI Frontend vorgenommen und zum Testende
-  wieder rückgängig gemacht werden.
+  Das Ganze gehÃ¶rt natÃ¼rlich in die "extended" Testsuiten; evtl. kÃ¶nnten die
+  notwendige SchemaÃ¤nderungen vom CLI Frontend vorgenommen und zum Testende
+  wieder rÃ¼ckgÃ¤ngig gemacht werden.
 
-- Rekursives Löschen
+- Rekursives LÃ¶schen
 
-  Es ist im Framework möglich, Unterbäume rekursiv zu löschen, indem der
-  `remove' Methode das Argument `recursive = True' übergeben wird.
+  Es ist im Framework mÃ¶glich, UnterbÃ¤ume rekursiv zu lÃ¶schen, indem der
+  `remove' Methode das Argument `recursive = True' Ã¼bergeben wird.
 
-  Diese Möglichkeit kann genutzt werden, um rekursives Löschen zu testen,
+  Diese MÃ¶glichkeit kann genutzt werden, um rekursives LÃ¶schen zu testen,
   indem die Container-Tests so erweitert werden, dass ihnen eine
-  untergeordnete Klasse von Objekten mit übergeben wird.  Nach dem Erzeugen
+  untergeordnete Klasse von Objekten mit Ã¼bergeben wird.  Nach dem Erzeugen
   wird ein Objekt dieses Typs unterhalb des Containers angelegt, der Container
-  danach rekursiv gelöscht und auf Nicht-Existenz beider Objekte geprüft.
+  danach rekursiv gelÃ¶scht und auf Nicht-Existenz beider Objekte geprÃ¼ft.
 
-  Hierfür sollte vermutlich die `runTest' Methode überschrieben werden, um den
-  veränderten Testablauf widerzuspiegeln (s. z.B. TestSettingsDefault.py als
-  Beispiel für das Überschreiben der Testmethode, TestDnsAlias.py als Beispiel
-  für das Erzeugen von (Unter-)Objekten).  Die hierfür erzeugten Tests können
+  HierfÃ¼r sollte vermutlich die `runTest' Methode Ã¼berschrieben werden, um den
+  verÃ¤nderten Testablauf widerzuspiegeln (s. z.B. TestSettingsDefault.py als
+  Beispiel fÃ¼r das Ãœberschreiben der Testmethode, TestDnsAlias.py als Beispiel
+  fÃ¼r das Erzeugen von (Unter-)Objekten).  Die hierfÃ¼r erzeugten Tests kÃ¶nnen
   als neues Testfallmodul implementiert werden, das TestContainers importiert.
 
 
-Sonstige nützliche Erweiterungen
+Sonstige nÃ¼tzliche Erweiterungen
 --------------------------------
 
 - Neue Benutzerattribute
 
-  Für Benutzerobjekte gibt es einige Optionen, die (soweit ich das sehe) im
+  FÃ¼r Benutzerobjekte gibt es einige Optionen, die (soweit ich das sehe) im
   Testskript nicht getestet werden, wie Groupware oder PKI.  Das TestUser
   Modul sollte um diese Optionen und deren Properties erweitert werden.
 
-- Ändern von Optionen
+- Ã„ndern von Optionen
 
-  Es gibt Optionen, die nach dem Erzeugen eines Objekts diesem zugefügt oder
-  von ihm entfernt werden können, wie z.B. die Groupware Option.  Um dies
-  testen zu können, sollte es eine Eigenschaft `modifyOptions' geben, die sich
-  zu `createOptions' verhält wie `modifyProperties' zu `createProperties'.
+  Es gibt Optionen, die nach dem Erzeugen eines Objekts diesem zugefÃ¼gt oder
+  von ihm entfernt werden kÃ¶nnen, wie z.B. die Groupware Option.  Um dies
+  testen zu kÃ¶nnen, sollte es eine Eigenschaft `modifyOptions' geben, die sich
+  zu `createOptions' verhÃ¤lt wie `modifyProperties' zu `createProperties'.
 
-  Zusätzlich müssten dann auch nach dem Ändern von Objekten dessen Optionen
-  (bzw. Objektklassen) geprüft werden.
+  ZusÃ¤tzlich mÃ¼ssten dann auch nach dem Ã„ndern von Objekten dessen Optionen
+  (bzw. Objektklassen) geprÃ¼ft werden.
 
 - Multi-IPs
 
-  Die Multi-IP Erweiterung besteht, wie ich sie verstehe, in der Änderung,
-  dass IPs nun multi-values sind; um sie auszunutzen und zu testen, müssen IP
-  Adressen einfach nach dem multi-value Protokoll für Properties festgelegt
-  werden (s. GenericCase für Dokumentation zu diesem Protokoll).
+  Die Multi-IP Erweiterung besteht, wie ich sie verstehe, in der Ã„nderung,
+  dass IPs nun multi-values sind; um sie auszunutzen und zu testen, mÃ¼ssen IP
+  Adressen einfach nach dem multi-value Protokoll fÃ¼r Properties festgelegt
+  werden (s. GenericCase fÃ¼r Dokumentation zu diesem Protokoll).
 
 - Automatisches Abschalten des Listener/Notifier Mechanismus
 
-  Je nach Anzahl der Testfälle oder der übergebenen Optionen sollte das CLI
-  Frontend eventuell den Listener/Notifier Mechanismus für die Dauer der Tests
-  deaktivieren (und danach reaktivieren).  Hierfür müssen einfach die
-  richtigen Shell-Befehle ausgeführt werden (was im Frontend und nicht in den
-  Tests geschehen sollte); es könnte eine eigene Option dafür eingeführt
-  werden, oder es könnte automatisch geschehen, sobald eine der "langen"
-  Optionen (-a, -A, -x) gewählt wurde.
+  Je nach Anzahl der TestfÃ¤lle oder der Ã¼bergebenen Optionen sollte das CLI
+  Frontend eventuell den Listener/Notifier Mechanismus fÃ¼r die Dauer der Tests
+  deaktivieren (und danach reaktivieren).  HierfÃ¼r mÃ¼ssen einfach die
+  richtigen Shell-Befehle ausgefÃ¼hrt werden (was im Frontend und nicht in den
+  Tests geschehen sollte); es kÃ¶nnte eine eigene Option dafÃ¼r eingefÃ¼hrt
+  werden, oder es kÃ¶nnte automatisch geschehen, sobald eine der "langen"
+  Optionen (-a, -A, -x) gewÃ¤hlt wurde.
 
-- Dediziertes Verzeichnis für Testfälle
+- Dediziertes Verzeichnis fÃ¼r TestfÃ¤lle
 
   Das CLI Frontend findet die Tests momentan dadurch, dass es Dateien namens
-  "Test*.py" im Verzeichnis "." sucht.  Besser wäre eventuell, ein eigenes
-  Verzeichnis für die Testfall Module zu erzeugen (z.B. unterhalb von
+  "Test*.py" im Verzeichnis "." sucht.  Besser wÃ¤re eventuell, ein eigenes
+  Verzeichnis fÃ¼r die Testfall Module zu erzeugen (z.B. unterhalb von
   /usr/lib/python), und es sollten auch .pyo oder .pyc Dateien beachtet werden
   (v.a. .pyo Dateien; die sind mit Optimierung erzeugt worden, was wir zum
-  Laden der Univention Admin Module ebenfalls machen müssen).
+  Laden der Univention Admin Module ebenfalls machen mÃ¼ssen).
 
 
 Fehlersuche
 ===========
 
-Ein Fehler in einem der Testfälle kann z.B. zu folgendem Output führen:
+Ein Fehler in einem der TestfÃ¤lle kann z.B. zu folgendem Output fÃ¼hren:
 
 ,----
 | testing module computers/trustaccount ... FAIL
@@ -152,40 +152,40 @@ Ein Fehler in einem der Testfälle kann z.B. zu folgendem Output führen:
 
 Die erste Zeile gibt uns die Beschreibung des Tests (insbes. das
 Handler-Modul, das getestet wird) und die Information, dass der Test
-fehlgeschlagen ist.  `FAIL' meint hier, dass eine Kondition explizit geprüft
-wurde und die Prüfung fehlgeschlagen ist.  `ERROR' würde bedeuten, dass ein
+fehlgeschlagen ist.  `FAIL' meint hier, dass eine Kondition explizit geprÃ¼ft
+wurde und die PrÃ¼fung fehlgeschlagen ist.  `ERROR' wÃ¼rde bedeuten, dass ein
 "unerwarteter Fehler" aufgetreten ist, was normalerweise eine Exception ist,
 die -nicht- von AssertionError erbt, also z.B. ein TypeError, wenn ein Fehler
-im Testfall vorliegt.  `ok' würde bedeuten, dass der Test erfolgreich war.
+im Testfall vorliegt.  `ok' wÃ¼rde bedeuten, dass der Test erfolgreich war.
 
 Unter der Liste der durchlaufenen Tests (und unter der doppelten Linie) werden
-dann die Fehler zusammengefasst.  Die erste Zeile zeigt dabei wiederum (für
+dann die Fehler zusammengefasst.  Die erste Zeile zeigt dabei wiederum (fÃ¼r
 jeden Fehler) wie er fehlgeschlagen ist (also `FAIL' oder `ERROR') und die
 Beschreibung des Tests.  Nach der einfachen Linie folgen dann der Traceback,
 der erzeugt wurde und dessen Fehlermeldung.
 
-Zum Ende wird zusammengefasst, wie viele Testfälle in welcher Zeit durchlaufen
+Zum Ende wird zusammengefasst, wie viele TestfÃ¤lle in welcher Zeit durchlaufen
 wurden und wie viele davon auf welche Weise fehlgeschlagen sind.
 
-Der Traceback soll natürlich der Fehleranalyse dienen; er zeigt an, welche
+Der Traceback soll natÃ¼rlich der Fehleranalyse dienen; er zeigt an, welche
 Funktionen von welcher Stelle aus aufgerufen wurden, bis es zum Fehler kam.
 Der Fehler findet sich hier unterhalb von `hookAfterCreated', d.h. einer der
-zusätzlich eingefügten Tests am neu erstellten Objekt ist fehlgeschlagen.
+zusÃ¤tzlich eingefÃ¼gten Tests am neu erstellten Objekt ist fehlgeschlagen.
 Aufgetreten ist der Fehler dann in der `__checkPassword' Methode -- dort habe
-ich ihn für dieses Beispiel eingebaut :-)
+ich ihn fÃ¼r dieses Beispiel eingebaut :-)
 
-Die Fehlermeldung nach dem Traceback verrät uns, welcher Fehler aufgetreten
+Die Fehlermeldung nach dem Traceback verrÃ¤t uns, welcher Fehler aufgetreten
 ist (`PropertyInvalidError', d.h. eine Property hatte einen unerwarteten
-Wert); in diesem Fall gibt er dazu aus, welche Property geprüft wurde
+Wert); in diesem Fall gibt er dazu aus, welche Property geprÃ¼ft wurde
 ("password"), was sie beinhalten soll ("Machine Password"), wie das Objekt
-heißt, das geprüft wurde ("testtrustaccount"), wo das Objekt im DIT angelegt
+heiÃŸt, das geprÃ¼ft wurde ("testtrustaccount"), wo das Objekt im DIT angelegt
 wurde ("cn=testtrustaccount,cn=computers,dc=ucs,dc=local"), zu welchem Modul
-das Objekt gehört ("computers/trustaccount"), und welche Werte erwartet wurden
-bzw. tatsächlich vorgefunden wurden.
+das Objekt gehÃ¶rt ("computers/trustaccount"), und welche Werte erwartet wurden
+bzw. tatsÃ¤chlich vorgefunden wurden.
 
 --------------------
 
-Hier ein weiteres, deutlich längeres Beispiel, entnommen aus einer Reihe von
+Hier ein weiteres, deutlich lÃ¤ngeres Beispiel, entnommen aus einer Reihe von
 User-Tests:
 
 ,----
@@ -271,23 +271,23 @@ Der erste Traceback zeigt, dass das Anlegen (`testCreate') des Objekts
 fehlgeschlagen ist, da der Unterprozess einen Fehler erzeugt hat
 (`ProcessFailedError').  Es wird angegeben, welches Programm aufgerufen wurde,
 mit welchem Fehlercode es beendet wurde und welche Ausgaben es erzeugt hat, in
-diesem Fall die Information, dass die übergeben Optionen ungültig waren.
+diesem Fall die Information, dass die Ã¼bergeben Optionen ungÃ¼ltig waren.
 
 Der zweite Traceback zeigt einen Fehler, der direkt im Univention Admin
 aufgetreten ist, was bedeutet, dass dieser durch Optionen an den CLI Admin zum
 Absturz gebracht werden konnte.  Der Traceback und der genaue Testfall sollten
-verwandt werden, um einen Bug gegen den Univention Admin zu öffnen (ist in
+verwandt werden, um einen Bug gegen den Univention Admin zu Ã¶ffnen (ist in
 diesem Fall geschehen).
 
-Der dritte Traceback zeigt die unspektakuläre "Object exists" Fehlermeldung
+Der dritte Traceback zeigt die unspektakulÃ¤re "Object exists" Fehlermeldung
 des CLI Admin; so ein Fehler an dieser Stelle weist darauf hin, dass es sich
 um einen Folgefehler handelt, d.h. entweder das Benutzerobjekt oder eins
-seiner Locks wurden bei einem der vorherigen Fehler nicht ordnungsgemäß
+seiner Locks wurden bei einem der vorherigen Fehler nicht ordnungsgemÃ¤ÃŸ
 entfernt.
 
 --------------------
 
-Als letztes Beispiel hier die Ausgabe einer Suche nach übriggebliebenen Locks:
+Als letztes Beispiel hier die Ausgabe einer Suche nach Ã¼briggebliebenen Locks:
 
 ,----
 | searching remaining locks ... FAIL
@@ -307,9 +307,9 @@ Als letztes Beispiel hier die Ausgabe einer Suche nach übriggebliebenen Locks:
 | FAILED (failures=1)
 `----
 
-Der Traceback verrät uns, dass ein Lock übriggeblieben ist, und an welcher DN
+Der Traceback verrÃ¤t uns, dass ein Lock Ã¼briggeblieben ist, und an welcher DN
 es zu finden ist.
 
 Um alle verbliebenen Locks automatisch zu entfernen, reicht es, dem CLI
-Frontend die `--cleanup' Option zu übergeben.  Die Ausgabe wird übrigens auf
+Frontend die `--cleanup' Option zu Ã¼bergeben.  Die Ausgabe wird Ã¼brigens auf
 Stdout ausgegeben und kann somit direkt in eine Datei umgeleitet werden.

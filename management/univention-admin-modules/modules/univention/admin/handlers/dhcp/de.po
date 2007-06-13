@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -21,15 +21,15 @@ msgstr "DHCP"
 
 #: dhcp.py:56
 msgid "Add, edit and delete DHCP Objects"
-msgstr "Hinzufügen, bearbeiten und löschen von DHCP-Objekten"
+msgstr "HinzufÃ¼gen, bearbeiten und lÃ¶schen von DHCP-Objekten"
 
 #: dhcp.py:57
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: dhcp.py:57
 msgid "Add DHCP Object"
-msgstr "DHCP-Objekt hinzufügen"
+msgstr "DHCP-Objekt hinzufÃ¼gen"
 
 #: dhcp.py:57
 msgid "Find"
@@ -71,7 +71,7 @@ msgid ""
 "hardware-address should be a set of hexadecimal octets (numbers from 0 "
 "through ff) separated by colons."
 msgstr ""
-"Zur Zeit werden nur Ethernet und Token-Ring unterstützt. Die Hardware-"
+"Zur Zeit werden nur Ethernet und Token-Ring unterstÃ¼tzt. Die Hardware-"
 "Adresse sollte aus hexadezimalen Oktetten (Zahlen von 0 bis ff) getrennt "
 "durch Doppelpunkte angegeben werden."
 
@@ -85,8 +85,8 @@ msgid ""
 "address or a domain name that resolves to one or more IP addresses"
 msgstr ""
 "Zuweisen einer oder mehrerer fester IP-Adressen. Jeder Eintrag sollte eine "
-"IP-Adresse oder ein vollständiger Rechnername, der sich in eine IP-Adresse "
-"auflösen lässt, sein."
+"IP-Adresse oder ein vollstÃ¤ndiger Rechnername, der sich in eine IP-Adresse "
+"auflÃ¶sen lÃ¤sst, sein."
 
 #: host.py:86
 msgid "Fixed IP Addresses"
@@ -182,7 +182,7 @@ msgstr "Dynamische Adresszuweisung"
 
 #: sharedsubnet.py:107 subnet.py:108
 msgid "Define a pool of addresses available for dynamic address assignment."
-msgstr "Definiere einen IP-Adressbereich für die dynamische Adresszuweisung."
+msgstr "Definiere einen IP-Adressbereich fÃ¼r die dynamische Adresszuweisung."
 
 #: subnet.py:45
 msgid "DHCP: Subnet"

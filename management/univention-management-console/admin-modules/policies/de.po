@@ -12,8 +12,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: console_access.py:45
 msgid "Allowed Operations"
@@ -45,7 +45,7 @@ msgstr "Nicht erlaubte Zugriffe"
 
 #: console_access.py:94
 msgid "Required Object Classes"
-msgstr "Benötigte Objektklassen"
+msgstr "BenÃ¶tigte Objektklassen"
 
 #: console_access.py:104
 msgid "Prohibited Object Classes"

@@ -12,8 +12,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: categories.py:74
 msgid "All Modules"
@@ -21,7 +21,7 @@ msgstr "Alle Module"
 
 #: categories.py:75
 msgid "Configuration and monitoring of system services"
-msgstr "Konfiguration und Überwachung von System-Diensten"
+msgstr "Konfiguration und Ãœberwachung von System-Diensten"
 
 #: categories.py:76
 msgid "Miscellaneous"
@@ -33,19 +33,19 @@ msgstr "Nicht zugeordnete Module"
 
 #: values.py:71
 msgid "value contains invalid characters"
-msgstr "Der Wert enthält ungültige Zeichen"
+msgstr "Der Wert enthÃ¤lt ungÃ¼ltige Zeichen"
 
 #: values.py:130
 msgid "Value is not a valid integer number."
-msgstr "Der Wert ist keine gültige Zahl."
+msgstr "Der Wert ist keine gÃ¼ltige Zahl."
 
 #: values.py:145
 msgid "invalid value."
-msgstr "Ungültiger Wert."
+msgstr "UngÃ¼ltiger Wert."
 
 #: values.py:150
 msgid "At least one entry is required."
-msgstr "Mindestens ein Einträg wird benötigt."
+msgstr "Mindestens ein EintrÃ¤g wird benÃ¶tigt."
 
 #: values.py:166
 msgid "German"
@@ -57,4 +57,4 @@ msgstr "Englisch"
 
 #: values.py:189
 msgid "A value is required."
-msgstr "Ein Wert wird benötigt."
+msgstr "Ein Wert wird benÃ¶tigt."

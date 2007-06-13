@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
@@ -69,7 +69,7 @@ msgstr "Keine Verbindung zum LDAP-Server."
 #: requests.py:350
 msgid "The LDAP server could not be contacted. Please try again later."
 msgstr ""
-"Der LDAP Server konnte nicht erreicht werden. Bitte versuchen Sie es später "
+"Der LDAP Server konnte nicht erreicht werden. Bitte versuchen Sie es spÃ¤ter "
 "noch einmal."
 
 #: requests.py:424
@@ -83,7 +83,7 @@ msgstr "Nichts"
 
 #: syntax.py:164
 msgid "select network"
-msgstr "Wählen Sie ein Netz aus."
+msgstr "WÃ¤hlen Sie ein Netz aus."
 
 #: syntax.py:176 syntax.py:178
 msgid "read"
@@ -95,7 +95,7 @@ msgstr "schreiben"
 
 #: syntax.py:176
 msgid "execute"
-msgstr "Ausführen"
+msgstr "AusfÃ¼hren"
 
 #: syntax.py:178
 msgid "access"
@@ -131,7 +131,7 @@ msgstr "Passwort (Wiederholung)"
 
 #: syntax.py:273
 msgid "Please retype the password to rule out typos."
-msgstr "Geben Sie das Passwort erneut ein, um Tippfehler auszuschließen."
+msgstr "Geben Sie das Passwort erneut ein, um Tippfehler auszuschlieÃŸen."
 
 #: syntax.py:289
 msgid "any"
@@ -184,8 +184,8 @@ msgstr "Aktion abbrechen"
 #~ "Univention Admin enables you to manage all components of your Univention "
 #~ "Corporate Server (UCS) Domain."
 #~ msgstr ""
-#~ "Univention Admin ermöglicht Ihnen die Administration aller Elemente Ihrer "
-#~ "Univention Corporate Server (UCS) Domäne."
+#~ "Univention Admin ermÃ¶glicht Ihnen die Administration aller Elemente Ihrer "
+#~ "Univention Corporate Server (UCS) DomÃ¤ne."
 
 #~ msgid "Wizards"
 #~ msgstr "Assistenten"
@@ -194,8 +194,8 @@ msgstr "Aktion abbrechen"
 #~ "Common tasks like administration of users, groups, servers, desktops and "
 #~ "printers can easily be handled using the wizards."
 #~ msgstr ""
-#~ "Alltägliche Aufgaben wie die Verwaltung von Benutzern, Gruppen, Server- "
-#~ "oder Desktopsystemen können direkt über die Assistenten "
+#~ "AlltÃ¤gliche Aufgaben wie die Verwaltung von Benutzern, Gruppen, Server- "
+#~ "oder Desktopsystemen kÃ¶nnen direkt Ã¼ber die Assistenten "
 #~ "(Benutzerverwaltung, Gruppenverwaltung usw.) abgewickelt werden."
 
 #~ msgid "Navigation"
@@ -208,9 +208,9 @@ msgstr "Aktion abbrechen"
 #~ "advanced DNS and DHCP configuration or settings for Univention Admin "
 #~ "itself."
 #~ msgstr ""
-#~ "Neben allen Möglichkeiten, die die Assistenten bieten, erlaubt die "
-#~ "Navigation die Administration der gesamten Domänenstruktur "
-#~ "einschliesslich Containern, Organisationseinheiten und zugehörigen "
+#~ "Neben allen MÃ¶glichkeiten, die die Assistenten bieten, erlaubt die "
+#~ "Navigation die Administration der gesamten DomÃ¤nenstruktur "
+#~ "einschliesslich Containern, Organisationseinheiten und zugehÃ¶rigen "
 #~ "Richtlinien, die fortgeschrittene Verwaltung von DNS und DHCP oder die "
 #~ "Konfiguration von Univention Admin."
 
@@ -224,10 +224,10 @@ msgstr "Aktion abbrechen"
 #~ "Univention Console for a machine can be found at the UCS object in the "
 #~ "computer wizard."
 #~ msgstr ""
-#~ "<a target=parent href=/console/>Univention Console</a> ermöglicht die "
+#~ "<a target=parent href=/console/>Univention Console</a> ermÃ¶glicht die "
 #~ "Konfiguration von lokalen Systemeinstellungen wie der "
 #~ "Netzwerkkonfiguration oder Installation von Software. Der Zugriff auf "
-#~ "Univention Console anderer UCS Systeme kann über Verknüpfungen an den "
+#~ "Univention Console anderer UCS Systeme kann Ã¼ber VerknÃ¼pfungen an den "
 #~ "Objekten in der Rechnerverwaltung erfolgen."
 
 #~ msgid ""
@@ -253,7 +253,7 @@ msgstr "Aktion abbrechen"
 
 #~ msgid "error while modifying: %s %s"
 #~ msgstr ""
-#~ "Beim Übernehmen der Änderungen ist ein Fehler aufgetreten: <br> %s %s"
+#~ "Beim Ãœbernehmen der Ã„nderungen ist ein Fehler aufgetreten: <br> %s %s"
 
 #~ msgid "Is the LDAP-Server started and reachable ?"
 #~ msgstr "Ist der LDAP-Server gestartet und erreichbar ?"
@@ -262,10 +262,10 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Keine Verbindung zum LDAP-Server."
 
 #~ msgid "About Univention Admin"
-#~ msgstr "Über Univention Admin"
+#~ msgstr "Ãœber Univention Admin"
 
 #~ msgid "About"
-#~ msgstr "Über"
+#~ msgstr "Ãœber"
 
 #~ msgid "Build"
 #~ msgstr "Build"
@@ -301,10 +301,10 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Account Operators"
 
 #~ msgid "delete"
-#~ msgstr "Löschen"
+#~ msgstr "LÃ¶schen"
 
 #~ msgid "%d Object(s) Selected for Removal"
-#~ msgstr "%d Objekte sind zum Löschen ausgewählt"
+#~ msgstr "%d Objekte sind zum LÃ¶schen ausgewÃ¤hlt"
 
 # modbrowse.py in myinit()
 #~ msgid "Object"
@@ -314,21 +314,21 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Ort"
 
 #~ msgid "Delete?"
-#~ msgstr "Wirklich löschen?"
+#~ msgstr "Wirklich lÃ¶schen?"
 
 #~ msgid "Delete refering objects?"
-#~ msgstr "Auch zugehörige Objekte löschen?"
+#~ msgstr "Auch zugehÃ¶rige Objekte lÃ¶schen?"
 
 # modbrowse.py in myinit()
 #~ msgid "%s object"
 #~ msgstr "%s Objekt"
 
 #~ msgid "select %s"
-#~ msgstr "\"%s\" auswählen"
+#~ msgstr "\"%s\" auswÃ¤hlen"
 
 #~ msgid "Really delete selected objects and refering objects if enabled."
 #~ msgstr ""
-#~ "Ausgewählte und falls aktiviert auch zugehörige Objekte endgültig löschen."
+#~ "AusgewÃ¤hlte und falls aktiviert auch zugehÃ¶rige Objekte endgÃ¼ltig lÃ¶schen."
 
 #~ msgid "cancel"
 #~ msgstr "Abbrechen"
@@ -337,28 +337,28 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Position:"
 
 #~ msgid "add"
-#~ msgstr "Hinzufügen"
+#~ msgstr "HinzufÃ¼gen"
 
 #~ msgid "add new object of selected type at current position"
-#~ msgstr "Neues Objekt des ausgewählten Typs an aktueller Position hinzufügen"
+#~ msgstr "Neues Objekt des ausgewÃ¤hlten Typs an aktueller Position hinzufÃ¼gen"
 
 #~ msgid "Make your choice..."
 #~ msgstr "Treffen Sie Ihre Wahl"
 
 #~ msgid "add new object at current position"
-#~ msgstr "Neues Objekt an aktueller Position hinzufügen"
+#~ msgstr "Neues Objekt an aktueller Position hinzufÃ¼gen"
 
 #~ msgid "select type of object to add"
-#~ msgstr "Gewünschten Objekttyp auswählen"
+#~ msgstr "GewÃ¼nschten Objekttyp auswÃ¤hlen"
 
 #~ msgid "Select target to move %d object(s) to"
-#~ msgstr "Wählen Sie das Ziel für %d zu verschiebende(s) Objekt(e) aus"
+#~ msgstr "WÃ¤hlen Sie das Ziel fÃ¼r %d zu verschiebende(s) Objekt(e) aus"
 
 #~ msgid "move"
 #~ msgstr "Entfernen"
 
 #~ msgid "move selected objects"
-#~ msgstr "Ausgewählte Objekte verschieben"
+#~ msgstr "AusgewÃ¤hlte Objekte verschieben"
 
 #~ msgid "browse"
 #~ msgstr "Navigation"
@@ -389,13 +389,13 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Typ"
 
 #~ msgid "Select"
-#~ msgstr "Auswählen"
+#~ msgstr "AuswÃ¤hlen"
 
 #~ msgid "switch to parent directory"
-#~ msgstr "In das übergeordnete Verzeichnis wechseln"
+#~ msgstr "In das Ã¼bergeordnete Verzeichnis wechseln"
 
 #~ msgid "up"
-#~ msgstr "übergeordneter Ordner"
+#~ msgstr "Ã¼bergeordneter Ordner"
 
 #~ msgid "%d search result(s) (from cache):"
 #~ msgstr "%d Suchergebnis(se) (zwischengespeichert):"
@@ -407,19 +407,19 @@ msgstr "Aktion abbrechen"
 #~ msgstr "(aktuell)"
 
 #~ msgid "open %s"
-#~ msgstr "\"%s\" öffnen"
+#~ msgstr "\"%s\" Ã¶ffnen"
 
 #~ msgid "edit %s"
 #~ msgstr "\"%s\" bearbeiten"
 
 #~ msgid "Do"
-#~ msgstr "Ausführen"
+#~ msgstr "AusfÃ¼hren"
 
 #~ msgid "Do action with selected objects."
-#~ msgstr "Aktion mit ausgewählten Objekte durchführen."
+#~ msgstr "Aktion mit ausgewÃ¤hlten Objekte durchfÃ¼hren."
 
 #~ msgid "Do with selected objects..."
-#~ msgstr "Die ausgewählten Objekte ..."
+#~ msgstr "Die ausgewÃ¤hlten Objekte ..."
 
 #~ msgid "Invert selection"
 #~ msgstr "Auswahl umkehren"
@@ -428,10 +428,10 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Bearbeiten"
 
 #~ msgid "Delete"
-#~ msgstr "Löschen"
+#~ msgstr "LÃ¶schen"
 
 #~ msgid "Delete recursively"
-#~ msgstr "Rekursiv löschen"
+#~ msgstr "Rekursiv lÃ¶schen"
 
 #~ msgid "Move"
 #~ msgstr "Verschieben"
@@ -440,54 +440,54 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Hierher verschieben"
 
 #~ msgid "move selected objects here"
-#~ msgstr "Ausgewählte Objekte hierher verschieben"
+#~ msgstr "AusgewÃ¤hlte Objekte hierher verschieben"
 
 #~ msgid "cancel moving object"
 #~ msgstr "Verschieben des Objektes abbrechen"
 
 #~ msgid "More than %d results, please refine search filter."
 #~ msgstr ""
-#~ "Es wurden mehr als %d Objekte gefunden, bitte schränken Sie die Suche ein."
+#~ "Es wurden mehr als %d Objekte gefunden, bitte schrÃ¤nken Sie die Suche ein."
 
 #~ msgid "Removing %d/%d selected objects failed: %s"
-#~ msgstr "Das Löschen von %d/%d ausgewählten Objekten ist fehlgeschlagen: %s"
+#~ msgstr "Das LÃ¶schen von %d/%d ausgewÃ¤hlten Objekten ist fehlgeschlagen: %s"
 
 #~ msgid "Removed %d/%d objects successfully."
-#~ msgstr "Es wurden %d/%d Objekte erfolgreich gelöscht."
+#~ msgstr "Es wurden %d/%d Objekte erfolgreich gelÃ¶scht."
 
 #~ msgid "Position changed."
-#~ msgstr "Position geändert."
+#~ msgstr "Position geÃ¤ndert."
 
 #~ msgid "%d object(s) are selected."
 #~ msgstr "%d Objekt(e) sind markiert."
 
 #~ msgid "Cannot edit multiple objects with different types."
-#~ msgstr "Es können nicht mehrere Objekte unterschiedlichen Typs bearbeiten."
+#~ msgstr "Es kÃ¶nnen nicht mehrere Objekte unterschiedlichen Typs bearbeiten."
 
 #~ msgid "Position has not changed. Not moving objects."
 #~ msgstr ""
-#~ "Die Position hat sich nicht geändert und die Objekte wurden nicht "
+#~ "Die Position hat sich nicht geÃ¤ndert und die Objekte wurden nicht "
 #~ "verschoben."
 
 #~ msgid "Moving %d/%d objects failed: %s"
 #~ msgstr "Das Verschieben von %d/%d Objekten ist fehlgeschlagen: %s"
 
 #~ msgid "Moved %d/%d objects successfully."
-#~ msgstr "Es wurden %d/%d ausgewählten Objekten erfolgreich verschoben."
+#~ msgstr "Es wurden %d/%d ausgewÃ¤hlten Objekten erfolgreich verschoben."
 
 #~ msgid ""
 #~ "Error opening Object: %s <br> You may encounter further errors editing "
 #~ "this object."
 #~ msgstr ""
-#~ "Fehler beim Öffnen des Objekts: %s <br> Bei der weiteren Bearbeitung des "
-#~ "Objekts sind Folgefehler nicht auszuschließen."
+#~ "Fehler beim Ã–ffnen des Objekts: %s <br> Bei der weiteren Bearbeitung des "
+#~ "Objekts sind Folgefehler nicht auszuschlieÃŸen."
 
 #~ msgid ""
 #~ "Warning opening Object: <ul>%s</ul> You may encounter further errors "
 #~ "editing this object."
 #~ msgstr ""
-#~ "Warnungen beim Öffnen des Objekts: <ul>%s</ul> Bei der weiteren "
-#~ "Bearbeitung des Objekts sind Folgefehler nicht auszuschließen."
+#~ "Warnungen beim Ã–ffnen des Objekts: <ul>%s</ul> Bei der weiteren "
+#~ "Bearbeitung des Objekts sind Folgefehler nicht auszuschlieÃŸen."
 
 #~ msgid "name:"
 #~ msgstr "Name:"
@@ -516,7 +516,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Los"
 
 #~ msgid "Available Policy Types:"
-#~ msgstr "Verfügbare Richtlinientypen"
+#~ msgstr "VerfÃ¼gbare Richtlinientypen"
 
 #~ msgid "Policy Type"
 #~ msgstr "Richtlinientyp"
@@ -528,55 +528,55 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Richtlinie bearbeiten"
 
 #~ msgid "select %s for disconnection"
-#~ msgstr "\"%s\" zum Trennen auswählen"
+#~ msgstr "\"%s\" zum Trennen auswÃ¤hlen"
 
 #~ msgid "inherited"
 #~ msgstr "ererbt"
 
 #~ msgid "Disconnect selected policies"
-#~ msgstr "Ausgewählte Richtlinien trennen"
+#~ msgstr "AusgewÃ¤hlte Richtlinien trennen"
 
 #~ msgid "%s for Container %s"
-#~ msgstr "%s für Container %s"
+#~ msgstr "%s fÃ¼r Container %s"
 
 #~ msgid "%s for new Container"
-#~ msgstr "%s für neuen Container"
+#~ msgstr "%s fÃ¼r neuen Container"
 
 #~ msgid "apply"
 #~ msgstr "Zuweisen"
 
 #~ msgid "Choose a configuration for your object"
-#~ msgstr "Wählen Sie eine Konfiguration für Ihr Objekt"
+#~ msgstr "WÃ¤hlen Sie eine Konfiguration fÃ¼r Ihr Objekt"
 
 #~ msgid "Select Configuration:"
-#~ msgstr "Konfiguration auswählen:"
+#~ msgstr "Konfiguration auswÃ¤hlen:"
 
 #~ msgid "select forward lookup zone"
-#~ msgstr "Wählen Sie eine Forward Lookup Zone aus."
+#~ msgstr "WÃ¤hlen Sie eine Forward Lookup Zone aus."
 
 #~ msgid "select reverse lookup zone"
-#~ msgstr "Wählen Sie eine Reverse Lookup Zone aus."
+#~ msgstr "WÃ¤hlen Sie eine Reverse Lookup Zone aus."
 
 #~ msgid "select attribute"
-#~ msgstr "Wählen Sie ein Attribut aus."
+#~ msgstr "WÃ¤hlen Sie ein Attribut aus."
 
 #~ msgid "%s: Too many entries for selectbox"
-#~ msgstr "%s: zu viele Einträge für eine Auswahlliste"
+#~ msgstr "%s: zu viele EintrÃ¤ge fÃ¼r eine Auswahlliste"
 
 #~ msgid "select profile"
-#~ msgstr "Wählen Sie ein Profil"
+#~ msgstr "WÃ¤hlen Sie ein Profil"
 
 #~ msgid "Add %s"
-#~ msgstr "%s hinzufügen"
+#~ msgstr "%s hinzufÃ¼gen"
 
 #~ msgid "Current entries for '%s'"
-#~ msgstr "Aktuelle Einträge für '%s'"
+#~ msgstr "Aktuelle EintrÃ¤ge fÃ¼r '%s'"
 
 #~ msgid "Entries:"
-#~ msgstr "Einträge:"
+#~ msgstr "EintrÃ¤ge:"
 
 #~ msgid "Remove selected '%s' entrie(s) from list"
-#~ msgstr "Lösche die ausgewählten '%s' Einträge aus der Liste."
+#~ msgstr "LÃ¶sche die ausgewÃ¤hlten '%s' EintrÃ¤ge aus der Liste."
 
 #~ msgid "Move upwards"
 #~ msgstr "Nach oben schieben"
@@ -585,7 +585,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Nach unten schieben"
 
 #~ msgid "select host"
-#~ msgstr "Wählen Sie einen Rechner aus."
+#~ msgstr "WÃ¤hlen Sie einen Rechner aus."
 
 #~ msgid "Not Before"
 #~ msgstr "Nicht Vor"
@@ -662,31 +662,31 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Benutzerzertifikat (base64-encoded)"
 
 #~ msgid "Select a file"
-#~ msgstr "Wählen Sie eine Datei"
+#~ msgstr "WÃ¤hlen Sie eine Datei"
 
 #~ msgid "Load New file"
 #~ msgstr "Neue Datei laden"
 
 #~ msgid "Upload selected file"
-#~ msgstr "Ausgewählte Datei hochladen"
+#~ msgstr "AusgewÃ¤hlte Datei hochladen"
 
 #~ msgid "Load file"
 #~ msgstr "Datei laden"
 
 #~ msgid "Delete certificate"
-#~ msgstr "Zertifikat löschen"
+#~ msgstr "Zertifikat lÃ¶schen"
 
 #~ msgid "Download/Import Certificate"
 #~ msgstr "Zertifikat Herunterladen/Importieren"
 
 #~ msgid "select Server"
-#~ msgstr "Server auswählen"
+#~ msgstr "Server auswÃ¤hlen"
 
 #~ msgid "all"
 #~ msgstr "alles"
 
 #~ msgid "append"
-#~ msgstr "anhängen"
+#~ msgstr "anhÃ¤ngen"
 
 #~ msgid "post"
 #~ msgstr "senden"
@@ -699,10 +699,10 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Zugangsrecht"
 
 #~ msgid "select access right"
-#~ msgstr "Zugangsrechte auswählen"
+#~ msgstr "Zugangsrechte auswÃ¤hlen"
 
 #~ msgid "Add"
-#~ msgstr "Hinzufügen"
+#~ msgstr "HinzufÃ¼gen"
 
 #~ msgid "Remove"
 #~ msgstr "Entfernen"
@@ -756,43 +756,43 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Dienste"
 
 #~ msgid "select manufacturer"
-#~ msgstr "Wählen Sie den Hersteller aus."
+#~ msgstr "WÃ¤hlen Sie den Hersteller aus."
 
 #~ msgid "manufacturer"
 #~ msgstr "Hersteller"
 
 #~ msgid "select printer-manufacturer"
-#~ msgstr "Wählen Sie den Druckerhersteller aus"
+#~ msgstr "WÃ¤hlen Sie den Druckerhersteller aus"
 
 #~ msgid "select printer-model"
-#~ msgstr "Wählen Sie ein Druckermodell aus"
+#~ msgstr "WÃ¤hlen Sie ein Druckermodell aus"
 
 #~ msgid "select package list"
-#~ msgstr "Paketliste auswählen"
+#~ msgstr "Paketliste auswÃ¤hlen"
 
 #~ msgid "package list"
 #~ msgstr "Paketliste"
 
 #~ msgid "select Packages"
-#~ msgstr "Pakete auswählen"
+#~ msgstr "Pakete auswÃ¤hlen"
 
 #~ msgid "Self Tabs List"
 #~ msgstr "Sichtbare Karteikarten"
 
 #~ msgid "select tab"
-#~ msgstr "Wählen Sie eine Karteikarte aus."
+#~ msgstr "WÃ¤hlen Sie eine Karteikarte aus."
 
 #~ msgid "All"
 #~ msgstr "Alles"
 
 #~ msgid "choose objects to add"
-#~ msgstr "Wählen Sie die Objekte zum hinzufügen aus."
+#~ msgstr "WÃ¤hlen Sie die Objekte zum hinzufÃ¼gen aus."
 
 #~ msgid "Current"
 #~ msgstr "Aktuell"
 
 #~ msgid "choose objects to remove"
-#~ msgstr "Wählen Sie die zu entfernenden Objekte aus."
+#~ msgstr "WÃ¤hlen Sie die zu entfernenden Objekte aus."
 
 #~ msgid "Fri"
 #~ msgstr "Fr"
@@ -825,16 +825,16 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Anmeldung"
 
 #~ msgid "overwrite value %s in all objects"
-#~ msgstr "Überschreibe Wert %s in allen Objekten"
+#~ msgstr "Ãœberschreibe Wert %s in allen Objekten"
 
 #~ msgid "overwrite"
-#~ msgstr "überschreiben"
+#~ msgstr "Ã¼berschreiben"
 
 #~ msgid "Invalid value"
 #~ msgstr "Ungueltige Eingabe"
 
 #~ msgid "Position changed"
-#~ msgstr "Position geändert"
+#~ msgstr "Position geÃ¤ndert"
 
 #~ msgid "Modifying %d/%d objects failed: %s"
 #~ msgstr "Die Bearbeitung von %d/%d Objekten ist fehlgeschlagen: %s"
@@ -861,7 +861,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Abmelden"
 
 #~ msgid "Do you really want to logout?"
-#~ msgstr "Möchten Sie sich wirklich abmelden?"
+#~ msgstr "MÃ¶chten Sie sich wirklich abmelden?"
 
 #~ msgid "Please enter your uid."
 #~ msgstr "Bitte geben Sie hier Ihren Benutzernamen ein."
@@ -879,20 +879,20 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Abbruch des Anmeldevorgangs."
 
 #~ msgid "Login Domain:"
-#~ msgstr "Domäne für die Anmeldung:"
+#~ msgstr "DomÃ¤ne fÃ¼r die Anmeldung:"
 
 #~ msgid "choose Domain for login"
-#~ msgstr "Bitte wählen Sie die Domäne, an der Sie sich anmelden möchten."
+#~ msgstr "Bitte wÃ¤hlen Sie die DomÃ¤ne, an der Sie sich anmelden mÃ¶chten."
 
 #~ msgid "Wrong Username or Password or Domain"
 #~ msgstr ""
-#~ "Der Benutzername oder das Passwort sind für die ausgewählte Domäne nicht "
+#~ "Der Benutzername oder das Passwort sind fÃ¼r die ausgewÃ¤hlte DomÃ¤ne nicht "
 #~ "korrekt."
 
 #~ msgid "License not found. During this session add and modify are disabled."
 #~ msgstr ""
-#~ "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
-#~ "Bearbeiten von Objekten nicht möglich."
+#~ "Keine Lizenz gefunden. WÃ¤hrend dieser Sitzung ist das HinzufÃ¼gen und "
+#~ "Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid "Login successful"
 #~ msgstr "Anmeldung erfolgreich."
@@ -901,57 +901,57 @@ msgstr "Aktion abbrechen"
 #~ "You have too many user accounts for your license. During this session add "
 #~ "and modify are disabled."
 #~ msgstr ""
-#~ "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
-#~ "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+#~ "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. WÃ¤hrend dieser "
+#~ "Sitzung ist das HinzufÃ¼gen und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "You have too many client accounts for your license. During this session "
 #~ "add and modify are disabled."
 #~ msgstr ""
-#~ "Sie haben mehr Client Rechner, als Ihre Lizenz erlaubt. Während dieser "
-#~ "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+#~ "Sie haben mehr Client Rechner, als Ihre Lizenz erlaubt. WÃ¤hrend dieser "
+#~ "Sitzung ist das HinzufÃ¼gen und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "You have too many desktop accounts for your license. During this session "
 #~ "add and modify are disabled."
 #~ msgstr ""
-#~ "Sie haben mehr Desktop Rechner, als Ihre Lizenz erlaubt. Während dieser "
-#~ "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+#~ "Sie haben mehr Desktop Rechner, als Ihre Lizenz erlaubt. WÃ¤hrend dieser "
+#~ "Sitzung ist das HinzufÃ¼gen und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "You have too many groupware accounts for your license. During this "
 #~ "session add and modify are disabled."
 #~ msgstr ""
-#~ "Sie haben mehr Groupware Konten, als Ihre Lizenz erlaubt. Während dieser "
-#~ "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+#~ "Sie haben mehr Groupware Konten, als Ihre Lizenz erlaubt. WÃ¤hrend dieser "
+#~ "Sitzung ist das HinzufÃ¼gen und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "Your license is expired. During this session add and modify are disabled."
 #~ msgstr ""
-#~ "Die Lizenz ist abgelaufen. Während dieser Sitzung ist das Hinzufügen und "
-#~ "Bearbeiten von Objekten nicht möglich."
+#~ "Die Lizenz ist abgelaufen. WÃ¤hrend dieser Sitzung ist das HinzufÃ¼gen und "
+#~ "Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "Your license is not valid for your LDAP-Base. During this session add and "
 #~ "modify are disabled."
 #~ msgstr ""
-#~ "Die installierte Linzenz wurde nicht für diese Basis-DN ausgestellt. "
-#~ "Während dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten "
-#~ "nicht möglich."
+#~ "Die installierte Linzenz wurde nicht fÃ¼r diese Basis-DN ausgestellt. "
+#~ "WÃ¤hrend dieser Sitzung ist das HinzufÃ¼gen und Bearbeiten von Objekten "
+#~ "nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "Your license is not valid. During this session add and modify are "
 #~ "disabled."
 #~ msgstr ""
-#~ "Ihre Lizenz ist nicht gültig. Während dieser Sitzung ist das Hinzufügen "
-#~ "und Bearbeiten von Objekten nicht möglich."
+#~ "Ihre Lizenz ist nicht gÃ¼ltig. WÃ¤hrend dieser Sitzung ist das HinzufÃ¼gen "
+#~ "und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid ""
 #~ "Your license does not allow modifications. During this session add and "
 #~ "modify are disabled."
 #~ msgstr ""
-#~ "Die installierte Lizenz erlaubt keine Änderungen. Während dieser Sitzung "
-#~ "ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
+#~ "Die installierte Lizenz erlaubt keine Ã„nderungen. WÃ¤hrend dieser Sitzung "
+#~ "ist das HinzufÃ¼gen und Bearbeiten von Objekten nicht mÃ¶glich."
 
 #~ msgid "Account"
 #~ msgstr "Konto"
@@ -960,7 +960,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Mein Konto bearbeiten"
 
 #~ msgid "Change my password"
-#~ msgstr "Ändern meines Passworts"
+#~ msgstr "Ã„ndern meines Passworts"
 
 #~ msgid "Admin"
 #~ msgstr "Admin"
@@ -969,13 +969,13 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Meine Univention Admin Einstellungen bearbeiten"
 
 #~ msgid "My personal objects"
-#~ msgstr "Meine persönlichen Objekte"
+#~ msgstr "Meine persÃ¶nlichen Objekte"
 
 #~ msgid "Request canceled, your changes were discarded."
-#~ msgstr "Vorgang abgebrochen, die Änderungen wurden verworfen."
+#~ msgstr "Vorgang abgebrochen, die Ã„nderungen wurden verworfen."
 
 #~ msgid "Request commited, your changes were accepted."
-#~ msgstr "Vorgang abgeschlossen, die Änderungen wurden übernommen."
+#~ msgstr "Vorgang abgeschlossen, die Ã„nderungen wurden Ã¼bernommen."
 
 #~ msgid "Wizard"
 #~ msgstr "Assistent"
@@ -984,34 +984,34 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Wo soll das neue Objekt erzeugt werden"
 
 #~ msgid "Select Domain:"
-#~ msgstr "Domäne auswählen:"
+#~ msgstr "DomÃ¤ne auswÃ¤hlen:"
 
 #~ msgid "Choose a position for your object"
-#~ msgstr "Wählen Sie eine Position für Ihr Objekt."
+#~ msgstr "WÃ¤hlen Sie eine Position fÃ¼r Ihr Objekt."
 
 #~ msgid "Select Path:"
-#~ msgstr "Container auswählen:"
+#~ msgstr "Container auswÃ¤hlen:"
 
 #~ msgid "no default path found"
 #~ msgstr "Kein Standard-Container gefunden"
 
 #~ msgid "Superordinate Object"
-#~ msgstr "Übergeordnetes Objekt"
+#~ msgstr "Ãœbergeordnetes Objekt"
 
 #~ msgid "Superordinate:"
-#~ msgstr "Übergeordnetes Objekt:"
+#~ msgstr "Ãœbergeordnetes Objekt:"
 
 #~ msgid "what type of object do you want to create"
-#~ msgstr "Wählen Sie den gewünschten Objekttyp aus."
+#~ msgstr "WÃ¤hlen Sie den gewÃ¼nschten Objekttyp aus."
 
 #~ msgid "Select Type:"
-#~ msgstr "Typ auswählen:"
+#~ msgstr "Typ auswÃ¤hlen:"
 
 #~ msgid "no template"
 #~ msgstr "Keine Vorlage"
 
 #~ msgid "Select Template:"
-#~ msgstr "Vorlage auswählen:"
+#~ msgstr "Vorlage auswÃ¤hlen:"
 
 #~ msgid "from what template should the new object derive"
 #~ msgstr "Auf welcher Vorlage soll das neue Objekt basieren?"
@@ -1020,16 +1020,16 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Weiter"
 
 #~ msgid "Select Domain"
-#~ msgstr "Wählen Sie die Domäne"
+#~ msgstr "WÃ¤hlen Sie die DomÃ¤ne"
 
 #~ msgid "all registered %s object containers"
 #~ msgstr "Alle registrierten %s-Container"
 
 #~ msgid "selected domain"
-#~ msgstr "Ausgewählte Domäne"
+#~ msgstr "AusgewÃ¤hlte DomÃ¤ne"
 
 #~ msgid "selected domain including subdomains"
-#~ msgstr "Ausgewählte Domäne und deren Unterdomänen"
+#~ msgstr "AusgewÃ¤hlte DomÃ¤ne und deren UnterdomÃ¤nen"
 
 #~ msgid "only %s"
 #~ msgstr "Nur \"%s\""
@@ -1044,7 +1044,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Gesuchter Typ"
 
 #~ msgid "choose property"
-#~ msgstr "Wählen Sie die Eigenschaft"
+#~ msgstr "WÃ¤hlen Sie die Eigenschaft"
 
 #~ msgid "Display (new) search results"
 #~ msgstr "(Neue) Suchergebnisse anzeigen"
@@ -1053,21 +1053,21 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Suchen"
 
 #~ msgid "reset"
-#~ msgstr "Zurücksetzen"
+#~ msgstr "ZurÃ¼cksetzen"
 
 #~ msgid "reset search"
-#~ msgstr "Suche zurücksetzen"
+#~ msgstr "Suche zurÃ¼cksetzen"
 
 #~ msgid ""
 #~ "Failed to open object, insufficient or ambiguous values returned from "
 #~ "search (%s)"
 #~ msgstr ""
-#~ "Ein Objekt konnte nicht öffnen, ungenaues oder mehrdeutiges Suchergebnis "
+#~ "Ein Objekt konnte nicht Ã¶ffnen, ungenaues oder mehrdeutiges Suchergebnis "
 #~ "(%s)."
 
 #~ msgid "More than %d results, please redefine search."
 #~ msgstr ""
-#~ "Es wurden mehr als %d Objekte gefunden, bitte schränken Sie die Suche ein."
+#~ "Es wurden mehr als %d Objekte gefunden, bitte schrÃ¤nken Sie die Suche ein."
 
 #~ msgid "%d Search result(s) (from cache):"
 #~ msgstr "%d Suchergebnis(se) (zwischengespeichert):"
@@ -1076,10 +1076,10 @@ msgstr "Aktion abbrechen"
 #~ msgstr "%d Suchergebnis(se):"
 
 #~ msgid "Do with selected objects...."
-#~ msgstr "Die ausgewählten Objekten ..."
+#~ msgstr "Die ausgewÃ¤hlten Objekten ..."
 
 #~ msgid "Removed %d/%d objects (%d errors)."
-#~ msgstr "Es wurden %d/%d Objekte erfolgreich gelöscht (%d Fehler)."
+#~ msgstr "Es wurden %d/%d Objekte erfolgreich gelÃ¶scht (%d Fehler)."
 
 #~ msgid "Moved %d/%d objects (%d errors)."
 #~ msgstr "Es wurden %d/%d Objekten erfolgreich verschoben (%d Fehler)."
@@ -1097,7 +1097,7 @@ msgstr "Aktion abbrechen"
 #~ msgstr "Anmeldung nicht erlaubt um:"
 
 #~ msgid "select %s for deletion"
-#~ msgstr "\"%s\" zum Löschen auswählen"
+#~ msgstr "\"%s\" zum LÃ¶schen auswÃ¤hlen"
 
 #~ msgid "Edit %d \"%s\" objects"
 #~ msgstr "Bearbeite %d \"%s\"-Objekt(e)"

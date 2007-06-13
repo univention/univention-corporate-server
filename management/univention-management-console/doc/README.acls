@@ -1,26 +1,26 @@
-Dieses Dokument beschreibt die Abbildung der Berechtigungen für die neue
+Dieses Dokument beschreibt die Abbildung der Berechtigungen fÃŒr die neue
 Univention Console.
 
 
 Anforderungen an die Berechtigungen:
 
- - Die Berechtigungen müssen bis auf Befehlsebene definiert werden können.
+ - Die Berechtigungen mÃŒssen bis auf Befehlsebene definiert werden kÃ¶nnen.
  - Berechtigungen an Benutzer und Gruppen als Richtlinie
- - Die Benutzerberechtigung überschreibt die Gruppenberechtigung
+ - Die Benutzerberechtigung ÃŒberschreibt die Gruppenberechtigung
  - additive Vererbung
- - Wir müssen in der Richtlinie aber auch direkt einen Befehl bzw. eine
-   Befehlsgruppe deaktivieren können.
- - Die Berechtigungen müssen auch funktionieren, wenn keine LDAP Verbindung
+ - Wir mÃŒssen in der Richtlinie aber auch direkt einen Befehl bzw. eine
+   Befehlsgruppe deaktivieren kÃ¶nnen.
+ - Die Berechtigungen mÃŒssen auch funktionieren, wenn keine LDAP Verbindung
    besteht.
- - Gruppen in Gruppen sollen unterstützt werden.
+ - Gruppen in Gruppen sollen unterstÃŒtzt werden.
  - Alle nicht angegebenen Sachen werden nicht erlaubt.
- - Befehlsdefinition für Rechner bzw. Rechnergruppen
+ - Befehlsdefinition fÃŒr Rechner bzw. Rechnergruppen
 
 
-Die Richtlinie beinhaltet primär eine Liste von "allow" und "disallow" DNs,
+Die Richtlinie beinhaltet primÃ€r eine Liste von "allow" und "disallow" DNs,
 univentionConsoleAllow und univentionConsoleDisallow. die beiden Werte sind 
 Multivalue Variablen. Die Richtlinie kann sowohl an Gruppen, als auch an
-Benutzern gehängt werden.
+Benutzern gehÃ€ngt werden.
 Gruppenrichtlinie.
 
 objectClass: univentionPolicyConsoleAccess
@@ -39,22 +39,22 @@ attribute: ldap_base
 attribute: command			[multivalue]
 attribute: data
 
-Immer wenn ein Wert nicht angegeben ist, dann wird dieser als .* (regulärer
+Immer wenn ein Wert nicht angegeben ist, dann wird dieser als .* (regulÃ€rer
 Ausdruck in Python) bzw. bei der LDAP Basis mit ldap/base ersetzt.
 
 Die Attribute enthalten die folgenden Informationen:
  - cn: Gibt den Namen des ACLs Objektes an.
  - description: Beschreibt das ACL Objekt, dieser Wert kann direkt in der
    Richtlinie angezeigt werden.
- - category: Definiert eine Kategorie, über die die Drop-Downs in der
+ - category: Definiert eine Kategorie, ÃŒber die die Drop-Downs in der
    Richtlinie aufgeteilt werden. Da wir in grossen Umgebungen wahrscheinlich
    schnell 500 ACL Objekte haben.
  - host: Definiert eine Liste von Rechnern bzw. von Rechnergruppen.
- - ldap_base: Darüber kann die Suche nach den Rechnern bzw. der Rechnergruppe
-   eingeschränkt werden.
+ - ldap_base: DarÃŒber kann die Suche nach den Rechnern bzw. der Rechnergruppe
+   eingeschrÃ€nkt werden.
  - command: Gibt eine Liste von Kommandos an
- - data: Definiert die Daten, die verändert werden dürfen, das ist besonders
-   für Univention Baseconfig hilfreich.
+ - data: Definiert die Daten, die verÃ€ndert werden dÃŒrfen, das ist besonders
+   fÃŒr Univention Baseconfig hilfreich.
 
 Beispiele:
 
@@ -101,8 +101,8 @@ data: cups/*
 ****************************************************************************
 
 Beschreibung:
-Die Beschreibung wird später in Univention Admin angezeigt. Problematisch ist
-hier noch die deutsche Übersetzung.
+Die Beschreibung wird spÃ€ter in Univention Admin angezeigt. Problematisch ist
+hier noch die deutsche Ãbersetzung.
 
 Kategory:
 Durch die Kategorie werden die Objekte gruppiert. Die Kategorieren werden
@@ -120,33 +120,33 @@ description: Mailserver
 
 Rechner/Rechnergruppe:
 Hier sollten wir neben den eigentlichen Rechnernamen auch die Systemrollen
-verwenden können. Die Systemrollen werden in [] angegeben. Dazu können wir
-auch noch die Systemaufgaben, die wir im Moment nur für Kolab2 verwenden, 
-angeben. Diese werden in {} angegeben. Natürlich können die unterschiedlichen
+verwenden kÃ¶nnen. Die Systemrollen werden in [] angegeben. Dazu kÃ¶nnen wir
+auch noch die Systemaufgaben, die wir im Moment nur fÃŒr Kolab2 verwenden, 
+angeben. Diese werden in {} angegeben. NatÃŒrlich kÃ¶nnen die unterschiedlichen
 Dinge auch gemischt werden, die Angaben werden dabei additive interpretiert.
 
 Befehle bzw. Befehlsgruppen:
-Die Befehle bzw. Befehlsgruppen können NICHT als Komma Liste angegeben werden.
+Die Befehle bzw. Befehlsgruppen kÃ¶nnen NICHT als Komma Liste angegeben werden.
 Es wird immer nur ein Befehl oder eine Befehlsgruppe angegeben. Dabei wird .*
 als Wildcard ausgewertet.
 
 Daten:
-Das können unterschiedliche Werte sein, bei Univention Baseconfig Befehlen sind
-das die Variablen, die gesetzt werden können, wobei dort aber nur die Variablen,
-nicht die möglichen Werte definiert werden. Diese Liste ist ebenfalls Komma
+Das kÃ¶nnen unterschiedliche Werte sein, bei Univention Baseconfig Befehlen sind
+das die Variablen, die gesetzt werden kÃ¶nnen, wobei dort aber nur die Variablen,
+nicht die mÃ¶glichen Werte definiert werden. Diese Liste ist ebenfalls Komma
 getrennt und interpretiert .* als Wildcard.
 
 
 
 Vererbung
-Die Benutzerrichtlinie überschreibt immer die Gruppenrichtlinie. Ansonsten
-werden alle Berechtigungen additiv vererbt. Wenn in der Gruppenrichtlinie für
-die Gruppe A ein Befehl X verboten wird, in der Gruppenrichtlinie für Gruppe B
+Die Benutzerrichtlinie ÃŒberschreibt immer die Gruppenrichtlinie. Ansonsten
+werden alle Berechtigungen additiv vererbt. Wenn in der Gruppenrichtlinie fÃŒr
+die Gruppe A ein Befehl X verboten wird, in der Gruppenrichtlinie fÃŒr Gruppe B
 der Befehl X wieder erlaubt und der Benutzer in beiden Gruppen ist, dann ist
-für ihn der Befehl X erlaubt.
+fÃŒr ihn der Befehl X erlaubt.
 
 
-Damit die Befehle in Univention Admin per Drop-Down ausgewählt werden können,
+Damit die Befehle in Univention Admin per Drop-Down ausgewÃ€hlt werden kÃ¶nnen,
 sollten die Befehle registriert werden. Dabei werden unterhalb von cn=univention
 die Befehle definiert, z.B.:
 
@@ -157,8 +157,8 @@ univentionConsoleOperation: cups/modify/start
 univentionConsoleOperation: cups/modify/stop
 univentionConsoleOperation: cups/remove
 
-Wahrscheinlich werden die Console Operationen häufig von DC Slaves oder Clients
-mitgebracht, von daher benötigen die Rechneraccounts Schreibzugriff auf den
+Wahrscheinlich werden die Console Operationen hÃ€ufig von DC Slaves oder Clients
+mitgebracht, von daher benÃ¶tigen die Rechneraccounts Schreibzugriff auf den
 Bereich im LDAP.
 
 
@@ -167,5 +167,5 @@ Beim Auslesen der Berechtigungen aus dem Verzeichnisdienst werden die ACLs im
 Dateisystem zwischengespeichert. 
 /var/cache/univention-console/acls/Administrator
 /var/cache/univention-console/acls/user2
-Meldet sich der Benutzer zum ersten Mal an und es gibt keine ACL Datei für
+Meldet sich der Benutzer zum ersten Mal an und es gibt keine ACL Datei fÃŒr
 den Benutzer, dann wird der Zugriff verweigert.

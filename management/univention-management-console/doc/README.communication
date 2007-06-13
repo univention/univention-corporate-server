@@ -1,8 +1,8 @@
-In den Request-/Response-Objekten müssen zwei Arten Kommunikation abgewickelt werden:
+In den Request-/Response-Objekten mÃŒssen zwei Arten Kommunikation abgewickelt werden:
  Frontend <-> Daemon
  Daemon <-> Daemon
 
-Die Kommunikation zwischen Daemon und Frontend muss folgende Aufgaben erfüllen:
+Die Kommunikation zwischen Daemon und Frontend muss folgende Aufgaben erfÃŒllen:
 
 - das Fronted sendet Anfragen und Kommandos
 - der Daemon sendet dem Frontend Informationen:
@@ -38,7 +38,7 @@ Aufbau module:
   das submenue im Modul
 
 Aufbau dialog:
-- content: dict, enhält Inhaltselemente,der key wird aus structure
+- content: dict, enhÃ€lt Inhaltselemente,der key wird aus structure
   referenziert
 - options: dict, enthaelt spezifische Infos,
 - dependencies: definiert Abhaengigkeiten der Inhaltselemente
@@ -50,11 +50,11 @@ Aufbau Strukturelmente:
 - type: definiert den Typ
 - content: Liste, abhaengig vom Typ, einfache Strings sind keys aus dem
   content-Bereich von "dialog"
-- mögliche Struktur-Typen:
+- mÃ¶gliche Struktur-Typen:
 * list: Liste von Elementen, content ist eine verschachtelte Liste, alle
   "Zeilen" sollten eine identische Anzahl von Elementen haben, options
-  kann "headline" als Liste von Überschriftelementen enthalten.
-* table: Tabelle, content enhält eine Liste von Elementen vom Typ
+  kann "headline" als Liste von Ãberschriftelementen enthalten.
+* table: Tabelle, content enhÃ€lt eine Liste von Elementen vom Typ
   tablerow
 * tablerow: "options" kann "rowspan":Nr und "head" enthalten, content
   eine Liste von Elementen vom Typ tablecol
@@ -74,11 +74,11 @@ Aufbau Inhalte:
 - syntax: Verweis auf univention.admin.syntax oder basis-elemente (text,
   icon, button)
 
-Im Datenformat müssen unterschiedliche Inhaltselemente entsprechend der
-syntax.py aus univention-webui definiert werden können. Dazu können
+Im Datenformat mÃŒssen unterschiedliche Inhaltselemente entsprechend der
+syntax.py aus univention-webui definiert werden kÃ¶nnen. Dazu kÃ¶nnen
 viele der syntax-routinen aus modedit geholt werden.
 
-Beispiel Druckerübersicht:
+Beispiel DruckerÃŒbersicht:
 
 import univention.management.console.dialog as umcd
 import univention.management.console.protocol as umcp
@@ -190,11 +190,11 @@ aktuellen content-Elementen angehaengt.
 
 === REQUESTS ===
 
-Mögliche Requests:
+MÃ¶gliche Requests:
 - Modulspezifisch: werden von den Modulen erzeugt und in die Responses
   gepackt
 * Daemon <-> Frontend: die Requests werden vom Modul generiert und in
-  dem Response an Aktionen (Button, Link etc.) gehängt
+  dem Response an Aktionen (Button, Link etc.) gehÃ€ngt
 * Daemon <-> Daemon: es kann Modulspezifische Requests und Responses
   geben, um Seiten zu erstellen auf denen Informationen von mehreren
   Daemons gesammelt dargestellt werden
@@ -203,7 +203,7 @@ Mögliche Requests:
 - Generisch: werden vom Frontend erzeugt, z.B.:
 * VERSION
 * AUTH
-* Liste der Module die am User angezeigt werden dürfen (command GET)
+* Liste der Module die am User angezeigt werden dÃŒrfen (command GET)
 * CLOSE
 
 Aufbau der Modulspezifischen Requests:

@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -21,15 +21,15 @@ msgstr "Netzwerk"
 
 #: network.py:46
 msgid "Add, edit and delete networks"
-msgstr "Hinzufügen, bearbeiten und löschen von Netzwerken"
+msgstr "HinzufÃ¼gen, bearbeiten und lÃ¶schen von Netzwerken"
 
 #: network.py:47
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: network.py:47
 msgid "Add Network Object"
-msgstr "Netz-Objekte hinzufügen"
+msgstr "Netz-Objekte hinzufÃ¼gen"
 
 #: network.py:47
 msgid "Find"
@@ -53,7 +53,7 @@ msgstr "Netzmaske"
 
 #: network.py:82
 msgid "Next IP Address"
-msgstr "nächste IP-Adresse"
+msgstr "nÃ¤chste IP-Adresse"
 
 #: network.py:91
 msgid "IP Address Range"
@@ -61,15 +61,15 @@ msgstr "IP-Adressbereich"
 
 #: network.py:101
 msgid "DNS Entry Position"
-msgstr "Forward Lookup Zone für DNS-Einträge"
+msgstr "Forward Lookup Zone fÃ¼r DNS-EintrÃ¤ge"
 
 #: network.py:112
 msgid "DNS Entry Zone Reverse"
-msgstr "Reverse Lookup Zone für DNS-Einträge"
+msgstr "Reverse Lookup Zone fÃ¼r DNS-EintrÃ¤ge"
 
 #: network.py:123
 msgid "DHCP Entry"
-msgstr "DHCP-Einträge"
+msgstr "DHCP-EintrÃ¤ge"
 
 #: network.py:146
 msgid "General"
@@ -100,7 +100,7 @@ msgid "DHCP"
 msgstr "DHCP"
 
 #~ msgid "nextIp"
-#~ msgstr "nächste IP-Adresse"
+#~ msgstr "nÃ¤chste IP-Adresse"
 
 #~ msgid "Network Manager"
 #~ msgstr "Netzwerkverwaltung"

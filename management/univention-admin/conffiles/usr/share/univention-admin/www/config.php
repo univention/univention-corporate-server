@@ -1,17 +1,17 @@
 <?php
-# Maximales alter temporärer Dateien in Sekunden. Bei überschreiten wird gelöscht.
+# Maximales alter temporÃ¤rer Dateien in Sekunden. Bei Ã¼berschreiten wird gelÃ¶scht.
 # $temp_age=180;
 $temp_age=800;
 
-# Verzeichnis zur temporären Speicherung der XML-Dokumente
+# Verzeichnis zur temporÃ¤ren Speicherung der XML-Dokumente
 # Muss ein Unterverzeichnis sein, da alle Dateien die seit $temp_age nicht
-# mehr benutzt werden, gelöscht werden.
+# mehr benutzt werden, gelÃ¶scht werden.
 $temp_dir="/tmp/webui/";	
 
-# Zugriffsrechte des temporären Verzeichnis als oktalwert
+# Zugriffsrechte des temporÃ¤ren Verzeichnis als oktalwert
 $temp_mode=0700;
 
-# Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
+# Programmaufruf (die Variable wir in folgenden String eingefÃ¼gt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
 run='$run="/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.py '

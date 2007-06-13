@@ -1,14 +1,20 @@
+univention-webui (1.2.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:36 +0200
+
 univention-webui (1.2.0-1) unstable; urgency=low
 
   * set default encoding to UTF-8 
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 16:22:11 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 16:22:11 +0200
 
 univention-webui (1.1.2-2) unstable; urgency=low
 
   * applied modifications from UMC-Scope 
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:49:25 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 01 Jun 2007 13:49:25 +0200
 
 univention-webui (1.1.2-1) unstable; urgency=low
 
@@ -50,7 +56,7 @@ univention-webui (0.4-2-11) unstable; urgency=low
 
   * updated english text and german translation
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 11:39:16 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 11:39:16 +0100
 
 univention-webui (0.4-2-9) unstable; urgency=low
 

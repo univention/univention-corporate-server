@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Admin
 #  show the about dialog
@@ -200,10 +201,10 @@ class modabout(unimodule.unimodule):
 			if self.save.get( 'personal_use' ) == '1':
 				rows.append(tablerow("",{},{"obs":[
 					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[_('License')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[u'Die "Free For Personal Use" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des § 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten für private Zwecke ermöglicht wird. <br><br>\
-							Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software Dritten zum Download oder zur Nutzung zur Verfügung zu stellen oder sie im Rahmen einer überwiegend beruflichen oder gewerbsmäßigen Nutzung zu verwenden.  <br><br>\
-							Die Überlassung der "Free For Personal Use"-Ausgabe von UCS erfolgt im Rahmen eines Schenkungsvertrages. Wir schließen deswegen alle Gewährleistungs- und Haftungsansprüche aus, es sei denn, es liegt ein Fall des Vorsatzes oder der groben Fahrlässigkeit vor. Wir weisen darauf hin, dass bei der "Free For Personal Use"-Ausgabe die Haftungs-, Gewährleistungs-, Support- und Pflegeansprüche, die sich aus unseren kommerziellen Softwareverträgen ergeben, nicht gelten.  <br><br>\
-							Wir wünschen Ihnen viel Freude bei der Nutzung der "Free For Personal Use" Ausgabe von Univention Corporate Server und freuen uns über Ihr Feedback. Bei Fragen wenden Sie sich bitte an unser Forum, dass Sie im Internet unter <a target=parent href=http://forum.univention.de/>http://forum.univention.de/</a> erreichen.']})]})
+					tablecol("",{'type':'about_layout'},{"obs":[htmltext('',{},{'htmltext':[u'Die "Free For Personal Use" Ausgabe von Univention Corporate Server ist eine spezielle Softwarelizenz mit der Verbraucher im Sinne des Â§ 13 BGB die kostenlose Nutzung von Univention Corporate Server und darauf basierenden Softwareprodukten fÃ¼r private Zwecke ermÃ¶glicht wird. <br><br>\
+							Im Rahmen dieser Lizenz darf UCS von unseren Servern heruntergeladen, installiert und genutzt werden. Es ist jedoch nicht erlaubt, die Software Dritten zum Download oder zur Nutzung zur VerfÃ¼gung zu stellen oder sie im Rahmen einer Ã¼berwiegend beruflichen oder gewerbsmÃ¤ÃŸigen Nutzung zu verwenden.  <br><br>\
+							Die Ãœberlassung der "Free For Personal Use"-Ausgabe von UCS erfolgt im Rahmen eines Schenkungsvertrages. Wir schlieÃŸen deswegen alle GewÃ¤hrleistungs- und HaftungsansprÃ¼che aus, es sei denn, es liegt ein Fall des Vorsatzes oder der groben FahrlÃ¤ssigkeit vor. Wir weisen darauf hin, dass bei der "Free For Personal Use"-Ausgabe die Haftungs-, GewÃ¤hrleistungs-, Support- und PflegeansprÃ¼che, die sich aus unseren kommerziellen SoftwarevertrÃ¤gen ergeben, nicht gelten.  <br><br>\
+							Wir wÃ¼nschen Ihnen viel Freude bei der Nutzung der "Free For Personal Use" Ausgabe von Univention Corporate Server und freuen uns Ã¼ber Ihr Feedback. Bei Fragen wenden Sie sich bitte an unser Forum, dass Sie im Internet unter <a target=parent href=http://forum.univention.de/>http://forum.univention.de/</a> erreichen.']})]})
 					]}))
  		else:
  			rows.append(tablerow("",{},{"obs":[

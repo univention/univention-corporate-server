@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  admin module: policy defining access restriction for UMC

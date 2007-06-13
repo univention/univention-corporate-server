@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  share code for UMC client and servers

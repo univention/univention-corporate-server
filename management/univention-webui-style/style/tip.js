@@ -1,7 +1,7 @@
 var mx,my,pid,lay_id;
 var version=parseInt(navigator.appVersion.charAt (0));
 
-function warte(lay){ // Delayfunction für Tooltip
+function warte(lay){ // Delayfunction fÃ¼r Tooltip
 
 	lay_id=lay;
 	pid = window.setTimeout('showTip()',1000);
@@ -50,7 +50,7 @@ function sendForm2(id){ // Formular mit Link senden und Button auf pressed setze
    document.forms['menu'].submit();
 }
 
-function setBG(id, status){ // Ändert Background der Menüelemente für IE
+function setBG(id, status){ // Ã„ndert Background der MenÃ¼elemente fÃ¼r IE
 /*
 if(navigator.appName=="Microsoft Internet Explorer"){
 	if(status)

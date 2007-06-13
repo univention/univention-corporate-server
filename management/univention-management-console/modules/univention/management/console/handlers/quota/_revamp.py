@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  quota module: revamp module command result for the specific user interface

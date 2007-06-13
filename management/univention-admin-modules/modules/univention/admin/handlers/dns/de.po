@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -58,15 +58,15 @@ msgstr "DNS"
 
 #: dns.py:57
 msgid "Add, edit and delete DNS Objects"
-msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
+msgstr "HinzufÃ¼gen, bearbeiten und lÃ¶schen eines DNS-Objektes"
 
 #: dns.py:58
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: dns.py:58
 msgid "Add DNS Object"
-msgstr "DNS-Objekt hinzufügen"
+msgstr "DNS-Objekt hinzufÃ¼gen"
 
 #: dns.py:58
 msgid "Find"
@@ -102,7 +102,7 @@ msgstr "Aktualisierungsintervall"
 
 #: forward_zone.py:106 reverse_zone.py:106
 msgid "Retry Interval"
-msgstr "Intervall für erneute Versuche"
+msgstr "Intervall fÃ¼r erneute Versuche"
 
 #: forward_zone.py:117 reverse_zone.py:117
 msgid "Expire Interval"
@@ -122,11 +122,11 @@ msgstr "Start of Authority Eintrag"
 
 #: forward_zone.py:164 reverse_zone.py:164
 msgid "Primary Name Server Information"
-msgstr "Primäre Nameserver Informationen"
+msgstr "PrimÃ¤re Nameserver Informationen"
 
 #: forward_zone.py:166 reverse_zone.py:166
 msgid "Primary Name Server"
-msgstr "Primärer Nameserver"
+msgstr "PrimÃ¤rer Nameserver"
 
 #: forward_zone.py:170 reverse_zone.py:139 reverse_zone.py:170
 msgid "Name Servers"
@@ -134,7 +134,7 @@ msgstr "Nameserver"
 
 #: forward_zone.py:170 reverse_zone.py:170
 msgid "Additional Name Servers"
-msgstr "Zusätzliche Nameserver"
+msgstr "ZusÃ¤tzliche Nameserver"
 
 #: forward_zone.py:196 host_record.py:156 ptr_record.py:97 reverse_zone.py:209
 #: srv_record.py:134
@@ -159,7 +159,7 @@ msgstr "Text Record"
 
 #: host_record.py:100
 msgid "Primary IP-Address"
-msgstr "Primäre IP-Adresse"
+msgstr "PrimÃ¤re IP-Adresse"
 
 #: host_record.py:103
 msgid "IP-Addresses"
@@ -175,7 +175,7 @@ msgstr "Mail"
 
 #: host_record.py:106
 msgid "Mail Exchangers for this Host"
-msgstr "Mail Exchanger für diesen Rechner"
+msgstr "Mail Exchanger fÃ¼r diesen Rechner"
 
 #: host_record.py:109
 msgid "Text"
@@ -188,7 +188,7 @@ msgstr "Optionaler Text"
 #: host_record.py:154 ptr_record.py:95 srv_record.py:132 zone_mx_record.py:99
 #: zone_txt_record.py:100
 msgid "superordinate object not present"
-msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
+msgstr "Ein Ã¼bergeordnetes Objekt ist nicht vorhanden"
 
 #: ptr_record.py:43
 msgid "DNS: Pointer"

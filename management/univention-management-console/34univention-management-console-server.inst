@@ -182,7 +182,7 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set category="Druckserver" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="cups/job/*" \
-																				 --set description="Druckaufträge anzeigen, löschen und verschieben"
+																				 --set description="DruckauftrÃ¤ge anzeigen, lÃ¶schen und verschieben"
 
 
 # create quota acls

@@ -45,7 +45,7 @@ $config->set_js($is_js);
 include ("includes/language.inc");	# i18n-Klasse
 include ("includes/container.inc");	# Container-Klasse
 include ("includes/parser.inc");	# Parser-Klasse
-include ("includes/translator.inc");	# Übersetzungs-Klasse
+include ("includes/translator.inc");	# Ãœbersetzungs-Klasse
 
 $usedtextdomain = textdomain ( 'univention-webui' );
 

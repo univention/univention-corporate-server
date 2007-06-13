@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Management Console
 #  main dialog class, defining a frame for data-elements

@@ -1,3 +1,9 @@
+univention-management-console (0.7.5-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 15:29:36 +0200
+
 univention-management-console (0.7.5-1) unstable; urgency=low
 
   * switch from runsvctrl to sv
@@ -10,34 +16,34 @@ univention-management-console (0.7.4-1) unstable; urgency=low
   * internal errors in the module process are send to the frontend
   * increased number of retries to contact newly started module process
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 16:25:47 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 16:25:47 +0200
 
 univention-management-console (0.7.3-1) unstable; urgency=low
 
   * fixed imports of univention.(baseconfig|service)_info in serveral modules
   * closes categories with the cancel button works again
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 12 Jun 2007 10:22:26 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 12 Jun 2007 10:22:26 +0200
 
 univention-management-console (0.7.2-1) unstable; urgency=low
 
   * merge with CVS branch ucs1_3_umc 
   * better error handling if web client could not read CA certificate
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 22:35:40 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Jun 2007 22:35:40 +0200
 
 univention-management-console (0.7.1-1) unstable; urgency=low
 
   * update packaging for UCS 2.0
   * applied bug fixes
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 05 Jun 2007 08:35:19 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 05 Jun 2007 08:35:19 +0200
 
 univention-management-console (0.7.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies 
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 04 Jun 2007 13:54:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 04 Jun 2007 13:54:44 +0200
 
 univention-management-console (0.6.26-1) unstable; urgency=low
 
@@ -47,7 +53,7 @@ univention-management-console (0.6.26-1) unstable; urgency=low
   * buttons with "do-not-close-my-dialog" are now possible
   * updated frontend translation
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri,  1 Jun 2007 14:31:42 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri,  1 Jun 2007 14:31:42 +0200
 
 univention-management-console (0.6.25-1) unstable; urgency=low
 
@@ -55,50 +61,50 @@ univention-management-console (0.6.25-1) unstable; urgency=low
     requests may not be found.
   * add a first very simple version of the service module 
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 31 May 2007 16:51:01 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 31 May 2007 16:51:01 +0200
 
 univention-management-console (0.6.24-1) unstable; urgency=low
 
   * provide more information in the log file when loading of an UMC module fails 
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 30 May 2007 09:46:17 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 30 May 2007 09:46:17 +0200
 
 univention-management-console (0.6.23-1) unstable; urgency=low
 
   * attribute warning for input fields work again 
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 30 May 2007 09:28:28 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 30 May 2007 09:28:28 +0200
 
 univention-management-console (0.6.22-1) unstable; urgency=low
 
   * set close-on-exec flag for tcp/unix sockets
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 May 2007 16:55:12 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue, 29 May 2007 16:55:12 +0200
 
 univention-management-console (0.6.21-1) unstable; urgency=low
 
   * clean up debug messages
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 29 May 2007 15:21:47 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 29 May 2007 15:21:47 +0200
 
 univention-management-console (0.6.20-1) unstable; urgency=low
 
   *  pass credentials (username and password) to module process
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 29 May 2007 10:28:43 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 29 May 2007 10:28:43 +0200
 
 univention-management-console (0.6.19-1) unstable; urgency=low
 
   * updated german translation in cups module
   * reactivate PAM authentication (instead of baseconfig auth)
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 24 May 2007 15:43:12 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 24 May 2007 15:43:12 +0200
 
 univention-management-console (0.6.18-2) unstable; urgency=low
 
   *  ADH hostkey file is obsolete by using ssl host key/cert
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 May 2007 11:57:40 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 24 May 2007 11:57:40 +0200
 
 univention-management-console (0.6.18-1) unstable; urgency=low
 
@@ -109,26 +115,26 @@ univention-management-console (0.6.18-1) unstable; urgency=low
     - try to use locale given by cmdline
     - if that fails use umc/web/language
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 May 2007 11:47:57 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 24 May 2007 11:47:57 +0200
 
 univention-management-console (0.6.17-1) unstable; urgency=low
 
   * baseconfig module: searching with an empty filter works now
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 24 May 2007 11:43:56 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 24 May 2007 11:43:56 +0200
 
 univention-management-console (0.6.16-1) unstable; urgency=low
 
   * fixed locale problem in quota module
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 24 May 2007 11:16:24 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 24 May 2007 11:16:24 +0200
 
 univention-management-console (0.6.15-1) unstable; urgency=low
 
   * baseconfig module: searching for description or value crashed on variables
     without a description or a value; this is fixed now
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 24 May 2007 10:11:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 24 May 2007 10:11:44 +0200
 
 univention-management-console (0.6.14-1) unstable; urgency=low
 
@@ -136,7 +142,7 @@ univention-management-console (0.6.14-1) unstable; urgency=low
   * when adding or editing baseconfig variables: description and category are
     not mandatory any more
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 23 May 2007 19:10:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 23 May 2007 19:10:44 +0200
 
 univention-management-console (0.6.13-3) unstable; urgency=low
 
@@ -144,13 +150,13 @@ univention-management-console (0.6.13-3) unstable; urgency=low
   * UMC SSL connections now use existing X509 certificates instead of
     anonymous diffie hellman 
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 23 May 2007 13:28:28 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 23 May 2007 13:28:28 +0200
 
 univention-management-console (0.6.13-2) unstable; urgency=low
 
   * updated german translation of the frontend daemon 
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 22 May 2007 17:00:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 22 May 2007 17:00:44 +0200
 
 univention-management-console (0.6.13-1) unstable; urgency=low
 
@@ -160,7 +166,7 @@ univention-management-console (0.6.13-1) unstable; urgency=low
   * new 'in progress' message
   * cleanup debug messages
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 22 May 2007 16:32:28 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 22 May 2007 16:32:28 +0200
 
 univention-management-console (0.6.12-2) unstable; urgency=low
 
@@ -169,13 +175,13 @@ univention-management-console (0.6.12-2) unstable; urgency=low
   * moved process call from _revamp to _printers
   * updated translation
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue, 22 May 2007 14:22:58 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue, 22 May 2007 14:22:58 +0200
 
 univention-management-console (0.6.12-1) unstable; urgency=low
 
   * moved print quota listing to its own tab
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue, 22 May 2007 11:47:41 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue, 22 May 2007 11:47:41 +0200
 
 univention-management-console (0.6.11-1) unstable; urgency=low
 
@@ -183,7 +189,7 @@ univention-management-console (0.6.11-1) unstable; urgency=low
   * fixed mapping of Link object
     - use correct icon path and css class
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 May 2007 17:26:53 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 21 May 2007 17:26:53 +0200
 
 univention-management-console (0.6.10-1) unstable; urgency=low
 
@@ -191,13 +197,13 @@ univention-management-console (0.6.10-1) unstable; urgency=low
     description
   * fixed a translation bug in the baseconfig module 
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 21 May 2007 17:02:50 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 21 May 2007 17:02:50 +0200
 
 univention-management-console (0.6.9-1) unstable; urgency=low
 
   * fixed locale setting of module processes 
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 May 2007 14:38:28 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 21 May 2007 14:38:28 +0200
 
 univention-management-console (0.6.8-1) unstable; urgency=low
 
@@ -206,45 +212,45 @@ univention-management-console (0.6.8-1) unstable; urgency=low
   * default locale is de_DE@euro
   * use global baseconfig object in UMCP session objects
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 21 May 2007 13:37:58 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 21 May 2007 13:37:58 +0200
 
 univention-management-console (0.6.7-1) unstable; urgency=low
 
   * renamed baseconfig variable from console/* to umc/*
   * fixed a bug in the module server
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 16 May 2007 17:05:17 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 16 May 2007 17:05:17 +0200
 
 univention-management-console (0.6.6-1) unstable; urgency=low
 
   * add german translation for Univention Admin modules
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 16 May 2007 12:00:15 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 16 May 2007 12:00:15 +0200
 
 univention-management-console (0.6.5-1) unstable; urgency=low
 
   * added ChoiceButton
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue, 15 May 2007 17:58:23 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue, 15 May 2007 17:58:23 +0200
 
 univention-management-console (0.6.4-1) unstable; urgency=low
 
   * updated german translation; fixed encoding of umlauts 
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 15 May 2007 16:49:20 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 15 May 2007 16:49:20 +0200
 
 univention-management-console (0.6.3-3) unstable; urgency=low
 
   * pass through locale settings (frontend -> server -> modules)
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 May 2007 17:38:05 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 14 May 2007 17:38:05 +0200
 
 univention-management-console (0.6.3-2) unstable; urgency=low
 
   * fixed multiline text input widget
   * apache-config: redirect non-https requests to https uri
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 14 May 2007 13:48:24 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 14 May 2007 13:48:24 +0200
 
 univention-management-console (0.6.3-1) unstable; urgency=low
 
@@ -255,7 +261,7 @@ univention-management-console (0.6.3-1) unstable; urgency=low
   * replaced 'beta' image and title
   * updated german translation 
 
- -- Andreas Büsching <buesching@univention.de>  Sun, 13 May 2007 18:52:37 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun, 13 May 2007 18:52:37 +0200
 
 univention-management-console (0.6.2-1) unstable; urgency=low
 
@@ -264,14 +270,14 @@ univention-management-console (0.6.2-1) unstable; urgency=low
   * baseconfig module: just write descriptions if modified; if there are no
     search results do not draw table; support empty baseconfig values
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 12 May 2007 22:39:28 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat, 12 May 2007 22:39:28 +0200
 
 univention-management-console (0.6.1-1) unstable; urgency=low
 
   * baseconfig-module: cleanup; modifying and adding of variables including of
     descriptions is possible; updated german translation
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 11 May 2007 16:22:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 11 May 2007 16:22:44 +0200
 
 univention-management-console (0.6.0-1) unstable; urgency=low
 
@@ -288,40 +294,40 @@ univention-management-console (0.6.0-1) unstable; urgency=low
   * set receive buffer to 16K in UMCP server and client
   * catch signal TERM to cleanup
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 11 May 2007 10:37:16 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 11 May 2007 10:37:16 +0200
 
 univention-management-console (0.5.6-5) unstable; urgency=low
 
   * restart apache after adding php4 module 
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 03 May 2007 15:10:47 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 03 May 2007 15:10:47 +0200
 
 univention-management-console (0.5.6-4) unstable; urgency=low
 
   * generate host key file earlier
   * pass credentials to univention-admin in join script
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 03 May 2007 14:56:48 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 03 May 2007 14:56:48 +0200
 
 univention-management-console (0.5.6-3) unstable; urgency=low
 
   * moved generation of hostkey for SSL communication to the postinst of
     univention-management-console-server 
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 03 May 2007 10:56:44 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 03 May 2007 10:56:44 +0200
 
 univention-management-console (0.5.6-2) unstable; urgency=low
 
   * removed version from dependencies to univention-webui and
     univention-baseconfig 
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 03 May 2007 10:28:27 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 03 May 2007 10:28:27 +0200
 
 univention-management-console (0.5.6-1) unstable; urgency=low
 
   * removed access to baseconfig module from default policy (for beta release) 
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 02 May 2007 13:16:17 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 02 May 2007 13:16:17 +0200
 
 univention-management-console (0.5.5-1) unstable; urgency=low
 
@@ -331,7 +337,7 @@ univention-management-console (0.5.5-1) unstable; urgency=low
   * increased timeout for UMCP responses for the beta release; because the web
     interface does not support partial replies
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 02 May 2007 11:03:42 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 02 May 2007 11:03:42 +0200
 
 univention-management-console (0.5.4-1) unstable; urgency=low
 
@@ -340,14 +346,14 @@ univention-management-console (0.5.4-1) unstable; urgency=low
   * use debug level from baseconfig variable console/debug/level for module
     processes
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 30 Apr 2007 17:02:40 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 30 Apr 2007 17:02:40 +0200
 
 univention-management-console (0.5.3-1) unstable; urgency=low
 
   * overworked support for adding print quota entries
   * closing dialog categories works again
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 30 Apr 2007 16:24:55 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 30 Apr 2007 16:24:55 +0200
 
 univention-management-console (0.5.2-1) unstable; urgency=low
 
@@ -356,7 +362,7 @@ univention-management-console (0.5.2-1) unstable; urgency=low
   * support adding new printer quota entries
   * updated translation
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 30 Apr 2007 11:11:48 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 30 Apr 2007 11:11:48 +0200
 
 univention-management-console (0.5.1-1) unstable; urgency=low
 
@@ -365,7 +371,7 @@ univention-management-console (0.5.1-1) unstable; urgency=low
   * enhanced handling of error messages
   * updated translations
 
- -- Andreas Büsching <buesching@univention.de>  Sun, 29 Apr 2007 23:01:55 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun, 29 Apr 2007 23:01:55 +0200
 
 univention-management-console (0.5.0-1) unstable; urgency=low
 
@@ -374,7 +380,7 @@ univention-management-console (0.5.0-1) unstable; urgency=low
   * code cleanup
   * support error messages per module category
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 28 Apr 2007 22:37:36 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat, 28 Apr 2007 22:37:36 +0200
  
 univention-management-console (0.4.16-7) unstable; urgency=low
 
@@ -393,14 +399,14 @@ univention-management-console (0.4.16-1) unstable; urgency=low
   * add logo images
   * set default logo and title to 'beta'
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 23 Apr 2007 17:17:33 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 23 Apr 2007 17:17:33 +0200
 
 univention-management-console (0.4.15-1) unstable; urgency=low
 
   * more encoding fixes
   * fixed typos in dynamic widgets
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 23 Apr 2007 16:41:27 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 23 Apr 2007 16:41:27 +0200
 
 univention-management-console (0.4.14-2) unstable; urgency=low
 
@@ -412,7 +418,7 @@ univention-management-console (0.4.14-1) unstable; urgency=low
 
   * fixed an encoding problem in the frontend mapping code
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 23 Apr 2007 15:16:15 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 23 Apr 2007 15:16:15 +0200
 
 univention-management-console (0.4.12-1) unstable; urgency=low
 
@@ -420,14 +426,14 @@ univention-management-console (0.4.12-1) unstable; urgency=low
   * fixed translation problems in UMC servers
   * updated translations
 
- -- Andreas Büsching <buesching@univention.de>  Sun, 22 Apr 2007 21:36:34 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun, 22 Apr 2007 21:36:34 +0200
 
 univention-management-console (0.4.11-1) unstable; urgency=low
 
   * support for inactive table rows 
   * new dialog button to support cancelling of operations
 
- -- Andreas Büsching <buesching@univention.de>  Sun, 22 Apr 2007 13:43:52 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sun, 22 Apr 2007 13:43:52 +0200
 
 univention-management-console (0.4.10-1) unstable; urgency=low
 
@@ -435,7 +441,7 @@ univention-management-console (0.4.10-1) unstable; urgency=low
   * layout enhancements in cups module
   * support adding/modifying of file system quota
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 21 Apr 2007 18:29:40 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat, 21 Apr 2007 18:29:40 +0200
 
 univention-management-console (0.4.9-1) unstable; urgency=low
 
@@ -443,7 +449,7 @@ univention-management-console (0.4.9-1) unstable; urgency=low
   * enhanced parsing alogorithm of repquota output
   * fixed a bug in handling of self-closing categories
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 20 Apr 2007 13:41:14 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 20 Apr 2007 13:41:14 +0200
 
 univention-management-console (0.4.8-1) unstable; urgency=low
 
@@ -451,7 +457,7 @@ univention-management-console (0.4.8-1) unstable; urgency=low
   * support self-closing categories
   * several fixes in cups and quota module
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 19 Apr 2007 15:40:49 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 19 Apr 2007 15:40:49 +0200
 
 univention-management-console (0.4.7-1) unstable; urgency=low
 
@@ -459,20 +465,20 @@ univention-management-console (0.4.7-1) unstable; urgency=low
   * frontend daemon dies after timeout
   * logout in web frontend is possible
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 18 Apr 2007 15:58:43 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 18 Apr 2007 15:58:43 +0200
 
 univention-management-console (0.4.6-1) unstable; urgency=low
 
   * fixed reselection of categories of startup requests
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 17 Apr 2007 17:16:13 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 17 Apr 2007 17:16:13 +0200
 
 univention-management-console (0.4.5-1) unstable; urgency=low
 
   * add support titles of dialog frames
   * fixed bug that caused a crash when an existing partition was not mounted
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 17 Apr 2007 16:13:40 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 17 Apr 2007 16:13:40 +0200
 
 univention-management-console (0.4.4-2) unstable; urgency=low
 
@@ -480,7 +486,7 @@ univention-management-console (0.4.4-2) unstable; urgency=low
   * code cleanup
   * cups module: display printer location and description
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 14 Apr 2007 22:31:41 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat, 14 Apr 2007 22:31:41 +0200
 
 univention-management-console (0.4.3-1) unstable; urgency=low
 
@@ -488,7 +494,7 @@ univention-management-console (0.4.3-1) unstable; urgency=low
   * new syntax for baseconfig search pattern
   * support for caching last response for startup commands
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 Apr 2007 20:09:55 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 13 Apr 2007 20:09:55 +0200
 
 univention-management-console (0.4.0-1) unstable; urgency=low
 
@@ -497,14 +503,14 @@ univention-management-console (0.4.0-1) unstable; urgency=low
   * updated translations
   * new widgets: selection button and multi value list
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 09 Apr 2007 16:40:23 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon, 09 Apr 2007 16:40:23 +0200
 
 univention-management-console (0.3.8-1) unstable; urgency=low
 
   * fixed handling of Text widget
   * fixes in cups/printer/show method and revamp function
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 23 Mar 2007 10:22:16 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 23 Mar 2007 10:22:16 +0100
 
 univention-management-console (0.3.7-1) unstable; urgency=low
 
@@ -512,39 +518,39 @@ univention-management-console (0.3.7-1) unstable; urgency=low
   * dialog widgets may have "layout" attributes
   * baseconfig module: variables can be added including meta information
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 22 Mar 2007 14:37:32 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 22 Mar 2007 14:37:32 +0100
 
 univention-management-console (0.3.6-1) unstable; urgency=low
 
   * complete functionality of new widget DynamicList
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 17 Mar 2007 20:03:16 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat, 17 Mar 2007 20:03:16 +0100
 
 univention-management-console (0.3.5-1) unstable; urgency=low
 
   * implement new widget DynamicList: add and remove lines of input fields
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 16 Mar 2007 17:14:17 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 16 Mar 2007 17:14:17 +0100
 
 univention-management-console (0.3.4-1) unstable; urgency=low
 
   * add support for themeable header image; configurable via bsaseconfig
     variable umc/title/image 
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 15 Mar 2007 16:17:16 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 15 Mar 2007 16:17:16 +0100
 
 univention-management-console (0.3.3-1) unstable; urgency=low
 
   * support adding of baseconfig variables
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 15 Mar 2007 13:49:40 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 15 Mar 2007 13:49:40 +0100
 
 univention-management-console (0.3.2-1) unstable; urgency=low
 
   * use new baseconfig meta information
   * code cleanup
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 14 Mar 2007 17:30:18 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 14 Mar 2007 17:30:18 +0100
  
 univention-management-console (0.3.1-3) unstable; urgency=low
 
@@ -563,13 +569,13 @@ univention-management-console (0.3.1-1) unstable; urgency=low
 
   * fixed a bug in the quota module
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  1 Mar 2007 17:13:12 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu,  1 Mar 2007 17:13:12 +0100
 
 univention-management-console (0.3.0-1) unstable; urgency=low
 
   * new debian packages; add package for proxy
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  1 Mar 2007 16:16:42 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu,  1 Mar 2007 16:16:42 +0100
 
 univention-management-console (0.2.0-1) unstable; urgency=low
 
@@ -578,7 +584,7 @@ univention-management-console (0.2.0-1) unstable; urgency=low
   * fixes for SSL encrypted connections
   * preparations for UMC proxy integration
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 22 Feb 2007 08:47:19 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 22 Feb 2007 08:47:19 +0100
 
 univention-management-console (0.1-0-10) unstable; urgency=low
 

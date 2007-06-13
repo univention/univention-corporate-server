@@ -11,7 +11,7 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
@@ -62,7 +62,7 @@ msgstr "Kurzbeschreibung"
 
 #: customattribute.py:68
 msgid "Long Description"
-msgstr "Ausführliche Beschreibung"
+msgstr "AusfÃ¼hrliche Beschreibung"
 
 #: customattribute.py:78
 msgid "Syntax"
@@ -95,11 +95,11 @@ msgstr "Objektklasse"
 # customattribute.py:06
 #: customattribute.py:149
 msgid "Delete Object Class"
-msgstr "Objektklasse löschen"
+msgstr "Objektklasse lÃ¶schen"
 
 #: customattribute.py:159
 msgid "Needed Module"
-msgstr "Benötigtes Modul"
+msgstr "BenÃ¶tigtes Modul"
 
 #: customattribute.py:160
 msgid "\"users/user\" or \"computer/thinclient\""
@@ -115,11 +115,11 @@ msgstr "Objektklassen"
 
 #: customattribute.py:175
 msgid "Object classes needed for this Attribute"
-msgstr "Objektklassen, die für dieses Attribut benötigt werden"
+msgstr "Objektklassen, die fÃ¼r dieses Attribut benÃ¶tigt werden"
 
 #: customattribute.py:178
 msgid "Corresponding LDAP Attributes"
-msgstr "Zugehöriges LDAP-Attribut"
+msgstr "ZugehÃ¶riges LDAP-Attribut"
 
 #: default.py:45
 msgid "Preferences: Default"
@@ -127,7 +127,7 @@ msgstr "Einstellungen: Vorgabe"
 
 #: default.py:62
 msgid "Default Primary Group"
-msgstr "Standard Primärgruppe"
+msgstr "Standard PrimÃ¤rgruppe"
 
 #: default.py:72
 msgid "Default Computer Group"
@@ -135,19 +135,19 @@ msgstr "Standard Rechnergruppe"
 
 #: default.py:82
 msgid "Default DC Slave Computer Group"
-msgstr "Standardgruppe für DC Slave-Rechner"
+msgstr "Standardgruppe fÃ¼r DC Slave-Rechner"
 
 #: default.py:92
 msgid "Default DC Master & Backup Server Group"
-msgstr "Standardgruppe für DC Master- und DC Backup-Rechner"
+msgstr "Standardgruppe fÃ¼r DC Master- und DC Backup-Rechner"
 
 #: default.py:102
 msgid "Default Member Server Group"
-msgstr "Standardgruppe für Member-Server"
+msgstr "Standardgruppe fÃ¼r Member-Server"
 
 #: default.py:112
 msgid "Default Client Computer Group"
-msgstr "Standardgruppe für Clients"
+msgstr "Standardgruppe fÃ¼r Clients"
 
 #: default.py:122
 msgid "Default KDE Profiles"
@@ -167,7 +167,7 @@ msgstr "Nichts"
 
 #: default.py:165
 msgid "Primary Groups"
-msgstr "Primäre Gruppen"
+msgstr "PrimÃ¤re Gruppen"
 
 #: default.py:172
 msgid "KDE Profiles"
@@ -335,7 +335,7 @@ msgstr "Modul"
 
 #: license.py:74
 msgid "Module the license is valid for"
-msgstr "Für dieses Modul ist die Lizenz gültig."
+msgstr "FÃ¼r dieses Modul ist die Lizenz gÃ¼ltig."
 
 #: license.py:83
 msgid "Base DN"
@@ -343,7 +343,7 @@ msgstr "Basis-DN"
 
 #: license.py:84
 msgid "Base DN the license is valid for"
-msgstr "Für diesen Basis-DN st die Lizenz gültig."
+msgstr "FÃ¼r diesen Basis-DN st die Lizenz gÃ¼ltig."
 
 #: license.py:93
 msgid "Signature"
@@ -352,7 +352,7 @@ msgstr "Signatur"
 #: license.py:94
 msgid "This Signature is used to verify the authenticity of the license."
 msgstr ""
-"Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
+"Diese Signatur wird verwendet, um die AuthentizitÃ¤t der Lizenz zu Ã¼berprÃ¼fen."
 
 #: license.py:113
 msgid "Max. User Accounts"
@@ -402,11 +402,11 @@ msgstr ""
 
 #: license.py:153
 msgid "Valid Product Types"
-msgstr "Gültige Produkttypen"
+msgstr "GÃ¼ltige Produkttypen"
 
 #: license.py:154
 msgid "Product types this license allows."
-msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
+msgstr "Produkttypen, fÃ¼r die die vorliegenden Lizenz gÃ¼ltig ist."
 
 #: license.py:164
 msgid "Licensing Information"
@@ -430,7 +430,7 @@ msgstr "Gesperrt bis"
 
 #: lock.py:74
 msgid "Lock Information"
-msgstr "Informationen über die Sperrung"
+msgstr "Informationen Ã¼ber die Sperrung"
 
 #: packages.py:47
 msgid "Settings: Package List"
@@ -438,7 +438,7 @@ msgstr "Einstellungen: Paketliste"
 
 #: packages.py:48
 msgid "List of Packages for UCS Systems"
-msgstr "Paketliste für UCS-Systeme"
+msgstr "Paketliste fÃ¼r UCS-Systeme"
 
 #: packages.py:63 packages.py:64 packages.py:75
 msgid "Package List"
@@ -498,7 +498,7 @@ msgstr "Konfigurationsname"
 
 #: sambaconfig.py:76
 msgid "Password Length"
-msgstr "Passwort-Länge"
+msgstr "Passwort-LÃ¤nge"
 
 #: sambaconfig.py:86
 msgid "Password History"
@@ -514,7 +514,7 @@ msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
 #: sambaconfig.py:116
 msgid "User must Logon to Change Password"
-msgstr "Änderung des Passwortes erfordert Anmeldung"
+msgstr "Ã„nderung des Passwortes erfordert Anmeldung"
 
 #: sambaconfig.py:126
 msgid "Maximum Password Age"
@@ -526,7 +526,7 @@ msgstr "Dauer der Aussperrung"
 
 #: sambaconfig.py:146
 msgid "Reset Count Minutes"
-msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
+msgstr "Fehlgeschlagene Anmeldeversuche zurÃ¼cksetzen nach"
 
 #: sambaconfig.py:156
 msgid "Disconnect Time"
@@ -534,15 +534,15 @@ msgstr "Verbindung trennen nach"
 
 #: sambaconfig.py:166
 msgid "Refuse Machine Password Change"
-msgstr "Änderung des Rechnerpasswortes ablehnen"
+msgstr "Ã„nderung des Rechnerpasswortes ablehnen"
 
 #: sambadomain.py:52
 msgid "Settings: Samba Domain"
-msgstr "Einstellungen: Samba-Domäne"
+msgstr "Einstellungen: Samba-DomÃ¤ne"
 
 #: sambadomain.py:57
 msgid "Samba Domain Name"
-msgstr "Samba-Domänenname"
+msgstr "Samba-DomÃ¤nenname"
 
 #: sambadomain.py:67
 msgid "Samba SID"
@@ -550,15 +550,15 @@ msgstr "Samba-SID"
 
 #: sambadomain.py:78
 msgid "Next User RID"
-msgstr "nächste Benutzer-RID"
+msgstr "nÃ¤chste Benutzer-RID"
 
 #: sambadomain.py:89
 msgid "Next Group RID"
-msgstr "nächste Gruppen-RID"
+msgstr "nÃ¤chste Gruppen-RID"
 
 #: sambadomain.py:100
 msgid "Next RID"
-msgstr "nächste RID"
+msgstr "nÃ¤chste RID"
 
 #: service.py:44
 msgid "Settings: Service"
@@ -608,7 +608,7 @@ msgstr "Zu speicherndes Attribut"
 msgid ""
 "An LDAP attribute is required that should be used for storing the information"
 msgstr ""
-"Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
+"Ein LDAP-Attribut wird benÃ¶tigt in dem die Informationen gespeichert werden."
 
 #: user.py:46
 msgid "Preferences: Univention Admin User Settings"
@@ -664,11 +664,11 @@ msgstr "Organisation"
 
 #: usertemplate.py:90
 msgid "Change password on Next Login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
+msgstr "Passwort bei der nÃ¤chsten Anmeldung Ã¤ndern"
 
 #: usertemplate.py:91
 msgid "Change password on next login"
-msgstr "Passwort bei der nächsten Anmeldung ändern"
+msgstr "Passwort bei der nÃ¤chsten Anmeldung Ã¤ndern"
 
 #: usertemplate.py:101
 msgid "Disabled"
@@ -716,11 +716,11 @@ msgstr "Profilverzeichnis"
 
 #: usertemplate.py:195
 msgid "Windows Home Drive"
-msgstr "Laufwerk für Heimatverzeichnis"
+msgstr "Laufwerk fÃ¼r Heimatverzeichnis"
 
 #: usertemplate.py:205
 msgid "Street"
-msgstr "Straße"
+msgstr "StraÃŸe"
 
 #: usertemplate.py:215
 msgid "Postal Code"
@@ -744,11 +744,11 @@ msgstr "Mitarbeiterkategorie"
 
 #: usertemplate.py:275
 msgid "Primary Group"
-msgstr "Primäre Gruppe"
+msgstr "PrimÃ¤re Gruppe"
 
 #: usertemplate.py:288
 msgid "Primary E-Mail Address"
-msgstr "Primäre E-Mail-Adresse"
+msgstr "PrimÃ¤re E-Mail-Adresse"
 
 #: usertemplate.py:299
 msgid "Use Global Spam Folder"
@@ -768,7 +768,7 @@ msgstr "Mails weiterleiten"
 
 #: usertemplate.py:333
 msgid "Forward Address"
-msgstr "E-Mail-Adresse für Mailweiterleitung"
+msgstr "E-Mail-Adresse fÃ¼r Mailweiterleitung"
 
 #: usertemplate.py:344
 msgid "Forward Keep Copy"
@@ -784,11 +784,11 @@ msgstr "Spam weiterleiten"
 
 #: usertemplate.py:377
 msgid "Activate folderdelivery"
-msgstr "Eingehende Mails in einen ausgewählten Ordner verschieben"
+msgstr "Eingehende Mails in einen ausgewÃ¤hlten Ordner verschieben"
 
 #: usertemplate.py:388
 msgid "Deliver to Folder"
-msgstr "Ordner für eingehende Mails"
+msgstr "Ordner fÃ¼r eingehende Mails"
 
 #: usertemplate.py:399
 msgid "Delegates"
@@ -796,7 +796,7 @@ msgstr "Authorisierte E-Mail-Adressen"
 
 #: usertemplate.py:410
 msgid "Vacation Address"
-msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
+msgstr "E-Mail-Adressen fÃ¼r Abwesenheitsnotiz"
 
 #: usertemplate.py:421
 msgid "Activate Vacation"
@@ -816,11 +816,11 @@ msgstr "Abwesenheitsnotiz als Antwort auf Spam Mails senden"
 
 #: usertemplate.py:465
 msgid "React Domain"
-msgstr "Abwesenheitsnotiz an folgende Domänen senden"
+msgstr "Abwesenheitsnotiz an folgende DomÃ¤nen senden"
 
 #: usertemplate.py:476
 msgid "No React Domain"
-msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
+msgstr "Abwesenheitsnotiz an folgende nicht senden DomÃ¤nen"
 
 #: usertemplate.py:487
 msgid "Invitation Policy"
@@ -896,7 +896,7 @@ msgstr "Einstellungen: X Konfigurationsauswahl"
 
 #: xconfig_choices.py:63
 msgid "Resolution"
-msgstr "Auflösung"
+msgstr "AuflÃ¶sung"
 
 #: xconfig_choices.py:73
 msgid "Color Depth"
@@ -932,7 +932,7 @@ msgstr "X Modul"
 
 #: xconfig_choices.py:153
 msgid "Display Size (mm)"
-msgstr "Bildschirm Grösse (mm)"
+msgstr "Bildschirm GrÃ¶sse (mm)"
 
 #: xconfig_choices.py:174
 msgid "X Configuration Choices"
@@ -948,7 +948,7 @@ msgstr "X Konfiguration Auswahl"
 #~ msgstr "Erlaube Zugriff auf den Navigationsbereich"
 
 #~ msgid "Show Self Menu Entry"
-#~ msgstr "Persönliche Einstellungen anzeigen"
+#~ msgstr "PersÃ¶nliche Einstellungen anzeigen"
 
 #~ msgid "Mailbox Directory"
 #~ msgstr "Postfach-Verzeichnis"
@@ -984,7 +984,7 @@ msgstr "X Konfiguration Auswahl"
 #~ msgstr "Mailordner Link"
 
 #~ msgid "maildomains link"
-#~ msgstr "Maildomänen Link"
+#~ msgstr "MaildomÃ¤nen Link"
 
 #~ msgid "mailinglists link"
 #~ msgstr "Mailinglisten Link"
@@ -996,7 +996,7 @@ msgstr "X Konfiguration Auswahl"
 #~ msgstr "Mailordner Link"
 
 #~ msgid "Maildomains"
-#~ msgstr "Maildomänen"
+#~ msgstr "MaildomÃ¤nen"
 
 #~ msgid "Mailinglists"
 #~ msgstr "Maiinglisten"

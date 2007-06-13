@@ -13,7 +13,7 @@ msgstr ""
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: unicode\n"
 
 #: __init__.py:50 __init__.py:56 __init__.py:64
 msgid "Mail Server"
@@ -45,7 +45,7 @@ msgstr "IMAP-Zugriff"
 
 #: __init__.py:70
 msgid "IMAP Quota Support"
-msgstr "IMAP Quota Unterstützung"
+msgstr "IMAP Quota UnterstÃŒtzung"
 
 #: __init__.py:71
 msgid "POP3 Access"
@@ -53,11 +53,11 @@ msgstr "POP3-Zugriff"
 
 #: __init__.py:72
 msgid "Maximum Message Size"
-msgstr "Maximale Nachrichtengröße"
+msgstr "Maximale NachrichtengrÃ¶Ãe"
 
 #: __init__.py:73
 msgid "Alias E-Mail Address for root"
-msgstr "Alternative E-Mail-Adresse für root"
+msgstr "Alternative E-Mail-Adresse fÃŒr root"
 
 #: _revamp.py:42
 msgid "Mail Server Configration"

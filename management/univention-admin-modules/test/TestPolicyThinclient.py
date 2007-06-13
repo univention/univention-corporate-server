@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
 #  unit tests: policies/thinclient tests

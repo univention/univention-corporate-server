@@ -1,15 +1,15 @@
-Die Wizards werden im LDAP definiert. Dafür gibt es unterhalb des Containers
+Die Wizards werden im LDAP definiert. DafÃ¼r gibt es unterhalb des Containers
 cn=console,cn=univention,$ldap_base den Container cn=wizards.
 
 Pro Wizard gibt es ein neues Objekt, unter dem die Seiten definiert werden,
-z.B. cn=basis,cn=wizards,... für den Basiseinstellungs-Wizard. 
-An diesem Container wird eine Beschreibung und ein Icon angehängt. Diese
-Beschreibung und das Icon können dann beim Start des Wizards angezeigt werden.
-Zusätzlich werden an dem Container Rechner bzw. Systeme definiert, auf denen
-dieser Wizard ausgeführt werden darf. Dort können die Rechner dann über
-service:<service> oder über role:<system/role> oder über host:<hostname>
-ausgewählt werden. Weiter können Aktionen definiert werden, die nach dem
-Durchlauf des Wizards ausgeführt werden sollen, definiert werden, z.B:
+z.B. cn=basis,cn=wizards,... fÃ¼r den Basiseinstellungs-Wizard. 
+An diesem Container wird eine Beschreibung und ein Icon angehÃ¤ngt. Diese
+Beschreibung und das Icon kÃ¶nnen dann beim Start des Wizards angezeigt werden.
+ZusÃ¤tzlich werden an dem Container Rechner bzw. Systeme definiert, auf denen
+dieser Wizard ausgefÃ¼hrt werden darf. Dort kÃ¶nnen die Rechner dann Ã¼ber
+service:<service> oder Ã¼ber role:<system/role> oder Ã¼ber host:<hostname>
+ausgewÃ¤hlt werden. Weiter kÃ¶nnen Aktionen definiert werden, die nach dem
+Durchlauf des Wizards ausgefÃ¼hrt werden sollen, definiert werden, z.B:
 service:cups oder script:/usr/lib/univention-setup/scripts/basis/10hostname.
 
 Ein Besipiel:
@@ -28,7 +28,7 @@ univentionConsoleWizardAction: script:/usr/lib/univention-setup/scripts/basis/
 univentionConsoleWizardCategory: system
 
 
-Der Aufbau der ersten Seite wäre dann der Aufbau ungefähr so:
+Der Aufbau der ersten Seite wÃ¤re dann der Aufbau ungefÃ¤hr so:
 
 
 ----------------------------------------------------------
@@ -46,7 +46,7 @@ Der Aufbau der ersten Seite wäre dann der Aufbau ungefähr so:
 
 
 
-Weiter werden dann unterhalb des Wizad-Container die nächsten Wizard Seiten
+Weiter werden dann unterhalb des Wizad-Container die nÃ¤chsten Wizard Seiten
 definiert. Hierbei ist jedes LDAP-Object ein Objekt auf der Wizard-Seite. Ein
 Beispiel:
 dn: cn=hostname,cn=basis,cn=wizards,cn=console,cn=univention,$ldap_base
@@ -74,7 +74,7 @@ univentionConsoleWizardValueDescription: Hostname
 
 univentionConsoleWizardTyp gibt den Typ des Eingabefeldes wieder, z.B. ein IP
 Adress-Eingabefeld, einen String, eine Selectbox, ein Boolean usw.
-Unterstützte Werte:
+UnterstÃ¼tzte Werte:
  - string
  - ip
  - selectbox
@@ -85,21 +85,21 @@ univentionConsoleWizardSequence ist die Nummer, wann diese Seite angezeigt
 wird. Es wird die Seite mit der kleinsten Nummer zuerst angezeigt. Mit 
 univentionConsoleWizardPosition kann die Position des Eingabefeldes auf
 der Seite angeben werden, wenn mehr als ein Eingabefeld auf der Seite
-gewünscht wird.
+gewÃ¼nscht wird.
 univentionConsoleWizardDefault kann einen Default Wert vorgeben. Durch das
-Schlüsselwort baseconfig wird der Inhalt der Univention Baseconfig Variable
-verwendet. Hier sind noch gegenseitige Abhängigkeiten zu anderen Variablen in
+SchlÃ¼sselwort baseconfig wird der Inhalt der Univention Baseconfig Variable
+verwendet. Hier sind noch gegenseitige AbhÃ¤ngigkeiten zu anderen Variablen in
 dem Wizard zu definieren (TODO).
 Mit univentionConsoleWizardSyntaxCheck kann die Syntax des eingebenen Wertes
-überprüft werden, wobei durch das Schlüsselwort re: ein Reguläre Ausdrücke
-geprüft wird. Hier sollte noch geprüft werden, ob externe Funktionen noch
-benötigt werden (TODO).
-Das Attribut univentionConsoleWizardValue kann Werte vorgeben, bsp. für eine
+Ã¼berprÃ¼ft werden, wobei durch das SchlÃ¼sselwort re: ein RegulÃ¤re AusdrÃ¼cke
+geprÃ¼ft wird. Hier sollte noch geprÃ¼ft werden, ob externe Funktionen noch
+benÃ¶tigt werden (TODO).
+Das Attribut univentionConsoleWizardValue kann Werte vorgeben, bsp. fÃ¼r eine
 Selectbox oder Checkboxen. Dabei kann neben value auch die LDAP Syntax,
-bekannt aus Univention Admin, verwendet werden. Natürlich nicht gemischt.
+bekannt aus Univention Admin, verwendet werden. NatÃ¼rlich nicht gemischt.
 univentionConsoleWizardHost gibt an, auf welchen Rechnern bzw. auf welcher
 Rechnergruppe diese Seite angezeigt wird, neben der Systemrolle (systemrole:)
-wird auch der Rechnername (host:) oder der Service (service:) unterstützt.
+wird auch der Rechnername (host:) oder der Service (service:) unterstÃ¼tzt.
 Mit univentionConsoleWizardIcon kann ein Icon angebenen werden, welches
 angezeigt werden soll.
 Und univentionConsoleWizardValueDescription zeigt die direkte Beschreibung des
@@ -119,7 +119,7 @@ Aufbau:
 |                         ___________                    |
 |    $value_description  |___________|                   |
 |                                                        |
-| <-Zurück                                     Weiter->  |
+| <-ZurÃ¼ck                                     Weiter->  |
 ----------------------------------------------------------
 
 

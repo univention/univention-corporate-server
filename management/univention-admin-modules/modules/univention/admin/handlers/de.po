@@ -11,8 +11,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: ISO-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: __init__.py:171
@@ -23,11 +23,11 @@ msgstr "Attribut=%s alter Wert=%s neuer Wert=%s"
 #: __init__.py:174
 #, python-format
 msgid "The property %s is required"
-msgstr "Die Eigenschaft %s wird benötigt."
+msgstr "Die Eigenschaft %s wird benÃ¶tigt."
 
 #: __init__.py:314
 msgid "Move not possible: old and new DN are the same."
-msgstr "Verschieben ist nicht möglich: alter und neuer DN sind identisch."
+msgstr "Verschieben ist nicht mÃ¶glich: alter und neuer DN sind identisch."
 
 #: __init__.py:316
 msgid "Move into subcontainer of self not allowed."
@@ -53,7 +53,7 @@ msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
 msgstr ""
-"Der DHCP-Eintrag für diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
+"Der DHCP-Eintrag fÃ¼r diesen Rechner sollte die Zonen LDAP-DN, die IP- und "
 "MAC-Adresse enthalten."
 
 #: __init__.py:1636
@@ -63,7 +63,7 @@ msgstr "DNS Forward Zone"
 # __init__.py:chen"024
 #: __init__.py:1636 __init__.py:1644 __init__.py:1652
 msgid "delete"
-msgstr "Löschen"
+msgstr "LÃ¶schen"
 
 #: __init__.py:1644
 msgid "DNS Reverse Zone"

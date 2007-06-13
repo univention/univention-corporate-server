@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -O
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention LDAP
 #  set the new attribute sambaWriteable to the same value as writeable

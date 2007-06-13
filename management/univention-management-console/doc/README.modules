@@ -1,34 +1,34 @@
 Dieses Dokument beschreibt die einzelnen Teile der neuen Univention
-Management Console um eine mögliche Verteilung auf mehrere Entwickler
-durchzuführen:
+Management Console um eine mÃ¶gliche Verteilung auf mehrere Entwickler
+durchzufÃ¼hren:
 
-Die neue Console besteht primär aus zwei Modulen, die über das Protokoll UMCP
+Die neue Console besteht primÃ¤r aus zwei Modulen, die Ã¼ber das Protokoll UMCP
 kommunizieren:
 
 * Univention Console Frontend (UCF)
 
 * Univention Console Daemon (UCD)
 
-Die Entwicklung des Protokolls sowie die Implementierung sind die Basis für alle
+Die Entwicklung des Protokolls sowie die Implementierung sind die Basis fÃ¼r alle
 weiteren Teilen, die mit dem dritten wichtigen Bereich der Kommunikation zu tun
 haben. Im folgenden werden nun diese Teile weiter zerlegt.
 
 1. Kommunikation
 
 - Protokoll Konzeptionierung
-  Es muß ein Protokoll entwickelt werden, dass die Anfragen des Frontends an den Daemon übermitteln kann und die Antworten für das Frontend verständlich zurückliefert. Details dazu können in der Datei doc/README.uvcp nachgelesen werden.
+  Es muÃŸ ein Protokoll entwickelt werden, dass die Anfragen des Frontends an den Daemon Ã¼bermitteln kann und die Antworten fÃ¼r das Frontend verstÃ¤ndlich zurÃ¼ckliefert. Details dazu kÃ¶nnen in der Datei doc/README.uvcp nachgelesen werden.
 
 - Implementierung
-  Eine Implementierung von UVCP sollte der Anwendung eine einfache Schnittstelle bieten, die keine detailierten Kenntnisse über das Protokoll erfordern
+  Eine Implementierung von UVCP sollte der Anwendung eine einfache Schnittstelle bieten, die keine detailierten Kenntnisse Ã¼ber das Protokoll erfordern
   
-- Verschlüsselung
-  Das Protokoll sollte seine Daten verschlüsselt übertragen. Für die ersten Test reicht eine Klartext Übertragung, d.h. die Verschlüsselung soll erst später nachgerüstet werden.
+- VerschlÃ¼sselung
+  Das Protokoll sollte seine Daten verschlÃ¼sselt Ã¼bertragen. FÃ¼r die ersten Test reicht eine Klartext Ãœbertragung, d.h. die VerschlÃ¼sselung soll erst spÃ¤ter nachgerÃ¼stet werden.
 
 2. Univention Console Frontend (UCF)
 
-UCF ist wie beim Univention Admin zum Teil in PHP geschrieben und in ein "Frontend-Daemon" in Python. Die Funktionsweise ist der ähnlich und basiert daher auch auf dem Code vom Admin. Hier sollte noch geprüft werden, ob weitere Teil des Codes in einem gemeinsamen Code geteilt werden können (es gibt bereits univention-webui*).
+UCF ist wie beim Univention Admin zum Teil in PHP geschrieben und in ein "Frontend-Daemon" in Python. Die Funktionsweise ist der Ã¤hnlich und basiert daher auch auf dem Code vom Admin. Hier sollte noch geprÃ¼ft werden, ob weitere Teil des Codes in einem gemeinsamen Code geteilt werden kÃ¶nnen (es gibt bereits univention-webui*).
 
-Der Frontend-Daemon authentisiert sich gegenüber einem UCD über UMCP. Anhand des Benutzernamens stehen dem Frontend-Daemon nun bestimmte Rechte zur Verfügung. 
+Der Frontend-Daemon authentisiert sich gegenÃ¼ber einem UCD Ã¼ber UMCP. Anhand des Benutzernamens stehen dem Frontend-Daemon nun bestimmte Rechte zur VerfÃ¼gung. 
 
 3. Univention Console Daemon (UCD)
 
@@ -36,54 +36,54 @@ Der Daemon besteht im Prinzip aus drei Modulen:
 
 * Proxy
 
-Der Proxy übernimmt die Netzkommunikation mit dem Frontend und leitet
+Der Proxy Ã¼bernimmt die Netzkommunikation mit dem Frontend und leitet
 die Anfrage an den entsprechenden Rechner weiter. Mittels UVCP soll es
-nämlich möglich sein die Anfrage an einen anderen Univention Console
+nÃ¤mlich mÃ¶glich sein die Anfrage an einen anderen Univention Console
 Daemon weiterzuleiten mit dem das Frontend gerade gar nicht verbunden
 ist. Diese Weiterleitung sowie die notwendige Authentisierung soll von
-dem Proxy übernommen werden.
+dem Proxy Ã¼bernommen werden.
   
 * Core
 
-Der Kern des Daemon übernimmt die Verarbeitung der Anfrage und die
-Kontrolle über die einzelnen Module, die dann die jeweiligen Befehle
-ausführen. Des weiteren enthält der Kern eine Basis Implementierung
-für Module.
+Der Kern des Daemon Ã¼bernimmt die Verarbeitung der Anfrage und die
+Kontrolle Ã¼ber die einzelnen Module, die dann die jeweiligen Befehle
+ausfÃ¼hren. Des weiteren enthÃ¤lt der Kern eine Basis Implementierung
+fÃ¼r Module.
   
 * Modules
 
-Module implementieren ähnlich wie beim Admin die Verwaltung einer
+Module implementieren Ã¤hnlich wie beim Admin die Verwaltung einer
 Komponente. Allerdings ist bei dieses Modulen die Liste der
 Funktionien auf der Komponente nicht festgeschrieben, sondern wird in
 den Modulen definiert.
 
 Wichtig bei allen Teilen des Daemon ist, dass sie keine blockierenden
-Code-Stücke enthalten, da der Daemon auf pyNotifier aufsetzen soll, um
+Code-StÃ¼cke enthalten, da der Daemon auf pyNotifier aufsetzen soll, um
 auf Threading zu verzichten und um trotzdem mit einem einzigen Prozess
-mehrere Verbindungen zu verarbeiten. Es dürfen beispielsweise keine
-blockierenden Sockets verwendet werden. Hierfür sind folgende Module
+mehrere Verbindungen zu verarbeiten. Es dÃ¼rfen beispielsweise keine
+blockierenden Sockets verwendet werden. HierfÃ¼r sind folgende Module
 bzgl. asynchroner Mechanismen zu untersuchen:
 
 - [DONE] python-ldap (univention-python)
 
-python-ldap bietet eine API für die asynchrone
-Kommunikation. Eigentlich ist das sogar die Basis, die von der API für
+python-ldap bietet eine API fÃ¼r die asynchrone
+Kommunikation. Eigentlich ist das sogar die Basis, die von der API fÃ¼r
 die synchrone Kommunikation genutzt wird.
 
-Also muß hier univention-python erwertert werden, so dass es möglich
+Also muÃŸ hier univention-python erwertert werden, so dass es mÃ¶glich
 ist die Operationen auf das access-Objekt auch asynchron
-durchzuführen. Dabei muß es eine polling-Funktion entwickelt werden,
+durchzufÃ¼hren. Dabei muÃŸ es eine polling-Funktion entwickelt werden,
 die von einer Main-Loop aus aufgerufen werden kann.
 
 - [DONE] pam, python-pam
 
-libpam sieht keine API für asynchrone Kommunikation vor. Das einzige
-was PAM bietet ist die Möglichkeit die zusätzlich eingebauten
-Verzögerungen (um DoS Attacken zu unterbinden) zu umgehen. Dauert aber
+libpam sieht keine API fÃ¼r asynchrone Kommunikation vor. Das einzige
+was PAM bietet ist die MÃ¶glichkeit die zusÃ¤tzlich eingebauten
+VerzÃ¶gerungen (um DoS Attacken zu unterbinden) zu umgehen. Dauert aber
 beispielsweise ein LDAP-Request ziemlich lange, dann wird das nicht
-helfen. Hier evtl. tatsächlich auf einen Thread zurückgegriffen
+helfen. Hier evtl. tatsÃ¤chlich auf einen Thread zurÃ¼ckgegriffen
 werden. Da es hier aber nur um einen unidirectionalen Datenaustausch
-geht, sollte das keine größeren Problem bereiten.
+geht, sollte das keine grÃ¶ÃŸeren Problem bereiten.
 
 
 

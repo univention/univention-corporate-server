@@ -11,8 +11,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: ENCODING\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
 
 #: allocators.py:132 allocators.py:158 locking.py:66
@@ -34,11 +34,11 @@ msgstr "Objekt(e) suchen"
 
 #: modules.py:557
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "HinzufÃ¼gen"
 
 #: modules.py:557
 msgid "Add Object(s)"
-msgstr "Objekt(e) hinzufügen"
+msgstr "Objekt(e) hinzufÃ¼gen"
 
 #: mungeddial.py:40
 msgid "CTX Present"
@@ -58,7 +58,7 @@ msgstr "Client-Drucker beim Anmelden verbinden"
 
 #: mungeddial.py:84
 msgid "Default to main client printer"
-msgstr "Standardmäßig der Client Hauptdrucker"
+msgstr "StandardmÃ¤ÃŸig der Client Hauptdrucker"
 
 #: mungeddial.py:95
 msgid "CTX Flags1"
@@ -90,7 +90,7 @@ msgstr "CTX maximale Verbindungstrennungsdauer"
 
 #: mungeddial.py:172
 msgid "CTX Maximum Idle Time"
-msgstr "CTX Maximale Untätigkeitsdauer"
+msgstr "CTX Maximale UntÃ¤tigkeitsdauer"
 
 #: mungeddial.py:183
 msgid "Keyboard Layout"
@@ -98,7 +98,7 @@ msgstr "Tastaturlayout"
 
 #: mungeddial.py:194
 msgid "CTX Minimal Encryption Level"
-msgstr "CTX minimales Verschlüssungslevel"
+msgstr "CTX minimales VerschlÃ¼ssungslevel"
 
 #: mungeddial.py:205
 msgid "Start Program Work Directory"
@@ -114,7 +114,7 @@ msgstr "Basisverzeichnis des Terminalservers"
 
 #: mungeddial.py:238
 msgid "Terminal Server Base Directory Drive Letter"
-msgstr "Laufwerksbuchstabe für das Basisverzeichnis des Terminalservers"
+msgstr "Laufwerksbuchstabe fÃ¼r das Basisverzeichnis des Terminalservers"
 
 #: mungeddial.py:249
 msgid "Windows Terminal Server Profile Path"
@@ -122,7 +122,7 @@ msgstr "Windows Terminalserver Profilpfad"
 
 #: mungeddial.py:260
 msgid "Start Program Use Client Configuration"
-msgstr "Client Konfiguration übernehmen für das Startprogramm"
+msgstr "Client Konfiguration Ã¼bernehmen fÃ¼r das Startprogramm"
 
 #: mungeddial.py:271
 msgid "Start Program Commandline"
@@ -142,11 +142,11 @@ msgstr "Windows Terminalservereinstellungen"
 
 #: nagios.py:43
 msgid "Email addresses of Nagios contacts"
-msgstr "Email-Adressen für Nagios-Benachrichtigungen"
+msgstr "Email-Adressen fÃ¼r Nagios-Benachrichtigungen"
 
 #: nagios.py:53
 msgid "Parent hosts"
-msgstr "Übergeordnete Rechner"
+msgstr "Ãœbergeordnete Rechner"
 
 #: nagios.py:63
 msgid "Assigned nagios services"
@@ -166,11 +166,11 @@ msgstr "Nagios-Benachrichtigung"
 
 #: nagios.py:79
 msgid "Nagios Notification Settings"
-msgstr "Einstellungen für Nagios-Benachrichtigungen"
+msgstr "Einstellungen fÃ¼r Nagios-Benachrichtigungen"
 
 #: nagios.py:92
 msgid "Nagios Support"
-msgstr "Nagios-Unterstützung"
+msgstr "Nagios-UnterstÃ¼tzung"
 
 #: nagios.py:269
 msgid "cannot find fqdn of "
@@ -231,7 +231,7 @@ msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
 
 #: syntax.py:320
 msgid "Value may not contain double quotes (\")!"
-msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
+msgstr "Der Wert darf kein AnfÃ¼hrungszeichen (\") enthalten!"
 
 #: syntax.py:334
 msgid "The password is to short, at least 8 characters needed."
@@ -243,23 +243,23 @@ msgstr "Ein leeres Passwort ist nicht erlaubt!"
 
 #: syntax.py:355
 msgid "Not a valid hostname!"
-msgstr "Kein gültiger Hostname"
+msgstr "Kein gÃ¼ltiger Hostname"
 
 #: syntax.py:369
 msgid "Not a valid windows hostname!"
-msgstr "Kein gültiger Windows-Hostname"
+msgstr "Kein gÃ¼ltiger Windows-Hostname"
 
 #: syntax.py:381 syntax.py:384
 msgid "Not a valid IP address!"
-msgstr "Keine gültige IP-Adresse"
+msgstr "Keine gÃ¼ltige IP-Adresse"
 
 #: syntax.py:412
 msgid "Not a valid hostname or IP address!"
-msgstr "Kein gültiger Hostname oder IP-Adresse"
+msgstr "Kein gÃ¼ltiger Hostname oder IP-Adresse"
 
 #: syntax.py:455
 msgid "Not a valid netmask!"
-msgstr "Keine gültige Netzwerkmaske."
+msgstr "Keine gÃ¼ltige Netzwerkmaske."
 
 #: syntax.py:459
 msgid "First Address"
@@ -283,11 +283,11 @@ msgstr "Keine absolute Pfadangabe"
 
 #: syntax.py:493 syntax.py:504
 msgid "Not a valid email address!"
-msgstr "Keine gültige E-Mail-Adresse"
+msgstr "Keine gÃ¼ltige E-Mail-Adresse"
 
 #: syntax.py:522
 msgid "Not a valid Date"
-msgstr "Kein gültiges Datum"
+msgstr "Kein gÃ¼ltiges Datum"
 
 #: syntax.py:536
 msgid ""
@@ -311,7 +311,7 @@ msgstr "Fehlender Wert!"
 
 #: syntax.py:586 syntax.py:596
 msgid "Priority"
-msgstr "Priorität"
+msgstr "PrioritÃ¤t"
 
 #: syntax.py:586
 msgid "Mail Server"
@@ -339,11 +339,11 @@ msgstr "Server"
 
 #: syntax.py:606
 msgid "Not a valid time format"
-msgstr "Keine gültige Zeitangabe"
+msgstr "Keine gÃ¼ltige Zeitangabe"
 
 #: syntax.py:619
 msgid "Not a valid time interval"
-msgstr "Kein gültiges Zeitintervall"
+msgstr "Kein gÃ¼ltiges Zeitintervall"
 
 #: syntax.py:625
 msgid "Ethernet"
@@ -390,23 +390,23 @@ msgstr "Beschreibung"
 
 #: syntax.py:695 syntax.py:760
 msgid "Not a valid LDAP DN"
-msgstr "Kein gültiger LDAP-DN"
+msgstr "Kein gÃ¼ltiger LDAP-DN"
 
 #: syntax.py:726
 msgid "Invitation Policy"
-msgstr "Richtlinie für Einladungen"
+msgstr "Richtlinie fÃ¼r Einladungen"
 
 #: syntax.py:733
 msgid "Shared folder user ACL"
-msgstr "Benutzer ACLs für gemeinsame Ordner"
+msgstr "Benutzer ACLs fÃ¼r gemeinsame Ordner"
 
 #: syntax.py:738 syntax.py:749
 msgid "Not a valid shared folder ACL"
-msgstr "Keine gültige ACL für gemeinsame Ordner"
+msgstr "Keine gÃ¼ltige ACL fÃ¼r gemeinsame Ordner"
 
 #: syntax.py:744
 msgid "Shared folder group ACL"
-msgstr "Gruppen ACLs für gemeinsame Ordner"
+msgstr "Gruppen ACLs fÃ¼r gemeinsame Ordner"
 
 #: syntax.py:781
 msgid ""
@@ -433,7 +433,7 @@ msgstr "Gruppen-ID"
 
 #: syntax.py:1039 syntax.py:1044
 msgid "Primary Group"
-msgstr "Primäre Gruppe"
+msgstr "PrimÃ¤re Gruppe"
 
 #: syntax.py:1049
 msgid "Network"
@@ -469,7 +469,7 @@ msgstr "Februar"
 
 #: syntax.py:1353
 msgid "March"
-msgstr "März"
+msgstr "MÃ¤rz"
 
 #: syntax.py:1354
 msgid "April"
@@ -582,7 +582,7 @@ msgstr "Keine"
 
 #: syntax.py:1621
 msgid "About"
-msgstr "Über"
+msgstr "Ãœber"
 
 #: syntax.py:1621
 msgid "Browse"
@@ -594,7 +594,7 @@ msgstr "Assistenten"
 
 #: syntax.py:1621
 msgid "Personal Settings"
-msgstr "Persönliche Einstellungen"
+msgstr "PersÃ¶nliche Einstellungen"
 
 #: syntax.py:1635
 msgid "No Reboot"
@@ -614,7 +614,7 @@ msgstr "Kerberos Prinzipal"
 
 #: syntax.py:1644
 msgid "Personal Information"
-msgstr "Persönliche Information"
+msgstr "PersÃ¶nliche Information"
 
 #: syntax.py:1645
 msgid "Samba Account"
@@ -634,7 +634,7 @@ msgstr "Trennen"
 
 #: syntax.py:1656
 msgid "Reset"
-msgstr "Zurücksetzen"
+msgstr "ZurÃ¼cksetzen"
 
 #: syntax.py:1664
 msgid "All Clients"
@@ -694,7 +694,7 @@ msgstr "Die Eigenschaft existiert nicht."
 
 #: uexceptions.py:62
 msgid "Value may not change."
-msgstr "Der Wert darf nicht verändert werden."
+msgstr "Der Wert darf nicht verÃ¤ndert werden."
 
 #: uexceptions.py:65
 msgid "Invalid syntax."
@@ -702,7 +702,7 @@ msgstr "Falsche Syntax."
 
 #: uexceptions.py:68
 msgid "Value is required."
-msgstr "Ein Wert wird benötigt."
+msgstr "Ein Wert wird benÃ¶tigt."
 
 #: uexceptions.py:71
 msgid "Values do not match."
@@ -710,7 +710,7 @@ msgstr "Die Werte sind nicht gleich."
 
 #: uexceptions.py:74
 msgid "Could not acquire lock."
-msgstr "Exklusiver Zugriff nicht möglich."
+msgstr "Exklusiver Zugriff nicht mÃ¶glich."
 
 #: uexceptions.py:77
 msgid "Authentication Failed."
@@ -737,12 +737,12 @@ msgid ""
 "The DHCP entry for this host should contain the zone DN, the IP address and "
 "the MAC address."
 msgstr ""
-"Der DHCP-Eintrag für diesen Rechner sollte den Zonen-DN, die IP-und die MAC-"
+"Der DHCP-Eintrag fÃ¼r diesen Rechner sollte den Zonen-DN, die IP-und die MAC-"
 "Adresse enthalten."
 
 #: uexceptions.py:95
 msgid "Next IP address not found."
-msgstr "Die nächste IP-Adresse wurde nicht gefunden."
+msgstr "Die nÃ¤chste IP-Adresse wurde nicht gefunden."
 
 #: uexceptions.py:98
 msgid "The given IP address is not within the range of the selected network"
@@ -766,11 +766,11 @@ msgstr "Der Standard Kolab Home Server existiert nicht."
 
 #: uexceptions.py:113
 msgid "Default primary group does not exist"
-msgstr "Die primäre Standardgruppe existiert nicht."
+msgstr "Die primÃ¤re Standardgruppe existiert nicht."
 
 #: uexceptions.py:116
 msgid "This is a primary group"
-msgstr "Das ist eine primäre Gruppe."
+msgstr "Das ist eine primÃ¤re Gruppe."
 
 #: uexceptions.py:122
 msgid "The requested group not be found."
@@ -792,11 +792,11 @@ msgstr ""
 
 #: uexceptions.py:134
 msgid "Not all needed information was entered."
-msgstr "Nicht alle benötigten Informationen wurden angegeben."
+msgstr "Nicht alle benÃ¶tigten Informationen wurden angegeben."
 
 #: uexceptions.py:137
 msgid "Cannot overwrite a fixed attribute."
-msgstr "Kann kein unveränderliches Attribut überschreiben."
+msgstr "Kann kein unverÃ¤nderliches Attribut Ã¼berschreiben."
 
 #: uexceptions.py:140
 msgid "Dynamic BOOTP leases are not compatible with failover."
@@ -808,7 +808,7 @@ msgstr "Es wurde keine Lizenz gefunden."
 
 #: uexceptions.py:146
 msgid "The license is invalid."
-msgstr "Die Lizenz ist ungültig."
+msgstr "Die Lizenz ist ungÃ¼ltig."
 
 #: uexceptions.py:149
 msgid "The license is expired."
@@ -816,15 +816,15 @@ msgstr "Die Lizenz ist abgelaufen."
 
 #: uexceptions.py:152
 msgid "The license is invalid for the current base DN."
-msgstr "Die Lizenz ist ungültig für den aktuellen Basis-DN."
+msgstr "Die Lizenz ist ungÃ¼ltig fÃ¼r den aktuellen Basis-DN."
 
 #: uexceptions.py:155
 msgid ""
 "The license check is disabled. Your are using the GPL version without any "
 "support or maintenance by Univention."
 msgstr ""
-"Die Lizenzüberprüfung ist deaktiviert. Sie verwenden die GPL Version ohne "
-"die Support oder Maintenance Unterstüzung von Univention."
+"Die LizenzÃ¼berprÃ¼fung ist deaktiviert. Sie verwenden die GPL Version ohne "
+"die Support oder Maintenance UnterstÃ¼zung von Univention."
 
 #: uexceptions.py:158
 msgid "Too many user accounts"
@@ -844,11 +844,11 @@ msgstr "Zu viele Groupware Konten"
 
 #: uexceptions.py:166
 msgid "During this session add and modify are disabled"
-msgstr "Während dieser Sitzung sind Hinzufügen und Bearbeiten nicht verfügbar."
+msgstr "WÃ¤hrend dieser Sitzung sind HinzufÃ¼gen und Bearbeiten nicht verfÃ¼gbar."
 
 #: uexceptions.py:169
 msgid "Password has been used before. Please choose a different one."
-msgstr "Das Passwort wurde bereits verwendet. Bitte wählen Sie ein anderes."
+msgstr "Das Passwort wurde bereits verwendet. Bitte wÃ¤hlen Sie ein anderes."
 
 #: uexceptions.py:172
 msgid "The password is to short, at least 8 character!"
@@ -862,21 +862,21 @@ msgstr "Netzwerk und IP-Adressbereich passen nicht zusammen."
 msgid "The IP range contains its network address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet seine Netzwerk Adresse. Das ist nicht "
-"zulässig!"
+"zulÃ¤ssig!"
 
 #: uexceptions.py:181
 msgid "The IP range contains its broadcast address. That is not permitted!"
 msgstr ""
 "Der IP-Adressbereich beinhaltet die Broadcast-Adresse. Das ist nicht "
-"zulässig!"
+"zulÃ¤ssig!"
 
 #: uexceptions.py:184
 msgid "Overlapping IP ranges"
-msgstr "Überschneidung in den IP-Adressbereichen"
+msgstr "Ãœberschneidung in den IP-Adressbereichen"
 
 #: uexceptions.py:187
 msgid "Invalid combination of options."
-msgstr "Unzulässige Zusammenstellung von Optionen."
+msgstr "UnzulÃ¤ssige Zusammenstellung von Optionen."
 
 #: uexceptions.py:190
 msgid "Password policy error: "
@@ -884,22 +884,22 @@ msgstr "Fehler in der Passwort-Richtlinie: "
 
 #: uexceptions.py:193
 msgid "This operation is not allowed on this object."
-msgstr "Die Operation ist für dieses Objekt nicht erlaubt."
+msgstr "Die Operation ist fÃ¼r dieses Objekt nicht erlaubt."
 
 #: uexceptions.py:196
 msgid "Empty printer groups are not possible."
-msgstr "Leere Druckergruppen sind nicht möglich."
+msgstr "Leere Druckergruppen sind nicht mÃ¶glich."
 
 #: uexceptions.py:199
 msgid ""
 "Printer groups with quota support can only have members with quota support."
 msgstr ""
-"Einer Druckergruppen mitUnterstützung für Quota können als Mitglieder nur "
+"Einer Druckergruppen mitUnterstÃ¼tzung fÃ¼r Quota kÃ¶nnen als Mitglieder nur "
 "Drucker mit Quota haben."
 
 #: uexceptions.py:202
 msgid "Only printer objects can be members of a printer group."
-msgstr "Nur Drucker-Objekte können Mitglied in einer Druckergruppe sein."
+msgstr "Nur Drucker-Objekte kÃ¶nnen Mitglied in einer Druckergruppe sein."
 
 #: uexceptions.py:205
 msgid "Only existing groups are allowed."
@@ -912,7 +912,7 @@ msgstr "Nur existierende Benutzer sind erlaubt."
 #: uexceptions.py:211
 #, python-format
 msgid "Invalid syntax in default value. Check these templates: %s."
-msgstr "Falsche Syntax bei Standardwert. Zu prüfende Vorlagen: %s."
+msgstr "Falsche Syntax bei Standardwert. Zu prÃ¼fende Vorlagen: %s."
 
 #: uexceptions.py:216
 msgid "Timeperiod Object still in use!"
@@ -920,13 +920,13 @@ msgstr "Nagios-Zeitraum-Objekt wird noch genutzt!"
 
 #: uexceptions.py:219
 msgid "IP address entry required to assign nagios services!"
-msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benötigt!"
+msgstr "Zum Zuweisen von Nagios-Diensten wird eine IP-Adresse benÃ¶tigt!"
 
 #: uexceptions.py:222
 msgid "DNS Forward Zone entry required to assign nagios services!"
 msgstr ""
 "Zum Zuweisen von Nagios-Diensten wird ein Eintrag in der DNS Forward Zone "
-"benötigt!"
+"benÃ¶tigt!"
 
 #: uldap.py:71
 msgid "There was no LDAP base specified."
@@ -943,7 +943,7 @@ msgstr "Authentisierung fehlgeschlagen"
 
 #: uldap.py:346
 msgid "Moving childs is not supported."
-msgstr "Das Verschieben von Kindsknoten wird nicht unterstützt."
+msgstr "Das Verschieben von Kindsknoten wird nicht unterstÃ¼tzt."
 
 #~ msgid "TCP"
 #~ msgstr "TCP"

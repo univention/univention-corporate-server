@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention LDAP Replication
 #  listener module for LDAP replication
