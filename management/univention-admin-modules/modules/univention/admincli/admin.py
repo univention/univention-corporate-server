@@ -499,8 +499,8 @@ def doit(arglist):
 						input[name]=value
 						was_set=1
 						
-			if not was_set:
-				out.append("WARNING: No attribute with name %s in this module, value not set."%name)
+			if not was_set or name=='name':
+				out.append("WARNING: No attribute with name '%s' in this module, value not set."%name)
 		elif opt == '--append':
 			pos=val.find('=')
 			name=val[:pos]
