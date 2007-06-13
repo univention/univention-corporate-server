@@ -31,21 +31,18 @@
 case "$1" in
 	start)
 		echo -n "Starting samsync daemon: "
-		runsvctrl u /etc/runit/samsyncd
-		echo "done"
+		sv up samsyncd
 		;;
 	stop)
 		echo -n "Stopping samsync daemon: "
-		runsvctrl d /etc/runit/samsyncd
-		echo "done"
+		sv down samsyncd
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting samsync daemon: "
+		sv restart samsyncd
 		;;
 	crestart)
-		if runsvstat /etc/runit/samsyncd | grep pid > /dev/null 2>&1
+		if sv status samsyncd | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else

@@ -44,8 +44,8 @@ def postrun():
 	if baseConfig.has_key("dhcpd/enable") and ( baseConfig["dhcpd/enable"] in ["yes", "true", '1']):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: Restarting server')
 		try:
-			listener.run('/usr/bin/runsvctrl', ['runsvctrl', 'down', '/etc/runit/univention-dhcp'], uid=0)
-			listener.run('/usr/bin/runsvctrl', ['runsvctrl', 'up', '/etc/runit/univention-dhcp'], uid=0)
+			listener.run('/usr/bin/sv', ['sv', 'down', 'univention-dhcp'], uid=0)
+			listener.run('/usr/bin/sv', ['sv', 'up', 'univention-dhcp'], uid=0)
 		except Exception, e:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Restart DHCP server failed: %s' % str(e))
 	else:

@@ -32,21 +32,18 @@
 case "$1" in
 	start)
 		echo -n "Starting univention-dhcp daemon: "
-		runsvctrl u /etc/runit/univention-dhcp
-		echo "done"
+		sv up univention-dhcp
 		;;
 	stop)
 		echo -n "Stopping univention-dhcp daemon: "
-		runsvctrl d /etc/runit/univention-dhcp
-		echo "done"
+		sv down univention-dhcp
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting univention-dhcp daemon: "
+		sv restart univention-dhcp
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-dhcp | grep pid > /dev/null 2>&1
+		if sv status /etc/runit/univention-dhcp | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
