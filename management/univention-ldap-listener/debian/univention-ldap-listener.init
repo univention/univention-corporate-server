@@ -33,25 +33,22 @@
 case "$1" in
 	start)
 		echo -n "Starting univention-ldap-listener daemon: "
-		runsvctrl u /etc/runit/univention-ldap-listener
-		echo "done"
+		sv up univention-ldap-listener
 		;;
 	stop)
 		echo -n "Stopping univention-ldap-listener daemon: "
-		runsvctrl d /etc/runit/univention-ldap-listener
-		echo "done"
+		sv down univention-ldap-listener
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 5
-		$0 start
+		echo -n "Restarting univention-ldap-listener daemon: "
+		sv restart univention-ldap-listener
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-ldap-listener/ | grep pid > /dev/null 2>&1
+		if sv status univention-ldap-listener | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "runsvstat returns no running listener, don't need to restart."
+			echo "sv status returns no running listener, don't need to restart."
 		fi
 		;;
 	*)

@@ -33,25 +33,22 @@
 case "$1" in
 	start)
 		echo -n "Starting univention-ldap-notifier daemon: "
-		runsvctrl u /etc/runit/univention-ldap-notifier
-		echo "done"
+		sv start univention-ldap-notifier
 		;;
 	stop)
 		echo -n "Stopping univention-ldap-notifier daemon: "
-		runsvctrl d /etc/runit/univention-ldap-notifier
-		echo "done"
+		sv stop univention-ldap-notifier
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting univention-ldap-notifier daemon: "
+		sv restart univention-ldap-notifier
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-ldap-notifier | grep pid > /dev/null 2>&1
+		if sv status univention-ldap-notifier | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "runsvstat returns no running notifier, don't need to restart."
+			echo "sv status returns no running notifier, don't need to restart."
 		fi
 		;;
 	*)

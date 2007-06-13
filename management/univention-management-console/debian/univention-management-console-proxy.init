@@ -9,25 +9,22 @@ fi
 case "$1" in
 	start)
 		echo -n "Starting Univention Management Console Proxy: "
-		runsvctrl u /etc/runit/univention-management-console-proxy
-		echo "done"
+		sv start univention-management-console-proxy
 		;;
 	stop)
 		echo -n "Stopping Univention Management Console Proxy: "
-		runsvctrl d /etc/runit/univention-management-console-proxy
-		echo "done"
+		sv stop univention-management-console-proxy
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting Univention Management Console Proxy: "
+		sv restart univention-management-console-proxy
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-management-console-proxy | grep pid > /dev/null 2>&1
+		if sv status univention-management-console-proxy | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "runsvstat return no running Univention Management Console Proxy, don't need to restart."
+			echo "sv status return no running Univention Management Console Proxy, don't need to restart."
 		fi
 		;;
 	*)

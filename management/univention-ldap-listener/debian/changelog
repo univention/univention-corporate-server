@@ -1,3 +1,9 @@
+univention-ldap-listener (2.0.1-1) unstable; urgency=low
+
+  * switch from runsvctrl to sv
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jun 2007 13:12:18 +0200
+
 univention-ldap-listener (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
