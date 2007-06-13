@@ -1,3 +1,9 @@
+univention-server (2.1.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:46 +0200
+
 univention-server (2.1.1-1) unstable; urgency=low
 
   * do not change the server password if a failed.ldif exists

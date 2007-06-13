@@ -1,3 +1,9 @@
+univention-showload (2.0.0-3) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:47 +0200
+
 univention-showload (2.0.0-2) unstable; urgency=low
 
   * added missing compat file
