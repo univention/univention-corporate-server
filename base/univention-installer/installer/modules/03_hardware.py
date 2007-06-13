@@ -370,9 +370,9 @@ class object(content):
 								self.parent.container['cdrom_device']='smbfs:%s' % dev
 					else:
 						if dev.startswith('/dev'):
-							res=os.system('mount %s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('mount -t iso9660 %s /mnt -o exec >/dev/null 2>&1' % dev)
 						else:
-							res=os.system('mount /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('mount -t iso9660 /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']=dev

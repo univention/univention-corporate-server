@@ -96,7 +96,7 @@ class object(content):
 						elif cdrom_device.startswith('smbfs:'):
 							res = os.system('mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
 						else:
-							res=os.system('mount %s /mnt >/dev/null 2>&1'%cdrom_device)
+							res=os.system('mount -t iso9660 %s /mnt >/dev/null 2>&1'%cdrom_device)
 					if os.path.exists('/mnt/packages/Packages'):
 						fp = open('/mnt/packages/Packages', 'r')
 						for line in fp.readlines():

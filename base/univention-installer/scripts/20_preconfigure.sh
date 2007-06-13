@@ -90,7 +90,7 @@ if [ -n "\$nfs" ]; then
 elif [ -n "\$smbfs" ]; then
 	mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /sourcedevice
 else
-	mount $cdrom_device /sourcedevice
+	mount -t iso9600 $cdrom_device /sourcedevice
 fi
 apt-get clean
 apt-get update
