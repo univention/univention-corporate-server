@@ -974,8 +974,8 @@ def doit(arglist):
 		if recursive:
 			try:
 				object.remove(recursive)
-			except:
-				out.append('E: Object is not explicit. Canceled Operation')
+			except univention.admin.uexceptions.ldapError:
+				out.append('E: Operation on non empty Objects is not allowed')
 				return out + ["OPERATION FAILED"]
 		else:
 			try:
