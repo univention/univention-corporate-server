@@ -1,6 +1,0 @@
-files
-pam-runasroot
-pam-runasroot.postinst.debhelper
-pam-runasroot.prerm.debhelper
-pam-runasroot.substvars
-

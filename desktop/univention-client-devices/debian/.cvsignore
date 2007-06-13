@@ -1,8 +1,0 @@
-files
-univention-client-login
-univention-client-login.postinst.debhelper
-univention-client-login.prerm.debhelper
-univention-client-devices
-univention-client-devices.postinst.debhelper
-univention-client-devices.prerm.debhelper
-univention-client-devices.substvars
