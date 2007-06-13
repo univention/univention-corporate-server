@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  replace an old SID with a new one

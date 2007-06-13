@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  this file defines the mapping beetween AD and UCS
@@ -226,10 +227,10 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 				},
 
 			mapping_table = {
-				'cn': [( u'Domain Users' , u'Dom‰nen-Benutzer'), ( u'Domain Users' , u'Domain Users'),
-						(u'Domain Admins', u'Dom‰nen-Admins'), (u'Domain Admins', u'Domain Admins'),
-						(u'Windows Hosts', u'Dom‰nencomputer'), (u'Windows Hosts', u'Windows Hosts'),
-						(u'Domain Guests', u'Dom‰nen-G‰ste'), (u'Domain Guests', u'Domain Guests')]
+				'cn': [( u'Domain Users' , u'Dom√§nen-Benutzer'), ( u'Domain Users' , u'Domain Users'),
+						(u'Domain Admins', u'Dom√§nen-Admins'), (u'Domain Admins', u'Domain Admins'),
+						(u'Windows Hosts', u'Dom√§nencomputer'), (u'Windows Hosts', u'Windows Hosts'),
+						(u'Domain Guests', u'Dom√§nen-G√§ste'), (u'Domain Guests', u'Domain Guests')]
 			},
 
 		),

@@ -1,3 +1,9 @@
+univention-scalix (1.0.0-3) stable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:53 +0200
+
 univention-scalix (1.0.0-2) stable; urgency=low
 
   * added debian/compat file
@@ -39,19 +45,19 @@ univention-scalix (0.4-48) stable; urgency=low
     and POP3S if scalix/imaps and scalix/pop3s are set to 'yes'
   * start univention-scalix-stunnel on startup/shutdown
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed,  9 May 2007 14:50:54 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed,  9 May 2007 14:50:54 +0200
 
 univention-scalix (0.4-46) stable; urgency=low
 
   * removed set cmd of BC var scalix/smtpfilter in postinst
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 13:28:07 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 13:28:07 +0200
 
 univention-scalix (0.4-45) stable; urgency=low
 
   * added smtpd config file 
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 11:43:43 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue,  8 May 2007 11:43:43 +0200
 
 univention-scalix (0.4-44) stable; urgency=low
 
@@ -275,7 +281,7 @@ univention-scalix (0.3-1) stable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 11:26:58 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon,  4 Dec 2006 11:26:58 +0100
 
 univention-scalix (0.2-11) stable; urgency=low
 

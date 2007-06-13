@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Package Database
 #  listener module

@@ -531,8 +531,8 @@ sub hist_history_save {
          'rwmount;',
 		 '');
     my $raid = "0";
-    my $raidf = "2";                                                                        # Merker für RAID Failover
-    my $raidpoint ="";                                                                      # Merker für Mountpoint
+    my $raidf = "2";                                                                        # Merker fÃ¼r RAID Failover
+    my $raidpoint ="";                                                                      # Merker fÃ¼r Mountpoint
     
     foreach my $d (sort keys %nonroot) {
     my $p    = $nonroot{$d}->{part};
@@ -540,13 +540,13 @@ sub hist_history_save {
 
     my $raus = "0";                                                                       
     
-    # Partitionen durchlaufen ...., wir merken uns RAID für später !
+    # Partitionen durchlaufen ...., wir merken uns RAID fÃ¼r spÃ¤ter !
     if ($p=~/\/dev\/md[0-9]{1,2}/) {                                                       # RAID vorhanden ?
         $raid="1"; $raus="1"; 
         $raidf=system("which nfs-failover-init >/dev/null 2>&1");                          # nfs-failover-init auch vorhanden ?(0/255)
         $raidpoint=$d;                                                                     # merke Mountpoint...
     }
-    next if "$raus" == "1";                                                                # nächster Wert, wenn Raid gefunden,
+    next if "$raus" == "1";                                                                # nÃ¤chster Wert, wenn Raid gefunden,
                                                                                            # wollen wir hier nix machen...
     print $fh
       "if yesno \\\n",
@@ -624,7 +624,7 @@ sub hist_history_save {
   print $fh
       "mount -a \n",
       "rwmount \n",
-      "cp history.txt /var/lib/unidump/ && echo \"restaurierte History zrückkopiert.\" \n",
+      "cp history.txt /var/lib/unidump/ && echo \"restaurierte History zrÃ¼ckkopiert.\" \n",
       "lilo\n";
       
 # --------------------------------------------------------

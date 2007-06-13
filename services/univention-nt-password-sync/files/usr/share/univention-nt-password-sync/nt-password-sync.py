@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention NT password sync
 #  skript for sending password-hashes to a Windows Host 

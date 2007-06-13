@@ -1,3 +1,9 @@
+univention-apache (2.0.3-3) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:48 +0200
+
 univention-apache (2.0.3-2) unstable; urgency=low
 
   * added a conflict to apache 1
@@ -40,7 +46,7 @@ univention-apache (1.9.1-1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 17:39:43 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 23 Nov 2006 17:39:43 +0100
 
 univention-apache (1.9-12) unstable; urgency=low
 

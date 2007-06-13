@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Package Database
 #  Univention Console module
@@ -121,10 +122,10 @@ class modpkgdb(unimodule.unimodule):
 	def mytype(self):
 		return "dialog"
 
-# Grunds‰tzlicher Ablauf: in myinit(self) wird die Benutzeroberfl‰che aufgebaut,
+# Grunds√§tzlicher Ablauf: in myinit(self) wird die Benutzeroberfl√§che aufgebaut,
 # sprich, es werden alle Eingabefelder, Buttons, usw. definiert, die der Benutzer
 # sehen soll.
-# In apply(self) werden diese Felder ausgewertet und abh‰ngig davon Aktionen gestartet
+# In apply(self) werden diese Felder ausgewertet und abh√§ngig davon Aktionen gestartet
 
 	def myinit(self):
 
@@ -175,7 +176,7 @@ class modpkgdb(unimodule.unimodule):
 		# Nach Systemen zeigen
 		if menuselection=='sys':
 			# ------------------------------------------------------------------------------
-			# System-Suchfelder w‰hlen
+			# System-Suchfelder w√§hlen
 			# ------------------------------------------------------------------------------
 			saverows=[]
 			rows=[]
@@ -255,7 +256,7 @@ class modpkgdb(unimodule.unimodule):
 						sysversion_types.append({'name': s[0],  'description': s[0]})
 
 			self.syschoices=self.save.get("syschoices")
-			# syschoices enth‰lt immer Tupel aus search_type und search_value
+			# syschoices enth√§lt immer Tupel aus search_type und search_value
 			# bei erstem Aufruf hier ein default-Paar eintragen
 			if not self.syschoices:
 				self.syschoices=[("sysname","eq","")]
@@ -355,7 +356,7 @@ class modpkgdb(unimodule.unimodule):
 			)
 
 			# ------------------------------------------------------------------------------
-			# Suche ausf¸hren
+			# Suche ausf√ºhren
 			# ------------------------------------------------------------------------------
 			result=self.save.get('browse_syssearch_result')
 			if self.save.get('browse_syssearch') == '1' or result:
@@ -403,7 +404,7 @@ class modpkgdb(unimodule.unimodule):
 							s = ''
 
 						if re==1:
-							# vereinfachter regul‰ren Ausdruck in Postgres-RE wandeln
+							# vereinfachter regul√§ren Ausdruck in Postgres-RE wandeln
 
 							# Sternchen vorne
 							s0 = ''
@@ -421,9 +422,9 @@ class modpkgdb(unimodule.unimodule):
 								else:
 									s1 = '$'
 
-							# komische Zeichen {string.punctuation ohne '.', '*', '-' und '_'} lˆschen
+							# komische Zeichen {string.punctuation ohne '.', '*', '-' und '_'} l√∂schen
 							# '*' in '.*' wandeln
-							# '.' bleibt RE f¸r beliebiges Zeichen
+							# '.' bleibt RE f√ºr beliebiges Zeichen
 							sv=''
 							for i in s:
 								if i not in '!"#$%&\'()+,/:;<=>?@[\\]^`{|}~':
@@ -434,9 +435,9 @@ class modpkgdb(unimodule.unimodule):
 							s = s0 + sv + s1
 
 						else:
-							# keine regul‰ren Ausdruck bei grˆﬂer oder kleiner
+							# keine regul√§ren Ausdruck bei gr√∂√üer oder kleiner
 
-							# komische Zeichen {string.punctuation ohne '.', '-' und '_'} lˆschen
+							# komische Zeichen {string.punctuation ohne '.', '-' und '_'} l√∂schen
 							# '.' maskieren
 							sv=''
 							for i in s:
@@ -507,7 +508,7 @@ class modpkgdb(unimodule.unimodule):
 
 		elif menuselection=='search':
 			# ------------------------------------------------------------------------------
-			# Paket-System-Suchfelder w‰hlen
+			# Paket-System-Suchfelder w√§hlen
 			# ------------------------------------------------------------------------------
 			saverows=[]
 			rows=[]
@@ -599,7 +600,7 @@ class modpkgdb(unimodule.unimodule):
 				currentstate_types.append({'name': str(key), 'description': item })
 
 			self.choices=self.save.get("choices")
-			# choices enth‰lt immer Tupel aus search_type und search_value
+			# choices enth√§lt immer Tupel aus search_type und search_value
 			# bei erstem Aufruf hier ein default-Paar eintragen
 			if not self.choices:
 				self.choices=[("pkgname","eq","")]
@@ -726,7 +727,7 @@ class modpkgdb(unimodule.unimodule):
 			)
 
 			# ------------------------------------------------------------------------------
-			# Suche ausf¸hren
+			# Suche ausf√ºhren
 			# ------------------------------------------------------------------------------
 			result=self.save.get('browse_search_result')
 			if self.save.get('browse_search') == '1' or result:
@@ -784,7 +785,7 @@ class modpkgdb(unimodule.unimodule):
 							s = ''
 
 						if re==1:
-							# vereinfachter regul‰ren Ausdruck in Postgres-RE wandeln
+							# vereinfachter regul√§ren Ausdruck in Postgres-RE wandeln
 
 							# Sternchen vorne
 							s0 = ''
@@ -802,9 +803,9 @@ class modpkgdb(unimodule.unimodule):
 								else:
 									s1 = '$'
 
-							# komische Zeichen {string.punctuation ohne '.', '*', '-' und '_'} lˆschen
+							# komische Zeichen {string.punctuation ohne '.', '*', '-' und '_'} l√∂schen
 							# '*' in '.*' wandeln
-							# '.' bleibt RE f¸r beliebiges Zeichen
+							# '.' bleibt RE f√ºr beliebiges Zeichen
 							sv=''
 							for i in s:
 								if i not in '!"#$%&\'()+,/:;<=>?@[\\]^`{|}~':
@@ -815,9 +816,9 @@ class modpkgdb(unimodule.unimodule):
 							s = s0 + sv + s1
 
 						else:
-							# keine regul‰ren Ausdruck bei grˆﬂer oder kleiner
+							# keine regul√§ren Ausdruck bei gr√∂√üer oder kleiner
 
-							# komische Zeichen {string.punctuation ohne '.', '-' und '_'} lˆschen
+							# komische Zeichen {string.punctuation ohne '.', '-' und '_'} l√∂schen
 							# '.' maskieren
 							sv=''
 							for i in s:
@@ -1081,7 +1082,7 @@ class modpkgdb(unimodule.unimodule):
 
 		if menuselection=='sys':
 			# ------------------------------------------------------------------------------
-			# Suchfelder w‰hlen
+			# Suchfelder w√§hlen
 			# ------------------------------------------------------------------------------
 			visible=self.syssearch_visible.get_input()
 			if visible:
@@ -1107,7 +1108,7 @@ class modpkgdb(unimodule.unimodule):
 			else:
 				choices=[]
 				# alle Suchzeilen durchgehen, pruefen, ob eine entfernt werden soll,
-				# die anderen Zeilen wieder f¸r n‰. Aufruf speichenr
+				# die anderen Zeilen wieder f√ºr n√§. Aufruf speichenr
 				if self.syssearch_rows:
 					choices_valid = 0
 					for type, query, text, del_button in self.syssearch_rows:
@@ -1164,7 +1165,7 @@ class modpkgdb(unimodule.unimodule):
 
 		elif menuselection=='search':
 			# ------------------------------------------------------------------------------
-			# Suchfelder w‰hlen
+			# Suchfelder w√§hlen
 			# ------------------------------------------------------------------------------
 			visible=self.search_visible.get_input()
 			if visible:
@@ -1190,7 +1191,7 @@ class modpkgdb(unimodule.unimodule):
 			else:
 				choices=[]
 				# alle Suchzeilen durchgehen, pruefen, ob eine entfernt werden soll,
-				# die anderen Zeilen wieder f¸r n‰. Aufruf speichenr
+				# die anderen Zeilen wieder f√ºr n√§. Aufruf speichenr
 				if self.search_rows:
 					choices_valid = 0
 					for type, query, text, del_button in self.search_rows:

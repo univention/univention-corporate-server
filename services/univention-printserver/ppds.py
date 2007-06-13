@@ -1,4 +1,5 @@
-#!/usr/bin/env python2.4
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Print Server
 #  helper script: prints out a list of univention admin commands to create

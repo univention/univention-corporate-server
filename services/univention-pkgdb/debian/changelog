@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:51 +0200
+
 univention-pkgdb (1.0.1-1) unstable; urgency=low
 
   * change univention-pkgdb-scan to the new python structure
@@ -20,7 +26,7 @@ univention-pkgdb (0.21-1) unstable; urgency=low
 
   * add GPL headers 
 
- -- Andreas Büschin <buesching@univention.de>  Tue,  5 Dec 2006 10:41:43 +0100
+ -- Andreas BÃŒschin <buesching@univention.de>  Tue,  5 Dec 2006 10:41:43 +0100
 
 univention-pkgdb (0.20-3) unstable; urgency=low
 

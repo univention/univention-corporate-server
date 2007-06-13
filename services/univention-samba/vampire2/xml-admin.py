@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  takes over a Windows NT4 domain
@@ -614,7 +615,7 @@ def __modify_account(domainsid, ldap_user,xml_account):
 		ldap_user['primaryGroup']=univention.admin.config.getDefaultValue(lo, 'group')
 
 	if xml_account.has_key('acct_expiry_time') and xml_account['acct_expiry_time'][0] != "2147483647" and  xml_account['acct_expiry_time'][0] != "0":
-		# 2147483647 scheint zu bedeuten, das das Konto nicht abläuft
+		# 2147483647 scheint zu bedeuten, das das Konto nicht ablÃ¤uft
 		print 'set userexpiry'
 		ldap_user['userexpiry']=time.strftime("%d.%m.%y",time.gmtime(long(xml_account['acct_expiry_time'][0])+(3600*24)))
 
@@ -647,7 +648,7 @@ def __modify_workstation_samba_settings(domainsid, dn, xml_account):
 
 	ldap_object=lo.search(base=dn)
 
-	#jetzt werden noch die Attribute geändert, die nicht im Admin sind
+	#jetzt werden noch die Attribute geÃ¤ndert, die nicht im Admin sind
 	ml=[]
 
 	old=None
@@ -818,7 +819,7 @@ def sync_user(domainname, domainsid, xml_account):
 		# Ist der Benutzername bereits im LDAP vorhanden? --> Ja
 		univention.debug.debug(univention.debug.MAIN, univention.debug.ALL, 'DEBUG: Benutzer im LDAP vorhanden')
 
-		# wir verwenden zunächst nur den ersten Benutzer, es darf ja auch nicht mehr geben
+		# wir verwenden zunÃ¤chst nur den ersten Benutzer, es darf ja auch nicht mehr geben
 		ldap_user=ldap_users[0]
 
 		ldap_user.open()

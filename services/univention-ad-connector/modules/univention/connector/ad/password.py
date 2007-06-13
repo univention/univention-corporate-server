@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  control the password sync communication with the ad password service
@@ -128,7 +129,7 @@ def get_password_from_ad(connector, rid):
 
 def password_sync_ucs(connector, key, object):
 	_d=univention.debug.function('ldap.ad.password_sync_ucs')
-	# externes Programm zum Überptragen des Hash aufrufen
+	# externes Programm zum Ãœberptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
 	
 	compatible_modstring = univention.connector.ad.compatible_modstring

@@ -59,7 +59,7 @@ fi
 
 # modprobe auf st
 #modprobe st 2>/dev/null 1>&2 || {
-#    echo "Sorry, konnte Modul für Streamer-Tape (st) nicht laden.";
+#    echo "Sorry, konnte Modul fÃ¼r Streamer-Tape (st) nicht laden.";
 #    echo "Bitte laden Sie die entsprechenden SCSI Module und starten sie $0 dann erneut.";
 #    echo "Stop.";
 #}

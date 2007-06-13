@@ -174,7 +174,7 @@ static int split_packet_helper ( char **p, char **dest )
 /****************************************************************************
  * split_packet
  *
- * Bekommt einen Buffer von l_buf Länge wird in die struct packet geschrieben
+ * Bekommt einen Buffer von l_buf LÃ¤nge wird in die struct packet geschrieben
  * char *userdn
  * char *pwd
  * char cmd
@@ -195,7 +195,7 @@ int split_packet ( char *buf, int l_buf, struct packet *packet )
 	memcpy( &len, p, 4 );
 	p+=4;
 
-	/* Die Länge von den ersten 4 Bytes muss genau so lang sein, wie der
+	/* Die LÃ¤nge von den ersten 4 Bytes muss genau so lang sein, wie der
 	 * Buffer insgesamt, plus die ersten 4 Bytes */
 	if ( l_buf != len+4 ) {
 		fprintf ( packet->logfile, "split_packet length error: l_buf=%d, len=%d\n",l_buf,len); fflush ( packet->logfile );
@@ -225,7 +225,7 @@ int split_packet ( char *buf, int l_buf, struct packet *packet )
 
 	if ( packet->cmd == GET_PASSWORD ) {
 		/* Wenn das Passwort gelese werden soll, dann steht in dem Paket noch die
-		 * Information über den Benutzer */
+		 * Information Ã¼ber den Benutzer */
 		if ( ( rc = split_packet_helper ( &p, &packet->user_data ) ) != E_OK ) {
 			if ( rc == E_PACKET_LENGTH ) {
 				fprintf ( packet->logfile, ">8192 user data\n");fflush ( packet->logfile );
@@ -235,7 +235,7 @@ int split_packet ( char *buf, int l_buf, struct packet *packet )
 
 	} else if ( packet->cmd == SET_PASSWORD ) {
 		/* Wenn wir das Passwort setzen, dann wird die Information des Benutzers
-		 * und das Passwort benötigt */
+		 * und das Passwort benÃ¶tigt */
 		if ( ( rc = split_packet_helper ( &p, &packet->user_data ) ) != E_OK ) {
 			if ( rc == E_PACKET_LENGTH ) {
 				fprintf ( packet->logfile, ">8192 user data\n");fflush ( packet->logfile );
@@ -271,12 +271,12 @@ int create_packet ( char **buf, int *l_buf, struct packet *packet, unsigned int 
 
 	if ( packet->cmd == GET_PASSWORD  && error_code == E_OK ) {
 
-		/* Wenn das Passwort an den Client zurückgeliefert werden soll und
+		/* Wenn das Passwort an den Client zurÃ¼ckgeliefert werden soll und
 		 * der Error Code in Ordnung ist, dann wird das entsprechene Paket
 		 * generiert, Aufbau des Paketes:
-		 * 4 Bytes Länge des Paketes minus 4 (quasi sich selbst)
+		 * 4 Bytes LÃ¤nge des Paketes minus 4 (quasi sich selbst)
 		 * 4 Bytes Error Code
-		 * 4 Bytes Länge der folgenden Daten
+		 * 4 Bytes LÃ¤nge der folgenden Daten
 		 * n Bytes die Passwort Daten
 		 */
 
@@ -301,7 +301,7 @@ int create_packet ( char **buf, int *l_buf, struct packet *packet, unsigned int 
 	} else  {
 
 		/* Wenn das Passwort gesetzt wurde, oder ein Fehler aufgetreten ist,
-		 * geben wir die Länge und den Error Code zurück, jeweils 4 Bytes */
+		 * geben wir die LÃ¤nge und den Error Code zurÃ¼ck, jeweils 4 Bytes */
 
 		*l_buf = 4 + 4;
 		*buf = (char *) malloc ( *l_buf * sizeof ( char ) );

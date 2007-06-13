@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Samba
 #  listener module: manages samba configuration

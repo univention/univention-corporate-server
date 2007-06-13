@@ -47,7 +47,7 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 
 # Die PPDs sind in den Paketen foomatic-filters-ppdsx und cupsys-driver-gimpprint.
 # Um die entsprechenden univention-admin Befehle daraus zu erzeugen,
-# einfach das mitgelieferte Skript `univention-ppds' ausführen.
+# einfach das mitgelieferte Skript `univention-ppds' ausfÃ¼hren.
 
 univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=Alps \
 	--append printmodel="\"foomatic-ppds/Alps/Alps-MD-1000-md2k.ppd.gz\" \"Alps MD-1000 Foomatic/md2k\"" \

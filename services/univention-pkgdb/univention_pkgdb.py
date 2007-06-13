@@ -1,5 +1,5 @@
 #!/usr/bin/python2.4
-# -*- coding: iso-8859-15 -*-
+# -*- coding: utf-8 -*-
 #
 # Univention Package Database
 #  python module for the package database
@@ -157,7 +157,7 @@ def sql_get_dbservername( domainname ):
 	return dbsrvname
 
 # ------------------------------------------------------------------------------
-# Prüfe auf Superuser
+# PrÃ¼fe auf Superuser
 # ------------------------------------------------------------------------------
 def sql_test_superuser():
 	log( 'test for pkgdbu' )
@@ -183,7 +183,7 @@ def sql_test_superuser():
 	return retcode
 
 # ------------------------------------------------------------------------------
-# DB-Connectstring für entfernte Datenbank ermitteln
+# DB-Connectstring fÃ¼r entfernte Datenbank ermitteln
 # ------------------------------------------------------------------------------
 def sql_create_connectstring( dbsrvname, sysname, pwdfile='/etc/machine.secret'  ):
 	log( 'create connectstring for ' + sysname + ' on ' + dbsrvname )
@@ -202,7 +202,7 @@ def sql_create_connectstring( dbsrvname, sysname, pwdfile='/etc/machine.secret' 
 	return pkgdb_connect_string
 
 # ------------------------------------------------------------------------------
-# DB-Connectstring für lokale Datenbank ermitteln
+# DB-Connectstring fÃ¼r lokale Datenbank ermitteln
 # ------------------------------------------------------------------------------
 def sql_create_localconnectstring( sysname  ):
 	log( 'create local connectstring for ' + sysname )
@@ -296,7 +296,7 @@ def execute_psql_command(connect_string, cmd):
 		return ret
 
 # ------------------------------------------------------------------------------
-# Datenbankbenutzer hinzufügen
+# Datenbankbenutzer hinzufÃ¼gen
 # ------------------------------------------------------------------------------
 def sql_grant_system( db_connect_string, sysname ):
 	log( 'add (grant) user ' + sysname + ' to database' )
@@ -664,13 +664,13 @@ def main(args):
 
 	if to_test_su > 0:
 		# ------------------------------------------------------------------------------
-		# Prüfe, ob dieser account ein Superuser ist
+		# PrÃ¼fe, ob dieser account ein Superuser ist
 		# ------------------------------------------------------------------------------
     		sys.exit(sql_test_superuser())
 
 	elif len(add_system) > 0:
 		# ------------------------------------------------------------------------------
-		# Systembenutzer zur Datenbank hinzufügen
+		# Systembenutzer zur Datenbank hinzufÃ¼gen
 		# ------------------------------------------------------------------------------
 		sql_grant_system( pkgdb_connect_string, add_system )
 
@@ -756,7 +756,7 @@ def main(args):
 
 	elif to_fill_testdb > 0:
 		# ------------------------------------------------------------------------------
-		# Fülle Testdatenbank
+		# FÃ¼lle Testdatenbank
 		# ------------------------------------------------------------------------------
 		log( 'start fill of testdb ' )
 		sysversion = baseConfig['version/version'] + '-' + baseConfig['version/patchlevel']
@@ -764,7 +764,7 @@ def main(args):
 		ldaphostdn = baseConfig['ldap/hostdn']
 
 		# ------------------------------------------------------------------------------
-		# Datenbankverbindung öffnen
+		# Datenbankverbindung Ã¶ffnen
 		# ------------------------------------------------------------------------------
     		if to_debug == 1:
 			pkgdbhdl = pgdb.connect(pkgdb_connect_string)
@@ -848,13 +848,13 @@ def main(args):
 				print 'Package %s %s SelectedState=%d InstState=%d CurrentState=%d' %(package_name,package_status,package_selectedstate,package_inststate,package_currentstate)
 
 		# ------------------------------------------------------------------------------
-		# Schleife über 1500 testsysteme
+		# Schleife Ã¼ber 1500 testsysteme
 		# ------------------------------------------------------------------------------
 		for sysnr in range (1, 1500):
 			sysname    = 'testsystem'+string.zfill( sysnr, 4)
 
 			# ------------------------------------------------------------------------------
-			# Datenbank füllen
+			# Datenbank fÃ¼llen
 			# ------------------------------------------------------------------------------
 
 			# Systemname eintragen
@@ -876,7 +876,7 @@ def main(args):
 
 				outfile.close()
 
-				# Liste an sql-Server übertragen
+				# Liste an sql-Server Ã¼bertragen
 				retval, rettxt = execute_psql_command(pkgdb_connect_string, """\\copy packages_on_systems from '%s'"""%fname)
 				if not(rettxt==""):
 					print("Error inserting package data: %s"%rettxt)
@@ -889,7 +889,7 @@ def main(args):
 					sql_put_removed_packages_on_systems( pkgdbhdl, pkgdbcur, sysname, pkgname, package_selectedstate, package_inststate, package_currentstate )
 
 		# ------------------------------------------------------------------------------
-		# Veraltete Einträge löschen
+		# Veraltete EintrÃ¤ge lÃ¶schen
 		# ------------------------------------------------------------------------------
 		sql_del_unrefered_packages_on_systems( pkgdbhdl, pkgdbcur )
 
@@ -905,7 +905,7 @@ def main(args):
 		pkgdbhdl.close()
 
 		# ------------------------------------------------------------------------------
-		# Datenbank intern aufräumen
+		# Datenbank intern aufrÃ¤umen
 		# ------------------------------------------------------------------------------
 		sql_vacuum_analyse( pkgdb_connect_string )
 
@@ -929,7 +929,7 @@ def main(args):
 			sys.exit(0)
 
 		# ------------------------------------------------------------------------------
-		# Datenbankverbindung öffnen
+		# Datenbankverbindung Ã¶ffnen
 		# ------------------------------------------------------------------------------
     		if to_debug == 1:
 			pkgdbhdl = pgdb.connect(pkgdb_connect_string)
@@ -1013,7 +1013,7 @@ def main(args):
 				print 'Package %s %s SelectedState=%d InstState=%d CurrentState=%d' %(package_name,package_status,package_selectedstate,package_inststate,package_currentstate)
 
 		# ------------------------------------------------------------------------------
-		# Datenbank füllen
+		# Datenbank fÃ¼llen
 		# ------------------------------------------------------------------------------
 
 		# Systemname eintragen
@@ -1035,7 +1035,7 @@ def main(args):
 
 			outfile.close()
 
-			# Liste an sql-Server übertragen
+			# Liste an sql-Server Ã¼bertragen
 			retval, rettxt = execute_psql_command(pkgdb_connect_string, """\\copy packages_on_systems from '%s'"""%fname)
 			if not(rettxt==""):
 				print("Error inserting package data: %s"%rettxt)

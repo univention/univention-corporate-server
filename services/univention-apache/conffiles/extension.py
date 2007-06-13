@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Apache
 #  baseconfig module: modifies the memory limit for PHP applications run

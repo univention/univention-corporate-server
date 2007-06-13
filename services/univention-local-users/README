@@ -1,11 +1,11 @@
 Die Gruppe der zu replizierenden Benutzer kann ueber 
 'univention-baseconfig set local-user-sync/group="gruppe"' gesetzt werden.
-Während der Installation wird diese Variable auf den Wert admin gesetzt.
+WÃ¤hrend der Installation wird diese Variable auf den Wert admin gesetzt.
 Wird ein Benutzer aufgenommen, so wird ein lokales Konto erstellt; wird einer
 entfernt, so wird auch das lokale Konto entfernt.
 
-Momentan gibt es keine Überprüfung, ob der Benutzer evtl. manuell lokal
-angelegt oder verändert worden ist. Dementsprechend werden auf Aufräumen des
-Moduls auch alle Benutzer mit UIDs im Intervall 1000 bis 29999 gelöscht.
+Momentan gibt es keine ÃœberprÃ¼fung, ob der Benutzer evtl. manuell lokal
+angelegt oder verÃ¤ndert worden ist. Dementsprechend werden auf AufrÃ¤umen des
+Moduls auch alle Benutzer mit UIDs im Intervall 1000 bis 29999 gelÃ¶scht.
 Benutzer mit solchen UIDs sollten ohnehin nicht vorhanden sein wenn LDAP zur
-Benutzerverwaltung verwendet wird, um UID Überschneidungen zu vermeiden.
+Benutzerverwaltung verwendet wird, um UID Ãœberschneidungen zu vermeiden.

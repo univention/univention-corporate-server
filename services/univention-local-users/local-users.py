@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Local Users
 #  listener module: replicates a selected group of LDAP users to

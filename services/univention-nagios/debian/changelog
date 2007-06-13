@@ -1,3 +1,9 @@
+univention-nagios (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:50 +0200
+
 univention-nagios (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -10,7 +16,7 @@ univention-nagios (0.31) unstable; urgency=low
   * fixed python version in nagios plugins
   * create device /dev/dpti0 if missing
 
- -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 29 Mar 2007 16:39:21 +0200
+ -- SÃƒÂ¶nke Schwardt <schwardt@univention.de>  Thu, 29 Mar 2007 16:39:21 +0200
 
 univention-nagios (0.30) unstable; urgency=low
 
@@ -27,20 +33,20 @@ univention-nagios (0.30) unstable; urgency=low
   * nagios-server ldap listener is now able to handle the changes of attribute
     'associatedDomain'
   
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 22 Mar 2007 15:31:55 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 22 Mar 2007 15:31:55 +0100
 
 univention-nagios (0.29) unstable; urgency=low
 
   * added missing notification if host is down
     (controlled by baseconfig)
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu,  8 Feb 2007 16:16:06 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu,  8 Feb 2007 16:16:06 +0100
 
 univention-nagios (0.28) unstable; urgency=low
 
   * fixed bug in server listener when removing objects
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 16:33:06 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 16:33:06 +0100
 
 univention-nagios (0.27) unstable; urgency=low
 
@@ -48,20 +54,20 @@ univention-nagios (0.27) unstable; urgency=low
     (server postinst) 
   * server listener does reload instead of restart nagios
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 13:37:27 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 13:37:27 +0100
 
 univention-nagios (0.26) unstable; urgency=low
 
   * added exit 0 to postinst scripts
   * remove obsolete import
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 11:05:28 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri,  2 Feb 2007 11:05:28 +0100
 
 univention-nagios (0.25) unstable; urgency=low
 
   * use correct attribute name in listener
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 16:48:25 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 16:48:25 +0100
 
 univention-nagios (0.24) unstable; urgency=low
 
@@ -70,26 +76,26 @@ univention-nagios (0.24) unstable; urgency=low
   * fixed python code (baseConfig ==> listener.baseConfig)
   * don't call listener resync in server postinst
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 10:55:38 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 10:55:38 +0100
 
 univention-nagios (0.23) unstable; urgency=low
 
   * added missing import in listener
   * changed restart of nagios (stop+start instead of restart)
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 09:21:12 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu,  1 Feb 2007 09:21:12 +0100
 
 univention-nagios (0.22) unstable; urgency=low
 
   * fixed server.postinst
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 13:39:37 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 13:39:37 +0100
 
 univention-nagios (0.21) unstable; urgency=low
 
   * use absolute path instead of device for default rootdiskfree service
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 10:20:31 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 10:20:31 +0100
 
 univention-nagios (0.20) unstable; urgency=low
 
@@ -100,14 +106,14 @@ univention-nagios (0.20) unstable; urgency=low
   * added dependency univention-admin-nagios to uni-nagios-client
   * start nagios after installation
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 09:21:57 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 31 Jan 2007 09:21:57 +0100
 
 univention-nagios (0.19) unstable; urgency=low
 
   * added support for univention console
   * tweaked default univention services
 
- -- Sönke Schwardt <schwardt@univention.de>  Tue, 30 Jan 2007 14:21:20 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Tue, 30 Jan 2007 14:21:20 +0100
 
 univention-nagios (0.18) unstable; urgency=low
 
@@ -118,7 +124,7 @@ univention-nagios (0.18) unstable; urgency=low
   * removed restart of nrped in baseconfig template
   * nagios-server creates only services but does not assign hosts
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 16:48:06 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 16:48:06 +0100
 
 univention-nagios (0.17) unstable; urgency=low
 
@@ -127,7 +133,7 @@ univention-nagios (0.17) unstable; urgency=low
   * starting NRPE server on installation
   * fixed bugs in check_univention_replication
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 15:49:07 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 15:49:07 +0100
 
 univention-nagios (0.16) unstable; urgency=low
 
@@ -141,7 +147,7 @@ univention-nagios (0.15) unstable; urgency=low
   * renamed client join script
   * fixed wrong plugin cmd in default service UNIVENTION_SSL
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 13:48:08 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 13:48:08 +0100
 
 univention-nagios (0.14) unstable; urgency=low
 
@@ -149,19 +155,19 @@ univention-nagios (0.14) unstable; urgency=low
   * added univention-nagios-client join script
   * catch errors while opening files in check_univention_i2o_raid
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 10:58:28 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 29 Jan 2007 10:58:28 +0100
 
 univention-nagios (0.13) unstable; urgency=low
 
   * fixed dir permission change on nagios/server/checkexternalcmd change
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri, 26 Jan 2007 13:15:47 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri, 26 Jan 2007 13:15:47 +0100
 
 univention-nagios (0.12) unstable; urgency=low
 
   * added join script
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri, 26 Jan 2007 10:49:58 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri, 26 Jan 2007 10:49:58 +0100
 
 univention-nagios (0.11) unstable; urgency=low
 
@@ -173,7 +179,7 @@ univention-nagios (0.11) unstable; urgency=low
   * added nrpe directory for local config files
   * enabled host-alive-check 
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Jan 2007 17:47:59 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 22 Jan 2007 17:47:59 +0100
 
 univention-nagios (0.10) unstable; urgency=low
 
@@ -187,13 +193,13 @@ univention-nagios (0.10) unstable; urgency=low
   * new baseconfig variable: nagios/client/checkraid
   * added some missing icons
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 18 Jan 2007 09:24:49 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 18 Jan 2007 09:24:49 +0100
 
 univention-nagios (0.9) unstable; urgency=low
 
   * fixed adding of additional option "nagios" to host object in u-nagios-server.postinst
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 10 Jan 2007 10:01:03 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 10 Jan 2007 10:01:03 +0100
 
 univention-nagios (0.8) unstable; urgency=low
 
@@ -214,13 +220,13 @@ univention-nagios (0.7) unstable; urgency=low
     /var/lib/nagios2/rw and /var/lib/nagios2 if nagios/server/checkexternalcmd
     is changed
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri, 22 Dec 2006 12:06:59 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri, 22 Dec 2006 12:06:59 +0100
 
 univention-nagios (0.5) unstable; urgency=low
 
   * added ldap listener for nagios nrpe client
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Dec 2006 16:20:35 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 21 Dec 2006 16:20:35 +0100
 
 univention-nagios (0.4) unstable; urgency=low
 
@@ -228,7 +234,7 @@ univention-nagios (0.4) unstable; urgency=low
   * deactivated creation/deletion of config directories within listener
     instead they are created while installing the package
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 18 Dec 2006 14:22:48 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 18 Dec 2006 14:22:48 +0100
 
 univention-nagios (0.3) unstable; urgency=low
 
@@ -236,17 +242,17 @@ univention-nagios (0.3) unstable; urgency=low
   * whitespace cleanup
   * added missing build-dependency
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 18 Dec 2006 11:43:42 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 18 Dec 2006 11:43:42 +0100
 
 univention-nagios (0.2) unstable; urgency=low
 
   * added univention baseconfig templates
 
- -- Sönke Schwardt <schwardt@univention.de>  Fri,  8 Dec 2006 10:01:50 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Fri,  8 Dec 2006 10:01:50 +0100
 
 univention-nagios (0.1) unstable; urgency=low
 
   * Initial Release.
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu,  7 Dec 2006 11:48:13 +0100
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu,  7 Dec 2006 11:48:13 +0100
 

@@ -1,4 +1,5 @@
-#!/usr/bin/python2.1 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Share
 #  share replication script

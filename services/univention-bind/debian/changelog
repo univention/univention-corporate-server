@@ -1,3 +1,9 @@
+univention-bind (2.0.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:49 +0200
+
 univention-bind (2.0.1-1) unstable; urgency=low
 
   * switch from runsvctrl to sv
@@ -20,7 +26,7 @@ univention-bind (1.27.2) unstable; urgency=low
 
   * add GPL Headers
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 24 Nov 2006 09:56:40 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri, 24 Nov 2006 09:56:40 +0100
 
 univention-bind (1.26) unstable; urgency=low
 

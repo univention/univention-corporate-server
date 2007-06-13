@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention NFS
 #  listener module: update configuration of local NFS shares

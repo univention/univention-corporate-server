@@ -1,3 +1,9 @@
+univention-samba (1.0.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:52 +0200
+
 univention-samba (1.0.1-1) unstable; urgency=low
 
   * switch from runsvctrl to sv
@@ -65,7 +71,7 @@ univention-samba (0.67) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 10:53:00 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Mon,  4 Dec 2006 10:53:00 +0100
 
 univention-samba (0.65) unstable; urgency=low
 
@@ -90,7 +96,7 @@ univention-samba (0.61) unstable; urgency=low
   * set samba/ldap/replication/sleep to an initial value of 4000 if it is not
     set already
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 26 Sep 2006 07:56:05 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 26 Sep 2006 07:56:05 +0200
 
 univention-samba (0.60) unstable; urgency=low
 
@@ -138,7 +144,7 @@ univention-samba (0.50) unstable; urgency=low
 
   * replace ':' in lastname with ' ' as a ':' causes problems 
 
- -- Andreas B�sching <buesching@univention.de>  Tue,  7 Mar 2006 01:49:27 +0100
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Mar 2006 01:49:27 +0100
 
 univention-samba (0.49) unstable; urgency=low
 
@@ -188,7 +194,7 @@ univention-samba (0.42) unstable; urgency=low
   * add option to stop LDAP notifier before updating the LDAP tree and restart
     it afterwards (merged from ucs1_2). 
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 31 Oct 2005 15:24:50 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 15:24:50 +0100
 
 univention-samba (0.39) unstable; urgency=low
 

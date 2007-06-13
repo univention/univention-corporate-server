@@ -1,3 +1,9 @@
+univention-nfs (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:50 +0200
+
 univention-nfs (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -20,7 +26,7 @@ univention-nfs (0.9-13) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 14:30:01 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat,  2 Dec 2006 14:30:01 +0100
 
 univention-nfs (0.9-12) unstable; urgency=low
 

@@ -10,8 +10,8 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-1\n"
-"Content-Transfer-Encoding: ENCODING\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
 #: modpkgdb.py:76
@@ -48,7 +48,7 @@ msgstr "Speichern"
 
 #: modpkgdb.py:181 modpkgdb.py:553
 msgid "Delete"
-msgstr "Löschen"
+msgstr "LÃ¶schen"
 
 #: modpkgdb.py:200 modpkgdb.py:469 modpkgdb.py:577 modpkgdb.py:1028
 msgid "system-name"
@@ -72,7 +72,7 @@ msgstr "ungleich"
 
 #: modpkgdb.py:207 modpkgdb.py:584
 msgid "bigger"
-msgstr "größer"
+msgstr "grÃ¶ÃŸer"
 
 #: modpkgdb.py:208 modpkgdb.py:585
 msgid "lesser"
@@ -80,7 +80,7 @@ msgstr "kleiner"
 
 #: modpkgdb.py:209 modpkgdb.py:586
 msgid "bigger or equal"
-msgstr "größer oder gleich"
+msgstr "grÃ¶ÃŸer oder gleich"
 
 #: modpkgdb.py:210 modpkgdb.py:587
 msgid "lesser or equal"
@@ -96,7 +96,7 @@ msgstr "Filterbedingung"
 
 #: modpkgdb.py:256 modpkgdb.py:642
 msgid "filter_del"
-msgstr "Filter löschen"
+msgstr "Filter lÃ¶schen"
 
 #: modpkgdb.py:266 modpkgdb.py:275 modpkgdb.py:283 modpkgdb.py:652
 #: modpkgdb.py:661 modpkgdb.py:670 modpkgdb.py:679 modpkgdb.py:688
@@ -106,7 +106,7 @@ msgstr "Filtertext"
 
 #: modpkgdb.py:295 modpkgdb.py:708
 msgid "filter_add"
-msgstr "Filter hinzufügen"
+msgstr "Filter hinzufÃ¼gen"
 
 #: modpkgdb.py:296 modpkgdb.py:709 modpkgdb.py:965
 msgid "results of page"
@@ -182,15 +182,15 @@ msgstr "Nicht aktualisierte Systeme"
 
 #: modpkgdb.py:952
 msgid "Incomplete installed packages"
-msgstr "Unvollständig installierte Pakete"
+msgstr "UnvollstÃ¤ndig installierte Pakete"
 
 #: modpkgdb.py:963
 msgid "Check"
-msgstr "Überprüfung"
+msgstr "ÃœberprÃ¼fung"
 
 #: modpkgdb.py:964
 msgid "Start check"
-msgstr "Überprüfung starten"
+msgstr "ÃœberprÃ¼fung starten"
 
 #: modpkgdb.py:968
 msgid "To compare with version"

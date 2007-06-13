@@ -3420,7 +3420,7 @@
 #
 # Linux kernel boot images, from Albert Cahalan <acahalan@cs.uml.edu>
 # and others such as Axel Kohlmeyer <akohlmey@rincewind.chemie.uni-ulm.de>
-# and Nicol·s Lichtmaier <nick@debian.org>
+# and Nicol√°s Lichtmaier <nick@debian.org>
 # All known start with: b8 c0 07 8e d8 b8 00 90 8e c0 b9 00 01 29 f6 29
 514		string	HdrS		Linux kernel
 >518		leshort	>0
@@ -3442,7 +3442,7 @@
 0		belong	0xb8c0078e	Linux kernel
 >0x1e3		string	Loading		version 1.3.79 or older
 >0x1e9		string	Loading		from prehistoric times
-# LSM entries - Nicol·s Lichtmaier <nick@feedback.net.ar>
+# LSM entries - Nicol√°s Lichtmaier <nick@feedback.net.ar>
 0	string	Begin3	Linux Software Map entry text
 
 #------------------------------------------------------------------------------

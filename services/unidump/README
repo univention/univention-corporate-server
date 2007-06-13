@@ -4,7 +4,7 @@ UNIDUMP (Kurzanleitung)
 Installation
 ------------
 
-folgende Debian-Pakete werden benötigt:
+folgende Debian-Pakete werden benÃ¶tigt:
 
 Aus CPAN-Modulen erstellte Pakete (dh-make-perl):
 libappconfig-perl_1.52-1_all.deb
@@ -30,7 +30,7 @@ Administrationsdaten in /var/lib/unidump
 Konfigurationsfile /etc/unidump.conf
 
 
-Änderungen im Konfigurationsfile /etc/unidump.conf
+Ã„nderungen im Konfigurationsfile /etc/unidump.conf
 
 #globaler Teil:
 
@@ -40,8 +40,8 @@ ntapedevice = /dev/nst0
 # zu verwendende Backup-Strategie (distrib oder simple)
 strategy = simple
 
-# der dump soll bei späteren dumps mit höherem Level berücksichtigt werden
-# dies sollte bei den regelmäßigen Sicherungen gesetzt werden
+# der dump soll bei spÃ¤teren dumps mit hÃ¶herem Level berÃ¼cksichtigt werden
+# dies sollte bei den regelmÃ¤ÃŸigen Sicherungen gesetzt werden
 regulardump = 1
 
 # Protokollierung in eigenes Logfile
@@ -50,12 +50,12 @@ useunilog = 1
 # Protokollierung nach syslog
 usesylog = 1
 
-# Erstellung von Quick-File-Access-Dateien, soweit möglich (nur dump)
+# Erstellung von Quick-File-Access-Dateien, soweit mÃ¶glich (nur dump)
 useqfa = 1
 
 
 # Im unteren Teil werden sog. DISK spezifiziert:
-# ein beliebiger Name für die DISK (entspricht einer Partitiion)
+# ein beliebiger Name fÃ¼r die DISK (entspricht einer Partitiion)
 [home] 
 
 # der Mountpoint der Partition
@@ -65,7 +65,7 @@ directory = /home
 dumper = xfsdump  
 
 
-# hier das gleiche für die Root-Partition
+# hier das gleiche fÃ¼r die Root-Partition
 
 [system]
 directory = /
@@ -78,9 +78,9 @@ eotcommand      =       "sh -c 'exit 1'"
 
 Labeln der Tapes
 ----------------
-Jedes Tape erhält ein Label und eine ID. Das Label muss entsprechend der 
-Backup-Strategie gewählt werden, die ID wird automatisch generiert. 
-Wird das Label eines Tapes geändert, bleibt die ID erhalten. Für die
+Jedes Tape erhÃ¤lt ein Label und eine ID. Das Label muss entsprechend der 
+Backup-Strategie gewÃ¤hlt werden, die ID wird automatisch generiert. 
+Wird das Label eines Tapes geÃ¤ndert, bleibt die ID erhalten. FÃ¼r die
 Strategie "simple" werden 9 Tapes mit folgenden Labels versehen:
 Monday
 Tuesday
@@ -114,7 +114,7 @@ werden, was aber i.d.R. nicht gemacht werden sollte.
 
 
 Eine Liste aller jemals gelabelten Tapes wird in
-/var/lib/unidump/tapelib.txt geführt. Sie kann mit dem Programm unilib
+/var/lib/unidump/tapelib.txt gefÃ¼hrt. Sie kann mit dem Programm unilib
 ausgegeben werden.
 # unilib
                 TAPEID                     TAPELABEL       CYCLE
@@ -140,8 +140,8 @@ geht das so:
 # unidump home
 
 
-Über die Dumps wird Protokoll in /var/lib/unidump/history.txt
-geführt. Dieses File kann mit unihist abgefragt werden:
+Ãœber die Dumps wird Protokoll in /var/lib/unidump/history.txt
+gefÃ¼hrt. Dieses File kann mit unihist abgefragt werden:
 
 # unihist
 
@@ -165,17 +165,17 @@ Partition. Sonst muss sie vom Backup ausgenommen werden:
 
 
 Im Konfigfile kann die Option "verify" angegeben werden. Damit wird
-jeder Dump nach dem Schreiben in einem extra Lauf überprüft. ext2dump
+jeder Dump nach dem Schreiben in einem extra Lauf Ã¼berprÃ¼ft. ext2dump
 kann das selbst (dump -C), beim xfsdump geht das so:
 Der Dump wird wieder restauriert und dann per "diff" mit dem
 Original verglichen. Bei inkrementellen Dumps, werden nur die
-geänderten Dateien verglichen. Um Platz zu sparen, wird der Dump nicht
-komplett restauriert sondern stückweise, indem jeweils die erste Ebene
+geÃ¤nderten Dateien verglichen. Um Platz zu sparen, wird der Dump nicht
+komplett restauriert sondern stÃ¼ckweise, indem jeweils die erste Ebene
 von Unterverzeichnissen einzeln restauiert wird. Also z.B.
-/home/foo: restauriern -- verglechen -- löschen
-/home/bar: restauriern -- verglechen -- löschen
+/home/foo: restauriern -- verglechen -- lÃ¶schen
+/home/bar: restauriern -- verglechen -- lÃ¶schen
 ...
-Das spart natürlich nur dann Platz, wenn tatsächlich mehr als ein
+Das spart natÃ¼rlich nur dann Platz, wenn tatsÃ¤chlich mehr als ein
 Unterverzeichnis existiert.
 
 
@@ -183,12 +183,12 @@ Restore
 -------
 
 restore erfolgt in 2 Schritte: 
-1) dump(s) suchen, auf dem die gewünschtem Daten sind
-2) zurückkopieren der Daten
+1) dump(s) suchen, auf dem die gewÃ¼nschtem Daten sind
+2) zurÃ¼ckkopieren der Daten
 
 Der 1. Schritt wird mit unilist erledigt:
 Werden z.B. Daten aus dem verzeichnis (entspricht Mountpoint) /home
-vom 20.3.2002 benötigt, dann:
+vom 20.3.2002 benÃ¶tigt, dann:
 
 # unilist -dir /home -date 2002-03-20
 
@@ -197,13 +197,13 @@ vom 20.3.2002 benötigt, dann:
 Ohne Datumsangabe weggelassen wird, wird das aktuelle Datum eingesetzt
 (damit bekommt man die Daten der letzten Sicherung).
 Die so erzeugt Liste ist s--e--h--r   l--a--n--g. Besser ist, eine
-zusätzliche Perl-Regular Expression anzugeben, wie z.B.:
+zusÃ¤tzliche Perl-Regular Expression anzugeben, wie z.B.:
 
 # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" > /tmp/list
 
-Die so erzeugt Liste kann vollständig oder teilweise an unirest
-übergeben werden. unirest fordert dann die notwendigen Tapes an und
-restauriert die gewünschten Daten.
+Die so erzeugt Liste kann vollstÃ¤ndig oder teilweise an unirest
+Ã¼bergeben werden. unirest fordert dann die notwendigen Tapes an und
+restauriert die gewÃ¼nschten Daten.
 
 # unirest  /tmp/list
 
@@ -211,11 +211,11 @@ oder
 
 # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
 
-i.d.R. wird mehr als ein Tape benötigt. unirest liest die Daten des
+i.d.R. wird mehr als ein Tape benÃ¶tigt. unirest liest die Daten des
 ersten Tapes und beendet sich dann. Es wird ein Meldung ausgegeben,
-welches Tape als nächstes gebraucht wird und mit welchem Parameter
+welches Tape als nÃ¤chstes gebraucht wird und mit welchem Parameter
 unirest neu zu starten ist (der Programmstatus wird einfach in einem 
-Temporärfile zwischengespeichert)
+TemporÃ¤rfile zwischengespeichert)
 
 # unilist -dir /home -date 2002-03-20 "^./rrobert/.*\.ps" | unirest
 To restore I will need the following dump(s) in that order:
@@ -231,7 +231,7 @@ oder
 # unirest -archiv tar
 oder
 # unirest -archiv star
-machen außerdem zip bzw. tar-Archive von den restaurierten Daten.
+machen auÃŸerdem zip bzw. tar-Archive von den restaurierten Daten.
 
 
 
@@ -241,13 +241,13 @@ Administration
 
 unidump schreibt normalerweise toc-Files (Table-Of-Contents) nach
 /var/lib/unidump/toc. Diese werden zum Restaurieren einzelner Dateien
-benötigt. Sie können mit unitoc widerhergestellt werden. Einfach Tape
+benÃ¶tigt. Sie kÃ¶nnen mit unitoc widerhergestellt werden. Einfach Tape
 einlegen und
 
 # unitoc
 
 
-Die Datei /var/lib/unidump/history.txt enthält die Informationen,
+Die Datei /var/lib/unidump/history.txt enthÃ¤lt die Informationen,
 welcher Dump auf welchem Tape ist. Diese Datei befindet sich auf jedem
 Tape als letzes tapefile (als GNU tar). Sie kann mit 
 
@@ -256,24 +256,24 @@ Tape als letzes tapefile (als GNU tar). Sie kann mit
 vom Tape geholt werden (unihrest schreibt nach stdout). 
 
 
-Dumps, die auf die Holdingdisk geschrieben wurden, sollten möglichst
+Dumps, die auf die Holdingdisk geschrieben wurden, sollten mÃ¶glichst
 bald auf ein Tape kopiert werden. Dazu dient uniflush.
 
 # uniflush
 
 
-Informationen über die Konfiguration, Holdingdisk, etc können mit 
+Informationen Ã¼ber die Konfiguration, Holdingdisk, etc kÃ¶nnen mit 
 
 # unistat 
 
 abgefragt werden.
 
 Von der Holdingdisk, dem Verzeichnis der Dump-Logfiles und der History
-(/var/lib/unidump/history.txt) können mit 
+(/var/lib/unidump/history.txt) kÃ¶nnen mit 
 
 # uniproper [-force]
 
-überflüssige Einträge entfernt werden. 
+Ã¼berflÃ¼ssige EintrÃ¤ge entfernt werden. 
 
 
 

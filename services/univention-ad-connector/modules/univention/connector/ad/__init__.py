@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  Basic class for the AD connector part
@@ -672,7 +673,7 @@ class ad(univention.connector.ucs):
 		_d=univention.debug.function('ldap.__search_ad_changes')
 		lastUSN = self._get_lastUSN()
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
-		# +1 da suche nur nach '>=', nicht nach '>' möglich
+		# +1 da suche nur nach '>=', nicht nach '>' mÃ¶glich
 		if filter != '':
 			newfilter = '(&(%s)(|(uSNChanged>=%s)(uSNCreated>=%s)))' % (filter,lastUSN+1,lastUSN+1)
 		else:

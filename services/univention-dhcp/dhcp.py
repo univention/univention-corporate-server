@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention DHCP
 #  listener module

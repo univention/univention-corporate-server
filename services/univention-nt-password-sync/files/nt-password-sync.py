@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention NT password sync
 #  Univention LDAP Listener script for the NT pasword sync

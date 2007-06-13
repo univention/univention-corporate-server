@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  this baseconfig script automatically generates the SSL certificate for the AD host

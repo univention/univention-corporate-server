@@ -1,3 +1,9 @@
+univention-printserver (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 16:09:52 +0200
+
 univention-printserver (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -9,13 +15,13 @@ univention-printserver (0.22-1) unstable; urgency=low
   * fixed support for attributes like location and description that might have
     values containing whitespaces
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 20 Dec 2006 10:27:08 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 20 Dec 2006 10:27:08 +0100
 
 univention-printserver (0.21-1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:55:17 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat,  2 Dec 2006 19:55:17 +0100
 
 univention-printserver (0.20-2) unstable; urgency=low
 

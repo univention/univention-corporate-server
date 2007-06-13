@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+
 #
 # Univention Samba
 #  helper script: set default samba settings

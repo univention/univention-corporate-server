@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Scalix
 #  listener module: synchronizing information between UCS and Scalix

@@ -69,7 +69,7 @@ Set objRootDSE = GetObject("LDAP://rootDSE")
 Set objContainer = GetObject("LDAP://"& WScript.Arguments.Item(0))
 
 For i = 1 To WScript.Arguments.Item(1)
-	username= Replace(Space(5-Int(Log(i)/Log(10)))," ","0") & i  ' führende Nullen
+	username= Replace(Space(5-Int(Log(i)/Log(10)))," ","0") & i  ' fÃ¼hrende Nullen
 	StdOut.WriteLine "Schreibe User: " & username
 	Set objusr = objContainer.Create("User", "cn=genuser" & salt & "-" & username)
 
@@ -90,7 +90,7 @@ For i = 1 To WScript.Arguments.Item(1)
 Next
 StdOut.WriteLine i-1 & " User erzeugt."
 
-' Zurücksetzen, WScript.exe als default
+' ZurÃ¼cksetzen, WScript.exe als default
 cmdLine = "%COMSPEC% /C cscript //H:WScript "
 result = shell.Run(cmdLine,0,True)
 

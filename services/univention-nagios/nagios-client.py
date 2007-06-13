@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Nagios
 #  listener module: update configuration of local Nagios client

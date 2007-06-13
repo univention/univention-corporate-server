@@ -2,9 +2,9 @@ Packages-Status-DB
 
 Sinn dieses Programmpaketes ist das erfassen von installierten Paketen auf den
 einzelnen Rechnern in eine zentrale DB. Diese DB dient als Informationsquelle
-für den Softwarestatus der teilnehmenden Systeme.
+fÃ¼r den Softwarestatus der teilnehmenden Systeme.
 
-Status heißt Version, Installationsstatus und Zeitpunkt der 
+Status heiÃŸt Version, Installationsstatus und Zeitpunkt der 
 Installation/Deinstallation bzw Erfassung.>
 
 Installationsstatus ist Install/Removed/Purged/... was (dpkg -l so sagt).
@@ -15,7 +15,7 @@ Die Packages-Status-DB wird in zwei Debian-Pakete aufgeteilt.
 Auf den Master wird eine DB installiert, die folgende Daten enthalten soll:
 
 a) Liste der zu betrachtenen Rechner und deren Info.
-b) Liste der möglichen Pakete und deren Info.
+b) Liste der mÃ¶glichen Pakete und deren Info.
 c) Liste von Paketen in Rechnern mit deren Status.
    Hat Referenzen zur Tabelle a und b.
    
@@ -23,18 +23,18 @@ Da in der DB nur statische Daten enthalten sind und keine Historien,
 wird nur der letzte Zeitpunkt einer Datensatzoperation mit in die
 jeweilige Tabelle gespeichert.
 
-Zur Rechnerinfo gehört auch die Letzte Rückmeldung von apt-get ...
+Zur Rechnerinfo gehÃ¶rt auch die Letzte RÃ¼ckmeldung von apt-get ...
 
 Als DB wird Postgres eingesetzt.
-Die Oberfläche wird wie bei univention-console gemacht.
-Zusätzlich werden kleine Scripte zur Kommandozeilenabfrage erstellt.
+Die OberflÃ¤che wird wie bei univention-console gemacht.
+ZusÃ¤tzlich werden kleine Scripte zur Kommandozeilenabfrage erstellt.
 
-Die DB und Webseite muß gegen unberechtigten Zugriff gesichert werden.
+Die DB und Webseite muÃŸ gegen unberechtigten Zugriff gesichert werden.
 
 
 2. DB-Erfassungsmodul
 Dieser Teil besteht nur aus ein oder mehreren Sripten zur Erfassung der
-Informationen über das System, das Paket oder die Pakete und dessen Stati.
+Informationen Ã¼ber das System, das Paket oder die Pakete und dessen Stati.
 
 Optimal werden diese Scripte in dpkg (oder APT) eingebunden.
 Die Scripte schreiben mit dem Rechneraccount in die Datenbank. 

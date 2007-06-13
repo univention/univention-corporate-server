@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention AD Connector
 #  Univention LDAP Listener script for the ad connector

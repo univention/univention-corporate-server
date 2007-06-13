@@ -1,11 +1,11 @@
 #!/bin/bash
 #
 # holdingproper.sh 
-# suche holdingsdumps aus history.txt, prüfe, ob Datei noch 
+# suche holdingsdumps aus history.txt, prÃ¼fe, ob Datei noch 
 # vorhanden ist und entferne den Eintrag aus der history.txt, wenn Datei nicht mehr vorhanden.
 # 
-# es wäre schön, wenn diese Funktion unter Perl in das Script "uniflush" integriert werden 
-# könnte und mit dem Parameter "uniflush -clean" aufgerufen werden kann.
+# es wÃ¤re schÃ¶n, wenn diese Funktion unter Perl in das Script "uniflush" integriert werden 
+# kÃ¶nnte und mit dem Parameter "uniflush -clean" aufgerufen werden kann.
 #
 #
 #set -x

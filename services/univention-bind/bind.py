@@ -1,4 +1,5 @@
-#! /bin/sh
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Bind
 #  listener script

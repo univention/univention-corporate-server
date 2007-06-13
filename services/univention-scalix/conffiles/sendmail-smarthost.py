@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Baseconfig
 #  set relay host / smarthost in sendmail cfg
