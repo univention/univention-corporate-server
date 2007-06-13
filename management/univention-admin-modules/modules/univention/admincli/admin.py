@@ -972,7 +972,11 @@ def doit(arglist):
 				univention.admin.objects.performCleanup(object)
 
 		if recursive:
-			object.remove(recursive)
+			try:
+				object.remove(recursive)
+			except:
+				out.append('E: Object is not explicit. Canceled Operation')
+				return out + ["OPERATION FAILED"]
 		else:
 			try:
 				object.remove()
