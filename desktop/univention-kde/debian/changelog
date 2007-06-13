@@ -1,3 +1,9 @@
+univention-kde (2.0.1-4) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:08 +0200
+
 univention-kde (2.0.1-3) unstable; urgency=low
 
   * added fakeroot to dependency list
@@ -34,20 +40,20 @@ univention-kde (1.30.3) unstable; urgency=low
 
   * fixed bug in generated postinst script for KDE profiles 
 
- -- Andreas Büsching <crunchy@bitkipper.net>  Thu,  7 Dec 2006 08:23:17 +0100
+ -- Andreas BÃŒsching <crunchy@bitkipper.net>  Thu,  7 Dec 2006 08:23:17 +0100
 
 univention-kde (1.30.2) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 15:01:09 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 29 Nov 2006 15:01:09 +0100
 
 univention-kde (1.29) unstable; urgency=low
 
   * only if the server role is a master or backup, the join script is executed
     by the postinst script
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 22 Nov 2006 16:36:55 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 22 Nov 2006 16:36:55 +0100
 
 univention-kde (1.27) unstable; urgency=low
 
@@ -78,7 +84,7 @@ univention-kde (1.17) unstable; urgency=low
 
   * modified default profile to activate sound server
 
- -- Andreas B�sching <buesching@univention.de>  Wed, 19 Apr 2006 16:46:34 +0200
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Apr 2006 16:46:34 +0200
 
 univention-kde (1.16) unstable; urgency=low
 
@@ -86,7 +92,7 @@ univention-kde (1.16) unstable; urgency=low
   * add Kontact entry to menu
   * add Kontact Icon to desktop
 
- -- Andreas Bü�sching <buesching@univention.de>  Tue, 28 Feb 2006 10:58:11 +0100
+ -- Andreas BÃŒüsching <buesching@univention.de>  Tue, 28 Feb 2006 10:58:11 +0100
 
 univention-kde (1.13) unstable; urgency=low
 

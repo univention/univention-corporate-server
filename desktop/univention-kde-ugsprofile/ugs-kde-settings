@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention KDE UGS Profiles
 #  helper script: set KDE UGS profile for the given user

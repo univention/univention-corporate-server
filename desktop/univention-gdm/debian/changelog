@@ -1,3 +1,9 @@
+univention-gdm (1.0.1-3) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:07 +0200
+
 univention-gdm (1.0.1-2) unstable; urgency=low
 
   * added -a 16 switch to rdesktop call
@@ -92,14 +98,14 @@ univention-gdm (0.27) unstable; urgency=low
   * register baseconfig variable univentionAutostartSript for configuration
     file /etc/gdm/gdm.conf
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 21 Apr 2006 14:28:06 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri, 21 Apr 2006 14:28:06 +0200
 
 univention-gdm (0.26) unstable; urgency=low
 
   * modified auto-start behaviour of managed clients: setting the autostart
     script in the policy is enough no further variable must been set.
 
- -- Andreas Büsching <buesching@univention.de>  Fri,  7 Apr 2006 19:53:12 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri,  7 Apr 2006 19:53:12 +0200
 
 univention-gdm (0.25) unstable; urgency=low
 
@@ -111,19 +117,19 @@ univention-gdm (0.22) unstable; urgency=low
 
   * add PAM module for GDM autologin
 
- -- Andreas Büsching <buesching@univention.de>  Wed,  8 Feb 2006 20:28:10 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Wed,  8 Feb 2006 20:28:10 +0100
 
 univention-gdm (0.21) unstable; urgency=low
 
   * adaption for the new behaviour of gdm during autologin sessions
 
- -- Andreas Büsching <buesching@univention.de>  Tue,  7 Feb 2006 18:04:30 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Tue,  7 Feb 2006 18:04:30 +0100
 
 univention-gdm (0.20) unstable; urgency=low
 
   * new background image und adaption of colors and text positions
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 12 Dec 2005 11:08:10 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Mon, 12 Dec 2005 11:08:10 +0100
 
 univention-gdm (0.19) unstable; urgency=low
 
@@ -137,7 +143,7 @@ univention-gdm (0.18) unstable; urgency=low
   * fixed the position of the headline of the login box in different
     resolutions
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  3 Nov 2005 17:30:31 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Thu,  3 Nov 2005 17:30:31 +0100
 
 univention-gdm (0.16) unstable; urgency=low
 
@@ -147,7 +153,7 @@ univention-gdm (0.16) unstable; urgency=low
   * add template file etc/default/gdm: contains the language used for gdm.
     if gdm/language is set, it defines the language otherwise locale is used.
 
- -- Andreas Büsching <buesching@univention.de>  Tue,  1 Nov 2005 17:13:26 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Tue,  1 Nov 2005 17:13:26 +0100
 
 univention-gdm (0.15) unstable; urgency=low
 
@@ -157,7 +163,7 @@ univention-gdm (0.15) unstable; urgency=low
     right place
   * add /etc/gdm/Sessions to the search path for desktop sessions
 
- -- Andreas Büsching <buesching@univention.de>  Tue,  1 Nov 2005 13:21:16 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Tue,  1 Nov 2005 13:21:16 +0100
 
 univention-gdm (0.14) unstable; urgency=low
 

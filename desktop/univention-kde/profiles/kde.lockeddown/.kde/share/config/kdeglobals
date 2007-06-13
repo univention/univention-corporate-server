@@ -143,7 +143,7 @@ Language[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 2)
 ActiveEffect=none
 
 [Paths]
-Trash=$HOME/Desktop/Mülleimer/
+Trash=$HOME/Desktop/MÃŒlleimer/
 Desktop=/usr/share/univention-kde-profiles/kde.lockeddown/Desktop
 
 [PreviewSettings]

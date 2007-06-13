@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 #    Copyright (C) 2001  Jeff Epler  <jepler@unpythonic.dhs.org>
 #

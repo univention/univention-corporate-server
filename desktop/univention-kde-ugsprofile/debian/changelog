@@ -1,3 +1,9 @@
+univention-kde-ugsprofile (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:08 +0200
+
 univention-kde-ugsprofile (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -8,7 +14,7 @@ univention-kde-ugsprofile (0.6.1) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 15:56:50 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 29 Nov 2006 15:56:50 +0100
 
 univention-kde-ugsprofile (0.5) unstable; urgency=low
 

@@ -129,7 +129,7 @@ Language[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 2)
 ActiveEffect=none
 
 [Paths]
-Trash=$HOME/Desktop/Mülleimer/
+Trash=$HOME/Desktop/MÃŒlleimer/
 
 [WM]
 activeBackground=62,145,235

@@ -1,56 +1,56 @@
 [Desktop Entry]
 Encoding=UTF-8
 Name=Kontact
-Name[be]=Кантакт
-Name[hi]=कॉन्टेक्ट
+Name[be]=ÐÐ°ÐœÑÐ°ÐºÑ
+Name[hi]=à€à¥à€šà¥à€à¥à€à¥à€
 Name[sv]=Kontakt
-Name[ta]=தொடர்பு கொள்
+Name[ta]=à®€à¯à®à®°à¯à®ªà¯ à®à¯à®³à¯
 Exec=kontact
 Type=Application
 Icon=kontact
 GenericName=Personal Information Manager
-GenericName[ar]=مدير معلومات شخصية
-GenericName[be]=Кіраваньне пэрсанальнай інфармацыяй
-GenericName[bg]=Лична информация
-GenericName[bs]=Upravitelj ličnim informacijama
-GenericName[ca]=Gestor d'informació personal
-GenericName[cs]=Správce osobních informací
+GenericName[ar]=ÙØ¯ÙØ± ÙØ¹ÙÙÙØ§Øª ØŽØ®ØµÙØ©
+GenericName[be]=ÐÑÑÐ°Ð²Ð°ÐœÑÐœÐµ Ð¿ÑÑÑÐ°ÐœÐ°Ð»ÑÐœÐ°Ð¹ ÑÐœÑÐ°ÑÐŒÐ°ÑÑÑÐ¹
+GenericName[bg]=ÐÐžÑÐœÐ° ÐžÐœÑÐŸÑÐŒÐ°ÑÐžÑ
+GenericName[bs]=Upravitelj liÄnim informacijama
+GenericName[ca]=Gestor d'informaciÃ³ personal
+GenericName[cs]=SprÃ¡vce osobnÃ­ch informacÃ­
 GenericName[cy]=Rheolydd Gwybodaeth Personol
-GenericName[da]=Personlig informationshåndtering
-GenericName[de]=Persönlicher Informationsmanager
-GenericName[el]=Προσωπικός διαχειριστής πληροφοριών
-GenericName[es]=Gestor de información personal
+GenericName[da]=Personlig informationshÃ¥ndtering
+GenericName[de]=PersÃ¶nlicher Informationsmanager
+GenericName[el]=Î ÏÎ¿ÏÏÏÎ¹ÎºÏÏ ÎŽÎ¹Î±ÏÎµÎ¹ÏÎ¹ÏÏÎ®Ï ÏÎ»Î·ÏÎ¿ÏÎ¿ÏÎ¹ÏÎœ
+GenericName[es]=Gestor de informaciÃ³n personal
 GenericName[et]=Personaalse info haldur
-GenericName[fi]=Henkilötietojen hallinta
+GenericName[fi]=HenkilÃ¶tietojen hallinta
 GenericName[fr]=Gestionnaire d'informations personnelles
-GenericName[gl]=Xestor de Información Persoal
-GenericName[he]=מנהל מידע אישי
-GenericName[hi]=निजी जानकारी प्रबंधक
-GenericName[hu]=Információkezelő
-GenericName[is]=PIM Dagbók, geyma persónuupplýsingar
+GenericName[gl]=Xestor de InformaciÃ³n Persoal
+GenericName[he]=×× ×× ××××¢ ×××©×
+GenericName[hi]=à€šà€¿à€à¥ à€à€Ÿà€šà€à€Ÿà€°à¥ à€ªà¥à€°à€¬à€à€§à€
+GenericName[hu]=InformÃ¡ciÃ³kezelÅ
+GenericName[is]=PIM DagbÃ³k, geyma persÃ³nuupplÃœsingar
 GenericName[it]=Gestione informazioni personali 
-GenericName[ja]=個人情報マネージャ
-GenericName[lt]=Asmeninės informacijos tvarkyklė
-GenericName[mk]=Менаџер за лични информации
+GenericName[ja]=åäººæå ±ãããŒãžã£
+GenericName[lt]=AsmeninÄs informacijos tvarkyklÄ
+GenericName[mk]=ÐÐµÐœÐ°ÑÐµÑ Ð·Ð° Ð»ÐžÑÐœÐž ÐžÐœÑÐŸÑÐŒÐ°ÑÐžÐž
 GenericName[nb]=Personlig informasjonsbehandler
 GenericName[nn]=Personleg informasjonshandtering
-GenericName[pl]=Program do zarządzania informacjami osobistymi
-GenericName[pt]=Gestor Pessoal de Informações
-GenericName[pt_BR]=Gerenciador de Informações Pessoais
-GenericName[ro]=Manager de informaţii personale
-GenericName[ru]=Персональный информационный менеджер
-GenericName[se]=Persuvnnalaš diehtogieđaheapmi
-GenericName[sk]=Osobný manažér informácii
+GenericName[pl]=Program do zarzÄdzania informacjami osobistymi
+GenericName[pt]=Gestor Pessoal de InformaÃ§Ãµes
+GenericName[pt_BR]=Gerenciador de InformaÃ§Ãµes Pessoais
+GenericName[ro]=Manager de informaÅ£ii personale
+GenericName[ru]=ÐÐµÑÑÐŸÐœÐ°Ð»ÑÐœÑÐ¹ ÐžÐœÑÐŸÑÐŒÐ°ÑÐžÐŸÐœÐœÑÐ¹ ÐŒÐµÐœÐµÐŽÐ¶ÐµÑ
+GenericName[se]=PersuvnnalaÅ¡ diehtogieÄaheapmi
+GenericName[sk]=OsobnÃœ manaÅŸÃ©r informÃ¡cii
 GenericName[sl]=Osebni upravitelj informacij
-GenericName[sr]=Менаџер личних информација
-GenericName[sr@Latn]=Menadžer ličnih informacija
+GenericName[sr]=ÐÐµÐœÐ°ÑÐµÑ Ð»ÐžÑÐœÐžÑ ÐžÐœÑÐŸÑÐŒÐ°ÑÐžÑÐ°
+GenericName[sr@Latn]=MenadÅŸer liÄnih informacija
 GenericName[sv]=Personlig informationshantering
-GenericName[ta]=அந்தரங்க தகவல் மேலாளர்
-GenericName[tg]=Мудири маълумоти шахсӣ
-GenericName[tr]=Kişisel Bilgi Yöneticisi
-GenericName[uk]=Менеджер особистої інформації
-GenericName[uz]=Шахсий маълумот бошқарувчиси
-GenericName[zh_CN]=个人信息管理器
+GenericName[ta]=à®à®šà¯à®€à®°à®à¯à® à®€à®à®µà®²à¯ à®®à¯à®²à®Ÿà®³à®°à¯
+GenericName[tg]=ÐÑÐŽÐžÑÐž ÐŒÐ°ÑÐ»ÑÐŒÐŸÑÐž ÑÐ°ÑÑÓ£
+GenericName[tr]=KiÅisel Bilgi YÃ¶neticisi
+GenericName[uk]=ÐÐµÐœÐµÐŽÐ¶ÐµÑ ÐŸÑÐŸÐ±ÐžÑÑÐŸÑ ÑÐœÑÐŸÑÐŒÐ°ÑÑÑ
+GenericName[uz]=ÐšÐ°ÑÑÐžÐ¹Â ÐŒÐ°ÑÐ»ÑÐŒÐŸÑ Ð±ÐŸÑÒÐ°ÑÑÐ²ÑÐžÑÐž
+GenericName[zh_CN]=äžªäººä¿¡æ¯ç®¡çåš
 Terminal=0
 X-KDE-StartupNotify=true
 Categories=Qt;KDE;Office

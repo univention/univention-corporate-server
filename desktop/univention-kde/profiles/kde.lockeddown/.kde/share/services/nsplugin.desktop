@@ -1,8 +1,8 @@
 [Desktop Entry]
-Name=Betrachter für Netscape-Plugins
+Name=Betrachter fÃ¼r Netscape-Plugins
 Type=Service
 Icon=netscape
-Comment=Betrachter für Netscape-Plugins
+Comment=Betrachter fÃ¼r Netscape-Plugins
 X-KDE-Library=libnsplugin
 InitialPreference=0
 ServiceTypes=KParts/ReadOnlyPart,Browser/View

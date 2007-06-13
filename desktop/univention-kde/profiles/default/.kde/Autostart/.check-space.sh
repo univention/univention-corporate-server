@@ -32,7 +32,7 @@
 dd if=/dev/zero of=$HOME/.kde/.spacesaver bs=10k count=25 >/dev/null 2>&1 || {
     case $LANG in
 		de*)
-			echo -e 'Der ihrem Benutzerkonto zugewiesene Speicherplatz wird knapp.\nSie sollten nicht benötigte Dateien löschen oder den Systemverwalter\num eine Erhöhung der Speicherplatzquote bitten.' \
+			echo -e 'Der ihrem Benutzerkonto zugewiesene Speicherplatz wird knapp.\nSie sollten nicht benÃ¶tigte Dateien lÃ¶schen oder den Systemverwalter\num eine ErhÃ¶hung der Speicherplatzquote bitten.' \
 				| xmessage -center -file -
 			;;
 		*)

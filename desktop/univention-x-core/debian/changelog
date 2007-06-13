@@ -1,3 +1,9 @@
+univention-x-core (1.1.1-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:10 +0200
+
 univention-x-core (1.1.1-1) unstable; urgency=low
 
   * fix some typos in the xorg.conf template
@@ -45,7 +51,7 @@ univention-x-core (0.7-2) unstable; urgency=low
 
   * fixed an format string error for the VideoRAM option in xorg.conf
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  8 Dec 2005 16:30:23 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Thu,  8 Dec 2005 16:30:23 +0100
 
 univention-x-core (0.7-1) unstable; urgency=low
 
@@ -63,7 +69,7 @@ univention-x-core (0.6) unstable; urgency=low
 
   * add support for variable univentionXVideoRam
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 16 Nov 2005 17:20:15 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Wed, 16 Nov 2005 17:20:15 +0100
 
 univention-x-core (0.5) unstable; urgency=low
 

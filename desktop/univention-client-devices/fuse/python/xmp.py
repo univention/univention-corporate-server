@@ -1,4 +1,5 @@
-#!/usr/bin/env python1.5
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 #    Copyright (C) 2001  Jeff Epler  <jepler@unpythonic.dhs.org>
 #

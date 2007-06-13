@@ -1,4 +1,5 @@
 #!/usr/bin/make -f
+#
 # Univention X Core
 #  rules file for the debian package
 #

@@ -1,4 +1,5 @@
-#!/usr/bin/python2.4 -OO
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Client Basesystem
 #  helper script for creation the configuration of thin client

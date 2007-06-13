@@ -1,3 +1,9 @@
+univention-mozilla-firefox (1.2-7) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:09 +0200
+
 univention-mozilla-firefox (1.2-6) unstable; urgency=low
 
   * Readded missing files
@@ -14,7 +20,7 @@ univention-mozilla-firefox (1.2-4) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 15:21:17 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri,  1 Dec 2006 15:21:17 +0100
 
 univention-mozilla-firefox (1.2-3) unstable; urgency=low
 

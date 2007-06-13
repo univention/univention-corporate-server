@@ -1,10 +1,10 @@
 [Desktop Entry]
 Comment=Contains removed files
-Comment[de]=Enthält gelöschte Dateien
+Comment[de]=EnthÃ€lt gelÃ¶schte Dateien
 EmptyIcon=trashcan_empty
 Encoding=UTF-8
 Icon=trashcan_full
 Name=Trash
-Name[de]=Mülleimer
+Name[de]=MÃŒlleimer
 Type=Link
 URL=trash:/
