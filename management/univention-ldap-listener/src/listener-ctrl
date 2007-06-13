@@ -41,9 +41,9 @@ case "$1" in
 		shift
 		[ -z "$1" ] && usage
 		
-		runsvctrl down /etc/runit/univention-ldap-listener
+		sv down univention-ldap-listener
 		i=0
-		while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do
+		while ! sv status univention-ldap-listener | grep ^down: >/dev/null ; do
 			i=$((i+1))
 			if [ $i -gt 300 ]; then
 				echo "Sending SIGKILL"
@@ -60,7 +60,7 @@ case "$1" in
 		for i in $*; do
 			rm "/var/lib/univention-ldap-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
 		done
-		runsvctrl up /etc/runit/univention-ldap-listener
+		sv up univention-ldap-listener
 		
 		;;
 	*)

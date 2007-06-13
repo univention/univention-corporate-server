@@ -90,9 +90,9 @@ fi
 
 date >> /var/log/univention/ldap-replication-resync.log
 echo "Try to sync changes stored in $1 into local LDAP" | tee -a /var/log/univention/ldap-replication-resync.log
-runsvctrl down /etc/runit/univention-ldap-listener
+sv down univention-ldap-listener
 echo -n "waiting for listener-shutdown "
-while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null
+while ! sv status univention-ldap-listener | grep ^down: >/dev/null
   do sleep 1
   echo -n " ."
 done
