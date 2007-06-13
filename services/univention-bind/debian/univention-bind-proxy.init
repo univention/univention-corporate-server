@@ -31,25 +31,22 @@
 case "$1" in
 	start)
 		echo -n "Starting univention-bind-proxy daemon: "
-		runsvctrl u /etc/runit/univention-bind-proxy
-		echo "done"
+		sv up univention-bind-proxy
 		;;
 	stop)
 		echo -n "Stopping univention-bind-proxy daemon: "
-		runsvctrl d /etc/runit/univention-bind-proxy
-		echo "done"
+		svn down univention-bind-proxy
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting univention-bind-proxy daemon: "
+		svn restart univention-bind-proxy
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-bind-proxy | grep pid > /dev/null 2>&1
+		if sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "runsvstat return no running bind-proxy, don't need to restart."
+			echo "sv status return no running bind-proxy, don't need to restart."
 		fi
 		;;
 	*)

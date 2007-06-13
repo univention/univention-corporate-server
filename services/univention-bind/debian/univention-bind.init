@@ -32,25 +32,22 @@
 case "$1" in
 	start)
 		echo -n "Starting univention-bind daemon: "
-		runsvctrl u /etc/runit/univention-bind
-		echo "done"
+		sv up univention-bind
 		;;
 	stop)
 		echo -n "Stopping univention-bind daemon: "
-		runsvctrl d /etc/runit/univention-bind
-		echo "done"
+		sv down univention-bind
 		;;
 	restart|force-reload)
-		$0 stop
-		sleep 1
-		$0 start
+		echo -n "Restarting univention-bind daemon: "
+		sv restart univention-bind
 		;;
 	crestart)
-		if runsvstat /etc/runit/univention-bind | grep pid > /dev/null 2>&1
+		if sv status univention-bind | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
-			echo "runsvstat return no running bind, don't need to restart."
+			echo "sv status return no running bind, don't need to restart."
 		fi
 		;;
 	*)
