@@ -1,3 +1,9 @@
+univention-apache (2.0.3-2) unstable; urgency=low
+
+  * added a conflict to apache 1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 13 Jun 2007 14:26:21 +0200
+
 univention-apache (2.0.3-1) unstable; urgency=low
 
   * update etc/default/apache2
