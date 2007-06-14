@@ -37,4 +37,8 @@ deb file:/sourcedevice/packages ./
 
 __EOT__
 
+echo "APT::Get::AllowUnauthenticated 1 ;" >/instmnt/etc/apt/apt.conf
+
+chmod 644 /instmnt/etc/apt/apt.conf
 chmod 644 /instmnt/etc/apt/sources.list
+rm -Rf /instmnt/etc/apt/sources.list.d

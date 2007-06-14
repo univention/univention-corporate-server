@@ -58,6 +58,10 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 fi
 
 
+cd /dev
+/sbin/MAKEDEV generic
+cd -
+
 mount -a
 #mount /mnt/installation
 
