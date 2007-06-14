@@ -1,3 +1,10 @@
+univention-pam (1.1.0-10) unstable; urgency=low
+
+  * fixed oder of pam rules
+  * made if clause more readable
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 14 Jun 2007 15:49:03 +0200
+
 univention-pam (1.1.0-9) unstable; urgency=low
 
   * added access file baseconfig variables:
