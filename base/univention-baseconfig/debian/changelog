@@ -1,4 +1,4 @@
-univention-baseconfig (2.1.8-1) unstable; urgency=low
+univention-baseconfig (2.1.8-2) unstable; urgency=low
 
   * if server/role is empty then set it to basesystem
 

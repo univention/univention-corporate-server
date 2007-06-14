@@ -162,7 +162,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.54-35; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.8-1; then
-	univention-baseconfig get server/role?basesystem
+	univention-baseconfig set server/role?basesystem
 fi
 
 exit 0
