@@ -1,3 +1,9 @@
+univention-installer (1.1.6-1) unstable; urgency=low
+
+  * forward some special keys to the input elements (left, backspace, ...)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 09:05:43 +0200
+
 univention-installer (1.1.5-3) unstable; urgency=low
 
   * set unit to MB for the parted print calls
