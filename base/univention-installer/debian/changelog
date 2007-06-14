@@ -1,3 +1,10 @@
+univention-installer (1.2.9-1) unstable; urgency=low
+
+  * support for an encrypted root password in the installation profile
+    (root_password_crypted)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 14:17:37 +0200
+
 univention-installer (1.2.8-2) unstable; urgency=low
 
   * added st to the modules list on a recover system

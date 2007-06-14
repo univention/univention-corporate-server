@@ -48,9 +48,14 @@ class object(content):
 		return ['hostname','domainname','ldap_base']
 
 	def profile_complete(self):
-		if self.check('hostname') | self.check('domainname') | self.check('ldap_base') | self.check('root_password') | self.check( 'windows_domain'):
+		if self.check('hostname') | self.check('domainname') | self.check('ldap_base') | self.check( 'windows_domain'):
 			return False
-		self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
+		if self.check('root_password') and self.check('root_password_crypted'):
+			return False
+		if self.all_result.has_key('root_password_crypted'):
+			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], "XXXXXXXXXX", "XXXXXXXXXX", focus=False)
+		else:
+			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
 		if self.message:
 			return False
 
@@ -176,56 +181,57 @@ class object(content):
 					if focus:
 						self.move_focus( 7 )
 					return message
-		if root_password1.strip() == '':
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("Please enter a Password.")
-		if root_password2.strip() == '':
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password2_position )
-				return _("Please retype the Password.")
-		if root_password1.strip() != root_password2.strip():
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("The Passwords do not match.")
-		if len(root_password1.strip()) < 8:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("Your password is too short. For security reasons, your password must be at least 8 characters long.")
-		if root_password1.strip().find(" ") != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("Illegal password: A password may not contain blanks.")
-		if root_password2.strip().find(" ") != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password2_position )
-				return _("Illegal password: A password may not contain blanks.")
-		if root_password1.strip().find('\\') != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("Illegal password: A password may not contain back slashes.")
-		if root_password2.strip().find('\\') != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password2_position )
-				return _("Illegal password: A password may not contain back slashes.")
-		if root_password1.strip().find('"') != -1 or root_password1.strip().find("'") != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password1_position )
-				return _("Illegal password: A password may not contain quotation marks.")
-		if root_password2.strip().find('"') != -1 or root_password2.strip().find("'") != -1:
-			if not self.ignore('password'):
-				if focus:
-					self.move_focus( password2_position )
-				return _("Illegal password: A password may not contain quotation marks.")
+		if not self.all_results.has_key('root_password_crypted'):
+			if root_password1.strip() == '':
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("Please enter a Password.")
+			if root_password2.strip() == '':
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password2_position )
+					return _("Please retype the Password.")
+			if root_password1.strip() != root_password2.strip():
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("The Passwords do not match.")
+			if len(root_password1.strip()) < 8:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("Your password is too short. For security reasons, your password must be at least 8 characters long.")
+			if root_password1.strip().find(" ") != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("Illegal password: A password may not contain blanks.")
+			if root_password2.strip().find(" ") != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password2_position )
+					return _("Illegal password: A password may not contain blanks.")
+			if root_password1.strip().find('\\') != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("Illegal password: A password may not contain back slashes.")
+			if root_password2.strip().find('\\') != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password2_position )
+					return _("Illegal password: A password may not contain back slashes.")
+			if root_password1.strip().find('"') != -1 or root_password1.strip().find("'") != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password1_position )
+					return _("Illegal password: A password may not contain quotation marks.")
+			if root_password2.strip().find('"') != -1 or root_password2.strip().find("'") != -1:
+				if not self.ignore('password'):
+					if focus:
+						self.move_focus( password2_position )
+					return _("Illegal password: A password may not contain quotation marks.")
 		return 0
 
 
@@ -240,8 +246,12 @@ class object(content):
 		else:
 			password1_position=9
 			password2_position=11
-		root_password1=self.elements[password1_position].result()
-		root_password2=self.elements[password2_position].result()
+		if self.all_results.has_key('root_password_crypted'):
+			root_password1='XXXXXXXXXX'
+			root_password2='XXXXXXXXXX'
+		else:
+			root_password1=self.elements[password1_position].result()
+			root_password2=self.elements[password2_position].result()
 		return self.check_values(self.elements[3].result(), self.elements[5].result(), ldap_base, root_password1, root_password2)
 
 	def helptext(self):
@@ -257,10 +267,16 @@ class object(content):
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			result['ldap_base']='%s' % self.elements[7].result().strip()
 			result['windows_domain']='%s' % self.elements[9].result().strip()
-			if self.elements[11].result().strip() == self.elements[13].result().strip() and len(self.elements[11].result().strip()) >7:
-				result['root_password']='%s' % self.elements[11].result().strip()
+			if self.all_results.has_key('root_password_crypted'):
+				result['root_password_crypted']=self.all_results['root_password_crypted']
+			else:
+				if self.elements[11].result().strip() == self.elements[13].result().strip() and len(self.elements[11].result().strip()) >7:
+					result['root_password']='%s' % self.elements[11].result().strip()
 		else:
 			result['windows_domain']='%s' % self.elements[7].result().strip()
-			if self.elements[9].result().strip() == self.elements[11].result().strip() and len(self.elements[9].result().strip()) > 7:
-				result['root_password']='%s' % self.elements[9].result().strip()
+			if self.all_results.has_key('root_password_crypted'):
+				result['root_password_crypted']=self.all_results['root_password_crypted']
+			else:
+				if self.elements[9].result().strip() == self.elements[11].result().strip() and len(self.elements[9].result().strip()) > 7:
+					result['root_password']='%s' % self.elements[9].result().strip()
 		return result

@@ -66,7 +66,11 @@ mount -a
 #mount /mnt/installation
 
 shadowconfig on
-usermod -p `mkpasswd $root_password` root
+if [-n "$root_password_crypted" ]; then
+	usermod -p "$root_password_crypted" root
+else
+	usermod -p `mkpasswd $root_password` root
+fi
 mount proc /proc -t proc
 
 #create parport devices
