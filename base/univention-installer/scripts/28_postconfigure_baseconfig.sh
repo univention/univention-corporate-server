@@ -132,6 +132,8 @@ else
 		univention-baseconfig set server/role=mobileclient
 	elif [ $server_role = "domaincontroller_backup" ]; then
 		univention-baseconfig set server/role=domaincontroller_backup
+	elif [ $server_role = "basesystem" ]; then
+		univention-baseconfig set server/role=basesystem
 	fi
 fi
 

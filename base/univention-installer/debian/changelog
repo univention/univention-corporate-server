@@ -1,3 +1,9 @@
+univention-installer (1.2.7-1) unstable; urgency=low
+
+  * set server role on a basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 13:03:18 +0200
+
 univention-installer (1.2.6-1) unstable; urgency=low
 
   * added less to package list
