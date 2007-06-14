@@ -534,7 +534,7 @@ class object(content):
 		devices_remove=[]
 		for dev in devices:
 			dev=dev.strip()
-			p = os.popen('/sbin/parted -s unit MB %s p 2>&1 | grep [a-z]'% dev)
+			p = os.popen('/sbin/parted -s %s unit MB p 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()
 			self.debug('fist line: [%s]' % first_line)
@@ -545,7 +545,7 @@ class object(content):
 				continue
 			elif _re_error.match(first_line):
 				os.system('/sbin/install-mbr -f %s' % dev)
-				p = os.popen('/sbin/parted unit MB %s p'% dev)
+				p = os.popen('/sbin/parted %s unit MB p'% dev)
 				first_line=p.readline()
 				if _re_error.match(first_line):
 					self.debug('Firstline starts with error')
