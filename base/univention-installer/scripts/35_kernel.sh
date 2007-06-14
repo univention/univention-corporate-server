@@ -50,23 +50,11 @@ if [ "$architecture" != "powerpc" ]; then
 	chroot /instmnt ./install_initrd.sh
 fi
 
-LOADED_MODULES=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`
-if [ -n "$LOADED_MODULES" ]; then
-    for i in $LOADED_MODULES; do
-		if [ -e /mnt/conf/modules_ignore ]; then
-			grep ^$i /mnt/conf/modules_ignore >/dev/null 2>&1
-			if [ $? != 0 ]; then
-        		echo $i >>/instmnt/etc/mkinitrd/modules
-			fi
-		else
-        	echo $i >>/instmnt/etc/mkinitrd/modules
-		fi
-		if [ -z "$module" ]; then
-			module="$i"
-		else
-			module="$module;$i"
-		fi
-    done
+loaded_modules=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`
+loaded_modules=$(echo $loaded_modules | sed -e 's| |;|g')
+
+if [ -n "$modules" ]; then
+	modules=$(echo $modules | sed -e 's| |;|g')
 fi
 
 if [ -n "$kernel_version" ]; then
@@ -105,8 +93,11 @@ cat >>/instmnt/install_kernel.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
+if [ -n "$loaded_modules" ]; then
+	univention-baseconfig set mkinird/modules="$loaded_modules"
+fi
 if [ -n "$module" ]; then
-	univention-baseconfig set mkinird/modules="$module"
+	univention-baseconfig set kernel/modules="$module"
 fi
 
 if [ "$architecture" = "powerpc" ]; then
