@@ -134,11 +134,13 @@ Type: file
 File: etc/pam.d/ftp
 Variables: auth/user/services
 Variables: auth/admin/services
+Variables: auth/ftpd/accessfile
 
 Type: file
 File: etc/pam.d/gdm
 Variables: auth/user/services
 Variables: auth/admin/services
+Variables: auth/gdm/accessfile
 
 Type: file
 File: etc/pam.d/kcheckpass
@@ -194,7 +196,7 @@ Type: file
 File: etc/pam.d/ssh
 Variables: auth/user/services
 Variables: auth/admin/services
-Variables: ssh/rootlogin
+Variables: auth/sshd/accessfile
 
 Type: file
 File: etc/pam.d/su

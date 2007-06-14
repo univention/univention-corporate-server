@@ -17,8 +17,8 @@ else:
 	scheme='deny'
 
 print '@include %s-account' % scheme
-if baseConfig.has_key('ssh/rootlogin') and baseConfig['ssh/rootlogin'] == 'disallow':
-	print 'auth       required     pam_listfile.so onerr=succeed item=user sense=deny file=/etc/security/nopasswdusers'
+if baseConfig.has_key('auth/sshd/accessfile') and not baseConfig['auth/sshd/accessfile'] == '':
+	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/sshd/accessfile']
 print '@include %s-auth' % scheme
 print '@include %s-session' % scheme
 print 'session    optional   pam_lastlog.so'

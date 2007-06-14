@@ -1,3 +1,13 @@
+univention-pam (1.1.0-9) unstable; urgency=low
+
+  * added access file baseconfig variables:
+  *	auth/sshd/accessfile
+  *	auth/ftpd/accessfile
+  *	auth/gdm/accessfile
+  * removed obsolete variable ssh/rootlogin
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 14 Jun 2007 13:41:35 +0200
+
 univention-pam (1.1.0-8) unstable; urgency=low
 
   * encoded files utf-8

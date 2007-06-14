@@ -16,6 +16,8 @@ elif 'gdm' in baseConfig['auth/admin/services'].split(' '):
 else:
 	scheme='deny'
 
+if baseConfig.has_key('auth/gdm/accessfile') and not baseConfig['auth/gdm/accessfile'] == '':
+	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/gdm/accessfile']
 print '@include %s-account' % scheme
 print '@include %s-auth' % scheme
 print '@include %s-session' % scheme
