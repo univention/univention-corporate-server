@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-baseconfig
 Architecture: all
-Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils
+Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils,  acl, xfsprogs, lsof
 Description: UCS - base configuration
  This package contains the base configuration for UCS.
  .

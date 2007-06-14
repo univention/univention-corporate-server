@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.8-3) unstable; urgency=low
+
+  * added some basetools like acl and lsof to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 16:53:36 +0200
+
 univention-baseconfig (2.1.8-2) unstable; urgency=low
 
   * if server/role is empty then set it to basesystem
