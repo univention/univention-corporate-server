@@ -563,6 +563,14 @@ PackageList=[
 					'Description': _("An Editor"),
 				},
 				{
+					'Name': _('Less'),
+					'Packages': ['less'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['all'],
+					'Possible': ['all'],
+					'Description': _('Pager program similar to more'),
+				},
+				{
 					'Name': _('Links-SSL'),
 					'Packages': ['links-ssl'],
 					'Architecture': [ 'x86', 'powerpc' ],
