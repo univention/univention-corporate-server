@@ -1,3 +1,9 @@
+univention-admin-modules (1.1.0-11) unstable; urgency=low
+
+  * improving handling of errors for removing objects recursive
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 08:15:51 +0200
+
 univention-admin-modules (1.1.0-10) unstable; urgency=low
 
   * changed error handling for recursive option in univention-admin 

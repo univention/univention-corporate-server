@@ -974,9 +974,12 @@ def doit(arglist):
 		if recursive:
 			try:
 				object.remove(recursive)
-			except univention.admin.uexceptions.ldapError:
-				out.append('E: Operation on non empty Objects is not allowed')
-				return out + ["OPERATION FAILED"]
+			except univention.admin.uexceptions.ldapError, msg:
+				if str(msg)!='Operation not allowed on non-leaf':
+					raise
+				else:
+					out.append(str(msg))
+					return out + ["OPERATION FAILED"]
 		else:
 			try:
 				object.remove()
