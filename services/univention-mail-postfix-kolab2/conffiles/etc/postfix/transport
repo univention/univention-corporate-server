@@ -1,0 +1,24 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/postfix/transport
+#
+
+@!@
+fqdn='%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+if baseConfig.has_key('mail/hosteddomains'):
+	all_hosted_domains = baseConfig['mail/hosteddomains'].split(' ')
+	for hosted_domain in all_hosted_domains:
+		print '%-30s  kolabmailboxfilter' % (hosted_domain)
+	if not fqdn in all_hosted_domains:
+		print '%-30s local' % ( fqdn )
+else:
+	print '%-30s kolabmailboxfilter' % (baseConfig['domainname'])
+	print '%-30s local' % ( fqdn )
+@!@
+
+

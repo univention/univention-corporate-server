@@ -1,0 +1,4 @@
+@!@
+if baseConfig['ldap/server/type']=="master":
+	print 'include     /usr/share/univention-ldap/schema/policyMailQuota.schema'
+@!@

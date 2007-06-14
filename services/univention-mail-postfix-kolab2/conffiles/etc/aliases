@@ -1,0 +1,18 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/aliases
+#
+
+@!@
+import re
+_re=re.compile('mail/alias/*')
+keylist=baseConfig.keys()
+for key in keylist:
+	if _re.match(key):
+		print '%s: %s' % (key.split('/')[-1],baseConfig[key])
+@!@	

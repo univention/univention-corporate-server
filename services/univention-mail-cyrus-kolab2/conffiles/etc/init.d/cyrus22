@@ -1,0 +1,182 @@
+#! /bin/sh
+#
+# cyrus22	/etc/init.d/ script for cyrus2 IMAPd
+#		This file manages the Cyrus IMAPd master process.
+#
+#		Copr. 2001 by Henrique de Moraes Holschuh <hmh@debian.org>
+#		Distributed under the GPL version 2
+#
+# $Id: cyrus22,v 1.1.2.5 2005/09/26 05:53:32 stefan Exp $
+
+# Make sure we get sane results on borked locales
+LC_ALL=C
+export LC_ALL
+
+# Overridable defaults
+unset CYRUS_VERBOSE
+unset LISTENQUEUE
+[ -r /etc/default/cyrus22 ] && . /etc/default/cyrus22
+
+[ "x${CYRUS_VERBOSE}" != "x" ] && export CYRUS_VERBOSE
+OPTIONS="-d"
+[ "x${LISTENQUEUE}" != "x" ] && OPTIONS="-l ${LISTENQUEUE} ${OPTIONS}"
+if [ -n "$CONF" ]; then
+	OPTIONS="${OPTIONS} -M $CONF/cyrus.conf -C $CONF/imapd.conf"
+fi
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DAEMON=/usr/sbin/cyrmaster
+NAME=cyrmaster
+DESC="Cyrus IMAPd"
+
+test -x ${DAEMON} || exit 0
+
+set -e
+
+START="--start --quiet --pidfile /var/run/${NAME}.pid --exec ${DAEMON} -- ${OPTIONS}"
+
+verifydb() {
+   while read -r DBKEY DBVALUE ; do
+	match=`sort -u < $1 | gawk "/^${DBKEY}[[:blank:]]/ { print \\$2 }"`
+	[ "x${match}" != "x${DBVALUE}" ] && return 0
+   done
+   return 1
+}
+
+createdir() {
+# $1 = user
+# $2 = group
+# $3 = permissions (octal)
+# $4 = path to directory
+	[ -d "$4" ] || mkdir -p "$4"
+	chown -c -h "$1:$2" "$4"
+	chmod -c "$3" "$4"
+}
+
+missingstatoverride () {
+	echo "$0: You are missing a dpkg-statoverride on $1.  Add it." >&2
+	exit 1
+}
+
+fixdirs () {
+	dir=`dpkg-statoverride --list /var/run/cyrus` \
+		|| missingstatoverride /var/run/cyrus
+	[ -z "$dir" ] \
+		|| createdir $dir
+	dir=`dpkg-statoverride --list /var/run/cyrus/socket` \
+		|| missingstatoverride /var/run/cyrus/socket
+	[ -z "$dir" ] \
+		|| createdir $dir
+}
+
+case "$1" in
+  start)
+  	# Verify if there are old Cyrus 1.5 spools that were not upgraded
+	[ -f /var/lib/cyrus/mailboxes -a -d /var/lib/cyrus/deliverdb -a \
+	  -d /var/spool/cyrus/mail/user -a ! -d /var/spool/cyrus/mail/stage. ] && {
+	  	echo "$0: It appears that you still have an version 1.5 spool" 1>&2
+		echo "$0: that needs to be upgraded. Please refer to the guide" 1>&2
+		echo "$0: at /usr/share/doc/cyrus22-common/UPGRADE.Debian" 1>&2
+		echo
+		echo "$0: Cyrmaster not started."
+		exit 2
+	}
+	# Verify consistency of database backends
+	[ -f /usr/lib/cyrus/cyrus-db-types.active ] && {
+		# is it safe to start cyrmaster? compare "key value" pairs
+		# from the (old) active database types file with the new one
+		( sort -u /usr/lib/cyrus/cyrus-db-types.active \
+		  | grep DBENGINE \
+		  | verifydb /usr/lib/cyrus/cyrus-db-types.txt \
+		) && {
+		    echo "$0: Database backends mismatch! You must manually" 1>&2
+		    echo "$0: verify and update the Cyrus databases to the" 1>&2
+		    echo "$0: new backends." 1>&2
+		    echo "$0: Please refer to /usr/share/doc/cyrus22-common/README.Debian" 1>&2
+		    echo "$0: for instructions." 1>&2
+		    echo
+		    echo "$0: Cyrmaster not started."
+		    exit 2
+		}
+	}
+	echo -n "Starting ${DESC}: "
+	fixdirs
+	if start-stop-daemon ${START} >/dev/null 2>&1 ; then
+		echo "$NAME."
+	else
+		if start-stop-daemon --test ${START} >/dev/null 2>&1; then
+			echo "(failed)."
+			exit 1
+		else
+			echo "${DAEMON} already running."
+			exit 0
+		fi
+	fi
+
+	sleep 5
+
+	if [ -d /var/spool/cyrus/jobs/mailbox/create/user -a -x /usr/sbin/univention-cyrus-mkdir ]; then
+		(
+			cd /var/spool/cyrus/jobs/mailbox/create/user/
+			for i in *; do
+				if [ "$i" != "*" ]; then
+					/usr/sbin/univention-cyrus-mkdir $i || true
+				fi
+			done
+		)
+	fi
+	if [ -d /var/spool/cyrus/jobs/mailbox/create/admin -a -x /usr/sbin/univention-cyrus-mkdir ]; then
+		(
+			cd /var/spool/cyrus/jobs/mailbox/create/admin/
+			for i in *; do
+				if [ "$i" != "*" ]; then
+					/usr/sbin/univention-cyrus-mkdir -a $i || true
+				fi
+			done
+		)
+	fi
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	if start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
+			--quiet --startas $DAEMON >/dev/null 2>&1 ; then
+		echo "$NAME."
+	else
+		echo "(failed)."
+	fi
+	;;
+  reload|force-reload)
+	echo "Reloading $DESC configuration files."
+	start-stop-daemon --stop --signal 1 --quiet \
+		--pidfile /var/run/$NAME.pid --exec $DAEMON >/dev/null 2>&1
+  	;;
+  restart)
+  	$0 stop && {
+	  echo -n "Waiting for complete shutdown..."
+	  i=5
+	  while [ $i -gt 0 ] ; do
+	  	if start-stop-daemon --start --test \
+	  	   --pidfile /var/run/$NAME.pid \
+		   --exec $DAEMON >/dev/null 2>&1 ; then
+			break
+		fi
+		sleep 2s
+		i=$(($i - 1))
+		echo -n "."
+	  done
+	  [ $i -eq 0 ] && {
+	  	echo
+		echo "fatal: incomplete shutdown detected, aborting."
+		exit 1
+	  }
+	  echo
+	}
+	exec $0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|reload|force-reload}" 1>&2
+	exit 1
+	;;
+esac
+
+exit 0

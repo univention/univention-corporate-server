@@ -1,0 +1,8 @@
+## Kolab Policy Server
+smtpd_recipient_restrictions = permit_mynetworks,permit_sasl_authenticated,
+	reject_unauth_destination, reject_unlisted_recipient, check_policy_service unix:private/kolabpolicy
+smtpd_sender_restrictions = permit_mynetworks, check_policy_service unix:private/kolabpolicy
+kolabpolicy_time_limit = 3600
+kolabpolicy_max_idle = 20
+
+

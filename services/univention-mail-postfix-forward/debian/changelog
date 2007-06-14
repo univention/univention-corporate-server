@@ -1,0 +1,29 @@
+univention-mail-postfix-forward (0.6) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 14:03:32 +0100
+
+univention-mail-postfix-forward (0.5) unstable; urgency=low
+
+  * run baseconfig commit on /etc/mailname
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Jul 2006 09:56:31 +0200
+
+univention-mail-postfix-forward (0.4) unstable; urgency=low
+
+  * added baseconfig variable for start on boot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 16 Mar 2005 07:06:53 +0100
+
+univention-mail-postfix-forward (0.2) unstable; urgency=low
+
+  * added conflict with univention-mail-tiny 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 16 Nov 2004 09:31:20 +0100
+
+univention-mail-postfix-forward (0.1) unstable; urgency=low
+
+  * Initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Aug 2004 06:36:48 +0200

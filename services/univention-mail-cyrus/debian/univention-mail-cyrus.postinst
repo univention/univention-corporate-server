@@ -1,0 +1,143 @@
+#!/bin/sh
+#
+# Univention Mail Cyrus
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if [ -e /etc/sasldb2 ]; then
+	chown root.sasl /etc/sasldb2
+fi
+
+univention-baseconfig set ldap/port?389
+univention-baseconfig set mail/cyrus?yes
+univention-baseconfig set mail/cyrus/sieve/listen_host?localhost
+
+dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
+
+CHROOT=/var/spool/postfix
+
+addgroup --system postfix || true
+
+adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix
+
+adduser postfix mail
+
+if [ -e /etc/postfix/transport ]; then
+	postmap /etc/postfix/transport
+fi
+
+eval `univention-baseconfig shell hostname domainname`
+
+cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/ || true
+cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
+chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
+chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
+
+univention-baseconfig commit /etc/cyrus.conf
+univention-baseconfig commit /etc/imapd.conf
+univention-baseconfig commit /etc/default/saslauthd
+
+chown -R cyrus:mail /etc/univention/templates/files/var/spool/sieve
+chmod 600 /etc/univention/templates/files/var/spool/sieve/*
+
+univention-baseconfig set mail/antispam/globalfolder="spam@$domainname"
+
+# Mail-Quota
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.5; then
+	/usr/sbin/univention-baseconfig set mail/cyrus/imap/quota?"yes"
+	/usr/sbin/univention-baseconfig set mail/cyrus/imap/quotawarnpercent?90
+	/usr/sbin/univention-baseconfig set mail/cyrus/imap/quotawarnkb?0
+fi
+
+
+if [ -x /etc/init.d/postfix ]; then
+	/etc/init.d/postfix restart
+fi
+
+/etc/init.d/saslauthd stop
+/etc/init.d/saslauthd start
+
+univention-baseconfig commit /etc/init.d/cyrus21 || true
+cyrver=`univention-baseconfig get mail/cyrus/version`
+if [ "$cyrver" == "2.2" ]; then
+    /etc/init.d/cyrus22 restart
+else
+    /etc/init.d/cyrus21 restart
+fi
+
+/etc/init.d/univention-ldap-listener crestart
+
+#freebusy
+freebusy_pwd=`mkpasswd --hash=md5 -s freebusy`
+useradd -d /var/freebusy -p "$freebusy_pwd" freebusy
+passwd -n 99999 freebusy
+mkdir -p /var/freebusy/var
+# prepare chroot-jail, look if user freebusy is already set to ftp/chroot
+(cd /var/freebusy/var; ln -s ../ freebusy)
+chown -R freebusy /var/freebusy
+if [ `univention-baseconfig dump | egrep  "^ftp/chroot.*freebusy$" | wc -m` -lt 1 ];
+	then
+	i=0;
+	while [ `univention-baseconfig get "ftp/chroot$i" | wc -m` -gt 1 ];
+	  do
+	  ((i=i+1));
+	done;
+	univention-baseconfig set ftp/chroot$i=freebusy;
+fi
+# allow ftp for freebusy
+if [ `univention-baseconfig dump | egrep  "^ftp/allow.*freebusy$" | wc -m` -lt 1 ];
+	then
+	i=0;
+	while [ `univention-baseconfig get "ftp/allow$i" | wc -m` -gt 1 ];
+	  do
+	  ((i=i+1));
+	done;
+	univention-baseconfig set ftp/allow$i=freebusy;
+fi
+
+if [ ! -e /etc/cyrus.secret ]; then
+	TMP=$(tempfile)
+	makepasswd --nocrypt > $TMP
+	PASSWD=$(cat $TMP)
+	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
+	rm -f $TMP
+	usermod -p "$PASSWD_CRYPT" cyrus
+	echo "$PASSWD" >/etc/cyrus.secret
+	chmod 600  /etc/cyrus.secret
+fi
+
+if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
+	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user
+fi
+
+if [ ! -d /var/spool/cyrus/jobs/mailbox/create/admin ]; then
+	mkdir -p /var/spool/cyrus/jobs/mailbox/create/admin
+fi
+
+#DEBHELPER#
+
+chown cyrus:mail /var/spool/sieve/*sieve

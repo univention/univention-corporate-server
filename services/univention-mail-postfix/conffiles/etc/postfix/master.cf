@@ -1,0 +1,97 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/postfix/master.cf
+# 
+
+
+# ==========================================================================
+# service type	private	unpriv	chroot	wakeup	maxproc	command + args
+# 		(yes)	(yes)	(yes)	(never)	(50)
+# ==========================================================================
+@!@
+if baseConfig.has_key('mail/smtpport'):
+	smtpport = baseConfig['mail/smtpport']
+else:
+	smtpport = 'smtp'
+
+if baseConfig.has_key('mail/smtpauth') and baseConfig['mail/smtpauth'] == 'yes':
+	print '%s	  inet	n	-	n	-	-	smtpd' % smtpport
+else:
+	print '%s	  inet	n	-	-	-	-	smtpd' % smtpport
+if baseConfig.has_key('mail/antispam') and baseConfig['mail/antispam'] == 'yes' and not (baseConfig.has_key('mail/antivir/spam') and baseConfig['mail/antivir/spam'] == 'yes'):
+	print '    -o content_filter=spamassassin'
+@!@
+#628	  inet	n	-	-	-	-	qmqpd
+pickup	  fifo	n	-	-	60	1	pickup
+cleanup	  unix	n	-	-	-	0	cleanup
+qmgr	  fifo	n	-	-	300	1	qmgr
+#qmgr	  fifo	n	-	-	300	1	nqmgr
+rewrite	  unix	-	-	-	-	-	trivial-rewrite
+bounce	  unix	-	-	-	-	0	bounce
+defer	  unix	-	-	-	-	0	bounce
+flush	  unix	n	-	-	1000?	0	flush
+smtp	  unix	-	-	-	-	-	smtp
+showq     unix	n	-	-	-	-	showq
+error     unix	-	-	-	-	-	error
+local	  unix	-	n	n	-	-	local
+virtual	  unix	-	n	n	-	-	virtual
+lmtp	  unix	-	-	n	-	-	lmtp
+proxymap  unix  -       -       -       -       -       proxymap
+trace     unix  -       -       n       -       0       bounce
+verify    unix  -       -       n       -       1       verify
+anvil     unix  -       -       n       -       1       anvil
+scache    unix  -       -       -       -       1       scache
+discard   unix  -       -       n       -       -       discard
+tlsmgr    unix  -       -       n       1000?   1       tlsmgr
+
+
+#cyrus	  unix	-	n	n	-	-	pipe
+# flags=R user=cyrus argv=/usr/sbin/cyrdeliver -e -r -s ${sender} -m ${extension} ${user}
+uucp	  unix	-	n	n	-	-	pipe
+  flags=Fqhu user=uucp argv=uux -r -n -z -a$sender - $nexthop!rmail ($recipient)
+ifmail    unix  -       n       n       -       -       pipe
+  flags=F user=ftn argv=/usr/lib/ifmail/ifmail -r $nexthop ($recipient)
+bsmtp     unix  -       n       n       -       -       pipe
+  flags=Fq. user=bsmtp argv=/usr/lib/bsmtp/bsmtp -d -t$nexthop -f$sender $recipient
+scalemail-backend unix	-	n	n	-	2	pipe
+  flags=R user=scalemail argv=/usr/lib/scalemail/bin/scalemail-store ${nexthop} ${user} ${extension}
+
+# only used by postfix-tls
+smtps	  inet	n	-	n	-	-	smtpd -o smtpd_tls_wrappermode=yes -o smtpd_sasl_auth_enable=yes
+#587	  inet	n	-	n	-	-	smtpd -o smtpd_enforce_tls=yes -o smtpd_sasl_auth_enable=yes
+
+relay     unix  -       -       n       -       -       smtp
+
+@!@
+if baseConfig.has_key('mail/antivir') and baseConfig['mail/antivir'] == 'yes':
+	print 'smtp-amavis unix -      -       n     -       2  smtp'
+	print '    -o smtp_data_done_timeout=1200'
+	print ''
+	print '127.0.0.1:10025 inet n  -       n     -       -  smtpd'
+	print '    -o content_filter='
+	print '    -o local_recipient_maps='
+	print '    -o relay_recipient_maps='
+	print '    -o smtpd_restriction_classes='
+	print '    -o smtpd_client_restrictions='
+	print '    -o smtpd_helo_restrictions='
+	print '    -o smtpd_sender_restrictions='
+	print '    -o smtpd_recipient_restrictions=permit_mynetworks,reject'
+	print '    -o mynetworks=127.0.0.0/8'
+	print '    -o strict_rfc821_envelopes=yes'
+	print '    -o smtpd_error_sleep_time=0'
+	print '    -o smtpd_soft_error_limit=1001'
+	print '    -o smtpd_hard_error_limit=1000'
+	print ''
+
+if baseConfig.has_key('mail/antispam') and baseConfig['mail/antispam'] == 'yes' and not (baseConfig.has_key('mail/antivir/spam') and baseConfig['mail/antivir/spam'] == 'yes'):
+	print 'spamassassin unix -     n       n       -       -       pipe'
+	print '    user=nobody argv=/usr/bin/spamc -f -e /usr/sbin/sendmail -oi -f ${sender} ${recipient}'
+#	print 'spamassassin unix -     n       n       -       -       pipe'
+#	print '    user=spamd argv=/usr/bin/spamc -f -e /usr/bin/procmail -t -m /var/spool/procmail/procmail.global ${sender} ${recipient}'
+@!@
+

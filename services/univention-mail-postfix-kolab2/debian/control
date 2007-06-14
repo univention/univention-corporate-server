@@ -1,0 +1,22 @@
+Source: univention-mail-postfix-kolab2
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-baseconfig-dev
+
+Package: univention-mail-postfix-kolab2
+Architecture: all
+Depends: postfix (>=2.2.3), postfix-ldap (>=2.2.3), sasl2-bin, univention-kolab2-framework, libpam-univentionmailcyrus, univention-antivir-mail, univention-spamassassin
+Pre-Depends: univention-baseconfig (>> 1.54-30)
+Conflicts: univention-mail, univention-mail-postfix-forward, univention-mail-postfix, univention-mail-cyrus, univention-mail-cyrus22
+Provides: univention-mail-postfix
+Replaces: univention-mail-postfix
+Description: UCS - postfix kolab2 configuration
+ This package contains the configuration for the postfix
+ mail transport agent and helper scripts to make UCS
+ compatible with the kolab2-project.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,19 @@
+#TLS settings
+smtpd_use_tls = yes
+smtpd_tls_auth_only = yes
+smtpd_starttls_timeout = 300s
+smtpd_timeout = 300s
+smtpd_tls_cert_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
+smtpd_tls_key_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
+smtpd_tls_received_header = no
+smtpd_tls_session_cache_timeout = 3600s
+
+tls_random_source = dev:/dev/urandom
+smtpd_sasl_auth_enable = yes
+
+smtpd_sasl_local_domain =
+
+smtpd_sasl_security_options = noanonymous
+
+# Support broken clients like Microsoft Outlook Express 4.x which expect AUTH=LOGIN instead of AUTH LOGIN
+broken_sasl_auth_clients = yes

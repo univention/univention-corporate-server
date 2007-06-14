@@ -1,0 +1,170 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/postfix/main.cf
+#
+
+# some basic path definitions
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+program_directory = /usr/lib/postfix
+
+
+# some basic mail system settings
+myhostname = @%@hostname@%@
+mydomain =  @%@domainname@%@
+myorigin = /etc/mailname
+smtp_helo_name = @%@hostname@%@.@%@domainname@%@
+append_dot_mydomain = no
+
+
+# this defines which domains are considered to be "own" domains and
+# therefor are not forwarded to the relay host.
+# if ldap is used, all "own" domains must be given
+# in the transport file with the keyword "virtual".
+@!@
+import string
+if baseConfig.has_key('server/role') and baseConfig['server/role'] == 'domaincontroller_backup':
+	print 'mydestination = $myhostname.$mydomain'
+
+	if baseConfig.has_key('mail/relay') and baseConfig['mail/relay']:
+		relays=string.split(baseConfig['mail/relay'], ' ')
+		for i in range(0, len(relays)):
+			print 'relayhost = %s' % relays[i]
+
+	print 'mynetworks = 127.0.0.0/8'
+else:
+	print 'transport_maps = hash:/etc/postfix/transport'
+	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
+
+	if baseConfig.has_key('mail/postfix/mynetworks') and baseConfig['mail/postfix/mynetworks']:
+		print 'mynetworks = %s' % baseConfig['mail/postfix/mynetworks']
+
+if baseConfig.has_key('mail/smtpauth') and baseConfig['mail/smtpauth'] == 'yes':
+	print 'smtpd_sasl_auth_enable = yes'
+	print 'smtpd_sasl_security_options = noanonymous'
+	print 'smtpd_sasl_local_domain = '
+	print 'broken_sasl_auth_clients = yes'
+	
+@!@
+#TLS settings
+smtpd_use_tls = yes
+smtpd_tls_auth_only = yes
+smtpd_starttls_timeout = 300s
+smtpd_timeout = 300s
+smtpd_tls_cert_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
+smtpd_tls_key_file = /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
+smtpd_tls_received_header = no
+smtpd_tls_session_cache_timeout = 3600s
+
+tls_random_source = dev:/dev/urandom
+
+relay_domains = $mydestination
+@!@
+if baseConfig.has_key('mail/smtpauth') and baseConfig['mail/smtpauth'] == 'yes':
+	print 'smtpd_recipient_restrictions = permit_sasl_authenticated, permit_mynetworks, check_relay_domains'
+@!@
+
+# the given networks are "our" networks, from which we accept mail.
+#mynetworks = 127.0.0.0/8@!@
+#def splitDotted(ip):
+#	quad = [0, 0, 0, 0]
+#
+#	i = 0
+#	for q in ip.split('.'):
+#		if i > 3: break
+#		quad[i] = int(q)
+#		i += 1
+#
+#	return quad
+#
+#def netmaskBits(dotted):
+#	bits = 0
+#	for d in dotted:
+#		for i in range(0,8):
+#			if ((d & 2**i) == 2**i):
+#				bits += 1
+#	return bits
+#
+#for i in range(0,4):
+#	if baseConfig.has_key('interfaces/eth%s/network' % i) and baseConfig.has_key('interfaces/eth%s/netmask' % i):
+#		print ', %s/%s' % (baseConfig['interfaces/eth%s/network' % i], netmaskBits(splitDotted(baseConfig['interfaces/eth%s/netmask' %i])))
+#	for j in range(0,4):
+#		if baseConfig.has_key('interfaces/eth%s_%s/network' % (i,j)) and baseConfig.has_key('interfaces/eth%s_%s/netmask' % (i,j) ):
+#			print ',%s/%s' % (baseConfig['interfaces/eth%s_%s/network' % (i,j)], netmaskBits(splitDotted(baseConfig['interfaces/eth%s_%s/netmask' % (i,j)])))
+#@!@
+
+
+# we need to name a smtp relay host to which we forward non-local
+# mails. smtp authentication is also possible.
+@!@
+if baseConfig['mail/relayhost']:
+	print 'relayhost = @%@mail/relayhost@%@'
+
+if baseConfig['mail/relayauth'] == 'yes':
+	print 'smtp_sasl_auth_enable = yes'
+	print 'smtp_sasl_security_options = noanonymous'
+	print 'smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth'
+@!@
+
+
+# aliases and mappings are defined here.
+ldapaddressout_server_host = @%@ldap/server/name@%@
+ldapaddressout_search_base = @%@ldap/base@%@
+ldapaddressout_query_filter = (mailPrimaryAddress=%s)
+ldapaddressout_result_attribute = mailPrimaryAddress
+canonical_maps = ldap:ldapaddressout, hash:/etc/postfix/canonical
+
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+ldapvirtual_server_host = @%@ldap/server/name@%@
+ldapvirtual_search_base = @%@ldap/base@%@
+ldapvirtual_query_filter = (mailAlternativeAddress=%s)
+ldapvirtual_result_attribute = mailPrimaryAddress
+virtual_maps = ldap:ldapvirtual, hash:/etc/postfix/virtual
+
+# if virus scanning is desired, all mails can be redirected through amavis.
+@!@
+if baseConfig['mail/antivir'] == 'yes':
+	print 'content_filter = smtp-amavis:[127.0.0.1]:10024'
+@!@
+
+
+# if ldap is used, we need to query it for email addresses and corresponding
+# mbox file / Maildir path
+
+accounts_server_host = @%@ldap/server/name@%@
+accounts_search_base = @%@ldap/base@%@
+accounts_query_filter = (|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))
+accounts_result_attribute = mailPrimaryAddress
+local_recipient_maps = ldap:accounts
+
+
+# - if cyrus is used, the mailboxes are written to cyrus socket
+# - if cyrus is not used, but ldap, the mailbox are written to a location
+#   defined in ldap, either as mbox or Maildir format
+# - else, the mailboxes are saved in homedir, in Maildir format. procmail
+#   is also used.
+# mailbox_transport = lmtp:unix:/var/run/cyrus/socket/lmtp
+
+
+@!@
+if baseConfig.has_key('mail/archivefolder') and not baseConfig['mail/archivefolder'] == '':
+	print '# Send a blind carbon copy of every mail to this account.'
+	print 'always_bcc = @%@mail/archivefolder@%@'
+@!@
+
+# The message_size_limit parameter limits the total size in bytes of
+# a message, including envelope information. Default is 10240000
+@!@
+if baseConfig.has_key('mail/messagesizelimit') and not baseConfig['mail/messagesizelimit'] == '':
+	print 'message_size_limit = @%@mail/messagesizelimit@%@'
+else:
+	print '#message_size_limit = 0'
+@!@
+

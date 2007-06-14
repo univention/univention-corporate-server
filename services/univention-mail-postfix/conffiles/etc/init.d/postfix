@@ -1,0 +1,111 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/init.d/postfix
+# 
+#!/bin/sh -e
+
+# Start or stop Postfix
+#
+# LaMont Jones <lamont@debian.org>
+# based on sendmail's init.d script
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/postfix
+PIDFILE=/var/run/postfix.pid
+NAME=Postfix
+TZ=
+unset TZ
+
+# Defaults - don't touch, edit /etc/default/postfix
+SYNC_CHROOT="y"
+
+test -f /etc/default/postfix && . /etc/default/postfix
+
+test -x $DAEMON && test -f /etc/postfix/main.cf || exit 0
+
+case "$1" in
+    start)
+	echo -n "Starting mail transport agent: Postfix"
+
+	@!@
+if baseConfig.has_key('postfix/autostart') and  baseConfig['postfix/autostart'].lower() in ['no', 'false']:
+	print 'echo "  disabled"'
+	print 'exit 0'
+@!@
+
+	# see if anything is running chrooted.
+	NEED_CHROOT=$(awk '/^[0-9a-z]/ && ($5 == "-") { print "y"; exit}' /etc/postfix/master.cf)
+
+	if [ -n "$NEED_CHROOT" ] && [ -n "$SYNC_CHROOT" ]; then
+	    # Make sure that the chroot environment is set up correctly.
+	    oldumask=$(umask)
+	    umask 022
+	    cd $(postconf -h queue_directory)
+
+	    # if we're using unix:passwd.byname, then we need to add etc/passwd.
+	    local_maps=$(postconf -h local_recipient_maps)
+	    if [ "X$local_maps" != "X${local_maps#*unix:passwd.byname}" ]; then
+		if [ "X$local_maps" = "X${local_maps#*proxy:unix:passwd.byname}" ]; then
+		    sed 's/^\([^:]*\):[^:]*/\1:x/' /etc/passwd > etc/passwd
+		    chmod a+r etc/passwd
+		fi
+	    fi
+
+	    FILES="etc/localtime etc/services etc/resolv.conf etc/hosts \
+		etc/nsswitch.conf"
+	    for file in $FILES; do 
+		[ -d ${file%/*} ] || mkdir -p ${file%/*}
+		if [ -f /${file} ]; then rm -f ${file} && cp /${file} ${file}; fi
+		if [ -f  ${file} ]; then chmod a+rX ${file}; fi
+	    done
+	    rm -f usr/lib/zoneinfo/localtime
+	    ln -sf /etc/localtime usr/lib/zoneinfo/localtime
+	    rm -f lib/libnss_*so*
+	    tar cf - /lib/libnss_*so* 2>/dev/null |tar xf -
+	    umask $oldumask
+	fi
+
+	${DAEMON} start 2>&1 |
+		(grep -v 'starting the Postfix' 1>&2 || /bin/true)
+	echo "."
+    ;;
+
+    stop)
+	echo -n "Stopping mail transport agent: Postfix"
+	${DAEMON} stop 2>&1 |
+		(grep -v 'stopping the Postfix' 1>&2 || /bin/true)
+	echo "."
+    ;;
+
+    restart)
+        $0 stop
+        $0 start
+    ;;
+    
+    force-reload|reload)
+	echo -n "Reloading Postfix configuration..."
+	${DAEMON} reload 2>&1 |
+		(grep -v 'refreshing the Postfix' 1>&2 || /bin/true)
+	echo "done."
+    ;;
+
+    flush)
+	${DAEMON} flush
+    ;;
+
+    check)
+	${DAEMON} check
+    ;;
+
+    *)
+	echo "Usage: /etc/init.d/postfix {start|stop|restart|reload|flush|check|force-reload}"
+	exit 1
+    ;;
+esac
+
+exit 0

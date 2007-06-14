@@ -1,0 +1,108 @@
+Type: multifile
+Multifile: etc/postfix/main.cf
+Variables: interfaces/eth0/netmask
+Variables: hostname
+Variables: domainname
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: mail/ldap
+Variables: mail/antivir
+Variables: mail/relayauth
+Variables: mail/relayhost
+Variables: mail/cyrus
+Variables: mail/archivefolder
+Variables: mail/relay
+Variables: mail/hosteddomains
+Variables: mail/postfix/mydomains
+Variables: mail/postfix/mynetworks
+Variables: server/role
+Variables: mail/messagesizelimit
+Variables: ldap/base
+Variables: ldap/port
+Variables: ldap/server
+Variables: mail/smtp/helo/name
+Variables: mail/localmailboxsizelimit
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/10_general
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/30_maps
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/40_ldap
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/50_kolab
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/60_tls
+
+Type: subfile
+Multifile: etc/postfix/main.cf
+Subfile: etc/postfix/main.cf.d/80_delivery
+
+Type: multifile
+Multifile: etc/postfix/master.cf
+Variables: hostname
+Variables: domainname
+Variables: postfix/permithosts
+Variables: postfix/allow-unauth
+Variables: mail/antivir
+Variables: interfaces/eth*/network
+Variables: interfaces/eth*/netmask
+Variables: ldap/base
+Variables: ldap/port
+Variables: ldap/server
+Variables: mail/smtpport
+
+Type: subfile
+Multifile: etc/postfix/master.cf
+Subfile: etc/postfix/master.cf.d/10_services
+
+Type: subfile
+Multifile: etc/postfix/master.cf
+Subfile: etc/postfix/master.cf.d/30_antivir
+
+Type: subfile
+Multifile: etc/postfix/master.cf
+Subfile: etc/postfix/master.cf.d/60_kolab
+
+Type: file
+File: etc/mailname
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/aliases
+Variables: mail/alias/*
+
+Type: file
+File: etc/postfix/transport
+Variables: hostname
+Variables: domainname
+Variables: mail/hosteddomains
+
+Type: file
+File: etc/init.d/postfix
+Variables: postfix/autostart
+
+Type: file
+File: etc/pam.d/smtp
+
+Type: file
+File: etc/postfix/sasl/smtpd.conf
+
+Type: file
+File: etc/postfix/sasl/pam_ldap_smtp.conf
+Variables: ldap/server/name
+Variables: ldap/base
+
+Type: module
+Module: create-archivefolder.py
+Variables: mail/archivefolder

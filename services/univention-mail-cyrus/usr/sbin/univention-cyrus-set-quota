@@ -1,0 +1,137 @@
+#!/usr/bin/python2.4
+# -*- coding: iso-8859-15 -*-
+#
+# Univention Mail Cyrus
+#  helper script: set mail quota for a user
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+adminuser=0
+import os, string, pwd, grp, sys, univention_baseconfig, ldap, tempfile, posix
+from pexpect import *
+
+
+def usage():
+	print 'usage: univention-cyrus-set-quota <USERNAME>'
+	sys.exit(1)
+
+baseConfig = univention_baseconfig.baseConfig()
+baseConfig.load()
+
+
+cyrus_user='cyrus'
+
+if posix.environ.has_key('USER'):
+	user_name=posix.environ['USER']
+else:
+	sys.exit(1)
+
+if user_name == 'root' or user_name == 'cyrus':
+	sys.exit(0)
+
+
+try:
+	l=ldap.open(baseConfig['ldap/server/name'])
+except ldap.LDAPError, e:
+	print e
+l.simple_bind_s('', '')
+
+serverDN = baseConfig['ldap/base']
+
+searchScope = ldap.SCOPE_SUBTREE
+searchFilter = "(&(uid=%s)(objectClass=univentionMail))" % user_name
+retrieve_attributes = ['mailPrimaryAddress']
+
+
+try:
+	ldap_result = l.search_s(serverDN, searchScope, searchFilter, retrieve_attributes)
+	for (dn, attr) in ldap_result:
+		user_dn = dn
+		mail = attr['mailPrimaryAddress'][0]
+
+except ldap.LDAPError, e:
+	sys.exit()
+l.unbind()
+
+univentionMQ='0'
+
+mail=mail.strip()
+
+if baseConfig.has_key('mail/cyrus/version') and baseConfig['mail/cyrus/version'] == '2.2':
+	#cyrus 22
+	domainpart=mail.split('@')[1]
+	userpart=mail.split('@')[0]
+	path='/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
+else:
+	#cyrus21
+	path='/var/spool/cyrus/mail/%s/user/%s'%(mail[0],mail.replace('.','^'))
+
+if os.path.exists(path):
+
+	tempfile=tempfile.mktemp()
+
+
+	result=os.system('univention_policy_result -s "%s" >>%s' %  (user_dn, tempfile))
+
+	if result != 0:
+		print 'failed to execute univention_policy_result'
+		sys.exit(result)
+
+	file=open(tempfile, 'r')
+
+	univentionMQ='0'
+	for line in file.readlines():
+		line=line.strip(' ').strip('\n')
+		if line.startswith('univentionMailQuotaMB='):
+			univentionMQ=line.replace('univentionMailQuotaMB=', '').strip('" ')
+			univentionMQ=univentionMQ + "000"
+
+	file.close()
+	os.remove(tempfile)
+
+else:
+	#+++# Das Mail-Verzeichnis existiert nicht.
+	pass
+
+user_name=user_name.strip()
+
+if univentionMQ != '0':
+	password=open('/etc/cyrus.secret').read()
+	if password[-1] == '\n':
+		password=password[0:-1]
+
+	child = spawn('/usr/bin/cyradm -u %s localhost' % (cyrus_user))
+	i=0
+	while not i == 3:
+		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+		if i == 0:
+			child.sendline(password)
+		elif i == 1:
+			child.sendline('setquota user/%s %s' % (mail, univentionMQ))
+			child.sendline('disc')
+			child.sendline('exit')
+		elif i == 2:
+			sys.exit(1)

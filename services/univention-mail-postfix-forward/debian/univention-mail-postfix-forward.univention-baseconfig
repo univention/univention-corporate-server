@@ -1,0 +1,16 @@
+Type: file
+File: etc/postfix/main.cf
+Variables: mail/relay
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/aliases
+Variables: mail/alias/*
+
+Type: file
+File: etc/mailname
+
+Type: file
+File: etc/init.d/postfix
+Variables: postfix/autostart

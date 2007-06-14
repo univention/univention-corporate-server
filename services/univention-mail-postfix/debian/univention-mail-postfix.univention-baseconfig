@@ -1,0 +1,58 @@
+Type: file
+File: etc/postfix/main.cf
+Variables: interfaces/eth0/netmask
+Variables: hostname
+Variables: domainname
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: mail/ldap
+Variables: mail/antivir
+Variables: mail/relayauth
+Variables: mail/relayhost
+Variables: mail/cyrus
+Variables: mail/archivefolder
+Variables: mail/relay
+Variables: mail/hosteddomains
+Variables: mail/postfix/mynetworks
+Variables: server/role
+Variables: mail/messagesizelimit
+Variables: mail/smtpauth
+
+Type: file
+File: etc/postfix/master.cf
+Variables: hostname
+Variables: mail/antivir
+Variables: mail/antispam
+Variables: interfaces/eth*/network
+Variables: interfaces/eth*/netmask
+Variables: mail/smtpauth
+Variables: mail/smtpport
+
+Type: file
+File: etc/mailname
+Variables: hostname
+Variables: domainname
+
+Type: file
+File: etc/aliases
+Variables: mail/alias/*
+
+Type: file
+File: etc/postfix/transport
+Variables: hostname
+Variables: domainname
+Variables: mail/hosteddomains
+
+Type: file
+File: etc/init.d/postfix
+Variables: postfix/autostart
+
+Type: module
+Module: create-archivefolder.py
+Variables: mail/archivefolder
+
+Type: file
+File: etc/pam.d/smtp
+
+Type: file
+File: etc/postfix/sasl/smtpd.conf

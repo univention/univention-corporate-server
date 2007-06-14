@@ -1,0 +1,140 @@
+#!/bin/sh
+#
+# Univention Mail Cyrus Kolab2
+#  postinst script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+add_kolab2cal_user ()
+{
+	univention-baseconfig set mail/cyrus/imap/admins?kolab2cal@$domainname
+	adduser --quiet --system --home /var/lib/univention-kolab2cal kolab2cal
+	if [ ! -e /etc/kolab2cal.secret ]; then
+		TMP=$(tempfile)
+		makepasswd --nocrypt > $TMP
+		PASSWD=$(cat $TMP)
+		PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
+		rm -f $TMP
+		usermod -p "$PASSWD_CRYPT" kolab2cal
+		echo "$PASSWD" >/etc/kolab2cal.secret
+		chmod 640  /etc/kolab2cal.secret
+		chgrp mail  /etc/kolab2cal.secret
+		usermod -l kolab2cal@$domainname kolab2cal
+	fi
+
+	univention-baseconfig set mail/cyrus/caluser=kolab2cal@$domainname
+	univention-baseconfig set mail/cyrus/caluser/pwdfile=/etc/kolab2cal.secret
+
+}
+
+if [ -e /etc/sasldb2 ]; then
+	chown root.sasl /etc/sasldb2
+fi
+eval `univention-baseconfig shell hostname domainname server/role`
+
+cp /etc/univention/ssl/$hostname.$domainname/cert.pem /var/lib/cyrus/ || true
+cp /etc/univention/ssl/$hostname.$domainname/private.key /var/lib/cyrus/ || true
+chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
+chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
+
+univention-baseconfig set mail/cyrus?yes
+univention-baseconfig set mail/cyrus/version?"2.2"
+univention-baseconfig set mail/cyrus/imap?yes
+univention-baseconfig set mail/cyrus/imap/lookup_groups?yes
+univention-baseconfig set mail/cyrus/pop?yes
+univention-baseconfig set ldap/port=389
+univention-baseconfig set mail/cyrus/sieve/listen_host?localhost
+
+dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
+
+CHROOT=/var/spool/postfix
+
+addgroup --system postfix || true
+
+adduser --system --home ${CHROOT} --no-create-home --disabled-password --ingroup postfix postfix
+
+###########
+
+adduser postfix mail
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.5-1; then
+	add_kolab2cal_user
+elif [ -z "$2" ]; then
+	add_kolab2cal_user
+fi
+
+if [ -z "$2" ]; then
+	univention-baseconfig set mail/cyrus/imap/quota?"yes"
+	univention-baseconfig set mail/cyrus/imap/quotawarnpercent?90
+	univention-baseconfig set mail/cyrus/imap/quotawarnkb?0
+fi
+
+if [ ! -e /etc/cyrus.secret ]; then
+	TMP=$(tempfile)
+	makepasswd --nocrypt > $TMP
+	PASSWD=$(cat $TMP)
+	PASSWD_CRYPT=$(mkpasswd --hash=md5 -s < $TMP)
+	rm -f $TMP
+	usermod -p "$PASSWD_CRYPT" cyrus
+	echo "$PASSWD" >/etc/cyrus.secret
+	chmod 600  /etc/cyrus.secret
+fi
+
+if [ ! -d /var/spool/cyrus/jobs/mailbox/create/user ]; then
+	mkdir -p /var/spool/cyrus/jobs/mailbox/create/user
+fi
+
+if [ ! -d /var/spool/cyrus/jobs/mailbox/create/admin ]; then
+	mkdir -p /var/spool/cyrus/jobs/mailbox/create/admin
+fi
+
+# Needed for ldap listener
+if [ ! -d /var/cache/univention-mail-cyrus-kolab2/ ]; then
+	mkdir -p /var/cache/univention-mail-cyrus-kolab2/
+fi
+
+if [ -x /etc/init.d/saslauthd ]; then
+	/etc/init.d/saslauthd stop || true
+	sleep 1
+	/etc/init.d/saslauthd start || true
+fi
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/81univention-mail-cyrus-kolab2.inst || true
+fi
+
+#restart cyrus
+
+if [ -x /etc/init.d/cyrus22 ]; then
+	/etc/init.d/cyrus22 restart
+fi
+
+#restart lstener
+if [ -x /etc/init.d/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener crestart
+fi

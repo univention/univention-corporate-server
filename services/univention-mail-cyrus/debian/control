@@ -1,0 +1,42 @@
+Source: univention-mail-cyrus
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-mail-cyrus
+Architecture: all
+Depends: univention-mail-cyrus-imap, cyrus22-admin | cyrus21-admin, univention-mail-cyrus-pop, univention-ftp
+Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail, univention-mail-cyrus-quota-mailserver
+Replaces: univention-mail-cyrus-quota-mailserver
+Description: UCS - imap configuration
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-cyrus-imap
+Architecture: all
+Depends: univention-baseconfig (>= 1.2), libpam-univentionmailcyrus, cyrus22-imapd | cyrus21-imapd, sasl2-bin, libsasl2-modules
+Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail
+Description: UCS - imap configuration
+ The UCS cyrus imapd mail package
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-mail-cyrus-pop
+Architecture: all
+Depends: univention-baseconfig (>= 1.2), libpam-univentionmailcyrus, cyrus22-imapd | cyrus21-imapd, sasl2-bin, libsasl2-modules, cyrus22-pop3d | cyrus21-pop3d
+Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail
+Description: UCS - imap configuration
+ The UCS cyrus imapd mail package
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

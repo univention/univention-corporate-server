@@ -1,0 +1,5 @@
+usr/sbin
+usr/lib/univention-ldap-listener/system
+usr/lib/univention-install
+etc/imapd
+etc/univention/daemons/

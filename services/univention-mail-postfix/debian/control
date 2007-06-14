@@ -1,0 +1,19 @@
+Source: univention-mail-postfix
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-baseconfig-dev
+
+Package: univention-mail-postfix
+Architecture: all
+Pre-Depends: postfix, univention-baseconfig (>> 1.54-30)
+Depends: postfix-ldap
+Conflicts: univention-mail, univention-mail-postfix-forward
+Description: UCS - postfix configuration
+ This package contains the configuration for the postfix
+ mail transport agent.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

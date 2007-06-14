@@ -1,0 +1,89 @@
+#!/usr/bin/python2.4
+#
+# Univention Mail Cyrus Kolab2
+#  helper script: sets ACLs for a given mailbox
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+adminuser=0
+import os, string, pwd, grp, sys, univention_baseconfig
+from pexpect import *
+def cyrescape(address):
+	address=address.replace("@","\@")
+	address=address.replace(".","\^")
+	return address.strip()
+def usage():
+	print 'usage: univention-cyrus-set-acl [-o] <shared folder> <email> <permission>'
+	sys.exit(1)
+
+import smtplib
+
+from email.MIMEText import MIMEText
+
+cyrus_user='cyrus'
+
+outlook = False
+if len( sys.argv ) > 3 and sys.argv[ 1 ] == '-o':
+	outlook = True
+	sys.argv.remove( '-o' )
+if len(sys.argv) == 4 and sys.argv[1]:
+	shared_name=sys.argv[1].lower()
+	email=sys.argv[2].lower()
+	permission=sys.argv[3].lower()
+else:
+	usage()
+
+shared_name=shared_name.strip()
+
+password=open('/etc/cyrus.secret').read()
+if password[-1] == '\n':
+	password=password[0:-1]
+
+# if we want to give acls to a group, a different syntax is needed
+
+if email.find("@")==-1:
+	# no email address, so we are dealing with a group, with 'anyone' or 'anonymous'
+	if not (email == "anyone" or email == "anonymous"):
+		email=email.replace(" ", "\ ")
+		email="group:%s"%email
+
+child = spawn('/usr/bin/cyradm -u %s localhost' % (cyrus_user))
+i=0
+while not i == 3:
+	i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+	if i == 0:
+		child.sendline(password)
+	elif i == 1:
+		if not outlook:
+			child.sendline('sam shared/%s %s %s' % (shared_name, email, permission))
+		else:
+			name = shared_name.split( '@', 1 )[ 0 ]
+			child.sendline( 'sam user/%s/%s %s %s' % ( name, shared_name, email, permission ) )
+
+		child.sendline('disc')
+		child.sendline('exit')
+	elif i == 2:
+		sys.exit(1)

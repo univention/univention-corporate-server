@@ -1,0 +1,84 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the files in the following directory instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig ueberschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die Dateien in
+#          folgendem Verzeichnis:
+#
+#       /etc/univention/templates/files/etc/postfix/master.cf.d
+#
+
+
+# many options are based on original kolab-settings
+
+# The message_size_limit parameter limits the total size in bytes of
+# a message, including envelope information. Default is 10240000
+@!@
+if baseConfig.has_key('mail/messagesizelimit') and not baseConfig['mail/messagesizelimit'] == '':
+	print 'message_size_limit = @%@mail/messagesizelimit@%@'
+else:
+	print '#message_size_limit = 0'
+@!@
+
+# mailbox_size_limit limits the max. size of local mailboxes. Default is 51200000
+@!@
+if baseConfig.has_key('mail/localmailboxsizelimit') and not baseConfig['mail/localmailboxsizelimit'] == '':
+        print 'mailbox_size_limit = @%@mail/localmailboxsizelimit@%@'
+else:
+        print '#mailbox_size_limit = 0'
+@!@
+
+# some basic path definitions
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+program_directory = /usr/lib/postfix
+
+
+# some basic mail system settings
+myhostname = @%@hostname@%@.@%@domainname@%@
+mydomain = @%@domainname@%@
+myorigin = /etc/mailname
+@!@
+if baseConfig.has_key('mail/smtp/helo/name') and baseConfig['mail/smtp/helo/name']:
+	print 'smtp_helo_name = %s' % baseConfig['mail/smtp/helo/name']
+else:
+	print 'smtp_helo_name = %s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+@!@
+
+
+append_dot_mydomain = no
+
+masquerade_domains = $mydomain
+masquerade_exceptions = root
+
+# this defines which domains are considered to be "own" domains and
+# therefor are not forwarded to the relay host.
+# if ldap is used, all "own" domains must be given
+# in the transport file with the keyword "virtual".
+transport_maps = hash:/etc/postfix/transport, ldap:ldaptransport
+@!@
+if baseConfig.has_key('mail/postfix/mydomains') and baseConfig['mail/postfix/mydomains']:
+	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, %s, localhost, $transport_maps' % baseConfig['mail/postfix/mydomains']
+else:
+	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
+if baseConfig.has_key('mail/postfix/mynetworks') and baseConfig['mail/postfix/mynetworks']:
+	print 'mynetworks = %s' % baseConfig['mail/postfix/mynetworks']
+else:
+	print 'mynetworks = 127.0.0.0/8'
+@!@
+
+relay_domains = $mydestination
+
+
+# we need to name a smtp relay host to which we forward non-local
+# mails. smtp authentication is also possible.
+@!@
+if baseConfig['mail/relayhost']:
+	print 'relayhost = @%@mail/relayhost@%@'
+
+if baseConfig['mail/relayauth'] == 'yes':
+	print 'smtp_sasl_auth_enable = yes'
+	print 'smtp_sasl_security_options = noanonymous'
+	print 'smtp_sasl_password_maps = hash:/etc/postfix/smtp_auth'
+@!@

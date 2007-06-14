@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Univention mail Postfix Kolab2
+#  postinst script for the debian package
+#
+# Copyright (C) 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+univention-baseconfig set postfix/autostart?yes
+univention-baseconfig set postfix/allow-unauth?yes
+
+eval `univention-baseconfig shell`
+
+for file in transport virtual canonical access relocated; do
+  if [ ! -e /etc/postfix/$file ]; then
+      touch /etc/postfix/$file
+  fi
+  postmap /etc/postfix/$file
+done
+
+for file in /etc/univention/templates/info/univention-mail-postfix-forward.info /etc/univention/templates/info/univention-mail-postfix.info /etc/univention/templates/files/etc/postfix/main.cf /var/cache/univention-config/cache /etc/univention/templates/files/etc/postfix/master.cf
+  do
+  if [ -e $file ]; then
+      rm $file || true
+  fi
+done
+
+adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
+univention-baseconfig set ldap/port?389
+univention-baseconfig set mail/alias/root?systemmail@$hostname.$domainname
+univention-baseconfig set mail/alias/postmaster?root
+univention-baseconfig set mail/messagesizelimit?10240000
+newaliases
+
+adduser postfix sasl
+
+univention-baseconfig commit /etc/mailname
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/67univention-mail-postfix-kolab2.inst || true
+fi
+
+if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
+	/etc/init.d/postfix restart
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4-32; then
+    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
+fi

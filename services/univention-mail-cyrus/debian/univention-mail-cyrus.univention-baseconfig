@@ -1,0 +1,18 @@
+Type: file
+File: etc/default/saslauthd
+
+Type: file
+File: var/spool/sieve/local.sieve
+
+Type: file
+File: var/spool/sieve/global.sieve
+Variables: mail/antispam/globalfolder
+
+Type: file
+File: etc/cyrus.conf
+Variables: mail/cyrus/imap
+Variables: mail/cyrus/pop
+Variables: mail/cyrus/sieve/listen_host
+Variables: mail/cyrus/imap/maxchilds
+Variables: mail/cyrus/pop/maxchild
+Variables: mail/cyrus/sieve/maxchilds

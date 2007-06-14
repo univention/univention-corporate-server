@@ -1,0 +1,49 @@
+# SMTP interface for injecting mail back into postfix
+# from the automatic invitation handling script
+127.0.0.1:10026 inet n	-	n	-	-  smtpd
+    -o content_filter=
+    -o cleanup_service_name=post-cleanup
+    -o local_recipient_maps=
+    -o relay_recipient_maps=
+    -o smtpd_restriction_classes=
+    -o smtpd_client_restrictions=
+    -o smtpd_helo_restrictions=
+    -o smtpd_sender_restrictions=
+    -o smtpd_recipient_restrictions=permit_mynetworks,reject
+    -o mynetworks=127.0.0.0/8
+    -o strict_rfc821_envelopes=yes
+    -o smtpd_error_sleep_time=0
+    -o smtpd_soft_error_limit=1001
+    -o smtpd_hard_error_limit=1000
+
+kolabpolicy    unix  -       n       n       -       -       spawn user=cyrus argv=/var/lib/univention-kolab2-framework/kolab_smtpdpolicy 
+    -ldap ldap://@%@ldap/server/name@%@:@%@ldap/port@%@ 
+    -basedn @%@ldap/base@%@
+    -domain @%@domainname@%@
+@!@
+if baseConfig.has_key('postfix/permithosts') and baseConfig['postfix/permithosts']:
+	print '    -permithosts %s.%s,%s' % (baseConfig['hostname'], baseConfig['domainname'], baseConfig['postfix/permithosts'].replace(' ', ','))
+else:
+	print '    -permithosts %s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+if baseConfig.has_key('postfix/allow-unauth') and baseConfig['postfix/allow-unauth'].lower() in ['yes', 'true']:
+	print '    -allow-unauth'
+@!@
+
+kolabfilter     unix  -       n       n       -       -       pipe user=cyrus flags=n argv=/usr/bin/php
+    -c /etc/php4/apache/php.ini
+    -f /var/lib/univention-kolab2-framework/kolabfilter.php 
+    --
+    -h @%@hostname@%@.@%@domainname@%@
+    -s ${sender}
+    -r ${recipient}
+    -c ${client_address}
+
+kolabmailboxfilter     unix  -       n       n       -       -       pipe user=cyrus flags=n argv=/usr/bin/php
+    -c /etc/php4/apache/php.ini
+    -f /var/lib/univention-kolab2-framework/kolabmailboxfilter.php
+    --
+    -h @%@hostname@%@.@%@domainname@%@
+    -s ${sender}
+    -r ${recipient}
+    -c ${client_address}
+

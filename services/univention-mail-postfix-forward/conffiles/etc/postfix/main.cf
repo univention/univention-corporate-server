@@ -1,0 +1,42 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/postfix/main.cf
+#
+
+# Do not change these directory settings - they are critical to Postfix
+# operation.
+command_directory = /usr/sbin
+daemon_directory = /usr/lib/postfix
+program_directory = /usr/lib/postfix
+setgid_group = postdrop
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+smtpd_banner = $myhostname ESMTP $mail_name (Debian/GNU)
+biff = no
+
+# Uncomment the next line to generate delayed mail warnings
+#delay_warning_time = 4h
+
+myhostname = @%@hostname@%@.@%@domainname@%@
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+myorigin = /etc/mailname
+mydestination = @%@hostname@%@.@%@domainname@%@, localhost.@%@domainname@%@, localhost
+@!@
+import string
+if baseConfig.has_key('mail/relay') and baseConfig['mail/relay']:
+	relays=string.split(baseConfig['mail/relay'], ' ')
+	for i in range(0, len(relays)):
+		print 'relayhost = %s' % relays[i]
+@!@
+mynetworks = 127.0.0.0/8
+mailbox_command =
+mailbox_size_limit = 0
+recipient_delimiter = +

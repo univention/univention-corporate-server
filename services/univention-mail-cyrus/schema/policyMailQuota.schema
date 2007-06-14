@@ -1,0 +1,18 @@
+# Copyright (C) 2004, 2005, 2006 Univention GmbH"
+# policyMailQuota.schema
+# extends policy.schema
+
+attributetype ( 1.3.6.1.4.1.10176.1000.22.1.1 NAME 'univentionMailQuotaMB'
+	DESC 'mail quota limit - in MB'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.1000.22.1.2 NAME 'univentionMailQuotaWarning'
+	DESC 'mail quota warning if limit is almost reached - percent'
+	EQUALITY integerMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE)
+
+objectclass ( 1.3.6.1.4.1.10176.1000.22.2.1 NAME 'univentionMailQuota'
+	SUP 'univentionPolicy' STRUCTURAL
+	DESC 'Mail quota configuration policy object'
+	MAY ( univentionMailQuotaMB $ univentionMailQuotaWarning ))

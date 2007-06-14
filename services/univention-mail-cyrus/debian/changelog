@@ -1,0 +1,166 @@
+univention-mail-cyrus (0.13-21) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri,  1 Dec 2006 10:48:39 +0100
+
+univention-mail-cyrus (0.13-20) unstable; urgency=low
+
+  * corrected univention-cyrus-mkdir (use password from parameter list)
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Wed,  4 Oct 2006 12:55:54 +0200
+
+univention-mail-cyrus (0.13-19) unstable; urgency=low
+
+  * added string.lower to cyrus.py for mailbox creation 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 30 Aug 2006 09:47:45 +0200
+
+univention-mail-cyrus (0.13-18) unstable; urgency=low
+
+  * added string.lower to univention-cyrus-mkdir for creating/modifying mail
+    and sieve path for domainpart entry
+
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 13:47:02 +0200
+
+univention-mail-cyrus (0.13-17) unstable; urgency=low
+
+  * added string.lower to univention-cyrus-mkdir for creating/modifying mail
+    and sieve path 
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 22 Aug 2006 11:57:39 +0200
+
+univention-mail-cyrus (0.13-16) unstable; urgency=low
+
+  * added cyrus imapd to the univention console service list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Aug 2006 07:28:23 +0200
+
+univention-mail-cyrus (0.13-13) unstable; urgency=low
+
+  * more support for cyrus21 and cyrus22
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  4 May 2006 15:20:15 +0200
+
+univention-mail-cyrus (0.13-12) unstable; urgency=low
+
+  * added support for creation of mailboxes on remote cyrus servers
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Mon, 10 Apr 2006 11:58:12 +0200
+
+univention-mail-cyrus (0.13-5) unstable; urgency=low
+
+  * remove double registration of etc/pam.d/pop
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue,  4 Apr 2006 14:57:58 +0200
+
+univention-mail-cyrus (0.13-4) unstable; urgency=low
+
+  * fixed problem with wrong path for sieve scrips for mail addresses
+    containing dots
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 27 Mar 2006 13:20:02 +0200
+
+univention-mail-cyrus (0.13-3) unstable; urgency=low
+
+  * new baseconfig variable mail/cyrus/imap/lookup_groups: can disable lookup
+    of UNIX groups via LDAP
+
+ -- Andreas Büsching <buesching@univention.de>  Sun,  5 Mar 2006 04:02:54 +0100
+
+univention-mail-cyrus (0.13-2) unstable; urgency=low
+
+  * improved quota-setting script
+
+ -- Martin Kuehl <kuehl@univention.de>  Thu,  2 Mar 2006 10:11:49 +0100
+
+univention-mail-cyrus (0.13-1) unstable; urgency=low
+
+  * Fixed a a bug in univention-cyrus-set-quota, which resulted in not being
+    able to login via IMAP anymore if quotas were activated
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 16 Jan 2006 17:06:55 +0100
+
+univention-mail-cyrus (0.13-0) unstable; urgency=low
+
+  * support for cyrus21 and cyrus22
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 17 Nov 2005 10:05:02 +0100
+
+univention-mail-cyrus (0.12-3) unstable; urgency=low
+
+  * debian/univention-mail-cyrus.univention-baseconfig: fixed typo. the
+    variables are challed maxchilds and maxclients
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2005 14:52:03 +0100
+
+univention-mail-cyrus (0.12-2) unstable; urgency=low
+
+  * add baseconfig variables mail/cyrus/(imap|pop|sieve)/maxchilds to control
+    the maximum number of spawned child processes. Default value (is not set)
+    is 50
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  7 Nov 2005 12:00:15 +0100
+
+univention-mail-cyrus (0.12-1) unstable; urgency=low
+
+  * removed old sasl dependencies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Nov 2005 10:27:47 +0100
+
+univention-mail-cyrus (0.12-0) unstable; urgency=low
+
+  * added working pam-configuration for sieve
+  * sieve-listening hosts can be set by baseconfig
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  2 Nov 2005 13:53:43 +0100
+
+univention-mail-cyrus (0.11) unstable; urgency=low
+
+  * using cyrus21 or cyrus22
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 15 Sep 2005 09:27:13 +0200
+
+univention-mail-cyrus (0.7) unstable; urgency=low
+
+  * support for mail quotas
+
+ -- Lars Rehe <lars@anton.knut.univention.de>  Wed,  6 Jul 2005 11:26:32 +0200
+
+univention-mail-cyrus (0.6) unstable; urgency=low
+
+  * correct spam filter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jul 2005 14:01:18 +0200
+
+univention-mail-cyrus (0.5) unstable; urgency=low
+
+  * Test-Version für Quotas
+
+ -- Lars Rehe <rehe@univention.de>  Fri, 27 May 2005 14:50:41 +0200
+
+univention-mail-cyrus (0.4) unstable; urgency=low
+
+  * Use libpam-univentionmailcyrus module.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 22 Mar 2005 09:44:03 +0100
+
+univention-mail-cyrus (0.3) unstable; urgency=low
+
+  * freebusy can access through ftp only in chroot
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Nov 2004 15:15:20 +0100
+
+univention-mail-cyrus (0.2) unstable; urgency=low
+
+  * disabled password changing for freebusy-account 
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu,  7 Oct 2004 09:37:28 +0200
+
+univention-mail-cyrus (0.1) unstable; urgency=low
+
+  * Initial release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  1 Jul 2004 08:23:05 +0200
+

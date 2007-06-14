@@ -1,0 +1,272 @@
+#!/usr/bin/python2.4
+#
+# Univention Mail Cyrus
+#  helper script: creates mailboxes
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+adminuser=0
+import os, string, pwd, grp, sys, univention_baseconfig, getopt
+from pexpect import *
+def cyrescape(address):
+	address=address.replace("@","\@")
+	address=address.replace(".","\^")
+	return address.strip()
+def usage():
+	print 'usage: univention-cyrus-mkdir [-a] <USERNAME>'
+	print 'use -a only for the mail admin user it creates'
+	print 'a Ham box in addition to the Spam box'
+	print ''
+	print 'to create Cyrus accounts on a remote machine, use'
+	print 'univention-cyrus-mkdir -h <HOSTNAME> -u <ADMINUSER> -p <PASSWORD> <USERNAME>'
+	sys.exit(1)
+
+def create_toltec_message(folder, username, escapedname):
+	child = os.popen ('/usr/sbin/cyrdeliver -m %s -a %s "%s"'%(folder, username, escapedname),'w')
+	child.write('From: "Toltec Synchronization" <>\n')
+	child.write('Date: Wed, 18 Aug 2004 10:06:49 +0000\n')
+	child.write('Subject: Hidden Toltec Message\n')
+	child.write('X-Synchronize-Library: Toltec\n')
+	child.write('X-Synchronize-Version: 1.0\n')
+	child.write('X-Toltec-Folder: IPF.Note\n')
+	child.write('\n')
+	child.write('This message is used by the Toltec Connector to synchronize messages with Outlook.Please do not delete this message.\n')
+	child.close()
+
+import smtplib
+
+from email.MIMEText import MIMEText
+
+
+baseConfig = univention_baseconfig.baseConfig()
+baseConfig.load()
+
+
+cyrus_user='cyrus'
+hostname='localhost'
+adminuser=''
+remotehost=''
+remoteadm=''
+password=''
+
+optlist, mail_user = getopt.getopt(sys.argv[1:], 'ah:p:u:')
+for option, value in optlist:
+	if option == '-a':
+		adminuser=1
+	elif option == '-h':
+		remotehost=value
+	elif option == '-u':
+		remoteadm=value
+	elif option == '-p':
+		password=value
+	else:
+		usage()
+
+if not mail_user:
+	usage()
+
+user_name=mail_user[0]
+
+# Entweder -a, keine oder alle drei remote Optionen
+if ( adminuser and ( remotehost or remoteadm or password ) ) or ( ( remotehost or remoteadm or password ) and not ( remotehost and remoteadm and password ) ):
+	usage()
+
+remote=''
+if ( hostname != 'localhost' or remoteadm or password ):
+	remote=1
+
+if remoteadm:
+	cyrus_user=remoteadm
+if remotehost:
+	hostname=remotehost
+
+
+def create_sieve_scripts(user_name, sievepath, call_sievec):
+	templatepath = '/var/spool/sieve'
+	sievedefault = 'default'
+	cyrus_id = pwd.getpwnam('cyrus')[2]
+	mail_id  = grp.getgrnam('mail')[2]
+	if not os.path.exists(sievepath):
+		try:
+			os.mkdir(sievepath)
+			os.chmod(sievepath, 0700)
+			os.chown(sievepath, cyrus_id, mail_id)
+		except:
+			pass
+
+	# mailadmin folder should not use standard sieve filtering scripts
+	if not adminuser:
+		symlink_src = '%s/global.sieve' % (templatepath)
+		symlink_dest = '%s/global.sieve.script' % (sievepath)
+		if not os.path.exists(symlink_dest):
+			try:
+				os.symlink(symlink_src, symlink_dest)
+				os.chown(symlink_dest, cyrus_id, mail_id)
+			except:
+				pass
+
+		symlink_src = '%s/local.sieve' % (templatepath)
+		symlink_dest = '%s/local.sieve.script' % (sievepath)
+		if not os.path.exists(symlink_dest):
+			try:
+				os.symlink(symlink_src, symlink_dest)
+				os.chown(symlink_dest, cyrus_id, mail_id)
+			except:
+				pass
+
+		# default: put spam into users subfolder
+		symlink_src = '%s/local.sieve' % (templatepath)
+		symlink_dest = '%s/%s' % (sievepath, sievedefault)
+		if os.path.exists(symlink_dest):
+			os.remove(symlink_dest)
+		try:
+			os.symlink(symlink_src, symlink_dest)
+			os.chown(symlink_dest, cyrus_id, mail_id)
+			if call_sievec: #cyrus2.2
+				os.system('/usr/lib/cyrus/bin/sievec %s %s%s' % (symlink_dest, symlink_dest, "bc"))
+				os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
+				os.chown("%s%s"%(symlink_dest, 'bc'), cyrus_id, mail_id)
+		except:
+			raise
+
+
+def create_cyrus21(user_name):
+	global password
+	# create directory an symlinks for sieve script language
+	sievepath = '/var/spool/sieve/%s/%s' % (user_name[0], user_name.replace('.','^'))
+	create_sieve_scripts(user_name, sievepath, False)
+
+	if os.path.exists('/var/spool/cyrus/mail/%s/user/%s/Spam'%(user_name[0],user_name.replace('.','^'))) and not remote:
+		sys.exit(0)
+	user_name=user_name.strip()
+	if not remote:
+		password=open('/etc/cyrus.secret').read()
+		if password[-1] == '\n':
+			password=password[0:-1]
+
+	child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
+	i=0
+	while not i == 3:
+		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+		if i == 0:
+			child.sendline(password)
+		elif i == 1:
+			child.sendline('cm user/%s' % user_name)
+			if not remote:
+				child.sendline('cm user/%s/Spam' % user_name)
+				if adminuser:
+					child.sendline('cm user/%s/Ham' % user_name)
+			child.sendline('disc')
+			child.sendline('exit')
+		elif i == 2 and not remote:
+			if adminuser:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+			else:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+			if not os.path.exists(job_path):
+				fd=os.open(job_path, os.O_CREAT)
+				os.close(fd)
+			sys.exit(1)
+
+	if not remote:
+		if adminuser:
+			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+		else:
+			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+		if os.path.exists(job_path):
+			os.unlink(job_path)
+
+		escapedname=cyrescape(user_name)
+
+		create_toltec_message("Spam", user_name, escapedname)
+		if adminuser:
+			create_toltec_message("Ham", user_name, escapedname)
+
+def create_cyrus22(user_name):
+	global password
+	user_name=user_name.strip()
+	domainpart=user_name.split('@')[1]
+	domainpart=string.lower(domainpart)
+	userpart=user_name.split('@')[0]
+	userpart=string.lower(userpart)
+	userpart_mangled=userpart.replace('.', '^')
+
+	sievepath = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart_mangled)
+	if not os.path.exists(sievepath) and not remote:
+		os.makedirs(sievepath)
+
+	if not remote:
+		create_sieve_scripts(user_name, sievepath, True)
+
+	if not os.path.exists('/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s/Spam' % (domainpart[0], domainpart, userpart[0], userpart_mangled)) or remote:
+
+		if not remote:
+			password=open('/etc/cyrus.secret').read()
+			if password[-1] == '\n':
+				password=password[0:-1]
+
+		child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
+		i=0
+		while not i == 3:
+			i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+			if i == 0:
+				child.sendline(password)
+			elif i == 1:
+				child.sendline('cm user/%s' % user_name)
+				if not remote:
+					child.sendline('cm user/%s/Spam@%s' % (userpart, domainpart))
+					if adminuser:
+						child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
+				child.sendline('disc')
+				child.sendline('exit')
+			elif i == 2 and not remote:
+				if adminuser:
+					job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+				else:
+					job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+				if not os.path.exists(job_path):
+					fd=os.open(job_path, os.O_CREAT)
+					os.close(fd)
+				sys.exit(1)
+
+		if not remote:
+			if adminuser:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+			else:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+			if os.path.exists(job_path):
+				os.unlink(job_path)
+
+
+
+if baseConfig.has_key('mail/cyrus/version') and baseConfig['mail/cyrus/version']=='2.2':
+	create_cyrus22(user_name)
+else:
+	create_cyrus21(user_name)

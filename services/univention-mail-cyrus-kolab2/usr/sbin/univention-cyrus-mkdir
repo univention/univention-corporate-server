@@ -1,0 +1,144 @@
+#!/usr/bin/python2.4
+#
+# Univention Mail Cyrus Kolab2
+#  helper script: create mailboxes
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+adminuser=0
+import os, string, pwd, grp, sys, univention_baseconfig, getopt
+from pexpect import *
+def cyrescape(address):
+	address=address.replace("@","\@")
+	address=address.replace(".","\^")
+	return address.strip()
+def usage():
+	print 'usage: univention-cyrus-mkdir [-a] <USERNAME>'
+	print 'use -a only for the mail admin user it creates'
+	print 'a Ham box in addition to the Spam box'
+	print ''
+	print 'to create Cyrus accounts on a remote machine, use'
+	print 'univention-cyrus-mkdir -h <HOSTNAME> -u <ADMINUSER> -p <PASSWORD> <USERNAME>'
+	sys.exit(1)
+
+import smtplib
+
+from email.MIMEText import MIMEText
+
+
+baseConfig = univention_baseconfig.baseConfig()
+baseConfig.load()
+
+
+cyrus_user='cyrus'
+hostname='localhost'
+adminuser=''
+remotehost=''
+remoteadm=''
+password=''
+
+optlist, mail_user = getopt.getopt(sys.argv[1:], 'ah:p:u:')
+for option, value in optlist:
+	if option == '-a':
+		adminuser=1
+	elif option == '-h':
+		remotehost=value
+	elif option == '-u':
+		remoteadm=value
+	elif option == '-p':
+		password=value
+	else:
+		usage()
+
+if not mail_user:
+	usage()
+
+user_name=mail_user[0]
+
+# Entweder -a, keine oder alle drei remote Optionen
+if ( adminuser and ( remotehost or remoteadm or password ) ) or ( ( remotehost or remoteadm or password ) and not ( remotehost and remoteadm and password ) ):
+	usage()
+
+remote=''
+if ( hostname != 'localhost' or remoteadm or password ):
+	remote=1
+
+if remoteadm:
+	cyrus_user=remoteadm
+if remotehost:
+	hostname=remotehost
+
+
+user_name=user_name.strip()
+domainpart=user_name.split('@')[1]
+domainpart=string.lower(domainpart)
+userpart=user_name.split('@')[0]
+userpart=string.lower(userpart)
+userpart_modified=userpart.replace(".", "^")
+
+if not os.path.exists('/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified)) and not remote:
+	os.makedirs('/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified), mode=0777)
+
+if not os.path.exists('/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s/Spam' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified)) or remote:
+
+	if not remote:
+		password=open('/etc/cyrus.secret').read()
+		if password[-1] == '\n':
+			password=password[0:-1]
+
+	child = spawn('/usr/bin/cyradm -u %s %s' % (cyrus_user, hostname))
+	i=0
+	while not i == 3:
+		i = child.expect(['IMAP Password:', '>', 'cyradm: cannot connect to server', EOF], timeout=60)
+		if i == 0:
+			child.sendline(password)
+		elif i == 1:
+			child.sendline('cm user/%s' % user_name)
+			if not remote:
+				child.sendline('cm user/%s/Spam@%s' % (userpart, domainpart))
+				if adminuser:
+					child.sendline('cm user/%s/Ham@%s' % (userpart, domainpart))
+			child.sendline('disc')
+			child.sendline('exit')
+		elif i == 2 and not remote:
+			if adminuser:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+			else:
+				job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+			if not os.path.exists(job_path):
+				fd=os.open(job_path, os.O_CREAT)
+				os.close(fd)
+			sys.exit(1)
+
+	if not remote:
+		if adminuser:
+			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/admin', user_name)
+		else:
+			job_path=os.path.join('/var/spool/cyrus/jobs/mailbox/create/user', user_name)
+
+		if os.path.exists(job_path):
+			os.unlink(job_path)

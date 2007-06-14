@@ -1,0 +1,65 @@
+
+#
+# LDAP Alias support
+#
+
+ldapvirtual_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapvirtual_search_base = @%@ldap/base@%@
+ldapvirtual_query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s)(uid=%s)))
+ldapvirtual_result_attribute = mailPrimaryAddress
+ldapvirtual_result_filter = %s
+#ldapvirtual_search_timeout = 15
+ldapvirtual_scope = sub
+#ldapvirtual_bind = yes
+#ldapvirtual_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
+#ldapvirtual_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
+ldapvirtual_version = 3
+
+#
+# LDAP Mail Groups
+#
+
+ldapgroups_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapgroups_search_base = @%@ldap/base@%@
+ldapgroups_query_filter = (&(mailPrimaryAddress=%s)(objectclass=posixGroup))
+ldapgroups_result_attribute = uid
+ldapgroups_special_result_attribute = uniqueMember
+ldapgroups_scope = sub
+ldapgroups_version = 3
+
+
+#
+# LDAP Distributionlist support
+#
+
+ldapdistlist_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapdistlist_search_base = @%@ldap/base@%@
+ldapdistlist_domain = $mydestination
+ldapdistlist_query_filter = (&(objectClass=univentionKolabGroup)(mailPrimaryAddress=%s))
+#ldapdistlist_special_result_attribute = univentionKolabMember
+#ldapdistlist_exclude_internal = yes
+ldapdistlist_result_attribute = univentionKolabMember
+#ldapdistlist_result_filter = %s
+ldapdistlist_search_timeout = 15
+ldapdistlist_scope = sub
+#ldapdistlist_bind = yes
+#ldapdistlist_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
+#ldapdistlist_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
+ldapdistlist_version = 3
+
+#
+# LDAP Transport for multilocation support
+#
+
+ldaptransport_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldaptransport_search_base = @%@ldap/base@%@
+ldaptransport_query_filter = (&(mailPrimaryAddress=%s)(objectClass=kolabInetOrgPerson)(!(kolabHomeServer=$myhostname)))
+ldaptransport_result_attribute = kolabHomeServer
+ldaptransport_result_filter = smtp:[%s]
+ldaptransport_search_timeout = 15
+ldaptransport_scope = sub
+#ldaptransport_bind = yes
+#ldaptransport_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
+#ldaptransport_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
+ldaptransport_version = 3
+
