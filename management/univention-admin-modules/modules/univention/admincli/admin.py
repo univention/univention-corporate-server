@@ -849,6 +849,9 @@ def doit(arglist):
 				except univention.admin.uexceptions.valueInvalidSyntax, err:
 					out.append('E: Invalid Syntax: %s' % err)
 					return out + ["OPERATION FAILED"]
+				except univention.admin.uexceptions.invalidOperation, msg:
+					out.append(str(msg))
+					return out + ["OPERATION FAILED"]
 
 		else: # modify
 
