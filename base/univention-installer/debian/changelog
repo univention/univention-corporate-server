@@ -1,3 +1,9 @@
+univention-installer (1.3.1-1) unstable; urgency=low
+
+  * upgrade the package list to ucs 2.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 16:28:12 +0200
+
 univention-installer (1.2.9-1) unstable; urgency=low
 
   * support for an encrypted root password in the installation profile
