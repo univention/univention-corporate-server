@@ -1,3 +1,9 @@
+univention-installer (1.1.5-3) unstable; urgency=low
+
+  * set unit to MB for the parted print calls
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 08:43:41 +0200
+
 univention-installer (1.1.5-2) unstable; urgency=low
 
   * mount cdrom with parameter -t iso9660
