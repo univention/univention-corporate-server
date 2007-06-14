@@ -39,7 +39,7 @@ set | egrep "^eth.*_type=" | while read line; do
 	fi
 	dynamic=`echo $line | sed -e 's|.*=||'`
 	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
-		python2.4 -OOO /sbin/univention-baseconfig set interfaces/$network_device/type=dhcp
+		python2.4 /sbin/univention-baseconfig set interfaces/$network_device/type=dhcp
 	fi
 	network_device=`echo $network_device | sed -e 's|_|:|g'`
 
@@ -62,10 +62,10 @@ set | egrep "^eth.*_ip=" | while read line; do
 		continue
 	fi
 
-	python2.4 -OOO /sbin/univention-baseconfig set interfaces/$network_device/address=$address
-	python2.4 -OOO /sbin/univention-baseconfig set interfaces/$network_device/netmask=$netmask
-	python2.4 -OOO /sbin/univention-baseconfig set interfaces/$network_device/broadcast=$broadcast
-	python2.4 -OOO /sbin/univention-baseconfig set interfaces/$network_device/network=$network
+	python2.4 /sbin/univention-baseconfig set interfaces/$network_device/address=$address
+	python2.4 /sbin/univention-baseconfig set interfaces/$network_device/netmask=$netmask
+	python2.4 /sbin/univention-baseconfig set interfaces/$network_device/broadcast=$broadcast
+	python2.4 /sbin/univention-baseconfig set interfaces/$network_device/network=$network
 
 	network_device=`echo $network_device | sed -e 's|_|:|g'`
 
@@ -74,27 +74,27 @@ set | egrep "^eth.*_ip=" | while read line; do
 done
 
 if [ -n "$gateway" ]; then
-	python2.4 -OOO /sbin/univention-baseconfig set gateway=$gateway
+	python2.4 /sbin/univention-baseconfig set gateway=$gateway
 	route add default gw $gateway
 fi
 
 
 if [ -n "$nameserver_1" ]; then
 	echo "nameserver $nameserver_1" >>/etc/resolv.conf
-	python2.4 -OOO /sbin/univention-baseconfig set nameserver1=$nameserver_1
+	python2.4 /sbin/univention-baseconfig set nameserver1=$nameserver_1
 fi
 
 if [ -n "$nameserver_2" ]; then
 	echo "nameserver $nameserver_2" >>/etc/resolv.conf
-	python2.4 -OOO /sbin/univention-baseconfig set nameserver2=$nameserver_2
+	python2.4 /sbin/univention-baseconfig set nameserver2=$nameserver_2
 fi
 
 if [ -n "$nameserver_3" ]; then
 	echo "nameserver $nameserver_3" >>/etc/resolv.conf
-	python2.4 -OOO /sbin/univention-baseconfig set nameserver3=$nameserver_3
+	python2.4 /sbin/univention-baseconfig set nameserver3=$nameserver_3
 fi
 
 if [ -n "$proxy_http" ]; then
-	python2.4 -OOO /sbin/univention-baseconfig set proxy/http=$proxy_http
-	python2.4 -OOO /sbin/univention-baseconfig set proxy/ftp=$proxy_http
+	python2.4 /sbin/univention-baseconfig set proxy/http=$proxy_http
+	python2.4 /sbin/univention-baseconfig set proxy/ftp=$proxy_http
 fi

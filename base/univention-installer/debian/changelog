@@ -1,3 +1,9 @@
+univention-installer (1.2.1-1) unstable; urgency=low
+
+  * remove -OOO from univention-baseconfig call
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 10:16:00 +0200
+
 univention-installer (1.1.9-1) unstable; urgency=low
 
   * the parted output has changed
