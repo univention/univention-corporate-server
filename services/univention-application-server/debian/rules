@@ -71,7 +71,6 @@ binary-indep: build install
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_movefiles
 	dh_shlibdeps
 	dh_gencontrol 
 	dh_md5sums

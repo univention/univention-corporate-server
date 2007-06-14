@@ -1,3 +1,9 @@
+univention-application-server (2.0.0-2) unstable; urgency=low
+
+  * remove dh_movefiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 15:35:20 +0200
+
 univention-application-server (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
