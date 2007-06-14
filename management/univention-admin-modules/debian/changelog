@@ -1,3 +1,9 @@
+univention-admin-modules (1.1.0-13) unstable; urgency=low
+
+  * advanced error handling in univention-admin 
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 09:16:26 +0200
+
 univention-admin-modules (1.1.0-12) unstable; urgency=low
 
   * fixed syntax in univention-admin 
