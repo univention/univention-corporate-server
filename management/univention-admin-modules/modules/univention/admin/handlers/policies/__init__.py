@@ -7,7 +7,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -36,9 +36,9 @@ policies=[]
 def __walk( root, dir, files ):
 	global _policies
  	for file in files:
- 		if not file.endswith('.pyo') or file.startswith('__') or file == 'policy.pyo':
+ 		if not file.endswith('.py') or file.startswith('__') or file == 'policy.py':
  			continue
- 		policies.append( __import__( file[ : -4 ], globals(), locals(), [ '' ] ) )
-			
+ 		policies.append( __import__( file[ : -3 ], globals(), locals(), [ '' ] ) )
+
 path = os.path.abspath( os.path.dirname( __file__ ) )
 os.path.walk( path, __walk, path )
