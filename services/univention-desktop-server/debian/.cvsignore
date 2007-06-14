@@ -1,0 +1,4 @@
+files
+univention-desktop-server
+univention-desktop-server.postinst.debhelper
+univention-desktop-server.prerm.debhelper

@@ -1,0 +1,71 @@
+univention-desktop-server (1.10) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:01:48 +0100
+
+univention-desktop-server (1.9) unstable; urgency=low
+
+  * remove dependency to univention-java on powerpc
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Feb 2006 15:19:48 +0100
+
+univention-desktop-server (1.8) unstable; urgency=low
+
+  * remove evolution desktop link
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Nov 2005 06:14:20 +0100
+
+univention-desktop-server (1.7) unstable; urgency=low
+
+  * remove depends
+  * set terminal-server-policy as FQDN
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Nov 2005 15:28:10 +0100
+
+univention-desktop-server (1.6) unstable; urgency=low
+
+  * depends on menu or menu-xdg
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Jul 2005 09:29:37 +0200
+
+univention-desktop-server (1.5) unstable; urgency=low
+
+  * support for spaces in ldap base
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Dec 2004 18:29:29 +0100
+
+univention-desktop-server (1.4) unstable; urgency=low
+
+  * Drop univention-desktop-server binary package.
+  * Add proper package descriptions.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 13:34:35 +0200
+
+univention-desktop-server (1.3) unstable; urgency=low
+
+  * bugfix join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 Mar 2004 16:58:18 +0100
+
+univention-desktop-server (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:38 +0200
+
+univention-desktop-server (0.2) unstable; urgency=low
+
+  * include several meta-packages
+    - univention-desktop-server
+    - univention-application-server
+    - univention-file-server
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon,  6 Jan 2003 09:02:40 +0100
+
+univention-desktop-server (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thomas Krebs <krebs@univention.de>  Thu,  8 Nov 2001 9:47:19 +0200
+
