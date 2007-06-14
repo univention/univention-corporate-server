@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.8-1) unstable; urgency=low
+
+  * if server/role is empty then set it to basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 13:07:15 +0200
+
 univention-baseconfig (2.1.7-1) unstable; urgency=low
 
   * switch from runsvctrl to sv
