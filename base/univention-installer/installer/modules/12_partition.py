@@ -577,7 +577,7 @@ class object(content):
 				start=float(cols[1].split('MB')[0].replace(',','.'))
 				end=float(cols[2].split('MB')[0].replace(',','.'))
 				size=end-start
-				type=cols[3]
+				type=cols[4]
 				if type == 'extended':
 					ptype=2
 					extended=1
@@ -592,14 +592,14 @@ class object(content):
 				fstype=''
 				flag=[]
 
-				if len(cols) > 4:
-					fstype=cols[4]
+				if len(cols) > 5:
+					fstype=cols[5]
 					#FIXME
 					if fstype in ['boot','hidden','raid','lvm','lba','palo','prep','boot,','hidden,','raid,','lvm,','lba,','palo,','prep']:
 						flag.append(fstype.strip(','))
 						fstype=''
 
-				for i in range(5,10):
+				for i in range(6,10):
 					if len(cols) > i:
 						flag.append(cols[i].strip(','))
 				if ( start - last_end) > self.container['min_size']:
