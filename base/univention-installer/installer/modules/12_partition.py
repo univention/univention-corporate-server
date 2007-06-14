@@ -534,7 +534,7 @@ class object(content):
 		devices_remove=[]
 		for dev in devices:
 			dev=dev.strip()
-			p = os.popen('/sbin/parted -s unit MB %s p 2>&1'% dev)
+			p = os.popen('/sbin/parted -s unit MB %s p 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()
 			self.debug('fist line: [%s]' % first_line)
@@ -552,8 +552,8 @@ class object(content):
 					self.debug('Remove device %s' % dev)
 					devices_remove.append(dev)
 					continue
-			if _re_disk_geometry.match(first_line):
-				mb_size=int(first_line.split()[-2].split('-')[1].split('.')[0].split(',')[0])
+			if first_line.startswith('Disk: '):
+				mb_size = int(first_lise.split(' ')[-1].split('MB')[0].split(',')[0])
 			else:
 				mb_size=1000
 			extended=0
