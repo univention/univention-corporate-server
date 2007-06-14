@@ -39,7 +39,7 @@ def handler(dn, new, old):
 		if old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] and old['mailPrimaryAddress'][0].lower() != listener.baseConfig['mail/antispam/globalfolder'].lower():
 			if old.has_key( 'univentionKolabDisableSieve' ) and old[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not remove the sieve script for user: %s' % old['mailPrimaryAddress'][0])
-				sys.exit(0)
+				return
 			try:
 				user_name = old['mailPrimaryAddress'][0]
 				userpart=user_name.split('@')[0]
@@ -59,7 +59,7 @@ def handler(dn, new, old):
 
 			if new.has_key( 'univentionKolabDisableSieve' ) and new[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
-				sys.exit(0)
+				return
 
 			user_name = new['mailPrimaryAddress'][0]
 			userpart=user_name.split('@')[0]
