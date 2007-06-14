@@ -1,3 +1,9 @@
+univention-admin-modules (1.1.0-15) unstable; urgency=low
+
+  * fixed syntax in univention-admin 
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 14 Jun 2007 10:33:19 +0200
+
 univention-admin-modules (1.1.0-14) unstable; urgency=low
 
   * bump version
