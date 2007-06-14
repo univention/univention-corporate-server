@@ -1,4 +1,4 @@
-Source: univention-desktop-server
+Source: univention-application-server
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-application-server
 Architecture: any
-Depends: univention-ldap-client, rsh-server, menu | menu-xdg, arts, gnome-spell, aspell-de, gnome-desktop-data, , gnome-icon-theme, ${F:Java} gconf-editor
+Depends: univention-ldap-client, rsh-server
 Conflicts: univention-desktop-applications
 Recommends: univention-kde, univention-mozilla-firefox, univention-multimedia, univention-ooffice, univention-staroffice
 Description: UCS - application server
@@ -19,11 +19,11 @@ Description: UCS - application server
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-file-server
+Package: univention-desktop-environment
 Architecture: all
-Depends: univention-samba
-Description: UCS - file server
- This meta-packages installs a file server.
+Depends: univention-kde, univention-ooffice2, univention-firefox, univention-java, univention-x-core
+Description: UCS - desktop environment
+ This meta-packages installs a complete desktop environment.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

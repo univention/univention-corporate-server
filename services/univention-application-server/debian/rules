@@ -28,15 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
-
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
-
-ifneq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
-	java_package=""
-else
-	java_package="univention-java, "
-endif
 
 configure: configure-stamp
 configure-stamp:
@@ -49,8 +41,6 @@ build-stamp:
 	touch build-stamp
 
 D=$(CURDIR)/debian/univention-application-server
-DD=$(CURDIR)/debian/univention-desktop-server
-DF=$(CURDIR)/debian/univention-file-server
 
 clean:
 	dh_testdir
@@ -66,7 +56,6 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -d debian/tmp
 	install -m 755 80univention-application-server.inst $(D)/usr/lib/univention-install/
 
 
@@ -84,8 +73,7 @@ binary-indep: build install
 	dh_installdeb
 	dh_movefiles
 	dh_shlibdeps
-	dh_gencontrol -punivention-application-server -u-VF:Java="${java_package}"
-	dh_gencontrol -punivention-file-server
+	dh_gencontrol 
 	dh_md5sums
 	dh_builddeb
 
