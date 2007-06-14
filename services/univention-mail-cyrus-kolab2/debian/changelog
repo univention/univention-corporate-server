@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 16:37:14 +0200
+
 univention-mail-cyrus-kolab2 (0.6-20) unstable; urgency=low
 
   * add GPL headers
