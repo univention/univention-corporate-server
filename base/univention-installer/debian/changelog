@@ -1,4 +1,4 @@
-univention-installer (1.1.8-1) unstable; urgency=low
+univention-installer (1.1.9-1) unstable; urgency=low
 
   * the parted output has changed
 
