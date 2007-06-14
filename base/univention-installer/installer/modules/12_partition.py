@@ -552,7 +552,7 @@ class object(content):
 					self.debug('Remove device %s' % dev)
 					devices_remove.append(dev)
 					continue
-			if first_line.startswith('Disk: '):
+			if first_line.startswith('Disk '):
 				mb_size = int(first_lise.split(' ')[-1].split('MB')[0].split(',')[0])
 			else:
 				mb_size=1000
