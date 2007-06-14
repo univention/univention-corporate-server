@@ -352,6 +352,9 @@ class object(content):
 
 			if not self.parent.container['hardware'].has_key('kudzu') or not 'ide-generic' in self.parent.container['hardware']['kudzu']:
 				self.parent.container['hardware']['kudzu'].append('ide-generic')
+			if self.parent.cmdline.get('recover', False):
+				if not self.parent.container['hardware'].has_key('kudzu') or not 'st' in self.parent.container['hardware']['kudzu']:
+					self.parent.container['hardware']['kudzu'].append('st')
 			#for h in range(0,len(hardware)):
 			#	if hardware[h].has_key('desc'):
 			#		print hardware[h]['desc']
