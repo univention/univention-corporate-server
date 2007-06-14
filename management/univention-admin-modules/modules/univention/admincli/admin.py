@@ -974,7 +974,7 @@ def doit(arglist):
 		if recursive:
 			try:
 				object.remove(recursive)
-			except univention.admin.uexceptions.ldapError, msg:
+			except univention.admin.uexceptions.ldapError,msg:
 				if str(msg)!='Operation not allowed on non-leaf':
 					raise
 				else:
