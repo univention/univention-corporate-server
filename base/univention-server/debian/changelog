@@ -1,3 +1,10 @@
+univention-server (2.1.1-4) unstable; urgency=low
+
+  * remove univention-basetools from the univention-managed-client dependency
+    list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Jun 2007 15:31:04 +0200
+
 univention-server (2.1.1-3) unstable; urgency=low
 
   * remove less from the package dependency list
