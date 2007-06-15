@@ -1,4 +1,4 @@
-univention-debug (1.1.0-1) unstable; urgency=low
+univention-debug (1.1.0-2) unstable; urgency=low
 
   * removed dependency to univention.utf8; not required anymore
   * adapt version to UCS 2.0 policy
@@ -11,7 +11,6 @@ univention-debug (1.0-1-5) unstable; urgency=low
 
  -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 11:21:36 +0200
 
->>>>>>> .r393
 univention-debug (1.0-1-4) unstable; urgency=low
 
   * added missing packaging files
