@@ -1,0 +1,48 @@
+univention-printclient (0.9) unstable; urgency=low
+
+  * fixed creation of tempfile 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  7 Dec 2006 16:22:37 +0100
+
+univention-printclient (0.7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:18:18 +0100
+
+univention-printclient (0.6) unstable; urgency=low
+
+  * added baseconfig header to /etc/cups/client.conf
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 19 Jun 2006 16:22:16 +0200
+
+univention-printclient (0.5) unstable; urgency=low
+
+  * change interpreter to python2.4 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  8 Dec 2005 08:13:07 +0100
+
+univention-printclient (0.4) unstable; urgency=low
+
+  * remove " from policy result
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 26 Apr 2005 06:43:08 +0200
+
+univention-printclient (0.3) unstable; urgency=low
+
+  * do not use `-s' when invoking kprinter 
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon,  4 Apr 2005 11:51:11 +0200
+
+univention-printclient (0.2) unstable; urgency=low
+
+  * If lp or lpr are invoked, use kprinter if $DISPLAY is set 
+
+ -- Sven Dreyer <dreyer@univention.de>  Wed,  1 Dec 2004 11:54:20 +0100
+
+univention-printclient (0.1) unstable; urgency=low
+
+  * Initial Release 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Nov 2004 14:33:58 +0100
+

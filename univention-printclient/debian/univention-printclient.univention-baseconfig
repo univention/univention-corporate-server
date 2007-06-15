@@ -1,0 +1,10 @@
+Type: file
+File: etc/cups/client.conf
+Variables: ldap/server/name
+Variables: cups/server
+
+Type: file
+File: usr/bin/lp
+
+Type: file
+File: usr/bin/lpr
