@@ -1,3 +1,9 @@
+univention-dhcp (2.0.2-2) unstable; urgency=low
+
+  * make postinst script more robust
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 09:25:31 +0200
+
 univention-dhcp (2.0.2-1) unstable; urgency=low
 
   * don't wait for runsv in the postinst
