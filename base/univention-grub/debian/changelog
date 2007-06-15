@@ -1,3 +1,9 @@
+univention-grub (1.0.7-1) unstable; urgency=low
+
+  * added grub/append to the append line
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 13:27:45 +0200
+
 univention-grub (1.0.6-2) unstable; urgency=low
 
   * added diff to the build dependency list
