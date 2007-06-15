@@ -1,3 +1,9 @@
+univention-setup (1.0.1-1) unstable; urgency=low
+
+  * don't restart apache in UMC mode
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 08:08:48 +0200
+
 univention-setup (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
