@@ -2438,7 +2438,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def __passwordInHistory(self, newpassword, pwhistory):
 		# first calc hash for the new pw
-		s = sha.new(newpassword.encode('ISO-8859-1'))
+		s = sha.new( newpassword.encode( 'utf-8' ) )
 		newpwhash = string.upper(s.hexdigest())
 		if not string.find(pwhistory, newpwhash) < 0:
 			# password has already been used.
@@ -2447,7 +2447,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 	def __getPWHistory(self, newpassword, pwhistory, pwhlen):
 		# first calc hash for the new pw
-		s = sha.new(newpassword.encode('ISO-8859-1'))
+		s = sha.new( newpassword.encode( 'utf-8' ) )
 		newpwhash = string.upper(s.hexdigest())
 
 		# split the history

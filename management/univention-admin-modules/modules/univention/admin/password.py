@@ -48,14 +48,14 @@ def crypt(password):
 	urandom.close()
 
 	import crypt
-	return crypt.crypt(password.encode('ISO-8859-1'), '$1$%s$' % salt)
+	return crypt.crypt(password.encode('utf-8'), '$1$%s$' % salt)
 
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
 
 	p_to, p_from = os.popen2('/usr/sbin/univention-smbencrypt')
 
-	p_to.write(password.encode('latin')+'\n')
+	p_to.write( password.encode( 'utf-8' ) + '\n' )
 	p_to.close()
 
 	r = p_from.read()[:-1]
@@ -66,9 +66,9 @@ def ntlm(password):
 def krb5_asn1(principal, password, context=None):
 	list=[]
 	if type(principal) == types.UnicodeType:
-		principal = codecs.latin_1_encode(principal)[0]
+		principal = str( principal )
 	if type(password) == types.UnicodeType:
-		password = codecs.latin_1_encode(password)[0]
+		password = str( password )
 	if not context:
 		context = heimdal.context()
 	for etype in context.get_default_in_tkt_etypes():
