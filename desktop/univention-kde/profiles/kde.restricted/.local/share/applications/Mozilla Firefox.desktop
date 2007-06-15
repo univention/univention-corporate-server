@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=Internet Browser
+Exec=firefox
+GenericName=
+Icon=firefox
+Name=Mozilla Firefox
+Path=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

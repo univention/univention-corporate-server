@@ -1,0 +1,237 @@
+2007-05-24T19:01:37 Checking update-file '/usr/share/apps/kconf_update/kcookiescfg.upd' for new updates
+2007-05-24T19:01:37 Checking update-file '/usr/share/apps/kconf_update/kded.upd' for new updates
+2007-05-24T19:01:37 Checking update-file '/usr/share/apps/kconf_update/kdeprintrc.upd' for new updates
+2007-05-24T19:01:37 Checking update-file '/usr/share/apps/kconf_update/kio_help.upd' for new updates
+2007-05-24T19:01:37 kio_help.upd: Found new update 'kde3_2'
+2007-05-24T19:01:37 kio_help.upd: Running script 'move_kio_help_cache.sh'
+2007-05-24T19:01:37 [Script] mv: Aufruf von stat für „/home/janis/.kde/share/apps/kio_help/cache“ nicht möglich: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:37 [Script] rmdir: /home/janis/.kde/share/apps/kio_help: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/kioslave.upd' for new updates
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/kpgp.upd' for new updates
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/kate-2.4.upd' for new updates
+2007-05-24T19:01:38 kate-2.4.upd: Found new update 'kate2.4'
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/kwin.upd' for new updates
+2007-05-24T19:01:38 kwin.upd: Found new update 'kde3.2Xinerama'
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/kcalcrc.upd' for new updates
+2007-05-24T19:01:38 kcalcrc.upd: Found new update 'KDE_3_2_0'
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/favicons.upd' for new updates
+2007-05-24T19:01:38 favicons.upd: Found new update 'kde3_2'
+2007-05-24T19:01:38 favicons.upd: Running script 'move_favicons.sh'
+2007-05-24T19:01:38 Checking update-file '/usr/share/apps/kconf_update/mouse_cursor_theme.upd' for new updates
+2007-05-24T19:01:38 mouse_cursor_theme.upd: Found new update 'kde3.4.99'
+2007-05-24T19:01:39 Checking update-file '/usr/share/apps/kconf_update/kaccel.upd' for new updates
+2007-05-24T19:01:39 kaccel.upd: Found new update 'kde3.3/r1'
+2007-05-24T19:01:39 kaccel.upd: Running script 'convertShortcuts.pl'
+2007-05-24T19:01:39 kaccel.upd: Script removes kdeglobals:Global Shortcuts:Lock Screen
+2007-05-24T19:01:39 kaccel.upd: Updating kdeglobals:Global Shortcuts:Lock Session to 'default(Alt+Ctrl+L)'
+2007-05-24T19:01:39 Checking update-file '/usr/share/apps/kconf_update/kcmdisplayrc.upd' for new updates
+2007-05-24T19:01:39 Checking update-file '/usr/share/apps/kconf_update/kuriikwsfilter.upd' for new updates
+2007-05-24T19:01:39 kuriikwsfilter.upd: Found new update 'post-kde3.1/cvs'
+2007-05-24T19:01:39 Checking update-file '/usr/share/apps/kconf_update/kickerrc.upd' for new updates
+2007-05-24T19:01:39 kickerrc.upd: Found new update 'kde_3_4_reverseLayout'
+2007-05-24T19:01:39 kickerrc.upd: Running script 'kicker-3.4-reverseLayout'
+2007-05-24T19:01:40 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:40 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:Applet_1:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:Applet_2:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:Applet_3:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:Applet_4:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:DesktopButton_1:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:General:Applets2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:KMenuButton_1:FreeSpace2, already exists.
+2007-05-24T19:01:40 kickerrc.upd: Updating kickerrc:URLButton_1:FreeSpace2 to '0'
+2007-05-24T19:01:40 kickerrc.upd: Found new update 'kde_3_5_taskbarEnums'
+2007-05-24T19:01:40 kickerrc.upd: Running script 'kicker-3.5-taskbarEnums.pl'
+2007-05-24T19:01:40 kickerrc.upd: Found new update 'kde_3_5_kconfigXTize'
+2007-05-24T19:01:40 kickerrc.upd: Running script 'kicker-3.5-kconfigXTize.pl'
+2007-05-24T19:01:40 kickerrc.upd: Skipping kickerrc:menus:MenuEntryFormat, already exists.
+2007-05-24T19:01:40 kickerrc.upd: RemoveKey removes kickerrc:menus:DetailedEntriesNamesFirst
+2007-05-24T19:01:40 kickerrc.upd: RemoveKey removes kickerrc:menus:DetailedMenuEntries
+2007-05-24T19:01:40 Checking update-file '/usr/share/apps/kconf_update/socks.upd' for new updates
+2007-05-24T19:01:40 Checking update-file '/usr/share/apps/kconf_update/konqueror_gestures_kde321_update.upd' for new updates
+2007-05-24T19:01:40 konqueror_gestures_kde321_update.upd: Found new update 'kde321'
+2007-05-24T19:01:40 konqueror_gestures_kde321_update.upd: Running script 'khotkeys_update' with arguments '--id konqueror_gestures_kde321'
+2007-05-24T19:01:41 [Script] Xlib:  extension "XInputExtension" missing on display ":1.0".
+2007-05-24T19:01:41 [Script] Failed to get list of devices
+2007-05-24T19:01:41 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:41 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:41 Checking update-file '/usr/share/apps/kconf_update/khotkeys_32b1_update.upd' for new updates
+2007-05-24T19:01:41 khotkeys_32b1_update.upd: Found new update 'kde32b1'
+2007-05-24T19:01:41 khotkeys_32b1_update.upd: Running script 'khotkeys_update' with arguments '--id kde32b1'
+2007-05-24T19:01:42 [Script] Xlib:  extension "XInputExtension" missing on display ":1.0".
+2007-05-24T19:01:42 [Script] Failed to get list of devices
+2007-05-24T19:01:42 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:42 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:42 Checking update-file '/usr/share/apps/kconf_update/khotkeys_printscreen.upd' for new updates
+2007-05-24T19:01:42 khotkeys_printscreen.upd: Found new update 'printscreen'
+2007-05-24T19:01:42 khotkeys_printscreen.upd: Running script 'khotkeys_update' with arguments '--id printscreen'
+2007-05-24T19:01:43 [Script] Xlib:  extension "XInputExtension" missing on display ":1.0".
+2007-05-24T19:01:43 [Script] Failed to get list of devices
+2007-05-24T19:01:43 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:43 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/klippershortcuts.upd' for new updates
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/klipperrc.upd' for new updates
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/kfmclient_3_2.upd' for new updates
+2007-05-24T19:01:43 kfmclient_3_2.upd: Found new update 'kfmclient_3_2'
+2007-05-24T19:01:43 kfmclient_3_2.upd: Running script 'kfmclient_3_2_update.sh'
+2007-05-24T19:01:43 kfmclient_3_2.upd: Script removes kfmclientrc:Settings:StartNewKonqueror
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/kwin_fsp_workarounds_1.upd' for new updates
+2007-05-24T19:01:43 kwin_fsp_workarounds_1.upd: Found new update 'kde351'
+2007-05-24T19:01:43 kwin_fsp_workarounds_1.upd: Running script 'kwin_update_default_rules' with arguments 'fsp_workarounds_1.kwinrules'
+2007-05-24T19:01:43 [Script] kwin_update_default_rules: WARNING: File fsp_workarounds_1.kwinrules not found!
+2007-05-24T19:01:43 kwin_fsp_workarounds_1.upd: !! An error occured while running '/usr/lib/kconf_update_bin/kwin_update_default_rules fsp_workarounds_1.kwinrules'
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/konqsidebartng.upd' for new updates
+2007-05-24T19:01:43 konqsidebartng.upd: Found new update 'konqsidebartng_rc'
+2007-05-24T19:01:43 konqsidebartng.upd: Updating konqsidebartng.rc:webbrowsing:ShowExtraButtons to 'true'
+2007-05-24T19:01:43 konqsidebartng.upd: Updating konqsidebartng.rc:webbrowsing:ShowTabsLeft to 'true'
+2007-05-24T19:01:43 konqsidebartng.upd: Updating konqsidebartng.rc:filemanagement:ShowExtraButtons to 'true'
+2007-05-24T19:01:43 konqsidebartng.upd: Updating konqsidebartng.rc:filemanagement:ShowTabsLeft to 'true'
+2007-05-24T19:01:43 konqsidebartng.upd: RemoveGroup removes group konqsidebartng.rc:<default>
+2007-05-24T19:01:43 konqsidebartng.upd: Found new update 'konqsidebartng_entries'
+2007-05-24T19:01:43 konqsidebartng.upd: Running script 'move_konqsidebartng_entries.sh'
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/konsole.upd' for new updates
+2007-05-24T19:01:43 Checking update-file '/usr/share/apps/kconf_update/kwin3_plugin.upd' for new updates
+2007-05-24T19:01:43 kwin3_plugin.upd: Found new update 'kde3.2'
+2007-05-24T19:01:43 kwin3_plugin.upd: Running script 'kwin3_plugin.pl'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:clientMachine1 to 'localhost'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:count to '1'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:desktop1 to '0'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:geometry1 to '174,205,700,480'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:iconified1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:maximize1 to '0'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:resourceClass1 to 'konqueror'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:resourceName1 to 'konqueror'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:restore1 to '0,0,0,0'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:shaded1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:skipPager1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:skipTaskbar1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:staysOnTop1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:sticky1 to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:windowRole1 to 'konqueror-mainwindow#1'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:FakeSession:windowType1 to 'Normal'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:MouseBindings:CommandActiveTitlebar2 to 'Lower'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:MouseBindings:CommandActiveTitlebar3 to 'Operations menu'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Style:PluginLib to 'kwin3_keramik'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:AltTabStyle to 'KDE'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:AnimateMinimize to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:AnimateShade to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:FocusPolicy to 'ClickToFocus'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:MoveMode to 'Transparent'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:MoveResizeMaximizedWindows to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:ResizeMode to 'Transparent'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:ShadeHover to 'false'
+2007-05-24T19:01:44 kwin3_plugin.upd: Updating kwinrc:Windows:TitlebarDoubleClickCommand to 'Shade'
+2007-05-24T19:01:44 Checking update-file '/usr/share/apps/kconf_update/kwin_focus1.upd' for new updates
+2007-05-24T19:01:44 kwin_focus1.upd: Found new update 'kwin_focus1'
+2007-05-24T19:01:44 kwin_focus1.upd: Running script 'kwin_focus1.sh'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:AltTabStyle to 'KDE'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:AnimateMinimize to 'false'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:AnimateShade to 'false'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:FocusPolicy to 'ClickToFocus'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:IgnoreFocusStealingClasses to 'kio_uiserver'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:MoveMode to 'Transparent'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:MoveResizeMaximizedWindows to 'false'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:ResizeMode to 'Transparent'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:ShadeHover to 'false'
+2007-05-24T19:01:44 kwin_focus1.upd: Updating kwinrc:Windows:TitlebarDoubleClickCommand to 'Shade'
+2007-05-24T19:01:44 Checking update-file '/usr/share/apps/kconf_update/kwin_focus2.upd' for new updates
+2007-05-24T19:01:44 kwin_focus2.upd: Found new update 'kwin_focus2'
+2007-05-24T19:01:44 kwin_focus2.upd: Running script 'kwin_focus2.sh'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:AltTabStyle to 'KDE'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:AnimateMinimize to 'false'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:AnimateShade to 'false'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:FocusPolicy to 'ClickToFocus'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:IgnoreFocusStealingClasses to 'kio_uiserver'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:MoveMode to 'Transparent'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:MoveResizeMaximizedWindows to 'false'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:ResizeMode to 'Transparent'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:ShadeHover to 'false'
+2007-05-24T19:01:44 kwin_focus2.upd: Updating kwinrc:Windows:TitlebarDoubleClickCommand to 'Shade'
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/kwiniconify.upd' for new updates
+2007-05-24T19:01:45 kwiniconify.upd: Found new update 'iconifyupd3.1'
+2007-05-24T19:01:45 kwiniconify.upd: Updating kwin.eventsrc:minimize:presentation to '0'
+2007-05-24T19:01:45 kwiniconify.upd: Removing kwin.eventsrc:iconify:presentation, moved.
+2007-05-24T19:01:45 kwiniconify.upd: Updating kwin.eventsrc:unminimize:presentation to '0'
+2007-05-24T19:01:45 kwiniconify.upd: Removing kwin.eventsrc:deiconify:presentation, moved.
+2007-05-24T19:01:45 kwiniconify.upd: RemoveGroup removes group kwin.eventsrc:iconify
+2007-05-24T19:01:45 kwiniconify.upd: RemoveGroup removes group kwin.eventsrc:deiconify
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/kwinsticky.upd' for new updates
+2007-05-24T19:01:45 kwinsticky.upd: Found new update 'stickyupd3.1'
+2007-05-24T19:01:45 kwinsticky.upd: Updating kwin.eventsrc:on_all_desktops:presentation to '0'
+2007-05-24T19:01:45 kwinsticky.upd: Removing kwin.eventsrc:sticky:presentation, moved.
+2007-05-24T19:01:45 kwinsticky.upd: Updating kwin.eventsrc:not_on_all_desktops:presentation to '0'
+2007-05-24T19:01:45 kwinsticky.upd: Removing kwin.eventsrc:unsticky:presentation, moved.
+2007-05-24T19:01:45 kwinsticky.upd: RemoveGroup removes group kwin.eventsrc:sticky
+2007-05-24T19:01:45 kwinsticky.upd: RemoveGroup removes group kwin.eventsrc:unsticky
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/ksmserver.upd' for new updates
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/kwinupdatewindowsettings.upd' for new updates
+2007-05-24T19:01:45 kwinupdatewindowsettings.upd: Found new update 'kde33b1'
+2007-05-24T19:01:45 kwinupdatewindowsettings.upd: Running script 'kwin_update_window_settings'
+2007-05-24T19:01:45 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:45 [Script] sh: /usr/local/bin/getlocale: Datei oder Verzeichnis nicht gefunden
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/knewsticker.upd' for new updates
+2007-05-24T19:01:45 Checking update-file '/usr/share/apps/kconf_update/kopete-account-kconf_update.upd' for new updates
+2007-05-24T19:01:45 kopete-account-kconf_update.upd: Found new update 'kopete0.7/r1'
+2007-05-24T19:01:45 kopete-account-kconf_update.upd: Running script 'kopete-account-kconf_update.sh'
+2007-05-24T19:01:45 kopete-account-kconf_update.upd: Found new update 'kopete0.10/r1'
+2007-05-24T19:01:45 kopete-account-kconf_update.upd: Running script 'kopete-account-0.10.pl'
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kopete-jabberpriorityaddition-kconf_update.upd' for new updates
+2007-05-24T19:01:46 kopete-jabberpriorityaddition-kconf_update.upd: Found new update 'kopete0.9/r1'
+2007-05-24T19:01:46 kopete-jabberpriorityaddition-kconf_update.upd: Running script 'kopete-jabberpriorityaddition-kconf_update.sh'
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kopete-jabberproxytype-kconf_update.upd' for new updates
+2007-05-24T19:01:46 kopete-jabberproxytype-kconf_update.upd: Found new update 'kopete0.9/r1'
+2007-05-24T19:01:46 kopete-jabberproxytype-kconf_update.upd: Running script 'kopete-jabberproxytype-kconf_update.sh'
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kopete-nameTracking.upd' for new updates
+2007-05-24T19:01:46 kopete-nameTracking.upd: Found new update 'kopete0.9/r1'
+2007-05-24T19:01:46 kopete-nameTracking.upd: Running script 'kopete-nameTracking-kconf_update'
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kopete-pluginloader2.upd' for new updates
+2007-05-24T19:01:46 kopete-pluginloader2.upd: Found new update 'kopete0.8/r1'
+2007-05-24T19:01:46 kopete-pluginloader2.upd: Running script 'kopete-pluginloader2.sh'
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kopete-pluginloader.upd' for new updates
+2007-05-24T19:01:46 kopete-pluginloader.upd: Found new update 'kopete0.7/r1'
+2007-05-24T19:01:46 kopete-pluginloader.upd: Running script 'kopete-pluginloader.pl'
+2007-05-24T19:01:46 kopete-pluginloader.upd: Script removes kopeterc::Modules
+2007-05-24T19:01:46 kopete-pluginloader.upd: Removing empty group kopeterc:
+2007-05-24T19:01:46 Checking update-file '/usr/share/apps/kconf_update/kmail.upd' for new updates
+2007-05-24T19:01:46 kmail.upd: Found new update '3.2-update-loop-on-goto-unread-settings'
+2007-05-24T19:01:46 kmail.upd: Running script 'kmail-3.2-update-loop-on-goto-unread-settings.sh'
+2007-05-24T19:01:46 kmail.upd: Found new update '3.1.4-dont-use-UOID-0-for-any-identity'
+2007-05-24T19:01:46 kmail.upd: Running script 'kmail-3.1.4-dont-use-UOID-0-for-any-identity.pl'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.2-misc'
+2007-05-24T19:01:47 kmail.upd: Running script 'kmail-3.2-misc.sh'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.2-moves'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.3-use-ID-for-accounts'
+2007-05-24T19:01:47 kmail.upd: Running script 'kmail-3.3-use-ID-for-accounts.pl'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.3-update-filter-rules'
+2007-05-24T19:01:47 kmail.upd: !! Script 'kmail-3.3-update-filter-rules.pl' not found in line 99 : 'Script=kmail-3.3-update-filter-rules.pl,perl'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.3-move-identities-to-own-file'
+2007-05-24T19:01:47 kmail.upd: Running script 'kmail-3.3-move-identities.pl'
+2007-05-24T19:01:47 kmail.upd: Script removes kmailrc:General:Default Identity
+2007-05-24T19:01:47 kmail.upd: Updating emailidentities:General:Default Identity to ''
+2007-05-24T19:01:47 kmail.upd: Found new update '3.3-aegypten-kpgprc-to-kmailrc'
+2007-05-24T19:01:47 kmail.upd: Found new update '3.3-aegypten-kpgprc-to-libkleopatrarc'
+2007-05-24T19:01:47 kmail.upd: Running script 'kmail-3.3-aegypten.pl'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.3-aegypten-emailidentities-split-sign-encr-keys'
+2007-05-24T19:01:48 kmail.upd: Running script 'kmail-3.3-split-sign-encr-keys.sh'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.3-misc'
+2007-05-24T19:01:48 kmail.upd: Running script 'kmail-3.3-misc.pl'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.3b1-misc'
+2007-05-24T19:01:48 kmail.upd: Running script 'kmail-3.3b1-misc.pl'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.4'
+2007-05-24T19:01:48 kmail.upd: Running script 'kmail-3.4-misc.pl'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.4a'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.4b'
+2007-05-24T19:01:48 kmail.upd: Found new update '3.4.1'
+2007-05-24T19:01:48 kmail.upd: Running script 'kmail-3.4.1-update-status-filters.pl'
+2007-05-24T19:01:49 kmail.upd: Found new update '3.5-filter-icons'
+2007-05-24T19:01:49 kmail.upd: Running script 'kmail-3.5-filter-icons.pl'
+2007-05-24T19:01:49 kmail.upd: Found new update '3.5.4'
+2007-05-24T19:01:49 Checking update-file '/usr/share/apps/kconf_update/korganizer.upd' for new updates
+2007-05-24T19:01:49 korganizer.upd: Found new update 'korganizer_3.4_GroupwareCleanup'
+2007-05-24T19:01:49 korganizer.upd: Found new update 'korganizer_3.4_WebExport'
+2007-05-24T19:01:49 korganizer.upd: Found new update 'korganizer_3.4_FilterAction'
+2007-05-24T19:01:49 korganizer.upd: Found new update 'korganizer_3.4_HolidayPlugin'
+2007-05-24T19:01:49 Checking update-file '/usr/share/apps/kconf_update/kghostview.upd' for new updates
+2007-05-24T19:01:49 kghostview.upd: Found new update '1changeToKConfigXT'
+2007-05-24T19:01:49 kghostview.upd: Found new update '2changeToKConfigXT'
+2007-05-24T19:01:49 kghostview.upd: Running script 'update-to-xt-names.pl'

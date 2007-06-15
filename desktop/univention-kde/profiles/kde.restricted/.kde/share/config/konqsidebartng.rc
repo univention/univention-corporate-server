@@ -1,0 +1,10 @@
+[$Version]
+update_info=konqsidebartng.upd:konqsidebartng_rc
+
+[filemanagement]
+ShowExtraButtons=true
+ShowTabsLeft=true
+
+[webbrowsing]
+ShowExtraButtons=true
+ShowTabsLeft=true

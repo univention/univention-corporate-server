@@ -1,0 +1,63 @@
+[1]
+Description=konqueror (KDE3.2)
+above=false
+aboverule=4
+below=false
+belowrule=4
+desktop=1
+desktoprule=4
+fullscreen=false
+fullscreenrule=4
+maximizehoriz=false
+maximizehorizrule=4
+maximizevert=false
+maximizevertrule=4
+minimize=false
+minimizerule=4
+noborder=false
+noborderrule=4
+position=174,205
+positionrule=4
+shade=false
+shaderule=4
+size=700,480
+sizerule=4
+skippager=false
+skippagerrule=4
+skiptaskbar=false
+skiptaskbarrule=4
+types=1
+windowrole=konqueror-mainwindow#1
+windowrolematch=1
+wmclass=konqueror konqueror
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+BrowserApplication[$d]
+count=1
+
+[KFileDialog Settings]
+Automatically select filename extension[$d]
+Height 1024[$d]
+Height 1050[$d]
+Height 1200[$d]
+Height 600[$d]
+Height 768[$d]
+LocationCombo Completionmode[$d]
+PathCombo Completionmode[$d]
+Recent URLs[$d]
+Separate Directories[$d]
+Show Bookmarks[$d]
+Show Speedbar[$d]
+Show hidden files[$d]
+Sort by[$d]
+Sort case insensitively[$d]
+Sort directories first[$d]
+Sort reversed[$d]
+View Style[$d]
+Width 1024[$d]
+Width 1280[$d]
+Width 1440[$d]
+Width 1600[$d]
+Width 800[$d]

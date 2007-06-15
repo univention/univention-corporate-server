@@ -1,0 +1,249 @@
+[$Version]
+update_info=kded.upd:kde3.0,kaccel.upd:kde3.1/r3,socks.upd:kde3.0/r1,klippershortcuts.upd:04112002,kwin.upd:kde3.2Xinerama,mouse_cursor_theme.upd:kde3.4.99,kaccel.upd:kde3.3/r1
+
+[DesktopIcons]
+ActiveEffect=togamma
+ActiveSemiTransparent=false
+ActiveValue=1
+Animated=true
+DefaultEffect=none
+DefaultSemiTransparent=false
+DefaultValue=1
+DisabledEffect=togray
+DisabledSemiTransparent=false
+DisabledValue=1
+DoublePixels=false
+Size=32
+
+[Desktops]
+Name_1=
+Name_2=
+Name_3=
+Name_4=
+Number=4
+
+[FMSettings]
+StandardFont=
+
+[General]
+alternateBackground=237,244,249
+background=239,239,239
+buttonBackground=221,223,228
+buttonForeground=0,0,0
+fixed=Monospace,10,-1,5,50,0,0,0,0,0
+font=Sans Serif,10,-1,5,50,0,0,0,0,0
+foreground=0,0,0
+linkColor=0,0,238
+menuFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+selectBackground=103,141,178
+selectForeground=255,255,255
+shadeSortColumn=true
+taskbarFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+toolBarFont=Sans Serif,10,-1,5,50,0,0,0,0,0
+visitedLinkColor=82,24,139
+widgetStyle=Plastik
+windowBackground=255,255,255
+windowForeground=0,0,0
+
+[Global Shortcuts]
+Activate Window Demanding Attention=default(Alt+Ctrl+A)
+Block Global Shortcuts=none
+Defaults timestamp=Jun  5 200713:08:25
+Desktop Screenshot=default(Ctrl+Print)
+Enable/Disable Clipboard Actions=default(Alt+Ctrl+X)
+Halt without Confirmation=none
+Kill Window=default(Alt+Ctrl+Escape)
+Lock Session=default(Alt+Ctrl+L)
+Log Out=default(Alt+Ctrl+Delete)
+Log Out Without Confirmation=default(Alt+Ctrl+Shift+Delete)
+Manually Invoke Action on Current Clipboard=default(Alt+Ctrl+R)
+Mouse Emulation=default(Alt+F12)
+Next Taskbar Entry=none
+Popup Launch Menu=default(Alt+F1)
+Previous Taskbar Entry=none
+Reboot without Confirmation=none
+Run Command=default(Alt+F2)
+Setup Window Shortcut=none
+Show Klipper Popup-Menu=default(Alt+Ctrl+V)
+Show Taskmanager=default(Ctrl+Escape)
+Show Window List=default(Alt+F5)
+Switch One Desktop Down=none
+Switch One Desktop Up=none
+Switch One Desktop to the Left=none
+Switch One Desktop to the Right=none
+Switch User=default(Alt+Ctrl+Insert)
+Switch to Desktop 1=default(Ctrl+F1)
+Switch to Desktop 10=default(Ctrl+F10)
+Switch to Desktop 11=default(Ctrl+F11)
+Switch to Desktop 12=default(Ctrl+F12)
+Switch to Desktop 13=default(Ctrl+Shift+F1)
+Switch to Desktop 14=default(Ctrl+Shift+F2)
+Switch to Desktop 15=default(Ctrl+Shift+F3)
+Switch to Desktop 16=default(Ctrl+Shift+F4)
+Switch to Desktop 17=default(Ctrl+Shift+F5)
+Switch to Desktop 18=default(Ctrl+Shift+F6)
+Switch to Desktop 19=default(Ctrl+Shift+F7)
+Switch to Desktop 2=default(Ctrl+F2)
+Switch to Desktop 20=default(Ctrl+Shift+F8)
+Switch to Desktop 3=default(Ctrl+F3)
+Switch to Desktop 4=default(Ctrl+F4)
+Switch to Desktop 5=default(Ctrl+F5)
+Switch to Desktop 6=default(Ctrl+F6)
+Switch to Desktop 7=default(Ctrl+F7)
+Switch to Desktop 8=default(Ctrl+F8)
+Switch to Desktop 9=default(Ctrl+F9)
+Switch to Next Desktop=none
+Switch to Next Keyboard Layout=default(Alt+Ctrl+K)
+Switch to Previous Desktop=none
+Toggle Showing Desktop=default(Alt+Ctrl+D)
+Toggle Window Raise/Lower=none
+Walk Through Desktop List=Ctrl+Tab
+Walk Through Desktop List (Reverse)=Ctrl+Shift+Tab
+Walk Through Desktops=none
+Walk Through Desktops (Reverse)=none
+Walk Through Windows=default(Alt+Tab)
+Walk Through Windows (Reverse)=default(Alt+Shift+Tab)
+Window Above Other Windows=none
+Window Below Other Windows=none
+Window Close=default(Alt+F4)
+Window Fullscreen=none
+Window Grow Horizontal=none
+Window Grow Vertical=none
+Window Lower=none
+Window Maximize=none
+Window Maximize Horizontal=none
+Window Maximize Vertical=none
+Window Minimize=none
+Window Move=none
+Window No Border=none
+Window On All Desktops=none
+Window One Desktop Down=none
+Window One Desktop Up=none
+Window One Desktop to the Left=none
+Window One Desktop to the Right=none
+Window Operations Menu=default(Alt+F3)
+Window Pack Down=none
+Window Pack Left=none
+Window Pack Right=none
+Window Pack Up=none
+Window Raise=none
+Window Resize=none
+Window Screenshot=default(Alt+Print)
+Window Shade=none
+Window Shrink Horizontal=none
+Window Shrink Vertical=none
+Window to Desktop 1=none
+Window to Desktop 10=none
+Window to Desktop 11=none
+Window to Desktop 12=none
+Window to Desktop 13=none
+Window to Desktop 14=none
+Window to Desktop 15=none
+Window to Desktop 16=none
+Window to Desktop 17=none
+Window to Desktop 18=none
+Window to Desktop 19=none
+Window to Desktop 2=none
+Window to Desktop 20=none
+Window to Desktop 3=none
+Window to Desktop 4=none
+Window to Desktop 5=none
+Window to Desktop 6=none
+Window to Desktop 7=none
+Window to Desktop 8=none
+Window to Desktop 9=none
+Window to Next Desktop=none
+Window to Previous Desktop=none
+
+[Icons]
+Theme=crystalsvg
+
+[KDE]
+ChangeCursor=true
+EffectAnimateCombo=false
+EffectFadeMenu=false
+EffectFadeTooltip=false
+EffectsEnabled=false
+ShowIconsOnPushButtons=false
+SingleClick=true
+colorScheme=<default>
+contrast=7
+macStyle=false
+
+[Locale]
+Country[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 1)
+Language[$e]=$(/usr/local/bin/getlocale| cut -d '/' -f 2)
+
+[MainToolbarIcons]
+ActiveEffect=none
+ActiveSemiTransparent=false
+ActiveValue=1
+Animated=false
+DefaultEffect=none
+DefaultSemiTransparent=false
+DefaultValue=1
+DisabledEffect=togray
+DisabledSemiTransparent=false
+DisabledValue=1
+DoublePixels=false
+Size=22
+
+[PanelIcons]
+ActiveEffect=togamma
+ActiveSemiTransparent=false
+ActiveValue=1
+Animated=false
+DefaultEffect=none
+DefaultSemiTransparent=false
+DefaultValue=1
+DisabledEffect=togray
+DisabledSemiTransparent=false
+DisabledValue=1
+DoublePixels=false
+Size=32
+
+[Paths]
+Trash=$HOME/Desktop/Mülleimer/
+
+[SmallIcons]
+ActiveEffect=none
+ActiveSemiTransparent=false
+ActiveValue=1
+Animated=false
+DefaultEffect=none
+DefaultSemiTransparent=false
+DefaultValue=1
+DisabledEffect=togray
+DisabledSemiTransparent=false
+DisabledValue=1
+DoublePixels=false
+Size=16
+
+[ToolbarIcons]
+ActiveEffect=none
+ActiveSemiTransparent=false
+ActiveValue=1
+Animated=false
+DefaultEffect=none
+DefaultSemiTransparent=false
+DefaultValue=1
+DisabledEffect=togray
+DisabledSemiTransparent=false
+DisabledValue=1
+DoublePixels=false
+Size=22
+
+[WM]
+activeBackground=65,142,220
+activeBlend=107,145,184
+activeFont=Sans Serif,10,-1,5,75,0,0,0,0,0
+activeForeground=255,255,255
+activeTitleBtnBg=220,220,220
+frame=239,239,239
+handle=239,239,239
+inactiveBackground=157,170,186
+inactiveBlend=157,170,186
+inactiveForeground=221,221,221
+inactiveFrame=239,239,239
+inactiveHandle=239,239,239
+inactiveTitleBtnBg=220,220,220

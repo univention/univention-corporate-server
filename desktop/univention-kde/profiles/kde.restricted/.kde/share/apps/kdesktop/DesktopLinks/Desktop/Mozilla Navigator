@@ -1,0 +1,17 @@
+[Desktop Entry]
+Comment=Mozilla Navigator
+Comment[de]=Mozilla Navigator
+Exec=mozilla
+GenericName=
+GenericName[de]=
+Icon=firefox
+MimeType=
+Name=Mozilla Navigator
+Path=
+StartupNotify=true
+Terminal=false
+TerminalOptions=
+Type=Application
+X-DCOP-ServiceType=
+X-KDE-SubstituteUID=false
+X-KDE-Username=

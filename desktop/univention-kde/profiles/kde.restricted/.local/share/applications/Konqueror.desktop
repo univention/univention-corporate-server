@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=
+Exec=konqueror
+GenericName=Internet Browser
+Icon=konqueror
+Name=Konqueror
+Path=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=

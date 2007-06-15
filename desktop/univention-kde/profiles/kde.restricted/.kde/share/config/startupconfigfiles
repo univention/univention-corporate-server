@@ -1,0 +1,50 @@
+kcminputrc Mouse cursorTheme ''
+/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcminputrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcminputrc
+!/usr/share/config/kcminputrc
+*
+kcminputrc Mouse cursorSize ''
+/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcminputrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcminputrc
+!/usr/share/config/kcminputrc
+*
+kpersonalizerrc General FirstLogin true
+/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kpersonalizerrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kpersonalizerrc
+!/usr/share/config/kpersonalizerrc
+*
+ksplashrc KSplash Theme Default
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/ksplashrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/ksplashrc
+!/usr/share/config/ksplashrc
+*
+kcmrandrrc Display ApplyOnStartup false
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmrandrrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmrandrrc
+!/usr/share/config/kcmrandrrc
+*
+kcmrandrrc [Screen0]
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmrandrrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmrandrrc
+!/usr/share/config/kcmrandrrc
+*
+kcmrandrrc [Screen1]
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmrandrrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmrandrrc
+!/usr/share/config/kcmrandrrc
+*
+kcmrandrrc [Screen2]
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmrandrrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmrandrrc
+!/usr/share/config/kcmrandrrc
+*
+kcmrandrrc [Screen3]
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmrandrrc
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmrandrrc
+!/usr/share/config/kcmrandrrc
+*
+kcmfonts General forceFontDPI 0
+!/usr/share/univention-kde-profiles/univention-kde-profile-restricted/.kde/share/config/kcmfonts
+!/usr/share/univention-kde-profiles/default/.kde/share/config/kcmfonts
+!/usr/share/config/kcmfonts
+*

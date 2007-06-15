@@ -1,0 +1,17 @@
+#! /bin/sh
+# kcminputrc Mouse cursorTheme ''
+kcminputrc_mouse_cursortheme=""
+# kcminputrc Mouse cursorSize ''
+kcminputrc_mouse_cursorsize=""
+# kpersonalizerrc General FirstLogin true
+kpersonalizerrc_general_firstlogin="false"
+# ksplashrc KSplash Theme Default
+ksplashrc_ksplash_theme="Default"
+# kcmrandrrc Display ApplyOnStartup false
+kcmrandrrc_display_applyonstartup="false"
+# kcmrandrrc [Screen0]
+# kcmrandrrc [Screen1]
+# kcmrandrrc [Screen2]
+# kcmrandrrc [Screen3]
+# kcmfonts General forceFontDPI 0
+kcmfonts_general_forcefontdpi="0"

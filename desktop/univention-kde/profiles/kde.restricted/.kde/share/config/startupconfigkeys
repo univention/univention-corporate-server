@@ -1,0 +1,10 @@
+kcminputrc Mouse cursorTheme ''
+kcminputrc Mouse cursorSize ''
+kpersonalizerrc General FirstLogin true
+ksplashrc KSplash Theme Default
+kcmrandrrc Display ApplyOnStartup false
+kcmrandrrc [Screen0]
+kcmrandrrc [Screen1]
+kcmrandrrc [Screen2]
+kcmrandrrc [Screen3]
+kcmfonts General forceFontDPI 0

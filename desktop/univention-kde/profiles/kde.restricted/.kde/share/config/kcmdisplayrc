@@ -1,0 +1,5 @@
+[$Version]
+update_info=kcmdisplayrc.upd:kde3
+
+[X11]
+exportKDEColors=true

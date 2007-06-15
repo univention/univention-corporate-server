@@ -1,0 +1,42 @@
+[Background Common]
+CommonDesktop=true
+DeskNum=0
+
+[Desktop Icons]
+Preview=
+
+[Desktop0]
+BackgroundMode=Flat
+BlendBalance=100
+BlendMode=NoBlending
+Color1=0,48,130
+Color2=108,139,185
+Pattern=
+ReverseBlending=false
+Wallpaper=/usr/share/wallpapers/KDE34.png
+WallpaperMode=Scaled
+
+[FMSettings]
+NormalTextColor=0,0,0
+UnderlineLinks=true
+
+[General]
+AutoLineUpIcons=true
+
+[KFileDialog Settings]
+Automatic Preview=true
+Autoplay sounds=true
+
+[Menubar]
+ShowMenubar=false
+
+[Mouse Buttons]
+Middle=WindowListMenu
+
+[ScreenSaver]
+Saver=
+
+[Version]
+KDEVersionMajor=3
+KDEVersionMinor=5
+KDEVersionRelease=7

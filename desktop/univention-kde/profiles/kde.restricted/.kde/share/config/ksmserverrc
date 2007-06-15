@@ -1,0 +1,17 @@
+[$Version]
+update_info=ksmserver.upd:kde3
+
+[General]
+screenCount=1
+
+[LegacySession: saved at previous logout]
+count=0
+
+[Session: saved at previous logout]
+clientId1=11c0a8020a000106156276800000036170000
+count=1
+discardCommand1=rm,$HOME/.kde/share/config/session/kwin_11c0a8020a000106156276800000036170000_1180026291_156771
+program1=kwin
+restartCommand1=kwin,-session,11c0a8020a000106156276800000036170000_1180026291_156771
+restartStyleHint1=0
+userId1=janis

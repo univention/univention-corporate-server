@@ -1,0 +1,20 @@
+[$Version]
+update_info=kfmclient_3_2.upd:kfmclient_3_2
+
+[FMSettings]
+UnderlineLinks=true
+
+[KonqMainWindow_Size]
+Height 768=443
+Width 1024=693
+
+[MainView Settings]
+ToggableViewsShown=
+
+[Open-with settings]
+CompletionMode=5
+History=acroread,acro
+
+[Settings]
+BgColor=0,0,0
+BgImage=/usr/share/apps/konqueror/tiles/kde4ever.png
