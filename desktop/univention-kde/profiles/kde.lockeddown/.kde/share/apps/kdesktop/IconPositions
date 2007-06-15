@@ -18,7 +18,7 @@ Y 768=-99231
 Yabs=79
 Yabs_1024x768=79
 
-[IconPosition::Mülleimer]
+[IconPosition::MÃŒlleimer]
 X 1024=-98975
 X 640=17
 Y 480=5
@@ -36,7 +36,7 @@ Y 768=-99231
 Yabs=298
 Yabs_1024x768=298
 
-[IconPosition::Persönliches Verzeichnis]
+[IconPosition::PersÃ¶nliches Verzeichnis]
 X=7
 X 1024=-98975
 X 640=7
@@ -44,7 +44,7 @@ Y=197
 Y 480=197
 Y 768=-99231
 
-[IconPosition::Pers�nliches Verzeichnis]
+[IconPosition::Persönliches Verzeichnis]
 Xabs=137
 Xabs_1024x768=137
 Yabs=6

@@ -5,152 +5,152 @@ URL=
 Icon=history
 Name=History
 Name[af]=Geskiedenis
-Name[ar]=الخطّ الزمني
-Name[az]=Keçmiş
-Name[be]=Гісторыя
-Name[bg]=История
-Name[bn]=ইতিহাস
+Name[ar]=Ø§ÙØ®Ø·Ù Ø§ÙØ²ÙÙÙ
+Name[az]=KeÃ§miÅ
+Name[be]=ÐÑÑÑÐŸÑÑÑ
+Name[bg]=ÐÑÑÐŸÑÐžÑ
+Name[bn]=àŠàŠ€àŠ¿àŠ¹àŠŸàŠž
 Name[br]=Istor
 Name[bs]=Historija
 Name[ca]=Historial
 Name[cs]=Historie
-Name[csb]=Historëjô
+Name[csb]=HistorÃ«jÃŽ
 Name[cy]=Hanes
 Name[da]=Historik
 Name[de]=Verlaufsspeicher
-Name[el]=Ιστορικό
+Name[el]=ÎÏÏÎ¿ÏÎ¹ÎºÏ
 Name[eo]=Historio
 Name[es]=Historial
 Name[et]=Ajalugu
 Name[eu]=Historia
-Name[fa]=تاریخچه
+Name[fa]=ØªØ§Ø±ÛØ®ÚÙ
 Name[fi]=Historia
 Name[fr]=Historique
 Name[fy]=Histoarje
 Name[ga]=Stair
 Name[gl]=Historial
-Name[he]=היסטוריה
-Name[hi]=इतिहास
+Name[he]=×××¡×××š××
+Name[hi]=à€à€€à€¿à€¹à€Ÿà€ž
 Name[hr]=Povijest
-Name[hu]=Napló
+Name[hu]=NaplÃ³
 Name[id]=Sejarah
 Name[is]=Saga
 Name[it]=Cronologia
-Name[ja]=履歴
-Name[kk]=Журнал
-Name[km]=ប្រវត្តិ
-Name[lo]=ປະວັດການໃຊ້ງານ
+Name[ja]=å±¥æ­Ž
+Name[kk]=ÐÑÑÐœÐ°Ð»
+Name[km]=áááááááá·
+Name[lo]=àºàº°àº§àº±àºàºàº²àºà»àºà»àºàº²àº
 Name[lt]=Istorija
-Name[lv]=Vēsture
-Name[mk]=Историја
-Name[mn]=Түүх
+Name[lv]=VÄsture
+Name[mk]=ÐÑÑÐŸÑÐžÑÐ°
+Name[mn]=Ð¢Ò¯Ò¯Ñ
 Name[ms]=Sejarah
-Name[mt]=Kronoloġija
+Name[mt]=KronoloÄ¡ija
 Name[nb]=Historie
-Name[nds]=Vörgeschicht
-Name[ne]=इतिहास
+Name[nds]=VÃ¶rgeschicht
+Name[ne]=à€à€€à€¿à€¹à€Ÿà€ž
 Name[nl]=Geschiedenis
 Name[nn]=Historie
 Name[nso]=Histori
-Name[pa]=ਅਤੀਤ
+Name[pa]=àšàš€à©àš€
 Name[pl]=Historia
-Name[pt]=Histórico
-Name[pt_BR]=Histórico
+Name[pt]=HistÃ³rico
+Name[pt_BR]=HistÃ³rico
 Name[ro]=Istoric
-Name[ru]=Журнал
+Name[ru]=ÐÑÑÐœÐ°Ð»
 Name[rw]=Amateka
 Name[se]=Historihkka
-Name[sk]=História
+Name[sk]=HistÃ³ria
 Name[sl]=Zgodovina
-Name[sr]=Историјат
+Name[sr]=ÐÑÑÐŸÑÐžÑÐ°Ñ
 Name[sr@Latn]=Istorijat
 Name[sv]=Historik
-Name[ta]=வரலாறு
-Name[te]=చరిత్ర
-Name[tg]=Таърих
-Name[th]=ประวัติการใช้
-Name[tr]=Geçmiş
-Name[tt]=Taríx
-Name[uk]=Історія
-Name[uz]=Тарих
+Name[ta]=à®µà®°à®²à®Ÿà®±à¯
+Name[te]=à°à°°à°¿à°€à±à°°
+Name[tg]=Ð¢Ð°ÑÑÐžÑ
+Name[th]=àžàž£àž°àž§àž±àžàžŽàžàž²àž£à¹àžà¹
+Name[tr]=GeÃ§miÅ
+Name[tt]=TarÃ­x
+Name[uk]=ÐÑÑÐŸÑÑÑ
+Name[uz]=Ð¢Ð°ÑÐžÑ
 Name[ven]=Divhazwakale
-Name[vi]=Lịch sử
+Name[vi]=Lá»ch sá»­
 Name[wa]=Istwere
 Name[xh]=Imbali
-Name[zh_CN]=历史
-Name[zh_TW]=歷史紀錄
+Name[zh_CN]=åå²
+Name[zh_TW]=æ­·å²çŽé
 Name[zu]=Umlando
 Comment=This is the history of the URLs you have recently visited. You can sort them in many ways.
 Comment[af]=Hierdie is die geskiedenis van die Urls jy het onlangse besoekte. jy kan sorteer hulle in veel maniere.
-Comment[ar]=هذا الخط الزمني للمواقع التي زرتها حديثاً. يمكنك ترتيبها بالعديد من الطرق.
-Comment[az]=Bu da əvvəllər ziyarət etdiyiniz URLlərin siyahısıdır. Onları istədiyiniz kimi düzə bilərsiiz.
-Comment[be]=Гэта гісторыя спасылак URL, якія вы раней наведалі. Вы можаце ўпарадкаваць іх рознымі спосабамі.
-Comment[bg]=История на скоро посетените адреси
-Comment[bn]=আপনি সম্প্রতি কোন কোন ইউ-আর-এল-এ গিয়েছেন তার ইতিহাস। আপনি এই তালিকাটি নানাভাবে সাজাতে পারেন।
-Comment[bs]=Ovo je historija URLova koje ste nedavno posjetili. Možete ih složiti na više načina.
-Comment[ca]=Aquest és l'historial amb els URL que heu visitat recentment. Podeu ordenar-les de moltes maneres.
-Comment[cs]=Toto je historie URL, které jste naposledy navštívili. Můžete si je různými způsoby setřídit.
-Comment[csb]=Historëjô slédno òbzérónëch adresów URL. Je mòżno jã na wszelejaczé ôrte zortowac.
+Comment[ar]=ÙØ°Ø§ Ø§ÙØ®Ø· Ø§ÙØ²ÙÙÙ ÙÙÙÙØ§ÙØ¹ Ø§ÙØªÙ Ø²Ø±ØªÙØ§ Ø­Ø¯ÙØ«Ø§Ù. ÙÙÙÙÙ ØªØ±ØªÙØšÙØ§ ØšØ§ÙØ¹Ø¯ÙØ¯ ÙÙ Ø§ÙØ·Ø±Ù.
+Comment[az]=Bu da ÉvvÉllÉr ziyarÉt etdiyiniz URLlÉrin siyahÄ±sÄ±dÄ±r. OnlarÄ± istÉdiyiniz kimi dÃŒzÉ bilÉrsiiz.
+Comment[be]=ÐÑÑÐ° Ð³ÑÑÑÐŸÑÑÑ ÑÐ¿Ð°ÑÑÐ»Ð°Ðº URL, ÑÐºÑÑ Ð²Ñ ÑÐ°ÐœÐµÐ¹ ÐœÐ°Ð²ÐµÐŽÐ°Ð»Ñ. ÐÑ ÐŒÐŸÐ¶Ð°ÑÐµ ÑÐ¿Ð°ÑÐ°ÐŽÐºÐ°Ð²Ð°ÑÑ ÑÑ ÑÐŸÐ·ÐœÑÐŒÑ ÑÐ¿ÐŸÑÐ°Ð±Ð°ÐŒÑ.
+Comment[bg]=ÐÑÑÐŸÑÐžÑ ÐœÐ° ÑÐºÐŸÑÐŸ Ð¿ÐŸÑÐµÑÐµÐœÐžÑÐµ Ð°ÐŽÑÐµÑÐž
+Comment[bn]=àŠàŠªàŠšàŠ¿ àŠžàŠ®à§àŠªà§àŠ°àŠ€àŠ¿ àŠà§àŠš àŠà§àŠš àŠàŠ-àŠàŠ°-àŠàŠ²-àŠ àŠàŠ¿à§à§àŠà§àŠš àŠ€àŠŸàŠ° àŠàŠ€àŠ¿àŠ¹àŠŸàŠžà¥€ àŠàŠªàŠšàŠ¿ àŠàŠ àŠ€àŠŸàŠ²àŠ¿àŠàŠŸàŠàŠ¿ àŠšàŠŸàŠšàŠŸàŠ­àŠŸàŠ¬à§ àŠžàŠŸàŠàŠŸàŠ€à§ àŠªàŠŸàŠ°à§àŠšà¥€
+Comment[bs]=Ovo je historija URLova koje ste nedavno posjetili. MoÅŸete ih sloÅŸiti na viÅ¡e naÄina.
+Comment[ca]=Aquest Ã©s l'historial amb els URL que heu visitat recentment. Podeu ordenar-les de moltes maneres.
+Comment[cs]=Toto je historie URL, kterÃ© jste naposledy navÅ¡tÃ­vili. MÅ¯ÅŸete si je rÅ¯znÃœmi zpÅ¯soby setÅÃ­dit.
+Comment[csb]=HistorÃ«jÃŽ slÃ©dno Ã²bzÃ©rÃ³nÃ«ch adresÃ³w URL. Je mÃ²ÅŒno jÃ£ na wszelejaczÃ© ÃŽrte zortowac.
 Comment[cy]=Dyma hanes y safleoedd rydych wedi ymweld a nhw. Gallwch eu didoli mewn sawl ffordd.
-Comment[da]=Dette er historikken for de URL'er du har besøgt for nyligt. Du kan sortere dem på mange måder.
-Comment[de]=Dies ist ein Ordner für alle Adressen, die Sie in letzter Zeit besucht haben. Sie können sie auf vielerlei Weise sortieren.
-Comment[el]=Αυτό είναι το ιστορικό των URL που επισκεφθήκατε πρόσφατα. Μπορείτε να τα ταξινομήσετε με πολλούς τρόπους.
+Comment[da]=Dette er historikken for de URL'er du har besÃžgt for nyligt. Du kan sortere dem pÃ¥ mange mÃ¥der.
+Comment[de]=Dies ist ein Ordner fÃŒr alle Adressen, die Sie in letzter Zeit besucht haben. Sie kÃ¶nnen sie auf vielerlei Weise sortieren.
+Comment[el]=ÎÏÏÏ ÎµÎ¯ÎœÎ±Î¹ ÏÎ¿ Î¹ÏÏÎ¿ÏÎ¹ÎºÏ ÏÏÎœ URL ÏÎ¿Ï ÎµÏÎ¹ÏÎºÎµÏÎžÎ®ÎºÎ±ÏÎµ ÏÏÏÏÏÎ±ÏÎ±. ÎÏÎ¿ÏÎµÎ¯ÏÎµ ÎœÎ± ÏÎ± ÏÎ±ÎŸÎ¹ÎœÎ¿ÎŒÎ®ÏÎµÏÎµ ÎŒÎµ ÏÎ¿Î»Î»Î¿ÏÏ ÏÏÏÏÎ¿ÏÏ.
 Comment[eo]=Jen la historio de la vizititaj URLoj. Vi povas ordigi ilin diversmaniere.
 Comment[es]=Este es el historial con las URLs que ha visitado recientemente. Puede ordenarlas de diversos modos.
-Comment[et]=Sinu viimati külastatud saitide ajalugu. Ajalugu on võimalik mitmel moel sorteerida.
+Comment[et]=Sinu viimati kÃŒlastatud saitide ajalugu. Ajalugu on vÃµimalik mitmel moel sorteerida.
 Comment[eu]=Hau bisitatu berri dituzun URLen historia da. Era askotan antola ditzakezu
-Comment[fa]=این تاریخچۀ نشانیهای وبی است که اخیراً بازدید کرده‌اید. می‌توانید آنها را به روشهای زیادی مرتب کنید.
-Comment[fi]=Tämä on historia selatuista verkko-osoitteista. Ne voidaan järjestää monella tavalla.
-Comment[fr]=Voici la liste des URL que vous avez récemment visitées. Vous pouvez les trier de multiples façons.
-Comment[fy]=Dit is de histoarje fan de URL-adressen wêr jo koartlyn west ha. Jo kinne se op ferskate manieren sortearje.
-Comment[gl]=Éste é o historial de URLs que visitou recentemente. Pode ordená-las de varios xeitos.
-Comment[he]=זוהי היסטוריית הכתובות בהן ביקרת לאחרונה. באפשרותך לסדר אותה במגוון דרכים.
-Comment[hi]=आप जो हालिया भ्रमण किए हैं, उन यूआरएल का यह इतिहास है. आप इन्हें कई तरीकों से क्रमबद्ध कर सकते हैं.
-Comment[hr]=Povijest nedavno posjećenih URL adresa koji je moguće preslagivati na različite načine
-Comment[hu]=Itt láthatók a legutóbb meglátogatott URL-ek. Többféle szempont szerint is sorba rendezhetők.
-Comment[is]=Þetta er saga þeirra heimasíðna sem þú hefur heimsótt.  Þú getur raðað þessum lista á ýmsan hátt.
-Comment[it]=Questa è la cronologia degli indirizzi URL che hai visitato recentemente. Puoi ordinarli in vari modi.
-Comment[ja]=最近訪問した URL のリストを表示します。リストはさまざまな方法でソートできます。
-Comment[kk]=Жуырда жолыққан URL адрестер. Өз ыңғайыңызға қарай реттеп алуға болады.
-Comment[km]=នេះ​ជា​ប្រវត្តិ​របស់ URL ដែល​អ្នក​បាន​ទស្សនា​ថ្មីៗ​នេះ ។ អ្នក​អាច​តម្រៀប​ពួក​វា​តាម​វិធី​ជា​ច្រើន ។
-Comment[lo]=ນີ້ເປັນປະວັດເກັບ URL ທີ່ທ່ານເຄີຍມມກ່ອນໂດຍທ່ານສາມາດລງງລຳດັບມັນໄດ້ໃນຫລາຍຮູບແບບ
-Comment[lt]=Tai Jūsų neseniai aplankytų URL istorija, Jūs galite surūšiuoti juos įvairiais būdais.
-Comment[lv]=Šī ir nesen apmeklēto URL vēsture. Jūs varat to šķirot daudzos veidos.
-Comment[mk]=Ова е историја на URL кои скоро сте ги посетиле. Може да ги подредувате на разни начини.
-Comment[mn]= Энэ бол таны хамгийн сүүлд айлчилсан URL хаягуудын түүх юм. Та тэдгээрийг янз бүрээр эрэмбэлж болно.
+Comment[fa]=Ø§ÛÙ ØªØ§Ø±ÛØ®ÚÛ ÙØŽØ§ÙÛÙØ§Û ÙØšÛ Ø§Ø³Øª Ú©Ù Ø§Ø®ÛØ±Ø§Ù ØšØ§Ø²Ø¯ÛØ¯ Ú©Ø±Ø¯ÙâØ§ÛØ¯. ÙÛâØªÙØ§ÙÛØ¯ Ø¢ÙÙØ§ Ø±Ø§ ØšÙ Ø±ÙØŽÙØ§Û Ø²ÛØ§Ø¯Û ÙØ±ØªØš Ú©ÙÛØ¯.
+Comment[fi]=TÃ€mÃ€ on historia selatuista verkko-osoitteista. Ne voidaan jÃ€rjestÃ€Ã€ monella tavalla.
+Comment[fr]=Voici la liste des URL que vous avez rÃ©cemment visitÃ©es. Vous pouvez les trier de multiples faÃ§ons.
+Comment[fy]=Dit is de histoarje fan de URL-adressen wÃªr jo koartlyn west ha. Jo kinne se op ferskate manieren sortearje.
+Comment[gl]=Ãste Ã© o historial de URLs que visitou recentemente. Pode ordenÃ¡-las de varios xeitos.
+Comment[he]=×××× ×××¡×××š×××ª ×××ª××××ª ××× ×××§×š×ª ××××š×× ×. ×××€×©×š××ª× ××¡××š ×××ª× ×××××× ××š×××.
+Comment[hi]=à€à€ª à€à¥ à€¹à€Ÿà€²à€¿à€¯à€Ÿ à€­à¥à€°à€®à€£ à€à€¿à€ à€¹à¥à€, à€à€š à€¯à¥à€à€°à€à€² à€à€Ÿ à€¯à€¹ à€à€€à€¿à€¹à€Ÿà€ž à€¹à¥. à€à€ª à€à€šà¥à€¹à¥à€ à€à€ à€€à€°à¥à€à¥à€ à€žà¥ à€à¥à€°à€®à€¬à€Šà¥à€§ à€à€° à€žà€à€€à¥ à€¹à¥à€.
+Comment[hr]=Povijest nedavno posjeÄenih URL adresa koji je moguÄe preslagivati na razliÄite naÄine
+Comment[hu]=Itt lÃ¡thatÃ³k a legutÃ³bb meglÃ¡togatott URL-ek. TÃ¶bbfÃ©le szempont szerint is sorba rendezhetÅk.
+Comment[is]=Ãetta er saga ÃŸeirra heimasÃ­Ã°na sem ÃŸÃº hefur heimsÃ³tt.  ÃÃº getur raÃ°aÃ° ÃŸessum lista Ã¡ Ãœmsan hÃ¡tt.
+Comment[it]=Questa Ãš la cronologia degli indirizzi URL che hai visitato recentemente. Puoi ordinarli in vari modi.
+Comment[ja]=æè¿èšªåãã URL ã®ãªã¹ããè¡šç€ºããŸãããªã¹ãã¯ããŸããŸãªæ¹æ³ã§ãœãŒãã§ããŸãã
+Comment[kk]=ÐÑÑÑÐŽÐ° Ð¶ÐŸÐ»ÑÒÒÐ°Ðœ URL Ð°ÐŽÑÐµÑÑÐµÑ. ÓšÐ· ÑÒ£ÒÐ°Ð¹ÑÒ£ÑÐ·ÒÐ° ÒÐ°ÑÐ°Ð¹ ÑÐµÑÑÐµÐ¿ Ð°Ð»ÑÒÐ° Ð±ÐŸÐ»Ð°ÐŽÑ.
+Comment[km]=áááâáá¶âáááááááá·âáááá URL áááâá¢áááâáá¶áâáááááá¶âáááážáâáááÂ á á¢áááâá¢á¶áâááááááâááœáâáá¶âáá¶áâáá·áážâáá¶âááááŸáÂ á
+Comment[lo]=àºàºµà»à»àºàº±àºàºàº°àº§àº±àºà»àºàº±àº URL àºàºµà»àºà»àº²àºà»àºàºµàºàº¡àº¡àºà»àº­àºà»àºàºàºà»àº²àºàºªàº²àº¡àº²àºàº¥àºàºàº¥àº³àºàº±àºàº¡àº±àºà»àºà»à»àºàº«àº¥àº²àºàº®àº¹àºà»àºàº
+Comment[lt]=Tai JÅ«sÅ³ neseniai aplankytÅ³ URL istorija, JÅ«s galite surÅ«Å¡iuoti juos Ä¯vairiais bÅ«dais.
+Comment[lv]=Å Ä« ir nesen apmeklÄto URL vÄsture. JÅ«s varat to Å¡Ä·irot daudzos veidos.
+Comment[mk]=ÐÐ²Ð° Ðµ ÐžÑÑÐŸÑÐžÑÐ° ÐœÐ° URL ÐºÐŸÐž ÑÐºÐŸÑÐŸ ÑÑÐµ Ð³Ðž Ð¿ÐŸÑÐµÑÐžÐ»Ðµ. ÐÐŸÐ¶Ðµ ÐŽÐ° Ð³Ðž Ð¿ÐŸÐŽÑÐµÐŽÑÐ²Ð°ÑÐµ ÐœÐ° ÑÐ°Ð·ÐœÐž ÐœÐ°ÑÐžÐœÐž.
+Comment[mn]= Ð­ÐœÑ Ð±ÐŸÐ» ÑÐ°ÐœÑ ÑÐ°ÐŒÐ³ÐžÐ¹Ðœ ÑÒ¯Ò¯Ð»ÐŽ Ð°Ð¹Ð»ÑÐžÐ»ÑÐ°Ðœ URL ÑÐ°ÑÐ³ÑÑÐŽÑÐœ ÑÒ¯Ò¯Ñ ÑÐŒ. Ð¢Ð° ÑÑÐŽÐ³ÑÑÑÐžÐ¹Ð³ ÑÐœÐ· Ð±Ò¯ÑÑÑÑ ÑÑÑÐŒÐ±ÑÐ»Ð¶ Ð±ÐŸÐ»ÐœÐŸ.
 Comment[ms]=Ini ialah sejarah URL yang baru anda lawati. Anda tidak boleh isihkan ia dalam banyak cara.
-Comment[mt]=Din hija kronoloġija tal-URLs kollha li żort reċentement. Tista' tissortjahom b'diversi modi.
-Comment[nb]=Dette er en liste over de nettadressene du har vært innom nylig. Du kan sortere dem på ulike måter.
-Comment[nds]=Dit is de Vörgeschicht vun Sieden, de Du tolest besöcht hest. Du kannst se op mennige Oorden sorteren.
-Comment[ne]=यो तपाईँले भर्खरै अवलोकन गर्नु भएको यू आर एलहरूको सूची हो । तीनिहरूलाई तपाईँले धेरै तरिकाले क्रमबद्ध गर्न सक्नुहुन्छ ।
+Comment[mt]=Din hija kronoloÄ¡ija tal-URLs kollha li ÅŒort reÄentement. Tista' tissortjahom b'diversi modi.
+Comment[nb]=Dette er en liste over de nettadressene du har vÃŠrt innom nylig. Du kan sortere dem pÃ¥ ulike mÃ¥ter.
+Comment[nds]=Dit is de VÃ¶rgeschicht vun Sieden, de Du tolest besÃ¶cht hest. Du kannst se op mennige Oorden sorteren.
+Comment[ne]=à€¯à¥ à€€à€ªà€Ÿà€à€à€²à¥ à€­à€°à¥à€à€°à¥ à€à€µà€²à¥à€à€š à€à€°à¥à€šà¥ à€­à€à€à¥ à€¯à¥ à€à€° à€à€²à€¹à€°à¥à€à¥ à€žà¥à€à¥ à€¹à¥ à¥€ à€€à¥à€šà€¿à€¹à€°à¥à€²à€Ÿà€ à€€à€ªà€Ÿà€à€à€²à¥ à€§à¥à€°à¥ à€€à€°à€¿à€à€Ÿà€²à¥ à€à¥à€°à€®à€¬à€Šà¥à€§ à€à€°à¥à€š à€žà€à¥à€šà¥à€¹à¥à€šà¥à€ à¥€
 Comment[nl]=Dit is de geschiedenis van de URL-adressen waar u recentelijk bent geweest. U kunt ze op meerdere manieren sorteren.
-Comment[nn]=Dette er historia over adressene du nyleg har vitja. Du kan sortera lista på mange måtar.
+Comment[nn]=Dette er historia over adressene du nyleg har vitja. Du kan sortera lista pÃ¥ mange mÃ¥tar.
 Comment[nso]=Ye ke histori ya di-URL tseo odi etetsego gabjale. Okadi rarolla ka mekgwa ye mentshi.
-Comment[pa]=ਇਹ URL ਦੀ ਸੂਚੀ ਹੈ, ਜੋ ਕਿ ਤੁਸੀਂ ਖੋਲੋ ਸਨ, ਤੁਸੀਂ ਇਹਨਾਂ ਨੂੰ ਕਈ ਤਰਾਂ ਕ੍ਰਮਬੱਧ ਕਰ ਸਕਦੇ ਹੋ।
-Comment[pl]=Historia ostatnio odwiedzonych adresów URL. Można ją na różne sposoby posortować.
-Comment[pt]=O histórico dos URLs visitados recentemente. É possível ordená-los de várias maneiras.
-Comment[pt_BR]=Este é o histórico das URLs que você visitou recentemente. Você pode ordenar esta lista de várias maneiras.
-Comment[ro]=Acesta este istoricul URL-urilor pe care le-aţi vizitat recent. Le puteţi sorta în diferite moduri.
-Comment[ru]=Журнал недавно посещённых адресов (URL). Его можно настраивать по своему усмотрению.
+Comment[pa]=àšàš¹ URL àšŠà© àšžà©àšà© àš¹à©, àšà© àšàš¿ àš€à©àšžà©àš àšà©àš²à© àšžàšš, àš€à©àšžà©àš àšàš¹àššàšŸàš àššà©à©° àšàš àš€àš°àšŸàš àšà©àš°àš®àš¬à©±àš§ àšàš° àšžàšàšŠà© àš¹à©à¥€
+Comment[pl]=Historia ostatnio odwiedzonych adresÃ³w URL. MoÅŒna jÄ na rÃ³ÅŒne sposoby posortowaÄ.
+Comment[pt]=O histÃ³rico dos URLs visitados recentemente. Ã possÃ­vel ordenÃ¡-los de vÃ¡rias maneiras.
+Comment[pt_BR]=Este Ã© o histÃ³rico das URLs que vocÃª visitou recentemente. VocÃª pode ordenar esta lista de vÃ¡rias maneiras.
+Comment[ro]=Acesta este istoricul URL-urilor pe care le-aÅ£i vizitat recent. Le puteÅ£i sorta Ã®n diferite moduri.
+Comment[ru]=ÐÑÑÐœÐ°Ð» ÐœÐµÐŽÐ°Ð²ÐœÐŸ Ð¿ÐŸÑÐµÑÑÐœÐœÑÑ Ð°ÐŽÑÐµÑÐŸÐ² (URL). ÐÐ³ÐŸ ÐŒÐŸÐ¶ÐœÐŸ ÐœÐ°ÑÑÑÐ°ÐžÐ²Ð°ÑÑ Ð¿ÐŸ ÑÐ²ÐŸÐµÐŒÑ ÑÑÐŒÐŸÑÑÐµÐœÐžÑ.
 Comment[rw]=Aya ni amateka ya URL wasuye vuba. Ushobora kuzishungura mu buryo bwinshi.
-Comment[se]=Dán listtus oainnát čujuhusaid maid áiddo leat guossohan. Don sáhtát erohallat listtu máŋgga láhkai.
-Comment[sk]=Toto je história URL, ktoré ste naposledy navštívili. Môžete ich utriediť rôznymi spôsobmi.
-Comment[sl]=To je zgodovina URL-jev, ki ste jih pred kratkim obiskali. Lahko jih uredite na različne načine.
-Comment[sr]=Ово је листа URL-ова које сте недавно посетили. Можете је поређати на разне начине.
-Comment[sr@Latn]=Ovo je lista URL-ova koje ste nedavno posetili. Možete je poređati na razne načine.
-Comment[sv]=Det här är historiken på de webbadresser du nyligen besökt. Du kan sortera dem på många sätt.
-Comment[ta]=நீங்கள் தற்போது பார்த்த வலைப்பின்னல்களின் வரலாறு. அதை பல வழிகளில் வரிசைப்படுத்தலாம்.
-Comment[tg]=Ин саҳифаҳои аз торихчаи URL-ҳое ки охирон дидаед. Метавонед онҳоро ба ҳар сурати дархост мураттаб кунед.
-Comment[th]=นี่เป็นประวัติเก็บ URL ที่คุณเคยไปมาก่อน โดยคุณสามารถเรียงลำดับมันได้ในหลายรูปแบบ
-Comment[tr]=Bu sizim yakın geçmişte ziyaret ettiğiniz URL'lerin bir listesidir. Bunları bir çok şekilde sıralayabilirsiniz.
-Comment[tt]=Soñğı arada qaralğan bulğan URL tezmäse. Anı törleçä tärtipläp bula.
-Comment[uk]=Це - історія URL, які ви недавно відвідали. Ви можете також впорядкувати її будь-яким чином.
-Comment[uz]=Яқинда кўрган URL'ларнинг тарихи. Уларни турлича саралашингиз мумкин
+Comment[se]=DÃ¡n listtus oainnÃ¡t Äujuhusaid maid Ã¡iddo leat guossohan. Don sÃ¡htÃ¡t erohallat listtu mÃ¡Ågga lÃ¡hkai.
+Comment[sk]=Toto je histÃ³ria URL, ktorÃ© ste naposledy navÅ¡tÃ­vili. MÃŽÅŸete ich utriediÅ¥ rÃŽznymi spÃŽsobmi.
+Comment[sl]=To je zgodovina URL-jev, ki ste jih pred kratkim obiskali. Lahko jih uredite na razliÄne naÄine.
+Comment[sr]=ÐÐ²ÐŸ ÑÐµ Ð»ÐžÑÑÐ° URL-ÐŸÐ²Ð° ÐºÐŸÑÐµ ÑÑÐµ ÐœÐµÐŽÐ°Ð²ÐœÐŸ Ð¿ÐŸÑÐµÑÐžÐ»Ðž. ÐÐŸÐ¶ÐµÑÐµ ÑÐµ Ð¿ÐŸÑÐµÑÐ°ÑÐž ÐœÐ° ÑÐ°Ð·ÐœÐµ ÐœÐ°ÑÐžÐœÐµ.
+Comment[sr@Latn]=Ovo je lista URL-ova koje ste nedavno posetili. MoÅŸete je poreÄati na razne naÄine.
+Comment[sv]=Det hÃ€r Ã€r historiken pÃ¥ de webbadresser du nyligen besÃ¶kt. Du kan sortera dem pÃ¥ mÃ¥nga sÃ€tt.
+Comment[ta]=à®šà¯à®à¯à®à®³à¯ à®€à®±à¯à®ªà¯à®€à¯ à®ªà®Ÿà®°à¯à®€à¯à®€ à®µà®²à¯à®ªà¯à®ªà®¿à®©à¯à®©à®²à¯à®à®³à®¿à®©à¯ à®µà®°à®²à®Ÿà®±à¯. à®à®€à¯ à®ªà®² à®µà®Žà®¿à®à®³à®¿à®²à¯ à®µà®°à®¿à®à¯à®ªà¯à®ªà®à¯à®€à¯à®€à®²à®Ÿà®®à¯.
+Comment[tg]=ÐÐœ ÑÐ°Ò³ÐžÑÐ°Ò³ÐŸÐž Ð°Ð· ÑÐŸÑÐžÑÑÐ°Ðž URL-Ò³ÐŸÐµ ÐºÐž ÐŸÑÐžÑÐŸÐœ ÐŽÐžÐŽÐ°ÐµÐŽ. ÐÐµÑÐ°Ð²ÐŸÐœÐµÐŽ ÐŸÐœÒ³ÐŸÑÐŸ Ð±Ð° Ò³Ð°Ñ ÑÑÑÐ°ÑÐž ÐŽÐ°ÑÑÐŸÑÑ ÐŒÑÑÐ°ÑÑÐ°Ð± ÐºÑÐœÐµÐŽ.
+Comment[th]=àžàžµà¹à¹àžà¹àžàžàž£àž°àž§àž±àžàžŽà¹àžà¹àž URL àžàžµà¹àžàžžàžà¹àžàž¢à¹àžàž¡àž²àžà¹àž­àž à¹àžàž¢àžàžžàžàžªàž²àž¡àž²àž£àžà¹àž£àžµàž¢àžàž¥àž³àžàž±àžàž¡àž±àžà¹àžà¹à¹àžàž«àž¥àž²àž¢àž£àž¹àžà¹àžàž
+Comment[tr]=Bu sizim yakÄ±n geÃ§miÅte ziyaret ettiÄiniz URL'lerin bir listesidir. BunlarÄ± bir Ã§ok Åekilde sÄ±ralayabilirsiniz.
+Comment[tt]=SoÃ±ÄÄ± arada qaralÄan bulÄan URL tezmÃ€se. AnÄ± tÃ¶rleÃ§Ã€ tÃ€rtiplÃ€p bula.
+Comment[uk]=ÐŠÐµ - ÑÑÑÐŸÑÑÑ URL, ÑÐºÑ Ð²Ðž ÐœÐµÐŽÐ°Ð²ÐœÐŸ Ð²ÑÐŽÐ²ÑÐŽÐ°Ð»Ðž. ÐÐž ÐŒÐŸÐ¶ÐµÑÐµ ÑÐ°ÐºÐŸÐ¶ Ð²Ð¿ÐŸÑÑÐŽÐºÑÐ²Ð°ÑÐž ÑÑ Ð±ÑÐŽÑ-ÑÐºÐžÐŒ ÑÐžÐœÐŸÐŒ.
+Comment[uz]=Ð¯ÒÐžÐœÐŽÐ° ÐºÑÑÐ³Ð°Ðœ URL'Ð»Ð°ÑÐœÐžÐœÐ³ ÑÐ°ÑÐžÑÐž. Ð£Ð»Ð°ÑÐœÐž ÑÑÑÐ»ÐžÑÐ° ÑÐ°ÑÐ°Ð»Ð°ÑÐžÐœÐ³ÐžÐ· ÐŒÑÐŒÐºÐžÐœ
 Comment[ven]=Heyi ndi divhazwakale ya URL no i dalelaho zwazwino. Ni nga i lugisa nga ndila dzo fhambananho.
-Comment[vi]=Đây là danh sách các URL bạn đã xem gần đây. Bạn có thể sắp xếp lại chúng theo vài cách khác nhau.
+Comment[vi]=ÄÃ¢y lÃ  danh sÃ¡ch cÃ¡c URL báº¡n ÄÃ£ xem gáº§n ÄÃ¢y. Báº¡n cÃ³ thá» sáº¯p xáº¿p láº¡i chÃºng theo vÃ i cÃ¡ch khÃ¡c nhau.
 Comment[xh]=Le yimbali yee URL obusandukuzindwendwela. Ungazibeka ngendlela ezininzi.
-Comment[zh_CN]=这是您曾经浏览过的 URL 历史。您可以以多种方式对其排序。
-Comment[zh_TW]=這是您最近訪問的 URL 的歷史紀錄。您可以將它們以多種方式排序。
+Comment[zh_CN]=è¿æ¯æšæŸç»æµè§è¿ç URL åå²ãæšå¯ä»¥ä»¥å€ç§æ¹åŒå¯¹å¶æåºã
+Comment[zh_TW]=éæ¯æšæè¿èšªåç URL çæ­·å²çŽéãæšå¯ä»¥å°å®åä»¥å€çš®æ¹åŒæåºã
 Comment[zu]=Lo umlando wama-URL osanda kuwavakashela. Ungawahlela ngezindlela eziningi.
 Open=false
 X-KDE-TreeModule=History

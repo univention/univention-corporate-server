@@ -5,132 +5,132 @@ URL=system:/
 Icon=system
 Name=System
 Name[af]=Stelsel
-Name[ar]=النظام
+Name[ar]=Ø§ÙÙØžØ§Ù
 Name[az]=Sistem
-Name[be]=Сістэма
-Name[bg]=Система
-Name[bn]=সিস্টেম
+Name[be]=Ð¡ÑÑÑÑÐŒÐ°
+Name[bg]=Ð¡ÐžÑÑÐµÐŒÐ°
+Name[bn]=àŠžàŠ¿àŠžà§àŠà§àŠ®
 Name[br]=Reizhiad
 Name[bs]=Sistem
 Name[ca]=Sistema
-Name[cs]=Systém
+Name[cs]=SystÃ©m
 Name[csb]=Systema
 Name[cy]=Cysawd
-Name[el]=Σύστημα
+Name[el]=Î£ÏÏÏÎ·ÎŒÎ±
 Name[eo]=Sistemo
 Name[es]=Sistema
-Name[et]=Süsteem
+Name[et]=SÃŒsteem
 Name[eu]=Sistema
-Name[fa]=سیستم
-Name[fi]=Järjestelmä
+Name[fa]=Ø³ÛØ³ØªÙ
+Name[fi]=JÃ€rjestelmÃ€
 Name[fo]=Kervi
-Name[fr]=Système
+Name[fr]=SystÃšme
 Name[fy]=Systeem
-Name[ga]=Córas
+Name[ga]=CÃ³ras
 Name[gl]=Sistema
-Name[he]=מערכת
-Name[hi]=तंत्र
+Name[he]=××¢×š××ª
+Name[hi]=à€€à€à€€à¥à€°
 Name[hr]=Sustav
 Name[hu]=Rendszer
 Name[id]=Sistem
 Name[is]=Kerfi
 Name[it]=Sistema
-Name[ja]=システム
-Name[kk]=Жүйелік
-Name[km]=ប្រព័ន្ធ
-Name[ko]=시스템
-Name[lo]=ຈັດການລະບົບ
+Name[ja]=ã·ã¹ãã 
+Name[kk]=ÐÒ¯Ð¹ÐµÐ»ÑÐº
+Name[km]=áááááááá
+Name[ko]=ìì€í
+Name[lo]=àºàº±àºàºàº²àºàº¥àº°àºàº»àº
 Name[lt]=Sistema
-Name[lv]=Sistēma
-Name[mk]=Систем
-Name[mn]=Систем
+Name[lv]=SistÄma
+Name[mk]=Ð¡ÐžÑÑÐµÐŒ
+Name[mn]=Ð¡ÐžÑÑÐµÐŒ
 Name[ms]=Sistem
 Name[mt]=Sistema
 Name[nds]=Systeem
-Name[ne]=प्रणाली
+Name[ne]=à€ªà¥à€°à€£à€Ÿà€²à¥
 Name[nl]=Systeem
 Name[oc]=Sistemo
-Name[pa]=ਸਿਸਟਮ
+Name[pa]=àšžàš¿àšžàšàš®
 Name[pt]=Sistema
 Name[pt_BR]=Sistema
 Name[ro]=Sistem
-Name[ru]=Система
+Name[ru]=Ð¡ÐžÑÑÐµÐŒÐ°
 Name[rw]=Sisitemu
-Name[se]=Vuogádat
-Name[sk]=Systém
+Name[se]=VuogÃ¡dat
+Name[sk]=SystÃ©m
 Name[sl]=Sistem
-Name[sr]=Систем
+Name[sr]=Ð¡ÐžÑÑÐµÐŒ
 Name[sr@Latn]=Sistem
 Name[ss]=Umshini
-Name[ta]=அமைப்பு
-Name[te]=వ్యవస్థ
-Name[tg]=Система
-Name[th]=ระบบ
+Name[ta]=à®à®®à¯à®ªà¯à®ªà¯
+Name[te]=à°µà±à°¯à°µà°žà±à°¥
+Name[tg]=Ð¡ÐžÑÑÐµÐŒÐ°
+Name[th]=àž£àž°àžàž
 Name[tr]=Sistem
 Name[tt]=Sistem
-Name[uk]=Система
-Name[uz]=Тизим
+Name[uk]=Ð¡ÐžÑÑÐµÐŒÐ°
+Name[uz]=Ð¢ÐžÐ·ÐžÐŒ
 Name[ven]=Maitele
-Name[vi]=Hệ thống
+Name[vi]=Há» thá»ng
 Name[wa]=Sistinme
 Name[xh]=Indlela esestyenziswayo
-Name[zh_CN]=系统
-Name[zh_TW]=系統
+Name[zh_CN]=ç³»ç»
+Name[zh_TW]=ç³»çµ±
 Name[zu]=Isistimu
 Comment=This folder allows you to access common places on your computer
 Comment[af]=Hierdie gids laat jou toe om algemene plekke op jou rekenaar te besoek
-Comment[ar]=هذا المجلّد يسمح لك بالوصول إلى مواقع مشتركة على حاسوبك
-Comment[be]=Гэтая тэчка дазваляе атрымаць хуткі доступ да розных важных месцаў на вашым кампутары
-Comment[bg]=Директория за достъп до често използваните места в компютъра
-Comment[bn]=এই ফোল্ডারটি আপনার কম্পিউটারে সাধারণত ব্যবহৃত অবস্থানগুলিতে চটপট চলে যেতে সাহায্য করে
-Comment[bs]=Ovaj direktorij vam omogućuje pristup uobičajenim mjestima na vašem računaru
+Comment[ar]=ÙØ°Ø§ Ø§ÙÙØ¬ÙÙØ¯ ÙØ³ÙØ­ ÙÙ ØšØ§ÙÙØµÙÙ Ø¥ÙÙ ÙÙØ§ÙØ¹ ÙØŽØªØ±ÙØ© Ø¹ÙÙ Ø­Ø§Ø³ÙØšÙ
+Comment[be]=ÐÑÑÐ°Ñ ÑÑÑÐºÐ° ÐŽÐ°Ð·Ð²Ð°Ð»ÑÐµ Ð°ÑÑÑÐŒÐ°ÑÑ ÑÑÑÐºÑ ÐŽÐŸÑÑÑÐ¿ ÐŽÐ° ÑÐŸÐ·ÐœÑÑ Ð²Ð°Ð¶ÐœÑÑ ÐŒÐµÑÑÐ°Ñ ÐœÐ° Ð²Ð°ÑÑÐŒ ÐºÐ°ÐŒÐ¿ÑÑÐ°ÑÑ
+Comment[bg]=ÐÐžÑÐµÐºÑÐŸÑÐžÑ Ð·Ð° ÐŽÐŸÑÑÑÐ¿ ÐŽÐŸ ÑÐµÑÑÐŸ ÐžÐ·Ð¿ÐŸÐ»Ð·Ð²Ð°ÐœÐžÑÐµ ÐŒÐµÑÑÐ° Ð² ÐºÐŸÐŒÐ¿ÑÑÑÑÐ°
+Comment[bn]=àŠàŠ àŠ«à§àŠ²à§àŠ¡àŠŸàŠ°àŠàŠ¿ àŠàŠªàŠšàŠŸàŠ° àŠàŠ®à§àŠªàŠ¿àŠàŠàŠŸàŠ°à§ àŠžàŠŸàŠ§àŠŸàŠ°àŠ£àŠ€ àŠ¬à§àŠ¯àŠ¬àŠ¹à§àŠ€ àŠàŠ¬àŠžà§àŠ¥àŠŸàŠšàŠà§àŠ²àŠ¿àŠ€à§ àŠàŠàŠªàŠ àŠàŠ²à§ àŠ¯à§àŠ€à§ àŠžàŠŸàŠ¹àŠŸàŠ¯à§àŠ¯ àŠàŠ°à§
+Comment[bs]=Ovaj direktorij vam omoguÄuje pristup uobiÄajenim mjestima na vaÅ¡em raÄunaru
 Comment[ca]=Aquesta carpeta us permet accedir a llocs usuals de l'ordinador
-Comment[cs]=Tato složka zpřístupňuje často používaná umístění na vašem počítači
-Comment[csb]=Nen katalog dôwô mòżnotã przistãpù do nôczãsczi brëkòwónëch placów w twòjim kòmpùtrze
-Comment[da]=Denne mappe giver adgang til almindelige steder på din computer
-Comment[de]=Dieser Ordner ermöglicht den Zugriff auf gebräuchliche Systembereiche des Computers
-Comment[el]=Αυτός ο φάκελος σας επιτρέπει την πρόσβαση σε τυπικές τοποθεσίες του συστήματός σας
-Comment[eo]=Tiu ĉi dosierujo atingebligas al viaj ofte vizititaj lokoj en via komputilo
+Comment[cs]=Tato sloÅŸka zpÅÃ­stupÅuje Äasto pouÅŸÃ­vanÃ¡ umÃ­stÄnÃ­ na vaÅ¡em poÄÃ­taÄi
+Comment[csb]=Nen katalog dÃŽwÃŽ mÃ²ÅŒnotÃ£ przistÃ£pÃ¹ do nÃŽczÃ£sczi brÃ«kÃ²wÃ³nÃ«ch placÃ³w w twÃ²jim kÃ²mpÃ¹trze
+Comment[da]=Denne mappe giver adgang til almindelige steder pÃ¥ din computer
+Comment[de]=Dieser Ordner ermÃ¶glicht den Zugriff auf gebrÃ€uchliche Systembereiche des Computers
+Comment[el]=ÎÏÏÏÏ Î¿ ÏÎ¬ÎºÎµÎ»Î¿Ï ÏÎ±Ï ÎµÏÎ¹ÏÏÎ­ÏÎµÎ¹ ÏÎ·Îœ ÏÏÏÏÎ²Î±ÏÎ· ÏÎµ ÏÏÏÎ¹ÎºÎ­Ï ÏÎ¿ÏÎ¿ÎžÎµÏÎ¯ÎµÏ ÏÎ¿Ï ÏÏÏÏÎ®ÎŒÎ±ÏÏÏ ÏÎ±Ï
+Comment[eo]=Tiu Äi dosierujo atingebligas al viaj ofte vizititaj lokoj en via komputilo
 Comment[es]=Esta carpeta permite acceder a lugares usuales en su equipo
-Comment[et]=See kataloog võimaldab juurdepääsu tavalistele kohtadele su arvutis
+Comment[et]=See kataloog vÃµimaldab juurdepÃ€Ã€su tavalistele kohtadele su arvutis
 Comment[eu]=Karpeta honek zure ordenagailuaren leku arruntetarako sarbidea ematen dizu
-Comment[fa]=این پوشه اجازۀ دستیابی به جاهای مشترک در رایانۀ شما را می‌دهد
-Comment[fi]=Tämä kansio sallii pääsyn tietokoneesi yleisiin kohteisiin
-Comment[fr]=Ce dossier vous permet d'accéder aux endroits de votre ordinateur régulièrement utilisés
-Comment[fy]=Dizze map jout tagong ta algemiene plakken yn jo kompjûter
-Comment[ga]=Ceadaíonn an fillteán seo duit áiteanna coitianta a rochtain ar do ríomhaire
+Comment[fa]=Ø§ÛÙ ÙŸÙØŽÙ Ø§Ø¬Ø§Ø²Û Ø¯Ø³ØªÛØ§ØšÛ ØšÙ Ø¬Ø§ÙØ§Û ÙØŽØªØ±Ú© Ø¯Ø± Ø±Ø§ÛØ§ÙÛ ØŽÙØ§ Ø±Ø§ ÙÛâØ¯ÙØ¯
+Comment[fi]=TÃ€mÃ€ kansio sallii pÃ€Ã€syn tietokoneesi yleisiin kohteisiin
+Comment[fr]=Ce dossier vous permet d'accÃ©der aux endroits de votre ordinateur rÃ©guliÃšrement utilisÃ©s
+Comment[fy]=Dizze map jout tagong ta algemiene plakken yn jo kompjÃ»ter
+Comment[ga]=CeadaÃ­onn an fillteÃ¡n seo duit Ã¡iteanna coitianta a rochtain ar do rÃ­omhaire
 Comment[gl]=Este cartafol permite-lle aceder a lugares habituais do seu ordenador
-Comment[he]=תיקייה זו מאפשרת לך לגשת את המקומות המועדפים עליך במערכת שלך
-Comment[hr]=Ova mapa omogućuje pristup uobičajenim lokacijama na računalu
-Comment[hu]=Néhány fontosabb rendszerkönyvtár elérését teszi lehetővé
-Comment[is]=Þessi mappa veitir aðgang að almennum stöðum á tölvunni þinni
+Comment[he]=×ª××§××× ×× ×××€×©×š×ª ×× ×××©×ª ××ª ×××§××××ª ××××¢××€×× ×¢××× ×××¢×š××ª ×©××
+Comment[hr]=Ova mapa omoguÄuje pristup uobiÄajenim lokacijama na raÄunalu
+Comment[hu]=NÃ©hÃ¡ny fontosabb rendszerkÃ¶nyvtÃ¡r elÃ©rÃ©sÃ©t teszi lehetÅvÃ©
+Comment[is]=Ãessi mappa veitir aÃ°gang aÃ° almennum stÃ¶Ã°um Ã¡ tÃ¶lvunni ÃŸinni
 Comment[it]=Questa cartella permette di accedere agli oggetti comuni del tuo computer
-Comment[ja]=このフォルダからコンピュータ上のよく使われる場所にアクセスできます
-Comment[kk]=Бұл қапшық компьютердегі ортақ орындарға қатынауға мүмкіндік береді
-Comment[km]=ថត​នេះ​អនុញ្ញាត​ឲ្យអ្នក​ចូលដំណើរការ​កន្លែង​ទូទៅ​លើកុំព្យូទ័រ​របស់​អ្នក
-Comment[lt]=Šio aplanko padedami pasieksite dažniausiai lankomas kompiuterio vietas
-Comment[mk]=Оваа папка ви овозможува пристап до вообичаените места на вашиот компјутер
-Comment[nb]=Denne mappa gir deg tilgang til vanlige steder på din datamaskin
-Comment[nds]=Mit dissen Orner kannst Du op en Reeg faken bruukte Öörd togriepen
-Comment[ne]=यो फोल्डरले तपाईँलाई कम्प्युटरको साझा स्थानहरूमा पहुँच अनुमति दिन्छ
+Comment[ja]=ãã®ãã©ã«ãããã³ã³ãã¥ãŒã¿äžã®ããäœ¿ãããå Žæã«ã¢ã¯ã»ã¹ã§ããŸã
+Comment[kk]=ÐÒ±Ð» ÒÐ°Ð¿ÑÑÒ ÐºÐŸÐŒÐ¿ÑÑÑÐµÑÐŽÐµÐ³Ñ ÐŸÑÑÐ°Ò ÐŸÑÑÐœÐŽÐ°ÑÒÐ° ÒÐ°ÑÑÐœÐ°ÑÒÐ° ÐŒÒ¯ÐŒÐºÑÐœÐŽÑÐº Ð±ÐµÑÐµÐŽÑ
+Comment[km]=ááâáááâá¢áá»áááá¶áâá²ááá¢áááâááŒáááááŸááá¶áâááááááâááŒááâááŸáá»áááááŒáááâááááâá¢ááá
+Comment[lt]=Å io aplanko padedami pasieksite daÅŸniausiai lankomas kompiuterio vietas
+Comment[mk]=ÐÐ²Ð°Ð° Ð¿Ð°Ð¿ÐºÐ° Ð²Ðž ÐŸÐ²ÐŸÐ·ÐŒÐŸÐ¶ÑÐ²Ð° Ð¿ÑÐžÑÑÐ°Ð¿ ÐŽÐŸ Ð²ÐŸÐŸÐ±ÐžÑÐ°ÐµÐœÐžÑÐµ ÐŒÐµÑÑÐ° ÐœÐ° Ð²Ð°ÑÐžÐŸÑ ÐºÐŸÐŒÐ¿ÑÑÑÐµÑ
+Comment[nb]=Denne mappa gir deg tilgang til vanlige steder pÃ¥ din datamaskin
+Comment[nds]=Mit dissen Orner kannst Du op en Reeg faken bruukte ÃÃ¶rd togriepen
+Comment[ne]=à€¯à¥ à€«à¥à€²à¥à€¡à€°à€²à¥ à€€à€ªà€Ÿà€à€à€²à€Ÿà€ à€à€®à¥à€ªà¥à€¯à¥à€à€°à€à¥ à€žà€Ÿà€à€Ÿ à€žà¥à€¥à€Ÿà€šà€¹à€°à¥à€®à€Ÿ à€ªà€¹à¥à€à€ à€à€šà¥à€®à€€à€¿ à€Šà€¿à€šà¥à€
 Comment[nl]=Deze map geeft toegang tot algemene plekken van uw desktop
-Comment[nn]=Denne mappa gir deg tilgang til nokre vanlege stader på datamaskina
-Comment[pa]=ਇਹ ਫੋਲਡਰ ਤੁਹਾਨੂੰ ਤੁਹਾਡੇ ਕੰਪਿਊਟਰ 'ਚ ਆਮ ਥਾਵਾਂ ਦੀ ਵਰਤੋਂ ਕਰਨ ਲਈ ਸਹਾਇਕ ਹੈ
-Comment[pl]=Ten folder umożliwia dostęp do najczęściej używanych miejsc w Twoim komputerze
+Comment[nn]=Denne mappa gir deg tilgang til nokre vanlege stader pÃ¥ datamaskina
+Comment[pa]=àšàš¹ àš«à©àš²àš¡àš° àš€à©àš¹àšŸàššà©à©° àš€à©àš¹àšŸàš¡à© àšà©°àšªàš¿àšàšàš° 'àš àšàš® àš¥àšŸàšµàšŸàš àšŠà© àšµàš°àš€à©àš àšàš°àšš àš²àš àšžàš¹àšŸàšàš àš¹à©
+Comment[pl]=Ten folder umoÅŒliwia dostÄp do najczÄÅciej uÅŒywanych miejsc w Twoim komputerze
 Comment[pt]=Esta pasta permite aceder a alguns locais comuns no seu computador
-Comment[pt_BR]=Esta pasta permite que você acesse lugares comuns em seu computador
-Comment[ro]=Acest folder vă permite să accesaţi locurile uzuale pe computerul dvs.
-Comment[ru]=Часто используемые папки
-Comment[sk]=Tento priečinok umožňuje pristupovať na spoločné miesta na tomto počítači
-Comment[sl]=Ta mapa omogoča dostop do pomembnih lokacij na vašem računalniku
-Comment[sr]=Ова фасцикла омогућава приступ уобичајеним местима на вашем рачунару
-Comment[sr@Latn]=Ova fascikla omogućava pristup uobičajenim mestima na vašem računaru
-Comment[sv]=Den här katalogen gör det möjligt att komma åt vanliga platser på din dator
-Comment[th]=โฟลเดอร์นี้อนุญาตให้คุณเข้าถึงสถานที่ทั่วๆ ไปในเครื่องคอมพิวเตอร์ของคุณ
-Comment[uk]=Ця тека надає доступ до спільних місць у вашому комп'ютері
-Comment[vi]=Thư mục này cho phép bạn truy cập vào các nơi thông dụng của máy tính
-Comment[zh_CN]=此文件夹允许您访问计算机中的公共位置
-Comment[zh_TW]=這個資料夾允許存取您電腦上的共同空間
+Comment[pt_BR]=Esta pasta permite que vocÃª acesse lugares comuns em seu computador
+Comment[ro]=Acest folder vÄ permite sÄ accesaÅ£i locurile uzuale pe computerul dvs.
+Comment[ru]=Ð§Ð°ÑÑÐŸ ÐžÑÐ¿ÐŸÐ»ÑÐ·ÑÐµÐŒÑÐµ Ð¿Ð°Ð¿ÐºÐž
+Comment[sk]=Tento prieÄinok umoÅŸÅuje pristupovaÅ¥ na spoloÄnÃ© miesta na tomto poÄÃ­taÄi
+Comment[sl]=Ta mapa omogoÄa dostop do pomembnih lokacij na vaÅ¡em raÄunalniku
+Comment[sr]=ÐÐ²Ð° ÑÐ°ÑÑÐžÐºÐ»Ð° ÐŸÐŒÐŸÐ³ÑÑÐ°Ð²Ð° Ð¿ÑÐžÑÑÑÐ¿ ÑÐŸÐ±ÐžÑÐ°ÑÐµÐœÐžÐŒ ÐŒÐµÑÑÐžÐŒÐ° ÐœÐ° Ð²Ð°ÑÐµÐŒ ÑÐ°ÑÑÐœÐ°ÑÑ
+Comment[sr@Latn]=Ova fascikla omoguÄava pristup uobiÄajenim mestima na vaÅ¡em raÄunaru
+Comment[sv]=Den hÃ€r katalogen gÃ¶r det mÃ¶jligt att komma Ã¥t vanliga platser pÃ¥ din dator
+Comment[th]=à¹àžàž¥à¹àžàž­àž£à¹àžàžµà¹àž­àžàžžàžàž²àžà¹àž«à¹àžàžžàžà¹àžà¹àž²àžàž¶àžàžªàžàž²àžàžàžµà¹àžàž±à¹àž§à¹ à¹àžà¹àžà¹àžàž£àž·à¹àž­àžàžàž­àž¡àžàžŽàž§à¹àžàž­àž£à¹àžàž­àžàžàžžàž
+Comment[uk]=ÐŠÑ ÑÐµÐºÐ° ÐœÐ°ÐŽÐ°Ñ ÐŽÐŸÑÑÑÐ¿ ÐŽÐŸ ÑÐ¿ÑÐ»ÑÐœÐžÑ ÐŒÑÑÑÑ Ñ Ð²Ð°ÑÐŸÐŒÑ ÐºÐŸÐŒÐ¿'ÑÑÐµÑÑ
+Comment[vi]=ThÆ° má»¥c nÃ y cho phÃ©p báº¡n truy cáº­p vÃ o cÃ¡c nÆ¡i thÃŽng dá»¥ng cá»§a mÃ¡y tÃ­nh
+Comment[zh_CN]=æ­€æä»¶å€¹åè®žæšè®¿é®è®¡ç®æºäž­çå¬å±äœçœ®
+Comment[zh_TW]=éåè³æå€Ÿåèš±å­åæšé»èŠäžçå±åç©ºé
 Open=true
 X-KDE-TreeModule=Directory
 X-KDE-KonqSidebarModule=konqsidebar_tree

@@ -221,7 +221,7 @@ Size=32
 [Paths]
 Desktop=/usr/share/univention-kde-profiles/univention-kde-profile-lockeddown/Desktop/
 Desktop=/usr/share/univention-kde-profiles/kde.lockeddown/Desktop
-Trash=$HOME/Desktop/Mülleimer/
+Trash=$HOME/Desktop/MÃŒlleimer/
 
 [PreviewSettings]
 BoostSize=true

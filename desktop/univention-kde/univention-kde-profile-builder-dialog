@@ -37,7 +37,7 @@ if [ $? -ne 0 ]; then exit 1; fi
 name=`cat $tmpfile | grep -v KWrited | tail -n -1`
 echo "NAME:" $name
 
-kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewählt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
+kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewÃ€hlt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
 
 $cmd --title "Auswahl des Heimatverzeichnisses" --getexistingdirectory $default_path 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
@@ -47,7 +47,7 @@ $cmd --inputbox "Versionsnummer des Profils" "0.1" 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
 version=`cat $tmpfile | grep -v KWrited | tail -n -1`
 
-$cmd --radiolist "Art des Profils" restricted "Veränderbare Vorgabe" off locked "Unveränderbare Vorgabe" on 2>/dev/null >$tmpfile
+$cmd --radiolist "Art des Profils" restricted "VerÃ€nderbare Vorgabe" off locked "UnverÃ€nderbare Vorgabe" on 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
 desktop=`cat $tmpfile | grep -v KWrited | tail -n -1`
 
