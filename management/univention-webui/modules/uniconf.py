@@ -35,8 +35,7 @@ import types
 
 import univention.debug
 import sys
-import codecs
-(utf8_encode,utf8_decode,utf8_reader,utf8_writer)=codecs.lookup('utf-8')
+
 def getSubnodesByName(node,name):
 	list=node.getElementsByTagName(name)
 	list2=[]
@@ -94,9 +93,9 @@ class uniconf:
 			if dummy<l:
 				break
 		return (found,len(st)-l)
-		
-				
-			
+
+
+
 	def hide(self):
 		self.atts["internal"]=None
 
@@ -166,23 +165,23 @@ class uniconf:
 				try:
 					obj.name=obj.mytype()
 				except Exception,ex:
-					sys.stderr.write("Problem with: "+str(obj)+" "+str(ex)+"\n")
-					
-				
+					sys.stderr.write("Problem with: "+unicode(obj)+" "+unicode(ex)+"\n")
+
+
 			if not id.has_key(obj.name):
 				id[obj.name]=0
 			else:
 				id[obj.name]=id[obj.name]+1
 			if id[obj.name]!=0:
-				obj.name=obj.name+str(id[obj.name])
+				obj.name=obj.name+unicode(id[obj.name])
 			obj.id= self.id +"_%s"%(obj.name)
 			obj.init(input,xmlob,self.find_id(node,obj.id))
 
-	
+
 	def check(self):
 		for obj in self.subobjs:
 			obj.check()
-		
+
 
 	def apply(self):
 		for i in self.subobjs:
@@ -198,12 +197,12 @@ class uniconf:
 		xmlob=self.reprattrs(xmlob,self.myel)
 		xmlob=self.reprvars(xmlob,self.myel)
 		xmlob=self.myxmlrepr(xmlob,self.myel)
-			
+
 		for obj in self.subobjs :
 			xmlob=obj.xmlrepr(xmlob,self.myel)
 		return xmlob
-		
-		
+
+
 
 	def reprvars(self,xmlob,node):
 		if self.atts.has_key("passive"):
@@ -237,7 +236,7 @@ class uniconf:
 			if self.ivars[var]!=None:
 				contenttexttag=xmlob.createTextNode(self.ivars[var])
 				contenttag.appendChild(contenttexttag)
-		
+
 		return xmlob
 
 
@@ -263,21 +262,21 @@ class uniconf:
 
 	def myinit(self):
 		pass
-	
+
 	def gettagtext(self,nodelist):
 		rc = ""
 		for node in nodelist:
 			if node.nodeType == node.TEXT_NODE:
 				rc = rc + node.data
 		return rc
-	
+
 	def parsevars(self,vars):
 		xvardic={}
 		ivardic={}
 		for v in vars:
 			nametag=getSubnodesByName(v,"name")[0]
 			valuetag=getSubnodesByName(v,"content")[0]
-			
+
 			name=self.gettagtext(nametag.childNodes)
 			value=self.gettagtext(valuetag.childNodes)
 			atts=[]
@@ -297,15 +296,15 @@ class uniconf:
 
 	def parseatts(self,node):
 		atts=[]
-		
+
 		if node.attributes!=None:
 			for i in xrange(0,node.attributes.length):
 				att=node.attributes.item(i).name
 			atts.append(att)
-		
+
 			for att in atts:
 				self.atts[att]=node.getAttribute(att)
-			
+
 
 	def xmlpar(self,xmlob,node):
 		if node == None:
@@ -323,19 +322,19 @@ class uniconf:
 				if n==None:
 					continue
 				ob.xmlpar(xmlob,n)
-				
-		
+
+
 
 	def message(self,msg):
 		if not self.handlesmsg(msg):
 			self.messagebuff.append(msg)
 			if self.parent == self:
-				raise "unhandled message" + str(msg) + " in " + self.id
+				raise "unhandled message" + unicode(msg) + " in " + self.id
 			self.parent.message(msg)
 		else :
 			self.messagebuff.append(msg[:])
-			
-	
+
+
 	def mytype(self):
 		#to be implemented by each object
 		pass
@@ -343,5 +342,3 @@ class uniconf:
 	def handlesmsg(self,msg):
 		#to be implemented by each object
 		return 0
-	
-

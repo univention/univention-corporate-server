@@ -50,10 +50,10 @@ class longtable(uniconf):
 		self.save = self.parent.save
 	def mytype(self):
 		return("long_table")
-		
+
 	def init(self,input,xmlob,node):
 		self.input=input
-		
+
 		for ob in self.args["obs"]:
 			self.subobjs.append(ob)
 
@@ -63,7 +63,7 @@ class longtable(uniconf):
 			contenttags=getSubnodesByName(node,"content")
 			if contenttags:
 				content=self.gettagtext(contenttags[0].childNodes)
-				self.ivars["content"]=str(content)
+				self.ivars["content"]=unicode(content)
 
 	def myxmlrepr(self, xmlob, node):
 		contenttag=xmlob.createElement("content")

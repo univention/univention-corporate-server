@@ -39,7 +39,7 @@ from localwebui import _
 
 import univention.debug
 import univention.admin.uldap
-	
+
 from uniparts import *
 import cPickle
 import cStringIO
@@ -75,7 +75,7 @@ class saver (uniconf):
 	def deserialize(self,st):
 		if st==None or st=="":
 			return None
-		f=cStringIO.StringIO(binascii.a2b_base64(str(st)))
+		f=cStringIO.StringIO(binascii.a2b_base64(unicode(st)))
 		P=cPickle.Unpickler(f)
 		erg=P.load()
 		return erg

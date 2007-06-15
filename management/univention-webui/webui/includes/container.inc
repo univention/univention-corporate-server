@@ -128,7 +128,7 @@ class webui_container{
 		echo "<head>\n";
 
 		echo "<title>".$this->site_title."   ".$this->title."</title>\n";
-		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=iso-8859-1\"></meta>\n";
+		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></meta>\n";
 		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\"></link>\n";
 		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
 		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
@@ -154,9 +154,9 @@ class webui_container{
 		}
 		echo "    <td width=\"722\"><span class=\"Stil2\">".$this->headertext."</span></td>\n";
 		echo "  </tr>\n";
-		
+
 		if($this->ref_config->layout_type && $this->ref_config->layout_type=='menuless')
-		  {		    
+		  {
 		    echo "  <tr>\n"; //line 3
 		    echo "   <td colspan=\"4\">\n";
 		    echo "   <!-- layout is menuless -->\n";

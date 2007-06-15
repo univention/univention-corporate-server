@@ -46,6 +46,6 @@ from notebook import *
 from icon import *
 from waitdialog import waitstatus
 from tabbing import Tabbing
-import codecs
+# import codecs
 
-(utf8_encode,utf8_decode,utf8_reader,utf8_writer)=codecs.lookup('utf-8')
+# (utf8_encode,utf8_decode,utf8_reader,utf8_writer)=codecs.lookup('utf-8')

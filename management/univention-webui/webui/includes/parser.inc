@@ -196,21 +196,21 @@ class webui_out{			# PHP ---> Python
 			if(trim($key) == 'internal') $this->valid = trim($tag);
 			$attr .= " $key=\"".$value."\"";
 			}
-		fwrite($this->pipe,utf8_encode("<".$tag.$attr.">"));
+		fwrite($this->pipe,"<".$tag.$attr.">");
 	}
 
 	function closeTag($p, $tag){
 		if($this->valid == trim($tag)) $this->valid = FALSE;
 		if(trim($tag)=='content') $this->content=FALSE;
-		fwrite($this->pipe,utf8_encode(htmlspecialchars(stripslashes($this->change), ENT_COMPAT)));
+		fwrite($this->pipe,htmlspecialchars(stripslashes($this->change), ENT_COMPAT));
 		$this->change='';
-		fwrite($this->pipe,utf8_encode("</".$tag.">"));
+		fwrite($this->pipe,"</".$tag.">");
 	}
 
 	function value($p, $value){
 		if(trim($value)){
-			if($this->valid) fwrite($this->pipe,htmlspecialchars(utf8_encode($value)));
-			elseif(!$this->content) fwrite($this->pipe,htmlspecialchars(utf8_encode($value)));
+			if($this->valid) fwrite($this->pipe,htmlspecialchars($value));
+			elseif(!$this->content) fwrite($this->pipe,htmlspecialchars($value));
 			}
 	}
 }

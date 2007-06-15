@@ -50,7 +50,7 @@ class notebook(uniconf):
 			return {"selected":"0"}
 	def myinit(self):
 		if self.args.get("selected"):
-			self.ivars["selected"]=str(self.args["selected"])
+			self.ivars["selected"]=unicode(self.args["selected"])
 		else:
 			self.ivars["selected"]="0"
 	def butrepr(self,xmlob,node,desc,helptext,active):
@@ -88,7 +88,7 @@ class notebook(uniconf):
 		name.appendChild(nametext)
 		value=xmlob.createElement("content")
 		var.appendChild(value)
-		valuetext=xmlob.createTextNode(str(self.args.get("selected","0")))
+		valuetext=xmlob.createTextNode(unicode(self.args.get("selected","0")))
 		value.appendChild(valuetext)
 		for button in self.args.get("buttons",[]):
 			if len(button) == 4: # specific for UMC
@@ -114,7 +114,7 @@ class notebook(uniconf):
 					xmlob=self.butrepr(xmlob,tag,text,help,0)
 			number+=1
 		return xmlob
-					
+
 	def init(self,input,xmlob,node):
 		self.bpressed=0
 		self.input=input
@@ -130,15 +130,13 @@ class notebook(uniconf):
 					name=self.gettagtext(nametag.childNodes)
 					value=self.gettagtext(valuetag.childNodes)
 					if value:
-						self.ivars["selected"]=str(num)
+						self.ivars["selected"]=unicode(num)
 						self.bpressed=1
 				num+=1
 			if not self.bpressed:
-				self.ivars["selected"]=str(self.args.get("selected"))
-				
+				self.ivars["selected"]=unicode(self.args.get("selected"))
+
 	def getselected(self):
 		if not self.input:
 			return None
 		return int(self.ivars.get("selected",0))
-		
-

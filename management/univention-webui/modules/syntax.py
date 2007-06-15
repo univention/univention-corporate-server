@@ -152,10 +152,10 @@ class question_syntax(uniconf.uniconf):
 					tmppos = univention.admin.uldap.position(position.getBase())
 					tmppos.setDn(net)
 					(displaypos,displaydepth) = tmppos.getPrintable_depth()
-					if not str(displaydepth) == oldlevel:
+					if not unicode(displaydepth) == oldlevel:
 						item += 1
-					oldlevel = str(displaydepth)
-					network_choicelist.append({"item":item,"level":str(displaydepth),"name":net,"description":displaypos})
+					oldlevel = unicode(displaydepth)
+					network_choicelist.append({"item":item,"level":unicode(displaydepth),"name":net,"description":displaypos})
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'webui/syntax: network: %s level:%s ' % (displaydepth, displaypos) )
 					if net == value:
 						network_choicelist[-1]['selected'] = '1'
@@ -248,7 +248,7 @@ class question_syntax(uniconf.uniconf):
 
 			tmp_atts=copy.deepcopy(self.atts)
 			tmp_atts['width']='150'
-			text_box=question_text(name,tmp_atts,{'usertext':str(value),'helptext':self.args.get('helptext', '')})
+			text_box=question_text(name,tmp_atts,{'usertext':unicode(value),'helptext':self.args.get('helptext', '')})
 			self.subfields.append(text_box)
 			unit_box=question_select('',tmp_atts,{'choicelist':units, 'helptext':'Unit of Time'})
 			self.subfields.append(unit_box)
@@ -360,7 +360,7 @@ class question_syntax(uniconf.uniconf):
 				for desc,syntax in self.syntax.subsyntaxes:
 					value.append('')
 			for desc, syntax in self.syntax.subsyntaxes:
-				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s index=%d subsyntaxes=%s' % (str(value), index, self.syntax.subsyntaxes))
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'value=%s index=%d subsyntaxes=%s' % (unicode(value), index, self.syntax.subsyntaxes))
 				self.subfields.append(question_syntax('',self.atts,
 													  {'syntax':syntax,
 													   'value':value[index],
@@ -415,7 +415,7 @@ class question_syntax(uniconf.uniconf):
 					value=value*60*60
 				elif unit == 'minutes':
 					value=value*60
-				value=str(value)
+				value=unicode(value)
 			except ValueError:
 				value=(self.subfields[0].get_input(), self.subfields[1].get_input())
     			except TypeError:

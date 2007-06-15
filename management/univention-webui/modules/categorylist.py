@@ -59,13 +59,13 @@ class categorylist(uniconf):
 		closed = "-1";
 
 		if self.args.get("selected"):
-			selected = str( self.args["selected"] )
+			selected = unicode( self.args["selected"] )
 		if self.args.get("closed"):
-			closed = str( self.args["closed"] )
-		
+			closed = unicode( self.args["closed"] )
+
 		self.ivars[ "selected" ] = selected
 		self.ivars[ "closed" ] = closed
-			
+
 
 	def category_repr(self, xmlob, node, desc, helptext, active, closeable, closed):
 		tag=xmlob.createElement("text")
@@ -110,7 +110,7 @@ class categorylist(uniconf):
 		name.appendChild(nametext)
 		value=xmlob.createElement("content")
 		var.appendChild(value)
-		valuetext=xmlob.createTextNode(str(self.args.get("selected","0")))
+		valuetext=xmlob.createTextNode(unicode(self.args.get("selected","0")))
 		value.appendChild(valuetext)
 		for category_element in self.args.get("categories",[]):
 			description = category_element[ 'description' ]
@@ -123,13 +123,13 @@ class categorylist(uniconf):
 				closeable = "1"
 			else:
 				closeable = "0"
-				
+
 			tag=xmlob.createElement("button")
 
 			if icon:
 				tag.setAttribute( 'icon', icon )
 			tag.setAttribute( 'closeable', closeable )
-				
+
 			node.appendChild(tag)
 			active = 0
 
@@ -137,7 +137,7 @@ class categorylist(uniconf):
 				active = 1
 			elif not self.args.get("selected") and number == 0:
 				active = 1
-				
+
 			xmlob=self.category_repr(xmlob, tag, description[0], description[1], active, closeable, closed)
 
 			if closeable == "1": # add a "close"-button
@@ -148,10 +148,10 @@ class categorylist(uniconf):
 
 				node.appendChild(tag)
 				xmlob=self.category_repr(xmlob, tag, description[0], description[1], active, closeable, closed)
-				
+
 			number+=1
 		return xmlob
-					
+
 	def init(self,input,xmlob,node):
 		self.bpressed = 0
 		self.bclosed = 0
@@ -174,15 +174,15 @@ class categorylist(uniconf):
 					if value:
 						if closebutton:
 							self.closed = 1
-							self.ivars["closed"]=str(num-1)
+							self.ivars["closed"]=unicode(num-1)
 						else:
-							self.ivars["selected"]=str(num)
+							self.ivars["selected"]=unicode(num)
 							self.bpressed = 1
 				if not closebutton:
 					num+=1
 			if not self.bpressed:
-				self.ivars["selected"]=str(self.args.get("selected"))
-				
+				self.ivars["selected"]=unicode(self.args.get("selected"))
+
 	def getselected(self):
 		if not self.input:
 			return None
