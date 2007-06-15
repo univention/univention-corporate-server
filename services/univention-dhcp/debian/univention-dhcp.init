@@ -28,6 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+if [ ! -e /etc/runit/univention/univention-dhcp ]; then
+	exit 0
+fi
+
 
 case "$1" in
 	start)
@@ -47,7 +51,7 @@ case "$1" in
 			then
 			$0 restart
 		else
-			echo "runsvstat return no running dhcpd, don't need to restart."
+			echo "sv status return no running dhcpd, don't need to restart."
 		fi
 		;;
 	*)
