@@ -1,0 +1,5 @@
+[/usr/lib/netscape/plugins-libc6/nppdf.so]
+application/pdf:pdf:Portable Document Format
+[/usr/lib/mozilla/plugins/libflashplayer.so]
+application/x-shockwave-flash:swf:Shockwave Flash
+application/futuresplash:spl:FutureSplash Player

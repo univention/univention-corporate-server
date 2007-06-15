@@ -1,0 +1,13 @@
+[$i]
+[General]
+PassiveResourceKeys=
+ResourceKeys=w4dVtHczUj
+Standard=w4dVtHczUj
+
+[Resource_w4dVtHczUj]
+FileFormat=vcard
+ResourceIdentifier=w4dVtHczUj
+ResourceIsActive=true
+ResourceIsReadOnly=false
+ResourceName=resource
+ResourceType=file

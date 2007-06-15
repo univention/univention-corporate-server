@@ -1,0 +1,19 @@
+number=3
+
+[0]
+description=
+file=nppdf.so
+mime=application/pdf:pdf:Portable Document Format
+name=Unbenanntes Plugin
+
+[1]
+description=Shockwave Flash 6.0 r79
+file=libflashplayer.so
+mime=application/x-shockwave-flash:swf:Shockwave Flash;application/futuresplash:spl:FutureSplash Player
+name=Shockwave Flash
+
+[2]
+description=
+file=nppdf.so
+mime=application/pdf:pdf:Portable Document Format
+name=Unbenanntes Plugin

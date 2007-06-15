@@ -1,0 +1,61 @@
+[IconPosition::Evolution]
+X=15
+X 1024=-98975
+X 640=15
+Y=19
+Y 480=19
+Y 768=-99231
+
+[IconPosition::Mozilla Navigator]
+X=14
+X 1024=-98975
+X 640=14
+Xabs=14
+Xabs_1024x768=14
+Y=108
+Y 480=108
+Y 768=-99231
+Yabs=79
+Yabs_1024x768=79
+
+[IconPosition::Mülleimer]
+X 1024=-98975
+X 640=17
+Y 480=5
+Y 768=-99231
+
+[IconPosition::OpenOffice]
+X=9
+X 1024=-98975
+X 640=9
+Xabs=28
+Xabs_1024x768=28
+Y=286
+Y 480=286
+Y 768=-99231
+Yabs=298
+Yabs_1024x768=298
+
+[IconPosition::Persönliches Verzeichnis]
+X=7
+X 1024=-98975
+X 640=7
+Y=197
+Y 480=197
+Y 768=-99231
+
+[IconPosition::Pers�nliches Verzeichnis]
+Xabs=137
+Xabs_1024x768=137
+Yabs=6
+Yabs_1024x768=6
+
+[IconPosition::trash.desktop]
+X=-67
+X 640=-67
+Xabs=32
+Xabs_1024x768=32
+Y=-74
+Y 480=-74
+Yabs=6
+Yabs_1024x768=6

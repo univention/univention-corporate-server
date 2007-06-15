@@ -1,0 +1,25 @@
+[Desktop Entry]
+BgImage=
+Encoding=UTF-8
+Icon=desktop
+Type=Directory
+
+[IconPosition::Evolution]
+X=17
+Y=61
+
+[IconPosition::Mozilla Navigator]
+X=16
+Y=117
+
+[IconPosition::Mülleimer]
+X=17
+Y=5
+
+[IconPosition::OpenOffice]
+X=12
+Y=189
+
+[IconPosition::Persönliches Verzeichnis]
+X=5
+Y=245

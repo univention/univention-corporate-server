@@ -1,0 +1,12 @@
+[$i]
+[General]
+InitialHeight 768=564
+InitialWidth 1024=847
+SplitterSizes=195,646
+
+[HTML Settings]
+AutomaticDetectionLanguage=0
+
+[Index]
+IconSize=Medium
+ViewMode=Tree

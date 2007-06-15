@@ -1,0 +1,13 @@
+[Desktop Entry]
+Comment=Rechner
+Exec=kcalc
+GenericName=
+Icon=kcalc
+Name=KCalc
+Path=
+StartupNotify=true
+Terminal=0
+TerminalOptions=
+Type=Application
+X-KDE-SubstituteUID=false
+X-KDE-Username=
