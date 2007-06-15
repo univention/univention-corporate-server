@@ -1,9 +1,0 @@
-[Desktop Entry]
-Type=MimeType
-MimeType=application/futuresplash
-Icon=netscape_doc
-Comment=Netscape Shockwave Flash
-X-KDE-AutoEmbed=true
-X-KDE-nsplugin=true
-Patterns=*.spl
-Name=FutureSplash Player
