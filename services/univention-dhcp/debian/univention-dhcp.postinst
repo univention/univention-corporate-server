@@ -47,18 +47,7 @@ if [ "$1" = "configure" -a -n "$2" ]
 	then
 	/etc/init.d/univention-dhcp crestart
 else
-	if [ "$1" = "configure" ]
-		then
-		echo "wait for runsv to sync..."
-		count=0
-		until runsvstat /etc/runit/univention-dhcp > /dev/null 2>&1 || test $count -gt 10
-		  do
-		  sleep 1
-		  ((count=count+1))
-		done
-		# runsv has 10 seconds to sync, if it hasn't there will be a warning
-		/etc/init.d/univention-dhcp start
-	fi
+	/etc/init.d/univention-dhcp start
 fi
 
 if [ "$1" = "configure" ]; then

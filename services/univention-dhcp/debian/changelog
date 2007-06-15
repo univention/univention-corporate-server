@@ -1,3 +1,9 @@
+univention-dhcp (2.0.2-1) unstable; urgency=low
+
+  * don't wait for runsv in the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 08:17:58 +0200
+
 univention-dhcp (2.0.1-2) unstable; urgency=low
 
   * encoded files utf-8
