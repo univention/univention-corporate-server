@@ -1,3 +1,9 @@
+univention-python (2.2.1-1) unstable; urgency=low
+
+  * no password encoding to ISO-8859-1 anymore 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2007 15:09:58 +0200
+
 univention-python (2.2.0-1) unstable; urgency=low
 
   * removed univention.utf8; UCS 2.0 using UTF-8 by default

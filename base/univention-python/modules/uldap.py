@@ -107,9 +107,8 @@ class access:
 			pass
 
 	def __encode_pwd(self, pwd):
-		(iso_encode,iso_decode,isoblar,isoblaw)=codecs.lookup('iso-8859-1')
-		if type(pwd)==type(u''):
-			return iso_encode(pwd)[0]
+		if isinstance( pwd, unicode ):
+			return str( pwd )
 		else:
 			return pwd
 
