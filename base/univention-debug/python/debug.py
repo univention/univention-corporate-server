@@ -29,32 +29,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import univention.utf8
 import _debug
 from _debug import *
 
 def debug(id, level, ustring, utf8=1):
-	try:
-		if utf8:
-			string=univention.utf8.encode(ustring)
-		else:
-			string=ustring
-		_debug.debug(id, level, string)
-	except:
-		pass
+	_debug.debug(id, level, ustring)
 
 class function:
 	def __init__(self, text,  utf8=1):
-		try:
-			if utf8:
-				self.text=univention.utf8.encode(text)
-			else:
-				self.text=text
-			_debug.begin(self.text)
-		except:
-			pass
+		self.text=text
+		_debug.begin(self.text)
+
 	def __del__(self):
-		try:
-			_debug.end(self.text)
-		except:
-			pass
+		_debug.end(self.text)
