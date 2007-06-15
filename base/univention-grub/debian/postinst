@@ -29,6 +29,9 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
                 else
                         grub_append="root=$lilo_root"
                 fi
+		else
+        	rootdevice=$(grep -w / /etc/fstab | awk '{print $1}')
+			vars="$vars grub/root=$rootdevice"
         fi
 
         if [ -n "$lilo_append_acpi" ] && [ "$lilo_append_acpi" = "off" ]; then
@@ -85,7 +88,8 @@ elif [ -z "$2" ]; then
 
         univention-baseconfig set grub/timeout?5 \
 								grub/append="$append" \
-								grub/vga=785
+								grub/root="$rootdevice" \
+								grub/vga=785 \
 								grub/memtest86=true
 
 fi
