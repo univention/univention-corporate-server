@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-grub
 Architecture: all
-Depends: grub
+Depends: grub, diff
 Conflicts: lilo
 Description: Meta package for the grub configuration
  .
