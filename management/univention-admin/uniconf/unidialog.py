@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -46,10 +46,10 @@ import univention.admin.uldap
 class unidialog(unimodule.unimodule):
 
 	def __init__(self,a,b,c):
-		b['site_title']='Univention Admin' 
+		b['site_title']='Univention Admin'
 		b['header_img']='style/header_admin.gif'
 		unimodule.unimodule.__init__(self,a,b,c)
-		
+
 	def mytype(self):
 		return "dialog"
 
@@ -61,14 +61,14 @@ class unidialog(unimodule.unimodule):
 		self.xmlob=b
 		self.mod=None
 		uniconf.init(self,a,b,c)
-	
+
 	def myinit(self):
 		global uniconf_mods
-		
+
 		position=self.save.get('ldap_position')
 		if not position:
 			position=univention.admin.uldap.position(self.uaccess.base)
-	
+
 		# display info text
 		infotext=self.save.get("infobox_information_text")
 		if infotext and type(infotext) in [types.StringType, types.UnicodeType]:
@@ -84,7 +84,7 @@ class unidialog(unimodule.unimodule):
 				pass
 		else:
 			good_login=1
-		
+
 		# create instance of current module
 		if self.save.get("uc_module")!=None and self.save.get("uc_module")!="none" :
 			try:
@@ -94,11 +94,11 @@ class unidialog(unimodule.unimodule):
 				pass
 		if self.mod != None:
 			self.subobjs.append(self.mod)
-	
+
 		# if there's no current module, display welcome dialog
 		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
 			if not self.inithandlemessages():
-				
+
 				header_text = _("Welcome to Univention Admin")
 
 				introduction_text = _("Univention Admin enables you to manage all components of your Univention Corporate Server (UCS) Domain.")
@@ -112,9 +112,9 @@ class unidialog(unimodule.unimodule):
 				if self.save.get( 'personal_use' ) == '1':
 					component_texts.append([_("License"),_("You are using the \"Free for personal use\" edition. Find more information on the about page.")])
 				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Admin and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])
-					
 
-				
+
+
 				self.subobjs.append(table("",
 							  {'type':'content_header'},
 							  {"obs":[(tablerow({},{},{'obs':[tablecol("",{'type':'browse_layout'},{"obs":[]})]}))]})
@@ -142,7 +142,7 @@ class unidialog(unimodule.unimodule):
 						   ]
 					for obj in objects:
 						rows.append(tablerow({},{'border':'0'},{'obs':obj}))
-				
+
 				subtables.append(table('',{},{'obs':rows}))
 				self.subobjs.append(table('',
 							  {'type':'content_main'},
@@ -167,7 +167,7 @@ class unidialog(unimodule.unimodule):
 			self.subobjs.insert(0,title(_("// logged in as: %s%s")%(self.save.get("user"),logindomain),{},{}))
 		else:
 			self.subobjs.insert(0,title("Univention Admin",{},{}))
-					
+
 		# display menu
 		menuheader=text("",{},{"text":[_("Univention Admin")]})
 		menuheaderitem=menuitem("",{},{"item":menuheader})
@@ -176,7 +176,7 @@ class unidialog(unimodule.unimodule):
 		self.smbutlistlist=[]
 		modlist=[]
 
-		
+
 		for tmpnam, tmpmod in uniconf_mods.items():
 			if hasattr(tmpmod,'mymenunum'):
 				menunum=tmpmod.mymenunum()
@@ -190,15 +190,15 @@ class unidialog(unimodule.unimodule):
 		activemoduleinmenu=self.save.get("uc_module")
 		if self.save.get("uc_module") in ["usermessage","askuser"]:
 			activemoduleinmenu=self.save.get("backtomodule")
-		
+
 		try:
 			realmod=uniconf_mods['mod'+activemoduleinmenu]
 		except KeyError:
 			pass
-			
+
 		for num, tmpnam, tmpmod in modlist:
 			modname=tmpnam[3:]
-				
+
 			modok=self.save.get("modok")
 			if not modok:
 				modok={}
@@ -210,7 +210,7 @@ class unidialog(unimodule.unimodule):
 			self.save.put("modok",modok)
 
 			subs=[]
-			if modname==activemoduleinmenu: 
+			if modname==activemoduleinmenu:
 				try:
 					subs=realmod.mysubmodules()
 				except:
@@ -242,7 +242,7 @@ class unidialog(unimodule.unimodule):
 
 						if self.save.get("uc_virtualmodule",'')==virtmod.id:
 							mbut=button(virtmod.name,{'icon':icon_path,'active':'1'},{"helptext":virtmod.description,'active':'1'})
-						else: 
+						else:
 							mbut=button(virtmod.name,{'icon':icon_path},{"helptext":virtmod.description})
 
 						self.mbutlist.append([mbut, moduleinfo.id, virtmod.id])
@@ -251,11 +251,11 @@ class unidialog(unimodule.unimodule):
 							for submod in virtmod.submodules:
 								icon_path='/icon/submods/'+submod.id+'.png'
 								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/'+submod.id+'.gif'	
+									icon_path='/icon/'+submod.id+'.gif'
 								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
 									icon_path='/icon/submods/'+submod.id+'.png'
 								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/submods/'+submod.id+'.gif'	
+									icon_path='/icon/submods/'+submod.id+'.gif'
 								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
 									icon_path='/icon/generic.gif'
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "submodule %s with icon %s" % (submod.id, icon_path))
@@ -279,13 +279,13 @@ class unidialog(unimodule.unimodule):
 					if hasattr(tmpmod,'mymenuicon'):
 						icon_path=tmpmod.mymenuicon()
 
-					
+
 					if moduleinfo.id==self.save.get('uc_module','') and self.save.get("uc_submodule",'')==None: # this button is active
 						mbut=button(moduleinfo.name,{'icon':icon_path,'active':'1'},{"helptext":moduleinfo.description,'active':'1'})
-					else: 
+					else:
 						mbut=button(moduleinfo.name,{'icon':icon_path},{"helptext":moduleinfo.description})
 					self.mbutlist.append([mbut, moduleinfo.id])
-	
+
 					for submod in moduleinfo.submodules:
 						smbut=button(submod.name,{},{"helptext":submod.description})
 						smbutlist.append([smbut, moduleinfo.id, submod.id])
@@ -301,17 +301,17 @@ class unidialog(unimodule.unimodule):
 
 		m=menu("",{},{"items":menulist})
 		self.subobjs.append(m)
-	
+
 	def handlesmsg(self,msg):
 		return 1
-		
+
 	def apply(self):
-		
+
 		if self.mod!=None:
 			try:
 				self.mod.apply()
 			except univention.admin.uexceptions.base, ex:
-				self.usermessage(_("error while modifying: %s %s")%(ex.message,str(ex)))
+				self.usermessage(_("error while modifying: %s %s")%(ex.message,unicode(ex)))
 		elif self.applyhandlemessages():
 			return
 		for msg in self.messagebuff:
@@ -329,7 +329,7 @@ class unidialog(unimodule.unimodule):
 					else:
 						self.save.put("uc_virtualmodule", None)
 					self.save.put("uc_submodule",None)
-			
+
 		for smbutlist in self.smbutlistlist:
 			for but in smbutlist:
 				if hasattr(but[0],'pressed'):
@@ -348,5 +348,3 @@ class unidialog(unimodule.unimodule):
 	def handlemessage(self,msg):
 		if msg=="msg:reinit":
 			self.dirty=1
-
-

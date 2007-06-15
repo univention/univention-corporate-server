@@ -724,9 +724,9 @@ class modedit(unimodule.unimodule):
 					collength=len(col)
 					if collength>1:
 						for subcol in col:
-							subcol.rowspan=str(divmod(mult,collength)[0])
+							subcol.rowspan=unicode(divmod(mult,collength)[0])
 					elif collength>0:
-						col[0].rowspan=str(mult)
+						col[0].rowspan=unicode(mult)
 				notDone=1
 				while notDone:
 					newrow=[]
@@ -760,7 +760,7 @@ class modedit(unimodule.unimodule):
 							syntax=property.syntax
 					attributes={}
 					if field.width:
-						attributes['width']=str(field.width)
+						attributes['width']=unicode(field.width)
 
 					if invalid_values.has_key(name):
 						value=invalid_values[name]
@@ -785,6 +785,9 @@ class modedit(unimodule.unimodule):
 
 					# edit only the first value of multi-value property
 
+					if univention.admin.modules.name(current_module) == 'users/user':
+						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'lastname: %s' % current_object.info.get( 'lastname', '' ) )
+						univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'description: %s' % current_object.info.get( 'description', '' ) )
 					# select a way to build out contens
 					if property.multivalue and field.first_only:
 						if value:
@@ -829,10 +832,10 @@ class modedit(unimodule.unimodule):
 								for group in groups:
 									tmppos.setDn(group)
 									(displaypos,displaydepth)=tmppos.getPrintable_depth()
-									if not str(displaydepth) == oldlevel:
+									if not unicode(displaydepth) == oldlevel:
 										item+=1
-									oldlevel=str(displaydepth)
-									dns_entry_choicelist.append({'item':item,"level":str(displaydepth),"name":group,"description":displaypos})
+									oldlevel=unicode(displaydepth)
+									dns_entry_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
 									i = i + 1
 									if self.save.get('x_choice_value_of_%s'%name) == group:
 										dns_entry_choicelist[-1]['selected']='1'
@@ -852,10 +855,10 @@ class modedit(unimodule.unimodule):
 
 									zone, ip = split_dns_line( vstr )
 									if zone and ip:
-										mvaluelist.append({'name': str(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone, ip ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone, ip ) } )
 										i+=1
 									elif zone:
-										mvaluelist.append({'name': str(i), 'description': '%s' % ( zone ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s' % ( zone ) } )
 										i+=1
 									else:
 										univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Multiip: failed to decode the line: "%s"' % vstr )
@@ -971,10 +974,10 @@ class modedit(unimodule.unimodule):
 								for group in groups:
 									tmppos.setDn(group)
 									(displaypos,displaydepth)=tmppos.getPrintable_depth()
-									if not str(displaydepth) == oldlevel:
+									if not unicode(displaydepth) == oldlevel:
 										item+=1
-									oldlevel=str(displaydepth)
-									dns_entry_reverse_choicelist.append({'item':item,"level":str(displaydepth),"name":group,"description":displaypos})
+									oldlevel=unicode(displaydepth)
+									dns_entry_reverse_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
 									i = i + 1
 									if self.save.get('x_choice_value_of_%s'%name) == group:
 										dns_entry_reverse_choicelist[-1]['selected']='1'
@@ -993,10 +996,10 @@ class modedit(unimodule.unimodule):
 									vstr =  syntax.tostring(v)
 									zone, ip = split_dns_line( vstr )
 									if zone and ip:
-										mvaluelist.append({'name': str(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone, ip ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s&nbsp;&nbsp;&nbsp;%s' % ( zone, ip ) } )
 										i+=1
 									elif zone:
-										mvaluelist.append({'name': str(i), 'description': '%s' % ( zone ) } )
+										mvaluelist.append({'name': unicode(i), 'description': '%s' % ( zone ) } )
 										i+=1
 
 
@@ -1120,9 +1123,9 @@ class modedit(unimodule.unimodule):
 								for group in groups:
 									tmppos.setDn(group)
 									(displaypos,displaydepth)=tmppos.getPrintable_depth()
-									if not oldlevel == str(displaydepth):
+									if not oldlevel == unicode(displaydepth):
 										item+=1
-									oldlevel=str(displaydepth)
+									oldlevel=unicode(displaydepth)
 
 									primary_group_choicelist.append({"name":group,"description":displaypos})
 									i = i + 1
@@ -1158,7 +1161,7 @@ class modedit(unimodule.unimodule):
 											line = "%s&nbsp;&nbsp;&nbsp;%s" % ( line, ip )
 										if mac:
 											line = "%s&nbsp;&nbsp;&nbsp;%s" % ( line, mac )
-										mvaluelist.append({'name': str(i), 'description': line } )
+										mvaluelist.append({'name': unicode(i), 'description': line } )
 										i+=1
 
 							update_choices=button('lmanusel',{},{'helptext':_('Select the DHCP Zone')})
@@ -1282,10 +1285,10 @@ class modedit(unimodule.unimodule):
 							for group in groups:
 								tmppos.setDn(group)
 								(displaypos,displaydepth)=tmppos.getPrintable_depth()
-								if not str(displaydepth) == oldlevel:
+								if not unicode(displaydepth) == oldlevel:
 									item+=1
-								oldlevel=str(displaydepth)
-								primary_group_choicelist.append({'item':item,"level":str(displaydepth),"name":group,"description":displaypos})
+								oldlevel=unicode(displaydepth)
+								primary_group_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
 								if group == value:
 									primary_group_choicelist[-1]['selected']='1'
 
@@ -1318,10 +1321,10 @@ class modedit(unimodule.unimodule):
 							for group in groups:
 								tmppos.setDn(group)
 								(displaypos,displaydepth)=tmppos.getPrintable_depth()
-								if not str(displaydepth) == oldlevel:
+								if not unicode(displaydepth) == oldlevel:
 									item+=1
-								oldlevel=str(displaydepth)
-								dns_entry_reverse_choicelist.append({'item':item,"level":str(displaydepth),"name":group,"description":displaypos})
+								oldlevel=unicode(displaydepth)
+								dns_entry_reverse_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
 								if group == value:
 									dns_entry_reverse_choicelist[-1]['selected']='1'
 
@@ -1373,10 +1376,10 @@ class modedit(unimodule.unimodule):
 							for group in groups:
 								tmppos.setDn(group)
 								(displaypos,displaydepth)=tmppos.getPrintable_depth()
-								if not oldlevel == str(displaydepth):
+								if not oldlevel == unicode(displaydepth):
 									item+=1
-								oldlevel=str(displaydepth)
-								primary_group_choicelist.append({'item':item,"level":str(displaydepth),"name":group,"description":displaypos})
+								oldlevel=unicode(displaydepth)
+								primary_group_choicelist.append({'item':item,"level":unicode(displaydepth),"name":group,"description":displaypos})
 								if group == value:
 									primary_group_choicelist[-1]['selected']='1'
 
@@ -1483,7 +1486,7 @@ class modedit(unimodule.unimodule):
 
 						tmplist=self.lo.get(dn=property.configObjectPosition+","+position.getDomain(), attr=[property.configAttributeName])
 						if tmplist.has_key(property.configAttributeName):
-							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Choices: %s ' % (str(tmplist)) )
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Choices: %s ' % (unicode(tmplist)) )
 							for choice in tmplist[property.configAttributeName]:
 								generic_choicelist.append({'name': choice, 'description': choice})
 								if choice == value:
@@ -1510,7 +1513,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -1722,7 +1725,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -2209,7 +2212,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -2341,7 +2344,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -2381,7 +2384,7 @@ class modedit(unimodule.unimodule):
 
 							id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
 							self.minput[name].append(id_select)
-							self.minput[name].append(question_text(_("Destination"),atts,{"helptext":_("Destination"), 'usertext': str(set_src)}))
+							self.minput[name].append(question_text(_("Destination"),atts,{"helptext":_("Destination"), 'usertext': unicode(set_src)}))
 
 							#self.minput[name].append(id_select)
 							# [1]: add button
@@ -2433,7 +2436,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -2557,7 +2560,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -2705,9 +2708,9 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
-									#self.usermessage(str(e))
+									#self.usermessage(unicode(e))
 									pass
 								i+=1
 
@@ -2849,7 +2852,7 @@ class modedit(unimodule.unimodule):
 									found=False
 									for p in global_acllist:
 										if p.has_key('name') and p['name'] == v:
-											mvaluelist.append({'name': str(i), 'description': p['description']})
+											mvaluelist.append({'name': unicode(i), 'description': p['description']})
 											found=True
 											break
 									i+=1
@@ -2954,9 +2957,9 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
-									#self.usermessage(str(e))
+									#self.usermessage(unicode(e))
 									pass
 								i+=1
 
@@ -3086,17 +3089,17 @@ class modedit(unimodule.unimodule):
 											for admin_attribute in admin_module['attributes']:
 												if temp_attribute == admin_attribute[ 'name' ]:
 													found=True
-													mvaluelist.append({'name': str(i), 'description': '%s: %s' % (admin_module[ 'description' ], admin_attribute[ 'description' ])})
+													mvaluelist.append({'name': unicode(i), 'description': '%s: %s' % (admin_module[ 'description' ], admin_attribute[ 'description' ])})
 												elif temp_attribute == 'dn':
 													found = True
-													mvaluelist.append( { 'name': str( i ), 'description': '%s: %s' % ( admin_module[ 'description' ], _( 'DN' ) ) } )
+													mvaluelist.append( { 'name': unicode( i ), 'description': '%s: %s' % ( admin_module[ 'description' ], _( 'DN' ) ) } )
 												if found:
 													break
 											break
 									if not found:
-										mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+										mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
-									#self.usermessage(str(e))
+									#self.usermessage(unicode(e))
 									pass
 								i+=1
 
@@ -3273,9 +3276,9 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
-									#self.usermessage(str(e))
+									#self.usermessage(unicode(e))
 									pass
 								i+=1
 
@@ -3442,7 +3445,7 @@ class modedit(unimodule.unimodule):
 						if value:
 							for v in value:
 								try:
-									mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -3556,9 +3559,9 @@ class modedit(unimodule.unimodule):
 							for v in value:
 								try:
 									if userprops.has_key(v):
-										mvaluelist.append({'name': str(i), 'description': userprops[v].short_description})
+										mvaluelist.append({'name': unicode(i), 'description': userprops[v].short_description})
 									else:
-										mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+										mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									pass
 								i+=1
@@ -3916,11 +3919,11 @@ class modedit(unimodule.unimodule):
 
 						for day in [_("Sun"), _("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat")]:
 							for hour in range(0, 24):
-								txt=day + " " + str(hour) + "-" + str(hour+1)
+								txt=day + " " + unicode(hour) + "-" + unicode(hour+1)
 								if vals[count]=="0":
-									choices_possible.append({"name": str(count), "description": txt})
+									choices_possible.append({"name": unicode(count), "description": txt})
 								else:
-									choices_current.append({"name": str(count), "description": txt})
+									choices_current.append({"name": unicode(count), "description": txt})
 								count+=1
 						self.logonHours_possible = question_mselect(_("Disallowed at:"),{"width":"130"}, {"helptext":"", "choicelist":choices_possible})
 						self.logonHours_current = question_mselect(_("Allowed at:"), {"width":"130"}, {"helptext":"", "choicelist":choices_current})
@@ -4089,11 +4092,11 @@ class modedit(unimodule.unimodule):
 											if choice[0] == description:
 												description = choice[1]
 												continue
-										mvaluelist.append({'name': str(i), 'description': description})
+										mvaluelist.append({'name': unicode(i), 'description': description})
 									else:
-										mvaluelist.append({'name': str(i), 'description': syntax.tostring(v)})
+										mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
-									#self.usermessage(str(e))
+									#self.usermessage(unicode(e))
 									pass
 								i+=1
 
@@ -4239,9 +4242,9 @@ class modedit(unimodule.unimodule):
 										]})
 									]}))
 					if colspan:
-						cols[-1].atts["colspan"]=str(colspan)
+						cols[-1].atts["colspan"]=unicode(colspan)
 					if rowspan and rowspan!="1":
-						cols[-1].atts["rowspan"]=str(rowspan)
+						cols[-1].atts["rowspan"]=unicode(rowspan)
 				rows.append(tablerow("",{},{"obs":cols}))
 
 			# create table containing one row for each 'logical' field as generated above
@@ -4947,7 +4950,7 @@ class modedit(unimodule.unimodule):
 								object.modify()
 							except univention.admin.uexceptions.base, ex:
 								self.multiedit_modify_status[2] += 1
-								self.multiedit_errors.append('%s: %s %s' % (dn,ex.message,str(ex)))
+								self.multiedit_errors.append('%s: %s %s' % (dn,ex.message,unicode(ex)))
 							self.multiedit_modify_status[0] += 1
 						if self.multiedit_errors:
 							self.usermessage(_("Modifying %d/%d objects failed: %s") % (self.multiedit_modify_status[2], self.multiedit_modify_status[1], string.join(self.multiedit_errors, '<br>')))
@@ -4974,7 +4977,7 @@ class modedit(unimodule.unimodule):
 						else:
 							self.usermessage(_("error while modifying: %s %s") % ("",ex))
 					except UnicodeEncodeError, e: # raise fails if uid contains umlauts or other non-ASCII-characters
-						self.usermessage(_("internal error: %s") % str( e ) )
+						self.usermessage(_("internal error: %s") % unicode( e ) )
 
 					self.save.put('edit_object', None)
 					self.save.put('edit_object_opened', None)
@@ -4994,7 +4997,7 @@ class modedit(unimodule.unimodule):
 					for obj, cmd, exception in self.object.exceptions:
 						#FIXME: remove HTML code
 						if exception:
-							message_string+=_('While %s %s: %s<br>')% (cmd,obj, str(exception))
+							message_string+=_('While %s %s: %s<br>')% (cmd,obj, unicode(exception))
 					if message_string:
 						self.usermessage(message_string)
 

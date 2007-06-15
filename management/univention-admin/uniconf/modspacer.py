@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -52,13 +52,13 @@ def mywgroup():
 	return ""
 def mymenunum():
 	return []
-	
+
 class spacer(unimodule.unimodule):
 	def mytype(self):
 		return "spacer"
 
 	def myinit(self):
 		return
-	
+
 	def apply(self):
 		return

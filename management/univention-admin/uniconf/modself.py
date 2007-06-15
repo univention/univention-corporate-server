@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -95,12 +95,12 @@ def myrgroup():
 def mywgroup():
 	return ""
 
-def mymenunum():	
+def mymenunum():
 	return 101
 
 def mymenuicon():
 	return '/icon/settings/cn.gif'
-	
+
 class modself(modedit.modedit):
 	def myinit(self):
 		self.save=self.parent.save
@@ -141,4 +141,3 @@ class modself(modedit.modedit):
 		modedit.modedit.apply(self,
 				      cancelMessage=_("Request canceled, your changes were discarded."),
 				      okMessage=_("Request commited, your changes were accepted."))
-

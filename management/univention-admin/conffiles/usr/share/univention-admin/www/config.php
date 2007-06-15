@@ -6,7 +6,7 @@ $temp_age=800;
 # Verzeichnis zur temporären Speicherung der XML-Dokumente
 # Muss ein Unterverzeichnis sein, da alle Dateien die seit $temp_age nicht
 # mehr benutzt werden, gelöscht werden.
-$temp_dir="/tmp/webui/";	
+$temp_dir="/tmp/webui/";
 
 # Zugriffsrechte des temporären Verzeichnis als oktalwert
 $temp_mode=0700;
@@ -14,7 +14,7 @@ $temp_mode=0700;
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
-run='$run="/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.py '
+run='$run="/usr/bin/python2.4 /usr/share/univention-admin/uniconf/univention-admin.py '
 if baseConfig.has_key('admin/web/debug/level'):
         debug='-d %s '%baseConfig['admin/web/debug/level']
 else:

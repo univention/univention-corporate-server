@@ -147,10 +147,10 @@ def main(argv):
 				open('/tmp/xmlin', 'w').write(xmlin)
 			xmlout = session.startRequest(xmlin, number)
 			if debugging >= 2:
-				open('/tmp/xmlout', 'w').write(utf8_encode(xmlout)[0])
+				open('/tmp/xmlout', 'w').write(xmlout)
 
 			# send output
-			conn.send(utf8_encode(xmlout)[0]+'\0')
+			conn.send(xmlout+'\0')
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'sent output')
 			conn.close()
 
