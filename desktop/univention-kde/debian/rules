@@ -51,16 +51,18 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
+	
+	(cd profiles && find . ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
 
-	install -m 0644 univention-background.png debian/univention-kde/usr/share/wallpapers/
-	install -m 0644 files/evolution-small.png debian/univention-kde/usr/share/pixmaps
-	(cd profiles && find . ! -path "*CVS*" -type d -exec install  -d "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
-	(cd profiles && find . ! -path "*CVS*" -type f -exec install {} "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
+	install -m 0644 files/univention-wallpaper.jpg debian/univention-kde/usr/share/wallpapers/
+	
 	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/
 	install -m 0755 univention-kde-profile-builder-dialog debian/univention-kde/usr/bin/
+	
 	install -m 0644 files/libVncExt.so.2.0 debian/univention-kde-vncmodule/usr/X11R6/lib/libVncExt.so.2.0
-	install -m 0755 files/kvncevent debian/univention-kde-vncmodule/usr/bin/kvncevent
-	install -m 0755 files/vncevent debian/univention-kde-vncmodule/usr/bin/vncevent
+	install -m 0755 files/kvncevent debian/univention-kde-vncmodule/usr/bin/kvncevent/
+	install -m 0755 files/vncevent debian/univention-kde-vncmodule/usr/bin/vncevent/
 	install -m 0644 files/vncevent.desktop debian/univention-kde-vncmodule/usr/share/applnk/System/vncevent.desktop
 
 	install -m 0755 78univention-kde.inst debian/univention-kde/usr/lib/univention-install/
