@@ -68,6 +68,8 @@ cd -
 mount -a
 #mount /mnt/installation
 
+cp /proc/mounts /etc/mtab
+
 shadowconfig on
 if [ -n "$root_password_crypted" ]; then
 	usermod -p "$root_password_crypted" root
@@ -109,3 +111,4 @@ __EOT__
 
 chmod +x /instmnt/preconfigure.sh
 chroot /instmnt ./preconfigure.sh
+
