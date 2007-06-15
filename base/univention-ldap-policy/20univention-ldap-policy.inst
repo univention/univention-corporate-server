@@ -1,7 +1,7 @@
-#!/bin/sh
+#! /bin/sh
 #
-# Univention Installer
-#  create sources.list
+# Univention LDAP Policy
+#  join script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,17 +28,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-mkdir -p /instmnt/etc/apt/
-mkdir -p /instmnt/sourcedevice
-cat >/instmnt/etc/apt/sources.list <<__EOT__
-#UCS Installtion
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
 
-deb file:/sourcedevice/packages ./
+touch /usr/lib/univention-install/.index.txt
 
-__EOT__
+test -n "`grep "univention-ldap-policy successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-echo "APT::Get::AllowUnauthenticated 1 ;" >/instmnt/etc/apt/apt.conf
+run-parts /usr/lib/univention-ldap-policy >>/var/log/univention/join.log 2>&1
 
-chmod 644 /instmnt/etc/apt/apt.conf
-chmod 644 /instmnt/etc/apt/sources.list
-rm -Rf /instmnt/etc/apt/sources.list.d
+test -n "`grep "univention-ldap-policy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-policy successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

@@ -1,0 +1,17 @@
+Source: univention-ldap-policy
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-ldap-policy
+Architecture: all
+Depends: univention-baseconfig (>=0.06), netcat
+Description: UCS - LDAP Policy handler
+ This package manage the scripts in /usr/lib/univention-ldap-policy
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

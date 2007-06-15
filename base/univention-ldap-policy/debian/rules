@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/make -f
 #
-# Univention Installer
-#  create sources.list
+# Univention LDAP Policy
+#  rules file for the debian package
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,17 +28,52 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-mkdir -p /instmnt/etc/apt/
-mkdir -p /instmnt/sourcedevice
-cat >/instmnt/etc/apt/sources.list <<__EOT__
-#UCS Installtion
+# This is the debhelper compatability version to use.
+export DH_COMPAT=3
 
-deb file:/sourcedevice/packages ./
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
 
-__EOT__
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch build-stamp
 
-echo "APT::Get::AllowUnauthenticated 1 ;" >/instmnt/etc/apt/apt.conf
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	dh_clean
 
-chmod 644 /instmnt/etc/apt/apt.conf
-chmod 644 /instmnt/etc/apt/sources.list
-rm -Rf /instmnt/etc/apt/sources.list.d
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 755 20univention-ldap-policy.inst debian/univention-ldap-policy/usr/lib/univention-install
+	install -m 755 univention-ldap-policy debian/univention-ldap-policy/etc/init.d/
+	univention-install-baseconfig
+
+binary-arch: build install
+
+binary-indep: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installinit
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

@@ -533,17 +533,20 @@ if [ $ldap_available = 1 ]; then
 
 fi
 
-if [ -x /usr/sbin/apachectl ]; then
-	/usr/sbin/apachectl stop
-	count=0
-	while pidof apache; do
-		sleep 1
-		count=$((count+1))
-		if [ $count -gt 20 ]; then
-			continue;
-		fi
-	done
-	/usr/sbin/apachectl start
+is_variable_set "UMC_MODE"
+if [ $? = 0 ]; then
+	if [ -x /usr/sbin/apachectl ]; then
+		/usr/sbin/apachectl stop
+		count=0
+		while pidof apache; do
+			sleep 1
+			count=$((count+1))
+			if [ $count -gt 20 ]; then
+				continue;
+			fi
+		done
+		/usr/sbin/apachectl start
+	fi
 fi
 service_start univention-ldap-notifier
 

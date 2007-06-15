@@ -498,7 +498,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('SSH Client'),
+					'Name': _('ssh client'),
 					'Packages': ['openssh-client'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
@@ -506,8 +506,8 @@ PackageList=[
 					'Description': _("Secure shell client, an rlogin/rsh/rcp replacement"),
 				},
 				{
-					'Name': _('DHCP Client'),
-					'Packages': ['dhcp-client'],
+					'Name': _('dhcp client'),
+					'Packages': ['dhcp3-client'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': [ 'all' ],

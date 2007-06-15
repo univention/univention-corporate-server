@@ -1,7 +1,7 @@
 #!/bin/sh
 #
-# Univention Installer
-#  create sources.list
+# Univention LDAP Policy
+#  init script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,17 +28,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-mkdir -p /instmnt/etc/apt/
-mkdir -p /instmnt/sourcedevice
-cat >/instmnt/etc/apt/sources.list <<__EOT__
-#UCS Installtion
+case "$1" in
+	start|restart)
+		echo -n "Starting Univention LDAP Policy: "
 
-deb file:/sourcedevice/packages ./
+		eval `univention-baseconfig shell`
 
-__EOT__
+		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
+			run-parts /usr/lib/univention-ldap-policy >>/var/log/univention/ldap-policy.log 2>&1
+			if [ $? = 0 ]; then
+				echo "done"
+			else
+				echo "failed"
+			fi
+		else
+			echo "failed"
+		fi
+		;;
+	stop)
+		;;
+	*)
+		echo "Usage: /etc/init.d/univention-ldap-policy {start|stop|restart}"
+		exit 1
+		;;
+esac
 
-echo "APT::Get::AllowUnauthenticated 1 ;" >/instmnt/etc/apt/apt.conf
-
-chmod 644 /instmnt/etc/apt/apt.conf
-chmod 644 /instmnt/etc/apt/sources.list
-rm -Rf /instmnt/etc/apt/sources.list.d
+exit 0

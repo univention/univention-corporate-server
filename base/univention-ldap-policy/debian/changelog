@@ -1,0 +1,18 @@
+univention-ldap-policy (0.4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 08:57:13 +0100
+
+univention-ldap-policy (0.3) unstable; urgency=low
+
+  * create init script
+  * remove cron reboot job
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  9 Jun 2005 14:50:36 +0200
+
+univention-ldap-policy (0.1) unstable; urgency=low
+
+  * Initial Release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Oct 2004 06:38:12 +0200

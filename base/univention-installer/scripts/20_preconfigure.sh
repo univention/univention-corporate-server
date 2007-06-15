@@ -57,6 +57,7 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	done
 fi
 
+mount proc /proc -t proc
 
 cd /dev
 /sbin/MAKEDEV generic
@@ -66,12 +67,11 @@ mount -a
 #mount /mnt/installation
 
 shadowconfig on
-if [-n "$root_password_crypted" ]; then
+if [ -n "$root_password_crypted" ]; then
 	usermod -p "$root_password_crypted" root
 else
 	usermod -p `mkpasswd $root_password` root
 fi
-mount proc /proc -t proc
 
 #create parport devices
 cd /dev
