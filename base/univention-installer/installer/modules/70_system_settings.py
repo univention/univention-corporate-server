@@ -91,8 +91,11 @@ class object(content):
 			result['local_repository']='true'
 		else:
 			result['local_repository']='false'
-		if len(self.elements[3].selected) > 0:
-			result['create_home_share']='true'
+		if not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
+			if len(self.elements[3].selected) > 0:
+				result['create_home_share']='true'
+			else:
+				result['create_home_share']='false'
 		else:
 			result['create_home_share']='false'
 		return result
