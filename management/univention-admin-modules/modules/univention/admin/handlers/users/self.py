@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -37,7 +37,6 @@ import univention.admin.handlers.policies.admin_user
 import univention.admin.localization
 import univention.admin.uexceptions
 import univention.admin.uldap
-import univention.utf8
 import base64
 
 import univention.debug

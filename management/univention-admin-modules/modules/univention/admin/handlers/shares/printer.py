@@ -34,7 +34,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.utf8
 
 import univention.debug
 import univention.admin.uexceptions

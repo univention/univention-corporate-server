@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,11 +29,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, heimdal, codecs, types, string, sys
-import univention.utf8
 
 def crypt(password):
 	"""return crypt hash"""
-	
+
 	valid = ['.', '/', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
 		'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
 		'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H',
@@ -47,13 +46,13 @@ def crypt(password):
 		salt = salt + valid[(ord(o) % 64)]
 
 	urandom.close()
-	
+
 	import crypt
 	return crypt.crypt(password.encode('ISO-8859-1'), '$1$%s$' % salt)
 
 def ntlm(password):
 	"""return tuple with NT and LanMan hash"""
-	
+
 	p_to, p_from = os.popen2('/usr/sbin/univention-smbencrypt')
 
 	p_to.write(password.encode('latin')+'\n')

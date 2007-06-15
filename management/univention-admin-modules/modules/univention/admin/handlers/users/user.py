@@ -45,7 +45,6 @@ import univention.admin.uexceptions
 import univention.admin.uldap
 import univention.admin.mungeddial as mungeddial
 import univention.admin.handlers.settings.prohibited_username
-import univention.utf8
 import base64
 
 import univention.debug
@@ -2297,7 +2296,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					ml.append(('sambaPwdMustChange',self.oldattr.get('sambaPwdMustChange', [''])[0], sambaPwdMustChange))
 				# set sambaPwdLastSet to 1, see UCS Bug #8292 and Samba Bug #4313
 				sambaPwdLastSetValue='1'
-				
+
 			if 'kerberos' in self.options:
 				expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()))))
 				krb5PasswordEnd="%s" % "20"+expiry[6:8]+expiry[3:5]+expiry[0:2]+"000000Z"

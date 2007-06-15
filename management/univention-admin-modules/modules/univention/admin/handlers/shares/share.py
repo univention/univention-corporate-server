@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.utf8
 
 translation=univention.admin.localization.translation('univention.admin.handlers.shares')
 _=translation.translate
@@ -53,7 +52,7 @@ wizardoperations={"add":[_("Add"), _("Add Share Object")],"find":[_("Find"), _("
 syntax_filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'univentionShare'),
 	univention.admin.filter.expression('cn', '*'),
-	univention.admin.filter.expression('writeable', '1'),	
+	univention.admin.filter.expression('writeable', '1'),
 	])
 
 childs=0
@@ -63,11 +62,11 @@ options={
 	'samba': univention.admin.option(
 			short_description=_('Export for Samba Clients'),
 			default=1
-		),								
+		),
 	'nfs': univention.admin.option(
 			short_description=_('Export for NFS Clients'),
 			default=1
-		),								
+		),
 }
 property_descriptions={
 	'name': univention.admin.property(
@@ -378,7 +377,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			default='1'
-			
+
 		),
 	'sambaLevel2Oplocks': univention.admin.property(
 			short_description=_('Level 2 Oplocks'),
@@ -642,7 +641,7 @@ def stringToBool(value):
 
 def insertQuotes(value):
 	'Turns @group name, user name into @"group name", "user name"'
-	
+
 	entries=value.split(",")
 	new_entries=""
 	for entry in entries:
@@ -728,7 +727,7 @@ class object(univention.admin.handlers.simpleLdap):
 		self.descriptions=property_descriptions
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
-		
+
 		self.options = []
 		self._define_options( options )
 
@@ -764,7 +763,7 @@ class object(univention.admin.handlers.simpleLdap):
 			ocs.append('univentionShareNFS')
 		return [
 			('objectClass', ocs)
-		]			
+		]
 	def _ldap_pre_remove(self):
 		if not hasattr(self,"options"):
 			self.open()
@@ -793,14 +792,14 @@ class object(univention.admin.handlers.simpleLdap):
 				temp=temp[0]
 				uid=temp[4:]
 				userstring+=uid
-				
+
 				exstr=_("The %s %s%s %s this share as home share!")%(pluralstring,userstring,numstring,usestring)
-				
+
 				raise univention.admin.uexceptions.homeShareUsed,exstr
-	
+
 	def description(self):
 		return _('%s (%s on %s)') % (self['name'], self['path'], self['host'])
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	filter=univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionShare'),
@@ -818,5 +817,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionShare' in attr.get('objectClass', [])

@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.utf8
 import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.container')
@@ -253,7 +252,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
@@ -310,7 +309,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return [
 			('objectClass', ['top', 'organizationalUnit'])
 		]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
@@ -328,5 +327,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'organizationalUnit' in attr.get('objectClass', [])

@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -34,7 +34,6 @@ import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
-import univention.utf8
 
 translation=univention.admin.localization.translation('univention.admin.handlers.shares')
 _=translation.translate
@@ -166,22 +165,22 @@ class object(univention.admin.handlers.simpleLdap):
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 		self.save()
-	
+
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 		self.save()
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		self.isValidPrinterObject() #check all members
 
-	
+
 	def _ldap_addlist(self):
 		return [ ( 'objectClass', ['top', 'univentionPrinterGroup'] ) ]
-	
+
 	def _ldap_pre_modify(self):# check for membership in a quota-printerclass
 		if self.hasChanged('setQuota') and self.info['setQuota'] == '0':
 			printergroups=self.lo.searchDn(filter='(&(objectClass=univentionPrinterGroup)(univentionPrinterQuotaSupport=1))')
@@ -217,7 +216,7 @@ class object(univention.admin.handlers.simpleLdap):
 			printergroup_object.open()
 			printergroup_object['groupMember'].remove(self.info['name'])
 			printergroup_object.modify()
-	
+
 	def isValidPrinterObject(self): # check printer on current spoolhost
 		for member in self.info['groupMember']:
 			spoolhosts = '(|'
@@ -247,5 +246,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-	
+
 	return 'univentionPrinterGroup' in attr.get('objectClass', [])

@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -160,13 +160,13 @@ def module_usage(information, action=''):
 						if name == "filler":
 							continue
 						property=module.property_descriptions.get(name)
-		
+
 						required={}
 						required['create']=0
 						required['modify']=0
 						required['remove']=0
 						required['editable']=1
-				
+
 						if property.required:
 							required['create']=1
 						if property.identifies:
@@ -176,7 +176,7 @@ def module_usage(information, action=''):
 							required['modify']=0
 							required['remove']=0
 							required['editable']=0
-		
+
 						flags=''
 						if required.has_key(action) and required[action]:
 							flags='*'
@@ -199,7 +199,7 @@ def module_usage(information, action=''):
 							flags+='[]'
 						if flags:
 							flags='('+flags+')'
-						
+
 						out.append('    %-40s %s' % (name+' '+flags, property.short_description))
 	return out
 
@@ -208,7 +208,7 @@ def module_information(module, identifies_only=0):
 	if 'superordinate' in dir(module) and module.superordinate:
 		superordinate=univention.admin.modules.get(module.superordinate)
 		information.update(module_information(superordinate, identifies_only=1))
-	
+
 	for name, property in module.property_descriptions.items():
 		if (identifies_only and property.identifies) or (not identifies_only):
 			information[module][0][name]=property
@@ -216,8 +216,14 @@ def module_information(module, identifies_only=0):
 		if hasattr(module,'options'):
 			for name, option in module.options.items():
 				information[module][1][name]=option
-	
+
 	return information
+
+def _2utf8( text ):
+	try:
+		return text.encode( 'utf-8' )
+	except:
+		return text.decode( 'iso-8859-1' )
 
 def object_input(module, object, input, append=None, remove=None):
 	out=[]
@@ -244,7 +250,7 @@ def object_input(module, object, input, append=None, remove=None):
 						for j in test_val:
 							if j and j.rstrip().lstrip():
 								val.append(j.rstrip().lstrip())
-						
+
 					if not object.has_key(key):
 						object[key]=[]
 					if val in object[key]:
@@ -283,7 +289,7 @@ def object_input(module, object, input, append=None, remove=None):
 
 							for j in range(0,len(val)):
 								val[j]='"%s"' % val[j]
-								
+
 						if val and val in object[key]:
 							object[key].remove(val)
 						else:
@@ -342,7 +348,7 @@ def object_input(module, object, input, append=None, remove=None):
 	return out
 
 def list_available_modules(o=[]):
-	
+
 	o.append("Available Modules are:")
 	avail_modules = []
 	for mod in sys.modules.keys():
@@ -354,22 +360,22 @@ def list_available_modules(o=[]):
 	return o
 
 def doit(arglist):
-	
+
 	out=[]
 	# parse module and action
 	if len(arglist) < 2:
 		return usage() + ["OPERATION FAILED"]
-	
+
 	module_name=arglist[1]
 	if module_name in ['-h', '--help', '-?']:
 		return usage()
-	
+
 	if module_name == '--version':
 		return version()
-		
+
 	if module_name == 'modules':
 		return list_available_modules()
-	
+
 	try:
 		module=univention.admin.modules.get(module_name)
 	except:
@@ -381,19 +387,19 @@ def doit(arglist):
 		out.append("unknown module %s."%module_name)
 		out.append("")
 		return list_available_modules(out) + ["OPERATION FAILED"]
-		
+
 	information=module_information(module)
-	
+
 	if len(arglist) == 2:
 		out = usage() + module_usage(information)
 		return out + ["OPERATION FAILED"]
-	
+
 	action=arglist[2]
-	
+
 	if len(arglist) == 3 and action != 'list':
 		out = usage() + module_usage(information, action)
-		return out + ["OPERATION FAILED"]	
-	
+		return out + ["OPERATION FAILED"]
+
 	remove_referring=0
 	recursive=0
 	# parse options
@@ -409,7 +415,7 @@ def doit(arglist):
 		for argument in args:
 			msg = '%s "%s"' % (msg, argument)
 		out.append(msg)
-	
+
 	position_dn=''
 	dn=''
 	arg=None
@@ -432,7 +438,7 @@ def doit(arglist):
 	policy_dereference=[]
 	for opt, val in opts:
 		if opt == '--position':
-			position_dn=codecs.latin_1_decode(val)[0]
+			position_dn = _2utf8( val )
 		elif opt == '--logfile':
 			logfile=val
 		elif opt == '--policies':
@@ -444,7 +450,7 @@ def doit(arglist):
 		elif opt == '--bindpwd':
 			bindpwd=val
 		elif opt == '--dn':
-			dn=codecs.latin_1_decode(val)[0]
+			dn = _2utf8( val )
 		elif opt == '--arg':
 			arg=val
 		elif opt == '--tls':
@@ -467,7 +473,7 @@ def doit(arglist):
 		elif opt == '--customattribute':
 			pos=val.find('=')
 			name=val[:pos]
-			value=codecs.latin_1_decode(val[pos+1:])[0]
+			value= _2utf8( val[ pos + 1 : ] )
 			if not customattribute.has_key(name):
 				customattribute[name]=[]
 			customattribute[name].append(value)
@@ -477,7 +483,7 @@ def doit(arglist):
 				customattribute_remove.append((val,None))
 			else:
 				name=val[:pos]
-				value=codecs.latin_1_decode(val[pos+1:])[0]
+				value = _2utf8( val[ pos + 1 : ] )
 				customattribute_remove.append((name,value))
 		elif opt == '--policy-reference':
 			policy_reference.append(val)
@@ -486,7 +492,8 @@ def doit(arglist):
 		elif opt == '--set':
 			pos=val.find('=')
 			name=val[:pos]
-			value=codecs.latin_1_decode(val[pos+1:])[0]
+			value = _2utf8( val[ pos + 1 : ] )
+
 			was_set=0
 			for mod, (properties,options) in information.items():
 				if properties.has_key(name):
@@ -499,13 +506,13 @@ def doit(arglist):
 					else:
 						input[name]=value
 						was_set=1
-						
+
 			if not was_set or name=='name':
 				out.append("WARNING: No attribute with name '%s' in this module, value not set."%name)
 		elif opt == '--append':
 			pos=val.find('=')
 			name=val[:pos]
-			value=codecs.latin_1_decode(val[pos+1:])[0]
+			value = _2utf8( val[ pos + 1 : ] )
 			was_set=0
 			for mod, (properties,options) in information.items():
 				if properties.has_key(name):
@@ -520,7 +527,7 @@ def doit(arglist):
 						was_set=1
 			if not was_set:
 				out.append("WARNING: No attribute with name %s in this module, value not appended."%name)
-	
+
 		elif opt == '--remove':
 			pos=val.find('=')
 			if pos == -1:
@@ -528,7 +535,7 @@ def doit(arglist):
 				value=None
 			else:
 				name=val[:pos]
-				value=codecs.latin_1_decode(val[pos+1:])[0]
+				value = _utf8( val[ pos + 1 : ] )
 			was_set=0
 			for mod, (properties,options) in information.items():
 				if properties.has_key(name):
@@ -547,30 +554,30 @@ def doit(arglist):
 			remove_referring=1
 		elif opt == '--recursive':
 			recursive=1
-	
+
 	if logfile:
 		univention.debug.init(logfile, 1, 0)
 	else:
 		out.append("WARNING: no logfile specified")
-	
+
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
-	
+
 	if baseConfig.has_key('ldap/master') and baseConfig['ldap/master']:
 		co=univention.admin.config.config(baseConfig['ldap/master'])
 	else:
 		co=univention.admin.config.config()
-	
+
 	baseDN=baseConfig['ldap/base']
-	
+
 	if baseConfig.has_key('admin/cmd/debug/level'):
 		debug_level=baseConfig['admin/cmd/debug/level']
 	else:
 		debug_level=0
-	
+
 	univention.debug.set_level(univention.debug.LDAP, int(debug_level))
 	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
-	
+
 	if binddn and bindpwd:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % binddn)
 		try:
@@ -580,7 +587,7 @@ def doit(arglist):
 	   		out.append('authentication error: %s' % str(e))
 			return out + ["OPERATION FAILED"]
 	   		pass
-	
+
 	else:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
 		try:
@@ -590,7 +597,7 @@ def doit(arglist):
 			return out + ["OPERATION FAILED"]
 		pwdLine=secretFile.readline()
 		pwd=re.sub('\n','',pwdLine)
-		
+
 		try:
 			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn='cn=admin,'+baseDN, bindpw=pwd, start_tls=tls)
 		except Exception, e:
@@ -603,7 +610,7 @@ def doit(arglist):
 		superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
 	else:
 		superordinate=None
-		
+
 	if not position_dn and superordinate_dn:
 		position_dn=superordinate_dn
 	elif not position_dn:
@@ -615,7 +622,7 @@ def doit(arglist):
 	except univention.admin.uexceptions.noObject:
 		out.append('E: Invalid position')
 		return out + ["OPERATION FAILED"]
-	
+
 	extraOC=[]
 	extraAttributes=[]
 	univention.admin.modules.init(lo,position,module)
@@ -658,12 +665,12 @@ def doit(arglist):
 									out.append("WARNING: singlevalue customattribute %s has more than one value set, replace first"%customattribute[module.property_descriptions[pname].short_description])
 						if not replaced:
 							extraAttributes.append((ldapMapping,'',[customattribute[module.property_descriptions[pname].short_description][0]]))
-	
-	if action in ['modify','edit','create','new']:								
+
+	if action in ['modify','edit','create','new']:
 		for i in customattribute.keys():
 			if not i in customattributes_set:
 				out.append("WARNING: customattribute %s not found, value not set"%i)
-	
+
 		if policy_reference:
 			for el in policy_reference:
 				oc = lo.get(el,['objectClass'])
@@ -673,7 +680,7 @@ def doit(arglist):
 				if not 'univentionPolicy' in oc['objectClass']:
 					out.append("Object to be referenced is no valid Policy:"+el)
 					return out + ["OPERATION FAILED"]
-	
+
 
 #+++# ACTION CREATE #+++#
 	if action == 'create' or action == 'new':
@@ -687,7 +694,7 @@ def doit(arglist):
 				out.append('E: Insufficient information')
 				out.append('Superordinate object is missing')
 				return out + ["OPERATION FAILED"]
-				
+
 			if parsed_options:
 				object.options=parsed_options
 			object.open()
@@ -763,42 +770,42 @@ def doit(arglist):
 			except univention.admin.uexceptions.noObject:
 				out.append('E: object not found')
 				return out + ["OPERATION FAILED"]
-					
+
 			if extraOC or extraAttributes:
 				if extraOC:
 					oc=lo.search(base=dn, scope='base', attr=['objectClass'])
-			
+
 					noc=[]
 					for i in range(len(oc[0][1]['objectClass'])):
 						noc.append(oc[0][1]['objectClass'][i])
-		
+
 					for i in range(len(extraOC)):
 						if extraOC[i] not in noc:
 							noc.append(extraOC[i])
-	
+
 					if oc != noc:
 						extraAttributes.append(('objectClass',oc,noc))
-	
+
 				if extraAttributes:
 					lo.modify(dn,extraAttributes)
-	
+
 			if policy_reference:
 				lo.modify(dn,[('objectClass','','univentionPolicyReference')])
 				modlist=[]
 				for el in policy_reference:
 					modlist.append(('univentionPolicyReference','',el))
 				lo.modify(dn,modlist)
-	
+
 			if exists == 1:
 				out.append('Object exists')
 			else:
 				if not dn:
 					dn=object.dn
-				out.append('Object created: %s' % codecs.latin_1_encode(dn)[0])
-		
+				out.append('Object created: %s' % _2utf8( dn ) )
+
 #+++# ACTION MODIFY #+++#
 	elif action == 'modify' or action == 'edit' or action == 'move':
-	
+
 		object_modified = 0
 
 		if hasattr(module,'operations') and module.operations:
@@ -811,7 +818,7 @@ def doit(arglist):
 		except univention.admin.uexceptions.noObject:
 			out.append('E: object not found')
 			return out + ["OPERATION FAILED"]
-			
+
 		object.open()
 		if hasattr(object,'open_warning') and object.open_warning:
 			out.append('WARNING:%s'%object.open_warning)
@@ -942,9 +949,9 @@ def doit(arglist):
 				object_modified+=1
 
 		if object_modified > 0:
-			out.append('Object modified: %s'% codecs.latin_1_encode(dn)[0])
+			out.append( 'Object modified: %s'% _2utf8( dn ) )
 		else:
-			out.append('No modification: %s'% codecs.latin_1_encode(dn)[0])
+			out.append( 'No modification: %s'% _2utf8( dn ) )
 
 	elif action == 'remove' or action == 'delete':
 
@@ -966,7 +973,7 @@ def doit(arglist):
 		except univention.admin.uexceptions.noObject:
 			out.append('E: object not found')
 			return out + ["OPERATION FAILED"]
-			
+
 		object.open()
 		if hasattr(object,'open_warning') and object.open_warning:
 			out.append('WARNING:%s'%object.open_warning)
@@ -986,7 +993,7 @@ def doit(arglist):
 			except univention.admin.uexceptions.primaryGroupUsed:
 				out.append('E: object in use')
 				return out + ["OPERATION FAILED"]
-		out.append('Object removed: %s'% codecs.latin_1_encode(dn)[0])
+		out.append( 'Object removed: %s'% _2utf8( dn ) )
 
 	elif action == 'list' or action == 'lookup':
 
@@ -995,11 +1002,11 @@ def doit(arglist):
 				out.append('Search %s not allowed' % module_name)
 				return out + ["OPERATION FAILED"]
 
-		out.append(codecs.latin_1_encode(filter)[0])
+		out.append( _2utf8( filter ) )
 
 		for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
-			out.append('DN: %s' % codecs.latin_1_encode(univention.admin.objects.dn(object))[0])
-			out.append('ARG: %s' % univention.admin.objects.arg(object))
+			out.append( 'DN: %s' % _2utf8( univention.admin.objects.dn (object ) ) )
+			out.append( 'ARG: %s' % univention.admin.objects.arg( object ) )
 
 			if (hasattr(module,'virtual') and not module.virtual) or not hasattr(module,'virtual'):
 				object.open()
@@ -1010,23 +1017,25 @@ def doit(arglist):
 					if module.property_descriptions[key].multivalue:
 						for v in value:
 							if s.tostring(v):
-								out.append('  %s: %s' % (codecs.latin_1_encode(key)[0], codecs.latin_1_encode(s.tostring(v))[0]))
+								out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( v ) ) ) )
 							else:
-								out.append('  %s: %s' % (codecs.latin_1_encode(key)[0], None))
+								out.append('  %s: %s' % ( _2utf8( key ), None ) )
 					else:
 						if s.tostring(value):
-							out.append('  %s: %s' % (codecs.latin_1_encode(key)[0], codecs.latin_1_encode(s.tostring(value))[0]))
+							out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( value ) ) ) )
 						else:
-							out.append('  %s: %s' % (codecs.latin_1_encode(key)[0], None))
+							out.append('  %s: %s' % ( _2utf8( key ), None ) )
 
 				if 'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object),['objectClass'])['objectClass']:
-					references = lo.get(codecs.latin_1_encode(univention.admin.objects.dn(object))[0],['univentionPolicyReference'])
+					references = lo.get( _2utf8(univention.admin.objects.dn( object ) ),
+										 [ 'univentionPolicyReference' ] )
 					if references:
 						for el in references['univentionPolicyReference']:
-							out.append('  %s: %s' % ('univentionPolicyReference', codecs.latin_1_encode(s.tostring(el))[0]))
-					
+							out.append('  %s: %s' % ( 'univentionPolicyReference',
+													  _2utf8( s.tostring( el ) ) ) )
+
 			if policyOptions:
-				policyResults=os.popen('univention_policy_result %s %s'%(policyOptions,codecs.latin_1_encode(univention.admin.objects.dn(object))[0]))
+				policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( univention.admin.objects.dn( object ) ) ) )
 				out.append("  Policy-based Settings:")
 				line = policyResults.readline()
 				policy=''
@@ -1058,14 +1067,14 @@ def doit(arglist):
 					client[attribute]=[policy, value]
 					value=[]
 
-				out.append('')	
+				out.append('')
 
 				if module_name == 'dhcp/host':
 						subnet_module=univention.admin.modules.get('dhcp/subnet')
 						for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
 
 							if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
-								policyResults=os.popen('univention_policy_result %s %s'%(policyOptions,codecs.latin_1_encode(subnet.dn)[0]))
+								policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( subnet.dn ) ) )
 								out.append("  Subnet-based Settings:")
 								line = policyResults.readline()
 								ddict={}
@@ -1093,7 +1102,7 @@ def doit(arglist):
 
 									line = policyResults.readline()
 
-								out.append('')	
+								out.append('')
 
 								if policyOptions==" ":
 									ddict[attribute]=[policy, value]
@@ -1117,15 +1126,14 @@ def doit(arglist):
 									for key in client.keys():
 										for i in range(0, len(client[key])):
 											out.append("    %s=%s" % (key, client[key][i]))
-								out.append('')	
+								out.append('')
 
 			out.append('')
 
 	else:
 		out.append("Unknown or no action defined")
-		out.append('')	
+		out.append('')
 		usage()
 		return out + ["OPERATION FAILED"]
 
 	return out # nearly the only successfull return
-	

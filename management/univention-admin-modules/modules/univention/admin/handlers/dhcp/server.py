@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,7 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys, string
-import univention.utf8
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -94,7 +93,7 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('server'), mapping.mapValue('server', self.info['server']), self.position.getDn())
 
@@ -114,13 +113,13 @@ class object(univention.admin.handlers.simpleLdap):
 		object=univention.admin.objects.get(module, None, self.lo, self.position, dn=self.position.getDn())
 		shadow_module, shadow_object=univention.admin.objects.shadow(self.lo, module, object, self.position)
 		self.lo.modify(self.dn, [('dhcpServiceDN', oldServiceDN[0], shadow_object.dn)])
-		
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
 	univention.admin.filter.expression('objectClass', 'dhcpServer')
 	])
-	
+
 	if superordinate:
 		filter.expressions.append(univention.admin.filter.expression('dhcpServiceDN', superordinate.dn))
 
@@ -135,5 +134,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr):
-	
+
 	return 'dhcpServer' in attr.get('objectClass', [])

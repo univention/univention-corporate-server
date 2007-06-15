@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -29,8 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import ldap
-import univention
-import univention.utf8
 import univention.uldap
 import string
 import univention.admin.localization
@@ -70,7 +68,7 @@ class position:
 	def __init__(self, base, loginDomain=''):
 		if not base:
 			raise univention.admin.uexceptions.insufficientInformation, _( "There was no LDAP base specified." )
-		
+
 		if not loginDomain:
 			self.__loginDomain=base
 		else:
@@ -194,7 +192,7 @@ class position:
 				printable=""
 				for i in range(len(components)):
 					printable+="&nbsp;&nbsp;"
-				printable+=components.pop()				
+				printable+=components.pop()
 		else:
 			printable=domain
 		return printable
@@ -215,7 +213,7 @@ class position:
 			else:
 				printable=""
 				depth = len(components)*2
-				printable+=components.pop()				
+				printable+=components.pop()
 		else:
 			printable=domain
 		return (printable,depth)
@@ -242,7 +240,7 @@ class access:
 		self.require_license=0
 		self.allow_modify=1
 
-	
+
 	def bind(self, binddn, bindpw):
 		try:
 			self.lo.bind(binddn, bindpw)
@@ -276,14 +274,14 @@ class access:
 
 	def requireLicense(self, require=1):
 		self.require_license=require
-	
+
 	def __validateLicense(self):
 		if self.require_license and not GPLversion:
 			univention.admin.license.select('admin')
-	
+
 	def get(self, dn, attr=[], required=0, exceptions=0):
 		return self.lo.get(dn, attr, required)
-	
+
 	def getAttr(self, dn, attr, required=0, exceptions=0):
 		return self.lo.getAttr(dn, attr, required)
 
@@ -296,7 +294,7 @@ class access:
 			raise univention.admin.uexceptions.insufficientInformation, msg[0]['desc']
 		except ldap.LDAPError, msg:
 			raise univention.admin.uexceptions.ldapError, msg[0]['desc']
-	
+
 	def searchDn(self, filter='(objectClass=*)', base='', scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 		try:
 			return self.lo.searchDn(filter, base, scope, unique, required, timeout, sizelimit)
@@ -327,7 +325,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			raise univention.admin.uexceptions.ldapError, msg[0]['desc']
-	
+
 	def modify(self, dn, changes, exceptions=0,ignore_license=0):
 		self.__validateLicense()
 		if not self.allow_modify and not ignore_license:
@@ -377,7 +375,7 @@ class access:
 			raise univention.admin.uexceptions.permissionDenied
 		except ldap.LDAPError, msg:
 			raise univention.admin.uexceptions.ldapError, msg[0]['desc']
-	
+
 	def parentDn(self, dn):
 		return self.lo.parentDn(dn)
 
