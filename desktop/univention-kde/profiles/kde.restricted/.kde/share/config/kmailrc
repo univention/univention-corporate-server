@@ -1,8 +1,0 @@
-[$Version]
-update_info=kmail.upd:1,kmail.upd:4,kmail.upd:5,kmail.upd:6,kmail.upd:7,kmail.upd:8,kmail.upd:9,kmail.upd:3.1-update-identities,kmail.upd:3.1-use-identity-uoids
-
-[Composer]
-previous-identity=
-
-[General]
-Default Identity=
