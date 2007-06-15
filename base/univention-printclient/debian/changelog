@@ -1,3 +1,9 @@
+univention-printclient (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 15 Jun 2007 13:07:42 +0200
+
 univention-printclient (0.9) unstable; urgency=low
 
   * fixed creation of tempfile 
