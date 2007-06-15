@@ -1,3 +1,9 @@
+univention-python (2.2.0-1) unstable; urgency=low
+
+  * removed univention.utf8; UCS 2.0 using UTF-8 by default
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 15 Jun 2007 09:34:14 +0200
+
 univention-python (2.1.1-2) unstable; urgency=low
 
   * encoded files utf-8

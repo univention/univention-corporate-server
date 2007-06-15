@@ -31,7 +31,6 @@
 
 import ldap, re, types, codecs
 import sys,ldap.schema
-import univention.utf8
 import univention.debug
 import univention_baseconfig
 
@@ -119,14 +118,14 @@ class access:
 		self.binddn=binddn
 		self.bindpw=bindpw
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
-		self.lo.simple_bind_s(univention.utf8.encode(self.binddn), self.__encode_pwd(self.bindpw))
+		self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
 	def __smart_open(self):
 		_d=univention.debug.function('uldap.__smart_open host=%s port=%d base=%s' % (self.host, self.port, self.base))
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'establishing new connection')
 
-		self.lo=ldap.ldapobject.SmartLDAPObject(uri="LDAP://"+str(self.host)+":"+str(self.port), who=univention.utf8.encode(self.binddn), cred=self.__encode_pwd(self.bindpw), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
+		self.lo=ldap.ldapobject.SmartLDAPObject(uri="LDAP://"+str(self.host)+":"+str(self.port), who=self.binddn, cred=self.__encode_pwd(self.bindpw), start_tls=self.start_tls, tls_cacertfile=self.ca_certfile)
 
 	def __open(self):
 		_d=univention.debug.function('uldap.__open host=%s port=%d base=%s' % (self.host, self.port, self.base))
@@ -144,53 +143,73 @@ class access:
 
 		if self.binddn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'bind binddn=%s' % self.binddn)
-			self.lo.simple_bind_s(univention.utf8.encode(self.binddn), self.__encode_pwd(self.bindpw))
+			self.lo.simple_bind_s(self.binddn, self.__encode_pwd(self.bindpw))
 
-	def __recode_attribute(self, attr, val, func):
+	def __encode( self, value ):
+		if value == None:
+			return value
+		if isinstance( value, types.UnicodeType ):
+			return str( value )
+
+		if isinstance( value, ( types.ListType, types.TupleType ) ):
+			ls = []
+			for i in value:
+				ls.append( self.__encode( i ) )
+			return ls
+		if isinstance( value, types.DictType ):
+			dict = {}
+			for k in value.keys():
+				dict[ k ] = encode( value[ k ] )
+			return dict
+		else:
+			return value
+
+	def __recode_attribute( self, attr, val ):
 		if attr in self.decode_ignorelist:
 			return val
-		return func(val)
+		return self.__encode( val )
 
-	def __recode_entry(self, entry, func):
+	def __recode_entry(self, entry ):
 		if type(entry) == types.TupleType and len(entry) == 3:
-			return (entry[0], entry[1], self.__recode_attribute(entry[1], entry[2], func))
+			return ( entry[ 0 ], entry[ 1 ], self.__recode_attribute( entry[ 1 ], entry[ 2 ] ) )
 		elif type(entry) == types.TupleType and len(entry) == 2:
-			return (entry[0], self.__recode_attribute(entry[0], entry[1], func))
-		elif type(entry) == types.ListType:
+			return ( entry[ 0 ], self.__recode_attribute( entry[ 0 ], entry[ 1 ] ) )
+		elif isinstance( entry, ( types.ListType, types.TupleType ) ):
 			new=[]
 			for i in entry:
-				new.append(self.__recode_entry(i, func))
+				new.append( self.__recode_entry( i ) )
 			return new
-		elif type(entry) == types.DictType:
-			new={}
+		elif type( entry ) == types.DictType:
+			new = {}
 			for attr, val in entry.items():
-				new[attr]=self.__recode_attribute(attr, val, func)
+				new[ attr ]=self.__recode_attribute( attr, val )
 			return new
 		else:
 			return entry
 
 	def __encode_entry(self, entry):
-		return self.__recode_entry(entry, univention.utf8.encode)
+		return self.__recode_entry( entry )
 
 	def __encode_attribute(self, attr, val):
-		return self.__recode_attribute(attr, val, univention.utf8.encode)
+		return self.__recode_attribute( attr, val )
 
 	def __decode_entry(self, entry):
-		return self.__recode_entry(entry, univention.utf8.decode)
+		return self.__recode_entry( entry )
 
 	def __decode_attribute(self, attr, val):
-		return self.__recode_attribute(attr, val, univention.utf8.decode)
+		return self.__recode_attribute( attr, val )
 
 	def get(self, dn, attr=[], required=0):
 		'''returns ldap object'''
 
 		if dn:
 			try:
-				result=self.lo.search_s(univention.utf8.encode(dn), ldap.SCOPE_BASE, univention.utf8.encode('(objectClass=*)'), univention.utf8.encode(attr))
+				result=self.lo.search_s( dn, ldap.SCOPE_BASE,
+										 '(objectClass=*)',attr )
 			except ldap.NO_SUCH_OBJECT:
 				result={}
 			if result:
-				return self.__decode_entry(result[0][1])
+				return self.__decode_entry( result[0][1] )
 		if required:
 			raise ldap.NO_SUCH_OBJECT, {'desc': 'no object'}
 		return {}
@@ -201,11 +220,12 @@ class access:
 		_d=univention.debug.function('uldap.getAttr %s %s' % (dn, attr))
 		if dn:
 			try:
-				result=self.lo.search_s(univention.utf8.encode(dn), ldap.SCOPE_BASE, '(objectClass=*)', univention.utf8.encode([attr]))
+				result=self.lo.search_s( dn, ldap.SCOPE_BASE,
+										'(objectClass=*)', [ attr ] )
 			except ldap.NO_SUCH_OBJECT:
 				result={}
 			if result and result[0][1].has_key(attr):
-				return univention.utf8.decode(result[0][1][attr])
+				return result[0][1][attr]
 		if required:
 			raise ldap.NO_SUCH_OBJECT, {'desc': 'no object'}
 		return []
@@ -219,21 +239,19 @@ class access:
 			base=self.base
 
 		if scope == 'base+one':
-			res=univention.utf8.decode(
-				self.lo.search_ext_s
-				(univention.utf8.encode(base),
-				ldap.SCOPE_BASE,
-				univention.utf8.encode(filter),
-				univention.utf8.encode(attr),
-				serverctrls=serverctrls, clientctrls=None,
-				timeout=timeout, sizelimit=sizelimit)
-				+self.lo.search_ext_s(
-				univention.utf8.encode(base),
-				ldap.SCOPE_ONELEVEL,
-				univention.utf8.encode(filter),
-				univention.utf8.encode(attr),
-				serverctrls=serverctrls, clientctrls=None,
-				timeout=timeout, sizelimit=sizelimit), ignore=self.decode_ignorelist)
+			res = self.lo.search_ext_s( base,
+										ldap.SCOPE_BASE,
+										filter,
+										attr,
+										serverctrls=serverctrls, clientctrls=None,
+										timeout=timeout, sizelimit=sizelimit) + \
+										self.lo.search_ext_s( base,
+															  ldap.SCOPE_ONELEVEL,
+															  filter,
+															  attr,
+															  serverctrls=serverctrls,
+															  clientctrls=None,
+															  timeout=timeout, sizelimit=sizelimit)
 		else:
 			if scope == 'sub' or scope == 'domain':
 				ldap_scope=ldap.SCOPE_SUBTREE
@@ -241,13 +259,12 @@ class access:
 				ldap_scope=ldap.SCOPE_ONELEVEL
 			else:
 				ldap_scope=ldap.SCOPE_BASE
-			res=univention.utf8.decode(
-				self.lo.search_ext_s(
-				univention.utf8.encode(base),
-				ldap_scope,univention.utf8.encode(filter),
-				univention.utf8.encode(attr),
+			res= self.lo.search_ext_s(
+				base,
+				ldap_scope,filter,
+				attr,
 				serverctrls=serverctrls, clientctrls=None,
-				timeout=timeout, sizelimit=sizelimit), ignore=self.decode_ignorelist)
+				timeout=timeout, sizelimit=sizelimit)
 
 
 		if unique and len(res) > 1:
@@ -327,7 +344,6 @@ class access:
 	def add(self, dn, al):
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.add dn=%s' % dn)
-		dn=univention.utf8.encode(dn)
 		nal={}
 		for i in al:
 			v=None
@@ -410,9 +426,7 @@ class access:
 			ml.append((op, key, val))
 
 		ml=self.__encode_entry(ml)
-		dn=univention.utf8.encode(dn)
 		if rename:
-			rename=univention.utf8.encode(rename)
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'rename %s' % rename)
 			self.lo.rename_s(dn, rename, None, delold=0)
 			dn=rename+dn[dn.find(','):]
@@ -422,8 +436,6 @@ class access:
 
 	def rename(self, dn, newdn):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.rename %s -> %s' % (dn,newdn))
-		dn=univention.utf8.encode(dn)
-		newdn=univention.utf8.encode(newdn)
 		oldrdn = dn[:dn.find(',')]
 		oldsdn = dn[dn.find(',')+1:]
 		newrdn = newdn[:newdn.find(',')]
@@ -441,13 +453,12 @@ class access:
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'uldap.delete %s' % dn)
 		if dn:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, 'delete')
-			self.lo.delete_s(univention.utf8.encode(dn))
+			self.lo.delete_s(dn)
 
 	def parentDn(self, dn):
 		return parentDn(dn, self.base)
 
 	def hasChilds(self, dn):
-		dn=univention.utf8.encode(dn)
 		# try operational attributes
 		attrs=self.lo.search_s(dn, ldap.SCOPE_BASE, '(objectClass=*)', ['hasSubordinates'])
 		if attrs.has_key('hasSubordinates'):
