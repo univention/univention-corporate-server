@@ -1,3 +1,10 @@
+univention-kde (2.0.1-6) unstable; urgency=low
+
+  * updated kde.lockeddown, kde.restricted and default profile
+  * added new univention wallpaper
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 15 Jun 2007 14:47:38 +0200
+
 univention-kde (2.0.1-5) unstable; urgency=low
 
   * added arts to the dependency list
