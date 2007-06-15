@@ -160,11 +160,11 @@ if [ -n "$ssl_email" ]; then
 fi
 
 if [ -n "$acpi_off" ]; then
-	univention-baseconfig set "$(univention-baseconfig get grub/append) acpi=off"
+	univention-baseconfig set "\$(univention-baseconfig get grub/append) acpi=off"
 fi
 
 if [ -n "$pci_acpi_off" ]; then
-	univention-baseconfig set "$(univention-baseconfig get grub/append) pci=noacpi"
+	univention-baseconfig set "\$(univention-baseconfig get grub/append) pci=noacpi"
 fi
 
 if [ -n "$grub_append" ]; then

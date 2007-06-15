@@ -79,11 +79,11 @@ else
 		boot_version=`uname -r | awk -F"." '{printf "%s.%s.%s\n",$1,$2,$3}'`
 		if [ "$boot_version" = "2.6.14" ]; then
 			# booting the default kernel image
-			kernel_package="univention-kernel-image${kernel_extension}-2.6"
-			fallback_kernel_package="univention-kernel-image-2.6"
+			kernel_package="univention-kernel-image${kernel_extension}-2.6-18"
+			fallback_kernel_package="univention-kernel-image-2.6-18"
 		else
 			kernel_package="univention-kernel-image${kernel_extension}-${boot_version}"
-			fallback_kernel_package="univention-kernel-image-2.6"
+			fallback_kernel_package="univention-kernel-image-2.6-18"
 		fi
 			
 	fi

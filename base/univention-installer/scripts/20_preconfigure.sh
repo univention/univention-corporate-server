@@ -59,6 +59,8 @@ fi
 
 mount proc /proc -t proc
 
+echo "Setting up devices, this may take a while."
+
 cd /dev
 /sbin/MAKEDEV generic
 cd -
