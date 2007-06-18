@@ -80,9 +80,7 @@ def main(argv):
 		univention.debug.init('/dev/null', 0, 0)
 
 	os.environ["LC_MESSAGES"]=language
-	locale.setlocale( locale.LC_TIME, language )
-# 	if language == 'de':
-# 		locale.setlocale( locale.LC_TIME, 'de_DE@euro' )
+	locale.setlocale( locale.LC_MESSAGES, language )
 
 	from uniparts import *
 	import requests
