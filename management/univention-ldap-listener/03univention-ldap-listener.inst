@@ -40,7 +40,7 @@ test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install
 
 listener_pid=`pidof univention-ldap-listener`
 if [ -n "$listener_pid" ]; then
-	runsvctrl d /etc/runit/univention-ldap-listener
+	sv down univention-ldap-listener
 fi
 
 if [ -e "/var/lib/univention-ldap-listener" ]; then
