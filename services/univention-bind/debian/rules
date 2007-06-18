@@ -66,11 +66,8 @@ install: build
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-bind-proxy/etc/runit/univention-bind-proxy/finish
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-bind/etc/runit/univention-bind/finish
 
-	# add daemon information for bind9, used by univention-console
-	echo "Bind9;univention-bind;/usr/sbin/named -c /etc/bind/named.conf ;20" > debian/univention-bind/etc/univention/daemons/bind
-	echo "Bind9 Proxy;univention-bind-proxy;/usr/sbin/named -c /etc/bind/named.conf.proxy;20" > debian/univention-bind-proxy/etc/univention/daemons/bind-proxy
-
 	univention-install-baseconfig
+	univention-install-service-info
 
 binary-arch: build install
 

@@ -1,0 +1,4 @@
+[univention-bind-proxy]
+description[de]=DNS Proxy Dienst
+icon=service/bind-proxy
+programs=/usr/sbin/named -c /etc/bind/named.conf.proxy
