@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.0-2) unstable; urgency=low
+
+  * call exit 0 at the end of the postinst scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 14:11:31 +0200
+
 univention-kolab2-framework (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

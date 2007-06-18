@@ -141,3 +141,5 @@ fi
 #DEBHELPER#
 
 chown cyrus:mail /var/spool/sieve/*sieve
+
+exit 0

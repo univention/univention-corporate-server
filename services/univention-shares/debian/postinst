@@ -34,3 +34,5 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/univention-ldap-listener crestart
 fi
 
+exit 0
+

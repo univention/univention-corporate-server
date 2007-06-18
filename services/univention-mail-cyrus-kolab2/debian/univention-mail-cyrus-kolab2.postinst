@@ -138,3 +138,5 @@ fi
 if [ -x /etc/init.d/univention-ldap-listener ]; then
 	/etc/init.d/univention-ldap-listener crestart
 fi
+
+exit 0

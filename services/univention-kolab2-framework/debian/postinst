@@ -74,3 +74,5 @@ fi
 if [ -x /etc/init.d/cyrus22 ]; then
     /etc/init.d/cyrus22 restart
 fi
+
+exit 0

@@ -36,3 +36,5 @@ univention-baseconfig set local-user-sync/passwd?true
 if [ -x /etc/init.d/univention-ldap-listener ]; then
 	/etc/init.d/univention-ldap-listener crestart
 fi
+
+exit 0

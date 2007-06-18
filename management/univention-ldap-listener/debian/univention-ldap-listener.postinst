@@ -74,4 +74,4 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	fi
 fi
 
-
+exit 0

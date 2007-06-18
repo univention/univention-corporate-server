@@ -1,3 +1,9 @@
+univention-heimdal (2.0.1-3) unstable; urgency=low
+
+  * call exit 0 at the end of the postinst scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 13:59:24 +0200
+
 univention-heimdal (2.0.1-2) unstable; urgency=low
 
   * encoded files utf-8
