@@ -36,18 +36,24 @@ usage:
 translation=univention.admin.localization.translation()
 _=translation.translate
 '''
+import locale
 
 class translation:
-	def __init__(self, namespace):
-		domain=namespace.replace('/', '-').replace('.', '-')
+	def __init__( self, namespace ):
+		domain = namespace.replace( '/', '-' ).replace( '.', '-' )
 		try:
-			self.translation=gettext.translation(domain)
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'translating %s' % namespace)
+			lang = locale.getlocale( locale.LC_MESSAGES )
+			if lang[ 0 ]:
+				self.translation = gettext.translation( domain, languages = ( lang[ 0 ], ) )
+			else:
+				self.translation = None
 		except IOError, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'no translation for %s (%s)' % ( namespace, str( e ) ) )
-			self.translation=None
-	def translate(self, message):
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
+									'no translation for %s (%s)' % ( namespace, str( e ) ) )
+			self.translation = None
+
+	def translate( self, message ):
 		if self.translation:
-			return self.translation.ugettext(message)
+			return self.translation.ugettext( message )
 		else:
 			return message
