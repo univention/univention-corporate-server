@@ -1,0 +1,664 @@
+# Kronolith Simplified Chinese translation.
+# Copyright (C) 2002 The Horde Project.
+# Zhang Bo <boozhang@sdb.ac.cn>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-06-23 12:55+0800\n"
+"PO-Revision-Date: 2002-05-26 10:55+0800\n"
+"Last-Translator: Zhang Bo <boozhang@sdb.ac.cn>\n"
+"Language-Team: Zhang Bo <boozhang@sdb.ac.cn>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d 时"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d 时, %d 分"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d 时, %d 分"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d 时"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d 时, %d 分"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d 时, %d 分"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d 分"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d 分"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "文件 %s 已导入完成"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s 于进度中."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s 现正激活中."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s 开始于 %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>描述</b> (选项)"
+
+msgid "<b>Description</b>"
+msgstr "<b>描述</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>关键词</b> (选项)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>关键词</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>重复</b> (选项)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>重复</b>"
+
+msgid "Add Event"
+msgstr "新增事件"
+
+msgid "Add a new event"
+msgstr "新增一事件"
+
+msgid "Alarm Date"
+msgstr "警示日期"
+
+msgid "Alarm Span (minutes)"
+msgstr "警示间隔 (分钟)"
+
+msgid "Alarm Time"
+msgstr "警示时间"
+
+msgid "Alarm"
+msgstr "警示"
+
+msgid "All day event"
+msgstr "整日性事件"
+
+msgid "All day"
+msgstr "整日"
+
+msgid "All events"
+msgstr "所有事件"
+
+msgid "All"
+msgstr "所有"
+
+msgid "April"
+msgstr "四月"
+
+msgid "At"
+msgstr "在"
+
+msgid "August"
+msgstr "八月"
+
+msgid "Birthday"
+msgstr "生日"
+
+msgid "Business"
+msgstr "商务"
+
+msgid "Cancel"
+msgstr "取消"
+
+msgid "Category"
+msgstr "类别"
+
+msgid "Change the way dates and times are formatted."
+msgstr "变更日期及时间格式"
+
+msgid "Confirm deletion of events?"
+msgstr "确定删除事件?"
+
+msgid "Create a New Event"
+msgstr "建立一新事件"
+
+msgid "Current"
+msgstr "目前"
+
+msgid "Daily: Recurs every"
+msgstr "日: 每"
+
+msgid "Date and Time Options"
+msgstr "日期与时间选项"
+
+msgid "Day"
+msgstr "天"
+
+msgid "Day(s)"
+msgstr "天"
+
+msgid "December"
+msgstr "十二月"
+
+#, c-format
+msgid "Delete %s"
+msgstr "删除 %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "删除 '%s'"
+
+msgid "Delete Event"
+msgstr "删除事件"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr "此删除动作将套用到:仅目前事件,目前及以后事件,或所有"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Description"
+msgstr "描述"
+
+msgid "Display 24-hour times?"
+msgstr "以 24 小时制显示?"
+
+msgid "Display Options"
+msgstr "显示选项"
+
+#, c-format
+msgid "Due: %s"
+msgstr "时期: %s"
+
+msgid "Duration"
+msgstr "时期"
+
+#, c-format
+msgid "Edit %s"
+msgstr "编辑 %s"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "End Date"
+msgstr "结束日期"
+
+msgid "End On"
+msgstr "结束于"
+
+msgid "End Time"
+msgstr "结束时间"
+
+msgid "Export Calendar"
+msgstr "导出行程日历"
+
+msgid "Export"
+msgstr "导出"
+
+msgid "February"
+msgstr "二月"
+
+msgid "Fr"
+msgstr "星期五"
+
+msgid "Friday"
+msgstr "星期五"
+
+msgid "Future"
+msgstr "目前及以后"
+
+msgid "Game"
+msgstr "游戏"
+
+msgid "Goto"
+msgstr "移至"
+
+msgid "Help"
+msgstr "求助"
+
+msgid "Hour(s)"
+msgstr "时"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "我的来源文件为 CSV 格式,而且该文件的第一行为字段名称"
+
+msgid "Illegal or malformed form data."
+msgstr "不合法的数据格式"
+
+msgid "Import Calendar"
+msgstr "导入行程日历"
+
+msgid "Import"
+msgstr "导入"
+
+msgid "Import/Export Calendar"
+msgstr "导入/导出行程日历"
+
+msgid "Import/Export"
+msgstr "导入/导出"
+
+msgid "January"
+msgstr "一月"
+
+msgid "July"
+msgstr "七月"
+
+msgid "June"
+msgstr "六月"
+
+msgid "Keywords"
+msgstr "关键词"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith 并未完成设定."
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Last month"
+msgstr "上月"
+
+msgid "Last week"
+msgstr "上周"
+
+msgid "Lasts"
+msgstr "持续"
+
+msgid "Limit the time span to export:"
+msgstr "限制导出时间间隔:"
+
+msgid "Location"
+msgstr "地点"
+
+msgid "March"
+msgstr "三月"
+
+msgid "May"
+msgstr "天"
+
+msgid "Meeting"
+msgstr "会议"
+
+msgid "Minute(s)"
+msgstr "分钟"
+
+msgid "Minutes before"
+msgstr "分钟前"
+
+msgid "Minutes"
+msgstr "分钟"
+
+msgid "Mo"
+msgstr "星期一"
+
+msgid "Monday"
+msgstr "星期一"
+
+msgid "Month"
+msgstr "月"
+
+msgid "Monthly: Recurs every"
+msgstr "月: 每"
+
+msgid "New Event"
+msgstr "新事件"
+
+msgid "Next Month"
+msgstr "下个月"
+
+msgid "Next day"
+msgstr "下一天"
+
+msgid "Next week"
+msgstr "下一周"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "没有行程日历(SQL型态)的设定信息."
+
+msgid "No end date"
+msgstr "永远"
+
+msgid "None"
+msgstr "无"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"请注意: 由于目前所使用的行程日历驱动程序有些许的瑕疵,以致于无法导入文件."
+
+msgid "November"
+msgstr "十一月"
+
+msgid "October"
+msgstr "十月"
+
+msgid "Options"
+msgstr "选项"
+
+msgid "Pattern"
+msgstr "样式"
+
+msgid "Permanently delete this event?"
+msgstr "永久删除此事件?"
+
+msgid "Personal"
+msgstr "个人的"
+
+msgid "Previous day"
+msgstr "前一日"
+
+msgid "Problem?"
+msgstr "问题?"
+
+msgid "Recur Until"
+msgstr "重复直到"
+
+msgid "Recurrence Data"
+msgstr "重复日期"
+
+msgid "Recurrence End Date"
+msgstr "重复截止日"
+
+msgid "Recurrence Interval"
+msgstr "重复间隔"
+
+msgid "Recurrence Type"
+msgstr "重复型态"
+
+msgid "Recurs daily"
+msgstr "每日重复"
+
+msgid "Recurs monthly"
+msgstr "每月重复"
+
+msgid "Recurs not"
+msgstr "不重复"
+
+msgid "Recurs weekly"
+msgstr "每周重复"
+
+msgid "Recurs yearly"
+msgstr "每年重复"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "行程日历设置中,找不到关于 'database'设定资料."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "行程日历设置中,找不到关于 'hostspec'设定资料."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "行程日历设置中,找不到关于 'password'设定资料."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "行程日历设置中,找不到关于 'phptype'设定资料."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "行程日历设置中,找不到关于 'username'设定资料."
+
+msgid "Reset to Defaults"
+msgstr "重设回内定值"
+
+msgid "Sa"
+msgstr "星期六"
+
+msgid "Saturday"
+msgstr "星期六"
+
+msgid "Save As New"
+msgstr "另存新档"
+
+msgid "Save Event"
+msgstr "储存事件"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr "选择如何显示各种不同的显示风格以及缺省的显示风格"
+
+msgid "Select how to display Dates:"
+msgstr "选择如何显示日期:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "选择是否在行程日历中显示代办事项."
+
+msgid "Select the file to import:"
+msgstr "选择文件以导入数据:"
+
+msgid "Select the first weekday:"
+msgstr "选择每周的第一天:"
+
+msgid "Select the format to export to:"
+msgstr "选择导出的格式:"
+
+msgid "Select the source to import from:"
+msgstr "选择来源文件以导入数据:"
+
+msgid "Select the time span to show:"
+msgstr "请选择时间范围以显示"
+
+msgid "Select the view to display after login:"
+msgstr "选择当登入后的的显示方法:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "选择哪些事件以显示于主目录的摘要中."
+
+msgid "September"
+msgstr "九月"
+
+msgid "Set the current time zone."
+msgstr "设定目前的时区."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "设定菜单以及求助的语言."
+
+msgid "Set your preferred display language."
+msgstr "设定你的偏好显示语言."
+
+msgid "Show due tasks in the calendar?"
+msgstr "在行程日历中显示代办事项?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "以半小时为日与周的最小显示单位?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "只显示有设定警示作用的事件?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "部分的 Kronolith 配置文件遗失:"
+
+msgid "Start Date"
+msgstr "启始日期"
+
+msgid "Start On"
+msgstr "开始于"
+
+msgid "Start Time"
+msgstr "启始时间"
+
+msgid "Su"
+msgstr "星期天"
+
+msgid "Summary"
+msgstr "摘要"
+
+msgid "Sunday"
+msgstr "星期天"
+
+msgid "Tasks"
+msgstr "代办事项"
+
+msgid "Th"
+msgstr "星期四"
+
+msgid "The data was lost."
+msgstr "资料遗失"
+
+msgid "The end date must be later than the start date."
+msgstr "结束日期必需大于开始日期."
+
+msgid "The file contained no data."
+msgstr "文件中没有数据."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr "文件上传发生问题.文件大小超过允许最大值."
+
+msgid "There was an error importing the data."
+msgstr "导入数据时发生一个错误."
+
+msgid "There was an error importing the uploaded file"
+msgstr "导入上传文件时发生一个错误."
+
+msgid "There were no events to export."
+msgstr "没有事件可导出."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr "这个文件控制行程日历的一些偏好设定,以及哪些使用者可以变更设定."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"这个文件控制文件中关于颜色与字体的展现风格.并以新增或覆盖 Horde 的方式为预设"
+"值."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr "这是 Kronolith 的主要设定文件.并包含其程序所需的路径与选项."
+
+msgid "Thursday"
+msgstr "星期四"
+
+msgid "Time Zone"
+msgstr "时区"
+
+msgid "Title"
+msgstr "事件名称"
+
+msgid "Today"
+msgstr "今天"
+
+msgid "Tu"
+msgstr "星期二"
+
+msgid "Tuesday"
+msgstr "星期二"
+
+msgid "Type"
+msgstr "型式"
+
+msgid "User Interface"
+msgstr "使用者接口"
+
+msgid "User Options"
+msgstr "使用者选项"
+
+#, c-format
+msgid "View %s"
+msgstr "显视 %s"
+
+msgid "We"
+msgstr "星期三"
+
+msgid "Wednesday"
+msgstr "星期三"
+
+#, c-format
+msgid "Week %d"
+msgstr "周 %d"
+
+msgid "Week"
+msgstr "周"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "周&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "周"
+
+msgid "Weekly: Recurs every"
+msgstr "周: 每"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "日与周的结止显示时间？"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "日与周的启始显示时间？"
+
+msgid "Work Week"
+msgstr "上班日"
+
+msgid "Work&nbsp;Week"
+msgstr "上班日"
+
+msgid "Yearly: Recurs every"
+msgstr "年: 每"
+
+msgid "Your Information"
+msgstr "你的个人信息:"
+
+msgid "Your current time zone:"
+msgstr "你目前的时区:"
+
+msgid "day"
+msgstr "日"
+
+msgid "day(s)"
+msgstr "日"
+
+msgid "days"
+msgstr "日"
+
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar 文件已导入完成"
+
+msgid "month(s)"
+msgstr "月"
+
+msgid "no time"
+msgstr "无时间"
+
+msgid "on the same date"
+msgstr "在同一天"
+
+msgid "on the same weekday"
+msgstr "在每周的第一天"
+
+msgid "week"
+msgstr "周"
+
+msgid "week(s) on:"
+msgstr "周:"
+
+msgid "weeks"
+msgstr "周"
+
+msgid "year(s)"
+msgstr "年"

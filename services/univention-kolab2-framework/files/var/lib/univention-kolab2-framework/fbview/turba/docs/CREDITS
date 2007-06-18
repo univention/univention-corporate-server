@@ -1,0 +1,74 @@
+============================
+|| Turba Development Team ||
+============================
+
+===============
+Core Developers
+===============
+
+Chuck Hagenbuch <chuck@horde.org>
+- original design work
+
+Jon Parise <jon@csh.rit.edu>
+- initial implementation work
+
+Rich Lafferty <rich@horde.org>
+- documentation
+
+Jan Schneider <jan@horde.org>
+- import/export routines
+- stuff
+
+
+============
+Localization
+============
+
+Arabic (Syria)          Platinum Development Team <devteam@platinum-sy.net>
+Brazilian Portuguese    Carlos Daniel Kibrit <kibrit@terra.com.br>
+Bulgarian               Miroslav Pendev <pendev@hotmail.com>
+Catalan                 Angels Guimerà <angels.Guimera@uab.es>
+Chinese (Simplified)    WangHengWen <whw@my169.com>
+Chinese (Traditional)   David Chang <david@thbuo.gov.tw>
+Czech                   Pavel Chytil <pchytil@asp.ogi.edu>
+Danish                  Martin List-Petersen <martin@list-petersen.dk>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+Estonian                Toomas Aas <toomas.aas@raad.tartu.ee>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Sam Przyswa <samp@arial-concept.com>
+                        Ronnie Garcia <ronnie@mk2.net>
+                        Benoit St-André <ben@benoitst-andre.net>
+Galician                Rafael Varela <rafael.varela@usc.es>
+                        Guillermo Mendez <guille@usc.es>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Italian                 Giovanni Meneghetti <gmeneghetti@infvic.it>
+Japanese                B.J. Black <william.black@sun.com>
+                        Takeshi Morishima <tm@onepost.net>
+Korean                  J.I Kim <aporie@netian.com>
+Latvian                 Kaspars Kapenieks <kaspars@rcc.lv>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Sumskas <vilius@lnk.lt>
+Macedonian              Stojan Pesov <ssp@eureka.com.mk>
+Norwegian Bokmaal       Oystein Steimler <oystein@rexta.net>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Polish                  Piotr Roszatycki <dexter@debian.pl>
+Portuguese              Nuno Loureiro <nuno@eth.pt>
+                        Jose' Carlos <horde.i18n@abismo.org>
+Romanian                Eugen Hoanca <eugenh@urban-grafx.ro>
+                        Marius Dragulescu <mariusd@urban-grafx.ro>
+Russian                 Ignat Ikryanov <ignat@ibd.ru>
+                        Anton Nekhoroshih <anton@valuehost.ru>
+                        Fedor A. Fetisov <faf@ssc.ru>
+Slovak                  Leo Mrafko <leo@oel.sk>
+                        Ivan Noris <noris@bgs.sk>
+Slovenian               Jure Krasovic <jurek@rcc-irc.si>
+Spanish                 Julian Jares <jjares@techie.com>
+                        Raúl Alvarez Venegas <rav@tecoman.ucol.mx>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+Ukrainian               Andriy Kopystyansky <anri@polynet.lviv.ua>
+
+$Horde: turba/docs/CREDITS,v 1.47 2004/03/30 17:35:04 jan Exp $

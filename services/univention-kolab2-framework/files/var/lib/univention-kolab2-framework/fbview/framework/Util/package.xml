@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/Util/package.xml,v 1.4 2004/02/24 01:11:57 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Util</name>
+  <summary>Horde Utility Libraries</summary>
+  <description>
+    These classes provide functionality useful for all kind of applications.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jan</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-10-28</date>
+    <notes>Initial release as a PEAR package</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Array.php"/>
+      <file role="php" baseinstalldir="/Horde" name="String.php"/>
+      <file role="php" baseinstalldir="/Horde" name="Util.php"/>
+      <file role="php" baseinstalldir="/Horde" name="Variables.php"/>
+      <dir name="tests" role="test">
+        <file name="String.phpt"/>
+        <file name="String2.phpt"/>
+        <file name="utf-8.phpt"/>
+      </dir>
+    </filelist>
+    <provides type="class" name="Horde_Array"/>
+    <provides type="class" name="String"/>
+    <provides type="class" name="Util"/>
+    <provides type="class" name="Variables"/>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-10-28</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

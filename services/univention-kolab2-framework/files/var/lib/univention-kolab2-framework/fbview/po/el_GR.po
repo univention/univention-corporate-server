@@ -1,0 +1,609 @@
+# Horde Greek translation.
+# Copyright (C) 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde: 2.2-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:06+0200\n"
+"PO-Revision-Date: 2001-07-26 11:13+0200\n"
+"Last-Translator: Stefanos I. Dimitriou <support_webmail@teiath.gr>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s είναι έτοιμοι να γίνουν οι λειτουργίες συντήρησης που είναι επιλεγμένες παρακάτω."
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Λειτουργίες Συντήρησης - Επιβεβαίωση"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' δεν έχει ρυθμιστεί στο registry της εφαρμογής Horde"
+
+msgid "24 hours"
+msgstr "24ώρη μορφή"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Παρουσιάστηκε ένα σοβαρό λάθος:</b>"
+
+msgid "AM/PM"
+msgstr "ΠΜ/ΜΜ"
+
+msgid "Add pair"
+msgstr "Προσθήκη ζεύγους"
+
+msgid "Address Book"
+msgstr "Διευθυνσιογράφος"
+
+msgid "Address"
+msgstr "Διεύθυνση"
+
+msgid "Alias"
+msgstr "Ψευδώνυμο"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "Available fields:"
+msgstr "Διαθέσιμα Πεδία:"
+
+msgid "Birthday"
+msgstr "Γενέθλια"
+
+msgid "CVS"
+msgstr "Αρχείο κειμένου χωρισμένο με κόμμα"
+
+msgid "Calendar"
+msgstr "Ημερολόγιο"
+
+msgid "Cancel Problem Report"
+msgstr "Ακύρωση Αναφοράς Προβλήματος"
+
+msgid "Cell Phone"
+msgstr "Κινητό Τηλέφωνο"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Επιλέξτε οποιαδήποτε λειτουργία θέλετε να εκτελεστεί αυτή τη στιγμή."
+
+msgid "Close Help Window"
+msgstr "Κλείσιμο Παράθυρου Βοήθειας"
+
+msgid "Close Help"
+msgstr "Κλείσιμο Βοήθειας"
+
+msgid "Close Window"
+msgstr "Κλείσιμο Παράθυρου"
+
+msgid "Company"
+msgstr "Εταιρία"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Περιεχόμενα του '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Περιεχόμενα των αρχείων RAR"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr ""
+
+msgid "Credits"
+msgstr "Ευχαριστίες"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Ημερήσια"
+
+msgid "Database query failed."
+msgstr "Η αναζήτηση στη Βάση Δεδομένων απέτυχε."
+
+msgid "Default Identity"
+msgstr "Προεπιλεγμένη Ταυτότητα"
+
+msgid "Describe the Problem"
+msgstr "Περιγραφή του Προβλήματος"
+
+msgid "Details have been logged for the administrator."
+msgstr "Οι λεπτομέρειες έχουν καταγραφεί για τον διαχειριστή."
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Μην επιχειρήσετε να ανοίξετε απευθείας το αρχείο maintenance.php"
+
+msgid "Email"
+msgstr "Αλληλογραφία"
+
+msgid "Empty result."
+msgstr "Δεν επιστράφηκαν Αποτελέσματα."
+
+msgid "Error"
+msgstr "Λάθος"
+
+msgid "Every 15 minutes"
+msgstr "Κάθε 15 λεπτά"
+
+msgid "Every 30 seconds"
+msgstr "Κάθε 30 δευτερόλεπτα"
+
+msgid "Every 5 minutes"
+msgstr "Κάθε 5 λεπτά"
+
+msgid "Every Login"
+msgstr "Κάθε φορά που μπαίνετε στην υπηρεσία"
+
+msgid "Every half hour"
+msgstr "Κάθε μισή ώρα"
+
+msgid "Every minute"
+msgstr "Κάθε λεπτό"
+
+msgid "Example values:"
+msgstr "Παραδειγματικές τιμές:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Αναμενόμενο \"BEGIN\" στη γραμμή %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Αναμενόμενο \"END:%s\" στη γραμμή %d."
+
+msgid "Failed retrieving preferences."
+msgstr "Αποτυχία κατά την προσπάθεια ανάκτησης των προτιμήσεων."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Αποτυχία σύνδεσης στον διακομιστή Καταλόγου."
+
+msgid "Fax"
+msgstr "ΦΑΞ"
+
+msgid "Full Description:"
+msgstr "Αναλυτική Περιγραφή:"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid "Home Address"
+msgstr "Διεύθυνση Σπιτιού"
+
+msgid "Home Phone"
+msgstr "Τηλέφωνο Σπιτιού"
+
+msgid "Horde Login"
+msgstr "Είσοδος στην Υπηρεσία ΗΛεκτρονικού Ταχυδρομείου"
+
+msgid "Horde System"
+msgstr "Σύστημα 'Horde'"
+
+msgid "Horde Wireless"
+msgstr "'Horde' Ασύρματη"
+
+msgid "Horde is not properly configured"
+msgstr "Το πρόγραμμα 'Horde' δεν έχει ρυθμιστεί σωστά"
+
+msgid "Horde"
+msgstr "Αρχική Σελίδα"
+
+msgid "Icons Only"
+msgstr "Μόνο Εικονίδια"
+
+msgid "Icons with text"
+msgstr "Εικονίδια και Κείμενο"
+
+msgid "Import Error: "
+msgstr "Λάθος κατά την Εισαγωγή: "
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Πεδίο που εισήχθη: %s"
+
+msgid "Imported fields:"
+msgstr "Πεδία που εισήχθησαν:"
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "List Help Topics"
+msgstr "Λίστα θεμάτων Βοήθειας"
+
+msgid "Log in"
+msgstr "Είσοδος"
+
+msgid "Log out"
+msgstr "Έξοδος"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr "Η είσοδος Απέτυχε. Πιθανότατα δόθηκε λάθος το Όνομα Χρήστη ή ο Κωδικός."
+
+msgid "Logout"
+msgstr "Έξοδος"
+
+msgid "MM"
+msgstr "ΜΜ"
+
+msgid "Mail"
+msgstr "Αλληλογραφία"
+
+msgid "Manual"
+msgstr "Εγχειρίδιο"
+
+msgid "Map Date and Time Fields"
+msgstr "Πεδία Ημερομηνίας και Ώρας"
+
+msgid "Map Import Fields"
+msgstr "Πεδία εισαγωγής"
+
+msgid "Matching fields"
+msgstr "Πεδία που ταιριάζουν"
+
+msgid "Memos"
+msgstr "Σημειώσεις"
+
+msgid "Menu mode:"
+msgstr "Κατάσταση Μενού:"
+
+msgid "Message"
+msgstr "Μήνυμα"
+
+msgid "Monthly"
+msgstr "Μηνιαία"
+
+msgid "My Summary"
+msgstr "Η Περίληψη μου:"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "Never"
+msgstr "Ποτέ"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για την υπηρεσία Καταλόγου."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για τις κατηγορίες της SQL."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για τις προτιμήσεις της SQL."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Δεν έχουν ρυθμιστεί οι πληροφορίες για την αυθεντικοποίηση στην SQL."
+
+msgid "No preferences are available."
+msgstr "Οι προτιμήσεις δεν είναι διαθέσιμες."
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Notice"
+msgstr "Ανακοινώσεις"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Το πρόγραμμα που διαχειρίζεται τις ειδοποιήσεις %s δεν βρέθηκε."
+
+msgid "Number of columns in the summary view:"
+msgstr "Αριθμός στηλών στην εμφάνιση της περίληψης:"
+
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Other Information"
+msgstr "Αλλες Πληροφορίες"
+
+msgid "Password"
+msgstr "Κωδικός"
+
+msgid "Perform Maintenance Operations"
+msgstr "Εκτέλεση Λειτουργιών Συντήρησης"
+
+msgid "Phone"
+msgstr "Τηλέφωνο"
+
+msgid "Please provide a summary of the problem."
+msgstr "Παρακαλώ δώστε μία περίληψη του προβλήματος."
+
+msgid "Please provide your username and password"
+msgstr "Παρακαλώ δώστε το Όνομα Χρήστη και τον κωδικό σας"
+
+msgid "Problem Description"
+msgstr "Περιγραφή Προβλήματος"
+
+msgid "Refresh Summary View:"
+msgstr "Ανανέωση της Προβολής Περίληψης:"
+
+msgid "Remove pair"
+msgstr "Αφαίρεση ζεύγους"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'basedn' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'basedn' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'database' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'table' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'uid' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'uid' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις αυθεντικοποίησης."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις κατηγοριών."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί στις ρυθμίσεις των προτιμήσεων."
+
+msgid "Return to Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+msgid "Role"
+msgstr "Ρόλος"
+
+msgid "Save Options"
+msgstr "Αποθήκευση Επιλογών"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr "Επιλέξτε τους χαρακτήρες που θέλετε από τις παρακάτω λίστες. Κατόπιν"
+"μπορείτε να τα αντιγράψετε και να τα επικολλήσετε στο μήνυμα σας."
+
+msgid "Select the date delimiter:"
+msgstr "Επιλογή του διαχωριστή ημερομηνίας:"
+
+msgid "Select the date format:"
+msgstr "Επιλογή της μορφής που θα έχει η ημερομηνία:"
+
+msgid "Select the time format:"
+msgstr "Επιλογή της μορφής που θα έχει η ώρα:"
+
+msgid "Select two matching fields."
+msgstr "Επιλέξτε δύο πεδία που ταιριάζουν."
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε τη γλώσσα σας:"
+
+msgid "Send Problem Report"
+msgstr "Αποστολή Αναφοράς Προβλήματος"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Ρυθμίστε διάφορες επιλογές εμφάνισης και το χρόνο ανανέωσης των σελίδων."
+
+msgid "Set your preferred display language."
+msgstr "Επιλογή της προτιμούμενης γλώσσας."
+
+msgid "Short Summary:"
+msgstr "Σύντομη Περίληψη:"
+
+msgid "Skip Maintenance"
+msgstr "Ακύρωση Συντήρησης"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Μερικά από τα αρχεία διαχείρισης του Horde έχουν χαθεί:"
+
+msgid "Special Character Input"
+msgstr "Εισαγωγή Ειδικών Χαρακτήρων"
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+msgid "Tasks"
+msgstr "Εργασίες"
+
+msgid "Text Only"
+msgstr "Μόνο Κείμενο"
+
+#, c-format
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"Το πρόγραμμα που χρησιμοποιείτε για την εμφάνιση αυτού του είδους τα μηνύματα "
+"(%s) δεν βρέθηκε στο σύστημα."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Η registry είναι ο τρόπος με τον οποίο οι εφαρμογές του Horde επικοινωνούν. "
+"μεταξύ τους. Εδώ πρέπει να γράψετε ότι εφαρμογές του Horde έχετε εγκαταστήσει."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Αυτό το αρχείο περιέχει τους MIME drivers που χρησιμοποιούνται από την υπηρεσία "
+"επιτρέποντας διάφορα προγράμματα να διαχειρίζονται τα περιεχόμενα των email και "
+"να τα εμφανίζουν με τον κατάλληλο τρόπο."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις ρυθμίσεις των χρωμάτων και των γραμματοσειρών για "
+"όλα το πρόγραμμα του Horde, και για τις εφαρμογές που είναι εγκατεστημένες σε "
+"αυτό και δεν παρέχουν δικές τους επιλογές για αυτές τις ρυθμίσεις."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Αυτό το αρχείο καταγράφει τις επεκτάσεις των τύπων ΜΙΜΕ, ώστε τα περιεχόμενα "
+"ορισμένων mail να εμφανίζονται με τον κατάλληλο τρόπο."
+
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος 'Horde'. Περιέχει τα "
+"μονοπάτια και τα βασικά μέρη που χρησιμοποιούνται από τον πυρήνα και τις "
+"εφαρμογές του συστήματος. "
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Type mismatch."
+msgstr "Λανθασμένος τύπος δεδομένων."
+
+msgid "URL"
+msgstr "Ηλεκτρονική Διεύθυνση"
+
+msgid "Unable to connect to SQL server."
+msgstr "Δεν είναι δυνατή η σύνδεση στο διακομιστή SQL."
+
+msgid "Unable to register preferences in session."
+msgstr "Δεν είναι δυνατόν να καταχωρηθούν οι προτιμήσεις για αυτή την σύνδεση."
+
+msgid "Unable to translate this Word document"
+msgstr "Δεν μπόρεσε να μεταφραστεί αυτό το έγγραφο Word"
+
+msgid "Undo Changes"
+msgstr "Ακύρωση Αλλαγών"
+
+msgid "Unexpected end of file."
+msgstr "Μη αναμενόμενο τέλος του αρχείου."
+
+msgid "Use Default Value"
+msgstr "Να χρησιμοποιηθεί η προεπιλεγμένη τιμή"
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+msgid "Username"
+msgstr "Όνομα Χρήστη"
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Weekly"
+msgstr "Εβδομαδιαία"
+
+msgid "Welcome to %s"
+msgstr "Καλωσήρθες στο %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Καλώς ήλθες, %s"
+
+msgid "What application should Horde display after login?"
+msgstr "Πια εφαρμογή να εμφανίζεται αφού συνδεθείτε στην υπηρεσία;"
+
+msgid "Work Address"
+msgstr "Διεύθυνση Εργασίας"
+
+msgid "Work Phone"
+msgstr "Τηλέφωνο Εργασίας"
+
+msgid "YY"
+msgstr "YY"
+
+msgid "Yearly"
+msgstr "Ετήσια"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Έχετε αποσυνδεθεί. <br />Ευχαριστούμε που χρησιμοποιήσατε την υπηρεσία."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Πρέπει να περιγράψετε το πρόβλημα πριν στείλετε αναφορά για αυτό."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Η σύνδεση σας %s διακόπηκε. Παρακαλώ δοκιμάστε να ξανασυνδεθείτε."
+
+msgid "Your Email Address:"
+msgstr "Η Ηλεκτρονική σας Διεύθυνση:"
+
+msgid "Your Information"
+msgstr "Οι Πληροφορίες σας"
+
+msgid "Your Name:"
+msgstr "Ονοματεπώνυμο:"
+
+msgid "Your options have been updated."
+msgstr "Οι επιλογές σας έχουν αποθηκευτεί."
+
+msgid "[Problem Report]"
+msgstr "[Αναφορά Προβλήματος]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[γραμμή %s από %s]"
+
+msgid "vCard"
+msgstr "Ψηφιακή Κάρτα"

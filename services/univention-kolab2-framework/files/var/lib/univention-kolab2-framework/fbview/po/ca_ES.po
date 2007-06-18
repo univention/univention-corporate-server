@@ -1,0 +1,651 @@
+# Horde Catalan translation.
+# Copyright (C) 2003 Angels Guimerà
+# Angels Guimerà <Angels.Guimera@uab.es>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 2.1\n"
+"POT-Creation-Date: 2003-02-18 09:39+0100\n"
+"PO-Revision-Date: 2003-02-18 09:39+0100\n"
+"Last-Translator: Angels Guimerà <Angels.Guimera@uab.es>\n"
+"Language-Team: Catalan <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Operacions de Manteniment %s - Confirmació"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr ""
+"%s és a punt d'efectuar les operacions de mantenimemt marcades més abaix."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' no està configurat en el Registre de Horde."
+
+msgid "24 hours"
+msgstr "24 hores"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Ha succeït un error fatal: </b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add pair"
+msgstr "Afegir parell"
+
+msgid "Address"
+msgstr "Adreça"
+
+msgid "Addressbook"
+msgstr "Llibreta d'adreces"
+
+msgid "Alias"
+msgstr "Alies"
+
+msgid "An illegal value was specified."
+msgstr "S'ha especificat un valor il·legal."
+
+msgid "Available fields:"
+msgstr "Camps disponibles:"
+
+#, c-format
+msgid "Bind to server %s:%d with DN %s failed: [%d] %s"
+msgstr "Enllaç al servidor %s:%d amb DN %s ha fallat: [%d] %s"
+
+msgid "Birthday"
+msgstr "Aniversari"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Calendari"
+
+msgid "Cancel Problem Report"
+msgstr "Cancel·lar Informe"
+
+msgid "Cell Phone"
+msgstr "Telèfon Cel·lular"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr ""
+"Marqueu a la casella de selecció l'operació o operacions que desitjeu "
+"executar en aquesta ocasió."
+
+msgid "Close Help Window"
+msgstr "Tancar Finestra d'Ajuda"
+
+msgid "Close Help"
+msgstr "Tancar Ajuda"
+
+msgid "Close Window"
+msgstr "Tancar Finestra"
+
+msgid "Company"
+msgstr "Companyia"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Contingut de '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Contiingut d'arxiu RAR"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "No s'ha pogut obrir el mòdul %s Maintenance_Task"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Diàriament"
+
+msgid "Database query failed."
+msgstr "Consulta a la base de dades ha fallat."
+
+msgid "Default Identity"
+msgstr "Identitat Predeterminada"
+
+msgid "Describe the Problem"
+msgstr "Descripció del Problema"
+
+msgid "Details have been logged for the administrator."
+msgstr "Els detalls han estat registrats per a l'administrador."
+
+msgid "Display Options"
+msgstr "Opcions de Visualizació"
+
+msgid "Do not directly access maintenance.php"
+msgstr "No accediu directament a maintenance.php"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Resultat buit."
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Every 15 minutes"
+msgstr "Cada 15 minuts"
+
+msgid "Every 30 seconds"
+msgstr "Cada 30 segons"
+
+msgid "Every 5 minutes"
+msgstr "Cada 5 minuts"
+
+msgid "Every Login"
+msgstr "Cada Inici de Sessió"
+
+msgid "Every half hour"
+msgstr "Cada mitja hora"
+
+msgid "Every minute"
+msgstr "Cada minut"
+
+msgid "Example values:"
+msgstr "Exemple de valors:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "S'esperava \"BEGIN\" a la línia %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "S'esperarava \"END:%s\" a la línia %d."
+
+msgid "Failed retrieving prefs for "
+msgstr "Errada al recuperar les preferències per a "
+
+msgid "Failed retrieving preferences."
+msgstr "Errada al recuperar les preferències."
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "Errada a l'intentar connectar amb el servidor de preferencies LDAP."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Errada al connectar amb el servidor LDAP."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "Errada a l'intentar obrir la connexió LDAP a %s."
+
+#, c-format
+msgid "Failed to retrieve user's DN: [%d] %s"
+msgstr "Errada alrecuperar DN de l'usuari: [%d] %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Full Description:"
+msgstr "Descripció Completa:"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Home Address"
+msgstr "Adreça Particular"
+
+msgid "Home Phone"
+msgstr "Telèfon Particular"
+
+msgid "Horde Login"
+msgstr "Horde Login"
+
+msgid "Horde System"
+msgstr "Sistema Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Inalàmbric"
+
+msgid "Horde is not properly configured"
+msgstr "Horde no està configurat correctament."
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Errada d'Importació: "
+
+msgid "Import"
+msgstr "Importar"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Camp importat: %s"
+
+msgid "Imported fields:"
+msgstr "Camps importats:"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "List Help Topics"
+msgstr "Llistar Temes d'Ajuda"
+
+msgid "Log in"
+msgstr "Entrar"
+
+msgid "Log out"
+msgstr "Sortir de sessió"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Per alguna raó no s'ha aconseguit obrir la sessió. Probablement el "
+"vostre nom d'ususari o "
+"contrasenya ha estat introduït incorrectament."
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Correu"
+
+msgid "Map Date and Time Fields"
+msgstr "Mapejar Camps de Data i Hora"
+
+msgid "Map Import Fields"
+msgstr "Mapejar Camps a Importar"
+
+msgid "Matching fields"
+msgstr "Camps Corresponents"
+
+msgid "Memos"
+msgstr "Memoràndums"
+
+msgid "Message"
+msgstr "Missatge"
+
+msgid "Monthly"
+msgstr "Mensualment"
+
+msgid "My Summary"
+msgstr "El meu Resum"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid "Never"
+msgstr "Mai"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "No s'ha especificat informació per a les Preferències LDAP."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "No s'ha especificat la informació per a les Categories SQL."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "No s'ha especificat la informació per a les Preferències SQL."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "No s'ha especificat la informació per a l'autenticació per SQL."
+
+msgid "No preferences are available."
+msgstr "No hi ha preferències disponibles."
+
+msgid "No preferences were retrieved."
+msgstr "No s'ha recuperat cap de les preferències."
+
+msgid "Notes"
+msgstr "Notes"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "No s'ha trobat agent de notificació %s."
+
+msgid "Options"
+msgstr "Opcions"
+
+msgid "Other Information"
+msgstr "Altra Informació"
+
+msgid "Password"
+msgstr "Contrasenya"
+
+msgid "Perform Maintenance Operations"
+msgstr "Realitzar Operacions de Manteniment"
+
+msgid "Phone"
+msgstr "Telèfon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Si us plau, proporcioneu un resum del problema."
+
+msgid "Please provide your username and password"
+msgstr "Si us plau, proporcioneu el vostre nom d'usuari i contrasenya"
+
+msgid "Problem Description"
+msgstr "Descripció del Problema"
+
+#, c-format
+msgid "Rebind to server %s:%d with DN %s failed: [%d] %s"
+msgstr "Reenllaç al servidor %s:%d amb DN %s ha fallat: [%d] %s"
+
+#, c-format
+msgid "Referral target %s for DN %s is not in the authorized server list!"
+msgstr "¡El blanc de referència %s per al DN %s no està definit a la llista de servidors autorizats!"
+
+msgid "Refresh Summary View:"
+msgstr "Refrescar Vista del Resum:"
+
+msgid "Remove pair"
+msgstr "Treure parell"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+"'basedn' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+"'basedn' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+"'database' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+"'database' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+"'database' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+"'hostspec' requerit no especificat a la configuració de l'autenticació"
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+"'hostspec' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+"'hostspec' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+"'password' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+"'password' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+"'password' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+"'phptype' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+"'phptype' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+"'phptype' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr ""
+"'table' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr ""
+"'table' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+"'table' requerit no especificat a la configuració de les preferències."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr ""
+"'tableRelations' requerit no especificat a la configuració de les "
+"categories."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+"'uid' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+"'uid' requerit no especificat a la configuració de las preferències."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+"'username' requerit no especificat a la configuració de l'autenticació."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+"'username' requerit no especificat a la configuració de les categories."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+"'username' requerit no especificat a la configuració de les preferències."
+
+msgid "Return to Options"
+msgstr "Tornar a Opcions"
+
+msgid "Role"
+msgstr "Funció"
+
+msgid "Save Options"
+msgstr "Desar Opcions"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Seleccioneu els caràcters que necessiteu de les caselles de sota. Podeu "
+"copiar-los i enganxar-los de l'àrea de text."
+
+msgid "Select the date delimiter:"
+msgstr "Seleccioneu el delimitador de la data:"
+
+msgid "Select the date format:"
+msgstr "Seleccioneu el format de la data:"
+
+msgid "Select the time format:"
+msgstr "Seleccioneu el format de l'hora:"
+
+msgid "Select two matching fields."
+msgstr "Seleccioneu dos camps que coincideixin."
+
+msgid "Select your preferred language:"
+msgstr "Seleccioneu el vostre idioma preferit:"
+
+msgid "Send Problem Report"
+msgstr "Enviar Informe"
+
+#, c-format
+msgid "Set rebind proc failed: [%d] %s"
+msgstr "Errada al fixar el proc del reenllaç: [%d] %s"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Estableix el refresc de pàgina i altres opcions de visualització."
+
+msgid "Set your preferred display language."
+msgstr "Estableix el vostre idioma preferit de visualització."
+
+msgid "Short Summary:"
+msgstr "Breu Resum:"
+
+msgid "Skip Maintenance"
+msgstr "Omitir Manteniment"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Falten alguns arxius de configuració de Horde:"
+
+msgid "Special Character Input"
+msgstr "Entrada de Caràcters Especials"
+
+msgid "Success"
+msgstr "Èxit"
+
+msgid "Tasks"
+msgstr "Feines"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"El registre és com les aplicacions de Horde determinen comunicar-se entre "
+"elles mateixes. Heu de llistar cada aplicació de Horde que tingueu aquí."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Aquest arxiu controla el conjunt global de controladors MIME per a la "
+"estructura Horde, permetent a les aplicacions fer ús de programes "
+"tals como enscript o mswordview que tradueixen el contingut en HTML per a "
+"visualitzar-lo en un navegador."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Aquest arxiu controla el full d'estil que s'utilitza per fixar colors i "
+"tipus de lletra per a l'estructura Horde i totes les aplicacions que no "
+"proveeixin les seves pròpies configuracions."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Aquest arxiu mapeja les extensions d'arxiu a tipus MIME lògics, "
+"permetent a les aplicacions Horde comprendre com fer utilitzar alguns continguts"
+ "tals com arxius adjunts en el correu o inspeccions a CVS."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Aquest és l'arxiu principal de configuració de . Conté rutes aa "
+"arxius i elements bàsics que apliquen el nucli de l'estructura i totes "
+"les aplicacions de Horde."
+
+msgid "This number must be at least one."
+msgstr "Aquest número ha de ser com a mínim un 1."
+
+msgid "This value must be a number."
+msgstr "Aquest valor ha de ser un número."
+
+msgid "Title"
+msgstr "Títol"
+
+msgid "Type mismatch."
+msgstr "El tipus no coincideix."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Incapaç de connectarse al servidor de SQL."
+
+#, c-format
+msgid "Unable to modify preferences: [%d] %s"
+msgstr "Incapaç de modificar les preferències: [%d] %s"
+
+msgid "Unable to register preferences in session."
+msgstr "Incapaç d'enregistrar preferències en la sessió."
+
+msgid "Unable to translate this Word document"
+msgstr "No és possible traduir aquest document de Word"
+
+msgid "Undo Changes"
+msgstr "Desfer Canvis"
+
+msgid "Unexpected end of file."
+msgstr "Final d'arxiu inesperat."
+
+msgid "Use Default Value"
+msgstr "Utilitzar Valor per Defecte"
+
+msgid "User Options"
+msgstr "Opcions d'Usuari"
+
+msgid "Username"
+msgstr "Usuari"
+
+msgid "Warning!"
+msgstr "¡Avís!"
+
+msgid "Warning"
+msgstr "Avís"
+
+msgid "Weekly"
+msgstr "Setmanalment"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Benvinguts a %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Benvingut, %s"
+
+msgid "Work Address"
+msgstr "Adreça de la Feina"
+
+msgid "Work Phone"
+msgstr "Telèfon de la Feina"
+
+msgid "YY"
+msgstr "AA"
+
+msgid "Yearly"
+msgstr "Anualment"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Heu tancat la sessió. Gràcie sper utilitzar el sistema."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Heu de descriure el problema abans d'enviar l'informe del problema."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "La vostra sessió en %s ha expirat. Si us plau, inicieu una nova sessió."
+
+msgid "Your Email Address:"
+msgstr "Correu Electrònic:"
+
+msgid "Your Information"
+msgstr "La vostra Informació"
+
+msgid "Your Name:"
+msgstr "El vostre Nom:"
+
+msgid "Your options have been updated."
+msgstr "Les opcions han estat actualitzades."
+
+msgid "[Problem Report]"
+msgstr "[Informe del Problema]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[línia %s de %s]"
+
+msgid "vCard"
+msgstr "vCard"
+
+#msgid "Account Manager"
+#msgstr "Gestor de Comptes"
+
+#msgid "Network"
+#msgstr "Xarxa"
+

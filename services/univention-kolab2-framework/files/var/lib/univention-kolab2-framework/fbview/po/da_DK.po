@@ -1,0 +1,597 @@
+# Horde Danish translation.
+# Copyright (C) Martin List-Petersen <martin@list-petersen.dk>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2001-12-21 12:29+0100\n"
+"PO-Revision-Date: 2002-01-03 12:20+0100\n"
+"Last-Translator: Martin List-Petersen <martin@list-petersen.dk>\n"
+"Language-Team: Danish <dk-horde@hulpsystems.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Vedligeholdelse - Bekræftelse"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s skal til at udføre de valgte vedligeholdelsesopgaver."
+
+msgid "24 hours"
+msgstr "24 timer"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add a new user:"
+msgstr "Oprette en ny bruger:"
+
+msgid "Add pair"
+msgstr "Opret par"
+
+msgid "Add user"
+msgstr "Opret bruger"
+
+msgid "Adding users is disabled."
+msgstr "Oprettelse af brugere er slået fra"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "Addressbook"
+msgstr "Adressekartotek"
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Alias"
+msgstr "Kaldenavn"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr "Forbindelse mislykkedes: ingen emner for %s fundet."
+
+msgid "Attempt to bind without a valid connection."
+msgstr "Ingen gyldig forbindelse forhånden."
+
+msgid "Available fields:"
+msgstr "Felter til rådighed:"
+
+#, c-format
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr "Forbindelse til server %s, dn %s som %s mislykkedes: [%d] %s"
+
+msgid "Birthday"
+msgstr "Fødselsdag"
+
+msgid "Bugs"
+msgstr "Fejl"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Cancel Problem Report"
+msgstr "Afbryd reportering af problem"
+
+msgid "Cell Phone"
+msgstr "Mobil"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Udvælg de ting, som skal udføres denne gang."
+
+msgid "Close Help Window"
+msgstr "Luk vinduet med hjælpen"
+
+msgid "Close Help"
+msgstr "Luk hjælpefunktionen"
+
+msgid "Close Window"
+msgstr "Luk vindue"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Confirm Password"
+msgstr "Bekræft kodeord"
+
+msgid "Contents of the GZipped Tarball"
+msgstr "Indholdet af tgz arkivet"
+
+msgid "Contents of the RAR archive"
+msgstr "Indholdet af RAR arkivet"
+
+msgid "Contents of the Zip file"
+msgstr "Indholdet af ZIP arkivet"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Kunne ikke åbne modul til vedligeholdelse %s"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Daglig"
+
+msgid "Database query failed."
+msgstr "Databaseopslag fejlede."
+
+msgid "Default Identity"
+msgstr "Standard-identitet"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Describe the Problem"
+msgstr "Beskriv problemet"
+
+msgid "Discussions"
+msgstr "Diskussioner"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Du må ikke kalde maintenance.php direkte"
+
+msgid "Email"
+msgstr "eMail"
+
+msgid "Empty result."
+msgstr "Intet resultat."
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "Every Login"
+msgstr "Altid ved login"
+
+msgid "Example values:"
+msgstr "Eksempelværdier:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Forventede \"BEGIN\" i linie %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Forventede \"END:%s\" i linie %d."
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "Kunne ikke få forbindelse til LDAP serveren med opsætningen."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Kunne ikke få forbindelse til LDAP serveren."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "Kunne ikke etablere en LDAP forbindelse til %s."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "File Manager"
+msgstr "Filhåndtering"
+
+msgid "Full Description:"
+msgstr "Fuld beskrivelse:"
+
+msgid "Headlines"
+msgstr "Overskrifterne"
+
+msgid "Help"
+msgstr "Hjælp"
+
+msgid "Home Address"
+msgstr "Adresse (hjem)"
+
+msgid "Home Phone"
+msgstr "Telefon (hjem)"
+
+msgid "Horde Login"
+msgstr "Horde Login"
+
+msgid "Horde System"
+msgstr "Horde System"
+
+msgid "Horde User Administration"
+msgstr "Horde Bruger Administration"
+
+msgid "Horde Wireless"
+msgstr "Horde Trådløs"
+
+msgid "Horde is not properly configured"
+msgstr "Horde er ikke konfigureret korrekt"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Fejl under import: "
+
+msgid "Import"
+msgstr "Import"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Importerede felter: %s"
+
+msgid "Imported fields:"
+msgstr "Importerede felter:"
+
+msgid "List Help Topics"
+msgstr "Oplistning af hjælpeemner"
+
+msgid "Listing users is disabled."
+msgstr "Visning af brugere er slået fra."
+
+msgid "Log in"
+msgstr "Log ind"
+
+msgid "Log out"
+msgstr "Log ud"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Mail"
+
+msgid "Map Date and Time Fields"
+msgstr "Sammenkæd dato og tid felter"
+
+msgid "Map Import Fields"
+msgstr "Sammenkæd import felter"
+
+msgid "Matching fields"
+msgstr "Overenspassende felter"
+
+msgid "Message"
+msgstr "Meddelelse"
+
+msgid "Monthly"
+msgstr "Månedlig"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid "Network"
+msgstr "Netværk"
+
+msgid "News"
+msgstr "Nyheder"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Der er ingen opsætning for brug af LDAP til indstillinger."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Der er ingen opsætning for brug af SQL til kategorierne."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Der er ingen opsætning for brug af SQL til indstillinger."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Der er ingen opsætning for brug af SQL til autoristation."
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "Ingen emne for %s fundet."
+
+msgid "No preferences are available."
+msgstr "Der er ingen indstillinger til rådighed."
+
+msgid "No preferences were retrieved."
+msgstr "Der blev ikke hentet nogen indstillinger."
+
+msgid "Notes"
+msgstr "Noter"
+
+msgid "Password"
+msgstr "Kodeord"
+
+msgid "Passwords cannot be blank."
+msgstr "Kodeord kan være tomt."
+
+msgid "Passwords must match."
+msgstr "Kodeordene skal være ens."
+
+msgid "Perform Maintenance Operations"
+msgstr "Udfør vedligeholdelse"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please log in"
+msgstr "Log vendligst ind"
+
+msgid "Please provide a summary of the problem."
+msgstr "Skriv venligst, hvad problemet går ud på og hvad der sker."
+
+msgid "Please provide your username and password"
+msgstr "Indtast venligst brugernavn og kodeord"
+
+msgid "Presentations"
+msgstr "Præsentationer"
+
+msgid "Problem Description"
+msgstr "Problembeskrivelse"
+
+msgid "Remove pair"
+msgstr "Slet par"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Den fornødne 'basedn' er ikke angivet i autoristations-opsætningen."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Den fornødne 'basedn' er ikke angivet i indstillingerne."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Den fornødne 'database' er ikke angivet i autoristations-opsætningen."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Den fornødne 'database' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Den fornødne 'database' er ikke angivet i indstillingerne."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Den fornødne 'hostspec' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Den fornødne 'hostspec' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Den fornødne 'hostspec' er ikke angivet i indstillingerne."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Det fornødne 'password' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Det fornødne 'password' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Det fornødne 'password' er ikke angivet i indstillingerne."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Den fornødne 'phptype' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Den fornødne 'phptype' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Den fornødne 'phptype' er ikke angivet i indstillingerne."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Den fornødne 'table' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Den fornødne 'table' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Den fornødne 'table' er ikke angivet i indstillingerne."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "Den fornødne 'tableRelations' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Den fornødne 'uid' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Den fornødne 'uid' er ikke angivet i indstillingerne."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Det fornødne 'username' er ikke angivet i autorisations-opsætningen."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Det fornødne 'username' er ikke angivet i kategori-opsætningen."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Den fornødne 'username' er ikke angivet i indstillingerne."
+
+msgid "Reset"
+msgstr "Nulstil"
+
+msgid "Return to Options"
+msgstr "Tilbage til indstillingerne"
+
+msgid "Role"
+msgstr "Regel"
+
+msgid "Save Options"
+msgstr "Gemme Indstillinger"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Vælg de tegn du har brug for fra kasserne forneden. De kan så klippes og "
+"kopieres fra textfeltet."
+
+msgid "Select the date delimiter:"
+msgstr "Vælg dato-adskilleren:"
+
+msgid "Select the date format:"
+msgstr "Vælg datoformat:"
+
+msgid "Select the time format:"
+msgstr "Vælg tidsformat:"
+
+msgid "Select two matching fields."
+msgstr "Vælg to felter, der svarer til hinanden."
+
+msgid "Send Problem Report"
+msgstr "Send problembeskrivelse"
+
+msgid "Short Summary:"
+msgstr "Kort opsummering:"
+
+msgid "Skip Maintenance"
+msgstr "Spring vedligeholdelse over"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Nogle af Horde's opsætningsfiler mangler:"
+
+msgid "Special Character Input"
+msgstr "Indtastning for specialkarakter"
+
+msgid "Success"
+msgstr "Lykkedes"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' blev tilføjet i systemet."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s' blev slettet i systemet."
+
+msgid "Tasks"
+msgstr "Opgaver"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Registreringsdatabasen sørger for, at de forskellige Horde-moduler kan tale med hinanden. "
+"Alle Horde-moduler du bruger, bør være nævnt her."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Der opstod et problem under tilføjelsen af '%s' til systemet."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Der opstod et problem under sletning af '%s' i systemet."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Denne fil håndterer et global sæt af MIME drivere, som bruges af Horde. "
+"Disse drivere tillader moduler at bruge programmer som enscript og mswordview, "
+"så de kan konverteres for visningen i en HTML browser."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings.."
+msgstr ""
+"Denne fil indeholder det stylesheet, der bestemmer farver og fonte for "
+"Horde og alle moduler, der ikke har deres egne indstillinger.."
+
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Denne fil sammenbinder filtyper med MIME typer, hvilket gør, at Horde "
+"moduler kan finde ud af hvordan f.eks. emailvedhæftelser og CVS "
+"checkouts skal håndteres."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Dette er Horde's hovedkonfigurationsfil. Den indholder stier og den grundlæggende "
+"opsætning, der er gældende for Horde og de installerede moduler."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Type mismatch."
+msgstr "Skrivefejl."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Kunne ikke få forbindelse til SQL serveren."
+
+msgid "Unable to modified preferences."
+msgstr "Kunne ikke ændre indstillingerne."
+
+msgid "Unable to register preferences in session."
+msgstr "Kunne ikke registrere indstillingerne i den aktuelle session."
+
+msgid "Unable to translate this Word document"
+msgstr "Kunne ikke oversætte dette Word dokument"
+
+msgid "Undo Changes"
+msgstr "Fortryd ændringer"
+
+msgid "Unexpected end of file."
+msgstr "Uforventet slut af fil."
+
+msgid "Use Default Value"
+msgstr "Brug standardværdi"
+
+msgid "Username"
+msgstr "Brugernavn"
+
+msgid "Users in the system:"
+msgstr "Brugere i systemet:"
+
+msgid "Warning!"
+msgstr "Advarsel!"
+
+msgid "Warning"
+msgstr "Advarsel"
+
+msgid "Weekly"
+msgstr "Ugentlig"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Velkommen, %s"
+
+msgid "Work Address"
+msgstr "Adresse (arbejde)"
+
+msgid "Work Phone"
+msgstr "Telefon (arbejde)"
+
+msgid "YY"
+msgstr "ÅÅ"
+
+msgid "Yearly"
+msgstr "Årlig"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Du bliver nød til at lave en problembeskrivelse, før du kan sende den ind."
+
+msgid "You must specify a username to remove."
+msgstr "Du skal angive brugernavnet, som du vil fjerne."
+
+msgid "You must specify the username to add."
+msgstr "Du skal angive brugernavnet, som du vil tilføje."
+
+msgid "Your Email Address:"
+msgstr "Din eMail-adresse:"
+
+msgid "Your Name:"
+msgstr "Dit navn:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Din autorisations-backend understøtter ikke tilføjelsen af brugere eller er den "
+"funktion af en eller anden grund blevet slået fra."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Din autorisations-backend understøtter ikke oplistningen af brugere eller er den "
+"funktion af en eller anden grund blevet slået fra."
+
+msgid "[Problem Report]"
+msgstr "[Problembeskrivelse]"

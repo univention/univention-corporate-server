@@ -1,0 +1,28 @@
+<?php
+/**
+ * Configuration for the make-release.php script.
+ *
+ * $Horde: horde/scripts/make-release-conf.php.dist,v 1.4 2004/02/15 13:32:50 jan Exp $
+ */
+
+/* Username for horde.org.
+ * Make sure you belong to the "horde" group there. */
+$this->options['horde']['user'] = '';
+
+/* From: address for announcements. */
+$this->options['ml']['from'] = '';
+
+/* Username for freshmeat.net.
+ * Make sure you are a project admin there for the modules 
+ * you want to release. */
+$this->options['fm']['user'] = '';
+
+/* Password for freshmeat.net. */
+$this->options['fm']['password'] = '';
+
+/* Local MD5 command. */
+$this->options['md5'] = '/usr/bin/md5sum';
+
+/* Configuration for local MTA. */
+$this->options['mailer']['type'] = 'sendmail';
+$this->options['mailer']['params'] = array();

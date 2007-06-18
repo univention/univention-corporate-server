@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/SessionHandler/package.xml,v 1.6 2003/12/04 01:11:47 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_SessionHandler</name>
+  <summary>Session Handler API</summary>
+  <description>
+    SessionHandler:: defines an API for implementing custom session handlers for PHP.
+This package contains implementations for:
+* PEAR DB
+* MySql
+* DBM Files
+* Oracle 8i
+* PostgreSQL
+* ODBC
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>mac</user>
+      <role>lead</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+    <provides type="class" name="SessionHandler"/>
+    <provides type="class" name="SessionHandler_dbm"/>
+    <provides type="class" name="SessionHandler_mysql"/>
+    <provides type="class" name="SessionHandler_oci8"/>
+    <provides type="class" name="SessionHandler_pgsql"/>
+    <provides type="class" name="SessionHandler_sapdb"/>
+    <provides type="class" name="SessionHandler_sql"/>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="SessionHandler.php"/>
+
+      <dir name="SessionHandler" role="php" baseinstalldir="/Horde">
+          <file name="dbm.php"/>
+          <file name="mysql.php"/>
+          <file name="oci8.php"/>
+          <file name="pgsql.php"/>
+          <file name="sapdb.php"/>
+          <file name="sql.php"/>
+      </dir>
+
+    </filelist>
+  </release>
+
+  <deps>
+    <dep type="pkg" rel="has">Horde_SQL</dep>
+  </deps>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-03</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

@@ -1,0 +1,134 @@
+Horde Database Installation Guide                    horde/scripts/db/README
+=--------------------------------------------------------------------------=
+
+$Horde: horde/scripts/db/README,v 1.9 2003/03/07 18:10:44 bjn Exp $
+
+Purpose of this file
+~~~~~~~~~~~~~~~~~~~~
+This file will hopefully ease the installation and configuration of your
+database for use with Horde.  The scope of the document deals primarily
+with using your database with Horde and should not be considered a
+resource for general database tasks.
+
+Requirements for Horde
+~~~~~~~~~~~~~~~~~~~~~~
+Horde currently supports 4 databases:
+
+    - MySQL         http://www.mysql.com/
+    - PostgreSQL    http://www.postgresql.org/
+    - Oracle        http://www.oracle.com/
+    - Sybase        http://www.sybase.com/
+
+MySQL and PostgreSQL are regularly used by the development team, and will
+work with no problems.  Oracle and Sybase were reported working in the
+previous version of Horde/IMP by some of our users, and are assumed to
+still work... but that hasn't been verified recently.
+
+Before You Begin
+~~~~~~~~~~~~~~~~
+You will need to have your database preconfigured and working on your
+system before you even get to this stage.  For help with this, please
+consult your database specific help files.
+
+Before using any of the scripts listed below, please look over them to
+ensure that any system-specific settings (or personal choices) are set
+to your desired settings (eg. 'username', etc.).
+
+Please NOTE that the database configuration steps listed below MUST
+match what is configured within Horde.
+
+Specifically, if you change the database name, user, or password while
+configuring the database (below), you will need to make the same changes
+to your Horde configuration files as well.
+
+MySQL
+~~~~~
+The mysql_create.sql script will create a database called "horde",
+and a user called "horde" (with password "horde") that has full
+rights to the database.  *Note that with MySQL, PEAR DB emulates
+sequences by automatically creating extra tables ending in _seq,
+so the MySQL "horde" user must have CREATE privilege on the
+"horde" database.
+
+This script needs to be run as the MySQL root user (which is NOT
+the same as the UNIX/Linux root user):
+
+$ mysql --user=root --password=<MySQL-root-passwd> < mysql_create.sql
+
+After running this script, it's a good idea to restart your MySQL
+server:
+
+$ mysqladmin --user=root --password=<MySQL-root-passwd> reload
+
+To check that this is working, the following command should connect
+without errors:
+
+$ mysql --user=horde --password=horde horde
+
+Type "quit" to quit MySQL.
+
+If you need to uninstall the database, you can do so with:
+
+$ mysql --user=root --password=<MySQL-root-passwd> < mysql_drop.sql
+
+This will delete all your user data!
+
+PostgreSQL
+~~~~~~~~~~
+# su - postgres  (or whatever your database runs as... usually postgres)
+$ psql -d template1 -f pgsql_create.sql
+
+This script will create a "horde" database and a "horde" user.  You
+should set a password for this user with this command (if you didn't
+uncomment the one in pgsql_create.sql):
+
+$ psql -qc "ALTER USER horde WITH PASSWORD 'pass';" template1 postgres
+
+Then create the tables within the "horde" database:
+
+$ psql -d horde -f auth.sql
+$ psql -d horde -f prefs.sql
+$ psql -d horde -f category.sql
+
+These scripts will also grant the "horde" user the necessary privileges to
+each of the tables.
+
+Oracle
+~~~~~~
+Run 'sqlplus'. Login, then [we need instructions for creating the
+database and user here].
+
+That should be it.  Restart Oracle just to be sure, and try it.  Then
+create the tables within the "horde" database:
+
+[Also need those instructions here.]
+
+Sybase
+~~~~~~
+To create the database, from 'isql' run:
+
+    create database horde
+
+Next, you should (recommended) create a login to use with this database.
+The 'isql' command for this is:
+
+    sp_addlogin <username> <password>
+
+Next you need to change the ownership of the database to this new user.  The
+'isql' command for this is:
+
+    sp_changedbowner <username>
+
+After that, you just need to set up your tables within the database.  To do
+that, just run this command from the command line:
+
+    isql -i auth.sql -U<username> -P<password>
+    isql -i prefs.sql -U<username> -P<password>
+
+
+Additional Notes
+~~~~~~~~~~~~~~~~
+This is by far not a complete HOWTO. This is just a compiled list of what
+people have contributed so far. If you have tips, ideas, suggestions or
+anything else that you think could help others in setting up their database
+for use with Horde, please let us know.  <dev@lists.horde.org>

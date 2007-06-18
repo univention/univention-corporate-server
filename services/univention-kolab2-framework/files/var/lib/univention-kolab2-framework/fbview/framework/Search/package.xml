@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Search/package.xml,v 1.1 2004/01/25 19:21:30 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Search</name>
+  <summary>Horde Search API</summary>
+  <description>
+    The Horde_Search:: API tries to provide a generic API to several remote search services.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-01-25</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Search.php" />
+      <dir baseinstalldir="/Horde" role="php" name="Search">
+        <file name="google.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Horde_Search" />
+    <provides type="class" name="Horde_Search_google" />
+
+    <deps>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-01-25</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

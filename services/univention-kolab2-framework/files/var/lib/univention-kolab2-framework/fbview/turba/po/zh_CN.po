@@ -1,0 +1,315 @@
+# Turba Simplified Chinese Translation
+# Copyright (C) 2001 WangHengWen.
+# WangHengWen <whw@my169.com>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.0\n"
+"POT-Creation-Date: 2001-12-29 10:35+0800\n"
+"PO-Revision-Date: 2001-06-19 09:46+0800\n"
+"Last-Translator: WangHengWen <whw@my169.com>\n"
+"Language-Team: Chinese <whw@my169.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=GB2312\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s 文件已经成功导入"
+
+msgid "Add Contact ..."
+msgstr "增加联系人..."
+
+msgid "Add a new contact"
+msgstr "增加新的联系人"
+
+msgid "Add failed"
+msgstr "增加操作失败"
+
+msgid "Add"
+msgstr "增加"
+
+msgid "Addressbook is read-only."
+msgstr "地址本是只读的."
+
+msgid "Advanced Directory Search"
+msgstr "高级目录搜索"
+
+msgid "Advanced Search"
+msgstr "高级搜索"
+
+msgid "Alias"
+msgstr "别名"
+
+msgid "Bcc"
+msgstr "暗送"
+
+msgid "Cancel"
+msgstr "中止"
+
+msgid "Cc"
+msgstr "抄送"
+
+msgid "Cell Phone"
+msgstr "单位电话"
+
+msgid "Clear Search"
+msgstr "清除查找"
+
+msgid "Company"
+msgstr "公司"
+
+msgid "Delete"
+msgstr "删除"
+
+msgid "Deletion failed"
+msgstr "删除操作失败"
+
+msgid "Directory Search"
+msgstr "目录查找"
+
+msgid "Directory"
+msgstr "目录"
+
+msgid "Edit"
+msgstr "编辑"
+
+msgid "Email"
+msgstr ""
+
+msgid "Error"
+msgstr "错误"
+
+#, fuzzy
+msgid "Export Addressbook"
+msgstr "工作地址"
+
+msgid "Export"
+msgstr "导出"
+
+msgid "Failed to connect to the specified directory."
+msgstr "连接到指定目录服务器失败."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "目录搜索失败: %s"
+
+msgid "Fax"
+msgstr "传真"
+
+msgid "Find"
+msgstr "查找"
+
+#, fuzzy
+msgid "From"
+msgstr "发件人"
+
+msgid "Help"
+msgstr "帮助"
+
+msgid "Home Address"
+msgstr "家庭地址"
+
+msgid "Home Phone"
+msgstr "家庭电话"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "当导入CVS格工的数据时,第一行包含字段名吗?"
+
+msgid "Illegal or malformed form data."
+msgstr ""
+
+#, fuzzy
+msgid "Import Addressbook"
+msgstr "导入地址本"
+
+msgid "Import"
+msgstr "导入"
+
+msgid "Import/Export Addressbooks"
+msgstr "导入/导出地址本"
+
+msgid "Import/Export"
+msgstr "导入/导出"
+
+msgid "Invalid addressbook."
+msgstr "非法地址本"
+
+msgid "Invalid e-mail address."
+msgstr "非法的 E-Mail 地址"
+
+msgid "Invalid name."
+msgstr "非法名称"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Matching"
+msgstr ""
+
+msgid "Message"
+msgstr "消息"
+
+msgid "Name"
+msgstr "名称"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+
+msgid "Notes"
+msgstr "备注"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "请选择一本你要增加的地址本."
+
+msgid "Problem?"
+msgstr "问题?"
+
+msgid "Reset"
+msgstr "复原"
+
+msgid "Save Changes"
+msgstr "保存更改"
+
+msgid "Save"
+msgstr "保存"
+
+#, fuzzy
+msgid "Search Results"
+msgstr "查找结果"
+
+msgid "Search"
+msgstr "查找"
+
+msgid "Search&nbsp;Results"
+msgstr "查找结果"
+
+msgid "Select the destination to import to:"
+msgstr ""
+
+msgid "Select the file to import:"
+msgstr ""
+
+msgid "Select the format to export to:"
+msgstr ""
+
+msgid "Select the format to import from:"
+msgstr ""
+
+msgid "Select the source to export from:"
+msgstr ""
+
+msgid "Select your preferred language:"
+msgstr ""
+
+msgid "Send Message"
+msgstr "发送邮件"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "发送邮件到 %s"
+
+msgid "Set the your preferred display language."
+msgstr ""
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr ""
+
+msgid "Success"
+msgstr "成功"
+
+msgid "The data got lost"
+msgstr ""
+
+msgid "The data got lost."
+msgstr ""
+
+msgid "The file contained no data."
+msgstr ""
+
+msgid "There are no writeable address books."
+msgstr ""
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+
+msgid "There was an error importing the data."
+msgstr ""
+
+msgid "There was an error importing the uploaded file"
+msgstr ""
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+
+msgid "This file defines the list of available sources for Turba."
+msgstr ""
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+
+msgid "This person is already in your addressbook."
+msgstr "该地址已经在你的地址本中存在."
+
+msgid "Title"
+msgstr "标题"
+
+msgid "To"
+msgstr "收件人"
+
+msgid "Turba is not properly configured"
+msgstr "Turba没有完全配置好"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr ""
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Work Address"
+msgstr "工作地址"
+
+msgid "Work Phone"
+msgstr "工作电话"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+
+msgid "Your Information"
+msgstr "你的信息"
+
+#, fuzzy
+msgid "[Edit]"
+msgstr "编辑"

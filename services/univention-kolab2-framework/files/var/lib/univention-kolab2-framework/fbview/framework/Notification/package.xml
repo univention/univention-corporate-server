@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Notification/package.xml,v 1.8 2004/01/18 15:10:08 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Notification</name>
+  <summary>Horde Notification System</summary>
+  <description>
+    The Notification:: class provides a subject-observer pattern for raising and showing messages of different types and to different listeners.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial packaging.</notes>
+    
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Notification.php" />
+      <dir role="php" baseinstalldir="/Horde" name="Notification">
+        <file name="Event.php" />
+        <file name="Listener.php" />
+        <dir role="php" baseinstalldir="/Horde" name="Listener">
+          <file name="javascript.php" />
+          <file name="mobile.php" />
+          <file name="status.php" />
+        </dir>
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Notification" />
+    <provides type="class" name="Notification_Event" />
+    <provides type="class" name="Notification_Listener" />
+    <provides type="class" name="Notification_Listener_javascript" />
+    <provides type="class" name="Notification_Listener_mobile" />
+    <provides type="class" name="Notification_Listener_status" />
+
+    <deps>
+      <dep type="ext" rel="has">gettext</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-05</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

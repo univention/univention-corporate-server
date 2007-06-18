@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/CLI/package.xml,v 1.4 2003/10/29 00:32:36 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_CLI</name>
+  <summary>Horde CLI API</summary>
+  <description>
+    Horde_CLI:: API for basic command-line functionality/checks
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-04</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="CLI.php" />
+    </filelist>
+    <provides type="class" name="Horde_CLI"/>
+    <deps>
+      <dep type="ext" rel="has">gettext</dep>
+    </deps>
+  </release>
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-04</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

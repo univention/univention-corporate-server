@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Menu/package.xml,v 1.1 2004/02/11 22:17:12 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Menu</name>
+  <summary>Horde Menu package</summary>
+  <description>
+    Package for creating and manipulating Horde menus and menuitems.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-02-11</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Menu.php" />
+    </filelist>
+
+    <provides type="class" name="Menu" />
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-02-11</date>
+      <notes>Initial packaging</notes>
+    </release>
+  </changelog>
+</package>

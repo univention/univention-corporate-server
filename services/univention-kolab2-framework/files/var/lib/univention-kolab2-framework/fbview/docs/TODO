@@ -1,0 +1,33 @@
+=================================
+|| Horde Development TODO List ||
+=================================
+
+- Implement some sort of non-SQL persistent DataTree backend that can
+be the default backend so that people don't get non-persistent
+DataTree objects. Get rid of the null backend; we pretty much _need_ a
+persistent DataTree for Horde 3.0's functionality to work as
+advertised.
+
+- Implement admin/deleteUser methods in applications' APIs to delete
+user specific data.
+
+- Implement a Horde_Lock class that sits on top of DataTree and
+provides locking of any object in the Horde system, like Links
+provides relations between any object and Perms provides permissions.
+
+- Add a /services/groups/ section. Include public group homepages,
+including any information marked public for the group (let the members
+list be marked public/group only/admin only), add group administrators
+(just a flag for users), add the ability to show all calendars/other
+shares that a group has permissions to, allow creating a new
+calendar/poll/etc. for a group.
+
+- Add the ability to break out DataTree group_uids into their own
+tables (one table per group).
+
+- Use the freedesktop shared-mime-info XML file
+(http://www.freedesktop.org/Software/shared-mime-info) to build our MIME_Magic
+magic data files.
+
+
+$Horde: horde/docs/TODO,v 1.15 2004/05/21 19:24:11 chuck Exp $

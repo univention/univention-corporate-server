@@ -1,0 +1,2131 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 2.0\n"
+"POT-Creation-Date: 2003-02-08 21:04-0600\n"
+"PO-Revision-Date: 2003-02-08 00:00\n"
+"Last-Translator: Takeshi Morishima <tm@onepost.net>\n"
+"Language-Team: Japanese <unknown@unknown.domain>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=SHIFT_JIS\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr " &#151; %s は次に指定されている保守操作を実行する準備が整いました."
+
+#, c-format
+msgid " (%s days ago)"
+msgstr " (%s 日前)"
+
+msgid " (today)"
+msgstr " (今日)"
+
+msgid " (yesterday)"
+msgstr " (昨日)"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "通知 - %s"
+
+#, c-format
+msgid "%s Configuration"
+msgstr "%sの設定"
+
+#, c-format
+msgid "%s Fingerprint"
+msgstr "%s 電子指紋"
+
+#, c-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s 保守操作の確認"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s 標準"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s 同意条項"
+
+#, c-format
+msgid "%s has cancelled %s."
+msgstr "%s さんが %s をキャンセルしました."
+
+#, c-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s さんが予定情報要求に返信しました."
+
+#, c-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s さんが %s への招待に返信しました."
+
+#, c-format
+msgid "%s has sent you free/busy information."
+msgstr "%s さんが予定情報を送ってきてます."
+
+#, c-format
+msgid "%s is required"
+msgstr "%sが必要です"
+
+#, c-format
+msgid "%s requests your free/busy information."
+msgstr "%sさんがあなたの予定情報を要求しています."
+
+#, c-format
+msgid "%s requests your presence at %s."
+msgstr "%sさんが%sにあなたの出席を要求しています."
+
+#, c-format
+msgid "%s wishes to add to %s."
+msgstr "%sさんが%sへの追加を希望しています."
+
+#, c-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%sさんがあなたに%sをご存じいただくのを希望しています."
+
+#, c-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%sさんが%sについての最新の情報を受信することを希望しています."
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s ゲストサービス</a>"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s'はHordeレジストリに設定されていません."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s'がグループシステムに追加されました。"
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s'が許可設定システムに追加されました."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s'は作成されませんでした: %s."
+
+msgid "24 hours"
+msgstr "24 時間"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>致命的なエラーがおこりました:</b>"
+
+msgid "<b>The calendar data is invalid</b>"
+msgstr "<b>カレンダーデータが無効です</b>"
+
+#, c-format
+msgid "<i>View as %s</i>"
+msgstr "<i>%sとして表示</i>"
+
+msgid "A public PGP key is required to encrypt a message."
+msgstr "公開PGP 鍵がメッセージの暗号化に必要です."
+
+msgid "A public PGP key is required to verify a signed message."
+msgstr "公開PGP 鍵が署名されたメッセージの検証に必要です."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"公開PGP 鍵、秘匿PGP鍵およびパスフレーズが暗号化メッセージの復号に必要です。"
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr "公開PGP 鍵、秘匿PGP鍵およびパスフレーズがメッセージの署名に必要です。"
+
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"公開S/MIME鍵、秘匿S/MIME鍵およびパスフレーズが暗号化メッセージの復号に必要で"
+"す。"
+
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to sign "
+"a message."
+msgstr ""
+"公開S/MIME鍵、秘匿S/MIME鍵およびパスフレーズがメッセージの署名に必要です。"
+
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "公開S/MIME鍵がメッセージの暗号化に必要です."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Accept request"
+msgstr "受諾要求"
+
+msgid "Accepted"
+msgstr "受諾済"
+
+msgid "Actions"
+msgstr "アクション"
+
+msgid "Add Here:"
+msgstr "ここに追加"
+
+msgid "Add New Group"
+msgstr "新しいグループを追加"
+
+msgid "Add New Permission"
+msgstr "新しい許可フラグを追加"
+
+msgid "Add Sub-group"
+msgstr "サブグループを追加"
+
+msgid "Add Sub-permission"
+msgstr "サブ許可フラグ"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "サブグループを'%s'に追加"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "許可設定を'%s'に追加"
+
+msgid "Add a new user:"
+msgstr "新規ユーザを追加："
+
+msgid "Add new members"
+msgstr "新規メンバを追加："
+
+msgid "Add pair"
+msgstr "ペアを追加"
+
+msgid "Add this to my calendar"
+msgstr "これをカレンダーに追加"
+
+msgid "Add to my address book:"
+msgstr "個人アドレス帳に追加:"
+
+msgid "Add user"
+msgstr "ユーザを追加"
+
+msgid "Add"
+msgstr "追加"
+
+msgid "Adding users is disabled."
+msgstr "ユーザの追加処理は無効化されています."
+
+msgid "Address Book"
+msgstr "アドレス帳"
+
+msgid "Address"
+msgstr "住所"
+
+msgid "Administration"
+msgstr "管理"
+
+msgid "Ads"
+msgstr "Ads"
+
+msgid "Alias"
+msgstr "別名"
+
+msgid "All Groups"
+msgstr "全てのグループ"
+
+msgid "All Permissions"
+msgstr "全ての許可設定"
+
+msgid "Already exists"
+msgstr "既に存在します"
+
+msgid "An illegal value was specified."
+msgstr "不正な値が指定されています"
+
+msgid "April"
+msgstr "４月"
+
+msgid "Archive File Size"
+msgstr "アーカイブファイルサイズ"
+
+msgid "Archive Name"
+msgstr "アーカイブ名"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "本当に'%s'とサブグループ全てを削除していいですか?"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-permissions?"
+msgstr "本当に'%s'とサブ許可設定全てを削除していいですか?"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "メンテナンス処理の実行前に確認を求めるようにしますか?"
+
+msgid "Attached is an iCalendar file reply to a request you sent"
+msgstr "あなたの要求に対する返信のiCalendarファイルが添付されてます."
+
+msgid "Attempt to delete a non-existent group."
+msgstr "存在しないグループの削除を行おうとしました."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "許可設定"
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "許可設定"
+
+msgid "Attendees"
+msgstr "参加者"
+
+msgid "Attribute Not Found"
+msgstr "属性が見つかりません"
+
+msgid "Attributes"
+msgstr "属性"
+
+msgid "August"
+msgstr "8月"
+
+msgid "Auth_cyrsql: Required imap extension not found."
+msgstr "Auth_cyrsql: 必要なIMAP拡張機能が見つかりません."
+
+msgid ""
+"Auth_ftp: Required FTP extension not found. Compile PHP with the --enable-"
+"ftp switch."
+msgstr ""
+"Auth_ftp: FTP拡張機能がみつかりません. PHPを--enable-ftpコンパイルオプション"
+"をつけてコンパイルしなおしてください."
+
+msgid "Auth_imap: Required IMAP extension not found."
+msgstr "Auth_imap: IMAP拡張機能が見つかりません"
+
+msgid "Auth_krb5: Required krb5 extension not found."
+msgstr "Auth_krb5: krb5拡張機能が見つかりません"
+
+msgid "Auth_ldap: Required LDAP extension not found."
+msgstr "Auth_ldap: LDAP拡張機能が見つかりません"
+
+msgid "Auth_mcal: Required MCAL extension not found."
+msgstr "Auth_mcal: MCAP拡張機能が見つかりません"
+
+msgid "Auth_radius: Required sockets extension not found."
+msgstr "Auth_radius: sockets拡張機能が見つかりません"
+
+msgid "Auth_smbauth: Required smbauth extension not found."
+msgstr "Auth_smbauth: smbauth拡張機能が見つかりません"
+
+msgid "Authentication failed"
+msgstr "認証に失敗しました"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "RADIUSサーバにより認証が拒否されました."
+
+msgid "Available fields:"
+msgstr "使用可能なフィールド："
+
+msgid "Awaiting Responce"
+msgstr "応答待ち"
+
+msgid "Bad kerberos password."
+msgstr "Keroberos ユーザ名が無効です"
+
+msgid "Bad kerberos username."
+msgstr "Keroberos ユーザ名が無効です"
+
+msgid "Barbie"
+msgstr "バービー"
+
+msgid "Birthday"
+msgstr "誕生日"
+
+msgid "Block Parameters"
+msgstr "ブロックパラメータ"
+
+msgid "Block Type"
+msgstr "ブロックタイプ"
+
+msgid "Bold"
+msgstr "ボールド体"
+
+msgid "Bookmarks"
+msgstr "ブックマーク"
+
+msgid "Brown"
+msgstr "茶色"
+
+msgid "Bugs"
+msgstr "バグ"
+
+msgid "Burnt Orange"
+msgstr "深橙色"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CRC"
+msgstr "CRC"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "カレンダー"
+
+msgid "Camouflage"
+msgstr "カモフラージュ"
+
+#, c-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "IMAP サーバに接続できませんでした: %s"
+
+msgid "Cancel Problem Report"
+msgstr "障害レポートをキャンセルする"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+#, c-format
+msgid "Cannot remove; children exist (%s)"
+msgstr "削除できません; 子孫が存在します (%s)"
+
+msgid ""
+"Cannot reorder, number of entries supplied for reorder does not match number "
+"stored."
+msgstr ""
+"並べ替えの対象の数が保存されている数と合わないので並べ替えができません."
+
+msgid "Cell Phone"
+msgstr "携帯電話"
+
+msgid "Certificate Details"
+msgstr "身元証明詳細"
+
+msgid "Chair Person"
+msgstr "議長"
+
+msgid "Change"
+msgstr "変更"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "実行したい操作のボックスをチェックしてください。"
+
+msgid "Checkbook"
+msgstr "小切手帳"
+
+msgid "Cherry"
+msgstr "チェリー"
+
+msgid "Choose an action:"
+msgstr "アクションを選択してください:"
+
+msgid "Click to Continue"
+msgstr "クリックすると次へ"
+
+msgid "Close Help Window"
+msgstr "ヘルプウィンドウを閉じる"
+
+msgid "Close Help"
+msgstr "ヘルプを閉じる"
+
+msgid "Close Window"
+msgstr "ウィンドウを閉じる"
+
+msgid "Color Picker"
+msgstr "色選択"
+
+msgid "Color"
+msgstr "色"
+
+msgid "Comics"
+msgstr "コミックス"
+
+msgid "Common Name"
+msgstr "共通名"
+
+msgid "Company"
+msgstr "会社"
+
+msgid "Completed"
+msgstr "完了"
+
+msgid "Configuration"
+msgstr "設定"
+
+msgid "Configure"
+msgstr "設定する"
+
+msgid "Confirm Password"
+msgstr "パスワードを確認"
+
+msgid "Connection refused to the public keyserver."
+msgstr "公衆鍵サーバの接続が拒否されました"
+
+msgid "Connection to ftp server failed."
+msgstr "FTP サーバへの接続に失敗しました."
+
+msgid "Content Goes Here!"
+msgstr "内容がここにきます!"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "'%s' の内容"
+
+msgid "Copy"
+msgstr "コピー"
+
+msgid "Could not PGP encrypt message."
+msgstr "メッセージのPGP暗号化ができませんでした"
+
+msgid "Could not PGP sign message."
+msgstr "メッセージのPGP署名ができませんでした"
+
+msgid "Could not S/MIME encrypt message."
+msgstr "メッセージのS/MIME暗号化ができませんでした"
+
+msgid "Could not S/MIME sign message."
+msgstr "メッセージのS/MIME署名ができませんでした"
+
+msgid "Could not connect to database for SQL SessionHandler."
+msgstr "SQL SessionHandler のデータベースに接続出来ませんでした."
+
+#, c-format
+msgid "Could not connect to table '%s' for SQL SessionHandler."
+msgstr "SQL SessionHandler のテーブル'%s'に接続出来ませんでした."
+
+msgid "Could not decrypt PGP data."
+msgstr "PGPデータの復号化ができませんでした"
+
+msgid "Could not decrypt S/MIME data."
+msgstr "S/MIMEデータの復号化ができませんでした"
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "受信者の電子メールアドレスが確定できませんでした."
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "公開鍵を鍵サーバから取得できませんでした."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Maintenance_Task モジュール %s を開けませんでした。"
+
+msgid "Country"
+msgstr "国"
+
+msgid "Create"
+msgstr "作成"
+
+msgid "Cut"
+msgstr "切り取り"
+
+msgid "DD"
+msgstr "日"
+
+msgid "DHTML Rich Text Editor"
+msgstr "DHTMLリッチテキストエディタ"
+
+msgid "Daily"
+msgstr "毎日"
+
+msgid "Data"
+msgstr "データ"
+
+msgid "December"
+msgstr "12月"
+
+msgid "Declined"
+msgstr "拒絶"
+
+msgid "Default Identity"
+msgstr "デフォルト ID"
+
+msgid "Default Permissions"
+msgstr "デフォルト許可設定"
+
+msgid "Delegate position"
+msgstr "委任ポジション"
+
+msgid "Delegated"
+msgstr "委任されてます"
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Deny request for free/busy information"
+msgstr "予定情報の取得要求を拒否する"
+
+msgid "Deny request"
+msgstr "要求を拒否"
+
+msgid "Deny"
+msgstr "拒否"
+
+msgid "Describe the Problem"
+msgstr "障害内容の説明"
+
+msgid "Description"
+msgstr "説明"
+
+msgid "Details have been logged for the administrator."
+msgstr "詳細が管理者のために記録されました."
+
+msgid "Development"
+msgstr "開発"
+
+msgid "Discussions"
+msgstr "ディスカッション"
+
+msgid "Display Options"
+msgstr "オプションを保存"
+
+msgid "Do not directly access maintenance.php"
+msgstr "maintenance.php に直接アクセスしないでください"
+
+msgid ""
+"Does the first row contain the field names? Check if yes, leave unchecked if "
+"no."
+msgstr ""
+"最初の列がフィールド名を含んでいますか? そうならチェックし、そうでなければ"
+"チェックせずにそのままにしてください."
+
+msgid "Does the first row contain the field names?"
+msgstr "最初の列がフィールド名を含んでいますか?"
+
+#, c-format
+msgid "Download %s"
+msgstr "%sのダウンロード"
+
+msgid "Download"
+msgstr "ダウンロード"
+
+msgid "Edit Block"
+msgstr "ブロックの編集"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "%sの許可設定の編集"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Email Address"
+msgstr "Eメールアドレス"
+
+msgid "Email addresses must match."
+msgstr "Eメールアドレスが一致しなければいけません."
+
+msgid "Email"
+msgstr "電子メール"
+
+msgid "Empty result."
+msgstr "何も見つかりません。"
+
+msgid "End"
+msgstr "おわり"
+
+#, c-format
+msgid "Error sending reply: %s."
+msgstr "返信送出エラー: %s."
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Error:"
+msgstr "エラー:"
+
+msgid "Every 15 minutes"
+msgstr "15分毎"
+
+msgid "Every 30 seconds"
+msgstr "30分毎"
+
+msgid "Every 5 minutes"
+msgstr "5分毎"
+
+msgid "Every Login"
+msgstr "ログイン毎"
+
+msgid "Every half hour"
+msgstr "30分毎"
+
+msgid "Every minute"
+msgstr "1分毎"
+
+msgid "Example values:"
+msgstr "指定値の例"
+
+msgid "Execute"
+msgstr "実行"
+
+msgid "Expand"
+msgstr "展開"
+
+msgid "Exponent"
+msgstr "指数"
+
+msgid "Failed retrieving preferences."
+msgstr "プレファレンス設定を取得できません。"
+
+msgid "Failed to connect to LDAP server."
+msgstr "LDAP サーバに接続できませんでした。"
+
+msgid "Failed to connect to SMB server."
+msgstr "SMB サーバに接続できませんでした。"
+
+msgid "Fax"
+msgstr "ファックス"
+
+msgid "February"
+msgstr "2月"
+
+#, c-format
+msgid "File Count: %s file"
+msgstr "ファイルカウント: %s ファイル"
+
+#, c-format
+msgid "File Count: %s files"
+msgstr "ファイルカウント: %s ファイル"
+
+msgid "File Manager"
+msgstr "ファイルマネージャ"
+
+msgid "File Name"
+msgstr "ファイル名"
+
+msgid "File uploads not supported."
+msgstr "ファイルアップロードはサポートされていません"
+
+msgid "Filters"
+msgstr "フィルタ"
+
+msgid "Forms"
+msgstr "フォーム"
+
+msgid "Forums"
+msgstr "フォーラム"
+
+msgid "Forwardings"
+msgstr "転送"
+
+msgid "Free/Busy Information"
+msgstr "予定情報"
+
+msgid "Free/Busy Reply"
+msgstr "予定情報返信"
+
+msgid "Free/Busy Request Responce"
+msgstr "予定情報要求応答"
+
+msgid "Free/Busy Request"
+msgstr "予定情報要求"
+
+msgid "Full Description:"
+msgstr "詳しい説明"
+
+msgid "Full Name"
+msgstr "氏名"
+
+#, c-format
+msgid "Generate %s Configuration"
+msgstr "%s 構成情報を生成する"
+
+msgid "Given Name"
+msgstr "姓"
+
+msgid "Green"
+msgstr "緑"
+
+msgid "Grey"
+msgstr "灰色"
+
+msgid "Group Administration"
+msgstr "グループ管理"
+
+msgid "Groups"
+msgstr "グループ"
+
+msgid "Guest Access"
+msgstr "ゲストアクセス"
+
+msgid "Guest Permissions"
+msgstr "ゲスト許可設定"
+
+msgid "Guest Services"
+msgstr "ゲストサービス"
+
+msgid "HTTP Authentication not found."
+msgstr "HTTP認証がみつかりません."
+
+msgid "HTTPS is currently not supported."
+msgstr "HTTPSは現在サポートしてません."
+
+msgid "Headlines"
+msgstr "見出し"
+
+msgid "Help"
+msgstr "ヘルプ"
+
+msgid "Home Address"
+msgstr "自宅の住所"
+
+msgid "Home Phone"
+msgstr "自宅の電話番号"
+
+msgid "Home"
+msgstr "ホーム"
+
+msgid "Horde Administration"
+msgstr "Horde 管理"
+
+msgid "Horde Configuration"
+msgstr "Horde 設定"
+
+msgid "Horde Login"
+msgstr "Horde ログイン"
+
+msgid "Horde is not properly configured"
+msgstr "Horde が正しく設定されていません。"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "How many fields (columns) are there?"
+msgstr "フィールド(行)の数はいくつですか?"
+
+#, c-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "IMAPメールボックスの作成に失敗しました: %s"
+
+#, c-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "IMAPメールボックスの削除に失敗しました: %s"
+
+#, c-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "IMAPメールボックスクォータの作成に失敗しました: %s"
+
+msgid "IP Address not within allowed CIDR block."
+msgstr "IPアドレスが許可されたCIDRブロック内にありません."
+
+msgid "Icons Only"
+msgstr "アイコンのみ"
+
+msgid "Icons with text"
+msgstr "アイコンとテキスト"
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on line %d."
+msgstr "インポートエラー: %d 行に \"BEGIN\" が抜けています。"
+
+#, c-format
+msgid "Import Error: Expecting BEGIN on line %d."
+msgstr "インポートエラー: %d 行に \"BEGIN\" が抜けています。"
+
+msgid "Import Error: Malformed line."
+msgstr "インポートエラー: 行フォーマットが壊れてます"
+
+#, c-format
+msgid "Import Error: Mismatch; expecting END:%s on line %d"
+msgstr "インポートエラー: 不整合. END:%sが行%dにありません."
+
+#, c-format
+msgid "Import Error: Type mismatch. Expected \"END:%s\" on line %d."
+msgstr "インポートエラー: %2$d 行に \"END:%1$s\" が抜けています。"
+
+msgid "Import Error: Unexpected end of file."
+msgstr "インポートエラー: ファイルが予期せず終了しています。"
+
+#, c-format
+msgid "Import Tasks, Step %d"
+msgstr "タスクのインポート、ステップ %d"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "インポートされたフィールド： %s"
+
+msgid "Imported fields:"
+msgstr "インポートされたフィールド："
+
+msgid "In Process"
+msgstr "処理中"
+
+msgid "Incorrect action code given."
+msgstr "間違ったアクションコードが与えられています."
+
+msgid "Information"
+msgstr "インフォメーション"
+
+msgid "Invalid Action selected for this component."
+msgstr "このコンポーネントに無効なアクションが選択されています."
+
+msgid "Invalid data submitted."
+msgstr "無効なデータが提出されました."
+
+msgid "Issuer"
+msgstr "発行者"
+
+msgid "Italic"
+msgstr "イタリック体"
+
+msgid "January"
+msgstr "１月"
+
+msgid "July"
+msgstr "７月"
+
+msgid "June"
+msgstr "６月"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberosサーバが認証拒否しました."
+
+msgid "Key already exists on the public keyserver."
+msgstr "電子鍵がすでに公衆鍵サーバに存在します"
+
+msgid "Language"
+msgstr "言語"
+
+msgid "Layout"
+msgstr "レイアウト"
+
+msgid "Light Blue"
+msgstr "薄青"
+
+msgid "List Help Topics"
+msgstr "ヘルプ項目を表示する"
+
+msgid "Listing users is disabled."
+msgstr "ユーザのリストは無効になっています。"
+
+msgid "Local Server"
+msgstr "ローカルサーバ"
+
+msgid "Location"
+msgstr "場所"
+
+msgid "Log in"
+msgstr "ログイン"
+
+#, c-format
+msgid "Log out of %s"
+msgstr "%sからログアウト"
+
+msgid "Log out"
+msgstr "ログアウト"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"ログインに失敗しました. ユーザ名かパスワードが間違っている可能性があります."
+
+msgid "Logout"
+msgstr "ログアウト"
+
+msgid "MM"
+msgstr "月"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "添付された MS-TNEF がデータを含んでません."
+
+msgid "Mail & News"
+msgstr "電子メールとネットニュース"
+
+msgid "Mail"
+msgstr "電子メール"
+
+msgid "March"
+msgstr "３月"
+
+msgid "Matching fields"
+msgstr "フィールドを一致させています"
+
+msgid "May"
+msgstr "５月"
+
+msgid "Meeting Cancellation"
+msgstr "会議キャンセル"
+
+msgid "Meeting Information"
+msgstr "会議情報"
+
+msgid "Meeting Proposal"
+msgstr "会議の"
+
+msgid "Meeting Reply"
+msgstr "会議の"
+
+msgid "Meeting Update Request"
+msgstr "会議更新のリクエスト"
+
+msgid "Meeting Update"
+msgstr "会議更新"
+
+msgid "Meetings"
+msgstr "会議"
+
+msgid "Members"
+msgstr "メンバ"
+
+msgid "Menu mode:"
+msgstr "メニューモード"
+
+msgid ""
+"Message Verified Successfully but the signer's certificate could not be "
+"verified."
+msgstr "メッセージは検証できましたが署名者の身元は証明できませんでした."
+
+msgid "Message"
+msgstr "本文"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "メソッド'%s'は定義されてません"
+
+msgid "Method"
+msgstr "メソッド"
+
+msgid "Mime Type"
+msgstr "Mime Type"
+
+msgid "Mobile Mail"
+msgstr "携帯メール"
+
+msgid "Modified Date"
+msgstr "修正日"
+
+msgid "Modulus"
+msgstr "Modulus"
+
+msgid "Monthly"
+msgstr "毎月"
+
+msgid "Move Down"
+msgstr "下へ"
+
+msgid "Move Left"
+msgstr "左へ"
+
+msgid "Move Right"
+msgstr "右へ"
+
+msgid "Move Up"
+msgstr "上へ"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "My Account"
+msgstr "アカウント"
+
+msgid "My Summary Layout"
+msgstr "サマリレイアウト"
+
+msgid "My Summary"
+msgstr "サマリ"
+
+msgid "NO, I Do NOT Agree"
+msgstr "同意しません"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "NeXT"
+msgstr "NeXT"
+
+msgid "Needs Action"
+msgstr "要アクション"
+
+msgid "Network"
+msgstr "ネットワーク"
+
+msgid "Never"
+msgstr "なし"
+
+msgid "New Username (optional)"
+msgstr "新しいユーザ名(任意)"
+
+msgid "Next"
+msgstr "次"
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "FTP VFS の構成情報が指定されていません。"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "LDAP プレファレンスの構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "SQL カテゴリに構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "SQL プレファレンスの構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr "SQL SessoinHandler の構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL Tokens."
+msgstr "SQLトークンの構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "SQL VFS の構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "SQL 認証の構成情報が指定されていません。"
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "SQL カテゴリの構成情報が指定されていません。"
+
+msgid "No password provided for IMAP authentication."
+msgstr "IMAP 認証のパスワードがありません"
+
+msgid "No password provided for Kerberos authentication."
+msgstr "Kerberos 認証のパスワードがありません"
+
+msgid "No password provided for LDAP authentication."
+msgstr "LDAP 認証のパスワードがありません。"
+
+msgid "No password provided for RADIUS authentication."
+msgstr "RADIUS 認証のパスワードがありません。"
+
+msgid "No password provided for SMB authentication."
+msgstr "SMB 認証の構成情報が指定されていません。"
+
+msgid "No preferences are available."
+msgstr "プレファレンス設定情報がありません。"
+
+msgid "No valid XML data returned"
+msgstr "無効のXMLデータが返りました"
+
+msgid "No values"
+msgstr "値なし"
+
+msgid "Non Participant"
+msgstr "参加者なし"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Not After"
+msgstr "これより前"
+
+msgid "Not Before"
+msgstr "これより後"
+
+msgid "Notes"
+msgstr "ノート"
+
+msgid "Notice"
+msgstr "通知"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "通知受取り%sがみつかりません."
+
+msgid "November"
+msgstr "11月"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "October"
+msgstr "10月"
+
+msgid "Off"
+msgstr "オフ"
+
+msgid "Office"
+msgstr "オフィス"
+
+msgid "On"
+msgstr "オン"
+
+msgid "Only one email address allowed."
+msgstr "電子メールアドレスは1つだけ指定できます."
+
+msgid "Optional Participant"
+msgstr "任意参加者"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Orange"
+msgstr "オレンジ"
+
+msgid "Organisation"
+msgstr "組織"
+
+msgid "Organisational Unit"
+msgstr "部署"
+
+msgid "Other Information"
+msgstr "他のインフォメーション"
+
+msgid "Owner Permissions"
+msgstr "所持者の許可設定"
+
+msgid "PGP Digital Signature"
+msgstr "PGP電子署名"
+
+msgid "PGP Encrypted Data"
+msgstr "PGP"
+
+msgid "PGP Public Key"
+msgstr "PGP公開鍵"
+
+msgid "PGP Signed/Encrypted Data"
+msgstr "PGP署名済/暗号化データ"
+
+msgid "PHP Shell"
+msgstr "PHPシェル"
+
+msgid "Password"
+msgstr "パスワード"
+
+msgid "Password: "
+msgstr "パスワード: "
+
+msgid "Password:"
+msgstr "パスワード:"
+
+msgid "Passwords cannot be blank."
+msgstr "パスワードが入力されてません."
+
+msgid "Passwords must match."
+msgstr "パスワードが一致しません."
+
+msgid "Paste"
+msgstr "貼り付け"
+
+msgid "Perform Maintenance Operations"
+msgstr "保守操作を実行する"
+
+msgid "Perform maintenance operations on login?"
+msgstr "ログイン時に保守操作を実行しますか?"
+
+msgid "Permissions Administration"
+msgstr "許可設定の管理"
+
+msgid "Permissions"
+msgstr "許可設定"
+
+msgid "Personal Information"
+msgstr "個人情報"
+
+msgid "Phone"
+msgstr "電話"
+
+msgid "Please enter a month and a year."
+msgstr "月と年を入力してください."
+
+msgid "Please enter a month, day, and year."
+msgstr "月、日と年を入力してください."
+
+msgid "Please enter a valid date; check the number of days in the month."
+msgstr "正しい日付を入力してください. 月の日数をチェックしてください."
+
+msgid "Please provide a summary of the problem."
+msgstr "障害内容を要約してご記入ください。"
+
+msgid "Please provide your username and password"
+msgstr "ユーザ名とパスワードを入力してください。"
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"次の文書を読んでください. このシステムを使用するための規定事項に同意する必要"
+"があります."
+
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr "次の情報をご覧くださった上でメニューからアクションを選択してください."
+
+msgid "Please select an action from the menu below."
+msgstr "下のメニューからアクションを選択してください."
+
+msgid "Polls"
+msgstr "Polls"
+
+msgid "Prefs_ldap: Required LDAP extension not found."
+msgstr "Prefs_ldap: LDAP拡張機能が見つかりません."
+
+msgid "Prefs_session: Required session extension not found."
+msgstr "Prefs_ldap: session拡張機能が見つかりません."
+
+msgid "Presentations"
+msgstr "プレゼンテーション"
+
+msgid "Problem Description"
+msgstr "障害内容の説明"
+
+msgid "Problem?"
+msgstr "不都合?"
+
+msgid "Public Key Algorithm"
+msgstr "公衆鍵アルゴリズム"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "公衆鍵/秘匿鍵が生成できませんでした."
+
+#, c-format
+msgid "RSA Public Key (%d bit)"
+msgstr "RSA公衆鍵(%dビット)"
+
+msgid "Ratio"
+msgstr "比"
+
+msgid "Read"
+msgstr "読む"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "本当に%sを削除しますか? この操作元に戻せません."
+
+msgid "Refresh Portal View:"
+msgstr "ポータルの再表示"
+
+msgid "Remember the free/busy information."
+msgstr "予定情報を記憶する"
+
+msgid "Remote Servers"
+msgstr "遠隔サービス"
+
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "遠隔URL (http://www.example.com/horde): "
+
+msgid "Remote summaries"
+msgstr "遠隔サマリ"
+
+msgid "Remove Block"
+msgstr "ブロックを削除"
+
+msgid "Remove from my calendar"
+msgstr "自分のカレンダから削除"
+
+msgid "Remove pair"
+msgstr "ペアを削除"
+
+msgid "Remove user"
+msgstr "ユーザを削除"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "ユーザを削除: %s"
+
+msgid "Remove"
+msgstr "削除"
+
+msgid "Reply Sent."
+msgstr "返信送出"
+
+msgid "Reply with Not Supported Message"
+msgstr "サポートされているメッセージでは無い旨を返信する."
+
+msgid "Reply with free/busy for next 2 months."
+msgstr "次の2ヶ月の予定情報を返信する"
+
+msgid "Reply with requested free/busy information."
+msgstr "要求された予定情報を返信する"
+
+#, c-format
+msgid "Reply: %s"
+msgstr "返信: %s"
+
+msgid "Request couldn't be answered: "
+msgstr "要求に返答できません: "
+
+#, c-format
+msgid "Required '%s' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'%s'が指定されていません。"
+
+#, c-format
+msgid "Required '%s' not specified in categories configuration."
+msgstr "カテゴリ設定に'%s'が指定されていません。"
+
+#, c-format
+msgid "Required '%s' not specified in preferences configuration."
+msgstr "プレファレンス設定に'%s'が指定されていません。"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "認証設定に'basedn'が指定されていません。"
+
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr "認証設定に'bdc_hostspec'が指定されていません。"
+
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'database'が指定されていません。"
+
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "VFS設定に'database'が指定されていません。"
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "認証設定に'database'が指定されていません。"
+
+msgid "Required 'database' not specified in token configuration."
+msgstr "トークン設定に'database'が指定されていません。"
+
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr "認証設定に'domain'が指定されていません。"
+
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'hostspec'が指定されていません。"
+
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "VFS設定に'hostspec'が指定されていません。"
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "認証設定に'hostspec'が指定されていません。"
+
+msgid "Required 'hostspec' not specified in token configuration."
+msgstr "トークン設定に'hostspec'が指定されていません。"
+
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'password'が指定されていません。"
+
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "VFS設定に'password'が指定されていません。"
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "認証設定に'password'が指定されていません。"
+
+msgid "Required 'password' not specified in token configuration."
+msgstr "トークン設定に'password'が指定されていません。"
+
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr "認証設定に'pdc_hostspec'が指定されていません。"
+
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'phptype'が指定されていません。"
+
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "VFS設定に'phptype'が指定されていません。"
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "認証設定に'phptype'が指定されていません。"
+
+msgid "Required 'phptype' not specified in token configuration."
+msgstr "トークン設定に'phptype'が指定されていません。"
+
+msgid "Required 'port' not specified in VFS configuration."
+msgstr "VFS設定に'password'が指定されていません。"
+
+msgid "Required 'query_auth' not specified in authentication configuration."
+msgstr "認証設定に'username'が指定されていません。"
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "認証設定に'uid'が指定されていません。"
+
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr "SessionHandler設定に'username'が指定されていません。"
+
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "トークン設定に'username'が指定されていません。"
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "認証設定に'username'が指定されていません。"
+
+msgid "Required 'username' not specified in token configuration."
+msgstr "トークン設定に'username'が指定されていません。"
+
+msgid "Required 'vfsroot' not specified in VFS configuration."
+msgstr "VFS設定に必要な'vfsroot'が指定されていません。"
+
+msgid "Required Participant"
+msgstr "必要な参加者"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Return to Display Options"
+msgstr "表示オプションに戻る"
+
+msgid "Return to Options"
+msgstr "オプションに戻る"
+
+msgid "Role"
+msgstr "役割"
+
+msgid "Run"
+msgstr "実行"
+
+msgid "S/MIME Cryptographic Signature"
+msgstr "S/MIME暗号"
+
+msgid "SQL Shell"
+msgstr "SQL シェル"
+
+msgid "SSH"
+msgstr "SSH"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "'%s'を保存"
+
+msgid "Save Options"
+msgstr "オプションを保存"
+
+msgid "Select a date"
+msgstr "日付を指定してください："
+
+msgid "Select a group to add"
+msgstr "追加するグループを選択してください"
+
+msgid "Select a new owner"
+msgstr "新しい所持者を選択してください"
+
+msgid "Select a server"
+msgstr "サーバを選択してください"
+
+msgid "Select a user to add"
+msgstr "追加するユーザを選択してください"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"必要な文字を下のボックスから選んでコピーすると、テキストエリアへペーストでき"
+"ます。"
+
+msgid "Select the date delimiter:"
+msgstr "日付の区切り文字を指定してください："
+
+msgid "Select the date format:"
+msgstr "日付の形式を指定してください："
+
+msgid "Select the time format:"
+msgstr "時刻の形式を指定してください："
+
+msgid "Select two matching fields."
+msgstr "一致する２つのフィールドを選んでください。"
+
+msgid "Select your color scheme."
+msgstr "色調を選択してください."
+
+msgid "Select your preferred language:"
+msgstr "言語を選択してください:"
+
+msgid "Select"
+msgstr "選択"
+
+msgid "Send Latest Information"
+msgstr "最新情報を送る"
+
+msgid "Send Problem Report"
+msgstr "障害レポートを送信する"
+
+msgid "September"
+msgstr "9月"
+
+msgid "Serial Number"
+msgstr "通番"
+
+msgid "Set your preferred display language."
+msgstr "表示言語を設定してください."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"開始時のアプリケーション、色調、ページ再表示、その他の表示オプションを選択し"
+"てください."
+
+msgid "Short Summary:"
+msgstr "簡単なサマリー："
+
+msgid "Should access keys be defined for most links?"
+msgstr "リンク選択にショートカットキーが使えるようにしますか."
+
+msgid "Show"
+msgstr "表示"
+
+msgid "Shrink or move neighbouring block(s) out of the way first"
+msgstr "まず隣りのブロックを縮小または移動させてください."
+
+msgid "Shrink"
+msgstr "縮小"
+
+msgid "Signature Algorithm"
+msgstr "署名アルゴリズム"
+
+msgid "Signature"
+msgstr "署名"
+
+msgid "Size"
+msgstr "サイズ"
+
+msgid "Skip Maintenance"
+msgstr "保守をスキップする"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Horde 設定ファイルの中に、足りないファイルがあります："
+
+msgid "SpamAssassin"
+msgstr "SpamAssassin"
+
+msgid "Special Character Input"
+msgstr "特殊文字の入力"
+
+msgid "Start"
+msgstr "開始"
+
+msgid "State or Province"
+msgstr "ステートまたは県"
+
+msgid "Status"
+msgstr "状態"
+
+msgid "Street Address"
+msgstr "住所番地"
+
+msgid "Subject Public Key Info"
+msgstr "公開鍵情報"
+
+msgid "Subject"
+msgstr "主題"
+
+msgid "Submit"
+msgstr "提出"
+
+msgid "Success"
+msgstr "成功"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' がシステムに追加されました。"
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "'%s' を削除しました。"
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s' がシステムから削除されました。"
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "'%s' を更新しました"
+
+msgid "Summary"
+msgstr "サマリ"
+
+msgid "Sun"
+msgstr "日"
+
+msgid "Surname"
+msgstr "姓"
+
+msgid "TSV file"
+msgstr "TSVファイル"
+
+msgid "Tasks"
+msgstr "タスク"
+
+msgid "Telephone Number"
+msgstr "電話番号"
+
+msgid "Tentatively Accept request"
+msgstr "仮受諾要求"
+
+msgid "Tentatively Accepted"
+msgstr "仮受諾"
+
+msgid "Text Only"
+msgstr "テキストのみ"
+
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Maintenance クラスの読込みが正常に行えませんでした"
+
+msgid "The Options window has closed. Exiting."
+msgstr "オプションウィンドウを閉じました. 終了します."
+
+msgid ""
+"The detached PGP signature block is required to verify the signed message."
+msgstr "検証"
+
+msgid "The encryption features require a secure web connection."
+msgstr "暗号化は安全なウェブ接続が必要です."
+
+msgid "The file contained no data."
+msgstr "ファイルがデータを含んでいません."
+
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr "GnuPGバイナリのパスがCrypt_pgpクラスに与えられている必要があります."
+
+msgid "The openssl module is required for the Horde_Crypt_smime:: class."
+msgstr "Horde_Crypt_smimeクラスにはopensslモジュールが必要です."
+
+#, c-format
+msgid ""
+"The preference \"%s\" could not be saved because its data exceeded the "
+"maximum allowable size"
+msgstr ""
+"プレファレンス\"%s\"はデータがサイズ制限を越えたため保存できませんでした."
+
+#, c-format
+msgid ""
+"The program used to view this data type (%s) was not found on the system."
+msgstr ""
+"このデータ型(%s)を表示するためのプログラムがこのシステムにみつかりません."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"各 Horde アプリケーションは、レジストリを参照して相互に通信する方法を決定しま"
+"す。ここに、インストールしてある Horde アプリケーションを全てリストしてくださ"
+"い。"
+
+#, c-format
+msgid "The server \"%s\" has been deleted."
+msgstr "サーバ\"%s\"は削除されました."
+
+#, c-format
+msgid "The server \"%s\" has been saved."
+msgstr "サーバ\"%s\"は保存されました."
+
+msgid "The uploaded data got lost since the last step."
+msgstr "アップロードデータが最終ステップで消失しました."
+
+msgid "The uploaded file could not be saved."
+msgstr "アップロードデータを保存できませんでした."
+
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "ユーザの予定情報を収納しました."
+
+msgid "There are no parts that can be displayed inline."
+msgstr "インライン表示できる部分はありません."
+
+#, c-format
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"文字数がこのフィールドに多過ぎます. %s の文字が入力されています. %s 以下でな"
+"くてはいけません."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "'%s' をシステムへ追加中に問題が発生しました."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "'%s' をシステムから削除中に問題が発生しました."
+
+#, c-format
+msgid "There was a problem updating '%s': %s"
+msgstr "'%s' をシステムへ追加中に問題が発生しました:%s"
+
+#, c-format
+msgid "There was a problem with the file upload: No %s was uploaded."
+msgstr ""
+"ファイルアップロードに問題が発生しました: %s はアップロードされていません."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was larger than the maximum "
+"allowed size (%d bytes)."
+msgstr ""
+"ファイルアップロードに問題が発生しました: %s はファイルのサイズ制限値(%dバイ"
+"ト)を越えています."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was only partially uploaded."
+msgstr ""
+"ファイルアップロードに問題が発生しました: %s は一部のみアップロードされまし"
+"た."
+
+msgid "There was an error importing the contact data."
+msgstr "連絡先データのインポート中にエラーが発生しました."
+
+#, c-format
+msgid "There was an error importing the event: %s."
+msgstr "イベントのインポート中にエラーが発生しました: %s."
+
+#, c-format
+msgid "There was an error importing this task: %s."
+msgstr "タスクのインポート中にエラーが発生しました: %s."
+
+#, c-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "ユーザの予定情報インポートでエラーが発生しました: %s."
+
+msgid "There was an unknown error verifying this message."
+msgstr "このメッセージの検証に既知でないエラーが発生しました."
+
+msgid ""
+"These are the first 100 characters of the first two lines of the imported "
+"file:"
+msgstr "次はインポートされたファイルの最初の2行の最初の100キャラクタです:"
+
+msgid "This action is not supported."
+msgstr "このアクションはサポートされてません."
+
+msgid "This action is not yet implemented."
+msgstr "このアクションはまだ実装されていません."
+
+msgid ""
+"This contact data has been successfully added to your address book. Click "
+"below to view:"
+msgstr ""
+"連絡先データがあなたのアドレス帳に追加されました. 下をクッリックすると表示し"
+"ます."
+
+msgid "This does not appear to be a valid rar archive."
+msgstr "これは有効なrarアーカイブではないようです."
+
+msgid "This does not appear to be a valid zip file."
+msgstr "これは有効なzipファイルではないようです."
+
+msgid "This does not seem to be a valid card number."
+msgstr "これは有効なカード番号ではないようです."
+
+msgid ""
+"This event has been successfully added to your calendar. Click icon to view:"
+msgstr ""
+"イベントがあなたのカレンダに追加されました. アイコンをクリックすると表示しま"
+"す:"
+
+msgid "This field is required."
+msgstr "このフィールドは必須です."
+
+msgid "This field may only contain integers."
+msgstr "このフィールドは整数でなくてはいけません."
+
+msgid "This field may only contain numbers and the colon."
+msgstr "このフィールドは数字とコロンでなくてはいけません."
+
+msgid "This field may only contain numbers."
+msgstr "このフィールドは数字でなくてはいけません."
+
+msgid "This field must be a comma or space separated list of integers"
+msgstr ""
+"このフィールドはコンマまたは空白で区切られた整数のリストでなくてはいけません."
+
+msgid ""
+"This field must contain a color code in the RGB Hex format, for example "
+"'#1234af'."
+msgstr "このフィールドは16進RGB表記の色コードなくてはいけません. 例:'#1234af'."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"このファイルは、Horde フレームワーク用の MIME ドライバを一括制御することによ"
+"り、アプリケーションが、enscript や mswordview などのプログラムを利用して、コ"
+"ンテンツをブラウザ上で HTML 表示できるようにします。"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"このファイルは、Horde フレームワーク （および独自の設定を持たないアプリケー"
+"ション） の色とフォントを設定するスタイルシートを制御します.."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"このファイルは、ファイルの拡張子を論理 MIME タイプにマッピングすることによ"
+"り、Horde アプリケーションが電子メール添付ファイルや CVS チェックアウトなどの"
+"コンテンツの処理方法を決定できるようにします。"
+
+msgid "This form has already been processed."
+msgstr "このフォームは既に処理されています."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"これは、メインの Horde 設定ファイルで、コアフレームワークおよび全 Horde アプ"
+"リケーションに適用されるパスと基本的な項目が含まれています。"
+
+msgid "This number must be at least one."
+msgstr "この番号は最小でも1でなくてはいけません."
+
+msgid "This server can't uncompress zip and gzip files."
+msgstr "このサーバではzipとgzipファイルを展開できません."
+
+msgid ""
+"This task has been successfully added to your tasklist. Click icon to view:"
+msgstr ""
+"タスクがあなたのタスクリストに追加されました. アイコンをクリックすると表示し"
+"ます:"
+
+msgid "This value must be a number."
+msgstr "この値は数字の必要があります."
+
+msgid "This window must be called from an Options window"
+msgstr "このウィンドウはオプションウィンドウから呼出される必要があります."
+
+msgid "Time Tracking"
+msgstr "タイムシート"
+
+msgid "Title Goes Here!"
+msgstr "ここにタイトルがきます"
+
+msgid "Title"
+msgstr "タイトル"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "SQL サーバに接続できません。"
+
+#, c-format
+msgid "Unable to delete %s, the directory is not empty"
+msgstr "%sを削除できません. ディレクトリが空ではありません."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "'%s'を削除できません: %s."
+
+msgid "Unable to open compressed archive."
+msgstr "圧縮書庫ファイルを開けません。"
+
+msgid "Unable to read the vfsroot directory."
+msgstr "vfsroot ディレクトリを読めません."
+
+msgid "Unable to translate this Word document"
+msgstr "この Word 文書を翻訳できません。"
+
+msgid "Underline"
+msgstr "アンダーライン"
+
+msgid "Undo Changes"
+msgstr "変更を取り消す"
+
+#, c-format
+msgid "Unhandled component of type: %s"
+msgstr "非対応コンポーネントタイプ: %s"
+
+msgid "Unsupported Extension"
+msgstr "サポートしていない拡張子です."
+
+msgid "Unsupported serialization type"
+msgstr "サポートしていないシリアル化タイプです."
+
+msgid "Unsupported unserialization type"
+msgstr "サポートしていな逆シリアル化タイプです."
+
+#, c-format
+msgid "Update %s"
+msgstr "%s を更新する."
+
+msgid "Update respondent status"
+msgstr "返信者の状態を更新する."
+
+msgid "Update user"
+msgstr "ユーザを更新する"
+
+msgid "Update"
+msgstr "更新"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "'%s' を更新しました."
+
+msgid "Use Default Value"
+msgstr "デフォルト値を使用"
+
+msgid "User Administration"
+msgstr "ユーザ管理"
+
+msgid "User Options"
+msgstr "ユーザオプション"
+
+msgid "User Registration"
+msgstr "ユーザ登録"
+
+msgid "Username and/or password not correct."
+msgstr "ユーザ名またはパスワードが正しくありません."
+
+msgid "Username"
+msgstr "ユーザ名"
+
+msgid "Username: "
+msgstr "ユーザ名: "
+
+msgid "Username:"
+msgstr "ユーザ名:"
+
+msgid "Users in the system:"
+msgstr "システム中のユーザ："
+
+msgid "Users"
+msgstr "ユーザ"
+
+msgid "Vacation"
+msgstr "休暇"
+
+msgid "Validity"
+msgstr "有効性"
+
+msgid "Verification failed - this message may have been tampered with."
+msgstr "検証"
+
+msgid "Version"
+msgstr "版"
+
+#, c-format
+msgid "View %s"
+msgstr "%s を見る"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Webserver"
+msgstr "ウェブサーバ"
+
+msgid "Weekly"
+msgstr "毎週"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "%s にようこそ"
+
+msgid "Welcome"
+msgstr "ようこそ"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "%s さん、ようこそ"
+
+#, c-format
+msgid "What application should %s display after login?"
+msgstr "%sログイン後どのアプリケーションを表示しますか?"
+
+msgid "What is the delimiter character?"
+msgstr "区切り文字は何ですか?"
+
+msgid "What is the quote character?"
+msgstr "引用文字は何ですか?"
+
+msgid "Wishlists"
+msgstr "欲しいもの一覧"
+
+msgid "Work Address"
+msgstr "勤務先の住所"
+
+msgid "Work Phone"
+msgstr "勤務先の電話番号"
+
+#, c-format
+msgid "Writing not possible. Copy this code manually to %s."
+msgstr "書きこみができません. このコードを手動で%sにコピーしてください."
+
+#, c-format
+msgid "Wrote %s successfully."
+msgstr "%sの書きこみに成功しました."
+
+msgid "X509v3 extensions"
+msgstr "X509v3拡張機能"
+
+msgid "YY"
+msgstr "年"
+
+msgid "YYYY"
+msgstr "年"
+
+msgid "Yearly"
+msgstr "毎年"
+
+msgid "Yes, I Agree"
+msgstr "同意します"
+
+msgid "You did not enter a valid email address."
+msgstr "有効な電子メールアドレスではありません。"
+
+#, c-format
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in %s."
+msgstr ""
+"インポートされたファイルのフィールドを%s内の対応するフィールドにマップしてま"
+"せん."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "ログアウトしました.<br />ご利用ありがとうございました."
+
+msgid "You must configure a Signup backend to use Signups."
+msgstr "Signupを利用するためにはSignupバックエンドを設定する必要があります."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "障害の内容を記述してから、障害レポートを送信してください。"
+
+msgid "You must select an server to be deleted."
+msgstr "削除するサーバを指定してください。"
+
+msgid "You must specify a username to remove."
+msgstr "削除するユーザ名を指定してください。"
+
+msgid "You must specify the username to add."
+msgstr "追加するユーザ名を指定してください。"
+
+msgid "You must specify the username to update."
+msgstr "更新するユーザ名を指定してください。"
+
+msgid "You must specify what action to perform."
+msgstr "実行するアクションを指定してください。"
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "%sセッションの有効期限が切れています. 再ログインしてください."
+
+msgid "Your Email Address:"
+msgstr "電子メールアドレス："
+
+msgid "Your Information"
+msgstr "インフォメーション"
+
+msgid "Your Name:"
+msgstr "ご氏名:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"この認証バックエンドでは、ユーザの追加がサポートされていないか、あるいは何ら"
+"かの理由でこの機能が無効になっています。"
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"この認証バックエンドでは、ユーザのリストがサポートされていないか、あるいは何"
+"らかの理由でこの機能が無効になっています。"
+
+msgid "Your options have been updated."
+msgstr "オプションを更新しました"
+
+msgid "Your remote servers:"
+msgstr "遠隔サーバ:"
+
+msgid "[Problem Report]"
+msgstr "［障害レポート］"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[行:%s/%s]"
+
+msgid "file"
+msgstr "ファイル"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "not yet implemented"
+msgstr "まだ実装されていません"
+
+msgid "unnamed"
+msgstr "名無し"
+
+msgid "vCard"
+msgstr "vCard"

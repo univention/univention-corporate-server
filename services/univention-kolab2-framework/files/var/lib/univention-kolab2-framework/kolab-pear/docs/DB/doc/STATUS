@@ -1,0 +1,76 @@
+STATUS OF THE PEAR DB PACKAGE
+=============================
+
+$Id: STATUS,v 1.1.2.1 2005/10/05 14:39:48 steuwer Exp $
+------------------------------------------------------------------------
+
+DB Driver Feature Matrix
+------------------------
+Symbols:
+  x  =  implemented, but without tests
+  t  =  implemented, but one or more tests fail
+  T  =  implemented, passing all tests
+  e  =  emulated, without tests
+  l  =  emulated, but one or more tests fail
+  E  =  emulated, passing all tests
+  n  =  returns "not capable"
+  -  =  no implementation of this feature or status unknown
+
+                    fbsql      ifx      mssql     mysqli     odbc     sqlite
+FEATURE        dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
+simpleQuery      -    x    T    T    x    T    T    x    T    T    T    T    T
+numCols          x    x    T    x    x    T    T    x    T    T    T    T    T
+numRows          x    x    n    n    x    T    T    x    E    T    T    T    n 
+errorNative      n    x    n    t    n    T    T    x    T    T    T    E    T
+prepare/execute  e    e    T    E    e    E    E    e    T    E    E    E    E
+sequences        -    e    T    E    n    E    E    e    T    E    T    E    E
+affectedRows     n    x    n    T    x    n    T    x    T    T    T    T    T
+fetch modes      x    x    T    T    x    T    T    x    T    T    T    T    T
+fetch row by no  x    x    n    T    x    T    T    x    n    x    T    T    T
+transactions     -    x    T    n    n    T    t    -    T    T    T    -    T
+auto-commit      -    x    x    n    n    n    n    -    x    x    x    -    n
+error mapping    -    x    T    t    -    t    t    -    T    T    E    l    l
+tableInfo        n    x    T    t    n    T    T    -    T    n    T    -    T
+
+NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
+
+
+TYPE (getListOf)
+tables           -    x    -    -    -    x    x    -    x    -    x    -    x
+views            -    -    -    -    -    x    n    -    -    -    x    -    x
+users            -    -    -    -    -    -    x    -    -    -    x    -    -
+databases        -    -    -    -    -    -    x    -    -    -    x    -    -
+functions        -    -    -    -    -    -    -    -    -    -    x    -    -
+
+
+Test Conformance
+----------------
+Symbols:
+    o  =  Test passed
+    X  =  Test failed
+    N  =  Test failed due to DBMS not considering something an error
+    E  =  Test failed due to problem with PHP extension
+
+                    fbsql      ifx      mssql     mysqli     odbc     sqlite
+               dbase  |  ibase  |  msql   |  mysql  |   oci8  |  pgsql  |  sybase
+01connect        -    -    o    o    -    o    o    -    o    o    o    o    o 
+02fetch          -    -    o    o    -    o    o    -    o    o    o    o    o
+03simplequery    -    -    o    o    -    o    o    -    o    o    o    o    o
+04numcols        -    -    o    o    -    o    o    -    o    o    o    o    o
+05sequences      -    -    o    o    -    o    o    -    o    o    o    o    o
+06prepexec       -    -    o    o    -    o    o    -    o    o    o    o    o
+08affectedrows   -    -    X    o    -    o    o    -    o    o    o    o    o
+09numrows        -    -    X    X    -    o    o    -    o    o    o    o    o
+10errormap       -    -    o    N    -    E    N    -    o    o    o    N    E
+11transactions   -    -    o    -    -    o    X    -    o    o    o    -    o
+13limit          -    -    o    o    -    o    o    -    o    o    o    o    o
+14fetchmode_obje -    -    o    o    -    o    o    -    o    o    o    o    o
+15quote          -    -    o    X    -    o    o    -    o    o    o    o    o
+16tableinfo      -    -    o    X    -    o    o    -    o    -    o    -    o
+17query          -    -    X    o    -    o    o    -    o    o    o    o    o
+18get            -    -    X    o    -    o    o    -    o    o    o    o    o
+
+NOTE: ibase testing done under PHP 5.  ibase under PHP 4 is unstable on Windows.
+
+NOTE: getAll() and getAssoc() crashes PHP 5 when using DB_FETCHMODE_OBJECT.
+      See http://bugs.php.net/?id=27123

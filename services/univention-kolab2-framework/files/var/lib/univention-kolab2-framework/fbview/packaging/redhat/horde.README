@@ -1,0 +1,379 @@
+Horde RPMs                                                      horde.README
+=--------------------------------------------------------------------------=
+
+$Horde: horde/packaging/redhat/horde.README,v 1.17 2002/06/25 13:56:23 bjn Exp $
+
+
+NOTE:  This file describes the process of installing Horde and its
+components on Red Hat 7.x using RPM v4 packages.
+
+- Red Hat 6.x is not supported.
+
+- If you are using tarballs to compile and install Horde manually, you
+should read the README file included in each tarball.  The docs/INSTALL
+file in each tarball describes the complete installation process when
+using tarballs.
+
+
+INSTALLING
+
+The versions of the RPMs listed below (for Red Hat 7.x) are tested
+together and known to work; if you choose to use different versions,
+your mileage may vary.  Except for PHP (and mcal/js/sablotron which most
+sites don't need), they are all official RPMs from Red Hat.
+
+The Horde RPMs require several other (prerequisite) RPMs.  These RPMs
+can be downloaded from Red Hat (or a mirror such as ibiblio).  For the
+original RPMs, append "7.x/en/os/i386/RedHat/RPMS/"; for updated RPMs,
+append "updates/7.x/en/os/i386/":
+
+    ftp://ftp.redhat.com/pub/redhat/linux/
+    ftp://distro.ibiblio.org/pub/linux/distributions/redhat/
+
+PLEASE NOTE the following bug in RPM 4.0.4, which *may* result in lost
+configuration files during an upgrade (rpm -U).  Some sites experience
+the bug and some don't... so to be safe, back up all your configuration
+files before upgrading!
+
+    http://groups.google.com/groups?hl=en&lr=&selm=20020418100752.S6539%40devserv.devel.redhat.com
+
+YOU WILL NEED TO RESTART Apache after you install/upgrade/remove the
+PHP, Horde, IMP, etc. RPMs.
+
+The following are the steps for getting these prerequisites installed.
+
+1)  Security Advisories
+
+    Before you do anything else, make sure you've installed the RPMs
+    described in the Red Hat Security Advisories for your version of
+    Red Hat.  You should update Apache, Cyrus SASL, OpenLDAP, OpenSSL,
+    and any others that relate to the RPMs listed in this document.
+    Some of those packages, in turn, have prerequisites that are NOT
+    covered in this document, so consult the following:
+
+    http://www.redhat.com/support/errata/
+        rh7-errata-security.html (7.0)
+        rh71-errata-security.html (7.1)
+        rh72-errata-security.html (7.2)
+        rh73-errata-security.html (7.3)
+
+2)  Required RPMs
+
+    Since Red Hat has not yet released a suitable set of PHP 4.1.2 RPMs
+    for Red Hat <= 7.2, nor any MCAL RPMs, Horde has created custom ones,
+    which can be downloaded at the Horde FTP site:
+
+        ftp://ftp.horde.org/pub/RPMS/i386/rh7/
+
+    a)  All sites will need the following RPMs.  Note especially the
+        updated versions of freetype and libxml2 for 7.0 and 7.1;
+        earlier versions won't work:
+
+        Red Hat 7.0 and 7.1
+        ===================
+        apache-1.3.22-5.7.1
+        expat-1.95.1-1 (++)
+        freetype-2.0.1-4 (++)
+        libxml2-2.4.10-0.7x.2 (**)
+        openssl-0.9.6-9
+        openssl095a-0.9.5a-9
+        php-4.1.2-0horde1
+        php-imap-4.1.2-0horde1
+
+        (++) comes from Red Hat 7.1
+        (**) comes from Red Hat 7.2
+
+        Red Hat 7.2
+        ===========
+        apache-1.3.22-6
+        db31-3.1.17-1
+        expat-1.95.1-7
+        freetype-2.0.3-7
+        libtool-libs13-1.3.5-2
+        libxml2-2.4.10-0.7x.2
+        openssl-0.9.6b-8
+        openssl095a-0.9.5a-11
+        openssl096-0.9.6-6
+        php-4.1.2-0horde1
+        php-imap-4.1.2-0horde1
+
+        Red Hat 7.3
+        ===========
+        apache-1.3.23-14
+        db3-3.3.11-6
+        expat-1.95.2-2
+        freetype-2.0.9-2
+        libtool-libs13-1.3.5-2
+        libxml2-2.4.19-4
+        openssl-0.9.6b-18
+        openssl095a-0.9.5a-11
+        openssl096-0.9.6-6
+        php-4.1.2-7
+        php-imap-4.1.2-7
+
+    (NOTE:  Red Hat went back and forth several times about whether
+    the PHP Apache shared module (.so file) should be in its own RPM
+    (mod_php) or not.  If you were using PHP RPMs earlier than 4.0.6
+    check carefully to see whether there is a mod_php RPM whose version
+    doesn't match the others.  If so, uninstall it, or Apache+PHP may
+    fail to work properly.)
+
+    b)  If your Horde server will also be an IMAP server:
+
+        Red Hat 7.0
+        ===========
+        imap-2001a-1.70.0
+
+        Red Hat 7.1
+        ===========
+        imap-2001a-1.71.0
+
+        Red Hat 7.2
+        ===========
+        imap-2001a-1.72.0
+
+        Red Hat 7.3
+        ===========
+        imap-2001a-10
+
+3)  OpenLDAP RPMs
+
+    a)  If you are using OpenLDAP with Horde:
+
+        Red Hat 7.0 and 7.1
+        ===================
+        openldap-2.0.21-0.7.1
+        openldap12-1.2.12-3
+        php-ldap-4.1.2-0horde1
+
+        Red Hat 7.2
+        ===========
+        openldap-2.0.21-1
+        openldap12-1.2.12-4
+        php-ldap-4.1.2-0horde1
+
+        Red Hat 7.3
+        ===========
+        openldap-2.0.23-4
+        openldap12-1.2.13-3
+        php-ldap-4.1.2-7
+
+    b)  If your Horde server is also an OpenLDAP server:
+
+        Red Hat 7.0 and 7.1
+        ===================
+        openldap-servers-2.0.21-0.7.1
+
+        Red Hat 7.2
+        ===========
+        openldap-servers-2.0.21-1
+
+        Red Hat 7.3
+        ===========
+        openldap-servers-2.0.23-4
+
+4)  MySQL RPMs
+
+    a)  If you are using MySQL with Horde:
+
+        Red Hat 7.0
+        ===========
+        mysql-3.23.32-1.7
+        mysqlclient9-3.23.22-3
+        php-mysql-4.1.2-0horde1
+
+        Red Hat 7.1
+        ===========
+        mysql-3.23.36-1
+        mysqlclient9-3.23.22-4
+        php-mysql-4.1.2-0horde1
+
+        Red Hat 7.2
+        ===========
+        mysql-3.23.41-1
+        mysqlclient9-3.23.22-6
+        php-mysql-4.1.2-0horde1
+
+        Red Hat 7.3
+        ===========
+        mysql-3.23.49-3
+        mysqlclient9-3.23.22-6
+        php-mysql-4.1.2-7
+
+    b)  If your Horde server is also a MySQL server:
+
+        Red Hat 7.0
+        ===========
+        mysql-server-3.23.32-1.7
+
+        Red Hat 7.1
+        ===========
+        mysql-server-3.23.36-1
+
+        Red Hat 7.2
+        ===========
+        mysql-server-3.23.41-1
+
+        Red Hat 7.3
+        ===========
+        mysql-server-3.23.49-3
+
+5)  PostgreSQL RPMs
+
+    a)  If you are using PostgreSQL with Horde:
+
+        Red Hat 7.0
+        ===========
+        php-pgsql-4.1.2-0horde1
+        postgresql-7.0.2-17
+
+        Red Hat 7.1
+        ===========
+        php-pgsql-4.1.2-0horde1
+        postgresql-7.0.3-8
+
+        Red Hat 7.2
+        ===========
+        php-pgsql-4.1.2-0horde1
+        postgresql-7.1.3-2
+        postgresql-libs-7.1.3-2
+
+        Red Hat 7.3
+        ===========
+        php-pgsql-4.1.2-7
+        postgresql-7.2.1-5
+        postgresql-libs-7.2.1-5
+
+    b)  If your Horde server is also a PostgreSQL server:
+
+        Red Hat 7.0
+        ===========
+        postgresql-server-7.0.2-17
+
+        Red Hat 7.1
+        ===========
+        postgresql-server-7.0.3-8
+
+        Red Hat 7.2
+        ===========
+        postgresql-server-7.1.3-2
+
+        Red Hat 7.3
+        ===========
+        postgresql-server-7.2.1-5
+
+6)  MCAL RPMs
+
+    If you are using MCAL with Horde (Kronolith):
+
+    Red Hat 7.x
+    ===========
+    mcal-0.7cvs-0horde0
+    php-mcal-4.1.2-0horde1
+
+    (Note that this will only work if you're using the Horde-customized
+    php-4.1.2-0horde1 PHP RPMs; you can't mix php-mcal with the Red Hat
+    7.3 PHP 4.1.2 RPMs.)
+
+7)  XSLT RPMs
+
+    These aren't required for Horde and its applications, but if you need
+    XSLT support for your other PHP applications, install the following.
+    The js and sablotron RPMs are from Mozilla; you can also find them
+    on the Horde FTP site.
+
+    Red Hat 7.x
+    ===========
+    js-1.5rc4-2
+    php-xslt-4.1.2-0horde1
+    sablotron-0.82-1
+
+    (Note that this will only work if you're using the Horde-customized
+    php-4.1.2-0horde1 PHP RPMs; you can't mix php-xslt with the Red Hat
+    7.3 PHP 4.1.2 RPMs.)
+
+8)  Horde RPMs
+
+    The Horde RPMs have been tested with Red Hat 7.1, 7.2, and 7.3 (they
+    should work fine with Red Hat 7.0) and with MySQL and PostgreSQL;
+    additional testing and comments always welcome.  These RPMs can be
+    downloaded from the Horde FTP site:
+
+        ftp://ftp.horde.org/pub/RPMS/noarch/rh7/
+
+    Red Hat 7.x
+    ===========
+    horde-2.1-2
+    imp-3.1-2
+    kronolith-1.0-2
+    turba-1.1-2
+
+    YOU WILL NEED TO RESTART Apache after you install/upgrade/remove the
+    above RPMs.
+
+    After installing these RPMs, you will need to configure Horde and
+    the applications (config directories), create MySQL or PostgreSQL
+    database tables if needed, etc.  Please see the docs/INSTALL file
+    for each application (/var/www/html/horde/docs/INSTALL etc.).
+
+
+UPGRADING
+
+PLEASE NOTE the following bug in RPM 4.0.4, which *may* result in lost
+configuration files during an upgrade (rpm -U).  Back up all your
+configuration files before upgrading!
+
+    http://groups.google.com/groups?hl=en&lr=&selm=20020418100752.S6539%40devserv.devel.redhat.com
+
+The Horde RPMs are designed to be upgradable (rpm -U option).  As with
+all RPM upgrades, you should scan for .rpmorig, .rpmnew, and .rpmsave
+files left after the upgrade, and merge in your old configuration with
+the new files.  A command such as the following can be used for this:
+
+    # find /etc /usr /var -name \*.rpm\* -print
+
+
+TESTING
+
+If you want to test the Horde installation, you'll need to add read
+permission to /var/www/html/horde/test.php, and use a web browser to
+access the page at:
+
+    http://example.com/horde/test.php
+
+Anything that shows up in red is a potential problem.  Reload the page and
+make sure that the counter increments (this tests PHP session handling).
+
+
+ISSUES/KNOWN BUGS/MISSING FEATURES
+
+- Need Chora, Nag, and Mnemo RPMs.
+
+- When I get time I will be adding support for viewers (wvHtml, xlHtml,
+  etc.) in IMP.
+
+- Other minor issues are listed in horde/packaging/redhat/TODO (in CVS).
+
+
+CREDITS
+
+Thanks to Mike Hardy <mhardy@h3c.com>, Chuck Moss <mossc@mossc.com>, and
+Mike Barsalou <mbarsalou@aidea.org> who have provided helpful suggestions,
+testing, and feedback for the Horde RPMs.
+
+Thanks to Dale Lovelace (formerly at Red Hat) who wrote the initial
+Horde and IMP RPMs, and to Dan Brown <danb35@earthlink.net> who has
+contributed some configurability and other good ideas from his setup.
+
+
+CONTACT
+
+We'd love to have feedback on these RPMs; please contact us on the Horde
+mailing lists:
+
+    http://www.horde.org/mail/
+
+
+PACKAGER
+
+Brent J. Nordquist <bjn@horde.org>

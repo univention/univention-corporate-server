@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Browser/package.xml,v 1.2 2004/05/25 15:52:43 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Browser</name>
+  <summary>Horde Browser API</summary>
+  <description>
+    The Horde_Browser:: class provides an API for getting information
+    about the current user's browser and its capabilities.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-02-12</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Browser.php"/>
+      <dir baseinstalldir="/Horde" name="Browser" role="php">
+        <file name="imode.php"/>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="pkg" rel="has" optional="yes">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-02-12</date>
+      <notes>Initial packaging</notes>
+    </release>
+  </changelog>
+</package>

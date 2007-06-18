@@ -1,0 +1,309 @@
+# Turba Brazilian Portugues translation.
+# Copyright (C) 2001 Carlos Daniel Kibrit.
+# Carlos Daniel Kibrit <kibrit@terra.com.br>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.0-RC1\n"
+"POT-Creation-Date: 2001-11-08 22:58+0100\n"
+"PO-Revision-Date: 2001-11-13 16:20-0300\n"
+"Last-Translator: Carlos Daniel Kibrit <kibrit@terra.com.br>\n"
+"Language-Team: Brazilian Portuguese <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Arquivo %s importado com sucesso"
+
+msgid "Add Contact ..."
+msgstr "Incluir contato..."
+
+msgid "Add a new contact"
+msgstr "Incluir novo contato"
+
+msgid "Add"
+msgstr "Incluir"
+
+msgid "Addressbook is read-only."
+msgstr "Endereços permite somente leitura"
+
+msgid "Advanced Directory Search"
+msgstr "Busca Avançada no Diretório"
+
+msgid "Advanced Search"
+msgstr "Busca Avançada"
+
+msgid "Alias"
+msgstr "Apelido"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Birthday"
+msgstr "Aniversário"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cell Phone"
+msgstr "Fone Celular"
+
+msgid "Clear Search"
+msgstr "Limpar Busca"
+
+msgid "Company"
+msgstr "Emprêsa"
+
+msgid "Date/Time"
+msgstr "Data/Hora"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Directory Search"
+msgstr "Busca no Diretório"
+
+msgid "Directory"
+msgstr "Diretório"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email 2"
+msgstr "Email 2"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error"
+msgstr "Erro"
+
+msgid "Export Addressbook"
+msgstr "Exportar Endereços"
+
+msgid "Export"
+msgstr "Exportar"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Falha na conexão ao diretório especificado"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Falha na busca, no diretório: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Buscar"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Home Address"
+msgstr "Endereço Residencial"
+
+msgid "Home Phone"
+msgstr "Fone Residencial"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Na iportação de dados em formato CSV: A primeira linha contém"
+"os nomes dos campos? "
+
+msgid "Illegal or malformed form data."
+msgstr "Formulário de dados com problemas ou Ilegal"
+
+msgid "Import Addressbook"
+msgstr "Importar Endereços"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importar/Exportar Endereços"
+
+msgid "Import/Export"
+msgstr "Importar/Exportar."
+
+msgid "Invalid addressbook."
+msgstr "Endereços Inválidos."
+
+msgid "Invalid e-mail address."
+msgstr "Email inválido"
+
+msgid "Invalid name."
+msgstr "Nome Inválido."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Message"
+msgstr "Mensagem"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Nenhum dos arquivos de endereços estão configurados para permitir a"
+"inclusão de dados. Se você acredita que isto está errado, por favor"
+"contacte o Administrador de seu sistema"
+
+msgid "Notes"
+msgstr "Notas"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Escolha um arquivo de endereços para incluir contato"
+
+msgid "Problem?"
+msgstr "Problema?"
+
+msgid "Reset"
+msgstr "Desfazer"
+
+msgid "Save Changes"
+msgstr "Salvar alterações"
+
+msgid "Save"
+msgstr "Salvar"
+
+msgid "Search Results"
+msgstr "Resultados da Busca"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Search&nbsp;Results"
+msgstr "Resultados&nbsp;da&nbsp;Busca"
+
+msgid "Select the destination to import from:"
+msgstr "Selecione destino para importar"
+
+msgid "Select the file to import:"
+msgstr "Selecione arquivo para importar"
+
+msgid "Select the format to export to:"
+msgstr "Selecione arquivo para exportar"
+
+msgid "Select the format to import from:"
+msgstr "Selecionar formato para importar"
+
+msgid "Select the source to export from:"
+msgstr "Selecionar origem para exportar"
+
+msgid "Select your preferred language:"
+msgstr "Selecione seu idioma preferido:"
+
+msgid "Send Message"
+msgstr "Enviar Mensagem"
+
+msgid "Set your preferred display language."
+msgstr "Selecione a linguagem de apresentação preferida."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Arquivos de configuração de Turba não encontrados:"
+
+msgid "Success"
+msgstr "Operação OK"
+
+msgid "The data got lost"
+msgstr "Os dados estão perdidos"
+
+msgid "The data got lost."
+msgstr "Os dados estão perdidos."
+
+msgid "The file contained no data."
+msgstr "O arquivo não contém dados."
+
+msgid "There are no writeable address books."
+msgstr "Não há arquivo de endereços disponível para alteração"
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Houve um problema com o envio do arquivo. O Arquivo pode ser maior que"
+"o tamanho máximo permitido."
+
+msgid "There was an error importing the data."
+msgstr "Houve um erro na importação dos dados"
+
+msgid "There was an error importing the uploaded file"
+msgstr "Houve um erro na importação do arquivo enviado"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Este arquivo controla as preferências padrão para o Turba e também controla"
+"quais preferências os usuários podem alterar"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Este arquivo controla o estilo utilizado para definir cores e fontes"
+"adicionalmente ou em sobreposição aos padrões Horde"
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Este arquivo define a lista de origens disponível para Turba"
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Esta é o arquivo de configuração principal de Turba. Ele contém caminhos e"
+"opções para os scripts de Turba. "
+
+msgid "Time"
+msgstr "Hora"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "To"
+msgstr "Para"
+
+msgid "Turba is not properly configured"
+msgstr "Turba não está corretamente configurado"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Impossível carregar a definição de %s."
+
+msgid "Warning"
+msgstr "Aviso"
+
+msgid "Work Address"
+msgstr "Endereço Comercial"
+
+msgid "Work Phone"
+msgstr "Fone Comercial"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Você não mapeou campos do arquivo importado para os correspondentes campos"
+"em Turba"
+
+msgid "Your Information"
+msgstr "Suas Informações"
+
+msgid "[Edit]"
+msgstr "[Editar]"
+
+msgid "from"
+msgstr "de"
+
+msgid "matching"
+msgstr "corresponde a"
+

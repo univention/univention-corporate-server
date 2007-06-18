@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: turba/locale/de_DE/help.xml,v 1.3 2003/07/14 23:01:13 jan Exp $ -->
+<help>
+  <entry id="Overview" md5="25b8d6106ddd54a9efc45424ae8bb415" state="uptodate">
+    <title>Überblick</title>
+    <heading>Einführung</heading>
+    <para>
+    Mit Hilfe des Adressbuchs können Sie einfach und unkompliziert Kontaktdaten speichern, auslesen und benutzen. Es kann sowohl ein private als auch öffentliche, im Netzwerk verfügbare Addressbücher zur Verfügung stellen. Auch Verteilerlisten werden unterstützt, so dass Sie Ihre eigenen &quot;Mailinglisten&quot; erstellen können.
+    </para>
+</entry>
+  <entry id="menu-add" md5="30c3618e2379ac4ec117f2ef60f95901" state="uptodate">
+    <title>Menü: Hinzufügen</title>
+    <heading>Hinzufügen</heading>
+    <para>
+    Fügen Sie hier Personen zu Ihrem Adressbuch hinzu. Sie können Personen nur zu Ihrem persönlichen Addressbuch hinzufügen, weil die anderen schreibgeschützt sind.
+    </para>
+</entry>
+  <entry id="menu-search" md5="ca2d3f0082074021e11df12953791508" state="uptodate">
+    <title>Menü: Suche</title>
+    <heading>Suche</heading>
+    <para>
+    Durchsuchen Sie hier ein Adressbuch, um Informationen zu finden. Mit dieser Suche können Sie nur einige einfache Felder durchsuchen. Unter &quot;Erweiterte Suche&quot; können Sie auch andere Felder durchsuchen.
+    </para>
+</entry>
+  <entry id="menu-advanced-search" md5="b711e28daa80a906623d6a36d634e9f2" state="uptodate">
+    <title>Menü: Erweiterte Suche</title>
+    <heading>Erweiterte Suche</heading>
+    <para>
+    Durchsuchen Sie hier ein Adressbuch, um Informationen zu finden. Mit dieser Suche können Sie mehrere Felder gleichzeitig durchsuchen. Welche Felder für die Suche zur Verfügung stehen, hängt von dem ausgewählten Adressbuch ab.
+    </para>
+</entry>
+  <entry id="menu-import" md5="7d641a3e8b967c91f556b46899f866be" state="changed">
+    <title>Menü: Import/Export</title>
+    <heading>Import/Export</heading>
+    <para>
+    Dieser Menüpunkt erlaubt den Import in und den Export von Ihrem persönlichen Adressbuch. Es werden CSV (kommagetrennte Werte), Outlook, vCard und andere verbreitete Formate unterstützt. Um Daten in Ihr Adressbuch zu importieren, müssen diese auf Ihrem lokalen Rechner (auf dem Sie den Browser ausführen) vorliegen.
+    </para>
+    <para>
+    Um in ein Adressbuch zu importieren, klicken Sie auf das Import/Export-Symbol und wählen Sie das Addressbuch aus. Wählen Sie das Format, in dem die zu importierenden Daten vorliegen, aus der Auswahlliste aus. Klicken Sie auf den &quot;Durchsuchen...&quot;-Knopf, suchen Sie nach der Datei, die importiert werden soll, wählen Sie diese aus und klicken Sie auf &quot;Importieren&quot;.
+    </para>
+    <para>
+    Einige komplizierte Einträge oder Einträge mit Feldern, die nicht genau den Feldern in Ihrem Adressbuch entsprechen, können unter Umständen nicht richtig importiert worden sein. Daher sollten Sie die importierten Daten nach dem Import überprüfen.
+    </para>
+<!-- English entry:
+<entry id="menu-import">
+    <title>Menu: Import/Export</title>
+    <heading>Import/Export</heading>
+
+    <para>This menu allows you to import to and export from your personal
+    address book (&quot;My Addressbook&quot;). It supports both CSV (Comma Separated
+    Variable), Outlook, and vCard formats, as well as some other popular
+    formats. To import an address book, you need to have the address book
+    information to import on your local machine (on which the web browser is
+    running).  To do this, you'll need to first export the address book
+    information from your current email client.</para>
+
+    <para>If you use Outlook Express:</para>
+    <para>1) Click on File &gt; Export &gt; Address Book</para>
+    <para>2) Select 'Text File' (Comma Separated Values) in the 'Address
+    Book Export Tool'.  Click 'Export'.</para>
+    <para>3) In the 'Save exported files as' field, type in a name for your
+    address book.  Click 'Next'.</para>
+    <para>4) Put a checkmark in the box to the left of each of the fields
+    that you wish to export.  Click 'Finish'.</para>
+    <para>5) You should receive a message that states 'Address book export
+    process has completed'.  Click 'OK'.</para>
+    <para>6) Click 'Close' on the 'Address Book Export Tool' and close
+    Outlook Express.</para>
+
+    <para>If the exported address book file is not located on your desktop,
+    and you're using a Windows operating system, click on Start &gt; Find or
+    Search &gt; Files or Folders and search your main hard drive for the file
+    name that you used in step 3.  Make note of the file's location.</para>
+
+    <para>To import an address book, open the address book you want to
+    import the information into. Click on the Import/Export Icon. Select the
+    type of address information data file you want to import from the
+    selection list.  Click on the browse button to open a file browser to
+    navigate among the files on your computer in order to locate the address
+    data file. Select the file, and click on the Import button. The
+    information in the file will be imported into your address book. Some
+    complex entries, or entries with fields that don't match Address Book's
+    fields, may not import correctly, so you should verify the imported data
+    after an import.</para>
+</entry>--><!-- English entry:
+<entry id="menu-import">
+    <title>Menu: Import/Export</title>
+    <heading>Import/Export</heading>
+
+    <para>This menu allows you to import to and export from your personal
+    address book (&quot;My Addressbook&quot;). It supports both CSV (Comma Separated
+    Variable), Outlook, and vCard formats, as well as some other popular
+    formats. To import an address book, you need to have the address book
+    information to import on your local machine (on which the web browser is
+    running).  To do this, you'll need to first export the address book
+    information from your current email client.</para>
+
+    <para>If you use Outlook Express:</para>
+    <para>1) Click on File &gt; Export &gt; Address Book</para>
+    <para>2) Select 'Text File' (Comma Separated Values) in the 'Address
+    Book Export Tool'.  Click 'Export'.</para>
+    <para>3) In the 'Save exported files as' field, type in a name for your
+    address book.  Click 'Next'.</para>
+    <para>4) Put a checkmark in the box to the left of each of the fields
+    that you wish to export.  Click 'Finish'.</para>
+    <para>5) You should receive a message that states 'Address book export
+    process has completed'.  Click 'OK'.</para>
+    <para>6) Click 'Close' on the 'Address Book Export Tool' and close
+    Outlook Express.</para>
+
+    <para>If the exported address book file is not located on your desktop,
+    and you're using a Windows operating system, click on Start &gt; Find or
+    Search &gt; Files or Folders and search your main hard drive for the file
+    name that you used in step 3.  Make note of the file's location.</para>
+
+    <para>To import an address book, open the address book you want to
+    import the information into. Click on the Import/Export Icon. Select the
+    type of address information data file you want to import from the
+    selection list.  Click on the browse button to open a file browser to
+    navigate among the files on your computer in order to locate the address
+    data file. Select the file, and click on the Import button. The
+    information in the file will be imported into your address book. Some
+    complex entries, or entries with fields that don't match Address Book's
+    fields, may not import correctly, so you should verify the imported data
+    after an import.</para>
+</entry>--></entry>
+  <entry id="menu-problem" md5="093444fd64826cd3d7a5da098162334f" state="uptodate">
+    <title>Menü: Problem</title>
+    <heading>Problembericht</heading>
+    <para>
+    Hier können Sie Kontakt mit uns aufnehmen, falls Sie Probleme haben sollten. Geben Sie alle notwendigen Informationen an, damit wir Ihnen helfen können.
+    </para>
+</entry>
+  <entry id="search-results" md5="0792fb93e6f65669372113fe1d3c510f" state="uptodate">
+    <title>Suchergebnisse</title>
+    <heading>Suchergebnisse</heading>
+    <para>
+    Wenn die Suche erfolgreich war, werden die Suchergebnisse aufgelistet.
+    </para>
+    <para>
+    Wenn Sie auf ein &quot;Email&quot;-Feld klicken, öffnet sich ein neues Fenster, in dem Sie eine Nachricht an die angegeben Adresse schreiben können. Wenn Sie auf das &quot;Name&quot;-Feld klicken, wird der zugehörige Adressbucheintrag angezeigt und Sie können den Eintrag bearbeiten oder löschen.
+    </para>
+    <para>
+    Um die Suchergebnisse wieder zu löschen und eine neue Suche zu beginnen, klicken Sie auf den &quot;Suche zurücksetzen&quot; Link.
+    </para>
+</entry>
+  <entry id="sorting" md5="e52d993b2efc82a30d27afea7723290c" state="uptodate">
+    <title>Einträge sortieren</title>
+    <heading>Einträge sortieren</heading>
+    <para>
+    Wenn Sie sich eine Liste von Einträgen anzeigen lassen, können Sie die Einträge nach Namen oder Emailadressen sortieren, indem Sie auf die jeweilige Spaltenüberschrift klicken. Um zwischen auf- und absteigender Sortierung umzuschalten, klicken Sie auf das Pfeilsymbol in der Spaltenüberschrift.
+    </para>
+</entry>
+</help>

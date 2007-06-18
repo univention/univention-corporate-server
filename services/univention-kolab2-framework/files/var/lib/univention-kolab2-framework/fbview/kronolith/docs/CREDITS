@@ -1,0 +1,59 @@
+================================
+|| Kronolith Development Team ||
+================================
+
+===============
+Core Developers
+===============
+
+Chuck Hagenbuch <chuck@horde.org>
+- original concept
+- all current code (this really can change)
+- PEAR DB:: and MCAL drivers
+
+
+=======
+Drivers
+=======
+
+MCAL                Chuck Hagenbuch <chuck@horde.org>
+MySQL (deprecated)  Luc Saillard <luc+kronolith@alcove.fr>
+PEAR DB             Chuck Hagenbuch <chuck@horde.org>
+
+
+============
+Localization
+============
+
+Arabic (Syria)          Platinum Development Team <devteam@platinum-sy.net>
+Brazilian Portuguese    Samuel Mota <samuel@bumerangue.com>
+Bulgarian               Miroslav Pendev <miro@cybershade.us>
+Chinese (Simplified)    Zhang Bo <boozhang@sdb.ac.cn>
+Chinese (Traditional)   David Chang <david@thbuo.gov.tw>
+Czech                   Pavel Chytil <pchytil@asp.ogi.edu>
+Danish                  Bill Edgington <horde@0x20.com>
+                        Martin List-Petersen <martin@list-petersen.dk>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Mikhaël Janson <mik@galaxie.net>
+                        Benoit St-André <ben@benoitst-andre.net>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Italian                 Giovanni Meneghetti <gmeneghetti@infvic.it>
+Korean                  J.I Kim <aporie@netian.com>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Sumskas <vilius@lnk.lt>
+Norwegian Bokmaal       Torstein S. Hansen <huleboer@techbee.no>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Polish                  Maciek Uhlig <muhlig@us.edu.pl>
+Romanian                Eugen Hoanca <eugenh@urban-grafx.ro>
+                        Marius Dragulescu <mariusd@urban-grafx.ro>
+Russian                 Anton Nekhoroshih <anton@valuehost.ru>
+                        Fedor A. Fetisov <faf@ssc.ru>
+Slovak                  Leo Mrafko <leo@oel.sk>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+
+$Horde: kronolith/docs/CREDITS,v 1.31 2004/01/28 12:42:01 jan Exp $

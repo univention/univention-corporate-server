@@ -1,0 +1,407 @@
+# Turba Portugal Portuguese translation.
+# Nuno Loureiro <nuno@eth.pt>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-05-29 02:59+0100\n"
+"PO-Revision-Date: 2002-02-21 18:31+0000\n"
+"Last-Translator: Nuno Loureiro <nuno@eth.pt>\n"
+"Language-Team: Portuguese <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Ficheiro %s importado com sucesso"
+
+msgid "Add Contact ..."
+msgstr "Adicionar contacto..."
+
+msgid "Add a new contact"
+msgstr "Adicionar novo contacto"
+
+msgid "Add failed"
+msgstr "Falhou a inserção"
+
+msgid "Add"
+msgstr "Adicionar"
+
+msgid "Address Book Listing"
+msgstr "Listagem da Lista de contactos"
+
+msgid "Addressbook is read-only."
+msgstr "A lista de contactos permite apenas, acesso de leitura"
+
+msgid "Advanced Search"
+msgstr "Pesquisa Avançada"
+
+msgid "Alias"
+msgstr "Apelido"
+
+msgid "Available Columns:"
+msgstr "Colunas disponíveis:"
+
+msgid "Browse"
+msgstr "Listar"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cell Phone"
+msgstr "Telemóvel"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Escolher a ordem das colunas a mostrar na listagem de endereços."
+
+msgid "Clear Search"
+msgstr "Limpar Pesquisa"
+
+msgid "Column Options"
+msgstr "Opções das colunas"
+
+msgid "Company"
+msgstr "Empresa"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Conteúdo de %s"
+
+msgid "Default Display"
+msgstr "Visualização Padrão"
+
+msgid "Delete"
+msgstr "Apagar"
+
+msgid "Deletion failed"
+msgstr "A remoção falhou"
+
+msgid "Directory Listing"
+msgstr "Listagem do Directório"
+
+msgid "Directory Search"
+msgstr "Pesquisa no Directório"
+
+msgid "Directory"
+msgstr "Directório"
+
+msgid "Display Options"
+msgstr "Opções de visualização"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Editar '%s'"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error while searching directory."
+msgstr "Ocorreu um erro ao pesquisar no directório."
+
+msgid "Export Addressbook"
+msgstr "Exportar Endereços"
+
+msgid "Export"
+msgstr "Exportar"
+
+#, c-format
+msgid "Failed to browse the directory: %s"
+msgstr "A listagem do directório falhou: %s"
+
+msgid "Failed to connect to the specified directory."
+msgstr "A ligação ao directório especificado falhou."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "A pesquisa no directório falhou: %s"
+
+msgid "Failed to search the specified directory."
+msgstr "A pesquisa ao directório especificado falhou."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Pesquisar"
+
+msgid "From"
+msgstr "De"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Home Address"
+msgstr "Morada"
+
+msgid "Home Phone"
+msgstr "Telefone"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Na importação de dados em formato CSV: A primeira linha contémos nomes dos "
+"campos? "
+
+msgid "Illegal or malformed form data."
+msgstr "Formulário de dados com problemas ou dados inválidos"
+
+msgid "Import Addressbook"
+msgstr "Importar Lista de contactos"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importar/Exportar Listas de contactos"
+
+msgid "Import/Export"
+msgstr "Importar/Exportar"
+
+msgid "Invalid addressbook."
+msgstr "Lista de contactos Inválida."
+
+msgid "Invalid e-mail address."
+msgstr "Email inválido."
+
+msgid "Invalid email."
+msgstr "Email inválido."
+
+msgid "Invalid name."
+msgstr "Nome Inválido."
+
+msgid "Invalid public key."
+msgstr "Chave pública Inválida."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "Matching"
+msgstr "Correspondente"
+
+msgid "More than 1 entry returned."
+msgstr "Foi retornada mais que 1 entrada."
+
+msgid "Mulberry addressbook sucessfully imported"
+msgstr "A lista de contactos Mulberry foi importada com sucesso"
+
+msgid "Name"
+msgstr "Nome"
+
+#, c-format
+msgid "No public key found for %s."
+msgstr "Não foi encontrada a chave pública para %s."
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Nenhuma das Listas de contactos disponíveis está configurada para permitir "
+"ainserção de dados. Se achar que foi um erro, por favorcontacte o "
+"Administrador do sistema."
+
+msgid "Notes"
+msgstr "Notas"
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "PGP Public Key"
+msgstr "Chave Pública PGP"
+
+msgid "Pine addressbook sucessfully imported"
+msgstr "Lista de contactos do Pine importada com sucesso"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Escolha uma lista de contactos para adicionar um contacto."
+
+msgid "Please select a directory:"
+msgstr "Por favor, escolha um directório:"
+
+msgid "Problem?"
+msgstr "Problema?"
+
+msgid "Reset"
+msgstr "Limpar"
+
+msgid "Save Changes"
+msgstr "Gravar alterações"
+
+msgid "Save"
+msgstr "Gravar"
+
+msgid "Search Results"
+msgstr "Resultados da pesquisa"
+
+msgid "Search"
+msgstr "Pesquisar"
+
+msgid "Search&nbsp;Results"
+msgstr "Resultados&nbsp;da&nbsp;Pesquisa"
+
+msgid "Select the destination to import to:"
+msgstr "Seleccione o destino para importar:"
+
+msgid "Select the file to import:"
+msgstr "Seleccione o ficheiro para importar:"
+
+msgid "Select the format to export to:"
+msgstr "Seleccione o formato para exportar:"
+
+msgid "Select the format to import from:"
+msgstr "Seleccione o formato para importar:"
+
+msgid "Select the source to export from:"
+msgstr "Seleccione a origem para exportar:"
+
+msgid "Select view to display by default."
+msgstr "Escolher a vizualização a mostrar por defeito."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Escolher os campos visiveis na listagem de endereços."
+
+msgid "Select your preferred language:"
+msgstr "Seleccione o seu idioma preferido:"
+
+msgid "Selected Columns:"
+msgstr "Colunas seleccionadas:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Enviar mail para %s"
+
+msgid "Set your preferred display language."
+msgstr "Seleccione a linguagem de apresentação preferida."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Ficheiros de configuração do Turba não encontrados:"
+
+msgid "The data got lost."
+msgstr "Os dados perderam-se."
+
+msgid "The data was lost"
+msgstr "Os dados perderam-se"
+
+msgid "The file contained no data."
+msgstr "O ficheiro não contém dados."
+
+msgid "There are no writeable address books."
+msgstr "Não há listas de contactos com permissão de escrita."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Houve um problema com o envio do ficheiro. O ficheiro deve ser maior queo "
+"tamanho máximo permitido."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Ocorreu um erro ao adicionar este objecto. Contacte o seu administrador de "
+"sistema para obter ajuda."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Ocorreu um erro ao apagar este objecto. Contacte o seu administrador de "
+"sistema para obter ajuda."
+
+msgid "There was an error importing the data."
+msgstr "Houve um erro na importação dos dados."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Houve um erro na importação do ficheiro enviado"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Este ficheiro controla as preferências padrão para o Turba, e também "
+"controlaquais as preferências que os utilizadores podem alterar."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Este ficheiro controla o estilo utilizado para definir cores e "
+"fontesadicionalmente ou em sobreposição com os padrões do Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Este ficheiro define os nomes e tipos dos atributos globais do Turba - "
+"nomes, endereços de email, etc."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Este ficheiro define a lista de origens disponível para o Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Este é o ficheiro de configuração principal do Turba. Contém caminhos "
+"eopções para os scripts do Turba. "
+
+msgid "This person already has a public key in the addressbook."
+msgstr "Esta pessoa já tem uma chave pública na sua lista de contactos."
+
+msgid "This person is already in your addressbook."
+msgstr "Esta pessoa já está na sua lista de contactos."
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Turba is not properly configured"
+msgstr "O Turba não está correctamente configurado"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Impossível ler a definição de %s."
+
+msgid "User Options"
+msgstr "Opções do utilizador"
+
+msgid "View to display by default:"
+msgstr "Visualização a mostrar por defeito:"
+
+msgid "Work Address"
+msgstr "Endereço do Emprego"
+
+msgid "Work Phone"
+msgstr "Telefone do Emprego"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Não mapeou nenhum campo do ficheiro importado para os campos "
+"correspondentesdo Turba"
+
+msgid "Your Information"
+msgstr "As suas Informações"
+
+msgid "[Edit]"
+msgstr "[Editar]"
+
+msgid "add column"
+msgstr "Adicionar coluna"
+
+msgid "move left"
+msgstr "Mover p/a esquerda"
+
+msgid "move right"
+msgstr "Mover p/a direita"
+
+msgid "remove column"
+msgstr "remover coluna"
+

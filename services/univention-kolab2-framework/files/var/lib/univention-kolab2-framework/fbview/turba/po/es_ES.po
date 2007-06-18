@@ -1,0 +1,368 @@
+# Turba Spanish translation.
+# Copyright (C) 2001 Julian Jares.
+# Julian Jares <jjares@techie.com>, 2001.
+# Raúl Alvarez Venegas <rav@tecoman.ucol.mx>, 2001-2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-03-16 20:52-0600\n"
+"PO-Revision-Date: 2001-07-31 16:18-0400\n"
+"Last-Translator: Raúl Alvarez Venegas <rav@tecoman.ucol.mx>\n"
+"Language-Team: Spanish <dev@horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "El archivo %s fue importado satisfactoriamente"
+
+msgid "Add Contact ..."
+msgstr "Agregar Contacto ..."
+
+msgid "Add a new contact"
+msgstr "Agregar un contacto nuevo"
+
+msgid "Add failed"
+msgstr "Fallo al Agregar"
+
+msgid "Add"
+msgstr "Agregar"
+
+msgid "Addressbook is read-only."
+msgstr "La Libreta de direcciones es de sólo lectura."
+
+msgid "Advanced Directory Search"
+msgstr "Búsqueda Avanzada en el Directorio"
+
+msgid "Advanced Search"
+msgstr "Búsqueda Avanzada"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Available Columns:"
+msgstr "Columnas Disponibles:"
+
+msgid "Browse"
+msgstr "Examinar"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cell Phone"
+msgstr "Teléfono Celular"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr ""
+"Elija el orden de las columnas a visualizar en la lista de direcciones."
+
+msgid "Clear Search"
+msgstr "Borrar Búsqueda"
+
+msgid "Column Options"
+msgstr "Opciones de la Columna"
+
+msgid "Company"
+msgstr "Compañía"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Contenido de %s"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Deletion failed"
+msgstr "Fallo al Borrar"
+
+msgid "Directory Listing"
+msgstr "Listado del Directorio"
+
+msgid "Directory Search"
+msgstr "Búsqueda en el Directorio"
+
+msgid "Directory"
+msgstr "Directorio"
+
+msgid "Display Options"
+msgstr "Opciones de Visualización"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Editar '%s'"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Export Addressbook"
+msgstr "Exportar Libreta de direcciones"
+
+msgid "Export"
+msgstr "Exportar"
+
+#, c-format
+msgid "Failed to browse the directory: %s"
+msgstr "Fallo al buscar en el directorio: %s"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Fallo al conectar con el directorio especificado."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Fallo al buscar en el directorio: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Encontrar"
+
+msgid "From"
+msgstr "De"
+
+msgid "Help"
+msgstr "Ayuda"
+
+msgid "Home Address"
+msgstr "Domicilo Particular"
+
+msgid "Home Phone"
+msgstr "Teléfono Particular"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Si importa datos CSV: ¿Contiene la primera fila los nombres de los campos?"
+
+msgid "Illegal or malformed form data."
+msgstr "Formulario de datos ilegal o malformado."
+
+msgid "Import Addressbook"
+msgstr "Importar Libreta de direcciones"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importar/Exportar Libreta de direcciones"
+
+msgid "Import/Export"
+msgstr "Importar/Exportar"
+
+msgid "Invalid addressbook."
+msgstr "La libreta de direcciones no es válida."
+
+msgid "Invalid e-mail address."
+msgstr "La dirección de e-mail no es válida."
+
+msgid "Invalid name."
+msgstr "El nombre no es válido."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "List"
+msgstr "Enumerar"
+
+msgid "Matching"
+msgstr "que coincida con"
+
+msgid "Name"
+msgstr "Nombre"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ninguna de las libretas de direcciones disponibles está configurada para "
+"permitirle agregar nuevas entradas en ellas. Si considera esto un error, por "
+"favor contacte al administrador de sistemas."
+
+msgid "Notes"
+msgstr "Notas"
+
+msgid "Options"
+msgstr "Opciones"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Por favor escoja una libreta de direcciones para agregar el contacto."
+
+msgid "Please select a directory:"
+msgstr "Por favor seleccione un directorio:"
+
+msgid "Problem?"
+msgstr "¿Problemas?"
+
+msgid "Reset"
+msgstr "Limpiar"
+
+msgid "Save Changes"
+msgstr "Guardar Cambios"
+
+msgid "Save"
+msgstr "Guardar"
+
+msgid "Search Results"
+msgstr "Resultados de la Búsqueda"
+
+msgid "Search"
+msgstr "Buscar"
+
+msgid "Search&nbsp;Results"
+msgstr "Resultados de la Búsqueda"
+
+msgid "Select the destination to import to:"
+msgstr "Seleccione el destino para importar en:"
+
+msgid "Select the file to import:"
+msgstr "Seleccione el archivo a importar:"
+
+msgid "Select the format to export to:"
+msgstr "Seleccione el formato a exportar:"
+
+msgid "Select the format to import from:"
+msgstr "Seleccione el formato a importar:"
+
+msgid "Select the source to export from:"
+msgstr "Seleccione la fuente desde la cual exportar:"
+
+msgid "Select which fields to display in the address lists."
+msgstr "Seleccione qué campos a visualizar en las listas de direcciones."
+
+msgid "Select your preferred language:"
+msgstr "Seleccione su idioma preferido:"
+
+msgid "Selected Columns:"
+msgstr "Columnas Seleccionadas:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Enviar correo a %s"
+
+msgid "Set your preferred display language."
+msgstr "Establezca su idioma preferido a desplegar."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Algunos de los archivos de configuración de Turba no se encuentran:"
+
+msgid "The data got lost."
+msgstr "Los datos se perdieron."
+
+msgid "The data was lost"
+msgstr "Los datos se perdieron"
+
+msgid "The file contained no data."
+msgstr "El archivo no contiene datos."
+
+msgid "There are no writeable address books."
+msgstr "No hay libretas de direcciones donde se pueda escribir."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Hubo un error al subir el archivo. El archivo pudo haber sido más grande que "
+"el tamaño máximo permitido."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Hubo un error al agregar este objeto. Contacte al administrador del sistema "
+"para ayuda adicional."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Hubo un error al eliminar este objeto. Contacte a su administrador de "
+"sistemas para ayuda adicional."
+
+msgid "There was an error importing the data."
+msgstr "Hubo un error al importar los datos."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Hubo un error al importar el archivo que cargó"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Este archivo controla las preferencias predeterminadas de Turba, también "
+"controla qué preferencias pueden alterar los usuarios."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Este archivo controla las hojas de estilo que se utilizan para fijar colores "
+"y tipos de letra además de reemplazar los predeterminados por Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Este archivo define el atributo global de nombres y tipos de Turba - "
+"nombres, direcciones de correo, etc."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Este archivo define la lista de fuentes disponibles para Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Este es el archivo principal de configuración de Turba. Contiene las rutas y "
+"opciones de todos los scripts de Turba."
+
+msgid "This person is already in your addressbook."
+msgstr "Esta persona ya está en su libreta de direcciones."
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Turba is not properly configured"
+msgstr "Turba no está correctamente configurado"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Incapaz de cargar la definición de %s."
+
+msgid "User Options"
+msgstr "Opciones del Usuario"
+
+msgid "Work Address"
+msgstr "Dirección Laboral"
+
+msgid "Work Phone"
+msgstr "Teléfono Laboral"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"No asoció ninguno de los campos del archivo importado a los campos "
+"correspondientes en Turba."
+
+msgid "Your Information"
+msgstr "Su Información"
+
+msgid "[Edit]"
+msgstr "[Editar]"
+
+msgid "add column"
+msgstr "agregar columna"
+
+msgid "move left"
+msgstr "mover a la izquierda"
+
+msgid "move right"
+msgstr "mover a la derecha"
+
+msgid "remove column"
+msgstr "quitar columna"

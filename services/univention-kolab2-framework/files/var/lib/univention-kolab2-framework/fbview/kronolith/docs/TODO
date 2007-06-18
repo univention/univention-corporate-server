@@ -1,0 +1,48 @@
+=====================================
+|| Kronolith Development TODO List ||
+=====================================
+
+- Finish scripts/eventd to flexibly send reminders.
+
+- Need a UI for deleting exceptions to a recurring event.
+
+- A separate location to select the calendars to display in the
+summary. Currently the summary displays what ever you had selected the
+last time you were in Kronolith.
+
+- The option to not have any personal calendars displayed, now with
+remote calendars this would be a desirable option.
+
+- Remove the assumption that each calendar is using the same
+backend. Ideally it should be possible to have a local calendar using
+sql or mcal and a remote calendar using another driver (eg wcap or
+whatever mozilla uses).
+
+- Drivers should handle the permissions checks instead of accessing
+shares directly (outside drivers) to get the permissions for an event
+or calendar. One day we might have a calendar backend that knows about
+permissions.
+
+- Allow publishing calendars to a remote site as iCalendar files.
+
+- Allow direct access to calendars in iCalendar format (for working
+directly with Mozilla Calendar, Apple's iCal, and similar programs as
+a remote calendar server).
+
+- Saving of individual events as .ics files.
+
+- Support for searching a local file system for freebusy info.
+
+- Support for searching freebusy.office.microsoft.com for freebusy
+info.
+
+- Automatically locate a meeting time.
+
+- Add a quick tool for planning meeting agendas.
+
+- Handle resource scheduling/management somehow, either per-calendar
+or by kinds of calendars, including rules for when overlapping
+appointments are allowed, etc.
+
+
+$Horde: kronolith/docs/TODO,v 1.12 2004/05/12 19:57:35 chuck Exp $

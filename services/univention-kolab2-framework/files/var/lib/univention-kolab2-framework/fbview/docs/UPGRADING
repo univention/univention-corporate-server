@@ -1,0 +1,16 @@
+Upgrading to Horde 3.0
+======================
+
+This is a non-exhaustive, quick explanation of what has changed between
+an Horde 2.x installation to Horde 3.0.
+
+* Configuration files
+Most configuration files have been changed to XML format. To generate a valid
+configuration file from the XML file, follow the configuration instructions
+in the applications' docs/INSTALL file.
+
+* Preferences
+The last_login preference has changed its format and scope. Just remove all
+last_login preferences from the preferences backend.
+
+$Horde: horde/docs/UPGRADING,v 1.1 2003/07/16 11:24:41 jan Exp $

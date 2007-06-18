@@ -1,0 +1,4067 @@
+# Horde Dutch translation.
+# Copyright (C) 2001 Jan Kuipers.
+# Jan Kuipers <jrkuipers@lauwerscollege.nl>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-17 18:09+0100\n"
+"PO-Revision-Date: 2004-01-18 17:29+0100\n"
+"Last-Translator: Jan Kuipers <jrkuipers@lauwerscollege.nl>\n"
+"Language-Team: Dutch <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s is klaar onderstaande, geselecteerde, werkzaamheden uit te voeren."
+
+#, c-format
+msgid " (%s days ago)"
+msgstr " (%s dagen geleden)"
+
+#, c-format
+msgid " (Accesskey %s)"
+msgstr " (Sneltoets %s)"
+
+msgid " (Read only)"
+msgstr " (Alleen lezen)"
+
+msgid " (today)"
+msgstr " (vandaag)"
+
+msgid " (yesterday)"
+msgstr " (gisteren)"
+
+#, c-format
+msgid " at %s %s"
+msgstr " op %s %s"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Opmerking"
+
+#, c-format
+msgid "%s Configuration"
+msgstr "%s Configuratie"
+
+#, c-format
+msgid "%s Fingerprint"
+msgstr "%s vingerafdruk"
+
+#, c-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Onderhoudswerkzaamheden - Bevestiging"
+
+#, c-format
+msgid "%s Sign Up"
+msgstr "%s inschrijven"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s standaard"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s gebruikersovereenkomst"
+
+#, c-format
+msgid "%s already exists."
+msgstr "%s bestaat al."
+
+#, c-format
+msgid "%s at %s %s"
+msgstr "%s op %s %s"
+
+#, c-format
+msgid "%s at %s ft"
+msgstr "%s op %s ft"
+
+#, c-format
+msgid "%s has cancelled %s."
+msgstr "%s is afgebroken %s."
+
+#, c-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s heeft geantwoord op een free/busy verzoek."
+
+#, c-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s heeft geantwoord op de uitnodiging voor %s."
+
+#, c-format
+msgid "%s has sent you free/busy information."
+msgstr "%s heeft u free/busy informatie toegezonden."
+
+#, c-format
+msgid "%s is required"
+msgstr "%s is vereist"
+
+#, c-format
+msgid "%s mins"
+msgstr "%s min"
+
+#, c-format
+msgid "%s not found."
+msgstr "%s niet gevonden."
+
+#, c-format
+msgid "%s requests your free/busy information."
+msgstr "%s vraagt uw free/busy informatie."
+
+#, c-format
+msgid "%s requests your presence at %s."
+msgstr "%s vraagt uw aanwezigheid bij %s."
+
+#, c-format
+msgid "%s wishes to add to %s."
+msgstr "%s wenst toe te voegen aan %s."
+
+#, c-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%s wenst u op de hoogte te brengen van %s."
+
+#, c-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s wenst de meest recente informatie te ontvangen over %s."
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s Gast Diensten</a>"
+
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#, c-format
+msgid "'%s' is not a valid choice."
+msgstr "'%s' is geen geldige keuze."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' is niet geconfigureerd in het Horde register."
+
+#, c-format
+msgid "'%s' tree renderer not found."
+msgstr "'%s' tree weergever niet gevonden."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s' aan het groepensysteem toegevoegd."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' aan het rechtensysteem toegevoegd."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' is niet aangemaakt: %s."
+
+#, c-format
+msgid ", gusting %s %s"
+msgstr ", windvlagen %s %s"
+
+#, c-format
+msgid ", variable from %s to %s"
+msgstr ", variabel van %s tot %s"
+
+msgid "-- select --"
+msgstr "-- selecteren --"
+
+#, c-format
+msgid "16-bit depth not supported: %s"
+msgstr "16-bit diepte niet ondersteund: %s"
+
+msgid "24 hours"
+msgstr "24 uurs"
+
+msgid "A database backend is required for this block."
+msgstr "Een database backend is vereist voor dit blok."
+
+msgid "A fatal error has occurred"
+msgstr "Er heeft zich een fatale fout voorgedaan"
+
+msgid "A new signup has been received and is awaiting your approval."
+msgstr "Een nieuwe inschrijving is ontvangen en wacht op uw goedkeuring."
+
+msgid "A public PGP key is required to encrypt a message."
+msgstr "Een openbare PGP sleutel is vereist om een bericht te coderen."
+
+msgid "A public PGP key is required to verify a signed message."
+msgstr ""
+"Een openbare PGP sleutel is vereist om een ondertekend bericht te verifiëren."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"Een openbare PGP sleutel, privé PGP sleutel en wachtwoordregel zijn vereist "
+"om een bericht te decoderen."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Een openbare PGP sleutel, privé PGP sleutel en wachtwoordregel zijn vereist "
+"om een bericht te ondertekenen."
+
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"Een openbare S/MIME sleutel, privé S/MIME sleutel en wachtwoordregel zijn "
+"vereist om een bericht te decoderen."
+
+msgid ""
+"A public S/MIME key, private S/MIME key, and passphrase are required to sign "
+"a message."
+msgstr ""
+"Een openbare S/MIME sleutel, privé S/MIME sleutel en wachtwoordregel zijn "
+"vereist om een bericht te ondertekenen."
+
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "Een openbare SMIME sleutel is vereist om een bericht te coderen."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "About..."
+msgstr "Over..."
+
+msgid "Accept request"
+msgstr "Verzoek accepteren"
+
+msgid "Accepted"
+msgstr "Geaccepteerd"
+
+msgid "Access denied creating VFS directory."
+msgstr "Toegang geweigerd bij het maken van VFS directory."
+
+msgid "Access denied creating VFS file."
+msgstr "Toegang geweigerd bij het maken van VFS bestand."
+
+msgid "Accounting"
+msgstr "Verantwoording"
+
+msgid "Actions"
+msgstr "Bewerkingen"
+
+#, c-format
+msgid "Add %s"
+msgstr "%s toevoegen"
+
+msgid "Add Child Group"
+msgstr "Child groep toevoegen"
+
+msgid "Add Child Permission"
+msgstr "Child recht toevoegen"
+
+msgid "Add Here:"
+msgstr "Hier toevoegen:"
+
+msgid "Add New Group"
+msgstr "Nieuwe groep toevoegen"
+
+msgid "Add New Permission"
+msgstr "Nieuw recht toevoegen"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Een \"childgroep\" aan '%s' toevoegen"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Een \"childrecht\" aan '%s' toevoegen"
+
+msgid "Add a new user:"
+msgstr "Nieuwe gebruiker toevoegen:"
+
+msgid "Add new members"
+msgstr "Nieuwe leden toevoegen"
+
+msgid "Add pair"
+msgstr "Paar toevoegen"
+
+#, c-format
+msgid "Add the %s Menu as a Mozilla Sidebar"
+msgstr "Het %s menu toevoegen als een Mozilla Sidebar"
+
+msgid "Add this to my calendar"
+msgstr "Dit aan mijn agenda toevoegen"
+
+msgid "Add to my address book:"
+msgstr "Voeg toe aan mijn adresboek:"
+
+msgid "Add user"
+msgstr "Gebruiker toevoegen"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+#, c-format
+msgid ""
+"Added '%s' to the system, but could not add additional signup information: %"
+"s."
+msgstr ""
+"'%s' aan het systeem toegevoegd, maar kon geen extra inschrijvingsinformatie "
+"toevoegen: %s."
+
+#, c-format
+msgid "Added '%s' to the system. You can log in now."
+msgstr "'%s' aan het systeem toegevoegd. U kunt nu aanmelden."
+
+msgid "Adding users is disabled."
+msgstr "Toevoegen van gebruikers is uitgeschakeld."
+
+msgid "Address Book"
+msgstr "Adresboek"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Administration"
+msgstr "Beheer"
+
+msgid "Ads"
+msgstr "Advertenties"
+
+msgid "Afghanistan"
+msgstr "Afganistan"
+
+msgid "Albania"
+msgstr "Albanië"
+
+msgid "Algeria"
+msgstr "Algerije"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "All Authenticated Users"
+msgstr "Alle geauthenticeerde gebruikers"
+
+msgid "All Groups"
+msgstr "Alle groepen"
+
+msgid "All Permissions"
+msgstr "Alle rechten"
+
+msgid "Allow multiple addresses"
+msgstr "Meerdere adressen toestaan"
+
+#, c-format
+msgid "Alpha channel not supported: %s"
+msgstr "Alpha kanaal wordt niet ondersteund: %s"
+
+msgid "Already exists"
+msgstr "Bestaat al"
+
+msgid "Alternate templates"
+msgstr "Alternatieve sjablonen"
+
+msgid "American Samoa"
+msgstr "Amerikaans Samoa"
+
+#, c-format
+msgid "An error occurred following this link: %s"
+msgstr "Er heeft zich fout voorgedaan bij het volgen van deze link: %s"
+
+msgid "An illegal value was specified."
+msgstr "Een ongeldige waarde opgegeven."
+
+msgid "Andorra"
+msgstr "Andorra"
+
+msgid "Angola"
+msgstr "Angola"
+
+msgid "Anguilla"
+msgstr "Anguilla"
+
+msgid "Anonymous Proxy"
+msgstr "Anonieme proxy"
+
+msgid "Antarctica"
+msgstr "Antarctica"
+
+msgid "Antigua and Barbuda"
+msgstr "Antigua en Barbuda"
+
+msgid "Application"
+msgstr "Toepassing"
+
+msgid "Apply to Child Shares"
+msgstr "Op childshares toepassen"
+
+msgid "April"
+msgstr "April"
+
+msgid "Arabic (Windows-1256)"
+msgstr "Arabisch (Windows-1256)"
+
+msgid "Archive File Size"
+msgstr "Archiefbestandsgrootte"
+
+msgid "Archive Name"
+msgstr "Archiefnaam"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Weet u zeker dat u '%s' en alle subgroepen wilt verwijderen?"
+
+msgid "Argentina"
+msgstr "Argentinië"
+
+msgid "Armenia"
+msgstr "Armenië"
+
+msgid "Armenian (ARMSCII-8)"
+msgstr "Armeens (ARMSCII-8)"
+
+msgid "Aruba"
+msgstr "Aruba"
+
+msgid "Ascension Island"
+msgstr "Ascension eiland"
+
+msgid "Asia/Pacific Region"
+msgstr "Azië/Pacifische Regio"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Om bevestiging vragen voor het uitvoeren van onderhoudswerkzaamheden?"
+
+msgid "Attached is an iCalendar file reply to a request you sent"
+msgstr "Een iCalendarbestand is bijgevoegd, in antwoord op uw gezonden verzoek"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Poging om een niet bestaande groep te verwijderen."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Poging om een niet bestaand recht te verwijderen."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Poging om een niet bestaand recht te bewerken."
+
+msgid "Attempt to edit a non-existent share."
+msgstr "Poging om een niet bestaande share te bewerken."
+
+msgid "Attendees"
+msgstr "Aanwezigen"
+
+msgid "Attributes"
+msgstr "Attributen"
+
+msgid "August"
+msgstr "Augustus"
+
+msgid "Australia"
+msgstr "Australië"
+
+msgid "Austria"
+msgstr "Oostenrijk"
+
+msgid "Auth_cyrsql: Required imap extension not found."
+msgstr "Auth_cyrsql: vereiste imap extentie niet gevonden."
+
+msgid "Auth_cyrus: Backend does not have required capabilites."
+msgstr "Auth_cyrus: backend heeft niet de vereiste bekwaamheden."
+
+msgid "Auth_cyrus: Required imap extension not found."
+msgstr "Auth_cyrus: vereiste imap extentie niet gevonden."
+
+msgid ""
+"Auth_ftp: Required FTP extension not found. Compile PHP with the --enable-"
+"ftp switch."
+msgstr ""
+"Auth_ftp: vereiste FTP extentie niet gevonden. Compileer PHP met de --enable-"
+"ftp optie."
+
+msgid "Auth_imap: Required IMAP extension not found."
+msgstr "Auth_imap: vereiste IMAP extentie niet gevonden."
+
+msgid "Auth_krb5: Required krb5 extension not found."
+msgstr "Auth_krb5: vereiste krb5 extentie niet gevonden."
+
+msgid "Auth_ldap: Required LDAP extension not found."
+msgstr "Auth_ldap: vereiste LDAP extentie niet gevonden."
+
+#, c-format
+msgid "Auth_ldap: Unable to add user %s. This is what the server said: "
+msgstr "Auth_ldap: Niet in staat gebruiker %s toe te voegen. De server meldt: "
+
+#, c-format
+msgid "Auth_ldap: Unable to remove user %s"
+msgstr "Auth_ldap: Niet in staat gebruiker %s te verwijderen"
+
+#, c-format
+msgid "Auth_ldap: Unable to update user %s"
+msgstr "Auth_ldap: Niet in staat gebruiker %s bij te werken"
+
+msgid "Auth_mcal: Required MCAL extension not found."
+msgstr "Auth_mcal: vereiste MCAL extentie niet gevonden."
+
+msgid "Auth_radius: Required sockets extension not found."
+msgstr "Auth_radius: vereiste sockets extentie niet gevonden."
+
+msgid "Auth_smbauth: Required smbauth extension not found."
+msgstr "Auth_smbauth: vereiste smbauth extentie niet gevonden."
+
+msgid "Authentication failed"
+msgstr "Authenticatie mislukt"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "Authenticatie geweigerd door de RADIUS server."
+
+msgid "Authentication to FTP server failed."
+msgstr "Authenticatie op FTP server mislukt."
+
+msgid "Available fields:"
+msgstr "Beschikbare velden:"
+
+msgid "Awaiting Response"
+msgstr "In afwachting van antwoord"
+
+msgid "Azerbaijan"
+msgstr "Azerbaidzjan"
+
+msgid "Bad kerberos password."
+msgstr "Fout kerberoswachtwoord."
+
+msgid "Bad kerberos username."
+msgstr "Foute kerberosgebruikersnaam."
+
+msgid "Bahamas"
+msgstr "Bahamas"
+
+msgid "Bahrain"
+msgstr "Bahrein"
+
+msgid "Baltic (ISO-8859-13)"
+msgstr "Baltisch (ISO-8859-13)"
+
+msgid "Bangladesh"
+msgstr "Bangladesh"
+
+msgid "Barbados"
+msgstr "Barbados"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Bare"
+msgstr "Kaal"
+
+msgid "Belarus"
+msgstr "Wit rusland"
+
+msgid "Belgium"
+msgstr "België"
+
+msgid "Belize"
+msgstr "Belize"
+
+msgid "Benin"
+msgstr "Benin"
+
+msgid "Bermuda"
+msgstr "Bermuda"
+
+msgid "Bhutan"
+msgstr "Bhutan"
+
+msgid "Birthday"
+msgstr "Verjaardag"
+
+msgid "Block Settings"
+msgstr "Blokinstellingen"
+
+msgid "Block Type"
+msgstr "Bloktype"
+
+msgid "Block selection"
+msgstr "Blokselectie"
+
+msgid "Blue and White"
+msgstr "Blauw en wit"
+
+msgid "Bold"
+msgstr "Vet"
+
+msgid "Bolivia"
+msgstr "Bolivia"
+
+msgid "Bookmarks"
+msgstr "Bookmarks"
+
+msgid "Bosnia and Herzegovina"
+msgstr "Bosnië en Herzegovina"
+
+msgid "Botswana"
+msgstr "Botswana"
+
+msgid "Bouvet Island"
+msgstr "Bouvet eiland"
+
+msgid "Brazil"
+msgstr "Brazilië"
+
+msgid "British Indian Ocean Territory"
+msgstr "Brits Indische Oceaan Territorium"
+
+msgid "Brown"
+msgstr "Bruin"
+
+msgid "Brunei Darussalam"
+msgstr "Brunei Darussalam"
+
+msgid "Bulgaria"
+msgstr "Bulgarije"
+
+msgid "Burkina Faso"
+msgstr "Burkina Faso"
+
+msgid "Burnt Orange"
+msgstr "Gebrand oranje"
+
+msgid "Burundi"
+msgstr "Burundi"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CRC"
+msgstr "CRC"
+
+msgid "Calendar"
+msgstr "Agenda"
+
+msgid "Cambodia"
+msgstr "Cambodja"
+
+msgid "Cameroon"
+msgstr "Kameroen"
+
+msgid "Camouflage"
+msgstr "Camouflage"
+
+#, c-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "Kan niet verbinden met IMAP server: %s"
+
+msgid "Canada"
+msgstr "Canada"
+
+msgid "Cancel Problem Report"
+msgstr "Probleemrapport afbreken"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Cannot delete file: "
+msgstr "Kan bestand niet verwijderen: "
+
+msgid "Cannot remove directory: "
+msgstr "Kan directory niet verwijderen: "
+
+#, c-format
+msgid "Cannot remove; children exist (%s)"
+msgstr "Kan niet verwijderen; children bestaan (%s)"
+
+msgid ""
+"Cannot reorder, number of entries supplied for reorder does not match number "
+"stored."
+msgstr ""
+"Kan niet opnieuw rangschikken, het aantal items om opnieuw te rangschikken "
+"komt niet overeen met het opgeslagen aantal."
+
+msgid "Cape Verde"
+msgstr "Kaap Verde"
+
+msgid "Cayman Islands"
+msgstr "Cayman eilanden"
+
+msgid "Cell Phone"
+msgstr "Tel.nr.mobiel"
+
+msgid "Celtic (ISO-8859-14)"
+msgstr "Keltisch (ISO-8859-14)"
+
+msgid "Central African Republic"
+msgstr "Centraal Afrikaanse Republiek"
+
+msgid "Central European (ISO-8859-2)"
+msgstr "Centraal Europees (ISO-8859-2)"
+
+msgid "Certificate Details"
+msgstr "Certificaatdetails"
+
+msgid "Chad"
+msgstr "Tsjaad"
+
+msgid "Chair Person"
+msgstr "Voorzitter"
+
+msgid "Change"
+msgstr "Wijzigen"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Selecteer de werkzaamheden, die u op dit moment wilt uitvoeren."
+
+msgid "Chile"
+msgstr "Chili"
+
+msgid "China"
+msgstr "China"
+
+msgid "Chinese Simplified (GB2312)"
+msgstr "Chinees vereenvoudigd (GB2312)"
+
+msgid "Chinese Traditional (Big5)"
+msgstr "Chinees traditioneel (Big5)"
+
+msgid "Choose a password"
+msgstr "Kies een wachtwoord"
+
+msgid "Choose a username"
+msgstr "Kies een gebruikersnaam"
+
+msgid "Choose an action:"
+msgstr "Kies een bewerking:"
+
+msgid "Choose how to display dates:"
+msgstr "Kies datumweergave:"
+
+msgid "Christmas Island"
+msgstr "Christmas eiland"
+
+#, c-format
+msgid "Class definition of %s not found."
+msgstr "Classdefinitie van %s niet gevonden."
+
+msgid "Click to Continue"
+msgstr "Klik om verder te gaan"
+
+msgid "Client Ticket"
+msgstr "Clientticket"
+
+msgid "Client"
+msgstr "Client"
+
+msgid "Close Window"
+msgstr "Sluit scherm"
+
+msgid "Clouds:"
+msgstr "Wolken:"
+
+msgid "Cocos (Keeling) Islands"
+msgstr "Cocos (Keeling) eilanden"
+
+msgid "Colombia"
+msgstr "Colombia"
+
+msgid "Color Picker"
+msgstr "Kleurenkiezer"
+
+msgid "Color"
+msgstr "Kleur"
+
+msgid "Colour selection"
+msgstr "Kleurselectie"
+
+msgid "Comics"
+msgstr "Strips"
+
+msgid "Command Shell"
+msgstr "Opdrachtschil"
+
+msgid "Command"
+msgstr "Opdracht"
+
+msgid "Comment"
+msgstr "Opmerking"
+
+msgid "Common Name"
+msgstr "Algemene naam"
+
+msgid "Comoros"
+msgstr "Comoren"
+
+msgid "Company"
+msgstr "Bedrijf"
+
+msgid "Completed"
+msgstr "Afgerond"
+
+msgid "Conditions:"
+msgstr "Condities:"
+
+msgid "Configuration"
+msgstr "Configuratie"
+
+msgid "Configure"
+msgstr "Configureren"
+
+msgid "Confirm Password"
+msgstr "Bevestig wachtwoord"
+
+msgid "Congo"
+msgstr "Kongo"
+
+msgid "Congo, The Democratic Republic of the"
+msgstr "Kongo, De Democratische Republiek van de"
+
+#, c-format
+msgid "Connection refused to the public keyserver. Reason: %s (%s)"
+msgstr ""
+"Verbinding, met de openbare sleutelserver, is geweigerd. Reden: %s (%s)"
+
+msgid "Connection to FTP server failed."
+msgstr "Verbinding met FTP server mislukt."
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Inhoud van '%s'"
+
+msgid "Cook Islands"
+msgstr "Cook eilanden"
+
+#, c-format
+msgid "Copy failed: %s"
+msgstr "Kopiëren mislukt: %s"
+
+msgid "Copy"
+msgstr "Kopiëren"
+
+msgid "Cornflower"
+msgstr "Cornflower"
+
+msgid "Costa Rica"
+msgstr "Costa Rica"
+
+msgid "Cote d'Ivoire"
+msgstr "Ivoorkust"
+
+msgid "Could not PGP encrypt message."
+msgstr "Kon PGP bericht niet coderen."
+
+msgid "Could not PGP sign message."
+msgstr "Kon PGP bericht niet ondertekenen."
+
+msgid "Could not S/MIME encrypt message."
+msgstr "Kon bericht niet S/MIME coderen."
+
+msgid "Could not S/MIME sign message."
+msgstr "Kon bericht niet S/MIME ondertekenen."
+
+msgid "Could not bind to LDAP server."
+msgstr "Kon geen verbinding met de LDAP-server maken."
+
+#, c-format
+msgid "Could not call function %s in application %s."
+msgstr "Kon functie %s in toepassing %s niet aanroepen."
+
+msgid "Could not decrypt PGP data."
+msgstr "Kon PGP data niet decoderen."
+
+msgid "Could not decrypt S/MIME data."
+msgstr "Kon S/MIME data niet decoderen."
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Kon het emailadres van de ontvanger niet bepalen."
+
+msgid "Could not include font definition file."
+msgstr "Kon lettertypedefinitiebestand niet invoegen."
+
+#, c-format
+msgid "Could not include font metric file: %s"
+msgstr "Kon lettertypemetriekbestand %s niet invoegen"
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "Kon de openbare sleutel niet verkrijgen van de sleutelserver."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Kon onderhoudstakenmodule %s niet openen"
+
+#, c-format
+msgid "Could not read %s."
+msgstr "Kon %s niet lezen."
+
+msgid "Could not search the LDAP server."
+msgstr "Kon de LDAP-server niet doorzoeken."
+
+msgid "Couldn't find the Mozilla Sidebar. Make sure the sidebar is open."
+msgstr ""
+"Kon de Mozilla Sidebar niet vinden. Zorg ervoor dat de sidebar open is."
+
+msgid "Couldn't perform checkout of the requested file"
+msgstr "Kon controle van het gewenste bestand niet uitvoeren"
+
+msgid "Counted text"
+msgstr "Getelde tekst"
+
+msgid "Country"
+msgstr "Land"
+
+msgid "Create"
+msgstr "Maken"
+
+msgid "Creator Permissions"
+msgstr "Eigenaarrechten"
+
+msgid "Credit card number"
+msgstr "Creditcardnummer"
+
+msgid "Croatia"
+msgstr "Kroatië"
+
+msgid "Cross Reference"
+msgstr "Verwijzing"
+
+msgid "Cuba"
+msgstr "Cuba"
+
+msgid "Current Phase"
+msgstr "Huidige fase"
+
+msgid "Current Time"
+msgstr "Huidige tijd"
+
+msgid "Current Weather"
+msgstr "Huidig weer"
+
+msgid "Cut"
+msgstr "Knippen"
+
+msgid "Cyprus"
+msgstr "Cyprus"
+
+msgid "Cyrillic (KOI8-R)"
+msgstr "Cyrillisch (KOI8-R)"
+
+msgid "Cyrillic (Windows-1251)"
+msgstr "Cyrillisch (Windows-1251)"
+
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "Cyrillisch/Ukrains (KOI8-U)"
+
+msgid "Czech Republic"
+msgstr "Tsjechische Republiek"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "DHTML Rich Text Editor"
+msgstr "DHTML Rich Text Editor"
+
+msgid "Daily"
+msgstr "Dagelijks"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Date selection"
+msgstr "Datum selectie"
+
+msgid "Date"
+msgstr "Datum"
+
+msgid "December"
+msgstr "December"
+
+msgid "Declined"
+msgstr "Afgenomen"
+
+msgid "Default Identity"
+msgstr "Standaard identiteit"
+
+msgid "Default Permissions"
+msgstr "Standaard rechten"
+
+msgid "Default permissions"
+msgstr "Standaard rechten"
+
+msgid "Delegate position"
+msgstr "Positie overdragen"
+
+msgid "Delegated"
+msgstr "Overgedragen"
+
+msgid "Delete Group"
+msgstr "Groep verwijderen"
+
+msgid "Delete Permission"
+msgstr "Recht verwijderen"
+
+msgid "Delete existing alternate template"
+msgstr "Bestaand alternatief sjabloon verwijderen"
+
+#, c-format
+msgid "Delete permissions for '%s'"
+msgstr "Rechten van '%s' verwijderen"
+
+msgid "Delete this link"
+msgstr "Verwijder deze link"
+
+msgid "Delete this permission and any sub-permissions?"
+msgstr "Dit recht en alle subrechten verwijderen?"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Denmark"
+msgstr "Denemarken"
+
+msgid "Deny request for free/busy information"
+msgstr "Free/busy informatie verzoek weigeren"
+
+msgid "Deny request"
+msgstr "Verzoek weigeren"
+
+msgid "Describe the Problem"
+msgstr "Beschrijf het probleem"
+
+msgid "Description"
+msgstr "Beschrijving"
+
+msgid "Details (also in Horde's logfile):"
+msgstr "Details (ook in Horde's logbestand):"
+
+msgid "Details have been logged for the administrator."
+msgstr "Details zijn gelogd voor de systeembeheerder."
+
+msgid "Development"
+msgstr "Ontwikkeling"
+
+#, c-format
+msgid "Dew Point for last hour: %s %s"
+msgstr "Dauwpunt voor het afgelopen uur: %s %s"
+
+msgid "DewPoint:"
+msgstr "Dauwpunt:"
+
+msgid "Directory"
+msgstr "Directory"
+
+msgid "Discussions"
+msgstr "Discussies"
+
+msgid "Display 24-hour times?"
+msgstr "24-uurs tijdweergave?"
+
+msgid "Display Options"
+msgstr "Weergaveopties"
+
+msgid "Display format"
+msgstr "Weergaveformaat"
+
+msgid "Djibouti"
+msgstr "Djibouti"
+
+msgid "Do not alter the locale before including the class file."
+msgstr "Wijzig de locale niet voor het invoegen van het classbestand."
+
+msgid "Do not delete"
+msgstr "Niet verwijderen"
+
+msgid "Do not directly access maintenance.php"
+msgstr "maintenance.php niet direct aanspreken"
+
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr "Bevat de eerste rij de veldnamen? Zo ja, dit hokje aanvinken:"
+
+msgid "Dominica"
+msgstr "Dominica"
+
+msgid "Dominican Republic"
+msgstr "Dominicaanse Republiek"
+
+#, c-format
+msgid "Download %s"
+msgstr "%s downloaden"
+
+msgid "Download"
+msgstr "Downloaden"
+
+msgid "Drop down list"
+msgstr "Drop down lijst"
+
+msgid "E-Mail"
+msgstr "E-Mail"
+
+msgid "ERR"
+msgstr "ERR"
+
+msgid "Ecuador"
+msgstr "Ecuador"
+
+msgid "Edit Block"
+msgstr "Blok bewerken"
+
+msgid "Edit Group"
+msgstr "Groep bewerken"
+
+msgid "Edit Permission"
+msgstr "Recht bewerken"
+
+#, c-format
+msgid "Edit Permissions for %s"
+msgstr "Rechten van '%s' bewerken"
+
+msgid "Edit Permissions"
+msgstr "Rechten bewerken"
+
+#, c-format
+msgid "Edit permissions for %s"
+msgstr "Rechten van %s bewerken"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Rechten van '%s' bewerken"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Egypt"
+msgstr "Egypte"
+
+msgid "El Salvador"
+msgstr "El Salvador"
+
+msgid "Email Address"
+msgstr "Emailadres"
+
+msgid "Email addresses must match."
+msgstr "Emailadressen moeten overeenkomen."
+
+msgid "Email with confirmation"
+msgstr "Email met bevestiging"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Emoticons"
+msgstr "Emoticons"
+
+msgid "Empty result."
+msgstr "Geen resultaat."
+
+msgid "End year"
+msgstr "Eindjaar"
+
+msgid "End"
+msgstr "Einde"
+
+msgid "Equatorial Guinea"
+msgstr "Equatoriaal Guinee"
+
+msgid "Eritrea"
+msgstr "Eritrea"
+
+#, c-format
+msgid "Error connecting to database %s for metar codes"
+msgstr "Fout bij verbinden met database %s voor metar codes"
+
+msgid "Error retrieving station IDs from metarAirports"
+msgstr "Fout bij ophalen station ID's van metarvliegvelden"
+
+#, c-format
+msgid "Error sending reply: %s."
+msgstr "Fout bij verzenden van antwoord: %s"
+
+msgid "Error"
+msgstr "Fout"
+
+msgid "Estonia"
+msgstr "Estland"
+
+msgid "Ethiopia"
+msgstr "Ethiopië"
+
+msgid "Europe"
+msgstr "Europa"
+
+msgid "Every 15 minutes"
+msgstr "Elke 15 minuten"
+
+msgid "Every 30 seconds"
+msgstr "Elke 30 seconden"
+
+msgid "Every 5 minutes"
+msgstr "Elke 5 minuten"
+
+msgid "Every Login"
+msgstr "Elke aanmelding"
+
+msgid "Every half hour"
+msgstr "Elk half uur"
+
+msgid "Every minute"
+msgstr "Elke minuut"
+
+msgid "Example values:"
+msgstr "Voorbeeldwaarden:"
+
+msgid "Execute"
+msgstr "Uitvoeren"
+
+msgid "Expand"
+msgstr "Uitbreiden"
+
+msgid "Expiration Date"
+msgstr "Vervaldatum"
+
+msgid "Exponent"
+msgstr "Exponent"
+
+msgid "Failed retrieving preferences."
+msgstr "Ophalen voorkeursinstellingen mislukt."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Verbinding met de LDAP-server is mislukt."
+
+msgid "Failed to connect to SMB server."
+msgstr "Verbinding met de SMB-server is mislukt."
+
+#, c-format
+msgid "Failed to retrieve: %s"
+msgstr "Ophalen van %s mislukt"
+
+msgid "Failed to spawn cvsps to retrieve patchset information"
+msgstr "Aanroepen van cvsps, om patchset informatie op te halen, mislukt"
+
+msgid "Failed to rlog to retrieve file log information"
+msgstr "Aanroepen van rlog, om bestandlog informatie op te halen, mislukt"
+
+msgid "Falkland Islands (Malvinas)"
+msgstr "Falkland eilanden (Malvinas)"
+
+msgid "Faroe Islands"
+msgstr "Faroër eilanden"
+
+msgid "Fatal Error!"
+msgstr "Fatale fout!"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "February"
+msgstr "Februari"
+
+msgid "Feels Like:"
+msgstr "Voelt als:"
+
+msgid "Fiji"
+msgstr "Fiji"
+
+#, c-format
+msgid "File Count: %s file"
+msgstr "Aantal bestanden: %s bestand"
+
+#, c-format
+msgid "File Count: %s files"
+msgstr "Aantal bestanden: %s bestanden"
+
+msgid "File Manager"
+msgstr "Bestandmanager"
+
+msgid "File Name"
+msgstr "Bestandsnaam"
+
+msgid "File Not Found"
+msgstr "Bestand niet gevonden"
+
+msgid "File upload"
+msgstr "Bestandupload"
+
+msgid "File uploads not supported."
+msgstr "Bestanduploads worden niet ondersteund."
+
+msgid "Filters"
+msgstr "Filters"
+
+msgid "Finland"
+msgstr "Finland"
+
+msgid "First Half"
+msgstr "Eerste helft"
+
+msgid "First Quater"
+msgstr "Eerste kwartaal"
+
+msgid "Fix ratio"
+msgstr "Verhouding herstellen"
+
+msgid "Flip"
+msgstr "Omkeren"
+
+#, c-format
+msgid "Folder %s does not exist"
+msgstr "Map %s bestaat niet."
+
+msgid "Follow up task"
+msgstr "Opvolgende taak"
+
+#, c-format
+msgid "Font already added: %s %s"
+msgstr "Lettertype reeds toegevoegd: %s %s"
+
+msgid "Font file not found."
+msgstr "Lettertypebestand niet gevonden."
+
+msgid "Forms"
+msgstr "Formulieren"
+
+msgid "Fortune type"
+msgstr "Fortunetype"
+
+msgid "Fortune"
+msgstr "Fortune"
+
+msgid "Fortunes"
+msgstr "Fortunes"
+
+msgid "Forums"
+msgstr "Forums"
+
+msgid "Forwards"
+msgstr "Doorsturingen"
+
+msgid "France"
+msgstr "Frankrijk"
+
+msgid "France, Metropolitan"
+msgstr "Frankrijk, Hoofdstedelijk"
+
+msgid "Free/Busy Information"
+msgstr "Free/Busy informatie"
+
+msgid "Free/Busy Reply"
+msgstr "Free/Busy antwoord"
+
+msgid "Free/Busy Request Response"
+msgstr "Free/Busy verzoek antwoord"
+
+msgid "Free/Busy Request"
+msgstr "Free/Busy verzoek"
+
+msgid "French Guiana"
+msgstr "Frans Guyana"
+
+msgid "French Polynesia"
+msgstr "Frans Polynesië"
+
+msgid "French Southern Territories"
+msgstr "Franse Zuidelijke Territoria"
+
+msgid "Full Description:"
+msgstr "Volledige omschrijving:"
+
+msgid "Full Moon"
+msgstr "Volle maan"
+
+msgid "Full Name"
+msgstr "Volledige naam"
+
+msgid "Funny note"
+msgstr "Funny note"
+
+msgid "Gabon"
+msgstr "Gabon"
+
+msgid "Gambia"
+msgstr "Gambia"
+
+#, c-format
+msgid "Generate %s Configuration"
+msgstr "Genereer %s configuratie"
+
+msgid "Georgia"
+msgstr "Georgië"
+
+msgid "Germany"
+msgstr "Duitsland"
+
+msgid "Ghana"
+msgstr "Ghana"
+
+msgid "Gibraltar"
+msgstr "Gibraltar"
+
+msgid "Given Name"
+msgstr "Voornaam"
+
+msgid "Google Search"
+msgstr "Google zoeken"
+
+msgid "Grayscale"
+msgstr "Grijsschaal"
+
+msgid "Greece"
+msgstr "Griekenland"
+
+msgid "Greek (ISO-8859-7)"
+msgstr "Grieks (ISO-8859-7)"
+
+msgid "Green"
+msgstr "Groen"
+
+msgid "Greenland"
+msgstr "Groenland"
+
+msgid "Grenada"
+msgstr "Grenada"
+
+msgid "Grey"
+msgstr "Grijs"
+
+msgid "Group Administration"
+msgstr "Groepsbeheer"
+
+msgid "Group names must be non-empty"
+msgstr "Groepnamen mogen niet leeg zijn"
+
+msgid "Group permissions"
+msgstr "Grouprechten"
+
+msgid "Groups"
+msgstr "Groepen"
+
+msgid "Guadeloupe"
+msgstr "Guadeloupe"
+
+msgid "Guam"
+msgstr "Guam"
+
+msgid "Guatemala"
+msgstr "Guatemala"
+
+msgid "Guernsey"
+msgstr "Guernsey"
+
+msgid "Guest Access"
+msgstr "Gast toegang"
+
+msgid "Guest Permissions"
+msgstr "Gast rechten"
+
+msgid "Guest Services"
+msgstr "Gast diensten"
+
+msgid "Guest permissions"
+msgstr "Gast rechten"
+
+msgid "Guinea"
+msgstr "Guinee"
+
+msgid "Guinea-Bissau"
+msgstr "Guinee-Bissau"
+
+msgid "Guyana"
+msgstr "Guyana"
+
+msgid "HH"
+msgstr "HH"
+
+msgid "HTML"
+msgstr "HTML"
+
+msgid "HTTP Authentication not found."
+msgstr "HTTP authenticatie niet gevonden."
+
+msgid "HTTPS is currently not supported."
+msgstr "HTTPS wordt momenteel niet ondersteund."
+
+msgid "Haiti"
+msgstr "Haiti"
+
+msgid "Hash-Algorithm"
+msgstr "Hash-algorithme"
+
+msgid "Header"
+msgstr "Kop"
+
+msgid "Headlines"
+msgstr "Hoofdpunten"
+
+msgid "Heard Island and McDonald Islands"
+msgstr "Heard eiland en McDonald eilanden"
+
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "Hebreeuws (ISO-8859-8-I)"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Helper"
+msgstr "Helper"
+
+msgid "Hemisphere"
+msgstr "Halfrond"
+
+msgid "Here is the beginning of the file:"
+msgstr "Hier is het begin van het bestand:"
+
+msgid "History entry names must be non-empty"
+msgstr "History invoer namen mogen niet leeg zijn"
+
+msgid "Holy See (Vatican City State)"
+msgstr "Holy See (Vaticaanstad)"
+
+msgid "Home Address"
+msgstr "Thuisadres"
+
+msgid "Home Phone"
+msgstr "Tel.nr.thuis"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "Honduras"
+msgstr "Honduras"
+
+msgid "Hong Kong"
+msgstr "Hong Kong"
+
+msgid "Horde Administration"
+msgstr "Horde beheer"
+
+msgid "Horde Configuration"
+msgstr "Horde configuratie"
+
+msgid ""
+"Horde is not correctly configured or there was an error loading "
+"configuration files."
+msgstr ""
+"Horde is niet juist geconfigureerd of er was een fout bij het laden van de "
+"configuratiebestanden."
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "How many fields (columns) are there?"
+msgstr "Hoeveel velden (kolommen) zijn er?"
+
+msgid "Humidity:"
+msgstr "Vochtigheid:"
+
+msgid "Hungary"
+msgstr "Hongarije"
+
+#, c-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "Maken van IMAP mailbox mislukt: %s"
+
+#, c-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "Verwijderen van IMAP mailbox mislukt: %s"
+
+#, c-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "Maken van IMAP mailbox quota mislukt: %s"
+
+msgid "IP Address not available."
+msgstr "IP adres niet beschikbaar."
+
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP adres valt niet binnen het toegestane CIDR blok."
+
+msgid "Iceland"
+msgstr "IJsland"
+
+msgid "Icons Only"
+msgstr "Alleen pictogrammen"
+
+msgid "Icons with text"
+msgstr "Pictogrammen met tekst"
+
+#, c-format
+msgid "Image file has no extension and no type was specified: %s"
+msgstr "Afbeeldingbestand heeft geen extentie en geen type is opgegeven: %s"
+
+msgid "Image upload"
+msgstr "Afbeelding upload"
+
+msgid "Images"
+msgstr "Afbeeldingen"
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on line %d."
+msgstr "Importeerfout: Verwachtte \"BEGIN\" in de regel %d."
+
+#, c-format
+msgid "Import Error: Expecting BEGIN on line %d."
+msgstr "Importeerfout: Verwachtte BEGIN in de regel %d."
+
+msgid "Import Error: Malformed line."
+msgstr "Importeerfout: Misvormde regel."
+
+#, c-format
+msgid "Import Error: Mismatch; expecting END:%s on line %d"
+msgstr "Importeerfout: Typefout. Verwachtte END:%s in regel %d"
+
+#, c-format
+msgid "Import Error: Type mismatch. Expected \"END:%s\" on line %d."
+msgstr "Importeerfout: Typefout. Verwachtte \"END:%s\" in regel %d."
+
+msgid "Import Error: Unexpected end of file."
+msgstr "Importeerfout: Onverwacht bestandseinde."
+
+#, c-format
+msgid "Import, Step %d"
+msgstr "Importeren, stap %d"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Geimporteerd veld: %s"
+
+msgid "Imported fields:"
+msgstr "Geimporteerde velden:"
+
+msgid "In Process"
+msgstr "In behandeling"
+
+#, c-format
+msgid "Incorrect PNG file: %s"
+msgstr "Onjuist PNG bestand: %s"
+
+msgid "Incorrect action code given."
+msgstr "Onjuiste bewerkingscode opgegeven."
+
+#, c-format
+msgid "Incorrect layout display mode: %s"
+msgstr "Onjuiste layoutweergavemode: %s"
+
+#, c-format
+msgid "Incorrect orientation: %s"
+msgstr "Onjuiste oriëntatie: %s"
+
+#, c-format
+msgid "Incorrect units: %s"
+msgstr "Onjuiste eenheden: %s"
+
+#, c-format
+msgid "Incorrect zoom display mode: %s"
+msgstr "Onjuiste zoomweergavemode: %s"
+
+msgid "India"
+msgstr "India"
+
+msgid "Individual Users"
+msgstr "Individuele gebruikers"
+
+msgid "Indonesia"
+msgstr "Indonesië"
+
+msgid "Information"
+msgstr "Informatie"
+
+msgid "Insert alternate template"
+msgstr "Alternatief sjabloon invoegen"
+
+msgid "Integer list"
+msgstr "Integer lijst"
+
+msgid "Integer"
+msgstr "Integer"
+
+#, c-format
+msgid "Interlacing not supported: %s"
+msgstr "Interliniëring wordt niet ondersteund: %s"
+
+msgid "Invalid Action selected for this component."
+msgstr "Ongeldige bewerking geselecteerd voor dit onderdeel."
+
+msgid "Invalid data submitted."
+msgstr "Ongeldige data opgegeven."
+
+msgid "Invalid file format"
+msgstr "Ongeldig tijdformaat"
+
+msgid "Invalid parent permission."
+msgstr "Ongeldig parent recht."
+
+msgid "Invalid revision number"
+msgstr "Ongeldig revisienummer"
+
+msgid "Iran, Islamic Republic of"
+msgstr "Iran, Islamitische Republiek van"
+
+msgid "Iraq"
+msgstr "Irak"
+
+msgid "Ireland"
+msgstr "Ierland"
+
+msgid "Isle of Man"
+msgstr "Eiland Man"
+
+msgid "Israel"
+msgstr "Israël"
+
+msgid "Issuer"
+msgstr "Uitgever"
+
+msgid "Italic"
+msgstr "Cursief"
+
+msgid "Italy"
+msgstr "Italië"
+
+msgid "Jamaica"
+msgstr "Jamaica"
+
+msgid "January"
+msgstr "Januari"
+
+msgid "Japan"
+msgstr "Japan"
+
+msgid "Japanese (ISO-2022-JP)"
+msgstr "Japans (ISO-2022-JP)"
+
+msgid "Jersey"
+msgstr "Jersey"
+
+msgid "Jordan"
+msgstr "Jordanië"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "Kazakhstan"
+msgstr "Kazachstan"
+
+msgid "Keep original?"
+msgstr "Origineel behouden?"
+
+msgid "Kenya"
+msgstr "Kenia"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberos server weigerde authenticatie."
+
+msgid "Key Creation"
+msgstr "Sleutel maken"
+
+msgid "Key Fingerprint"
+msgstr "Sleutelvingerafdruk"
+
+msgid "Key Length"
+msgstr "Sleutellengte"
+
+msgid "Key Type"
+msgstr "Sleuteltype"
+
+msgid "Key already exists on the public keyserver."
+msgstr "De sleutel bestaat al op de openbare sleutelserver."
+
+msgid "Kiribati"
+msgstr "Kiribati"
+
+msgid "Korea, Democratic People's Republic of"
+msgstr "Korea, Democratische Volksrepubliek van"
+
+msgid "Korea, Republic of"
+msgstr "Korea, Republiek van"
+
+msgid "Korean (EUC-KR)"
+msgstr "Koreaans (EUC-KR)"
+
+msgid "Kuwait"
+msgstr "Koeweit"
+
+msgid "Kyrgyzstan"
+msgstr "Kyrgiesië"
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Lao People's Democratic Republic"
+msgstr "Democratische Volksrepubliek Lao"
+
+msgid "Last Half"
+msgstr "Laatste helft"
+
+msgid "Last Quater"
+msgstr "Laatste kwartaal"
+
+msgid "Last Updated:"
+msgstr "Laatst bijgewerkt:"
+
+#, c-format
+msgid "Last login: %s from %s"
+msgstr "Laatste aanmelding: %s van %s"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Laatste aanmelding: %s"
+
+msgid "Last login: Never"
+msgstr "Laatste aanmelding: Nooit"
+
+msgid "Latvia"
+msgstr "Letland"
+
+msgid "Lavender"
+msgstr "Lavender"
+
+msgid "Layout"
+msgstr "Opmaak"
+
+msgid "Lebanon"
+msgstr "Libanon"
+
+msgid "Lesotho"
+msgstr "Lesotho"
+
+msgid "Liberia"
+msgstr "Liberia"
+
+msgid "Libyan Arab Jamahiriya"
+msgstr "Libische Arabische Jamahiriya"
+
+msgid "Liechtenstein"
+msgstr "Liechtenstein"
+
+msgid "Light Blue"
+msgstr "Lichtblauw"
+
+msgid "Link"
+msgstr "Link"
+
+msgid "Links"
+msgstr "Links"
+
+msgid "List Help Topics"
+msgstr "Lijst van help onderdelen"
+
+msgid "List-Archive"
+msgstr "Lijst-Archief"
+
+msgid "List-Help"
+msgstr "Lijst-Help"
+
+msgid "List-Id"
+msgstr "Lijst-Id"
+
+msgid "List-Owner"
+msgstr "Lijst-Eigenaar"
+
+msgid "List-Post"
+msgstr "Lijst-Post"
+
+msgid "List-Subscribe"
+msgstr "Lijst-Inschrijven"
+
+msgid "List-Unsubscribe"
+msgstr "Lijst-Uitschrijven"
+
+msgid "Listing users is disabled."
+msgstr "Weergeven van gebruikerslijst is uitgeschakeld."
+
+msgid "Literature"
+msgstr "Literatuur"
+
+msgid "Lithuania"
+msgstr "Litouwen"
+
+msgid "Locale and Time"
+msgstr "Taal en tijd"
+
+msgid "Location"
+msgstr "Locatie"
+
+#, c-format
+msgid "Log in to %s"
+msgstr "Aanmelden bij %s"
+
+msgid "Log in"
+msgstr "Aanmelden"
+
+#, c-format
+msgid "Log out of %s"
+msgstr "Afmelden bij %s"
+
+msgid "Log out"
+msgstr "Afmelden"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Aanmelding mislukt. Hoogstwaarschijnlijk heeft u uw gebruikersnaam of "
+"wachtwoord verkeerd ingevoerd."
+
+msgid "Login"
+msgstr "Aanmelden"
+
+msgid "Logout"
+msgstr "Afmelden"
+
+msgid "Long text"
+msgstr "Lange tekst"
+
+msgid "Loyola Blue"
+msgstr "Loyola Blue"
+
+msgid "Loyola"
+msgstr "Loyola"
+
+msgid "Luxembourg"
+msgstr "Luxemburg"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "MOTD"
+msgstr "MOTD"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF attachment bevatte geen data."
+
+msgid "MSG"
+msgstr "MSG"
+
+msgid "Macao"
+msgstr "Macao"
+
+msgid "Macedonia, The Former Yugoslav Republic of"
+msgstr "Macedonië, De vroegere Joegoslavische Republiek van"
+
+msgid "Madagascar"
+msgstr "Madagascar"
+
+msgid "Mail & News"
+msgstr "E-mail & Nieuws"
+
+msgid "Mail"
+msgstr "E-mail"
+
+msgid "Malawi"
+msgstr "Malawi"
+
+msgid "Malaysia"
+msgstr "Maleisië"
+
+msgid "Maldives"
+msgstr "Maladiven"
+
+msgid "Mali"
+msgstr "Mali"
+
+msgid "Malta"
+msgstr "Malta"
+
+msgid "March"
+msgstr "Maart"
+
+msgid "Marshall Islands"
+msgstr "Marchall eilanden"
+
+msgid "Martinique"
+msgstr "Martinique"
+
+msgid "Matching fields"
+msgstr "Overeenkomende velden"
+
+msgid "Mauritania"
+msgstr "Mauretanië"
+
+msgid "Mauritius"
+msgstr "Mauritius"
+
+#, c-format
+msgid "Max temp last 24 hours: %s %s"
+msgstr "Maximum temperatuur van de afgelopen 24 uur: %s %s"
+
+#, c-format
+msgid "Max temp last 6 hours: %s %s"
+msgstr "Maximum temperatuur van de afgelopen 6 uur: %s %s"
+
+msgid "Maximum length"
+msgstr "Maximale lengte"
+
+msgid "May"
+msgstr "Mei"
+
+msgid "Mayotte"
+msgstr "Mayotte"
+
+msgid "Meeting Cancellation"
+msgstr "Vergaderingsafzegging"
+
+msgid "Meeting Information"
+msgstr "Vergaderingsinformatie"
+
+msgid "Meeting Proposal"
+msgstr "Vergaderingsvoorstel"
+
+msgid "Meeting Reply"
+msgstr "Vergaderingsantwoord"
+
+msgid "Meeting Update Request"
+msgstr "Vergaderingsupdate verzoek"
+
+msgid "Meeting Update"
+msgstr "Vergaderingsupdate"
+
+msgid "Meetings"
+msgstr "Vergaderingen"
+
+msgid "Members"
+msgstr "Leden"
+
+msgid "Menu mode:"
+msgstr "Menu mode:"
+
+msgid ""
+"Message Verified Successfully but the signer's certificate could not be "
+"verified."
+msgstr ""
+"Bericht met succes geverifieerd, maar het certificaat van de ondergetekende "
+"kon niet worden geverifieerd."
+
+msgid "Message"
+msgstr "Bericht"
+
+msgid "Metar Weather"
+msgstr "Metar Weer"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "Methode '%s' is niet gedefinieerd"
+
+msgid "Method"
+msgstr "Methode"
+
+msgid "Metric"
+msgstr "Metrisch"
+
+msgid "Mexico"
+msgstr "Mexico"
+
+msgid "Micronesia, Federated States of"
+msgstr "Micronesië, Federale Staten van"
+
+msgid "Mime Type"
+msgstr "Mime type"
+
+#, c-format
+msgid "Min temp last 24 hours: %s %s"
+msgstr "Minimum temperatuur van de afgelopen 24 uur: %s %s"
+
+#, c-format
+msgid "Min temp last 6 hours: %s %s"
+msgstr "Minimum temperatuur van de afgelopen 6 uur: %s %s"
+
+msgid "Mirror"
+msgstr "Mirror"
+
+#, c-format
+msgid "Missing or incorrect image file: %s"
+msgstr "Ontbrekend of onjuist afbeeldingbestand: %s"
+
+#, c-format
+msgid "Missing palette in: %s"
+msgstr "Ontbrekend palet in: %s"
+
+msgid "Mobile Mail"
+msgstr "Mobiele e-mail"
+
+msgid "Modified Date"
+msgstr "Wijzigingsdatum"
+
+msgid "Modulus"
+msgstr "Modulus"
+
+msgid "Moldova, Republic of"
+msgstr "Moldavië, Republiek van"
+
+msgid "Monaco"
+msgstr "Monaco"
+
+msgid "Mongolia"
+msgstr "Mongolië"
+
+msgid "Month and year"
+msgstr "Maand en jaar"
+
+msgid "Monthly"
+msgstr "Maandelijks"
+
+msgid "Montserrat"
+msgstr "Montserrat"
+
+msgid "Moon Phases"
+msgstr "Maanfasen"
+
+msgid "Morocco"
+msgstr "Marokko"
+
+msgid "Move Down"
+msgstr "Naar beneden verplaatsen"
+
+msgid "Move Left"
+msgstr "Naar links verplaatsen"
+
+msgid "Move Right"
+msgstr "Naar rechts verplaatsen"
+
+msgid "Move Up"
+msgstr "Naar boven verplaatsen"
+
+msgid "Move down"
+msgstr "Naar beneden verplaatsen"
+
+#, c-format
+msgid "Move failed: %s"
+msgstr "Verplaatsen mislukt: %s"
+
+msgid "Move up"
+msgstr "Naar boven verplaatsen"
+
+msgid "Mozambique"
+msgstr "Mozambique"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "Multi-level drop down lists"
+msgstr "Multi-level drop down lijsten"
+
+msgid "Multiple selection"
+msgstr "Meervoudige selectie"
+
+msgid "My Account"
+msgstr "Mijn account"
+
+msgid "My Portal Layout"
+msgstr "Mijn portaallayout"
+
+msgid "My Portal"
+msgstr "Mijn portaal"
+
+msgid "Myanmar"
+msgstr "Birma"
+
+msgid "NO, I Do NOT Agree"
+msgstr "Nee, ik accepteer de voorwaarden NIET"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Namibia"
+msgstr "Namibië"
+
+msgid "Nauru"
+msgstr "Nauru"
+
+msgid "NeXT"
+msgstr "Volgende"
+
+msgid "Needs Action"
+msgstr "Handeling nodig"
+
+msgid "Nepal"
+msgstr "Nepal"
+
+msgid "Netherlands Antilles"
+msgstr "Nederlands Antillen"
+
+msgid "Netherlands"
+msgstr "Nederland"
+
+msgid "Network"
+msgstr "Netwerk"
+
+msgid "Never"
+msgstr "Nooit"
+
+msgid "New Caledonia"
+msgstr "Nieuw Caledonië"
+
+msgid "New Moon"
+msgstr "Nieuwe maan"
+
+msgid "New Username (optional)"
+msgstr "Nieuwe gebruikersnaam (optioneel)"
+
+msgid "New Zealand"
+msgstr "Nieuw Zeeland"
+
+msgid "News"
+msgstr "Nieuws"
+
+msgid "Next Phase"
+msgstr "Volgende fase"
+
+msgid "Next options"
+msgstr "Volgende opties"
+
+msgid "Next"
+msgstr "Volgende"
+
+msgid "Nicaragua"
+msgstr "Nicaragua"
+
+msgid "Niger"
+msgstr "Niger"
+
+msgid "Nigeria"
+msgstr "Nigeria"
+
+msgid "Niue"
+msgstr "Niue"
+
+msgid "No block exists at the requested position"
+msgstr "Er bestaat geen blok op de gevraagde positie"
+
+msgid "No calendar name provided for MCAL authentication."
+msgstr "Geen agendanaam opgegeven voor MCAL authenticatie."
+
+msgid "No child permissions are to be added below this level."
+msgstr "Onder dit niveau worden geen child rechten toegevoegd."
+
+#, c-format
+msgid "No configuration information specified for %s."
+msgstr "Geen configuratieinformatie opgegeven voor %s."
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "Geen configuratieinformatie opgegeven voor FTP VFS."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "Geen configuratieinformatie opgegeven voor SQL VFS."
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "Geen configuratieinformatie opgegeven voor SQL-bestand VFS."
+
+msgid "No description found"
+msgstr "Geen beschrijving gevonden"
+
+msgid "No location is set."
+msgstr "Er is geen locatie ingesteld."
+
+msgid "No password provided for HTTP authentication."
+msgstr "Geen wachtwoord opgegeven voor HTTP authenticatie."
+
+msgid "No password provided for IMAP authentication."
+msgstr "Geen wachtwoord opgegeven voor IMAP authenticatie."
+
+msgid "No password provided for Kerberos authentication."
+msgstr "Geen wachtwoord opgegeven van Kerberos authenticatie."
+
+msgid "No password provided for LDAP authentication."
+msgstr "Geen wachtwoord opgegeven voor LDAP authenticatie."
+
+msgid "No password provided for Login authentication."
+msgstr "Geen wachtwoord opgegeven voor Login authenticatie."
+
+msgid "No password provided for PASSWD authentication."
+msgstr "Geen wachtwoord opgegeven voor PASSWD authenticatie."
+
+msgid "No password provided for RADIUS authentication."
+msgstr "Geen wachtwoord opgegeven voor RADIUS authenticatie."
+
+msgid "No password provided for SMB authentication."
+msgstr "Geen wachtwoord opgegeven voor SMB authenticatie."
+
+msgid "No pending signups."
+msgstr "Geen hangende inschrijvingen."
+
+msgid "No revisions"
+msgstr "Geen revisies"
+
+msgid "No valid XML data returned"
+msgstr "Geen geldige XML data teruggestuurd"
+
+msgid "No values"
+msgstr "Geen waarden"
+
+msgid "Non Participant"
+msgstr "Geen deelnemer"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Nordic (ISO-8859-10)"
+msgstr "Noord Europees (ISO-8859-10)"
+
+msgid "Norfolk Island"
+msgstr "Norfolk eiland"
+
+msgid "Northern Hemisphere"
+msgstr "Noordelijk halfrond"
+
+msgid "Northern Mariana Islands"
+msgstr "Marianen"
+
+msgid "Norway"
+msgstr "Noorwegen"
+
+msgid "Not After"
+msgstr "Niet na"
+
+msgid "Not Before"
+msgstr "Niet voor"
+
+msgid "Not Implemented"
+msgstr "Niet van toepassing"
+
+#, c-format
+msgid "Not a JPEG file: %s"
+msgstr "Geen JPEG bestand: %s"
+
+#, c-format
+msgid "Not a PNG file: %s"
+msgstr "Geen PNG bestand: %s"
+
+msgid "Not a directory"
+msgstr "Geen directory"
+
+msgid "Not supported."
+msgstr "Niet ondersteund."
+
+msgid "Notes"
+msgstr "Notities"
+
+msgid "Notice"
+msgstr "Opmerking"
+
+msgid "November"
+msgstr "November"
+
+msgid "Number of characters"
+msgstr "Aantal karakters"
+
+msgid "Number of columns"
+msgstr "Aantal kolommen"
+
+msgid "Number of rows"
+msgstr "Aantal rijen"
+
+msgid "Number"
+msgstr "Getal"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Object Creator"
+msgstr "Objecteigenaar"
+
+msgid "Object creator permissions"
+msgstr "Gebeurtenis eigenaarrechten"
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "Off"
+msgstr "Uit"
+
+msgid "Office"
+msgstr "Kantoor"
+
+msgid "Oman"
+msgstr "Oman"
+
+msgid "On"
+msgstr "Aan"
+
+msgid "Only one email address allowed."
+msgstr "Slecht één emailadres toegestaan."
+
+msgid ""
+"Only the owner or system administrator may change ownership or owner "
+"permissions for a share"
+msgstr ""
+"Alleen de eigenaar of een systeembeheerder mag de eigenaarrechten van een "
+"share wijzigen"
+
+msgid "Optional Participant"
+msgstr "Extra deelnemer"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "Organisation"
+msgstr "Organistatie"
+
+msgid "Organisational Unit"
+msgstr "Organisatie eenheid"
+
+msgid "Original application template"
+msgstr "Origineel toepassingssjabloon"
+
+#, c-format
+msgid "Original templates in %s:"
+msgstr "Originele sjablonen in %s:"
+
+msgid "Other Information"
+msgstr "Andere informatie"
+
+msgid "Other"
+msgstr "Andere"
+
+msgid "Owner Permissions"
+msgstr "Eigenaarrechten"
+
+msgid "PAM authentication is not available."
+msgstr "PAM authenticatie is niet beschikbaar."
+
+msgid "PGP Digital Signature"
+msgstr "Digitale PGP handtekening"
+
+msgid "PGP Encrypted Data"
+msgstr "Gecodeerde PGP data"
+
+msgid "PGP Public Key"
+msgstr "Openbare PGP sleutel"
+
+msgid "PGP Signed/Encrypted Data"
+msgstr "Ondertekende/gecodeerde PGP data"
+
+msgid "PHP Code"
+msgstr "PHP code"
+
+msgid "PHP Shell"
+msgstr "PHP shell"
+
+msgid "Pakistan"
+msgstr "Pakistan"
+
+msgid "Palau"
+msgstr "Palau"
+
+msgid "Palestinian Territory, Occupied"
+msgstr "Palestijns Territorium, Bezet"
+
+msgid "Panama"
+msgstr "Panama"
+
+msgid "Papua New Guinea"
+msgstr "Papua Nieuw Guinea"
+
+msgid "Paraguay"
+msgstr "Paraguay"
+
+msgid "Password with confirmation"
+msgstr "Wachtwoord met bevestiging"
+
+msgid "Password"
+msgstr "Wachtwoord"
+
+msgid "Password: "
+msgstr "Wachtwoord: "
+
+msgid "Password:"
+msgstr "Wachtwoord:"
+
+msgid "Passwords cannot be blank."
+msgstr "Wachtwoorden kunnen niet blanco zijn."
+
+msgid "Passwords must match."
+msgstr "Wachtwoorden moeten overeenkomen."
+
+msgid "Paste"
+msgstr "Plakken"
+
+msgid "Pending Signups:"
+msgstr "Hangende inschrijvingen:"
+
+msgid "Perform Maintenance Operations"
+msgstr "Onderhoudswerkzaamheden uitvoeren"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Onderhoudswerkzaamheden uitvoeren bij aanmelding?"
+
+#, c-format
+msgid "Permission '%s' not deleted."
+msgstr "Recht '%s' niet verwijderd."
+
+msgid "Permission Denied"
+msgstr "Recht geweigerd"
+
+#, c-format
+msgid "Permission denied for %s/%s."
+msgstr "Rechten geweigerd voor %s/%s."
+
+msgid "Permission"
+msgstr "Recht"
+
+msgid "Permissions Administration"
+msgstr "Rechtenbeheer"
+
+msgid "Permissions"
+msgstr "Rechten"
+
+msgid "Personal Information"
+msgstr "Persoonlijke informatie"
+
+msgid "Peru"
+msgstr "Peru"
+
+msgid "Philippines"
+msgstr "Philippijnen"
+
+msgid "Phone"
+msgstr "Telefoon"
+
+msgid "Photos"
+msgstr "Foto's"
+
+msgid "Pitcairn"
+msgstr "Pitcairn"
+
+msgid "Please enter a month and a year."
+msgstr "Geef een maand en een jaar, a.u.b."
+
+msgid "Please enter a valid date; check the number of days in the month."
+msgstr ""
+"Geef een geldige datum a.u.b.; controleer het aantal dagen in de maand."
+
+msgid "Please enter a valid time."
+msgstr "Geef een geldige tijd, a.u.b."
+
+msgid "Please provide a summary of the problem."
+msgstr "Geef een samenvatting van het probleem, a.u.b."
+
+msgid "Please provide your username and password"
+msgstr "Geef uw gebruikersnaam en wachtwoord, a.u.b."
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Lees de volgende tekst, a.u.b. U dient de voorwaarden te accepteren om het "
+"systeem te gebruiken."
+
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Bekijk de volgende informatie a.u.b. en selecteer daarna een bewerking uit "
+"het onderstaande menu."
+
+msgid "Please select an action from the menu below."
+msgstr "Selecteer een bewerking uit het onderstaande menu, a.u.b."
+
+msgid "Poland"
+msgstr "Polen"
+
+msgid "Polls"
+msgstr "Peilingen"
+
+msgid "Portugal"
+msgstr "Portugal"
+
+#, c-format
+msgid "Precip for last %s hour(s): %s %s"
+msgstr "Neerslag van de afgelopen %s uren: %s %s"
+
+#, c-format
+msgid "Precip for last %s hour(s): %s"
+msgstr "Neerslag van de afgelopen %s uren: %s"
+
+msgid "Prefs_ldap: Required LDAP extension not found."
+msgstr "Prefs_ldap: vereiste LDAP extentie niet gevonden."
+
+msgid "Prefs_session: Required session extension not found."
+msgstr "Prefs_session: vereiste sessie extentie niet gevonden."
+
+msgid "Presentations"
+msgstr "Presentaties"
+
+#, c-format
+msgid "Pressure at sea-level: %s %s"
+msgstr "Luchtdruk op zeeniveau: %s %s"
+
+msgid "Pressure:"
+msgstr "Luchtdruk:"
+
+msgid "Preview"
+msgstr "Beoordelen"
+
+msgid "Previous options"
+msgstr "Vorige opties"
+
+msgid "Previous task"
+msgstr "Vorige taak"
+
+msgid "Private Key"
+msgstr "Prive sleutel"
+
+msgid "Problem Description"
+msgstr "Probleembeschrijving"
+
+msgid "Problem?"
+msgstr "Probleem?"
+
+msgid "Projects"
+msgstr "Projecten"
+
+msgid "Prompt text"
+msgstr "Prompt tekst"
+
+msgid "Public Key Algorithm"
+msgstr "Openbare sleutel algorithme"
+
+msgid "Public Key"
+msgstr "Openbare sleutel"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "Openbaar/Prive sleutelpaar niet gegenereerd."
+
+msgid "Puerto Rico"
+msgstr "Puerto Rico"
+
+msgid "Qatar"
+msgstr "Quatar"
+
+#, c-format
+msgid "RSA Public Key (%d bit)"
+msgstr "RSA openbare sleutel (%d bit)"
+
+msgid "Radio selection"
+msgstr "Keuzerondje selectie"
+
+msgid "Random Fortune"
+msgstr "Random Fortune"
+
+msgid "Ratio"
+msgstr "Verhouding"
+
+msgid "Read"
+msgstr "Lezen"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "%s echt verwijderen? Deze bewerking kan niet ongedaan gemaakt worden."
+
+msgid "Refresh Portal View:"
+msgstr "Portalweergave verversen:"
+
+msgid "Regex"
+msgstr "Regex"
+
+msgid "Remarks:"
+msgstr "Opmerkingen:"
+
+msgid "Remember the free/busy information."
+msgstr "Onthoudt de free/busy informatie."
+
+msgid "Remote Servers"
+msgstr "Servers op afstand"
+
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "URL op afstand (http://www.example.com/horde):"
+
+msgid "Remote summaries"
+msgstr "Samenvattingen op afstand"
+
+msgid "Remove Block"
+msgstr "Blok verwijderen"
+
+msgid "Remove from my calendar"
+msgstr "Uit mijn agenda verwijderen"
+
+msgid "Remove pair"
+msgstr "Paar verwijderen"
+
+msgid "Remove user"
+msgstr "Gebruiker verwijderen"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "Verwijder gebruiker: %s"
+
+msgid "Remove"
+msgstr "Verwijderen"
+
+msgid "Reply Sent."
+msgstr "Antwoord verzonden."
+
+msgid "Reply with Not Supported Message"
+msgstr "Antwoord met een niet ondersteund bericht"
+
+msgid "Reply with free/busy for next 2 months."
+msgstr "Antwoord met free/busy voor de volgende 2 maanden."
+
+msgid "Reply with requested free/busy information."
+msgstr "Antwoord met de gevraagde free/busy informatie."
+
+#, c-format
+msgid "Reply: %s"
+msgstr "Antwoord: %s"
+
+msgid "Request couldn't be answered. Returned errorcode: "
+msgstr "Verzoek kon niet worden beantwoord. Geretourneerde foutcode: "
+
+#, c-format
+msgid "Required '%s' not specified in %s configuration."
+msgstr "Vereiste '%s' niet opgegeven in %s configuratie."
+
+#, c-format
+msgid "Required '%s' not specified in VFS configuration."
+msgstr "Vereiste '%s' niet opgegeven in VFS configuratie."
+
+#, c-format
+msgid "Required '%s' not specified in configuration."
+msgstr "Vereiste '%s' niet opgegeven in configuratie."
+
+msgid "Required Participant"
+msgstr "Vereiste deelnemer"
+
+msgid "Reseller Ticket"
+msgstr "Wederverkoperticket"
+
+msgid "Reseller"
+msgstr "Wederverkoper"
+
+msgid "Reset"
+msgstr "Herstellen"
+
+msgid "Results"
+msgstr "Resultaten"
+
+msgid "Return to Options"
+msgstr "Terug naar opties"
+
+msgid "Reunion"
+msgstr "Reunion"
+
+msgid "Riddles"
+msgstr "Raadsels"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Romania"
+msgstr "Roemenië"
+
+msgid "Rotate 180"
+msgstr "180 draaien"
+
+msgid "Rotate Left"
+msgstr "Naar links draaien"
+
+msgid "Rotate Right"
+msgstr "Naar rechts draaien"
+
+msgid "Run"
+msgstr "Starten"
+
+msgid "Russian Federation"
+msgstr "Russische Federatie"
+
+msgid "Rwanda"
+msgstr "Rwanda"
+
+msgid "S/MIME Cryptographic Signature"
+msgstr "Cryptografische S/MIME handtekening"
+
+msgid "SMS Messaging"
+msgstr "SMS versturen"
+
+msgid "SQL Query"
+msgstr "SQL Query"
+
+msgid "SQL Shell"
+msgstr "SQL shell"
+
+msgid "SS"
+msgstr "SS"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "SUCCESS"
+msgstr "SUCCES"
+
+msgid "Saint Helena"
+msgstr "St Helena"
+
+msgid "Saint Kitts and Nevis"
+msgstr "St Kitts en Nevis"
+
+msgid "Saint Lucia"
+msgstr "St Lucia"
+
+msgid "Saint Pierre and Miquelon"
+msgstr "St Pierre en Miquelon"
+
+msgid "Saint Vincent and the Grenadines"
+msgstr "St Vincent en de Grenadines"
+
+msgid "Samoa"
+msgstr "Samoa"
+
+msgid "San Marino"
+msgstr "San Marino"
+
+msgid "Sao Tome and Principe"
+msgstr "Sao Tome en Principe"
+
+msgid "Satellite Provider"
+msgstr "Satellietprovider"
+
+msgid "Saudi Arabia"
+msgstr "Saudi Arabië"
+
+#, c-format
+msgid "Save %s"
+msgstr "%s opslaan"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "'%s' opslaan"
+
+msgid "Save Options"
+msgstr "Bewaar opties"
+
+msgid "Save"
+msgstr "Opslaan"
+
+msgid "Select a date"
+msgstr "Selecteer een datum"
+
+msgid "Select a group to add"
+msgstr "Selecteer een groep om toe te voegen"
+
+msgid "Select a new owner"
+msgstr "Selecteer een nieuwe eigenaar"
+
+msgid "Select a server"
+msgstr "Selecteer een server"
+
+msgid "Select a user to add"
+msgstr "Selecteer een gebruiker om toe te voegen"
+
+msgid ""
+"Select the s you need from the boxes below. You can then copy and paste them "
+"from the text area."
+msgstr ""
+"Selecteer de benodigde karakters uit de onderstaande vakjes. U kunt deze dan "
+"kopiëren en plakken in het tekstgebied."
+
+msgid "Select the date delimiter:"
+msgstr "Kies het datumscheidingsteken:"
+
+msgid "Select the date format:"
+msgstr "Kies de datumopmaak:"
+
+msgid "Select the time delimiter:"
+msgstr "Kies het tijdscheidingsteken:"
+
+msgid "Select the time format:"
+msgstr "Kies de tijdopmaak:"
+
+msgid "Select two matching fields."
+msgstr "Selecteer twee overeenkomende velden."
+
+msgid "Select your color scheme."
+msgstr "Selecteer uw kleurschema."
+
+msgid "Select your preferred language:"
+msgstr "Kies uw gewenste taal:"
+
+msgid "Send Latest Information"
+msgstr "Stuur meest recente informatie"
+
+msgid "Send Problem Report"
+msgstr "Probleemrapport verzenden"
+
+msgid "Senegal"
+msgstr "Senegal"
+
+#, c-format
+msgid "Sensor: %s"
+msgstr "Sensor: %s"
+
+msgid "September"
+msgstr "September"
+
+msgid "Serbia and Montenegro"
+msgstr "Servië en Montenegro"
+
+msgid "Serial Number"
+msgstr "Serienummer"
+
+msgid "Set up remote servers that you want to access from your portal."
+msgstr "Instellen van remote servers die u wilt benaderen vanuit uw portal."
+
+msgid "Set your preferred language, timezone and date options."
+msgstr "Instellen van uw gewenste taal, tijdzone en datumopties."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Instellen van uw opstarttoepassing, kleurschema, paginaverversing en andere "
+"weergaveopties."
+
+msgid "Set"
+msgstr "Instellen"
+
+msgid "Seychelles"
+msgstr "Seychellen"
+
+msgid "Shopping"
+msgstr "Winkelen"
+
+msgid "Short Summary:"
+msgstr "Korte samenvatting:"
+
+msgid "Should access keys be defined for most links?"
+msgstr "Dienen sneltoetsen voor de meeste links gedefinieerd te worden?"
+
+msgid "Show last login time when logging in?"
+msgstr "Laatste aanmeldingstijd weergeven bij aanmelden?"
+
+msgid "Show picker"
+msgstr "Kiezer weergeven"
+
+#, c-format
+msgid "Show the %s Menu on the left?"
+msgstr "%s menu aan de linkerkant weergeven?"
+
+msgid "Show"
+msgstr "Weergeven"
+
+msgid "Shrink or move neighbouring block(s) out of the way first"
+msgstr "Verklein of verplaats naburige blokken eerst"
+
+msgid "Shrink"
+msgstr "Verkleinen"
+
+msgid "Sierra Leone"
+msgstr "Sierra Leone"
+
+msgid "Sign up if not registered"
+msgstr "Inschrijven wanneer niet geregistreerd"
+
+msgid "Sign up"
+msgstr "Intekenen"
+
+msgid "Signature Algorithm"
+msgstr "Handtekening algorithme"
+
+msgid "Signature"
+msgstr "Handtekening"
+
+msgid "Simplex"
+msgstr "Simplex"
+
+msgid "Singapore"
+msgstr "Singapore"
+
+msgid "Size"
+msgstr "Grootte"
+
+msgid "Skip Maintenance"
+msgstr "Onderhoud overslaan"
+
+msgid "Slovakia"
+msgstr "Slowakije"
+
+msgid "Slovenia"
+msgstr "Slovenië"
+
+#, c-format
+msgid "Snow depth: %s %s"
+msgstr "Sneeuwdiepte: %s %s"
+
+#, c-format
+msgid "Snow equivalent in water: %s %s"
+msgstr "Sneeuwequivalent in water: %s %s"
+
+msgid "Solomon Islands"
+msgstr "Solomon eilanden"
+
+msgid "Somalia"
+msgstr "Somalië"
+
+msgid "Sort order selection"
+msgstr "Sorteervolgorde selectie"
+
+msgid "South Africa"
+msgstr "Zuid Afrika"
+
+msgid "South European (ISO-8859-3)"
+msgstr "Zuid Europees (ISO-8859-3)"
+
+msgid "South Georgia and the South Sandwich Islands"
+msgstr "Zuid Georgië en de Zuid Sandwich eilanden"
+
+msgid "Southern Hemisphere"
+msgstr "Zuidelijk halfrond"
+
+msgid "Spacer"
+msgstr "Scheidingsteken"
+
+msgid "Spain"
+msgstr "Spanje"
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "Special Character Input"
+msgstr "Speciaal karakter invoer"
+
+msgid "Sri Lanka"
+msgstr "Sri Lanka"
+
+msgid "Standard"
+msgstr "Standaard"
+
+msgid "Start year"
+msgstr "Startjaar"
+
+msgid "Start"
+msgstr "Starten"
+
+msgid "State or Province"
+msgstr "Staat of provincie"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Storage format"
+msgstr "Opslagformaat"
+
+msgid "Street Address"
+msgstr "Adres"
+
+msgid "String list"
+msgstr "Stringlijst"
+
+msgid "Subject Public Key Info"
+msgstr "Openbare sleutel onderwerpinformatie"
+
+msgid "Subject"
+msgstr "Onderwerp"
+
+msgid "Submit"
+msgstr "Bevestigen"
+
+#, c-format
+msgid ""
+"Submitted request to add '%s' to the system. You can not log in until your "
+"request has been approved."
+msgstr ""
+"Aanvraag verstuurd om '%s' aan het systeem toe te voegen. U kunt niet "
+"aanmelden tot uw aanvraag is goedgekeurd."
+
+msgid "Success"
+msgstr "Succes"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' met succes aan het systeem toegevoegd."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "'%s' met succes aan verwijderd."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s' met succes uit het systeem verwijderd."
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "'%s' met succes bijgewerkt"
+
+msgid "Sudan"
+msgstr "Soedan"
+
+msgid "Summary"
+msgstr "Samenvatting"
+
+msgid "Sun Rise"
+msgstr "Zonsopgang"
+
+msgid "Sun Set"
+msgstr "Zonsondergang"
+
+msgid "Sunrise/Sunset"
+msgstr "Zonsopgang/Zonsondergang"
+
+msgid "Support"
+msgstr "Ondersteuning"
+
+msgid "Suriname"
+msgstr "Suriname"
+
+msgid "Surname"
+msgstr "Achternaam"
+
+msgid "Svalbard and Jan Mayen"
+msgstr "Spitsbergen en Jan Mayen"
+
+msgid "Swaziland"
+msgstr "Swaziland"
+
+msgid "Sweden"
+msgstr "Zweden"
+
+msgid "Switzerland"
+msgstr "Zwitserland"
+
+msgid "Syrian Arab Republic"
+msgstr "Syrische Arabische Republiek"
+
+msgid "TSV file"
+msgstr "TSV bestand"
+
+msgid "Taiwan"
+msgstr "Taiwan"
+
+msgid "Taiwan, Province of China"
+msgstr "Taiwan, Provincie van China"
+
+msgid "Tajikistan"
+msgstr "Tadzjikistan"
+
+msgid "Tanzania, United Republic of"
+msgstr "Tanzania, Verenigde Republiek van"
+
+msgid "Task"
+msgstr "Taak"
+
+msgid "Tasks"
+msgstr "Taken"
+
+msgid "Teal"
+msgstr "Teal"
+
+msgid "Telephone Number"
+msgstr "Telefoonnummer"
+
+#, c-format
+msgid "Temp for last hour: %s %s"
+msgstr "Temperatuur van het afgelopen uur: %s %s"
+
+msgid "Temperature:"
+msgstr "Temperatuur:"
+
+#, c-format
+msgid "Template '%s' not found."
+msgstr "Sjabloon '%s' niet gevonden"
+
+msgid "Template Administration"
+msgstr "Sjabloonbeheer"
+
+msgid "Tentatively Accept request"
+msgstr "Voorlopig verzoek accepteren"
+
+msgid "Tentatively Accepted"
+msgstr "Voorlopig geaccepteerd"
+
+msgid "Text Only"
+msgstr "Alleen tekst"
+
+msgid "Text"
+msgstr "Tekst"
+
+msgid "Thai (TIS-620)"
+msgstr "Thais (TIS-620)"
+
+msgid "Thailand"
+msgstr "Thailand"
+
+#, c-format
+msgid "The %s link to %s has been removed."
+msgstr "De %s link naar %s is verwijderd."
+
+msgid "The Maintenance:: class did not load successfully"
+msgstr "De Maintenance:: class werd niet geladen"
+
+msgid "The Options window has closed. Exiting."
+msgstr "Het Optiesscherm is gesloten. Afsluiten."
+
+msgid "The calendar data is invalid"
+msgstr "De agendadata is ongeldig"
+
+msgid ""
+"The detached PGP signature block is required to verify the signed message."
+msgstr ""
+"Het losgekoppelde PGP ondertekeningsblok is vereist om het ondertekende "
+"bericht te verifiëren."
+
+msgid "The encryption features require a secure web connection."
+msgstr "De codeermogelijkheden vereisen een beveiligde webverbinding."
+
+#, c-format
+msgid "The file %s should contain a %s setting."
+msgstr "Het bestand %s dient een %s instelling te bevatten."
+
+#, c-format
+msgid "The file %s should contain some %s settings."
+msgstr "Het bestand %s dient enige %s instellingen te bevatten."
+
+msgid "The file contained no data."
+msgstr "Het bestand bevatte geen data."
+
+msgid "The link has been removed"
+msgstr "De link is verwijderd"
+
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr ""
+"De plaats van het GnuPG programma dient opgegeven te worden in de "
+"Crypt_pgp:: class."
+
+#, c-format
+msgid "The method %s is not defined in the API for %s."
+msgstr "De methode %s is niet gedefinieerd in de API voor %s."
+
+msgid "The openssl module is required for the Horde_Crypt_smime:: class."
+msgstr "De openssl module is vereist voor de Horde_Crypt_smime:: class."
+
+#, c-format
+msgid ""
+"The preference \"%s\" could not be saved because its data exceeded the "
+"maximum allowable size"
+msgstr ""
+"De voorkeursinstelling \"%s\" kon niet worden opgeslagen, omdat de data de "
+"maximum toelaatbare grootte overschrijdt."
+
+#, c-format
+msgid ""
+"The program used to view this data type (%s) was not found on the system."
+msgstr ""
+"Het programma om dit datatype (%s) te bekijken, werd niet op het systeem "
+"gevonden."
+
+#, c-format
+msgid "The server \"%s\" has been deleted."
+msgstr "De server \"%s\" is verwijderd."
+
+#, c-format
+msgid "The server \"%s\" has been saved."
+msgstr "De server \"%s\" is opgeslagen."
+
+msgid "The specified row does not exist."
+msgstr "De opgegeven rij bestaat niet."
+
+msgid "The uploaded data was lost since the previous step."
+msgstr "De uploaded data is na de voorgaande stap verloren gegaan."
+
+msgid "The uploaded file could not be saved."
+msgstr "Het uploaded bestand is niet opgeslagen."
+
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "De free/busy informatie van de gebruiker met succes opgeslagen."
+
+msgid "There are no parts that can be displayed inline."
+msgstr "Er zijn geen onderdelen, welke inline weergegeven kunnen worden."
+
+#, c-format
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"Er zijn te veel karakters in dit veld. U heeft %s karakters opgegeven; u "
+"dient minder dan %s op te geven."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system. %s."
+msgstr "Een probleem met het toevoegen van '%s' aan het systeem. %s."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system: %s"
+msgstr "Een probleem met het toevoegen van '%s' aan het systeem: %s"
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Een probleem met het verwijderen van '%s' uit systeem."
+
+#, c-format
+msgid "There was a problem updating '%s': %s"
+msgstr "Een probleem met het bijwerken van '%s': %s"
+
+#, c-format
+msgid "There was a problem with the file upload: No %s was uploaded."
+msgstr "Een probleem met de bestandsupload: Geen %s werd geupload."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was larger than the maximum "
+"allowed size (%d bytes)."
+msgstr ""
+"Een probleem met de bestandsupload: Het %s is groter dan de maximum "
+"toelaatbare grootte (%d bytes)."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was only partially uploaded."
+msgstr ""
+"Een probleem met de bestandsupload: Het %s is slechts gedeeltelijk geupload."
+
+msgid "There was an error importing the contact data."
+msgstr "Een fout bij het importeren van de adresdata."
+
+#, c-format
+msgid "There was an error importing the event: %s."
+msgstr "Een fout bij het importeren van de gebeurtenis: %s."
+
+#, c-format
+msgid "There was an error importing this task: %s."
+msgstr "Een fout bij het importeren van deze taak: %s."
+
+#, c-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr ""
+"Een fout bij het importeren van free/busy informatie van de gebruiker: %s."
+
+msgid "There was an unknown error verifying this message."
+msgstr "Een onbekende fout bij het verifiëren van dit bericht."
+
+msgid "This action is not supported."
+msgstr "Deze bewerking wordt niet ondersteund."
+
+msgid "This action is not yet implemented."
+msgstr "Deze bewerking is nog niet van toepassing."
+
+msgid "This application is not activated."
+msgstr "Deze toepassing is niet ingeschakeld."
+
+msgid ""
+"This contact data has been successfully added to your address book. Click "
+"below to view:"
+msgstr ""
+"Deze adresdata is met succes aan uw adresboek toegevoegd. Klik hieronder om "
+"te bekijken:"
+
+msgid "This does not appear to be a valid rar archive."
+msgstr "Dit lijkt niet een geldig rar bestand te zijn."
+
+msgid "This does not appear to be a valid zip file."
+msgstr "Dit lijkt niet een geldig zip bestand te zijn."
+
+msgid "This does not seem to be a valid card number."
+msgstr "Dit lijkt niet een geldig kaartnummer te zijn."
+
+msgid ""
+"This event has been successfully added to your calendar. Click icon to view:"
+msgstr ""
+"Deze gebeurtenis is met succes aan uw agenda toegevoegd. Klik op pictogram "
+"om te bekijken:"
+
+msgid "This field is required."
+msgstr "Dit veld is vereist"
+
+msgid "This field may only contain integers."
+msgstr "Dit veld mag alleen integers bevatten."
+
+msgid "This field may only contain numbers and the colon."
+msgstr "Dit veld mag alleen getallen en de dubbele punt bevatten."
+
+msgid "This field must be a comma or space separated list of integers"
+msgstr ""
+"Dit veld dient een komma of spatie gescheiden lijst met integers te zijn"
+
+msgid "This field must be a valid number."
+msgstr "Deze waarde dient een geldig getal te zijn."
+
+msgid ""
+"This field must contain a color code in the RGB Hex format, for example "
+"'#1234af'."
+msgstr ""
+"Dit veld dient een kleurcode in RGB HEX-formaat te bevatten, b.v. '#1234af'."
+
+msgid "This form has already been processed."
+msgstr "Dit formulier is reeds verwerkt."
+
+#, c-format
+msgid "This is %s."
+msgstr "Dit is %s."
+
+msgid "This number must be at least one."
+msgstr "Dit getal dient tenminste één te zijn."
+
+msgid "This server can't uncompress zip and gzip files."
+msgstr "Deze server kan geen zip en gzip bestanden uitpakken."
+
+msgid "This system is currently deactivated."
+msgstr "Het systeem is momenteel uitgeschakeld."
+
+msgid ""
+"This task has been successfully added to your tasklist. Click icon to view:"
+msgstr ""
+"Deze taak is met succes aan uw takenlijst toegevoegd. Klik op pictogram om "
+"te bekijken:"
+
+msgid "This value must be a number."
+msgstr "Deze waarde dient een getal te zijn."
+
+msgid "This window must be called from an Options window"
+msgstr "Dit scherm dient aangeroepen te worden vanuit een Optiesscherm"
+
+msgid "Tickets"
+msgstr "Tickets"
+
+msgid "Time Tracking"
+msgstr "Tijdplanning"
+
+msgid "Time format"
+msgstr "Tijdformaat"
+
+msgid "Time selection"
+msgstr "Tijdselectie"
+
+msgid "Time"
+msgstr "Tijd"
+
+msgid "Timor-Leste"
+msgstr "Timor-Leste"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid ""
+"To select multiple items, hold down the Control (PC) or Command (Mac) key "
+"while clicking."
+msgstr ""
+"Om meerdere onderdelen te selecteren, houd de Control (PC) of Command (Mac) "
+"toets vast tijdens klikken."
+
+msgid "Togo"
+msgstr "Togo"
+
+msgid "Tokelau"
+msgstr "Tokelau"
+
+msgid "Tonga"
+msgstr "Tonga"
+
+msgid "Trinidad and Tobago"
+msgstr "Trinidad en Tobago"
+
+msgid "True or false"
+msgstr "True of false"
+
+msgid "Tunisia"
+msgstr "Tunesië"
+
+msgid "Turkey"
+msgstr "Turkije"
+
+msgid "Turkish (ISO-8859-9)"
+msgstr "Turks (ISO-8859-9)"
+
+msgid "Turkmenistan"
+msgstr "Turkmenistan"
+
+msgid "Turks and Caicos Islands"
+msgstr "Turks en Caicos eilanden"
+
+msgid "Tuvalu"
+msgstr "Tuvalu"
+
+msgid "Type your choice: "
+msgstr "Typ uw keuze: "
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Uganda"
+msgstr "Oeganda"
+
+msgid "Ukraine"
+msgstr "Oekraïne"
+
+msgid "Unable to access VFS directory."
+msgstr "Niet in staat VFS directory aan te spreken."
+
+msgid "Unable to add extra user information when signing up."
+msgstr ""
+"Niet in staat extra gebruikersinformatie toe te voegen bij inschrijven."
+
+#, c-format
+msgid "Unable to annotate; server said: %s"
+msgstr "Niet in staat te annoteren; de server meldt: %s"
+
+#, c-format
+msgid "Unable to change permission for VFS file %s/%s."
+msgstr "Niet in staat de rechten van VFS bestand %s/%s te wijzigen."
+
+#, c-format
+msgid "Unable to change to %s."
+msgstr "Niet in staat te wijzigen naar %s."
+
+msgid "Unable to connect to SQL server."
+msgstr "Niet in staat met de SQL server te verbinden."
+
+msgid "Unable to connect with SSL."
+msgstr "Niet in staat met SSL te verbinden."
+
+msgid "Unable to copy VFS file."
+msgstr "Niet in staat VFS bestand te kopiëren."
+
+msgid "Unable to create VFS directory."
+msgstr "Niet in staat VFS directory te maken."
+
+msgid "Unable to create VFS file."
+msgstr "Niet in staat VFS bestand te maken."
+
+msgid "Unable to decompress data."
+msgstr "Niet in staat data uit te pakken."
+
+#, c-format
+msgid "Unable to delete %s, the directory is not empty"
+msgstr "Niet in staat %s te verwijderen, directory is niet leeg"
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Niet in staat '%s': %s te verwijderen."
+
+msgid "Unable to delete VFS directory recursively."
+msgstr "Niet in staat VFS directory recursief te verwijderen."
+
+msgid "Unable to delete VFS directory."
+msgstr "Niet in staat VFS directory te verwijderen."
+
+#, c-format
+msgid "Unable to delete VFS directory: %s."
+msgstr "Niet in staat VFS directory %s te verwijderen."
+
+msgid "Unable to delete VFS file."
+msgstr "Niet in staat VFS bestand te verwijderen."
+
+#, c-format
+msgid "Unable to delete VFS recursively: %s."
+msgstr "Niet in staat VFS %s recursief te verwijderen."
+
+msgid "Unable to determine current directory."
+msgstr "Niet in staat huidige directory te bepalen."
+
+msgid "Unable to find directory"
+msgstr "Niet in staat directory te vinden"
+
+msgid "Unable to move VFS file."
+msgstr "Niet in staat VFS bestand te verplaatsen."
+
+msgid "Unable to open VFS file for writing."
+msgstr "Niet in staat VFS bestand te openen voor schrijven."
+
+msgid "Unable to open VFS file."
+msgstr "Niet in staat VFS bestand te openen."
+
+msgid "Unable to open compressed archive."
+msgstr "Niet in staat het ingepakte bestand te openen."
+
+#, c-format
+msgid "Unable to open image file: %s"
+msgstr "Niet in staat afbeeldingbestand %s te openen."
+
+msgid "Unable to read the vfsroot directory."
+msgstr "Niet in staat vfsroot directory te openen."
+
+msgid "Unable to rename VFS directory."
+msgstr "Niet in staat VFS directory te hernoemen."
+
+#, c-format
+msgid "Unable to rename VFS directory: %s."
+msgstr "Niet in staat VFS directory %s te hernoemen."
+
+#, c-format
+msgid "Unable to rename VFS file %s/%s."
+msgstr "Niet in staat VFS bestand %s/%s te hernoemen."
+
+msgid "Unable to rename VFS file."
+msgstr "Niet in staat VFS bestand te hernoemen."
+
+#, c-format
+msgid "Unable to save PDF file: %s"
+msgstr "Niet in staat PDF bestand %s op te slaan."
+
+msgid "Unable to send PDF file, some data has already been output to browser."
+msgstr ""
+"Niet in staat PDF bestand te verzenden, enige data is reeds verstuurd naar "
+"de browser."
+
+msgid "Unable to translate this Word document"
+msgstr "Niet in staat dit Word document te vertalen"
+
+msgid "Unable to write VFS file data."
+msgstr "Niet in staat VFS bestandsdata te schrijven."
+
+msgid "Unable to write VFS file."
+msgstr "Niet in staat VFS bestand te schrijven."
+
+msgid "Underline"
+msgstr "Onderstrepen"
+
+msgid "Undo Changes"
+msgstr "Herstel wijzigingen"
+
+#, c-format
+msgid "Unexpected output from Checkout: %s"
+msgstr "Onverwachte output van controle: %s"
+
+#, c-format
+msgid "Unhandled component of type: %s"
+msgstr "Niet bewerkbaar onderdeel van type: %s"
+
+msgid "Unicode (UTF-8)"
+msgstr "Unicode (UTF-8)"
+
+msgid "United Arab Emirates"
+msgstr "Verenigde Arabische Emiraten"
+
+msgid "United Kingdom"
+msgstr "Verenigd Koningkrijk"
+
+msgid "United States Minor Outlying Islands"
+msgstr "Verenigde Staten, kleine buiten liggende eilanden"
+
+msgid "United States"
+msgstr "Verenigde Staten"
+
+msgid "Units"
+msgstr "Eenheden"
+
+#, c-format
+msgid "Unknown compression method: %s"
+msgstr "Onbekende compressie methode: %s"
+
+#, c-format
+msgid "Unknown filter method: %s"
+msgstr "Onbekende filtermethode: %s"
+
+#, c-format
+msgid "Unknown page format: %s"
+msgstr "Onbekend paginaformat: %s"
+
+msgid "Unknown"
+msgstr "Onbekend"
+
+msgid "Unsupported Extension"
+msgstr "Niet ondersteunde extentie"
+
+#, c-format
+msgid "Unsupported image file type: %s"
+msgstr "Niet ondersteund afbeeldingbestandstype: %s"
+
+#, c-format
+msgid "Update %s"
+msgstr "%s bijwerken"
+
+msgid "Update respondent status"
+msgstr "Status van beantwoorder bijwerken"
+
+msgid "Update user"
+msgstr "Gebruiker bijwerken."
+
+msgid "Update"
+msgstr "Bijwerken"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "'%s' bijgewerkt."
+
+msgid "Upload"
+msgstr "Upload"
+
+msgid "Uruguay"
+msgstr "Uruguay"
+
+msgid "Use Default Value"
+msgstr "Gebruik standaardwaarde"
+
+#, c-format
+msgid "User %s is not authorised for %s."
+msgstr "Gebruiker %s is niet geautoriseerd voor %s."
+
+msgid "User Administration"
+msgstr "Gebruikersbeheer"
+
+msgid "User Options"
+msgstr "Gebruikersopties"
+
+msgid "User Registration has been disabled for this site."
+msgstr "Gebruikersregistratie is uitgeschakeld op deze site."
+
+msgid "User Registration"
+msgstr "Gebruikersregistratie"
+
+msgid "User permissions"
+msgstr "Gebruikersrechten"
+
+#, c-format
+msgid "Username '%s' already exists."
+msgstr "Gebruikersnaam '%s' bestaat al."
+
+msgid "Username and/or password not correct."
+msgstr "Gebruikersnaam en/of wachtwoord niet juist."
+
+msgid "Username"
+msgstr "Gebruikersnaam"
+
+msgid "Username: "
+msgstr "Gebruikersnaam: "
+
+msgid "Username:"
+msgstr "Gebruikersnaam:"
+
+msgid "Users in the system:"
+msgstr "Gebruikers in het systeem:"
+
+msgid "Users"
+msgstr "Gebruikers"
+
+msgid "Uzbekistan"
+msgstr "Oezbekistan"
+
+msgid "VFS directory does not exist."
+msgstr "VFS directory bestaat niet."
+
+msgid "Vacation"
+msgstr "Vakantie"
+
+msgid "Validity"
+msgstr "Geldigheid"
+
+msgid "Values to select from"
+msgstr "Waarden waaruit gekozen kan worden"
+
+msgid "Values"
+msgstr "Waarden"
+
+msgid "Vanuatu"
+msgstr "Vanuatu"
+
+msgid "Venezuela"
+msgstr "Venezuela"
+
+msgid "Verification failed - this message may have been tampered with."
+msgstr "Verificatie mislukt - er kan met dit bericht geknoeid zijn."
+
+msgid "Version Control"
+msgstr "Versiecontrole"
+
+msgid "Version"
+msgstr "Versie"
+
+msgid "Viet Nam"
+msgstr "Vietnam"
+
+msgid "Vietnamese (VISCII)"
+msgstr "Vietnamees (VISCII)"
+
+#, c-format
+msgid "View %s"
+msgstr "%s bekijken"
+
+msgid "View an external web page"
+msgstr "Bekijk een externe webpagina"
+
+#, c-format
+msgid "View as %s"
+msgstr "Bekijken als %s"
+
+msgid "View map"
+msgstr "Map bekijken"
+
+msgid "Virgin Islands, British"
+msgstr "Maagden eilanden, Britse"
+
+msgid "Virgin Islands, U.S."
+msgstr "Maagden eilanden, V.S."
+
+msgid "Visibility:"
+msgstr "Zicht:"
+
+msgid "WARN"
+msgstr "WARN"
+
+msgid "Wallis and Futuna"
+msgstr "Wallis en Futuna"
+
+msgid "Warning"
+msgstr "Waarschuwing"
+
+msgid "Web Site"
+msgstr "Website"
+
+msgid "Web"
+msgstr "Web"
+
+msgid "Weekly"
+msgstr "Wekelijks"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Welkom bij %s"
+
+msgid "Welcome"
+msgstr "Welkom"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Welkom, %s"
+
+msgid "Western (ISO-8859-1)"
+msgstr "Westers (ISO-8859-1)"
+
+msgid "Western (ISO-8859-15)"
+msgstr "Westers (ISO-8859-15)"
+
+msgid "Western Sahara"
+msgstr "Westelijke Sahara"
+
+#, c-format
+msgid "What application should %s display after login?"
+msgstr "Welke toepassing dient %s weer te geven na aanmelding?"
+
+msgid "What is the delimiter character?"
+msgstr "Wat is het scheidingskarakter?"
+
+msgid "What is the quote character?"
+msgstr "Wat is het citaatkarakter?"
+
+msgid "Which phases"
+msgstr "Welke fasen"
+
+msgid "Wiki"
+msgstr "Wiki"
+
+msgid "Wind speed in knots"
+msgstr "Windsnelheid in knopen"
+
+msgid "Wind:"
+msgstr "Wind:"
+
+msgid "Wishlists"
+msgstr "Wenslijsten"
+
+msgid "Work Address"
+msgstr "Werkadres:"
+
+msgid "Work Phone"
+msgstr "Tel.nr.werk"
+
+#, c-format
+msgid "Writing not possible. Copy this code manually to %s."
+msgstr "Schrijven niet mogelijk. Kopieer deze code handmatig naar %s."
+
+#, c-format
+msgid "Wrote %s successfully."
+msgstr "%s met succes geschreven."
+
+msgid "X509v3 extensions"
+msgstr "X509v3 extenties"
+
+msgid "YY"
+msgstr "JJ"
+
+msgid "YYYY"
+msgstr "JJJJ"
+
+msgid "Yearly"
+msgstr "Jaarlijks"
+
+msgid "Yemen"
+msgstr "Jemen"
+
+msgid "Yes, I Agree"
+msgstr "Ja, ik accepteer de voorwaarden"
+
+#, c-format
+msgid "You can approve this signup at %s"
+msgstr "U kunt deze inschrijving goedkeuren op %s"
+
+msgid "You did not enter a valid email address."
+msgstr "U heeft geen geldig emailadres opgegeven."
+
+#, c-format
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in %s."
+msgstr ""
+"U heeft geen velden uit het geimporteerde bestand gekoppeld met de "
+"overeenkomstige velden in %s."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "U bent afgemeld. <br />Bedankt voor het gebruik van het systeem."
+
+msgid "You have to enter a valid value."
+msgstr "U dient een geldige waarde op te geven."
+
+#, c-format
+msgid "You must configure a DataTree backend to use %s."
+msgstr ""
+"U dient een DataTree backend te configureren om %s te kunnen gebruiken."
+
+msgid "You must configure a DataTree backend to use Signups."
+msgstr ""
+"U dient een DataTree backend te configureren om inschrijvingen te kunnen "
+"gebruiken."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr ""
+"U dient het probleem te beschrijven, voordat u het probleemrapport kunt "
+"verzenden."
+
+msgid "You must select an server to be deleted."
+msgstr "U dient een server te selecteren om te verwijderen."
+
+msgid "You must specify a username to remove."
+msgstr "U dient een gebruikersnaam op te geven om te verwijderen."
+
+msgid "You must specify the username to add."
+msgstr "U dient een gebruikersnaam op te geven om toe te voegen."
+
+msgid "You must specify the username to update."
+msgstr "U dient een gebruikersnaam op te geven om bij te kunnen werken."
+
+msgid "You must specify what action to perform."
+msgstr "U dient een bewerking op te geven welke uitgevoerd moet worden."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Uw %s sessie is verlopen. Opnieuw aanmelden, a.u.b."
+
+msgid "Your Email Address:"
+msgstr "Uw emailadres:"
+
+msgid "Your Information"
+msgstr "Uw informatie"
+
+msgid "Your Name:"
+msgstr "Uw naam:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Het toevoegen van gebruikers wordt niet ondersteund door uw authenticatie "
+"backend, of dit is, om de een of andere reden,  uitgeschakeld."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Het weergeven van een gebruikerslijst wordt niet ondersteund door uw "
+"authenticatie backend, of dit is, om de een of andere reden, uitgeschakeld."
+
+msgid "Your browser does not support this feature."
+msgstr "Uw browser ondersteunt deze mogelijkheid niet."
+
+msgid "Your current time zone:"
+msgstr "Uw huidige tijdzone:"
+
+msgid "Your options have been updated."
+msgstr "Uw opties zijn bijgewerkt."
+
+msgid "Your remote servers:"
+msgstr "Uw servers op afstand:"
+
+msgid "Yugoslavia"
+msgstr "Joegoslavië"
+
+msgid "Zaire"
+msgstr "Zaïre"
+
+msgid "Zambia"
+msgstr "Zambia"
+
+msgid "Zimbabwe"
+msgstr "Zimbabwe"
+
+msgid "[Problem Report]"
+msgstr "[Probleemrapport]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[regel %s van %s]"
+
+msgid "calm"
+msgstr "Kalm"
+
+msgid "day"
+msgstr "dag"
+
+msgid "days"
+msgstr "dagen"
+
+msgid "file"
+msgstr "bestand"
+
+#, c-format
+msgid "from the %s (%s)"
+msgstr "van de %s (%s)"
+
+msgid "h:"
+msgstr "h:"
+
+msgid "hour"
+msgstr "uur"
+
+msgid "hours"
+msgstr "uren"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "minute"
+msgstr "minuut"
+
+msgid "minutes"
+msgstr "minuten"
+
+msgid "month"
+msgstr "maand"
+
+msgid "months"
+msgstr "maanden"
+
+msgid "not implemented"
+msgstr "niet van toepassing"
+
+msgid "not yet implemented"
+msgstr "Nog niet van toepassing"
+
+msgid "second"
+msgstr "seconde"
+
+msgid "seconds"
+msgstr "seconden"
+
+msgid "type the password twice to confirm"
+msgstr "Voer, ter bevestiging, het wachtwoord twee maal in"
+
+msgid "unnamed"
+msgstr "onbenoemd"
+
+msgid "vCard"
+msgstr "vCard"
+
+msgid "very little time"
+msgstr "erg kort"
+
+msgid "w:"
+msgstr "w:"
+
+msgid "week"
+msgstr "week"
+
+msgid "weeks"
+msgstr "weken"
+
+msgid "year"
+msgstr "jaar"
+
+msgid "years"
+msgstr "jaren"

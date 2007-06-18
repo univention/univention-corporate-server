@@ -1,0 +1,386 @@
+# Latvian translation for Turba
+# Kaspars Kapenieks <kaspars@rcc.lv>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.1\n"
+"POT-Creation-Date: 2002-11-29 12:14+0200\n"
+"PO-Revision-Date: 2002-11-29 16:00+0200\n"
+"Last-Translator: Kaspars Kapenieks <kaspars@rcc.lv>\n"
+"Language-Team: Latvian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1257\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "fails %s veiksmîgi ielâdçts"
+
+msgid "Add Contact ..."
+msgstr "Pievienot ..."
+
+msgid "Add a new contact"
+msgstr "Pievienot jaunu"
+
+msgid "Add failed"
+msgstr "Pievienot neizdevâs"
+
+msgid "Add"
+msgstr "Pievienot"
+
+msgid "Address Book Listing"
+msgstr "Adresu grâmatu saraksts"
+
+msgid "Addressbook is read-only."
+msgstr "Adresu grâmata pieejama tikai lasîðanai."
+
+msgid "Advanced Search"
+msgstr "Sareþìîtâ meklçðana"
+
+msgid "Alias"
+msgstr "Saîsinâjums"
+
+msgid "An illegal value was specified."
+msgstr "Norâdîta nederîga vçrtîba"
+
+msgid "Available Columns:"
+msgstr "Pieejamâs kolonnas:"
+
+msgid "Browse"
+msgstr "Pârlûkot"
+
+msgid "Cancel"
+msgstr "Atcelt"
+
+msgid "Cell Phone"
+msgstr "Mobilais tâlrunis"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Izvçlieties kâdâ kârtîbâ kolonnas tiks parâdîtas adresu sarakstâ."
+
+msgid "Clear Search"
+msgstr "Notîrît"
+
+msgid "Column Options"
+msgstr "Kolonnu opcijas"
+
+msgid "Company"
+msgstr "Organizâcija"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "%s saturs"
+
+msgid "Default Display"
+msgstr "Noklusçtais ekrâns"
+
+msgid "Delete"
+msgstr "Dzçst"
+
+msgid "Deletion failed"
+msgstr "Izdzçst neizdevâs"
+
+msgid "Directory"
+msgstr "Katalogs"
+
+msgid "Display Options"
+msgstr "Ekrâna opcijas"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Rediìçt '%s'"
+
+msgid "Edit"
+msgstr "Rediìçt"
+
+msgid "Email"
+msgstr "E-pasts"
+
+msgid "Error"
+msgstr "Kïûda"
+
+msgid "Export Addressbook"
+msgstr "Eksportçt adresu grâmatu"
+
+msgid "Export"
+msgstr "Eksportçt"
+
+msgid "Failed to access the specified address book."
+msgstr "Neizdevâs piekïût norâdîtajai adresu grâmatai."
+
+#, c-format
+msgid "Failed to browse %s."
+msgstr "Neizdevâs %s pârlûkoðana."
+
+msgid "Failed to connect to the specified directory."
+msgstr "Neizdevâs pieslçgties norâdîtajam katalogam."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Neizdevâs meklçðana katalogâ: %s"
+
+msgid "Fax"
+msgstr "Fakss"
+
+msgid "Find"
+msgstr "Meklçt"
+
+msgid "From"
+msgstr "No"
+
+msgid "Help"
+msgstr "Palîdzîba"
+
+msgid "Home Address"
+msgstr "Mâjas adrese"
+
+msgid "Home Phone"
+msgstr "Mâjas telefons"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Vai importçjamajos CSV failos pirmâ rinda satur lauku nosaukumus?"
+
+msgid "Illegal or malformed form data."
+msgstr "Nederîgi formas dati."
+
+msgid "Import Addressbook"
+msgstr "Importçt adresu grâmatu"
+
+msgid "Import"
+msgstr "Importçt"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importçt/Eksportçt adresu grâmatas"
+
+msgid "Import/Export"
+msgstr "Importçt/Eksportçt"
+
+msgid "Invalid addressbook."
+msgstr "Nederîga adresu grâmata."
+
+msgid "Invalid e-mail address."
+msgstr "Nederîga e-pasta adrese."
+
+msgid "Invalid name."
+msgstr "Nederîgs vârds."
+
+msgid "Language"
+msgstr "Valoda"
+
+msgid "List"
+msgstr "Saraksts"
+
+msgid "Matching"
+msgstr "Atbilstoðs"
+
+msgid "Message"
+msgstr "Vçstule"
+
+msgid "Name"
+msgstr "Vârds"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Nevienâ no norâdîtajâm adresu grâmatâm nav iespçjams pievienot ierakstus."
+
+msgid "Notes"
+msgstr "Piezîmes"
+
+msgid "Options"
+msgstr "Opcijas"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Lûdzu izvçlieties adresu grâmatu, kurai pievienot ierakstus."
+
+msgid "Please select a directory:"
+msgstr "Lûdzu izvçvieties katalogu:"
+
+msgid "Problem?"
+msgstr "Problçma?"
+
+msgid "Reset"
+msgstr "Dzçst visus"
+
+msgid "Save Changes"
+msgstr "Saglabât izmaiòas"
+
+msgid "Save"
+msgstr "Saglabât"
+
+msgid "Search Results"
+msgstr "Meklçðanas rezultâti"
+
+msgid "Search"
+msgstr "Meklçðana"
+
+msgid "Search&nbsp;Results"
+msgstr "Meklçðanas&nbsp;rezultâti"
+
+msgid "Select the destination to import to:"
+msgstr "Izvçlieties kur importçt:"
+
+msgid "Select the file to import:"
+msgstr "Izvçlieties failu, ko importçt:"
+
+msgid "Select the format to export to:"
+msgstr "Izvçlieties kâdâ formâtâ eksportçt:"
+
+msgid "Select the format to import from:"
+msgstr "Izvçlieties kâdâ formâtâ importçt:"
+
+msgid "Select the source to export from:"
+msgstr "Izvçlieties avotu, no kura importçt:"
+
+msgid "Select view to display by default."
+msgstr "Izvçlieties skatu, ko parâdît noklusçti."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Izvçlieties kurus laukus râdît adresu sarakstos."
+
+msgid "Select your preferred language:"
+msgstr "Izvçlieties valodu:"
+
+msgid "Selected Columns:"
+msgstr "Izvçlieties kolonnas:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Nosûtît pastu uz %s"
+
+msgid "Set your preferred display language."
+msgstr "Izvçlieties ekrâna valodu."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Trûkst daþi no Turbas konfigurâcijas failiem:"
+
+msgid "Success"
+msgstr "Veiksme"
+
+msgid "The data got lost"
+msgstr "Dati tika zaudçti"
+
+msgid "The data got lost."
+msgstr "Dati tika zaudçti."
+
+msgid "The file contained no data."
+msgstr "Failâ nebija datu."
+
+msgid "There are no browseable address books."
+msgstr "Ðeit nav pârlûkojamu adresu grâmatu."
+
+#, c-format
+msgid "There are no entries in %s."
+msgstr "%s nav ierakstu."
+
+msgid "There are no writeable address books."
+msgstr "Nav rediìçjamu adresu grâmatu."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Problçma ar faila ielâdi. Iespçjams, ka fails ir lielâks par maksimâli pieïaujamo "
+"izmçru."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr "Kïûda pievienojot objektu. Sazinieties ar sistçmas administratoru."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr "Kïûda dzçðot objektu. Sazinieties ar sistçmas administratoru."
+
+msgid "There was an error importing the data."
+msgstr "Kïûda importçjot datus."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Kïûda importçjot ielâdçto failu"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr "Ðis fails kontrolç noklusçtos iestatîjumus"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "Ðis fails kontrolç stilus."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr "Ðis fails definç globâlos atribûtu vârdus."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Ðis fails definç pieejamos avotus."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr "Ðis ir galvenais konfigurâcijas fails."
+
+msgid "This number must be at least one."
+msgstr "Ðim skaitlim jâbût vismaz viens"
+
+msgid "This person is already in your addressbook."
+msgstr "Ðî persona jau ir jûsu adresu grâmatâ."
+
+msgid "This value must be a number."
+msgstr "Ðai vçrtîbai ir jâbut skaitlim."
+
+msgid "Title"
+msgstr "Virsraksts"
+
+msgid "Turba is not properly configured"
+msgstr "Turba nav korekti nokonfigurçta"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Nevar ielâdçt %s definîciju."
+
+msgid "User Options"
+msgstr "Lietotâja opcijas"
+
+msgid "View to display by default:"
+msgstr "Skatîjums, ko parâdît pçc noklusçðanas:"
+
+msgid "Warning"
+msgstr "Brîdinâjums"
+
+msgid "Work Address"
+msgstr "Darba adrese"
+
+msgid "Work Phone"
+msgstr "Darba telefons"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Nav norâdîta importçtâ faila lauku atbilstîba adresu grâmatas laukiem."
+
+msgid "Your Information"
+msgstr "Jûsu informâcija"
+
+msgid "Your options have been updated."
+msgstr "Jûsu opcijas ir saglabâtas."
+
+msgid "[Edit]"
+msgstr "[Rediìçt]"
+
+msgid "add column"
+msgstr "pievienot kolonnu"
+
+msgid "move left"
+msgstr "pârvietot pa kreisi"
+
+msgid "move right"
+msgstr "pârvietot pa labi"
+
+msgid "remove column"
+msgstr "izdzçst kolonnu"

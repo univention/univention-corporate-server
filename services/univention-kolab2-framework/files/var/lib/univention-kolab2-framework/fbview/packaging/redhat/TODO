@@ -1,0 +1,12 @@
+RPM To-Do List                                                          TODO
+=--------------------------------------------------------------------------=
+
+$Horde: horde/packaging/redhat/TODO,v 1.8 2003/02/28 21:20:16 bjn Exp $
+
+To Do:
+
+ [ ] PHP 4.3.1: http://nixil.net/curl.patches.tar.gz
+ [ ] %{initdir} example from Matt Wilson
+ [ ] i18n SPEC files
+ [ ] Icon: directives pointing to file in graphics
+

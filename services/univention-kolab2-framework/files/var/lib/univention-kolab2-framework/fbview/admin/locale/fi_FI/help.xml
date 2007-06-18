@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<!-- $Horde: horde/admin/locale/fi_FI/help.xml,v 1.1 2002/12/28 13:04:27 jan Exp $ -->
+<help>
+
+<entry id="admin-phpshell">
+    <title>Yll‰pidon tyˆkalut: PHP-komentotulkki</title>
+    <heading>Miten PHP-komentotulkkia k‰ytet‰‰n</heading>
+    <para>PHP-komentotulkkissa voi suorittaa palvelimella mit‰ tahansa
+          PHP-komentoja. N‰m‰ komennot suoritetaan <code>eval()</code>
+          funktion sis‰ll‰ ja nykyisen istunnon kontekstissa. T‰m‰
+          komentotulkki on ensisijaisesti tarkoitettu syntaksin
+          tarkistukseen ja yksinkertaisen koodin suoritukseen. Huomaa,
+          ett‰ tulostaaksesi jotakin, niin sinun pit‰‰ k‰ytt‰‰ echo ja
+          print komentoja.</para>
+</entry>
+
+<entry id="admin-sqlshell">
+    <title>Yll‰pidon tyˆkalut: SQL-komentotulkki</title>
+    <heading>Miten SQL-komentotulkkia k‰ytet‰‰n</heading>
+    <para>SQL-komentotulkissa voi suorittaa mit‰ tahansa SQL-lausekkeita,
+          jotka suoritetaan tietokannassa. K‰ytett‰v‰ tietokanta on
+          m‰‰ritelty $conf['sql'] ja sit‰ k‰ytet‰‰n PEAR:DB-luokan avulla.
+          Voit k‰ytt‰‰ t‰t‰ tyˆkaluja tehd‰ksesi kyselyj‰ tietokantaan,
+          p‰ivitt‰‰ksesi tietoja tietokannassa, poistaaksesi tietoja
+          tietokannasta jne. tai hakea tietoja tietokannasta. SQL-komennot
+          l‰hetet‰‰n suoraan tietokannalle ja paluuarvona tulee statuskoodi
+          ja kyselyn palauttaman arvo.</para>
+</entry>
+
+</help>

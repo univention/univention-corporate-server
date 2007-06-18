@@ -1,0 +1,595 @@
+# HORDE Polish translation.
+# Copyright (C) 2001 Mariusz Zynel <mariusz@mizar.org>
+# Mariusz Zynel <mariusz@math.uwb.edu.pl>, 2001.
+# Piotr Roszatycki <dexter@debian.org>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2001-12-21 12:51+0100\n"
+"PO-Revision-Date: 2001-12-21 13:51+0100\n"
+"Last-Translator: Piotr Roszatycki <dexter@debian.pl>\n"
+"Language-Team: Polish <pl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s - cykliczne operacje - potwierdzenie"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s - gotowy do wykonania cyklicznych operacji zaznaczonych poni¿ej."
+
+msgid "24 hours"
+msgstr "24 godz."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add a new user:"
+msgstr "Dodaj nowego u¿ytkownika:"
+
+msgid "Add pair"
+msgstr "Dodaj parê"
+
+msgid "Add user"
+msgstr "Dodaj u¿ytkownika"
+
+msgid "Adding users is disabled."
+msgstr "Dodawanie u¿ytkowników jest wy³aczone."
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Addressbook"
+msgstr "Ksi±¿ka"
+
+msgid "Administration"
+msgstr "Administracja"
+
+msgid "Alias"
+msgstr "Alias"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr "Próba zalogowania siê nie powiod³a siê: brak wpisu dla %s."
+
+msgid "Attempt to bind without a valid connection."
+msgstr "Próba zalogowania siê bez po³±czenia."
+
+msgid "Available fields:"
+msgstr "Dostêpne ksi±¿ki adresowe:"
+
+#, c-format
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr ""
+"Zalogowanie siê do serwera %s, dn %s jako %s, nie powiod³o siê: [%d] %s"
+
+msgid "Birthday"
+msgstr "Data urodzenia"
+
+msgid "Bugs"
+msgstr "Sierpieñ"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalendarz"
+
+msgid "Cancel Problem Report"
+msgstr "Anuluj raport o problemie"
+
+msgid "Cell Phone"
+msgstr "Tel. kom."
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Zaznacz pozycjê dla której chcesz wykonaæ operacjê."
+
+msgid "Close Help Window"
+msgstr "Zamknij okno pomocy"
+
+msgid "Close Help"
+msgstr "Zamknij pomoc"
+
+msgid "Close Window"
+msgstr "Zamknij okno"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Confirm Password"
+msgstr "Potwierd¼ has³o"
+
+msgid "Contents of the GZipped Tarball"
+msgstr "Zawarto¶æ skompresowanego archiwum TAR"
+
+msgid "Contents of the RAR archive"
+msgstr "Zawarto¶æ archiwum RAR"
+
+msgid "Contents of the Zip file"
+msgstr "Zawarto¶æ archiwum Zip"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Nie mo¿na otworzyæ modu³u Maintenance_Task %s"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Codziennie"
+
+msgid "Database query failed."
+msgstr "Zapytanie do bazy danych nie powiod³o siê."
+
+msgid "Default Identity"
+msgstr "Domy¶lna to¿samo¶æ"
+
+msgid "Delete"
+msgstr "Usuñ"
+
+msgid "Describe the Problem"
+msgstr "Opisz problem"
+
+msgid "Discussions"
+msgstr "Dyskusje"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Brak bezpo¶redniego dostêpu do maintenance.php"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Brak rezultatów."
+
+msgid "Error"
+msgstr "B³±d"
+
+msgid "Every Login"
+msgstr "Co ka¿de zalogowanie siê"
+
+msgid "Example values:"
+msgstr "Przyk³adowe warto¶ci:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Brak spodziewanego \"BEGIN\" w linii %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Brak spodziewanego \"END:%s\" w linii %d."
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "B³±d podczas ³±czenia siê z serwerem LDAP z ustawieniami."
+
+msgid "Failed to connect to LDAP server."
+msgstr "B³±d podczas ³±czenia siê z serwerem LDAP."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "B³±d podczas ³±czenia siê z serwerem LDAP %s."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "File Manager"
+msgstr "Mened¿er plików"
+
+msgid "Full Description:"
+msgstr "Pe³ny opis:"
+
+msgid "Headlines"
+msgstr "Nag³ówki"
+
+msgid "Help"
+msgstr "Pomoc"
+
+msgid "Home Address"
+msgstr "Adres domowy"
+
+msgid "Home Phone"
+msgstr "Tel. dom."
+
+msgid "Horde Login"
+msgstr "Logowanie w Horde"
+
+msgid "Horde System"
+msgstr "System Horde"
+
+msgid "Horde User Administration"
+msgstr "Administracja u¿ytkowników Horde"
+
+msgid "Horde Wireless"
+msgstr "Bezprzewodowe Horde"
+
+msgid "Horde is not properly configured"
+msgstr "Horde nie jest w pe³ni skonfigurowane."
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "B³±d importu: "
+
+msgid "Import"
+msgstr "Import"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Importowane pole: %s"
+
+msgid "Imported fields:"
+msgstr "Importowane pola:"
+
+msgid "List Help Topics"
+msgstr "Wy¶wietl tematy pomocy"
+
+msgid "Listing users is disabled."
+msgstr "Listowanie u¿ytkowników jest wy³±czone."
+
+msgid "Log in"
+msgstr "Zaloguj"
+
+msgid "Log out"
+msgstr "Wyloguj"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Poczta"
+
+msgid "Map Date and Time Fields"
+msgstr "Mapa pól daty i czasu"
+
+msgid "Map Import Fields"
+msgstr "Mapa importowanych pól"
+
+msgid "Matching fields"
+msgstr "Pasuj±ce pola"
+
+msgid "Message"
+msgstr "Wiadomo¶æ"
+
+msgid "Monthly"
+msgstr "Co miesi±c"
+
+msgid "Name"
+msgstr "Nazwisko"
+
+msgid "Network"
+msgstr "Sieæ"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Brak informacji o serwerze LDAP z ustawieniami."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Brak informacji o serwerze SQL z kategoriami."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Brak informacji o serwerze SQL z ustawieniami."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Brak informacji o serwerze SQL z u¿ytkownikami"
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "Nie znaleziono pozycji dla %s."
+
+msgid "No preferences are available."
+msgstr "Brak dostêpnych ustawieñ."
+
+msgid "No preferences were retrieved."
+msgstr "Nie pobrano ¿adnych ustawieñ."
+
+msgid "Notes"
+msgstr "Uwagi"
+
+msgid "Password"
+msgstr "Has³o"
+
+msgid "Passwords cannot be blank."
+msgstr "Has³o nie mo¿e byæ puste."
+
+msgid "Passwords must match."
+msgstr "Has³o musi pasowaæ."
+
+msgid "Perform Maintenance Operations"
+msgstr "Wykonaj cykliczne operacje"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please log in"
+msgstr "Proszê zalogowaæ siê"
+
+msgid "Please provide a summary of the problem."
+msgstr "Proszê opisaæ problem."
+
+msgid "Please provide your username and password"
+msgstr "Proszê podaæ nazwê u¿ytkownika i has³o"
+
+msgid "Presentations"
+msgstr "Prezentacje"
+
+msgid "Problem Description"
+msgstr "Opis problemu"
+
+msgid "Remove pair"
+msgstr "Usuñ parê"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'basedn' dla konfiguracji autentyfikacji. "
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'basedn' dla konfiguracji ustawieñ."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'database' dla konfiguracji autentyfikacji."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'database' dla konfiguracji kategorii."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'database' dla konfiguracji ustawieñ."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'hostspec' dla konfiguracji autentyfikacji."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'hostspec' dla konfiguracji kategorii."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'hostspec' dla konfiguracji ustawieñ."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'password' dla konfiguracji autentyfikacji."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'password' dla konfiguracji kategorii."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'password' dla konfiguracji ustawieñ."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'phptype' dla konfiguracji autentyfikacji."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'phptype' dla konfiguracji kategorii."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'phptype' dla konfiguracji ustawieñ."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'table' dla konfiguracji autentyfikacji."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'table' dla konfiguracji kategorii."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'table' dla konfiguracji ustawieñ."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'tableRelations' dla konfiguracji kategorii."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'uid' dla konfiguracji autentyfikacji."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'uid' dla konfiguracji ustawieñ."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Brak wymaganej opcji 'username' dla konfiguracji autentyfikacji."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Brak wymaganej opcji 'username' dla konfiguracji kategorii."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Brak wymaganej opcji 'username' dla konfiguracji ustawieñ."
+
+msgid "Reset"
+msgstr "Kasuj"
+
+msgid "Return to Options"
+msgstr "Powrót do opcji"
+
+msgid "Role"
+msgstr "Stanowisko"
+
+msgid "Save Options"
+msgstr "Zapisz opcje"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Wybierz znaki z poni¿szych pól formularza. Mo¿esz je skopiowaæ i wkleiæ z "
+"pola tekstowego."
+
+msgid "Select the date delimiter:"
+msgstr "Wybierz znak podzia³u daty:"
+
+msgid "Select the date format:"
+msgstr "Wybierz format daty:"
+
+msgid "Select the time format:"
+msgstr "Wybierz format czasu:"
+
+msgid "Select two matching fields."
+msgstr "Wybierz dwa pasuj±ce pola."
+
+msgid "Send Problem Report"
+msgstr "Wy¶lij raport o problemie"
+
+msgid "Short Summary:"
+msgstr "Krótkie streszczenie:"
+
+msgid "Skip Maintenance"
+msgstr "Pomiñ operacje cykliczne"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Brakuje kilku plików konfiguracyjnych Horde:"
+
+msgid "Special Character Input"
+msgstr "Edycja znaków specjalnych"
+
+msgid "Success"
+msgstr "Powodzenie"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "Uda³o siê dodaæ '%s' do systemu."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Uda³o siê usun±æ '%s' z systemu."
+
+msgid "Tasks"
+msgstr "Zadania"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Rejestr s³u¿y do komunikacji pomiêdzy aplikacjami Horde. Powinienie¶ "
+"wprowadziæ tutaj wszystkie zainstalowane aplikacje Horde."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Wyst±pi³ problem przy dodawaniu '%s' do systemu."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Wyst±pi³ problem przy usuwaniu '%s' z systemu."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Ten plik odpowiada za globalne ustawienia skojarzeñ typów MIME dla ca³ego "
+"¶rodowiska Horde, pozwalaj±c aplikacjom na korzystanie z zewnêtrznych "
+"programów (takich jak enscript lub mswordview) do wy¶wietlania zawarto¶ci "
+"dokumentu w postaci HTML rozumianego przez przegl±darkê."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings.."
+msgstr ""
+"Ten plik odpowiada za plik stylu, który jest u¿yty do ustawienia kolorów i "
+"fontów w ¶rodowisku Horde i wszystkich aplikacji nie zawierajacych w³asnych "
+"definicji."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Ten plik zawiera mapê rozszerzeñ plików powi±zanych z typami MIME, "
+"pozwalaj±c aplikacjom ¶rodowiska Horde na ustawienie odpowiedniego typu "
+"dokumentu."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"To jest podstawowy plik konfiguracyjny Horde. Zawiera on ¶cie¿ki i "
+"podstawowe dane dla systemu Horde i wszystkich jego aplikacji."
+
+msgid "Title"
+msgstr "Tytu³"
+
+msgid "Type mismatch."
+msgstr "Nie pasuj±cy typ."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "B³±d podczas ³±czenia siê z serwerem SQL."
+
+msgid "Unable to modified preferences."
+msgstr "B³±d podczas zmiany ustawieñ."
+
+msgid "Unable to register preferences in session."
+msgstr "B³±d podczas rejestrowania ustawieñ w sesji."
+
+msgid "Unable to translate this Word document"
+msgstr "Nie mo¿na przet³umaczyæ tego dokumentu Word-a"
+
+msgid "Undo Changes"
+msgstr "Cofnij zmiany"
+
+msgid "Unexpected end of file."
+msgstr "Niespodziewany koniec pliku."
+
+msgid "Use Default Value"
+msgstr "U¿yj domy¶lnej warto¶ci"
+
+msgid "Username"
+msgstr "Nazwa u¿ytkownika"
+
+msgid "Users in the system:"
+msgstr "U¿ytkownicy w systemie:"
+
+msgid "Warning!"
+msgstr "Ostrze¿enie!"
+
+msgid "Warning"
+msgstr "Ostrze¿enie"
+
+msgid "Weekly"
+msgstr "Co tydzieñ"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Witamy, %s"
+
+msgid "Work Address"
+msgstr "Adres do pracy"
+
+msgid "Work Phone"
+msgstr "Tel. do pracy"
+
+msgid "YY"
+msgstr "RR"
+
+msgid "Yearly"
+msgstr "Co rok"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Musisz opisaæ problem zanim go wy¶lesz."
+
+msgid "You must specify a username to remove."
+msgstr "Musisz okre¶liæ u¿ytkownika, którego chcesz usun±æ."
+
+msgid "You must specify the username to add."
+msgstr "Musisz okre¶liæ u¿ytkownika, którego chcesz dodaæ."
+
+msgid "Your Email Address:"
+msgstr "Twój adres e-mail:"
+
+msgid "Your Name:"
+msgstr "Twoje imiê i nazwisko:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Ten system autentykacji nie obs³uguje dodawania u¿ytkowników, lub ta opcja "
+"zosta³a wy³±czona."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Ten system autentykacji nie obs³uguje listowania u¿ytkowników, lub ta opcja "
+"zosta³a wy³±czona."
+
+msgid "[Problem Report]"
+msgstr "[Raport o problemie]"

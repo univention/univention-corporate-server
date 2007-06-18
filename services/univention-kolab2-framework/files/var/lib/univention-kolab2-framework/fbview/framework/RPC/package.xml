@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/RPC/package.xml,v 1.7 2004/01/24 23:21:08 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_RPC</name>
+  <summary>Horde RPC API</summary>
+  <description>
+    The Horde_RPC:: class provides a common abstracted interface to
+    various remote methods of accessing Horde functionality.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jan</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>beta</state>
+    <date>2003-11-25</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="RPC.php"/>
+      <dir baseinstalldir="/Horde" name="RPC" role="php">
+        <file name="soap.php"/>
+        <file name="syncml.php"/>
+        <file name="syncml_wbxml.php"/>
+        <file name="webdav.php"/>
+        <file name="xmlrpc.php"/>
+      </dir>
+      <file role="test" name="tests/rpc-test.php"/>
+    </filelist>
+
+    <deps>
+      <dep type="ext" rel="has">xmlrpc</dep>
+      <dep type="pkg" rel="ge" version="0.8RC3">SOAP</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>beta</state>
+      <date>2003-11-25</date>
+      <notes>Initial release as a Horde package</notes>
+    </release>
+  </changelog>
+</package>

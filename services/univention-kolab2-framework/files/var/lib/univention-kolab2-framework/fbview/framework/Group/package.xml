@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Group/package.xml,v 1.7 2004/01/15 22:48:02 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Group</name>
+  <summary>Horde User Groups System</summary>
+  <description>
+    The Group:: class provides the Horde groups system.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial packaging.</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Group.php" />
+      <dir baseinstalldir="/Horde" role="php" name="Group">
+        <file name="hooks.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Group" />
+    <provides type="class" name="DataTreeObject_Group" />
+    <provides type="class" name="Group_hooks" />
+
+    <deps>
+      <dep type="ext" rel="has">gettext</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_DataTree</dep>
+      <dep type="pkg" rel="has">Horde_Auth</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-05</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

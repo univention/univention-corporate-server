@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/XML_RAX/package.xml,v 1.1 2004/01/20 02:18:51 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>XML_RAX</name>
+  <summary>Record-oriented API for XML</summary>
+  <description>
+    Record-oriented API for XMLRecord-oriented API for XML
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-01-19</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file baseinstalldir="/XML" role="php" name="RAX.php" />
+    </filelist>
+
+    <provides type="class" name="XML_RAX" />
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-01-19</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

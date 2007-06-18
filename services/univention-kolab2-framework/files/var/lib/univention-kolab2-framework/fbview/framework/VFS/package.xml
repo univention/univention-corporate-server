@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/VFS/package.xml,v 1.32 2004/05/27 22:09:46 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>VFS</name>
+  <summary>Virtual File System API</summary>
+  <description>This package provides a Virtual File System API, with backends for:
+* SQL
+* FTP
+* Local filesystems
+* Hybrid SQL and filesystem
+
+... and more planned. Reading/writing/listing of files are all
+supported, and there are both object-based and array-based interfaces
+to directory listings.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chagenbu</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>jellybob</user>
+      <role>developer</role>
+      <name>Jon Wood</name>
+      <email>jon@jellybob.co.uk</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.6</version>
+    <state>beta</state>
+    <date>2003-99-99</date>
+    <notes>* Add a CLI script for accessing and modifying VFS backends.
+* Added the getCurrentDirectory() function.
+* phpdoc has been updated and should now generate correctly in all files.
+* Return error if trying to copy a file onto itself with the file driver (http://bugs.horde.org/details.php?id=168).</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/" name="VFS.php"/>
+      <dir name="VFS" role="php">
+        <file name="Browser.php" />
+        <file name="GC.php" />
+        <file name="Object.php" />
+        <file name="ListItem.php" />
+        <file name="file.php" />
+        <file name="ftp.php" />
+        <file name="musql.php" />
+        <file name="sql.php" />
+        <file name="sql_file.php" />
+      </dir>
+      <file role="script" install-as="vfs.php" name="scripts/vfs.php"/>
+    </filelist>
+
+    <provides type="class" name="VFS"/>
+    <provides type="class" name="VFS_file"/>
+    <provides type="class" name="VFS_ftp"/>
+    <provides type="class" name="VFS_musql"/>
+    <provides type="class" name="VFS_sql"/>
+    <provides type="class" name="VFS_sql_file"/>
+    <provides type="class" name="VFS_Browser"/>
+    <provides type="class" name="VFS_GC"/>
+    <provides type="class" name="VFS_ListItem"/>
+    <provides type="class" name="VFS_Object"/>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+"/>
+      <dep type="ext" rel="has">gettext</dep>
+    </deps>
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2002-09-24</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+
+    <release>
+      <version>0.0.2</version>
+      <state>alpha</state>
+      <date>2002-10-22</date>
+      <notes>Added an ObjectVFS wrapper class, returns a ListItem on each call to listFolder, until no items are left.</notes>
+    </release>
+
+    <release>
+      <version>0.0.3</version>
+      <state>beta</state>
+      <date>2003-07-03</date>
+      <notes>Added a class for providing garbage collection; removed all Horde dependancies.</notes>
+    </release>
+
+    <release>
+      <version>0.0.4</version>
+      <state>beta</state>
+      <date>2003-09-09</date>
+      <notes>* Default ftp driver to port 21.
+* Distinguish between connection and authentication errors in the ftp driver.
+* Clean up temporary files if the FTP driver wasn't able to retrieve a file.
+* Add exists() method.
+* Add emptyFolder() method.
+* Add $recursive parameter to all deleteFolder() implementations.
+* Add FTPS support.</notes>
+    </release>
+
+    <release>
+      <version>0.0.5</version>
+      <state>beta</state>
+      <date>2003-99-99</date>
+      <notes>* Fix typo that prevented the sql_file driver to load its
+      parameters.
+* PHP 5 compatibility fixes.
+* Add 'pasv' parameter for FTP driver.
+* Add writeData() method to sql_file driver.
+* Support ~/path when a 'home' parameter is defined.</notes>
+    </release>
+  </changelog>
+
+</package>

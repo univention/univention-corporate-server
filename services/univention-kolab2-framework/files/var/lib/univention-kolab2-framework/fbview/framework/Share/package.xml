@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Share/package.xml,v 1.8 2004/01/15 22:35:00 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Share</name>
+  <summary>Horde Shared Permissions System</summary>
+  <description>
+    Horde_Share:: This class provides an interface to all shares a user might have.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>mac</user>
+      <role>lead</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+    <maintainer>
+      <user>jvandal</user>
+      <role>developer</role>
+      <name>Joel Vandal</name>
+      <email>jvandal@infoteck.qc.ca</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial packaging.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Share.php" />
+    </filelist>
+    <provides type="class" name="DataTreeObject_Share" />
+    <deps>
+      <dep type="pkg" rel="has">Horde_Identity</dep>
+      <dep type="pkg" rel="has">Horde_Perms</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-05</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!-- $Horde: horde/locale/uk_UA/help.xml,v 1.2 2004/05/27 20:22:12 jan Exp $ -->
+<help>
+  <entry id="summary" state="new">
+<title>The Portal Page</title>
+ <para>
+  This portal page provides a quick summary of all your important
+  information. For example, it might show how many new e-mail messages you
+  have in your INBOX, upcoming events on your calendar, tasks on your to-do
+  list, headlines from selected news services, and so on.  Many of these
+  summaries will contain quick shortcuts to common functions, such as
+  composing a new mail message, creating a new calendar event or task, etc.
+ </para>
+ <para>
+  The contents of this portal page are customizable via the Layout button.
+  For example, you can choose which items to include on this portal page as
+  well as in which order they are shown.
+ </para>
+</entry>
+  <entry id="navbar" state="new">
+<title>The Application Navigation Bar</title>
+ <para>
+  At the left hand side of the web page is the application navigation bar.
+  Click on the icons on this navigation bar to quickly and easily switch
+  between the available applications.
+ </para>
+</entry>
+  <entry id="prefs-do_maintenance" state="new">
+    <title>Preferences: Maintenance: Do Maintenance</title>
+    <para>
+    If you would like to perform maintenance operations on login, check this box.
+    </para>
+</entry>
+  <entry id="prefs-confirm_maintenance" state="new">
+    <title>Preferences: Maintenance: Confirm Maintenance</title>
+    <para>
+    If you would like to confirm all maintenance tasks before they are run, check this box. If left unchecked, all maintenance operations that need to be run will be performed automatically with no chance to cancel on login.
+    </para>
+</entry>
+</help>

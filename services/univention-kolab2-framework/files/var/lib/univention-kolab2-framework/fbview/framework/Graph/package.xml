@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Graph/package.xml,v 1.9 2004/05/06 21:14:55 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Graph</name>
+  <summary>Horde graphing suite</summary>
+  <description>
+    Provides a set of graph backends and methods for creating all kinds of graphs using the Horde_Image abstraction package.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="Horde" name="Graph.php" />
+      <dir name="Graph" baseinstalldir="Horde" role="php">
+        <dir name="Chart" role="php">
+          <file name="pie.php" />
+          <file name="pie3d.php" />
+        </dir>
+        <dir name="Plot" role="php">
+          <file name="bar.php" />
+          <file name="bargrouped.php" />
+          <file name="barstacked.php" />
+          <file name="scatter.php" />
+          <file name="line.php" />
+        </dir>
+      </dir>
+
+      <dir name="tests" role="test">
+        <file name="test01.php" />
+        <file name="test02.php" />
+        <file name="test03.php" />
+        <file name="test04.php" />
+        <file name="test05.php" />
+        <file name="test06.php" />
+        <file name="test_bargrouped.php" />
+        <file name="test_pie3d.php" />
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="pkg" rel="has">Horde_Cache</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_Image</dep>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-05</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

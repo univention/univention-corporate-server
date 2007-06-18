@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Scheduler/package.xml,v 1.5 2004/01/05 22:53:25 slusarz Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_Scheduler</name>
+  <summary>Horde Scheduler System</summary>
+  <description>
+    TODO
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial packaging.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Scheduler.php" />
+
+      <dir name="Scheduler" baseinstalldir="/Horde" role="php">
+        <file name="cron.php" />
+      </dir>
+    </filelist>
+  </release>
+
+  <deps>
+    <dep type="pkg" rel="has">Horde_Util</dep>
+    <dep type="pkg" rel="has">VFS</dep>
+  </deps>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-05</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

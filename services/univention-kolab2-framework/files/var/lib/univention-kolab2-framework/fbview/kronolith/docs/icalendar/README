@@ -1,0 +1,6 @@
+This directory contains some example .ics files - iCalendar - for use
+in testing importing/exporting of data from Kronolith and for
+developers who need examples to work with the format.
+
+The holidays/ directory contains files that define different sets of
+holidays, that can be imported into Kronolith calendars.

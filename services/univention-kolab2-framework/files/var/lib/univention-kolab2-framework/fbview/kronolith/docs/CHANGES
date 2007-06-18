@@ -1,0 +1,263 @@
+----
+v2.0
+----
+
+[cjh] Add Kolab drivers (Stuart Bingë <s.binge@codefusion.co.za>).
+
+
+----------
+v2.0-ALPHA
+----------
+
+[cjh] Remote calendars are now parsed with the Horde_iCalendar library,
+      which allows for much better iCalendar support, better handling of
+      timezones, etc.
+[cjh] The month view no longer shows blank boxes for days in the grid that are
+      outside of the current month - instead, it goes back into the previous
+      month and forward into the next month however many days are showable.
+[cjh] Kronolith now includes the functionality, previously in Moment,
+      to track attendees for events, send invitations, updates, and
+      cancellations, and do scheduling based on freebusy information
+      (Stuart Binge <s.binge@codefusion.co.za>).
+[cjh] Kronolith_Driver::move() added to prevent event IDs changing when moving
+      between calendars, if possible.
+[cjh] GUIDs now only contain kronolith: and the event ID - sharename is not needed.
+[cjh] Event IDs are now 32-character unique strings, to be useable as GUIDs.
+      The SQL table definition has changed; conversion scripts are in scripts/.
+[cjh] eventd now uses the Horde_Scheduler API's ability to serialize and
+      save state; it's now meant to be run out of cron every minute (no
+      more slow memory munching).
+[cjh] Show start and end times in event tooltips
+      (Payton <payton@repligen.com>).
+[cjh] Fix events that recur every n months (where n != 1) on the same
+      weekday when using the SQL driver.
+[cjh] Track addition, modification, and deletion of events
+      with the Horde History:: API.
+[cjh] The event editor now switches the list of categories to match the
+      calendar that you are adding the event to.
+[cjh] Show tooltips with event descriptions.
+[cjh] Show a legend mapping categories to colors
+      (Jason Rust <jrust@rustyparts.com>).
+[mir] listEvents now supports an option to NOT do recurrence (useful for
+      synchronizing with other systems).
+[cjh] First shot at a reminder daemon, written in PHP and using the
+      Horde_Scheduler framework.
+[cjh] Cache free/busy information for an hour.
+[cjh] Add viewing of shared calendars side-by-side in the month view
+      (j.huinink@wanadoo.nl).
+[cjh] Kronolith now generates free/busy information for any calendar that the
+      viewer has PERMS_SHOW permission to. This can be used in, e.g., Outlook
+      for scheduling meetings, etc.
+[cjh] Support for guest calendars.
+[cjh] Use the global shares editing page for changing/assigning share permissions.
+[mac] Add support for subscribing to remote iCalendar files.
+[cjh] Remove the Share header for now; takes up far too much space
+      to communicate limited information.
+[mac] Add ability to display multiple calendars at a time.
+[cjh] Palm DateBook (PDB) import support.
+[mac] Add shared calendars support (Joel Vandal <jvandal@infoteck.qc.ca>).
+[cjh] Kronolith can now send iCalendar invitations to an event.
+[cjh] Import/Export of iCalendar data works for basic attributes now.
+[cjh] Use Horde::compressOutput() for output compression.
+
+
+------
+v1.1.1
+------
+
+[jan] Fix some display bugs with recurring events in the sql driver (cjh).
+
+
+----------
+v1.1.1-RC1
+----------
+
+[jan] Fix broken image tag in day and week views.
+[jan] Fix "New Category" selection in event edit view.
+[jan] Add Arabic (Syria) translation (Platinum Development Team
+      <devteam@platinum-sy.net>).
+
+
+----
+v1.1
+----
+
+[cjh] Kronolith_Event objects now know how to obtain their driver,
+      rather than storing a reference. Makes for much smaller/better
+      return values over XML-RPC, at least.
+[cjh] Fix a bug in the spanning algorithm when there were two
+      independant sets of overlapping events that were not common
+      factors (i.e, a set of 2 events and a set of 3 events). Also
+      start to document the row spanning code.
+[mir] Implement week of month recurrence for SQL driver.
+[cjh] Use Kronolith::listEvents() everywhere, so there is only one body
+      of code to debug/add to for listing of events.
+[cjh] Show Nag tasks, if requested, on all views.
+[cjh] Use Kronolith::listEvents() in the week views; should be much
+      more efficient (fewer SQL queries/MCAL calls).
+[cjh] Fix summary display of events after an empty day.
+[cjh] Fix links to events on other calendars in the summary.
+[cjh] Show category colors in the Kronolith summary.
+[cjh] Show current category color in category color options screen
+      (Jan Kuipers <jrkuipers@lauwerscollege.nl>).
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>,
+      Marius Dragulescu <mariusd@urban-grafx.ro>).
+[jan] Add Print button for day, week, month views (mac).
+[jan] Clean up url creation and XHTML (mac).
+[jan] Add Norwegian Bokmaal translation (Torstein S. Hansen <huleboer@techbee.no>).
+[jan] Add Kronolith::addParameter().
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[mac] Clean up url creation and XHTML.
+[jan] Add Simplified Chinese translation (Zhang Bo <boozhang@sdb.ac.cn>).
+[jan] Add Bulgarian translation (Miroslav Pendev <miro@cybershade.us>).
+[jan] Replace <?= with <?php echo, and remove the short_open_tags requirement.
+[jan] Add delete link to event view.
+[jan] Remove deprecated DB::isWarning() calls.
+
+
+----
+v1.0
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[jan] Add Korean translation (J.I Kim <aporie@netian.com>).
+[jan] Add Danish translation (Bill Edgington <horde@0x20.com>).
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[jan] Add event view page and make it the standard if clicking on an event
+      link (Brandon Knitter <knitterb@blandsite.org>).
+[jan] Show event description in link tooltip.
+[jan] Add Event::getLink().
+[cjh] Track when events are modified.
+[cjh] Add exceptions to recurring events.
+[cjh] Allow same deletion options as Palm for recurring events.
+[cjh] Add a preference for confirming event deletion.
+[jan] Add Slovak translation (Leo Mrafko <leo@oel.sk>).
+[jan] Add "Save as new" button (Michael Cochrane <mike@graftonhall.co.nz>).
+[cjh] Close a potential problem with register_globals On and $js_onLoad.
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[cjh] Add new event link to the summary (Quinn Wilson <qwilson@midworld.org>).
+[cjh] Use the new PrefsUI class.
+[cjh] Show events that extend past the end hour of the day view.
+[jon] Adapt to the new Horde::img() syntax.
+[cjh] Switch output compression to ob_gzhandler().
+[cjh] Fix column widths in week view to be consistent
+      (Jeff Graves <jeff@image-src.com>).
+[jan] Add Polish translation (Maciek Uhlig <muhlig@us.edu.pl>).
+[cjh] Add preferences for the hour range shown in the day/week views.
+[cjh] Use KRONOLITH_TEMPLATES constant for all template paths.
+[cjh] Use $registry->getParam() for all Registry information.
+[cjh] Use the new Notification system.
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Use the new notification framework. This breaks compatibility with
+      Horde 2.0.
+[jan] Remove the standard value for the language preference. The language to
+      fall back to should be set Horde wide in lang.php instead.
+[jan] Change '24hr' preference to 'twentyFour' to be ldap compliant.
+
+
+------
+v0.0.3
+------
+
+[bjn] Change 'en' and 'en_EN' locales to 'en_US' (default).
+[jan] Add Brazilian Portuguese translation (Samuel Mota
+      <samuel@bumerangue.com>).
+[jan] Add DHTML date navigator.
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add Russian translation (Anton Nekhoroshih <anton@valuehost.ru>).
+[jan] Recode the html display functions and add extra row for all day events.
+[cjh] Let the Registry handle retrieving preferences.
+[jan] Add icon for recurring events.
+[jan] Add preference to show due tasks from Nag in the calendar.
+[jan] Add import/export capability.
+[jan] Add Italian translation (Giovanni Meneghetti <gmeneghetti@infvic.it>).
+[cjh] Add Traditional Chinese translation (David Chang <david@thbuo.gov.tw>).
+[jan] Add support for timezones
+[jan] Put new-event-link into week header instead around times in week view.
+[jan] Add day of month into week headers
+[cjh] Add Czech translation (pchytil@asp.ogi.edu).
+[jan] The menu buttons now open the day/week/month view corresponding to the
+      actual view. New 'Today' button.
+[jan] Make sure that events before 8am are shown correctly.
+[cjh] Add an initial MySQL driver (Luc Saillard <luc+kronolith@alcove.fr>).
+[avsm] Replace $conf['paths'] with the $registry equivalents.
+[jan] Let the week alternatively start with Sunday. ISO conform week number
+      calculation.
+[cjh] Prevent all day events from causing the day to start displaying at 12am.
+[cjh] Add $conf['menu']['apps'] support and a help link.
+[jan] Let the users alternatively select end time or duration of an event.
+[jan] Add support for alarms.
+[cjh] Add a preference to use hour increments instead of half-hour (Jan
+      Schneider <janmailing@gmx.de>).
+[cjh] Bold in progress events in the summary and don't show events that are
+      over (Jan Schneider <janmailing@gmx.de>).
+[cjh] Add delete links on event edit pages, and make sure delete and cancel
+      work without javascript (Jan Schneider <janmailing@gmx.de>).
+[cjh] Add translation framework.
+[cjh] Make sure events are sorted by time in the summary.
+[cjh] Use the *url() functions more consistently to make sure that
+      cookie-less sessions work.
+
+
+------
+v0.0.2
+------
+
+[cjh] Allow all-day events and montly-on-weekday recurrence.
+[cjh] Add a Horde summary API function.
+[cjh] Use 24hr time preference (Jan Schneider <janmailing@gmx.de>).
+[cjh] Added Preferences framework into Kronolith.
+[jon] Merge doctype.inc into common-header.inc.
+[jon] Allow the registry to handle Kronolith's configuration values.
+[jon] HORDE_BASE is now defined in lib/base.php instead of config/conf.php.
+[cjh] Define the HORDE_BASE constant in config/conf.php, and use it when
+      referring to any of Horde's files.
+[jon] Retired config/menu.txt in favor of config/menu.php.  This file follows
+      a new format based on native PHP data structures.
+[cjh] Add an optional keywords section, and a keywords definition file.
+[cjh] Add a location field to events.
+[cjh] Add the ability to re-label the category field, and to make it a
+      system-defined list of options.
+[cjh] Added Kronolith::weeksInYear($year) and Kronolith_Day::isToday().
+[cjh] Add week and workweek (mon-fri) views.
+[cjh] Allow events to recur every other week, every 3 days, etc.
+[cjh] Reorganize the event adding/editing screen and add javascript to give
+      the user sane defaults.
+[cjh] Remove year.php; it's ugly and not really useful.
+[cjh] Open the calender in base.php.
+[cjh] Remove most of the remaining mcal-dependent code.
+[cjh] Kronolith now uses Horde authentication instead of its own. This means
+      that whatever auth method you are using for Horde will be used to
+      authenticate to Kronolith, and in return you get single sign-on with any
+      other apps using Horde authentication. This also means that Kronolith
+      is completely independent of MCAL for authentication now; if you have
+      one MCAL user, that's enough to provide calendars for all Horde users.
+[cjh] Add lib/base.php to include all globally needed conf files and
+      libraries, set up the language, etc.
+[cjh] Abstract the event creation/edit code into the
+      Kronolith_Driver/Kronolith_Event classes.
+[cjh] Changes to work with register_globals = Off. (IN PROGRESS)
+[cjh] Add an optional "get the time this event would start on day x" feature
+      to the Kronolith_Event:: class, allowing status.php to work with
+      recurring events.
+[cjh] We now have the Kronolith_Event abstraction class that abstracts away
+      details of events, so that the frontend scripts aren't dependant on
+      mcal.
+[cjh] Display events which are in progress, just starting, or start in under
+      two hours along with other messages just under the menu.
+[cjh] Much slicker UI.
+[cjh] Use mcal_popen instead of mcal_open - might give us a performance gain.
+
+
+------
+v0.0.1
+------
+
+[cjh] Don't display delete links in month view; slimmer UI.
+[jon] Silence session_start warnings.
+[jon] Use Horde::url() in place of the deprecated buildURL() function.
+[cjh] Update to work with new slimmed down/Horde:: integrated session code.
+[cjh] Use the new css.php script to generate our stylesheets.
+[cjh] Revising the look and feel to use the new stylesheets and conventions.
+[cjh] Added initial CHANGES file and documentation.

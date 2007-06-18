@@ -1,0 +1,328 @@
+# Turba Korean translation.
+# Copyright (C) 2001 J.I Kim.
+# J.I Kim <aporie@netian.com>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2001-12-31 13:51+0900\n"
+"PO-Revision-Date: 2001-11-10 02:40+0900\n"
+"Last-Translator: j.i Kim <aporie@netian.com>\n"
+"Language-Team: Korean <aporie@netian.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=euc-kr\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s 파일이 임포트되었습니다."
+
+msgid "Add Contact ..."
+msgstr "연락처 추가하기 ..."
+
+msgid "Add a new contact"
+msgstr "새로운 연락처 추가"
+
+msgid "Add failed"
+msgstr "새로운 연락처 추가 실패"
+
+msgid "Add"
+msgstr "추가"
+
+msgid "Addressbook is read-only."
+msgstr "주소록이 읽기 전용입니다."
+
+msgid "Advanced Directory Search"
+msgstr "디렉토리 고급 검색"
+
+msgid "Advanced Search"
+msgstr "고급 검색"
+
+msgid "Alias"
+msgstr "가명"
+
+msgid "Bcc"
+msgstr "숨은 참조"
+
+msgid "Cancel"
+msgstr "취소"
+
+msgid "Cc"
+msgstr "참조"
+
+msgid "Cell Phone"
+msgstr "휴대폰"
+
+msgid "Clear Search"
+msgstr "검색항목 초기화"
+
+msgid "Company"
+msgstr "회사"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Deletion failed"
+msgstr "삭제 실패"
+
+msgid "Directory Search"
+msgstr "디렉토리 검색"
+
+msgid "Directory"
+msgstr "디렉토리"
+
+msgid "Edit"
+msgstr "수정"
+
+msgid "Email"
+msgstr "이메일"
+
+msgid "Error"
+msgstr "오류"
+
+msgid "Export Addressbook"
+msgstr "주소록 엑스포트"
+
+msgid "Export"
+msgstr "엑스포트"
+
+msgid "Failed to connect to the specified directory."
+msgstr "선택한 디렉토리에 연결할 수 없습니다."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "디렉토리 검색오류: %s"
+
+msgid "Fax"
+msgstr "팩스"
+
+msgid "Find"
+msgstr "찾기"
+
+msgid "From"
+msgstr "위치"
+
+msgid "from"
+msgstr "위치"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Home Address"
+msgstr "집 주소"
+
+msgid "Home Phone"
+msgstr "집 전화"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "CSV 데이타를 임포트하는 경우, 첫번째 열이 필드 이름을 갖고 있습니까?"
+
+msgid "Illegal or malformed form data."
+msgstr "잘못된 데이타"
+
+msgid "Import Addressbook"
+msgstr "주소록 임포트"
+
+msgid "Import"
+msgstr "임포트"
+
+msgid "Import/Export Addressbooks"
+msgstr "임포트/엑스포트 주소록"
+
+msgid "Import/Export"
+msgstr "임포트/엑스포트"
+
+msgid "Invalid addressbook."
+msgstr "잘못된 주소록"
+
+msgid "Invalid e-mail address."
+msgstr "잘못된 이메일 주소"
+
+msgid "Invalid name."
+msgstr "잘못된 이름."
+
+msgid "Language"
+msgstr "언어"
+
+msgid "Matching"
+msgstr "찾는 문자열"
+
+msgid "matching"
+msgstr "찾는 문자열"
+
+msgid "Message"
+msgstr "메세지"
+
+msgid "Name"
+msgstr "이름"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"새로운 항목을 추가할 수 있도록 설정된 주소록이 없습니다. 만약 이것이 오류라"
+"고 생각하신다면, 시스템 관리자에게 문의하시기 바랍니다."
+
+msgid "Notes"
+msgstr "참조"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "연락처를 추가할 주소록을 선택하세요."
+
+msgid "Problem?"
+msgstr "문제 발생?"
+
+msgid "Reset"
+msgstr "재설정"
+
+msgid "Save Changes"
+msgstr "변경사항 저장"
+
+msgid "Save"
+msgstr "저장"
+
+msgid "Search Results"
+msgstr "검색 결과"
+
+msgid "Search"
+msgstr "검색"
+
+msgid "Search&nbsp;Results"
+msgstr "검색&nbsp;결과"
+
+msgid "Select the destination to import to:"
+msgstr "임포트할 위치 선택:"
+
+msgid "Select the file to import:"
+msgstr "임포트할 파일 선택:"
+
+msgid "Select the format to export to:"
+msgstr "엑스포트 파일의 형식 선택"
+
+msgid "Select the format to import from:"
+msgstr "임포트 파일의 형식 선택:"
+
+msgid "Select the source to export from:"
+msgstr "엑스포트 파일의 소스 선택"
+
+msgid "Select your preferred language:"
+msgstr "즐겨사용하는 언어 선택"
+
+msgid "Send Message"
+msgstr "메세지 전송"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "%s로 메일 보내기"
+
+msgid "Set your preferred display language."
+msgstr "화면에 표시할 언어 설정."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Turba의 일부 설정파일이 없습니다."
+
+msgid "Success"
+msgstr "성공"
+
+msgid "The data got lost"
+msgstr "자료 손실"
+
+msgid "The data got lost."
+msgstr "자료 손실"
+
+msgid "The file contained no data."
+msgstr "파일에 아무런 자료가 없습니다."
+
+msgid "There are no writeable address books."
+msgstr "쓰기가능한 주소록이 없습니다."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"업로드 파일에 문제가 있습니다. 이파일은 업로드 최대허용크기를 초과합니다."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"추가하는데 오류가 발생했습니다. 시스템관리자에게 도움을 요청하시기 바랍니다."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"삭제하는데 오류가 발생했습니다. 시스템관리자에게 도움을 요청하시기 바랍니다."
+
+msgid "There was an error importing the data."
+msgstr "데이타 임포트 오류"
+
+msgid "There was an error importing the uploaded file"
+msgstr "업로드 파일 임포트 오류"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"이 파일은 Turba의 기본 설정 파일입니다. 또한 사용자 환경설정을 변경할 수 있"
+"는 설정파일입니다."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"이파일은 기본 Horde의 스타일 쉬트의 색상과 폰트를 오버라이드(override) 설정하"
+"는데 사용됩니다."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"이 파일은 Turba 전역 속성 이름과 유형 - 이름, 이메일, 주소등 -을 정의합니다."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "이 파일은 Turba에서 가능한 소스목록을 정의합니다."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"이파일은 기본 Turba 설정파일입니다. 이파일은 Turba 스크립트의 경로와 옵션을 "
+"설정합니다."
+
+msgid "This person is already in your addressbook."
+msgstr "이미 주소록에 등록되어 있습니다."
+
+msgid "Title"
+msgstr "제목"
+
+msgid "To"
+msgstr "받는 사람"
+
+msgid "Turba is not properly configured"
+msgstr "Turba가 올바르게 설정되지 않았습니다."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "%s 정의를 읽을 수 없습니다."
+
+msgid "Warning"
+msgstr "경고"
+
+msgid "Work Address"
+msgstr "직장 주소"
+
+msgid "Work Phone"
+msgstr "직장 전화"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "임포트된 파일의 어떤 항목도 Turba의 항목에 맞게 설정하지 않았습니다."
+
+msgid "Your Information"
+msgstr "개인 정보"
+
+msgid "[Edit]"
+msgstr "[수정]"

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/XML_SVG/package.xml,v 1.7 2003/12/17 23:44:39 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>XML_SVG</name>
+  <summary>XML_SVG API</summary>
+  <description>This package provides an object-oriented API for building SVG documents.</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chagenbu</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.3</version>
+    <date>2003-12-17</date>
+    <state>stable</state>
+    <notes>Updated stable release for the package system.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/XML" name="SVG.php" />
+    </filelist>
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+" />
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.2</version>
+      <date>2003-07-07</date>
+      <state>stable</state>
+      <notes>Stable release into the PEAR XML hierarchy.</notes>
+    </release>
+    <release>
+      <version>0.0.1</version>
+      <date>2002-12-29</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

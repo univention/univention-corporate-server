@@ -1,0 +1,1 @@
+var _editor_url = "<?php echo $GLOBALS['registry']->getParam('webroot', 'horde') ?>/services/editor/htmlarea/";

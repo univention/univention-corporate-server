@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/iCalendar/package.xml,v 1.7 2003/12/04 01:18:14 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_iCalendar</name>
+  <summary>iCalendar API</summary>
+  <description>This package provides an API for dealing with iCalendar data.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>mac</user>
+      <role>lead</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file role="php" name="iCalendar.php" baseinstalldir="/Horde"/>
+
+      <dir name="iCalendar" role="php" baseinstalldir="/Horde">
+        <file name="valarm.php"/>
+        <file name="vevent.php"/>
+        <file name="vfreebusy.php"/>
+        <file name="vjournal.php"/>
+        <file name="vtimezone.php"/>
+        <file name="vtodo.php"/>
+      </dir>
+
+    </filelist>
+  </release>
+
+  <deps>
+    <dep type="php" rel="ge" version="4.2.0+" />
+    <dep type="pkg" rel="has">Horde_Util</dep>
+  </deps>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-03</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

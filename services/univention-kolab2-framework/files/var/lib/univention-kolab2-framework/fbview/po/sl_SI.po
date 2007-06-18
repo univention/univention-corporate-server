@@ -1,0 +1,547 @@
+# Horde Slovenian translation.
+# Copyright (C) 2002 Jure Krasovic.
+# Jure Krasovic <jurek@rcc-irc.si>.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-02-26 12:28+0100\n"
+"PO-Revision-Date: 2002-02-26 13:04+0100\n"
+"Last-Translator: Jure Krasovic <jurek@rcc-irc.si>\n"
+"Language-Team: Sloven¹èina <jurek@rcc-irc.si>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Postopki vzdr¾evanja"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s je pripravljen na vzdr¾evanje. Preverite spodaj."
+
+msgid "24 hours"
+msgstr "24 ur"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add a new user:"
+msgstr "Dodaj novega uporabnika:"
+
+msgid "Add pair"
+msgstr "Dodaj par"
+
+msgid "Add user"
+msgstr "Dodaj uporabnika"
+
+msgid "Adding users is disabled."
+msgstr "Dodajanje uporabnikov je izkljuèeno."
+
+msgid "Address"
+msgstr "Naslov"
+
+msgid "Addressbook"
+msgstr "Imenik"
+
+msgid "Administration"
+msgstr "Administracija"
+
+msgid "Alias"
+msgstr "Vzdevek"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr ""
+
+msgid "Attempt to bind without a valid connection."
+msgstr ""
+
+msgid "Available fields:"
+msgstr ""
+
+#, c-format
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr ""
+
+msgid "Birthday"
+msgstr "Rojstni dan"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Cancel Problem Report"
+msgstr "Razveljavi prijavo te¾ave"
+
+msgid "Cell Phone"
+msgstr "Mobilni telefon"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Obkljukajte izbrani(e) postopek(ke), ki jih ¾elite izvesti."
+
+msgid "Close Help Window"
+msgstr "Zapri okno pomoèi"
+
+msgid "Close Help"
+msgstr "Zapri pomoè"
+
+msgid "Close Window"
+msgstr "Zapri okno"
+
+msgid "Company"
+msgstr "Podjetje"
+
+msgid "Confirm Password"
+msgstr "Potrdi geslo"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Vsebina '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Vsebina RAR datoteke"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr ""
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Dnevno"
+
+msgid "Database query failed."
+msgstr "Poizvedba v bazi podatkov je spodletela."
+
+msgid "Default Identity"
+msgstr "Privzete identiteta"
+
+msgid "Delete"
+msgstr "Poèisti"
+
+msgid "Describe the Problem"
+msgstr "Opi¹ite te¾avo"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Ne dostopaj direktno do maintenance.php"
+
+msgid "Email"
+msgstr "Elektronski naslov"
+
+msgid "Empty result."
+msgstr ""
+
+msgid "Error"
+msgstr "Napaka"
+
+msgid "Every Login"
+msgstr "Ob vsaki prijavi"
+
+msgid "Example values:"
+msgstr "Primer vnosa:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Prièakovano \"BEGIN\" v vrstici %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Prièakovano \"END:%s\" v vrstici %d."
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr ""
+
+msgid "Failed to connect to LDAP server."
+msgstr "Povezava do LDAP stre¾nika ni bila uspe¹na."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr ""
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "Full Description:"
+msgstr "Polni opis:"
+
+msgid "Help"
+msgstr "Pomoè"
+
+msgid "Home Address"
+msgstr "Domaèi naslov"
+
+msgid "Home Phone"
+msgstr "Domaèi telefon"
+
+msgid "Horde Login"
+msgstr "Prijava Horde"
+
+msgid "Horde System"
+msgstr "Horde system"
+
+msgid "Horde User Administration"
+msgstr "Upravljanje z uporabniki"
+
+msgid "Horde Wireless"
+msgstr "Horde brez¾ièno"
+
+msgid "Horde is not properly configured"
+msgstr "Horde ni pravilno nastavljen"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Napaka pri uvozu:"
+
+msgid "Import"
+msgstr "Uvoz"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Uvo¾eno polje %s"
+
+msgid "Imported fields:"
+msgstr "Uvo¾ena polja:"
+
+msgid "List Help Topics"
+msgstr "Prika¾i teme pomoèi"
+
+msgid "Listing users is disabled."
+msgstr "Prikaz uporabnikov je izkljuèen."
+
+msgid "Log in"
+msgstr "Prijava"
+
+msgid "Log out"
+msgstr "Odjava"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "IMP"
+
+msgid "Map Date and Time Fields"
+msgstr ""
+
+msgid "Map Import Fields"
+msgstr ""
+
+msgid "Matching fields"
+msgstr ""
+
+msgid "Message"
+msgstr "Sporoèilo"
+
+msgid "Monthly"
+msgstr "Meseèno"
+
+msgid "Name"
+msgstr "Ime"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr ""
+
+msgid "No configuration information specified for SQL Categories."
+msgstr ""
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr ""
+
+msgid "No configuration information specified for SQL authentication."
+msgstr ""
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "Noben zapis ne ustreza iskanemu pojmu %s."
+
+msgid "No preferences are available."
+msgstr ""
+
+msgid "No preferences were retrieved."
+msgstr ""
+
+msgid "Notes"
+msgstr "Zapiski"
+
+msgid "Password"
+msgstr "Geslo"
+
+msgid "Passwords cannot be blank."
+msgstr "Geslo mora biti vne¹eno."
+
+msgid "Passwords must match."
+msgstr "Geslo mora biti pravilno."
+
+msgid "Perform Maintenance Operations"
+msgstr "Izvedi vzdr¾evanje"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please log in"
+msgstr "Prosimo prijavite se"
+
+msgid "Please provide a summary of the problem."
+msgstr "Prosimo, na kratko opi¹ite te¾avo."
+
+msgid "Please provide your username and password"
+msgstr "Vnesite prijavo in geslo"
+
+msgid "Problem Description"
+msgstr "Opis te¾ave"
+
+msgid "Remove pair"
+msgstr "Odstrani par"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+
+msgid "Reset"
+msgstr "Razveljavi"
+
+msgid "Return to Options"
+msgstr "Vrnitev v mo¾nosti"
+
+msgid "Role"
+msgstr "Vloga"
+
+msgid "Save Options"
+msgstr "Shrani nastavitve"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+
+msgid "Select the date delimiter:"
+msgstr "Izberite loèilo v datumu:"
+
+msgid "Select the date format:"
+msgstr "Izberite format datuma:"
+
+msgid "Select the time format:"
+msgstr "Izberite format za èas:"
+
+msgid "Select two matching fields."
+msgstr "Izberi pripadajoèi polji."
+
+msgid "Send Problem Report"
+msgstr "Po¹ljitev poroèilo o te¾avi"
+
+msgid "Short Summary:"
+msgstr "Kratek zakljuèek:"
+
+msgid "Skip Maintenance"
+msgstr "Preskoèi "
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Nastavitvene datoteke za Horde ne obstojajo:"
+
+msgid "Special Character Input"
+msgstr "Vnos posebnih znakov"
+
+msgid "Success"
+msgstr "Uspeh"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "Uspe¹no dodan '%s' v sistem."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Uspe¹no odstranjen '%s' iz sistema."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Pri¹lo je do te¾ave pri dodajanju '%s' v sistem."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Pri¹lo je do te¾ave pri odstranjevanju '%s' iz sistema."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings.."
+msgstr ""
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+
+msgid "Title"
+msgstr "Naslov"
+
+msgid "Type mismatch."
+msgstr "Tipkarski ¹krat."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Neuspe¹en dostop do SQL stre¾nika."
+
+msgid "Unable to modified preferences."
+msgstr ""
+
+msgid "Unable to register preferences in session."
+msgstr ""
+
+msgid "Unable to translate this Word document"
+msgstr ""
+
+msgid "Undo Changes"
+msgstr "Razveljavi stremembe"
+
+msgid "Unexpected end of file."
+msgstr "Neprièakovan konec datoteke."
+
+msgid "Use Default Value"
+msgstr "Uporabi privzeto vrednost"
+
+msgid "Username"
+msgstr "Uporabnik"
+
+msgid "Users in the system:"
+msgstr "Uporabniki v sistemu:"
+
+msgid "Warning!"
+msgstr "Opozorilo!"
+
+msgid "Warning"
+msgstr "Opozorilo"
+
+msgid "Weekly"
+msgstr "Tedensko"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Dobrodo¹li, %s"
+
+msgid "Work Address"
+msgstr "Slu¾beni naslov"
+
+msgid "Work Phone"
+msgstr "Telefon v slu¾bi"
+
+msgid "YY"
+msgstr "LL"
+
+msgid "Yearly"
+msgstr "Letno"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Preden po¹ljete poroèilo o te¾avi, te¾avo nakratko opi¹ite."
+
+msgid "You must specify a username to remove."
+msgstr "Vnesite uporabni¹ko ime za odstranitev."
+
+msgid "You must specify the username to add."
+msgstr "Vnesite uporabni¹ko ime za dodajanje."
+
+msgid "Your Email Address:"
+msgstr "Va¹ elektronski naslov:"
+
+msgid "Your Name:"
+msgstr "Va¹e ime:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+
+msgid "[Problem Report]"
+msgstr "[Prijava te¾ave]"

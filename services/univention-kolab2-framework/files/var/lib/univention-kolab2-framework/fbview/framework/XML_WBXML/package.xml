@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/XML_WBXML/package.xml,v 1.11 2004/01/20 02:22:30 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>XML_WBXML</name>
+  <summary>XML_WBXML:: provides an API for encoding and decoding WBXML documents used in SyncML and other wireless applications.</summary>
+  <description>This package provides encoding and decoding of WBXML (Wireless Binary XML) documents. WBXML is used in SyncML for transferring smaller amounts of data with wireless devices.</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-11-25</date>
+    <notes>Initial implementation.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/XML" name="WBXML.php" />
+      <dir role="php" baseinstalldir="/XML" name="WBXML">
+        <file name="ContentHandler.php"/>
+        <file name="DTD.php"/>
+        <file name="DTDManager.php"/>
+        <file name="Decoder.php"/>
+        <file name="Encoder.php"/>
+        <dir name="DTD">
+          <file name="SyncML.php"/>
+          <file name="SyncMLDevInf.php"/>
+          <file name="SyncMLMetInf.php"/>
+        </dir>
+      </dir>
+
+      <dir role="doc" name="docs">
+        <dir name="examples">
+          <file name="decode.php"/>
+          <file name="encode.php"/>
+          <file name="syncml_client_packet_1.xml"/>
+          <file name="syncml_client_packet_1.wbxml"/>
+          <file name="syncml_server_packet_1.xml"/>
+          <file name="syncml_server_packet_1.wbxml"/>
+        </dir>
+      </dir>
+
+      <dir role="test" name="tests">
+        <file name="decode1.phpt"/>
+        <file name="decode2.phpt"/>
+        <file name="decode-encode.phpt"/>
+        <file name="encode1.phpt"/>
+        <file name="encode2.phpt"/>
+        <file name="encode-decode.phpt"/>
+      </dir>
+    </filelist>
+
+    <provides type="class" name="XML_WBXML"/>
+    <provides type="class" name="XML_WBXML_ContentHandler"/>
+    <provides type="class" name="XML_WBXML_DTD"/>
+    <provides type="class" name="XML_WBXML_DTDManager"/>
+    <provides type="class" name="XML_WBXML_Decoder"/>
+    <provides type="class" name="XML_WBXML_Encoder"/>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+" />
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-11-25</date>
+      <state>alpha</state>
+      <notes>Initial release as a package</notes>
+    </release>
+  </changelog>
+
+</package>

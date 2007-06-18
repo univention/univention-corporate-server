@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/IMAP/package.xml,v 1.10 2004/04/23 21:49:05 slusarz Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_IMAP</name>
+  <summary>Horde IMAP Utility Classes</summary>
+  <description>
+    The IMAP_Cache:: class facilitates in caching output from the PHP imap extension in the current session.
+
+    The IMAP_Search:: class performs complex searching of an IMAP mailbox.
+
+    The IMAP_Sort:: class performs sorting of IMAP mailbox/folder lists.
+
+    The IMAP_Tree:: builds an internal tree structure from an IMAP/POP3/NNTP server.
+
+    Classes to help with complex searching of an IMAP mailbox. The built-in PHP search() function only allows IMAPv2 search queries (see RFC 1176).  This library allows more complex searches to be created (e.g. OR searches, searching specific headers).    
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>slusarz</user>
+      <name>Michael Slusarz</name>
+      <email>slusarz@bigworm.colorado.edu</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-06</date>
+    <notes>Initial release as a PEAR package</notes>
+    <provides type="class" name="IMAP_ACL" />
+    <provides type="class" name="IMAP_ACL_rfc2086" />
+    <provides type="class" name="IMAP_Admin" />
+    <provides type="class" name="IMAP_Cache" />
+    <provides type="class" name="IMAP_Search" />
+    <provides type="class" name="IMAP_Search_Query" />
+    <provides type="class" name="IMAP_Sort" />
+    <provides type="class" name="IMAP_Tree" />
+    <filelist>
+      <dir role="php" name="IMAP" baseinstalldir="/Horde">
+        <file name="ACL.php" />
+        <file name="Admin.php" />
+        <file name="Cache.php" />
+        <file name="Search.php" />
+        <file name="Sort.php" />
+        <file name="Tree.php" />
+        <dir role="php" name="ACL">
+          <file name="rfc2086.php" />
+        </dir>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+      <dep type="ext" rel="has" optional="yes">imap</dep>
+    </deps>
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-06</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

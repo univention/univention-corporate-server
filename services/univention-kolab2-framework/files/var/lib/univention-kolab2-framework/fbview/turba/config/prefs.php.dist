@@ -1,0 +1,150 @@
+<?php
+/**
+ * $Horde: turba/config/prefs.php.dist,v 1.26 2004/02/04 21:57:36 chuck Exp $
+ *
+ * See horde/config/prefs.php for documentation on the structure of this file.
+ */
+
+$prefGroups['columns'] = array(
+    'column' => _("Display Options"),
+    'label' => _("Column Options"),
+    'desc' => _("Select which fields to display in the address lists."),
+    'members' => array('columnselect'));
+
+$prefGroups['display'] = array(
+    'column' => _("Display Options"),
+    'label' => _("Default Display"),
+    'desc' => _("Select view to display by default."),
+    'members' => array('initial_page', 'sortby', 'sortdir', 'maxpage', 'perpage'));
+
+$prefGroups['format'] = array(
+    'column' => _("Display Options"),
+    'label' => _("Name Format"),
+    'desc' => _("Select which format to display names."),
+    'members' => array('name_format'));
+
+$prefGroups['search'] = array(
+    'column' => _("Display Options"),
+    'label' => _("Searching Options"),
+    'desc' => _("Choose a default directory for your personal addressbook, contact lists, and searches."),
+    'members' => array('default_dir', 'adv_results_placement')
+);
+
+$prefGroups['application'] = array(
+    'column' => _("Other Options"),
+    'label' => _("Delete Confirmation"),
+    'desc' => _("Delete button behaviour"),
+    'members' => array('delete_opt')
+);
+
+
+// columns selection widget
+$_prefs['columnselect'] = array(
+    'locked' => false,
+    'type' => 'special'
+);
+
+// columns to be displayed
+$_prefs['columns'] = array(
+    'value' => "netcenter\temail\nbigfoot\temail\nverisign\temail\nlocalsql\temail",
+    'locked' => false,
+    'shared' => false,
+    'type' => 'implicit'
+);
+
+// user preferred sorting column
+// zero based int representing the column number to sort by
+$_prefs['sortby'] = array(
+    'value' => 0,
+    'locked' => false,
+    'shared' => false,
+    'type' => 'implicit'
+);
+
+// user preferred sorting direction
+$_prefs['sortdir'] = array(
+    'value' => 0,
+    'locked' => false,
+    'shared' => false,
+    'type' => 'enum',
+    'enum' => array(0 => _("Ascending"),
+                    1 => _("Descending")),
+    'desc' => _("Default sorting direction:")
+);
+
+// number of maximum pages and items per page
+$_prefs['maxpage'] = array(
+    'value' => 10,
+    'locked' => false,
+    'shared' => false,
+    'type' => 'number',
+    'desc' => _("Maximum number of pages")
+);
+
+$_prefs['perpage'] = array(
+    'value' => 20,
+    'locked' => false,
+    'shared' => false,
+    'type' => 'number',
+    'desc' => _("Number of items per page")
+);
+
+// the page to display.  Either 'browse.php' or 'search.php'
+$_prefs['initial_page'] = array(
+    'value' => 'search.php',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'enum',
+    'desc' => _("View to display by default:"),
+    'enum' => array('browse.php' => _("Address Book Listing"),
+                    'search.php' => _("Search"))
+);
+
+// the format to display names.  Either 'last_first' or 'first_last'
+$_prefs['name_format'] = array(
+    'value' => 'last_first',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'enum',
+    'desc' => _("Select the format used to display names:"),
+    'enum' => array('last_first' => _("\"Lastname, Firstname\" (ie. Doe, John)"),
+                    'first_last' => _("\"Firstname Lastname\"  (ie. John Doe)"))
+);
+
+// Default directory
+$_prefs['default_dir'] = array(
+    'value' => '',
+    // 'value' => 'localsql',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'select',
+    'desc' => _("Default directory for your personal addressbook, contact lists, and searches.")
+);
+
+// Advanced search results placement. Are results positioned above or below the search form?
+$_prefs['adv_results_placement'] = array(
+    'value' => 'below',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'enum',
+    'desc' => _("Specify where you want advanced search results to appear."),
+    'enum' => array('below' => _("Below search form"),
+                    'above'  => _("Above search form"))
+);
+
+// preference for holding any preferences-based addressbooks.
+$_prefs['prefbooks'] = array(
+    'value' => '',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'implicit'
+);
+
+// preference for delete confirmation dialog.
+$_prefs['delete_opt'] = array(
+    'value' => '0',
+    'locked' => false,
+    'shared' => false,
+    'type' => 'checkbox',
+    'desc' => _("Do you want to confirm deleting entries?")
+);

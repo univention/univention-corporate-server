@@ -1,0 +1,115 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<!-- $Horde: kronolith/locale/fi_FI/help.xml,v 1.2 2002/12/27 15:15:36 jan Exp $ -->
+<help>
+
+<entry id="Overview">
+    <title>Kronolith: Yleiskuva</title>
+    <heading>Mikä on kronolith?</heading>
+    <para>
+Kronolith on WWW-pohjainen kalenterisovellus. Normaalien toimintojen kuten tapahtumien lisääminen, muokkaaminen ja poistaminen, sovellus tukee erilaisia toistuvia tapahtumia, hälytykset, tuonti/vienti toiminnnot (iCalendar ja Palm DataBook (PDB) muodoista), iCalendar kutsut, monia eri kalenterinäkymiä, jaettuja kalentereita, ja tehtävälistat (Jos Nag sovellus on asennettuna) ja mahdollisuus näyttää tapahtumia Horde yhteenvetonäkymässä.
+    </para>
+</entry>
+
+<entry id="menu-today">
+    <title>Valikko: Tänään</title>
+    <heading>Tänään</heading>
+    <para>
+    <i>Tänään</i> valikkotoiminto näyttää oletusnäkymässä (kuukausi, viikko, päivä jne. asetuksissa) tämän päivän tiedot.
+    </para>
+</entry>
+
+<entry id="menu-Goto">
+    <title>Valikko: Mene</title>
+    <heading>Mene</heading>
+    <para>
+    <i>Mene</i> valikkotoiminto aukaiseen pienen ikkunaan, jonka avulla voit valita ja <i>mennä</i> nopeasti tietyn vuoden, kuukauden, viikon tai kuukaudenpäivin näkymään. Tämä on yleensä nopein tapa liikkua kalenterissa.
+    </para>
+</entry>
+
+<entry id="menu-Day">
+    <title>Valikko: Päivä</title>
+    <heading>Päivä näkymä</heading>
+    <para>
+    <i>Päivä</i> valikkotoiminto näyttää valitun päivän tapahtumat.
+    </para>
+</entry>
+
+<entry id="menu-work-week">
+    <title>Valikko: Työviikko</title>
+    <heading>Työviikko näkymä</heading>
+    <para>
+    <i>Työviikko</i> valikkotoiminto näyttää työviikkonäkymän (Päivät Maanantaista Perjantaihin), joka on lähinnä valitta päivää.
+    </para>
+</entry>
+
+<entry id="menu-week">
+    <title>Valikko: Viikko</title>
+    <heading>Viikko näkymä</heading>
+    <para>
+    <i>Viikko</i> valikkotoiminto näyttää viikko näkymän (7 päivää). Viikkonäkymä sisältää valitun päivän.
+    </para>
+</entry>
+
+<entry id="menu-month">
+    <title>Valikko: Kuukausi</title>
+    <heading>Kuukausi näkymä</heading>
+    <para>
+    <i>Kuukausi</i> valikkotoiminto näyttää kuukausi nälymän, joka sisältää myös valitun päivän.
+    </para>
+</entry>
+
+<entry id="menu-new-event">
+    <title>Valikko: Uusi tapahtuma</title>
+    <heading>Uusi tapahtuma</heading>
+    <para>
+    <i>Uusi tapahtuma</i> valikkotoiminnolla voit lisätä kalenteriin uuden tapahtuman.
+    </para>
+</entry>
+
+<entry id="menu-options">
+    <title>Valikko: Asetukset</title>
+    <heading>Asetukset</heading>
+    <para>
+    <i>Asetukset</i> valikkotoiminnolla voit asettaa <i>asetuksia</i>, joilla voit määritellä Kronolith:n ulkoasua, miten Kronolith toimii Horde:n ja muiden Horde ohjelmien kanssa, hallinnoida monia tai jaettuja kalentereita ja hallinnoida tapahtumien luokituksia.
+    </para>
+</entry>
+
+<entry id="menu-import-export">
+    <title>Valikko: Tuo/Vie</title>
+    <heading>Tuo/Vie</heading>
+    <para>
+    <i>Tuo/Vie</i> valikkotoiminolla voi tuoda tai viedä kalenteritapahtumia. Voi tuoda tapahtumia CSV, Microsoft Outlook, Palm DateBook tai vCalendar/iCalendar muodoissa. Tapahtumia voi viedä vain CSV tai iCalendar muodoissa.
+    </para>
+</entry>
+
+<entry id="alarms">
+    <title>Hälytykset</title>
+    <heading>Hälytykset</heading>
+    <para>
+    Kronolith voi hälyttää joillekkin tapahtumille. Oletuksenä hälytys tapahtuu 15 minuuttia ennen tapahtuman alkua. Voit myös itse määritellä hälytyksen ajankohdan kunhan se vain on ennen tapahtuman alkua.
+    </para>
+</entry>
+
+<entry id="recurring-events">
+    <title>Toistuvat tapahtumat</title>
+    <heading>Toistuvat tapahtumat</heading>
+    <para>
+    Tapahtumat voivat toistua monella eri tavalla. Monet tapahtuvat toistuvat tietyn ajan välein. Esimerkiksi valitsemalla <i>Kuukausittain</i> tapahtuma merkitään toistuvaksi kuukausittain ja <i>Viikoittain</i> tapahtuma toistuu joka viikko. Toisto voi olla myös hiukan monimutkaisempi kuten esimerkiksi tapahtuma, joka on aina kuukauden viimeisenä perjantaina tai tapahtuma, joka on joka viikko maanantaisin, keskiviikkoisin ja perjantaisin.
+    </para>
+    <para>
+    Voit myös määritellä miten kauan toisto kestää valitsemalla <i>loppupäivämäärän</i>
+    </para>
+    <para>
+    Normaalisti jonkun toistuvan tapahtuman muokkaus vaikuttaa kaikkiin tapahtumien toistokertoihin. Yksittäistä toistuvaa tapahtumaa voi muokata muokkaamalla juuri sitä tapahtumaa, poistamalla tapahtumasta toiston ja valitsemalla sen jälkeen <i>Talleta tapahtuma uutena</i> toistovalikosta. Tämän jälkeen tapahtumaa voi käsitellä erillisenä muista toistuvista tapahtumista.
+    </para>
+</entry>
+
+<entry id="Printing">
+    <title>Tulostus</title>
+    <heading>Kalenterien ja tapahtumien tulostaminen</heading>
+    <para>
+    Jotkin näkymät on suunniteltu tulostettaviksi. Kun käytät sellaista näkymää, niin <i>Tulosta</i> ikoni näkyy valikossa. Käytä tätä toimintoa tulostaaksesi käytössäolevan näkymän.
+    </para>
+</entry>
+
+</help>

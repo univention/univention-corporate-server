@@ -1,0 +1,662 @@
+# Kronolith Hungarian translation file.
+# Copyright (C) 2002 Laszlo L. Tornoci
+# This file is distributed under the same license as the Kronolith package.
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-06-02 23:09+0200\n"
+"PO-Revision-Date: 2002-06-07 23:15+0200\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d óra"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d óra, %d perc"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d óra, %d perc"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d óra"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d óra, %d perc"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d óra, %d perc"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d perc"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d perc"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s fájlt sikeresen importáltuk"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s most zajlik."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s most kezdõdik."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s %s idõ múlva kezdõdik"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Leírás</b> (opcionális)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Leírás</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Kulcsszavak</b> (opcionális)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Kulcsszavak</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Ismétlõdés</b> (opcionális)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Ismétlõdés</b>"
+
+msgid "Add Event"
+msgstr "Új elfoglaltság"
+
+msgid "Add a new event"
+msgstr "Új elfoglaltság beírása"
+
+msgid "Alarm Date"
+msgstr "A figyelmeztetés dátuma"
+
+msgid "Alarm Span (minutes)"
+msgstr "A figyelmeztetés idõtartama (perc)"
+
+msgid "Alarm Time"
+msgstr "A figyelmeztetés ideje"
+
+msgid "Alarm"
+msgstr "Figyelmeztetés"
+
+msgid "All day event"
+msgstr "Egésznapos elfoglaltság"
+
+msgid "All day"
+msgstr "egész nap"
+
+msgid "All events"
+msgstr "Az összes elfoglaltság"
+
+msgid "All"
+msgstr "Összes"
+
+msgid "April"
+msgstr "április"
+
+msgid "At"
+msgstr " "
+
+msgid "August"
+msgstr "augusztus"
+
+msgid "Birthday"
+msgstr "Születésnap"
+
+msgid "Business"
+msgstr "Munka"
+
+msgid "Cancel"
+msgstr "Mégse"
+
+msgid "Category"
+msgstr "Kategória"
+
+msgid "Change the way dates and times are formatted."
+msgstr "A dátum- és idõformátum megváltoztatása."
+
+msgid "Confirm deletion of events?"
+msgstr "Az elfoglaltságok törlésekor kíván külön megerõsítést?"
+
+msgid "Create a New Event"
+msgstr "Új elfoglaltság bevitele"
+
+msgid "Current"
+msgstr "Jelenlegi"
+
+msgid "Daily: Recurs every"
+msgstr "naponta: minden"
+
+msgid "Date and Time Options"
+msgstr "Dátum és idõ opciók"
+
+msgid "Day"
+msgstr "Nap"
+
+msgid "Day(s)"
+msgstr "nap"
+
+msgid "December"
+msgstr "december"
+
+#, c-format
+msgid "Delete %s"
+msgstr "%s törlése"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "'%s' törlése"
+
+msgid "Delete Event"
+msgstr "Az elfoglaltság törlése"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr "Csak ezt az elfoglaltságot töröljük, vagy ezt és az összes jövõbelit, vagy pedig az összeset, idõponttól függetlenül?"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Description"
+msgstr "Leírás"
+
+msgid "Display 24-hour times?"
+msgstr "Az idõpontokat 24 órás formátumban jelenítsük meg?"
+
+msgid "Display Options"
+msgstr "Megjelenítási beállítások"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Határidõ: %s"
+
+msgid "Duration"
+msgstr "Meddig tart"
+
+#, c-format
+msgid "Edit %s"
+msgstr "%s módosítása"
+
+msgid "Edit"
+msgstr "Módosítás"
+
+msgid "End Date"
+msgstr "A befejezés dátuma"
+
+msgid "End On"
+msgstr "Végzõdik"
+
+msgid "End Time"
+msgstr "A befejezés ideje"
+
+msgid "Export Calendar"
+msgstr "A naptár exportálása"
+
+msgid "Export"
+msgstr "Exportálás"
+
+msgid "February"
+msgstr "február"
+
+msgid "Fr"
+msgstr "Pé"
+
+msgid "Friday"
+msgstr "péntek"
+
+msgid "Future"
+msgstr "Jövõ"
+
+msgid "Game"
+msgstr "Játék"
+
+msgid "Goto"
+msgstr "Ugrás"
+
+msgid "Help"
+msgstr "Segítség"
+
+msgid "Hour(s)"
+msgstr "óra"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "CSV (,-vel elválasztott) adatok importálásakor: az elsõ sor a mezõk neveit tartalmazza?"
+
+msgid "Illegal or malformed form data."
+msgstr "Hibás vagy elfogadhatlan adat."
+
+msgid "Import Calendar"
+msgstr "Naptár importálása"
+
+msgid "Import"
+msgstr "Importálás"
+
+msgid "Import/Export Calendar"
+msgstr "Naptár importálása/exportálása"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "January"
+msgstr "január"
+
+msgid "July"
+msgstr "július"
+
+msgid "June"
+msgstr "június"
+
+msgid "Keywords"
+msgstr "Kulcsszavak"
+
+msgid "Kronolith is not properly configured"
+msgstr "A Kronolith program konfigurációja hibás"
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "Last month"
+msgstr "Múlt hónap"
+
+msgid "Last week"
+msgstr "Múlt hét"
+
+msgid "Lasts"
+msgstr "Idõtartam"
+
+msgid "Limit the time span to export:"
+msgstr "Korlátozzuk az exportálandó adatok idõintervallumát:"
+
+msgid "Location"
+msgstr "Hely"
+
+msgid "March"
+msgstr "március"
+
+msgid "May"
+msgstr "május"
+
+msgid "Meeting"
+msgstr "Megbeszélés"
+
+msgid "Minute(s)"
+msgstr "perc"
+
+msgid "Minutes before"
+msgstr "Perccel korábban"
+
+msgid "Minutes"
+msgstr "perc"
+
+msgid "Mo"
+msgstr "Hé"
+
+msgid "Monday"
+msgstr "hétfõ"
+
+msgid "Month"
+msgstr "Hónap"
+
+msgid "Monthly: Recurs every"
+msgstr "havonta: ismétlõdik minden"
+
+msgid "New Event"
+msgstr "Új elfoglaltság"
+
+msgid "Next Month"
+msgstr "Következõ hónap"
+
+msgid "Next day"
+msgstr "Másnap"
+
+msgid "Next week"
+msgstr "Következõ hét"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "A program konfigurációjában hiányzik az SQL rendszerre vonatkozó adat."
+
+msgid "No end date"
+msgstr "nincs vége"
+
+msgid "None"
+msgstr "nincs"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr "Figyelem: Ezzel a konfigurációval nem lehetséges az importálás a naptári segédprogram hibája miatt."
+
+msgid "November"
+msgstr "november"
+
+msgid "October"
+msgstr "október"
+
+msgid "Options"
+msgstr "Opciók"
+
+msgid "Pattern"
+msgstr "Módja"
+
+msgid "Permanently delete this event?"
+msgstr "Véglegesen töröljük ki ezt az elfoglaltságot?"
+
+msgid "Personal"
+msgstr "Személyes"
+
+msgid "Previous day"
+msgstr "Elõzõ nap"
+
+msgid "Problem?"
+msgstr "Probléma?"
+
+msgid "Recur Until"
+msgstr "Meddig ismétlõdik"
+
+msgid "Recurrence Data"
+msgstr "Ismétlõdési adatok"
+
+msgid "Recurrence End Date"
+msgstr "Az ismétlõdés vége"
+
+msgid "Recurrence Interval"
+msgstr "Az ismétlõdési idõ"
+
+msgid "Recurrence Type"
+msgstr "Az ismétlõdés fajtája"
+
+msgid "Recurs daily"
+msgstr "Naponta ismétlõdik"
+
+msgid "Recurs monthly"
+msgstr "Havonta ismétlõdik"
+
+msgid "Recurs not"
+msgstr "Nem ismétlõdik"
+
+msgid "Recurs weekly"
+msgstr "Hetente ismétlõdik"
+
+msgid "Recurs yearly"
+msgstr "Évente ismétlõdik"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "A konfigurációban nincs megadva a 'database'."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "A konfigurációban nincs megadva a 'hostspec'."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "A konfigurációban nincs megadva a 'password'."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "A konfigurációban nincs megadva a 'phptype'."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "A konfigurációban nincs megadva a 'username'."
+
+msgid "Reset to Defaults"
+msgstr "Kezdjük újra a kitöltést"
+
+msgid "Sa"
+msgstr "Szo"
+
+msgid "Saturday"
+msgstr "szombat"
+
+msgid "Save As New"
+msgstr "Újként mentsük el"
+
+msgid "Save Event"
+msgstr "Az elfoglaltság mentése"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr "Megerõsítési opciók, különbözõ nézetek megjelenítési formájái, ill. az alapértelmezett nézet állítható be."
+
+msgid "Select how to display Dates:"
+msgstr "Válassza ki a dátumok megjelenítési formáját:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Megadható, hogy a határidõs feladatok megjelenjenek-e a naptárban."
+
+msgid "Select the file to import:"
+msgstr "Válassza ki az importálandó fájlt:"
+
+msgid "Select the first weekday:"
+msgstr "Válassza ki a hét elsõ napját:"
+
+msgid "Select the format to export to:"
+msgstr "Válassza ki hogy milyen formátumú fájlba kíván exportálni:"
+
+msgid "Select the source to import from:"
+msgstr "Válassza ki, hogy milyen forrásból importál:"
+
+msgid "Select the time span to show:"
+msgstr "Válassza ki, hogy milyen idõintervallumot jelenítsünk meg:"
+
+msgid "Select the view to display after login:"
+msgstr "Válassza ki, hogy milyen nézet jelenjen meg a bejelentkezés után:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Megadható, hogy milyen elfoglaltságokat jelenítsünk meg az összefoglaló nézetben."
+
+msgid "September"
+msgstr "Szeptember"
+
+msgid "Set the current time zone."
+msgstr "Beállíthatja az idõzónát."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Állítsa be milyen nyelven jelenjen meg a menü és a magyarázószövegek."
+
+msgid "Set your preferred display language."
+msgstr "Beállíthatja az Önnek megfelelõ nyelvet."
+
+msgid "Show due tasks in the calendar?"
+msgstr "Mutassuk a határidõs feladatokat a naptárban?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "A napi és heti nézetekben félórás idõegységek szerepeljenek?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Csak azokat az elfoglaltságokat mutassuk, amikhez figyelmeztetés van rendelve?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "A Kronolith program konfigurációs fájljai közül hiányzik:"
+
+msgid "Start Date"
+msgstr "Kezdõ dátum"
+
+msgid "Start On"
+msgstr "Kezdõdik"
+
+msgid "Start Time"
+msgstr "Kezdési idõ"
+
+msgid "Su"
+msgstr "Va"
+
+msgid "Summary"
+msgstr "Összefoglalás"
+
+msgid "Sunday"
+msgstr "vasárnap"
+
+msgid "Tasks"
+msgstr "Feladatok"
+
+msgid "Th"
+msgstr "Csü"
+
+msgid "The data was lost."
+msgstr "Az adat elveszett."
+
+msgid "The end date must be later than the start date."
+msgstr "A befejezés dátuma késõbb kel legyen, mint a kezdeté."
+
+msgid "The file contained no data."
+msgstr "A fájlban nem volt adat."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr "Az állományt nem sikerült a szerverre feltölteni. Lehet, hogy a fájl nagyobb, mint a maximálisan megengedett méret."
+
+msgid "There was an error importing the data."
+msgstr "Az importálás során hiba történt."
+
+msgid "There was an error importing the uploaded file"
+msgstr "A szerverre küldött fájl importálása során hiba történt"
+
+msgid "There were no events to export."
+msgstr "Nem volt exportálható elfoglaltság."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr "Ez a fájl határozza meg a Kronolith program alapértelmezés szerinti beállításait, ill. azt, hogy mely beállításokat változtathatnak meg a felhasználók."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "Ez a fájl tartalmazza a színeket és fontokat meghatározó stíluslap információkat, melyek kiegészítik, vagy felülbírálják a Horde alapértelmezéseit."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr "Ez a fõ Kronolith konfigurációs fájl, mely elérési útvonalakat és Kronolith scriptek számára való opciókat tartalmaz."
+
+msgid "Thursday"
+msgstr "csütörtök"
+
+msgid "Time Zone"
+msgstr "Idõzóna"
+
+msgid "Title"
+msgstr "Cím"
+
+msgid "Today"
+msgstr "Ma"
+
+msgid "Tu"
+msgstr "Ke"
+
+msgid "Tuesday"
+msgstr "kedd"
+
+msgid "Type"
+msgstr "Típus"
+
+msgid "User Interface"
+msgstr "A program használata"
+
+msgid "User Options"
+msgstr "Felhasználói beállítások"
+
+#, c-format
+msgid "View %s"
+msgstr "%s megtekintése"
+
+msgid "We"
+msgstr "Sze"
+
+msgid "Wednesday"
+msgstr "szerda"
+
+#, c-format
+msgid "Week %d"
+msgstr "%d. hét"
+
+msgid "Week"
+msgstr "Hét"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "%d.&nbsp;hét"
+
+msgid "Week(s)"
+msgstr "Hét"
+
+msgid "Weekly: Recurs every"
+msgstr "hetente: ismétlõdik minden"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "Hány óráig mutassuk az idõt a napi ill. heti nézetben, ha nincs késõbbi elfoglaltság?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "Hány órátõl kezdve mutassuk az idõt a napi ill. heti nézetben, ha nincs korábbi elfoglaltság?"
+
+msgid "Work Week"
+msgstr "Munkahét"
+
+msgid "Work&nbsp;Week"
+msgstr "Munkahét"
+
+msgid "Yearly: Recurs every"
+msgstr "évente: ismétlõdik minden"
+
+msgid "Your Information"
+msgstr "Személyes információ"
+
+msgid "Your current time zone:"
+msgstr "Az Ön jelenlegi idõzónája:"
+
+msgid "day"
+msgstr "nap"
+
+msgid "day(s)"
+msgstr "nap"
+
+msgid "days"
+msgstr ". nap"
+
+msgid "iCalendar file successfully imported"
+msgstr "Az iCalendar fájlt sikeresen importáltuk"
+
+msgid "month(s)"
+msgstr ". hónap"
+
+msgid "no time"
+msgstr "nincs idõpont"
+
+msgid "on the same date"
+msgstr " a hónap ugyanazon napján"
+
+msgid "on the same weekday"
+msgstr " a hét ugyanazon napján"
+
+msgid "week"
+msgstr "hét"
+
+msgid "week(s) on:"
+msgstr ". héten a következõ nap(ok)on:"
+
+msgid "weeks"
+msgstr "hét"
+
+msgid "year(s)"
+msgstr ". évben"

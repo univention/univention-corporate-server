@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Block/package.xml,v 1.1 2004/02/14 00:25:13 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Block</name>
+  <summary>Horde Block API</summary>
+  <description>
+    The Horde_Block API provides a mechanism for displaying content
+    blocks from numerous Horde applications or other sources,
+    manipulating those blocks, configuring them, etc.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jan</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-02-13</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Block.php" />
+      <dir baseinstalldir="/Horde" name="Block" role="php">
+        <file name="Collection.php" />
+        <file name="Layout.php" />
+        <file name="UI.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Horde_Block" />
+    <provides type="class" name="Horde_Block_Collection" />
+    <provides type="class" name="Horde_Block_Layout" />
+    <provides type="class" name="Horde_Block_UI" />
+
+    <deps>
+      <dep type="ext" rel="has" optional="yes">gettext</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-02-13</date>
+      <notes>Initial packaging</notes>
+    </release>
+  </changelog>
+</package>

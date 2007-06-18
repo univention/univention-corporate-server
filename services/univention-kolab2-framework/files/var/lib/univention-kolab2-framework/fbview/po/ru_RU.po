@@ -1,0 +1,587 @@
+# Horde Russian translation.
+# Copyright (C)
+# Ignat Ikryanov <iignat@newmail.ru>, 2001
+# Fedor A. Fetisov <faf@ssc.ru>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde v2.1\n"
+"POT-Creation-Date: 2002-11-10 18:07+0300\n"
+"PO-Revision-Date: 2002-11-10 18:07+0300\n"
+"Last-Translator: Fedor A. Fetisov <faf@ssc.ru>\n"
+"Language-Team: Fedor A. Fetisov <faf@ssc.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Операция поддержки %s - Подтверждение"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "Приложение %s готово к осуществлению операций поддержки, отмеченных ниже."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "Приложение '%s' не сконфигурировано в Horde Registry"
+
+msgid "24 hours"
+msgstr "24 часа"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Произошла критическая ошибка:</b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Account Manager"
+msgstr "Управление счетами"
+
+msgid "Add pair"
+msgstr "Добавить пару"
+
+msgid "Address"
+msgstr "Адрес"
+
+msgid "Addressbook"
+msgstr "Адресная книга"
+
+msgid "Alias"
+msgstr "Псевдоним"
+
+msgid "An illegal value was specified."
+msgstr "Было указано некорректное значение."
+
+msgid "Available fields:"
+msgstr "Доступные поля:"
+
+msgid "Birthday"
+msgstr "День рождения"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Календарь"
+
+msgid "Cancel Problem Report"
+msgstr "Отмена отчета о проблеме"
+
+msgid "Cell Phone"
+msgstr "Клеточная радиосвязь"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Отметьте флажками операцию(ии), которые Вы хотите осуществить."
+
+msgid "Close Help Window"
+msgstr "Закрыть окно подсказки"
+
+msgid "Close Help"
+msgstr "Закрыть подсказку"
+
+msgid "Close Window"
+msgstr "Закрыть окно"
+
+msgid "Company"
+msgstr "Компания"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Содержимое '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Содержимое архива RAR"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Не могу открыть модуль Maintenance_Task %s"
+
+msgid "DD"
+msgstr "ДД"
+
+msgid "Daily"
+msgstr "Ежедневно"
+
+msgid "Database query failed."
+msgstr "Неудачный запрос в базу."
+
+msgid "Default Identity"
+msgstr "Профиль по умолчанию"
+
+msgid "Describe the Problem"
+msgstr "Опишите проблему"
+
+msgid "Details have been logged for the administrator."
+msgstr "Подробности были записаны в журнал для администратора."
+
+msgid "Display Options"
+msgstr "Настройки оболочки"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Не вызывайте maintenance.php непосредственно"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Нулевой результат."
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Every 15 minutes"
+msgstr "Каждые 15 минут"
+
+msgid "Every 30 seconds"
+msgstr "Каждые 30 секунд"
+
+msgid "Every 5 minutes"
+msgstr "Каждые 5 минут"
+
+msgid "Every Login"
+msgstr "Каждый раз при входе"
+
+msgid "Every half hour"
+msgstr "Каждые полчаса"
+
+msgid "Every minute"
+msgstr "Каждую минуту"
+
+msgid "Example values:"
+msgstr "Пример значений:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Ожидался \"BEGIN\" на строке %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Ожидался \"END:%s\" на строке %d."
+
+msgid "Failed retrieving preferences."
+msgstr "Восстановление настроек не удалось."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Неудачное соединение с сервером LDAP."
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Forwards"
+msgstr "Перенаправить"
+
+msgid "Full Description:"
+msgstr "Полное описание:"
+
+msgid "Help"
+msgstr "Подсказка"
+
+msgid "Home Address"
+msgstr "Домашний адрес"
+
+msgid "Home Phone"
+msgstr "Домашний телефон"
+
+msgid "Horde Login"
+msgstr "Логин в Horde"
+
+msgid "Horde System"
+msgstr "Система Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Wireless"
+
+msgid "Horde is not properly configured"
+msgstr "Horde не правильно настроен"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Ошибка импорта: "
+
+msgid "Import"
+msgstr "Импорт"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Импортировано поле: %s"
+
+msgid "Imported fields:"
+msgstr "Импортированы поля:"
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "List Help Topics"
+msgstr "Список разделов подсказки"
+
+msgid "Log in"
+msgstr "Вход"
+
+msgid "Log out"
+msgstr "Выход"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"По каким-то причинам вход в систему не удался. Вероятнее всего, Ваши имя "
+"пользователя или пароль были введены неверно."
+
+msgid "MM"
+msgstr "ММ"
+
+msgid "Mail"
+msgstr "IMP"
+
+msgid "Map Date and Time Fields"
+msgstr "Планировка полей даты и времени"
+
+msgid "Map Import Fields"
+msgstr "Планировка импортируемых полей"
+
+msgid "Matching fields"
+msgstr "Совпадающие поля"
+
+msgid "Memos"
+msgstr "Заметки"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Monthly"
+msgstr "Ежемесячно"
+
+msgid "My Summary"
+msgstr "Главная"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid "Never"
+msgstr "Никогда"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Для настроек LDAP не было указано соответствующей информации."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Не было указано соответствующей информации для категорий SQL."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Для настроек SQL не было указано соответствующей информации."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Нет настроек для процедуры аутентификации по SQL"
+
+msgid "No preferences are available."
+msgstr "Нет доступных настроек."
+
+msgid "Notes"
+msgstr "Заметки"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Адресат уведомления %s не найден."
+
+msgid "Options"
+msgstr "Настройки"
+
+msgid "Other Information"
+msgstr "Прочая информация"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Perform Maintenance Operations"
+msgstr "Осуществление операций поддержки"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Please provide a summary of the problem."
+msgstr "Пожалуйста, сообщите суть проблемы."
+
+msgid "Please provide your username and password"
+msgstr "Пожалуйста, введите Ваши имя пользователя и пароль"
+
+msgid "Problem Description"
+msgstr "Описание проблемы"
+
+msgid "Refresh Summary View:"
+msgstr "Обновление главной страницы:"
+
+msgid "Remove pair"
+msgstr "Удалить пару"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Необходимый параметр 'basedn' не указан в конфигурации аутентификации."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Необходимый параметр 'basedn' не указан в конфигурации настроек."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Необходимый параметр 'database' не указан в конфигурации аутентификации."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Необходимый параметр 'database' не указан в конфигурации категорий."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Необходимый параметр 'database' не указан в конфигурации настроек."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Необходимый параметр 'hostspec' не указан в конфигурации аутентификации."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Необходимый параметр 'hostspec' не указан в конфигурации категорий."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Необходимый параметр 'hostspec' не указан в конфигурации настроек."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Необходимый параметр 'password' не указан в конфигурации аутентификации."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Необходимый параметр 'password' не указан в конфигурации категорий."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Необходимый параметр 'password' не указан в конфигурации настроек."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Необходимый параметр 'phptype' не указан в конфигурации аутентификации."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Необходимый параметр 'phptype' не указан в конфигурации категорий."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Необходимый параметр 'phptype' не указан в конфигурации настроек."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Необходимый параметр 'table' не указан в конфигурации аутентификации."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Необходимый параметр 'table' не указан в конфигурации категорий."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Необходимый параметр 'table' не указан в конфигурации настроек."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "Необходимый параметр 'tableRelations' не указан в конфигурации категорий."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Необходимый параметр 'uid' не указан в конфигурации аутентификации."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Необходимый параметр 'uid' не указан в конфигурации настроек."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Необходимый параметр 'username' не указан в конфигурации аутентификации."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Необходимый параметр 'basedn' не указан в конфигурации категорий."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Необходимый параметр 'username' не указан в конфигурации настроек."
+
+msgid "Return to Options"
+msgstr "Вернуться к настройкам"
+
+msgid "Role"
+msgstr "Сценарий"
+
+msgid "Save Options"
+msgstr "Сохранить настройки"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Выберите нужные Вам символы из форм внизу. Затем Вы можете скопировать и "
+"вставить их в текст."
+
+msgid "Select the date delimiter:"
+msgstr "Выберите разделитель полей даты:"
+
+msgid "Select the date format:"
+msgstr "Выберите формат даты:"
+
+msgid "Select the time format:"
+msgstr "Выберите отображения формат времени:"
+
+msgid "Select two matching fields."
+msgstr "Выберите два совпадающих поля."
+
+msgid "Select your preferred language:"
+msgstr "Выберите язык:"
+
+msgid "Send Problem Report"
+msgstr "Послать сообщение о проблеме"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Установка обновления Вашей страницы и другие настройки оболочки."
+
+msgid "Set your preferred display language."
+msgstr "Выберите язык оболочки."
+
+msgid "Short Summary:"
+msgstr "Краткое обобщение:"
+
+msgid "Skip Maintenance"
+msgstr "Пропустить поддержку"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Потеряны конфигурационные файлы Horde:"
+
+msgid "Special Character Input"
+msgstr "Специальные символы"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "Tasks"
+msgstr "Задачи"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Регистрация - это то, с помощью чего приложения Horde получают информацию о том "
+"как им работать друг с другом. Здесь Вы должны перечислить все Ваши приложения Horde."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Этот файл управляет общими установками MIME драйверов для Horde framework, "
+"позволяющими приложениям пользоваться такими программами, как enscript или mswordview "
+"для преобразования данных в HTML для отображения в браузере."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Этот файл управляет таблицами стилей, которые используются для задания цветов и шрифтов "
+"для Horde framework и всех приложений, которые не задают свои собственные "
+"настройки."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Этот файл содержит сопоставление расширений файлов и логических типов MIME, позволяя "
+"приложениям Horde представлять себе, как обрабатывать некоторые данные, такие как "
+"прикрепленные к email файлы или проекты CVS."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Это главный файл конфигурации Horde. Он содержит пути и основные параметры, "
+"применяемые к ядру framework и ко всем приложениям Horde."
+
+msgid "This number must be at least one."
+msgstr "Это число не может быть меньше единицы."
+
+msgid "This value must be a number."
+msgstr "Это значение должно быть числом."
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "Type mismatch."
+msgstr "Несовпадение типов."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Невозможно соединиться с SQL сервером."
+
+msgid "Unable to register preferences in session."
+msgstr "Невозможно сохранить установки в сессии."
+
+msgid "Unable to translate this Word document"
+msgstr "Этот документ Word не может быть переведен."
+
+msgid "Undo Changes"
+msgstr "Отменить изменения"
+
+msgid "Unexpected end of file."
+msgstr "Неожиданный конец файла."
+
+msgid "Use Default Value"
+msgstr "Использовать значение по умолчанию"
+
+msgid "User Options"
+msgstr "Настройки пользователя"
+
+msgid "Username"
+msgstr "Имя пользователя"
+
+msgid "Vacation Notices"
+msgstr "Извещения об отсутствии"
+
+msgid "Warning!"
+msgstr "Внимание!"
+
+msgid "Warning"
+msgstr "Внимание"
+
+msgid "Weekly"
+msgstr "Еженедельно"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Добро пожаловать в %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Добро пожаловать, %s"
+
+msgid "Work Address"
+msgstr "Рабочий адрес"
+
+msgid "Work Phone"
+msgstr "Рабочий телефон"
+
+msgid "YY"
+msgstr "ГГ"
+
+msgid "Yearly"
+msgstr "Ежегодно"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Вы вышли из системы.<br />Благодарим Вас за ее использование."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Вы должны описать проблемы, прежде чем сможете отослать сообщение о ней."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Ваша %s сессия закончилась. Пожалуйста, войдите в систему заново."
+
+msgid "Your Email Address:"
+msgstr "Ваш Email:"
+
+msgid "Your Information"
+msgstr "Ваша информация"
+
+msgid "Your Name:"
+msgstr "Ваше имя:"
+
+msgid "Your options have been updated."
+msgstr "Ваши настройки были обновлены."
+
+msgid "[Problem Report]"
+msgstr "[Сообщение о проблеме]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[строка %s из %s]"
+
+msgid "vCard"
+msgstr "vCard"

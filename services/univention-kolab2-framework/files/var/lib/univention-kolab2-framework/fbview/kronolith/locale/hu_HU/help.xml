@@ -1,0 +1,156 @@
+<?xml version='1.0' encoding="iso-8859-2"?>
+<!-- based on: $Horde: kronolith/locale/hu_HU/help.xml,v 1.2 2004/02/29 22:49:52 jan Exp $ -->
+<!-- Kronolith help file, Hungarian translation -->
+<!-- Copyright (C) 2004 Laszlo L. Tornoci -->
+<!-- This file is distributed under the same license as the Kronolith package. -->
+<!-- Latest versions: ftp://xenia.sote.hu/pub/linux/horde/ -->
+
+<help>
+
+<entry id="Overview">
+    <title>Kronolith: áttekintés</title>
+    <heading>Mire jó a Kronolith?</heading>
+    <para>
+A Kronolith egy web alapú naptárprogram. Azon túl, hogy elfoglaltságokat
+lehet létrehozni, változtatni és törölni, egy sor egyéb dolgot is támogat:
+ismétlődő eseményeket (kivételekkel és törlési lehetőségekkel), alarm, import
+és export funkciókat, mutatja a feladatok (Nag) listáját (amennyiben ez a
+program installálva van), továbbá az elfoglaltságok listáját a Horde 
+összefoglaló képernyőn is meg tudja jeleníteni.
+    </para>
+</entry>
+
+<entry id="menu-today">
+    <title>Menü: Ma</title>
+    <heading>Ma</heading>
+    <para>
+    A <i>Ma</i> menüpont az alapértelmezett módon (havi, heti, napi stb. 
+nézetben, ahogy az Opciókban be van állítva) jeleníti meg az aznapi dátumot.
+    </para>
+</entry>
+
+<entry id="menu-Goto">
+    <title>Menü: Ugrás</title>
+    <heading>Ugrás</heading>
+    <para>
+    Az <i>Ugrás</i> menüpont egy kis felbukkanó ablakot jelenít meg, melyben
+gyorsan kiválasztható, hogy melyik dátumra ugorjunk (pl. megadható az év,
+a hónap, az év valahányadik hete, a hónap adott napja). Rendszerint ez a 
+a naptárban való dátumválasztás leggyorsabb módja.
+    </para>
+</entry>
+
+<entry id="menu-Day">
+    <title>Menü: Nap</title>
+    <heading>Napi nézet</heading>
+    <para>
+    A <i>Nap</i> menüpont a kiválasztott dátum napi nézetét jeleníti meg.
+    </para>
+</entry>
+
+<entry id="menu-work-week">
+    <title>Menü: Munkahét</title>
+    <heading>Munkahét nézet</heading>
+    <para>
+    A <i>Munkahét</i> menüpont a kiválasztott dátumhoz legközelebb eső
+munkahetet jeleníti meg (hétfőtől péntekig).
+    </para>
+</entry>
+
+<entry id="menu-week">
+    <title>Menü: Hét</title>
+    <heading>Heti nézet</heading>
+    <para>
+    A <i>Hét</i> menüpont a kiválasztott dátumot tartalmazó hét adatait
+jeleníti meg (7 napos nézet).
+    </para>
+</entry>
+
+<entry id="menu-month">
+    <title>Menü: Hónap</title>
+    <heading>Hónap nézet</heading>
+    <para>
+    A <i>Hónap</i> menüpont a kiválasztott dátumot tartalmazó hónap adatait
+jeleníti meg.
+    </para>
+</entry>
+
+<entry id="menu-new-event">
+    <title>Menü: Új elfoglaltság</title>
+    <heading>Új elfoglaltság létrehozása</heading>
+    <para>
+    Az <i>Új elfoglaltság</i> menüpont segítségével új eseményt rögzíthet
+a naptárban.
+    </para>
+</entry>
+
+<entry id="menu-options">
+    <title>Menü: Opciók</title>
+    <heading>Opciók</heading>
+    <para>
+    Az <i>Opciók</i> menüpont segítségével személyes igényeinek megfelelően
+állíthatja be a program tulajdonságait, más Horde programmodulokkal való 
+együttműködését, több ill. másokkal közös naptárakat használhat, továbbá
+személyes igényeinek megfelelően alakíthatja elfoglaltságainak kategorizálását.
+    </para>
+</entry>
+
+<entry id="menu-import-export">
+    <title>Menü: Import/Export</title>
+    <heading>Import/Export</heading>
+    <para>
+    Az <i>Import/Export</i> menüpont segítségével importálhatók ill.
+exportálhatók a naptári elfoglaltságok. Jelenleg CSV (comma separated value:
+vesszővel elválasztott adatformátum) és Microsoft Outlook formátumú adatok
+importálhatók. Exportálni csak CSV formátumban lehet.
+    </para>
+</entry>
+
+<entry id="alarms">
+    <title>Figyelmeztetés (alarm)</title>
+    <heading>Figyelmeztetések</heading>
+    <para>
+    A program ébresztőóraszerűen figyelmeztetni tudja a számítógép 
+felhasználóját az egyes elfoglaltságokra. Alapértelmezés szerint az
+első figyelmeztetést 15 perccel az esemény kezdete előtt kapja
+a felhasználó, de ez szabadon állítható be, külön-külön az egyes 
+elfoglaltságokra.
+    </para>
+</entry>
+
+<entry id="recurring-events">
+    <title>Ismétlődő elfoglaltságok</title>
+    <heading>Ismétlődő elfoglaltságok</heading>
+    <para>
+    Az egyes eseményekhez többféle módon állítható be az ismétlődés. Az
+elfoglaltságok gyakran egyszerű módon ismétlődnek, pl. a <i>havi</i>
+vagy <i>heti</i> ismétlődés a kiválasztott eseményt havi ill. heti
+ismétődésűvé teszi. Az ismétlődések bonyolultabban is megadhatók: pl.
+minden hónap utolsó péntekén, vagy minden héten hétfőn, szerdán és
+pénteken.
+    </para>
+    <para>
+    Az ismétlődés időtartama behatárolható az ismétlődést végét jelző
+dátum megadásával.
+    </para>
+    <para>
+    Amennyiben módosítunk egy ismétlődő eseményt, akkor a módosítás
+az esemény összes előfordulására érvényes lesz. Amennyiben egy ismétlődő
+elfoglaltság egyetlen előfordulását kívánjuk megváltoztatni, akkor szüntessük
+meg az ismétlődését, majd az <i>Újként mentsük el</i> gombra kattintva
+mentsük el. Ezt követően az eseménynek ez az előfordulása a többi 
+ismétlődéstől függetlenül módosítható.
+    </para>
+</entry>
+
+<entry id="Printing">
+    <title>Nyomtatás</title>
+    <heading>A naptár és az elfoglaltságok kinyomtatása</heading>
+    <para>
+    A naptár bizonyos megjelenítési módjait ki lehet nyomtatni. Ezekben
+az esetekben a felső menüsorban megjelenik a <i>Nyomtatás</i> ikon. Erre
+az ikonra kattintva kinyomtatható a képernyő tartalma.
+    </para>
+</entry>
+
+</help>

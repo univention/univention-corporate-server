@@ -1,0 +1,234 @@
+==============================
+|| INSTALLING Kronolith 2.0 ||
+==============================
+
+This document contains instructions for installing the Kronolith
+web-based calendar application on your system.
+
+For information on the capabilities and features of Kronolith, see the file
+README in the top-level directory of the Kronolith distribution.
+
+
+OBTAINING Kronolith
+-------------------
+
+Kronolith can be obtained from the Horde website and FTP server, at
+
+   http://www.horde.org/kronolith/
+   ftp://ftp.horde.org/pub/kronolith/
+
+Bleeding-edge development versions of Kronolith are available via CVS; see
+the file docs/HACKING in the Horde distribution for information on
+accessing the Horde CVS repository.
+
+
+PREREQUISITES
+-------------
+
+To function properly, Kronolith requires the following:
+
+  1. A working Horde installation.
+
+     Kronolith runs within the Horde Application Framework, a set of
+     common tools for Web applications written in PHP. You must
+     install Horde before installing Kronolith.
+
+     The Horde Framework can be obtained from the Horde website and
+     FTP server, at
+
+        http://www.horde.org/horde/
+        ftp://ftp.horde.org/pub/horde/
+
+     Many of Kronolith's prerequisites are also Horde prerequisites.
+     Be sure to have completed all of the steps in the INSTALL
+     file for the Horde Framework before installing Kronolith.
+
+  2. MCAL or SQL support in PHP.
+
+     Kronolith store its data either using the MCAL extension, or in
+     an SQL database. Build PHP either --with-mcal or with whichever
+     SQL driver you require; see the Horde INSTALL file for more
+     details on using databases with Horde.
+
+     If you are using MCAL, and don't have support for it in PHP
+     already, here are instructions for compiling libmcal and
+     PHP. Make sure to use libmcal 0.7 and libmcal drivers 0.9, or later.
+
+     (Note that there are RPMs for libmcal and a libmcal-aware PHP if
+     you use RedHat. You can get these from the Horde site:
+     ftp://ftp.horde.org/pub/RPMS/)
+
+     Check out libmcal from CVS:
+     > cvs -d :pserver:anonymous@cvs.libmcal.sourceforge.net:/cvsroot/libmcal login
+     (leave Password blank)
+     > cvs -d :pserver:anonymous@cvs.libmcal.sourceforge.net:/cvsroot/libmcal co libmcal
+
+     Check out icap and mstore from CVS, UNDER libmcal:
+     > cd libmcal
+     > cvs co icap mstore
+
+     Compile:
+     > cd icap
+     > make
+     > cd ../mstore
+     > make
+     > cd ..
+     > ./configure --with-icap --with-mstore
+     > make; make install
+     additionally copy *.h to /usr/local/mcal/include
+
+     > mkdir /var/calendar
+     > chmod 1777 /var/calendar
+
+     cd to php4 src directory
+     configure php with --with-mcal=/usr/local/mcal and other regular options
+     make and make install
+
+     cd to apache directory
+     make and make install
+
+     restart your httpd server
+
+     make the mstore password file /etc/mpasswd
+     use the htpasswd program from apache
+     for the first time use
+     > htpasswd -c /etc/mpasswd username
+     and for adding more users don't use the -c switch
+
+     You only need one username to run kronolith. The calendars for
+     the different horde users are managed automatically.
+
+
+INSTALLING Kronolith
+--------------------
+
+Kronolith is written in PHP, and must be installed in a web-accessible
+directory. The precise location of this directory will differ from
+system to system. Conventionally, Kronolith is installed directly underneath
+Horde in the webserver's document tree.
+
+Since Kronolith is written in PHP, there is no compilation necessary;
+simply expand the distribution where you want it to reside and rename
+the root directory of the distribution to whatever you wish to appear
+in the URL. For example, with the Apache webserver's default document
+root of '/usr/local/apache/htdocs', you would type:
+
+   cd /usr/local/apache/htdocs/horde
+   tar zxvf /path/to/kronolith-1.0.tar.gz
+   mv kronolith-1.0 kronolith
+
+and would then find Kronolith at the URL
+
+   http://your-server/horde/kronolith/
+
+
+CONFIGURING Kronolith
+---------------------
+
+1. Configuring Horde for Kronolith
+
+   a. Register the application
+
+      In horde/config/registry.php, find the applications['kronolith'] stanza.
+      The 'show' parameter should already be marked '=> true'.
+      If you have changed the location of Kronolith relative to Horde,
+      either in the URL or in the filesystem or both, you must
+      update the 'fileroot' and 'webroot' settings to their correct
+      values.
+
+2. [Only if you are using SQL, not libmcal] Creating the database table
+
+   The specific steps to create the Kronolith database table depend
+   on which database you've chosen to use.
+
+   First, look in scripts/drivers/ to see if a script already
+   exists for your database type. If so, you should be
+   able to simply execute that script as superuser in your
+   database. (Note that executing the script as the "horde" user will
+   probably fail when granting privileges.)
+
+   If such a script does not exist, you'll need to build your own, using
+   the file kronolith.sql as a starting point. If you need
+   assistance in creating databases, you may wish to let us know on
+   the Kronolith mailing list.
+
+   You will also need to make sure that the "horde" user in your
+   database has table-creation privileges, so that the tables that
+   PEAR DB uses to provide portable sequences can be created.
+
+
+3. Configuring Kronolith.
+
+   To configure Kronolith, change to the config/ directory of the
+   installed distribution, and make copies of all of the configuration
+   "dist" files without the "dist" suffix:
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Documentation on the format of those files can be found in each
+   file; open each in an editor and make changes as suggested within.
+   The default values are reasonable, but may not be appropriate for
+   your site, so it is best to check them before preceeding.
+
+   You must login to Horde as a Horde Administrator to finish the
+   configuration of kronolith.  Use the Horde "Administration" menu item to
+   get to the Administration page, and then click on the "Configuration"
+   icon to get the Configuration page.  Select "Calendar" from the selection
+   list of applications, and click on the "Configure" button.  Fill in or
+   change any configuration values as needed.  When done click on "Generate
+   Calendar Configuration" to generate the conf.php file.  If your web server
+   doesn't have write permissions to the configuration directory or
+   file, it will not be able to write the file.  In this case, cut and
+   paste the returned configuration information into the file
+   kronolith/config/conf.php.
+
+   Note for international users:  Kronolith uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are
+   found in the po/ directory.  If a translation is not yet available
+   for your locale (and you wish to create one), or if you're having
+   trouble using a provided translation, please see the horde/docs/TRANSLATIONS
+   file for instructions.
+
+4. Testing Kronolith
+
+   Use Kronolith to create, modify, and delete events. Test at
+   least the following:
+
+     - Creating a new event
+     - Creating a recurring event
+     - Modifying an event
+     - Deleting an event
+
+
+OBTAINING SUPPORT
+-----------------
+
+If you encounter problems with Kronolith, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web
+at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual
+applications and for issues relating to the project as a whole.
+Information, archives, and subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+Please keep in mind that Kronolith is free software written by volunteers.
+For information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using Kronolith!
+
+The Horde team
+kronolith@lists.horde.org
+
+$Horde: kronolith/docs/INSTALL,v 1.13 2003/11/18 20:00:41 ericr Exp $

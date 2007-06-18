@@ -1,0 +1,735 @@
+# Turba Dutch translation.
+# Copyright (C) 2001 Jan Kuipers.
+# Jan Kuipers <jrkuipers@lauwerscollege.nl>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-18 14:32+0100\n"
+"PO-Revision-Date: 2004-01-18 17:34+0100\n"
+"Last-Translator: Jan Kuipers <jrkuipers@lauwerscollege.nl>\n"
+"Language-Team: Dutch <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid " or "
+msgstr " of "
+
+#, c-format
+msgid "%s added."
+msgstr "%s toegevoegd."
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s bestand met succes geimporteerd"
+
+#, c-format
+msgid "%s records displayed."
+msgstr "%s records weergegeven"
+
+msgid "A browser that supports iFrames is required"
+msgstr "Een browser met iFrame ondersteuning is vereist"
+
+msgid "Above search form"
+msgstr "Boven zoekformulier"
+
+msgid "Add Object"
+msgstr "Object toevoegen"
+
+msgid "Add column"
+msgstr "Kolom toevoegen"
+
+msgid "Add to"
+msgstr "Toevoegen aan"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+#, c-format
+msgid "Added a %s link to %s."
+msgstr "Een %s link toegevoegd aan %s."
+
+msgid "Address Book Listing"
+msgstr "Adresboek lijst"
+
+msgid "Address book entry"
+msgstr "Adresboekinvoer"
+
+msgid "Address book is read-only."
+msgstr "Adresboek is alleen-lezen"
+
+msgid "Address not in addressbook."
+msgstr "Adres niet in adresboek."
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Adressen in lijst: %s"
+
+msgid "Advanced Search"
+msgstr "Uitgebreid zoeken"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "Application Options"
+msgstr "Toepassingopties"
+
+#, c-format
+msgid "Are you sure that you want to delete %s?"
+msgstr "Weet u zeker dat u %s wilt verwijderen?"
+
+msgid "Are you sure that you want to delete the selected entries?"
+msgstr "Weet u zeker dat u de geselecteerde adressen wilt verwijderen?"
+
+msgid "Ascending"
+msgstr "Toenemend"
+
+msgid "Available Columns:"
+msgstr "Beschikbare kolommen:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Terug naar %s"
+
+msgid "Basic Search"
+msgstr "Eenvoudig zoeken"
+
+msgid "Below search form"
+msgstr "Onder zoekformulier"
+
+#, c-format
+msgid "Bind failed: (%s) %s"
+msgstr "Verbinding mislukt: (%s) %s"
+
+msgid "Browse"
+msgstr "Bladeren"
+
+msgid "Business Category"
+msgstr "Zakelijke categorie"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Checkbox"
+msgstr "Keuzevak"
+
+msgid ""
+"Choose a default directory for your personal addressbook, contact lists, and "
+"searches."
+msgstr ""
+"Kies een standaarddirectory voor uw persoonlijke adresbook, adreslijsten en "
+"zoekresultaten."
+
+msgid "Choose an address book"
+msgstr "Kies een adresboek"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Kies de weergavevolgorde van de kolommen in de adreslijst."
+
+msgid "Clear Search"
+msgstr "Herstel zoeken"
+
+msgid "Column Options"
+msgstr "Kolomopties"
+
+msgid "Comma separated values"
+msgstr "Komma gescheiden waarden"
+
+msgid "Company Address"
+msgstr "Bedrijfsadres"
+
+msgid "Company"
+msgstr "Bedrijf"
+
+msgid "Connection failure"
+msgstr "Verbinding mislukt"
+
+msgid "Contact List"
+msgstr "Adressenlijst"
+
+msgid "Contact not found."
+msgstr "Adres niet gevonden."
+
+msgid "Contact removed from list."
+msgstr "Adres van lijst verwijderd."
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Inhoud van %s"
+
+msgid "Copy"
+msgstr "Kopiëren"
+
+msgid "Created"
+msgstr "Gemaakt"
+
+msgid "Default Display"
+msgstr "Standaardweergave"
+
+msgid ""
+"Default directory for your personal addressbook, contact lists, and searches."
+msgstr ""
+"Standaarddirectory voor uw persoonlijke adresboek, adreslijsten en "
+"zoekresultaten."
+
+msgid "Default sorting direction:"
+msgstr "Standaard sorteerrichting:"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "'%s' verwijderen"
+
+msgid "Delete Confirmation"
+msgstr "Verwijderbevestiging"
+
+msgid "Delete button behaviour"
+msgstr "Verwijderknopgedrag"
+
+#, c-format
+msgid "Delete failed: (%s) %s"
+msgstr "Verwijderen mislukt: (%s) %s"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Deletion failed"
+msgstr "Verwijderen mislukt"
+
+msgid "Descending"
+msgstr "Afnemend"
+
+msgid "Directory"
+msgstr "Directory"
+
+msgid "Display Options"
+msgstr "Weergaveopties"
+
+msgid "Do you want to confirm deleting entries?"
+msgstr "Wilt u het verwijderen van adressen bevestigen?"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "'%s' bewerken"
+
+#, c-format
+msgid "Edit entry for %s"
+msgstr "Invoer bewerken voor %s"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty key"
+msgstr "Lege sleutel"
+
+msgid "Empty source"
+msgstr "Lege bron"
+
+#, c-format
+msgid "Entry for %s updated."
+msgstr "Invoer voor %s bijgewerkt."
+
+msgid "Error while searching directory."
+msgstr "Fout bij het doorzoeken van directory."
+
+msgid "Exit Address Book"
+msgstr "Adresboek verlaten"
+
+msgid "Export Address Book"
+msgstr "Adresboek exporteren"
+
+msgid "Export"
+msgstr "Exporteren"
+
+#, c-format
+msgid "Failed to access the specified address book: %s"
+msgstr "Toegang tot het gespecificeerde adresboek mislukt: %s"
+
+#, c-format
+msgid "Failed to add %s to %s: %s"
+msgstr "Toevoegen van %s aan %s mislukt: %s"
+
+msgid "Failed to browse list"
+msgstr "Bladeren in lijst mislukt"
+
+msgid "Failed to browse the directory"
+msgstr "Bladeren in directory mislukt"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Verbinden met gespecificeerde directory mislukt."
+
+#, c-format
+msgid "Failed to find object to be added: %s"
+msgstr "Vinden van toe te voegen object mislukt: %s"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Doorzoeken van directory %s mislukt."
+
+msgid "Failed to search the specified directory."
+msgstr "Doorzoeken van gespecificeerde directory mislukt."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Zoek"
+
+msgid "First Name"
+msgstr "Voornaam"
+
+msgid "Freebusy URL"
+msgstr "Freebusy URL"
+
+msgid "From"
+msgstr "in"
+
+msgid "Group"
+msgstr "Groep"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Home Address"
+msgstr "Thuisadres"
+
+msgid "Home Phone"
+msgstr "Tel.nr. thuis"
+
+#, c-format
+msgid "Import Address Book, Step %d"
+msgstr "Adresboek importeren, stap %d"
+
+msgid "Import/Export Address Books"
+msgstr "Adresboeken importeren/exporteren"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Invalid address book."
+msgstr "Ongeldig adresboek."
+
+msgid "Invalid e-mail address."
+msgstr "Ongeldig emailadres."
+
+msgid "Invalid email."
+msgstr "Ongeldig emailadres."
+
+msgid "Invalid entry."
+msgstr "Ongeldige invoer."
+
+msgid "Invalid key specified."
+msgstr "Ongeldige sleutel opgegeven."
+
+msgid "Invalid key."
+msgstr "Ongeldige sleutel."
+
+msgid "Invalid name."
+msgstr "Ongeldige naam."
+
+msgid "Language"
+msgstr "Taal"
+
+msgid "Last Modified"
+msgstr "Laatst gewijzigd"
+
+msgid "Last Name"
+msgstr "Achternaam"
+
+msgid "Link added."
+msgstr "Link toegevoegd."
+
+msgid "Link canceled."
+msgstr "Link verwijderd."
+
+msgid "Matching"
+msgstr "overeenkomend met"
+
+msgid "Mini Search"
+msgstr "Mini zoeken"
+
+msgid "Missing information"
+msgstr "Missende informatie"
+
+msgid "Mobile Phone"
+msgstr "Mobiele telefoon"
+
+#, c-format
+msgid "Modify failed: (%s) %s"
+msgstr "Wijzigen mislukt: (%s) %s"
+
+msgid "More than 1 entry returned."
+msgstr "Meer dan 1 invoer geretourneerd."
+
+msgid "Move left"
+msgstr "Naar links"
+
+msgid "Move right"
+msgstr "Naar rechts"
+
+msgid "Move"
+msgstr "Verplaatsen"
+
+msgid "Mulberry Address Book"
+msgstr "Mulberry adresboek"
+
+#, c-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] in address book."
+msgstr ""
+"Meerdere personen met adres [%s], maar geen met naam [%s] in adresboek."
+
+msgid "My Addressbook"
+msgstr "Mijn adresboek"
+
+msgid "Name Format"
+msgstr "Naamopmaak"
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Netcenter Member Directory"
+msgstr "Netcenter ledendirectory"
+
+msgid "New Contact"
+msgstr "Nieuw adres"
+
+msgid "New List"
+msgstr "Nieuwe lijst"
+
+msgid "Next"
+msgstr "Volgende"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "Geen %s invoer gevonden voor %s."
+
+msgid "No contacts found"
+msgstr "Geen adressen gevonden"
+
+msgid "None"
+msgstr "Geen"
+
+msgid "Notes"
+msgstr "Notities"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "PGP Public Key"
+msgstr "Openbare PGP sleutel"
+
+msgid "Pine Address Book"
+msgstr "Pine adresboek"
+
+msgid "Please enter the name of the new list:"
+msgstr "Geef de naam van de nieuwe lijst, a.u.b:"
+
+msgid "Please select a directory:"
+msgstr "Selecteer een directory, a.u.b.:"
+
+msgid "Please select contact"
+msgstr "Selecteer een adres, a.u.b."
+
+msgid "Private Address Book"
+msgstr "Prive adresboek"
+
+#, c-format
+msgid "Query failed: (%s) %s"
+msgstr "Query mislukt: (%s) %s"
+
+msgid "Quick Search"
+msgstr "Snel zoeken"
+
+#, c-format
+msgid "Read failed: (%s) %s"
+msgstr "Lezen mislukt: (%s) %s"
+
+msgid "Remove column"
+msgstr "Kolom verwijderen"
+
+msgid "Remove from this list"
+msgstr "Uit deze lijst verwijderen."
+
+msgid "Requested object not found."
+msgstr "Aangevraagd object niet gevonden."
+
+msgid "Reset"
+msgstr "Herstellen"
+
+msgid "S/MIME Public Certificate"
+msgstr "Openbaar S/MIME certificaat"
+
+msgid "Save"
+msgstr "Bewaren"
+
+msgid "Search Results"
+msgstr "Zoekresultaten"
+
+msgid "Search"
+msgstr "Zoeken"
+
+msgid "Searching Options"
+msgstr "Zoekopties"
+
+msgid "Searching..."
+msgstr "Zoeken..."
+
+msgid "Select Address Book"
+msgstr "Selecteer adresboek"
+
+msgid "Select List"
+msgstr "Selecteer lijst"
+
+msgid "Select the destination to import to:"
+msgstr "Selecteer de importbestemming:"
+
+msgid "Select the file to import:"
+msgstr "Selecteer het te importeren bestand"
+
+msgid "Select the format to export to:"
+msgstr "Selecteer het exportformaat:"
+
+msgid "Select the format to import from:"
+msgstr "Selecteer het importformaat:"
+
+msgid "Select the format used to display names:"
+msgstr "Selecteer de opmaak voor het weergeven van namen:"
+
+msgid "Select the source to export from:"
+msgstr "Selecteer de exportbron:"
+
+msgid "Select view to display by default."
+msgstr "Selecteer de standaardweergave."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Selecteer welke velden worden weergegeven in de adreslijsten."
+
+msgid "Select which format to display names."
+msgstr "Selecteer de opmaak voor het weergeven van namen."
+
+msgid "Select your preferred language:"
+msgstr "Selecteer uw gewenste taal:"
+
+msgid "Select"
+msgstr "Selecteren"
+
+msgid "Selected Columns:"
+msgstr "Geselecteerde kolommen:"
+
+#, c-format
+msgid "Selected address book '%s'."
+msgstr "Geselecteerd adresboek '%s'."
+
+msgid "Set your preferred display language."
+msgstr "Stel uw gewenste weergavetaal in."
+
+msgid "Shared Directory"
+msgstr "Gedeelde directory"
+
+msgid "Show All"
+msgstr "Alle weergeven"
+
+msgid "Show Contacts"
+msgstr "Adressen weergeven"
+
+msgid "Show Lists"
+msgstr "Lijsten weergeven"
+
+msgid "Show"
+msgstr "Weergeven"
+
+msgid "Sort Direction"
+msgstr "Sorteerrichting"
+
+msgid "Specify where you want advanced search results to appear."
+msgstr "Opgeven waar u de geavanceerde zoekresultaten wilt laten verschijnen."
+
+#, c-format
+msgid "Successfully added %s to %s"
+msgstr "%s met succes toegevoegd aan %s"
+
+msgid "TSV"
+msgstr "TSV"
+
+msgid "Tab separated values"
+msgstr "Tab gescheiden waarden"
+
+msgid "The object you requested does not exist."
+msgstr "Het gevraagde object bestaat niet."
+
+msgid "The source you requested does not exist."
+msgstr "De door u gevraagde bron bestaat niet."
+
+msgid "There are no browseable address books."
+msgstr "Er zijn geen door te bladeren adresboeken."
+
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Er zijn geen beschrijfbare adresboeken. Geen van de beschikbare adresboeken "
+"zijn geconfigureerd voor het toevoegen van nieuwe adressen. Wanneer u denkt "
+"dat dit een fout betreft, neem dan contact op met de systeembeheerder."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Er heeft zich een fout voorgedaan bij het toevoegen van dit object. Neem "
+"contact op met uw systeembeheerder voor verdere hulp."
+
+msgid "There was an error creating a new list."
+msgstr "Een fout bij het maken van een nieuwe lijst."
+
+#, c-format
+msgid "There was an error deleting %s from the source address book."
+msgstr "Een fout bij het verwijderen van %s uit het bronadresboek."
+
+msgid ""
+"There was an error deleting this entry. Contact your system administrator "
+"for further help."
+msgstr ""
+"Er heeft zich een fout voorgedaan bij het verwijderen van deze invoer. Neem "
+"contact op met uw systeembeheerder voor verdere hulp."
+
+msgid "There was an error deleting this entry."
+msgstr "Een fout bij het verwijderen van deze invoer."
+
+msgid "There was an error deleting this object."
+msgstr "Een fout bij het verwijderen van dit object."
+
+msgid "There was an error displaying the select List"
+msgstr "Een fout bij het weergeven van de geselecteerde lijst"
+
+#, c-format
+msgid "There was an error importing the data: %s"
+msgstr "Een fout bij het importeren van de data: %s"
+
+msgid "There was an error importing the vCard data."
+msgstr "Een fout bij het importeren van de vCard data."
+
+msgid "There was an error removing this object."
+msgstr "Een fout bij het verwijderen van dit object."
+
+#, c-format
+msgid "There was an error updating this entry: %s"
+msgstr "Een fout bij het bijwerken van deze invoer: %s"
+
+#, c-format
+msgid "There was an error updating this entry: %s."
+msgstr "Een fout bij het bijwerken van deze invoer: %s."
+
+msgid "There were no addresses to export."
+msgstr "Er waren geen adressen om te exporteren."
+
+msgid "This file format is not supported."
+msgstr "Dit bestandsformaat wordt niet ondersteund."
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "Deze persoon heeft reeds een %s in het adresboek."
+
+msgid "This person is already in your address book."
+msgstr "Deze persoon bevindt zich reeds in uw adresboek."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid ""
+"Turba is not correctly configured or there was an error loading "
+"configuration files."
+msgstr ""
+"Turba is niet juist geconfigureerd of er was een fout bij het laden van de "
+"configuratiebestanden."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Niet in staat om de definitie van %s te laden."
+
+msgid "Unknown source"
+msgstr "Onbekende bron"
+
+msgid "Unnamed Contact"
+msgstr "Onbenoemd adres"
+
+msgid "User Options"
+msgstr "Gebruikersopties"
+
+msgid "Verisign Directory"
+msgstr "Verisign directory"
+
+#, c-format
+msgid "View '%s'"
+msgstr "'%s' bekijken"
+
+msgid "View Contact"
+msgstr "Adres weergeven"
+
+msgid "View to display by default:"
+msgstr "Standaardweergave:"
+
+msgid "Work Address"
+msgstr "Werkadres"
+
+msgid "Work Phone"
+msgstr "Tel.nr. werk"
+
+msgid "You are creating a distribution list."
+msgstr "U maakt een distributielijst."
+
+msgid "You do not have permission to edit this object."
+msgstr "U heeft geen recht om dit object te bewerken."
+
+msgid "You do not have permission to view this object."
+msgstr "U heeft geen recht om dit object te bekijken."
+
+msgid "You must select a target address book."
+msgstr "U dient een doeladresboek te selecteren."
+
+msgid "You must select a target list."
+msgstr "U dient een doellijst te selecteren."
+
+msgid "You must select an address first."
+msgstr "U dient eerst een adres te selecteren."
+
+msgid "You must select at least one entry first."
+msgstr "U dient tenminste eerst één adres te selecteren."
+
+msgid "You only have permission to view this object."
+msgstr "U heeft alleen recht om dit object te bekijken."
+
+msgid "Your Information"
+msgstr "Uw informatie"
+
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Voornaam Achternaam\" (b.v. John Doe)"
+
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Achternaam, Voornaam\" (b.v. Doe, John)"
+
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+msgid "contacts.tsv"
+msgstr "contacts.tsv"
+
+msgid "from"
+msgstr "in"
+
+msgid "to Selected Address Book"
+msgstr "naar geselecteerd adresboek"
+
+msgid "vCard"
+msgstr "vCard"

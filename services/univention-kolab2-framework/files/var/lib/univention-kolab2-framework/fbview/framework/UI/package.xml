@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/UI/package.xml,v 1.7 2004/05/02 21:25:56 eraserhd Exp $ -->
+<package version="1.0">
+  <name>Horde_UI</name>
+  <summary>Horde's User Interface Classes</summary>
+  <description>
+    The Horde_UI package provides several classes for handling UI elements in Horde.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chagenbu</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+
+    <maintainer>
+      <user>eraserhd</user>
+      <role>developer</role>
+      <name>Jay Felice</name>
+      <email>jfelice@cronosys.com</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-11-14</date>
+    <notes>Initial release as a PEAR package</notes>
+
+    <filelist>
+      <dir role="php" baseinstalldir="/Horde" name="UI">
+        <file name="Language.php" />
+        <file name="Pager.php" />
+	<file name="Table.php" />
+        <file name="Tabs.php" />
+        <file name="VarRenderer.php" />
+        <dir role="php" name="VarRenderer">
+          <file name="html.php" />
+        </dir>
+        <file name="Widget.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Horde_UI_Language" />
+    <provides type="class" name="Horde_UI_Pager" />
+    <provides type="class" name="Horde_UI_Tabs" />
+    <provides type="class" name="Horde_UI_VarRenderer" />
+    <provides type="class" name="Horde_UI_VarRenderer_html" />
+    <provides type="class" name="Horde_UI_Widget" />
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-11-14</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Image/package.xml,v 1.9 2004/05/06 21:43:05 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Image</name>
+  <summary>Horde Image API</summary>
+  <description>This package provides an Image utility API, with backends for:
+* GD
+* GIF
+* PNG
+* SVG
+* SWF
+* ImageMagick convert command line tool
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+      <maintainer>
+      <user>mac</user>
+      <role>developer</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2002-09-24</date>
+    <notes>Initial release as a PEAR package</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Image.php" />
+      <dir name="Image" baseinstalldir="/Horde" role="php">
+        <file name="gd.php" />
+        <file name="im.php" />
+        <file name="png.php" />
+        <file name="rgb.php" />
+        <file name="svg.php" />
+        <file name="swf.php" />
+      </dir>
+
+      <dir role="test" name="tests">
+        <file name="gd.php" />
+        <file name="im.php" />
+        <file name="svg.php" />
+        <file name="swf.php" />
+      </dir>
+    </filelist>
+
+  </release>
+
+  <deps>
+    <dep type="php" rel="ge" version="4.2.0+" />
+    <dep type="pkg" rel="has">Horde_Util</dep>
+    <dep type="pkg" rel="has" optional="yes">XML_SVG</dep> 
+  </deps>
+
+</package>

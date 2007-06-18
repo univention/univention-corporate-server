@@ -1,0 +1,512 @@
+# Horde Brazilian Portugues translation.
+# Copyright (C) 2001 Carlos Daniel Kibrit.
+# Carlos Daniel Kibrit <kibrit@terra.com.br>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 2.0-RC1\n"
+"POT-Creation-Date: 2001-11-08 22:58+0100\n"
+"PO-Revision-Date: 2001-11-13 16:20-0300\n"
+"Last-Translator: Carlos Daniel Kibrit <kibrit@terra.com.br>\n"
+"Language-Team: Brazilian Portuguese <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+msgid "24 hours"
+msgstr "24 horas"
+
+msgid "A fatal error has occurred"
+msgstr "Ocorreu um erro fatal"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add a new user:"
+msgstr "Incluir novo usuário"
+
+msgid "Add pair"
+msgstr "Incluir parceiro"
+
+msgid "Add user"
+msgstr "Incluir usuário"
+
+msgid "Adding users is disabled."
+msgstr "Inclusão de usuários desabilitada"
+
+msgid "Addressbook"
+msgstr "Endereços"
+
+msgid "Alias"
+msgstr "Apelido"
+
+msgid ""
+"An error has occurred. Furthermore, Horde encountered an error attempting to "
+"log this error."
+msgstr ""
+"ocorreu um erro. Adicionalmente, Horde detetou um erro na tentativa de"
+"anotar este erro"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr "Tentativa de sujeição falhou: Não há registro para %s"
+
+msgid "Attempt to bind without a valid connection."
+msgstr "Sujeição sem uma ligação válida"
+
+msgid "Available fields:"
+msgstr "Campos disponíveis"
+
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr "Sujeição ao servidor %s, dn %s como %s falhou: [%d] %s"
+
+msgid "Bugs"
+msgstr "Falhas"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Calendário"
+
+msgid "Cancel Problem Report"
+msgstr "Cancelar relatorio de problemas"
+
+msgid "Close Help Window"
+msgstr "Fechar janela ajuda"
+
+msgid "Close Help"
+msgstr "Fechar ajuda"
+
+msgid "Close Window"
+msgstr "Fechar janela"
+
+msgid "Confirm Password"
+msgstr "Confirme a senha"
+
+msgid "Contents of the GZipped Tarball"
+msgstr "Conteúdo do arquivo Tar comprimido com GZip"
+
+msgid "Contents of the RAR archive"
+msgstr "Conteúdo do arquivo RAR"
+
+msgid "Could not retrieve preferences."
+msgstr "Nã foi possível ler preferências"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Database query failed."
+msgstr "Consulta ao Banco de dados falhou"
+
+msgid "Default Identity"
+msgstr "Identidade Padrão"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Describe the Problem"
+msgstr "Descreva o problema"
+
+msgid "Empty result."
+msgstr "Sem Resultados"
+
+msgid "Error"
+msgstr "Erro"
+
+msgid "Example values:"
+msgstr "Valores exemplo"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Esperado \"BEGIN\" na linha %d. "
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Esperado \"END:%s\" na linha %d. "
+
+msgid "FTP"
+msgstr "FTP"
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "Falha na conexão ao servidor LDAP de preferências."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Falha na conexão com o servidor LDAP."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "Falha na abertura de conexão LDAP a %s"
+
+msgid "Full Description:"
+msgstr "Descrição completa"
+
+msgid "Headlines"
+msgstr "Títulos"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Horde :: Fatal Error"
+msgstr "Hrde :: Erro fatal"
+
+msgid "Horde Login"
+msgstr "Conectar-se a Horde"
+
+msgid "Horde System"
+msgstr "Sistema Horde"
+
+msgid "Horde User Administration"
+msgstr "Administração de usuários Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Sem Fio"
+
+msgid ""
+"Horde is not correctly configured to log error messages. You must configure "
+"at least a text file log in horde/config/conf.php."
+msgstr ""
+"Horde não está configurado corretamente para anotar mensagens de"
+"erro. Você deve configurar pelo menos um arquivo texto" 
+"para   Listar erros em horde/config/conf.php"
+
+msgid "Horde is not properly configured"
+msgstr "Horde não está corretamente configurado"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Erro na importação"
+
+msgid "Import"
+msgstr "Importar"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Campo importado: %s"
+
+msgid "Imported fields:"
+msgstr "Campos importados"
+
+msgid "List Help Topics"
+msgstr "Listar tópicos da ajuda"
+
+msgid "Listing users is disabled."
+msgstr "Listar usuários esta desabilitado"
+
+msgid "Log in"
+msgstr "Conectar-se"
+
+msgid "Log out"
+msgstr "Desconectar-se"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Correio"
+
+msgid "Map Date and Time Fields"
+msgstr "Mapear campos de Data e Hora"
+
+msgid "Map Import Fields"
+msgstr "Mapear campos importados"
+
+msgid "Matching fields"
+msgstr "Campos Correspondentes"
+
+msgid "Message"
+msgstr "Mensagem"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Network"
+msgstr "Rede"
+
+msgid "News"
+msgstr "Notícias"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Especificar informações de configuração para Preferências LDAP"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Especificar informações de configuração para Preferências SQL"
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Especificar informações de configuração para autenticação SQL"
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "Registro não encontrado para %s."
+
+msgid "No preferences were retrieved."
+msgstr "Não foram encontradas preferências."
+
+msgid "Password"
+msgstr "Senha"
+
+msgid "Passwords cannot be blank."
+msgstr "Senhas não podem ser apagadas"
+
+msgid "Passwords must match."
+msgstr "Senhas tem que ser exatas"
+
+msgid "Please log in"
+msgstr "Conecte-se"
+
+msgid "Please provide your username and password"
+msgstr "Informe seu nome de usuário e senha"
+
+msgid "Presentations"
+msgstr "Apresentações"
+
+msgid "Problem Description"
+msgstr "Descrição do problema"
+
+msgid "Remove pair"
+msgstr "Remova par"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "'basedn' não especificada na configuração de autenticação"
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "'basedn' não especificada na configuração de preferências"
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "'database' (banco de dados) não especificado na autenticação de" 
+"configuração"
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "'database' não especificado na configuração de preferências"
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "'hostspec' requerido, não especificado na configuração de" "autenticação"
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "'hostspec' requerido, não especificado na configuração de"
+"preferências."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "'senha' requerida não especificada na configuração de autenticação"
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "'senha' requerida  não especificada na configuração de preferências"
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "'phptype' requerido não especificado na configuração de autenticação"
+"(tipo de php)"
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "'phtype' requerido não especificado na configuração de preferências"
+"(tipo de php)"
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "'table' (tabela) requerida  não especificada na configuração de autenticação"
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "'table' (tabela) requerida não especificada na configuração de"
+"preferências"
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "'uid' requerido não especificado na configuração de autenticação"
+"(identificação de usuário) "
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "'uid' requerido não especificado na configuração de preferências"
+"(identificação de usuário)"
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "'username' (nome do usuário) não especificado na configuração"
+"de autenticação. "
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "'username' (nome de usuário) não especificado na configuração"
+"de preferências"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Return to Options"
+msgstr "Voltar"
+
+msgid "Save Options"
+msgstr "Salvar Opções"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then"
+"copy and paste them from the textarea."
+msgstr "Selecione os caracteres necessários nos campos abaixo, Você"
+"poderá então copiar e colar da área de texto"
+
+msgid "Select the date delimiter:"
+msgstr "Selecione o delimitador de data"
+
+msgid "Select the date format:"
+msgstr "Selecione formato de data"
+
+msgid "Select the time format:"
+msgstr "Selecione o formato da hora"
+
+msgid "Select two matching fields."
+msgstr "Selecione dois campos relacionados"
+
+msgid "Send Problem Report"
+msgstr "Enviar Lista de problemas"
+
+msgid "Short Summary:"
+msgstr "Resumo reduzido"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Faltam arquivos de configuração de Horde"
+
+msgid "Special Character Input"
+msgstr "Introdução de Caracter especial"
+
+msgid "Subject"
+msgstr "Assunto"
+
+msgid "Success"
+msgstr "Operação OK"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' incluido no sistema"
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s' removido do sistema."
+
+msgid "Tasks"
+msgstr "Tarefas"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"O Registro possibilita a comunicação entre as aplicações Horde"
+"Você deve Listar qualquer aplicação Horde que você tem aqui."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Houve um problema na inclusão de '%s' ao sistema."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Houve um problema na remoção de '%s' do sistema."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript  or" "mswordview  to render content into HTML for viewing in a browser."
+msgstr ""
+"Este arquivo controla os drivers MIME globais para a estrutura Horde"
+"permitindo que as aplicações possam usar programas como enscript ou" "mswordview para tecer o conteúdo em HTML para visualização num"
+"navegador web."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings.."
+msgstr ""
+"Este arquivo controla o estilo padrão usado para determinar cores e fontes"
+"para a estrutura Horde e para as plaicações que não dispõe destes recursos"
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Este arquivo mapeia as extensões de arquivo para os tipos MIME, permitindo" "que as aplicações de Horde saibam como processar conteúdos como"
+"mensagens de email"
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Este é o arquivo de configuração principal de Horde. Ele contém caminhos"
+"e itens básicos que se aplicam a estrutura central e aplicações Horde"
+
+msgid "Type mismatch."
+msgstr "Tipo incorreto"
+
+msgid "Unable to connect to SQL server."
+msgstr "Sem conexão com o servidor SQL"
+
+msgid "Unable to list users."
+msgstr "Impossível Listar usuários"
+
+msgid "Unable to modified preferences."
+msgstr "Impossível modificar preferências"
+
+msgid "Unable to register preferences in session."
+msgstr "Impossível registrar preferências em sessão"
+
+msgid "Unable to retrieve list of preferences."
+msgstr "Impossível recuperar Lista de preferências"
+
+msgid "Unable to translate this Word document"
+msgstr "Impossível traduzir este documento Word"
+
+msgid "Unable to updated preferences."
+msgstr "Impossível atualizar preferências"
+
+msgid "Undo Changes"
+msgstr "Desfazer"
+
+msgid "Unexpected end of file."
+msgstr "Fim de arquivo inesperado"
+
+msgid "Unsupported"
+msgstr "Não suportado"
+
+msgid "Use Default Value"
+msgstr "usar período padrão"
+
+msgid "Username"
+msgstr "Nome de usuário"
+
+msgid "Users in the system:"
+msgstr "Usuários no sistema"
+
+msgid "Warning"
+msgstr "Aviso"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Bem vindo, %s"
+
+msgid "YY"
+msgstr "AA"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Descreva o problema antes de enviar a Lista de problemas"
+
+msgid "You must specify a username to remove."
+msgstr "Especifique um nome de usuário para remoção"
+
+msgid "You must specify the username to add."
+msgstr "Especifique o nome de usuário para inclusão"
+
+msgid "Your Email Address:"
+msgstr "Seu endereço de Email"
+
+msgid "Your Name:"
+msgstr "Seu Nome"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Sua autenticação não suporta adição de usuários ou a função foi desabilitada"
+"por outra razão"
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Sua autenticação não suporta a função Listar usuários ou a função foi"
+"desabilitada por outro motivo"
+
+msgid "[Problem Report]"
+msgstr "[Listar Problemas] "

@@ -1,0 +1,190 @@
+===============================
+ Translation Helper User Guide 
+===============================
+
+:Date:     $Date: 2005/09/30 13:59:03 $
+:Revision: $Revision: 1.1.2.1 $
+:Authors:  Jan Schneider
+:Contact:  i18n@lists.horde.org
+
+.. contents::
+
+1 Introduction
+===============
+
+``translation.php`` is a small PHP script that should help translators doing
+their work.
+Any feedback, bug reports and feature requests should be send to the `i18n
+mailing list`_. This is also the right place for new translations and general
+discussions of i18n and l10n questions and problems.
+
+For a list of available commands run::
+
+  ./translation.php help
+
+For detailed help on a certain command run::
+
+  ./translation.php help command
+
+
+Additional information about creating translations and fixing problems can be
+found in the file ``horde/docs/TRANSLATION``.
+
+.. _i18n mailing list: http://horde.org/mail/
+
+1.1 Prerequisites
+==================
+
+To run this script you'll need a PHP executable like the CLI or the CGI version
+with `gettext support`_ compiled in and the basic `PEAR`_ libraries. The
+script expects your PHP executable to be at ``/usr/bin/php``. If your
+executable is at another place, either edit the first line of
+``translation.php`` to reflect your location or call the script like::
+
+  /usr/local/bin/php -f translation.php.
+
+You'll need `gettext`_ 0.11 or greater, but version 0.12 or greater is strongly
+recommended as this is the first version that supports PHP natively. Older
+versions may not extract all translateable strings correctly.
+A windows version of the gettext binaries can be found on every `GNU ftp
+mirror`_ as of version 0.12.
+
+You'll need the PEAR packages `Console_Getopt`_ 0.11 or greater,
+`Console_Table`_ and `File_Find`_. The Console_Getopt package that comes with
+PHP before version 4.3.0 has bugs and is not sufficient. Console_Getopt 0.11
+also needs a newer PEAR version than the one that comes with PHP versions
+prior to 4.3.0. To install all needed packages, run::
+
+  pear upgrade PEAR Console_Getopt
+  pear install Console_Table File_Find
+
+or download the newest package from the `PEAR`_ server and install them
+manually in your PEAR directory.
+
+.. _gettext: http://www.gnu.org/software/gettext/
+.. _gettext support: http://www.php.net/gettext/
+.. _GNU ftp mirror: http://www.gnu.org/prep/ftp.html
+.. _PEAR: http://pear.php.net/
+.. _Console_Getopt: http://pear.php.net/package/Console_Getopt/
+.. _Console_Table: http://pear.php.net/package/Console_Table/
+.. _File_Find: http://pear.php.net/package/File_Find/
+
+2 Creating a new translation
+=============================
+
+To create a new translation you first have to extract all gettext messages from
+the PHP sources. There are already template files with the ``.pot`` suffix in
+the ``po`` directories that you can use if you have troubles extracting the
+messages but they might be outdated.
+Run::
+
+  ./translation extract
+
+You now have to create a new PO file for your locale. A locale has the form
+``ll_CC`` where ``ll`` is the two letter `ISO 639`_ code of the language and
+``CC`` the two letter `ISO 3166`_ code of the country, e.g. ``de_DE``,
+``en_US`` or ``pt_BR``.
+``translation.php`` is able to guess the locale from the ``LANG`` environment
+variable but it is safer to specify the locale with the ``-l`` parameter.
+To create the PO file run::
+
+  ./translation init -l ll_CC
+
+Now you can start the translation by editing the created ``ll_CC.po``
+files. It is important to set the correct charset for the locale in the
+``Content-Type:`` header.
+You should fill out the the complete header of the created ``ll_CC.po`` file,
+e.g.::
+
+  # Dutch translation for Horde.
+  # Copyright (C) 2004 Horde Project
+  # This file is distributed under the same license as the Horde package.
+  # Joris Braakman <jbraakman@yahoo.com>, 2004.
+  #
+  msgid ""
+  msgstr ""
+  "Project-Id-Version: Horde 2.3\n"
+  "Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+  "POT-Creation-Date: 2004-04-14 10:30+0200\n"
+  "PO-Revision-Date: 2004-04-14 17:17+02:00\n"
+  "Last-Translator: Joris Braakman <jbraakman@yahoo.com>\n"
+  "Language-Team: i18n@lists.horde.org\n"
+  "MIME-Version: 1.0\n"
+  "Content-Type: text/plain; charset=ISO-8859-1\n"
+  "Content-Transfer-Encoding: 8-bit\n"
+
+To compile the translations to a binary format run::
+
+  ./translation make
+
+After you created the new translation you have to add entries for this locale
+in the configuration file horde/config/nls.php.
+
+TODO: filling new po files with strings from the compendium.
+
+.. _ISO 639: http://www.loc.gov/standards/iso639-2/
+.. _ISO 3166: http://www.iso.ch/iso/en/prods-services/iso3166ma/index.html
+
+3 Maintaining translations
+===========================
+
+This tool is designed to help you translators doing your great work. It changes
+a lot compared to the old methods creating and maintainig your translations. To
+make the transition to the tool as smooth as possible you should read chapter
+3.1 before using this tool the first time.
+
+3.1 First time use of translation.php
+======================================
+
+This tool introduces a nice feature of gettext: compendium files. A compendium
+is a special PO file containing a set of translations recurring in many
+different packages. These compendia will be used in the background without much
+for you to care about. But you have to create and edit a compendium before you
+can use it.
+
+To create a compendium of all your existing translations run::
+
+  ./translation.php compendium -l ll_CC
+
+The ``compendium.po`` being created will contain all modules' translations of
+this locale merged into a single file. You should take a closer look at this
+file because you may find a lot of special marked lines where you translated
+certain strings differently in the various modules. It's a good idea to fix
+the modules' translations now so that all modules use the same translation for
+the same string. You can alway recreate your compendium with the above command.
+
+If you're maintaining translations for different `branches`_ and assumed that
+you have all modules of the ``HEAD`` branches in one directory and all of the
+``RELENG_*`` branches in another, you probably want to share a compendium
+between these directories.
+
+You should first create a compendium in the ``RELENG_*`` branch, review it and
+fix all translations until you're happy with the result. Then create a second
+compendium in the ``HEAD`` branch and include your first one with the --add
+option.
+Now fix the translations in this branch. If you're ready you can remove the
+first compendium and for now on use the compendium in the ``HEAD`` branch for
+both branches. To do so use the ``--compendium`` option to specify a path to
+your compendium.
+
+.. _branches: http://www.horde.org/source/
+
+3.2 Updating translations
+=========================
+
+The process of updating translations is a cycle where you extract new gettext
+strings from the sources, translate those new strings or update the already
+translated strings and compile them after.
+
+To update the translation for a module, run::
+
+  ./translation.php update -m modulename -l ll_CC
+
+This extracts the new strings from the sources and tries to update them from
+already existing translations in the compendium. You just have to translate
+all unstranslated strings in the ``ll_CC.po`` file in the ``po`` directory of
+the module you updated.
+
+Once this is done, you can compile the translation by calling::
+
+  ./translation.php make -m modulename -l ll_CC

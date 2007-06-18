@@ -1,0 +1,63 @@
+<?php
+/**
+ * Release focus. Possible values:
+ * 0 - N/A
+ * 1 - Initial freshmeat announcement
+ * 2 - Documentation
+ * 3 - Code cleanup
+ * 4 - Minor feature enhancements
+ * 5 - Major feature enhancements
+ * 6 - Minor bugfixes
+ * 7 - Major bugfixes
+ * 8 - Minor security fixes
+ * 9 - Major security fixes
+ */
+$this->notes['fm']['focus'] = 5;
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+After almost two years of work, the Horde Team is proud to announce the first
+alpha release of the Kronolith Calendar Application version 2.0.
+
+Kronolith is the Horde calendar application. It provides web-based calendars
+backed by either a SQL database or the MCAL library. Supported features
+include shared calendars, remote calendars, meeting management, alarms,
+recurring events, and a sophisticated day/week view which handles arbitrary
+numbers of overlapping events.
+
+This is a preview version that should not be used on production
+systems.  Some small parts are missing and there are still a few bugs,
+some of which are listed below.  You should not use this preview
+version over existing production data.
+
+The API, configuration items, or features may change before the final
+release, but we encourage widespread testing and feedback via the mailing
+lists or our bug tracking system. Translations are not ready to be updated
+yet, since some strings will change before the final release.
+
+The major changes compared to the Kronolith 1.x versions are:
+    * Shared calendars.
+    * Meeting management through iCalendar and iTip messages.
+    * Event reminders through email.
+    * iCalendar import and export.
+    * Generation of free/busy information.
+    * Remote calendars.
+
+Known issues:
+    * Documentation is not completely updated yet.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+Support for shared calendars has been added.
+Meetings can now be managed through iCalendar and iTip messages.
+Email-based event reminders have been added.
+iCalendar data can now be imported and exported.
+Free/busy information is being generated automatically now, for use in Outlook
+or other calendar applications.
+Remote calendars have been added.
+FM;
+
+$this->notes['name'] = 'Kronolith';
+$this->notes['fm']['project'] = 'kronolith';
+$this->notes['fm']['branch'] = 'FRAMEWORK_3';

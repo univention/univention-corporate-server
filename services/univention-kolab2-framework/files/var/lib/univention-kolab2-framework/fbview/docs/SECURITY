@@ -1,0 +1,304 @@
+===========================================================================
+|| Horde Security Notes                                                  ||
+===========================================================================
+
+---------------
+Temporary files
+===============
+
+Horde applications make extensive use of temporary files.  In order to 
+make sure these files are secure, you should make sure your installation
+meets the following criteria.
+
+Some applications use the PHP tempnam() function call to create temporary
+files.  As of PHP 4.0.3, PHP tempnam() calls the mkstemp() function
+which is designed to prevent mischief such as /tmp races, symbolic
+link retargeting, etc.  Sites using PHP earlier than 4.0.3 should upgrade
+so as not to be vulnerable to such abuse by local users.
+
+Sites may also gain increased security by defining an upload_tmp_dir
+(in the php.ini file) which is writable by the web server, but not writable
+by other users.  Since the temporary files may contain sensitive information
+it is best to also make these file unreadable by other users.  That is,
+they can be made readable and writable only by the web server user.
+
+
+------------
+PHP Sessions
+============
+
+For the most security, you should enable PHP session cookies by enabling
+the php setting session.use_cookies.  When doing so, be sure to set an
+appropriate session.cookie_path and session.cookie_domain also to secure
+your cookies.
+
+If PHP sessions are set to use the "files" save_handler, then these files
+should be secured properly.  Sites can increase security by setting the
+php setting session.save_path to a directory that is only readable and
+writable by the web server process.  
+
+Sites with a large user base should consider setting the session.entropy_file
+and session.entropy_length to appropriate values.
+
+Horde will encrypt the user credentials before storing them in the session.
+However, this encryption can be improved if you have and enable the php
+extension "mcrypt" which allows for stronger encryption than is otherwise
+provided by Horde.
+
+
+--------------------------
+Default database passwords
+==========================
+
+The Horde documentation and sample database creation scripts create
+a default user and password for accessing the horde database.  Using
+this password in a production environment is a security hole, since an
+attacker will easily guess it.
+
+It is very important that sites change at least the password to
+something secure. 
+
+
+----------------------------------------------
+Prevent configuration file reading and writing 
+==============================================
+
+The configuration files may contain sensitive data (such as database
+passwords) that should not be read or written by local system users or
+remote web users.
+
+If you use a Unix system, one way to make the configuration files and
+directories accessible only to the web server is as follows.  Here we
+assume that the web server runs as the user "apache" and the files
+are located in /home/httpd/html -- substitute the correct user or file
+path if needed.
+
+# chown -R apache /home/httpd/html/horde/config
+# chown -R apache /home/httpd/html/horde/*/config
+# chmod -R go-rwx /home/httpd/html/horde/config
+# chmod -R go-rwx /home/httpd/html/horde/*/config
+
+For completely fascist permissions, you can make the entire Horde tree
+inaccessible by anyone except the web server user (and root):
+
+# chown -R apache /home/httpd/html/horde
+# chmod -R go-rwx  /home/httpd/html/horde
+# chmod -R a-w   /home/httpd/html/horde/
+
+Note that the last line makes all files unwritable by any user (only root
+can override this).  This makes the site secure, but may make it more
+difficult to administrate.  In particular, it will defeat the Horde 
+administrative configuration interface, forcing you to update the Horde
+configuration files manually (as per the INSTALL instructions).
+
+The above will not secure the files if other user's on the same machine
+can run scripts as the apache user.  If you need to protect against
+this you should make other user's scripts run under their own account
+with some facility such as apache's suexec module.  You need to watch
+out not only for cgi scripts, but also for other modules like mod_php,
+mod_perl, mod_python, etc. that may be in use on your server.
+
+
+--------------------------
+Restricting test.php files
+==========================
+
+The test.php files provide a wealth of information that can be used
+against the site by attackers.  One you have confirmed that everything
+is working, you should disable access to the test.php files.  You can
+do this via the web server, or via system file permissions.  On a unix
+system, you might issue a command such as:
+
+# chmod a-rwx /home/httpd/html/horde/test.php
+# chmod a-rwx /home/httpd/html/horde/*/test.php
+
+
+-------------------------------------------------------------
+Preventing Apache from serving configuration and source files
+==============================================================
+
+The Horde configuration files may contain sensitive data (such as
+database passwords) that should not be served by the web server. Other
+directories contain PHP source code that isn't intended for viewing
+by end-users. The Horde group has provided .htaccess files in 
+various directories to help protect these files.  However, that
+depends on your web server honoring .htacess files (which is a
+performance hit, and may not be available in all web servers).
+
+An Apache site can also prevent the web server from serving these
+files by adding sections to httpd.conf such as the following:
+
+<Directory "/home/httpd/html/horde/config">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/lib">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/locale">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/po">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/scripts">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/templates">
+    order deny,allow
+    deny from all
+</Directory>
+
+Repeat this pattern for each Horde application.  For example, for IMP
+you would then add:
+
+<Directory "/home/httpd/html/horde/imp/config">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/imp/lib">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/imp/locale">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/imp/po">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/imp/scripts">
+    order deny,allow
+    deny from all
+</Directory>
+<Directory "/home/httpd/html/horde/imp/templates">
+    order deny,allow
+    deny from all
+</Directory>
+
+
+-------------
+Setup scripts
+=============
+
+There are various scripts use to setup or configure Horde.  If you
+allow other users on the web server machine, you should protect these
+files from being accessed by them.  On a unix system, you might restrict
+these files to root access by using the following type of commands:
+
+# chown -R root /home/httpd/html/horde/scripts
+# chown -R root /home/httpd/html/horde/*/scripts
+# chmod -R go-rwx /home/httpd/html/horde/scripts
+# chmod -R go-rwx /home/httpd/html/horde/*/scripts
+
+
+-------------------------------
+Using a chroot web server setup
+===============================
+
+Unix users may want to consider using a chroot environment for their
+web server.  How to do this is beyond the scope of this document, but
+sufficient information exists on the world wide web and/or in your
+server documentation to complete this task.
+
+
+------------------------------
+Hidding PHP info from the user
+==============================
+
+You should consider setting the following PHP variables in your php.ini file
+to prevent information leak to the user, or global insertion by the user:
+
+expose_php = Off
+display_errors = Off
+log_errors = On
+register_globals = Off
+
+You should also set up error logging (using the PHP error_log variable)
+to log to a file, syslog, or other log destination.
+
+
+-------------------------
+Using a secure web server
+=========================
+
+Horde depends on passing sensitive information (such as passwords and
+session information)  between the web server and the web client.  Using
+a secure (SSL-enabled) web server will help protect this information as
+it traversing the network.
+
+
+-------------------------------
+Using a secure POP3/IMAP server
+===============================
+
+If you are using a POP3/IMAP server with Horde (e.g. for authentication or
+for IMP) then Horde is passing the user's login credentials between the
+web server and the mail server.
+
+If your web server and IMAP server are on the same host, you can increase
+security by forcing all traffic over the loopback or localhost interface
+so that it is not exposed to your network.
+
+In cases where that is not possible, we recommend using a secure mail
+connection such as IMAP-SSL or POP3-SSL to ensure that passwords remain
+safe.
+
+
+-------------------
+TODO: LDAP Security
+===================
+
+LDAP security is similar to the above POP3/IMAP server security issue.
+If you are using LDAP, you should make sure that you are not exposing
+ldap passwords or any sensitive data in your LDAP database.
+
+
+------------------------
+Database socket security
+========================
+
+If your database (e.g. MySQL or PostgreSQL) is on the same host as your
+web server, you may use unix sockets rather than tcp connections to help
+improve your security (and performance).  (If it doesn't support unix
+sockets, you can achieve some better security by restricting the tcp 
+support to the loopback or localhost interface)
+
+If the database keeps its socket file (e.g. mysql.sock) in a directory
+like /tmp or /var/tmp, you should set permissions carefully to ensure that
+local users (if you have any) can't delete the socket. The unix "sticky"
+bit should already be sent on the temporary directory itself, but you
+also need to make sure the socket itself isn't writable by "other"
+or users can delete it.
+
+You might consider moving the socket file to another location such
+as /var/run or the top-level directory of your database program (e.g.
+/var/lib/mysql or /var/lib/pgsql).
+
+
+-------------------------------
+Sendmail or SMTP considerations
+===============================
+
+In some cases, you can increase security by sending mail via the local
+command-line sendmail program on your web server, rather than using SMTP. 
+However, there may be reasons to use SMTP instead, such as if your smtp
+server does spam or virus checking which would be skipped using the local
+sendmail program.
+
+
+----------------
+Additional Notes
+================
+
+This is by far not a complete security HOWTO. This is just a compiled list
+of what people have contributed so far. If you have tips, ideas, suggestions
+or anything else that you think could help others in securing their Horde
+installation, please let us know.
+
+$Horde: horde/docs/SECURITY,v 1.8 2003/08/29 21:56:51 jan Exp $

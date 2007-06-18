@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Token/package.xml,v 1.6 2003/10/29 19:35:02 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Token</name>
+  <summary>Horde Token API</summary>
+  <description>
+    The Horde_Token:: class provides a common abstracted interface into the various token generation mediums. It also includes all of the functions for retrieving, storing, and checking tokens.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>max</user>
+      <role>lead</role>
+      <name>Max Kalika</name>
+      <email>max@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Token.php"/>
+      <dir baseinstalldir="/Horde" name="Token" role="php">
+        <file name="file.php"/>
+        <file name="sql.php"/>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-03</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

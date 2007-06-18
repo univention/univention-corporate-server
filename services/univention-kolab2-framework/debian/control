@@ -1,0 +1,19 @@
+Source: univention-kolab2-framework
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-baseconfig-dev
+
+Package: univention-kolab2-framework
+Architecture: all
+Pre-Depends: univention-apache, libapache-mod-auth-pam, php4-pear, php4-ldap, php4-domxml
+Depends: univention-baseconfig, python2.4-pexpect, liburi-perl, libnet-ldap-perl, openssl
+Description: UCS - postfix kolab2 framework
+ This package contains scripts and configuration needed
+ for kolab2 compatible servers. Most work is based on the
+ kolab-project.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

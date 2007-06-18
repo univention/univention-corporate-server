@@ -1,0 +1,1029 @@
+# Finnish translation for Kronolith.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Leena Heino <liinu@uta.fi>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0\n"
+"POT-Creation-Date: 2002-03-13 09:38+0200\n"
+"PO-Revision-Date: 2003-05-28 12:59+0200\n"
+"Last-Translator: Leena Heino <liinu@uta.fi>\n"
+"Language-Team: Finnish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d tunti"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d tunti, %d minuutti"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d tunti, %d minuuttia"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d tuntia"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d tuntia, %d minuutti"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d tuntia, %d minuuttia"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minuutti"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minuuttia"
+
+#, c-format
+msgid "%s Minutes before"
+msgstr "%s minuuttia ennen"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s tiedoston tuonti onnistui"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s etenee."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s alkaa nyt"
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s alkaa %s"
+
+#, c-format
+msgid "%s's Calendar"
+msgstr "%s:n kalenteri"
+
+msgid "* Add these by clicking Invite *"
+msgstr "* Lis‰‰ n‰m‰ valitsemalla Kutsu *"
+
+msgid "* Please select address(es) *"
+msgstr "* Valitse osoitteet *"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Kuvaus</b> (vapaaehtoinen)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Kuvaus</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Avainsanat</b> (vapaaehtoinen)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Avainsanat</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Toistuvuus</b> (vapaaehtoinen)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Toistuvuus</b>"
+
+msgid "Add Event"
+msgstr "Lis‰‰ tapahtuma"
+
+msgid "Add New Remote Calendar:"
+msgstr "Lis‰‰ uusi et‰kalenteri:"
+
+msgid "Add a new event"
+msgstr "Lis‰‰ uusi tapahtuma"
+
+msgid "Add people from my Address Book"
+msgstr "Lis‰‰ henkilˆt osoitekirjastani"
+
+msgid "Add"
+msgstr "Lis‰‰"
+
+msgid "Add, remove, and edit categories."
+msgstr "Voit lis‰t‰, poistaa ja muokata luokituksia."
+
+msgid "Alarm Date"
+msgstr "H‰lytysp‰iv‰m‰‰r‰"
+
+msgid "Alarm Span (minutes)"
+msgstr "H‰lytyksen pituus (minuutteina)"
+
+msgid "Alarm Time"
+msgstr "H‰lytysaika"
+
+msgid "Alarm"
+msgstr "H‰lytys"
+
+msgid "All Visible"
+msgstr "Kaikki n‰kyvill‰"
+
+msgid "All day event"
+msgstr "Koko p‰iv‰n tapahtuma"
+
+msgid "All day"
+msgstr "Koko p‰iv‰n"
+
+msgid "All events"
+msgstr "Kaikki tapahtumat"
+
+msgid "All"
+msgstr "Kaikki"
+
+#, c-format
+msgid "Any events in a category that is deleted will become %s."
+msgstr "Kaikki poistettavassa luokituksessa oleville tapahtumille tulee luokitukseksi %s."
+
+msgid "April"
+msgstr "huhtikuu"
+
+msgid "At"
+msgstr "Kello"
+
+msgid "Attached is an iCalendar file describing this event."
+msgstr "Liitteen‰ on iCalendar tiedosto, jossa on lis‰tietoja t‰st‰ tapahtumasta."
+
+msgid "August"
+msgstr "elokuu"
+
+msgid "Back to Calendar Options"
+msgstr "Takaisin kalenterin asetuksiin"
+
+msgid "Birthday"
+msgstr "Syntym‰p‰iv‰"
+
+msgid "Business"
+msgstr "Tyˆasia"
+
+msgid "Calendar Summary"
+msgstr "Kalenteri yhteenveto"
+
+msgid "Calendar"
+msgstr "Kalenteri"
+
+msgid "Calendar's Type:"
+msgstr "Kalenterin tyyppi:"
+
+msgid "Calendar's name:"
+msgstr "Kalenterin nimi:"
+
+msgid "Calendars"
+msgstr "Kalenterit"
+
+msgid "Can't create a new event."
+msgstr "Ei voida luoda uutta tapahtumaan."
+
+msgid "Cancel"
+msgstr "Peru"
+
+msgid "Category Management"
+msgstr "Luokitusten hallinta"
+
+msgid "Category"
+msgstr "Luokitus"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Voit muuttaa p‰iv‰m‰‰rien ja ajan esitystapaa."
+
+msgid "Change"
+msgstr "Muuta"
+
+msgid "Choose Color"
+msgstr "Valitse v‰ri"
+
+msgid "Comma separated values"
+msgstr "Pilkuilla erotetut arvot"
+
+msgid "Confirm deletion of events?"
+msgstr "Varmista tapahtumien poisto."
+
+msgid "Contact List"
+msgstr "Osoitelista"
+
+msgid "Create New Category"
+msgstr "Luo uusi luokitus"
+
+msgid "Create a New Event"
+msgstr "Luo uusi tapahtuma"
+
+msgid "Create"
+msgstr "Luo"
+
+msgid "Current"
+msgstr "T‰m‰"
+
+msgid "Daily: Recurs every"
+msgstr "P‰ivitt‰in: Toistuvuuden v‰li"
+
+msgid "Date and Time Options"
+msgstr "P‰iv‰m‰‰r‰n ja ajan asetukset"
+
+msgid "Day"
+msgstr "P‰iv‰"
+
+msgid "Day(s)"
+msgstr "P‰iv‰‰"
+
+msgid "December"
+msgstr "joulukuu"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Poista %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Poista '%s'"
+
+msgid "Delete Event"
+msgstr "Poista tapahtuma"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Poista t‰m‰ tapahtuma, t‰m‰n tapahtuman tulevat toisinnot vai t‰m‰ "
+"tapahtuma ja kaikki sen toisinnot."
+
+msgid "Delete"
+msgstr "Poista"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Description:"
+msgstr "Kuvaus:"
+
+msgid "Display 24-hour times?"
+msgstr "K‰yt‰ 24-tunnin aikaesityst‰."
+
+msgid "Display Options"
+msgstr "N‰kym‰n asetukset"
+
+msgid "Display"
+msgstr "N‰yt‰"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Valmistuu: %s"
+
+msgid "Duration"
+msgstr "Kesto"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Muokkaa %s"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Muokkaa '%s'"
+
+msgid "Edit Remote Calendars"
+msgstr "Muokkaa et‰kalenterejasi"
+
+msgid "Edit your calendars."
+msgstr "Muokkaa kalentereitasi."
+
+msgid "Edit"
+msgstr "Muokkaa"
+
+msgid "Email Address"
+msgstr "S‰hkˆpostiosoite"
+
+msgid "End Date"
+msgstr "P‰‰ttymisp‰iv‰m‰‰r‰"
+
+msgid "End On"
+msgstr "P‰‰ttyy"
+
+msgid "End Time"
+msgstr "P‰‰ttymisaika"
+
+msgid "Event from %s to %s"
+msgstr "Tapahtuma alkaen %s loppuu %s"
+
+msgid "Existing Remote Calendars:"
+msgstr "Olemassaolevat et‰kalenterit:"
+
+msgid "Export Calendar"
+msgstr "Vie kalenteri"
+
+msgid "Export"
+msgstr "Vie"
+
+msgid "February"
+msgstr "helmikuu"
+
+msgid "Find"
+msgstr "Haku"
+
+msgid "Fr"
+msgstr "pe"
+
+msgid "Friday"
+msgstr "perjantai"
+
+msgid "Future"
+msgstr "Tulevat"
+
+msgid "Game"
+msgstr "Peli"
+
+msgid "Goto"
+msgstr "Mene"
+
+msgid "Help"
+msgstr "Ohje"
+
+msgid "Here is a more detailed description:"
+msgstr "T‰ss‰ ovat tarkemmat tiedot:"
+
+msgid "Hour(s)"
+msgstr "Tuntia"
+
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr ""
+"Montako tulevaa p‰iv‰‰ merkit‰‰‰n vapaaksi/varatuksi."
+
+#, c-format
+msgid "Import Calendar, Step %d"
+msgstr "Kalenterin tuonti, askel %d"
+
+msgid "Import"
+msgstr "Tuo"
+
+msgid "Import/Export Calendar"
+msgstr "Tuo/Vie kalenteri"
+
+msgid "Import/Export"
+msgstr "Tuo/Vie"
+
+msgid "Invalid category entered."
+msgstr "Ep‰kelpo luokitus annettu."
+
+#, c-format
+msgid "Invite people to %s"
+msgstr "Kutsu henkilˆt %s:‰‰n"
+
+#, c-format
+msgid "Invite people to '%s'"
+msgstr "Kutsu henkilˆt '%s':‰‰n"
+
+msgid "Invite these people"
+msgstr "Kutsu n‰m‰ henkilˆt"
+
+msgid "Invite"
+msgstr "Kutsu"
+
+msgid "January"
+msgstr "tammikuu"
+
+msgid "July"
+msgstr "hein‰kuu"
+
+msgid "June"
+msgstr "kes‰kuu"
+
+msgid "Keywords"
+msgstr "Avainsanat"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith-ohjelmisto ei ole asennettu oikein"
+
+msgid "Language"
+msgstr "Kieli"
+
+msgid "Last Month"
+msgstr "Edellinen kuukausi"
+
+msgid "Last week"
+msgstr "Edellinen viikko"
+
+msgid "Lasts"
+msgstr "Kest‰‰"
+
+msgid "Limit the time span to export:"
+msgstr "Rajoita viennin aikaa:"
+
+msgid "Location"
+msgstr "Paikka"
+
+msgid "Manage multiple calendars."
+msgstr "Voit muokata kalentereita ja niiden asetuksia."
+
+msgid "Manage remote calendars."
+msgstr "Voit muokata et‰kalentereja ja niiden asetuksia."
+
+msgid "March"
+msgstr "maaliskuu"
+
+msgid "May"
+msgstr "toukokuu"
+
+msgid "Meeting"
+msgstr "Tapaaminen"
+
+#, c-format
+msgid "Meeting: %s"
+msgstr "Tapaaminen: %s"
+
+msgid "Meetings"
+msgstr "Tapaamiset"
+
+msgid "Minute(s)"
+msgstr "Minuuttia"
+
+msgid "Minutes"
+msgstr "Minuuttia"
+
+msgid "Mo"
+msgstr "ma"
+
+msgid "Monday"
+msgstr "maanantai"
+
+msgid "Month"
+msgstr "Kuukausi"
+
+msgid "Monthly: Recurs every"
+msgstr "Kuukausittain: Toistuvuuden v‰li"
+
+msgid ""
+"Multiple iCalendar components found. Use calendar/import_icalendar instead."
+msgstr ""
+"Lˆytyi useita iCalendar komponentteja. K‰yt‰ mielummin calendar/import_icalendar komponenttia."
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Name:"
+msgstr "Nimi:"
+
+msgid "New Category"
+msgstr "Uusi luokitus"
+
+msgid "New Event"
+msgstr "Uusi tapahtuma"
+
+msgid "Next Month"
+msgstr "Seuraava kuukausi"
+
+msgid "Next day"
+msgstr "Seuraava p‰iv‰"
+
+msgid "Next week"
+msgstr "Seuraava viikko"
+
+msgid "No calendars are available to guests."
+msgstr "Vierailijoille ei ole tarjolla yht‰‰n kalenteria."
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Asetustietoja ei ollut m‰‰ritelty SQL kalenterille."
+
+msgid "No end date"
+msgstr "Ei p‰‰ttymisp‰iv‰‰"
+
+msgid "No iCalendar data was found."
+msgstr "Ei lˆytynyt iCalendar tietoa."
+
+msgid "None"
+msgstr "Ei k‰ytˆss‰"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Huomaa: Tuonti ei ole mahdollista n‰ill‰ asetuksilla kalenteriajurin "
+"virheen takia."
+
+msgid "November"
+msgstr "marraskuu"
+
+msgid "October"
+msgstr "lokakuu"
+
+msgid "Options"
+msgstr "Asetukset"
+
+msgid "Other Options"
+msgstr "Muut asetukset"
+
+msgid "Owner"
+msgstr "Omistaja"
+
+msgid "Palm DateBook"
+msgstr "Palm DateBook"
+
+msgid "Pattern"
+msgstr "Toistuvuus"
+
+msgid "Permanently delete this event?"
+msgstr "Poistetaanko t‰m‰ tapahtuma pysyv‰sti?"
+
+msgid "Permission Denied"
+msgstr "K‰yttˆ kielletty"
+
+msgid "Permissions"
+msgstr "Oikeudet"
+
+msgid "Personal"
+msgstr "Henkilˆkohtainen"
+
+msgid "Please enter a name for the new category:"
+msgstr "Anna nimi uudelle luokitukselle:"
+
+msgid "Please enter a new name for this category:"
+msgstr "Anna t‰lle luokitukselle uusi nimi:"
+
+msgid "Previous day"
+msgstr "Edellinen p‰iv‰"
+
+msgid "Print"
+msgstr "Tulosta"
+
+msgid "Private"
+msgstr "Yksityinen"
+
+msgid "Recur Until"
+msgstr "Toistuvuus p‰‰ttyy"
+
+msgid "Recurrence Data"
+msgstr "Toistuvuuden tiedot"
+
+msgid "Recurrence End Date"
+msgstr "Toistuvuuden p‰‰ttymisp‰iv‰m‰‰r‰"
+
+msgid "Recurrence Interval"
+msgstr "Toistuvuuden v‰li"
+
+msgid "Recurrence Type"
+msgstr "Toistuvuuden tyyppi"
+
+msgid "Recurs daily"
+msgstr "Toistuu p‰ivitt‰in"
+
+msgid "Recurs monthly"
+msgstr "Toistuu kuukausittain"
+
+msgid "Recurs not"
+msgstr "Ei toistu"
+
+msgid "Recurs weekly"
+msgstr "Toistuu viikoittain"
+
+msgid "Recurs yearly"
+msgstr "Toistuu vuosittain"
+
+msgid "Reminder: %s"
+msgstr "Muistutus: %s"
+
+msgid "Remote Calendars"
+msgstr "Et‰kalenterit"
+
+msgid "Rename"
+msgstr "Nime‰ uudelleen"
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Tarvittavaa 'hostspec'-tietoa ei ollut m‰‰ritelty calendar asetuksissa."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Tarvittavaa 'password'-tietoa ei ollut m‰‰ritelty calendar asetuksissa."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Tarvittavaa 'phptype'-tietoa ei ollut m‰‰ritelty calendar asetuksissa."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Tarvittavaa 'username'-tietoa ei ollut m‰‰ritelty calendar asetuksissa."
+
+msgid "Reset to Defaults"
+msgstr "Palauta oletusasetukset"
+
+msgid "Reset"
+msgstr "Tyhjenn‰"
+
+msgid "Sa"
+msgstr "la"
+
+msgid "Saturday"
+msgstr "lauantai"
+
+msgid "Save As New"
+msgstr "Talleta uutena"
+
+msgid "Save Event"
+msgstr "Talleta tapahtuma"
+
+msgid "Search"
+msgstr "Haku"
+
+msgid "Select a calendar"
+msgstr "Valitse kalenteri"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Voit muuttaa varmistukseen liittyvi‰ asetuksia, miten erilaisia n‰kymi‰ "
+"n‰ytet‰‰n ja mit‰ k‰ytet‰‰n oletusn‰kym‰n‰."
+
+msgid "Select how to display Dates:"
+msgstr "Valitse p‰iv‰m‰‰rien esitysasu:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Voit valita n‰ytet‰‰nkˆ valmistuvat teht‰v‰t kalenterissa."
+
+msgid "Select if to show meetings in the calendar."
+msgstr "Voit valita n‰ytet‰‰nkˆ tapaamiset kalenterissa."
+
+msgid "Select the calendar to import to:"
+msgstr "Valitse kalenteri, johon tuodaan tietoja:"
+
+msgid "Select the file to import:"
+msgstr "Valitse tiedosto, johon tuot tietoa:"
+
+msgid "Select the first weekday:"
+msgstr "Valitse ensimm‰inen viikonp‰iv‰:"
+
+msgid "Select the format to export to:"
+msgstr "Valitse vienniss‰ k‰ytett‰v‰ muoto:"
+
+msgid "Select the identity you want to use to invite people:"
+msgstr "Valitse profiili, jota k‰yt‰t kutsumisessa:"
+
+msgid "Select the source to import from:"
+msgstr "Valitse tuonnissa k‰ytett‰v‰ muoto:"
+
+msgid "Select the time span to show:"
+msgstr "Valitse n‰ytett‰v‰ aikajakso:"
+
+msgid "Select the view to display after login:"
+msgstr "Valitse n‰kym‰, joka n‰ytet‰‰n sis‰‰nkirjautumisen j‰lkeen:"
+
+msgid "Select which events to show in the Horde summary."
+msgstr "Voit valita mit‰ tapahtumia n‰ytet‰‰n Horde yhteenvedossa."
+
+msgid "September"
+msgstr "syyskuu"
+
+msgid "Set the current time zone."
+msgstr "Voit asettaa k‰ytett‰v‰n aikavyˆhykkeen."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Aseta kieli, jota k‰ytet‰‰n valikoissa, selityksiss‰ ja ohjeissa."
+
+msgid "Set your preferred display language."
+msgstr "Voit asettaa ohjelmassa k‰ytett‰v‰n kielen."
+
+msgid "Shared"
+msgstr "Julkinen"
+
+msgid "Show Calendars:"
+msgstr "N‰yt‰ kalenterit:"
+
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "N‰yt‰ poista, h‰lytys ja toisto ikonit kalenterin‰kym‰ss‰."
+
+msgid "Show due tasks in the calendar?"
+msgstr "N‰yt‰ valmistuvat teht‰v‰t kalenterissa."
+
+msgid "Show half hour slots in day and week views?"
+msgstr "N‰yt‰ puolen tunnin lokerot p‰iv‰-, viikko- ja vuosin‰kymiss‰."
+
+msgid "Show meetings in the calendar?"
+msgstr "N‰yt‰ tapaamiset kalenterissa."
+
+msgid "Show only events that have an alarm set?"
+msgstr "N‰yt‰ vain ne tapahtumat, joihin liittyy h‰lytys."
+
+msgid "Show shared calendars side-by-side"
+msgstr "N‰yt‰ jaetut kalenterit vierekk‰in"
+
+msgid "Show"
+msgstr "N‰yt‰"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Joitakin Kronolith:n asetustiedostoja puuttuu:"
+
+msgid "Start Date"
+msgstr "Alkamisp‰iv‰m‰‰r‰"
+
+msgid "Start On"
+msgstr "Alkaa"
+
+msgid "Start Time"
+msgstr "Alkamisaika"
+
+msgid "Su"
+msgstr "su"
+
+msgid "Summary"
+msgstr "Yhteenveto"
+
+msgid "Sunday"
+msgstr "sunnuntai"
+
+msgid "Tasks"
+msgstr "Teht‰v‰t"
+
+msgid "Th"
+msgstr "to"
+
+#, c-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Kalenteria \"%s\" ei voi poistaa."
+
+#, c-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Kalenteri \"%s\" on poistettu"
+
+#, c-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Kalenteri \"%s\" on talletettu."
+
+msgid "The calendar name is empty."
+msgstr "Kalenterilla ei ole nime‰."
+
+msgid "The end date must be later than the start date."
+msgstr "P‰‰ttymisp‰iv‰m‰‰r‰ pit‰‰ olla myˆhempi kuin alkamisp‰iv‰m‰‰r‰."
+
+msgid "The invite screen is no longer present. Exiting."
+msgstr "Kutsu henkilˆit‰ -n‰kym‰ ei ole en‰‰ n‰kyviss‰. Poistutaan."
+
+#, c-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Tapahtui virhe k‰ytett‰ess‰ kalenteria: %s"
+
+#, c-format
+msgid "There was an error adding the event: %s"
+msgstr "Tapahtui virhe lis‰tt‰ess‰ tapahtumaa: %s"
+
+#, c-format
+msgid "There was an error editing the event: %s"
+msgstr "Tapahtui virhe muokattaessa tapahtumaa: %s"
+
+msgid "There was an error importing the data."
+msgstr "Tiedon tuonnissa tapahtui virhe."
+
+msgid "There was an error importing the iCalendar data."
+msgstr "iCalendar-tietojen tuonnissa tapahtui virhe."
+
+#, c-format
+msgid "There was an error importing the iCalendar data: %s."
+msgstr "iCalendar-tietojen tuonnissa tapahtui virhe: %s."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Tiedoston tuonnissa tapahtui virhe"
+
+#, c-format
+msgid "There was an error sending your invitation: %s"
+msgstr "Tapahtui virhe kutsua l‰hetett‰ess‰. Palvelimen virheilmoitus oli: %s"
+
+msgid "There were no events to export."
+msgstr "Ei ole tapahtumia. Tapahtumia ei voi vied‰."
+
+msgid "These changes can not be undone!"
+msgstr "N‰it‰ muutoksia ei voi peruuttaa!"
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n Kronolith-ohjelmiston k‰ytt‰j‰n oletusasetukset "
+"ja myˆs asetukset joita k‰ytt‰j‰t itse voivat asettaa ja muuttaa."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"T‰ss‰ tiedostossa asetetaan tyylitiedot, jotka m‰‰rittelev‰t k‰ytett‰v‰t "
+"v‰rit ja kirjasimet. N‰m‰ m‰‰rityksen menev‰t Horde:n m‰‰ritysten ylitse."
+
+msgid "This file format is not supported."
+msgstr "T‰m‰ tiedostomuoto ei ole tuettu."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"T‰m‰ on Kronolith:n p‰‰asetustiedosto. Se sis‰lt‰‰ esimerkiksi polut ja asetukset "
+"muihin Kronolith:n k‰ytt‰miin skripteihin."
+
+#, c-format
+msgid "This is what the server said: %s"
+msgstr "Palvelimen virheilmoitus oli: %s"
+
+msgid "Thursday"
+msgstr "torstai"
+
+msgid "Time Zone"
+msgstr "Aikavyˆhyke"
+
+msgid "Title"
+msgstr "Otsikko"
+
+msgid "Today"
+msgstr "T‰n‰‰n"
+
+msgid "Tomorrow"
+msgstr "Huomenna"
+
+msgid "Tu"
+msgstr "ti"
+
+msgid "Tuesday"
+msgstr "tiistai"
+
+msgid "Type"
+msgstr "Tyyppi"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+#, c-format
+msgid "Unable to delete %s."
+msgstr "Ei voida poistaa %s."
+
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Ei voida poistaa \"%s\": %s"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "M‰‰rityksen %s lukeminen ep‰onnistui."
+
+msgid "Unfiled"
+msgstr "Luokittelematon"
+
+msgid "User Interface"
+msgstr "K‰yttˆliittym‰"
+
+msgid "User Options"
+msgstr "K‰ytt‰j‰n asetukset"
+
+#, c-format
+msgid "View %s"
+msgstr "N‰yt‰ %s"
+
+msgid "We"
+msgstr "ke"
+
+msgid "Wednesday"
+msgstr "keskiviikko"
+
+#, c-format
+msgid "Week %d"
+msgstr "Viikko %d"
+
+msgid "Week"
+msgstr "Viikko"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Viikko&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Viikkoa"
+
+msgid "Weekly: Recurs every"
+msgstr "Viikoittain: Toistuvuuden v‰li"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Mihin aikaan p‰iv‰ ja viikkon‰kym‰t pit‰isi p‰‰tty‰, jos ei ole myˆh‰isempi‰ tapahtumia?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Mihin aikaan p‰iv‰ ja viikkon‰kym‰t pit‰isi alkaa, jos ei ole aikaisempia tapahtumia?"
+
+msgid "Work Week"
+msgstr "Tyˆviikko"
+
+msgid "Yearly: Recurs every"
+msgstr "Vuosittain: Toistuvuuden v‰li"
+
+msgid "You are creating a new category."
+msgstr "Olet luomassa uutta luokitusta."
+
+msgid "You can only use this form from the Invite People screen."
+msgstr "T‰t‰ lomaketta voi k‰ytt‰‰ vain Kutsu henkilˆit‰ -n‰kym‰st‰."
+
+#, c-format
+msgid "You do not have permission to add events to %s."
+msgstr "Sinulla ei ole oikeuksia lis‰t‰ tapahtumia %s:‰‰n."
+
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "Sinulla ei ole oikeuksia lis‰t‰ tapahtumia valittuun kalenteriin."
+
+msgid "You do not have permission to delete this event."
+msgstr "Sinulla ei ole oikeuksia poistaa t‰t‰ tapahtumaa."
+
+msgid "You do not have permission to edit this event."
+msgstr "Sinulla ei ole oikeuksia muokata t‰t‰ tapahtumaa."
+
+msgid ""
+"You don't have an email address configured in your preferences. You must set "
+"one before sending invitations."
+msgstr ""
+"Et ole m‰‰ritellyt s‰hkˆpostiosoitettasi asetuksissa. Ennenkuin voit "
+"l‰hett‰‰ kutsuja sinun pit‰‰ m‰‰ritell‰ s‰hkˆpostiosoitteesi."
+
+#, c-format
+msgid "You have been invited to %s"
+msgstr "Sinut on kutsuttu %s:‰‰n"
+
+#, c-format
+msgid "You have been invited to \"%s\"."
+msgstr "Sinut on kutsuttu \"%s\":‰‰n."
+
+msgid "You have specified an invalid calendar."
+msgstr "Olet m‰‰ritellyt ep‰kelvon kalenterin."
+
+msgid "You must choose a category."
+msgstr "Sinun pit‰‰ valita luokitus."
+
+msgid "You must select a calendar to be deleted."
+msgstr "Sinun pit‰‰ valita poistettava kalenteri."
+
+msgid "You must select an address first."
+msgstr "Sinun pit‰‰ ensin valita osoite."
+
+#, c-format
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "Pyysit muistuttamaan tapahtumasta %s, joka on kello %s."
+
+msgid "Your Information"
+msgstr "Omat tietosi"
+
+msgid "Your calendars:"
+msgstr "Kalenterisi:"
+
+msgid "Your current time zone:"
+msgstr "Aikavyˆhykkeesi:"
+
+msgid "Your default calendar:"
+msgstr "Oletus kalenterisi:"
+
+msgid "Your invitation was successfully sent."
+msgstr "Kutsusi l‰hetys onnistui."
+
+msgid "[none]"
+msgstr "[tyhj‰]"
+
+msgid "day"
+msgstr "p‰iv‰"
+
+msgid "day(s)"
+msgstr "p‰iv‰‰"
+
+msgid "days"
+msgstr "p‰iv‰‰"
+
+msgid "events.csv"
+msgstr "events.csv"
+
+msgid "from"
+msgstr "l‰hde"
+
+msgid "month(s)"
+msgstr "kuukautta"
+
+msgid "no time"
+msgstr "ei aikaa"
+
+msgid "on the same date"
+msgstr "samana p‰iv‰n‰"
+
+msgid "on the same weekday"
+msgstr "samana viikonp‰iv‰n‰"
+
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+msgid "vEvent not found."
+msgstr "ei lˆytynyt vEvent"
+
+msgid "week"
+msgstr "viikko"
+
+msgid "week(s) on:"
+msgstr "viikkoa ja viikonp‰ivin‰:"
+
+msgid "weeks"
+msgstr "viikkoa"
+
+msgid "year(s)"
+msgstr "vuotta"

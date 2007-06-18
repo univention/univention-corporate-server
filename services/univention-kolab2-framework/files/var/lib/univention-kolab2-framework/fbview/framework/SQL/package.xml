@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/SQL/package.xml,v 1.5 2004/01/13 05:00:29 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_SQL</name>
+  <summary>SQL Utility Class</summary>
+  <description>
+    Horde_SQL:: contains some utility functions for dealing with SQL.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+
+    <provides type="class" name="Horde_SQL" />
+    <provides type="class" name="Horde_SQL_Attributes" />
+
+    <filelist>
+      <file role="php" name="SQL.php" baseinstalldir="/Horde"/>
+      <dir name="SQL" role="php" baseinstalldir="/Horde">
+        <file name="Attributes.php" />
+      </dir>
+    </filelist>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-03</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

@@ -1,0 +1,24 @@
+<?xml version="1.0" ?>
+
+<SimpleTemplate>
+    <options override="yes">
+        <delimiter begin="[" end="]"/>
+        <autoBraces value="true"/>
+        <locale value="en"/>
+    </options>
+
+    <!--    preFilter - register any pre filter here
+            override -          ????
+            registerOnlyOnce -  yes or no, this takes care of not registering one filter multiple times
+                                it's just not to loose performance
+            inheritOptions -    this inherits the options from the SimpleTemplate object automatically
+    -->
+    <preFilter override="no"
+                registerOnlyOnce="yes"
+                inheritOptions="yes">
+        <register function="removeHtmlComments" object="tplFilter" />
+        <register function="removeCStyleComments" object="tplFilter" />
+        <register function="addIfBeforeForeach" object="tplFilter" />
+    </preFilter>
+
+</SimpleTemplate>

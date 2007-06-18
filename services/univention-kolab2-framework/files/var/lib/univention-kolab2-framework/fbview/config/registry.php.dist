@@ -1,0 +1,579 @@
+<?php
+/**
+ * registry.php -- Horde application registry.
+ *
+ * $Horde: horde/config/registry.php.dist,v 1.220 2004/05/29 21:12:42 jan Exp $
+ *
+ * This configuration file is used by Horde to determine which Horde
+ * applications are installed and where, as well as how they interact.
+ *
+ * Application registry
+ * --------------------
+ * The following settings register installed Horde applications.
+ * By default, Horde assumes that the application directories live
+ * inside the horde directory.
+ *
+ * Attribute     Type     Description
+ * ---------     ----     -----------
+ * fileroot      string   The base filesystem path for the module's files
+ * webroot       string   The base URI for the module
+ * graphics      string   The base URI for the module images
+ * icon          string   The URI for an icon to show in menus for the module
+ * name          string   The name used in menus and descriptions for a module
+ * status        string   'inactive', 'hidden', 'notoolbar', 'heading', 'admin'
+ *                        or 'active'.
+ * provides      string   Service types the module provides.
+ * initial_page  string   The initial (default) page (filename) for the module
+ * templates     string   The filesystem path to the templates directory
+ * menu_parent   string   The name of the 'heading' group that this app should
+ *                        show up under.
+ * target        string   The (optional) target frame for the link.
+ */
+
+// We try to automatically determine the proper webroot for Horde
+// here. This still assumes that applications live under horde/. If
+// this results in incorrect results for you, simply change the two
+// uses of the $webroot variable in the 'horde' stanza below.
+//
+// Note for Windows users: the below assumes that your DOCUMENT_ROOT
+// uses forward slashes. If it does not, you'll have to tweak this.
+if (isset($_SERVER['DOCUMENT_ROOT'])) {
+    $webroot = str_replace(array('\\',
+                                 $_SERVER['DOCUMENT_ROOT'],
+                                 '/config/registry.php'),
+                           array('/', '', ''), __FILE__);
+} else {
+    $webroot = '/horde';
+}
+
+$this->applications['horde'] = array(
+    'fileroot' => dirname(__FILE__) . '/..',
+    'webroot' => $webroot,
+    'initial_page' => 'login.php',
+    'icon' => $webroot . '/graphics/horde.gif',
+    'name' => _("Horde"),
+    'status' => 'active',
+    'templates' => dirname(__FILE__) . '/../templates',
+    'provides' => 'horde'
+);
+
+if (Auth::getAuth()) {
+    $this->applications['logout'] = array(
+        'fileroot' => dirname(__FILE__) . '/..',
+        'webroot' => $this->applications['horde']['webroot'],
+        'initial_page' => 'login.php?' . AUTH_REASON_PARAM . '=' . AUTH_REASON_LOGOUT,
+        'icon' => $this->applications['horde']['webroot'] . '/graphics/logout.gif',
+        'name' => _("Logout"),
+        'status' => 'notoolbar'
+        );
+} else {
+    $this->applications['logout'] = array(
+        'fileroot' => dirname(__FILE__) . '/..',
+        'webroot' => $this->applications['horde']['webroot'],
+        'initial_page' => 'login.php?url=' . urlencode(Horde::selfUrl(true)),
+        'icon' => $this->applications['horde']['webroot'] . '/graphics/login.gif',
+        'name' => _("Login"),
+        'status' => 'notoolbar'
+        );
+}
+
+$this->applications['problem'] = array(
+    'fileroot' => dirname(__FILE__) . '/..',
+    'webroot' => $this->applications['horde']['webroot'] . '/services',
+    'graphics' => $this->applications['horde']['webroot'] . '/graphics',
+    'initial_page' => 'problem.php?return_url=' . urlencode(Horde::selfURL(true)),
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/problem.gif',
+    'name' => _("Problem?"),
+    'status' => 'notoolbar'
+);
+
+$this->applications['mail'] = array(
+    'status' => 'heading',
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/mail.gif',
+    'name' => _("Mail & News")
+);
+
+$this->applications['imp'] = array(
+    'fileroot' => dirname(__FILE__) . '/../imp',
+    'webroot' => $this->applications['horde']['webroot'] . '/imp',
+    'icon' => $this->applications['horde']['webroot'] . '/imp/graphics/imp.gif',
+    'name' => _("Mail"),
+    'status' => 'active',
+    'provides' => 'mail',
+    'menu_parent' => 'mail'
+);
+
+$this->applications['ingo'] = array(
+    'fileroot' => dirname(__FILE__) . '/../ingo',
+    'webroot' => $this->applications['horde']['webroot'] . '/ingo',
+    'icon' => $this->applications['horde']['webroot'] . '/ingo/graphics/ingo.gif',
+    'name' => _("Filters"),
+    'status' => 'active',
+    'provides' => array('mail/blacklistFrom', 'mail/showBlacklist', 'mail/whitelistFrom', 'mail/showWhitelist', 'mail/applyFilters', 'mail/canApplyFilters', 'mail/showFilters'),
+    'menu_parent' => 'mail'
+);
+
+$this->applications['sam'] = array(
+    'fileroot' => dirname(__FILE__) . '/../sam',
+    'webroot' => $this->applications['horde']['webroot'] . '/sam',
+    'icon' => $this->applications['horde']['webroot'] . '/sam/graphics/sam.gif',
+    'name' => _("Spam"),
+    'status' => 'active',
+    // Uncomment this line if you want Sam to handle the blacklist
+    // filter instead of Ingo:
+    // 'provides' => array('mail/blacklistFrom', 'mail/showBlacklist', 'mail/whitelistFrom', 'mail/showWhitelist'),
+    'menu_parent' => 'mail'
+);
+
+$this->applications['troll'] = array(
+    'fileroot' => dirname(__FILE__) . '/../troll',
+    'webroot' => $this->applications['horde']['webroot'] . '/troll',
+    'icon' => $this->applications['horde']['webroot'] . '/troll/graphics/troll.gif',
+    'name' => _("Discussions"),
+    'status' => 'active',
+    'menu_parent' => 'mail'
+);
+
+$this->applications['agora'] = array(
+    'fileroot' => dirname(__FILE__) . '/../agora',
+    'webroot' => $this->applications['horde']['webroot'] . '/agora',
+    'icon' => $this->applications['horde']['webroot'] . '/agora/graphics/agora.gif',
+    'name' => _("Forums"),
+    'status' => 'active',
+    'provides' => 'forums',
+    'menu_parent' => 'mail'
+);
+
+$this->applications['vilma'] = array(
+    'fileroot' => dirname(__FILE__) . '/../vilma',
+    'webroot' => $this->applications['horde']['webroot'] . '/vilma',
+    'icon' => $this->applications['horde']['webroot'] . '/vilma/graphics/vilma.gif',
+    'name' => _("Mail Admin"),
+    'status' => 'active',
+    'menu_parent' => 'mail'
+);
+
+$this->applications['mimp'] = array(
+    'fileroot' => dirname(__FILE__) . '/../mimp',
+    'webroot' => $this->applications['horde']['webroot'] . '/mimp',
+    'name' => _("Mobile Mail"),
+    'status' => 'notoolbar'
+);
+
+$this->applications['pim'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/pim.gif',
+    'name' => _("Personal Information"),
+    'status' => 'heading',
+);
+
+$this->applications['turba'] = array(
+    'fileroot' => dirname(__FILE__) . '/../turba',
+    'webroot' => $this->applications['horde']['webroot'] . '/turba',
+    'icon' => $this->applications['horde']['webroot'] . '/turba/graphics/turba.gif',
+    'name' => _("Address Book"),
+    'status' => 'active',
+    'provides' => array('contacts', 'clients'),
+    'menu_parent' => 'pim'
+);
+
+$this->applications['kronolith'] = array(
+    'fileroot' => dirname(__FILE__) . '/../kronolith',
+    'webroot' => $this->applications['horde']['webroot'] . '/kronolith',
+    'icon' => $this->applications['horde']['webroot'] . '/kronolith/graphics/kronolith.gif',
+    'name' => _("Calendar"),
+    'status' => 'active',
+    'provides' => 'calendar',
+    'menu_parent' => 'pim'
+);
+
+$this->applications['mnemo'] = array(
+    'fileroot' => dirname(__FILE__) . '/../mnemo',
+    'webroot' => $this->applications['horde']['webroot'] . '/mnemo',
+    'icon' => $this->applications['horde']['webroot'] . '/mnemo/graphics/mnemo.gif',
+    'name' => _("Notes"),
+    'status' => 'active',
+    'provides' => 'notes',
+    'menu_parent' => 'pim'
+);
+
+$this->applications['nag'] = array(
+    'fileroot' => dirname(__FILE__) . '/../nag',
+    'webroot' => $this->applications['horde']['webroot'] . '/nag',
+    'icon' => $this->applications['horde']['webroot'] . '/nag/graphics/nag.gif',
+    'name' => _("Tasks"),
+    'status' => 'active',
+    'provides' => 'tasks',
+    'links' => array(
+        'follow-up-to' => array(
+            'provider' => 'tasks',
+            'description' => _("Follow up task"),
+            'reverse' => array(
+                'description'=> _("Previous task"),
+                'type' => 'follow-up-from',
+                'readonly' => true,
+                ),
+            ),
+        'client' => array(
+            'provider' => 'contacts',
+            'description' => _("Client"),
+            'reverse' => array(
+                'description' => _("Task"),
+                'type' => 'task',
+                'readonly' => false,
+                ),
+            ),
+        ),
+    'menu_parent' => 'pim'
+);
+
+$this->applications['genie'] = array(
+    'fileroot' => dirname(__FILE__) . '/../genie',
+    'webroot' => $this->applications['horde']['webroot'] . '/genie',
+    'icon' => $this->applications['horde']['webroot'] . '/genie/graphics/genie.gif',
+    'name' => _("Wishlists"),
+    'status' => 'active',
+    'provides' => 'wishlist',
+    'menu_parent' => 'pim'
+);
+
+$this->applications['trean'] = array(
+    'fileroot' => dirname(__FILE__) . '/../trean',
+    'webroot' => $this->applications['horde']['webroot'] . '/trean',
+    'icon' => $this->applications['horde']['webroot'] . '/trean/graphics/trean.gif',
+    'name' => _("Bookmarks"),
+    'status' => 'active',
+    'provides' => 'bookmarks',
+    'menu_parent' => 'pim'
+);
+
+$this->applications['devel'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/devel.gif',
+    'name' => _("Development"),
+    'status' => 'heading',
+);
+
+$this->applications['chora'] = array(
+    'fileroot' => dirname(__FILE__) . '/../chora',
+    'webroot' => $this->applications['horde']['webroot'] . '/chora',
+    'icon' => $this->applications['horde']['webroot'] . '/chora/graphics/chora.gif',
+    'name' => _("Version Control"),
+    'status' => 'active',
+    'menu_parent' => 'devel'
+);
+
+$this->applications['babel'] = array(
+    'fileroot' => dirname(__FILE__) . '/../babel',
+    'webroot' => $this->applications['horde']['webroot'] . '/babel',
+    'icon' => $this->applications['horde']['webroot'] . '/babel/graphics/babel.gif',
+    'name' => _("i18n"),
+    'status' => 'inactive',
+    'menu_parent' => 'devel'
+);
+
+$this->applications['thor'] = array(
+    'fileroot' => dirname(__FILE__) . '/../thor',
+    'webroot' => $this->applications['horde']['webroot'] . '/thor',
+    'icon' => $this->applications['horde']['webroot'] . '/thor/graphics/thor.png',
+    'name' => _("Projects"),
+    'status' => 'active',
+    'provides' => 'projects',
+    'menu_parent' => 'devel'
+);
+
+$this->applications['whups'] = array(
+    'fileroot' => dirname(__FILE__) . '/../whups',
+    'webroot' => $this->applications['horde']['webroot'] . '/whups',
+    'icon' => $this->applications['horde']['webroot'] . '/whups/graphics/whups.gif',
+    'name' => _("Tickets"),
+    'status' => 'active',
+    'provides' => 'tickets',
+    'links' => array(
+        'client' => array(
+            'provider' => 'contacts',
+            'description' => _("Client"),
+            'show' => false,
+            'reverse' => array(
+                'description' => _("Client Ticket"),
+                'type' => 'task',
+                'readonly' => true,
+                'show' => false
+                ),
+            ),
+        'reseller' => array(
+            'provider' => 'contacts',
+            'description' => _("Reseller"),
+            'reverse' => array(
+                'description' => _("Reseller Ticket"),
+                'type' => 'task',
+                'readonly' => true,
+                ),
+            ),
+        ),
+    'menu_parent' => 'devel'
+);
+
+$this->applications['luxor'] = array(
+    'fileroot' => dirname(__FILE__) . '/../luxor',
+    'webroot' => $this->applications['horde']['webroot'] . '/luxor',
+    'icon' => $this->applications['horde']['webroot'] . '/luxor/graphics/luxor.gif',
+    'name' => _("Cross Reference"),
+    'status' => 'active',
+    'menu_parent' => 'devel'
+);
+
+$this->applications['nic'] = array(
+    'fileroot' => dirname(__FILE__) . '/../nic',
+    'webroot' => $this->applications['horde']['webroot'] . '/nic',
+    'icon' => $this->applications['horde']['webroot'] . '/nic/graphics/nic.gif',
+    'name' => _("Network"),
+    'status' => 'active',
+    'provides' => 'net',
+    'menu_parent' => 'devel'
+);
+
+$this->applications['info'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/info.gif',
+    'name' => _("Information"),
+    'status' => 'heading',
+);
+
+$this->applications['mottle'] = array(
+    'fileroot' => dirname(__FILE__) . '/../mottle',
+    'webroot' => $this->applications['horde']['webroot'] . '/mottle',
+    'icon' => $this->applications['horde']['webroot'] . '/mottle/graphics/mottle.gif',
+    'name' => _("MOTD"),
+    'status' => 'active',
+    'menu_parent' => 'info'
+);
+
+$this->applications['jonah'] = array(
+    'fileroot' => dirname(__FILE__) . '/../jonah',
+    'webroot' => $this->applications['horde']['webroot'] . '/jonah',
+    'icon' => $this->applications['horde']['webroot'] . '/jonah/graphics/jonah.gif',
+    'name' => _("News"),
+    'status' => 'active',
+    'menu_parent' => 'info'
+);
+
+$this->applications['goops'] = array(
+    'fileroot' => dirname(__FILE__) . '/../goops',
+    'webroot' => $this->applications['horde']['webroot'] . '/goops',
+    'icon' => $this->applications['horde']['webroot'] . '/goops/graphics/goops.gif',
+    'name' => _("Search Engines"),
+    'status' => 'active',
+    'menu_parent' => 'info'
+);
+
+$this->applications['klutz'] = array(
+    'fileroot' => dirname(__FILE__) . '/../klutz',
+    'webroot' => $this->applications['horde']['webroot'] . '/klutz',
+    'icon' => $this->applications['horde']['webroot'] . '/klutz/graphics/klutz.gif',
+    'name' => _("Comics"),
+    'status' => 'active',
+    'provides' => 'comics',
+    'menu_parent' => 'info'
+);
+
+$this->applications['orator'] = array(
+    'fileroot' => dirname(__FILE__) . '/../orator',
+    'webroot' => $this->applications['horde']['webroot'] . '/orator',
+    'icon' => $this->applications['horde']['webroot'] . '/orator/graphics/orator.gif',
+    'name' => _("Presentations"),
+    'status' => 'active',
+    'menu_parent' => 'info'
+);
+
+$this->applications['office'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/office.gif',
+    'name' => _("Office"),
+    'status' => 'heading',
+);
+
+$this->applications['hermes'] = array(
+    'fileroot' => dirname(__FILE__) . '/../hermes',
+    'webroot' => $this->applications['horde']['webroot'] . '/hermes',
+    'icon' => $this->applications['horde']['webroot'] . '/hermes/graphics/hermes.gif',
+    'name' => _("Time Tracking"),
+    'status' => 'active',
+    'menu_parent' => 'office',
+    'provides' => 'time'
+);
+
+$this->applications['juno'] = array(
+    'fileroot' => dirname(__FILE__) . '/../juno',
+    'webroot' => $this->applications['horde']['webroot'] . '/juno',
+    'icon' => $this->applications['horde']['webroot'] . '/juno/graphics/juno.gif',
+    'name' => _("Accounting"),
+    'status' => 'active',
+    'menu_parent' => 'office'
+);
+
+$this->applications['myaccount'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/myaccount.gif',
+    'name' => _("My Account"),
+    'status' => 'heading',
+);
+
+$this->applications['accounts'] = array(
+    'fileroot' => dirname(__FILE__) . '/../accounts',
+    'webroot' => $this->applications['horde']['webroot'] . '/accounts',
+    'icon' => $this->applications['horde']['webroot'] . '/accounts/graphics/accounts.gif',
+    'name' => _("My Account"),
+    'status' => 'active',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['gollem'] = array(
+    'fileroot' => dirname(__FILE__) . '/../gollem',
+    'webroot' => $this->applications['horde']['webroot'] . '/gollem',
+    'icon' => $this->applications['horde']['webroot'] . '/gollem/graphics/gollem.gif',
+    'name' => _("File Manager"),
+    'status' => 'active',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['forwards'] = array(
+    'fileroot' => dirname(__FILE__) . '/../forwards',
+    'webroot' => $this->applications['horde']['webroot'] . '/forwards',
+    'icon' => $this->applications['horde']['webroot'] . '/forwards/graphics/forwards.gif',
+    'name' => _("Forwards"),
+    'status' => 'active',
+    'provides' => 'forwards',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['passwd'] = array(
+    'fileroot' => dirname(__FILE__) . '/../passwd',
+    'webroot' => $this->applications['horde']['webroot'] . '/passwd',
+    'icon' => $this->applications['horde']['webroot'] . '/passwd/graphics/passwd.gif',
+    'name' => _("Password"),
+    'status' => 'active',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['jeta'] = array(
+    'fileroot' => dirname(__FILE__) . '/../jeta',
+    'webroot' => $this->applications['horde']['webroot'] . '/jeta',
+    'icon' => $this->applications['horde']['webroot'] . '/jeta/graphics/jeta.gif',
+    'name' => _("SSH"),
+    'status' => 'active',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['vacation'] = array(
+    'fileroot' => dirname(__FILE__) . '/../vacation',
+    'webroot' => $this->applications['horde']['webroot'] . '/vacation',
+    'icon' => $this->applications['horde']['webroot'] . '/vacation/graphics/vacation.gif',
+    'name' => _("Vacation"),
+    'status' => 'active',
+    'provides' => 'vacation',
+    'menu_parent' => 'myaccount'
+);
+
+$this->applications['website'] = array(
+    'icon' => $this->applications['horde']['webroot'] . '/graphics/webserver.gif',
+    'name' => _("Web Site"),
+    'status' => 'heading',
+);
+
+$this->applications['giapeto'] = array(
+    'fileroot' => dirname(__FILE__) . '/../giapeto',
+    'webroot' => $this->applications['horde']['webroot'] . '/giapeto',
+    'icon' => $this->applications['horde']['webroot'] . '/giapeto/graphics/giapeto.gif',
+    'name' => _("CMS"),
+    'status' => 'active',
+    'provides' => 'cms',
+    'menu_parent' => 'website'
+);
+
+$this->applications['midas'] = array(
+    'fileroot' => dirname(__FILE__) . '/../midas',
+    'webroot' => $this->applications['horde']['webroot'] . '/midas',
+    'icon' => $this->applications['horde']['webroot'] . '/midas/graphics/midas.gif',
+    'name' => _("Ads"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['odin'] = array(
+    'fileroot' => dirname(__FILE__) . '/../odin',
+    'webroot' => $this->applications['horde']['webroot'] . '/odin',
+    'icon' => $this->applications['horde']['webroot'] . '/odin/graphics/odin.gif',
+    'name' => _("Data"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['ulaform'] = array(
+    'fileroot' => dirname(__FILE__) . '/../ulaform',
+    'webroot' => $this->applications['horde']['webroot'] . '/ulaform',
+    'icon' => $this->applications['horde']['webroot'] . '/ulaform/graphics/ulaform.gif',
+    'name' => _("Forms"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['volos'] = array(
+    'fileroot' => dirname(__FILE__) . '/../volos',
+    'webroot' => $this->applications['horde']['webroot'] . '/volos',
+    'icon' => $this->applications['horde']['webroot'] . '/volos/graphics/volos.gif',
+    'name' => _("Guestbook"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['ansel'] = array(
+    'fileroot' => dirname(__FILE__) . '/../ansel',
+    'webroot' => $this->applications['horde']['webroot'] . '/ansel',
+    'icon' => $this->applications['horde']['webroot'] . '/ansel/graphics/ansel.gif',
+    'name' => _("Photos"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['scry'] = array(
+    'fileroot' => dirname(__FILE__) . '/../scry',
+    'webroot' => $this->applications['horde']['webroot'] . '/scry',
+    'icon' => $this->applications['horde']['webroot'] . '/scry/graphics/scry.gif',
+    'name' => _("Polls"),
+    'status' => 'active',
+    'provides' => 'polls',
+    'menu_parent' => 'website'
+);
+
+$this->applications['rakim'] = array(
+    'fileroot' => dirname(__FILE__) . '/../rakim',
+    'webroot' => $this->applications['horde']['webroot'] . '/rakim',
+    'icon' => $this->applications['horde']['webroot'] . '/rakim/graphics/rakim.gif',
+    'name' => _("Support"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['merk'] = array(
+    'fileroot' => dirname(__FILE__) . '/../merk',
+    'webroot' => $this->applications['horde']['webroot'] . '/merk',
+    'icon' => $this->applications['horde']['webroot'] . '/merk/graphics/merk.gif',
+    'name' => _("Shopping"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['swoosh'] = array(
+    'fileroot' => dirname(__FILE__) . '/../swoosh',
+    'webroot' => $this->applications['horde']['webroot'] . '/swoosh',
+    'icon' => $this->applications['horde']['webroot'] . '/swoosh/graphics/swoosh.gif',
+    'name' => _("SMS Messaging"),
+    'status' => 'active',
+    'menu_parent' => 'website'
+);
+
+$this->applications['wicked'] = array(
+    'fileroot' => dirname(__FILE__) . '/../wicked',
+    'webroot' => $this->applications['horde']['webroot'] . '/wicked',
+    'icon' => $this->applications['horde']['webroot'] . '/wicked/graphics/wicked.png',
+    'name' => _("Wiki"),
+    'status' => 'active',
+    'provides' => 'wiki',
+    'menu_parent' => 'website'
+);

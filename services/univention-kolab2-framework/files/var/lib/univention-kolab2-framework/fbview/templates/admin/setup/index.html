@@ -1,0 +1,57 @@
+<tag:notify />
+
+<table border="0" cellpadding="1" cellspacing="0" width="100%">
+  <tr>
+    <td class="header">
+      <gettext>Application</gettext>
+    </td>
+    <td class="header">
+      &nbsp;
+    </td>
+    <td class="header">
+      <gettext>Status</gettext>
+    </td>
+  </tr>
+  <loop:apps>
+  <tr class="<tag:apps.class />">
+    <td>
+      <tag:apps.name />
+    </td>
+    <td align="center">
+      <tag:apps.conf />
+    </td>
+    <td>
+      <tag:apps.status />
+    </td>
+  </tr>
+  </loop:apps>
+</table>
+
+<table border="0" cellpadding="1" cellspacing="0" width="100%">
+  <tr valign="top">
+    <td width="50%">
+      <if:actions>
+      <table border="0" cellpadding="2" cellspacing="0" width="100%">
+        <tr>
+          <td class="header">
+            <gettext>Setup upgrade scripts available</gettext>
+          </td>
+        </tr>
+        <tr class="item">
+          <td>
+            <ul>
+              <loop:actions>
+              <li><tag:actions /></li>
+              </loop:actions>
+            </ul>
+          </td>
+        </tr>
+      </table>
+      </if:actions>
+    </td><td width="50%">
+      <if:ftpform>
+        <tag:ftpform />
+      </if:ftpform>
+    </td>
+  </tr>
+</table>

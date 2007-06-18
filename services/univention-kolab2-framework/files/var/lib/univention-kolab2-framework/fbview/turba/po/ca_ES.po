@@ -1,0 +1,394 @@
+# Turba Catalan translation.
+# Copyright (C) 2003 Angels Guimerà
+# Angels Guimerà <Angels.Guimera@uab.es>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.1\n"
+"POT-Creation-Date: 2003-02-18 09:39+0100\n"
+"PO-Revision-Date: 2003-02-18 09:39+0100\n"
+"Last-Translator: Angels Guimerà <Angels.Guimera@uab.es>\n"
+"Language-Team: Catalan <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "L'arxiu %s ha estat importat satisfactòriament"
+
+msgid "Add Contact ..."
+msgstr "Afegir Contacte ..."
+
+msgid "Add a new contact"
+msgstr "Afegir nou contacte"
+
+msgid "Add failed"
+msgstr "Ha fallat al afegir"
+
+msgid "Add"
+msgstr "Afegir"
+
+msgid "Addressbook is read-only."
+msgstr "La Llibreta d'adreces només és de lectura."
+
+msgid "Advanced Directory Search"
+msgstr "Cerca Avançada en el Directori"
+
+msgid "Advanced Search"
+msgstr "Cerca Avançada"
+
+msgid "Alias"
+msgstr "Àlies"
+
+msgid "An illegal value was specified."
+msgstr "Se especificó un valor ilegal."
+
+msgid "Available Columns:"
+msgstr "Columnes Disponibles:"
+
+msgid "Browse"
+msgstr "Examinar"
+
+msgid "Cancel"
+msgstr "Cancel·lar"
+
+msgid "Cell Phone"
+msgstr "Telèfon Cel·lular"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr ""
+"Escolliu l'ordre de les columnes que voleu visusalitzar a la llista d'adreces."
+
+msgid "Clear Search"
+msgstr "Esborrar la Cerca"
+
+msgid "Column Options"
+msgstr "Opcions de la Columna"
+
+msgid "Company"
+msgstr "Companyia"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Contingut de %s"
+
+msgid "Delete"
+msgstr "Eliminar"
+
+msgid "Deletion failed"
+msgstr "Ha fallat al eliminar"
+
+msgid "Directory Listing"
+msgstr "Llistat del Directori"
+
+msgid "Directory Search"
+msgstr "Cerca en el Directori"
+
+msgid "Directory"
+msgstr "Directori"
+
+msgid "Display Options"
+msgstr "Opcions de Visualització"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Editar '%s'"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Export Addressbook"
+msgstr "Exportar Llibreta d'adreces"
+
+msgid "Export"
+msgstr "Exportar"
+
+#, c-format
+msgid "Failed to browse the directory: %s"
+msgstr "Ha fallat el llistat del directori: %s"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Ha fallat al connectar amb el directori especificat."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Ha fallat al cercar en el directori: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Trobar"
+
+msgid "From"
+msgstr "De"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Home Address"
+msgstr "Adreça Personal"
+
+msgid "Home Phone"
+msgstr "Telèfon Personal"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Si importeu dades CSV: ¿Conté la primera fila els noms dels camps?"
+
+msgid "Illegal or malformed form data."
+msgstr "Formulari de dades il·legal o malformat."
+
+msgid "Import Addressbook"
+msgstr "Importar Llibreta d'adreces"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importar/Exportar Llibreta d'adreces"
+
+msgid "Import/Export"
+msgstr "Importar/Exportar"
+
+msgid "Invalid addressbook."
+msgstr "La llibreta d'adreces no és vàlida."
+
+msgid "Invalid e-mail address."
+msgstr "L'adreça d'e-mail no és vàlida."
+
+msgid "Invalid name."
+msgstr "El nom no és vàlid."
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "List"
+msgstr "Llistar"
+
+msgid "Matching"
+msgstr "que coincideixi amb"
+
+msgid "Message"
+msgstr "Missatge"
+
+msgid "Name"
+msgstr "Nom"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Cap de les llibrestes d'adreces disponibles està configurada per "
+"permetre-us afegir-hi noves entrades. Si considereu que això é sun error, si su plau "
+"contacteu l'administrador de sistemes."
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Options"
+msgstr "Opcions"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Si us plau, escolliur una llibreta d'adreces per afegir-hi el contacte."
+
+msgid "Please select a directory:"
+msgstr "Si us plau, seleccioneu un directori:"
+
+msgid "Problem?"
+msgstr "¿Problemes?"
+
+msgid "Reset"
+msgstr "Netejar"
+
+msgid "Save Changes"
+msgstr "Desar els Canvis"
+
+msgid "Save"
+msgstr "Desar"
+
+msgid "Search Results"
+msgstr "Resultats de la Cerca"
+
+msgid "Search"
+msgstr "Cercar"
+
+msgid "Search&nbsp;Results"
+msgstr "Resultats de la Cerca"
+
+msgid "Select the destination to import to:"
+msgstr "Seleccioneu el destí per importar a:"
+
+msgid "Select the file to import:"
+msgstr "Seleccioneu l'arxiu que voleu importar:"
+
+msgid "Select the format to export to:"
+msgstr "Seleccioneu el format que voleu exportar:"
+
+msgid "Select the format to import from:"
+msgstr "Seleccioneu el format que voleu importar:"
+
+msgid "Select the source to export from:"
+msgstr "Seleccioneu la font des de la que voleu exportar:"
+
+msgid "Select which fields to display in the address lists."
+msgstr "Seleccioneu quins camps voleu visualitzar en les llistes d'adreces."
+
+msgid "Select your preferred language:"
+msgstr "Seleccioneu el vostre idioma preferit:"
+
+msgid "Selected Columns:"
+msgstr "Columnes Seleccionades:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Enviar correu a %s"
+
+msgid "Set your preferred display language."
+msgstr "Establiu el vostre idioma de visualització preferit."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Alguns dels arxius de configuració de Turba no s'han trobat:"
+
+msgid "Success"
+msgstr "Èxit"
+
+msgid "The data got lost"
+msgstr "Les dades s'han perdut"
+
+msgid "The data got lost."
+msgstr "Les dades s'han perdut."
+
+msgid "The file contained no data."
+msgstr "L'arxiu no conté dades."
+
+msgid "There are no writeable address books."
+msgstr "No hi ha llibretes d'adreces on es pugui escriure."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Hi ha hagut un error al pujar l'arxiu. Potser l'arxiu era més gran que el "
+"tamany màxim permès."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"HI ha hagut un error al afegir aquest objecte. Contacteu l'administrador del sistema"
+"per a ajuda addicional."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Hi ha hagut un error al eliminar aquest objecte. Contacteu l'administrador del sistema"
+"per a ajuda addicional."
+
+
+msgid "There was an error importing the data."
+msgstr "HI ha hagut un error al importar les dades."
+
+msgid "There was an error importing the uploaded file"
+msgstr "HI ha hagut un error al importar l'arxiu carregat"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Aquest arxiu contrala les preferències predeterminades de Turba, també controla quines són les preferències que"
+"poden ser alterades pels usuaris."
+
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Aquest arxiu controla els full d'estil que s'utilitzen per fixar colors "
+"i tipus de lletra, a més de reemplaçar els predeterminats per Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Aquest arxiu defineix l'atribut global de noms i tipus de Turba - "
+"noms, adreces de correu, etc."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Aquest arxiu defineix la llista de fonts disponibles per a Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Aquest és l'arxiu principal de configuració de Turba. Conté les rutes i opcions de tots "
+"els scripts de Turba."
+
+msgid "This number must be at least one."
+msgstr "Aquest número ha de ser, al menys, un 1."
+
+msgid "This person is already in your addressbook."
+msgstr "Aquesta persona ja ha estat enregistrada en la vostra llibreta d'adreces."
+
+msgid "This value must be a number."
+msgstr "Aquest valor ha de ser un número."
+
+msgid "Title"
+msgstr "Títol"
+
+msgid "Turba is not properly configured"
+msgstr "Turba no està configurat correctament"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Incapaç de carregar la definició de %s."
+
+msgid "User Options"
+msgstr "Opcions de l'Usuari"
+
+msgid "Warning"
+msgstr "Avís"
+
+msgid "Work Address"
+msgstr "Adreça Laboral"
+
+msgid "Work Phone"
+msgstr "Telèfon Laboral"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"No heu associat cap dels camps de l'arxiu importat als camps "
+"corresponents a Turba."
+
+msgid "Your Information"
+msgstr "La vostra Informació"
+
+msgid "Your options have been updated."
+msgstr "Les opcions han estat actualitzades."
+
+msgid "[Edit]"
+msgstr "[Editar]"
+
+msgid "add column"
+msgstr "afegir columna"
+
+msgid "move left"
+msgstr "moure a l'esquerra"
+
+msgid "move right"
+msgstr "moure a la dreta"
+
+msgid "remove column"
+msgstr "treure columna"

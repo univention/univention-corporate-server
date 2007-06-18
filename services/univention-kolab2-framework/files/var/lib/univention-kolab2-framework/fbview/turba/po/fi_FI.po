@@ -1,0 +1,637 @@
+# Finnish translation for Turba.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Leena Heino <liinu@uta.fi>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0\n"
+"POT-Creation-Date: 2001-11-27 10:37+0200\n"
+"PO-Revision-Date: 2003-05-28 12:59+0200\n"
+"Last-Translator: Leena Heino <liinu@uta.fi>\n"
+"Language-Team: Finnish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s added."
+msgstr "%s lis‰tty."
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s tiedoston tuonti onnistui"
+
+msgid "A browser that supports iFrames is required"
+msgstr "Tarvitaan selain, jossa on tuki iFrames toiminnolle"
+
+msgid "Add Object"
+msgstr "Lis‰‰ objekti"
+
+msgid "Add a new contact"
+msgstr "Lis‰‰ uudet yhteystiedot"
+
+msgid "Add column"
+msgstr "Lis‰‰ sarake"
+
+msgid "Add to"
+msgstr "Lis‰‰ kohteeseen"
+
+msgid "Add"
+msgstr "Lis‰‰"
+
+#, c-format
+msgid "Added a %s link to %s."
+msgstr "Lis‰ttiin %s linkki %s:‰‰n."
+
+msgid "Address Book Listing"
+msgstr "Osoitekirjan selaus"
+
+msgid "Address book entry"
+msgstr "Osoitekirjan merkint‰"
+
+msgid "Address book is read-only."
+msgstr "Osoitekirjaa voi vain lukea."
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Osoitteet listassa: %s"
+
+msgid "Advanced Search"
+msgstr "Tarkempi haku"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "All"
+msgstr "Kaikki"
+
+msgid "Ascending"
+msgstr "Nouseva"
+
+msgid "Available Columns:"
+msgstr "K‰ytett‰viss‰olevat sarakkeet:"
+
+msgid "Back to %s"
+msgstr "Palaa takaisin hakemistoon %s"
+
+msgid "Browse"
+msgstr "Selaa"
+
+msgid "CSV"
+msgstr "CSV"
+
+msgid "Cancel"
+msgstr "Peru"
+
+msgid "Checkbox"
+msgstr "Valintaruutu"
+
+msgid ""
+"Choose a default directory for your personal addressbook, contact lists, and "
+"searches."
+msgstr ""
+"Voit valita oletushakemiston osoitekirjaksi, osoitelistaksi ja "
+" k‰ytett‰v‰ksi hakutoiminnoissa."
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Valitse sarakkeiden j‰rjestys osoitelistassa."
+
+msgid "Clear Search"
+msgstr "Poista hakuehdot"
+
+msgid "Column Options"
+msgstr "Sarakkeiden asetukset"
+
+msgid "Comma separated values"
+msgstr "Pilkuilla erotetut arvot"
+
+msgid "Company"
+msgstr "Yritys"
+
+msgid "Contact List"
+msgstr "Yhteystietolista"
+
+msgid "Contact not found."
+msgstr "Yhtyestietoja ei lˆytynyt."
+
+msgid "Contact removed from list."
+msgstr "Yhteystiedot poistettiin listalta."
+
+#, c-format
+msgid "Contents of %s"
+msgstr "%s:n sis‰ltˆ"
+
+msgid "Default Display"
+msgstr "Oletusn‰kym‰"
+
+msgid ""
+"Default directory for your personal addressbook, contact lists, and searches."
+msgstr ""
+"Oletushakemisto osoitekirjaksi, osoitelistaksi ja haku toimintoihin."
+
+msgid "Default sorting direction:"
+msgstr "Oletusj‰rjestyksen suunta:"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Poista '%s'"
+
+msgid "Delete"
+msgstr "Poista"
+
+msgid "Deletion failed"
+msgstr "Poistaminen ep‰onnistui"
+
+msgid "Descending"
+msgstr "Laskeva"
+
+msgid "Directory"
+msgstr "Hakemisto"
+
+msgid "Display Options"
+msgstr "N‰kym‰n asetukset"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Muokkaa %s"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Muokkaa '%s'"
+
+#, c-format
+msgid "Edit entry for %s"
+msgstr "Muokkaa %s:n merkint‰‰"
+
+msgid "Edit"
+msgstr "Muokkaa"
+
+msgid "Email"
+msgstr "S‰hkˆposti"
+
+msgid "Empty key"
+msgstr "Tyhj‰ avain"
+
+msgid "Empty source"
+msgstr "Tyhj‰ l‰hde"
+
+#, c-format
+msgid "Entry for %s updated."
+msgstr "Merkint‰ %s:st‰ on p‰ivitetty."
+
+msgid "Error while searching directory."
+msgstr "Tapahtui virhe kun hakemistosta suoritettiin hakua."
+
+msgid "Exit Address Book"
+msgstr "Poistu osoitekirjasta"
+
+msgid "Export Address Book"
+msgstr "Vie osoitekirja"
+
+msgid "Export"
+msgstr "Vie"
+
+msgid "Failed to access the specified address book."
+msgstr "Valittuun osoitekirjaan ei saatu yhteytt‰."
+
+#, c-format
+msgid "Failed to browse list"
+msgstr "Listan selaus ep‰onnistui."
+
+#, c-format
+msgid "Failed to browse the directory"
+msgstr "Hakemiston selaus ep‰onnistui"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Yhteys valittuun hakemistoon ep‰onnistui."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Haku ep‰onnistui hakemistosta: %s"
+
+msgid "Failed to search the specified directory."
+msgstr "Haku ep‰onnistui valitusta hakemistosta."
+
+msgid "Fax"
+msgstr "Faksi"
+
+msgid "Find"
+msgstr "Haku"
+
+msgid "Freebusy URL"
+msgstr "Freebusy URL"
+
+msgid "From"
+msgstr "L‰hde"
+
+msgid "Group"
+msgstr "Ryhm‰"
+
+msgid "Help"
+msgstr "Ohje"
+
+msgid "Home Address"
+msgstr "Kotiosoite"
+
+msgid "Home Phone"
+msgstr "Puhelin(koti)"
+
+msgid "Import Address Book, Step %d"
+msgstr "Osoitekirjan tuonti, askel %d"
+
+msgid "Import/Export Address books"
+msgstr "Tuo/Vie osoitekirja"
+
+msgid "Import/Export"
+msgstr "Tuo/Vie"
+
+msgid "Invalid address book."
+msgstr "Ep‰kelpo osoitekirja."
+
+msgid "Invalid e-mail address."
+msgstr "Virheellinen s‰hkˆpostiosoite."
+
+msgid "Invalid email."
+msgstr "Virheellinen s‰hkˆpostiosoite."
+
+msgid "Invalid entry."
+msgstr "Virheellinen tieto."
+
+msgid "Invalid name."
+msgstr "Virheellinen nimi."
+
+msgid "Language"
+msgstr "Kieli"
+
+msgid "Link added."
+msgstr "Lis‰ttiin linkki."
+
+msgid "Link canceled."
+msgstr "Poistettiin linkki."
+
+msgid "Matching"
+msgstr "On"
+
+msgid "Mini Search"
+msgstr "Pieni haku"
+
+msgid "Missing information"
+msgstr "Puuttuu tietoja"
+
+msgid "Mobile Phone"
+msgstr "Matkapuhelin"
+
+msgid "More than 1 entry returned."
+msgstr "Vaihtoehtoja oli enemm‰n kuin 1."
+
+msgid "Move left"
+msgstr "Siirr‰ vasemmalle"
+
+msgid "Move right"
+msgstr "Siirr‰ oikealle"
+
+msgid "Mulberry Address Book"
+msgstr "Mulberry-osoitekirja"
+
+#, c-format
+msgid ""
+"Multiple persons with address [%s], but none with name [%s] in address book."
+msgstr ""
+"Osoitekirjassa oli monta henkilˆ‰ osoitteella [%s], mutta ei ket‰‰n nimell‰ "
+"[%s]."
+
+msgid "My Addressbook"
+msgstr "Osoitekirjani"
+
+msgid "Name Format"
+msgstr "Nimen muoto"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "Netcenter Member Directory"
+msgstr "Netcenter j‰senhakemisto"
+
+msgid "New Contact"
+msgstr "Uusi yhteystieto"
+
+msgid "New List"
+msgstr "Uusi lista"
+
+msgid "Next"
+msgstr "Seuraava"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "%s:lle ei lˆytynyt tietoa %s."
+
+msgid "No contacts found"
+msgstr "Ei lˆytynyt yhteystietoja"
+
+msgid "None"
+msgstr "Ei ainuttakaan"
+
+msgid "Notes"
+msgstr "Muistiinpanot"
+
+msgid "Options"
+msgstr "Asetukset"
+
+msgid "PGP Public Key"
+msgstr "Julkinen PGP-avain"
+
+msgid "Pine Address Book"
+msgstr "Pine-osoitekirja"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Valitse osoitekirja, johon yhteystiedot lis‰t‰‰n."
+
+msgid "Please enter the name of the new list:"
+msgstr "Anna nimi uudelle listalle:"
+
+msgid "Please select a directory:"
+msgstr "Valitse hakemisto:"
+
+msgid "Please select contact"
+msgstr "Valitse yhteystieto"
+
+msgid "Private Address Book"
+msgstr "Yksityinen osoitekirja"
+
+msgid "Quick Search"
+msgstr "Pikahaku"
+
+msgid "Remove column"
+msgstr "Poista sarake"
+
+msgid "Remove from this list"
+msgstr "Poista t‰lt‰ listalta"
+
+msgid "Requested object not found."
+msgstr "Pyydetty‰ objektia ei lˆytynyt."
+
+msgid "Reset"
+msgstr "Tyhjenn‰"
+
+msgid "S/MIME Public Certificate"
+msgstr "S/MIME julkinen varmenne"
+
+msgid "Save"
+msgstr "Talleta"
+
+msgid "Search Results"
+msgstr "Haun tulokset"
+
+msgid "Search"
+msgstr "Haku"
+
+msgid "Searching Options"
+msgstr "Haun asetukset"
+
+msgid "Searching..."
+msgstr "Haetaan..."
+
+msgid "Select Address Book"
+msgstr "Valitse osoitekirja"
+
+msgid "Select List"
+msgstr "Valitse lista"
+
+msgid "Select Source"
+msgstr "Valitse l‰hde"
+
+msgid "Select the destination to import to:"
+msgstr "Valitse kohde, johon tuot tietoa:"
+
+msgid "Select the file to import:"
+msgstr "Valitse tiedosto, josta tuot tietoa:"
+
+msgid "Select the format to export to:"
+msgstr "Valitse vienniss‰ k‰ytett‰v‰ muoto:"
+
+msgid "Select the format to import from:"
+msgstr "Valitse tuonnissa k‰ytett‰v‰ muoto:"
+
+msgid "Select the format used to display names:"
+msgstr "Valitse nimien esitysmuoto:"
+
+msgid "Select the source to export from:"
+msgstr "Valitse l‰hde, josta vied‰‰n tietoa:"
+
+msgid "Select view to display by default."
+msgstr "Voit valita oletusn‰kym‰n."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Valitse osoitelistassa n‰ytett‰v‰t kent‰t."
+
+msgid "Select which format to display names."
+msgstr "Voit valita nimien esitysmuodon."
+
+msgid "Select your preferred language:"
+msgstr "Valitse k‰ytett‰v‰ kieli:"
+
+msgid "Select"
+msgstr "Valitse"
+
+msgid "Selected Columns:"
+msgstr "Valitut sarakkeet:"
+
+msgid "Set your preferred display language."
+msgstr "Voit asettaa ohjelmassa k‰ytett‰v‰n kielen."
+
+msgid "Shared Directory"
+msgstr "Jaettu hakemisto"
+
+msgid "Show All"
+msgstr "N‰yt‰ kaikki"
+
+msgid "Show Contacts"
+msgstr "N‰yt‰ yhteystiedot"
+
+msgid "Show Lists"
+msgstr "N‰yt‰ listat"
+
+msgid "Show"
+msgstr "N‰yt‰"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Joitakin Turban asetustiedostoja puuttuu:"
+
+msgid "Sort Direction"
+msgstr "J‰rjestyksen suunta."
+
+msgid "Source"
+msgstr "L‰hde"
+
+msgid "TSV"
+msgstr "TSV"
+
+msgid "Tab separated values"
+msgstr "Tabulaattorein(TAB) erotetut arvot"
+
+msgid "The object you requested does not exist."
+msgstr "Pyyt‰m‰‰si ohjektia ei ole olemassa."
+
+msgid "There are no browseable address books."
+msgstr "Osoitekirjoja ei voi selata."
+
+msgid ""
+"There are no writeable address books. None of the available address books "
+"are configured to allow you to add new entries to them. If you believe this "
+"is an error, please contact your system administrator."
+msgstr ""
+"Osoitekirjoihin ei voi kirjoittaa. K‰ytett‰viss‰olevat osoitekirjat eiv‰t "
+"salli sinun lis‰t‰ niihin uusia osoitteita. Jos ep‰ilet virhetilannetta, "
+"niin ota yhteys j‰rjestelm‰n yll‰pit‰j‰‰n."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Tietueen lis‰‰minen ep‰onnistui. Ota yhteytt‰ j‰rjestelm‰n yll‰pit‰j‰‰n."
+
+msgid "There was an error creating a new list."
+msgstr "Uuden listan tekeminen ep‰onnistui."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Tietueen poistaminen ep‰onnistui. Ota yhteytt‰ j‰rjestelm‰n yll‰pit‰j‰‰n."
+
+msgid "There was an error deleting this object."
+msgstr "T‰m‰n objektin poistaminen ep‰onnistui."
+
+msgid "There was an error displaying the select List"
+msgstr "Listan n‰ytt‰minen ep‰onnistui"
+
+msgid "There was an error importing the data: %s"
+msgstr "Tiedon tuonnissa tapahtui virhe: %s"
+
+msgid "There was an error importing the vCard data."
+msgstr "Tapahtui virhe tuotaessa vCard-tietoja."
+
+msgid "There was an error removing this object."
+msgstr "T‰m‰n objektin poistaminen ep‰onnistui."
+
+#, c-format
+msgid "There was an error updating this entry: %s."
+msgstr "T‰m‰n merkinn‰n p‰ivityksess‰ tapahtui virhe: %s."
+
+msgid "There were no addresses to export."
+msgstr "Ei ole yht‰‰n viet‰v‰‰ osoitetta."
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n Turba-ohjelmiston k‰ytt‰j‰n oletusasetukset "
+"ja myˆs asetukset, joita k‰ytt‰j‰t itse voivat asettaa ja muuttaa."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"T‰ss‰ tiedostossa asetetaan tyylitiedot, jotka m‰‰rittelev‰t k‰ytett‰v‰t "
+"v‰rit ja kirjasimet. N‰m‰ m‰‰rityksen menev‰t Horde:n m‰‰ritysten ylitse."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n Turban yleiset tietuem‰‰ritteet ja tyypit - "
+"nimet, s‰hkˆposti jne."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "T‰ss‰ tiedostoss‰ m‰‰ritell‰‰n Turba:ss‰ k‰ytett‰v‰t hakemistot."
+
+msgid "This file format is not supported."
+msgstr "T‰m‰ tiedostomuoto ei ole tuettu."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"T‰m‰ on Turban p‰‰asetustiedosto. Se sis‰lt‰‰ esimerkiksi polut ja asetukset "
+"muihin Turban k‰ytt‰miin skripteihin."
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "T‰ll‰ henkilˆll‰ on jo %s tieto osoitekirjassa."
+
+msgid "This person is already in your address book."
+msgstr "T‰m‰ henkilˆn tiedot ovat jo osoitekirjassa."
+
+msgid "Title"
+msgstr "Titteli"
+
+msgid "Turba is not properly configured"
+msgstr "Turba-ohjelmisto ei ole asennettu oikein"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "M‰‰rityksen %s lukeminen ep‰onnistui."
+
+msgid "Unknown source"
+msgstr "Tuntematon l‰hde"
+
+msgid "Unnamed Contact"
+msgstr "Nimetˆn yhteystieto"
+
+msgid "User Options"
+msgstr "K‰ytt‰j‰n asetukset"
+
+msgid "Verisign Directory"
+msgstr "Verisign hakemisto"
+
+#, c-format
+msgid "View '%s'"
+msgstr "N‰yt‰ '%s'"
+
+msgid "View Contact"
+msgstr "N‰yt‰ yhteystiedot"
+
+msgid "View to display by default:"
+msgstr "Oletuksena k‰ytett‰v‰ n‰kym‰:"
+
+msgid "Work Address"
+msgstr "Tyˆosoite"
+
+msgid "Work Phone"
+msgstr "Puhelin(tyˆ)"
+
+msgid "You are creating a distribution list."
+msgstr "Olet tekem‰ss‰ jakelulistaa."
+
+msgid "You do not have permission to view this object."
+msgstr "Sinulla ei ole oikeuksia n‰hd‰ t‰m‰n objektin tietoja."
+
+msgid "You must select an address first."
+msgstr "Sinun pit‰‰ ensin valita osoite."
+
+msgid "You must select at least one contact first."
+msgstr "Sinun pit‰‰ valita ainakin yksi yhteystieto."
+
+msgid "You only have permission to view this object."
+msgstr "Sinulla on oikeudet vain katsoa t‰m‰n objektin tietoja."
+
+msgid "Your Information"
+msgstr "Omat tietosi"
+
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"Etunimi Sukunimi\"  (esim. Matti Meik‰l‰inen)"
+
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"Sukunimi, Etunimi\" (esim. Meik‰l‰inen, Matti)"
+
+msgid "contacts.csv"
+msgstr "contacts.csv"
+
+msgid "contacts.tsv"
+msgstr "contacts.csv"
+
+msgid "from"
+msgstr "l‰hde"
+
+msgid "vCard"
+msgstr "vCard-k‰yntikortti"

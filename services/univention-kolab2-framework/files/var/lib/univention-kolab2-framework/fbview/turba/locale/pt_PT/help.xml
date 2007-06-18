@@ -1,0 +1,79 @@
+<?xml version='1.0' encoding='iso-8859-1'?>
+<help>
+
+<entry id="Overview">
+    <title>Apresentação</title>
+    <heading>Introdução</heading>
+    <para>
+    A Lista de Contactos fornece um método e local conveniente para guardar informação de contactos para uma utilização fácil. Pode fornecer acesso a um livro de endereços privado bem como acesso a serviços públicos de endereçamentos. Também suporta listas de distribuição para que possa criar a suas próprias listas distribuídas.
+    </para>
+</entry>
+
+<entry id="menu-add">
+    <title>Menu: Adicionar</title>
+    <heading>Adicionar</heading>
+    <para>
+    Adicionar um utilizador no livro de endereços. Poderá apenas adicionar ao livro &quot;My Addressbook&quot; já que os restantes são apenas para acesso de leitura.
+    </para>
+</entry>
+
+<entry id="menu-search">
+    <title>Menu: Pesquisar</title>
+    <heading>Pesquisar</heading>
+    <para>
+    Pesquise um livro de endereços para encontrar informação. Esta pesquisa permite apenas utilizar alguns campos básicos. Veja &quot;Pesquisa Avançada&quot; para utilizar outros campos.
+    </para>
+</entry>
+
+<entry id="menu-advanced-search">
+    <title>Menu: Pesquisa Avançada</title>
+    <heading>Pesquisa Avançada</heading>
+    <para>
+    Pesquise um livro de endereços para encontrar informação. Esta pesquisa permite utilizar vários campos. Os campos disponíveis para a pesquisa dependem do livro de endereços a ser utilizado.
+    </para>
+</entry>
+
+<entry id="menu-import">
+    <title>Menu: Importar/Exportar</title>
+    <heading>Importar/Exportar</heading>
+    <para>
+    Este menu permite importar para ou exportar  do seu livro pessoal de
+endereços (&quot;My Addressbook&quot;). Suporta os formatos CSV (Comma Seperated
+Variable), Outlook, e vCard, bem como outros formatos populares. Para importar um livro de endereços, terá que ter um ficheiro com a informação no computador onde está a aceder ao webmail.
+    </para>
+    <para>
+    Para importar um livro de endereços, abra o livro de endereços da Lista de Contactos. Prima o ícone "Importar/Exportar". Seleccione o tipo de informação que tem para importar da lista apresentada. Prima no botão &quot;Browse&quot; e navegue até ao ficheiro a importar. Seleccione esse ficheiro, e prima o botão de Importar. A informação no ficheiro será importada para o seu livro de endereços. Deverá sempre verificar a informação após uma importação já que poderá haver informação mais complexa que não tenha sido importada correctamente.
+    </para>
+</entry>
+
+<entry id="menu-problem">
+    <title>Menu: Problemas</title>
+    <heading>Relatório  de Problema</heading>
+    <para>
+    Permite que entre em contacto connosco para indicar qualquer problema verificado. Certifique-se que indica a informação adequada de contacto caso contrário não será possível responder-lhe!
+    </para>
+</entry>
+
+<entry id="search-results">
+    <title>Resultados da pesquisa</title>
+    <heading>Resultados da pesquisa</heading>
+    <para>
+    Os resultados de uma pesquisa bem sucedida aparecerão nesta área.
+    </para>
+    <para>
+    Ao premir no campo &quot;Email&quot; será aberto uma janela para compor uma nova mensagem com destinatário o endereço escolhido. Se premir no campo &quot;Nome&quot;, será levado à informação desse registo no livro de endereços, permitindo-lhe a edição da mesma.
+    </para>
+    <para>
+    Para remover o resultado de uma pesquisa e iniciar nova, prima no "Limpar Pesquisa"
+    </para>
+</entry>
+
+<entry id="sorting">
+    <title>Ordenando Entradas</title>
+    <heading>Ordenando Entradas</heading>
+    <para>
+    Poderá ordenar uma lista de contactos por nome ou email premindo o título da coluna apropriada. Para inverter a ordem da ordenação, pode utilizar o ícone da seta no coluna desejada.
+    </para>
+</entry>
+
+</help>

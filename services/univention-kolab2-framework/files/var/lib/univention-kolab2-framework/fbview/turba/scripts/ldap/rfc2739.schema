@@ -1,0 +1,98 @@
+#
+# http://www.faqs.org/rfcs/rfc2739.html
+# 
+# From the RFC:
+# The calCalURI contains the URI to a snapshot of the user's entire
+# default calendar. The calFBURL contains the URI to the user's default
+# busy time data. The calCAPURI represents contains a URI that can be
+# used to communicate with the user's calendar. The calCalAdrURI
+# contains a URI that points to the location to which event requests
+# should be sent for that user.
+#
+# The calOtherCalURIs is a multi-valued property containing URIs to
+# snapshots of other calendars that the user may have. The
+# calOtherFBURLs is a multi-valued property containing URIs to other
+# free/busy data that the user may have. The calOtherCAPURIs attribute
+# is a multi-valued property containing URIs to other calendars that
+# the user may have. The calOtherCalAdrURIs attribute is a multi-valued
+# property containing URIs to other locations that a user may want
+# event requests sent to.
+#
+# There is no predetermined order to the values in either multi-valued
+# property.
+
+#	EQUALITY caseIgnoreIA5Match
+
+attribute (1.2.840.113556.1.4.478
+  NAME 'calCalURI'
+  DESC 'Snapshot of users entire default calendar'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.479
+  NAME 'calFBURL'
+  DESC 'URI of the uses free and busy information'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.480
+  NAME 'calCAPURI'
+  DESC 'URI used to communicate with the users calendar'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.481
+  NAME 'calCalAdrURI'
+  DESC 'URI to which event requests should be sent for the user'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.482
+  NAME 'calOtherCalURIs'
+  DESC 'URIs to non-default calendars belonging to the user'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.483
+  NAME 'calOtherFBURLs'
+  DESC 'URIs to non-default free and busy information files'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.484
+  NAME 'calOtherCAPURIs'
+  DESC 'URIs for communicating with non-default calendars'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+attribute (1.2.840.113556.1.4.485
+  NAME 'calOtherCalAdrURIs'
+  DESC 'Destinations for event requests to non-default calendars'
+  EQUALITY caseIgnoreIA5Match
+  SUBSTR caseIgnoreIA5SubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.26
+ )
+
+objectclass (1.2.840.113556.1.5.87
+ NAME 'calEntry' 
+ DESC 'Calendering and Free Busy information'
+ SUP top AUXILIARY
+ MAY (calCalURI $ calFBURL $ calCAPURI $ calCalAdrURI $ 
+      calOtherCalURIs $ calOtherFBURLs $ calOtherCAPURIs $
+      calOtherCalAdrURIs
+     )
+ )

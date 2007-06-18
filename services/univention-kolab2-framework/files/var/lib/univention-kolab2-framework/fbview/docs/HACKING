@@ -1,0 +1,215 @@
+Horde Development Resources
+===========================
+
+Online resources for developing with Horde (including Horde Framework
+API documentation) are available at:
+
+   http://dev.horde.org/   
+
+
+Hacking on Horde from CVS
+=========================
+
+Horde and its modules use CVS for source control. CVS is well-documented,
+but the manual page assumes you already know how it works. An excellent
+guide to getting started with CVS is _Open Source Development with CVS_
+by Karl Fogel. It's published by Coriolis, and the technical part of the
+book is available for free on the Web at 
+
+   http://cvsbook.red-bean.com/
+
+The paper version includes chapters on organizing and managing Open
+Source development. You can obtain a CVS client for your operating
+system at CVSHOME, at 
+
+   http://www.cvshome.org/downloads.html
+
+of them may be found at http://www.cyclic.com - they support CVS
+commercially, even though it is an open source program.
+
+You will need a CVS client to do any of the following (check out the Cyclic
+homepage if you don't have one).
+
+For those already familiar with CVS, the anonymous CVSROOT is:
+
+    :pserver:cvsread@anoncvs.horde.org:/repository
+
+
+Downloading Horde modules from CVS
+----------------------------------
+
+You will want to do this if you want bleeding edge code.
+
+1. Go to the directory you want to download the code to:
+
+      cd ~/work
+
+2. Set CVSROOT to the location of the CVS repository. (You could also
+   pass cvs the name of the CVS root with the "-d" option.) Be
+   sure to note the colon (":") in front of "pserver".
+
+  (in sh, ksh, bash, zsh):
+      CVSROOT=:pserver:cvsread@anoncvs.horde.org:/repository
+      export CVSROOT
+
+  (in csh, tcsh):
+      setenv CVSROOT :pserver:cvsread@anoncvs.horde.org:/repository
+
+3. Login to the anonymous CVS repository. When prompted for a 
+   password, enter "horde".
+      
+      cvs login
+
+4. Check out the module you want to download from the repository.
+   Replace MODULE with horde, imp, turba, troll, and so forth.
+   (The "-z3" tells cvs to compress the data it sends over the network,
+   uncompressing it when you 
+
+      cvs -z3 co MODULE
+
+   If you want to check out a particular branch of a module (for example,
+   the older STABLE_2_2 branch of IMP), include the branch tag like so,
+   replacing TAG with the name of the branch:
+
+      cvs -z3 co -r TAG MODULE
+
+5. As you work with the software, you can periodically update your
+   tree to match the master tree at any time, from the top directory
+   of the module. Using "horde" as an example module:
+
+      cd ~/work/horde
+      cvs -z3 update
+
+
+Obtaining a CVS account
+-----------------------
+
+If you're going to be a regular contributor to Horde, then you can
+request a CVS account in order to commit your changes to the
+repository yourself. (If you're only going to be contributing once in
+a while, there truly is no need for you to have one, as posting your
+changes to the application's mailing list will suffice to get your
+changes reviewed and included.)
+
+If you do get commit access to the CVS tree, you will have the ability
+to mess some things up. Not for good, mind you, as CVS allows updates
+to be backed off, but you still need to remember what you're doing and
+be careful what you commit and when you commit it. Because of this, we
+prefer that you submit your work to the mailing list for a while so we
+can tell you know what you're doing.
+
+If you're not a committer, the best way to submit a patch is to send
+it either to the application's mailing list or to dev@lists.horde.org.
+For more information on Horde mailing lists, see
+
+   http://www.horde.org/mail/
+
+
+Committing changes to CVS
+-------------------------
+
+Once you have a CVS account, you will need to log into the CVS server
+so it knows who you are and can grant you the appropriate rights to
+work on the sources.
+
+The CVSROOT is different for committers; instead of the repository
+listed above, set CVSROOT to
+
+   :ext:USERNAME@cvs.horde.org:/repository
+
+replacing USERNAME with your cvs username.
+
+The committers' repository does not use pserver. You will need to have
+ssh installed on your system, and have arranged with one of the core
+developers to put your SSH key on the system. If you have not done
+this, talk to one of the core developers.
+
+To get cvs to use ssh, you will need to set the environment variable
+CVS_RSH to "ssh" in your shell.
+
+You do not need to do "cvs login"; you will be prompted for the 
+passphrase for your SSH key whenever you access the repository.
+
+You may also wish to set the environment variable EDITOR to point to
+your favorite text editor. This way when you commit software changes
+and it asks you to enter a change description, you can do so in your
+favorite editor.
+
+Then, for work on developmental, bleeding-edge versions:
+
+  1) Check out the code by typing "cvs co MODULE"
+  2) Work on the code <hack, hack, hack>
+  3) Commit any changes with "cvs commit FILENAMES" in the directory the
+     files are in.
+
+Sometimes, others will make changes and you will need to update your tree so
+the changes show up in your local sources. You do this with the "cvs update"
+command in the horde directory. Please be sure to update your tree regularly;
+merging changes is considerably more work than running "cvs update".
+
+To work with any tagged branch (to patch a stable release, for instance):
+
+  1) Check out the code with "cvs co -r TAG MODULE"
+  2) Work on the code <hack, hack, hack>
+  3) Commit any changes with "cvs commit FILENAMES" in the directory the
+     files are in.
+
+If somebody else also makes changes to the labeled version, you can get them
+in your local source tree with the "cvs update" command issued in the module
+directory.
+
+If you are done working with the labeled source branch, and would like
+to move back into the bleeding-edge development source tree, you can
+issue the command "cvs update -A" to update everything to the current
+"HEAD" version.
+
+(We used to document how to merge code from HEAD into a labeled branch here,
+but since it was heavily peppered with "talk to core developers first",
+it's been elided to prevent errors of experimentation. If you think you need
+to do that, you have to talk to core developers anyhow -- they'll explain
+how.)
+
+
+Other CVS Notes
+---------------
+
+If you do end up getting a CVS account, here are some tips to help keep
+things going smoothly:
+
+1. Subscribe to the cvs@lists.horde.org and dev@lists.horde.org mailing
+   lists.
+
+2. Be sure to modify the file docs/CHANGES to reflect the changes to the
+   code you are committing.
+
+3. If you're planning on doing anything major, please let people know in
+   advance on the dev@ or application mailing lists as appropriate.
+
+   Developers need to communicate extensively in order to make sure everyone
+   knows what's going on. This is extremely important when you work on
+   key components.
+
+4. Use the Bug Tracking System. Currently we are using Bugzilla to
+   keep track of bugs. All new submissions are being cc'd to the
+   cvs@lists.horde.org mailing list so that if we aren't paying
+   attention, we'll at least get mail about it. Using the Bugs database
+   helps us keep track of issues we are having and where we stand with
+   the product.
+
+5. Remember to advance the library version whenever anything major is
+   changed.
+
+
+Please send any comments or questions pertaining to this document to
+core@horde.org.
+
+-------------------------------------------------------------------------
+
+Copyright 1999 Ivan E. Moore II <rkrusty@tdyc.com>
+Copyright 1999 Mike Hardy <mikeh@spark.com>
+
+This code is licensed under the GNU Public License.
+See the file COPYING in the top directory.
+
+
+$Horde: horde/docs/HACKING,v 1.6 2003/08/29 21:56:51 jan Exp $

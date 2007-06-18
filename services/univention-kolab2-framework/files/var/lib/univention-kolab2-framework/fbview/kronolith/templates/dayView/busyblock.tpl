@@ -1,0 +1,1 @@
+<div onclick="<tag:evclick />" class="busy" style="cursor:pointer;top:-<tag:top />px;height:15px;white-space:nowrap;overflow:hidden;text-align:center;position:relative;width:<tag:width />%;left:<tag:left />%;"><tag:label /></div>

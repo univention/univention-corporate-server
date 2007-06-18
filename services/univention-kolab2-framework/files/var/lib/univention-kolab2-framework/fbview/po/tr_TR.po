@@ -1,0 +1,526 @@
+# Horde Turkish Translation
+# Copyright (C) 2002 The Horde Project.
+# Genco YILMAZ <gencoyilmaz@yahoo.com>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-04-10 17:23+0300\n"
+"PO-Revision-Date: 2002-12-28 18:57+0100\n"
+"Last-Translator: Genco YILMAZ <gencoyilmaz@yahoo.com>\n"
+"Language-Team: Turkish <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-9\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Bak?m Çal??mas? - Do?rulama"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s aþagýdaki bakým iþlemlerini gerçekleþtirmek için hazýr"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' Horde kayýtlarýnda tanýmlanmamýþ"
+
+msgid "24 hours"
+msgstr "24 saat"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Ciddi bir hata oluþtu:</b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add pair"
+msgstr "Çift ekle"
+
+msgid "Address"
+msgstr "Adres"
+
+msgid "Addressbook"
+msgstr "Adres Defteri"
+
+msgid "Alias"
+msgstr "Takma Ad"
+
+msgid "An illegal value was specified."
+msgstr "Geçersiz bir deðer belirtildi"
+
+msgid "Available fields:"
+msgstr "Mevcut Alanlar:"
+
+#, c-format
+msgid "Bind to server %s:%d with DN %s failed: [%d] %s"
+msgstr "Sunucu %s:%d DN %s ile baðlantý baþarýsýz oldu: [%d] %s"
+
+msgid "Birthday"
+msgstr "Doðum Günü"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Takvim"
+
+msgid "Cancel Problem Report"
+msgstr "Sorun Bildirimini Durdur"
+
+msgid "Cell Phone"
+msgstr "Cep telefonu"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Þimdi yapmak istediðiniz iþlem(ler) için kutucuklarý iþaretleyiniz"
+
+msgid "Close Help Window"
+msgstr "Yardým Penceresini Kapat"
+
+msgid "Close Help"
+msgstr "Yardýmý Kapat"
+
+msgid "Close Window"
+msgstr "Pencereyi Kapat"
+
+msgid "Company"
+msgstr "Þirket"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "'%s' in içeriði"
+
+msgid "Contents of the RAR archive"
+msgstr "RAR arþivinin içeriði"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Bakým_görevi modülü %s açýlamadý"
+
+msgid "DD"
+msgstr "GG"
+
+msgid "Daily"
+msgstr "Günlük"
+
+msgid "Database query failed."
+msgstr "Veritabaný sorgusu baþarýsýz"
+
+msgid "Default Identity"
+msgstr "Tanýmlý Kimlik"
+
+msgid "Describe the Problem"
+msgstr "Sorunu Bildir"
+
+msgid "Details have been logged for the administrator."
+msgstr "Ayrýntýlar sistem yöneticisi için kayýt edildi"
+
+msgid "Do not directly access maintenance.php"
+msgstr "maintenance.php dosyasýna direk giriþ yapma"
+
+msgid "Email"
+msgstr "E-posta"
+
+msgid "Empty result."
+msgstr "Sonucu kaldýr"
+
+msgid "Error"
+msgstr "Hata"
+
+msgid "Every Login"
+msgstr "Her Giriþte"
+
+msgid "Example values:"
+msgstr "Örnek Deðerler"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "\"BEGIN\" %d satýrýnda bekleniyor"
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "\"END:%s\" %d satýrýda bekleniyor"
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "LDAP tercih sunucusuna baðlantý baþarýsýz oldu"
+
+msgid "Failed to connect to LDAP server."
+msgstr "LDAP sunucuna baðlantý baþarýsýz"
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "%s için LDAP baðlantýsý baþarýsýz "
+
+#, c-format
+msgid "Failed to retrieve user's DN: [%d] %s"
+msgstr "Kullanýcýnýn DN: [%d] %s bilgisinin alýnmasý baþarýsýz"
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "Full Description:"
+msgstr "Tam Tanýmlama:"
+
+msgid "Help"
+msgstr "Yardým"
+
+msgid "Home Address"
+msgstr "Ev Adresi"
+
+msgid "Home Phone"
+msgstr "Ev Telefonu"
+
+msgid "Horde Login"
+msgstr "Horde Giriþ"
+
+msgid "Horde Summary"
+msgstr "Horde Özeti"
+
+msgid "Horde System"
+msgstr "Horde Sistemi"
+
+msgid "Horde Wireless"
+msgstr "Horde Kablosuz"
+
+msgid "Horde is not properly configured"
+msgstr "Horde düzgün yapýlandýrýlmadý"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Hatayý Al:"
+
+msgid "Import"
+msgstr "Veri Al"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Alýnan alan: %s"
+
+msgid "Imported fields:"
+msgstr "Alýnan alanlar:"
+
+msgid "List Help Topics"
+msgstr "Yardým Konularýný Listele"
+
+msgid "Log in"
+msgstr "Giriþ"
+
+msgid "Log out"
+msgstr "Çýkýþ"
+
+msgid "MM"
+msgstr "AA"
+
+msgid "Mail"
+msgstr "Posta"
+
+msgid "Map Date and Time Fields"
+msgstr "Tarih ve zaman alanlarýný adresle"
+
+msgid "Map Import Fields"
+msgstr "Alýnan alanlarý adresle"
+
+msgid "Matching fields"
+msgstr "Eþlenen alanlar"
+
+msgid "Message"
+msgstr "Mesaj"
+
+msgid "Monthly"
+msgstr "Aylýk"
+
+msgid "Name"
+msgstr "Ad"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "LDAP tercihleri için herhangi bir ayar yapýlmamýþ"
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "SQL sýnýflarý için herhangi bir ayar yapýlmamýþ"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "SQL tercihleri için herhangi bir ayar yapýlmamýþ"
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "SQL kimlik doðrulamasý için herhangi bir ayar yapýlmamýþ "
+
+msgid "No preferences are available."
+msgstr "Tercih belirtilmemiþ"
+
+msgid "No preferences were retrieved."
+msgstr "Tercihler geri alýnmadý"
+
+msgid "Notes"
+msgstr "Notlar"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Teblið bilgisi %s bulunamadý"
+
+msgid "Password"
+msgstr "Þifre"
+
+msgid "Perform Maintenance Operations"
+msgstr "Bakým çalýþmasýný yürüt"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Lütfen sorun özetini bildirin"
+
+msgid "Please provide your username and password"
+msgstr "Kullanýcý adýnýzý ve þifrenizi giriniz"
+
+msgid "Problem Description"
+msgstr "Sorun Tanýmý"
+
+msgid "Remove pair"
+msgstr "Çifti kaldýr"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Gerekli 'basedn', kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Gerekli 'basedn',tercih yapýlandýrmasýnda belirtilmemiþ "
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Gerekli 'database' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Gerekli 'database' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Gerekli 'database' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Gerekli 'hostspec' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Gerekli 'hostspec' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Gerekli 'hostspec',tercih yapýlandýrmasýnda belirtilmemiþ "
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Gerekli 'password' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Gerekli 'password' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Gerekli 'password' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Gerekli 'phptype' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Gerekli 'phptype' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Gerekli 'phptype' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "Gerekli 'table' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "Gerekli 'table' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "Gerekli 'table' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "Gerekli 'tableRelations' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Gerekli 'uid' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Gerekli 'uid' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Gerekli 'username' kimlik doðrulama yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Gerekli 'username' sýnýf yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Gerekli 'username' tercih yapýlandýrmasýnda belirtilmemiþ"
+
+msgid "Return to Options"
+msgstr "Seçeneklere Geri Dön"
+
+msgid "Role"
+msgstr "Rol"
+
+msgid "Save Options"
+msgstr "Seçenekleri Kaydet"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Ýstediðiniz karakterleri kutulardan seçin.Daha sonra bunlarý metin alanýndan"
+"kopyalayýp yapýþtýrabilirsiniz"
+
+msgid "Select the date delimiter:"
+msgstr "Tarih ayýracýný seç:"
+
+msgid "Select the date format:"
+msgstr "Tarih formatýný seç"
+
+msgid "Select the time format:"
+msgstr "Zaman formatýný seç"
+
+msgid "Select two matching fields."
+msgstr "Eþlenen iki alanýn seç"
+
+msgid "Send Problem Report"
+msgstr "Sorun raporu gönder"
+
+msgid "Short Summary:"
+msgstr "Kýsa Özet:"
+
+msgid "Skip Maintenance"
+msgstr "Bakýmý Geç"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Horde'un bazý yapýlandýrma dosyalarý eksik:"
+
+msgid "Special Character Input"
+msgstr "Özel karakter giriþi"
+
+msgid "Success"
+msgstr "Baþarýlý"
+
+msgid "Tasks"
+msgstr "Görevler"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Horde uygulamalarý arasý iletiþim kayýtý"
+"Yüklenmiþ Horde uygulamalarýnýzý burada listeleyin"
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Bu dosya, Horde altyapýsý için evrensel MIME sürücülerini kontrol edip,"
+"içeriði HTML formatýna aktarýp, tarayýcýnýzda görüntülemek için,"
+"uygulamalara enscript ya da mswordview gibi programlarý kullanma imkaný verir."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Bu dosya Horde ve kendi ayarlarý olmayan uygulamalar için renk ve fontlarý "
+"belirlemek için kullanýlan stylesheet'i kontrol eder"
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Bu dosya Horde uygulamalarýna, örnegin e-posta ek dosyalarýný ya da CVS'yi nasýl kullanmasý "
+"gerektigini bildiren dosya uzantýarýný mantýksal MIME tiplerine eþler"
+""
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Ana Horde yapýlandýrma dosyasýdýr. Horde uygulamalarý ve ana yapý için"
+"temel bileþenleri ve yol tanýmlarýný içerir."
+
+msgid "This number must be at least one."
+msgstr "Bu numara en azýndan bir olmalý"
+
+msgid "This value must be a number."
+msgstr "Bu deðer bir numara olmalý"
+
+msgid "Title"
+msgstr "Baþlýk"
+
+msgid "Type mismatch."
+msgstr "Tip uyuþmazlýðý"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "SQL sunucuya baðlanýlamadý"
+
+#, c-format
+msgid "Unable to modify preferences: [%d] %s"
+msgstr "Tercihler: [%d] %s deðiþtirilemiyor "
+
+msgid "Unable to register preferences in session."
+msgstr "Oturumda tercihler kayýt edilemiyor"
+
+msgid "Unable to translate this Word document"
+msgstr "Bu word dokümaný çevirilemiyor"
+
+msgid "Undo Changes"
+msgstr "Deðiþiklikleri geri al"
+
+msgid "Unexpected end of file."
+msgstr "Beklenmeyen dosya sonu"
+
+msgid "Use Default Value"
+msgstr "Ön tanýmlý deðeri kullan"
+
+msgid "Username"
+msgstr "Kullanýcý Adý"
+
+msgid "Warning!"
+msgstr "Uyarý!"
+
+msgid "Warning"
+msgstr "Uyarý!"
+
+msgid "Weekly"
+msgstr "Haftalýk"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "%s 'a Hoþgeldiniz"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "%s ' a hoþgeldiniz"
+
+msgid "Work Address"
+msgstr "Ýþ Adresi"
+
+msgid "Work Phone"
+msgstr "Ýþ Telefonu"
+
+msgid "YY"
+msgstr "YY"
+
+msgid "Yearly"
+msgstr "Yýllýk"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Sorun raporunu göndermeden önce sorunu tanýmlamalýsýnýz"
+
+msgid "Your Email Address:"
+msgstr "E-posta Adresiniz"
+
+msgid "Your Name:"
+msgstr "Adýnýz:"
+
+msgid "Your options have been updated."
+msgstr "Seçenekleriniz kayýt edildi"
+
+msgid "[Problem Report]"
+msgstr "[Sorun Bildirimi]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[satýr %s dan %s]"

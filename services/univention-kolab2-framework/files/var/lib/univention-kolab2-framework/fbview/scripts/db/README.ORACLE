@@ -1,0 +1,246 @@
+FIRST OF ALL:
+This is not my first documentation! but my first in english.
+Feel free to contact me at torsten@flammiger.org if you have 
+any suggestions or problems related to this docs
+
+All i will write about Oracle with Horde is based on Oracle >= 8i
+though it should work with 9i too. 
+( Cant test it 'cause my test pc only has 256mb of ram! too poor
+for 9i ! )
+
+I think (i'm sure) 'Up to date' available distributions
+are capable to run Oracle. I have tested it on
+Slackware 7.1/8.0 (8.1.6) and have running it on Gentoo 1.2 (8.1.7.4)
+without any Problems. Some distributions are certified like SuSE or 
+RedHat. On Debian it should also run.
+
+Furthermore i'll assume, that no "normal" user is going to install
+or is in need to install an Oracle DB (of course there are some freaks ;)
+so knowledge about setting up and maintain an Oracle
+DB is indispensable! Maybe this is the reason why no Admin
+has ever posted any docs about getting Horde work with Oracle
+
+NOTE: all docs are available from www.oracle.com for free (AFAIK)
+
+Now let's begin:
+
+Case 1) 
+I'll assume that you do not have an instance running and therefore
+are about to install a fresh instance "horde" .
+
+--	check and if needed change shared memory parameters
+--	create at least the dba group
+--	create your oracle user, name it as you like
+	make sure your ora-user is in the group dba
+--	su - <your fresh oracle user>
+-- 	set up all the appropriate environment variables for oracle
+	take a close look at the install howto provided by oracle
+--	mount the CD (if it is your source media)
+--	run the script runInstaller - better to have X11 installed ;)
+	Attention: If you are about to install Oracle 9i
+	do NOT run the installer from directly from your CD!
+	like cd /cdrom and then start it by typing ./runInstaller
+	you won't be able to unmount the CD later on but you have to
+	because 9i is a 3CD-Set
+--	follow the instructions given by the installation programm
+	at the point where you are asked for an installation method
+	choose "user-defined". This ist especially VERY IMPORTENT if you
+	are about to install 8i since you have to patch the installation
+	BEFORE you create your database! If you not choose "user-defined"
+	the program "dbassist" will automatically start at the end of
+	the installation process and will hang and/or fail.
+--	at the end of your installation you have to configure your listener.ora,
+	tnsnames.ora and your sqlnet.ora This is all done by the
+	installation programm. 
+--	Now: if you use 8.1.7 get the patch glibc-2.1.3-stubs.tar.gz from Oracle. 
+	It's at the same page like the db-source. Install as described in README.stub
+	(it's in the package so first untar it somewhere else or use 'mc' )
+--	Now create your database. Run "dbassist"
+	It's now on you to decide how big the initial tablespaces are, how many
+	control files you like, of course how it's name will be and what
+	option you plan to use like InterMedia. It's Your Decision !
+	(BTW: the defaults will work and are very time consuming ;)
+	At the end let the dbasist program save the configuration. You can choose
+	location and name. Now you can close dbassist.
+--	change to the location where you stored the scripts and take a short look
+	at least into oraclerun.sh and oraclerun1.sh. If all is OK create the database:
+	run ./oraclerun.sh. 
+	Sit back take a cup of coffee and hope all will be good ;)
+
+	If you choosed the InterMedia option the creation process will take
+	about 2 and a half hour (on my 500MHz-P3 :-). Without Java it will take
+	about 1 hour. (this both ist short - 9i takes as min. twice that time !)
+	
+	NOTE: choosing InterMedia will give you enhanced possibilities for storing
+	and manipulating media files. Look at http://intermedia.as-dataservice.de/
+	for an example...
+	
+	ANOTHER NOTE: if you installed 8.1.7 and afterwards applied an up to date
+	patchset (like 8.1.7.4) you MUST repatch your installation with the 
+	glibc-stubs patch or your DB won't run
+	
+	PROBLEMS ?: Look at www.orafaq.com for your answer
+
+All went fine? Good, lets go ahead and create a new tablespace called horde
+
+--	The database should run after it was succesfully created. Login as user system
+	or sys (like you prefer). The passwords where written to you on STDOUT.
+	Please change them! I know databases running for years storing important data
+	and still have the default password !!
+	(manager for system and change_on_install for sys)
+
+--	sqlplus sys/change_on_install@<your SID>
+	if you properly set the ORACLE_SID environment variable you can ommit the
+	trailing @<your sid> when you are logged on to the machine which is running the DB.
+
+--	create the tablespace for horde
+	sql> CREATE TABLESPACE HORDE
+              LOGGING
+              DATAFILE '<YOUR PATH HERE>/HORDE.dbf' SIZE <AS YOU LIKE>M;
+
+	This is indeed very simple but it works and nothing has to be in uppercase
+	letters. After a few seconds or minutes - depends on how many megabytes
+	you gave to that tablespace - a new datafile has been created.
+
+--	We can now create a user with default tablespace HORDE, lets name him horde:
+
+	CREATE USER HORDE PROFILE DEFAULT IDENTIFIED BY <your password here> 
+        TABLESPACE HORDE TEMPORARY TABLESPACE TEMP QUOTA UNLIMITED ON TEMP
+	QUOTA UNLIMITED ON HORDE ACCOUNT UNLOCK;
+	GRANT CONNECT TO HORDE;
+
+--	commit your work: > commit;
+	and log out
+--	login as user horde: sqlplus horde/<password>@<your sid> and create the tables
+	!<path to horde>/scripts/db/oracle_create.sql and commit your aktion: > commit;
+	the tables will be created in the default tablespace for your horde user
+	
+OK now you can configure Horde to use your instance but after a reboot Oracle
+will not start automaticly. That is what we are going to configure now.
+
+--	logout of oracle, login as user sys or <your oracle user> 
+	and shutdown your instance: (hope your oracle user is in the group dba -
+	if not he can't shut down your instance)
+	> connect internal
+	> shutdown immediate
+	and logout...
+	
+--	test the script "dbstart" in $ORACLE_HOME/bin If the DB does not start
+	you have to edit it or create a link from $ORACLE_HOME/dbs/init<sid-name>.ora
+	to $ORACLE_HOME/admin/<sid name>/pfile/init<sid-name>.ora
+	( dbstart will look for your sid-files in subdir "dbs" but these are stored
+	under $ORACLE_HOME/admin/<sid name>/pfile/ - this maybe is a bug or a
+	feature in the oracle installer )
+	test "dbstart" again - now it should work, i hope
+
+--	edit the file /etc/oratab
+	Change the line
+	<sid-name>:<your Oracle Home - Full qualified path>:N   to
+	<sid-name>:<your Oracle Home - Full qualified path>:Y
+
+--	now change or create a startup script which is executed at boot time. It should contain
+	something like this:
+	
+	su - <your oracle user> -c "<hour path here>/bin/lsnrctl start"
+	su - <your oracle user> -c "<your path here>/bin/dbstart"
+
+	and of course your instance should be stopped a regular way. Place this
+	in the appropriate script which is executed at shutdown time
+
+	su - <your oracle user> -c "<hour path here>/bin/lsnrctl stop"
+	su - <your oracle user> -c "<your path here>/bin/dbshut"
+
+--	test it
+
+End of Case 1)
+
+
+Case 2)
+
+Problem: You have an allready running oracle database and would like
+to add a new instance. Solution is quiet easy.
+For now, the new database' name will be --> horde
+
+Before i start i'll make some assumptions:
+(PLEASE CHANGE THE PATHNAMES AS NECESSARY )
+
+1.	$ORACLE_HOME=/home/oracle
+2.	$ORACLE_BASE = $ORACLE_HOME
+3.	Your existing Database is installed under $ORACLE_HOME/oradata/<your instance name>
+4.	Your existing Trace/Dump/pfile/bdump... - directories are installed under
+	 $ORACLE_HOME/admin/<your instance name>/
+
+	Therefore your new horde database files will go into another directory:
+	$ORACLE_HOME/oradata/horde/
+
+	The Trace/Dump/pfile/bdump... - dirs go to:
+	$ORACLE_HOME/admin/horde/
+
+	The inithorde.ora file in $ORACLE_HOME/dbs should be a link to:
+	$ORACLE_HOME/admin/horde/pfile/init.ora
+
+Lets begin:
+
+--	create the directories for your new db (as your ORACLE user):
+	#> mkdir -p $ORACLE_HOME/oradata/horde/archive
+	#> mkdir -p $ORACLE_HOME/admin/horde/adhoc \
+		    $ORACLE_HOME/admin/horde/bdump \
+		    $ORACLE_HOME/admin/horde/cdump \
+		    $ORACLE_HOME/admin/horde/create \
+		    $ORACLE_HOME/admin/horde/exp \
+		    $ORACLE_HOME/admin/horde/pfile \
+		    $ORACLE_HOME/admin/horde/udump
+
+--	copy your existing init.ora file from $ORACLE_HOME/admin/<existing instance>/pfile/
+	to $ORACLE_HOME/admin/horde/pfile/ and make the appropriate changes in it
+	CHANGE AT LEAST THE PATHNAMES !!!
+
+--	make the link from $ORACLE_HOME/dbs/inithorde.ora to
+	$ORACLE_HOME/admin/horde/pfile/init.ora
+
+	#> ln -s $ORACLE_HOME/admin/horde/pfile/init.ora $ORACLE_HOME/dbs/inithorde.ora
+
+--	set ORACLE_SID to horde
+	#> ORACLE_SID=horde
+
+--	login and startup the instance
+	#> sqlplus /nolog
+	sql> startup pfile=/home/oracle/admin/horde/pfile/init.ora nomount
+
+--	create the database from create_horde_db.sql - you should of course have saved it somwhere ;)
+	sql> !/path/to/create_horde_db.sql
+
+	as template i took the script from
+	http://www.adp-gmbh.ch/ora/admin/creatingdbmanually.html#samplecreatedatabase
+	and made some minor changes.
+
+--	create the data dictionary, etc.
+	sql> !/home/oracle/rdbms/admin/catalog.sql
+	sql> !/home/oracle/rdbms/admin/catproc.sql
+	sql> !/home/oracle/rdbms/admin/caths.sql
+	sql> commit;
+	sql> exit
+
+--	now add a new line to /etc/oratab
+
+	old ( only 1 instance ):
+	<your installed instance name>:/home/oracle:Y
+
+	new ( with the new one ):
+	<your installed instance name>:/home/oracle:Y
+	horde:/home/oracle:Y
+
+--	add the new instance to your tnsnames.ora
+	use the java gui net8assist or copy and paste the statements by yourself and
+	make the changes as needed
+
+--	after all, the scripts dbstart und dbshut will then automaticly start and shutdown all
+	instances at once
+
+Creating the Tablespace and required user is the same as  described above
+
+
+I hope that there are not so many spelling mistakes ( my native language is german ) 
+and that this will be helpfull for someone
+
+End of Case 2)

@@ -1,0 +1,41 @@
+univention-kolab2 (0.43-15) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 16:16:47 +0100
+
+univention-kolab2 (0.43-13) unstable; urgency=low
+
+  * switched to own OIDs in kolab-schema-extenstions
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  6 Dec 2005 08:55:13 +0100
+
+univention-kolab2 (0.42) unstable; urgency=low
+
+  * Minor corrections
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 27 Sep 2005 12:53:57 +0200
+
+univention-kolab2 (0.4) unstable; urgency=low
+
+  * Added univention-pycompile
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 27 Sep 2005 12:31:22 +0200
+
+univention-kolab2 (0.3) unstable; urgency=low
+
+  * Added UGS shared folders module
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 27 Sep 2005 10:49:44 +0200
+
+univention-kolab2 (0.2) unstable; urgency=low
+
+  * Basic integration into univention-admin
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 26 Sep 2005 10:20:52 +0200
+
+univention-kolab2 (0.1) unstable; urgency=low
+
+  * create packages
+
+ -- Univention GmbH <packages@univention.de>  Thu, 08 Sep 2005 16:51:51 +0100

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/File_PDF/package.xml,v 1.4 2004/04/28 03:29:47 mdjukic Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>File_PDF</name>
+  <summary>PDF generation using only PHP.</summary>
+  <description>This package provides PDF generation using only PHP, without requiring any external libraries.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>mdjukic</user>
+      <role>lead</role>
+      <name>Marko Djukic</name>
+      <email>mdjukic@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>beta</state>
+    <date>2003-11-01</date>
+    <notes>Initial release as a PEAR package</notes>
+
+    <filelist>
+      <file role="php" name="PDF.php" baseinstalldir="/File" />
+      <dir role="php" name="PDF" baseinstalldir="/File">
+        <dir name="fonts" role="php">
+          <file name="courier.php" />
+          <file name="helvetica.php" />
+          <file name="helveticab.php" />
+          <file name="helveticabi.php" />
+          <file name="helveticai.php" />
+          <file name="symbol.php" />
+          <file name="times.php" />
+          <file name="timesb.php" />
+          <file name="timesbi.php" />
+          <file name="timesi.php" />
+          <file name="zapfdingbats.php" />
+        </dir>
+      </dir>
+    </filelist>
+
+    <provides type="class" name="PDF"/>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0"/>
+      <dep type="pkg" rel="has" optional="yes">HTTP_Download</dep>
+    </deps>
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>beta</state>
+      <date>2003-11-01</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

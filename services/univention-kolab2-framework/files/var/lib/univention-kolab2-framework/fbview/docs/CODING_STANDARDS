@@ -1,0 +1,672 @@
+========================
+ Horde Coding Standards
+========================
+
+:Date:		$Date: 2005/09/30 13:58:48 $
+:Revision:	$Revision: 1.1.2.1 $
+:Authors:   Jon Parise, Chuck Hagenbuch
+:Contact:   dev@lists.horde.org
+
+.. contents:: Contents
+.. section-numbering::
+
+Indenting
+=========
+
+Use an indent of 4 spaces, with no tabs.
+
+
+Control Structures
+==================
+
+These include ``if``, ``for``, ``while``, ``switch``, etc.  Here is an example
+``if`` statement, since it is the most complicated of them::
+
+  if ((condition1) || (condition2)) {
+      action1;
+  } elseif ((condition3) && (condition4)) {
+      action2;
+  } else {
+      defaultaction;
+  }
+
+Multi-line if conditions are braced this way::
+
+  if ((condition1) || (condition2) || (condition3) ||
+      (condition4)) {
+      action1;
+  }
+
+Control statements should have one space between the control keyword and
+opening parenthesis, to distinguish them from function calls.
+
+Do not omit the curly braces under any circumstance.  In the case of a large
+number of short tests and actions, the following is acceptable::
+
+  if (condition)   { action; }
+  if (condition 2) { action 2; }
+  ...
+
+For switch statements::
+
+  switch (condition) {
+  case 1:
+      action1;
+      break;
+
+  case 2:
+      action2;
+      break;
+
+  default:
+      defaultaction;
+      break;
+  }
+
+
+Function Calls
+==============
+
+Functions should be called with no spaces between the function name, the
+opening parenthesis, and the first parameter; spaces between commas and each
+parameter, and no space between the last parameter, the closing parenthesis,
+and the semicolon.  Here's an example::
+
+  $var = foo($bar, $baz, $quux);
+
+As displayed above, there should be one space on either side of an equals sign
+used to assign the return value of a function to a variable.  In the case of a
+block of related assignments, more space may be inserted to promote
+readability::
+
+  $short         = foo($bar);
+  $long_variable = foo($baz);
+
+If assigning a reference to a variable, place the ampersand next to the
+referenced object, not the equal sign::
+
+  $reference = &$foo;
+  $reference = &foo();
+
+
+Function Definitions
+====================
+
+Function declaractions follow the "one true brace" convention::
+
+  function fooFunction($arg1, $arg2 = '')
+  {
+      if (condition) {
+          statement;
+      }
+      return $val;
+  }
+
+Arguments with default values go at the end of the argument list.  Always
+attempt to return a meaningful value from a function if one is appropriate.
+
+Functions used only in the current script/class (e.g. private member methods)
+should begin with a ``_`` character (e.g. ``_exampleLibrary``).  This helps
+distinguish these private function calls from other, public function calls.
+
+
+Naming Libraries
+================
+
+Libraries (any file located in the ``lib/`` directory of the application)
+should be named with capital letters at the beginning of each word.  Use
+studlycaps for naming; a session cache class would be stored in
+``lib/SessionCache.php``.
+
+If the library/class is extended, the extending files should be stored in a
+directory under ``lib/`` with the same name as the original library.
+Subclasses follow the exact same naming requirements, except that if the
+subclass is instantiated by a factory method, it should be all lowercase.
+
+Example
+-------
+
+The "Example Library" library should be saved as ``lib/ExampleLibrary.php``.
+Any file extending the library/class should be stored in the directory
+``lib/ExampleLibrary/``.
+
+
+Comments
+========
+
+Inline documentation for classes should follow the `Javadoc convention`_.
+
+.. _Javadoc convention: http://java.sun.com/products/jdk/javadoc/writingdoccomments/index.html
+
+Quick example for private variable definition for Horde::
+
+    /**
+     * Variable description.
+     *
+     * @var datatype $variable name
+     */
+
+Quick example function definition for Horde::
+
+    /**
+     * The description of the function goes here.
+     *
+     * @access [public | private]
+     *
+     * @param [optional] datatype $variablename   Description of variable.
+     * @param [optional] datatype $variable2name  Description of variable2.
+     * ...
+     * [Insert 2 spaces after the longest $variable definition, and then line
+     *  up all descriptions with this description]
+     *
+     * @return datatype  Description of return value.
+     * [Once again, insert 2 spaces after the datatype, and line up all
+     *  subsequent lines, if any, with this character.]
+     *
+     * @abstract [Only if necessary]
+     *
+     * @since Horde x.x [Only if necessary - use if function is added to the
+     * current release versions to indicate that the function has not been
+     * available in previous versions.]
+     */
+
+
+Including Code
+==============
+
+If you are including a class, function library, or anything else which would
+cause a parse error if included twice, always use `include_once`_.  This will
+ensure that no matter how many factory methods we use or how much dynamic
+inclusion we do, the library will only be included once.
+
+If you are including a static filename, such as a conf file or a template that
+is *always* used, use `require`_.
+
+If you are dynamically including a filename, or want the code to only be used
+conditionally (an optional template), use `include`_.
+
+.. _include_once: http://www.php.net/manual/en/function.include-once.php
+.. _require: http://www.php.net/manual/en/function.require.php
+.. _include: http://www.php.net/manual/en/function.include.php
+
+
+PHP Code Tags
+=============
+
+Always use ``<?php ?>`` to delimit PHP code, not the ``<? ?>`` shorthand.
+This is required for PEAR compliance and is also the most portable way to
+include PHP code on differing operating systems and setups.
+
+In templates, make sure to use this as well (``<?php echo $varname ?>``), as
+the shortcut version (``<?= $var ?>``) does not work with `short_open_tag`_
+turned off.
+
+.. _short_open_tag: http://www.php.net/manual/en/configuration.directives.php#ini.short-open-tag
+
+
+Header Comment Blocks
+=====================
+
+All source code files in the Horde distribution should contain the following
+comment block as the header:
+
+Example for `LGPL`_'ed Horde code::
+
+    /**
+     * The Horde_Foo:: class provides an API for various foo
+     * techniques that can be used by Horde applications.
+     *
+     * $Horde: horde/docs/CODING_STANDARDS,v 1.80 2004/04/09 01:59:19 jon Exp $
+     *
+     * Copyright 1999-2001 Original Author <author@example.com>
+     * Copyright 2001 Your Name <you@example.com>
+     *
+     * See the enclosed file COPYING for license information (LGPL). If you
+     * did not receive this file, see http://www.fsf.org/copyleft/lgpl.html.
+     *
+     * @author  Original Author <author@example.com>
+     * @author  Your Name <you@example.com>
+     * @version $Revision: 1.1.2.1 $
+     * @since   Horde 3.0
+     * @package Horde_Package
+     */
+
+.. _LGPL: http://www.opensource.org/licenses/lgpl-license.php
+
+Example for `GPL`_'ed application code::
+
+    /**
+     * The App_Bar:: class contains all functions related to handling
+     * bars in App.
+     *
+     * $Horde: horde/docs/CODING_STANDARDS,v 1.80 2004/04/09 01:59:19 jon Exp $
+     *
+     * Copyright 1999-2001 Original Author <author@example.com>
+     * Copyright 2001 Your Name <you@example.com>
+     *
+     * See the enclosed file COPYING for license information (GPL). If you
+     * did not receive this file, see http://www.fsf.org/copyleft/gpl.html.
+     *
+     * @author  Original Author <author@example.com>
+     * @author  Your Name <you@example.com>
+     * @version $Revision: 1.1.2.1 $
+     * @since   App 1.0
+     * @package app
+     */
+
+
+.. _GPL: http://www.opensource.org/licenses/gpl-license.php
+
+There's no hard rule to determine when a new code contributer should be added
+to the list of authors for a given source file.  In general, their changes
+should fall into the "substantial" category (meaning somewhere around 10% to
+20% of code changes).  Exceptions could be made for rewriting functions or
+contributing new logic.
+
+Simple code reorganization or bug fixes would not justify the addition of a
+new individual to the list of authors.
+
+
+CVS Tags
+========
+
+Include the <dollar>Horde: <dollar> CVS vendor tag in each file.  As each file
+is edited, add this tag if it's not yet present (or replace existing forms
+such as <dollar>Id<dollar>, "Last Modified:", etc.).
+
+EXCEPTION: Don't include these in templates.
+
+
+Example URLs
+============
+
+Use ``example.com`` for all example URLs, per `RFC 2606`_.
+
+.. _RFC 2606: http://www.faqs.org/rfcs/rfc2606.html
+
+
+php.ini settings
+================
+
+All Horde code should work with `register_globals`_ disabled.  This means
+using ``$_COOKIE``, ``$_SESSION``, ``$_SERVER`` and ``$_ENV`` to access all
+cookie, session, server and environment data, respectively.
+
+To retrieve posted data (in the global ``$_GET`` and ``$_POST`` variables),
+you should normally use `Util::getFormData()`_ which will automatically run
+`Util::dispelMagicQuotes()`_. This will ensure that all Horde code will work
+regardless of the setting of `magic_quotes_gpc`_. The only time you should not
+use `Util::getFormData()`_ is if you want to directly access a GET or POST
+variable instead; in this case, you should use `Util::getGet()`_ or
+`Util::getPost()`_ respectively.
+
+All Horde code should work with `error_reporting`_ = E_ALL. Failure to do so
+would result in ugly output, error logs getting filled with lots of warning
+messages, or even downright broken scripts.
+
+No Horde code should assume that '.' is in the include path. Always specify
+'./' in front of a filename when you are including a file in the same
+directory.
+
+.. _register_globals: http://www.php.net/manual/en/security.registerglobals.php
+.. _magic_quotes_gpc: http://www.php.net/manual/en/ref.info.php#ini.magic-quotes-gpc
+.. _error_reporting: http://www.php.net/manual/en/ref.errorfunc.php#ini.error-reporting
+.. _Util::getFormData(): http://dev.horde.org/api/framework/Horde_Util/Util.html#methodgetFormData
+.. _Util::dispelMagicQuotes(): http://dev.horde.org/api/framework/Horde_Util/Util.html#methoddispelMagicQuotes
+.. _Util::getGet(): http://dev.horde.org/api/framework/Horde_Util/Util.html#methodgetGet
+.. _Util::getPost(): http://dev.horde.org/api/framework/Horde_Util/Util.html#methodgetPost
+
+
+XHTML 1.0 Compliance
+====================
+
+All tag names and parameters must be lower case including javascript event
+handlers::
+
+    <font color="#FFFFFF">...</font>
+    <a href="http://example.com" onmouseover="status=''" onmouseout="status=''">...</a>
+
+All tag parameters must be of a valid parameter="value" form (numeric values
+must also be surrounded by quotes).  For parameters that had no value in HTML,
+the parameter name is the value.  For example::
+
+    <input type="checkbox" checked="checked">
+    <select name="example">
+        <option selected="selected" value="1">Example</option>
+    </select>
+    <td nowrap="nowrap">Example</td>
+
+All tags must be properly closed.  Tags where closing is forbidden must end
+with a space and a slash::
+
+    <br />
+    <hr />
+    <img src="example.gif" alt="Example" />
+    <input type="submit" value="Example" />
+
+All form definitions must be on their own line and either fully defined within
+a ``<td></td>`` pair or be outside table tags.  Forms must also always have an
+action parameter::
+
+    <form method="post" action="http://example.com/example.cgi">
+    <table>
+        <tr><td>example</td></tr>
+    </table>
+    </form>
+
+    <table>
+        <tr><td>
+            <form action="javascript:void(0)" onsubmit="return false;">
+            </form>
+        </td></tr>
+    </table>
+
+All JavaScript tags must have a valid language and type parameters::
+
+    <script language="JavaScript" type="text/javascript">
+    <!--
+    ...
+    // -->
+    </script>
+
+Nothing may appear after ``</html>``, therefore include any common footers
+after all other output.
+
+All images must have an ``alt`` attribute::
+
+    <img src="example.gif" alt="<?php echo _("Example") ?>" />
+    <?php echo Horde::img('example.gif', _("Example")) ?>                  (On the HEAD branch)
+    <?php echo Horde::img('example.gif', 'alt="' . _("Example") . '"') ?>  (On the RELENG_2 branch)
+
+Input fields of type "image" do not allow the border attribute and may render
+with a border on some browsers.  Use the following instead::
+
+   <a href="" onclick="document.formname.submit(); return false;"><?php echo Horde::img("example.gif", _("Example")) ?></a>
+
+
+
+Database Naming Conventions
+===========================
+
+All database tables used by Horde resources and Horde applications need to
+make sure that their table and field names work in all databases.  Many
+databases reserve words like 'uid', 'user', etc. for internal use, and forbid
+words that are SQL keywords (select, where, etc.).  Also, all names should be
+lowercase, with underscores ('_') to separate words, to avoid case sensitivity
+issues.
+
+A good way to do this for field names is to make the field name
+tablename_fieldname.
+
+Other general guidelines: Table names should be plural (users); field names
+should be singular (user_name).
+
+
+Regular Expression Use
+======================
+
+Always use the `preg_`_ functions if possible instead of `ereg_`_ (and
+`preg_split()`_ instead of `split()`_); they are included in PHP by default
+and much more efficient and much faster than `ereg_`_.
+
+**NEVER** use a regular expression to match or replace a static string.
+`explode()`_ (in place of `split()`_), `str_replace()`_, `strstr()`_, or
+`strtr()`_ do the job much more efficiently.
+
+.. _preg_: http://www.php.net/manual/en/ref.pcre.php
+.. _ereg_: http://www.php.net/manual/en/ref.regex.php
+.. _preg_split(): http://www.php.net/manual/en/function.preg-split.php
+.. _split(): http://www.php.net/manual/en/function.split.php
+.. _explode(): http://www.php.net/manual/en/function.explode.php
+.. _str_replace(): http://www.php.net/manual/en/function.str-replace.php
+.. _strstr(): http://www.php.net/manual/en/function.strstr.php
+.. _strtr(): http://www.php.net/manual/en/function.strtr.php
+
+
+Parameter Passing
+=================
+
+Objects should be passed by reference.  Everything else, including arrays,
+should be passed by value wherever semantically possible.
+
+[Zend Engine 2: objects should also be passed by value]
+
+This practice takes full advantage of reference counting.
+
+
+Long Lines
+==========
+
+Wrap lines at 80 characters, including comments, unless this severely impacts
+the clarity of the code.  Always wrap comments.
+
+
+Line Breaks
+===========
+
+Only use UNIX style of linebreak (``\n``), not Windows/DOS/Mac style
+(``\r\n``).
+
+Using vim, to convert from DOS style type::
+
+    :set ff=unix
+
+Using vi, to convert from DOS style type::
+
+    :g/^M/s///g
+
+(Note that the ``^M`` is a control character, and to reproduce it when you
+type in the vi command you have to pad it first using the special ``^V``
+character.)
+
+
+Private Variables
+=================
+
+Variables used exclusively within a class should begin with a underscore ('_')
+character.  An example class variable definition:  ``var $_variablename;``
+
+
+Array Definitions
+=================
+
+When defining arrays, or nested arrays, use the following format, where
+indentation is noted via the closing parenthesis characters::
+
+    $arrayname['index'] = array(
+        'name1' => 'value1',
+        'name2' => array(
+            'subname1' => 'subvalue1',
+            'subname2' => 'subvalue2'
+        )
+    );
+
+The only exception should be for empty arrays, which may be written on a
+single line such as::
+
+    $arrayname['index'] = array();
+
+
+Internationalization (I18n)
+===========================
+
+Mark all strings presented to the user as gettext strings by calling the
+gettext shortcut function (``_()``)::
+
+    echo _("Hello world");
+
+Don't use the gettext functions for strings that will be written to a log file
+or otherwise presented to the administrator.
+
+The String:: class contains several string manipulation methods that are, as
+opposed to their PHP equivalents, locale and charset safe.
+
+Use String::convertCharset() if you need to convert between different
+character set encodings (for example, between user input and a storage backend
+or data from an external source and the user interface).  You don't need to
+care if the character sets are really different.
+
+Use the String::lower() and String::upper() methods without a second
+parameter if you need to perform a locale-independent string conversion.  
+That's the case for all strings that are further processed or interpreted by
+code.  Use these methods with the second parameter set to true for strings
+that need to be converted correctly according to the current (or specified)
+character set.
+
+Use the other String:: equivalents of PHP string functions to manipulate
+strings correctly according to the current (or specified) character set but
+use the PHP functions for code/machine processed strings.
+
+
+Error checking
+==============
+
+Horde code should use `PEAR_Error`_ objects to return most error conditions
+from library calls, and many times we will simply pass back a `PEAR_Error`_
+object generated by an underlying library (such as Mail or PEAR DB).
+
+For these cases, use the following style of code block to check for success
+after any call which could generate an error condition::
+
+    $result = $something->call('may error');
+    if (is_a($result, 'PEAR_Error')) {
+        // Handle error condition.
+    } else {
+        // Succeeded.
+    }
+
+Note that `is_a()`_ checks for subclasses of the named class, as well, so if
+the object you get back is really a `DB_Error`_ object, this will still catch
+it (since `DB_Error`_ extends `PEAR_Error`_).
+
+Calling PEAR::isError() results in the same behavior, but is_a()
+accomplishes the same result with a single native PHP function call.
+
+.. _PEAR_Error: http://pear.php.net/manual/en/core.pear.pear-error.php
+.. _DB_Error: http://pear.php.net/manual/en/package.database.db.db-error.php
+.. _is_a(): http://www.php.net/manual/en/function.is-a.php
+
+
+Existence checking
+==================
+
+Often you'll need to check whether or not a variable or property exists.
+There are several cases here:
+
+a. If you need to know if a variable exists at all and is not ``null``, use
+`isset()`_::
+
+    // Check to see if $param is defined.
+    if (isset($param)) {
+        // $param may be false, but it's there.
+    }
+
+b. If you need to know if a variable exists AND has a non-empty value (not
+``null``, 0, ``false``, empty string or undefined), use !`empty()`_::
+
+    // Make sure that $answer exists, is not an empty string, and is
+    // not 0:
+    if (!empty($answer)) {
+        // $answer has some non-false content.
+    } else {
+        // (bool)$answer would be false.
+    }
+
+As pointed out in the comment of the else clause, `empty()`_ essentially does
+the same check as `isset()`_ -- is this variable defined in the current scope?
+-- and then, if it is, returns what the variable would evaluate to as a
+boolean. This means that 0, while potentially valid input, is "empty" - so if
+0 is valid data for your case, don't use !`empty()`_.
+
+c. If you know you are working with a mixed variable then using just
+`isset()`_ and `empty()`_ could cause unexpected results, for example if
+testing for a key and the variable is actually a string::
+
+    $foo = 'bar';
+    if (isset($foo['somekey'])) {
+        // This will evaluate to TRUE!
+    }
+
+If you know that there is a possibility of a mixed type variable the solution
+in this case would be to add an `is_array()`_ check in the ``if()`` statement.
+
+d. Use `array_key_exists()`_ when you want to check if an array key is defined
+even if it has a value of ``null``::
+
+    // Make sure we have a charset parameter. Value could also be null.
+    if (!array_key_exists('charset', $params)) {
+        Horde::fatal('Incomplete configuration.');
+    }
+
+Please note that `array_key_exists()`_ is a performance hit (25%-100%) and
+should only be used when necessary. Instead try to use !`empty()`_ or
+`isset()`_ instead.
+
+.. _isset(): http://www.php.net/manual/en/function.isset.php
+.. _empty(): http://www.php.net/manual/en/function.empty.php
+.. _is_array(): http://www.php.net/manual/en/function.is-array.php
+.. _array_key_exists(): http://www.php.net/manual/en/function.array-key-exists.php
+
+
+Quotes
+======
+
+You should always use single quote (') characters around strings, except where
+double quote (") characters are required.  All literal strings should be in
+single quotes.  A comparison of single and double quote usage follows:
+
+Single Quotes:
+  * Variables in the string are not parsed or expanded.
+  * New line symbols can be included as literal line ends (not recommended).
+  * To include a single quote character, escape it with a ``\`` (backslash)
+    character, as in: ``echo 'Here\'s an example';``
+  * To specify a ``\`` (backslash) character, double it: ``echo 'c:\\temp';``
+
+Double Quotes:
+  * Parses and expands variables in the string.
+  * Uses advanced (`sprintf`_-style) escape sequences like ``\n``, ``\$``,
+    ``\t``, etc.
+  * Should be used in the gettext shortcut ``_("")`` format.
+  * Use with care, as many correct looking strings are really invalid.
+
+The following are all incorrect::
+
+    echo "Today is the $date['day'] of $date['month']"
+    $_SESSION[index] = $_SESSION["old_index"];
+
+.. _sprintf: http://www.php.net/sprintf
+
+
+define()
+========
+
+Surprisingly enough, `define()`_ is a somewhat slow function in PHP (as of PHP
+4.3.x) so excessive use is discouraged.
+
+Using `define()`_ in classes should be OK - we will sacrifice a tiny bit of
+speed for readability of code.  `define()`_ should NOT be used for actionIDs -
+use a plain old string instead.  For anything else, use your best judgment.
+
+Additionally, every constant should be prefixed with ``HORDE_``, its package
+name, or the application name.
+
+.. _define(): http://www.php.net/manual/en/function.define.php
+
+
+Optimizations
+=============
+
+The following optimizations should be used, if possible:
+
+extension_loaded()
+------------------
+This appears to be an expensive PHP call.  Use Horde::extensionExists()
+instead, which will cache the results of the call.
+
+Loops
+-----
+Make sure that you do not continue to define the same variable within a
+loop. Instead, declare the variable a single time before the loop is run.
+
+
+.. vim: tabstop=4 shiftwidth=4 softtabstop=4 expandtab textwidth=78:

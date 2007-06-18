@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Text_Diff/package.xml,v 1.11 2004/05/13 15:06:32 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Text_Diff</name>
+  <summary>Engine for performing and rendering text diffs</summary>
+  <description>This package provides a text-based diff engine and renderers for multiple diff output formats.</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chagenbu</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>pmjones</user>
+      <role>lead</role>
+      <name>Paul M Jones</name>
+      <email>pmjones@memphis.edu</email>
+    </maintainer>
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.3</version>
+    <date>2004-05-13</date>
+    <state>beta</state>
+    <notes>Renamed final() and orig() methods to avoid conflict with final keyword in PHP5</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Text" name="Diff.php" />
+      <file role="php" baseinstalldir="/Text" name="Diff3.php" />
+      <dir role="php" baseinstalldir="/Text" name="Diff">
+        <file name="Renderer.php" />
+	    <dir role="php" name="Renderer">
+	      <file name="unified.php" />
+	    </dir>
+      </dir>
+
+      <dir role="doc" name="docs">
+        <dir name="examples">
+          <file name="diff.php"/>
+          <file name="1.txt"/>
+          <file name="2.txt"/>
+        </dir>
+      </dir>
+
+      <dir role="test" name="tests">
+        <file name="1.txt" />
+        <file name="2.txt" />
+        <file name="diff.phpt" />
+        <file name="unified.phpt" />
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+" />
+      <dep type="ext" rel="has" optional="yes">xdiff</dep>
+    </deps>
+
+    <provides type="class" name="Text_Diff" />
+    <provides type="class" name="Text_Diff3" />
+    <provides type="class" name="Text_MappedDiff" />
+    <provides type="class" name="Text_Diff_Renderer" />
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.3</version>
+      <date>2004-05-13</date>
+      <state>alpha</state>
+      <notes>Renamed final() and orig() methods to avoid conflict with final keyword in PHP5</notes>
+    </release>
+
+    <release>
+      <version>0.0.2</version>
+      <date>2004-03-16</date>
+      <state>alpha</state>
+      <notes>Added optional xdiff support</notes>
+    </release>
+
+    <release>
+      <version>0.0.1</version>
+      <date>2004-01-09</date>
+      <state>alpha</state>
+      <notes>Initial package release</notes>
+    </release>
+  </changelog>
+
+</package>

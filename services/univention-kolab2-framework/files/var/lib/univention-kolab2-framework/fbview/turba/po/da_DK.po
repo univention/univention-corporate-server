@@ -1,0 +1,328 @@
+# Turba Danish translation.
+# Copyright (C) Martin List-Petersen <martin@list-petersen.dk>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-01-03 12:17+0100\n"
+"PO-Revision-Date: 2002-01-06 13:04+0100\n"
+"Last-Translator: Martin List-Petersen <martin@list-petersen.dk>\n"
+"Language-Team: Danish <dk-horde@hulpsystems.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Import af %s filen lykkedes"
+
+msgid "Add Contact ..."
+msgstr "Tilføj kontakt"
+
+msgid "Add a new contact"
+msgstr "Tilføj ny kontakt"
+
+msgid "Add failed"
+msgstr "Kunne ikke tilføje"
+
+msgid "Add"
+msgstr "Tilføj"
+
+msgid "Addressbook is read-only."
+msgstr "Adressekartoteket er skrivebeskyttet"
+
+msgid "Advanced Directory Search"
+msgstr "Udvidet katalogsøgning"
+
+msgid "Advanced Search"
+msgstr "Udvidet søgning"
+
+msgid "Alias"
+msgstr "Kaldenavn"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Cancel"
+msgstr "Annuler"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cell Phone"
+msgstr "Mobiltelefon"
+
+msgid "Clear Search"
+msgstr "Nulstil søgning"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Delete"
+msgstr "Slet"
+
+msgid "Deletion failed"
+msgstr "Sletning mislykkedes"
+
+msgid "Directory Search"
+msgstr "Katalogsøgning"
+
+msgid "Directory"
+msgstr "Katalog"
+
+msgid "Edit"
+msgstr "Rediger"
+
+msgid "Email"
+msgstr "eMail"
+
+msgid "Error"
+msgstr "Fejl"
+
+msgid "Export Addressbook"
+msgstr "Eksporter adressekartotek"
+
+msgid "Export"
+msgstr "Eksporter"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Kunne ikke forbinde til det angivne katalog."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Kunne ikke søge i kataloget: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Find"
+
+msgid "From"
+msgstr "Fra"
+
+msgid "Help"
+msgstr "Hjælp"
+
+msgid "Home Address"
+msgstr "Adresse (hjemme)"
+
+msgid "Home Phone"
+msgstr "Telefon (hjemme)"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Ved import af CSV data: Indeholder den første række feltnavnene?"
+
+msgid "Illegal or malformed form data."
+msgstr "Illegale eller misdannede data"
+
+msgid "Import Addressbook"
+msgstr "Importer adressekartotek"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import/Export Addressbooks"
+msgstr "Import/Eksport af adressekartotek"
+
+msgid "Import/Export"
+msgstr "Import/Eksport"
+
+msgid "Invalid addressbook."
+msgstr "Ugyldig adressekartotek"
+
+msgid "Invalid e-mail address."
+msgstr "Ugyldig eMail-adresse."
+
+msgid "Invalid name."
+msgstr "Ugyldigt navn."
+
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Matching"
+msgstr "Matcher"
+
+msgid "Message"
+msgstr "Meddelelse"
+
+msgid "Name"
+msgstr "Navn"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ingen af de tilgængelige adressekartoteker tillader dig at tilføje "
+"nye emner. Hvis du mener dette er en fejl, så kontakt venligst din "
+"systemadministrator."
+
+msgid "Notes"
+msgstr "Noter"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Vælg venligst den adressekartotek, som du vil tilføje kontakten til."
+
+msgid "Problem?"
+msgstr "Problem ?"
+
+msgid "Reset"
+msgstr "Annuler"
+
+msgid "Save Changes"
+msgstr "Gem ændringer"
+
+msgid "Save"
+msgstr "Gem"
+
+msgid "Search Results"
+msgstr "Søgeresultater"
+
+msgid "Search"
+msgstr "Søg"
+
+msgid "Search&nbsp;Results"
+msgstr "Søgeresultater"
+
+msgid "Select the destination to import to:"
+msgstr "Vælg stedet, du vil importere til:"
+
+msgid "Select the file to import:"
+msgstr "Vælg filen som skal importeres:"
+
+msgid "Select the format to export to:"
+msgstr "Vælg eksportformat:"
+
+msgid "Select the format to import from:"
+msgstr "Vælg importformat:"
+
+msgid "Select the source to export from:"
+msgstr "Vælg kilde som der skal eksporteres fra:"
+
+msgid "Select your preferred language:"
+msgstr "Vælg dit foretrukne sprog"
+
+msgid "Send Message"
+msgstr "Send Meddelelse"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Send mail til %s"
+
+msgid "Set the your preferred display language."
+msgstr "Vælg det sprog du foretrækker."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Nogle af Turba's konfigurationsfiler mangler:"
+
+msgid "Success"
+msgstr "Udført"
+
+msgid "The data got lost"
+msgstr "Data gik tabt"
+
+msgid "The data got lost."
+msgstr "Data gik tabt."
+
+msgid "The file contained no data."
+msgstr "Filen indeholdt ingen data"
+
+msgid "There are no writeable address books."
+msgstr "Der findes ingen adressekartoteker, som der kan gemmes i."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Der opstod et problem under filoverførslen. Filen kan have været "
+"større end den maksimalt tilladte størrelse."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Der opstod en fejl ved tilføjelse af objektet. Kontakt din "
+"systemadministrator for yderligere hjælp."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Der opstod en fejl ved sletning af objektetet. Kontakt din "
+"systemadministrator for yderligere hjælp."
+
+msgid "There was an error importing the data."
+msgstr "Der opstod en fejl under importeringen af data."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Der opstod en fejl ved importering af den overførte fil"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Denne fil håndterer standardinstillinger for Turba og "
+"styrer hvilke indstillinger brugerne kan ændre."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Denne fil håndterer oplysninger til opsætningen af farver og fonte, der supplerer "
+"eller erstatter oplysningerne fra Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Denne fil definerer de globale navne og typer på - navn, eMail, "
+"adresser, osv."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Denne fil definerer listen over tilgængelige kilder for Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Dette er Turbas hovedkonfigurationsfil. Den indeholder stier og "
+"indstillinger for scriptene i Turba."
+
+msgid "This person is already in your addressbook."
+msgstr "Denne er person findes allerede i din adressekartotek"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "To"
+msgstr "Til"
+
+msgid "Turba is not properly configured"
+msgstr "Turba er ikke sat rigtigt op"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Kan ikke indlæse definitionen af %s."
+
+msgid "Warning"
+msgstr "Advarsel"
+
+msgid "Work Address"
+msgstr "Adresse (arbejde)"
+
+msgid "Work Phone"
+msgstr "Telefon (arbejde)"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr 
+"For at importere skal du tilordne felter fra den fil du importerer til de "
+"tilsvarende felter i Turba."
+
+msgid "Your Information"
+msgstr "Din information"
+
+msgid "[Edit]"
+msgstr "[Rediger]"

@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- $Horde: turba/config/conf.xml,v 1.5 2004/01/15 03:11:20 chuck Exp $ -->
+<configuration>
+ <configsection name="menu" desc="Menu settings">
+  <configheader>
+    Menu Settings
+  </configheader>
+  <configboolean name="import_export" desc="Should we display an Import/Export link in Turba's menu?">true</configboolean>
+  <configmultienum name="apps" desc="Select any applications that should be linked in Turba's menu">
+   <values>
+    <configspecial name="list-horde-apps" />
+   </values>
+  </configmultienum>
+ </configsection>
+ <configsection name="client">
+   <configheader>
+        Settings for Clients
+   </configheader>
+
+   <configstring name="addressbook" desc="Name of client addressbook">localsql</configstring>
+ </configsection>
+ <configsection name="search">
+   <configheader>
+        Settings for Search
+   </configheader>
+   <configboolean name="cache" desc="Should we cache search results in the session?">true</configboolean>
+ </configsection>
+
+</configuration>

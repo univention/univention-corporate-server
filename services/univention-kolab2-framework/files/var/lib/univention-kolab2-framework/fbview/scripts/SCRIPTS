@@ -1,0 +1,85 @@
+Horde Utility Scripts                                        scripts/SCRIPTS
+=--------------------------------------------------------------------------=
+
+Introduction
+~~~~~~~~~~~~
+This directory contains various utility scripts for the Horde
+distribution.  They are here for your convenience.
+
+
+Script Index
+~~~~~~~~~~~~
+compare_revisions.sh
+    Compares different CVS revisions of the same file.
+
+create-symlinks.php
+    Creates symbolic links necessary for developers to work
+    directly on the files in the framework module without needing
+    to install the changed packages.
+
+crond
+    tbd
+
+horde-rsync.sh
+    Performs a checkout of the latest Horde cvs sources using
+    rsync.
+
+http_login_refer.php
+    tbd
+
+make-snaps.php
+    tbd
+
+make-tarball.pl
+    Builds distribution tarballs for Horde and Horde modules.
+
+merge.php
+    Merges commits from a commit message into the CVS tree of
+    the current directory.
+
+migrate_categories.php
+    Migrates old categories to the new horde_category_attributes table.
+
+migrate_links.php
+    Migrates old Horde_Links to the horde_category_attributes table.
+
+package.dtd
+    The PEAR package description.
+
+rpc-test.php
+    Provides tests for the RPC client against several (including our own)
+    RPC servers.
+
+set_perms.sh
+    Sets file ownership and permissions on the Horde tree for
+    high security.
+
+setup.php
+    The main Horde setup script which allows for a step by step setup
+    or reconfiguration of a Horde installation.
+
+temp-cleanup.cron
+    An example cron job shell script which will clean up any
+    temporary files which may get stranded by Horde users in the
+    web server's temporary directory.
+
+update_horde.sh
+    Facilitates the updating and/or installation of horde
+    and its applications.
+
+mime_mapping/
+    This script converts an Apache-style mime.types file into
+    a mime.mapping.php driver file suitable for use with Horde.
+    It is useful for syncing Apache updates to their MIME types
+    with Horde.
+
+
+Database Scripts
+~~~~~~~~~~~~~~~~
+Database table schemas and associated utility scripts are located in the
+db/ subdirectory.
+
+
+LDAP Schemas
+~~~~~~~~~~~~
+LDAP schemas are located in the ldap/ subdirectory.

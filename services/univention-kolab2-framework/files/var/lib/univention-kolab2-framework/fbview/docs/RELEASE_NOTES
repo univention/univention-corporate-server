@@ -1,0 +1,80 @@
+<?php
+/**
+ * Release focus. Possible values:
+ * 0 - N/A
+ * 1 - Initial freshmeat announcement
+ * 2 - Documentation
+ * 3 - Code cleanup
+ * 4 - Minor feature enhancements
+ * 5 - Major feature enhancements
+ * 6 - Minor bugfixes
+ * 7 - Major bugfixes
+ * 8 - Minor security fixes
+ * 9 - Major security fixes
+ */
+$this->notes['fm']['focus'] = 5;
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+After more than two years of work, the Horde Team is very excited to
+announce the first alpha release of the Horde Application Framework
+Version 3.0.
+
+The Horde Application Framework is a modular, general-purpose web application
+framework written in PHP.  It provides an extensive array of classes that are
+targeted at the common problems and tasks involved in developing modern web
+applications.
+
+This is a preview version that should not be used on production
+systems.  Some small parts are missing and there are still a few bugs,
+some of which are listed below.  You should not use this preview
+version over existing production data.
+
+The API, configuration items, or features may change before the final
+release, but we encourage widespread testing and feedback via the mailing
+lists or our bug tracking system. Translations are not ready to be updated
+yet, since some strings will change before the final release.
+
+Horde Version 3 differs from the 2.x releases in many ways, including the
+following:
+    * Full support for groups and arbitrary permissions.
+    * Completely rewritten, fully RFC-compliant MIME system with many
+      new MIME viewers.
+    * Many i18n improvements, including full charset support for the whole
+      framework.
+    * User customizable portal page.
+    * Theme support.
+    * Access (shortcut) keys.
+    * DHTML tree menu for applications, including Mozilla sidebar support.
+    * XML-based application configuration through a graphical user interface.
+    * Forms creation and validation API.
+    * Template engine.
+    * Crypt API with support for PGP/GPG and S/MIME.
+    * XML-RPC and SOAP server and client, SyncML on the way.
+    * Improved notification system.
+    * Many new APIs like Compress, Image, PDF, History, iCalendar, SyncML,
+      CLI, Version control, NLS, Timer, and SVG.
+
+Known issues:
+    * Documentation is not completely updated yet.
+    * A global interface to identities is missing.
+    * If inserting invalid data in a tabbed form (e.g. the configuration
+      interface), the tab with the errors is not selected.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+New in this release: Full group and permissions support; a robust
+RFC-compliant MIME API with many new viewers; many i18n improvements,
+including full charset support; User customizable portals and themes;
+shortcut keys for many actions; a DHTML tree menu for applications;
+XML-based configuration available through your browser; XML-RPC and
+SOAP clients and servers. New code APIs: forms creation/validation, a
+template engine, a crypt API with support for PGP/GPG and S/MIME,
+Compress, Image, PDF, History, iCalendar, SyncML, CLI, Version
+control, NLS, Timer and SVG.
+FM;
+
+$this->notes['name'] = 'Horde';
+$this->notes['fm']['project'] = 'horde';
+$this->notes['fm']['branch'] = 'FRAMEWORK_3';

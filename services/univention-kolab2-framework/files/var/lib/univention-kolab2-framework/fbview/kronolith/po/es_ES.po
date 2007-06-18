@@ -1,0 +1,643 @@
+# Kronolith Spanish translation
+# Copyright (C) 2001-2002 Raúl Alvarez Venegas.
+# Raúl Alvarez Venegas <rav@tecoman.ucol.mx>, 2001-2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-03-16 20:55-0600\n"
+"PO-Revision-Date: 2001-08-24 22:30-0500\n"
+"Last-Translator: Raúl Alvarez Venegas <rav@tecoman.ucol.mx>\n"
+"Language-Team: Spanish <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d hora"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d hora, %d minuto"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d hora, %d minutos"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d horas"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d horas, %d minuto"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d horas, %d minutos"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minuto"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minutos"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Archivo %s importado satisfactoriamente"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s está en progreso."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s está iniciando ahora."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s inicia en %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Descripción</b> (opcional)"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Palabras clave</b> (opcional)"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Recurrencia</b> (opcional)"
+
+msgid "Add Event"
+msgstr "Agregar Evento"
+
+msgid "Add a new event"
+msgstr "Agregar nuevo evento"
+
+msgid "Alarm Date"
+msgstr "Fecha de Alarma"
+
+msgid "Alarm Span (minutes)"
+msgstr "Duración de la Alarma (minutos)"
+
+msgid "Alarm Time"
+msgstr "Hora de Alarma"
+
+msgid "Alarm"
+msgstr "Alarma"
+
+msgid "All day event"
+msgstr "Evento de todo el día"
+
+msgid "All day"
+msgstr "Todo el día"
+
+msgid "All events"
+msgstr "Todos los eventos"
+
+msgid "April"
+msgstr "Abril"
+
+#, c-format
+msgid "Are you sure you want to delete the event \"%s\"?"
+msgstr "¿Esta seguro que desea eliminar el evento \"%s\"?"
+
+msgid "At"
+msgstr "A las"
+
+msgid "August"
+msgstr "Agosto"
+
+msgid "Birthday"
+msgstr "Cumpleaños"
+
+msgid "Business"
+msgstr "Negocio"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Category"
+msgstr "Categoría"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Cambiar formato de fecha y hora."
+
+msgid "Create a New Event"
+msgstr "Crear un Nuevo Evento"
+
+msgid "Daily: Recurs every"
+msgstr "Diariamente: Se repite cada"
+
+msgid "Date and Time Options"
+msgstr "Opciones de Fecha y Hora"
+
+msgid "Day"
+msgstr "Día"
+
+msgid "Day(s)"
+msgstr "Día(s)"
+
+msgid "December"
+msgstr "Diciembre"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Eliminar '%s'"
+
+msgid "Delete Event"
+msgstr "Eliminar Evento"
+
+msgid "Description"
+msgstr "Descripción"
+
+msgid "Display 24-hour times?"
+msgstr "¿Desplegar en tiempos de 24-horas?"
+
+msgid "Display Options"
+msgstr "Opciones de Visualización"
+
+msgid "Due:"
+msgstr "Vence en:"
+
+msgid "Duration"
+msgstr "Duración"
+
+msgid "Edit "
+msgstr "Modificar"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Modificar %s"
+
+msgid "End Date"
+msgstr "Fecha Final"
+
+msgid "End On"
+msgstr "Termina El"
+
+msgid "End Time"
+msgstr "Hora Final"
+
+msgid "Export Calendar"
+msgstr "Exportar Calendario"
+
+msgid "Export"
+msgstr "Exportar"
+
+msgid "February"
+msgstr "Febrero"
+
+msgid "Fr"
+msgstr "Vie"
+
+msgid "Friday"
+msgstr "Viernes"
+
+msgid "Game"
+msgstr "Juego"
+
+msgid "Goto"
+msgstr "Ir a"
+
+msgid "Help"
+msgstr "Ayuda"
+
+msgid "Hour(s)"
+msgstr "Hora(s)"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Si importa datos CSV: ¿Contiene la primera fila los nombres de los campos?"
+
+msgid "Illegal or malformed form data."
+msgstr "Formulario de datos ilegal o malformado."
+
+msgid "Import Calendar"
+msgstr "Importar Calendario"
+
+msgid "Import"
+msgstr "Importar"
+
+msgid "Import/Export Calendar"
+msgstr "Importar/Exportar Calendario"
+
+msgid "Import/Export"
+msgstr "Importar/Exportar"
+
+msgid "January"
+msgstr "Enero"
+
+msgid "July"
+msgstr "Julio"
+
+msgid "June"
+msgstr "Junio"
+
+msgid "Keywords"
+msgstr "Palabras clave"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith no está configurado correctamente."
+
+msgid "Kronolith"
+msgstr "Kronolith"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Last month"
+msgstr "Último mes"
+
+msgid "Last week"
+msgstr "Última semana"
+
+msgid "Lasts"
+msgstr "Dura"
+
+msgid "Limit the time span to export:"
+msgstr "Limitar duración para exportar:"
+
+msgid "Location"
+msgstr "Ubicación"
+
+msgid "March"
+msgstr "Marzo"
+
+msgid "May"
+msgstr "Mayo"
+
+msgid "Meeting"
+msgstr "Reunión"
+
+msgid "Minute(s)"
+msgstr "Minuto(s)"
+
+msgid "Minutes before"
+msgstr "Minutos antes"
+
+msgid "Minutes"
+msgstr "Minutos"
+
+msgid "Mo"
+msgstr "Lun"
+
+msgid "Monday"
+msgstr "Lunes"
+
+msgid "Month"
+msgstr "Mes"
+
+msgid "Monthly: Recurs every"
+msgstr "Mensualmente: Se repite cada"
+
+msgid "New Event"
+msgstr "Nuevo Evento"
+
+msgid "Next Month"
+msgstr "Siguiente Mes"
+
+msgid "Next day"
+msgstr "Siguiente día"
+
+msgid "Next week"
+msgstr "Siguiente semana"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "No se especificó información de configuración para el Calendario SQL."
+
+msgid "No end date"
+msgstr "Sin fecha final"
+
+msgid "None"
+msgstr "Ninguna"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Nota: No es posible importar con esta configuración a una falla de "
+"funcionamiento en la capa subyacente del manejador del calendario."
+
+msgid "November"
+msgstr "Noviembre"
+
+msgid "October"
+msgstr "Octubre"
+
+msgid "Options"
+msgstr "Opciones"
+
+msgid "Pattern"
+msgstr "Patrón"
+
+msgid "Personal"
+msgstr "Personal"
+
+msgid "Previous day"
+msgstr "Día anterior"
+
+msgid "Problem?"
+msgstr "¿Problemas?"
+
+msgid "Recur Until"
+msgstr "Repetir Hasta"
+
+msgid "Recurrence Data"
+msgstr "Datos a Repetir"
+
+msgid "Recurrence End Date"
+msgstr "Fecha de Vencimiento de la Repetición"
+
+msgid "Recurrence Interval"
+msgstr "Intervalo de Repetición"
+
+msgid "Recurrence Type"
+msgstr "Tipo de Repetición"
+
+msgid "Recurs daily"
+msgstr "Repetir diariamente"
+
+msgid "Recurs monthly"
+msgstr "Repetir mensualmente"
+
+msgid "Recurs not"
+msgstr "No repetir"
+
+msgid "Recurs weekly"
+msgstr "Repetir semanalmente"
+
+msgid "Recurs yearly"
+msgstr "Repetir anualmente"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr ""
+"'database' requerido no especificado en la configuración del calendario."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr ""
+"'hostspec' requerido no especificado en la configuración del calendario."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr ""
+"'password' requerido no especificado en la configuración del calendario."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr ""
+"'phptype' requerido no especificado en la configuración del calendario."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr ""
+"'username' requerido no especificado en la configuración del calendario."
+
+msgid "Reset to Defaults"
+msgstr "Restaurar a los valores por defecto"
+
+msgid "Sa"
+msgstr "Sab"
+
+msgid "Saturday"
+msgstr "Sábado"
+
+msgid "Save Event"
+msgstr "Guardar Evento"
+
+msgid "Select how to display Dates:"
+msgstr "Seleccione cómo desplegar las Fechas:"
+
+msgid "Select how to display the different views and choose default view."
+msgstr ""
+"Seleccione cómo desplegar las diferente vistas y escoja la vista por defecto."
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Seleccione si se van a mostrar tareas vencidas en el calendario."
+
+msgid "Select the file to import:"
+msgstr "Seleccione el archivo para importar:"
+
+msgid "Select the first weekday:"
+msgstr "Seleccione el primer día laborable:"
+
+msgid "Select the format to export to:"
+msgstr "Seleccione el formato para exportar a:"
+
+msgid "Select the source to import from:"
+msgstr "Seleccione la fuente para importar de:"
+
+msgid "Select the time span to show:"
+msgstr "Seleccione la duración para mostrar:"
+
+msgid "Select the view to display after login:"
+msgstr "Seleccione la vista a desplegar después de entrar:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Seleccione los eventos a mostrar en el Resumen de Horde."
+
+msgid "September"
+msgstr "Septiembre"
+
+msgid "Set the current time zone."
+msgstr "Establece la zona horaria actual."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Establece el idioma de los elementos del menú, explicaciones y ayuda."
+
+msgid "Set your preferred display language."
+msgstr "Establezca su idioma preferido a desplegar."
+
+msgid "Show due tasks in the calendar?"
+msgstr "¿Mostrar tareas vencidas en el calendario?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "¿Mostrar divisiones de media hora en las vistas de día y semana?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "¿Mostrar únicamente los eventos que tienen alarma?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Faltan algunos archivos de configuración de Kronolith:"
+
+msgid "Start Date"
+msgstr "Fecha de Inicio"
+
+msgid "Start On"
+msgstr "Inicia El"
+
+msgid "Start Time"
+msgstr "Hora de Inicio"
+
+msgid "Su"
+msgstr "Dom"
+
+msgid "Summary"
+msgstr "Resumen"
+
+msgid "Sunday"
+msgstr "Domingo"
+
+msgid "Tasks"
+msgstr "Tareas"
+
+msgid "Th"
+msgstr "Jue"
+
+msgid "The data was lost."
+msgstr "Los datos se perdieron."
+
+msgid "The end date must be later than the start date."
+msgstr "La fecha final debe ser posterior a la fecha de inicio."
+
+msgid "The file contained no data."
+msgstr "El archivo no contiene datos."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Hubo un problema al subir el archivo. El archivo pudo haber sido más grande "
+"que el tamaño máximo permitido."
+
+msgid "There was an error importing the data."
+msgstr "Hubo un error al importar los datos."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Hubo un error al importar el archivo que cargó"
+
+msgid "There were no events to export."
+msgstr "No hubo eventos a exportar."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Este archivo controla las preferencias por defecto para Kronolith, y también "
+"controla aquellas preferencias que los usuarios pueden alterar."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Este archivo controla la hoja de estilo utilizada para fijar los colores y "
+"fuentes, además anula las configuraciones por defecto de Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Este es el archivo principal de configuración de Kronolith. Contiene rutas a "
+"archivos y opciones para todos los scripts de Kronolith."
+
+msgid "Thursday"
+msgstr "Jueves"
+
+msgid "Time Zone"
+msgstr "Zona Horaria"
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Today"
+msgstr "Hoy"
+
+msgid "Tu"
+msgstr "Mar"
+
+msgid "Tuesday"
+msgstr "Martes"
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "User Interface"
+msgstr "Interfaz de Usuario"
+
+msgid "User Options"
+msgstr "Opciones del Usuario"
+
+msgid "We"
+msgstr "Mie"
+
+msgid "Wednesday"
+msgstr "Miércoles"
+
+#, c-format
+msgid "Week %d"
+msgstr "Semana %d"
+
+msgid "Week"
+msgstr "Semana"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Semana&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Semana(s)"
+
+msgid "Weekly: Recurs every"
+msgstr "Semanalmente: Se repite cada"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"¿A qué hora deben finalizar las vistas del día y de la semana, cuándo no "
+"no haya eventos posteriores?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"¿A qué hora deben iniciar las vistas del día y de la semana, cuándo "
+"no haya eventos anteriores?"
+
+msgid "Work Week"
+msgstr "Semana Laboral"
+
+msgid "Work&nbsp;Week"
+msgstr "Semana&nbsp;Laboral"
+
+msgid "Yearly: Recurs every"
+msgstr "Anualmente: Se repite cada"
+
+msgid "Your Information"
+msgstr "Su Información"
+
+msgid "Your current time zone:"
+msgstr "Su zona horaria:"
+
+msgid "day"
+msgstr "día"
+
+msgid "day(s)"
+msgstr "día(s)"
+
+msgid "days"
+msgstr "días"
+
+msgid "iCalendar file successfully imported"
+msgstr "Archivo de iCalendar importado satisfactoriamente"
+
+msgid "month(s)"
+msgstr "mes(es)"
+
+msgid "no time"
+msgstr "ningún tiempo"
+
+msgid "on the same date"
+msgstr "en la misma fecha"
+
+msgid "on the same weekday"
+msgstr "en el mismo día laborable"
+
+msgid "week"
+msgstr "semana"
+
+msgid "week(s) on:"
+msgstr "semana(s) en:"
+
+msgid "weeks"
+msgstr "semanas"
+
+msgid "year(s)"
+msgstr "año(s)"

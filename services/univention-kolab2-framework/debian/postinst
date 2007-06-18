@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# Univention Kolab2 Framework
+#  postinst script for the debian package
+#
+# Copyright (C) 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+chown -R www-data:www-data /var/www/freebusy
+if [ ! -d /usr/share/univention-admin/www ]; then
+	mkdir -p /usr/share/univention-admin/www
+fi
+
+ln -s /var/www/freebusy /usr/share/univention-admin/www/freebusy
+/etc/init.d/apache reload || true
+touch /var/log/freebusy.log
+chown www-data:www-data /var/log/freebusy.log
+chmod o-rwx /var/log/freebusy.log
+
+eval `univention-baseconfig shell`
+
+univention-baseconfig set mail/antivir/spam?yes
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.1-10; then
+	univention-baseconfig set mail/cyrus/caluser?kolab2cal@$domainname
+	univention-baseconfig set mail/cyrus/caluser/pwdfile?/etc/kolab2cal.secret
+elif [ -z "$2" ]; then
+	univention-baseconfig set mail/cyrus/caluser?kolab2cal@$domainname
+	univention-baseconfig set mail/cyrus/caluser/pwdfile?/etc/kolab2cal.secret
+fi
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/65univention-kolab2-framework.inst || true
+	mail=`univention-admin settings/usertemplate list --filter="cn=$hostname.$domainname Groupware Account" | grep ' e-mail:' | sed 's/[^:]*: //;s/^None$//'`
+	shell=`univention-admin settings/usertemplate list --filter="cn=$hostname.$domainname Groupware Account" | grep ' shell:' | sed 's/[^:]*: //;s/^None$//'`
+	if [ -z "$mail" -o -z "$shell" ]; then
+		univention-admin settings/usertemplate modify --dn "cn=$hostname.$domainname Groupware Account,cn=templates,cn=univention,$ldap_base" --set kolabHomeServer="$hostname.$domainname" --set mailPrimaryAddress="<username>@$domainname" --set e-mail="<username>@$domainname" --set shell="/bin/bash"
+	fi
+fi
+
+if [ -x /etc/init.d/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener crestart
+fi
+
+if [ -z "$postfix_autostart" ] || [ "$postfix_autostart" = "yes" ]; then
+	if [ -x /etc/init.d/postfix ]; then
+	    /etc/init.d/postfix restart
+	fi
+fi
+
+if [ -x /etc/init.d/cyrus22 ]; then
+    /etc/init.d/cyrus22 restart
+fi

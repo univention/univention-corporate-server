@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Cipher/package.xml,v 1.10 2003/12/13 05:28:49 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Cipher</name>
+  <summary>Cipher API</summary>
+  <description>This package provides a Block Mode Cipher API, supporting the following ciphers:
+* Blowfish
+* Cast128
+* DES
+* RC2
+* RC4
+
+And supporting the following block modes:
+* CBC
+* ECB
+* CFB64
+* OFB64
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>mac</user>
+      <role>lead</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file name="Cipher.php" role="php" baseinstalldir="/Horde"/>
+      <dir name="Cipher" role="php" baseinstalldir="/Horde">
+        <file name="BlockMode.php"/>
+        <file name="blowfish.php"/>
+        <file name="cast128.php"/>
+        <file name="des.php"/>
+        <file name="rc2.php"/>
+        <file name="rc4.php"/>
+        <dir name="BlockMode" role="php">
+          <file role="php" name="cbc.php"/>
+          <file role="php" name="cfb64.php"/>
+          <file role="php" name="ecb.php"/>
+          <file role="php" name="ofb64.php"/>
+        </dir>
+      </dir>
+      <dir name="tests" role="test">
+        <file name="Cipher1.phpt"/>
+        <file name="Cipher2.phpt"/>
+        <file name="Cipher3.phpt"/>
+        <file name="Cipher4.phpt"/>
+        <file name="Cipher5.phpt"/>
+        <file name="Cipher6.phpt"/>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+" />
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-03</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

@@ -1,0 +1,312 @@
+----
+v2.0
+----
+
+[jan] Add access keys.
+[cjh] Add Kolab drivers (Stuart Bingë <s.binge@codefusion.co.za>).
+[cjh] The alphabetic pager now has an "All" option.
+
+
+----------
+v2.0-ALPHA
+----------
+
+[cjh] Show an alphabetic pager for browsing address books
+      (Mike Bydalek <mbydalek@zivix.com>).
+[cjh] Rename LDAP objects when their DN changes
+      (Tarjei Huse <tarjei+a_lists.phpgw@nu.no>).
+[cjh] Add exporting of VCards from the browse/search view
+      (Mike Bydalek <mbydalek@zivix.com>).
+[cjh] Initial IMSP driver (Michael Rubinsky <mike@theupstairsroom.com>).
+[cjh] Use Horde_UI_Pager to page browse results
+      (Joel Vandal <jvandal@infoteck.qc.ca>).
+[cjh] Basic support for setting permissions on Turba sources
+      (Joel Vandal <jvandal@infoteck.qc.ca>).
+[cjh] Unify search and advanced search code to use a much more similar
+      interface (Joel Vandal <jvandal@infoteck.qc.ca>).
+[cjh] Javascript delete confirmation is now available as a preference
+      ("W. David Betts" <david@populus.com>).
+[cjh] Searching composite fields, and other complex generated
+      searching, now works with the LDAP driver.
+[cjh] Track addition, modification, and deletion of contacts
+      with the Horde History:: API.
+[cjh] Use arbitrary search support to include searching of composite
+      fields.
+[cjh] Turba_Drivers are now capable of arbitrary searches, including
+      unlimited nested combinations of AND and OR searches.
+[cjh] Add the ability to link fields in the backend into a composite
+      field, which is not editable, but which displays the correct
+      value.
+[cjh] Add the ability to move or copy contacts to a separate
+      addressbook.
+[cjh] Display multiple email addresses more intelligently
+      (John Dalbec <jpdalbec@ysu.edu>).
+[cjh] Allow setting a limit on the number of queries returned by an
+      LDAP search (Andrew Morgan <morgan@orst.edu>).
+[cjh] Add edit/delete links in browse views.
+[cjh] Preference for default directory for searches, etc.
+      (Richard Heggs <Richard.Heggs@nottinghamcity.gov.uk>).
+[cjh] Add support for listing/adding/retrieval of public keys
+      (Michael M Slusarz <slusarz@bigworm.colorado.edu>).
+[cjh] Use the new PrefsUI class.
+[jon] Adapt to the new Horde::img() syntax.
+[cjh] Use the new Notification system.
+[jan] Remove the standard value for the language preference. The language to
+      fall back to should be set Horde wide in lang.php instead.
+
+
+------
+v1.2.2
+------
+
+[jan] Add Galician translation (Rafael Varela Pet <srrafa@usc.es>, Guillermo
+      Mendez <guille@usc.es>).
+
+
+------
+v1.2.1
+------
+
+[jan] Fix importing of vCard 2.1 data that contains commas (needs 
+      Horde 2.2.4).
+[jan] Make sorting order dependent of the name format (Sergey Zhukov
+      <sergey@intellij.net>).
+[jan] Add Arabic (Syria) translation (Platinum Development Team
+      <devteam@platinum-sy.net>).
+[jan] Add Macedonian translation (Stojan Pesov <ssp@eureka.com.mk>).
+[jan] Add Romanian translation (Eugen Hoanca <eugenh@urban-grafx.ro>,
+      Marius Dragulescu <mariusd@urban-grafx.ro>).
+[cjh] Remove dependency on class not in Horde 2.x.
+
+
+----
+v1.2
+----
+
+[cjh] Use the 'objectclass' entry from LDAP sources instead of defaulting to
+      'objectclass=*'.
+[jan] Add Catalan translation (Angels Guimerà <angels.Guimera@uab.es>).
+[jan] Add a preference for viewing names as Lastname, Firstname
+      (Marc Jauvin <marc@register4less.com>).
+[jan] Add Latvian translation (Kaspars Kapenieks <kaspars@rcc.lv>).
+[cjh] Close several small XSS vulnerabilities
+      (Mitja Kolsek <mitja.kolsek@acros.si>).
+[cjh] Fix problems with cached search results from different backends.
+[jan] If an LDAP directory is configured to use utf8 encoding,
+      encode attributes when adding them to the directory (cjh).
+[jan] Add Turba_List::remove() (cjh).
+[jan] Add Turba_Object::fromvCard() (cjh).
+[jan] Add a registry script for Turba (Michael Cochrane <mike@graftonhall.co.nz>).
+[jan] Add distribution list support (Michael Cochrane <mike@graftonhall.co.nz>).
+[jan] Add personal LDAP address book HOWTO and example (cjh).
+[jan] Add generic add, delete, get, list API functions for specific fields (mms).
+[jan] Add Turba::addParameter().
+[jan] Add Lithuanian translation (Darius Matuliauskas <darius@lnk.lt>).
+[cjh] Add a miniwindow interface that can be used in popups from other
+      applications.
+[cjh] Add preferences-based addressbook capability for small, private
+      addressbooks.
+[cjh] Make sure vCard email addresses are imported as just the email
+      address, not as Personal Info <address@example.com>.
+[cjh] Add Turba::getBareAddress() for converting
+      Personal Info <address@example.com> into just address@example.com.
+[jan] Add Bulgarian translation (Miroslav Pendev <pendev@hotmail.com>).
+[cjh] Add links to MapQuest from address fields.
+[jan] Pass contact name to compose link in display view.
+[jan] Replace <?= with <?php echo to remove the short_open_tags requirement (cjh).
+[jan] Fix preference for default view.
+[jan] Add import/export filter for TSV, Mulberry and Pine (Liam Hoekenga
+	  <liamr@umich.edu>).
+
+
+----
+v1.1
+----
+
+[jan] Add Hungarian translation (Laszlo L. Tornoci <torlasz@xenia.sote.hu>).
+[jan] Add Norwegian Nynorsk translation (Per-Stian Vatne <psv@orsta.org>).
+[jan] Add Slovenian translation (Jure Krasovic <jurek@rcc-irc.si>).
+[jan] Add Japanese translation (B.J. Black <william.black@sun.com>).
+[cjh] Add an optional parameter to set the LDAP protocol version.
+[cjh] Close a potential problem with register_globals On and $js_onLoad.
+[jan] Add Portugal Portugues translation (Nuno Loureiro <nuno@eth.pt>).
+[cjh] Add a Browse interface for easily listing all contacts.
+[cjh] Change some button inputs to submits and remove some javascript.
+[cjh] Source-wide filters with LDAP are always AND-ed.
+[cjh] Remove awkward To:, Cc:, Bcc: message composition interface and clean
+      up UI.
+[cjh] Delete empty attributes instead of just leaving them unchanged.
+[cjh] Log SQL and LDAP queries at LOG_DEBUG.
+[cjh] Don't generate LDAP searches with 'attr=**' in them for empty values
+      (use attr=*).
+[cjh] Say "Edit 'entry'" instead of just "entry" in the mouseover text for
+      search results which are editable.
+[cjh] Add a local LDAP directory example.
+[cjh] Don't store objects in the search results session cache; a bit slower,
+      but seems to be much more reliable.
+[cjh] Vastly improve search results handling - store them in the session,
+      don't add duplicate results, let people use the back button, etc.
+[cjh] Fix the column select javascript.
+[cjh] Add list mouseover effect (Ronnie Garcia <ronnie@mk2.net>).
+[cjh] Fix results problem with advanced.php and old results.
+[cjh] Patches to tweak the LDAP driver to handle things a bit more
+      correctly (HiCkS <hicks@666.hn.org>).
+[cjh] Add and use TURBA_TEMPLATES constant.
+[cjh] Use $registry->getParam() for all Registry information.
+[jan] Add 'admin' entry to the sources hash to give write access on readonly
+      addressbooks to certain logged in users.
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Add preferences page and user preference to select the columns that shall
+      be displayed in the search results.
+[jan] Add Estonian translation (Toomas Aas <toomas.aas@raad.tartu.ee>).
+[jan] Add Slovak translation (Leo Mrafko <leo@oel.sk>).
+[jon] Enable the "portability" option in the SQL driver.
+[jan] Add Ukrainian translation (Andriy Kopystyansky <anri@polynet.lviv.ua>).
+[jan] Add Danish translation (Martin List-Petersen <martin@list-petersen.dk>).
+[jan] Fix bug "This person is already in your addressbook.".
+
+
+----
+v1.0
+----
+
+[jan] Add Norwegian Bookmal translation (Oystein Steimler <oystein@rexta.net>).
+[avsm] Add .htaccess files to deny access to data directories.
+[jan] Add Finnish translation (Leena Heino <liinu@uta.fi>).
+[cjh] Avoid adding duplicate entries through the add API method.
+
+
+--------
+v1.0-RC4
+--------
+
+[rich] Include rewritten and reorganized documentation.
+[rich] License under Horde APL.
+[cjh] Make email addresses clickable in displayed objects.
+[bjn] Change 'en' and 'en_EN' locales to 'en_US' (default).
+[cjh] Vastly improve error reporting when adding an object fails.
+[jan] Add Brazilian Portuguese translation (Carlos Daniel Kibrit
+      <kibrit@terra.com.br>).
+[jan] Add Greek translation (Stefanos I. Dimitriou <sdimitri@teiath.gr>).
+[jan] Add Swedish translation (Andreas Dahlén <andreas@dahlen.ws>).
+[jan] Add Korean translation (J.I Kim <aporie@netian.com>).
+[cjh] Remove duplicate entries from multiple sources from
+      turbaExpandAddresses() results.
+[cjh] Don't show the addressbook select widget on the search page if there's
+      just one to search from.
+
+
+------
+v0.0.3
+------
+
+[cjh] Add an optional 'strict' configuration array definining fields which
+      must always be matched exactly.
+[jan] Add api function to get info about the fields.
+[jan] Add source configuration to select which fields should be searchable by
+      default.
+[cjh] Allow OR searches.
+[cjh] Pass full email addresses (with names) to messages being composed
+      (Lars Nummedal <largs@nummedal.net>).
+[jan] Add Polish translation.
+[jan] Add mapping of date/time fields to the import feature.
+[jan] Add support for date fields (e.g. birthdays).
+[jan] turbaExpandAddresses() now returns all email addresses that belong
+      to a contact.
+[jan] Show the fields in edit and display view dynamically based on what's
+      provided by the backend.
+[jan] Add Italian translation (Giovanni Meneghetti <gmeneghetti@infvic.it>).
+[jan] Add import/export ui based on the new Data class.
+[cjh] Add Traditional Chinese translation (David Chang <david@thbuo.gov.tw>).
+[cjh] Add Czech translation (pchytil@asp.ogi.edu).
+[cjh] Add Russian translation (Ignat Ikryanov <ignat@ibd.ru>).
+[cjh] Add $conf['menu']['apps'] support and a help link.
+[cjh] Make incremental building up of search results works again in both
+      search and advanced search.
+[cjh] Add Alias to default fields (Marc Jauvin <marc@register4less.com>).
+[cjh] Use the *url() functions more consistently to make sure that
+      cookie-less sessions work.
+
+
+------
+v0.0.2
+------
+
+[cjh] Add some more error checking to the searching and LDAP driver.
+[cjh] Add config/attributes.php to provide nice labels for directory
+      attributes.
+[cjh] Adding German translation from Jan Schneider <janmailing@gmx.de>.
+[cjh] Allow LDAP Sources to define a filter always included in searches
+      (rbarnett@neuromics.com).
+[jon] Preserve the search parameters after a search is performed.
+[jon] Allow the registry to handle Turba's configuration values.
+[jon] HORDE_BASE is now defined in lib/base.php instead of config/conf.php.
+[max] Adding source retrieval api function.
+[cjh] Adding Dutch translation from Jan Kuipers <jrkuipers@lauwerscollege.nl>.
+[jon] Adding French translation from Sam Przyswa <samp@arial-concept.com>.
+[cjh] Add gettext infrastructure.
+[cjh] Define the HORDE_BASE constant in config/conf.php, and use it when
+      referring to any of Horde's files.
+[cjh] Bring the advanced search page up to date, and add it to the menu.
+[jon] Retired config/menu.txt in favor of config/menu.php.  This file follows
+      a new format based on native PHP data structures.
+[max] Expand api to allow adding addresses to an addressbook.
+[cjh] Add the first api function (expanding addresses) for Turba in
+      lib/api.php.
+[cjh] Add and Delete now work for the LDAP driver.
+[cjh] Fix wap contacts searching.
+[cjh] Turba now uses Horde authentication instead of its own. This means
+      that whatever auth method you are using for Horde will be used to
+      authenticate to Turba, and in return you get single sign-on with any
+      other apps using Horde authentication.
+[cjh] Working addObject() and removeObject() SQL driver methods.
+[cjh] Move Turba_Source::getMyObject() to Turba_Source::getObject(); nothing
+      was using the old getObject() call anymore.
+[cjh] If you set $params['bind_dn'] and $params['bind_password'] for an LDAP
+      source, Turba will bind as the specified dn to the LDAP server,
+      letting you add/edit entries.
+[cjh] Update capatilization to match Horde/PEAR standards.
+[cjh] register_globals = Off fixes.
+[cmc] Add a display object page, fix a ldap bug with the dn, add
+      a read function to the turba source class (Done by Christian
+      M. Couder (cmc) <christian@alcove.fr>).
+[cjh] Add an advanced search page contributed by Christian Couder
+      <christian@alcove.fr>.
+[cjh] Bring the WML templates up to date with recent changes.
+[cjh] Make the LDAP server port configurable and make sure the parameter
+      appears in the example sources.
+[cjh] Implemented edit functionality for the SQL driver.
+[cjh] Moved the filter() functionality (and supporting functions) into
+      Turba_List, where it really belongs.
+[cjh] We now actually use Turba_List, Turba_AbstractObject, Turba_ListView,
+      and many other pieces of the class hierarchy that were previously only
+      referenced in the object model.
+[cjh] Clean up the sql Driver implementation a bit. Now, if the source is
+      private, the __owner criteria must match the current user, instead of
+      using __key. __key should uniquely identify each object, and shouldn't
+      be what user that object belongs to.
+[cjh] Reorganize the class hierarchy a bit - use Object instead of Contact,
+      and a few other naming changes.
+[cjh] Merged WAP functionality into search.php. If a WAP browser is
+      detected, a slimmed-down wml interface will be used that only displays
+      names and (callable) phone numbers.
+
+
+------
+v0.0.1
+------
+
+[cjh] Fix bug where searches with no results would tack on an empty row.
+[cjh] Conversion to CSS.
+[cjh] Cleanup, modernization.
+[jon] Silence session_start warnings.
+[jon] Use Horde::url() in place of the deprecated buildURL() function.
+[cjh] Use new session model and $horde['session_name'].
+[cjh] Fixed message sending javascript to work with multiple addresses.
+[jon] Allow directory sources to be set 'read-only' (non-editable).
+[jon] Added a 'public' flag to the $cfgSources entries.
+[jon] Contact attributes are configurable via config/attributes.php.
+[jon] Renamed the source configuration hash to $cfgSources (from just
+      $sources).
+[jon] Moved from config/ldap.php to config/sources.php.
+[jon] Converted Chuck's existing class stubs into a PEAR-style lib/ tree.

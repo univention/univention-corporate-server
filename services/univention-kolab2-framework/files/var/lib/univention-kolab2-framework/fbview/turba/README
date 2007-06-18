@@ -1,0 +1,73 @@
+Turba
+Version 2.0
+
+What is Turba?
+--------------
+
+Turba is the Horde contact management application, designed to be
+integrated with other Horde applications to provide a unified
+interface to contact management throughout the Horde suite.
+
+This software is OSI Certified Open Source Software.
+OSI Certified is a certification mark of the Open Source Initiative.
+
+
+Obtaining Turba
+---------------
+
+Further information on Turba and the latest version can be obtained at
+
+  http://www.horde.org/turba/
+
+
+Documentation
+-------------
+
+The following documentation is available in the Turba distribution:
+
+README         - This file
+COPYING        - Copyright and license information
+docs/CHANGES   - List of changes by release
+docs/CREDITS   - Who developed this
+docs/INSTALL   - Installation instructions
+
+Installation
+------------
+
+Instructions for installing Turba can be found in the file INSTALL
+in the docs/ directory of the Turba distribution.
+
+
+Assistance
+----------
+
+If you encounter problems with Turba, help is available! 
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web
+at
+ 
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual
+applications and for issues relating to the project as a whole.
+Information, archives, and subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Lastly, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network
+(irc.freenode.net).
+
+
+Licensing
+---------
+
+For licensing and copyright information, please see the file
+COPYING in the Turba distribution.
+
+Thanks,
+
+The Turba team
+turba@lists.horde.org
+
+$Horde: turba/README,v 1.11 2004/03/06 15:47:00 jan Exp $

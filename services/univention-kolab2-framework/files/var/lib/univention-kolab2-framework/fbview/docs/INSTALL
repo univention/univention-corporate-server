@@ -1,0 +1,553 @@
+========================================
+|| INSTALLING THE HORDE 3.0 FRAMEWORK ||
+========================================
+
+This document contains instructions for installing the Horde
+Framework on your system.
+
+The Horde Framework, by itself, does not provide any significant end
+user functionality; it provides a base for other applications and
+tools for developers. When you have installed Horde as described
+below, you will probably want to install some of the available Horde
+applications, such as IMP (a webmail client), or Kronolith (a
+calendar). There is a list of Horde applications and projects at
+http://www.horde.org/projects.php.
+
+If you are interested in developing applications for Horde, there is
+developer documentation and references available at
+http://dev.horde.org/, and some tutorials and papers on Horde
+available at http://www.horde.org/papers/.
+
+For information on the capabilities and features of Horde, see
+the file README in the top-level directory of the Horde
+distribution.
+
+
+OBTAINING HORDE
+---------------
+
+The Horde Framework can be obtained from the Horde website and FTP
+server, at
+
+   http://www.horde.org/horde/
+   ftp://ftp.horde.org/pub/horde/
+
+Or, better yet, use a mirror that is closer to you.  The mirror list can be
+found at:
+
+   http://www.horde.org/mirrors.php
+
+(For the rest of the documentation, all links will point to the main Horde
+website - simply replace www.horde.org with the hostname of your preferred
+mirror to access the files at a mirrored location.)
+
+The "tarballs/" subdirectory contains the Horde PHP files which can
+be unpacked using tar+gunzip (see INSTALLING HORDE, below).  If you
+are using Red Hat Linux and prefer to use RPMs, they can be found
+here:
+
+   ftp://ftp.horde.org/pub/RPMS/
+
+(For an RPM install, consult the README file in the RPM directory
+for important instructions!)
+
+Bleeding-edge development versions of Horde and its applications are
+available via CVS; see the file docs/HACKING, or visit the website
+http://www.horde.org/source, for information on accessing the Horde
+CVS repository.
+
+You will probably also want one or more Horde applications, since
+Horde doesn't do much by itself; a list of available applications,
+with links to descriptions and downloads, can be found at
+
+   http://www.horde.org/projects.php
+
+While previous versions of Horde were numbered to correspond with a
+particular version of the IMP webmail application, that is no longer
+true as of Horde version 2.0. The current version of Horde will work
+with the current version of Horde applications.
+
+
+PREREQUISITES
+-------------
+
+The following prerequisites are REQUIRED for Horde to function
+properly.
+
+  1. A webserver that supports PHP.
+
+     Horde and its applications are developed under the Apache
+     webserver, which we recommend. Apache is available from
+
+        http://httpd.apache.org/
+
+     Horde has also been reportedly used successfully under Microsoft IIS,
+     among others.
+
+  2. PHP 4.2.1 or above.
+
+     PHP is the interpreted language in which Horde is written.
+     You can obtain PHP at
+
+        http://www.php.net/
+
+     Follow the instructions in the PHP package to build PHP
+     for your system. If you use Apache, be sure to build PHP
+     as a library with the
+
+         --with-apache
+     or
+         --with-apxs
+
+     options to ./configure, and not as a standalone executable.
+
+     The following PHP options are REQUIRED by Horde (listed with
+     their own prerequisites and configure options). In many cases,
+     the required libraries and tools can be obtained as packages from
+     your operating system vendor.
+
+       a. Gettext support. (--with-gettext)
+
+          Gettext is the GNU Translation Project's localization library.
+          Horde uses gettext to provide local translations of text
+          displayed by applications. Information on obtaining the
+          gettext package is available at
+
+             http://www.gnu.org/software/gettext/gettext.html
+
+          (See also note below on configuring translations.)
+
+       b. XML and DOMXML support. (--with-xml --with-dom)
+
+          Horde's help engine and component configuration require
+          XML support. While some webservers (including recent Apache
+          versions) have XML libraries built-in, others will require
+          the expat XML parser libraries, available from
+
+             http://www.jclark.com/xml/expat.html
+
+          IMPORTANT: You must have BOTH XML libraries installed for Horde
+                     to work properly!
+
+     The following PHP options are RECOMMENDED to enable advanced features
+     in Horde:
+
+       a. A preferences container.
+
+          Horde applications can store user preferences in an SQL
+          database, an LDAP directory, or in PHP sessions.
+
+          For SQL database preferences storage, Horde is
+          thoroughly tested on MySQL (--with-mysql) and PostgreSQL
+          (--with-pgsql) and has been reported to work with Oracle
+          (--with-oracle). It may also work with any other database
+          supported by PEAR, but they are untested.
+
+          Preferences can also be stored via LDAP (--with-ldap).
+
+          Alternatively, preferences can be stored in PHP sessions,
+          which requires no external programs or configure options,
+          but which will not maintain preferences between sessions.
+
+          While the LDAP or database server need not be running on
+          the machine onto which you are installing Horde, the
+          appropriate client libraries to access the LDAP or
+          database server must be available locally.
+
+          If a preference container is not configured, no preference
+          options will be configurable via Horde's web interface - the
+          default values stored in each applications config/prefs.php
+          file will be used.
+
+       b. Mcrypt support (--with-mcrypt)
+
+          Mcrypt is a general-purpose cryptography library which is
+          broader and significantly more efficient (FASTER!) than
+          PHP's own cryptographic code. You can obtain mcrypt from
+
+             http://mcrypt.sourceforge.net/
+
+          Building PHP without mcrypt support will not stop Horde
+          from working, but will force it to use weaker (and much slower)
+          encryption.
+
+       c. UTF-8 support (--with-iconv --enable-mbstring)
+
+          If these extensions are enabled, Horde can support the UTF-8 
+          character set (meaning that content with any charset can be viewed
+          with any translation).
+
+       d. GD support (--with-gd)
+
+          Horde will use the GD extension to perform manipulations on image
+          data through the Horde_Image library.
+
+          If you want GD to be able to work with PNG images, you should use
+          the --with-png-dir option to make sure PHP can find the PNG
+          libraries it needs to compile.
+          
+          If you want GD to be able to work with JPEG images, you should use
+          the --with-jpeg-dir option to make sure PHP can find the JPEG
+
+          You can also use the ImageMagick package
+          (http://www.imagemagick.org/) to do these manipulations instead.
+          See horde/config/conf.php for more details.
+
+     ** Additionally, individual Horde applications may REQUIRE other     **
+     ** options to be built into PHP also. Please check docs/INSTALL      **
+     ** for all applications you wish to use to see if other PHP options  **
+     ** are needed.                                                       **
+
+
+  3. Additional PEAR Modules
+
+     PEAR is short for "PHP Extension and Application Repository".
+     The goal of PEAR is to provide a means of distributing reusable
+     code.
+
+     For more information, see http://pear.php.net/
+
+     ** Make sure you are running a supported (i.e. new enough) version **
+     ** of PEAR: use the test script described below under Section 5 of **
+     ** "Configuring Horde".                                            **
+
+     These PEAR modules are REQUIRED to be installed for complete Horde
+     functionality:
+
+       a. Log
+       b. Mail_Mime
+       c. VFS
+
+          To install, enter the following at the command prompt:
+            pear install Log Mail_Mime VFS
+
+     These PEAR modules are RECOMMENDED to be installed:
+
+       a. File
+
+          REQUIRED only if you wish to import CSV files.
+          To install, enter the following at the command prompt:
+            pear install File
+
+       b. Date
+
+          REQUIRED only if you are dealing with calendar data.
+          To install, enter the following at the command prompt:
+            pear install Date
+
+       c. XML_SVG
+
+          REQUIRED only if you are dealing with SVG image elements.
+          To install, enter the following at the command prompt:
+            pear install XML_SVG
+
+     This method of installing PEAR modules requires that your PHP has
+     been compiled as a static binary. If you installed PHP as a webserver
+     module, recompile PHP without the module option (for Apache, without
+     BOTH --with-apache and --with-apxs) and do a 'make install'.
+
+     Note that recent versions of PHP (4.3.0+) build both a SAPI module
+     (Apache, CGI, etc.) and a command-line (CLI) binary at the same
+     time. Check if you have a php binary in /usr/local/bin (/usr/bin if
+     if you installed from an operating system package) before recompiling.
+
+     If you receive the error "Could not read cmd args",
+     you should run the pear script this way:
+       php -d register_argc_argv=1 _PEAR_ install _URL_
+
+     _PEAR_ is the complete path of the pear script installed by PHP
+     during installation (e.g. /usr/local/bin/pear).
+     Make sure the 'pear' script appears in your path. The default
+     installation path for pear is '/usr/local/bin/pear'.
+
+     _URL_ is the URL, listed above, which you wish to download
+     from.
+
+     If you are unable to find any of the above PEAR packages, make
+     sure you have allowed the installation of beta packages. Check
+     for this by typing the following on the command line:
+       pear config-get preferred_state
+
+     If PEAR reports the preferred_state as 'stable', then run the following
+     command to add support for installing beta packages:
+       pear config-set preferred_state beta
+
+     For more detailed directions on installing PEAR modules, see
+     the PEAR documentation at http://pear.php.net/manual/
+
+  4. Additional PECL Modules
+
+     PECL is short for "PHP Extension Community Library".
+     The goal of PECL is to provide a means of easily distributing 
+     PHP extensions.
+
+     For more information, see http://pecl.php.net/
+
+     PECL is the "sister" of PEAR and uses the same packaging and
+     distribution system as PEAR, so the configuration/setup is essentially
+     identical to the PEAR instructions above.
+
+     These PECL modules are RECOMMENDED to be installed:
+
+       a. fileinfo
+
+          Allows Horde modules to guess the MIME type of files by analyzing
+          their contents.
+
+          If not enabled, Horde will use its own PHP code to perform MIME
+          magic lookups.  However, this lookup is slower, less accurate, and
+          detects fewer MIME types than the PECL extension will.
+
+          To install, enter the following at the command prompt:
+            pear install fileinfo
+
+     For additional help on using the pear command-line program to install
+     PECL extensions, see the PEAR installation section above.
+
+
+The following non-PHP prerequisites are RECOMMENDED, or are REQUIRED
+if you use a specific Horde application (as noted in [brackets]):
+
+  1. Sendmail or equivalent.
+
+     Horde uses sendmail, or a program that implements the
+     sendmail(8) API (as included with postfix, qmail, and exim,
+     among others). If your system does not already have a full
+     mail transport with a sendmail interface, you can configure
+     Horde to speak directly with a remote SMTP server, but this
+     may incur a performance penalty.
+
+
+INSTALLING HORDE
+----------------
+
+Horde is written in PHP, and must be installed in a web-accessible
+directory. The precise location of this directory will differ from
+system to system. If you have no idea where you should be installing
+Horde, install it directly under the root of your webserver's document
+tree.
+
+(For an RPM installation, consult the README file in the RPM directory
+for important instructions!  The following instructions are for a tarball
+installation.)
+
+Since Horde is written in PHP, there is no compilation necessary;
+simply expand the distribution where you want it to reside and rename
+the root directory of the distribution to whatever you wish to appear
+in the URL. For example, with the Apache webserver's default document
+root of '/usr/local/apache/htdocs', you would type::
+
+   cd /usr/local/apache/htdocs
+   tar zxvf /path/to/horde-3.0.tar.gz
+   mv horde-3.0 horde
+
+At this point, the Horde framework modules need to be installed. This must be
+done as root (or another user with sufficient administrator priviledges)::
+
+   cd horde/framework
+   php -q install-packages.php
+
+For Windows systems - use the ``install-packages.bat`` file instead.
+For Debian systems - the command-line PHP interpreter might be called ``php4``
+instead of ``php``.
+
+You would then find Horde at the URL::
+
+   http://your-server/horde/
+
+
+CONFIGURING HORDE
+-----------------
+
+1. Configuring the web server
+
+   Horde requires the following webserver settings. Examples shown are
+   for Apache; other webservers' configurations will differ.
+
+   a. PHP interpretation for files matching "*.php"
+
+         AddType application/x-httpd-php .php
+
+   NOTE: The above instructions may not work if you have specified
+         PHP as an output filter with SetOutputFilter directive 
+         in Apache 2.x versions.  In particular, Red Hat 8.0 and
+         above Apache 2.x RPMS have the output filter set, and
+         MUST NOT have the above AddType directive added.
+
+   b. "index.php" as an index file (brought up when a user requests
+      a URL for a directory)
+
+         DirectoryIndex index.php
+
+2. Creating databases
+
+   The specific steps to create a preferences storage container depend
+   on which database you've chosen to use.
+
+   First, look in scripts/db/ to see if a "_create" script already
+   exists for your database. If so, you should be able to simply
+   execute that script as superuser in your database.  Consult the
+   scripts/db/README file for more information.
+
+   Be sure to change the default password, "horde", to something
+   else before creating the tables! (Remember to use this password
+   when you configure Horde in the next step.)
+
+   If such a script does not exist, you'll need to build your own, using
+   the files auth.sql, prefs.sql, and category.sql as a starting point.
+   If you need assistance in creating databases for a database for
+   which no "_create" script exists, you may wish to let us know on
+   the Horde mailing list.
+
+   Note that the "_drop" scripts in the scripts/db/ directory remove
+   the changes made by the "_create" scripts.
+
+3. Configuring Horde
+
+   To configure Horde, change to the config/ directory of the
+   installed distribution, and make copies of all of the configuration
+   "dist" files without the "dist" suffix:
+
+      cd config/
+      for foo in *.dist; do cp $foo `basename $foo .dist`; done
+
+   Or if you are installing Horde an a Windows system:
+
+      cd config
+      copy *.dist *.
+
+   Documentation on the format of those files can be found in each
+   file. You must at least complete the "Preferences System Settings"
+   section of conf.php and provide paths to helper applications in
+   mime_drivers.php.
+
+   Configuration of applications in registry.php is documented in
+   the INSTALL file of each application.  Most applications require
+   you to configure them with a "Horde administrator" account.  A
+   Horde administrator account is any normal Horde account that has been
+   listed in the $conf['auth']['admins'] array in horde/config/conf.php
+   It is recommended that you define an administrator account at this
+   time.
+
+   The other files in that directory need only be modified if you wish
+   to customize Horde's appearance or behaviour -- the defaults will
+   work at most sites.
+
+   Note for international users:  Horde uses GNU gettext to provide local
+   translations of text displayed by applications; the translations are
+   found in the po/ directory.  If a translation is not yet available
+   for your locale (and you wish to create one), or if you're having
+   trouble using a provided translation, please see the horde/docs/TRANSLATIONS
+   file for instructions.
+
+4. Securing Horde
+
+   a. Passwords
+
+      Some of Horde's configuration files contain passwords which local
+      users could use to access your database. It is recommended to ensure
+      that at least the Horde configuration files (in config/) are not
+      readable to system users. There are .htaccess files restricting
+      access to directories that do not need to be accessed directly;
+      before relying on those, ensure that your webserver supports
+      .htaccess and is configured to use them, and that the files in
+      those directories are in fact inaccessible via the browser.
+
+      An additional approach is to make Horde's configuration files
+      owned by the user 'root' and by a group which only the webserver
+      user belongs to, and then making them readable only to owner and
+      group. For example, if your webserver runs as www.www, do as
+      follows:
+
+         chown root.www config/*
+         chmod 0440 config/*
+
+   b. Sessions
+
+      Session data -- including hashed versions of your users'
+      passwords, in some applications -- may not be stored as securely
+      as necessary.
+
+      If you are using file-based PHP sessions (which are the default),
+      be sure that session files are not being written into /tmp with
+      permissions that allow other users to read them. Ideally, change
+      the 'session.save_path' setting in php.ini to a directory only
+      readable and writeable by your webserver.
+
+      Additionally, you can change the session handler of PHP to use any
+      storage backend requested (e.g. SQL database) via the
+      $conf['sessionhandler']['type'] parameter. See config/conf.php
+      for further information.
+
+5. Testing Horde
+
+   Once you have configured your webserver, PHP, and Horde, bring up the
+   included test page in your Web browser to ensure that all necessary
+   prerequisites have been met. If you installed Horde as described
+   above, the URL to the test page would be
+
+      http://your-server/horde/test.php
+
+   Check that your PHP and PEAR versions are acceptably recent, that
+   all required module capabilities are present, and that
+   magic_quotes_runtime is set to Off. Then note the "Session counter: 1"
+   line under "PHP Sessions", and reload the page. The session counter
+   should increment.
+
+
+CONFIGURING APPLICATIONS
+------------------------
+
+A list of available Horde applications can be found at
+
+   http://www.horde.org/projects.php
+
+Instructions on configuring Horde applications can be found in
+the INSTALL file in the application's docs/ directory.
+
+
+TEMPORARY FILES
+---------------
+
+Various Horde applications will generate temporary files in PHP's
+temporary directory (see the $conf['tmpdir'] entry in config/conf.php).
+For various reasons, some of these files may not be removed when the
+user's session ends. To reclaim this disk space, it may be necessary to
+periodically delete these old temporary files.
+
+An example cron-based solution can be found at scripts/temp-cleanup.cron.
+Another possible solution is to use Red Hat's "tmpwatch" utility to remove
+old files (see http://www.redhat.com/).
+
+
+OBTAINING SUPPORT
+-----------------
+
+If you encounter problems with Horde, help is available!
+
+The Horde Frequently Asked Questions List (FAQ), available on the Web
+at
+
+  http://www.horde.org/faq/
+
+The Horde Project runs a number of mailing lists, for individual
+applications and for issues relating to the project as a whole.
+Information, archives, and subscription information can be found at
+
+  http://www.horde.org/mail/
+
+Finally, Horde developers, contributors and users also make occasional
+appearances on IRC, on the channel #horde on the freenode Network 
+(irc.freenode.net).
+
+Please keep in mind that Horde is free software written by volunteers.
+For information on reasonable support expectations, please read
+
+  http://www.horde.org/support.php
+
+Thanks for using Horde!
+
+The Horde team
+horde@lists.horde.org
+
+$Horde: horde/docs/INSTALL,v 1.69 2004/04/29 19:37:26 slusarz Exp $

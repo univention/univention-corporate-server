@@ -1,0 +1,1668 @@
+# Horde Slovak translation.
+# Copyright (C) 2002 Leo Mrafko <leo@oel.sk> (original translator)
+# (C) 2002, 2003 Ivan Noris <vix@vazka.sk>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-05-20 00:15+0200\n"
+"PO-Revision-Date: 2004-05-23 20:01+0200\n"
+"Last-Translator: Ivan Noris <vix@vazka.sk>\n"
+"Language-Team: Slovak <vix@vazka.sk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; Aplikácia %s je pripravená na vykonanie nasledujúcich operácií "
+"údr¾by."
+
+msgid " (Read only)"
+msgstr " (Iba na èítanie)"
+
+msgid " and "
+msgstr " a "
+
+msgid " at "
+msgstr " rýchlos» "
+
+#, c-format
+msgid "%d-day forecast"
+msgstr "predpoveï na %d dní"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Poznámka"
+
+#, c-format
+msgid "%s Configuration"
+msgstr "Konfigurácia %s"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Operácie údr¾by pre aplikáciu %s - Potvrdenie"
+
+#, c-format
+msgid "%s Standard"
+msgstr "©tandardná schéma %s"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "Podmienky pou¾itia %s"
+
+#, c-format
+msgid "%s at %s ft"
+msgstr "%s vo vý¹ke %s stôp"
+
+#, c-format
+msgid "%s minutes"
+msgstr "%s minút"
+
+#, c-format
+msgid "%s not found."
+msgstr "%s nebol nájdený."
+
+#, c-format
+msgid "%s to %s of %s"
+msgstr "%s a¾ %s z %s"
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "Skupina '%s' bol pridaná do systému."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "Právo '%s' bolo pridané do systému."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' nebolo mo¾né vytvori»: %s."
+
+#, c-format
+msgid ", gusting %s %s"
+msgstr ", v nárazoch %s %s"
+
+#, c-format
+msgid ", variable from %s to %s"
+msgstr ", premenná v rozsahu %s a¾ %s"
+
+msgid "24 hours"
+msgstr "24 hodín"
+
+msgid "A database backend is required for this block."
+msgstr "Pre tento blok je po¾adovaný databázový backend."
+
+msgid "A new signup has been received and is awaiting your approval."
+msgstr "Systém prijal novú ¾iados» o prihlásenie a oèakáva Va¹e schválenie."
+
+msgid "AM/PM"
+msgstr "12 hodín"
+
+msgid "About..."
+msgstr "O..."
+
+msgid "Accounting"
+msgstr "Úètovanie"
+
+#, c-format
+msgid "Add %s"
+msgstr "Prida» %s"
+
+msgid "Add Child Group"
+msgstr "Prida» podriadenú skupinu"
+
+msgid "Add Here:"
+msgstr "Prida»:"
+
+msgid "Add New Group"
+msgstr "Prida» skupinu"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Prida» dcérsku skupinu do '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Prida» dcérske právo do '%s'"
+
+msgid "Add a new user:"
+msgstr "Prida» pou¾ívateµa:"
+
+msgid "Add new members"
+msgstr "Prida» èlenov"
+
+msgid "Add pair"
+msgstr "Prida» pár"
+
+#, c-format
+msgid "Add the %s Menu as a Mozilla Sidebar"
+msgstr "Prida» menu %s ako Mozilla Sidebar"
+
+msgid "Add user"
+msgstr "Prida» pou¾ívateµa"
+
+msgid "Add"
+msgstr "Prida»"
+
+#, c-format
+msgid ""
+"Added '%s' to the system, but could not add additional signup information: %"
+"s."
+msgstr ""
+"'%s' bol pridaný do systému, ale nemo¾no prida» ïal¹ie prihlasovacie "
+"informácie: %s."
+
+#, c-format
+msgid "Added '%s' to the system. You can log in now."
+msgstr "'%s' bol pridaný do systému. Teraz sa mô¾ete prihlási»."
+
+msgid "Adding users is disabled."
+msgstr "Pridávanie pou¾ívateµov je zakázané."
+
+msgid "Address Book"
+msgstr "Adresár"
+
+msgid "Administration"
+msgstr "Administrácia"
+
+msgid "Ads"
+msgstr "Reklamy"
+
+msgid "All Authenticated Users"
+msgstr "V¹etci autentifikovaní pou¾ívatelia"
+
+msgid "All Groups"
+msgstr "V¹etky skupiny"
+
+msgid "All Permissions"
+msgstr "V¹etky práva"
+
+msgid "Alternate IMSP Login"
+msgstr "Alternatívne prihlasovacie meno IMSP"
+
+msgid "Alternate IMSP Password"
+msgstr "Alternatívne heslo IMSP"
+
+msgid "Alternate IMSP Username"
+msgstr "Alternatívne pou¾ívateµské meno IMSP"
+
+msgid "Alternate templates"
+msgstr "Alternatívne ¹ablóny"
+
+msgid "Application is ready."
+msgstr "Aplikácia je pripravená."
+
+msgid "Application"
+msgstr "Aplikácia"
+
+msgid "Apply to Child Shares"
+msgstr "Aplikova» na podriadené zdieµané prieèinky"
+
+msgid "Approve"
+msgstr "Schváli»"
+
+msgid "Arabic (Windows-1256)"
+msgstr "Arabic (Windows-1256)"
+
+#, c-format
+msgid "Are you sure you want to remove the signup request for %s ?"
+msgstr "Naozaj chcete vymaza» ¾iados» o prihlásenie '%s'?"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Naozaj chcete vymaza» '%s' a v¹etky podskupiny?"
+
+msgid "Armenian (ARMSCII-8)"
+msgstr "Armenian (ARMSCII-8)"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Vy¾adova» potvrdenie pred vykonaním operácií údr¾by?"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Pokus o vymazanie neexistujúcej skupiny."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Pokus o vymazanie neexistujúceho práva."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Pokus o úpravu neexistujúceho práva."
+
+msgid "Available fields:"
+msgstr "Dostupné polo¾ky:"
+
+msgid "Azur"
+msgstr "Azur"
+
+msgid "Baltic (ISO-8859-13)"
+msgstr "Baltic (ISO-8859-13)"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Block Settings"
+msgstr "Nastavenia bloku"
+
+msgid "Block Type"
+msgstr "Typ bloku"
+
+msgid "Blue and White"
+msgstr "Blue and White"
+
+msgid "Bookmarks"
+msgstr "Zálo¾ky"
+
+msgid "Brown"
+msgstr "Brown"
+
+msgid "Bugs"
+msgstr "Chyby"
+
+msgid "Burnt Orange"
+msgstr "Burnt Orange"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalendár"
+
+msgid "Calm"
+msgstr "Bezvetrie"
+
+msgid "Camouflage"
+msgstr "Camouflage"
+
+msgid "Cancel Problem Report"
+msgstr "Zru¹i» správu o probléme"
+
+msgid "Cancel"
+msgstr "Zru¹i»"
+
+msgid "Categories and Labels"
+msgstr "Kategórie a popisky"
+
+msgid "Celtic (ISO-8859-14)"
+msgstr "Celtic (ISO-8859-14)"
+
+msgid "Central European (ISO-8859-2)"
+msgstr "Central European (ISO-8859-2)"
+
+msgid ""
+"Change the name and address that people see when they read and reply to your "
+"emails."
+msgstr ""
+"Nastavenie mena a adries, ktoré vidia µudia, keï èítajú a odpovedajú na Va¹e "
+"e-maily."
+
+msgid "Change"
+msgstr "Zmeni»"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Oznaète ¹tvorèek pri operáciách, ktoré chcete vykona» teraz."
+
+msgid "Chinese Simplified (GB2312)"
+msgstr "Chinese Simplified (GB2312)"
+
+msgid "Chinese Traditional (Big5)"
+msgstr "Chinese Traditional (Big5)"
+
+msgid "Choose how to display dates:"
+msgstr "Vyberte spôsob zobrazovania dátumov:"
+
+msgid "Click to Continue"
+msgstr "Kliknite pre pokraèovanie"
+
+msgid "Client Ticket"
+msgstr "Client Ticket"
+
+msgid "Client"
+msgstr "Klient"
+
+msgid "Close Window"
+msgstr "Zatvori» okno"
+
+msgid "Clouds"
+msgstr "Oblaèno"
+
+msgid "Color"
+msgstr "Farba"
+
+msgid "Comics"
+msgstr "Komiks"
+
+msgid "Command Shell"
+msgstr "Príkazový interpreter"
+
+msgid "Command"
+msgstr "Príkaz"
+
+msgid "Conditions"
+msgstr "Podmienky"
+
+msgid "Configuration needs updating."
+msgstr "Konfigurácia potrebuje aktualizáciu."
+
+msgid "Configuration"
+msgstr "Konfigurácia"
+
+#, c-format
+msgid "Configure %s"
+msgstr "Konfigurova» %s"
+
+msgid "Confirm Password"
+msgstr "Potvrïte heslo"
+
+msgid "Contacts"
+msgstr "Kontakty"
+
+msgid "Cornflower"
+msgstr "Cornflower"
+
+#, c-format
+msgid "Could not connect to server '%s' using FTP: %s"
+msgstr "Nepodarilo sa pripoji» k serveru '%s' pomocou FTP: %s"
+
+#, c-format
+msgid "Could not delete setup upgrade script '%s'."
+msgstr "Nepodarilo sa vymaza» skript na upgrade konfigurácie '%s'."
+
+#, c-format
+msgid "Could not save %s configuration."
+msgstr "Nepodarilo sa ulo¾i» konfiguráciu %s."
+
+#, c-format
+msgid "Could not save setup upgrade script to: '%s'."
+msgstr "Nepodarilo sa ulo¾i» skript na upgrade konfigurácie do: '%s'."
+
+#, c-format
+msgid "Could not write configuration for '%s': %s"
+msgstr "Nepodarilo sa zapísa» konfiguráciu pre '%s': %s"
+
+msgid "Couldn't find the Mozilla Sidebar. Make sure the sidebar is open."
+msgstr "Nemo¾no nájs» Mozilla Sidebar. Skontrolujte, ¾e je sidebar otvorený."
+
+msgid "Create a new one"
+msgstr "Vytvori» nový"
+
+msgid "Create"
+msgstr "Vytvori»"
+
+msgid "Creator Permissions"
+msgstr "Práva tvorcu"
+
+msgid "Cross Reference"
+msgstr "Krí¾ový odkaz"
+
+msgid "Current Phase"
+msgstr "Aktuálna fáza"
+
+msgid "Current Time"
+msgstr "Aktuálny èas"
+
+msgid "Current Weather"
+msgstr "Aktuálne poèasie"
+
+msgid "Current condition: "
+msgstr "Aktuálne podmienky: "
+
+msgid "Cyrillic (KOI8-R)"
+msgstr "Cyrillic (KOI8-R)"
+
+msgid "Cyrillic (Windows-1251)"
+msgstr "Cyrillic (Windows-1251)"
+
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "Cyrillic/Ukrainian (KOI8-U)"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Data"
+msgstr "Údaje"
+
+msgid "Date Received"
+msgstr "Dátum prijatia"
+
+msgid "Day"
+msgstr "Deò"
+
+msgid "Default Permissions"
+msgstr "©tandardné práva"
+
+msgid "Delete Group"
+msgstr "Vymaza» skupinu"
+
+msgid "Delete existing alternate template"
+msgstr "Vymaza» existujúcu alternatívnu ¹ablónu"
+
+#, c-format
+msgid "Delete permissions for '%s'"
+msgstr "Vymaza» práva pre '%s'"
+
+msgid "Delete selected identity"
+msgstr "Vymaza» vybranú identitu"
+
+msgid "Delete this permission and any sub-permissions?"
+msgstr "Naozaj chcete vymaza» toto právo a v¹etky jeho podpráva?"
+
+msgid "Delete"
+msgstr "Vymaza»"
+
+#, c-format
+msgid "Deleted setup upgrade script '%s'."
+msgstr "Skript na upgrade konfigurácie '%s' bol vymazaný."
+
+msgid "Development"
+msgstr "Vývoj"
+
+msgid "Dew Point for last hour: "
+msgstr "Rosný bod za poslednú hodinu: "
+
+msgid "Dew Point"
+msgstr "Rosný bod"
+
+msgid "Dew point: "
+msgstr "Rosný bod: "
+
+msgid "Directory"
+msgstr "Adresár"
+
+msgid "Discussions"
+msgstr "Diskusie"
+
+msgid "Display 24-hour times?"
+msgstr "Zobrazova» èas v 24-hodinovom formáte?"
+
+msgid "Display Options"
+msgstr "Nastavenie zobrazenia"
+
+msgid "Do not delete"
+msgstr "Nevymaza»"
+
+msgid "Does the first row contain the field names? If yes, check this box:"
+msgstr "Obsahuje prvý riadok názvy polí? Ak áno, za¹krtnite políèko: "
+
+msgid "Download generated configuration as PHP script."
+msgstr "Stiahnu» vygenerovanú konfiguráciu ako PHP skript."
+
+msgid "Edit Block"
+msgstr "Upravi» blok"
+
+msgid "Edit Group"
+msgstr "Upravi» skupinu"
+
+msgid "Edit options for:"
+msgstr "Upravi» práva pre:"
+
+#, c-format
+msgid "Edit permissions for %s"
+msgstr "Upravi» práva pre %s"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Upravi» práva pre '%s'"
+
+msgid "Edit"
+msgstr "Upravi»"
+
+msgid "Email Address"
+msgstr "Emailová adresa:"
+
+msgid "Error"
+msgstr "Chyba"
+
+msgid "Every 15 minutes"
+msgstr "Ka¾dých 15 minút"
+
+msgid "Every 30 seconds"
+msgstr "Ka¾dých 30 sekúnd"
+
+msgid "Every 5 minutes"
+msgstr "Ka¾dých 5 minút"
+
+msgid "Every half hour"
+msgstr "Ka¾dú polhodinu"
+
+msgid "Every minute"
+msgstr "Ka¾dú minútu"
+
+msgid "Example values:"
+msgstr "Napríklad:"
+
+msgid "Execute"
+msgstr "Spusti»"
+
+msgid "FTP upload of setup"
+msgstr "Nahra» konfiguráciu na FTP"
+
+msgid "Feels Like"
+msgstr ""
+
+msgid "Feels like: "
+msgstr ""
+
+msgid "File Manager"
+msgstr "Správca súborov"
+
+msgid "Filters"
+msgstr "Filtre"
+
+msgid "First Half"
+msgstr "Prvá polovica"
+
+msgid "First Quarter"
+msgstr "Prvá ¹tvr»"
+
+msgid "Follow up task"
+msgstr ""
+
+msgid ""
+"Forecast Days (note that the returned forecast returns both day and night; a "
+"large number here could result in a wide block)"
+msgstr ""
+"Predpoveï na uvedený poèet dní (pamätajte na to, ¾e predpoveï je pre dni aj "
+"noci a tak mô¾e veµké èíslo spôsobi» veµkú ¹írku bloku)"
+
+msgid "Forms"
+msgstr "Formuláre"
+
+msgid "Fortune type"
+msgstr "Typ fortuny"
+
+msgid "Fortune"
+msgstr "Fortuna"
+
+msgid "Fortunes"
+msgstr "Fortuny"
+
+msgid "Forums"
+msgstr "Fóra"
+
+msgid "Forwards"
+msgstr "Presmerovania"
+
+msgid "From the "
+msgstr "Zo smeru "
+
+msgid "Full Description"
+msgstr "Úplný popis"
+
+msgid "Full Moon"
+msgstr "Spln"
+
+msgid "Full Name"
+msgstr "Celé meno:"
+
+msgid "Funny note"
+msgstr "Zábavná poznámka"
+
+#, c-format
+msgid "Generate %s Configuration"
+msgstr "Generova» konfiguráciu pre aplikáciu %s"
+
+msgid "Go"
+msgstr "Odosla»"
+
+msgid "Google Search"
+msgstr "Hµada» na Google"
+
+msgid "Greek (ISO-8859-7)"
+msgstr "Greek (ISO-8859-7)"
+
+msgid "Green"
+msgstr "Green"
+
+msgid "Grey"
+msgstr "Grey"
+
+msgid "Group Administration"
+msgstr "Administrácia skupín"
+
+msgid "Group permissions"
+msgstr "Skupinové práva"
+
+msgid "Groups"
+msgstr "Skupiny"
+
+msgid "Guest Permissions"
+msgstr "Práva anonymných pou¾ívateµov"
+
+msgid "Guest Services"
+msgstr "Slu¾by pre anonymných pou¾ívateµov"
+
+msgid "Guest permissions"
+msgstr "Práva anonymných pou¾ívateµov"
+
+msgid "Guestbook"
+msgstr "Guestbook"
+
+msgid "Headlines"
+msgstr "Hlavné správy"
+
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "Hebrew (ISO-8859-8-I)"
+
+msgid "Help"
+msgstr "Pomocník"
+
+msgid "Hemisphere"
+msgstr "Pologuµa"
+
+msgid "Here is the beginning of the file:"
+msgstr "Tu je zaèiatok súboru:"
+
+msgid "Home"
+msgstr "Domov"
+
+msgid "Horde Administration"
+msgstr "Administrácia Horde"
+
+msgid "Horde Configuration"
+msgstr "Konfigurácia Horde"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "How many fields (columns) are there?"
+msgstr "Zadajte poèet polí (ståpcov)?"
+
+msgid "Humidity"
+msgstr "Vlhkos»"
+
+msgid "Humidity: "
+msgstr "Vlhkos»: "
+
+msgid "Icons Only"
+msgstr "Iba ikony"
+
+msgid "Icons with text"
+msgstr "Ikony a text"
+
+msgid "Identity's name:"
+msgstr "Názov identity:"
+
+msgid "Image Galleries"
+msgstr "Obrázkové galérie"
+
+msgid "Images"
+msgstr "Obrázky"
+
+#, c-format
+msgid "Import, Step %d"
+msgstr "Import, krok %d"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Importované pole: %s"
+
+msgid "Imported fields:"
+msgstr "Importované polia:"
+
+msgid "Individual Users"
+msgstr "Jednotliví pou¾ívatelia"
+
+msgid "Information"
+msgstr "Informácie"
+
+msgid "Insert alternate template"
+msgstr "Vlo¾i» alternatívnu ¹ablónu"
+
+msgid "Invalid application."
+msgstr "Neplatná aplikácia."
+
+msgid "Invalid parent permission."
+msgstr "Neplatné rodièovské právo."
+
+msgid "Japanese (ISO-2022-JP)"
+msgstr "Japanese (ISO-2022-JP)"
+
+msgid "Kolab"
+msgstr "Kolab"
+
+msgid "Korean (EUC-KR)"
+msgstr "Korean (EUC-KR)"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Last Half"
+msgstr "Posledná polovica"
+
+msgid "Last Quarter"
+msgstr "Posledná ¹tvr»"
+
+msgid "Last Updated:"
+msgstr "Posledná aktualizácia:"
+
+msgid "Lavender"
+msgstr "Lavender"
+
+msgid "Layout"
+msgstr "Vzhµad"
+
+msgid "Light Blue"
+msgstr "Light Blue"
+
+msgid "List Databases"
+msgstr "Vypísa» zoznam databáz"
+
+msgid "List Help Topics"
+msgstr "Zoznam tém Pomocníka"
+
+msgid "List Tables"
+msgstr "Vypísa» zoznam tabuliek"
+
+msgid "Listing users is disabled."
+msgstr "Zobrazovanie zoznamu pou¾ívateµov je zakázané."
+
+msgid "Literature"
+msgstr "Literatúra"
+
+msgid "Local time: "
+msgstr "Miestny èas: "
+
+msgid "Locale and Time"
+msgstr "Lokalizácia a èas"
+
+msgid "Location"
+msgstr "Lokalita"
+
+msgid "Log in"
+msgstr "Prihlásenie"
+
+msgid "Log out"
+msgstr "Odhlási»"
+
+msgid "Login"
+msgstr "Prihlásenie"
+
+msgid "Logout"
+msgstr "Odhlásenie"
+
+msgid "Loyola Blue"
+msgstr "Loyola Blue"
+
+msgid "Loyola"
+msgstr "Loyola"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "MOTD"
+msgstr "Správa dòa"
+
+msgid "Mail & News"
+msgstr "Po¹ta & News"
+
+msgid "Mail Admin"
+msgstr "Posla» e-mail administrátorovi"
+
+msgid "Mail"
+msgstr "Po¹ta"
+
+msgid ""
+"Manage the list of categories you have to label items with, and colors "
+"associated with those categories."
+msgstr ""
+"Spravova» zoznam kategórií, s ktorými oznaèujete polo¾ky a farby asociované "
+"s týmito kategóriami."
+
+msgid "Matching fields"
+msgstr "Zhodné polia"
+
+msgid "Max temp last 24 hours: "
+msgstr "Najvy¹¹ia teplota za posledných 24 hodín: "
+
+msgid "Max temp last 6 hours: "
+msgstr "Najvy¹¹ia teplota za posledných 6 hodín: "
+
+msgid "Meetings"
+msgstr "Stretnutia"
+
+msgid "Members"
+msgstr "Èlenovia"
+
+msgid "Menu mode:"
+msgstr "Zobrazenie menu:"
+
+msgid "Metar Weather"
+msgstr "Poèasie Metar"
+
+msgid ""
+"Metar block not available. Details have been logged for the administrator."
+msgstr ""
+"Údaje Metar nie sú k dispozícii. Detaily boli zaznamenané pre administrátora."
+
+msgid "Metar block not available."
+msgstr "Údaje Metar nie sú dostupné."
+
+msgid "Metric"
+msgstr "Metrické"
+
+msgid "Min temp last 24 hours: "
+msgstr "Najni¾¹ia teplota za posledných 24 hodín: "
+
+msgid "Min temp last 6 hours: "
+msgstr "Najni¾¹ia teplota za posledných 6 hodín: "
+
+msgid ""
+"Missing configuration. You have to generate it now if you want to use this "
+"application."
+msgstr ""
+"Chýba konfigurácia. Ak chcete pou¾íva» túto aplikáciu, musíte teraz "
+"vygenerova» konfiguráciu."
+
+msgid "Mobile Mail"
+msgstr "Mobilný mail"
+
+msgid "Moon Phases"
+msgstr "Mesaèné fázy"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "My Account"
+msgstr "Moje konto"
+
+msgid "NO, I Do NOT Agree"
+msgstr "Nie, nesúhlasím."
+
+msgid "NeXT"
+msgstr "NeXT"
+
+msgid "Network"
+msgstr "Sie»"
+
+msgid "Never"
+msgstr "Nikdy"
+
+msgid "New Category"
+msgstr "Nová kategória"
+
+msgid "New Moon"
+msgstr "Nov"
+
+msgid "New Username (optional)"
+msgstr "Nové pou¾ívateµské meno (nepovinné)"
+
+msgid "News"
+msgstr "News"
+
+msgid "Next Phase"
+msgstr "Nasledujúca fáza"
+
+msgid "Next"
+msgstr "Ïalej"
+
+msgid "Night"
+msgstr "Noc"
+
+msgid "No child permissions are to be added below this level."
+msgstr "Pod touto úrovòou sa nepridajú ¾iadne podriadené práva."
+
+msgid "No location is set."
+msgstr "Nie je nastavená lokalita."
+
+msgid "No pending signups."
+msgstr "®iadne prebiehajúce prihlásenia."
+
+msgid "No temporary directory available for cache."
+msgstr "Pre vyrovnávaciu pamä» nie je dostupný ¾iaden doèasný prieèinok."
+
+msgid "No version found in original configuration. Regenerate configuration."
+msgstr ""
+"V pôvodnej konfigurácii nebola nájdená ¾iadna verzia. Vygenerujte znovu "
+"konfiguráciu."
+
+msgid "No version found in your configuration. Regenerate configuration."
+msgstr ""
+"V konfigurácii nebola nájdená ¾iadna verzia. Vygenerujte znovu konfiguráciu."
+
+msgid "None"
+msgstr "®iaden"
+
+msgid "Nordic (ISO-8859-10)"
+msgstr "Nordic (ISO-8859-10)"
+
+msgid "Northern Hemisphere"
+msgstr "Severná pologuµa"
+
+msgid "Notes"
+msgstr "Poznámky"
+
+msgid "Notice"
+msgstr "Poznámka"
+
+msgid "Object Creator"
+msgstr "Autor objektu"
+
+msgid "Object creator permissions"
+msgstr "Práva tvorcu objektu"
+
+msgid "Office"
+msgstr "Pracovisko"
+
+msgid "Open in a new window"
+msgstr "Otvori» v novom okne"
+
+#, c-format
+msgid "Options for %s"
+msgstr "Nastavenia %s"
+
+msgid "Options"
+msgstr "Nastavenia"
+
+msgid "Original application template"
+msgstr "Pôvodná ¹ablóna aplikácie"
+
+#, c-format
+msgid "Original templates in %s:"
+msgstr "Pôvodné ¹ablóny v %s:"
+
+msgid "Other Information"
+msgstr "Ïal¹ie informácie"
+
+msgid "Owner Permissions"
+msgstr "Práva vlastníka"
+
+msgid "PHP Code"
+msgstr "PHP kód"
+
+msgid "PHP Shell"
+msgstr "PHP Shell"
+
+msgid "Password"
+msgstr "Heslo"
+
+msgid "Password: "
+msgstr "Heslo: "
+
+msgid "Password:"
+msgstr "Heslo:"
+
+msgid "Passwords must match."
+msgstr "Heslá musia by» rovnaké."
+
+msgid "Paste"
+msgstr "Vlo¾i»"
+
+msgid "Pending Signups:"
+msgstr "Prebiehajúce prihlásenia:"
+
+msgid "Perform Maintenance Operations"
+msgstr "Vykona» operácie údr¾by"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Vykona» operácie údr¾by pri prihlásení?"
+
+#, c-format
+msgid "Permission '%s' not deleted."
+msgstr "Právo '%s' nebolo vymazané."
+
+msgid "Permission"
+msgstr "Právo"
+
+msgid "Permissions Administration"
+msgstr "Administrácia práv"
+
+msgid "Permissions"
+msgstr "Práva"
+
+msgid "Personal Information"
+msgstr "Osobné informácie"
+
+msgid "Photos"
+msgstr "Fotografie"
+
+msgid "Please enter a name for the new category:"
+msgstr "Zadajte prosím meno pre novú kategóriu:"
+
+msgid "Please provide a summary of the problem."
+msgstr "Prosím uveïte zhrnutie problému."
+
+msgid "Please provide your username and password"
+msgstr "Prosím zadajte svoje pou¾ívateµské meno a heslo"
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Preèítajte si prosím nasledujúci text. MUSÍTE súhlasi» s podmienkami "
+"pou¾itia systému."
+
+msgid "Polls"
+msgstr "Ankety"
+
+msgid "Postnuke"
+msgstr "Postnuke"
+
+#, c-format
+msgid "Precipitation for last %s hour(s): "
+msgstr "Zrá¾ky za posledných %s hodín: "
+
+msgid "Presentations"
+msgstr "Prezentácie"
+
+msgid "Pressure at sea level: "
+msgstr "Tlak na úrovni mora: "
+
+msgid "Pressure"
+msgstr "Tlak"
+
+msgid "Pressure: "
+msgstr "Tlak: "
+
+msgid "Previous task"
+msgstr "Predchádzajúca úloha"
+
+msgid "Problem?"
+msgstr "Ohlási» problém"
+
+msgid "Projects"
+msgstr "Projekty"
+
+msgid "Query"
+msgstr "Dotaz"
+
+msgid "Random Fortune"
+msgstr "Náhodná fortuna"
+
+msgid "Read"
+msgstr "Èíta»"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Naozaj vymaza» %s? Túto operáciu nemo¾no vráti» spä»."
+
+msgid "Refresh Portal View:"
+msgstr "Obnovi» zobrazenie portálu:"
+
+msgid "Remarks"
+msgstr "Postrehy"
+
+msgid "Remote Servers"
+msgstr "Vzdialené servery"
+
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "Vzdialená URL (http://www.example.com/horde):"
+
+msgid "Remove Block"
+msgstr "Odstráni» blok"
+
+msgid "Remove pair"
+msgstr "Odstráni» pár"
+
+msgid "Remove saved script from server's temporary directory."
+msgstr "Odstráni» ulo¾ený skript z doèasného prieèinka na serveri."
+
+msgid "Remove user"
+msgstr "Odstráni» pou¾ívateµa"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "Odstráni» pou¾ívateµa: %s"
+
+msgid "Remove"
+msgstr "Odstráni»"
+
+msgid "Reseller Ticket"
+msgstr "Reseller Ticket"
+
+msgid "Reseller"
+msgstr "Reseller"
+
+msgid "Reset"
+msgstr "Vymaza» formulár"
+
+msgid "Results"
+msgstr "Výsledky"
+
+msgid "Return to Options"
+msgstr "Návrat na nastavenia"
+
+msgid "Riddles"
+msgstr "Hádanky"
+
+msgid "Run"
+msgstr "Spusti»"
+
+msgid "SMS Messaging"
+msgstr "Posielanie SMS"
+
+msgid "SQL Shell"
+msgstr "SQL Shell"
+
+msgid "SSH"
+msgstr "SSH"
+
+#, c-format
+msgid "Save %s"
+msgstr "Ulo¾i» %s"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "Ulo¾i» '%s'"
+
+msgid "Save Options"
+msgstr "Ulo¾i» nastavenia"
+
+msgid ""
+"Save generated configuration as a PHP script to your server's temporary "
+"directory."
+msgstr ""
+"Ulo¾i» vygenerovanú konfiguráciu ako PHP skript do doèasného prieèinka Vá¹ho "
+"servera."
+
+msgid "Save"
+msgstr "Ulo¾i»"
+
+#, c-format
+msgid "Saved %s configuration."
+msgstr "Konfigurácia %s bola ulo¾ená."
+
+#, c-format
+msgid "Saved setup upgrade script to: '%s'."
+msgstr "Skript na upgrade nastavení bol ulo¾ený: '%s'."
+
+msgid "Search Engines"
+msgstr "Vyhµadávaèe"
+
+msgid "Search"
+msgstr "Hµada»"
+
+msgid "Select a group to add"
+msgstr "Vyberte skupinu na pridanie"
+
+msgid "Select a new owner"
+msgstr "Vyberte nového vlastníka"
+
+msgid "Select a server"
+msgstr "Vyberte server"
+
+msgid "Select a user to add"
+msgstr "Vyberte pou¾ívateµa na pridanie"
+
+msgid "Select the date delimiter:"
+msgstr "Vyberte oddeµovaè vo formáte dátumu:"
+
+msgid "Select the date format:"
+msgstr "Vyberte formát dátumu:"
+
+msgid "Select the identity you want to change:"
+msgstr "Vyberte identitu, ktorú chcete zmeni»:"
+
+msgid "Select the time delimiter:"
+msgstr "Vyberte oddeµovaè vo formáte èasu:"
+
+msgid "Select the time format:"
+msgstr "Vyberte formát èasu:"
+
+msgid "Select two matching fields."
+msgstr "Vyberte dve zhodné polia."
+
+msgid "Select your color scheme."
+msgstr "Vyberte si farebnú schému"
+
+msgid "Select your preferred language:"
+msgstr "Vyberte jazyk:"
+
+msgid "Send Problem Report"
+msgstr "Posla» správu o probléme"
+
+msgid "Sensor: "
+msgstr "Sensor: "
+
+msgid "Set up remote servers that you want to access from your portal."
+msgstr ""
+"Nastavenie vzdialených serverov, ku ktorým chcete pristupova» z Vá¹ho "
+"portálu."
+
+msgid "Set your preferred display language."
+msgstr "Nastavenie preferovaného jazyka"
+
+msgid "Set your preferred language, timezone and date options."
+msgstr "Vyberte jazyk, èasovú zónu a nastavenia dátumu."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Nastavenie aplikácie spú¹»anej pri ¹tarte, farebnej schémy, intervalu "
+"obnovovania stránky a iných vlastností zobrazenia."
+
+msgid "Several locations possible with the parameter: "
+msgstr "Do úvahy prichádza niekoµko lokalít pomocou parametra: "
+
+msgid "Shopping"
+msgstr "Shopping"
+
+msgid "Short Summary"
+msgstr "Krátky súhrn"
+
+msgid "Should access keys be defined for most links?"
+msgstr "Majú sa pre väè¹inu liniek vytvori» skratkové klávesy?"
+
+msgid "Show last login time when logging in?"
+msgstr "Má sa pri prihlásení zobrazi» èas posledného prihlásenia?"
+
+#, c-format
+msgid "Show the %s Menu on the left?"
+msgstr "Zobrazi» menu %s na µavej strane?"
+
+msgid "Show"
+msgstr "Zobrazi»"
+
+msgid "Sign up if not registered"
+msgstr "Prihlási» sa, ak nie som registrovaný"
+
+msgid "Simplex"
+msgstr "Simplex"
+
+msgid "Skip Maintenance"
+msgstr "Preskoèi» údr¾bu"
+
+msgid "Snow depth: "
+msgstr "Håbka snehu: "
+
+msgid "Snow equivalent in water: "
+msgstr "Mno¾stvo vody ekvivalentné snehu: "
+
+msgid "South European (ISO-8859-3)"
+msgstr "South European (ISO-8859-3)"
+
+msgid "Southern Hemisphere"
+msgstr "Ju¾ná pologuµa"
+
+msgid "Spam"
+msgstr "Spam"
+
+msgid "SpamAssassin"
+msgstr "SpamAssassin"
+
+msgid "Standard"
+msgstr "©tandardné"
+
+#, c-format
+msgid ""
+"Submitted request to add '%s' to the system. You can not log in until your "
+"request has been approved."
+msgstr ""
+"Po¾iadavka na pridanie '%s' do systému bola odoslaná. Nemô¾ete sa prihlási», "
+"kým nebude Va¹a po¾iadavka schválená."
+
+msgid "Success"
+msgstr "Úspech"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' bola úspe¹ne pridaná do systému."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "Vymazanie '%s' bola úspe¹né."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Vymazanie '%s' zo systému bolo úspe¹né."
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "Aktualizácia '%s' bola úspe¹ná."
+
+#, c-format
+msgid "Successfully wrote %s"
+msgstr "%s bol úspe¹né ulo¾ený"
+
+msgid "Sun Rise"
+msgstr "Východ slnka"
+
+msgid "Sun Set"
+msgstr "Západ slnka"
+
+msgid "Sunrise"
+msgstr "Východ slnka"
+
+msgid "Sunrise/Sunset"
+msgstr "Východ/západ slnka"
+
+msgid "Sunrise: "
+msgstr "Východ slnka: "
+
+msgid "Sunset"
+msgstr "Západ slnka"
+
+msgid "Sunset: "
+msgstr "Západ slnka: "
+
+msgid "Support"
+msgstr "Podpora"
+
+msgid "Task"
+msgstr "Úloha"
+
+msgid "Tasks"
+msgstr "Úlohy"
+
+msgid "Teal"
+msgstr "Teal"
+
+msgid "Temp for last hour: "
+msgstr "Teplota za poslednú hodinu: "
+
+msgid "Temperature"
+msgstr "Teplota"
+
+msgid "Temperature: "
+msgstr "Teplota: "
+
+msgid "Template Administration"
+msgstr "Správa ¹ablón"
+
+msgid "Text Only"
+msgstr "Iba text"
+
+msgid "Thai (TIS-620)"
+msgstr "Thai (TIS-620)"
+
+#, c-format
+msgid "The signup request for %s has been removed."
+msgstr "®iados» o prihlásenie %s bola vymazaná."
+
+msgid "The weather.com block is not available."
+msgstr "Blok weather.com nie je dostupný."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system. %s."
+msgstr "Nastala chyba pri pridávaní '%s' do systému: %s."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system: %s"
+msgstr "Nastala chyba pri pridávaní '%s' do systému: %s"
+
+#, c-format
+msgid "There was a problem removing '%s' from the system: "
+msgstr "Nastala chyba pri odstraòovaní '%s' zo systému: "
+
+#, c-format
+msgid "There was a problem updating '%s': %s"
+msgstr "Nastala chyba pri aktualizácii '%s': %s"
+
+msgid ""
+"There was an error in the configuration form. Perhaps you left out a "
+"required field."
+msgstr ""
+"Nastala chyba v konfiguraènom formulári. Pravdepodobne ste nevyplnili "
+"po¾adované pole."
+
+#, c-format
+msgid "This is %s."
+msgstr "Toto je %s."
+
+msgid "Tickets"
+msgstr "Tickets"
+
+msgid "Time Tracking"
+msgstr "Time Tracking"
+
+msgid "Time format"
+msgstr "Formát èasu"
+
+msgid "Title"
+msgstr "Titulok"
+
+msgid "Today"
+msgstr "Dnes"
+
+msgid "Tomorrow"
+msgstr "Zajtra"
+
+msgid "Turkish (ISO-8859-9)"
+msgstr "Turkish (ISO-8859-9)"
+
+msgid "U.V. index: "
+msgstr "U.V. index: "
+
+msgid "URL"
+msgstr "URL"
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Nemo¾no vymaza» '%s': %s."
+
+msgid "Undo Changes"
+msgstr "Zru¹i» zmeny"
+
+msgid "Unicode (UTF-8)"
+msgstr "Unicode (UTF-8)"
+
+msgid "Units"
+msgstr "Jednotky"
+
+#, c-format
+msgid "Update %s"
+msgstr "Aktualizova» %s"
+
+msgid "Update user"
+msgstr "Aktualizova» pou¾ívateµa"
+
+msgid "Update"
+msgstr "Aktualizácia"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "Aktualizácia '%s' bola úspe¹ná."
+
+msgid "Upgrade script deleted."
+msgstr "Skript na upgrade bol vymazaný."
+
+msgid "Upload"
+msgstr "Nahra»"
+
+msgid "Uploaded all application setup files to the server."
+msgstr "V¹etky súbory s konfiguráciou boli nahrané na server."
+
+msgid "Use Default Value"
+msgstr "Pou¾i» prednastavenú hodnotu"
+
+msgid "Use if name/password is different for IMSP server."
+msgstr "Pou¾ite v prípade, ¾e je meno/heslo odli¹né pre IMSP server."
+
+msgid "User Administration"
+msgstr "Správa pou¾ívateµov"
+
+msgid "User Registration has been disabled for this site."
+msgstr "Registrácia pou¾ívateµov bola pre túto stránku zakázaná."
+
+msgid "User Registration"
+msgstr "Registrácia pou¾ívateµa"
+
+msgid "User permissions"
+msgstr "Práva vlastníka"
+
+msgid "Username"
+msgstr "Pou¾ívateµské meno"
+
+msgid "Username: "
+msgstr "Pou¾ívateµské meno: "
+
+msgid "Username:"
+msgstr "Pou¾ívateµské meno:"
+
+msgid "Users in the system:"
+msgstr "Pou¾ívatelia systému:"
+
+msgid "Users"
+msgstr "Pou¾ívatelia"
+
+msgid "Vacation"
+msgstr "Dovolenka"
+
+msgid "Variable"
+msgstr "Premenná"
+
+msgid "Version Control"
+msgstr "Mana¾ment verzií"
+
+msgid "Vietnamese (VISCII)"
+msgstr "Vietnamese (VISCII)"
+
+msgid "View an external web page"
+msgstr "Zobrazi» externú www stránku"
+
+msgid "Visibility"
+msgstr "Viditeµnos»"
+
+msgid "Visibility: "
+msgstr "Viditeµnos»: "
+
+#, c-format
+msgid "WARNING!!! REMOVE SCRIPT MANUALLY FROM %s."
+msgstr "UPOZORNENIE!!! ODSTRÁÒTE SKRIPT Z %s RUÈNE."
+
+msgid "Weather Forecast"
+msgstr "Predpoveï poèasia"
+
+msgid "Web Site"
+msgstr "WWW stránka"
+
+msgid "Web"
+msgstr "Web"
+
+msgid "Webserver"
+msgstr "Webserver"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Víta Vás %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Vitajte, %s"
+
+msgid "Western (ISO-8859-1)"
+msgstr "Western (ISO-8859-1)"
+
+msgid "Western (ISO-8859-15)"
+msgstr "Western (ISO-8859-15)"
+
+#, c-format
+msgid "What application should %s display after login?"
+msgstr "Ktorú aplikáciu má %s zobrazi» po prihlásení?"
+
+msgid "What is the delimiter character?"
+msgstr "Aký je znak pre oddeµovaè?"
+
+msgid "What is the quote character?"
+msgstr "Aký je znak pre úvodzovku?"
+
+msgid "Which phases"
+msgstr "Ktoré fázy"
+
+msgid "Wiki"
+msgstr "Wiki"
+
+msgid "Wind speed in knots"
+msgstr "Rýchlos» vetra v uzloch"
+
+msgid "Wind: "
+msgstr "Vietor: "
+
+msgid "Wind:"
+msgstr "Vietor:"
+
+msgid "Wishlists"
+msgstr "Wishlists"
+
+#, c-format
+msgid ""
+"Writing not possible. You can either use the available upgrade script or "
+"copy manually the code below to %s."
+msgstr ""
+"Nemo¾no zapisova». Mô¾ete pou¾i» buï dostupný upgrade skript alebo "
+"skopírova» ruène kód uvedený ni¾¹ie do %s."
+
+msgid "YY"
+msgstr "YY"
+
+msgid "Yes, I Agree"
+msgstr "Súhlasím."
+
+#, c-format
+msgid "You can approve this signup at %s"
+msgstr "Toto prihlásenie mô¾ete schváli» na %s"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Musíte popísa» problém predtým, ako odo¹lete správu o probléme."
+
+msgid "You must specify a username to remove."
+msgstr "Musíte urèi» meno pou¾ívateµa, ktorého chcete vymaza»."
+
+msgid "You must specify the username to add."
+msgstr "Musíte urèi» meno pou¾ívateµa, ktorého chcete prida»."
+
+msgid "You must specify the username to update."
+msgstr "Musíte urèi» pou¾ívateµa, ktorý sa má aktualizova»."
+
+msgid "Your Email Address"
+msgstr "Va¹a Emailová adresa"
+
+msgid "Your From: address:"
+msgstr "Va¹a Emailová adresa pou¾itá pre odchádzajúcu po¹tu:"
+
+msgid "Your Information"
+msgstr "Va¹e informácie"
+
+msgid "Your Name"
+msgstr "Va¹e meno"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Vá¹ autentifikaèný modul nepodporuje pridávanie pou¾ívateµov, alebo bola "
+"táto mo¾nos» z nejakého dôvodu zakázaná."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Vá¹ autentifikaèný modul nepodporuje zobrazovanie zoznamu pou¾ívateµov, "
+"alebo bola táto mo¾nos» z nejakého dôvodu zakázaná."
+
+msgid "Your browser does not support this feature."
+msgstr "Vá¹ prehliadaè nepodporuje túto funkciu."
+
+msgid "Your current time zone:"
+msgstr "Va¹a aktuálna èasová zóna:"
+
+msgid "Your default identity:"
+msgstr "Prednastavená identita:"
+
+msgid "Your full name:"
+msgstr "Va¹e meno:"
+
+msgid "Your remote servers:"
+msgstr "Va¹e vzdialené servery:"
+
+msgid "calm"
+msgstr "bezvetrie"
+
+#, c-format
+msgid "from the %s (%s) at %s %s"
+msgstr "zo smeru %s (%s) rýchlos»ou %s %s"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "type the password twice to confirm"
+msgstr "pre potvrdenie zadajte heslo dvakrát"
+
+msgid "weather.com"
+msgstr "weather.com"

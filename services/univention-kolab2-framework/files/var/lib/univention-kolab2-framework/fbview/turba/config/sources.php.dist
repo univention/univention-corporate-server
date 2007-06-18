@@ -1,0 +1,648 @@
+<?php
+/**
+ * $Horde: turba/config/sources.php.dist,v 1.84 2004/04/24 14:13:44 jan Exp $
+ *
+ * This file is where you specify the sources of contacts available to
+ * users at your installation. It contains a large number of EXAMPLES. Please
+ * remove or comment out those examples that YOU DON'T NEED.
+ * There are a number of properties that you can set for each server,
+ * including:
+ *
+ * title: This is the common (user-visible) name that you want displayed
+ * in the contact source drop-down box.
+ *
+ * type: The types 'ldap', 'sql', 'imsp' and 'prefs' are currently
+ * supported. Preferences-based addressbooks are not intended for
+ * production installs unless you really know what you're doing - they
+ * are not searchable, and they won't scale well if a user has a large
+ * number of entries.
+ *
+ * params: These are the connection parameters specific to the contact
+ * source. See below for examples of how to set these.
+ *
+ * map: This is a list of mappings from the standard Turba attribute
+ * names (on the left) to the attribute names by which they are known
+ * in this contact source (on the right). Turba also supports
+ * composite fields.  A composite field is defined by mapping the
+ * field name to an array containing a list of component fields and a
+ * format string (similar to a printf() format string). Here is an
+ * example:
+ * ...
+ * 'name' => array('fields' => array('firstname', 'lastname'),
+ *                 'format' => '%s %s'),
+ * 'firstname' => 'object_firstname',
+ * 'lastname' => 'object_lastname',
+ * ...
+ *
+ * search: A list of Turba attribute names that can be searched for
+ * this source.
+ *
+ * strict: A list of native field/attribute names that must always be
+ * matched exactly in a search.
+ *
+ * public: If set to true, this source will be available to all users.
+ * See also 'readonly' -- public=true readonly=false means writable
+ * by all users!
+ *
+ * readonly: If set to true, this source can only be modified by users
+ * on the 'admin' list.
+ *
+ * admin: A list (array) of users that are allowed to modify this source,
+ * if it's marked 'readonly'.
+ *
+ * export: If set to true, this source will appear on the Export menu,
+ * allowing users to export the contacts to a CSV (etc.) file.
+ *
+ * charset: Some LDAP servers use UTF8 for encoding. See below for
+ * examples.
+ *
+ * Here are some example configurations:
+ */
+
+/**
+ * Public netcenter and bigfoot addressbooks.
+ */
+$cfgSources['netcenter'] = array(
+    'title' => _("Netcenter Member Directory"),
+    'type' => 'ldap',
+    'params' => array(
+        'server' => 'memberdir.netscape.com',
+        'port' => 389,
+        'root' => 'ou=member_directory,o=netcenter.com',
+        'dn' => array('cn'),
+        'objectclass' => 'person',
+        'filter' => '',
+        'charset' => 'iso-8859-1'
+    ),
+    'map' => array(
+        '__key' => 'dn',
+        'name' => 'cn',
+        'email' => 'mail',
+        'alias' => 'givenname'
+    ),
+    'search' => array(
+        'name',
+        'email',
+        'alias'
+    ),
+    'strict' => array(
+        'dn'
+    ),
+    'public' => true,
+    'readonly' => true,
+    'export' => false
+);
+
+$cfgSources['bigfoot'] = array(
+    'title' => 'Bigfoot',
+    'type' => 'ldap',
+    'params' => array(
+        'server' => 'ldap.bigfoot.com',
+        'port' => 389,
+        'root' => '',
+        'charset' => 'iso-8859-1'
+    ),
+    'map' => array(
+        '__key' => 'dn',
+        'name' => 'cn',
+        'email' => 'mail',
+        'alias' => 'givenname'
+    ),
+    'search' => array(
+        'name',
+        'email',
+        'alias'
+    ),
+    'strict' => array(
+        'dn'
+    ),
+    'public' => true,
+    'readonly' => true,
+    'export' => false
+);
+
+$cfgSources['verisign'] = array(
+    'title' => _("Verisign Directory"),
+    'type' => 'ldap',
+    'params' => array(
+        'server' => 'directory.verisign.com',
+        'port' => 389,
+        'root' => '',
+        'charset' => 'iso-8859-1'
+    ),
+    'map' => array(
+        '__key' => 'dn',
+        'name' => 'cn',
+        'email' => 'mail'
+    ),
+    'search' => array(
+        'name',
+        'email'
+    ),
+    'strict' => array(
+        'dn'
+    ),
+    'public' => true,
+    'readonly' => true,
+    'export' => false
+);
+
+/**
+ * A local address book in an SQL database. This implements a per-user
+ * address book.
+ *
+ * Be sure to create a turba_objects table in your Horde database
+ * from the schema in turba/scripts/drivers/turba.sql if you use
+ * this source.
+ */
+$cfgSources['localsql'] = array(
+    'title' => _("My Addressbook"),
+    'type' => 'sql',
+    // The default connection details are pulled from the Horde-wide
+    // SQL connection configuration.
+    //
+    // The old example illustrates how to use an alternate database
+    // configuration.
+    //
+    // New Example:
+    'params' => array_merge($conf['sql'], array('table' => 'turba_objects')),
+
+    // Old Example:
+    // 'params' => array(
+    //     'phptype' => 'mysql',
+    //     'hostspec' => 'localhost',
+    //     'username' => 'horde',
+    //     'password' => '*****',
+    //     'database' => 'horde',
+    //     'table' => 'turba_objects',
+    //     'charset' => 'iso-8859-1'
+    // ),
+    'map' => array(
+        '__key' => 'object_id',
+        '__owner' => 'owner_id',
+        '__type' => 'object_type',
+        '__members' => 'object_members',
+        'name' => 'object_name',
+        'email' => 'object_email',
+        'alias' => 'object_alias',
+        'homeAddress' => 'object_homeaddress',
+        'workAddress' => 'object_workaddress',
+        'homePhone' => 'object_homephone',
+        'workPhone' => 'object_workphone',
+        'cellPhone' => 'object_cellphone',
+        'fax' => 'object_fax',
+        'title' => 'object_title',
+        'company' => 'object_company',
+        'notes' => 'object_notes',
+        'pgpPublicKey' => 'object_pgppublickey',
+        'smimePublicKey' => 'object_smimepublickey',
+        'freebusyUrl' => 'object_freebusyurl'
+    ),
+    'search' => array(
+        'name',
+        'email'
+    ),
+    'strict' => array(
+        'object_id',
+        'owner_id',
+        'object_type',
+    ),
+    'public' => false,
+    'readonly' => false,
+    'admin' => array(),
+    'export' => true
+);
+
+/**
+ * A local address book in an LDAP directory. This implements a public
+ * (shared) address book.
+ * To store freebusy information in the ldapdirectory, you'll need
+ * the rfc2739.schema from ftp://kalamazoolinux.org/pub/projects/awilliam/misc-ldap/.
+ */
+$cfgSources['localldap'] = array(
+    'title' => _("Shared Directory"),
+    'type' => 'ldap',
+    'params' => array(
+        'server' => 'ldap.example.com',
+        'port' => 389,
+        'root' => 'dc=example,dc=com',
+        'bind_dn' => 'cn=admin,ou=users,dc=example,dc=com',
+        'bind_password' => '********',
+        'sizelimit' => 200,
+        'dn' => array('cn'),
+        'objectclass' => array('top',
+                               'person',
+                               'organizationalPerson','inetOrgPerson'),
+        'charset' => 'iso-8859-1',
+        'version' => 3
+    ),
+    'map' => array(
+        '__key' => 'dn',
+        'name' => 'cn',
+        'email' => 'mail',
+        'homePhone' => 'homephone',
+        'workPhone' => 'telephonenumber',
+        'cellPhone' => 'mobiletelephonenumber',
+        'homeAddress' => 'homepostaladdress'
+        // 'freebusyUrl' => 'calFBURL'
+    ),
+    'search' => array(
+        'name',
+        'email',
+        'homePhone',
+        'workPhone',
+        'cellPhone',
+        'homeAddress'
+    ),
+    'strict' => array(
+        'dn',
+    ),
+    'public' => true,
+    'readonly' => false,
+    'admin' => array(),
+    'export' => true
+);
+
+/**
+ * A personal adressbook. This assumes that the login is
+ * <username>@domain.com and that the users are stored on the same
+ * ldap server. Thus it is possible to bind with the username and
+ * password from the user. For more info; please refer to the
+ * docs/LDAP file in the Turba distribution.
+ *
+ * To store freebusy information in the ldapdirectory, you'll need
+ * the rfc2739.schema from ftp://kalamazoolinux.org/pub/projects/awilliam/misc-ldap/.
+ */
+
+// First we need to get the uid.
+$uid = Auth::getBareAuth();
+$basedn = 'dc=example, dc=com';
+$cfgSources['personal_ldap'] = array(
+    'title' => _("My Addressbook"),
+    'type' => 'ldap',
+    'params' => array(
+        'server' => 'localhost',
+        'root' => 'ou=' . $uid . ',ou=personal_addressbook' . $basedn,
+        'bind_dn' => 'uid=' . $uid . ',ou=People,' . $basedn,
+        'bind_password' => Auth::getCredential('password'),
+        'dn' => array('cn', 'uid'),
+        'objectclass' => array('top',
+                               'person',
+                               'inetOrgPerson',
+                               // 'calEntry',
+                               'organizationalPerson'),
+        'charset' => 'utf-8',
+        'version' => 3
+    ),
+    'map' => array(
+        '__key' => 'dn',
+        'name' => 'cn',
+        'email' => 'mail',
+        'lastname' => 'sn',
+        'title' => 'title',
+        'company' => 'organizationname',
+        'businessCategory' => 'businesscategory',
+        'companyAddress' => 'postaladdress',
+        'zip' => 'postalcode',
+        'workPhone' => 'telephonenumber',
+        'fax' => 'facsimiletelephonenumber',
+        'homeAddress' => 'homepostaladdress',
+        'homePhone' => 'homephone',
+        'cellPhone' => 'mobile',
+        'notes' => 'description',
+        // Evolution interopt attributes:  (those that do not require the evolution.schema)
+        'office'=> 'roomNumber',
+        'department' => 'ou',
+        'nickname' => 'displayName',
+        'website' => 'labeledURI',
+
+        // these are not stored on the ldapserver!
+        'pgpPublicKey' => 'object_pgppublickey',
+        'smimePublicKey' => 'object_smimepublickey',
+
+        // From rfc2739.schema:
+        // 'freebusyUrl' => 'calFBURL',
+
+    ),
+    'search' => array(
+        'name',
+        'email',
+        'businessCategory',
+        'title',
+        'homePhone',
+        'workPhone',
+        'cellPhone',
+        'homeAddress'
+    ),
+    'strict' => array(
+        'dn',
+
+    ),
+    'public' => true,
+    'readonly' => false,
+    'admin' => array($uid),
+    'export' => true
+);
+
+/**
+ * A preferences-based adressbook. This will always be private. You
+ * can add any attributes you like to the map and it will just work;
+ * you can also create multiple prefs-based addressbooks by changing
+ * the 'name' parameter. This is best for addressbooks that are
+ * expected to remain small; it's not the most efficient, but it can't
+ * be beat for getting up and running quickly, especially if you
+ * already have Horde preferences working. Note that it is not
+ * searchable, though - searches will simply return the whole
+ * addressbook.
+ */
+$cfgSources['prefs'] = array(
+    'title' => _("Private Address Book"),
+    'type' => 'prefs',
+    'params' => array(
+        'name' => 'prefs'
+    ),
+    'map' => array(
+        '__key' => 'id',
+        '__type' => '_type',
+        '__members' => '_members',
+        'name' => 'name',
+        'email' => 'mail',
+        'alias' => 'alias'
+    ),
+    'search' => array(
+        'name',
+        'email',
+        'alias'
+    ),
+    'strict' => array(
+        'id',
+        '_type',
+    ),
+    'public' => false,
+    'readonly' => false,
+    'export' => true
+);
+
+/**
+ * IMSP Based Addressbook.
+ *
+ * Communicates with an IMSP backend server.
+ *
+ * Notes:
+ * You should configure the user's "main" addressbook here.  The name
+ * of the addressbook is set in the 'name' element of the params array. 
+ * It is configured by default to be the same as the username.
+ * Any other addressbooks the user has access to will automatically be
+ * configured at runtime.
+ *
+ * In the params array, accepted values for auth_method are 'cram_md5'
+ * and 'plaintext' - these must match a IMSP_Auth_ driver.  
+ * 
+ * Groups in other IMSP-aware applications are just entries with multiple
+ * email addresses in the email field and a 'group' field set to flag the entry
+ * as a group. (The Cyrusoft applications, Mulberry and Silkymail both use a
+ * field named 'group' set to equal 'group' to signify this). A Turba_Group
+ * is basically a List of existing Turba_Objects.  The IMSP driver will map
+ * between these two structures when reading and writing groups.  The only
+ * caveat is that IMSP groups that contain email addresses which do not have a
+ * cooresponding contact entry will be ignored. The group_id_field should be
+ * set to the IMSP field that flags the entry as a 'group' entry and the
+ * group_id_value should be set to the value given to that field.
+ *
+ * By default, the username and password that were used to login to
+ * Horde is used to login to the IMSP server.  If these credentials
+ * are different, there is a user preference in Horde to allow another
+ * username / password to be entered. The alternate credentials are always
+ * used if present.
+ *
+ * In the map array, since IMSP uses the 'name' attribute as a key,
+ * this is what __key is mapped to ... and a dynamic field 'fullname'
+ * is added and mapped to the horde 'name' field. This is populated
+ * with the IMSP 'name' field when the object is read from the server.
+ */
+
+// First, get the user name
+$uid = $GLOBALS['prefs']->getValue('imsp_auth_user');
+$pass = $GLOBALS['prefs']->getValue('imsp_auth_pass');
+if (!strlen($uid)) {
+    $uid = Auth::getAuth();
+    if (preg_match('/(^.*)@/', $uid, $matches)) {
+        $uid = $matches[1];
+    }
+    $pass = Auth::getCredential('password');
+}
+
+$cfgSources['imsp'] = array(
+    'title' => _("IMSP"),
+    'type' => 'imsp',
+    'params' => array(
+        'server'   => 'localhost',
+        'port'     => '406',
+        'username' => $uid,
+        'password' => $pass,
+        'name' => $uid,
+        'auth_method' => 'cram_md5',
+        'group_id_field' => 'group',
+        'group_id_value' => 'group'
+        ),
+    'map' => array(
+        '__key' => 'name',
+        '__type' => '__type',
+        '__members' => '__members',
+        'name' => 'fullname',
+        'email' => 'email',
+        'alias' => 'alias',
+        'company' => 'company',
+        'notes' => 'notes',
+        'workPhone' => 'phone-work',
+        'fax' => 'fax',
+        'homePhone' => 'phone-home',
+        'cellPhone' => 'cellphone'
+        ),
+    'search' => array(
+        'name',
+        'email',
+        'alias',
+        'company',
+        'homePhone'
+        ),
+    'strict' => array(),
+    'public' => false,
+    'readonly' => false,
+    'export' => true
+    );
+
+/**
+ * Get any other addressbooks this user might be privy to.
+ */
+require_once 'Net/IMSP/Utils.php';
+$result = Net_IMSP_Utils::getAllBooks($cfgSources['imsp']); 
+if (!is_a($result, 'PEAR_Error')) {
+    for ($i = 0; $i < count($result); $i++) {
+        $cfgSources['imsp' . $i+1] = $result[$i];
+    }
+} else {
+    $notification->push($result);
+}
+
+/**
+ * A global address book for a Kolab Server. This is typically a
+ * read-only public directory, stored in the default Kolab LDAP
+ * server. The user accessing this should have read permissions
+ * to the shared directory in LDAP.
+ */
+$cfgSources['kolab_global'] = array(
+    'title' => _("Global Address Book"),
+    'type' => 'ldap',
+    'params' => array(
+        'server' => $GLOBALS['conf']['kolab']['server'],
+        'port' => 389,
+        'root' => $GLOBALS['conf']['kolab']['basedn'],
+        'sizelimit' => 200,
+        'dn' => array('cn'),
+        'objectclass' => array(
+            'top',
+            'inetOrgPerson'
+        ),
+        'charset' => 'iso-8859-1',
+        'version' => 3,
+        'bind_dn' => $GLOBALS['conf']['kolab']['binddn'],
+        'bind_password' => $GLOBALS['conf']['kolab']['bindpw'],
+    ),
+    'map' => array(
+        '__key'             => 'dn',
+        // We should use the following 'name' definition, however the current
+        // Kolab admin interface does not store ldap names properly, meaning
+        // this ends up returning just the surname.
+        //
+        // 'name'              => array(
+        //   'fields' => array(
+        //       'firstname',
+        //       'lastname'
+        //   ),
+        //   'format' => '%s %s'
+        //
+        'name'              => 'cn',
+        'firstname'         => 'givenName',
+        'lastname'          => 'sn',
+        'email'             => 'mail',
+        'alias'             => 'alias',
+        'title'             => 'title',
+        'company'           => 'o',
+        'workAddress'       => 'street',
+        'workCity'          => 'l',
+        'workProvince'      => 'st',
+        'workPostalCode'    => 'postalCode',
+        'workCountry'       => 'c',
+        'homePhone'         => 'homePhone',
+        'workPhone'         => 'telephoneNumber',
+        'cellPhone'         => 'mobile',
+        'fax'               => 'fax',
+        'notes'             => 'description',
+    ),
+    'search' => array(
+        'name',
+        'firstname',
+        'lastname',
+        'email',
+        'title',
+        'company',
+        'workAddress',
+        'workCity',
+        'workProvince',
+        'workPostalCode',
+        'workCountry',
+        'homePhone',
+        'workPhone',
+        'cellPhone',
+        'fax',
+        'notes',
+    ),
+    'strict' => array(
+        'dn',
+    ),
+    'public' => true,
+    'readonly' => true,
+    'admin' => array(),
+    'export' => true
+);
+
+/**
+ * A local address book for a Kolab user. This is stored in a
+ * specially flagged 'Contacts' folder within the users Cyrus IMAP
+ * mailbox. By default this folder can only be accessed by its owner,
+ * however it can be shared via Cyrus ACLs.
+ */
+$cfgSources['kolab_local'] = array(
+    'title' => 'My Contacts',
+    'type' => 'kolab',
+    'params' => array(
+        'folder' => 'Contacts',
+        'server' => $GLOBALS['conf']['kolab']['server'],
+    ),
+    'map' => array(
+        '__key'             => 'uid',
+        '__owner'           => 'owner',
+        'name'              => array(
+            'fields' => array(
+                'firstname',
+                'lastname'
+            ),
+            'format' => '%s %s'
+        ),
+        'firstname'         => 'firstname',
+        'lastname'          => 'lastname',
+        'email'             => 'email',
+        'title'             => 'title',
+        'company'           => 'company',
+        'homeAddress'       => 'homeAddress',
+        'homeCity'          => 'homeCity',
+        'homeProvince'      => 'homeProvince',
+        'homePostalCode'    => 'homePostalCode',
+        'homeCountry'       => 'homeCountry',
+        'workAddress'       => 'workAddress',
+        'workCity'          => 'workCity',
+        'workProvince'      => 'workProvince',
+        'workPostalCode'    => 'workPostalCode',
+        'workCountry'       => 'workCountry',
+        'homePhone'         => 'homePhone',
+        'workPhone'         => 'workPhone',
+        'cellPhone'         => 'cellPhone',
+        'fax'               => 'fax',
+        'notes'             => 'notes',
+        'website'           => 'website',
+        'nickname'          => 'nickname',
+    ),
+    'search' => array(
+        'name',
+        'firstname',
+        'lastname',
+        'email',
+        'title',
+        'company',
+        'homeAddress',
+        'homeCity',
+        'homeProvince',
+        'homePostalCode',
+        'homeCountry',
+        'workAddress',
+        'workCity',
+        'workProvince',
+        'workPostalCode',
+        'workCountry',
+        'homePhone',
+        'workPhone',
+        'cellPhone',
+        'fax',
+        'notes',
+        'website',
+        'nickname',
+    ),
+    'strict' => array(
+        'uid'
+    ),
+    'public' => false,
+    'readonly' => false,
+    'admin' => array(),
+    'export' => true
+);

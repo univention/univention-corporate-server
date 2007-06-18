@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Form/package.xml,v 1.3 2004/03/22 20:05:18 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_Form</name>
+  <summary>Horde Form API</summary>
+  <description>
+    The Horde_Form:: package provides form rendering, validation, and other functionality for the Horde Application Framework.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>robertecoyle</user>
+      <role>developer</role>
+      <name>Robert E. Coyle</name>
+      <email>robertecoyle@hotmail.com</email>
+    </maintainer>
+    <maintainer>
+      <user>mdjukic</user>
+      <role>developer</role>
+      <name>Marko Djukic</name>
+      <email>marko@oblo.com</email>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file role="php" name="Form.php" baseinstalldir="/Horde" />
+
+      <dir name="Form" role="php" baseinstalldir="/Horde">
+        <file name="Action.php" />
+        <file name="Renderer.php" />
+
+        <dir name="Action" role="php" baseinstalldir="/Horde">
+          <file name="conditional_enable.php" />
+          <file name="conditional_setvalue.php" />
+          <file name="reload.php" />
+          <file name="submit.php" />
+          <file name="sum_fields.php" />
+          <file name="updatefield.php" />
+        </dir>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="ext" rel="has" optional="yes">gettext</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_Server</dep>
+      <dep type="pkg" rel="has">Horde_Token</dep>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-03</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

@@ -1,0 +1,58 @@
+#! /bin/sh
+#
+# Univention Kolab2 Framework
+#  join script
+#
+# Copyright (C) 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-kolab2-framework successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
+	univention-admin computers/$server_role modify $@ --dn $ldap_hostdn --append service="kolab2"
+	univention-admin container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=services
+	univention-admin settings/service create  --ignore_exists $@ --position cn=services,cn=univention,$ldap_base --set name=kolab2
+	# if there is no default kolab home server ...
+	kolab_home=`univention-admin settings/default list --filter='cn=default' | grep defaultKolabHomeServer | sed 's/ *defaultKolabHomeServer: //'`
+	if [ "$kolab_home" = "None" ]; then
+		univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --set defaultKolabHomeServer=$hostname.$domainname
+	fi
+	univention-admin settings/usertemplate create $@ --ignore_exists --position cn=templates,cn=univention,$ldap_base --set name="$hostname.$domainname Groupware Account" --set kolabHomeServer="$hostname.$domainname" --set mailPrimaryAddress="<username>@$domainname" --set e-mail="<username>@$domainname"
+fi
+
+univention-admin mail/domain create $@ --ignore_exists --set name=$domainname --position cn=domain,cn=mail,$ldap_base
+
+test -n "`grep "univention-kolab2-framework successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kolab2-framework successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0

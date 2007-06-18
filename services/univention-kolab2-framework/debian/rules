@@ -1,0 +1,110 @@
+#!/usr/bin/make -f
+#
+# Univention Kolab2 Framework
+#  rules file for the debian package
+#
+# Copyright (C) 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+export DH_COMPAT=3
+
+package=univention-kolab2-framework
+
+build: build-stamp
+
+build-stamp:
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	dh_clean
+
+install:
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabmailboxfilter.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolab_smtpdpolicy debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/kolabmailtransport.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/misc.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/olhacks.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
+	install -m755 files/var/lib/univention-kolab2-framework/kolabfilter/resmgr.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/kolabfilter/
+
+	install -m755 files/var/www/freebusy/freebusy.php debian/univention-kolab2-framework/var/www/freebusy/
+	install -m755 files/var/www/freebusy/pfb.php debian/univention-kolab2-framework/var/www/freebusy/
+
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycache.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusy.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusycollector.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusyldap.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/misc.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/recurrence.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+
+	sh -c " cd files; find usr/share/php/PEAR/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	sh -c " cd files; find var/lib/univention-kolab2-framework/fbview/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	sh -c " cd files; find var/lib/univention-kolab2-framework/kolab-pear/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+
+	install -m 755 65univention-kolab2-framework.inst debian/univention-kolab2-framework/usr/lib/univention-install
+	install -m 755 kolabserver.py debian/univention-kolab2-framework/usr/lib/univention-ldap-listener/system/
+	install -m 755 kolabdomain.py debian/univention-kolab2-framework/usr/lib/univention-ldap-listener/system/
+	install -m 755 files/usr/share/outlook-setup/konfig2000.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/konfig2003.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/readme.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.au3 debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2000-de-setup.exe debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.au3 debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/UGS-Outlook-2003-de-setup.exe debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+	install -m 755 files/usr/share/outlook-setup/univention_logo.gif debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
+
+	univention-install-baseconfig
+	dh_install
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installman -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_shlibdeps -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

@@ -1,0 +1,12 @@
+<?php
+/**
+ * $Horde: turba/config/html.php.dist,v 1.6 2003/08/08 13:50:42 chuck Exp $
+ * 
+ * CSS properties unique to Turba.
+ * This file is parsed by css.php, and used to produce a stylesheet.
+ */
+
+$css['.listitem']['background-color'] = '#ffffff';
+$css['.listitem-hi']['background-color'] = '#ccccff';
+$css['.oldlistitem']['background-color'] = '#dddddd';
+$css['.oldlistitem-hi']['background-color'] = '#aaaacc';

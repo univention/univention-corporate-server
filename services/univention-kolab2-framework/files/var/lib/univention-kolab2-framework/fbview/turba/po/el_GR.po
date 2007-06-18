@@ -1,0 +1,547 @@
+# Turba Greek translation.
+# Copyright (C) 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba: 1.2-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:11+0200\n"
+"PO-Revision-Date: 2001-07-26 11:36+0200\n"
+"Last-Translator: Stefanos I. Dimitriou <support_webmail@teiath.gr>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s Επιτυχώς εισαγωγή του αρχείου"
+
+msgid "Add Contact ..."
+msgstr "Νέα καρτέλα ..."
+
+msgid "Add a new contact"
+msgstr "Προσθήκη νέας καρτέλας"
+
+msgid "Add failed"
+msgstr "Η προσθήκη απέτυχε"
+
+msgid "Add to"
+msgstr "Προσθήκη στο"
+
+msgid "Add"
+msgstr "Προσθήκη"
+
+msgid "Address Book Listing"
+msgstr "Λίστα Διευθύνσεων"
+
+msgid "Address book is read-only."
+msgstr "Ο διευθυνσιογράφος είναι μόνο για ανάγνωση."
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Διευθύνσεις στη λίστα: %s"
+
+msgid "Advanced Search"
+msgstr "Ειδική Αναζήτηση"
+
+msgid "Alias"
+msgstr "Ψευδώνυμο"
+
+msgid "All"
+msgstr "Όλα"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "Ascending"
+msgstr "Αύξουσα"
+
+msgid "Available Columns:"
+msgstr "Διαθέσιμα Πεδία:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "Επιστροφή στο %s"
+
+msgid "Browse"
+msgstr "Λίστα"
+
+msgid "Cancel"
+msgstr "Ακύρωση"
+
+msgid "Checkbox"
+msgstr "Επιλογή των διευθύνσεων"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Επιλογή της σειράς των στηλών κατά την προβολή της λίστας των διευθύνσεων."
+
+msgid "Clear Search"
+msgstr "Ακύρωση Αναζήτησης"
+
+msgid "Column Options"
+msgstr "Επιλογές Στηλών"
+
+msgid "Comma separated values"
+msgstr "Τιμές διαχωρισμένες με κόμμα"
+
+msgid "Company"
+msgstr "Εταιρία"
+
+msgid "Contact removed from list."
+msgstr "Η καρτέλα αφαιρέθηκε από τη λίστα."
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Περιεχόμενα του %s"
+
+msgid "Default Display"
+msgstr "Προεπιλεγμένη Εμφάνιση"
+
+msgid "Default sorting direction:"
+msgstr "Προεπιλεγμένη κατεύθυνση ταξινόμησης:"
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgid "Deletion failed"
+msgstr "Διαγραφή απέτυχε"
+
+msgid "Descending"
+msgstr "Φθίνουσα"
+
+msgid "Directory"
+msgstr "Κατάλογος"
+
+msgid "Display Options"
+msgstr "Επιλογές Εμφάνισης"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Επεξεργασία '%s'"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error while searching directory."
+msgstr "Παρουσιάστηκε σφάλμα κατά την αναζήτηση στον κατάλογο."
+
+msgid "Error"
+msgstr "Λάθος"
+
+msgid "Exit Address Book"
+msgstr "Έξοδος από το Διευθυνσιογράφο"
+
+msgid "Export Address Book"
+msgstr "Εξαγωγή Βιβλίου Διευθύνσεων"
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "Failed to access the specified address book."
+msgstr "Αποτυχία κατά τη σύνδεση στον επιλεγμένο διευθυνσιογράφο."
+
+msgid "Failed to browse list"
+msgstr "Αποτυχία κατά την εμφάνιση της λίστας"
+
+msgid "Failed to browse the directory"
+msgstr "Αποτυχία κατά την προβολή του καταλόγου"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Αποτυχία σύνδεσης στον επιλεγμένο κατάλογο."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Αποτυχία κατά την αναζήτηση στον κατάλογο : %s"
+
+msgid "Failed to search the specified directory."
+msgstr "Αποτυχία κατά την αναζήτηση στον επιλεγμένο κατάλογο."
+
+msgid "Fax"
+msgstr "Φαξ"
+
+msgid "Find"
+msgstr "Αναζήτηση"
+
+msgid "From"
+msgstr "Από"
+
+msgid "Group"
+msgstr "Ομάδα"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid "Home Address"
+msgstr "Διεύθυνση Κατοικίας"
+
+msgid "Home Phone"
+msgstr "Τηλέφωνο Κατοικίας"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Αν εισάγετε διευθύνσεις από αρχείο χαρακτήρων, η πρώτη γραμμή περιέχει τα "
+"ονόματα των πεδίων;"
+
+msgid "Illegal or malformed form data."
+msgstr "Λανθασμένη μορφή ή τύπος δεδομένων."
+
+msgid "Import Address Book"
+msgstr "Εισαγωγή Βιβλίου Διευθύνσεων"
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import/Export Addressbooks"
+msgstr "Εισαγωγή/Εξαγωγή Διευθυνσιογράφου"
+
+msgid "Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+msgid "Invalid address book."
+msgstr "Λανθασμένο Βιβλίο Διευθύνσεων."
+
+msgid "Invalid e-mail address."
+msgstr "Λάθος 'e-mail' διεύθυνση"
+
+msgid "Invalid email."
+msgstr "Λάθος email."
+
+msgid "Invalid entry."
+msgstr "Λάθος Καταχώριση."
+
+msgid "Invalid name."
+msgstr "Λάθος όνομα"
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "Matching"
+msgstr "Ταιριάζει με"
+
+msgid "Message"
+msgstr "Μήνυμα"
+
+msgid "Mobile Phone"
+msgstr "Κινητό Τηλέφωνο"
+
+msgid "More than 1 entry returned."
+msgstr "Επιστράφηκαν περισσότερες από μία καταχωρήσεις."
+
+msgid "Mulberry Address Book"
+msgstr "Διευθυνσιογράφος Mulberry"
+
+msgid "Mulberry addressbook sucessfully imported"
+msgstr "Έγινε επιτυχώς εισαγωγή του διευθυνσιογράφου Mulberry"
+
+msgid "Name"
+msgstr "Όνομα"
+
+msgid "New List"
+msgstr "Νέα Λίστα"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "Δεν βρέθηκε %s καταχώριση για %s."
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Κανένας από τους διαθέσιμους διευθυνσιογράφους δεν έχει ρυθμιστεί ώστε να "
+"μπορεί να καταχωρεί εγγραφές. Μπορείτε να ενημερώσετε το διαχειριστή του "
+"συστήματος σας."
+
+msgid "None"
+msgstr "Κανένα"
+
+msgid "Notes"
+msgstr "Σημειώσεις"
+
+msgid "Options"
+msgstr "Επιλογές"
+
+msgid "Outlook"
+msgstr "Πρόγραμμα Outlook"
+
+msgid "Pine Address Book"
+msgstr "Διευθυνσιογράφος Pine"
+
+msgid "Pine addressbook sucessfully imported"
+msgstr "Έγινε επιτυχώς εισαγωγή του διευθυνσιογράφου Pine"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Παρακαλώ επιλέξτε ένα διευθυνσιογράφο για να προσθέσετε μία καρτέλα σε αυτόν."
+
+msgid "Please enter the name of the new list:"
+msgstr "Παρακαλώ δώστε το όνομα για τη νέα λίστα:"
+
+msgid "Please select a directory:"
+msgstr "Παρακαλώ επιλέξτε ένα κατάλογο:"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+msgid "Reset"
+msgstr "Ακύρωση"
+
+msgid "Save Changes"
+msgstr "Αποθήκευση αλλαγών"
+
+msgid "Save"
+msgstr "Αποθήκευση"
+
+msgid "Search Results"
+msgstr "Αποτελέσματα Αναζήτησης"
+
+msgid "Search"
+msgstr "Αναζήτηση"
+
+msgid "Search&nbsp;Results"
+msgstr "Αποτελέσματα&nbsp;Αναζήτησης"
+
+msgid "Select Address Book"
+msgstr "Επιλέξτε Διευθυνσιογράφο"
+
+msgid "Select List"
+msgstr "Λίστα Επιλογής"
+
+msgid "Select the destination to import to:"
+msgstr "Επιλέξτε που θα γίνει η εισαγωγή:"
+
+msgid "Select the file to import:"
+msgstr "Επιλέξτε το αρχείο που θα εισαχθεί:"
+
+msgid "Select the format to export to:"
+msgstr "Επιλέξτε την μορφή εξαγωγής των δεδομένων:"
+
+msgid "Select the format to import from:"
+msgstr "Επιλέξτε την μορφή εισαγωγής των δεδομένων:"
+
+msgid "Select the source to export from:"
+msgstr "Επιλέξτε από που θα εξάγετε τα δεδομένα:"
+
+msgid "Select view to display by default."
+msgstr "Επιλογή της προεπιλεγμένης προβολής."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Επιλογή των πεδίων που θα εμφανίζονται στη λίστα των διευθύνσεων."
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε την προτιμούμενη γλώσσα:"
+
+msgid "Select"
+msgstr "Επιλογή"
+
+msgid "Selected Columns:"
+msgstr "Επιλεγμένες Στήλες:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Αποστολή email προς %s"
+
+msgid "Set your preferred display language."
+msgstr "Ρυθμίστε την γλώσσα προτίμησης σας."
+
+msgid "Show All"
+msgstr "Εμφάνιση Όλων"
+
+msgid "Show Contacts"
+msgstr "Εμφάνιση Επαφών"
+
+msgid "Show Lists"
+msgstr "Εμφάνιση Λιστών"
+
+msgid "Show"
+msgstr "Εμφάνιση"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Κάποια από τα αρχεία ρυθμίσεων του Turba's λείπουν:"
+
+msgid "Sort Direction"
+msgstr "Κατεύθυνση Ταξινόμησης"
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+msgid "Tab separated values"
+msgstr "Τιμής διαχωρισμένες με 'Tab'"
+
+msgid "The data got lost"
+msgstr "Τα δεδομένα χάθηκαν"
+
+msgid "The data got lost."
+msgstr "Τα δεδομένα χάθηκαν."
+
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιείχε δεδομένα."
+
+msgid "There are no browseable address books."
+msgstr "Δεν υπάρχουν διευθυνσιογράφοι τους οποίους μπορείτε να δείτε."
+
+msgid "There are no writeable address books."
+msgstr "Δεν υπάρχουν διευθυνσιογράφοι στους οποίους μπορείτε να γράψετε."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Υπήρξε πρόβλημα κατά την μεταφορά του αρχείου. Το αρχείο μπορεί να είναι "
+"μεγαλύτερο από το επιτρεπόμενο μέγεθος."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Υπήρξε πρόβλημα στην προσθήκη του αντικειμένου. Επικοινωνήστε με τον "
+"διαχειριστή."
+
+msgid "There was an error creating a new list."
+msgstr "Παρουσιάστηκε σφάλμα κατά την δημιουργία της νέας λίστας."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Παρουσιάστηκε πρόβλημα κατά την διαγραφή αυτού του αντικειμένου. Επικοινωνήστε με τον "
+"διαχειριστή για περισσότερες πληροφορίες."
+
+msgid "There was an error deleting this object."
+msgstr "Παρουσιάστηκε σφάλμα κατά την διαγραφή αυτού του αντικειμένου."
+
+msgid "There was an error displaying the select List"
+msgstr "Παρουσιάστηκε σφάλμα κατά εμφάνιση της λίστας"
+
+msgid "There was an error importing the data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή δεδομένων."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Παρουσιάστηκε σφάλμα κατά μεταφορά του αρχείου στον server"
+
+msgid "There was an error importing the vCard data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή της Ψηφιακής Κάρτας."
+
+msgid "There was an error removing this object."
+msgstr "Παρουσιάστηκε σφάλμα κατά την διαγραφή αυτού του αντικειμένου."
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις προκαθορισμένες ρυθμίσεις του Turba, και επίσης "
+"ποιες από αυτές μπορούν να τροποποιήσουν οι χρήστες."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο περιέχει τις ρυθμίσεις για τα χρώματα και τις γραμματοσειρές."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Αυτό το αρχείο ορίζει τις γενικές ιδιότητες του προγράμματος Turba - "
+"τους τύπους, το όνομα, το email, κ.τ.λ"
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Αυτό το αρχείο ορίζει την λίστα με τις διαθέσιμες πηγές του Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος Turba. Περιλαμβάνει "
+"τα μονοπάτια και τις επιλογές για όλα του τα script."
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "Αυτή η επαφή %s έχει ήδη καταχωρηθεί στο διευθυνσιογράφο."
+
+
+msgid "This person is already in your address book."
+msgstr "Αυτή η επαφή υπάρχει ήδη στο διευθυνσιογράφο σας."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Turba is not properly configured"
+msgstr "Το πρόγραμμα Turba δεν έχει ρυθμιστεί πλήρως."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Δεν μπορούν να γίνουν οι ρυθμίσεις του %s."
+
+msgid "Unnamed Contact"
+msgstr "Στην επαφή δεν έχει συμπληρωθεί όνομα."
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+msgid "View map"
+msgstr "Εμφάνιση Χάρτη"
+
+msgid "View to display by default:"
+msgstr "Η προβολή που θα εμφανίζεται:"
+
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Web Site"
+msgstr "Ηλεκτρονική Διεύθυνση(URL)"
+
+msgid "Work Address"
+msgstr "Διεύθυνση Εργασίας"
+
+msgid "Work Phone"
+msgstr "Τηλέφωνο Εργασίας"
+
+msgid "You are creating a distribution list."
+msgstr "Δημιουργείτε μία λίστα διανομής."
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "Δεν αντιστοιχήθηκαν πεδία από το αρχείο που εισήχθη στα αντίστοιχα του διευθυνσιογράφου."
+
+msgid "You must select at least one contact first."
+msgstr "Πρέπει πρώτα να επιλέξετε μία επαφή."
+
+msgid "Your Information"
+msgstr "Οι πληροφορίες Σας"
+
+msgid "Your options have been updated."
+msgstr "Οι επιλογές σας έχουν αποθηκευτεί."
+
+msgid "[Edit]"
+msgstr "[Επεξεργασία]"
+
+msgid "add column"
+msgstr "προσθήκη στήλης"
+
+msgid "businesscategory"
+msgstr "Κατηγορία Εργασίας"
+
+msgid "move left"
+msgstr "Μεταφορά Αριστερά"
+
+msgid "move right"
+msgstr "Μεταφορά Δεξιά"
+
+msgid "remove column"
+msgstr "Αφαίρεση Στήλης"
+
+msgid "vCard"
+msgstr "Ψηφιακή Κάρτα"

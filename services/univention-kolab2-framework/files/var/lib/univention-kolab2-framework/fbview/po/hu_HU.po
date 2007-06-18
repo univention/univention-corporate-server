@@ -1,0 +1,564 @@
+# Horde Hungarian translation file.
+# Copyright (C) 2002 Laszlo L. Tornoci
+# This file is distributed under the same license as the Horde package.
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-06-01 21:43+0200\n"
+"PO-Revision-Date: 2002-06-07 19:49+0200\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s karbantartási feladatok - megerõsítés"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s készen áll az alább kijelölt karbantartási feladatok elvégzésére."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' nincs konfigurálva a Horde Registry-ben."
+
+msgid "24 hours"
+msgstr "24 óra"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Helyrehozhatatlan hiba történt:</b>"
+
+msgid "AM/PM"
+msgstr "de/du"
+
+msgid "Add pair"
+msgstr "Új pár hozzáadása"
+
+msgid "Address"
+msgstr "Cím"
+
+msgid "Addressbook"
+msgstr "Címjegyzék"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "A megadott érték elfogadhatatlan."
+
+msgid "Available fields:"
+msgstr "A rendelkezésre álló mezõk:"
+
+msgid "Birthday"
+msgstr "Születésnap"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Naptár"
+
+msgid "Cancel Problem Report"
+msgstr "Mégse küldök hibajelentést"
+
+msgid "Cell Phone"
+msgstr "Mobil telefon"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Jelölje ki azokat a feladato(ka)t, ami(ke)t most el kíván végezni."
+
+msgid "Close Help Window"
+msgstr "A magyarázó ablak bezárása"
+
+msgid "Close Help"
+msgstr "A magyarázat bezárása"
+
+msgid "Close Window"
+msgstr "Az ablak bezárása"
+
+msgid "Company"
+msgstr "Cég"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "'%s' tartalma"
+
+msgid "Contents of the RAR archive"
+msgstr "A RAR archívum tartalma"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "A %s karbantartási modul nem nyitható meg"
+
+msgid "DD"
+msgstr "NN"
+
+msgid "Daily"
+msgstr "naponta"
+
+msgid "Database query failed."
+msgstr "Az adatbázisban való keresés nem sikerült."
+
+msgid "Default Identity"
+msgstr "Alapértelmezés szerinti azonosító"
+
+msgid "Describe the Problem"
+msgstr "Adjon leírást a problémáról"
+
+msgid "Details have been logged for the administrator."
+msgstr "A részletek a rendszergazda számára készülõ naplófájlba kerültek."
+
+msgid "Display Options"
+msgstr "Megjelenítési opciók"
+
+msgid "Do not directly access maintenance.php"
+msgstr "A maintenance.php nem érhetõ el közvetlenül."
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Nincs ilyen."
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "Every 15 minutes"
+msgstr "15 percenként"
+
+msgid "Every 30 seconds"
+msgstr "30 másodpercenként"
+
+msgid "Every 5 minutes"
+msgstr "5 percenként"
+
+msgid "Every Login"
+msgstr "minden bejelentkezéskor"
+
+msgid "Every half hour"
+msgstr "félóránként"
+
+msgid "Every minute"
+msgstr "percenként"
+
+msgid "Example values:"
+msgstr "Példa értékek:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "A %d. sorban a \"BEGIN\" szónak kellett volna elõfordulnia."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "A \"END:%s\" kifejezésnek kellett volna elõfordulni a %d. sorban."
+
+msgid "Failed retrieving preferences."
+msgstr "A személyes beállításokat nem sikerült beolvasni."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Az LDAP szerver nem érhetõ el."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Full Description:"
+msgstr "Részletes leírás:"
+
+msgid "Help"
+msgstr "Segítség"
+
+msgid "Home Address"
+msgstr "Otthoni cím"
+
+msgid "Home Phone"
+msgstr "Otthoni telefon"
+
+msgid "Horde Login"
+msgstr "Horde bejelentkezés"
+
+msgid "Horde System"
+msgstr "Horde rendszer"
+
+msgid "Horde Wireless"
+msgstr "Drótnélküli Horde"
+
+msgid "Horde is not properly configured"
+msgstr "A Horde program nincs megfelelõen konfigurálva"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Hiba az importálásban:"
+
+msgid "Import"
+msgstr "Import"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Az importált mezõ: %s"
+
+msgid "Imported fields:"
+msgstr "Az importált mezõk:"
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "List Help Topics"
+msgstr "Azoknak a témáknak a listája amirõl segítség kapható"
+
+msgid "Log in"
+msgstr "Bejelentkezés"
+
+msgid "Log out"
+msgstr "Kijelentkezés"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr "A bejelentkezés nem sikerült. Ennek legvalószínûbb oka az, hogy rosszul írta be a felhasználói nevét vagy jelszavát."
+
+msgid "MM"
+msgstr "HH"
+
+msgid "Mail"
+msgstr "Levelezés"
+
+msgid "Map Date and Time Fields"
+msgstr "Dátum és idõ mezõk megfeleltetése"
+
+msgid "Map Import Fields"
+msgstr "Import mezõk megfeleltetése"
+
+msgid "Matching fields"
+msgstr "Egymásnak megfelelõ mezõk"
+
+msgid "Memos"
+msgstr "Feljegyzések"
+
+msgid "Message"
+msgstr "Üzenet"
+
+msgid "Monthly"
+msgstr "havonta"
+
+msgid "My Summary"
+msgstr "Az összefoglalásom"
+
+msgid "Name"
+msgstr "Név"
+
+msgid "Never"
+msgstr "Soha"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Az LDAP személyes beállítások nincsenek konfigurálva."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Nincs SQL konfigurációs adat a kategóriákra."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Nincs SQL konfigurációs adat a felhasználói beállításokra."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Nincs SQL konfigurációs adat a felhasználói azonosításra."
+
+msgid "No preferences are available."
+msgstr "A személyes beállítások nem állnak rendelkezésre."
+
+msgid "No preferences were retrieved."
+msgstr "A személyes beállítások nem érhetõk el."
+
+msgid "Notes"
+msgstr "Jegyzetek"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Nem található a program figyelmeztetéseket fogadó %s komponense."
+
+msgid "Options"
+msgstr "Opciók"
+
+msgid "Other Information"
+msgstr "Egyéb információ"
+
+msgid "Password"
+msgstr "Jelszó"
+
+msgid "Perform Maintenance Operations"
+msgstr "Karbantartási feladatok"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Kérem röviden írja le a probléma lényegét."
+
+msgid "Please provide your username and password"
+msgstr "Kérem adja meg a bejelentkezési nevét és jelszavát"
+
+msgid "Problem Description"
+msgstr "A probléma leírása"
+
+msgid "Refresh Summary View:"
+msgstr "Az összefoglaló nézet frissítése:"
+
+msgid "Remove pair"
+msgstr "A pár törlése"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "A 'basedn' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "A 'basedn' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "A 'database' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "A 'database' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "A 'database' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "A 'hostspec' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "A 'hostspec' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "A 'hostspec' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "A 'password' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "A 'password' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "A 'password' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "A 'phptype' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "A 'phptype' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "A 'phptype' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "A 'table' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "A 'table' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "A 'table' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "A 'tableRelations' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Az 'uid' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Az 'uid' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "A 'username' értéket nem adták meg az felhasználói azonosítás konfigurációjában."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "A 'username' értéket nem adták meg a kategóriák konfigurációjában."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "A 'username' értéket nem adták meg az felhasználói beállítások konfigurációjában."
+
+msgid "Return to Options"
+msgstr "Vissza az opciókhoz"
+
+msgid "Role"
+msgstr "Szerep"
+
+msgid "Save Options"
+msgstr "Mentés"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr "Válassza ki a kívánt karakter(eke)t az alábbi lehetõségek közül. Ezután \"copy/paste\" módszerrel a megfelelõ helyre másolhatja õket."
+
+msgid "Select the date delimiter:"
+msgstr "Válassza ki a dátumelválasztó karaktert:"
+
+msgid "Select the date format:"
+msgstr "Válassza ki a dátum formátumát:"
+
+msgid "Select the time format:"
+msgstr "Válassza ki az idõ formátumát:"
+
+msgid "Select two matching fields."
+msgstr "Válasszon ki két egymásnak megfelelõ mezõt."
+
+msgid "Select your preferred language:"
+msgstr "Válassza ki az Önnek megfelelõ nyelvet:"
+
+msgid "Send Problem Report"
+msgstr "Hibajelentés küldése"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Az oldal frissítési gyakorisága és más megjelenítési beállítások."
+
+msgid "Set your preferred display language."
+msgstr "Válassza ki az Önnek megfelelõ nyelvet."
+
+msgid "Short Summary:"
+msgstr "Rövid összefoglalás:"
+
+msgid "Skip Maintenance"
+msgstr "A karbantartás kihagyása"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Hiányzik a Horde program néhány konfigurációs fájlja:"
+
+msgid "Special Character Input"
+msgstr "Speciális karakter bevitele"
+
+msgid "Success"
+msgstr "Sikerült"
+
+msgid "Tasks"
+msgstr "Feladatok"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr "A 'registry' fájl határozza meg, a Horde alkalmazások közötti kommunikációt. Itt szerepelnie kell az összes installált Horde alkalmazásnak."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr "Ez a fájl tartalmazza a Horde rendszer számára elérhetõ MIME meghajtó modulokat, s így olyan segédprogramok segítségével, mint az enscript és az mswordview bizonyos fájlok HTML-lé alakítva közvetlenül megjeleníthetõk a böngészõprogramban."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr "Ez a file tartalmazza a stíluslap információkat, melyek meghatározzák a szín és fontbeállításokat a Horde rendszer és az összes olyan program számára, melynek nincs saját beállítása."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr "Ez a fájl rendeli hozzá a fájlnév kiegészítésekhez (extension) a logikai MIME típusokat, melyek révén a Horde alkalmazások tudják, hogyan kezeljék pl. az email mellékleteket, vagy CVS fájlkikéréseket."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr "Ez a fõ Horde konfigurációs fájl. Itt állíthatók be az alapprogram és a többi Horde alkalmazás számára az elérési útvonalak és közös alapértékek."
+
+msgid "This number must be at least one."
+msgstr "Ez a szám nem lehet egynél kisebb."
+
+msgid "This value must be a number."
+msgstr "Ez az érték csak szám lehet."
+
+msgid "Title"
+msgstr "Titulus"
+
+msgid "Type mismatch."
+msgstr "A típusok nem egyeznek."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Az SQL szerver nem érhetõ el."
+
+msgid "Unable to register preferences in session."
+msgstr "A személyes beállítások nem menthetõk el."
+
+msgid "Unable to translate this Word document"
+msgstr "Nem sikerült lefordítani ezt a Word dokumentumot"
+
+msgid "Undo Changes"
+msgstr "Mégse változtassunk"
+
+msgid "Unexpected end of file."
+msgstr "Túl korán vége lett a fájlnak."
+
+msgid "Use Default Value"
+msgstr "Használjuk az alapértelmezett értéket"
+
+msgid "User Options"
+msgstr "Felhasználói opciók"
+
+msgid "Username"
+msgstr "Felhasználói név"
+
+msgid "Warning!"
+msgstr "Figyelmeztetés!"
+
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+msgid "Weekly"
+msgstr "hetente"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Üdvözöljük: %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Üdvözöljük, %s"
+
+msgid "Work Address"
+msgstr "Munkahelyi cím"
+
+msgid "Work Phone"
+msgstr "Munkahelyi telefon"
+
+msgid "YY"
+msgstr "ÉÉ"
+
+msgid "Yearly"
+msgstr "évente"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Ön kijelentkezett.<br />Köszönjük, hogy használta a szolgáltatást."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Elõbb le kell írnia, hogy milyen problémát tapasztalt, mielõtt elküldi a hibajelentést."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Az Ön %s kapcsolata idõtúllépés miatt megszakadt. Kérem jelentkezzen be újra."
+
+msgid "Your Email Address:"
+msgstr "Az Ön email címe:"
+
+msgid "Your Information"
+msgstr "Személyes információ"
+
+msgid "Your Name:"
+msgstr "Az Ön neve:"
+
+msgid "Your options have been updated."
+msgstr "Elmentettük az Ön új beállításait."
+
+msgid "[Problem Report]"
+msgstr "[Hibajelentés]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[%s/%s sor]"
+
+msgid "vCard"
+msgstr "vCard"

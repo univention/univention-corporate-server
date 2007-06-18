@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/Mobile/package.xml,v 1.4 2004/01/15 22:21:13 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Mobile</name>
+  <summary>Horde Mobile API</summary>
+  <description>
+    Horde API for generating Mobile content. Includes numerous utility functions, generalized element classes, and renderers for markup languages including WML, HDML, and CHTML.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial release as a PEAR package</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Mobile.php" />
+      <dir baseinstalldir="/Horde" name="Mobile" role="php">
+        <file name="Renderer.php" />
+        <dir name="Renderer" role="php">
+          <file name="html.php" />
+          <file name="wml.php" />
+        </dir>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-03</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

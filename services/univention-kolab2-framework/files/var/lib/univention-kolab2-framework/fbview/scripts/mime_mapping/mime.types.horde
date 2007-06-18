@@ -1,0 +1,42 @@
+# This is a Horde-specific addition to the MIME types provided by the
+# mime.types file from the Apache webserver. All additions to the
+# mime.mapping.php file should be made here also or else they will be
+# lost when the convert.pl script is regenerated.
+#
+# $Horde: horde/scripts/mime_mapping/mime.types.horde,v 1.10 2003/08/15 16:14:54 chuck Exp $
+
+# MIME type                                  Extension
+application/x-compress                       Z
+application/x-gzip                           gz
+application/x-gtar                           tgz
+application/x-httpd-php                      php
+application/x-httpd-php3                     php3
+application/x-perl                           pl pm
+application/x-ms-wmd                         wmd
+application/x-ms-wmz                         wmz
+application/xhtml+xml                        xht xhtml
+application/xml                              xml
+application/vnd.sun.xml.calc                 sxc
+application/vnd.sun.xml.calc.template        stc
+application/vnd.sun.xml.draw                 sxd
+application/vnd.sun.xml.draw.template        std
+application/vnd.sun.xml.writer.global        sxg
+application/vnd.sun.xml.math                 sxm
+application/vnd.sun.xml.impress              sxi
+application/vnd.sun.xml.impress.template     sti
+application/vnd.sun.xml.writer               sxw
+application/vnd.sun.xml.writer.template      stw
+application/vnd.visio                        vsd
+audio/x-ms-wax                               wax
+audio/x-ms-wma                               wma
+text/calendar                                vcs ics ifb vfb
+text/diff                                    diff patch
+text/html                                    shtml
+text/plain                                   po
+text/plain                                   log
+text/x-vcard                                 vcf
+video/x-ms-asf                               asf asx
+video/x-ms-wm                                wm
+video/x-ms-wmv                               wmv
+video/x-ms-wmx                               wmx
+video/x-ms-wvx                               wvx

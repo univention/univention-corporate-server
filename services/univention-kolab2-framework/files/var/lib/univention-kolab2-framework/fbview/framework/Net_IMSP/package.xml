@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/Net_IMSP/package.xml,v 1.6 2004/04/16 22:55:32 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Net_IMSP</name>
+  <summary>IMSP API</summary>
+  <description>Provides an API into an IMSP server for Addressbooks and Options</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>mike</user>
+      <role>lead</role>
+      <name>Michael Rubinsky</name>
+      <email>mike@theupstairsroom.com</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-02-05</date>
+    <notes>Initial packaging and release of code</notes>
+
+    <provides type="class" name="Net_IMSP"/>
+    <provides type="class" name="Net_IMSP_Auth"/>
+    <provides type="class" name="Net_IMSP_Auth_plaintext"/>
+    <provides type="class" name="Net_IMSP_Auth_cram_md5"/>
+    <provides type="class" name="Net_IMSP_Book"/>
+    <provides type="class" name="Net_IMSP_Options"/>
+    <provides type="class" name="Net_IMSP_Utils"/>
+    <filelist>
+      <file role="php" baseinstalldir="/Net" name="IMSP.php" />
+      <dir baseinstalldir="/Net" name="IMSP" role="php">
+        <file name="Auth.php"/>
+        <dir name="Auth" role="php">
+          <file name="plaintext.php"/>
+          <file name="cram_md5.php"/>
+        </dir>
+        <file name="Book.php"/>
+        <file name="Options.php"/>
+        <file name="Utils.php"/>
+      </dir>
+    </filelist>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-02-05</date>
+      <notes>Initial packaging and release of code</notes>
+    </release>
+  </changelog>
+
+</package>

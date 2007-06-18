@@ -1,0 +1,1011 @@
+# Kronolith Dutch translation.
+# Copyright (C) 2001 Jan Kuipers.
+# Jan Kuipers <jrkuipers@lauwerscollege.nl>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2004-01-18 14:03+0100\n"
+"PO-Revision-Date: 2004-01-18 14:10+0100\n"
+"Last-Translator: Jan Kuipers <jrkuipers@lauwerscollege.nl>\n"
+"Language-Team: Dutch <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d uur"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d uur, %d minuut"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d uur, %d minuten"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d uren"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d uren, %d minuut"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d uren, %d minuten"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minuut"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minuten"
+
+#, c-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s dag(en) %s uren %s minuten"
+
+#, c-format
+msgid "%s Minutes before"
+msgstr "%s minuten voor"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s bestand met succes geimporteerd"
+
+#, c-format
+msgid "%s not found."
+msgstr "%s niet gevonden."
+
+#, c-format
+msgid "%s's Calendar"
+msgstr "%s's agenda"
+
+msgid "* Add these by clicking Invite *"
+msgstr "* Klik op uitnodigen om toe te voegen *"
+
+msgid "* Please select address(es) *"
+msgstr "* Selecteer adres(sen), a.u.b. *"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Omschrijving</b> (optie)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Omschrijving</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Trefwoorden</b> (optie)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Trefwoorden</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Herhaling</b> (optie)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Herhaling</b>"
+
+msgid "AM"
+msgstr "AM"
+
+msgid "Add Event"
+msgstr "Gebeurtenis toevoegen"
+
+msgid "Add New Remote Calendar:"
+msgstr "Nieuwe agenda op afstand, toevoegen:"
+
+msgid "Add a new event"
+msgstr "Nieuwe gebeurtenis toevoegen"
+
+msgid "Add people from my Address Book"
+msgstr "Personen uit mijn adresboek toevoegen"
+
+msgid "Add"
+msgstr "Toevoegen"
+
+msgid "Add, remove, and edit the colors to label events with."
+msgstr ""
+"Toevoegen, verwijderen en bewerken van kleuren om gebeurtenissen te labelen."
+
+msgid "Alarm Date"
+msgstr "Alarmdatum"
+
+msgid "Alarm Span (minutes)"
+msgstr "Alarmduur (minuten)"
+
+msgid "Alarm Time"
+msgstr "Alarmtijd"
+
+msgid "Alarm"
+msgstr "Alarm"
+
+msgid "All Visible"
+msgstr "Alle zichtbaar"
+
+msgid "All day event"
+msgstr "Gehele dag durende gebeurtenis"
+
+msgid "All day"
+msgstr "De gehele dag"
+
+msgid "All events"
+msgstr "Alle gebeurtenissen"
+
+msgid "All"
+msgstr "Allemaal"
+
+#, c-format
+msgid "Any events in a category that is deleted will become %s."
+msgstr "Elke gebeurtenis in een categorie die wordt verwijderd, zal worden %s."
+
+msgid "April"
+msgstr "April"
+
+msgid "At"
+msgstr "Op"
+
+msgid "Attached is an iCalendar file describing this event."
+msgstr "Een iCalendar bestand, wat deze gebeurtenis beschrijft, is bijgevoegd."
+
+msgid "August"
+msgstr "Augustus"
+
+msgid "Back to Calendar Options"
+msgstr "Terug naar agendaopties"
+
+msgid "Birthday"
+msgstr "Verjaardag"
+
+msgid "Business"
+msgstr "Zakelijk"
+
+msgid "Calendar Summary"
+msgstr "Agendasamenvatting"
+
+msgid "Calendar"
+msgstr "Agenda"
+
+msgid "Calendar's Type:"
+msgstr "Agendatype:"
+
+msgid "Calendar's name:"
+msgstr "Agendanaam:"
+
+msgid "Calendars"
+msgstr "Agenda's"
+
+msgid "Can't create a new event."
+msgstr "Kan geen nieuwe gebeurtenis maken."
+
+msgid "Cancel"
+msgstr "Afbreken"
+
+msgid "Category Management"
+msgstr "Categoriebeheer"
+
+msgid "Category"
+msgstr "Categorie"
+
+msgid "Change"
+msgstr "Wijzigen"
+
+msgid "Comma separated values"
+msgstr "Komma gescheiden waarden"
+
+msgid "Confirm deletion of events?"
+msgstr "Verwijdering van gebeurtenissen bevestigen?"
+
+msgid "Contact List"
+msgstr "Adreslijst"
+
+#, c-format
+msgid "Could not open %s."
+msgstr "Kon %s niet openen."
+
+msgid "Create New Category"
+msgstr "Maak een nieuwe categorie"
+
+msgid "Create a New Event"
+msgstr "Maak een nieuwe gebeurtenis"
+
+msgid "Create"
+msgstr "Maken"
+
+msgid "Created"
+msgstr "Gemaakt"
+
+msgid "Current"
+msgstr "Huidige"
+
+msgid "Daily: Recurs every"
+msgstr "Dagelijks: herhaalt zich elke"
+
+msgid "Day"
+msgstr "Dag"
+
+msgid "Day(s)"
+msgstr "dag(en)"
+
+msgid "December"
+msgstr "December"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Verwijder %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Verwijder '%s'"
+
+msgid "Delete Event"
+msgstr "Verwijder gebeurtenis"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Verwijder alleen de huidige gebeurtenis, dit voorval en alle toekomstige "
+"voorvallen, of alle voorvallen?"
+
+msgid "Delete"
+msgstr "Verwijderen"
+
+msgid "Description"
+msgstr "Omschrijving"
+
+msgid "Description:"
+msgstr "Omschrijving:"
+
+msgid "Display Options"
+msgstr "Display opties"
+
+msgid "Display"
+msgstr "Weergeven"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Vervaldatum: %s"
+
+msgid "Duration"
+msgstr "Tijdsduur"
+
+#, c-format
+msgid "Edit %s"
+msgstr "%s bewerken"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "'%s' bewerken"
+
+msgid "Edit Remote Calendars"
+msgstr "Agenda's op afstand, bewerken"
+
+msgid "Edit your calendars."
+msgstr "Uw agenda's bewerken"
+
+msgid "Edit"
+msgstr "Bewerken"
+
+msgid "Email Address"
+msgstr "Emailadres"
+
+msgid "End Date"
+msgstr "Einddatum"
+
+msgid "End On"
+msgstr "Eindigt op"
+
+msgid "End Time"
+msgstr "Eindtijd"
+
+msgid "Event Labels"
+msgstr "Gebeurtenislabels"
+
+#, c-format
+msgid "Event from %s to %s"
+msgstr "Gebeurtenis van %s tot %s"
+
+msgid "Existing Remote Calendars:"
+msgstr "Bestaande agenda's op afstand:"
+
+msgid "Export Calendar"
+msgstr "Agenda exporteren"
+
+msgid "Export"
+msgstr "Exporteren"
+
+msgid "February"
+msgstr "Februari"
+
+msgid "Find"
+msgstr "Vinden"
+
+msgid "Fr"
+msgstr "Vr"
+
+msgid "Friday"
+msgstr "Vrijdag"
+
+msgid "Future"
+msgstr "Toekomst"
+
+msgid "Game"
+msgstr "Spel"
+
+msgid "Goto"
+msgstr "Ga naar"
+
+msgid "Help"
+msgstr "Help"
+
+msgid "Here is a more detailed description:"
+msgstr "Hier is een meer gedetailleerde beschrijving:"
+
+msgid "Hour(s)"
+msgstr "Uur"
+
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr ""
+"Voor hoeveel toekomstige dagen dienen we vrij/bezet informatie aan te maken?"
+
+#, c-format
+msgid "Import Calendar, Step %d"
+msgstr "Agenda importeren, stap %d"
+
+msgid "Import"
+msgstr "Importeren"
+
+msgid "Import/Export Calendar"
+msgstr "Agenda importeren/exporteren"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Invalid category entered."
+msgstr "Ongeldige categorie ingevoerd."
+
+#, c-format
+msgid "Invite people to %s"
+msgstr "Personen uitnodigen op %s"
+
+#, c-format
+msgid "Invite people to '%s'"
+msgstr "Personen uitnodigen op '%s'"
+
+msgid "Invite these people"
+msgstr "Deze personen uitnodigen"
+
+msgid "Invite"
+msgstr "Uitnodigen"
+
+msgid "January"
+msgstr "Januari"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "Keywords"
+msgstr "Trefwoorden"
+
+msgid ""
+"Kronolith is not correctly configured or there was an error loading "
+"configuration files."
+msgstr ""
+"Kronolith is niet juist geconfigureerd of er was een fout bij het laden van "
+"de configuratiebestanden."
+
+msgid "Last Modified"
+msgstr "Laatst gewijzigd"
+
+msgid "Last Month"
+msgstr "Afgelopen maand"
+
+msgid "Last week"
+msgstr "Afgelopen week"
+
+msgid "Lasts"
+msgstr "Duurt"
+
+msgid "Limit the time span to export:"
+msgstr "Beperk de, te exporteren, tijdsduur:"
+
+msgid "Location"
+msgstr "Locatie"
+
+msgid "Manage remote calendars."
+msgstr "Agenda's op afstand, beheren."
+
+msgid "Manage your calendars and who can access them."
+msgstr "Beheer uw agenda's en wie hier toegang op hebben."
+
+msgid "March"
+msgstr "Maart"
+
+msgid "May"
+msgstr "Mei"
+
+msgid "Meeting"
+msgstr "Vergadering"
+
+#, c-format
+msgid "Meeting: %s"
+msgstr "Vergadering: %s"
+
+msgid "Meetings"
+msgstr "Vergaderingen"
+
+msgid "Minute(s)"
+msgstr "Minuten"
+
+msgid "Mo"
+msgstr "Ma"
+
+msgid "Monday"
+msgstr "Maandag"
+
+msgid "Month View"
+msgstr "Maandweergave"
+
+msgid "Month"
+msgstr "Maand"
+
+msgid "Monthly Events List"
+msgstr "Maandelijke gebeurtenissen lijst"
+
+msgid "Monthly: Recurs every"
+msgstr "Maandelijks: herhaalt zich elke"
+
+msgid "Months Ahead"
+msgstr "Komende maanden"
+
+msgid "Multiple Calendars"
+msgstr "Meerdere agenda's"
+
+msgid ""
+"Multiple iCalendar components found. Use calendar/import_icalendar instead."
+msgstr ""
+"Meerdere iCalendar onderdelen gevonden. Gebruik, in plaats hiervan, agenda/"
+"importeer_icalendar."
+
+msgid "Name"
+msgstr "Naam"
+
+msgid "Name:"
+msgstr "Naam:"
+
+msgid "New Category"
+msgstr "Nieuwe categorie"
+
+msgid "New Event"
+msgstr "Nieuwe gebeurtenis"
+
+msgid "Next Month"
+msgstr "Volgende maand"
+
+msgid "Next day"
+msgstr "Volgende dag"
+
+msgid "Next week"
+msgstr "Volgende week"
+
+msgid "No calendars are available to guests."
+msgstr "Geen agenda's beschikbaar voor gasten."
+
+msgid "No end date"
+msgstr "Geen einddatum"
+
+msgid "No events to display"
+msgstr "Geen gebeurtenissen weer te geven"
+
+msgid "No iCalendar data was found."
+msgstr "Geen iCalendar data gevonden."
+
+msgid "None"
+msgstr "Geen"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Opmerking: Importeren is niet mogelijk met deze configuratie, als gevolg van "
+"een bug in de onderliggende agendadriver."
+
+msgid "November"
+msgstr "November"
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "Options"
+msgstr "Opties"
+
+msgid "Owner"
+msgstr "Eigenaar"
+
+msgid "PM"
+msgstr "PM"
+
+msgid "Palm DateBook"
+msgstr "Palm DateBook"
+
+msgid "Pattern"
+msgstr "Patroon"
+
+msgid "Permanently delete this event?"
+msgstr "Deze gebeurtenis definitief verwijderen?"
+
+msgid "Permission Denied"
+msgstr "Toegang geweigerd"
+
+msgid "Permissions"
+msgstr "Rechten"
+
+msgid "Personal"
+msgstr "Persoonlijk"
+
+msgid "Please enter a name for the new category:"
+msgstr "Een naam voor de nieuwe categorie invoeren, a.u.b.:"
+
+msgid "Please enter a new name for this category:"
+msgstr "Een nieuwe naam voor deze categorie invoeren, a.u.b.:"
+
+msgid "Portal Options"
+msgstr "Portaalopties"
+
+msgid "Previous day"
+msgstr "Vorige dag"
+
+msgid "Print"
+msgstr "Afdrukken"
+
+msgid "Private"
+msgstr "Prive"
+
+msgid "Recur Until"
+msgstr "Herhaal tot"
+
+msgid "Recurrence Data"
+msgstr "Herhalingsdata"
+
+msgid "Recurrence End Date"
+msgstr "Herhalingseinddatum"
+
+msgid "Recurrence Interval"
+msgstr "Herhalingsinterval"
+
+msgid "Recurrence Type"
+msgstr "Herhalingstype"
+
+msgid "Recurs daily"
+msgstr "Herhaalt dagelijks"
+
+msgid "Recurs monthly"
+msgstr "Herhaalt maandelijks"
+
+msgid "Recurs not"
+msgstr "Herhaalt niet"
+
+msgid "Recurs weekly"
+msgstr "Herhaalt wekelijks"
+
+msgid "Recurs yearly"
+msgstr "Herhaalt jaarlijks"
+
+#, c-format
+msgid "Reminder: %s"
+msgstr "Herinnering: %s"
+
+msgid "Remote Calendars"
+msgstr "Agenda's op afstand"
+
+msgid "Rename"
+msgstr "Hernoemen"
+
+msgid "Reset to Defaults"
+msgstr "Herstel standaardinstellingen"
+
+msgid "Reset"
+msgstr "Herstellen"
+
+msgid "Sa"
+msgstr "Za"
+
+msgid "Saturday"
+msgstr "Zaterdag"
+
+msgid "Save As New"
+msgstr "Opslaan als nieuw"
+
+msgid "Save Event"
+msgstr "Gebeurtenis opslaan"
+
+msgid "Search"
+msgstr "Zoeken"
+
+msgid "Select a calendar"
+msgstr "Selecteer een agenda"
+
+msgid "Select a date"
+msgstr "Selecteer een datum"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Kies bevestigingsopties, hoe de verschillende weergaves worden afgebeeld en "
+"kies een standaardweergave."
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Kies om taakvervaldata weer te geven in de agenda."
+
+msgid "Select if to show meetings in the calendar."
+msgstr "Kies om vergaderingen weer te geven in de agenda."
+
+msgid "Select the calendar to import to:"
+msgstr "Selecteer de agenda om naar te importeren:"
+
+msgid "Select the file to import:"
+msgstr "Kies het, te importeren, bestand:"
+
+msgid "Select the first weekday:"
+msgstr "Kies de eerste weekdag:"
+
+msgid "Select the format to export to:"
+msgstr "Kies het exportformaat:"
+
+msgid "Select the identity you want to use to invite people:"
+msgstr ""
+"Kies de identiteit die u wilt gebruiken voor het uitnodigen van personen:"
+
+msgid "Select the source to import from:"
+msgstr "Kies de importbron:"
+
+msgid "Select the time span to show:"
+msgstr "Kies een tijdsduurweergave:"
+
+msgid "Select the view to display on startup:"
+msgstr "Kies een weergave welke wordt gebruikt na opstarten:"
+
+msgid "Select which events to show in the portal."
+msgstr "Kies welke gebeurtenissen worden weergegeven in het portaal."
+
+msgid "September"
+msgstr "September"
+
+msgid "Set end date"
+msgstr "Einddatum instellen"
+
+msgid "Set recurrence end date"
+msgstr "Herhalingseinddatum instellen"
+
+msgid "Set start date"
+msgstr "Begindatum instellen"
+
+msgid "Shared"
+msgstr "Gedeeld"
+
+msgid "Show Calendars:"
+msgstr "Agenda's weergeven:"
+
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr ""
+"Verwijderen, alarm en herhalingpictogrammen weergeven in agendaweergaven?"
+
+msgid "Show due tasks in the calendar?"
+msgstr "Taakvervaldata weergeven in de agenda?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Gebruik halfuurs indeling in dag- en weekweergave?"
+
+msgid "Show meetings in the calendar?"
+msgstr "Vergaderingen weergeven in de agenda?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Alleen gebeurtenissen met een alarm weergeven?"
+
+msgid "Show shared calendars side-by-side"
+msgstr "Gedeelde agenda's naast elkaar weergeven"
+
+msgid "Show"
+msgstr "Weergeven"
+
+msgid "Start Date"
+msgstr "Begindatum"
+
+msgid "Start On"
+msgstr "Begint op"
+
+msgid "Start Time"
+msgstr "Begintijd"
+
+msgid "Su"
+msgstr "Zo"
+
+msgid "Sunday"
+msgstr "Zondag"
+
+msgid "Tasks"
+msgstr "Taken"
+
+msgid "Th"
+msgstr "Do"
+
+#, c-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "De agenda \"%s\" kan niet worden verwijderd."
+
+#, c-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "De agenda \"%s\" is verwijderd."
+
+#, c-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "De agenda \"%s\" is opgeslagen."
+
+msgid "The calendar name is empty."
+msgstr "De agendanaam is leeg."
+
+msgid "The end date must be later than the start date."
+msgstr "De einddatum dient later te zijn dan de startdatum."
+
+msgid "The invite screen is no longer present. Exiting."
+msgstr "Het uitnodigingsscherm is niet meer aanwezig. Afsluiten."
+
+#, c-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "Een fout bij de toegang van de agenda: %s"
+
+#, c-format
+msgid "There was an error adding the event: %s"
+msgstr "Een fout bij het toevoegen van de gebeurtenis: %s"
+
+#, c-format
+msgid "There was an error editing the event: %s"
+msgstr "Een fout bij het bewerken van de gebeurtenis: %s"
+
+msgid "There was an error importing the data."
+msgstr "Een fout bij het importeren van de data."
+
+msgid "There was an error importing the iCalendar data."
+msgstr "Een fout bij het importeren van de iCalendar data."
+
+#, c-format
+msgid "There was an error importing the iCalendar data: %s."
+msgstr "Een fout bij het importeren van de iCalendar data: %s"
+
+msgid "There was an error importing the uploaded file"
+msgstr "Een fout bij het importeren van het uploaded bestand"
+
+#, c-format
+msgid "There was an error sending your invitation: %s"
+msgstr "Een fout bij het verzenden van uw uitnodiging: %s"
+
+msgid "There were no events to export."
+msgstr "Er zijn geen gebeurtenissen te exporteren."
+
+msgid "These changes can not be undone!"
+msgstr "Deze wijzigingen kunnen niet ongedaan gemaakt worden!"
+
+msgid "This file format is not supported."
+msgstr "Dit bestandsformaat wordt niet ondersteund."
+
+#, c-format
+msgid "This is what the server said: %s"
+msgstr "Dit is wat de server meldt: %s"
+
+msgid "Thursday"
+msgstr "Donderdag"
+
+msgid "Title"
+msgstr "Titel"
+
+#, c-format
+msgid "Today is: %s"
+msgstr "Vandaag is het: %s"
+
+msgid "Today"
+msgstr "Vandaag"
+
+msgid "Tomorrow"
+msgstr "Morgen"
+
+msgid "Tu"
+msgstr "Di"
+
+msgid "Tuesday"
+msgstr "Dinsdag"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "URL:"
+msgstr "URL:"
+
+#, c-format
+msgid "Unable to delete %s."
+msgstr "Niet in staat om %s te verwijderen."
+
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Niet in staat om \"%s\": %s te verwijderen"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Niet in staat om de definitie van %s te laden."
+
+msgid "Unfiled"
+msgstr "Onbenoemd"
+
+msgid "User Interface"
+msgstr "Gebruikersinterface"
+
+msgid "User Options"
+msgstr "Gebruikeropties"
+
+msgid "View Day"
+msgstr "Dag weergeven"
+
+msgid "View Today"
+msgstr "Vandaag weergeven"
+
+msgid "We"
+msgstr "Wo"
+
+msgid "Wednesday"
+msgstr "Woensdag"
+
+#, c-format
+msgid "Week %d"
+msgstr "Week %d"
+
+msgid "Week"
+msgstr "Week"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Week&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Weken"
+
+msgid "Weekly: Recurs every"
+msgstr "Wekelijks: herhaalt zich elke"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Welke tijd dienen dag- en weekweergaven te eindigen, wanneer er geen latere "
+"gebeurtenissen zijn?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Welke tijd dienen dag- en weekweergaven te beginnen, wanneer er geen eerdere "
+"gebeurtenissen zijn?"
+
+msgid "Work Week"
+msgstr "Werkweek"
+
+msgid "Yearly: Recurs every"
+msgstr "Jaarlijks: herhaalt zich elke"
+
+msgid "You are creating a new category."
+msgstr "U maakt een nieuwe categorie."
+
+msgid "You can only use this form from the Invite People screen."
+msgstr "U kunt dit formulier alleen gebruiken vanuit het uitnodigingsscherm"
+
+#, c-format
+msgid "You do not have permission to add events to %s."
+msgstr "U heeft geen recht om gebeurtenissen aan %s toe te voegen."
+
+msgid "You do not have permission to add events to the selected calendar."
+msgstr ""
+"U heeft geen recht om gebeurtenissen aan de geselecteerde agenda toe te "
+"voegen."
+
+msgid "You do not have permission to delete this event."
+msgstr "U heeft geen recht om deze gebeurtenis te verwijderen."
+
+msgid "You do not have permission to edit this event."
+msgstr "U heeft geen recht om deze gebeurtenis te bewerken."
+
+msgid ""
+"You don't have an email address configured in your preferences. You must set "
+"one before sending invitations."
+msgstr ""
+"U heeft geen emailadres geconfigureerd in uw voorkeursinstellingen. U dient "
+"er een in te stellen om uitnodigingen te kunnen verzenden."
+
+#, c-format
+msgid "You have been invited to %s"
+msgstr "U bent uitgenodigd op %s"
+
+#, c-format
+msgid "You have been invited to \"%s\"."
+msgstr "U bent uitgenodigd bij \"%s\"."
+
+msgid "You have specified an invalid calendar."
+msgstr "U heeft een ongeldige agenda opgegeven."
+
+msgid "You must choose a category."
+msgstr "U dient een categorie te kiezen."
+
+msgid "You must select a calendar to be deleted."
+msgstr "U dient een agenda te selecteren om te verwijderen."
+
+msgid "You must select an address first."
+msgstr "U dient eerst een adres te selecteren."
+
+#, c-format
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "U verzocht om herinnert te worden aan %s, wat is op %s."
+
+msgid "Your calendars:"
+msgstr "Uw agenda's:"
+
+msgid "Your default calendar:"
+msgstr "Uw standaardagenda:"
+
+msgid "Your invitation was successfully sent."
+msgstr "Uw uitnodiging is met succes verzonden."
+
+msgid "[none]"
+msgstr "[geen]"
+
+msgid "day"
+msgstr "dag"
+
+msgid "day(s)"
+msgstr "dag(en)"
+
+msgid "days"
+msgstr "dagen"
+
+msgid "events.csv"
+msgstr "events.csv"
+
+msgid "from"
+msgstr "van"
+
+msgid "month(s)"
+msgstr "maand(en)"
+
+msgid "no time"
+msgstr "Geen tijd"
+
+msgid "on the same date"
+msgstr "Op dezelfde datum"
+
+msgid "on the same weekday"
+msgstr "Op dezelfde weekdag"
+
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+msgid "vEvent not found."
+msgstr "vEvent niet gevonden."
+
+msgid "week"
+msgstr "week"
+
+msgid "week(s) on:"
+msgstr "week op:"
+
+msgid "weeks"
+msgstr "weken"
+
+msgid "year(s)"
+msgstr "jaar"

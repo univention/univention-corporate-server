@@ -1,0 +1,328 @@
+# Turba Ukrainian KOI8-U translation
+# Copyright (C) 2002 Andriy Kopystyansky.
+# Andriy Kopystyansky <anri@polynet.lviv.ua>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba v1.0.1\n"
+"POT-Creation-Date: 2002-01-05 14:25+0200\n"
+"PO-Revision-Date: 2002-01-05 15:35+0200\n"
+"Last-Translator: Andriy Kopystyansky <anri@polynet.lviv.ua>\n"
+"Language-Team: Ukrainian <webmaster@polynet.lviv.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-U\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr " %s файл усп╕шно ╕мпортований"
+
+msgid "Add Contact ..."
+msgstr "Додати Запис ..."
+
+msgid "Add a new contact"
+msgstr "Додати новий запис"
+
+msgid "Add failed"
+msgstr "Не вдалося додати"
+
+msgid "Add"
+msgstr "Додати"
+
+msgid "Addressbook is read-only."
+msgstr "Адресна книга доступна т╕льки для читання"
+
+msgid "Advanced Directory Search"
+msgstr "Розширений пошук по Директор╕╖"
+
+msgid "Advanced Search"
+msgstr "Розширений Пошук"
+
+msgid "Alias"
+msgstr "Псевдон╕м"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Cancel"
+msgstr "В╕дм╕нити"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cell Phone"
+msgstr "Ст╕льниковий телефон"
+
+msgid "Clear Search"
+msgstr "Очистити Пошук"
+
+msgid "Company"
+msgstr "Орган╕зац╕я"
+
+msgid "Delete"
+msgstr "Витерти"
+
+msgid "Deletion failed"
+msgstr "Не вдалося Витерти"
+
+msgid "Directory Search"
+msgstr "Пошук в Директор╕╖"
+
+msgid "Directory"
+msgstr "Директор╕я"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "Email"
+msgstr "Е-пошта"
+
+msgid "Error"
+msgstr "Помилка"
+
+msgid "Export Addressbook"
+msgstr "Експорт Адресно╖ книги"
+
+msgid "Export"
+msgstr "Експорт"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Не вдалося сконтактуватись з вказаною директор╕╓ю."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Невдача пошуку в директор╕╖: %s"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Find"
+msgstr "Знайти"
+
+msgid "From"
+msgstr "в"
+
+msgid "Help"
+msgstr "Допомога"
+
+msgid "Home Address"
+msgstr "Домашня адреса"
+
+msgid "Home Phone"
+msgstr "Домашн╕й телефон"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "╤мпортуючи дан╕ CVS: чи перший рядок м╕стить назви пол╕в?"
+
+msgid "Illegal or malformed form data."
+msgstr "Некоректн╕ або несформован╕ дан╕ форми."
+
+msgid "Import Addressbook"
+msgstr "╤мпорт Адресно╖ книги"
+
+msgid "Import"
+msgstr "╤мпорт"
+
+msgid "Import/Export Addressbooks"
+msgstr "╤мпорт/Експорт Адресних книг"
+
+msgid "Import/Export"
+msgstr "╤мпорт/Експорт"
+
+msgid "Invalid addressbook."
+msgstr "Некоректна Адресна книга."
+
+msgid "Invalid e-mail address."
+msgstr "Некоректна адреса е-пошти."
+
+msgid "Invalid name."
+msgstr "Некоректна назва."
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Matching"
+msgstr "що в╕дпов╕да╓"
+
+msgid "Message"
+msgstr "Пов╕домлення"
+
+msgid "Name"
+msgstr "Iм`я"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr "Жодна з доступних адресних книг не сконф╕гурована для додавання Вами "
+"нових запис╕в до них. Якщо Ви вважа╓те, що це помилка, зверн╕ться до Вашого "
+"системного адм╕н╕стратора."
+
+msgid "Notes"
+msgstr "Нотатки"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Вкаж╕ть адесну книгу для додавання запису."
+
+msgid "Problem?"
+msgstr "Проблема?"
+
+msgid "Reset"
+msgstr "Очистити"
+
+msgid "Save Changes"
+msgstr "Зберегти зм╕ни"
+
+msgid "Save"
+msgstr "Зберегти"
+
+msgid "Search Results"
+msgstr "Результати Пошуку"
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "Search&nbsp;Results"
+msgstr "Результат&nbsp;Пошуку"
+
+msgid "Select the destination to import to:"
+msgstr "Вкаж╕ть призначення ╕мпорту:"
+
+msgid "Select the file to import:"
+msgstr "Вибер╕ть файл для ╕мпорту:"
+
+msgid "Select the format to export to:"
+msgstr "Вкаж╕ть формат для експорту:"
+
+msgid "Select the format to import from:"
+msgstr "Вкаж╕ть формат для ╕мпорту:"
+
+msgid "Select the source to export from:"
+msgstr "Вибер╕ть джерело, зв╕дки експортувати:"
+
+msgid "Select your preferred language:"
+msgstr "Вибер╕ть бажану мову:"
+
+msgid "Send Message"
+msgstr "В╕д╕слати листа"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "В╕д╕слати листа до %s"
+
+msgid "Set the your preferred display language."
+msgstr "Встанов╕ть бажану мову в╕дображення."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "В╕дсутн╕ деяк╕ конф╕гурац╕йн╕ файли для Turba:"
+
+msgid "Success"
+msgstr "Усп╕шно"
+
+msgid "The data got lost"
+msgstr "╤нформац╕ю втрачено"
+
+msgid "The data got lost."
+msgstr "╤нформац╕ю втрачено."
+
+msgid "The file contained no data."
+msgstr "Файл не м╕стить ╕нформац╕╖."
+
+msgid "There are no writeable address books."
+msgstr "Нема жодно╖ адресно╖ книги, доступно╖ для записування."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Трапилася проблема при завантаженн╕ файлу. Його розм╕р мабуть перевищу╓ "
+"максимальний дозволений."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Трапилася помилка при додаванн╕ нового запису. Зверн╕ться до системного "
+"адм╕н╕стратора."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Трапилася помилка при знищенн╕ цього запису. Зверн╕ться до системного "
+"адм╕н╕стратора."
+
+msgid "There was an error importing the data."
+msgstr "Трапилася помилка при ╕мпортуванн╕ даних."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Трапилася помилка ╕мпорту завантаженого файлу"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Цей файл визнача╓ опц╕╖ за замовчуванням для Turba, а також визнача╓, "
+"як╕ опц╕╖ користувач може зм╕нювати."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Цей файл опису╓ стил╕, як╕ визначають кольори ╕ шрифти на додаток "
+"(або зам╕сть) вказаних для Horde за замовчуванням."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Цей файл визнача╓ назви ╕ типи глобальних атрибут╕в для Turba - ╕мена, "
+"е-пошту ╕тд."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Цей файл визнача╓ перел╕к доступних джерел для Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Це основний конф╕гурац╕йний файл для Turba. В╕н м╕стить шляхи ╕ параметри "
+"для сценар╕╖в Turba."
+
+msgid "This person is already in your addressbook."
+msgstr "Ця особа вже занесена до Вашо╖ Адресно╖ книги."
+
+msgid "Title"
+msgstr "Титул"
+
+msgid "To"
+msgstr "До"
+
+msgid "Turba is not properly configured"
+msgstr "Turba не сконф╕гурована правильно"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Неможливо завантажити визначення для %s."
+
+msgid "Warning"
+msgstr "Увага"
+
+msgid "Work Address"
+msgstr "Робоча адреса"
+
+msgid "Work Phone"
+msgstr "Робочий телефон"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Ви не прикр╕пили жоден атрибут з ╕мпортованого файлу до в╕дпов╕дних пол╕в "
+"в Turba."
+
+msgid "Your Information"
+msgstr "Ваша ╤нформац╕я"
+
+msgid "[Edit]"
+msgstr "[Редагувати]"

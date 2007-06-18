@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Perms/package.xml,v 1.9 2004/01/15 23:14:43 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Perms</name>
+  <summary>Horde Permissions System</summary>
+  <description>
+    The Perms:: class provides the Horde permissions system.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial packaging.</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Perms.php" />
+      <dir baseinstalldir="/Horde" role="php" name="Perms">
+        <file name="UI.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Perms" />
+    <provides type="class" name="Perms_UI" />
+    <provides type="class" name="DataTreeObject_Permission" />
+
+    <deps>
+      <dep type="ext" rel="has">gettext</dep>
+      <dep type="pkg" rel="has">Horde_Framework</dep>
+      <dep type="pkg" rel="has">Horde_Array</dep>
+      <dep type="pkg" rel="has">Horde_DataTree</dep>
+      <dep type="pkg" rel="has">Horde_Group</dep>
+      <dep type="pkg" rel="has" optional="yes">Horde_Tree</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-05</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

@@ -1,0 +1,53 @@
+Kronolith
+Version 2.0
+
+What is Kronolith?
+------------------
+
+Kronolith is a web-based calendar system writtin in PHP and utilizing
+the Horde Application Framework.
+
+This software is OSI Certified Open Source Software.
+OSI Certified is a certification mark of the Open Source Initiative.
+
+
+Release Documentation
+---------------------
+
+COPYING       - Copyright license
+docs/CHANGES  - A list of changes by release
+docs/INSTALL  - Installation instructions and notes
+docs/CREDITS  - Who developed this
+
+
+Installation
+------------
+
+Note: You must have the Horde Framework installed and configured
+      before you can install Kronolith. For more information, consult
+      the documentation in the Horde distribution.
+
+All Kronolith installation documentation is located in the docs/
+subdirectory. The docs/INSTALL file currently contains everything
+relevant.
+
+
+Need Help?
+----------
+
+If you run into problems during the installation, there are multiple
+resources as your disposal. It is highly suggested that you consult them
+in this order:
+
+    1) The Kronolith documentation (located in the docs/ subdirectory).
+    2) The online FAQ available at http://faq.horde.org/.
+    3) The searchable mailing list archives, linked from http://horde.org/mail/.
+    4) The live mailing lists. More information at http://horde.org/mail/.
+
+Failing to read the documentation before asking a simple question answered
+therein will no doubt result in a less-than-welcome response from the mailing
+lists. You've been warned. =)
+
+
+The Kronolith Team
+kronolith@lists.horde.org

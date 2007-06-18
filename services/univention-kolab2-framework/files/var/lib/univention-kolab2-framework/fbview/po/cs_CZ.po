@@ -1,0 +1,1452 @@
+# Horde Czech Translation.
+# Copyright (C) 2001 Pavel Chytil.
+# Pavel Chytil <pavel@chytil.tk>, 2001
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-10-17 10:20-0700\n"
+"PO-Revision-Date:  2001-07-26 14:56-0900\n"
+"Last-Translator: Pavel Chytil <pavel@chytil.tk>\n"
+"Language-Team: Czech <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr " &#151; %s je pøipraven provést oznaèené operce údr¾by."
+
+#, c-format
+msgid " (%s days ago)"
+msgstr " (pøed %s dny)"
+
+msgid " (today)"
+msgstr " (dnes)"
+
+msgid " (yesterday)"
+msgstr " (vèera)"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Upozornìní"
+
+#, c-format
+msgid "%s Configuration"
+msgstr "%s Konfigurace"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Operace Údr¾by - Potvrzení"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s Standard"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s Podmínky Pou¾ití"
+
+#, c-format
+msgid "%s is required"
+msgstr "%s je po¾adován"
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s Slu¾by Hostùm</a>"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' není nakonfigurován v Horde Registrech."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s' byl pøidán do skupinového systému."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' byl pøidán do systému pøístupových práv."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' nebyl vytvoøen: %s."
+
+msgid "24 hours"
+msgstr "24 hodin"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Nastala zásadní chyba:</b>"
+
+#, c-format
+msgid "<b>The calendar data is invalid:<br />%s</b>"
+msgstr "<b>Neplatná data v kalendáøi:<br />%s</b>"
+
+msgid "A public PGP key is required to encrypt a message."
+msgstr "Je tøeba mít veøejný PGP klíè k zakódování zprávy."
+
+msgid "A public PGP key is required to verify a signed message."
+msgstr "Je tøeba mít veøejný PGP klíè k ovìøení oznaèené zprávy."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"Je tøeba mít veøejný PGP klíè, osobní PGP klíè, a heslo k dekódování zprávy."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Je tøeba mít veøejný PGP klíè, osobní PGP klíè, a heslo k oznaèení zprávy."
+
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "Je tøeba mít veøejný SMIME klíè k zakódování zprávy."
+
+msgid "A public SMIME key is required to verify a signed message."
+msgstr "Je tøeba mít veøejný SMIME klíè k ovìøení oznaèené zprávy."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"Je tøeba mít veøejný SMIME klíè, osobní SMIME klíè, a heslo k dekódování zprávy."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Je tøeba mít veøejný SMIME klíè, osobní SMIME klíè, a heslo k oznaèení zprávy."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add Child"
+msgstr "Pøidat Podskupinu"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Pøidat Podskupinu do '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Pøidat podskupinì pøístupové práva '%s'"
+
+msgid "Add a new member"
+msgstr "Pøidat nový èlen"
+
+msgid "Add a new user:"
+msgstr "Pøidat nového u¾ivatele:"
+
+msgid "Add pair"
+msgstr "Pøidat pár"
+
+msgid "Add summary"
+msgstr "Pøidat shrnutí"
+
+msgid "Add this to my calendar"
+msgstr "Pøidat do kalendáøe"
+
+msgid "Add to my address book:"
+msgstr "Pøidat do Kontaktù:"
+
+msgid "Add user"
+msgstr "Pøidat nového u¾ivatele"
+
+msgid "Add"
+msgstr "Pøidat"
+
+msgid "Adding users is disabled."
+msgstr "Pøidaní u¾ivatelé nejsou aktivní."
+
+msgid "Address Book"
+msgstr "Kontakty"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Administration"
+msgstr "Administrace"
+
+msgid "Ads"
+msgstr "Inzeráty"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "All Groups"
+msgstr "V¹echny Skupiny"
+
+msgid "All Permissions"
+msgstr "V¹echny Pøístupová Práva"
+
+msgid "An illegal value was specified."
+msgstr "Byla zadána ¹patná hodnota."
+
+msgid "Archive File Size"
+msgstr "Velikost Archívu"
+
+msgid "Archive Name"
+msgstr "Název Archívu"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s'?"
+msgstr "Jste si jistí vymazáním '%s'?"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Zeptat se o potvrzení pro provedení operací údr¾by?"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Pokus o vymazání skupiny, která neexistuje."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Pokus o vymazání pøístupového práva, které neexistuje."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Pokus o zmìnu pøístupového práva, které neexistuje."
+
+msgid "Attributes"
+msgstr "Atributy"
+
+msgid "Authentication failed"
+msgstr "Ovìøení selhalo"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "Ovìøení bylo zamítnuto RADIUS serverem."
+
+msgid "Available Columns:"
+msgstr "Sloupce k Dispozici:"
+
+msgid "Available fields:"
+msgstr "Pole k Dispozici:"
+
+msgid "Bad kerberos password."
+msgstr "©patné heslo kerberos."
+
+msgid "Bad kerberos username."
+msgstr "©patné u¾ivatelské jméno kerberos."
+
+msgid "Barbie"
+msgstr "Barbína - Rù¾ovouèké"
+
+msgid "Birthday"
+msgstr "Narozeniny"
+
+msgid "Bold"
+msgstr "Tuèné"
+
+msgid "Bookmarks"
+msgstr "Zálo¾ky"
+
+msgid "Brown"
+msgstr "Hnìdé"
+
+msgid "Bugs"
+msgstr "Nedostatky"
+
+msgid "Burnt Orange"
+msgstr "Hdìdo-Oran¾ové"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CRC"
+msgstr "CRC"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalendáø"
+
+msgid "Camouflage"
+msgstr "Kamuflá¾"
+
+#, c-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "Selhalo spojení k IMAP serveru: %s"
+
+msgid "Cancel Problem Report"
+msgstr "Zru¹it Hlá¹ení Problému"
+
+msgid "Cancel"
+msgstr "Zru¹it"
+
+#, c-format
+msgid "Cannot remove; children exist (%s)"
+msgstr "Nelze odstranit, proto¾e obsahuje podskupinu(y) (%s)"
+
+msgid "Cell Phone"
+msgstr "Mobilní Telefon"
+
+msgid "Centered"
+msgstr "Vestøedu"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Oznaète rámeèek, pokud si teï pøejete provést operace údr¾by."
+
+msgid "Checkbook"
+msgstr "©eková Kní¾ka"
+
+msgid "Cherry"
+msgstr "Tøe¹òové"
+
+msgid "Choose the order of the summaries to display in the summary page."
+msgstr "Vybrat poøadí zobrazení shrnutí na hlavní stránce."
+
+msgid "Click to Continue"
+msgstr "Kliknìte pro Pokraèování"
+
+msgid "Close Help Window"
+msgstr "Zavøít Okno s Nápovìdou"
+
+msgid "Close Help"
+msgstr "Zavøít Nápovìdu"
+
+msgid "Close Window"
+msgstr "Zavøít Okno"
+
+msgid "Color Picker"
+msgstr "Výbìr Barev"
+
+msgid "Comics"
+msgstr "Komiksy"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Configuration"
+msgstr "Konfigurace"
+
+msgid "Configure"
+msgstr "Nakonfigurovat"
+
+msgid "Confirm Password"
+msgstr "Potvrïte Heslo"
+
+msgid "Connection refused to the public keyserver."
+msgstr "Spojení bylo zamítnuto veøejným klíèovým serverem."
+
+msgid "Connection to ftp server failed."
+msgstr "Selhalo spojení na FTP server."
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Obsah v '%s'"
+
+msgid "Could not PGP encrypt message."
+msgstr "Nelze pou¾ít PGP kódování."
+
+msgid "Could not PGP sign message."
+msgstr "Nelze pou¾ít PGP oznaèení."
+
+msgid "Could not SMIME encrypt message."
+msgstr "Nelze pou¾ít SMIME kódování."
+
+msgid "Could not SMIME sign message."
+msgstr "Nelze pou¾ít SMIME oznaèení."
+
+msgid "Could not decrypt PGP data."
+msgstr "Nelze pou¾ít PGP dekódování."
+
+msgid "Could not decrypt SMIME data."
+msgstr "Nelze pou¾ít SMIME dekódování."
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Nelze urèit emailovou adresu pøíjemce."
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "Nelze obdr¾et klíè z veøejného serveru."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Nelze otevøít modul %s pro Operace Údr¾by"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "DHTML Rich Text Editor"
+msgstr "DHTML Editor"
+
+msgid "Daily"
+msgstr "Dennì"
+
+msgid "Data"
+msgstr "Data"
+
+msgid "Decrease Indentation"
+msgstr "Sní¾it Odra¾ení Textu"
+
+msgid "Default Identity"
+msgstr "Implicitní Identita"
+
+msgid "Delete"
+msgstr "Vymazat"
+
+msgid "Deny"
+msgstr "Odepøít"
+
+msgid "Describe the Problem"
+msgstr "Popipsat Problém"
+
+msgid "Details have been logged for the administrator."
+msgstr "Detaily byly záznamenány pro systémového administrátora."
+
+msgid "Discussions"
+msgstr "Diskuse"
+
+msgid "Display Options"
+msgstr "Zobrazit Mo¾nosti"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Neu¾ívejte pøímo maintenance.php"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Zmìnit pøístupová práva pro '%s'"
+
+msgid "Edit"
+msgstr "Zmìnit"
+
+msgid "Email addresses must match."
+msgstr "Emailové adresy se musí zhodovat."
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Prázdný výsledek."
+
+msgid "End this row"
+msgstr "Ukonèit øádek"
+
+msgid "Error"
+msgstr "Chyba"
+
+msgid "Every 15 minutes"
+msgstr "Ka¾dých 15 minut"
+
+msgid "Every 30 seconds"
+msgstr "Ka¾dých 30 sekund"
+
+msgid "Every 5 minutes"
+msgstr "Ka¾dých 5 minut"
+
+msgid "Every Login"
+msgstr "Ka¾dé pøihlá¹ení do systému"
+
+msgid "Every half hour"
+msgstr "Ka¾dou pùlhodinu"
+
+msgid "Every minute"
+msgstr "Ka¾dou minutu"
+
+msgid "Example values:"
+msgstr "Pøíkladové hodnoty:"
+
+msgid "Execute"
+msgstr "Provést"
+
+msgid "Failed retrieving preferences."
+msgstr "Pøíjem preferencí selhalo."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Selhalo spojení na LDAP server."
+
+msgid "Failed to connect to SMB server."
+msgstr "Selhalo spojení na SMB server."
+
+msgid "Fax"
+msgstr "Fax"
+
+#, c-format
+msgid "File Count: %s file"
+msgstr "Poèet souborù: %s soubor"
+
+#, c-format
+msgid "File Count: %s files"
+msgstr "Poèet souborù: %s souborù"
+
+msgid "File Manager"
+msgstr "Správce Souborù"
+
+msgid "File Name"
+msgstr "Jméno Souboru"
+
+msgid "Filters"
+msgstr "Filtry"
+
+msgid "Forwardings"
+msgstr "Pøeposlání"
+
+msgid "Full Description:"
+msgstr "Podrobný Popis:"
+
+#, c-format
+msgid "Generate %s Configuration"
+msgstr "Vytvoøit Konfiguraci pro %s"
+
+msgid "Green"
+msgstr "Zelené"
+
+msgid "Grey"
+msgstr "©edé"
+
+msgid "Group Administration"
+msgstr "Administrace Skupin"
+
+msgid "Groups"
+msgstr "Skupiny"
+
+msgid "Guest Access"
+msgstr "Pøístup pro Hosta"
+
+msgid "Guest Services"
+msgstr "Slu¾by Hostùm"
+
+msgid "HTTP Authentication not found."
+msgstr "Nebylo nalezeno HTTP ovìøení."
+
+msgid "Headlines"
+msgstr "Novinky"
+
+msgid "Help"
+msgstr "Nápovìda"
+
+msgid "Home Address"
+msgstr "Adresa Domù"
+
+msgid "Home Phone"
+msgstr "Telefon Domù"
+
+msgid "Home"
+msgstr "Domov"
+
+msgid "Horde Administration"
+msgstr "Horde Administrace"
+
+msgid "Horde Configuration"
+msgstr "Konfigurace pro Horde"
+
+msgid "Horde Login"
+msgstr "Pøihlá¹ení do se systému Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Bezdrátovì"
+
+msgid "Horde is not properly configured"
+msgstr "Horde není správnì konfigurováno"
+
+msgid "Horde"
+msgstr "Horde"
+
+#, c-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "Selhalo vytvoøení IMAP schránky: %s"
+
+#, c-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "Selhalo vymazání IMAP schránky: %s"
+
+#, c-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "Selhalo vytvoøení IMAP kvóty: %s"
+
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP adresa se nenachází v CIDR bloku."
+
+msgid "Icons Only"
+msgstr "Pouze Ikonky"
+
+msgid "Icons with text"
+msgstr "Ikonky s textem"
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on line %d."
+msgstr "Chyba pøi importování: Oèekávaný \"ZAÈÁTEK\" na øádku %d."
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on the line %d."
+msgstr "Chyba pøi importování: Oèekávaný \"ZAÈÁTEK\" na øádku %d."
+
+msgid "Import Error: Malformed line."
+msgstr "Chyba pøi Importování: ©patnì naformátovaný øádek."
+
+#, c-format
+msgid "Import Error: Type mismatch. Expected \"END:%s\" on line %d."
+msgstr "Chyba pøi Importování: Chyba ve struktuøe. Oèekávaný \"KONEC:%s\" na øádku %d."
+
+msgid "Import Error: Unexpected end of file."
+msgstr "Chyba pøi Importování: Neoèekávaný konec souboru."
+
+msgid "Import to my calendar"
+msgstr "Importovat kalendáø"
+
+msgid "Import"
+msgstr "Importovat"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Importované Pole: %s"
+
+msgid "Imported fields:"
+msgstr "Importovaná Pole:"
+
+msgid "Increase Indentation"
+msgstr "Zvý¹it Odra¾ení Textu"
+
+msgid "Insert Ruler"
+msgstr "Vlo¾it Pravítko"
+
+msgid "Invalid data submitted."
+msgstr "Byla vlo¾ena nesprávná data."
+
+msgid "Invalid response from server"
+msgstr "©patná odezva serveru"
+
+msgid "Italic"
+msgstr "Kurzíva"
+
+msgid "Justify Full"
+msgstr "Plnì Vyrovnat"
+
+msgid "Justify Left"
+msgstr "Zarovnat doleva"
+
+msgid "Justify Right"
+msgstr "Zarovnat doprava"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Kerberos server odmítnul ovìøení."
+
+msgid "Key already exists on the public keyserver."
+msgstr "Klíè ji¾ existuje na veøejném serveru."
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Light Blue"
+msgstr "Svìtle Modrá"
+
+msgid "List Help Topics"
+msgstr "Výpis Mo¾ností pro Nápovìdu"
+
+msgid "Listing users is disabled."
+msgstr "Výpis u¾ivatelù není nastaven."
+
+msgid "Log in"
+msgstr "Pøihlá¹ení se do systému"
+
+msgid "Log out"
+msgstr "Odlá¹ení se ze systému"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Selhalo pøihlá¹ení do systému. Pravdìpodobnì jste zadali nesprávné "
+"u¾ivatelské jméno nebo heslo."
+
+msgid "Logout"
+msgstr "Odhlá¹ení se ze systému"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF Pøíloha neobsahuje ¾ádná data."
+
+msgid "Mail"
+msgstr "Po¹ta"
+
+msgid "Map Date and Time Fields"
+msgstr "Mapovat pole pro Datum a Èas"
+
+msgid "Map Import Fields"
+msgstr "Mapovat Importované Pole"
+
+msgid "Matching fields"
+msgstr "Pole, která se shodují"
+
+msgid "Members"
+msgstr "Èlenové"
+
+msgid "Menu mode:"
+msgstr "Mód Nabítky:"
+
+msgid ""
+"Message Verified Successfully but the signer's certificated could not be "
+"verified."
+msgstr "Zpráva byla úspì¹nì ovìøena, ale certifikát oznaèení nelze ovìøit."
+
+msgid "Message"
+msgstr "Zpráva"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "Metoda '%s' není definována"
+
+msgid "Method"
+msgstr "Metoda"
+
+msgid "Mime Type"
+msgstr "Mime Typ"
+
+msgid "Modified Date"
+msgstr "Zmìnìný Datum"
+
+msgid "Monthly"
+msgstr "Mìsíènì"
+
+msgid "Move down/right"
+msgstr "Posunout dolù/vpravo"
+
+msgid "Move up/left"
+msgstr "Posunout nahoru/vlevo"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "My Account"
+msgstr "Mùj Úèet"
+
+msgid "My Summary"
+msgstr "Moje Shrnutí"
+
+msgid "NO, I Do NOT Agree"
+msgstr "Ne, já Nesouhlasím."
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid "NeXT"
+msgstr "NeXT"
+
+msgid "Network"
+msgstr "Sí»"
+
+msgid "Never"
+msgstr "Nikdy"
+
+msgid "New Username (optional)"
+msgstr "Nové U¾ivatelské Jméno (nepovinné)"
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro FTP VFS."
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro LDAP mo¾nosti."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL Kategorie."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL Mo¾nosti."
+
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL obsluhu relace."
+
+msgid "No configuration information specified for SQL Tokens."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL Tokeny."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL VFS."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr ""
+"®ádné konfiguraèní informace nebyli specifikovány pro SQL Prokázání Identity."
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "®ádné konfiguraèní informace nebyli specifikovány pro SQL-Soubor VFS."
+
+msgid "No password provided for IMAP authentication."
+msgstr "Nebylo poskytnuto heslo pro ovìøení pomocí IMAP."
+
+msgid "No password provided for Kerberos authentication."
+msgstr "Nebylo poskytnuto heslo pro ovìøení pomocí Kerberos."
+
+msgid "No password provided for LDAP authenticaton."
+msgstr "Nebylo poskytnuto heslo pro ovìøení pomocí LDAP."
+
+msgid "No password provided for RADIUS authentication."
+msgstr "Nebylo poskytnuto heslo pro ovìøení pomocí RADIUS."
+
+msgid "No password provided for SMB authentication."
+msgstr "Nebylo poskytnuto heslo pro ovìøení pomocí SMB."
+
+msgid "No preferences are available."
+msgstr "®ádné nastavení není k dispozici."
+
+msgid "No valid XML data returned"
+msgstr "Byla vrácena neplatná XML data"
+
+msgid "No values"
+msgstr "Bez hodnot"
+
+msgid "Notes"
+msgstr "Poznámky"
+
+msgid "Notice"
+msgstr "Upozornìní"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Oznámení, ¾e posluchaè %s není nalezen."
+
+msgid "Off"
+msgstr "Vyp"
+
+msgid "On"
+msgstr "Zap"
+
+msgid "Options"
+msgstr "Mo¾nosti"
+
+msgid "Orange"
+msgstr "Oran¾ové"
+
+msgid "Ordered List"
+msgstr "Objednaný Seznam"
+
+msgid "Other Information"
+msgstr "Dal¹í Informace"
+
+msgid "PHP Shell"
+msgstr "PHP Shell"
+
+msgid "Password"
+msgstr "Heslo"
+
+msgid "Passwords cannot be blank."
+msgstr "Heslo musí obsahovat nìjaké znaky."
+
+msgid "Passwords must match."
+msgstr "Hesla se musí zhodovat."
+
+msgid "Perform Maintenance Operations"
+msgstr "Provédt Operace Údr¾by"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Provést operace údr¾by pøi pøihlá¹ení se do systému?"
+
+msgid "Permissions Administration"
+msgstr "Administrace Pøístupových Práv"
+
+msgid "Permissions"
+msgstr "Pøístupová Práva"
+
+msgid "Phone"
+msgstr "Telefon"
+
+msgid "Please enter a month and a year."
+msgstr "Prosím zadejte mìsíc a rok."
+
+msgid "Please enter a month, day, and year."
+msgstr "Prosím zadejte mìsíc, den a rok."
+
+msgid "Please provide a summary of the problem."
+msgstr "Prosím poskytnìte shrnutí problému."
+
+msgid "Please provide your username and password"
+msgstr "Prosím zadejte své u¾ivatelské jméno a heslo"
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Prosím pøeètìte následující text. Pokud si pøejete u¾ívat systém, MUSÍTE "
+"souhlasit s podmínkami pou¾ívání."
+
+msgid "Problem Description"
+msgstr "Popsat Problém"
+
+msgid "Problem?"
+msgstr "Problém?"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "Veøejný/Osobní klíèový pár nebyl úspì¹nì vytvoøen."
+
+msgid "Ratio"
+msgstr "Pomìr"
+
+msgid "Read"
+msgstr "Èíst"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Opravdu vymazat %s? Tato operace je nevratná."
+
+msgid "Refresh Summary View:"
+msgstr "Obnovit Zobrazení Shrnutí:"
+
+msgid "Remove pair"
+msgstr "Odstraò pár"
+
+msgid "Remove summary"
+msgstr "Odstranit shrnutí"
+
+msgid "Remove user"
+msgstr "Odstranit u¾ivatele"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "Odstranit u¾ivatele: %s"
+
+msgid "Remove"
+msgstr "Odstranit"
+
+msgid "Request couldn't be answered"
+msgstr "Nelze odpovìdìt na po¾adavek"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Po¾adované 'basedn' není urèené v konfiguraci identifikace."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "Po¾adované 'basedn' není urèené v konfiguraci mo¾ností."
+
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr "Po¾adovaný 'bdc_hostspec' není urèen v konfiguraci identifikace."
+
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci obsluhy relace."
+
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci kategorií VFS."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci identifikace."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci kategorií."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci mo¾ností."
+
+msgid "Required 'database' not specified in token configuration."
+msgstr "Po¾adovaná 'database' není urèená v konfiguraci tokenù."
+
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr "Po¾adované 'domain' není urèena v konfiguraci identifikace."
+
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci obsluhy relace."
+
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci VFS."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci identifikace."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci kategorií."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci mo¾ností."
+
+msgid "Required 'hostspec' not specified in token configuration."
+msgstr "Po¾adovaný 'hostspec' není urèen v konfiguraci tokenù."
+
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci obsluhy relace."
+
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci VFS."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci identifikace."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci kategorií."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci mo¾ností."
+
+msgid "Required 'password' not specified in token configuration."
+msgstr "Po¾adovaný 'password' není urèen v konfiguraci tokenù."
+
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr "Po¾adovaný 'pdc_hostspec' není urèen v konfiguraci identifikace."
+
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci obsluhy relace."
+
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci VFS."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci identifikace."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci kategorií."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci mo¾ností."
+
+msgid "Required 'phptype' not specified in token configuration."
+msgstr "Po¾adovaný 'phptype' není urèen v konfiguraci tokenù."
+
+msgid "Required 'port' not specified in VFS configuration."
+msgstr "Po¾adovaný 'port' není urèen v konfiguraci VFS."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Po¾adované 'uid' není urèeno v konfiguraci identifikace."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "Po¾adované 'uid' není urèeno v konfiguraci mo¾ností."
+
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci obsluhy relace."
+
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci VFS."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci identifikace."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci kategorií."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci mo¾ností."
+
+msgid "Required 'username' not specified in token configuration."
+msgstr "Po¾adovaný 'username' není urèen v konfiguraci tokenù."
+
+msgid "Required 'vfsroot' not specified in VFS configuration."
+msgstr "Po¾adovaná 'vfsroot' není urèen v konfiguraci VFS."
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Return to Options"
+msgstr "Zpìt k Mo¾nostem"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "SSH"
+msgstr "SSH"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "Ulo¾it '%s'"
+
+msgid "Save Options"
+msgstr "Ulo¾it Mo¾nosti"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Vyberat písmena, které jsou potøebné. Lze pou¾ít Kopírovat a Vlo¾it z "
+"textové oblasti."
+
+msgid "Select the date delimiter:"
+msgstr "Vyberat èasový oddìlovaè:"
+
+msgid "Select the date format:"
+msgstr "Vyberat formát datumu:"
+
+msgid "Select the time format:"
+msgstr "Vyberat formát èasu:"
+
+msgid "Select two matching fields."
+msgstr "Vyberat dvì pole, která se shodují."
+
+msgid "Select your color scheme."
+msgstr "Vybrat barevné téma."
+
+msgid "Select your preferred language:"
+msgstr "Vyberte si Vá¹ upøednostòovaný jazyk:"
+
+msgid "Select"
+msgstr "Vybrat"
+
+msgid "Selected Columns:"
+msgstr "Vyberané Sloupce:"
+
+msgid "Send Problem Report"
+msgstr "Poslat Problém"
+
+msgid "Set your preferred display language."
+msgstr "Vyberte si Vá¹ upøednostòovaný jazyk:"
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Urèení poèáteèní aplikace, barevného téma, obnovování strínky, a dal¹ích "
+"mo¾ností zobrazení."
+
+msgid "Short Summary:"
+msgstr "Krátké Shrnutí"
+
+msgid "Show"
+msgstr "Zobrazit"
+
+msgid "Size"
+msgstr "Velikost"
+
+msgid "Skip Maintenance"
+msgstr "Neprovádìt Údr¾bu"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Chybí nìkteré z konfiguraèních souborù pro Horde:"
+
+msgid "SpamAssassin"
+msgstr "SpamAssassin"
+
+msgid "Special Character Input"
+msgstr "Vlo¾ení Speciálních Znakù"
+
+msgid "Submit"
+msgstr "Poddat"
+
+msgid "Success"
+msgstr "Úspì¹nì Provedeno"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s' bylo úspì¹nì pøidáno do systému."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "'%s' bylo úspì¹nì vymazáno ze systému."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s' bylo úspì¹nì odstranìno ze systému."
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "'%s' bylo úspì¹nì obnoveno v systému."
+
+msgid "Sun"
+msgstr "Slunce"
+
+msgid "Tasks"
+msgstr "Úkoly"
+
+msgid "Text Only"
+msgstr "Pouze Text"
+
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Tøída Maintenance:: se nenahrála v poøádku."
+
+msgid "The Options window has closed. Exiting."
+msgstr "Okno s mo¾nostmi bylo uzavøeno. Ukonèuji."
+
+msgid ""
+"The detached PGP signature block is required to verify the signed message."
+msgstr ""
+"Je potøeba mít vyèlenìný PGP blok s oznaèením pro ovìøení zprávy."
+
+msgid ""
+"The detached SMIME signature block is required to verify the signed message."
+msgstr ""
+"Je potøeba mít vyèlenìný PGP blok s oznaèením pro ovìøení zprávy."
+
+msgid "The encryption features require a secure web connection."
+msgstr "Funkce kódování vy¾aduje bezpeèné spojení s internetem."
+
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr ""
+"Umístnìní binárního souboru GnuPG musí být zadáno tøídì Crypt_pgp::."
+
+msgid "The openssl module is required for the Crypt_smime:: class."
+msgstr "Tøída Crypt_smime:: potøebuje openssl modul."
+
+#, c-format
+msgid ""
+"The program used to view this data type (%s) was not found on the system."
+msgstr ""
+"Program, který umo¾òuje zobrazení toho to datového typu (%s) nebyl nalezen v systému."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Horde aplikace pou¾ívají Registry jako komunikaèní prostøedek mezi sebou. "
+"Zde byste mìli vypsat v¹echny naistalované aplikace."
+
+msgid "There are no parts that can be displayed inline."
+msgstr "®ádnou èást nelze zobrazit ve zprávì."
+
+#, c-format
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"Pøíli¹ mnoho znakù v tomto poli. Bylo vlo¾eno %s znakù, maximální poèet znakù "
+"je %s." 
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Nastal problém pøi pøidávání '%s' do systému."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Nastal problém pøi odstraòování '%s' ze systému."
+
+#, c-format
+msgid "There was a problem updating '%s'"
+msgstr "Nastal problém pøi obnovì '%s'"
+
+msgid "There was an error importing the calendar data."
+msgstr "Nastala chyba pøi importování kalendáøe."
+
+msgid "There was an error importing the contact data."
+msgstr "Nastala chyba pøi importování Kontaktù."
+
+msgid "There was an unknown error verifying this message."
+msgstr "Nastala chyba pøi ovìøování této zprávy."
+
+msgid ""
+"This calendar data has been successfully added to your schedule. Click below "
+"to view:"
+msgstr ""
+"Tyto kalendáøní data byly úspì¹nì pøidány do Va¹eho Kalendáøe. Pro zobrazení "
+"kliknìte ní¾e:"
+
+msgid ""
+"This contact data has been successfully added to your address book. Click "
+"below to view:"
+msgstr ""
+"Tyto data o kontaktu byly úspì¹nì pøidány do Va¹ich Kontaktù. Pro zobrazení "
+"kliknìte ní¾e:"
+
+msgid "This does not appear to be a valid rar archive."
+msgstr "Toto nevypadá, ¾e je platný rar archív."
+
+msgid "This does not appear to be a valid zip file."
+msgstr "Toto nevypadá, ¾e je platný zip soubor."
+
+msgid "This field is required."
+msgstr "Toto je po¾ádované pole."
+
+msgid "This field may only contain integers."
+msgstr "Toto pole mù¾e obsahovat pouze celá èísla."
+
+msgid "This field may only contain numbers."
+msgstr "Toto pole mù¾e obsahovat pouze èísla."
+
+msgid "This field must be a comma or space separated list of integers"
+msgstr "Toto pole musí být seznam celých èísel s èárkou nebo mezerou jako oddìlovaèem."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Tento soubor øídí globální nastavení MIME driverù pro Horde systém, umo¾òuje "
+"aplikacím pou¾ít programy jako enscript nebo mswordview k zobrazení obsahu v "
+"HTML ve Va¹em prohlí¾eèi."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Tento soubor urèuje styly, které jsou pou¾ity k nastavení barev a typù písma "
+"pro Horde Framework a také v¹ech ostatnich aplikací, které nemají vlastní "
+"nastavení."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Tento soubor mapuje extensions souborù k logickým MIME typùm, z dùvodu "
+"umo¾nìní aplikacím provedení úkonù jako zobrazení pøíloh k emailùm, nebo CVS "
+"kontrolám."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Toto je hlavní konfiguraèní soubor pro Horde. Obsahuje cesty a základní "
+"polo¾ky, které se pou¾ívají v Horde a jeho aplikacích."
+
+msgid "This number must be at least one."
+msgstr "Toto èíslo musí být nejménì jedna."
+
+msgid "This server can't uncompress zip and gzip files."
+msgstr "Tento server nemù¾e dekomprimovat zip a gzip soubory."
+
+msgid "This value must be a number."
+msgstr "Tato hodnota musí být èíslo."
+
+msgid "This window must be called from an Options window"
+msgstr "Toto okno se musí otevøít z okna pro Mo¾nosti"
+
+msgid "Time Tracking"
+msgstr "Management Èasu"
+
+msgid "Title"
+msgstr "Titul"
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Nelze se pøipojit na SQL server."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Nelze vymazat '%s': %s."
+
+msgid "Unable to open compressed archive."
+msgstr "Nelze otevøít komprimovaný archív."
+
+msgid "Unable to read the vfsroot directory."
+msgstr "Nelze pøeèíst vfsroot adresáø."
+
+msgid "Unable to translate this Word document"
+msgstr "Nelze pøelo¾it tento Word dokument."
+
+msgid "Underline"
+msgstr "Podtrhnout"
+
+msgid "Undo Changes"
+msgstr "Zru¹it Zmìny"
+
+msgid "Unordered List"
+msgstr "Nesetøídìný Seznam"
+
+msgid "Update password:"
+msgstr "Obnovit heslo:"
+
+msgid "Update user"
+msgstr "Obnoven U¾ivatele"
+
+msgid "Update"
+msgstr "Obnovit"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "Obnoveno '%s'."
+
+msgid "Use Default Value"
+msgstr "Pou¾ít Implicitní Hodnotu"
+
+msgid "User Administration"
+msgstr "Administrace U¾ivatelù"
+
+msgid "User Options"
+msgstr "U¾ivatelské Mo¾nosti"
+
+msgid "Username and/or password not correct."
+msgstr "U¾ivatelské Jméno a/nebo Heslo naní správné."
+
+msgid "Username"
+msgstr "U¾ivatelské Jméno"
+
+msgid "Users in the system:"
+msgstr "U¾ivatelù v systému:"
+
+msgid "Users"
+msgstr "U¾ivatelé"
+
+msgid "Vacation"
+msgstr "Dovolená"
+
+msgid "Verification failed - this message may have been tampered with."
+msgstr "Ovìøení selhalo - tato zpráva mù¾e být fal¹ovaná."
+
+msgid "Warning"
+msgstr "Upozornìní"
+
+msgid "Weekly"
+msgstr "Týdnì"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Vítejte v %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Vítejte, %s"
+
+#, c-format
+msgid "What application should %s display after login?"
+msgstr "Kterou aplikaci má %s zobrazit po pøihlá¹ení se do systému?"
+
+msgid "Work Address"
+msgstr "Adresa do Práce"
+
+msgid "Work Phone"
+msgstr "Telefon do Práce"
+
+msgid "YY"
+msgstr "RR"
+
+msgid "Yearly"
+msgstr "Roènì"
+
+msgid "Yes, I Agree"
+msgstr "Ano, Souhlasím"
+
+msgid "You did not enter a valid email address."
+msgstr "Nezadali jste správnou emailovou adresu."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Byli jste odhlá¹eni.<br />Dìkujeme za u¾ívání systému."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Musíte vysvìtlit Vá¹ problém pøedtím, ne¾ ho po¹lete."
+
+msgid "You must specify a username to remove."
+msgstr "Urèete u¾ivatelské jméno, které bude odstranìno."
+
+msgid "You must specify the username to add."
+msgstr "Urèete u¾ivatelské jméno, které bude pøidáno."
+
+msgid "You must specify the username to update."
+msgstr "Urèete u¾ivatelské jméno, které bude obnoveno."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Va¹e %s relace zanikla. Opìt se pøihla¹te, prosím"
+
+msgid "Your Email Address:"
+msgstr "Va¹e Emailová Adresa:"
+
+msgid "Your Information"
+msgstr "Va¹e Informace"
+
+msgid "Your Name:"
+msgstr "Va¹e Jméno:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Vá¹ identifikaèní protokol nepodporuje pøidávání u¾ivatelù, nebo tato "
+"mo¾nost byla z nìjakých jiných dùvodù zakázána."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"Vá¹ identifikaèní protokol nepodporuje výpis u¾ivatelù, nebo tato mo¾nost "
+"byla z nìjakých jiných dùvodù zakázána."
+
+msgid "Your options have been updated."
+msgstr "Va¹e mo¾nosti byly obnoveny."
+
+msgid "[Problem Report]"
+msgstr "[Hlá¹ení Problému]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[øádek %s z %s]"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "unnamed"
+msgstr "bezjména"
+
+msgid "vCard"
+msgstr "vCard"

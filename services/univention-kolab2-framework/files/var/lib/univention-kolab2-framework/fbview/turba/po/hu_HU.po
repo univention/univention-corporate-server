@@ -1,0 +1,384 @@
+# Turba Hungarian translation file.
+# Copyright (C) 2002 Laszlo L. Tornoci
+# This file is distributed under the same license as the Turba package.
+# Laszlo L. Tornoci <torlasz@xenia.sote.hu>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-06-02 23:08+0200\n"
+"PO-Revision-Date: 2002-06-07 09:01+0200\n"
+"Last-Translator: Laszlo L. Tornoci <torlasz@xenia.sote.hu>\n"
+"Language-Team: Hungarian <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "A %s fájl importálása sikeresen megtörtént"
+
+msgid "Add Contact ..."
+msgstr "Új bejegyzés..."
+
+msgid "Add a new contact"
+msgstr "Új bejegyzés rögzítése"
+
+msgid "Add failed"
+msgstr "Az új bejegyzés rögzítése nem sikerült"
+
+msgid "Add"
+msgstr "Bevitel"
+
+msgid "Addressbook is read-only."
+msgstr "A címjegyzék csak olvasható."
+
+msgid "Advanced Directory Search"
+msgstr "Címtárban történõ részletes keresés"
+
+msgid "Advanced Search"
+msgstr "Részletes keresés"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "A megadott érték nem fogadható el."
+
+msgid "Available Columns:"
+msgstr "A rendelkezésre álló oszlopok:"
+
+msgid "Browse"
+msgstr "Böngészés"
+
+msgid "Cancel"
+msgstr "Mégse"
+
+msgid "Cell Phone"
+msgstr "Mobil telefon"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Válassza ki, hogy milyen sorrendben jelenjenek meg a címlistában az oszlopok."
+
+msgid "Clear Search"
+msgstr "Az eredmények törlése"
+
+msgid "Column Options"
+msgstr "Az oszlopok beállítása"
+
+msgid "Company"
+msgstr "Cég"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "A %s tartalma"
+
+msgid "Default Display"
+msgstr "Az alapértelmezés szerinti megjelenítés"
+
+msgid "Delete"
+msgstr "Törlés"
+
+msgid "Deletion failed"
+msgstr "A törlés nem sikerült"
+
+msgid "Directory"
+msgstr "Címtár"
+
+msgid "Display Options"
+msgstr "A megjelenítés beállításai"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "'%s' módosítása"
+
+msgid "Edit"
+msgstr "Módosítás"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error"
+msgstr "Hiba"
+
+msgid "Export Addressbook"
+msgstr "A címjegyzék exportálása"
+
+msgid "Export"
+msgstr "Exportálás"
+
+msgid "Failed to access the specified address book."
+msgstr "A megadott címjegyzék nem érhetõ el."
+
+#, c-format
+msgid "Failed to browse %s"
+msgstr "Nem sikerült a böngészés %s-ben"
+
+msgid "Failed to connect to the specified directory."
+msgstr "A megadott címtár nem érhetõ el."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Nem sikerült a %s címtárban való keresés"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Mezõ"
+
+msgid "From"
+msgstr "honnan"
+
+msgid "Help"
+msgstr "Segítség"
+
+msgid "Home Address"
+msgstr "Otthoni cím"
+
+msgid "Home Phone"
+msgstr "Otthoni telefon"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "CSV (,-vel elválasztott) adatok importálásakor: az elsõ sor a mezõk neveit tartalmazza?"
+
+msgid "Illegal or malformed form data."
+msgstr "Hibás vagy elfogadhatlan adat."
+
+msgid "Import Addressbook"
+msgstr "Címjegyzék importálása"
+
+msgid "Import"
+msgstr "Importálás"
+
+msgid "Import/Export Addressbooks"
+msgstr "Címjegyzékek import/exportja"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Invalid addressbook."
+msgstr "Hibás címjegyzék."
+
+msgid "Invalid e-mail address."
+msgstr "Hibás email cím."
+
+msgid "Invalid name."
+msgstr "Hibás/elfogadhatatlan név."
+
+msgid "Language"
+msgstr "Nyelv"
+
+msgid "List"
+msgstr "Lista"
+
+msgid "Matching"
+msgstr "mit"
+
+msgid "Message"
+msgstr "Üzenet"
+
+msgid "Name"
+msgstr "Név"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr "Egyetlen rendelkezésre álló címjegyzékhez sem tud újabb bejegyzéseket hozzátenni. Ha úgy gondolja, hogy ez rendellenes, akkor forduljon a helyi rendszergazdához."
+
+msgid "Notes"
+msgstr "Megjegyzés"
+
+msgid "Options"
+msgstr "Opciók"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Válassza ki, hogy melyik címjegyzékhez szeretne hozzátenni."
+
+msgid "Please select a directory:"
+msgstr "Kérem válasszon egy címtárat:"
+
+msgid "Problem?"
+msgstr "Probléma?"
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Save Changes"
+msgstr "Mentsük el a változtatásokat"
+
+msgid "Save"
+msgstr "Mentés"
+
+msgid "Search Results"
+msgstr "A keresés eredménye"
+
+msgid "Search"
+msgstr "Keresés"
+
+msgid "Search&nbsp;Results"
+msgstr "A&nbsp;keresés&nbsp;eredménye"
+
+msgid "Select the destination to import to:"
+msgstr "Válassza ki, hogy hova kíván importálni:"
+
+msgid "Select the file to import:"
+msgstr "Válassza ki az importálandó fájlt."
+
+msgid "Select the format to export to:"
+msgstr "Válassza ki, hogy milyen formátumba kíván exportálni:"
+
+msgid "Select the format to import from:"
+msgstr "Válassza ki, hogy milyen formátumból kíván importálni:"
+
+msgid "Select the source to export from:"
+msgstr "Válassza ki, hogy mit kíván exportálni:"
+
+msgid "Select view to display by default."
+msgstr "Válassza ki az alapértelmezett megjelenítést."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Kiválasztható, hogy a címlistában milyen mezõk jelenjenek meg."
+
+msgid "Select your preferred language:"
+msgstr "Válassza ki az Önnek megfelelõ nyelvet:"
+
+msgid "Selected Columns:"
+msgstr "A kiválasztott oszlopok:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Levélküldés %s-nek"
+
+msgid "Set your preferred display language."
+msgstr "Beállíthatja az Önnek megfelelõ nyelvet."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "A Turba program konfigurációs állományai közül hiányzik néhány:"
+
+msgid "Success"
+msgstr "Sikerült"
+
+msgid "The data got lost"
+msgstr "Az adat elveszett"
+
+msgid "The data got lost."
+msgstr "Az adat elveszett."
+
+msgid "The file contained no data."
+msgstr "A fájlban nem voltak adatok."
+
+msgid "There are no browseable address books."
+msgstr "Nincsen olyan címjegyzék, amiben böngészni tud."
+
+#, c-format
+msgid "There are no entries in %s."
+msgstr "A %s címjegyzék üres."
+
+msgid "There are no writeable address books."
+msgstr "Nincsen olyan címjegyzék, amiben változtatni tud."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr "Az állományt nem sikerült a szerverre feltölteni. Lehet, hogy a fájl nagyobb, mint a maximálisan megengedett méret."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr "Az objektum hozzáadása nem sikerült. További segítségért forduljon a rendszergazdához."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr "Az objektum törlése nem sikerült. További segítségért forduljon a rendszergazdához."
+
+msgid "There was an error importing the data."
+msgstr "Az importálás során hiba történt."
+
+msgid "There was an error importing the uploaded file"
+msgstr "A szerverre küldött fájl importálása során hiba történt"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr "Ez a fájl határozza meg a Turba program alapértelmezés szerinti beállításait, ill. azt, hogy mely beállításokat változtathatnak meg a felhasználók."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "Ez a fájl tartalmazza a színeket és fontokat meghatározó stíluslap információkat, melyek kiegészítik, vagy felülbírálják a Horde alapértelmezéseit."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr "Ez a fájl tartalmazza a Turba program globális mezõneveit és típusait - név, email, címek, stb."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Ez a fájl tartalmazza a Turba program számára elérhetõ forrásokat."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr "Ez a fõ Turba konfigurációs fájl, mely elérési útvonalakat és Turba scriptek számára való opciókat tartalmaz."
+
+msgid "This number must be at least one."
+msgstr "Ez a szám nem lehet egynél kisebb."
+
+msgid "This person is already in your addressbook."
+msgstr "Ez a személy már szerepel az Ön címjegyzékében."
+
+msgid "This value must be a number."
+msgstr "Ez az érték csak szám lehet."
+
+msgid "Title"
+msgstr "Titulus"
+
+msgid "Turba is not properly configured"
+msgstr "A Turba program konfigurációja hibás"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Nem sikerült beolvasni %s definícióját."
+
+msgid "User Options"
+msgstr "Felhasználói beállítások"
+
+msgid "View to display by default:"
+msgstr "Az alapértelmezés szerinti megjelenítés:"
+
+msgid "Warning"
+msgstr "Figyelmeztetés"
+
+msgid "Work Address"
+msgstr "Munkahelyi cím"
+
+msgid "Work Phone"
+msgstr "Munkahelyi telefon"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "Nem adta meg a megfeleltetést az importált fájl és a Turba program mezõi között."
+
+msgid "Your Information"
+msgstr "Személyes információ"
+
+msgid "Your options have been updated."
+msgstr "Már az új beállítások érvényesek."
+
+msgid "[Edit]"
+msgstr "[Módosítás]"
+
+msgid "add column"
+msgstr "új oszlop"
+
+msgid "move left"
+msgstr "balra"
+
+msgid "move right"
+msgstr "jobbra"
+
+msgid "remove column"
+msgstr "oszlop törlése"

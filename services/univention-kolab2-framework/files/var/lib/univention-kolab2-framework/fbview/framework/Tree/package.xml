@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Tree/package.xml,v 1.6 2003/12/16 00:32:46 slusarz Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Tree</name>
+  <summary>Horde Tree API</summary>
+  <description>
+The Horde_Tree:: class provides a tree view of hierarchical information. It allows for expanding/collapsing of branches and maintains their state. It can work together with the Horde_Tree javascript class to achieve this in DHTML on supported browsers.
+  </description>
+  <license>GPL</license>
+  <maintainers>
+    <maintainer>
+      <user>mdjukic</user>
+      <role>lead</role>
+      <name>Marko Djukic</name>
+      <email>marko@oblo.com</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Tree.php" />
+
+      <dir name="Tree" baseinstalldir="/Horde" role="php">
+        <file name="javascript.php" />
+        <file name="html.php" />
+      </dir>
+
+    </filelist>
+  </release>
+
+  <deps>
+    <dep type="ext" rel="has" optional="yes">gettext</dep>
+    <dep type="pkg" rel="has">Horde_Util</dep>
+  </deps>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-05</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

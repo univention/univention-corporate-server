@@ -1,0 +1,1 @@
+<div style="width:100%;text-align:right;"><?php echo Horde::link('', _("Exit Address Book"), 'menuitem', null, 'parent.window.close(); return false;') . Horde::img('close.gif', _("Exit Address Book"), 'align="middle"', $registry->getParam('graphics', 'horde')) . '&nbsp;' . _("Exit Address Book") ?></a></div>

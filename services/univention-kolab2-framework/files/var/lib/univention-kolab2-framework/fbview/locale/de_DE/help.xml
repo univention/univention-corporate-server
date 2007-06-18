@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!-- $Horde: horde/locale/de_DE/help.xml,v 1.4 2004/05/27 20:22:16 jan Exp $ -->
+<help>
+  <entry id="summary" md5="68ca33f7f0c9aae4c103eb47492cdc15" state="uptodate">
+<title>Die Portalseite</title>
+ <para>
+  Die Portalseite erlaubt eine kurze Übersicht über alle Ihre wichtigen
+  Informationen. Sie kann zum Beispiel anzeigen, wie viele neue Emails Sie
+  haben, welche Termine demnächst anstehen, welche Aufgaben Sie noch zu
+  erledigen haben oder auch die neuesten Nachrichten. Viele dieser Übersichten
+  enthalten schnelle Zugriffe auf häufig benötigte Funktionen, wie das
+  Schreiben neuer Emails oder dem Anlegen neuer Kalendereinträge oder
+  Aufgaben.
+ </para>
+ <para>
+  Der Inhalt dieser Portalseite kann über den &quot;Anpassen&quot;-Link
+  verändert werden. Sie können zum Beispiel auswählen, welche Übersichten in
+  die Portalseite aufgenommen werden sollen, und festlegen, in welcher
+  Reihenfolge sie angezeigt werden.
+ </para>
+</entry>
+  <entry id="navbar" md5="b8cf0ae19e57dfa0c2b962e516782f47" state="uptodate">
+<title>Die Anwendungs-Navigationsleiste</title>
+ <para>
+  Auf der linken Seite des Fensters befindet sich die Navigationsleiste für
+  die Anwendungen. Klicken Sie auf die Symbole oder Namen der Anwendungen, um
+  schnell und einfach zwischen diesen hin- und herzuschalten.
+ </para>
+</entry>
+  <entry id="prefs-do_maintenance" state="new">
+    <title>Preferences: Maintenance: Do Maintenance</title>
+    <para>
+    If you would like to perform maintenance operations on login, check this box.
+    </para>
+</entry>
+  <entry id="prefs-confirm_maintenance" state="new">
+    <title>Preferences: Maintenance: Confirm Maintenance</title>
+    <para>
+    If you would like to confirm all maintenance tasks before they are run, check this box. If left unchecked, all maintenance operations that need to be run will be performed automatically with no chance to cancel on login.
+    </para>
+</entry>
+</help>

@@ -1,0 +1,549 @@
+# Horde Ukrainian KOI8-U translation
+# Copyright (C) 2002 Andriy Kopystyansky.
+# Andriy Kopystyansky <anri@polynet.lviv.ua>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde v2.1\n"
+"POT-Creation-Date: 2002-01-05 15:36+0200\n"
+"PO-Revision-Date: 2002-01-05 16:15+0200\n"
+"Last-Translator: Andriy Kopystyansky <anri@polynet.lviv.ua>\n"
+"Language-Team: Ukrainian <webmaster@polynet.lviv.ua>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=KOI8-U\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Операц╕я проф╕лактичного обслуговування %s - П╕дтвердження"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s приготовано до вказаних проф╕лактичних операц╕й."
+
+msgid "24 hours"
+msgstr "24 години"
+
+msgid "AM/PM"
+msgstr ""
+
+msgid "Add a new user:"
+msgstr "Додати нового користувача:"
+
+msgid "Add pair"
+msgstr "Додати пару"
+
+msgid "Add user"
+msgstr "Додати користувача"
+
+msgid "Adding users is disabled."
+msgstr "Додавання користувач╕в заборонене."
+
+msgid "Address"
+msgstr "Адреса"
+
+msgid "Addressbook"
+msgstr "Адресна книга"
+
+msgid "Administration"
+msgstr "Адм╕н╕стрування"
+
+msgid "Alias"
+msgstr "Псевдон╕м"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr "Спроба п╕дключення невдала: жодного запису для %s."
+
+msgid "Attempt to bind without a valid connection."
+msgstr "Спроба п╕дключення за в╕дсутност╕ коректного з'╓днання."
+
+msgid "Available fields:"
+msgstr "Доступн╕ поля:"
+
+#, c-format
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr "П╕дключення до сервера %s, dn %s як %s невдале: [%d] %s"
+
+msgid "Birthday"
+msgstr "День народження"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Cancel Problem Report"
+msgstr "В╕дм╕нити пов╕домлення проблеми"
+
+msgid "Cell Phone"
+msgstr "Ст╕льниковий телефон"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "В╕дм╕тьте оперц╕ю(╖), як╕ сл╕д зд╕йснити в цей час."
+
+msgid "Close Help Window"
+msgstr "Закрити в╕кно допомоги"
+
+msgid "Close Help"
+msgstr "Закрити Допомогу"
+
+msgid "Close Window"
+msgstr "Закрити в╕кно"
+
+msgid "Company"
+msgstr "Компан╕я"
+
+msgid "Confirm Password"
+msgstr "П╕дтвердження паролю"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Вм╕ст '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Вм╕ст RAR арх╕ву"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr ""
+
+msgid "DD"
+msgstr "ДД"
+
+msgid "Daily"
+msgstr "Щоденно"
+
+msgid "Database query failed."
+msgstr "Невдача запиту до бази даних."
+
+msgid "Default Identity"
+msgstr "Основна ╕постась"
+
+msgid "Delete"
+msgstr "Витерти"
+
+msgid "Describe the Problem"
+msgstr "Опиш╕ть проблему"
+
+msgid "Do not directly access maintenance.php"
+msgstr ""
+
+msgid "Email"
+msgstr "Е-пошта"
+
+msgid "Empty result."
+msgstr "Порожн╕й результат."
+
+msgid "Error"
+msgstr "Помилка"
+
+msgid "Every Login"
+msgstr "Кожного входу"
+
+msgid "Example values:"
+msgstr "Дан╕ для прикладу:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr ""
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr ""
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr ""
+
+msgid "Failed to connect to LDAP server."
+msgstr ""
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr ""
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Full Description:"
+msgstr "Повний опис:"
+
+msgid "Help"
+msgstr "Допомога"
+
+msgid "Home Address"
+msgstr "Домашня адреса"
+
+msgid "Home Phone"
+msgstr "Домашн╕й телефон"
+
+msgid "Horde Login"
+msgstr "Вх╕д до Horde"
+
+msgid "Horde System"
+msgstr "Система Horde"
+
+msgid "Horde User Administration"
+msgstr "Адм╕н╕стрування користувач╕в Horde"
+
+msgid "Horde Wireless"
+msgstr ""
+
+msgid "Horde is not properly configured"
+msgstr "Horde не сконф╕гурована правильно"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Помилка ╤мпорту: "
+
+msgid "Import"
+msgstr "╤мпорт"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "╤мпортоване поле: %s"
+
+msgid "Imported fields:"
+msgstr "╤мпортован╕ поля:"
+
+msgid "List Help Topics"
+msgstr "Перел╕к розд╕л╕в Допомоги"
+
+msgid "Listing users is disabled."
+msgstr "Перегляд списку користувач╕в заборонений."
+
+msgid "Log in"
+msgstr "Вв╕йти"
+
+msgid "Log out"
+msgstr "Вийти"
+
+msgid "MM"
+msgstr "ММ"
+
+msgid "Mail"
+msgstr "IMP-портал"
+
+msgid "Map Date and Time Fields"
+msgstr "Прив'язати поля Дати ╕ Часу"
+
+msgid "Map Import Fields"
+msgstr "Прив'язати ╕мпортован╕ поля"
+
+msgid "Matching fields"
+msgstr "В╕дпов╕дн╕ поля"
+
+msgid "Message"
+msgstr "Лист"
+
+msgid "Monthly"
+msgstr "Щом╕сяця"
+
+msgid "Name"
+msgstr "╤м`я"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr ""
+
+msgid "No configuration information specified for SQL Categories."
+msgstr ""
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr ""
+
+msgid "No configuration information specified for SQL authentication."
+msgstr ""
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "Не знайдено жодного запису для %s."
+
+msgid "No preferences are available."
+msgstr ""
+
+msgid "No preferences were retrieved."
+msgstr ""
+
+msgid "Notes"
+msgstr "Нотатки"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Passwords cannot be blank."
+msgstr "Пароль не може бути пустий."
+
+msgid "Passwords must match."
+msgstr "Пароль мусить сп╕впасти."
+
+msgid "Perform Maintenance Operations"
+msgstr "Виконати проф╕лактичн╕ операц╕╖"
+
+msgid "Phone"
+msgstr "Телефон"
+
+msgid "Please log in"
+msgstr "Будь-ласка, вв╕йд╕ть"
+
+msgid "Please provide a summary of the problem."
+msgstr "Будь-ласка, дайте короткий опис проблеми."
+
+msgid "Please provide your username and password"
+msgstr "Будь-ласка, вкаж╕ть назву користувача ╕ пароль"
+
+msgid "Problem Description"
+msgstr "Опис проблеми"
+
+msgid "Remove pair"
+msgstr "Витерти пару"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+
+msgid "Reset"
+msgstr "Очистити"
+
+msgid "Return to Options"
+msgstr "Повернутися до Опц╕й"
+
+msgid "Role"
+msgstr "Роль"
+
+msgid "Save Options"
+msgstr "Зберегти опц╕╖"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Вибер╕ть необх╕дн╕ Вам символи з пол╕в нижче. Ви зможете скоп╕ювати ╖х ╕ "
+"вставити з поля вводу тексту."
+
+msgid "Select the date delimiter:"
+msgstr "Вибер╕ть розд╕лювач дати:"
+
+msgid "Select the date format:"
+msgstr "Вибер╕ть формат дати:"
+
+msgid "Select the time format:"
+msgstr "Вибер╕ть формат часу:"
+
+msgid "Select two matching fields."
+msgstr ""
+
+msgid "Send Problem Report"
+msgstr "В╕д╕слати пов╕домлення про проблему"
+
+msgid "Short Summary:"
+msgstr "Короткий зм╕ст"
+
+msgid "Skip Maintenance"
+msgstr "Пропустити проф╕лактику"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "В╕дсутн╕ деяк╕ конф╕гурац╕йн╕ файли для Horde:"
+
+msgid "Special Character Input"
+msgstr "Вв╕д Спец╕альних символ╕в"
+
+msgid "Success"
+msgstr "Усп╕шно"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "Усп╕шно додано '%s' до системи."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Усп╕шно видалено '%s' з системи."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Трапилася проблема при додаванн╕ '%s' до системи."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Трапилася проблема при видаленн╕ '%s' з системи."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings.."
+msgstr ""
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+
+msgid "Title"
+msgstr "Титул"
+
+msgid "Type mismatch."
+msgstr "Нев╕дпов╕дн╕сть тип╕в."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr ""
+
+msgid "Unable to modified preferences."
+msgstr ""
+
+msgid "Unable to register preferences in session."
+msgstr ""
+
+msgid "Unable to translate this Word document"
+msgstr ""
+
+msgid "Undo Changes"
+msgstr "Скасувати зм╕ни"
+
+msgid "Unexpected end of file."
+msgstr "Передчасний кiнець файлу."
+
+msgid "Use Default Value"
+msgstr "Використовувати значення за замовчуванням"
+
+msgid "Username"
+msgstr "Назва користувача"
+
+msgid "Users in the system:"
+msgstr "Користувач╕ в систем╕:"
+
+msgid "Warning!"
+msgstr "Увага!"
+
+msgid "Warning"
+msgstr "Увага"
+
+msgid "Weekly"
+msgstr "Щотижня"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "В╕таю Вас, %s"
+
+msgid "Work Address"
+msgstr "Робоча адреса"
+
+msgid "Work Phone"
+msgstr "Робочий телефон"
+
+msgid "YY"
+msgstr "РР"
+
+msgid "Yearly"
+msgstr "Щор╕чно"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Ви повинн╕ описати проблему, перш н╕ж в╕дсилати пов╕домлення про не╖."
+
+msgid "You must specify a username to remove."
+msgstr "Вам сл╕д вказати назву користувача для видалення."
+
+msgid "You must specify the username to add."
+msgstr "Вам сл╕д вказати назву користувача для додавання."
+
+msgid "Your Email Address:"
+msgstr "Ваша адреса е-пошти:"
+
+msgid "Your Name:"
+msgstr "Ваше ╕м'я:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+
+msgid "[Problem Report]"
+msgstr "[Пов╕домлення Проблеми]"

@@ -1,0 +1,104 @@
+=================================
+|| Horde Release Process Notes ||
+=================================
+
+$Horde: horde/docs/RELEASE,v 1.22 2004/04/01 20:37:36 jan Exp $
+
+
+The steps to use when cutting a new release:
+
+-   Examine */docs/CHANGES files:
+
+    --  Add the word SECURITY in front of any security-related changes,
+        and move them to the top, to draw attention to them.
+
+    --  Cull out the most important ones, and prepare the text of an
+        announcement.
+
+    --  Write the release announcements into the docs/RELEASE_NOTES file and
+        check if it parses with `php -l docs/RELEASE_NOTES'.
+
+-   Examine */README and docs/* files, and update the version if necessary.
+
+-   Make sure your settings in horde/scripts/make-release-conf.php are
+    correct.
+
+-   If you want to use another CVSROOT than the default one, set the CVSROOT
+    environment variable to a user with commit privs
+    (e.g. user@cvs.horde.org:/repository) and change to an empty directory.
+
+-   Make a "dry run" of the make-release.php script by adding "--nocommit
+    --noftp --noannounce" to the command line parameters.
+
+-   Create the tarballs/patches using (HEAD) horde/scripts/make-release.php:
+
+    --  Must be run as root (to set file ownership).
+
+    --  Can optionally add "--nocommit --noftp --noannounce" to do a "dry run"
+        that will not make any CVS and FTP changes or announcements.
+
+    --  Example commands (omit "--branch" when building HEAD):
+
+        # make-release.php --module=horde --version=2.<n> --branch=RELENG_2
+        # make-release.php --module=imp --version=3.<n> --branch=RELENG_3
+        # make-release.php --module=turba --version=1.<n> --branch=RELENG_1
+
+-   If upgrading from a release candidate, remove the old tarball from the FTP
+    server.
+
+-   Update the web site (hordeweb CVS directory):
+
+    --  Edit top-level hordeweb/main.html
+
+    --  For Horde, under hordeweb/horde edit:
+
+        horde.html
+
+    --  For IMP, under hordeweb/imp edit:
+
+        3.0/2002 (or current year) 3.0/latest.html 3.0/imp.html
+        download/download.html
+
+    --  For Turba, under hordeweb/turba edit:
+
+        content.txt download/download.html
+
+    --  If applicable, under hordeweb/source edit:
+
+        versions.html
+
+-   Add new version to bugs.horde.org.
+
+
+** Guidelines for release candidates (RCs):
+
+* The last time we introduced a bug with code from a new minor release so
+we had to release another version right after. This might always happen if
+there is more than one change since the last release or if the changes were
+done recently.
+
+* If we have a security leak that needs to be plugged immediately, it is
+the common way to release a new minor version that *only* contains the fix
+for that leak.
+
+* RCs are necessary for every release (except 3) because many translators
+only update their translations when there is a new (minor) release cycle
+starting because they don't translate on CVS versions.
+
+
+** Example format for announcement messages:
+
+The Horde Team is pleased to announce the (first release candidate|official
+release) of the [MODULE NAME] version [VERSION].
+
+[MODULE DESCRIPTION]
+
+[Barring any problems, this code will be released as [MODULE] [VERSION].
+Testing is requested and comments are encouraged.
+Updated translations would also be great.]
+
+Major new changes in this release:
+
+    - [CHANGE 1]
+    - [CHANGE 2]
+    ...

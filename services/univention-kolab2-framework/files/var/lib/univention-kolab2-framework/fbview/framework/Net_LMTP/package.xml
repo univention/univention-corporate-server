@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Net_LMTP</name>
+  <summary>Provides an implementation of the RFC2033 LMTP protocol</summary>
+  <description>Provides an implementation of the RFC2033 LMTP using PEAR's Net_Socket and Auth_SASL class.</description>
+  <maintainers>
+    <maintainer>
+      <user>damian</user>
+      <name>Damian Alejandro Fernandez Sosa</name>
+      <email>damlists@cnba.uba.ar</email>
+      <role>lead</role>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>1.0.1</version>
+    <date>2004-08-25</date>
+    <license>PHP License</license>
+    <state>stable</state>
+    <notes>* Fixed a bug in SIZE handling (thanks to Steffen Hansen for bug report)
+* Marked as Stable</notes>
+    <deps>
+      <dep type="pkg" rel="has">Net_Socket</dep>
+    </deps>
+    <filelist>
+      <file role="php" baseinstalldir="Net" name="LMTP.php"/>
+      <file role="test" name="test_lmtp.php"/>
+    </filelist>
+  </release>
+  <changelog>
+    <release>
+      <version>0.7.0</version>
+      <date>2004-03-02</date>
+      <state>stable</state>
+      <notes>* Removed dependency on Auth_SASL, but if installed automatically uses it probiding DIGEST-MD5 and CRAM-MD5 auth methods
+* Marked as stable
+
+</notes>
+    </release>
+    <release>
+      <version>0.6</version>
+      <date>2003-03-27</date>
+      <state>beta</state>
+      <notes>- Fixed a bug in DIGEST-MD5 Auth Method.
+- Now Uses defaults values in constructor.
+      
+</notes>
+    </release>
+    <release>
+      <version>0.5</version>
+      <date>2003-03-24</date>
+      <state>beta</state>
+      <notes>- All methods are implemmented based on Net_SMTP
+      
+</notes>
+    </release>
+  </changelog>
+</package>

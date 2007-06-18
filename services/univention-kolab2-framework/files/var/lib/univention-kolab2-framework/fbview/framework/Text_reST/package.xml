@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Text_reST/package.xml,v 1.5 2003/12/11 03:04:28 eraserhd Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Text_reST</name>
+  <summary>reStructuredText parser and formatters</summary>
+  <description>This package provides a parser for reStructguredText and reformatters for different output formats.</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>eraserhd</user>
+      <role>lead</role>
+      <name>Jason M. Felice</name>
+      <email>eraserhead@eraserhead.net</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-12-08</date>
+    <notes>Initial release as PEAR package</notes>
+
+    <filelist>
+      <dir role="php" baseinstalldir="/Text" name="reST">
+        <file name="Formatter.php" />
+	<dir role="php" name="Formatter">
+	  <file name="html.php" />
+	</dir>
+        <file name="Parser.php" />
+      </dir>
+      <file role="php" baseinstalldir="/Text" name="reST.php" />
+      <dir name="tests" role="test">
+      	<file name="headings.phpt" />
+	<file name="lblocks.phpt" />
+      	<file name="links.phpt" />
+      	<file name="roles.phpt" />
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0+" />
+    </deps>
+
+    <provides type="class" name="Text_reST" />
+    <provides type="class" name="Text_reST_Formatter" />
+    <provides type="class" name="Text_reST_Formatter_html" />
+    <provides type="class" name="Text_reST_Parser" />
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2002-12-29</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

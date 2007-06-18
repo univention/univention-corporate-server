@@ -1,0 +1,118 @@
+WBXML support:
+Done, but does not work with SyncML Dev
+
+
+Authentication:
+Basic Done
+MD5 will not be supported
+
+
+Sync method (classes) support:
+    TwoWaySync            // Started
+    SlowSync              // May not be done, too complicated
+    OneWayFromClientSync  // Started
+    OneWayFromServerSync  // Started
+    RefreshFromClientSync // Started
+    RefreshFromServerSync // Started
+
+
+Session handling:
+Done, but need to remove when finished
+
+
+Registry functions:
+
+  function import($content, $contenttype) // returns $guid or false if fails
+  // called by $registry->call($type . '/import', array($content, $contenttype))
+
+  function export($guid, $contenttype) // returns $content or false if fails
+  // called by $registry->call($type . '/export', array($content, $contenttype))
+
+  function remove($guid) // returns true/false?  this one may exist
+  // called by $registry->call($type . '/import', array($content, $contenttype))
+
+  function replace($guid, $content, $contenttype) // returns true/false
+  // called by $registry->call($type . '/replace', array($guid, $content, $contenttype));
+
+  function listBy($timestamp, 'change'|'add'|'delete');  // returns an array of $guids false if fails
+  // called by $registry->call($type . '/listBy', array($timestamp, $listtype))
+
+  function list();  // returns an array of $guids or false if fails
+  // called by $registry->call($type . '/list')
+
+Implementation grid:
+
+|-----------------------------------------------------------|
+|           | Kronolith |   Mnemo   |    Nag    |   Turba   |
+|-----------|-----------|-----------|-----------|-----------|
+| import()  |     X     |     X     |     X     |           |
+|--        -|-         -|-         -|-         -|-         -|
+| export()  |     X     |     X     |     X     |           |
+|--        -|-         -|-         -|-         -|-         -|
+| remove()  |     X     |     X     |     X     |           |
+|--        -|-         -|-         -|-         -|-         -|
+| replace() |     X     |     X     |     X     |           |
+|--        -|-         -|-         -|-         -|-         -|
+| listBy()  |     X     |     X     |     X     |     X     |
+|--        -|-         -|-         -|-         -|-         -|
+| list()    |     X     |     X     |     X     |           |
+|-----------------------------------------------------------|
+
+We should support these content types:
+    notes:  text/plain: text maybe only ascii? text/x-vnote?
+    tasks:  text/x-vcalendar: vCalendar
+    calendar: text/x-vcalendar: vCalendar
+    contacts: text/x-vcard: vCard
+
+
+ID mappings:
+need to write these functions in State:
+    getLocUID($type, $guid) // returns local id
+    setLocUID($type, $guid, $locid) // returns true/false
+    removeLocUID($type, $locid) // returns $guid/false
+
+
+Sync Date:
+We need a function that returns the last sync date.  I would put this
+in State and have something like this: getLastSyncDate($target) and it
+would use $sourceURI, and $username from the class:
+need to write this function in State
+    getLastSyncDate($target)
+    setLastSyncDate($target, $syncDate)
+We should also have
+    getLastSyncAnchor($target)
+    setLastSyncAnchor($target, $syncDate)
+SyncAnchor is either an ever increasing integer,
+or a UTC based ISO 8601 date/time stamp (20000824T133000Z, yyyymmddThhMMssZ)
+This is used by the client/server to see if any syncs were missed
+
+
+SyncML Dev:
+not implemented, and may not have to
+problem with WBXML prevents it from being used
+
+
+Sync commands:
+Alert Done
+Final Done
+Get not done but works, does not support SyncML Dev
+Put not done but works, does not
+Results Done
+Status Done
+Sync Done
+Add only used in Sync
+Atomic only used in Sync   // May not be used
+Copy only used in Sync     // May not be used
+Delete only used in Sync
+Replace only used in Sync
+Sequence only used in Sync // May not be used
+
+
+SyncBody:
+Need to clean up better when finished
+
+
+SyncHdr:
+No SyncML Dev support, see above
+
+$Horde: framework/SyncML/docs/TODO,v 1.22 2004/03/16 19:30:10 chuck Exp $

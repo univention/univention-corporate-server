@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Kolab/package.xml,v 1.4 2004/04/21 19:05:01 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Kolab</name>
+  <summary>Glue package for accessing a Kolab server from Horde</summary>
+  <description>
+    This package contains a number of helper functions that make
+    communication between a Horde client and a Kolab server smoother.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>stuart</user>
+      <role>lead</role>
+      <name>Stuart Binge</name>
+      <email>s.binge@codefusion.co.za</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.4</version>
+    <state>alpha</state>
+    <date>2004-04-21</date>
+    <notes>
+     Pretty much a total reorganisation of the library; added a new Kolab_Cyrus
+     object to better encapsulate communication with the Cyrus server. Moved and
+     in most cases renamed existing functions to fit into the Kolab_Cyrus object,
+     and added several new functions.
+    </notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="Kolab.php" />
+    </filelist>
+
+    <provides type="class" name="Kolab" />
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.4</version>
+      <state>alpha</state>
+      <date>2004-04-21</date>
+      <notes>
+       Pretty much a total reorganisation of the library; added a new Kolab_Cyrus
+       object to better encapsulate communication with the Cyrus server. Moved and
+       in most cases renamed existing functions to fit into the Kolab_Cyrus object,
+       and added several new functions.
+      </notes>
+    </release>
+    <release>
+      <version>0.0.3</version>
+      <state>alpha</state>
+      <date>2004-03-09</date>
+      <notes>
+       - Modified the cyrusMailboxURI() function to properly handle shared
+         Cyrus folders.
+       - Small change in the openCyrusConnection() function to disable creating
+         the specified folder if it is a shared folder, even if the user requests
+         otherwise.
+       - Removed the compileFreeBusy() functions, as Kronolith:: already provides
+         a more robust version.
+      </notes>
+    </release>
+    <release>
+      <version>0.0.2</version>
+      <state>alpha</state>
+      <date>2004-01-30</date>
+      <notes>
+       - Replaced the various iconv() functions with Horde counterparts from
+         the MIME:: and String:: libraries.
+       - Replaced the Net_HTTP_Client code with its equivalent that uses
+         HTTP_Request for GETs, and PHP streams with the WebDAV_Client wrapper
+         for WebDAV PUTs.
+       - Fixed a small bug in openCyrusConnection() when false was being
+         returned (instead of raising Horde::fatal) on a certain error condition.
+      </notes>
+    </release>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-01-28</date>
+      <notes>Initial contribution to Horde</notes>
+    </release>
+  </changelog>
+</package>

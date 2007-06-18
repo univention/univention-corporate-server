@@ -1,0 +1,39 @@
+<?xml version='1.0'?>
+<!-- $Horde: horde/admin/locale/en_US/help.xml,v 1.3 2003/06/14 04:28:21 chuck Exp $ -->
+<help>
+
+<entry id="admin-phpshell">
+    <title>Admin Tools: PHP Shell</title>
+    <heading>How to use the PHP Shell</heading>
+    <para>The PHP command shell lets you execute arbitrary PHP
+          statements on the server. These commands are executed using
+          the <code>eval()</code> function, and execute in the context
+          of the current session. This shell is intended to try out
+          syntax and execute some simple arbitrary code. Note that to
+          get any output, you must echo or print something in your
+          code fragment.</para>
+</entry>
+
+<entry id="admin-sqlshell">
+    <title>Admin Tools: SQL Shell</title>
+    <heading>How to use the SQL Shell</heading>
+    <para>The SQL query shell lets you execute arbitrary SQL
+          statements on your database. These commands are executed
+          against the database defined in $conf['sql'] using the
+          PEAR::DB classes. You can use this tool to do queries into
+          the database, to do complicated SQL updates, deletes, etc.,
+          or to do simple data collection. It sends SQL queries to the
+          database directly, and will report return codes and complete
+          result sets.</para>
+</entry>
+
+<entry id="admin-cmdshell">
+    <title>Admin Tools: Command Shell</title>
+    <heading>How to use the Command Shell</heading>
+    <para>The command shell lets you execute arbitrary shell
+          commands on your server. You can use this to do quick
+          shell operations or when a shell is not otherwise available.
+          </para>
+</entry>
+
+</help>

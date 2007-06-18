@@ -1,0 +1,340 @@
+# $Horde: horde/scripts/ldap/horde.schema,v 1.19 2004/04/19 18:13:39 chuck Exp $
+#
+# The offical horde OID assigned by IANA is 13040.
+#
+# This schema depends on:
+#	- core.schema
+#
+#
+#Horde attribute branch 1.3.6.1.4.1.13040.2.1.*
+#IMP attribute branch 1.3.6.1.4.1.13040.3.1.*
+#Turba attribute branch 1.3.6.1.4.1.13040.4.1.*
+#Kronolith attribute branch 1.3.6.1.4.1.13040.5.1.*
+#Nag attribute branch 1.3.6.1.4.1.13040.6.1.*
+#Gollem attribute branch 1.3.6.1.4.1.13040.7.1.*
+#Chora attribute branch 1.3.6.1.4.1.13040.8.1.*
+#Mnemo attribute branch 1.3.6.1.4.1.13040.9.1.*
+#Troll attribute branch 1.3.6.1.4.1.13040.10.1.*
+#Klutz attribute branch 1.3.6.1.4.1.13040.11.1.*
+#Jonah attribute branch 1.3.6.1.4.1.13040.12.1.*
+#Hermes attribute branch 1.3.6.1.4.1.13040.13.1.*
+#Juno attribute branch 1.3.6.1.4.1.13040.14.1.*
+#Trean attribute branch 1.3.6.1.4.1.13040.15.1.*
+#Whups attribute branch 1.3.6.1.4.1.13040.16.1.*
+#Ingo attribute branch 1.3.6.1.4.1.13040.17.1.*
+#Ansel atribute branch 1.3.6.1.4.1.13040.18.1.*
+#Genie atribute branch 1.3.6.1.4.1.13040.19.1.*
+#Scry atribute branch 1.3.6.1.4.1.13040.20.1.*
+#Wicked atribute branch 1.3.6.1.4.1.13040.21.1.*
+#
+#Horde objectclass branch 1.3.6.1.4.1.13040.2.2.*
+#IMP objectclass branch 1.3.6.1.4.1.13040.3.2.*
+#Turba objectclass branch 1.3.6.1.4.1.13040.4.2.*
+#Kronolith objectclass branch 1.3.6.1.4.1.13040.5.2.*
+#NAG objectclass branch 1.3.6.1.4.1.13040.6.2.*
+#Gollem objectclass branch 1.3.6.1.4.1.13040.7.2.*
+#Chora objectclass branch 1.3.6.1.4.1.13040.8.2.*
+#Mnemo objectclass branch 1.3.6.1.4.1.13040.9.2.*
+#Troll objectclass branch 1.3.6.1.4.1.13040.10.2.*
+#Klutz objectclass branch 1.3.6.1.4.1.13040.11.2.*
+#Jonah objectclass branch 1.3.6.1.4.1.13040.12.2.*
+#Hermes objectclass branch 1.3.6.1.4.1.13040.13.2.*
+#Juno objectclass branch 1.3.6.1.4.1.13040.14.2.*
+#Trean objectclass branch 1.3.6.1.4.1.13040.15.2.*
+#Whups objectclass branch 1.3.6.1.4.1.13040.16.2.*
+#Ingo objectclass branch 1.3.6.1.4.1.13040.17.2.*
+#Ansel objectclass branch 1.3.6.1.4.1.13040.18.2.*
+#Genie objectclass branch 1.3.6.1.4.1.13040.19.2.*
+#Scry objectclass branch 1.3.6.1.4.1.13040.20.2.*
+#Wicked objectclass branch 1.3.6.1.4.1.13040.21.2.*
+
+#
+# Horde attribute branch 1.3.6.1.4.1.13040.2.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.2.1.1
+	NAME 'hordePrefs'
+	DESC 'Horde Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# IMP attribute branch 1.3.6.1.4.1.13040.3.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.3.1.1
+	NAME 'impPrefs'
+	DESC 'IMP Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Turba attribute branch 1.3.6.1.4.1.13040.4.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.4.1.1
+	NAME 'turbaPrefs'
+	DESC 'Turba Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+attributetype ( 1.3.6.1.4.1.13040.4.1.2
+	NAME 'turbaType'
+	DESC 'Turba Object Type: Contact/List'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{8} )
+
+attributetype ( 1.3.6.1.4.1.13040.4.1.3
+	NAME 'turbaMembers'
+	DESC 'Encoded members of a Turba list'
+        EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{4000} )
+
+#
+# Kronolith attribute branch 1.3.6.1.4.1.13040.5.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.5.1.1
+	NAME 'kronolithPrefs'
+	DESC 'Kronolith Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Nag attribute branch 1.3.6.1.4.1.13040.6.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.6.1.1
+	NAME 'nagPrefs'
+	DESC 'Nag Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Gollem attribute branch 1.3.6.1.4.1.13040.7.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.7.1.1
+	NAME 'gollemPrefs'
+	DESC 'Gollem Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Chora attribute branch 1.3.6.1.4.1.13040.8.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.8.1.1
+	NAME 'choraPrefs'
+	DESC 'Chora Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Mnemo attribute branch 1.3.6.1.4.1.13040.9.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.9.1.1
+	NAME 'mnemoPrefs'
+	DESC 'Mnemo Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Troll attribute branch 1.3.6.1.4.1.13040.10.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.10.1.1
+	NAME 'trollPrefs'
+	DESC 'Troll Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Klutz attribute branch 1.3.6.1.4.1.13040.11.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.11.1.1
+	NAME 'klutzPrefs'
+	DESC 'Klutz Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Jonah attribute branch 1.3.6.1.4.1.13040.12.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.12.1.1
+	NAME 'jonahPrefs'
+	DESC 'Jonah Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Hermes attribute branch 1.3.6.1.4.1.13040.13.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.13.1.1
+	NAME 'hermesPrefs'
+	DESC 'Hermes Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Juno attribute branch 1.3.6.1.4.1.13040.14.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.14.1.1
+	NAME 'junoPrefs'
+	DESC 'Juno Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Trean attribute branch 1.3.6.1.4.1.13040.15.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.15.1.1
+	NAME 'treanPrefs'
+	DESC 'Trean Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Whups attribute branch 1.3.6.1.4.1.13040.16.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.16.1.1
+	NAME 'whupsPrefs'
+	DESC 'Whups Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Ingo attribute branch 1.3.6.1.4.1.13040.17.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.17.1.1
+       NAME 'ingoPrefs'
+       DESC 'Ingo Preferences'
+       EQUALITY caseIgnoreIA5Match
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Ansel attribute branch 1.3.6.1.4.1.13040.18.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.18.1.1
+       NAME 'anselPrefs'
+       DESC 'Ansel Preferences'
+       EQUALITY caseIgnoreIA5Match
+       SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Genie attribute branch 1.3.6.1.4.1.13040.19.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.19.1.1
+	NAME 'geniePrefs'
+	DESC 'Genie Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Scry attribute branch 1.3.6.1.4.1.13040.20.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.20.1.1
+	NAME 'scryPrefs'
+	DESC 'Scry Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Wicked attribute branch 1.3.6.1.4.1.13040.21.1.*
+#
+attributetype ( 1.3.6.1.4.1.13040.21.1.1
+	NAME 'wickedPrefs'
+	DESC 'Wicked Preferences'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26{1024} )
+
+#
+# Horde objectclass branch 1.3.6.1.4.1.13040.2.2.*
+#
+objectclass ( 1.3.6.1.4.1.13040.2.2.1
+    NAME 'hordePerson'
+    DESC 'Horde Preferences'
+    SUP top
+    AUXILIARY
+    MAY ( mail $ hordePrefs $ impPrefs $ turbaPrefs $
+        gollemPrefs $ kronolithPrefs $ mnemoPrefs $
+        trollPrefs $ nagPrefs $ klutzPrefs $
+        jonahPrefs $ hermesPrefs $ junoPrefs $
+        treanPrefs $ whupsPrefs $ ingoPrefs $
+				geniePrefs $ scryPrefs $ anselPrefs $
+				wickedPrefs 
+    ) )
+
+#
+# IMP objectclass branch 1.3.6.1.4.1.13040.3.2.*
+#
+
+# Turba objectclass branch 1.3.6.1.4.1.13040.4.2.*
+objectclass ( 1.3.6.1.4.1.13040.4.2.1 
+  NAME 'turbaContact'
+  DESC 'Turba Contact'
+  SUP top
+  AUXILIARY
+  MAY ( turbaType $ turbaMembers )
+ )
+
+#
+# Kronolith objectclass branch 1.3.6.1.4.1.13040.5.2.*
+#
+
+#
+# Nag objectclass branch 1.3.6.1.4.1.13040.6.2.*
+#
+
+#
+# Gollem objectclass branch 1.3.6.1.4.1.13040.7.2.*
+#
+
+#
+# Chora objectclass branch 1.3.6.1.4.1.13040.8.2.*
+#
+
+#
+# Mnemo objectclass branch 1.3.6.1.4.1.13040.9.2.*
+#
+
+#
+# Troll objectclass branch 1.3.6.1.4.1.13040.10.2.*
+#
+
+#
+# Klutz objectclass branch 1.3.6.1.4.1.13040.11.2.*
+#
+
+#
+# Jonah objectclass branch 1.3.6.1.4.1.13040.12.2.*
+#
+
+#
+# Hermes objectclass branch 1.3.6.1.4.1.13040.13.2.*
+#
+
+#
+# Juno objectclass branch 1.3.6.1.4.1.13040.14.2.*
+#
+
+#
+# Trean objectclass branch 1.3.6.1.4.1.13040.15.2.*
+#
+
+#
+# Whups objectclass branch 1.3.6.1.4.1.13040.16.2.*
+#
+
+#
+# Ingo objectclass branch 1.3.6.1.4.1.13040.17.2.*
+#
+
+#
+# Ansel objectclass branch 1.3.6.1.4.1.13040.18.2.*
+#
+
+#
+# Genie objectclass branch 1.3.6.1.4.1.13040.19.2.*
+#
+
+#
+# Scry objectclass branch 1.3.6.1.4.1.13040.20.2.*
+#
+
+#
+# Wicked objectclass branch 1.3.6.1.4.1.13040.21.2.*
+#
+

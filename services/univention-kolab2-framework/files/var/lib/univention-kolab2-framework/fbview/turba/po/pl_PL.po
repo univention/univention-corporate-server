@@ -1,0 +1,325 @@
+# Turba Polish translation.
+# Copyright (C) 2001 Mariusz Zynel <mariusz@mizar.org>
+# Mariusz Zynel <mariusz@math.uwb.edu.pl>, 2001.
+# Piotr Roszatycki <dexter@debian.org>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2001-12-21 13:30+0100\n"
+"PO-Revision-Date: 2001-12-21 13:33+0100\n"
+"Last-Translator: Piotr Roszatycki <dexter@debian.pl>\n"
+"Language-Team: Polish <pl@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Plik %s zosta³ zaimportowany"
+
+msgid "Add Contact ..."
+msgstr "Dodaj kontakt ..."
+
+msgid "Add a new contact"
+msgstr "Dodanie nowego kontaktu"
+
+msgid "Add failed"
+msgstr "Dodanie nie powiod³o siê"
+
+msgid "Add"
+msgstr "Dodaj"
+
+msgid "Addressbook is read-only."
+msgstr "Ksi±¿ka adresowa jest w trybie tylko do odczytu"
+
+msgid "Advanced Directory Search"
+msgstr "Zaawansowane szukanie"
+
+msgid "Advanced Search"
+msgstr "Zaawansowane"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "Bcc"
+msgstr "Bcc"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Cc"
+msgstr "Cc"
+
+msgid "Cell Phone"
+msgstr "Tel. kom."
+
+msgid "Clear Search"
+msgstr "Czy¶æ wyniki"
+
+msgid "Company"
+msgstr "Firma"
+
+msgid "Delete"
+msgstr "Usuñ"
+
+msgid "Deletion failed"
+msgstr "Skasowanie nie powiod³o siê"
+
+msgid "Directory Search"
+msgstr "Przeszukiwanie ksi±¿ki"
+
+msgid "Directory"
+msgstr "Ksi±¿ka adresowa"
+
+msgid "Edit"
+msgstr "Edytuj"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error"
+msgstr "B³±d"
+
+msgid "Export Addressbook"
+msgstr "Eksport ksi±¿ki adresowej"
+
+msgid "Export"
+msgstr "Eksport"
+
+msgid "Failed to connect to the specified directory."
+msgstr "B³±d podczas ³±czenia siê do wybranej ksi±¿ki adresowej."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "B³±d podczas przeszukiwania ksi±¿ki adresowej: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Znajd¼"
+
+msgid "Help"
+msgstr "Pomoc"
+
+msgid "Home Address"
+msgstr "Adres domowy"
+
+msgid "Home Phone"
+msgstr "Tel. dom."
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Je¿eli importujesz plik CSV, to czy pierwszy wiersz zawiera nazwy pól?"
+
+msgid "Illegal or malformed form data."
+msgstr "Nieprawid³owe lub ¼le sformatowane dane."
+
+msgid "Import Addressbook"
+msgstr "Import ksi±¿ki adresowej"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import/Export Addressbooks"
+msgstr "Import/Eksport ksi±¿ki adresowej"
+
+msgid "Import/Export"
+msgstr "Import/Eksport"
+
+msgid "Invalid addressbook."
+msgstr "B³êdna ksi±¿ka adresowa."
+
+msgid "Invalid e-mail address."
+msgstr "B³êdny adres email."
+
+msgid "Invalid name."
+msgstr "B³êdne nazwisko."
+
+msgid "Language"
+msgstr "Jêzyk"
+
+msgid "Message"
+msgstr "Wiadomo¶æ"
+
+msgid "Name"
+msgstr "Nazwisko"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"¯adna z dostêpnych ksi±¿ek adresowych nie udostêpnia zapisu nowych pozycji. "
+"Je¿eli s±dzisz, ¿e jest to b³±d, skontaktuj siê z administratorem."
+
+msgid "Notes"
+msgstr "Uwagi"
+
+msgid "Please choose an address book to add a contact to."
+msgstr ""
+"Proszê wybraæ ksi±¿kê adresow±, do której maj± zostaæ wprowadzone dane."
+
+msgid "Problem?"
+msgstr "Problem?"
+
+msgid "Reset"
+msgstr "Kasuj"
+
+msgid "Save Changes"
+msgstr "Zachowaj zmiany"
+
+msgid "Save"
+msgstr "Zachowaj"
+
+msgid "Search Results"
+msgstr "Wyniki szukania"
+
+msgid "Search"
+msgstr "Szukaj"
+
+msgid "Search&nbsp;Results"
+msgstr "Rezultaty&nbsp;szukania"
+
+msgid "Select the destination to import to:"
+msgstr "Wybierz docelowe miejsce importowania:"
+
+msgid "Select the file to import:"
+msgstr "Wybierz plik do zaimportowania:"
+
+msgid "Select the format to export to:"
+msgstr "Wybierz format do wyeksportowania:"
+
+msgid "Select the format to import from:"
+msgstr "Wybierz format do zaimportowania:"
+
+msgid "Select the source to export from:"
+msgstr "Wybierz ¼ród³o do wyeksportowania:"
+
+msgid "Select your preferred language:"
+msgstr "Wybierz preferowany jêzyk:"
+
+msgid "Send Message"
+msgstr "Wy¶lij wiadomo¶æ"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Wy¶lij wiadomo¶æ do %s"
+
+msgid "Set the your preferred display language."
+msgstr "Ustaw preferowany jêzyk."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Brak niektórych plików konfiguracyjnych Turba:"
+
+msgid "Success"
+msgstr "Sukces"
+
+msgid "The data got lost"
+msgstr "Dane zosta³y utracone"
+
+msgid "The data got lost."
+msgstr "Dane zosta³y utracone."
+
+msgid "The file contained no data."
+msgstr "Plik nie zawiera danych."
+
+msgid "There are no writeable address books."
+msgstr "Brak ksi±¿ek adresowych do zapisu"
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Wyst±pi³ problem podczas pobierania pliku. Rozmiar pliku mo¿e byæ wiêkszy "
+"ni¿ maksymalny dozwolony."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Wyst±pi³ b³±d podczas dodawania tego obiektu. Proszê skontaktowaæ siê z "
+"administratorem systemu w celu uzyskania pomocy."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Wyst±pi³ b³±d podczas kasowania tego obiektu. Proszê skontaktowaæ siê z "
+"administratorem systemu w celu uzyskania pomocy."
+
+msgid "There was an error importing the data."
+msgstr "B³±d podczas importowania danych."
+
+msgid "There was an error importing the uploaded file"
+msgstr "B³±d podczas importowania wys³anego pliku"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"W tym pliku skonfigurowane s± domy¶lne preferencje w Turba, okre¶lone s± "
+"równie¿ te, które mog± byæ zmieniane przez u¿ytkowników."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr "W tym pliku okre¶lone s± style u¿ywane do ustawienia kolorów i fontów."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"W tym pliku okre¶lone s± globalne nazwy i typy atrybutów - nazwiska, emaila, "
+"adresu, itp."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "W tym pliku okre¶lona jest lista dostêpnych ¼róde³ dla Turba."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"To jest g³ówny plik konfiguracyjny Turba. Zawiera on ¶cie¿ki i opcje "
+"skryptów Turba."
+
+msgid "Title"
+msgstr "Tytu³"
+
+msgid "To"
+msgstr "Do"
+
+msgid "Turba is not properly configured"
+msgstr "Turba nie jest w pe³ni skonfigurowana."
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Nie mo¿na za³adowaæ definicji %s."
+
+msgid "Warning"
+msgstr "Ostrze¿enie"
+
+msgid "Work Address"
+msgstr "Adres do pracy"
+
+msgid "Work Phone"
+msgstr "Tel. do pracy"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Nie wybrany zosta³ sposób zamiany pól importowanego pliku na odpowiednie "
+"pola aplikacji Turba."
+
+msgid "Your Information"
+msgstr "Twoje informacje"
+
+msgid "[Edit]"
+msgstr "[Edycja]"
+
+msgid "from"
+msgstr "od"
+
+msgid "matching"
+msgstr "zawiera"

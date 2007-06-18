@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Net_SMS/package.xml,v 1.6 2004/04/24 17:01:39 mdjukic Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Net_SMS</name>
+  <summary>SMS functionality.</summary>
+  <description>This package provides SMS functionality and access to SMS gateways.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>mdjukic</user>
+      <role>lead</role>
+      <name>Marko Djukic</name>
+      <email>mdjukic@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>beta</state>
+    <date>2004-03-15</date>
+    <notes>Initial release as a PEAR package</notes>
+
+    <filelist>
+      <file role="php" name="SMS.php" baseinstalldir="/Net" />
+      <dir role="php" name="SMS" baseinstalldir="/Net">
+        <file name="clickatell_http.php" />
+        <file name="sms2email_http.php" />
+        <file name="vodafoneitaly_smtp.php" />
+      </dir>
+    </filelist>
+
+    <provides type="class" name="SMS"/>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.2.0"/>
+      <dep type="ext" rel="has" name="gettext"/>
+      <dep type="pkg" rel="has" optional="yes">HTTP_Request</dep>
+      <dep type="pkg" rel="has" optional="yes">Mail</dep>
+    </deps>
+
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>beta</state>
+      <date>2004-03-15</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

@@ -1,0 +1,400 @@
+# Russian Turba Translation
+# Copyright (C)
+# Ignat Ikryanov <iignat@newmail.ru>, 2001
+# Anton Nekhoroshih <anton@valuehost.ru>, 2001
+# Fedor A. Fetisov <faf@ssc.ru>, 2002
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba v1.1\n"
+"POT-Creation-Date: 2002-11-10 18:09+0300\n"
+"PO-Revision-Date: 2002-11-10 18:09+0300\n"
+"Last-Translator: Fedor A. Fetisov <faf@ssc.ru>\n"
+"Language-Team: Fedor A. Fetisov <faf@ssc.ru>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CP1251\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "Файл %s успешно импортирован"
+
+msgid "Add Contact ..."
+msgstr "Добавить Запись ..."
+
+msgid "Add a new contact"
+msgstr "Добавить новую запись"
+
+msgid "Add failed"
+msgstr "Ошибка при добавлении"
+
+msgid "Add"
+msgstr "Добавить"
+
+msgid "Address Book Listing"
+msgstr "Содержание адресной книги"
+
+msgid "Addressbook is read-only."
+msgstr "Адресная книга доступна только для чтения."
+
+msgid "Advanced Search"
+msgstr "Расширенный Поиск"
+
+msgid "Alias"
+msgstr "Псевдоним"
+
+msgid "An illegal value was specified."
+msgstr "Была указана некорректная величина."
+
+msgid "Available Columns:"
+msgstr "Доступные столбцы:"
+
+msgid "Browse"
+msgstr "Выбрать"
+
+msgid "Cancel"
+msgstr "Отмена"
+
+msgid "Cell Phone"
+msgstr "Мобильный телефон"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Выберите порядок отображения столбцов в списке адресов."
+
+msgid "Clear Search"
+msgstr "Очистить"
+
+msgid "Column Options"
+msgstr "Параметры столбцов"
+
+msgid "Company"
+msgstr "Компания"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Содержание %s"
+
+msgid "Default Display"
+msgstr "Оболочка по умолчанию"
+
+msgid "Delete"
+msgstr "Удалить"
+
+msgid "Deletion failed"
+msgstr "Ошибка при удалении"
+
+msgid "Directory"
+msgstr "Каталог"
+
+msgid "Display Options"
+msgstr "Настройки оболочки"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Редактирование '%s'"
+
+msgid "Edit"
+msgstr "Редактирование"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Error"
+msgstr "Ошибка"
+
+msgid "Export Addressbook"
+msgstr "Экспорт адресной книги"
+
+msgid "Export"
+msgstr "Экспорт"
+
+msgid "Failed to access the specified address book."
+msgstr "Ошибка при доступе к указанной адресной книге."
+
+#, c-format
+msgid "Failed to browse %s."
+msgstr "Ошибка при выборе %s."
+
+msgid "Failed to connect to the specified directory."
+msgstr "Ошибка при соединении с указанным каталогом."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Ошибка при поиске в каталоге: %s"
+
+msgid "Fax"
+msgstr "Факс"
+
+msgid "Find"
+msgstr "Найти"
+
+msgid "From"
+msgstr "От"
+
+msgid "Help"
+msgstr "Подсказка"
+
+msgid "Home Address"
+msgstr "Домашний адрес"
+
+msgid "Home Phone"
+msgstr "Домашний телефон"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Если импортируются данные из CSV, содержит ли первая строка имена полей?"
+
+msgid "Illegal or malformed form data."
+msgstr "Некорректные данные из формы."
+
+msgid "Import Addressbook"
+msgstr "Импорт адресной книги"
+
+msgid "Import"
+msgstr "Импорт"
+
+msgid "Import/Export Addressbooks"
+msgstr "Импорт/Экспорт адресной книги"
+
+msgid "Import/Export"
+msgstr "Импорт/Экспорт"
+
+msgid "Invalid addressbook."
+msgstr "Некорректная адресная книга."
+
+msgid "Invalid e-mail address."
+msgstr "Некорректный e-mail."
+
+msgid "Invalid name."
+msgstr "Некорректное имя."
+
+msgid "Language"
+msgstr "Язык"
+
+msgid "List"
+msgstr "Список"
+
+msgid "Matching"
+msgstr "Совпадение"
+
+msgid "Message"
+msgstr "Сообщение"
+
+msgid "Name"
+msgstr "Имя"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ни одна из доступных адресных книг не была сконфигурирована так, чтобы Вы имели "
+"возможность добавлять в нее новые записи. Если Вы считаете, что это ошибка, то "
+"свяжитесь с сисадмином."
+
+msgid "Notes"
+msgstr "Заметки"
+
+msgid "Options"
+msgstr "Настройки"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Пожалуйста, выберите адресную книгу, в которую Вы хотите добавить запись."
+
+msgid "Please select a directory:"
+msgstr "Пожалуйста, выберите каталог:"
+
+msgid "Problem?"
+msgstr "Проблемы?"
+
+msgid "Reset"
+msgstr "Сбросить"
+
+msgid "Save Changes"
+msgstr "Сохранить изменения"
+
+msgid "Save"
+msgstr "Сохранить"
+
+msgid "Search Results"
+msgstr "Результаты поиска"
+
+msgid "Search"
+msgstr "Поиск"
+
+msgid "Search&nbsp;Results"
+msgstr "Результаты&nbsp;поиска"
+
+msgid "Select the destination to import to:"
+msgstr "Куда Вы хотите импортировать:"
+
+msgid "Select the file to import:"
+msgstr "Какой файл Вы хотите импортировать:"
+
+msgid "Select the format to export to:"
+msgstr "Выберите формат экспорта:"
+
+msgid "Select the format to import from:"
+msgstr "Выберите формат импорта:"
+
+msgid "Select the source to export from:"
+msgstr "Выберите источник для экспорта:"
+
+msgid "Select view to display by default."
+msgstr "Выберите вид оболочки по умолчанию."
+
+msgid "Select which fields to display in the address lists."
+msgstr "Выберите поля, видимые в списке адресов."
+
+msgid "Select your preferred language:"
+msgstr "Выберите язык интерфейса:"
+
+msgid "Selected Columns:"
+msgstr "Выбранные столбцы:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Отправить письмо %s"
+
+msgid "Set your preferred display language."
+msgstr "Выбор языка меню и подсказок"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Потерян ряд конфигурационных файлов Turba:"
+
+msgid "Success"
+msgstr "Успешно"
+
+msgid "The data got lost"
+msgstr "Данные утеряны"
+
+msgid "The data got lost."
+msgstr "Данные утеряны."
+
+msgid "The file contained no data."
+msgstr "Файл не содержит данных."
+
+msgid "There are no browseable address books."
+msgstr "Нет адресных книг, доступных для выбора."
+
+#, c-format
+msgid "There are no entries in %s."
+msgstr "В %s нет записей."
+
+msgid "There are no writeable address books."
+msgstr "Нет адресных книг, доступных для записи."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Ошибка при загрузке файла. Возможно файл превышает максимально разрешенный размер."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Ошибка при добавлении объекта. Свяжитесь с сисадмином."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Ошибка при удалении объекта. Свяжитесь с сисадмином."
+
+msgid "There was an error importing the data."
+msgstr "Ошибка при импорте данных."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Ошибка при импорте загруженного файла"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Этот файл управляет установками Turba по умолчанию, а также определяет, "
+"какие параметры пользователи могут изменять."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Этот файл управляет таблицами стилей, которые используются для задания цветов и шрифтов "
+"в дополнение или вместо установок Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Этот файл определяет имена и типы общих структур Turba - имена, email, адреса и т.д."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Этот файл определяет список доступных для Turba источников."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Это основной конфигурационный файл Turba. Он содержит пути и установки для скриптов "
+"Turba."
+
+msgid "This number must be at least one."
+msgstr "Это число не может быть меньше единицы."
+
+msgid "This person is already in your addressbook."
+msgstr "Этот человек уже записан в Вашей адресной книге."
+
+msgid "This value must be a number."
+msgstr "Этот значение должно быть числом."
+
+msgid "Title"
+msgstr "Заголовок"
+
+msgid "Turba is not properly configured"
+msgstr "Turba неверно сконфигурирована"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Невозможно загрузить определение %s."
+
+msgid "User Options"
+msgstr "Настройки пользователя"
+
+msgid "View to display by default:"
+msgstr "Вид оболочки по умолчанию:"
+
+msgid "Warning"
+msgstr "Внимание"
+
+msgid "Work Address"
+msgstr "Рабочий адрес"
+
+msgid "Work Phone"
+msgstr "Рабочий телефон"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Вы не указали соответствия полей в импортируемом файле соответствующим полям "
+"в Turba."
+
+msgid "Your Information"
+msgstr "Ваша информация"
+
+msgid "Your options have been updated."
+msgstr "Ваши настройки были обновлены."
+
+msgid "[Edit]"
+msgstr "[Редактировать]"
+
+msgid "add column"
+msgstr "добавить столбец"
+
+msgid "move left"
+msgstr "сместить влево"
+
+msgid "move right"
+msgstr "сместить вправо"
+
+msgid "remove column"
+msgstr "убрать столбец"

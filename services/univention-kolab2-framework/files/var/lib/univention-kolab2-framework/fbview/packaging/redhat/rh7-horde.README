@@ -1,0 +1,224 @@
+Horde RPMs                                                      horde.README
+=--------------------------------------------------------------------------=
+
+$Horde: horde/packaging/redhat/rh7-horde.README,v 1.4 2003/04/28 01:09:01 bjn Exp $
+
+
+NOTE:  This file describes the process of installing Horde and its
+components on Red Hat Linux 7.2 and 7.3 using RPM v4 packages.
+
+- Red Hat Linux 7.1 and earlier are no longer supported.
+
+- If you are using tarballs to compile and install Horde manually, you
+should read the README file included in each tarball.  The docs/INSTALL
+file in each tarball describes the complete installation process when
+using tarballs.
+
+
+INSTALLING
+
+IMPORTANT: If you're going to upgrade (rpm -U), see UPGRADING below for
+an important note.
+
+YOU WILL NEED TO RESTART Apache after you install/upgrade/remove the
+PHP, Horde, IMP, etc. RPMs.
+
+The following are the steps for getting these prerequisites installed.
+
+1)  Security Advisories
+
+    Before you do anything else, make sure you've installed the RPMs
+    described in the Red Hat Security Advisories for your version of Red
+    Hat Linux.  You should update any RPMs listed below in this document.
+    Some of those packages, in turn, have prerequisites that are NOT
+    covered in this document, so consult the following:
+
+    http://www.redhat.com/support/errata/
+        rh72-errata-security.html (7.2)
+        rh73-errata-security.html (7.3)
+
+2)  Required RPMs
+
+    Since Red Hat has not yet released a suitable set of PHP 4.2.3 RPMs,
+    nor any mcrypt/mcal RPMs, Horde has created custom ones, which can
+    be downloaded at the Horde FTP site:
+
+        ftp://ftp.horde.org/pub/RPMS/i386/rh7/
+
+    All the other RPMs listed below are official from Red Hat, and can
+    be found on any Red Hat Linux mirror.
+
+    a)  All sites will need the following RPMs.  If you are using Red
+        Hat Linux 7.2, note the version requirements for curl and libxml2;
+        the easiest solution is to install the 7.3 RPMs onto your 7.2
+        machine.
+
+        apache
+        curl >= 7.9.0
+        db3
+        db3x (needed on RHL 7.3 only)
+        expat
+        freetype
+        libtool-libs13
+        libxml2 >= 2.4.14
+        openssl
+        openssl095a
+        openssl096
+        php-4.2.3-0horde2
+        php-imap-4.2.3-0horde2
+        pspell
+
+    b)  If your Horde server will also be an IMAP server:
+
+        imap
+
+3)  OpenLDAP RPMs
+
+    a)  If you are using OpenLDAP with Horde:
+
+        openldap
+        openldap12
+        php-ldap-4.2.3-0horde2
+
+    b)  If your Horde server is also an OpenLDAP server:
+
+        openldap-servers
+
+4)  MySQL RPMs
+
+    a)  If you are using MySQL with Horde:
+
+        mysql
+        mysqlclient9
+        php-mysql-4.2.3-0horde2
+
+    b)  If your Horde server is also a MySQL server:
+
+        mysql-server
+
+5)  PostgreSQL RPMs
+
+    a)  If you are using PostgreSQL with Horde:
+
+        php-pgsql-4.2.3-0horde2
+        postgresql
+        postgresql-libs
+
+    b)  If your Horde server is also a PostgreSQL server:
+
+        postgresql-server
+
+6)  mcal RPMs
+
+    If you are using mcal with Horde (Kronolith):
+
+    mcal-0.7-0horde2
+    php-mcal-4.2.3-0horde2
+
+    (Note that this will only work if you're using the Horde-customized
+    php-4.2.3-0horde2 PHP RPMs; you can't mix php-mcal with the Red Hat
+    Linux stock PHP 4.1.2 RPMs.)
+
+7)  mcrypt RPMs
+
+    Horde can take advantage of the mcrypt encryption libraries, if they
+    are installed, to improve the performance of encryption operations.
+
+    libmcrypt-2.5.6-0horde2
+    php-mcrypt-4.2.3-0horde2
+
+    (Note that this will only work if you're using the Horde-customized
+    php-4.2.3-0horde2 PHP RPMs; you can't mix php-mcrypt with the Red Hat
+    Linux stock PHP 4.1.2 RPMs.)
+
+8)  XSLT RPMs
+
+    These aren't required for Horde and its applications, but if you need
+    XSLT support for your other PHP applications, install the following.
+    The js and sablotron RPMs are from Mozilla; you can also find them
+    on the Horde FTP site.
+
+    js
+    php-xslt-4.2.3-0horde2
+    sablotron
+
+    (Note that this will only work if you're using the Horde-customized
+    php-4.2.3-0horde2 PHP RPMs; you can't mix php-xslt with the Red Hat
+    Linux stock PHP 4.1.2 RPMs.)
+
+9)  Horde RPMs
+
+    The Horde RPMs have been tested with Red Hat Linux 7.2/7.3 and MySQL;
+    additional testing and comments always welcome.  These RPMs can be
+    downloaded from the Horde FTP site:
+
+        ftp://ftp.horde.org/pub/RPMS/noarch/rh7/
+
+    Red Hat 7.x
+    ===========
+    horde-2.2.3-1
+    imp-3.2.1-1
+    kronolith-1.0-2
+    mnemo-1.1-1
+    nag-1.1-1
+    turba-1.2-1
+
+    YOU WILL NEED TO RESTART Apache after you install/upgrade/remove the
+    above RPMs.
+
+    After installing these RPMs, you will need to configure Horde and
+    the applications (config directories), create MySQL or PostgreSQL
+    database tables if needed, etc.  Please see the docs/INSTALL file
+    for each application (/var/www/html/horde/docs/INSTALL etc.).
+
+
+UPGRADING
+
+PLEASE NOTE the following bug in RPM 4.0.4, which *may* result in lost
+configuration files during an upgrade (rpm -U).  Back up all your
+configuration files before upgrading!
+
+    http://groups.google.com/groups?hl=en&lr=&selm=20020418100752.S6539%40devserv.devel.redhat.com
+
+The Horde RPMs are designed to be upgradable (rpm -U option).  As with
+all RPM upgrades, you should scan for .rpmorig, .rpmnew, and .rpmsave
+files left after the upgrade, and merge in your old configuration with
+the new files.  A command such as the following can be used for this:
+
+    # find /etc /usr /var -name \*.rpm\* -print
+
+
+TESTING
+
+If you want to test the Horde installation, you'll need to add read
+permission to /var/www/html/horde/test.php, and use a web browser to
+access the page at:
+
+    http://example.com/horde/test.php
+
+Anything that shows up in red is a potential problem.  Reload the page and
+make sure that the counter increments (this tests PHP session handling).
+
+
+CREDITS
+
+Thanks to Mike Hardy <mhardy@h3c.com>, Chuck Moss <mossc@mossc.com>, and
+Mike Barsalou <mbarsalou@aidea.org> who have provided helpful suggestions,
+testing, and feedback for the Horde RPMs.
+
+Thanks to Dale Lovelace (formerly at Red Hat) who wrote the initial
+Horde and IMP RPMs, and to Dan Brown <danb35@earthlink.net> who has
+contributed some configurability and other good ideas from his setup.
+
+
+CONTACT
+
+We'd love to have feedback on these RPMs; please contact us on the Horde
+mailing lists:
+
+    http://www.horde.org/mail/
+
+
+PACKAGER
+
+Brent J. Nordquist <bjn@horde.org>

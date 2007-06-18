@@ -1,0 +1,125 @@
+========================================
+|| HORDE Version 3.0 Development Team ||
+========================================
+
+
+===============
+Core Developers
+===============
+
+Chuck Hagenbuch <chuck@horde.org>
+- original Horde design and programming
+- stuff
+
+Jon Parise <jon@csh.rit.edu>
+- preferences subsystem
+- help subsystem
+- general code maintenance
+- miscelleaneous functions
+- shell scripts
+- documentation
+- html doctor
+- stuff
+
+Anil Madhavapeddy <anil@recoil.org>
+- to quote Chuck: 'stuff'
+
+Rich Lafferty <rich@horde.org>
+- documentation
+
+Jan Schneider <jan@horde.org>
+- themes
+- i18n, l10n
+- stuff
+
+Michael Slusarz <slusarz@bigworm.colorado.edu>
+- MIME rendering/handling code
+- Other stuff
+
+
+============
+Localization
+============
+
+Arabic (Syria)          Platinum Development Team <devteam@platinum-sy.net>
+Brazilian Portuguese    Carlos Daniel Kibrit <kibrit@terra.com.br>
+Bulgarian               Miroslav Pendev <pendev@hotmail.com>
+Catalan                 Angels Guimerà <angels.Guimera@uab.es>
+Chinese (Simplified)    WangHengWen <whw@my169.com>
+                        Liaobin <liaobin@jite.net>
+Chinese (Traditional)   David Chang <david@thbuo.gov.tw>
+Czech                   Pavel Chytil <paja@asp.ogi.edu>
+Danish                  Martin List-Petersen <martin@list-petersen.dk>
+Dutch                   Jan Kuipers <jrkuipers@lauwerscollege.nl>
+Estonian                Toomas Aas <toomas.aas@raad.tartu.ee>
+Finnish                 Leena Heino <liinu@uta.fi>
+French                  Frederic Trudeau <ftrudeau@cam.org>
+                        Thierry Thomas <thierry@pompo.net>
+                        Benoit St-André <ben@benoitst-andre.net>
+Galician                Rafael Varela <rafael.varela@usc.es>
+                        Guillermo Mendez <guille@usc.es>
+German                  Jan Schneider <jan@horde.org>
+Greek                   Stefanos I. Dimitriou <support@teiath.gr>
+                        Silligardos Xristoforos
+                        Anagnostopoulos Apostolis
+Hungarian               Laszlo L. Tornoci <torlasz@xenia.sote.hu>
+Indonesian              Slamin <slamin@unej.ac.id>
+Italian                 Paola Carpenter <pcarpenter@infvic.it>
+                        Giovanni Meneghetti <gmeneghetti@infvic.it>
+                        Federico Giannici <giannici@neomedia.it>
+Japanese                B.J. Black <william.black@sun.com>
+                        Takeshi Morishima <tm@onepost.net>
+Korean                  J.I Kim <aporie@netian.com>
+Latvian                 Kaspars Kapenieks <kaspars@rcc.lv>
+Lithuanian              Darius Matuliauskas <darius@lnk.lt>
+                        Vilius Sumskas <vilius@lnk.lt>
+Macedonian              Stojan Pesov <ssp@eureka.com.mk>
+Norwegian Bokmaal       Oystein Steimler <oystein@rexta.net>
+Norwegian Nynorsk       Per-Stian Vatne <psv@orsta.org>
+Polish                  Mariusz Zynel <mariusz@math.uwb.edu.pl>
+Portuguese              Nuno Loureiro <nuno@eth.pt>
+Romanian                Corneliu Musat <cmusat@tiamat.keysys.ro>
+Russian                 Ignat Ikryanov <ignat@ibd.ru>
+                        Fedor A. Fetisov <faf@ssc.ru>
+Slovak                  Leo Mrafko <leo@oel.sk>
+                        Ivan Noris <noris@bgs.sk>
+Slovenian               Jure Krasovic <jurek@rcc-irc.si>
+Spanish                 Raúl Alvarez Venegas <rav@tecoman.ucol.mx>
+Swedish                 Andreas Dahlén <andreas@dahlen.ws>
+Turkish                 Genco Yilmaz <gencoyilmaz@yahoo.com>
+Ukrainian               Andriy Kopystyansky <anri@polynet.lviv.ua>
+
+
+======
+Themes
+======
+
+Barbie          Atif Ghaffar <aghaffar@developer.ch>
+Brown           Marco Obaid <marco@muw.edu>
+Camouflage      Atif Ghaffar <aghaffar@developer.ch>
+Cherry          Christophe Guilloux <rootix@bootix.net>
+Green           Nacer Laradji <laradji@tuxfamily.org>
+Grey            Nacer Laradji <laradji@tuxfamily.org>
+Lavender        Ziaur Rahman <zia@qalacom.com>
+Light-Blue      Atif Ghaffar <aghaffar@developer.ch>
+Mozilla         Michael Cochrane <mike@graftonhall.co.nz>
+Orange          Ronnie Garcia <ronnie@mk2.net>
+Simplex         Cariad Ilmàra <cariad@adnx.net>
+Sun             Christophe Guilloux <rootix@bootix.net>
+
+
+=============
+Contributions
+=============
+
+HTML to Text Converter: Jon Abernathy <jon@chuggnutt.com>
+
+
+===================
+Inactive Developers
+===================
+
+Ivan E. Moore II <rkrusty@tdyc.com>
+Mike Hardy <mike@itsprojects.com>
+
+$Horde: horde/docs/CREDITS,v 1.73 2004/04/29 15:13:55 jan Exp $

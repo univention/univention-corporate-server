@@ -1,0 +1,65 @@
+Some tips on performance tuning systems for Horde.  This does not cover
+hardware tuning or even low level system (network, filesystem, etc) 
+tuning.
+
+Linux Tuning:
+* Recompile RPMS for your architecture (e.g. i586, i686, athlon, etc).
+  This applies most to your Apache, PHP, IMAP, and POP3 packages.
+
+Apache/PHP tuning
+* Consider a PHP accelerator program.  See for example
+  The Zend Performance Suite (http://www.zend.com/horde.php), The ionCube PHP
+  Accelerator (http://www.php-accelerator.co.uk/),
+  or Turck MMCache for PHP (http://turck-mmcache.sourceforge.net/).
+  These accelerators speed up access by caching the compiled PHP code,
+  eliminating the need to recompile the code for every single page load. THIS
+  IS PROBABLY THE EASIEST WAY TO IMPROVE THE PERFORMANCE OF HORDE.
+* Compile PHP with the "--enable-inline-optimization" option to generate the
+  fastest possible PHP executable.
+* Only load as many Apache and PHP extensions as needed (to reduce memory
+  usage).
+* If using SSL with a large site, consider a hardware SSL accelerator.
+* Use shared memory for the Apache SSL cache if possible.
+* Use of the mcrypt PHP extension should significantly increase performance
+  while also increasing security.
+* Disable DNS lookups in your Apache logging, or use a caching DNS server
+  on the web server host.
+* Enable Apache keepalives.
+* Enable PHP output compression (either in php.ini or horde/config/conf.php).
+* Don't run PHP session garbage collection too often if using a slow
+  storage medium (like SQL). (See session.gc_probability in php.ini)
+* Consider using a faster storage medium for sessions, such as a tmpfs
+  or other memory based file system.  If you are sure your apache setup
+  is rock solid and you don't restart it there is a mm session driver.
+  However, be aware that certain Horde applications (like IMP) make heavy
+  use of caching data in sessions so memory based solutions may be exhausted
+  quickly, particularly if there will be more than a single user.
+
+Sending Mail
+* Generally using a local sendmail command to send mail will result in better
+  peformance than using a SMTP connection.
+* Some MTA servers may be faster or more efficient than others.
+  Consider switching to a faster format if needed.
+
+IMAP tuning
+* Consider an IMAP proxy for more persistent connections.  Some IMAP proxies
+  are up-imapproxy (http://www.imapproxy.org/), imapproxy
+  (http://www.horde.org/imapproxy/), and Perdition
+  (http://www.vergenet.net/linux/perdition/).
+* Some IMAP servers (or IMAP mailbox store formats) perform better than 
+  others.  Consider switching to a faster format if needed.
+
+Postgresql tuning
+* Do a vacuum command periodically to tune your database
+* Increase shared_buffers and sort_mem memory settings.
+* If web server and database is on the same unix host, use unix sockets
+  instead of network connections for database access.
+
+MySQL tuning
+* If web server and database is on the same unix host, use unix sockets
+  instead of network connections for database access.
+* Enable mysql query cache if you have sufficient RAM.  Edit your my.cnf
+  file and add the following (change the memory size to meet your needs):
+  set-variable = query_cache_size=128M 
+
+$Horde: horde/docs/PERFORMANCE,v 1.8 2003/11/18 16:31:32 ericr Exp $

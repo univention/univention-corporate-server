@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Horde: framework/Horde/package.xml,v 1.4 2004/05/19 15:24:13 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Framework</name>
+  <summary>Horde core Framework libraries</summary>
+  <description>
+    These classes provide the core functionality of the Horde
+    Application Framework.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jan</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>beta</state>
+    <date>2004-02-13</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/" name="Horde.php"/>
+      <dir name="Horde" role="php">
+        <file name="Config.php"/>
+        <file name="Help.php"/>
+        <file name="Registry.php"/>
+      </dir>
+    </filelist>
+
+    <provides type="class" name="Horde"/>
+    <provides type="class" name="Config" />
+    <provides type="class" name="Help"/>
+    <provides type="class" name="Registry"/>
+
+    <deps>
+      <dep type="pkg" rel="has" optional="yes">Horde_Browser</dep>
+      <dep type="pkg" rel="has" optional="yes">Horde_Form</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>beta</state>
+      <date>2004-02-13</date>
+      <notes>Initial packaging</notes>
+    </release>
+  </changelog>
+</package>

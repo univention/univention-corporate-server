@@ -1,0 +1,577 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 1.0\n"
+"POT-Creation-Date: 2003-03-26 05:09+0900\n"
+"PO-Revision-Date: 2003-03-26 06:30+0900\n"
+"Last-Translator: Isamu Yamamoto <yamamoto@trustbee.com>\n"
+"Language-Team: Japanses <william.black@sun.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=SHIFT_JIS\n"
+"Content-Transfer-Encoding: 7-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s ファイルがインポートされました。"
+
+msgid "Add Contact ..."
+msgstr "連絡先の追加 ..."
+
+msgid "Add a new contact"
+msgstr "新規連絡先の追加"
+
+msgid "Add failed"
+msgstr "追加できませんでした。"
+
+msgid "Add to"
+msgstr "追加"
+
+msgid "Add"
+msgstr "追加"
+
+msgid "Address Book Listing"
+msgstr "アドレス帳一覧"
+
+msgid "Address book is read-only."
+msgstr "アドレス帳は読み取り専用です。"
+
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "リスト内のアドレス： %s"
+
+msgid "Advanced Search"
+msgstr "詳細検索"
+
+msgid "Alias"
+msgstr "エイリアス"
+
+msgid "All"
+msgstr "すべて"
+
+msgid "An illegal value was specified."
+msgstr "不正な値が指定されました。"
+
+msgid "Ascending"
+msgstr "昇順"
+
+msgid "Available Columns:"
+msgstr "利用可能な列:"
+
+#, c-format
+msgid "Back to %s"
+msgstr "%s に戻る"
+
+msgid "Browse"
+msgstr "閲覧"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Checkbox"
+msgstr "チェック"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "アドレス一覧に表示する列の順番を選択して下さい。"
+
+msgid "Clear Search"
+msgstr "検索のクリア"
+
+msgid "Column Options"
+msgstr "表示列オプション"
+
+msgid "Comma separated values"
+msgstr "カンマで区切られたデータ"
+
+msgid "Company"
+msgstr "会社"
+
+msgid "Contact removed from list."
+msgstr "リストから連絡先を外しました。"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "%s の内容"
+
+msgid "Default Display"
+msgstr "デフォルト表示"
+
+msgid "Default sorting direction:"
+msgstr "デフォルトのソート方向："
+
+msgid "Delete"
+msgstr "削除"
+
+msgid "Deletion failed"
+msgstr "削除できませんでした。"
+
+msgid "Descending"
+msgstr "降順"
+
+msgid "Directory"
+msgstr "ディレクトリ"
+
+msgid "Display Options"
+msgstr "表示オプション"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "'%s' の編集"
+
+msgid "Edit"
+msgstr "編集"
+
+msgid "Email"
+msgstr "メール"
+
+msgid "Error while searching directory."
+msgstr "ディレクトリ検索中にエラーが発生しました。"
+
+msgid "Error"
+msgstr "エラー"
+
+msgid "Exit Address Book"
+msgstr "アドレス帳の終了"
+
+msgid "Export Address Book"
+msgstr "アドレス帳のエクスポート"
+
+msgid "Export"
+msgstr "エクスポート"
+
+msgid "Failed to access the specified address book."
+msgstr "指定されたアドレス帳に接続できませんでした。"
+
+msgid "Failed to browse list"
+msgstr "リストの閲覧ができませんでした。"
+
+msgid "Failed to browse the directory"
+msgstr "ディレクトリの閲覧ができませんでした。"
+
+msgid "Failed to connect to the specified directory."
+msgstr "指定されたディレクトリに接続できませんでした。"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "%s ディレクトリを検索できませんでした。"
+
+msgid "Failed to search the specified directory."
+msgstr "指定されたディレクトリに接続できませんでした。"
+
+msgid "Fax"
+msgstr "ファクス"
+
+msgid "Find"
+msgstr "検索"
+
+msgid "From"
+msgstr "差出人"
+
+msgid "Group"
+msgstr "グループ"
+
+msgid "Help"
+msgstr "ヘルプ"
+
+msgid "Home Address"
+msgstr "自宅の住所"
+
+msgid "Home Phone"
+msgstr "自宅の電話番号"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"CSV 形式のデータをインポートしている場合:  第1行目はフィールド名ですか？"
+
+msgid "Illegal or malformed form data."
+msgstr "データ形式が不正またはデータが壊れています"
+
+msgid "Import Address Book"
+msgstr "アドレス帳のインポート"
+
+msgid "Import"
+msgstr "インポート"
+
+msgid "Import/Export Addressbooks"
+msgstr "アドレス帳のインポート／エクスポート"
+
+msgid "Import/Export"
+msgstr "インポート／エクスポート"
+
+msgid "Invalid address book."
+msgstr "アドレス帳が不正です。"
+
+msgid "Invalid e-mail address."
+msgstr "メールアドレスが不正です。"
+
+msgid "Invalid email."
+msgstr "メールアドレスが不正です。"
+
+msgid "Invalid entry."
+msgstr "入力値が不正です。"
+
+msgid "Invalid name."
+msgstr "名前が不正です。"
+
+msgid "Language"
+msgstr "言語設定"
+
+msgid "Matching"
+msgstr "が次に一致する"
+
+msgid "Message"
+msgstr "メッセージ"
+
+msgid "Mobile Phone"
+msgstr "携帯電話番号"
+
+msgid "More than 1 entry returned."
+msgstr "1つを越えるエントリが返されました。"
+
+msgid "Mulberry Address Book"
+msgstr "Mulberry形式のアドレス帳"
+
+msgid "Mulberry addressbook sucessfully imported"
+msgstr "Mulberry形式のアドレス帳がインポートされました。"
+
+msgid "Name Format"
+msgstr "名前の表示形式"
+
+msgid "Name"
+msgstr "名前"
+
+msgid "New List"
+msgstr "新規リスト"
+
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "%s エントリは %s に見つかりませんでした。"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"新規エントリを追加できるように設定されている使用可能なアドレス帳はありませ"
+"ん。これがエラーであると思われる場合には、システム管理者にご連絡ください。"
+
+msgid "None"
+msgstr "なし"
+
+msgid "Notes"
+msgstr "注記"
+
+msgid "Options"
+msgstr "オプション"
+
+msgid "Outlook"
+msgstr "アウトルック"
+
+msgid "Pine Address Book"
+msgstr "Pine形式のアドレス帳"
+
+msgid "Pine addressbook sucessfully imported"
+msgstr "Pine形式のアドレス帳がインポートされました。"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "連絡先を追加したいアドレス帳を選んで下さい"
+
+msgid "Please enter the name of the new list:"
+msgstr "新規リストの名前を入力して下さい："
+
+msgid "Please select a directory:"
+msgstr "ディレクトリを選択して下さい:"
+
+msgid "Problem?"
+msgstr "問題？"
+
+msgid "Remove from this list"
+msgstr "リストから外す"
+
+msgid "Reset"
+msgstr "リセット"
+
+msgid "Save Changes"
+msgstr "変更を保存"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "Search Results"
+msgstr "検索結果"
+
+msgid "Search"
+msgstr "検索"
+
+msgid "Search&nbsp;Results"
+msgstr "検索&nbsp;結果"
+
+msgid "Select Address Book"
+msgstr "アドレス帳の選択"
+
+msgid "Select List"
+msgstr "リストの選択"
+
+msgid "Select the destination to import to:"
+msgstr "インポート先を選択してください:"
+
+msgid "Select the file to import:"
+msgstr "インポートするファイルを選択してください:"
+
+msgid "Select the format to export to:"
+msgstr "エクスポートするフォーマットを選択してください:"
+
+msgid "Select the format to import from:"
+msgstr "インポートするフォーマットを選択してください:"
+
+msgid "Select the format used to display names:"
+msgstr "名前の表示に使われる形式を選択して下さい："
+
+msgid "Select the source to export from:"
+msgstr "エクスポートするソースを選択してください:"
+
+msgid "Select view to display by default."
+msgstr "デフォルトの表示画面を選択します。"
+
+msgid "Select which fields to display in the address lists."
+msgstr "アドレスの一覧で表示する列を選択します。"
+
+msgid "Select which format to display names."
+msgstr "名前の表示形式を選択します。"
+
+msgid "Select your preferred language:"
+msgstr "優先して使用する言語を選択してください:"
+
+msgid "Select"
+msgstr "選択"
+
+msgid "Selected Columns:"
+msgstr "選択した列:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "メールを %s に送信"
+
+msgid "Set your preferred display language."
+msgstr "表示言語を設定します。"
+
+msgid "Show All"
+msgstr "すべて表示"
+
+msgid "Show Contacts"
+msgstr "連絡先の表示"
+
+msgid "Show Lists"
+msgstr "リストの表示"
+
+msgid "Show"
+msgstr "表示"
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "一部の Turba 設定ファイルが見つかりません："
+
+msgid "Sort Direction"
+msgstr "ソート方向"
+
+msgid "Success"
+msgstr "成功"
+
+msgid "Tab separated values"
+msgstr "タブで区切られたデータ"
+
+msgid "The data got lost"
+msgstr "データが失われました"
+
+msgid "The data got lost."
+msgstr "データが失われました。"
+
+msgid "The file contained no data."
+msgstr "ファイルにデータが含まれていません。"
+
+msgid "There are no browseable address books."
+msgstr "閲覧可能なアドレス帳はありません。"
+
+msgid "There are no writeable address books."
+msgstr "書き込み可能なアドレス帳はありません。"
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"ファイルのアップロード中に問題が発生しました。ファイルが最大許容サイズを超え"
+"ている可能性があります。"
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"オブジェクトの追加中にエラーが発生しました。詳細についてはシステム管理者にお"
+"問い合わせください。"
+
+msgid "There was an error creating a new list."
+msgstr "新規リストの作成でエラーが発生しました。"
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"オブジェクトの削除中にエラーが発生しました。詳細についてはシステム管理者にお"
+"問い合わせください。"
+
+msgid "There was an error deleting this object."
+msgstr "オブジェクトの削除時にエラーが発生しました。"
+
+msgid "There was an error displaying the select List"
+msgstr "選択されたリストの表示でエラーが発生しました。"
+
+msgid "There was an error importing the data."
+msgstr "データのインポート中にエラーが発生しました。"
+
+msgid "There was an error importing the uploaded file"
+msgstr "アップロードしたファイルのインポート中にエラーが発生しました。"
+
+msgid "There was an error importing the vCard data."
+msgstr "vCardデータのインポート中にエラーが発生しました。"
+
+msgid "There was an error removing this object."
+msgstr "オブジェクトの削除時にエラーが発生しました。"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"このファイルは、Turba のデフォルト設定とユーザが変更できる設定項目を指定しま"
+"す。"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"このファイルは、色とフォントの設定および Horde デフォルト設定への追加または上"
+"書きに使われるスタイルシートを制御します。"
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"このファイルは、Turba グローバル属性名とタイプ - 名前、メールアドレスなどを定"
+"義します。"
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "このファイルは、利用できる Turba ソースのリストを定義します。"
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"これはメインの Turba 設定ファイルで、Turba スクリプトへのパスとオプションに関"
+"する情報が含まれています。"
+
+msgid "This number must be at least one."
+msgstr "1以上の数を入力して下さい。"
+
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "この方は既にアドレス帳に %s のエントリがあります。"
+
+msgid "This person is already in your address book."
+msgstr "この名前の人物はすでにアドレス帳に存在します。"
+
+msgid "This value must be a number."
+msgstr "数字を入力して下さい。"
+
+msgid "Title"
+msgstr "敬称"
+
+msgid "Turba is not properly configured"
+msgstr "Turba が正しく設定されていません。"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "%s の定義をロードできません。"
+
+msgid "Unnamed Contact"
+msgstr "名前のない連絡先"
+
+msgid "User Options"
+msgstr "ユーザーオプション"
+
+msgid "View map"
+msgstr "地図を表示"
+
+msgid "View to display by default:"
+msgstr "デフォルトの表示画面:"
+
+msgid "Warning"
+msgstr "警告"
+
+msgid "Work Address"
+msgstr "勤務先の住所"
+
+msgid "Work Phone"
+msgstr "勤務先の電話番号"
+
+msgid "You are creating a distribution list."
+msgstr "配信リストを作成します。"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"インポートファイルのどのフィールドも、対応する Turba のフィールドにマップされ"
+"ていません。"
+
+msgid "You must select at least one contact first."
+msgstr "最初に1つ以上の連絡先を選択して下さい。"
+
+msgid "Your Information"
+msgstr "個人情報"
+
+msgid "Your options have been updated."
+msgstr "オプションを更新しました。"
+
+msgid "[Edit]"
+msgstr "[編集]"
+
+msgid "\"Firstname Lastname\"  (ie. John Doe)"
+msgstr "\"姓 名\" (例. 山田 太郎)"
+
+msgid "\"Lastname, Firstname\" (ie. Doe, John)"
+msgstr "\"名, 姓\" (例. 太郎, 山田)"
+
+msgid "add column"
+msgstr "列の追加"
+
+msgid "move left"
+msgstr "左に移動"
+
+msgid "move right"
+msgstr "右に移動"
+
+msgid "remove column"
+msgstr "列の削除"
+
+msgid "vCard"
+msgstr "vCard"
+
+#~ msgid "Cell Phone"
+#~ msgstr "携帯電話"
+
+#~ msgid "There are no entries in %s."
+#~ msgstr "%s には登録がありません。"
+
+#~ msgid "Advanced Directory Search"
+#~ msgstr "ディレクトリの詳細検索"
+
+#~ msgid "Bcc"
+#~ msgstr "BCC"
+
+#~ msgid "Cc"
+#~ msgstr "CC"
+
+#~ msgid "Directory Search"
+#~ msgstr "ディレクトリ検索"
+
+#~ msgid "Send Message"
+#~ msgstr "メッセージの送信"
+
+#~ msgid "To"
+#~ msgstr "宛先"

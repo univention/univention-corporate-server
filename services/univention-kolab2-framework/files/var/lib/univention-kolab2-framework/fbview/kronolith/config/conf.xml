@@ -1,0 +1,147 @@
+<?xml version="1.0"?>
+<!-- $Horde: kronolith/config/conf.xml,v 1.8 2004/04/21 19:05:01 chuck Exp $ -->
+<configuration>
+ <configsection name="calendar">
+  <configheader>
+   Calendar Driver Settings
+  </configheader>
+
+  <configswitch name="driver" desc="What storage driver should we use?">sql
+
+   <case name="mcal" desc="MCAL">
+    <configsection name="params">
+     <configdescription>
+      Any parameters that the storage driver needs.
+     </configdescription>
+     <configstring name="driver" desc="What MCAL driver is being used?">mstore</configstring>
+     <configstring name="username" desc="Connect to MCAL as">horde</configstring>
+     <configstring name="password" required="false" desc="Password to connect with">****</configstring>
+    </configsection>
+   </case>
+
+   <case name="sql" desc="SQL">
+
+    <configsection name="params">
+     <configswitch name="driverconfig" desc="Driver configuration">horde
+      <case name="horde" desc="Horde defaults">
+       <configstring name="table" desc="Database table">kronolith_events</configstring>
+      </case>
+      <case name="custom" desc="Custom parameters">
+       <configdescription>
+        Any parameters that the storage driver needs.
+       </configdescription>
+       <configenum name="phptype" desc="What database backend should we use?">mysql
+        <values>
+         <value desc="MySQL">mysql</value>
+         <value desc="PostgreSQL">pgsql</value>
+         <value desc="ODBC">odbc</value>
+         <value desc="Oracle">oci8</value>
+        </values>
+       </configenum>
+       <configstring name="hostspec" desc="Database server/host/ODBC dsn">localhost</configstring>
+       <configstring name="username" desc="Username to connect to the database as">horde</configstring>
+       <configstring name="password" required="false" desc="Password to connect with">****</configstring>
+       <configstring name="database" desc="Database name to use">horde</configstring>
+       <configswitch name="protocol" desc="How should we connect to the database?">unix
+        <case name="unix" desc="UNIX Sockets">
+         <configstring name="socket" required="false" desc="Location of UNIX socket, if using one">/var/lib/mysql/mysql.sock</configstring>
+        </case>
+        <case name="tcp" desc="TCP/IP">
+         <configinteger name="port" required="false" desc="Port the DB is running on, if non-standard">3306</configinteger>
+        </case>
+       </configswitch>
+       <configstring name="table" desc="Database table">kronolith_events</configstring>
+       <configstring name="charset" desc="Internally used charset">iso-8859-1</configstring>
+      </case>
+     </configswitch>
+    </configsection>
+
+   </case>
+
+   <case name="kolab" desc="Kolab">
+    <configsection name="params">
+     <configstring name="folder" desc="Which IMAP folder should be used to store the calendar data?">Calendar</configstring>
+    </configsection>
+   </case>
+
+  </configswitch>
+ </configsection>
+
+ <configsection name="storage">
+
+  <configheader>
+   Free/Busy Driver Settings
+  </configheader>
+
+  <configswitch name="driver" desc="What free/busy driver should we use?">sql
+
+   <case name="sql" desc="SQL">
+
+    <configsection name="params">
+     <configswitch name="driverconfig" desc="Driver configuration">horde
+      <case name="horde" desc="Horde defaults">
+       <configstring name="table" desc="Database table">kronolith_storage</configstring>
+      </case>
+      <case name="custom" desc="Custom parameters">
+       <configdescription>
+        Any parameters that the free/busy driver needs.
+       </configdescription>
+       <configenum name="phptype" desc="What database backend should we use?">mysql
+        <values>
+         <value desc="MySQL">mysql</value>
+         <value desc="PostgreSQL">pgsql</value>
+         <value desc="ODBC">odbc</value>
+         <value desc="Oracle">oci8</value>
+        </values>
+       </configenum>
+       <configstring name="hostspec" desc="Database server/host/ODBC dsn">localhost</configstring>
+       <configstring name="username" desc="Username to connect to the database as">horde</configstring>
+       <configstring name="password" required="false" desc="Password to connect with"></configstring>
+       <configstring name="database" desc="Database name to use">horde</configstring>
+       <configswitch name="protocol" desc="How should we connect to the database?">unix
+        <case name="unix" desc="UNIX Sockets">
+         <configstring name="socket" required="false" desc="Location of UNIX socket, if using one">/var/lib/mysql/mysql.sock</configstring>
+        </case>
+        <case name="tcp" desc="TCP/IP">
+         <configinteger name="port" required="false" desc="Port the DB is running on, if non-standard">3306</configinteger>
+        </case>
+       </configswitch>
+       <configstring name="table" desc="Database table">kronolith_storage</configstring>
+       <configstring name="charset" desc="Internally used charset">iso-8859-1</configstring>
+      </case>
+     </configswitch>
+    </configsection>
+
+   </case>
+
+   <case name="kolab" desc="Kolab">
+    <configsection name="params">
+     <configstring name="folder" desc="Which WebDAV folder should be used to store the free/busy data?">/freebusy</configstring>
+    </configsection>
+   </case>
+
+  </configswitch>
+ </configsection>
+
+ <configsection name="metadata">
+   <configheader>
+        Metadata Settings
+   </configheader>
+
+   <configboolean name="keywords" desc="Should keywords be loaded from config/keywords.php to be assigned to events?">false</configboolean>
+ </configsection>
+
+ <configsection name="menu">
+   <configheader>
+        Menu Settings
+   </configheader>
+
+  <configboolean name="print" desc="Should we display a Print link in the Kronolith menu?">true</configboolean>
+  <configboolean name="import_export" desc="Should we display an Import/Export link in the Horde application menus?">true</configboolean>
+  <configmultienum name="apps" desc="Select any applications that should be linked in Kronolith's menu">
+   <values>
+    <configspecial name="list-horde-apps" />
+   </values>
+  </configmultienum>
+ </configsection>
+</configuration>

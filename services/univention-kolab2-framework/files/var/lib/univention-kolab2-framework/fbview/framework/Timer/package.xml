@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Timer/package.xml,v 1.4 2003/12/12 17:46:39 slusarz Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Timer</name>
+  <summary>Horde Timer API</summary>
+  <description>
+The Horde_Timer:: class provide a simple interface for timing operations/actions.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-05</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Timer.php" />
+    </filelist>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2003-07-05</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

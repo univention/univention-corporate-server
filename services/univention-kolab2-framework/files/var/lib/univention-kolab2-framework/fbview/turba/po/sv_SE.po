@@ -1,0 +1,700 @@
+# Turba Swedish translation
+# Copyright (C) 2002 Andreas Dahlén.
+# Andreas Dahlén <andreas@dahlen.ws>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-10-18 13:03+0200\n"
+"PO-Revision-Date: 2001-11-11 22:15+0100\n"
+"Last-Translator: Andreas Dahlén <andreas@dahlen.ws>\n"
+"Language-Team: Swedish <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:138
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:247
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s filen är importerad"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:7
+msgid "Add"
+msgstr "Lägg till"
+
+#: /home/httpd/html/horde_cvs/po/../turba/addobject.php:19
+#: /home/httpd/html/horde_cvs/po/../turba/templates/add/add.inc:10
+msgid "Add a new contact"
+msgstr "Lägg till en ny kontakt"
+
+#: /home/httpd/html/horde_cvs/po/../turba/addobjectaction.php:44
+msgid "Add failed"
+msgstr "Tillägg misslyckades"
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:29
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:73
+msgid "Address Book Listing"
+msgstr "Adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:66
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:221
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:301
+msgid "Address book is read-only."
+msgstr "Adressbok kan endast läsas."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:203
+#, c-format
+msgid "Addresses in list: %s"
+msgstr "Adresser i listan: %s"
+
+#: /home/httpd/html/horde_cvs/po/../turba/advanced.php:19
+#: /home/httpd/html/horde_cvs/po/../turba/templates/advanced/head.inc:8
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:9
+msgid "Advanced Search"
+msgstr "Avancerad sökning"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:22
+msgid "Alias"
+msgstr "Alias"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:8
+msgid "All"
+msgstr "Alla"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:61
+msgid "Ascending"
+msgstr "Stigande"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:235
+msgid "Available Columns:"
+msgstr "Tillgängliga kolumner"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:43
+#, c-format
+msgid "Back to %s"
+msgstr "Tillbaka till %s"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:6
+msgid "Browse"
+msgstr "Lista"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/column_headers.inc:7
+msgid "Checkbox"
+msgstr "Kryssruta"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:229
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Välj sorteringsordning på de kolumner som visas i adresslistan,"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/advanced/results_head.inc:18
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:45
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:77
+msgid "Clear Search"
+msgstr "Rensa sökning"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:12
+msgid "Column Options"
+msgstr "Kolumn inställningar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:16
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:16
+msgid "Comma separated values"
+msgstr "Kommaseparerade värden"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:34
+msgid "Company"
+msgstr "Företag"
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:78
+msgid "Contact removed from list."
+msgstr "Kontakt raderas från listan."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:226
+#, c-format
+msgid "Contents of %s"
+msgstr "Innehåll i %s"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:18
+msgid "Default Display"
+msgstr "Förvald visning"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:63
+msgid "Default sorting direction:"
+msgstr "Förvald sorteringsriktning:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:20
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:86
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:34
+msgid "Delete"
+msgstr "Radera"
+
+#: /home/httpd/html/horde_cvs/po/../turba/deleteobject.php:37
+msgid "Deletion failed"
+msgstr "Radering misslyckades"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:62
+msgid "Descending"
+msgstr "Fallande"
+
+#: /home/httpd/html/horde_cvs/po/../turba/advanced.php:47
+msgid "Directory"
+msgstr "Katalog"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:11
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:17
+msgid "Display Options"
+msgstr "Visningsinställningar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:19
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:85
+#: /home/httpd/html/horde_cvs/po/../turba/templates/edit/edit.inc:10
+msgid "Edit"
+msgstr "Ändra"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/contactrow.inc:52
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/contactrow.inc:57
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/row.inc:41
+#, c-format
+msgid "Edit '%s'"
+msgstr "Ändra '%s'"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:26
+msgid "Email"
+msgstr "E-post"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:307
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:311
+msgid "Error while searching directory."
+msgstr "Misslyckades att söka i katalogen."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/miniwindow/menu.inc:1
+msgid "Exit Address Book"
+msgstr "Avluta adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:7
+msgid "Export Address Book"
+msgstr "Exportera adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:57
+msgid "Failed to access the specified address book."
+msgstr "Misslyckades att kontakta angiven katalog."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:207
+msgid "Failed to browse list"
+msgstr "Misslyckades att visa listan"
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:240
+msgid "Failed to browse the directory"
+msgstr "Misslyckades att visa katalogen"
+
+#: /home/httpd/html/horde_cvs/po/../turba/advanced.php:64
+#: /home/httpd/html/horde_cvs/po/../turba/addobject.php:44
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:89
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:222
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:260
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:314
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:378
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:413
+#: /home/httpd/html/horde_cvs/po/../turba/search.php:48
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:124
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:350
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:398
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:441
+msgid "Failed to connect to the specified directory."
+msgstr "Misslyckades att kontakta angiven katalog."
+
+#: /home/httpd/html/horde_cvs/po/../turba/advanced.php:86
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:382
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:417
+#: /home/httpd/html/horde_cvs/po/../turba/search.php:64
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Misslyckades att söka i katalogen: %s"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:362
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:409
+msgid "Failed to search the specified directory."
+msgstr "Misslyckades att söka i angiven katalog."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:58
+msgid "Fax"
+msgstr "Fax"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/search.inc:65
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:37
+msgid "Find"
+msgstr "Hitta"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/search.inc:78
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:50
+msgid "From"
+msgstr "Från"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/contactrow.inc:67
+msgid "Group"
+msgstr "Grupp"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:26
+msgid "Help"
+msgstr "Hjälp"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:38
+msgid "Home Address"
+msgstr "Adress, hem"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:46
+msgid "Home Phone"
+msgstr "Telefon, hem"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:24
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Om import av CSV data: innehåller första raden fältnamn?"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:147
+msgid "Illegal or malformed form data."
+msgstr "Felaktig formulärdata."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:7
+msgid "Import Address Book"
+msgstr "Importera adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:13
+msgid "Import/Export"
+msgstr "Importera/Exporetera"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:442
+msgid "Import/Export Address books"
+msgstr "Importera/Exportera adressböcker"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:60
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:207
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:260
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:283
+msgid "Invalid address book."
+msgstr "Felaktig adressbok."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:215
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:287
+msgid "Invalid e-mail address."
+msgstr "Felaktig ePost-adress."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:334
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:426
+msgid "Invalid email."
+msgstr "Felaktig e-post."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:295
+msgid "Invalid entry."
+msgstr "Felaktigt värde."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:211
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:291
+msgid "Invalid name."
+msgstr "Felaktigt namn."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:6
+msgid "Language"
+msgstr "Språk"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/search.inc:72
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:44
+msgid "Matching"
+msgstr "Matchar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:54
+msgid "Mobile Phone"
+msgstr "Mobiltelefon"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:369
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:446
+msgid "More than 1 entry returned."
+msgstr "Mer än ett värde returnerades."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:20
+msgid "Mulberry Address Book"
+msgstr "Mulberry"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:300
+msgid "Mulberry address book sucessfully imported"
+msgstr "Adressbok från Mulberry är importerad"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/sources.php.dist:145
+#: /home/httpd/html/horde_cvs/po/../turba/config/sources.php.dist:289
+msgid "My Addressbook"
+msgstr "Min adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:18
+msgid "Name"
+msgstr "Namn"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:20
+msgid "New List"
+msgstr "Ny lista"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:371
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:453
+#, c-format
+msgid "No %s entry found for %s."
+msgstr "Värde %s saknas för %s."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:9
+msgid "None"
+msgstr "Ingen"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/add/noadd.inc:9
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ingen av de tillgängliga adressböckerna är konfigurerade så att du får lägga "
+"till kontakter i dem, Om du tror att det är ett fel, kontakta din system "
+"administratör."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:62
+msgid "Notes"
+msgstr "Anteckningar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:18
+msgid "Options"
+msgstr "Inställningar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:18
+msgid "Outlook"
+msgstr "Outlook"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:66
+msgid "PGP Public Key"
+msgstr "Publik nyckel för PGP"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:21
+msgid "Pine Address Book"
+msgstr "Pine"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:354
+msgid "Pine address book sucessfully imported"
+msgstr "Adressbook från Pine är importerad"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/add/select.inc:6
+msgid "Please choose an address book to add a contact to."
+msgstr "Ange en adressbok som kontakterna skall läggas till i."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:220
+msgid "Please select a directory:"
+msgstr "Var god ange en katalogen:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/sources.php.dist:350
+msgid "Private Address Book"
+msgstr "Privat adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/search.php:18
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/search.inc:59
+#: /home/httpd/html/horde_cvs/po/../turba/templates/menu/menu.inc:8
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:31
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:74
+msgid "Search"
+msgstr "Sök"
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:186
+#: /home/httpd/html/horde_cvs/po/../turba/templates/advanced/results_head.inc:15
+msgid "Search Results"
+msgstr "Sökresultat"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/head.inc:74
+msgid "Search&nbsp;Results"
+msgstr "Sökresultat"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:7
+msgid "Select"
+msgstr "Välj"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/select.inc:8
+msgid "Select Address Book"
+msgstr "Välj adressbok"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:18
+msgid "Select List"
+msgstr "Välj lista"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:25
+msgid "Select the destination to import to:"
+msgstr "Ange en destination att importera till:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:29
+msgid "Select the file to import:"
+msgstr "Ange fil som skall importeras:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:14
+msgid "Select the format to export to:"
+msgstr "Ange format för exporten:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:14
+msgid "Select the format to import from:"
+msgstr "Ange importformat:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:21
+msgid "Select the source to export from:"
+msgstr "Ange källa för exporten:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:19
+msgid "Select view to display by default."
+msgstr "Välj vy som skall visas som default."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:13
+msgid "Select which fields to display in the address lists."
+msgstr "Välj vilka fält som visas i adresslistan."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:29
+msgid "Select your preferred language:"
+msgstr "Ange ditt förvalda språk:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:245
+msgid "Selected Columns:"
+msgstr "Valda kolumner:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:53
+#, c-format
+msgid "Send mail to %s"
+msgstr "Skicka meddelande till %s"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:7
+msgid "Set your preferred display language."
+msgstr "Ange ditt förvalda visningsspråk."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:41
+msgid "Show All"
+msgstr "Visa alla"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:40
+msgid "Show Contacts"
+msgstr "Visa kontakter"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/actions.inc:39
+msgid "Show Lists"
+msgstr "Visa listor"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:13
+msgid "Some of Turba's configuration files are missing:"
+msgstr "En del av Turba's konfigurations filer saknas:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/column_headers.inc:9
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/column_headers.inc:14
+msgid "Sort Direction"
+msgstr "Sorteringsriktning"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:17
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:17
+msgid "Tab separated values"
+msgstr "Tabseparerade värden"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:36
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:267
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:321
+msgid "The data got lost."
+msgstr "Informationen försvann."
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:74
+msgid "The data was lost"
+msgstr "Informationen försvann"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:360
+msgid "The file contained no data."
+msgstr "Filen innehåller ingen information."
+
+#: /home/httpd/html/horde_cvs/po/../turba/displayobject.php:20
+msgid "The object you requested does not exist."
+msgstr "Objektet du söker existerar inte."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:53
+msgid "There are no browseable address books."
+msgstr "Det finns inga adressböcker att visa."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/add/noadd.inc:4
+msgid "There are no writeable address books."
+msgstr "Det finns inga skrivabara adressböcker."
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:144
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Det uppstod problem med filuppladdningen. Filen kan ha varit större än "
+"maximal tillåten storlek."
+
+#: /home/httpd/html/horde_cvs/po/../turba/addobjectaction.php:42
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Det uppstod problem vid upplägg. Kontakta din systemadministratör för "
+"ytterligare hjälp."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:141
+msgid "There was an error creating a new list."
+msgstr "Det uppstod fel vid skapande av ny lista."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:85
+msgid "There was an error deleting this object."
+msgstr "Det uppstod fel vid radering av objektet."
+
+#: /home/httpd/html/horde_cvs/po/../turba/deleteobject.php:35
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Det uppstod problem vid radering. Kontakta din systemadministratör för "
+"ytterligare hjälp."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:221
+msgid "There was an error displaying the select List"
+msgstr "Det uppstod fel vid visning av den valda listan."
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:124
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:244
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:298
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:352
+msgid "There was an error importing the data."
+msgstr "Det uppstod fel vid import av data."
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:216
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:242
+#, c-format
+msgid "There was an error importing the data: %s."
+msgstr "Det uppstod fel vid import av data: %s."
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:163
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:190
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:257
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:311
+msgid "There was an error importing the uploaded file"
+msgstr "Det uppstod fel vid import av den uppladdade fileni."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:71
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:94
+msgid "There was an error importing the vCard data."
+msgstr "Det uppstod fel vid import av vCard-data."
+
+#: /home/httpd/html/horde_cvs/po/../turba/browse.php:76
+msgid "There was an error removing this object."
+msgstr "Det uppstod fel vid radering av objektet."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:32
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Den här filen kontrollerar grundinställningar för Turba, samt vilka "
+"inställningar som en användare kan ändra."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:25
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Den här filen kontrollerar de stylesheet som används för att bestämma färger "
+"och typsnitt."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:46
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Den här filen definierar namn och typ för Turbas attribut. Tex namn, e-post "
+"och adresser."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:39
+msgid "This file defines the list of available sources for Turba."
+msgstr "Den här filen definierar de källor som finns tillgängliga i Turba."
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:18
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Det här är huvudkonfigurationsfilen för Turba. Den innehåller sökvägar och "
+"inställningar för Turbas script."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:313
+#, c-format
+msgid "This person already has a %s entry in the address book."
+msgstr "Personen har redan ett värde för %s i adressboken."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:82
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:227
+msgid "This person is already in your address book."
+msgstr "Personen finns redan i din adressbok."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:30
+msgid "Title"
+msgstr "Titel"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/index/notconfigured.inc:4
+msgid "Turba is not properly configured"
+msgstr "Turba är inte korrekt konfigurerat"
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/Driver.php:44
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Kaninte ladda definitionen av %s."
+
+#: /home/httpd/html/horde_cvs/po/../turba/lib/api.php:87
+msgid "Unnamed Contact"
+msgstr "Namnlös kontakt"
+
+#: /home/httpd/html/horde_cvs/po/../turba/prefs.php:48
+msgid "User Options"
+msgstr "Användarinställningar"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/display/display.inc:77
+msgid "View map"
+msgstr "Visa karta"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:72
+msgid "View to display by default:"
+msgstr "Vy som skall visas som default:"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:42
+msgid "Work Address"
+msgstr "Adress, arbete"
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/attributes.php.dist:50
+msgid "Work Phone"
+msgstr "Telefon, arbete"
+
+#: /home/httpd/html/horde_cvs/po/../turba/data.php:43
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "Du kopplade inga fält från importfilen till motsvarande fält i Turba."
+
+#: /home/httpd/html/horde_cvs/po/../turba/config/prefs.php.dist:5
+msgid "Your Information"
+msgstr "Din information"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/contactrow.inc:40
+#: /home/httpd/html/horde_cvs/po/../turba/templates/browse/contactrow.inc:58
+#: /home/httpd/html/horde_cvs/po/../turba/templates/search/row.inc:41
+msgid "[Edit]"
+msgstr "[Ändra]"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:239
+msgid "add column"
+msgstr "lägg till kolumn"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:249
+msgid "move left"
+msgstr "flytta vänster"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:251
+msgid "move right"
+msgstr "flytta höger"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/prefs/columnselect.inc:241
+msgid "remove column"
+msgstr "ta bort kolumn"
+
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/export.inc:19
+#: /home/httpd/html/horde_cvs/po/../turba/templates/data/import.inc:19
+msgid "vCard"
+msgstr "vCard"

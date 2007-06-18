@@ -1,0 +1,58 @@
+<?php
+/**
+ * Release focus. Possible values:
+ * 0 - N/A
+ * 1 - Initial freshmeat announcement
+ * 2 - Documentation
+ * 3 - Code cleanup
+ * 4 - Minor feature enhancements
+ * 5 - Major feature enhancements
+ * 6 - Minor bugfixes
+ * 7 - Major bugfixes
+ * 8 - Minor security fixes
+ * 9 - Major security fixes
+ */
+$this->notes['fm']['focus'] = 5;
+
+/* Mailing list release notes. */
+$this->notes['ml']['changes'] = <<<ML
+The Horde Team is pleased to announce the first alpha release of the Turba
+Contact Manager version 2.0.
+
+Turba is the Horde contact management application. It is a production level
+address book, and makes heavy use of the Horde framework to provide
+integration with IMP and other Horde applications.
+
+This is a preview version that should not be used on production
+systems.  Some small parts are missing and there are still a few bugs,
+some of which are listed below.  You should not use this preview
+version over existing production data.
+
+The API, configuration items, or features may change before the final
+release, but we encourage widespread testing and feedback via the mailing
+lists or our bug tracking system. Translations are not ready to be updated
+yet, since some strings will change before the final release.
+
+The major changes compared to the Turba 1.x versions are:
+    * Copying and moving of contacts between different address books.
+    * IMSP backend.
+    * Optional delete confirmation.
+    * Composite fields.
+    * Allow search result limits for LDAP backends.
+
+Known issues:
+    * Documentation is not completely updated yet.
+ML;
+
+/* Freshmeat release notes. */
+$this->notes['fm']['changes'] = <<<FM
+Contacts can now be copied and moved between different address books.
+IMSP backends are now supported.
+Delete operations can now optionally be confirmed.
+Composite fields have been added.
+Search result limits can now be specified for LDAP backends.
+FM;
+
+$this->notes['name'] = 'Turba';
+$this->notes['fm']['project'] = 'turba';
+$this->notes['fm']['branch'] = 'FRAMEWORK_3';

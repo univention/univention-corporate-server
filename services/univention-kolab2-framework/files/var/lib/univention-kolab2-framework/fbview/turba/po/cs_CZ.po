@@ -1,0 +1,367 @@
+# Turba Czech Translation.
+# Copyright (C) 2001 Pavel Chytil.
+# Pavel Chytil <pavel@chytil.tk>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-03-19 15:45-0800\n"
+"PO-Revision-Date:  2001-07-26 14:56-0700\n"
+"Last-Translator: Pavel Chytil <pavel@chytil.tk>\n"
+"Language-Team: Czech <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s soubor byl úspì¹nì importován"
+
+msgid "Add Contact ..."
+msgstr "Vlo¾ Kontakt ..."
+
+msgid "Add a new contact"
+msgstr "Vlo¾ nový kontakt"
+
+msgid "Add failed"
+msgstr "Vlo¾ení selhalo"
+
+msgid "Add"
+msgstr "Vlo¾"
+
+msgid "Addressbook is read-only."
+msgstr "Kontakty je pouze ke ètení"
+
+msgid "Advanced Directory Search"
+msgstr "Hledej dùkladnìji v Kontaktech"
+
+msgid "Advanced Search"
+msgstr "Hledej Dùkladnìji"
+
+msgid "Alias"
+msgstr "Pøezdívka"
+
+msgid "Available Columns:"
+msgstr "Mo¾né Sloupce:"
+
+msgid "Browse"
+msgstr "Procházet"
+
+msgid "Cancel"
+msgstr "Zru¹"
+
+msgid "Cell Phone"
+msgstr "Mobil"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Vyberte jak zobrazovat sloupce v seznamu adres."
+
+msgid "Clear Search"
+msgstr "Vyèisti Na¹lé Polo¾ky"
+
+msgid "Column Options"
+msgstr "Mo¾nosti Sloupce"
+
+msgid "Company"
+msgstr "Firma"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Obsahuje %s"
+
+msgid "Delete"
+msgstr "Sma¾"
+
+msgid "Deletion failed"
+msgstr "Smazaní selhalo"
+
+msgid "Directory Listing"
+msgstr "Seznam Kontaktù"
+
+msgid "Directory Search"
+msgstr "Hledej v Kontaktech"
+
+msgid "Directory"
+msgstr "Kontakty"
+
+msgid "Display Options"
+msgstr "Zobraz Mo¾nosti"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Uprav '%s'"
+
+msgid "Edit"
+msgstr "Uprav"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Export Addressbook"
+msgstr "Exportujte Kontakty"
+
+msgid "Export"
+msgstr "Exportovat"
+
+#, c-format
+msgid "Failed to browse the directory: %s"
+msgstr "Nelze pøistoupit ke kontaktù v: %s"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Nemù¾e se pøipojit k daným kontaktùm."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Nemù¾e prohledat kontakty: %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Find"
+msgstr "Hledej"
+
+msgid "From"
+msgstr "Od"
+
+msgid "Help"
+msgstr "Nápovìda"
+
+msgid "Home Address"
+msgstr "Adresa Domù"
+
+msgid "Home Phone"
+msgstr "Telefon Domù"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Pokud importujete CVS data: obsahuje první øádek názvy polo¾ek?"
+
+msgid "Illegal or malformed form data."
+msgstr "Nepovolená nebo ¹patnì naformatovaná data."
+
+msgid "Import Addressbook"
+msgstr "Importovat Kontakty"
+
+msgid "Import"
+msgstr "Importovat"
+
+msgid "Import/Export Addressbooks"
+msgstr "Importovat/Exportovat Kontakty"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "Invalid addressbook."
+msgstr "Neplatné kontakty"
+
+msgid "Invalid e-mail address."
+msgstr "Neplatná e-mailová adresa"
+
+msgid "Invalid name."
+msgstr "Neplatné jméno"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "List"
+msgstr "Seznam"
+
+msgid "Matching"
+msgstr "Shodující se s"
+
+msgid "Name"
+msgstr "Jméno"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Nový kontakt nelze ulo¾it do ¾ádného z mo¾ných Kontaktù. Pokud si myslíte, "
+"¾e je to chyba, prosím kontaktujte svého systémového administrátora."
+
+msgid "Notes"
+msgstr "Poznámka"
+
+msgid "Options"
+msgstr "Mo¾nosti"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Prosím, vyberte si Kontakty, kde se pøidá nový kontakt."
+
+msgid "Please select a directory:"
+msgstr "Prosim vyberte adresáø:"
+
+msgid "Problem?"
+msgstr "Problém?"
+
+msgid "Reset"
+msgstr "Vyèistit"
+
+msgid "Save Changes"
+msgstr "Ulo¾ Zmìny"
+
+msgid "Save"
+msgstr "Ulo¾"
+
+msgid "Search Results"
+msgstr "Hledej Výsledky"
+
+msgid "Search"
+msgstr "Hledej"
+
+msgid "Search&nbsp;Results"
+msgstr "Hledej&nbsp;Výsledek"
+
+msgid "Select the destination to import to:"
+msgstr "Vyberte cíl kam importovat:"
+
+msgid "Select the file to import:"
+msgstr "Vyberte soubor k importování:"
+
+msgid "Select the format to export to:"
+msgstr "Vyberte formát souboru k exportování:"
+
+msgid "Select the format to import from:"
+msgstr "Vyberte formát, z kterého budete importovat:"
+
+msgid "Select the source to export from:"
+msgstr "Vyberte zdroj, z kterého budete exportovat:"
+
+msgid "Select which fields to display in the address lists."
+msgstr "Vyberte, které pole mají být zobrazena v seznamu adres."
+
+msgid "Select your preferred language:"
+msgstr "Vyberte si Vá¹ jazyk:"
+
+msgid "Selected Columns:"
+msgstr "Vybrané Sloupce:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Po¹li %s po¹tu"
+
+msgid "Set your preferred display language."
+msgstr "Vyberte si Vá¹ preferovaný jazyk pro zobrazování."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Chybí tu nìjaký z koniguraèních souborù pro Turbu"
+
+msgid "The data got lost."
+msgstr "Data se ztratila."
+
+msgid "The data was lost"
+msgstr "Data se ztratila"
+
+msgid "The file contained no data."
+msgstr "Soubor neobsahuje ¾ádné data."
+
+msgid "There are no writeable address books."
+msgstr "Nelze zapisovat do ¾adných Kontaktù."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Do¹lo k chybì pøi poskztování souboru. Velikost poskztovaného souboru mohla "
+"pøesáhnout povolenou velikost."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Nastala chyba pøi vkládání tohoto objektu. Kontaktujte Va¹eho systémového "
+"administrátora."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Nastala chyba pøi smazávání tohoto objektu. Kontaktujte Va¹eho systémového "
+"administrátora."
+
+msgid "There was an error importing the data."
+msgstr "Pøi importování dat do¹lo k chybì."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Pøi importování souboru do¹lo k chybì."
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Tento soubor urèuje nastavení pro Turbu a také polo¾ky, které mohou být "
+"mìnìny u¾ivatelem."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Tento soubor urèuje nastavení barev a typ písma bez ohledu na pùvodní "
+"nastavení Horde systému."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Tento soubor urèuje globalní atributy jmen a typù pro Turbu = jmena, email, "
+"adresa, atd."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Tento soubor definuje seznam mo¾ných zdrojù pro Turbu."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Toto je hlavní konfiguraèní soubor pro Turbu. Obsahuje cesty a mo¾nosti pro "
+"skripty v Turbì."
+
+msgid "This person is already in your addressbook."
+msgstr "Tato osoba se ji¾ nachází ve Va¹ich Kontaktech."
+
+msgid "Title"
+msgstr "Titul"
+
+msgid "Turba is not properly configured"
+msgstr "Turba není øádnì nakofigurována"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Nelze dosáhnout definici %s."
+
+msgid "User Options"
+msgstr "U¾ivatelské Mo¾nosti"
+
+msgid "Work Address"
+msgstr "Pracovní Adresa"
+
+msgid "Work Phone"
+msgstr "Telefon do práce"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Nevybrali jste ¾ádné pole z importovaného souboru, které se dá importovat do "
+"Turby."
+
+msgid "Your Information"
+msgstr "Va¹e Informace"
+
+msgid "[Edit]"
+msgstr "[Uprav]"
+
+msgid "add column"
+msgstr "pøidejte sloupec"
+
+msgid "move left"
+msgstr "posuò vlevo"
+
+msgid "move right"
+msgstr "posuò vpravo"
+
+msgid "remove column"
+msgstr "odstraò sloupec"
+
+#~ msgid "Send Message"
+#~ msgstr "Po¹li Zprávu"

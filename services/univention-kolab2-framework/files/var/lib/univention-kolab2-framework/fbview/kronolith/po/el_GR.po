@@ -1,0 +1,735 @@
+# Kronolith Greek translation.
+# Copyright (C) 2002 Stefanos I. Dimitriou.
+# Stefanos I. Dimitriou <support_webmail@teiath.gr>, 2002.
+# Silligardos Xristoforos, 2002.
+# Anagnostopoulos Apostolis, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith: 2.0-cvs\n"
+"POT-Creation-Date: 2002-11-07 12:10+0200\n"
+"PO-Revision-Date: 2001-07-26 11:36+0200\n"
+"Last-Translator: Stefanos I. Dimitriou <support_webmail@teiath.gr>\n"
+"Language-Team: Greek <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-7\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d ώρα"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d ώρα, %d λεπτό"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d ώρα, %d λεπτά"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d ώρες"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d ώρες, %d λεπτό"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d ώρες, %d λεπτά"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d λεπτό"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d λεπτά"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s, έγινε επιτυχώς η εισαγωγή του αρχείου"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s είναι σε λειτουργία."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s αρχίζει τώρα."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s ξεκινά σε %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Περιγραφή</b> (προαιρετικό)"
+
+msgid "<b>Description</b>"
+msgstr "<b>Περιγραφή</b>"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Λέξεις κλειδιά</b> (προαιρετικό)"
+
+msgid "<b>Keywords</b>"
+msgstr "<b>Λέξεις κλειδιά</b>"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Επανάληψη</b> (προαιρετικό)"
+
+msgid "<b>Recurrence</b>"
+msgstr "<b>Επανάληψη</b>"
+
+msgid "Add Event"
+msgstr "Προσθήκη Γεγονότος"
+
+msgid "Add a new event"
+msgstr "Προσθήκη νέου Γεγονότος"
+
+msgid "Alarm Date"
+msgstr "Ημερομηνία Προειδοποίησης"
+
+msgid "Alarm Span (minutes)"
+msgstr "Διάρκεια Προειδοποίησης (λεπτά)"
+
+msgid "Alarm Time"
+msgstr "Ημερομηνία Προειδοποίησης"
+
+msgid "Alarm"
+msgstr "Προειδοποίηση"
+
+msgid "All day event"
+msgstr "Γεγονός που διαρκεί όλη την μέρα"
+
+msgid "All day"
+msgstr "Όλες τις μέρες"
+
+msgid "All events"
+msgstr "Όλα τα γεγονότα"
+
+msgid "All"
+msgstr "Όλα"
+
+msgid "April"
+msgstr "Απρίλιος"
+
+msgid "At"
+msgstr "Σε"
+
+msgid "August"
+msgstr "Αύγουστος"
+
+msgid "Birthday"
+msgstr "Γενέθλια"
+
+msgid "Business"
+msgstr "Επιχείρηση"
+
+msgid "Cancel"
+msgstr "Ακυρο"
+
+msgid "Category"
+msgstr "Κατηγορία"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Αλλαγή του τρόπου μορφοποίησης της ημερομηνίας και της ώρας."
+
+msgid "Confirm deletion of events?"
+msgstr "*Να ζητείται επιβεβαίωση κατά τη διαγραφή των γεγονότων;"
+
+msgid "Create a New Event"
+msgstr "Δημιουργία νέου γεγονότος"
+
+msgid "Current"
+msgstr "Τρέχων"
+
+msgid "Daily: Recurs every"
+msgstr "Καθημερινά: Κάθε"
+
+msgid "Date and Time Options"
+msgstr "Ρυθμίσεις Ημερομηνίας και Ώρας"
+
+msgid "Day"
+msgstr "Ημέρα"
+
+msgid "Day(s)"
+msgstr "Ημέρα(ες)"
+
+msgid "December"
+msgstr "Δεκέμβριος"
+
+#, c-format
+msgid "Delete %s"
+msgstr "Διαγραφή %s"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Διαγραφή '%s'"
+
+msgid "Delete Event"
+msgstr "Διαγραφή Γεγονότος"
+
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Διαγράψτε το τρέχων γεγονός μόνο, αυτό το περιστατικό και όλες τις μελλοντικές εμφανίσεις του, ή"
+"όλες τις εμφανίσεις του;"
+
+
+msgid "Delete"
+msgstr "Διαγραφή"
+
+msgid "Description"
+msgstr "Περιγραφή"
+
+msgid "Display 24-hour times?"
+msgstr "Εμφάνιση της ώρας σε 24ωρη μορφή?"
+
+msgid "Display Options"
+msgstr "Εμφάνιση Ρυθμίσεων"
+
+#, c-format
+msgid "Due: %s"
+msgstr "Διάρκεια: %s"
+
+msgid "Duration"
+msgstr "Διάρκεια"
+
+#, c-format
+msgid "Edit %s"
+msgstr "Επεξεργασία %s"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Επεξεργασία '%s'"
+
+msgid "Edit"
+msgstr "Επεξεργασία"
+
+msgid "End Date"
+msgstr "Ημερομηνία Λήξης"
+
+msgid "End On"
+msgstr "Λήξη Στις"
+
+msgid "End Time"
+msgstr "Ώρα Λήξης"
+
+msgid "Export Calendar"
+msgstr "Εξαγωγή Ημερολογίου"
+
+msgid "Export"
+msgstr "Εξαγωγή"
+
+msgid "February"
+msgstr "Φεβρουάριος"
+
+msgid "Fr"
+msgstr "Πα"
+
+msgid "Friday"
+msgstr "Παρασκευή"
+
+msgid "Future"
+msgstr "Μελλοντικά"
+
+msgid "Game"
+msgstr "Παιχνίδι"
+
+msgid "Goto"
+msgstr "Μεταφορά"
+
+msgid "Help"
+msgstr "Βοήθεια"
+
+msgid "Hour(s)"
+msgstr "Ώρα(ες)"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Αν εισάγετε διευθύνσεις από αρχείο χαρακτήρων, η πρώτη γραμμή περιέχει τα "
+"ονόματα των πεδίων;"
+
+msgid "Illegal or malformed form data."
+msgstr "Λανθασμένη μορφή ή τύπος δεδομένων."
+
+msgid "Import Calendar"
+msgstr "Εισαγωγή Ημερολογίου"
+
+msgid "Import"
+msgstr "Εισαγωγή"
+
+msgid "Import/Export Calendar"
+msgstr "Εισαγωγή/Εξαγωγή Ημερολογίου"
+
+msgid "Import/Export"
+msgstr "Εισαγωγή/Εξαγωγή"
+
+msgid "January"
+msgstr "Ιανουάριος"
+
+msgid "July"
+msgstr "Ιούλιος"
+
+msgid "June"
+msgstr "Ιούνιος"
+
+msgid "Keywords"
+msgstr "Λέξη κλειδί"
+
+msgid "Kronolith is not properly configured"
+msgstr "Το πρόγραμμα Kronolith δεν είναι πλήρως ρυθμισμένο."
+
+msgid "Language"
+msgstr "Γλώσσα"
+
+msgid "Last month"
+msgstr "Τελευταίος μήνας"
+
+msgid "Last week"
+msgstr "Τελευταία Εβδομάδα"
+
+msgid "Lasts"
+msgstr "Διάρκεια"
+
+msgid "Limit the time span to export:"
+msgstr "Επιλέξτε το εύρος του χρόνου που θα εξάγετε:"
+
+msgid "Location"
+msgstr "Τοποθεσία"
+
+msgid "March"
+msgstr "Μάρτιος"
+
+msgid "May"
+msgstr "Μάιος"
+
+msgid "Meeting"
+msgstr "Συνάντηση"
+
+msgid "Minute(s)"
+msgstr "Λεπτό(ά)"
+
+msgid "Minutes before"
+msgstr "Λεπτά πριν"
+
+msgid "Minutes"
+msgstr "Λεπτά"
+
+msgid "Mo"
+msgstr "Δε"
+
+msgid "Monday"
+msgstr "Δευτέρα"
+
+msgid "Month"
+msgstr "Μήνας"
+
+msgid "Monthly: Recurs every"
+msgstr "Μηνιαία: Κάθε"
+
+msgid "New Event"
+msgstr "Νέο Γεγονός"
+
+msgid "Next Month"
+msgstr "Επόμενος Μήνας"
+
+msgid "Next day"
+msgstr "Επόμενη Μέρα"
+
+msgid "Next week"
+msgstr "Επόμενη Εβδομάδα"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Δεν έχει ρυθμιστεί το ημερολόγιο για την SQL."
+
+msgid "No end date"
+msgstr "Δεν υπάρχει ημερομηνία λήξης"
+
+msgid "None"
+msgstr "Κανένα"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Σημείωση: Δεν μπορεί να πραγματοποιηθεί η εισαγωγή λόγο λάθους που οφείλεται "
+"σε ένα driver του ημερολογίου."
+
+msgid "November"
+msgstr "Νοέμβριος"
+
+msgid "October"
+msgstr "Οκτώβριος"
+
+msgid "Options"
+msgstr "Ρυθμίσεις"
+
+msgid "Pattern"
+msgstr "Μοτίβο"
+
+msgid "Permanently delete this event?"
+msgstr "Να διαγραφεί ΜΟΝΙΜΑ αυτό το γεγονός;"
+
+msgid "Personal"
+msgstr "Προσωπικό"
+
+msgid "Previous day"
+msgstr "Προηγούμενη ημέρα"
+
+msgid "Problem?"
+msgstr "Πρόβλημα;"
+
+msgid "Recur Until"
+msgstr "Επανάληψη έως"
+
+msgid "Recurrence Data"
+msgstr "Επανάληψη δεδομένων"
+
+msgid "Recurrence End Date"
+msgstr "*Ημερομηνία Τέλους"
+
+msgid "Recurrence Interval"
+msgstr "*Επανάληψη έως"
+
+msgid "Recurrence Type"
+msgstr "*Επαναλαμβανόμενος Τύπος"
+
+msgid "Recurs daily"
+msgstr "Καθημερινώς"
+
+msgid "Recurs monthly"
+msgstr "Επανάληψη ανά μήνα"
+
+msgid "Recurs not"
+msgstr "Χωρίς επανάληψη"
+
+msgid "Recurs weekly"
+msgstr "Επανάληψη ανά εβδομάδα"
+
+msgid "Recurs yearly"
+msgstr "Επανάληψη ανά χρόνο"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "Η απαιτούμενη βάση δεδομένων δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'hostspec' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'password' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'phptype' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Το απαιτούμενο 'username' δεν έχει καθοριστεί για το ημερολόγιο."
+
+msgid "Reset to Defaults"
+msgstr "Επαναφορά των προεπιλεγμένων ρυθμίσεων"
+
+msgid "Sa"
+msgstr "Σα"
+
+msgid "Saturday"
+msgstr "Σάββατο"
+
+msgid "Save As New"
+msgstr "Αποθήκευση ως νέο"
+
+msgid "Save Event"
+msgstr "Αποθήκευση Γεγονότος"
+
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Επιλέξτε τον τρόπο εμφάνισης, και τον τρόπο επιβεβαίωσης των ενεργειών."
+
+msgid "Select how to display Dates:"
+msgstr "Επιλέξτε τον τρόπο εμφάνισης των Ημερομηνιών:"
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "*Επιλέξτε αν θα εμφανίζονται τα γεγονότα του ημερολογίου"
+
+msgid "Select the file to import:"
+msgstr "Επιλέξτε το αρχείο που θα εισάγετε:"
+
+msgid "Select the first weekday:"
+msgstr "Επιλέξτε την πρώτη ημέρα της εβδομάδος:"
+
+msgid "Select the format to export to:"
+msgstr "Επιλέξτε την μορφή των δεδομένων εξόδου:"
+
+msgid "Select the source to import from:"
+msgstr "Επιλέξτε από που θα εισάγετε τα δεδομένα:"
+
+msgid "Select the time span to show:"
+msgstr "Επιλέξτε το εύρος του χρόνου που θα εμφανίζεται:"
+
+msgid "Select the view to display after login:"
+msgstr "Επιλέξτε την εμφάνιση που θα χρησιμοποιείται μετά την είσοδο σας:"
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Επιλέξτε ποια γεγονότα θα εμφανίζονται στην πρώτη σελίδα (περίληψη) της υπηρεσίας."
+
+msgid "September"
+msgstr "Σεπτέμβριος"
+
+msgid "Set the current time zone."
+msgstr "Επιλέξτε τη Ζώνη Ώρας στην οποία βρίσκεστε :"
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Ορίστε την γλώσσα για τα μενού, τις οδηγίες και την βοήθεια"
+
+
+msgid "Set your preferred display language."
+msgstr "Ορίστε την γλώσσα προτίμησής σας."
+
+msgid "Show due tasks in the calendar?"
+msgstr "Να εμφανίζονται τα γεγονότα στο Ημερολόγιο"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Να γίνεται χωρισμός ανά μισή ώρα στη λίστα της ημέρας και της εβδομάδας;"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Να εμφανιστούν μόνο τα γεγονότα στα οποία έχει οριστεί υπενθύμιση;"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Κάποια αρχεία ρυθμίσεων του προγράμματος Kronolith λείπουν:"
+
+msgid "Start Date"
+msgstr "Ημερομηνία Εκκίνησης"
+
+msgid "Start On"
+msgstr "Εκκίνηση στις"
+
+msgid "Start Time"
+msgstr "Ώρα Εκκίνησης"
+
+msgid "Su"
+msgstr "Κυ"
+
+msgid "Summary"
+msgstr "Περίληψη"
+
+msgid "Sunday"
+msgstr "Κυριακή"
+
+msgid "Tasks"
+msgstr "Γεγονότα"
+
+msgid "Th"
+msgstr "Πέ"
+
+msgid "The data was lost."
+msgstr "Τα δεδομένα χάθηκαν."
+
+msgid "The end date must be later than the start date."
+msgstr "Η ημερομηνία τέλους πρέπει να είναι μεταγενέστερη της ημερομηνίας αρχής."
+
+msgid "The file contained no data."
+msgstr "Το αρχείο δεν περιέχει δεδομένα."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Υπήρξε πρόβλημα κατά την μεταφορά του αρχείου. Το αρχείο μπορεί να είναι "
+"μεγαλύτερο από το επιτρεπόμενο μέγεθος."
+
+msgid "There was an error importing the data."
+msgstr "Παρουσιάστηκε σφάλμα κατά την εισαγωγή των δεδομένων"
+
+msgid "There was an error importing the uploaded file"
+msgstr "Υπήρξε σφάλμα κατά την εισαγωγή του αρχείου"
+
+msgid "There were no events to export."
+msgstr "Δεν υπάρχουν γεγονότα προς εξαγωγή."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Αυτό το αρχείο ελέγχει τις προεπιλεγμένες προτιμήσεις του προγράμματος "
+"Kronolith, και ελέγχει επίσης ποιες προτιμήσεις μπορούν οι χρήστες  να "
+"μεταβάλλουν"
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Αυτό το αρχείο ρυθμίζει τα χρώματα και τις γραμματοσειρές για οτιδήποτε δεν "
+"περιέχεται στις ρυθμίσεις του προγράμματος Horde."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Αυτό είναι το βασικό αρχείο ρυθμίσεων του προγράμματος Kronolith. Περιέχει "
+"τα μονοπάτια και τις ρυθμίσεις για τα scripts του προγράμματος."
+
+msgid "Thursday"
+msgstr "Πέμπτη"
+
+msgid "Time Zone"
+msgstr "Ζώνη Ώρας"
+
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Today"
+msgstr "Σήμερα"
+
+msgid "Tu"
+msgstr "Τρί"
+
+msgid "Tuesday"
+msgstr "Τρίτη"
+
+msgid "Type"
+msgstr "Τύπος"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Δεν είναι δυνατόν να φορτωθούν οι ρυθμίσεις του %s."
+
+msgid "User Interface"
+msgstr "Περιβάλλον Χρήστη"
+
+msgid "User Options"
+msgstr "Επιλογές Χρήστη"
+
+#, c-format
+msgid "View %s"
+msgstr "Εμφάνιση %s"
+
+msgid "We"
+msgstr "Τε"
+
+msgid "Wednesday"
+msgstr "Τετάρτη"
+
+#, c-format
+msgid "Week %d"
+msgstr "Εβδομάδα %d"
+
+msgid "Week"
+msgstr "Εβδομάδα"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Εβδομάδα&nbsp;%d"
+
+msgid "Week(s)"
+msgstr "Εβδομάδα(ες)"
+
+msgid "Weekly: Recurs every"
+msgstr "Εβδομαδιαία: Κάθε"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Ποια θα είναι η τελική ώρα στην εμφάνιση ανά ημέρα και ανά εβδομάδα, όταν δεν"
+"υπάρχουν άλλα γεγονότα προσδιορισμένα αργότερα από αυτή;"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Ποια θα είναι η ώρα έναρξης στην εμφάνιση ανά ημέρα και ανά εβδομάδα, όταν δεν"
+"υπάρχουν άλλα γεγονότα προσδιορισμένα νωρίτερα από αυτή;"
+
+
+msgid "Work Week"
+msgstr "Πενθήμερο"
+
+msgid "Work&nbsp;Week"
+msgstr "Πενθήμερο"
+
+msgid "Yearly: Recurs every"
+msgstr "Ετησίως: Κάθε"
+
+msgid "Your Information"
+msgstr "Οι Πληροφορίες σας"
+
+msgid "Your current time zone:"
+msgstr "Η Ζώνη Ώρας σας:"
+
+msgid "day"
+msgstr "ημέρα"
+
+msgid "day(s)"
+msgstr "ημέρα(ες)"
+
+msgid "days"
+msgstr "ημέρες"
+
+msgid "iCalendar file successfully imported"
+msgstr "Επιτυχής εισαγωγή του Ημερολογίου"
+
+msgid "month(s)"
+msgstr "μήνα(ες)"
+
+msgid "no time"
+msgstr "χωρίς χρόνο"
+
+msgid "on the same date"
+msgstr "την ίδια ημέρα"
+
+msgid "on the same weekday"
+msgstr "την ίδια εβδομάδα"
+
+msgid "week"
+msgstr "εβδομάδα"
+
+msgid "week(s) on:"
+msgstr "εβδομάδα(ες) την(το):"
+
+msgid "weeks"
+msgstr "εβδομάδες"
+
+msgid "year(s)"
+msgstr "έτος(η)"
+
+msgid "An illegal value was specified."
+msgstr "Ορίστηκε μία μη επιτρεπόμενη τιμή."
+
+msgid "Are you sure you want to delete the event \"%s\"?"
+msgstr "Θέλετε να διαγράψετε το γεγονός \"%s\";"
+
+msgid "Error"
+msgstr "Λάθος"
+
+msgid "Kronolith"
+msgstr "Ημερολόγιο"
+
+msgid "Message"
+msgstr "Μήνυμα"
+
+msgid "Success"
+msgstr "Επιτυχία"
+
+msgid "This number must be at least one."
+msgstr "Αυτός ο αριθμός πρέπει να είναι τουλάχιστον ένα."
+
+msgid "This value must be a number."
+msgstr "Αυτή η τιμή πρέπει να είναι αριθμός."
+
+msgid "User Preferences"
+msgstr "Προτιμήσεις Χρήστη"
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+msgid "Your preferences have been updated."
+msgstr "Οι προτιμήσεις σου έχουν ενημερωθεί."
+
+msgid "Return to Options"
+msgstr "Επιστροφή στις Επιλογές"
+
+msgid "Undo Changes"
+msgstr "Ακύρωση Επιλογών"
+
+msgid "Select your preferred language:"
+msgstr "Επιλέξτε την προτιμούμενη γλώσσα:"

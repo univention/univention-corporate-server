@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/History/package.xml,v 1.1 2004/01/25 19:21:29 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_History</name>
+  <summary>API for tracking the history of an object.</summary>
+  <description>
+    This API provides a way to track changes on arbitrary pieces of
+    data in Horde applications.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-01-25</date>
+    <notes>Initial Release</notes>
+
+    <filelist>
+      <file baseinstalldir="/Horde" role="php" name="History.php" />
+    </filelist>
+
+    <provides type="class" name="Horde_History" />
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2004-01-25</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

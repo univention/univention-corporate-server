@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Editor/package.xml,v 1.1 2004/02/11 21:39:51 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_Editor</name>
+  <summary>Horde Editor API</summary>
+  <description>
+    TODO
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-02-11</date>
+    <notes>Initial packaging</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Editor.php" />
+      <dir name="Editor" baseinstalldir="/Horde" role="php">
+        <file name="htmlarea.php" />
+      </dir>
+    </filelist>
+
+  </release>
+
+  <deps>
+    <dep type="pkg" rel="has">Horde_Util</dep>
+  </deps>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2004-02-11</date>
+      <state>alpha</state>
+      <notes>Initial packaging</notes>
+    </release>
+  </changelog>
+</package>

@@ -1,0 +1,966 @@
+# Horde Portugal Portuguese translation.
+# Nuno Loureiro <nuno@eth.pt>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2002-05-28 00:52+0100\n"
+"PO-Revision-Date: 2002-01-21 18:22-0000\n"
+"Last-Translator: Nuno Loureiro <nuno@eth.pt>\n"
+"Language-Team: Portugal Portuguese <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Notificação"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Operações de Manutenção - Confirmação"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s Standard"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s Termos do Acordo"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr ""
+"%s está pronto para efectuar as operações de manutenção marcadas abaixo."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' não está configurado no Registry do Horde."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "Adição de '%s' no sistema de grupos com sucesso."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "Adição de '%s' no sistema de permissões com sucesso."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' não foi criado: %s."
+
+msgid "24 hours"
+msgstr "24 horas"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Ocorreu um erro fatal:</b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add Child"
+msgstr "Adicionar filho"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Adicionar um sub-grupo a '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Adicionar uma sub-permissão a '%s'"
+
+msgid "Add a new member"
+msgstr "Adicionar novo membro:"
+
+msgid "Add a new user:"
+msgstr "Adicionar novo utilizador:"
+
+msgid "Add pair"
+msgstr "Adicionar parceiro"
+
+msgid "Add user"
+msgstr "Adicionar utilizador"
+
+msgid "Add"
+msgstr "Adicionar"
+
+msgid "Adding users is disabled."
+msgstr "A adição de utilizadores está desactivada."
+
+msgid "Address"
+msgstr "Endereço"
+
+msgid "Addressbook"
+msgstr "Lista de contactos"
+
+msgid "Administration"
+msgstr "Administração"
+
+msgid "Alias"
+msgstr "Apelido"
+
+msgid "An illegal value was specified."
+msgstr "Foi especificado um valor inválido."
+
+#, c-format
+msgid "Are you sure you wish to delete '%s'?"
+msgstr "Tem a certeza que quer remover '%s'?"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Tentativa de remoção de um grupo não existente."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Tentativa de remoção de uma permissão não existente."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Tentativa de edição de uma permissão não existente."
+
+msgid "Available fields:"
+msgstr "Campos disponíveis:"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+#, c-format
+msgid "Bind to server %s:%d with DN %s failed: [%d] %s"
+msgstr "Ligação ao servidor %s:%d com o DN %s falhou: [%d] %s"
+
+msgid "Birthday"
+msgstr "Aniversário"
+
+msgid "Brown"
+msgstr "Castanho"
+
+msgid "Bugs"
+msgstr "Bugs"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Calendário"
+
+msgid "Camouflage"
+msgstr "Camoflado"
+
+msgid "Cancel Problem Report"
+msgstr "Cancelar Relatório de Problemas"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Cell Phone"
+msgstr "Telefone Celular"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Marque as operações que deseja executar neste momento."
+
+msgid "Cherry"
+msgstr "Cereja"
+
+msgid "Click to Continue"
+msgstr "Clique para Continuar"
+
+msgid "Close Help Window"
+msgstr "Fechar Janela de Ajuda"
+
+msgid "Close Help"
+msgstr "Fechar Ajuda"
+
+msgid "Close Window"
+msgstr "Fechar janela"
+
+msgid "Company"
+msgstr "Empresa"
+
+msgid "Confirm Password"
+msgstr "Confirme a Password"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Conteúdo de '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Conteúdo do ficheiro RAR"
+
+msgid "Could not PGP encrypt message."
+msgstr "Não foi possível encriptar a mensagem com PGP."
+
+msgid "Could not PGP sign message."
+msgstr "Não foi possível assinar a mensagem com PGP."
+
+msgid "Could not decrypt PGP data."
+msgstr "Não foi possível desencriptar os dados com o PGP."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Não foi possível abrir o módulo de Manutenção de Tarefas %s"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Diariamente"
+
+msgid "Database query failed."
+msgstr "O query à Base de Dados falhou."
+
+msgid "Default Identity"
+msgstr "Identidade Padrão"
+
+msgid "Delete"
+msgstr "Apagar"
+
+msgid "Deny"
+msgstr "Negar"
+
+msgid "Describe the Problem"
+msgstr "Descreva o Problema"
+
+msgid "Details have been logged for the administrator."
+msgstr "Os detalhes foram logados para o administrador do sistema."
+
+msgid "Discussions"
+msgstr "Discucção"
+
+msgid "Display Options"
+msgstr "Opções de Visualização"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Não utilize o maintenance.php directamente"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Editar permissões a '%s'"
+
+msgid "Edit"
+msgstr "Editar"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Sem resultados."
+
+msgid "Error"
+msgstr "Erro"
+
+msgid "Every 15 minutes"
+msgstr "Em cada 15 minutos"
+
+msgid "Every 30 seconds"
+msgstr "Em cada 30 segundos"
+
+msgid "Every 5 minutes"
+msgstr "Em cada 5 minutos"
+
+msgid "Every Login"
+msgstr "Em cada Login"
+
+msgid "Every half hour"
+msgstr "Em cada meia hora"
+
+msgid "Every minute"
+msgstr "Em cada minuto"
+
+msgid "Example values:"
+msgstr "Valores exemplo:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Esperado \"BEGIN\" na linha %d. "
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Esperado \"END:%s\" na linha %d. "
+
+msgid "Failed retrieving prefs for "
+msgstr "Falhou a puxar as preferências para "
+
+msgid "Failed retrieving preferences."
+msgstr "Não foi possível puxar as preferências."
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "Falha na ligação ao servidor LDAP de preferências."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Falha na ligação ao servidor LDAP."
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "Falha na abertura de uma ligação LDAP com %s."
+
+#, c-format
+msgid "Failed to retrieve user's DN: [%d] %s"
+msgstr "Falhou a puxar o DN do utilizador: [%d] %s"
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "File Manager"
+msgstr "Gestão de Ficheiros"
+
+msgid "Full Description:"
+msgstr "Descrição Completa:"
+
+msgid "Green"
+msgstr "Verde"
+
+msgid "Grey"
+msgstr "Cinzento"
+
+#
+msgid "Group Administration"
+msgstr "Grupo Administração"
+
+msgid "Groups"
+msgstr "Grupos"
+
+msgid "Headlines"
+msgstr "Cabeçalhos"
+
+msgid "Help"
+msgstr "Ajuda"
+
+msgid "Home Address"
+msgstr "Endereço (Residência)"
+
+msgid "Home Phone"
+msgstr "Telefone (Residência)"
+
+msgid "Horde Administration"
+msgstr "Administração do Horde"
+
+msgid "Horde Group Administration"
+msgstr "Administração do grupo Horde"
+
+msgid "Horde Login"
+msgstr "Login no Horde"
+
+msgid "Horde Permissions Administration"
+msgstr "Administração de permissões do Horde"
+
+msgid "Horde User Administration"
+msgstr "Administração de Utilizadores do Horde"
+
+msgid "Horde Wireless"
+msgstr "Horde Wireless"
+
+msgid "Horde is not properly configured"
+msgstr "O Horde não está configurado correctamente"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "Erro na Importação:"
+
+msgid "Import"
+msgstr "Importar"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Campo importado: %s"
+
+msgid "Imported fields:"
+msgstr "Campos importados:"
+
+msgid "Invalid response from server"
+msgstr "Resposta inválida do servidor"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Light Blue"
+msgstr "Azul claro"
+
+msgid "List Help Topics"
+msgstr "Mostrar Tópicos de Ajuda"
+
+msgid "Listing users is disabled."
+msgstr "A listagem de utilizadores está desactivada."
+
+msgid "Log in"
+msgstr "Ligar"
+
+msgid "Log out"
+msgstr "Sair"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Por alguma razão o login falhou. Provavelmente o username e password foram "
+"introduzidos incorrectamente."
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Correio"
+
+msgid "Map Date and Time Fields"
+msgstr "Mapear Campos de Data e Hora"
+
+msgid "Map Import Fields"
+msgstr "Mapear Campos Importados"
+
+msgid "Matching fields"
+msgstr "Campos coincidentes"
+
+msgid "Members"
+msgstr "Membros"
+
+msgid "Memos"
+msgstr "Memos"
+
+msgid "Message"
+msgstr "Mensagem"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "O método '%s' não está definido"
+
+msgid "Monthly"
+msgstr "Mensalmente"
+
+msgid "My Summary"
+msgstr "Breve Resumo:"
+
+msgid "NO, I Do NOT Agree"
+msgstr "Não, não concordo"
+
+msgid "Name"
+msgstr "Nome"
+
+msgid "Network"
+msgstr "Rede"
+
+msgid "Never"
+msgstr "Nunca"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr ""
+"Não foram especificadas informações de configuração para Preferências LDAP."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Não há informações de configuração para as Categorias SQL"
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Não há informações de configuração para as Preferências SQL."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr ""
+"Não foram especificadas informações de configuração para a autenticação SQL."
+
+msgid "No key information returned."
+msgstr "Não foi retornada informação da key"
+
+msgid "No preferences are available."
+msgstr "Não há preferências disponíveis."
+
+msgid "No preferences were retrieved."
+msgstr "Não foram encontradas preferências."
+
+msgid "No valid XML data returned"
+msgstr "Não foram retornados dados em XML válidos"
+
+msgid "Notes"
+msgstr "Notas"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "O sistema de escuta de notificações %s não foi encontrado."
+
+msgid "Options"
+msgstr "Opções"
+
+msgid "Orange"
+msgstr "Cor de Laranja"
+
+msgid "Other Information"
+msgstr "Outras Informações"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Passwords cannot be blank."
+msgstr "As Passwords não podem ser vazias"
+
+msgid "Passwords must match."
+msgstr "As Passwords têm que coincidir"
+
+msgid "Perform Maintenance Operations"
+msgstr "Executar Operações de Manutenção"
+
+msgid "Permissions Administration"
+msgstr "Administração de permissões"
+
+msgid "Permissions"
+msgstr "Permissões"
+
+msgid "Phone"
+msgstr "Telefone"
+
+msgid "Please provide a summary of the problem."
+msgstr "Por favor, forneça uma breve descrição do problema."
+
+msgid "Please provide your username and password"
+msgstr "Por favor, introduza o seu username e password"
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Por favor leia o texto seguinte. Tem de CONCORDAR com os termos deste acordo para usar "
+"o sistema."
+
+msgid "Presentations"
+msgstr "Apresentações"
+
+msgid "Problem Description"
+msgstr "Descrição do Problema"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "O par de chaves Publica/Privada não foi gerada com sucesso."
+
+msgid "Read"
+msgstr "Leitura"
+
+#, c-format
+msgid "Rebind to server %s:%d with DN %s failed: [%d] %s"
+msgstr "Ligação ao servidor %s:%d com o DN %s falhou: [%d] %s"
+
+#, c-format
+msgid "Referral target %s for DN %s is not in the authorized server list!"
+msgstr "O target de referência %s para o DN %s não está na lista de servidores autorizados!"
+
+msgid "Refresh Summary View:"
+msgstr "Vista actualizada do sumário:"
+
+msgid "Remove pair"
+msgstr "Remover par"
+
+msgid "Remove"
+msgstr "Remover"
+
+msgid "Request couldn't be answered"
+msgstr "Não foi possível responder ao pedido"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'basedn' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'basedn' não foi especificado na configuração de "
+"preferências."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'database' não foi especificado na autenticação de "
+"configuração."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'database' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'database' não foi especificado na configuração de "
+"preferências."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'hostspec' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'hostspec' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'hostspec' não foi especificado na configuração de "
+"preferências."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'password' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'password' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'password' não foi especificada na configuração de "
+"preferências."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'phptype' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'phptype' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'phtype' não foi especificado na configuração de "
+"preferências."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'table' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'table' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'table' não foi especificada na configuração de "
+"preferências."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'table' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'uid' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'uid' não foi especificado na configuração de "
+"preferências."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+"O campo obrigatório 'username' não foi especificado na configuração de "
+"autenticação."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+"O campo obrigatório 'username' não foi especificado na configuração das "
+"categorias."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+"O campo obrigatório 'username' não foi especificado na configuração de "
+"preferências."
+
+msgid "Reset"
+msgstr "Limpar"
+
+msgid "Return to Options"
+msgstr "Voltar"
+
+msgid "Role"
+msgstr "Regra"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "Gravar '%s'"
+
+msgid "Save Options"
+msgstr "Gravar Opções"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Seleccione os caracteres necessários na caixa abaixo. Poderá então copiá-los "
+"e colá-los na área de texto."
+
+msgid "Select the date delimiter:"
+msgstr "Seleccione o delimitador da data:"
+
+msgid "Select the date format:"
+msgstr "Seleccione o formato da data:"
+
+msgid "Select the time format:"
+msgstr "Seleccione o formato da hora:"
+
+msgid "Select two matching fields."
+msgstr "Seleccione dois campos relacionados."
+
+msgid "Select your color scheme."
+msgstr "Escolha o seu conjunto de cores."
+
+msgid "Select your preferred language:"
+msgstr "Seleccione o seu idioma preferido:"
+
+msgid "Send Problem Report"
+msgstr "Enviar Relatório de Problemas"
+
+#, c-format
+msgid "Set rebind proc failed: [%d] %s"
+msgstr "A escolha do processo de ligação falhou: [%d] %s"
+
+msgid "Set your color scheme, page refreshing, and other display options."
+msgstr "Escolha o seu conjunto de cores, actualização da página e outras "
+"opções de vizualização."
+
+msgid "Set your preferred display language."
+msgstr "Seleccione o seu idioma de apresentação favorito."
+
+msgid "Short Summary:"
+msgstr "Breve Resumo:"
+
+msgid "Show"
+msgstr "Mostrar"
+
+msgid "Skip Maintenance"
+msgstr "Saltar Manutenção"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Faltam alguns dos ficheiros da configuração do Horde:"
+
+msgid "Special Character Input"
+msgstr "Inserir Caracter Especial"
+
+msgid "Success"
+msgstr "Sucesso"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "Adição de '%s' no sistema com sucesso."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "Remoção de '%s' com sucesso."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "Remoção de '%s' do sistema com sucesso."
+
+msgid "Sun"
+msgstr "Sol"
+
+msgid "Tasks"
+msgstr "Tarefas"
+
+msgid "The encryption features require a secure web connection."
+msgstr "As opções de encriptação funcionam apenas numa ligação de web segura."
+
+#, c-format
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"O programa usado para ver este tipo de mensagem (%s) não foi encontrado "
+"no sistema."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"O registry é onde as aplicações do Horde determinam como comunicar entre "
+"elas. Deve listar aqui qualquer aplicação do Horde que esteja instalada."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "Ocorreu um problema na inserção de '%s' no sistema."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Ocorreu um problema na remoção de '%s' do sistema."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"Este ficheiro controla o conjunto global de drivers MIME do Horde, "
+"permitindo que as aplicações integrantes do pacote façam uso de programas "
+"tais como o enscript ou o mswordview para converter conteúdos diversos em "
+"HTML, permitindo que os mesmos possam ser visualizados num browser."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"Este ficheiro controla a stylesheet que será utilizada para configurar cores "
+"e fontes para o Horde e para todas as aplicações que não possuam as suas "
+"próprias configurações."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"Este ficheiro mapeia as extensões de ficheiro para os tipos MIME, permitindo "
+"que as aplicações do Horde saibam como processar conteúdos tais como "
+"mensagens de email."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Este é o ficheiro de configuração principal do Horde. Contém caminhos e "
+"itens básicos que se aplicam à estrutura principal e a todas as aplicações "
+"do Horde."
+
+msgid "This number must be at least one."
+msgstr "Este número precisa de ser pelo menos um."
+
+msgid "This value must be a number."
+msgstr "Esta valor tem de ser um número."
+
+msgid "Title"
+msgstr "Título"
+
+msgid "Type mismatch."
+msgstr "Tipo incorreto."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Não foi possível ligar ao servidor SQL."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Não consigo remover '%s': %s."
+
+#, c-format
+msgid "Unable to modify preferences: [%d] %s"
+msgstr "Não foi possível modificar as preferências: [%d] %s"
+
+msgid "Unable to register preferences in session."
+msgstr "Impossível registar preferências na sessão."
+
+msgid "Unable to translate this Word document"
+msgstr "Não foi possível converter este documento Word"
+
+msgid "Undo Changes"
+msgstr "Desfazer Alterações"
+
+msgid "Unexpected end of file."
+msgstr "Fim de ficheiro inesperado."
+
+msgid "Update"
+msgstr "Modificar"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "'%s' Modificado."
+
+msgid "Use Default Value"
+msgstr "Usar Valor Padrão"
+
+msgid "User Administration"
+msgstr "Administração de Utilizadores"
+
+msgid "User Options"
+msgstr "Opções do Utilizador"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Users in the system:"
+msgstr "Utilizadores do sistema:"
+
+msgid "Users"
+msgstr "Utilizadores"
+
+msgid "Warning!"
+msgstr "Aviso!"
+
+msgid "Warning"
+msgstr "Aviso"
+
+msgid "Weekly"
+msgstr "Semanalmente"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Bem-vindo a %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Bem-vindo, %s"
+
+msgid "Work Address"
+msgstr "Endereço (Emprego)"
+
+msgid "Work Phone"
+msgstr "Telefone (Emprego)"
+
+msgid "YY"
+msgstr "AA"
+
+msgid "Yearly"
+msgstr "Anualmente"
+
+msgid "Yes, I Agree"
+msgstr "Sim, concordo"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Acabou de sair. <br />Obrigado por utilizar o sistema."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Deve descrever o problema antes de enviar o relatório."
+
+msgid "You must specify a username to remove."
+msgstr "Deve especificar o utilizador a remover."
+
+msgid "You must specify the username to add."
+msgstr "Deve especificar o utilizador a adicionar."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "A sua sessão %s expirou. Por favor efectue o login novamente."
+
+msgid "Your Email Address:"
+msgstr "Endereço de Email:"
+
+msgid "Your Information"
+msgstr "As suas informações"
+
+msgid "Your Name:"
+msgstr "Nome:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"O seu método de autenticação não suporta adição de utilizadores ou esta "
+"opção foi desactivada por algum outro motivo."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"O seu método de autenticação não suporta listagem de utilizadores ou esta "
+"opção foi desactivada por algum outro motivo."
+
+msgid "Your options have been updated."
+msgstr "As suas opções foram modificadas com sucesso."
+
+msgid "[Problem Report]"
+msgstr "[Relatório de Problemas] "
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[linha %s de %s]"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "vCard"
+msgstr "vCard"
+

@@ -1,0 +1,661 @@
+# Kronolith Czech Translation.
+# Copyright (C) 2001 Pavel Chytil.
+# Pavel Chytil <pavel@chytil.tk>, 2001
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-03-19 16:12-0800\n"
+"PO-Revision-Date:  2001-07-26 14:56-0900\n"
+"Last-Translator: Pavel Chytil <pavel@chytil.tk>\n"
+"Language-Team: Czech <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%d hour"
+msgstr "%d hodina"
+
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d hodina, %d minuta"
+
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d hodina, %d minut"
+
+#, c-format
+msgid "%d hours"
+msgstr "%d hodin"
+
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d hodin, %d minuta"
+
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d hodin, %d minut"
+
+#, c-format
+msgid "%d minute"
+msgstr "%d minuta"
+
+#, c-format
+msgid "%d minutes"
+msgstr "%d minut"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s soubor úspì¹nì importován"
+
+#, c-format
+msgid "%s is in progress."
+msgstr "%s se právì koná."
+
+#, c-format
+msgid "%s is starting now."
+msgstr "%s právì zaèíná."
+
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s zaèíná za %s"
+
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Popis</b> (nepovinné)"
+
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Kíèová slova</b> (nepovinné)"
+
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Opakování</b> (nepovinné)"
+
+msgid "Add Event"
+msgstr "Pøidej Událost"
+
+msgid "Add a new event"
+msgstr "Pøidej novou událost"
+
+msgid "Alarm Date"
+msgstr "Datum Alarmu"
+
+msgid "Alarm Span (minutes)"
+msgstr "Vymìøení Alarmu (v minutách)"
+
+msgid "Alarm Time"
+msgstr "Èas Alarmu"
+
+msgid "Alarm"
+msgstr "Alarm"
+
+msgid "All day event"
+msgstr "Událost na celý den"
+
+msgid "All day"
+msgstr "Celý den"
+
+msgid "All events"
+msgstr "V¹echny Události"
+
+msgid "April"
+msgstr "Duben"
+
+#, c-format
+msgid "Are you sure you want to delete the event \"%s\"?"
+msgstr "Jste si jistí, ¾e chcete vymazat událost \"%s\"?"
+
+msgid "At"
+msgstr "V"
+
+msgid "August"
+msgstr "Srpen"
+
+msgid "Birthday"
+msgstr "Narozeniny"
+
+msgid "Business"
+msgstr "Práce"
+
+msgid "Cancel"
+msgstr "Zru¹"
+
+msgid "Category"
+msgstr "Kategorie"
+
+msgid "Change the way dates and times are formatted."
+msgstr "Zmìn formatovaní pro èas a datum."
+
+msgid "Create a New Event"
+msgstr "Vytvoø Novou Událost"
+
+msgid "Daily: Recurs every"
+msgstr "Dennì: Rekurzívne ka¾dý"
+
+msgid "Date and Time Options"
+msgstr "Mo¾nosti pro Datum a Èas"
+
+msgid "Day"
+msgstr "Den"
+
+msgid "Day(s)"
+msgstr "Den(Dny)"
+
+msgid "December"
+msgstr "Prosinec"
+
+#, c-format
+msgid "Delete '%s'"
+msgstr "Sma¾ '%s'"
+
+msgid "Delete Event"
+msgstr "Sma¾ Událost"
+
+msgid "Description"
+msgstr "Popis"
+
+msgid "Display 24-hour times?"
+msgstr "Zobraz 24-hodinovì?"
+
+msgid "Display Options"
+msgstr "Mo¾nosti Zobrazení"
+
+msgid "Due:"
+msgstr "Oèekávaný:"
+
+msgid "Duration"
+msgstr "Délka Trvání"
+
+msgid "Edit "
+msgstr "Uprav "
+
+#, c-format
+msgid "Edit %s"
+msgstr "Uprav %s"
+
+msgid "End Date"
+msgstr "Datum Ukonèení"
+
+msgid "End On"
+msgstr "Konec v"
+
+msgid "End Time"
+msgstr "Èas Ukonèení"
+
+msgid "Export Calendar"
+msgstr "Exportovat Kalendáø"
+
+msgid "Export"
+msgstr "Export"
+
+msgid "February"
+msgstr "Únor"
+
+msgid "Fr"
+msgstr "Pá"
+
+msgid "Friday"
+msgstr "Pátek"
+
+msgid "Game"
+msgstr "Hra"
+
+msgid "Goto"
+msgstr "Jdi na"
+
+msgid "Help"
+msgstr "Nápovìda"
+
+msgid "Hour(s)"
+msgstr "Hodin(a)"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Pokud importováno jako CVS data: Obsahuje prvni øádek názvy polí?"
+
+msgid "Illegal or malformed form data."
+msgstr "Nedovolené, nebo ¹patnì naformátované data."
+
+msgid "Import Calendar"
+msgstr "Importovat Kalendáø"
+
+msgid "Import"
+msgstr "Import"
+
+msgid "Import/Export Calendar"
+msgstr "Importovat/Exportovat Kalendáø"
+
+msgid "Import/Export"
+msgstr "Import/Export"
+
+msgid "January"
+msgstr "Leden"
+
+msgid "July"
+msgstr "Èervenec"
+
+msgid "June"
+msgstr "Èerven"
+
+msgid "Keywords"
+msgstr "Klíèová slova"
+
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith není správnì nakonfigurován"
+
+msgid "Kronolith"
+msgstr "Kronolith"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Last month"
+msgstr "Minulý mìsíc"
+
+msgid "Last week"
+msgstr "Minulý týden"
+
+msgid "Lasts"
+msgstr "Trvá"
+
+msgid "Limit the time span to export:"
+msgstr "Limituj èasové rozmezí k exportování:"
+
+msgid "Location"
+msgstr "Místo"
+
+msgid "March"
+msgstr "Bøezen"
+
+msgid "May"
+msgstr "Kvìten"
+
+msgid "Meeting"
+msgstr "Schùze"
+
+msgid "Minute(s)"
+msgstr "Minut(a)"
+
+msgid "Minutes before"
+msgstr "Minut pøed"
+
+msgid "Minutes"
+msgstr "Minut"
+
+msgid "Mo"
+msgstr "Po"
+
+msgid "Monday"
+msgstr "Pondìlí"
+
+msgid "Month"
+msgstr "Mìsíc"
+
+msgid "Monthly: Recurs every"
+msgstr "Mìsíènì: Rekurzívnì ka¾dý"
+
+msgid "New Event"
+msgstr "Nová Událost"
+
+msgid "Next Month"
+msgstr "Pøí¹tí Mìsíc"
+
+msgid "Next day"
+msgstr "Pøí¹tí den"
+
+msgid "Next week"
+msgstr "Pøí¹tí týden"
+
+msgid "No configuration information specified for SQL Calendar."
+msgstr "®ádné konfigurèní informace pro SQL Kalendáø nebyli urèeny."
+
+msgid "No end date"
+msgstr "Nekonèí"
+
+msgid "None"
+msgstr "®ádný"
+
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr ""
+"Upozornìní: Není mo¾no importovat, proto¾e driver pro kalendáø obsahuje "
+"chyby."
+
+msgid "November"
+msgstr "Listopad"
+
+msgid "October"
+msgstr "Øíjen"
+
+msgid "Options"
+msgstr "Mo¾nosti"
+
+msgid "Pattern"
+msgstr "Vzor"
+
+msgid "Personal"
+msgstr "Osobní"
+
+msgid "Previous day"
+msgstr "Pøedchozí den"
+
+msgid "Problem?"
+msgstr "Problém?"
+
+msgid "Recur Until"
+msgstr "Rekurzívnì a¾ do"
+
+msgid "Recurrence Data"
+msgstr "Opakování Dat"
+
+msgid "Recurrence End Date"
+msgstr "Koneèný datum pro Opakovaní"
+
+msgid "Recurrence Interval"
+msgstr "Opakovaci Interval"
+
+msgid "Recurrence Type"
+msgstr "Opakovací Typ"
+
+msgid "Recurs daily"
+msgstr "Opakuj dennì"
+
+msgid "Recurs monthly"
+msgstr "Opakuj mesíènì"
+
+msgid "Recurs not"
+msgstr "Neopakovat"
+
+msgid "Recurs weekly"
+msgstr "Opakuj týdnì"
+
+msgid "Recurs yearly"
+msgstr "Opakuj roènì"
+
+msgid "Required 'database' not specified in calendar configuration."
+msgstr "Po¾adovaná 'database' neni urèena v konfiguraci kalendáøe."
+
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Po¾adovaný 'hostspec' neni urèen v konfiguraci kalendáøe."
+
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Po¾adovaný 'password' neni urèen v konfiguraci kalendáøe."
+
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Po¾adovaný 'phptype' neni urèen v konfiguraci kalendáøe."
+
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Po¾adované 'username' neni urèeno v konfiguraci kalendáøe."
+
+msgid "Reset to Defaults"
+msgstr "Zpìt na Implicitní Nastavení"
+
+msgid "Sa"
+msgstr "So"
+
+msgid "Saturday"
+msgstr "Sobota"
+
+msgid "Save Event"
+msgstr "Ulo¾ Událost"
+
+msgid "Select how to display Dates:"
+msgstr "Vyber jak zobrazit Datum:"
+
+msgid "Select how to display the different views and choose default view."
+msgstr "Vyber jak zobrazit rùzné zobrazení a vyber implicitní zobrazení."
+
+msgid "Select if to show due tasks in the calendar."
+msgstr "Vyber zdali ukázat oèekávané udalosti v kalendáøi."
+
+msgid "Select the file to import:"
+msgstr "Vyber soubor k importování:"
+
+msgid "Select the first weekday:"
+msgstr "Vyber první den týdne:"
+
+msgid "Select the format to export to:"
+msgstr "Vyber formát k exportovaní:"
+
+msgid "Select the source to import from:"
+msgstr "Vyber zdroj, z kterého se bude importovat: "
+
+msgid "Select the time span to show:"
+msgstr "Vyber èasové rozmezí k zobrazení:"
+
+msgid "Select the view to display after login:"
+msgstr "Vyber zobrazení po pøihla¹ení se do systému: "
+
+msgid "Select what events to show in the Horde summary."
+msgstr "Vyber jake události se mají zobrazit v Horde shrnutí."
+
+msgid "September"
+msgstr "Záøí"
+
+msgid "Set the current time zone."
+msgstr "Nastavte Va¹e souèasné èasové pásmo."
+
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Nastavte jazyk pro po¾ku z nabítky, vysvìtlení, a nápovìdu."
+
+msgid "Set your preferred display language."
+msgstr "Nastavte Vá¹ preferovaný jazyk pro zobrazení."
+
+msgid "Show due tasks in the calendar?"
+msgstr "Zobrazit oèekávané udalosti v kalendáøi?"
+
+msgid "Show half hour slots in day and week views?"
+msgstr "Mají se ukázat pùlhodinové úseky v denním a týdenním zobrazení?"
+
+msgid "Show only events that have an alarm set?"
+msgstr "Mají se ukázat pouze události s alarmem?"
+
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Chybí nìkteré konfiguraèní soubory Kronolithu:"
+
+msgid "Start Date"
+msgstr "Datum Zaèátku"
+
+msgid "Start On"
+msgstr "Zaèátek V"
+
+msgid "Start Time"
+msgstr "Èas Zaèátku"
+
+msgid "Su"
+msgstr "Ne"
+
+msgid "Summary"
+msgstr "Shrnutí"
+
+msgid "Sunday"
+msgstr "Nedìle"
+
+msgid "Tasks"
+msgstr "Události"
+
+msgid "Th"
+msgstr "Èt"
+
+msgid "The data was lost."
+msgstr "Data se ztratila"
+
+msgid "The end date must be later than the start date."
+msgstr "Den konce události musí být po dnu zaèátku události."
+
+msgid "The file contained no data."
+msgstr "Soubor neobsahuje ¾ádné data."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Nastal problém s poskytováním souboru. Soubor mù¾e být vìt¹í ne¾ povolená "
+"maximální velikost."
+
+msgid "There was an error importing the data."
+msgstr "Chyba pøi importování dat."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Chyba pøi importování poskytnutého souboru"
+
+msgid "There were no events to export."
+msgstr "®ádné události k exportování."
+
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Tento soubor urèuje nastavení pro Kronolith a také polo¾ky, které mohou být "
+"mìnìny u¾ivatelem."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Tento soubor obsahuje nastavení pro tabulky stylù a je pou¾it pro nastavení "
+"barev a typu písma bey ohledu na Horde nastavení."
+
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Toto je hlavni konfiguraèní soubor pro Kronolith. Obsahuje cesty a mo¾nosti "
+"pro skripty v Kronolithu."
+
+msgid "Thursday"
+msgstr "Ètvrtek"
+
+msgid "Time Zone"
+msgstr "Èasové Pásmo"
+
+msgid "Title"
+msgstr "Titul"
+
+msgid "Today"
+msgstr "Dnes"
+
+msgid "Tu"
+msgstr "Út"
+
+msgid "Tuesday"
+msgstr "Úterý"
+
+msgid "Type"
+msgstr "Typ"
+
+msgid "User Interface"
+msgstr "U¾ivatelské Rozhraní"
+
+msgid "User Options"
+msgstr "U¾ivatelské Mo¾nosti"
+
+msgid "We"
+msgstr "St"
+
+msgid "Wednesday"
+msgstr "Støeda"
+
+#, c-format
+msgid "Week %d"
+msgstr "Týden %d"
+
+msgid "Week"
+msgstr "Týden"
+
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Týden&nbsp;;%d"
+
+msgid "Week(s)"
+msgstr "Týden(y)"
+
+msgid "Weekly: Recurs every"
+msgstr "Týdnì: Rekurzívnì ka¾dý"
+
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"Kdy má èasové zobrazeni dne a týdne konèit, pokud neobsahují pozdni události?"
+
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"Kdy má èasové zobrazeni dne a týdne zaèínat, pokud neobsahují èasné události?"
+
+msgid "Work Week"
+msgstr "Pracovní Týden"
+
+msgid "Work&nbsp;Week"
+msgstr "Pracovní&nbsp;Týden"
+
+msgid "Yearly: Recurs every"
+msgstr "Roènì: Rekurzívnì ka¾dý"
+
+msgid "Your Information"
+msgstr "Va¹e Informace"
+
+msgid "Your current time zone:"
+msgstr "Va¹e souèasné èasové pásmo:"
+
+msgid "day"
+msgstr "den"
+
+msgid "day(s)"
+msgstr "den(dny)"
+
+msgid "days"
+msgstr "dny"
+
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar soubor byl úspì¹nì importován"
+
+msgid "month(s)"
+msgstr "mìsíc(e)"
+
+msgid "no time"
+msgstr "bez èasového údaje"
+
+msgid "on the same date"
+msgstr "ve stejném dnu"
+
+msgid "on the same weekday"
+msgstr "ve stejném týdnu"
+
+msgid "week"
+msgstr "týden"
+
+msgid "week(s) on:"
+msgstr "týden(týdny) v:"
+
+msgid "weeks"
+msgstr "týdny"
+
+msgid "year(s)"
+msgstr "rok(y)"
+
+#~ msgid "An illegal value was specified."
+#~ msgstr "Zadali jse nepovolenou hodnotu."
+
+#~ msgid "Error"
+#~ msgstr "Chyba"
+
+#~ msgid "Message"
+#~ msgstr "Zpráva"
+
+#~ msgid "Success"
+#~ msgstr "Dokonèeno v poøádku"
+
+#~ msgid "This number must be at least one."
+#~ msgstr "Toto èíslo musí být nejménì jedna."
+
+#~ msgid "This value must be a number."
+#~ msgstr "Tato hodnota musí být èíslo."
+
+#~ msgid "User Preferences"
+#~ msgstr "Nastavení Mo¾ností pro U¾ivatele"
+
+#~ msgid "Warning"
+#~ msgstr "Upozornìní"
+
+#~ msgid "Your preferences have been updated."
+#~ msgstr "Va¹e nastavení bylo aktualizováno."

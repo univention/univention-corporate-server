@@ -1,0 +1,589 @@
+# Horde Korean translation.
+# Copyright (C) 2001 J.I Kim.
+# J.I Kim <aporie@netian.com>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0-cvs\n"
+"POT-Creation-Date: 2001-12-31 13:43+0900\n"
+"PO-Revision-Date: 2001-11-09 16:29+0900\n"
+"Last-Translator: J.I Kim <aporie@netian.com>\n"
+"Language-Team: Korean <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=EUC-KR\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s 유지관리 작업 - 확인"
+
+#, c-format
+msgid "%s is ready to perform the maintenance operations checked below."
+msgstr "%s는 아래에 설정된 유지관리 작업을 수행할 준비가 되었습니다."
+
+msgid "24 hours"
+msgstr "24 시간"
+
+msgid "AM/PM"
+msgstr "오전/오후"
+
+msgid "Add a new user:"
+msgstr "새로운 사용자 추가:"
+
+msgid "Add pair"
+msgstr "페어(pair)추가"
+
+msgid "Add user"
+msgstr "사용자 추가"
+
+msgid "Adding users is disabled."
+msgstr "사용자 추가 사용안함"
+
+msgid "Address"
+msgstr "주소"
+
+msgid "Addressbook"
+msgstr "주소록"
+
+msgid "Administration"
+msgstr "관리"
+
+msgid "Alias"
+msgstr "얼라이어스"
+
+#, c-format
+msgid "Attempt to bind failed: no entry found for %s."
+msgstr "바인딩 시도 오류: %s 가 없습니다."
+
+msgid "Attempt to bind without a valid connection."
+msgstr "올바른 연결없이 바인딩을 시도합니다."
+
+msgid "Available fields:"
+msgstr "가능한 필드:"
+
+#, c-format
+msgid "Bind to server %s, dn %s as %s failed: [%d] %s"
+msgstr "%s 서버에 dn %s 를 %s로 바인딩하는데 실패했습니다: [%d] %s"
+
+msgid "Birthday"
+msgstr "생일"
+
+msgid "Bugs"
+msgstr "벌레들"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "달력"
+
+msgid "Cancel Problem Report"
+msgstr "오류 보고하기 취소"
+
+msgid "Cell Phone"
+msgstr "휴대폰"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "지금 수행할 작업을 선택하세요."
+
+msgid "Close Help Window"
+msgstr "도움말 창 닫기"
+
+msgid "Close Help"
+msgstr "도움말 닫기"
+
+msgid "Close Window"
+msgstr "창 닫기"
+
+msgid "Company"
+msgstr "회사"
+
+msgid "Confirm Password"
+msgstr "암호 확인"
+
+msgid "Contents of '%s'"
+msgstr "'%s'의 내용"
+
+msgid "Contents of the RAR archive"
+msgstr "RAR 압축"
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Maintenance_Task 모듈 %s 를 열 수 없습니다."
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "일별"
+
+msgid "Database query failed."
+msgstr "데이타베이스 검색 오류"
+
+msgid "Default Identity"
+msgstr "기본 식별자"
+
+msgid "Delete"
+msgstr "삭제"
+
+msgid "Describe the Problem"
+msgstr "오류 설명"
+
+msgid "Discussions"
+msgstr "토론"
+
+msgid "Do not directly access maintenance.php"
+msgstr "maintenance.php에 직접 접근하지 마세요."
+
+msgid "Email"
+msgstr "이메일"
+
+msgid "Empty result."
+msgstr "결과 없음"
+
+msgid "Error"
+msgstr "오류"
+
+msgid "Every Login"
+msgstr "모두 로그인"
+
+msgid "Example values:"
+msgstr "예:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "%d 라인에 \"BEGIN\" 이 있어야 합니다."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "\"END:%s\"가 %d라인에 없습니다."
+
+msgid "Failed to connect to LDAP preferences server."
+msgstr "LDAP 서버 접속 실패"
+
+msgid "Failed to connect to LDAP server."
+msgstr "LDAP 서버 접속 실패"
+
+#, c-format
+msgid "Failed to open an LDAP connection to %s."
+msgstr "LDAP 연결 %s 실패"
+
+msgid "Fax"
+msgstr "팩스"
+
+msgid "File Manager"
+msgstr "파일 관리자"
+
+msgid "Full Description:"
+msgstr "전체 설명:"
+
+msgid "Headlines"
+msgstr "헤드라인"
+
+msgid "Help"
+msgstr "도움말"
+
+msgid "Home Address"
+msgstr "집 주소"
+
+msgid "Home Phone"
+msgstr "집 전화번호"
+
+msgid "Horde Login"
+msgstr "Horde 로그인"
+
+msgid "Horde System"
+msgstr "Horde 시스템"
+
+msgid "Horde User Administration"
+msgstr "Horde 사용자 관리"
+
+msgid "Horde Wireless"
+msgstr "Horde 무선"
+
+msgid "Horde is not properly configured"
+msgstr "Horde가 바르게 설정되지 않았습니다."
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Import Error: "
+msgstr "읽어오기(임포트) 오류: "
+
+msgid "Import"
+msgstr "읽어오기(임포트)"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "읽어오기 항목: %s"
+
+msgid "Imported fields:"
+msgstr "임포트된 항목:"
+
+msgid "List Help Topics"
+msgstr "도움알 목차"
+
+msgid "Listing users is disabled."
+msgstr "사용할 수 없는 사용자 목록."
+
+msgid "Log in"
+msgstr "로그인"
+
+msgid "Log out"
+msgstr "로그아웃"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "웹메일"
+
+msgid "Map Date and Time Fields"
+msgstr "날자 및 시간 항목 맵"
+
+msgid "Map Import Fields"
+msgstr "임포트 항목 맵"
+
+msgid "Matching fields"
+msgstr "일치하는 항목"
+
+msgid "Message"
+msgstr "메세지"
+
+msgid "Monthly"
+msgstr "매월"
+
+msgid "Name"
+msgstr "이름"
+
+msgid "Network"
+msgstr "네트워크"
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "LDAP환경 설정정보가 없습니다."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "SQL 카테고리 설정정보가 없습니다."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "SQL 환경 설정정보가 없습니다."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "SQL 인증 설정정보가 없습니다."
+
+#, c-format
+msgid "No entry found for %s."
+msgstr "%s를 위한 항목이 없습니다."
+
+msgid "No preferences are available."
+msgstr "환경설정이 올바르지 않음"
+
+msgid "No preferences were retrieved."
+msgstr "환경설정 읽기 오류"
+
+msgid "Notes"
+msgstr "참조"
+
+msgid "Password"
+msgstr "암호"
+
+msgid "Passwords cannot be blank."
+msgstr "암호가 입력되지 않았습니다."
+
+msgid "Passwords must match."
+msgstr "암호가 일치하지 않습니다."
+
+msgid "Perform Maintenance Operations"
+msgstr "유지 관리 작업 실행"
+
+msgid "Phone"
+msgstr "전화번호"
+
+msgid "Please log in"
+msgstr "로그인하세요"
+
+msgid "Please provide a summary of the problem."
+msgstr "문제에 대한 요약을 입력해 주세요."
+
+msgid "Please provide your username and password"
+msgstr "사용자이름과 암호를 입력하세요"
+
+msgid "Presentations"
+msgstr "환경설정"
+
+msgid "Problem Description"
+msgstr "문제 설명"
+
+msgid "Remove pair"
+msgstr "페어(pair) 삭제"
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "인증설정에서 'basedn'이 없습니다."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr "환경설정에서 'basedn'이 없습니다."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "인증설정에서 'database'가 없습니다."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr "설정 카테고리에서 'database'가 없습니다."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr "환경설정에서 'database'가 없습니다."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "인증설정에서 'hostspec'이 없습니다."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr "설정 카테고리에서 'hostspec'이 없습니다."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr "환경설정에서 'hostspec'이 없습니다."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "인증설정에서 'password'가 없습니다."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr "설정 카테고리에서 'password'가 없습니다."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr "환경설정에서 'password'가 없습니다."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "인증설정에서 'phptypw'이 없습니다."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr "설정 카테고리에서 'phptypw'이 없습니다."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr "환경설정에서 'phptypw'이 없습니다."
+
+msgid "Required 'table' not specified in authentication configuration."
+msgstr "인증설정에서 'table'이 없습니다."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr "설정 카테고리에서 'table'이 없습니다."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr "환경설정에서 'table'이 없습니다."
+
+msgid "Required 'tableRelations' not specified in categories configuration."
+msgstr "설정 카테고리에서 'tableRelations'가 없습니다."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "인증설정에서 'uid'가 없습니다."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr "환경설정에서 'uid'가 없습니다."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "인증설정에서 'username'이 없습니다."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr "설정 카테고리에서 'username'이 없습니다."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr "환경설정에서 'username'이 없습니다."
+
+msgid "Reset"
+msgstr "입력 취소"
+
+msgid "Return to Options"
+msgstr "옵션으로 돌아가기"
+
+msgid "Role"
+msgstr "역할"
+
+msgid "Save Options"
+msgstr "옵션 저장"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"아래 상자에서 필요한 문자를 선택하세요. 그리고나서 복사후 텍스트영역에 붙여넣"
+"기하면 됩니다."
+
+msgid "Select the date delimiter:"
+msgstr "날자 구분표시 선택:"
+
+msgid "Select the date format:"
+msgstr "날자 형식 선택"
+
+msgid "Select the time format:"
+msgstr "시간 형식 선택"
+
+msgid "Select two matching fields."
+msgstr "두개의 일치하는 항목 선택"
+
+msgid "Send Problem Report"
+msgstr "문제발생 보고서 전송하기"
+
+msgid "Short Summary:"
+msgstr "간단한 요약:"
+
+msgid "Skip Maintenance"
+msgstr "유지관리 생략"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Horde의 일부 설정파일이 없습니다:"
+
+msgid "Special Character Input"
+msgstr "특수 문자 입력"
+
+msgid "Success"
+msgstr "성공"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s'가 시스템에 추가되었습니다."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s'가 시스템에서 삭제되었습니다."
+
+msgid "Tasks"
+msgstr "작업"
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"레지스트리(registry)는 Horde 응용프로그램간의 동작방식을 설정합니다. 여기에"
+"서 설치된 Horde 응용프로그램을 열거해야 합니다."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system."
+msgstr "'%s'를 시스템에 추가할 수 없습니다."
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "'%s'를 시스템에서 삭제할 수 없습니다."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"이파일은 Horde프레임워크와 응용프로그램이 브라우저에서 HTML로 내용을 볼때 "
+"enscript또는 mswordview같은 프로그램을 사용하도록 하기 위한 전역 MIME 드라이"
+"버를 설정합니다. "
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"이 파일은 Horde 프레임워크와 모든 응용프로그램에서 사용되는 색상과 폰트에 사용"
+"되는 스타일쉬트를 제어합니다. 하지만 응용프로그램 각자의 스타일쉬트는 제공하"
+"지 않습니다."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"이 파일은 논리적인 MIME형식의 파일 확장자를 지정하여, Horde 응용프로그램이 이"
+"메일 첨부파일 또는 CVS 체크아웃(co)에서 내용을 어떻게 다루어야 하는지를 알려"
+"줍니다."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"이것은 기본 Horde 설정파일입니다. 모든 Horde 응용 프로그램과 핵심적인 프레임 "
+"워크사이에 적용되는 기본 경로와 내용을 갖고 있습니다."
+
+msgid "Title"
+msgstr "제목"
+
+msgid "Type mismatch."
+msgstr "형식 오류."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "SQL 서버에 접속할 수 없습니다."
+
+msgid "Unable to modify preferences."
+msgstr "환경설정을 변경할 수 없습니다."
+
+msgid "Unable to register preferences in session."
+msgstr "세션에서 환경설정을 등록할 수 없습니다."
+
+msgid "Unable to translate this Word document"
+msgstr "이 워드문서를 변경할 수 없습니다."
+
+msgid "Undo Changes"
+msgstr "변경사항 되돌리기"
+
+msgid "Unexpected end of file."
+msgstr "파일의 끝이 잘못되었습니다."
+
+msgid "Use Default Value"
+msgstr "기본값 사용"
+
+msgid "Username"
+msgstr "사용자명"
+
+msgid "Users in the system:"
+msgstr "시스템의 사용자:"
+
+msgid "Warning!"
+msgstr "경고!"
+
+msgid "Warning"
+msgstr "경고"
+
+msgid "Weekly"
+msgstr "매주"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "환영합니다, %s"
+
+msgid "Work Address"
+msgstr "직장 주소:"
+
+msgid "Work Phone"
+msgstr "직장 전화번호"
+
+msgid "YY"
+msgstr "YY"
+
+msgid "Yearly"
+msgstr "매년"
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "문제 보고서를 보내기전에 이문제에 대한 설명을 입력해야 합니다."
+
+msgid "You must specify a username to remove."
+msgstr "삭제할 사용자 이름을 입력해야 합니다."
+
+msgid "You must specify the username to add."
+msgstr "추가할 사용자 이름을 입력해야 합니다."
+
+msgid "Your Email Address:"
+msgstr "이메일 주소:"
+
+msgid "Your Name:"
+msgstr "이름:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"당신의 인증클라이언트가 사용자를 추가할 수 없습니다. 또는 다른 이유로 사용자 "
+"추가기능을 사용할 수 없습니다."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"당신의 인증클라이언트가 사용자 목록보기를 지원하지 않습니다. 또는 다른 이유"
+"로 사용자 목록보기를 사용할 수 없습니다."
+
+msgid "[Problem Report]"
+msgstr "[오류 보고하기]"

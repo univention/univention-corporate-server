@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/LDAP/package.xml,v 1.1 2004/01/13 05:00:27 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>Horde_LDAP</name>
+  <summary>LDAP Utility Class</summary>
+  <description>
+    Horde_LDAP:: contains some utility functions for dealing with LDA.
+  </description>
+  <license>LGPL</license>
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-01-12</date>
+    <notes>Initial Release.</notes>
+
+    <provides type="class" name="Horde_LDAP" />
+
+    <filelist>
+      <file role="php" name="LDAP.php" baseinstalldir="/Horde"/>
+    </filelist>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2004-01-12</date>
+      <state>alpha</state>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+
+</package>

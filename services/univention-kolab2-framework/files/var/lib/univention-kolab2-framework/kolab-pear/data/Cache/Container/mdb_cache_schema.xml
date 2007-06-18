@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<database>
+
+ <name>dbname</name>
+ <create>1</create>
+ <description> </description>
+
+ <table>
+  <name>cache</name>
+  <description> </description>
+
+  <declaration>
+
+   <field>
+      <name>ID</name>
+      <type>text</type>
+      <length>32</length>
+      <default></default>
+      <notnull>1</notnull>
+   </field>
+
+   <field>
+      <name>cachegroup</name>
+      <type>text</type>
+      <length>127</length>
+      <default></default>
+      <notnull>1</notnull>
+   </field>
+
+   <field>
+      <name>cachedata</name>
+      <type>clob</type>
+      <default></default>
+      <notnull>1</notnull>
+   </field>
+
+   <field>
+      <name>userdata</name>
+      <type>text</type>
+      <length>255</length>
+      <default></default>
+   </field>
+
+   <field>
+      <name>expires</name>
+      <type>integer</type>
+      <default>0</default>
+      <notnull>1</notnull>
+   </field>
+
+   <field>
+      <name>changed</name>
+      <type>integer</type>
+      <default>0</default>
+      <notnull>1</notnull>
+   </field>
+
+
+   <index>
+    <name>id_index</name>
+    <unique>1</unique>
+    <field> <name>id</name> </field>
+    <field> <name>cachegroup</name> </field>
+   </index>
+
+
+   <index>
+    <name>expires_index</name>
+    <field> <name>expires</name> </field>
+   </index>
+
+  </declaration>
+ </table>
+
+</database>

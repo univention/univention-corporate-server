@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Compress/package.xml,v 1.7 2003/10/29 19:35:01 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Horde_Compress</name>
+  <summary>Horde Compression API</summary>
+  <description>
+    The Horde_Compress:: class provides an API for various compression techniques.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>jon</user>
+      <role>lead</role>
+      <name>Jon Parise</name>
+      <email>jon@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>slusarz</user>
+      <role>lead</role>
+      <name>Michael Slusarz</name>
+      <email>slusarz@bigworm.colorado.edu</email>
+    </maintainer>
+    <maintainer>
+      <user>mac</user>
+      <role>lead</role>
+      <name>Mike Cochrane</name>
+      <email>mike@graftonhall.co.nz</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2003-07-03</date>
+    <notes>Initial Release.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="Compress.php" />
+      <dir baseinstalldir="/Horde" name="Compress" role="php">
+        <file name="dbx.php" />
+        <file name="gzip.php" />
+        <file name="tar.php" />
+        <file name="tnef.php" />
+        <file name="zip.php" />
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="ext" rel="has" optional="yes">gettext</dep>
+      <dep type="ext" rel="has" optional="yes">zlib</dep>
+      <dep type="pkg" rel="has">Horde_Util</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <state>alpha</state>
+      <date>2003-07-03</date>
+      <notes>Initial release as a PEAR package</notes>
+    </release>
+  </changelog>
+</package>

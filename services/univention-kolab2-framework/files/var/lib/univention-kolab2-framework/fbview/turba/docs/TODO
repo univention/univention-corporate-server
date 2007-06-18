@@ -1,0 +1,12 @@
+=================================
+|| Turba Development TODO List ||
+=================================
+
+- Add feature to allow each user to set up their own fieldset, maybe
+storing such records in an SQL attributes-type DB backend.
+
+- Figure out how to sanely name Groups when using a composite 'name'
+field.
+
+
+$Horde: turba/docs/TODO,v 1.2 2004/04/01 21:42:14 chuck Exp $

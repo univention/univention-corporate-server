@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/SyncML/package.xml,v 1.5 2004/05/26 17:32:49 chuck Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.0">
+<package version="1.0">
+  <name>SyncML</name>
+  <summary>SyncML:: provides an API for processing SyncML requests.</summary>
+  <description>This package provides classes for implementing a SyncML server.</description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>amills</user>
+      <role>lead</role>
+      <name>Anthony Mills</name>
+      <email>amills@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.0.1</version>
+    <state>alpha</state>
+    <date>2004-01-19</date>
+    <notes>Initial implementation.</notes>
+
+    <filelist>
+      <file role="php" baseinstalldir="/Horde" name="SyncML.php" />
+      <dir role="php" baseinstalldir="/Horde" name="SyncML">
+        <file name="State.php"/>
+
+        <file name="Command.php"/>
+        <dir name="Command">
+          <file name="Alert.php"/>
+          <file name="Final.php"/>
+          <file name="Get.php"/>
+          <file name="Put.php"/>
+          <file name="Replace.php"/>
+          <file name="Results.php"/>
+          <file name="Status.php"/>
+
+          <file name="Sync.php"/>
+          <dir name="Sync">
+            <file name="Add.php"/>
+            <file name="ContentSyncElement.php"/>
+            <file name="Delete.php"/>
+            <file name="Replace.php"/>
+            <file name="SyncElement.php"/>
+          </dir>
+        </dir>
+
+        <file name="Sync.php"/>
+        <dir name="Sync">
+          <file name="OneWayFromClientSync.php"/>
+          <file name="OneWayFromServerSync.php"/>
+          <file name="RefreshFromClientSync.php"/>
+          <file name="RefreshFromServerSync.php"/>
+          <file name="SlowSync.php"/>
+          <file name="TwoWaySync.php"/>
+       </dir>
+      </dir>
+
+      <dir role="doc" name="docs">
+        <file name="TODO"/>
+      </dir>
+    </filelist>
+
+    <deps>
+      <dep type="php" rel="ge" version="4.3.0+" />
+      <dep type="pkg" rel="has">XML_WBXML</dep>
+    </deps>
+  </release>
+
+  <changelog>
+    <release>
+      <version>0.0.1</version>
+      <date>2004-01-19</date>
+      <state>alpha</state>
+      <notes>Initial implementation</notes>
+    </release>
+  </changelog>
+
+</package>

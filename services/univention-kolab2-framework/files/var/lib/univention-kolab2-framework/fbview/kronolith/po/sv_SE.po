@@ -1,0 +1,1225 @@
+# Kronolith Swedish translation
+# Copyright (C) 2002 Andreas Dahlén.
+# Andreas Dahlén <andreas@dahlen.ws>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"POT-Creation-Date: 2002-10-18 13:03+0200\n"
+"PO-Revision-Date: 2002-01-04 18:10+0100\n"
+"Last-Translator: Andreas Dahlén <andreas@dahlen.ws>\n"
+"Language-Team: Swedish <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:422
+#, c-format
+msgid "%d hour"
+msgstr "%d timme"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:424
+#, c-format
+msgid "%d hour, %d minute"
+msgstr "%d timme, %d minut"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:426
+#, c-format
+msgid "%d hour, %d minutes"
+msgstr "%d timme, %d minuter"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:414
+#, c-format
+msgid "%d hours"
+msgstr "%d timmar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:416
+#, c-format
+msgid "%d hours, %d minute"
+msgstr "%d timmar, %d minut"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:418
+#, c-format
+msgid "%d hours, %d minutes"
+msgstr "%d timmar, %d minuter"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:432
+#, c-format
+msgid "%d minute"
+msgstr "%d minut"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:434
+#, c-format
+msgid "%d minutes"
+msgstr "%d minuter"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Event.php:766
+#, c-format
+msgid "%s Minutes before"
+msgstr "%s minuter innan"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:210
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s filen är importerad"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/status.php:27
+#, c-format
+msgid "%s is in progress."
+msgstr "%s är aktiv."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/status.php:25
+#, c-format
+msgid "%s is starting now."
+msgstr "%s startar nu."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/status.php:29
+#, c-format
+msgid "%s starts in %s"
+msgstr "%s startar om %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:51
+msgid "* Add these by clicking Invite *"
+msgstr "* Lägg till genom att klicka på Bjud in * "
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:37
+msgid "* Please select address(es) *"
+msgstr "* Välj adress(er) *"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:75
+msgid "<b>Description</b>"
+msgstr "<b>Beskrivning</b>"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:253
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:254
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Beskrivning</b> (valfri)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:127
+msgid "<b>Keywords</b>"
+msgstr "<b>Nyckelord</b>"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:349
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>Nyckelord</b> (valfri)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:87
+msgid "<b>Recurrence</b>"
+msgstr "<b>Upprepning</b>"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:268
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:269
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>Upprepning</b> (valfri)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:27
+msgid "Add Event"
+msgstr "Lägg till händelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:30
+msgid "Add New Remote Calendar:"
+msgstr "Lägg till ny fjärrkalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/addevent.php:32
+msgid "Add a new event"
+msgstr "Lägg till en ny händelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:50
+msgid "Add, remove, and edit categories."
+msgstr "Lägg till, radera och ändra kategorier."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:211
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:212
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:47
+msgid "Alarm"
+msgstr "Alarm"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:245
+msgid "Alarm Date"
+msgstr "Alarmdatum"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:244
+msgid "Alarm Span (minutes)"
+msgstr "Tid mellan alarm (minuter)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:246
+msgid "Alarm Time"
+msgstr "Alarmtid"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/DayView.php:84
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/DayView.php:86
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/WeekView.php:89
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:204
+msgid "All day"
+msgstr "Hela dagen"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:138
+msgid "All day event"
+msgstr "Heldagshändelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:23
+msgid "All events"
+msgstr "Alla händelser"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:41
+#, c-format
+msgid "Any events in a category that is deleted will become %s."
+msgstr "Händelser i en kategori som raderas kommer att bli %s."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:71
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:158
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:115
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:116
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:171
+msgid "At"
+msgstr "Kl"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "Födelsedag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:50
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:5
+msgid "Calendar"
+msgstr "Kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:33
+msgid "Calendar's Type:"
+msgstr "Kalendertyp:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:23
+msgid "Calendar's name:"
+msgstr "Kalendernamn:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:126
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:36
+msgid "Calendars"
+msgstr "Kalendrar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:248
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:72
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:73
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:20
+msgid "Category"
+msgstr "Kategori"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:49
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:234
+msgid "Category Management"
+msgstr "Kategorihantering"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:19
+msgid "Change the way dates and times are formatted."
+msgstr "Ändra hur datum och tider visas."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:226
+msgid "Choose Color"
+msgstr "Välj färg"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:168
+msgid "Confirm deletion of events?"
+msgstr "Bekräfta radering av händelser?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:7
+#: /home/httpd/html/horde_cvs/po/../kronolith/contacts.php:82
+msgid "Contact List"
+msgstr "Kontaktlista"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:47
+msgid "Create New Category"
+msgstr "Skapa ny kategori"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/month.php:113
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/DayView.php:84
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/DayView.php:154
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/week/head.inc:23
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/week/head.inc:24
+msgid "Create a New Event"
+msgstr "Skapa en ny händelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:285
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:93
+msgid "Daily: Recurs every"
+msgstr "Daglig: Upprepa var"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:18
+msgid "Date and Time Options"
+msgstr "Datum- och tidsinställningar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:18
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:104
+msgid "Day"
+msgstr "Dag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:204
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:244
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:56
+msgid "Day(s)"
+msgstr "Dag(ar)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:63
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:44
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:73
+msgid "Delete"
+msgstr "Radera"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/delevent.php:35
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Event.php:775
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/delete/delete.inc:21
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/delete/one.inc:21
+#, c-format
+msgid "Delete %s"
+msgstr "Radera %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:73
+#, c-format
+msgid "Delete '%s'"
+msgstr "Radera '%s'"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/editevent.php:59
+msgid "Delete Event"
+msgstr "Radera händelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/delete/delete.inc:26
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr ""
+"Radera enbart aktuell händelse, aktuell samt framtida förekomster eller alla "
+"förekomster?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:247
+msgid "Description"
+msgstr "Beskrivning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:27
+msgid "Description:"
+msgstr "Beskrivning:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:60
+msgid "Display"
+msgstr "Visa"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:96
+msgid "Display 24-hour times?"
+msgstr "Visa 24-timmars tider?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:17
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:23
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:29
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:55
+msgid "Display Options"
+msgstr "Visningsinställningar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:322
+#, c-format
+msgid "Due: %s"
+msgstr "Klar: %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:141
+msgid "Duration"
+msgstr "Varaktighet"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:43
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:87
+msgid "Edit"
+msgstr "Ändra"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/editevent.php:32
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:27
+#, c-format
+msgid "Edit %s"
+msgstr "Ändra %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:87
+#, c-format
+msgid "Edit '%s'"
+msgstr "Ändra '%s'"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:265
+msgid "Edit Remote Calendars"
+msgstr "Ändra fjärrkalendrar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:202
+msgid "Edit your calendars."
+msgstr "Ändra dina kalendrar."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:63
+msgid "Email Address"
+msgstr "E-post adress"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:242
+msgid "End Date"
+msgstr "Slutdatum"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:111
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:146
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:147
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:41
+msgid "End On"
+msgstr "Sluta den"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:243
+msgid "End Time"
+msgstr "Sluttid"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:5
+msgid "Existing Remote Calendars:"
+msgstr "Befintliga fjärrkalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:7
+msgid "Export Calendar"
+msgstr "Exportera kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:15
+msgid "Find"
+msgstr "Sök"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:298
+msgid "Fr"
+msgstr "Fr"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:29
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:101
+msgid "Friday"
+msgstr "Fredag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/keywords.php.dist:17
+msgid "Game"
+msgstr "Spel"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:16
+msgid "Goto"
+msgstr "Gå till"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:46
+msgid "Help"
+msgstr "Hjälp"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:204
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:243
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:59
+msgid "Hour(s)"
+msgstr "Timm/e/ar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:242
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr ""
+"För hur många dagar in i framtiden vill du generera information om ledig/"
+"upptagen?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/import.inc:25
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Om import av CSV data: innehåller första raden fältnamn?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:219
+msgid "Illegal or malformed form data."
+msgstr "Felaktig formulärdata."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/import.inc:7
+msgid "Import Calendar"
+msgstr "Importera kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:33
+msgid "Import/Export"
+msgstr "Importera/Exportera"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:362
+msgid "Import/Export Calendar"
+msgstr "Importera/Exportera kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:99
+msgid "Invite"
+msgstr "Bjud in"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/invite/invite.inc:8
+#, c-format
+msgid "Invite people to %s"
+msgstr "Bjud in personer till %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:99
+#, c-format
+msgid "Invite people to '%s'"
+msgstr "Bjud in personer till '%s'"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:250
+msgid "Keywords"
+msgstr "Nyckelord"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/index/notconfigured.inc:4
+msgid "Kronolith is not properly configured"
+msgstr "Kronolith är inte korrekt konfigurerat"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:6
+msgid "Language"
+msgstr "Språk"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month_head.inc:7
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:13
+msgid "Last Month"
+msgstr "Sista månaden"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/week/head.inc:5
+msgid "Last week"
+msgstr "Sista veckan"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:198
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:199
+msgid "Lasts"
+msgstr "Varar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:19
+msgid "Limit the time span to export:"
+msgstr "Begränsa tidsspannet för exporten:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:249
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:83
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:29
+msgid "Location"
+msgstr "Plats"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:37
+msgid "Manage multiple calendars."
+msgstr "Hantera flera kalendrar."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:43
+msgid "Manage remote calendars."
+msgstr "Hantera fjärrkalendrar."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "Möte"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:36
+msgid "Member's Permission:"
+msgstr "Deltagarbehörighet"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:25
+msgid "Member's email address:"
+msgstr "Deltagares e-postadress:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/members.php:111
+msgid "Members List"
+msgstr "Medlemslista"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:6
+msgid "Members List for Calendar"
+msgstr "Medlemslista för kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:242
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:62
+msgid "Minute(s)"
+msgstr "Minut(er)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:204
+msgid "Minutes"
+msgstr "Minuter"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:294
+msgid "Mo"
+msgstr "Må"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:25
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:97
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:126
+msgid "Monday"
+msgstr "Måndag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:21
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:107
+msgid "Month"
+msgstr "Månad"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:305
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:311
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:107
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:109
+msgid "Monthly: Recurs every"
+msgstr "Monatlig: Upprepa var"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/base.php:123
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:108
+msgid "My Calendar"
+msgstr "Min kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:62
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:11
+msgid "Name"
+msgstr "Namn"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:32
+msgid "Name:"
+msgstr "Namn:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:763
+msgid "New Category"
+msgstr "Ny kategori"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:63
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:24
+msgid "New Event"
+msgstr "Ny händelse"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month_head.inc:13
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:15
+msgid "Next Month"
+msgstr "Nästa månad"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/day/head.inc:6
+msgid "Next day"
+msgstr "Nästa dag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/week/head.inc:7
+msgid "Next week"
+msgstr "Nästa vecka"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/sql.php:387
+msgid "No configuration information specified for SQL Calendar."
+msgstr "Ingen konfigurationsinformation är angiven för SQL-kalendern."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:333
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:119
+msgid "No end date"
+msgstr "Inget slutdatum"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:238
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:280
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:67
+msgid "None"
+msgstr "Ingen"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/import.inc:15
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr "Pga en bug i drivrutinen för kalendern, så är import inte möjligt."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:28
+msgid "Options"
+msgstr "Inställningar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:35
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:41
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:48
+msgid "Other Options"
+msgstr "Andra inställningar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:274
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:90
+msgid "Pattern"
+msgstr "Mönster"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/delete/one.inc:26
+msgid "Permanently delete this event?"
+msgstr "Radera händelsen permanent?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/day/head.inc:4
+msgid "Previous day"
+msgstr "Föregående dag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:38
+msgid "Print"
+msgstr "Utskrift"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:35
+msgid "Private"
+msgstr "Privat"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:42
+msgid "Read"
+msgstr "Läs"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:328
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:329
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:118
+msgid "Recur Until"
+msgstr "Upprepa tills"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:254
+msgid "Recurrence Data"
+msgstr "Infromation om upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:252
+msgid "Recurrence End Date"
+msgstr "Slutdatum för upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:253
+msgid "Recurrence Interval"
+msgstr "Intervall för upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:251
+msgid "Recurrence Type"
+msgstr "Typ av upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:446
+msgid "Recurs daily"
+msgstr "Daglig upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:451
+msgid "Recurs monthly"
+msgstr "Månatlig upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:444
+msgid "Recurs not"
+msgstr "Upprepas inte"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:448
+msgid "Recurs weekly"
+msgstr "Veckovis upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:453
+msgid "Recurs yearly"
+msgstr "Årlig upprepning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:42
+msgid "Remote Calendars"
+msgstr "Fjärrkalendrar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:64
+msgid "Rename"
+msgstr "Byt namn"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/sql.php:393
+msgid "Required 'hostspec' not specified in calendar configuration."
+msgstr "Erfodrad 'hostspec' är inte angiven i konfigureringen av kalendern."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/sql.php:399
+msgid "Required 'password' not specified in calendar configuration."
+msgstr "Erfodrad 'password' är inte angiven i konfigureringen av kalendern."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/sql.php:390
+msgid "Required 'phptype' not specified in calendar configuration."
+msgstr "Erfodrad 'phptype' är inte angiven i konfigureringen av kalendern."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/sql.php:396
+msgid "Required 'username' not specified in calendar configuration."
+msgstr "Erfodrad 'username' är inte angiven i konfigureringen av kalendern."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:299
+msgid "Sa"
+msgstr "Lö"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:30
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:102
+msgid "Saturday"
+msgstr "Lördag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/editevent.php:42
+#: /home/httpd/html/horde_cvs/po/../kronolith/editevent.php:46
+msgid "Save As New"
+msgstr "Spara som ny"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/addevent.php:35
+#: /home/httpd/html/horde_cvs/po/../kronolith/editevent.php:44
+msgid "Save Event"
+msgstr "Spara"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:759
+msgid "Select Category"
+msgstr "Välj kategori"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:11
+msgid "Select a calendar"
+msgstr "Välj en kalender"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:12
+msgid "Select a member"
+msgstr "Välj en medlem"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:25
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr ""
+"Välj inställningar för bekräftelser och hur vyer skall visas samt förvald vy."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:88
+msgid "Select how to display Dates:"
+msgstr "Välj hur datum skall visas:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:57
+msgid "Select if to show due tasks in the calendar."
+msgstr "Visa förfallna uppgifter i kalendern?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/import.inc:26
+msgid "Select the file to import:"
+msgstr "Välj fil som skall importeras:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:124
+msgid "Select the first weekday:"
+msgstr "Ange första veckodagen:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:14
+msgid "Select the format to export to:"
+msgstr "Ange format för exporten:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/import.inc:17
+msgid "Select the source to import from:"
+msgstr "Välj källa att importera från:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:134
+msgid "Select the time span to show:"
+msgstr "Välj tidsintervall som skall visas:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:108
+msgid "Select the view to display after login:"
+msgstr "Välj vy som visas efter inloggning:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:31
+msgid "Select which events to show in the Horde summary."
+msgstr "Välj vilka händelser som skall visas i Hordes summering."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:13
+msgid "Set the current time zone."
+msgstr "Ange aktuell tidszon."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:68
+msgid "Set the language that menu items, explanations, and help are in."
+msgstr "Ange språk för menyalternativ, förklaringar och hjälp."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:7
+msgid "Set your preferred display language."
+msgstr "Ange förvalt språk för visning."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:36
+msgid "Shared"
+msgstr "Delad"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:55
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:41
+msgid "Show"
+msgstr "Visa"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:257
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "Visa ikoner för radera, alarm och återkommande i kalendervyer?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:160
+msgid "Show due tasks in the calendar?"
+msgstr "Visa förfallna uppgifter i kalendern?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:116
+msgid "Show half hour slots in day and week views?"
+msgstr "Visa halvtimmes rader i dags- och veckovyer?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:152
+msgid "Show only events that have an alarm set?"
+msgstr "Visa enbart händelser med alarm?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:211
+msgid "Show the Calendar icon on the menubar?"
+msgstr "Visa kalenderikon i menyn?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/index/notconfigured.inc:13
+msgid "Some of Kronolith's configuration files are missing:"
+msgstr "Några av Kronoliths konfigurationsfiler saknas:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:240
+msgid "Start Date"
+msgstr "Startdatum"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/data/export.inc:27
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:92
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:93
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:35
+msgid "Start On"
+msgstr "Starta den"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:241
+msgid "Start Time"
+msgstr "Starttid"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:300
+msgid "Su"
+msgstr "Sö"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:30
+msgid "Summary"
+msgstr "Sammanfattning"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:23
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:32
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:103
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:125
+msgid "Sunday"
+msgstr "Söndag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:56
+msgid "Tasks"
+msgstr "Uppgifter"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:297
+msgid "Th"
+msgstr "To"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:79
+#, c-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "Kalendern '%s' kunde inte raderas."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:94
+#, c-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "Kalendern '%s' raderades."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:71
+#, c-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "Kalendern '%s' sparades."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:50
+msgid "The calendar name is empty."
+msgstr "Kalendernamnet är tomt."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:34
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:83
+msgid "The data was lost."
+msgstr "Informationen förlorades."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:289
+msgid "The file contained no data."
+msgstr "Filen innehöll ingen information."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/members.php:104
+#, c-format
+msgid "The member \"%s\" has been deleted."
+msgstr "Medelemmen '%s' raderades."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/members.php:94
+#, c-format
+msgid "The member \"%s\" has been saved."
+msgstr "Medlemmen '%s' sparades."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:216
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Det uppstod problem med uppladdning av filen. Filen kan ha varit större än "
+"maximalt tillåten storlek."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:194
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:281
+msgid "There was an error importing the data."
+msgstr "Fel vid import av data."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:30
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:47
+msgid "There was an error importing the iCalendar data."
+msgstr "Fel vid import av iCalendar data."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:96
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:234
+msgid "There was an error importing the uploaded file"
+msgstr "Fel vid import av den uppladdade filen"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:266
+#, c-format
+msgid "There was an error importing the uploaded file: %s."
+msgstr "Fel vid import av den uppladdade filen: %s."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/invite.php:98
+#, c-format
+msgid "There was an error sending your invitation: %s"
+msgstr "Fel vid sändning av din inbjudan: %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:310
+msgid "There were no events to export."
+msgstr "Inga händelser att exportera."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:73
+msgid "These changes can not be undone!"
+msgstr "Ändringarna kan inte ångras!"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/index/notconfigured.inc:32
+msgid ""
+"This file controls the default preferences for Kronolith, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Den här filen kontrollerar grundinställningar för Kronolith samt vilka "
+"inställningar som användaren kan ändra."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/index/notconfigured.inc:25
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Den här filen kontrollerar de stylesheet som används för att bestämma färger "
+"och typsnitt."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/index/notconfigured.inc:18
+msgid ""
+"This is the main Kronolith configuration file. It contains paths and options "
+"for all Kronolith scripts."
+msgstr ""
+"Det här är huvudkonfigurationsfilen för Kronolith. Den innehåller sökvägar "
+"och inställningar för Kronoliths script."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:28
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:100
+msgid "Thursday"
+msgstr "Torsdag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:12
+msgid "Time Zone"
+msgstr "Tidszon"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:239
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:41
+msgid "Title"
+msgstr "Titel"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:104
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:14
+msgid "Today"
+msgstr "Idag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/api.php:106
+msgid "Tomorrow"
+msgstr "Imorgon"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:295
+msgid "Tu"
+msgstr "Ti"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:26
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:98
+msgid "Tuesday"
+msgstr "Tisdag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/keywords.php.dist:17
+msgid "Type"
+msgstr "Typ"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:13
+msgid "URL"
+msgstr "URL"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/remote_cal_management.inc:35
+msgid "URL:"
+msgstr "URL:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:90
+#, c-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "Kunde inte radera '%s': %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver/mcal.php:53
+#, c-format
+msgid "Unable to delete %s."
+msgstr "Kunde inte radera '%s'."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Driver.php:73
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Kunde inte ladda definitionen av %s."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:813
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/category_management.inc:41
+msgid "Unfiled"
+msgstr "Ej kategoriserad"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:24
+msgid "User Interface"
+msgstr "Användargränssnitt"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/prefs.php:106
+msgid "User Options"
+msgstr "Andra inställningar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/viewevent.php:60
+#, c-format
+msgid "View %s"
+msgstr "Visa %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:296
+msgid "We"
+msgstr "On"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/month/head.inc:27
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:99
+msgid "Wednesday"
+msgstr "Onsdag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:20
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:105
+msgid "Week"
+msgstr "Vecka"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/month.php:105
+#: /home/httpd/html/horde_cvs/po/../kronolith/week.php:27
+#: /home/httpd/html/horde_cvs/po/../kronolith/workweek.php:23
+#, c-format
+msgid "Week %d"
+msgstr "Vecka %d"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/month.php:105
+#, c-format
+msgid "Week&nbsp;%d"
+msgstr "Vecka&nbsp;%d"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:245
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:53
+msgid "Week(s)"
+msgstr "Veck/a/or"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:291
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:105
+msgid "Weekly: Recurs every"
+msgstr "Veckovis: Upprepa var"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:184
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr ""
+"På vilken tid skall dag- och veckovyer sluta när det inte finns några senare "
+"händelser?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:176
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr ""
+"På vilken tid skall dag- och veckovyer starta när det inte finns några "
+"tidigare händelser?"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/menu/menu.inc:19
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:106
+msgid "Work Week"
+msgstr "Arbetsvecka"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:317
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:111
+msgid "Yearly: Recurs every"
+msgstr "Årlig: Upprepa varje"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/invite.php:39
+msgid ""
+"You don't have an email address configured in your preferences. You must set "
+"one before sending invitations."
+msgstr ""
+"Du har ingen e-postadress konfigurerad i dina inställningar. Du måste ange "
+"en innan du kan skicka inbjudningar."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/invite.php:65
+#, c-format
+msgid "You have been invited to %s"
+msgstr "Du har bjudits in till %s"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/invite.php:68
+#, c-format
+msgid ""
+"You have been invited to %s.\n"
+"\n"
+"Here is a more detailed description:\n"
+"\n"
+"%s\n"
+"\n"
+"Attached is an iCalendar file describing this event."
+msgstr ""
+"Du har blivit inbjuden till %s.\n"
+"\n"
+"Här är en mer detaljerad beskrivning:\n"
+"\n"
+"%s\n"
+"\n"
+"Bifogat finns en iCalendar fil."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/prefs.php:97
+msgid "You must select a calendar to be deleted."
+msgstr "Du måste ange en kalender som skall raderas."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/shares/members.php:106
+msgid "You must select an member to be deleted."
+msgstr "Du måste ange en medlem som skall raderas."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:5
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:11
+msgid "Your Information"
+msgstr "Din information"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/manage.inc:9
+msgid "Your calendars:"
+msgstr "Dina kalendrar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:76
+msgid "Your current time zone:"
+msgstr "Din aktuella tidszon:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/prefs/shareselect.inc:10
+msgid "Your default calendar:"
+msgstr "Din förvalda kalender:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/invite.php:89
+msgid "Your invitation was successfully sent."
+msgstr "Din inbjudan är skickad."
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/share/members/manage.inc:10
+msgid "Your members:"
+msgstr "Dina medlemmar:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:135
+msgid "day"
+msgstr "dag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:286
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:93
+msgid "day(s)"
+msgstr "dag(ar)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:136
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:137
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:138
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:139
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:140
+msgid "days"
+msgstr "dagar"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/contacts/contacts.inc:18
+msgid "from"
+msgstr "från"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/data.php:283
+msgid "iCalendar file successfully imported"
+msgstr "iCalendar-fil imprterades"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:306
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:312
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:107
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:109
+msgid "month(s)"
+msgstr "månad(er)"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/lib/Kronolith.php:430
+msgid "no time"
+msgstr "ingen tid"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:306
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:107
+msgid "on the same date"
+msgstr "på samma dag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:312
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:109
+msgid "on the same weekday"
+msgstr "på samma veckodag"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:141
+msgid "week"
+msgstr "vecka"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:293
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:105
+msgid "week(s) on:"
+msgstr "vecka på:"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:142
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:143
+#: /home/httpd/html/horde_cvs/po/../kronolith/config/prefs.php.dist:144
+msgid "weeks"
+msgstr "veckor"
+
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/edit/edit.inc:318
+#: /home/httpd/html/horde_cvs/po/../kronolith/templates/view/view.inc:111
+msgid "year(s)"
+msgstr "år"

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Horde: framework/Net_Cyrus/package.xml,v 1.1 2004/01/11 10:58:54 jan Exp $ -->
+<!DOCTYPE package SYSTEM "http://pear.php.net/dtd/package-1.1">
+<package version="1.0">
+  <name>Net_Cyrus</name>
+  <summary>Cyrus administration API</summary>
+  <description>
+     The Net_Cyrus:: class provides an API for the administration of Cyrus IMAP servers.
+  </description>
+  <license>LGPL</license>
+
+  <maintainers>
+    <maintainer>
+      <user>yunosh</user>
+      <role>lead</role>
+      <name>Jan Schneider</name>
+      <email>jan@horde.org</email>
+    </maintainer>
+    <maintainer>
+      <user>chuck</user>
+      <role>lead</role>
+      <name>Chuck Hagenbuch</name>
+      <email>chuck@horde.org</email>
+    </maintainer>
+  </maintainers>
+
+  <release>
+    <version>0.1</version>
+    <state>alpha</state>
+    <date>2004-01-11</date>
+    <notes>Initial Release.</notes>
+    <filelist>
+      <file role="php" baseinstalldir="/Net" name="Cyrus.php" />
+    </filelist>
+    <provides type="class" name="Net_Cyrus"/>
+  </release>
+
+  <changelog>
+  </changelog>
+</package>

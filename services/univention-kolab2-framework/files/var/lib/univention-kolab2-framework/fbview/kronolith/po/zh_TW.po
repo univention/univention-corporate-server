@@ -1,0 +1,1487 @@
+# KRONOLITH Traditional Chinese Translation
+# Copyright (C) 2001 David Chang. 張良文,台灣
+# David Chang <david@tmv.gov.tw>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Kronolith 2.0-cvs\n"
+"Report-Msgid-Bugs-To: dev@lists.horde.org\n"
+"POT-Creation-Date: 2004-04-09 09:07+0800\n"
+"PO-Revision-Date: 2003-01-08 10:53+0100\n"
+"Last-Translator: David Chang <david@tmv.gov.tw>\n"
+"Language-Team: Traditional Chinese <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=BIG5\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#: templates/edit/edit.inc:219
+#, php-format
+msgid "%s Day(s) %s Hour(s) %s Minutes"
+msgstr "%s 天 %s 時 %s 分"
+
+#: data.php:235
+#, php-format
+msgid "%s file successfully imported"
+msgstr "檔案 %s 已匯入完成"
+
+#: lib/api.php:109
+#, php-format
+msgid "%s not found."
+msgstr "找不到 %s."
+
+#: lib/base.php:123
+#, php-format
+msgid "%s's Calendar"
+msgstr "%s 的行事曆"
+
+#: templates/contacts/contacts.inc:51
+msgid "* Add these by clicking Add *"
+msgstr "* 點選新增以完成 *"
+
+#: templates/contacts/contacts.inc:37
+msgid "* Please select address(es) *"
+msgstr "* 請選擇地址 *"
+
+#: templates/edit/edit.inc:292
+msgid "<b>Attendees</b> (optional)"
+msgstr "<b>出席人員</b> (非必須)"
+
+#: templates/edit/edit.inc:270
+msgid "<b>Description</b> (optional)"
+msgstr "<b>描述</b> (選項)"
+
+#: templates/edit/edit.inc:394
+msgid "<b>Keywords</b> (optional)"
+msgstr "<b>關鍵字</b> (選項)"
+
+#: templates/edit/edit.inc:312
+msgid "<b>Recurrence</b> (optional)"
+msgstr "<b>重複</b> (選項)"
+
+#: templates/data/export.inc:104 templates/data/export.inc:184
+msgid "AM"
+msgstr "AM"
+
+#: lib/Kronolith.php:560
+msgid "Accepted"
+msgstr "已接受"
+
+#: templates/contacts/contacts.inc:48 templates/contacts/contacts.inc:79
+msgid "Add"
+msgstr "新增"
+
+#: templates/edit/edit.inc:25
+msgid "Add Event"
+msgstr "新增事件"
+
+#: templates/prefs/remote_cal_management.inc:35
+msgid "Add a new Remote Calendar"
+msgstr "新增一個遠端行事曆"
+
+#: addevent.php:50
+msgid "Add a new event"
+msgstr "新增一事件"
+
+#: templates/attendees/attendees.inc:78
+msgid "Add attendees"
+msgstr "新增出席人員"
+
+#: templates/attendees/attendees.inc:82
+msgid "Add people from my Address Book"
+msgstr "由我的通訊錄新增人員"
+
+#: templates/attendees/attendees.inc:86
+msgid "Add these people"
+msgstr "新增這些人員"
+
+#: config/prefs.php.dist:45
+msgid "Add, remove, and edit the colors to label events with."
+msgstr "新增,移除 以及為各項分類編輯顏色."
+
+#: templates/view/view.inc:61 templates/edit/edit.inc:229
+msgid "Alarm"
+msgstr "警示"
+
+#: data.php:50
+msgid "Alarm Date"
+msgstr "警示日期"
+
+#: data.php:49
+msgid "Alarm Span (minutes)"
+msgstr "警示間隔 (分鐘)"
+
+#: data.php:51
+msgid "Alarm Time"
+msgstr "警示時間"
+
+#: templates/delete/delete.inc:43
+msgid "All"
+msgstr "所有"
+
+#: lib/FBView/week.php:139 lib/FBView/week.php:142 lib/FBView/week.php:145
+#: lib/FBView/day.php:167 lib/FBView/day.php:170 lib/FBView/day.php:173
+#: lib/FBView/workweek.php:138 lib/FBView/workweek.php:141
+#: lib/FBView/workweek.php:144
+msgid "All Attendees"
+msgstr "所有出席人員"
+
+#: lib/Block/month.php:22 lib/Block/monthlist.php:25
+#: lib/Block/prevmonthlist.php:25 lib/Block/summary.php:22
+msgid "All Visible"
+msgstr "所有可見的"
+
+#: templates/edit/edit.inc:218 lib/DayView.php:87 lib/DayView.php:89
+#: lib/Driver.php:1687 lib/Driver.php:1701 lib/WeekView.php:106
+#: lib/WeekView.php:116
+msgid "All day"
+msgstr "整日"
+
+#: lib/Block/monthlist.php:161 lib/Block/prevmonthlist.php:159
+#: lib/Block/summary.php:145
+msgid "All day event"
+msgstr "整日性事件"
+
+#: templates/data/export.inc:24
+msgid "All events"
+msgstr "所有事件"
+
+#: templates/prefs/category_management.inc:41
+#, php-format
+msgid "Any events in a category that is deleted will become %s."
+msgstr "被刪除分類中的原事件將改為 %s."
+
+#: templates/javascript/goto.inc:69
+msgid "April"
+msgstr "四月"
+
+#: templates/edit/edit.inc:130 templates/edit/edit.inc:187
+#: templates/data/export.inc:73 templates/data/export.inc:159
+msgid "At"
+msgstr "在"
+
+#: lib/Kronolith.php:1392
+msgid ""
+"Attached is an iCalendar file with more information about the event. If your "
+"mail client supports iTip requests you can use this file to easily update "
+"your local copy of the event."
+msgstr ""
+
+#: templates/view/view.inc:181 templates/attendees/attendees.inc:46
+msgid "Attendance"
+msgstr "出席人員"
+
+#: templates/view/view.inc:177
+msgid "Attendees"
+msgstr "出席人員"
+
+#: templates/javascript/goto.inc:73
+msgid "August"
+msgstr "八月"
+
+#: templates/calendars/calendars.inc:139
+msgid "Back to Calendar Options"
+msgstr "返回行事曆選項"
+
+#: config/keywords.php.dist:17
+msgid "Birthday"
+msgstr "生日"
+
+#: config/prefs.php.dist:198
+msgid "Business"
+msgstr "商務"
+
+#: templates/fbview/legend.inc:10 templates/dayView/legend.inc:10
+#: lib/FBView/week.php:105 lib/FBView/week.php:124 lib/FBView/day.php:133
+#: lib/FBView/day.php:152 lib/FBView/workweek.php:104
+#: lib/FBView/workweek.php:123
+msgid "Busy"
+msgstr "忙碌"
+
+#: templates/edit/edit.inc:48 lib/Block/month.php:19
+#: lib/Block/monthlist.php:19 lib/Block/prevmonthlist.php:19
+#: lib/Block/summary.php:19
+msgid "Calendar"
+msgstr "行事曆"
+
+#: templates/calendars/calendars.inc:127
+msgid "Calendar Description"
+msgstr "行事曆描述"
+
+#: templates/calendars/calendars.inc:105
+msgid "Calendar Name"
+msgstr "行事曆的名稱"
+
+#: lib/api.php:115
+msgid "Calendar Summary"
+msgstr "行事曆摘要"
+
+#: templates/calendars/calendars.inc:114
+msgid "Calendar Type"
+msgstr "行事曆的型態"
+
+#: calendars.php:128 config/prefs.php.dist:25 config/prefs.php.dist:35
+msgid "Calendars"
+msgstr "行事曆"
+
+#: data.php:212
+msgid "Can't create a new event."
+msgstr "無法建立新事件"
+
+#: templates/edit/edit.inc:32 templates/edit/edit.inc:425
+#: templates/delete/delete.inc:44 templates/delete/one.inc:42
+#: templates/contacts/contacts.inc:80
+msgid "Cancel"
+msgstr "取消"
+
+#: lib/Kronolith.php:539
+msgid "Cancelled"
+msgstr "已取消"
+
+#: data.php:53 templates/view/view.inc:20 templates/edit/edit.inc:68
+msgid "Category"
+msgstr "分類"
+
+#: config/prefs.php.dist:218
+msgid "Category Management"
+msgstr "分類管理"
+
+#: templates/calendars/calendars.inc:22 templates/calendars/calendars.inc:136
+msgid "Change"
+msgstr "變更"
+
+#: templates/prefs/category_management.inc:68
+#: templates/prefs/category_management.inc:69
+msgid "Color Picker"
+msgstr "調色盤"
+
+#: data.php:28 templates/data/import.inc:21
+msgid "Comma separated values"
+msgstr "逗點分隔值"
+
+#: config/prefs.php.dist:154
+msgid "Confirm deletion of events?"
+msgstr "刪除事件時是否需要確認 ?"
+
+#: lib/Kronolith.php:536
+msgid "Confirmed"
+msgstr "已確認"
+
+#: contacts.php:86 templates/contacts/contacts.inc:7
+msgid "Contact List"
+msgstr "聯絡名單"
+
+#: lib/Kronolith.php:175
+#, php-format
+msgid "Could not open %s."
+msgstr "無法開啟 %s."
+
+#: templates/calendars/calendars.inc:18 templates/calendars/calendars.inc:136
+#: templates/calendars/calendars.inc:138
+msgid "Create"
+msgstr "建立"
+
+#: templates/prefs/category_management.inc:47
+msgid "Create New Category"
+msgstr "建立一新分類"
+
+#: month.php:120 templates/week/head.inc:22 templates/week/head.inc:23
+#: templates/week/head_side_by_side.inc:22
+#: templates/week/head_side_by_side.inc:23 lib/DayView.php:87
+#: lib/DayView.php:187
+msgid "Create a New Event"
+msgstr "建立一新事件"
+
+#: config/prefs.php.dist:27
+msgid ""
+"Create, edit, and delete calendars; also control the access of other users "
+"to calendars that you own."
+msgstr "建立, 編輯, 以及刪除行事曆; 同時亦可控制讓其他人可以存取你的行事曆."
+
+#: templates/view/view.inc:88
+msgid "Created"
+msgstr "建立"
+
+#: templates/delete/delete.inc:41
+msgid "Current"
+msgstr "目前"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:327
+msgid "Daily: Recurs every"
+msgstr "日: 每"
+
+#: templates/menu/menu.inc:18 config/prefs.php.dist:75
+msgid "Day"
+msgstr "天"
+
+#: templates/attendees/attendees.inc:104
+msgid "Day View"
+msgstr "日檢視"
+
+#: templates/view/view.inc:70 templates/edit/edit.inc:260
+msgid "Day(s)"
+msgstr "天"
+
+#: templates/javascript/goto.inc:77
+msgid "December"
+msgstr "十二月"
+
+#: lib/Kronolith.php:563
+msgid "Declined"
+msgstr "謝絕"
+
+#: viewevent.php:100 templates/prefs/category_management.inc:65
+#: templates/prefs/remote_cal_management.inc:23 templates/delete/one.inc:41
+#: templates/contacts/contacts.inc:68 templates/calendars/calendars.inc:137
+msgid "Delete"
+msgstr "刪除"
+
+#: delevent.php:40 templates/delete/delete.inc:21 templates/delete/one.inc:21
+#: lib/Driver.php:1768
+#, php-format
+msgid "Delete %s"
+msgstr "刪除 %s"
+
+#: viewevent.php:100
+#, php-format
+msgid "Delete '%s'"
+msgstr "刪除 '%s'"
+
+#: editevent.php:61
+msgid "Delete Event"
+msgstr "刪除事件"
+
+#: templates/delete/delete.inc:35
+msgid ""
+"Delete the current event only, this occurrence and all future occurences, or "
+"all occurences?"
+msgstr "此刪除動作將套用到:僅目前事件,目前及以後事件,或所有"
+
+#: data.php:52 templates/view/view.inc:105
+msgid "Description"
+msgstr "描述"
+
+#: templates/attendees/attendees.inc:111
+msgid "Dismiss"
+msgstr "關閉"
+
+#: templates/contacts/contacts.inc:60
+msgid "Display"
+msgstr "顯示"
+
+#: config/prefs.php.dist:9 config/prefs.php.dist:18 config/prefs.php.dist:43
+#: config/prefs.php.dist:52 config/prefs.php.dist:61
+msgid "Display Options"
+msgstr "顯示選項"
+
+#: lib/Kronolith.php:506
+msgid "Does not recur"
+msgstr "不重複"
+
+#: lib/Kronolith.php:415
+#, php-format
+msgid "Due: %s"
+msgstr "時期: %s"
+
+#: templates/edit/edit.inc:154
+msgid "Duration"
+msgstr "時期"
+
+#: viewevent.php:119
+msgid "Edit"
+msgstr "編輯"
+
+#: editevent.php:33 templates/edit/edit.inc:25 lib/Driver.php:1762
+#, php-format
+msgid "Edit %s"
+msgstr "編輯 %s"
+
+#: viewevent.php:119
+#, php-format
+msgid "Edit '%s'"
+msgstr "編輯 '%s'"
+
+#: templates/edit/edit.inc:305
+msgid "Edit Attendees"
+msgstr "編輯出席人員"
+
+#: config/prefs.php.dist:253
+msgid "Edit Remote Calendars"
+msgstr "編輯遠端行事曆"
+
+#: attendees.php:91
+msgid "Edit attendees"
+msgstr "編輯出席人員"
+
+#: config/prefs.php.dist:192
+msgid "Edit your calendars."
+msgstr "編輯你的行事曆"
+
+#: templates/view/view.inc:180 templates/contacts/contacts.inc:63
+#: templates/attendees/attendees.inc:45
+msgid "Email Address"
+msgstr "電子郵件地址"
+
+#: data.php:47
+msgid "End Date"
+msgstr "結束日期"
+
+#: templates/view/view.inc:55 templates/edit/edit.inc:159
+#: templates/data/export.inc:111
+msgid "End On"
+msgstr "結束於"
+
+#: data.php:48
+msgid "End Time"
+msgstr "結束時間"
+
+#: attendees.php:108 attendees.php:119 attendees.php:126
+#, php-format
+msgid "Error retrieving free/busy information for %s: %s"
+msgstr "無法讀取 %s: %s 的 free/busy 資訊"
+
+#: config/prefs.php.dist:44
+msgid "Event Labels"
+msgstr "事件標籤"
+
+#: lib/Driver.php:944
+#, php-format
+msgid "Event from %s to %s"
+msgstr "事件從 %s 到 %s"
+
+#: templates/data/export.inc:190
+msgid "Export"
+msgstr "匯出"
+
+#: templates/data/export.inc:8
+msgid "Export Calendar"
+msgstr "匯出行事曆"
+
+#: templates/javascript/goto.inc:67
+msgid "February"
+msgstr "二月"
+
+#: templates/contacts/contacts.inc:15
+msgid "Find"
+msgstr "找尋"
+
+#: templates/javascript/goto.inc:61 templates/edit/edit.inc:340
+#: lib/Block/month.php:69
+msgid "Fr"
+msgstr "星期五"
+
+#: templates/view/view.inc:130 templates/month/head.inc:29
+#: templates/edit/javascript.inc:111
+msgid "Friday"
+msgstr "星期五"
+
+#: templates/delete/delete.inc:42
+msgid "Future"
+msgstr "目前及以後"
+
+#: config/keywords.php.dist:17
+msgid "Game"
+msgstr "遊戲"
+
+#: templates/menu/menu.inc:16
+msgid "Goto"
+msgstr "移至"
+
+#: lib/Block/summary.php:114
+#, php-format
+msgid "Goto %s"
+msgstr "移至 %s"
+
+#: templates/menu/menu.inc:47 templates/contacts/contacts.inc:82
+msgid "Help"
+msgstr "求助"
+
+#: templates/view/view.inc:73 templates/edit/edit.inc:259
+msgid "Hour(s)"
+msgstr "時"
+
+#: config/prefs.php.dist:227
+msgid ""
+"How many days into the future should we generate free/busy information for?"
+msgstr "應該對未來產生幾天 空閒/忙碌 訊息呢?"
+
+#: templates/data/import.inc:38
+msgid "Import"
+msgstr "匯入"
+
+#: templates/data/import.inc:9
+#, php-format
+msgid "Import Calendar, Step %d"
+msgstr "匯入行事曆,步驟 %d"
+
+#: templates/menu/menu.inc:29
+msgid "Import/Export"
+msgstr "匯入/匯出"
+
+#: data.php:282
+msgid "Import/Export Calendar"
+msgstr "匯入/匯出行事曆"
+
+#: templates/edit/javascript.inc:10
+msgid "Invalid category entered."
+msgstr "不合法的分類."
+
+#: templates/javascript/goto.inc:66
+msgid "January"
+msgstr "一月"
+
+#: templates/javascript/goto.inc:72
+msgid "July"
+msgstr "七月"
+
+#: templates/javascript/goto.inc:71
+msgid "June"
+msgstr "六月"
+
+#: data.php:55 templates/view/view.inc:155
+msgid "Keywords"
+msgstr "關鍵字"
+
+#: templates/view/view.inc:95
+msgid "Last Modified"
+msgstr "最近一次更新"
+
+#: templates/month/head.inc:13 templates/month/head_side_by_side.inc:13
+#: templates/month/head_side_by_side.inc:19
+#: templates/month/head_side_by_side.inc:25
+msgid "Last Month"
+msgstr "上月"
+
+#: templates/week/head.inc:4 templates/week/head_side_by_side.inc:4
+msgid "Last week"
+msgstr "上週"
+
+#: templates/edit/edit.inc:214
+msgid "Lasts"
+msgstr "持續"
+
+#: templates/data/export.inc:20
+msgid "Limit the time span to export:"
+msgstr "限制匯出時間間隔:"
+
+#: data.php:54 templates/view/view.inc:29
+#: templates/prefs/remote_cal_management.inc:18
+#: templates/prefs/remote_cal_management.inc:52 templates/edit/edit.inc:77
+msgid "Location"
+msgstr "地點"
+
+#: config/prefs.php.dist:37
+msgid "Manage remote calendars."
+msgstr "管理多個遠端行事曆."
+
+#: templates/javascript/goto.inc:68
+msgid "March"
+msgstr "三月"
+
+#: templates/javascript/goto.inc:70
+msgid "May"
+msgstr "五月"
+
+#: config/keywords.php.dist:17
+msgid "Meeting"
+msgstr "會議"
+
+#: config/prefs.php.dist:62
+msgid "Meetings"
+msgstr "會議"
+
+#: templates/view/view.inc:76 templates/edit/edit.inc:258
+msgid "Minute(s)"
+msgstr "分鐘"
+
+#: lib/Block/prevmonthlist.php:43
+msgid "Missed Events List"
+msgstr "事件列表已遺失"
+
+#: templates/javascript/goto.inc:57 templates/edit/edit.inc:336
+#: lib/Block/month.php:69
+msgid "Mo"
+msgstr "星期一"
+
+#: templates/view/view.inc:126 templates/month/head.inc:25
+#: templates/edit/javascript.inc:107 config/prefs.php.dist:99
+msgid "Monday"
+msgstr "星期一"
+
+#: templates/menu/menu.inc:21 config/prefs.php.dist:78
+msgid "Month"
+msgstr "月"
+
+#: lib/api.php:118 lib/Block/month.php:40
+msgid "Month View"
+msgstr "月檢視"
+
+#: lib/api.php:116 lib/Block/monthlist.php:43
+msgid "Monthly Events List"
+msgstr "每月事件列表"
+
+#: templates/view/view.inc:136 templates/view/view.inc:138
+#: templates/edit/edit.inc:347 templates/edit/edit.inc:353
+msgid "Monthly: Recurs every"
+msgstr "月: 每"
+
+#: lib/Block/monthlist.php:22
+msgid "Months Ahead"
+msgstr ""
+
+#: lib/Block/prevmonthlist.php:22
+msgid "Months Before"
+msgstr "個月以前"
+
+#: lib/api.php:219 lib/api.php:363
+msgid "Multiple iCalendar components found; only one vEvent is supported."
+msgstr ""
+
+#: templates/calendars/calendars.inc:89
+msgid "My Calendars"
+msgstr "我的行事曆"
+
+#: templates/menu/menu.inc:69
+msgid "My Calendars:"
+msgstr "我的行事曆:"
+
+#: templates/prefs/remote_cal_management.inc:17
+#: templates/prefs/remote_cal_management.inc:44
+#: templates/contacts/contacts.inc:62
+msgid "Name"
+msgstr "名稱"
+
+#: lib/Kronolith.php:837
+msgid "New Category"
+msgstr "新增分類"
+
+#: templates/menu/menu.inc:24 lib/Block/month.php:41
+#: lib/Block/monthlist.php:44 lib/Block/summary.php:41
+msgid "New Event"
+msgstr "新事件"
+
+#: lib/FBView/day.php:109
+msgid "Next Day"
+msgstr "下一天"
+
+#: templates/month/head.inc:15 templates/month/head_side_by_side.inc:15
+#: templates/month/head_side_by_side.inc:21
+#: templates/month/head_side_by_side.inc:27
+msgid "Next Month"
+msgstr "下個月"
+
+#: lib/FBView/week.php:66 lib/FBView/workweek.php:66
+msgid "Next Week"
+msgstr "下一週"
+
+#: templates/day/head.inc:6 templates/day/head_side_by_side.inc:6
+msgid "Next day"
+msgstr "下一天"
+
+#: templates/week/head.inc:6 templates/week/head_side_by_side.inc:6
+msgid "Next week"
+msgstr "下一週"
+
+#: templates/fbview/legend.inc:14 templates/dayView/legend.inc:14
+msgid "No Information"
+msgstr "沒有資訊"
+
+#: templates/attendees/attendees.inc:53
+msgid "No attendees"
+msgstr "沒有出席人員"
+
+#: lib/Kronolith.php:1476
+msgid "No calendars are available to guests."
+msgstr "沒有任何行事曆可供來賓使用."
+
+#: templates/view/view.inc:148 templates/edit/edit.inc:373
+msgid "No end date"
+msgstr "永遠"
+
+#: lib/Block/monthlist.php:208 lib/Block/prevmonthlist.php:206
+#: lib/Block/summary.php:199
+msgid "No events to display"
+msgstr "無事件可供顯示"
+
+#: lib/api.php:209 lib/api.php:353
+msgid "No iCalendar data was found."
+msgstr "找不到 iCalendar 資料."
+
+#: templates/view/view.inc:81 templates/edit/edit.inc:254
+#: templates/edit/edit.inc:322 lib/Kronolith.php:570 lib/Kronolith.php:590
+msgid "None"
+msgstr "無"
+
+#: lib/Storage/sql.php:128
+msgid "Not found"
+msgstr "找不到"
+
+#: templates/data/import.inc:17
+msgid ""
+"Notice: Importing is not possible with this configuration due to a bug in "
+"the underlying calendar driver."
+msgstr "請注意: 由於目前所使用的行事曆驅動程式有些許的瑕疵,以致於無法匯入檔案."
+
+#: templates/javascript/goto.inc:76
+msgid "November"
+msgstr "十一月"
+
+#: templates/javascript/goto.inc:75
+msgid "October"
+msgstr "十月"
+
+#: lib/Kronolith.php:587
+msgid "Optional"
+msgstr "非必須"
+
+#: lib/FBView/week.php:132 lib/FBView/day.php:160 lib/FBView/workweek.php:131
+msgid "Optional to attend"
+msgstr "非必須出席人員"
+
+#: templates/menu/menu.inc:42
+msgid "Options"
+msgstr "選項"
+
+#: templates/view/view.inc:42
+msgid "Owner"
+msgstr "擁有者"
+
+#: templates/data/export.inc:105 templates/data/export.inc:185
+msgid "PM"
+msgstr "PM"
+
+#: data.php:29 templates/data/import.inc:22
+msgid "Palm DateBook"
+msgstr "Palm 行事曆"
+
+#: lib/api.php:117
+msgid "Past Events List"
+msgstr "過去的事件列表"
+
+#: templates/view/view.inc:119 templates/edit/edit.inc:316
+msgid "Pattern"
+msgstr "樣式"
+
+#: templates/delete/one.inc:35
+msgid "Permanently delete this event?"
+msgstr "永久刪除此事件?"
+
+#: lib/api.php:190 lib/api.php:270 lib/api.php:305 lib/api.php:335
+#: lib/api.php:424 lib/api.php:458
+msgid "Permission Denied"
+msgstr "存取遭拒"
+
+#: templates/calendars/calendars.inc:36
+msgid "Permissions"
+msgstr "權限"
+
+#: config/prefs.php.dist:198
+msgid "Personal"
+msgstr "個人的"
+
+#: templates/prefs/category_management.inc:24 templates/edit/javascript.inc:6
+msgid "Please enter a name for the new category:"
+msgstr "請輸入新增分類的名稱:"
+
+#: templates/prefs/category_management.inc:12
+msgid "Please enter a new name for this category:"
+msgstr "請為此分類輸入一個新的名稱:"
+
+#: config/prefs.php.dist:19
+msgid "Portal Options"
+msgstr "個人站台選項"
+
+#: templates/fbview/legend.inc:12 templates/dayView/legend.inc:12
+msgid "Possible Meeting Time"
+msgstr "可能的會議時間"
+
+#: lib/FBView/week.php:161 lib/FBView/day.php:189 lib/FBView/workweek.php:160
+msgid "Possible Meeting Times"
+msgstr "可能的會議時間"
+
+#: lib/FBView/day.php:105
+msgid "Previous Day"
+msgstr "前一日"
+
+#: lib/FBView/week.php:62 lib/FBView/workweek.php:62
+msgid "Previous Week"
+msgstr "前一週"
+
+#: templates/day/head.inc:4 templates/day/head_side_by_side.inc:4
+msgid "Previous day"
+msgstr "前一日"
+
+#: templates/menu/menu.inc:34
+msgid "Print"
+msgstr "列印"
+
+#: templates/calendars/calendars.inc:118
+msgid "Private"
+msgstr "私人的"
+
+#: templates/view/view.inc:147 templates/edit/edit.inc:370
+msgid "Recur Until"
+msgstr "重複直到"
+
+#: templates/view/view.inc:116
+msgid "Recurrence"
+msgstr "重複"
+
+#: data.php:59
+msgid "Recurrence Data"
+msgstr "重複日期"
+
+#: data.php:57
+msgid "Recurrence End Date"
+msgstr "重複截止日"
+
+#: data.php:58
+msgid "Recurrence Interval"
+msgstr "重複間隔"
+
+#: data.php:56
+msgid "Recurrence Type"
+msgstr "重複型態"
+
+#: lib/Kronolith.php:509
+msgid "Recurs daily"
+msgstr "每日重複"
+
+#: lib/Kronolith.php:516
+msgid "Recurs monthly"
+msgstr "每月重複"
+
+#: lib/Kronolith.php:512
+msgid "Recurs weekly"
+msgstr "每週重複"
+
+#: lib/Kronolith.php:519
+msgid "Recurs yearly"
+msgstr "每年重複"
+
+#: lib/Scheduler/kronolith.php:155
+#, php-format
+msgid "Reminder: %s"
+msgstr "提醒: %s"
+
+#: config/prefs.php.dist:36
+msgid "Remote Calendars"
+msgstr "遠端行事曆"
+
+#: templates/menu/menu.inc:80
+msgid "Remote Calendars:"
+msgstr "遠端行事曆:"
+
+#: templates/attendees/attendees.inc:57
+#, php-format
+msgid "Remove %s"
+msgstr "移除 %s"
+
+#: attendees.php:29
+msgid "Remove Attendee"
+msgstr "移除出席人員"
+
+#: templates/prefs/category_management.inc:66
+msgid "Rename"
+msgstr "更名"
+
+#: lib/Kronolith.php:594
+msgid "Required"
+msgstr "必須要"
+
+#: lib/FBView/week.php:150 lib/FBView/week.php:153 lib/FBView/week.php:156
+#: lib/FBView/day.php:178 lib/FBView/day.php:181 lib/FBView/day.php:184
+#: lib/FBView/workweek.php:149 lib/FBView/workweek.php:152
+#: lib/FBView/workweek.php:155
+msgid "Required Attendees"
+msgstr "必須出席人員"
+
+#: lib/FBView/week.php:113 lib/FBView/day.php:141 lib/FBView/workweek.php:112
+msgid "Required to attend"
+msgstr "必須出席的人員"
+
+#: templates/contacts/contacts.inc:69 templates/calendars/calendars.inc:138
+msgid "Reset"
+msgstr "重設"
+
+#: templates/edit/edit.inc:33 templates/edit/edit.inc:426
+msgid "Reset to Defaults"
+msgstr "重設回內定值"
+
+#: templates/view/view.inc:182 templates/attendees/attendees.inc:47
+msgid "Response"
+msgstr "回覆"
+
+#: templates/javascript/goto.inc:62 templates/edit/edit.inc:341
+#: lib/Block/month.php:69
+msgid "Sa"
+msgstr "星期六"
+
+#: templates/view/view.inc:131 templates/month/head.inc:30
+#: templates/edit/javascript.inc:112
+msgid "Saturday"
+msgstr "星期六"
+
+#: viewevent.php:117
+#, php-format
+msgid "Save '%s' As New"
+msgstr "另存新檔 '%s'"
+
+#: editevent.php:44 editevent.php:48 viewevent.php:117
+msgid "Save As New"
+msgstr "另存新檔"
+
+#: addevent.php:41 editevent.php:46
+msgid "Save Event"
+msgstr "儲存事件"
+
+#: templates/contacts/contacts.inc:27
+msgid "Search"
+msgstr "搜尋"
+
+#: templates/calendars/calendars.inc:91
+msgid "Select a calendar"
+msgstr "※請選擇一本行事曆※"
+
+#: templates/edit/edit.inc:122 templates/edit/edit.inc:177
+#: templates/edit/edit.inc:386
+msgid "Select a date"
+msgstr "選擇一個日期"
+
+#: config/prefs.php.dist:11
+msgid ""
+"Select confirmation options, how to display the different views and choose "
+"default view."
+msgstr "選擇如何顯示各種不同的檢視以及內定的檢視"
+
+#: templates/data/import.inc:27
+msgid "Select the calendar to import to:"
+msgstr "選擇行事曆以匯入資料到:"
+
+#: templates/data/import.inc:36
+msgid "Select the file to import:"
+msgstr "選擇檔案以匯入資料:"
+
+#: config/prefs.php.dist:97
+msgid "Select the first weekday:"
+msgstr "選擇每週的第一天:"
+
+#: templates/data/export.inc:15
+msgid "Select the format to export to:"
+msgstr "選擇匯出的格式:"
+
+#: templates/data/import.inc:19
+msgid "Select the source to import from:"
+msgstr "選擇來源檔案以匯入資料:"
+
+#: config/prefs.php.dist:108
+msgid "Select the time span to show:"
+msgstr "請選擇時間範圍以顯示"
+
+#: config/prefs.php.dist:79
+msgid "Select the view to display on startup:"
+msgstr "選擇登入後的的檢視方法:"
+
+#: config/prefs.php.dist:54
+msgid "Select to show due tasks in the calendar."
+msgstr "選擇是否在行事曆中顯示待辦事項."
+
+#: config/prefs.php.dist:63
+msgid "Select to show meetings in the calendar."
+msgstr "選擇是否在行事曆中顯示會議."
+
+#: config/prefs.php.dist:20
+msgid "Select which events to show in the portal."
+msgstr "選擇用來顯示於個人站台中的事件."
+
+#: templates/delete/delete.inc:28 templates/delete/one.inc:28
+msgid "Send a cancel notification to all attendees when deleting this event"
+msgstr "當事件被刪除後，傳送一個取消通知給所有出席人員"
+
+#: templates/view/view.inc:186 templates/attendees/attendees.inc:60
+#, php-format
+msgid "Send an email to %s"
+msgstr "傳送一封郵件給 %s"
+
+#: templates/edit/edit.inc:299
+msgid "Send updates/invitations to all attendees when saving this event"
+msgstr "當事件被儲存後，傳送一個更新/邀請通知給所有出席人員"
+
+#: templates/javascript/goto.inc:74
+msgid "September"
+msgstr "九月"
+
+#: templates/edit/edit.inc:177
+msgid "Set end date"
+msgstr "設定結束日期"
+
+#: templates/edit/edit.inc:386
+msgid "Set recurrence end date"
+msgstr "設定重複截止日"
+
+#: templates/edit/edit.inc:122
+msgid "Set start date"
+msgstr "設定開始日期"
+
+#: templates/calendars/calendars.inc:119
+msgid "Shared"
+msgstr "共享"
+
+#: config/prefs.php.dist:26
+msgid "Shared Calendars"
+msgstr "共享行事曆"
+
+#: templates/menu/menu.inc:74
+msgid "Shared Calendars:"
+msgstr "所有共享的行事曆:"
+
+#: templates/menu/menu.inc:56
+msgid "Show"
+msgstr "顯示"
+
+#: config/prefs.php.dist:288
+msgid "Show category legend?"
+msgstr "顯示分類的註記說明 ?"
+
+#: config/prefs.php.dist:244
+msgid "Show delete, alarm, and recurrence icons in calendar views?"
+msgstr "在行事曆檢視畫面中顯示刪除,警示以及重覆週期圖示嗎?"
+
+#: config/prefs.php.dist:136
+msgid "Show due tasks in the calendar?"
+msgstr "在行事曆中顯示待辦事項?"
+
+#: config/prefs.php.dist:88
+msgid "Show half hour slots in day and week views?"
+msgstr "以半小時為日與週的最小顯示單位?"
+
+#: config/prefs.php.dist:145
+msgid "Show meetings in the calendar?"
+msgstr "在行事曆中顯示會議?"
+
+#: config/prefs.php.dist:127
+msgid "Show only events that have an alarm set?"
+msgstr "只顯示有設定警示作用的事件?"
+
+#: config/prefs.php.dist:278
+msgid "Show shared calendars side-by-side"
+msgstr "並列顯示開放的行事曆"
+
+#: config/prefs.php.dist:297
+msgid "Show time of day between each day in week views?"
+msgstr "在週檢視的畫面中顯示每一天的時間 ?"
+
+#: data.php:45
+msgid "Start Date"
+msgstr "啟始日期"
+
+#: templates/view/view.inc:49 templates/edit/edit.inc:103
+#: templates/data/export.inc:28
+msgid "Start On"
+msgstr "開始於"
+
+#: data.php:46
+msgid "Start Time"
+msgstr "啟始時間"
+
+#: templates/view/view.inc:35 templates/edit/edit.inc:86
+msgid "Status"
+msgstr "狀態"
+
+#: templates/javascript/goto.inc:63 templates/edit/edit.inc:342
+#: lib/Block/month.php:72 lib/Block/month.php:75
+msgid "Su"
+msgstr "星期天"
+
+#: templates/view/view.inc:132 templates/month/head.inc:23
+#: templates/month/head.inc:32 templates/edit/javascript.inc:106
+#: config/prefs.php.dist:98
+msgid "Sunday"
+msgstr "星期天"
+
+#: config/prefs.php.dist:53
+msgid "Tasks"
+msgstr "待辦事項"
+
+#: lib/Kronolith.php:543 lib/Kronolith.php:566
+msgid "Tentative"
+msgstr "暫時"
+
+#: templates/javascript/goto.inc:60 templates/edit/edit.inc:339
+#: lib/Block/month.php:69
+msgid "Th"
+msgstr "星期四"
+
+#: templates/contacts/javascript.inc:73
+msgid "The Edit Attendees screen is no longer present. Exiting."
+msgstr "編輯邀請的畫面已不存在. 離開中."
+
+#: calendars.php:102
+#, php-format
+msgid "The calendar \"%s\" cannot be deleted."
+msgstr "行事曆 \"%s\" 無法被刪除."
+
+#: calendars.php:116
+#, php-format
+msgid "The calendar \"%s\" has been deleted."
+msgstr "行事曆 \"%s\" 已刪除."
+
+#: calendars.php:84
+#, php-format
+msgid "The calendar \"%s\" has been renamed to \"%s\"."
+msgstr "行事曆 \"%s\" 已更名為 \"%s\"."
+
+#: calendars.php:94
+#, php-format
+msgid "The calendar \"%s\" has been saved."
+msgstr "行事曆 \"%s\" 已儲存."
+
+#: calendars.php:51
+msgid "The calendar name is empty."
+msgstr "行事曆名稱是空白."
+
+#: templates/edit/javascript.inc:188
+msgid "The end date must be later than the start date."
+msgstr "結束日期必需大於開始日期."
+
+#: lib/Kronolith.php:1369
+#, php-format
+msgid "The event \"%s\" has been cancelled."
+msgstr "事件 \"%s\" 已取消."
+
+#: lib/Kronolith.php:1382
+#, php-format
+msgid "The event \"%s\" has been updated."
+msgstr "事件 \"%s\" 已更新."
+
+#: lib/Kronolith.php:1423
+#, php-format
+msgid "The event notification to %s was successfully sent."
+msgstr "給 %s 的事件通知已成功的送出."
+
+#: lib/Kronolith.php:1390
+msgid "The following is a more detailed description of the event:"
+msgstr "關於此事件以下有更詳細的敘述:"
+
+#: addeventaction.php:18 editeventaction.php:35
+#, php-format
+msgid "There was an error accessing the calendar: %s"
+msgstr "存取行事曆: %s 時發生一個錯誤."
+
+#: addeventaction.php:27
+#, php-format
+msgid "There was an error adding the event: %s"
+msgstr "新增事件: %s 時發生一個錯誤."
+
+#: editeventaction.php:73
+#, php-format
+msgid "There was an error editing the event: %s"
+msgstr "編輯事件: %s 時發生一個錯誤."
+
+#: data.php:225
+msgid "There was an error importing the data."
+msgstr "匯入資料時發生一個錯誤."
+
+#: lib/api.php:203 lib/api.php:234 lib/api.php:347
+msgid "There was an error importing the iCalendar data."
+msgstr "匯入 iCalendar 資料時發生一個錯誤."
+
+#: editeventaction.php:54
+#, php-format
+msgid "There was an error moving the event: %s"
+msgstr "搬移事件: %s 時發生一個錯誤"
+
+#: lib/Kronolith.php:1428
+#, php-format
+msgid "There was an error sending an event notification to %s: %s"
+msgstr "傳送事件通知給 %s: %s 時發生一個錯誤"
+
+#: data.php:95
+msgid "There were no events to export."
+msgstr "沒有事件可匯出."
+
+#: templates/prefs/category_management.inc:77
+msgid "These changes can not be undone!"
+msgstr "這些變更無法復原!"
+
+#: data.php:174
+msgid "This file format is not supported."
+msgstr "此檔案格式並未被支援."
+
+#: data.php:214 data.php:227
+#, php-format
+msgid "This is what the server said: %s"
+msgstr "伺服器回應: %s"
+
+#: templates/view/view.inc:129 templates/month/head.inc:28
+#: templates/edit/javascript.inc:110
+msgid "Thursday"
+msgstr "星期四"
+
+#: templates/edit/edit.inc:96
+msgid "Time span"
+msgstr "時間範圍"
+
+#: data.php:44 templates/edit/edit.inc:39
+msgid "Title"
+msgstr "事件名稱"
+
+#: templates/menu/menu.inc:14 lib/Block/monthlist.php:122
+#: lib/Block/prevmonthlist.php:120 lib/Block/summary.php:106
+msgid "Today"
+msgstr "今天"
+
+#: lib/Block/month.php:170
+#, php-format
+msgid "Today is: %s"
+msgstr "今天是: %s"
+
+#: lib/Block/monthlist.php:124 lib/Block/prevmonthlist.php:122
+#: lib/Block/summary.php:108
+msgid "Tomorrow"
+msgstr "明天"
+
+#: templates/javascript/goto.inc:58 templates/edit/edit.inc:337
+#: lib/Block/month.php:69
+msgid "Tu"
+msgstr "星期二"
+
+#: templates/view/view.inc:127 templates/month/head.inc:26
+#: templates/edit/javascript.inc:108
+msgid "Tuesday"
+msgstr "星期二"
+
+#: config/keywords.php.dist:17
+msgid "Type"
+msgstr "型式"
+
+#: lib/Storage/sql.php:54
+msgid "Unable to connect to SQL server."
+msgstr "無法連結至 SQL 伺服器."
+
+#: calendars.php:112
+#, php-format
+msgid "Unable to delete \"%s\": %s"
+msgstr "無法刪除 \"%s\": %s"
+
+#: lib/Driver/mcal.php:176
+#, php-format
+msgid "Unable to delete %s."
+msgstr "無法刪除 %s ."
+
+#: lib/Driver.php:264
+#, php-format
+msgid "Unable to load the definition of %s."
+msgstr "無法載入 %s 的定義資料."
+
+#: calendars.php:82
+#, php-format
+msgid "Unable to rename \"%s\": %s"
+msgstr "無法更名 \"%s\": %s"
+
+#: templates/prefs/category_management.inc:41 lib/Kronolith.php:935
+msgid "Unfiled"
+msgstr "未分類"
+
+#: lib/FBView/day.php:47 lib/FBView/day.php:57
+msgid "Unknown"
+msgstr "未知的"
+
+#: config/prefs.php.dist:10
+msgid "User Interface"
+msgstr "使用者介面"
+
+#: lib/Block/month.php:143 lib/Block/month.php:146
+msgid "View Day"
+msgstr "日檢視"
+
+#: lib/Block/month.php:168
+msgid "View Today"
+msgstr "檢視今天"
+
+#: templates/javascript/goto.inc:59 templates/edit/edit.inc:338
+#: lib/Block/month.php:69
+msgid "We"
+msgstr "星期三"
+
+#: templates/view/view.inc:128 templates/month/head.inc:27
+#: templates/edit/javascript.inc:109
+msgid "Wednesday"
+msgstr "星期三"
+
+#: templates/menu/menu.inc:20 config/prefs.php.dist:76
+msgid "Week"
+msgstr "週"
+
+#: month.php:112 week.php:27 workweek.php:23
+#, php-format
+msgid "Week %d"
+msgstr "周 %d"
+
+#: templates/attendees/attendees.inc:108
+msgid "Week View"
+msgstr "週檢視"
+
+#: month.php:112
+#, php-format
+msgid "Week&nbsp;%d"
+msgstr "週&nbsp;%d"
+
+#: templates/view/view.inc:67 templates/edit/edit.inc:261
+msgid "Week(s)"
+msgstr "週"
+
+#: templates/view/view.inc:134 templates/edit/edit.inc:333
+msgid "Weekly: Recurs every"
+msgstr "週: 每"
+
+#: config/prefs.php.dist:172
+msgid ""
+"What time should day and week views end, when there are no later events?"
+msgstr "日與週的結止顯示時間？"
+
+#: config/prefs.php.dist:163
+msgid ""
+"What time should day and week views start, when there are no earlier events?"
+msgstr "日與週的啟始顯示時間？"
+
+#: templates/menu/menu.inc:19 config/prefs.php.dist:77
+msgid "Work Week"
+msgstr "上班日"
+
+#: templates/attendees/attendees.inc:106
+msgid "Work Week View"
+msgstr "上班日檢視"
+
+#: templates/view/view.inc:140 templates/edit/edit.inc:359
+msgid "Yearly: Recurs every"
+msgstr "年: 每"
+
+#: templates/edit/javascript.inc:6
+msgid "You are creating a new category."
+msgstr "你正在建立一個新分類中."
+
+#: templates/contacts/javascript.inc:79
+msgid "You can only use this form from the Edit Attendees screen."
+msgstr "從編輯邀請人員畫面中你只能使用這個表單."
+
+#: addeventaction.php:20
+#, php-format
+msgid "You do not have permission to add events to %s."
+msgstr "你並沒有新增事件到 %s 的權限."
+
+#: data.php:184
+msgid "You do not have permission to add events to the selected calendar."
+msgstr "你並沒有權限,在所選擇的行事曆上新增事件."
+
+#: deleventaction.php:26
+msgid "You do not have permission to delete this event."
+msgstr "你並沒有權限刪除此事件."
+
+#: editeventaction.php:68
+msgid "You do not have permission to edit this event."
+msgstr "你並沒有編輯此事件的權限."
+
+#: lib/Kronolith.php:1344
+msgid ""
+"You don't have an email address configured in your preferences. You must set "
+"one before sending event notifications."
+msgstr ""
+"在你的偏好設定選項中並未設定你的電子郵件位址.傳送事件通知前你必須先設定完成."
+
+#: lib/Kronolith.php:1378
+#, php-format
+msgid "You have been invited to \"%s\"."
+msgstr "你已被邀請到 \"%s\"."
+
+#: data.php:179
+msgid "You have specified an invalid calendar."
+msgstr "你已經指定一個不合法的行事曆."
+
+#: templates/edit/javascript.inc:14
+msgid "You must choose a category."
+msgstr "你必須先選擇一個分類."
+
+#: calendars.php:119
+msgid "You must select a calendar to be deleted."
+msgstr "你必須先選擇一個要刪除的行事曆."
+
+#: templates/contacts/javascript.inc:57
+msgid "You must select an address first."
+msgstr "首先你必須先選擇一個地址."
+
+#: lib/Scheduler/kronolith.php:157
+#, php-format
+msgid "You requested to be reminded about %s, which is at %s."
+msgstr "提醒你在 %2$s 的時候,有一個行事曆事件 %1$s 等待辦理."
+
+#: templates/prefs/shareselect.inc:10
+msgid "Your default calendar"
+msgstr "你的預設行事曆"
+
+#: lib/Driver.php:932 lib/Driver.php:941
+msgid "[none]"
+msgstr "[無]"
+
+#: templates/edit/edit.inc:263
+msgid "before the event starts"
+msgstr "於事件開始前"
+
+#: config/prefs.php.dist:109
+msgid "day"
+msgstr "日"
+
+#: templates/view/view.inc:122 templates/edit/edit.inc:328
+msgid "day(s)"
+msgstr "日"
+
+#: config/prefs.php.dist:110 config/prefs.php.dist:111
+#: config/prefs.php.dist:112 config/prefs.php.dist:113
+#: config/prefs.php.dist:114
+msgid "days"
+msgstr "日"
+
+#: data.php:137 templates/data/export.inc:1
+msgid "events.csv"
+msgstr "行事曆.csv"
+
+#: templates/contacts/contacts.inc:18
+msgid "from"
+msgstr "從"
+
+#: templates/view/view.inc:136 templates/view/view.inc:138
+#: templates/edit/edit.inc:348 templates/edit/edit.inc:354
+msgid "month(s)"
+msgstr "月"
+
+#: templates/view/view.inc:136 templates/edit/edit.inc:348
+msgid "on the same date"
+msgstr "在同一天"
+
+#: templates/view/view.inc:138 templates/edit/edit.inc:354
+msgid "on the same weekday"
+msgstr "在每週的第一天"
+
+#: data.php:30 templates/data/import.inc:23
+msgid "vCalendar/iCalendar"
+msgstr "vCalendar/iCalendar"
+
+#: lib/api.php:214 lib/api.php:358
+msgid "vEvent not found."
+msgstr "找不到 vEvent."
+
+#: config/prefs.php.dist:115
+msgid "week"
+msgstr "週"
+
+#: templates/view/view.inc:134 templates/edit/edit.inc:335
+msgid "week(s) on:"
+msgstr "週:"
+
+#: config/prefs.php.dist:116 config/prefs.php.dist:117
+#: config/prefs.php.dist:118
+msgid "weeks"
+msgstr "週"
+
+#: templates/view/view.inc:140 templates/edit/edit.inc:360
+msgid "year(s)"
+msgstr "年"

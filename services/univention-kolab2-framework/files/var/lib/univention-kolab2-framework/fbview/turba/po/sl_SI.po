@@ -1,0 +1,327 @@
+# Turba Slovenian translation.
+# Copyright (C) 2002 Jure Krasovic.
+# Jure Krasovic <jurek@rcc-irc.si>.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-02-27 16:26+0100\n"
+"PO-Revision-Date: 2002-02-27 16:16+0100\n"
+"Last-Translator: Jure Kra¹ovic<jurek@rcc-irc.si>\n"
+"Language-Team: Sloven¹èina <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s datoteke uspe¹no uvo¾ena"
+
+msgid "Add Contact ..."
+msgstr "Dodaj naslov ..."
+
+msgid "Add a new contact"
+msgstr "Dodaj nov naslov"
+
+msgid "Add failed"
+msgstr "Dodajanje spodletelo"
+
+msgid "Add"
+msgstr "Dodaj"
+
+msgid "Addressbook is read-only."
+msgstr "Imenik omogoèa samo branje."
+
+msgid "Advanced Directory Search"
+msgstr "Napredno iskanje po mapi"
+
+msgid "Advanced Search"
+msgstr "Napredno iskanje"
+
+msgid "Alias"
+msgstr "Vzdevek"
+
+msgid "Bcc"
+msgstr "Kpp"
+
+msgid "Cancel"
+msgstr "Preklièi"
+
+msgid "Cc"
+msgstr "Kp"
+
+msgid "Cell Phone"
+msgstr "Mobilni telefon"
+
+msgid "Clear Search"
+msgstr "Izbri¹i"
+
+msgid "Company"
+msgstr "Podjetje"
+
+msgid "Delete"
+msgstr "Izbri¹i"
+
+msgid "Deletion failed"
+msgstr "Brisanje spodletelo"
+
+msgid "Directory Search"
+msgstr "Iskanje po mapi"
+
+msgid "Directory"
+msgstr "Imenik"
+
+msgid "Edit"
+msgstr "Uredi"
+
+msgid "Email"
+msgstr "Elektronski naslov"
+
+msgid "Error"
+msgstr "Napaka"
+
+msgid "Export Addressbook"
+msgstr "Izvozi imenik"
+
+msgid "Export"
+msgstr "Izvoz"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Neuspe¹en priklop na ¾eleni imenik."
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Pri¹lo je do napake pri iskanju po imeniku : %s"
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "Find"
+msgstr "Najdi"
+
+msgid "From"
+msgstr "&nbsp&nbspv"
+
+msgid "Help"
+msgstr "Pomoè"
+
+msgid "Home Address"
+msgstr "Domaèi naslov"
+
+msgid "Home Phone"
+msgstr "Domaèi telefon"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr "Èe uva¾ate CVS podatke: ali prvi stolpec vsebuje ime polj?"
+
+msgid "Illegal or malformed form data."
+msgstr "Nepravilni podatki."
+
+msgid "Import Addressbook"
+msgstr "Uvozi imenik"
+
+msgid "Import"
+msgstr "Uvoz"
+
+msgid "Import/Export Addressbooks"
+msgstr "Uvoz/Izvoz imenika"
+
+msgid "Import/Export"
+msgstr "Uvoz/Izvoz"
+
+msgid "Invalid addressbook."
+msgstr "Napaèen imenik."
+
+msgid "Invalid e-mail address."
+msgstr "Napaèen elektronski naslov."
+
+msgid "Invalid name."
+msgstr "Napaèno ime."
+
+msgid "Language"
+msgstr "Jezik"
+
+msgid "Matching"
+msgstr "Vsebuje"
+
+msgid "Message"
+msgstr "Sporoèilo"
+
+msgid "Name"
+msgstr "Ime"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Noben od razpolo¾ljivih imenikov ni nastavljen za dodajanje novih naslovov. "
+"Èe ste preprièani, da je to napaka obvestite o tem skrbnika sistema."
+
+msgid "Notes"
+msgstr "Dodatno"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Izberite imenik za dodajanje naslovov."
+
+msgid "Problem?"
+msgstr "Te¾ava?"
+
+msgid "Reset"
+msgstr "Razveljavi"
+
+msgid "Save Changes"
+msgstr "Shrani spremembe"
+
+msgid "Save"
+msgstr "Shrani"
+
+msgid "Search Results"
+msgstr "Zadetki iskanja"
+
+msgid "Search"
+msgstr "I¹èi"
+
+msgid "Search&nbsp;Results"
+msgstr "Iskanje&nbsp;Zadetki"
+
+msgid "Select the destination to import to:"
+msgstr "Izberite imenik za uvoz:"
+
+msgid "Select the file to import:"
+msgstr "Izberite datoteko za uvoz:"
+
+msgid "Select the format to export to:"
+msgstr "Izberite format za izvoz v:"
+
+msgid "Select the format to import from:"
+msgstr "Izberite format uvoza:"
+
+msgid "Select the source to export from:"
+msgstr "Izberite vir za izvoz:"
+
+msgid "Select your preferred language:"
+msgstr "Izberi ¾elen jezik"
+
+msgid "Send Message"
+msgstr "Po¹lji sporoèilo"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Po¹lji sporoèilo za %s"
+
+msgid "Set the your preferred display language."
+msgstr "Nastavite ¾eljeni jezik."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Nekatere nastavitvene datoteke Turba-e manjkajo:"
+
+msgid "Success"
+msgstr "Uspeh"
+
+msgid "The data got lost"
+msgstr "Podatki so izgubljeni"
+
+msgid "The data got lost."
+msgstr "Podatki so izgubljeni."
+
+msgid "The file contained no data."
+msgstr "Datoteka ne vsebuje podatkov."
+
+msgid "There are no writeable address books."
+msgstr "Imenika za dodajanje ne obstoja."
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Nastala je te¾ava pri nalaganju datoteke. Datoteka je predvidoma veèja kot "
+"je dovoljena velikost."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Pri¹lo je do napake pri dodajanju objekta. Za pomoè se obrnite na skrbnika "
+"sistema."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Pri¹lo je do napake pri brisanju objekta. Za pomoè se obrnite na skrbnika "
+"sistema."
+
+msgid "There was an error importing the data."
+msgstr "Pri¹lo je do napake pri uvozu podatkov."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Pri¹lo je do napake pri uvozu datoteke"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"Ta datoteke vsebuje privzetelastnosti za Turbo in tudi predpisuje katere "
+"lastnosti lahko uporabnik spreminja."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"Datoteka vsebuje parametre za obliko, ki omogoèajo spreminjanje privzetih "
+"barv in tipografij v Horde."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"Datoteka vsebuje globalne nastavitve Turbe, imena in tipe imen, elektronske "
+"naslove, ..."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "Datoteka vsebuje seznam razpolo¾ljivih virov Turbe."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"Glavna nastavitvena datoteka Turbe. Vsebuje poti in mo¾nosti za "
+"programe Turbe."
+
+msgid "This person is already in your addressbook."
+msgstr "Oseba ¾e obstaja v imeniku"
+
+msgid "Title"
+msgstr "Naziv"
+
+msgid "To"
+msgstr "Za"
+
+msgid "Turba is not properly configured"
+msgstr "Turba ni pravilno nastavljena"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Neuspelo nalaganje nastavitev %s."
+
+msgid "Warning"
+msgstr "Opozorilo"
+
+msgid "Work Address"
+msgstr "Slu¾beni naslov"
+
+msgid "Work Phone"
+msgstr "Telefon v slu¾bi"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr ""
+"Nobeno polje iz datoteke za uvoz ni bilo preslikano v ustrezna polja v Turbi."
+
+msgid "Your Information"
+msgstr "Va¹i podatki"
+
+msgid "[Edit]"
+msgstr "[Uredi]"

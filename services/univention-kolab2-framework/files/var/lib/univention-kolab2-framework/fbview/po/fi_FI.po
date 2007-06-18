@@ -1,0 +1,2493 @@
+# Finnish translation for Horde.
+# Copyright (C) 2001 Free Software Foundation, Inc.
+# Leena Heino <liinu@uta.fi>, 2001.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 3.0\n"
+"POT-Creation-Date: 2001-11-27 10:37+0200\n"
+"PO-Revision-Date: 2003-06-02 12:59+0200\n"
+"Last-Translator: Leena Heino <linu@uta.fi>\n"
+"Language-Team: Finnish <i18n@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr ""
+" &#151; %s on valmis suorittamaan valitut yll‰pitotoimenpiteet."
+
+#, c-format
+msgid " (%s days ago)"
+msgstr " (%s p‰iv‰‰ sitten)"
+
+msgid " (Read only)"
+msgstr " (vain luku)"
+
+msgid " (today)"
+msgstr " (t‰n‰‰n)"
+
+msgid " (yesterday)"
+msgstr " (eilen)"
+
+#, c-format
+msgid "%s - Notice"
+msgstr "%s - Ilmoitus"
+
+#, c-format
+msgid "%s Configuration"
+msgstr "%s asennus"
+
+#, c-format
+msgid "%s Fingerprint"
+msgstr "%s Sormenj‰lki"
+
+#, c-format
+msgid "%s KB"
+msgstr "%s KB"
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "%s Yll‰pitotoimenpiteet - Varmistus"
+
+#, c-format
+msgid "%s Sign Up"
+msgstr "%s kirjautuminen"
+
+#, c-format
+msgid "%s Standard"
+msgstr "%s standardi"
+
+#, c-format
+msgid "%s Terms of Agreement"
+msgstr "%s k‰yttˆehdot"
+
+#, c-format
+msgid "%s already exists."
+msgstr "%s on jo olemassa."
+
+#, c-format
+msgid "%s has cancelled %s."
+msgstr "%s on peruuttanut %s:n."
+
+#, c-format
+msgid "%s has replied to a free/busy request."
+msgstr "%s on vastannut vapaana/varattu pyyntˆˆn."
+
+#, c-format
+msgid "%s has replied to the invitation to %s."
+msgstr "%s on vastannut kutsuun %s."
+
+#, c-format
+msgid "%s has sent you free/busy information."
+msgstr "%s on l‰hett‰nyt sinulle vapaana/varattu tietoja."
+
+#, c-format
+msgid "%s is required"
+msgstr "%s on pakollinen"
+
+#, c-format
+msgid "%s requests your free/busy information."
+msgstr "%s pyyt‰‰ sinulta vapaana/varattu tietoja."
+
+#, c-format
+msgid "%s requests your presence at %s."
+msgstr "%s pyyt‰‰ sinua %s:ssa."
+
+#, c-format
+msgid "%s wishes to add to %s."
+msgstr "%s haluaa lis‰t‰ sinut %s:een."
+
+#, c-format
+msgid "%s wishes to make you aware of %s."
+msgstr "%s haluaa ilmoittaa sinulle %s:sta."
+
+#, c-format
+msgid "%s wishes to receive the latest information about %s."
+msgstr "%s haluaa saada uusimmat tiedot %s:sta."
+
+#, c-format
+msgid "%s%s Guest Services</a>"
+msgstr "%s%s Vierailijan palvelut</a>"
+
+#, c-format
+msgid "%s: %s"
+msgstr "%s: %s"
+
+#, c-format
+msgid "'%s' is not a valid choice."
+msgstr "'%s' ei kelpaa valinnaksi."
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' ei ole asennettu Horden rekisteriss‰."
+
+#, c-format
+msgid "'%s' tree renderer not found."
+msgstr "'%s' puiden kuvaajaa ei lˆytynyt."
+
+#, c-format
+msgid "'%s' was added to the groups system."
+msgstr "'%s' lis‰ttiin ryhm‰j‰rjestelm‰‰n."
+
+#, c-format
+msgid "'%s' was added to the permissions system."
+msgstr "'%s' lis‰ttiin oikeudetj‰rjestelm‰‰n."
+
+#, c-format
+msgid "'%s' was not created: %s."
+msgstr "'%s' ei luotu: %s."
+
+msgid "24 hours"
+msgstr "24 tuntia"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b>Vakava virhe tapahtui:</b>"
+
+#, c-format
+msgid "<b>The calendar data is invalid</b>"
+msgstr "<b>Kalenteritieto on ep‰kelpoa</b>"
+
+#, c-format
+msgid "<i>View as %s</i>"
+msgstr "<i>N‰yt‰ %s:‰</i>"
+
+msgid "A public PGP key is required to encrypt a message."
+msgstr "Viestin salaukseen tarvitaan julkinen PGP-avain."
+
+msgid "A public PGP key is required to verify a signed message."
+msgstr "Allekirjoitetun viestin tarkistukseen tarvitaan julkinen PGP-avain."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to decrypt a "
+"message."
+msgstr ""
+"Salatun viestin avaamiseen tarvitaan julkinen PGP-avain, salainen "
+"PGP-avain ja salasanateksti."
+
+msgid ""
+"A public PGP key, private PGP key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Viestin allekirjoittamiseksi tarvitaan julkinen PGP-avain, salainen "
+"PGP-avain ja salasanateksti."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to "
+"decrypt a message."
+msgstr ""
+"Salatun viestin avaamiseen tarvitaan julkinen SMIME-avain, salainen "
+"SMIME-avain ja salasanateksti."
+
+msgid ""
+"A public SMIME key, private SMIME key, and passphrase are required to sign a "
+"message."
+msgstr ""
+"Viestin allekirjoittamiseksi tarvitaan julkinen SMIME-avain, salainen "
+"SMIME-avain ja salasanateksti."
+
+msgid "A public SMIME key is required to encrypt a message."
+msgstr "Viestin salaukseen tarvitaan julkinen SMIME-avain."
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Accept request"
+msgstr "Hyv‰ksy pyyntˆ"
+
+msgid "Accepted"
+msgstr "Hyv‰ksytty"
+
+msgid "Actions"
+msgstr "Toimenpiteet"
+
+msgid "Add Here:"
+msgstr "Lis‰‰ t‰h‰n:"
+
+msgid "Add New Group"
+msgstr "Lis‰‰ uusi ryhm‰"
+
+msgid "Add New Permission"
+msgstr "Lis‰‰ uusi oikeus"
+
+msgid "Add Sub-group"
+msgstr "Lis‰‰ aliryhm‰"
+
+msgid "Add Sub-permission"
+msgstr "Lis‰‰ alioikeus"
+
+#, c-format
+msgid "Add a child group to '%s'"
+msgstr "Lis‰‰ j‰sen ryhm‰‰n '%s'"
+
+#, c-format
+msgid "Add a child permission to '%s'"
+msgstr "Lis‰‰ j‰senelle oikeudet '%s'"
+
+msgid "Add a new user:"
+msgstr "Lis‰‰ uusi k‰ytt‰j‰:"
+
+msgid "Add new members"
+msgstr "Lis‰‰ uusia j‰seni‰"
+
+msgid "Add pair"
+msgstr "Lis‰‰ pari"
+
+msgid "Add this to my calendar"
+msgstr "Lis‰‰ kalenteriini"
+
+msgid "Add to my address book:"
+msgstr "Lis‰‰ osoitekirjaani:"
+
+msgid "Add user"
+msgstr "Lis‰‰ k‰ytt‰j‰"
+
+msgid "Add"
+msgstr "Lis‰‰"
+
+#, c-format
+msgid "Added '%s' to the system. You can log in now."
+msgstr "Lis‰ttiin '%s' j‰rjestelm‰‰n. Voit nyt kirjautua sis‰‰n."
+
+msgid "Adding users is disabled."
+msgstr "K‰ytt‰jien lis‰‰minen on estetty."
+
+msgid "Address Book"
+msgstr "Osoitekirja"
+
+msgid "Address"
+msgstr "Osoite"
+
+msgid "Administration"
+msgstr "Yll‰pito"
+
+msgid "Ads"
+msgstr "Mainokset"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "All Groups"
+msgstr "Kaikki ryhm‰t"
+
+msgid "All Permissions"
+msgstr "Kaikki oikeudet"
+
+msgid "Already exists"
+msgstr "On jo olemassa"
+
+msgid "Alternate templates"
+msgstr "Vaihtoehtoiset mallit"
+
+#, c-format
+msgid "An error occurred following this link: %s"
+msgstr "Tapahtui virhe seurattessa linkki‰: %s"
+
+msgid "An illegal value was specified."
+msgstr "Annettu arvo ei kelpaa."
+
+msgid "Application"
+msgstr "Ohjelma"
+
+msgid "April"
+msgstr "huhtikuu"
+
+msgid "Arabic (Windows-1256)"
+msgstr "Arabia (Windows-1256)"
+
+msgid "Archive File Size"
+msgstr "Paketin koko"
+
+msgid "Archive Name"
+msgstr "Paketin nimi"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-groups?"
+msgstr "Oletko varma, ett‰ haluat poistaa '%s' ja kaikki sen aliryhm‰t?"
+
+#, c-format
+msgid "Are you sure you wish to delete '%s' and any sub-permissions?"
+msgstr "Oletko varma, ett‰ haluat poistaa '%s' ja kaikki sen alioikeudet?"
+
+msgid "Armenian (ARMSCII-8)"
+msgstr "Armenia (ARMSCII-8)"
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Kysy varmistus ennenkuin tehd‰‰n yll‰pitotoimenpiteet."
+
+msgid "Attached is an iCalendar file reply to a request you sent"
+msgstr "Liitteena on iCalendar tiedosto, joka on vastaus l‰hett‰m‰‰si pyyntˆˆn"
+
+msgid "Attempt to delete a non-existent group."
+msgstr "Yritettiin poistaa olematonta ryhm‰‰."
+
+msgid "Attempt to delete a non-existent permission."
+msgstr "Yritettiin poistaa olematonta oikeutta."
+
+msgid "Attempt to edit a non-existent permission."
+msgstr "Yritettiin muokata olematonta oikeutta."
+
+msgid "Attendees"
+msgstr "Osallistujat"
+
+msgid "Attribute Not Found"
+msgstr "Lis‰m‰‰rityksi‰ ei lˆytynyt"
+
+msgid "Attributes"
+msgstr "Lis‰m‰‰ritykset"
+
+msgid "August"
+msgstr "elokuu"
+
+msgid "Auth_cyrsql: Required imap extension not found."
+msgstr "Auth_cyrsql: Tarvittavaa IMAP laajennusta ei lˆytynyt."
+
+msgid "Auth_cyrus: Backend does not have required capabilites."
+msgstr "Auth_cyrus: Taustaj‰rjestelm‰ ei tue tarvittavia ominaisuuksia."
+
+msgid "Auth_cyrus: Required imap extension not found."
+msgstr "Auth_cyrus: Tarvittavaa IMAP laajennusta ei lˆytynyt."
+
+msgid ""
+"Auth_ftp: Required FTP extension not found. Compile PHP with the "
+"--enable-ftp switch."
+msgstr ""
+"Auth_ftp: tarvittavaa FTP laajennusta ei lˆytynyt. K‰‰nn‰ PHP k‰ytt‰en "
+"--enable-ftp vipusta."
+
+msgid "Auth_imap: Required IMAP extension not found."
+msgstr "Auth_imap: Tarvittavaa IMAP laajennusta ei lˆytynyt."
+
+msgid "Auth_krb5: Required krb5 extension not found."
+msgstr "Auth_krb5: Tarvittavaa krb5 laajennusta ei lˆytynyt."
+
+msgid "Auth_ldap: Required LDAP extension not found."
+msgstr "Auth_ldap: Tarvittavaa LDAP laajennusta ei lˆytynyt."
+
+msgid "Auth_mcal: Required MCAL extension not found."
+msgstr "Auth_mcal: Tarvittavaa MCAL laajennusta ei lˆytynyt."
+
+msgid "Auth_radius: Required sockets extension not found."
+msgstr "Auth_radius: Tarvittavaa sockets laajennusta ei lˆytynyt."
+
+msgid "Auth_smbauth: Required smbauth extension not found."
+msgstr "Auth_smbauth: Tarvittavaa smbauth laajennusta ei lˆytynyt."
+
+msgid "Authentication failed"
+msgstr "Autentikointi ep‰onnistui"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "Autentikointi ep‰onnistui RADIUS-palvelimelta."
+
+msgid "Available fields:"
+msgstr "K‰ytett‰viss‰olevat kent‰t:"
+
+msgid "Awaiting Responce"
+msgstr "Odotetaan vastausta"
+
+msgid "Bad kerberos password."
+msgstr "V‰‰r‰ kerberos salasana."
+
+msgid "Bad kerberos username."
+msgstr "V‰‰r‰ kerberos k‰ytt‰j‰tunnus."
+
+msgid "Baltic (ISO-8859-13)"
+msgstr "Baltia (ISO-8859-13)"
+
+msgid "Barbie"
+msgstr "Barbie"
+
+msgid "Birthday"
+msgstr "Syntym‰p‰iv‰"
+
+msgid "Block Parameters"
+msgstr "osion parametrit"
+
+msgid "Block Type"
+msgstr "osioin tyypi"
+
+msgid "Bold"
+msgstr "Lihavoitu"
+
+msgid "Bookmarks"
+msgstr "Kirjanmerkit"
+
+msgid "Brown"
+msgstr "Ruskea"
+
+msgid "Bugs"
+msgstr "Virheet"
+
+msgid "Burnt Orange"
+msgstr "Poltettu oranssi"
+
+msgid "CMS"
+msgstr "CMS"
+
+msgid "CRC"
+msgstr "CRC-virheentarkistus"
+
+msgid "CVS"
+msgstr "CVS-versiohallinta"
+
+msgid "Calendar"
+msgstr "Kalenteri"
+
+msgid "Camouflage"
+msgstr "Maastokuviointi"
+
+#, c-format
+msgid "Can't connect to IMAP server: %s"
+msgstr "IMAP-palvelimeen ei saatu yhteytt‰: %s"
+
+msgid "Cancel Problem Report"
+msgstr "Peru ongelmaviesti"
+
+msgid "Cancel"
+msgstr "Peru"
+
+#, c-format
+msgid "Cannot remove; children exist (%s)"
+msgstr "Ei voida poistaa; lapsia olemassa (%s)"
+
+msgid ""
+"Cannot reorder, number of entries supplied for reorder does not match number "
+"stored."
+msgstr ""
+"Ei voi j‰rjest‰‰, j‰rjestett‰vien m‰‰r‰ ei vastaa talletettujen m‰‰r‰‰."
+
+msgid "Cell Phone"
+msgstr "Puhelin(GSM)"
+
+msgid "Celtic (ISO-8859-14)"
+msgstr "Keltti (ISO-8859-14)"
+
+msgid "Central European (ISO-8859-2)"
+msgstr "Keski-Eurooppa (ISO-8859-2)"
+
+msgid "Certificate Details"
+msgstr "Varmenteen tiedot"
+
+msgid "Chair Person"
+msgstr "Puheenjohtaja"
+
+msgid "Change"
+msgstr "Muuta"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Valitse valintaruuduista suoritettavat toimenpiteet."
+
+msgid "Checkbook"
+msgstr "Tilikirja"
+
+msgid "Chinese Simplified (GB2312)"
+msgstr "Kiina yksikertaistettu (GB2312)"
+
+msgid "Chinese Traditional (Big5)"
+msgstr "Kiina perinteinen (Big5)"
+
+msgid "Choose a password"
+msgstr "Valitse salasana"
+
+msgid "Choose a username"
+msgstr "Valitse k‰ytt‰j‰tunnus"
+
+msgid "Choose an action:"
+msgstr "Valitse toiminto:"
+
+#, c-format
+msgid "Class definition of %s not found."
+msgstr "Luokkam‰‰rityst‰ %s ei lˆytynyt."
+
+msgid "Click to Continue"
+msgstr "Valitse jatkaaksesi"
+
+msgid "Client Ticket"
+msgstr "Asiakas lipuke"
+
+msgid "Client"
+msgstr "Asiakas"
+
+msgid "Close Help Window"
+msgstr "Sulje ohjeikkuna"
+
+msgid "Close Help"
+msgstr "Sulje ohje"
+
+msgid "Close Window"
+msgstr "Sulje ikkuna"
+
+msgid "Color Picker"
+msgstr "V‰rivalitsin"
+
+msgid "Color"
+msgstr "V‰ri"
+
+msgid "Comics"
+msgstr "Sarjakuvat"
+
+msgid "Comment"
+msgstr "Kommentti"
+
+msgid "Common Name"
+msgstr "Yleinen nimi"
+
+msgid "Company"
+msgstr "Yritys"
+
+msgid "Completed"
+msgstr "Suoritettu"
+
+msgid "Configuration"
+msgstr "Asennus"
+
+msgid "Configure"
+msgstr "Asenna"
+
+msgid "Confirm Password"
+msgstr "Vahvista kirjoittamalla salasana uudestaan"
+
+#, c-format
+msgid "Connection refused to the public keyserver. Reason: %s (%s)"
+msgstr "Yhteys julkisten avainten palvelimelle ep‰onnistui. Virhe: %s (%s)"
+
+msgid "Connection to FTP server failed."
+msgstr "Yhteys ftp-palvelimelle ep‰onnistui."
+
+msgid "Content Goes Here!"
+msgstr "Sis‰ltˆ tulee t‰h‰n!"
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "'%s':n sis‰ltˆ"
+
+#, c-format
+msgid "Copy failed: %s"
+msgstr "Kopiointi ep‰onnistui: %s"
+
+msgid "Copy"
+msgstr "Kopioi"
+
+msgid "Cornflower"
+msgstr "Maissinkukka"
+
+msgid "Could not PGP encrypt message."
+msgstr "Viestin PGP-salausta ei voitu tehd‰."
+
+msgid "Could not PGP sign message."
+msgstr "Viestiin ei voitu muodostaa PGP-allekirjoitusta."
+
+msgid "Could not S/MIME encrypt message."
+msgstr "Viestin S/MIME-salausta ei voitu tehd‰."
+
+msgid "Could not S/MIME sign message."
+msgstr "Viestiin ei voitu muodostaa S/MIME-allekirjoitusta."
+
+#, c-format
+msgid "Could not call function %s in application %s."
+msgstr "Funktiota %s ei voitu kutsua ohjelmassa %s."
+
+msgid "Could not connect to database for SQL SessionHandler."
+msgstr "SQL SessionHandler ei saanut yhteytt‰ tietokantaan."
+
+#, c-format
+msgid "Could not connect to table '%s' for SQL SessionHandler."
+msgstr "SQL SessionHandler ei saanut tietokannan taulun '%s' tietoja."
+
+msgid "Could not decrypt PGP data."
+msgstr "PGP-salattua tietoa ei voitu aukaista."
+
+msgid "Could not decrypt S/MIME data."
+msgstr "S/MIME-salattua tietoa ei voitu aukaista."
+
+msgid "Could not determine the recipient's e-mail address."
+msgstr "Viestin l‰hett‰j‰n s‰hkˆpostiosoitetta ei pystytty m‰‰rittelem‰‰n."
+
+msgid "Could not obtain public key from the keyserver."
+msgstr "Julkisten avainten palvelimelta ei saatu julkista avainta."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Yll‰pitomoduulin %s aukaisu ep‰onnistui"
+
+#, c-format
+msgid "Couldn't read %s."
+msgstr "%s:‰‰ ei voitu lukea."
+
+msgid "Country"
+msgstr "Maa"
+
+msgid "Create"
+msgstr "Luo"
+
+msgid "Cross Reference"
+msgstr "Ristiinviittaukset"
+
+msgid "Cut"
+msgstr "Leikkaa"
+
+msgid "Cyrillic (KOI8-R)"
+msgstr "Kyrillinen (KOI8-R)"
+
+msgid "Cyrillic (Windows-1251)"
+msgstr "Kyrillinen (Windows-1251)"
+
+msgid "Cyrillic/Ukrainian (KOI8-U)"
+msgstr "Kyrillinen/Ukraina (KOI8-U)"
+
+msgid "DD"
+msgstr "PP"
+
+msgid "DHTML Rich Text Editor"
+msgstr "DHTML RTF-editori"
+
+msgid "Daily"
+msgstr "P‰ivitt‰in"
+
+msgid "Data"
+msgstr "Dataa"
+
+msgid "December"
+msgstr "joulukuu"
+
+msgid "Declined"
+msgstr "kielt‰ytynyt"
+
+msgid "Default Identity"
+msgstr "Oletusprofiili"
+
+msgid "Default Permissions"
+msgstr "Oletusoikeudet"
+
+msgid "Delegate position"
+msgstr "Delegoi paikka"
+
+msgid "Delegated"
+msgstr "Delegoitu"
+
+msgid "Delete existing alternate template"
+msgstr "Poista olemassaolevat vaihtoehtoinen malli"
+
+msgid "Delete this link"
+msgstr "Poista t‰m‰ linkki"
+
+msgid "Delete"
+msgstr "Poista"
+
+msgid "Deny request for free/busy information"
+msgstr "Kiell‰ vapaa/varatty tietojen pyyntˆ"
+
+msgid "Deny request"
+msgstr "Kiell‰ pyyntˆ"
+
+msgid "Describe the Problem"
+msgstr "Ongelman kuvaus"
+
+msgid "Description"
+msgstr "Kuvaus"
+
+msgid "Details (also in Horde's logfile):"
+msgstr "Tarkemmat tiedot (lˆytyv‰t myˆs Horde:n logitiedostosta):"
+
+msgid "Details have been logged for the administrator."
+msgstr "Tarkemmat tiedot on talletettu yll‰pidon k‰sitelt‰v‰ksi."
+
+msgid "Development"
+msgstr "Kehitys"
+
+msgid "Discussions"
+msgstr "Keskusteluryhm‰t"
+
+msgid "Display Options"
+msgstr "N‰kym‰n asetukset"
+
+msgid "Do not directly access maintenance.php"
+msgstr "ƒl‰ k‰yt‰ suoraan maintenance.php:t‰"
+
+msgid ""
+"Does the first row contain the field names? Check if yes, leave unchecked if "
+"no."
+msgstr ""
+"Sis‰lt‰‰kˆ ensimm‰inen rivi sarakkeiden otsikot? Jos kyll‰, niin valitse. "
+"Jos ei niin j‰t‰ valitsematta."
+
+msgid "Does the first row contain the field names?"
+msgstr "Sis‰lt‰‰kˆ ensimm‰inen rivi sarakkeiden otsikot?"
+
+#, c-format
+msgid "Download %s"
+msgstr "Tallenna %s"
+
+msgid "Download"
+msgstr "Tallenna"
+
+msgid "E-Mail"
+msgstr "S‰hkˆpostiosoite"
+
+msgid "ERR"
+msgstr "VIRHE"
+
+msgid "Edit Block"
+msgstr "Muokkaa osiota"
+
+#, c-format
+msgid "Edit permissions for '%s'"
+msgstr "Muokaa '%s':n oikeuksia"
+
+msgid "Edit"
+msgstr "Muokkaa"
+
+msgid "Email Address"
+msgstr "S‰hkˆpostiosoite"
+
+msgid "Email addresses must match."
+msgstr "S‰hkˆpostiosoitteiden pit‰‰ olla samat."
+
+msgid "Email"
+msgstr "S‰hkˆposti"
+
+msgid "Empty result."
+msgstr "Tyhj‰ vastaus."
+
+msgid "End"
+msgstr "P‰‰ttyy"
+
+#, c-format
+msgid "Error sending reply: %s."
+msgstr "Virhe l‰hetett‰ess‰ vastausta: %s."
+
+msgid "Error"
+msgstr "Virhe"
+
+msgid "Event Creator"
+msgstr "Tapahtuman luoja"
+
+msgid "Every 15 minutes"
+msgstr "15 minuutin v‰lein"
+
+msgid "Every 30 seconds"
+msgstr "30 sekunnin v‰lein"
+
+msgid "Every 5 minutes"
+msgstr "5 minuutin v‰lein"
+
+msgid "Every Login"
+msgstr "Jokaisella sis‰‰nkirjautumisella"
+
+msgid "Every half hour"
+msgstr "Puolen tunnin v‰lein"
+
+msgid "Every minute"
+msgstr "Minuutin v‰lein"
+
+msgid "Example values:"
+msgstr "Esimerkkiarvot:"
+
+msgid "Execute"
+msgstr "Suorita"
+
+msgid "Expand"
+msgstr "Laajenna"
+
+msgid "Expand/collapse section"
+msgstr "Laajenna/pienenn‰ osio"
+
+msgid "Expiration Date"
+msgstr "Loppup‰iv‰m‰‰r‰"
+
+msgid "Exponent"
+msgstr "Exponentti"
+
+msgid "Failed retrieving preferences."
+msgstr "Asetusten haku ep‰onnistui."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Yhteys LDAP-palvelimeen ep‰onnistui."
+
+msgid "Failed to connect to SMB server."
+msgstr "Yhteys SMB-palvelimeen ep‰onnistui."
+
+#, c-format
+msgid "Failed to retrieve: %s"
+msgstr "Ei voitu hakea: %s"
+
+msgid "Fatal Error!"
+msgstr "Vakava virhe!"
+
+msgid "Fax"
+msgstr "Faksi"
+
+msgid "February"
+msgstr "helmikuu"
+
+#, c-format
+msgid "File Count: %s file"
+msgstr "Tiedostojen lukum‰‰r‰: %s tiedosto"
+
+#, c-format
+msgid "File Count: %s files"
+msgstr "Tiedostojen lukum‰‰r‰: %s tiedostoa"
+
+msgid "File Manager"
+msgstr "Tiedostojen k‰sittely"
+
+msgid "File Name"
+msgstr "Tiedoston nimi"
+
+msgid "File uploads not supported."
+msgstr "Tiedostojen tuonti ei ole k‰ytett‰viss‰."
+
+msgid "Filters"
+msgstr "Suodattimet"
+
+msgid "Follow up task"
+msgstr "Jatka teht‰v‰‰"
+
+msgid "Forms"
+msgstr "Lomakkeet"
+
+msgid "Forums"
+msgstr "Keskusteluryhm‰t"
+
+msgid "Forwardings"
+msgstr "S‰hkˆpostin uudelleenohjaukset"
+
+msgid "Free/Busy Information"
+msgstr "Vapaa/varattu tiedot"
+
+msgid "Free/Busy Reply"
+msgstr "Vapaa/varattu vastaus"
+
+msgid "Free/Busy Request Responce"
+msgstr "Vastaus vapaa/varattu pyyntˆˆn"
+
+msgid "Free/Busy Request"
+msgstr "Vapaa/varattu pyyntˆ"
+
+msgid "Full Description:"
+msgstr "Pidempi kuvaus:"
+
+msgid "Full Name"
+msgstr "Koko nimi"
+
+msgid "Funny note"
+msgstr "Hauska komenntti"
+
+#, c-format
+msgid "Generate %s Configuration"
+msgstr "Tee %s asetukset"
+
+msgid "Given Name"
+msgstr "Etunimi"
+
+msgid "Greek (ISO-8859-7)"
+msgstr "Kreikka (ISO-8859-7)"
+
+msgid "Green"
+msgstr "Vihre‰"
+
+msgid "Grey"
+msgstr "Harmaa"
+
+msgid "Group Administration"
+msgstr "Ryhm‰n yll‰pito"
+
+msgid "Group names must be non-empty"
+msgstr "Ryhm‰n nimi ei saa olla tyhj‰"
+
+msgid "Groups"
+msgstr "Ryhm‰t"
+
+msgid "Guest Access"
+msgstr "Vierailija p‰‰sy"
+
+msgid "Guest Permissions"
+msgstr "Vierailijan oikeudet"
+
+msgid "Guest Services"
+msgstr "Vierailijan palvelut"
+
+msgid "HTTP Authentication not found."
+msgstr "HTTP autentikointia ei lˆytynyt."
+
+msgid "HTTPS is currently not supported."
+msgstr "HTTPS ei ole k‰ytett‰viss‰."
+
+msgid "Hash-Algorithm"
+msgstr "Hash-algoritmi"
+
+msgid "Headlines"
+msgstr "Otsikot"
+
+msgid "Hebrew (ISO-8859-8-I)"
+msgstr "Hebrea (ISO-8859-8-I)"
+
+msgid "Help"
+msgstr "Ohje"
+
+msgid "Home Address"
+msgstr "Kotiosoite"
+
+msgid "Home Phone"
+msgstr "Puhelin(koti)"
+
+msgid "Home"
+msgstr "Koti"
+
+msgid "Horde Administration"
+msgstr "Horde yll‰pito"
+
+msgid "Horde Configuration"
+msgstr "Horde asetukset"
+
+msgid "Horde is not properly configured"
+msgstr "Horde-ohjelmisto ei ole asennettu oikein"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "How many fields (columns) are there?"
+msgstr "Kenttien (sarakkeiden) lukum‰‰r‰."
+
+#, c-format
+msgid "IMAP mailbox creation failed: %s"
+msgstr "IMAP-postilaatikon luonti ep‰onnistui: %s"
+
+#, c-format
+msgid "IMAP mailbox deletion failed: %s"
+msgstr "IMAP-postilaatikon poisto ep‰onnistui: %s"
+
+#, c-format
+msgid "IMAP mailbox quota creation failed: %s"
+msgstr "IMAP-postilaatikon kiintiˆn luonti ep‰onnistui: %s"
+
+msgid "IP Address not available."
+msgstr "IP-osoite ei ole k‰ytett‰viss‰."
+
+msgid "IP Address not within allowed CIDR block."
+msgstr "IP-osoite ei ole sallitun CIDR-blokin sis‰ll‰"
+
+msgid "Icons Only"
+msgstr "Vain ikonit"
+
+msgid "Icons with text"
+msgstr "Ikonit ja teksti"
+
+#, c-format
+msgid "Import Error: Expected \"BEGIN\" on line %d."
+msgstr "Virhe tuonnissa: Odotettua merkkijonoa \"BEGIN\" ei ollut rivill‰ %d."
+
+#, c-format
+msgid "Import Error: Expecting BEGIN on line %d."
+msgstr "Virhe tuonnissa: Odotettua merkkijonoa BEGIN ei ollut rivill‰ %d."
+
+msgid "Import Error: Malformed line."
+msgstr "Virhe tuonnissa: Ep‰kelpo rivi."
+
+#, c-format
+msgid "Import Error: Mismatch; expecting END:%s on line %d"
+msgstr "Virhe tuonnissa: odotettua merkkijonoa \"END:%s\" ei ollut rivill‰ %d."
+
+#, c-format
+msgid "Import Error: Type mismatch. Expected \"END:%s\" on line %d."
+msgstr "Virhe tuonnissa: Tyyppivirhe, odotettua merkkijonoa \"END:%s\" ei ollut rivill‰ %d."
+
+msgid "Import Error: Unexpected end of file."
+msgstr "Virhe tuonnissa: Tiedosto p‰‰ttyi odottamattomasti keskener‰isen‰."
+
+#, c-format
+msgid "Import Tasks, Step %d"
+msgstr "Teht‰vien tuonti, askel %d"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Tuotu kentt‰: %s"
+
+msgid "Imported fields:"
+msgstr "Tuodut kent‰t:"
+
+msgid "In Process"
+msgstr "Tekeill‰"
+
+msgid "Incorrect action code given."
+msgstr "V‰‰r‰ toimintokoodi annettu."
+
+msgid "Information"
+msgstr "Tiedot"
+
+msgid "Insert alternate template"
+msgstr "Laita vaihtoehtoinen malli"
+
+msgid "Invalid Action selected for this component."
+msgstr "T‰lle komponentille on valittu v‰‰r‰ toiminto."
+
+msgid "Invalid data submitted."
+msgstr "L‰hetettiin ep‰kelpoa tietoa."
+
+msgid "Issuer"
+msgstr "Liikkeellelaskija"
+
+msgid "Italic"
+msgstr "Kursivoitu"
+
+msgid "January"
+msgstr "tammikuu"
+
+msgid "Japanese (ISO-2022-JP)"
+msgstr "Japani (ISO-2022-JP)"
+
+msgid "July"
+msgstr "hein‰kuu"
+
+msgid "June"
+msgstr "kes‰kuu"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Autentikointi ep‰onnistui Kerberos-palvelimelle."
+
+msgid "Key Creation"
+msgstr "Avaimen luonti"
+
+msgid "Key Fingerprint"
+msgstr "Avaimen tunniste"
+
+msgid "Key Length"
+msgstr "Avaimen pituus"
+
+msgid "Key Type"
+msgstr "Avaimen tyyppi"
+
+msgid "Key already exists on the public keyserver."
+msgstr "Avain on jo julkisten avainten palvelimella"
+
+msgid "Korean (EUC-KR)"
+msgstr "Korea (EUC-KR)"
+
+msgid "Language"
+msgstr "Kieli"
+
+#, c-format
+msgid "Last login: %s from %s"
+msgstr "Edellinen sis‰‰nkirjautuminen: %s, %s"
+
+#, c-format
+msgid "Last login: %s"
+msgstr "Edellinen sis‰‰nkirjautuminen: %s"
+
+msgid "Last login: Never"
+msgstr "Edellinen sis‰‰nkirjautuminen: Ei milloinkaan"
+
+msgid "Lavender"
+msgstr "Laventeli"
+
+msgid "Layout"
+msgstr "Asettelu"
+
+msgid "Light Blue"
+msgstr "Vaaleansininen"
+
+msgid "List Help Topics"
+msgstr "N‰yt‰ ohjeiden aiheet"
+
+msgid "Listing users is disabled."
+msgstr "K‰ytt‰j‰tietojen n‰ytt‰minen on estetty."
+
+msgid "Local Server"
+msgstr "Paikallinen palvelin"
+
+msgid "Location"
+msgstr "Paikka"
+
+msgid "Log in"
+msgstr "Kirjaudu sis‰‰n"
+
+#, c-format
+msgid "Log out of %s"
+msgstr "Kirjaudu ulos %s palvelusta"
+
+msgid "Log out"
+msgstr "Kirjaudu ulos"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Sis‰‰nkirjautumisesi ep‰onnistui. Todenn‰kˆisesti kirjoitit "
+"k‰ytt‰j‰tunnuksesi tai salasanasi v‰‰rin."
+
+msgid "Logout"
+msgstr "Kirjaudu ulos"
+
+msgid "Loyola Blue"
+msgstr "Loyolansininen"
+
+msgid "Loyola"
+msgstr "Loyola"
+
+msgid "MM"
+msgstr "KK"
+
+msgid "MS-TNEF Attachment contained no data."
+msgstr "MS-TNEF liitetiedosto oli tyhj‰."
+
+msgid "MSG"
+msgstr "VIESTI"
+
+msgid "Mail & News"
+msgstr "Posti ja Uutiset"
+
+msgid "Mail"
+msgstr "Posti"
+
+msgid "March"
+msgstr "maaliskuu"
+
+msgid "Matching fields"
+msgstr "T‰sm‰‰v‰t kent‰t"
+
+msgid "May"
+msgstr "toukokuu"
+
+msgid "Meeting Cancellation"
+msgstr "Tapaamisen peruutus"
+
+msgid "Meeting Information"
+msgstr "Tapaamisen tiedot"
+
+msgid "Meeting Proposal"
+msgstr "Tapaamisehdotus"
+
+msgid "Meeting Reply"
+msgstr "Vastaus tapaamiseen"
+
+msgid "Meeting Update Request"
+msgstr "Tapaamisen p‰ivityspyyntˆ"
+
+msgid "Meeting Update"
+msgstr "Tapaamisen p‰ivitys"
+
+msgid "Meetings"
+msgstr "Tapaamiset"
+
+msgid "Members"
+msgstr "J‰senet"
+
+msgid "Menu mode:"
+msgstr "Menun muoto:"
+
+msgid ""
+"Message Verified Successfully but the signer's certificated could not be "
+"verified."
+msgstr ""
+"Viestin tarkistus onnistui, mutta allekirjoittajan varmennetta ei voitu "
+"tarkistaa."
+
+msgid "Message"
+msgstr "Viesti"
+
+#, c-format
+msgid "Method '%s' is not defined"
+msgstr "Metodia '%s' ei ole m‰‰ritelty"
+
+msgid "Method"
+msgstr "Metodi"
+
+msgid "Mime Type"
+msgstr "Mime-tyyppi"
+
+msgid "Mobile Mail"
+msgstr "Mobiilis‰hkˆposti"
+
+msgid "Modified Date"
+msgstr "Muokkauksen p‰iv‰m‰‰r‰"
+
+msgid "Modulus"
+msgstr "Jakaja"
+
+msgid "Monthly"
+msgstr "Kuukausittain"
+
+msgid "Move Down"
+msgstr "Siirr‰ alas"
+
+msgid "Move Left"
+msgstr "Siirr‰ vasemmalle"
+
+msgid "Move Right"
+msgstr "Siirr‰ oikealle"
+
+msgid "Move Up"
+msgstr "Siirr‰ ylˆs"
+
+#, c-format
+msgid "Move failed: %s"
+msgstr "Siirto ep‰onnistui: %s"
+
+msgid "Mozilla"
+msgstr "Mozilla"
+
+msgid "My Account"
+msgstr "K‰ytt‰j‰tunnukseni"
+
+msgid "My Summary Layout"
+msgstr "Yhteenvetoni asettelu"
+
+msgid "My Summary"
+msgstr "Yhteenvetoni"
+
+msgid "NO, I Do NOT Agree"
+msgstr "EI, EN suostu"
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid "NeXT"
+msgstr "NeXT"
+
+msgid "Needs Action"
+msgstr "Tarvitsee toimenpiteit‰"
+
+msgid "Network"
+msgstr "Verkko"
+
+msgid "Never"
+msgstr "Ei koskaan"
+
+msgid "New Username (optional)"
+msgstr "Uusi k‰ytt‰j‰tunnus (vapaaehtoinen)"
+
+msgid "Next options"
+msgstr "Seuraavat asetukset"
+
+msgid "Next"
+msgstr "Seuraava"
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "Asetuksia ei lˆytynyt FTP VFS:lle."
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr "Asetuksia ei lˆytynyt LDAP preferences:lle."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr "Asetuksia ei lˆytynyt SQL Categories:lle."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr "Asetuksia ei lˆytynyt SQL Preferences:lle."
+
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr "Asetuksia ei lˆytynyt SQL SessionHandler:lle."
+
+msgid "No configuration information specified for SQL Tokens."
+msgstr "Asetuksia ei lˆytynyt SQL Tokens:lle."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "Asetuksia ei lˆytynyt SQL VFS:lle."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr "Asetuksia ei lˆytynyt SQL authentication:lle."
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr "Asetuksia ei lˆytynyt SQL-File VFS:lle."
+
+msgid "No description found"
+msgstr "Kuvausta ei lˆytynyt"
+
+msgid "No password provided for IMAP authentication."
+msgstr "Salasanaa ei ole annettu IMAP-autentikoinnissa."
+
+msgid "No password provided for Kerberos authentication."
+msgstr "Salasanaa ei ole annettu Kerberos-autentikoinnissa."
+
+msgid "No password provided for LDAP authentication."
+msgstr "Salasanaa ei ole annettu LDAP-autentikoinnissa."
+
+msgid "No password provided for RADIUS authentication."
+msgstr "Salasanaa ei ole annettu RADIUS-autentikoinnissa."
+
+msgid "No password provided for SMB authentication."
+msgstr "Salasanaa ei ole annettu SMB-autentikoinnissa."
+
+msgid "No preferences are available."
+msgstr "Asetukset eiv‰t ole saatavilla."
+
+msgid "No valid XML data returned"
+msgstr "Kaikki palautunut XML-data oli ep‰kelpoa"
+
+msgid "No values"
+msgstr "Ei arvoja"
+
+msgid "Non Participant"
+msgstr "Ei osallistuja"
+
+msgid "None"
+msgstr "Ei ainuttakaan"
+
+msgid "Nordic (ISO-8859-10)"
+msgstr "Lappi/Pohjoismaat/Eskimo (ISO-8859-10)"
+
+msgid "Not After"
+msgstr "Ei j‰lkeen"
+
+msgid "Not Before"
+msgstr "Ei ennen"
+
+msgid "Not supported."
+msgstr "Ei tuettu."
+
+msgid "Notes"
+msgstr "Muistiinpanot"
+
+msgid "Notice"
+msgstr "Ilmoitus"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Ilmoituskuuntelijaa %s ei lˆytynyt."
+
+msgid "November"
+msgstr "marraskuu"
+
+msgid "OK"
+msgstr "OK"
+
+msgid "Object Creator"
+msgstr "Objektin luoja"
+
+msgid "October"
+msgstr "lokakuu"
+
+msgid "Off"
+msgstr "Pois p‰‰lt‰"
+
+msgid "Office"
+msgstr "Toimisto"
+
+msgid "On"
+msgstr "P‰‰ll‰"
+
+msgid "Only one email address allowed."
+msgstr "Voit laittaa vain yhden s‰hkˆpostiosoitteen."
+
+msgid "Optional Participant"
+msgstr "mahdollinen osallistuja"
+
+msgid "Options"
+msgstr "Asetukset"
+
+msgid "Organisation"
+msgstr "Organisaatio"
+
+msgid "Organisational Unit"
+msgstr "Organisaatioyksikkˆ"
+
+msgid "Original application template"
+msgstr "Alkuper‰inen ohjelman malli"
+
+#, c-format
+msgid "Original templates in %s:"
+msgstr "Alkuper‰iset mallit %s:ss‰:"
+
+msgid "Other Information"
+msgstr "Muut tiedot"
+
+msgid "Owner Permissions"
+msgstr "Omistajan oikeudet"
+
+msgid "PGP Digital Signature"
+msgstr "Digitaalinen PGP-allekirjoitus"
+
+msgid "PGP Encrypted Data"
+msgstr "PGP-salattua tietoa"
+
+msgid "PGP Public Key"
+msgstr "Julkinen PGP-avain"
+
+msgid "PGP Signed/Encrypted Data"
+msgstr "PGP-allekirjoitettua ja salattua tietoa"
+
+msgid "PHP Shell"
+msgstr "PHP-komentotulkki"
+
+msgid "Password"
+msgstr "Salasana"
+
+msgid "Password: "
+msgstr "Salasana: "
+
+msgid "Password:"
+msgstr "Salasana:"
+
+msgid "Passwords cannot be blank."
+msgstr "Salasana ei saa olla tyhj‰."
+
+msgid "Passwords must match."
+msgstr "Salasanojen pit‰‰ olla samat."
+
+msgid "Paste"
+msgstr "Liit‰"
+
+msgid "Perform Maintenance Operations"
+msgstr "Suorita yll‰pitotoimenpiteet"
+
+msgid "Perform maintenance operations on login?"
+msgstr "Suorita yll‰pitotoimenpiteet sis‰‰nkirjautumisen yhteydess‰."
+
+#, c-format
+msgid "Permission denied for %s/%s."
+msgstr "K‰yttˆoikeus kielletty %s/%s"
+
+msgid "Permissions Administration"
+msgstr "Oikeuksien yll‰pito"
+
+msgid "Permissions"
+msgstr "Oikeudet"
+
+msgid "Personal Information"
+msgstr "Omat tiedot"
+
+msgid "Phone"
+msgstr "Puhelin"
+
+msgid "Please enter a month and a year."
+msgstr "Anna kuukausi ja vuosi."
+
+msgid "Please enter a valid date; check the number of days in the month."
+msgstr "Anna oikea p‰iv‰m‰‰r‰; Tarkista p‰ivien lukum‰‰r‰ kuukaudessa."
+
+msgid "Please provide a summary of the problem."
+msgstr "Anna lyhyt kuvaus ongelmasta."
+
+msgid "Please provide your username and password"
+msgstr "Anna k‰ytt‰j‰tunnuksesi ja salasanasi"
+
+msgid ""
+"Please read the following text.  You MUST agree with the terms to use the "
+"system."
+msgstr ""
+"Lue seuraava teksti. Sinun PITƒƒ suostua k‰yttˆehtoihin voidaksesi k‰ytt‰‰ "
+"j‰rjestelm‰‰."
+
+msgid ""
+"Please review the following information, and then select an action from the "
+"menu below."
+msgstr ""
+"Lue seuraavat tiedot ja valitse sen j‰lkeen sopiva toimenpide allaolevasta "
+"valikosta."
+
+msgid "Please select an action from the menu below."
+msgstr "Valitse toiminto allaolevasta valikosta."
+
+msgid "Polls"
+msgstr "Mielipidetutkimukset"
+
+msgid "Prefs_ldap: Required LDAP extension not found."
+msgstr "Prefs_ldap: Tarvittavaa LDAP laajennusta ei lˆytynyt."
+
+msgid "Prefs_session: Required session extension not found."
+msgstr "Prefs_session: Tarvittavaa session laajennusta ei lˆytynyt"
+
+msgid "Presentations"
+msgstr "Esitykset"
+
+msgid "Preview Text"
+msgstr "Esikatselu teksti"
+
+msgid "Previous options"
+msgstr "Edelliset asetukset"
+
+msgid "Previous task"
+msgstr "Edellinen teht‰v‰"
+
+msgid "Private Key"
+msgstr "Salainen avain"
+
+msgid "Problem Description"
+msgstr "Ongelman kuvaus"
+
+msgid "Problem?"
+msgstr "Ongelma?"
+
+msgid "Public Key Algorithm"
+msgstr "Julkisen avaimen algoritmi"
+
+msgid "Public Key"
+msgstr "Julkinen avain"
+
+msgid "Public/Private keypair not generated successfully."
+msgstr "Julkisen/salaisen avainparin luonti ep‰onnistui."
+
+#, c-format
+msgid "RSA Public Key (%d bit)"
+msgstr "RSA Julkinen avain (%d bitti‰)"
+
+msgid "Ratio"
+msgstr "Suhde"
+
+msgid "Read"
+msgstr "Luku"
+
+#, c-format
+msgid "Really delete %s? This operation cannot be undone."
+msgstr "Poistetaanko %s? T‰t‰ toimintoa ei voi peruuttaa."
+
+msgid "Refresh Portal View:"
+msgstr "P‰ivit‰ yhteenveton‰kym‰‰:"
+
+msgid "Remember the free/busy information."
+msgstr "Muista vapaa/varattu tiedot."
+
+msgid "Remote Servers"
+msgstr "Et‰palvelimet"
+
+msgid "Remote URL (http://www.example.com/horde):"
+msgstr "Et‰isen palvelun URL (http://www.example.com/horde):"
+
+msgid "Remote summaries"
+msgstr "Et‰yhteenvedot"
+
+msgid "Remove Block"
+msgstr "Poista osio"
+
+msgid "Remove from my calendar"
+msgstr "Poista kalenteristani"
+
+msgid "Remove pair"
+msgstr "Poista pari"
+
+msgid "Remove user"
+msgstr "Poista k‰ytt‰j‰"
+
+#, c-format
+msgid "Remove user: %s"
+msgstr "Poista k‰ytt‰j‰: %s"
+
+msgid "Remove"
+msgstr "Poista"
+
+msgid "Reply Sent."
+msgstr "Vastaus on l‰hetetty."
+
+msgid "Reply with Not Supported Message"
+msgstr "Vastaa ei tuettu viestill‰"
+
+msgid "Reply with free/busy for next 2 months."
+msgstr "Vastaa seuraavan kahden kuukauden vapaa/varattu tiedoilla"
+
+msgid "Reply with requested free/busy information."
+msgstr "Vastaa pyydetyill‰ vapaa/varattu tiedoilla"
+
+#, c-format
+msgid "Reply: %s"
+msgstr "Vastaus: %s"
+
+msgid "Request couldn't be answered. Returned errorcode: "
+msgstr "Pyyntˆˆn ei voitu vastata. Virhekoodi: "
+
+#, c-format
+msgid "Required '%s' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa '%s'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+#, c-format
+msgid "Required '%s' not specified in VFS configuration."
+msgstr "Tarvittavaa '%s'-tietoa ei ollut m‰‰ritelty VFS asetuksissa."
+
+#, c-format
+msgid "Required '%s' not specified in categories configuration."
+msgstr "Tarvittavaa '%s'-tietoa ei ollut m‰‰ritelty categories asetuksissa."
+
+#, c-format
+msgid "Required '%s' not specified in preferences configuration."
+msgstr "Tarvittavaa '%s'-tietoa ei ollut m‰‰ritelty preferences asetuksissa."
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr "Tarvittavaa 'basedn'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr "Tarvittavaa 'bdc_hostspec'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa 'database'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr "Tarvittavaa 'database'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'database' not specified in token configuration."
+msgstr "Tarvittavaa 'database'-tietoa ei ollut m‰‰ritelty token asetuksissa."
+
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr "Tarvittavaa 'domain'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa 'hostspec'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr "Tarvittavaa 'hostspec'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'hostspec' not specified in token configuration."
+msgstr "Tarvittavaa 'hostspec'-tietoa ei ollut m‰‰ritelty token asetuksissa."
+
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa 'password'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr "Tarvittavaa 'password'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'password' not specified in token configuration."
+msgstr "Tarvittavaa 'password'-tietoa ei ollut m‰‰ritelty token asetuksissa."
+
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr "Tarvittavaa 'pdc_hostspec'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa 'phptype'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr "Tarvittavaa 'phptype'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'phptype' not specified in token configuration."
+msgstr "Tarvittavaa 'phptype'-tietoa ei ollut m‰‰ritelty token asetuksissa."
+
+msgid "Required 'query_auth' not specified in authentication configuration."
+msgstr "Tarvittavaa 'query_auth'-tietoa ei ollut m‰‰ritelty authentication asetuksissa"
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr "Tarvittavaa 'uid'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr "Tarvittavaa 'username'-tietoa ei ollut m‰‰ritelty SessionHandler asetuksissa."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr "Tarvittavaa 'username'-tietoa ei ollut m‰‰ritelty authentication asetuksissa."
+
+msgid "Required 'username' not specified in token configuration."
+msgstr "Tarvittavaa 'username'-tietoa ei ollut m‰‰ritelty token asetuksissa."
+
+msgid "Required Participant"
+msgstr "Pakollinen osallistuja"
+
+msgid "Reseller Ticket"
+msgstr "Myyj‰n lipuke"
+
+msgid "Reseller"
+msgstr "Myyj‰"
+
+msgid "Reset"
+msgstr "Tyhjenn‰"
+
+msgid "Return to Options"
+msgstr "Palaa asetuksiin"
+
+msgid "Role"
+msgstr "Rooli"
+
+msgid "Run"
+msgstr "Suorita"
+
+msgid "S/MIME Cryptographic Signature"
+msgstr "S/MIME kryptograafinen allekirjoitus"
+
+msgid "SQL Shell"
+msgstr "SQL-komentotulkki"
+
+msgid "SSH"
+msgstr "SSH"
+
+msgid "SUCCESS"
+msgstr "ONNISTUI"
+
+#, c-format
+msgid "Save '%s'"
+msgstr "Talleta '%s'"
+
+msgid "Save Options"
+msgstr "Talleta asetukset"
+
+msgid "Select a date"
+msgstr "Valitse p‰iv‰m‰‰r‰"
+
+msgid "Select a group to add"
+msgstr "Valitse lis‰tt‰v‰ ryhm‰"
+
+msgid "Select a new owner"
+msgstr "Valitse uusi omistaja"
+
+msgid "Select a server"
+msgstr "Valitse palvelin"
+
+msgid "Select a user to add"
+msgstr "Valitse lis‰tt‰v‰ k‰ytt‰j‰"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Valitse tarvittavat merkit alla olevista valikoista. "
+"Voit sen j‰lkeen kopioida ja liitt‰‰ merkit tekstiin."
+
+msgid "Select the date delimiter:"
+msgstr "Valitse p‰iv‰yksen erotinmerkki:"
+
+msgid "Select the date format:"
+msgstr "Valitse p‰iv‰yksen esitystapa:"
+
+msgid "Select the time format:"
+msgstr "Valitse ajan esitystapa:"
+
+msgid "Select two matching fields."
+msgstr "Valitse kaksi yhteensopivaa kentt‰‰."
+
+msgid "Select your color scheme."
+msgstr "Valitse v‰riteema."
+
+msgid "Select your preferred language:"
+msgstr "Valitse k‰ytett‰v‰ kieli:"
+
+msgid "Select"
+msgstr "Valitse"
+
+msgid "Send Latest Information"
+msgstr "L‰het‰ viimeisimm‰t tiedot"
+
+msgid "Send Problem Report"
+msgstr "L‰het‰ ongelmaviesti"
+
+msgid "September"
+msgstr "syyskuu"
+
+msgid "Serial Number"
+msgstr "Sarjanumero"
+
+msgid "Set up remote servers that you want to access from your portal."
+msgstr "Voit asettaa ulkoisten palvelimien asetukset, joita haluat k‰ytt‰‰ portaalissa."
+
+msgid "Set your preferred display language."
+msgstr "Voit asettaa ohjelmassa k‰ytett‰v‰n kielen."
+
+msgid ""
+"Set your startup application, color scheme, page refreshing, and other "
+"display options."
+msgstr ""
+"Voit asettaa aloitusohjelman, v‰riteeman, n‰kym‰n p‰ivityksen ja muita "
+"n‰kym‰‰n liityvi‰ asetuksia."
+
+msgid "Short Summary:"
+msgstr "Lyhyt kuvaus:"
+
+msgid "Should access keys be defined for most links?"
+msgstr "Aseteta pikavalintan‰pp‰imet useimmille linkeille."
+
+msgid "Show last login time when logging in?"
+msgstr "N‰yt‰ edellisen sis‰‰nkirjautumisen p‰iv‰ys."
+
+msgid "Show"
+msgstr "N‰yt‰"
+
+msgid "Shrink or move neighbouring block(s) out of the way first"
+msgstr "Pienenn‰ tai siirra viereisi‰ osioita, jotta ne eiv‰t ole tiell‰"
+
+msgid "Shrink"
+msgstr "Pienenn‰"
+
+msgid "Sign up if not registered"
+msgstr "Kirjaudu, jos et ole viel‰ rekisterˆitynyt"
+
+msgid "Sign up"
+msgstr "Kirjaudu"
+
+msgid "Signature Algorithm"
+msgstr "Allekirjoituksen algoritmi"
+
+msgid "Signature"
+msgstr "Allekirjoitus"
+
+msgid "Simplex"
+msgstr "Simplex"
+
+msgid "Size"
+msgstr "Koko"
+
+msgid "Skip Maintenance"
+msgstr "Ohita yll‰pitoteht‰v‰t"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Joitakin Horden asetustiedostoja puuttuu:"
+
+msgid "South European (ISO-8859-3)"
+msgstr "Etel‰-Eurooppa (ISO-8859-3)"
+
+msgid "SpamAssassin"
+msgstr "SpamAssasin"
+
+msgid "Special Character Input"
+msgstr "Erikoismerkkien syˆttˆ"
+
+msgid "Start"
+msgstr "Alkaa"
+
+msgid "State or Province"
+msgstr "L‰‰ni tai alue"
+
+msgid "Status"
+msgstr "Tila"
+
+msgid "Street Address"
+msgstr "Katuosoite"
+
+msgid "Subject Public Key Info"
+msgstr "Yksilˆn julkisen avaimen tiedot"
+
+msgid "Subject"
+msgstr "Yksilˆ"
+
+msgid "Submit"
+msgstr "L‰het‰"
+
+#, c-format
+msgid ""
+"Submitted request to add '%s' to the system. You can not log in until your "
+"request has been approved."
+msgstr ""
+"L‰hetettiin '%s':n lis‰yspyyntˆ. Et voi kirjautua sis‰‰n ennenkuin "
+"pyyntˆsi on k‰sitelty ja hyv‰ksytty."
+
+msgid "Success"
+msgstr "Onnistui"
+
+#, c-format
+msgid "Successfully added '%s' to the system."
+msgstr "'%s': lis‰‰minen j‰rjestelm‰‰n onnistui."
+
+#, c-format
+msgid "Successfully deleted '%s'."
+msgstr "'%s': poistettiin onnistuneesti."
+
+#, c-format
+msgid "Successfully removed '%s' from the system."
+msgstr "'%s': onnistuttiin poistamaan j‰rjestelm‰st‰."
+
+#, c-format
+msgid "Successfully updated '%s'"
+msgstr "'%s': p‰ivitys onnistui."
+
+msgid "Summary"
+msgstr "Yhteenveto"
+
+msgid "Support"
+msgstr "Tuki"
+
+msgid "Surname"
+msgstr "Sukunimi"
+
+msgid "TSV file"
+msgstr "TSV-tiedosto"
+
+msgid "Task"
+msgstr "Teht‰v‰"
+
+msgid "Tasks"
+msgstr "Teht‰v‰t"
+
+msgid "Teal"
+msgstr "Sinisiipitavi"
+
+msgid "Telephone Number"
+msgstr "Puhelinnumero"
+
+msgid "Template Administration"
+msgstr "Mallien hallinta"
+
+msgid "Tentatively Accept request"
+msgstr "Alustavasti hyv‰ksytty vastaus"
+
+msgid "Tentatively Accepted"
+msgstr "Alustavasti hyv‰ksytty"
+
+msgid "Text Only"
+msgstr "Vain teksti"
+
+msgid "Thai (TIS-620)"
+msgstr "Thai (TIS-620)"
+
+#, c-format
+msgid "The %s link to %s has been removed."
+msgstr "%s linkki %s:‰‰n on poistettu."
+
+msgid "The Maintenance:: class did not load successfully"
+msgstr "Maintenance:: -luokan lataaminen ep‰onnistui"
+
+msgid "The Options window has closed. Exiting."
+msgstr "Asetukset ikkuna on suljettu. Poistutaan."
+
+msgid ""
+"The detached SMIME signature block is required to verify the signed message."
+msgstr ""
+"Viestin allekirjoituksen tarkistamiseen tarvitaan erillinen SMIME-allekirjoituslohko."
+
+msgid "The encryption features require a secure web connection."
+msgstr "Salaustoiminnon k‰yttˆ vaati salattua WWW-yhteytt‰."
+
+msgid "The file contained no data."
+msgstr "Tiedosto oli tyhj‰."
+
+msgid "The link has been removed"
+msgstr "Linkki on poistettu"
+
+msgid ""
+"The location of the GnuPG binary must be given to the Crypt_pgp:: class."
+msgstr ""
+"GnuPG ohjelman sijainti pit‰‰ m‰‰ritell‰ Crypt_pgp:: -luokassa."
+
+#, c-format
+msgid "The method %s is not defined in the API for %s."
+msgstr "Metodi %s ei ole m‰‰ritelty %s:n API:ssa."
+
+msgid "The openssl module is required for the Horde_Crypt_smime:: class."
+msgstr "Moduuli openssl tarvitaan Horde_Crypt_smime:: -luokan k‰ytt‰miseksi."
+
+#, c-format
+msgid ""
+"The preference \"%s\" could not be saved because its data exceeded the "
+"maximum allowable size"
+msgstr ""
+"Asetusta \"%s\" koska sen tiedot ylittiv‰t talletustavan suurimman sallitun "
+"rajan"
+
+#, c-format
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"Ohjelmaa, jolla voi katsoa viestityyppi‰ (%s), ei lˆytynyt j‰rjestelm‰st‰."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Rekisteriss‰ m‰‰ritell‰‰n miten Horde-ohjelmat viestitt‰v‰t kesken‰‰n. "
+"Sinun pit‰‰ m‰‰ritell‰ t‰h‰n kaikki k‰ytett‰v‰t Horde-ohjelmat."
+
+#, c-format
+msgid "The server \"%s\" has been deleted."
+msgstr "Palvelin \"%s\" on poistettu."
+
+#, c-format
+msgid "The server \"%s\" has been saved."
+msgstr "Palvelin \"%s\" on talletettu."
+
+msgid "The uploaded data got lost since the last step."
+msgstr "Tuotu tieto h‰visi edellisen kohdan aikana."
+
+msgid "The uploaded file could not be saved."
+msgstr "Tuotua tiedostoa ei voitu tallettaa."
+
+msgid "The user's free/busy information was sucessfully stored."
+msgstr "K‰ytt‰j‰n vapaana/varattu tietojen talletus onnistui."
+
+msgid "There are no parts that can be displayed inline."
+msgstr "Ei ole osia, jotka voidaan n‰ytt‰‰ viestien yhteydess‰."
+
+#, c-format
+msgid ""
+"There are too many characters in this field. You have entered %s characters; "
+"you must enter less than %s."
+msgstr ""
+"T‰ss‰ kent‰ss‰ on liian monta merkki‰. Annoit %s merkki‰; sinun pit‰‰ antaa "
+"v‰hemm‰n kuin %s merkki‰." 
+
+#, c-format
+msgid "There was a problem adding '%s' to the system. %s."
+msgstr "Joitakin ongelmia '%s' lis‰‰misess‰ j‰rjestelm‰‰n. %s."
+
+#, c-format
+msgid "There was a problem adding '%s' to the system: %s"
+msgstr "Joitakin ongelmia '%s' lis‰‰misess‰ j‰rjestelm‰‰n: %s"
+
+#, c-format
+msgid "There was a problem removing '%s' from the system."
+msgstr "Joitakin ongelmia '%s' poistamisessa j‰rjestelm‰st‰."
+
+#, c-format
+msgid "There was a problem updating '%s': %s"
+msgstr "Joitakin ongelmia '%s' p‰ivityksess‰: %s"
+
+#, c-format
+msgid "There was a problem with the file upload: No %s was uploaded."
+msgstr ""
+"Tiedoston tuonnissa oli ongelmia. Yht‰‰n %s ei tuotu"
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was larger than the maximum "
+"allowed size (%d bytes)."
+msgstr ""
+"Tiedoston tuonnissa oli ongelmia. %s koko oli suurempi kuin suurin sallittu "
+"koko (%d tavua)."
+
+#, c-format
+msgid ""
+"There was a problem with the file upload: The %s was only partially uploaded."
+msgstr ""
+"Tiedoston tuonnissa oli ongelmia. %s latautui vain osaksi."
+
+msgid "There was an error importing the contact data."
+msgstr "Yhteystietojen tuonnissa tapahtui virhe."
+
+#, c-format
+msgid "There was an error importing the event: %s."
+msgstr "Tapahtumien tuonnissa tapahtui virhe: %s."
+
+#, c-format
+msgid "There was an error importing this task: %s."
+msgstr "T‰m‰n teht‰v‰n tuonnissa tapahtui virhe: %s."
+
+#, c-format
+msgid "There was an error importing user's free/busy information: %s."
+msgstr "K‰ytt‰j‰n vapaa/varattu tietojen tuonnissa tapahtui virhe: %s."
+
+msgid "There was an unknown error verifying this message."
+msgstr "Viestin tarkistuksessa tapahtui jokin tuntematon virhe."
+
+msgid ""
+"These are the first 100 characters of the first two lines of the imported "
+"file:"
+msgstr ""
+"N‰m‰ ovat 100 ensimm‰ist‰ merkki‰ kahdelta ensimm‰iselt‰ rivilt‰ tuodusta "
+"tiedostosta:"
+
+msgid "This action is not supported."
+msgstr "T‰m‰ toiminto ei ole tuettu."
+
+msgid "This action is not yet implemented."
+msgstr "T‰m‰ toiminto ei ole viel‰ toteutettu."
+
+msgid ""
+"This contact data has been successfully added to your address book. Click "
+"below to view:"
+msgstr ""
+"N‰m‰ yhteystiedot onnistuttiin lis‰‰m‰‰n osoitekirjaasi. Valitse jokin "
+"seuraavista katsottavaksi:"
+
+msgid "This does not appear to be a valid rar archive."
+msgstr "T‰m‰ tiedosto ei vaikuta rar-tiedostolta."
+
+msgid "This does not appear to be a valid zip file."
+msgstr "T‰m‰ tiedosto ei vaikuta zip-tiedostolta."
+
+msgid "This does not seem to be a valid card number."
+msgstr "T‰m‰ ei vaikuta oikealta korttinumerolta."
+
+msgid ""
+"This event has been successfully added to your schedule. Click icon to view:"
+msgstr ""
+"T‰m‰n tapahtuman lis‰ys aikatauluusi onnistui. N‰hd‰ksesi tiedot valitse ikoni:"
+
+msgid "This field is required."
+msgstr "T‰m‰ kentt‰ on pakollinen."
+
+msgid "This field may only contain integers."
+msgstr "T‰ss‰ kent‰ss‰ pit‰‰ olla vain kokonaislukuja."
+
+msgid "This field may only contain numbers and the colon."
+msgstr "T‰ss‰ kent‰ss‰ pit‰‰ olla numeroita ja pilkku-merkkej‰."
+
+msgid "This field may only contain numbers."
+msgstr "T‰ss‰ kent‰ss‰ pit‰‰ olla vain numeroita."
+
+msgid "This field must be a comma or space separated list of integers"
+msgstr "T‰ss‰ kent‰ss‰ pit‰‰ olla lista kokonaislukuja, jotka pit‰‰ olla erotettu pilkulla tai v‰lilyˆnnill‰"
+
+msgid ""
+"This field must contain a color code in the RGB Hex format, for example "
+"'#1234af'."
+msgstr "T‰ss‰ kent‰ss‰ on v‰rim‰‰ritys, jonka pit‰‰ olla RGB Hex muodoss, "
+"esimerkiksi '#1234af'."
+
+msgid ""
+"This file controls the default preferences for Horde, and also controls "
+"which preferences users can alter."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n oletusasetukset Horde:lle ja ne asetukset, "
+"joita k‰ytt‰j‰t voivat muuttaa."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n yhteiset asetukset MIME-ajureille "
+"Horde-j‰rjestelm‰ss‰. N‰m‰ ajurit mahdollistavat ulkoisten ohjelmien, "
+"kuten enscript tai mswordview, k‰ytˆn Horde-j‰rjestelm‰ss‰ sis‰llˆn "
+"muuttamiseksi sopivaan muotoon WWW-selaimilla katselua varten."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"T‰ss‰ tiedostossa asetetaan tyylitiedot, jotka m‰‰rittelev‰t k‰ytett‰v‰t "
+"v‰rit ja kirjasimet Horde-j‰rjestelm‰ss‰ ja niille ohjelmille jotka eiv‰t "
+"m‰‰rittele omia vastaavia asetuksia."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"T‰ss‰ tiedostossa m‰‰ritell‰‰n tiedostop‰‰tteet tietyille MIME-tyypeille. "
+"T‰m‰ mahdollista sen, ett‰ Horde-j‰rjestelm‰ss‰ voidaa k‰ytt‰‰ apuohjelmia "
+"esimerkiksi s‰hkˆpostin liitteiden tai CVS-versionhallinnan k‰sittelyyn."
+
+msgid "This form has already been processed."
+msgstr "T‰m‰ lomake on jo k‰sitelty."
+
+msgid "This function requires 'imap' to be built into PHP."
+msgstr "T‰m‰ funktio vaatii, ett‰ 'imap' on k‰‰nnetty mukaan PHP:n."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"T‰m‰ on Horden p‰‰asetustiedosto. T‰ss‰ tiedostossa m‰‰ritell‰‰n koko "
+"Horde-j‰rjestelm‰‰ koskevia polkuja ja peruspalikoita."
+
+msgid "This number must be at least one."
+msgstr "Numeron pit‰‰ olla v‰hint‰‰n yksi."
+
+msgid "This server can't uncompress zip and gzip files."
+msgstr "T‰ll‰ palvelimella ei voi aukaista zip tai gzip tiedostoja."
+
+msgid ""
+"This task has been successfully added to your tasklist. Click icon to view:"
+msgstr ""
+"T‰m‰n teht‰v‰n lis‰ys teht‰v‰listaasi onnistui. N‰hd‰ksesi tiedot valitse ikoni:"
+
+msgid "This value must be a number."
+msgstr "Arvon pit‰‰ olla numero."
+
+msgid "This window must be called from an Options window"
+msgstr "T‰t‰ ikkunaa pit‰‰ kutsua vain Asetukset ikkunasta"
+
+msgid "Time Tracking"
+msgstr "Ajan seuranta"
+
+msgid "Title Goes Here!"
+msgstr "Otsikko tulee t‰h‰n!"
+
+msgid "Title"
+msgstr "Titteli"
+
+msgid "Turkish (ISO-8859-9)"
+msgstr "Turkki (ISO-8859-9)"
+
+msgid "Type your choice: "
+msgstr "Kirjoita valintasi: "
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to add extra user information when signing up."
+msgstr "k‰ytt‰j‰n lis‰tietojen lis‰ys ei onnistunut kirjautumisessa."
+
+#, c-format
+msgid "Unable to change to %s."
+msgstr "Ei voi vaihtaa %s."
+
+msgid "Unable to connect to SQL server."
+msgstr "SQL-palvelimeen ei saada yhteytt‰."
+
+msgid "Unable to decompress data."
+msgstr "Tietoa ei voi laajentaa."
+
+#, c-format
+msgid "Unable to delete %s, the directory is not empty"
+msgstr "Ei voida poistaa %s, hakemisto ei ole tyhj‰."
+
+#, c-format
+msgid "Unable to delete '%s': %s."
+msgstr "Ei voida poistaa '%s': %s."
+
+msgid "Unable to determine current directory."
+msgstr "Nykyist‰ hakemistoa ei voitu selvitt‰‰."
+
+msgid "Unable to open compressed archive."
+msgstr "Tiivistetyn tiedoston aukaisu ep‰onnistui."
+
+msgid "Unable to read the vfsroot directory."
+msgstr "vfsroot juurihakemistoa ei voitu lukea."
+
+msgid "Unable to translate this Word document"
+msgstr "Word-dokumenttia ei voitu k‰‰nt‰‰"
+
+msgid "Underline"
+msgstr "Alleviivattu"
+
+msgid "Undo Changes"
+msgstr "Peru muutokset"
+
+#, c-format
+msgid "Unhandled component of type: %s"
+msgstr "K‰sittelem‰tˆn komponenttityyppi: %s"
+
+msgid "Unicode (UTF-8)"
+msgstr "Unicode (UTF-8)"
+
+msgid "Unknown"
+msgstr "Tuntematon"
+
+msgid "Unsupported Extension"
+msgstr "Ei-tuettu laajennus"
+
+msgid "Unsupported serialization type"
+msgstr "Ei-tuettu sarjoitus tapa"
+
+msgid "Unsupported unserialization type"
+msgstr "Ei-tuettu sarjoituksen purkutapa"
+
+msgid "Update %s"
+msgstr "P‰ivit‰ %s"
+
+msgid "Update respondent status"
+msgstr "P‰ivit‰ vastanneen tila"
+
+msgid "Update user"
+msgstr "P‰ivit‰ k‰ytt‰j‰"
+
+msgid "Update"
+msgstr "P‰ivit‰"
+
+#, c-format
+msgid "Updated '%s'."
+msgstr "P‰ivitettiin '%s'."
+
+msgid "Use Default Value"
+msgstr "K‰yt‰ oletusarvoa"
+
+msgid "User Administration"
+msgstr "K‰ytt‰jien yll‰pito"
+
+msgid "User Options"
+msgstr "K‰ytt‰j‰n asetukset"
+
+msgid "User Registration"
+msgstr "K‰ytt‰j‰n rekisterˆiminen"
+
+#, c-format
+msgid "Username '%s' already exists."
+msgstr "K‰ytt‰j‰tunnus '%s' on jo olemassa."
+
+msgid "Username and/or password not correct."
+msgstr "K‰ytt‰j‰tunnus tai salasana on v‰‰rin."
+
+msgid "Username"
+msgstr "K‰ytt‰j‰tunnus"
+
+msgid "Username: "
+msgstr "K‰ytt‰j‰tunnus: "
+
+msgid "Username:"
+msgstr "K‰ytt‰j‰tunnus:"
+
+msgid "Users in the system:"
+msgstr "J‰rjestelm‰n k‰ytt‰j‰t:"
+
+msgid "Users"
+msgstr "K‰ytt‰j‰t"
+
+msgid "Vacation"
+msgstr "Poissaoloviestit"
+
+msgid "Validity"
+msgstr "Voimassaoloaika"
+
+msgid "Verification failed - this message may have been tampered with."
+msgstr "Tarkistus ep‰onnistui - T‰t‰ viesti‰ on voitu k‰sitell‰."
+
+msgid "Version"
+msgstr "Versio"
+
+msgid "Vietnamese (VISCII)"
+msgstr "Vietnam (VISCII)"
+
+#, c-format
+msgid "View %s"
+msgstr "N‰yt‰ %s"
+
+msgid "View map"
+msgstr "N‰yt‰ kartalta"
+
+msgid "WARN"
+msgstr "VAROITUS"
+
+msgid "Warning"
+msgstr "Varoitus"
+
+msgid "Webserver"
+msgstr "WWW-palvelin"
+
+msgid "Weekly"
+msgstr "Viikoittain"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Tervetuloa ohjelmaan %s"
+
+msgid "Welcome"
+msgstr "Tervetuloa"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Tervetuloa, %s"
+
+msgid "Western (ISO-8859-1)"
+msgstr "L‰nsimainen (ISO-8859-1)"
+
+msgid "Western (ISO-8859-15)"
+msgstr "L‰nsimainen/Euro (ISO-8859-15)"
+
+msgid "What application should %s display after login?"
+msgstr "Mink‰ ohjelman %s k‰ynnist‰‰ sis‰‰nkirjautumisen j‰lkeen."
+
+msgid "What is the delimiter character?"
+msgstr "Mit‰ merkki‰ k‰ytet‰‰n erottimena?"
+
+msgid "What is the quote character?"
+msgstr "Mit‰ merkki‰ k‰ytet‰‰n lainaukseen?"
+
+msgid "Wishlists"
+msgstr "Toivelistat"
+
+msgid "Work Address"
+msgstr "Tyˆosoite"
+
+msgid "Work Phone"
+msgstr "Puhelin(tyˆ)"
+
+#, c-format
+msgid "Writing not possible. Copy this code manually to %s."
+msgstr "Kirjoittaminen ei ollut mahdollista. Kopioi t‰m‰ koodi k‰sin %s:‰‰n."
+
+#, c-format
+msgid "Wrote %s successfully."
+msgstr "Kirjoitettiin onnistuneesti %s."
+
+msgid "X509v3 extensions"
+msgstr "X509v3 laajennukset"
+
+msgid "YY"
+msgstr "VV"
+
+msgid "YYYY"
+msgstr "VVVV"
+
+msgid "Yearly"
+msgstr "Vuosittain"
+
+msgid "Yes, I Agree"
+msgstr "Kyll‰, suostun."
+
+msgid "You did not enter a valid email address."
+msgstr "Et antanut oikean muotoista s‰hkˆpostiosoitetta."
+
+#, c-format
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in %s."
+msgstr ""
+"Et m‰‰ritellyt mitk‰ tuodun tiedoston kent‰t vastaavat mit‰kin kentti‰ "
+"%s:ss‰."
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Olet kirjautunut ulos j‰rjestelm‰st‰.<br />Kiitos k‰ynnist‰."
+
+#, c-format
+msgid "You must configure a Category backend to use %s."
+msgstr "Sinun pit‰‰ asentaa Category taustaj‰rjestelm‰ ennen kuin voit k‰ytt‰‰ %s."
+
+msgid "You must configure a Signup backend to use Signups."
+msgstr "Sinun pit‰‰ asentaa Signup taustaj‰rjestelm‰ ennen kuin voit k‰ytt‰‰ Signup toimintoja."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Sinun tulee kuvailla ongelmatilannetta ennenkuin voit l‰hett‰‰ ongelmaviestin."
+
+msgid "You must select an server to be deleted."
+msgstr "Sinun pit‰‰ valita poistettava palvelin."
+
+msgid "You must specify a username to remove."
+msgstr "Sinun pit‰‰ antaa poistettava k‰ytt‰j‰tunnus."
+
+msgid "You must specify the username to add."
+msgstr "Sinun pit‰‰ antaa lis‰tt‰v‰ k‰ytt‰j‰tunnus."
+
+msgid "You must specify the username to update."
+msgstr "Sinun pit‰‰ antaa p‰ivitett‰v‰ k‰ytt‰j‰tunnus."
+
+msgid "You must specify what action to perform."
+msgstr "Sinun pit‰‰ valita suoritettava toiminto."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Istuntosi %s on vanhentunut. Kirjaudu uudelleen sis‰‰n."
+
+msgid "Your Email Address:"
+msgstr "S‰hkˆpostiosoitteesi:"
+
+msgid "Your Information"
+msgstr "Omat tietosi"
+
+msgid "Your Name:"
+msgstr "Nimesi:"
+
+msgid ""
+"Your authentication backend does not support adding users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"K‰ytt‰m‰si authentication taustaj‰rjestelm‰ ei tue k‰ytt‰jien lis‰‰mist‰ "
+"tai t‰m‰ piirre ei ole jostakin syyst‰ k‰ytett‰viss‰."
+
+msgid ""
+"Your authentication backend does not support listing users, or the feature "
+"has been disabled for some other reason."
+msgstr ""
+"K‰ytt‰m‰si authentication taustaj‰rjestelm‰ ei tue k‰ytt‰j‰tietojen "
+"n‰ytt‰mist‰ tai t‰m‰ piirre ei ole jostakin syyst‰ k‰ytett‰viss‰."
+
+msgid "Your options have been updated."
+msgstr "Asetuksesi on p‰ivitetty."
+
+msgid "Your remote servers:"
+msgstr "Et‰palvelimesi:"
+
+msgid "[Problem Report]"
+msgstr "[Ongelma]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[rivill‰ %s/%s]"
+
+msgid "file"
+msgstr "tiedosto"
+
+msgid "i18n"
+msgstr "i18n"
+
+msgid "move down"
+msgstr "siirr‰ alasp‰in"
+
+msgid "move up"
+msgstr "siirr‰ ylˆsp‰in"
+
+msgid "not implemented"
+msgstr "ei ole toteutettu"
+
+msgid "not yet implemented"
+msgstr "ei ole viel‰ toteutettu"
+
+msgid "type the password twice to confirm"
+msgstr "varmistaaksesi kirjoita salasana kahdesti"
+
+msgid "unnamed"
+msgstr "nimetˆn"
+
+msgid "vCard"
+msgstr "vCard-k‰yntikortti"

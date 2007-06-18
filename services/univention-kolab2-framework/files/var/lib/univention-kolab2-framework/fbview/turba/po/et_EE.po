@@ -1,0 +1,387 @@
+# TURBA ESTONIAN TRANSLATION.
+# Toomas Aas <toomas.aas@mail.ee>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Turba 2.0-cvs\n"
+"POT-Creation-Date: 2002-03-30 21:34+0200\n"
+"PO-Revision-Date: 2002-03-31 16:37+0300\n"
+"Last-Translator: Toomas Aas <toomas.aas@mail.ee>\n"
+"Language-Team: Estonian <dev@lists.horde.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8-bit\n"
+
+#, c-format
+msgid "%s file successfully imported"
+msgstr "%s faili import õnnestus"
+
+msgid "Add Contact ..."
+msgstr "Lisa aadress ..."
+
+msgid "Add a new contact"
+msgstr "Lisa uus aadress"
+
+msgid "Add failed"
+msgstr "Lisamine ebaõnnestus"
+
+msgid "Add"
+msgstr "Lisa"
+
+msgid "Addressbook is read-only."
+msgstr "Aadressiraamatul on kirjutuskaitse"
+
+msgid "Advanced Directory Search"
+msgstr "Põhjalik kataloogiotsing"
+
+msgid "Advanced Search"
+msgstr "Põhjalik otsing"
+
+msgid "Alias"
+msgstr ""
+
+msgid "Available Columns:"
+msgstr "Kasutatavad veerud:"
+
+msgid "Browse"
+msgstr "Sirvi"
+
+msgid "Cancel"
+msgstr "Loobu"
+
+msgid "Cell Phone"
+msgstr "Mobiiltelefon"
+
+msgid "Choose the order of the columns to display in the address list."
+msgstr "Vali veergude järjestus aadresside nimekirjas."
+
+msgid "Clear Search"
+msgstr "Tühjenda otsing"
+
+msgid "Column Options"
+msgstr "Veeru seaded"
+
+msgid "Company"
+msgstr "Firma"
+
+#, c-format
+msgid "Contents of %s"
+msgstr "Aadressiraamat: %s"
+
+msgid "Delete"
+msgstr "Kustuta"
+
+msgid "Deletion failed"
+msgstr "Kustutamine ebaõnnestus"
+
+msgid "Directory Listing"
+msgstr "Kataloog"
+
+msgid "Directory Search"
+msgstr "Kataloogiotsing"
+
+msgid "Directory"
+msgstr "Kataloog"
+
+msgid "Display Options"
+msgstr "Näita"
+
+#, c-format
+msgid "Edit '%s'"
+msgstr "Paranda '%s'"
+
+msgid "Edit"
+msgstr "Paranda"
+
+msgid "Email"
+msgstr "E-mail"
+
+msgid "Export Addressbook"
+msgstr "Aadressiraamatu eksport"
+
+msgid "Export"
+msgstr "Eksport"
+
+#, c-format
+msgid "Failed to browse the directory: %s"
+msgstr "Kataloogi %s sirvimine ebaõnnestus"
+
+msgid "Failed to connect to the specified directory."
+msgstr "Ei saanud valitud kataloogiga ühendust"
+
+#, c-format
+msgid "Failed to search the directory: %s"
+msgstr "Otsing kataloogist %s ebaõnnestus"
+
+msgid "Fax"
+msgstr "Faks"
+
+msgid "Find"
+msgstr "Leia"
+
+msgid "From"
+msgstr "Kellelt"
+
+msgid "Help"
+msgstr "Abi"
+
+msgid "Home Address"
+msgstr "Kodune aadress"
+
+msgid "Home Phone"
+msgstr "Kodune telefon"
+
+msgid "If importing CSV data: does the first row contain the field names?"
+msgstr ""
+"Kui impordid CSV formaadis andmeid: kas esimene rida sisaldab väljade "
+"nimesid?"
+
+msgid "Illegal or malformed form data."
+msgstr "Lubamatud andmed või valesti täidetud vorm."
+
+msgid "Import Addressbook"
+msgstr "Aadressiraamatu import"
+
+msgid "Import"
+msgstr ""
+
+msgid "Import/Export Addressbooks"
+msgstr "Aadressiraamatute import/eksport"
+
+msgid "Import/Export"
+msgstr "Import/Eksport"
+
+msgid "Invalid addressbook."
+msgstr "Vigane aadressiraamat."
+
+msgid "Invalid e-mail address."
+msgstr "Vigane e-maili aadress."
+
+msgid "Invalid name."
+msgstr "Vigane nimi."
+
+msgid "Language"
+msgstr "Keel"
+
+msgid "List"
+msgstr "Nimekiri"
+
+msgid "Matching"
+msgstr " mis sisaldab "
+
+msgid "Name"
+msgstr "Nimi"
+
+msgid ""
+"None of the available address books are configured to allow you to add new "
+"entries to them. If you believe this is an error, please contact your system "
+"administrator."
+msgstr ""
+"Ükski kasutatav aadressiraamat ei võimalda sul aadresse lisada. Kui see on "
+"sinu arvates viga, võta ühendust süsteemi administraatoriga."
+
+msgid "Notes"
+msgstr "Märkmed"
+
+msgid "Options"
+msgstr "Häälestus"
+
+msgid "Please choose an address book to add a contact to."
+msgstr "Palun vali aadressiraamat kuhu aadress lisada."
+
+msgid "Please select a directory:"
+msgstr "Palun vali kataloog:"
+
+msgid "Problem?"
+msgstr "Probleem?"
+
+msgid "Reset"
+msgstr ""
+
+msgid "Save Changes"
+msgstr "Salvesta muutused"
+
+msgid "Save"
+msgstr "Salvesta"
+
+msgid "Search Results"
+msgstr "Otsingu tulemus"
+
+msgid "Search"
+msgstr "Otsing"
+
+msgid "Search&nbsp;Results"
+msgstr "Otsingu&nbsp;tulemus"
+
+msgid "Select the destination to import to:"
+msgstr "Kuhu importida:"
+
+msgid "Select the file to import:"
+msgstr "Vali imporditav fail:"
+
+msgid "Select the format to export to:"
+msgstr "Vali ekspordi formaat:"
+
+msgid "Select the format to import from:"
+msgstr "Vali imporditav formaat:"
+
+msgid "Select the source to export from:"
+msgstr "Kust eksportida:"
+
+msgid "Select which fields to display in the address lists."
+msgstr "Vali milliseid välju näidata aadresside nimekirjades."
+
+msgid "Select your preferred language:"
+msgstr "Vali oma lemmikkeel:"
+
+msgid "Selected Columns:"
+msgstr "Valitud veerud:"
+
+#, c-format
+msgid "Send mail to %s"
+msgstr "Saada kiri %s'le"
+
+msgid "Set the your preferred display language."
+msgstr "Vali oma lemmikkeel."
+
+msgid "Set your preferred display language."
+msgstr "Vali oma lemmikkeel."
+
+msgid "Some of Turba's configuration files are missing:"
+msgstr "Mõned Turba konfiguratsioonifailid on puudu:"
+
+msgid "The data got lost."
+msgstr "Andmed läksid kaotsi."
+
+msgid "The data was lost"
+msgstr "Andmed läksid kaotsi"
+
+msgid "The file contained no data."
+msgstr "See fail ei sisaldanud andmeid."
+
+msgid "There are no writeable address books."
+msgstr "Ükski aadressiraamat ei luba salvestamist"
+
+msgid ""
+"There was a problem with the file upload. The file may have been larger than "
+"the maximum allowed size."
+msgstr ""
+"Faili serverisse laadimisel tekkis probleem. Võib-olla on fail suurem kui "
+"maksimaalne lubatud suurus."
+
+msgid ""
+"There was an error adding this object. Contact your system administrator for "
+"further help."
+msgstr ""
+"Selle objekti lisamisel tekkis viga. Abi saamiseks võta ühendust süsteemi "
+"administraatoriga."
+
+msgid ""
+"There was an error deleting this object. Contact your system administrator "
+"for further help."
+msgstr ""
+"Selle objekti kustutamisel tekkis viga. Abi saamiseks võta ühendust süsteemi "
+"administraatoriga."
+
+msgid "There was an error importing the data."
+msgstr "Andmete impordil tekkis viga."
+
+msgid "There was an error importing the uploaded file"
+msgstr "Laetud faili importimisel tekkis viga"
+
+msgid ""
+"This file controls the default preferences for Turba, and also controls "
+"which preferences users can alter."
+msgstr ""
+"See fail määrab Turba vaikeparameetrid ning määrab ka selle, milliseid "
+"parameetreid kasutajad saavad muuta."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts in "
+"addition to or overriding Horde defaults."
+msgstr ""
+"See fail kontrollib värve ja kirjastiile, asendades vajaduse korral Horde "
+"vastavad parameetrid."
+
+msgid ""
+"This file defines the Turba global attribute names and types - names, email "
+"addresses, etc."
+msgstr ""
+"See fail defineerib Turba globaalsed atribuudinimed ja -tüübid: nimed, "
+"e-maili aadressid jne."
+
+msgid "This file defines the list of available sources for Turba."
+msgstr "See fail määrab, milliseid andmeallikaid Turba saab kasutada."
+
+msgid ""
+"This is the main Turba configuration file. It contains paths and options for "
+"the Turba scripts."
+msgstr ""
+"See on peamine Turba konfiguratsioonifail. Ta sisaldab kataloogiteid ja "
+"seadeid Turba skriptide jaoks."
+
+msgid "This person is already in your addressbook."
+msgstr "See isik on juba sinu aadressiraamatus."
+
+msgid "Title"
+msgstr "Amet"
+
+msgid "Turba is not properly configured"
+msgstr "Turba ei ole korralikult häälestatud"
+
+#, c-format
+msgid "Unable to load the definition of %s."
+msgstr "Ei suuda laadida %s definitsiooni."
+
+msgid "User Options"
+msgstr "Kasutaja seaded"
+
+msgid "Work Address"
+msgstr "Tööaadress"
+
+msgid "Work Phone"
+msgstr "Töötelefon"
+
+msgid ""
+"You didn't map any fields from the imported file to the corresponding fields "
+"in Turba."
+msgstr "Sa ei seadnud imporditava faili väljadele vastavaid Turba välju."
+
+msgid "Your Information"
+msgstr "Sinu info"
+
+msgid "[Edit]"
+msgstr "[Paranda]"
+
+msgid "add column"
+msgstr "lisa veerg"
+
+msgid "move left"
+msgstr "tõsta vasakule"
+
+msgid "move right"
+msgstr "tõsta paremale"
+
+msgid "remove column"
+msgstr "eemalda veerg"
+
+#~ msgid "Cc"
+#~ msgstr "Koopia"
+
+#~ msgid "Error"
+#~ msgstr "Viga"
+
+#~ msgid "Message"
+#~ msgstr "Teade"
+
+#~ msgid "Send Message"
+#~ msgstr "Saada teade"
+
+#~ msgid "Success"
+#~ msgstr "Õnnestus"
+
+#~ msgid "To"
+#~ msgstr "Kellele"
+
+#~ msgid "Warning"
+#~ msgstr "Hoiatus"

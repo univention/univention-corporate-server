@@ -1,0 +1,747 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Horde 2.3\n"
+"POT-Creation-Date: 2004-01-09 07:04+0700\n"
+"PO-Revision-Date: 2004-01-09 08:30+0700\n"
+"Last-Translator: Slamin <slamin@unej.ac.id>\n"
+"Language-Team: UPT TI UNEJ <uptti@unej.ac.id>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, c-format
+msgid ""
+" &#151; %s is ready to perform the maintenance operations checked below."
+msgstr " %s siap untuk mengoperasikan perawatan yang ditandai di bawah ini."
+
+#, c-format
+msgid "%s Maintenance Operations - Confirmation"
+msgstr "Konfirmasi - Operasi Perawatan %s"
+
+#, c-format
+msgid "'%s' is not configured in the Horde Registry."
+msgstr "'%s' tidak dikonfigurasi pada Horde Registry"
+
+msgid "24 hours"
+msgstr "24 jam"
+
+msgid "<b>A fatal error has occurred:</b>"
+msgstr "<b> Terjadi kesalahan fatal:<b>"
+
+msgid "AM/PM"
+msgstr "AM/PM"
+
+msgid "Add pair"
+msgstr "Tambah pasangan"
+
+msgid "Address Book"
+msgstr "Buku Alamat"
+
+msgid "Address"
+msgstr "Alamat"
+
+msgid "Alias"
+msgstr "Alias"
+
+msgid "An illegal value was specified."
+msgstr "Nilai salah telah terspesifikasi."
+
+msgid "Ask for confirmation before doing maintenance operations?"
+msgstr "Minta konfirmasi sebelum mengoperasikan perawatan?"
+
+msgid "Authentication rejected by RADIUS server."
+msgstr "Autentisasi ditolak oleh server RADIUS."
+
+msgid "Available fields:"
+msgstr "Field yang tersedia:"
+
+msgid "Bad kerberos password."
+msgstr "Password kerberos salah."
+
+msgid "Bad kerberos username."
+msgstr "Username kerberos salah."
+
+msgid "Birthday"
+msgstr "Ulang tahun"
+
+msgid "CVS"
+msgstr "CVS"
+
+msgid "Calendar"
+msgstr "Kalender"
+
+msgid "Cancel Problem Report"
+msgstr "Batalkan Laporan Masalah"
+
+msgid "Cell Phone"
+msgstr "Hand Phone"
+
+msgid "Check the box for any operation(s) you want to perform at this time."
+msgstr "Tandai kotak untuk operasi yang anda ingin saat ini."
+
+msgid "Close Help Window"
+msgstr "Tutup Window Bantuan"
+
+msgid "Close Help"
+msgstr "Tutup Bantuan"
+
+msgid "Close Window"
+msgstr "Tutup Window"
+
+msgid "Comics"
+msgstr "Komik"
+
+msgid "Company"
+msgstr "Perusahaan"
+
+msgid "Connection to ftp server failed."
+msgstr "Koneksi ke server ftp gagal."
+
+#, c-format
+msgid "Contents of '%s'"
+msgstr "Isi '%s'"
+
+msgid "Contents of the RAR archive"
+msgstr "Isi arsip RAR"
+
+msgid "Could not connect to database for SQL SessionHandler."
+msgstr "Tidak bisa koneksi ke database untuk SQL SessionHandler."
+
+#, c-format
+msgid "Could not connect to table '%s' for SQL SessionHandler."
+msgstr "Tidak bisa koneksi ke tabel '%s' untuk SQL SessionHandler."
+
+#, c-format
+msgid "Could not open Maintenance_Task module %s"
+msgstr "Tidak bisa membuka modul Tugas_Perawatan %s"
+
+msgid "DD"
+msgstr "DD"
+
+msgid "Daily"
+msgstr "Harian"
+
+msgid "Database query failed."
+msgstr "Permintaan database gagal."
+
+msgid "Default Identity"
+msgstr "Identitas Default"
+
+msgid "Describe the Problem"
+msgstr "Jelaskan Masalah"
+
+msgid "Details have been logged for the administrator."
+msgstr "Pejelasan yang rinci sudah disimpan untuk administrator."
+
+msgid "Display Options"
+msgstr "Tampilkan Pilihan"
+
+msgid "Do not directly access maintenance.php"
+msgstr "Tidak mengakses langsung ke maintenance.php"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "Empty result."
+msgstr "Hasil kosong."
+
+msgid "Error"
+msgstr "Salah"
+
+msgid "Every 15 minutes"
+msgstr "Setiap 15 menit"
+
+msgid "Every 30 seconds"
+msgstr "Setiap 30 detik"
+
+msgid "Every 5 minutes"
+msgstr "Setiap 5 menit"
+
+msgid "Every Login"
+msgstr "Setiap Login"
+
+msgid "Every half hour"
+msgstr "Setiap setengah jam"
+
+msgid "Every minute"
+msgstr "Setiap menit"
+
+msgid "Example values:"
+msgstr "Contoh nilai:"
+
+#, c-format
+msgid "Expected \"BEGIN\" in the line %d."
+msgstr "Berharap \"BEGIN\" pada bari %d."
+
+#, c-format
+msgid "Expected \"END:%s\" in line %d."
+msgstr "Berharap \"END:%s\" pada baris %d."
+
+msgid "Failed retrieving preferences."
+msgstr "Gagal membuka preferences."
+
+msgid "Failed to connect to LDAP server."
+msgstr "Gagal koneksi ke server LDAP."
+
+msgid "Failed to connect to SMB server."
+msgstr "Gagal koneksi ke server SMB."
+
+msgid "Fax"
+msgstr "Fax"
+
+msgid "Filters"
+msgstr "Filter"
+
+msgid "Full Description:"
+msgstr "Diskripsi Lengkap:"
+
+msgid "Help"
+msgstr "Bantuan"
+
+msgid "Home Address"
+msgstr "Alamat Rumah"
+
+msgid "Home Phone"
+msgstr "Telepon Rumah"
+
+msgid "Home"
+msgstr "Rumah"
+
+msgid "Horde Login"
+msgstr "Login Horde"
+
+msgid "Horde System"
+msgstr "System Horde"
+
+msgid "Horde Wireless"
+msgstr "Wireless Horde"
+
+msgid "Horde is not properly configured"
+msgstr "Horde tidak dikonfigurasi dengan sempurna"
+
+msgid "Horde"
+msgstr "Horde"
+
+msgid "Icons Only"
+msgstr "Hanya Ikon"
+
+msgid "Icons with text"
+msgstr "Ikon dengan teks"
+
+msgid "Import Error: "
+msgstr "Salah Impor: "
+
+msgid "Import"
+msgstr "Impor"
+
+#, c-format
+msgid "Imported field: %s"
+msgstr "Field terimpor: %s"
+
+msgid "Imported fields:"
+msgstr "Field-field terimpor"
+
+msgid "Kerberos server rejected authentication."
+msgstr "Server kerberos menolak autentisasi."
+
+msgid "Language"
+msgstr "Bahasa"
+
+msgid "List Help Topics"
+msgstr "Daftar Topik Bantuan"
+
+msgid "Log in"
+msgstr "Masuk"
+
+msgid "Log out"
+msgstr "Keluar"
+
+msgid ""
+"Login failed for some reason. Most likely your username or password was "
+"entered incorrectly."
+msgstr ""
+"Login salah karena beberapa alasan. Sangat mungkin username atau password "
+"yang anda masukkan salah."
+
+msgid "Logout"
+msgstr "Logout"
+
+msgid "MM"
+msgstr "MM"
+
+msgid "Mail"
+msgstr "Mail"
+
+msgid "Map Date and Time Fields"
+msgstr "Map Tanggal dan Waktu Field"
+
+msgid "Map Import Fields"
+msgstr "Map Field Impor"
+
+msgid "Matching fields"
+msgstr "Field cocok"
+
+msgid "Memos"
+msgstr "Memo"
+
+msgid "Menu mode:"
+msgstr "Mode menu:"
+
+msgid "Message"
+msgstr "Pesan"
+
+msgid "Monthly"
+msgstr "Bulanan"
+
+msgid "My Summary"
+msgstr "Ringkasanku"
+
+msgid "Name"
+msgstr "Nama"
+
+msgid "Never"
+msgstr "Tidak pernah"
+
+msgid "No configuration information specified for FTP VFS."
+msgstr "Tidak ada informasi konfigurasi yang terspesifikasi untuk FTP VFS."
+
+msgid "No configuration information specified for LDAP Preferences."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk LDAP Preferences."
+
+msgid "No configuration information specified for SQL Categories."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL Categories."
+
+msgid "No configuration information specified for SQL Preferences."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL Preferences."
+
+msgid "No configuration information specified for SQL SessionHandler."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL SessionHandler."
+
+msgid "No configuration information specified for SQL VFS."
+msgstr "Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL VFS."
+
+msgid "No configuration information specified for SQL authentication."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL authentication."
+
+msgid "No configuration information specified for SQL-File VFS."
+msgstr ""
+"Tidak ada informasi konfigurasi yang terspesifikasi untuk SQL-File VFS."
+
+msgid "No preferences are available."
+msgstr "Tidak tersedia preferences."
+
+msgid "Notes"
+msgstr "Catatan"
+
+msgid "Notice"
+msgstr "Pemberitahuan"
+
+#, c-format
+msgid "Notification listener %s not found."
+msgstr "Pendengar pemberitahuan %s tidak ditemukan."
+
+msgid "Number of columns in the summary view:"
+msgstr "Jumlah kolom pada tampilan ringkasan:"
+
+msgid "Options"
+msgstr "Pilihan"
+
+msgid "Other Information"
+msgstr "Informasi Lain"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Perform Maintenance Operations"
+msgstr "Lakukan Operasi Perawatan"
+
+msgid "Phone"
+msgstr "Telepon"
+
+msgid "Please provide a summary of the problem."
+msgstr "Berikan ringkasan masalah."
+
+msgid "Please provide your username and password"
+msgstr "Berikan username dan password anda"
+
+msgid "Problem Description"
+msgstr "Diskripsi Masalah"
+
+msgid "Refresh Summary View:"
+msgstr "Tampilkan Ringkasan Ulang:"
+
+msgid "Remove pair"
+msgstr "Hapus pasangan"
+
+#, c-format
+msgid "Required '%s' not specified in SessionHandler configuration."
+msgstr ""
+"'%s' yang diperlukan tidak terspesifikasi pada konfigurasi SessionHandler."
+
+msgid "Required 'basedn' not specified in authentication configuration."
+msgstr ""
+"'basedn' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'basedn' not specified in preferences configuration."
+msgstr ""
+"'basedn' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'bdc_hostspec' not specified in authentication configuration."
+msgstr ""
+"'bdc_hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"autentisasi."
+
+msgid "Required 'database' not specified in SessionHandler configuration."
+msgstr ""
+"'database' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"SessionHandler."
+
+msgid "Required 'database' not specified in VFS configuration."
+msgstr "'database' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'database' not specified in authentication configuration."
+msgstr ""
+"'database' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'database' not specified in categories configuration."
+msgstr ""
+"'database' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'database' not specified in preferences configuration."
+msgstr ""
+"'database' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'domain' not specified in authentication configuration."
+msgstr ""
+"'domain' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'hostspec' not specified in SessionHandler configuration."
+msgstr ""
+"'hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"SessionHandler."
+
+msgid "Required 'hostspec' not specified in VFS configuration."
+msgstr "'hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'hostspec' not specified in authentication configuration."
+msgstr ""
+"'hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'hostspec' not specified in categories configuration."
+msgstr ""
+"'hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'hostspec' not specified in preferences configuration."
+msgstr ""
+"'hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'password' not specified in SessionHandler configuration."
+msgstr ""
+"'password' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"SessionHandler."
+
+msgid "Required 'password' not specified in VFS configuration."
+msgstr "'password' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'password' not specified in authentication configuration."
+msgstr ""
+"'password' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'password' not specified in categories configuration."
+msgstr ""
+"'password' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'password' not specified in preferences configuration."
+msgstr ""
+"'password' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'pdc_hostspec' not specified in authentication configuration."
+msgstr ""
+"'pdc_hostspec' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"autentisasi."
+
+msgid "Required 'phptype' not specified in SessionHandler configuration."
+msgstr ""
+"'phptype' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"SessionHandler."
+
+msgid "Required 'phptype' not specified in VFS configuration."
+msgstr "'phptype' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'phptype' not specified in authentication configuration."
+msgstr ""
+"'phptype' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'phptype' not specified in categories configuration."
+msgstr ""
+"'phptype' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'phptype' not specified in preferences configuration."
+msgstr ""
+"'phptype' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'port' not specified in VFS configuration."
+msgstr "'port' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'table' not specified in categories configuration."
+msgstr ""
+"'table' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'table' not specified in preferences configuration."
+msgstr ""
+"'table' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'uid' not specified in authentication configuration."
+msgstr ""
+"'uid' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'uid' not specified in preferences configuration."
+msgstr ""
+"'uid' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'username' not specified in SessionHandler configuration."
+msgstr ""
+"'username' yang diperlukan tidak terspesifikasi pada konfigurasi "
+"SessionHandler."
+
+msgid "Required 'username' not specified in VFS configuration."
+msgstr "'username' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Required 'username' not specified in authentication configuration."
+msgstr ""
+"'username' yang diperlukan tidak terspesifikasi pada konfigurasi autentisasi."
+
+msgid "Required 'username' not specified in categories configuration."
+msgstr ""
+"'username' yang diperlukan tidak terspesifikasi pada konfigurasi kategori."
+
+msgid "Required 'username' not specified in preferences configuration."
+msgstr ""
+"'username' yang diperlukan tidak terspesifikasi pada konfigurasi preferences."
+
+msgid "Required 'vfsroot' not specified in VFS configuration."
+msgstr "'vfsroot' yang diperlukan tidak terspesifikasi pada konfigurasi VFS."
+
+msgid "Return to Options"
+msgstr "Kembali ke Pilihan"
+
+msgid "Role"
+msgstr "Peran"
+
+msgid "Save Options"
+msgstr "Simpan Pilihan"
+
+msgid ""
+"Select the characters you need from the boxes below. You can then copy and "
+"paste them from the textarea."
+msgstr ""
+"Pilih karakter yang diperlukan dari kotak di bawah ini. Anda dapat copy dan "
+"paste dari tempat teks."
+
+msgid "Select the date delimiter:"
+msgstr "Pilih tanda batas tanggal:"
+
+msgid "Select the date format:"
+msgstr "Pilih format tanggal:"
+
+msgid "Select the time delimiter:"
+msgstr "Pilih tanda batas waktu:"
+
+msgid "Select the time format:"
+msgstr "Pilih format waktu:"
+
+msgid "Select two matching fields."
+msgstr "Pilih dua field yang cocok."
+
+msgid "Select your preferred language:"
+msgstr "Pilih bahasa yang anda inginkan:"
+
+msgid "Send Problem Report"
+msgstr "Kirim Laporan Masalah"
+
+msgid "Set your page refreshing, and other display options."
+msgstr "Set halaman penampilan ulang, dan pilihan tampilan lain."
+
+msgid "Set your preferred display language."
+msgstr "Set tampilan bahasa yang anda inginkan"
+
+msgid "Short Summary:"
+msgstr "Ringkasan Pendek"
+
+msgid "Skip Maintenance"
+msgstr "Lompati Perawatan"
+
+msgid "Some of Horde's configuration files are missing:"
+msgstr "Beberapa file konfigurasi Horde hilang:"
+
+msgid "Special Character Input"
+msgstr "Input Karakter Spesial"
+
+msgid "Success"
+msgstr "Sukses"
+
+msgid "Tasks"
+msgstr "Tugas"
+
+msgid "Text Only"
+msgstr "Hanya Teks"
+
+#, c-format
+msgid ""
+"The program used to view this message type (%s) was not found on the system."
+msgstr ""
+"Program yang digunakan untuk melihat jenis pesan (%s) tidak ditemukan.pada "
+"sistem."
+
+msgid ""
+"The registry is how Horde applications find out how to talk to each other. "
+"You should list any installed Horde applications that you have here."
+msgstr ""
+"Registry merupakan cara aplikasi Horde berbicara dengan yang lain. Anda "
+"seharusnya menampilkan aplikasi Horde yang diinstal disini."
+
+msgid ""
+"This file controls the global set of MIME drivers for the Horde framework, "
+"allowing applications to make use of programs such as enscript or mswordview "
+"to render content into HTML for viewing in a browser."
+msgstr ""
+"File ini mengontrol set global dari driver MIME untuk framework Horde, "
+"membiarkan aplikasi untuk menggunakan program seperti enscript atau "
+"mswordview agar memasukkan isi ke HTML untuk dilihat di browser."
+
+msgid ""
+"This file controls the stylesheet that is used to set colors and fonts for "
+"the Horde framework and all applications that do not provide their own "
+"settings."
+msgstr ""
+"File ini mengontrol stylesheet yang digunakan untuk set warna dan font "
+"framework Horde dan semua aplikasi yang tidak menyediakan setting sendiri."
+
+msgid ""
+"This file maps file extensions to logical MIME types, enabling Horde "
+"applications to figure out how to handle some content such as email "
+"attachments or CVS checkouts."
+msgstr ""
+"File ini memetakan ekstensi file ke jenis MIME logik, memungkinkan aplikasi "
+"Horde untuk mengatasi cara menangani beberapa isi seperti attachment email "
+"atau checkout CVS."
+
+msgid ""
+"This is the main Horde configuration file. It contains paths and basic items "
+"that apply to the core framework and all Horde applications."
+msgstr ""
+"Ini adalah file utama konfigurasi Horde. File ini berisi path dan item dasar "
+"yang diaplikasikan untuk framework inti dan semua aplikasi Horde."
+
+msgid "This number must be at least one."
+msgstr "Angka ini paling sedikit harus satu."
+
+msgid "This value must be a number."
+msgstr "Nilai ini harus angka."
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Type mismatch."
+msgstr "Salah ketik."
+
+msgid "URL"
+msgstr "URL"
+
+msgid "Unable to connect to SQL server."
+msgstr "Tidak bisa koneksi ke server SQL."
+
+msgid "Unable to read the vfsroot directory."
+msgstr "Tidak bisa membaca direktori vfsroot."
+
+msgid "Unable to register preferences in session."
+msgstr "Tidak bisa mendaftar preferences pada sesi."
+
+msgid "Unable to translate this Word document."
+msgstr "Tidak bisa menterjemahkan dokumen Word ini."
+
+msgid "Undo Changes"
+msgstr "Batalkan Perubahan"
+
+msgid "Unexpected end of file."
+msgstr "Bukan akhir file yang diharapkan."
+
+msgid "Use Default Value"
+msgstr "Gunakan Nilai Default"
+
+msgid "User Options"
+msgstr "Pilihan Pemakai"
+
+msgid "Username"
+msgstr "Username"
+
+msgid "Warning"
+msgstr "Peringatan"
+
+msgid "Weekly"
+msgstr "Mingguan"
+
+#, c-format
+msgid "Welcome to %s"
+msgstr "Selamat Datang di %s"
+
+#, c-format
+msgid "Welcome, %s"
+msgstr "Selamat Datang, %s"
+
+msgid "What application should Horde display after login?"
+msgstr "Aplikasi apa yang seharusnya tampil setelah login?"
+
+msgid "Work Address"
+msgstr "Alamat Kantor"
+
+msgid "Work Phone"
+msgstr "Telepon Kantor"
+
+msgid "YY"
+msgstr "YY"
+
+msgid "Yearly"
+msgstr "Tahunan"
+
+msgid "You have been logged out.<br />Thank you for using the system."
+msgstr "Anda sudah keluar.<br />Terima kasih atas penggunaan sistem ini."
+
+msgid "You must describe the problem before you can send the problem report."
+msgstr "Anda harus menjelaskan masalahnya sebelum mengirim laporan masalah."
+
+#, c-format
+msgid "Your %s session has expired. Please login again."
+msgstr "Sesi %s anda sudah habis. Silakan login lagi."
+
+msgid "Your Email Address:"
+msgstr "Alamat Email Anda:"
+
+msgid "Your Information"
+msgstr "Informasi Anda"
+
+msgid "Your Name:"
+msgstr "Nama Anda:"
+
+msgid "Your options have been updated."
+msgstr "Pilihan anda telah diperbarui."
+
+msgid "[Problem Report]"
+msgstr "[Laporan Masalah]"
+
+#, c-format
+msgid "[line %s of %s]"
+msgstr "[baris %s dari %s]"
+
+msgid "vCard"
+msgstr "vCard"

@@ -1,0 +1,11 @@
+Type: file
+File: etc/kolab2/resmgr.conf
+Variables: mail/cyrus/caluser
+Variables: mail/cyrus/caluser/pwdfile
+
+Type: file
+File: etc/kolab2/freebusy.conf
+
+Type: file
+File: etc/univention/apache/95kolab2-freebusy
+Variables: freebusy/http/legacy
