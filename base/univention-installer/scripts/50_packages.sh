@@ -111,17 +111,17 @@ done
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	$PIPE apt-get install univention-server-master --yes
-elif [ $server_role = "domaincontroller_backup" ]; then
+elif [ "$server_role" = "domaincontroller_backup" ]; then
 	$PIPE apt-get install univention-server-backup --yes
-elif [ $server_role = "domaincontroller_slave" ]; then
+elif [ "$server_role" = "domaincontroller_slave" ]; then
 	$PIPE apt-get install univention-server-slave --yes
-elif [ $server_role = "memberserver" ]; then
+elif [ "$server_role" = "memberserver" ]; then
 	$PIPE apt-get install univention-server-member --yes
-elif [ $server_role = "managed_client" ]; then
+elif [ "$server_role" = "managed_client" ]; then
 	$PIPE apt-get install univention-fat-client --yes
-elif [ $server_role = "mobile_client" ]; then
+elif [ "$server_role" = "mobile_client" ]; then
 	$PIPE apt-get install univention-mobile-client --yes
-else
+elif [ "$server_role" = "basesystem" ]; then
 	$PIPE apt-get install univention-updater --yes
 fi
 

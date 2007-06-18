@@ -202,7 +202,7 @@ PackageList=[
 					'Description': _('Web Proxy Services'),
 				},
 				{
-					'Name': _('SSH Server'),
+					'Name': _('OpenSSH Server'),
 					'Packages': ['openssh-server'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
@@ -498,7 +498,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('ssh client'),
+					'Name': _('OpenSSH client'),
 					'Packages': ['openssh-client'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
