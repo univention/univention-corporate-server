@@ -8,7 +8,7 @@ Package: univention-mail-postfix
 Architecture: all
 Pre-Depends: postfix, univention-baseconfig (>> 1.54-30)
 Depends: postfix-ldap
-Conflicts: univention-mail, univention-mail-postfix-forward, exim4-base
+Conflicts: univention-mail, univention-mail-postfix-forward, exim4, exim4-base, exim4-config
 Description: UCS - postfix configuration
  This package contains the configuration for the postfix
  mail transport agent.
