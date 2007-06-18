@@ -47,3 +47,6 @@ fi
 if [ -x /etc/init.d/apache2 ]; then
 	/etc/init.d/apache2 restart
 fi
+
+exit 0
+
