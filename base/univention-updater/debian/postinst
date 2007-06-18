@@ -60,9 +60,6 @@ if [ "$1" = "configure" ]; then
 	univention-baseconfig set update/security/prefix="updates/security-desktop"
 	univention-baseconfig set update/directory?"ucs-updates"
 
-	univention-baseconfig set version/repository-version?$version_version
-	univention-baseconfig set version/repository-patchlevel?$version_patchlevel
-
 	mkdir -p /var/cache/univention-update
 
 	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.12; then

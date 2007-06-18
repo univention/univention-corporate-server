@@ -1,3 +1,9 @@
+univention-updater (2.0.6-1) unstable; urgency=low
+
+  * remove some unused stuff from the postup.sh and from the postinst script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 08:16:50 +0200
+
 univention-updater (2.0.5-3) unstable; urgency=low
 
   * encoded files utf-8
