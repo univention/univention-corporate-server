@@ -70,7 +70,7 @@ def pidof( name ):
 		if not cmd:
 			continue
 		args = cmd.split( '\x00' )
-		cmd = shlex.split( name.encode( 'iso-8859-1' ) )
+		cmd = shlex.split( name )
 		if args[ 0 ].endswith( cmd[ 0 ] ):
 			if len( cmd ) > 1 and len( args ) >= len( cmd ):
 				for i in range( 1, len( cmd ) ):

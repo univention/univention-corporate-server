@@ -169,7 +169,7 @@ class BaseconfigInfo( object ):
 			for key in var.keys():
 				items = var.normalize( key )
 				for item, value in items.items():
-					value = value.encode( 'iso-8859-1' )
+					value = value
 					cfg.set( name, item, value )
 
 		cfg.write( fd )

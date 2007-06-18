@@ -69,10 +69,6 @@ class LocalizedDictionary( dict ):
 
 	def __setitem__( self, key, value ):
 		key = string.lower( key )
-		if not isinstance( key, unicode ):
-			key = unicode( key, 'iso-8859-1' )
-		if not isinstance( value, unicode ):
-			value = unicode( value, 'iso-8859-1' )
 		matches = LocalizedDictionary._locale_regex.match( key )
 		# localized value?
 		if matches:
@@ -161,13 +157,7 @@ class UnicodeConfig( ConfigParser.ConfigParser ):
 			fp.write("[%s]\n" % section)
 			for (key, value) in self._sections[section].items():
 				if key != "__name__":
-					if not isinstance( value, unicode ):
-						value = unicode( value, 'iso-8859-1' )
-					if not isinstance( key, unicode ):
-						key = unicode( key, 'iso-8859-1' )
-					fp.write( "%s = %s\n" % ( key.encode( 'utf8' ),
-											  value.encode( 'utf8' ).replace( '\n', '\n\t' )
-) )
+					fp.write( "%s = %s\n" % ( key, value.replace( '\n', '\n\t' ) ) )
 			fp.write("\n")
 
 
