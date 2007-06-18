@@ -82,12 +82,12 @@ fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.10; then
-		/etc/init.d/univention-ldap-notifier restart
+		/etc/init.d/univention-ldap-notifier restart || true
 	else
-		/etc/init.d/univention-ldap-notifier crestart
+		/etc/init.d/univention-ldap-notifier crestart || true
 	fi
 elif [ "$1" = "configure" ]; then
-	/etc/init.d/univention-ldap-notifier restart
+	/etc/init.d/univention-ldap-notifier restart || true
 fi
 
 

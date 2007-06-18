@@ -61,7 +61,8 @@ install: build
 
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/finish
 	touch debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/down
-	ln -s /etc/runit/univention-ldap-notifier debian/univention-ldap-notifier/etc/runit/univention/univention-ldap-notifier
+
+	install -m 755 02univention-ldap-notifier.inst debian/univention-ldap-notifier/usr/lib/univention-install/
 
 	# add file to be used by univention-console
 	echo "Univention-LDAP-Notifier;univention-ldap-notifier;/usr/sbin/univention-ldap-notifier;20" > debian/univention-ldap-notifier/etc/univention/daemons/univention-ldap-notifier

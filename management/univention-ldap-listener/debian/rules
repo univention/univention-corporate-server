@@ -63,7 +63,6 @@ install: build
 
 	touch debian/univention-ldap-listener/etc/runit/univention-ldap-listener/down
 	univention-install-baseconfig
-	ln -s /etc/runit/univention-ldap-listener debian/univention-ldap-listener/etc/runit/univention/univention-ldap-listener
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-listener/etc/runit/univention-ldap-listener/finish
 
 	# add file to be used by univention-console

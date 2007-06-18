@@ -6,3 +6,4 @@ var/lib/univention-ldap/save
 etc/runit/univention
 etc/runit/univention-ldap-notifier
 etc/univention/daemons
+usr/lib/univention-install

@@ -1,3 +1,9 @@
+univention-ldap-listener (2.0.5-1) unstable; urgency=low
+
+  * create runit link during the join
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 19:45:15 +0200
+
 univention-ldap-listener (2.0.4-1) unstable; urgency=low
 
   * only try to start the daemon if the runsv link exists
