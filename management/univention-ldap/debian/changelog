@@ -1,3 +1,9 @@
+univention-ldap (2.2.3-5) unstable; urgency=low
+
+  * call exit 0 at the end of the postinst scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 12:53:31 +0200
+
 univention-ldap (2.2.3-4) unstable; urgency=low
 
   * encoded files utf-8

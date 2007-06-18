@@ -35,3 +35,5 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; then
 fi
 
 #DEBHELPER#
+
+exit 0
