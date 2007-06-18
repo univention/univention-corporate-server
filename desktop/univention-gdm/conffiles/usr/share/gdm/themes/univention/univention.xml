@@ -8,7 +8,7 @@
   </item>
 
   <item type="label" id="clock">
-    <normal color="#ffffff" font="Sans Bold 14"/>
+    <normal color="#ffffff" font="Sans Bold 12"/>
     <pos x="-20" y="20" anchor="e"/>
     <text>%c</text>
   </item>
@@ -45,7 +45,7 @@
     <box orientation="vertical" min-width="340" xpadding="30" ypadding="30" spacing="10">
       <item type="label" id="login">
         <pos anchor="n" x="50%"/>
-        <normal color="#ffffff" font="Sans 20"/>
+        <normal color="#ffffff" font="Sans 16"/>
 		<text>Login</text>
 		<text xml:lang="de">Anmeldung</text>
       </item>
@@ -56,7 +56,7 @@
     <box orientation="vertical" min-width="320" xpadding="5" ypadding="5" spacing="5">
 		<item type="label" id="pam-prompt">
         	<pos anchor="nw" x="10%" y="-10%"/>
-        	<normal color="#000000" font="Sans Bold 14"/>
+        	<normal color="#000000" font="Sans Bold 12"/>
     		<!-- Stock label for: Username: -->
 	    	<stock type="username-label"/>
      	</item>
@@ -96,9 +96,9 @@ else:
 		<pos y="50%" anchor="w"/>
 	  </item>
 	  <item type="label">
-	    <normal color="#000000" font="Sans Bold 12"/>
-		<prelight color="#dd1144" font="Sans Bold 12"/>
-		<active color="#cc0033" font="Sans Bold 12"/>
+	    <normal color="#000000" font="Sans Bold 10"/>
+		<prelight color="#dd1144" font="Sans Bold 10"/>
+		<active color="#cc0033" font="Sans Bold 10"/>
 		<pos y="50%" anchor="w"/>
 		<!-- Stock label for: _Session -->
 		<stock type="session"/>
@@ -121,9 +121,9 @@ if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] =
  	print '  	    <pos y="50%" anchor="w"/>'
  	print '  	  </item>'
  	print '  	  <item type="label">'
- 	print '  	    <normal color="#000000" font="Sans Bold 12"/>'
- 	print '  	    <prelight color="#dd1144" font="Sans Bold 12"/>'
- 	print '  	    <active color="#cc0033" font="Sans Bold 12"/>'
+ 	print '  	    <normal color="#000000" font="Sans Bold 10"/>'
+ 	print '  	    <prelight color="#dd1144" font="Sans Bold 10"/>'
+ 	print '  	    <active color="#cc0033" font="Sans Bold 10"/>'
  	print '  	    <pos y="50%" anchor="w"/>'
  	print '  	    <!-- Stock label for: _Language -->'
  	print '  	    <stock type="language"/>'
@@ -140,9 +140,9 @@ if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 't
 	print ' 	    <pos y="50%" anchor="w"/>'
 	print ' 	  </item>'
 	print ' 	  <item type="label">'
-	print ' 	    <normal color="#000000" font="Sans Bold 12"/>'
-	print ' 	    <prelight color="#dd1144" font="Sans Bold 12"/>'
-	print ' 	    <active color="#cc0033" font="Sans Bold 12"/>'
+	print ' 	    <normal color="#000000" font="Sans Bold 10"/>'
+	print ' 	    <prelight color="#dd1144" font="Sans Bold 10"/>'
+	print ' 	    <active color="#cc0033" font="Sans Bold 10"/>'
 	print ' 	    <pos y="50%" anchor="w"/>'
 	print ' 	    <!-- Stock label for: _System -->'
 	print ' 	    <stock type="system"/>'
