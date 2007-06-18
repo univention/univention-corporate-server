@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -36,12 +36,17 @@ PYVERS=$(shell pyversions -vr)
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
+MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+
+%.mo:	%.po
+	msgfmt -o $@ $<
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 	touch configure-stamp
 
-build: configure-stamp build-stamp
+build: configure-stamp build-stamp $(MO_FILES)
 build-stamp:
 	dh_testdir
 	touch build-stamp
@@ -76,7 +81,7 @@ install-ext-%:
 	install -m755 univention-cli-client $(TOOLS_DEST)/usr/share/univention-admin-tools/univention-cli-client
 	install -m755 univention-cli-server $(TOOLS_DEST)/usr/share/univention-admin-tools/univention-cli-server
 
-	# install admin modules 
+	# install admin modules
 
 	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
 		o=debian/python-univention-admin/usr/lib/python$*/site-packages/$${i#modules/};\
@@ -88,7 +93,7 @@ install-ext-%:
 		install -d "`dirname $$o`";\
 		install -m 644 $$i $$o;\
 	done
-	@for i in $(MOFILES); do\
+	@for i in $(MO_FILES); do\
 		lang=`basename $$i .mo`;\
 		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
 		o=debian/python-univention-admin/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
@@ -121,7 +126,7 @@ binary-indep: build install
 	dh_installcron
 	dh_installman
 	dh_installinfo
-	dh_installchangelogs 
+	dh_installchangelogs
 	dh_pycentral
 	dh_link
 	dh_strip

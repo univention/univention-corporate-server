@@ -6,7 +6,7 @@
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # This program is free software; you can redistribute it and/or modify
@@ -44,7 +44,7 @@ class translation:
 			self.translation=gettext.translation(domain)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'translating %s' % namespace)
 		except IOError, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'no translation for %si (%s)' % ( namespace, str( e ) ) )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'no translation for %s (%s)' % ( namespace, str( e ) ) )
 			self.translation=None
 	def translate(self, message):
 		if self.translation:

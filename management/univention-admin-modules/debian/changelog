@@ -1,3 +1,9 @@
+univention-admin-modules (1.2.1-2) unstable; urgency=low
+
+  * package translation files 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 08:13:33 +0200
+
 univention-admin-modules (1.2.1-1) unstable; urgency=low
 
   * no password encoding to ISO-8859-1 anymore 
