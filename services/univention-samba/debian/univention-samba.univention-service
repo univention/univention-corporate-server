@@ -1,0 +1,5 @@
+[samba]
+description[de]=Stellt Dienste für Windows Rechner zur Verfügung
+description[en]=Provides services for Windows
+icon=service/samba
+programs=/usr/sbin/smbd,/usr/sbin/nmbd

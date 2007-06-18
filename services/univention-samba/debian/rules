@@ -91,9 +91,8 @@ install: build
 
 	install -m 755 kerberize_user ${D}/usr/share/univention-samba/
 
-	echo "Samba;samba;/usr/sbin/smbd;20" > ${D}/etc/univention/daemons/samba
-
 	univention-install-baseconfig
+	univention-install-service-info
 
 binary-arch: build install
 
