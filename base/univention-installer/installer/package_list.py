@@ -315,7 +315,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Univention Admin'),
-					'Packages': ['univention-admin', 'python2.4-univention-license'],
+					'Packages': ['univention-admin', 'python-univention-license'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
