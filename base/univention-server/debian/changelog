@@ -1,3 +1,9 @@
+univention-server (2.1.1-5) unstable; urgency=low
+
+  * remove univention-console from the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 12:03:28 +0200
+
 univention-server (2.1.1-4) unstable; urgency=low
 
   * remove univention-basetools from the univention-managed-client dependency
