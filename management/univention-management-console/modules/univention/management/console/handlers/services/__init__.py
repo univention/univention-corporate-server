@@ -101,27 +101,6 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
 
-# 	def __execute_service( self, service, cmd, callback ):
-# 		init_script = '/etc/init.d/%s' % service
-
-# 		if os.path.exists( init_script ):
-# 			proc = notifier.popen.Shell( '%s %s' % ( init_script, cmd ),
-# 										 stdout = False )
-# 			proc.signal_connect( 'finished', callback )
-
-# 	def _done( self, pid, status, stdout, id, dialog ):
-# 		if not status:
-# 			dialog.append( umcd.Text( _( 'Service started successfully.' ) ) )
-# 			self.finished( id, dialog )
-# 		else:
-# 			dialog.append( umcd.Text( _( 'Failed to start service.' ) ) )
-# 			self.finished( id, dialog, success = False )
-
-# 	def __doit( self, object, action ):
-# 		if object.options.has_key( 'service' ):
-# 			cb = notifier.Callback( self._done, object.id(), umcd.Dialog() )
-# 			self.__execute_service( object.options[ 'service' ], 'start', cb )
-
 	def _run_it( self, services, action ):
 		failed = []
 		for srv in services:
@@ -161,35 +140,17 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		else:
 			self.finished( object.id(), {} )
 
-# 	def service_reload( self, object ):
-# 		self.__doit( object, 'reload' )
-
-# 	def service_restart( self, object ):
-# 		self.__doit( object, 'restart' )
-
-# 	def service_status( self, object ):
-# 		lst = umcd.List()
-
-# 		lst.setHeader( [ umcd.Text( _( 'Name' ) ), umcd.Text( _( 'Status' ) ) ] )
-
-# 		if object.options.has_key( 'service' ):
-# 			if type( object.options[ 'service' ]) == type( [ ] ):
-# 				for srv in object.options[ 'service' ]:
-# 					if self.__valid_srv( srv ):
-# 						# This is still blocking, but may be fast enough
-# 						status = self.__service_status( srv )
-# 						lst.appendRow( [ umcd.Text ( srv ),
-# 										 umcd.Text( status ) ] )
-
-# 		self.finished( object.id(), umcd.Dialog( [ lst ] ) )
-
-# 	def service_remove( self, object ):
-# 		pass
-
-# 	def service_add( self, object ):
-# 		pass
-
 	def service_list( self, object ):
 		srvs = usi.ServiceInfo()
+		umc.baseconfig.load()
+
+		for name, srv in srvs.services.items():
+			key = '%s/autostart' % name
+			if not umc.baseconfig.has_key( key ):
+				srv.autostart = None
+			elif umc.baseconfig[ key ].lower() in ( 'yes', '1', 'true' ):
+				srv.autostart = True
+			else:
+				srv.autostart = False
 
 		self.finished( object.id(), srvs.services )

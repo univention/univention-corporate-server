@@ -147,7 +147,7 @@ class simpleHandler( signals.Provider ):
 			res.report = _( "Execution of command '%(command)s' has failed:\n\n%(text)s" ) % \
 							{ 'command' : object.arguments[ 0 ],
 							  'text' : unicode( traceback.format_exc() ) }
-			res.status( 600 )
+			res.status( 500 )
 			self.signal_emit( 'failure', res )
 			del self.__requests[ object.id() ]
 

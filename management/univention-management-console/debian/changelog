@@ -1,3 +1,12 @@
+univention-management-console (0.7.7-1) unstable; urgency=low
+
+  * add support for detecting start type (manual or automatically)
+  * mark tracebacks in UMC module handlers as internal error in status code of
+    response message
+  * fixed typos in init script for UMC server
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 18 Jun 2007 16:09:18 +0200
+
 univention-management-console (0.7.6-2) unstable; urgency=low
 
   * enable the apache site after the conffile was installed

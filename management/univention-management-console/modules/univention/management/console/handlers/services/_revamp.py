@@ -44,7 +44,7 @@ class Web( object ):
 		lst = umcd.List()
 		servs = res.dialog
 		boxes = []
-		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Description' ) ] )
+		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start Type' ), _( 'Description' ) ] )
 		for name, srv in servs.items():
 			if srv.running:
 				icon = umcd.Image( 'services/start', umct.SIZE_SMALL )
@@ -53,7 +53,12 @@ class Web( object ):
 			chk = umcd.Checkbox( static_options = { 'service' : name } )
 			boxes.append( chk.id() )
 			image = umcd.Image( 'services/default', umct.SIZE_MEDIUM )
-			lst.add_row( [ image, name, icon, srv[ 'description' ], chk ] )
+			type = _( 'manual' )
+			if srv.autostart:
+				type = _( 'automatically' )
+			elif srv.autostart == None:
+				type = _( 'unknown' )
+			lst.add_row( [ image, name, icon, type, srv[ 'description' ], chk ] )
 		req = umcp.Command( args = [], opts= { 'service' : [] } )
 		req_list = umcp.Command( args = [ 'service/list' ],
 								 opts = {} )
