@@ -1,3 +1,10 @@
+univention-apache (2.0.4-2) unstable; urgency=low
+
+  * added new ucs-overview.html german and english version created by
+    templates only links to master on non-master-roles
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 18 Jun 2007 15:07:14 +0200
+
 univention-apache (2.0.4-1) unstable; urgency=low
 
   * add service information file 

@@ -54,6 +54,9 @@ install: build
 
 	install -m 0755 08univention-apache.inst debian/univention-apache/usr/lib/univention-install/
 
+	install -m 644 stylesheet.css debian/univention-apache/var/www
+	install -m 644 img/* debian/univention-apache/var/www/img
+
 	univention-install-baseconfig
 	univention-install-service-info
 	find debian/univention-apache/ -regex '.*/CVS' -print0 | xargs -0 rm -rf
