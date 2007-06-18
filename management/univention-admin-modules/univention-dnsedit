@@ -49,16 +49,7 @@ import univention.admin.handlers.dns.alias
 import univention.admin.uexceptions
 
 def usage():
-	print >>sys.stderr, 'Usage: %s domain option [args]' % sys.argv[0]
-	print >>sys.stderr, 'Valid Options are:'
-	for elements in options.keys():
-		if elements == 'binddn':
-			print >>sys.stderr, '--%s= value' %elements
-		elif elements == 'bindpwd':
-			print >>sys.stderr, '--%s= value' %elements
-		else:
-			print >>sys.stderr, '--%s' %elements
-	sys.exit(1)
+	print >>sys.stderr, 'Usage: %s domain command [args]' % sys.argv[0]
 
 options={}
 options['ignore_missing_zone']=0
@@ -69,11 +60,10 @@ options['overwrite']=0
 options['stoptls']=0
 options['binddn']=0
 options['bindpwd']=0
-options['help']=0
 
-try:
-	opts, args=getopt.getopt(sys.argv[2:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
-except:
+opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite'])
+
+if len(args) < 3:
 	usage()
 	sys.exit(1)
 
@@ -94,8 +84,6 @@ for opt, val in opts:
 		options['binddn']=val
 	elif opt == '--bindpwd':
 		options['bindpwd']=val
-	elif opt == '--help':
-		options['help']=1
 
 co=None
 lo=None
@@ -109,32 +97,13 @@ baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
 timeout=time.time() + 120	# 2 minutes from now
-
-if len(args) < 3:
-        usage()
-        sys.exit(1)
-elif options['help']==1:
-        usage()
-        sys.exit(1)
-
-if not args[0] == baseConfig['ldap/base'].split('=')[1]:
-        print >>sys.stderr, 'Unknown Domain'
-        sys.exit(1)
-
-if not args[1] in opts:
-        print >>sys.stderr, 'Unknown Option'
-        usage()
-        sys.exit(1)
-
 def bind():
 	if time.time() > timeout:
 		err = '%s: LDAP server %s unreachable, aborting' % (sys.argv[0], baseConfig['ldap/master'])
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
 		print err
 		sys.exit(1)
-	if options['help']:
-		usage()
-	elif options['binddn'] and options['bindpwd']:
+	if options['binddn'] and options['bindpwd']:
 		try:
 			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn=options['binddn'], bindpw=options['bindpwd'], start_tls=start_tls)
 			position=univention.admin.uldap.position(lo.base)
