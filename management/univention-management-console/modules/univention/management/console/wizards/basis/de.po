@@ -37,7 +37,7 @@ msgstr "Rechnername"
 
 #: __init__.py:68
 msgid "Domain Name"
-msgstr "DomÃ€ne"
+msgstr "Domäne"
 
 #: __init__.py:69
 msgid "Windows Domain"
@@ -50,7 +50,7 @@ msgstr "LDAP-Basis"
 #: __init__.py:113
 #, python-format
 msgid "The following scripts failed: %(scripts)s"
-msgstr "Die folgenden Scripte sind fehlgeschlagen: %(scripts)s"
+msgstr "Die folgenden Skripte sind fehlgeschlagen: %(scripts)s"
 
 #: _revamp.py:42
 msgid "Basis Configration"
@@ -62,7 +62,7 @@ msgstr "Der Name des Rechners"
 
 #: _revamp.py:52
 msgid "The DNS domain name for the computer network"
-msgstr "Die DNS-DomÃ€ne des Netzes"
+msgstr "Die DNS-Domäne des Netzes"
 
 #: _revamp.py:57
 msgid "The LDAP base for the management database"
@@ -70,4 +70,4 @@ msgstr "Die LDAP-Basis der Management-Datenbank"
 
 #: _revamp.py:62
 msgid "The Windows domain provided by the Samba server"
-msgstr "Die Windows-DomÃ€ne des Samba-Dienstes"
+msgstr "Die Windows-Domäne des Samba-Dienstes"

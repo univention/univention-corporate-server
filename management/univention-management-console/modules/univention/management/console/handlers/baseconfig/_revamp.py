@@ -43,9 +43,6 @@ import _types
 
 _ = umc.Translation( 'univention.management.console.handlers.baseconfig' ).translate
 
-def _utf8( text ):
-	return unicode( text.encode( 'iso-8859-1' ), 'utf8')
-
 class Web( object ):
 	def _web_baseconfig_search( self, object, res ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Baseconfig.search: options: %s' % str( object.options ) )
@@ -81,13 +78,13 @@ class Web( object ):
 						for cat_name in var[ 'categories' ].split( ',' ):
 							cat = info.get_category( cat_name )
 							if cat:
-								cat_names.append( _utf8( cat[ 'name' ] ) )
+								cat_names.append( cat[ 'name' ] )
 						cat_text = ', '.join( cat_names )
 					else:
 						cat_text = ''
 
 					if var[ 'description' ]:
-						descr_text = _utf8( var[ 'description' ] )
+						descr_text = var[ 'description' ]
 					else:
 						descr_text = ''
 					if len( descr_text ) > 40:
@@ -158,7 +155,7 @@ class Web( object ):
 				info.load_categories()
 				for cat in cats.split( ',' ):
 					cat_info = info.get_category( cat )
-					default.append( ( string.lower( cat ), _utf8( cat_info[ 'name' ] ) ) )
+					default.append( ( string.lower( cat ), cat_info[ 'name' ] ) )
 			category = umcd.make( self[ 'baseconfig/set' ][ 'categories' ], fields = fields,
 								  default = default )
 		else:
@@ -171,7 +168,7 @@ class Web( object ):
 		if variable:
 			descr = variable.get_dict( 'description' )
 			for lang, text in descr.items():
-				default.append( { 'lang' : lang, 'text' : _utf8( text ) } )
+				default.append( { 'lang' : lang, 'text' : text } )
 		lang = umcd.Selection( ( 'lang', _types.descr_lang ), default = 'de' )
 		text = umcd.TextInput( ( 'text', _types.descr_text ) )
 		descr = umcd.DynamicList( self[ 'baseconfig/set' ][ 'descriptions' ],

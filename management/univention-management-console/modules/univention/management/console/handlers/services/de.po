@@ -21,7 +21,7 @@ msgstr "System-Dienste"
 
 #: __init__.py:49
 msgid "controls system services"
-msgstr "Kontrolle ÃŒber System-Dienste"
+msgstr "Kontrolle über System-Dienste"
 
 #: __init__.py:52
 msgid "Service"
@@ -49,7 +49,7 @@ msgstr "Dienst entfernen"
 
 #: __init__.py:86
 msgid "Add a service"
-msgstr "Dienst hinzufÃŒgen"
+msgstr "Dienst hinzufügen"
 
 #: __init__.py:91
 msgid "List all services"
@@ -62,7 +62,7 @@ msgstr "Das Starten der folgenden Dienste ist fehlgeschlagen: %(services)s"
 
 #: __init__.py:140 __init__.py:152
 msgid "You are not permitted to run this command."
-msgstr "Sie haben keine Berechtigungen dieses Kommando auszufÃŒhren"
+msgstr "Sie haben keine Berechtigungen dieses Kommando auszuführen"
 
 #: __init__.py:146
 #, python-format
@@ -91,4 +91,4 @@ msgstr "Dienste stoppen"
 
 #: _revamp.py:65
 msgid "Select the Operation"
-msgstr "Operation auswÃ€hlen"
+msgstr "Operation auswählen"

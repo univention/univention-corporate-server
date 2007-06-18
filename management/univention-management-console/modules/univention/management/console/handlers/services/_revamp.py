@@ -39,9 +39,6 @@ import univention.debug as ud
 
 _ = umc.Translation( 'univention.management.console.handlers.services' ).translate
 
-def _utf8( text ):
-	return unicode( text.encode( 'iso-8859-1' ), 'utf8' )
-
 class Web( object ):
 	def _web_service_list( self, object, res ):
 		lst = umcd.List()
@@ -56,7 +53,7 @@ class Web( object ):
 			chk = umcd.Checkbox( static_options = { 'service' : name } )
 			boxes.append( chk.id() )
 			image = umcd.Image( 'services/default', umct.SIZE_MEDIUM )
-			lst.add_row( [ image, name, icon, _utf8( srv[ 'description' ] ), chk ] )
+			lst.add_row( [ image, name, icon, srv[ 'description' ], chk ] )
 		req = umcp.Command( args = [], opts= { 'service' : [] } )
 		req_list = umcp.Command( args = [ 'service/list' ],
 								 opts = {} )

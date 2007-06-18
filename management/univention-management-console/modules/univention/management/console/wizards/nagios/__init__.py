@@ -80,5 +80,5 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		self.finished( object.id(), { 'number' : umc.baseconfig.get( 'nagios/server/smsrecipient', 0 ), } )
 
 	def nagios_set( self, object ):
-		ub.handler_set( [ 'nagios/server/smsrecipient=%s' % object.options[ 'number' ].encode( 'iso-8859-1' ) ] )
+		ub.handler_set( [ 'nagios/server/smsrecipient=%s' % object.options[ 'number' ] ] )
 		self.finished( object.id(), {} )

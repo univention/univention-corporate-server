@@ -52,7 +52,7 @@ class unidialog(unimodule.unimodule):
 
 	def __init__(self,a,b,c):
 		if baseConfig.has_key('umc/title') and baseConfig['umc/title']:
-			b['site_title']=baseConfig['umc/title'].decode('latin1')
+			b['site_title']=baseConfig['umc/title']
 		else:
 			b['site_title']='Univention Management Console'
 		if baseConfig.has_key('umc/title/image') and \

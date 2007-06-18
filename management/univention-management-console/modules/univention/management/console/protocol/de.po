@@ -25,11 +25,11 @@ msgstr "OK, Teilantwort"
 
 #: definitions.py:53
 msgid "command currently not available/possible"
-msgstr "Das Kommando ist momentan nicht verfÃŒgbar "
+msgstr "Das Kommando ist momentan nicht verfügbar "
 
 #: definitions.py:54
 msgid "invalid UMCP message"
-msgstr "UngÃŒltige UMCP Nachricht"
+msgstr "Ungültige UMCP Nachricht"
 
 #: definitions.py:55
 msgid "unknown command or not permitted to run"
@@ -37,15 +37,15 @@ msgstr "Unbekanntes Kommando oder fehlende Berechtigungen"
 
 #: definitions.py:56
 msgid "invalid command arguments"
-msgstr "UngÃŒltige Kommando-Parameter"
+msgstr "Ungültige Kommando-Parameter"
 
 #: definitions.py:57
 msgid "incomplete command"
-msgstr "UnvollstÃ€ndiges Kommando"
+msgstr "Unvollständiges Kommando"
 
 #: definitions.py:58
 msgid "invalid body object"
-msgstr "UngÃŒltiger Nachrichtenrumpf"
+msgstr "Ungültiger Nachrichtenrumpf"
 
 #: definitions.py:59
 msgid "unparsable message header"
@@ -73,7 +73,7 @@ msgstr "Zugriff auf UMC ist nicht erlaubt"
 
 #: definitions.py:65
 msgid "command execution prohibited"
-msgstr "AusfÃŒhrung des Kommandos ist nicht erlaubt"
+msgstr "Ausführung des Kommandos ist nicht erlaubt"
 
 #: definitions.py:66
 msgid "internal error"
@@ -93,7 +93,7 @@ msgstr "Verbindung zum Modul-Prozess ist fehlgeschlagen"
 
 #: definitions.py:70
 msgid "SSL server certificate is not trustworthy"
-msgstr "SSL-Server-Zertifikat ist nicht vertrauenswÃŒrdig"
+msgstr "SSL-Server-Zertifikat ist nicht vertrauenswürdig"
 
 #: definitions.py:71
 msgid "error occuried during command processing"
@@ -101,7 +101,7 @@ msgstr "Fehler wÃ€hrend der Kommandoverarbeitung"
 
 #: definitions.py:72
 msgid "specified locale is not available"
-msgstr "Die gesetzten Spracheinstellungen kÃ¶nnen nicht verwendet werden."
+msgstr "Die gesetzten Spracheinstellungen können nicht verwendet werden."
 
 #: definitions.py:98
 msgid "Unknown Status"

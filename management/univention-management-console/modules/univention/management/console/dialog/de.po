@@ -25,7 +25,7 @@ msgstr "Setzen"
 
 #: button.py:81
 msgid "Add"
-msgstr "HinzufÃŒgen"
+msgstr "Hinzufügen"
 
 #: button.py:98
 msgid "Cancel"
@@ -37,7 +37,7 @@ msgstr "OK"
 
 #: button.py:110
 msgid "Reset"
-msgstr "ZurÃŒcksetzen"
+msgstr "Zurücksetzen"
 
 #: helper.py:69
 msgid "Results per Page"

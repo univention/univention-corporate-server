@@ -45,7 +45,7 @@ msgstr "IMAP-Zugriff"
 
 #: __init__.py:70
 msgid "IMAP Quota Support"
-msgstr "IMAP Quota UnterstÃŒtzung"
+msgstr "IMAP Quota Unterstützung"
 
 #: __init__.py:71
 msgid "POP3 Access"
@@ -53,11 +53,11 @@ msgstr "POP3-Zugriff"
 
 #: __init__.py:72
 msgid "Maximum Message Size"
-msgstr "Maximale NachrichtengrÃ¶Ãe"
+msgstr "Maximale Nachrichtengröße"
 
 #: __init__.py:73
 msgid "Alias E-Mail Address for root"
-msgstr "Alternative E-Mail-Adresse fÃŒr root"
+msgstr "Alternative E-Mail-Adresse für root"
 
 #: _revamp.py:42
 msgid "Mail Server Configration"

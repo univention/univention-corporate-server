@@ -16,7 +16,7 @@ $temp_mode=0700;
 
 @!@
 run='$run="/usr/bin/python2.4 /usr/share/univention-management-console/frontend/univention-console-frontend.py '
-if baseConfig.has_key('console/web/debug/level'):
+if baseConfig.has_key('umc/web/debug/level'):
 	debug='-d %s '%baseConfig['umc/web/debug/level']
 else:
 	debug='-d 0 '
@@ -27,7 +27,7 @@ if baseConfig.has_key('umc/web/language'):
 	else:
 		lang = '-l %s' % lang
 else:
-	lang='-l de'
+	lang='-l de_DE.utf8'
 tail='";'
 if baseConfig.has_key('umc/web/timeout'):
 	try:
@@ -55,12 +55,9 @@ print run
 @!@
 if baseConfig.has_key('umc/web/language'):
 	lang = baseConfig['umc/web/language']
-	if lang.find( '_' ) > -1:
-		print '$language="%s";' % lang[ : lang.find( '_' ) ]
-	else:
-		print '$language="%s";' % lang
+	print '$language="%s";' % lang
 else:
-	print '$language="de";'
+	print '$language="de_DE.utf8";'
 @!@
 
 # Zeichensatz des Input- & Output-XML

@@ -61,7 +61,7 @@ def main(argv):
 					   dest = 'socket', help = 'defines the socket to bind to',
 					   default = '' )
 	parser.add_option( '-l', '--language', type = 'string', action = 'store',
-					   dest = 'language', default = 'de_DE',
+					   dest = 'language', default = 'de_DE.utf8',
 					   help = 'defines the language to use' )
 	parser.add_option( '-n', '--no-daemon', action = 'store_false',
 					   dest = 'daemon_mode', default = True,
@@ -176,10 +176,10 @@ def main(argv):
 				open('/tmp/xmlin', 'w').write(xmlin)
 			xmlout = session.startRequest( xmlin, number, ignore_ldap_connection=True, timeout = None )
 			if options.debug >= 2:
-				open('/tmp/xmlout', 'w').write(utf8_encode(xmlout)[0])
+				open('/tmp/xmlout', 'w').write( xmlout )
 
 			# send output
-			conn.send(utf8_encode(xmlout)[0]+'\0')
+			conn.send( xmlout + '\0' )
 			conn.close()
 
 			# Do cleanup work after the connection has been closed,

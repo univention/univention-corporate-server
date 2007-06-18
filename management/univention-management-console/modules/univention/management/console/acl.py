@@ -240,9 +240,7 @@ class ACLs:
 		for allow in self.acls[ 'allow' ]:
 			if not hostname or allow[ 'host' ] == hostname:
 				match = self.__command_match( allow[ 'command' ], command )
-				ud.debug( ud.ADMIN, ud.INFO, "command match: %s" % match )
 				opt_match = self.__option_match( allow[ 'options' ], options )
-				ud.debug( ud.ADMIN, ud.INFO, "option match: %s" % opt_match )
 				if match == ACLs.MATCH_FULL and opt_match == ACLs.MATCH_FULL:
 					# if allow[ 'command' ] == command:
 					if [ 'fromUser' ]:

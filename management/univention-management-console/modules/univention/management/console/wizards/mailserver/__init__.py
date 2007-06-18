@@ -118,8 +118,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		ub.handler_set( [ 'mail/cyrus/imap=%s' % _2str( object.options[ 'imap' ] ) ] )
 		ub.handler_set( [ 'mail/cyrus/imap/quota=%s' % _2str( object.options[ 'imap_quota' ] ) ] )
 		ub.handler_set( [ 'mail/cyrus/pop=%s' % _2str( object.options[ 'pop' ] ) ] )
-		ub.handler_set( [ 'mail/messagesizelimit=%s' % object.options[ 'messagesizelimit' ].encode( 'iso-8859-1' ) ] )
-		ub.handler_set( [ 'mail/alias/root=%s' % object.options[ 'root' ].encode( 'iso-8859-1' ) ] )
+		ub.handler_set( [ 'mail/messagesizelimit=%s' % object.options[ 'messagesizelimit' ] ] )
+		ub.handler_set( [ 'mail/alias/root=%s' % object.options[ 'root' ] ] )
 		cb = notifier.Callback( self._mailserver_set, object,
 								_( 'Restarting the following services failed: %(services)s' ) )
 		func = notifier.Callback( self._run_it, [ 'cyrus', 'postfix' ], 'restart' )

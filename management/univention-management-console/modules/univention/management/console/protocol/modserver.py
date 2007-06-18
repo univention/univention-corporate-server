@@ -74,7 +74,7 @@ class ModuleServer( Server ):
 				except:
 					pass
 			if not self.__module:
-				raise Exception( "Module '%s' could not be found. Exiting ..." )
+				raise Exception( "Module '%s' could not be found. Exiting ..." % modname )
 			self.__handler = self.__module.handler()
 			self.__handler.set_interface( self.__interface )
 			self.__commands = self.__module.command_description

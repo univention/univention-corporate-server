@@ -24,8 +24,8 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	/usr/lib/univention-install/34univention-management-console-server.inst
 fi
 
-if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
-	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
+if [ "${locale/de_DE.UTF-8:UTF-8//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE.UTF-8:UTF-8"
 fi
 
 # default directory for UNIX sockets daemon <-> module

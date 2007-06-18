@@ -57,7 +57,7 @@ msgstr "Anmeldung abbrechen"
 
 #: modconsole.py:138
 msgid "Do you really want to logout?"
-msgstr "MÃ¶chten Sie sich wirklich abmelden?"
+msgstr "Möchten Sie sich wirklich abmelden?"
 
 #: modconsole.py:169
 msgid "Update status"
@@ -68,7 +68,7 @@ msgid ""
 "Authentication failed: A connection to the UMC daemon could not be "
 "established."
 msgstr ""
-"Authentisierungfehler: Eine Verbindung zum UMC-DÃ€mon konnte nicht "
+"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
 "hergestellt werden"
 
 #: modconsole.py:277
@@ -82,7 +82,7 @@ msgstr "Abmeldung erfolgreich"
 
 #: pages/overview.py:22
 msgid "Overview"
-msgstr "Ãberblick"
+msgstr "Überblick"
 
 #: pages/overview.py:54
 msgid "Favorites"
@@ -90,7 +90,7 @@ msgstr "Favoriten"
 
 #: pages/overview.py:54
 msgid "Favorite Univention Management Console Modules"
-msgstr "Am hÃ€ufigsten genutzte Module"
+msgstr "Am häufigsten genutzte Module"
 
 #: pages/overview.py:86 pages/about.py:103
 msgid "Logout from Univention Management Console"
@@ -106,7 +106,7 @@ msgstr "Hinweis"
 
 #: pages/about.py:19
 msgid "About"
-msgstr "Ãber"
+msgstr "Über"
 
 #: pages/about.py:32
 msgid "Univention Management Console"
@@ -182,16 +182,16 @@ msgstr "WÃ€hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
 #: mapping/dynamics.py:79
 msgid "Add"
-msgstr "HinzufÃŒgen"
+msgstr "Hinzufügen"
 
 #: mapping/dynamics.py:165
 msgid "Entries:"
-msgstr "EintrÃ€ge:"
+msgstr "Einträge:"
 
 #: mapping/dynamics.py:166
 #, python-format
 msgid "Current entries for '%s'"
-msgstr "Existierende EintÃ€ge fÃŒr '%s'"
+msgstr "Existierende Einträge für '%s'"
 
 #: mapping/dynamics.py:276
 msgid "any"
@@ -215,7 +215,7 @@ msgstr "Eigenschaft"
 
 #: mapping/dynamics.py:299
 msgid "select attribute"
-msgstr "WÃ€hlen Sie ein Attribut aus"
+msgstr "Wählen Sie ein Attribut aus"
 
 #: mapping/dynamics.py:419
 msgid "All"
@@ -223,7 +223,7 @@ msgstr "Alles"
 
 #: mapping/dynamics.py:419
 msgid "choose objects to add"
-msgstr "WÃ€hlen Sie die Objekte zum HinzufÃŒgen aus."
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
 
 #: mapping/dynamics.py:420
 msgid "Current"
@@ -231,15 +231,15 @@ msgstr "Aktuell"
 
 #: mapping/dynamics.py:420
 msgid "choose objects to remove"
-msgstr "WÃ€hlen Sie die zu entfernenden Objekte aus."
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
 
 #: mapping/buttons.py:146
 msgid "Do"
-msgstr "AusfÃŒhren"
+msgstr "Ausführen"
 
 #: mapping/buttons.py:147
 msgid "Do action with selected objects."
-msgstr "Aktion mit ausgewÃ€hlten Objekten ausfÃŒhren"
+msgstr "Aktion mit ausgewählten Objekten ausführen"
 
 #: mapping/buttons.py:149
 msgid "Invert Selection"
@@ -247,16 +247,16 @@ msgstr "Auswahl umkehren"
 
 #: mapping/buttons.py:150
 msgid "Select All"
-msgstr "Alle auswÃ€hlen"
+msgstr "Alle auswählen"
 
 #: mapping/buttons.py:153 mapping/buttons.py:155
 msgid "Do with selected objects ..."
-msgstr "AusgewÃ€hlte Objekte ..."
+msgstr "Ausgewählte Objekte ..."
 
 #: mapping/buttons.py:217
 msgid "Select"
-msgstr "AuswÃ€hlen"
+msgstr "Auswählen"
 
 #: mapping/buttons.py:218
 msgid "Select entry"
-msgstr "AuswÃ€hlen eines Eintrags"
+msgstr "Auswählen eines Eintrags"
