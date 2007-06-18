@@ -71,7 +71,7 @@ class object(content):
 			for val in self.all_results['locales'].split(' '):
 				default_values.append(val.split(':')[0])
 		else:
-			default_values=['de_DE@euro']
+			default_values=['de_DE.UTF-8']
 		for line in range(len(locales)):
 			sortlist.append(locales[line].strip().split(' '))
 		sortlist.sort()
