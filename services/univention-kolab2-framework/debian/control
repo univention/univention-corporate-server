@@ -6,8 +6,8 @@ Build-Depends: debhelper, univention-baseconfig-dev
 
 Package: univention-kolab2-framework
 Architecture: all
-Pre-Depends: univention-apache, libapache-mod-auth-pam, php4-pear, php4-ldap, php4-domxml
-Depends: univention-baseconfig, python2.4-pexpect, liburi-perl, libnet-ldap-perl, openssl
+Pre-Depends: univention-apache, libapache2-mod-auth-pam, php-pear, php5-ldap, php5-xmlrpc
+Depends: univention-baseconfig, python-pexpect, liburi-perl, libnet-ldap-perl, openssl
 Description: UCS - postfix kolab2 framework
  This package contains scripts and configuration needed
  for kolab2 compatible servers. Most work is based on the
