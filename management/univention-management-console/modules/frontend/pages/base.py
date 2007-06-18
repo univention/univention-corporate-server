@@ -42,6 +42,7 @@ class Page( object ):
 		self.id = id
 		self.selected = 0
 		self.selection_changed = True
+		self.reselected = False
 		self.closed = False
 		self.categories = []
 		self.categorylist = None
@@ -90,6 +91,12 @@ class Page( object ):
 
 	def apply( self ):
 		selected = self.categorylist.getselected()
+		# check if the current category is re-selected
+		if getattr( self.categorylist, 'bpressed', 0 ) and self.selected == selected:
+			self.reselected = True
+		else:
+			self.reselected = False
+
 		self.selection_changed = ( self.selected != selected )
 		self.selected = selected
 

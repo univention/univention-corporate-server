@@ -340,6 +340,15 @@ class Module( base.Page ):
 		if self.selection_changed:
 			self.__change_to_selected()
 			return
+		elif self.reselected:
+			cmd = self.__startups[ self.selected ]
+			if cmd.caching and cmd.cache:
+				self.__layout = cmd.cache
+				return
+			else:
+				self.active.reset()
+				self.active.single( client.request_send( cmd.request ) )
+
 
 		# Handle dynamic elements
 		for params, dyn in self.dynamics:
