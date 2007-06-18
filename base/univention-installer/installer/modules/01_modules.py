@@ -356,6 +356,8 @@ class object(content):
 				self.parent.container['hardware']['kudzu'].append('ide-disk')
 			if not self.parent.container['hardware'].has_key('kudzu') or not 'sd_mod' in self.parent.container['hardware']['kudzu']:
 				self.parent.container['hardware']['kudzu'].append('sd_mod')
+			if not self.parent.container['hardware'].has_key('kudzu') or not 'dm-mod' in self.parent.container['hardware']['kudzu']:
+				self.parent.container['hardware']['kudzu'].append('dm-mod')
 			if self.parent.cmdline.get('recover', False):
 				if not self.parent.container['hardware'].has_key('kudzu') or not 'st' in self.parent.container['hardware']['kudzu']:
 					self.parent.container['hardware']['kudzu'].append('st')
