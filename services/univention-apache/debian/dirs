@@ -2,3 +2,4 @@ usr/sbin
 etc/univention/apache
 var/lib/univention-apache
 var/www
+usr/lib/univention-install/
