@@ -53,7 +53,7 @@ def main(argv):
 	socket_filename=''
 	socket_timeout=60*5
 	debugging = 0
-	language='de'
+	language='de_DE.utf8'
 
 	# parse command line arguments
 	opts, args = getopt.getopt(argv[1:], 's:t:d:l:')
@@ -80,8 +80,9 @@ def main(argv):
 		univention.debug.init('/dev/null', 0, 0)
 
 	os.environ["LC_MESSAGES"]=language
-	if language == 'de':
-		locale.setlocale( locale.LC_TIME, 'de_DE@euro' )
+	locale.setlocale( locale.LC_TIME, language )
+# 	if language == 'de':
+# 		locale.setlocale( locale.LC_TIME, 'de_DE@euro' )
 
 	from uniparts import *
 	import requests

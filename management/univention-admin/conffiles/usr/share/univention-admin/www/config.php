@@ -22,7 +22,7 @@ else:
 if baseConfig.has_key('admin/web/language'):
         lang='-l %s'%baseConfig['admin/web/language']
 else:
-        lang='-l de'
+        lang='-l de_DE.utf8'
 tail='";'
 
 if baseConfig.has_key('admin/timeout'):
@@ -51,7 +51,7 @@ print run
 if baseConfig.has_key('admin/web/language'):
 	print '$language="%s";'%baseConfig['admin/web/language']
 else:
-	print '$language="de";'
+	print '$language="de_DE.utf8";'
 @!@
 # Zeichensatz des Input- & Output-XML
 $encoding="UTF-8";    //ISO-8859-1  oder UTF-8

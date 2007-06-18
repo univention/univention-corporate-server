@@ -37,7 +37,7 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 fi
 
 univention-baseconfig set admin/timeout?300
-univention-baseconfig set admin/web/language?de
+univention-baseconfig set admin/web/language?de_DE.utf8
 univention-baseconfig set ssl/validity/check?yes
 
 
