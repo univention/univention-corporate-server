@@ -51,10 +51,8 @@ install: build
 
 	install -m 755 67univention-mail-postfix.inst debian/univention-mail-postfix/usr/lib/univention-install/
 
-	# create file regarding postfix used by univention-console
-	echo "Postfix Mailserver;postfix;/usr/lib/postfix/master;20" > debian/univention-mail-postfix/etc/univention/daemons/postfix
-
 	univention-install-baseconfig
+	univention-install-service-info
 	dh_install
 
 binary-indep: build install

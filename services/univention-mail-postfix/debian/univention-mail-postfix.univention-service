@@ -1,0 +1,5 @@
+[postfix]
+description[de]=Dienst zum Versenden und annehmen von E-Mails
+description[en]=Service for Sending and Receiving E-Mails
+icon=service/postfix
+programs=/usr/lib/postfix/master
