@@ -50,6 +50,7 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
 		. /usr/share/univention-ssl/make-certificates.sh;
 		init;
+		univention-certificate new -name $hostname.$domainname
 	else
 		echo "skipped. SSL Certificate found in $CERTPATH ";
 	fi
