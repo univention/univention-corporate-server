@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.0-2) unstable; urgency=low
+
+  * added conflict to exim4-base
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 18 Jun 2007 10:56:32 +0200
+
 univention-mail-postfix (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
