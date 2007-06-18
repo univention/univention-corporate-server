@@ -30,13 +30,30 @@
 
 import gettext
 import sys
+import locale
 
+import univention.debug
 
-def _(val):
-    try:
-        translationdomain="univention-webui-modules"
-        translation=gettext.translation(translationdomain)
-        newval = translation.ugettext(val)
-    except:
-        newval=val
-    return newval
+class Translation:
+	def __init__( self, namespace ):
+		domain = namespace.replace( '/', '-' ).replace( '.', '-' )
+		try:
+			lang = locale.getlocale( locale.LC_MESSAGES )
+			if lang[ 0 ]:
+				self.translation = gettext.translation( domain, languages = ( lang[ 0 ], ) )
+			else:
+				self.translation = None
+		except IOError, e:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
+									'no translation for %s (%s)' % ( namespace, str( e ) ) )
+			self.translation = None
+
+	def translate( self, message ):
+		if self.translation:
+			return self.translation.ugettext( message )
+		else:
+			return message
+
+__translation = Translation( 'univention-webui-modules' )
+
+_ = __translation.translate
