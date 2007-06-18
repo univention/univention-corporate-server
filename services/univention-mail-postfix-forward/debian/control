@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-baseconfig-dev
 Package: univention-mail-postfix-forward
 Architecture: all
 Depends: univention-baseconfig, postfix
-Conflicts: univention-mail, univention-mail-postfix, univention-mail-tiny, courier-mta, exim
+Conflicts: univention-mail, univention-mail-postfix, univention-mail-tiny, courier-mta, exim, exim4-base
 Description: UCS - postfix forward configuration
  This package contains the configuration for the postfix
  mail transport agent.
