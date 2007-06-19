@@ -39,11 +39,11 @@ case "$1" in
 		;;
 	stop)
 		echo -n "Stopping univention-bind-proxy daemon: "
-		svn down univention-bind-proxy
+		sv down univention-bind-proxy
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-bind-proxy daemon: "
-		svn restart univention-bind-proxy
+		sv restart univention-bind-proxy
 		;;
 	crestart)
 		if sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1

@@ -1,3 +1,9 @@
+univention-bind (2.0.2-4) unstable; urgency=low
+
+  * call sv instead of svn in the init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 06:48:54 +0200
+
 univention-bind (2.0.2-3) unstable; urgency=low
 
   * add service information files 
