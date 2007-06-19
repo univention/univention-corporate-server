@@ -105,7 +105,7 @@ PackageList=[
 					'Description': _('Horde Webclient for UGS'),
 				},
 				{
-					'Name': _('Mail Services (smtp/pop3/imap)'),
+					'Name': _('Mail Services (smtp/pop/imap)'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus', 'univention-spamassassin'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''], 
