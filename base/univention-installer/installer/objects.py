@@ -298,6 +298,7 @@ class select:
 		self.line=line
 		self.dict={}
 		self.list=[]
+		self.disabled = 0
 		list=[]
 
 		if type(dict) is type(self.dict):
@@ -392,11 +393,25 @@ class select:
 			self.set(-(self.visible[1]-1))
 		self.draw()
 
+	def enable(self):
+		self.disabled=0
+		for i in range(len(self.list)):
+			self.list[i].color(4)
+		self.list[self.current].set_on()
+		self.draw()
+
+	def disable(self):
+		self.disabled=1
+		for i in range(len(self.list)):
+			self.list[i].color(1)
+		self.draw()
+
 	def usable(self):
+		if self.disabled == 1:
+			return 0
 		if len(self.list) > 0:
 			return 1
-		else:
-			return 0
+		return 0
 
 	def result(self):
 		result=[]
@@ -783,6 +798,7 @@ class radiobutton:
 		self.dict=dict
 		self.active=0
 		self.fixed=fixed
+		self.disabled=0
 
 		# try to sort...
 		list=self.dict.keys()
@@ -867,7 +883,22 @@ class radiobutton:
 			return 'tab'
 		self.draw()
 
+
+	def enable(self):
+		self.disabled=0
+		for i in range(len(self.button)):
+			self.button[i].set_off()
+		self.draw()
+
+	def disable(self):
+		self.disabled=1
+		for i in range(len(self.button)):
+			self.button[i].color(4)
+		self.draw()
+
 	def usable(self):
+		if self.disabled == 1:
+			return 0
 		if len(self.button):
 			return 1
 		else:
@@ -1378,7 +1409,7 @@ class subwin:
 		self.pad.bkgd(" ",curses.color_pair(4))
 		self.shadow.bkgd(" ",curses.color_pair(1))
 		self.pad.border(curses.MY_VLINE,curses.MY_VLINE,curses.MY_HLINE,curses.MY_HLINE,curses.EDGE_TL,curses.EDGE_TR,curses.EDGE_BL,curses.EDGE_BR)
-		self.elements=[]
+		self.reset_layout()
 		self.current=0
 		if len(self.strip_header()):
 			y_xtra=0
@@ -1393,6 +1424,34 @@ class subwin:
 				self.current=(self.current+1)%len(self.elements)
 				if self.current==temp:
 					break
+
+	# removes all widgets from window
+	def reset_layout(self):
+		self.elements = []
+		self.element_index = {}
+
+	# adds widget to window and assigns name to it
+	def add_elem(self, name, element):
+		self.element_index[name] = len(self.elements)
+		self.elements.append( element )
+
+	# returns widget addressed by name
+	def get_elem(self, name):
+		return self.elements[ self.element_index[ name ] ]
+
+	# tests if widget addressed by name exists
+	def elem_exists(self, name):
+		return self.element_index.has_key(name)
+
+	# returns widget id (old behaviour) of widget addressed by name
+	def get_elem_id(self, name):
+		if self.element_index.has_key(name):
+			return self.element_index[ name ]
+		return None
+
+	# returns widget addressed by widget id
+	def get_elem_by_id(self, id):
+		return self.elements[ id ]
 
 	def draw(self):
 		if hasattr(self,"sub"):
