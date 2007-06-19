@@ -178,9 +178,9 @@ if [ -n "$locale_default" ]; then
 
 	univention-baseconfig set "locale/default"="$locale_default"
 
-	univention-baseconfig set admin/web/language="\$short_form"
-	univention-baseconfig set console/web/language="\$short_form"
-	univention-baseconfig set gdm/language="\$locale_default"
+	univention-baseconfig set admin/web/language="$locale_default"
+	univention-baseconfig set console/web/language="$locale_default"
+	univention-baseconfig set gdm/language="$locale_default"
 fi
 
 echo "$timezone" >/etc/timezone
