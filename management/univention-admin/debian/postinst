@@ -58,6 +58,10 @@ univention-baseconfig set admin/web/debug/level?0
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.4-1; then
 	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-admin/www/icon
 	a2ensite univention-admin
+elif [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.2.3-1; then
+	if [ "$admin_web_language" = "de" ]; then
+		univention-baseconfig set admin/web/language=de_DE.utf8
+	fi
 elif [ "$1" = configure -a -z "$2" ]; then
 	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-admin/www/icon
 	a2ensite univention-admin
