@@ -1,3 +1,13 @@
+univention-installer (1.4.0-1) unstable; urgency=low
+
+  * added basic LVM support (beta)
+    * only one LVM Volume Group is supported in partition dialog
+      (more than one may exist in system but cannot be used)
+    * creating/removing PVs
+    * creating LVs
+
+ -- Soenke Schwardt <schwardt@univention.de>  Tue, 19 Jun 2007 09:09:23 +0200
+
 univention-installer (1.3.9-2) unstable; urgency=low
 
   * set the long locale string for admin and umc
@@ -161,6 +171,7 @@ univention-installer (1.1.3-1) unstable; urgency=low
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Jun 2007 11:32:38 +0200
 
+>>>>>>> .r467
 univention-installer (1.1.2-1) unstable; urgency=low
 
   * don't install univention-windows-installer on a memberserver

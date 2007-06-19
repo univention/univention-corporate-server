@@ -39,6 +39,15 @@ from objects import *
 from local import _
 import os, re, string, curses
 
+PARTTYPE_PRIMARY = 0
+PARTTYPE_LOGICAL = 1
+PARTTYPE_EXTENDED = 2
+PARTTYPE_FREESPACE_PRIMARY = 4
+PARTTYPE_FREESPACE_LOGICAL = 5
+PARTTYPE_LVM_VG = 100
+PARTTYPE_LVM_LV = 101
+PARTTYPE_LVM_VG_FREE = 102
+
 class object(content):
 	def __init__(self,max_y,max_x,last=(1,1), file='/tmp/installer.log', cmdline={}):
 		self.written=0
@@ -114,7 +123,7 @@ class object(content):
 		return self.sub.input(key)
 
 	def kill_subwin(self):
-		#Defined to prevend subwin from killing (module == subwin)
+		#Defined to prevent subwin from killing (module == subwin)
 		if hasattr(self.sub, 'sub'):
 			self.sub.sub.exit()
 		return ""
@@ -180,6 +189,12 @@ class object(content):
 		self.container['history']=[]
 		self.container['temp']={}
 		self.container['selected']=1
+		self.container['lvm'] = {}
+		self.container['lvm']['enabled'] = None
+		self.container['lvm']['lvm1available'] = False
+		self.container['lvm']['warnedlvm1'] = False
+		self.container['lvm']['ucsvgname'] = None
+		self.container['lvm']['lvmconfigread'] = False
 
 	def read_profile(self):
 		self.container['result']={}
@@ -427,6 +442,103 @@ class object(content):
 			self.stop()
 
 
+	def read_lvm_pv(self):
+#		p = os.popen('pvscan 2> /dev/null')
+#		p.close()
+		p = os.popen('pvdisplay -c 2> /dev/null')
+		content=p.read()
+		p.close()
+
+		#  /dev/sdb4:vg_member50:3907584:-1:8:8:-1:4096:477:477:0:dEMYyK-EdEu-uXvk-OS39-IeBe-whg1-c8fTCF
+
+		for line in content.splitlines():
+			item = line.strip().split(':')
+
+			self.container['lvm']['pv'][ item[0] ] = { 'touched': 0,
+													   'vg': item[1],
+													   'PEsize': int( item[7] ), # physical extent size in kilobytes
+													   'totalPE': int( item[8] ),
+													   'freePE': int( item[9] ),
+													   'allocPE': int( item[10] ),
+													   }
+
+		# set PV-Flag in disk-container
+		for disk in self.container['disk'].keys():
+			for part in self.container['disk'][disk]['partitions']:
+				self.container['disk'][disk]['partitions'][part]['pvflag'] = (part in self.container['lvm']['pv'].keys())
+
+
+	def read_lvm_vg(self):
+#		p = os.popen('vgscan 2> /dev/null')
+#		p.close()
+
+		p = os.popen('vgdisplay 2> /dev/null | grep " Format "')
+		content=p.read()
+		p.close()
+		if 'lvm1' in content:
+			self.container['lvm']['lvm1available'] = True
+
+		p = os.popen('vgdisplay -c 2> /dev/null')
+		content=p.read()
+		p.close()
+
+		#  vg_member50:r/w:772:-1:0:0:0:-1:0:2:2:2940928:4096:718:8:710:B2oHiE-D06t-g4eM-lblN-ELf2-KAYH-ef3CxX
+
+		# get available VGs
+		for line in content.splitlines():
+			item = line.strip().split(':')
+			self.container['lvm']['vg'][ item[0] ] = { 'touched': 0,
+													   'PEsize': int(item[12]),
+													   'totalPE': int(item[13]),
+													   'allocPE': int(item[14]),
+													   'freePE': int(item[15]),
+													   'size': int(item[12])*int(item[13])/1024.0,
+													   'created': 1,
+													   'lv': {}
+													   }
+
+	def read_lvm_lv(self):
+#		p = os.popen('lvscan 2> /dev/null')
+#		p.close()
+
+		p = os.popen('lvdisplay -c 2> /dev/null')
+		content=p.read()
+		p.close()
+
+		#  /dev/ucsvg/ucsvg-vol1:ucsvg:3:1:-1:0:819200:100:-1:0:0:254:0
+		#  /dev/ucsvg/ucsvg-vol2:ucsvg:3:1:-1:0:311296:38:-1:0:0:254:1
+		#  /dev/ucsvg/ucsvg_vol3:ucsvg:3:1:-1:0:204800:25:-1:0:0:254:2
+
+		# get available LVs
+		for line in content.splitlines():
+			item = line.strip().split(':')
+
+			vg = item[1]
+			pesize = self.container['lvm']['vg'][ vg ]['PEsize']
+			lvname = item[0].split('/')[-1]
+			self.container['lvm']['vg'][ item[1] ]['lv'][ lvname ] = {  'dev': item[0],
+																		'vg': item[1],
+																		'touched': 0,
+																		'PEsize': int(pesize),
+																		'currentLE': int(item[7]),
+																		'format': 0,
+																		'size': int(item[7])*int(pesize)/1024.0,
+																		'fstype': '',
+																		'flag': '',
+																		'mpoint': '',
+																		}
+
+	def read_lvm(self):
+		# read initial LVM status
+		self.container['lvm']['pv'] = {}
+		self.container['lvm']['vg'] = {}
+		self.read_lvm_pv()
+		self.read_lvm_vg()
+		self.read_lvm_lv()
+		if len(self.container['lvm']['vg'].keys()) > 0:
+			self.container['lvm']['enabled'] = True
+		self.container['lvm']['lvmconfigread'] = True
+
 	def read_devices(self):
 		if os.path.exists('/lib/univention-installer/partitions'):
 			file=open('/lib/univention-installer/partitions')
@@ -537,7 +649,7 @@ class object(content):
 			p = os.popen('/sbin/parted -s %s unit MB p 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()
-			self.debug('fist line: [%s]' % first_line)
+			self.debug('first line: [%s]' % first_line)
 			if _re_warning.match(first_line):
 				self.debug('Firstline starts with warning')
 				self.debug('Remove device: %s' % dev)
@@ -555,7 +667,7 @@ class object(content):
 			if first_line.startswith('Disk '):
 				mb_size = int(first_line.split(' ')[-1].split('MB')[0].split(',')[0])
 			else:
-				mb_size=1000
+				mb_size = 0	
 			extended=0
 			primary=0
 			logical=0
@@ -622,7 +734,7 @@ class object(content):
 					last_end=start
 				else:
 					last_end=end
-			if ( mb_size -last_end) > self.container['min_size']:
+			if ( mb_size - last_end) > self.container['min_size']:
 				free_start=last_end+float(0.01)
 				free_end = float(mb_size)
 				partList[free_start]=self.generate_freespace(free_start,free_end)
@@ -669,7 +781,7 @@ class object(content):
 
 
 	def generate_freespace(self,start,end):
-		return {'type':4,
+		return {'type':PARTTYPE_FREESPACE_PRIMARY,
 			'touched':0,
 			'fstype':'---',
 			'size':end-start,
@@ -733,6 +845,59 @@ class object(content):
 
 	class partition(subwin):
 
+		def __init__(self,parent,pos_y,pos_x,width,height):
+			self.part_objects = {}
+			subwin.__init__(self,parent,pos_y,pos_x,width,height)
+			self.check_lvm_msg()
+
+		def set_lvm(self, flag, vgname = None):
+			self.container['lvm']['enabled'] = flag
+			if flag:
+				if vgname:
+					self.container['lvm']['ucsvgname'] = vgname
+				else:
+					self.container['lvm']['ucsvgname'] = 'vg_ucs'
+				self.parent.debug( 'Partition: LVM enabled: lvm1available=%s  ucsvgname="%s"' %
+							(self.container['lvm']['lvm1available'], self.container['lvm']['ucsvgname']))
+				if not self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
+					self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ] = { 'touched': 1,
+																						  'PEsize': 4096,
+																						  'totalPE': 0,
+																						  'allocPE': 0,
+																						  'freePE': 0,
+																						  'size': 0,
+																						  'created': 0,
+																						  'lv': {}
+																						  }
+
+		def check_lvm_msg(self):
+			# check if LVM config has to be read
+			if not self.container['lvm']['lvmconfigread']:
+				self.draw()
+				self.act = self.active(self,_('Detecting LVM devices'),_('Please wait ...'),name='act',action='read_lvm')
+				self.act.draw()
+				self.draw()
+			# show warning if LVM1 volumes are detected
+			if self.container['lvm']['lvm1available'] and not self.container['lvm']['warnedlvm1'] and not hasattr(self,'sub'):
+				self.container['lvm']['warnedlvm1'] = True
+				self.sub = self.warning_lvm1(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
+				self.sub.draw()
+				self.draw()
+			# if more than one volume group is present, ask which one to use
+			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
+				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
+				self.sub.draw()
+				self.draw()
+			# if only one volume group os present, use it
+			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) == 1:
+				self.container['lvm']['ucsvgname'] = self.container['lvm']['vg'].keys()[0]
+			# if LVM is not automagically enabled then ask user if it should be enabled
+			if self.container['lvm']['enabled'] == None and not hasattr(self,'sub'):
+				self.sub = self.ask_lvm_enable(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
+				self.sub.draw()
+				self.draw()
+
+
 		def draw(self):
 			self.shadow.refresh(0,0,self.pos_y+1,self.pos_x+1,self.pos_y+self.height+1,self.pos_x+self.width+1)
 			self.pad.refresh(0,0,self.pos_y,self.pos_x,self.pos_y+self.height,self.pos_x+self.width)
@@ -749,7 +914,7 @@ class object(content):
 			return _(' Partition dialog ')
 
 		def layout(self):
-			self.elements=[]
+			self.reset_layout()
 			self.container=self.parent.container
 			self.minY=self.parent.minY
 			self.minX=self.parent.minX-16
@@ -770,33 +935,52 @@ class object(content):
 			head5=self.get_col(_('Mount-Point'),col5,'l')
 			head6=self.get_col(_('Size(MB)'),col6)
 			text = '%s %s %s %s %s %s'%(head1,head2,head3,head4,head5,head6)
-			self.elements.append(textline(text,self.minY,self.minX+2)) #0
+			self.add_elem('TXT_0', textline(text,self.minY,self.minX+2)) #0
 
 			device=self.container['disk'].keys()
 			device.sort()
+
+			self.parent.debug('LAYOUT')
 
 			dict=[]
 			for dev in device:
 				disk = self.container['disk'][dev]
 				self.rebuild_table(disk,dev)
-				path = self.get_col(dev.split('/',2)[-1],col1,'l')
-				model = self.get_col('-'*(col2+col3+col4+col5+10),col2+col3+col4+col5+3)
+				txt = '%s  (%s) %s' % (dev.split('/',2)[-1], _('diskdrive'), '-'*(col1+col2+col3+col4+col5+10))
+				path = self.get_col(txt,col1+col2+col3+col4+col5+4,'l')
+
 				size = self.get_col('%s'%disk['size'],col6)
-				dict.append('%s %s %s' % (path,model,size))
+				# save for later use (evaluating inputs)
+				self.part_objects[ len(dict) ] = [ 'disk', dev ]
+				dict.append('%s %s' % (path,size))
 
 				part_list=self.container['disk'][dev]['partitions'].keys()
 				part_list.sort()
 				for i in range(len(part_list)):
 					part = self.container['disk'][dev]['partitions'][part_list[i]]
 					path = self.get_col(' %s' % self.dev_to_part(part, dev),col1,'l')
+
 					format=self.get_col('',col4,'m')
 					if part['format']:
 						format=self.get_col('X',col4,'m')
+					if 'lvm' in part['flag']:
+						type=self.get_col('LVMPV',col3)
+
+						device="/%s"%self.parent.get_device(dev, part_list[i]).replace("_","/")
+						# display corresponding vg of pv if available
+						if self.container['lvm'].has_key('pv') and self.container['lvm']['pv'].has_key( device ):
+							if self.container['lvm']['pv'][device]['vg']:
+								mount=self.get_col( self.container['lvm']['pv'][device]['vg'], col5, 'l')
+							else:
+								mount=self.get_col( _('(unassigned)'), col5, 'l')
+						else:
+							mount=self.get_col('',col5,'l')
+					else:
+						type=self.get_col(part['fstype'],col3)
+						if part['fstype']== 'linux-swap':
+							type=self.get_col('swap',col3)
+						mount=self.get_col(part['mpoint'],col5,'l')
 					size=self.get_col('%s'%int(part['size']),col6)
-					type=self.get_col(part['fstype'],col3)
-					if part['fstype']== 'linux-swap':
-						type=self.get_col('swap',col3)
-					mount=self.get_col(part['mpoint'],col5,'l')
 					if part['type'] in [0,1,2]:
 						start=('%s' % part_list[i]).split('.')[0]
 						end=('%s' % (part_list[i]+part['size'])).split('.')[0]
@@ -809,7 +993,7 @@ class object(content):
 					elif part['type'] == 2: # EXTENDED
 						path = self.get_col(' %s' % self.dev_to_part(part, dev),col1,'l')
 						type = self.get_col('extended',col3)
-					elif part['type'] == 4 or part['type'] == 5: # FREESPACE
+					elif part['type'] == PARTTYPE_FREESPACE_PRIMARY or part['type'] == PARTTYPE_FREESPACE_LOGICAL: # FREESPACE
 						area=self.get_col('',col2)
 						mount=self.get_col('',col5,'l')
 						if not self.possible_type(self.container['disk'][dev],part_list[i]):
@@ -825,18 +1009,71 @@ class object(content):
 						area=self.get_col('',col2)
 						type=self.get_col(_('unknown'),col3)
 						path=self.get_col('---',col1)
+
+					self.part_objects[ len(dict) ] = [ 'part', dev, part_list[i], i ]
 					dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+
+			# display LVM items if enabled
+			if self.container['lvm']['enabled'] and self.container['lvm'].has_key('vg'):
+				for vgname in self.container['lvm']['vg'].keys():
+					# remove following line to display all VGs!
+					# but check other code parts for compliance first
+					if vgname == self.container['lvm']['ucsvgname']:
+						vg = self.container['lvm']['vg'][ vgname ]
+						self.parent.debug('==> VG = %s' % vg)
+						lvlist = vg['lv'].keys() # equal to   self.container['lvm']['vg'][ vgname ]['lv'].keys()
+						lvlist.sort()
+
+						txt = '%s  (%s) %s' % (vgname, _('LVM volume group'), '-'*(col1+col2+col3+col4+col5+10))
+						path = self.get_col(txt,col1+col2+col3+col4+col5+4,'l')
+						vgsize = vg['PEsize'] * vg['totalPE'] / 1024
+						size = self.get_col('%s' % vgsize,col6)
+
+						self.part_objects[ len(dict) ] = [ 'lvm_vg', vgname, None ]
+						dict.append('%s %s' % (path,size))
+
+						for lvname in lvlist:
+							lv = vg['lv'][ lvname ]
+							self.parent.debug('==> LV = %s' % lv)
+							path = self.get_col(' %s' % lvname,col1,'l')
+							format = self.get_col('',col4,'m')
+							if lv['format']:
+								format=self.get_col('X',col4,'m')
+							size=self.get_col('%s' % int(lv['size']),col6)
+							type=self.get_col(lv['fstype'],col3)
+							if lv['fstype']== 'linux-swap':
+								type=self.get_col('swap',col3)
+							mount=self.get_col(lv['mpoint'],col5,'l')
+							area=self.get_col('',col2)
+
+							self.part_objects[ len(dict) ] = [ 'lvm_lv', vgname, lvname ]
+							dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+
+						# show free space in volume group  ( don't show less than 3 physical extents )
+						if vg['freePE'] > 2:
+							path = self.get_col(' ---',col1,'l')
+							format = self.get_col('',col4,'m')
+							vgfree = vg['PEsize'] * vg['freePE'] / 1024
+							size=self.get_col('%s' % int(vgfree),col6)
+							type=self.get_col('free',col3)
+							mount=self.get_col('',col5,'l')
+							area=self.get_col('',col2)
+							self.parent.debug('==> FREE %s MB' % vgfree)
+
+							self.part_objects[ len(dict) ] = [ 'lvm_vg_free', vgname, None ]
+							dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+
+
 			self.container['dict']=dict
 
-			self.elements.append(select(dict,self.minY+1,self.minX,self.maxWidth+11,12,self.container['selected'])) #1
-			self.elements.append(button(_('F2-Create'),self.minY+14,self.minX,18)) #2
-			self.elements.append(button(_('F3-Edit'),self.minY+14,self.minX+(self.width/2)-4,align="middle")) #3
-			self.elements.append(button(_('F4-Delete'),self.minY+14,self.minX+(self.width)-7,align="right")) #4
-
-			self.elements.append(button(_('F5-Reset changes'),self.minY+16,self.minX,30)) #5
-			self.elements.append(button(_('F6-Write partitions'),self.minY+16,self.minX+(self.width)-37,30)) #6
-			self.elements.append(button(_('F11-Back'),self.minY+18,self.minX,30)) #7
-			self.elements.append(button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37,30)) #8
+			self.add_elem('SEL_part', select(dict,self.minY+1,self.minX,self.maxWidth+11,14,self.container['selected'])) #1
+			self.add_elem('BT_create', button(_('F2-Create'),self.minY+16,self.minX,18)) #2
+			self.add_elem('BT_edit', button(_('F3-Edit'),self.minY+16,self.minX+(self.width/2)-4,align="middle")) #3
+			self.add_elem('BT_delete', button(_('F4-Delete'),self.minY+16,self.minX+(self.width)-7,align="right")) #4
+			self.add_elem('BT_reset', button(_('F5-Reset changes'),self.minY+17,self.minX,30)) #5
+			self.add_elem('BT_write', button(_('F6-Write partitions'),self.minY+17,self.minX+(self.width)-37,30)) #6
+			self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX,30)) #7
+			self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37,30)) #8
 			if self.startIt:
 				self.parent.scan_extended_size()
 				self.parent.debug('SCAN_EXT: %s' % self.container['temp'])
@@ -878,6 +1115,7 @@ class object(content):
 			return _('UCS-Partition-Tool \n \n This tool is designed for creating, editing and deleting partitions during the installation. \n \n Use \"F2-Create\" to add a new partition. \n \n Use \"F3-Edit\" to configure an already existing partition. \n \n Use \"F4-Delete\" to remove a partition. \n \n Use the \"Reset changes\" button to cancel your changes to the partition table. \n \n Use the \"Write Partitions\" button to create and/or format your partitions.')
 
 		def input(self,key):
+			self.check_lvm_msg()
 			if hasattr(self,"sub"):
 				rtest=self.sub.input(key)
 				if not rtest:
@@ -891,17 +1129,17 @@ class object(content):
 					return 'next'
 				elif rtest == 'tab':
 					self.sub.tab()
-			elif not len(self.elements[1].list) and key in [ 10, 32, 276 ]:
-				if self.elements[5].get_status():#reset changes
+			elif not len(self.get_elem('SEL_part').list) and key in [ 10, 32, 276 ]:
+				if self.get_elem('BT_reset').get_status():#reset changes
 					self.parent.start()
 					self.parent.layout()
-					self.elements[self.current].set_on()
-					self.elements[1].set_off()
+					self.get_elem_by_id(self.current).set_on()
+					self.get_elem('SEL_part').set_off()
 					if hasattr(self,"sub"):
 						self.sub.draw()
-				elif self.elements[7].get_status():#back
+				elif self.get_elem('BT_back').get_status():#back
 					return 'prev'
-				elif self.elements[8].get_status() or key == 276:#next
+				elif self.get_elem('BT_next').get_status() or key == 276:#next
 					if len(self.container['history']) or self.parent.test_changes():
 						self.sub=self.verify_exit(self,self.minY+(self.maxHeight/8)+2,self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
 						self.sub.draw()
@@ -911,48 +1149,33 @@ class object(content):
 			elif key == 260:
 				#move left
 				active=0
-				if  self.elements[3].active:
-					active=3
-				elif  self.elements[4].active:
-					active=4
-				elif  self.elements[5].active:
-					active=5
-				elif  self.elements[6].active:
-					active=6
-				elif  self.elements[7].active:
-					active=7
-				elif  self.elements[8].active:
-					active=8
+				for elemid in ['BT_edit', 'BT_delete', 'BT_reset', 'BT_write', 'BT_back', 'BT_next']:
+					if self.get_elem(elemid).active:
+						active=self.get_elem_id(elemid)
 				if active:
-					self.elements[active].set_off()
-					self.elements[active-1].set_on()
+					self.get_elem_by_id(active).set_off()
+					self.get_elem_by_id(active-1).set_on()
 					self.current=active-1
 					self.draw()
 			elif key == 261:
 				#move right
 				active=0
-				if  self.elements[2].active:
-					active=2
-				elif  self.elements[3].active:
-					active=3
-				elif  self.elements[4].active:
-					active=4
-				elif  self.elements[5].active:
-					active=5
-				elif  self.elements[6].active:
-					active=6
-				elif  self.elements[7].active:
-					active=7
+				for elemid in ['BT_create', 'BT_edit', 'BT_delete', 'BT_reset', 'BT_write', 'BT_back']:
+					if self.get_elem(elemid).active:
+						active=self.get_elem_id(elemid)
 				if active:
-					self.elements[active].set_off()
-					self.elements[active+1].set_on()
+					self.get_elem_by_id(active).set_off()
+					self.get_elem_by_id(active+1).set_on()
 					self.current=active+1
 					self.draw()
 
-			elif len(self.elements[1].result()) > 0:
-				selected = self.resolve_part(self.elements[1].result()[0])
+
+			elif len(self.get_elem('SEL_part').result()) > 0:
+				selected = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
+				self.parent.debug('self.part_objects=%s' % self.part_objects)
+				self.parent.debug('cur_elem=%s' % self.get_elem('SEL_part').result()[0])
 				self.parent.debug('partition: selected=[%s]' % selected)
-				self.container['selected']=self.elements[1].result()[0]
+				self.container['selected']=self.get_elem('SEL_part').result()[0]
 				disk=selected[1]
 				part=''
 				type=''
@@ -962,9 +1185,13 @@ class object(content):
 
 				if key == 266:# F2 - Create
 					self.parent.debug('partition: create')
-					if self.resolve_type(type) is 'free' and self.possible_type(self.container['disk'][disk],part):
+					if self.resolve_type(type) == 'free' and self.possible_type(self.container['disk'][disk],part):
 						self.parent.debug('partition: create!')
 						self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+						self.sub.draw()
+					elif selected[0] == 'lvm_vg_free':
+						self.parent.debug('partition: create lvm!')
+						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 				elif key == 267:# F3 - Edit
 					self.parent.debug('partition: edit')
@@ -972,11 +1199,15 @@ class object(content):
 						self.parent.debug('partition: edit!')
 						self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
+					elif selected[0] == 'lvm_lv':
+						self.parent.debug('partition: edit lvm!')
+						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+						self.sub.draw()
 				elif key == 268:# F4 - Delete
 					self.parent.debug('partition: delete')
 					if type == 0 or type == 1:
 						self.parent.debug('partition: delete!')
-						self.part_delete(self.elements[1].result()[0])
+						self.part_delete(self.get_elem('SEL_part').result()[0])
 					elif type == 2:
 						self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
 						self.sub.draw()
@@ -984,8 +1215,8 @@ class object(content):
 				elif key == 269:# F5 - Reset changes
 					self.parent.start()
 					self.parent.layout()
-					self.elements[self.current].set_on()
-					self.elements[1].set_off()
+					self.get_elem_by_id(self.current).set_on()
+					self.get_elem('SEL_part').set_off()
 					if hasattr(self,"sub"):
 						self.sub.draw()
 				elif key == 270:# F6 - Write Partitions
@@ -999,51 +1230,51 @@ class object(content):
 					else:
 						return 'next'
 				elif key in [ 10, 32 ]:
-					if self.elements[1].get_status():
+					if self.get_elem('SEL_part').get_status():
 						if self.resolve_type(type) == 'extended':
 							pass
 						elif disk or part and self.possible_type(self.container['disk'][disk],part): #select
 							if self.resolve_type(type) in ['primary', 'logical']:
 								self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 								self.sub.draw()
-					elif self.elements[2].get_status():#create
+					elif self.get_elem('BT_create').get_status():#create
 						if self.resolve_type(type) is 'free' and self.possible_type(self.container['disk'][disk],part):
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 							self.sub.draw()
-					elif self.elements[3].get_status():#edit
+					elif self.get_elem('BT_edit').get_status():#edit
 						if self.resolve_type(type) == 'primary' or self.resolve_type(type) == 'logical':
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 							self.sub.draw()
-					elif self.elements[4].get_status():#delete
+					elif self.get_elem('BT_delete').get_status():#delete
 						if type == 0 or type == 1:
-							self.part_delete(self.elements[1].result()[0])
+							self.part_delete(self.get_elem('SEL_part').result()[0])
 						elif type == 2:
 							self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
 							self.sub.draw()
-					elif self.elements[5].get_status():#reset changes
+					elif self.get_elem('BT_reset').get_status():#reset changes
 						self.parent.start()
 						self.parent.layout()
-						self.elements[self.current].set_on()
-						self.elements[1].set_off()
+						self.get_elem_by_id(self.current).set_on()
+						self.get_elem('SEL_part').set_off()
 						if hasattr(self,"sub"):
 							self.sub.draw()
-					elif self.elements[6].get_status():#write changes
+					elif self.get_elem('BT_write').get_status():#write changes
 						self.sub=self.verify(self,self.minY+(self.maxHeight/8),self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
 						self.sub.draw()
-					elif self.elements[7].get_status():#back
+					elif self.get_elem('BT_back').get_status():#back
 						return 'prev'
-					elif self.elements[8].get_status():#next
+					elif self.get_elem('BT_next').get_status():#next
 						if len(self.container['history']) or self.parent.test_changes():
 							self.sub=self.verify_exit(self,self.minY+(self.maxHeight/8)+2,self.minX+(self.maxWidth/8),self.maxWidth,self.maxHeight-7)
 							self.sub.draw()
 						else:
 							return 'next'
-					elif key == 10 and self.elements[self.current].usable():
-						return self.elements[self.current].key_event(key)
+					elif key == 10 and self.get_elem_by_id(self.current).usable():
+						return self.get_elem_by_id(self.current).key_event(key)
 				elif key == curses.KEY_DOWN or key == curses.KEY_UP:
-					self.elements[1].key_event(key)
+					self.get_elem('SEL_part').key_event(key)
 				else:
-					self.elements[self.current].key_event(key)
+					self.get_elem_by_id(self.current).key_event(key)
 				return 1
 
 		def resolve_part(self,index):
@@ -1062,15 +1293,46 @@ class object(content):
 						return ['part',disk ,part,j]
 					j+=1
 				i+=1
+
 		def part_delete(self,index):
-			result=self.resolve_part(index)
+			result=self.part_objects[index]
 			disk = result[1]
-			part_list = self.container['disk'][disk]['partitions'].keys()
-			part_list.sort()
+
+			if self.container['lvm']['enabled'] and 'lvm' in self.container['disk'][disk]['partitions'][result[2]]['flag']:
+				device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num'])
+				if self.container['lvm']['pv'].has_key(device):
+					pv = self.container['lvm']['pv'][ device ]
+
+					# check if PV is empty
+					if pv['allocPE'] > 0:
+						msglist = [ _('Unable to remove physical volume from'),
+									_('volume group "%s"!') % pv['vg'],
+									_('Physical volume contains used physical extents!') ]
+						self.sub = self.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,self.height-10,  msglist)
+						self.draw()
+						return
+					else:
+						# PV is empty
+						vgname = pv['vg']
+						if vgname:
+							# PV is assigned to VG --> update VG data
+							vg = self.container['lvm']['vg'][ vgname ]
+							vg['freePE'] -= pv['totalPE']
+							vg['totalPE'] -= pv['totalPE']
+							vg['size'] = vg['PEsize'] * vg['totalPE'] / 1024.0
+							if vg['freePE'] + vg['allocPE'] != vg['totalPE']:
+								self.parent.debug('PARTITION: assertion failed: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
+												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
+							# reduce VG
+							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
+							self.container['history'].append('/sbin/pvremove %s' % device)
+	#						self.container['history'].append('/sbin/pvscan')
+	#						self.container['history'].append('/sbin/vgscan')
+
 			type=self.container['disk'][disk]['partitions'][result[2]]['type']
 			if type is 0:#primary
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
-				self.container['disk'][disk]['partitions'][result[2]]['type']=4
+				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
 				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
 				self.container['disk'][disk]['partitions'][result[2]]['format']=0
 				self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
@@ -1079,7 +1341,7 @@ class object(content):
 			elif type is 1:#logical
 				deleted=self.container['disk'][disk]['partitions'][result[2]]['num']
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
-				self.container['disk'][disk]['partitions'][result[2]]['type']=5
+				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_LOGICAL
 				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
 				self.container['disk'][disk]['partitions'][result[2]]['format']=0
 				self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
@@ -1094,7 +1356,7 @@ class object(content):
 					self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][extended]['num']))
 					self.container['disk'][disk]['extended']=0
 					self.container['disk'][disk]['primary']-=1
-					self.container['disk'][disk]['partitions'][extended]['type']=4
+					self.container['disk'][disk]['partitions'][extended]['type']=PARTTYPE_FREESPACE_PRIMARY
 					self.container['disk'][disk]['partitions'][extended]['touched']=1
 					self.container['disk'][disk]['partitions'][result[2]]['num']=-1
 				self.container['disk'][disk]['logical']-=1
@@ -1104,12 +1366,12 @@ class object(content):
 			elif type is 2:#extended
 				self.container['disk'][disk]['extended']=0
 				self.container['disk'][disk]['primary']-=1
-				self.container['disk'][disk]['partitions'][result[2]]['type']=4
+				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
 				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
 				for part in self.container['disk'][disk]['partitions'].keys():
 					if self.container['disk'][disk]['partitions'][part]['type'] is 1:
 						self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][part]['num']))
-						self.container['disk'][disk]['partitions'][part]['type']=5
+						self.container['disk'][disk]['partitions'][part]['type']=PARTTYPE_FREESPACE_LOGICAL
 						self.container['disk'][disk]['partitions'][part]['touched']=1
 						self.container['disk'][disk]['logical']-=1
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
@@ -1122,7 +1384,7 @@ class object(content):
 			self.draw()
 
 		def part_create(self,index,mpoint,size,fstype,type,flag,format,end=0):
-			result=self.resolve_part(index)
+			result=self.part_objects[index]
 			disk = result[1]
 			part_list = self.container['disk'][disk]['partitions'].keys()
 			part_list.sort()
@@ -1145,7 +1407,11 @@ class object(content):
 						self.container['disk'][disk]['partitions'][result[2]]['num']=0
 						self.container['disk'][disk]['primary']+=1
 						self.container['disk'][disk]['extended']=1
-						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' % (disk,self.resolve_type(2),result[2],result[2]+size))
+						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
+														 (disk,
+														  self.resolve_type(2),
+														  result[2],
+														  result[2]+size))
 						current += float(0.01)
 						size -= float(0.01)
 
@@ -1156,14 +1422,22 @@ class object(content):
 						if (part + self.container['disk'][disk]['partitions'][part]['size']) < result[2]+1:
 							self.container['disk'][disk]['partitions'][part]['size']+=new_sectors
 							self.container['disk'][disk]['partitions'][part]['touched']=1
-							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (disk,self.container['disk'][disk]['partitions'][part]['num'],part,part+self.container['disk'][disk]['partitions'][part]['size']))
+							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+															 (disk,
+															  self.container['disk'][disk]['partitions'][part]['num'],
+															  part,
+															  part+self.container['disk'][disk]['partitions'][part]['size']))
 							size -= float(0.01)
 						elif part > result[2]:
 							self.container['disk'][disk]['partitions'][part]['size']+=(part-result[2])
 							self.container['disk'][disk]['partitions'][result[2]]=self.container['disk'][disk]['partitions'][part]
 							self.container['disk'][disk]['partitions'][result[2]]['touched']=1
 							self.container['disk'][disk]['partitions'].pop(part)
-							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num'],result[2],result[2]+self.container['disk'][disk]['partitions'][result[2]]['size']))
+							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+															 (disk,
+															  self.container['disk'][disk]['partitions'][result[2]]['num'],
+															  result[2],
+															  result[2]+self.container['disk'][disk]['partitions'][result[2]]['size']))
 							current += float(0.01)
 							size -= float(0.01)
 
@@ -1196,7 +1470,7 @@ class object(content):
 					self.container['disk'][disk]['partitions'][new_free]['fstype']=''
 					self.container['disk'][disk]['partitions'][new_free]['flag']=[]
 					self.container['disk'][disk]['partitions'][new_free]['format']=0
-					self.container['disk'][disk]['partitions'][new_free]['type']=4
+					self.container['disk'][disk]['partitions'][new_free]['type']=PARTTYPE_FREESPACE_PRIMARY
 					self.container['disk'][disk]['partitions'][new_free]['num']=-1 #temporary wrong num
 				if type is 1:
 					self.minimize_extended(disk)
@@ -1204,9 +1478,49 @@ class object(content):
 
 				for f in flag:
 					self.container['history'].append('/sbin/parted --script %s set %d %s on' % (disk,self.container['disk'][disk]['partitions'][current]['num'],f))
-				self.parent.debug("history\n")
+
+				if 'lvm' in flag:
+					device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][current]['num'])
+					ucsvgname = self.container['lvm']['ucsvgname']
+
+					# create new PV entry
+					pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
+					# -1 ==> LVM uses one page for metadata
+					totalpe = int(self.container['disk'][disk]['partitions'][current]['size'] * 1024 / pesize) - 1
+
+					self.parent.debug('PARTITION: part_create: pesize=%sk   partsize=%sM=%sk  totalpe=%sPE' %
+									  (pesize, self.container['disk'][disk]['partitions'][current]['size'],
+									   self.container['disk'][disk]['partitions'][current]['size'] * 1024, totalpe))
+
+					self.container['lvm']['pv'][ device ] = { 'touched': 1,
+															  'vg': ucsvgname,
+															  'PEsize': pesize,
+															  'totalPE': totalpe,
+															  'freePE': totalpe,
+															  'allocPE': 0,
+															  }
+
+					# update VG entry
+					self.container['lvm']['vg'][ ucsvgname ]['touched'] = 1
+					self.container['lvm']['vg'][ ucsvgname ]['totalPE'] += totalpe
+					self.container['lvm']['vg'][ ucsvgname ]['freePE'] += totalpe
+					self.container['lvm']['vg'][ ucsvgname ]['size'] = (self.container['lvm']['vg'][ ucsvgname ]['totalPE'] *
+																	 self.container['lvm']['vg'][ ucsvgname ]['PEsize'] / 1024.0)
+
+					device = "/%s" % self.parent.get_device(disk, current).replace("_","/")
+#					self.container['history'].append('/sbin/pvscan')
+					self.container['history'].append('/sbin/pvcreate %s' % device)
+					if not self.container['lvm']['vg'][ ucsvgname ]['created']:
+						self.container['history'].append('/sbin/vgcreate %s %s' % (ucsvgname, device))
+						self.container['lvm']['vg'][ ucsvgname ]['created'] = 1
+#						self.container['history'].append('/sbin/vgscan')
+					else:
+						self.container['history'].append('/sbin/vgextend %s %s' % (ucsvgname, device))
+
+				self.parent.debug("HISTORY")
 				for h in self.container['history']:
-					self.parent.debug(h)
+					self.parent.debug('==> %s' % h)
+
 
 
 
@@ -1241,7 +1555,7 @@ class object(content):
 					self.container['disk'][disk]['partitions'].pop(start)
 				elif new_end > end:
 					self.parent.debug('### minimize at end: %s'%[new_end,end])
-					self.container['disk'][disk]['partitions'][part_list[-1]]['type']=5
+					self.container['disk'][disk]['partitions'][part_list[-1]]['type']=PARTTYPE_FREESPACE_LOGICAL
 					self.container['disk'][disk]['partitions'][part_list[-1]]['num']=-1
 					self.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (disk,self.container['disk'][disk]['partitions'][start]['num'],start,new_end))
 
@@ -1274,9 +1588,11 @@ class object(content):
 						extended=part[i]
 				if i > 0:
 					previous_type=new[last_new]['type']
-					if (previous_type == 4 and current_type == 4) or (previous_type == 5 and current_type == 5) or (previous_type == 4 and current_type == 5): # found freespace next to freespace -> merge
+					if (previous_type == PARTTYPE_FREESPACE_PRIMARY and current_type == PARTTYPE_FREESPACE_PRIMARY) or \
+					   (previous_type == PARTTYPE_FREESPACE_LOGICAL and current_type == PARTTYPE_FREESPACE_LOGICAL) or \
+					   (previous_type == PARTTYPE_FREESPACE_PRIMARY and current_type == PARTTYPE_FREESPACE_LOGICAL): # found freespace next to freespace -> merge
 						new[last_new]['size']= (part[i] + old[part[i]]['size']) - last_new
-					elif previous_type == 5 and current_type == 4:
+					elif previous_type == PARTTYPE_FREESPACE_LOGICAL and current_type == PARTTYPE_FREESPACE_PRIMARY:
 						if extended < 0:
 							old[part[i]]['size']+=new[last_new]['size']
 							new[last_new]=old[part[i]]
@@ -1288,7 +1604,8 @@ class object(content):
 							new[last_new]=old[part[i]]
 							new[last_new]['touched']
 						redo=1
-					elif previous_type == 2 and current_type == 5 and not i == 1 and disc['partitions'][part[i-2]]['type'] == 4:
+					elif previous_type == 2 and current_type == PARTTYPE_FREESPACE_LOGICAL and \
+						 not i == 1 and disc['partitions'][part[i-2]]['type'] == PARTTYPE_FREESPACE_PRIMARY:
 						# freespace next to extended part
 						# a logical part has been remove
 						# the extended have to be resized
@@ -1302,7 +1619,7 @@ class object(content):
 						new.pop(last_new)
 						last_new=part[i]+old[part[i]]['size']
 
-					elif previous_type == 2 and current_type == 5:
+					elif previous_type == 2 and current_type == PARTTYPE_FREESPACE_LOGICAL:
 						old[part[i-1]]['size']-=old[part[i]]['size']
 						new_start=part[i]
 						new_end=new_start+old[part[i-1]]['size']
@@ -1334,7 +1651,7 @@ class object(content):
 						new[part[i]]=old[part[i]]
 						last_new=part[i]
 
-					elif current_type == 4 or current_type == 5:
+					elif current_type == PARTTYPE_FREESPACE_PRIMARY or current_type == PARTTYPE_FREESPACE_LOGICAL:
 						# Copy Freespace
 						new[part[i]]=old[part[i]]
 						last_new=part[i]
@@ -1400,40 +1717,51 @@ class object(content):
 
 
 		def resolve_type(self,type):
-			if type is 0: # PRIMARY
-				return 'primary'
-			elif type is 1: # LOGICAL
-				return 'logical'
-			elif type is 2: # EXTENDED
-				return 'extended'
-			elif type is 4 or type is 5: # FREESPACE
-				return 'free'
-			elif type is 8 or type is 9:
-				return 'meta'
-			else:
-				return 'unkown'
+			mapping = { PARTTYPE_PRIMARY: 'primary',
+						PARTTYPE_LOGICAL: 'logical',
+						PARTTYPE_FREESPACE_PRIMARY: 'free',
+						PARTTYPE_FREESPACE_LOGICAL: 'free',
+						8: 'meta',
+						9: 'meta',
+						PARTTYPE_LVM_VG: 'lvm_vg',
+						PARTTYPE_LVM_LV: 'lvm_lv',
+						PARTTYPE_LVM_VG_FREE: 'lvm_lv_free',
+						}
+			if mapping.has_key(type):
+				return mapping[type]
+			return 'unknown'
 
 		def get_result(self):
 			pass
 
+
 		def write_devices(self):
 			self.draw()
-			self.act = self.active(self,_('Write partitions'),_('Please wait ...'),name='act')
-			self.act.action='create_partitions'
+			self.act = self.active(self, _('Write partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()
-			self.act = self.active(self,_('Create Filesystems'),_('Please wait ...'),name='act')
-			self.act.action='make_filesystem'
+			if self.container['lvm']['enabled']:
+				self.act = self.active(self, _('Create LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
+				self.act.draw()
+			self.act = self.active(self, _('Create Filesystems'), _('Please wait ...'), name='act', action='make_filesystem')
 			self.act.draw()
 			self.draw()
 
 		class active(act_win):
-			def __init__(self,parent,header,text,name='act'):
-				self.pos_x=parent.minX+(parent.maxWidth/2)-15
-				self.pos_y=parent.minY+5
+			def __init__(self,parent,header,text,name='act',action=None):
+				if action=='read_lvm':
+					self.pos_x=parent.minX+(parent.maxWidth/2)-20
+					self.pos_y=parent.minY+5
+				else:
+					self.pos_x=parent.minX+(parent.maxWidth/2)-15
+					self.pos_y=parent.minY+5
+				self.action = action
 				act_win.__init__(self,parent,header,text,name)
 
 			def function(self):
-				if self.action == 'create_partitions':
+				if self.action == 'read_lvm':
+					self.parent.parent.debug('Partition: Reading LVM config')
+					self.parent.parent.read_lvm()
+				elif self.action == 'create_partitions':
 					self.parent.parent.debug('Partition: Create Partitions')
 					for command in self.parent.container['history']:
 						p=os.popen('%s 2>&1'%command)
@@ -1443,6 +1771,7 @@ class object(content):
 					self.parent.parent.written=1
 				elif self.action == 'make_filesystem':
 					self.parent.parent.debug('Partition: Create Filesystem')
+					# create filesystems on physical partitions
 					for disk in self.parent.container['disk'].keys():
 						for part in self.parent.container['disk'][disk]['partitions'].keys():
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
@@ -1454,12 +1783,33 @@ class object(content):
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
 								elif fstype == 'linux-swap':
 									mkfs_cmd='/bin/mkswap %s' % device
+								else:
+									mkfs_cmd='/bin/true'
 								p=os.popen('%s 2>&1'%mkfs_cmd)
 								self.parent.parent.debug('PARTITION: %s' % mkfs_cmd)
 								p.close()
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
+					# create filesystems on logical volumes
+					for vgname in self.parent.container['lvm']['vg'].keys():
+						vg = self.parent.container['lvm']['vg'][ vgname ]
+						for lvname in vg['lv'].keys():
+							if vg['lv'][lvname]['format']:
+								device = vg['lv'][lvname]['dev']
+								fstype = vg['lv'][lvname]['fstype']
+								if fstype in ['ext2','ext3','vfat','msdos']:
+									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
+								elif fstype == 'xfs':
+									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
+								else:
+									mkfs_cmd='/bin/true'
+								p=os.popen('%s 2>&1'%mkfs_cmd)
+								self.parent.parent.debug('PARTITION: %s' % mkfs_cmd)
+								p.close()
+								vg['lv'][lvname]['format'] = 0
+
 				self.parent.layout()
 				self.stop()
+
 
 		class edit(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
@@ -1469,7 +1819,7 @@ class object(content):
 				return self.parent.helptext()
 
 			def input(self, key):
-				dev = self.parent.resolve_part(self.parent.elements[1].result()[0])
+				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 				type = dev[0]
 				path = dev[1]
 				disk=self.parent.container['disk'][path]
@@ -1478,45 +1828,51 @@ class object(content):
 					if not self.sub.input(key):
 						self.parent.layout()
 						return 0
-				if key == 260 and self.elements[11].active:
+				if key == 260 and self.get_elem('BT_save').active:
 					#move left
-					self.elements[11].set_off()
-					self.elements[12].set_on()
-					self.current=12
+					self.get_elem('BT_save').set_off()
+					self.get_elem('BT_cancel').set_on()
+					self.current = get_elem_id('BT_cancel')
 					self.draw()
-				elif key == 261 and self.elements[12].active:
+				elif key == 261 and self.get_elem('BT_cancel').active:
 					#move right
-					self.elements[12].set_off()
-					self.elements[11].set_on()
-					self.current=11
+					self.get_elem('BT_cancel').set_off()
+					self.get_elem('BT_save').set_on()
+					self.current = get_elem_id('BT_save')
 					self.draw()
 				elif key in [ 10, 32, 276 ]:
-					if self.elements[12].usable() and self.elements[12].get_status():
+					if self.get_elem('BT_cancel').usable() and self.get_elem('BT_cancel').get_status():
 						return 0
-					elif ( self.elements[11].usable() and self.elements[11].get_status() ) or key == 276:
+					elif ( self.get_elem('BT_save').usable() and self.get_elem('BT_save').get_status() ) or key == 276:
 						if self.operation is 'create': # Speichern
 							part=dev[2]
-							mpoint=self.elements[2].result()
-							if self.elements[4].result().isdigit():
-								size=float(self.elements[4].result())
+							mpoint=self.get_elem('INP_mpoint').result()
+							if self.get_elem('INP_size').result().isdigit():
+								size=float(self.get_elem('INP_size').result())
 							else:
 								return 1
-							fstype=self.elements[6].result()[0]
-							type=int(self.elements[7].result())
+							format=self.get_elem('CB_format').result()
+							fstype=self.get_elem('SEL_fstype').result()[0]
+							type=int(self.get_elem('RB_pri_log').result())
 							if disk['partitions'][part]['size'] < size:
 								size=disk['partitions'][part]['size']
-							flag=['']
-							if self.elements[8].result():
+							flag=[]
+							if self.get_elem('CB_bootable').result():
 								flag.append('boot')
-							if self.elements[9].result():
+							if self.elem_exists('CB_ppcprep') and self.get_elem('CB_ppcprep').result():
 								flag.append('prep')
 								flag.append('boot')
+							if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
+								flag.append('lvm')
+								mpoint=''
+								format=1
+								fstype='LVMPV'
 
 							if fstype == 'linux-swap':
 								mpoint=''
 							if len(mpoint) > 0 and not mpoint.startswith('/'):
 								mpoint='/%s' % mpoint
-							self.parent.container['temp']={'selected':self.parent.elements[1].result()[0],
+							self.parent.container['temp']={'selected':self.parent.get_elem('SEL_part').result()[0],
 										'mpoint':mpoint,
 										'size':size,
 										'fstype':fstype,
@@ -1524,8 +1880,7 @@ class object(content):
 										'flag':flag,
 										}
 
-							self.parent.parent.debug('checkbox selected=%s' % self.elements[10].selected)
-							if not self.elements[10].result():
+							if not format:
 								self.sub=self.parent.no_format(self,self.pos_y+4,self.pos_x+1,self.width-2,self.height-8)
 								self.sub.draw()
 								return 1
@@ -1534,17 +1889,21 @@ class object(content):
 								format=1
 
 							num=0 # temporary zero
-							self.parent.part_create(self.parent.elements[1].result()[0],mpoint,size,fstype,type,flag,format)
+							self.parent.part_create(self.parent.get_elem('SEL_part').result()[0],mpoint,size,fstype,type,flag,format)
 						elif self.operation is 'edit': # Speichern
 							part=dev[2]
-							mpoint=self.elements[6].result()
-							fstype=self.elements[4].result()[0]
+							mpoint=self.get_elem('INP_mpoint').result()
+							fstype=self.get_elem('SEL_fstype').result()[0]
 							flag=[]
-							if self.elements[7].result():
+							if self.get_elem('CB_bootable').result():
 								flag.append('boot')
-							if self.elements[9].result():
+							if self.elem_exists('CB_ppcprep') and self.get_elem('CB_ppcprep').result():
 								flag.append('prep')
 								flag.append('boot')
+							if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
+								flag.append('lvm')
+								mpoint=''
+								fstype='LVMPV'
 
 							self.parent.container['temp']={'fstype':fstype}
 							if fstype == 'linux-swap':
@@ -1552,7 +1911,7 @@ class object(content):
 							if len(mpoint) > 0 and not mpoint.startswith('/'):
 								mpoint='/%s' % mpoint
 							self.parent.container['disk'][path]['partitions'][part]['mpoint']=mpoint
-							#if self.elements[7].result():
+							#if self.get_elem('CB_bootable').result():
 							old_flags=self.parent.container['disk'][path]['partitions'][part]['flag']
 							for f in old_flags:
 								if f not in flag:
@@ -1563,13 +1922,13 @@ class object(content):
 
 							self.parent.container['disk'][path]['partitions'][part]['flag']=flag
 
-							if self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype and not self.elements[10].result():
+							if self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype and not self.get_elem('CB_format').result():
 								self.sub=self.parent.no_format(self,self.pos_y+4,self.pos_x+1,self.width-2,self.height-8,0,path,part)
 								self.sub.draw()
 								return 1
 							else:
 								self.parent.container['temp']={}
-								if self.elements[10].result():
+								if self.get_elem('CB_format').result():
 									self.parent.container['disk'][path]['partitions'][part]['format']=1
 								else:
 									self.parent.container['disk'][path]['partitions'][part]['format']=0
@@ -1579,33 +1938,67 @@ class object(content):
 						self.parent.layout()
 						self.parent.draw()
 						return 0
-					elif key == 10 and self.elements[self.current].usable():
-						return self.elements[self.current].key_event(key)
-				if self.elements[self.current].usable():
-					self.elements[self.current].key_event(key)
+					elif key == 10 and self.get_elem_by_id(self.current).usable():
+						return self.get_elem_by_id(self.current).key_event(key)
+				if self.get_elem_by_id(self.current).usable():
+					self.get_elem_by_id(self.current).key_event(key)
 				if self.operation == 'edit':
-					if 'linux-swap' in self.elements[4].result():
-						self.elements[6].disable()
+					# if partition is LVM PV
+					if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
+						self.get_elem('INP_mpoint').disable()
+						self.get_elem('SEL_fstype').disable()
+						self.get_elem('CB_format').disable()
+						self.get_elem('CB_bootable').disable()
+						if self.elem_exists('CB_ppcprep'):
+							self.get_elem('CB_ppcprep').disable()
 					else:
-						self.elements[6].enable()
-					if self.current == 6:
-						self.elements[6].set_on()
-						self.elements[2].draw()
+						# partition is no LVM PV
+						self.get_elem('INP_mpoint').enable()
+						self.get_elem('SEL_fstype').enable()
+						self.get_elem('CB_format').enable()
+						self.get_elem('CB_bootable').enable()
+						if self.elem_exists('CB_ppcprep'):
+							self.get_elem('CB_ppcprep').enable()
+
+						if 'linux-swap' in self.get_elem('SEL_fstype').result():
+							self.get_elem('INP_mpoint').disable()
+						else:
+							self.get_elem('INP_mpoint').enable()
+						if self.current == self.get_elem_id('INP_mpoint'):
+							self.get_elem('INP_mpoint').set_on()
+							self.get_elem('INP_mpoint').draw()
 				elif self.operation == 'create':
-					if 'linux-swap' in self.elements[6].result():
-						self.elements[2].disable()
+					if self.elem_exists('CB_lvmpv') and self.get_elem('CB_lvmpv').result():
+						# partition is LVM PV
+						self.get_elem('INP_mpoint').disable()
+						self.get_elem('SEL_fstype').disable()
+						self.get_elem('CB_format').disable()
+						self.get_elem('CB_bootable').disable()
+						if self.elem_exists('CB_ppcprep'):
+							self.get_elem('CB_ppcprep').disable()
 					else:
-						self.elements[2].enable()
-					if self.current == 2:
-						self.elements[2].set_on()
-						self.elements[2].draw()
+						# partition is no LVM PV
+						self.get_elem('INP_mpoint').enable()
+						self.get_elem('SEL_fstype').enable()
+						self.get_elem('CB_format').enable()
+						self.get_elem('CB_bootable').enable()
+						if self.elem_exists('CB_ppcprep'):
+							self.get_elem('CB_ppcprep').enable()
+
+						if 'linux-swap' in self.get_elem('SEL_fstype').result():
+							self.get_elem('INP_mpoint').disable()
+						else:
+							self.get_elem('INP_mpoint').enable()
+					if self.current == self.get_elem_id('INP_mpoint'):
+						self.get_elem('INP_mpoint').set_on()
+						self.get_elem('INP_mpoint').draw()
 				return 1
 
 			def get_result(self):
 				pass
 
 			def layout(self):
-				dev = self.parent.resolve_part(self.parent.elements[1].result()[0])
+				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 				type = dev[0]
 				path = dev[1]
 				disk=self.parent.container['disk'][path]
@@ -1613,35 +2006,34 @@ class object(content):
 
 				if type is 'disk': # got a diskdrive
 					self.operation='diskinfo'
-					self.elements.append(textline(_('Physical Diskdrive'),self.pos_y+2,self.pos_x+2))#0
-					self.elements.append(textline(_('Device: %s' %path),self.pos_y+4,self.pos_x+2))#1
-					self.elements.append(textline(_('Size: %s' %disk['size']),self.pos_y+6,self.pos_x+2))#2
-					self.elements.append(dummy())#3
-					self.elements.append(textline(_('Primary Partitions: %s' %disk[(_('primary'))]),self.pos_y+10,self.pos_x+2))#4
-					self.elements.append(textline(_('Logical Partitions: %s' %disk[(_('logical'))]),self.pos_y+12,self.pos_x+2))#5
-					self.elements.append(dummy())#6
-					self.elements.append(dummy())#7
-					self.elements.append(dummy())#8
-					self.elements.append(dummy())#9
-					self.elements.append(button(_("Next"),self.pos_y+17,self.pos_x+20,15)) #10
-					self.elements.append(dummy())#11
-					self.current=10
-					self.elements[self.current].set_on()
-
+					self.add_elem('TXT_1',textline(_('Physical Diskdrive'),self.pos_y+2,self.pos_x+2))#0
+					self.add_elem('TXT_2',textline(_('Device: %s') % path,self.pos_y+4,self.pos_x+2))#1
+					self.add_elem('TXT_3',textline(_('Size: %s') % disk['size'],self.pos_y+6,self.pos_x+2))#2
+					self.add_elem('D1',dummy())#3
+					self.add_elem('TXT_4',textline(_('Primary Partitions: %s') % disk[(_('primary'))],self.pos_y+10,self.pos_x+2))#4
+					self.add_elem('TXT_5',textline(_('Logical Partitions: %s') % disk[(_('logical'))],self.pos_y+12,self.pos_x+2))#5
+					self.add_elem('D2',dummy())#6
+					self.add_elem('D3',dummy())#7
+					self.add_elem('D4',dummy())#8
+					self.add_elem('D5',dummy())#9
+					self.add_elem('BT_next',button(_("Next"),self.pos_y+17,self.pos_x+20,15)) #10
+					self.add_elem('D6',dummy())#11
+					self.current=self.get_elem_id('BT_next')
+					self.get_elem_by_id(self.current).set_on()
 
 				elif type is 'part':
 					start = dev[2]
 					partition=disk['partitions'][start]
 					part_type=self.parent.resolve_type(partition['type'])
-					if partition['type'] is 4 or partition['type'] is 5: # got freespace
+					if partition['type'] is PARTTYPE_FREESPACE_PRIMARY or partition['type'] is PARTTYPE_FREESPACE_LOGICAL: # got freespace
 						self.operation='create'
-						self.elements.append(textline(_('New Partition:'),self.pos_y+2,self.pos_x+5))#0
+						self.add_elem('TXT_1', textline(_('New Partition:'),self.pos_y+2,self.pos_x+5)) #0
 
-						self.elements.append(textline(_('Mount-Point'),self.pos_y+4,self.pos_x+5)) #1
-						self.elements.append(input(partition['mpoint'],self.pos_y+4,self.pos_x+5+len(_('Mount-Point')),20)) #2
-						self.elements.append(textline(_('Size (MB)'),self.pos_y+6,self.pos_x+5)) #3
-						self.elements.append(input('%s'%int(partition['size']),self.pos_y+6,self.pos_x+5+len(_('Mount-Point')),20)) #4
-						self.elements.append(textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
+						self.add_elem('TXT_2', textline(_('Mount-Point'),self.pos_y+4,self.pos_x+5)) #1
+						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+4,self.pos_x+5+len(_('Mount-Point')),20)) #2
+						self.add_elem('TXT_3', textline(_('Size (MB)'),self.pos_y+6,self.pos_x+5)) #3
+						self.add_elem('INP_size', input('%s' % int(partition['size']),self.pos_y+6,self.pos_x+5+len(_('Mount-Point')),20)) #4
+						self.add_elem('TXT_4', textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
 
 						try:
 							file=open('modules/filesystem')
@@ -1656,8 +2048,8 @@ class object(content):
 								entry = fs[1][:-1]
 								dict[entry]=[entry,line]
 						file.close()
-						self.elements.append(select(dict,self.pos_y+9,self.pos_x+4,15,6)) #6
-						self.elements[6].set_off()
+						self.add_elem('SEL_fstype', select(dict,self.pos_y+9,self.pos_x+4,15,6)) #6
+						self.get_elem('SEL_fstype').set_off()
 						dict={}
 						if self.parent.possible_type(disk, start) is 1:
 							dict[_('primary')]=[0]
@@ -1666,30 +2058,31 @@ class object(content):
 						elif self.parent.possible_type(disk, start) is 3:
 							dict[_('primary')]=[0]
 							dict[_('logical')]=[1]
-						self.elements.append(radiobutton(dict,self.pos_y+9,self.pos_x+33,10,2,[0])) #7
+						self.add_elem('RB_pri_log', radiobutton(dict,self.pos_y+9,self.pos_x+33,10,2,[0])) #7
 
-						self.elements.append(checkbox({_('bootable'):'1'},self.pos_y+12,self.pos_x+33,11,1,[])) #8
+						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'},self.pos_y+12,self.pos_x+33,11,1,[])) #8
 						if self.parent.parent.cmdline.has_key('architecture') and self.parent.parent.cmdline['architecture'] == 'powerpc':
-							self.elements.append(checkbox({_('PPC PreP'):'1'},self.pos_y+13,self.pos_x+33,11,1,[])) #9
-						else:
-							self.elements.append(dummy())#9
+							self.add_elem('CB_ppcprep', checkbox({_('PPC PreP'):'1'},self.pos_y+13,self.pos_x+33,11,1,[])) #9
 						if self.operation == 'create':
-							self.elements.append(checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[0])) #10
+							self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[0])) #10
 						else:
-							self.elements.append(checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[])) #10
-						self.elements.append(button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #11
-						self.elements.append(button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align="left")) #12
-						self.current=2
-						self.elements[self.current].set_on()
+							self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[])) #10
+						if self.parent.container['lvm']['enabled']:
+							self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'},self.pos_y+15,self.pos_x+33,14,1,[])) #13
+						self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #11
+						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align="left")) #12
+
+						self.current=self.get_elem_id('INP_mpoint')
+						self.get_elem('INP_mpoint').set_on()
 					else:  #got a valid partition
 						self.operation='edit'
-						self.elements.append(textline(_('Partition: %s' % self.parent.dev_to_part(partition,path,type="full")),self.pos_y+2,self.pos_x+5))#0
+						self.add_elem('TXT_1', textline(_('Partition: %s') % self.parent.dev_to_part(partition,path,type="full"),self.pos_y+2,self.pos_x+5))#0
 						if part_type== "primary":
-							self.elements.append(textline(_('Typ: primary'),self.pos_y+4,self.pos_x+5))#1
+							self.add_elem('TXT_2', textline(_('Typ: primary'),self.pos_y+4,self.pos_x+5))#1
 						else:
-							self.elements.append(textline(_('Typ: logical'),self.pos_y+4,self.pos_x+5))#1
-						self.elements.append(textline(_('Size: %s' %partition['size']),self.pos_y+4,self.pos_x+33))#2
-						self.elements.append(textline(_('Filesystem'),self.pos_y+7,self.pos_x+5)) #3
+							self.add_elem('TXT_2', textline(_('Typ: logical'),self.pos_y+4,self.pos_x+5))#1
+						self.add_elem('TXT_3', textline(_('Size: %s') % partition['size'],self.pos_y+4,self.pos_x+33))#2
+						self.add_elem('TXT_4', textline(_('Filesystem'),self.pos_y+7,self.pos_x+5)) #3
 
 						try:
 							file=open('modules/filesystem')
@@ -1706,35 +2099,251 @@ class object(content):
 								if entry == partition['fstype']:
 									filesystem_num=line
 						file.close()
-						self.elements.append(select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
-						self.elements.append(textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
-						self.elements.append(input(partition['mpoint'],self.pos_y+8,self.pos_x+33,20)) #6
+						self.add_elem('SEL_fstype', select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
+						self.add_elem('TXT_5', textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
+						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+8,self.pos_x+33,20)) #6
 						if 'boot' in partition['flag']:
-							self.elements.append(checkbox({_('bootable'):'1'},self.pos_y+10,self.pos_x+33,11,1,[0])) #7
+							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'},self.pos_y+10,self.pos_x+33,11,1,[0])) #7
 						else:
-							self.elements.append(checkbox({_('bootable'):'1'},self.pos_y+10,self.pos_x+33,11,1,[])) #7
-						self.elements.append(dummy())#8
+							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'},self.pos_y+10,self.pos_x+33,11,1,[])) #7
 						if self.parent.parent.cmdline.has_key('architecture') and self.parent.parent.cmdline['architecture'] == 'powerpc':
 							if 'prep' in partition['flag']:
-								self.elements.append(checkbox({_('PPC PreP'):'1'},self.pos_y+11,self.pos_x+33,11,1,[0])) #9
+								self.add_elem('CB_ppcprep', checkbox({_('PPC PreP'):'1'},self.pos_y+11,self.pos_x+33,11,1,[0])) #9
 							else:
-								self.elements.append(checkbox({_('PPC PreP'):'1'},self.pos_y+11,self.pos_x+33,11,1,[])) #9
-						else:
-							self.elements.append(dummy())#9
+								self.add_elem('CB_ppcprep', checkbox({_('PPC PreP'):'1'},self.pos_y+11,self.pos_x+33,11,1,[])) #9
 						if partition['format']:
-							self.elements.append(checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[0])) #10
+							self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[0])) #10
 						else:
-							self.elements.append(checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[])) #10
-						self.elements.append(button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-8,align="right")) #11
-						self.elements.append(button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+6,15)) #12
+							self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[])) #10
+						if self.parent.container['lvm']['enabled']:
+							if 'lvm' in partition['flag']:
+								self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'},self.pos_y+13,self.pos_x+33,14,1,[0])) #13
+								self.get_elem('INP_mpoint').disable()
+								self.get_elem('SEL_fstype').disable()
+								self.get_elem('CB_format').disable()
+								self.get_elem('CB_bootable').disable()
+								if self.elem_exists('CB_ppcprep'):
+									self.get_elem('CB_ppcprep').disable()
+								self.current=self.get_elem_id('CB_lvmpv')
+								self.get_elem('CB_lvmpv').set_on()
+							else:
+								self.add_elem('CB_lvmpv', checkbox({_('LVM PV'):'1'},self.pos_y+13,self.pos_x+33,14,1,[])) #13
+						self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-8,align="right")) #11
+						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+6,15)) #12
 						if filesystem_num == 3:
-							self.elements[6].disable()
+							self.get_elem('INP_mpoint').disable()
+
+
+		class edit_lvm_lv(subwin):
+			def __init__(self,parent,pos_x,pos_y,width,heigth):
+				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
+
+			def helptext(self):
+				return self.parent.helptext()
+
+			def input(self, key):
+				type, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
+
+				if hasattr(self,"sub"):
+					self.sub.input(key)
+					return 1
+				if key == 260 and self.get_elem('BT_save').active:
+					#move left
+					self.get_elem('BT_save').set_off()
+					self.get_elem('BT_cancel').set_on()
+					self.current = get_elem_id('BT_cancel')
+					self.draw()
+				elif key == 261 and self.get_elem('BT_cancel').active:
+					#move right
+					self.get_elem('BT_cancel').set_off()
+					self.get_elem('BT_save').set_on()
+					self.current = get_elem_id('BT_save')
+					self.draw()
+				elif key in [ 10, 32, 276 ]:
+					if self.get_elem('BT_cancel').usable() and self.get_elem('BT_cancel').get_status():
+						return 0
+					elif ( self.get_elem('BT_save').usable() and self.get_elem('BT_save').get_status() ) or key == 276:
+
+						if self.operation is 'create': # save new logical volume
+
+							vg = self.parent.container['lvm']['vg'][ vgname ]
+
+							# get values
+
+							lvname = self.get_elem('INP_name').result()
+							mpoint = self.get_elem('INP_mpoint').result()
+							if self.get_elem('INP_size').result().isdigit():
+								size = float(self.get_elem('INP_size').result())
+							else:
+								size = None
+							format = self.get_elem('CB_format').result()
+							fstype = self.get_elem('SEL_fstype').result()[0]
+
+							# do some consistency checks
+
+							if not lvname or lvname in vg['lv'].keys():
+								if not lvname:
+									msglist = [ _('Please enter volume name!') ]
+								else:
+									msglist = [ _('Logical volume name is already in use!') ]
+
+								self.current=self.get_elem_id('INP_name')
+								self.get_elem_by_id(self.current).set_on()
+
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.draw()
+								return 1
+
+							if size == None:
+								self.current=self.get_elem_id('INP_size')
+								self.get_elem_by_id(self.current).set_on()
+
+								msglist = [ _('Size contains non-digit characters!') ]
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.draw()
+								return 1
+
+							currentLE = int(round(size * 1024.0 / vg['PEsize'] + 0.5))
+							if currentLE > vg['freePE']:  # decrease logical volume by one physical extent - maybe it fits then
+								currentLE -= 1
+							if currentLE > vg['freePE']:
+								self.current=self.get_elem_id('INP_size')
+								self.get_elem_by_id(self.current).set_on()
+
+								msglist = [ _('Not enough free space on volume group!') ]
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.draw()
+								return 1
+							size = int(vg['PEsize'] * currentLE / 1024.0)
+
+							# data seems to be ok
+
+							vg['lv'][lvname] = { 'dev': '/dev/%s/%s' % (vgname, lvname),
+												 'vg': vgname,
+												 'touched': 1,
+												 'PEsize': vg['PEsize'],
+												 'currentLE': currentLE,
+												 'format': format,
+												 'size': size,
+												 'fstype': fstype,
+												 'flag': '',
+												 'mpoint': mpoint,
+												 }
+
+							self.parent.container['history'].append('/sbin/lvcreate -l %d --name "%s" "%s"' % (currentLE, lvname, vgname) )
+#							self.parent.container['history'].append('/sbin/lvscan 2> /dev/null')
+
+							self.parent.parent.debug("HISTORY")
+							for h in self.parent.container['history']:
+								self.parent.parent.debug('==> %s' % h)
+
+							# update used/free space on volume group
+							self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
+							self.parent.container['lvm']['vg'][ vgname ]['allocPE'] -= currentLE
+
+						elif self.operation is 'edit': # Speichern
+
+							# get and save values
+
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] = self.get_elem('INP_mpoint').result()
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['format'] = self.get_elem('CB_format').result()
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype'] = self.get_elem('SEL_fstype').result()[0]
+
+						self.parent.layout()
+						self.parent.draw()
+
+						return 0
+
+					elif key == 10 and self.get_elem_by_id(self.current).usable():
+						return self.get_elem_by_id(self.current).key_event(key)
+
+				if self.get_elem_by_id(self.current).usable():
+					self.get_elem_by_id(self.current).key_event(key)
+
+				return 1
+
+			def get_result(self):
+				pass
+
+			def layout(self):
+				type, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
+				self.operation=''
+
+				if type is 'lvm_vg_free':  # FREE SPACE ON VOLUME GROUP
+					vg = self.parent.container['lvm']['vg'][ vgname ]
+					maxsize = (vg['PEsize'] * vg['freePE'] / 1024)
+
+					self.operation='create'
+					self.add_elem('TXT_0', textline(_('New Logical Volume:'),self.pos_y+2,self.pos_x+5)) #0
+					self.add_elem('INP_name', input('',self.pos_y+2,self.pos_x+5+len(_('New Logical Volume:'))+1,20)) #2
+					self.add_elem('TXT_1', textline(_('Mount-Point:'),self.pos_y+4,self.pos_x+5)) #1
+					self.add_elem('INP_mpoint', input('',self.pos_y+4,self.pos_x+5+len(_('Mount-Point:'))+1,20)) #2
+					self.add_elem('TXT_3', textline(_('Size (MB):'),self.pos_y+6,self.pos_x+5)) #3
+					self.add_elem('INP_size', input('%s' % int(maxsize),self.pos_y+6,self.pos_x+5+len(_('Mount-Point:'))+1,20)) #4
+					self.add_elem('TXT_5', textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
+
+					try:
+						file=open('modules/filesystem')
+					except:
+						file=open('/lib/univention-installer/modules/filesystem')
+					dict={}
+					filesystem_num=0
+					filesystem=file.readlines()
+					for line in range(len(filesystem)):
+						fs=filesystem[line].split(' ')
+						if len(fs) > 1 and fs != 'linux-swap':
+							entry = fs[1][:-1]
+							dict[entry]=[entry,line]
+					file.close()
+					self.add_elem('SEL_fstype', select(dict,self.pos_y+9,self.pos_x+4,15,6)) #6
+					self.get_elem('SEL_fstype').set_off()
+
+					self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[])) #7
+
+					self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #8
+					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align="left")) #9
+
+					self.current=self.get_elem_id('INP_name')
+					self.get_elem_by_id(self.current).set_on()
+				elif type is 'lvm_lv':  # EXISTING LOGICAL VOLUME
+					lv = self.parent.container['lvm']['vg'][ vgname ]['lv'][ lvname ]
+					self.operation='edit'
+					self.add_elem('TXT_0', textline(_('LVM Logical Volume: %s') % lvname,self.pos_y+2,self.pos_x+5))#0
+					self.add_elem('TXT_2', textline(_('Size: %s MB') % int(lv['size']),self.pos_y+4,self.pos_x+5))#2
+					self.add_elem('TXT_3', textline(_('Filesystem'),self.pos_y+7,self.pos_x+5)) #3
+
+					try:
+						file=open('modules/filesystem')
+					except:
+						file=open('/lib/univention-installer/modules/filesystem')
+					dict={}
+					filesystem_num=0
+					filesystem=file.readlines()
+					for line in range(0, len(filesystem)):
+						fs=filesystem[line].split(' ')
+						if len(fs) > 1 and fs != 'linux-swap':
+							entry = fs[1][:-1]
+							dict[entry]=[entry,line]
+							if entry == lv['fstype']:
+								filesystem_num=line
+					file.close()
+					self.add_elem('SEL_fstype', select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
+					self.add_elem('TXT_5', textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
+					self.add_elem('INP_mpoint', input(lv['mpoint'],self.pos_y+8,self.pos_x+33,20)) #6
+
+					if lv['format']:
+						self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[0])) #7
+					else:
+						self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[])) #7
+
+					self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-8,align="right")) #8
+					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+6,15)) #9
 
 		class del_extended(subwin):
 			def input(self, key):
 				if key in [ 10, 32 ]:
 					if self.elements[3].get_status():
-						self.parent.part_delete(self.parent.elements[1].result()[0])
+						self.parent.part_delete(self.parent.get_elem('SEL_part').result()[0])
 						self.parent.layout()
 						return 0
 					elif self.elements[4].get_status():
@@ -1867,6 +2476,109 @@ class object(content):
 				pass
 
 
+		class warning_lvm1(subwin):
+			def input(self, key):
+				if key in [ 10, 32 ]:
+					if self.elements[3].get_status(): #Ok
+						return self._ok()
+				return 1
+
+			def layout(self):
+				message=_('LVM1 volumes detected. To use LVM1 volumes all')
+				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
+				message=_('existing LVM1 snapshots have to be removed!')
+				self.elements.append(textline(message,self.pos_y+3,self.pos_x+(self.width/2),align="middle")) #1
+				message=_('Otherwise kernel is unable to mount them!')
+				self.elements.append(textline(message,self.pos_y+4,self.pos_x+(self.width/2),align="middle")) #2
+
+				self.elements.append(button(_("Ok"),self.pos_y+6,self.pos_x+(self.width/2)-7,15)) #3
+				self.current=3
+				self.elements[3].set_on()
+			def _ok(self):
+				return 0
+
+		class ask_lvm_enable(subwin):
+			def input(self, key):
+				if key in [ 10, 32 ]:
+					if self.elements[2].get_status(): #Yes
+						return self._ok()
+					elif self.elements[3].get_status(): #No
+						return self._false()
+				elif key == 260 and self.elements[3].active:
+					#move left
+					self.elements[3].set_off()
+					self.elements[2].set_on()
+					self.current=2
+					self.draw()
+				elif key == 261 and self.elements[2].active:
+					#move right
+					self.elements[2].set_off()
+					self.elements[3].set_on()
+					self.current=3
+					self.draw()
+				return 1
+
+			def layout(self):
+				message=_('No LVM volume group found on current system.')
+				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
+				message=_('Do you want to use LVM2?')
+				self.elements.append(textline(message,self.pos_y+4,self.pos_x+(self.width/2),align="middle")) #1
+
+				self.elements.append(button(_("Yes"),self.pos_y+7,self.pos_x+5,15)) #2
+				self.elements.append(button(_("No"),self.pos_y+7,self.pos_x+35,15)) #3
+				self.current=3
+				self.elements[3].set_on()
+			def _ok(self):
+				self.parent.set_lvm(True)
+				return 0
+			def _false(self):
+				self.parent.set_lvm(False)
+				return 0
+
+		class ask_lvm_vg(subwin):
+			def input(self, key):
+				if key in [ 10, 32 ]:
+					if self.elements[4].get_status(): #Ok
+						return self._ok()
+				elif key == 260 and self.elements[4].active:
+					#move left
+					self.elements[4].set_off()
+					self.elements[3].set_on()
+					self.current=3
+					self.draw()
+				elif key == 261 and self.elements[3].active:
+					#move right
+					self.elements[3].set_off()
+					self.elements[4].set_on()
+					self.current=4
+					self.draw()
+				if self.elements[self.current].usable():
+					self.elements[self.current].key_event(key)
+				return 1
+
+			def layout(self):
+				message=_('UCS Installer supports only one LVM volume group.')
+				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
+				message=_('Please select volume group to use for installation.')
+				self.elements.append(textline(message,self.pos_y+3,self.pos_x+(self.width/2),align="middle")) #1
+				message=_('Volume Group:')
+				self.elements.append(textline(message,self.pos_y+5,self.pos_x+2)) #2
+
+				dict = {}
+				line = 0
+				for vg in self.parent.container['lvm']['vg'].keys():
+					dict[ vg ] = [ vg, line ]
+					line += 1
+				default_line = 0
+				self.elements.append(select(dict,self.pos_y+6,self.pos_x+3,self.width-6,4, default_line)) #3
+
+				self.elements.append(button(_("OK"),self.pos_y+11,self.pos_x+(self.width/2)-7,15)) #4
+				self.current=3
+				self.elements[3].set_on()
+			def _ok(self):
+				self.parent.set_lvm(True, vgname = self.elements[3].result()[0] )
+				return 0
+
 		class verify(subwin):
 			def input(self, key):
 				if key in [ 10, 32 ]:
@@ -1928,6 +2640,28 @@ class object(content):
 				self.elements[3].set_on()
 			def _ok(self):
 				self.parent.write_devices()
+				return 0
+
+		class msg_win(subwin):
+			def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], callback=None):
+				self.msglist = msglist
+				self.callback = callback
+				subwin.__init__(self,parent,pos_y,pos_x,width,height)
+
+			def layout(self):
+				y = 2
+				for msg in self.msglist:
+					self.elements.append(textline(msg,self.pos_y+y,self.pos_x+(self.width/2),align="middle"))
+					y+=1
+				y+=1
+
+				self.elements.append(button(_("Ok"),self.pos_y+y,self.pos_x+(self.width/2),15,align="middle"))
+				self.current=len(self.elements)-1
+				self.elements[self.current].set_on()
+
+			def _ok(self):
+				if self.callback != None:
+					self.callback()
 				return 0
 
 		class wrong_rootfs(subwin):
