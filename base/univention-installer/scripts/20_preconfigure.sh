@@ -57,13 +57,10 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	done
 fi
 
+export PREVLEVEL="N"
 mount proc /proc -t proc
-
-echo "Setting up devices, this may take a while."
-
-cd /dev
-/sbin/MAKEDEV generic
-cd -
+mount -t sysfs sysfs /sys/
+/etc/init.d/udev start
 
 mount -a
 #mount /mnt/installation

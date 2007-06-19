@@ -40,15 +40,16 @@ cat >>/instmnt/ldap.sh <<__EOT__
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	eval \`univention-baseconfig shell\`
-	univention-admin users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password=$root_password --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base"
+	echo "Create User Administrator"
+	univention-admin users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password=$root_password --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
 
 	#create default network
-
 	forwardZone=\`univention-admin dns/forward_zone list --filter zone=\$domainname | grep DN | head -1 | sed -e 's/DN: //g'\`
 	reverseZone=\`univention-admin dns/reverse_zone list | grep ^DN | head -1 | sed -e 's|DN: ||'\`
 	dhcpService=\`univention-admin dhcp/service list | grep DN | head -1 | sed -e 's/DN: //g'\`
 
-	univention-admin networks/network create --position "cn=networks,\$ldap_base" --set name=default --set netmask=\$interfaces_eth0_netmask --set network=\$interfaces_eth0_network --set dnsEntryZoneForward=\$forwardZone --set dnsEntryZoneReverse=\$reverseZone --set dhcpEntryZone=\$dhcpService
+	echo "Create default network"
+	univention-admin networks/network create --position "cn=networks,\$ldap_base" --set name=default --set netmask=\$interfaces_eth0_netmask --set network=\$interfaces_eth0_network --set dnsEntryZoneForward=\$forwardZone --set dnsEntryZoneReverse=\$reverseZone --set dhcpEntryZone=\$dhcpService >/dev/null 2>&1
 fi
 
 __EOT__

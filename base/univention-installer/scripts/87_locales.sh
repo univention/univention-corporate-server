@@ -32,7 +32,8 @@
 
 cat >>/instmnt/locales.sh <<__EOT__
 
-locale-gen
+echo "Generating locales (this might take a while)"
+locale-gen  >/dev/null 2>&1
 
 __EOT__
 

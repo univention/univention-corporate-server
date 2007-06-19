@@ -63,24 +63,32 @@ fi
 
 sync
 
+cat >/instmnt/tmp/cleanup.sh <<__EOT__
+umount -a >/dev/null 2>&1
+__EOT__
+chmod +x /instmnt/tmp/cleanup.sh
+chroot /instmnt ./tmp/cleanup.sh
+
+
 echo "Rebooting in 10 seconds - Please remove the install media in order to prevent install rerun"
 for i in 0 1 2 3 4 5 6 7 8 9 ; do echo -n . ; sleep 1 ; done
 
-cat >>/instmnt/tmp/cleanup.sh <<__EOT__
+cat >/instmnt/tmp/cleanup.sh <<__EOT__
 if [ -x /etc/init.d/nscd ]; then
 	/etc/init.d/nscd stop
 fi
 
-umount -a
-rm -Rf /sourcedevice >/dev/null 2>&1
+umount -a >/dev/null 2>&1
 echo -n "Sending all processes the TERM signal... "
 killall5 -15 >/dev/null 2>&1
 echo "done."
-sleep 10
+
+sleep 5
 echo -n "Sending all processes the KILL signal... "
 killall5 -9 >/dev/null 2>&1
 echo "done."
-umount -a
+
+umount -a >/dev/null 2>&1
 rm -Rf /sourcedevice >/dev/null 2>&1
 __EOT__
 
