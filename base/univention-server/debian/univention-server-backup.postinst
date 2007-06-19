@@ -44,22 +44,12 @@ mkdir -p /var/lib/samba/netlogon/scripts/
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --debug --comment-chars '#' --enable time
-	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
-		/usr/lib/univention-bootsplash/univention-appendsplash
-		if [ -x /sbin/lilo ]; then
-			/sbin/lilo
-		fi
-	fi
-elif [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 1.14; then
-	if [ -x /usr/sbin/mkinitrd ]; then
-		/usr/sbin/mkinitrd -o /initrd.img `ls -l /initrd.img  | sed -e 's|.*boot/initrd.img-||'`
-		if [ -x /sbin/lilo ]; then
-			/sbin/lilo
-		fi
-	else
-		echo "E: could not find mkinitrd to create a new initrd image"
-		exit 1
-	fi
+	#if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
+	#	/usr/lib/univention-bootsplash/univention-appendsplash
+	#	if [ -x /sbin/lilo ]; then
+	#		/sbin/lilo
+	#	fi
+	#fi
 fi
 
 #DEBHELPER#
@@ -67,3 +57,5 @@ fi
 if [ -x /etc/init.d/ntp-server -a -x /etc/rc2.d/S23ntp-server ]; then
 	update-rc.d -f ntp-server remove >/dev/null 2>&1 || true
 fi
+
+exit 0
