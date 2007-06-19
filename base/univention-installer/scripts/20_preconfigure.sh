@@ -57,10 +57,14 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	done
 fi
 
-export PREVLEVEL="N"
+
 mount proc /proc -t proc
 mount -t sysfs sysfs /sys/
+
+# ignore udev warning
+export RUNLEVEL="S" PREVLEVEL="N"
 /etc/init.d/udev start
+unset RUNLEVEL PREVLEVEL
 
 mount -a
 #mount /mnt/installation
