@@ -28,8 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-/usr/lib/univention-install/30univention-shares.inst || true
-
 if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/univention-ldap-listener crestart
 fi

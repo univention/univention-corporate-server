@@ -1,3 +1,9 @@
+univention-shares (1.0.0-4) unstable; urgency=low
+
+  * the join script doesn't exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 07:13:35 +0200
+
 univention-shares (1.0.0-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
