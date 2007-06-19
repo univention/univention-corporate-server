@@ -1,5 +1,9 @@
 #!/bin/sh
 
+if [ ! -e /etc/runit/univention/univention-console-proxy ]; then
+	exit 0
+fi
+
 eval `univention-baseconfig shell`
 
 if [ -z "$umc_proxy_autostart" -o "$umc_proxy_autostart" = "no" ]; then
@@ -10,14 +14,17 @@ case "$1" in
 	start)
 		echo -n "Starting Univention Management Console Proxy: "
 		sv start univention-management-console-proxy
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping Univention Management Console Proxy: "
 		sv stop univention-management-console-proxy
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting Univention Management Console Proxy: "
 		sv restart univention-management-console-proxy
+		echo ""
 		;;
 	crestart)
 		if sv status univention-management-console-proxy | grep ^run: > /dev/null 2>&1

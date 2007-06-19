@@ -1,4 +1,4 @@
-univention-management-console (0.7.7-1) unstable; urgency=low
+univention-management-console (0.7.7-2) unstable; urgency=low
 
   * add support for detecting start type (manual or automatically)
   * mark tracebacks in UMC module handlers as internal error in status code of

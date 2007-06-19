@@ -36,14 +36,17 @@ case "$1" in
 	start)
 		echo -n "Starting univention-ldap-listener daemon: "
 		sv up univention-ldap-listener
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-ldap-listener daemon: "
 		sv down univention-ldap-listener
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-ldap-listener daemon: "
 		sv restart univention-ldap-listener
+		echo ""
 		;;
 	crestart)
 		if sv status univention-ldap-listener | grep ^run: > /dev/null 2>&1

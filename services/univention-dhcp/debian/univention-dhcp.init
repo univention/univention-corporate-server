@@ -37,14 +37,17 @@ case "$1" in
 	start)
 		echo -n "Starting univention-dhcp daemon: "
 		sv up univention-dhcp
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-dhcp daemon: "
 		sv down univention-dhcp
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-dhcp daemon: "
 		sv restart univention-dhcp
+		echo ""
 		;;
 	crestart)
 		if sv status /etc/runit/univention-dhcp | grep ^run: > /dev/null 2>&1

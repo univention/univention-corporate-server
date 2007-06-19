@@ -36,14 +36,17 @@ case "$1" in
 	start)
 		echo -n "Starting univention-bind daemon: "
 		sv up univention-bind
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-bind daemon: "
 		sv down univention-bind
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-bind daemon: "
 		sv restart univention-bind
+		echo ""
 		;;
 	crestart)
 		if sv status univention-bind | grep ^run: > /dev/null 2>&1

@@ -28,18 +28,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+if [ ! -e /etc/runit/univention/univention-console-server ]; then
+	exit 0
+fi
+
 case "$1" in
 	start)
 		echo -n "Starting Univention Management Console Server: "
 		sv up	 univention-management-console-server
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping Univention Management Console Server: "
 		sv down univention-management-console-server
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting Univention Management Console Server: "
 		sv restart univention-management-console-server
+		echo ""
 		;;
 	crestart)
 		if sv status univention-management-console-server | grep ^run: > /dev/null 2>&1

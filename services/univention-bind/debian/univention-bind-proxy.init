@@ -36,14 +36,17 @@ case "$1" in
 	start)
 		echo -n "Starting univention-bind-proxy daemon: "
 		sv up univention-bind-proxy
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-bind-proxy daemon: "
 		sv down univention-bind-proxy
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-bind-proxy daemon: "
 		sv restart univention-bind-proxy
+		echo ""
 		;;
 	crestart)
 		if sv status univention-bind-proxy | grep ^run: > /dev/null 2>&1

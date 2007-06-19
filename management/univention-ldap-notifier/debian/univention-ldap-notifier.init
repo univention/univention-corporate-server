@@ -36,14 +36,17 @@ case "$1" in
 	start)
 		echo -n "Starting univention-ldap-notifier daemon: "
 		sv start univention-ldap-notifier
+		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-ldap-notifier daemon: "
 		sv stop univention-ldap-notifier
+		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-ldap-notifier daemon: "
 		sv restart univention-ldap-notifier
+		echo ""
 		;;
 	crestart)
 		if sv status univention-ldap-notifier | grep ^run: > /dev/null 2>&1
