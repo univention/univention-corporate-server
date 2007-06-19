@@ -1,3 +1,9 @@
+univention-installer (1.4.1-2) unstable; urgency=low
+
+  * show the disk geometry after calling install-mbr
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 10:59:14 +0200
+
 univention-installer (1.4.1-1) unstable; urgency=low
 
   * ignore udev start warning

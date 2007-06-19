@@ -657,7 +657,7 @@ class object(content):
 				continue
 			elif _re_error.match(first_line):
 				os.system('/sbin/install-mbr -f %s' % dev)
-				p = os.popen('/sbin/parted %s unit MB p'% dev)
+				p = os.popen('/sbin/parted %s unit MB p 2>&1 | grep [a-z]'% dev)
 				first_line=p.readline()
 				if _re_error.match(first_line):
 					self.debug('Firstline starts with error')
