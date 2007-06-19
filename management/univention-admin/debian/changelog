@@ -1,3 +1,9 @@
+univention-admin (3.2.3-2) unstable; urgency=low
+
+  * fixed sortation of packages for improved performance
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 19 Jun 2007 13:39:47 +0200
+
 univention-admin (3.2.3-1) unstable; urgency=low
 
   * migrate the locate settings

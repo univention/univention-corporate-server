@@ -3469,7 +3469,7 @@ class modedit(unimodule.unimodule):
 										chosen=1
 										for p in attr['univentionPackageDefinition']:
 											packages.append({'name': "%s" %p, 'description': "%s" %p})
-											packages.sort()
+										packages.sort()
 									else:
 										packagelists.append({'name':class_name,'description':class_name})
 
