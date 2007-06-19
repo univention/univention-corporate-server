@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.9-2) unstable; urgency=low
+
+  * added console-data and console-tools to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 09:28:24 +0200
+
 univention-baseconfig (2.1.9-1) unstable; urgency=low
 
   * UTF-8 is default now; no re-coding to ISO-8859-1 anymore
