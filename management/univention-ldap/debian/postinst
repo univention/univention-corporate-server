@@ -384,4 +384,22 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; t
 			--position=cn=policies,$ldap_base --set policyPath=1
 	fi
 fi
+
+if [ "$1" = configure -a -n "$2" ];then
+	eval `univention-baseconfig shell ldap/base`
+	for container in computers dhcp dns groups kerberos mail networks policies printers samba shares users univention;do
+		#Add Description to Default Container if not set
+		RET=$(ldapsearch -x -b cn=$container,$ldap_base -s base -LLL description=*)
+		if [ -z "$RET" ]; then
+			#If Description not set add value from translation.ldif
+			cat /usr/share/univention-ldap/translation.ldif |sed "s/container/$container/" |sed "s/ldap_base/$ldap_base/"|ldapmodify -x -D cn=admin,$ldap_base -w $(cat /etc/ldap.secret)
+		else
+			#If Description is set keep value and modify object
+			cat /usr/share/univention-ldap/translation.ldif |sed "s/container/$container/" |sed "s/ldap_base/$ldap_base/"|ldapmodify -x -D cn=admin,$ldap_base -w $(cat /etc/ldap.secret)
+			RET=$(echo "$RET" |grep 'description: '| sed "s/^description: //")
+			univention-admin container/cn modify --dn="cn=$container,$ldap_base" --set description="$RET"
+		fi
+	done
+fi
+
 exit 0

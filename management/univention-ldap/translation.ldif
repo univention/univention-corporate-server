@@ -1,0 +1,6 @@
+dn: cn=container,ldap_base
+cn: container
+objectClass: top
+objectClass: organizationalRole
+description: Default container Container
+description;lang-de: Standard container Container
