@@ -553,7 +553,7 @@ class textline:
 		self.pos_y=pos_y
 		self.text=text
 		self.height=1
-		self.pad=curses.newpad(self.height, self.width)
+		self.pad=curses.newpad(self.height, self.width+2)
 		self.bgcolor()
 		if len(text) >0 and self.width-1  >= 0:
 			self.pad.addstr(0,0,text[:self.width-1])

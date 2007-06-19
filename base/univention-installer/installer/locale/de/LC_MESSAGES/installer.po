@@ -21,7 +21,7 @@ msgid ""
 "please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
 msgstr ""
 "Drücken Sie Ctrl+c um den Installer zu verlassen oder eine beliebige Taste "
-"um fortzufahren. Nachdem Sie den Installer abgebrochen haben, können Sie das "
+"um fortzufahren. Nachdem Sie den Installer abgebrochen haben, kö�nnen Sie das "
 "System neu booten oder mittels Ctrl+Alt+F2 zu einer shell gelangen."
 
 #: installer/main.py:211 ../univention-setup/usr/sbin/univention-setup:112
@@ -1895,7 +1895,7 @@ msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
 
 #: ../univention-setup/usr/sbin/univention-setup:352
 msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Übernehmen | Strg+c-Abbruch"
+msgstr " F1-Hilfe | F11-Zurück | F12Übernehmen | Strg+c-Abbruch"
 
 #: ../univention-setup/usr/sbin/univention-setup:354
 msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
