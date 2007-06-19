@@ -1,3 +1,9 @@
+univention-installer (1.4.2-1) unstable; urgency=low
+
+  * set more locles stuff
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 13:29:46 +0200
+
 univention-installer (1.4.1-2) unstable; urgency=low
 
   * show the disk geometry after calling install-mbr

@@ -174,12 +174,12 @@ fi
 univention-baseconfig set locale="$locales"
 
 if [ -n "$locale_default" ]; then
-	short_form=`echo $locale_default | cut -c 1-2`
+	short_form=`echo $locale_default | awk -F ':' '{print $1}'`
 
 	univention-baseconfig set "locale/default"="$locale_default"
 
-	univention-baseconfig set admin/web/language="$locale_default"
-	univention-baseconfig set console/web/language="$locale_default"
+	univention-baseconfig set admin/web/language="$short_form"
+	univention-baseconfig set console/web/language="$short_form"
 	univention-baseconfig set gdm/language="$locale_default"
 fi
 
