@@ -88,7 +88,7 @@ install-ext-%:
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done
-	@for i in modules/univention/admin/handlers/*/*.gif; do\
+	@for i in modules/univention/admin/handlers/*/*.{gif|png}; do\
 		o=debian/python-univention-admin/usr/share/univention-webui-style/icon/$${i#modules/univention/admin/handlers/};\
 		install -d "`dirname $$o`";\
 		install -m 644 $$i $$o;\
