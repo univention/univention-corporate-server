@@ -1,3 +1,9 @@
+univention-admin (3.2.3-3) unstable; urgency=low
+
+  * added link to univention-admin for ucs-overview.html
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 20 Jun 2007 11:55:02 +0200
+
 univention-admin (3.2.3-2) unstable; urgency=low
 
   * fixed sortation of packages for improved performance

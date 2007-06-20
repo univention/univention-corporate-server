@@ -17,3 +17,11 @@ Variables: admin/timeout
 
 Type: file
 File: etc/apache2/sites-available/univention-admin
+
+Type: subfile
+Multifile: var/www/ucs-overview.html
+Subfile: var/www/ucs-overview.html.d/02ucs-overview.html
+
+Type: subfile
+Multifile: var/www/ucs-overview-en.html
+Subfile: var/www/ucs-overview-en.html.d/02ucs-overview-en.html
