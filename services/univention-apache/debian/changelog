@@ -1,3 +1,11 @@
+univention-apache (2.0.6-1) unstable; urgency=low
+
+  * remove index.html file
+  * added baseconfig variable apache/startsite and set it to
+    ucs-overview.html
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 11:55:20 +0200
+
 univention-apache (2.0.5-1) unstable; urgency=low
 
   * restart apache after enabling the ssl module

@@ -1,5 +1,6 @@
 Type: file
 File: etc/apache2/sites-available/default
+Variables: apache/startsite
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf
@@ -7,10 +8,6 @@ Variables: interfaces/eth.*/type
 Variables: interfaces/eth.*/address
 Variables: hostname
 Variables: domainname
-
-Type: file
-File: var/www/index.html
-Variables: hostname
 
 Type: module
 Module: extension.py
