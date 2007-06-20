@@ -1,10 +1,6 @@
 Type: file
-File: etc/mkinitrd/mkinitrd.conf
-Variables: mkinitrd/root
+File: etc/initramfs-tools/initramfs.conf
+Variables: initramfs/.*
 
 Type: file
-File: etc/mkinitrd/modules
-Variables: mkinitrd/modules
-
-Type: file
-File: usr/share/initrd-tools/init
+File: usr/share/initramfs-tools/init

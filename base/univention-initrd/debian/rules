@@ -54,11 +54,6 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m755 univention-initrd ${D}/usr/bin/
-	mkdir -p conffiles/usr/share/initrd-tools/
-	install -m644 /usr/share/initrd-tools/init conffiles/usr/share/initrd-tools/
-	patch -Np1 <initrd_init.patch conffiles/usr/share/initrd-tools/init
-
 	univention-install-baseconfig
 
 	dh_install

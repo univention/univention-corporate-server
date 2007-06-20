@@ -1,3 +1,9 @@
+univention-initrd (1.1.1-1) unstable; urgency=low
+
+  * switch from mkinitrd to mkinitramfs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 19 Jun 2007 06:57:57 +0200
+
 univention-initrd (1.0.1-2) unstable; urgency=low
 
   * encoded files utf-8
