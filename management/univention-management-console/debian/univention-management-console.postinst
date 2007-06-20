@@ -15,7 +15,7 @@ test -h /var/www/univention-management-console || ln -s /usr/share/univention-ma
 
 
 univention-baseconfig set umc/web/timeout?300
-univention-baseconfig set umc/web/language?de_DE@euro
+univention-baseconfig set umc/web/language?de_DE.utf8
 univention-baseconfig set umc/web/debug/level?1
 
 
