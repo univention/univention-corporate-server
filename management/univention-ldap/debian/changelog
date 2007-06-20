@@ -1,3 +1,9 @@
+univention-ldap (2.2.4-2) unstable; urgency=low
+
+  * added descriptions for default container in univention-admin 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 20 Jun 2007 13:14:14 +0200
+
 univention-ldap (2.2.4-1) unstable; urgency=low
 
   * import failed.ldif after starting the ldap server

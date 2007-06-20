@@ -48,7 +48,6 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	
-	install -m 644 translation.ldif debian/univention-ldap-config/usr/share/univention-ldap/
 	install -m 644 base.ldif debian/univention-ldap-config/usr/share/univention-ldap/
 	install -m 644 schema/as400.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/
 	install -m 644 schema/automount.schema debian/univention-ldap-config/usr/share/univention-ldap/schema/

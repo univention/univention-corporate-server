@@ -59,7 +59,7 @@ userPassword: {crypt}@@%%@@ldap.pw@@%%@@
 dn: cn=univention,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default System Settings Container
+description: Containing System Specific Data
 cn: univention
 
 dn: cn=temporary,cn=univention,@%@ldap/base@%@
@@ -262,19 +262,19 @@ gidNumber: 55000
 dn: cn=users,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Users Container
+description: Containing all User Objects as per default Settings
 cn: users
 
 dn: cn=groups,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Groups Container
+description: Containing all Group Objects as per default Settings
 cn: groups
 
 dn: cn=computers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Computers Container
+description: Containing all Computer Objects as per default Settings
 cn: computers
 
 dn: cn=dc,cn=computers,@%@ldap/base@%@
@@ -290,36 +290,36 @@ cn: memberserver
 dn: cn=shares,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Shares Container
+description: Containing all Share Objects as per default Settings
 cn: shares
 
 dn: cn=networks,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Networks Container
+description: Containing all Network Objects as per default Settings
 cn: networks
 
 dn: cn=printers,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Printers Container
+description: Containing all Printer Objects as per default Settings
 cn: printers
 
 dn: cn=policies,@%@ldap/base@%@
 objectClass: organizationalRole
-description: Default Policies Container
+description: Containing all Policy Objects as per default Settings
 cn: policies
 
 dn: cn=kerberos,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Kerberos Container
+description: Containing all Kerberos Objects as per default Settings
 cn: kerberos
 
 dn: cn=mail,@%@ldap/base@%@
 objectClass: top
 objectClass: organizationalRole
-description: Default Mail Container
+description: Containing all Mail Objects as per default Settings
 cn: mail
 
 dn: cn=desktop,cn=policies,@%@ldap/base@%@
@@ -456,12 +456,12 @@ cn: windowsinstallations
 
 dn: cn=dns,@%@ldap/base@%@
 objectClass: organizationalRole
-description: Default DNS Container
+description: Containing all DNS Objects as per default Settings
 cn: dns
 
 dn: cn=dhcp,@%@ldap/base@%@
 objectClass: organizationalRole
-description: Default DHCP Container
+description: Containing all DHCP Objects as per default Settings
 cn: dhcp
 
 dn: cn=users,cn=policies,@%@ldap/base@%@
