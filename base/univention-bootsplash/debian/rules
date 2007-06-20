@@ -59,6 +59,9 @@ install: build
 	install -m 0755 conffiles/etc/init.d/rc $B/etc/init.d/rc.ucs
 	install -m 0755 conffiles/etc/init.d/rcS $B/etc/init.d/rcS.ucs
 
+	install -m 644 etc/bootsplash/themes/ucs/config/*cfg debian/univention-bootsplash/etc/bootsplash/themes/ucs/config/
+	install -m 644 etc/bootsplash/themes/ucs/images/*jpg debian/univention-bootsplash/etc/bootsplash/themes/ucs/images/
+
 	univention-install-baseconfig
 
 binary-indep: build install

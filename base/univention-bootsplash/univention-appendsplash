@@ -34,15 +34,6 @@ themedir="/etc/bootsplash/themes"
 parm1="$1"
 parm2="$2"
 
-if [ ! -e /usr/sbin/splash ] ; then
-	echo "E: bootsplash tool splash not installed"
-	exit 1
-fi
-splash="/usr/sbin/splash"
-
-tempfile=`mktemp`
-#echo "D: Tempfile: $tempfile"
-
 function help() {
 	echo "univention-appendsplash: tool to append bootsplash images to initrd"
 	echo "copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany"
@@ -54,67 +45,17 @@ function help() {
 	echo ""
 }
 
-#if [ -z "$parm1" ] ; then
-#	help
-#	exit 1
-#fi
 
-#initrd="/boot/initrd.img-`uname -r`"
-initrd="/"`ls -l /initrd.img | awk '{print $11}'`
-if [ -n "$parm1" ] ; then
-	if [ "$parm1" == "-i" ] ; then
-		initrd="$parm2"
-	 else
-		help
-		exit 0
-	fi
-	if [ "$parm1" == "-h" ] || [ "$parm1" == "--help" ] || [ "$parm1" == "-?" ]; then
-		help
-		exit 0
-	fi
+res=0
+if [ -n "$parm1" ] && [ "$parm1" == "-i" ] && [ -n "$parm2" ] ; then
+	version=`basename $parm2 | sed -e 's|initrd.img-||'`
+	mkinitramfs --supported-target-version=$version -o /boot/$parm2
+	res=$?
+elif [ -n "$parm1" ]; then
+	help
+else
+	mkinitramfs -o /boot/initrd.img-`uname -r`
+	res=$?
 fi
 
-echo "Setting up univention-bootsplash for initrd $initrd"
-
-if [ -z "$splash_theme" ] ; then
-	echo "E: no variable splash/theme, aborting"
-	exit 1
-fi
-if [ "$splash_theme" == "None" ] || [ "$splash_theme" == "none" ] || [ "$splash_theme" == "off" ] ; then
-	echo "* splash/theme set to $splash_theme, not adding splashimages"
-	exit 0
-fi
-theme="$splash_theme"
-
-#echo "D: * using initrd: $initrd"
-
-if [ -d $themedir/$theme/config/ ] ; then
-		confexists=0
-		for i in $themedir/$theme/config/*cfg ; do
-			if [ -e $i ] ; then
-				confexists=1
-			fi
-		done
-fi
-
-if [ $confexists == 0 ] ; then
-	echo "E: There is no themeconfig at $themedir/$theme/config/"
-	exit 1
-fi
-
-echo "* Theme set to $theme"
-
-problem=""
-echo "* Adding splashimages:"
-for i in $themedir/$theme/config/*cfg ; do
-	echo " # added $i"
-	$splash -s -f $i >> $tempfile || problem="$i $problem"
-done
-
-if [ ! -z "$problem" ] ; then
-	echo "E: Problem at $problem. Not adding Splashimages."
-	exit 1
-fi
-
-cat $tempfile >> $initrd
-rm $tempfile
+exit $res

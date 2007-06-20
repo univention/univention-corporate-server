@@ -1,3 +1,10 @@
+univention-bootsplash (1.0.2-1) unstable; urgency=low
+
+  * added default ucs splash image
+  * change univention-appendsplash to mkinitramfs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 16:26:47 +0200
+
 univention-bootsplash (1.0.1-3) unstable; urgency=low
 
   * switch from lilo to grub
