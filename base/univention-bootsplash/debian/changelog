@@ -1,4 +1,4 @@
-univention-bootsplash (1.0.1-2) unstable; urgency=low
+univention-bootsplash (1.0.1-3) unstable; urgency=low
 
   * switch from lilo to grub
   * switch to /etc/default/bootsplash configuration
