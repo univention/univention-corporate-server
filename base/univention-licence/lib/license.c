@@ -276,15 +276,26 @@ int univention_license_check_basedn()
 		
 		if (licenseBaseDN != NULL && baseDN != NULL)
 		{
-			if ((strlen(licenseBaseDN->line[0]) == strlen(baseDN)))
-				if (strcmp(licenseBaseDN->line[0], baseDN) == 0)
+			/* check for free for personal use edition */
+			if ((strlen(licenseBaseDN->line[0]) == strlen("Free for personal use edition"))) {
+				if (strcmp(licenseBaseDN->line[0], "Free for personal use edition") == 0) {
 					ret = 1;
+				}
+			}
+
+			if ((strlen(licenseBaseDN->line[0]) == strlen(baseDN))) {
+				if (strcmp(licenseBaseDN->line[0], baseDN) == 0) {
+					ret = 1;
+				}
+			}
 			
-			if (ret == 0)
+			if (ret == 0) {
 				univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "This License is limited to the Base DN '%s' but the Base DN of your system is '%s'.",licenseBaseDN->line[0],baseDN);
+			}
 		}
-		else
+		else {
 			univention_debug(UV_DEBUG_LICENSE, UV_DEBUG_ERROR, "Value Error: baseDN:%s, LicenseBaseDN:%s.",baseDN,licenseBaseDN->line[0]);
+		}
 		
 		univention_licenseStrings_free(licenseBaseDN);
 		licenseBaseDN = NULL;
