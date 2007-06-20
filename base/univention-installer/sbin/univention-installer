@@ -15,6 +15,9 @@ if [ -e /.ucs-edition ]; then
 	params="$params --edition $(cat /.ucs-edition)"
 fi
 
+if [ -e /.ucs-version ]; then
+	params="$params --version $(cat /.ucs-version)"
+fi
 if [ -n "$recover" ]; then
 
 

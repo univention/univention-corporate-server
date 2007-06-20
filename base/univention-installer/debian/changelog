@@ -1,3 +1,9 @@
+univention-installer (1.4.5-1) unstable; urgency=low
+
+  * show UCS Version in the installer header
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 13:35:06 +0200
+
 univention-installer (1.4.4-2) unstable; urgency=low
 
   * no longer start udev during the installation

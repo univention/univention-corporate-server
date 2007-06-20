@@ -53,7 +53,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'edition=']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -348,8 +348,8 @@ class mods:
 
 	def header(self):
 		if self.cmdline.has_key('product') and self.cmdline['product'].lower() == "ugs":
-			return objects.headline(_(' Univention Groupware Server'),max_y/2-12,max_x/2-35)
-		return objects.headline(_(' Univention Corporate Server'),max_y/2-12,max_x/2-35)
+			return objects.headline(_(' Univention Groupware Server %s' % self.cmdline.get('version', '')),max_y/2-12,max_x/2-35)
+		return objects.headline(_(' Univention Corporate Server %s' % self.cmdline.get('version', '')),max_y/2-12,max_x/2-35)
 
 	def footer(self, last):
 		if last[0]==0: # first
