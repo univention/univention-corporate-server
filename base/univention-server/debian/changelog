@@ -1,3 +1,9 @@
+univention-server (2.1.2-1) unstable; urgency=low
+
+  * set bootsplash images
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 16:57:05 +0200
+
 univention-server (2.1.1-6) unstable; urgency=low
 
   * don't call univention-appendsplash and lilo in the postinst script

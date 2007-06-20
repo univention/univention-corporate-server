@@ -68,18 +68,21 @@ if [ -z "$user_services" ]; then
 fi
 
 univention-baseconfig set gdm/menu/system=true
-univention-baseconfig set splash/theme=mobileclient
+
+if [ -n "$splash_theme" ]; then
+	univention-baseconfig set bootsplash/theme=$splash_theme
+	univention-baseconfig unset splash/theme
+fi
+
+univention-baseconfig set bootsplash/theme?mobileclient
 
 univention-baseconfig set ldap/connection/check?"*/3 * * * *"
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --debug --comment-chars '#' --enable time
-	#if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
-	#	/usr/lib/univention-bootsplash/univention-appendsplash
-	#	if [ -x /sbin/lilo ]; then
-	#		/sbin/lilo
-	#	fi
-	#fi
+	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
+		/usr/lib/univention-bootsplash/univention-appendsplash
+	fi
 fi
 
 univention-baseconfig set ifplugd/action/mount?yes

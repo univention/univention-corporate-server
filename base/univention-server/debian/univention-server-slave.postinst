@@ -32,16 +32,19 @@ eval `univention-baseconfig shell`
 
 univention-baseconfig set windows/wins-support=no
 univention-baseconfig set server/password/interval?21
-univention-baseconfig set splash/theme=domaincontroller_slave
+
+if [ -n "$splash_theme" ]; then
+	univention-baseconfig set bootsplash/theme=$splash_theme
+	univention-baseconfig unset splash/theme
+fi
+
+univention-baseconfig set bootsplash/theme?domaincontroller_slave
 
 if [ "$1" = "configure" -a -z "$2" ]; then
 	update-inetd --debug --comment-chars '#' --enable time
-	#if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
-	#	/usr/lib/univention-bootsplash/univention-appendsplash
-	#	if [ -x /sbin/lilo ]; then
-	#		/sbin/lilo
-	#	fi
-	#fi
+	if [ -e /usr/lib/univention-bootsplash/univention-appendsplash ] ; then
+		/usr/lib/univention-bootsplash/univention-appendsplash
+	fi
 fi
 
 #DEBHELPER#
