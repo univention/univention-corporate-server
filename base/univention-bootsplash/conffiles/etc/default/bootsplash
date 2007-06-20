@@ -12,7 +12,7 @@ SPLASH="yes"
 # The theme bootsplash should use.  Right now this points to
 # /etc/bootsplash/theme/current which is a symlink to the
 # current theme.
-THEME=@!@baseConfig.get('bootsplash/theme', 'ucs')@!@
+THEME=@!@print '%s' % baseConfig.get('bootsplash/theme', 'ucs')@!@
 
 # Which consoles should be displayed with different bootsplash images
 BOOTSPLASH_TTYS="1 2 3 4 5"
@@ -28,5 +28,5 @@ MSG_SHUTDOWN="Shutting down the system. Please wait..."
 USE_STATIC_FBT="no"
 
 # Size for the bootsplash-image in the initrd
-SPLASH_SIZE=@!@baseConfig.get('bootsplash/size', '640x480')@!@
+SPLASH_SIZE=@!@print '%s' % baseConfig.get('bootsplash/size', '640x480')@!@
 
