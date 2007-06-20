@@ -1,3 +1,9 @@
+univention-grub (1.0.8-1) unstable; urgency=low
+
+  * some menu.lst conffile fixes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 14:03:37 +0200
+
 univention-grub (1.0.7-1) unstable; urgency=low
 
   * added grub/append to the append line

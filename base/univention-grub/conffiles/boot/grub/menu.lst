@@ -50,11 +50,11 @@ background = 000000
 ## e.g. kopt=root=/dev/hda1 ro
 ##      kopt_2_6_8=root=/dev/hdc1 ro
 ##      kopt_2_6_8_2_686=root=/dev/hdc2 ro
-# kopt=root=@%@grub/root@%@ ro @!@baseConfig.get('grub/append', '')@!@
+# kopt=root=@%@grub/root@%@ ro @!@print '%s' % baseConfig.get('grub/append', '')@!@
 
 ## default grub root device
 ## e.g. groot=(hd0,0)
-# groot=@!@baseConfig.get('grub/groot', '(hd0,0)')@!@
+# groot=@!@print '%s' % baseConfig.get('grub/groot', '(hd0,0)')@!@
 
 ## should update-grub create alternative automagic boot options
 ## e.g. alternative=true
