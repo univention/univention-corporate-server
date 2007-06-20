@@ -1,3 +1,10 @@
+univention-ldap-replication (1.0.5-1) unstable; urgency=low
+
+  * add more ignored OIDs in schema-replication for new builtin definitions
+    in openldap 2.3
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 11:00:14 +0200
+
 univention-ldap-replication (1.0.4-1) unstable; urgency=low
 
   * univention.utf8 no longer exists

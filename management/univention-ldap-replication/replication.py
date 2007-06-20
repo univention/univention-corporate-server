@@ -125,6 +125,12 @@ BUILTIN_OIDS=[
 	# objectClasses
 	'2.16.840.1.113730.3.2.6',	# referral
 	'2.16.840.1.113730.3.1.34',	# ref (operational)
+	# UCS 2.0
+	'2.5.4.34', #seeAlso
+	'0.9.2342.19200300.100.1.1', #userid
+	'2.5.4.13',  #description
+	'1.3.6.1.1.1.1.1', # gidNumber
+	'1.3.6.1.1.1.1.0', #uidNumber
 ]
 
 class LDIFObject:
