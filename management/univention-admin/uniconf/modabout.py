@@ -63,7 +63,7 @@ def mymenunum():
 	return 600
 
 def mymenuicon():
-	return '/icon/about.gif'
+	return unimodule.selectIconByName( 'about' )
 
 class modabout(unimodule.unimodule):
 	def mytype(self):

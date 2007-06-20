@@ -135,7 +135,8 @@ if(!isset($logout))
 else
 {
   $container = new webui_container($config, $glob_tabindex);
-  $this->config = $config;
+  #$this->config = $config;
+  $container->config = $config;
   $container->logout($logout, $session_id);
 }
 

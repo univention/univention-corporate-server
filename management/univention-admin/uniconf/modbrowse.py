@@ -62,7 +62,7 @@ def mymenunum():
 def mysubmodules():
 	return []
 def mymenuicon():
-	return '/icon/browse.gif'
+	return unimodule.selectIconByName( 'browse' )
 
 class modbrowse(unimodule.unimodule):
 	def mytype(self):
@@ -120,11 +120,7 @@ class modbrowse(unimodule.unimodule):
 				removelist.remove(i)
 				continue
 
-			icon_path='/icon/'+object_type+'.gif'
-			if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-				icon_path='/icon/'+object_type+'.png'
-				if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-					icon_path='/icon/generic.gif'
+			icon_path = unimodule.selectIconByName( object_type )
 
 			name=univention.admin.objects.description(object)
 			description=univention.admin.modules.short_description(object_module)
@@ -595,7 +591,9 @@ class modbrowse(unimodule.unimodule):
 
 		# switch to parent directory
 		if not position.isBase():
-			t=button(_('up'),{'icon':'/icon/up.gif'},{"helptext":_("switch to parent directory")}) # ICON
+			t=button( _('up'),
+				 { 'icon' : unimodule.selectIconByName( 'up' ) },
+				 { "helptext" : _("switch to parent directory") })
 			self.dirbuts.append((t,self.lo.parentDn(position.getDn()), ''))
 			iconcols=[
 				tablecol("",{'type':'browse_layout'},{"obs":[t]}),
@@ -634,15 +632,12 @@ class modbrowse(unimodule.unimodule):
 			domainContainer, ign = string.split(domain,"=")
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "rdn = "+domainContainer)
 
-			icon_path='/icon/'+sub_object_type+'.gif'
-			if os.path.exists('/usr/share/univention-admin/www'+icon_path):
-				pass
-			elif os.path.exists('/usr/share/univention-admin/www'+'/icon/'+sub_object_type+'.png'):
-				icon_path='/icon/'+sub_object_type+'.png'
-			elif univention.admin.modules.childs(sub_object_module):
-				icon_path='/icon/folder.gif'
+			
+			if univention.admin.modules.childs(sub_object_module):
+				icon_path = unimodule.selectIconByName( sub_object_type,
+								   iconNameGeneric = 'folder' )
 			else:
-				icon_path='/icon/generic.gif'
+				icon_path = unimodule.selectIconByName( sub_object_type )
 
 
 			if position.isDomain() and not rdn in ['dhcp', 'dns', 'policies'] and not domainContainer in ['dc','ou','cn','uid','l','o','c','sambaDomainName']:
@@ -664,7 +659,9 @@ class modbrowse(unimodule.unimodule):
 				name=univention.admin.objects.description(sub_object)
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'object %s name = %s ' % (sub_object.dn,name))
 
-			open_button=icon('',{'url':'/icon/empty.gif'},{}) # ICON
+			open_button=icon('',
+					 { 'url' : unimodule.selectIconByName( 'empty' ) },
+					 {} )
 
 			if valid:
 				if univention.admin.modules.childs(sub_object_module) and not object.dn == sub_object.dn:

@@ -232,11 +232,7 @@ class unidialog(unimodule.unimodule):
 					else:
 						smbutlist=[]
 						submenulist=[]
-						icon_path='/icon/'+virtmod.id+'.png'
-						if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-							icon_path='/icon/'+virtmod.id+'.gif'
-						if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-							icon_path='/icon/generic.gif'
+						icon_path = unimodule.selectIconByName( virtmod.id )
 
 						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "virtmodule %s with icon %s" % (virtmod.id, icon_path))
 
@@ -249,15 +245,10 @@ class unidialog(unimodule.unimodule):
 
 						if virtmod.id == self.save.get('uc_virtualmodule'):
 							for submod in virtmod.submodules:
-								icon_path='/icon/submods/'+submod.id+'.png'
-								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/'+submod.id+'.gif'
-								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/submods/'+submod.id+'.png'
-								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/submods/'+submod.id+'.gif'
-								if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-									icon_path='/icon/generic.gif'
+								icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/submods/', iconNameGeneric = '' )
+								if not icon_path or not type(icon_path) in types.StringTypes:
+									univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "submodule %s failed selectIcon with %s" % (submod.id, icon_path))
+									icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/', iconNameGeneric = 'generic' )
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "submodule %s with icon %s" % (submod.id, icon_path))
 								if self.save.get("uc_submodule",'') == submod.id or (not self.save.get("uc_submodule",'') and submod.id in ['find','users/self']):
 									# this button is active, find is default in modwizard (the default should be moved into the submodule itself)
@@ -275,7 +266,7 @@ class unidialog(unimodule.unimodule):
 				smbutlist=[]
 				submenulist=[]
 				if moduleinfo.name:
-					icon_path = '/icon/generic.gif'
+					icon_path = unimodule.selectIconByName( 'generic' )
 					if hasattr(tmpmod,'mymenuicon'):
 						icon_path=tmpmod.mymenuicon()
 

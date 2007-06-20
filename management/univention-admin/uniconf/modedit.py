@@ -266,18 +266,12 @@ class modedit(unimodule.unimodule):
 			header_rows.append(tablerow("",{},{"obs":[tablecol("",{'colspan':'4'},{"obs":[htmltext("",{},{'htmltext':['&nbsp;']})]})]}))
 
 		############################################################################
-
-		icon_path='/icon/'+univention.admin.modules.name(module)+'.png'
-		if os.path.exists('/usr/share/univention-admin/www'+icon_path):
-			pass
+		
+		if univention.admin.modules.childs(module):
+			icon_path = unimodule.selectIconByName( univention.admin.modules.name(module),
+							   iconNameGeneric = 'folder' )
 		else:
-			icon_path='/icon/'+univention.admin.modules.name(module)+'.gif'
-			if os.path.exists('/usr/share/univention-admin/www'+icon_path):
-				pass
-			elif univention.admin.modules.childs(module):
-				icon_path='/icon/folder.gif'
-			else:
-				icon_path='/icon/generic.gif'
+			icon_path = unimodule.selectIconByName( univention.admin.modules.name(module) )
 
 		head_icon=icon('',{'url':icon_path},{})
 		# heading
@@ -456,12 +450,7 @@ class modedit(unimodule.unimodule):
 					if name.find(":") > 0:
 						name = name[name.find(":")+2:]
 
-					# TODO: support for multiple sizes and formats (png)
-					icon_path='/icon/'+policy_type+'.png'
-					if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-						icon_path='/icon/'+policy_type+'.gif'
-						if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-							icon_path='/icon/generic.gif'
+					icon_path = unimodule.selectIconByName( policy_type )
 
 					policy_edit_button=button(name,{'icon':icon_path},{"helptext":_("edit policy object")})
 					cols.append(tablecol('',{'type':'policy_left'}, {'obs': [policy_edit_button]}))
@@ -4005,10 +3994,13 @@ class modedit(unimodule.unimodule):
 							object = univention.admin.objects.get( mod[ 0 ], None, self.lo, None, key )
 							univention.admin.objects.open( object )
 							name = univention.admin.objects.description( object )
+							iconName = ""
 							if mod:
-								btn = button( name, { 'icon' : '/icon/%s.gif' % univention.admin.modules.name( mod[ 0 ] ) }, { 'helptext' : key } )
-							else:
-								btn = button( name, { 'icon' : '/icon/generic.gif' }, { 'helptext' : key } )
+								iconName = univention.admin.modules.name( mod[ 0 ] )
+							btn = button( name,
+								      { 'icon' : unimodule.selectIconByName( iconName ) },
+								      { 'helptext' : key } )
+							
 							col = [ tablecol( '', {}, { 'obs': [ btn ] } ) ]
 							for entry in display:
 								attr = entry.split( ':', 1 )[ 1 ].strip()

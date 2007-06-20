@@ -814,11 +814,7 @@ class modwizard(unimodule.unimodule):
 				if not sub_object_module:
 					continue
 
-				icon_path='/icon/'+sub_object_type+'.png'
-				if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-					icon_path='/icon/'+sub_object_type+'.gif'
-				if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-					icon_path='/icon/generic.gif'
+				icon_path = unimodule.selectIconByName( sub_object_type )
 
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (sub_object_type,icon_path))
 
@@ -969,11 +965,7 @@ class modwizard(unimodule.unimodule):
 				removelist.remove(i)
 				continue
 
-			icon_path='/icon/'+object_type+'.png'
-			if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-				icon_path='/icon/'+object_type+'.gif'
-			if not os.path.exists('/usr/share/univention-admin/www'+icon_path):
-				icon_path='/icon/generic.gif'
+			icon_path = unimodule.selectIconByName( object_type )
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'icon path for %s: %s' % (object_type,icon_path))
 

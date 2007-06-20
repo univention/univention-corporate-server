@@ -99,7 +99,7 @@ def mymenunum():
 	return 101
 
 def mymenuicon():
-	return '/icon/settings/cn.gif'
+	return unimodule.selectIconByName( 'cn', filesystemSubpath = '/icon/settings/' )
 
 class modself(modedit.modedit):
 	def myinit(self):

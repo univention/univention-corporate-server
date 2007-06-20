@@ -49,7 +49,7 @@ def mywgroup():
 def mymenunum():
     return 500
 def mymenuicon():
-	return '/icon/exit.gif'
+	return unimodule.selectIconByName( 'exit' )
 
 class modlogout(unimodule.unimodule):
     def mytype(self):

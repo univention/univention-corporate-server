@@ -39,6 +39,28 @@ import ldap
 from uniparts import *
 from localwebui import _
 
+def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = '/icon/' ):
+	'''Select an icon by an given object name.
+	iconPathGeneric is the fallback if no icon with the given Name exists'''
+	
+	defaultType = '.png'
+	alternativeType = '.gif'
+	
+	filesystemLocation = '/usr/share/univention-admin/www'
+	filesystemSubpathGeneric = '/icon/'
+	
+	availablePaths = [filesystemSubpath+iconName+defaultType,
+			  filesystemSubpath+iconName+alternativeType ]
+	
+	if iconNameGeneric:
+		availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+defaultType )
+		availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+alternativeType )
+		
+	for iconPath in availablePaths:
+		if os.path.exists( filesystemLocation+iconPath ):
+			return iconPath
+	return False
+
 class unimodule(uniconf):
 	def myname(self):
 		return myname()
@@ -156,7 +178,7 @@ class unimodule(uniconf):
 			self.save.put('infobox_information_text', old+'<br>'+new)
 		else:
 			self.save.put('infobox_information_text', new)
-		
+
 class realmodule:
 	def __init__(self, id, name, description='', virtualmodules=[], submodules=[]):
 		self.id=id
