@@ -53,6 +53,12 @@ class object(content):
 		self.written=0
 		content.__init__(self,max_y,max_x,last, file, cmdline)
 
+	def MiB2MB(self, mb):
+		return mb * 1024.0 * 1024.0 / 1000.0 / 1000.0
+
+	def MB2MiB(self, mb):
+		return mb * 1000.0 * 1000.0 / 1024.0 / 1024.0
+
 	def checkname(self):
 		return ['devices']
 
@@ -143,6 +149,21 @@ class object(content):
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ['xfs','ext2','ext3']:
 							root_fs=self.container['disk'][disk]['partitions'][part]['fstype']
 						root_device=1
+
+		# check LVM Logical Volumes if LVM is enabled
+		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
+			vg = self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ]
+			for lvname in vg['lv'].keys():
+				lv = vg['lv'][lvname]
+				mpoint = lv['mpoint'].strip()
+				if mpoint in mpoint_temp:
+					return _('Double Mount-Point \'%s\'') % mpoint
+				mpoint_temp.append(mpoint)
+				if mpoint == '/':
+					if not lv['fstype'] in ['xfs','ext2','ext3']:
+						root_fs = lv['fstype']
+					root_device=1
+
 		if not root_device:
 			self.move_focus( 1 )
 			return _('Missing \'/\' as mountpoint')
@@ -423,11 +444,11 @@ class object(content):
 						start = self.parent.container['profile']['create'][disk][num]['start']
 						end = self.parent.container['profile']['create'][disk][num]['end']
 						if not fstype or fstype in [ 'None', 'none' ]:
-							command='/sbin/PartedCreate -d %s -t %s -s %s -e %s'%(disk,type,start,end)
+							command='/sbin/PartedCreate -d %s -t %s -s %s -e %s' % (disk, type, self.parent.MiB2MB(start), self.parent.MiB2MB(end))
 						else:
-							command='/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s'%(disk,type,fstype,start,end)
+							command='/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s' % (disk, type, fstype, self.parent.MiB2MB(start), self.parent.MiB2MB(end))
 						self.parent.debug('run command: %s' % command)
-						p=os.popen('%s >>/tmp/installer.log 2>&1'%command)
+						p=os.popen('%s >>/tmp/installer.log 2>&1' % command)
 						p.close()
 						if fstype in ['ext2','ext3','vfat','msdos']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
@@ -488,7 +509,7 @@ class object(content):
 		for line in content.splitlines():
 			item = line.strip().split(':')
 			self.container['lvm']['vg'][ item[0] ] = { 'touched': 0,
-													   'PEsize': int(item[12]),
+													   'PEsize': int(item[12]), # physical extent size in kilobytes
 													   'totalPE': int(item[13]),
 													   'allocPE': int(item[14]),
 													   'freePE': int(item[15]),
@@ -519,7 +540,7 @@ class object(content):
 			self.container['lvm']['vg'][ item[1] ]['lv'][ lvname ] = {  'dev': item[0],
 																		'vg': item[1],
 																		'touched': 0,
-																		'PEsize': int(pesize),
+																		'PEsize': int(pesize), # physical extent size in kilobytes
 																		'currentLE': int(item[7]),
 																		'format': 0,
 																		'size': int(item[7])*int(pesize)/1024.0,
@@ -665,9 +686,9 @@ class object(content):
 					devices_remove.append(dev)
 					continue
 			if first_line.startswith('Disk '):
-				mb_size = int(first_line.split(' ')[-1].split('MB')[0].split(',')[0])
+				mb_size = int(self.MB2MiB(int(first_line.split(' ')[-1].split('MB')[0].split(',')[0])))
 			else:
-				mb_size = 0	
+				mb_size = 0
 			extended=0
 			primary=0
 			logical=0
@@ -686,8 +707,8 @@ class object(content):
 				cols=line.split()
 				num=cols[0]
 				part=dev+cols[0]
-				start=float(cols[1].split('MB')[0].replace(',','.'))
-				end=float(cols[2].split('MB')[0].replace(',','.'))
+				start=self.MB2MiB(float(cols[1].split('MB')[0].replace(',','.')))
+				end=self.MB2MiB(float(cols[2].split('MB')[0].replace(',','.')))
 				size=end-start
 				type=cols[4]
 				if type == 'extended':
@@ -841,6 +862,31 @@ class object(content):
 						type=self.container['disk'][disk]['partitions'][part]['type']
 					result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
 		result[ 'disks' ] = string.join( partitions, ' ')
+		# append LVM if enabled
+		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
+			vg = self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ]
+			for lvname in vg['lv'].keys():
+				lv = vg['lv'][lvname]
+				mpoint = lv['mpoint']
+				if not mpoint:
+					mpoint = 'None'
+				fstype = lv['fstype']
+				if not fstype:
+					fstype = 'None'
+				device = lv['dev']
+
+				if mpoint == '/boot':
+					result[ 'boot_partition' ] = device
+				if mpoint == '/':
+					if not result.has_key( 'boot_partition' ):
+						result[ 'boot_partition' ] = device
+
+				device_list.append(device)
+				format = lv['format']
+				start = 0
+				end = 0
+				type='only_mount'
+				result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
 		return result
 
 	class partition(subwin):
@@ -861,7 +907,7 @@ class object(content):
 							(self.container['lvm']['lvm1available'], self.container['lvm']['ucsvgname']))
 				if not self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
 					self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ] = { 'touched': 1,
-																						  'PEsize': 4096,
+																						  'PEsize': 4096, # physical extent size in kilobytes
 																						  'totalPE': 0,
 																						  'allocPE': 0,
 																						  'freePE': 0,
@@ -886,11 +932,13 @@ class object(content):
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
 				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
-				self.sub.draw()
 				self.draw()
 			# if only one volume group os present, use it
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) == 1:
+				self.parent.debug('Enabling LVM - only one VG found - %s' % self.container['lvm']['vg'].keys() )
 				self.container['lvm']['ucsvgname'] = self.container['lvm']['vg'].keys()[0]
+				self.layout()
+				self.draw()
 			# if LVM is not automagically enabled then ask user if it should be enabled
 			if self.container['lvm']['enabled'] == None and not hasattr(self,'sub'):
 				self.sub = self.ask_lvm_enable(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
@@ -1308,7 +1356,7 @@ class object(content):
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!') ]
-						self.sub = self.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,self.height-10,  msglist)
+						self.sub = self.msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
 						self.draw()
 						return
 					else:
@@ -1410,8 +1458,8 @@ class object(content):
 						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
 														 (disk,
 														  self.resolve_type(2),
-														  result[2],
-														  result[2]+size))
+														  self.parent.MiB2MB(result[2]),
+														  self.parent.MiB2MB(result[2]+size)))
 						current += float(0.01)
 						size -= float(0.01)
 
@@ -1425,8 +1473,8 @@ class object(content):
 							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
 															 (disk,
 															  self.container['disk'][disk]['partitions'][part]['num'],
-															  part,
-															  part+self.container['disk'][disk]['partitions'][part]['size']))
+															  self.parent.MiB2MB(part),
+															  self.parent.MiB2MB(part+self.container['disk'][disk]['partitions'][part]['size'])))
 							size -= float(0.01)
 						elif part > result[2]:
 							self.container['disk'][disk]['partitions'][part]['size']+=(part-result[2])
@@ -1436,8 +1484,8 @@ class object(content):
 							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
 															 (disk,
 															  self.container['disk'][disk]['partitions'][result[2]]['num'],
-															  result[2],
-															  result[2]+self.container['disk'][disk]['partitions'][result[2]]['size']))
+															  self.parent.MiB2MB(result[2]),
+															  self.parent.MiB2MB(result[2]+self.container['disk'][disk]['partitions'][result[2]]['size'])))
 							current += float(0.01)
 							size -= float(0.01)
 
@@ -1453,7 +1501,8 @@ class object(content):
 				self.container['disk'][disk]['partitions'][current]['type']=type
 				self.container['disk'][disk]['partitions'][current]['num']=0
 				self.container['disk'][disk]['partitions'][current]['size']=new_sectors
-				self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' % (disk,self.resolve_type(type),current,current+size))
+				self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
+												 (disk,self.resolve_type(type), self.parent.MiB2MB(current), self.parent.MiB2MB(current+size)))
 				if type is 0:
 					self.container['disk'][disk]['primary']+=1
 				if not (old_size - size) < self.container['min_size']:
@@ -1485,12 +1534,14 @@ class object(content):
 
 					# create new PV entry
 					pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
-					# -1 ==> LVM uses one page for metadata
-					totalpe = int(self.container['disk'][disk]['partitions'][current]['size'] * 1024 / pesize) - 1
+					# number of physical extents
+					pecnt = int(self.container['disk'][disk]['partitions'][current]['size'] * 1024 / pesize)
+					# LVM uses about 2.5% of pecnt for metadata overhead
+					totalpe = int(pecnt * 0.975)
 
-					self.parent.debug('PARTITION: part_create: pesize=%sk   partsize=%sM=%sk  totalpe=%sPE' %
+					self.parent.debug('PARTITION: part_create: pesize=%sk   partsize=%sM=%sk  pecnt=%sPE  totalpe=%sPE' %
 									  (pesize, self.container['disk'][disk]['partitions'][current]['size'],
-									   self.container['disk'][disk]['partitions'][current]['size'] * 1024, totalpe))
+									   self.container['disk'][disk]['partitions'][current]['size'] * 1024, pecnt, totalpe))
 
 					self.container['lvm']['pv'][ device ] = { 'touched': 1,
 															  'vg': ucsvgname,
@@ -1511,7 +1562,8 @@ class object(content):
 #					self.container['history'].append('/sbin/pvscan')
 					self.container['history'].append('/sbin/pvcreate %s' % device)
 					if not self.container['lvm']['vg'][ ucsvgname ]['created']:
-						self.container['history'].append('/sbin/vgcreate %s %s' % (ucsvgname, device))
+						self.container['history'].append('/sbin/vgcreate --physicalextentsize %sk %s %s' %
+														 (self.container['lvm']['vg'][ ucsvgname ]['PEsize'], ucsvgname, device))
 						self.container['lvm']['vg'][ ucsvgname ]['created'] = 1
 #						self.container['history'].append('/sbin/vgscan')
 					else:
@@ -1551,13 +1603,21 @@ class object(content):
 					self.parent.debug('### minimize at start: %s'%[new_start,start])
 					self.container['disk'][disk]['partitions'][start]['size']=end-new_start
 					self.container['disk'][disk]['partitions'][new_start]=self.container['disk'][disk]['partitions'][start]
-					self.container['history'].append('/sbin/parted --script %s resize %s %s %s; #1' % (disk,self.container['disk'][disk]['partitions'][start]['num'],new_start,new_end))
+					self.container['history'].append('/sbin/parted --script %s resize %s %s %s; #1' %
+													 (disk,
+													  self.container['disk'][disk]['partitions'][start]['num'],
+													  self.parent.MiB2MB(new_start),
+													  self.parent.MiB2MB(new_end)))
 					self.container['disk'][disk]['partitions'].pop(start)
 				elif new_end > end:
 					self.parent.debug('### minimize at end: %s'%[new_end,end])
 					self.container['disk'][disk]['partitions'][part_list[-1]]['type']=PARTTYPE_FREESPACE_LOGICAL
 					self.container['disk'][disk]['partitions'][part_list[-1]]['num']=-1
-					self.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (disk,self.container['disk'][disk]['partitions'][start]['num'],start,new_end))
+					self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+													 (disk,
+													  self.container['disk'][disk]['partitions'][start]['num'],
+													  self.parent.MiB2MB(start),
+													  self.parent.MiB2MB(new_end)))
 
 
 			self.layout()
@@ -1624,7 +1684,11 @@ class object(content):
 						new_start=part[i]
 						new_end=new_start+old[part[i-1]]['size']
 						new[new_start]=old[part[i-1]]
-						self.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (device,old[part[i-1]]['num'],new_start,new_end))
+						self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+														 (device,
+														  old[part[i-1]]['num'],
+														  self.parent.MiB2MB(new_start),
+														  self.parent.MiB2MB(new_end)))
 						new[part[i-1]]=old[part[i]]
 						redo=1
 
@@ -2239,7 +2303,7 @@ class object(content):
 
 							# update used/free space on volume group
 							self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
-							self.parent.container['lvm']['vg'][ vgname ]['allocPE'] -= currentLE
+							self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
 
 						elif self.operation is 'edit': # Speichern
 
@@ -2389,8 +2453,16 @@ class object(content):
 								end=self.parent.container['temp'][disk][2]
 								self.parent.container['disk'][disk]['partitions'][part]['size']=end-start
 								self.parent.container['disk'][disk]['partitions'][start]=self.parent.container['disk'][disk]['partitions'][part]
-								self.parent.container['history'].append('/sbin/parted --script %s resize %s %s %s' % (disk,self.parent.container['disk'][disk]['partitions'][part]['num'],start,end))
-								self.parent.parent.debug('COMMAND: /sbin/parted --script %s resize %s %s %s' % (disk,self.parent.container['disk'][disk]['partitions'][part]['num'],start,end))
+								self.parent.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+																		(disk,
+																		 self.parent.container['disk'][disk]['partitions'][part]['num'],
+																		 self.parent.MiB2MB(start),
+																		 self.parent.MiB2MB(end)))
+								self.parent.parent.debug('COMMAND: /sbin/parted --script %s resize %s %s %s' %
+														 (disk,
+														  self.parent.container['disk'][disk]['partitions'][part]['num'],
+														  self.parent.MiB2MB(start),
+														  self.parent.MiB2MB(end)))
 								self.parent.container['disk'][disk]['partitions'].pop(part)
 						self.parent.container['temp']={}
 						self.parent.rebuild_table(self.parent.container['disk'][disk],disk)
@@ -2526,8 +2598,8 @@ class object(content):
 
 				self.elements.append(button(_("Yes"),self.pos_y+7,self.pos_x+5,15)) #2
 				self.elements.append(button(_("No"),self.pos_y+7,self.pos_x+35,15)) #3
-				self.current=3
-				self.elements[3].set_on()
+				self.current=2
+				self.elements[2].set_on()
 			def _ok(self):
 				self.parent.set_lvm(True)
 				return 0

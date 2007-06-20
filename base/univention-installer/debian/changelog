@@ -1,3 +1,15 @@
+univention-installer (1.4.6-1) unstable; urgency=low
+
+  * do not complain about /-filesystem on LVM LV
+  * "use LVM?" dialog defaults to "yes"
+  * parted uses factor 1000 for "MB/KB" whilst LVM uses factor 1024 for "MB/KB" -
+    internal processing uses now factor 1024; values given to and read from
+    parted are now converted
+  * reserved space for LVM metadata overhead is not taken into account while
+    calculating available space on PV and VG
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 20 Jun 2007 14:33:34 +0200
+
 univention-installer (1.4.5-1) unstable; urgency=low
 
   * show UCS Version in the installer header
