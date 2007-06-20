@@ -332,23 +332,16 @@ fi
 
 # Stop Notifier
 notifier_pid=`pidof univention-ldap-notifier`
-if [ -n "$notifier_pid" -a -d /etc/runit/univention-ldap-notifier ]; then
-	echo -n "shutdown univention-ldap-notifier "
-	while ! runsvstat /etc/runit/univention-ldap-notifier | grep "/etc/runit/univention-ldap-notifier: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+if [ -n "$notifier_pid" -a -e /etc/runit/univention/univention-ldap-notifier ]; then
+	/etc/init.d/univention-ldap-notifier stop
+	while ! sv status univention-ldap-notifier | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
 
 # Stop Listener
 listener_pid=`pidof univention-ldap-listener`
-if [ -d /etc/runit/univention-ldap-listener ]; then
-	echo -n "shutdown univention-ldap-listener "
-	/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-	echo -n "."
-	sleep 3
-	if [ -n "$listener_pid" ]; then
-		kill -9 "$listener_pid" >/dev/null 2>&1
-		sleep 3
-	fi
-	while ! runsvstat /etc/runit/univention-ldap-listener | grep "/etc/runit/univention-ldap-listener: down" >/dev/null ; do sleep 3; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+if [ -e /etc/runit/univention/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener stop
+	while ! sv status univention-ldap-listener | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
 rm -Rf /var/lib/univention-ldap-listener/*
 
