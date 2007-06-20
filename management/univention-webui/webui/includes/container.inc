@@ -71,7 +71,7 @@ class webui_container{
 		case '1':
 		  $headertext = _("Session closed");
 		  $maincontent = _("Your current session has been closed.");
-		  require("config");
+		  require("config.php");
 		  system("rm -r ".$temp_dir.$session_id.'/');
 		  break;
 		case '2':
