@@ -1,3 +1,9 @@
+univention-initrd (1.1.2-1) unstable; urgency=low
+
+  * fix initramfs.conf conffile
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 14:25:13 +0200
+
 univention-initrd (1.1.1-1) unstable; urgency=low
 
   * switch from mkinitrd to mkinitramfs

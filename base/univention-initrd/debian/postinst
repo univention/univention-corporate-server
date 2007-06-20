@@ -2,7 +2,7 @@
 
 
 univention-baseconfig set	initramfs/modules?most \
-							initramfs/busybox?no
+							initramfs/busybox?yes
 
 #DEBHELPER#
 
