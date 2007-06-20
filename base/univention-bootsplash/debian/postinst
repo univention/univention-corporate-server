@@ -46,10 +46,18 @@ fi
 
 eval `univention-baseconfig shell`
 
-if [ ! `echo $lilo_append | grep splash` ] ; then
-	univention-baseconfig set lilo/append="splash=silent $lilo_append"
+if [ -n "$splash_theme" ]; then
+	univention-baseconfig set bootsplash/theme?"$splash_theme"
+	univention-baseconfig set bootsplash/size?"640x480"
+	univention-baseconfig unset splash/theme
 fi
-univention-baseconfig set lilo/vga?785
+
+if [ ! `echo $grub_append | grep splash` ] ; then
+	univention-baseconfig set grub/append="splash=silent $grub_append"
+fi
+univention-baseconfig set grub/vga?785
 
 
 #DEBHELPER#
+
+exit 0

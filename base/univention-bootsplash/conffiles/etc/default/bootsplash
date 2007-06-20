@@ -1,0 +1,32 @@
+# Defaults for bootsplash initscript
+# sourced by /etc/init.d/bootsplash
+# installed at /etc/default/bootsplash by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Set this to yes to enable bootsplash after kernel loads
+SPLASH="yes"
+
+# The theme bootsplash should use.  Right now this points to
+# /etc/bootsplash/theme/current which is a symlink to the
+# current theme.
+THEME=@!@baseconfig.get('bootsplash/theme', 'ucs')@!@
+
+# Which consoles should be displayed with different bootsplash images
+BOOTSPLASH_TTYS="1 2 3 4 5"
+
+# What messages must be displayed at boot and shutdown time
+MSG_BOOT="Booting the system. Please wait..."
+MSG_SHUTDOWN="Shutting down the system. Please wait..."
+
+# Should we use fbtruetype.static? This is usefull if you want to
+# display text at boot time and if you have a separate /usr partition
+# The default configuration use the dynamicaly linked fbtruetype
+# Set USE_STATIC_FBT to yes to use fbtruetype.static
+USE_STATIC_FBT="no"
+
+# Size for the bootsplash-image in the initrd
+SPLASH_SIZE=@!@baseconfig.get('bootsplash/size', '640x480')@!@
+
