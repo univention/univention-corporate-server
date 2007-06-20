@@ -52,7 +52,7 @@ if [ -n "$splash_theme" ]; then
 	univention-baseconfig unset splash/theme
 fi
 
-if [ ! `echo $grub_append | grep splash` ] ; then
+if [ ! "`echo $grub_append | grep splash`" ] ; then
 	univention-baseconfig set grub/append="splash=silent $grub_append"
 fi
 univention-baseconfig set grub/vga?785
