@@ -30,8 +30,7 @@
 # Univention LDAP Listener replication module
 
 import sys, os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64
-import univention_baseconfig, univention.debug, univention.utf8
-(utf8enc,utf8dec,utf8read,utf8write)=codecs.lookup('utf-8')
+import univention_baseconfig, univention.debug
 
 baseConfig = univention_baseconfig.baseConfig()
 baseConfig.load()
@@ -138,7 +137,7 @@ class LDIFObject:
 		if '\n' in value:
 			encode = 1
 		try:
-			(newval,leng)=utf8dec(value)
+			(newval,leng)=value
 			newval=newval.encode('ascii')
 		except UnicodeError:
 			encode = 1
@@ -357,14 +356,14 @@ def handler(dn, new, listener_old):
 		# add
 		if new and not old:
 			al=addlist(new)
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'add: %s' % univention.utf8.decode(dn))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'add: %s' % dn)
 			try:
 				l.add_s(dn, al)
 			except ldap.OBJECT_CLASS_VIOLATION, msg:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % univention.utf8.decode(dn))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'replication: object class violation while adding %s' % dn)
 		# delete
 		elif old and not new:
-			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'delete: %s' % univention.utf8.decode(dn))
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'delete: %s' % dn)
 			try:
 				l.delete_s(dn)
 			except ldap.NOT_ALLOWED_ON_NONLEAF, msg:
@@ -379,7 +378,7 @@ def handler(dn, new, listener_old):
 		else:
 			ml=modlist(old, new)
 			if ml:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'modify: %s' % univention.utf8.decode(dn))
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ALL, 'modify: %s' % dn)
 				l.modify_s(dn, ml)
 	except ldap.SERVER_DOWN, msg:
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.WARN, '%s: retrying' % msg[0]['desc'])
