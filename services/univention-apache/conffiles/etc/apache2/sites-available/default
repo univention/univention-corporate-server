@@ -13,9 +13,9 @@ NameVirtualHost *
 		Order allow,deny
 		allow from all
 		@!@
-		if baseConfig.has_key('apache/startsite'):
-			print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite'])
-		@!@
+if baseConfig.has_key('apache/startsite'):
+	print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
+@!@
 	</Directory>
 
 	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
