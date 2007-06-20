@@ -1,3 +1,9 @@
+univention-installer (1.4.4-2) unstable; urgency=low
+
+  * no longer start udev during the installation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 20 Jun 2007 09:53:30 +0200
+
 univention-installer (1.4.4-1) unstable; urgency=low
 
   * translation updates

@@ -61,10 +61,12 @@ fi
 mount proc /proc -t proc
 mount -t sysfs sysfs /sys/
 
-# ignore udev warning
-export RUNLEVEL="S" PREVLEVEL="N"
-/etc/init.d/udev start
-unset RUNLEVEL PREVLEVEL
+echo "Setting up devices, this may take a while."
+
+cd /dev
+/sbin/MAKEDEV generic
+cd -
+
 
 mount -a
 #mount /mnt/installation
