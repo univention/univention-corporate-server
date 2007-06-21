@@ -1238,6 +1238,8 @@ class object(content):
 				if selected[0] == 'part':
 					part=selected[2]
 					type = self.container['disk'][disk]['partitions'][part]['type']
+				elif selected[0] == 'lvm_lv':
+					type = PARTTYPE_LVM_LV
 
 				if key == 266:# F2 - Create
 					self.parent.debug('partition: create')
@@ -1267,8 +1269,8 @@ class object(content):
 						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 				elif key == 268:# F4 - Delete
-					self.parent.debug('partition: delete')
-					if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL:
+					self.parent.debug('partition: delete (%s)' % type)
+					if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
 						self.parent.debug('partition: delete!')
 						self.part_delete(self.get_elem('SEL_part').result()[0])
 					elif type == PARTTYPE_EXTENDED:
@@ -1324,7 +1326,7 @@ class object(content):
 								self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 								self.sub.draw()
 					elif self.get_elem('BT_delete').get_status():#delete
-						if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL:
+						if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
 							self.part_delete(self.get_elem('SEL_part').result()[0])
 						elif type == PARTTYPE_EXTENDED:
 							self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
@@ -1373,8 +1375,12 @@ class object(content):
 				i+=1
 
 		def pv_delete(self, index):
+			# returns True if pv has been deleted else False
 			result=self.part_objects[index]
 			disk = result[1]
+
+			if 'lvm' in result[0]:
+				return False
 
 			if self.container['lvm']['enabled'] and 'lvm' in self.container['disk'][disk]['partitions'][result[2]]['flag']:
 				device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num'])
@@ -1409,11 +1415,17 @@ class object(content):
 			return False
 
 		def part_delete(self,index):
+			result=self.part_objects[index]
+			disk = result[1]
+
 			if self.pv_delete(index):
 				return
 
-			type=self.container['disk'][disk]['partitions'][result[2]]['type']
-			if type is 0:#primary
+			if result[0] == 'lvm_lv':
+				type = PARTTYPE_LVM_LV
+			else:
+				type=self.container['disk'][disk]['partitions'][result[2]]['type']
+			if type == PARTTYPE_PRIMARY:
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
 				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
 				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
@@ -1421,7 +1433,7 @@ class object(content):
 				self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
 				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
 				self.container['disk'][disk]['primary']-=1
-			elif type is 1:#logical
+			elif type == PARTTYPE_LOGICAL:
 				deleted=self.container['disk'][disk]['partitions'][result[2]]['num']
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
 				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_LOGICAL
@@ -1431,9 +1443,9 @@ class object(content):
 				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
 				count=0
 				for part in self.container['disk'][disk]['partitions'].keys():
-					if self.container['disk'][disk]['partitions'][part]['type'] is 1:
+					if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
 						count += 1
-					if self.container['disk'][disk]['partitions'][part]['type'] is 2:
+					if self.container['disk'][disk]['partitions'][part]['type'] is PARTTYPE_EXTENDED:
 						extended=part
 				if not count and extended: # empty extended
 					self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][extended]['num']))
@@ -1446,23 +1458,36 @@ class object(content):
 				self.container['disk'][disk] = self.renum_logical(self.container['disk'][disk],deleted)
 
 
-			elif type is 2:#extended
+			elif type == PARTTYPE_EXTENDED:
 				self.container['disk'][disk]['extended']=0
 				self.container['disk'][disk]['primary']-=1
 				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
 				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
 				for part in self.container['disk'][disk]['partitions'].keys():
-					if self.container['disk'][disk]['partitions'][part]['type'] is 1:
+					if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
 						self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][part]['num']))
 						self.container['disk'][disk]['partitions'][part]['type']=PARTTYPE_FREESPACE_LOGICAL
 						self.container['disk'][disk]['partitions'][part]['touched']=1
 						self.container['disk'][disk]['logical']-=1
 				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
 				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
+			elif type == PARTTYPE_LVM_LV:
+				lv = self.container['lvm']['vg'][ result[1] ]['lv'][ result[2] ]
 
-			if type is 1:
+				self.parent.debug('removing LVM LV %s' % lv['dev'])
+				self.container['history'].append('/sbin/lvremove -f %s' % lv['dev'])
+
+				# update used/free space on volume group
+				currentLE = lv['currentLE']
+				self.parent.container['lvm']['vg'][ lv['vg'] ]['freePE'] += currentLE
+				self.parent.container['lvm']['vg'][ lv['vg'] ]['allocPE'] -= currentLE
+
+				del self.container['lvm']['vg'][ result[1] ]['lv'][ result[2] ]
+
+			if type == PARTTYPE_LOGICAL:
 				self.minimize_extended(disk)
-			self.container['disk'][disk]=self.rebuild_table(self.container['disk'][disk],disk)
+			if type != PARTTYPE_LVM_LV:
+				self.container['disk'][disk]=self.rebuild_table(self.container['disk'][disk],disk)
 			self.layout()
 			self.draw()
 
@@ -1475,9 +1500,9 @@ class object(content):
 			old_type=self.container['disk'][disk]['partitions'][result[2]]['type']
 			old_sectors=self.container['disk'][disk]['partitions'][result[2]]['size']
 			new_sectors=size
-			if type is 0 or type is 1: #create new primary/logical disk
+			if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL: #create new primary/logical disk
 				current=result[2]
-				if type is 1: # need to modify/create extended
+				if type == PARTTYPE_LOGICAL: # need to modify/create extended
 					if not self.container['disk'][disk]['extended']: #create extended
 						size=new_sectors+float(0.01)
 						self.container['disk'][disk]['partitions'][result[2]]['size']=size
@@ -1538,7 +1563,7 @@ class object(content):
 				self.container['disk'][disk]['partitions'][current]['size']=new_sectors
 				self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
 												 (disk,self.resolve_type(type), self.parent.MiB2MB(current), self.parent.MiB2MB(current+size)))
-				if type is 0:
+				if type == PARTTYPE_PRIMARY:
 					self.container['disk'][disk]['primary']+=1
 				if not (old_size - size) < self.container['min_size']:
 					self.container['disk'][disk]['partitions'][current]['size']=new_sectors
@@ -1556,7 +1581,7 @@ class object(content):
 					self.container['disk'][disk]['partitions'][new_free]['format']=0
 					self.container['disk'][disk]['partitions'][new_free]['type']=PARTTYPE_FREESPACE_PRIMARY
 					self.container['disk'][disk]['partitions'][new_free]['num']=-1 #temporary wrong num
-				if type is 1:
+				if type == PARTTYPE_LOGICAL:
 					self.minimize_extended(disk)
 				self.rebuild_table( self.container['disk'][disk],disk)
 

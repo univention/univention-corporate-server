@@ -1,4 +1,11 @@
-univention-installer (1.4.7-2) unstable; urgency=low
+univention-installer (1.4.9-1) unstable; urgency=low
+
+  * enabled deletion of LVM LV
+  * replaced some left over integers with contants (PARTTYPE_*)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 09:43:27 +0200
+
+univention-installer (1.4.8-1) unstable; urgency=low
 
   * use constant variable instead of integers for partition types
 
