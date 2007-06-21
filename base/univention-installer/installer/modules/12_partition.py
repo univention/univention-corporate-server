@@ -2401,9 +2401,15 @@ class object(content):
 					vg = self.parent.container['lvm']['vg'][ vgname ]
 					maxsize = (vg['PEsize'] * vg['freePE'] / 1024)
 
+					lvname_proposal = ''
+					for i in range(1,255):
+						if not vg['lv'].has_key('vol%d' % i):
+							lvname_proposal = 'vol%d' % i
+							break
+
 					self.operation='create'
 					self.add_elem('TXT_0', textline(_('New Logical Volume:'),self.pos_y+2,self.pos_x+5)) #0
-					self.add_elem('INP_name', input('',self.pos_y+2,self.pos_x+5+len(_('New Logical Volume:'))+1,20)) #2
+					self.add_elem('INP_name', input(lvname_proposal,self.pos_y+2,self.pos_x+5+len(_('New Logical Volume:'))+1,20)) #2
 					self.add_elem('TXT_1', textline(_('Mount-Point:'),self.pos_y+4,self.pos_x+5)) #1
 					self.add_elem('INP_mpoint', input('',self.pos_y+4,self.pos_x+5+len(_('Mount-Point:'))+1,20)) #2
 					self.add_elem('TXT_3', textline(_('Size (MB):'),self.pos_y+6,self.pos_x+5)) #3
