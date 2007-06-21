@@ -1,3 +1,10 @@
+univention-installer (1.4.10-1) unstable; urgency=low
+
+  * popup msg window (when creating LVM LV and e.g. name wasn't set) can now
+    be closed again
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 10:06:40 +0200
+
 univention-installer (1.4.9-1) unstable; urgency=low
 
   * enabled deletion of LVM LV

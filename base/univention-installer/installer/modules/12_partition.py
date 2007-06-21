@@ -2253,7 +2253,10 @@ class object(content):
 				type, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 
 				if hasattr(self,"sub"):
-					self.sub.input(key)
+					if not self.sub.input(key):
+						self.sub.exit()
+					self.draw()
+					# do not close local window - only msg_win is displayed as subwin
 					return 1
 				if key == 260 and self.get_elem('BT_save').active:
 					#move left
@@ -2295,6 +2298,7 @@ class object(content):
 								else:
 									msglist = [ _('Logical volume name is already in use!') ]
 
+								self.get_elem_by_id(self.current).set_off()
 								self.current=self.get_elem_id('INP_name')
 								self.get_elem_by_id(self.current).set_on()
 
@@ -2303,6 +2307,7 @@ class object(content):
 								return 1
 
 							if size == None:
+								self.get_elem_by_id(self.current).set_off()
 								self.current=self.get_elem_id('INP_size')
 								self.get_elem_by_id(self.current).set_on()
 
@@ -2315,6 +2320,7 @@ class object(content):
 							if currentLE > vg['freePE']:  # decrease logical volume by one physical extent - maybe it fits then
 								currentLE -= 1
 							if currentLE > vg['freePE']:
+								self.get_elem_by_id(self.current).set_off()
 								self.current=self.get_elem_id('INP_size')
 								self.get_elem_by_id(self.current).set_on()
 
