@@ -1,3 +1,9 @@
+univention-baseconfig (2.1.10-2) unstable; urgency=low
+
+  * check for /usr/bin/sv in the logrotate.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Jun 2007 16:42:52 +0200
+
 univention-baseconfig (2.1.10-1) unstable; urgency=low
 
   * added patch from Wolf for univention-baseconfig bash completion
