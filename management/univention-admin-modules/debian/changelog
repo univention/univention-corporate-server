@@ -1,3 +1,11 @@
+univention-admin-modules (1.2.3-3) unstable; urgency=low
+
+  * add svgz-sources
+  * generate fall-back .gif-files
+  * add more new icons
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 21 Jun 2007 10:47:50 +0200
+
 univention-admin-modules (1.2.3-2) unstable; urgency=low
 
   * new icon-set
