@@ -1929,10 +1929,12 @@ class object(content):
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
+								elif fstype == 'linux-swap':
+									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true'
 								p=os.popen('%s 2>&1'%mkfs_cmd)
-								self.parent.parent.debug('PARTITION: %s' % mkfs_cmd)
+								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
 								p.close()
 								vg['lv'][lvname]['format'] = 0
 
@@ -2404,11 +2406,14 @@ class object(content):
 					dict={}
 					filesystem_num=0
 					filesystem=file.readlines()
-					for line in range(len(filesystem)):
-						fs=filesystem[line].split(' ')
-						if len(fs) > 1 and fs != 'linux-swap':
+					i=0
+					for line in filesystem:
+						fs=line.split(' ')
+						if len(fs) > 1:
 							entry = fs[1][:-1]
-							dict[entry]=[entry,line]
+							if entry != 'linux-swap':
+								dict[entry]=[entry,i]
+								i += 1
 					file.close()
 					self.add_elem('SEL_fstype', select(dict,self.pos_y+9,self.pos_x+4,15,6)) #6
 					self.get_elem('SEL_fstype').set_off()
@@ -2434,13 +2439,16 @@ class object(content):
 					dict={}
 					filesystem_num=0
 					filesystem=file.readlines()
-					for line in range(0, len(filesystem)):
-						fs=filesystem[line].split(' ')
-						if len(fs) > 1 and fs != 'linux-swap':
+					i=0
+					for line in filesystem:
+						fs=line.split(' ')
+						if len(fs) > 1:
 							entry = fs[1][:-1]
-							dict[entry]=[entry,line]
-							if entry == lv['fstype']:
-								filesystem_num=line
+							if entry != 'linux-swap':
+								dict[entry]=[entry,i]
+								if entry == lv['fstype']:
+									filesystem_num=i
+								i += 1
 					file.close()
 					self.add_elem('SEL_fstype', select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
 					self.add_elem('TXT_5', textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
