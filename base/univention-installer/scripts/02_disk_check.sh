@@ -126,14 +126,22 @@ fi
 
 count=1
 echo "Creating disks"
-set | grep "^dev_" | while read line; do
+set | egrep "^(dev|lvm)_" | while read line; do
 	name=`echo $line | sed -e 's|=.*||'`
 	var=`echo $line | sed -e 's|.*=.||;s|"||g' | sed -e "s|'||g"`
 	if [ "$name" = "devices" ]; then
 		continue
 	fi
-	disk_name=`get_device_disk $name`
-	disk="/dev/$disk_name"
+	if [ "`echo $name | cut -b1-4`" = "lvm_" ] ; then
+		disk_num=`echo $var | awk '{print $1}'`
+		disk_name="$disk_num"
+		disk="$disk_num"
+		var=`echo $var | cut -d' ' -f2-`
+	else
+		disk_name=`get_device_disk $name`
+		disk="/dev/$disk_name"
+		device_num=`echo $name | sed -e 's|dev_|/dev/|g;s|_|/|g'`
+	fi
 
 	device_type=`echo $var | awk '{print $1}'`
  	device_format=`echo $var | awk '{print $2}'`
@@ -142,7 +150,6 @@ set | grep "^dev_" | while read line; do
 	device_end=`echo $var | awk '{print $5}'`
 	device_mp=`echo $var | awk '{print $6}'`
 
-	device_num=`echo $name | sed -e 's|dev_|/dev/|g;s|_|/|g'`
 
 	echo "device_type=$device_type"
 	echo "device_format=$device_format"

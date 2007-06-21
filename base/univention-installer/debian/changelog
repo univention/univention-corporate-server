@@ -1,3 +1,10 @@
+univention-installer (1.4.13-1) unstable; urgency=low
+
+  * adjusted univention-installer scripts for LVM
+  * added debug output
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 15:52:18 +0200
+
 univention-installer (1.4.12-1) unstable; urgency=low
 
   * disable swap on LVM LV

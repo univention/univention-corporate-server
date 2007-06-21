@@ -34,13 +34,19 @@ echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "
 
 # Mount /xxx partitions
-set | grep "^dev_" | while read line; do
+set | egrep "^(dev|lvm)_" | while read line; do
 	name=`echo $line | sed -e 's|=.*||'`
 	var=`echo $line | sed -e 's|.*=.||;s|"||g' | sed -e "s|'||g"`
 	if [ "$name" = "devices" ]; then
 		continue
 	fi
-	device_name=`echo /$name| sed -e 's|_|/|g;s|dev_||g'`
+	if [ "`echo $name | cut -b1-4`" = "lvm_" ] ; then
+		# first argument is lvm device name
+		device_name=`echo $var | awk '{print $1}'`
+		var=`echo $var | cut -d' ' -f2-`
+	else
+		device_name=`echo /$name| sed -e 's|_|/|g;s|dev_||g'`
+	fi
 	device_type=`echo $var	| awk '{print $1}'`
 	device_format=`echo $var| awk '{print $2}'`
 	device_fs=`echo $var	| awk '{print $3}'`

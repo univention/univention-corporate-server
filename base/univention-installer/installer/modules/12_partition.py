@@ -871,6 +871,7 @@ class object(content):
 					result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
 		result[ 'disks' ] = string.join( partitions, ' ')
 		# append LVM if enabled
+		i=0
 		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
 			vg = self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ]
 			for lvname in vg['lv'].keys():
@@ -881,7 +882,8 @@ class object(content):
 				fstype = lv['fstype']
 				if not fstype:
 					fstype = 'None'
-				device = lv['dev']
+				device = 'lvm_%d' % i
+				i += 1
 
 				if mpoint == '/boot':
 					result[ 'boot_partition' ] = device
@@ -892,9 +894,9 @@ class object(content):
 				device_list.append(device)
 				format = lv['format']
 				start = 0
-				end = 0
+				end = lv['size']
 				type='only_mount'
-				result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
+				result[device] = "%s %s %s %s %sM %sM %s" % (lv['dev'],type,format,fstype,start,end,mpoint)
 		return result
 
 	class partition(subwin):
@@ -1411,8 +1413,8 @@ class object(content):
 							# reduce VG
 							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
 							self.container['history'].append('/sbin/pvremove %s' % device)
-	#						self.container['history'].append('/sbin/pvscan')
-	#						self.container['history'].append('/sbin/vgscan')
+#							self.container['history'].append('/sbin/pvscan')
+#							self.container['history'].append('/sbin/vgscan')
 			return False
 
 		def part_delete(self,index):
@@ -1894,7 +1896,8 @@ class object(content):
 					self.parent.parent.debug('Partition: Create Partitions')
 					for command in self.parent.container['history']:
 						p=os.popen('%s 2>&1'%command)
-						self.parent.parent.debug('PARTITION: %s'%command)
+						self.parent.parent.debug('PARTITION: running "%s"'%command)
+						self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
 						p.close()
 					self.parent.container['history']=[]
 					self.parent.parent.written=1
@@ -1915,7 +1918,8 @@ class object(content):
 								else:
 									mkfs_cmd='/bin/true'
 								p=os.popen('%s 2>&1'%mkfs_cmd)
-								self.parent.parent.debug('PARTITION: %s' % mkfs_cmd)
+								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
+								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
 								p.close()
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
@@ -1935,6 +1939,7 @@ class object(content):
 									mkfs_cmd='/bin/true'
 								p=os.popen('%s 2>&1'%mkfs_cmd)
 								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
+								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
 								p.close()
 								vg['lv'][lvname]['format'] = 0
 
@@ -2294,10 +2299,16 @@ class object(content):
 							fstype = self.get_elem('SEL_fstype').result()[0]
 
 							# do some consistency checks
+							lvname_ok = True
+							for c in lvname:
+								if not(c.isalnum() or c == '_'):
+									lvname_ok = False
 
-							if not lvname or lvname in vg['lv'].keys():
+							if not lvname or lvname in vg['lv'].keys() or not lvname_ok:
 								if not lvname:
 									msglist = [ _('Please enter volume name!') ]
+								elif not lvname_ok:
+									msglist = [ _('Logical volume name contains illegal characters!') ]
 								else:
 									msglist = [ _('Logical volume name is already in use!') ]
 
@@ -2305,7 +2316,7 @@ class object(content):
 								self.current=self.get_elem_id('INP_name')
 								self.get_elem_by_id(self.current).set_on()
 
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 
@@ -2315,7 +2326,7 @@ class object(content):
 								self.get_elem_by_id(self.current).set_on()
 
 								msglist = [ _('Size contains non-digit characters!') ]
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 
@@ -2328,7 +2339,7 @@ class object(content):
 								self.get_elem_by_id(self.current).set_on()
 
 								msglist = [ _('Not enough free space on volume group!') ]
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+4,self.width-8,7, msglist)
+								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 							size = int(vg['PEsize'] * currentLE / 1024.0)
