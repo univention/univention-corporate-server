@@ -2,4 +2,5 @@ etc/univention/base.info/categories
 etc/univention/base.info/variables
 var/log/univention
 etc/X11/Xsession.d/
+etc/bash_completion.d/
 usr/lib/univention-ldap-policy/
