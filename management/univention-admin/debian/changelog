@@ -1,3 +1,10 @@
+univention-admin (3.2.3-4) unstable; urgency=low
+
+  * new iconset
+  * general function to select icon (prefer png by default)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 20 Jun 2007 14:20:09 +0200
+
 univention-admin (3.2.3-3) unstable; urgency=low
 
   * added link to univention-admin for ucs-overview.html

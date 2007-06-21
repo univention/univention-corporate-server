@@ -245,10 +245,10 @@ class unidialog(unimodule.unimodule):
 
 						if virtmod.id == self.save.get('uc_virtualmodule'):
 							for submod in virtmod.submodules:
-								icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/submods/', iconNameGeneric = '' )
+								icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/', iconNameGeneric = '' )
 								if not icon_path or not type(icon_path) in types.StringTypes:
 									univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "submodule %s failed selectIcon with %s" % (submod.id, icon_path))
-									icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/', iconNameGeneric = 'generic' )
+									icon_path = unimodule.selectIconByName( submod.id, filesystemSubpath = '/icon/submods/', iconNameGeneric = 'generic' )
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "submodule %s with icon %s" % (submod.id, icon_path))
 								if self.save.get("uc_submodule",'') == submod.id or (not self.save.get("uc_submodule",'') and submod.id in ['find','users/self']):
 									# this button is active, find is default in modwizard (the default should be moved into the submodule itself)
