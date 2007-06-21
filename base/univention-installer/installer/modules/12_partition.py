@@ -163,8 +163,9 @@ class object(content):
 			for lvname in vg['lv'].keys():
 				lv = vg['lv'][lvname]
 				mpoint = lv['mpoint'].strip()
-				if mpoint in mpoint_temp:
-					return _('Double Mount-Point \'%s\'') % mpoint
+				if len(mpoint):
+					if mpoint in mpoint_temp:
+						return _('Double Mount-Point \'%s\'') % mpoint
 				mpoint_temp.append(mpoint)
 				if mpoint == '/':
 					if not lv['fstype'] in ['xfs','ext2','ext3']:
