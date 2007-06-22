@@ -18,20 +18,20 @@ Description: UCS - Samba domain controller
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-samba-ha
-Architecture: all
-Depends: univention-samba, univention-heartbeat
-Description: UCS - Samba domain controller
- This package contains the configuration for the Samba
- domain controller in a heartbeat-failover situation. 
- It provides authentication, file and print services for 
- Windows computers.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
+#Package: univention-samba-ha
+#Architecture: all
+#Depends: univention-samba, univention-heartbeat
+#Description: UCS - Samba domain controller
+# This package contains the configuration for the Samba
+# domain controller in a heartbeat-failover situation. 
+# It provides authentication, file and print services for 
+# Windows computers.
+# .
+# It is part of Univention Corporate Server (UCS), an
+# integrated, directory driven solution for managing
+# corporate environments. For more information about UCS,
+# refer to: http://www.univention.de/
+#
 Package: univention-samba-slave-pdc
 Architecture: all
 Depends: univention-samba

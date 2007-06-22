@@ -33,3 +33,7 @@
 if [ ! -e /etc/samba/local.conf ]; then
 	touch /etc/samba/local.conf
 fi
+
+# this will be checked by the samba debian postinst script
+univention-baseconfig set samba/ldapsam?true
+
