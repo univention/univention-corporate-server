@@ -1,3 +1,9 @@
+univention-printserver (1.0.1-1) unstable; urgency=low
+
+  * move the adduser call to the join script instead of using the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Jun 2007 15:01:26 +0200
+
 univention-printserver (1.0.0-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts

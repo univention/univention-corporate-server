@@ -39,6 +39,8 @@ test -n "`grep "univention-printserver successful" /usr/lib/univention-install/.
 
 eval `univention-baseconfig shell`
 
+getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
+
 univention-admin container/cn create $@ --ignore_exists --position "cn=univention,$ldap_base" --set name=cups
 
 univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=misc  \
@@ -2649,7 +2651,6 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-ppds/Xerox/Xerox-WorkCentre_XK35c-lex5700.ppd.gz\" \"Xerox WorkCentre XK35c Foomatic/lex5700 (recommended)\""
 
 
-adduser $hostname\$ lp
 
 rm /var/lib/univention-ldap-listener/handlers/cups-printers >/dev/null 2>&1|| true
 
