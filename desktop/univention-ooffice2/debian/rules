@@ -56,6 +56,17 @@ install: build
 
 	install -m755 ooo-wrapper $(D)/usr/bin/ooo-wrapper
 
+	for d in locolor hicolor; do \
+		for s in 16x16 22x22 32x32 48x48; do \
+			for f in ooo_base.xpm ooo_calc.xpm ooo_draw.xpm ooo_gulls.xpm ooo_impress.xpm ooo_math.xpm ooo_template.xpm ooo_web.xpm ooo_writer.xpm; do \
+				install -m 644 files/usr/share/icons/$${d}/$${s}/apps/$$f $(D)/usr/share/icons/$${d}/$${s}/apps/; \
+			done; \
+		done; \
+	done;
+
+
+	univention-install-baseconfig
+
 
 binary-arch: build install
 

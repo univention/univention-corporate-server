@@ -2,12 +2,12 @@ Source: univention-ooffice2
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends-Indep: debhelper (>> 3.0.0)
+Build-Depends-Indep: debhelper (>> 3.0.0), univention-config-dev
 Standards-Version: 3.5.5
 
 Package: univention-ooffice2
 Architecture: all
-Depends: openoffice.org, openoffice.org-core, openoffice.org-l10n-de, openoffice.org-l10n-en-us
+Depends: openoffice.org, openoffice.org-core, openoffice.org-l10n-de, openoffice.org-l10n-en-us, openoffice.org-kde
 Conflicts: univention-ooffice, univention-ooffice-mimelnk
 Description: UCS - Openoffice.org 2
  This package installs Openoffice.org 2, including German

@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.1-1) unstable; urgency=low
+
+  * added patches from the desktop scope
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Jun 2007 13:15:57 +0200
+
 univention-ooffice2 (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
