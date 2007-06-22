@@ -1551,6 +1551,123 @@ class subwin:
 	def start(self):
 		pass
 
+
+class yes_no_win(subwin):
+	def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], align='middle', callback_yes=None, callback_no=None, default='yes', *args, **kwargs):
+		# adjust size if width and height is too small
+		for line in msglist:
+			if width < len(line)+4:
+				width = len(line)+4
+		if height < len(msglist)+6:
+			height = len(msglist)+6
+
+		self.msglist = msglist
+		self.align = align
+		self.callback_yes = callback_yes
+		self.callback_no = callback_no
+		self.args = args
+		self.kwargs = kwargs
+		self.win_incomplete = True
+
+		if default in [ 'YES', 'yes' ]:
+			self.default = 'BT_YES'
+		else:
+			self.default = 'BT_NO'
+
+		subwin.__init__(self,parent,pos_y,pos_x,width,height)
+
+	def incomplete(self):
+		return self.win_incomplete
+
+	def input(self, key):
+		if key in [ 10, 32 ]:
+			if self.get_elem('BT_YES').get_status(): #Yes
+				self._ok()
+				self.win_incomplete = False
+				return 0
+			elif self.get_elem('BT_NO').get_status(): #No
+				self._false()
+				self.win_incomplete = False
+				return 0
+		elif key == 260 and self.get_elem('BT_NO').active:
+			#move left
+			self.get_elem('BT_NO').set_off()
+			self.get_elem('BT_YES').set_on()
+			self.current=self.get_elem_id('BT_YES')
+			self.draw()
+		elif key == 261 and self.get_elem('BT_YES').active:
+			#move right
+			self.get_elem('BT_YES').set_off()
+			self.get_elem('BT_NO').set_on()
+			self.current=self.get_elem_id('BT_NO')
+			self.draw()
+		return 1
+
+	def layout(self):
+		y = 2
+		if self.align == 'middle':
+			x = self.pos_x+(self.width/2)
+		else:
+			x = self.pos_x+2
+		for msg in self.msglist:
+			self.elements.append(textline(msg, self.pos_y+y, x, align=self.align))
+			y+=1
+		y+=1
+
+		self.add_elem('BT_YES', button(_("Yes"),self.pos_y+y,self.pos_x+13,15,align='middle'))
+		self.add_elem('BT_NO', button(_("No"),self.pos_y+y,self.pos_x+self.width-13,15,align='middle'))
+
+		self.current = self.get_elem_id( self.default )
+		self.elements[ self.current ].set_on()
+
+	def _ok(self):
+		if self.callback_yes != None:
+			self.callback_yes('BT_YES', *self.args, **self.kwargs)
+
+	def _false(self):
+		if self.callback_no != None:
+			self.callback_no('BT_NO', *self.args, **self.kwargs)
+
+
+class msg_win(subwin):
+	def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], align='middle', callback=None, *args, **kwargs):
+		# adjust size if width and height is too small
+		for line in msglist:
+			if width < len(line)+4:
+				width = len(line)+4
+		if height < len(msglist)+6:
+			height = len(msglist)+6
+
+		self.msglist = msglist
+		self.align = align
+		self.callback = callback
+		self.args = args
+		self.kwargs = kwargs
+
+		subwin.__init__(self,parent,pos_y,pos_x,width,height)
+
+	def input(self, key):
+		if key in [ 10, 32 ]:
+			self._ok()
+			return 0
+		return 1
+
+	def layout(self):
+		y = 2
+		for msg in self.msglist:
+			self.elements.append(textline(msg,self.pos_y+y,self.pos_x+(self.width/2),self.align))
+			y+=1
+		y+=1
+
+		self.elements.append(button(_("Ok"),self.pos_y+y,self.pos_x+(self.width/2),15,align="middle"))
+		self.current=len(self.elements)-1
+		self.elements[self.current].set_on()
+
+	def _ok(self):
+		if self.callback != None:
+			self.callback(*self.args, **self.kwargs)
+
+
 class activity:
 	def __init__(self,pos_y,pos_x,width):
 		self.width=width

@@ -757,6 +757,7 @@ class object(content):
 					if fstype in ['boot','hidden','raid','lvm','lba','palo','prep','boot,','hidden,','raid,','lvm,','lba,','palo,','prep']:
 						flag.append(fstype.strip(','))
 						fstype=''
+					
 
 				for i in range(6,10):
 					if len(cols) > i:
@@ -775,7 +776,8 @@ class object(content):
 						'num':int(num),
 						'mpoint':'',
 						'flag':flag,
-						'format':0
+						'format':0,
+						'preexist': 1
 						}
 				if type == 'extended':
 					last_end=start
@@ -954,8 +956,10 @@ class object(content):
 			# show warning if LVM1 volumes are detected
 			if self.container['lvm']['lvm1available'] and not self.container['lvm']['warnedlvm1'] and not hasattr(self,'sub'):
 				self.container['lvm']['warnedlvm1'] = True
-				self.sub = self.warning_lvm1(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
-				self.sub.draw()
+				msglist = [ _('LVM1 volumes detected. To use LVM1 volumes all'),
+							_('existing LVM1 snapshots have to be removed!'),
+							_('Otherwise kernel is unable to mount them!') ]
+				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
@@ -1279,7 +1283,7 @@ class object(content):
 						if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 							self.parent.debug('partition: edit lvm pv not allowed')
 							msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-							self.sub=self.msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+							self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 							self.sub.draw()
 						else:
 							self.parent.debug('partition: edit!')
@@ -1325,7 +1329,7 @@ class object(content):
 								if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 									self.parent.debug('partition: edit lvm pv not allowed')
 									msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-									self.sub=self.msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+									self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 									self.sub.draw()
 								else:
 									self.parent.debug('partition: edit!')
@@ -1341,7 +1345,7 @@ class object(content):
 							if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
 								self.parent.debug('partition: edit lvm pv not allowed')
 								msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
-								self.sub=self.msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
+								self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 								self.sub.draw()
 							else:
 								self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
@@ -1413,7 +1417,7 @@ class object(content):
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!') ]
-						self.sub = self.msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
+						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
 						self.draw()
 						return True
 					else:
@@ -1538,7 +1542,7 @@ class object(content):
 						self.container['disk'][disk]['extended']=1
 						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
 														 (disk,
-														  self.resolve_type(2),
+														  self.resolve_type(PARTTYPE_EXTENDED),
 														  self.parent.MiB2MB(result[2]),
 														  self.parent.MiB2MB(result[2]+size)))
 						current += float(0.01)
@@ -1972,6 +1976,35 @@ class object(content):
 			def helptext(self):
 				return self.parent.helptext()
 
+			def no_format_callback_part_create(self, result):
+				selected=self.parent.container['temp']['selected']
+				mpoint=self.parent.container['temp']['mpoint']
+				size=self.parent.container['temp']['size']
+				fstype=self.parent.container['temp']['fstype']
+				type=self.parent.container['temp']['type']
+				flag=self.parent.container['temp']['flag']
+				self.parent.container['temp']={}
+				if result == 'BT_YES':
+					format=1
+					self.parent.part_create(selected,mpoint,size,fstype,type,flag,format)
+				elif result == 'BT_NO':
+					format=0
+					self.parent.part_create(selected,mpoint,size,fstype,type,flag,format)
+				return 0
+
+
+			def no_format_callback_part_edit(self, result, path, part):
+				fstype=self.parent.container['temp']['fstype']
+				self.parent.container['temp']={}
+				if result == 'BT_YES':
+					format=1
+				else:
+					format=0
+				self.parent.container['disk'][path]['partitions'][part]['format']=format
+				self.parent.container['disk'][path]['partitions'][part]['fstype']=fstype
+				return 0
+
+
 			def input(self, key):
 				dev = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 				type = dev[0]
@@ -2001,7 +2034,7 @@ class object(content):
 					elif ( self.get_elem('BT_save').usable() and self.get_elem('BT_save').get_status() ) or key == 276:
 						if self.operation is 'create': # Speichern
 							part=dev[2]
-							mpoint=self.get_elem('INP_mpoint').result()
+							mpoint=self.get_elem('INP_mpoint').result().strip()
 							if self.get_elem('INP_size').result().isdigit():
 								size=float(self.get_elem('INP_size').result())
 							else:
@@ -2035,8 +2068,15 @@ class object(content):
 										'flag':flag,
 										}
 
+							msglist = [ _('The selected filesystem takes no'),
+										_('effect, if format is not selected.'),
+										'',
+										_('Do you want to format this partition?') ]
+
 							if not format:
-								self.sub=self.parent.no_format(self,self.pos_y+4,self.pos_x+1,self.width-2,self.height-8)
+								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+													  msglist=msglist, callback_yes=self.no_format_callback_part_create,
+													  callback_no=self.no_format_callback_part_create, default='no' )
 								self.sub.draw()
 								return 1
 							else:
@@ -2047,7 +2087,7 @@ class object(content):
 							self.parent.part_create(self.parent.get_elem('SEL_part').result()[0],mpoint,size,fstype,type,flag,format)
 						elif self.operation is 'edit': # Speichern
 							part=dev[2]
-							mpoint=self.get_elem('INP_mpoint').result()
+							mpoint=self.get_elem('INP_mpoint').result().strip()
 							fstype=self.get_elem('SEL_fstype').result()[0]
 							flag=[]
 							if self.get_elem('CB_bootable').result():
@@ -2074,8 +2114,27 @@ class object(content):
 
 							self.parent.container['disk'][path]['partitions'][part]['flag']=flag
 
-							if self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype and not self.get_elem('CB_format').result():
-								self.sub=self.parent.no_format(self, self.pos_y+4, self.pos_x+1, self.width-2, self.height-8, 0, path, part)
+							rootfs = (mpoint == '/')
+							# if format is not set and mpoint == '/' OR
+							#    format is not set and fstype changed
+							if ( self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype or rootfs) and not self.get_elem('CB_format').result():
+								if rootfs:
+									msglist = [ _('This partition is designated as root filesystem,'),
+												_('but "format" is not selected. This can cause'),
+												_('problems with preexisting data on disk!'),
+												'',
+												_('Do you want to format this partition?')
+												]
+								else:
+									msglist = [ _('The selected filesystem takes no'),
+												_('effect, if "format" is not selected.'),
+												'',
+												_('Do you want to format this partition?')
+												]
+
+								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+													  msglist=msglist, callback_yes=self.no_format_callback_part_edit,
+													  callback_no=self.no_format_callback_part_edit, default='no', path=path, part=part )
 								self.sub.draw()
 								return 1
 							else:
@@ -2084,8 +2143,7 @@ class object(content):
 									self.parent.container['disk'][path]['partitions'][part]['format']=1
 								else:
 									self.parent.container['disk'][path]['partitions'][part]['format']=0
-
-							self.parent.container['disk'][path]['partitions'][part]['fstype']=fstype
+								self.parent.container['disk'][path]['partitions'][part]['fstype']=fstype
 						self.parent.container['disk'][path]=self.parent.rebuild_table(disk,path)
 
 						self.parent.layout()
@@ -2270,21 +2328,33 @@ class object(content):
 
 		class edit_lvm_lv(subwin):
 			def __init__(self,parent,pos_x,pos_y,width,heigth):
+				self.close_on_subwin_exit = False
 				subwin.__init__(self,parent,pos_x,pos_y,width,heigth)
 
 			def helptext(self):
 				return self.parent.helptext()
 
+			def no_format_callback(self, result, lv):
+				if result == 'BT_YES':
+					format=1
+				else:
+					format=0
+				lv['format'] = format
+				return result
+
 			def input(self, key):
-				type, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
+				parttype, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 
 				if hasattr(self,"sub"):
-					if not self.sub.input(key):
-						self.sub.exit()
-					self.draw()
-					# do not close local window - only msg_win is displayed as subwin
+					res = self.sub.input(key)
+					if not res:
+						if not self.sub.incomplete():
+							self.sub.exit()
+							self.draw()
+							if self.close_on_subwin_exit:
+								return 0
 					return 1
-				if key == 260 and self.get_elem('BT_save').active:
+				elif key == 260 and self.get_elem('BT_save').active:
 					#move left
 					self.get_elem('BT_save').set_off()
 					self.get_elem('BT_cancel').set_on()
@@ -2308,7 +2378,7 @@ class object(content):
 							# get values
 
 							lvname = self.get_elem('INP_name').result()
-							mpoint = self.get_elem('INP_mpoint').result()
+							mpoint = self.get_elem('INP_mpoint').result().strip()
 							if self.get_elem('INP_size').result().isdigit():
 								size = float(self.get_elem('INP_size').result())
 							else:
@@ -2334,7 +2404,7 @@ class object(content):
 								self.current=self.get_elem_id('INP_name')
 								self.get_elem_by_id(self.current).set_on()
 
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
+								self.sub = msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 
@@ -2344,7 +2414,7 @@ class object(content):
 								self.get_elem_by_id(self.current).set_on()
 
 								msglist = [ _('Size contains non-digit characters!') ]
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
+								self.sub = msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 
@@ -2357,7 +2427,7 @@ class object(content):
 								self.get_elem_by_id(self.current).set_on()
 
 								msglist = [ _('Not enough free space on volume group!') ]
-								self.sub = self.parent.msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
+								self.sub = msg_win(self,self.pos_y+4,self.pos_x+1,self.width-2,7, msglist)
 								self.draw()
 								return 1
 							size = int(vg['PEsize'] * currentLE / 1024.0)
@@ -2387,13 +2457,55 @@ class object(content):
 							self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
 							self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
 
+							msglist = [ _('The selected filesystem takes no'),
+										_('effect, if format is not selected.'),
+										'',
+										_('Do you want to format this partition?') ]
+
+							if not format:
+								self.close_on_subwin_exit = True
+								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+													  msglist=msglist, callback_yes=self.no_format_callback,
+													  callback_no=self.no_format_callback, default='no', lv=vg['lv'][lvname] )
+								self.sub.draw()
+								return 1
+
 						elif self.operation is 'edit': # Speichern
 
 							# get and save values
 
-							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] = self.get_elem('INP_mpoint').result()
+							oldfstype = self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype']
+							fstype = self.get_elem('SEL_fstype').result()[0]
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] = self.get_elem('INP_mpoint').result().strip()
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['format'] = self.get_elem('CB_format').result()
-							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype'] = self.get_elem('SEL_fstype').result()[0]
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype'] = fstype
+
+							rootfs = (self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] == '/')
+							# if format is not set and mpoint == '/' OR
+							#    format is not set and fstype changed
+							if ( oldfstype != fstype or rootfs) and not self.get_elem('CB_format').result():
+								if rootfs:
+									msglist = [ _('This volume is designated as root filesystem,'),
+												_('but "format" is not selected. This can cause'),
+												_('problems with preexisting data on disk!'),
+												'',
+												_('Do you want to format this partition?')
+												]
+								else:
+									msglist = [ _('The selected filesystem takes no'),
+												_('effect, if "format" is not selected.'),
+												'',
+												_('Do you want to format this partition?')
+												]
+
+								self.close_on_subwin_exit = True
+								self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+1, self.width-2, 0,
+													  msglist=msglist, callback_yes=self.no_format_callback,
+													  callback_no=self.no_format_callback, default='no',
+													  lv=self.parent.container['lvm']['vg'][vgname]['lv'][lvname] )
+								self.sub.draw()
+								return 1
+
 
 						self.parent.layout()
 						self.parent.draw()
@@ -2412,10 +2524,10 @@ class object(content):
 				pass
 
 			def layout(self):
-				type, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
+				parttype, vgname, lvname = self.parent.part_objects[self.parent.get_elem('SEL_part').result()[0]]
 				self.operation=''
 
-				if type is 'lvm_vg_free':  # FREE SPACE ON VOLUME GROUP
+				if parttype is 'lvm_vg_free':  # FREE SPACE ON VOLUME GROUP
 					vg = self.parent.container['lvm']['vg'][ vgname ]
 					maxsize = (vg['PEsize'] * vg['freePE'] / 1024)
 
@@ -2460,7 +2572,7 @@ class object(content):
 
 					self.current=self.get_elem_id('INP_name')
 					self.get_elem_by_id(self.current).set_on()
-				elif type is 'lvm_lv':  # EXISTING LOGICAL VOLUME
+				elif parttype is 'lvm_lv':  # EXISTING LOGICAL VOLUME
 					lv = self.parent.container['lvm']['vg'][ vgname ]['lv'][ lvname ]
 					self.operation='edit'
 					self.add_elem('TXT_0', textline(_('LVM Logical Volume: %s') % lvname,self.pos_y+2,self.pos_x+5))#0
@@ -2578,92 +2690,6 @@ class object(content):
 			def get_result(self):
 				pass
 
-		class no_format(subwin):
-			def __init__(self,parent,pos_y,pos_x,width,height, part_create=1,path=0,part=0):
-				self.part_create=part_create
-				self.path=path
-				self.part=part
-				subwin.__init__(self,parent,pos_y,pos_x,width,height)
-
-			def input(self, key):
-				if key in [ 10, 32 ]:
-					if self.part_create:
-						selected=self.parent.parent.container['temp']['selected']
-						mpoint=self.parent.parent.container['temp']['mpoint']
-						size=self.parent.parent.container['temp']['size']
-						fstype=self.parent.parent.container['temp']['fstype']
-						type=self.parent.parent.container['temp']['type']
-						flag=self.parent.parent.container['temp']['flag']
-						self.parent.parent.container['temp']={}
-						if self.elements[3].get_status():
-							format=1
-							self.parent.parent.part_create(selected,mpoint,size,fstype,type,flag,format)
-							return 0
-						elif self.elements[4].get_status():
-							format=0
-							self.parent.parent.part_create(selected,mpoint,size,fstype,type,flag,format)
-							return 0
-					else:
-						fstype=self.parent.parent.container['temp']['fstype']
-						self.parent.parent.container['temp']={}
-						if self.elements[3].get_status():
-							format=1
-						elif self.elements[4].get_status():
-							format=0
-						self.parent.parent.container['disk'][self.path]['partitions'][self.part]['format']=format
-						self.parent.parent.container['disk'][self.path]['partitions'][self.part]['fstype']=fstype
-						return 0
-				elif key == 260 and self.elements[4].active:
-					#move left
-					self.elements[4].set_off()
-					self.elements[3].set_on()
-					self.current=3
-					self.draw()
-				elif key == 261 and self.elements[3].active:
-					#move right
-					self.elements[3].set_off()
-					self.elements[4].set_on()
-					self.current=4
-					self.draw()
-				return 1
-
-			def layout(self):
-				message=_('The select filesystem takes no effect,')
-				self.elements.append(textline(message,self.pos_y+2,self.pos_x+2)) #0
-				message=_('if format is not selected.')
-				self.elements.append(textline(message,self.pos_y+3,self.pos_x+2)) #1
-				message=_('Do you want to format this partition')
-				self.elements.append(textline(message,self.pos_y+5,self.pos_x+2)) #2
-
-				self.elements.append(button(_("Yes"),self.pos_y+8,self.pos_x+5,15)) #3
-				self.elements.append(button(_("No"),self.pos_y+8,self.pos_x+35,15)) #4
-				self.current=4
-				self.elements[4].set_on()
-
-			def get_result(self):
-				pass
-
-
-		class warning_lvm1(subwin):
-			def input(self, key):
-				if key in [ 10, 32 ]:
-					if self.elements[3].get_status(): #Ok
-						return self._ok()
-				return 1
-
-			def layout(self):
-				message=_('LVM1 volumes detected. To use LVM1 volumes all')
-				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
-				message=_('existing LVM1 snapshots have to be removed!')
-				self.elements.append(textline(message,self.pos_y+3,self.pos_x+(self.width/2),align="middle")) #1
-				message=_('Otherwise kernel is unable to mount them!')
-				self.elements.append(textline(message,self.pos_y+4,self.pos_x+(self.width/2),align="middle")) #2
-
-				self.elements.append(button(_("Ok"),self.pos_y+6,self.pos_x+(self.width/2)-7,15)) #3
-				self.current=3
-				self.elements[3].set_on()
-			def _ok(self):
-				return 0
 
 		class ask_lvm_enable(subwin):
 			def input(self, key):
@@ -2810,32 +2836,6 @@ class object(content):
 				self.parent.write_devices()
 				return 0
 
-		class msg_win(subwin):
-			def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], callback=None):
-				self.msglist = msglist
-				self.callback = callback
-				subwin.__init__(self,parent,pos_y,pos_x,width,height)
-
-			def input(self, key):
-				if key in [ 10, 32 ]:
-					return self._ok()
-				return 1
-
-			def layout(self):
-				y = 2
-				for msg in self.msglist:
-					self.elements.append(textline(msg,self.pos_y+y,self.pos_x+(self.width/2),align="middle"))
-					y+=1
-				y+=1
-
-				self.elements.append(button(_("Ok"),self.pos_y+y,self.pos_x+(self.width/2),15,align="middle"))
-				self.current=len(self.elements)-1
-				self.elements[self.current].set_on()
-
-			def _ok(self):
-				if self.callback != None:
-					self.callback()
-				return 0
 
 		class wrong_rootfs(subwin):
 			def layout(self):
