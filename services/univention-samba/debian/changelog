@@ -1,6 +1,6 @@
-univention-samba (1.0.3-1) unstable; urgency=low
+univention-samba (1.0.3-2) unstable; urgency=low
 
-  * added baseconfig variable samba/ldapsam
+  * added baseconfig variable samba/generate_smbpasswd
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 22 Jun 2007 08:15:06 +0200
 
