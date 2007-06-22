@@ -133,9 +133,9 @@ set | egrep "^(dev|lvm)_" | while read line; do
 		continue
 	fi
 	if [ "`echo $name | cut -b1-4`" = "lvm_" ] ; then
-		disk_num=`echo $var | awk '{print $1}'`
-		disk_name="$disk_num"
-		disk="$disk_num"
+		device_num=`echo $var | awk '{print $1}'`
+		disk_name="$device_num"
+		disk="$device_num"
 		var=`echo $var | cut -d' ' -f2-`
 	else
 		disk_name=`get_device_disk $name`

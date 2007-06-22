@@ -867,28 +867,29 @@ class object(content):
 			partitions.append( disk )
 			for part in self.container['disk'][disk]['partitions']:
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
-					mpoint=self.container['disk'][disk]['partitions'][part]['mpoint']
-					if mpoint == '':
-						mpoint = 'None'
-					fstype=self.container['disk'][disk]['partitions'][part]['fstype']
-					if fstype == '':
-						fstype = 'None'
-					device = self.get_device(disk, part)
+					if self.container['disk'][disk]['partitions'][part]['fstype'][0:3] != 'LVM':
+						mpoint=self.container['disk'][disk]['partitions'][part]['mpoint']
+						if mpoint == '':
+							mpoint = 'None'
+						fstype=self.container['disk'][disk]['partitions'][part]['fstype']
+						if fstype == '':
+							fstype = 'None'
+						device = self.get_device(disk, part)
 
-					if mpoint == '/boot':
-						result[ 'boot_partition' ] = device
-					if mpoint == '/':
-						if not result.has_key( 'boot_partition' ):
+						if mpoint == '/boot':
 							result[ 'boot_partition' ] = device
+						if mpoint == '/':
+							if not result.has_key( 'boot_partition' ):
+								result[ 'boot_partition' ] = device
 
-					device_list.append(device)
-					format=self.container['disk'][disk]['partitions'][part]['format']
-					start=part
-					end=part+self.container['disk'][disk]['partitions'][part]['size']
-					type='only_mount'
-					if self.container['disk'][disk]['partitions'][part]['touched']:
-						type=self.container['disk'][disk]['partitions'][part]['type']
-					result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
+						device_list.append(device)
+						format=self.container['disk'][disk]['partitions'][part]['format']
+						start=part
+						end=part+self.container['disk'][disk]['partitions'][part]['size']
+						type='only_mount'
+						if self.container['disk'][disk]['partitions'][part]['touched']:
+							type=self.container['disk'][disk]['partitions'][part]['type']
+						result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
 		result[ 'disks' ] = string.join( partitions, ' ')
 		# append LVM if enabled
 		i=0
@@ -906,10 +907,10 @@ class object(content):
 				i += 1
 
 				if mpoint == '/boot':
-					result[ 'boot_partition' ] = device
+					result[ 'boot_partition' ] = lv['dev']
 				if mpoint == '/':
 					if not result.has_key( 'boot_partition' ):
-						result[ 'boot_partition' ] = device
+						result[ 'boot_partition' ] = lv['dev']
 
 				device_list.append(device)
 				format = lv['format']
@@ -1938,7 +1939,7 @@ class object(content):
 								elif fstype == 'linux-swap':
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
-									mkfs_cmd='/bin/true'
+									mkfs_cmd='/bin/true %s' % device
 								p=os.popen('%s 2>&1'%mkfs_cmd)
 								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
 								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
@@ -1958,7 +1959,7 @@ class object(content):
 								elif fstype == 'linux-swap':
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
-									mkfs_cmd='/bin/true'
+									mkfs_cmd='/bin/true %s' % device
 								p=os.popen('%s 2>&1'%mkfs_cmd)
 								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
 								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))

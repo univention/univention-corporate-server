@@ -1,4 +1,12 @@
-univention-installer (1.4.15-2) unstable; urgency=low
+univention-installer (1.4.17-1) unstable; urgency=low
+
+  * small LVM related fix in 02_disk_check.sh
+    (use correct mount point and device)
+  * do not pass through LVM PV devices to installer scripts
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 22 Jun 2007 16:07:41 +0200
+
+univention-installer (1.4.16-1) unstable; urgency=low
 
   * moved msg_win vom 12_partition to objects.py
   * added yes_no_win to objects.py
