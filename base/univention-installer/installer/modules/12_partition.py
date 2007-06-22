@@ -545,6 +545,24 @@ class object(content):
 			vg = item[1]
 			pesize = self.container['lvm']['vg'][ vg ]['PEsize']
 			lvname = item[0].split('/')[-1]
+
+			p = os.popen('/bin/file -Ls %s' % item[0])
+			data = p.read()
+			p.close()
+			fstype=''
+			if 'SGI XFS filesystem data' in data:
+				fstype = 'xfs'
+			elif 'ext2 filesystem data' in data:
+				fstype = 'ext2'
+			elif 'ext3 filesystem data' in data:
+				fstype = 'ext3'
+			elif 'swap file' in data and 'Linux' in data:
+				fstype = 'linux-swap'
+			elif 'FAT (16 bit)' in data:
+				fstype = 'fat16'
+			elif 'FAT (32 bit)' in data:
+				fstype = 'fat32'
+
 			self.container['lvm']['vg'][ item[1] ]['lv'][ lvname ] = {  'dev': item[0],
 																		'vg': item[1],
 																		'touched': 0,
@@ -552,7 +570,7 @@ class object(content):
 																		'currentLE': int(item[7]),
 																		'format': 0,
 																		'size': int(item[7])*int(pesize)/1024.0,
-																		'fstype': '',
+																		'fstype': fstype,
 																		'flag': '',
 																		'mpoint': '',
 																		}

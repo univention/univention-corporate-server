@@ -1,8 +1,14 @@
+univention-installer (1.4.15-1) unstable; urgency=low
+
+  * added filesystem detection for LVM LV
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 22 Jun 2007 10:31:30 +0200
+
 univention-installer (1.4.14-1) unstable; urgency=low
 
   * display name proposal while creating LVM LV
 
- -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 17:02:13 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 17:02:13 +0200
 
 univention-installer (1.4.13-1) unstable; urgency=low
 
@@ -15,7 +21,7 @@ univention-installer (1.4.12-1) unstable; urgency=low
 
   * disable swap on LVM LV
 
- -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 12:47:57 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 21 Jun 2007 12:47:57 +0200
 
 univention-installer (1.4.11-1) unstable; urgency=low
 
