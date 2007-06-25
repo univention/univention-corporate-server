@@ -1,3 +1,9 @@
+univention-grub (1.0.9-1) unstable; urgency=low
+
+  * determine correct groot device
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 25 Jun 2007 17:22:51 +0200
+
 univention-grub (1.0.8-1) unstable; urgency=low
 
   * some menu.lst conffile fixes
