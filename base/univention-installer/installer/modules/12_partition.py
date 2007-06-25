@@ -861,7 +861,7 @@ class object(content):
 
 	def result(self):
 		result={}
-		device_list=[]
+		tmpresult = []
 		partitions = []
 		for disk in self.container['disk']:
 			partitions.append( disk )
@@ -882,17 +882,16 @@ class object(content):
 							if not result.has_key( 'boot_partition' ):
 								result[ 'boot_partition' ] = device
 
-						device_list.append(device)
 						format=self.container['disk'][disk]['partitions'][part]['format']
 						start=part
 						end=part+self.container['disk'][disk]['partitions'][part]['size']
 						type='only_mount'
 						if self.container['disk'][disk]['partitions'][part]['touched']:
 							type=self.container['disk'][disk]['partitions'][part]['type']
-						result[device] = "%s %s %s %sM %sM %s" % (type,format,fstype,start,end,mpoint)
+						tmpresult.append( ("PHY", device, type, format, fstype, start, end, mpoint) )
 		result[ 'disks' ] = string.join( partitions, ' ')
+
 		# append LVM if enabled
-		i=0
 		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
 			vg = self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ]
 			for lvname in vg['lv'].keys():
@@ -903,8 +902,6 @@ class object(content):
 				fstype = lv['fstype']
 				if not fstype:
 					fstype = 'None'
-				device = 'lvm_%d' % i
-				i += 1
 
 				if mpoint == '/boot':
 					result[ 'boot_partition' ] = lv['dev']
@@ -912,12 +909,17 @@ class object(content):
 					if not result.has_key( 'boot_partition' ):
 						result[ 'boot_partition' ] = lv['dev']
 
-				device_list.append(device)
 				format = lv['format']
 				start = 0
 				end = lv['size']
 				type='only_mount'
-				result[device] = "%s %s %s %s %sM %sM %s" % (lv['dev'],type,format,fstype,start,end,mpoint)
+				tmpresult.append( ("LVM", lv['dev'], type, format, fstype, start, end, mpoint) )
+		# sort partitions by mountpoint
+		i = 0
+		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
+		for (parttype, device, type, format, fstype, start, end, mpoint) in tmpresult:
+			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s" % (parttype, device, type, format, fstype, start, end, mpoint)
+			i += 1
 		return result
 
 	class partition(subwin):

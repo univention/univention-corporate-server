@@ -34,25 +34,25 @@ echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "
 
 # Mount /xxx partitions
-set | egrep "^(dev|lvm)_" | while read line; do
+set | egrep "^dev_" | while read line; do
 	name=`echo $line | sed -e 's|=.*||'`
 	var=`echo $line | sed -e 's|.*=.||;s|"||g' | sed -e "s|'||g"`
 	if [ "$name" = "devices" ]; then
 		continue
 	fi
-	if [ "`echo $name | cut -b1-4`" = "lvm_" ] ; then
-		# first argument is lvm device name
-		device_name=`echo $var | awk '{print $1}'`
-		var=`echo $var | cut -d' ' -f2-`
+	# dev_%d = "parttype device type format fstype start end mpoint"
+	if [ "`echo $var | cut -d' ' -f1`" = "LVM" ] ; then
+		device_name=`echo $var | awk '{print $2}'`
 	else
+		name=`echo $var | awk '{print $2}'`
 		device_name=`echo /$name| sed -e 's|_|/|g;s|dev_||g'`
 	fi
-	device_type=`echo $var	| awk '{print $1}'`
-	device_format=`echo $var| awk '{print $2}'`
-	device_fs=`echo $var	| awk '{print $3}'`
-	device_start=`echo $var	| awk '{print $4}'`
-	device_end=`echo $var	| awk '{print $5}'`
-	device_mp=`echo $var	| awk '{print $6}'`
+	device_type=`echo $var | awk '{print $3}'`
+ 	device_format=`echo $var | awk '{print $4}'`
+	device_fs=`echo $var | awk '{print $5}'`
+	device_start=`echo $var | awk '{print $6}'`
+	device_end=`echo $var | awk '{print $7}'`
+	device_mp=`echo $var | awk '{print $8}'`
 
 	if [ -n "$device_fs" ]; then
 		if [ "$device_fs" = "linux-swap" ]; then
@@ -69,15 +69,11 @@ set | egrep "^(dev|lvm)_" | while read line; do
 			continue;
 		elif [ "$device_mp" = 'None' -o "$device_mp" = "none" ]; then
 			continue;
-		elif [ "$device_mp" = "/boot" ]; then
-			mount -t $device_fs $device_name /instmnt/$device_mp
-			echo -n "$device_name " >>/instmnt/.log
-			echo -n "$device_name "
 		else
 			mkdir -p /instmnt/$device_mp
 			mount -t $device_fs $device_name /instmnt/$device_mp
-			echo -n "$device_name " >>/instmnt/.log
-			echo -n "$device_name "
+			echo -n "  $device_name ==> $device_mp" >>/instmnt/.log
+			echo -n "  $device_name ==> $device_mp "
 			if [ "$device_mp" = "/tmp" ]; then
 			    chmod 0777 /instmnt/$device_mp
 			    chmod +t /instmnt/$device_mp
