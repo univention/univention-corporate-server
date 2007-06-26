@@ -1,3 +1,9 @@
+univention-webui-style (1.0.2-8) unstable; urgency=low
+
+  * corrected dh_link problem
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 26 Jun 2007 15:19:46 +0200
+
 univention-webui-style (1.0.2-7) unstable; urgency=low
 
   * corrected name of templatefiles directory
