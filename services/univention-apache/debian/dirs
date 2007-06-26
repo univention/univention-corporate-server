@@ -1,5 +1,4 @@
 usr/sbin
 etc/univention/apache
 var/lib/univention-apache
-var/www/img
 usr/lib/univention-install/

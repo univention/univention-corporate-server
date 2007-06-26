@@ -16,37 +16,3 @@ Variables: php/memory/limit
 Type: file
 File: etc/default/apache2
 Variables: apache2/autostart
-
-Type: multifile
-Multifile: var/www/ucs-overview.html
-Variables: server/role
-Variables: ldap/master
-Variables: hostname
-
-Type: subfile
-Multifile: var/www/ucs-overview.html
-Subfile: var/www/ucs-overview.html.d/01ucs-overview.html
-Variables: server/role
-Variables: ldap/master
-Variables: hostname
-
-Type: subfile
-Multifile: var/www/ucs-overview.html
-Subfile: var/www/ucs-overview.html.d/99ucs-overview.html
-
-Type: multifile
-Multifile: var/www/ucs-overview-en.html
-Variables: server/role
-Variables: ldap/master
-Variables: hostname
-
-Type: subfile
-Multifile: var/www/ucs-overview-en.html
-Subfile: var/www/ucs-overview-en.html.d/01ucs-overview-en.html
-Variables: server/role
-Variables: ldap/master
-Variables: hostname
-
-Type: subfile
-Multifile: var/www/ucs-overview-en.html
-Subfile: var/www/ucs-overview-en.html.d/99ucs-overview-en.html

@@ -32,7 +32,7 @@ a2enmod auth_pam
 a2enmod unique_id
 
 univention-baseconfig set apache/loglevel?"warn"
-univention-baseconfig set apache/startsite?"ucs-overview.html"
+univention-baseconfig set apache/startsite?"ucs-overview/de.html"
 univention-baseconfig set mail/alias/webmaster?root
 
 eval $(univention-baseconfig shell)
