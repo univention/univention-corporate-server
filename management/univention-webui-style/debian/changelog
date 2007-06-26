@@ -1,3 +1,9 @@
+univention-webui-style (1.0.2-5) unstable; urgency=low
+
+  * added style andf files for ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 26 Jun 2007 09:05:05 +0200
+
 univention-webui-style (1.0.2-4) unstable; urgency=low
 
   * added svgz sources to new icons

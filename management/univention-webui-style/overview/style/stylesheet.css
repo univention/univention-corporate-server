@@ -401,6 +401,10 @@ td.tab_layout{
 padding:10px;
 }
 
+td.overview {
+padding: 10px 0 5px 10px;
+}
+
 td.bold,
 td.normal,
 td.note_layout,
@@ -1153,4 +1157,21 @@ td.umc_list_element_part_right {
         padding-bottom: 6px;
         vertical-align: middle;
         white-space: normal;
+}
+
+#tools_overview  {
+        position:absolute;
+        top: 120px;
+        left: 895px;
+        width: 170px;
+        height: 120px;
+        z-index: 10;
+        }
+
+#welcome_overview  {
+        text-align: center;
+        font-size: 21px;
+        font-weight: bold;
+        color: #000000;
+        margin: 10px 0 10px 0;
 }
