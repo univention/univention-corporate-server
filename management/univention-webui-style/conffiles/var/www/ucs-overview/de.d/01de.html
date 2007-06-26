@@ -1,0 +1,84 @@
+<!--
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/var/www/ucs-overview/de.html.d/
+#
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<title>Univention Server</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link rel="SHORTCUT ICON" href="../icon/about.png" />
+<link rel="stylesheet" href="../style/stylesheet.css" type="text/css" />
+</head>
+<body>
+<table class="global" cellpadding="0" cellspacing="0">
+<tbody>
+<tr class="global_head">
+<td class="global_head_spacer" colspan="4"></td>
+</tr>
+<tr class="global_head">
+<td height="33"><img src="../style/logo_univention.gif" alt="Univention" border="0" height="33" width="180" /></td>
+<td height="33" width="15"></td>
+<td height="33" width="100"></td>
+<td width="722"></td>
+</tr>
+<tr>
+<td colspan="4">
+<table class="global_menu" cellpadding="0" cellspacing="0" width="98%">
+<tbody>
+<tr class="global_menu">
+<td class="global_menu_slogan" ><img src="../style/slogan_whitebg.gif" alt="linux for your business" border="0"height="29" width="180" /></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+<div id="tools_overview">
+<form name="jump" action="GO"><select name="menu" onchange="location=document.jump.menu.options[document.jump.menu.selectedIndex].value;"value="GO">
+<option selected value="de.html">deutsch</option>
+<option value="en.html">english</option>
+</select></form>
+</div>
+@!@
+rolesdict = {"domaincontroller_master":"Dom&auml;nencontroller Master","domaincontroller_backup":"Dom&auml;nencontroller Backup","domaincontroller_slave":"Dom&auml;nencontroller Slave","memberserver":"Memberserver","managed_client":"Managed Client","mobile_client":"Mobile Client"}
+role = rolesdict["@%@server/role@%@"]
+print'<div id="welcome_overview">Willkommen auf dem', role , '@%@hostname@%@</div>'
+print'<img src="../icon/blank.gif" alt="" />'
+print'<table class="tab_on" summary="" border="0" cellpadding="0"cellspacing="0">'
+print'<tr class="notebook_on">'
+print'<td class="notebook_on">'
+print'<table class="tab_on" border="0" cellpadding="0" cellspacing="0">'
+print'<tr>'
+print'<td class="tab_on" nowrap>'
+print'<table>'
+print'<tr>'
+print'<td><a class="notebook_on">&Uuml;berblick</a></td>'
+print'</tr>'
+print'</table>'
+print'</td>'
+print'<td class="tab"><img src="../style/reiter_rot18x24.gif" alt="" /></td>'
+print'</tr>'
+print'<tr>'
+print'<td class="notebook_spacer"></td>'
+print'</tr>'
+print'</table>'
+print'<table class="content_main_menuless">'
+if not role == "Dom&auml;nencontroller Master" :
+	print'<tr>'
+	print'<td class="overview"><a href="http://@%@ldap/master@%@"><img src="../icon/about.png" alt="" border="0" /></a></td>'
+	print'<td class="overview"><a href="http://@%@ldap/master@%@">@%@ldap/master@%@</a></td>'
+	print'<td class="overview">Der Dom&auml;nencontroller Master ihrer Univention Corporate Server Dom&auml;ne</td>'
+	print'</tr>'
+	print'<tr>'
+	print'<td></td>'
+	print'</tr>'
+@!@

@@ -44,6 +44,7 @@ clean:
 	dh_testroot
 	rm -f build-stamp configure-stamp
 	rm -rf ${D}
+	rm -rf ${D}-base
 	dh_clean
 
 install: build
@@ -61,7 +62,8 @@ install: build
 	install -m644 overview/style/*.* $(D)-base/usr/share/univention-webui-style/style/
 
 	find ${D} -name CVS | xargs rm -rf
-
+	
+	univention-install-baseconfig
 
 binary-arch: build install
 
