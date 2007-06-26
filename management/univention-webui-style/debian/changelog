@@ -1,3 +1,9 @@
+univention-webui-style (1.0.2-7) unstable; urgency=low
+
+  * corrected name of templatefiles directory
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 26 Jun 2007 10:51:24 +0200
+
 univention-webui-style (1.0.2-6) unstable; urgency=low
 
   * added tempplate-files for ucs-overview
