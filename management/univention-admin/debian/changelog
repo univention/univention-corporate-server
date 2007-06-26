@@ -1,3 +1,9 @@
+univention-admin (3.2.3-5) unstable; urgency=low
+
+  *  corrected link to univention-admin for ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 26 Jun 2007 14:31:31 +0200
+
 univention-admin (3.2.3-4) unstable; urgency=low
 
   * new iconset
