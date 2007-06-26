@@ -851,7 +851,7 @@ class object(content):
 		return 0
 
 	def get_device(self, disk, part):
-		device="dev_%s"%(disk.replace('/dev/', '').replace('/','_'))
+		device="/dev/%s" % disk.replace('/dev/', '').replace('//', '/')
 		regex = re.compile(".*c[0-9]d[0-9]*")
 		match = re.search(regex,disk)
 		if match: # got /dev/cciss/cXdXpX
@@ -1049,7 +1049,7 @@ class object(content):
 					if 'lvm' in part['flag']:
 						type=self.get_col('LVMPV',col3)
 
-						device="/%s"%self.parent.get_device(dev, part_list[i]).replace("_","/")
+						device = self.parent.get_device(dev, part_list[i])
 						# display corresponding vg of pv if available
 						if self.container['lvm'].has_key('pv') and self.container['lvm']['pv'].has_key( device ):
 							if self.container['lvm']['pv'][device]['vg']:
@@ -1654,7 +1654,7 @@ class object(content):
 			self.container['lvm']['vg'][ ucsvgname ]['size'] = (self.container['lvm']['vg'][ ucsvgname ]['totalPE'] *
 																self.container['lvm']['vg'][ ucsvgname ]['PEsize'] / 1024.0)
 			
-			device = "/%s" % self.parent.get_device(disk, part).replace("_","/")
+			device = self.parent.get_device(disk, part)
 #			self.container['history'].append('/sbin/pvscan')
 			self.container['history'].append('/sbin/pvcreate %s' % device)
 			if not self.container['lvm']['vg'][ ucsvgname ]['created']:
@@ -1932,7 +1932,7 @@ class object(content):
 					for disk in self.parent.container['disk'].keys():
 						for part in self.parent.container['disk'][disk]['partitions'].keys():
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
-								device="/%s"%self.parent.parent.get_device(disk, part).replace("_","/")
+								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
 								if fstype in ['ext2','ext3','vfat','msdos']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)

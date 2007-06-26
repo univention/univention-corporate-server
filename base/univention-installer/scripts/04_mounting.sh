@@ -41,12 +41,7 @@ set | egrep "^dev_" | while read line; do
 		continue
 	fi
 	# dev_%d = "parttype device type format fstype start end mpoint"
-	if [ "`echo $var | cut -d' ' -f1`" = "LVM" ] ; then
-		device_name=`echo $var | awk '{print $2}'`
-	else
-		name=`echo $var | awk '{print $2}'`
-		device_name=`echo /$name| sed -e 's|_|/|g;s|dev_||g'`
-	fi
+	device_name=`echo $var | awk '{print $2}'`
 	device_type=`echo $var | awk '{print $3}'`
  	device_format=`echo $var | awk '{print $4}'`
 	device_fs=`echo $var | awk '{print $5}'`
@@ -72,8 +67,8 @@ set | egrep "^dev_" | while read line; do
 		else
 			mkdir -p /instmnt/$device_mp
 			mount -t $device_fs $device_name /instmnt/$device_mp
-			echo -n "  $device_name ==> $device_mp" >>/instmnt/.log
-			echo -n "  $device_name ==> $device_mp "
+			echo -n "  $device_name ($device_mp) " >>/instmnt/.log
+			echo -n "  $device_name ($device_mp) "
 			if [ "$device_mp" = "/tmp" ]; then
 			    chmod 0777 /instmnt/$device_mp
 			    chmod +t /instmnt/$device_mp

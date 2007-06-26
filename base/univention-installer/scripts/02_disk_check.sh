@@ -132,17 +132,9 @@ set | egrep "^dev_" | while read line; do
 	if [ "$name" = "devices" ]; then
 		continue
 	fi
+
 	# dev_%d = "parttype device type format fstype start end mpoint"
-	if [ "`echo $var | cut -d' ' -f1`" = "LVM" ] ; then
-		device_num=`echo $var | awk '{print $2}'`
-		disk_name="$device_num"
-		disk="$device_num"
-	else
-		name=`echo $var | awk '{print $2}'`
-		disk_name=`get_device_disk $name`
-		disk="/dev/$disk_name"
-		device_num=`echo $name | sed -e 's|dev_|/dev/|g;s|_|/|g'`
-	fi
+	device_num=`echo $var | awk '{print $2}'`
 	device_type=`echo $var | awk '{print $3}'`
  	device_format=`echo $var | awk '{print $4}'`
 	device_fs=`echo $var | awk '{print $5}'`

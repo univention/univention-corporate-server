@@ -1,3 +1,11 @@
+univention-installer (1.4.19-1) unstable; urgency=low
+
+  * use consistent passthrough of device names from installer to installer
+    scripts
+  * switched default filesystem from xfs to ext3 by reordering fslist
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 26 Jun 2007 15:04:33 +0200
+
 univention-installer (1.4.18-1) unstable; urgency=low
 
   * create mountpoint for /boot before mounting it
