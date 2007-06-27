@@ -30,4 +30,8 @@
 
 #DEBHELPER#
 
-/usr/lib/univention-install/79univention-kde-ugsprofile.inst || true
+eval `univention-baseconfig shell server/role`
+
+if [ -n "$server_role" -a "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/79univention-kde-ugsprofile.inst || true
+fi
