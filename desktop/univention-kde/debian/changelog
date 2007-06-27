@@ -1,3 +1,9 @@
+univention-kde (2.0.1-10) unstable; urgency=low
+
+  * bump version
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 27 Jun 2007 15:00:13 +0200
+
 univention-kde (2.0.1-9) unstable; urgency=low
 
   * dont install .svn dirs in new desktop profiles
