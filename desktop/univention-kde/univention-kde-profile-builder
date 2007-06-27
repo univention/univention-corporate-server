@@ -220,8 +220,8 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	(cd profiles && find . ! -path "*CVS*" -type d -exec install  -d "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
-	(cd profiles && find . ! -path "*CVS*" -type f -exec install {} "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find . ! -path "*.svn*" -type d -exec install  -d "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/@@@pkgname@@@/usr/share/univention-kde-profiles/"{} \;)
 	install -m 0755 80univention-kde-profile_@@@profile_name@@@.inst debian/@@@pkgname@@@/usr/lib/univention-install/
 
 binary-arch: build install
