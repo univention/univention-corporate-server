@@ -52,8 +52,8 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	(cd profiles && find kde.ugs ! -path "*CVS*" -type d -exec install  -d "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
-	(cd profiles && find kde.ugs ! -path "*CVS*" -type f -exec install {} "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find kde.ugs ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find kde.ugs ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
 	install -d debian/univention-kde-ugsprofile/kde.ugs/.kde/share/config/kresources/kolab
 	install -m 0755 79univention-kde-ugsprofile.inst debian/univention-kde-ugsprofile/usr/lib/univention-install/
 	install -m 0755 ugs-kde-settings debian/univention-kde-ugsprofile/usr/bin/

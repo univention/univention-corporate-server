@@ -38,24 +38,17 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-if [ -z "`grep "univention-kde-ugsprofile successful" /usr/lib/univention-install/.index.txt`" ]; then
+test -n "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-	eval `univention-baseconfig shell ldap/base`
-	res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | grep "defaultKdeProfiles: /usr/share/univention-kde-profiles/kde.ugs" | sed -e 's|.*default|default|'`
+eval `univention-baseconfig shell ldap/base`
+res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | grep "defaultKdeProfiles: /usr/share/univention-kde-profiles/kde.ugs" | sed -e 's|.*default|default|'`
 
-	if [ -z "$res" ]; then
-		univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.ugs" >/dev/null 2>&1
-	fi
-
-	test -n "`grep "univention-kde-ugsprofile successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile successful" >>/usr/lib/univention-install/.index.txt
+if [ -z "$res" ]; then
+	univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.ugs" >/dev/null 2>&1
 fi
 
-if [ -z "`grep "univention-kde-ugsprofile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" ]; then
-	eval `univention-baseconfig shell ldap/base`
-
-	univention-admin policies/desktop create --position cn=desktop,cn=policies,$ldap_base --set name="UGS Deutsch" --set language="de_DE.UTF-8" --set profile="/usr/share/univention-kde-profiles/kde.ugs"
+univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base --set name="UGS Deutsch" --set language="de_DE@euro" --set profile="/usr/share/univention-kde-profiles/kde.ugs"
 	
-	test -n "`grep "univention-kde-ugsprofile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
-fi
+test -n "`grep "univention-kde-ugsprofile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
