@@ -1,3 +1,12 @@
+univention-kde (2.0.1-8) unstable; urgency=low
+
+  * Create desktop policies for default profiles:
+  * KDE restricted Deutsch
+  * KDE lockeddown Deutsch
+  * Run install script on dc-master and dc-backup only
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 25 Jun 2007 17:24:48 +0200
+
 univention-kde (2.0.1-7) unstable; urgency=low
 
   * utf-8 encoding

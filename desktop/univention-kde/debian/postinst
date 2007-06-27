@@ -33,8 +33,11 @@
 rm -f /usr/share/apps/kdesktop/DesktopLinks/debian.desktop
 rm -f /etc/kde3/debian/debian.desktop
 
+eval `univention-baseconfig shell server/role`
 
-/usr/lib/univention-install/78univention-kde.inst || true
+if [ -n "$server_role" -a "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/78univention-kde.inst || true
+fi
 
 univention-baseconfig set auth/kdeprofile?true
 univention-baseconfig set "hal/devices/group?Domain Users"

@@ -28,6 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+# Install script version
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,16 +38,24 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-kde successful" /usr/lib/univention-install/.index.txt`" && exit 1
+if [ -z "`grep "univention-kde successful" /usr/lib/univention-install/.index.txt`" ]; then
+	eval `univention-baseconfig shell ldap/base`
+	res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | sed -e 's|.*default|default|'`
 
-eval `univention-baseconfig shell`
+	if [ -z "$res" -o "$res" = "defaultKdeProfiles: None" ]; then
+		univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --set name=default --set defaultKdeProfiles="none" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" >/dev/null 2>&1
+	fi
 
-res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | sed -e 's|.*default|default|'`
-
-if [ -z "$res" -o "$res" = "defaultKdeProfiles: None" ]; then
-	univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --set name=default --set defaultKdeProfiles="none" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" >/dev/null 2>&1
+	test -n "`grep "univention-kde successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde successful" >>/usr/lib/univention-install/.index.txt
 fi
 
-test -n "`grep "univention-kde successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde successful" >>/usr/lib/univention-install/.index.txt
+if [ -z "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" ]; then
+	eval `univention-baseconfig shell ldap/base`
+
+	univention-admin policies/desktop create --position cn=desktop,cn=policies,$ldap_base --set name="KDE lockeddown Deutsch" --set language="de_DE.UTF-8" --set profile="/usr/share/univention-kde-profiles/kde.lockeddown"
+	univention-admin policies/desktop create --position cn=desktop,cn=policies,$ldap_base --set name="KDE restricted Deutsch" --set language="de_DE.UTF-8" --set profile="/usr/share/univention-kde-profiles/kde.restricted"
+	
+	test -n "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+fi
 
 exit 0
