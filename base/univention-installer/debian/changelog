@@ -1,3 +1,11 @@
+univention-installer (1.5.1-2) unstable; urgency=low
+
+  * Added auto-partition feature
+  * activate "format" by default while creating a new LVM LV
+  * improved support for grub
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 27 Jun 2007 13:25:55 +0200
+
 univention-installer (1.4.19-1) unstable; urgency=low
 
   * use consistent passthrough of device names from installer to installer

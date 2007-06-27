@@ -67,8 +67,8 @@ set | egrep "^dev_" | while read line; do
 		else
 			mkdir -p /instmnt/$device_mp
 			mount -t $device_fs $device_name /instmnt/$device_mp
-			echo -n "  $device_name ($device_mp) " >>/instmnt/.log
-			echo -n "  $device_name ($device_mp) "
+			echo -n "  $device_name ($device_mp)" >>/instmnt/.log
+			echo -n "  $device_name ($device_mp)"
 			if [ "$device_mp" = "/tmp" ]; then
 			    chmod 0777 /instmnt/$device_mp
 			    chmod +t /instmnt/$device_mp

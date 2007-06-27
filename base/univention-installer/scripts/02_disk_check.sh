@@ -32,7 +32,28 @@
 
 architecture=`/bin/uname -m`
 
+# Usage: resolve_symlink file
+# Find the real file/device that file points at
+resolve_symlink () {
+	tmp_fname=$1
+	# Resolve symlinks
+	while test -L $tmp_fname; do
+		tmp_new_fname=`ls -al $tmp_fname | sed -n 's%.*-> \(.*\)%\1%p'`
+		if test -z "$tmp_new_fname"; then
+			echo "Unrecognized ls output" 2>&1
+			exit 1
+		fi
 
+		# Convert relative symlinks
+		case $tmp_new_fname in
+			/*) tmp_fname="$tmp_new_fname"
+			;;
+			*) tmp_fname="`echo $tmp_fname | sed 's%/[^/]*$%%'`/$tmp_new_fname"
+			;;
+		esac
+	done
+	echo "$tmp_fname"
+}
 
 get_device_disk ()
 {
@@ -142,6 +163,9 @@ set | egrep "^dev_" | while read line; do
 	device_end=`echo $var | awk '{print $7}'`
 	device_mp=`echo $var | awk '{print $8}'`
 
+	if [ "`echo $var | awk '{print $1}'`" = "LVM" ] ; then
+		device_num=`resolve_symlink $device_num`
+	fi
 
 	echo "device_type=$device_type"
 	echo "device_format=$device_format"

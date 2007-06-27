@@ -218,6 +218,7 @@ class object(content):
 		self.container['history']=[]
 		self.container['temp']={}
 		self.container['selected']=1
+		self.container['autopartition'] = None
 		self.container['lvm'] = {}
 		self.container['lvm']['enabled'] = None
 		self.container['lvm']['lvm1available'] = False
@@ -949,6 +950,169 @@ class object(content):
 																						  'lv': {}
 																						  }
 
+		def auto_partitioning(self, result):
+			self.container['autopartition'] = True
+			self.parent.debug('AUTO PARTITIONIERUNG')
+
+			# remove all LVM LVs
+			for vgname,vg in self.container['lvm']['vg'].items():
+				for lvname, lv in vg['lv'].items():
+					self.parent.debug('deleting LVM LV: %s' % lvname)
+					self.part_delete_generic( 'lvm_lv', vgname, lvname )
+
+			# reduce all LVM VGs
+			for vgname,vg in self.container['lvm']['vg'].items():
+				self.parent.debug('reducing LVM VG: %s' % vgname)
+				self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
+				self.container['history'].append('/sbin/vgreduce -a %s' % vgname)
+				self.container['history'].append('/sbin/vgremove %s' % vgname)
+
+			# remove all logical partitions, next all extended partitions and finally all primary partitions
+			for parttype in [ PARTTYPE_LOGICAL, PARTTYPE_EXTENDED, PARTTYPE_PRIMARY ]:
+				for diskname, disk in self.container['disk'].items():
+					for partname, part in disk['partitions'].items():
+						if part['type'] == parttype:
+							self.parent.debug('deleting part: %s on %s' % (partname, diskname))
+							self.part_delete_generic( 'part', diskname, partname, force=True )
+
+			# remove internal data avout LVM VGs and LVM PGs
+			for vgname,vg in self.container['lvm']['vg'].items():
+				self.parent.debug('removing LVM VG: %s' % vgname)
+				del self.container['lvm']['vg'][vgname]
+			self.container['lvm']['pv'] = {}
+
+			self.parent.debug("HISTORY")
+			for h in self.container['history']:
+				self.parent.debug('==> %s' % h)
+
+			# reactivate LVM
+			self.set_lvm(True)
+
+			# get disk list
+			disklist = self.container['disk'].keys()
+			disklist.sort()
+
+			# get system memory
+			p = os.popen('free')
+			data = p.read()
+			p.close()
+			regex = re.compile('Mem:\s+(\d+)\s+')
+			sysmem = -1
+			for line in data.splitlines():
+				match = regex.match(line)
+				if match:
+					sysmem = int(match.group(1)) / 1024
+			self.parent.debug('AUTOPART: sysmem=%s' % sysmem)
+
+			# create primary partition on first harddisk for /boot
+			partsize = 96
+			targetdisk = None
+			targetpart = None
+			for disk in disklist:
+				for part in self.container['disk'][disk]['partitions'].keys():
+					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY ]:
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > partsize:
+							targetdisk = disk
+							targetpart = part
+					if targetdisk:
+						break
+				if targetdisk:
+					break
+			if targetdisk:
+				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
+				self.part_create_generic(targetdisk, targetpart, '/boot', partsize, 'ext3', PARTTYPE_PRIMARY, [], 1)
+			else:
+				msglist = [ _('Not enough disk space found for /boot!'),
+							_('Auto-partitioning aborted.') ]
+				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.draw()
+				return
+
+			# determine size of free space areas
+			freespacelist = []
+			freespacemax = 0.0
+			freespacesum = 0.0
+			for disk in self.container['disk'].keys():
+				for part in self.container['disk'][disk]['partitions'].keys():
+					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY ]:
+						freespacelist.append( ( int(self.container['disk'][disk]['partitions'][part]['size']), disk, part ) )
+						freespacesum += int(self.container['disk'][disk]['partitions'][part]['size'])
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > freespacemax:
+							freespacemax = int(self.container['disk'][disk]['partitions'][part]['size'])
+			freespacelist.sort(lambda x,y: int(x[0]) < int(y[0]))
+			self.parent.debug('AUTOPART: freespacelist=%s' % freespacelist)
+			self.parent.debug('AUTOPART: freespacesum=%s' % freespacesum)
+			self.parent.debug('AUTOPART: freespacemax=%s' % freespacemax)
+
+			# create primary partition on first harddisk for /swap
+			minsystemsize = 4096   # minimum free space for system
+			minswapsize = 192      # minimum free space for swap partition
+			swapsize = 2 * sysmem  # default for swap partition
+			if swapsize > 2048:    # limit swap partition to 2GB
+				swapsize = 2048
+			if swapsize < minswapsize:
+				swapsize = minswapsize
+			if (freespacesum - minswapsize < minsystemsize) or (freespacemax < minswapsize):
+				self.parent.debug('AUTOPART: not enough disk space for swap (freespacesum=%s  freespacemax=%s  minswapsize=%s  minsystemsize=%s' %
+								  (freespacesum, freespacemax, minswapsize, minsystemsize))
+				msglist = [ _('Not enough disk space found!'),
+							_('Auto-partitioning aborted.') ]
+				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.draw()
+				return
+			while freespacesum - swapsize < minsystemsize:
+				swapsize -= 16
+				if swapsize < minswapsize:
+					swapsize = minswapsize
+
+			targetdisk = None
+			targetpart = None
+			for disk in disklist:
+				for part in self.container['disk'][disk]['partitions'].keys():
+					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY ]:
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > swapsize:
+							targetdisk = disk
+							targetpart = part
+					if targetdisk:
+						break
+				if targetdisk:
+					break
+			if targetdisk:
+				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
+				self.parent.debug('AUTOPART: create swap: disk=%s  part=%s  swapsize=%s' % (targetdisk, targetpart, swapsize))
+				self.part_create_generic(targetdisk, targetpart, '', swapsize, 'linux-swap', PARTTYPE_PRIMARY, [], 1)
+			else:
+				self.parent.debug('AUTOPART: no disk space for swap found')
+				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
+				msglist = [ _('Not enough disk space found for /boot!'),
+							_('Auto-partitioning aborted.') ]
+				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+				self.draw()
+				return
+
+			# create one LVM PV per free space range
+			parttype_mapping = { PARTTYPE_FREESPACE_PRIMARY: PARTTYPE_PRIMARY,
+								 PARTTYPE_FREESPACE_LOGICAL: PARTTYPE_LOGICAL }
+			for disk in disklist:
+				for part in self.container['disk'][disk]['partitions'].keys():
+					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY, PARTTYPE_FREESPACE_LOGICAL ]:
+						# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
+						size = self.container['disk'][disk]['partitions'][part]['size']
+						parttype = parttype_mapping[ self.container['disk'][disk]['partitions'][part]['type'] ]
+						self.part_create_generic(disk, part, '', size, '', parttype, ['lvm'], 0)
+
+			# create one LVM LV for /-filesystem
+			vgname = self.parent.container['lvm']['ucsvgname']
+			vg = self.parent.container['lvm']['vg'][ vgname ]
+			lvname = 'rootfs'
+			format = 1
+			fstype = 'ext3'
+			mpoint = '/'
+			flag = []
+			currentLE = vg['freePE']
+			self.lv_create(vgname, lvname, currentLE, format, fstype, flag, mpoint)
+
+
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
 			if not self.container['lvm']['lvmconfigread']:
@@ -956,6 +1120,15 @@ class object(content):
 				self.act = self.active(self,_('Detecting LVM devices'),_('Please wait ...'),name='act',action='read_lvm')
 				self.act.draw()
 				self.draw()
+
+			# ask for auto partitioning
+			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
+				msglist=[ _('Do you want to use auto-partitioning?') ]
+				self.container['autopartition'] = False
+				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
+				self.sub.draw()
+				self.draw()
+
 			# show warning if LVM1 volumes are detected
 			if self.container['lvm']['lvm1available'] and not self.container['lvm']['warnedlvm1'] and not hasattr(self,'sub'):
 				self.container['lvm']['warnedlvm1'] = True
@@ -964,16 +1137,19 @@ class object(content):
 							_('Otherwise kernel is unable to mount them!') ]
 				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
+
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
 				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
 				self.draw()
+
 			# if only one volume group os present, use it
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) == 1:
 				self.parent.debug('Enabling LVM - only one VG found - %s' % self.container['lvm']['vg'].keys() )
 				self.container['lvm']['ucsvgname'] = self.container['lvm']['vg'].keys()[0]
 				self.layout()
 				self.draw()
+
 			# if LVM is not automagically enabled then ask user if it should be enabled
 			if self.container['lvm']['enabled'] == None and not hasattr(self,'sub'):
 				self.sub = self.ask_lvm_enable(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
@@ -1402,21 +1578,24 @@ class object(content):
 					j+=1
 				i+=1
 
-		def pv_delete(self, index):
-			# returns True if pv has been deleted else False
-			result=self.part_objects[index]
-			disk = result[1]
+		def pv_delete(self, parttype, disk, part, force=False):
+			# returns False if pv has been deleted
+			# return True if pv cannot be deleted
 
-			if 'lvm' in result[0]:
+			forceflag=''
+			if force:
+				forceflag='-ff'
+
+			if 'lvm' in parttype:
 				return False
 
-			if self.container['lvm']['enabled'] and 'lvm' in self.container['disk'][disk]['partitions'][result[2]]['flag']:
-				device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num'])
+			if self.container['lvm']['enabled'] and 'lvm' in self.container['disk'][disk]['partitions'][part]['flag']:
+				device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][part]['num'])
 				if self.container['lvm']['pv'].has_key(device):
 					pv = self.container['lvm']['pv'][ device ]
 
 					# check if PV is empty
-					if pv['allocPE'] > 0:
+					if pv['allocPE'] > 0 and not force:
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!') ]
@@ -1437,70 +1616,84 @@ class object(content):
 												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							# reduce VG
 							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
-							self.container['history'].append('/sbin/pvremove %s' % device)
+							self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
 #							self.container['history'].append('/sbin/pvscan')
 #							self.container['history'].append('/sbin/vgscan')
 			return False
 
 		def part_delete(self,index):
 			result=self.part_objects[index]
-			disk = result[1]
+			arg_parttype = result[0]
+			arg_disk = result[1]
+			arg_part = None
+			if len(result) > 2:
+				arg_part = result[2]
 
-			if self.pv_delete(index):
+			self.part_delete_generic(arg_parttype, arg_disk, arg_part)
+
+			self.layout()
+			self.draw()
+
+
+		def part_delete_generic(self, arg_parttype, arg_disk, arg_part, force=False):
+
+			if self.pv_delete(arg_parttype, arg_disk, arg_part, force):
 				return
 
-			if result[0] == 'lvm_lv':
+			if arg_parttype == 'lvm_lv':
 				type = PARTTYPE_LVM_LV
 			else:
-				type=self.container['disk'][disk]['partitions'][result[2]]['type']
+				type=self.container['disk'][arg_disk]['partitions'][arg_part]['type']
+
 			if type == PARTTYPE_PRIMARY:
-				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
-				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
-				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
-				self.container['disk'][disk]['partitions'][result[2]]['format']=0
-				self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
-				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
-				self.container['disk'][disk]['primary']-=1
+				self.container['history'].append('/sbin/parted --script %s rm %s' % (arg_disk,self.container['disk'][arg_disk]['partitions'][arg_part]['num']))
+				self.container['disk'][arg_disk]['partitions'][arg_part]['type']=PARTTYPE_FREESPACE_PRIMARY
+				self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
+				self.container['disk'][arg_disk]['partitions'][arg_part]['format']=0
+				self.container['disk'][arg_disk]['partitions'][arg_part]['mpoint']=''
+				self.container['disk'][arg_disk]['partitions'][arg_part]['num']=-1
+				self.container['disk'][arg_disk]['primary']-=1
+
 			elif type == PARTTYPE_LOGICAL:
-				deleted=self.container['disk'][disk]['partitions'][result[2]]['num']
-				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
-				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_LOGICAL
-				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
-				self.container['disk'][disk]['partitions'][result[2]]['format']=0
-				self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
-				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
+				deleted=self.container['disk'][arg_disk]['partitions'][arg_part]['num']
+				self.container['history'].append('/sbin/parted --script %s rm %s' % (arg_disk,self.container['disk'][arg_disk]['partitions'][arg_part]['num']))
+				self.container['disk'][arg_disk]['partitions'][arg_part]['type']=PARTTYPE_FREESPACE_LOGICAL
+				self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
+				self.container['disk'][arg_disk]['partitions'][arg_part]['format']=0
+				self.container['disk'][arg_disk]['partitions'][arg_part]['mpoint']=''
+				self.container['disk'][arg_disk]['partitions'][arg_part]['num']=-1
 				count=0
-				for part in self.container['disk'][disk]['partitions'].keys():
-					if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
+				for part in self.container['disk'][arg_disk]['partitions'].keys():
+					if self.container['disk'][arg_disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
 						count += 1
-					if self.container['disk'][disk]['partitions'][part]['type'] is PARTTYPE_EXTENDED:
+					if self.container['disk'][arg_disk]['partitions'][part]['type'] is PARTTYPE_EXTENDED:
 						extended=part
 				if not count and extended: # empty extended
-					self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][extended]['num']))
-					self.container['disk'][disk]['extended']=0
-					self.container['disk'][disk]['primary']-=1
-					self.container['disk'][disk]['partitions'][extended]['type']=PARTTYPE_FREESPACE_PRIMARY
-					self.container['disk'][disk]['partitions'][extended]['touched']=1
-					self.container['disk'][disk]['partitions'][result[2]]['num']=-1
-				self.container['disk'][disk]['logical']-=1
-				self.container['disk'][disk] = self.renum_logical(self.container['disk'][disk],deleted)
-
+					self.container['history'].append('/sbin/parted --script %s rm %s' % (arg_disk,self.container['disk'][arg_disk]['partitions'][extended]['num']))
+					self.container['disk'][arg_disk]['extended']=0
+					self.container['disk'][arg_disk]['primary']-=1
+					self.container['disk'][arg_disk]['partitions'][extended]['type']=PARTTYPE_FREESPACE_PRIMARY
+					self.container['disk'][arg_disk]['partitions'][extended]['touched']=1
+					self.container['disk'][arg_disk]['partitions'][arg_part]['num']=-1
+				self.container['disk'][arg_disk]['logical']-=1
+				self.container['disk'][arg_disk] = self.renum_logical(self.container['disk'][arg_disk],deleted)
 
 			elif type == PARTTYPE_EXTENDED:
-				self.container['disk'][disk]['extended']=0
-				self.container['disk'][disk]['primary']-=1
-				self.container['disk'][disk]['partitions'][result[2]]['type']=PARTTYPE_FREESPACE_PRIMARY
-				self.container['disk'][disk]['partitions'][result[2]]['touched']=1
-				for part in self.container['disk'][disk]['partitions'].keys():
-					if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
-						self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][part]['num']))
-						self.container['disk'][disk]['partitions'][part]['type']=PARTTYPE_FREESPACE_LOGICAL
-						self.container['disk'][disk]['partitions'][part]['touched']=1
-						self.container['disk'][disk]['logical']-=1
-				self.container['history'].append('/sbin/parted --script %s rm %s' % (disk,self.container['disk'][disk]['partitions'][result[2]]['num']))
-				self.container['disk'][disk]['partitions'][result[2]]['num']=-1
+				self.container['disk'][arg_disk]['extended']=0
+				self.container['disk'][arg_disk]['primary']-=1
+				self.container['disk'][arg_disk]['partitions'][arg_part]['type']=PARTTYPE_FREESPACE_PRIMARY
+				self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
+				for part in self.container['disk'][arg_disk]['partitions'].keys():
+					if self.container['disk'][arg_disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
+						self.container['history'].append('/sbin/parted --script %s rm %s' % (arg_disk,self.container['disk'][arg_disk]['partitions'][part]['num']))
+						self.container['disk'][arg_disk]['partitions'][part]['type']=PARTTYPE_FREESPACE_LOGICAL
+						self.container['disk'][arg_disk]['partitions'][part]['touched']=1
+						self.container['disk'][arg_disk]['logical']-=1
+				self.container['history'].append('/sbin/parted --script %s rm %s' % (arg_disk,self.container['disk'][arg_disk]['partitions'][arg_part]['num']))
+				self.container['disk'][arg_disk]['partitions'][arg_part]['num']=-1
+
 			elif type == PARTTYPE_LVM_LV:
-				lv = self.container['lvm']['vg'][ result[1] ]['lv'][ result[2] ]
+				lv = self.container['lvm']['vg'][ arg_disk ]['lv'][ arg_part ]
 
 				self.parent.debug('removing LVM LV %s' % lv['dev'])
 				self.container['history'].append('/sbin/lvremove -f %s' % lv['dev'])
@@ -1510,114 +1703,115 @@ class object(content):
 				self.parent.container['lvm']['vg'][ lv['vg'] ]['freePE'] += currentLE
 				self.parent.container['lvm']['vg'][ lv['vg'] ]['allocPE'] -= currentLE
 
-				del self.container['lvm']['vg'][ result[1] ]['lv'][ result[2] ]
+				del self.container['lvm']['vg'][ arg_disk ]['lv'][ arg_part ]
 
 			if type == PARTTYPE_LOGICAL:
-				self.minimize_extended(disk)
+				self.minimize_extended(arg_disk)
 			if type != PARTTYPE_LVM_LV:
-				self.container['disk'][disk]=self.rebuild_table(self.container['disk'][disk],disk)
-			self.layout()
-			self.draw()
+				self.container['disk'][arg_disk]=self.rebuild_table(self.container['disk'][arg_disk],arg_disk)
 
 		def part_create(self,index,mpoint,size,fstype,type,flag,format,end=0):
 			result=self.part_objects[index]
-			disk = result[1]
-			part_list = self.container['disk'][disk]['partitions'].keys()
+			self.part_create_generic(result[1], result[2], mpoint, size, fstype, type, flag, format, end)
+
+
+		def part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
+			part_list = self.container['disk'][arg_disk]['partitions'].keys()
 			part_list.sort()
-			old_size=self.container['disk'][disk]['partitions'][result[2]]['size']
-			old_type=self.container['disk'][disk]['partitions'][result[2]]['type']
-			old_sectors=self.container['disk'][disk]['partitions'][result[2]]['size']
+			old_size=self.container['disk'][arg_disk]['partitions'][arg_part]['size']
+			old_type=self.container['disk'][arg_disk]['partitions'][arg_part]['type']
+			old_sectors=self.container['disk'][arg_disk]['partitions'][arg_part]['size']
 			new_sectors=size
 			if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL: #create new primary/logical disk
-				current=result[2]
+				current=arg_part
 				if type == PARTTYPE_LOGICAL: # need to modify/create extended
-					if not self.container['disk'][disk]['extended']: #create extended
+					if not self.container['disk'][arg_disk]['extended']: #create extended
 						size=new_sectors+float(0.01)
-						self.container['disk'][disk]['partitions'][result[2]]['size']=size
-						self.container['disk'][disk]['partitions'][result[2]]['touched']=1
-						self.container['disk'][disk]['partitions'][result[2]]['mpoint']=''
-						self.container['disk'][disk]['partitions'][result[2]]['fstype']=''
-						self.container['disk'][disk]['partitions'][result[2]]['flag']=[]
-						self.container['disk'][disk]['partitions'][result[2]]['format']=0
-						self.container['disk'][disk]['partitions'][result[2]]['type']=2
-						self.container['disk'][disk]['partitions'][result[2]]['num']=0
-						self.container['disk'][disk]['primary']+=1
-						self.container['disk'][disk]['extended']=1
+						self.container['disk'][arg_disk]['partitions'][arg_part]['size']=size
+						self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
+						self.container['disk'][arg_disk]['partitions'][arg_part]['mpoint']=''
+						self.container['disk'][arg_disk]['partitions'][arg_part]['fstype']=''
+						self.container['disk'][arg_disk]['partitions'][arg_part]['flag']=[]
+						self.container['disk'][arg_disk]['partitions'][arg_part]['format']=0
+						self.container['disk'][arg_disk]['partitions'][arg_part]['type']=PARTTYPE_EXTENDED
+						self.container['disk'][arg_disk]['partitions'][arg_part]['num']=0
+						self.container['disk'][arg_disk]['primary']+=1
+						self.container['disk'][arg_disk]['extended']=1
 						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
-														 (disk,
+														 (arg_disk,
 														  self.resolve_type(PARTTYPE_EXTENDED),
-														  self.parent.MiB2MB(result[2]),
-														  self.parent.MiB2MB(result[2]+size)))
+														  self.parent.MiB2MB(arg_part),
+														  self.parent.MiB2MB(arg_part+size)))
 						current += float(0.01)
 						size -= float(0.01)
 
 					else: # resize extended
-						for part in self.container['disk'][disk]['partitions'].keys():
-							if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
+						for part in self.container['disk'][arg_disk]['partitions'].keys():
+							if self.container['disk'][arg_disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
 								break #found extended leaving loop
-						if (part + self.container['disk'][disk]['partitions'][part]['size']) < result[2]+1:
-							self.container['disk'][disk]['partitions'][part]['size']+=new_sectors
-							self.container['disk'][disk]['partitions'][part]['touched']=1
+						if (part + self.container['disk'][arg_disk]['partitions'][part]['size']) < arg_part+1:
+							self.container['disk'][arg_disk]['partitions'][part]['size']+=new_sectors
+							self.container['disk'][arg_disk]['partitions'][part]['touched']=1
 							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
-															 (disk,
-															  self.container['disk'][disk]['partitions'][part]['num'],
+															 (arg_disk,
+															  self.container['disk'][arg_disk]['partitions'][part]['num'],
 															  self.parent.MiB2MB(part),
-															  self.parent.MiB2MB(part+self.container['disk'][disk]['partitions'][part]['size'])))
+															  self.parent.MiB2MB(part+self.container['disk'][arg_disk]['partitions'][part]['size'])))
 							size -= float(0.01)
-						elif part > result[2]:
-							self.container['disk'][disk]['partitions'][part]['size']+=(part-result[2])
-							self.container['disk'][disk]['partitions'][result[2]]=self.container['disk'][disk]['partitions'][part]
-							self.container['disk'][disk]['partitions'][result[2]]['touched']=1
-							self.container['disk'][disk]['partitions'].pop(part)
+						elif part > arg_part:
+							self.container['disk'][arg_disk]['partitions'][part]['size']+=(part-arg_part)
+							self.container['disk'][arg_disk]['partitions'][arg_part]=self.container['disk'][arg_disk]['partitions'][part]
+							self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
+							self.container['disk'][arg_disk]['partitions'].pop(part)
 							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
-															 (disk,
-															  self.container['disk'][disk]['partitions'][result[2]]['num'],
-															  self.parent.MiB2MB(result[2]),
-															  self.parent.MiB2MB(result[2]+self.container['disk'][disk]['partitions'][result[2]]['size'])))
+															 (arg_disk,
+															  self.container['disk'][arg_disk]['partitions'][arg_part]['num'],
+															  self.parent.MiB2MB(arg_part),
+															  self.parent.MiB2MB(arg_part+self.container['disk'][arg_disk]['partitions'][arg_part]['size'])))
 							current += float(0.01)
 							size -= float(0.01)
 
-				if not self.container['disk'][disk]['partitions'].has_key(current):
-					self.container['disk'][disk]['partitions'][current]={}
-				self.container['disk'][disk]['partitions'][current]['touched']=1
+				if not self.container['disk'][arg_disk]['partitions'].has_key(current):
+					self.container['disk'][arg_disk]['partitions'][current]={}
+				self.container['disk'][arg_disk]['partitions'][current]['touched']=1
 				if len(mpoint) > 0 and not mpoint.startswith('/'):
 					mpoint='/%s' % mpoint
-				self.container['disk'][disk]['partitions'][current]['mpoint']=mpoint
-				self.container['disk'][disk]['partitions'][current]['fstype']=fstype
-				self.container['disk'][disk]['partitions'][current]['flag']=flag
-				self.container['disk'][disk]['partitions'][current]['format']=format
-				self.container['disk'][disk]['partitions'][current]['type']=type
-				self.container['disk'][disk]['partitions'][current]['num']=0
-				self.container['disk'][disk]['partitions'][current]['size']=new_sectors
+				self.container['disk'][arg_disk]['partitions'][current]['mpoint']=mpoint
+				self.container['disk'][arg_disk]['partitions'][current]['fstype']=fstype
+				self.container['disk'][arg_disk]['partitions'][current]['flag']=flag
+				self.container['disk'][arg_disk]['partitions'][current]['format']=format
+				self.container['disk'][arg_disk]['partitions'][current]['type']=type
+				self.container['disk'][arg_disk]['partitions'][current]['num']=0
+				self.container['disk'][arg_disk]['partitions'][current]['size']=new_sectors
 				self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
-												 (disk,self.resolve_type(type), self.parent.MiB2MB(current), self.parent.MiB2MB(current+size)))
+												 (arg_disk,self.resolve_type(type), self.parent.MiB2MB(current), self.parent.MiB2MB(current+size)))
 				if type == PARTTYPE_PRIMARY:
-					self.container['disk'][disk]['primary']+=1
+					self.container['disk'][arg_disk]['primary']+=1
 				if not (old_size - size) < self.container['min_size']:
-					self.container['disk'][disk]['partitions'][current]['size']=new_sectors
+					self.container['disk'][arg_disk]['partitions'][current]['size']=new_sectors
 					if not end: #start at first sector of freespace
 						new_free=current+new_sectors
 					else: # new partition at the end of freespace
-						self.container['disk'][disk]['partitions'][current+old_sectors-newsectors]=self.container['disk'][disk]['partitions'][current]
+						self.container['disk'][arg_disk]['partitions'][current+old_sectors-newsectors]=self.container['disk'][arg_disk]['partitions'][current]
 						new_free=current
-					self.container['disk'][disk]['partitions'][new_free]={}
-					self.container['disk'][disk]['partitions'][new_free]['touched']=1
-					self.container['disk'][disk]['partitions'][new_free]['size']=old_sectors-new_sectors
-					self.container['disk'][disk]['partitions'][new_free]['mpoint']=''
-					self.container['disk'][disk]['partitions'][new_free]['fstype']=''
-					self.container['disk'][disk]['partitions'][new_free]['flag']=[]
-					self.container['disk'][disk]['partitions'][new_free]['format']=0
-					self.container['disk'][disk]['partitions'][new_free]['type']=PARTTYPE_FREESPACE_PRIMARY
-					self.container['disk'][disk]['partitions'][new_free]['num']=-1 #temporary wrong num
+					self.container['disk'][arg_disk]['partitions'][new_free]={}
+					self.container['disk'][arg_disk]['partitions'][new_free]['touched']=1
+					self.container['disk'][arg_disk]['partitions'][new_free]['size']=old_sectors-new_sectors
+					self.container['disk'][arg_disk]['partitions'][new_free]['mpoint']=''
+					self.container['disk'][arg_disk]['partitions'][new_free]['fstype']=''
+					self.container['disk'][arg_disk]['partitions'][new_free]['flag']=[]
+					self.container['disk'][arg_disk]['partitions'][new_free]['format']=0
+					self.container['disk'][arg_disk]['partitions'][new_free]['type']=PARTTYPE_FREESPACE_PRIMARY
+					self.container['disk'][arg_disk]['partitions'][new_free]['num']=-1 #temporary wrong num
 				if type == PARTTYPE_LOGICAL:
-					self.minimize_extended(disk)
-				self.rebuild_table( self.container['disk'][disk],disk)
+					self.minimize_extended(arg_disk)
+				self.rebuild_table( self.container['disk'][arg_disk],arg_disk)
 
 				for f in flag:
-					self.container['history'].append('/sbin/parted --script %s set %d %s on' % (disk,self.container['disk'][disk]['partitions'][current]['num'],f))
+					self.container['history'].append('/sbin/parted --script %s set %d %s on' % (arg_disk,self.container['disk'][arg_disk]['partitions'][current]['num'],f))
 
 				if 'lvm' in flag:
-					self.pv_create(disk, current)
+					self.pv_create(arg_disk, current)
 
 				self.parent.debug("HISTORY")
 				for h in self.container['history']:
@@ -1632,8 +1826,8 @@ class object(content):
 			pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
 			# number of physical extents
 			pecnt = int(self.container['disk'][disk]['partitions'][part]['size'] * 1024 / pesize)
-			# LVM uses about 2.5% of pecnt for metadata overhead
-			totalpe = int(pecnt * 0.975)
+			# LVM uses about 2% of percent for metadata overhead
+			totalpe = int(pecnt * 0.978)
 
 			self.parent.debug('PARTITION: pv_create: pesize=%sk   partsize=%sM=%sk  pecnt=%sPE  totalpe=%sPE' %
 							  (pesize, self.container['disk'][disk]['partitions'][part]['size'],
@@ -1869,6 +2063,33 @@ class object(content):
 					return 0
 			else:
 				return 3
+
+
+		def lv_create(self, vgname, lvname, currentLE, format, fstype, flag, mpoint):
+			vg = self.parent.container['lvm']['vg'][ vgname ]
+			size = int(vg['PEsize'] * currentLE / 1024.0)
+			self.container['lvm']['vg'][vgname]['lv'][lvname] = { 'dev': '/dev/%s/%s' % (vgname, lvname),
+																  'vg': vgname,
+																  'touched': 1,
+																  'PEsize': vg['PEsize'],
+																  'currentLE': currentLE,
+																  'format': format,
+																  'size': size,
+																  'fstype': fstype,
+																  'flag': '',
+																  'mpoint': mpoint,
+																  }
+
+			self.parent.container['history'].append('/sbin/lvcreate -l %d --name "%s" "%s"' % (currentLE, lvname, vgname) )
+#			self.parent.container['history'].append('/sbin/lvscan 2> /dev/null')
+
+			self.parent.debug("HISTORY")
+			for h in self.parent.container['history']:
+				self.parent.debug('==> %s' % h)
+
+			# update used/free space on volume group
+			self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
+			self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
 
 
 
@@ -2435,30 +2656,8 @@ class object(content):
 								return 1
 							size = int(vg['PEsize'] * currentLE / 1024.0)
 
-							# data seems to be ok
-
-							vg['lv'][lvname] = { 'dev': '/dev/%s/%s' % (vgname, lvname),
-												 'vg': vgname,
-												 'touched': 1,
-												 'PEsize': vg['PEsize'],
-												 'currentLE': currentLE,
-												 'format': format,
-												 'size': size,
-												 'fstype': fstype,
-												 'flag': '',
-												 'mpoint': mpoint,
-												 }
-
-							self.parent.container['history'].append('/sbin/lvcreate -l %d --name "%s" "%s"' % (currentLE, lvname, vgname) )
-#							self.parent.container['history'].append('/sbin/lvscan 2> /dev/null')
-
-							self.parent.parent.debug("HISTORY")
-							for h in self.parent.container['history']:
-								self.parent.parent.debug('==> %s' % h)
-
-							# update used/free space on volume group
-							self.parent.container['lvm']['vg'][ vgname ]['freePE'] -= currentLE
-							self.parent.container['lvm']['vg'][ vgname ]['allocPE'] += currentLE
+							# data seems to be ok ==> create LVM LV
+							self.parent.lv_create(vgname, lvname, currentLE, format, fstype, '', mpoint)
 
 							msglist = [ _('The selected filesystem takes no'),
 										_('effect, if format is not selected.'),
@@ -2561,14 +2760,14 @@ class object(content):
 						fs=line.split(' ')
 						if len(fs) > 1:
 							entry = fs[1][:-1]
-							if entry != 'linux-swap':
+							if entry != 'linux-swap':   # disable swap on LVM
 								dict[entry]=[entry,i]
 								i += 1
 					file.close()
 					self.add_elem('SEL_fstype', select(dict,self.pos_y+9,self.pos_x+4,15,6)) #6
 					self.get_elem('SEL_fstype').set_off()
 
-					self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[])) #7
+					self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+14,self.pos_x+33,14,1,[0])) #7
 
 					self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #8
 					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align="left")) #9
@@ -2594,7 +2793,7 @@ class object(content):
 						fs=line.split(' ')
 						if len(fs) > 1:
 							entry = fs[1][:-1]
-							if entry != 'linux-swap':
+							if entry != 'linux-swap':   # disable swap on LVM
 								dict[entry]=[entry,i]
 								if entry == lv['fstype']:
 									filesystem_num=i
