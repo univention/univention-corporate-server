@@ -1,3 +1,9 @@
+univention-grub (1.0.10-1) unstable; urgency=low
+
+  * updated groot device detection
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 27 Jun 2007 15:36:06 +0200
+
 univention-grub (1.0.9-1) unstable; urgency=low
 
   * determine correct groot device

@@ -94,6 +94,17 @@ elif [ -z "$2" ]; then
 
 fi
 
+# determine grubdevice
+if [ -z "$grub_groot" ] ; then
+	grubdev=$(mount | grep " on /boot " | cut -d' ' -f1)
+	if [ -z "$grubdev" ] ; then
+		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
+	fi
+	. /usr/sbin/update-grub
+	groot=$(convert $grubdev)
+	univention-baseconfig set grub/groot="$groot"
+fi
+
 eval $(univention-baseconfig shell)
 
 #DEBHELPER#
@@ -103,19 +114,9 @@ if [ "$1" = configure -a -z "$2" ]; then
 	# source the update-grub file, so we could use the grub helper functions
 	if [ -n "$grub_boot" ]; then
 
-		# determine grubdevice
-		if [ -z "$grub_grubdev" ] ; then
-			grubdev=$(mount | grep " on /boot " | cut -d' ' -f1)
-			if [ -z "$part" ] ; then
-				grubdev=$(mount | grep " on / " | cut -d' ' -f1)
-			fi
-			univention-baseconfig set grub/grubdev=$grubdev
-		fi
+		mkinitramfs -o /boot/initrd-`uname -r` `uname -r`
 
 		grub-install --no-floppy $grub_boot
-		. /usr/sbin/update-grub
-		groot=$(convert $grub_grubdev)
-		univention-baseconfig set grub/groot="$groot"
 	fi
 	update-grub -y
 fi
