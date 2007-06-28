@@ -1024,7 +1024,7 @@ class object(content):
 			p = os.popen('free')
 			data = p.read()
 			p.close()
-			regex = re.compile('Mem:\s+(\d+)\s+')
+			regex = re.compile('^\s+Mem:\s+(\d+)\s+.*$')
 			sysmem = -1
 			for line in data.splitlines():
 				match = regex.match(line)
@@ -2709,6 +2709,7 @@ class object(content):
 
 							oldfstype = self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype']
 							fstype = self.get_elem('SEL_fstype').result()[0]
+							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['touched'] = 1
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['mpoint'] = self.get_elem('INP_mpoint').result().strip()
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['format'] = self.get_elem('CB_format').result()
 							self.parent.container['lvm']['vg'][vgname]['lv'][lvname]['fstype'] = fstype

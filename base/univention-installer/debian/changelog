@@ -1,3 +1,10 @@
+univention-installer (1.5.3-1) unstable; urgency=low
+
+  * fixed calculation of swap part size on auto partitioning
+  * changing LVM LV is now recognized again
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 15:14:23 +0200
+
 univention-installer (1.5.2-1) unstable; urgency=low
 
   * fixed layout bug in msg_win
