@@ -1,3 +1,9 @@
+univention-kolab2 (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:15:55 +0200
+
 univention-kolab2 (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -8,7 +14,7 @@ univention-kolab2 (0.43-15) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 16:16:47 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Wed, 29 Nov 2006 16:16:47 +0100
 
 univention-kolab2 (0.43-13) unstable; urgency=low
 
