@@ -180,6 +180,34 @@ class object(content):
 			self.move_focus( 1 )
 			return _('Wrong filesystemtype \'%s\' for mountpoint \'/\'' % root_fs)
 
+		# check if LVM is enabled, /-partition is LVM LV and /boot is missing
+		rootfs_is_lvm = False
+		bootfs_is_lvm = None
+		# check for /boot on regular partition
+		for disk in self.container['disk'].keys():
+			for part in self.container['disk'][disk]['partitions']:
+				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
+					mpoint = self.container['disk'][disk]['partitions'][part]['mpoint'].strip()
+					if mpoint == '/boot':
+						bootfs_is_lvm = False
+		if self.container['lvm']['enabled'] and self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
+			vg = self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ]
+			for lvname in vg['lv'].keys():
+				mpoint = vg['lv'][ lvname ]['mpoint'].strip()
+				if mpoint == '/':
+					rootfs_is_lvm = True
+				if mpoint == '/boot':
+					bootfs_is_lvm = True
+		self.debug('PARTITION: bootfs_is_lvm=%s  rootfs_is_lvm=%s' % (bootfs_is_lvm, rootfs_is_lvm))
+		if rootfs_is_lvm and bootfs_is_lvm in [ None, True ]:
+			msglist= [ _('Unable to create bootable config!'),
+					   _('/-partition is located on LVM and'),
+					   _('/boot-partition is missing or located'),
+					   _('on LVM too.') ]
+			self.sub.sub=msg_win(self.sub, self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),1,1, msglist)
+			self.sub.sub.draw()
+			return 1
+
 		if len(self.container['history']) or self.test_changes():
 			self.sub.sub=self.sub.verify_exit(self.sub,self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),self.sub.maxWidth,self.sub.maxHeight-7)
 			self.sub.sub.draw()
@@ -952,7 +980,7 @@ class object(content):
 
 		def auto_partitioning(self, result):
 			self.container['autopartition'] = True
-			self.parent.debug('AUTO PARTITIONIERUNG')
+			self.parent.debug('PARTITION: AUTO PARTITIONING')
 
 			# remove all LVM LVs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -1112,6 +1140,8 @@ class object(content):
 			currentLE = vg['freePE']
 			self.lv_create(vgname, lvname, currentLE, format, fstype, flag, mpoint)
 
+		def ask_lvm_enable_callback(self, result):
+			self.set_lvm( (result == 'BT_YES') )
 
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
@@ -1126,7 +1156,6 @@ class object(content):
 				msglist=[ _('Do you want to use auto-partitioning?') ]
 				self.container['autopartition'] = False
 				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
-				self.sub.draw()
 				self.draw()
 
 			# show warning if LVM1 volumes are detected
@@ -1152,8 +1181,10 @@ class object(content):
 
 			# if LVM is not automagically enabled then ask user if it should be enabled
 			if self.container['lvm']['enabled'] == None and not hasattr(self,'sub'):
-				self.sub = self.ask_lvm_enable(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-8)
-				self.sub.draw()
+				msglist=[ _('No LVM volume group found on current system.'),
+						  _('Do you want to use LVM2?') ]
+				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes',
+									  callback_yes=self.ask_lvm_enable_callback, callback_no=self.ask_lvm_enable_callback)
 				self.draw()
 
 
@@ -2892,44 +2923,6 @@ class object(content):
 			def get_result(self):
 				pass
 
-
-		class ask_lvm_enable(subwin):
-			def input(self, key):
-				if key in [ 10, 32 ]:
-					if self.elements[2].get_status(): #Yes
-						return self._ok()
-					elif self.elements[3].get_status(): #No
-						return self._false()
-				elif key == 260 and self.elements[3].active:
-					#move left
-					self.elements[3].set_off()
-					self.elements[2].set_on()
-					self.current=2
-					self.draw()
-				elif key == 261 and self.elements[2].active:
-					#move right
-					self.elements[2].set_off()
-					self.elements[3].set_on()
-					self.current=3
-					self.draw()
-				return 1
-
-			def layout(self):
-				message=_('No LVM volume group found on current system.')
-				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
-				message=_('Do you want to use LVM2?')
-				self.elements.append(textline(message,self.pos_y+4,self.pos_x+(self.width/2),align="middle")) #1
-
-				self.elements.append(button(_("Yes"),self.pos_y+7,self.pos_x+5,15)) #2
-				self.elements.append(button(_("No"),self.pos_y+7,self.pos_x+35,15)) #3
-				self.current=2
-				self.elements[2].set_on()
-			def _ok(self):
-				self.parent.set_lvm(True)
-				return 0
-			def _false(self):
-				self.parent.set_lvm(False)
-				return 0
 
 		class ask_lvm_vg(subwin):
 			def input(self, key):

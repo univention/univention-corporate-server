@@ -1,3 +1,10 @@
+univention-installer (1.5.2-1) unstable; urgency=low
+
+  * fixed layout bug in msg_win
+  * added check if / or /boot is in non-LVM-volume
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 11:20:07 +0200
+
 univention-installer (1.5.1-2) unstable; urgency=low
 
   * Added auto-partition feature

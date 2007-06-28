@@ -1633,8 +1633,8 @@ class msg_win(subwin):
 	def __init__(self,parent,pos_y,pos_x,width,height, msglist=[], align='middle', callback=None, *args, **kwargs):
 		# adjust size if width and height is too small
 		for line in msglist:
-			if width < len(line)+4:
-				width = len(line)+4
+			if width < len(line)+6:
+				width = len(line)+6
 		if height < len(msglist)+6:
 			height = len(msglist)+6
 
@@ -1655,11 +1655,11 @@ class msg_win(subwin):
 	def layout(self):
 		y = 2
 		for msg in self.msglist:
-			self.elements.append(textline(msg,self.pos_y+y,self.pos_x+(self.width/2),self.align))
+			self.elements.append(textline(msg,self.pos_y+y,self.pos_x+1+(self.width/2),self.align))
 			y+=1
 		y+=1
 
-		self.elements.append(button(_("Ok"),self.pos_y+y,self.pos_x+(self.width/2),15,align="middle"))
+		self.elements.append(button(_("Ok"),self.pos_y+y,self.pos_x+1+(self.width/2),15,align="middle"))
 		self.current=len(self.elements)-1
 		self.elements[self.current].set_on()
 
