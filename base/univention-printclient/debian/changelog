@@ -1,3 +1,9 @@
+univention-printclient (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:06:33 +0200
+
 univention-printclient (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
@@ -8,13 +14,13 @@ univention-printclient (0.9) unstable; urgency=low
 
   * fixed creation of tempfile 
 
- -- Andreas Büsching <buesching@univention.de>  Thu,  7 Dec 2006 16:22:37 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu,  7 Dec 2006 16:22:37 +0100
 
 univention-printclient (0.7) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:18:18 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Sat,  2 Dec 2006 19:18:18 +0100
 
 univention-printclient (0.6) unstable; urgency=low
 
