@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention mail Postfix Kolab2
 #  listener module: creates mailboxes
