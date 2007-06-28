@@ -1,3 +1,10 @@
+univention-grub (1.0.12-1) unstable; urgency=low
+
+  * added conversion "devicefile to grub identifier" in postinst
+  * added dependency to lvm2 (needed to recreate initramfs)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 15:06:53 +0200
+
 univention-grub (1.0.11-1) unstable; urgency=low
 
   * update initramfs if kernel module dm-mod is missing

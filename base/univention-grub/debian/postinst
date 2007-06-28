@@ -94,21 +94,76 @@ elif [ -z "$2" ]; then
 
 fi
 
-# determine grubdevice
-if [ -z "$grub_groot" ] ; then
-	grubdev=$(mount | grep " on /boot " | cut -d' ' -f1)
-	if [ -z "$grubdev" ] ; then
-		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
-	fi
-	. /usr/sbin/update-grub
-	groot=$(convert $grubdev)
-	univention-baseconfig set grub/groot="$groot"
-fi
+
+# Usage: convert os_device
+# Convert an OS device to the corresponding GRUB drive.
+# This part is OS-specific.
+# HINT: This code is borrowed from /usr/sbin/update-grub
+convert () {
+    # First, check if the device file exists.
+    if test -e "$1"; then
+		:
+    else
+		echo "$1: Not found or not a block device." 1>&2
+		echo ""
+		return 0
+    fi
+
+	host_os=`uname -s | tr '[[:upper:]]' '[[:lower:]]'`
+
+    # Break the device name into the disk part and the partition part.
+    case "$host_os" in
+    linux)
+		tmp_disk=`echo "$1" | sed -e 's%\([sh]d[[:lower:]]\)[0-9]*$%\1%' \
+				  -e 's%\(fd[0-9]*\)$%\1%' \
+				  -e 's%/part[0-9]*$%/disc%' \
+				  -e 's%\(c[0-7]d[0-9]*\).*$%\1%'`
+		tmp_part=`echo "$1" | sed -e 's%.*/[sh]d[[:lower:]]\([0-9]*\)$%\1%' \
+				  -e 's%.*/fd[0-9]*$%%' \
+				  -e 's%.*/floppy/[0-9]*$%%' \
+				  -e 's%.*/\(disc\|part\([0-9]*\)\)$%\2%' \
+				  -e 's%.*c[0-7]d[0-9]*p*%%'`
+	;;
+# HINT: handling other operating systems has been deleted 
+    *)
+		echo "update-grub does not support your OS yet." 1>&2
+		echo ""
+		return 0
+    esac
+
+	device_map="/boot/grub/device.map"
+
+    # Get the drive name.
+    tmp_drive=`grep -v '^#' $device_map | grep "$tmp_disk *$" \
+			| sed 's%.*\(([hf]d[0-9][a-z0-9,]*)\).*%\1%'`
+
+    # If not found, print an error message and exit.
+    if test "x$tmp_drive" = x; then
+		echo "$1 does not have any corresponding BIOS drive." 1>&2
+		echo ""
+		return 0
+    fi
+
+    if test "x$tmp_part" != x; then
+		# If a partition is specified, we need to translate it into the
+		# GRUB's syntax.
+		case "$host_os" in
+		linux)
+	    	  echo "$tmp_drive" | sed "s%)$%,`expr $tmp_part - 1`)%" ;;
+# HINT: handling other operating systems has been deleted 
+		esac
+    else
+		# If no partition is specified, just print the drive name.
+		echo "$tmp_drive"
+    fi
+}
 
 grepcnt=$(grep -c "^dm-mod$" /etc/initramfs-tools/modules)
 if [ "$grepcnt" = "0" ] ; then
 	echo "LVM kernel module 'dm-mod' is missing in initrd - recreating initrd"
 	echo "dm-mod" >> /etc/initramfs-tools/modules
+	echo "dm-mirror" >> /etc/initramfs-tools/modules
+	echo "dm-snapshot" >> /etc/initramfs-tools/modules
 	for fn in /boot/initrd.img-* ; do
 		kernelversion=${fn/\/boot\/initrd.img-}
 		update-initramfs -u -t -k "$kernelversion"
@@ -126,6 +181,17 @@ if [ "$1" = configure -a -z "$2" ]; then
 		grub-install --no-floppy $grub_boot
 	fi
 	update-grub -y
+fi
+
+# determine grubdevice
+# needs to be called after grub-install: devices.map is created by grub-install
+if [ -z "$grub_groot" ] ; then
+	grubdev=$(mount | grep " on /boot " | cut -d' ' -f1)
+	if [ -z "$grubdev" ] ; then
+		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
+	fi
+	groot=$(convert $grubdev)
+	univention-baseconfig set grub/groot="$groot"
 fi
 
 exit 0

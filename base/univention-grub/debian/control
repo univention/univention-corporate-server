@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-grub
 Architecture: all
-Depends: grub, diff, initramfs-tools
+Depends: grub, diff, initramfs-tools, lvm2
 Conflicts: lilo
 Description: Meta package for the grub configuration
  .
