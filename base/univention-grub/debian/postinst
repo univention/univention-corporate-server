@@ -105,6 +105,16 @@ if [ -z "$grub_groot" ] ; then
 	univention-baseconfig set grub/groot="$groot"
 fi
 
+grepcnt=$(grep -c "^dm-mod$" /etc/initramfs-tools/modules)
+if [ "$grepcnt" = "0" ] ; then
+	echo "LVM kernel module 'dm-mod' is missing in initrd - recreating initrd"
+	echo "dm-mod" >> /etc/initramfs-tools/modules
+	for fn in /boot/initrd.img-* ; do
+		kernelversion=${fn/\/boot\/initrd.img-}
+		update-initramfs -u -t -k "$kernelversion"
+	done
+fi
+
 eval $(univention-baseconfig shell)
 
 #DEBHELPER#
@@ -113,9 +123,6 @@ eval $(univention-baseconfig shell)
 if [ "$1" = configure -a -z "$2" ]; then
 	# source the update-grub file, so we could use the grub helper functions
 	if [ -n "$grub_boot" ]; then
-
-		mkinitramfs -o /boot/initrd-`uname -r` `uname -r`
-
 		grub-install --no-floppy $grub_boot
 	fi
 	update-grub -y

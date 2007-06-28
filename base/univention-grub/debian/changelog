@@ -1,3 +1,9 @@
+univention-grub (1.0.11-1) unstable; urgency=low
+
+  * update initramfs if kernel module dm-mod is missing
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 10:59:41 +0200
+
 univention-grub (1.0.10-1) unstable; urgency=low
 
   * updated groot device detection
