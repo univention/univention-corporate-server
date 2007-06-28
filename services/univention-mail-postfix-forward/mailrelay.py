@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention mail Postfix Forward
 #  listener module: sets mail relay configuration and restarts postfixs

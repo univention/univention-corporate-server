@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-5) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:50:37 +0200
+
 univention-mail-postfix-forward (1.0.0-4) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
@@ -26,7 +32,7 @@ univention-mail-postfix-forward (0.6) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Fri,  1 Dec 2006 14:03:32 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Fri,  1 Dec 2006 14:03:32 +0100
 
 univention-mail-postfix-forward (0.5) unstable; urgency=low
 
