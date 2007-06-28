@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Postfix
 #  baseconfig module: creates a global archive mailbox
