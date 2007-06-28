@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus
 #  listener module: creating mailboxes

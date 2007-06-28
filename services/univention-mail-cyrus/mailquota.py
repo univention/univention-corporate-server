@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus
 #  admin module: policy for mail quota configuration

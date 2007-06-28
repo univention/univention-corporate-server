@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.0-4) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:32:17 +0200
+
 univention-mail-cyrus (1.0.0-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
@@ -20,7 +26,7 @@ univention-mail-cyrus (0.13-21) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas BÃ¼sching <buesching@univention.de>  Fri,  1 Dec 2006 10:48:39 +0100
+ -- Andreas BÃƒÅ’sching <buesching@univention.de>  Fri,  1 Dec 2006 10:48:39 +0100
 
 univention-mail-cyrus (0.13-20) unstable; urgency=low
 
@@ -85,7 +91,7 @@ univention-mail-cyrus (0.13-3) unstable; urgency=low
   * new baseconfig variable mail/cyrus/imap/lookup_groups: can disable lookup
     of UNIX groups via LDAP
 
- -- Andreas Büsching <buesching@univention.de>  Sun,  5 Mar 2006 04:02:54 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Sun,  5 Mar 2006 04:02:54 +0100
 
 univention-mail-cyrus (0.13-2) unstable; urgency=low
 
@@ -111,7 +117,7 @@ univention-mail-cyrus (0.12-3) unstable; urgency=low
   * debian/univention-mail-cyrus.univention-baseconfig: fixed typo. the
     variables are challed maxchilds and maxclients
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 10 Nov 2005 14:52:03 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Thu, 10 Nov 2005 14:52:03 +0100
 
 univention-mail-cyrus (0.12-2) unstable; urgency=low
 
@@ -119,7 +125,7 @@ univention-mail-cyrus (0.12-2) unstable; urgency=low
     the maximum number of spawned child processes. Default value (is not set)
     is 50
 
- -- Andreas Büsching <buesching@univention.de>  Mon,  7 Nov 2005 12:00:15 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Mon,  7 Nov 2005 12:00:15 +0100
 
 univention-mail-cyrus (0.12-1) unstable; urgency=low
 
@@ -154,7 +160,7 @@ univention-mail-cyrus (0.6) unstable; urgency=low
 
 univention-mail-cyrus (0.5) unstable; urgency=low
 
-  * Test-Version für Quotas
+  * Test-Version fÃ¼r Quotas
 
  -- Lars Rehe <rehe@univention.de>  Fri, 27 May 2005 14:50:41 +0200
 
