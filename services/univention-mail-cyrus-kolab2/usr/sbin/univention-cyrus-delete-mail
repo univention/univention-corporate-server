@@ -51,7 +51,7 @@ do
 	done
 done
 
-echo $n" Datei(en) gelöscht"
+echo $n" Datei(en) gelÃ¶scht"
 echo ${stringZ/%abc/XYZ}
 echo $'Wiederaufbau des caches:\n'
 

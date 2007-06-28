@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus Kolab2
 #  helper script: sets quota information for a shared folder

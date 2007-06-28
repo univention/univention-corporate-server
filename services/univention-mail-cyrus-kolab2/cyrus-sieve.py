@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus Kolab2
 #  listener module: create sieve scripts with rules for kolab and spam

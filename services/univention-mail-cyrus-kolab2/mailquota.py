@@ -1,4 +1,5 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Mail Cyrus Kolab2
 #  admin module: policies for mail quota configuration
