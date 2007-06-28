@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.0-3) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 28 Jun 2007 10:29:10 +0200
+
 univention-kolab2-framework (1.0.0-2) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
@@ -32,7 +38,7 @@ univention-kolab2-framework (0.1-78) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 30 Nov 2006 08:01:25 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 30 Nov 2006 08:01:25 +0100
 
 univention-kolab2-framework (0.1-76) unstable; urgency=low
 

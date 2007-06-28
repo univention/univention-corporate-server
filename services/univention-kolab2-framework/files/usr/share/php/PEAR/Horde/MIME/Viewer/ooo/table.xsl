@@ -44,7 +44,7 @@
 
    The Initial Developer of the Original Code is: Sun Microsystems, Inc.
 
-   Copyright © 2002 by Sun Microsystems, Inc.
+   Copyright ÃÂ© 2002 by Sun Microsystems, Inc.
 
    All Rights Reserved.
 

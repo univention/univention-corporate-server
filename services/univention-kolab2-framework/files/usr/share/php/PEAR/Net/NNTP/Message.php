@@ -1,7 +1,7 @@
 <?php
 // +-----------------------------------------------------------------------+
 // |                                                                       |
-// | Copyright � 2003 Heino H. Gehlsen. All Rights Reserved.               |
+// | Copyright Â© 2003 Heino H. Gehlsen. All Rights Reserved.               |
 // |                  http://www.heino.gehlsen.dk/software/license         |
 // |                                                                       |
 // +-----------------------------------------------------------------------+
@@ -25,7 +25,7 @@
 // |    terms and conditions. If none exist, a short notice of the         |
 // |    following form (hypertext is preferred, text is permitted) should  |
 // |    be used within the body of any redistributed or derivative code:   |
-// |    "Copyright � 2003 Heino H. Gehlsen. All Rights Reserved.           |
+// |    "Copyright Â© 2003 Heino H. Gehlsen. All Rights Reserved.           |
 // |     http://www.heino.gehlsen.dk/software/license"                     |
 // |                                                                       |
 // | 3. Notice of any changes or modifications to the files, including     |
@@ -51,8 +51,8 @@
 // |                                                                       |
 // +-----------------------------------------------------------------------+
 // |                                                                       |
-// | This license is based on the "W3C� SOFTWARE NOTICE AND LICENSE".      |
-// | No changes have been made to the "W3C� SOFTWARE NOTICE AND LICENSE",  |
+// | This license is based on the "W3CÂ® SOFTWARE NOTICE AND LICENSE".      |
+// | No changes have been made to the "W3CÂ® SOFTWARE NOTICE AND LICENSE",  |
 // | except for the references to the copyright holder, which has either   |
 // | been changes or removed.                                              |
 // |                                                                       |

@@ -355,9 +355,9 @@ class Text {
         // Remove control characters.
         $text = preg_replace('/[\x00-\x1f]+/', '', $text);
 
-        /* The '�' entry may look wrong, depending on your editor,
+        /* The 'Â' entry may look wrong, depending on your editor,
            but it's not - that's not really a single quote. */
-        $from = array('�', '�', '�', '�', '�', '�', '�', '�', '�', '�', chr(167), '&#61479;', '&#61572;', '&#61594;', '&#61640;', '&#61623;', '&#61607;', '&#61553;', '&#61558;', '&#8226;', '&#9658;');
+        $from = array('Â', 'Â', 'Â', 'Â', 'Â', 'Â', 'Â', 'Â', 'Â', 'Â·', chr(167), '&#61479;', '&#61572;', '&#61594;', '&#61640;', '&#61623;', '&#61607;', '&#61553;', '&#61558;', '&#8226;', '&#9658;');
         $to   = array('...',     "'", "'",    '"',    '"',    '*',    '-',    '-',    '*', '*',      '*',        '.',        '*',        '*',        '-',        '-',        '*',        '*',        '*',       '*',       '>');
 
         return str_replace($from, $to, $text);

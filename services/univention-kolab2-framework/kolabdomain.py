@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Kolab2 Framework
 #  listener module: mail domain configuration

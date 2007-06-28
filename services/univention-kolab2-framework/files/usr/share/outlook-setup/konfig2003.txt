@@ -8,13 +8,13 @@ C:\Programme\Microsoft Office\OFFICE11\OUTLOOK.EXE
 
 3
 
-Die Eingaben werden vom Programm Zeile f�r Zeile ausgelesen.
+Die Eingaben werden vom Programm Zeile fÃŒr Zeile ausgelesen.
 Es darf sonst nichts in den Zeilen stehen.
 1. Nachname (z.B. Mustermann)
 2. Vorname (z.B. Max)
 3. Teil der E-Mailaddresse vor dem @ (z.B. mmustermann)
 4. Teil der E-Mailaddresse nach dem @ (z.B. testdomain.de | ergibt dann mmustermann@testdomain.de)
-5. vollst�ndiger Name des Servers (FQDN) (z.B. ucsmaster.testdomain.de)
+5. vollstÃ€ndiger Name des Servers (FQDN) (z.B. ucsmaster.testdomain.de)
 6. Passwort des Benutzers (wenn leer wird der Benutzer gefragt)
 7. Pfad zur Outlook.exe (wenn leer dann Default"C:\Programme\Microsoft Office\OFFICE11\OUTLOOK.EXE")
 8. LDAP-Suchbasis (cn=users, dc mit "univention-baseconfig get ldap/base" ermitteln)[wenn leer dann keine Konfiguration]
