@@ -164,10 +164,13 @@ if [ "$grepcnt" = "0" ] ; then
 	echo "dm-mod" >> /etc/initramfs-tools/modules
 	echo "dm-mirror" >> /etc/initramfs-tools/modules
 	echo "dm-snapshot" >> /etc/initramfs-tools/modules
-	for fn in /boot/initrd.img-* ; do
-		kernelversion=${fn/\/boot\/initrd.img-}
-		update-initramfs -u -t -k "$kernelversion"
-	done
+	filelist=$(ls -1 /boot/initrd.img-* 2>/dev/null)
+	if [ -n "$filelist" ] ; then
+		for fn in $filelist ; do
+			kernelversion=${fn/\/boot\/initrd.img-}
+			update-initramfs -u -t -k "$kernelversion"
+		done
+	fi
 fi
 
 eval $(univention-baseconfig shell)
