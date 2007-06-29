@@ -1,3 +1,10 @@
+univention-mail-postfix (1.0.0-6) unstable; urgency=low
+
+  * added baseconfig module to call postmap and reload postfix on
+    mail/hosteddomains change
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 29 Jun 2007 10:57:57 +0200
+
 univention-mail-postfix (1.0.0-5) unstable; urgency=low
 
   * encoded files utf-8

@@ -56,3 +56,7 @@ File: etc/pam.d/smtp
 
 Type: file
 File: etc/postfix/sasl/smtpd.conf
+
+Type: module
+Module: mail_hosteddomains.py
+Variables: mail/hosteddomains
