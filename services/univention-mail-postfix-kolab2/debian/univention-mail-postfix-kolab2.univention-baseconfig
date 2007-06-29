@@ -106,3 +106,7 @@ Variables: ldap/base
 Type: module
 Module: create-archivefolder.py
 Variables: mail/archivefolder
+
+Type: module
+Module: mail_hosteddomains.py
+Variables: mail/hosteddomains
