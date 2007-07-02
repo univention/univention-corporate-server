@@ -466,7 +466,7 @@ def doit(arglist):
 		elif opt == '--filter':
 			try:
 				tmp_attr,tmp_val= val.split('=')
-			except Exception:
+			except ValueError:
 				msg="Filter is not valid"
 				out.append(msg)
 				return out + usage() + ["OPERATION FAILED"]
