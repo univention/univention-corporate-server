@@ -1,3 +1,9 @@
+univention-admin-modules (1.2.3-4) unstable; urgency=low
+
+  * advanced error handling for filter option
+
+ -- Bastian Neumann <neumann@univention.de>  Mon,  2 Jul 2007 13:45:45 +0200
+
 univention-admin-modules (1.2.3-3) unstable; urgency=low
 
   * add svgz-sources
