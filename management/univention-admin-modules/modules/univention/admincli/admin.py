@@ -613,7 +613,11 @@ def doit(arglist):
 	   		pass
 
 	if superordinate_dn and univention.admin.modules.superordinate(module):
-		superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
+		try:
+			superordinate=univention.admin.objects.get(univention.admin.modules.superordinate(module), co, lo, '', dn=superordinate_dn)
+		except univention.admin.uexceptions.insufficientInformation, e:
+			out.append('Insufficient Information: %s' % str(e))
+			return out + ["OPERATION FAILED"]	
 	else:
 		superordinate=None
 
