@@ -475,6 +475,12 @@ def doit(arglist):
 				out.append(msg)
 				return out + usage() + ["OPERATION FAILED"]
 			else:
+				invalid_char=["+","-","*"]
+				for char in invalid_char:
+					if char in tmp_attr:
+						msg="Filter is not valid"
+						out.append(msg)
+						return out + usage() + ["OPERATION FAILED"]
 				filter=val
 		elif opt == '--customattribute':
 			pos=val.find('=')

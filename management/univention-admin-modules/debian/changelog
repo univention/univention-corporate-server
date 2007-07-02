@@ -1,3 +1,9 @@
+univention-admin-modules (1.2.3-7) unstable; urgency=low
+
+  * improved filter option for special chars 
+
+ -- Bastian Neumann <neumann@univention.de>  Mon,  2 Jul 2007 16:56:39 +0200
+
 univention-admin-modules (1.2.3-6) unstable; urgency=low
 
   * improved error handling of non existent superordinates
