@@ -34,6 +34,7 @@ Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/netbios/aliases
+Variables: samba/netbios/filter
 
 Type: subfile
 Multifile: etc/samba/smb.conf

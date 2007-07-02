@@ -1,3 +1,9 @@
+univention-samba (1.0.3-3) unstable; urgency=low
+
+  * Register samba/netbios/filter in Univention Baseconfig.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  2 Jul 2007 13:43:30 +0200
+
 univention-samba (1.0.3-2) unstable; urgency=low
 
   * added baseconfig variable samba/generate_smbpasswd
