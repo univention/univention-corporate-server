@@ -37,7 +37,7 @@ def _(val):
 		try:
 			t=gettext.translation('installer', '/lib/univention-installer/locale')
 		except:
-			t=gettext.translation('installer', 'locale')
+			t=gettext.translation('installer', 'locale' )
 		newval=t.gettext(val)
 	except:
 		#sys.stderr.write("could not translate string: \"%s\"\n"%val)

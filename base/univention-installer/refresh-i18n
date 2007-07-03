@@ -58,10 +58,10 @@ else
 	nano $po.pox
 fi
 
-echo "Use this entry? (y/n)"
+echo "Use this entry? (Y/n)"
 read yn
 
-if [ $yn = "y" ]; then
+if [ -z "$yn" -o "$yn" = "y" ]; then
     echo "Copying po file"
     cp $po.pox ./installer/locale/$po/LC_MESSAGES/installer.po
     echo "Regenerating mo file"

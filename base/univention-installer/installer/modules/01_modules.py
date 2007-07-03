@@ -319,6 +319,7 @@ class object(content):
 
 
 			start=0
+			h = {}
 			for line in lines:
 				line=line.strip('\n')
 				if line == '-' and not start:
