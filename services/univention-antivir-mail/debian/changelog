@@ -1,0 +1,91 @@
+univention-antivir-mail (1.2-12) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 16:51:24 +0100
+
+univention-antivir-mail (1.2-10) unstable; urgency=low
+
+  * remove unneeded dependencies on univention-mail-cyrus,
+    univention-mail or univention-mail-postfix-kolab2
+  * add new maintainer
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 16 Nov 2006 11:57:19 +0100
+
+univention-antivir-mail (1.2-9) unstable; urgency=low
+
+  * never deliver copies of spam mails to quarantine folder
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu,  3 Aug 2006 11:41:13 +0200
+
+univention-antivir-mail (1.2-8) unstable; urgency=low
+
+  * add baseconfig variables mail/antivir/quarantine_to and
+		mail/antivir/banned/double_ext
+		mail/antivir/banned/basic_ext
+		mail/antivir/banned/long_ext
+		mail/antivir/banned/file_type
+		mail/antivir/banned/mime_type,rfc2046)
+
+ -- Martin Kuehl <kuehl@univention.de>  Wed,  1 Mar 2006 17:17:16 +0100
+
+univention-antivir-mail (1.2-3) unstable; urgency=low
+
+  * merge with UGS - increase version number
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 28 Feb 2006 17:12:06 +0100
+
+univention-antivir-mail (1.0-12) unstable; urgency=low
+
+  * add dependency on 'univention-spamassassin'
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 13:18:13 +0100
+
+univention-antivir-mail (1.0-11) unstable; urgency=low
+
+  * create baseconfig files clamd.conf and freshclam.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Feb 2006 10:22:27 +0100
+
+univention-antivir-mail (1.0-10) unstable; urgency=low
+
+  * restart spamassasin on install/update
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 24 Feb 2006 14:48:57 +0100
+
+univention-antivir-mail (1.0-9) unstable; urgency=low
+
+  * support for univention-mail-postfix-kolab2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Oct 2005 08:00:23 +0200
+
+univention-antivir-mail (1.0-5) unstable; urgency=low
+
+  * using true instead of TRUE in postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 May 2005 06:59:07 +0200
+
+univention-antivir-mail (1.0-4) unstable; urgency=low
+
+  * changed default to clamav and activated scanning
+  * added dependencies to different available scanner-packages
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  4 Apr 2005 14:27:59 +0200
+
+univention-antivir-mail (1.0-3) unstable; urgency=low
+
+  * fixed permission problem
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 28 Sep 2004 12:42:31 +0200
+
+univention-antivir-mail (1.0-2) unstable; urgency=low
+
+  * Added dependency to kav4fileservers
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 15 Jul 2004 08:07:10 +0200
+
+univention-antivir-mail (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
