@@ -8,7 +8,7 @@ Standards-Version: 3.5.2
 Package: univention-mail-cyrus-kolab2
 Architecture: all
 Depends: univention-baseconfig (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2, sasl2-bin, libsasl2-modules, cyrus-admin-2.2, cyrus-pop3d-2.2, libterm-readline-perl-perl
-Conflicts: cyrus21-imapd, cyrus21-admin, univention-mail-cyrus, univention-mail-cyrus-imap, univention-mail-cyrus-pop
+Conflicts: univention-mail-cyrus, univention-mail-cyrus-imap, univention-mail-cyrus-pop
 Description: UCS - imap configuration
  The UCS cyrus imapd mail package
  .

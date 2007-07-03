@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.0-5) unstable; urgency=low
+
+  * removed conflicts to old cyrus21* packages as this is handled by the new
+    cyrus-*-2.2 packages
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jul 2007 15:39:27 +0200
+
 univention-mail-cyrus-kolab2 (1.0.0-4) unstable; urgency=low
 
   * encoded files utf-8
