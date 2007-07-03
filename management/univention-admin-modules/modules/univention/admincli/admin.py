@@ -475,12 +475,6 @@ def doit(arglist):
 				out.append(msg)
 				return out + usage() + ["OPERATION FAILED"]
 			else:
-				invalid_char=["+","-","*"]
-				for char in invalid_char:
-					if char in tmp_attr:
-						msg="Filter is not valid"
-						out.append(msg)
-						return out + usage() + ["OPERATION FAILED"]
 				filter=val
 		elif opt == '--customattribute':
 			pos=val.find('=')
@@ -1019,133 +1013,136 @@ def doit(arglist):
 				return out + ["OPERATION FAILED"]
 
 		out.append( _2utf8( filter ) )
+		
+		try:
+			for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
+				out.append( 'DN: %s' % _2utf8( univention.admin.objects.dn (object ) ) )
+				out.append( 'ARG: %s' % univention.admin.objects.arg( object ) )
 
-		for object in univention.admin.modules.lookup(module, co, lo, scope='sub', superordinate=superordinate, base=position.getDn(), filter=filter):
-			out.append( 'DN: %s' % _2utf8( univention.admin.objects.dn (object ) ) )
-			out.append( 'ARG: %s' % univention.admin.objects.arg( object ) )
-
-			if (hasattr(module,'virtual') and not module.virtual) or not hasattr(module,'virtual'):
-				object.open()
-				if hasattr(object,'open_warning') and object.open_warning:
-					out.append('WARNING: %s'%object.open_warning)
-				for key, value in object.items():
-					s=module.property_descriptions[key].syntax
-					if module.property_descriptions[key].multivalue:
-						for v in value:
-							if s.tostring(v):
-								out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( v ) ) ) )
+				if (hasattr(module,'virtual') and not module.virtual) or not hasattr(module,'virtual'):
+					object.open()
+					if hasattr(object,'open_warning') and object.open_warning:
+						out.append('WARNING: %s'%object.open_warning)
+					for key, value in object.items():
+						s=module.property_descriptions[key].syntax
+						if module.property_descriptions[key].multivalue:
+							for v in value:
+								if s.tostring(v):
+									out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( v ) ) ) )
+								else:
+									out.append('  %s: %s' % ( _2utf8( key ), None ) )
+						else:
+							if s.tostring(value):
+								out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( value ) ) ) )
 							else:
 								out.append('  %s: %s' % ( _2utf8( key ), None ) )
-					else:
-						if s.tostring(value):
-							out.append('  %s: %s' % ( _2utf8( key ), _2utf8( s.tostring( value ) ) ) )
-						else:
-							out.append('  %s: %s' % ( _2utf8( key ), None ) )
 
-				if 'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object),['objectClass'])['objectClass']:
-					references = lo.get( _2utf8(univention.admin.objects.dn( object ) ),
+					if 'univentionPolicyReference' in lo.get(univention.admin.objects.dn(object),['objectClass'])['objectClass']:
+						references = lo.get( _2utf8(univention.admin.objects.dn( object ) ),
 										 [ 'univentionPolicyReference' ] )
-					if references:
-						for el in references['univentionPolicyReference']:
-							out.append('  %s: %s' % ( 'univentionPolicyReference',
-													  _2utf8( s.tostring( el ) ) ) )
+						if references:
+							for el in references['univentionPolicyReference']:
+								out.append('  %s: %s' % ( 'univentionPolicyReference',
+													  	_2utf8( s.tostring( el ) ) ) )
 
-			if policyOptions:
-				policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( univention.admin.objects.dn( object ) ) ) )
-				out.append("  Policy-based Settings:")
-				line = policyResults.readline()
-				policy=''
-				value=[]
-				client={}
-				while not line == "":
-					if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
-						out.append("    %s"%line.strip())
-						if policyOptions==" ":
-							clsplit=string.split(line.strip(), ': ')
-							if clsplit[0] == 'Policy':
-								if policy:
-									client[attribute]=[policy, value]
-									value=[]
-								policy=clsplit[1]
-							elif clsplit[0] == 'Attribute':
-								attribute=clsplit[1]
-							elif clsplit[0] == 'Value':
-								value.append(clsplit[1])
-						else:
-							clsplit=string.split(line.strip(), '=')
-							if not client.has_key(clsplit[0]):
-								client[clsplit[0]] = []
-							client[clsplit[0]].append(clsplit[1])
-
+				if policyOptions:
+					policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( univention.admin.objects.dn( object ) ) ) )
+					out.append("  Policy-based Settings:")
 					line = policyResults.readline()
-
-				if policyOptions==" ":
-					client[attribute]=[policy, value]
+					policy=''
 					value=[]
+					client={}
+					while not line == "":
+						if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
+							out.append("    %s"%line.strip())
+							if policyOptions==" ":
+								clsplit=string.split(line.strip(), ': ')
+								if clsplit[0] == 'Policy':
+									if policy:
+										client[attribute]=[policy, value]
+										value=[]
+									policy=clsplit[1]
+								elif clsplit[0] == 'Attribute':
+									attribute=clsplit[1]
+								elif clsplit[0] == 'Value':
+									value.append(clsplit[1])
+							else:
+								clsplit=string.split(line.strip(), '=')
+								if not client.has_key(clsplit[0]):
+									client[clsplit[0]] = []
+								client[clsplit[0]].append(clsplit[1])
+
+						line = policyResults.readline()
+
+					if policyOptions==" ":
+						client[attribute]=[policy, value]
+						value=[]
+
+					out.append('')
+
+					if module_name == 'dhcp/host':
+							subnet_module=univention.admin.modules.get('dhcp/subnet')
+							for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
+
+								if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
+									policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( subnet.dn ) ) )
+									out.append("  Subnet-based Settings:")
+									line = policyResults.readline()
+									ddict={}
+									policy=''
+									value=[]
+									while not line == "":
+										if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
+											out.append("    %s"%line.strip())
+											if policyOptions==" ":
+												subsplit=string.split(line.strip(), ': ')
+												if subsplit[0] == 'Policy':
+													if policy:
+														ddict[attribute]=[policy, value]
+														value=[]
+													policy=subsplit[1]
+												elif subsplit[0] == 'Attribute':
+													attribute=subsplit[1]
+												elif subsplit[0] == 'Value':
+													value.append(subsplit[1])
+											else:
+												subsplit=string.split(line.strip(), '=')
+												if not ddict.has_key(subsplit[0]):
+													ddict[subsplit[0]] = []
+												ddict[subsplit[0]].append(subsplit[1])
+
+										line = policyResults.readline()
+
+									out.append('')
+
+									if policyOptions==" ":
+										ddict[attribute]=[policy, value]
+										value=[]
+
+									out.append("  Merged Settings:")
+
+									for key in ddict.keys():
+										if not client.has_key(key):
+											client[key]=ddict[key]
+
+
+
+									if policyOptions==" ":
+										for key in client.keys():
+											out.append("    Policy: "+client[key][0])
+											out.append("    Attribute: "+key)
+											for i in range(0, len(client[key][1])):
+												out.append("    Value: "+client[key][1][i])
+									else:
+										for key in client.keys():
+											for i in range(0, len(client[key])):
+												out.append("    %s=%s" % (key, client[key][i]))
+									out.append('')
 
 				out.append('')
-
-				if module_name == 'dhcp/host':
-						subnet_module=univention.admin.modules.get('dhcp/subnet')
-						for subnet in univention.admin.modules.lookup(subnet_module, co, lo, scope='sub', superordinate=superordinate, base='', filter=''):
-
-							if univention.admin.ipaddress.ip_is_in_network(subnet['subnet'], subnet['subnetmask'], object['fixedaddress'][0]):
-								policyResults = os.popen( 'univention_policy_result %s %s' % ( policyOptions, _2utf8( subnet.dn ) ) )
-								out.append("  Subnet-based Settings:")
-								line = policyResults.readline()
-								ddict={}
-								policy=''
-								value=[]
-								while not line == "":
-									if not (line.strip() == "" or line.strip()[:4]=="DN: " or line.strip()[:7]=="POLICY "):
-										out.append("    %s"%line.strip())
-										if policyOptions==" ":
-											subsplit=string.split(line.strip(), ': ')
-											if subsplit[0] == 'Policy':
-												if policy:
-													ddict[attribute]=[policy, value]
-													value=[]
-												policy=subsplit[1]
-											elif subsplit[0] == 'Attribute':
-												attribute=subsplit[1]
-											elif subsplit[0] == 'Value':
-												value.append(subsplit[1])
-										else:
-											subsplit=string.split(line.strip(), '=')
-											if not ddict.has_key(subsplit[0]):
-												ddict[subsplit[0]] = []
-											ddict[subsplit[0]].append(subsplit[1])
-
-									line = policyResults.readline()
-
-								out.append('')
-
-								if policyOptions==" ":
-									ddict[attribute]=[policy, value]
-									value=[]
-
-								out.append("  Merged Settings:")
-
-								for key in ddict.keys():
-									if not client.has_key(key):
-										client[key]=ddict[key]
-
-
-
-								if policyOptions==" ":
-									for key in client.keys():
-										out.append("    Policy: "+client[key][0])
-										out.append("    Attribute: "+key)
-										for i in range(0, len(client[key][1])):
-											out.append("    Value: "+client[key][1][i])
-								else:
-									for key in client.keys():
-										for i in range(0, len(client[key])):
-											out.append("    %s=%s" % (key, client[key][i]))
-								out.append('')
-
-			out.append('')
-
+		except univention.admin.uexceptions.ldapError, errmsg:
+			out.append('%s' %str(errmsg))
+			return out + ["OPERATION FAILED"]
 	else:
 		out.append("Unknown or no action defined")
 		out.append('')

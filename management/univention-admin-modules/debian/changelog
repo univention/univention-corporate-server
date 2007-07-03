@@ -1,3 +1,10 @@
+univention-admin-modules (1.2.3-8) unstable; urgency=low
+
+  * changed error handling for filter option with wrong attributes/special
+    chars
+
+ -- Bastian Neumann <neumann@univention.de>  Tue,  3 Jul 2007 09:03:51 +0200
+
 univention-admin-modules (1.2.3-7) unstable; urgency=low
 
   * improved filter option for special chars 
