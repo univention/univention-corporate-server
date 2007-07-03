@@ -1,1 +1,3 @@
 /etc/univention/templates/files/etc/amavis/amavisd.conf
+/etc/univention/templates/files/etc/clamav/clamd.conf
+/etc/univention/templates/files/etc/clamav/freshclam.conf
