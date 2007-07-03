@@ -1,3 +1,10 @@
+univention-heimdal (2.0.1-4) unstable; urgency=low
+
+  * Move hdb-ldap-create-base parameter outside of the database
+    section of krb5.conf, so that the configuration is valid.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  3 Jul 2007 16:45:14 +0200
+
 univention-heimdal (2.0.1-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts
