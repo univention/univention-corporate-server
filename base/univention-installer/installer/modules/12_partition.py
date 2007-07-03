@@ -713,7 +713,13 @@ class object(content):
 					devices.append('/dev/%s' % dev_match.group())
 					self.debug('Extracting /dev/%s ' % cols[3])
 
+		uniqlist = []
+		for dev in devices:
+			if not dev in uniqlist:
+				uniqlist.append(dev)
+		devices = uniqlist
 		devices.sort()
+		self.debug('devices=%s' % devices)
 
 		diskList={}
 		_re_warning=re.compile('^Warning: Unable to open .*')
@@ -763,18 +769,25 @@ class object(content):
 				num=cols[0]
 				part=dev+cols[0]
 				start=self.MB2MiB(float(cols[1].split('MB')[0].replace(',','.')))
+				#
 				end=self.MB2MiB(float(cols[2].split('MB')[0].replace(',','.')))
+				# EVIL EVIL EVIL START ==> FIXME TODO
+				# start is used as identifier but extended and logical partition can have same start point
+				while start in partList.keys():
+					start += 0.00000001
+				# EVIL EVIL EVIL END 
+
 				size=end-start
 				type=cols[4]
 				if type == 'extended':
-					ptype=2
+					ptype=PARTTYPE_EXTENDED
 					extended=1
 					primary+=1
 				if type == 'primary':
-					ptype=0
+					ptype=PARTTYPE_PRIMARY
 					primary+=1
 				if type == 'logical':
-					ptype=1
+					ptype=PARTTYPE_LOGICAL
 					logical+=1
 
 				fstype=''
@@ -786,7 +799,7 @@ class object(content):
 					if fstype in ['boot','hidden','raid','lvm','lba','palo','prep','boot,','hidden,','raid,','lvm,','lba,','palo,','prep']:
 						flag.append(fstype.strip(','))
 						fstype=''
-					
+
 
 				for i in range(6,10):
 					if len(cols) > i:
@@ -851,6 +864,8 @@ class object(content):
 					extended_start = part
 					extended_end = part+self.container['disk'][disk]['partitions'][part]['size']
 			if found and found_extended:
+				self.debug('scan_extended_size: extended_start=%s  start=%s  diff=%s' % (extended_start,start,start - extended_start))
+				self.debug('scan_extended_size: extended_end=%s  end=%s  diff=%s' % (extended_end,end, extended_end - end))
 				if extended_start < start-float(0.1):
 					self.container['temp'][disk]=[extended_start,start-float(0.1),end]
 				elif extended_end > end+float(0.1):
@@ -1000,7 +1015,7 @@ class object(content):
 				for diskname, disk in self.container['disk'].items():
 					for partname, part in disk['partitions'].items():
 						if part['type'] == parttype:
-							self.parent.debug('deleting part: %s on %s' % (partname, diskname))
+							self.parent.debug('deleting part: %s on %s (%s)' % (partname, diskname, self.parent.get_device(diskname, partname)))
 							self.part_delete_generic( 'part', diskname, partname, force=True )
 
 			# remove internal data avout LVM VGs and LVM PGs
@@ -2527,10 +2542,10 @@ class object(content):
 						self.operation='create'
 						self.add_elem('TXT_1', textline(_('New Partition:'),self.pos_y+2,self.pos_x+5)) #0
 
-						self.add_elem('TXT_2', textline(_('Mount-Point'),self.pos_y+4,self.pos_x+5)) #1
-						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+4,self.pos_x+5+len(_('Mount-Point')),20)) #2
-						self.add_elem('TXT_3', textline(_('Size (MB)'),self.pos_y+6,self.pos_x+5)) #3
-						self.add_elem('INP_size', input('%s' % int(partition['size']),self.pos_y+6,self.pos_x+5+len(_('Mount-Point')),20)) #4
+						self.add_elem('TXT_2', textline(_('Mount-Point:'),self.pos_y+4,self.pos_x+5)) #1
+						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+4,self.pos_x+6+len(_('Mount-Point:')),20)) #2
+						self.add_elem('TXT_3', textline(_('Size (MB):'),self.pos_y+6,self.pos_x+5)) #3
+						self.add_elem('INP_size', input('%s' % int(partition['size']),self.pos_y+6,self.pos_x+6+len(_('Mount-Point:')),20)) #4
 						self.add_elem('TXT_4', textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
 
 						try:

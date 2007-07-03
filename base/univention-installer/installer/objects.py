@@ -540,7 +540,7 @@ class mselect(select):
 
 class textline:
 	def __init__(self, text, pos_y, pos_x, align='left', width=0):
-		self.width=len(text)+1
+		self.width=len(text)
 		if width:
 			self.width=width
 
@@ -555,14 +555,14 @@ class textline:
 		self.height=1
 		self.pad=curses.newpad(self.height, self.width+2)
 		self.bgcolor()
-		if len(text) >0 and self.width-1  >= 0:
-			self.pad.addstr(0,0,text[:self.width-1])
+		if len(text) >0 and self.width  >= 0:
+			self.pad.addstr(0,0,text[:self.width])
 
 	def bgcolor(self):
 		self.pad.bkgd(" ",curses.color_pair(4))
 
 	def set_text(self,text):
-		self.width=len(text)+1
+		self.width=len(text)
 		self.pad=curses.newpad(self.height, self.width)
 		self.bgcolor()
 		self.pad.addstr(0,0,text)
@@ -1582,13 +1582,21 @@ class yes_no_win(subwin):
 	def input(self, key):
 		if key in [ 10, 32 ]:
 			if self.get_elem('BT_YES').get_status(): #Yes
+				sub = self.parent.sub
 				self._ok()
-				self.win_incomplete = False
-				return 0
+				if self.parent.sub is sub:
+					self.win_incomplete = False
+					return 0
+				else:
+					return 1
 			elif self.get_elem('BT_NO').get_status(): #No
+				sub = self.parent.sub
 				self._false()
-				self.win_incomplete = False
-				return 0
+				if self.parent.sub is sub:
+					self.win_incomplete = False
+					return 0
+				else:
+					return 1
 		elif key == 260 and self.get_elem('BT_NO').active:
 			#move left
 			self.get_elem('BT_NO').set_off()
@@ -1648,8 +1656,12 @@ class msg_win(subwin):
 
 	def input(self, key):
 		if key in [ 10, 32 ]:
+			sub = self.parent.sub
 			self._ok()
-			return 0
+			if self.parent.sub is sub:
+				return 0
+			else:
+				return 1
 		return 1
 
 	def layout(self):

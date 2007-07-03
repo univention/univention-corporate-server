@@ -1,4 +1,12 @@
-univention-installer (1.5.5-2) unstable; urgency=low
+univention-installer (1.5.7-1) unstable; urgency=low
+
+  * fixed overwriting of window borders by textline
+  * fixed closing window bug
+  * fixed missing extended partition bug
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue,  3 Jul 2007 15:43:38 +0200
+
+univention-installer (1.5.6-1) unstable; urgency=low
 
   * add missing translations
 
