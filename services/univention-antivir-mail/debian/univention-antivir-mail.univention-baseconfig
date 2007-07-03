@@ -1,5 +1,5 @@
 Type: file
-File: etc/amavis/amavisd.conf
+File: etc/amavis/conf.d/60-univention
 Variables: domainname
 Variables: hostname
 Variables: mail/hosteddomains
