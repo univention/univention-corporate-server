@@ -2127,6 +2127,7 @@ class object(content):
 		def resolve_type(self,type):
 			mapping = { PARTTYPE_PRIMARY: 'primary',
 						PARTTYPE_LOGICAL: 'logical',
+						PARTTYPE_EXTENDED: 'extended',
 						PARTTYPE_FREESPACE_PRIMARY: 'free',
 						PARTTYPE_FREESPACE_LOGICAL: 'free',
 						8: 'meta',
@@ -2137,11 +2138,49 @@ class object(content):
 						}
 			if mapping.has_key(type):
 				return mapping[type]
+			self.parent.debug('ERROR: resolve_type(%s)=unknown' % type)
 			return 'unknown'
 
 		def get_result(self):
 			pass
 
+
+		# returns False if one or more device files cannot be found - otherwise True
+		def write_devices_check(self):
+			missing_devices=[]
+			for disk in self.container['disk'].keys():
+				for part in self.container['disk'][disk]['partitions']:
+					if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
+						dev = self.parent.get_device(disk, part)
+						if not os.path.exists(dev):
+							missing_devices.append(dev)
+			missing_devices.sort()
+			if missing_devices:
+				self.parent.debug('MISSING DEVICES: %s' % missing_devices)
+				msglist = [ _('No device files found for following devices. Please'),
+							_('decrease number of partitions on a single disk or use LVM.'),
+							'' ]
+				# create device list and wrap at column 55
+				tmpstr = ''
+				for dev in missing_devices:
+					if len(tmpstr) + len(dev) > 55:
+						msglist.append(tmpstr)
+						tmpstr = dev
+					else:
+						if tmpstr == '':
+							tmpstr = dev
+						else:
+							tmpstr += ', %s' % dev
+				if len(tmpstr):
+					msglist.append(tmpstr)
+
+				self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2, msglist)
+				self.draw()
+				return False
+			else:
+				self.parent.debug('WRITE_DEVICES')
+				self.write_devices()
+				return True
 
 		def write_devices(self):
 			self.draw()
@@ -2898,13 +2937,13 @@ class object(content):
 								self.parent.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
 																		(disk,
 																		 self.parent.container['disk'][disk]['partitions'][part]['num'],
-																		 self.parent.MiB2MB(start),
-																		 self.parent.MiB2MB(end)))
+																		 self.parent.parent.MiB2MB(start),
+																		 self.parent.parent.MiB2MB(end)))
 								self.parent.parent.debug('COMMAND: /sbin/parted --script %s resize %s %s %s' %
 														 (disk,
 														  self.parent.container['disk'][disk]['partitions'][part]['num'],
-														  self.parent.MiB2MB(start),
-														  self.parent.MiB2MB(end)))
+														  self.parent.parent.MiB2MB(start),
+														  self.parent.parent.MiB2MB(end)))
 								self.parent.container['disk'][disk]['partitions'].pop(part)
 						self.parent.container['temp']={}
 						self.parent.rebuild_table(self.parent.container['disk'][disk],disk)
@@ -3000,15 +3039,17 @@ class object(content):
 				self.current=3
 				self.elements[3].set_on()
 			def _ok(self):
-				self.parent.write_devices()
+				if not self.parent.write_devices_check():
+					return 1  # do not return 0 ==> will close self.sub, but write_devices_check replaced self.sub with new msg win
 				return 0
 			def _false(self):
 				return 0
 
 		class verify_exit(verify):
 			def _ok(self):
-				self.parent.write_devices()
-				return 'next'
+				if self.parent.write_devices_check():
+					return 'next'
+				return 1  # do not return 0 ==> will close self.sub, but write_devices_check replaced self.sub with new msg win
 
 			def _false(self):
 				return 0
@@ -3029,7 +3070,8 @@ class object(content):
 				self.current=3
 				self.elements[3].set_on()
 			def _ok(self):
-				self.parent.write_devices()
+				if not self.parent.write_devices_check():
+					return 1  # do not return 0 ==> will close self.sub, but write_devices_check replaced self.sub with new msg win
 				return 0
 
 
