@@ -19,6 +19,7 @@ WallpaperMode=Scaled
 [FMSettings]
 NormalTextColor=0,0,0
 UnderlineLinks=true
+TextWidth=100
 
 [General]
 AutoLineUpIcons=true
