@@ -117,12 +117,11 @@ class baseConfig(dict):
 				value = ''
 
 			self[key] = value
-			
 		fp.close()
 
 		if import_failed:
 			self.__save_file(self.file)
-
+	
 	def __create_base_conf( self ):
 		if not os.path.exists( self.file ):
 			try:
@@ -577,7 +576,16 @@ class configHandlers:
 		for object in objects:
 			d = {}
 			for v in object.variables:
-				d[v] = bc[v]
+                                if v in self._handlers.keys():
+					if ".*" in v:
+						for i in range(0,4):
+							val=v.replace(".*","%s"%i)
+							regex = re.compile('(%s)'%v)
+							match = regex.search("%s"%self._handlers.keys())
+							d[val] = bc[val]
+							i+=1
+					else:
+						d[v] = bc[v]
 			object((bc, d))
 
 
