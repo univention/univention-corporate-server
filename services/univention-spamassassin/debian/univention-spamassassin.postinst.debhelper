@@ -1,0 +1,1 @@
+test -x /usr/sbin/univention-baseconfig && univention-baseconfig register univention-spamassassin || true

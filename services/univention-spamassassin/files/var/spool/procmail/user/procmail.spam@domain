@@ -1,0 +1,7 @@
+# Wenn kein Spam-Flag, dann wurde EMail vermutlich von
+# einem User weitergeleitet: Attachment extrahieren
+:0fw: bayes_fixup.lock
+* < 256000
+# * !^X-Spam-Status: Yes
+| /var/spool/procmail/extract.pl
+

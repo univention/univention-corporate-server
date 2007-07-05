@@ -1,0 +1,67 @@
+univention-spamassassin (1.0.0-1) unstable; urgency=low
+
+  * Update to 2.0 policies
+  * Add 2007 to copyright headers
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu,  5 Jul 2007 14:13:06 +0200
+
+univention-spamassassin (0.9-8) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 11:14:49 +0100
+
+univention-spamassassin (0.9-7) unstable; urgency=low
+
+  * add --dbpath parameter to call to sa-learn, so the correct database is
+    updated
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 26 Oct 2006 13:55:55 +0200
+
+univention-spamassassin (0.9-6) unstable; urgency=low
+
+  * decide between old and new cyrus version
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Apr 2006 19:48:22 +0200
+
+univention-spamassassin (0.9-5) unstable; urgency=low
+
+  * fix path to global spam folder
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 13:38:30 +0100
+
+univention-spamassassin (0.9-4) unstable; urgency=low
+
+  * fix path to global spam folder
+
+ -- Martin Kuehl <kuehl@univention.de>  Tue, 28 Feb 2006 13:35:15 +0100
+
+univention-spamassassin (0.9-3) unstable; urgency=low
+
+  * merge for UGS
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jan 2006 08:31:48 +0100
+
+univention-spamassassin (0.4-0) unstable; urgency=low
+
+  * changes needed for new spamassassin-version
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 17 Nov 2005 14:29:54 +0100
+
+univention-spamassassin (0.3) unstable; urgency=low
+
+  * support for kolab2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Oct 2005 08:27:55 +0200
+
+univention-spamassassin (0.2) unstable; urgency=low
+
+  * Removed option -a from conffile, added dep. for >=sa-3.0
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 18 Aug 2005 17:13:04 +0200
+
+univention-spamassassin (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Holger Friese <friese@univention.de>  Mon, 23 Aug 2004 11:33:01 +0200

@@ -1,0 +1,16 @@
+Source: univention-spamassassin
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-spamassassin
+Architecture: all
+Depends: univention-baseconfig, spamassassin (>= 3.0.4), spamc
+Description: univention mail antispam
+ univention mail antispam module
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

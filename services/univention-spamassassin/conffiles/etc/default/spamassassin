@@ -1,0 +1,14 @@
+# /etc/default/spamd.conf
+# Duncan Findlay
+
+# WARNING read README.spamd before using.  THERE ARE SECURITY RISKS!
+
+# Change to one to enable spamd
+ENABLED=1
+
+# Options
+# See man spamd for possible options. The -d option is automatically added.
+OPTIONS="-m 10 -H"
+
+# Set nice level of spamd
+#NICE="--nicelevel 15"

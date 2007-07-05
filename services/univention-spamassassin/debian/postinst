@@ -1,0 +1,59 @@
+#! /bin/sh
+# Univention Spamassassin
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+if [ -f /var/spool/procmail/user/procmail.spam@domain ]; then
+	eval `univention-baseconfig shell domainname`
+	mv /var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/procmail.spam@$domainname
+fi
+
+adduser --quiet --system --home /var/lib/spamd --shell /bin/bash spamd
+chown -R spamd:nogroup /var/spool/procmail
+
+univention-baseconfig set mail/antispam?yes
+univention-baseconfig set mail/antispam/requiredhits?5.0
+univention-baseconfig set mail/antispam/learndaily?no
+
+if [ -x /etc/init.d/postfix ]; then
+	/etc/init.d/postfix reload || true
+fi
+
+
+#DEBHELPER#
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2; then
+	univention-baseconfig commit /etc/default/spamassassin
+fi	
+
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/68univention-spamassassin.inst || true
+fi
+
+exit 0
+

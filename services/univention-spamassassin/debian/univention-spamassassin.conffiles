@@ -1,0 +1,5 @@
+/etc/univention/templates/files/usr/share/spamassassin/10_misc.cf
+/etc/univention/templates/files/etc/default/spamassassin
+
+/etc/univention/templates/files/usr/sbin/univention-sa-learn
+/etc/univention/templates/files/etc/cron.daily/univention-spamassassin

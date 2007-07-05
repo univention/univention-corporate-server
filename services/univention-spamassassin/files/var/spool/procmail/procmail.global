@@ -1,0 +1,12 @@
+# LOGFILE=/var/spool/procmail/procmail.log
+# LOGABSTRACT=all
+
+PATH=/usr/bin:/usr/local/bin
+SHELL=/bin/sh
+DELIVER=/usr/sbin/sendmail
+
+INCLUDERC=/var/spool/procmail/user/procmail.$2
+
+:0:
+| $DELIVER -oi -f $1 $2
+
