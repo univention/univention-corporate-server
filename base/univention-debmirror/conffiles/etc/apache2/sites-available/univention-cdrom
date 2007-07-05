@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
-# 	/etc/univention/templates/files/etc/univention/apache/93univention-cdrom
+# 	/etc/univention/templates/files/etc/apache2/univention-cdrom
 #
 
 

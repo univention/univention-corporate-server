@@ -1,3 +1,9 @@
+univention-debmirror (1.0.1-1) unstable; urgency=low
+
+  * move definition for repository web site to apache2 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 05 Jul 2007 16:51:30 +0200
+
 univention-debmirror (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
