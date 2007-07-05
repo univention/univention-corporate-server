@@ -1,2 +1,2 @@
 Type: file
-File: etc/univention/apache/93univention-cdrom
+File: etc/apache2/sites-available/univention-cdrom
