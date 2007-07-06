@@ -1,3 +1,9 @@
+univention-grub (1.0.14-1) unstable; urgency=low
+
+  * fixed reference to boot splash image 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 06 Jul 2007 14:19:34 +0200
+
 univention-grub (1.0.13-1) unstable; urgency=low
 
   * improve update of initramfs
