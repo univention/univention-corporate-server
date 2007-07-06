@@ -118,7 +118,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 elif [ "$server_role" = "memberserver" ]; then
 	$PIPE apt-get install univention-server-member --yes
 elif [ "$server_role" = "managed_client" ]; then
-	$PIPE apt-get install univention-fat-client --yes
+	$PIPE apt-get install univention-managed-client --yes
 elif [ "$server_role" = "mobile_client" ]; then
 	$PIPE apt-get install univention-mobile-client --yes
 elif [ "$server_role" = "basesystem" ]; then

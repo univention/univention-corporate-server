@@ -1,3 +1,9 @@
+univention-installer (1.5.7-2) unstable; urgency=low
+
+  * Fixed base package installation on managed clients
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Fri,  6 Jul 2007 08:54:46 +0200
+
 univention-installer (1.5.7-1) unstable; urgency=low
 
   * fixed overwriting of window borders by textline
