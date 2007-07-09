@@ -1,0 +1,146 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Manager Modules
+#  check for unused policies
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import ldap, sys
+
+import univention.baseconfig
+
+baseConfig=univention.baseconfig.baseConfig()
+baseConfig.load()
+
+baseDN=baseConfig['ldap/base']
+
+lo=ldap.open('localhost', 389)
+bindpw=open('/etc/ldap.secret').read()
+if bindpw[-1] == '\n':
+	bindpw=bindpw[0:-1]
+lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+
+
+def print_usage():
+	print "\nUse: proof_policies [query|delete] \n"
+	print "Without options you will see a list of unused policies and references to non-existant policies.",
+	print "The query-option will request each time for deletion of such elements, the delete-option will",
+	print "delete every unused policy and broken reference. If you use both options the first will define",
+	print "the behavior !\n"
+
+# delete all if command delete is given
+delete_all = 0
+query = 0
+if len(sys.argv) > 1:
+	if sys.argv[1] == "delete":
+		delete_all = 1
+	elif sys.argv[1] == "query":
+		query = 1
+	else:
+		print_usage()
+		sys.exit()
+	
+# What we gonna do:
+# 1. list all objectClass=univentionPolicy
+# 2. iterate all objectClass=univentionPolicyReference
+# 3. therefore iterate all Attributes univentionPolicyReference
+#      if found reference points to a exisiting reference mark it as used, if not query for deleting
+# 4. query all unmarked Policies for deleting
+
+count_references = 0
+count_deleted_references = 0
+count_policies = 0
+count_deleted_policies = 0
+
+policy_object = {}
+
+res_uP=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicy')
+for i in range(0,len(res_uP)):
+	policy_object[res_uP[i][0]] = 0 # set all Policies as unused
+
+
+res_uPR=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionPolicyReference')
+for i in range(0,len(res_uPR)):
+	if res_uPR[i][1].has_key("univentionPolicyReference"):
+		#to_delete = []
+		modlist = []
+		for el in res_uPR[i][1]["univentionPolicyReference"]:
+			if policy_object.has_key(el):
+				policy_object[el]=1
+			else:
+				print "referenced policy does not exists:",res_uPR[i][0],"->",el
+				count_references = count_references + 1
+				inp = ""
+				if not delete_all:
+					if query:
+						print "delete reference (y/N)?"
+						inp = sys.stdin.readline()
+				else: inp="y"
+				if inp[:1] == "y":
+					modlist.append((ldap.MOD_DELETE,"univentionPolicyReference",el))
+					print "marked for deletion"
+					count_deleted_references = count_deleted_references + 1
+
+
+		if len(modlist)>0:
+			lo.modify(res_uPR[i][0],modlist)
+			print "deleted References in",res_uPR[i][0]
+
+
+	else: print "Warning: found univentionPolicyReference without such Attribute",res_uPR[i][0]
+
+
+to_delete = []
+for el in policy_object.keys():
+	if policy_object[el] == 0:
+		print "no reference to policy",el
+		count_policies = count_policies + 1
+		inp = ""
+		if not delete_all:
+			if query:
+				print "delete policy (y,N)?"
+				inp = sys.stdin.readline()
+		else: inp = "y"
+		if inp[:1] == "y":
+			to_delete.append(el)
+			print "marked for deletion"
+
+for el in to_delete:
+	lo.delete_s(el)
+	print "deleted",el
+	count_deleted_policies = count_deleted_policies + 1
+
+
+print "Found",count_references,"references to non-existing policies, deleted",
+print count_deleted_references,"of them."
+print "Found",count_policies,"not referenced policies, deleted",
+print count_deleted_policies,"of them."
+
+if not query and not delete_all:
+	print "\nRun this script with an option for deleting unused policies and references,"
+	print "call \"proof_policies help\" for details"

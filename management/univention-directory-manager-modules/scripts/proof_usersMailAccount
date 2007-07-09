@@ -1,0 +1,83 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Manager Modules
+#  check if user accounts have objectClass univentionMail
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import sys, ldap, string
+
+import univention.baseconfig
+
+baseConfig=univention.baseconfig.baseConfig()
+baseConfig.load()
+
+baseDN=baseConfig['ldap/base']
+
+lo=ldap.open('localhost', 389)
+bindpw=open('/etc/ldap.secret').read()
+if bindpw[-1] == '\n':
+	bindpw=bindpw[0:-1]
+lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+
+count_changes = 0
+warning = 0
+
+
+print "\n  proof if user-accounts have objectClass univentionMail and activate it."
+print "  call %s all to activate all users without questions.\n"%sys.argv[0]
+
+res_pA=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(|(&(objectClass=posixAccount)(objectClass=shadowAccount))(objectClass=sambaSamAccount)(&(objectClass=person)(objectClass=organizationalPerson)(objectClass=inetOrgPerson)))(!(uidNumber=0))(!(uid=*$))(!(objectClass=univentionMail)))', ['objectClass'])
+
+print "found %s Users which may be changed:\n" % len(res_pA)
+
+activate_all = False
+
+if len(sys.argv) > 1:
+	if sys.argv[1] == "all":
+		activate_all = True
+
+for i in range(0,len(res_pA)):
+	modlist = [(ldap.MOD_ADD,'objectClass','univentionMail')]
+	try:
+		inp = ""
+		print "found user without mail: %s"%res_pA[i][0]
+		if not activate_all:
+			print "activate mail? (y/N)?"
+			inp = sys.stdin.readline()
+		if activate_all or inp == "y":
+			lo.modify_s(res_pA[i][0],modlist)
+			count_changes = count_changes +1
+			print "Modified %s"%res_pA[i][0]
+	except:
+		print "Warning: failed to modify User %s"%res_pA[i][0]
+		warning = warning + 1
+
+print "changing of",len(res_pA),"Users finished, changed",count_changes,"of them (",warning," warnings).\n"
+
+

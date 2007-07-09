@@ -1,0 +1,171 @@
+# Copyright (C) 2006 Univention GmbH
+# Univention GmbH <packages@univention.de>
+# This file is distributed under the same license as this package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-10-19 08:42+0200\n"
+"PO-Revision-Date: 2004-04-02 16:24+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+"Generated-By: pygettext.py 1.3\n"
+
+#: cn.py:18
+msgid "Container: Container"
+msgstr "Container: Container"
+
+#: cn.py:24 dc.py:40 ou.py:25
+msgid "Name"
+msgstr "Name"
+
+#: cn.py:34 ou.py:35
+msgid "Add to Standard Policy Container"
+msgstr "Zu Standard-Richtlinien-Container hinzufügen"
+
+#: cn.py:44 ou.py:45
+msgid "Add to Standard DHCP Container"
+msgstr "Zu Standard-DHCP-Container hinzufügen"
+
+#: cn.py:54 ou.py:55
+msgid "Add to Standard DNS Container"
+msgstr "Zu Standard-DNS-Container hinzufügen"
+
+#: cn.py:64 ou.py:65
+msgid "Add to Standard User Container"
+msgstr "Zu Standard-Benutzer-Container hinzufügen"
+
+#: cn.py:74 ou.py:75
+msgid "Add to Standard Group Container"
+msgstr "Zu Standard-Gruppen-Container hinzufügen"
+
+#: cn.py:84 ou.py:85
+msgid "Add to Standard Computer Container"
+msgstr "Zu Standard-Rechner-Containern hinzufügen"
+
+#: cn.py:94 ou.py:95
+msgid "Add to Standard Network Container"
+msgstr "Zu Standard-Netzwerk-Containern hinzufügen"
+
+#: cn.py:104 ou.py:105
+msgid "Add to Standard Share Container"
+msgstr "Zu Standard-Freigaben-Container hinzufügen"
+
+#: cn.py:114 ou.py:115
+msgid "Add to Standard Printer Container"
+msgstr "Zu Standard-Drucker-Container hinzufügen"
+
+#: cn.py:124 ou.py:125
+msgid "Add to Standard mail container"
+msgstr "Zu Standard-Mail-Container hinzufügen"
+
+#: cn.py:134 ou.py:135
+msgid "Add to Standard License Container"
+msgstr "Zu Standard-Lizenz-Containern hinzufügen"
+
+#: cn.py:144 ou.py:145
+msgid "Description"
+msgstr "Beschreibung"
+
+#: cn.py:165 dc.py:146 ou.py:166
+msgid "General"
+msgstr "Allgemein"
+
+#: cn.py:165 dc.py:146 ou.py:166
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
+#: cn.py:168 ou.py:169
+msgid "Path Settings"
+msgstr "Container-Einstellungen"
+
+#: cn.py:168 ou.py:169
+msgid "Default positions for adding objects"
+msgstr "Vorgegebene Position beim Hinzufügen von Objekten"
+
+#: dc.py:30
+msgid "Container: Domain"
+msgstr "Container: Domäne"
+
+#: dc.py:34 dc.py:125
+msgid "Kerberos Realm"
+msgstr "Kerberos Realm"
+
+#: dc.py:50 dc.py:147
+msgid "Domain Password"
+msgstr "Domänen-Passwort"
+
+#: dc.py:60
+msgid "DNS Forward Zone"
+msgstr "Forward Lookup Zone"
+
+#: dc.py:71
+msgid "DNS Reverse Zone"
+msgstr "Reverse Lookup Zone"
+
+#: dc.py:81
+msgid "Samba Domain Name"
+msgstr "Samba-Domänenname"
+
+#: dc.py:92
+msgid "Samba SID"
+msgstr "Samba-SID"
+
+#: dc.py:103
+msgid "Samba Next User RID"
+msgstr "Nächste Samba-User-RID"
+
+#: dc.py:114
+msgid "Samba Next Group RID"
+msgstr "Nächste Samba-Gruppen-RID"
+
+#: dc.py:136
+msgid "Mail Relay Server"
+msgstr "Mail Relay-Server"
+
+#: dc.py:147
+msgid "Administrator Password for this Domain"
+msgstr "Administrator Passwort für die Domäne"
+
+#: dc.py:148
+msgid "DNS"
+msgstr "DNS"
+
+#: dc.py:148
+msgid "DNS Zones"
+msgstr "DNS-Zonen"
+
+#: dc.py:151
+msgid "Samba"
+msgstr "Samba"
+
+#: dc.py:151
+msgid "Samba Settings"
+msgstr "Samba-Einstellungen"
+
+#: dc.py:155
+msgid "Kerberos"
+msgstr "Kerberos"
+
+#: dc.py:155
+msgid "Kerberos Settings"
+msgstr "Kerberos-Einstellungen"
+
+#: dc.py:158
+msgid "Mail"
+msgstr "Mail"
+
+#: dc.py:158
+msgid "Mail Settings"
+msgstr "Mail-Einstellungen"
+
+#: ou.py:19
+msgid "Container: Organizational Unit"
+msgstr "Container: Organisationseinheit"
+
+#~ msgid "FIXME"
+#~ msgstr "FIXME"
