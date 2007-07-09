@@ -46,7 +46,8 @@ def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = 
 	defaultType = '.png'
 	alternativeType = '.gif'
 	
-	filesystemLocation = '/usr/share/univention-admin/www'
+	filesystemLocations = [ '/usr/share/univention-directory-manager/www',
+		'/usr/share/univention-webui-style' ]
 	filesystemSubpathGeneric = '/icon/'
 	
 	availablePaths = [filesystemSubpath+iconName+defaultType,
@@ -57,8 +58,9 @@ def selectIconByName(iconName, iconNameGeneric = 'generic', filesystemSubpath = 
 		availablePaths.append( filesystemSubpathGeneric+iconNameGeneric+alternativeType )
 		
 	for iconPath in availablePaths:
-		if os.path.exists( filesystemLocation+iconPath ):
-			return iconPath
+	  	for prefix in filesystemLocations:
+			if os.path.exists( prefix + iconPath ):
+				return iconPath
 	return False
 
 class unimodule(uniconf):
