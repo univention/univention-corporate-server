@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
+# Univention Directory Manager Modules
 #  check for unused dhcp records
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -32,9 +32,9 @@
 
 import ldap, string, sys
 
-import univention_baseconfig
+import univention.baseconfig
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univention.baseconfig.baseConfig()
 baseConfig.load()
 
 baseDN=baseConfig['ldap/base']

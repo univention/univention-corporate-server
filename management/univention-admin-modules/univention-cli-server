@@ -78,7 +78,7 @@ def main():
 	global logfile
 	logfile=''
 	if len(sys.argv) < 2:
-		logfile='/var/log/univention/admin-cmd.log'
+		logfile='/var/log/univention/directory-manager-cmd.log'
 	else:
 		logfile=sys.argv[1]
 		
@@ -115,8 +115,8 @@ def main():
 
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
-	if baseConfig.has_key('admin/cmd/debug/level'):
-		debug_level=baseConfig['admin/cmd/debug/level']
+	if baseConfig.has_key('directory/manager/cmd/debug/level'):
+		debug_level=baseConfig['directory/manager/cmd/debug/level']
 	else:
 		debug_level=1
 	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
@@ -128,13 +128,13 @@ def main():
 	except:	
 		print 'E: Socket directory exists (%s)' % socket_dir
 	
-	if baseConfig.has_key('admin/cmd/timeout'):
-		timeout=baseConfig['admin/cmd/timeout']
+	if baseConfig.has_key('directory/manager/cmd/timeout'):
+		timeout=baseConfig['directory/manager/cmd/timeout']
 		if int(timeout) > 2147483647:
 			timeout=2147483647
 	else:
 		timeout=300
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'daemon [%s] baseconfig key admin/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
 	try:
 		s=ForkingTCPServer(socket_path, myRequestHandler)
 		os.chmod(socket_path, 0600)
@@ -222,7 +222,7 @@ def doit(sarglist, conn):
 	
 	cmdfile=os.path.basename(arglist[0])
 	if cmdfile == 'univention-admin':
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-admin' % (os.getppid(), os.getpid()))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
 		try:
 			output = univention.admincli.admin.doit(arglist)

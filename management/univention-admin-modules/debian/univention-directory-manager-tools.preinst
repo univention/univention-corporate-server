@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Admin Modules
-#  postinst script
+# Univention Directory Manager Modules
+#  preinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -29,7 +29,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-univention-baseconfig set admin/cmd/debug/level?0
-univention-baseconfig set admin/cmd/timeout?300
-
 #DEBHELPER#
+
+echo "kill all running univention-cli-server"
+pid=`ps xaw | grep univention-cli-server | grep -v grep | awk '{print $1}'`
+
+if [ -n "$pid" ] 
+	then
+	kill $pid
+fi
+	
+exit 0

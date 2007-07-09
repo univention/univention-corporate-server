@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
+# Univention Directory Manager Modules
 #  check if users are member of their primary group
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -32,9 +32,9 @@
 
 import ldap, string
 
-import univention_baseconfig
+import univentionr._baseconfig
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univentionr._baseconfig.baseConfig()
 baseConfig.load()
 
 baseDN=baseConfig['ldap/base']

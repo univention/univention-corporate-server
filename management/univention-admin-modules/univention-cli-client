@@ -71,9 +71,9 @@ except:
 		os.dup2(null, sys.stdout.fileno())
 		os.dup2(null, sys.stderr.fileno())
 		if len(logfile) >0:
-			os.execv('/usr/share/univention-admin-tools/univention-cli-server', ['univention-cli-server', logfile])
+			os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', ['univention-cli-server', logfile])
 		else:
-			os.execv('/usr/share/univention-admin-tools/univention-cli-server', ['univention-cli-server'])
+			os.execv('/usr/share/univention-directory-manager-tools/univention-cli-server', ['univention-cli-server'])
 	else:
 		os.waitpid(pid, os.P_NOWAIT)
 	

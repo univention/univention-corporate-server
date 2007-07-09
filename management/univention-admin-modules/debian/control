@@ -1,4 +1,4 @@
-Source: univention-admin-modules
+Source: univention-directory-manager-modules
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
@@ -6,13 +6,13 @@ Standards-Version: 3.5.5
 Build-Depends: debhelper, python, python-all-dev, python-central
 XS-Python-Version: all
 
-Package: python-univention-admin
+Package: python-univention-directory-manager
 Architecture: all
-Depends: ${python:Depends}, python-univention, python-univention-heimdal, makepasswd, univention-newsid, univention-smbencrypt, univention-webui-style, python2.4-m2crypto, python-univention-admin-cli
+Depends: ${python:Depends}, python-univention, python-univention-heimdal, makepasswd, univention-newsid, univention-smbencrypt, univention-webui-style, python2.4-m2crypto, python-univention-directory-manager-cli
 Conflicts: univention-admin-modules, univention-admin (<< 2.1), python2.3-univention-admin-mail, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python2.3-univention-admin, python2.4-univention-admin
-Replaces: univention-admin-modules, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python2.4-univention-admin
-Suggests: univention-admin, univention-admin-tools
-Provides: ${python:Provides}, python2.4-univention-admin
+Replaces: univention-admin-modules, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python2.4-univention-admin, python-univention-admin
+Suggests: univention-directory-manager, univention-directory-manager-tools
+Provides: ${python:Provides}, python2.4-univention-directory-manager, python-univention-admin, python2.4-univention-admin
 XB-Python-Version: ${python:Versions}
 Description: UCS - Modules for administration tools
  This package contains the modules that implement the
@@ -23,25 +23,28 @@ Description: UCS - Modules for administration tools
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: python-univention-admin-cli
+Package: python-univention-directory-manager-cli
 Architecture: all
 Depends: ${python:Depends}, python-univention
-Provides: ${python:Provides}
+Provides: ${python:Provides}, python-univention-admin-cli
+Replaces: python-univention-admin-cli
+Conflicts: python-univention-admin-cli
 XB-Python-Version: ${python:Versions}
 Description: UCS - Modules for administration tools
  This package contains the modules that implement the
- features of Univention Admin.
+ features of Univention Directory Manager.
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-admin-tools
+Package: univention-directory-manager-tools
 Architecture: all
-Depends: python-univention-admin
-Conflicts: univention-admin-modules, python2.3-univention-admin
-Replaces: univention-admin-modules
+Depends: python-univention-directory-manager
+Conflicts: univention-admin-modules, python2.3-univention-admin, univention-admin-tools
+Replaces: univention-admin-modules, univention-admin-tools
+Provides: univention-admin-tools
 Description: UCS - Command-line based administration tools
  This package contains command-line based programs to
  manage UCS.
