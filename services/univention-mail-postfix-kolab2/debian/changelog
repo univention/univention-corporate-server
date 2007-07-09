@@ -1,3 +1,12 @@
+univention-mail-postfix-kolab2 (1.0.0-6) unstable; urgency=low
+
+  * In Univention Groupware Server 1.3.x Postfix was patched to accept
+    an empty flag passed to a pipe (flags=n). Postfix 2.3 has gained
+    support for such an option (null_mailer), so use this instead in
+    the kolabfilter definitions. See Debian #347262.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon,  9 Jul 2007 09:25:50 +0200
+
 univention-mail-postfix-kolab2 (1.0.0-5) unstable; urgency=low
 
   * dont reload postfix

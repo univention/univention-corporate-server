@@ -29,7 +29,7 @@ if baseConfig.has_key('postfix/allow-unauth') and baseConfig['postfix/allow-unau
 	print '    -allow-unauth'
 @!@
 
-kolabfilter     unix  -       n       n       -       -       pipe user=cyrus flags=n argv=/usr/bin/php
+kolabfilter     unix  -       n       n       -       -       pipe user=cyrus null_sender= argv=/usr/bin/php 
     -c /etc/php4/apache/php.ini
     -f /var/lib/univention-kolab2-framework/kolabfilter.php 
     --
@@ -38,7 +38,7 @@ kolabfilter     unix  -       n       n       -       -       pipe user=cyrus fl
     -r ${recipient}
     -c ${client_address}
 
-kolabmailboxfilter     unix  -       n       n       -       -       pipe user=cyrus flags=n argv=/usr/bin/php
+kolabmailboxfilter     unix  -       n       n       -       -       pipe user=cyrus null_sender= argv=/usr/bin/php
     -c /etc/php4/apache/php.ini
     -f /var/lib/univention-kolab2-framework/kolabmailboxfilter.php
     --
