@@ -1,3 +1,9 @@
+univention-webui-style (1.0.3-1) unstable; urgency=low
+
+  * add new header icons for directory manager; removed admin header icon
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 16:44:01 +0200
+
 univention-webui-style (1.0.2-10) unstable; urgency=low
 
   * changed some link-styles in ucs-overview
