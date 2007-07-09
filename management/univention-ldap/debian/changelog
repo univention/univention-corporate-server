@@ -1,3 +1,10 @@
+univention-ldap (2.2.4-3) unstable; urgency=low
+
+  * set dependency to univention-directory-manager-tools instead of
+    univention-admin-tools 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 16:46:32 +0200
+
 univention-ldap (2.2.4-2) unstable; urgency=low
 
   * added descriptions for default container in univention-admin 
