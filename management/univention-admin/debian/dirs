@@ -1,8 +1,8 @@
 usr/share/locale/de/LC_MESSAGES
-usr/share/univention-admin
-usr/share/univention-admin/www
-usr/share/univention-admin/www/locale/de/LC_MESSAGES
-var/lib/univention-admin/tmp
-var/lib/univention-admin/log
+usr/share/univention-directory-manager
+usr/share/univention-directory-manager
+usr/share/univention-directory-manager/www/locale/de/LC_MESSAGES
+var/lib/univention-directory-manager/tmp
+var/lib/univention-directory-manager/log
 usr/sbin
 usr/lib/univention-install

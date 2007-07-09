@@ -16,15 +16,15 @@ msgstr ""
 "Generated-By: pygettext.py 1.3\n"
 
 #: uniconf/main.py:120 uniconf/unidialog.py:101
-msgid "Welcome to Univention Admin"
-msgstr "Willkommen zu Univention Admin"
+msgid "Welcome to Univention Directory Manager"
+msgstr "Willkommen zu Univention Directory Manager"
 
 #: uniconf/main.py:122 uniconf/unidialog.py:103
 msgid ""
-"Univention Admin enables you to manage all components of your Univention "
+"Univention Directory Manager enables you to manage all components of your Univention "
 "Corporate Server (UCS) Domain."
 msgstr ""
-"Univention Admin ermöglicht Ihnen die Administration aller Elemente Ihrer "
+"Univention Directory Manager ermöglicht Ihnen die Administration aller Elemente Ihrer "
 "Univention Corporate Server (UCS) Domäne."
 
 #: uniconf/main.py:125 uniconf/unidialog.py:106
@@ -49,13 +49,13 @@ msgid ""
 "Besides everything you can do with the wizards, the navigation provides you "
 "also an interface for many other settings, including structural extensions "
 "like containers, organizational units and connected policies, advanced DNS "
-"and DHCP configuration or settings for Univention Admin itself."
+"and DHCP configuration or settings for Univention Directory Manager itself."
 msgstr ""
 "Neben allen Möglichkeiten, die die Assistenten bieten, erlaubt die "
 "Navigation die Administration der gesamten Domänenstruktur einschliesslich "
 "Containern, Organisationseinheiten und zugehörigen Richtlinien, die "
 "fortgeschrittene Verwaltung von DNS und DHCP oder die Konfiguration von "
-"Univention Admin."
+"Univention Directory Manager."
 
 #: uniconf/main.py:129 uniconf/unidialog.py:110
 msgid "Console"
@@ -81,11 +81,11 @@ msgstr "Weitere Informationen"
 
 #: uniconf/main.py:130 uniconf/unidialog.py:113
 msgid ""
-"For more information about UCS, Univention Admin and other Univention Tools "
+"For more information about UCS, Univention Directory Manager and other Univention Tools "
 "take a look at the documentation or the online-forum on <a target=parent "
 "href=http://www.univention.de>www.univention.de</a>."
 msgstr ""
-"Weitere Informationen zu UCS, Univention Admin und anderen Univention Tools "
+"Weitere Informationen zu UCS, Univention Directory Manager und anderen Univention Tools "
 "finden Sie im Handbuch oder im Online Forum auf <a target=parent href=http://"
 "www.univention.de>www.univention.de</a>."
 
@@ -102,8 +102,8 @@ msgstr "// angemeldet als: %s%s"
 
 #: uniconf/main.py:173 uniconf/modabout.py:83 uniconf/modabout.py:95
 #: uniconf/unidialog.py:171
-msgid "Univention Admin"
-msgstr "Univention Admin"
+msgid "Univention Directory Manager"
+msgstr "Univention Directory Manager"
 
 #: uniconf/main.py:309 uniconf/modedit.py:4960 uniconf/modedit.py:4971
 #: uniconf/modedit.py:4973 uniconf/unidialog.py:313
@@ -163,8 +163,8 @@ msgid "About"
 msgstr "Über"
 
 #: uniconf/modabout.py:51
-msgid "About Univention Admin"
-msgstr "Über Univention Admin"
+msgid "About Univention Directory Manager"
+msgstr "Über Univention Directory Manager"
 
 #: uniconf/modabout.py:100
 msgid "Version"
@@ -1195,8 +1195,8 @@ msgid "Admin"
 msgstr "Admin"
 
 #: uniconf/modself.py:77
-msgid "Edit my Univention Admin settings"
-msgstr "Meine Univention Admin Einstellungen bearbeiten"
+msgid "Edit my Univention Directory Manager settings"
+msgstr "Meine Univention Directory Manager Einstellungen bearbeiten"
 
 #: uniconf/modself.py:85 uniconf/modself.py:87
 msgid "My personal objects"

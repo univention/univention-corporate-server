@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
+# Univention Directory Manager
 #  show the about dialog
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -49,7 +49,7 @@ def create(a,b,c):
 
 def myinfo(settings):
 	if settings.listAdminModule('modabout'):
-		return unimodule.realmodule("about", _("About"), _("About Univention Admin"))
+		return unimodule.realmodule("about", _("About"), _("About Univention Directory Manager"))
 	else:
 		return unimodule.realmodule("about", "", "")
 
@@ -81,7 +81,7 @@ class modabout(unimodule.unimodule):
 					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'about_layout'},{"obs":[]})]})]})
 				    )
 
-		self.nbook = notebook('', {}, {'buttons': [("%s %s" % (_('About'),_("Univention Admin")),"%s %s" % (_('About'),_("Univention Admin")))], 'selected': 0})
+		self.nbook = notebook('', {}, {'buttons': [("%s %s" % (_('About'),_("Univention Directory Manager")),"%s %s" % (_('About'),_("Univention Directory Manager")))], 'selected': 0})
 		self.subobjs.append(self.nbook)
 
 
@@ -93,7 +93,7 @@ class modabout(unimodule.unimodule):
 		## Admin
 		rows.append(tablerow("",{},{"obs":[
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-			header(_("Univention Admin"),{"type":"4"},{})
+			header(_("Univention Directory Manager"),{"type":"4"},{})
 			]})
 			]}))
 

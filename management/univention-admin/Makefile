@@ -1,8 +1,8 @@
 # 
 # Univention Admin
-#  Makefile for the admin debian package
+#  Makefile for the directory manager debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -40,10 +40,10 @@ clean:
 	@find uniconf -name '*.pyo' -exec rm \{\} \;
 
 install: all
-	install -d $(DESTDIR)/usr/share/univention-admin
+	install -d $(DESTDIR)/usr/share/univention-directory-manager
 	@for i in $(UNICONF); do\
-		o=$(DESTDIR)/usr/share/univention-admin/uniconf/$${i#uniconf/};\
+		o=$(DESTDIR)/usr/share/univention-directory-manager/uniconf/$${i#uniconf/};\
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done
-	install -m 0755 uniconf/uniconf-client $(DESTDIR)/usr/share/univention-admin
+	install -m 0755 uniconf/uniconf-client $(DESTDIR)/usr/share/univention-directory-manager

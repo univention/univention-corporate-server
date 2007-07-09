@@ -1,9 +1,9 @@
 #!/bin/sh
 # 
-# Univention Admin
-#  postrm file for the admin debian package
+# Univention Directory Manager
+#  postrm file for the directory manager debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 if [ "$1" = "purge" ]; then
-	rm -rf /etc/univention/ssl/univention-admin
+	rm -rf /etc/univention/ssl/univention-directory-manager
 fi
 
 #DEBHELPER#

@@ -14,20 +14,20 @@ $temp_mode=0700;
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
-run='$run="/usr/bin/python2.4 /usr/share/univention-admin/uniconf/univention-admin.py '
-if baseConfig.has_key('admin/web/debug/level'):
-        debug='-d %s '%baseConfig['admin/web/debug/level']
+run='$run="/usr/bin/python2.4 /usr/share/univention-directory-manager/uniconf/univention-admin.py '
+if baseConfig.has_key('directory/manager/web/debug/level'):
+        debug='-d %s '%baseConfig['directory/manager/web/debug/level']
 else:
         debug='-d 0 '
-if baseConfig.has_key('admin/web/language'):
-        lang='-l %s'%baseConfig['admin/web/language']
+if baseConfig.has_key('directory/manager/web/language'):
+        lang='-l %s'%baseConfig['directory/manager/web/language']
 else:
         lang='-l de_DE.utf8'
 tail='";'
 
-if baseConfig.has_key('admin/timeout'):
+if baseConfig.has_key('directory/manager/timeout'):
         try:
-                time = int(baseConfig['admin/timeout'])
+                time = int(baseConfig['directory/manager/timeout'])
         except:
                 time = 300
 else:
@@ -36,7 +36,7 @@ else:
 if time  > 2147483647:
         timeout='-t 2147483647 '
 else:
-        timeout='-t %s '%baseConfig['admin/timeout']
+        timeout='-t %s '%baseConfig['directory/manager/timeout']
 
 run=run+debug
 run=run+timeout
@@ -44,12 +44,12 @@ run=run+lang
 run=run+tail
 print run
 @!@
-#$run="/usr/share/univention-admin/uniconf-client";
+#$run="/usr/share/univention-directory/manager/uniconf-client";
 
 # gewaehlte Sprache fuer die Oberflaeche
 @!@
-if baseConfig.has_key('admin/web/language'):
-	print '$language="%s";'%baseConfig['admin/web/language']
+if baseConfig.has_key('directory/manager/web/language'):
+	print '$language="%s";'%baseConfig['directory/manager/web/language']
 else:
 	print '$language="de_DE.utf8";'
 @!@

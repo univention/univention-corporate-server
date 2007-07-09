@@ -31,7 +31,7 @@
 import sys, os, getopt, string, copy, socket, select, locale
 
 sys.path.append('/usr/share/univention-webui/modules/')
-ldir = '/usr/share/univention-admin/uniconf/'
+ldir = '/usr/share/univention-directory-manager/uniconf/'
 sys.path.append(ldir)
 os.chdir(ldir)
 

@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.0-1) unstable; urgency=low
+
+  * renamed univention-admin to univention-directory-manager 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 12:14:35 +0200
+
 univention-admin (3.2.3-7) unstable; urgency=low
 
   * changed links to univention-admin for ucs-overview

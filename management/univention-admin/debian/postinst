@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Admin
-#  postinst file for the admin debian package
+# Univention Directory Manager
+#  postinst file for the directory manager debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,38 +33,52 @@
 eval `univention-baseconfig shell`
 
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/25univention-admin.inst || true
+	/usr/lib/univention-install/25univention-directory-manager.inst || true
 fi
 
-univention-baseconfig set admin/timeout?300
-univention-baseconfig set admin/web/language?de_DE.utf8
+# rename baseconfig variables
+function bc_rename() {
+	old=$1
+	new=$2
+	predefined=$3
+	if [ -n "$old" ]; then
+		univention-baseconfig set "${new}?${old}"
+	else
+		univention-baseconfig set "${new}?${predefined}"
+	fi		
+
+}
+if [ "$1" = configure -a -n "$2" ]; then
+	bc_rename $admin_web_debug_level "directory/manager/web/debug/level" "0"
+	if [ "$admin_web_language" = "de" ]; then
+		admin_web_language="de_DE.utf8"
+	elif [ "$admin_web_language" = "en" ]; then
+		admin_web_language="en_US.utf8"
+	fi 
+	bc_rename $admin_web_language "directory/manager/web/language" "de_DE.utf8"
+	bc_rename $admin_timeout "directory/manager/timeout" "300"
+fi		
 univention-baseconfig set ssl/validity/check?yes
 
 
-for path in /usr/share/univention-admin/www/icon /usr/share/univention-admin/www/style /usr/share/univention-admin/www/includes; do
+for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then
 		rm -r $path
 	fi
 done
 
-test -h /usr/share/univention-admin/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-admin/www
-test -h /usr/share/univention-admin/www/file.php || ln -s /usr/share/univention-webui/www/file.php /usr/share/univention-admin/www
+test -h /usr/share/univention-directory-manager/www/index.php || ln -s /usr/share/univention-webui/www/index.php /usr/share/univention-directory-manager/www
+test -h /usr/share/univention-directory-manager/www/file.php || ln -s /usr/share/univention-webui/www/file.php /usr/share/univention-directory-manager/www
 
-test -h /var/www/univention-admin || ln -s /usr/share/univention-admin/www /var/www/univention-admin
+test -h /var/www/univention-directory-manager || ln -s /usr/share/univention-directory-manager/www /var/www/univention-directory-manager
 
-
-univention-baseconfig set admin/web/debug/level?0
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.4-1; then
-	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-admin/www/icon
-	a2ensite univention-admin
-elif [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.2.3-1; then
-	if [ "$admin_web_language" = "de" ]; then
-		univention-baseconfig set admin/web/language=de_DE.utf8
-	fi
+	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-directory-manager/www/icon
+	a2ensite univention-directory-manager
 elif [ "$1" = configure -a -z "$2" ]; then
-	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-admin/www/icon
-	a2ensite univention-admin
+	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-directory-manager/www/icon
+	a2ensite univention-directory-manager
 fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
@@ -72,6 +86,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	for i in `ps -ef | grep "/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.pyo" | awk '{print $2}'`; do
 		kill $i >/dev/null 2>&1
 	done
+	rm -f /etc/apache2/sites-enabled/univention-admin
 
 	sleep 1
 

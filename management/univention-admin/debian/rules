@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 # 
-# Univention Admin
+# Univention Directory Manager
 #  rules file for the admin debian package
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-admin
+package=univention-directory-manager
 
 build: build-stamp
 build-stamp:
@@ -50,15 +50,15 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	make install DESTDIR=debian/univention-admin/
-	find debian/univention-admin -name CVS | xargs rm -rf
-	echo -n "`date +"%d.%m.%Y"`" > debian/univention-admin/usr/share/univention-admin/uniconf/builddate
-	cat debian/changelog | head -1 > debian/univention-admin/usr/share/univention-admin/uniconf/buildversion
+	make install DESTDIR=debian/univention-directory-manager/
+	find debian/univention-directory-manager -name CVS | xargs rm -rf
+	echo -n "`date +"%d.%m.%Y"`" > debian/univention-directory-manager/usr/share/univention-directory-manager/uniconf/builddate
+	cat debian/changelog | head -1 > debian/univention-directory-manager/usr/share/univention-directory-manager/uniconf/buildversion
 
 	msgfmt -o uniconf/locale/de/LC_MESSAGES/uniconf.mo uniconf/locale/de/LC_MESSAGES/uniconf.po
-	install -m 0644 uniconf/locale/de/LC_MESSAGES/uniconf.mo debian/univention-admin/usr/share/locale/de/LC_MESSAGES/univention-admin-webfrontend.mo
+	install -m 0644 uniconf/locale/de/LC_MESSAGES/uniconf.mo debian/univention-directory-manager/usr/share/locale/de/LC_MESSAGES/univention-directory-manager-webfrontend.mo
 
-	install -m 0755 25univention-admin.inst debian/univention-admin/usr/lib/univention-install/
+	install -m 0755 25univention-directory-manager.inst debian/univention-directory-manager/usr/lib/univention-install/
 
 	univention-install-baseconfig
 

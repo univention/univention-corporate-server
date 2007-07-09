@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
+# Univention Diectory Manager
 #  translation basics
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -34,7 +34,7 @@ import sys
 
 def _(val):
     try:
-        translationdomain="univention-admin-webfrontend"
+        translationdomain="univention-directory-manager-webfrontend"
         translation=gettext.translation(translationdomain)
         newval = translation.ugettext(val)
     except:

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
+# Univention Directory Manager
 #  module for editing the self object
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -75,7 +75,7 @@ def myinfo(settings):
 		if has_passwd:
 			submodules.append(unimodule.submodule('users/passwd', _("Password"), _("Change my password")))
 		if settings.may_override:
-			submodules.append(unimodule.submodule('settings/user', _("Admin"), _("Edit my Univention Admin settings")))
+			submodules.append(unimodule.submodule('settings/user', _("Admin"), _("Edit my Univention Directory Manager settings")))
 		if not submodules:
 			return unimodule.realmodule("self", '')
 		try:

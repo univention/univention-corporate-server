@@ -1,9 +1,9 @@
 #!/bin/sh
 # 
-# Univention Admin
-#  prerm file for the admin debian package
+# Univention Directory Manager
+#  prerm file for the directory manager debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -31,7 +31,7 @@
 set -e
 
 if test "$1" = "purge"; then
-	rm -rf /usr/share/univention-admin/www/modules/uniconf/messages
+	rm -rf /usr/share/univention-directory-manager/www/modules/uniconf/messages
 fi
 
 #DEBHELPER#

@@ -5,18 +5,18 @@ Variables: domainname
 
 Type: subfile
 Multifile: etc/hosts
-Subfile: etc/hosts.d/10-admin
+Subfile: etc/hosts.d/10-directory-manager
 Variables: interfaces/eth.*/address
 Variables: domainname
 
 Type: file
-File: usr/share/univention-admin/www/config.php
+File: usr/share/univention-directory-manager/www/config.php
 Variables: admin/web/debug/level
 Variables: admin/web/language
 Variables: admin/timeout
 
 Type: file
-File: etc/apache2/sites-available/univention-admin
+File: etc/apache2/sites-available/univention-directory-manager
 
 Type: subfile
 Multifile: var/www/ucs-overview/de.html
