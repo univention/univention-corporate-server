@@ -1,3 +1,9 @@
+univention-admin-modules (1.2.3-9) unstable; urgency=low
+
+  * improved error handling in univention-dnsedit
+
+ -- Bastian Neumann <neumann@univention.de>  Mon,  9 Jul 2007 13:42:28 +0200
+
 univention-admin-modules (1.2.3-8) unstable; urgency=low
 
   * changed error handling for filter option with wrong attributes/special

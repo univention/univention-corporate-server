@@ -48,9 +48,6 @@ import univention.admin.handlers.dns.srv_record
 import univention.admin.handlers.dns.alias
 import univention.admin.uexceptions
 
-def usage():
-	print >>sys.stderr, 'Usage: %s domain command [args]' % sys.argv[0]
-
 options={}
 options['ignore_missing_zone']=0
 options['ignore_exists']=0
@@ -60,12 +57,27 @@ options['overwrite']=0
 options['stoptls']=0
 options['binddn']=0
 options['bindpwd']=0
+options['help']=0
 
-opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite'])
+def usage():
+	print >>sys.stderr, 'Usage: %s command [args]' % sys.argv[0]
 
-if len(args) < 3:
-	usage()
-	sys.exit(1)
+def help():
+	print >>sys.stderr,"Valid Commands are:"
+	for elements in options.keys():
+		print >>sys.stderr,elements
+
+for elements in sys.argv[1:]:
+        if elements.startswith('--'):
+		elements=elements.replace('--','')
+                if elements not in options.keys():
+                        err = '%s: Unknown Command %s' % (sys.argv[0], elements)
+                        univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, err)
+                        print err
+                        sys.exit(1)
+
+opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
+
 
 for opt, val in opts:
 	if opt == '--ignore-missing-zone':
@@ -84,6 +96,9 @@ for opt, val in opts:
 		options['binddn']=val
 	elif opt == '--bindpwd':
 		options['bindpwd']=val
+	elif opt == '--help':
+		help()
+		sys.exit(1)
 
 co=None
 lo=None
