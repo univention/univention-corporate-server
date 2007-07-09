@@ -1,3 +1,10 @@
+univention-installer (1.5.8-1) unstable; urgency=low
+
+  * do not use UTF-8 encoding in translation files
+  * use de_DE.UTF-8 as default encoding in profiles
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 10:27:40 +0200
+
 univention-installer (1.5.7-2) unstable; urgency=low
 
   * Fixed base package installation on managed clients

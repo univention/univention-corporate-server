@@ -2,10 +2,10 @@
 to_check="partition"
 
 # [Language]
-locales="de_DE@euro:ISO-8859-15"
+locales="de_DE.UTF-8:UTF-8"
 
 # [Default language]
-locale_default="de_DE@euro:ISO-8859-15"
+locale_default="de_DE.UTF-8:UTF-8"
 
 # [System role]
 system_role="managed_client"

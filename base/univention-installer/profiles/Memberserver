@@ -12,10 +12,10 @@ local_repository="true"
 create_home_share="true"
 
 # [Sprache]
-locales="de_DE@euro:ISO-8859-15"
+locales="de_DE.UTF-8:UTF-8"
 
 # [Standardsprache]
-locale_default="de_DE@euro:ISO-8859-15"
+locale_default="de_DE.UTF-8:UTF-8"
 
 # [Tastatur]
 keymap="de-latin1"
