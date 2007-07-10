@@ -14,7 +14,7 @@ $temp_mode=0700;
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
-run='$run="/usr/bin/python2.4 /usr/share/univention-directory-manager/uniconf/univention-admin.py '
+run='$run="/usr/bin/python2.4 /usr/share/univention-directory-manager/uniconf/univention-directory-manager.py '
 if baseConfig.has_key('directory/manager/web/debug/level'):
         debug='-d %s '%baseConfig['directory/manager/web/debug/level']
 else:

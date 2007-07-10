@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
+# Univention Directory Manager
 #  uniconf client for the admin
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -35,7 +35,7 @@ import os, sys, socket, select
 socket_filename = sys.argv[1]
 
 if not os.path.exists(socket_filename):
-	os.system('/usr/bin/python2.4 -O /usr/share/univention-admin/uniconf/univention-admin.pyo -s %s' % socket_filename)
+	os.system('/usr/bin/python2.4 /usr/share/univention-admin/uniconf/univention-directory-manager.py -s %s' % socket_filename)
 
 sock = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
 sock.connect(socket_filename)
