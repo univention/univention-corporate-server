@@ -1,3 +1,9 @@
+univention-grub (1.0.14-2) unstable; urgency=low
+
+  * added setting of univention-config-registry Variable
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 10 Jul 2007 14:24:27 +0200
+
 univention-grub (1.0.14-1) unstable; urgency=low
 
   * fixed reference to boot splash image 

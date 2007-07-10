@@ -197,5 +197,7 @@ if [ -z "$grub_groot" ] ; then
 	univention-baseconfig set grub/groot="$groot"
 fi
 
+univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
+
 exit 0
 
