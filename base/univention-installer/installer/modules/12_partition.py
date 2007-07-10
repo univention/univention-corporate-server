@@ -34,10 +34,25 @@
 # Results of this module need to be stored in the dictionary self.result (variablename:value[,value1,value2])
 #
 
+#
+# HINT:
+#  - GUI code uses with factor 1024 for KB and MB ==> KiB and MiB
+#  - Profile code uses (mostly) factor 1000 for KB and MB. Some parts (extent calculation for LVM) use factor 1024.
+#  - imported and created profiles use factor 1000 for KB and MB !!!
+# ==> look at MiB2MB and MB2MiB
+#
+
 import objects
 from objects import *
 from local import _
 import os, re, string, curses
+import inspect
+
+# some autopartitioning config values
+PARTSIZE_BOOT = 96           # size of /boot partition
+PARTSIZE_SYSTEM_MIN = 4096   # minimum free space for system
+PARTSIZE_SWAP_MIN = 192      # lower swap partition limit: 192MB
+PARTSIZE_SWAP_MAX = 2048     # limit swap partition to 2048MB
 
 # possible partition types
 POSS_PARTTYPE_UNUSABLE = 0
@@ -69,34 +84,115 @@ class object(content):
 	def checkname(self):
 		return ['devices']
 
+	def debug(self, txt):
+		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
+		line = info[1]
+		content.debug(self, 'PARTITION:%d: %s' % (line,txt))
+
 	def profile_prerun(self):
+		self.debug('profile_prerun')
 		self.start()
 		self.container['profile']={}
+
+		self.act = self.prof_active(self,_('Reading LVM config'),_('Please wait ...'),name='act')
+		self.act.action='prof_read_lvm'
+		self.act.draw()
+#		self.read_lvm()
+		self.set_lvm(True)
+		self.debug('profile_prerun: self.container["disk"]=%s' % self.container['disk'])
+		self.debug('profile_prerun: self.container["lvm"]=%s' % self.container['lvm'])
 		self.read_profile()
 		return {}
 
 	def profile_complete(self):
+		self.debug('profile_complete')
 		if self.check('partitions') | self.check('partition'):
 			return False
-		root_device=0
-		root_fs=0
+		root_device=None
+		boot_device=None
+		root_fs=None
+		mpoint_list = []
 		for key in self.container['profile']['create'].keys():
 			for minor in self.container['profile']['create'][key].keys():
-				fstype=self.container['profile']['create'][key][minor]['fstype']
-				mpoint=self.container['profile']['create'][key][minor]['mpoint']
+				fstype=self.container['profile']['create'][key][minor]['fstype'].strip()
+				mpoint=self.container['profile']['create'][key][minor]['mpoint'].strip()
+				self.debug('profile_complete: %s: mpoint=%s  fstype=%s' % (key, mpoint, fstype))
+				if len(mpoint) and mpoint in mpoint_list:
+					self.message="Double mountpoint '%s'" % mpoint
+					return False
+				mpoint_list.append(mpoint)
+
+				if mpoint == '/boot':
+					boot_device = 'PHY'
+
 				if mpoint == '/':
-					root_device=1
+					root_device = 'PHY'
 					if fstype in ['xfs','ext2','ext3']:
-						root_fs=1
-		if not root_device:
-			#Missing / as mountpoint
-			self.message='Missing / as mountpoint'
+						root_fs = True
+
+		for lvname, lv in self.container['profile']['lvmlv']['create'].items():
+			mpoint = lv['mpoint']
+			fstype = lv['fstype']
+			self.debug('profile_complete: /dev/%s/%s: mpoint=%s  fstype=%s' % (lv['vg'], lvname, mpoint, fstype))
+
+			if len(mpoint) and mpoint in mpoint_list:
+				self.message="Double mountpoint '%s'" % mpoint
+				return False
+			mpoint_list.append(mpoint)
+
+			if mpoint == '/boot':
+				boot_device = 'LVM'
+
+			if mpoint == '/':
+				root_device = 'LVM'
+				if fstype in ['xfs','ext2','ext3']:
+					root_fs = True
+
+		if root_device == None:
+			self.message = 'Missing / as mountpoint'
 			return False
+
+		self.debug('root_device=%s  boot_device=%s' % (root_device, boot_device))
+		if root_device == 'LVM' and boot_device in [ None, 'LVM' ]:
+			self.message = 'Unbootable config! / on LVM needs /boot-partition!'
+			return False
+
 		if not root_fs:
 			#Wrong filesystemtype for mountpoint /
 			self.message='Wrong filesystemtype for mountpoint /'
 			return False
 
+		if 'auto_part' in self.all_results.keys():
+			if self.all_results['auto_part'] in [ 'full_disk' ]:
+				disklist = {}
+				disksizeall = 0.0
+				for diskname, disk in self.container['disk'].items():
+					disksize = 0.0
+					for partname, part in self.container['disk'][diskname]['partitions'].items():
+						disksize += part['size']
+					disklist[diskname] = disksize
+					disksizeall += disksize
+				if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MAX:
+					self.message='not enough space for autopartitioning: sum of disk sizes=%s  required=%s' % (disksizeall,
+																											   PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MAX)
+					return False
+
+				added_boot = False
+				added_swap = False
+				disklist_sorted = disklist.keys()
+				disklist_sorted.sort()
+				for diskname in disklist_sorted:
+					disksize = disklist[diskname]
+					if disksize > PARTSIZE_BOOT and not added_boot:
+						disksize -= PARTSIZE_BOOT
+						added_boot = True
+					if disksize > PARTSIZE_SWAP_MIN and not added_swap:
+						disksize -= PARTSIZE_SWAP_MIN
+						added_swap = True
+				if not added_swap or not added_boot:
+					self.message='cannot autopart disk: /boot or swap does not fit'
+					self.debug('cannot autopart disk: bootsize=%s swapsize=%s disklist=%s' % (PARTSIZE_BOOT, PARTSIZE_SWAP_MIN, disklist))
+					return False
 		return True
 
 	def get_real_partition_device_name(self, device, number):
@@ -113,19 +209,43 @@ class object(content):
 			return '%sp%d' % (dev_match.group(),number)
 		else:
 			return '%s%d' % (device,number)
+
 	def run_profiled(self):
+		self.debug('run_profiled')
 		self.act_profile()
+
+		self.debug('run_profiled: creating profile')
+		tmpresult = []
 		for key in self.container['profile']['create'].keys():
-			device=key.lstrip('/').replace('/','_')
 			for minor in self.container['profile']['create'][key].keys():
-				type=self.container['profile']['create'][key][minor]['type']
+				parttype=self.container['profile']['create'][key][minor]['type']
 				format=self.container['profile']['create'][key][minor]['format']
 				fstype=self.container['profile']['create'][key][minor]['fstype']
 				start=self.container['profile']['create'][key][minor]['start']
 				end=self.container['profile']['create'][key][minor]['end']
 				mpoint=self.container['profile']['create'][key][minor]['mpoint']
-				dev="%s"%self.get_real_partition_device_name(device,minor)
-				self.container['result'][dev]="%s %s %s %s %s %s"%(type,format,fstype,start,end,mpoint)
+				flag=self.container['profile']['create'][key][minor]['flag']
+				dev="%s"%self.get_real_partition_device_name(key,minor)
+
+				tmpresult.append( ("PHY", dev, parttype, format, fstype, start, end, mpoint, flag) )
+
+		for lvname,lv in self.container['profile']['lvmlv']['create'].items():
+			device = '/dev/%s/%s' % (lv['vg'], lvname)
+			tmpresult.append( ("LVM", device, 'LVMLV', lv['format'], lv['fstype'], lv['start'], lv['end'], lv['mpoint'], lv['flag']) )
+
+		i = 0
+		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
+		self.debug('run_profiled: tmpresult=%s' % tmpresult)
+		for (entrytype, device, parttype, format, fstype, start, end, mpoint, flag) in tmpresult:
+			if type(start) == type(0) or type(start)==type(0.0):
+				start = self.MiB2MB(start)
+			if type(end) == type(0) or type(end)==type(0.0):
+				end = self.MiB2MB(end)
+			self.container['result'][ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (entrytype, device, parttype, format, fstype,
+																						  start, end, mpoint, flag)
+			i += 1
+
+		self.debug('run_profiled: adding profile to results')
 		return self.container['result']
 
 	def layout(self):
@@ -142,6 +262,7 @@ class object(content):
 		return ""
 
 	def incomplete(self):
+		self.debug('incomplete')
 		root_device=0
 		root_fs=0
 		mpoint_temp=[]
@@ -198,7 +319,7 @@ class object(content):
 					rootfs_is_lvm = True
 				if mpoint == '/boot':
 					bootfs_is_lvm = True
-		self.debug('PARTITION: bootfs_is_lvm=%s  rootfs_is_lvm=%s' % (bootfs_is_lvm, rootfs_is_lvm))
+		self.debug('bootfs_is_lvm=%s  rootfs_is_lvm=%s' % (bootfs_is_lvm, rootfs_is_lvm))
 		if rootfs_is_lvm and bootfs_is_lvm in [ None, True ]:
 			msglist= [ _('Unable to create bootable config!'),
 					   _('/-partition is located on LVM and'),
@@ -214,6 +335,7 @@ class object(content):
 			return 1
 
 	def profile_f12_run(self):
+		self.debug('profile_f12_run')
 		# send the F12 key event to the subwindow
 		if hasattr(self.sub, 'sub'):
 			self.sub.sub.input(276)
@@ -254,66 +376,237 @@ class object(content):
 		self.container['lvm']['ucsvgname'] = None
 		self.container['lvm']['lvmconfigread'] = False
 
+	def profile_autopart(self):
+		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
+
+		# add all physical partitions for deletion
+		self.all_results['part_delete'] = 'all'
+
+		# add all logical volumes for deletion
+		tmpstr = ''
+		for vgname in self.container['lvm']['vg'].keys():
+			tmpstr += ' /dev/%s' % vgname
+		self.all_results['lvm_delete'] = tmpstr.strip()
+
+		# remove all existing dev_N entries
+		regex = re.compile('^dev_\d+$')
+		for key in self.all_results.keys():
+			if regex.match(key):
+				self.debug('AUTOPART-PROFILE: deleting self.all_results[%s]' % key)
+				del self.all_results[key]
+
+		# get system memory
+		p = os.popen('free')
+		data = p.read()
+		p.close()
+		regex = re.compile('^\s+Mem:\s+(\d+)\s+.*$')
+		sysmem = -1
+		for line in data.splitlines():
+			match = regex.match(line)
+			if match:
+				sysmem = int(match.group(1)) / 1024
+		self.debug('AUTOPART-PROFILE: sysmem=%s' % sysmem)
+
+		# calc disk sizes
+		disklist = {}
+		disksizeall = 0.0
+		for diskname, disk in self.container['disk'].items():
+			disksize = 0.0
+			for partname, part in self.container['disk'][diskname]['partitions'].items():
+				disksize += part['size']
+			disklist[diskname] = disksize
+			disksizeall += disksize
+		self.debug('AUTOPART-PROFILE: disklist=%s' % disklist)
+
+		# place partitions
+		dev_i = 0
+		added_boot = False
+		added_swap = False
+		swapsize_result = 0
+		disklist_sorted = disklist.keys()
+		disklist_sorted.sort()
+		for diskname in disklist_sorted:
+			disksize = disklist[diskname]
+			sizeused = 0.01
+			partnum = 1
+			# add /boot-partition
+			if disksize > PARTSIZE_BOOT and not added_boot:
+				start = sizeused
+				end = sizeused + PARTSIZE_BOOT
+				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 ext3 %sM %sM /boot None' % (diskname, partnum, start, end)
+				dev_i += 1
+				partnum += 1
+				disksize -= PARTSIZE_BOOT
+				sizeused += PARTSIZE_BOOT
+				added_boot = True
+
+			if disksize > PARTSIZE_SWAP_MIN and not added_swap:
+				swapsize = 2 * sysmem
+				if swapsize > PARTSIZE_SWAP_MAX:
+					swapsize = PARTSIZE_SWAP_MAX
+				while (disksize < swapsize) and (disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + swapsize):
+					swapsize -= 16
+					if swapsize < PARTSIZE_SWAP_MIN:
+						swapsize = PARTSIZE_SWAP_MIN
+
+				start = sizeused + 0.01
+				end = sizeused + swapsize
+				self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 linux-swap %sM %sM None None' % (diskname, partnum, start, end)
+				dev_i += 1
+				partnum += 1
+				disksize -= PARTSIZE_BOOT
+				sizeused += PARTSIZE_BOOT
+				swapsize_result = swapsize
+				added_swap = True
+
+			# use rest of disk als LVM PV
+			self.all_results['dev_%d' % dev_i] = 'PHY %s%d 0 1 None %sM 0 None lvm' % (diskname, partnum, sizeused+0.01)
+			dev_i += 1
+
+		rootsize = (disksizeall - swapsize_result - PARTSIZE_BOOT) * 0.95
+		self.all_results['dev_%d' % dev_i] = 'LVM /dev/vg_ucs/rootfs LVMLV 0 ext3 0 %sM / None' % rootsize
+		dev_i += 1
+
+#dev_0="LVM /dev/vg_ucs/rootfs LVMLV 0 ext3 0M 7000M / None"
+#dev_1="PHY /dev/sdb2 0 0 ext3 500.01M 596.01M /boot None"
+#dev_2="PHY /dev/sda1 0 0 None 0.01M 0 None lvm,boot"
+#dev_3="PHY /dev/sdb3 0 0 None 596.01M 0 None lvm,boot"
+#dev_4="PHY /dev/sdb1 0 0 linux-swap 0.01M 500.01M None None"
+#dev_5="LVM /dev/vg_ucs/homefs LVMLV 0 ext3 0M 2000M /home None"
+
+
 	def read_profile(self):
+		self.debug('read_profile')
 		self.container['result']={}
 		self.container['profile']['empty']=[]
 		self.container['profile']['delete']={}
 		self.container['profile']['create']={}
-		for key in self.all_results.keys():
-			if key == 'part_delete':
-				delete=self.all_results['part_delete'].replace("'","").split(' ')
-				for entry in delete:
-					if entry == 'all': # delete all existing partitions
-						for disk in self.container['disk'].keys():
-							if len(self.container['disk'][disk]['partitions'].keys()):
+		self.container['profile']['lvmlv']={}
+		self.container['profile']['lvmlv']['create']={}
+		self.container['profile']['lvmlv']['delete']={}
+		auto_part = False
+		device_cnt = 0
+		if 'auto_part' in self.all_results.keys():
+			if self.all_results['auto_part'] in [ 'full_disk' ]:
+				auto_part = True
+
+				self.profile_autopart()
+
+		if not auto_part or True:
+			self.debug('read_profile: no autopart')
+			for key in self.all_results.keys():
+				self.debug('read_profile: key=%s' % key)
+				if key == 'part_delete':
+					delete=self.all_results['part_delete'].replace("'","").split(' ')
+					for entry in delete:
+						if entry == 'all': # delete all existing partitions
+							for disk in self.container['disk'].keys():
+								if len(self.container['disk'][disk]['partitions'].keys()):
+									self.container['profile']['delete'][disk]=[]
+								for part in self.container['disk'][disk]['partitions'].keys():
+									if self.container['disk'][disk]['partitions'][part]['num'] > 0:
+										self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
+							self.container['profile']['empty'].append('all')
+						elif self.test_old_device_syntax(entry):
+							disk, partnum = self.test_old_device_syntax(entry)
+#							result[0]=self.get_device_name(result[0])
+							if not self.container['profile']['delete'].has_key(disk):
 								self.container['profile']['delete'][disk]=[]
-							for part in self.container['disk'][disk]['partitions'].keys():
-								if self.container['disk'][disk]['partitions'][part]['num'] > 0:
+							if not partnum and self.container['disk'].has_key(disk) and len(self.container['disk'][disk]['partitions'].keys()):
+								# case delete complete /dev/sda
+								for part in self.container['disk'][disk]['partitions'].keys():
 									self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
-						self.container['profile']['empty'].append('all')
-					elif self.parse_syntax(entry):
-						result=self.parse_syntax(entry)
-						result[0]=self.get_device_name(result[0])
-						if not self.container['profile']['delete'].has_key(result[0]):
-							self.container['profile']['delete'][result[0]]=[]
-						if not result[1] and self.container['disk'].has_key(result[0]) and len(self.container['disk'][result[0]]['partitions'].keys()): # case delete complete /dev/sda
-							for part in self.container['disk'][result[0]]['partitions'].keys():
-								self.container['profile']['delete'][result[0]].append(self.container['disk'][result[0]]['partitions'][part]['num'])
-							self.container['profile']['empty'].append(result[0])
+								self.container['profile']['empty'].append(disk)
+							else:
+								self.container['profile']['delete'][disk].append(partnum)
+
+				if key == 'lvmlv_delete':
+					lvmdelete=self.all_results['lvmlv_delete'].replace("'","").split(' ')
+					for entry in lvmdelete:
+						# /dev/vgname         ==> delete all LVs in VG
+						# /dev/vgname/        ==> delete all LVs in VG
+						# /dev/vgname/*       ==> delete all LVs in VG
+						# /dev/vgname/lvname  ==> delete specific LV in VG
+						# vgname              ==> delete all LVs in VG
+						# vgname/lvname       ==> delete specific LV in VG
+						dev = entry.rstrip(' /*')
+						if dev.startswith('/dev/'):
+							dev = dev[5:]
+						if dev.count('/'):
+							vgname, lvname = dev.split('/',1)
+							self.debug('deleting LV %s of VG %s' % (lvname, vgname))
+							if self.container['lvm']['vg'].has_key(vgname):
+								if self.container['lvm']['vg'][vgname]['lv'].has_key(lvname):
+									self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': lvname,
+																							  'vg': vgname }
+								else:
+									self.debug('WARNING: LVM LV %s not found in VG %s! Ignoring it' % (lvname, vgname))
+							else:
+								self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
 						else:
-							self.container['profile']['delete'][result[0]].append(result[1])
+							vgname = dev
+							self.debug('deleting whole VG %s' % vgname)
+							if self.container['lvm']['vg'].has_key(vgname):
+								self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': '',
+																						  'vg': vgname }
+							else:
+								self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
 
-			elif self.parse_syntax(key): # test for matching syntax (dev_sda2, /dev/sda2, etc)
-				result=self.parse_syntax(key)
-				result[0]=self.get_device_name(result[0])
-				if not self.container['profile']['create'].has_key(result[0]):
-					self.container['profile']['create'][result[0]]={}
-				parms=self.all_results[key].replace("'","").split()
-				self.container['result'][key]=''
-				if len(parms) >= 5:
-					if len(parms) < 6 or parms[5] == 'None' or parms[5] == 'linux-swap':
-						mpoint = ''
+				elif self.get_device_entry(key): # test for matching syntax (dev_sda2, /dev/sda2, dev_2 etc)
+					self.debug('profread: key=%s  val=%s' % (key, self.all_results[key]))
+					parttype, device, parms = self.get_device_entry(key)
+					parms=parms.replace("'","").split()
+
+					self.container['result'][key] = ''
+
+					if parttype == 'PHY':
+						disk, partnum = self.test_old_device_syntax(device)
+						if not self.container['profile']['create'].has_key(disk):
+							self.container['profile']['create'][disk]={}
+						if len(parms) >= 5:
+							flag = ''
+							if len(parms) < 6 or parms[5] == 'None' or parms[5] == 'linux-swap':
+								mpoint = ''
+							else:
+								mpoint = parms[5]
+							if len(parms) >= 7:
+								flag = parms[-1]
+								if flag.lower() == 'none':
+									flag = ''
+							if parms[0] == 'only_mount':
+								parms[1]=0
+
+							temp={	'type':parms[0],
+								'fstype':parms[2],
+								'start': parms[3],
+								'end': parms[4],
+								'mpoint':mpoint,
+								'format':parms[1],
+								'flag': flag,
+								}
+
+							self.debug('Added to create physical container: %s' % temp)
+							self.container['profile']['create'][disk][partnum]=temp
+						else:
+							self.debug('Syntax error for key[%s]' % key)
+							pass
+					elif parttype == 'LVM':
+						if parms[0] == 'only_mount':
+							parms[1]=0
+						vgname, lvname = device.split('/')[-2:]         # /dev/VolumeGroup/LogicalVolume
+						temp={	'vg': vgname,
+								'type':parms[0],
+								'format':parms[1],
+								'fstype':parms[2],
+								'start':parms[3],
+								'end':parms[4],
+								'mpoint':parms[5],
+								'flag':parms[6],
+								}
+						self.debug('Added to create lvm volume: %s' % temp)
+						self.container['profile']['lvmlv']['create'][lvname]=temp
 					else:
-						mpoint = parms[5]
-					if parms[0] == 'only_mount':
-						parms[1]=0
-					if result[1] < 5 and result[1] > 0:
-						type = PARTTYPE_PRIMARY
-
-					temp={	'type':parms[0],
-						'fstype':parms[2],
-						'start':parms[3],
-						'end':parms[4],
-						'mpoint':mpoint,
-						'format':parms[1]
-						}
-
-					self.debug('Added to create container: [%s]' % temp)
-					self.container['profile']['create'][result[0]][result[1]]=temp
-				else:
-					self.debug('Syntax error for key=[%s]' % key)
-					pass
-
+						self.debug('%s devices in profile unsupported' % parttype)
 
 	def get_device_name(self, partition):
 		match=0
@@ -403,6 +696,38 @@ class object(content):
 		else:
 			return partition
 
+	def test_old_device_syntax(self, entry):
+		result = [ None, 0 ]
+		regex = re.compile('(/dev/([a-zA-Z]+)(-?(\d+))?|dev_([a-zA-Z]+)(\d+)?)')  # match /dev/sda, /dev/sda2, /dev/sda-2, dev_sda2
+		match = regex.match(entry)
+		if match:
+			grp = match.groups()
+			if grp[1]:
+				result[0] = '/dev/%s' % grp[1]
+				if grp[3]:
+					result[1] = int(grp[3])
+			elif grp[4]:
+				result[0] = '/dev/%s' % grp[4]
+				if grp[5]:
+					result[1] = int(grp[5])
+		if result[1]:
+			return result
+		return None
+
+	def get_device_entry(self, key):
+		value = self.all_results[key]
+		result = self.test_old_device_syntax(key)
+		if result:
+			if result[0] != None:
+				return [ 'PHY', '%s%s' % result, value ]   # [ PHY, /dev/sda2, LINE ]
+
+		regex = re.compile('^dev_\d+$')
+		if regex.match(key):
+			if value.startswith('PHY ') or value.startswith('LVM '): # [ PHY|LVM, /dev/sda2, LINE ]
+				items = value.split(' ',2)
+				return items
+		return []
+
 
 	def parse_syntax(self,entry): # need to test different types of profile
 		num=0
@@ -436,13 +761,42 @@ class object(content):
 			return  0
 		return ["%s"%dev.strip(),num]
 
+	def customsize2MiB(self, size):
+		size = size.upper().strip()
+		if size[-1] in [ 'K', 'M', 'G' ]:
+			try:
+				newsize = float(size.strip('KMG'))
+			except:
+				newsize = 0
+			if size[-1] == 'K':
+				result = newsize*1000.0/1024.0/1024.0
+			elif size[-1] == 'M':
+				result = newsize*1000.0*1000.0/1024.0/1024.0
+			elif size[-1] == 'G':
+				result = newsize*1000.0*1000.0*1000.0/1024.0/1024.0
+		else:
+			try:
+				result = float(size)
+			except:
+				result = 0.0
+		return result
+
 	def act_profile(self):
 		if not self.written:
+			self.act = self.prof_active(self,_('Deleting LVM volumes'),_('Please wait ...'),name='act')
+			self.act.action='prof_delete_lvm'
+			self.act.draw()
 			self.act = self.prof_active(self,_('Deleting partitions'),_('Please wait ...'),name='act')
 			self.act.action='prof_delete'
 			self.act.draw()
-			self.act = self.prof_active(self,_('Write partitions'),_('Please wait ...'),name='act')
+			self.act = self.prof_active(self,_('Creating partitions'),_('Please wait ...'),name='act')
 			self.act.action='prof_write'
+			self.act.draw()
+			self.act = self.prof_active(self,_('Creating LVM volumes'),_('Please wait ...'),name='act')
+			self.act.action='prof_write_lvm'
+			self.act.draw()
+			self.act = self.prof_active(self,_('Formatting partitions'),_('Please wait ...'),name='act')
+			self.act.action='prof_format'
 			self.act.draw()
 			self.written=1
 
@@ -462,40 +816,140 @@ class object(content):
 			else:
 				return '%s%d' % (device,number)
 
+		def run_cmd(self, command, debug=True):
+			self.parent.debug('(profile) run command: %s' % command)
+			p=os.popen(command)
+			output = p.read()
+			p.close()
+			if debug:
+				self.parent.debug('\n=> %s' % output.replace('\n','\n=> '))
+			return output
+
+
 		def function(self):
-			if self.action == 'prof_delete':
+			if self.action == 'prof_read_lvm':
+				self.parent.debug('prof_read_lvm')
+				self.parent.read_lvm()
+
+			elif self.action == 'prof_delete_lvm':
+				self.parent.debug('prof_delete_lvm')
+				for dev,entry in self.parent.container['profile']['lvmlv']['delete'].items():
+					device = entry['vg']
+					if entry['lv']:
+						device += '/%s' % entry['lv']
+					self.run_cmd('/sbin/lvremove -f %s 2>&1' % device)
+
+				# cleanup all known LVM volume groups
+				for vgname, vg in self.parent.container['lvm']['vg'].items():
+					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
+#				self.run_cmd('/sbin/vgscan 2>&1')
+
+			elif self.action == 'prof_delete':
+				self.parent.debug('prof_delete')
 				for disk in self.parent.container['profile']['delete'].keys():
 					num_list=self.parent.container['profile']['delete'][disk]
 					num_list.reverse()
 					for num in num_list:
-						command='/sbin/parted --script %s p rm %s'%(disk,num)
-						p=os.popen('%s >>/tmp/installer.log 2>&1'%command)
-						p.close()
+						# remove LVM PV signature if LVM partition
+						device = self.get_real_partition_device_name(disk,num)
+						if device in self.parent.container['lvm']['pv'].keys():
+							self.parent.debug('%s in LVM PV' % device)
+							pv = self.parent.container['lvm']['pv'][device]
+							if pv['vg']:
+								testoutput = self.run_cmd( '/sbin/vgreduce -t %s %s 2>&1' % (pv['vg'], device) )
+								if "Can't remove final physical volume" in testoutput:
+									self.run_cmd( '/sbin/vgremove %s 2>&1' % pv['vg'] )
+								else:
+									self.run_cmd( '/sbin/vgreduce %s %s 2>&1' % (pv['vg'], device) )
+								self.run_cmd( '/sbin/pvremove -ff %s 2>&1' % device )
+
+						self.run_cmd('/sbin/parted --script %s p rm %s 2>&1'%(disk,num))
+
+				# cleanup all known LVM volume groups
+#				self.run_cmd('/sbin/pvscan 2>&1')
+#				self.run_cmd('/sbin/vgscan 2>&1')
+				for vgname, vg in self.parent.container['lvm']['vg'].items():
+					self.run_cmd('/sbin/vgreduce -a --removemissing %s 2>&1' % vgname)
+
 			elif self.action == 'prof_write':
+				vgcreated = False
+				self.parent.debug('prof_write')
+				for disk in self.parent.container['profile']['create'].keys():
+					num_list=self.parent.container['profile']['create'][disk].keys()
+					num_list.sort()
+					for num in num_list:
+						type = self.parent.container['profile']['create'][disk][num]['type']
+						flaglist = self.parent.container['profile']['create'][disk][num]['flag'].split(',')
+						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
+						start = self.parent.container['profile']['create'][disk][num]['start']
+						end = self.parent.container['profile']['create'][disk][num]['end']
+						if not fstype or fstype in [ 'None', 'none' ]:
+							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
+						else:
+							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))
+
+						if 'lvm' in flaglist:
+							device = self.get_real_partition_device_name(disk,num)
+							self.parent.debug('%s: lvm flag' % device)
+							ucsvgname = self.parent.container['lvm']['ucsvgname']
+							self.run_cmd('/sbin/pvcreate %s 2>&1' % device)
+							if not vgcreated:
+								self.run_cmd('/sbin/vgcreate --physicalextentsize %sk %s %s 2>&1' % (self.parent.container['lvm']['vg'][ ucsvgname ]['PEsize'], ucsvgname, device))
+#								self.run_cmd('/sbin/vgscan 2>&1')
+								vgcreated = True
+							self.run_cmd('/sbin/vgextend %s %s 2>&1' % (ucsvgname, device))
+				# cleanup all known LVM volume groups
+##				self.run_cmd('/sbin/pvscan 2>&1')
+##				self.run_cmd('/sbin/vgscan 2>&1')
+
+			elif self.action == 'prof_write_lvm':
+				self.parent.debug('prof_write_lvm')
+				for lvname, lv in self.parent.container['profile']['lvmlv']['create'].items():
+					vg = self.parent.container['lvm']['vg'][ lv['vg'] ]
+					size = self.parent.customsize2MiB( lv['end'] ) - self.parent.customsize2MiB( lv['start'] )
+					self.parent.debug('creating LV: start=%s  end=%s  size=%s' % (lv['start'], lv['end'], size))
+					currentLE = int(round(size * 1024.0 / vg['PEsize'] + 0.5))
+					self.run_cmd('/sbin/lvcreate -l %d --name "%s" "%s" 2>&1' % (currentLE, lvname, lv['vg'] ))
+#				self.run_cmd('/sbin/lvscan 2>&1')
+
+			elif self.action == 'prof_format':
+				self.parent.debug('prof_format')
 				for disk in self.parent.container['profile']['create'].keys():
 					num_list=self.parent.container['profile']['create'][disk].keys()
 					num_list.sort()
 					for num in num_list:
 						type = self.parent.container['profile']['create'][disk][num]['type']
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
-						start = self.parent.container['profile']['create'][disk][num]['start']
-						end = self.parent.container['profile']['create'][disk][num]['end']
-						if not fstype or fstype in [ 'None', 'none' ]:
-							command='/sbin/PartedCreate -d %s -t %s -s %s -e %s' % (disk, type, self.parent.MiB2MB(start), self.parent.MiB2MB(end))
-						else:
-							command='/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s' % (disk, type, fstype, self.parent.MiB2MB(start), self.parent.MiB2MB(end))
-						self.parent.debug('run command: %s' % command)
-						p=os.popen('%s >>/tmp/installer.log 2>&1' % command)
-						p.close()
+
+						mkfs_cmd = None
+						fstype = fstype.lower()
 						if fstype in ['ext2','ext3','vfat','msdos']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
 						elif fstype == 'xfs':
 							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
 						elif fstype == 'linux-swap':
 							mkfs_cmd='/bin/mkswap %s' % self.get_real_partition_device_name(disk,num)
-						self.parent.debug('PARTITION: %s' % mkfs_cmd)
-						p=os.popen('%s 2>&1'%mkfs_cmd)
-						p.close()
+						if mkfs_cmd:
+							self.run_cmd('%s 2>&1' % mkfs_cmd)
+						else:
+							self.parent.debug('unknown fstype (%s) for %s' % (fstype, self.get_real_partition_device_name(disk,num)))
+
+				for lvname, lv in self.parent.container['profile']['lvmlv']['create'].items():
+					device = '/dev/%s/%s' % (lv['vg'], lvname)
+					fstype = lv['fstype'].lower()
+
+					mkfs_cmd = None
+					fstype = fstype.lower()
+					if fstype in ['ext2','ext3','vfat','msdos']:
+						mkfs_cmd='/sbin/mkfs.%s %s' % (fstype, device)
+					elif fstype == 'xfs':
+						mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
+					elif fstype == 'linux-swap':
+						mkfs_cmd='/bin/mkswap %s' % device
+					if mkfs_cmd:
+						self.run_cmd('%s 2>&1' % mkfs_cmd)
+					else:
+						self.parent.debug('unknown fstype (%s) for %s' % (fstype, device))
 
 			self.stop()
 
@@ -519,11 +973,6 @@ class object(content):
 													   'freePE': int( item[9] ),
 													   'allocPE': int( item[10] ),
 													   }
-
-		# set PV-Flag in disk-container
-		for disk in self.container['disk'].keys():
-			for part in self.container['disk'][disk]['partitions']:
-				self.container['disk'][disk]['partitions'][part]['pvflag'] = (part in self.container['lvm']['pv'].keys())
 
 
 	def read_lvm_vg(self):
@@ -614,6 +1063,26 @@ class object(content):
 		if len(self.container['lvm']['vg'].keys()) > 0:
 			self.container['lvm']['enabled'] = True
 		self.container['lvm']['lvmconfigread'] = True
+
+	def set_lvm(self, flag, vgname = None):
+		self.container['lvm']['enabled'] = flag
+		if flag:
+			if vgname:
+				self.container['lvm']['ucsvgname'] = vgname
+			else:
+				self.container['lvm']['ucsvgname'] = 'vg_ucs'
+			self.debug( 'LVM enabled: lvm1available=%s  ucsvgname="%s"' %
+						(self.container['lvm']['lvm1available'], self.container['lvm']['ucsvgname']))
+			if not self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
+				self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ] = { 'touched': 1,
+																					  'PEsize': 4096, # physical extent size in kilobytes
+																					  'totalPE': 0,
+																					  'allocPE': 0,
+																					  'freePE': 0,
+																					  'size': 0,
+																					  'created': 0,
+																					  'lv': {}
+																					  }
 
 	def read_devices(self):
 		if os.path.exists('/lib/univention-installer/partitions'):
@@ -929,10 +1398,13 @@ class object(content):
 						format=self.container['disk'][disk]['partitions'][part]['format']
 						start=part
 						end=part+self.container['disk'][disk]['partitions'][part]['size']
+						flag=','.join(self.container['disk'][disk]['partitions'][part]['flag'])
+						if not flag:
+							flag = 'None'
 						type='only_mount'
 						if self.container['disk'][disk]['partitions'][part]['touched']:
 							type=self.container['disk'][disk]['partitions'][part]['type']
-						tmpresult.append( ("PHY", device, type, format, fstype, start, end, mpoint) )
+						tmpresult.append( ("PHY", device, type, format, fstype, start, end, mpoint, flag) )
 		result[ 'disks' ] = string.join( partitions, ' ')
 
 		# append LVM if enabled
@@ -957,12 +1429,15 @@ class object(content):
 				start = 0
 				end = lv['size']
 				type='only_mount'
-				tmpresult.append( ("LVM", lv['dev'], type, format, fstype, start, end, mpoint) )
+				if lv['touched']:
+					type = 'LVMLV'
+				flag='None'
+				tmpresult.append( ("LVM", lv['dev'], type, format, fstype, start, end, mpoint, flag) )
 		# sort partitions by mountpoint
 		i = 0
 		tmpresult.sort(lambda x,y: cmp(x[7], y[7]))  # sort by mountpoint
-		for (parttype, device, type, format, fstype, start, end, mpoint) in tmpresult:
-			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s" % (parttype, device, type, format, fstype, start, end, mpoint)
+		for (parttype, device, type, format, fstype, start, end, mpoint, flag) in tmpresult:
+			result[ 'dev_%d' % i ] =  "%s %s %s %s %s %sM %sM %s %s" % (parttype, device, type, format, fstype, self.MiB2MB(start), self.MiB2MB(end), mpoint, flag)
 			i += 1
 		return result
 
@@ -973,29 +1448,10 @@ class object(content):
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
 			self.check_lvm_msg()
 
-		def set_lvm(self, flag, vgname = None):
-			self.container['lvm']['enabled'] = flag
-			if flag:
-				if vgname:
-					self.container['lvm']['ucsvgname'] = vgname
-				else:
-					self.container['lvm']['ucsvgname'] = 'vg_ucs'
-				self.parent.debug( 'Partition: LVM enabled: lvm1available=%s  ucsvgname="%s"' %
-							(self.container['lvm']['lvm1available'], self.container['lvm']['ucsvgname']))
-				if not self.container['lvm']['vg'].has_key( self.container['lvm']['ucsvgname'] ):
-					self.container['lvm']['vg'][ self.container['lvm']['ucsvgname'] ] = { 'touched': 1,
-																						  'PEsize': 4096, # physical extent size in kilobytes
-																						  'totalPE': 0,
-																						  'allocPE': 0,
-																						  'freePE': 0,
-																						  'size': 0,
-																						  'created': 0,
-																						  'lv': {}
-																						  }
 
 		def auto_partitioning(self, result):
 			self.container['autopartition'] = True
-			self.parent.debug('PARTITION: AUTO PARTITIONING')
+			self.parent.debug('AUTO PARTITIONING')
 
 			# remove all LVM LVs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -1029,7 +1485,7 @@ class object(content):
 				self.parent.debug('==> %s' % h)
 
 			# reactivate LVM
-			self.set_lvm(True)
+			self.parent.set_lvm(True)
 
 			# get disk list
 			disklist = self.container['disk'].keys()
@@ -1048,13 +1504,12 @@ class object(content):
 			self.parent.debug('AUTOPART: sysmem=%s' % sysmem)
 
 			# create primary partition on first harddisk for /boot
-			partsize = 96
 			targetdisk = None
 			targetpart = None
 			for disk in disklist:
 				for part in self.container['disk'][disk]['partitions'].keys():
 					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY ]:
-						if int(self.container['disk'][disk]['partitions'][part]['size']) > partsize:
+						if int(self.container['disk'][disk]['partitions'][part]['size']) > PARTSIZE_BOOT:
 							targetdisk = disk
 							targetpart = part
 					if targetdisk:
@@ -1063,7 +1518,7 @@ class object(content):
 					break
 			if targetdisk:
 				# part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
-				self.part_create_generic(targetdisk, targetpart, '/boot', partsize, 'ext3', PARTTYPE_PRIMARY, [], 1)
+				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext3', PARTTYPE_PRIMARY, [], 1)
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
 							_('Auto-partitioning aborted.') ]
@@ -1088,25 +1543,23 @@ class object(content):
 			self.parent.debug('AUTOPART: freespacemax=%s' % freespacemax)
 
 			# create primary partition on first harddisk for /swap
-			minsystemsize = 4096   # minimum free space for system
-			minswapsize = 192      # minimum free space for swap partition
 			swapsize = 2 * sysmem  # default for swap partition
-			if swapsize > 2048:    # limit swap partition to 2GB
-				swapsize = 2048
-			if swapsize < minswapsize:
-				swapsize = minswapsize
-			if (freespacesum - minswapsize < minsystemsize) or (freespacemax < minswapsize):
-				self.parent.debug('AUTOPART: not enough disk space for swap (freespacesum=%s  freespacemax=%s  minswapsize=%s  minsystemsize=%s' %
-								  (freespacesum, freespacemax, minswapsize, minsystemsize))
+			if swapsize > PARTSIZE_SWAP_MAX:    # limit swap partition to 2GB
+				swapsize = PARTSIZE_SWAP_MAX
+			if swapsize < PARTSIZE_SWAP_MIN:
+				swapsize = PARTSIZE_SWAP_MIN
+			if (freespacesum - PARTSIZE_SWAP_MIN < PARTSIZE_SYSTEM_MIN) or (freespacemax < PARTSIZE_SWAP_MIN):
+				self.parent.debug('AUTOPART: not enough disk space for swap (freespacesum=%s  freespacemax=%s  PARTSIZE_SWAP_MIN=%s  PARTSIZE_SYSTEM_MIN=%s' %
+								  (freespacesum, freespacemax, PARTSIZE_SWAP_MIN, PARTSIZE_SYSTEM_MIN))
 				msglist = [ _('Not enough disk space found!'),
 							_('Auto-partitioning aborted.') ]
 				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
-			while freespacesum - swapsize < minsystemsize:
+			while freespacesum - swapsize < PARTSIZE_SYSTEM_MIN:
 				swapsize -= 16
-				if swapsize < minswapsize:
-					swapsize = minswapsize
+				if swapsize < PARTSIZE_SWAP_MIN:
+					swapsize = PARTSIZE_SWAP_MIN
 
 			targetdisk = None
 			targetpart = None
@@ -1156,7 +1609,7 @@ class object(content):
 			self.lv_create(vgname, lvname, currentLE, format, fstype, flag, mpoint)
 
 		def ask_lvm_enable_callback(self, result):
-			self.set_lvm( (result == 'BT_YES') )
+			self.parent.set_lvm( (result == 'BT_YES') )
 
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
@@ -1168,7 +1621,12 @@ class object(content):
 
 			# ask for auto partitioning
 			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
-				msglist=[ _('Do you want to use auto-partitioning?') ]
+				msglist=[ _('Do you want to use auto-partitioning?'),
+						  '',
+						  _('WARNING: choosing "Yes" prepares for deletion of all'),
+						  _('partitions on all disks! If auto-partition result is'),
+						  _('unsuitable press F5 to restart partitioning.')
+						  ]
 				self.container['autopartition'] = False
 				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
 				self.draw()
@@ -1480,7 +1938,7 @@ class object(content):
 				selected = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
 				self.parent.debug('self.part_objects=%s' % self.part_objects)
 				self.parent.debug('cur_elem=%s' % self.get_elem('SEL_part').result()[0])
-				self.parent.debug('partition: selected=[%s]' % selected)
+				self.parent.debug('selected=[%s]' % selected)
 				self.container['selected']=self.get_elem('SEL_part').result()[0]
 				disk=selected[1]
 				part=''
@@ -1492,36 +1950,36 @@ class object(content):
 					type = PARTTYPE_LVM_LV
 
 				if key == 266:# F2 - Create
-					self.parent.debug('partition: create')
+					self.parent.debug('create')
 					if self.resolve_type(type) == 'free' and self.possible_type(self.container['disk'][disk],part):
-						self.parent.debug('partition: create!')
+						self.parent.debug('create!')
 						self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 					elif selected[0] == 'lvm_vg_free':
-						self.parent.debug('partition: create lvm!')
+						self.parent.debug('create lvm!')
 						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 				elif key == 267:# F3 - Edit
-					self.parent.debug('partition: edit')
+					self.parent.debug('edit')
 					if self.resolve_type(type) == 'primary' or self.resolve_type(type) == 'logical':
 						item = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
 						if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
-							self.parent.debug('partition: edit lvm pv not allowed')
+							self.parent.debug('edit lvm pv not allowed')
 							msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
 							self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 							self.sub.draw()
 						else:
-							self.parent.debug('partition: edit!')
+							self.parent.debug('edit!')
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 							self.sub.draw()
 					elif selected[0] == 'lvm_lv':
-						self.parent.debug('partition: edit lvm!')
+						self.parent.debug('edit lvm!')
 						self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 				elif key == 268:# F4 - Delete
-					self.parent.debug('partition: delete (%s)' % type)
+					self.parent.debug('delete (%s)' % type)
 					if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
-						self.parent.debug('partition: delete!')
+						self.parent.debug('delete!')
 						self.part_delete(self.get_elem('SEL_part').result()[0])
 					elif type == PARTTYPE_EXTENDED:
 						self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
@@ -1552,12 +2010,12 @@ class object(content):
 							if self.resolve_type(type) in ['primary', 'logical']:
 								item = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
 								if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
-									self.parent.debug('partition: edit lvm pv not allowed')
+									self.parent.debug('edit lvm pv not allowed')
 									msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
 									self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 									self.sub.draw()
 								else:
-									self.parent.debug('partition: edit!')
+									self.parent.debug('edit!')
 									self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 									self.sub.draw()
 					elif self.get_elem('BT_create').get_status():#create
@@ -1568,7 +2026,7 @@ class object(content):
 						if self.resolve_type(type) == 'primary' or self.resolve_type(type) == 'logical':
 							item = self.part_objects[ self.get_elem('SEL_part').result()[0] ]
 							if 'lvm' in self.parent.container['disk'][item[1]]['partitions'][item[2]]['flag']:
-								self.parent.debug('partition: edit lvm pv not allowed')
+								self.parent.debug('edit lvm pv not allowed')
 								msglist=[ _('LVM physical volumes cannot be modified!'), _('If necessary delete this partition.') ]
 								self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 								self.sub.draw()
@@ -1658,7 +2116,7 @@ class object(content):
 							vg['totalPE'] -= pv['totalPE']
 							vg['size'] = vg['PEsize'] * vg['totalPE'] / 1024.0
 							if vg['freePE'] + vg['allocPE'] != vg['totalPE']:
-								self.parent.debug('PARTITION: assertion failed: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
+								self.parent.debug('assertion failed: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
 												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							# reduce VG
 							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
@@ -1875,7 +2333,7 @@ class object(content):
 			# LVM uses about 2% of percent for metadata overhead
 			totalpe = int(pecnt * 0.978)
 
-			self.parent.debug('PARTITION: pv_create: pesize=%sk   partsize=%sM=%sk  pecnt=%sPE  totalpe=%sPE' %
+			self.parent.debug('pv_create: pesize=%sk   partsize=%sM=%sk  pecnt=%sPE  totalpe=%sPE' %
 							  (pesize, self.container['disk'][disk]['partitions'][part]['size'],
 							   self.container['disk'][disk]['partitions'][part]['size'] * 1024, pecnt, totalpe))
 			
@@ -2221,19 +2679,19 @@ class object(content):
 
 			def function(self):
 				if self.action == 'read_lvm':
-					self.parent.parent.debug('Partition: Reading LVM config')
+					self.parent.parent.debug('Reading LVM config')
 					self.parent.parent.read_lvm()
 				elif self.action == 'create_partitions':
-					self.parent.parent.debug('Partition: Create Partitions')
+					self.parent.parent.debug('Create Partitions')
 					for command in self.parent.container['history']:
 						p=os.popen('%s 2>&1'%command)
-						self.parent.parent.debug('PARTITION: running "%s"'%command)
-						self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
+						self.parent.parent.debug('running "%s"'%command)
+						self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
 						p.close()
 					self.parent.container['history']=[]
 					self.parent.parent.written=1
 				elif self.action == 'make_filesystem':
-					self.parent.parent.debug('Partition: Create Filesystem')
+					self.parent.parent.debug('Create Filesystem')
 					# create filesystems on physical partitions
 					for disk in self.parent.container['disk'].keys():
 						for part in self.parent.container['disk'][disk]['partitions'].keys():
@@ -2248,9 +2706,9 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								p=os.popen('%s 2>&1'%mkfs_cmd)
-								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
-								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
+								p=os.popen('%s 2>&1' % mkfs_cmd)
+								self.parent.parent.debug('running "%s"' % mkfs_cmd)
+								self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
 								p.close()
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
@@ -2268,9 +2726,9 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								p=os.popen('%s 2>&1'%mkfs_cmd)
-								self.parent.parent.debug('PARTITION: running "%s"' % mkfs_cmd)
-								self.parent.parent.debug('=> %s' % p.read().replace('\n','\n=> '))
+								p=os.popen('%s 2>&1' % mkfs_cmd)
+								self.parent.parent.debug('running "%s"' % mkfs_cmd)
+								self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
 								p.close()
 								vg['lv'][lvname]['format'] = 0
 
@@ -3020,7 +3478,7 @@ class object(content):
 				self.current=3
 				self.elements[3].set_on()
 			def _ok(self):
-				self.parent.set_lvm(True, vgname = self.elements[3].result()[0] )
+				self.parent.parent.set_lvm(True, vgname = self.elements[3].result()[0] )
 				return 0
 
 		class verify(subwin):
