@@ -106,13 +106,6 @@ else
 	$PIPE apt-get install univention-grub univention-initrd
 fi
 
-echo "do_initrd = Yes" >>/etc/kernel-img.conf
-echo "do_bootfloppy = no" >>/etc/kernel-img.conf
-echo "silent_loader = yes" >>/etc/kernel-img.conf
-if [ "$architecture" = "powerpc" ]; then
-	echo "ramdisk = mkinitramfs mkinitrd.yaird" >>/etc/kernel-img.conf
-fi
-
 $PIPE apt-get install $kernel_package
 if [ "\$?" != "0" ]; then
 	if [ -n "$fallback_kernel_package" ]; then
