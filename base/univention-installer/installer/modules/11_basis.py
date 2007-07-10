@@ -52,7 +52,7 @@ class object(content):
 			return False
 		if self.check('root_password') and self.check('root_password_crypted'):
 			return False
-		if self.all_result.has_key('root_password_crypted'):
+		if self.all_results.has_key('root_password_crypted'):
 			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], "XXXXXXXXXX", "XXXXXXXXXX", focus=False)
 		else:
 			self.message=self.check_values(self.all_results['hostname'], self.all_results['domainname'], self.all_results['ldap_base'], self.all_results['root_password'], self.all_results['root_password'], focus=False)
