@@ -499,8 +499,6 @@ class simpleLdap(base):
 
 		ml=univention.admin.mapping.mapDiff(self.mapping, self.diff())
 
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'simpleLdap._ldap_modlist: ml after mapDiff: %s' % ml)
-
 		# policies
 		if self.policies != self.oldpolicies:
 			classes=self.oldattr.get('objectClass', [])
@@ -572,7 +570,6 @@ class simpleLdap(base):
 					al.append(('objectClass', [oc]))
 
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "trying to add object at: %s" % self.dn)
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "modlist: %s" % (al))
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "dn: %s" % (self.dn))
 		self.lo.add(self.dn, al)
 
@@ -1285,7 +1282,6 @@ class simpleComputer( simpleLdap ):
 
 		if len ( self[ 'mac' ] ) > 1 or len( self[ 'ip' ] ) > 1:
 			self.__multiip = True
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, '_ldap_post_modify: changes: %s' % self.__changes )
 
 		for entry in self.__changes[ 'dhcpEntryZone' ][ 'remove' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: dhcp check: removed: %s' % entry )
