@@ -69,7 +69,7 @@ if [ -n "$components" ]; then
 			elif [ "$i" = "Spamfilter" ]; then
 				packages="$packages univention-spamassassin"
 			elif [ "$i" = "Admin" ]; then
-				packages="$packages univention-admin "
+				packages="$packages univention-directory-manager "
 			elif [ "$i" = "SoftwareMonitor" ]; then
 				packages="$packages univention-pkgdb "
 			elif [ "$i" = "Backup" ]; then

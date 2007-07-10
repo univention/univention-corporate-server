@@ -314,12 +314,12 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Univention Admin'),
-					'Packages': ['univention-admin', 'python-univention-license'],
+					'Name': _('Univention Directory Manager'),
+					'Packages': ['univention-directory-manager', 'python-univention-license'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup'],
-					'Description': _('Univention Admin Webfrontend'),
+					'Description': _('Univention Director Manager Web Frontend'),
 				},
 				{
 					'Name': _('Univention Management Console'),
