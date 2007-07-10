@@ -1,3 +1,20 @@
+univention-installer (1.6.1-1) unstable; urgency=low
+
+  * fixes typo in basis module that broke profile based installation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Jul 2007 16:28:46 +0200
+
+univention-installer (1.6.0-1) unstable; urgency=low
+
+  * debug() in partition module displays line number
+  * profile code is now able to read old and new (lvm) profiles
+  * profile code supports auto partitioning
+  * added partition flags (lvm) to profile
+  * improved "Use autopartitioning?" message
+  * (closes: #8586)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 10 Jul 2007 16:26:14 +0200
+
 univention-installer (1.5.9-2) unstable; urgency=low
 
   * removed settings on /etc/kernel-img.conf
