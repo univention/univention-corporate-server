@@ -165,4 +165,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.8-1; t
 	univention-baseconfig set server/role?basesystem
 fi
 
+univention-baseconfig set kernel/do_initrd?yes
+univention-baseconfig set kernel/do_bootfloppy?no
+univention-baseconfig set kernel/silent_loader?yes
+
+architecture=`/bin/uname -m`
+if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
+	univention-baseconfig set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
+fi
+
 exit 0
