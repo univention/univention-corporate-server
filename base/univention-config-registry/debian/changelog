@@ -1,8 +1,8 @@
-univention-config-registry (2.2.0-1) unstable; urgency=low
+univention-config-registry (2.2.0-2) unstable; urgency=low
 
-  * renamed univention-baseconfig to univention-config-registry 
+  * renamed univention-baseconfig to univention-config-registry
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 10 Jul 2007 11:47:38 +0200
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Jul 2007 11:50:10 +0200
 
 univention-baseconfig (2.1.10-4) unstable; urgency=low
 
