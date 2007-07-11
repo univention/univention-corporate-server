@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  rules file for the debian package
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
@@ -31,8 +31,8 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
-PACKAGE_NAME=python-univention-baseconfig
-MODULE_NAME=univention-baseconfig
+PACKAGE_NAME=python-univention-config-registry
+MODULE_NAME=univention-config-registry
 
 PYVERS=$(shell pyversions -vr)
 
@@ -64,7 +64,7 @@ clean:
 	rm -f aclocal.m4 config.* install-sh ltmain.sh missing mkinstalldirs
 	dh_clean
 
-D=$(CURDIR)/debian/univention-baseconfig
+D=$(CURDIR)/debian/univention-config-registry
 
 install: install-stamp
 install-stamp: build-stamp $(PYVERS:%=install-ext-%)
@@ -84,31 +84,32 @@ install-ext-%:
 	install -m 755 univention-sysinfo_tmp debian/univention-config/usr/bin/univention-sysinfo
 	rm univention-sysinfo_tmp*
 
-	cat python/univention/baseconfig.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/baseconfig.py_tmp
+	cat python/univention/config_registry.py | sed -e "s/@%@package_version@%@/${version}/;s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention/config_registry.py_tmp
 
-	install -d debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/
-	install -m 0644 python/univention/__init__.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/__init__.py
-	install -m 0644 python/univention/info_tools.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/info_tools.py
-	install -m 0644 python/univention/baseconfig_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig_info.py
-	install -m 0644 python/univention/service_info.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/service_info.py
-	install -m 0644 python/univention/baseconfig.py_tmp debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention/baseconfig.py
-	install -m 0644 python/univention_baseconfig.py debian/python-univention-baseconfig/usr/lib/python$*/site-packages/univention_baseconfig.py
+	install -d debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/
+	install -m 0644 python/univention/__init__.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/__init__.py
+	install -m 0644 python/univention/info_tools.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/info_tools.py
+	install -m 0644 python/univention/config_registry_info.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/config_registry_info.py
+	install -m 0644 python/univention/service_info.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/service_info.py
+	install -m 0644 python/univention/config_registry.py_tmp debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/config_registry.py
+	install -m 0644 python/univention/baseconfig.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention/baseconfig.py
+	install -m 0644 python/univention_baseconfig.py debian/python-univention-config-registry/usr/lib/python$*/site-packages/univention_baseconfig.py
 
-	install -m 755 python/univention-baseconfig debian/univention-config/usr/sbin
-	install -m 755 python/univention-install-baseconfig debian/univention-config-dev/usr/bin
-	install -m 755 python/univention-install-baseconfig-info debian/univention-config-dev/usr/bin
+	install -m 755 python/univention-config-registry debian/univention-config/usr/sbin
+	install -m 755 python/univention-install-config-registry debian/univention-config-dev/usr/bin
+	install -m 755 python/univention-install-config-registry-info debian/univention-config-dev/usr/bin
 	install -m 755 python/univention-install-service-info debian/univention-config-dev/usr/bin
-	rm python/univention/baseconfig.py_tmp*
+	rm python/univention/config_registry.py_tmp*
 
-	install -m 755 etc/X11/Xsession.d/33-univention-environment debian/univention-baseconfig/etc/X11/Xsession.d/33-univention-environment
-	install -m 644 etc/bash_completion.d/univention-baseconfig debian/univention-baseconfig/etc/bash_completion.d/univention-baseconfig
+	install -m 755 etc/X11/Xsession.d/33-univention-environment debian/univention-config-registry/etc/X11/Xsession.d/33-univention-environment
+	install -m 644 etc/bash_completion.d/univention-config-registry debian/univention-config-registry/etc/bash_completion.d/univention-config-registry
 
-	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-baseconfig/usr/lib/univention-ldap-policy/nfsmounts
+	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-ldap-policy/nfsmounts
 
-	chmod 755 python/univention-install-baseconfig python/univention-install-baseconfig-info
+	chmod 755 python/univention-install-config-registry python/univention-install-config-registry-info
 
-	./python/univention-install-baseconfig
-	./python/univention-install-baseconfig-info
+	./python/univention-install-config-registry
+	./python/univention-install-config-registry-info
 	./python/univention-install-service-info
 
 
@@ -126,7 +127,7 @@ binary-arch: build install
 	dh_installinfo
 	dh_installchangelogs
 	dh_install --sourcedir=debian/tmp
-	dh_pycentral --no-package=univention-baseconfig -Nunivention-config -Nunivention-config-dev -Nlibunivention-config0 -Nlibunivention-config-dev
+	dh_pycentral --no-package=univention-config-registry -Nunivention-config -Nunivention-config-dev -Nlibunivention-config0 -Nlibunivention-config-dev
 	dh_link
 	dh_strip
 	dh_compress

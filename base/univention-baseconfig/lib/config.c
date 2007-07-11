@@ -1,6 +1,6 @@
 /*
- * Univention Baseconfig
- *  C library for univention baseconfig
+ * Univention Configuration Registry
+ *  C library for univention config registry
  *
  * Copyright (C) 2004, 2005, 2006 Univention GmbH
  *
@@ -147,7 +147,7 @@ int univention_config_set_string(char *key, char *value)
 		char *argv[5];
 		argv[0] = "sh";
 		argv[1] = "-c";
-		argv[2] = "univention-baseconfig";
+		argv[2] = "univention-config-registry";
 		argv[2] = "set";
 		argv[3] = str;
 		argv[4] = 0;

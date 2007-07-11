@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  Service information: read information about registered Baseconfig
+# Univention Configuration Registry
+#  Service information: read information about registered Config Registry
 #  variables
 #
 # Copyright (C) 2007 Univention GmbH

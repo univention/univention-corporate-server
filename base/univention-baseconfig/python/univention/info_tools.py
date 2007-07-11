@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  dictionary class for localized keys
 #
 # Copyright (C) 2007 Univention GmbH

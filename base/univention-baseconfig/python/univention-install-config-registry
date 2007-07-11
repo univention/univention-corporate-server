@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  install baseconfig script
+# Univention Configuration Registry
+#  install config registry script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention.baseconfig
+import univention.config_registry
 
 #  we need a way to allow spaces in directory and file names
 def doIt(argv):
@@ -80,9 +80,11 @@ def typeDir(type):
 
 if __name__ == '__main__':
 	for package in getPackages():
-		file = extFile(package, 'univention-baseconfig')
+		file = extFile(package, 'univention-config-registry')
 		if not os.path.exists(file):
-			continue
+			file = extFile(package, 'univention-baseconfig')
+			if not os.path.exists(file):
+				continue
 	
 		postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 		preinst = open(extFile(package, 'preinst.debhelper'), 'a')
@@ -92,7 +94,7 @@ if __name__ == '__main__':
 		except IOError:	bla=[]
 		conffiles = open('debian/'+package+'.conffiles','a')
 		fp = open(file)
-		for item in univention.baseconfig.parseRfc822(fp.read()):
+		for item in univention.config_registry.parseRfc822(fp.read()):
 			if item['Type'][0] == 'file':
 				f = item['File'][0]
 				doIt(['install', '-d', destDir(f, package)])
@@ -137,10 +139,10 @@ if __name__ == '__main__':
 		doIt(['install', '-d', destDir('', package, 'info')])
 		doIt(['install', '-m644', file, destPath(package+'.info', package, 'info')])
 
-		postinst.write('test -x /usr/sbin/univention-baseconfig && univention-baseconfig register %s || true\n' % package)
+		postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register %s || true\n' % package)
 
 		prerm.write('\n')
 		prerm.write('if [ "$1" = "remove" ] || [ "$1" = "purge" ]; then\n')
-		prerm.write('	test -x /usr/sbin/univention-baseconfig && univention-baseconfig unregister %s || true\n' % package)
+		prerm.write('	test -x /usr/sbin/univention-config-registry && univention-config-registry unregister %s || true\n' % package)
 		prerm.write('fi\n')
 		prerm.write('\n')

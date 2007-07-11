@@ -1,8 +1,8 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  install baseconfig information files
+# Univention Configuration Registry
+#  install config registry information files
 #
 # Copyright (C) 2007 Univention GmbH
 #

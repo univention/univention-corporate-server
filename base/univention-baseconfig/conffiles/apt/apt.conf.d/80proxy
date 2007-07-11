@@ -5,18 +5,18 @@ def print_proxy(proxy):
 	print '    http'
 	print '    {'
 	proxyString='Proxy "http://'
-	if baseConfig['proxy/username'] and baseConfig['proxy/password']:
-		proxyString+='%s:%s\x40' % (baseConfig['proxy/username'],baseConfig['proxy/password'])
+	if configRegistry['proxy/username'] and configRegistry['proxy/password']:
+		proxyString+='%s:%s\x40' % (configRegistry['proxy/username'],configRegistry['proxy/password'])
 	proxyString+='%s"' % proxy
 	print '        %s;' % (proxyString)
 	print '    }'
 	print '}'
 
-if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
-	print_proxy(baseConfig['proxy/http'].lower().replace('http://',''))
-elif baseConfig['proxy/address']:
-	proxy='%s' % (baseConfig['proxy/address'])
-	if baseConfig['proxy/port']:
-		proxy+=':%s' % (baseConfig['proxy/port'])
+if configRegistry.has_key('proxy/http') and configRegistry['proxy/http']:
+	print_proxy(configRegistry['proxy/http'].lower().replace('http://',''))
+elif configRegistry['proxy/address']:
+	proxy='%s' % (configRegistry['proxy/address'])
+	if configRegistry['proxy/port']:
+		proxy+=':%s' % (configRegistry['proxy/port'])
 	print_proxy(proxy)
 @!@

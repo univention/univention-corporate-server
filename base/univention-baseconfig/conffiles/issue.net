@@ -1,9 +1,9 @@
 @!@
 # Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
+#          univention-config-registry.
 #          Please edit the following file instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig
+#          univention-config-registry
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
 #       /etc/univention/templates/files/etc/issue.net
@@ -11,22 +11,22 @@
 
 menutitle=''
 
-if   baseConfig['server/role'] == 'fatclient':
+if   configRegistry['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
-elif baseConfig['server/role'] =='mobileclient':
+elif configRegistry['server/role'] =='mobileclient':
 	menutitle="Univention Mobile Client"
-elif baseConfig['server/role'] =='domaincontroller_master':
+elif configRegistry['server/role'] =='domaincontroller_master':
 	menutitle="Univention DC Master"
-elif baseConfig['server/role'] =='domaincontroller_backup':
+elif configRegistry['server/role'] =='domaincontroller_backup':
 	menutitle="Univention DC Backup"
-elif baseConfig['server/role'] =='domaincontroller_slave':
+elif configRegistry['server/role'] =='domaincontroller_slave':
 	menutitle="Univention DC Slave"
-elif baseConfig['server/role'] =='memberserver':
+elif configRegistry['server/role'] =='memberserver':
 	menutitle="Univention Memberserver"
 else:
 	menutitle="Univention Corporate Server"
 
-print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
+print  '%s %s-%s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'], configRegistry['version/security-patchlevel'])
 							
 @!@
 

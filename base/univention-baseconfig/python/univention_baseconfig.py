@@ -1,2 +1,2 @@
 # -*- coding: utf-8 -*-
-from univention.baseconfig import *
+from univention.config_registry import *

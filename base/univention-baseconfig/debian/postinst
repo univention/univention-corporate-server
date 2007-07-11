@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  postinst file
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,18 +33,18 @@ test -f "/etc/univention/templates/cache" && rm -f "/etc/univention/templates/ca
 dpkg-statoverride --add root adm 0750 /var/log/
 dpkg-statoverride --add root adm 0750 /var/log/univention
 
-univention-baseconfig set ldap/base?dc=univention,dc=unconfigured
+univention-config-registry set ldap/base?dc=univention,dc=unconfigured
 
-univention-baseconfig set ldap/server/name?ds1
-univention-baseconfig set ldap/server/ip?127.0.0.1
+univention-config-registry set ldap/server/name?ds1
+univention-config-registry set ldap/server/ip?127.0.0.1
 
-univention-baseconfig set ldap/binaryattributes?""
+univention-config-registry set ldap/binaryattributes?""
 
-univention-baseconfig set browser-cache?0
+univention-config-registry set browser-cache?0
 
-univention-baseconfig set log/rotate/weeks?12
+univention-config-registry set log/rotate/weeks?12
 
-univention-baseconfig set nameserver/option/timeout?2
+univention-config-registry set nameserver/option/timeout?2
 
 # this must be done _before_ dephelper runs
 if [ "$1" = configure -a \! -e /vmlinuz.install -a \! -e /initrd.img.install ]; then
@@ -61,10 +61,10 @@ fi
 #DEBHELPER#
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.5; then
-	eval `univention-baseconfig shell nameserver`
+	eval `univention-config-registry shell nameserver`
 	if [ -n "$nameserver" ]; then
-		univention-baseconfig set nameserver1=$nameserver
-		univention-baseconfig unset nameserver
+		univention-config-registry set nameserver1=$nameserver
+		univention-config-registry unset nameserver
 	fi
 fi
 
@@ -92,15 +92,15 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.30; then
 		permroot="yes"
 		xforw="no"
 	fi
-	univention-baseconfig set sshd/port?$port
-	univention-baseconfig set sshd/permitroot?$permroot
-	univention-baseconfig set sshd/xforwarding?$xforw
+	univention-config-registry set sshd/port?$port
+	univention-config-registry set sshd/permitroot?$permroot
+	univention-config-registry set sshd/xforwarding?$xforw
 fi
 
-univention-baseconfig set sshd/port?22
-univention-baseconfig set sshd/permitroot?yes
-univention-baseconfig set sshd/xforwarding?no
-univention-baseconfig set sshd/challengeresponse?no
+univention-config-registry set sshd/port?22
+univention-config-registry set sshd/permitroot?yes
+univention-config-registry set sshd/xforwarding?no
+univention-config-registry set sshd/challengeresponse?no
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/
@@ -117,12 +117,12 @@ if [ -e /etc/init.d/rdate ]; then
 fi
 
 if [ "$locale" = "de_DE@euro" ]; then
-	univention-baseconfig set locale="de_DE@euro:ISO-8859-15"
+	univention-config-registry set locale="de_DE@euro:ISO-8859-15"
 elif [ "$locale" = "de_DE" ]; then
-	univention-baseconfig set locale="de_DE:ISO-8859-15"
+	univention-config-registry set locale="de_DE:ISO-8859-15"
 fi
 
-eval `univention-baseconfig shell locale`
+eval `univention-config-registry shell locale`
 if [ -n "$locale" ]; then
 	/usr/sbin/locale-gen || true
 fi
@@ -130,7 +130,7 @@ fi
 update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
 if [ "$1" = configure -a -n "$2" ]; then
-	eval `univention-baseconfig shell`
+	eval `univention-config-registry shell`
 	if [ -n "$interfaces_eth0_type" ]; then
 		if [ "$interfaces_eth0_type" == "dhcp" ]; then
 			dhclient eth0 || true
@@ -139,11 +139,11 @@ if [ "$1" = configure -a -n "$2" ]; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; then
-    eval `univention-baseconfig shell proxy/address proxy/port proxy/http`
+    eval `univention-config-registry shell proxy/address proxy/port proxy/http`
     if [ -n "$proxy_http" ];
 	then
-	echo "remove deprecated baseconfig-variables proxy/address and proxy/port in favor to proxy/http"
-	univention-baseconfig set proxy/port="" proxy/address=""
+	echo "remove deprecated config registry variables proxy/address and proxy/port in favor to proxy/http"
+	univention-config-registry set proxy/port="" proxy/address=""
     else
 	if [ -n "$proxy_address" ];
 	    then
@@ -153,7 +153,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; th
 	    then
 	    proxy_http="$proxy_http":"$proxy_port"
 	fi
-	univention-baseconfig set proxy/port="" proxy/address="" proxy/http="$proxy_http"
+	univention-config-registry set proxy/port="" proxy/address="" proxy/http="$proxy_http"
     fi
 fi
 
@@ -162,16 +162,16 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.54-35; t
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.8-1; then
-	univention-baseconfig set server/role?basesystem
+	univention-config-registry set server/role?basesystem
 fi
 
-univention-baseconfig set kernel/do_initrd?yes
-univention-baseconfig set kernel/do_bootfloppy?no
-univention-baseconfig set kernel/silent_loader?yes
+univention-config-registry set kernel/do_initrd?yes
+univention-config-registry set kernel/do_bootfloppy?no
+univention-config-registry set kernel/silent_loader?yes
 
 architecture=`/bin/uname -m`
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	univention-baseconfig set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
+	univention-config-registry set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
 fi
 
 exit 0

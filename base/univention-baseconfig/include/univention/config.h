@@ -1,8 +1,8 @@
  /*
- * Univention Baseconfig
- *  header file for univention baseconfig lib
+ * Univention Configuration registry
+ *  header file for univention config registry lib
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *

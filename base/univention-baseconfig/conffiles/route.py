@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  set the routing
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,6 +35,6 @@ def restore_gateway(gateway):
 		os.system('route del default')
 		os.system('route add default gw %s' % gateway)
 
-def handler(baseConfig, changes):
-	gw = baseConfig.get('gateway')
+def handler(configRegistry, changes):
+	gw = configRegistry.get('gateway')
 	restore_gateway(gw)

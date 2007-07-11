@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  collects informations about the hardware, the configuration and the installed packages
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,7 +33,7 @@ TEMPDIR=/tmp/$TEMPSUBDIR
 
 
 PROCFILES="cpuinfo devices dma filesystems interrupts loadavg meminfo partitions uptime version scsi/scsi mounts"
-PROGRAMMS="lspci__-v uptime uname__-a univention-baseconfig__dump lsmod"
+PROGRAMMS="lspci__-v uptime uname__-a univention-config-registry__dump lsmod"
 
 collect_from_procfile() {
 	if [ -e /proc/$1 ]

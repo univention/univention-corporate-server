@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  main baseconfig classes
+# Univention Configuration Registry
+#  main configuration registry classes
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,10 +48,10 @@ cache_version_notice = '%s %s\n' % (cache_version_text, cache_version)
 cache_version_re = re.compile('^%s (P<version>[0-9]+)$' % cache_version_text)
 
 warning_text='''Warning: This file is auto-generated and might be overwritten by
-         univention-baseconfig.
+         univention-config-registry.
          Please edit the following file(s) instead:
 Warnung: Diese Datei wurde automatisch generiert und kann durch
-         univention-baseconfig überschrieben werden.
+         univention-config-registry überschrieben werden.
          Bitte bearbeiten Sie an Stelle dessen die folgende(n) Datei(en):'''
 
 sys.path.insert(0, '')
@@ -73,10 +73,10 @@ def filesort(x,y):
 	return cmp(os.path.basename(x), os.path.basename(y))
 
 
-class baseConfig(dict):
+class ConfigRegistry(dict):
 	
 	def __init__(self, file=None):
-		super(baseConfig, self).__init__()
+		super(ConfigRegistry, self).__init__()
 		if os.getenv( 'UNIVENTION_BASECONF' ):
 			self.file = os.getenv( 'UNIVENTION_BASECONF' )
 		elif file:
@@ -155,13 +155,15 @@ class baseConfig(dict):
 
 	def __getitem__(self, key):
 		try:
-			return super(baseConfig, self).__getitem__(key)
+			return super(ConfigRegistry, self).__getitem__(key)
 		except KeyError:
 			return ''
 
 	def __str__(self):
 		return '\n'.join(['%s: %s' % (key, val) for key, val in self.items()])
 
+# old class name
+baseConfig = ConfigRegistry
 
 def directoryFiles(dir):
 	all = []
@@ -203,9 +205,11 @@ def filter(template, dir, srcfiles=[]):
 			end = i.next()
 			
 			child_stdin, child_stdout = os.popen2('/usr/bin/python2.4', 'w+')
-			child_stdin.write('import univention_baseconfig\n')
-			child_stdin.write('baseConfig=univention_baseconfig.baseConfig()\n')
-			child_stdin.write('baseConfig.load()\n')
+			child_stdin.write('import univention.config_registry\n')
+			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
+			child_stdin.write('configRegistry.load()\n')
+			# for compability
+			child_stdin.write('baseConfig = configRegistry\n')
 			child_stdin.write(template[start.end():end.start()])
 			child_stdin.close()
 			value=child_stdout.read()
@@ -455,7 +459,7 @@ class configHandlers:
 			try:
 				qentry = (os.path.join(file_dir, entry['Subfile'][0]), grepVariables(open(os.path.join(file_dir, entry['Subfile'][0])).read()))
 			except IOError:
-				print "The following Subfile doesnt exist: \n%s \nunivention-baseconfig commit aborted" %(os.path.join(file_dir, entry['Subfile'][0]))
+				print "The following Subfile doesnt exist: \n%s \nunivention-config-registry commit aborted" %(os.path.join(file_dir, entry['Subfile'][0]))
 				sys.exit(1)
 			# if multifile object does not exist jet, queue subfiles
 			if self._multifiles.has_key(mfile):
@@ -605,7 +609,7 @@ def randpw():
 	return pw
 
 def handler_set(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 	b.lock()
 	
@@ -647,7 +651,7 @@ def handler_set(args):
 	c(changed.keys(), (b, changed))	
 
 def handler_unset(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.lock()
 	b.load()
 
@@ -660,14 +664,14 @@ def handler_unset(args):
 		if b.has_key(arg):
 			del b[arg]
 		else:
-			print "The baseconfig variable to be unset does not exist."
+			print "The config registry variable to be unset does not exist."
 			return None
 	b.save()
 	b.unlock()
 	c(changed.keys(), (b, changed))	
 
 def handler_dump(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 	print b
 
@@ -676,7 +680,7 @@ def handler_update(args):
 	c.update()
 
 def handler_commit(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 
 	c = configHandlers()
@@ -684,7 +688,7 @@ def handler_commit(args):
 	c.commit(b, args)
 
 def handler_register(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 
 	c = configHandlers()
@@ -694,7 +698,7 @@ def handler_register(args):
 	#c.commit((b, {}))
 
 def handler_unregister(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 
 	c = configHandlers()
@@ -741,7 +745,7 @@ def validateKey(k):
 	k = replaceUmlaut(k)
 	
 	if old != k:
-		sys.stderr.write('Please fix invalid umlaut in baseconfig key "%s" to %s \n' % (old, k))
+		sys.stderr.write('Please fix invalid umlaut in config variables key "%s" to %s \n' % (old, k))
 		return 0
 	
 	if len(k) > 0:
@@ -751,16 +755,16 @@ def validateKey(k):
 		if not match:
 			return 1
 		else:
-			sys.stderr.write('Please fix invalid char "%s" in baseconfig key "%s"\n'% (match.group(), k));
+			sys.stderr.write('Please fix invalid char "%s" in config registry key "%s"\n'% (match.group(), k));
 	return 0
 
 def handler_filter(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 	sys.stdout.write(filter(sys.stdin.read(), b))
 
 def handler_search(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 	keys = True
 	for arg in copy.copy( args ):
@@ -786,16 +790,16 @@ def handler_search(args):
 				break
 	
 def handler_get(args):
-	b = baseConfig()
+	b = ConfigRegistry()
 	b.load()
 	print b[args[0]]
 
 def handler_help(args):
-        print 'univention-baseconfig: base configuration for UCS'
+        print 'univention-config-registry: base configuration for UCS'
         print 'copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany'
         print ''
 	print 'Syntax:'
-	print '  univention-baseconfig [options] <action> [parameters]'
+	print '  univention-config-registry [options] <action> [parameters]'
 	print ''
 	print 'Options:'
 	print ''
@@ -844,7 +848,7 @@ def handler_help(args):
 	print '    no file is specified ALL configuration files are rebuilt'
 	print ''
 	print 'Description:'
-	print '  univention-baseconfig is a tool to handle the basic configuration for UCS'
+	print '  univention-config-registry is a tool to handle the basic configuration for UCS'
 	print ''
 	print 'Known-Bugs:'
 	print '  -None-'
@@ -852,17 +856,17 @@ def handler_help(args):
 	sys.exit(0)
 
 def handler_version(args):
-	print 'univention-baseconfig @%@package_version@%@'
+	print 'univention-config-registry @%@package_version@%@'
 	sys.exit(0);
 
 def missing_parameter(action):
 	print 'error: too few arguments for command [%s]' % action
-	print 'try `univention-baseconfig --help` for more information'
+	print 'try `univention-config-registry --help` for more information'
 	sys.exit(1);
 
 def exception_occured():
 	print 'error: your request could not be fulfilled'
-	print 'try `univention-baseconfig --help` for more information'
+	print 'try `univention-config-registry --help` for more information'
 	sys.exit(1);
 
 def filter_shell( args, text ):

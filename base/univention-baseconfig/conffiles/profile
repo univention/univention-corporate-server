@@ -1,8 +1,8 @@
 # Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
+#          univention-config-registry.
 #          Please edit the following file instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig
+#          univention-config-registry
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
 #       /etc/univention/templates/files/etc/profile
@@ -30,16 +30,16 @@ if [ "$PS1" ]; then
 fi
 
 @!@
-if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
-    print 'http_proxy="%s"' % baseConfig['proxy/http']
+if configRegistry.has_key('proxy/http') and configRegistry['proxy/http']:
+    print 'http_proxy="%s"' % configRegistry['proxy/http']
     print 'export PATH PS1 http_proxy'
 else:
     print 'export PATH PS1'
 @!@
 
 @!@
-if baseConfig.has_key('locale/default') and baseConfig['locale/default']:
-    print 'export LANG="%s"' % baseConfig['locale/default'].split(":")[0]
+if configRegistry.has_key('locale/default') and configRegistry['locale/default']:
+    print 'export LANG="%s"' % configRegistry['locale/default'].split(":")[0]
 @!@
 
 if [ -e "$HOME/.univention-environment" ]; then
@@ -47,8 +47,8 @@ if [ -e "$HOME/.univention-environment" ]; then
 fi
 
 @!@
-if baseConfig.has_key('umask') and baseConfig['umask']:
-	print 'umask %s' % baseConfig['umask']
+if configRegistry.has_key('umask') and configRegistry['umask']:
+	print 'umask %s' % configRegistry['umask']
 else:
 	print 'umask 022'
 @!@

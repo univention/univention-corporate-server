@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  Baseconfig information: read information about registered Baseconfig
+# Univention Configuration Registry
+#  Config Registry information: read information about registered Config Registry
 #  variables
 #
 # Copyright (C) 2007 Univention GmbH
@@ -34,7 +34,7 @@ import os
 import re
 import string
 
-import univention.baseconfig as ub
+import univention.config_registry as ucr
 import univention.info_tools as uit
 
 # default locale
@@ -68,8 +68,8 @@ class Category( uit.LocalizedDictionary ):
 
 		return True
 
-class BaseconfigInfo( object ):
-	BASE_DIR = '/etc/univention/base.info'
+class ConfigRegistryInfo( object ):
+	BASE_DIR = '/etc/univention/registry.info'
 	CATEGORIES = 'categories'
 	VARIABLES = 'variables'
 	CUSTOMIZED = '_customized'
@@ -80,12 +80,12 @@ class BaseconfigInfo( object ):
 		self.variables = {}
 		self.__patterns = {}
 		if not install_mode:
-			self.__baseConfig = ub.baseConfig()
-			self.__baseConfig.load()
+			self.__configRegistry = ucr.ConfigRegistry()
+			self.__configRegistry.load()
 			self.load_categories()
 			self.__load_variables( registered_only )
 		else:
-			self.__baseConfig = None
+			self.__configRegistry = None
 
 	def check_categories( self ):
 		failed = []
@@ -115,20 +115,20 @@ class BaseconfigInfo( object ):
 			self.categories[ cat_name ] = cat
 
 	def load_categories( self ):
-		path = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.CATEGORIES )
+		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.CATEGORIES )
 		for filename in os.listdir( path ):
 			self.read_categories( os.path.join( path, filename ) )
 
 	def check_patterns( self ):
 		# in install mode
-		if not self.__baseConfig:
+		if not self.__configRegistry:
 			return
 		for pattern, data in self.__patterns.items():
 			regex = re.compile( pattern )
 			vars = []
-			# find baseconfig variables that match this pattern and are
+			# find config registry variables that match this pattern and are
 			# not already listed in self.variables
-			for bvar in self.__baseConfig.keys():
+			for bvar in self.__configRegistry.keys():
 				if regex.match( bvar ) and not bvar in self.variables.keys():
 					# Does another pattern match this variable too?
 					if not bvar in vars:
@@ -139,7 +139,7 @@ class BaseconfigInfo( object ):
 			for name, value in data:
 				var[ name ] = value
 
-			# add a reference for each baseconfig variable to the
+			# add a reference for each config registry variable to the
 			# Variable object
 			for key in vars:
 				self.variables[ key ] = var
@@ -148,16 +148,16 @@ class BaseconfigInfo( object ):
 		self.__patterns = {}
 
 	def write_customized( self ):
-		filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
-								 BaseconfigInfo.CUSTOMIZED )
+		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+								 ConfigRegistryInfo.CUSTOMIZED )
 		self.__write_variables( filename )
 
 	def __write_variables( self, filename = None, package = None ):
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
-			filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
-									 package + BaseconfigInfo.FILE_SUFFIX )
+			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+									 package + ConfigRegistryInfo.FILE_SUFFIX )
 		try:
 			fd = open( filename, 'w' )
 		except:
@@ -178,16 +178,16 @@ class BaseconfigInfo( object ):
 		return True
 
 	def read_customized( self ):
-		filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
-								 BaseconfigInfo.CUSTOMIZED )
+		filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+								 ConfigRegistryInfo.CUSTOMIZED )
 		self.read_variables( filename, override = True )
 
 	def read_variables( self, filename = None, package = None, override = False ):
 		if not filename and not package:
 			raise AttributeError( "neither 'filename' nor 'package' is specified" )
 		if not filename:
-			filename = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES,
-									 package + BaseconfigInfo.FILE_SUFFIX )
+			filename = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES,
+									 package + ConfigRegistryInfo.FILE_SUFFIX )
 		cfg = uit.UnicodeConfig()
 		cfg.read( filename )
 		for sec in cfg.sections():
@@ -201,19 +201,19 @@ class BaseconfigInfo( object ):
 			var = Variable()
 			for name, value in cfg.items( sec ):
 				var[ name ] = value
-			if self.__baseConfig and self.__baseConfig.has_key( sec ):
-				var.value = self.__baseConfig[ sec ]
+			if self.__configRegistry and self.__configRegistry.has_key( sec ):
+				var.value = self.__configRegistry[ sec ]
 			self.variables[ sec ] = var
 
 	def __load_variables( self, registered_only = True ):
-		path = os.path.join( BaseconfigInfo.BASE_DIR, BaseconfigInfo.VARIABLES )
+		path = os.path.join( ConfigRegistryInfo.BASE_DIR, ConfigRegistryInfo.VARIABLES )
 		for entry in os.listdir( path ):
 			cfgfile = os.path.join( path, entry )
-			if os.path.isfile( cfgfile ) and entry != BaseconfigInfo.CUSTOMIZED:
+			if os.path.isfile( cfgfile ) and entry != ConfigRegistryInfo.CUSTOMIZED:
 				self.read_variables( cfgfile )
 		self.check_patterns()
 		if not registered_only:
-			for key, value in self.__baseConfig.items():
+			for key, value in self.__configRegistry.items():
 				if self.variables.has_key( key ):
 					continue
 				var = Variable( registered = False )

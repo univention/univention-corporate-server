@@ -1,8 +1,8 @@
 #Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
+#          univention-config-registry.
 #          Please edit the following file instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
+#          univention-config-registry überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
 #   /etc/univention/templates/files/etc/default/ntpdate
@@ -10,22 +10,22 @@
 
 @!@
 servers=''
-if not (baseConfig.has_key('timeserver') and baseConfig['timeserver'] == 'local'):
-	if baseConfig.has_key('server/role') and baseConfig['server/role'] != "domaincontroller_master":
-		if baseConfig.has_key('ldap/master') and baseConfig['ldap/master']:
-			servers+=baseConfig['ldap/master']
-		if baseConfig.has_key('ldap/backup') and baseConfig['ldap/backup']:
-			fqdn=baseConfig['hostname']+'.'+baseConfig['domainname']
-			backup=baseConfig['ldap/backup'].split(' ')
+if not (configRegistry.has_key('timeserver') and configRegistry['timeserver'] == 'local'):
+	if configRegistry.has_key('server/role') and configRegistry['server/role'] != "domaincontroller_master":
+		if configRegistry.has_key('ldap/master') and configRegistry['ldap/master']:
+			servers+=configRegistry['ldap/master']
+		if configRegistry.has_key('ldap/backup') and configRegistry['ldap/backup']:
+			fqdn=configRegistry['hostname']+'.'+configRegistry['domainname']
+			backup=configRegistry['ldap/backup'].split(' ')
 			for i in range(0,len(backup)):
 				if backup[i] != fqdn:
 					servers+=' '+backup[i]
-	if baseConfig.has_key('timeserver') and baseConfig['timeserver']:
-		servers+=' '+baseConfig['timeserver']
-	if baseConfig.has_key('timeserver2') and baseConfig['timeserver2']:
-		servers+=' '+baseConfig['timeserver2']
-	if baseConfig.has_key('timeserver3') and baseConfig['timeserver3']:
-		servers+=' '+baseConfig['timeserver3']
+	if configRegistry.has_key('timeserver') and configRegistry['timeserver']:
+		servers+=' '+configRegistry['timeserver']
+	if configRegistry.has_key('timeserver2') and configRegistry['timeserver2']:
+		servers+=' '+configRegistry['timeserver2']
+	if configRegistry.has_key('timeserver3') and configRegistry['timeserver3']:
+		servers+=' '+configRegistry['timeserver3']
 if servers:
 	print 'NTPSERVERS="%s"' % servers
 @!@

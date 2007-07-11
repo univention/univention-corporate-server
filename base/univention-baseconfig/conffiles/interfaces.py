@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  baseconfig module for the network interfaces
+# Univention Configuration Registry
+#  config registry module for the network interfaces
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,13 +48,13 @@ def restore_gateway(gateway):
 		os.system('route del default')
 		os.system('route add default gw %s' % gateway)
 
-def preinst(baseConfig, changes):
+def preinst(configRegistry, changes):
 	for iface in set(changes):
-		if baseConfig.has_key('%s/address'%iface):
+		if configRegistry.has_key('%s/address'%iface):
 			stop_iface(interface(iface))
 
-def postinst(baseConfig, changes):
+def postinst(configRegistry, changes):
 	for iface in set(changes):
-		if baseConfig.has_key('%s/address'%iface):
+		if configRegistry.has_key('%s/address'%iface):
 			start_iface(interface(iface))
-	restore_gateway(baseConfig.get('gateway'))
+	restore_gateway(configRegistry.get('gateway'))

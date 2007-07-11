@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  run locale-gen
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,6 +36,6 @@ def mk_locale_archive():
 def locale_gen():
 	os.system('/usr/sbin/locale-gen')
 
-def handler(baseConfig, changes):
+def handler(configRegistry, changes):
 	mk_locale_archive()
 	locale_gen()

@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  start script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,10 +32,10 @@
 import os, sys
 
 try:
-	import univention.baseconfig as ub
+	import univention.config_registry as ub
 except ImportError:
 	import univention_baseconfig as ub
 
-if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig'):
+if __name__ == '__main__' and not os.path.exists('/etc/univention/disable_baseconfig') and not os.path.exists('/etc/univention/disable_config_registry'):
 	ub.main(sys.argv[1:])
 

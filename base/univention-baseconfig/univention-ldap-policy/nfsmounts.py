@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  add and remove nfs shares from the LDAP directory to /etc/fstab
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,12 +30,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-import univention_baseconfig
+import univention.config_registry
 import ldap
 import string
 
-baseConfig=univention_baseconfig.baseConfig()
-baseConfig.load()
+configRegistry=univention.config_registry.ConfigRegistrConfigRegistry()
+configRegistry.load()
 
 def exit(result, message = None):
 	import sys
@@ -58,14 +58,14 @@ def query_policy(dn):
 	return nfsmount
 
 def main():
-	if not baseConfig.has_key( 'ldap/hostdn' ):
+	if not configRegistry.has_key( 'ldap/hostdn' ):
 		exit( 0 )
 	
-	nfsmounts = query_policy( baseConfig['ldap/hostdn'] )
+	nfsmounts = query_policy( configRegistry['ldap/hostdn'] )
 
-	ldap_server = baseConfig['ldap/server/name']
+	ldap_server = configRegistry['ldap/server/name']
 
-	fqdn = "%s.%s" % (baseConfig['hostname'], baseConfig['domainname'])
+	fqdn = "%s.%s" % (configRegistry['hostname'], configRegistry['domainname'])
 
 	lo = ldap.initialize("ldap://%s" % ldap_server)
 	lo.simple_bind_s("","")
@@ -129,7 +129,7 @@ def main():
 		# get the ip of the share_host
 		hostname = share_host.split('.',1)[0]
 		domain = string.join(share_host.split('.',1)[1:], '.')
-		result = lo.search_s(baseConfig['ldap/base'], ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(zoneName=%s))' % (hostname, domain), attrlist=['aRecord'])
+		result = lo.search_s(configRegistry['ldap/base'], ldap.SCOPE_SUBTREE, '(&(relativeDomainName=%s)(zoneName=%s))' % (hostname, domain), attrlist=['aRecord'])
 		try:
 			attributes = result[0][1]
 			if attributes.has_key('aRecord'):

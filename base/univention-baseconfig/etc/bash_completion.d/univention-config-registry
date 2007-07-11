@@ -1,7 +1,7 @@
-# bash completion for univention-baseconfig
+# bash completion for univention-config-registry
 # bugs: - does not recognize options
 
-_univention-baseconfig()
+_univention-config-registry()
 {
         file=/etc/univention/base.conf
         COMPREPLY=()
@@ -18,5 +18,6 @@ _univention-baseconfig()
         return 0
 }
 
-complete -F _univention-baseconfig univention-baseconfig
+complete -F _univention-config-registry univention-config-registry
+complete -F _univention-config-registry univention-baseconfig
 

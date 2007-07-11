@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Baseconfig
+# Univention Configuration Registry
 #  preinst file
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,15 +36,15 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 		boot_device=`cat /etc/lilo.conf  | grep boot=  | sed -e "s|boot=||"`
 		root_device=`cat /etc/lilo.conf  | grep root=  | sed -e "s|root=||"`
 		if [ -n "$boot_device" ]; then
-			univention-baseconfig set lilo/boot?$boot_device
+			univention-config-registry set lilo/boot?$boot_device
 		fi
 		if [ -n "$root_device" ]; then
-			univention-baseconfig set lilo/root?$root_device
+			univention-config-registry set lilo/root?$root_device
 		fi
 
 		modules=`cat /etc/modules | while read line; do l=\`echo $line | sed -e "s|#.*||"\`; if [ -z "$l" ]; then continue; fi; echo "$l;"; done`
 		if [ -n "$modules" ]; then
-			univention-baseconfig set kernel/modules="$modules"
+			univention-config-registry set kernel/modules="$modules"
 		fi
 	fi
 

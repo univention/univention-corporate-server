@@ -1,8 +1,8 @@
 # Warning: This file is auto-generated and might be overwritten by
-#          univention-baseconfig.
+#          univention-config-registry.
 #          Please edit the following file instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
+#          univention-config-registry überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
 #         /etc/univention/templates/files/etc/ssh/sshd_config
@@ -50,9 +50,9 @@ Port @%@sshd/port@%@
 PermitRootLogin @%@sshd/permitroot@%@
 X11Forwarding @%@sshd/xforwarding@%@
 @!@
-if baseConfig.has_key('sshd/xdisplayoffset') and baseConfig['sshd/xdisplayoffset']:
-	print "X11DisplayOffset %s" % baseConfig['sshd/xdisplayoffset']
-if baseConfig.has_key('sshd/xuselocalhost') and baseConfig['sshd/xuselocalhost']:
-	print "X11UseLocalhost %s" % baseConfig['sshd/xuselocalhost']
+if configRegistry.has_key('sshd/xdisplayoffset') and configRegistry['sshd/xdisplayoffset']:
+	print "X11DisplayOffset %s" % configRegistry['sshd/xdisplayoffset']
+if configRegistry.has_key('sshd/xuselocalhost') and configRegistry['sshd/xuselocalhost']:
+	print "X11UseLocalhost %s" % configRegistry['sshd/xuselocalhost']
 @!@
 

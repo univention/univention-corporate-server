@@ -1,8 +1,8 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Baseconfig
-#  install baseconfig information files
+# Univention Configuration Registry
+#  install configuration registry information files
 #
 # Copyright (C) 2007 Univention GmbH
 #
@@ -30,7 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, string
-import univention.baseconfig_info as ub_info
+import univention.config_registry_info as ucr_info
 
 def debhelper_files():
 	return ( os.path.join( 'debian', package + 'postinst.debhelper' ),
@@ -56,7 +56,7 @@ def divert_remove( fd, dest ):
 	fd.write( 'test "$1" = "install" && dpkg-divert --rename --divert %s --remove "%s" || true\n' % ( dest + '.debian', dest ) )
 
 if __name__ == '__main__':
-	info = ub_info.BaseconfigInfo( install_mode = True )
+	info = ucr_info.ConfigRegistryInfo( install_mode = True )
 	for package in binary_packages():
 		# package's conffiles
 		conffilename = os.path.join( 'debian', package + '.conffiles' )
@@ -74,7 +74,7 @@ if __name__ == '__main__':
 		postinst_fd = open( postinst, 'a' )
 
 		# categories
-		source = os.path.join( 'debian', package + '.univention-baseconfig-categories' )
+		source = os.path.join( 'debian', package + '.univention-config-registry-categories' )
 
 		if not os.path.exists( source ):
 			continue
@@ -85,14 +85,14 @@ if __name__ == '__main__':
 			print >>sys.stderr, 'The following category definitions are invalid: %s' % \
 				  ', '.join( failed )
 			sys.exit( 1 )
-		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
-								  ub_info.BaseconfigInfo.CATEGORIES )
+		dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
+								  ucr_info.ConfigRegistryInfo.CATEGORIES )
 		dest = os.path.join( dest_path, package + '.cfg' )
 
 		os.system( 'install -m 755 -d %s' % dest_path )
 		os.system( 'install -m 644 %s %s' % ( source, dest ) )
 
-		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.CATEGORIES,
+		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR, ucr_info.ConfigRegistryInfo.CATEGORIES,
 									  package + '.cfg' )
 		if not real_conffile + '\n' in current_conffiles:
 			conffiles.write( real_conffile + '\n' )
@@ -102,7 +102,7 @@ if __name__ == '__main__':
 
 		# variables
 		source = os.path.join( 'debian',
-							   package + '.univention-baseconfig-variables' )
+							   package + '.univention-config-registry-variables' )
 		if not os.path.exists( source ):
 			continue
 
@@ -112,14 +112,14 @@ if __name__ == '__main__':
 			print >>sys.stderr, 'The following variable definition are invalid: %s' % \
 				  ', '.join( failed )
 			sys.exit( 1 )
-		dest_path = os.path.join( 'debian', package, ub_info.BaseconfigInfo.BASE_DIR[ 1 : ],
-								  ub_info.BaseconfigInfo.VARIABLES )
+		dest_path = os.path.join( 'debian', package, ucr_info.ConfigRegistryInfo.BASE_DIR[ 1 : ],
+								  ucr_info.ConfigRegistryInfo.VARIABLES )
 		dest = os.path.join( dest_path, package + '.cfg' )
 
 		os.system( 'install -m 755 -d %s' % dest_path )
 		os.system( 'install -m 644 %s %s' % ( source, dest ) )
 
-		real_conffile = os.path.join( ub_info.BaseconfigInfo.BASE_DIR, ub_info.BaseconfigInfo.VARIABLES,
+		real_conffile = os.path.join( ucr_info.ConfigRegistryInfo.BASE_DIR, ucr_info.ConfigRegistryInfo.VARIABLES,
 									  package + '.cfg' )
 		if not real_conffile + '\n' in current_conffiles:
 			conffiles.write( real_conffile + '\n' )
