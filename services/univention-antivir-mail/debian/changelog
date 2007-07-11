@@ -1,27 +1,33 @@
+univention-antivir-mail (1.3.2-2) unstable; urgency=low
+
+  * konvert sources to utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 11 Jul 2007 17:12:54 +0200
+
 univention-antivir-mail (1.3.2-1) unstable; urgency=low
 
   * removed debian/univention-antivir-mail.conffiles; not required 
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jul 2007 16:53:11 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 03 Jul 2007 16:53:11 +0200
 
 univention-antivir-mail (1.3.1-1) unstable; urgency=low
 
   * move amavis configuration to new place (requested by new version)
   * fixed syntax errors in clamav configuration
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jul 2007 16:45:48 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 03 Jul 2007 16:45:48 +0200
 
 univention-antivir-mail (1.3.0-1) unstable; urgency=low
 
   * apply UCS 2.0 policies
 
- -- Andreas Büsching <buesching@univention.de>  Tue, 03 Jul 2007 15:13:07 +0200
+ -- Andreas BÃŒsching <buesching@univention.de>  Tue, 03 Jul 2007 15:13:07 +0200
 
 univention-antivir-mail (1.2-12) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 16:51:24 +0100
+ -- Andreas BÃŒsching <buesching@univention.de>  Thu, 23 Nov 2006 16:51:24 +0100
 
 univention-antivir-mail (1.2-10) unstable; urgency=low
 
