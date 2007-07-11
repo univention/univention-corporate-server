@@ -1,3 +1,9 @@
+univention-pam (1.1.0-11) unstable; urgency=low
+
+  *fixed wrong path to template in libnss-ldap.conf
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 11 Jul 2007 11:38:32 +0200
+
 univention-pam (1.1.0-10) unstable; urgency=low
 
   * fixed oder of pam rules
