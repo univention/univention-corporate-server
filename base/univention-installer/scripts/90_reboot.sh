@@ -69,10 +69,6 @@ __EOT__
 chmod +x /instmnt/tmp/cleanup.sh
 chroot /instmnt ./tmp/cleanup.sh
 
-
-echo "Rebooting in 10 seconds - Please remove the install media in order to prevent install rerun"
-for i in 0 1 2 3 4 5 6 7 8 9 ; do echo -n . ; sleep 1 ; done
-
 cat >/instmnt/tmp/cleanup.sh <<__EOT__
 if [ -x /etc/init.d/nscd ]; then
 	/etc/init.d/nscd stop
@@ -94,6 +90,9 @@ __EOT__
 
 chmod +x /instmnt/tmp/cleanup.sh
 chroot /instmnt ./tmp/cleanup.sh
+
+echo "Rebooting in 10 seconds - Please remove the install media in order to prevent install rerun"
+for i in 0 1 2 3 4 5 6 7 8 9 ; do echo -n . ; sleep 1 ; done
 
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	halt
