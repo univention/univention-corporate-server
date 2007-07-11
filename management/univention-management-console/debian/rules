@@ -85,7 +85,7 @@ install-ext-%:
 	touch debian/univention-management-console-proxy/etc/runit/univention-management-console-proxy/down
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-management-console-proxy/etc/runit/univention-management-console-proxy/finish
 
-	univention-install-baseconfig
+	univention-install-config-registry
 
 binary-indep: build install
 	dh_testdir -i
