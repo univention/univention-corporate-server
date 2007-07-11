@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  module: manages Univention Baseconfig variables
+#  module: manages Univention Config Registry variables
 #
 # Copyright (C) 2006, 2007 Univention GmbH
 #
@@ -39,8 +39,8 @@ import univention.management.console.tools as umct
 
 import univention.debug as ud
 
-import univention.baseconfig
-from univention.baseconfig_info import BaseconfigInfo, Variable
+import univention.config_registry
+from univention.config_registry_info import ConfigRegistryInfo, Variable
 
 import notifier.popen
 
@@ -51,14 +51,14 @@ _ = umc.Translation( \
 	'univention.management.console.handlers.baseconfig' ).translate
 
 icon = 'baseconfig/module'
-short_description = _( 'Univention Baseconfig' )
-long_description = _( 'Add, modify and search Univention Baseconfig variables' )
+short_description = _( 'Univention Configuration Registry' )
+long_description = _( 'Add, modify and search Univention configuration registry variables' )
 categories = [ 'all' ]
 
 command_description = {
 	'baseconfig/set': umch.command(
 		short_description = _( 'Add' ),
-		long_description = _( 'Add a new baseconfig variable' ),
+		long_description = _( 'Add a new configuration registry variable' ),
 		method = 'baseconfig_set',
 		values = { 'key' : _types.key,
 				   'value' : _types.value,
@@ -70,19 +70,19 @@ command_description = {
 	),
 	'baseconfig/show': umch.command(
 		short_description = _( 'Show' ),
-		long_description = _( 'Display Information about a baseconfig variable' ),
+		long_description = _( 'Display Information about a configuration registry variable' ),
 		method = 'baseconfig_show',
 		values = { 'key': _types.key },
 	),
 	'baseconfig/unset': umch.command(
 		short_description = _( 'Remove' ),
-		long_description = _( 'Unset a baseconfig value' ),
+		long_description = _( 'Unset a configuration registry value' ),
 		method = 'baseconfig_unset',
 		values = { 'key': _types.key },
 	),
 	'baseconfig/search': umch.command(
 		short_description = _( 'Search' ),
-		long_description = _( 'Search for a baseconfig value' ),
+		long_description = _( 'Search for a configuration registry value' ),
 		method = 'baseconfig_search',
 		values = { 'key' : _types.searchkey,
 				   'filter': _types.filter,
@@ -157,9 +157,9 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 
 	def baseconfig_show( self, object ):
-		"""this method returns a dictionary of baseconfig variables
+		"""this method returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the UMCP
-		request. Additionally a list of baseconfig categories can be defined"""
+		request. Additionally a list of configuration registry categories can be defined"""
 		if not object.incomplete:
 			baseInfo = BaseconfigInfo( registered_only = False )
 			vars = baseInfo.get_variables()
@@ -171,9 +171,9 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			self.finished( object.id(), None, success = False )
 
 	def baseconfig_search( self, object ):
-		"""this method returns a dictionary of baseconfig variables
+		"""this method returns a dictionary of configuration registry variables
 		found by searching for the (wildcard) expression defined by the UMCP
-		request. Additionally a list of baseconfig categories can be defined"""
+		request. Additionally a list of configuration registry categories can be defined"""
 		variables = {}
 		ud.debug( ud.ADMIN, ud.INFO, 'Baseconfig.search: options: %s' % str( object.options ) )
 		if not object.incomplete:

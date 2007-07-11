@@ -50,7 +50,17 @@ short_description = _( 'System Services' )
 long_description = _( 'controls system services' )
 categories = [ 'all' ]
 
+class StartType( umc.StaticSelection ):
+	def __init__( self ):
+		umc.StaticSelection.__init__( self, _( 'Start Type' ) )
+
+	def choices( self ):
+		return ( ( 'manual' : _( 'Manual' ) ), ( 'auto', _( 'Automatically' ) ) )
+
+umcd.copy( umc.StaticSelection, StartType )
+
 service_type = umc.String( _( 'Service' ) )
+start_type = StartType()
 
 command_description = {
 	'service/start': umch.command(
@@ -93,6 +103,11 @@ command_description = {
 		method = 'service_list',
 		startup = True,
 		priority = 100,
+	),
+	'service/start_type': umch.command(
+		short_description = _( 'Set start type' ),
+		method = 'service_start_type',
+		values = { 'type' : start_type }
 	),
 }
 
@@ -154,3 +169,6 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				srv.autostart = False
 
 		self.finished( object.id(), srvs.services )
+
+	def service_start_type( self, object ):
+		pass

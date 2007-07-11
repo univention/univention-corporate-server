@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-13 18:30+0200\n"
+"POT-Creation-Date: 2007-07-11 13:18+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,119 +15,119 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:53
-msgid "Univention Baseconfig"
-msgstr "Univention Baseconfig"
-
 #: __init__.py:54
-msgid "Add, modify and search Univention Baseconfig variables"
-msgstr "Hinzufügen, Beareiten und Suchen von Baseconfig Variablen"
+msgid "Univention Configuration Registry"
+msgstr ""
 
-#: __init__.py:59
+#: __init__.py:55
+msgid "Add, modify and search Univention configuration registry variables"
+msgstr "Hinzufügen, Beareiten und Suchen von Configuration Registry Variablen"
+
+#: __init__.py:60
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: __init__.py:60
-msgid "Add a new baseconfig variable"
-msgstr "Hinzufügen einer neuen Baseconfig Variable"
+#: __init__.py:61
+msgid "Add a new configuration registry variable"
+msgstr "Hinzufügen einer neuen Configuration Registry Variable"
 
-#: __init__.py:71
+#: __init__.py:72
 msgid "Show"
 msgstr "Anzeigen"
 
-#: __init__.py:72
-msgid "Display Information about a baseconfig variable"
-msgstr "Anzeigen von Informationen zu einer Baseconfig Variable"
+#: __init__.py:73
+msgid "Display Information about a configuration registry variable"
+msgstr "Anzeigen von Informationen zu einer Configuration Registry Variable"
 
-#: __init__.py:77
+#: __init__.py:78
 msgid "Remove"
 msgstr "Entfernen"
 
-#: __init__.py:78
-msgid "Unset a baseconfig value"
-msgstr "Entfernen eines Baseconfig Wertes"
+#: __init__.py:79
+msgid "Unset a configuration registry value"
+msgstr "Entfernen eines Configuration Registry Wertes"
 
-#: __init__.py:83
+#: __init__.py:84
 msgid "Search"
 msgstr "Suchen"
 
-#: __init__.py:84
-msgid "Search for a baseconfig value"
-msgstr "Suchen eines Baseconfig Wertes"
+#: __init__.py:85
+msgid "Search for a configuration registry value"
+msgstr "Suchen eines Configuration Registry Wertes"
 
-#: _revamp.py:74 _types.py:89
+#: _revamp.py:72 _types.py:90
 msgid "Variable"
 msgstr "Variable"
 
-#: _revamp.py:74 _types.py:89 _types.py:97
+#: _revamp.py:72 _types.py:90 _types.py:98
 msgid "Value"
 msgstr "Wert"
 
-#: _revamp.py:74 _revamp.py:176 _types.py:90 _types.py:103
+#: _revamp.py:72 _revamp.py:175 _types.py:91 _types.py:104
 msgid "Description"
 msgstr "Beschreibung"
 
-#: _revamp.py:75
+#: _revamp.py:73
 msgid "Categories"
 msgstr "Kategorien"
 
-#: _revamp.py:113
+#: _revamp.py:111
 #, python-format
 msgid "Variable: %(key)s"
 msgstr "Variable: %(key)s"
 
-#: _revamp.py:117
-msgid "No Baseconfig variables were found."
-msgstr "Es wurden keine Baseconfig Variablen gefunden."
+#: _revamp.py:115
+msgid "No configuration registry variables were found."
+msgstr "Es wurden keine Configuration Registry Variablen gefunden."
 
-#: _revamp.py:119
+#: _revamp.py:117
 msgid "Search Result"
 msgstr "Suchergebnis"
 
-#: _revamp.py:176 _types.py:104
+#: _revamp.py:175 _types.py:105
 msgid "Language"
 msgstr "Sprache"
 
 #: _revamp.py:190
-msgid "Modify Baseconfig Variable"
-msgstr "Bearbeiten einer Baseconfig Variable"
+msgid "Modify Configuration Registry Variable"
+msgstr "Bearbeiten einer Configuration Registry Variable"
 
 #: _revamp.py:192
-msgid "Add Baseconfig Variable"
-msgstr "Hinzufügen einer Baseconfig Variable"
+msgid "Add Configuration Registry Variable"
+msgstr "Hinzufügen einer Configuration Registry Variable"
 
-#: _types.py:40
+#: _types.py:41
 msgid "Category"
 msgstr "Kategorie"
 
-#: _types.py:61
+#: _types.py:62
 msgid "All (incl. not registered)"
 msgstr "Alle (inkl. nicht registrierter)"
 
-#: _types.py:62
+#: _types.py:63
 msgid "All"
 msgstr "Alle"
 
-#: _types.py:70
+#: _types.py:71
 msgid "List of Categories"
 msgstr "Liste der Kategorien"
 
-#: _types.py:77
+#: _types.py:78
 msgid "Types"
 msgstr "Typen"
 
-#: _types.py:80
+#: _types.py:81
 msgid "String"
 msgstr "Zeichenkette"
 
-#: _types.py:86
+#: _types.py:87
 msgid "Search Key"
 msgstr "Suchmaske"
 
-#: _types.py:95
+#: _types.py:96
 msgid "Key"
 msgstr "Schlüssel"
 
-#: _types.py:105
+#: _types.py:106
 msgid "Multilinugal Description"
 msgstr "Mehrsprachige Beschreibung"

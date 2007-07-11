@@ -1,3 +1,9 @@
+univention-management-console (0.7.8-1) unstable; urgency=low
+
+  * Univention Baseconfig is now called Univention Configuration Registry 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 11 Jul 2007 13:41:14 +0200
+
 univention-management-console (0.7.7-4) unstable; urgency=low
 
   * added link to umc for ucs-overview

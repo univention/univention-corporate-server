@@ -112,7 +112,7 @@ class Web( object ):
 					btn = umcd.Button( key, 'baseconfig/variable', umcd.Action( req_set ) )
 					result.add_row( [ btn, value, descr_text, cat_text ] )
 			else:
-				result.add_row( [ _( 'No Baseconfig variables were found.' ) ] )
+				result.add_row( [ _( 'No configuration registry variables were found.' ) ] )
 
 			main.append( umcd.Frame( [ result ], _( 'Search Result' ) ) )
 
@@ -187,9 +187,9 @@ class Web( object ):
 
 		# title
 		if variable != None:
-			main.append( umcd.Frame( [ form ], _( 'Modify Baseconfig Variable' ) ) )
+			main.append( umcd.Frame( [ form ], _( 'Modify Configuration Registry Variable' ) ) )
 		else:
-			main.append( umcd.Frame( [ form ], _( 'Add Baseconfig Variable' ) ) )
+			main.append( umcd.Frame( [ form ], _( 'Add Configuration Registry Variable' ) ) )
 
 		res.dialog = main
 		self.revamped( object.id(), res )

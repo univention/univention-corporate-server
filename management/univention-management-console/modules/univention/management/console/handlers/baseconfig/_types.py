@@ -32,7 +32,7 @@
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
 
-from univention.baseconfig_info import BaseconfigInfo, Variable
+from univention.config_registry import ConfigRegistryInfo, Variable
 
 _ = umc.Translation( 'univention.management.console.handlers.baseconfig' ).translate
 
@@ -41,7 +41,7 @@ class BaseconfigCategory( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Category' ), required = required )
 
 	def choices( self ):
-		info = BaseconfigInfo()
+		info = ConfigRegistryInfo()
 		lst = []
 
 		# build list of categories
