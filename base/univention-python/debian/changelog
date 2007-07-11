@@ -1,4 +1,4 @@
-univention-python (2.2.1-1) unstable; urgency=low
+univention-python (2.2.1-2) unstable; urgency=low
 
   * no password encoding to ISO-8859-1 anymore 
 
