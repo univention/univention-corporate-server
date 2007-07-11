@@ -106,8 +106,8 @@ install: build
 	install -m755 scripts/12_fstab.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/14_sources_list.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/20_preconfigure.sh ${D}/lib/univention-installer-scripts.d/
-	install -m755 scripts/25_install_baseconfig.sh ${D}/lib/univention-installer-scripts.d/
-	install -m755 scripts/28_postconfigure_baseconfig.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/25_install_config_registry.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/28_postconfigure_config_registry.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/31_preinst_hook.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/35_kernel.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/50_packages.sh ${D}/lib/univention-installer-scripts.d/

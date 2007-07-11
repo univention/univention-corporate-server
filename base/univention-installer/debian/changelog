@@ -1,4 +1,4 @@
-univention-installer (1.6.2-2) unstable; urgency=low
+univention-installer (1.6.2-3) unstable; urgency=low
 
   * use univention-config-registry instead of univention-baseconfig 
 
