@@ -57,130 +57,130 @@ if [ -n "$to_scan" ] || [ -n "$scan" ]; then
 	done
 fi
 if [ -n "\$host" ]; then
-	univention-baseconfig set hostname=\$host
+	univention-config-registry set hostname=\$host
 elif [ -n "$hostname" ]; then
-	univention-baseconfig set hostname=$hostname
+	univention-config-registry set hostname=$hostname
 fi
 __EOT__
 
 chmod +x /instmnt/hostname.sh
 chroot /instmnt ./hostname.sh
 
-cat >>/instmnt/postconfigure_baseconfig.sh <<__EOT__
+cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
 
-univention-baseconfig set domainname=$domainname
-#univention-baseconfig set hostname=$hostname
-univention-baseconfig set windows/domain=$windows_domain
+univention-config-registry set domainname=$domainname
+#univention-config-registry set hostname=$hostname
+univention-config-registry set windows/domain=$windows_domain
 hostname $hostname
 
 if [ -n "$eth0_type" -a "$eth0_type" = "dynamic" ]; then
-	univention-baseconfig set interfaces/eth0/type=dhcp
+	univention-config-registry set interfaces/eth0/type=dhcp
 fi
 
 if [ -n "$use_external_nameserver" -a "$use_external_nameserver" = "true" ]; then
-	univention-baseconfig set nameserver/external=true
+	univention-config-registry set nameserver/external=true
 else
-	univention-baseconfig set nameserver/external=false
+	univention-config-registry set nameserver/external=false
 fi
 
 if [ -n "$dns_forwarder_1" ]; then
-	univention-baseconfig set dns/forwarder1=$dns_forwarder_1
+	univention-config-registry set dns/forwarder1=$dns_forwarder_1
 fi
 if [ -n "$dns_forwarder_2" ]; then
-	univention-baseconfig set dns/forwarder2=$dns_forwarder_2
+	univention-config-registry set dns/forwarder2=$dns_forwarder_2
 fi
 if [ -n "$dns_forwarder_3" ]; then
-	univention-baseconfig set dns/forwarder3=$dns_forwarder_3
+	univention-config-registry set dns/forwarder3=$dns_forwarder_3
 fi
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
-	univention-baseconfig set create/home/share=true
+	univention-config-registry set create/home/share=true
 fi
 
 
 if [ -n "$ldap_position" ]; then
-	univention-baseconfig set ldap/position="$ldap_position"
+	univention-config-registry set ldap/position="$ldap_position"
 fi
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	if [ -n "$ldap_base" ]; then
-		univention-baseconfig set ldap/base="$ldap_base"
+		univention-config-registry set ldap/base="$ldap_base"
 	fi
-	univention-baseconfig set ldap/server/ip=$eth0_ip
-	univention-baseconfig set ldap/server/name=$hostname.$domainname
-	univention-baseconfig set ldap/master=$hostname.$domainname
-	univention-baseconfig set kerberos/adminserver=$hostname.$domainname
-	univention-baseconfig set server/role=domaincontroller_master
-	univention-baseconfig set ldap/server/type=master
+	univention-config-registry set ldap/server/ip=$eth0_ip
+	univention-config-registry set ldap/server/name=$hostname.$domainname
+	univention-config-registry set ldap/master=$hostname.$domainname
+	univention-config-registry set kerberos/adminserver=$hostname.$domainname
+	univention-config-registry set server/role=domaincontroller_master
+	univention-config-registry set ldap/server/type=master
 else
 	if [ -n "$ldap_base" ]; then
-		univention-baseconfig set ldap/base="$ldap_base"
+		univention-config-registry set ldap/base="$ldap_base"
 	fi
 	if [ -n "$domain_controller_ip" ]; then
-		univention-baseconfig set ldap/master/ip=$domain_controller_ip
+		univention-config-registry set ldap/master/ip=$domain_controller_ip
 	fi
 
-	univention-baseconfig set ldap/server/type=slave
+	univention-config-registry set ldap/server/type=slave
 
 	if [ $server_role = "domaincontroller_slave" ]; then
-		univention-baseconfig set server/role=domaincontroller_slave
+		univention-config-registry set server/role=domaincontroller_slave
 	elif [ $server_role = "memberserver" ]; then
-		univention-baseconfig set server/role=memberserver
+		univention-config-registry set server/role=memberserver
 	elif [ $server_role = "managed_client" ]; then
-		univention-baseconfig set server/role=fatclient
+		univention-config-registry set server/role=fatclient
 	elif [ $server_role = "mobile_client" ]; then
-		univention-baseconfig set server/role=mobileclient
+		univention-config-registry set server/role=mobileclient
 	elif [ $server_role = "domaincontroller_backup" ]; then
-		univention-baseconfig set server/role=domaincontroller_backup
+		univention-config-registry set server/role=domaincontroller_backup
 	elif [ $server_role = "basesystem" ]; then
-		univention-baseconfig set server/role=basesystem
+		univention-config-registry set server/role=basesystem
 	fi
 fi
 
 if [ -n "$ssl_country" ]; then
-	univention-baseconfig set ssl/country="$ssl_country"
+	univention-config-registry set ssl/country="$ssl_country"
 fi
 if [ -n "$ssl_state" ]; then
-	univention-baseconfig set ssl/state="$ssl_state"
+	univention-config-registry set ssl/state="$ssl_state"
 fi
 if [ -n "$ssl_locality" ]; then
-	univention-baseconfig set ssl/locality="$ssl_locality"
+	univention-config-registry set ssl/locality="$ssl_locality"
 fi
 if [ -n "$ssl_organization" ]; then
-	univention-baseconfig set ssl/organization="$ssl_organization"
+	univention-config-registry set ssl/organization="$ssl_organization"
 fi
 if [ -n "$ssl_organizationalunit" ]; then
-	univention-baseconfig set ssl/organizationalunit="$ssl_organizationalunit"
+	univention-config-registry set ssl/organizationalunit="$ssl_organizationalunit"
 fi
 if [ -n "$ssl_common" ]; then
-	univention-baseconfig set ssl/common="$ssl_common"
+	univention-config-registry set ssl/common="$ssl_common"
 fi
 if [ -n "$ssl_email" ]; then
-	univention-baseconfig set ssl/email=$ssl_email
+	univention-config-registry set ssl/email=$ssl_email
 fi
 
 if [ -n "$acpi_off" ]; then
-	univention-baseconfig set "\$(univention-baseconfig get grub/append) acpi=off"
+	univention-config-registry set "\$(univention-config-registry get grub/append) acpi=off"
 fi
 
 if [ -n "$pci_acpi_off" ]; then
-	univention-baseconfig set "\$(univention-baseconfig get grub/append) pci=noacpi"
+	univention-config-registry set "\$(univention-config-registry get grub/append) pci=noacpi"
 fi
 
 if [ -n "$grub_append" ]; then
-	univention-baseconfig set grub/append="$grub_append"
+	univention-config-registry set grub/append="$grub_append"
 fi
 
-univention-baseconfig set locale="$locales"
+univention-config-registry set locale="$locales"
 
 if [ -n "$locale_default" ]; then
 	short_form=`echo $locale_default | awk -F ':' '{print $1}'`
 
-	univention-baseconfig set "locale/default"="$locale_default"
+	univention-config-registry set "locale/default"="$locale_default"
 
-	univention-baseconfig set admin/web/language="$short_form"
-	univention-baseconfig set console/web/language="$short_form"
-	univention-baseconfig set gdm/language="$locale_default"
+	univention-config-registry set admin/web/language="$short_form"
+	univention-config-registry set console/web/language="$short_form"
+	univention-config-registry set gdm/language="$locale_default"
 fi
 
 echo "$timezone" >/etc/timezone
@@ -192,12 +192,12 @@ else
 	cp /usr/share/keymaps/i386/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz
 fi
 
-univention-baseconfig set version/version=$version_version
-univention-baseconfig set version/patchlevel=$version_patchlevel
+univention-config-registry set version/version=$version_version
+univention-config-registry set version/patchlevel=$version_patchlevel
 
-univention-baseconfig commit
+univention-config-registry commit
 
 __EOT__
 
-chmod +x /instmnt/postconfigure_baseconfig.sh
-chroot /instmnt ./postconfigure_baseconfig.sh
+chmod +x /instmnt/postconfigure_config_registry.sh
+chroot /instmnt ./postconfigure_config_registry.sh

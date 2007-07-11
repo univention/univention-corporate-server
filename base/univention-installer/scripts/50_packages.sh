@@ -102,7 +102,7 @@ cat >>/instmnt/install_packages.sh <<__EOT__
 export DEBIAN_FRONTEND=noninteractive
 
 for((i=0;i<4;i++)); do
-	dhcp=\`univention-baseconfig get interfaces/eth\$i/type | grep dhcp\`
+	dhcp=\`univention-config-registry get interfaces/eth\$i/type | grep dhcp\`
 	if [ -n "\$dhcp" ]; then
 		$PIPE apt-get install dhcp-client --yes
 		dhclient eth\$i

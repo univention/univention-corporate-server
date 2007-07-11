@@ -39,9 +39,9 @@ if [ -n "$local_repository" ]; then
 
 	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
 
-		UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 -OO /sbin/univention-baseconfig set local/repository=yes
+		UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 -OO /sbin/univention-config-registry set local/repository=yes
 
-		eval `UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 -OO /sbin/univention-baseconfig shell`
+		eval `UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 -OO /sbin/univention-config-registry shell`
 
 		echo "Copy cdrom to /var/lib/univention-server-cdrom"
 		mkdir -p /instmnt/var/lib/univention-server-cdrom

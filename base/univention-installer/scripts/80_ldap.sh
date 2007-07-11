@@ -39,7 +39,7 @@ cat >>/instmnt/ldap.sh <<__EOT__
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	eval \`univention-baseconfig shell\`
+	eval \`univention-config-registry shell\`
 	echo "Create User Administrator"
 	univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password=$root_password --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
 

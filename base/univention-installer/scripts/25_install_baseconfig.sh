@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Installer
-#  install Univention Baseconfig
+#  install Univention Configuration Registry
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,15 +31,15 @@
 cp /etc/univention/base.conf /instmnt/etc/univention/base.conf
 
 PIPE="yes yes '' |"
-cat >>/instmnt/install_baseconfig.sh <<__EOT__
+cat >>/instmnt/install_config_registry.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
-$PIPE apt-get install univention-baseconfig
+$PIPE apt-get install univention-config-registry
 $PIPE dpkg --configure -a
 $PIPE apt-get install bind9-host
 $PIPE dpkg --configure -a
 
 __EOT__
 
-chmod +x /instmnt/install_baseconfig.sh
-chroot /instmnt ./install_baseconfig.sh
+chmod +x /instmnt/install_config_registry.sh
+chroot /instmnt ./install_config_registry.sh

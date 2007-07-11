@@ -37,8 +37,8 @@ cat >/instmnt/etc/fstab <<__EOT__
 __EOT__
 
 #ROOT Device
-root_device=`python2.4 /sbin/univention-baseconfig get installer/device/0/name`
-root_fs=`python2.4 /sbin/univention-baseconfig get installer/device/0/fs`
+root_device=`python2.4 /sbin/univention-config-registry get installer/device/0/name`
+root_fs=`python2.4 /sbin/univention-config-registry get installer/device/0/fs`
 if [ "$root_fs" = "xfs" ]; then
 	options="defaults"
 else
@@ -55,13 +55,13 @@ proc		/proc		proc	defaults	0	0
 __EOT__
 
 
-eval `python2.4 /sbin/univention-baseconfig shell`
+eval `python2.4 /sbin/univention-config-registry shell`
 
 set | egrep -v "installer_device_0_mp=/" | egrep "installer_device_.*name=" | while read line; do
 	device_number=`echo $line | awk -F _ '{print $3}'`
-	device=`python2.4 /sbin/univention-baseconfig get installer/device/$device_number/name`
-	mp=`python2.4 /sbin/univention-baseconfig get installer/device/$device_number/mp`
-	fs=`python2.4 /sbin/univention-baseconfig get installer/device/$device_number/fs`
+	device=`python2.4 /sbin/univention-config-registry get installer/device/$device_number/name`
+	mp=`python2.4 /sbin/univention-config-registry get installer/device/$device_number/mp`
+	fs=`python2.4 /sbin/univention-config-registry get installer/device/$device_number/fs`
 
 	if [ -z "$device" ] || [ -z "$fs" ]; then
 		continue
