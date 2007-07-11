@@ -1,9 +1,15 @@
+univention-spamassassin (1.0.0-2) unstable; urgency=low
+
+  * konvert sources to utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 11 Jul 2007 17:14:09 +0200
+
 univention-spamassassin (1.0.0-1) unstable; urgency=low
 
   * Update to 2.0 policies
   * Add 2007 to copyright headers
 
- -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu,  5 Jul 2007 14:13:06 +0200
+ -- Moritz MÃŒhlenhoff <muehlenhoff@univention.de>  Thu,  5 Jul 2007 14:13:06 +0200
 
 univention-spamassassin (0.9-8) unstable; urgency=low
 
