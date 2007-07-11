@@ -1,3 +1,9 @@
+univention-installer (1.6.2-5) unstable; urgency=low
+
+  * advanced end of installation for removing installation media 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed, 11 Jul 2007 14:44:51 +0200
+
 univention-installer (1.6.2-4) unstable; urgency=low
 
   * installation device is know unmounted before system reboot 

@@ -50,17 +50,6 @@ rm -Rf /instmnt/initrd
 rm -Rf /instmnt/dead.letter
 /bin/sync
 
-if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
-	echo "Auto reboot"
-else
-	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		echo "Press enter to halt the system"
-	else
-		echo "Press enter to reboot the system"
-	fi
-	read foobar
-fi
-
 sync
 
 cat >/instmnt/tmp/cleanup.sh <<__EOT__
@@ -91,8 +80,18 @@ __EOT__
 chmod +x /instmnt/tmp/cleanup.sh
 chroot /instmnt ./tmp/cleanup.sh
 
-echo "Rebooting in 10 seconds - Please remove the install media in order to prevent install rerun"
-for i in 0 1 2 3 4 5 6 7 8 9 ; do echo -n . ; sleep 1 ; done
+if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
+	echo "Auto reboot"
+else
+	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
+		echo "Please remove the install media in order to prevent install rerun"
+		echo "Press enter to halt the system"
+	else
+		echo "Please remove the install media in order to prevent install rerun"
+		echo "Press enter to reboot the system"
+	fi
+	read foobar
+fi
 
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	halt
