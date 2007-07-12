@@ -102,19 +102,19 @@ Categories=System
 
 [kernel/do_bootfloppy]
 Description[de]=Unterbinde Fragen zum erstellen einer Bootdiskette
-Description[en]=Prevend questions about creating a boot floppy
+Description[en]=Prevent questions about creating a boot floppy
 Type=str
 Categories=System
 
 [kernel/do_initrd]
 Description[de]=Unterbinde Warnmeldungen wenn ein Initrd Kernel installiert wird
-Description[en]=Prevend warning message when installing an initrd kernel
+Description[en]=Prevent warning message when installing an initrd kernel
 Type=str
 Categories=System
 
 [kernel/postinst_hook]
 Description[de]=Script das vor dem starten des Bootloaders ausgeführt wird
-Description[en]=Script to be executet before running the bootloader
+Description[en]=Script to be executed before running the bootloader
 Type=str
 Categories=System
 
