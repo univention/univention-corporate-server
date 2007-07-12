@@ -46,17 +46,17 @@ function bc_rename() {
 	else
 		univention-baseconfig set "${new}?${predefined}"
 	fi		
-
 }
+
 if [ "$1" = configure -a -n "$2" ]; then
-	bc_rename $admin_web_debug_level "directory/manager/web/debug/level" "0"
+	bc_rename "$admin_web_debug_level" "directory/manager/web/debug/level" "0"
 	if [ "$admin_web_language" = "de" ]; then
 		admin_web_language="de_DE.utf8"
 	elif [ "$admin_web_language" = "en" ]; then
 		admin_web_language="en_US.utf8"
 	fi 
-	bc_rename $admin_web_language "directory/manager/web/language" "de_DE.utf8"
-	bc_rename $admin_timeout "directory/manager/timeout" "300"
+	bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
+	bc_rename "$admin_timeout" "directory/manager/timeout" "300"
 fi		
 univention-baseconfig set ssl/validity/check?yes
 
