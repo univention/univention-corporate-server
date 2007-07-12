@@ -1,5 +1,5 @@
 [proxy/http]
-Description[de]=Proxy für HTTP-Verbindungen
+Description[de]=Proxy fÃŒr HTTP-Verbindungen
 Description[en]=Proxy for HTTP connections
 Type=str
 Categories=Network
@@ -10,8 +10,14 @@ Description[en]=default locale
 Type=str
 Categories=Misc
 
+[umask]
+Description[de]=Standard umask für Benutzer
+Description[en]=Default umask for Users
+Type=str
+Categories=System
+
 [sshd/port]
-Description[de]=Port für den SSH-Dienst
+Description[de]=Port fÃŒr den SSH-Dienst
 Description[en]=Port for the SSH daemon
 Type=str
 Categories=Network
@@ -23,13 +29,13 @@ Type=str
 Categories=Network
 
 [sshd/xforwarding]
-Description[de]=Portweiterleitung für die X-Sitzung
+Description[de]=Portweiterleitung fÃŒr die X-Sitzung
 Description[en]=Port forwarding for the X session
 Type=str
 Categories=Network
 
 [sshd/xdisplayoffset]
-Description[de]=Erster Port für die Weiterleitung der X-Sitzung
+Description[de]=Erster Port fÃŒr die Weiterleitung der X-Sitzung
 Description[en]=First port for forwarded X sessions
 Type=str
 Categories=Network
@@ -41,13 +47,19 @@ Type=str
 Categories=Network
 
 [domainname]
-Description[de]=DNS-Domäne
+Description[de]=DNS-DomÃ€ne
 Description[en]=DNS domain
 Type=str
 Categories=Network
 
+[domain/domainname]
+Description[de]=Lokale-DomÃ€ne
+Description[en]=Lokal domain
+Type=str
+Categories=Network
+
 [domain/search]
-Description[de]=Automatisch zu durchsuchende DNS-Domänen
+Description[de]=Automatisch zu durchsuchende DNS-DomÃ€nen
 Description[en]=Automatically searched DNS domains
 Type=str
 Categories=Network
@@ -65,7 +77,7 @@ Type=str
 Categories=Network
 
 [interfaces/eth.*/type]
-Description[de]=Netztypen für die einzelnen Interfaces
+Description[de]=Netztypen fÃŒr die einzelnen Interfaces
 Description[en]=Type of network for each the network interface
 Type=str
 Categories=Network
@@ -82,14 +94,56 @@ Description[en]=Kernel modules to load
 Type=str
 Categories=System
 
+[kernel/clobber_modules]
+Description[de]=Verschiebe Modulverzeichnis wenn gleiche Kernelversion installiert wird
+Description[en]=Move modules directory if same kernel version gets installed
+Type=str
+Categories=System
+
+[kernel/do_bootfloppy]
+Description[de]=Unterbinde Fragen zum erstellen einer Bootdiskette
+Description[en]=Prevend questions about creating a boot floppy
+Type=str
+Categories=System
+
+[kernel/do_initrd]
+Description[de]=Unterbinde Warnmeldungen wenn ein Initrd Kernel installiert wird
+Description[en]=Prevend warning message when installing an initrd kernel
+Type=str
+Categories=System
+
+[kernel/postinst_hook]
+Description[de]=Script das vor dem starten des Bootloaders ausgeführt wird
+Description[en]=Script to be executet before running the bootloader
+Type=str
+Categories=System
+
+[kernel/ramdisk]
+Description[de]=Programm das die initiale RAM-Disk erzeugt
+Description[en]=Executable that creates an initial RAM disk
+Type=str
+Categories=System
+
+[kernel/ramdisk]
+Description[de]=Programm das die initiale RAM-Disk erzeugt
+Description[en]=Executable that creates an initial RAM disk
+Type=str
+Categories=System
+
+[kernel/silent_loader]
+Description[de]=Überspringe die Frage ob der Bootloader gestartet werden soll
+Description[en]=Skip the question asked before running the bootloader
+Type=str
+Categories=System
+
 [ldap/backup]
-Description[de]=Das UCS Backup-System der Domäne
+Description[de]=Das UCS Backup-System der DomÃ€ne
 Description[en]=The UCS backup system of the domain
 Type=str
 Categories=LDAP
 
 [ldap/master]
-Description[de]=Das UCS Master-System der Domäne
+Description[de]=Das UCS Master-System der DomÃ€ne
 Description[en]=The UCS master system of the domain
 Type=str
 Categories=LDAP
@@ -101,7 +155,7 @@ Type=str
 Categories=System
 
 [lilo/append/.*acpi]
-Description[de]=Hinzufügen von ACPI Option für Lilo
+Description[de]=HinzufÃŒgen von ACPI Option fÃŒr Lilo
 Description[en]=Add ACPI options for lilo
 Type=str
 Categories=System
@@ -122,7 +176,7 @@ Categories=System
 Description[de]=Standardkernel
 Description[en]=Default kernel
 Type=str
-Categories=Network
+Categories=System
 
 [lilo/root]
 Description[de]=root-Partition
@@ -167,13 +221,13 @@ Type=str
 Categories=Network
 
 [nameserver/option/timeout]
-Description[de]=Nach wievielen Sekunden der nächste DNS-Server gefragt wird
+Description[de]=Nach wievielen Sekunden der nÃ€chste DNS-Server gefragt wird
 Description[en]=After how may seconds the next DNS servers is used
 Type=str
 Categories=Network
 
 [pkgdb/overwrite/joincheck]
-Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenabnk
+Description[de]=Der Software-Monitor prÃŒft den Join-Status nicht vor dem Update der Datenabnk
 Description[en]=The software monitor does not check the join status before updating the database
 Type=str
 Categories=Misc
@@ -185,13 +239,13 @@ Type=str
 Categories=Misc
 
 [proxy/password]
-Description[de]=Passwort für die Authentisierung beim Proxy
+Description[de]=Passwort fÃŒr die Authentisierung beim Proxy
 Description[en]=Password for the proxy authentication
 Type=str
 Categories=Network
 
 [proxy/username]
-Description[de]=Benutzername für die Authentisierung beim Proxy
+Description[de]=Benutzername fÃŒr die Authentisierung beim Proxy
 Description[en]=Username for the proxy authentication
 Type=str
 Categories=Network
