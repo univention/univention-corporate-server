@@ -9,7 +9,6 @@ Variables: mail/ldap
 Variables: mail/antivir
 Variables: mail/relayauth
 Variables: mail/relayhost
-Variables: mail/cyrus
 Variables: mail/archivefolder
 Variables: mail/relay
 Variables: mail/hosteddomains
