@@ -1,3 +1,10 @@
+univention-config-registry (2.2.0-6) unstable; urgency=low
+
+  * add link /usr/bin/univention-install-baseconfig ->
+    univention-install-config-registry for compatibility 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Jul 2007 15:14:26 +0200
+
 univention-config-registry (2.2.0-5) unstable; urgency=low
 
   * fixed setting of kernel/postinst_hook
