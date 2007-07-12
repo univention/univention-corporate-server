@@ -1,3 +1,9 @@
+univention-config-registry (2.2.0-5) unstable; urgency=low
+
+  * fixed setting of kernel/postinst_hook
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 12 Jul 2007 14:28:15 +0200
+
 univention-config-registry (2.2.0-4) unstable; urgency=low
 
   * corrected value of kernel/postinst_hook
