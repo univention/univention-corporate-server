@@ -1,3 +1,9 @@
+univention-config-registry (2.2.0-4) unstable; urgency=low
+
+  * corrected value of kernel/postinst_hook
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 12 Jul 2007 13:43:15 +0200
+
 univention-config-registry (2.2.0-3) unstable; urgency=low
 
   * added File: /etc/kernel-img.conf to
