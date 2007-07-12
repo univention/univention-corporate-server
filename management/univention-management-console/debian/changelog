@@ -1,3 +1,9 @@
+univention-management-console (0.7.9-1) unstable; urgency=low
+
+  * fixed two tracebacks in baseconfig aund service module 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 12 Jul 2007 13:35:27 +0200
+
 univention-management-console (0.7.8-1) unstable; urgency=low
 
   * Univention Baseconfig is now called Univention Configuration Registry 

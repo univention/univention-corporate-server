@@ -100,8 +100,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		umch.simpleHandler.__init__( self, command_description )
 
 	def __create_variable_info( self, options ):
-		all_info = BaseconfigInfo( registered_only = False )
-		info = BaseconfigInfo( install_mode = True )
+		all_info = ConfigRegistryInfo( registered_only = False )
+		info = ConfigRegistryInfo( install_mode = True )
 		info.read_customized()
 		var = Variable()
 
@@ -161,7 +161,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		found by searching for the (wildcard) expression defined by the UMCP
 		request. Additionally a list of configuration registry categories can be defined"""
 		if not object.incomplete:
-			baseInfo = BaseconfigInfo( registered_only = False )
+			baseInfo = ConfigRegistryInfo( registered_only = False )
 			vars = baseInfo.get_variables()
 			if vars.has_key( object.options[ 'key' ] ):
 				self.finished( object.id(), vars[ object.options[ 'key' ] ] )
@@ -180,10 +180,10 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			category = object.options.get( 'category', None )
 			if category == 'all':
 				# load _all_ baseconfig variables
-				baseInfo = BaseconfigInfo( registered_only = False )
+				baseInfo = ConfigRegistryInfo( registered_only = False )
 			else:
 				# load _all registered_ baseconfig variables
-				baseInfo = BaseconfigInfo()
+				baseInfo = ConfigRegistryInfo()
 
 			filter = object.options.get( 'filter', '*' )
 			if filter == None:

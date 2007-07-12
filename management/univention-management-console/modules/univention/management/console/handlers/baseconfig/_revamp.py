@@ -37,7 +37,7 @@ import univention.management.console.protocol as umcp
 
 import univention.debug as ud
 
-from univention.baseconfig_info import BaseconfigInfo
+from univention.config_registry_info import ConfigRegistryInfo
 
 import _types
 
@@ -47,7 +47,7 @@ class Web( object ):
 	def _web_baseconfig_search( self, object, res ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Baseconfig.search: options: %s' % str( object.options ) )
 		main = []
-		info = BaseconfigInfo()
+		info = ConfigRegistryInfo()
 
 		# dictionary of baseconfig variables
 		( key, filter, category ), variables = res.dialog
@@ -151,7 +151,7 @@ class Web( object ):
 			default = []
 			cats = variable[ 'categories' ]
 			if cats:
-				info = BaseconfigInfo( install_mode = True )
+				info = ConfigRegistryInfo( install_mode = True )
 				info.load_categories()
 				for cat in cats.split( ',' ):
 					cat_info = info.get_category( cat )

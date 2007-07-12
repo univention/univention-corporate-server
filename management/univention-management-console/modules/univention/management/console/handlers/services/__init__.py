@@ -55,7 +55,7 @@ class StartType( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Start Type' ) )
 
 	def choices( self ):
-		return ( ( 'manual' : _( 'Manual' ) ), ( 'auto', _( 'Automatically' ) ) )
+		return ( ( 'manual', _( 'Manual' ) ), ( 'auto', _( 'Automatically' ) ) )
 
 umcd.copy( umc.StaticSelection, StartType )
 
