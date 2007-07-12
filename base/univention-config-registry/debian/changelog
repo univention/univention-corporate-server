@@ -1,3 +1,10 @@
+univention-config-registry (2.2.0-3) unstable; urgency=low
+
+  * added File: /etc/kernel-img.conf to
+    univention-config-registry.univention-config-registry
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 12 Jul 2007 12:38:43 +0200
+
 univention-config-registry (2.2.0-2) unstable; urgency=low
 
   * renamed univention-baseconfig to univention-config-registry
