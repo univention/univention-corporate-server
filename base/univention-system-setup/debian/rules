@@ -45,7 +45,7 @@ clean:
 
 	dh_clean
 
-D=$(CURDIR)/debian/univention-setup
+D=$(CURDIR)/debian/univention-system-setup
 
 install: build
 	dh_testdir
