@@ -815,6 +815,9 @@ def doit(arglist):
 
 #+++# ACTION MODIFY #+++#
 	elif action == 'modify' or action == 'edit' or action == 'move':
+		if not dn:
+			out.append('E: DN is missing')
+			return out + ["OPERATION FAILED"]
 
 		object_modified = 0
 
