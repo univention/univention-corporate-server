@@ -36,7 +36,7 @@ if [ ! -d /usr/share/univention-admin/www ]; then
 fi
 
 ln -s /var/www/freebusy /usr/share/univention-admin/www/freebusy
-/etc/init.d/apache reload || true
+/etc/init.d/apache2 reload || true
 touch /var/log/freebusy.log
 chown www-data:www-data /var/log/freebusy.log
 chmod o-rwx /var/log/freebusy.log

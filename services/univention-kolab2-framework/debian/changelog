@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.0-4) unstable; urgency=low
+
+  * Fix postinst script to reload Apache 2 configuration
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Fri, 13 Jul 2007 11:38:40 +0200
+
 univention-kolab2-framework (1.0.0-3) unstable; urgency=low
 
   * encoded files utf-8
