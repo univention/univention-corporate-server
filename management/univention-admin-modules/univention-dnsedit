@@ -76,13 +76,13 @@ for elements in sys.argv[1:]:
                         print err
                         sys.exit(1)
 
-opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
+opts, args=getopt.getopt(sys.argv[1:], '', ['ignore_missing_zone', 'quiet', 'reverse', 'ignore_exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
 
 
 for opt, val in opts:
-	if opt == '--ignore-missing-zone':
+	if opt == '--ignore_missing_zone':
 		options['ignore_missing_zone']=1
-	elif opt == '--ignore-exists':
+	elif opt == '--ignore_exists':
 		options['ignore_exists']=1
 	elif opt == '--quiet':
 		options['quiet']=1
