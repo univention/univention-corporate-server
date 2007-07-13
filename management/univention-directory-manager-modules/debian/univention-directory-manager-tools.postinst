@@ -36,14 +36,14 @@ function bc_rename() {
 	new=$2
 	predefined=$3
 	if [ -n "$old" ]; then
-		univention-baseconfig set "${new}?${old}"
+		univention-config-registry set "${new}?${old}"
 	else
-		univention-baseconfig set "${new}?${predefined}"
+		univention-config-registry set "${new}?${predefined}"
 	fi		
 
 }
 
-bc_rename $admin_cmd_debug_level "directory/manager/cmd/debug/level" "0"
-bc_rename $admin_cmd_timeout "directory/manager/cmd/timeout" "300"
+bc_rename "$admin_cmd_debug_level" "directory/manager/cmd/debug/level" "0"
+bc_rename "$admin_cmd_timeout" "directory/manager/cmd/timeout" "300"
 
 #DEBHELPER#

@@ -9,3 +9,4 @@ usr/share/univention-directory-manager-tools/univention-cli-client usr/share/uni
 usr/share/univention-directory-manager-tools/univention-cli-client usr/share/univention-directory-manager-tools/univention-delmachine
 usr/share/univention-directory-manager-tools/univention-cli-client usr/share/univention-directory-manager-tools/univention-setprimarygroup
 usr/share/univention-directory-manager-tools/univention-cli-client usr/sbin/univention-license-check
+usr/share/univention-directory-manager-tools usr/share/univention-admin-tools

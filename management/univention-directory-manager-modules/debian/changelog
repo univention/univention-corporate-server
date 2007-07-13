@@ -1,3 +1,11 @@
+univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
+
+  * postinst: fixed a bug in replacing old baseconfig variables
+  * add a symbolic link /usr/share/univention-admin-tools ->
+    univention-directory-manager-tools; for compatibility
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Jul 2007 08:04:32 +0200
+
 univention-directory-manager-modules (2.0.0-3) unstable; urgency=low
 
   * renamed Client to Managed Client 
