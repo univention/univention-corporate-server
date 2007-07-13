@@ -60,7 +60,9 @@ install: build
 
 	install -m 0755 25univention-directory-manager.inst debian/univention-directory-manager/usr/lib/univention-install/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
+	univention-install-service-info
 
 binary-indep: build install
 	dh_testdir -i
