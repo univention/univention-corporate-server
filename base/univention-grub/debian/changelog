@@ -1,3 +1,10 @@
+univention-grub (1.0.14-3) unstable; urgency=low
+
+  * the splash image has to be specified like splashimage=; the '=' is
+    important 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Jul 2007 08:24:10 +0200
+
 univention-grub (1.0.14-2) unstable; urgency=low
 
   * added setting of univention-config-registry Variable
