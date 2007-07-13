@@ -1,3 +1,10 @@
+univention-pam (1.1.0-12) unstable; urgency=low
+
+  * Enable password-less modification of GECOS properties and the default
+    shell through chfn and chsh by invoking pam_rootok.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Jul 2007 10:54:18 +0200
+
 univention-pam (1.1.0-11) unstable; urgency=low
 
   *fixed wrong path to template in libnss-ldap.conf

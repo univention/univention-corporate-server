@@ -8,7 +8,11 @@
 # 	/etc/univention/templates/files/etc/pam.d/chfn
 # 
 
+
 @!@
+if 'chfn' in baseConfig['auth/admin/services'].split(' '):
+	print 'auth            sufficient      pam_rootok.so'
+
 if 'chfn' in baseConfig['auth/user/services'].split(' '):
 	scheme='common'
 elif 'chfn' in baseConfig['auth/admin/services'].split(' '):
