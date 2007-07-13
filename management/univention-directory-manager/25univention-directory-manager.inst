@@ -43,30 +43,31 @@ eval `univention-baseconfig shell hostname domainname`
 
 # generate ssl certificate
 if test -e /etc/univention/ssl/univention-admin/cert.pem; then
-	( cd /etc/univention/ssl; ln -s univention-admin.$domainname univention-directory-manager.$domainname )
+	( cd /etc/univention/ssl; ln -s univention-admin.$domainname univention-directory-manager.$domainname; ln -s univention-admin.$domainname univention-directory-manager )
 else
         . /usr/share/univention-ssl/make-certificates.sh
         gencert "univention-directory-manager.$domainname" "univention-directory-manager.$domainname" >/dev/null 2>&1
 		chmod g+rx /etc/univention/ssl/univention-directory-manager.$domainname
 		chmod g+r /etc/univention/ssl/univention-directory-manager.$domainname/*
+	ln -s /etc/univention/ssl/univention-directory-manager.$domainname /etc/univention/ssl/univention-directory-manager
 fi
 
 univention-baseconfig set ldap/algorithmicalridbase?1000
 univention-baseconfig set ldap/port?389
 
 #tmp dir for download files
-chown www-data.www-data /var/lib/univention-admin/tmp
+chown www-data.www-data /var/lib/univention-directory-manager/tmp
 
-if ! test -d /usr/share/univention-admin/uniconf/messages; then
-	mkdir /usr/share/univention-admin/uniconf/messages
-	chown www-data.www-data /usr/share/univention-admin/uniconf/messages
-	chmod 770 /usr/share/univention-admin/uniconf/messages
+if ! test -d /usr/share/univention-directory-manager/uniconf/messages; then
+	mkdir /usr/share/univention-directory-manager/uniconf/messages
+	chown www-data.www-data /usr/share/univention-directory-manager/uniconf/messages
+	chmod 770 /usr/share/univention-directory-manager/uniconf/messages
 fi
 
-/usr/share/univention-admin-tools/univention-dnsedit $@ --stoptls --ignore-exists $domainname add zone root.$domainname 1 28 72 60 86 $hostname.$domainname
+/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls --ignore-exists $domainname add zone root.$domainname 1 28 72 60 86 $hostname.$domainname
 if [ $? != 0 ]; then exit 1; fi
 
-/usr/share/univention-admin-tools/univention-dnsedit $@ --stoptls $domainname add cname univention-directory-manager $hostname 2>/dev/null || true
+/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls $domainname add cname univention-directory-manager $hostname 2>/dev/null || true
 
 mkdir -p /var/log/univention/
 touch /var/log/univention/directory-manager-web.log
