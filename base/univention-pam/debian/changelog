@@ -1,3 +1,10 @@
+univention-pam (1.1.0-13) unstable; urgency=low
+
+  * Always add pam_rootok lines, not conditionally on
+    Univention Config Registry.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Jul 2007 11:52:52 +0200
+
 univention-pam (1.1.0-12) unstable; urgency=low
 
   * Enable password-less modification of GECOS properties and the default

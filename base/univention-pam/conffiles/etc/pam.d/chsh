@@ -9,8 +9,7 @@
 # 
 
 @!@
-if 'chsh' in baseConfig['auth/admin/services'].split(' '):
-	print 'auth            sufficient      pam_rootok.so'
+print 'auth            sufficient      pam_rootok.so'
 
 if 'chsh' in baseConfig['auth/user/services'].split(' '):
 	scheme='common'
