@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 #
 # Univention Setup
-#  language change script
+#  timezone change script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,34 +28,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
-
-is_variable_set "locale"
-if [ $? = 0 ]; then
-	exit 0
-fi
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-locale=`get_profile_var locale`
-default_locale=`get_profile_var "locale/default"`
+timezone=`get_profile_var timezone`
 
-locale-gen
-
-if [ -z "$locale" ]; then
-	univention-baseconfig unset locale
-else
-	univention-baseconfig set locale="$locale"
+if [ -z "$timezone" ]; then
+	exit 0
 fi
 
-if [ -z "$default_locale" ]; then
-	univention-baseconfig unset "locale/default"
-else
-	univention-baseconfig set "locale/default"="$default_locale"
+if [ -e /etc/timezone ]; then
+	old_timezone=`cat /etc/timezone`
+	if [ "$old_timezone" = "$timezone" ]; then
+		exit 0
+	fi
 fi
 
+echo "$timezone" >/etc/timezone
+ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
+
+test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server stop
+test -x /etc/init.d/ntpdate && /etc/init.d/ntpdate restart
+test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server start
 
 exit 0

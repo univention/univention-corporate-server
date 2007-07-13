@@ -1,9 +1,9 @@
-#!/bin/sh -e
+#!/bin/sh
 #
-# Univention Setup
-#  keyboard change script
+# Univention System Setup
+#  language change script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,12 +28,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 
-keymap=`get_profile_var keymap`
-
-if [ -z "$keymap" ]; then
+is_variable_set "locale"
+if [ $? = 0 ]; then
 	exit 0
 fi
 
@@ -41,8 +40,22 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-cp /usr/share/keymaps/i386/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz
+locale=`get_profile_var locale`
+default_locale=`get_profile_var "locale/default"`
 
-loadkeys $keymap
+locale-gen
+
+if [ -z "$locale" ]; then
+	univention-config-registry unset locale
+else
+	univention-config-registry set locale="$locale"
+fi
+
+if [ -z "$default_locale" ]; then
+	univention-config-registry unset "locale/default"
+else
+	univention-config-registry set "locale/default"="$default_locale"
+fi
+
 
 exit 0

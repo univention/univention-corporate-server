@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Setup
-#  forwarder change script
+# Univention System Setup
+#  boot init script for univention system setup
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,38 +28,27 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+eval $(univention-config-registry shell system/setup/boot/start system/setup/boot/modules)
 
+case "$1" in
+	start)
+		echo -n "Starting univention-system setup tools: "
+		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
+			if [ -n "$boot_setup_modules" ]; then
+				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g'`
+				univention-config-registry set system/setup/boot/start=false
+				exit 0
+			fi
+		fi
+		echo "done"
+		;;
+	stop)
+		echo "done"
+		;;
+	*)
+		echo "Usage: /etc/init.d/univention-system-setup-boot {start}."
+		exit 1
+		;;
+esac
 
-if [ "$check_ldap_access" = "1" ]; then
-	exit 0
-fi
-
-oldvalues=""
-newvalues=""
-
-for name in dns/forwarder1 dns/forwarder2 dns/forwarder3; do
-	is_variable_set "$name"
-	if [ $? = 0 ]; then
-		continue
-	fi
-
-	oldvalues="$oldvalues#$(univention-baseconfig get $name)"
-
-	var=`get_profile_var $name`
-
-	if [ -z "$var" ]; then
-		univention-baseconfig unset $name
-		newvalues="$newvalues#"
-	else
-		univention-baseconfig set $name=$var
-		newvalues="$newvalues#$var"
-	fi
-done
-
-if [ -d "/var/lib/univention-setup/dnsforwarder.post" ]; then
-	run-parts /var/lib/univention-setup/dnsforwarder.post --arg=$oldvalues --arg=$newvalues
-fi
-
-exit 0
 

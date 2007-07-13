@@ -1,7 +1,7 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Setup
-#  timezone change script
+#  gateway change script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,31 +28,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+
+
+is_variable_set "gateway"
+if [ $? = 0 ]; then
+	exit 0
+fi
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-timezone=`get_profile_var timezone`
+old_gateway=$(univention-config-registry get gateway)
+gateway=`get_profile_var gateway`
 
-if [ -z "$timezone" ]; then
-	exit 0
+if [ -z "$gateway" ]; then
+	univention-config-registry unset gateway
+	route del default
+else
+	univention-config-registry set gateway=$gateway
 fi
 
-if [ -e /etc/timezone ]; then
-	old_timezone=`cat /etc/timezone`
-	if [ "$old_timezone" = "$timezone" ]; then
-		exit 0
-	fi
+if [ -d "/var/lib/univention-system-setup/gateway.post" ]; then
+	run-parts /var/lib/univention-system-setup/gateway.post --arg=$old_gateway --arg=$gateway
 fi
-
-echo "$timezone" >/etc/timezone
-ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
-
-test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server stop
-test -x /etc/init.d/ntpdate && /etc/init.d/ntpdate restart
-test -x /etc/init.d/ntp-server && /etc/init.d/ntp-server start
 
 exit 0
+

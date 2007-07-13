@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -41,7 +41,7 @@ if [ $? = 0 ]; then
 	exit 0
 fi
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 packages_from_profile=`get_profile_var "packages"`
 

@@ -1,24 +1,24 @@
-Source: univention-setup
+Source: univention-system-setup
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.2
 Build-Depends: debhelper
 
-Package: univention-setup
+Package: univention-system-setup
 Architecture: all
 Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc
-Description: univention setup tools
+Description: univention system setup tools
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-setup-boot
+Package: univention-system-setup-boot
 Architecture: all
 Depends: univention-setup
-Description: starting univention-setup on next boot
+Description: starting univention-system-setup on next boot
  .
  It is part of Univention Corporate Server (UCS), an
  integrated, directory driven solution for managing

@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Setup
-#  proxy change script
+#  default locale change script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,31 +28,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
+
+is_variable_set "locale/default"
+if [ $? = 0 ]; then
+	exit 0
+fi
 
 if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-is_variable_set "proxy_http"
-if [ $? = 0 ]; then
-	continue
-fi
+default_locale=`get_profile_var "locale/default"`
 
-old_proxy=$(univention-baseconfig get proxy_http)
-var=`get_profile_var proxy_http`
-
-if [ -z "$var" ]; then
-	univention-baseconfig unset proxy/http
+if [ -z "$default_locale" ]; then
+	univention-config-registry unset "locale/default"
 else
-	univention-baseconfig set proxy/http="$var"
-fi
+	short_form=`echo $default_locale | cut -c 1-2`
 
-if [ -d "/var/lib/univention-setup/httpproxy.post" ]; then
-	run-parts /var/lib/univention-setup/httpproxy.post --arg=$old_proxy --arg=$var
+	univention-config-registry set "locale/default"="$default_locale"
+	univention-config-registry set directory/manager/web/language="$short_form"
+	univention-config-registry set console/web/language="$short_form"
 fi
-
 
 exit 0
-

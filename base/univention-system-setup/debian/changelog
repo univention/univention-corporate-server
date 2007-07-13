@@ -1,3 +1,9 @@
+univention-system-setup (1.1.0-1) unstable; urgency=low
+
+  * rename univention-setup to univention-system-setup
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 13 Jul 2007 14:49:34 +0200
+
 univention-setup (1.0.1-1) unstable; urgency=low
 
   * don't restart apache in UMC mode

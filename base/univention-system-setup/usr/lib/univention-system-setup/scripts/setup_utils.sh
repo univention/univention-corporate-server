@@ -1,9 +1,9 @@
 #!/bin/sh -e
 #
-# Univention Setup
+# Univention System Setup
 #  setup utils helper script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-profile_file="/var/cache/univention-setup/profile"
+profile_file="/var/cache/univention-system-setup/profile"
 check_ldap_access=0
 
 while [ $# -gt 0 ]
@@ -96,7 +96,7 @@ service_start ()
 
 ldap_binddn ()
 {
-	eval $(univention-baseconfig shell server/role ldap/base ldap/master)
+	eval $(univention-config-registry shell server/role ldap/base ldap/master)
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "cn=admin,$ldap_base"
 	else
@@ -110,7 +110,7 @@ ldap_binddn ()
 
 ldap_bindpwd ()
 {
-	eval $(univention-baseconfig shell server/role ldap/base ldap/master)
+	eval $(univention-config-registry shell server/role ldap/base ldap/master)
 	if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 		echo "`cat /etc/ldap.secret`"
 	else

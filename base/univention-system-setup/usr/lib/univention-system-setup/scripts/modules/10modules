@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/bin/sh -e
 #
 # Univention Setup
-#  boot init script for univention setup
+#  kernel module change script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,27 +28,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval $(univention-baseconfig shell boot/setup/start boot/setup/modules)
-
-case "$1" in
-	start)
-		echo -n "Starting univention-setup tools: "
-		if [ -n "$boot_setup_start" ] && [ "$boot_setup_start" = "yes" ] || [ "$boot_setup_start" = "true" ]; then
-			if [ -n "$boot_setup_modules" ]; then
-				univention-setup --modules=`echo $boot_setup_modules | sed -e 's| |,|g'`
-				univention-baseconfig set boot/setup/start=false
-				exit 0
-			fi
-		fi
-		echo "done"
-		;;
-	stop)
-		echo "done"
-		;;
-	*)
-		echo "Usage: /etc/init.d/univention-setup-boot {start}."
-		exit 1
-		;;
-esac
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 
+modules=`get_profile_var modules`
+
+if [ -z "$modules" ]; then
+	exit 0
+fi
+
+if [ "$check_ldap_access" = "1" ]; then
+	exit 0
+fi
+
+univention-config-registry set kernel/modules="`echo $modules | sed -e 's| |;|g'`"
+
+
+exit 0

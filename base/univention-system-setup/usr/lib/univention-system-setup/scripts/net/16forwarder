@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Setup
-#  nameserver change script
+#  forwarder change script
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-. /usr/lib/univention-setup/scripts/setup_utils.sh
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
 
 
 if [ "$check_ldap_access" = "1" ]; then
@@ -38,27 +38,27 @@ fi
 oldvalues=""
 newvalues=""
 
-for name in nameserver1 nameserver2 nameserver3; do
+for name in dns/forwarder1 dns/forwarder2 dns/forwarder3; do
 	is_variable_set "$name"
 	if [ $? = 0 ]; then
 		continue
 	fi
 
-	oldvalues="$oldvalues#$(univention-baseconfig get $name)"
+	oldvalues="$oldvalues#$(univention-config-registry get $name)"
 
 	var=`get_profile_var $name`
 
 	if [ -z "$var" ]; then
-		univention-baseconfig unset $name
+		univention-config-registry unset $name
 		newvalues="$newvalues#"
 	else
-		univention-baseconfig set $name=$var
+		univention-config-registry set $name=$var
 		newvalues="$newvalues#$var"
 	fi
 done
 
-if [ -d "/var/lib/univention-setup/nameserver.post" ]; then
-	run-parts /var/lib/univention-setup/nameserver.post --arg=$oldvalues --arg=$newvalues
+if [ -d "/var/lib/univention-system-setup/dnsforwarder.post" ]; then
+	run-parts /var/lib/univention-system-setup/dnsforwarder.post --arg=$oldvalues --arg=$newvalues
 fi
 
 exit 0
