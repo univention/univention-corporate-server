@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.2-2) unstable; urgency=low
+
+  * s/Directory/Management/
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 13 Jul 2007 14:28:57 +0200
+
 univention-directory-manager (4.0.2-1) unstable; urgency=low
 
   * added descriptions for config registry variables
