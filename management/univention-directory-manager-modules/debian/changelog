@@ -39,7 +39,7 @@ univention-directory-manager-modules (2.0.0-1) unstable; urgency=low
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 12:53:30 +0200
 
-uni vention-admin-modules (1.2.3-9) unstable; urgency=low
+univention-admin-modules (1.2.3-9) unstable; urgency=low
 
   * improved error handling in univention-dnsedit
 
