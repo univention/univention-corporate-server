@@ -1,4 +1,10 @@
-univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
+univention-directory-manager-modules (2.0.0-5) unstable; urgency=low
+
+  * fixed error handling in univention-dnsedit
+
+ -- Bastian Neumann <neumann@univention.de>  Fri, 13 Jul 2007 11:30:15 +0200
+
+ univention-directory-manager-modules (2.0.0-4) unstable; urgency=low
 
   * postinst: fixed a bug in replacing old baseconfig variables
   * add a symbolic link /usr/share/univention-admin-tools ->
@@ -27,7 +33,7 @@ univention-directory-manager-modules (2.0.0-1) unstable; urgency=low
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 09 Jul 2007 12:53:30 +0200
 
-univention-admin-modules (1.2.3-9) unstable; urgency=low
+uni vention-admin-modules (1.2.3-9) unstable; urgency=low
 
   * improved error handling in univention-dnsedit
 
