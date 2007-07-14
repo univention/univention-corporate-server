@@ -1,3 +1,9 @@
+univention-installer (1.6.4-1) unstable; urgency=low
+
+  * update german translation; use ISO-8859-1
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 19:57:40 +0200
+
 univention-installer (1.6.3-1) unstable; urgency=low
 
   * do not call python with -OO option anymore 

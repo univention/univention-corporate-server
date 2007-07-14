@@ -1,9 +1,9 @@
 #! /bin/sh
 #
 # Univention Installer
-#  Refresh gettext entries for univention-installer and univention-setup
+#  Refresh gettext entries for univention-installer and univention-system-setup
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,14 +30,14 @@
 
 po=de
 
-if  [ ! -e ../univention-setup/usr/sbin/univention-setup ]; then
+if  [ ! -e ../univention-system-setup/usr/sbin/univention-system-setup ]; then
 	echo "Please checkout univention-setup, the installer combines i18n strings"
 	echo "from both the installer and univention-setup"
 	exit
 fi
 
 
-xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-setup/usr/sbin/univention-setup*
+xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-system-setup/usr/sbin/univention-system-setup*
 
 grep "Content-Type: text/plain; charset=CHARSET" $po.pot.tmp
 
