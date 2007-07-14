@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.1-0) unstable; urgency=low
+
+  * re-renamed options (back to the original name)
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 12:49:40 +0200
+
 univention-directory-manager-modules (2.0.0-6) unstable; urgency=low
 
   * advanced error handling for Action modify 

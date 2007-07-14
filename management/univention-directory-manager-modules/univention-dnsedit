@@ -49,8 +49,8 @@ import univention.admin.handlers.dns.alias
 import univention.admin.uexceptions
 
 options={}
-options['ignore_missing_zone']=0
-options['ignore_exists']=0
+options['ignore-missing-zone']=0
+options['ignore-exists']=0
 options['quiet']=0
 options['reverse']=0
 options['overwrite']=0
@@ -76,14 +76,14 @@ for elements in sys.argv[1:]:
                         print err
                         sys.exit(1)
 
-opts, args=getopt.getopt(sys.argv[1:], '', ['ignore_missing_zone', 'quiet', 'reverse', 'ignore_exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
+opts, args=getopt.getopt(sys.argv[1:], '', ['ignore-missing-zone', 'quiet', 'reverse', 'ignore-exists', 'stoptls', 'binddn=', 'bindpwd=', 'overwrite','help'])
 
 
 for opt, val in opts:
-	if opt == '--ignore_missing_zone':
-		options['ignore_missing_zone']=1
-	elif opt == '--ignore_exists':
-		options['ignore_exists']=1
+	if opt == '--ignore-missing-zone':
+		options['ignore-missing-zone']=1
+	elif opt == '--ignore-exists':
+		options['ignore-exists']=1
 	elif opt == '--quiet':
 		options['quiet']=1
 	elif opt == '--reverse':
