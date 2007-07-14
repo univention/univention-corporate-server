@@ -1,4 +1,0 @@
-Type: file
-File: boot/grub/menu.lst
-Postinst: grub-update.py
-Variables: grub/groot

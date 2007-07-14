@@ -55,7 +55,7 @@ install: build
 
 	install -m 644 boot/grub/uniboot.xpm.gz ${D}/boot/grub/uniboot.xpm.gz
 
-	univention-install-baseconfig
+	univention-install-config-registry
 
 binary-arch: build install
 

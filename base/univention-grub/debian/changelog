@@ -1,3 +1,10 @@
+univention-grub (1.0.15-1) unstable; urgency=low
+
+  * use univention-config-registry instead of univention-baseconfig
+  * register new grub config registry variables
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 13:41:35 +0200
+
 univention-grub (1.0.14-3) unstable; urgency=low
 
   * the splash image has to be specified like splashimage=; the '=' is
