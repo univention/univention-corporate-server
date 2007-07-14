@@ -21,7 +21,7 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
                         grub_append="$lilo_append"
                 fi
 	else
-		grup_append="$grub_append splash=silent"
+		grub_append="$grub_append splash=silent"
         fi
 
         if [ -n "$lilo_root" ]; then

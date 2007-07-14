@@ -1,6 +1,7 @@
-univention-grub (1.0.15-2) unstable; urgency=low
+univention-grub (1.0.15-1) unstable; urgency=low
 
   * add symbolic links from /boot/boot to /boot 
+  * fixed typo
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:45 +0200
 
