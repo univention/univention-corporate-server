@@ -1,3 +1,9 @@
+univention-installer (1.6.3-1) unstable; urgency=low
+
+  * do not call python with -OO option anymore 
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:28:29 +0200
+
 univention-installer (1.6.2-6) unstable; urgency=low
 
   * changed bootscreen namings to Univention Installer
