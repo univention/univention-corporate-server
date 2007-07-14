@@ -1,6 +1,6 @@
 #!/bin/sh
 
-eval $(univention-baseconfig shell)
+eval $(univention-config-registry shell)
 
 if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
 
@@ -20,8 +20,6 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
                 else
                         grub_append="$lilo_append"
                 fi
-	else
-		grub_append="$grub_append splash=silent"
         fi
 
         if [ -n "$lilo_root" ]; then
@@ -62,12 +60,12 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
         fi
 
         if [ -n "$grub_append" ]; then
-                univention-baseconfig set grub/append="$grub_append"
+                univention-config-registry set grub/append="$grub_append"
         fi
 
-        univention-baseconfig set $vars grub/memtest86=true
+        univention-config-registry set $vars grub/memtest86=true
 
-        univention-baseconfig unset lilo/append/acpi \
+        univention-config-registry unset lilo/append/acpi \
                                 lilo/append/pci_acpi \
                                 lilo/append \
                                 lilo/boot \
@@ -88,8 +86,8 @@ elif [ -z "$2" ]; then
                 append="$append root=$rootdevice "
         fi
 
-        univention-baseconfig set grub/timeout?5 \
-								grub/append="$append" \
+        univention-config-registry set grub/timeout?5 \
+								grub/append="$append splash=silent" \
 								grub/root="$rootdevice" \
 								grub/vga=785 \
 								grub/memtest86=true
@@ -175,7 +173,7 @@ if [ "$grepcnt" = "0" ] ; then
 	fi
 fi
 
-eval $(univention-baseconfig shell)
+eval $(univention-config-registry shell)
 
 #DEBHELPER#
 
@@ -196,10 +194,10 @@ if [ -z "$grub_groot" ] ; then
 		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
 	fi
 	groot=$(convert $grubdev)
-	univention-baseconfig set grub/groot="$groot"
+	univention-config-registry set grub/groot="$groot"
 fi
 
-univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
+univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
 
 exit 0
 

@@ -1,3 +1,10 @@
+univention-grub (1.0.16-1) unstable; urgency=low
+
+  * use univention-config-registry instead if univention-baseconfig
+  * append splash=silent by default to kernel options
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 18:15:29 +0200
+
 univention-grub (1.0.15-3) unstable; urgency=low
 
   * add symbolic links from /boot/boot to /boot 
