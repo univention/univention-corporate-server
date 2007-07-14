@@ -1,3 +1,9 @@
+univention-grub (1.0.15-2) unstable; urgency=low
+
+  * add symbolic links from /boot/boot to /boot 
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:45 +0200
+
 univention-grub (1.0.15-1) unstable; urgency=low
 
   * use univention-config-registry instead of univention-baseconfig
