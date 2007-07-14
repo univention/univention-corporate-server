@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
-#  the univention admin start module
+# Univention Directory Manager
+#  the univention directory manager start module
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -73,7 +73,7 @@ def main(argv):
 			language = val
 
 	if debugging >0:
-		univention.debug.init('/var/log/univention/admin-web.log', 1, 1)
+		univention.debug.init('/var/log/univention/directory-manager-web.log', 1, 1)
 		univention.debug.set_level(univention.debug.LDAP, debugging)
 		univention.debug.set_level(univention.debug.ADMIN, debugging)
 	else:

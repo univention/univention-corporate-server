@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-1) unstable; urgency=low
+
+  * use univention-config-registry instead of univention-baseconfig 
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 12:33:01 +0200
+
 univention-directory-manager (4.0.2-3) unstable; urgency=low
 
   * fixed typos
@@ -16,7 +22,6 @@ univention-directory-manager (4.0.2-1) unstable; urgency=low
 
  -- Janis Meybohm <meybohm@univention.de>  Fri, 13 Jul 2007 14:08:55 +0200
 
-=======
 univention-directory-manager (4.0.2-1) unstable; urgency=low
 
   * adapt join script to new pathes (s/admin/directory-manager/)

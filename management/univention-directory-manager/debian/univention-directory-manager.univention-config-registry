@@ -11,9 +11,9 @@ Variables: domainname
 
 Type: file
 File: usr/share/univention-directory-manager/www/config.php
-Variables: admin/web/debug/level
-Variables: admin/web/language
-Variables: admin/timeout
+Variables: directory/manager/web/debug/level
+Variables: directory/manager/web/language
+Variables: directory/manager/timeout
 
 Type: file
 File: etc/apache2/sites-available/univention-directory-manager
