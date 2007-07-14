@@ -179,7 +179,7 @@ def lookup_zone(zone_name):
 	else:
 		zones=univention.admin.handlers.dns.reverse_zone.lookup(co, lo, '(subnet=%s)' % zone_name, scope='domain', base=position.getDomain(), unique=1)
 	if not zones:
-		if options['ignore_missing_zone']:
+		if options['ignore-missing-zone']:
 			sys.exit(0)
 		else:
 			print >>sys.stderr, 'E: Zone %s does not exist.' % zone_name
@@ -307,7 +307,7 @@ def add_cname_record(args):
 		record['name']=name
 		record['zonettl']='80600'
 	
-	if record['cname'] and not record['cname'] == cname and not options['overwrite'] and not options['ignore_exists']:
+	if record['cname'] and not record['cname'] == cname and not options['overwrite'] and not options['ignore-exists']:
 		print >>sys.stderr, 'E: Record exists and points to different address'
 		sys.exit(1)
 	if record['cname'] == cname:
@@ -382,7 +382,7 @@ if command == 'add':
 		elif type == 'zone':
 			add_zone(nargs)
 	except univention.admin.uexceptions.objectExists:
-		if not options['ignore_exists']:
+		if not options['ignore-exists']:
 			print >>sys.stderr, 'E: Object exists'
 			sys.exit(1)
 	
