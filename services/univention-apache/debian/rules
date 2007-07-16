@@ -52,8 +52,10 @@ install: build
 
 	install -m 0755 08univention-apache.inst debian/univention-apache/usr/lib/univention-install/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	univention-install-service-info
+
 	find debian/univention-apache/ -regex '.*/CVS' -print0 | xargs -0 rm -rf
 
 binary-arch: build install

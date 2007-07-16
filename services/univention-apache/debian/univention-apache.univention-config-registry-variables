@@ -1,0 +1,17 @@
+[apache/startsite]
+Description[de]=Pfad zur Startseite des Webservers
+Description[en]=Path to webservers index page
+Type=str
+Categories=Network
+
+[php/memory/limit]
+Description[de]=Speicherbegrenzung für PHP-Prozesse
+Description[en]=Memory limit for PHP-processes
+Type=str
+Categories=System
+
+[apache2/autostart]
+Description[de]=Automatischer Start des Apache Webservers
+Description[en]=Automatically start of the apache webserver
+Type=str
+Categories=System

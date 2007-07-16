@@ -1,3 +1,9 @@
+univention-apache (2.0.6-4) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 16 Jul 2007 11:02:41 +0200
+
 univention-apache (2.0.6-3) unstable; urgency=low
 
   * removed ucs-overview, added dependencie on univention-webui-style-base
