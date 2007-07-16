@@ -1,3 +1,9 @@
+univention-gdm (1.0.2-2) unstable; urgency=low
+
+  * removed locale setting, changed to univention-config-registry 
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Jul 2007 09:54:39 +0200
+
 univention-gdm (1.0.2-1) unstable; urgency=low
 
   * use a smaller font for the gdm theme

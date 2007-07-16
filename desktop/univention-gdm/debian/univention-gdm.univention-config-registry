@@ -9,11 +9,6 @@ Variables: gdm/allowroot
 Variables: gdm/allowremoteroot
 
 Type: file
-File: etc/default/gdm
-Variables: gdm/language
-Variables: locale/default
-
-Type: file
 File: etc/pam.d/gdm-autologin
 
 Type: file

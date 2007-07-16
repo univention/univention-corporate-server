@@ -28,15 +28,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
-	univention-baseconfig set gdm/menu/system?true
-	univention-baseconfig set gdm/menu/securesystem?true
+	univention-config-registry set gdm/menu/system?true
+	univention-config-registry set gdm/menu/securesystem?true
 else
-	univention-baseconfig set gdm/menu/system?true
-	univention-baseconfig set gdm/menu/securesystem?false
+	univention-config-registry set gdm/menu/system?true
+	univention-config-registry set gdm/menu/securesystem?false
 fi
 
 if [ "$server_role" = "mobile_client" -o "$server_role" = "fatclient" ]; then
@@ -44,9 +44,13 @@ if [ "$server_role" = "mobile_client" -o "$server_role" = "fatclient" ]; then
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.34; then
-        	univention-baseconfig set gdm/allowroot?true gdm/allowremoteroot?true
+        	univention-config-registry set gdm/allowroot?true gdm/allowremoteroot?true
 else
-        	univention-baseconfig set gdm/allowroot?false gdm/allowremoteroot?false
+        	univention-config-registry set gdm/allowroot?false gdm/allowremoteroot?false
+fi
+
+if [ -n "$gdm_language" ] ; then
+	univention-config-registry unset gdm/language
 fi
 
 
