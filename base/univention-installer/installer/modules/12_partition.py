@@ -1608,8 +1608,17 @@ class object(content):
 			currentLE = vg['freePE']
 			self.lv_create(vgname, lvname, currentLE, format, fstype, flag, mpoint)
 
+
+			self.parent.debug('AUTOPART FINISHED - INTERNAL STATUS:')
+			for pvname, pv in self.container['lvm']['pv'].items():
+				self.parent.debug('PV[%s]=%s' % (pvname, pv))
+			for vgname, vg in self.container['lvm']['vg'].items():
+				self.parent.debug('VG[%s]=%s' % (vgname, vg))
+
+
 		def ask_lvm_enable_callback(self, result):
 			self.parent.set_lvm( (result == 'BT_YES') )
+
 
 		def check_lvm_msg(self):
 			# check if LVM config has to be read
@@ -1879,6 +1888,7 @@ class object(content):
 			return _('UCS-Partition-Tool \n \n This tool is designed for creating, editing and deleting partitions during the installation. \n \n Use \"F2-Create\" to add a new partition. \n \n Use \"F3-Edit\" to configure an already existing partition. \n \n Use \"F4-Delete\" to remove a partition. \n \n Use the \"Reset changes\" button to cancel your changes to the partition table. \n \n Use the \"Write Partitions\" button to create and/or format your partitions.')
 
 		def input(self,key):
+			self.parent.debug('partition.input: key=%d' % key)
 			self.check_lvm_msg()
 			if hasattr(self,"sub"):
 				rtest=self.sub.input(key)
@@ -2097,18 +2107,30 @@ class object(content):
 				device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][part]['num'])
 				if self.container['lvm']['pv'].has_key(device):
 					pv = self.container['lvm']['pv'][ device ]
+					vgname = pv['vg']
 
-					# check if PV is empty
-					if pv['allocPE'] > 0 and not force:
+					# check if enough free space in VG is present
+					if vgname and self.container['lvm']['vg'][ vgname ]['freePE'] < pv['totalPE'] and not force:
+						self.parent.debug('Unable to remove physical volume from VG %s - vg[freePE]=%s  pv[totalPE]=%s' %
+										  (vgname, self.container['lvm']['vg'][ vgname ]['freePE'], pv['totalPE']))
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!') ]
 						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
 						self.draw()
 						return True
+
+					# check if PV is empty
+					if pv['allocPE'] > 0 and not force:
+						msglist = [ _('Unable to remove physical volume from'),
+									_('volume group "%s"!') % pv['vg'],
+									_('Physical volume contains used physical extents!'),
+									_('Please use "pvmove" to move data to other physical volumes.') ]
+						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
+						self.draw()
+						return True
 					else:
 						# PV is empty
-						vgname = pv['vg']
 						if vgname:
 							# PV is assigned to VG --> update VG data
 							vg = self.container['lvm']['vg'][ vgname ]
@@ -2116,7 +2138,10 @@ class object(content):
 							vg['totalPE'] -= pv['totalPE']
 							vg['size'] = vg['PEsize'] * vg['totalPE'] / 1024.0
 							if vg['freePE'] + vg['allocPE'] != vg['totalPE']:
-								self.parent.debug('assertion failed: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
+								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
+												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
+							if vg['freePE'] < 0 or vg['allocPE'] < 0 or vg['totalPE'] < 0:
+								self.parent.debug('ASSERTION FAILED: vg[freePE]=%d  vg[allocPE]=%d  vg[totalPE]=%d' %
 												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							# reduce VG
 							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
