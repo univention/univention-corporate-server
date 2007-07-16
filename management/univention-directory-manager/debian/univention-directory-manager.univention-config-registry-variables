@@ -1,16 +1,16 @@
-[admin/web/debug/level]
+[directory/manager/web/debug/level]
 Description[de]=Debug-Level des Univention Directory Manager Webfrontends
 Description[en]=Debug level of the Univention Directory Manager web frontend
 Type=str
 Categories=Management
 
-[admin/web/language]
+[directory/manager/web/language]
 Description[de]=Sprache des Univention Directory Manager Webfrontends
 Description[en]=Language of the Univention Directory Manager web frontend
 Type=str
 Categories=Management
 
-[admin/timeout]
+[directory/manager/timeout]
 Description[de]=Sitzungslaufzeit des Univention Directory Manager Webfrontends
 Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str

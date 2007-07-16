@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-2) unstable; urgency=low
+
+  * fixed naming of registry config variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 16 Jul 2007 10:41:33 +0200
+
 univention-directory-manager (4.0.3-1) unstable; urgency=low
 
   * use univention-config-registry instead of univention-baseconfig 
