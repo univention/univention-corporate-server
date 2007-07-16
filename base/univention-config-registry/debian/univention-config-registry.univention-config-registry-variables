@@ -76,15 +76,33 @@ Description[en]=Name of the computer
 Type=str
 Categories=Network
 
-[interfaces/eth.*/type]
-Description[de]=Netztypen fÃŒr die einzelnen Interfaces
-Description[en]=Type of network for each the network interface
-Type=str
-Categories=Network
-
 [interfaces/eth.*/address]
 Description[de]=IP-Adresse des Netz-Interfaces
 Description[en]=IP address of the network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/broadcast]
+Description[de]=Broadcast Adresse des Netz-Interfaces
+Description[en]=Broadcase address of the network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/netmask]
+Description[de]=Netzmaske des Netz-Interfaces
+Description[en]=Netmask of the network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/network]
+Description[de]=Netzwerk des Netz-Interfaces
+Description[en]=Network of the network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/type]
+Description[de]=Netztypen fÃŒr die einzelnen Interfaces
+Description[en]=Type of network for each the network interface
 Type=str
 Categories=Network
 
@@ -291,3 +309,15 @@ Description[de]=Hauptversion Version von UCS
 Description[en]=Major version of UCS
 Type=str
 Categories=System
+
+[ldap/server/name]
+Description[de]=FQDN des LDAP-Servers
+Description[en]=FQDN of the LDAP server
+Type=str
+Categories=Network
+
+[ldap/server/addition]
+Description[de]=Sekund�re LDAP-Server, falls prim�rer nicht erreichbar
+Description[en]=Secondary LDAP servers, used if primary server is not reachable
+Type=str
+Categories=Network
