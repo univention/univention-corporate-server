@@ -1,3 +1,9 @@
+univention-config-registry (2.2.0-10) unstable; urgency=low
+
+  * changed setting of kernel/ramdisk 
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 16 Jul 2007 11:09:17 +0200
+
 univention-config-registry (2.2.0-9) unstable; urgency=low
 
   * added conffiles/default/locale
