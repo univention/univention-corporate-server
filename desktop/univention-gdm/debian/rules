@@ -1,5 +1,4 @@
-#
-#/usr/bin/make -f
+#!/usr/bin/make -f
 #
 # Univention GDM
 #  rules file for the debian package
