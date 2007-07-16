@@ -1,3 +1,9 @@
+univention-system-setup (1.1.0-2) unstable; urgency=low
+
+  * adapt packaging rules to replace old univention-setup packages 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jul 2007 08:10:49 +0200
+
 univention-system-setup (1.1.0-1) unstable; urgency=low
 
   * rename univention-setup to univention-system-setup
