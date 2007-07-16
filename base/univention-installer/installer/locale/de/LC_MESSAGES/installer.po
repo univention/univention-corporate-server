@@ -1,4 +1,4 @@
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2007 Univention GmbH
 # Univention GmbH <packages@univention.de>
 # This file is distributed under the same license as this package.
 #
@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-14 18:49+0200\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2007-07-16 15:57+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -1091,7 +1091,7 @@ msgstr "Optionen"
 
 #: installer/modules/12_partition.py:97
 msgid "Reading LVM config"
-msgstr ""
+msgstr "Suche LVM-Geräte"
 
 #: installer/modules/12_partition.py:274 installer/modules/12_partition.py:289
 #, python-format
@@ -1164,35 +1164,35 @@ msgstr "Nicht genügend Speicherplatz vorhanden!"
 
 #: installer/modules/12_partition.py:1618
 msgid "Detecting LVM devices"
-msgstr "Suche LVM Geräte"
+msgstr "Suche LVM-Geräte"
 
 #: installer/modules/12_partition.py:1624
 msgid "Do you want to use auto-partitioning?"
 msgstr "Soll die automatische Partitionierung verwendet werden? "
 
-#: installer/modules/12_partition.py:1626
+#: installer/modules/12_partition.py:1635
 msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
-msgstr ""
+msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen"
 
-#: installer/modules/12_partition.py:1627
+#: installer/modules/12_partition.py:1636
 msgid "partitions on all disks! If auto-partition result is"
-msgstr ""
+msgstr "auf allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
 
-#: installer/modules/12_partition.py:1628
+#: installer/modules/12_partition.py:1637
 msgid "unsuitable press F5 to restart partitioning."
-msgstr ""
+msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
 
 #: installer/modules/12_partition.py:1637
 msgid "LVM1 volumes detected. To use LVM1 volumes all"
-msgstr "LVM1 Medium gefunden. Um LVM1 Medien zu nutzen"
+msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
 
 #: installer/modules/12_partition.py:1638
 msgid "existing LVM1 snapshots have to be removed!"
-msgstr "müssen alle LVM1 Snapshots gelöscht werden!"
+msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
 
 #: installer/modules/12_partition.py:1639
 msgid "Otherwise kernel is unable to mount them!"
-msgstr "Anderenfalls kann der Kernel sie nicth einbinden!"
+msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
 
 #: installer/modules/12_partition.py:1657
 msgid "No LVM volume group found on current system."
@@ -1324,7 +1324,7 @@ msgstr "LVM Physikalische Medien können nicht verändert werden!"
 #: installer/modules/12_partition.py:2014
 #: installer/modules/12_partition.py:2030
 msgid "If necessary delete this partition."
-msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden"
+msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
 
 #: installer/modules/12_partition.py:2103
 msgid "Unable to remove physical volume from"
@@ -1339,13 +1339,17 @@ msgstr "der Medien-Gruppe \"%s\" fehlgeschlagen!"
 msgid "Physical volume contains used physical extents!"
 msgstr "Physikalisches Medium enthält verwendete Systemdaten"
 
-#: installer/modules/12_partition.py:2633
-msgid "No device files found for following devices. Please"
-msgstr ""
+#: installer/modules/12_partition.py:2128
+msgid "Please use \"pvmove\" to move data to other physical volumes."
+msgstr "Bitte nutzen Sie \"pvmove\", um die Daten auf ein anderes physikalisches Medium zu verschieben."
 
-#: installer/modules/12_partition.py:2634
+#: installer/modules/12_partition.py:2658
+msgid "No device files found for following devices. Please"
+msgstr "Keine Gerätedateien für die nachfolgenden Geräte gefunden. Bitte"
+
+#: installer/modules/12_partition.py:2659
 msgid "decrease number of partitions on a single disk or use LVM."
-msgstr ""
+msgstr "reduzieren Sie die Anzahl der Partitionen auf einer Festplatte oder nutzen Sie LVM."
 
 #: installer/modules/12_partition.py:2660
 msgid "Write partitions"
