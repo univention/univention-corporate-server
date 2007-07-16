@@ -143,3 +143,7 @@ Variables: kernel/silent_loader
 Variables: kernel/clobber_modules
 Variables: kernel/ramdisk
 Variables: kernel/postinst_hook
+
+Type: file
+File: etc/default/locale
+Variables: locale/default
