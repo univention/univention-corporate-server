@@ -1,4 +1,5 @@
-#!/usr/bin/make -f
+#
+#/usr/bin/make -f
 #
 # Univention GDM
 #  rules file for the debian package
@@ -67,7 +68,7 @@ install: build
 	mkdir -p debian/univention-gdm/etc/univention/daemons/
 	echo "Gnome Display Manager;gdm;/usr/bin/gdm;99" > debian/univention-gdm/etc/univention/daemons/gdm
 
-	univention-install-baseconfig
+	univention-install-config-registry
 
 	dh_install
 

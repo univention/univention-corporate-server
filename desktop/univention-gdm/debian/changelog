@@ -1,4 +1,4 @@
-univention-gdm (1.0.2-2) unstable; urgency=low
+univention-gdm (1.0.2-3) unstable; urgency=low
 
   * removed locale setting, changed to univention-config-registry 
 
