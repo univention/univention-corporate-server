@@ -80,10 +80,10 @@ class ACLs:
 					servers = dc_slave.lookup( None, self.lo, None, base=self.__ldap_base )
 				elif host == 'memberserver':
 					servers = memberserver.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'mobileclient':
-					servers = mobileclient.lookup( None, self.lo, None, base=self.__ldap_base )
-				elif host == 'client':
-					servers = client.lookup( None, self.lo, None, base=self.__ldap_base )
+				elif host == 'mobile_client':
+					servers = mobile_client.lookup( None, self.lo, None, base=self.__ldap_base )
+				elif host == 'managed_client':
+					servers = managed_client.lookup( None, self.lo, None, base=self.__ldap_base )
 
 				if servers:
 					for server in servers:
