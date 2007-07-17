@@ -1,3 +1,9 @@
+univention-join (1.0.3-2) unstable; urgency=low
+
+  * changed computers/client to computers/managedclient
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 15:10:27 +0200
+
 univention-join (1.0.3-1) unstable; urgency=low
 
   * switch from runsvstat to sv

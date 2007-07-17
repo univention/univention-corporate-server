@@ -211,7 +211,7 @@ create_entry () {
 	if [ -z "$old_dn" ]; then
 		log 0 "	Create new $1 "
 
-		if [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/client" ]; then
+		if [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/managedclient" ]; then
 			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
 		elif [ -n "$MAC" -a -n "$dhcpEntry" -a "$module" = "computers/mobileclient" ]; then
 			mac_cmd="--set mac=$MAC --set dhcpEntryZone=$dhcpEntry"
@@ -319,9 +319,9 @@ elif [ "$ROLE" = "memberserver" ]; then
 	fi
 elif [ "$ROLE" = "client" ]; then
 	if [ -n "$POSITION" ]; then
-		create_entry "Client" "computers/client" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
+		create_entry "Client" "computers/managedclient" "$POSITION" "cn=Computers,cn=groups,$ldap_base"
 	else
-		create_entry "Client" "computers/client" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
+		create_entry "Client" "computers/managedclient" "cn=computers,$ldap_base" "cn=Computers,cn=groups,$ldap_base"
 	fi
 elif [ "$ROLE" = "mobileclient" ]; then
 	if [ -n "$POSITION" ]; then
