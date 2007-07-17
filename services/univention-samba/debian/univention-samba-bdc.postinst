@@ -30,10 +30,10 @@
 
 #DEBHELPER#
 
-univention-baseconfig set samba/role?bdc
-univention-baseconfig set samba/samsyncd/enable?false
+univention-config-registry set samba/role?bdc
+univention-config-registry set samba/samsyncd/enable?false
 if [ -z "$2" ]; then
-	univention-baseconfig set samba/script/postusermodify=true
+	univention-config-registry set samba/script/postusermodify=true
 fi
 
 

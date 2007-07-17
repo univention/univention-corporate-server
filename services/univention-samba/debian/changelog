@@ -1,6 +1,6 @@
 univention-samba (1.0.4-1) unstable; urgency=low
 
-  * switched from univention_baseconfig to univention.baseconfig
+  * switched from univention_baseconfig to univention.config_registry
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 17 Jul 2007 15:29:08 +0200
 

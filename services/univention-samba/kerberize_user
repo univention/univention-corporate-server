@@ -30,12 +30,12 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import ldap, sys, getopt
-import univention.baseconfig
+import univention.config_registry
 import univention.debug
 univention.debug.init('/dev/null', 1, 1)
 import univention.uldap
 
-baseConfig = univention.baseconfig.baseConfig()
+baseConfig = univention.config_registry.baseConfig()
 baseConfig.load()
 lo = univention.uldap.getAdminConnection(decode_ignorelist = [ 'krb5Key' ])
 krbbase='ou=krb5,'+baseConfig['ldap/base']

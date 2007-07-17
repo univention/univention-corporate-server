@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 if [ -z "$2" ]
 	then
@@ -43,9 +43,9 @@ if [ -z "$2" ]
 	mkdir -p /etc/univention/skel/windows-profiles/{Win95,WinNT,Win2k,WinXP,Win2K3}
 fi
 
-univention-baseconfig set samba/share/home?yes
-univention-baseconfig set samba/share/groups?no
-univention-baseconfig set samba/adminusers?administrator
+univention-config-registry set samba/share/home?yes
+univention-config-registry set samba/share/groups?no
+univention-config-registry set samba/adminusers?administrator
 
 if [ "$server_role" != "memberserver" ]
 then
@@ -58,11 +58,11 @@ then
 	else
 		tmphostname="$hostname"
 	fi
-	univention-baseconfig set samba/profileserver?$tmphostname
-	univention-baseconfig set samba/profilepath?'%U\windows-profiles\%a'
-	univention-baseconfig set samba/homedirserver?$tmphostname
-	univention-baseconfig set samba/homedirpath?%U
-	univention-baseconfig set samba/homedirletter?I
+	univention-config-registry set samba/profileserver?$tmphostname
+	univention-config-registry set samba/profilepath?'%U\windows-profiles\%a'
+	univention-config-registry set samba/homedirserver?$tmphostname
+	univention-config-registry set samba/homedirpath?%U
+	univention-config-registry set samba/homedirletter?I
 fi
 #DEBHELPER#
 
@@ -80,21 +80,21 @@ fi
 
 if [ -z "$windows_domain" ]; then
 	domain=`echo $domainname | cut -d"." -f 1 | tr "[:lower:]" "[:upper:]"`
-	univention-baseconfig set windows/domain=$domain
+	univention-config-registry set windows/domain=$domain
 fi
 
-univention-baseconfig set samba/debug/level?0
-univention-baseconfig set samba/os/level?65
+univention-config-registry set samba/debug/level?0
+univention-config-registry set samba/os/level?65
 
 /usr/lib/univention-install/26univention-samba.inst || true
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.17; then
 	if [ "$server_role" = "memberserver" ]; then
-		univention-baseconfig set samba/user="$ldap_hostdn"
+		univention-config-registry set samba/user="$ldap_hostdn"
 		sleep 2
 		smbpasswd -w `cat /etc/machine.secret`
 	fi
 fi
-univention-baseconfig set samba/script/adduser?true \
+univention-config-registry set samba/script/adduser?true \
 				samba/script/deleteuser?true \
 				samba/script/addgroup?true \
 				samba/script/deletegroup?true \
@@ -131,7 +131,7 @@ fi
 
 if [ "$1" = configure -a -z "$2" ]; then
 # only set this for new installations
-	univention-baseconfig set samba/autostart="no"
+	univention-config-registry set samba/autostart="no"
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4; then

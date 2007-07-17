@@ -46,4 +46,4 @@ if [ "$1" = "configure" -a -z "$2" ]
 	fi
 fi
 
-univention-baseconfig commit /etc/init.d/samba
+univention-config-registry commit /etc/init.d/samba
