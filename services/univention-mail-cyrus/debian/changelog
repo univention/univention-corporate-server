@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.0-5) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 17 Jul 2007 17:00:58 +0200
+
 univention-mail-cyrus (1.0.0-4) unstable; urgency=low
 
   * encoded files utf-8
