@@ -75,7 +75,7 @@ echo -e "\v##############################################################"
 echo "# Note: Each test creates $LIMIT objects of each used module "
 echo "#       Total number of objects = $total"
 echo "#       The modules are:"
-echo "#       users/user groups/group computers/client"
+echo "#       users/user groups/group computers/managedclient"
 echo "#       networks/network shares/printer shares/share"
 echo "##############################################################"
 
@@ -127,7 +127,7 @@ group () # create a groups/group object
 	univention-admin $module create --set name=$rand1 --position="cn=groups,$ldap_base"
 }
 
-computer () # create a computers/client object
+computer () # create a computers/managedclient object
 {
 	univention-admin $module create --set name=$rand1 --set unixhome=/dev/null --set primaryGroup="cn=Computers,cn=groups,$ldap_base" --position="cn=computers,$ldap_base"
 }
@@ -150,12 +150,12 @@ share () # create a shares/share object
 
 modrdn_objects ()
 {
-for module in "users/user" "groups/group" "computers/client" "networks/network" "shares/printer" "shares/share"
+for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 do
 	case "$module" in
 		users/user) cn="users" ;;
 		groups/group) cn="groups" ;;
-		computers/client) cn="computers" ;;
+		computers/managedclient) cn="computers" ;;
 		networks/network) cn="networks" ;;
 		shares/printer) cn="printers" ;;
 		shares/share) cn="shares" ;;
@@ -183,8 +183,8 @@ done
 create_objects () # create $LIMIT of every function above
 {
 echo -e "\v===> create $LIMIT objects of each module"
-echo "===> users/user groups/group computers/client networks/network shares/printer shares/share"
-for module in "users/user" "groups/group" "computers/client" "networks/network" "shares/printer" "shares/share"
+echo "===> users/user groups/group computers/managedclient networks/network shares/printer shares/share"
+for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 do
 	for ((a=1; a <= LIMIT ; a++))
 	do
@@ -193,7 +193,7 @@ do
 		case "$module" in
 			users/user) user ;;
 			groups/group) group ;;
-			computers/client) computer ;;
+			computers/managedclient) computer ;;
 			networks/network) network ;;
 			shares/printer) printer ;;
 			shares/share) share ;;
@@ -226,12 +226,12 @@ then
 	univention-scp -timeout 60 $pw /etc/ldap.secret root@$rmhost2:/etc/
 fi
 
-cmd="for module in users/user groups/group computers/client networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost.tmp; done"
+cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost.tmp; done"
 #cmd="ldapsearch -x -b $ldap_base > /tmp/ldap_dump_$rmhost.tmp"
 univention-ssh -timeout 60 $pw root@$rmhost $cmd
 univention-scp -timeout 60 $pw root@$rmhost:/tmp/ldap_dump_$rmhost.tmp /tmp/
 
-cmd="for module in users/user groups/group computers/client networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost2.tmp; done"
+cmd="for module in users/user groups/group computers/managedclient networks/network shares/printer shares/share; do univention-admin $module list >> /tmp/ldap_dump_$rmhost2.tmp; done"
 #cmd="ldapsearch -x -b $ldap_base > /tmp/ldap_dump_$rmhost2.tmp"
 univention-ssh -timeout 60 $pw root@$rmhost2 $cmd
 univention-scp -timeout 60 $pw root@$rmhost2:/tmp/ldap_dump_$rmhost2.tmp /tmp/
@@ -508,7 +508,7 @@ echo -e "\v$test"
 	create_objects
 
 	echo -e "\v\v===> starting killing-loop"
-	for module in "users/user" "groups/group" "computers/client" "networks/network" "shares/printer" "shares/share"
+	for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 	do
         	for ((a=1; a <= LIMIT; a++))
 		do
@@ -519,7 +519,7 @@ echo -e "\v$test"
 			case "$module" in
 				users/user)user;;
 				groups/group)group;;
-				computers/client)computer;;
+				computers/managedclient)computer;;
 				networks/network)network;;
 				shares/printer)printer;;
 				shares/share)share;;
@@ -556,7 +556,7 @@ echo -e "\v$test"
 	create_objects
 
 	echo -e "\v\v===> starting killing-loop"
-	for module in "users/user" "groups/group" "computers/client" "networks/network" "shares/printer" "shares/share"
+	for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 	do
 		for ((a=1; a <= LIMIT; a++))
 		do
@@ -567,7 +567,7 @@ echo -e "\v$test"
         		case "$module" in
 				users/user)user;;
 				groups/group)group;;
-				computers/client)computer;;
+				computers/managedclient)computer;;
 				networks/network)network;;
 				shares/printer)printer;;
 				shares/share)share;;
@@ -767,12 +767,12 @@ echo -e "\v\v**********  Remove created objects **********"
 echo -e "\vDo you want to delete all $total created objects? [Crt-C for \"No\"]"
 read answer
 echo "Removing all created objects..."
-for module in "users/user" "groups/group" "computers/client" "networks/network" "shares/printer" "shares/share"
+for module in "users/user" "groups/group" "computers/managedclient" "networks/network" "shares/printer" "shares/share"
 do
 	case "$module" in
 		users/user)cn="cn=users";;
 		groups/group)cn="cn=groups";;
-		computers/client)cn="cn=computers";;
+		computers/managedclient)cn="cn=computers";;
 		networks/network)cn="cn=networks";;
 		shares/printer)cn="cn=printers";;
 		shares/share)cn="cn=shares";;

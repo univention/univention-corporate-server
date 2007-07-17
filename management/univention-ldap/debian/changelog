@@ -1,3 +1,9 @@
+univention-ldap (2.2.4-5) unstable; urgency=low
+
+  * changed computers/client to computers/managedclient
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 15:57:48 +0200
+
 univention-ldap (2.2.4-4) unstable; urgency=low
 
   * fixed typo in slapd.conf template
