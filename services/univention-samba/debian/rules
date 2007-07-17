@@ -91,7 +91,8 @@ install: build
 
 	install -m 755 kerberize_user ${D}/usr/share/univention-samba/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	univention-install-service-info
 
 binary-arch: build install
