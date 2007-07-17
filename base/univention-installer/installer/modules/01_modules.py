@@ -78,7 +78,7 @@ class object(content):
 		if self.cmdline.has_key('loadmodules') and self.cmdline['loadmodules']:
 			for m in self.cmdline['loadmodules'].split(' '):
 				if len(m.strip(' ')) > 0:
-					self.sub = self.active(self,_('Load modules'),_('Loading module %s' % m))
+					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 					self.sub.action='loadmodule'
 					self.sub.loadmodule=m
 					self.sub.draw()
@@ -86,7 +86,7 @@ class object(content):
 			if self.cmdline.has_key('excludemodule') and self.cmdline['excludemodule']:
 				if m in self.cmdline['excludemodule'].split(' '):
 					continue
-			self.sub = self.active(self,_('Load modules'),_('Loading module %s' % m))
+			self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 			self.sub.action='loadmodule'
 			self.sub.loadmodule=m
 			self.sub.draw()
@@ -278,7 +278,7 @@ class object(content):
 		if self.cmdline.has_key('extramodules') and self.cmdline['extramodules']:
 			for m in self.cmdline['extramodules'].split(' '):
 				if len(m.strip(' ')) > 0:
-					self.sub = self.active(self,_('Load modules'),_('Loading module %s' % m))
+					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 					self.sub.action='loadmodule'
 					self.sub.loadmodule=m
 					self.sub.draw()
@@ -297,7 +297,7 @@ class object(content):
 				if self.cmdline.has_key('excludemodule') and self.cmdline['excludemodule']:
 					if m in self.cmdline['excludemodule'].split(' '):
 						continue
-				self.sub = self.active(self,_('Load modules'),_('Loading module %s' % m))
+				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()

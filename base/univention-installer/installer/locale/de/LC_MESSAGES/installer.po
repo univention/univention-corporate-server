@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-07-14 18:49+0200\n"
-"PO-Revision-Date: 2007-07-16 15:57+0200\n"
+"PO-Revision-Date: 2007-07-17 14:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -42,7 +42,7 @@ msgstr ""
 #: installer/main.py:230
 #: ../univention-system-setup/usr/sbin/univention-system-setup:131
 msgid "A Python Exception has occured!"
-msgstr "Ein Python Ausnahmefehler ist aufgetreten!"
+msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
 #: installer/main.py:249 installer/main.py:280 installer/objects.py:1674
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
@@ -58,7 +58,7 @@ msgstr "Ok"
 
 #: installer/main.py:268
 msgid "Available Installer Languages:"
-msgstr "Verfügbare Installer Sprachen:"
+msgstr "Verfügbare Installer-Sprachen:"
 
 #: installer/main.py:351
 #, python-format
@@ -153,7 +153,7 @@ msgstr "Dienste für Windows"
 
 #: installer/package_list.py:38
 msgid "Windows Components"
-msgstr "Windows Komponenten"
+msgstr "Windows-Komponenten"
 
 #: installer/package_list.py:42
 msgid "Samba"
@@ -161,7 +161,7 @@ msgstr "Samba"
 
 #: installer/package_list.py:47
 msgid "Samba Services"
-msgstr "Samba Dienste"
+msgstr "Samba-Dienste"
 
 #: installer/package_list.py:50
 msgid "Windows Installer 4"
@@ -169,7 +169,7 @@ msgstr "Windows Installer 4"
 
 #: installer/package_list.py:55
 msgid "Automatic Installation for Windows Clients"
-msgstr "Automatische Installation für Windows Clients"
+msgstr "Automatische Installation für Windows-Clients"
 
 #: installer/package_list.py:58
 msgid "DC Slave as Samba PDC"
@@ -185,7 +185,7 @@ msgstr "Winbind"
 
 #: installer/package_list.py:71
 msgid "Winbind Service"
-msgstr "Winbind Dienst"
+msgstr "Winbind-Dienst"
 
 #: installer/package_list.py:76
 msgid "Mail/Groupware"
@@ -221,7 +221,7 @@ msgstr "Horde Webclient für UGS"
 
 #: installer/package_list.py:108
 msgid "Mail Services (smtp/pop/imap)"
-msgstr "Mail Dienste (smtp/pop/imap)"
+msgstr "Mail-Dienste (smtp/pop/imap)"
 
 #: installer/package_list.py:113
 msgid "Standard Mail Services"
@@ -241,7 +241,7 @@ msgstr "DNS"
 
 #: installer/package_list.py:129
 msgid "DNS Server and Proxy"
-msgstr "DNS Server und Proxy"
+msgstr "DNS-Server und -Proxy"
 
 #: installer/package_list.py:132
 msgid "DHCP"
@@ -265,7 +265,7 @@ msgstr "Druckserver"
 
 #: installer/package_list.py:157
 msgid "Print Quota"
-msgstr "Druck Quota"
+msgstr "Druck-Quota"
 
 #: installer/package_list.py:162
 msgid "Print Quota Support"
@@ -273,7 +273,7 @@ msgstr "Druck Quota Unterstützung"
 
 #: installer/package_list.py:165
 msgid "Nagios Server"
-msgstr "Nagios Server"
+msgstr "Nagios-Server"
 
 #: installer/package_list.py:170 installer/package_list.py:178
 msgid "Host, service and network monitoring program "
@@ -281,7 +281,7 @@ msgstr "Rechner, Dienste und Netzwerk Überwachungsdienst"
 
 #: installer/package_list.py:173
 msgid "Nagios Client"
-msgstr "Nagios Client"
+msgstr "Nagios-Client"
 
 #: installer/package_list.py:181
 msgid "Univention AD Connector"
@@ -293,11 +293,11 @@ msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
 #: installer/package_list.py:189 installer/package_list.py:194
 msgid "Fax Server"
-msgstr "Fax Server"
+msgstr "Fax-Server"
 
 #: installer/package_list.py:197
 msgid "Squid Proxyserver"
-msgstr "Squid Proxyserver"
+msgstr "Squid-Proxyserver"
 
 #: installer/package_list.py:202
 msgid "Web Proxy Services"
@@ -313,11 +313,11 @@ msgstr "Secure shell server, ein rshd Ersatz"
 
 #: installer/package_list.py:213 installer/package_list.py:218
 msgid "FreeNX Server"
-msgstr "FreeNX Server"
+msgstr "FreeNX-Server"
 
 #: installer/package_list.py:221
 msgid "VNC Server"
-msgstr "VNC Server"
+msgstr "VNC-Server"
 
 #: installer/package_list.py:226
 msgid "Server for remote desktop access"
@@ -333,7 +333,7 @@ msgstr "Netzwerkinstallation von UCS"
 
 #: installer/package_list.py:239
 msgid "Terminal Service"
-msgstr "Terminal Dienste"
+msgstr "Terminal-Dienste"
 
 #: installer/package_list.py:241
 msgid "Terminal Service Components, required for ThinClients"
@@ -349,7 +349,7 @@ msgstr "X-Window-System Client für Terminal Dienste"
 
 #: installer/package_list.py:253
 msgid "Thinclient Environment"
-msgstr "Thinclient Umgebung"
+msgstr "Thinclient-Umgebung"
 
 #: installer/package_list.py:258
 msgid "ThinClient Interface"
@@ -442,7 +442,7 @@ msgstr "Backup"
 
 #: installer/package_list.py:345
 msgid "Backup Tools"
-msgstr "Backup Werkzeuge"
+msgstr "Backup-Werkzeuge"
 
 #: installer/package_list.py:349
 msgid "Unidump"
@@ -454,7 +454,7 @@ msgstr "Bandsicherungssoftware"
 
 #: installer/package_list.py:357
 msgid "Remote Backup"
-msgstr "Remote Backup"
+msgstr "Remote-Backup"
 
 #: installer/package_list.py:362
 msgid "Backup Software based on rsync"
@@ -462,7 +462,7 @@ msgstr "Backup Software basierend auf rsync"
 
 #: installer/package_list.py:367
 msgid "Desktop Environment"
-msgstr "Desktop Umgebung"
+msgstr "Desktop-Umgebung"
 
 #: installer/package_list.py:369
 msgid "Desktop Environment packages"
@@ -486,7 +486,7 @@ msgstr "Acrobat Reader"
 
 #: installer/package_list.py:442
 msgid "PDF Viewer"
-msgstr "PDF Betrachter"
+msgstr "PDF-Betrachter"
 
 #: installer/package_list.py:445
 msgid "Additional KDE Applications"
@@ -502,7 +502,7 @@ msgstr ""
 
 #: installer/package_list.py:453
 msgid "Multimedia Applications"
-msgstr "Multimedia Anwendungen"
+msgstr "Multimedia-Anwendungen"
 
 #: installer/package_list.py:458
 msgid "Multimedia applications, like amarok, kmplayer or mplayer"
@@ -510,7 +510,7 @@ msgstr "Multimedia Anwendungen, wie amarok, kmplayer oder mplayer"
 
 #: installer/package_list.py:461 installer/package_list.py:466
 msgid "Fax Client"
-msgstr "Fax Client"
+msgstr "Fax-Client"
 
 #: installer/package_list.py:469
 msgid "Evolution"
@@ -522,7 +522,7 @@ msgstr "Das GNOME Milprogramm"
 
 #: installer/package_list.py:477
 msgid "VNC Viewer"
-msgstr "VNC Betrachter"
+msgstr "VNC-Betrachter"
 
 #: installer/package_list.py:482
 msgid "Client for remote desktop Access"
@@ -538,11 +538,11 @@ msgstr "Werkzeuge"
 
 #: installer/package_list.py:497
 msgid "Extra Tools"
-msgstr "Zusatz Werkzeuge"
+msgstr "Zusatz-Werkzeuge"
 
 #: installer/package_list.py:501
 msgid "OpenSSH client"
-msgstr "OpenSSh Client"
+msgstr "OpenSSH-Client"
 
 #: installer/package_list.py:506
 msgid "Secure shell client, an rlogin/rsh/rcp replacement"
@@ -550,7 +550,7 @@ msgstr "SSH Client, ein Ersatz für rlogin/rsh/rcp"
 
 #: installer/package_list.py:509
 msgid "dhcp client"
-msgstr "DHCP Client"
+msgstr "DHCP-Client"
 
 #: installer/package_list.py:514
 msgid "Dynamic IP configuration"
@@ -602,7 +602,7 @@ msgstr "nmap"
 
 #: installer/package_list.py:562 installer/package_list.py:570
 msgid "The Network Mapper"
-msgstr ""
+msgstr "Portscanning-Tool"
 
 #: installer/package_list.py:565
 msgid "zip/unzip"
@@ -614,7 +614,7 @@ msgstr "eject"
 
 #: installer/package_list.py:578
 msgid "ejects CDs and operates CD-Changers under Linux"
-msgstr ""
+msgstr "wirft CDs aus und bedient CD-Wechsler unter Linux"
 
 #: installer/package_list.py:581
 msgid "Java"
@@ -829,7 +829,7 @@ msgstr "Lade Module"
 
 #: installer/modules/04_profile.py:371
 msgid "Initialize USB Devices"
-msgstr "USB Geräte initialisieren"
+msgstr "USB-Geräte initialisieren"
 
 #: installer/modules/04_timezone.py:58
 msgid "Choose a timezone:"
@@ -1010,11 +1010,11 @@ msgstr "Windows-Domäne"
 
 #: installer/modules/11_basis.py:94
 msgid "Password for root:"
-msgstr "Root Passwort"
+msgstr "Root-Passwort"
 
 #: installer/modules/11_basis.py:97
 msgid "Password for root (retype):"
-msgstr "Root Passwort (zur Bestätigung bitte nochmal eingeben)"
+msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
 
 #: installer/modules/11_basis.py:146
 msgid "Please insert a valid Hostname."
@@ -1129,7 +1129,7 @@ msgstr "Partition"
 
 #: installer/modules/12_partition.py:786
 msgid "Deleting LVM volumes"
-msgstr "Lösche LVM Geräte"
+msgstr "Lösche LVM-Geräte"
 
 #: installer/modules/12_partition.py:789
 msgid "Deleting partitions"
@@ -1141,7 +1141,7 @@ msgstr "Lösche Partitionen"
 
 #: installer/modules/12_partition.py:795
 msgid "Creating LVM volumes"
-msgstr "Erstelle LVM Geräte"
+msgstr "Erstelle LVM-Geräte"
 
 #: installer/modules/12_partition.py:798
 msgid "Formatting partitions"
@@ -1172,11 +1172,11 @@ msgstr "Soll die automatische Partitionierung verwendet werden? "
 
 #: installer/modules/12_partition.py:1635
 msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
-msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen"
+msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
 
 #: installer/modules/12_partition.py:1636
 msgid "partitions on all disks! If auto-partition result is"
-msgstr "auf allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
+msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
 
 #: installer/modules/12_partition.py:1637
 msgid "unsuitable press F5 to restart partitioning."
@@ -1256,7 +1256,7 @@ msgstr "unbekannt"
 
 #: installer/modules/12_partition.py:1791
 msgid "LVM volume group"
-msgstr "LVM Medien Gruppe"
+msgstr "LVM-Medien-Gruppe"
 
 #: installer/modules/12_partition.py:1834
 msgid "F2-Create"
@@ -1328,16 +1328,16 @@ msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
 
 #: installer/modules/12_partition.py:2103
 msgid "Unable to remove physical volume from"
-msgstr "Löschen des Physiklaischen Medium von"
+msgstr "Das Löschen des physikalischen Mediums der"
 
 #: installer/modules/12_partition.py:2104
 #, python-format
 msgid "volume group \"%s\"!"
-msgstr "der Medien-Gruppe \"%s\" fehlgeschlagen!"
+msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
 
 #: installer/modules/12_partition.py:2105
 msgid "Physical volume contains used physical extents!"
-msgstr "Physikalisches Medium enthält verwendete Systemdaten"
+msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
 
 #: installer/modules/12_partition.py:2128
 msgid "Please use \"pvmove\" to move data to other physical volumes."
@@ -1357,7 +1357,7 @@ msgstr "Schreibe Partitionen"
 
 #: installer/modules/12_partition.py:2663
 msgid "Create LVM Volumes"
-msgstr "Erstelle LVM Medien"
+msgstr "Erstelle LVM-Medien"
 
 #: installer/modules/12_partition.py:2665
 msgid "Create Filesystems"
@@ -1401,7 +1401,7 @@ msgstr " kann zu Problemen mit existierende Daten führen!"
 #: installer/modules/12_partition.py:2897
 #: installer/modules/12_partition.py:3242
 msgid "effect, if \"format\" is not selected."
-msgstr "wenn formatieren nicht gewählt wurde."
+msgstr "wenn \"formatieren\" nicht gewählt wurde."
 
 #: installer/modules/12_partition.py:2980
 msgid "Physical Diskdrive"

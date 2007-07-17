@@ -1647,7 +1647,7 @@ class object(content):
 						  _('unsuitable press F5 to restart partitioning.')
 						  ]
 				self.container['autopartition'] = False
-				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
+				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-15, msglist, default='yes', callback_yes=self.auto_partitioning)
 				self.draw()
 
 			# show warning if LVM1 volumes are detected
