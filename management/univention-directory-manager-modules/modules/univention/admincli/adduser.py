@@ -75,7 +75,7 @@ def get_user_object(user, position, lo, co):
 		userobject=univention.admin.modules.lookup(univention.admin.handlers.users.user, co, lo, scope='domain', base=position.getDn(), filter='(username=%s)' % user, required=1, unique=1)[0]		
 	except:
 		# machine Account
-		for handler in [univention.admin.handlers.computers.windows,univention.admin.handlers.computers.domaincontroller_master,univention.admin.handlers.computers.domaincontroller_slave,univention.admin.handlers.computers.domaincontroller_backup,univention.admin.handlers.computers.client,univention.admin.handlers.computers.memberserver]:
+		for handler in [univention.admin.handlers.computers.windows,univention.admin.handlers.computers.domaincontroller_master,univention.admin.handlers.computers.domaincontroller_slave,univention.admin.handlers.computers.domaincontroller_backup,univention.admin.handlers.computers.managedclient,univention.admin.handlers.computers.memberserver]:
 			if not usertype == 'machine': # Account not found in proceeded handlers
 				try:
 					userobject=univention.admin.modules.lookup(handler, co, lo, scope='domain', base=position.getDn(), filter='(uid=%s)' % user, required=1, unique=1)[0]

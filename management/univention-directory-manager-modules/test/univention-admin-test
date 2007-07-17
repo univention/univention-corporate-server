@@ -5257,13 +5257,13 @@ then
 	/etc/init.d/slapd restart
 fi
 
-createcomputers_client()
+createcomputers_managedclient()
 {
 	pos=$1
 	adminwrap $LINENO computers/managedclient create --set name=testclientcomputer --position=\"$pos,$ldap_base\"
 }
 
-checkcomputers_client()
+checkcomputers_managedclient()
 {
 	pos=$1
 	ckthere "cn=testclientcomputer,$pos" "base" "(objectClass=*)" testclientcomputer existence $LINENO
@@ -5872,7 +5872,7 @@ checkusers_user()
 
 if [ -n "$dorecursive" ]
 then
-	for otype in computers_client \
+	for otype in computers_managedclient \
 			computers_domaincontroller_backup \
 			computers_domaincontroller_master \
 			computers_domaincontroller_slave \
