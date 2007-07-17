@@ -1053,6 +1053,15 @@ class object(content):
 																		'mpoint': '',
 																		}
 
+	def enable_all_vg(self):
+		command = '/sbin/vgchange -ay 2>&1'
+		self.debug('run command: %s' % command)
+		p=os.popen(command)
+		output = p.read()
+		p.close()
+		self.debug('\n=> %s' % output.replace('\n','\n=> '))
+
+
 	def read_lvm(self):
 		# read initial LVM status
 		self.container['lvm']['pv'] = {}
@@ -1060,6 +1069,7 @@ class object(content):
 		self.read_lvm_pv()
 		self.read_lvm_vg()
 		self.read_lvm_lv()
+		self.enable_all_vg()
 		if len(self.container['lvm']['vg'].keys()) > 0:
 			self.container['lvm']['enabled'] = True
 		self.container['lvm']['lvmconfigread'] = True
