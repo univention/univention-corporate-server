@@ -60,7 +60,7 @@ def moreGroupware(license):
 				       license.licenses[license.GROUPWARE]) != 1)
 
 modules = {
-	'computers/client': Attributes( UCS ),
+	'computers/managedclient': Attributes( UCS ),
 	'computers/computer': Attributes(),
 	'computers/domaincontroller_backup': Attributes( options =
 				{

@@ -51,7 +51,7 @@ module='policies/clientpackages'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicyPackagesClient'
-policy_apply_to=["computers/client"]
+policy_apply_to=["computers/managedclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0

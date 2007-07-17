@@ -512,7 +512,7 @@ then
 	module_list computers/domaincontroller_slave $LINENO
 	module_list computers/memberserver $LINENO
 	module_list computers/windows $LINENO
-	module_list computers/client $LINENO
+	module_list computers/managedclient $LINENO
 	module_list computers/thinclient $LINENO
 	module_list shares/share $LINENO
 	module_list dns/forward_zone $LINENO
@@ -5260,7 +5260,7 @@ fi
 createcomputers_client()
 {
 	pos=$1
-	adminwrap $LINENO computers/client create --set name=testclientcomputer --position=\"$pos,$ldap_base\"
+	adminwrap $LINENO computers/managedclient create --set name=testclientcomputer --position=\"$pos,$ldap_base\"
 }
 
 checkcomputers_client()

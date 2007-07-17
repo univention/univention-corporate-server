@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.0.1-2) unstable; urgency=low
+
+  * renamed module computers/client to computers/managedclient and client.py
+    to managedclient.py  
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 17 Jul 2007 09:05:44 +0200
+
 univention-directory-manager-modules (2.0.1-1) unstable; urgency=low
 
   * fixed typos 

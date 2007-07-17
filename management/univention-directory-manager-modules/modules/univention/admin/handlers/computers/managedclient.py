@@ -44,7 +44,7 @@ import univention.admin.handlers.networks.network
 translation=univention.admin.localization.translation('univention.admin.handlers.computers')
 _=translation.translate
 
-module='computers/client'
+module='computers/managedclient'
 operations=['add','edit','remove','search','move']
 usewizard=1
 docleanup=1

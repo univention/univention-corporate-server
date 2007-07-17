@@ -59,7 +59,7 @@ module='policies/xfree'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicyXConfiguration'
-policy_apply_to=["computers/thinclient", "computers/client", "computers/mobileclient"]
+policy_apply_to=["computers/thinclient", "computers/managedclient", "computers/mobileclient"]
 policy_position_dn_prefix="cn=xfree"
 usewizard=1
 childs=0

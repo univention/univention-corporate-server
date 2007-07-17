@@ -54,7 +54,7 @@ wizardmenustring=_("Computer")
 wizarddescription=_("Add, edit and delete computers")
 wizardoperations={"add":[_("Add"), _("Add Computer")],"find":[_("Find"), _("Find Computer(s)")]}
 
-childmodules=["computers/client","computers/macos","computers/thinclient","computers/windows","computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/mobileclient", "computers/trustaccount", "computers/ipmanagedclient"]
+childmodules=["computers/managedclient","computers/macos","computers/thinclient","computers/windows","computers/domaincontroller_master", "computers/domaincontroller_backup", "computers/domaincontroller_slave", "computers/memberserver", "computers/mobileclient", "computers/trustaccount", "computers/ipmanagedclient"]
 
 childs=0
 short_description=_('Computer')
