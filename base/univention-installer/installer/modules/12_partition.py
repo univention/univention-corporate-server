@@ -3048,12 +3048,12 @@ class object(content):
 						self.get_elem('SEL_fstype').set_off()
 						dict={}
 						if self.parent.possible_type(disk, start) is 1:
-							dict[_('primary')]=[0]
+							dict[_('primary')]=[0, 0]
 						elif self.parent.possible_type(disk, start) is 2:
-							dict[_('logical')]=[1]
+							dict[_('logical')]=[1, 1]
 						elif self.parent.possible_type(disk, start) is 3:
-							dict[_('primary')]=[0]
-							dict[_('logical')]=[1]
+							dict[_('primary')]=[0, 0]
+							dict[_('logical')]=[1, 1]
 						self.add_elem('RB_pri_log', radiobutton(dict,self.pos_y+9,self.pos_x+33,10,2,[0])) #7
 
 						self.add_elem('CB_bootable', checkbox({_('bootable'):'1'},self.pos_y+12,self.pos_x+33,11,1,[])) #8

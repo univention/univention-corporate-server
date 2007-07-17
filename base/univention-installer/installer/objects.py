@@ -786,6 +786,10 @@ class hLine:
 
 class radiobutton:
 	def __init__(self,dict,pos_y,pos_x,width,visible,selected=[0],fixed=[]):
+		# UNSORTED:
+		#    dict[ DESCRIPTION ] = [ RETURNVALUE ]
+		# SORTED:
+		#    dict[ DESCRIPTION ] = [ RETURNVALUE, POSITION-AS-INT ]
 		self.pos_x=pos_x
 		self.pos_y=pos_y
 		self.visible=[0,visible]
