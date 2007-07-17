@@ -41,14 +41,14 @@ import univention.admin.handlers.computers.domaincontroller_master as dc_master
 import univention.admin.handlers.computers.domaincontroller_backup as dc_backup
 import univention.admin.handlers.computers.domaincontroller_slave as dc_slave
 import univention.admin.handlers.computers.memberserver as memberserver
-import univention.admin.handlers.computers.client as client
+import univention.admin.handlers.computers.managedclient as managedclient
 import univention.admin.handlers.computers.mobileclient as mobileclient
 
 class ACLs:
 	# constants
 	( MATCH_NONE, MATCH_PART, MATCH_FULL ) = range( 3 )
 
-	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, client, mobileclient )
+	_systemroles = ( dc_master, dc_backup, dc_slave, memberserver, managedclient, mobileclient )
 
 	def __init__( self, ldap_base = None, acls = None ):
 
