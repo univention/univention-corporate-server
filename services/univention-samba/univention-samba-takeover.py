@@ -30,7 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import getopt, sys, os, time, ldap, re, string, array
-import univention_baseconfig
+import univention.baseconfig
 import univention.debug
 import univention.admin.uldap
 import univention.admin.config
@@ -143,7 +143,7 @@ if sidfile == "":
 else:
 	newSID = sidfile.strip()
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univention.baseconfig.baseConfig()
 baseConfig.load()
 
 if baseConfig.has_key('domainname') and baseConfig['domainname']:

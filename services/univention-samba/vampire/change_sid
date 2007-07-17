@@ -31,7 +31,7 @@
 
 import sys
 
-import univention_baseconfig
+import univention.baseconfig
 import univention.debug
 univention.debug.init('/dev/null', 1, 1)
 

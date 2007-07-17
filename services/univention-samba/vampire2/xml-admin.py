@@ -35,7 +35,7 @@ import codecs, copy
 import time
 import traceback
 import univention.debug
-import univention_baseconfig
+import univention.baseconfig
 
 import univention.admin.uldap
 import univention.admin.config
@@ -450,7 +450,7 @@ def sync_groups(domainname, domainsid):
 	global builtin, domain
 
 	# search all NT groups for a group with the same name in the LDAP directory
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig=univention.baseconfig.baseConfig()
 	baseConfig.load()
 
 	if baseConfig.has_key('samba/defaultcontainer/group') and baseConfig['samba/defaultcontainer/group']:
@@ -868,7 +868,7 @@ def sync_user(domainname, domainsid, xml_account):
 			pass
 
 def sync_accounts(domainname, domainsid):
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig=univention.baseconfig.baseConfig()
 	baseConfig.load()
 
 	if baseConfig.has_key('samba/defaultcontainer/user') and baseConfig['samba/defaultcontainer/user']:
@@ -1065,7 +1065,7 @@ def main():
 
 	lo, position = univention.admin.uldap.getAdminConnection(decode_ignorelist=['krb5Key'])
 
-	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig=univention.baseconfig.baseConfig()
 	baseConfig.load()
 
 	if baseConfig.has_key('samba/defaultcontainer/user') and baseConfig['samba/defaultcontainer/user']:

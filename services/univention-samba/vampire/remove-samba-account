@@ -35,13 +35,13 @@ import univention.debug
 univention.debug.init('/var/log/univention/pdc-takeover.log', 1, 0)
 
 import univention.admin.uldap
-import univention_baseconfig
+import univention.baseconfig
 
 if len(sys.argv) != 2:
 	print "Expect exactly one argument: LDAP-Filter matching the Objects to modify"
 	sys.exit(1)
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univention.baseconfig.baseConfig()
 baseConfig.load()
 
 ldap_base=baseConfig['ldap/base']
