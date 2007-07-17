@@ -1,3 +1,9 @@
+univention-samba (1.0.3-4) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 17 Jul 2007 12:17:49 +0200
+
 univention-samba (1.0.3-3) unstable; urgency=low
 
   * Register samba/netbios/filter in Univention Baseconfig.

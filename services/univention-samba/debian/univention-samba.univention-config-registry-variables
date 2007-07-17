@@ -1,0 +1,246 @@
+[samba/charset/dos]
+Description[de]=Zeichensatz für die Kommunikation mit DOS SMB Clients
+Description[en]=Charset used to communicate with DOS SMB clients
+Type=str
+Categories=Network
+
+[samba/charset/unix]
+Description[de]=Zeichensatz des Samba-Servers
+Description[en]=Charset of the machine samba runs on
+Type=str
+Categories=Network
+
+[samba/charset/display]
+Description[de]=Zeichensatz zum Ausgeben von Nachrichten auf stdout und stderr (sollte gleich mit samba/charset/unix sein)
+Description[en]=Charset used to print messages to stdout and stderr (should be the same as the samba/charset/unix)
+Type=str
+Categories=Network
+
+[samba/use_spnego]
+Description[de]=Versuche Simple and Protected NEGOciation mit Windows 2000 and XP Clients
+Description[en]=Try to use Simple and Protected NEGOciation with Windows 2000 and XP clients
+Type=str
+Categories=Network
+
+[samba/client_use_spnego]
+Description[de]=Kontrolliert ob Samba Client versuchen Simple and Protected NEGOciation zu verwenden
+Description[en]=Controls whether Samba clients will try to use Simple and Protected NEGOciation
+Type=str
+Categories=Network
+
+[samba/deadtime]
+Description[de]=Anzahl Minuten nach denen eine Verbindung als dead betrachtet und geschlossen wird
+Description[en]=Number of minutes of inactivity before a connection is considered dead and it is disconnected
+Type=str
+Categories=Network
+
+[samba/domainmaster]
+Description[de]=Versuche als Domain Master Browsers zu fungieren
+Description[en]=Try to acts as domain master browser
+Type=str
+Categories=Network
+
+[samba/enable-msdfs]
+Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
+Description[en]=Act as a Dfs server and allow Dfs-aware clients to browse Dfs trees
+Type=str
+Categories=Network
+
+[samba/enable-privileges]
+Description[de]=Beachte Privilegien die zu spezifischen SIDs zugeordnet wurden
+Description[en]=Honor privileges assigned to specific SIDs
+Type=str
+Categories=Network
+
+[samba/encrypt_passwords]
+Description[de]=Versuche verschlüsselte Passwörter mit dem Client auszuhanden
+Description[en]=Controls whether encrypted passwords will be negotiated with the client
+Type=str
+Categories=Network
+
+[samba/getwd_cache]
+Description[de]=Aktiviere einen Caching-Algorithmus um die Zeit für getwd() Aufrufe zu minimieren
+Description[en]=Enables a caching algorithm to reduce the time taken for getwd() calls
+Type=str
+Categories=Network
+
+[samba/guest_account]
+Description[de]=Benutzername der für den Zugriff auf "guest ok" Services verwendet wird
+Description[en]=Username which will be used for access to services which are specified as guest ok
+Type=str
+Categories=Network
+
+[samba/homedirletter]
+Description[de]=Lokaler Pfad mit dem das Heimatverzeichnis des Benutzers verbunden wird
+Description[en]=Local path to which the home directory will be connected
+Type=str
+Categories=Network
+
+[samba/homedirpath]
+Description[de]=Gibt den Pfad zum Heimatverzeichnis für Win95/98 or NT Workstations vor
+Description[en]=Specifies the home directory location for Win95/98 or NT Workstations
+Type=str
+Categories=Network
+
+[samba/homedirserver]
+Description[de]=FQDN des Servers der Heimatverzeichnisse bereitstellt
+Description[en]=FQDN of the server sharing the home directorys
+Type=str
+Categories=Network
+
+[samba/invalid_users]
+Description[de]=Liste von Benutzern die sich nicht am Samba-Service anmelden dürfen
+Description[en]=List of users that are not allowed to login to this samba service 
+Type=str
+Categories=Network
+
+[samba/kernel_oplocks]
+Description[de]=Verwendung von Kernel Oplocks an- bzw. abschalten
+Description[en]=Turns the use of kernel based oplocks on/off
+Type=str
+Categories=Network
+
+[samba/large_readwrite]
+Description[de]=Unterstützung für 64k Streaming Lesen/Schreiben-SMB-Variante
+Description[en]=Enable/disable the 64k streaming read and write varient SMB requests
+Type=str
+Categories=Network
+
+[samba/ldap/replication/sleep]
+Description[de]=Warte die angegebenen Millisekunden auf die LDAP-Replikation
+Description[en]=Milliseconds to wait for the LDAP replication to finish
+Type=str
+Categories=Network
+
+[samba/logonscript]
+Description[de]=Pfad zum Netlogon-Script (relativ zum Netlogon-Service)
+Description[en]=Path to netlogon script (relative to the [netlogon] service)
+Type=str
+Categories=Network
+
+[samba/map_to_guest]
+Description[de]=Verhalten bei Anmeldung von Benutzern für die kein gültiger UNIX Benutzer existiert
+Description[en]=What to do with user login requests that don't match a valid UNIX user
+Type=str
+Categories=Network
+
+[samba/max_xmit]
+Description[de]=Maximale Paketgröße die ausgehaldelt werden kann
+Description[en]=Maximum packet size that will be negotiated
+Type=str
+Categories=Network
+
+[samba/netbios/aliases]
+Description[de]=Zusätzliche NetBIOS Namen für den Samba Server
+Description[en]=Additional NetBIOS names by which the Samba server is known
+Type=str
+Categories=Network
+
+[samba/netbios/filter]
+Description[de]=Filtert die Hosts in der Browse-Liste nach angegebenem Regulären Ausdruck
+Description[en]=Regular expression matching the hosts to appear in the browse list
+Type=str
+Categories=Network
+
+[samba/oplocks]
+Description[de]=Erteilen von oplocks für Datei-Öffnen-Anfrage
+Description[en]=Issue oplocks to file open requests
+Type=str
+Categories=Network
+
+[samba/preserve_case]
+Description[de]=Kontrolliert ob neue Dateinamen mit der Groß/Kleinschreibung wie vom Client gesendet angelegt, oder auf standard Groß/Kleinschreibung geändert werden
+Description[en]=Controls if new filenames are created with the case that the client passes, or if they are forced to be the default case
+Type=str
+Categories=Network
+
+[samba/profilepath]
+Description[de]=Verzeichnis in dem die Roaming Profile gespeichert werden
+Description[en]=Specifies the directory where roaming profiles are stored
+Type=str
+Categories=Network
+
+[samba/profileserver]
+Description[de]=Samba Server auf dem die Roaming Profile gespeichert werden
+Description[en]=Specifies the samba server where roaming profiles are stored
+Type=str
+Categories=Network
+
+[samba/read_raw]
+Description[de]=Unterstützung für 64 kByte-Datenpakete beim Übertragen von Daten an Clients
+Description[en]=Support 64 kByte packets when transferring data to clients
+Type=str
+Categories=Network
+
+[samba/write_raw]
+Description[de]=Unterstützung für 'Raw-SMBs' beim Datentransfehr von Clients
+Description[en]=Enable the Server to write raw SMBs when transfering data from clients
+Type=str
+Categories=Network
+
+[samba/serverstring]
+Description[de]=Zeichenkette die als Kommentar im Druck-Manager und von 'net view' angezeigt wird
+Description[en]=String that will show up in printer comment box and 'net view'
+Type=str
+Categories=Network
+
+[samba/share/groups]
+Description[de]=Aktivieren/Deaktivieren der Gruppenfreigabe
+Description[en]=Enable/Disable the group share
+Type=str
+Categories=Network
+
+[samba/share/home]
+Description[de]=Aktivieren/Deaktivieren der Heimatverzeichnissfreigabe
+Description[en]=Enable/Disable the home directory share
+Type=str
+Categories=Network
+
+[samba/short_preserve_case]
+Description[de]=Kontrolliert ob neue Dateien nach 8.3 (DOS) Format in Großbuchstaben erstellt oder auf standard Groß/Kleinschreibung geändert werden
+Description[en]=Controls if new files which conform to 8.3 (DOS) syntax are created upper case, or if they are forced to be the default case
+Type=str
+Categories=Network
+
+[samba/socket_options]
+Description[de]=Zusätzliche Socket Optionen die bei Verbindungen mit Clients verwendet werden
+Description[en]=Extra socket options to be used when talking with the client
+Type=str
+Categories=Network
+
+[samba/store_dos_attributes]
+Description[de]=Versuche DOS Attribute aus einem erweiterten Dateisystemattribut zu lesen bevor sie auf UNIX-Rechte abgebildet werden
+Description[en]=Attempt to read DOS attributes from a filesystem extended attribute, before mapping DOS attributes to UNIX permission bits
+Type=str
+Categories=Network
+
+[samba/time_server]
+Description[de]=Samba als Zeitserver für Windows Clients
+Description[en]=Advertises samba as a time server to Windows clients
+Type=str
+Categories=Network
+
+[samba/user]
+Description[de]=Alternativer LDAP-Administrator DN
+Description[en]=Alternative LDAP admin DN
+Type=str
+Categories=Network
+
+[samba/winbind_trusted_domains_only]
+Description[de]=Erlaube Samba-Memberservern einer Samba-Domäne, von LDAP/NIS/rsync verteilte UNIX Accounts als uids für Winbindd Benutzer zu verwenden
+Description[en]=Allow Samba member-servers of a samba domain to use UNIX accounts distributet via LDAP/NIS/rsync as the uid's for winbindd users
+Type=str
+Categories=Network
+
+[windows/wins-server]
+Description[de]=WINS Server an dem Samba sich registriert
+Description[en]=WINS server that samba should register with
+Type=str
+Categories=Network
+
+[windows/wins-support]
+Description[de]=Aktiviert/Deaktiviert Samba als WINS Server
+Description[en]=Should Samba act as a WINS server
+Type=str
+Categories=Network
+
