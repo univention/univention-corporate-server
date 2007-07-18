@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Installer
-#  cleanup system
+#  reboot system
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -30,50 +30,26 @@
 
 . /tmp/installation_profile
 
-#copy installation profile
-cat /tmp/installation_profile | sed -e "s|root_password=.*|#root_password=''|" | sed -e "s|domain_controller_password=.*|#domain_controller_password=''|" >/instmnt/etc/univention/installation_profile
+architecture=`/bin/uname -m`
 
-sync
+umount /instmnt
+umount -l /instmnt
 
-
-chmod -R 700 /instmnt/root
-chmod 1777 /instmnt/tmp
-
-#cleanup
-rm -f /instmnt/*.sh
-rm -f /instmnt/.log
-rm -f /instmnt/start
-rm -Rf /instmnt/srv
-rm -Rf /instmnt/initrd
-rm -Rf /instmnt/dead.letter
-/bin/sync
-
-sync
-
-cat >/instmnt/tmp/cleanup.sh <<__EOT__
-umount -a >/dev/null 2>&1
-__EOT__
-chmod +x /instmnt/tmp/cleanup.sh
-chroot /instmnt ./tmp/cleanup.sh
-
-cat >/instmnt/tmp/cleanup.sh <<__EOT__
-if [ -x /etc/init.d/nscd ]; then
-	/etc/init.d/nscd stop
+if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
+	echo "Auto reboot"
+else
+	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
+		echo "Please remove the install media in order to prevent install rerun"
+		echo "Press enter to halt the system"
+	else
+		echo "Please remove the install media in order to prevent install rerun"
+		echo "Press enter to reboot the system"
+	fi
+	read foobar
 fi
 
-umount -a >/dev/null 2>&1
-echo -n "Sending all processes the TERM signal... "
-killall5 -15 >/dev/null 2>&1
-echo "done."
-
-sleep 5
-echo -n "Sending all processes the KILL signal... "
-killall5 -9 >/dev/null 2>&1
-echo "done."
-
-umount -a >/dev/null 2>&1
-rm -Rf /sourcedevice >/dev/null 2>&1
-__EOT__
-
-chmod +x /instmnt/tmp/cleanup.sh
-chroot /instmnt ./tmp/cleanup.sh
+if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
+	halt
+else
+	reboot
+fi
