@@ -33,6 +33,8 @@
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 
+univention-config-registry set bind/autostart?yes
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 
 	if dpkg --compare-versions "$2" lt 1.15; then
