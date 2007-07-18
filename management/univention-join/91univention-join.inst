@@ -101,7 +101,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		find /etc/univention/ssl/univention-admin/ -type f | xargs chmod g+rw
 	fi
 
-	test -e /etc/ldap.secret && chgrp "Backup Join" /etc/ldap.secret && chmod 640 /etc/ldap.secret
+	test -e /etc/ldap.secret && chgrp "DC Backup Hosts" /etc/ldap.secret && chmod 640 /etc/ldap.secret
 
 	if [ -d /var/lib/heimdal-kdc ]; then
 		chgrp -R "DC Backup Hosts" /var/lib/heimdal-kdc

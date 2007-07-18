@@ -1,3 +1,9 @@
+univention-join (1.0.4-1) unstable; urgency=low
+
+  * switch group of /etc/ldap.secret to "DC Backup Hosts"
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Jul 2007 14:15:34 +0200
+
 univention-join (1.0.3-2) unstable; urgency=low
 
   * changed computers/client to computers/managedclient
@@ -56,7 +62,7 @@ univention-join (0.21-13) unstable; urgency=low
 
   * add GPL headers
 
- -- Andreas BÃŒsching <buesching@univention.de>  Wed, 29 Nov 2006 13:01:44 +0100
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 13:01:44 +0100
 
 univention-join (0.21-11) unstable; urgency=low
 
