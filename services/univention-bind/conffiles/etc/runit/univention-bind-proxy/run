@@ -4,7 +4,7 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 OPTS="-c /etc/bind/named.conf.proxy -u bind -f"
 
-eval `univention-baseconfig shell bind/autostart`
+eval `univention-config-registry shell bind/autostart`
 if [ -n "$bind_autostart" ]; then
 	if [ "$bind_autostart"  == "no" ] || [ "$bind_autostart"  == "false" ]; then
 		echo " bind is disabled"

@@ -2,3 +2,4 @@
 description[de]=DNS Dienst
 icon=service/bind
 programs=/usr/sbin/named -c /etc/bind/named.conf
+start_type=bind/autostart

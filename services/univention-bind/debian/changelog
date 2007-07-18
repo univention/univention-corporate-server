@@ -1,3 +1,9 @@
+univention-bind (2.0.3-1) unstable; urgency=low
+
+  * use univention-config-registry instead of univention-baseconfig
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 15:44:05 +0200
+
 univention-bind (2.0.2-5) unstable; urgency=low
 
   * call sv instead of svn in the init script
