@@ -1,5 +1,5 @@
 [proxy/http]
-Description[de]=Proxy f√É≈ír HTTP-Verbindungen
+Description[de]=Proxy f¸r HTTP-Verbindungen
 Description[en]=Proxy for HTTP connections
 Type=str
 Categories=Network
@@ -11,13 +11,13 @@ Type=str
 Categories=Misc
 
 [umask]
-Description[de]=Standard umask f√ºr Benutzer
+Description[de]=Standard umask f¸r Benutzer
 Description[en]=Default umask for Users
 Type=str
 Categories=System
 
 [sshd/port]
-Description[de]=Port f√É≈ír den SSH-Dienst
+Description[de]=Port f¸r den SSH-Dienst
 Description[en]=Port for the SSH daemon
 Type=str
 Categories=Network
@@ -29,13 +29,13 @@ Type=str
 Categories=Network
 
 [sshd/xforwarding]
-Description[de]=Portweiterleitung f√É≈ír die X-Sitzung
+Description[de]=Portweiterleitung f¸r die X-Sitzung
 Description[en]=Port forwarding for the X session
 Type=str
 Categories=Network
 
 [sshd/xdisplayoffset]
-Description[de]=Erster Port f√É≈ír die Weiterleitung der X-Sitzung
+Description[de]=Erster Port f¸r die Weiterleitung der X-Sitzung
 Description[en]=First port for forwarded X sessions
 Type=str
 Categories=Network
@@ -47,19 +47,19 @@ Type=str
 Categories=Network
 
 [domainname]
-Description[de]=DNS-Dom√É‚Ç¨ne
+Description[de]=DNS-Dom‰ne
 Description[en]=DNS domain
 Type=str
 Categories=Network
 
 [domain/domainname]
-Description[de]=Lokale-Dom√É‚Ç¨ne
+Description[de]=Lokale-Dom‰ne
 Description[en]=Lokal domain
 Type=str
 Categories=Network
 
 [domain/search]
-Description[de]=Automatisch zu durchsuchende DNS-Dom√É‚Ç¨nen
+Description[de]=Automatisch zu durchsuchende DNS-Dom‰nen
 Description[en]=Automatically searched DNS domains
 Type=str
 Categories=Network
@@ -101,7 +101,7 @@ Type=str
 Categories=Network
 
 [interfaces/eth.*/type]
-Description[de]=Netztypen f√É≈ír die einzelnen Interfaces
+Description[de]=Netztypen f¸r die einzelnen Interfaces
 Description[en]=Type of network for each the network interface
 Type=str
 Categories=Network
@@ -131,7 +131,7 @@ Type=str
 Categories=System
 
 [kernel/postinst_hook]
-Description[de]=Script das vor dem starten des Bootloaders ausgef√ºhrt wird
+Description[de]=Script das vor dem starten des Bootloaders ausgef¸hrt wird
 Description[en]=Script to be executed before running the bootloader
 Type=str
 Categories=System
@@ -149,19 +149,19 @@ Type=str
 Categories=System
 
 [kernel/silent_loader]
-Description[de]=√úberspringe die Frage ob der Bootloader gestartet werden soll
+Description[de]=‹berspringe die Frage ob der Bootloader gestartet werden soll
 Description[en]=Skip the question asked before running the bootloader
 Type=str
 Categories=System
 
 [ldap/backup]
-Description[de]=Das UCS Backup-System der Dom√É‚Ç¨ne
+Description[de]=Das UCS Backup-System der Dom‰ne
 Description[en]=The UCS backup system of the domain
 Type=str
 Categories=LDAP
 
 [ldap/master]
-Description[de]=Das UCS Master-System der Dom√É‚Ç¨ne
+Description[de]=Das UCS Master-System der Dom‰ne
 Description[en]=The UCS master system of the domain
 Type=str
 Categories=LDAP
@@ -173,7 +173,7 @@ Type=str
 Categories=System
 
 [lilo/append/.*acpi]
-Description[de]=Hinzuf√É≈ígen von ACPI Option f√É≈ír Lilo
+Description[de]=Hinzuf¸gen von ACPI Option f¸r Lilo
 Description[en]=Add ACPI options for lilo
 Type=str
 Categories=System
@@ -239,13 +239,13 @@ Type=str
 Categories=Network
 
 [nameserver/option/timeout]
-Description[de]=Nach wievielen Sekunden der n√É‚Ç¨chste DNS-Server gefragt wird
+Description[de]=Nach wievielen Sekunden der n‰chste DNS-Server gefragt wird
 Description[en]=After how may seconds the next DNS servers is used
 Type=str
 Categories=Network
 
 [pkgdb/overwrite/joincheck]
-Description[de]=Der Software-Monitor pr√É≈íft den Join-Status nicht vor dem Update der Datenabnk
+Description[de]=Der Software-Monitor pr¸ft den Join-Status nicht vor dem Update der Datenabnk
 Description[en]=The software monitor does not check the join status before updating the database
 Type=str
 Categories=Misc
@@ -257,13 +257,13 @@ Type=str
 Categories=Misc
 
 [proxy/password]
-Description[de]=Passwort f√É≈ír die Authentisierung beim Proxy
+Description[de]=Passwort f¸r die Authentisierung beim Proxy
 Description[en]=Password for the proxy authentication
 Type=str
 Categories=Network
 
 [proxy/username]
-Description[de]=Benutzername f√É≈ír die Authentisierung beim Proxy
+Description[de]=Benutzername f¸r die Authentisierung beim Proxy
 Description[en]=Username for the proxy authentication
 Type=str
 Categories=Network
