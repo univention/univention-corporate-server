@@ -31,8 +31,8 @@
 po=de
 
 if  [ ! -e ../univention-system-setup/usr/sbin/univention-system-setup ]; then
-	echo "Please checkout univention-setup, the installer combines i18n strings"
-	echo "from both the installer and univention-setup"
+	echo "Please checkout univention-system-setup, the installer combines i18n strings"
+	echo "from both the installer and univention-system-setup"
 	exit
 fi
 

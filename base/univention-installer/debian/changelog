@@ -1,3 +1,10 @@
+univention-installer (1.6.9-1) unstable; urgency=low
+
+  * fixed umount of /-partition
+  * renamed installer script
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Jul 2007 10:41:05 +0200
+
 univention-installer (1.6.8-1) unstable; urgency=low
 
   * fixed wrong translation code while loading kernel modules
