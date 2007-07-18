@@ -1,5 +1,5 @@
 [mail/cyrus/imap/lookup_groups]
-Description[de]=Gruppenaufl�sung wenn auth_unix verwendet wird
+Description[de]=GruppenauflÃ¶sung wenn auth_unix verwendet wird
 Description[en]=Look up groups when using auth_unix
 Type=str
 Categories=Network

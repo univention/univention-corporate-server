@@ -5,7 +5,7 @@ Type=str
 Categories=Network
 
 [mail/hosteddomains]
-Description[de]=Alle Maildom‰nen die dieser Server verwaltet
+Description[de]=Alle Maildom√§nen die dieser Server verwaltet
 Description[en]=All maildomains hosted by this server
 Type=str
 Categories=Network
