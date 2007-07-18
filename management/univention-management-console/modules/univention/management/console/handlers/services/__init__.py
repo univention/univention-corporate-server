@@ -161,6 +161,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 		for name, srv in srvs.services.items():
 			key = '%s/autostart' % name
+			if srv.has_key( 'start_type' ):
+				key = srv[ 'start_type' ]
 			if not umc.baseconfig.has_key( key ):
 				srv.autostart = None
 			elif umc.baseconfig[ key ].lower() in ( 'yes', '1', 'true' ):
