@@ -1,3 +1,9 @@
+univention-samba (1.0.4-2) unstable; urgency=low
+
+  * convert to utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 18 Jul 2007 11:28:25 +0200
+
 univention-samba (1.0.4-1) unstable; urgency=low
 
   * switched from univention_baseconfig to univention.config_registry
