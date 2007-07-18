@@ -1,3 +1,9 @@
+univention-webui-style (1.0.4-2) unstable; urgency=low
+
+  * corrected check on fatclient in templates
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 18 Jul 2007 11:56:50 +0200
+
 univention-webui-style (1.0.4-1) unstable; urgency=low
 
   * use DNS alias univention-directory-manager instead of univention-admin 
