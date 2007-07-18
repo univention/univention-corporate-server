@@ -32,8 +32,8 @@
 
 architecture=`/bin/uname -m`
 
-/bin/umount /instmnt
-/bin/umount -l /instmnt
+/bin/umount /instmnt > /dev/null 2>&1
+/bin/umount -l /instmnt > /dev/null 2>&1
 
 if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
 	echo "Auto reboot"
