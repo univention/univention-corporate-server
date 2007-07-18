@@ -1,3 +1,9 @@
+univention-installer (1.6.11-1) unstable; urgency=low
+
+  * add Administrator to group "DC Backup Hosts" in installer-scripts
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 18 Jul 2007 14:31:35 +0200
+
 univention-installer (1.6.10-1) unstable; urgency=low
 
   * use external umount and not busybox umount
