@@ -1,3 +1,11 @@
+univention-apache (2.0.7-1) unstable; urgency=low
+
+  * add config registry variable apache2/autostart to determine start type
+    (manual or auto start) 
+  * use univention-config-registry instead of univention-baseconfig
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 13:44:48 +0200
+
 univention-apache (2.0.6-5) unstable; urgency=low
 
   * convert to utf-8

@@ -31,11 +31,12 @@
 a2enmod auth_pam
 a2enmod unique_id
 
-univention-baseconfig set apache/loglevel?"warn"
-univention-baseconfig set apache/startsite?"ucs-overview/de.html"
-univention-baseconfig set mail/alias/webmaster?root
+univention-config-registry set apache2/autostart?"yes"
+univention-config-registry set apache/loglevel?"warn"
+univention-config-registry set apache/startsite?"ucs-overview/de.html"
+univention-config-registry set mail/alias/webmaster?root
 
-eval $(univention-baseconfig shell)
+eval $(univention-config-registry shell)
 
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/08univention-apache.inst || true
