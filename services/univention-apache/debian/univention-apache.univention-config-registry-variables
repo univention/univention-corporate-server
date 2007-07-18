@@ -5,7 +5,7 @@ Type=str
 Categories=Network
 
 [php/memory/limit]
-Description[de]=Speicherbegrenzung für PHP-Prozesse
+Description[de]=Speicherbegrenzung fÃ¼r PHP-Prozesse
 Description[en]=Memory limit for PHP-processes
 Type=str
 Categories=System
