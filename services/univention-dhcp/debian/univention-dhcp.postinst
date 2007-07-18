@@ -35,9 +35,18 @@ set -e
 update-rc.d -f dhcp3-server remove >/dev/null 2>&1
 update-rc.d -f dhcp remove >/dev/null 2>&1
 
-/usr/sbin/univention-baseconfig set dhcpd/enable?"yes"
-
 eval `univention-baseconfig shell`
+
+if [ -n "$dhcpd_enable" ]; then
+	if [ "$dhcpd_enable" = "yes" -o "$dhcpd_enable" = "true" -o "$dhcpd_eanble" = "1" ]; then
+		univention-config-registry set dhcpd/autostart?"yes"
+	else
+		univention-config-registry set dhcpd/autostart?"no"
+	fi	
+	univention-config-registry unset dhcpd/enable
+else
+	univention-config-registry set dhcpd/autostart?"yes"
+fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/25univention-dhcp.inst || true

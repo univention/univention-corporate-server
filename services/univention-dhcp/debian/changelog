@@ -1,3 +1,9 @@
+univention-dhcp (2.0.4-1) unstable; urgency=low
+
+  * add service description file 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jul 2007 15:19:36 +0200
+
 univention-dhcp (2.0.3-2) unstable; urgency=low
 
   * only try to start the daemon if the runsv link exists

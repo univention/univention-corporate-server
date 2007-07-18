@@ -3,7 +3,7 @@ File: etc/dhcp3/dhcpd.conf
 Variables: ldap/base
 Variables: dhcpd/ldap/base
 Variables: ldap/server/name
-Variables: dhcpd/enable
+Variables: dhcpd/autostart
 
 Type: file
 File: etc/init.d/dhcp3-server
