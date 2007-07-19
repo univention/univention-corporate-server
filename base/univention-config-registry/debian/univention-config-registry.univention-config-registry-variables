@@ -166,6 +166,36 @@ Description[en]=The UCS master system of the domain
 Type=str
 Categories=LDAP
 
+[ldap/server/name]
+Description[de]=FQDN des LDAP-Servers
+Description[en]=FQDN of the LDAP server
+Type=str
+Categories=LDAP
+
+[ldap/server/addition]
+Description[de]=Sekundäre LDAP-Server, falls primärer nicht erreichbar
+Description[en]=Secondary LDAP servers, used if primary server is not reachable
+Type=str
+Categories=LDAP
+
+[ldap/binaryattributes]
+Description[de]=Attribute die von Zeichensatz Kodierungen ausgenommen werden
+Description[en]=Attributes which don't get encoded/decoded
+Type=str
+Categories=LDAP
+
+[ldap/server/ip]
+Description[de]=IP-Adresse des lokalen LDAP-Servers
+Description[en]=IP address of the loacal LDAP server
+Type=str
+Categories=LDAP
+
+[ldap/base]
+Description[de]=Basis DN des LDAP-Verzeichnis
+Description[en]=Base DN of the LDAP directory
+Type=str
+Categories=LDAP
+
 [lilo/append]
 Description[de]=Weitere Kommandozeilenparameter von Lilo
 Description[en]=Additional parameters for lilo
@@ -310,14 +340,3 @@ Description[en]=Major version of UCS
 Type=str
 Categories=System
 
-[ldap/server/name]
-Description[de]=FQDN des LDAP-Servers
-Description[en]=FQDN of the LDAP server
-Type=str
-Categories=Network
-
-[ldap/server/addition]
-Description[de]=Sekundäre LDAP-Server, falls primärer nicht erreichbar
-Description[en]=Secondary LDAP servers, used if primary server is not reachable
-Type=str
-Categories=Network
