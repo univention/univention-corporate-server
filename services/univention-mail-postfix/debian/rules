@@ -51,7 +51,8 @@ install: build
 
 	install -m 755 67univention-mail-postfix.inst debian/univention-mail-postfix/usr/lib/univention-install/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	univention-install-service-info
 	dh_install
 

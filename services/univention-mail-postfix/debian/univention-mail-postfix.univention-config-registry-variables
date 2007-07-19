@@ -1,0 +1,78 @@
+[mail/alias/*]
+Description[de]=Mailweiterleitung für lokale Empfänger
+Description[en]=Redirect mail for local recipients
+Type=str
+Categories=Mail
+
+[mail/antispam]
+Description[de]=Aktiviert/Deaktiviert die Spamprüfung von E-Mails
+Description[en]=Enable/Disable spam checking for e-mails
+Type=str
+Categories=Mail
+
+[mail/antivir]
+Description[de]=Aktiviert/Deaktiviert die Virenprüfung von E-Mails
+Description[en]=Enable/Disable virus checking for e-mails
+Type=str
+Categories=Mail
+
+[mail/archivefolder]
+Description[de]=Archiviert ein und ausgehende E-Mails im angegebenen Postfach
+Description[en]=Archive all incoming and outgoing e-mails in given account
+Type=str
+Categories=Mail
+
+[mail/hosteddomains]
+Description[de]=Alle Maildomänen die dieser Server verwaltet
+Description[en]=All maildomains hosted by this server
+Type=str
+Categories=Mail
+
+[mail/messagesizelimit]
+Description[de]=Maximale Größe E-Mails (Byte)
+Description[en]=Maximum size of e-mails (Byte)
+Type=str
+Categories=Mail
+
+[mail/postfix/mynetworks]
+Description[de]=Mails zu diesen Domänen werden über die local_transport Regel zugestellt
+Description[en]=Mails to the given domains are delivered via the local_transport rule
+Type=str
+Categories=Mail
+
+[mail/relay]
+Description[de]=Liste von Relay-Hosts (hauptsächlich verwendet von Univention Policy)
+Description[en]=List of relay hosts (mainly used by Univention Policy)
+Type=str
+Categories=Mail
+
+[mail/relayhost]
+Description[de]=FQDN des zu verwendenden Relay-Server
+Description[en]=FQDN of the relay host to use
+Type=str
+Categories=Mail
+
+[mail/relayauth]
+Description[de]=Aktiviert/Deaktiviert die Authentifizierung am Relay-Server
+Description[en]=Enable/Disable authentication for relay host
+Type=str
+Categories=Mail
+
+[mail/smtpauth]
+Description[de]=Aktiviert/Deaktiviert SMTP-Authentifizierung
+Description[en]=Enable/Disable SMTP-Authentication
+Type=str
+Categories=Mail
+
+[mail/smtpport]
+Description[de]=Port des SMTP-Servers
+Description[en]=Port for SMTP server to use
+Type=str
+Categories=Mail
+
+[postfix/autostart]
+Description[de]=Aktiviert/Deaktiviert den automatischen Start von Postfix
+Description[en]=Enable/Disable the automatic of Postfix
+Type=str
+Categories=Mail
+
