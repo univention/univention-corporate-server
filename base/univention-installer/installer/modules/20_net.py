@@ -151,7 +151,7 @@ class object(content):
 					return False
 		if self.all_results['proxy_http'].strip() and not self.all_results['proxy_http'].strip() in ['http://', 'https://']: 
 			proxy=self.all_results['proxy_http'].strip()
-			if not ((proxy.startswith('http://') or proxy.startswith('https://')):
+			if not (proxy.startswith('http://') or proxy.startswith('https://')):
 				if not self.ignore('proxy_http'):
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
 					return False
