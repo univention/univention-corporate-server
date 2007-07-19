@@ -1,3 +1,11 @@
+univention-printserver (1.0.2-1) unstable; urgency=low
+
+  * new config registry variable cups/autostart
+  * use univention-config-registry instead of univention-baseconfig
+  * use univention-direcotry-manager instead of univention-admin
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Jul 2007 13:07:26 +0200
+
 univention-printserver (1.0.1-1) unstable; urgency=low
 
   * move the adduser call to the join script instead of using the postinst

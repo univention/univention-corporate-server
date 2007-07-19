@@ -47,7 +47,7 @@ def getName(filename):
 	return names[0]
 
 def getCommand(manufacturer, models):
-	first = 'univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
+	first = 'univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
 	rest = [ r'--append printmodel="\"%s\" \"%s\""' % (path, name) for path, name in models ]
 	rest.insert(0, first)
 	return ' \\\n\t'.join(rest)

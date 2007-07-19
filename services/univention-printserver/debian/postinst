@@ -28,18 +28,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
-univention-baseconfig set cups/server?$hostname.$domainname
-univention-baseconfig set cups/admin?"root@"$domainname
-univention-baseconfig set cups/systemgroup?"Printer-Admins,lp"
-univention-baseconfig set cups/location/base?"networks"
-univention-baseconfig set cups/location/admin?"networks"
-univention-baseconfig set cups/filedevice?yes
+univention-config-registry set cups/server?$hostname.$domainname
+univention-config-registry set cups/admin?"root@"$domainname
+univention-config-registry set cups/systemgroup?"Printer-Admins,lp"
+univention-config-registry set cups/location/base?"networks"
+univention-config-registry set cups/location/admin?"networks"
+univention-config-registry set cups/filedevice?yes
+univention-config-registry set cups/autostart?yes
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2-1; then
-	if [ "`univention-baseconfig get cups/server`" = "$hostname" ]; then
-		univention-baseconfig set cups/server=$hostname.$domainname
+	if [ "`univention-config-registry get cups/server`" = "$hostname" ]; then
+		univention-config-registry set cups/server=$hostname.$domainname
 	fi
 fi
 
