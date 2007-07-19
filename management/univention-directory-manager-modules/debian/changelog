@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.1-5) unstable; urgency=low
+
+  * advanced error handling for shared/subnets
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 19 Jul 2007 11:07:26 +0200
+
 univention-directory-manager-modules (2.0.1-4) unstable; urgency=low
 
   * corrected icon names for managedclients
