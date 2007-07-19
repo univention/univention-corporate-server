@@ -2,59 +2,59 @@
 Description[de]=Globales Spamverzeichnis
 Description[en]=Global spam folder
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/hosteddomains]
 Description[de]=Alle Maildomänen die dieser Server verwaltet
 Description[en]=All maildomains hosted by this server
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/imap]
 Description[de]=Aktiviert/Deaktiviert den IMAP-Daemon
 Description[en]=Enable/Disable the IMAP-Daemon
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/pop]
 Description[de]=Aktiviert/Deaktiviert den POP3-Daemon
 Description[en]=Enable/Disable the POP3-Daemon
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/imap/maxchilds]
 Description[de]=Maximale Anzahl von IMAPd Instanzen
 Description[en]=Maximum amount of IMAPd instances
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/pop/maxchilds]
 Description[de]=Maximale Anzahl von POP3d Instanzen
 Description[en]=Maximum amount of POP3d instances
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/sieve/maxchilds]
 Description[de]=Maximale Anzahl von Sieve Instanzen
 Description[en]=Maximum amount of sieve instances
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/sieve/listen_host]
 Description[de]=Von Sieve zu belegender UNIX oder Internetsocket
 Description[en]=UNIX or internet socket for sieve to listen on
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/imap/quotawarnpercent]
 Description[de]=Prozent des Quotaverbrauchs ab dem der Server Warnmeldungen generiert
 Description[en]=The percent of quota utilization over which the server generates warnings
 Type=str
-Categories=Network
+Categories=Mail
 
 [mail/cyrus/imap/quotawarnkb]
 Description[de]=Maximaler freier Speicher (in kB) ab dem Warnmeldungen generiert werden
 Description[en]=The maximum amount of free space (in kB) in which to give a quota warning
 Type=str
-Categories=Network
+Categories=Mail
 

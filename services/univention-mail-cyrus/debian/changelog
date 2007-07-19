@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.0-7) unstable; urgency=low
+
+  * change categories to mail
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 19 Jul 2007 12:52:54 +0200
+
 univention-mail-cyrus (1.0.0-6) unstable; urgency=low
 
   * convert to utf-8
