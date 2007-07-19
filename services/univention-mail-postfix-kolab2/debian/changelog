@@ -1,3 +1,10 @@
+univention-mail-postfix-kolab2 (1.0.1-1) unstable; urgency=low
+
+  * use univention-config-registry, univention-directory-manager instead of
+    univention-baseconfig und univention-admin 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Jul 2007 10:55:44 +0200
+
 univention-mail-postfix-kolab2 (1.0.0-7) unstable; urgency=low
 
   * deleted Variable: mail/cyrus
