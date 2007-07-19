@@ -61,7 +61,8 @@ install: build
 	install -m 644 cups-printers.py ${D}/usr/lib/univention-ldap-listener/system
 	install -m 0755 79univention-printserver.inst ${D}/usr/lib/univention-install/
 	install -D -m0755 ppds.py ${D}/usr/lib/univention-printserver/univention-ppds
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-service-info
 
 binary-arch: build install
 
