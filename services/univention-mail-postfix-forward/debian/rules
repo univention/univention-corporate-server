@@ -51,7 +51,8 @@ install: build
 
 	install -m 644 mailrelay.py debian/univention-mail-postfix-forward/usr/lib/univention-ldap-listener/system
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	dh_install
 
 binary-indep: build install
