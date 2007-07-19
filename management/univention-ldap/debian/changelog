@@ -1,3 +1,11 @@
+univention-ldap (2.2.4-6) unstable; urgency=low
+
+  * Add a new Univention Config Registry variable ldap/schema/export
+    which if set to "true" or "yes" exports the current LDAP schema used by
+    slapd through HTTP.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 19 Jul 2007 15:24:26 +0200
+
 univention-ldap (2.2.4-5) unstable; urgency=low
 
   * changed computers/client to computers/managedclient

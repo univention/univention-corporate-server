@@ -42,6 +42,12 @@ check_subschema ()
         fi
     done
 
+    @!@
+if baseConfig.has_key('ldap/schema/export') and  baseConfig['ldap/schema/export'].lower() in ['yes', 'true']:
+        print 'cp $tmpfile /var/www/ldap-schema.txt'
+        print 'chmod a+r /var/www/ldap-schema.txt'
+    @!@
+
     md5=`md5sum $tmpfile | awk '{print $1}'`
     if [ ! -d /var/lib/univention-ldap/schema ]; then
         mkdir /var/lib/univention-ldap/schema
