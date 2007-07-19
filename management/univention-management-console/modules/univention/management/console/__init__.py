@@ -33,7 +33,8 @@ from daemon import *
 from values import *
 from ldapconn import *
 
-import univention.baseconfig
+import univention.config_registry
 
-baseconfig = univention.baseconfig.baseConfig()
-baseconfig.load()
+registry = univention.config_registry.ConfigRegistry()
+baseconfig = registry
+registry.load()

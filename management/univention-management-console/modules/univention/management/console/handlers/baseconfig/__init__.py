@@ -138,7 +138,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			if value == None:
 				value = ''
 			arg = [ '%s=%s' % ( object.options[ 'key' ].encode(), value.encode() ) ]
-			univention.baseconfig.handler_set( arg )
+			univention.config_registry.handler_set( arg )
 			if object.options.get( 'descriptions', '' ) and object.options.get( 'type', '' ) and \
 				   object.options.get( 'categories', '' ):
 				self.__create_variable_info( object.options )
@@ -151,7 +151,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def baseconfig_unset( self, object ):
 		if object.options.has_key( 'key' ):
-			univention.baseconfig.handler_set( object.options[ 'key' ] )
+			univention.config_registry.handler_set( object.options[ 'key' ] )
 
 		self.finished( object.id(), {} )
 
@@ -179,10 +179,10 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if not object.incomplete:
 			category = object.options.get( 'category', None )
 			if category == 'all':
-				# load _all_ baseconfig variables
+				# load _all_ config registry variables
 				baseInfo = ConfigRegistryInfo( registered_only = False )
 			else:
-				# load _all registered_ baseconfig variables
+				# load _all registered_ config registry variables
 				baseInfo = ConfigRegistryInfo()
 
 			filter = object.options.get( 'filter', '*' )

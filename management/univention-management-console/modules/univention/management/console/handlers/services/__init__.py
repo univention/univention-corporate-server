@@ -38,6 +38,7 @@ import os
 
 import notifier.popen
 
+import univention.config_registry as ucr
 import univention.service_info as usi
 
 import _revamp
@@ -104,8 +105,13 @@ command_description = {
 		startup = True,
 		priority = 100,
 	),
-	'service/start_type': umch.command(
-		short_description = _( 'Set start type' ),
+	'service/start_auto': umch.command(
+		short_description = _( 'Set automatic start' ),
+		method = 'service_start_type',
+		values = { 'type' : start_type }
+	),
+	'service/start_manual': umch.command(
+		short_description = _( 'Set automatic start' ),
 		method = 'service_start_type',
 		values = { 'type' : start_type }
 	),
@@ -157,15 +163,15 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def service_list( self, object ):
 		srvs = usi.ServiceInfo()
-		umc.baseconfig.load()
+		umc.registry.load()
 
 		for name, srv in srvs.services.items():
 			key = '%s/autostart' % name
 			if srv.has_key( 'start_type' ):
 				key = srv[ 'start_type' ]
-			if not umc.baseconfig.has_key( key ):
+			if not umc.registry.has_key( key ):
 				srv.autostart = None
-			elif umc.baseconfig[ key ].lower() in ( 'yes', '1', 'true' ):
+			elif umc.registry[ key ].lower() in ( 'yes', '1', 'true' ):
 				srv.autostart = True
 			else:
 				srv.autostart = False
@@ -173,4 +179,19 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		self.finished( object.id(), srvs.services )
 
 	def service_start_type( self, object ):
-		pass
+		srvs = usi.ServiceInfo()
+		umc.registry.load()
+
+		for name in object.options[ 'service' ]:
+			srv = srvs.services.get( name, None )
+			if srv:
+				key = '%s/autostart' % name
+				if srv.has_key( 'start_type' ):
+					key = srv[ 'start_type' ]
+
+				value = 'no'
+				if object.arguments[ 0 ] == 'service/start_auto':
+					value = 'yes'
+				ucr.handler_set( [ '%s=%s' % ( key, value ) ] )
+		self.finished( object.id(), None )	
+

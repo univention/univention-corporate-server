@@ -70,7 +70,7 @@ class Web( object ):
 					reqquota.set_flag( 'web:startup_format', '%(name)s: %(printer)s' )
 					quotastate = umcd.Button( _( 'active' ), 'cups/quota', umcd.Action( reqquota ) )
 
-				row = [ umc.baseconfig[ 'hostname' ],
+				row = [ umc.registry[ 'hostname' ],
 						umcd.Button( printer, 'cups/printer', umcd.Action( req ) ),
 						attributes[ 'state' ], quotastate,
 						attributes[ 'location' ], attributes[ 'description' ],
@@ -107,7 +107,7 @@ class Web( object ):
 		info = umcd.List()
 		attributes = printer[ object.options[ 'printer' ] ]
 		headline = _( 'Printer: %s' ) % object.options[ 'printer' ]
-		info.add_row( [ _( 'Server' ) + ':', umc.baseconfig[ 'hostname' ] ] )
+		info.add_row( [ _( 'Server' ) + ':', umc.registry[ 'hostname' ] ] )
 		info.add_row( [ _( 'Status' ) + ':', attributes[ 'state' ] ] )
 		info.add_row( [ _( 'Location' ) + ':', attributes[ 'location' ] ] )
 		info.add_row( [ _( 'Description' ) + ':', attributes[ 'description' ] ] )
@@ -145,7 +145,7 @@ class Web( object ):
 		printer = tools.parse_lpstat_l( printerdata )
 		attributes = printer[ object.options[ 'printer' ] ]
 		headline = _( 'Printer: %s' ) % object.options[ 'printer' ]
-		info.add_row( [ _( 'Server' ) + ':', umc.baseconfig[ 'hostname' ] ] )
+		info.add_row( [ _( 'Server' ) + ':', umc.registry[ 'hostname' ] ] )
 		info.add_row( [ _( 'Status' ) + ':', attributes[ 'state' ] ] )
 		info.add_row( [ _( 'Location' ) + ':', attributes[ 'location' ] ] )
 		info.add_row( [ _( 'Description' ) + ':', attributes[ 'description' ] ] )
