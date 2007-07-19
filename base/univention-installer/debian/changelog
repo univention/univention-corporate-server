@@ -1,3 +1,10 @@
+univention-installer (1.6.12-2) unstable; urgency=low
+
+  * fixed Installer for not given proxy attribute in profile based
+    installation
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 19 Jul 2007 13:08:27 +0200
+
 univention-installer (1.6.12-1) unstable; urgency=low
 
   * suppress potential error messages on umount -
