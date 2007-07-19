@@ -11,3 +11,7 @@ icon=network.gif
 name[de]=Sonstiges
 name[en]=Miscellaneous
 icon=misc.gif
+
+[Mail]
+name=Mail
+icon=mail.gif
