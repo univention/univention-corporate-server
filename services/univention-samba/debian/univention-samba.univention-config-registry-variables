@@ -41,7 +41,7 @@ Type=str
 Categories=Network
 
 [samba/enable-msdfs]
-Description[de]=Agire als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
+Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
 Description[en]=Act as a DFS server and allow DFS-aware clients to browse DFS trees
 Type=str
 Categories=Network
@@ -173,7 +173,7 @@ Type=str
 Categories=Network
 
 [samba/write_raw]
-Description[de]=Unterstützung für 'Raw-SMBs' beim Datentransfehr von Clients
+Description[de]=Unterstützung für 'Raw-SMBs' beim Datentransfer von Clients
 Description[en]=Enable the Server to write raw SMBs when transfering data from clients
 Type=str
 Categories=Network
