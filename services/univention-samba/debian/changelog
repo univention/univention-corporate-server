@@ -1,3 +1,9 @@
+univention-samba (1.0.4-4) unstable; urgency=low
+
+  * try to fix crv file
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 19 Jul 2007 15:55:15 +0200
+
 univention-samba (1.0.4-3) unstable; urgency=low
 
   * fixed wrong indent for templateheader

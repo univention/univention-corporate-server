@@ -42,8 +42,8 @@ Categories=Network
 
 [samba/enable-msdfs]
 Description[de]=Agiere als DFS-Server und erlaube DFS-fähigen Clients DFS-Trees zu durchsuchen
-Description[en]=Act as a Dfs server and allow Dfs-aware clients to browse Dfs trees
-Type=str
+Description[en]=Act as a DFS server and allow DFS-aware clients to browse DFS trees
+Type=srt
 Categories=Network
 
 [samba/enable-privileges]
