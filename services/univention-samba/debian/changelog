@@ -1,3 +1,9 @@
+univention-samba (1.0.4-3) unstable; urgency=low
+
+  * fixed wrong indent for templateheader
+
+ -- Bastian Neumann <neumann@univention.de>  Thu, 19 Jul 2007 15:14:55 +0200
+
 univention-samba (1.0.4-2) unstable; urgency=low
 
   * convert to utf-8

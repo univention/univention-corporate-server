@@ -174,7 +174,7 @@ def postrun():
 	listener.setuid(0)
 	try:
 		fp = open('/etc/samba/shares.conf', 'w')
-		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-ldap-listener module. \n#              Please edit the following file instead: \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-ldap-listener Mo    dul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#       /etc/samba/local.conf \n#'
+		print >>fp, '# Warning: This file is auto-generated and will be overwritten by \n#          univention-ldap-listener module. \n#          Please edit the following file instead: \n#          /etc/samba/local.conf \n  \n# Warnung: Diese Datei wurde automatisch generiert und wird durch ein \n#          univention-ldap-listener Modul überschrieben werden. \n#          Ergänzungen können an folgende Datei vorgenommen werden: \n# \n#          /etc/samba/local.conf \n#'
 
 		for f in os.listdir('/etc/samba/shares.conf.d'):
 			print >>fp, 'include = %s' % os.path.join('/etc/samba/shares.conf.d', f)
