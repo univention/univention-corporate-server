@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-6) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 19 Jul 2007 13:05:47 +0200
+
 univention-mail-postfix-forward (1.0.0-5) unstable; urgency=low
 
   * encoded files utf-8

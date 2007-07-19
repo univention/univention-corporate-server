@@ -1,0 +1,18 @@
+[mail/alias/*]
+Description[de]=Mailweiterleitung für lokale Empfänger
+Description[en]=Redirect mail for local recipients
+Type=str
+Categories=Mail
+
+[mail/relay]
+Description[de]=Liste von Relay-Hosts (hauptsächlich verwendet von Univention Policy)
+Description[en]=List of relay hosts (mainly used by Univention Policy)
+Type=str
+Categories=Mail
+
+[postfix/autostart]
+Description[de]=Aktiviert/Deaktiviert den automatischen Start von Postfix
+Description[en]=Enable/Disable the automatic of Postfix
+Type=str
+Categories=Mail
+
