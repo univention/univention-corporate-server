@@ -54,7 +54,8 @@ install: build
 	# create file regarding postfix used by univention-console
 	echo "Postfix Mailserver;postfix;/usr/lib/postfix/master;20" > debian/univention-mail-postfix-kolab2/etc/univention/daemons/postfix
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	dh_install
 
 binary-indep: build install

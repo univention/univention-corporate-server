@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.1-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 19 Jul 2007 14:16:03 +0200
+
 univention-mail-postfix-kolab2 (1.0.1-1) unstable; urgency=low
 
   * use univention-config-registry, univention-directory-manager instead of
