@@ -1,3 +1,10 @@
+univention-nagios (1.0.0-3) unstable; urgency=low
+
+  * updated dependencies
+    (merged nagios into univention-directory-manager; apache --> apache2)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Jul 2007 14:46:52 +0200
+
 univention-nagios (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
@@ -16,7 +23,7 @@ univention-nagios (0.31) unstable; urgency=low
   * fixed python version in nagios plugins
   * create device /dev/dpti0 if missing
 
- -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 29 Mar 2007 16:39:21 +0200
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 29 Mar 2007 16:39:21 +0200
 
 univention-nagios (0.30) unstable; urgency=low
 
