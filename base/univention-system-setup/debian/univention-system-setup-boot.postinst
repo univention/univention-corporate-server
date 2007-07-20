@@ -28,18 +28,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval $(univention-config-registry shell)
+eval $(univention-baseconfig shell)
 
 if [ -n "$boot_setup_start" ]; then
-	univention-config-registry set system/setup/boot/start?"$boot_setup_start"
+	univention-baseconfig set system/setup/boot/start?"$boot_setup_start"
 else
-	univention-config-registry set system/setup/boot/start?true
+	univention-baseconfig set system/setup/boot/start?true
 fi
 
 if [ -n "$boot_setup_modules" ]; then
-	univention-config-registry set system/setup/boot/modules?"$boot_setup_modules"
+	univention-baseconfig set system/setup/boot/modules?"$boot_setup_modules"
 else
-	univention-config-registry set system/setup/boot/modules?"basis,net"
+	univention-baseconfig set system/setup/boot/modules?"basis,net"
 fi
 
 #DEBHELPER#
