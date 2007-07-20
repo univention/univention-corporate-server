@@ -84,6 +84,8 @@ if len(sys.argv) > 1:
 			cmdline['simple']=1
 		elif opt == '--profile_file' and val:
 			cmdline['profile_file']=val
+		elif opt == '--version' and val:
+			cmdline['version']=val
 		elif opt == '--edition' and val:
 			cmdline['edition']=[]
 			for e in val.split(','):

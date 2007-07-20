@@ -1,3 +1,9 @@
+univention-installer (1.6.13-1) unstable; urgency=low
+
+  * also reboot after the ucs installation on a ppc
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 13:55:15 +0200
+
 univention-installer (1.6.12-2) unstable; urgency=low
 
   * fixed Installer for not given proxy attribute in profile based

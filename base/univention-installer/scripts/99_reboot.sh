@@ -38,18 +38,10 @@ architecture=`/bin/uname -m`
 if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
 	echo "Auto reboot"
 else
-	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-		echo "Please remove the install media in order to prevent install rerun"
-		echo "Press enter to halt the system"
-	else
-		echo "Please remove the install media in order to prevent install rerun"
-		echo "Press enter to reboot the system"
-	fi
+	echo "Please remove the install media in order to prevent install rerun"
+	echo "Press enter to reboot the system"
 	read foobar
 fi
 
-if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
-	halt
-else
-	reboot
-fi
+reboot
+
