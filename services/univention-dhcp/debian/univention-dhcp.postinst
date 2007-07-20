@@ -39,13 +39,13 @@ eval `univention-baseconfig shell`
 
 if [ -n "$dhcpd_enable" ]; then
 	if [ "$dhcpd_enable" = "yes" -o "$dhcpd_enable" = "true" -o "$dhcpd_eanble" = "1" ]; then
-		univention-config-registry set dhcpd/autostart?"yes"
+		univention-baseconfig set dhcpd/autostart?"yes"
 	else
-		univention-config-registry set dhcpd/autostart?"no"
+		univention-baseconfig set dhcpd/autostart?"no"
 	fi	
-	univention-config-registry unset dhcpd/enable
+	univention-baseconfig unset dhcpd/enable
 else
-	univention-config-registry set dhcpd/autostart?"yes"
+	univention-baseconfig set dhcpd/autostart?"yes"
 fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
