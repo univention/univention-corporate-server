@@ -1,4 +1,4 @@
-univention-directory-manager-modules (2.0.1-6) unstable; urgency=low
+univention-directory-manager-modules (2.0.1-7) unstable; urgency=low
 
   * advanced error handling for creating dhcp/sharesubnet
 

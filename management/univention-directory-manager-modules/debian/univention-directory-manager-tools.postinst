@@ -36,9 +36,9 @@ function bc_rename() {
 	new=$2
 	predefined=$3
 	if [ -n "$old" ]; then
-		univention-config-registry set "${new}?${old}"
+		univention-baseconfig set "${new}?${old}"
 	else
-		univention-config-registry set "${new}?${predefined}"
+		univention-baseconfig set "${new}?${predefined}"
 	fi		
 
 }
