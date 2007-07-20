@@ -1,3 +1,9 @@
+univention-ldap (2.2.4-7) unstable; urgency=low
+
+  * modified PackageLists for Policies 
+
+ -- Bastian Neumann <neumann@univention.de>  Fri, 20 Jul 2007 10:25:06 +0200
+
 univention-ldap (2.2.4-6) unstable; urgency=low
 
   * Add a new Univention Config Registry variable ldap/schema/export
