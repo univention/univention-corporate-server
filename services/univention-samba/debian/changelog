@@ -1,3 +1,9 @@
+univention-samba (1.0.4-6) unstable; urgency=low
+
+  * try to fix crv file
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 20 Jul 2007 12:08:00 +0200
+
 univention-samba (1.0.4-5) unstable; urgency=low
 
   * try to fix crv file

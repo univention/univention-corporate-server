@@ -119,7 +119,7 @@ Type=str
 Categories=Network
 
 [samba/map_to_guest]
-Description[de]=Verhalten bei Anmeldung von Benutzern für die kein gültiger UNIX Benutzer existiert
+Description[de]=Verhalten bei Anmeldung von Benutzer für die kein gültiger UNIX Benutzer existiert
 Description[en]=What to do with user login requests that don't match a valid UNIX user
 Type=str
 Categories=Network
