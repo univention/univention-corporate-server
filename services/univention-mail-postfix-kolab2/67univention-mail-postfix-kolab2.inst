@@ -37,15 +37,15 @@ fi
 
 test -n "`grep "univention-mail-postfix-kolab2 successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-config-registry shell`
+eval `univention-baseconfig shell`
 
 if [ "$server_role" = "domaincontroller_backup" ]; then
-	res=`univention-directory-manager container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: "`
+	res=`univention-admin container/dc list $@ --dn "$ldap_base" | grep ".*mailRelay: "`
 	if [ -z "$res" ]; then
-		univention-directory-manager container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
+		univention-admin container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
 	fi
 else
-	univention-directory-manager container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
+	univention-admin container/dc modify $@ --dn "$ldap_base" --set mailRelay="$hostname.$domainname"
 fi
 
 test -n "`grep "univention-mail-postfix-kolab2 successful" /usr/lib/univention-install/.index.txt`" || echo "univention-mail-postfix-kolab2 successful" >>/usr/lib/univention-install/.index.txt
