@@ -1,3 +1,9 @@
+univention-heimdal (2.0.2-1) unstable; urgency=low
+
+  * during the join script check for the string krbtgt/ and not only for ldap
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 12:56:06 +0200
+
 univention-heimdal (2.0.1-4) unstable; urgency=low
 
   * Move hdb-ldap-create-base parameter outside of the database

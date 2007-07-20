@@ -50,7 +50,7 @@ univention-baseconfig set kerberos/kdc?$hostname
 
 eval `univention-baseconfig shell kerberos/realm`
 
-if ! kadmin -l dump | grep -q ldap; then
+if ! kadmin -l dump | grep -q "^krbtgt/"; then
     kadmin -l init --realm-max-ticket-life=unlimited --realm-max-renewable-life=unlimited $kerberos_realm >/dev/null 2>&1
 
 	kadmin -l add --random-key --use-defaults ldap/$hostname.$domainname >/dev/null 2>&1
