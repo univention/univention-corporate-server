@@ -1,4 +1,4 @@
-univention-apache (2.0.8-1) unstable; urgency=low
+univention-apache (2.0.8-2) unstable; urgency=low
 
   * define redirection out of virtual host block
 

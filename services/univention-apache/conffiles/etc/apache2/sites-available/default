@@ -43,6 +43,6 @@ NameVirtualHost *
 	allow from all
 	@!@
 if baseConfig.has_key('apache/startsite'):
-print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
+	print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
 @!@
 </Directory>
