@@ -1,0 +1,18 @@
+[freebusy/http/legacy]
+Description[de]=Aktiviere/Deaktiviere die Benutzerauthentifizierung für Freebusy
+Description[en]=Enable/Disable authentication for freebusy service
+Type=str
+Categories=Mail
+
+[mail/cyrus/caluser]
+Description[de]=Administrativer IMAP-Account für die automatische Terminannahme
+Description[en]=Administrative IMAP account for automatic task handling
+Type=str
+Categories=Mail
+
+[mail/cyrus/caluser/pwdfile]
+Description[de]=Pfad zu der Datei die das Passwort des caluser enthält
+Description[en]=Path to the file containing caluser's password
+Type=str
+Categories=Mail
+

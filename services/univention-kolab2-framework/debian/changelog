@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.0-5) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 20 Jul 2007 16:50:50 +0200
+
 univention-kolab2-framework (1.0.0-4) unstable; urgency=low
 
   * Fix postinst script to reload Apache 2 configuration
