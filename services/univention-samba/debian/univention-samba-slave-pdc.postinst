@@ -28,10 +28,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-config-registry set windows/wins-support=yes
-univention-config-registry set samba/share/home=yes
-univention-config-registry set samba/domainmaster=yes
-univention-config-registry set samba/ldap/replication/sleep?4000
+univention-baseconfig set windows/wins-support=yes
+univention-baseconfig set samba/share/home=yes
+univention-baseconfig set samba/domainmaster=yes
+univention-baseconfig set samba/ldap/replication/sleep?4000
 
 #DEBHELPER#
 
