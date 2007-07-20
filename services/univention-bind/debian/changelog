@@ -1,4 +1,4 @@
-univention-bind (2.0.3-2) unstable; urgency=low
+univention-bind (2.0.3-3) unstable; urgency=low
 
   * set bind/autostart to 'yes' by default if not already set 
 

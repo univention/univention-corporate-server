@@ -33,7 +33,7 @@
 chmod g+w /etc/bind
 chmod g+w /etc/bind/*
 
-univention-config-registry set bind/autostart?yes
+univention-baseconfig set bind/autostart?yes
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 

@@ -31,16 +31,16 @@
 
 #DEBHELPER#
 
-univention-config-registry set nameserver/external?false
+univention-baseconfig set nameserver/external?false
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions $2 lt 1.4; then
-	eval `univention-config-registry shell`
+	eval `univention-baseconfig shell`
 	if [ -n "$nameserver_internal" -a "$nameserver_internal" = true ]; then
-		univention-config-registry set nameserver/external=false
-		univention-config-registry unset nameserver/internal
+		univention-baseconfig set nameserver/external=false
+		univention-baseconfig unset nameserver/internal
 	else
-		univention-config-registry set nameserver/external=true
-		univention-config-registry unset nameserver/internal
+		univention-baseconfig set nameserver/external=true
+		univention-baseconfig unset nameserver/internal
 	fi
 fi
 

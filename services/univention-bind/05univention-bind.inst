@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
 wait_for_dns(){
-eval `univention-config-registry shell`
+eval `univention-baseconfig shell`
 if [ "$server_role" != "domaincontroller_master" ]
     then
     continue=1; while [ $continue == "1" ];do echo "wait for named ?"; timeout=`host -W 1 $ldap_master 2>&1| grep "timed out"`; if [ -z "$timeout" ]; then continue=0; fi; done
@@ -45,7 +45,7 @@ fi
 
 test -n "`grep "univention-bind successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-config-registry shell`
+eval `univention-baseconfig shell`
 
 if test -z "$ldap_server_ip" -a -z "$ldap_server_name"; then
 	exit 1
@@ -55,13 +55,13 @@ wait_for_dns
 #search for existing zone
 zone=`ldapsearch -x -LLL "(&(objectClass=dNSZone)(zoneName=$domainname))" dn | grep ^dn:`
 if [ -z "$zone" ]; then
-	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add zone root.$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
+	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add zone root.$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
 	if [ $? != 0 ]; then exit 1; fi
 fi
 
 
 wait_for_dns
-/usr/share/univention-directory-manager-tools/univention-dnsedit $@ $domainname add a $hostname $interfaces_eth0_address
+/usr/share/univention-admin-tools/univention-dnsedit $@ $domainname add a $hostname $interfaces_eth0_address
 if [ $? != 0 ]; then exit 1; fi
 
 reversezone=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output reverse --calcdns`
@@ -69,13 +69,13 @@ if [ -z "$reversezone" ]; then exit 1; fi
 ptr=`univention-ipcalc --netmask $interfaces_eth0_netmask --ip $interfaces_eth0_address --output pointer --calcdns`
 if [ -z "$ptr" ]; then exit 1; fi
 
-/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists --reverse $reversezone add zone root.$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
+/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $reversezone add zone root.$domainname. 1 28800 7200 604800 10800 $hostname.$domainname.
 if [ $? != 0 ]; then exit 1; fi
-/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists --reverse $reversezone add ptr $ptr $hostname.$domainname.
+/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --reverse $reversezone add ptr $ptr $hostname.$domainname.
 if [ $? != 0 ]; then exit 1; fi
 
 
-univention-config-registry set dns/master/address=127.0.0.1 dns/master/port?7777
+univention-baseconfig set dns/master/address=127.0.0.1 dns/master/port?7777
 
 update-rc.d -f bind9 remove >/dev/null 2>&1
 update-rc.d -f bind remove >/dev/null 2>&1
