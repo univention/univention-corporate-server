@@ -7,10 +7,10 @@ Variables: kerberos/v4tickets
 Variables: kerberos/adminserver
 
 Type: file
-File: var/lib/heimdal-kdc/kdc.conf
+File: etc/heimdal-kdc/kdc.conf
 
 Type: file
-File: var/lib/heimdal-kdc/kadmind.acl
+File: etc/heimdal-kdc/kadmind.acl
 
 Type: file
 File: etc/init.d/heimdal-kdc

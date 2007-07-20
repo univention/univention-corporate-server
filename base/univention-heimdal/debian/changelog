@@ -1,3 +1,9 @@
+univention-heimdal (2.0.3-1) unstable; urgency=low
+
+  * moved configuration to /etc/heimdal-kdc/
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 20 Jul 2007 14:59:21 +0200
+
 univention-heimdal (2.0.2-1) unstable; urgency=low
 
   * during the join script check for the string krbtgt/ and not only for ldap

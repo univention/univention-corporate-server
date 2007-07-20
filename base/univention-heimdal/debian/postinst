@@ -32,6 +32,8 @@
 
 eval `univention-baseconfig shell`
 
+univention-baseconfig set kerberos/autostart?yes
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/11univention-heimdal-init.inst || true
 	/usr/lib/univention-install/15univention-heimdal-kdc.inst || true

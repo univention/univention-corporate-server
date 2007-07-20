@@ -61,7 +61,8 @@ install: build
 	install -m644 keytab-member.py debian/univention-heimdal-kdc/usr/lib/univention-ldap-listener/system
 	install -m644 keytab.py debian/univention-heimdal-member/usr/lib/univention-ldap-listener/system
 	
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-service-info
 
 	#logroate can't handle .debian files
 	sed -i 's|--divert /etc/logrotate.d/heimdal-kdc.debian|--divert /etc/logrotate.d_heimdal-kdc.debian|' debian/univention-heimdal-kdc.preinst.debhelper
