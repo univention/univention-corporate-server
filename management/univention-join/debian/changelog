@@ -1,3 +1,9 @@
+univention-join (1.0.4-2) unstable; urgency=low
+
+  * readded the dependency to sysutils
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 13:04:09 +0200
+
 univention-join (1.0.4-1) unstable; urgency=low
 
   * switch group of /etc/ldap.secret to "DC Backup Hosts"
