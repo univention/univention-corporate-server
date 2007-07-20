@@ -1,3 +1,9 @@
+univention-apache (2.0.8-1) unstable; urgency=low
+
+  * define redirection out of virtual host block
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Jul 2007 12:01:44 +0200
+
 univention-apache (2.0.7-1) unstable; urgency=low
 
   * add config registry variable apache2/autostart to determine start type

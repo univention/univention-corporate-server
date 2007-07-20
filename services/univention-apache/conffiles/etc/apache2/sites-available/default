@@ -7,16 +7,6 @@ NameVirtualHost *
 		Options FollowSymLinks
 		AllowOverride None
 	</Directory>
-	<Directory /var/www/>
-		Options Indexes FollowSymLinks MultiViews
-		AllowOverride None
-		Order allow,deny
-		allow from all
-		@!@
-if baseConfig.has_key('apache/startsite'):
-	print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
-@!@
-	</Directory>
 
 	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
 	<Directory "/usr/lib/cgi-bin">
@@ -45,3 +35,14 @@ if baseConfig.has_key('apache/startsite'):
     </Directory>
 
 </VirtualHost>
+
+<Directory /var/www/>
+	Options Indexes FollowSymLinks MultiViews
+	AllowOverride None
+	Order allow,deny
+	allow from all
+	@!@
+if baseConfig.has_key('apache/startsite'):
+print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
+@!@
+</Directory>
