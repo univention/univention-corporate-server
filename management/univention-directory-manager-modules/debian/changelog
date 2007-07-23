@@ -1,4 +1,4 @@
-univention-directory-manager-modules (2.0.2-1) unstable; urgency=low
+univention-directory-manager-modules (2.0.2-2) unstable; urgency=low
 
   * support attribute memberUid for group membership
   * new attribute gecos for user objects; by default it contains "<firstname>
