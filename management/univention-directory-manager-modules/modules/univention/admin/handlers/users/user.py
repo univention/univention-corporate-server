@@ -161,6 +161,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'gecos': univention.admin.property(
+			short_description=_('GECOS'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			options=['posix'],
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'title': univention.admin.property(
 			short_description=_('Title'),
 			long_description='',
@@ -1035,7 +1045,8 @@ layout=[
 	univention.admin.tab(_('Linux/UNIX'),_('Unix Account Settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
-		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")]
+		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],
+		[univention.admin.field("gecos"),]
 	]),
 	univention.admin.tab(_('Windows'),_('Windows Account Settings'),[
 		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
@@ -1300,6 +1311,7 @@ mapping.register('sambaLogonHours', 'sambaLogonHours', logonHoursMap, logonHours
 mapping.register('scriptpath', 'sambaLogonScript', None, univention.admin.mapping.ListToString)
 mapping.register('profilepath', 'sambaProfilePath', None, univention.admin.mapping.ListToString)
 mapping.register('homedrive', 'sambaHomeDrive', None, univention.admin.mapping.ListToString)
+mapping.register('gecos', 'gecos', None, univention.admin.mapping.ListToString)
 
 mapping.register('kolabHomeServer', 'kolabHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('kolabForwardActive', 'univentionKolabForwardActive',  None, univention.admin.mapping.ListToString)
@@ -1547,6 +1559,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 			if 'pki' in self.options:
 				self.reload_certificate()
+
+			if 'posix' in self.options and not self.oldinfo.get( 'gecos', '' ):
+				self[ 'gecos' ] = self.__create_gecos()
+
 			self.save()
 		else:
 			if 'posix' in self.options:
@@ -1675,6 +1691,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			newmembers.append(self.dn)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: add to group %s'%group)
 			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__rewrite_member_uid( group, newmembers )
+
 		for group in remove_from_group:
 			if type(group) == type([]):
 				group=group[0]
@@ -1685,7 +1703,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			newmembers=case_insensitive_remove_from_list(self.dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: remove from group %s'%group)
 			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__rewrite_member_uid( group, newmembers )
 
+	def __rewrite_member_uid( self, group, members = [] ):
+		uids = self.lo.getAttr( group, 'memberUid' )
+		if not members:
+			members = self.lo.getAttr( group, 'uniqueMember' )
+		new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], members )
+		self.lo.modify(group, [ ( 'memberUid', uids, new ) ] )
+		
 	def __primary_group(self):
 		self.newPrimaryGroupDn=0
 		self.oldPrimaryGroupDn=0
@@ -2020,6 +2046,16 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if 'person' in self.options:
 				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
+
+		if 'posix' in self.options and not self.hasChanged( 'gecos' ):
+			if self.hasChanged( [ 'firstname', 'lastname' ] ):
+				gecos = self.__create_gecos()
+				if not self.oldinfo.get( 'gecos', '' ):
+					ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
+				else:
+					old_gecos = self.__create_gecos( old_data = True )
+					if old_gecos == self.oldinfo.get( 'gecos', '' ):
+						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
 
 		shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 
@@ -2365,6 +2401,25 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange', ''), shadowLastChangeValue))
 
 		return ml
+
+	def __create_gecos( self, old_data = False ):
+		if not old_data:
+			if self[ 'firstname' ]:
+				gecos = "%s %s" % ( self.info.get( 'firstname', '' ), self.info.get( 'lastname', '' ) )
+			else:
+				gecos = "%s" % self.info.get( 'lastname', '' )
+		else:
+			if self.oldinfo[ 'firstname' ]:
+				gecos = "%s %s" % ( self.oldinfo.get( 'firstname', '' ), self.oldinfo.get( 'lastname', '' ) )
+			else:
+				gecos = "%s" % self.oldinfo.get( 'lastname', '' )
+
+		# replace umlauts
+		_umlauts = { u'ä' : u'ae', u'Ä' : u'Ae', u'ö' : u'oe', u'Ö' : u'Oe', u'ü' : u'ue', u'Ü' : u'Ue', u'ß' : u'ss' }
+		for umlaut, code in _umlauts.items():
+			gecos = gecos.replace( umlaut, code )
+
+		return gecos
 
 	def _ldap_pre_remove(self):
 		if 'samba' in self.options:

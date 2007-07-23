@@ -31,6 +31,8 @@
 import univention.admin
 import univention.admin.localization
 
+import univention.debug as ud
+
 import base64
 
 translation=univention.admin.localization.translation('univention.admin')
@@ -290,6 +292,18 @@ properties = {
 			may_change=1,
 			identifies=0,
 		),
+	'CtxRASDialin': univention.admin.property(
+			short_description=_('CTX RAS Dialin'),
+			long_description=(''),
+			syntax=univention.admin.syntax.CTX_RASDialin,
+			multivalue=0,
+			options=['samba'],
+			required=0,
+			dontsearch=1,
+			may_change=1,
+			identifies=0,
+		),
+
 }
 
 tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal Server Settings' ), [
@@ -304,6 +318,7 @@ tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal Server
 		[ univention.admin.field( "CtxCfgClientPrinters"), univention.admin.field( "CtxCfgDefaultClientPrinters" ) ],
 		[ univention.admin.field( 'CtxShadow' ) ],
 		[ univention.admin.field( 'CtxBrokenSession' ), univention.admin.field( 'CtxReconnectSession' ) ],
+		[ univention.admin.field( 'CtxRASDialin' ) ],
 	] )
 
 class Support( object ):
@@ -323,7 +338,7 @@ class Support( object ):
 				changed=1
 				break
 
-		for val in [ 'CtxStartprogramClient', 'CtxCfgTSLogon', 'CtxCfgClientDrivers', 'CtxCfgClientPrinters', 'CtxCfgDefaultClientPrinters', 'CtxReconnectSession', 'CtxBrokenSession' ]:
+		for val in [ 'CtxStartprogramClient', 'CtxCfgTSLogon', 'CtxCfgClientDrivers', 'CtxCfgClientPrinters', 'CtxCfgDefaultClientPrinters', 'CtxReconnectSession', 'CtxBrokenSession', 'CtxRASDialin' ]:
 			if self.info.has_key(val) and self.hasChanged(val):
 				changed=1
 				break
@@ -342,7 +357,13 @@ class Support( object ):
 				if not val in self.sambaMungedHexValues:
 					enc[val]=self[val]
 
-			sambaMungedDial=base64.decodestring('IAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAQAA==')
+			#sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAAkCAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAUAAQAA==')
+			if self.info.has_key('CtxRASDialin'):
+				dialin_val=self['CtxRASDialin']
+			else:
+				dialin_val='E'
+			sambaMungedDial=base64.decodestring('bQAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIABkAA%sAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAIAAgACAAAAIAAgACAAIAAgACAAIAAgACAAUAAQ==' % dialin_val)
+			sambaMungedDial=sambaMungedDial.strip('\n')
 
 			# FIXME: value_len can be replaced by len( enc[ k ] )
 			for k in self.sambaMungedValues:
@@ -484,6 +505,17 @@ class Support( object ):
 					i=i+6+name_len+value_len
 				else:
 					i=i+1
+
+			munged_len=len(sambaMungedDial)
+			i=0
+			dialin_val='E'
+			while i<munged_len-10:
+				if sambaMungedDial[i:i+8] == 'AAIABkAA' or sambaMungedDial[i:i+8] == 'AAIABkAH':
+					dialin_val = sambaMungedDial[i+8]
+					i=i+1
+				else:
+					i=i+1
+			self.info['CtxRASDialin'] = dialin_val
 
 	def sambaMungedDialParse( self ):
 		if self.info.has_key('CtxCfgFlags1') and len(self.info['CtxCfgFlags1']) > 7 and self.info['CtxCfgFlags1'][6] != '0':

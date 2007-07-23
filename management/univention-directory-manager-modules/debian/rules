@@ -81,6 +81,8 @@ install-ext-%:
 	install -m755 univention-cli-client $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-cli-client
 	install -m755 univention-cli-server $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-cli-server
 
+	install -m755 univention-sync-memberuid $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-sync-memberuid
+
 	# install admin modules
 
 	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\

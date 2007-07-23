@@ -386,7 +386,9 @@ class object(univention.admin.handlers.simpleLdap):
 		new = self.info.get('users', []) + self.info.get('hosts', []) + self.info.get('nestedGroup', [])
 		if old != new:
 			ml.append( ( 'uniqueMember', old, new ) )
-
+			uids = self.lo.getAttr( self.dn, 'memberUid' )
+			new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], new )
+			ml.append( ( 'memberUid', uids, new ) )
 		return ml
 
 	def _ldap_post_create(self):
@@ -412,12 +414,14 @@ class object(univention.admin.handlers.simpleLdap):
 			self.gidNum=self.oldattr['gidNumber'][0]
 		if 'samba' in self.options:
 			self.groupSid=self.oldattr['sambaSID'][0]
-		searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(gidNumber=%s))'%self.gidNum, scope='domain')
-		if searchResult:
-			raise univention.admin.uexceptions.primaryGroupUsed
-		searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(sambaPrimaryGroupSID=%s))'%self.groupSid, scope='domain')
-		if searchResult:
-			raise univention.admin.uexceptions.primaryGroupUsed
+		if hasattr(self,'gidNum'):
+			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(gidNumber=%s))'%self.gidNum, scope='domain')
+			if searchResult:
+				raise univention.admin.uexceptions.primaryGroupUsed
+		if hasattr(self,'groupSid'):
+			searchResult=self.lo.searchDn(base=self.position.getDomain(), filter='(&(objectClass=person)(sambaPrimaryGroupSID=%s))'%self.groupSid, scope='domain')
+			if searchResult:
+				raise univention.admin.uexceptions.primaryGroupUsed
 
 	def _ldap_post_remove(self):
 
@@ -493,6 +497,7 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers.append(self.dn)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: add to supergroup %s'%group)
 			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__rewrite_member_uid( group )
 
 		for group in remove_from_group:
 			if type(group) == type([]):
@@ -504,7 +509,15 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers=self.__case_insensitive_remove_from_list(self.dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s'%group)
 			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__rewrite_member_uid( group )
 
+	def __rewrite_member_uid( self, members = [] ):
+		uids = self.lo.getAttr( group, 'memberUid' )
+		if not members:
+			members = self.lo.getAttr( group, 'uniqueMember' )
+		new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], members )
+		self.lo.modify(group, [ ( 'memberUid', uids, new ) ] )
+		
 	def __case_insensitive_in_list(self, dn, list):
 		for element in list:
 			if dn.lower() == element.lower():

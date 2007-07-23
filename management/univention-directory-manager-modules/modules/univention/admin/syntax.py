@@ -1479,11 +1479,57 @@ class HourSimple(select):
 		('23', '23'),
 	]
 
+class HourSimple(select):
+	name='hour'
+	choices=[
+		('00', '0'),
+		('1', '1'),
+		('2', '2'),
+		('3', '3'),
+		('4', '4'),
+		('5', '5'),
+		('6', '6'),
+		('7', '7'),
+		('8', '8'),
+		('9', '9'),
+		('10', '10'),
+		('11', '11'),
+		('12', '12'),
+		('13', '13'),
+		('14', '14'),
+		('15', '15'),
+		('16', '16'),
+		('17', '17'),
+		('18', '18'),
+		('19', '19'),
+		('20', '20'),
+		('21', '21'),
+		('22', '22'),
+		('23', '23'),
+	]
+
 class Minute(select):
 	name='minute'
 	choices=[
 		('', ''),
 		('all', _( 'all' ) ),
+		('00', '0'),
+		('5', '5'),
+		('10', '10'),
+		('15', '15'),
+		('20', '20'),
+		('25', '25'),
+		('30', '30'),
+		('35', '35'),
+		('40', '40'),
+		('45', '45'),
+		('50', '50'),
+		('55', '55'),
+	]
+
+class MinuteSimple(select):
+	name='minute'
+	choices=[
 		('00', '0'),
 		('5', '5'),
 		('10', '10'),
@@ -1680,6 +1726,16 @@ class CTX_Shadow( select ):
 		( '03000000', _( 'Enabled: Input: off, Message: on' ) ),
 		( '04000000', _( 'Enabled: Input: off, Message: off' ) ),
 		)
+class CTX_RASDialin( select ):
+	'''The keys of the choices are the hexdecimal values that represent
+	the options value within the munged dial flags'''
+	name = 'CTX_RASDialin'
+	choices = (
+		( 'E', _( 'Disabled' ) ),
+		( 'w', _( 'Enabled: Set by Caller' ) ),
+		( 'k', _( 'Enabled: No Call Back' ) ),
+		)
+	#( ' ', _( 'Enabled: Preset To' ) ),
 
 
 class nagiosHostsEnabledDn(simple):
