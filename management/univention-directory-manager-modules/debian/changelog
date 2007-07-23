@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.4-2) unstable; urgency=low
+
+  * fixed error handling for creating dhcp/sharedsubnets
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 23 Jul 2007 16:08:23 +0200
+
 univention-directory-manager-modules (2.0.4-1) unstable; urgency=low
 
   * fixed encoding of umlauts list in users/user

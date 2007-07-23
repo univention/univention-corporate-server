@@ -726,6 +726,8 @@ def doit(arglist):
 			except Exception, err:
 				out.append('E: Option %s is not valid' %err)
 				return out + ['OPERATION FAILED']
+
+			exists=0
 			try:
 				dn=object.create()
 			except univention.admin.uexceptions.objectExists:
