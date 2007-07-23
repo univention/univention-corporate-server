@@ -1,3 +1,9 @@
+univention-ldap (2.2.6-1) unstable; urgency=low
+
+  * added nagios.schema to slapd.conf.d/
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Jul 2007 15:44:44 +0200
+
 univention-ldap (2.2.5-1) unstable; urgency=low
 
   * the translog overlay module should write the changes to the file

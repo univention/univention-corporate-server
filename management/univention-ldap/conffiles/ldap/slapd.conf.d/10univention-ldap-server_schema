@@ -45,6 +45,7 @@ if baseConfig['ldap/server/type']=="master":
 	print 'include         /usr/share/univention-ldap/schema/admin-settings.schema'
 	print 'include         /usr/share/univention-ldap/schema/template.schema'
 	print 'include         /usr/share/univention-ldap/schema/univention-ldap-acl.schema'
+	print 'include         /usr/share/univention-ldap/schema/nagios.schema'
 else:
 	print 'include         /var/lib/univention-ldap/schema.conf'
 @!@
