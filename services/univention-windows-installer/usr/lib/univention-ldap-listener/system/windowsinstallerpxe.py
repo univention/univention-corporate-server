@@ -31,11 +31,15 @@ description='PXE configuration for the Windows installer'
 filter='(objectClass=univentionWindows)'
 attributes=['univentionWindowsReinstall', 'aRecord']
 
-import listener
+import listener, univention.config_registry
 import os, re, ldap, string, univention.debug
 
 pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
-pxeconfig_install = \
+
+baseConfig = univention.config_registry.baseConfig()
+baseConfig.load()
+
+	pxeconfig_install = \
 '''# Perform an unattended installation by default
 default inst
 
@@ -53,9 +57,10 @@ label local
 
 label inst
 	# Boot the universal PXE driver disk-image and append the DNS-Server
-	kernel memdisk
-	append initrd=undis3c.img keeppxe
-'''
+        kernel bzImage
+        append initrd=initrd z_path=//%s/install y_path=//%s/insthelp x_path=//%s/instdone
+''' % (baseConfig['hostname'], baseConfig['hostname'], baseConfig['hostname'])
+
 pxeconfig_local = \
 '''default local
 label local

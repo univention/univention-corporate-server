@@ -68,7 +68,7 @@ TEMP="/tmp/univention-windows-installer-$$"
 mkdir $TEMP
 trap "rm -rf $TEMP" INT TERM EXIT
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 SHARE="/var/lib/univention-windows-installer"
 CLIENTBOOT="/var/lib/univention-client-boot"
 TEMP="/tmp/univention-windows-installer-$$"

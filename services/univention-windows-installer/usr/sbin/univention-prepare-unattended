@@ -27,10 +27,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, os, ldap, univention.debug, univention.uldap, univention_baseconfig, tempfile, csv, shutil, sre
+import sys, os, ldap, univention.debug, univention.uldap, univention.config_registry, tempfile, csv, shutil, sre
 
 univention.debug.init('/var/log/univention/windows-installer.log', 0, 0)
-bc = univention_baseconfig.baseConfig()
+bc = univention.config_registry.baseConfig()
 bc.load()
 
 command, ip_address, basepath = sys.argv[1:4]
@@ -81,7 +81,6 @@ if command == 'create':
 		f = policies['univentionWindowsInstallationUnattendFile']['value'][0]
 		filename = os.path.join(basepath, 'install', 'policy', f)
 		if os.path.exists(filename):
-			#fp = open(os.path.join(path, 'policy.txt'), 'w')
 			fp = open(os.path.join(path, 'unattend.txt'), 'w')
 			fp.write(open(filename).read())
 			fp.close()

@@ -1,3 +1,9 @@
+univention-windows-installer (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 23 Jul 2007 17:25:47 +0200
+
 univention-windows-installer (1.2.0-13) unstable; urgency=low
 
   * add GPL headers

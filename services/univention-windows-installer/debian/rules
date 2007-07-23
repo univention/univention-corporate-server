@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
+export DH_COMPAT=4
 
 D=$(CURDIR)/debian/univention-windows-installer
 
@@ -78,7 +78,7 @@ install: build
 	install -m0755 usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py $(D)/usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py
 	ln -s /usr/lib/syslinux/memdisk $(D)/var/lib/univention-client-boot/memdisk
 
-	univention-install-baseconfig
+	univention-install-config-registry
 	
 	install -d ${D}/var/lib/univention-windows-installer/install/policy
 
