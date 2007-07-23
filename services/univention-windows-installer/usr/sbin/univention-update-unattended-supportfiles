@@ -1,0 +1,150 @@
+#!/bin/sh
+#
+# Univention Windows Installer
+#  download required additional components (djgpp and perl)
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+get_file() {
+        file="$1"
+        shift
+        sources="$*"
+        # we use lynx instead of wget because lynx knows what to do with
+        # file:// URIs and plain paths; unfortunately lynx -source also
+        # decompresses tar.gz files from local paths automatically;
+        # piping this command's output thru zcat --force should do the
+        # trick though.
+
+        if [ "$source" ]; then
+                lynx -source -connect_timeout=5 "$source/$file"
+        else
+                for s in $sources; do
+                        if lynx -source -connect_timeout=5 "$s/$file"; then
+                                return 0
+                        fi
+                done
+                return 1
+        fi
+}
+md5_test() {
+	MDWERT="$1"
+	MDPROBE=`md5sum $SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi | awk '{print$1}'`
+
+	if [ "$MDWERT" = "$MDPROBE" ]
+        then
+                return 0
+        else
+                return 1
+        fi
+
+}
+
+#TODO: use mktemp
+TEMP="/tmp/univention-windows-installer-$$"
+mkdir $TEMP
+trap "rm -rf $TEMP" INT TERM EXIT
+
+eval `univention-baseconfig shell`
+SHARE="/var/lib/univention-windows-installer"
+CLIENTBOOT="/var/lib/univention-client-boot"
+TEMP="/tmp/univention-windows-installer-$$"
+
+# set environment variables for proxy usage, check univ.-baseconfig
+# windowsinstaller/proxy/{http,ftp} and univention-baseconfig get proxy/{http,ftp}.
+# The clumsy if...then; if...then-design of the following lines is intended for readability
+
+if [ ! -z "$proxy_http" ]; then
+	export http_proxy=$proxy_http
+fi
+
+if [ ! -z "$proxy_ftp" ]; then
+	export ftp_proxy=$proxy_ftp
+fi
+
+if [ ! -z "$windowsinstaller_proxy_http" ]; then
+	export http_proxy=$windowsinstaller_proxy_http
+fi
+
+if [ ! -z "$windowsinstaller_proxy_ftp" ]; then
+	export ftp_proxy=$windowsinstaller_proxy_ftp
+fi
+
+
+if [ ! -z "$windowsinstaller_perl_url" ]; then
+	PERL_URL="$windowsinstaller_perl_url"
+else
+	PERL_URL="http://downloads.activestate.com/ActivePerl/Windows/5.8"
+fi
+
+if [ ! -z "$windowsinstaller_djgpp_url" ]; then
+	DJGPP_URL="$windowsinstaller_djgpp_url"
+else
+	DJGPP_URL="http://www.delorie.com/pub/djgpp/current"
+fi
+
+# DJGPP installieren
+if [ ! -e "$SHARE/install/djgpp/readme.1st" ]; then
+        echo -n "Installing DJGPP..."
+
+        get_file djdev203.zip $DJGPP_URL/v2 > $TEMP/djdev.zip || exit 1
+        unzip -L -o -qq -d $SHARE/install/djgpp $TEMP/djdev.zip
+
+        get_file csdpmi5b.zip $DJGPP_URL/v2misc > $TEMP/csdpmi.zip || exit 1
+        unzip -L -o -qq -d $SHARE/install/djgpp $TEMP/csdpmi.zip
+
+        get_file perl561b.zip $DJGPP_URL/v2gnu > $TEMP/perl.zip || exit 1
+        unzip -L -o -qq -d $SHARE/install/djgpp $TEMP/perl.zip
+
+        get_file pico396b.zip $DJGPP_URL/v2apps > $TEMP/pico.zip || exit 1
+        unzip -L -o -qq -d $SHARE/install/djgpp $TEMP/pico.zip
+
+        echo "done."
+fi
+
+# Perlumgebung herunterladen (ist zwingend notwendig für die weitere Abarbeitung der unattended Inst.!)
+# Hier werden MD5-Summen verglichen
+if get_file "MD5SUM" $PERL_URL > "$SHARE/install/packages/MD5SUM"; then
+        MDSUM=`grep ActivePerl-5.8.8.819-MSWin32-x86-267479.msi $SHARE/install/packages/MD5SUM | awk '{print$1}'`
+	        echo "fetched MD5SUM"
+fi
+if [ ! -e "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" ]; then
+        AP=0
+	echo -n "Downloading ActivePerl..."
+	if get_file "ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" $PERL_URL > "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi" && md5_test "$MDSUM" ; then
+		echo "done."
+                rm -f "$SHARE/install/packages/MD5SUM"
+        else
+                echo "Download failed."
+                rm -f "$SHARE/install/packages/ActivePerl-5.8.8.819-MSWin32-x86-267479.msi"
+                rm -f "$SHARE/install/packages/MD5SUM"
+                echo "Process aborted!!!"
+                exit 1
+
+        fi
+else
+        echo "...done."
+fi

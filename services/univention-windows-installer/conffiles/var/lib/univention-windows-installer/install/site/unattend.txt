@@ -1,0 +1,116 @@
+; Warning: This file is auto-generated and might be overwritten by
+;          univention-baseconfig.
+;          Please edit the following file instead:
+; Warnung: Diese Datei wurde automatisch generiert und kann durch
+;          univention-baseconfig überschrieben werden.
+;          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+;
+;       /etc/univention/templates/files/var/lib/univention-windows-installer/install/site/unattend.txt
+;
+
+
+[UserData]
+    ComputerName = computername 
+    FullName = Username full 
+    OrgName = Organisation
+
+[GuiUnattended]
+    AdminPassword = univention
+    AutoLogon = Yes
+    AutoLogonCount = 1
+    OEMSkipRegional = 1
+    TimeZone = 110
+    OemSkipWelcome = 1
+
+[LicenseFilePrintData]
+    AutoMode = PerServer
+    AutoUsers = 1000
+
+[GuiRunOnce]
+
+[Display]
+    BitsPerPel = 16
+    Vrefresh = 75
+    Xresolution = 1024
+    Yresolution = 768
+
+[Components]
+    cdplayer = Off
+    chat = Off
+    dialer = Off
+    freecell = Off
+    media_clips = Off
+    minesweeper = Off
+    mousepoint = Off
+    mplay = Off
+    pinball = Off
+    rec = Off
+    solitare = Off
+    TSEnable = On
+
+[TerminalServices]
+    ApplicationServer = 1
+    PermissionSettings = 0
+
+[TapiLocation]
+    CountryCode = 49
+    AreaCode = 0421
+
+[Identification]
+    JoinDomain = @%@windows/domain@%@
+    DomainAdmin = Administrator 
+    DomainAdminPassword = univention
+   
+[Networking]
+    InstallDefaultComponents = No
+
+[NetAdapters]
+    Adapter1 = params.Adapter1
+
+[params.Adapter1]
+    INFID = *
+
+[NetClients]
+    MS_MSClient = params.MS_MSClient
+
+[NetServices]
+    MS_SERVER = params.MS_SERVER
+
+[NetProtocols]
+    MS_TCPIP = params.MS_TCPIP
+
+[params.MS_TCPIP]
+    DNS = No
+    UseDomainNameDevolution = No
+    EnableLMHosts = Yes
+    AdapterSections = params.MS_TCPIP.Adapter1
+
+[params.MS_TCPIP.Adapter1]
+    SpecificTo = Adapter1
+    DHCP = Yes
+    WINS = @%@windows/wins-support@%@ 
+
+[NetOptionalComponents]
+    ; Install Print Services for UNIX
+    LPDSVC = 1
+
+; This section is for informational purposes.
+; Windows Setup does not use it.
+[_meta]
+    fdisk_lba = 1
+    edit_files = 0
+    replace_mbr = 1
+    local_admin_group = ""
+    local_admins = ""
+    ntp_servers = "ntp.fu-berlin.de"
+    fdisk_cmds="fdisk /clear 1;fdisk /pri:4000;fdisk /activate:1"
+    format_cmd = "format /Q /V: /Z:seriously C:"
+    ; Prompt for confirmation before running fdisk_cmds?
+    fdisk_confirm = 0 
+    ; First script run by postinst.bat
+    top = "top.bat"
+    ; Optional script(s) run by postinst.bat
+    middle = "middle.bat"
+    ; Last script(s) run by postinst.bat
+    bottom = "bottom.bat"
+

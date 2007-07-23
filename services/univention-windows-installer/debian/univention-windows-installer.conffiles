@@ -1,0 +1,3 @@
+/etc/univention/templates/files/var/lib/univention-windows-installer/install/lib/unattend.txt
+/etc/univention/templates/files/var/lib/univention-windows-installer/install/site/unattend.txt
+/etc/univention/templates/files/var/lib/univention-windows-installer/install/bin/mapznrun.bat

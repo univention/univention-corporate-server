@@ -1,0 +1,8 @@
+Type: file
+File: var/lib/univention-windows-installer/install/lib/unattend.txt
+
+Type: file
+File: var/lib/univention-windows-installer/install/site/unattend.txt
+
+Type: file
+File: var/lib/univention-windows-installer/install/bin/mapznrun.bat

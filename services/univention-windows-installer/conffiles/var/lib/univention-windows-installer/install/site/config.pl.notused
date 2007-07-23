@@ -1,0 +1,42 @@
+use warnings;
+use strict;
+#
+# set parameters
+
+$u->{'GuiUnattended'}->{'AdminPassword'} =
+    sub {
+    return 'univention';
+    };
+
+# more comeing soon ;-)
+
+
+# set the Keys 
+$u->{'UserData'}->{'ProductKey'} =
+    sub {
+        my $media_obj = Unattend::WinMedia->new ($u->{'_meta'}->{'OS_media'});
+        my $os_name = $media_obj->name ();
+        if ($os_name =~ /Windows XP/) {
+            return '@%@windows/productkey@%@';
+        }
+        elsif ($os_name =~ /Windows Server 2003/) {
+            return '@%@windows/productkey@%@';
+        }
+        return undef;
+    };
+
+$u->{'UserData'}->{'ProductID'} =
+    sub {
+        my $media_obj = Unattend::WinMedia->new ($u->{'_meta'}->{'OS_media'});
+        my $os_name = $media_obj->name ();
+        if ($os_name =~ /Windows 2000/) {
+            return '@%@windows/productkey@%@';
+        }
+        elsif (defined $u->{'UserData'}->{'ProductID'}) {
+            # It is OK for us to return undef as long as there is a
+            # ProductID.
+            return undef;
+        }
+        die "No ProductKey nor ProductID!";
+    };
+

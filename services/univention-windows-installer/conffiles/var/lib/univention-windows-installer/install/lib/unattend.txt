@@ -1,0 +1,58 @@
+; Warning: This file is auto-generated and might be overwritten by
+;          univention-baseconfig.
+;          Please edit the following file instead:
+; Warnung: Diese Datei wurde automatisch generiert und kann durch
+;          univention-baseconfig überschrieben werden.
+;          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+;
+;       /etc/univention/templates/files/var/lib/univention-windows-installer/install/lib/unattend.txt
+;
+
+
+[Data]
+    AutoPartition = 1
+    MsDosInitiated = 1
+    UnattendedInstall = Yes
+
+[Unattended]
+    UnattendMode = FullUnattended
+    DriverSigningPolicy = Ignore
+    ExtendOemPartition = 1
+    OemSkipEula = Yes
+    OemPreinstall = No
+    TargetPath = \WINNT
+    UnattendSwitch = Yes
+    FileSystem = convertNTFS
+    UseWholeDisk = Yes
+    Repartition = No
+
+[GuiUnattended]
+    AutoLogon = Yes
+    OEMSkipRegional = 1
+    OemSkipWelcome = 1
+
+[Networking]
+    InstallDefaultComponents = No
+
+[NetAdapters]
+    Adapter1 = params.Adapter1
+
+[params.Adapter1]
+    INFID = *
+
+[NetClients]
+    MS_MSClient = params.MS_MSClient
+
+[NetServices]
+    MS_SERVER = params.MS_SERVER
+
+[NetProtocols]
+    MS_TCPIP = params.MS_TCPIP
+
+[params.MS_TCPIP]
+    EnableLMHosts = Yes
+    AdapterSections = params.MS_TCPIP.Adapter1
+
+[params.MS_TCPIP.Adapter1]
+    SpecificTo = Adapter1
+    DHCP = Yes

@@ -1,0 +1,9 @@
+Betriebsystem einbinden:
+
+
+- legen Sie für jede Windows Version ein eigenes Unterverzeichnis
+  unter "/var/lib/univention-unattended/install/os" an 
+  (z.B. /var/lib/univention-unattended/install/os/winxp/)
+
+
+- kopieren Sie den Ordner "i386" der betreffenden Windows-CD in dieses Verzeichnis

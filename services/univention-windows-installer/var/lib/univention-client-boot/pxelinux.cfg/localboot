@@ -1,0 +1,4 @@
+# Perform a local boot by default
+default local
+label local
+        localboot 0

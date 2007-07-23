@@ -1,0 +1,172 @@
+#!/usr/bin/python2.4 -OO
+# Univention Windows Installer
+#  prepare unattended
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, os, ldap, univention.debug, univention.uldap, univention_baseconfig, tempfile, csv, shutil, sre
+
+univention.debug.init('/var/log/univention/windows-installer.log', 0, 0)
+bc = univention_baseconfig.baseConfig()
+bc.load()
+
+command, ip_address, basepath = sys.argv[1:4]
+
+if not command or not ip_address or not basepath:
+	sys.exit(0)
+
+def read_password_from_file(file):
+	pwd = open(file).read()
+	if pwd[-1] == '\n':
+		pwd=pwd[0:-1]
+	return pwd
+
+pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
+path = os.path.join(basepath, ip_address)
+
+if not command == "ready":
+	# When 'ready' is given, we'll have to write directly to the LDAP server.
+	# This is dealt with below in the 'if command==ready'-clause.
+	lo = univention.uldap.access(host=bc['ldap/server/name'], base=bc['ldap/base'], binddn=bc['ldap/hostdn'], bindpw=read_password_from_file('/etc/machine.secret'))
+
+	try:
+		dn, attrs = lo.search('(&(objectClass=univentionWindows)(aRecord=%s)(univentionWindowsReinstall=1))' % ip_address, required=1, unique=1)[0]
+		policies = lo.getPolicies(dn).get('univentionPolicyWindowsInstallation', {})
+	except ldap.INAPPROPRIATE_MATCHING, msg:
+		sys.exit(1)
+	except ldap.NO_SUCH_OBJECT:
+		sys.exit(0)
+
+def ip_to_hex(ip):
+	if ip.count('.') != 3:
+		return ''
+	o = ip.split('.')
+	return '%02X%02X%02X%02X' % (int(o[0]), int(o[1]), int(o[2]), int(o[3]))
+
+def beautify_mac(mac):
+	# turns aa:bb:cc:ee:ff:00 into AABBCCEEFF00
+	return mac.replace(":", "").upper()
+
+if command == 'create':
+	
+	if not os.path.isdir(path):
+		os.mkdir(path)
+
+	# copy policy unattended.txt snippet
+	OS_media=""
+	if policies.has_key('univentionWindowsInstallationUnattendFile'):
+		f = policies['univentionWindowsInstallationUnattendFile']['value'][0]
+		filename = os.path.join(basepath, 'install', 'policy', f)
+		if os.path.exists(filename):
+			#fp = open(os.path.join(path, 'policy.txt'), 'w')
+			fp = open(os.path.join(path, 'unattend.txt'), 'w')
+			fp.write(open(filename).read())
+			fp.close()
+
+			# The os to install cannot be set in unattend.txt. Therefore,
+			# we have to find out which from which path installation should start
+			fd = open(filename)
+			line = fd.readline()
+			while line:
+				if sre.match("\ *.OS_media\ =\ .*", line):
+					line=line.strip()
+					OS_media=line.split(" ")[2]
+					break
+				line = fd.readline()
+					
+	# create entry in cvs-file with individual settings for this computer
+	# Since there does not seem to be a way to
+	# replace a line in the csv-file (which has to be done in case the mac address
+	# already exists), we'll write a new file and copy it over the old one. That
+	# should not be a race condition, since config.pl either already has the old
+	# file opened or will open the new one.
+
+	oldfile = os.path.join(basepath, "install", "site", "unattend.csv")
+	fd, fname = tempfile.mkstemp(dir="/tmp", text=True)
+	hdl = os.fdopen(fd, "w")
+	writer = csv.writer(hdl)
+	mac = beautify_mac(attrs["macAddress"][0])
+	
+	if not(os.path.exists(oldfile)):
+		writer.writerow(['Lookup', 'Property', 'Value'])
+	else:
+		reader = csv.reader(file(oldfile))
+		for row in reader:
+			if not(row[0].upper()==mac):
+				writer.writerow(row)
+
+	# Add mac<->unattend.txt-mapping.
+	writer.writerow([mac, 'UnattendedFile', "Y:\unattend.txt"])
+
+	# Add mac<->os-directory-mapping
+	writer.writerow([mac, 'OS_media', OS_media])
+	
+	# Add mac<->computername-mapping
+	writer.writerow([mac, 'ComputerName', attrs['cn'][0]])
+	hdl.close()
+	os.chmod(fname, 0664)	# 0600 by default
+	shutil.copy(fname, os.path.join(basepath, "install", "site", "unattend.csv"))
+	os.remove(fname)
+			
+elif command == 'ready':
+
+	lo = univention.uldap.access(host=bc['ldap/master'], base=bc['ldap/base'], binddn=bc['ldap/hostdn'], bindpw=read_password_from_file('/etc/machine.secret'))
+
+	try:
+		dn, attrs = lo.search('(&(objectClass=univentionWindows)(aRecord=%s)(univentionWindowsReinstall=1))' % ip_address, required=1, unique=1)[0]
+	except ldap.INAPPROPRIATE_MATCHING, msg:
+		sys.exit(1)
+	except ldap.NO_SUCH_OBJECT:
+		sys.exit(0)
+
+	try:
+		lo.modify(dn, [('univentionWindowsReinstall', ['1'], ['0'])])
+	except Exception,e:
+		univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, 'Modify failed: %s ' % e)
+
+	# let's better make sure that the pxe configuration is up-to-date *now*
+	# for a local boot, removing the file altogether should be sufficient
+	basename = ip_to_hex(attrs['aRecord'][0])
+	if basename:
+		filename = os.path.join(pxebase, basename)
+		if os.path.exists(filename):
+			os.unlink(filename)
+
+elif command == 'done':
+
+	filename = os.path.join(path, 'policy.txt')
+	if os.path.exists(filename):
+		os.unlink(filename)
+	filename = os.path.join(path, 'unattend.txt')
+	if os.path.exists(filename):
+		os.unlink(filename)
+	os.rmdir(path)
+	
+else:
+	print >>sys.stderr, 'E: Invalid command'
+	sys.exit(1)
+
+

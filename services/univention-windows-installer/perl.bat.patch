@@ -1,0 +1,11 @@
+--- perl.bat.orig	Fri Oct 28 13:12:30 2005
++++ perl.bat	Fri Oct 28 13:13:35 2005
+@@ -24,7 +24,7 @@
+ %Z%\packages\windowsinstaller\WindowsInstaller-KB884016-v2-x86.exe /passive /norestart
+ :skipinstaller3
+ 
+-set perl_msi=%Z%\packages\ActivePerl-5.8.4.810-MSWin32-x86.msi
++set perl_msi=%Z%\packages\ActivePerl-5.8.8.819-MSWin32-x86-267479.msi
+ 
+ :retry
+ if exist %perl_msi% goto have_perl

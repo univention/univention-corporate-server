@@ -1,0 +1,119 @@
+univention-windows-installer (1.2.0-13) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Dec 2006 14:17:22 +0100
+
+univention-windows-installer (1.2.0-12) unstable; urgency=low
+
+  * Adapt to new filename of Perl Windows installer.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 30 Nov 2006 09:37:23 +0100
+
+univention-windows-installer (1.2.0-11) unstable; urgency=low
+
+  * Load revision 819 of ActivePerl, which includes a fix for an unspecified
+    vulnerability, which may lead to privilege escalation.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Oct 2006 14:36:07 +0200
+
+univention-windows-installer (1.2.0-10) unstable; urgency=low
+
+  * added MD5 check for Downloads
+
+ -- Tobias Scherer <scherer@univention.de>  Fri, 22 Sep 2006 14:49:12 +0200
+
+univention-windows-installer (1.2.0-9) unstable; urgency=low
+
+  * fixed download of ActivePerl
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 21 Sep 2006 16:55:56 +0200
+
+univention-windows-installer (1.2.0-8) unstable; urgency=low
+
+  * fixed error which caused the univentionWindowsReinstall-flag not being reset
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 25 Apr 2006 18:25:34 +0200
+
+univention-windows-installer (1.2.0-7) unstable; urgency=low
+
+  * removed wrong header in installs.conf
+
+ -- Bastian Neumann <bastian@anton.knut.univention.de>  Thu,  6 Apr 2006 15:57:57 +0200
+
+univention-windows-installer (1.2.0-6) unstable; urgency=low
+
+  * depends on syslinux or syslinux-bin, change for ppc architecture
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Feb 2006 10:08:23 +0100
+
+univention-windows-installer (1.2.0-3) unstable; urgency=low
+
+  * package installation does not fail when download fails
+  * added seperate script to download installation files
+  * imported bugfixes from ucs1.2-branch
+  * samba-pre-connect-script now connects to the local ldap-server
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri,  4 Nov 2005 16:22:17 +0100
+
+univention-windows-installer (1.2.0-2) unstable; urgency=low
+
+  * support for proxy use when downloading packages
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue,  1 Nov 2005 14:39:00 +0100
+
+univention-windows-installer (1.2.0-1) unstable; urgency=low
+
+  * redesign using unattended-4.6
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 28 Oct 2005 10:12:56 +0200
+
+univention-windows-installer (1.0.0-8) unstable; urgency=low
+
+  * now using unattended-4.6 (but still the old boot image)
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 16 Aug 2005 14:23:16 +0200
+
+univention-windows-installer (1.0.0-7) unstable; urgency=low
+
+  * added "top", "middle" and "bottom" scripts
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 22 Mar 2005 13:44:23 +0100
+
+univention-windows-installer (1.0.0-6) unstable; urgency=low
+
+  * added new parameter raw_disk_access to _meta section. This parameter
+    solved problems with hanging systems during fdisk /info /meta call.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 23 Jan 2005 16:20:19 +0100
+
+univention-windows-installer (1.0.0-5) unstable; urgency=low
+
+  * check for parameter usr/sbin/univention-prepare-unattended
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Aug 2004 07:46:36 +0200
+
+univention-windows-installer (1.0.0-4) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 11:12:45 +0200
+
+univention-windows-installer (1.0.0-3) unstable; urgency=low
+
+  * updated ActivePerl version
+
+ -- Peter Ganten <peter@ds-work.office.univention.de>  Mon,  2 Feb 2004 16:15:09 +0100
+
+univention-windows-installer (1.0.0-2) unstable; urgency=low
+
+  * catch exception while modify univentionWindowsReinstall
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2004 18:47:24 +0100
+
+univention-windows-installer (1.0.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thorsten Pesel <pesel@univention.de>  Fri, 21 Nov 2003 15:16:48 +0100
+

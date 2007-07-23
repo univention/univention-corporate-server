@@ -1,0 +1,57 @@
+#! /bin/sh
+#
+# Univention Windows Installer
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+# postinst script for univention-windows-installer
+
+set -e
+
+#DEBHELPER#
+
+/usr/sbin/univention-update-unattended-supportfiles  || \
+  ( echo Warning: Failed to download required additional components.;
+    echo Please re-run /usr/sbin/univention-update-unattended-supportfiles later on. )
+
+# chown all files below /var/lib/univention-windows-installer/install/ to UID 0
+chown -R 0:0 /var/lib/univention-windows-installer/install/
+
+# create top/middle/bottom.bat files
+if [ ! -e /var/lib/univention-windows-installer/install/scripts/top.bat -a ! -e /var/lib/univention-windows-installer/install/scripts/middle.bat -a ! -e /var/lib/univention-windows-installer/install/scripts/bottom.bat ]; then
+cat <<EOL | todos >/var/lib/univention-windows-installer/install/scripts/top.bat
+@echo off
+
+rem INSERT YOUR COMMANDS AFTER THIS LINE
+EOL
+cp -a /var/lib/univention-windows-installer/install/scripts/top.bat /var/lib/univention-windows-installer/install/scripts/middle.bat
+cp -a /var/lib/univention-windows-installer/install/scripts/top.bat /var/lib/univention-windows-installer/install/scripts/bottom.bat
+fi
+
+/etc/init.d/samba reload
+
+/etc/init.d/univention-ldap-listener restart
+

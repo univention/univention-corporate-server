@@ -1,0 +1,5 @@
+usr/sbin
+etc/samba
+var/lib/univention-windows-installer
+usr/lib/univention-ldap-listener/system
+var/lib/univention-client-boot/pxelinux.cfg
