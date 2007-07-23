@@ -2415,7 +2415,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				gecos = "%s" % self.oldinfo.get( 'lastname', '' )
 
 		# replace umlauts
-		_umlauts = { u'ä' : u'ae', u'Ä' : u'Ae', u'ö' : u'oe', u'Ö' : u'Oe', u'ü' : u'ue', u'Ü' : u'Ue', u'ß' : u'ss' }
+		_umlauts = { 'Ã¤' :'ae', 'Ã„' : 'Ae', 'Ã¶' : 'oe', 'Ã–' : 'Oe', 'Ã¼' : 'ue', 'Ãœ' : 'Ue', 'ÃŸ' : 'ss' }
 		for umlaut, code in _umlauts.items():
 			gecos = gecos.replace( umlaut, code )
 

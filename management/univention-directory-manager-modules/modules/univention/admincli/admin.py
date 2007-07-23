@@ -710,6 +710,7 @@ def doit(arglist):
 			object.open()
 			if hasattr(object,'open_warning') and object.open_warning:
 				out.append('WARNING:%s'%object.open_warning)
+			exists=0
 			try:
 				out.extend(object_input(module, object, input, append=append))
 			except univention.admin.uexceptions.nextFreeIp:
@@ -722,7 +723,6 @@ def doit(arglist):
 					return out + ["OPERATION FAILED"]
 				else:
 					exists=1
-			exists=0
 			except Exception, err:
 				out.append('E: Option %s is not valid' %err)
 				return out + ['OPERATION FAILED']

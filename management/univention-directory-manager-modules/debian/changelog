@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.4-1) unstable; urgency=low
+
+  * fixed encoding of umlauts list in users/user
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Jul 2007 16:06:43 +0200
+
 univention-directory-manager-modules (2.0.3-1) unstable; urgency=low
 
   * merged univention-admin-nagios
