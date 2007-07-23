@@ -138,7 +138,8 @@ install: build
 	install -d -m 755 -o root -g root ${DC}/etc/univention/daemons
 	echo "Nagios NRPE Server;nagios-nrpe-server;/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d;20" > ${DC}/etc/univention/daemons/nrped
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	dh_install
 
 

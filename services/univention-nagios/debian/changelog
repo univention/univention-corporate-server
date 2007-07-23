@@ -1,3 +1,9 @@
+univention-nagios (1.0.0-5) unstable; urgency=low
+
+  * fix rules file
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 23 Jul 2007 14:35:53 +0200
+
 univention-nagios (1.0.0-4) unstable; urgency=low
 
   * added descriptions for config registry variables
