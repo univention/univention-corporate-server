@@ -61,7 +61,7 @@ univention-baseconfig set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	univention-baseconfig set ldap/translogfile?"/var/lib/univention-ldap/notify/transaction"
+	univention-baseconfig set ldap/translogfile?"/var/lib/univention-ldap/listener/listener"
 fi
 
 test -f /var/lib/univention-ldap/ldap/DB_CONFIG || univention-baseconfig commit /var/lib/univention-ldap/ldap/DB_CONFIG

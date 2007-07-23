@@ -1,3 +1,10 @@
+univention-ldap (2.2.5-1) unstable; urgency=low
+
+  * the translog overlay module should write the changes to the file
+    /var/lib/univention-ldap/listener/listener
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 23 Jul 2007 15:15:06 +0200
+
 univention-ldap (2.2.4-7) unstable; urgency=low
 
   * modified PackageLists for Policies 
