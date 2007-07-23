@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.3-1) unstable; urgency=low
+
+  * merged univention-admin-nagios
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Jul 2007 15:15:28 +0200
+
 univention-directory-manager-modules (2.0.2-2) unstable; urgency=low
 
   * support attribute memberUid for group membership
