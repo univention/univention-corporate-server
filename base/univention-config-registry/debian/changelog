@@ -1,3 +1,9 @@
+univention-config-registry (2.2.1-5) unstable; urgency=low
+
+  * move pkgdb variables to categorie system
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 23 Jul 2007 11:47:05 +0200
+
 univention-config-registry (2.2.1-4) unstable; urgency=low
 
   * force UnicodeConfig to read files as utf-8

@@ -278,13 +278,13 @@ Categories=Network
 Description[de]=Der Software-Monitor prüft den Join-Status nicht vor dem Update der Datenabnk
 Description[en]=The software monitor does not check the join status before updating the database
 Type=str
-Categories=Misc
+Categories=System
 
 [pkgdb/scan]
 Description[de]=Soll die Software-Datenbank aktualisiert werden
 Description[en]=Should the software database be updated
 Type=str
-Categories=Misc
+Categories=System
 
 [proxy/password]
 Description[de]=Passwort für die Authentisierung beim Proxy
