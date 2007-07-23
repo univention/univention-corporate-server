@@ -1,3 +1,11 @@
+univention-directory-manager-modules (2.0.2-1) unstable; urgency=low
+
+  * support attribute memberUid for group membership
+  * new attribute gecos for user objects; by default it contains "<firstname>
+    <lastname>"
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 23 Jul 2007 15:06:06 +0200
+
 univention-directory-manager-modules (2.0.1-7) unstable; urgency=low
 
   * advanced error handling for creating dhcp/sharesubnet
