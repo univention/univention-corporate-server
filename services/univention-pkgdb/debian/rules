@@ -85,7 +85,8 @@ install-ext-%:
 	install -m 0700 univention-pkgdb-scan ${DT}/usr/sbin
 	install -m 0755 98univention-pkgdb-tools.inst ${DT}/usr/lib/univention-install
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-indep: build install
 
