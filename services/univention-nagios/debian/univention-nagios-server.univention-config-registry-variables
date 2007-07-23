@@ -1,0 +1,72 @@
+[nagios/server/autostart]
+Description[de]=Starte Nagios Server bei Konfigurationsänderungen neu
+Description[en]=Restart nagios server on configuration changes
+Type=str
+Categories=System
+
+[nagios/server/authenticate]
+Description[de]=Aktivier/Deaktiviere die Anmeldung am Nagios Webfrontend
+Description[en]=Enable/Disable authentication for the nagios web frontend
+Type=str
+Categories=System
+
+[nagios/server/checkexternalcmd]
+Description[de]=Deaktiviere das Übergeben von Kommandos aus dem Webfrontend
+Description[en]=Completely disable the ability to run commands thru the web frontend
+Type=str
+Categories=System
+
+[nagios/server/refreshrate]
+Description[de]=Automatischer Aktualisierungsintervall des Nagios Webfrontends
+Description[en]=Refresh rate of the nagios web frontend in seconds
+Type=str
+Categories=System
+
+[nagios/server/theme]
+Description[de]=Name des zu verwendenden Nagios Theme
+Description[en]=Name of the nagios theme to use
+Type=str
+Categories=System
+
+[nagios/server/user/allcmd]
+Description[de]=Erlaube diesen Benutzern dienstbezogene Kommandos zu starten
+Description[en]=Allow these users to run service specific commands
+Type=str
+Categories=System
+
+[nagios/server/user/allinfo]
+Description[de]=Erlaube diesen Benutzer alle Rechner und Diensteinformationen einzusehen
+Description[en]=Allow these users to view all available system and process information
+Type=str
+Categories=System
+
+[nagios/server/user/configinfo]
+Description[de]=Erlaube den angegebenen Benuzter Lesezugriff auf die Nagios Konfiguration
+Description[en]=Grant read access to the nagios configuration to the given users
+Type=str
+Categories=System
+
+[nagios/server/user/systemcmd]
+Description[de]=Erlaube den angegebenen Benutzern das Ausführen von Systemkommandos
+Description[en]=Allow the given users to run system commands
+Type=str
+Categories=System
+
+[nagios/server/user/systeminfo]
+Description[de]=Nur hier angegebene Benutzer können System und Prozessinformationen einsehen (* für alle)
+Description[en]=Show system and process informations to this users only (* means all)
+Type=str
+Categories=System
+
+[nagios/server/hostcheck/enable]
+Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios Hosts
+Description[en]=Enablae/Disable the regular availability checks for all nagios hosts
+Type=str
+Categories=System
+
+[nagios/server/hostcheck/notificationinterval]
+Description[de]=Warte die angegebene Zeitspanne in Minuten bevor die selbe Benachrichtigung erneut versendet wird
+Description[en]=Wait the given time in minutes before sending the same notification again
+Type=str
+Categories=System
+

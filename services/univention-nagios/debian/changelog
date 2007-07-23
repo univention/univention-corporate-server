@@ -1,3 +1,9 @@
+univention-nagios (1.0.0-4) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 23 Jul 2007 14:32:26 +0200
+
 univention-nagios (1.0.0-3) unstable; urgency=low
 
   * updated dependencies
