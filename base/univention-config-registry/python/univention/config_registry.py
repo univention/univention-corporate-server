@@ -111,7 +111,7 @@ class ConfigRegistry(dict):
 			if line.find(': ') == -1:
 				continue
 
-			key, value = line.split(': ')
+			key, value = line.split(': ', 1)
 			value = value.strip()
 			if len(value) == 0: #if variable was set without an value 
 				value = ''
@@ -356,7 +356,7 @@ def parseRfc822(f):
 		for line in lines:
 			if line.find(': ') == -1:
 				continue
-			key, value = line.split(': ')
+			key, value = line.split(': ', 1)
 			if not ent.has_key(key):
 				ent[key] = []
 			ent[key].append(value)
@@ -873,7 +873,7 @@ def filter_shell( args, text ):
 	out = []
 	for line in text:
 		try:
-			var, value = line.split( ': ' )
+			var, value = line.split( ': ', 1 )
 		except ValueError:
 			var = line
 			value = ''
@@ -885,7 +885,7 @@ def filter_shell( args, text ):
 def filter_keys_only( args, text ):
 	out = []
 	for line in text:
-		out.append( line.split( ': ' )[ 0 ] )
+		out.append( line.split( ': ', 1 )[ 0 ] )
 	return out
 		
 def filter_sort( args, text ):

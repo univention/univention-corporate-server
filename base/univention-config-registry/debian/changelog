@@ -1,3 +1,9 @@
+univention-config-registry (2.2.2-1) unstable; urgency=low
+
+  * fixed tracebacks caused by baseconfig variables containing ": "
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Jul 2007 13:09:12 +0200
+
 univention-config-registry (2.2.1-5) unstable; urgency=low
 
   * move pkgdb variables to categorie system
@@ -168,13 +174,13 @@ univention-baseconfig (2.1.6-1) unstable; urgency=low
 
   * fixed typo in service_info.py 
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Jun 2007 14:31:11 +0200
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 14:31:11 +0200
 
 univention-baseconfig (2.1.5-1) unstable; urgency=low
 
   * find running daemon by comparing the program name and the arguments 
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Jun 2007 13:00:10 +0200
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Jun 2007 13:00:10 +0200
 
 univention-baseconfig (2.1.4-1) unstable; urgency=low
 
@@ -205,7 +211,7 @@ univention-baseconfig (2.1.2-2) unstable; urgency=low
 
   * fixed a crash in the __eq__ operator of LocalizedDictionary
 
- -- Andreas BÃŒsching <buesching@univention.de>  Tue,  5 Jun 2007 22:06:58 +0200
+ -- Andreas Büsching <buesching@univention.de>  Tue,  5 Jun 2007 22:06:58 +0200
 
 univention-baseconfig (2.1.2-1) unstable; urgency=low
 
@@ -218,7 +224,7 @@ univention-baseconfig (2.1.1-1) unstable; urgency=low
   * updated baseconfig_info module
   * add service information module and installation script
 
- -- Andreas BÃŒsching <buesching@univention.de>  Fri, 01 Jun 2007 13:30:27 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri, 01 Jun 2007 13:30:27 +0200
 
 univention-baseconfig (2.1.0-1) unstable; urgency=low
 
@@ -252,7 +258,7 @@ univention-baseconfig (2.0.2-1) unstable; urgency=low
     of the dictionary
   * using 'get' method on localized dictiionaries is possible now
 
- -- Andreas BÃŒsching <buesching@univention.de>  Fri, 11 May 2007 11:46:52 +0200
+ -- Andreas Büsching <buesching@univention.de>  Fri, 11 May 2007 11:46:52 +0200
 
 univention-baseconfig (2.0.1-1) unstable; urgency=low
 
@@ -526,32 +532,32 @@ univention-baseconfig (1.53-11) unstable; urgency=low
 
   * the output of the dump and search action is sorted, again.
 
- -- Andreas BÃŒsching <buesching@univention.de>  Wed,  2 Nov 2005 09:09:53 +0100
+ -- Andreas Büsching <buesching@univention.de>  Wed,  2 Nov 2005 09:09:53 +0100
 
 univention-baseconfig (1.53-10) unstable; urgency=low
 
   * write error message to stderr in handler_search instead of stdout
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 31 Oct 2005 17:07:50 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 17:07:50 +0100
 
 univention-baseconfig (1.53-9) unstable; urgency=low
 
   * fixed the bug that the shell could not be called without an argument
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 31 Oct 2005 13:49:57 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 13:49:57 +0100
 
 univention-baseconfig (1.53-8) unstable; urgency=low
 
   * now the search command excepts more than one regular expression
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 31 Oct 2005 12:00:10 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 12:00:10 +0100
 
 univention-baseconfig (1.53-7) unstable; urgency=low
 
   * fixed a bug introduced with 1.53-5: the shell command must be able print
     out several variables given on the command line not just one.
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 31 Oct 2005 09:17:09 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 31 Oct 2005 09:17:09 +0100
 
 univention-baseconfig (1.53-6) unstable; urgency=low
 
@@ -566,14 +572,14 @@ univention-baseconfig (1.53-5) unstable; urgency=low
     the deprecated command 'shell' is now realized with --shell search
     instead of --shell dump
 
- -- Andreas BÃŒsching <buesching@univention.de>  Wed, 26 Oct 2005 14:50:07 +0200
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Oct 2005 14:50:07 +0200
 
 univention-baseconfig (1.53-4) unstable; urgency=low
 
   * error handling for invalid regular expressions given as argument to search
     command
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 24 Oct 2005 15:32:33 +0200
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2005 15:32:33 +0200
 
 univention-baseconfig (1.53-3) unstable; urgency=low
 
@@ -584,7 +590,7 @@ univention-baseconfig (1.53-3) unstable; urgency=low
   * shell command is deprecated: use --shell dump instead
   * add new command search <regex>
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 24 Oct 2005 08:20:51 +0200
+ -- Andreas Büsching <buesching@univention.de>  Mon, 24 Oct 2005 08:20:51 +0200
 
 univention-baseconfig (1.53-2) unstable; urgency=low
 
@@ -592,7 +598,7 @@ univention-baseconfig (1.53-2) unstable; urgency=low
     if set the value is used as configuration file instead of
     /etc/univention/base.conf
 
- -- Andreas BÃŒsching <buesching@univention.de>  Thu, 20 Oct 2005 16:50:45 +0200
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Oct 2005 16:50:45 +0200
 
 univention-baseconfig (1.53-1) unstable; urgency=low
 
