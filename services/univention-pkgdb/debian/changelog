@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.2-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 23 Jul 2007 11:37:44 +0200
+
 univention-pkgdb (1.0.2-1) unstable; urgency=low
 
   * do not use dh_pycentral for packages univention-pkgdb and
