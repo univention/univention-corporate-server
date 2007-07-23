@@ -29,14 +29,14 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import univention.baseconfig, time, os
+import univention_baseconfig, time, os
 
-baseConfig=univention.baseconfig.baseConfig()
+baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
 
-if baseConfig['security/firewall/enable'] != "yes":
-	print "Firewall is not enabled. Exiting."
-	exit
+#if baseConfig['security/firewall/enable'] != "yes":
+#	print "Firewall is not enabled. Exiting."
+#	exit
 
 def main():
 
@@ -56,11 +56,9 @@ def main():
 	enable = ''
 
 	# Open the main file
-	fh = open_iptables_script(initscript)
-	fh.write('$iptables -F\n\n')
+	fh_accept = open_iptables_script("/etc/security/netfilter.d/10accept")
+	fh_deny = open_iptables_script("/etc/security/netfilter.d/15accept")
 
-	# Global TCP/UDP blocking also needs to be done in the loop
-	# Now traverse the security/firewall/services/
 	base = baseConfig.keys()
 	base.sort()
 
@@ -68,77 +66,92 @@ def main():
 		value = baseConfig[key]
 		#print "[%s]\t\t%s" % (key, value)
 
-		# Seek for the ports
-		if key.startswith('security/firewall/tcp/') or key.startswith('security/firewall/udp/'):
-			tmp = key.split('/', 3)
+		if key.startswith('security/packetfilter/tcp/accept') or key.startswith('security/packetfilter/udp/'):
+			tmp = key.split('/')
 			proto = tmp[2]
-			port = tmp[3]
-		
-			# Only block as value is accepted!
-			# As default policy is accept and this is about general
-			# tcp/udp port blocking
-			if value == "block":
-				fh.write(add_iptables_entry(proto , port))
-		
-		# Welcome to the complex part, filtering out
-		if key.startswith('security/firewall/services/'):
-			key = key.replace('security/firewall/services/', '')
-			(service, data) = key.split('/', 1)
+			action = tmp[3]
 			
-			enable = baseConfig['security/firewall/services/'+service+'/enable']
-			if baseConfig['security/firewall/services/'+service+'/enable'] != "yes":
-				print "Firewall service disabled: " + service + '. Going on.'
-				continue
+			if action == 'accept' or action == 'deny':
+				port = value
+				port_chunks = port.split(",")
+				for i in port_chunks:
+					port_range = i.split("-")
+					if len(port_range) == 1:
+						if action == 'deny':
+							fh_deny.write(add_iptables_entry(proto, port_range[0], action))
+						elif action == 'accept':
+							fh_accept.write(add_iptables_entry(proto, port_range[0], action))
+					elif len(port_range) == 2:
+						if action == 'deny':
+							fh_deny.write(add_iptables_entry(proto, (port_range[0] + ":" + port_range[1]), action))
+						elif action == 'accept':
+							fh_accept.write(add_iptables_entry(proto, (port_range[0] + ":" + port_range[1]), action))
+							
+					else:
+						# Syntax error, log error message
+						pass
 
-			# We got a new service. Means, we can write the old, as we got all data
-			# You can be sure about this, because sort() was called on baseConfig
-			if oldservice and oldservice != service:
-				
-				write_service(oldservice, fh, enable, policy, log, tcp, udp, allowip, denyip)
-				
-				# Reset our values
-				udp = {}
-				tcp = {}
-				allowip = []
-				denyip = []
-				log = ''
-				policy = ''
-				enable = ''
+# 		# Welcome to the complex part, filtering out
+# 		if key.startswith('security/firewall/services/'):
+# 			key = key.replace('security/firewall/services/', '')
+# 			(service, data) = key.split('/', 1)
 			
-			# Else we need to collect more data
-			else:
-				# Logging rule
-				if (data == 'logging' and value == 'yes'):
-					log = 1
-				
-				if data == 'policy' and (value == 'accept' or value == 'deny'):
-					policy = value
+# 			enable = baseConfig['security/firewall/services/'+service+'/enable']
+# 			if baseConfig['security/firewall/services/'+service+'/enable'] != "yes":
+# 				print "Firewall service disabled: " + service + '. Going on.'
+# 				continue
 
-				if data.startswith('tcp/'):
-					(tmp, port) = data.split('/', 1)
-					tcp[port] = value
-
-				if data.startswith('udp/'):
-					(tmp, port) = data.split('/', 1)
-					udp[port] = value
+# 			# We got a new service. Means, we can write the old, as we got all data
+# 			# You can be sure about this, because sort() was called on baseConfig
+# 			if oldservice and oldservice != service:
 				
-				if data.startswith('allowed/'):
-					allowip.append(value)
+# 				write_service(oldservice, fh, enable, policy, log, tcp, udp, allowip, denyip)
 				
-				if data.startswith('denied/'):
-					denyip.append(value)
+# 				# Reset our values
+# 				udp = {}
+# 				tcp = {}
+# 				allowip = []
+# 				denyip = []
+# 				log = ''
+# 				policy = ''
+# 				enable = ''
 			
-			#print "Service: %s " % service
-			#print "data: %s => %s " % (data, value)
+# 			# Else we need to collect more data
+# 			else:
+# 				# Logging rule
+# 				if (data == 'logging' and value == 'yes'):
+# 					log = 1
+				
+# 				if data == 'policy' and (value == 'accept' or value == 'deny'):
+# 					policy = value
 
-			oldservice = service
+# 				if data.startswith('tcp/'):
+# 					(tmp, port) = data.split('/', 1)
+# 					tcp[port] = value
+
+# 				if data.startswith('udp/'):
+# 					(tmp, port) = data.split('/', 1)
+# 					udp[port] = value
+				
+# 				if data.startswith('allowed/'):
+# 					allowip.append(value)
+				
+# 				if data.startswith('denied/'):
+# 					denyip.append(value)
+			
+# 			#print "Service: %s " % service
+# 			#print "data: %s => %s " % (data, value)
+
+# 			oldservice = service
 		
 		
-	write_service(oldservice, fh, enable, policy, log, tcp, udp, allowip, denyip)
+#	write_service(oldservice, fh, enable, policy, log, tcp, udp, allowip, denyip)
 
 	# Close the main script
-	fh.write('\n')
-	fh.close()
+	fh_accept.write('\n')
+	fh_deny.write('\n')
+	fh_accept.close()
+	fh_deny.close()
 	os.chmod(initscript, 0755);
 
 ### functions^Wmethods
@@ -152,18 +165,17 @@ def open_iptables_script (file):
 # Add a IPTables entry to the INPUT chain
 # iptables -A INPUT  -p tcp --dport 111 -j univention-thinclient
 # call: add_iptables_entry('tcp', '111', 'thinclient')
-# jump='' option whether we want to jump into a certain chain or block in INPUT
-# disable='' if a ruleset is disabled, write it commented out anyway
-def add_iptables_entry(proto, port, jump='', disable=''):
-	if jump:
-		jump = 'univention-%s' % jump
-	else:
+
+def add_iptables_entry(proto, port, action):
+	jump = ""
+	
+	if action == 'deny':
 		if proto == 'tcp':
 			jump = 'REJECT --reject-with tcp-reset'
 		if proto == 'udp':
 			jump = 'DROP'
-
-	port = port.replace('-', ':', 1)
+	elif action == 'accept':
+		jump = 'ACCEPT'
 
 	return ('$iptables -A INPUT -p %s --dport %s -j %s\n' % (proto, port, jump))
 

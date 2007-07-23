@@ -1,0 +1,28 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		echo -n "Starting univention-firewall: "
+		if [ -x /etc/security/netfilter.d ] ; then
+		    run-parts /etc/security/netfilter.d/
+		fi
+		echo "done"
+		;;
+	stop)
+		echo -n "Stopping univention-firewall: "
+		# Needs serious improvement... 
+		iptables -F 
+		iptables -X 
+		echo "done"
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/univention-firewall {start|stop|restart}"
+		exit 1
+		;;
+esac
+
+
