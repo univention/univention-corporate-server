@@ -1,3 +1,0 @@
-Type: script
-Script: firewall.py
-Variables: security/firewall/*
