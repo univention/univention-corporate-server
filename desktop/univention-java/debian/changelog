@@ -1,0 +1,37 @@
+univention-java (1.0-7) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Nov 2006 09:48:50 +0100
+
+univention-java (1.0-6) unstable; urgency=low
+
+  * changed depends, will install sun-jre now
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  6 Dec 2005 17:04:32 +0100
+
+univention-java (1.0-4) unstable; urgency=high
+
+  * removed j2se-common depends
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Dec 2004 10:05:07 +0100
+
+univention-java (1.0-3) unstable; urgency=low
+
+  * basconfigdump handles Error if DISPLAY-variable is wrong
+  * added script "univention-java-baseconfigdump" to start baseconfigdump
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 11 Nov 2004 14:18:11 +0100
+
+univention-java (1.0-2) unstable; urgency=low
+
+  * support firefox 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue,  2 Nov 2004 13:40:51 +0100
+
+univention-java (1.0-1) unstable; urgency=low
+
+  * Initial Release. 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 24 Aug 2004 17:08:19 +0200
+

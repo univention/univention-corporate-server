@@ -1,0 +1,17 @@
+Source: univention-java
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper
+
+Package: univention-java
+Architecture: all
+Depends: sun-j2re1.5 | java-virtual-machine, java2-runtime, java-browser-plugin
+Description: UCS - Java support
+ This package provides Java support for UCS.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
