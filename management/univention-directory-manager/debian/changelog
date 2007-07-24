@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-3) unstable; urgency=low
+
+  * changed links from console to univention-management-console
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 24 Jul 2007 10:26:51 +0200
+
 univention-directory-manager (4.0.3-2) unstable; urgency=low
 
   * fixed naming of registry config variables
