@@ -1,3 +1,9 @@
+univention-java (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 16:05:39 +0200
+
 univention-java (1.0-7) unstable; urgency=low
 
   * add GPL headers
