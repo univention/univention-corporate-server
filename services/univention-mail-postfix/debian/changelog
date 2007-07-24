@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.0-10) unstable; urgency=low
+
+  * fixed wildcards
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 15:00:53 +0200
+
 univention-mail-postfix (1.0.0-9) unstable; urgency=low
 
   * added descriptions for config registry variables

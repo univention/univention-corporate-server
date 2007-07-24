@@ -22,8 +22,8 @@ File: etc/postfix/master.cf
 Variables: hostname
 Variables: mail/antivir
 Variables: mail/antispam
-Variables: interfaces/eth*/network
-Variables: interfaces/eth*/netmask
+Variables: interfaces/eth.*/network
+Variables: interfaces/eth.*/netmask
 Variables: mail/smtpauth
 Variables: mail/smtpport
 
@@ -34,7 +34,7 @@ Variables: domainname
 
 Type: file
 File: etc/aliases
-Variables: mail/alias/*
+Variables: mail/alias/.*
 
 Type: file
 File: etc/postfix/transport
