@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/security/netfilter.d/20tftp
+#
+
+@!@
+if baseConfig.has_key('security/services/dhcp') and baseConfig['security/services/dhcp'] == 'disabled':
+	print '/sbin/iptables -A INPUT  -p udp --dport 69 -j REJECT'
+@!@
