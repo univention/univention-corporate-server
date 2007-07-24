@@ -12,5 +12,5 @@
 
 @!@
 if baseConfig.has_key('security/services/telnet') and baseConfig['security/services/telnet'] == 'disabled':
-	print '/sbin/iptables -A INPUT  -p tcp --dport 22 -j REJECT'
+	print '/sbin/iptables -A INPUT  -p tcp --dport 23 -j REJECT'
 @!@
