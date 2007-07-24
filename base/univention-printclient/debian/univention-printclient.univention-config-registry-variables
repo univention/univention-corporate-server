@@ -1,0 +1,6 @@
+[cups/server]
+Description[de]=FQDN des CUPS-Druckservers
+Description[en]=FQDN of the CUPS printserver
+Type=str
+Categories=Printing
+
