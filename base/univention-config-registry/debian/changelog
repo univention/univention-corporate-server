@@ -1,3 +1,11 @@
+univention-config-registry (2.2.3-1) unstable; urgency=low
+
+  * moved univention-(baseconfig|config-registry) back to package
+    univention-config
+  * moved univention-install-* back to package univention-config-dev
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Jul 2007 13:44:47 +0200
+
 univention-config-registry (2.2.2-2) unstable; urgency=low
 
   * prevent config-registry module from loading all files in
