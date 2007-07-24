@@ -1,3 +1,10 @@
+univention-config-registry (2.2.2-2) unstable; urgency=low
+
+  * prevent config-registry module from loading all files in
+    registry.info dir, fixes Bug #8787
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 11:55:48 +0200
+
 univention-config-registry (2.2.2-1) unstable; urgency=low
 
   * fixed tracebacks caused by baseconfig variables containing ": "
