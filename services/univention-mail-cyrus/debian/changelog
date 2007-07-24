@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.0-9) unstable; urgency=low
+
+  * fixed an umlaut
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 12:00:54 +0200
+
 univention-mail-cyrus (1.0.0-8) unstable; urgency=low
 
   * change categories to mail
