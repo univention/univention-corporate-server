@@ -333,14 +333,16 @@ fi
 # Stop Notifier
 notifier_pid=`pidof univention-ldap-notifier`
 if [ -n "$notifier_pid" -a -e /etc/runit/univention/univention-ldap-notifier ]; then
-	/etc/init.d/univention-ldap-notifier stop
+	echo -n "Stopping univention-ldap-notifier daemon: "
+	/etc/init.d/univention-ldap-notifier stop >dev/null 2>&1
 	while ! sv status univention-ldap-notifier | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
 
 # Stop Listener
 listener_pid=`pidof univention-ldap-listener`
 if [ -e /etc/runit/univention/univention-ldap-listener ]; then
-	/etc/init.d/univention-ldap-listener stop
+	echo -n "Stopping univention-ldap-listener daemon: "
+	/etc/init.d/univention-ldap-listener stop >dev/null 2>&1
 	while ! sv status univention-ldap-listener | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
 rm -Rf /var/lib/univention-ldap-listener/*
@@ -408,9 +410,6 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 	eval `univention-baseconfig shell`
 
 	mkdir -p /var/lib/univention-ldap/notify/
-	#univention-scp $DCPWD -r $DCACCOUNT@$DCNAME:/var/lib/univention-ldap/notify/transaction /var/lib/univention-ldap/notify/transaction.tmp
-	#cat /var/lib/univention-ldap/notify/transaction.tmp | sed -e '$D' >/var/lib/univention-ldap/notify/transaction
-	#tail -1 /var/lib/univention-ldap/notify/transaction | awk '{print $1}' >/var/lib/univention-ldap/last_transaction.id
 
 	touch /usr/share/univention-join/.joined
 
@@ -434,6 +433,10 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 					failed_message "FAILED: failed.ldif exists."
 				fi
 				univention-scp $DCPWD -r $DCACCOUNT@$DCNAME:/var/lib/univention-ldap/notify/transaction /tmp/ >/dev/null 2>&1
+				if [ ! -e /tmp/transaction ]; then
+					failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
+				fi
+
 				id=`cat /var/lib/univention-ldap-listener/notifier_id`
 				cat /tmp/transaction | awk -F ' ' '{ if ( $1 <= '$id') print }' >/var/lib/univention-ldap/notify/transaction
 				rm /tmp/transaction

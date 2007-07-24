@@ -1,3 +1,9 @@
+univention-join (1.0.5-1) unstable; urgency=low
+
+  * added more error handling in the join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 13:43:55 +0200
+
 univention-join (1.0.4-2) unstable; urgency=low
 
   * readded the dependency to sysutils
