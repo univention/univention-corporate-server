@@ -6,7 +6,7 @@ Variables: domainname
 
 Type: file
 File: etc/aliases
-Variables: mail/alias/*
+Variables: mail/alias/.*
 
 Type: file
 File: etc/mailname

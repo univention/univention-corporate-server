@@ -1,4 +1,4 @@
-[mail/alias/*]
+[mail/alias/.*]
 Description[de]=Mailweiterleitung für lokale Empfänger
 Description[en]=Redirect mail for local recipients
 Type=str

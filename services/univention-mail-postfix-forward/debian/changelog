@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-8) unstable; urgency=low
+
+  * fixed wildcards
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 15:02:19 +0200
+
 univention-mail-postfix-forward (1.0.0-7) unstable; urgency=low
 
   * fix rules file
