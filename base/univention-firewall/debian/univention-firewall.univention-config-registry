@@ -1,0 +1,19 @@
+Type: script
+Script: firewall.py
+Variables: security/packetfilter/*
+
+Type: file
+File: etc/security/netfilter.d/20smtp
+Variables: security/services/smtp
+
+Type: file
+File: etc/security/netfilter.d/20pop3
+Variables: security/services/pop3
+
+Type: file
+File: etc/security/netfilter.d/20imap
+Variables: security/services/imap
+
+Type: file
+File: etc/security/netfilter.d/20nagios
+Variables: security/services/nagios
