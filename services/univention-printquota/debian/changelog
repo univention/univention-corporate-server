@@ -1,0 +1,30 @@
+univention-printquota (0.5.2-2) unstable; urgency=low
+
+  * remove world read access to /etc/pykota/pykota.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 21 Dec 2006 13:31:22 +0100
+
+univention-printquota (0.5.2-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:24:37 +0100
+
+univention-printquota (0.5-0) unstable; urgency=low
+
+  * specify filesystem rights and group membership compatible to cups 1.2
+  * enhance debug-capabilities for quota-policy tool
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  7 Nov 2006 17:30:04 +0100
+
+univention-printquota (0.4) unstable; urgency=low
+
+  * Switched to python 2.4 (support for older versions has been dropped)
+
+ -- Alexander Reelsen <reelsen@univention.de>  Mon, 19 Sep 2005 14:46:58 +0200
+
+univention-printquota (0.1) unstable; urgency=low
+
+  * Pykota for UCS
+
+ -- Univention GmbH <packages@univention.de>  Fri, 10 Jan 2005 15:53:05 +0100

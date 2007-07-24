@@ -1,0 +1,10 @@
+Type: multifile
+Multifile: etc/postgresql/pg_hba.conf
+Variables: cups/quota/server/access
+Variables: cups/quota/account
+
+Type: subfile
+Multifile: etc/postgresql/pg_hba.conf
+Subfile: etc/postgresql/pg_hba.conf.d/11-pg_hba.conf
+Variables: cups/quota/server/access
+Variables: cups/quota/account

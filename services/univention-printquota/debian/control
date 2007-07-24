@@ -1,0 +1,19 @@
+Source: univention-printquota
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-printquota
+Architecture: all
+Depends: univention-baseconfig, univention-printserver, pykota, univention-printquotadb
+Predepends: pykota
+Description: UCS - quotasupport for printserver
+ This packages provides the printquota configuration. Quotas
+ can be managed with Univention Admin and Univention Console.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,18 @@
+univention-printquotadb (0.3) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sat,  2 Dec 2006 19:29:21 +0100
+
+univention-printquotadb (0.2) unstable; urgency=low
+
+  * suppress notice messages upon initial creation of database
+  * upgrade pykota database to new version 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 15 Dec 2005 17:12:08 +0100
+
+univention-printquotadb (0.1) unstable; urgency=low
+
+  * Pykota-Storage-Database for UCS
+
+ -- Univention GmbH <packages@univention.de>  Fri, 10 Jan 2005 15:53:05 +0100
