@@ -33,6 +33,41 @@
 import sys, codecs, univention_baseconfig, os
 import ldap
 
+def encode_object_sid(sid_string, encode_in_base64=True):
+    binary_encoding = ""
+
+    for i in sid.split("-")[1:]:
+        j = int(i)
+
+        oc1 = (j >> 24)
+        oc2 = (j - (oc1 * (2 << 23))) >> 16
+        oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
+        oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
+
+        binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
+        binary_encoding += binary_encoding_chunk
+
+    if encode_in_base64:
+        return base64.encodestring(binary_encoding)
+
+    return binary_encoding
+
+def encode_object_sid_to_binary_ldapfilter(sid_string):
+    binary_encoding = ""
+
+    # The first two bytes do not seem to follow the expected binary LDAP filter
+    # conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
+    # statically
+    for i in sid_string.split("-")[3:]:
+        j = hex(int(i))
+        hex_repr = (((8-len(j[2:]))*"0") + j[2:])
+
+        binary_encoding_chunk  = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
+        binary_encoding += binary_encoding_chunk
+
+    return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
+
+
 if len(sys.argv)<2 or len(sys.argv)>3:
 	print ""
 	print "This is univention-adsearch"
@@ -76,7 +111,14 @@ lo.simple_bind_s(login_dn, login_pw)
 
 lc1 = ldap.create_control("LDAP_SERVER_SHOW_DELETED_OID")
 
-filter=sys.argv[1].decode('latin')
+filter_tmp=sys.argv[1].decode('latin')
+filter = ""
+
+for i in filter_tmp.split(","):
+	j = i.split("=")
+	if j[0] == "objectSid":
+		j[1] = encode_object_sid_to_binary_ldapfilter(j[1])
+	filter += (j[0] + "=" + j[1])
 
 if len(sys.argv)>2:
 	print sys.argv[1].split(',')

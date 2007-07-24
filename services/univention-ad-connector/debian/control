@@ -24,7 +24,7 @@ Description: UCS - Modules for connector sychronisation
 
 Package: python-univention-connector-ad
 Architecture: all
-Depends: ${python:Depends}, python-univention, python2.4-m2crypto, python-univention-license, python-univention-connector, python2.4-m2crypto
+Depends: ${python:Depends}, python-univention, python-univention-license, python-univention-connector, python-m2crypto
 Pre-Depends: univention-baseconfig (>> 1.54-30)
 Provides: ${python:Provides}, python2.4-univention-connector-ad
 XB-Python-Version: ${python:Versions}
@@ -39,7 +39,7 @@ Description: UCS - Modules for connector sychronisation
 
 Package: univention-ad-connector
 Architecture: all
-Depends: python2.4-univention (>= 1.5) | python2.4-univention-2005, python2.4-univention-license, python2.4-univention-connector-ad
+Depends: python-univention, python-univention-license, python-univention-connector-ad
 Pre-Depends: univention-baseconfig (>> 1.54-30)
 Conflicts: python2.3-univention-connector-ad
 Replaces: python2.3-univention-connector-ad

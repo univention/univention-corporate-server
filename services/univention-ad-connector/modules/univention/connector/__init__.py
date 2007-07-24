@@ -38,6 +38,7 @@ import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
 import univention.debug
+import base64
 from signal import *
 term_signal_caught = False
 
@@ -215,17 +216,20 @@ class property:
 		pass
 	
 class ucs:
-	def __init__(self, property, baseConfig, listener_dir):
+	def __init__(self, _property, baseConfig, listener_dir):
 		_d=univention.debug.function('ldap.__init__')
+
 
 		self.ucs_no_recode=['krb5Key','userPassword','pwhistory','sambaNTPassword','sambaLMPassword']
 
 		self.baseConfig=baseConfig
-		self.property=property
+		self.property=_property
+
+		self.init_debug()
+		
 		self.co=univention.admin.config.config()
 		self.listener_dir=listener_dir
 
-		self.init_debug()
 
 		self.configfile='/etc/univention/connector/internal.cfg'
 		if not os.path.exists(self.configfile):
@@ -704,13 +708,25 @@ class ucs:
 					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, '__set_values: no ucs_attribute found in %s' % attributes)
 			else:
 				# the value isn't set in the ad directory, but it could be set in ucs, so we should delete it on ucs side
+				#if self.baseConfig['connector/ad/windows_version'] != 'win2000':
+				
+				# prevent value resets of mandatory attributes
+				mandatory_attrs = ['lastname']
+
 				ucs_key = attributes.ucs_attribute
-				ucs_module = self.modules[property_type]
-				position=univention.admin.uldap.position(self.lo.base)
-				position.setDn(object['dn'])
-				univention.admin.modules.init(self.lo,position,ucs_module)
-				ucs_object[ucs_key] = []
-				univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+				if ucs_object.has_key(ucs_key):
+					ucs_module = self.modules[property_type]
+					position=univention.admin.uldap.position(self.lo.base)
+					position.setDn(object['dn'])
+					univention.admin.modules.init(self.lo,position,ucs_module)
+					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, '__set_values: no ldap_attribute defined in %s, we unset the key %s in the ucs-object' % (attributes, ucs_key))
+
+					if ucs_key not in mandatory_attrs:
+						ucs_object[ucs_key] = []
+					else:
+						univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, '__set_values: The attributes for %s have not been removed as it represents a mandatory attribute' % ucs_key)
+						
+
 
 		for attr_key in self.property[property_type].attributes.keys():
 			set_values(self.property[property_type].attributes[attr_key])
@@ -1080,6 +1096,8 @@ class ucs:
 		dn_mapping_stored = []
 		for dntype in ['dn','olddn']: # check if all available dn's are already mapped
 			if object.has_key(dntype):
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"_dn_type %s %s" % (object_type, str(object)))
+
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])
 					dn_mapping_stored.append(dntype)
@@ -1147,36 +1165,38 @@ class ucs:
 
 
 		else:
-			for attribute, values in object['attributes'].items():
-				for attr_key in self.property[key].attributes.keys():
-					if attribute == self.property[key].attributes[attr_key].con_attribute:
-						# mapping function
-						if hasattr(self.property[key].attributes[attr_key], 'mapping'):
-							object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=self.property[key].attributes[attr_key].mapping[1](self, key, object)
-						# direct mapping
-						else:
-							object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values
-
-						# mapping_table	
-						if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
-							for ucsval, conval in self.property[key].mapping_table[attr_key]:
-								if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
-
-									conval_lower = make_lower(conval)
-									objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
-									
-									if conval_lower in objectval_lower:
-										object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute][ objectval_lower.index(conval_lower) ] = ucsval
-									elif conval_lower == objectval_lower:
-										object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = ucsval
-
-				if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes != None:
-					for attr_key in self.property[key].post_attributes.keys():
-						if attribute == self.property[key].post_attributes[attr_key].con_attribute:
-							if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
-								object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
+			# Filter out Configuration objects w/o DN
+			if object['dn'] != None:
+				for attribute, values in object['attributes'].items():
+					for attr_key in self.property[key].attributes.keys():
+						if attribute == self.property[key].attributes[attr_key].con_attribute:
+							# mapping function
+							if hasattr(self.property[key].attributes[attr_key], 'mapping'):
+								object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=self.property[key].attributes[attr_key].mapping[1](self, key, object)
+						        # direct mapping
 							else:
-								object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values
+								object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute]=values
+
+						        # mapping_table	
+							if self.property[key].mapping_table and attr_key in self.property[key].mapping_table.keys():
+								for ucsval, conval in self.property[key].mapping_table[attr_key]:
+									if type(object_out['attributes'][self.property[key].attributes[attr_key].con_attribute]) == type([]):
+
+										conval_lower = make_lower(conval)
+										objectval_lower = make_lower(object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute])
+									
+										if conval_lower in objectval_lower:
+											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute][ objectval_lower.index(conval_lower) ] = ucsval
+										elif conval_lower == objectval_lower:
+											object_out['attributes'][self.property[key].attributes[attr_key].ldap_attribute] = ucsval
+
+					if hasattr(self.property[key], 'post_attributes') and self.property[key].post_attributes != None:
+						for attr_key in self.property[key].post_attributes.keys():
+							if attribute == self.property[key].post_attributes[attr_key].con_attribute:
+								if hasattr(self.property[key].post_attributes[attr_key], 'mapping'):
+									object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=self.property[key].post_attributes[attr_key].mapping[1](self, key, object)
+								else:
+									object_out['attributes'][self.property[key].post_attributes[attr_key].ldap_attribute]=values
 
 		return object_out
 

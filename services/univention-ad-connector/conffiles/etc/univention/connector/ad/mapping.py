@@ -42,7 +42,9 @@ global_ignore_subtree=['cn=univention,@%@ldap/base@%@','cn=policies,@%@ldap/base
 			'cn=ForeignSecurityPrincipals,@%@connector/ad/ldap/base@%@',
 			'ou=Domain Controllers,@%@connector/ad/ldap/base@%@',
 			'cn=Program Data,@%@connector/ad/ldap/base@%@',
+			'cn=Configuration,@%@connector/ad/ldap/base@%@',
 			'cn=Microsoft Exchange System Objects,@%@connector/ad/ldap/base@%@']
+
 
 ad_mapping = {
 	'user': univention.connector.property (
@@ -107,38 +109,41 @@ ad_mapping = {
 							ldap_attribute='o',
 							con_attribute='department',
 						),
-					'description': univention.connector.attribute (
-							ucs_attribute='description',
-							ldap_attribute='description',
-							con_attribute='description',
-						),
-@!@
+						@!@
 if baseConfig.has_key('connector/ad/mapping/user/exchange') and baseConfig['connector/ad/mapping/user/exchange'] in ['yes','true']:
-   print """
-                                                'Exchange-Homeserver': univention.connector.attribute (
-                                                        ucs_attribute='Exchange-Homeserver',
-                                                        ldap_attribute='univentionADmsExchHomeServerName',
-                                                        con_attribute='msExchHomeServerName',
-                                                ),
-                                                'Exchange-homeMDB': univention.connector.attribute (
-                                                        ucs_attribute='Exchange-homeMDB',
-                                                        ldap_attribute='univentionADhomeMDB',
-                                                        con_attribute='homeMDB',
-                                                ),
-                                                'Exchange-Nickname': univention.connector.attribute (
-                                                        ucs_attribute='Exchange-Nickname',
-                                                        ldap_attribute='univentionADmailNickname',
-                                                        con_attribute='mailNickname',
-                                                ),
-                                                """
+	print """
+					'Exchange-Homeserver': univention.connector.attribute (
+							ucs_attribute='Exchange-Homeserver',
+							ldap_attribute='univentionADmsExchHomeServerName',
+							con_attribute='msExchHomeServerName',
+					),
+					'Exchange-homeMDB': univention.connector.attribute (
+							ucs_attribute='Exchange-homeMDB',
+							ldap_attribute='univentionADhomeMDB',
+							con_attribute='homeMDB',
+					),
+					'Exchange-Nickname': univention.connector.attribute (
+							ucs_attribute='Exchange-Nickname',
+							ldap_attribute='univentionADmailNickname',
+							con_attribute='mailNickname',
+					),
+					"""
+if not baseConfig.has_key('connector/ad/windows_version') or baseConfig['connector/ad/windows_version'] != 'win2000':
+	print """
+					'description': univention.connector.attribute (
+						ucs_attribute='description',
+						ldap_attribute='description',
+						con_attribute='description',
+					),
+					"""
 if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['connector/ad/mapping/user/primarymail'] in ['yes','true']:
-   print """
-                                                'mailPrimaryAddress': univention.connector.attribute (
-							ucs_attribute='mailPrimaryAddress',
-							ldap_attribute='mailPrimaryAddress',
-							con_attribute='mail',
-                                                        ),
-                                                """
+	print """
+					'mailPrimaryAddress': univention.connector.attribute (
+						ucs_attribute='mailPrimaryAddress',
+						ldap_attribute='mailPrimaryAddress',
+						con_attribute='mail',
+					),
+					"""
 @!@
 					'street': univention.connector.attribute (
 							ucs_attribute='street',
@@ -210,20 +215,21 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							ldap_attribute='description',
 							con_attribute='description',
 						),
-                                        @!@if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['connector/ad/mapping/group/primarymail'] in ['yes','true']:
-                                                print """
-                                                'mailAddress': univention.connector.attribute (
-							ucs_attribute='mailAddress',
-							ldap_attribute='mailPrimaryAddress',
-							con_attribute='mail',
-                                                        ),
-                                                'Exchange-Nickname': univention.connector.attribute (
-                                                        ucs_attribute='Exchange-Nickname',
-                                                        ldap_attribute='univentionADmailNickname',
-                                                        con_attribute='mailNickname',
-                                                ),
-                                                """
-                                        @!@
+						@!@
+if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['connector/ad/mapping/group/primarymail'] in ['yes','true']:
+	print """
+					'mailAddress': univention.connector.attribute (
+						ucs_attribute='mailAddress',
+						ldap_attribute='mailPrimaryAddress',
+						con_attribute='mail',
+					),
+					'Exchange-Nickname': univention.connector.attribute (
+						ucs_attribute='Exchange-Nickname',
+						ldap_attribute='univentionADmailNickname',
+						con_attribute='mailNickname',
+					),
+					"""
+					@!@
 				},
 
 			mapping_table = {

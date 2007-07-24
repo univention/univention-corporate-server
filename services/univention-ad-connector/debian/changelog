@@ -1,3 +1,10 @@
+univention-ad-connector (1.1.0-1) unstable; urgency=low
+
+  * support Windows 2000, applied patches from the management scope
+  * fix dependencies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 10:15:46 +0200
+
 univention-ad-connector (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8

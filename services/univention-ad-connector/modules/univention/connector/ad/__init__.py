@@ -37,15 +37,15 @@ import univention.connector
 import univention.utf8
 
 def activate_user (connector, key, object):
-	# set userAccountControl to 544
-	for i in range(0,10):
-		try:
-			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['544'])])
-		except ldap.NO_SUCH_OBJECT:
-			time.sleep(1)
-			continue
-		return True
-	return False
+        # set userAccountControl to 544
+        for i in range(0,10):
+                try:
+                        connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'userAccountControl', ['544'])])
+                except ldap.NO_SUCH_OBJECT:
+                        time.sleep(1)
+                        continue
+                return True
+        return False
 
 def group_members_sync_from_ucs(connector, key, object):
 	return connector.group_members_sync_from_ucs(key, object)
@@ -135,8 +135,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 	object = copy.deepcopy(given_object)
 
 	samaccountname = ''
-	if object['attributes'].has_key('sAMAccountName'):
-		samaccountname=object['attributes']['sAMAccountName'][0]
+	
+	if object['dn'] != None:
+		if object['attributes'].has_key('sAMAccountName'):
+			samaccountname=object['attributes']['sAMAccountName'][0]
 		
 	def dn_premapped(object, dn_key, dn_mapping_stored):
 		if (not dn_key in dn_mapping_stored) or (not object[dn_key]):
@@ -165,6 +167,10 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 		if object.has_key(dn_key) and not dn_premapped(object, dn_key, dn_mapping_stored):
 
 			dn = object[dn_key]
+
+			# Skip Configuration objects with empty DNs
+			if dn == None:
+				break
 
 			pos = string.find(dn,'=')
 			pos2 =  len(univention.connector.ad.explode_unicode_dn(dn)[0])
@@ -389,6 +395,46 @@ def encode_sid(value):
 	return a
 
 
+def encode_object_sid(sid_string, encode_in_base64=True):
+    binary_encoding = ""
+
+    for i in sid.split("-")[1:]:
+        j = int(i)
+
+        oc1 = (j >> 24)
+        oc2 = (j - (oc1 * (2 << 23))) >> 16
+        oc3 = (j - (oc1 * (2 << 23)) - (oc2 * (2 << 15))) >> 8
+        oc4 = j - (oc1 * (2 << 23)) - (oc2 * (2 << 15)) - (oc3 * (2 << 7))
+
+        binary_encoding_chunk = chr(oc4) + chr(oc3) + chr(oc2) + chr(oc1)
+        binary_encoding += binary_encoding_chunk
+
+    if encode_in_base64:
+        return base64.encodestring(binary_encoding)
+
+    return binary_encoding
+
+def encode_object_sid_to_binary_ldapfilter(sid_string):
+    binary_encoding = ""
+
+    # The first two bytes do not seem to follow the expected binary LDAP filter
+    # conversion scheme. Thus, we skip them and prepend the encoding of "1-5"
+    # statically
+
+    univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"encode_object_sid_to_binary %s:" % str(sid_string))
+
+    
+    for i in sid_string.split("-")[3:]:
+        j = hex(int(i))
+        hex_repr = (((8-len(j[2:]))*"0") + j[2:])
+
+        binary_encoding_chunk  = '\\' + hex_repr[6:8] + "\\" + hex_repr[4:6] + "\\" + hex_repr[2:4] + "\\" + hex_repr[0:2]
+        binary_encoding += binary_encoding_chunk
+
+    return "\\01\\05\\00\\00\\00\\00\\00\\05" + binary_encoding
+
+
+
 def encode_list(list, encoding):
 	newlist=[]
 	for val in list:
@@ -503,10 +549,12 @@ def explode_unicode_dn(dn, notypes=0):
 
 class ad(univention.connector.ucs):
 	def __init__(self, property, baseConfig, ad_ldap_host, ad_ldap_port, ad_ldap_base, ad_ldap_binddn, ad_ldap_bindpw, ad_ldap_certificate, listener_dir):
+
 		univention.connector.ucs.__init__(self, property, baseConfig, listener_dir)
 
 		self.lo_ad=univention.uldap.access(host=ad_ldap_host, port=int(ad_ldap_port), base=ad_ldap_base, binddn=ad_ldap_binddn, bindpw=ad_ldap_bindpw, start_tls=2, ca_certfile=ad_ldap_certificate, decode_ignorelist=['objectSid', 'objectGUID', 'repsFrom', 'replUpToDateVector', 'ipsecData', 'logonHours', 'userCertificate', 'dNSProperty', 'dnsRecord', 'member'])
 		self.lo_ad.lo.set_option(ldap.OPT_REFERRALS,0)
+		self.baseConfig = baseConfig
 
 		if not self.config.has_section('AD'):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"__init__: init add config section 'AD'")
@@ -718,13 +766,20 @@ class ad(univention.connector.ucs):
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
 		'''
 		_d=univention.debug.function('ldap.__dn_from_deleted_object')
+
+		# In Windows 2000 there's no lastKnownParent attribute. Thus, we have to map the
+		# relevant object according to the objectGUID of the removed object
+		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+			GUID = object['objectGUID'][0]
+			return self._get_DN_for_GUID(GUID)
+
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
-		rdn = object['dn'][:string.find(object['dn'],'DEL:')-3]
-		if object['attributes'].has_key('lastKnownParent'):
-			return rdn + "," + object['attributes']['lastKnownParent'][0]							
-		else:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn )
-			return None
+ 		rdn = object['dn'][:string.find(object['dn'],'DEL:')-3]
+ 		if object['attributes'].has_key('lastKnownParent'):
+ 			return rdn + "," + object['attributes']['lastKnownParent'][0]							
+ 		else:
+ 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn )
+ 			return None
 
 	def __object_from_element(self, element):
 		"""
@@ -738,11 +793,20 @@ class ad(univention.connector.ucs):
 		object['dn'] = self.encode(element[0])
 		deleted_object = False
 		GUID = element[1]['objectGUID'][0]
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "GUID: %s " % str(GUID))
+
 		# modtype
 		if element[1].has_key('isDeleted') and element[1]['isDeleted'][0] == 'TRUE':
 			object['modtype'] = 'delete'
 			deleted_object = True
-			self._remove_GUID(GUID)
+
+			# Windows 2000 doesn't provide a LastKnownParent attribute for deleted objects
+			# Thus, we need to perform mapping according to the objectGUID, so do not delete
+			# it if running against Windows 2000
+			if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+				pass
+			else:
+				self._remove_GUID(GUID)
 		else:
 			#check if is moved
 			olddn = self.encode(self._get_DN_for_GUID(GUID))
@@ -765,7 +829,9 @@ class ad(univention.connector.ucs):
 			
 		if deleted_object: # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
-			object['dn'] = self.__dn_from_deleted_object(object)
+			object['dn'] = self._get_DN_for_GUID(GUID)
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "w2k: DN of removed object: %s" % object['dn'])
+			
 			if not object['dn']:
 				return None
 		return object
@@ -821,9 +887,12 @@ class ad(univention.connector.ucs):
 
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
 								   "set_primary_group_to_ucs_user: AD rid: %s"%ad_group_rid)
+			object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
+			if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+				object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
 
 			ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-								   'objectSID=%s-%s'%(self.ad_sid,ad_group_rid),
+								   "objectSid=" + object_sid_string,
 								   timeout=-1, sizelimit=0))
 
 			if not ldap_group_ad[0][0]:
@@ -912,8 +981,13 @@ class ad(univention.connector.ucs):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
 							   "primary_group_sync_to_ucs: AD rid: %s"%ad_group_rid)
 
+		object_sid_string = str(self.ad_sid) + "-" + str(ad_group_rid)
+
+		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+			object_sid_string = encode_object_sid_to_binary_ldapfilter(object_sid_string)
+
 		ldap_group_ad = encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,
-							   'objectSID=%s-%s'%(self.ad_sid,ad_group_rid),
+							   ('objectSID=' + object_sid_string),
 							   timeout=-1, sizelimit=0))
 
 		ucs_group = self._object_mapping('group',{'dn':ldap_group_ad[0][0],'attributes':ldap_group_ad[0][1]})
@@ -1583,6 +1657,56 @@ class ad(univention.connector.ucs):
 								modlist.append((ldap.MOD_REPLACE, attr, value))
 			if modlist:
 				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist))
+				
+			attrs_in_current_ucs_object = object['attributes'].keys()
+ 			attrs_which_should_be_mapped = []
+ 			attrs_to_remove_from_ad_object = []
+			attrs_which_should_be_mapped = []
+
+ 			if hasattr(self.property['container'], 'post_attributes') and self.property['ou'].post_attributes != None:
+				for ac in self.property['container'].post_attributes.keys():
+					attrs_which_should_be_mapped.append(self.property['container'].post_attributes[ac].con_attribute)
+
+			if hasattr(self.property['ou'], 'post_attributes') and self.property['ou'].post_attributes != None:
+				for ac in self.property['ou'].post_attributes.keys():
+					attrs_which_should_be_mapped.append(self.property['ou'].post_attributes[ac].con_attribute)
+
+ 			if hasattr(self.property['group'], 'post_attributes') and self.property['group'].post_attributes != None:
+				for ac in self.property['group'].post_attributes.keys():
+					attrs_which_should_be_mapped.append(self.property['group'].post_attributes[ac].con_attribute)
+
+ 			if hasattr(self.property['user'], 'post_attributes') and self.property['user'].post_attributes != None:
+				for ac in self.property['user'].post_attributes.keys():
+					attrs_which_should_be_mapped.append(self.property['user'].post_attributes[ac].con_attribute)
+
+			modlist_empty_attrs = []			
+ 			for expected_attribute in attrs_which_should_be_mapped:
+				if not object['attributes'].has_key(expected_attribute):
+					attrs_to_remove_from_ad_object.append(expected_attribute)
+
+				if modlist:
+					for modified_attrs in modlist:
+						if modified_attrs[1] in attrs_to_remove_from_ad_object and len(modified_attrs[2]) > 0:
+							attrs_to_remove_from_ad_object.remove(modified_attrs[1])
+
+			for yank_empty_attr in attrs_to_remove_from_ad_object:
+				if ad_object.has_key(yank_empty_attr):
+					if value != None:
+						# the description attribute is managed internally by AD and cannot
+						# be removed directly. Thus we set it to " " instead
+						# FIXME: Make this configurable by baseconfig
+						if yank_empty_attr != "description":
+							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
+						else:
+							univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Value for description reset to a blank instead of removing attribute")
+							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, "x"))
+
+			if len(modlist_empty_attrs) > 0:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))
+				
+				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist_empty_attrs))
+				modlist_empty_attrs = []
+
 
 			if hasattr(self.property[property_type],"post_con_modify_functions"):
 				for f in self.property[property_type].post_con_modify_functions:
