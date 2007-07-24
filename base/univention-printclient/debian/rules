@@ -54,7 +54,8 @@ install: build
 
 	install -m 755 univention-ldap-policy/univention-policy-set-print-server debian/univention-printclient/usr/lib/univention-ldap-policy/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 

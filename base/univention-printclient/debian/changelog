@@ -1,3 +1,9 @@
+univention-printclient (1.0.0-4) unstable; urgency=low
+
+  * fix rules file
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 24 Jul 2007 17:02:22 +0200
+
 univention-printclient (1.0.0-3) unstable; urgency=low
 
   * added descriptions for config registry variables
