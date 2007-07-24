@@ -729,8 +729,22 @@ def clean():
 def postrun():
 	global __initscript
 	initscript = __initscript
-	if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"] in ["yes", "true", '1']):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: Restarting server')
+	# restart nagios if not running and nagios/server/autostart is set to yes/true/1
+	# otherwise if nagios is running, ask nagios to reload config
+	p = os.popen('pidof /usr/sbin/nagios2')
+	pidlist = p.read()
+	p.close()
+	if not pidlist.strip():
+		if listener.baseConfig.has_key("nagios/server/autostart") and ( listener.baseConfig["nagios/server/autostart"].lower() in ["yes", "true", '1']):
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: nagios2 not running - restarting server')
+
+			listener.setuid(0)
+			try:
+				listener.run(initscript, ['nagios2', 'restart'], uid=0)
+			finally:
+				listener.unsetuid()
+	else:
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'NAGIOS-SERVER: reloading server')
 		listener.setuid(0)
 		try:
 			listener.run(initscript, ['nagios2', 'reload'], uid=0)
