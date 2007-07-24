@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/security/netfilter.d/20http
+#
+
+@!@
+if baseConfig.has_key('security/services/http') and baseConfig['security/services/http'] == 'disabled':
+	print '/sbin/iptables -A INPUT  -p tcp --dport 80 -j REJECT'
+@!@
