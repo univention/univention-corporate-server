@@ -1,3 +1,9 @@
+univention-ldap-replication (1.0.5-2) unstable; urgency=low
+
+  * added several BUILTIN_OIDS to replication.py
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 24 Jul 2007 12:56:19 +0200
+
 univention-ldap-replication (1.0.5-1) unstable; urgency=low
 
   * add more ignored OIDs in schema-replication for new builtin definitions
