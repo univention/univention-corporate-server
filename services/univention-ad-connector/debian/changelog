@@ -1,3 +1,10 @@
+univention-ad-connector (1.1.1-1) unstable; urgency=low
+
+  * don't delete a object on ucs site if the object should be ignored
+    (match_filter)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 11:16:41 +0200
+
 univention-ad-connector (1.1.0-1) unstable; urgency=low
 
   * support Windows 2000, applied patches from the management scope

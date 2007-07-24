@@ -528,6 +528,7 @@ class ucs:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"get_ucs_object: object search failed: %s"%searchdn)
 			self._debug_traceback(univention.debug.WARN, "get_ucs_object: failure was: \n\t")
 			return None
+
 		return ucs_object
 
 	def initialize_ucs(self):
@@ -810,6 +811,11 @@ class ucs:
 		_d=univention.debug.function('ldap.delete_in_ucs')		
 		module = self.modules[property_type]
 		ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+
+		if self._ignore_object(property_type,ucs_object):
+			self._debug_traceback(univention.debug.WARN, "get_ucs_object: ignore object")
+			return True
+
 		try:
 			return ucs_object.remove()
 		except Exception, e:
