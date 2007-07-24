@@ -1,0 +1,30 @@
+[cups/admin]
+Description[de]=E-Mail Adresse des CUPS Administrator
+Description[en]=E-Mail address of the CUPS administrator
+Type=str
+Categories=Printing
+
+[cups/filedevice]
+Description[de]=Erlaube das Datei pseudo-Gerät für neue Druckerwarteschlangen
+Description[en]=Allow the file pseudo-device for new printer queues
+Type=str
+Categories=Printing
+
+[cups/location/admin]
+Description[de]=Liste von Netzwerken aus denen der CUPS Administratorzugriff erlaubt wird
+Description[en]=List of networks from which admin access is allowed
+Type=str
+Categories=Printing
+
+[cups/location/base]
+Description[de]=Liste von Netzwerken aus denen das Drucken erlaubt wird
+Description[en]=List of networks from which printing is allowed
+Type=str
+Categories=Printing
+
+[cups/systemgroup]
+Description[de]=Gruppen mit Administrationszugriff auf die Drucker
+Description[en]=Groups with printer administration access
+Type=str
+Categories=Printing
+
