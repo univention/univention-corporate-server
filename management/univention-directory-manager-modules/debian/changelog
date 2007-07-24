@@ -1,3 +1,12 @@
+univention-directory-manager-modules (2.0.5-1) unstable; urgency=low
+
+  * different behaviour for attribute gecos: just set when creating new users;
+    modified if firstname or lastname is changed and the old value is still
+    the default
+  * univention-sync-memberuid: write output to log file instead of stdout
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 24 Jul 2007 12:57:40 +0200
+
 univention-directory-manager-modules (2.0.4-3) unstable; urgency=low
 
   * changed links from console to univention-management-console

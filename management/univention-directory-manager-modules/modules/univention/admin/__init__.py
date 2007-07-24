@@ -125,7 +125,7 @@ class property:
 							return self.new()
 			return self.base_default
 
-		elif isinstance(self.base_default[0], types.FunctionType):
+		elif isinstance(self.base_default[0], types.FunctionType) or callable( self.base_default[ 0 ] ):
 			for p in self.base_default[1]:
 				if not object[p]:
 					return self.new()

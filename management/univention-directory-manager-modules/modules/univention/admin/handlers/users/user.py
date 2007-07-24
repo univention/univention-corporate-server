@@ -58,6 +58,28 @@ class vacationResendDays(univention.admin.syntax.select):
 	for i in range(2,60):
 		choices.append(("%s" % i,"%s %s" % (i, _('days'))))
 
+class _default_gecos:
+	def __init__( self ):
+		pass
+
+	def __call__( self, object, old_data = False ):
+		if not old_data:
+			if object[ 'firstname' ]:
+				gecos = "%s %s" % ( object.info.get( 'firstname', '' ), object.info.get( 'lastname', '' ) )
+			else:
+				gecos = "%s" % object.info.get( 'lastname', '' )
+		else:
+			if object[ 'firstname' ]:
+				gecos = "%s %s" % ( object.oldinfo.get( 'firstname', '' ), object.oldinfo.get( 'lastname', '' ) )
+			else:
+				gecos = "%s" % object.oldinfo.get( 'lastname', '' )
+
+		# replace umlauts
+		_umlauts = { u'ä' : u'ae', u'Ä' : u'Ae', u'ö' : u'oe', u'Ö' : u'Oe', u'ü' : u'ue', u'Ü' : u'Ue', u'ß' : u'ss' }
+		for umlaut, code in _umlauts.items():
+			gecos = gecos.replace( umlaut, code )
+
+		return gecos
 
 module='users/user'
 operations=['add','edit','remove','search','move']
@@ -169,6 +191,7 @@ property_descriptions={
 			multivalue=0,
 			required=0,
 			may_change=1,
+			default = ( _default_gecos(), [], False ),
 			identifies=0
 		),
 	'title': univention.admin.property(
@@ -1560,9 +1583,6 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if 'pki' in self.options:
 				self.reload_certificate()
 
-			if 'posix' in self.options and not self.oldinfo.get( 'gecos', '' ):
-				self[ 'gecos' ] = self.__create_gecos()
-
 			self.save()
 		else:
 			if 'posix' in self.options:
@@ -2047,15 +2067,12 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ml.append(('displayName', self.oldattr.get('displayName', [''])[0], cn))
 				ml.append(('givenName', self.oldattr.get('givenName', [''])[0], self['firstname']))
 
-		if 'posix' in self.options and not self.hasChanged( 'gecos' ):
-			if self.hasChanged( [ 'firstname', 'lastname' ] ):
-				gecos = self.__create_gecos()
-				if not self.oldinfo.get( 'gecos', '' ):
-					ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
-				else:
-					old_gecos = self.__create_gecos( old_data = True )
+			if 'posix' in self.options:
+				gecos = _default_gecos()
+				if self.oldinfo.get( 'gecos', '' ):
+					old_gecos = gecos( self, old_data = True )
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
-						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos ) )
+						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos( self ) ) )
 
 		shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 
