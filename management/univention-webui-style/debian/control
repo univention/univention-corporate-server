@@ -20,6 +20,7 @@ Description: Styleset for Univention WebUI - Web based user interfaces
 
 Package: univention-webui-style-base
 Architecture: all
+Conflicts: univention-webui-style (<< 1.0.4-2)
 Description: Styleset for UCS-OVERVIEW, Welcome Site of Server
  This packages contains the icons and stylesheet for UCS-OVERVIEW,
  a web based Welcome interface for Univention Server.

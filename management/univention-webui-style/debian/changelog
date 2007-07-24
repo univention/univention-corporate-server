@@ -1,3 +1,9 @@
+univention-webui-style (1.0.4-3) unstable; urgency=low
+
+  * added conflict on univention-webui-style << 1.4-2
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 24 Jul 2007 14:11:17 +0200
+
 univention-webui-style (1.0.4-2) unstable; urgency=low
 
   * corrected check on fatclient in templates
