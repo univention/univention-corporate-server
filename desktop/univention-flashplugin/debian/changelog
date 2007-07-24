@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 16:12:32 +0200
+
 univention-flashplugin (1.4-6) unstable; urgency=low
 
   * add GPL headers

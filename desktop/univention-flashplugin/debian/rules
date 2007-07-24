@@ -31,8 +31,6 @@
 
 D=$(CURDIR)/debian/univention-flashplugin
 
-export DH_COMPAT=3
-
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -g
 endif
