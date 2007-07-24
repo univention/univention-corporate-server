@@ -53,8 +53,8 @@ Variables: domainname
 Variables: postfix/permithosts
 Variables: postfix/allow-unauth
 Variables: mail/antivir
-Variables: interfaces/eth*/network
-Variables: interfaces/eth*/netmask
+Variables: interfaces/eth.*/network
+Variables: interfaces/eth.*/netmask
 Variables: ldap/base
 Variables: ldap/port
 Variables: ldap/server
@@ -79,7 +79,7 @@ Variables: domainname
 
 Type: file
 File: etc/aliases
-Variables: mail/alias/*
+Variables: mail/alias/.*
 
 Type: file
 File: etc/postfix/transport
