@@ -54,9 +54,8 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	mkdir -p $(CURDIR)/debian/etc/security/netfilter.d
-	cp ./conffiles/etc/security/netfilter.d/20smtp $(CURDIR)/debian/univention-firewall/etc/univention/templates/files/etc/security/netfilter.d
-	cp ./00init $(CURDIR)/debian/etc/security/netfilter.d
+	mkdir -p $(CURDIR)/debian/univention-firewall/etc/security/netfilter.d
+	cp ./00init $(CURDIR)/debian/univention-firewall/etc/security/netfilter.d
 
 	univention-install-baseconfig
 
@@ -66,19 +65,11 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples
-	dh_installmenu
 	dh_installinit --name=univention-iptables -r -u"defaults 41"
-	dh_installcron
-	dh_installman
-	dh_installinfo
 	dh_installchangelogs 
-	dh_link
-	dh_strip
 	dh_compress
 	dh_fixperms
 	dh_installdeb
-	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums
 	dh_builddeb

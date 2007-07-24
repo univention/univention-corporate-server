@@ -17,3 +17,47 @@ Variables: security/services/imap
 Type: file
 File: etc/security/netfilter.d/20nagios
 Variables: security/services/nagios
+
+Type: file
+File: etc/security/netfilter.d/20dhcp
+Variables: security/services/dhcp
+
+Type: file
+File: etc/security/netfilter.d/20dns
+Variables: security/services/dns
+
+Type: file
+File: etc/security/netfilter.d/20ftp
+Variables: security/services/ftp
+
+Type: file
+File: etc/security/netfilter.d/20http
+Variables: security/services/http
+
+Type: file
+File: etc/security/netfilter.d/20https
+Variables: security/services/https
+
+Type: file
+File: etc/security/netfilter.d/20ldap
+Variables: security/services/ldap
+
+Type: file
+File: etc/security/netfilter.d/20postgres
+Variables: security/services/postgres
+
+Type: file
+File: etc/security/netfilter.d/20samba
+Variables: security/services/samba
+
+Type: file
+File: etc/security/netfilter.d/20ssh
+Variables: security/services/ssh
+
+Type: file
+File: etc/security/netfilter.d/20telnet
+Variables: security/services/telnet
+
+Type: file
+File: etc/security/netfilter.d/20tftp
+Variables: security/services/tftp

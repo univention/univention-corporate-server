@@ -1,8 +1,0 @@
-#!/bin/sh
-
-#DEBHELPER#
-
-# Do some basic firewall setup
-
-/etc/init.d/univention-firewall restart || true
-

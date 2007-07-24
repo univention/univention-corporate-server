@@ -1,3 +1,5 @@
 etc/univention-firewall/
 etc/univention/templates/scripts
 etc/univention/templates/info
+etc/security/netfilter.d/
+etc/univention/templates/files/etc/security/netfilter.d/
