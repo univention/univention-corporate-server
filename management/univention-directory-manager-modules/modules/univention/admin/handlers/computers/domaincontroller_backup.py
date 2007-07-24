@@ -578,10 +578,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 	def link(self):
 		if self['ip'] and len( self[ 'ip' ] ) > 0:
-			return [{'name':'console','url':'https://%s/console/'%self['ip'][ 0 ]}]
+			return [{'name':'Univention Management Console','url':'https://%s/univention-management-console/'%self['ip'][ 0 ]}]
 		elif self.has_key('dnsEntryZoneForward') and self['dnsEntryZoneForward'] and len( self['dnsEntryZoneForward' ] ) > 0:
 			zone=self['dnsEntryZoneForward'][('%s'%self['dnsEntryZoneForward'][ 0 ]).find('=')+1:('%s'%self['dnsEntryZoneForward'][ 0 ]).find(',')]
-			return [{'name':'console','url':'https://%s.%s/console/'%(self['name'],zone)}]	
+			return [{'name':'Univention Management Console','url':'https://%s.%s/univention-management-console/'%(self['name'],zone)}]	
 
 def rewrite(filter, mapping):
 	if filter.variable == 'ip':

@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.4-3) unstable; urgency=low
+
+  * changed links from console to univention-management-console
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 24 Jul 2007 10:34:02 +0200
+
 univention-directory-manager-modules (2.0.4-2) unstable; urgency=low
 
   * fixed error handling for creating dhcp/sharedsubnets
