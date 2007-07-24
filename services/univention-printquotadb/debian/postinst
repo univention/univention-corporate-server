@@ -50,3 +50,6 @@ fi
 secret=`cat $cups_quota_secret`
 su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '$secret';\" |psql -d pykota"
 su - postgres -c "echo \"ALTER USER pykotaadmin PASSWORD '';\" |psql -d pykota"
+
+exit 0
+

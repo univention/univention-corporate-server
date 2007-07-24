@@ -48,3 +48,6 @@ eval `univention-baseconfig shell`
 
 univention-baseconfig set cups/quota/secret?"/etc/pykota/pykota.secret"
 univention-baseconfig set cups/quota/server/access?"local"
+
+exit 0
+
