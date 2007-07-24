@@ -1,0 +1,4 @@
+Type: file
+File: etc/update-flashplugin.conf.rb
+Variables: flashplugin/downloadserver
+Variables: flashplugin/downloadpath

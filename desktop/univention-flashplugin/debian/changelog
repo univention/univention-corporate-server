@@ -1,0 +1,47 @@
+univention-flashplugin (1.4-6) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:27 +0100
+
+univention-flashplugin (1.4-4) unstable; urgency=low
+
+  * don't use -f parameter for update-flashplugin
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Aug 2006 09:26:38 +0200
+
+univention-flashplugin (1.4-3) unstable; urgency=low
+
+  * call update-flashplugin with correct mirror in postinst
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  5 Dec 2005 11:50:43 +0100
+
+univention-flashplugin (1.4-1) unstable; urgency=low
+
+  * remove .so files from package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Nov 2005 17:02:41 +0100
+
+univention-flashplugin (1.4-0) unstable; urgency=low
+
+  * changed to firefox as default
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 18 Nov 2005 08:42:30 +0100
+
+univention-flashplugin (1.3) unstable; urgency=low
+
+  * Code cleanup, support for firefox
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue,  2 Nov 2004 13:18:22 +0100
+
+univention-flashplugin (1.2) unstable; urgency=low
+
+  * new versioning scheme
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:41 +0200
+
+univention-flashplugin (1.0.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- univention_ Thorsten Pesel  <pesel@univention.de>  Fri, 11 Apr 2003 11:49:54 +0200
