@@ -28,9 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, syslog, os, string, ldap, univention.uldap, univention_baseconfig
+import sys, syslog, os, string, ldap, univention.uldap, univention.baseconfig
 
-bc = univention_baseconfig.baseConfig()
+bc = univention.baseconfig.baseConfig()
 bc.load()
 
 syslog.openlog('PyKota/univention-printquota-setuser')

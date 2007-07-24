@@ -1,3 +1,9 @@
+univention-printquota (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 24 Jul 2007 16:31:30 +0200
+
 univention-printquota (0.5.2-2) unstable; urgency=low
 
   * remove world read access to /etc/pykota/pykota.conf

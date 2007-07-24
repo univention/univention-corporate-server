@@ -42,3 +42,4 @@ adduser lp pykota
 
 univention-baseconfig set pykota/policy/debug?1
 
+exit 0

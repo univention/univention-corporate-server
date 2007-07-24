@@ -36,3 +36,5 @@ univention-baseconfig set cups/quota/server/name?"localhost"
 univention-baseconfig set cups/quota/account?"pykotaadmin"
 univention-baseconfig set cups/quota/inform?"no"
 univention-baseconfig set cups/quota/admin/mail?"root@"$domainname
+
+exit 0
