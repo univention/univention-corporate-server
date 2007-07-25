@@ -1,0 +1,85 @@
+#! /bin/sh
+#
+#
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/init.d/nagios-nrpe-server
+#
+
+### BEGIN INIT INFO
+# Provides:          nagios-nrpe-server
+# Required-Start:    $local_fs $remote_fs $syslog $named $network $time
+# Required-Stop:     $local_fs $remote_fs $syslog $named $network
+# Should-Start:
+# Should-Stop:
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start/Stop the Nagios remote plugin execution daemon
+### END INIT INFO
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/sbin/nrpe
+NAME=nagios-nrpe
+DESC=nagios-nrpe
+CONFIG=/etc/nagios/nrpe.cfg
+
+test -x $DAEMON || exit 0
+
+if ! [ -x "/lib/lsb/init-functions" ]; then
+	. /lib/lsb/init-functions
+else
+	echo "E: /lib/lsb/init-functions not found, lsb-base (>= 3.0-6) needed"
+	exit 1
+fi
+
+# Include nagios-nrpe defaults if available
+if [ -f /etc/default/nagios-nrpe-server ] ; then
+	. /etc/default/nagios-nrpe-server
+fi
+# we also used to include this file, so if it's there
+# we include it as well
+if [ -f /etc/default/nagios-nrpe ]; then
+	. /etc/default/nagios-nrpe
+fi
+if [ "$NICENESS" ]; then NICENESS="-n $NICENESS"; fi
+
+set -e
+
+case "$1" in
+  start)
+  	eval $(univention-baseconfig shell nagios/client/autostart)
+	if [ -z "$nagios_client_autostart" -o "$nagios_client_autostart" != "yes" ]; then
+		exit 0
+	fi
+	log_daemon_msg "Starting $DESC" "$NAME"
+	start_daemon $NICENESS $DAEMON -c $CONFIG -d $DAEMON_OPTS
+	log_end_msg $?
+	;;
+  stop)
+	log_daemon_msg "Stopping $DESC" "$NAME"
+	start-stop-daemon --stop --quiet --oknodo --exec $DAEMON
+	log_end_msg $?
+	;;
+  reload|force-reload)
+	log_daemon_msg "Reloading $DESC configuration files" "$NAME"
+	start-stop-daemon --stop --signal HUP --quiet --exec $DAEMON
+	log_end_msg $?
+	;;
+  restart)
+	$0 stop
+	sleep 1
+	$0 start
+	;;
+  *)
+	log_failure_msg "Usage: $N {start|stop|restart|reload|force-reload}" 
+	exit 1
+	;;
+esac
+
+exit 0

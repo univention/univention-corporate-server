@@ -1,0 +1,6 @@
+[nagios2]
+Description[de]=Nagios-Server
+Description[en]=Nagios Server
+icon=service/nagios2
+programs=/usr/sbin/nagios2
+start_type=nagios/server/autostart

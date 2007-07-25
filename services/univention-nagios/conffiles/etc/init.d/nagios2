@@ -1,0 +1,282 @@
+#! /bin/sh
+#
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/init.d/nagios2
+#
+
+#		Written by Miquel van Smoorenburg <miquels@cistron.nl>.
+#		Modified for Debian GNU/Linux
+#		by Ian Murdock <imurdock@gnu.ai.mit.edu>.
+#               Clamav version by Magnus Ekdahl <magnus@debian.org>
+#		Nagios version by Sean Finney <seanius@debian.org> and probably others
+#		nagios2 version by Marc Haber <mh+debian-packages@zugschlus.de>
+
+### BEGIN INIT INFO
+# Provides:          nagios2
+# Required-Start:    $local_fs $remote_fs $syslog $named $network $time
+# Required-Stop:     $local_fs $remote_fs $syslog $named $network
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: nagios host/service/network monitoring and management system
+# Description:       nagios is a monitoring and management system for hosts, services and networks.
+### END INIT INFO
+
+set -e
+
+if ! [ -x "/lib/lsb/init-functions" ]; then
+  . /lib/lsb/init-functions
+else
+  echo "E: /lib/lsb/init-functions not found, lsb-base (>= 3.0-6) needed"
+  exit 1
+fi
+
+DAEMON=/usr/sbin/nagios2
+NAME="nagios2"
+DESC="nagios2 monitoring daemon"
+NAGIOSCFG="/etc/nagios2/nagios.cfg"
+CGICFG="/etc/nagios2/cgi.cfg"
+NICENESS=5
+
+[ -x "$DAEMON" ] || exit 0
+[ -r /etc/default/nagios2 ] && . /etc/default/nagios2
+
+# this is from madduck on IRC, 2006-07-06
+# There should be a better possibility to give daemon error messages
+# and/or to log things
+log()
+{
+  case "$1" in
+    [[:digit:]]*) success=$1; shift;;
+    *) :;;
+  esac
+  log_action_begin_msg "$1"; shift
+  log_action_end_msg ${success:-0} "$*"
+}
+
+check_started () {
+  check_cmd="$(get_config "nagios_check_command" "$CGICFG")"
+  if [ ! "$check_cmd" ]; then
+    log 6 "unable to determine nagios_check_command from $CGICFG!" 
+    return 6
+  fi
+
+  eval $check_cmd >/dev/null
+		
+  if [ -f "$THEPIDFILE" ]; then
+    pid="$(cat $THEPIDFILE)"
+    if [ "$pid" ] && kill -0 $pid >/dev/null; then
+      return 0    # Is started
+    fi
+  fi
+  return 1	# Isn't started
+}
+
+#
+#	get_config()
+#
+#	grab a config option from nagios.cfg (or possibly another nagios config
+#	file if specified).  everything after the '=' is echo'd out, making
+#	this a nice generalized way to get requested settings.
+#
+get_config () {
+  if [ "$2" ]; then
+    set -- `grep ^$1 $2 | sed 's@=@ @'`
+  else
+    set -- `grep ^$1 $NAGIOSCFG | sed 's@=@ @'`
+  fi
+  shift
+  echo $*
+}
+
+check_config () {
+  if $DAEMON -v $NAGIOSCFG >/dev/null 2>&1 ; then
+    # First get the user/group etc Nagios is running as
+    nagios_user="$(get_config nagios_user)"
+    nagios_group="$(get_config nagios_group)"
+    log_file="$(get_config log_file)"
+    log_dir="$(dirname $log_file)"
+
+    return 0    # Config is ok
+  else
+    # config is not okay, so let's barf the error to the user
+    $DAEMON -v $NAGIOSCFG
+  fi
+}
+
+check_named_pipe () {
+  nagiospipe="$(get_config command_file)"
+  if [ -p "$nagiospipe" ]; then
+    return 1   # a named pipe exists
+  else
+    return 0   # no named pipe exists
+  fi
+}
+
+if [ ! -f "$NAGIOSCFG" ]; then
+  log_failure_msg "There is no configuration file for Nagios 2."
+  exit 6
+fi
+
+THEPIDFILE="$(grep lock_file $NAGIOSCFG | awk -v FS="=" '{print $2}')"
+[ -n "$THEPIDFILE" ] || THEPIDFILE='/var/run/nagios2/nagios.pid'
+
+[ -e "$THEPIDFILE" ] && PID=$(cat $THEPIDFILE)
+
+[ "$PID" = '1' ] && unset PID
+
+check_univentionConfigComplete () {
+  # if univention-nagios-server is installed and at least 3 config files exist in
+  # /etc/nagios2/conf.univention.d/ then suppress nagios error msg about incomplete
+  # nagios config
+  set +e
+  PKGCNT=$(COLUMNS=200 dpkg -l univention-nagios-server 2> /dev/null | grep -c ^ii)
+  if [ ! "$PKGCNT" = "0" ] ; then
+    eval `univention-config-registry shell`
+    if [ "$(find /etc/nagios2/conf.univention.d/ -type f | wc -l)" -le 3 ] ; then
+      echo ""
+      echo "WARNING: nagios2 configuration seems to be incomplete yet - start of nagios2 aborted"
+      case $nagios_server_autostart in
+         true|yes|1)
+         echo "HINT: nagios2 will be automatically started when nagios2 config has been"
+         echo "      successfully replicated"
+         ;;
+       *)
+         echo "HINT: please set Univention Config Registry entry"
+         echo "      'nagios/server/autostart=yes' to start nagios2 automatically when nagios2"
+         echo "      config has been successfully replicated"
+      esac
+      exit 0
+    fi
+  fi
+  set -e
+}
+
+start () {
+  DIRECTORY=$(echo $THEPIDFILE | sed 's!/[^/]\+$!!')
+  [ ! -d $DIRECTORY ] && mkdir -p $DIRECTORY
+  chown nagios:nagios $DIRECTORY
+
+  if ! check_started; then
+    check_univentionConfigComplete
+    if ! check_named_pipe; then
+      log_action_msg "named pipe exists - removing"
+      rm -f $nagiospipe
+    fi
+    if check_config; then
+      start_daemon -n $NICENESS -p $THEPIDFILE $DAEMON -d $NAGIOSCFG
+      ret=$?
+    else
+      log_failure_msg "errors in config!"
+      log_end_msg 1
+      exit 1
+    fi
+  else
+    log_failure_msg "already running!"
+    log_end_msg 1
+    exit 1
+  fi
+  return $ret
+}
+
+stop () {
+    if [ -n "$PID" ]; then
+      kill -15 -"$PID"
+      ret=$?
+    else
+      if [ -e "$THEPIDFILE" ] ; then
+               killproc -p $THEPIDFILE
+        ret=$?
+      else
+        ret=0
+      fi
+    fi
+    if ! check_named_pipe; then
+      rm -f $nagiospipe
+    fi
+    if [ -n "$ret" ]; then
+      return $ret
+    else
+      return $?
+    fi
+}
+
+status()
+{
+  log_action_begin_msg "checking $DAEMON"
+  if start-stop-daemon --stop --signal 0 --quiet --pid $THEPIDFILE >/dev/null; then
+    log_action_end_msg 0 "running"
+  else
+    if [ -e "$THEPIDFILE" ]; then
+      log_action_end_msg 1 "$DAEMON failed"
+      exit 1
+    else
+      log_action_end_msg 0 "not running"
+      exit 3
+    fi
+  fi
+}
+
+
+reload () {
+  # Check first
+  if check_config; then
+    if check_started; then
+      killproc -p $THEPIDFILE $DAEMON 1 
+    else
+      log_failure_msg "Not running."
+      log_end_msg 7
+      exit 7
+    fi
+  else
+    log_failure_msg "errors in config!"
+    log_end_msg 6
+    exit 6
+ fi
+}
+
+case "$1" in
+  start)
+  	eval $(univention-baseconfig shell nagios/server/autostart)
+	if [ -z "$nagios_server_autostart" -o "$nagios_server_autostart" != "yes" ]; then
+		exit 0
+	fi
+    log_daemon_msg "Starting $DESC" "$NAME"
+    start
+    log_end_msg $?
+    ;;
+  stop)
+    log_daemon_msg "Stopping $DESC" "$NAME"
+    stop
+    log_end_msg $?
+  ;;
+  restart)
+    log_daemon_msg "Restarting $DESC" "$NAME"
+    stop
+    if [ -z "$?" -o "$?" = "0" ]; then
+      start
+    fi
+    log_end_msg $?
+  ;;
+  reload|force-reload)
+    log_daemon_msg "Reloading $DESC configuration files" "$NAME"
+    reload
+    log_end_msg $?
+  ;;
+  status)
+    status
+    ;;
+  *)
+    log_failure_msg "Usage: $0 {start|stop|restart|reload|force-reload|status}" >&2
+    exit 1
+  ;;
+esac
+
+exit 0
