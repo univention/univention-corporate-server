@@ -54,8 +54,8 @@ install: build
 
 	install -m 0755 81univention-printquotadb.inst ${D}/usr/lib/univention-install/
 
-	univention-config-registry
-	univention-config-registry-info
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 
