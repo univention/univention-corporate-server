@@ -22,4 +22,5 @@ name[en]=Printing
 icon=printing.gif
 
 [Desktop]
+name=Desktop
 icon=desktop.gif
