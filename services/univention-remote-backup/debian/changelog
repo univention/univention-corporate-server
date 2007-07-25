@@ -1,3 +1,9 @@
+univention-remote-backup (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Jul 2007 08:16:11 +0200
+
 univention-remote-backup (1.1-1) unstable; urgency=low
 
   * add GPL headers
