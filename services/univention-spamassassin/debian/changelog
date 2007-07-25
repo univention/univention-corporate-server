@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.0-4) unstable; urgency=low
+
+  * fix rules file
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 25 Jul 2007 12:00:55 +0200
+
 univention-spamassassin (1.0.0-3) unstable; urgency=low
 
   * added descriptions for config registry variables
