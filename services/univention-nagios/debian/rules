@@ -80,10 +80,6 @@ install: build
 	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-install
 	install -m 755 26univention-nagios-server.inst ${DS}/usr/lib/univention-install/26univention-nagios-server.inst
 
-    # add entry to start/stop nagios2 in univention-console
-	install -d -m 755 -o root -g root ${DC}/etc/univention/daemons
-	echo "Nagios Server;nagios2;/usr/sbin/nagios2 -d /etc/nagios2/nagios.cfg;30" > ${DC}/etc/univention/daemons/nagios2
-
     # add univention icons
 	install -d -m 755 -o root -g root ${DS}/usr/share/univention-nagios-server/icons/
 	find usr/share/univention-nagios-server/icons/ -type f | xargs -n1 -i install -m 644 -o root -g root {} ${DS}/usr/share/univention-nagios-server/icons/
@@ -134,12 +130,9 @@ install: build
 	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-install
 	install -m 755 30univention-nagios-client.inst ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
 
-    # add entry to start/stop nrpe in univention-console
-	install -d -m 755 -o root -g root ${DC}/etc/univention/daemons
-	echo "Nagios NRPE Server;nagios-nrpe-server;/usr/sbin/nrpe -c /etc/nagios/nrpe.cfg -d;20" > ${DC}/etc/univention/daemons/nrped
-
 	univention-install-config-registry
 	univention-install-config-registry-info
+	univention-install-service-info
 	dh_install
 
 
