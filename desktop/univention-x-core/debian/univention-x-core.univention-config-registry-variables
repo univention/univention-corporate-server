@@ -1,0 +1,210 @@
+[xorg/.*]
+Description[de]=Xorg Konfigurationsvariable
+Description[en]=Xorg configuration variable
+Type=str
+Categories=Desktop
+
+[xorg/resolution]
+Description[de]=Display Auflösung
+Description[en]=Display resolution
+Type=str
+Categories=Desktop
+
+[xorg/module/load]
+Description[de]=Beim X-Serverstart zu ladende Xorg-Module
+Description[en]=Xorg modules to load on x-startup
+Type=str
+Categories=Desktop
+
+[xorg/screen/DefaultDepth]
+Description[de]=Standard Farbtiefe
+Description[en]=Default color depth
+Type=str
+Categories=Desktop
+
+
+[xorg/serverflags/.*]
+Description[de]=Xorg Serverflags-Sektion
+Description[en]=Xorg serverflags section
+Type=str
+Categories=Desktop
+
+[xorg/serverflags/options/.*]
+Description[de]=Xorg Serverflags-Optionen
+Description[en]=Xorg serverflags options
+Type=str
+Categories=Desktop
+
+[xorg/serverflags/options/AllowMouseOpenFail]
+Description[de]=Starte auch wenn die Maus nicht geöffnet/initialisiert werden konnte
+Description[en]=Start up even if the mouse device can't be opened/initialised
+Type=str
+Categories=Desktop
+
+
+[xorg/mouse/.*]
+Description[de]=Xorg Maus-Sektion
+Description[en]=Xorg mouse section
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/Driver]
+Description[de]=Maustreiber modul
+Description[en]=Mouse driver module
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/Identifier]
+Description[de]=Name der Maus
+Description[en]=Name of the mouse device
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/.*]
+Description[de]=Xorg Mausoptionen
+Description[en]=Xorg mouse options
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/Buttons]
+Description[de]=Anzahl an Maustasten
+Description[en]=Amount of mouse buttons
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/Emulate3Buttons]
+Description[de]=Emuliere eine dritte Maustaste
+Description[en]=Emulate third mouse button
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/Emulate3Timeout]
+Description[de]=Zeitspanne vor der Entscheidung ob zwei Maustasten für die drei-Tasten Emulation gedrückt wurden
+Description[en]=Timeout before deciding if two buttons where pressed for 3 button emulation
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/SendCoreEvents]
+Description[de]=Lässt das Eingabegerät immer Core-Events melden
+Description[en]=Cause the input device to always report core events
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/device]
+Description[de]=Gerätedatei über die auf die Maus zugegriffen werden kann
+Description[en]=Device through which the mouse can be accessed
+Type=str
+Categories=Desktop
+
+[xorg/mouse/.*/options/protocol]
+Description[de]=Zu verwendendes Mausprotokoll
+Description[en]=Specify the mouse protocol
+Type=str
+Categories=Desktop
+
+
+[xorg/monitor/HorizSync]
+Description[de]=Bereich der horizontalen Sync-Frequenzen die vom Monitor unterstützt werden
+Description[en]=Range of horizontal sync frequencies supported by the monitor
+Type=str
+Categories=Desktop
+
+[xorg/monitor/VertRefresh]
+Description[de]=Bereich der vertikalen Bildwiederholfrequenzen die vom Monitor unterstützt werden
+Description[en]=Range of vertical refresh frequencies supported by the monitor
+Type=str
+Categories=Desktop
+
+[xorg/monitor/DisplaySize]
+Description[de]=Breite und höhe des sichtbaren Bereiches des Monitors in Millimetern
+Description[en]=Width and height of the picture area of the monitor in millimetres
+Type=str
+Categories=Desktop
+
+
+[xorg/keyboard/.*]
+Description[de]=Xorg Tastatur-Sektion
+Description[en]=Xorg keyboard section
+Type=str
+Categories=Desktop
+
+[xorg/keyboard/options/.*]
+Description[de]=Xorg Tastaturoptionen
+Description[en]=Xorg keyboard options
+Type=str
+Categories=Desktop
+
+[xorg/keyboard/options/XkbLayout]
+Description[de]=XKB Tastaturlayout, normalerweise der Ländercode
+Description[en]=XKB keyboard layout name, usually the country or language code
+Type=str
+Categories=Desktop
+
+[xorg/keyboard/options/XkbVariant]
+Description[de]=XKB Tastaturvarianten
+Description[en]=XKB keyboard variant components
+Type=str
+Categories=Desktop
+
+[xorg/keyboard/options/XkbModel]
+Description[de]=XKB Tastaturmodell
+Description[en]=XKB keyboard model name
+Type=str
+Categories=Desktop
+
+[xorg/keyboard/options/XkbRules]
+Description[de]=XKB Regeldatei die verwendet wird um alle Xkb-Optionen zu interpretieren
+Description[en]=XKB rules file to use for interpreting the Xkb-options
+Type=str
+Categories=Desktop
+
+
+[xorg/device/.*]
+Description[de]=Xorg Grafikkarten-Sektion
+Description[en]=Xorg graphics device section
+Type=str
+Categories=Desktop
+
+[xorg/device/BoardName]
+Description[de]=Name der Grafikkarte
+Description[en]=Name of the graphics device
+Type=str
+Categories=Desktop
+
+[xorg/device/VendorName]
+Description[de]=Hersteller der Grafikkarte
+Description[en]=The graphics device manufacturer
+Type=str
+Categories=Desktop
+
+[xorg/device/driver]
+Description[de]=Treibermodul für die Grafikkarte
+Description[en]=Name of the driver module to use with the graphics device
+Type=str
+Categories=Desktop
+
+[xorg/device/options/.*]
+Description[de]=Xorg Grafikartenoptionen
+Description[en]=Xorg device options
+Type=str
+Categories=Desktop
+
+[xorg/device/options/VideoRam]
+Description[de]=Verfügbarer Grafikspeicher auf der Grafikkarte in kB
+Description[en]=Amount of video ram that installed on the graphics board in kB
+Type=str
+Categories=Desktop
+
+
+[xorg/vnc/exporttype]
+Description[de]=Aktiviere/Deaktiviere VNC-Displayfreigabe
+Description[en]=Enable/Disable VNC-export
+Type=str
+Categories=Desktop
+
+[xorg/vnc/viewonly]
+Description[de]=VNC-Displayfreigabe ohne Eingabemöglichkeit
+Description[en]=VNC-export with read-only access
+Type=str
+Categories=Desktop
+

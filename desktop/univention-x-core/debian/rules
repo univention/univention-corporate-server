@@ -53,7 +53,8 @@ install: build
 
 	install -m 0644 files/vnc.so debian/univention-x-core-vncmodule/usr/X11R6/lib/modules/extensions/libvnc.so
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 
