@@ -56,7 +56,7 @@ install: build
 	install -m 0755 80univention-printquota.inst ${D}/usr/lib/univention-install/
 
 	univention-install-config-registry
-	univention-install-config-registry-install
+	univention-install-config-registry-info
 
 binary-arch: build install
 
