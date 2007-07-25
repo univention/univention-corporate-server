@@ -1,3 +1,11 @@
+univention-firewall (1.1.0-1) unstable; urgency=low
+
+  * New iptables scheme based on /etc/security/netfilter.d config stack
+  * Service based configuration
+  * Previous config registry handling reworked
+
+ -- Moritz Muehlenhoff <jmm@knut.univention.de>  Wed, 25 Jul 2007 10:28:16 +0200
+
 univention-firewall (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
