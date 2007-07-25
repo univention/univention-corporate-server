@@ -1,3 +1,11 @@
+univention-config-registry (2.2.5-1) unstable; urgency=low
+
+  * add init scripts for ntp, cron, inetd, portmap, nscd
+  * add service descriptions
+  * add Configuration Registry variables to control start type of the services
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 09:26:45 +0200
+
 univention-config-registry (2.2.4-1) unstable; urgency=low
 
   * complete files if commit is used as univention-config-registry option

@@ -1,0 +1,45 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry berschrieben werden
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/init.d/cron
+#
+
+# Start/stop the cron daemon.
+
+test -f /usr/sbin/cron || exit 0
+
+#LSBNAMES='-l'  # Uncomment for LSB name support in /etc/cron.d/
+
+case "$1" in
+start)	
+		eval $(univention-config-registry shell cron/autostart)
+		if [ -z "$cron_autostart" -o "$cron_autostart" != "yes" ]; then
+			exit 0
+		fi
+		echo -n "Starting periodic command scheduler: cron"
+        start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
+        echo "." 
+	;;
+stop)	echo -n "Stopping periodic command scheduler: cron"
+        start-stop-daemon --stop --quiet --pidfile /var/run/crond.pid --name cron
+        echo "."
+        ;;
+restart) echo -n "Restarting periodic command scheduler: cron"
+        start-stop-daemon --stop --retry 5 --quiet --pidfile /var/run/crond.pid --name cron
+        start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
+        echo "."
+        ;;
+reload|force-reload) echo -n "Reloading configuration files for periodic command scheduler: cron"
+	# cron reloads automatically
+        echo "."
+        ;;
+*)	echo "Usage: /etc/init.d/cron start|stop|restart|reload|force-reload"
+        exit 1 
+        ;;
+esac
+exit 0

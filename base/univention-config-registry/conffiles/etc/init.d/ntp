@@ -1,0 +1,89 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry berschrieben werden
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/init.d/ntp
+#
+
+### BEGIN INIT INFO
+# Provides:        ntp
+# Required-Start:  $network $remote_fs $syslog
+# Required-Stop:   $network $remote_fs $syslog
+# Default-Start:   2 3 4 5
+# Default-Stop:    0 1 6
+# Short-Description: Start NTP daemon
+### END INIT INFO
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+. /lib/lsb/init-functions
+
+NAME=ntp
+DAEMON=/usr/sbin/ntpd
+PIDFILE=/var/run/ntpd.pid
+
+test -x $DAEMON || exit 5
+
+if [ -r /etc/default/$NAME ]; then
+	. /etc/default/$NAME
+fi
+
+if [ -e /etc/ntp.conf.dhcp ]; then
+	NTPD_OPTS="$NTPD_OPTS -c /etc/ntp.conf.dhcp"
+fi
+
+RUNASUSER=ntp
+UGID=$(getent passwd $RUNASUSER | cut -f 3,4 -d:) || true
+
+case $1 in
+	start)
+		eval $(univention-config-registry shell ntp/autostart)
+		if [ -z "$ntp_autostart" -o "$ntp_autostart" != "yes" ]; then
+			exit 0
+		fi
+		log_daemon_msg "Starting NTP server" "ntpd"
+		if [ -z "$UGID" ]; then
+			log_failure_msg "user \"$RUNASUSER\" does not exist"
+			exit 1
+		fi
+  		start-stop-daemon --start --quiet --oknodo --pidfile $PIDFILE --startas $DAEMON -- -p $PIDFILE -u $UGID $NTPD_OPTS
+		log_end_msg $?
+  		;;
+	stop)
+		log_daemon_msg "Stopping NTP server" "ntpd"
+  		start-stop-daemon --stop --quiet --oknodo --pidfile $PIDFILE
+		log_end_msg $?
+		rm -f $PIDFILE
+  		;;
+	restart|force-reload)
+		$0 stop && sleep 2 && $0 start
+  		;;
+	try-restart)
+		if $0 status >/dev/null; then
+			$0 restart
+		else
+			exit 0
+		fi
+		;;
+	reload)
+		exit 3
+		;;
+	status)
+		pidofproc -p $PIDFILE $DAEMON >/dev/null
+		status=$?
+		if [ $status -eq 0 ]; then
+			log_success_msg "NTP server is running."
+		else
+			log_failure_msg "NTP server is not running."
+		fi
+		exit $status
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|try-restart|force-reload|status}"
+		exit 2
+		;;
+esac

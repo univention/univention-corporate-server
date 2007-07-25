@@ -1,0 +1,96 @@
+#!/bin/sh -e
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry berschrieben werden
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/init.d/openbsd-inetd
+#
+### BEGIN INIT INFO
+# Provides:          inetd
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Should-Start:      $syslog
+# Should-Stop:       $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Start or stop the inetd daemon.
+### END INIT INFO
+
+DAEMON=/usr/sbin/inetd
+
+[ -x $DAEMON -a -e /etc/inetd.conf ] || exit 0
+
+[ -e /etc/default/openbsd-inetd ] && . /etc/default/openbsd-inetd
+
+. /lib/lsb/init-functions
+
+checkportmap () {
+  if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s 'rpc/'; then
+    return 0
+  fi
+
+  if [ ! -x /usr/bin/rpcinfo ]; then
+    log_action_msg "WARNING: rpcinfo not available - RPC services may be unavailable!"
+    log_action_msg "         (Commenting out the rpc services in inetd.conf will"
+    log_action_msg "         disable this message)"
+  elif ! /usr/bin/rpcinfo -u localhost portmapper >/dev/null 2>&1; then
+    log_action_msg "WARNING: portmapper inactive - RPC services unavailable!"
+    log_action_msg "         (Commenting out the rpc services in inetd.conf will"
+    log_action_msg "         disable this message)"
+  fi
+} 
+
+checknoservices () {
+    if ! grep -q "^[0-9A-Za-z/]" /etc/inetd.conf; then
+	log_warning_msg "Not starting internet superserver: no services enabled."
+	exit 0
+    fi
+}
+
+case "$1" in
+    start)
+		eval $(univention-config-registry shell inetd/autostart)
+		if [ -z "$inetd_autostart" -o "$inetd_autostart" != "yes" ]; then
+			exit 0
+		fi
+	checknoservices
+        checkportmap
+	log_daemon_msg "Starting internet superserver" "inetd"
+	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
+	    --exec $DAEMON -- $OPTIONS
+	log_end_msg 0
+	;;
+    stop)
+	log_daemon_msg "Stopping internet superserver" "inetd"
+	start-stop-daemon --stop --quiet --pidfile /var/run/inetd.pid \
+	    --oknodo
+	log_end_msg 0
+	;;
+    reload|force-reload)
+	log_daemon_msg "Reloading internet superserver" "inetd"
+	start-stop-daemon --stop --quiet --pidfile /var/run/inetd.pid \
+	    --oknodo --signal 1
+	log_end_msg 0
+	;;
+    restart)
+	checkportmap
+	log_daemon_msg "Restarting internet superserver" "inetd"
+	start-stop-daemon --stop --quiet --pidfile /var/run/inetd.pid \
+	    --oknodo
+	checknoservices
+	sleep 1
+	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
+	    --exec $DAEMON -- $OPTIONS
+	log_end_msg 0
+	;;
+    *)
+	echo "Usage: /etc/init.d/inetd {start|stop|reload|force-reload|restart}"
+	exit 2
+	;;
+esac
+
+exit 0
+
