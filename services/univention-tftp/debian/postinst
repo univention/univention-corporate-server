@@ -47,3 +47,5 @@ ln -sf /home /ha/home
 
 #DEBHELPER#
 
+exit 0
+
