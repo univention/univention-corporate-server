@@ -53,7 +53,9 @@ install: build
 	dh_installdirs
 
 	install -m 0755 81univention-printquotadb.inst ${D}/usr/lib/univention-install/
-	univention-install-baseconfig
+
+	univention-config-registry
+	univention-config-registry-info
 
 binary-arch: build install
 
