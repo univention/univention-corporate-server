@@ -15,3 +15,11 @@ icon=misc.gif
 [Mail]
 name=Mail
 icon=mail.gif
+
+[Printing]
+name[de]=Drucken
+name[en]=Printing
+icon=printing.gif
+
+[Desktop]
+icon=desktop.gif

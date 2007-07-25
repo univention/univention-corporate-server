@@ -1,3 +1,9 @@
+univention-config-registry (2.2.5-3) unstable; urgency=low
+
+  * added printing and desktop c-r-categorie
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 25 Jul 2007 13:10:35 +0200
+
 univention-config-registry (2.2.5-2) unstable; urgency=low
 
   * register new init scripts as configuration registry variables
