@@ -76,3 +76,6 @@ Description[en]=UNIX or internet socket for sieve to listen on
 Type=str
 Categories=Mail
 
+[mail/cyrus/autostart]
+Description[de]=Definiert ob Cyrus beim Booten des Rechners gestartet wird
+Description[en]=Defines if cyrus should be started when booting the computer
