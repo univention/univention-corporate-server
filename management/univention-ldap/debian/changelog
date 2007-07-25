@@ -1,3 +1,11 @@
+univention-ldap (2.2.7-1) unstable; urgency=low
+
+  * add Configuration Registry variable ldap/autostart to control start type
+    of slapd
+  * add service description
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 09:45:16 +0200
+
 univention-ldap (2.2.6-1) unstable; urgency=low
 
   * added nagios.schema to slapd.conf.d/

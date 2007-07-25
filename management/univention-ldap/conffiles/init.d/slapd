@@ -94,6 +94,10 @@ test -f $DAEMON || exit 0
 
 case "$1" in
   start)
+	eval $(univention-config-registry shell ldap/autostart)
+	if [ -z "$ldap_autostart" -o "$ldap_autostart" != "yes" ]; then
+	  exit 0
+	fi
    @!@
 if baseConfig['ldap/database/type'] == 'bdb':
 	print 'echo -n "Check database: "'
