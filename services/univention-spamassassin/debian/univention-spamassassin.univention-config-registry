@@ -9,7 +9,6 @@ File: etc/default/spamassassin
 Type: file
 File: usr/sbin/univention-sa-learn
 Variables: mail/antispam/globalfolder
-Variables: conffiles/usr/sbin/
 
 Type: file
 File: etc/cron.daily/univention-spamassassin

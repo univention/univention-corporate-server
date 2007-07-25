@@ -67,7 +67,8 @@ install: build
 	install -m 644 files/var/spool/procmail/user/procmail.spam@domain ${D}/var/spool/procmail/user/procmail.spam@domain
 	install -m 755 68univention-spamassassin.inst ${D}/usr/lib/univention-install/
 	
-	univention-install-baseconfig
+	univention-config-registry
+	univention-config-registry-info
 
 
 # Build architecture-independent files here.

@@ -1,0 +1,18 @@
+[mail/antispam/globalfolder]
+Description[de]=Globales Spamverzeichnis
+Description[en]=Global spam folder
+Type=str
+Categories=Mail
+
+[mail/antispam/learndaily]
+Description[de]=Lerne täglich Ham und Spam Nachrichten
+Description[en]=Learn ham and spam messages daily
+Type=str
+Categories=Mail
+
+[mail/antispam/requiredhits]
+Description[de]=Anzahl Punkte ab denen eine E-Mail als Spam klassifiziert wird
+Description[en]=Required hits to classify a mail as spam
+Type=str
+Categories=Mail
+
