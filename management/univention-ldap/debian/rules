@@ -92,9 +92,7 @@ install: build
 	install -m 744 scripts/convert_to_sharesSambaWriteable.py debian/univention-ldap-config/usr/share/univention-ldap
 	install -m 744 scripts/convert_shadowMax.py debian/univention-ldap-server/usr/share/univention-ldap
 
-	# add entry to start/stop slapd in univention-console
-	echo "Open LDAP-Server;slapd;/usr/sbin/slapd;19" > debian/univention-ldap-server/etc/univention/daemons/slapd
-
+	univention-install-service-info
 	dh_install
 
 binary-indep: build install

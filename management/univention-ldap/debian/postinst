@@ -38,6 +38,8 @@ chmod 0600 /var/lib/univention-ldap/replog/replog
 test -f /var/lib/univention-ldap/replog/replog.lock || \
 	touch /var/lib/univention-ldap/replog/replog.lock
 
+univention-baseconfig set ldap/autostart?yes
+
 #DEBHELPER#
 
 eval `univention-baseconfig shell server/role`
