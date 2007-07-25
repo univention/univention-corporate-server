@@ -1,3 +1,10 @@
+univention-ldap-listener (2.0.5-3) unstable; urgency=low
+
+  * add service description
+  * add Configuration Registry variable listener/autostart to set start type
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 11:14:11 +0200
+
 univention-ldap-listener (2.0.5-2) unstable; urgency=low
 
   * create runit link during the join
