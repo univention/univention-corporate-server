@@ -14,5 +14,5 @@
 if baseConfig.has_key('security/services/samba') and baseConfig['security/services/samba'] == 'disabled':
 	print '/sbin/iptables -A INPUT  -p tcp --dport 137:139 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p tcp --dport 445 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p udp --dport 445 -j DROP'
+	print '/sbin/iptables -A INPUT  -p udp --dport 445 -j REJECT'
 @!@
