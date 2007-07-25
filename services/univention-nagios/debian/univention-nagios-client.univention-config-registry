@@ -5,3 +5,6 @@ Variables: nagios/client/allowedhosts
 Type: file
 File: etc/cron.d/univention-nagios
 Variables: nagios/client/checkraid
+
+Type: file
+File: etc/init.d/nagios-nrpe-server

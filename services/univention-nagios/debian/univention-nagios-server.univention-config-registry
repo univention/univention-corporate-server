@@ -21,3 +21,6 @@ Variables: nagios/server/theme
 Type: file
 File: etc/nagios2/nagios.cfg
 Variables: nagios/server/checkexternalcmd
+
+Type: file
+File: etc/init.d/nagios2
