@@ -1,3 +1,9 @@
+univention-join (1.0.5-2) unstable; urgency=low
+
+  * added missing / in univention-join
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 25 Jul 2007 10:48:20 +0200
+
 univention-join (1.0.5-1) unstable; urgency=low
 
   * added more error handling in the join script
