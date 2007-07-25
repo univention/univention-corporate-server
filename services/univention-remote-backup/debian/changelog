@@ -1,0 +1,32 @@
+univention-remote-backup (1.1-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sun,  3 Dec 2006 12:41:55 +0100
+
+univention-remote-backup (1.0-4) unstable; urgency=low
+
+  * allow specifying remote username
+  * rsync only within filesystem boundaries
+  * renamed local directories
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 10 Dec 2004 17:16:24 +0100
+
+univention-remote-backup (1.0-3) unstable; urgency=low
+
+  * Allow zero history 
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 16 Aug 2004 09:17:18 +0200
+
+univention-remote-backup (1.0-2) unstable; urgency=low
+
+  * Added Managed Client Backup 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 10 Aug 2004 10:16:56 +0200
+
+univention-remote-backup (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
+
