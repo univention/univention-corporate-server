@@ -47,6 +47,10 @@ File: etc/security/netfilter.d/20http
 Variables: security/services/http
 
 Type: file
+File: etc/security/netfilter.d/20x11
+Variables: security/services/x11
+
+Type: file
 File: etc/security/netfilter.d/20https
 Variables: security/services/https
 

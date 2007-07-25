@@ -2,17 +2,22 @@
 
 case "$1" in
 	start)
-		echo -n "Starting univention-firewall: "
+
+	security_disabled=`univention-baseconfig get security/packetfilter/disabled`
+	
+	if [ -n "$security_disabled" -a "$security_disabled" = "true" ]; then
+		echo "Univention iptables configuration has been disabled."
+	else
+		echo -n "Starting Univention iptables configuration: "
 		if [ -x /etc/security/netfilter.d ] ; then
 		    run-parts /etc/security/netfilter.d/
 		fi
 		echo "done"
+	fi
 		;;
 	stop)
-		echo -n "Stopping univention-firewall: "
-		# Needs serious improvement... 
+		echo -n "Stopping Univention iptables configuration: "
 		iptables -F 
-		iptables -X 
 		echo "done"
 		;;
 	restart)
