@@ -15,6 +15,18 @@ File: etc/security/netfilter.d/20imap
 Variables: security/services/imap
 
 Type: file
+File: etc/security/netfilter.d/20kerberos
+Variables: security/services/kerberos
+
+Type: file
+File: etc/security/netfilter.d/20krsh
+Variables: security/services/krsh
+
+Type: file
+File: etc/security/netfilter.d/20nfs
+Variables: security/services/nfs
+
+Type: file
 File: etc/security/netfilter.d/20nagios
 Variables: security/services/nagios
 
