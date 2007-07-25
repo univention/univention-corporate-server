@@ -63,6 +63,7 @@ chmod 600 /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 chown cyrus /var/lib/cyrus/cert.pem /var/lib/cyrus/private.key || true
 
 univention-baseconfig set mail/cyrus?yes
+univention-baseconfig set mail/cyrus/autostart?yes
 univention-baseconfig set mail/cyrus/version?"2.2"
 univention-baseconfig set mail/cyrus/imap?yes
 univention-baseconfig set mail/cyrus/imap/lookup_groups?yes

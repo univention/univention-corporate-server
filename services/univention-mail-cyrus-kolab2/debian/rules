@@ -73,9 +73,8 @@ install: build
 
 	install -m 0755 81univention-mail-cyrus-kolab2.inst ${D}/usr/lib/univention-install/
 
-	echo "Cyrus IMAP Server;cyrus22;/usr/sbin/cyrmaster;20" >>${D}/etc/univention/daemons/cyrus22
-
 	univention-install-baseconfig
+	univention-install-service-info
 
 binary-arch: build install
 

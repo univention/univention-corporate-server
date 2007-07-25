@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.1-1) unstable; urgency=low
+
+  * add service description
+  * add configuration registry variable mail/cyrus/autostart tos et start type
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 13:31:46 +0200
+
 univention-mail-cyrus-kolab2 (1.0.0-6) unstable; urgency=low
 
   * added descriptions for config registry variables

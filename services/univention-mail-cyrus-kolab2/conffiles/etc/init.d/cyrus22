@@ -71,6 +71,10 @@ fixdirs () {
 
 case "$1" in
   start)
+  	eval $(univention-baseconfig shell mail/cyrus/autostart)
+	if [ -z "$mail_cyrus_autostart" -o "$mail_cyrus_autostart" != "yes" ]; then
+		exit 0
+	fi
   	# Verify if there are old Cyrus 1.5 spools that were not upgraded
 	[ -f /var/lib/cyrus/mailboxes -a -d /var/lib/cyrus/deliverdb -a \
 	  -d /var/spool/cyrus/mail/user -a ! -d /var/spool/cyrus/mail/stage. ] && {
