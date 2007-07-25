@@ -63,11 +63,8 @@ install: build
 	install -m 0755 univention/nx debian/univention-gdm-sessions/etc/gdm/Autostart/
 	install -m 0755 univention/Linux-Arbeitsplatz.desktop debian/univention-gdm-sessions/etc/gdm/Sessions/
 	
-	# add entries regarding services univention-console shall manage
-	mkdir -p debian/univention-gdm/etc/univention/daemons/
-	echo "Gnome Display Manager;gdm;/usr/bin/gdm;99" > debian/univention-gdm/etc/univention/daemons/gdm
-
 	univention-install-config-registry
+	univention-install-service-info
 
 	dh_install
 

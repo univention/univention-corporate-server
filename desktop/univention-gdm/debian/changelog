@@ -1,3 +1,10 @@
+univention-gdm (1.0.3-1) unstable; urgency=low
+
+  * add Configuration Registry variable gdm/autostart
+  * add service description
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 08:11:16 +0200
+
 univention-gdm (1.0.2-3) unstable; urgency=low
 
   * removed locale setting, changed to univention-config-registry 
