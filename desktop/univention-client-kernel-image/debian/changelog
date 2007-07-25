@@ -1,0 +1,95 @@
+univention-client-kernel-image (1:0.80) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Nov 2006 11:51:40 +0100
+
+univention-client-kernel-image (1:0.78) unstable; urgency=low
+
+  * Updated to .20
+
+ -- Wolf Wiegand <wolf@billy.knut.univention.de>  Fri,  3 Feb 2006 10:48:41 +0100
+
+univention-client-kernel-image (1:0.77) unstable; urgency=low
+
+  * Updated to .18
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 11:56:50 +0100
+
+univention-client-kernel-image (1:0.76) unstable; urgency=low
+
+  * Updated to thinclient.17
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 11:40:15 +0100
+
+univention-client-kernel-image (1:0.75) unstable; urgency=low
+
+  * Updated to thinclient.16
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 11:35:23 +0100
+
+univention-client-kernel-image (1:0.74) unstable; urgency=low
+
+  * Updated to thinclient.15
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 10:36:36 +0100
+
+univention-client-kernel-image (1:0.73) unstable; urgency=low
+
+  * Updated to thinclient.14
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 10:25:31 +0100
+
+univention-client-kernel-image (1:0.72) unstable; urgency=low
+
+  * Updated to thinclient.13
+
+ -- Alexander Reelsen <reelsen@univention.de>  Wed, 14 Dec 2005 08:39:57 +0100
+
+univention-client-kernel-image (1:0.71) unstable; urgency=low
+
+  * Updated thinclient kernel
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 13 Dec 2005 15:23:51 +0100
+
+univention-client-kernel-image (1:0.7) unstable; urgency=low
+
+  * new epoche
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Dec 2005 09:47:38 +0100
+
+univention-client-kernel-image (0.6) unstable; urgency=low
+
+  * Depends on newer kernel image (2.4.31)
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 10 Aug 2005 09:02:29 +0200
+
+univention-client-kernel-image (0.5) unstable; urgency=low
+
+  * Depends on newer kernel image (2.4.27)
+
+ -- Sven Dreyer <dreyer@univention.de>  Wed, 18 Aug 2004 11:29:16 +0200
+
+univention-client-kernel-image (0.4) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 14:41:49 +0200
+
+univention-client-kernel-image (0.3) unstable; urgency=low
+
+  * Depends on newer kernel image (2.4.26)
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 19 Apr 2004 16:05:24 +0200
+
+univention-client-kernel-image (0.2) unstable; urgency=low
+
+  * Depends on newer kernel image (2.4.25)
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 22 Mar 2004 14:09:02 +0100
+
+univention-client-kernel-image (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu,  8 Jan 2004 17:46:21 +0100
