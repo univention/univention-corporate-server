@@ -1,3 +1,9 @@
+univention-config-registry (2.2.4-1) unstable; urgency=low
+
+  * complete files if commit is used as univention-config-registry option
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Jul 2007 08:09:44 +0200
+
 univention-config-registry (2.2.3-1) unstable; urgency=low
 
   * moved univention-(baseconfig|config-registry) back to package

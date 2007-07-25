@@ -3,19 +3,23 @@
 
 _univention-config-registry()
 {
-        file=/etc/univention/base.conf
-        COMPREPLY=()
-        cur=${COMP_WORDS[COMP_CWORD]}
-        prev=${COMP_WORDS[COMP_CWORD-1]}
+	file=/etc/univention/base.conf
+	COMPREPLY=()
+	cur=${COMP_WORDS[COMP_CWORD]}
+	prev=${COMP_WORDS[COMP_CWORD-1]}
 
-        if [ "$cur" = "" ]; then
-                vars=$(grep -v \# $file | grep -v ^$ | sed "s/:.*//")
-                COMPREPLY=($vars)
-        else
-                vars=$(grep ^$cur $file | sed "s/:.*//")
-                COMPREPLY=($vars)
-        fi
-        return 0
+	if [ "$prev" = "commit" ]; then
+		_filedir
+	else
+		if [ "$cur" = "" ]; then
+			vars=$(grep -v \# $file | grep -v ^$ | sed "s/:.*//")
+			COMPREPLY=($vars)
+		else
+			vars=$(grep ^$cur $file | sed "s/:.*//")
+			COMPREPLY=($vars)
+		fi
+	fi
+	return 0
 }
 
 complete -F _univention-config-registry univention-config-registry
