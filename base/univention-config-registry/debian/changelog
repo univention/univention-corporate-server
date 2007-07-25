@@ -1,3 +1,9 @@
+univention-config-registry (2.2.5-2) unstable; urgency=low
+
+  * register new init scripts as configuration registry variables
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 12:02:25 +0200
+
 univention-config-registry (2.2.5-1) unstable; urgency=low
 
   * add init scripts for ntp, cron, inetd, portmap, nscd

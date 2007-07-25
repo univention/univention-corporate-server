@@ -22,6 +22,21 @@ Type: file
 File: etc/init.d/rdate
 
 Type: file
+File: etc/init.d/ntp
+
+Type: file
+File: etc/init.d/openbsd-inetd
+
+Type: file
+File: etc/init.d/cron
+
+Type: file
+File: etc/init.d/portmap
+
+Type: file
+File: etc/init.d/nscd
+
+Type: file
 File: etc/networks
 
 Type: file
