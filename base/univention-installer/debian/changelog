@@ -1,3 +1,9 @@
+univention-installer (1.6.13-2) unstable; urgency=low
+
+  * Allow modification of security profile in System Settings
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 Jul 2007 15:57:17 +0200
+
 univention-installer (1.6.13-1) unstable; urgency=low
 
   * also reboot after the ucs installation on a ppc
