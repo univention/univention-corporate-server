@@ -1,0 +1,30 @@
+[cups/quota/account]
+Description[de]=PostgreSQL Benutzer für die Quota-Datenbank
+Description[en]=PostgreSQL user for the quota database
+Type=str
+Categories=Printing
+
+[cups/quota/admin/mail]
+Description[de]=E-Mail Adresse des Quota Administrators
+Description[en]=E-mail address of the quota administrator
+Type=str
+Categories=Printing
+
+[cups/quota/inform]
+Description[de]=Aktiviere/Deaktiviere E-Mail Benachrichtigung bei Quota-Überschreitung
+Description[en]=Enable/Disable quota warning mails
+Type=str
+Categories=Printing
+
+[cups/quota/secret]
+Description[de]=Pfad zur Passwortdatei des PostgreSQL Benutzers
+Description[en]=Path to the password file for the PostgreSQL user
+Type=str
+Categories=Printing
+
+[cups/quota/server/name]
+Description[de]=FQDN des Quota-Datenbank-Servers
+Description[en]=FQDN of the quota database server
+Type=str
+Categories=Printing
+

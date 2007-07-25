@@ -54,7 +54,9 @@ install: build
 
 	install -m 0755 univention-printquota-setuser ${D}/usr/sbin/
 	install -m 0755 80univention-printquota.inst ${D}/usr/lib/univention-install/
-	univention-install-baseconfig
+
+	univention-install-config-registry
+	univention-install-config-registry-install
 
 binary-arch: build install
 
