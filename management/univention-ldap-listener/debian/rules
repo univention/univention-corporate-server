@@ -65,9 +65,7 @@ install: build
 	univention-install-baseconfig
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-listener/etc/runit/univention-ldap-listener/finish
 
-	# add file to be used by univention-console
-	echo "Univention-LDAP-Listener;univention-ldap-listener;/usr/sbin/univention-ldap-listener;50" > debian/univention-ldap-listener/etc/univention/daemons/univention-ldap-listener
-
+	univention-install-service-info
 	dh_install
 
 binary-arch: build install
