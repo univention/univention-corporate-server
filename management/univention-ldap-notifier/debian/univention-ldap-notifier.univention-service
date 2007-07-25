@@ -1,0 +1,7 @@
+[univention-ldap-notifier]
+Description[de]=Univention LDAP Notifier
+Description[en]=Univention LDAP Notifier
+programs=/usr/sbin/univention-ldap-notifier
+icon=service/ldap-listener
+start_type=notifier/autostart
+

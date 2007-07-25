@@ -64,8 +64,7 @@ install: build
 
 	install -m 755 02univention-ldap-notifier.inst debian/univention-ldap-notifier/usr/lib/univention-install/
 
-	# add file to be used by univention-console
-	echo "Univention-LDAP-Notifier;univention-ldap-notifier;/usr/sbin/univention-ldap-notifier;20" > debian/univention-ldap-notifier/etc/univention/daemons/univention-ldap-notifier
+	univention-install-service-info
 
 	dh_install
 

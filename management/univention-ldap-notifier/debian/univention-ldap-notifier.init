@@ -34,6 +34,10 @@ fi
 
 case "$1" in
 	start)
+		eval $(univention-baseconfig shell notifier/autostart)
+		if [ -z "$notifier_autostart" -o "$notifier_autostart" != "yes" ]; then
+			exit 0
+		fi
 		echo -n "Starting univention-ldap-notifier daemon: "
 		sv start univention-ldap-notifier
 		echo ""

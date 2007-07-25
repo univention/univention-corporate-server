@@ -1,3 +1,10 @@
+univention-ldap-notifier (2.0.4-3) unstable; urgency=low
+
+  * add service description
+  * add Configuration Registry variable notifier/autostart to set start type
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 11:07:57 +0200
+
 univention-ldap-notifier (2.0.4-2) unstable; urgency=low
 
   * create join script
