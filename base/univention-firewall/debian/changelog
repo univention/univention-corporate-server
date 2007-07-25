@@ -1,3 +1,9 @@
+univention-firewall (1.1.0-2) unstable; urgency=low
+
+  * Add missing service definitions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 25 Jul 2007 10:47:42 +0200
+
 univention-firewall (1.1.0-1) unstable; urgency=low
 
   * New iptables scheme based on /etc/security/netfilter.d config stack
