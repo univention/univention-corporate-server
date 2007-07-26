@@ -45,6 +45,14 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="top/view" \
 	--append operation="top/kill"
 
+# create mrtg operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=top \
+	--set description="Porcess Overview" \
+	--append operation="mrtg/*" \
+	--append operation="mrtg/view"
+
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=baseconfig \
@@ -131,6 +139,16 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set ldapbase="$ldap_base" \
 	--set command="top/view" \
 	--set description="Show Processes"
+
+# create mrtg overview acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=mrtg-all \
+	--set category="Load Statistic" \
+	--set ldapbase="$ldap_base" \
+	--set command="mrtg/*" \
+	--set description="All Operations"
+
 
 # create baseconfig acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -257,6 +275,7 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \

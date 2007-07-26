@@ -74,5 +74,7 @@ def insert( cat ):
 
 insert( Category( 'all', _( 'All Modules' ),
 				  _( 'Configuration and monitoring of system services' ), priority = 100 ) )
+insert( Category( 'system', _( 'System' ),
+                  _( 'System Overview' ), priority = 90 ) )
 insert( Category( 'wizards', _( 'Wizards' ),
 				  _( 'Wizards for simple configuration' ), priority = 80 ) )

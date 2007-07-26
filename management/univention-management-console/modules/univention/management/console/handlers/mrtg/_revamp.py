@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Management Console
-#  class representing an image with a UMCP dialog
+#  mrtg module: revamp module command result for the specific user interface
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,33 +29,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import base
+import univention.management.console as umc
+import univention.management.console.dialog as umcd
 
-import univention.management.console.tools as umct
+import univention.debug as ud
 
-class Image( base.Element ):
-	def __init__( self, tag = None, size = umct.SIZE_MEDIUM, attributes = {} ):
-		base.Element.__init__( self, attributes )
-		self.__tag = tag
-		self.__size = size
+_ = umc.Translation( 'univention.management.console.handlers.mrtg' ).translate
 
-	def __str__( self ):
-		return "%s: %s" % ( base.Element.__str__( self ), self.__tag )
+class Web( object ):
+	def _web_mrtg_view( self, object, res ):
+		text = { 'day' : _( 'Day' ),
+				 'week' : _( 'Week' ),
+				 'month' : _( 'Month' ) }
+		lst = []
+		for key, img in res.dialog:
+			lst.append( umcd.Frame( [ umcd.ImageURL( '/statistik/%s' % img ) ], text[ key ] ) )
 
-	def get_tag( self ):
-		return self.__tag
-
-	def get_size( self ):
-		return self.__size
-
-	def get_image( self ):
-		return umct.image_get( self.__tag, self.__size )
-
-class ImageURL( base.Element ):
-	def __init__( self, url = '', attributes = {} ):
-		self.__url = url
-
-	def get_image( self ):
-		return self.__url
-
-ImageTypes = ( type( Image() ), type( ImageURL() ) )
+		res.dialog = lst
+		self.revamped( object.id(), res )

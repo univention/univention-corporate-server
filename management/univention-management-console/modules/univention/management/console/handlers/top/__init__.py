@@ -33,14 +33,10 @@ import univention.management.console as umc
 import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
-import univention.management.console.categories as umcc
 
 import os
 
 import notifier.popen
-
-import univention.config_registry as ucr
-import univention.service_info as usi
 
 import _revamp
 import tools
@@ -52,9 +48,6 @@ icon = 'top/module'
 short_description = _( 'Process Overview' )
 long_description = _( 'Process Overview and Control' )
 categories = [ 'all', 'system' ]
-
-umcc.insert( umcc.Category( 'system', _( 'System' ),
-                  _( 'System Overview' ), priority = 80 ) )
 
 class TOP_Sort( umc.StaticSelection ):
 	def __init__( self ):
@@ -107,13 +100,6 @@ class handler( umch.simpleHandler, _revamp.Web ):
 	def __init__( self ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
-
-	def _run_it( self, services, action ):
-		failed = []
-		for srv in services:
-			if os.system( '/etc/init.d/%s %s' % ( srv, action ) ):
-				failed.append( srv )
-		return failed
 
 	def top_view( self, object ):
 		if not self.permitted( 'top/view', options = object.options ):

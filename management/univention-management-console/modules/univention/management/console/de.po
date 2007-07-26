@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-05-13 18:36+0200\n"
+"POT-Creation-Date: 2007-07-26 11:59+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,46 +15,68 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: categories.py:74
+#: categories.py:75
 msgid "All Modules"
 msgstr "Alle Module"
 
-#: categories.py:75
+#: categories.py:76
 msgid "Configuration and monitoring of system services"
 msgstr "Konfiguration und Überwachung von System-Diensten"
 
-#: categories.py:76
-msgid "Miscellaneous"
-msgstr "Verschiedenes"
-
 #: categories.py:77
-msgid "Everything else"
-msgstr "Nicht zugeordnete Module"
+msgid "System"
+msgstr "System"
 
-#: values.py:71
+#: categories.py:78
+msgid "System Overview"
+msgstr "Systemübersicht"
+
+#: categories.py:79
+msgid "Wizards"
+msgstr "Wizards"
+
+#: categories.py:80
+msgid "Wizards for simple configuration"
+msgstr "Wizards zur einfachen Konfiguration"
+
+#: values.py:74
 msgid "value contains invalid characters"
 msgstr "Der Wert enthält ungültige Zeichen"
 
 #: values.py:130
+msgid "E-Mail Address"
+msgstr "E-Mail-Adresse"
+
+#: values.py:135
+msgid "IP Address"
+msgstr "IP-Adresse"
+
+#: values.py:146
+#, python-format
+msgid "Invalid number (%s). Must be between 0 and 255"
+msgstr "Ungültige Zahl (%s). Der Wert muss zwischen 0 und 255 liegen."
+
+#: values.py:159
 msgid "Value is not a valid integer number."
 msgstr "Der Wert ist keine gültige Zahl."
 
-#: values.py:145
+#: values.py:174
 msgid "invalid value."
 msgstr "Ungültiger Wert."
 
-#: values.py:150
+#: values.py:179
 msgid "At least one entry is required."
 msgstr "Mindestens ein Einträg wird benötigt."
 
-#: values.py:166
+#: values.py:195
 msgid "German"
 msgstr "Deutsch"
 
-#: values.py:166
+#: values.py:195
 msgid "English"
 msgstr "Englisch"
 
-#: values.py:189
+#: values.py:218
 msgid "A value is required."
 msgstr "Ein Wert wird benötigt."
+

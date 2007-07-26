@@ -58,6 +58,7 @@ def icon_map( storage, umcp_part ):
 	return icon( '', { 'url' : umcp_part.get_image() }, {} )
 
 mapper.add( umcd.Image, icon_map )
+mapper.add( umcd.ImageURL, icon_map )
 
 def link_map( storage, umcp_part ):
 	attributes = utils.attributes( umcp_part )
