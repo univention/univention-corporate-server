@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.6-2) unstable; urgency=low
+
+  * add conflict to univention-admin-modules <= 1.2.3-9
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Jul 2007 13:24:02 +0200
+
 univention-directory-manager-modules (2.0.6-1) unstable; urgency=low
 
   * add a missing argument in __rewrite_member_uid of module groups/group
