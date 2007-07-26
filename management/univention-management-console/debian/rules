@@ -86,6 +86,7 @@ install-ext-%:
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-management-console-proxy/etc/runit/univention-management-console-proxy/finish
 
 	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-indep: build install
 	dh_testdir -i

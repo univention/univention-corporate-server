@@ -1,0 +1,6 @@
+[umc/web/timeout]
+Description[de]=Laufzeit von Univention Management Console Sitzungen
+Description[en]=Timout of Univention Management Console session
+Type=str
+Categories=Management
+

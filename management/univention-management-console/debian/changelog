@@ -1,3 +1,9 @@
+univention-management-console (0.7.13-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 26 Jul 2007 11:09:12 +0200
+
 univention-management-console (0.7.13-1) unstable; urgency=low
 
   * new module 'top': process overview

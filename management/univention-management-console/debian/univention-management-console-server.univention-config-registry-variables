@@ -1,0 +1,24 @@
+[umc/server/debug/level]
+Description[de]=Univention Management Console Server Debuglevel
+Description[en]=Univention Management Console Server debug level
+Type=str
+Categories=Management
+
+[umc/module/debug/level]
+Description[de]=Debuglevel der Module der Univention Management Console
+Description[en]=Debug level of the Univention Management Console modules
+Type=str
+Categories=Management
+
+[umc/web/debug/level]
+Description[de]=Debuglevel des Univention Management Console Webfrontends
+Description[en]=Debug level of the Univention Management Console web frontend
+Type=str
+Categories=Management
+
+[umc/web/language]
+Description[de]=Sprache der Univention Management Console
+Description[en]=Language of the Univention Management Console
+Type=str
+Categories=Management
+
