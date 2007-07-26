@@ -2,7 +2,7 @@ Source: univention-updater
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper
+Build-Depends: debhelper, univention-config-dev
 
 Package: univention-updater
 Architecture: all

@@ -1,3 +1,9 @@
+univention-updater (2.0.6-3) unstable; urgency=low
+
+  * fix rules and control
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 26 Jul 2007 10:51:51 +0200
+
 univention-updater (2.0.6-2) unstable; urgency=low
 
   * added descriptions for config registry variables
