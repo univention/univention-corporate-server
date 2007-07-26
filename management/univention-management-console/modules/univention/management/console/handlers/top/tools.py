@@ -62,7 +62,8 @@ def run_ps( callback, sort = 'cpu', count = '50' ):
 		cmd += ' --sort=user'
 	elif sort == 'pid':
 		cmd += ' --sort=pid'
-	cmd += ' | head -%s' % count
+	if not count == 'all':
+		cmd += ' | head -%s' % count
 	ud.debug( ud.ADMIN, ud.INFO, "run command: %s" % cmd )
 	proc = notifier.popen.Shell( cmd, stdout = True )
 	proc.signal_connect( 'finished', callback )
@@ -72,14 +73,11 @@ def parse_ps( result ):
 	global _ps_regex
 
 	processes = []
-	ud.debug( ud.ADMIN, ud.INFO, "NO RESULT? %s" % result )
 	for line in result:
 		matches = _ps_regex.match( line )
 		if not matches:
-			ud.debug( ud.ADMIN, ud.INFO, "NO MATCH: %s" % line )
 			break
 		grp = matches.groupdict()
-		ud.debug( ud.ADMIN, ud.INFO, "process: %s" % str( grp ) )
 		if not grp[ 'args' ]:
 			args = []
 		else:

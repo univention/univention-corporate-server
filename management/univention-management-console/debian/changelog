@@ -1,3 +1,11 @@
+univention-management-console (0.7.14-1) unstable; urgency=low
+
+  * removed debug messages
+  * top module: support for displaying all existing processes
+  * updated german translation
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Jul 2007 11:01:10 +0200
+
 univention-management-console (0.7.13-2) unstable; urgency=low
 
   * added descriptions for config registry variables

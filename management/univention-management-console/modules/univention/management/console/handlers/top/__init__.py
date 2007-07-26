@@ -69,7 +69,7 @@ class TOP_Count( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Number of Processes' ) )
 
 	def choices( self ):
-		return ( ( '10', '10' ), ( '20', '20' ), ( '50', '50' ) )
+		return ( ( 'all', _( 'all' ) ), ( '10', '10' ), ( '20', '20' ), ( '50', '50' ) )
 
 class TOP_Kill( umc.StaticSelection ):
 	def __init__( self ):
