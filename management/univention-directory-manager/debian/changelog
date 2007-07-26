@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-4) unstable; urgency=low
+
+  * add conflict to univention-admin <= 3.2.3-7 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 26 Jul 2007 13:12:37 +0200
+
 univention-directory-manager (4.0.3-3) unstable; urgency=low
 
   * changed links from console to univention-management-console
