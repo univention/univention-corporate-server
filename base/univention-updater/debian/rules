@@ -98,6 +98,9 @@ install: build
 	
 	test ${copyrightyear} = 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@//" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
 
+	univention-install-config-registry
+	univention-install-config-registry-info
+
 
 binary-indep: build install
 

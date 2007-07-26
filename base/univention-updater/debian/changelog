@@ -1,3 +1,9 @@
+univention-updater (2.0.6-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 26 Jul 2007 10:46:31 +0200
+
 univention-updater (2.0.6-1) unstable; urgency=low
 
   * remove some unused stuff from the postup.sh and from the postinst script

@@ -1,0 +1,61 @@
+[update/server]
+Description[de]=Server für das Univention Repository
+Description[en]=Server holding the Univention Repository
+Type=str
+Categories=System
+
+[update/directory]
+Description[de]=Updateverzeichnis auf dem Repository Server
+Description[en]=Update directory on the repository server
+Type=str
+Categories=System
+
+[local/repository]
+Description[de]=Aktiviere/Deaktiviere das lokale Repository
+Description[en]=Enable/Disable the local repository
+Type=str
+Categories=System
+
+[update/security/server]
+Description[de]=Server für Univention Security Updates
+Description[en]=Server for Univention Security Updates
+Type=str
+Categories=System
+
+[update/security/proxy]
+Description[de]=Proxy für das Beziehen der security updates
+Description[en]=Proxy to use while fetching security updates
+Type=str
+Categories=System
+
+[update/security/prefix]
+Description[de]=Verzeichnisspräfix für Security Updates
+Description[en]=Directory prefix for security updates
+Type=str
+Categories=System
+
+
+[update/warning]
+Description[de]=Aktivier/Deaktiviere Warnmeldungen vor automatischen Updates
+Description[en]=Enable/Disable warning messages before automatic updates
+Type=str
+Categories=System
+
+[update/warning/coloured]
+Description[de]=Aktivier/Deaktiviere farbige Warnmeldungen
+Description[en]=Enable/Disable colors in warning messages
+Type=str
+Categories=System
+
+[update/warning/lang]
+Description[de]=Sprache in der die Update Warnungen angezeigt werden
+Description[en]=Language of the update warning messages
+Type=str
+Categories=System
+
+[update/warning/tty]
+Description[de]=Terminals auf denen die Update Warnungen ausgegeben werden
+Description[en]=Terminals on which the update warning is displayed
+Type=str
+Categories=System
+
