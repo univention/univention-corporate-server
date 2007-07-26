@@ -54,7 +54,7 @@ class TOP_Sort( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Sort Processes' ) )
 
 	def choices( self ):
-		return ( ( 'cpu', _( 'CPU Usage' ) ), ( 'mem', _( 'Memory Usage' ) ),
+		return ( ( 'cpu', _( 'CPU Usage' ) ),
 				 ( 'user', _( 'Username' ) ), ( 'pid', _( 'Process ID' ) ) )
 
 class TOP_Count( umc.StaticSelection ):

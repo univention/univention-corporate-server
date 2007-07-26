@@ -39,7 +39,7 @@ import univention.debug as ud
 _ = umc.Translation( 'univention.management.console.handlers.top' ).translate
 
 _ps_regex = re.compile( ' *(?P<cpu>[0-9.]*) +(?P<mem>[0-9.]*) +(?P<user>[^ ]*) +(?P<pid>[0-9]*) +(?P<prog>[^ ]*)( +(?P<args>.*))?' )
-_ps_cmd = 'ps h -eo %cpu,%mem,user,pid,command'
+_ps_cmd = 'ps h -eo pcpu,pmem,user,pid,command'
 
 class Process( object ):
 	def __init__( self, uid = '', pid = 0, mem = 0.0, cpu = 0.0, prog = '', args = [] ):
@@ -55,16 +55,14 @@ def run_ps( callback, sort = 'cpu', count = '50' ):
 
 	cmd = copy.copy( _ps_cmd )
 	if sort == 'cpu':
-		cmd += ' --sort=%cpu | sort -r'
-	elif sort == 'mem':
-		cmd += ' --sort=%mem | sort -r'
+		cmd += ' --sort=pcpu | sort -r'
 	elif sort == 'user':
 		cmd += ' --sort=user'
 	elif sort == 'pid':
 		cmd += ' --sort=pid'
 	if not count == 'all':
 		cmd += ' | head -%s' % count
-	ud.debug( ud.ADMIN, ud.INFO, "run command: %s" % cmd )
+	ud.debug( ud.ADMIN, ud.INFO, cmd )
 	proc = notifier.popen.Shell( cmd, stdout = True )
 	proc.signal_connect( 'finished', callback )
 	proc.start()
