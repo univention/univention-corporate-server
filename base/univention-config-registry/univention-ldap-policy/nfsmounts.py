@@ -34,7 +34,7 @@ import univention.config_registry
 import ldap
 import string
 
-configRegistry=univention.config_registry.ConfigRegistrConfigRegistry()
+configRegistry=univention.config_registry.ConfigRegistry()
 configRegistry.load()
 
 def exit(result, message = None):
