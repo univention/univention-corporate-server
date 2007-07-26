@@ -116,6 +116,8 @@ def _verify_list_items( sequence ):
 	for i in range( 0, len( sequence ) ):
 		if isinstance( sequence[ i ], basestring ):
 			sequence[ i ] = Text( sequence[ i ] )
+		if isinstance( sequence[ i ], ( int, float ) ):
+			sequence[ i ] = Number( sequence[ i ] )
 		elif isinstance( sequence[ i ], ( list, tuple ) ):
 			sequence[ i ] = _verify_list_items( sequence[ i ] )
 	return sequence

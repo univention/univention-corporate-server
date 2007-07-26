@@ -240,6 +240,10 @@ class StringList( MultiValue ):
 	def __init__( self, label, required = True, may_change = True ):
 		MultiValue.__init__( self, label, basestring, required = required, may_change = may_change )
 
+class IntegerList( MultiValue ):
+	def __init__( self, label, required = True, may_change = True ):
+		MultiValue.__init__( self, label, int, required = required, may_change = may_change )
+
 class ObjectDNList( StringList ):
 	def __init__( self, label, required = True, may_change = True ):
 		StringList.__init__( self, label, required = required, may_change = may_change )

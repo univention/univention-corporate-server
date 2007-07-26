@@ -1,0 +1,89 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Management Console
+#  module: like top
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import copy, re
+
+import notifier.popen
+import univention.management.console as umc
+
+import univention.debug as ud
+
+_ = umc.Translation( 'univention.management.console.handlers.top' ).translate
+
+_ps_regex = re.compile( ' *(?P<cpu>[0-9.]*) +(?P<mem>[0-9.]*) +(?P<user>[^ ]*) +(?P<pid>[0-9]*) +(?P<prog>[^ ]*)( +(?P<args>.*))?' )
+_ps_cmd = 'ps h -eo %cpu,%mem,user,pid,command'
+
+class Process( object ):
+	def __init__( self, uid = '', pid = 0, mem = 0.0, cpu = 0.0, prog = '', args = [] ):
+		self.uid = uid
+		self.pid = pid
+		self.mem = mem
+		self.cpu = cpu
+		self.prog = prog
+		self.args = args
+
+def run_ps( callback, sort = 'cpu', count = '50' ):
+	global _ps_cmd
+
+	cmd = copy.copy( _ps_cmd )
+	if sort == 'cpu':
+		cmd += ' --sort=%cpu | sort -r'
+	elif sort == 'mem':
+		cmd += ' --sort=%mem | sort -r'
+	elif sort == 'user':
+		cmd += ' --sort=user'
+	elif sort == 'pid':
+		cmd += ' --sort=pid'
+	cmd += ' | head -%s' % count
+	ud.debug( ud.ADMIN, ud.INFO, "run command: %s" % cmd )
+	proc = notifier.popen.Shell( cmd, stdout = True )
+	proc.signal_connect( 'finished', callback )
+	proc.start()
+
+def parse_ps( result ):
+	global _ps_regex
+
+	processes = []
+	ud.debug( ud.ADMIN, ud.INFO, "NO RESULT? %s" % result )
+	for line in result:
+		matches = _ps_regex.match( line )
+		if not matches:
+			ud.debug( ud.ADMIN, ud.INFO, "NO MATCH: %s" % line )
+			break
+		grp = matches.groupdict()
+		ud.debug( ud.ADMIN, ud.INFO, "process: %s" % str( grp ) )
+		if not grp[ 'args' ]:
+			args = []
+		else:
+			args = grp[ 'args' ].split( ' ' )
+		processes.append( Process( grp[ 'user' ], int( grp[ 'pid' ] ), float( grp[ 'mem' ] ),
+								   float( grp[ 'cpu' ] ), grp[ 'prog' ], args ) )
+	return processes

@@ -36,6 +36,15 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--set description="Basis Wizard" \
 	--append operation="wizard/basis/*"
 
+# create process overview operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=top \
+	--set description="Porcess Overview" \
+	--append operation="top/*" \
+	--append operation="top/view" \
+	--append operation="top/kill"
+
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=baseconfig \
@@ -105,6 +114,23 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 	--set ldapbase="$ldap_base" \
 	--set command="wizard/basis/*" \
 	--set description="Basis Wizard"
+
+# create process overview acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=top-all \
+	--set category="Process Overview" \
+	--set ldapbase="$ldap_base" \
+	--set command="top/*" \
+	--set description="All Operations"
+
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=top-all \
+	--set category="Process Overview" \
+	--set ldapbase="$ldap_base" \
+	--set command="top/view" \
+	--set description="Show Processes"
 
 # create baseconfig acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -229,7 +255,8 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-mailserver-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base
+	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \

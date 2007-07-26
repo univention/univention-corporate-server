@@ -68,7 +68,7 @@ class ImageLoader( object ):
 			for path in _image_pathes:
 				f = os.path.join( _image_prefix, path, _image_theme,
 								  "%dx%d" % ( size, size ), tag )
-				for ext in ( 'gif', 'jpg', 'png' ):
+				for ext in ( 'png', 'gif', 'jpg' ):
 					filename = '%s.%s' % ( f, ext )
 					if os.path.isfile( filename ):
 						return filename[ len( _image_prefix ) + 1 : ]
