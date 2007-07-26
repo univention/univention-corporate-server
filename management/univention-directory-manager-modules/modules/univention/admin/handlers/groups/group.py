@@ -511,7 +511,7 @@ class object(univention.admin.handlers.simpleLdap):
 			self.lo.modify(group, [('uniqueMember', members, newmembers)])
 			self.__rewrite_member_uid( group )
 
-	def __rewrite_member_uid( self, members = [] ):
+	def __rewrite_member_uid( self, group, members = [] ):
 		uids = self.lo.getAttr( group, 'memberUid' )
 		if not members:
 			members = self.lo.getAttr( group, 'uniqueMember' )
