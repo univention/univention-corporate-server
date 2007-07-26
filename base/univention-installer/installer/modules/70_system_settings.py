@@ -53,6 +53,14 @@ class object(content):
 	def depends(self):
 		return {}
 
+ 	def mapping(self,value):
+		if value in ['normal','Normal']:
+			return 'normal'
+		elif value in ['strict','Strict']:
+			return 'strict'
+		elif value in ['open','Open']:
+			return 'open'
+
 	def profile_complete(self):
 		if self.check('local_repository') | self.check('create_home_share') | self.check('security_profile'):
 			return False
