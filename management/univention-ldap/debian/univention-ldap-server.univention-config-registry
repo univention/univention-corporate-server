@@ -17,7 +17,7 @@ Multifile: etc/ldap/slapd.conf
 Variables: ldap/server/type
 Variables: ldap/master
 Variables: ldap/base
-Variables: ldap/databse/type
+Variables: ldap/database/type
 Variables: ldap/database/bdb/checkpoint
 Variables: ldap/database/ldbm/dbsync
 Variables: ldap/index/eq

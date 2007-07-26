@@ -1,0 +1,72 @@
+[ldap/server/type]
+Description[de]=Typ des LDAP-Servers
+Description[en]=Type of LDAP server
+Type=str
+Categories=System
+
+[ldap/replog]
+Description[de]=Aktiviere/Deaktiviere das Schreiben der Replications-Log Datei
+Description[en]=Enable/Disable writing of replication log file
+Type=str
+Categories=System
+
+[ldap/translogfile]
+Description[de]=Pfad zur Transaktions-Log Datei
+Description[en]=Path to transactions log file
+Type=str
+Categories=System
+
+[ldap/schema/export]
+Description[de]=Exportiere die LDAP-Schemata beim LDAP-Start in das Webverzeichnis
+Description[en]=Export LDAP shemata to webroot at startup
+Type=str
+Categories=System
+
+[ldap/database/type]
+Description[de]=Typ des LDAP-Backends
+Description[en]=Type of LDAP backend to use
+Type=str
+Categories=System
+
+[ldap/database/bdb/*]
+Description[de]=Optionen des BDB LDAP-Backends
+Description[en]=Options for the bdb LDAP backend
+Type=str
+Categories=System
+
+[ldap/database/bdb/checkpoint]
+Description[de]=Häufigkeit in der die Daten aus der Transaction Log in die Datenbank geschrieben werden
+Description[en]=Frequency for checkpointing the database transaction log upon updating of the database
+Type=str
+Categories=System
+
+[ldap/database/ldbm/dbsync]
+Description[de]=Häufigkeit in der die Datenbank-Buffer auf die Festplatte geschrieben werden
+Description[en]=Frequency for flushing database buffers to disk
+Type=str
+Categories=System
+
+[ldap/index/approx]
+Description[de]=LDAP-Indizes für ähnliche Attribute
+Description[en]=LDAP indices for similar attributes
+Type=str
+Categories=System
+
+[ldap/index/eq]
+Description[de]=LDAP-Indizes für auf Gleichheit geprüfte Attribute
+Description[en]=LDAP indices for attributes checked for equality
+Type=str
+Categories=System
+
+[ldap/index/pres]
+Description[de]=LDAP-Indizes für auf Präsenz geprüfte Attribute
+Description[en]=LDAP indices for attributes checked for presence
+Type=str
+Categories=System
+
+[ldap/index/sub]
+Description[de]=LDAP-Indizes für Attribute die auf Teilausdrücke geprüft werden
+Description[en]=LDAP indices for attributes checked for substring matches
+Type=str
+Categories=System
+

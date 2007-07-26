@@ -84,7 +84,8 @@ install: build
 
 	install -m 755 univention-backup2master debian/univention-ldap-server/usr/lib/univention-ldap
 	install -m 755 univention-ldap-backup debian/univention-ldap-server/usr/sbin
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 	chmod 600 debian/univention-ldap-server/etc/univention/templates/files/etc/ldap/replica.conf
 	install -m 755 01univention-ldap-server-init.inst debian/univention-ldap-server/usr/lib/univention-install
 	install -m 755 04univention-ldap-client.inst debian/univention-ldap-client/usr/lib/univention-install
