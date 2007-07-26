@@ -69,10 +69,10 @@ d=`date +%Y%m%d%H%M%S`
 
 slapcat >/var/cache/univention-system-setup/ldif.$d
 
-cp -a /var/cache/univention-system-setup/ldif.$d /var/cache/univention-setup/ldif.$d.bak
+cp -a /var/cache/univention-system-setup/ldif.$d /var/cache/univention-system-setup/ldif.$d.bak
 cp -a /var/lib/univention-ldap/notify/transaction /var/cache/univention-system-setup/transaction.$d
 
-/usr/lib/univention-system-setup/scripts/ldif_rewrite.py $ldap_base $new_ldap_base /var/cache/univention-setup/ldif.$d /var/cache/univention-setup/new_ldif.$d
+/usr/lib/univention-system-setup/scripts/ldif_rewrite.py $ldap_base $new_ldap_base /var/cache/univention-system-setup/ldif.$d /var/cache/univention-system-setup/new_ldif.$d
 sed -i "s|$ldap_base |$new_ldap_base |" /var/lib/univention-ldap/notify/transaction
 
 rm -Rf /var/lib/univention-ldap/ldap/*
