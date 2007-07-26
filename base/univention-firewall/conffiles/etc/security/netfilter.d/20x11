@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/security/netfilter.d/20x11
+#
+
+@!@
+if baseConfig.has_key('security/services/x11') and baseConfig['security/services/x11'] == 'disabled':
+	print '/sbin/iptables -A INPUT  -p tcp --dport 6000:6007 -j REJECT'
+	print '/sbin/iptables -A INPUT  -p udp --dport 6000:6007 -j REJECT'
+@!@
