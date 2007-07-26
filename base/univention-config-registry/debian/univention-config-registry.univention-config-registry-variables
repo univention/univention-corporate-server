@@ -8,7 +8,7 @@ Categories=Network
 Description[de]=Standardsprache
 Description[en]=default locale
 Type=str
-Categories=Misc
+Categories=System
 
 [umask]
 Description[de]=Standard umask für Benutzer
