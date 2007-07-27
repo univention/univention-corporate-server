@@ -1,14 +1,17 @@
-<tr>
-<td class="overview"><a href="http://univention-directory-manager/ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>
-<td class="overview"><a href="http://univention-directory-manager/ucs-root-ca.crt">import zertificate</a></td>
-<td class="overview">root zertificate of server</td>
-</tr>
-<tr>
-<td class="overview"><a href="http://univention-directory-manager/udsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>
-
-<td class="overview"><a href="http://univention-directory-manager/udsCA.crl">reject zertificate</a></td>
-<td class="overview">invalid zertificates</td>
-</tr>
+@!@
+role = "@%@server/role@%@"
+if role == "domaincontroller_master" or role == "domaincontroller_backup" :
+	print'<tr>'
+	print'<td class="overview"><a href="http://@%@hostname@%@/ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>'
+	print'<td class="overview"><a href="http://@%@hostname@%@/ucs-root-ca.crt">import zertificate</a></td>'
+	print'<td class="overview">root zertificate of server</td>'
+	print'</tr>'
+	print'<tr>'
+	print'<td class="overview"><a href="http://@%@hostname@%@/udsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>'
+	print'<td class="overview"><a href="http://@%@hostname@%@/udsCA.crl">reject zertificate</a></td>'
+	print'<td class="overview">invalid zertificates</td>'
+	print'</tr>'
+@!@
 <tr>
 <td></td>
 </tr>
