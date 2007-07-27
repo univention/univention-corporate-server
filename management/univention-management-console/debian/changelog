@@ -1,3 +1,10 @@
+univention-management-console (0.7.17-1) unstable; urgency=low
+
+  * convert strings to unicode objects before cutting of characters to prevend
+    broken UTF-8 strings
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Jul 2007 10:51:02 +0200
+
 univention-management-console (0.7.16-1) unstable; urgency=low
 
   * top module: removed sort key 'mem' as it does not work with ps

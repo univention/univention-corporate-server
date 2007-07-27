@@ -88,13 +88,13 @@ class Web( object ):
 					else:
 						descr_text = ''
 					if len( descr_text ) > 40:
-						descr_text = '%s&nbsp;...' % descr_text[ : 40 ]
+						descr_text = '%s&nbsp;...' % str( unicode( descr_text )[ : 40 ] )
 
 					value = var.value
 					if not isinstance( value, basestring ):
 						value = ''
 					if len( value ) > 40:
-						value = '%s&nbsp;...' % value[ : 40 ]
+						value = '%s&nbsp;...' % str( unicode( value )[ : 40 ] )
 
 					value.replace( ' ', '&nbsp;' )
 					lines.append( [ key, value, descr_text, cat_text ] )
