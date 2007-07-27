@@ -151,7 +151,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def baseconfig_unset( self, object ):
 		if object.options.has_key( 'key' ):
-			univention.config_registry.handler_set( object.options[ 'key' ] )
+			univention.config_registry.handler_unset( object.options[ 'key' ] )
 
 		self.finished( object.id(), {} )
 

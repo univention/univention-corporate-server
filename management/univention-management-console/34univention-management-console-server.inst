@@ -40,7 +40,7 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 univention-admin settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
 	--set name=top \
-	--set description="Porcess Overview" \
+	--set description="Process Overview" \
 	--append operation="top/*" \
 	--append operation="top/view" \
 	--append operation="top/kill"
@@ -48,10 +48,19 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 # create mrtg operations
 univention-admin settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=top \
-	--set description="Porcess Overview" \
+	--set name=mrtg \
+	--set description="Load Statistics" \
 	--append operation="mrtg/*" \
 	--append operation="mrtg/view"
+
+# create modutils operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=modutils \
+	--set description="Kernel Module" \
+	--append operation="modutils/*" \
+	--append operation="modutils/search" \
+	--append operation="modutils/load"
 
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -149,6 +158,14 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set command="mrtg/*" \
 	--set description="All Operations"
 
+# create modutils overview acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=modutils-all \
+	--set category="Kernel Module" \
+	--set ldapbase="$ldap_base" \
+	--set command="modutils/*" \
+	--set description="All Operations"
 
 # create baseconfig acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -275,7 +292,8 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base
+	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \

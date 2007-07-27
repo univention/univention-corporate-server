@@ -1,3 +1,9 @@
+univention-management-console (0.7.19-1) unstable; urgency=low
+
+  * new module 'modutils': search, load and unload kernel modules
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 27 Jul 2007 16:03:52 +0200
+
 univention-management-console (0.7.18-1) unstable; urgency=low
 
   * if no mrtg graphics could be found, show info message
