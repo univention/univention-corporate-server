@@ -1,0 +1,146 @@
+.\" This -*- nroff -*- file has been generated from
+.\" DocBook SGML with docbook-to-man on Debian GNU/Linux.
+...\"
+...\"	transcript compatibility for postscript use.
+...\"
+...\"	synopsis:  .P! <file.ps>
+...\"
+.de P!
+\\&.
+.fl			\" force out current output buffer
+\\!%PB
+\\!/showpage{}def
+...\" the following is from Ken Flowers -- it prevents dictionary overflows
+\\!/tempdict 200 dict def tempdict begin
+.fl			\" prolog
+.sy cat \\$1\" bring in postscript file
+...\" the following line matches the tempdict above
+\\!end % tempdict %
+\\!PE
+\\!.
+.sp \\$2u	\" move below the image
+..
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+'\" t 
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
+.TH "depmod" "8" 
+.SH "NAME" 
+depmod \(em program to generate \fBmodules.dep\fP and map files. 
+.SH "SYNOPSIS" 
+.PP 
+\fBdepmod\fP [\fB-b \fIbasedir\fP\fP]  [\fB-e\fP]  [\fB-F \fISystem.map\fP\fP]  [\fB-n\fP]  [\fB-v\fP]  [\fB\fIversion\fP\fP]  [\fB-A\fP     ]  
+.PP 
+\fBdepmod\fP [\fB-e\fP]  [\fB-F\fISystem.map\fP\fP]  [\fB-n\fP]  [\fB-v\fP]  [\fB\fIversion\fP\fP]  [\fB\fIfilename\fP\fP \&...]  
+.SH "DESCRIPTION" 
+.PP 
+Linux kernel modules can provide services (called "symbols") for 
+other modules to use (using EXPORT_SYMBOL in the code).  If a 
+second module uses this symbol, that second module clearly 
+depends on the first module.  These dependencies can get quite 
+complex. 
+ 
+.PP 
+\fBdepmod\fP creates a list of module dependencies, 
+by reading each module under 
+\fB/lib/modules/\fP\fIversion\fP  
+and determining what symbols it exports, and what symbols it 
+needs.  By default this list is written to 
+\fBmodules.dep\fP in the same directory.  If 
+filenames are given on the command line, only those modules are 
+examined (which is rarely useful, unless all modules are 
+listed). 
+ 
+.PP 
+If a \fIversion\fP is provided, then that 
+kernel version's module directory is used, rather than the 
+current kernel version (as returned by "uname -r"). 
+ 
+.PP 
+\fBdepmod\fP will also generate various map files 
+in this directory, for use by the hotplug infrastructure. 
+ 
+.SH "OPTIONS" 
+.IP "\fB-b \fIbasedir\fP\fP \fB--basedir \fIbasedir\fP\fP 	  " 10 
+If your modules are not currently in the (normal) 
+directory 
+\fB/lib/modules/\fP\fIversion\fP, 
+but in a staging area, you can specify a 
+\fIbasedir\fP which is prepended to 
+the directory name.  This 
+\fIbasedir\fP is stripped from the 
+resulting \fBmodules.dep\fP file, so it 
+is ready to be moved into the normal location. 
+ 
+.IP "\fB-e\fP \fB--errsyms\fP         " 10 
+When combined with the \fB-F\fP option, this 
+reports any symbols which a module needs which are not 
+supplied by other modules or the kernel.  Normally, any 
+symbols not provided by modules are assumed to be 
+provided by the kernel (which should be true in a 
+perfect world). 
+ 
+.IP "\fB-F\fP \fB--filesyms \fISystem.map\fP\fP         " 10 
+Supplied with the \fBSystem.map\fP produced 
+when the kernel was built, this allows the 
+\fB-e\fP option to report unresolved symbols. 
+ 
+.IP "\fB-n\fP \fB--dry-run\fP         " 10 
+This sends the resulting modules.dep, then the various 
+map files, to standard output, rather than writing them into 
+the module directory. 
+ 
+.IP "\fB-A\fP \fB--quick\fP         " 10 
+This option scans to see if any modules are newer the 
+\fBmodules.dep\fP file before any work is 
+done: if not, it silently exits rather than regenerating 
+the files. 
+ 
+.SH "BACKWARDS COMPATIBILITY" 
+.PP 
+This version of \fBdepmod\fP is for kernels 
+\fB2.5.48\fP and above.  If it detects a kernel 
+with support for old-style modules, or the version specified is 
+before \fB2.5.48\fP, it will attempt to run 
+\fBdepmod.old\fP in its place, so it is completely 
+transparent to the user. 
+ 
+.SH "COPYRIGHT" 
+.PP 
+This manual page Copyright 2002, Rusty Russell, IBM Corporation. 
+ 
+.SH "SEE ALSO" 
+.PP 
+\fBmodprobe\fP\fB(8)\fP, 
+\fBmodules.dep\fP\fB(5)\fP, 
+\fBdepmod.old\fP\fB(8)\fP      
+...\" created by instant / docbook-to-man, Fri 15 Aug 2003, 23:44 

@@ -1,0 +1,93 @@
+.\" This -*- nroff -*- file has been generated from
+.\" DocBook SGML with docbook-to-man on Debian GNU/Linux.
+...\"
+...\"	transcript compatibility for postscript use.
+...\"
+...\"	synopsis:  .P! <file.ps>
+...\"
+.de P!
+\\&.
+.fl			\" force out current output buffer
+\\!%PB
+\\!/showpage{}def
+...\" the following is from Ken Flowers -- it prevents dictionary overflows
+\\!/tempdict 200 dict def tempdict begin
+.fl			\" prolog
+.sy cat \\$1\" bring in postscript file
+...\" the following line matches the tempdict above
+\\!end % tempdict %
+\\!PE
+\\!.
+.sp \\$2u	\" move below the image
+..
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+'\" t 
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
+.TH "insmod" "8" 
+.SH "NAME" 
+insmod \(em simple program to insert a module into the Linux Kernel 
+.SH "SYNOPSIS" 
+.PP 
+\fBinsmod\fP [\fIfilename\fP]  [\fImodule options\fP \&...]  
+.SH "DESCRIPTION" 
+.PP 
+\fBinsmod\fP is a trivial program to insert a 
+module into the kernel: if the 
+\fIfilename\fP is a hyphen, the module is 
+taken from standard input. Most users will want to use 
+\fBmodprobe\fP\fB(8)\fP instead, which is 
+cleverer. 
+.PP 
+Only the most general of error messages are reported: as the 
+work of trying to link the module is now done inside the kernel, 
+the \fBdmesg\fP usually gives more information 
+about errors. 
+.SH "BACKWARDS COMPATIBILITY" 
+.PP 
+This version of \fBinsmod\fP is for kernels 
+\fB2.5.48\fP and above.  If it detects a kernel 
+with support for old-style modules (for which much of the work 
+was done in userspace), it will attempt to run 
+\fBinsmod.old\fP in its place, so it is 
+completely transparent to the user. 
+.SH "COPYRIGHT" 
+.PP 
+This manual page Copyright 2002, Rusty Russell, IBM Corporation. 
+ 
+.SH "SEE ALSO" 
+.PP 
+\fBmodprobe\fP\fB(8)\fP, 
+\fBrmmod\fP\fB(8)\fP, 
+\fBlsmod\fP\fB(8)\fP, 
+\fBinsmod.old\fP\fB(8)\fP      
+...\" created by instant / docbook-to-man, Tue 19 Aug 2003, 20:19 

@@ -1,0 +1,927 @@
+=head1 NAME
+
+Net::LDAP - Lightweight Directory Access Protocol
+
+=head1 SYNOPSIS
+
+ use Net::LDAP;
+ 
+ $ldap = Net::LDAP->new( 'ldap.bigfoot.com' ) or die "$@";
+ 
+ $mesg = $ldap->bind ;    # an anonymous bind
+ 
+ $mesg = $ldap->search( # perform a search
+                        base   => "c=US",
+                        filter => "(&(sn=Barr) (o=Texas Instruments))"
+                      );
+ 
+ $mesg->code && die $mesg->error;
+ 
+ foreach $entry ($mesg->entries) { $entry->dump; }
+ 
+ $mesg = $ldap->unbind;   # take down session
+ 
+ 
+ $ldap = Net::LDAP->new( 'ldap.umich.edu' );
+ 
+ # bind to a directory with dn and password
+ $mesg = $ldap->bind( 'cn=root, o=University of Michigan, c=us',
+                      password => 'secret'
+                    );
+ 
+ $result = $ldap->add( 'cn=Barbara Jensen, o=University of Michigan, c=US',
+                       attr => [
+                         'cn'   => ['Barbara Jensen', 'Barbs Jensen'],
+                	 'sn'   => 'Jensen',
+                	 'mail' => 'b.jensen@umich.edu',
+                	 'objectclass' => ['top', 'person',
+                                           'organizationalPerson',
+                                           'inetOrgPerson' ],
+                       ]
+                     );
+ 
+ $result->code && warn "failed to add entry: ", $result->error ;
+ $mesg = $ldap->unbind;  # take down session
+
+=head1 DESCRIPTION
+
+B<Net::LDAP> is a collection of modules that implements a LDAP
+services API for Perl programs. The module may be used to search
+directories or perform maintenance functions such as adding, deleting
+or modifying entries.
+
+This document assumes that the reader has some knowledge of the LDAP
+protocol.
+
+=head1 CONSTRUCTOR
+
+=over 4
+
+=item new ( HOST, OPTIONS )
+
+Creates a new B<Net::LDAP> object and opens a connection to the named host.
+
+C<HOST> may be a host name or an IP number. TCP port may be specified
+after the host name followed by a colon (such as localhost:10389). The
+default TCP port for LDAP is 389.
+
+You can also specify a URI, such as 'ldaps://127.0.0.1:666' or
+'ldapi://%2fvar%2flib%2fldap_sock'. Note that '%2f's in the LDAPI
+socket path will be translated into '/'. This is to support LDAP query
+options like base, search etc. although the query part of the URI will
+be ignored in this context. If port was not specified in the URI, the
+default is either 389 or 636 for 'LDAP' and 'LDAPS' schemes
+respectively.
+
+C<HOST> may also be a reference to an array of hosts, host-port pairs
+or URIs to try. Each will be tried in order until a connection is
+made. Only when all have failed will the result of C<undef> be
+returned.
+
+=over 4
+
+=item port =E<gt> N
+
+Port to connect to on the remote server. May be overridden by C<HOST>.
+
+=item timeout =E<gt> N
+
+Timeout passed to L<IO::Socket> when connecting the remote server.
+(Default: 120)
+
+=item multihomed =E<gt> N
+
+Will be passed to L<IO::Socket> as the C<MultiHomed> parameter
+when connecting to the remote server
+
+=item localaddr =E<gt> HOST
+
+Will be passed to L<IO::Socket> as the C<LocalAddr> parameter, which
+sets the client's IP address (as opposed to the server's IP address.)
+
+=item debug =E<gt> N
+
+Set the debug level. See the L<debug|debug> method for details.
+
+=item async =E<gt> 1
+
+Perform all operations asynchronously.
+
+=item onerror =E<gt> 'die' | 'warn' | undef | sub { ... }
+
+In synchronous mode, change what happens when an error is detected.
+
+=over 4
+
+=item 'die'
+
+Net::LDAP will croak whenever an error is detected.
+
+=item 'warn'
+
+Net::LDAP will warn whenever an error is detected.
+
+=item undef
+
+Net::LDAP will warn whenever an error is detected and C<-w> is in
+effect. The method that was called will return C<undef>.
+
+=item sub { ... }
+
+The given sub will be called in a scalar context with a single
+argument, the result message. The value returned will be the return
+value for the method that was called.
+
+=back
+
+=item version =E<gt> N
+
+Set the protocol version being used (default is LDAPv3). This is
+useful if you want to talk to an old server and therefore have to use
+LDAPv2.
+
+=back
+
+Example
+
+  $ldap = Net::LDAP->new( 'remote.host', async => 1 );
+
+LDAPS connections have some extra valid options, see the
+L<start_tls|start_tls> method for details. Note the default value for
+'sslversion' for LDAPS is 'sslv2/3', and the default port for LDAPS
+is 636.
+
+For LDAPI connections, HOST is actually the location of a UNIX domain
+socket to connect to. The default location is '/var/lib/ldapi'.
+
+=back
+
+=head1 METHODS
+
+Each of the following methods take as arguments some number of fixed
+parameters followed by options, these options are passed in a named
+fashion, for example
+
+  $mesg = $ldap->bind( "cn=me,o=example", password => "mypasswd");
+
+The return value from these methods is an object derived from the
+L<Net::LDAP::Message> class. The methods of this class allow
+you to examine the status of the request.
+
+
+=over 4
+
+=item abandon ( ID, OPTIONS )
+
+Abandon a previously issued request. C<ID> may be a number or an
+object which is a sub-class of L<Net::LDAP::Message>, returned from a
+previous method call.
+
+=over 4
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below
+
+=back
+
+B<Example>
+
+  $res = $ldap->search( @search_args );
+
+  $mesg = $ldap->abandon( $res ); # This could be written as $res->abandon
+
+
+=item add ( DN, OPTIONS )
+
+Add a new entry to the directory. C<DN> can be either a
+L<Net::LDAP::Entry> object or a string.
+
+=over 4
+
+=item attrs =E<gt> [ ATTR =E<gt> VALUE, ... ]
+
+C<VALUE> should be a string if only a single value is wanted, or a
+reference to an array of strings if multiple values are wanted.
+
+This argument is not used if C<DN> is a L<Net::LDAP::Entry> object.
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below
+
+=back
+
+B<Example>
+
+  # $entry is an object of class Net::LDAP::Entry
+  $mesg = $ldap->add( $entry );
+
+  $mesg = $ldap->add( $dn,
+                      attrs => [
+                        name  => 'Graham Barr',
+                        attr  => 'value1',
+                        attr  => 'value2',
+                        multi => [qw(value1 value2)]
+                      ]
+                    );
+
+=item bind ( DN, OPTIONS )
+
+Bind (log in) to the server. C<DN> is the DN to bind with. An
+anonymous bind may be done by calling bind without any arguments.
+
+=over 4
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below
+
+=item noauth | anonymous =E<gt> 1
+
+Bind without any password. The value passed with this option is ignored.
+
+=item password =E<gt> PASSWORD
+
+Bind with the given password.
+
+=item sasl =E<gt> SASLOBJ
+
+Bind using a SASL mechanism. The argument given should be a sub-class
+of L<Authen::SASL>.
+
+=back
+
+B<Example>
+
+  $mesg = $ldap->bind; # Anonymous bind
+
+  $mesg = $ldap->bind( $dn, password => $password );
+
+  # $sasl is an object of class Authen::SASL
+  $mesg = $ldap->bind( $dn, sasl => $sasl, version => 3 );
+
+
+=item compare ( DN, OPTIONS )
+
+Compare values in an attribute in the entry given by C<DN> on the
+server. C<DN> may be a string or a L<Net::LDAP::Entry> object.
+
+=over 4
+
+=item attr =E<gt> ATTR
+
+The name of the attribute to compare.
+
+=item value =E<gt> VALUE
+
+The value to compare with.
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below.
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below.
+
+=back
+
+B<Example>
+
+  $mesg = $ldap->compare( $dn,
+                          attr  => 'cn',
+                          value => 'Graham Barr'
+                        );
+
+=item delete ( DN, OPTIONS )
+
+Delete the entry given by C<DN> from the server. C<DN> may be a string
+or a L<Net::LDAP::Entry> object.
+
+=over 4
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below.
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below.
+
+=back
+
+B<Example>
+
+ $mesg = $ldap->delete( $dn );
+
+=item moddn ( DN, OPTIONS )
+
+Rename the entry given by C<DN> on the server. C<DN> may be a string
+or a L<Net::LDAP::Entry> object.
+
+=over 4
+
+=item newrdn =E<gt> RDN
+
+This value should be a new RDN to assign to C<DN>.
+
+=item deleteoldrdn =E<gt> 1
+
+This option should be passwd if the existing RDN is to be deleted.
+
+=item newsuperior =E<gt> NEWDN
+
+If given this value should be the DN of the new superior for C<DN>.
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below.
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below.
+
+=back
+
+B<Example>
+
+ $mesg = $ldap->moddn( $dn, newrdn => 'cn=Graham Barr' );
+
+=item modify ( DN, OPTIONS )
+
+Modify the contents of the entry given by C<DN> on the server. C<DN>
+may be a string or a L<Net::LDAP::Entry> object.
+
+=over 4
+
+=item add =E<gt> { ATTR =E<gt> VALUE, ... }
+
+Add more attributes or values to the entry. C<VALUE> should be a
+string if only a single value is wanted in the attribute, or a
+reference to an array of strings if multiple values are wanted.
+
+=item delete =E<gt> [ ATTR, ... ]
+
+Delete complete attributes from the entry.
+
+=item delete =E<gt> { ATTR =E<gt> VALUE, ... }
+
+Delete individual values from an attribute. C<VALUE> should be a
+string if only a single value is being deleted from the attribute, or
+a reference to an array of strings if multiple values are being
+deleted.
+
+=item replace =E<gt> { ATTR =E<gt> VALUE, ... }
+
+Replace any existing values in each given attribute with
+C<VALUE>. C<VALUE> should be a string if only a single value is wanted
+in the attribute, or a reference to an array of strings if multiple
+values are wanted. A reference to an empty array will remove the
+entire attribute.
+
+=item changes =E<gt> [ OP =E<gt> [ ATTR =E<gt> VALUE ], ... ]
+
+This is an alternative to B<add>, B<delete> and B<replace> where the
+whole operation can be given in a single argument. C<OP> should be
+B<add>, B<delete> or B<replace>. C<VALUE> should be either a string or a
+reference to an array of strings, as before.
+
+Use this form if you want to control the order in which the operations
+will be performed.
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below.
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below.
+
+=back
+
+B<Example>
+
+ $mesg = $ldap->modify( $dn, add => { sn => 'Barr' } );
+ 
+ $mesg = $ldap->modify( $dn, delete => [qw(faxNumber)] );
+ 
+ $mesg = $ldap->modify( $dn, delete => { 'telephoneNumber' => '911' } );
+ 
+ $mesg = $ldap->modify( $dn, replace => { 'mail' => 'gbarr@pobox.com' } );
+ 
+ $mesg = $ldap->modify( $dn,
+                        changes => [
+                            # add sn=Barr
+                          add     => [ sn => 'Barr' ],
+                            # delete all fax numbers
+                          delete  => [ faxNumber => []],
+                            # delete phone number 911
+                          delete  => [ telephoneNumber => ['911']],
+                            # change email address
+                          replace => [ mail => 'gbarr@pobox.com']
+                        ]
+                      );
+
+=item search ( OPTIONS )
+
+Search the directory using a given filter.  This can be used to read
+attributes from a single entry, from entries immediately below a
+particular entry, or a whole subtree of entries.
+
+The result is an object of class L<Net::LDAP::Search>.
+
+=over 4
+
+=item base =E<gt> DN
+
+The DN that is the base object entry relative to which the search is
+to be performed.
+
+=item scope =E<gt> 'base' | 'one' | 'sub'
+
+By default the search is performed on the whole tree below
+the specified base object. This maybe changed by specifying a C<scope>
+parameter with one of the following values:
+
+=over 4
+
+=item base
+
+Search only the base object.
+
+=item one
+
+Search the entries immediately below the base object.
+
+=item sub
+
+Search the whole tree below (and including) the base object. This is
+the default.
+
+=back
+
+=item deref =E<gt> 'never' | 'search' | 'find' | 'always'
+
+By default aliases are dereferenced to locate the base object for the
+search, but not when searching subordinates of the base object. This
+may be changed by specifying a C<deref> parameter with one of the
+following values:
+
+=over 4
+
+=item never
+
+Do not dereference aliases in searching or in locating the base object
+of the search.
+
+=item search
+
+Dereference aliases in subordinates of the base object in searching,
+but not in locating the base object of the search.
+
+=item find
+
+Dereference aliases in locating the base object of the search, but not
+when searching subordinates of the base object. This is the default.
+
+=item always
+
+Dereference aliases both in searching and in locating the base object
+of the search.
+
+=back
+
+=item sizelimit =E<gt> N
+
+A sizelimit that restricts the maximum number of entries to be returned
+as a result of the search. A value of 0, and the default, means that
+no restriction is requested.  Servers may enforce a maximum number of
+entries to return.
+
+=item timelimit =E<gt> N
+
+A timelimit that restricts the maximum time (in seconds) allowed for a
+search. A value of 0 (the default), means that no timelimit will be
+requested.
+
+=item typesonly =E<gt> 1
+
+Only attribute types (no values) should be returned. Normally
+attribute types and values are returned.
+
+=item filter =E<gt> FILTER
+
+A filter that defines the conditions an entry in the directory must meet
+in order for it to be returned by the search. This may be a string or a
+L<Net::LDAP::Filter> object. Values inside filters may need to be escaped
+to avoid security problems; see L<Net::LDAP::Filter> for a definition of
+the filter format, including the escaping rules.
+
+=item attrs =E<gt> [ ATTR, ... ]
+
+A list of attributes to be returned for each entry that matches the
+search filter.
+
+If not specified, then the server will return the attributes that are
+specified as accessible by default given your bind credentials.
+
+Certain additional attributes such as "createTimestamp" and other
+operational attributes may also be available for the asking:
+
+  $mesg = $ldap->search( ... ,
+                         attrs => ['createTimestamp']
+                       );
+
+To retrieve the default attributes and additional ones, use '*'.
+
+  $mesg = $ldap->search( ... ,
+                         attrs => ['*', 'createTimestamp']
+                       );
+
+To retrieve no attributes (the server only returns the DNs of matching
+entries), use '1.1':
+
+  $mesg = $ldap->search( ... ,
+                         attrs => ['1.1']
+                       );
+
+=item control =E<gt> CONTROL
+
+=item control =E<gt> [ CONTROL, ... ]
+
+See L</CONTROLS> below.
+
+=item callback =E<gt> CALLBACK
+
+See L</CALLBACKS> below.
+
+=back
+
+B<Example>
+
+ $mesg = $ldap->search(
+                        base   => $base_dn,
+                        scope  => 'sub',
+                        filter => '(|(objectclass=rfc822mailgroup)(sn=jones))'
+                      );
+ 
+ Net::LDAP::LDIF->new( \*STDOUT,"w" )->write( $mesg->entries );
+
+=item start_tls ( OPTIONS )
+
+Calling this method will convert the existing connection to using
+Transport Layer Security (TLS), which provides an encrypted
+connection. This is I<only> possible if the connection uses LDAPv3,
+and requires that the server advertizes support for
+LDAP_EXTENSION_START_TLS. Use
+L<Net::LDAP::RootDSE/supported_extension> to check this.
+
+=over 4
+
+=item verify =E<gt> 'none' | 'optional' | 'require'
+
+How to verify the server's certificate:
+
+=over 4
+
+=item none
+
+The server may provide a certificate but it will not be checked - this
+may mean you are be connected to the wrong server
+
+=item optional
+
+Verify only when the server offers a certificate
+
+=item require
+
+The server must provide a certificate, and it must be valid.
+
+=back
+
+If you set verify to optional or require, you must also set either
+cafile or capath. The most secure option is B<require>.
+
+=item sslversion =E<gt> 'sslv2' | 'sslv3' | 'sslv2/3' | 'tlsv1'
+
+This defines the version of the SSL/TLS protocol to use. Defaults to
+B<'tlsv1'>.
+
+=item ciphers =E<gt> CIPHERS
+
+Specify which subset of cipher suites are permissible for this
+connection, using the standard OpenSSL string format. The default
+value is B<'ALL'>, which permits all ciphers, even those that don't
+encrypt.
+
+=item clientcert =E<gt> '/path/to/cert.pem'
+
+=item clientkey =E<gt> '/path/to/key.pem'
+
+=item keydecrypt =E<gt> sub { ... }
+
+If you want to use the client to offer a certificate to the server for
+SSL authentication (which is not the same as for the LDAP Bind
+operation) then set clientcert to the user's certificate file, and
+clientkey to the user's private key file. These files must be in PEM
+format.
+
+If the private key is encrypted (highly recommended) then keydecrypt
+should be a subroutine that returns the decrypting key. For example:
+
+ $ldap = Net::LDAP->new( 'myhost.example.com', version => 3 );
+ $mesg = $ldap->start_tls(
+                           verify => 'require',
+                           clientcert => 'mycert.pem',
+                           clientkey => 'mykey.pem',
+                           keydecrypt => sub { 'secret'; },
+                           capath => '/usr/local/cacerts/'
+                         );
+
+=item capath =E<gt> '/path/to/servercerts/'
+
+=item cafile =E<gt> '/path/to/servercert.pem'
+
+When verifying the server's certificate, either set capath to the
+pathname of the directory containing CA certificates, or set cafile to
+the filename containing the certificate of the CA who signed the
+server's certificate. These certificates must all be in PEM format.
+
+The directory in 'capath' must contain certificates named using the
+hash value of the certificates' subject names. To generate these
+names, use OpenSSL like this in Unix:
+
+    ln -s cacert.pem `openssl x509 -hash -noout < cacert.pem`.0
+
+(assuming that the certificate of the CA is in cacert.pem.)
+
+=back
+
+=item unbind ( )
+
+The unbind method does not take any parameters and will unbind you
+from the server. Some servers may allow you to re-bind or perform
+other operations after unbinding. If you wish to switch to another set
+of credentials while continuing to use the same connection, re-binding
+with another DN and password, without unbind-ing, will generally work.
+
+B<Example>
+
+ $mesg = $ldap->unbind;
+
+=back
+
+The following methods are for convenience, and do not return
+C<Net::LDAP::Message> objects.
+
+=over 4
+
+=item async ( VALUE )
+
+If C<VALUE> is given the async mode will be set. The previous value
+will be returned. The value is I<true> if LDAP operations are being
+performed asynchronously.
+
+=item certificate ( )
+
+Returns an X509_Certificate object containing the server's
+certificate. See the IO::Socket::SSL documentation for information
+about this class.
+
+For example, to get the subject name (in a peculiar OpenSSL-specific
+format, different from RFC 1779 and RFC 2253) from the server's
+certificate, do this:
+
+    print "Subject DN: " . $ldaps->certificate->subject_name . "\n";
+
+=item cipher ( )
+
+Returns the cipher mode being used by the connection, in the string
+format used by OpenSSL.
+
+=item debug ( VALUE )
+
+If C<VALUE> is given the debug bit-value will be set. The previous
+value will be returned. Debug output will be sent to C<STDERR>. The
+bits of this value are:
+
+ 1   Show outgoing packets (using asn_hexdump).
+ 2   Show incoming packets (using asn_hexdump).
+ 4   Show outgoing packets (using asn_dump).
+ 8   Show incoming packets (using asn_dump).
+
+The default value is 0.
+
+=item disconnect ( )
+
+Disconnect from the server
+
+=item root_dse ( OPTIONS )
+
+The root_dse method retrieves cached information from the server's
+rootDSE.
+
+=over 4
+
+=item attrs =E<gt> [ ATTR, ... ]
+
+A reference to a list of attributes to be returned.
+If not specified, then the following attributes will be requested
+
+  subschemaSubentry
+  namingContexts
+  altServer
+  supportedExtension
+  supportedFeatures
+  supportedControl
+  supportedSASLMechanisms
+  supportedLDAPVersion
+
+=back
+
+The result is an object of class L<Net::LDAP::RootDSE>.
+
+B<Example>
+
+ my $root = $ldap->root_dse;
+ # get naming Context
+ $root->get_value( 'namingContext', asref => 1 );
+ # get supported LDAP versions
+ $root->supported_version;
+
+As the root DSE may change in certain circumstances - for instance
+when you change the connection using start_tls - you should always use
+the root_dse method to return the most up-to-date copy of the root
+DSE.
+
+=item schema ( OPTIONS )
+
+Read schema information from the server.
+
+The result is an object of class L<Net::LDAP::Schema>.
+Read this documentation for further information about methods that
+can be performed with this object.
+
+=over 4
+
+=item dn =E<gt> DN
+
+If a DN is supplied, it will become the base object entry from 
+which the search for schema information will be conducted.  If
+no DN is supplied the base object entry will be determined from
+the rootDSE entry.
+
+=back
+
+B<Example>
+
+ my $schema = $ldap->schema;
+ # get objectClasses
+ @ocs = $schema->all_objectclasses;
+ # Get the attributes
+ @atts = $schema->all_attributes;
+
+=item socket ( )
+
+Returns the underlying C<IO::Socket> object being used.
+
+=item sync ( MESG )
+
+Wait for a given C<MESG> request to be completed by the server. If no
+C<MESG> is given, then wait for all outstanding requests to be completed.
+
+Returns an error code defined in L<Net::LDAP::Constant>.
+
+=item version ( )
+
+Returns the version of the LDAP protocol that is being used.
+
+=back
+
+=head1 CONTROLS
+
+Many of the methods described above accept a control option.
+This allows the user to pass controls to the server as described
+in LDAPv3.
+
+A control is a reference to a HASH and should contain the three
+elements below. If any of the controls are blessed then the
+method C<to_asn> will be called which should return a reference
+to a HASH containing the three elements described below.
+
+=over 4
+
+=item type =E<gt> OID
+
+This element must be present and is the name of the type of control
+being requested.
+
+=item critical =E<gt> FLAG
+
+critical is optional and should be a boolean value, if it is not specified
+then it is assumed to be I<false>.
+
+=item value =E<gt> VALUE
+
+If the control being requested requires a value then this element should
+hold the value for the server.
+
+=back
+
+=head1 CALLBACKS
+
+Most of the above commands accept a callback option. This option
+should be a reference to a subroutine. This subroutine will be called
+for each packet received from the server as a response to the request
+sent.
+
+When the subroutine is called the first argument will be the
+L<Net::LDAP::Message> object which was returned from the method.
+
+If the request is a search then multiple packets can be received from
+the server. Each entry is received as a separate packet. For each of these
+the subroutine will be called with a L<Net::LDAP::Entry> object as the second
+argument.
+
+During a search the server may also send a list of references. When such
+a list is received then the subroutine will be called with a
+L<Net::LDAP::Reference> object as the second argument.
+
+=head1 LDAP ERROR CODES
+
+B<Net::LDAP> also exports constants for the error codes that can be received
+from the server, see L<Net::LDAP::Constant>.
+
+=head1 SEE ALSO
+
+L<Net::LDAP::Constant>,
+L<Net::LDAP::Control>,
+L<Net::LDAP::Entry>,
+L<Net::LDAP::Filter>,
+L<Net::LDAP::Message>,
+L<Net::LDAP::Reference>,
+L<Net::LDAP::Search>,
+L<Net::LDAP::RFC>
+
+The homepage for the perl-ldap modules can be found at 
+http://perl-ldap.sourceforge.net/
+
+=head1 ACKNOWLEDGEMENTS
+
+This document is based on a document originally written by Russell Fulton
+E<lt>r.fulton@auckland.ac.nzE<gt>.
+
+Chris Ridd E<lt>chris.ridd@isode.comE<gt> for the many hours spent
+testing and contribution of the ldap* command line utilities.
+
+=head1 MAILING LIST
+
+A discussion mailing list is hosted by sourceforge at
+E<lt>perl-ldap@perl.orgE<gt> No subscription is necessary!
+
+=head1 BUGS
+
+We hope you do not find any, but if you do please report them to
+the mailing list.
+
+If you have a patch, please send it as an attachment to the mailing
+list.
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program is
+free software; you can redistribute it and/or modify it under the same
+terms as Perl itself.
+
+=cut

@@ -1,0 +1,62 @@
+=head1 NAME
+
+Net::LDAP::Reference - search reference
+
+=head1 SYNOPSIS
+
+  use Net::LDAP;
+
+  $ldap->search( @search_args, callback => \&process);
+
+  sub process {
+    my $mesg = shift;
+    my $obj = shift;
+    if (!$obj) {
+      # Search complete
+    }
+    elsif ($obj->isa('Net::LDAP::Reference')) {
+      my $ref;
+
+      foreach $ref ($obj->references) {
+        # process ref
+      }
+    }
+    else {
+      # Process Net::LDAP::Entry
+    }
+  }
+
+=head1 DESCRIPTION
+
+The B<Net::LDAP::Reference> object represents a reference (sometimes
+called a "referral") returned by the directory from a search.
+
+=head1 METHODS
+
+=over 4
+
+=item references
+
+Returns a list of references from the server.
+
+=back
+
+=head1 SEE ALSO
+
+L<Net::LDAP>,
+L<Net::LDAP::Search>
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>.
+
+Please report any bugs, or post any suggestions, to the perl-ldap mailing list
+E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program is
+free software; you can redistribute it and/or modify it under the same
+terms as Perl itself.
+
+=cut

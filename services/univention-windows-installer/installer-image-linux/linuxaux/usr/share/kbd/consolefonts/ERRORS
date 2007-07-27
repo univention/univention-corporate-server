@@ -1,0 +1,7 @@
+In iso04.f08 and iso10.f08 the letters K, and k,
+(letter k with cedilla) are wrong.
+In iso07.f08 and iso10.f08 the horizontal bar is wrong.
+In lat0u-14.psf positions 167, 168 (decimal) are wrong.
+
+Maybe someone with font editor can correct this.
+(Compare with *.f14 and *.f16 to see the right version.)

@@ -1,0 +1,193 @@
+=head1 NAME
+
+Net::LDAP::LDIF - LDIF reading and writing
+
+=head1 SYNOPSIS
+
+ use Net::LDAP::LDIF;
+
+ $ldif = Net::LDAP::LDIF->new( "file.ldif", "r", onerror => 'undef' );
+ while( not $ldif->eof ( ) ) {
+   $entry = $ldif->read_entry ( );
+   if ( $ldif->error ( ) ) {
+     print "Error msg: ", $ldif->error ( ), "\n";
+     print "Error lines:\n", $ldif->error_lines ( ), "\n";
+   } else {
+     # do stuff
+   }
+ }
+ $ldif->done ( );
+
+=head1 DESCRIPTION
+
+B<Net::LDAP::LDIF> provides a means to convert between
+L<Net::LDAP::Entry> objects and LDAP entries represented in LDIF
+format files. Reading and writing are supported and may manipulate
+single entries or lists of entries.
+
+As when reading an entire file into memory with perl normally, take
+into account the possibility of memory use when loading an LDIF file
+in one go.
+
+=head1 CONSTRUCTOR
+
+=over 4
+
+=item new ( FILE )
+
+Open the file read-only. C<FILE> may be the name of a file or an
+already open filehandle. If C<FILE> begins or ends with a C<|> then
+C<FILE> will be passed directly to C<open>.
+
+=item new ( FILE, MODE, OPTIONS )
+
+Open the file with the given C<MODE>, eg "w" or "a". C<FILE> may be
+the name of a file or an already open filehandle. If C<FILE> begins or
+ends with a C<|> then C<FILE> will be passed directly to C<open>.
+
+=over 4
+
+=item encode =E<gt> 'none' | 'canonical' | 'base64'
+
+Some values in LDIF cannot be written verbatim and have to be encoded
+in some way:
+
+=over 4
+
+=item 'none'
+
+The default.
+
+=item 'canonical'
+
+See L<Net::LDAP::Util/canonical_dn>.
+
+=item 'base64'
+
+Use base64.
+
+=back
+
+=item onerror =E<gt> 'die' | 'warn' | undef
+
+Specify what happens when an error is detected.
+
+=over 4
+
+=item 'die'
+
+C<Net::LDAP::LDIF> will croak with an appropriate message.
+
+=item 'warn'
+
+C<Net::LDAP::LDIF> will warn with an appropriate message.
+
+=item undef
+
+C<Net::LDAP::LDIF> will warn with an appropriate message if C<-w> is
+in effect.  The method that was called will return C<undef>.
+
+=back
+
+=item change =E<gt> 1
+
+Write entry changes to the LDIF file instead of the entries itself.
+I.e. write LDAP operations acting on the entries to the file instead of the entries contents.
+
+=item lowercase =E<gt> 1
+
+Convert attribute names to lowercase when writing.
+
+=item sort =E<gt> 1
+
+Sort attribute names when writing entries according to the rule:
+objectclass first then all other attributes alphabetically sorted
+
+=item version =E<gt> '1'
+
+Set the LDIF version to write to the resulting LDIF file.
+
+According to RFC 2849 currently the only legal value for this option is I<1>.
+
+The default is I<undef> meaning no version information is written to the LDIF file.
+
+=item wrap =E<gt> 78
+
+Number of columns where output line wrapping shall occur.
+
+Default is 78. Setting it to 40 or lower inhibits wrapping.
+
+=back
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item read_entry ( )
+
+Read one entry from the file and return it as a C<Net::LDAP::Entry>
+object.
+
+=item eof ( )
+
+Returns I<true> when the end of the file is reached.
+
+=item write_entry ( ENTRIES )
+
+Write the entries to the LDIF file.
+
+=item version ( [ VERSION ] )
+
+If called without arguments it returns the version of the LDIF file
+or undef if no version has been set.
+If called with an argument it sets the LDIF version to VERSION.
+
+According to RFC 2849 currently the only legal value for VERSION is I<1>.
+
+=item done ( )
+
+This method signals that the LDIF object is no longer needed. If a
+file was opened automatically when the object was created it will be
+closed. This method is called automatically via DESTROY when the
+object goes out of scope.
+
+=item error ( )
+
+Returns error message if error was found.
+
+=item error_lines ( )
+
+Returns lines that resulted in error.
+
+=item current_entry ( )
+
+Returns the current C<Net::LDAP::Entry> object.
+
+=item current_lines ( )
+
+Returns the lines that generated the current C<Net::LDAP::Entry>
+object.
+
+=item next_lines ( )
+
+Returns the lines that will generate the next C<Net::LDAP::Entry>
+object.
+
+=back
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>.
+
+Please report any bugs, or post any suggestions, to the perl-ldap
+mailing list E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program
+is free software; you can redistribute it and/or modify it under the
+same terms as Perl itself.
+
+=cut

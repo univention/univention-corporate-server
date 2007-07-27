@@ -1,0 +1,219 @@
+#!/usr/bin/perl
+
+use warnings;
+use strict;
+use File::Spec;
+
+# sysfs directory created by EDD module for BIOS boot device
+my $int13_dev80 = '/sys/firmware/edd/int13_dev80';
+-d $int13_dev80
+    or die "$int13_dev80 directory not found (did you load edd.o module?)";
+
+# sysfs block device directory
+my $sys_block = '/sys/block';
+-d $sys_block
+    or die "$sys_block directory not found";
+
+# Read first line from a file, remove newline, and return it.  Return
+# undef if file does not exist or could not be read.
+sub read_line ($) {
+    my ($filename) = @_;
+
+    open FILE, $filename
+        or return undef;
+
+    my $line = <FILE>;
+    chomp $line;
+
+    close FILE
+        or die "Unable to close $filename: $!";
+
+    return $line;
+}
+
+my $hex = qr{[0-9a-f]}i;
+
+# Return associative array with everything we can learn about the disk
+# from the EDD BIOS.  Argument is a directory under /sys/firmware/edd.
+sub get_bios_dev_info ($) {
+    my ($dir) = @_;
+    my %ret;
+
+    my $size = read_line (File::Spec->catfile ($dir, 'sectors'));
+    defined $size
+        and $ret{'size'} = $size;
+
+    my $mbr_signature = read_line (File::Spec->catfile
+                                   ($dir, 'mbr_signature'));
+    defined $mbr_signature
+        and $ret{'mbr_signature'} = $mbr_signature;
+
+    my $host_bus = read_line (File::Spec->catfile ($dir, 'host_bus'));
+    if (defined $host_bus) {
+        if ($host_bus =~ 
+            /^PCIX?\s+($hex+):($hex+)\.(\d+)\s+channel:\s+(\d+)$/) {
+            @ret{'pci_bus', 'pci_slot', 'pci_function', 'pci_domain'} =
+                ($1, $2, $3, $4);
+        }
+# Uncomment this once we know what to look for under /sys/block.
+#        elsif ($host_bus =~ /^SATA\s+device:s+(\d+)$/) {
+#            @ret{'sata_device'} = $1;
+#        }
+        else {
+            warn "*** Unrecognized bus type in $dir/host_bus\n";
+        }
+    }
+
+    my $interface = read_line (File::Spec->catfile ($dir, 'interface'));
+    if (defined $interface) {
+        if ($interface =~ /^ATA\s+device:\s+(\d+)$/) {
+            $ret{'ide_dev'} = $1;
+        }
+        elsif ($interface =~ /^SCSI\s+id:\s+(\d+)\s+lun:\s+(\d+)$/) {
+            @ret{'scsi_id', 'scsi_lun'} = ($1, $2);
+        }
+        else {
+            warn "*** Unrecognized interface type in $dir/interface\n";
+        }
+    }
+
+    return \%ret;
+}
+
+# Return associative array with everything we can learn about a disk
+# from the Linux device driver.  Argument is a directory under
+# /sys/block.
+sub get_linux_dev_info ($) {
+    my ($dir) = @_;
+    my %ret = ();
+
+    my $size = read_line (File::Spec->catfile ($dir, 'size'));
+    defined $size
+        and $ret{'size'} = $size;
+
+    my $device_link = File::Spec->catfile ($dir, 'device');
+    if (-l $device_link) {
+        my $device = readlink $device_link;
+        defined $device
+            or die "Unable to readlink $device_link";
+        if ($device =~
+            /\/devices\/pci($hex+):($hex+)\/\1:\2:($hex+)\.(\d+)/) {
+            @ret{'pci_domain', 'pci_bus', 'pci_slot', 'pci_function'} =
+                ($1, $2, $3, $4);
+        }
+
+        if ($device =~ /\/host(\d+)\/\1:(\d+):(\d+):(\d+)/) {
+            @ret{'scsi_host', 'scsi_channel', 'scsi_id', 'scsi_lun'} =
+                ($1, $2, $3, $4);
+        }
+
+        if ($device =~ /\/ide(\d+)\/\1\.(\d+)/) {
+            @ret{'ide_channel', 'ide_dev'} = ($1, $2);
+        }
+    }
+
+    return \%ret;
+}
+
+# Compare a field from one associative array with another, returning a
+# positive score if they match, a negative score if they do not, and
+# zero if the field is not present in one or the other.
+sub check ($$$$) {
+    my ($bios_dev, $linux_dev, $field, $goodness) = @_;
+    my $ret = 0;
+
+    if (defined $bios_dev->{$field} && defined $linux_dev->{$field}) {
+         $ret = ($bios_dev->{$field} eq $linux_dev->{$field}
+                 ? $goodness
+                 : -$goodness);
+    }
+
+    return $ret;
+}
+
+# Compute a number representing the similarity between a BIOS device
+# and Linux device.
+sub compute_similarity ($$) {
+    my ($bios_dev, $linux_dev) = @_;
+    my $ret = 0;
+
+    # Having the size match is very, very important.
+    #$ret += check ($bios_dev, $linux_dev, 'size', 1024);
+
+    # ...but close is better than nothing.  Sometimes the BIOS reports
+    # a size slightly different than the device driver.
+    if (defined $bios_dev->{'size'} && defined $linux_dev->{'size'}) {
+        my $diff = abs ($bios_dev->{'size'} - $linux_dev->{'size'});
+        $diff < 4
+            and $ret += (1024 >> $diff);
+    }
+
+    $ret += check ($bios_dev, $linux_dev, 'pci_domain', 8);
+    $ret += check ($bios_dev, $linux_dev, 'pci_bus', 4);
+    $ret += check ($bios_dev, $linux_dev, 'pci_slot', 2);
+    $ret += check ($bios_dev, $linux_dev, 'pci_function', 1);
+
+    $ret += check ($bios_dev, $linux_dev, 'scsi_id', 32);
+    $ret += check ($bios_dev, $linux_dev, 'scsi_lun', 16);
+
+    $ret += check ($bios_dev, $linux_dev, 'ide_dev', 32);
+
+    return $ret;
+}
+
+# Comparison routine for sorting Linux devices in an attempt to find a
+# match for the BIOS device.
+sub compare_linux_devs ($$$) {
+    my ($bios_dev, $linux_dev_a, $linux_dev_b) = @_;
+
+    my $sim_a = compute_similarity ($bios_dev, $linux_dev_a);
+    my $sim_b = compute_similarity ($bios_dev, $linux_dev_b);
+    return $sim_a <=> $sim_b;
+}
+
+my $bios_dev = get_bios_dev_info ($int13_dev80);
+
+my %linux_devices;
+
+# Read information about Linux block devices into memory.
+opendir SYS_BLOCK, $sys_block
+    or die "Unable to opendir $sys_block: $!";
+
+while (my $ent = readdir SYS_BLOCK) {
+    $ent eq '.' || $ent eq '..'
+        and next;
+
+    # We may as well omit floppy and ramdisk devices.
+    $ent =~ /^fd\d+$/ || $ent =~ /^ram\d+$/
+        and next;
+
+    my $dev_dir = File::Spec->catfile ($sys_block, $ent);
+    $linux_devices{$ent} = get_linux_dev_info ($dev_dir);
+}
+
+closedir SYS_BLOCK
+    or die "Unable to closedir $sys_block: $!";
+
+sub compare {
+    # Sort in reverse order of goodness.
+    my $ret = compare_linux_devs ($bios_dev, $linux_devices{$b},
+                                  $linux_devices{$a});
+
+    # As a last resort, alphabetize.
+    $ret == 0
+        and $ret = $a cmp $b;
+    return $ret;
+}
+
+my @devices = sort compare (keys %linux_devices);
+
+my $device = $devices[0];
+
+defined $device
+    or die 'Unable to determine boot device';
+
+$device =~ s/!/\//g;
+
+print $device, "\n";
+
+exit 0;

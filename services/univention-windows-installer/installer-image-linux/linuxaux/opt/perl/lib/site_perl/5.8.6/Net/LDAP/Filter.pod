@@ -1,0 +1,107 @@
+=head1 NAME
+
+Net::LDAP::Filter - representation of LDAP filters
+
+=head1 SYNOPSIS
+
+  use Net::LDAP::Filter;
+
+  $filter = Net::LDAP::Filter->new( $filter_str );
+
+=head1 DESCRIPTION
+
+The B<Net::LDAP::Filter> object lets you directly manipulate LDAP
+filters without worrying about the string representation and all the
+associated escaping mechanisms.
+
+=head1 CONSTRUCTOR
+
+=over 4
+
+=item new ( FILTER )
+
+Create a new object and parse FILTER. 
+
+=back
+
+=head1 METHODS
+
+=over 4
+
+=item parse ( FILTER )
+
+Parse FILTER. The next call to ber will return this filter encoded.
+
+=item as_string
+
+Return the filter in text form.
+
+=item print ( [ FH ] )
+
+Print the text representation of the filter to FH, or the currently
+selected output handle if FH is not given.
+
+=back
+
+=head1 FILTER SYNTAX
+
+Below is the syntax for a filter given in
+RFC-2254 http://www.ietf.org/rfc/rfc2254.txt
+
+ filter       = "(" filtercomp ")"
+ filtercomp   = and / or / not / item
+ and          = "&" filterlist
+ or           = "|" filterlist
+ not          = "!" filter
+ filterlist   = 1*filter
+ item         = simple / present / substring / extensible
+ simple       = attr filtertype value
+ filtertype   = equal / approx / greater / less
+ equal        = "="
+ approx       = "~="
+ greater      = ">="
+ less         = "<="
+ extensible   = attr [":dn"] [":" matchingrule] ":=" value
+                / [":dn"] ":" matchingrule ":=" value
+ present      = attr "=*"
+ substring    = attr "=" [initial] any [final]
+ initial      = value
+ any          = "*" *(value "*")
+ final        = value
+ attr         = AttributeDescription from Section 4.1.5 of RFC-2251
+ matchingrule = MatchingRuleId from Section 4.1.9 of RFC-2251
+ value        = AttributeValue from Section 4.1.6 of RFC-2251
+ 
+ 
+ Special Character encodings
+ ---------------------------
+    *               \2a, \*
+    (               \28, \(
+    )               \29, \)
+    \               \5c, \\
+    NUL             \00
+
+=head1 SEE ALSO
+
+L<Net::LDAP>,
+L<Other online documentation|Net::LDAP::RFC>
+
+=head1 ACKNOWLEDGEMENTS
+
+This document is based on a document originally written by Russell Fulton
+E<lt>r.fulton@auckland.ac.nzE<gt>.
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>
+
+Please report any bugs, or post any suggestions, to the perl-ldap mailing list
+E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program is
+free software; you can redistribute it and/or modify it under the same
+terms as Perl itself.
+
+=cut

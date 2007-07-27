@@ -30,7 +30,8 @@
 
 export DH_COMPAT=4
 
-D=$(CURDIR)/debian/univention-windows-installer
+INST=$(CURDIR)/debian/univention-windows-installer
+INST_IMAGE=$(CURDIR)/debian/univention-windows-installer-image-linux
 
 
 configure: configure-stamp
@@ -60,27 +61,35 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m0644 conffiles/etc/samba/installs.conf $(D)/etc/samba/installs.conf
-	install -m0644 var/lib/univention-client-boot/pxeboot.msg $(D)/var/lib/univention-client-boot/windows-installer.msg
-	install -m0644 var/lib/univention-client-boot/pxelinux.cfg/localboot $(D)/var/lib/univention-client-boot/pxelinux.cfg/localboot
+	# windows installer
+	install -m0644 conffiles/etc/samba/installs.conf $(INST)/etc/samba/installs.conf
+	install -m0644 var/lib/univention-client-boot/pxelinux.cfg/localboot $(INST)/var/lib/univention-client-boot/pxelinux.cfg/localboot
 
-	mkdir $(D)/var/lib/univention-windows-installer/tmp
-	unzip -qq -L -o -d $(D)/var/lib/univention-windows-installer/tmp unattended-4.6.zip
-	mv $(D)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/sample-config.pl \
-	   $(D)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/config.pl
-	rm $(D)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/unattend.csv
-	patch $(D)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/scripts/perl.bat < perl.bat.patch
-	mv $(D)/var/lib/univention-windows-installer/tmp/unattended-4.6/install $(D)/var/lib/univention-windows-installer
-	rm -rf $(D)/var/lib/univention-windows-installer/tmp
+	mkdir $(INST)/var/lib/univention-windows-installer/tmp
+	unzip -qq -L -o -d $(INST)/var/lib/univention-windows-installer/tmp unattended-4.6.zip
+	mv $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/sample-config.pl \
+	   $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/config.pl
+	rm $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/site/unattend.csv
+	patch $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install/scripts/perl.bat < perl.bat.patch
+	mv $(INST)/var/lib/univention-windows-installer/tmp/unattended-4.6/install $(INST)/var/lib/univention-windows-installer
+	rm -rf $(INST)/var/lib/univention-windows-installer/tmp
 
-	install -m0755 usr/sbin/univention-prepare-unattended $(D)/usr/sbin/univention-prepare-unattended
-	install -m0755 usr/sbin/univention-update-unattended-supportfiles $(D)/usr/sbin/univention-update-unattended-supportfiles
-	install -m0755 usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py $(D)/usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py
-	ln -s /usr/lib/syslinux/memdisk $(D)/var/lib/univention-client-boot/memdisk
+	install -m0755 usr/sbin/univention-prepare-unattended $(INST)/usr/sbin/univention-prepare-unattended
+	install -m0755 usr/sbin/univention-update-unattended-supportfiles $(INST)/usr/sbin/univention-update-unattended-supportfiles
+	install -m0755 usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py $(INST)/usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py
+	ln -s /usr/lib/syslinux/memdisk $(INST)/var/lib/univention-client-boot/memdisk
+	install -d ${INST}/var/lib/univention-windows-installer/install/policy
+
+	# installer image
+	
+	cp -r installer-image-linux/linuxaux $(INST_IMAGE)/var/lib/univention-windows-installer/install/
+	cp installer-image-linux/master $(INST_IMAGE)/var/lib/univention-windows-installer/linux/
+	find $(INST_IMAGE) -name '.svn' | xargs -- rm -rf
+	cp installer-image-linux/bzImage $(INST_IMAGE)/var/lib/univention-client-boot
+	cp installer-image-linux/initrd $(INST_IMAGE)/var/lib/univention-client-boot
 
 	univention-install-config-registry
 	
-	install -d ${D}/var/lib/univention-windows-installer/install/policy
 
 
 # Build architecture-independent files here.

@@ -1,8 +1,10 @@
 univention-windows-installer (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
+  * switch from DOS-based installation startup environment to a linux based
+    one
 
- -- Wolf Wiegand <wiegand@univention.de>  Mon, 23 Jul 2007 17:25:47 +0200
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 27 Jul 2007 15:13:47 +0200
 
 univention-windows-installer (1.2.0-13) unstable; urgency=low
 

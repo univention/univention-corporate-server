@@ -1,0 +1,51 @@
+.\" @(#)man/man8/setkeycodes.8	1.0 Nov  8 22:30:48 MET 1994
+.TH SETKEYCODES 8 "8 Nov 1994" "Local" "Keyboard Support"
+.SH NAME
+setkeycodes \- load kernel scancode-to-keycode mapping table entries
+.SH SYNOPSIS
+.B setkeycodes
+.I "scancode keycode ..."
+.SH DESCRIPTION
+The
+.I setkeycodes
+command reads its arguments two at a time, each pair of arguments
+consisting of a scancode (given in hexadecimal) and a keycode (given
+in decimal). For each such pair, it tells the kernel keyboard driver
+to map the specified scancode to the specified keycode.
+
+This command is useful only for people with slightly unusual keyboards,
+that have a few keys which produce scancodes that the kernel does not
+recognize.
+
+.SH THEORY
+The usual PC keyboard produces a series of scancodes for each
+key press and key release. (Scancodes are shown by
+\fBshowkey -s\fP, see showkey(1).)
+The kernel parses this stream of scancodes, and converts it to
+a stream of keycodes (key press/release events).
+(Keycodes are shown by \fBshowkey\fP.)
+Apart from a few scancodes with special meaning, and apart from
+the sequence produced by the Pause key, and apart from shiftstate
+related scancodes, and apart from the key up/down bit,
+the stream of scancodes consists of unescaped
+scancodes xx (7 bits) and escaped scancodes e0 xx (8+7 bits).
+It is hardwired in the current kernel that in the range 1-88
+(0x01-0x58) keycode equals scancode. For the remaining scancodes
+(0x59-0x7f) or scancode pairs (0xe0 0x00 - 0xe0 0x7f) a
+corresponding keycode can be assigned (in the range 1-127).
+For example, if you have a Macro key that produces e0 6f according
+to showkey(1), the command
+.RS
+.B "setkeycodes e06f 112"
+.RE
+will assign the keycode 112 to it, and then loadkeys(1) can be used
+to define the function of this key.
+.SH OPTIONS
+None.
+.SH BUGS
+The keycodes of X have nothing to do with those of Linux.
+Unusual keys can be made visible under Linux, but not under X.
+.SH "SEE ALSO"
+.I "dumpkeys (1), loadkeys (1), showkey (1), getkeycodes (8)"
+
+

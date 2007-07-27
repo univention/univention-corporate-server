@@ -1,0 +1,440 @@
+=head2 Tue Dec  7 14:24:33 2004: C<Module> L<Convert::ASN1|Convert::ASN1>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec  7 14:25:27 2004: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.46>
+
+=item *
+
+C<EXE_FILES: dbiproxy dbiprof>
+
+=back
+
+=head2 Tue Dec  7 14:25:51 2004: C<Module> L<DBD::mysql|DBD::mysql>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.9005_3>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec  7 14:26:05 2004: C<Module> L<Net::LDAP|Net::LDAP>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.3202>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 17:15:24 2004: C<Module> L<Convert::ASN1|Convert::ASN1>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 17:16:05 2004: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.46>
+
+=item *
+
+C<EXE_FILES: dbiproxy dbiprof>
+
+=back
+
+=head2 Tue Dec 21 17:16:25 2004: C<Module> L<DBD::mysql|DBD::mysql>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.9005_3>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 17:16:35 2004: C<Module> L<Net::LDAP|Net::LDAP>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.3202>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 18:04:03 2004: C<Module> L<Convert::ASN1|Convert::ASN1>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 18:04:41 2004: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.46>
+
+=item *
+
+C<EXE_FILES: dbiproxy dbiprof>
+
+=back
+
+=head2 Tue Dec 21 18:05:01 2004: C<Module> L<DBD::mysql|DBD::mysql>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.9005_3>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 21 18:05:08 2004: C<Module> L<Net::LDAP|Net::LDAP>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.3202>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Dec 27 15:09:44 2004: C<Module> L<Convert::ASN1|Convert::ASN1>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Dec 27 15:10:22 2004: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.46>
+
+=item *
+
+C<EXE_FILES: dbiproxy dbiprof>
+
+=back
+
+=head2 Mon Dec 27 15:10:41 2004: C<Module> L<DBD::mysql|DBD::mysql>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.9005_3>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Mon Dec 27 15:10:48 2004: C<Module> L<Net::LDAP|Net::LDAP>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.3202>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 28 12:54:33 2004: C<Module> L<Convert::ASN1|Convert::ASN1>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.18>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 28 12:55:35 2004: C<Module> L<DBI|DBI>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 1.46>
+
+=item *
+
+C<EXE_FILES: dbiproxy dbiprof>
+
+=back
+
+=head2 Tue Dec 28 12:56:01 2004: C<Module> L<DBD::mysql|DBD::mysql>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.9005_3>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+
+=head2 Tue Dec 28 12:56:12 2004: C<Module> L<Net::LDAP|Net::LDAP>
+
+=over 4
+
+=item *
+
+C<installed into: /opt/perl/lib/site_perl/5.8.6>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 0.3202>
+
+=item *
+
+C<EXE_FILES: >
+
+=back
+

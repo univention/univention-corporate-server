@@ -1,0 +1,117 @@
+=head1 NAME
+
+Net::LDAP::Search - Object returned by Net::LDAP search method
+
+=head1 SYNOPSIS
+
+ use Net::LDAP;
+
+ $mesg = $ldap->search( @search_args );
+
+ @entries = $mesg->entries;
+
+=head1 DESCRIPTION
+
+A B<Net::LDAP::Search> object is returned from the
+L<search|Net::LDAP/item_search> method of a L<Net::LDAP> object. It is
+a container object which holds the results of the search.
+
+=head1 METHODS
+
+B<Net::LDAP::Search> inherits from L<Net::LDAP::Message>, and so
+supports all methods defined in L<Net::LDAP::Message>.
+
+=over 4
+
+=item as_struct ( )
+
+Returns a reference to a HASH, where the keys are the DNs of the
+results and the values are HASH references. These second level HASHes
+hold the attributes such that the keys are the attribute names, in
+lowercase, and the values are references to an ARRAY holding the
+values.
+
+This method will block until the whole search request has finished.
+
+=item count ( )
+
+Returns the number of entries returned by the server.
+
+This method will block until the whole search request has finished.
+
+=item entry ( INDEX )
+
+Return the N'th entry, which will be a L<Net::LDAP::Entry> object. If
+INDEX is greater than the total number of entries returned then
+C<undef> will be returned.
+
+This method will block until the search request has returned enough
+entries.
+
+=item entries ( )
+
+Return an array of L<Net::LDAP::Entry> objects that were returned from
+the server.
+
+This method will block until the whole search request has finished.
+
+=item pop_entry ( )
+
+Pop an entry from the internal list of L<Net::LDAP::Entry> objects for
+this search. If there are no more entries then C<undef> is returned.
+
+This call will block if the list is empty, until the server returns
+another entry.
+
+=item references ( )
+
+Return a list of references that the server returned. This will be a
+list of L<Net::LDAP::Reference> objects.
+
+=item sorted ( )
+
+Return a list L<Net::LDAP:Entry> objects, sorted by their DNs.
+
+=item sorted ( ATTR, ... )
+
+Return a list of L<Net::LDAP::Entry> objects, sorted by the specified
+attributes. The attributes are compared in the order specified, each
+only being compared if all the prior attributes compare equal.
+
+=item shift_entry ( )
+
+Shift an entry from the internal list of L<Net::LDAP::Entry> objects
+for this search. If there are no more entries then C<undef> is
+returned.
+
+This call will block if the list is empty, until the server returns
+another entry.
+
+=back
+
+=head1 SEE ALSO
+
+L<Net::LDAP>,
+L<Net::LDAP::Message>,
+L<Net::LDAP::Entry>,
+L<Net::LDAP::Reference>
+
+=head1 ACKNOWLEDGEMENTS
+
+This document is based on a document originally written by Russell
+Fulton E<lt>r.fulton@auckland.ac.nzE<gt>.
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>
+
+Please report any bugs, or post any suggestions, to the perl-ldap
+mailing list E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program
+is free software; you can redistribute it and/or modify it under the
+same terms as Perl itself.
+
+=cut

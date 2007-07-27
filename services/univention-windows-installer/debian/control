@@ -18,3 +18,18 @@ Description: UCS - unattended Windows installation
  an integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-windows-installer-image-linux
+Architecture: any 
+Depends: lynx, unzip, python2.4, univention-baseconfig
+Conflicts: univention-windows-installer (<< 1.2-1)
+Description: Customized Linux-based Windows installation image
+ This package downloads a Linux-image from the unattended-website,
+ and adjusts the autoexec.bat to the hostname this packages is
+ installed on.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

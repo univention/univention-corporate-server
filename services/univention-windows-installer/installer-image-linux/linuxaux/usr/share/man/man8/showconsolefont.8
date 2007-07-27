@@ -1,0 +1,27 @@
+.TH  SHOWFONT 1 "2002-02-22" "" "Linux Console"
+
+.SH NAME
+showconsolefont \- Show the current EGA/VGA console screen font
+
+.SH SYNOPSIS
+.B showconsolefont
+[
+.B \-V
+] [
+.B \-v
+] [
+.B \-C
+.I console
+]
+
+.SH DESCRIPTION
+The
+.B showconsolefont
+command outputs the current console font to stdout.
+The option \-v prints additional information, while
+the option \-V prints the program version number.
+On Linux 2.6.1 and later, the option \-C allows one
+to indicate the console involved. Its argument is a pathname.
+
+.SH "SEE ALSO"
+.BR setfont (8)

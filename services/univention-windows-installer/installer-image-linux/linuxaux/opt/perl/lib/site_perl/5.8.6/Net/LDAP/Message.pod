@@ -1,0 +1,132 @@
+=head1 NAME
+
+Net::LDAP::Message - Message response from LDAP server
+
+=head1 SYNOPSIS
+
+ use Net::LDAP;
+
+=head1 DESCRIPTION
+
+B<Net::LDAP::Message> is a base class for the objects returned by the
+L<Net::LDAP> methods
+L<abandon|Net::LDAP/item_abandon>,
+L<add|Net::LDAP/item_add>,
+L<bind|Net::LDAP/item_bind>,
+L<compare|Net::LDAP/item_compare>,
+L<delete|Net::LDAP/item_delete>,
+L<modify|Net::LDAP/item_modify>,
+L<moddn|Net::LDAP/item_moddn>,
+L<search|Net::LDAP/item_search> and
+L<unbind|Net::LDAP/item_unbind>.
+
+The sub-class L<Net::LDAP::Search> returned by
+L<search|Net::LDAP/item_search> also defines many methods.
+
+If the L<Net::LDAP> object is in async mode then all these methods,
+except C<done>, will cause a wait until the request is completed.
+
+=head1 METHODS
+
+=over 4
+
+=item code ( )
+
+The code value in the result message from the server. Normally for a
+success zero will be returned. Constants for the result codes can be
+imported from the L<Net::LDAP> or L<Net::LDAP::Constant> module.
+
+=item control ( )
+
+Return a list of controls that were returned from the server.
+
+=item control ( OID, ... )
+
+Return a list of controls with the given OIDs that were returned from
+the server.
+
+=item dn ( )
+
+The DN in the result message from the server.
+
+=item done ( )
+
+Returns I<true> if the request has been completed.
+
+=item error ( )
+
+Returns the error message in the result message from the server. If
+the server did not include an error message, then the result of
+L<ldap_error_desc|Net::LDAP::Util/ldap_error_desc> with the error code
+from the result message.
+
+=item error_name ( )
+
+Returns the name of the error code in the result message from the
+server. See L<ldap_error_name|Net::LDAP::Util::ldap_error_name> for a
+detailed description of the return value.
+
+=item error_text ( )
+
+Returns the short text description of the error code in the result
+message from the server. See
+L<ldap_error_text|Net::LDAP::Util::ldap_error_text> for a detailed
+description of the return value.
+
+=item error_desc ( )
+
+Returns a long text description of the error code in the result
+message from the server. See
+L<ldap_error_desc|Net::LDAP::Util::ldap_error_desc> for a detailed
+description of the return value.
+
+=item is_error ( )
+
+Returns I<true> if the result code is considered to be an error for
+the operation.
+
+=item mesg_id ( )
+
+The message id of the request message sent to the server.
+
+=item referrals ( )
+
+Returns a list of referrals from the result message.
+
+=item server_error ( )
+
+The error message returned by the server, or C<undef> if the server
+did not provide a message.
+
+=item sync ( )
+
+Wait for the server to complete the request.
+
+=back
+
+=head1 SEE ALSO
+
+L<Net::LDAP>,
+L<Net::LDAP::Search>,
+L<Net::LDAP::Constant>,
+L<Net::LDAP::Util>
+
+=head1 ACKNOWLEDGEMENTS
+
+This document is based on a document originally written by Russell
+Fulton E<lt>r.fulton@auckland.ac.nzE<gt>.
+
+=head1 AUTHOR
+
+Graham Barr E<lt>gbarr@pobox.comE<gt>
+
+Please report any bugs, or post any suggestions, to the perl-ldap
+mailing list E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997-2004 Graham Barr. All rights reserved. This program
+is free software; you can redistribute it and/or modify it under the
+same terms as Perl itself.
+
+=cut

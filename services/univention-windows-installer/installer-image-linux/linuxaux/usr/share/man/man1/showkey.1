@@ -1,0 +1,73 @@
+.\" @(#)showkey.1 1.1 980201 aeb
+.TH SHOWKEY 1 "1 Feb 1998"
+.SH NAME
+showkey \- examine the codes sent by the keyboard
+.SH SYNOPSIS
+showkey [-h|--help] [-a|--ascii] [-s|--scancodes] [-k|--keycodes]
+.SH DESCRIPTION
+.IX "showkey command" "" "\fLshowkey\fR command"  
+.LP
+.B showkey
+prints to standard output either the scan codes or the keycode
+or the `ascii' code of each key pressed.
+In the first two modes the program runs until 10 seconds have elapsed
+since the last key press or release event, or until it receives
+a suitable signal, like SIGTERM, from another process.
+In `ascii' mode the program terminates when the user types ^D.
+.LP
+When in scancode dump mode, 
+.B showkey
+prints in hexadecimal format each byte received from the keyboard to the
+standard output. A new line is printed when an interval of about 0.1
+seconds occurs between the bytes received, or when the internal receive
+buffer fills up. This can be used to determine roughly, what byte
+sequences the keyboard sends at once on a given key press. The scan code
+dumping mode is primarily intended for debugging the keyboard driver or
+other low level interfaces. As such it shouldn't be of much interest to
+the regular end-user. However, some modern keyboards have keys or buttons
+that produce scancodes to which the kernel does not associate a keycode,
+and, after finding out what these are, the user can assign keycodes with
+.BR setkeycodes (8).
+.LP
+When in the default keycode dump mode,
+.B showkey
+prints to the standard output the keycode number or each key pressed or
+released. The kind of the event, press or release, is also reported.
+Keycodes are numbers assigned by the kernel to each individual physical
+key. Every key has always only one associated keycode number, whether
+the keyboard sends single or multiple scan codes when pressing it. Using
+.B showkey
+in this mode, you can find out what numbers to use in your personalized
+keymap files.
+.LP
+When in `ascii' dump mode,
+.B showkey
+prints to the standard output the decimal, octal, and hexadecimal
+value(s) of the key pressed, according to he present keymap.
+.SH OPTIONS
+.TP
+\-h \-\-help
+.B showkey
+prints to the standard error output its version number, a compile
+option and a short usage message, then exits.
+.TP
+\-s \-\-scancodes
+Starts
+.B showkey
+in scan code dump mode.
+.TP
+\-k \-\-keycodes
+Starts
+.B showkey
+in keycode dump mode. This is the default, when no command line options
+are present.
+.TP
+\-a \-\-ascii
+Starts
+.B showkey
+in `ascii' dump mode.
+.SH "SEE ALSO"
+.BR loadkeys (1),
+.BR dumpkeys (1),
+.BR keymaps (5),
+.BR setkeycodes (8)

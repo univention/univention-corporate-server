@@ -1,0 +1,136 @@
+.\" $Header: /aolnet/dev/src/CVS/sgml/docbook-to-man/cmd/docbook-to-man.sh,v 1.1.1.1 1998/11/13 21:31:59 db3l Exp $
+.\"
+.\"	transcript compatibility for postscript use.
+.\"
+.\"	synopsis:  .P! <file.ps>
+.\"
+.de P!
+.fl
+\!!1 setgray
+.fl
+\\&.\"
+.fl
+\!!0 setgray
+.fl			\" force out current output buffer
+\!!save /psv exch def currentpoint translate 0 0 moveto
+\!!/showpage{}def
+.fl			\" prolog
+.sy sed -e 's/^/!/' \\$1\" bring in postscript file
+\!!psv restore
+.
+.de pF
+.ie     \\*(f1 .ds f1 \\n(.f
+.el .ie \\*(f2 .ds f2 \\n(.f
+.el .ie \\*(f3 .ds f3 \\n(.f
+.el .ie \\*(f4 .ds f4 \\n(.f
+.el .tm ? font overflow
+.ft \\$1
+..
+.de fP
+.ie     !\\*(f4 \{\
+.	ft \\*(f4
+.	ds f4\"
+'	br \}
+.el .ie !\\*(f3 \{\
+.	ft \\*(f3
+.	ds f3\"
+'	br \}
+.el .ie !\\*(f2 \{\
+.	ft \\*(f2
+.	ds f2\"
+'	br \}
+.el .ie !\\*(f1 \{\
+.	ft \\*(f1
+.	ds f1\"
+'	br \}
+.el .tm ? font underflow
+..
+.ds f1\"
+.ds f2\"
+.ds f3\"
+.ds f4\"
+'\" t 
+.ta 8n 16n 24n 32n 40n 48n 56n 64n 72n  
+.TH "modinfo" "8" 
+.SH "NAME" 
+modinfo \(em program to show information about a Linux Kernel module 
+.SH "SYNOPSIS" 
+.PP 
+\fBmodinfo\fR [\fB-0\fP]  [\fB-F \fIfield\fR\fP]  [modulename|filename \&...]  
+.PP 
+\fBmodinfo -V\fR 
+.PP 
+\fBmodinfo -h\fR 
+.SH "DESCRIPTION" 
+.PP 
+\fBmodinfo\fR extracts information from the Linux 
+Kernel modules given on the command line.  If the module name is 
+not a filename, then the 
+\fB/lib/modules/\fP\fIversion\fR       directory is searched, as done by 
+\fBmodprobe\fP\fB(8)\fP. 
+ 
+.PP 
+\fBmodinfo\fR by default lists each attribute 
+of the module in form \fIfieldname\fR : 
+\fIvalue\fR, for easy reading.  The 
+filename is listed the same way (although it's not really an 
+attribute). 
+ 
+.PP 
+This version of \fBmodinfo\fR can understand 
+modules of any Linux Kernel architecture. 
+.SH "OPTIONS" 
+.IP "\fB-V\fP \fB--version\fP         " 10 
+Print the modinfo version.  Note BACKWARDS COMPATIBILITY 
+below: you might be printing the version of 
+\fBmodinfo.old\fR. 
+ 
+.IP "\fB-F\fP \fB--field\fP         " 10 
+Only print this field value, one per line.  This is most 
+useful for scripts.  Field names are case-insenitive. 
+Common fields (which may not be in every module) include 
+\fBauthor\fP, \fBdescription\fP, 
+\fBlicense\fP, \fBparam\fP, 
+\fBdepends\fP, and \fBalias\fP. 
+There are often multiple \fBparam\fP, 
+\fBalias\fP and \fBdepends\fP 	    fields.  The special field \fBfilename\fP 	    lists the filename of the module. 
+ 
+.IP "\fB-0\fP \fB--null\fP         " 10 
+Use the ASCII zero character to separate field values, 
+instead of a new line.  This is useful for scripts, since 
+a new line can theoretically appear inside a field. 
+ 
+.IP "\fB-a\fP \fB-d\fP \fB-l\fP \fB-p\fP \fB-n\fP         " 10 
+These are shortcuts for \fBauthor\fP, 
+\fBdescription\fP, 
+\fBlicense\fP.  \fBparam\fP and 
+\fBfilename\fP respectively, to ease the 
+transition from the old modutils 
+\fBmodinfo\fR. 
+ 
+.SH "BACKWARDS COMPATIBILITY" 
+.PP 
+This version of \fBmodinfo\fR is for kernel 
+modules \fB2.5.48\fP and above.  If it detects a 
+kernel with support for old-style modules, it will attempt to 
+run \fBmodprobe.old\fR in its place, so it is 
+completely transparent to the user. 
+.PP 
+Note that the output of this version of 
+\fBmodinfo\fR is simpler and more regular than 
+the older version: scripts attempting to use the default 
+output may get confused with complex fields. 
+ 
+.PP 
+You can force the new \fBmodinfo\fR to always 
+be used, by setting the \fBNEW_MODINFO\fP 	environment variable. 
+ 
+.SH "COPYRIGHT" 
+.PP 
+This manual page Copyright 2003, Rusty Russell, IBM Corporation. 
+ 
+.SH "SEE ALSO" 
+.PP 
+\fBmodprobe\fP\fB(8)\fP, 
+\fBmodinfo.old\fP\fB(8)\fP 
+.\" created by instant / docbook-to-man, Tue 09 Mar 2004, 08:43 

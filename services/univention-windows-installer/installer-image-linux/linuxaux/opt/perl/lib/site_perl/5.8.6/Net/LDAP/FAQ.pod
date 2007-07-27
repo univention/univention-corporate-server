@@ -1,0 +1,1548 @@
+=head1 NAME
+
+Net::LDAP::FAQ - Frequently Asked Questions about Net::LDAP
+
+=head1 SYNOPSIS
+
+ perldoc Net::LDAP::FAQ
+
+=head1 DESCRIPTION
+
+This document serves to answer the most frequently asked questions on both the
+perl-ldap Mailing List and those sent to Graham Barr.
+
+The latest version of this FAQ can be found at 
+
+ http://ldap.perl.org/FAQ.html
+
+=head1 GENERAL
+
+=head2 What is perl-ldap ?
+
+perl-ldap is the distribution name. The perl-ldap distribution contains
+the Net::LDAP modules.
+
+=head2 Why another perl LDAP implementation ?
+
+perl-ldap's goal is to be as portable as possible. It does this by
+being implemented completely in perl. So basically anywhere that perl
+runs perl-ldap will run. This is not true for other implementations
+which require a C compiler.
+
+=head2 Where can I get it ?
+
+Perl-ldap is available from CPAN. You will find it in the
+authors/id/GBARR directory. Alternatively you can download
+the latest version from 
+
+ http://www.cpan.org/search?dist=perl-ldap
+
+B<WARNING:>  The perl-ldap module is stored on CPAN as a *.gz file.
+Netscape on Windows systems sometimes has a problem storing the module
+with the correct name, it will replace the *.tar.gz with *_tar.tar.
+To correct the problem, with the pointer on the link, do a right click
+and then select B<save link as> to save the file with the correct file
+name.
+
+=head2 Is there a web page for perl-ldap ?
+
+Yes there is at http://ldap.perl.org/
+
+=head2 Is there a mailing list ?
+
+Yes there is at perl-ldap@perl.org
+
+You can subscribe to this list by mailing perl-ldap-subscribe@perl.org
+
+=head2 Is the mailing list archived ?
+
+Yes, at http://nntp.perl.org/group/perl.ldap
+
+Archives of messages since we switched to using sourceforge can be
+found at
+
+ http://www.geocrawler.com/lists/3/SourceForge/3482/0/
+
+Please be aware that the geocrawler system munges
+code that is in the email messages.  In particular, 
+apostrophes (') are turned into back ticks (`) and 
+newlines escapes (\n) are removed (and probably other 
+escapes as well).  
+
+There is also an archive of the perl-ldap mailing list at
+
+ http://www.xray.mpe.mpg.de/mailing-lists/perl-ldap/
+dd
+which also has messages from before the move to sourceforge.
+The xray archive does not munge email messages.
+
+=head2 Is there any online documentation ?
+
+Yes. perl-ldap has online documentation at
+
+ http://ldap.perl.org/ 
+
+which will have the latest documentation available.
+
+=head2 Is there a public CVS repository ?
+
+No, but there is a public SVN repository at
+
+  http://svn.mutatus.co.uk
+
+=head2 Can I get perl-ldap from the public SVN repository?
+
+Yes, any one can pull perl-ldap from the public SVN repository
+on perl.ldap.org.
+
+There are several ways this can be done.
+
+=over 4
+
+=item Web
+
+You can download it from CPAN by following the release link:  
+
+The 2 lines in the following example should be put together as 
+one continuous line.  Example;
+
+ http://search.cpan.org/CPAN/authors/id/G/GB/GBARR/perl-ldap-0.31.tar.gz
+
+B<WARNING:>  The perl-ldap module is stored on CPAN as a *.gz file.
+Netscape on Windows systems sometimes has a problem storing the module
+with the correct name, it will replace the *.tar.gz with *_tar.tar.
+To correct the problem, with the pointer on the link, do a right click
+and then select B<save link as> to save the file with the correct file
+name.
+
+=item SVN
+
+You can download latest development version of perl-ldap from
+svn.mutatus.co.uk by executing a anonymous SVN "checkout" command.
+
+The 2 lines in the following example should be put together as 
+one continuous line.  Example;
+
+ svn co http://svn.mutatus.co.uk/repos/perl-ldap/trunk
+
+=item Web page
+
+Most of the time there is a URL link on the perl-ldap 
+home page on ldap.perl.org that points to the latest released
+version of perl-ldap.  Due to the fact that humans must
+update the web page to point to a new release it sometimes does
+not get updated as quickly as it should.
+
+B<WARNING:>  The perl-ldap module is stored on CPAN as a *.gz file.
+Netscape on Windows systems sometimes has a problem storing the module
+with the correct name, it will replace the *.tar.gz with *_tar.tar.
+To correct the problem, with the pointer on the link, do a right click
+and then select B<save link as> to save the file with the correct file
+name.
+
+=back
+
+=head2 What is SVN.
+
+"SVN" is an abbreviation for "Subversion" (see http://subversion.tigris.org).
+Subversion is a "Source Control" or "Revision Control" tool
+designed to keep track of source changes made by groups of
+developers working on the same files, allowing them to
+stay in sync with each other as each individual chooses.
+
+=head1 LDAP AND DIRECTORY TERMINOLOGY.
+
+In order to help the user understand the perl-ldap module better
+some key LDAP terminology is defined here.
+
+=head2 What is a directory.
+
+A directory is a special purpose hierarchical database that usually
+contains typed information such as text strings, binary data, or X.509
+certificates.
+
+=head2 What is LDAP.
+
+LDAP stands for Lightweight Directory Access Protocol.
+The word I<Protocol> is the key word in the definition given in
+the preceding sentence, LDAP is I<NOT> hardware or software.
+It is a protocol that defines how a client and server will
+communicate with one another.
+
+The Lightweight Directory Access Protocol is defined in a series of
+Requests For Comments, better known as RFCs. The RFCs can be found on
+the Internet at http://www.ietf.org/ (the master repository) and many
+other places. There's a link to all the LDAP-related RFCs at
+Perl-LDAP's web site, http://perl-ldap.sourceforge.net/rfc.html. Some
+of the more important RFC numbers are RFC 1777 for LDAPv2 and RFC 2251
+as well as RFC3377 for LDAPv3.
+
+=head2 What is a LDAP Directory.
+
+In the strictest terms of the definition there is no such thing as a
+LDAP directory.  To be practical about this situation every day
+directory professionals refer to their directory as " a LDAP
+directory" because it is easy to say and it does convey the type of
+protocol used to communicate with their directory.  Using this
+definition a LDAP directory is a directory whose server software
+conforms to the Lightweight Directory Access Protocol when
+communicating with a client.
+
+=head2 What is an Entry.
+
+The traditional directory definition of a directory object 
+is called an Entry. Entries are composed of attributes that
+contain the information to be recorded about the object.
+
+(An entry in LDAP is somewhat analogous to a record in a table in an
+SQL database, but don't get too hung up about this analogy!)
+
+Entries are held in an upside-down tree structure. Entries can
+therefore contain subordinate entries, and entries B<must> have one
+direct superior entry.
+
+Entries with subordinate entries are called 'non-leaf' entries.
+
+Entries without subordinate entries are called 'leaf' entries.
+
+An entry's direct superior entry is called the entry's 'parent'.
+
+'Non-leaf' entries are also said to have 'child' entries.
+
+=head2 What is an attribute.
+
+The entry(s) in a directory are composed of attributes that contain
+information about the object.  Each attribute has a type
+and can contain one or more values.  
+
+For example:
+
+  cn=Road Runner
+
+is an attribute with a type named "cn", and one value.
+
+Each attribute is described by a 'syntax' which defines what kind of
+information can be stored in the attributes values.  Trying to store a
+value that doesn't conform to the attribute's syntax will result in an
+error.
+
+For example:
+
+  jpegPhoto=unknown
+
+is not permitted by the directory, because jpegPhotos may only contain
+JPEG-formatted images.
+
+Most syntaxes used in LDAP however describe text strings rather than
+binary objects (like JPEGs or certificates.)
+
+In LDAPv3 most of these syntaxes support Unicode encoded using
+UTF-8. Because the Net::LDAP modules do not change the strings that
+you pass in as attribute values (they get sent to the LDAP server
+as-is) to use accented characters you simply need to encode your
+strings in UTF-8. There are modules on CPAN that will help you here.
+
+Note that LDAPv2 servers used something called T.61 instead of Unicode
+and UTF-8. Most servers do not implement T.61 correctly, and it is
+recommended that you use LDAPv3 instead.
+
+Attributes may also be searched.  The algorithms used to perform
+different kinds of searches are described by the attribute's 'matching
+rules'.  Some matching rules are case-sensitive and some are
+case-insensitive, for example.  Sometimes matching rules aren't
+defined for a particular attribute: there's no way to search for
+jpegPhotos that contain a substring!
+
+You can examine all of a server's attribute definitions by reading the
+schema from the server.
+
+=head2 What is an object class.
+
+An object class is the name associated with a group of attributes that
+B<must> be present in an entry, and the group of attributes that
+B<may> also be present in an entry.
+
+Object classes may be derived (subclassed) from other object classes.
+For example the widely used 'inetOrgPerson' object class is derived
+from 'organizationalPerson', which is itself derived from 'person'
+which is itself derived from 'top'.
+
+Every entry has an attribute called 'objectClass' that lists all the
+names of object classes (and their superclasses) being used with the
+entry.
+
+You can examine all of a server's objectclass definitions by reading
+the schema from the server.
+
+=head2 What is a Distinguished Name (DN).
+
+Every entry in a directory has a Distinguished Name, or DN.  It is a
+unique Entry identifier throughout the complete directory.  No two
+Entries can have the same DN within the same directory.
+
+Examples of DNs:
+
+ cn=Road Runner, ou=bird, dc=cartoon, dc=com
+ ou=bird, dc=cartoon, dc=com
+ dc=cartoon, dc=com
+ dc=com
+
+=head2 What is a Relative Distinguished Name.
+
+Every DN is made up of a sequence of Relative Distinguished Names, or
+RDNs.  The sequences of RDNs are separated by commas (,). In LDAPv2
+semi-colons (;) were also allowed.  There can be more than one
+identical RDN in a directory, but they must have different parent
+entries.
+
+Technically, an RDN contains attribute-value assertions, or AVAs. When
+an AVA is written down, the attribute name is separated from the
+attribute value with an equals (=) sign.
+
+Example of a DN: 
+
+ cn=Road Runner,ou=bird,dc=cartoon,dc=com
+
+ RDNs of the proceeding DN: 
+ RDN => cn=Road Runner
+ RDN => ou=bird
+ RDN => dc=cartoon
+ RDN => dc=com
+
+RDNs can contain multiple attributes, though this is somewhat
+ususual. They are called multi-AVA RDNs, and each AVA is separated in
+the RDN from the others with a plus sign (+).
+
+Example of a DN with a multi-AVA RDN:
+
+ cn=Road Runner+l=Arizona,ou=bird,dc=cartoon,dc=com
+
+=head2 Where is an entry's name held?
+
+Entries do B<not> contain their DN. When you retrieve an entry from
+a search, the server will tell you the DN of each entry.
+
+On the other hand, entries B<do> contain their RDN. Recall that the RDN
+is formed from one or more attribute-value assertions (AVAs); each entry
+must contain all the attributes and values in the RDN.
+
+For example the entry:
+
+ cn=Road Runner+l=Arizona,ou=bird,dc=cartoon,dc=com
+
+B<must> contain a 'cn' attribute containing at least the value
+"Road Runner", B<and> an 'l' attribute containing at least the value
+"Arizona".
+
+The attributes used in the RDN may contain additional values, but the
+entry still only has one DN.
+
+=head2 What is a search base.
+
+A search base is a Distinguished Name that is the 
+starting point of search queries.
+
+Example of a DN:
+
+ cn=Road Runner,ou=bird,dc=cartoon,dc=com  
+
+Possible search base(s) for the proceeding DN:
+
+ Base => cn=Road Runner,ou=bird,dc=cartoon,dc=com  
+ Base => ou=bird,dc=cartoon,dc=com  
+ Base => dc=cartoon,dc=com  
+ Base => dc=com  
+
+Setting the search base to the lowest possible branch of
+the directory will speed up searches considerably.
+
+=head2 What is the difference between a LDAP server and a relational database.
+
+The most basic difference is that a directory server is  a
+specialized database designed to provide fast searches. While a relational
+database is optimized for transactions (where a series of operations is
+counted as 1, thus if one of the steps fails, the RDBMS can roll-back to
+the state it was in before you started).
+
+Directories also typically are hierarchical in nature (RDBMS is typically
+flat, but you can implement a hierarchy using tables and queries),
+networkable, distributed and replicated.
+
+LDAP provides an open-standard to a directory service.
+
+Typically we use LDAP for email directories (all popular email clients
+provide an LDAP client now) and authorization services (authentication and
+access control).
+
+You could use a RDBMS for these types of queries but there's no
+set standard, in particular over TCP/IP to connect to databases over the
+network. There's language specific protocols (like Perl's DBI and Java's
+JDBC) that hide this problem behind an API abstraction, but that's not a
+replacement for a standard access protocol.
+
+LDAP is starting to be used on roles traditionally played by RDBMS in 
+terms of general data management because it's easier to setup a LDAP 
+server (once you understand the basic nomenclature) and you don't need 
+a DBA to write your queries and more importantly all LDAP servers speak 
+the same essential protocol, thus you don't have to fuss with a 
+database driver trying to connect it to the Internet. Once you have an 
+LDAP server up and running, it's automatically available over the 'net. 
+It's possible to connect to a LDAP server from a variety of mechanisms, 
+including just about every possible programming language.
+
+More information on this topic can be found on the following URLs;
+
+ http://www.openldap.org/faq/data/cache/378.html
+
+ http://www.isode.com/whitepapers/ic-6055.html
+
+=head2 What is the difference between a ldap reference and a ldap referral?
+
+A referral is returned when the B<entire> operation must be resent to
+another server.
+
+A continuation reference is returned when B<part> of the operation must be
+resent to another server.
+
+See RFC 2251 section 4.5.3 for more details.
+
+=head1 PERL-LDAP INSTALLATION
+
+=head2 How do I install perl-ldap ?
+
+To install the modules that are in the perl-ldap distribution follow the
+same steps that you would for most other distributions found on CPAN, that
+is
+
+   # replace 0.31 with the version you have
+
+   gunzip perl-ldap-0.31.tar.gz
+   tar xvf perl-ldap-0.31.tar       
+   cd perl-ldap-0.31
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+=head2 But I do not have make, how can I install perl-ldap ?
+
+Well as luck would have it the modules in perl-ldap do not do anything
+complex, so a simple copy is enough to install. First run
+
+  perl -V
+
+This will output information about the version of perl you have
+installed. Near the bottom you will find something like
+
+  @INC:
+    /usr/local/perl/perl5.005/lib/5.00502/sun4-solaris
+    /usr/local/perl/perl5.005/lib/5.00502
+    /usr/local/perl/perl5.005/lib/site_perl/5.005/sun4-solaris
+    /usr/local/perl/perl5.005/lib/site_perl/5.005
+    .
+
+This is a list of directories that perl searches when it is looking for
+a module. The directory you need is the site_perl directory, but without
+the system architecture name, in this case it is
+C</usr/local/perl/perl5.005/lib/site_perl/5.005>. The files required
+can then be installed with
+
+   # replace 0.31 with the version you have
+
+   gunzip perl-ldap-0.31.tar.gz
+   tar xvf perl-ldap-0.31.tar       
+   cd perl-ldap-0.31/lib
+
+   cp * /usr/local/perl/perl5.005/lib/site_perl/5.005
+
+=head2 How can I load Perl-LDAP into an ActiveState Perl installation.
+
+There are several ways that Perl-LDAP can be installed into an
+ActiveState Perl tree.
+
+=over 4
+
+=item 1.
+
+The ActiveState ppm command can be used to install Perl-LDAP.
+When a new version of Perl-LDAP is released, it takes ActiveState
+a period of time to get the new release into the ActiveState ppm
+system. 
+
+=item 2.
+
+If the user has nmake installed, the user can do a normal perl 
+module install using nmake instead of make.
+
+=item 3.
+
+If the user does not have nmake or make, the user can install 
+Perl-LDAP using the install-nomake script by issuing the 
+following command.
+
+ perl install-nomake
+
+The install-nomake script can be used on any system that does not
+have make installed. 
+
+=back
+
+=head2 What other modules will I need ?
+
+perl-ldap does use other modules. Some are required, but some are
+optional (ie required to use certain features)
+
+=over 4
+
+=item Convert::ASN1
+
+This module is required for perl-ldap to work.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=Convert::ASN1
+
+=item Authen::SASL
+
+This module is optional.  You only need to install Authen::SASL
+if you want to use the SASL authentication method.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=Authen::SASL
+
+=item Digest::MD5
+
+This module is optional. It also requires a C compiler when installing.
+You only need to install Digest::MD5 if you want to use the SASL
+authentication method.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=Digest::MD5
+
+=item URI::ldap
+
+This module is optional. You only need to install URI::ldap if you are
+going to need to parse ldap referrals. L<Net::LDAP> does not do this
+automatically yet, so this module is not used by perl-ldap.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=URI::ldap
+
+=item OpenSSL and IO::Socket::SSL for Net::LDAPS
+
+If you want to use Net::LDAP::LDAPS you will need this module
+and the OpenSSL software package.
+
+You can obtain the latest release of IO::Socket::SSL from
+  http://search.cpan.org/search?module=IO::Socket::SSL
+
+You can obtain the latest release of OpenSSL from
+  http://www.openssl.org/
+
+If you are using a Linux system, many of the distributions
+have RPM packages that you can install.  Use your favorite
+web search engine to find the package that you need.
+
+=item XML::SAX
+
+If you want to use Net::LDAP::DSML you will need this module.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=XML::SAX 
+
+
+=item ResourcePool::Factory::Net::LDAP
+
+If you want to use failover the ResourcePool::Factory::Net::LDAP
+perl module provides methods to do this.
+
+You can obtain the latest release from
+  http://search.cpan.org/search?module=ResourcePool::Factory::Net::LDAP
+
+=back
+
+=head1 USING NET::LDAP
+
+=head2 How do I connect to my server ?
+
+The connection to the server is created when you create a new Net::LDAP
+object, e.g.
+
+  $ldap = Net::LDAP->new($server);
+
+=head2 Net::LDAP-E<gt>new sometimes returns undef, why ?
+
+The constructor will return undef if there was a problem connecting
+to the specified server. Any error message will be available in $@
+
+=head2 What is the proper format of the bind DN.
+
+The DN used to bind to a directory is a FULLY QUALIFIED DN.  The exact
+structure of the DN will depend on what data has been stored in the
+server.
+
+The following are valid examples.
+
+  uid=clif,ou=People,dc=umich,dc=edu
+
+  cn=directory manager,ou=admins,dc=umich,dc=edu
+
+In some servers the following would be a valid fully qualified DN of
+the directory manager.
+
+  cn=directory manager
+
+=head2 How can I tell when the server returns an error, bind() always returns
+true ?
+
+Most methods in Net::LDAP return a L<Net::LDAP::Message> 
+object, or a sub-class of that. This object will hold the results 
+from the server, including the result code.
+
+So, for example, to determine the result of the bind operation.
+
+  $mesg = $ldap->bind( $dn, password => $passwd );
+
+  if ( $mesg->code ) {
+    # Handle error codes here
+  }
+
+=head2 How can I set the LDAP version of a connection to my ldap server?
+
+This is done by adding the version option when connecting or binding
+to the LDAP server.
+
+For example;
+
+  $ldap = Net::LDAP->new( $server, version => 3 );
+
+or
+
+  $mesg = $ldap->bind( $dn, password => $passwd, version => 3 );
+
+Valid version numbers are 2 and 3.
+As of perl-ldap 0.27 the default LDAP version is 3.
+
+=head2 I did a search on my directory using the 'search' method. Where did
+the results go ?
+
+Your search results are stored in a 'search object'.
+Consider the following:
+
+ use Net::LDAP;
+
+ $ldap = Net::LDAP->new('ldap.acme.com') or die "$@";
+ $mesg = $ldap->search(
+                       base   => "o=acme.com",
+                       filter => "uid=jsmith",
+                      );
+
+$mesg is a search object. It is a reference blessed into the
+L<Net::LDAP::Search> package. By calling methods on this object you
+can obtain information about the result and also the individual
+entries.
+
+The first thing to check is if the search was successful. This is done
+with with the method $mesg-E<gt>code. This method will return the
+status code that the server returned. A success will yield a zero
+value, but there are other values, some of which could also be
+considered a success.  See L<Net::LDAP::Constant>
+
+  use Net::LDAP::Util qw(ldap_error_text);
+
+  die ldap_error_text($mesg->code)
+    if $mesg->code;
+
+There are two ways in which you can access the entries. You can access
+then with an index or you can treat the container like a stack and
+shift each entry in turn. For example
+
+  # as an array
+
+  # How many entries were returned from the search
+  my $max = $mesg->count; 
+
+  for( my $index = 0 ; $index < $max ; $index++) {
+    my $entry = $mesg->entry($index);
+    # ...
+  }
+
+  # or as a stack
+
+  while( my $entry = $mesg->shift_entry) {
+    # ...
+  }
+
+In each case $entry is an entry object. It is a reference blessed into
+the L<Net::LDAP::Entry> package. By calling methods on this object you
+can obtain information about the entry.
+
+For example, to obtain the DN for the entry
+
+  $dn = $entry->dn;
+
+To obtain the attributes that a given entry has
+
+  @attrs = $entry->attributes;
+
+And to get the list of values for a given attribute
+
+  @values = $entry->get( 'sn' );
+
+And to get the first of the values for a given attribute
+
+  $values = $entry->get( 'cn' );
+
+One thing to remember is that attribute names are case 
+insensitive, so 'sn', 'Sn', 'sN' and 'SN' are all the same.
+
+So, if you want to print all the values for the attribute C<'ou'> then this
+is as simple as
+
+  foreach ($entry->get_value( 'ou' )) {
+      print $_,"\n";
+    }
+
+Now if you just want to print all the values for all the attributes you
+can do
+
+  foreach my $attr ($entry->attributes) {
+    foreach my $value ($entry->get_value($attr)) {
+      print $attr, ": ", $value, "\n";
+    }
+  }
+
+=head2 How do I limit the scope of a directory search.
+
+You limit the scope of a directory search by setting the
+scope parameter of search request. 
+Consider the following:
+
+ use Net::LDAP;
+
+ $ldap = Net::LDAP->new('ldap.acme.com') or die "$@";
+ $mesg = $ldap->search(
+                       base   => "o=acme.com",
+                       scope  => 'sub',
+                       filter => "uid=jsmith",
+                      );
+
+Values for the scope parameter are as follows.
+
+=over 4
+
+=item base
+
+Search only the base object.
+
+=item one
+
+Search the entries immediately below the base object.
+
+=item sub
+
+Search the whole tree below the base object.
+This is the default.                                         
+
+=back
+
+=head1 GETTING SEARCH RESULTS
+
+There are two ways of retrieving the results of a requested
+LDAP search; inline and by using a callback subroutine.
+
+=head2 USING THE INLINE APPROACH
+
+Using the inline approach involves requesting the data and
+then waiting for all of the data to be returned before the
+user starts processing the data.
+
+Example: 
+
+ use Net::LDAP;
+
+ $ldap = Net::LDAP->new('ldap.acme.com') or die "$@";
+ $mesg = $ldap->search(
+                       base   => "o=acme.com",
+                       scope  => 'sub',
+                       filter => "sn=smith",
+                      );
+  #
+  # At this point the user can get the returned data as an array
+  # or as a stack.
+  # In this example we will use an array
+
+  # How many entries were returned from the search
+  my $max = $mesg->count; 
+
+  for( my $index = 0 ; $index < $max ; $index++) 
+  {
+    my $entry = $mesg->entry($index);
+    my $dn = $entry->dn; # Obtain DN of this entry
+
+    @attrs = $entry->attributes; # Obtain attributes for this entry.
+    foreach my $var (@attrs)
+    {
+     #get a list of values for a given attribute
+     $attr = $entry->get_value( $var, asref => 1 );
+     if ( defined($attr) )         
+     {          
+         foreach my $value ( @$attr )          
+         {           
+          print "$var: $value\n";  # Print each value for the attribute.
+         }         
+     }                                                                       
+    }
+  }
+
+As you can see the example is straight forward, but there is one
+drawback to this approach.  You must wait until all entries for the
+request search to be returned before you can process the data.  If
+there several thousand entries that match the search filter this 
+could take quite a long time period.
+
+=head2 USING THE CALLBACK SUBROUTINE APPROACH
+
+Using the callback approach involves requesting the data be sent
+to a callback subroutine as each entry arrives at the client.
+
+A callback is just a subroutine that is passed two parameters when
+it is called, the mesg and entry objects.
+
+Example: 
+
+ use Net::LDAP;
+
+ $ldap = Net::LDAP->new('ldap.acme.com') or die "$@";
+ $mesg = $ldap->search(
+                       base   => "o=acme.com",
+                       scope  => 'sub',
+                       filter => "sn=smith",
+                       callback => \&callback,
+                      );
+ #
+ # At this point the user needs to check the status of the
+ # ldap search.
+ # 
+
+ if ( $mesg->code )
+ {
+    $errstr = $mesg->code;
+    print "Error code:  $errstr\n";
+    $errstr = ldap_error_text($errstr);
+    print "$errstr\n";
+ } 
+
+
+ sub callback
+ {
+ my ( $mesg, $entry) = @_;
+
+   #
+   # First you must check to see if something was returned.
+   # Last execution of callback subroutine will have no
+   # defined entry and mesg object
+   #
+   if ( !defined($entry) )
+   {
+     print "No records found matching filter $match.\n"
+     if ($mesg->count == 0) ; # if mesg is not defined nothing will print.
+     return;
+   }
+
+   my $dn = $entry->dn; # Obtain DN of this entry
+
+   @attrs = $entry->attributes; # Obtain attributes for this entry.
+   foreach my $var (@attrs)
+   {
+    #get a list of values for a given attribute
+    $attr = $entry->get_value( $var, asref => 1 );
+    if ( defined($attr) )         
+    {          
+      foreach my $value ( @$attr )          
+      {           
+        print "$var: $value\n";  # Print each value for the attribute.
+      }         
+    }                                                                       
+   }
+   #
+   # For large search requests the following 2 lines of code
+   # may be very important, they will reduce the amount of memory 
+   # used by the search results.
+   #
+   # If the user is not worried about memory useage then the 2 lines
+   # of code can be omitted.
+   #
+   $mesg->pop_entry;
+
+ }  # End of callback subroutine
+
+As you can see the example is straight forward and it does not waste
+time waiting for all of the entries to be returned.  However if the
+pop_entry method is not used the callback approach can allocate a 
+lot of memory to the search request.
+
+=head1 USING NET::LDAPS
+
+=head2 Using an SSL network connection, how do I connect to my server?
+
+This class is a subclass of Net::LDAP so all the normal
+Net::LDAP methods can be used with a Net::LDAPS object;
+see the documentation for Net::LDAP to find out how to
+query a directory server using the LDAP protocol.                        
+
+The connection to the server is created when you create a new Net::LDAPS
+object, e.g.
+
+  $ldaps = Net::LDAPS->new($server,
+                           port => '10000',
+                           verify => 'require',
+                           capath => '/usr/local/cacerts/',
+                           );
+
+Starting with version 0.28 perl-ldap also supports URIs in the new method.
+So, the above can also be expressed as:
+
+  $ldaps = Net::LDAP->new("ldaps://$server",
+                           port => '10000',
+                           verify => 'require',
+                           capath => '/usr/local/cacerts/',
+                           );
+
+There are additional options to the new method with LDAPS URIs 
+and the LDAPS new method and several additional methods are
+included in the LDAPS object class.  
+
+For further information and code examples read the LDAPS
+module documentation;  perldoc Net::LDAPS
+
+=head1 USING LDAP GROUPS.
+
+=head2 What are LDAP groups.
+
+LDAP groups are object classes that contain an attribute that can
+store multiple DN values.  Two standard object classes are
+'groupOfNames' (which has a 'member' attribute) and
+'groupOfUniqueNames' (which has a 'uniqueMember' attribute.)
+
+According to the RFCs a group can be a member of another group,
+but some LDAP server vendors restrict this flexibility by not
+allowing nested groups in their servers.
+
+Two scripts for working with groups are available in the contrib
+directory.  They are isMember.pl and printMembers.pl. 
+
+=head2 How do you format a filter to search for entries whose 'member'
+attribute has a particular value? 
+
+Asking for (member=*) is OK - the directory uses the equality matching 
+rule which is defined for the member attribute.
+
+Asking for (member=c*) is not OK - there is no defined substring 
+matching rule for the member attribute. That's because the member 
+values are *not* strings, but distinguished names. There is no 
+substring matching rule for DNs, see RFC 2256 section 5.50.
+
+What you have to do is get the results of (member=*) and then select 
+the required results from the returned values. You need to do this 
+using knowledge of the string representation of DNs defined in RFC 
+2253, which is important because the same DN can have different string 
+representations. So you need to perform some canonicalization if you 
+want to be correct.
+
+
+=head1 USING DSML.
+
+=head2 How can I access DSML features from PERL-LDAP.
+
+Directory Service Markup Language (DSML) is the XML
+standard for representing directory service information in
+XML.
+
+Support for DSML is included in PERL-LDAP starting with version
+.20.
+
+At the moment this module only reads and writes DSML entry
+entities. It cannot process any schema entities because
+schema entities are processed differently than elements.
+
+Eventually this module will be a full level 2 consumer and
+producer enabling you to give you full DSML conformance.
+
+The specification for DSML is at http://www.oasis-open.org/specs/
+
+For further information and code examples read the DSML
+module documentation;  perldoc Net::LDAP::DSML
+
+=head1 USING CONTROLS AND VIRTUAL LISTS.
+
+=head2 How do I access the Control features.
+
+Support for LDAP version 3 Control objects is included in 
+perl-ldap starting with version .20.
+
+For further information and code examples read the Control
+module documentation;  perldoc Net::LDAP::Control
+
+=head2 How do I access the Virtual List features.
+
+Support for Virtual Lists is included in perl-ldap starting 
+with version .20.
+
+For further information and code examples read the Control
+module documentation;  perldoc Net::LDAP::Control
+
+=head1 GENERAL QUESTIONS.
+
+=head2 Are there any other code examples.
+
+Yes, there is an Examples pod file.  To view the pod
+do the following command;  perldoc Net::LDAP::Examples
+
+There is user contributed software in the contrib directory
+that is supplied with the PERL-LDAP distribution.  This is an
+excellent source of information on how to use the PERL-LDAP module.
+
+=head2 Can I contribute perl scripts that use perl-ldap
+to the contrib section? 
+
+Any one can submit a perl script that uses perl-ldap for inclusion
+in the contrib section.  Graham Barr will determine if the script
+will be included and will do the initial check in of the script
+to the CVS system on sourceforge.  Graham will make you the 
+owner/developer of the script. 
+
+There are a couple of requirements for consideration.
+
+You must supply a one line description of your script to be included
+in the contrib readme file.
+
+Inside the script will be the pod documentation for the script.
+No auxiliary documentation will be allowed.  For examples of how
+to do this see the tklkup or schema scripts currently in the contrib
+section.
+
+If Graham decides to include your script in the contrib section, you
+must register with sourceforge before your scripts will be put into
+the contrib CVS system.
+
+=head2 Is possible to get a complete entry, DN and attributes 
+without specifying the attributes name?
+
+Yes, just specify you want a list of no attributes back. The RFC says 
+that this tells the server to return all readable attributes back 
+(there may be access controls to prevent some from being returned.)
+
+So in the search method, just set (for LDAPv2):
+
+		attrs => [ ]
+
+If you are using LDAPv3, you can specify an attribute called "*" 
+instead, which lets you ask for additional (eg operational) attributes 
+in the same search.
+
+		attrs => [ "*" ]
+
+=head2 How do I put a JPEG photo into a entry in the directory.
+
+Follow the following code example, replacing the (...) with
+whatever is relevant to your setup. 
+
+  use Net::LDAP;
+  use Net::LDAP::Util qw(ldap_error_text);
+  use CGI;
+
+  local $/ = undef;
+  my $jpeg = <$filename>;
+
+  my $ldap = Net::LDAP->new(...);
+  my $res = $ldap->bind(...);
+     $res = $ldap->modify(...,
+                   add => [ 'jpegPhoto' => [ $jpeg ] ]);
+     $res = $ldap->unbind();
+
+
+=head2 How do I add a jpeg photo into a entry in the directory via html-forms.
+
+Follow the following code example, replacing the (...) with
+whatever is relevant to your setup. 
+
+  use Net::LDAP;
+  use Net::LDAP::Util qw(ldap_error_text);
+  use CGI;
+
+  my $q = new CGI;
+
+  print $q->header;
+  print $q->start_html(-title => 'Change JPEG photo');
+
+  if ($q->param('Update')) {
+          my $filename = $q->param('jpeg');
+          local $/ = undef;
+          my $jpeg = <$filename>;
+
+          my $ldap = Net::LDAP->new(...);
+          my $res = $ldap->bind(...);
+          $res = $ldap->modify(...,
+                          add => [ 'jpegPhoto' => [ $jpeg ] ]);
+          $res = $ldap->unbind();
+  } else {
+          print $q->start_multipart_form();
+          print $q->filefield(-name => 'jpeg', -size => 50);
+          print $q->submit('Update');
+          print $q->end_form();
+  }
+
+  print $q->end_html();
+
+=head2 What happens when you delete an attribute that does not exist.
+
+It is an error to delete an attribute that doesn't exist.  When you 
+get the error back the server ignores the entire modify operation
+you sent it, so you need to make sure the error doesn't happen.
+
+Another approach, if you are using LDAPv3 (note beginning with version .27
+Net::LDAP uses LDAPv3 by default) is to use a 'replace' with your
+attribute name and no values.
+In LDAPv3, this is defined to always work even if that attribute
+doesn't exist in the entry.
+
+ie:
+
+  my $mesg = $ldap->modify( $entry, replace => { %qv_del_arry } );
+
+But make sure you are using LDAPv3, because that is defined to B<not> work
+in LDAPv2. (A nice incompatibility between LDAPv2 and LDAPv3.)
+
+=head2 How can I delete a referral from an LDAP tree.
+
+Since this is a proprietary feature, you will have to check your
+server's documentation. You might find that you need to use a control. If
+there is a control called something like managedsait, that's the one you
+should probably use.  For proper operation you will need the oid number
+for managedsait; 2.16.840.1.113730.3.4.2 and do not specify a value for
+type.
+
+The code required will look similar to the following code snippet.
+
+  $mesg =  $ldap->delete("ref=\"ldap://acme/c=us,o=bricks\",o=clay",
+                  control => {type => "2.16.840.1.113730.3.4.2"} ); 
+
+=head2 How do I add an ACI/ACL entry to a directory server with
+Perl-LDAP.
+
+ACIs and ACLs are proprietary features in LDAP. The following code
+snippet works with a Netscape directory server. You will need the
+specify the correct DN (-DN-) and correct attribute(s) (-nom attr-).
+
+  my $aci = '(target="ldap:///-DN-")(targetattr="-nom attr-")(version 3.0;
+              acl "-nom acl-"; deny(all) userdn = "ldap:///self";)' ;
+
+  $ldap->modify($dn_modif, add => {'aci' => $aci });
+
+=head2 How do I avoid file type and data type mis-matching when loading
+data from a Win32 system.
+
+When loading a binary attribute with data read from a file on a Win32
+system, it has been noted that you should set "binmode" on the file
+before reading the file contents into the data array.
+
+Another possible solution to this problem is to convert the 
+binary data into a base64 encoded string and then store the encoded string
+in the file.  Then when reading the file, decode the base64 encoded 
+string back to binary and then use perl ldap to store the data
+in the directory.
+
+=head2 How do I create a Microsoft Exchange 5.x user.
+
+This is a solution provide by a perl-ldap user.
+
+This code works with ActiveState Perl running on WinNT 4. Please note that
+this requires the Win32::Perms module, and needs valid NT account info to
+replace the placeholders. 
+
+  use Net::LDAP;
+  use Net::LDAP::Util;
+  use Win32::Perms;
+
+  #Constants taken from ADSI Type Library
+  $ADS_RIGHT_EXCH_ADD_CHILD = 1;
+  $ADS_RIGHT_EXCH_DELETE = 0x10000;
+  $ADS_RIGHT_EXCH_DS_REPLICATION = 64;
+  $ADS_RIGHT_EXCH_DS_SEARCH = 256;
+  $ADS_RIGHT_EXCH_MAIL_ADMIN_AS = 32;
+  $ADS_RIGHT_EXCH_MAIL_RECEIVE_AS = 16;
+  $ADS_RIGHT_EXCH_MAIL_SEND_AS = 8;
+  $ADS_RIGHT_EXCH_MODIFY_ADMIN_ATT = 4;
+  $ADS_RIGHT_EXCH_MODIFY_SEC_ATT = 128;
+  $ADS_RIGHT_EXCH_MODIFY_USER_ATT = 2;
+
+  $EXCH_USER_RIGHTS = $ADS_RIGHT_EXCH_MAIL_RECEIVE_AS |
+  $ADS_RIGHT_EXCH_MAIL_SEND_AS |
+  $ADS_RIGHT_EXCH_MODIFY_USER_ATT;
+
+  $exch = Net::LDAP->new('server', debug =>0) || die $@;
+
+  $exch->bind( 'cn=admin_user,cn=nt_domain,cn=admin', version =>3,
+  password=>'password');
+
+  $myObj = Win32::Perms->new();
+  $Result = $myObj->Owner('nt_domain\user_name');
+  $myObj->Group('nt_domain\Everyone');
+  $myObj->Allow('nt_domain\user_name',
+  $EXCH_USER_RIGHTS,OBJECT_INHERIT_ACE);
+  $BinarySD = $myObj->GetSD(SD_RELATIVE);
+  $TextSD = uc(unpack( "H*", $BinarySD ));
+  Win32::Perms::ResolveSid('nt_domain\user_name', $sid);
+  $mysid = uc(unpack("H*",$sid));
+
+  $result = $exch->add ( dn   =>
+                'cn=user_name,cn=container,ou=site,o=organisation',
+                attr => [ 'objectClass' => ['organizationalPerson'],
+                          'cn'   => 'directory_name',
+                          'uid' => 'mail_nickname',
+                          'mail' => 'smtp_address',
+                        'assoc-nt-account' => [ $mysid ],
+                        'nt-security-descriptor' => [ $TextSD ],
+                        'mailPreferenceOption'  => 0
+                        ]
+              );
+
+
+  print ldap_error_name($result->code);
+
+=head2 Ho do I reset a user's password ...
+
+=head2 Z<>... in most LDAP servers ?
+
+Most LDAP servers use the standard userPassword attribute as the
+attribute to set when you want to change a user's password.
+
+They usually allow to set the password either using the regular 
+modify operation on the userPassword attribute or using the
+extended LDAP Password Modify operation defined in RFC3062.
+
+The recommended method is the extended Password Modify operation,
+which offers a standardized way to set user passwords but 
+unfortunately is not available on all LDAP servers.
+
+Whether the extended Password Modify operation is available can be
+found out by searching the attribute supportedExtension for the
+value 1.3.6.1.4.1.4203.1.11.1 in the RootDSE object.
+
+If the extended Password Modify operation is not avaiable the
+alternative is the regular modification of the userPassword attribute.
+
+But this method has some drawbacks:
+
+=over 4
+
+=item *
+
+Depending on the type of the server the arguments to the modify
+operations may vary. Some want the modify done with replace,
+some want it done by explicitely deleting the old password
+and add of the new one.
+This may even depend on whether you change the password for the bound
+user or as an administrator for another user.
+
+=item *
+
+With the modify operation some servers expect the client to
+do the hashing of the password on the client side. I.e. all
+clients that set passwords need to agree on the algorithm
+and the format of the hashed password.
+
+=item *
+
+Some LDAP servers do not allow setting the password if the
+connection is not sufficiently secured. I.e. require SSL or TLS
+support to set the password (which is heavily recommended anyway ;-)
+
+=back
+
+Here is an example of how to change your own password (for brevity's 
+sake error checking is left out):
+
+  use Net::LDAP;
+
+  my $ldap = Net::LDAP->new('ldaps://server.domain')  or  die "$@";
+  my $mesg = $ldap->bind('cn=Joe User,dc=perl,dc=ldap,dc=org',
+                         password => 'oldPW');
+
+  my $rootdse = $ldap->root_dse();
+
+  if ($rootdse->supported_extension('1.3.6.1.4.1.4203.1.11.1') {
+
+      require Net::LDAP::Extension::SetPassword;
+
+      $mesg = $ldap->set_password(user => 'cn=Joe User,dc=perl,dc=ldap,dc=org',
+                                  oldpasswd => 'oldPW',
+                                  newpasswd => 'newPW');
+  }
+  else {
+      $mesg = $ldap->modify('cn=Joe User,dc=perl,dc=ldap,dc=org',
+                            changes => [
+                                delete => [ userPassword => $oldPW ]
+                                add    => [ userPassword => $newPW ] ]);
+  }
+
+  $ldap->unbind();
+
+=head2 Z<>... in MS Active Directory ?
+
+With Active Directory a user's password is stored in the unicodePwd
+attribute and changed using the regular modify operation.
+
+ADS expects this password to be encoded in Unicode - UTF-16 to be exact.
+Before the unicode conversion is done the password needs to be
+surrounded by double quotes which do not belong to the user's password.
+
+For the password modify operation to succeed SSL is required.
+
+When changing the password for the user bound to the directory
+ADS expects it to be done by deleting the old password and
+adding the new one.
+When doing it as a user with administrative priviledges replacing
+the unicodePwd's value with a new one is allowed too.
+
+Here's an example that demonstrates setting your own password
+(again almost no error checking):
+
+  use Net::LDAP;
+  use Unicode::Map8;
+  use Unicode::String qw(utf16);
+
+  # build the conversion map from your local character set to Unicode
+  my $charmap = Unicode::Map8->new('latin1')  or  die;
+
+  # surround the PW with double quotes and convert it to UTF-16
+  # byteswap() was necessary in experiments on i386 Linux, YMMV
+  my $oldUniPW = $charmap->tou('"'.$oldPW.'"')->byteswap()->utf16();
+  my $newUniPW = $charmap->tou('"'.$newPW.'"')->byteswap()->utf16();
+
+  my $ldap = Net::LDAP->new('ldaps://ads.domain.controller')  or  die "$@";
+
+  my $mesg = $ldap->bind('cn=Joe User,dc=your,dc=ads,dc=domain',
+                         password => 'oldPW');
+
+  $mesg = $ldap->modify('cn=Joe User,dc=your,dc=ads,dc=domain',
+                        changes => [
+                            delete => [ unicodePwd => $oldUniPW ]
+                            add    => [ unicodePwd => $newUniPW ] ]);
+
+  $ldap->unbind();
+
+
+=head2 How can I simulate server failover.
+
+Perl-LDAP does not do server failover, however there are several
+programming options for getting around this situation.
+
+Here is one possible solution.
+
+  unless ( $ldaps =
+            Net::LDAPS->new($ldapserverone,
+                            port=>636,timeout=>5) ) 
+          {
+              $ldaps = Net::LDAPS->new($ldapservertwo,
+                                       port=>636,timeout=>20) || 
+              return 
+              "Can't connect to $ldapserverone or $ldapservertwo via LDAPS: $@";
+          }
+
+As of version 0.27 of perl-ldap the above can be expressed much simpler:
+
+  $ldaps = Net::LDAPS->new([ $ldapserverone, $ldapservertwo ],
+                           port=>636, timeout=>5)  or  die "$@";
+
+
+=head1 Using X.509 certificates.
+
+=head2 How do I store X.509 certificates in the directory?
+
+The first problem here is that there are many different formats to hold
+certificates in, for example PEM, DER, PKCS#7 and PKCS#12. The directory
+B<only> uses the DER format (more correctly, it only uses the BER format)
+which is a binary format.
+
+Your first job is to ensure that your certificates are therefore in DER/BER
+format. You could use OpenSSL to convert from PEM like this:
+
+  openssl x509 -inform PEM -in cert.pem -outform DER -out cert.der
+
+Consult the OpenSSL documentation to find out how to perform other
+conversions.
+
+To add a certificate to the directory, just slurp in the DER/BER
+certificate into a scalar variable, and add it to the entry's
+userCertificate attribute. How you do that will depend on which version of
+LDAP you are using.
+
+To slurp in the certificate try something like this:
+
+  my $cert;
+  {
+      local $/ = undef; # Slurp mode
+      open CERT, "cert.der" or die;
+      binmode CERT;
+      $cert = <CERT>;
+      close CERT;
+  }
+  # The certificate is now in $cert
+
+For LDAPv2, because most directory vendors ignore the string representation
+of certificates defined in RFC 1778, you should add this value to the
+directory like this:
+
+  $res = $ldap->modify("cn=My User, o=My Company,c=XY",
+                       add => [
+                               'userCertificate' => [ $cert ]
+                              ]);
+  die "Modify failed (" . ldap_error_name($res->code) . ")\n"
+      if $res->code;
+
+For LDAPv3, you must do this instead:
+
+  $res = $ldap->modify("cn=My User, o=My Company, c=XY",
+                       add => [
+                               'userCertificate;binary' => [ $cert ]
+                              ]);
+  die "Modify failed (" . ldap_error_name($res->code) . ")\n"
+      if $res->code;
+
+Of course, the entry you are trying to add the certificate to must use
+object classes that permit the userCertificate attribute, otherwise the
+modify will fail with an object class violation error. The inetOrgPerson
+structural object class permits userCertificates, as does the
+strongAuthenticationUser auxiliary object class. Others might also.
+
+=head1 ADDITIONAL DIRECTORY AND LDAP RESOURCES.
+
+=head2 URLs.
+
+Directory Services Mark Language (DSML)
+http://www.oasis-open.org/specs/
+
+eMailman LDAP information
+http://www.emailman.com/ldap/
+
+Rafael Corvalan's LDAP shell
+http://sf.net/projects/ldapsh
+
+LDAPS, also known as LDAPGURU.
+I<This web site has a nasty habit of resizing the browser
+to cover the WHOLE screen.>
+http://www.ldaps.com
+
+Jeff Hodges's Kings Mountain LDAP 
+http://www.kingsmountain.com/ldapRoadmap.shtml
+
+Mark Wahl's LDAP World at Innosoft.
+http://www.innosoft.com/ldapworld/
+(outdated: last update was in 1998)
+
+Open Source LDAP Directory Server.
+http://www.openldap.org/
+
+CriticalPath
+http://www.cp.net/
+
+IBM Directory Server
+http://www-306.ibm.com/software/network/directory/server/
+
+Innosoft
+http://www.innosoft.com
+(acquired by Sun)
+
+Isode (was MessagingDirect)
+http://www.isode.com/
+
+Netscape Directory Developers Area
+http://developer.netscape.com/directory/
+
+Nexor's X.500 and Internet Directories
+http://www.nexor.com/info/directory.htm/
+
+Novell's eDirectory
+http://www.novell.com/
+
+Novell's LDAPzone
+http://ldapzone.com/
+
+Octet String
+http://www.octetstring.com/
+
+SUN JAVA JNDI (Java Naming and Directory Interface)
+http://www.java.sun.com/jndi/
+
+Sun One, formerly Iplanet.
+http://wwws.sun.com/software/
+
+Eine deutsche LDAP Website 
+A german LDAP Website
+http://verzeichnisdienst.de/ldap/Perl/index.html
+
+The 2 following URLs deal mainly with Microsoft's
+Active Directory.
+
+Directory Works
+http://directoryworks.com/
+
+ActiveX LDAP Client
+http://www.polonia-online.com/ldap/
+
+=head2 BOOKS
+
+Developing LDAP and ADSI Clients for Microsoft(R) Exchange.
+By Sven B. Schreiber.  ISBN:  0201657775
+
+Implementing LDAP.
+By Mark Wilcox.  ISBN:  1861002211
+
+LDAP: Programming Directory-Enabled Applications With 
+Lightweight Directory Access Protocol. 
+By Tim Howes, Mark Smith.  ISBN:  1578700000
+
+LDAP Programming; Directory Management and Integration.
+By Clayton Donley.  ISBN:  1884777910
+
+LDAP Programming with Java. 
+By Rob Weltman, Tony Dahbura.  ISBN:  0201657589
+
+LDAP System Administration.
+By Gerald Carter.  ISBN:  1565924916
+
+Managing Enterprise Active Directory Services. 
+By Robbie Allen, Richard Puckett.  ISBN:  0672321254
+
+Solaris and LDAP Naming Services.
+By Tom Bialaski, Michael Haines. ISBN:  0-13-030678-9
+
+Understanding and Deploying LDAP Directory Services (2ed).
+By Tim Howes, Mark Smith, Gordon Good.
+ISBN:  0672323168
+
+LDAP Directories Explained.
+By Brian Arkills. ISBN 0-201-78792-X
+
+=head1 AUTHORS
+
+Any good FAQ is made up of many authors, everyone that contributes
+information to the perl-ldap mail list is a potential author.
+
+An attempt to maintain this FAQ is being done by Chris Ridd
+E<lt>chris.ridd@isode.comE<gt> and Peter Marschall <peter@adpm.de>.
+It was previously updated by Clif Harden E<lt>charden@pobox.comE<gt>.
+
+The original author of this FAQ was Graham Barr E<lt>gbarr@pobox.comE<gt>
+
+Please report any bugs, or post any suggestions, to the 
+perl-ldap mailing list E<lt>perl-ldap@perl.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1999-2004 Graham Barr. All rights reserved. This document is
+distributed, and may be redistributed, under the same terms as Perl itself.
+
+=cut

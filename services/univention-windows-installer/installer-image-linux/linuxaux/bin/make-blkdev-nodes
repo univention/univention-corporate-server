@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Create the block device nodes for a mass-storage device and its
+# partitions.  The argument to this script is the canonical name of
+# the device without the /dev prefix, like "hda" or "i2o/sda".
+
+die () {
+    echo "$@"
+    exit 2
+}
+
+sys_block=/sys/block
+
+[ -d $sys_block ] \
+    || die "$sys_block not found!"
+
+# Argument is a directory like /sys/block/hda, /sys/block/sda/sda1,
+# /sys/block/i2o!hda, or /sys/block/i2o!hda/i2o!hda2.
+make_block_device () {
+    local path="$1"
+
+    # Everything after the last /
+    local name=${path##*/}
+    local dev_file="/dev/$name"
+    # Replace ! with /
+    dev_file=${dev_file//\!/\/}
+    echo "Making device $dev_file"
+    [ -f "$path/dev" ] \
+        || die "$0: Internal error: $path/dev not found"
+
+    # Everything up to the last /
+    local dev_dir=${dev_file%/*}
+    mkdir -p "$dev_dir"
+    [ -d "$dev_dir" ] \
+        || die "$0: Unable to mkdir $dev_dir"
+
+    local major_minor="`cat $path/dev`"
+    local temp="$dev_file.$$.tmp"
+    mknod "$temp" b ${major_minor%:*} ${major_minor#*:} \
+        || die "mknod failed"
+    mv -f "$temp" "$dev_file" \
+        || die "rename $temp to $fullname failed"
+}
+
+# Replace / with !
+dev="${1//\//!}"
+
+[ -n "$dev" ] \
+    || die "$0: I need an argument"
+
+# Force "foo*" to expand to nothing if no matches found
+shopt -s nullglob
+
+# Exit silently if device does not exist
+[ -d "$sys_block/$dev" ] \
+    || exit 1
+
+make_block_device "$sys_block/$dev"
+
+# Devices like /dev/sda have partition names like /dev/sda1, while
+# devices like /dev/rd/c0d0 have partition names like /dev/rd/c0d0p1.
+# That is, we must append "pX" if the last character is a digit.  See
+# disk_name() in linux/fs/partitions/check.c.
+[[ $dev = *[0-9] ]] \
+    && p=p
+
+for devX in "$sys_block/$dev/$dev"$p[1-9]* ; do
+    make_block_device "$devX"
+done
+
+exit 0

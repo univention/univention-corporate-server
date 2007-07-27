@@ -1,0 +1,503 @@
+#/bin/bash
+
+die () {
+    echo "$@" >&2
+    echo "*** Dropping to shell" >&2
+    exec bash >&2
+}
+
+# Set VERSION environment variable.
+export VERSION=$(< /etc/version)
+
+if [ -z "$CMDLINE" ] ; then 
+    proc_cmdline=/proc/cmdline
+    [ -r "$proc_cmdline" ] \
+        || die "Unable to read $proc_cmdline"
+    CMDLINE=$(< $proc_cmdline)
+    unset proc_cmdline
+fi
+
+# Get a command-line parameter of the form "foo=bar" or just "foo",
+# for argument foo.
+get_cmdline_param () {
+    local what="$1"
+
+    # Order matters here, because command line should override DHCP
+    # option.
+    for token in $CMDLINE $unattend ; do
+        local var=${token%%=*}
+        if [ "$var" == "$what" ] ; then
+            echo "$token"
+            return
+        fi
+    done
+}
+
+# Sort modules consistent with order in /etc/module-order.txt.
+module_order=$(sed -e s/\#.\*// /etc/module-order.txt)
+sort_modules () {
+    local modules=" $* "
+    local ret=""
+
+    for module in $module_order ; do
+        new_modules=${modules// $module / }
+        [ "$new_modules" == "$modules" ] \
+            && continue
+        ret="$ret $module"
+        modules="$new_modules"
+    done
+
+    ret="$ret $modules"
+
+    echo $ret
+}
+
+load_modules () {
+    local modules="$1"
+
+    for module in $modules ; do
+        if lsmod | grep -q "^$module[[:space:]]" ; then
+            echo "(module $module already loaded)"
+        else
+            echo "Loading $module..."
+            modprobe $module
+            echo "...done loading $module"
+        fi
+    done
+}
+
+# See if /z is already mounted.
+check_z () {
+    cat /z/dosbin/install.pl > /dev/null 2>&1
+}
+
+echo "*** OK, here we go."
+echo
+echo "*** (If you booted from CD-ROM, you may eject it now.)"
+echo
+
+# Various things break for me on laptop hardware if I omit this delay.
+# For instance, cardmgr only monitors one socket (of two).
+# Or a 3c575 does not appear in /sys/bus/pci.
+# I have no idea why, exactly.  FIXME?
+sleep 2
+
+echo "*** First, let's load USB support in case you have a USB keyboard..."
+
+# PCI classes 0x0c03nn are USB controllers.
+load_modules "$(find-modules-pci 0x0c 0x03)"
+
+# FIXME: We should only load this if we actually have a USB keyboard
+# attached.
+load_modules usbhid
+
+# HID module takes a while to initialize.  Doh!
+sleep 2
+
+# Configure the keyboard, if requested.
+kbd=$(get_cmdline_param kbd)
+[ -n "$kbd" ] \
+    && loadkeys ${kbd#*=}
+
+check_shell=$(get_cmdline_param shell)
+
+[ -n "$check_shell" ] \
+    && die "'shell' kernel parameter found"
+
+echo "*** Next, we'll look for PCI Ethernet hardware..."
+
+# PCI classes 0x0200nn are Ethernet controllers.
+load_modules "$(sort_modules $(find-modules-pci 0x02 0x00))"
+
+echo "*** And I suppose we may as well look for PCMCIA devices..."
+if [ -e /var/run/did_cardmgr ] ; then
+    echo "*** (cardmgr already run; skipping)"
+else
+    cardmgr -o
+    touch /var/run/did_cardmgr
+fi
+
+echo "*** Now that we have loaded the modules (maybe), let's try DHCP..."
+unset got_lease
+for iface in eth0 eth1 eth2 ; do
+    if ! ifconfig $iface >/dev/urandom 2>&1 ; then
+        echo "*** $iface not found"
+        continue
+    fi
+
+    # Try this interface once, and retry for 10 seconds.  Works around
+    # problems we have had with drivers taking a while to initialize.
+    echo "*** Trying DHCP on $iface..."
+    start=$SECONDS
+    while : ; do
+        if udhcpc --interface=$iface --userclass=Unattended \
+            --now --script=/etc/udhcpc-script ; then
+            echo "*** DHCP on $iface worked!"
+            got_lease=1
+            # Break to top level.
+            break 2
+        fi
+        if [ $SECONDS -ge $(($start + 10)) ] ; then
+            echo "*** DHCP on $iface failed.  Giving up."
+            break
+        fi
+        echo "*** Retrying DHCP on $iface..."
+        sleep 1
+    done
+done
+
+[ -z "$got_lease" ] \
+    && die "Failed to obtain DHCP lease."
+
+# Having obtained a lease, read its info.  In particular, here we set
+# "unattend" to the value from local DHCP option 233.
+[ -f /var/run/dhcp.out ] \
+    && . /var/run/dhcp.out
+
+# Configure the keyboard again, in case it was provided via DHCP.
+kbd=$(get_cmdline_param kbd)
+[ -n "$kbd" ] \
+    && loadkeys ${kbd#*=}
+
+echo "*** Now we need to map the /y drive."
+
+mkdir /y
+
+while : ; do
+    Y_USER=guest
+    Y_PASS=guest
+    Y_PATH=//ntinstall/install-help
+
+    val=$(get_cmdline_param y_user)
+    [ -n "$val" ] && Y_USER=${val#*=}
+    val=$(get_cmdline_param y_pass)
+    [ -n "$val" ] && Y_PASS=${val#*=}
+    val=$(get_cmdline_param y_path)
+    [ -n "$val" ] && Y_PATH=${val#*=}
+
+    # Read one character with a 5-second timeout
+    read -n 1 -t 5 -p \
+        "Override bootdisk defaults (if unsure, say yes) [Y/N/X]? " \
+        input
+    echo
+
+    [[ "$input" == [xX] ]] \
+        && die "Exiting."
+
+    if [[ "$input" == [yY] ]] ; then
+        # Allow editing, and do not treat backslash specially.
+        read -e -r -p "Enter location of install-help share (default $Y_PATH): " \
+            input
+        [ -n "$input" ] && Y_PATH="$input"
+        read -e -r \
+            -p "Enter username for mapping install-help share (default $Y_USER): " \
+            input
+        [ -n "$input" ] && Y_USER="$input"
+        while : ; do
+            read -e -r -s -p "Enter password for mapping install-help share: " \
+                input
+            echo
+            read -e -r -s -p "Confirm password: " Y_PASS
+            echo
+            [ "$input" == "$Y_PASS" ] \
+                && break
+            echo "Passwords do not match.  Please try again."
+        done
+    fi
+
+    # Replace all slashes with backslashes, since Z_PATH will
+    # ultimately appear in permcreds.bat which is read by Windows.
+    Y_PATH=${Y_PATH//\//\\}
+
+    if [[ "$Y_USER" == */* && "$Y_USER" != *\\* ]] ; then
+        # Y_USER contains a slash but not a backslash, so we assume it
+        # is in "Samba format" (username/DOMAIN).  Convert it to
+        # DOMAIN\username.
+
+        # Split Y_USER at (final) slash, reverse, and reassemble.
+        Y_USER="${Y_USER##*/}\\${Y_USER%/*}"
+    fi
+
+    username=${Y_USER#*\\}              # everything after first backslash
+    [ "$username" == "$Y_USER" ] \
+        || domain=${Y_USER%%\\*}        # everyting before first backslash
+
+    # Default mount options: username, read-only mount
+    mount_opts="username=$username,ro"
+
+    # Append domain (workgroup), if any.
+    [ -n "$domain" ] \
+        && mount_opts="$mount_opts,workgroup=$domain"
+
+    # Add extra mount options, if any.
+    y_opts=$(get_cmdline_param y_opts)
+    [ -n "$y_opts" ] \
+        && mount_opts="$mount_opts,$y_opts"
+
+    export PASSWD="$Y_PASS"
+
+    # In case something broken is already mounted on /y
+    umount /y >/dev/null 2>&1
+
+    echo "*** Trying smbmount $Y_PATH /y -o ttl=600000,$mount_opts"
+
+    if ! smbmount "$Y_PATH" /y -o "ttl=600000,$mount_opts" ; then
+        break
+    else
+        echo "*** smbmount failed."
+    fi
+
+    echo "*** Trying mount.cifs $Y_PATH /y -o $mount_opts"
+
+    if mount.cifs "$Y_PATH" /y -o "$mount_opts" ; then
+        break
+    else
+        echo "*** mount.cifs failed."
+    fi
+
+    unset PASSWD
+
+    echo "*** Failed to mount /y.  Retrying..."
+done
+
+echo "*** Now we need to map the /z drive."
+
+while : ; do
+    Z_USER=guest
+    Z_PASS=guest
+    Z_PATH=//ntinstall/install
+
+    val=$(get_cmdline_param z_user)
+    [ -n "$val" ] && Z_USER=${val#*=}
+    val=$(get_cmdline_param z_pass)
+    [ -n "$val" ] && Z_PASS=${val#*=}
+    val=$(get_cmdline_param z_path)
+    [ -n "$val" ] && Z_PATH=${val#*=}
+
+    # Read one character with a 5-second timeout
+    read -n 1 -t 5 -p \
+        "Override bootdisk defaults (if unsure, say yes) [Y/N/X]? " \
+        input
+    echo
+
+    [[ "$input" == [xX] ]] \
+        && die "Exiting."
+
+    if [[ "$input" == [yY] ]] ; then
+        # Allow editing, and do not treat backslash specially.
+        read -e -r -p "Enter location of install share (default $Z_PATH): " \
+            input
+        [ -n "$input" ] && Z_PATH="$input"
+        read -e -r \
+            -p "Enter username for mapping install share (default $Z_USER): " \
+            input
+        [ -n "$input" ] && Z_USER="$input"
+        while : ; do
+            read -e -r -s -p "Enter password for mapping install share: " \
+                input
+            echo
+            read -e -r -s -p "Confirm password: " Z_PASS
+            echo
+            [ "$input" == "$Z_PASS" ] \
+                && break
+            echo "Passwords do not match.  Please try again."
+        done
+    fi
+
+    # Replace all slashes with backslashes, since Z_PATH will
+    # ultimately appear in permcreds.bat which is read by Windows.
+    Z_PATH=${Z_PATH//\//\\}
+
+    if [[ "$Z_USER" == */* && "$Z_USER" != *\\* ]] ; then
+        # Z_USER contains a slash but not a backslash, so we assume it
+        # is in "Samba format" (username/DOMAIN).  Convert it to
+        # DOMAIN\username.
+
+        # Split Z_USER at (final) slash, reverse, and reassemble.
+        Z_USER="${Z_USER##*/}\\${Z_USER%/*}"
+    fi
+
+    username=${Z_USER#*\\}              # everything after first backslash
+    [ "$username" == "$Z_USER" ] \
+        || domain=${Z_USER%%\\*}        # everyting before first backslash
+
+    # Default mount options: username, read-only mount
+    mount_opts="username=$username,ro"
+
+    # Append domain (workgroup), if any.
+    [ -n "$domain" ] \
+        && mount_opts="$mount_opts,workgroup=$domain"
+
+    # Add extra mount options, if any.
+    z_opts=$(get_cmdline_param z_opts)
+    [ -n "$z_opts" ] \
+        && mount_opts="$mount_opts,$z_opts"
+
+    export PASSWD="$Z_PASS"
+
+    if check_z ; then
+        echo "*** /z already mounted; skipping mount"
+        break
+    fi
+
+    # In case something broken is already mounted on /z
+    umount /z >/dev/null 2>&1
+
+    echo "*** Trying smbmount $Z_PATH /z -o ttl=600000,$mount_opts"
+
+    if smbmount "$Z_PATH" /z -o "ttl=600000,$mount_opts" ; then
+        check_z \
+            && break
+        echo "*** smbmount \"succeeded\", but /z/dosbin/install.pl not found"
+        umount /z
+    else
+        echo "*** smbmount failed."
+    fi
+
+    echo "*** Trying mount.cifs $Z_PATH /z -o $mount_opts"
+
+    if mount.cifs "$Z_PATH" /z -o "$mount_opts" ; then
+        check_z \
+            && break
+        echo "*** mount.cifs \"succeeded\", but /z/dosbin/install.pl not found"
+        umount /z
+    else
+        echo "*** mount.cifs failed."
+    fi
+
+    unset PASSWD
+
+    echo "*** Failed to mount /z.  Retrying..."
+done
+
+unset PASSWD
+
+[ -d /z/linuxaux ] \
+    || die "Invalid install share: /z/linuxaux directory not found."
+
+echo "*** Excellent.  Now, let's see about mass storage controllers..."
+
+# PCI classes 0x01nnnn are mass storage controllers.
+storage_modules="$(find-modules-pci 0x01)"
+
+# PCI classes 0x0e00nn are I2O intelligent controllers, which might
+# have storage devices attached to them.
+storage_modules="$storage_modules $(find-modules-pci 0x0e 0x00)"
+
+# Dell PowerEdge 2400 PERC2/Si uses PCI class 0x0508nn ("memory
+# controller") for no apparent reason.
+storage_modules="$storage_modules $(find-modules-pci 0x05 0x08)"
+
+[ -z "$storage_modules" ] \
+    && die "No mass storage hardware found (missing drivers?)"
+
+load_modules "$(sort_modules $storage_modules)"
+
+# If we loaded generic SCSI support, also load SCSI disk support.
+lsmod | grep -q "^scsi_mod[[:space:]]" \
+    && load_modules sd_mod
+
+# Load EDD module, which we use to locate the boot disk and to
+# determine the legacy disk geometry.
+echo "*** Now we will load the EDD module..."
+load_modules edd
+
+sleep 2         # paranoia
+
+echo "*** ...and locate the boot device"
+hda=`find-boot-device` \
+    || die "*** find-boot-device failed"
+
+make-blkdev-nodes "$hda" \
+    || die "*** Unable to make-blkdev-nodes $hda.  So close!  Oh, well."
+
+unset p
+
+# Devices like /dev/sda have partition names like /dev/sda1, while
+# devices like /dev/rd/c0d0 have partition names like /dev/rd/c0d0p1.
+# That is, we must append "pX" if the last character is a digit.  See
+# disk_name() in linux/fs/partitions/check.c.
+[[ $hda = *[0-9] ]] \
+    && p=p
+
+# DOSEMU skips exactly eight characters into the device name to read
+# the partition number.  Yes, really.  So we have to use a name like
+# "/dev/dsk", not "/dev/disk".
+ln -sf $hda /dev/dsk
+for part in 1 2 3 4 5 6 7 8 9 ; do
+    ln -sf $hda$p$part /dev/dsk$part
+done
+
+edd_dir=/sys/firmware/edd/int13_dev80
+echo "*** ...and look for legacy BIOS disk geometry in $edd_dir"
+
+# Here we shamelessly assume that we have found the boot device (BIOS
+# disk 80h), and that this is the device the user wanted.  Need to do
+# better someday.  FIXME.
+if [ -d "$edd_dir" ] ; then
+    declare -i LEGACY_BIOS_HEAD LEGACY_BIOS_SECT
+    heads_file="$edd_dir/legacy_max_head";
+    if [ -e "$heads_file" ] ; then 
+        export LEGACY_BIOS_HEAD="$(< $heads_file)"
+        # Heads value is useless until incremented
+        let LEGACY_BIOS_HEAD++
+    fi
+    sectors_file="$edd_dir/legacy_sectors_per_track";
+    [ -e "$sectors_file" ] \
+        && export LEGACY_BIOS_SECT="$(< $sectors_file)"
+else
+    echo "Directory not found."
+fi
+
+if [ -n "$LEGACY_BIOS_HEAD" ] && [ -n "$LEGACY_BIOS_SECT" ] ; then
+    echo "*** Legacy BIOS says $LEGACY_BIOS_HEAD heads and $LEGACY_BIOS_SECT sectors"
+else
+    echo "*** Found no legacy BIOS data.  Probably no big deal.  Continuing."
+fi
+
+if [ -w "/proc/ide/$hda/settings" ] ; then
+    echo -n "*** Making IDE driver interruptible for $hda..."
+    echo unmaskirq:1 >> "/proc/ide/$hda/settings"
+    echo "done."
+fi
+
+echo "*** By Jove, I think we've got it!"
+
+# FIXME: Bad hack to work around dosemu bug running over network
+rm /usr/bin/dosemu.bin
+cp /z/linuxaux/usr/bin/dosemu.bin /usr/bin/dosemu.bin
+rm -f /var/lib /var/lib/dosemu /var/lib/dosemu/drives \
+    /var/lib/dosemu/drives/dosboot.img >/dev/null 2>&1
+mkdir -p /var/lib/dosemu/drives
+cp /z/linuxaux/var/lib/dosemu/drives/dosboot.img /var/lib/dosemu/drives/.
+
+# install.pl relies on these environment variables
+# (see also LEGACY_BIOS_HEAD and LEGACY_BIOS_SECT above)
+export Z_PATH Z_USER Z_PASS
+
+# Used as staging area by install.pl
+[ -d /c ] || mkdir /c
+
+perl -I/z/lib /z/dosbin/install.pl \
+    || die "install.pl exited non-zero"
+
+# Determine partition number to use.
+active_part_line=`parted -s /dev/dsk print | grep '^[[:digit:]].*[[:space:]]boot'`
+active_part=${active_part_line%% *}
+
+if [ -z "$active_part" ] ; then
+    echo "Partition table:" >&2
+    parted /dev/dsk print >&2
+    die "No active partition found!"
+fi
+
+cp /etc/dosemu/dosemu.conf /tmp
+echo \$_hdimage = \"/dev/dsk$active_part\" >> /tmp/dosemu.conf
+
+# DOSEMU always exits non-zero.  FIXME.
+dosemu.bin -f /tmp/dosemu.conf
+
+sync
+reboot
+
+exec bash

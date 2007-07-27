@@ -1,0 +1,28 @@
+.TH FGCONSOLE 1 "14 Feburary 2002" "" "Linux User's Manual"
+
+.SH NAME
+fgconsole \- print the number of the active VT.
+
+.SH SYNOPSIS
+.B fgconsole
+
+.SH DESCRIPTION
+If the active Virtual Terminal is
+.IR /dev/ttyN ,
+then prints
+.I N
+on standard output.
+.SH NOTES
+Under 
+.IR devfs ,
+the consoles are in 
+.IR /dev/vc/N .
+.IR devfsd
+may maintain symlinks for compatibility.
+.SH "SEE ALSO"
+.BR chvt (1).
+.\" .SH "AUTHORS"
+.\" Andries Brouwer
+.\" .br
+.\" Manpage by Alastair McKinstry <mckinstry@computer.org>
+

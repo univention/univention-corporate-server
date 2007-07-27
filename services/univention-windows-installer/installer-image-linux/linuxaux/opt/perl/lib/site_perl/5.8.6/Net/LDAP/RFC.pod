@@ -1,0 +1,1291 @@
+
+=head1 NAME
+
+Net::LDAP::RFC - List of related RFC's
+
+=head1 SYNOPSIS
+
+  none
+
+=head1 DESCRIPTION
+
+The LDAP protocol is defined in the following RFC's
+
+=head1 Core LDAP Specification
+
+=head2 RFC-2251 Lightweight Directory Access Protocol (v3)
+
+http://www.ietf.org/rfc/rfc2251.txt
+
+The protocol described in this document is designed to provide
+access to directories supporting the X.500 models, while not
+incurring the resource requirements of the X.500 Directory
+Access Protocol (DAP). This protocol is specifically targeted
+at management applications and browser applications that
+provide read/write interactive access to directories. When used
+with a directory supporting the X.500 protocols, it is intended
+to be a complement to the X.500 DAP.
+
+
+
+=head2 RFC-2252 LDAPv3 Attribute Syntax Definitions
+
+http://www.ietf.org/rfc/rfc2252.txt
+
+The LDAP requires that the contents of AttributeValue fields in
+protocol elements be octet strings. This document defines a set
+of syntaxes for LDAPv3, and the rules by which attribute values
+of these syntaxes are represented as octet strings for
+transmission in the LDAP protocol. The syntaxes defined in this
+document are referenced by this and other documents that define
+attribute types. This document also defines the set of
+attribute types which LDAP servers should support.
+
+
+
+=head2 RFC-2253 UTF-8 String Representation of Distinguished Names
+
+http://www.ietf.org/rfc/rfc2253.txt
+
+The X.500 Directory uses distinguished names as the primary
+keys to entries in the directory. Distinguished Names are
+encoded in ASN.1 in the X.500 Directory protocols. In the LDAP,
+a string representation of distinguished names is transferred.
+This specification defines the string format for representing
+names, which is designed to give a clean representation of
+commonly used distinguished names, while being able to
+represent any distinguished name.
+
+
+
+=head2 RFC-2254 The String Representation of LDAP Search Filters
+
+http://www.ietf.org/rfc/rfc2254.txt
+
+The LDAP defines a network representation of a search filter
+transmitted to an LDAP server. Some applications may find it
+useful to have a common way of representing these search
+filters in a human-readable form. This document defines a
+human-readable string format for representing LDAP search
+filters. This document replaces RFC 1960, extending the string
+LDAP filter definition to include support for LDAPv3 extended
+match filters.
+
+
+
+=head2 RFC-2255 The LDAP URL Format
+
+http://www.ietf.org/rfc/rfc2255.txt
+
+This document describes a format for an LDAP Uniform Resource
+Locator, and describes an LDAP search operation performed to
+retrieve information from an LDAP directory. It updates the
+LDAP URL format for LDAPv3. This document also defines a second
+URL scheme prefix for LDAP running over the TLS protocol.
+
+
+
+=head2 RFC-2256 A Summary of the X.500(96) User Schema for use with LDAPv3
+
+http://www.ietf.org/rfc/rfc2256.txt
+
+This document provides an overview of the attribute types and
+object classes defined by the ISO and ITU-T committees in the
+X.500 documents, in particular those intended for use by
+directory clients. This is the most widely used schema for
+LDAP/X.500 directories, and many other schema definitions for
+white pages objects use it as a basis. This document does not
+cover attributes used for the administration of X.500 directory
+servers, nor does it include attributes defined by other
+ISO/ITU-T documents.
+
+
+
+
+=head1 Other LDAP Related RFCs
+
+=head2 RFC-1823 The LDAP Application Program Interface
+
+http://www.ietf.org/rfc/rfc1823.txt
+
+This document defines a C language application program
+interface to LDAP, which is designed to be powerful, yet simple
+to use. It defines compatible synchronous and asynchronous
+interfaces to LDAP to suit a wide variety of applications. This
+document gives a brief overview of the LDAP model, then an
+overview of how the API is used by an application program to
+obtain LDAP information. The API calls are described in detail,
+followed by an appendix that provides some example code
+demonstrating the use of the API.
+
+
+
+=head2 RFC-2079 Definition of an X.500 Attribute Type and an Object Class to
+Hold Uniform Resource Identifiers
+
+http://www.ietf.org/rfc/rfc2079.txt
+
+URLs are being widely used to specify the location of Internet
+resources. There is an urgent need to be able to include URLs
+in directories that conform to the LDAP and X.500 information
+models, and a desire to include other types of URIs as they are
+defined. A number of independent groups are already
+experimenting with the inclusion of URLs in LDAP and X.500
+directories. This document builds on the experimentation to
+date and defines a new attribute type and an auxiliary object
+class to allow URIs, including URLs, to be stored in directory
+entries in a standard way.
+
+
+
+=head2 RFC-2164 Use of an X.500/LDAP directory to support MIXER address mapping
+
+http://www.ietf.org/rfc/rfc2164.txt
+
+MIXER (RFC 2156) defines an algorithm for use of a set of
+global mapping between X.400 and RFC 822 addresses. This
+specification defines how to represent and maintain these
+mappings (MIXER Conformant Global Address Mappings of MCGAMs)
+in an X.500 or LDAP directory. Mechanisms for representing OR
+Address and Domain hierarchies within the DIT. These techniques
+are used to define two independent subtrees in the DIT, which
+contain the mapping information.
+
+
+
+=head2 RFC-2218 A Common Schema for the Internet White Pages Service
+
+http://www.ietf.org/rfc/rfc2218.txt
+
+This IETF Integrated Directory Services(IDS) Working Group
+proposes a standard specification for a simple Internet White
+Pages service by defining a common schema for use by the
+various White Pages servers. This schema is independent of
+specific implementations of the White Pages service. This
+document specifies the minimum set of core attributes of a
+White Pages entry for an individual and describes how new
+objects with those attributes can be defined and published. It
+does not describe how to represent other objects in the White
+Pages service. Further, it does not address the search sort
+expectations within a particular service.
+
+
+
+=head2 RFC-2222 Simple Authentication and Security Layer (SASL)
+
+http://www.ietf.org/rfc/rfc2222.txt
+
+This document describes a method for adding authentication
+support to connection-based protocols. To use this
+specification, a protocol includes a command for identifying
+and authenticating a user to a server and for optionally
+negotiating protection of subsequent protocol interactions. If
+its use is negotiated, a security layer is inserted between the
+protocol and the connection. This document describes how a
+protocol specifies such a command, defines several mechanisms
+for use by the command, and defines the protocol used for
+carrying a negotiated security layer over the connection.
+
+
+
+=head2 RFC-2247 Using Domains in LDAP/X.500 Distinguished Names
+
+http://www.ietf.org/rfc/rfc2247.txt
+
+LDAP uses X.500-compatible distinguished names for providing
+unique identification of entries. This document defines an
+algorithm by which a name registered with the Internet Domain
+Name Service can be represented as an LDAP distinguished name.
+
+
+
+=head2 RFC-2307 An Approach for Using LDAP as a Network Information Service
+
+http://www.ietf.org/rfc/rfc2307.txt
+
+This document describes an experimental mechanism for mapping
+entities related to TCP/IP and the UNIX system into X.500
+entries so that they may be resolved with the LDAP. A set of
+attribute types and object classes are proposed, along with
+specific guidelines for interpreting them. The intention is to
+assist the deployment of LDAP as an organizational nameservice.
+No proposed solutions are intended as standards for the
+Internet. Rather, it is hoped that a general consensus will
+emerge as to the appropriate solution to such problems, leading
+eventually to the adoption of standards. The proposed mechanism
+has already been implemented with some success.
+
+
+
+=head2 RFC-2559 Internet X.509 Public Key Infrastructure Operational Protocols
+- LDAPv2
+
+http://www.ietf.org/rfc/rfc2559.txt
+
+The protocol described in this document is designed to satisfy
+some of the operational requirements within the Internet X.509
+PKI. Specifically, this document addresses requirements to
+provide access to PKI repositories for the purposes of
+retrieving PKI information and managing that same information.
+The mechanism described in this document is based on the
+LDAPv2, defined in RFC 1777, defining a profile of that
+protocol for use within the PKIX and updates encodings for
+certificates and revocation lists from RFC 1778. Additional
+mechanisms addressing PKIX operational requirements are
+specified in separate documents.
+
+
+
+=head2 RFC-2587 Internet X.509 Public Key Infrastructure LDAPv2 Schema
+
+http://www.ietf.org/rfc/rfc2587.txt
+
+The schema defined in this document is a minimal schema to
+support PKIX in an LDAPv2 environment, as defined in RFC 2559.
+Only PKIX-specific components are specified here. LDAP servers,
+acting as PKIX repositories should support the auxiliary object
+classes defined in this specification and integrate this schema
+specification with the generic and other application-specific
+schemas as appropriate, depending on the services to be
+supplied by that server.
+
+
+
+=head2 RFC-2589 Extensions for Dynamic Directory Services
+
+http://www.ietf.org/rfc/rfc2589.txt
+
+LDAP supports lightweight access to static directory services,
+allowing relatively fast search and update access. Static
+directory services store information about people that persists
+in its accuracy and value over a long period of time. Dynamic
+directory services are different in that they store information
+about people that only persists in its accuracy and value while
+people are online. Though the protocol operations and
+attributes used by dynamic directory services are similar to
+the ones used for static directory services, clients that are
+bound to a dynamic directory service need to periodically
+refresh their presence at the server to keep directory entries
+from getting stale in the presence of client application
+crashes. A flow control mechanism from the server is also
+described that allows a server to inform clients how often they
+should refresh their presence.
+
+
+
+=head2 RFC-2596 Use of Language Codes in LDAP
+
+http://www.ietf.org/rfc/rfc2596.txt
+
+LDAP provides a means for clients to interrogate and modify
+information stored in a distributed directory system. The
+information in the directory is maintained as attributes of
+entries. Most of these attributes have syntaxes which are
+human-readable strings, and it is desirable to be able to
+indicate the natural language associated with attribute values.
+This document describes how language codes are carried in LDAP
+and are to be interpreted by LDAP servers. All implementations
+MUST be prepared to accept language codes in the LDAP
+protocols. Servers may or may not be capable of storing
+attributes with language codes in the directory.
+
+
+
+=head2 RFC-2649 Signed Directory Operations Using S/MIME
+
+http://www.ietf.org/rfc/rfc2649.txt
+
+This document defines an LDAPv3 based mechanism for signing
+directory operations in order to create a secure journal of
+changes that have been made to each directory entry. Both
+client and server based signatures are supported. An object
+class for subsequent retrieval are 'journal entries' is also
+defined. This document specifies LDAPv3 controls that enable
+this functionality. It also defines an LDAPv3 schema that
+allows for subsequent browsing of the journal information.
+
+
+
+=head2 RFC-2657 LDAPv2 Client vs. the Index Mesh
+
+http://www.ietf.org/rfc/rfc2657.txt
+
+LDAPv2 clients as implemented according to RFC 1777 have no
+notion of referral. The integration between such a client and
+an Index Mesh, as defined by the Common Indexing Protocol,
+heavily depends on referrals and therefore needs to be handled
+in a special way. This document defines one possible way of
+doing this.
+
+
+
+=head2 RFC-2696 LDAP Control Extension for Simple Paged Results Manipulation
+
+http://www.ietf.org/rfc/rfc2696.txt
+
+This document describes an LDAPv3 control extension for simple
+paging of search results. This control extension allows a
+client to control the rate at which an LDAP server returns the
+results of an LDAP search operation. This control may be useful
+when the LDAP client has limited resources and may not be able
+to process the entire result set from a given LDAP query, or
+when the LDAP client is connected over a low-bandwidth
+connection. Other operations on the result set are not defined
+in this extension. This extension is not designed to provide
+more sophisticated result set management.
+
+
+
+=head2 RFC-2713 Schema for Representing Java Objects in an LDAP Directory
+
+http://www.ietf.org/rfc/rfc2713.txt
+
+This document defines the schema for representing Java objects
+in an LDAP directory. It defines schema elements to represent a
+Java serialized object, a Java marshalled object, a Java remote
+object, and a JNDI reference.
+
+
+
+=head2 RFC-2714 Schema for Representing CORBA Objects in an LDAP Directory
+
+http://www.ietf.org/rfc/rfc2714.txt
+
+CORBA is the Common Object Request Broker Architecture defined
+by the Object Management Group. This document defines the
+schema for representing CORBA object references in an LDAP
+directory.
+
+
+
+=head2 RFC-2739 Calendar Attributes for vCard and LDAP
+
+http://www.ietf.org/rfc/rfc2739.txt
+
+When scheduling a calendar entity, such as an event, it is a
+prerequisite that an organizer has the calendar address of each
+attendee that will be invited to the event. Additionally,
+access to an attendee's current "busy time" provides an a
+priori indication of whether the attendee will be free to
+participate in the event. In order to meet these challenges, a
+calendar user agent (CUA) needs a mechanism to locate
+individual user's calendar and free/busy time. This memo
+defines three mechanisms for obtaining a URI to a user's
+calendar and free/busy time. These include:
+
+
+
+=head2 RFC-2798 Definition of the inetOrgPerson Object Class
+
+http://www.ietf.org/rfc/rfc2798.txt
+
+While the X.500 standards define many useful attribute types
+[X520] and object classes [X521], they do not define a person
+object class that meets the requirements found in today's
+Internet and Intranet directory service deployments. We define
+a new object class called inetOrgPerson for use in LDAP and
+X.500 directory services that extends the X.521 standard
+organizationalPerson class to meet these needs.
+
+
+
+=head2 RFC-2820 Access Control Requirements for LDAP
+
+http://www.ietf.org/rfc/rfc2820.txt
+
+This document describes the fundamental requirements of an
+access control list (ACL) model for the LDAP directory service.
+It is intended to be a gathering place for access control
+requirements needed to provide authorized access to and
+interoperability between directories.
+
+
+
+=head2 RFC-2829 Authentication Methods for LDAP
+
+http://www.ietf.org/rfc/rfc2829.txt
+
+This document specifies particular combinations of SASL
+mechanisms and extensions which are required and recommended in
+LDAP implementations.
+
+
+
+=head2 RFC-2831 Using Digest Authentication as a SASL Mechanism
+
+http://www.ietf.org/rfc/rfc2831.txt
+
+This specification defines how HTTP Digest Authentication can
+be used as a SASL [RFC 2222] mechanism for any protocol that
+has a SASL profile. It is intended both as an improvement over
+CRAM-MD5 [RFC 2195] and as a convenient way to support a single
+authentication mechanism for web, mail, LDAP, and other
+protocols.
+
+
+
+=head2 RFC-2891 LDAP Control Extension for Server Side Sorting of Search
+Results
+
+http://www.ietf.org/rfc/rfc2891.txt
+
+This document describes two LDAPv3 control extensions for
+server side sorting of search results. These controls allows a
+client to specify the attribute types and matching rules a
+server should use when returning the results to an LDAP search
+request. The controls may be useful when the LDAP client has
+limited functionality or for some other reason cannot sort the
+results but still needs them sorted. Other permissible controls
+on search operations are not defined in this extension.
+
+
+
+=head2 RFC-2849 The LDAP Data Interchange Format (LDIF) - Technical
+Specification
+
+http://www.ietf.org/rfc/rfc2849.txt
+
+This document describes a file format suitable for describing
+directory information or modifications made to directory
+information. The file format, known as LDIF, for LDAP Data
+Interchange Format, is typically used to import and export
+directory information between LDAP-based directory servers, or
+to describe a set of changes which are to be applied to a
+directory.
+
+
+
+=head1 Current Internet Drafts
+
+
+=head2 draft-armijo-ldap-control-error -- Result Message for LDAP Controls
+
+LDAPv3 allows for the extension of the protocol through the use
+of controls. These controls allow existing operations to be
+enhanced to provide additional functionality for directory
+operations. Complex controls are being established that are
+bringing up error conditions not anticipated in the LDAPv3
+specifications. The purpose of this draft is to create new
+result codes specific to LDAP controls and to define guidelines
+for the use of these result codes.
+
+
+
+=head2 draft-armijo-ldap-treedelete -- Tree Delete Control
+
+This document defines an LDAPv3 control that deletes an entire
+subtree of a container entry. This control extends the scope of
+the LDAPv3 delete operation as defined in RFC 2251. This
+control is beneficial in extending the functionality of the
+LDAP protocol and may be useful in administration in an LDAP
+environment.
+
+
+
+=head2 draft-behera-ldap-password-policy -- Password Policy for LDAP Directories
+
+Password policy is a set of rules that controls how passwords
+are used in LDAP directories. In order to improve the security
+of LDAP directories and make it difficult for password cracking
+programs to break into directories, it is desirable to enforce
+a set of rules on password usage. These rules are made to
+ensure that users change their passwords periodically,
+passwords meet construction requirements, the re-use of old
+password is restricted, and users are locked out after a
+certain number of failed attempts.
+
+
+
+=head2 draft-daigle-tisdag -- Technical Infrastructure for Swedish Directory Access Gateways
+(TISDAG)
+
+The strength of the TISDAG project's DAG proposal is that it
+defines the necessary technical infrastructure to provide a
+single-access-point service for information on Swedish Internet
+users. The resulting service will provide uniform access for
+all information -- the same level of access to information
+(7x24 service), and the same information made available,
+irrespective of the service provider responsible for
+maintaining that information, their directory service
+protocols, or the end-user's client access protocol.
+
+
+
+=head2 draft-good-ldap-changelog -- Definition of an Object Class to Hold LDAP Change Records
+
+In  order to  support more flexible  replication methods, it  is
+desirable  to specify  some manner in  which an LDAP client  may
+retrieve  a set  of changes which have  been applied to an  LDAP
+server's  database.  The  client,  which  may  be  another  LDAP
+server,  may then  choose to update  its own replicated copy  of
+the  data. This document specifies an object class which  may be
+used  to represent  changes applied to  an LDAP server. It  also
+specifies   a  method  for  discovering  the  location   of  the
+container  object  which  holds these  change records,  so  that
+clients  and servers  have a  common rendezvous  point for  this
+information.
+
+
+
+=head2 draft-greenblatt-ldapext-sos -- Simple Operations on Subtrees (for LDAP)
+
+This draft defines several new LDAP extensions, which are
+operations that can manipulate an entire portion of Directory
+Information Tree (DIT) at once. This draft does not presume any
+specific DIT structure or schema modifications.
+
+
+
+=head2 draft-greenblatt-ldapextstyle -- LDAP Extension Style Guide
+
+LDAPv3 provides a base set of services. Additionally, LDAP
+provides several mechanisms by which the base set of services
+may be enhanced to provide additional services. This document
+describes the different ways that LDAP may be enhanced, and how
+developers can decide which enhancement mechanism is best
+suited for their environment. It also discusses the positives
+and negatives for each LDAP enhancement mechanism
+
+
+
+=head2 draft-haripriya-ldapext-entryselect -- EntrySelection Control for LDAP Modify and Delete Operations on
+Multiple Entries
+
+This document defines an LDAPv3 control that can select
+multiple entries in a subtree of a container entry for
+modification or deletion. This control extends the scope of the
+LDAPv3 modify and delete operations as defined in [RFC 2251].
+This control is useful for modifying or deleting multiple
+entries on the basis of a single selection criterion. This may
+be useful for maintenance of an LDAP directory having a large
+number of objects.
+
+
+
+=head2 draft-hodges-ldapv3-as -- Lightweight Directory Access Protocol (v3): Applicability
+Statement
+
+The specification for LDAPv3 nominally comprises eight separte
+RFCs which were issued in two distinct subsets at separate
+times (RFCs 2251..2256 first, then RFCs 2229 and 2830 following
+later), but this has never been formally stated. Additionally,
+RFCs 2251 .. 2256 each are embellished with an "IESG Note"
+warning implementors and deployers of potential
+interoperability problems due to the lack of a specification of
+mandatory-to-implement authentication mechanism(s). This
+document corrects both situations by explicitly specifying the
+set of RFCs comprising LDAPv3 and rescinding the "IESG Note"
+due to the specification of mandatory-to-implement
+authentication mechanisms in RFC 2829.
+
+
+
+=head2 draft-ietf-ids-ds-bcp -- Best Current Practice for the Internet White Pages Service
+
+This document makes the following recommendations for
+organizations on the Internet:
+
+
+
+=head2 draft-ietf-ldapext-acl-model -- Access Control Model for LDAP
+
+This document describes the access control list (ACL) model for
+an LDAP directory service. It includes a description of the
+model, the LDAP controls, and the extended operations to the
+LDAP protocol. A separate document defines the corresponding
+APIs.
+
+
+
+=head2 draft-ietf-ldapext-cldap -- Connection-less Lightweight Directory Access Protocol
+
+This memo describes modifications to LDAPv3 to allow transport
+of a subset of the LDAP protocol over connection-less
+transport. The case of UDP/IP is covered in detail in this memo
+but other transport layers are possible.
+
+
+
+=head2 draft-ietf-ldapext-ldap-c-api -- The C LDAP Application Program Interface
+
+This document defines a C language application program
+interface to LDAP, and replaces the previous definition of this
+API, defined in RFC 1823, updating it to include support for
+features found in LDAPv3, as well as other changes to support
+information hiding and thread safety.
+
+
+
+=head2 draft-ietf-ldapext-ldap-java-api -- The Java LDAP Application Program Interface
+
+This document defines a java language application program
+interface to the LDAP, in the form of a class library. It
+complements but does not replace the C language API. This
+version adds support for SASL authentication.
+
+
+
+=head2 draft-ietf-ldapext-ldap-java-api-asynch-ext -- The Java LDAP Application Program Interface Asynchronous
+Extension
+
+This document defines asynchronous extensions to the java
+language application program interface to LDAP defined in
+draft-ietf-ldapext-ldap-java-api (v7)
+
+
+
+=head2 draft-ietf-ldapext-ldap-taxonomy -- A Taxonomy of Methods for LDAP Clients Finding Servers
+
+There  are several different methods for a LDAP client to find a
+LDAP  server. This  draft discusses  these methods and  provides
+pointers   for   interested   parties  to   learn   more   about
+implementing a particular method.
+
+
+
+=head2 draft-ietf-ldapext-ldapv3-dupent -- LDAP Control for a Duplicate Entry Representation of Search
+Results
+
+This document describes a Duplicate Entry Representation
+control extension for the LDAP Search operation. By using the
+control with an LDAP search, a client requests that the server
+return separate entries for each value held in the specified
+attributes. For instance, if a specified attribute of an entry
+holds multiple values, the search operation will return
+multiple instances of that entry, each instance holding a
+separate single value in that attribute.
+
+
+
+=head2 draft-ietf-ldapext-ldapv3-vlv -- LDAP Extensions for Scrolling View Browsing of Search Results
+
+This  document describes a  Virtual List View control  extension
+for  the  LDAP Search  operation.  This control  is designed  to
+allow  the  ''virtual  list box''  feature, common  in  existing
+commercial  e-mail address  book applications,  to be  supported
+efficiently  by LDAP servers. LDAP servers' inability to support
+this   client  feature  is  a  significant  impediment  to  LDAP
+replacing  proprietary protocols  in commercial e-mail  systems.
+
+
+
+=head2 draft-ietf-ldapext-locate -- Discovering LDAP Services with DNS
+
+An  LDAP request must be  directed to an appropriate  server for
+processing.  This document  specifies a  method for  discovering
+such  servers  using  information  in the  Domain  Name  System.
+
+
+
+=head2 draft-ietf-ldapext-matchedval -- Returning Matched Values with LDAPv3
+
+This document describes a control for the LDAPv3 that is used
+to return a subset of attribute values from an entry,
+specifically, only those values that contributed to the search
+filter evaluating to TRUE. Without support for this control, a
+client must retrieve all of an attribute's values and search
+for specific values locally.
+
+
+
+=head2 draft-ietf-ldapext-psearch -- Persistent Search: A Simple LDAP Change Notification Mechanism
+
+This document defines two controls that extend the LDAPv3
+search operation to provide a simple mechanism by which an LDAP
+client can receive notification of changes that occur in an
+LDAP server. The mechanism is designed to be very flexible yet
+easy for clients and servers to implement.
+
+
+
+=head2 draft-ietf-ldapext-refer -- Referrals in LDAP Directories
+
+This document defines two reference attributes and associated
+"referral" object class for representing generic knowledge
+information in LDAP directories. The attribute uses URIs to
+represent knowledge, enabling LDAP and non-LDAP services alike
+to be referenced. The object class can be used to construct
+entries in an LDAP directory containing references to other
+directories or services. This document also defines procedures
+directory servers should follow when supporting these schema
+elements and when responding to requests for which the
+directory server does not contain the requested object but may
+contain some knowledge of the location of the requested object.
+
+
+
+=head2 draft-ietf-ldapext-x509-sasl -- X.509 Authentication SASL Mechanism
+
+This document defines a SASL [RFC 2222] authentication
+mechanism based on X.509 strong authentication, providing two
+way authentication. This mechanism is only for authentication,
+and has no effect on the protocol encodings and is not designed
+to provide integrity or confidentiality services.
+
+
+
+=head2 draft-ietf-ldup-framing -- Extended Operations for Framing LDAP Operations
+
+Certain types of LDAP applications can benefit from the ability
+to specify the beginning and end of a related group of
+operations. For example, the LDUP multimaster update protocol
+requires that two servers agree to begin a session to transfer
+pending replication updates. This document provides a framework
+for constructing protocols that feature a framed set of related
+operations. It defines a pair of LDAPv3 extended operations
+that provide begin-end framing, and a pair of extended
+operations used to respond the begin-end framing operations.
+The nature of the actual LDAP operations carried inside these
+framing operations is not specified in this document.
+
+
+
+=head2 draft-ietf-ldup-infomod -- LDUP Replication Information Model
+
+draft-merrells-ldup-model (v1) describes the architectural
+approach to replication of LDAP directory contents. This
+document describes the information model and schema elements
+which support LDAP Replication Services
+
+
+
+=head2 draft-ietf-ldup-model -- LDAP Replication Architecture
+
+This  architectural  document  outlines a  suite of  schema  and
+protocol   extensions  to   LDAPv3  that  enables  the   robust,
+reliable,  server-to-server  exchange of  directory content  and
+changes.
+
+
+
+=head2 draft-ietf-ldup-protocol -- The LDUP Replication Update Protocol
+
+The protocol described in this document is designed to allow
+one LDAP server to replicate its directory content to another
+LDAP server. The protocol is designed to be used in a
+replication configuration where multiple updatable servers are
+present. Provisions are made in the protocol to carry
+information that allows the server receiving updates to apply a
+total ordering to all updates in the replicated system. This
+total ordering allows all replicas to correctly resolve
+conflicts that arise when LDAP clients submit changes to
+different servers that later replicate to one another.
+
+
+
+=head2 draft-ietf-ldup-replica-req -- LDAP V3 Replication Requirements
+
+This   document  discusses  the  fundamental   requirements  for
+replication  of data accessible via  the LDAPv3 protocol. It  is
+intended  to  be  a  gathering  place  for  general  replication
+requirements   needed   to  provide   interoperability   between
+informational directories.
+
+
+
+=head2 draft-ietf-ldup-subentry -- LDAP Subentry Schema
+
+This  document  describes an  object  class called  ldapSubEntry
+which  MAY be used to indicate operations and management related
+entries  in the directory, called LDAP Subentries.  This version
+of  this  document  is updated  with  an  assigned OID  for  the
+ldapSubEntry object class.
+
+
+
+=head2 draft-ietf-ldup-urp -- LDUP Update Reconciliation Procedures
+
+This document describes the procedures used by directory
+servers to reconcile updates performed by autonomously
+operating directory servers in a distributed, replicated
+directory service.
+
+
+
+=head2 draft-ietf-pkix-ldap-schema -- Internet X.509 Public Key Infrastructure Additional LDAP Schema
+for PKIs and PMIs
+
+This document describes LDAP schema features in addition to RFC
+2587 that are needed to support a Privilege Management
+Infrastructure and a Public Key Infrastructure. RFC2587
+describes some of the subschema applicable to LDAPv2 servers,
+specifically the public key certificate related attribute types
+and object classes that MUST or MAY be supported. This document
+does not revoke any of the contents of RFC2587, but supplements
+them. RFC2587 is equally applicable to LDAPv3 servers as to
+LDAPv2 servers and MUST be supported by LDAPv3 servers. Neither
+RFC2587 nor the user schema for LDAPv3 (RFC2256) nor the
+attribute syntax definitions for LDAPv3 (RFC2252) describe in
+detail the matching rules that should be supported by LDAP
+servers, nor do they describe how attribute value assertions
+for each matching rule should be encoded in filter items.
+Finally none of these documents mention attributeCertificates
+or any schema to support privilege management, since these
+concepts superseded the publishing of the RFCs.
+
+
+
+=head2 draft-just-ldapv3-rescodes -- LDAPv3 Result Codes: Definitions and Appropriate Use
+
+The purpose of this document is to describe, in some detail,
+the meaning and use of the result codes used with the LDAPv3
+protocol. Of particular importance are the error codes, which
+represent the majority of the result codes. This document
+provides definitions for each result code, and outlines the
+expected behaviour of the various operations with respect to
+how result codes and in particular, error conditions should be
+handled and which specific error code should be returned. It is
+hoped that this document will facilitate interoperability
+between clients and servers and the development of intelligent
+LDAP clients capable of acting upon the results received from
+the server.
+
+
+
+=head2 draft-mmeredith-rootdse-vendor-info -- Storing Vendor Information in the LDAP root DSE
+
+This document specifies two LDAP attributes, vendorName and
+vendorVersion that MAY be included in the root DSE to advertise
+vendor-specific information. These two attributes supplement
+the attributes defined in section 3.4 of RFC 2251. The
+information held in these attributes MAY be used for display
+and informational purposes and MUST NOT be used for feature
+advertisement or discovery.
+
+
+
+=head2 draft-moats-dmtf-application-ldap -- LDAP Schema for the DMTF Application CIM v2.1 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM
+Application model. Associations are mapped using a combination
+of auxiliary classes and DIT structure rules. Where auxiliary
+classes are used, name form and DIT content rules are
+specified. (This document is not a product of the DMTF, and
+represents the view of the authors.)
+
+
+
+=head2 draft-moats-dmtf-core-ldap -- LDAP Schema for the DMTF Core CIM v2.2 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM Core
+model. Associations are mapped using a combination of auxiliary
+classes and DIT structure rules. All attribute, object class,
+and name form OIDs are place holders, and syntax OIDs in
+definitions have been replaced by names for clarity. Further,
+structure rule identifiers are place holders and should be
+replaced as dictated by local implementations. (This document
+is a product of the DMTF LDAP WG.)
+
+
+
+=head2 draft-moats-dmtf-device-ldap -- LDAP Schema for the DMTF Device CIM v2.2 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM Device
+model. It builds on the core model presented in
+draft-moats-dmtf-core-ldap (v1). Associations are mapped using
+a combination of auxiliary classes and DIT structure rules.
+Where auxiliary classes are used, name form and DIT content
+rules are specified. (This document is not a product of the
+DMTF, and represents the view of the authors.)
+
+
+
+=head2 draft-moats-dmtf-network-ldap -- LDAP Schema for the DMTF Network CIM v2.2 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM Network
+model. Associations are mapped using a combination of auxiliary
+classes and DIT structure rules. Where auxiliary classes are
+used, name form and DIT content rules are specified. (This
+document is not a product of the DMTF, and represents the view
+of the authors.)
+
+
+
+=head2 draft-moats-dmtf-physical-ldap -- LDAP Schema for the DMTF Physical CIM v2.2 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM Physical
+model. Associations are mapped using a combination of auxiliary
+classes and DIT structure rules. Where auxiliary classes are
+used, name form and DIT content rules are specified. (This
+document is not a product of the DMTF, and represents the view
+of the authors.)
+
+
+
+=head2 draft-moats-dmtf-system-ldap -- LDAP Schema for the DMTF System CIM v2.2 Model
+
+This draft presents a LDAPv3 schema for the DMTF CIM System
+model. It builds on the core model presented in
+draft-moats-dmtf-core-ldap (v1). Associations are mapped using
+a combination of auxiliary classes and DIT structure rules.
+Where auxiliary classes are used, name form and DIT content
+rules are specified. (This document is not a product of the
+DMTF, and represents the view of the authors.)
+
+
+
+=head2 draft-moats-ldap-dereference-match -- Extensible Match Rule to Dereference Pointers
+
+This document defines a LDAPv3 extensible matching rule that
+allows a server to dereference pointers stored in an object's
+attribute and apply a LDAPv3 search filter to the resulting
+objects. This rule allows schema definitions to capture richer
+association models without requiring extra protocol exchanges
+or special client code.
+
+
+
+=head2 draft-natarajan-ldapext-cachedresults -- The LDAP Caching model
+
+Seeking entries from a directory is a process involving network
+resources. It is assumed that a directory is accessed for
+reading and searching data more than for modification purposes.
+Under such assumptions, for performance reasons, a mechanism
+for caching as a proxy which caches all entries is desirable.
+This document describes a mechanism for caching directory
+entries. This document also defines one operational attribute
+and two controls required to be implemented for the caching
+model.
+
+
+
+=head2 draft-natkovich-ldap-lcup -- LDAP Client Update Protocol
+
+This document defines the LDAP Client Update Protocol (LCUP).
+The protocol is intended to allow an LDAP client to synchronize
+with the content of a directory information tree (DIT) stored
+by an LDAP server and to be notified about the changes to that
+content.
+
+
+
+=head2 draft-rharrison-lburp -- LDAP Bulk Update/Replication Protocol
+
+The LDAP Bulk Update/Replication Protocol (LBURP) described in
+this document allows an LDAP client (a genuine client or an
+LDAP server acting as a client) to perform a bulk update to a
+replica on an LDAP server. The protocol groups a set of update
+operations using the LDAP framed protocol requests defined in
+[FRAMING] to notify the client that the update operations in
+the framed set are related. The update operations within the
+framed set are LDAPv3 extended operations each encapsulating a
+sequence number and one or more LDAPv3 update operations. The
+sequence number allows the server to process the update
+operations in the proper order even when they are sent
+asynchronously by the client, and the update operations can be
+grouped within the extended request to maximize the efficiency
+of client-server communication.
+
+
+
+=head2 draft-rharrison-ldap-extpartresp -- Extended Partial Response Protocol Enhancement to LDAPv3
+
+This document describes the ExtendedPartialResponse, an element
+of LDAP v3 protocol which allows multiple responses to LDAPv3
+extended requests. Extended partial responses are backward
+compatible with the existing LDAPv3 Extended Operation defined
+in LDAPv3..
+
+
+
+=head2 draft-salzr-ldap-repsig -- LDAP Controls for Reply Signatures
+
+In many environments the final step of certificate issuance is
+publishing the certificate to a repository. Unfortunately,
+there is no way for a Certification Authority (CA) to have a
+secure application-level acknowledgement that the proper
+repository did, in fact, receive the certificate. This issue is
+of greater concern when considering the publication of
+Certificate Revocation Lists (CRLs) -- if an adversary manages
+to interpose itself between the CA and its intended repository,
+then clients could end up relying on outdated revocation lists.
+
+
+
+=head2 draft-smith-ldap-c-api-ext-lderrno -- C LDAP API LDERRNO Extension
+
+This document defines an extension to the C LDAP API to support
+reporting of specific errors for functions in the API that do
+not provide a way to access detailed information about
+failures. Three new functions are defined: ldap_get_lderrno(),
+ldap_set_lderrno(), and ldap_dup_string().
+
+
+
+=head2 draft-smith-ldap-c-api-ext-vlv -- LDAP C API Virtual List View Extension (VLV)
+
+This document defines a virtual list view extension for the
+LDAP C API to support the LDAP protocol extensions for
+scrolling view browsing of search results. More specifically,
+this document defines functions to create virtual list view
+request controls and to parse virtual list view response
+controls.
+
+
+
+=head2 draft-smith-ldapv3-filter-update -- The String Representation of LDAP Search Filters
+
+LDAP defines a network representation of a search filter
+transmitted to an LDAP server. Some applications may find it
+useful to have a common way of representing these search
+filters in a human-readable form. This document defines a
+human-readable string format for representing the full range of
+possible LDAPv3 search filters, including extended match
+filters.
+
+
+
+=head2 draft-smith-ldapv3-url-update -- The LDAP URL Format
+
+LDAP is defined in RFCs 2251-3. This document describes a
+format for an LDAP Uniform
+
+
+
+=head2 draft-wahl-ldap-adminaddr -- Administrator Address Attribute
+
+Organizations running multiple directory servers need an
+ability for administrators to determine who is responsible for
+a particular server. This is conceptually similar to the
+'sysContact' object of SNMP. The administratorsAddress
+attribute allows a server administrator to provide the contact
+information of the responsible party for an LDAP server. This
+can be used by management clients which are, for example,
+checking the state of a replication or referral topology, to
+provide a way for the user of the management client to send
+email to manager of a particular server.
+
+
+
+=head2 draft-wahl-ldap-digest-example -- An Example of DIGEST-MD5 Authentication within an LDAP server
+
+HTTP Digest Authentication as a SASL mechanism is required to
+be supported in LDAP servers for password-based authentication
+(see Authentication Methods for LDAP). This specification
+describes one approach to implement DIGEST-MD5 authentication
+in an LDAP server. It does not specify a standard of any kind.
+
+
+
+=head2 draft-weltman-java-sasl -- The Java SASL Application Program Interface
+
+This document defines a client-side and a server-side Java
+language interface for using the Simple Authentication and
+Security Layer (SASL) mechanisms for adding authentication
+support to connection-based protocols. The interface promotes
+sharing of SASL mechanism drivers and security layers between
+applications using different protocols. It complements but does
+not replace [SASL], which defines and exemplifies use of the
+SASL protocol in a language-independent way.
+
+
+
+=head2 draft-weltman-ldap-java-controls -- Java LDAP Controls
+
+This   document  defines  support  for  the  Preferred  Language
+Control,  the  Server  Sorting  Control, and  the  Virtual  List
+Control  in the Java LDAP API. Controls are an LDAPv3 extension,
+to  allow  passing arbitrary  control information  along with  a
+standard   request  to  a  server,  and  to   receive  arbitrary
+information back with a standard result.
+
+
+
+=head2 draft-weltman-ldapv3-auth-response -- LDAP Authentication Response Control
+
+This document defines support for the Authentication Response
+Control. Controls are an LDAPv3 extension, to allow passing
+arbitrary control information along with a standard request to
+a server, and to receive arbitrary information back with a
+standard result. The Authentication Response Control may be
+returned by an LDAP server in a bind response to a client
+authenticating with LDAPv3. The control contains the identity
+assumed by the client. This is useful when there is a mapping
+step or other indirection during the bind, so that the client
+can be told what LDAP identity was granted. Client
+authentication with certificates is the primary situation where
+this applies. Also, some SASL authentication mechanisms may not
+involve the client explicitly providing a DN.
+
+
+
+=head2 draft-weltman-ldapv3-proxy -- LDAP Proxied Authorization Control
+
+This document defines support for the Proxied Authorization
+Control. Controls are an LDAPv3 extension, to allow passing
+arbitrary control information along with a standard request to
+a server, and to receive arbitrary information back with a
+standard result. The Proxied Authorization Control allows a
+connection with sufficient privileges to assume the identity of
+another entry for the duration of an LDAP request.
+
+
+
+=head2 draft-zeilenga-ldap-authpasswd -- LDAP Authentication Password Attribute
+
+This document describes schema for storing authentication
+passwords in an LDAP directory. The document provides schema
+definitions for authPassword and related schema definitions.
+The authPassword is intended to used instead of clear text
+password storage mechanisms such as userPassword [RFC2256] to
+support simple bind operations. The attribute may be used to
+store SASL authentication passwords in entries of a directory.
+
+
+
+=head2 draft-zeilenga-ldap-c-api-concurrency -- LDAP C API Concurrency Extensions
+
+This document defines extensions to the LDAP C API to support
+use in concurrent execution environments. The document
+describes and defines requirements for multiple concurrency
+levels: thread safe, session thread safe, and operation thread
+safe.
+
+
+
+=head2 draft-zeilenga-ldap-c-api-errno -- LDAP C API Error Reporting Extension
+
+This document defines a mandatory extension to the LDAP C API
+to provide error reporting for all API calls. The mechanism is
+non-intrusive and can, optionally, support concurrent execution
+environments.
+
+
+
+=head2 draft-zeilenga-ldap-grouping -- LDAPv3: Grouping of Related Operations
+
+This document provides a general mechanisms for grouping
+related LDAP operations, which may be used to support
+replication, proxies, and higher level operations such as
+transactions. This document describes a set of LDAP extended
+operations and other protocol and schema elements to support
+grouping of related operations.
+
+
+
+=head2 draft-zeilenga-ldap-namedref -- Named References in LDAP Directories
+
+This document defines schema and protocol elements for
+representing and manipulating generic knowledge information in
+LDAP directories. An attribute type "ref" is used to store URIs
+which may refer to LDAP and non-LDAP services. An object class
+"referral" is used to construct entries in an LDAP directory
+which references to other directories or services. A control,
+ManageDsaIT, is defined to allow clients to manipulate referral
+objects as normal entries. The document describes procedures
+directory servers should follow when supporting these elements.
+
+
+
+=head2 draft-zeilenga-ldap-passwd-exop -- LDAP Password Modify Extended Operation
+
+The integration of LDAP and external authentication services
+has introducted non-DN authentication identities and allowed
+for non-directory storage of passwords. As such, mechanisms
+which update the directory, such as Modify operation, cannot be
+used to change a user's password. This document describes an
+LDAP extended operation to allow modification of user passwords
+which is not dependent upon the form of the authentication
+identity nor the password storage mechanism used.
+
+
+
+=head2 draft-zeilenga-ldap-txn -- LDAPv3 Transactions
+
+LDAP update operations have atomic properties upon individual
+entries. However, it is often desirable to update two or more
+entries as one atomic action, a transaction. Transactions are
+necessary to support a number of applications including
+resource provisioning and information replication. This
+document defines an LDAP extension to support transactions.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-opattrs -- LDAPv3: All Operational Attributes
+
+X.500 provides a mechanism for clients to request all
+operational attributes be returned with entries provided in
+response to a search operation. LDAP [RFC2251] does not provide
+a similar mechanism to clients to request the return of
+operational attributes. The lack of such a mechanisms hinders
+discovery of operational attributes present in an entry.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2251 -- LDAPv3bis Suggestions: Lightweight Directory Access Protocol
+(v3)
+
+This Internet Draft suggests a number of updates to
+"Lightweight Directory Access Protocol (v3)" [RFC2251]. This
+document is not intended to be published as an RFC but used to
+identify LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2252 -- LDAPv3bis Suggestions: Attribute Syntax Definitions
+
+This Internet Draft suggests a number of updates to "
+Lightweight Directory Access Protocol (v3): Attribute Syntax
+Definitions" [RFC2252]. This document is not intended to be
+published as an RFC but used to identify LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2253 -- LDAPv3bis Suggestions: UTF-8 String Representation of
+Distinguished Names
+
+This Internet Draft suggests a number of updates to
+"Lightweight Directory Access Protocol (v3): UTF-8 String
+Representation of Distinguished Names" [RFC2253]. This document
+is not intended to be published as an RFC but used to identify
+LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2254 -- LDAPv3bis Suggestions: The String Representation of LDAP Search
+Filters
+
+This Internet Draft suggests a number of updates to "The String
+Representation of LDAP Search Filters" [RFC 2254]. This
+document is not intended to be published as an RFC but used to
+identify LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2255 -- LDAPv3bis Suggestions: The LDAP URL Format
+
+This Internet Draft suggests a number of updates to "The LDAP
+URL Format" [RFC 2255]. This document is not intended to be
+published as an RFC but used to identify LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2256 -- LDAPv3bis Suggestions: Summary of the X.500(96) User Schema for
+use with LDAPv3
+
+This Internet Draft suggests a number of updates to "A Summary
+of the X.500(96) User Schema for use with LDAPv3" [RFC 2256].
+This document is not intended to be published as an RFC but
+used to identify LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2829 -- LDAPv3bis Suggestions: Authentication Methods for LDAP
+
+This Internet Draft suggests a number of updates to
+"Authentication Methods for LDAP" [RFC2829]. This document is
+not intended to be published as an RFC but used to identify
+LDAPv3bis work items.
+
+
+
+=head2 draft-zeilenga-ldapv3bis-rfc2830 -- LDAPv3bis Suggestions: Extension for Transport Layer Security
+
+This Internet Draft suggests a number of updates to the
+"Lightweight Directory Access Protocol: Extension for Transport
+Layer Security" [RFC 2830]. This document is not intended to be
+published as an RFC but used to identify LDAPv3bis work items.
+
+
+=cut
+
