@@ -1,3 +1,9 @@
+univention-installer (1.6.13-3) unstable; urgency=low
+
+  * Make new get|add_elem helper classes available outside subwin class
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Jul 2007 09:26:55 +0200
+
 univention-installer (1.6.13-2) unstable; urgency=low
 
   * Allow modification of security profile in System Settings

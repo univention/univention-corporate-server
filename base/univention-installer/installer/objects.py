@@ -1094,6 +1094,7 @@ class content:
 		self.pad.bkgd(" ",curses.color_pair(4))
 		self.pad.border(curses.MY_VLINE,' ',' ',' ',' ',' ',' ',' ')
 		self.elements=[]
+		self.reset_layout()
 		self.current=0
 		self.std_button()
 		self.header=textline(self.modheader(), self.pos_y, self.pos_x+self.width-len(self.modheader())-2)
@@ -1111,6 +1112,35 @@ class content:
 		f=open(self.file, 'a+')
 		f.write(str+'\n')
 		f.close()
+
+
+	# removes all widgets from window
+	def reset_layout(self):
+		self.elements = []
+		self.element_index = {}
+
+	# adds widget to window and assigns name to it
+	def add_elem(self, name, element):
+		self.element_index[name] = len(self.elements)
+		self.elements.append( element )
+
+	# returns widget addressed by name
+	def get_elem(self, name):
+		return self.elements[ self.element_index[ name ] ]
+
+	# tests if widget addressed by name exists
+	def elem_exists(self, name):
+		return self.element_index.has_key(name)
+
+	# returns widget id (old behaviour) of widget addressed by name
+	def get_elem_id(self, name):
+		if self.element_index.has_key(name):
+			return self.element_index[ name ]
+		return None
+
+	# returns widget addressed by widget id
+	def get_elem_by_id(self, id):
+		return self.elements[ id ]
 
 	def std_button(self):
 		#self.debug('(content)std_button')
