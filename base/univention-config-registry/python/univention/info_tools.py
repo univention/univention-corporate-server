@@ -161,30 +161,6 @@ class UnicodeConfig( ConfigParser.ConfigParser ):
 					fp.write( "%s = %s\n" % ( key, value.replace( '\n', '\n\t' ) ) )
 			fp.write("\n")
 
-	def read(self, filenames):
-		"""Read and parse a filename or a list of filenames.
-		Files that cannot be opened are silently ignored; this is
-		designed so that you can specify a list of potential
-		configuration file locations (e.g. current directory, user's
-		home directory, systemwide directory), and all existing
-		configuration files in the list will be read.  A single
-		filename may also be given.
-	
-		Return list of successfully read files.
-		"""
-		if isinstance(filenames, basestring):
-			filenames = [filenames]
-		read_ok = []
-		for filename in filenames:
-			try:
-				fp = codecs.open(filename, 'r', 'utf-8')
-			except IOError:
-				continue
-			self._read(fp, filename)
-			fp.close()
-			read_ok.append(filename)
-		return read_ok
-
 def set_language( lang ):
 	global _locale
 	_locale = lang
