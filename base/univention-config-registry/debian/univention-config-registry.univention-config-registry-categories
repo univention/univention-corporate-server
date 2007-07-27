@@ -7,6 +7,10 @@ name[de]=Netz
 name[en]=Network
 icon=network.gif
 
+[LDAP]
+name=LDAP
+icon=ldap.gif
+
 [Misc]
 name[de]=Sonstiges
 name[en]=Miscellaneous

@@ -196,6 +196,18 @@ Description[en]=Base DN of the LDAP directory
 Type=str
 Categories=LDAP
 
+[ldap/hostdn]
+Description[de]=DN dieses Rechners
+Description[en]=DN of this machine
+Type=str
+Categories=LDAP
+
+[ldap/policy/cron]
+Description[de]=Cronjob für das regelmäßige Ausführen der Univention-Policy Scripte
+Description[en]=Cronjob for regular execution of Univention-Ploicy scripts
+Type=str
+Categories=LDAP
+
 [lilo/append]
 Description[de]=Weitere Kommandozeilenparameter von Lilo
 Description[en]=Additional parameters for lilo

@@ -1,3 +1,9 @@
+univention-config-registry (2.2.7-2) unstable; urgency=low
+
+  * added some variables and LDAP category
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 11:40:05 +0200
+
 univention-config-registry (2.2.7-1) unstable; urgency=low
 
   * UnicodeConfig: removed function 'read' as the codecs module does not help
