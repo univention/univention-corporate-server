@@ -1,3 +1,10 @@
+univention-ldap (2.2.7-4) unstable; urgency=low
+
+  * added descriptions for config registry variables, moved ldap
+    variables to categorie LDAP
+
+ -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 13:30:51 +0200
+
 univention-ldap (2.2.7-3) unstable; urgency=low
 
   * added descriptions for config registry variables

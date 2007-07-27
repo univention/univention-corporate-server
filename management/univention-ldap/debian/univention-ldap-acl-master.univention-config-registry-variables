@@ -2,17 +2,17 @@
 Description[de]=Erlaube Benutzern ihre UGS Einstellungen im Univention Directory Manager zu ändern
 Description[en]=Allow users to change their UGS settings in Univention Directory Manager
 Type=str
-Categories=System
+Categories=LDAP
 
 [ldap/acl/user/password/change]
 Description[de]=Erlaube Benutzern ihr Passwort im Univention Directory Manager
 Description[en]=Allow users to change their password in Univention Directory Manager
 Type=str
-Categories=System
+Categories=LDAP
 
 [ldap/debug/level]
 Description[de]=Debuglevel des LDAP-Servers
 Description[en]=Debuglevel of the LDAP server
 Type=str
-Categories=System
+Categories=LDAP
 
