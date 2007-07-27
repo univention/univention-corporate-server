@@ -1,3 +1,9 @@
+univention-mozilla-firefox (1.2-8) unstable; urgency=low
+
+  * change firefox homepage to ucd-welcome-2_0-0.html
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jul 2007 14:43:59 +0200
+
 univention-mozilla-firefox (1.2-7) unstable; urgency=low
 
   * encoded files utf-8
