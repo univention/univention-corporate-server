@@ -66,7 +66,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		path = '/var/www/statistik'
 		images = ( ( 'day', 'uds_0load-day.png' ),
 				   ( 'week', 'uds_0load-week.png' ),
-				   ( 'month', 'uds_0load-year.png' ) )
+				   ( 'month', 'uds_0load-month.png' ),
+				   ( 'year', 'uds_0load-year.png' ) )
 
 		result = []
 		for key, img in images:
