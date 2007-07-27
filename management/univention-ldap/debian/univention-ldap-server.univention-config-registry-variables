@@ -65,11 +65,11 @@ Description[en]=Frequency for checkpointing the database transaction log upon up
 Type=str
 Categories=LDAP
 
-[ldap/database/bdb/set_flags]
-Description[de]=
-Description[en]=
-Type=str
-Categories=LDAP
+#[ldap/database/bdb/set_flags]
+#Description[de]=
+#Description[en]=
+#Type=str
+#Categories=LDAP
 
 [ldap/database/bdb/set_cachesize]
 Description[de]=Anzahl der Einträge die vom BDB-Backend zwischengespeichert werden
