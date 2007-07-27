@@ -1,3 +1,9 @@
+univention-scalix (1.0.0-6) stable; urgency=low
+
+  * corrected templatefiles
+
+ -- Tobias Scherer <scherer@univention.de>  Fri, 27 Jul 2007 12:52:37 +0200
+
 univention-scalix (1.0.0-5) stable; urgency=low
 
   * added links for ucs-overview
