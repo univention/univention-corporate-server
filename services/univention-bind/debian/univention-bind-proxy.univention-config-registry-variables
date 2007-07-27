@@ -1,0 +1,30 @@
+[dns/forwarder1]
+Description[de]=Erster DNS-Forwarder
+Description[en]=First DNS forwarder
+Type=str
+Categories=Network
+
+[dns/forwarder2]
+Description[de]=Zweiter DNS-Forwarder
+Description[en]=Second DNS forwarder
+Type=str
+Categories=Network
+
+[dns/forwarder3]
+Description[de]=Dritter DNS-Forwarder
+Description[en]=Third DNS forwarder
+Type=str
+Categories=Network
+
+[dns/master/address]
+Description[de]=Erlaube bind-proxy Anfragen von dieser IP-Adresse
+Description[en]=Allow bind-proxy querrys from this ip adress
+Type=str
+Categories=Network
+
+[dns/master/port]
+Description[de]=Port auf dem auf Anfragen gewartet wird
+Description[en]=Port to listen on
+Type=str
+Categories=Network
+
