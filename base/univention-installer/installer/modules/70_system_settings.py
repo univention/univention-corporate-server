@@ -67,6 +67,7 @@ class object(content):
 		return True
 
 	def layout(self):
+		self.reset_layout()
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
 			self.elements.append(checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))#2
 		else:

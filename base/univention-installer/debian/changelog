@@ -1,3 +1,9 @@
+univention-installer (1.6.13-5) unstable; urgency=low
+
+  * Clear on-screen layout
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 27 Jul 2007 15:04:36 +0200
+
 univention-installer (1.6.13-4) unstable; urgency=low
 
   * Fix traceback
