@@ -1,3 +1,9 @@
+univention-nagios (1.0.2-4) unstable; urgency=low
+
+  * added links on ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Fri, 27 Jul 2007 12:54:14 +0200
+
 univention-nagios (1.0.2-3) unstable; urgency=low
 
   * register init scripts as configuration registry templates
