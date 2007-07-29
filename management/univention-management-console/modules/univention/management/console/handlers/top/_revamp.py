@@ -55,13 +55,14 @@ class Web( object ):
 						   actions = [ umcd.Action( req, [ sort.id(), count.id() ] ) ] )
 		opts.add_row( [ sort, count, btn ] )
 
-		lst.set_header( [ _( 'User' ), _( 'PID' ), _( 'CPU' ), _( 'Memory' ), _( 'Program' ), '' ] )
+		lst.set_header( [ _( 'User' ), _( 'PID' ), _( 'CPU' ), _( 'Virtual Size' ), _( 'Resident Set Size' ),
+						  _( 'Memory in %' ), _( 'Program' ), '' ] )
 		boxes = []
 
 		for proc in res.dialog:
 			chk = umcd.Checkbox( static_options = { 'pid' : proc.pid } )
 			boxes.append( chk.id() )
-			lst.add_row( [ proc.uid, proc.pid, proc.cpu, proc.mem, proc.prog, chk ] )
+			lst.add_row( [ proc.uid, proc.pid, proc.cpu, proc.vsize, proc.rssize, proc.mem, proc.prog, chk ] )
 
 		req = umcp.Command( args = [], opts= { 'signal' : 'kill', 'pid' : [] } )
 		req_list = umcp.Command( args = [ 'top/view' ],
@@ -70,7 +71,7 @@ class Web( object ):
 		actions = ( umcd.Action( req, boxes, True ), umcd.Action( req_list ) )
 		choices = [ ( 'top/kill', _( 'Kill Processes' ) ), ]
 		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
-		lst.add_row( [ umcd.Fill( 5 ), select ] )
+		lst.add_row( [ umcd.Fill( 7 ), select ] )
 
 		res.dialog = [ opts, lst ]
 		self.revamped( object.id(), res )

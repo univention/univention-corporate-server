@@ -1,3 +1,12 @@
+univention-management-console (0.7.21-1) unstable; urgency=low
+
+  * modutils module: support loading and unloading of kernel modules
+  * new widget 'Question' to setup simple yes/no dialogs
+  * top module: fix sorting of process table. support, pcpu, vsie, rssize,
+    user, pid
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 29 Jul 2007 16:47:10 +0200
+
 univention-management-console (0.7.19-1) unstable; urgency=low
 
   * new module 'modutils': search, load and unload kernel modules

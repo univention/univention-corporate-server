@@ -38,14 +38,16 @@ import univention.debug as ud
 
 _ = umc.Translation( 'univention.management.console.handlers.top' ).translate
 
-_ps_regex = re.compile( ' *(?P<cpu>[0-9.]*) +(?P<mem>[0-9.]*) +(?P<user>[^ ]*) +(?P<pid>[0-9]*) +(?P<prog>[^ ]*)( +(?P<args>.*))?' )
-_ps_cmd = 'ps h -eo pcpu,pmem,user,pid,command'
+_ps_regex = re.compile( ' *(?P<cpu>[0-9.]*) +(?P<vsize>[0-9]*) +(?P<rssize>[0-9]*) +(?P<mem>[0-9.]*) +(?P<user>[^ ]*) +(?P<pid>[0-9]*) +(?P<prog>[^ ]*)( +(?P<args>.*))?' )
+_ps_cmd = 'ps h -eo pcpu,vsize,rssize,pmem,user,pid,command'
 
 class Process( object ):
-	def __init__( self, uid = '', pid = 0, mem = 0.0, cpu = 0.0, prog = '', args = [] ):
+	def __init__( self, uid = '', pid = 0, vsize = 0, rssize = 0, mem = 0.0, cpu = 0.0, prog = '', args = [] ):
 		self.uid = uid
 		self.pid = pid
 		self.mem = mem
+		self.vsize = vsize
+		self.rssize = rssize
 		self.cpu = cpu
 		self.prog = prog
 		self.args = args
@@ -55,7 +57,11 @@ def run_ps( callback, sort = 'cpu', count = '50' ):
 
 	cmd = copy.copy( _ps_cmd )
 	if sort == 'cpu':
-		cmd += ' --sort=pcpu | sort -r'
+		cmd += ' --sort=-pcpu'
+	elif sort == 'rssize':
+		cmd += ' --sort=-rssize'
+	elif sort == 'vsize':
+		cmd += ' --sort=-vsize'
 	elif sort == 'user':
 		cmd += ' --sort=user'
 	elif sort == 'pid':
@@ -80,6 +86,6 @@ def parse_ps( result ):
 			args = []
 		else:
 			args = grp[ 'args' ].split( ' ' )
-		processes.append( Process( grp[ 'user' ], int( grp[ 'pid' ] ), float( grp[ 'mem' ] ),
+		processes.append( Process( grp[ 'user' ], int( grp[ 'pid' ] ), int( grp[ 'vsize' ] ), int( grp[ 'rssize' ] ), float( grp[ 'mem' ] ),
 								   float( grp[ 'cpu' ] ), grp[ 'prog' ], args ) )
 	return processes

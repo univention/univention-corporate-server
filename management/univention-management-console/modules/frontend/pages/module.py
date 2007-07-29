@@ -389,16 +389,20 @@ class Module( base.Page ):
 				# is current category a startup dialog that must be closed?
 				if self.__startups[ self.selected ].dialog() and umcp_part.close_dialog:
 					referrer = self.__startups[ self.selected ].referrer
+					use_referrer = self.__startups[ self.selected ].use_referrer()
 					self.__startups.remove( self.selected )
 					self.categories = self.__startups.categories()
 					idx = self.__startups.find( referrer )
 					cmd = self.__startups[ idx ]
-					if cmd.caching and cmd.cache:
-						self.__restore_referrer = True
-						self.selected = idx
-						self.__layout = cmd.cache
+					if use_referrer:
+						if cmd.caching and cmd.cache:
+							self.__restore_referrer = True
+							self.selected = idx
+							self.__layout = cmd.cache
+						else:
+							requests = [ referrer ]
 					else:
-						requests = [ referrer ]
+						self.selected = 0
 
 				if not self.__restore_referrer:
 					req = requests[ -1 ]

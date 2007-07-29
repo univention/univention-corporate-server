@@ -59,7 +59,7 @@ class ModUtilsCategories( umc.StaticSelection ):
 		umc.StaticSelection.__init__( self, _( 'Module Categories' ) )
 
 	def choices( self ):
-		lst = []
+		lst = [ ( 'all', _( 'All' ) ) ]
 		for cat in tools.get_kernel_categories():
 			lst.append( ( cat, cat ) )
 		return lst
@@ -85,14 +85,26 @@ command_description = {
 		method = 'modutils_search',
 		values = { 'category': cats_type,
 				   'key' : key_type,
+				   'loaded' : umc.Boolean( _( 'Loaded modules only' ) ),
 				   'pattern' : umc.String( _( 'Pattern' ) ) },
 		startup = True,
+	),
+	'modutils/show' : umch.command(
+		short_description = _( 'Load Kernel Modul' ),
+		method = 'modutils_show',
+		values = { 'module' : umc.String( _( 'Kernel Module' ) ),
+				   'load' : umc.Boolean( '' ) },
 	),
 	'modutils/load' : umch.command(
 		short_description = _( 'Load Kernel Modul' ),
 		method = 'modutils_load',
 		values = { 'module' : umc.String( _( 'Kernel Module' ) ),
-				   'arguments' : umc.String( _( 'Modul Arguments' ) ) },
+				   'arguments' : umc.String( _( 'Modul Arguments' ), required = False ) },
+	),
+	'modutils/unload' : umch.command(
+		short_description = _( 'Unload Kernel Modul' ),
+		method = 'modutils_unload',
+		values = { 'module' : umc.String( _( 'Kernel Module' ) ) },
 	),
 }
 
@@ -105,7 +117,27 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if object.incomplete:
 			self.finished( object.id(), None )
 		else:
+			ud.debug( ud.ADMIN, ud.INFO, "search for: %s" % object.options[ 'pattern' ] )
 			mods = tools.get_kernel_modules( object.options[ 'category' ],
-											 object.options[ 'pattern' ] )
+											 object.options[ 'pattern' ],
+											 object.options[ 'loaded' ] )
 			infos = tools.get_kernel_module_info( mods )
 			self.finished( object.id(), infos )
+	
+	def modutils_show( self, object ):
+		infos = tools.get_kernel_module_info( [ object.options[ 'module' ] ] )
+		if infos:
+			self.finished( object.id(), infos[ 0 ] ) 
+		else:
+			self.finished( object.id(), None ) 
+
+	def modutils_load( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'modprobe %s' % object.options[ 'module' ] )
+		os.system( 'modprobe %s' % object.options[ 'module' ] )
+		self.finished( object.id(), None )
+
+	def modutils_unload( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, 'rmmod -f %s' % object.options[ 'module' ] )
+		os.system( 'rmmod -f %s' % object.options[ 'module' ] )
+		self.finished( object.id(), None )
+

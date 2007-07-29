@@ -94,22 +94,23 @@ def get_kernel_categories():
 	return _kernel_categories
 
 def _walk_mods( arg, dirname, fnames ):
-	mods, cat, prefix, pattern = arg
-	if cat and not dirname[ len( prefix ) : ].startswith( cat ):
+	mods, cat, prefix, pattern, loaded_only = arg
+	if cat and cat != 'all' and not dirname[ len( prefix ) : ].startswith( cat ):
 		return
 	for fname in fnames:
 		if os.path.isfile( os.path.join( dirname, fname ) ) and fnmatch( fname, pattern ) and \
 			   fname.endswith( '.ko' ):
-			mods.append( fname[ : -3 ] )
+			if not loaded_only or is_kernel_module_loaded( fname[ : -3 ] ):
+				mods.append( fname[ : -3 ] )
 
-def get_kernel_modules( category, pattern ):
+def get_kernel_modules( category, pattern, loaded_only = False ):
 	global _kernel_version, _kernel_categories
 
 	if not _kernel_version:
 		get_kernel_version()
 	prefix = '/lib/modules/%s/kernel/' % _kernel_version
 	mods = []
-	os.path.walk( prefix, _walk_mods, ( mods, category, prefix, pattern ) )
+	os.path.walk( prefix, _walk_mods, ( mods, category, prefix, pattern, loaded_only ) )
 	return mods
 
 def _read_loaded_modules():
@@ -132,6 +133,7 @@ def _read_loaded_modules():
 
 def is_kernel_module_loaded( name ):
 	global _loaded_modules
+
 	if not _loaded_modules:
 		_read_loaded_modules()
 
@@ -141,6 +143,9 @@ def is_kernel_module_loaded( name ):
 	return None
 
 def get_kernel_module_info( mods ):
+	global _loaded_modules
+
+	_loaded_modules = []
 	infos = []
 	for mod in mods:
 		m = is_kernel_module_loaded( mod )

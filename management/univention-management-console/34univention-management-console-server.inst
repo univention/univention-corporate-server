@@ -23,18 +23,18 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="wizard/mailserver/*"
 
 # create nagios operations
-univention-admin settings/console_operation create $@ --ignore_exists \
-	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-nagios \
-	--set description="Nagios Wizard" \
-	--append operation="wizard/nagios/*"
+# univention-admin settings/console_operation create $@ --ignore_exists \
+# 	--position cn=operations,cn=console,cn=univention,$ldap_base \
+# 	--set name=wizard-nagios \
+# 	--set description="Nagios Wizard" \
+# 	--append operation="wizard/nagios/*"
 
 # create nagios operations
-univention-admin settings/console_operation create $@ --ignore_exists \
-	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-basis \
-	--set description="Basis Wizard" \
-	--append operation="wizard/basis/*"
+# univention-admin settings/console_operation create $@ --ignore_exists \
+# 	--position cn=operations,cn=console,cn=univention,$ldap_base \
+# 	--set name=wizard-basis \
+# 	--set description="Basis Wizard" \
+# 	--append operation="wizard/basis/*"
 
 # create process overview operations
 univention-admin settings/console_operation create $@ --ignore_exists \
@@ -117,12 +117,12 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 	--set description="Mail Server Wizard"
 
 # create nagios wizard acls
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-	--set name=wizard-nagios-all \
-	--set category="Wizard Nagios" \
-	--set ldapbase="$ldap_base" \
-	--set command="wizard/nagios/*" \
-	--set description="Nagios Wizard"
+# univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+# 	--set name=wizard-nagios-all \
+# 	--set category="Wizard Nagios" \
+# 	--set ldapbase="$ldap_base" \
+# 	--set command="wizard/nagios/*" \
+# 	--set description="Nagios Wizard"
 
 # create basis wizard acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -289,11 +289,11 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-mailserver-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base
+# 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \

@@ -55,7 +55,10 @@ class TOP_Sort( umc.StaticSelection ):
 
 	def choices( self ):
 		return ( ( 'cpu', _( 'CPU Usage' ) ),
-				 ( 'user', _( 'Username' ) ), ( 'pid', _( 'Process ID' ) ) )
+				 ( 'user', _( 'Username' ) ),
+				 ( 'rssize', _( 'Resident Set Size' ) ),
+				 ( 'vsize', _( 'Virtual Size' ) ),
+				 ( 'pid', _( 'Process ID' ) ) )
 
 class TOP_Count( umc.StaticSelection ):
 	def __init__( self ):
@@ -131,6 +134,5 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		for pid in object.options[ 'pid' ]:
 			cmd += '%d ' % pid
 
-		#cmd += ' &'
 		os.system( cmd )
 		self.finished( object.id(), None )

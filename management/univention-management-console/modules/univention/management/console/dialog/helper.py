@@ -47,6 +47,15 @@ class InfoBox( base.Text, image.Image ):
 		image.Image.__init__( self, 'actions/info', umct.SIZE_SMALL )
 		base.Text.__init__( self, text, attributes = { 'colspan' : str( columns ) } )
 
+class Question( base.List ):
+	def __init__( self, text = '', actions = [], okay = _( 'Ok' ) ):
+		base.List.__init__( self )
+		self._image = image.Image( 'actions/info', umct.SIZE_SMALL )
+		self._text = base.Text( text, attributes = { 'colspan' : '2' } )
+		self.add_row( [ self._image, self._text ] )
+		btn = button.CancelButton()
+		self.add_row( [ '', button.Button( okay, 'actions/ok', actions = actions ), btn ] )
+
 class SearchForm( base.List ):
 	def __init__( self, command = None, fields = [] ):
 		base.List.__init__( self )
@@ -74,4 +83,4 @@ class SearchForm( base.List ):
 		self.add_row( [ num_result, btnlst ] )
 		self.add_row( [ base.Fill( 2 ) ] )
 
-HelperTypes = ( type( InfoBox() ), type( SearchForm() ) )
+HelperTypes = ( type( InfoBox() ), type( Question() ), type( SearchForm() ) )

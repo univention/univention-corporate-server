@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-26 11:58+0200\n"
+"POT-Creation-Date: 2007-07-29 17:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:48 __init__.py:85
+#: __init__.py:48 __init__.py:89
 msgid "Process Overview"
 msgstr "Prozessübersicht"
 
@@ -31,47 +31,55 @@ msgstr "Sortierung"
 msgid "CPU Usage"
 msgstr "CPU Nutzung"
 
-#: __init__.py:57
-msgid "Memory Usage"
-msgstr "Speichernutzung"
-
 #: __init__.py:58
 msgid "Username"
 msgstr "Benutzername"
 
-#: __init__.py:58
+#: __init__.py:59
+msgid "Memory Usage (%)"
+msgstr "Speichernutzung (%)"
+
+#: __init__.py:60 _revamp.py:58
+msgid "Resident Set Size"
+msgstr "Residente Größe"
+
+#: __init__.py:61 _revamp.py:58
+msgid "Virtual Size"
+msgstr "Virtuelle Größe"
+
+#: __init__.py:62
 msgid "Process ID"
 msgstr "Prozess ID"
 
-#: __init__.py:62
+#: __init__.py:66
 msgid "Number of Processes"
 msgstr "Anzahl der Prozesse"
 
-#: __init__.py:65
+#: __init__.py:69
 msgid "all"
 msgstr "Alle"
 
-#: __init__.py:69
+#: __init__.py:73
 msgid "Kill Signal"
 msgstr "Beendigungssignal"
 
-#: __init__.py:72
+#: __init__.py:76
 msgid "Force Kill"
 msgstr "Beendigung erzwingen"
 
-#: __init__.py:72
+#: __init__.py:76
 msgid "Terminate"
 msgstr "Beenden"
 
-#: __init__.py:81
+#: __init__.py:85
 msgid "Process IDs"
 msgstr "Prozess IDs"
 
-#: __init__.py:92 _revamp.py:71
+#: __init__.py:96 _revamp.py:72
 msgid "Kill Processes"
 msgstr "Prozesse beenden"
 
-#: __init__.py:107 __init__.py:122
+#: __init__.py:111 __init__.py:126
 msgid "You are not permitted to run this command."
 msgstr "Sie dürfen dieses Kommando nicht ausführen."
 
@@ -91,14 +99,14 @@ msgstr "PID"
 msgid "CPU"
 msgstr "CPU"
 
-#: _revamp.py:58
-msgid "Memory"
-msgstr "Speicher"
+#: _revamp.py:59
+msgid "Memory in %"
+msgstr "Speicher in %"
 
-#: _revamp.py:58
+#: _revamp.py:59
 msgid "Program"
 msgstr "Programm"
 
-#: _revamp.py:72
+#: _revamp.py:73
 msgid "Select the Operation"
 msgstr "Auswahl der Operation"

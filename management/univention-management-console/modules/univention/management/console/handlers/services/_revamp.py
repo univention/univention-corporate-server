@@ -47,9 +47,9 @@ class Web( object ):
 		lst.set_header( [ umcd.Fill( 2, _( 'Name' ) ), _( 'Status' ), _( 'Start Type' ), _( 'Description' ) ] )
 		for name, srv in servs.items():
 			if srv.running:
-				icon = umcd.Image( 'services/start', umct.SIZE_SMALL )
+				icon = umcd.Image( 'actions/yes', umct.SIZE_SMALL )
 			else:
-				icon = umcd.Image( 'services/stop', umct.SIZE_SMALL )
+				icon = umcd.Image( 'actions/no', umct.SIZE_SMALL )
 			chk = umcd.Checkbox( static_options = { 'service' : name } )
 			boxes.append( chk.id() )
 			image = umcd.Image( 'services/default', umct.SIZE_MEDIUM )

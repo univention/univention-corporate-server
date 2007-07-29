@@ -31,6 +31,7 @@
 
 import mapper
 import utils
+import structural
 
 import univention.management.console.dialog as umcd
 
@@ -47,3 +48,4 @@ def infobox_map( storage, umcp_part ):
 	return table( '', { 'type' : 'umc_infobox' }, { 'obs' : [ row ] } )
 
 mapper.add( umcd.InfoBox, infobox_map )
+mapper.add( umcd.Question, structural.list_map )

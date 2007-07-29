@@ -96,6 +96,10 @@ Please take a second to provide the following information
 	def is_startup( self ):
 		return self.request.incomplete
 
+	def use_referrer( self ):
+		return not self.request.has_flag( 'web:startup_referrer' ) or \
+			   self.request.get_flag( 'web:startup_referrer' )
+
 	def reload( self ):
 		return self.request.has_flag( 'web:startup_reload' ) and \
 			   self.request.get_flag( 'web:startup_reload' )
