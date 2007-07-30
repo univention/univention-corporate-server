@@ -1,3 +1,9 @@
+univention-nagios (1.0.2-6) unstable; urgency=low
+
+  * changed templatenames for ucs-overview 
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 10:35:23 +0200
+
 univention-nagios (1.0.2-5) unstable; urgency=low
 
   * corrected template directory
