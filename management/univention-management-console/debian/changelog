@@ -1,3 +1,9 @@
+univention-management-console (0.7.21-2) unstable; urgency=low
+
+  * changed templatenames for ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 10:18:07 +0200
+
 univention-management-console (0.7.21-1) unstable; urgency=low
 
   * modutils module: support loading and unloading of kernel modules
