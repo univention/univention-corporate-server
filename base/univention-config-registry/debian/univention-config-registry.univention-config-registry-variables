@@ -46,6 +46,12 @@ Description[en]=Use localhost for the port forwarding
 Type=str
 Categories=Network
 
+[sshd/challengeresponse]
+Description[de]=Aktiviere/Deaktiviere challenge response authentication
+Description[en]=Enalbe/Disable challenge response authentication
+Type=str
+Categories=Network
+
 [domainname]
 Description[de]=DNS-Domäne
 Description[en]=DNS domain
@@ -61,6 +67,12 @@ Categories=Network
 [domain/search]
 Description[de]=Automatisch zu durchsuchende DNS-Domänen
 Description[en]=Automatically searched DNS domains
+Type=str
+Categories=Network
+
+[windows/domain]
+Description[de]=Windows Domänenname
+Description[en]=Windows domainname
 Type=str
 Categories=Network
 
@@ -349,6 +361,12 @@ Categories=System
 [version/version]
 Description[de]=Hauptversion Version von UCS
 Description[en]=Major version of UCS
+Type=str
+Categories=System
+
+[version/releasename]
+Description[de]=Codename des UCS-Release
+Description[en]=Codename for UCS releases
 Type=str
 Categories=System
 

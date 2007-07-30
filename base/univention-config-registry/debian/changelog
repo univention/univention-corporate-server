@@ -1,3 +1,9 @@
+univention-config-registry (2.2.7-4) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 11:51:31 +0200
+
 univention-config-registry (2.2.7-3) unstable; urgency=low
 
   * Pre-define the new version/releasename variable
