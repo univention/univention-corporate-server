@@ -1,3 +1,11 @@
+univention-installer (1.6.13-8) unstable; urgency=low
+
+  * Display release name in installer head line
+  * Convert the remaining elements of the system settings menu to
+    the new layout classes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 12:00:22 +0200
+
 univention-installer (1.6.13-7) unstable; urgency=low
 
   * Configure version/releasename at installation time

@@ -69,13 +69,13 @@ class object(content):
 	def layout(self):
 		self.reset_layout()
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
-			self.elements.append(checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))#2
+			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))
 		else:
-			self.elements.append(checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))#2
+			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ]:
-			self.elements.append(checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[0]))#3
+			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[0]))
 		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
-			self.elements.append(checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))#3
+			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))
 
 		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY, self.minX+2))
 
@@ -116,12 +116,13 @@ class object(content):
 
 	def result(self):
 		result={}
-		if len(self.elements[2].selected) > 0:
+		if len(self.get_elem('create_local_repo').selected) > 0:
 			result['local_repository']='true'
 		else:
 			result['local_repository']='false'
+
 		if not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
-			if len(self.elements[3].selected) > 0:
+			if len(self.get_elem('create_home_share').selected) > 0:
 				result['create_home_share']='true'
 			else:
 				result['create_home_share']='false'
