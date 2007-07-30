@@ -1,0 +1,36 @@
+[grub/append]
+Description[de]=Zusätzliche Kernel Optionen
+Description[en]=Additional kernel options
+Type=str
+Categories=System
+
+[grub/groot]
+Description[de]=Standard Grub root Gerät
+Description[en]=Default grub root device
+Type=str
+Categories=System
+
+[grub/root]
+Description[de]=Boot Partition
+Description[en]=Boot partition
+Type=str
+Categories=System
+
+[grub/memtest86]
+Description[de]=Aktiviere/Deaktiviere memtest86 Bootoption
+Description[en]=Enable/Disable memtest86 boot option
+Type=str
+Categories=System
+
+[grub/timeout]
+Description[de]=Wartezeit in Sekunden bevor der Standardkernel gebootet wird
+Description[en]=Timeout in seconds, before automatically booting the default entry
+Type=str
+Categories=System
+
+[grub/vga]
+Description[de]=Grub VGA-Code
+Description[en]=Grub vga code
+Type=str
+Categories=System
+

@@ -1,30 +1,36 @@
+univention-grub (1.0.16-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 15:57:01 +0200
+
 univention-grub (1.0.16-1) unstable; urgency=low
 
   * use univention-config-registry instead if univention-baseconfig
   * append splash=silent by default to kernel options
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 18:15:29 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Sat, 14 Jul 2007 18:15:29 +0200
 
 univention-grub (1.0.15-3) unstable; urgency=low
 
   * add symbolic links from /boot/boot to /boot 
   * fixed typo
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:45 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Sat, 14 Jul 2007 15:26:45 +0200
 
 univention-grub (1.0.15-1) unstable; urgency=low
 
   * use univention-config-registry instead of univention-baseconfig
   * register new grub config registry variables
 
- -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 13:41:35 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Sat, 14 Jul 2007 13:41:35 +0200
 
 univention-grub (1.0.14-3) unstable; urgency=low
 
   * the splash image has to be specified like splashimage=; the '=' is
     important 
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 13 Jul 2007 08:24:10 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri, 13 Jul 2007 08:24:10 +0200
 
 univention-grub (1.0.14-2) unstable; urgency=low
 
@@ -36,38 +42,38 @@ univention-grub (1.0.14-1) unstable; urgency=low
 
   * fixed reference to boot splash image 
 
- -- Andreas Büsching <buesching@univention.de>  Fri, 06 Jul 2007 14:19:34 +0200
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri, 06 Jul 2007 14:19:34 +0200
 
 univention-grub (1.0.13-1) unstable; urgency=low
 
   * improve update of initramfs
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 16:25:47 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 16:25:47 +0200
 
 univention-grub (1.0.12-1) unstable; urgency=low
 
   * added conversion "devicefile to grub identifier" in postinst
   * added dependency to lvm2 (needed to recreate initramfs)
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 15:06:53 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 15:06:53 +0200
 
 univention-grub (1.0.11-1) unstable; urgency=low
 
   * update initramfs if kernel module dm-mod is missing
 
- -- Sönke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 10:59:41 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Thu, 28 Jun 2007 10:59:41 +0200
 
 univention-grub (1.0.10-1) unstable; urgency=low
 
   * updated groot device detection
 
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 27 Jun 2007 15:36:06 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Wed, 27 Jun 2007 15:36:06 +0200
 
 univention-grub (1.0.9-1) unstable; urgency=low
 
   * determine correct groot device
 
- -- Sönke Schwardt <schwardt@univention.de>  Mon, 25 Jun 2007 17:22:51 +0200
+ -- SÃ¶nke Schwardt <schwardt@univention.de>  Mon, 25 Jun 2007 17:22:51 +0200
 
 univention-grub (1.0.8-1) unstable; urgency=low
 
