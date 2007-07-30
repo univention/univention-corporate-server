@@ -1,3 +1,9 @@
+univention-webui-style (1.0.4-6) unstable; urgency=low
+
+  *  added except/try on role-check for ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 15:31:41 +0200
+
 univention-webui-style (1.0.4-5) unstable; urgency=low
 
   * corrected role-check on mobileclient for ucs-overview

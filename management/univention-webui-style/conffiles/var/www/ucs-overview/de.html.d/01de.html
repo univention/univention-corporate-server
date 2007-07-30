@@ -50,7 +50,10 @@
 </div>
 @!@
 rolesdict = {"domaincontroller_master":"Domaincontroller Master","domaincontroller_backup":"Domaincontroller Backup","domaincontroller_slave":"Domaincontroller Slave","memberserver":"Memberserver","fatclient":"Managed Client","mobileclient":"Mobile Client"}
-role = rolesdict["@%@server/role@%@"]
+try:
+        role = rolesdict["@%@server/role@%@"]
+except:
+        role = "Univention Corporate Server"
 print'<div id="welcome_overview">Willkommen auf dem', role , '@%@hostname@%@</div>'
 print'<img src="../icon/blank.gif" alt="" />'
 print'<table class="global_menu" summary="" border="0" cellpadding="0"cellspacing="0">'
