@@ -1,3 +1,9 @@
+univention-management-console (0.7.22-2) unstable; urgency=low
+
+  * add missing files required for 'vnc' module
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 30 Jul 2007 20:48:44 +0200
+
 univention-management-console (0.7.22-1) unstable; urgency=low
 
   * new module 'vnc': set apssword, start vnc server, connect to server using
