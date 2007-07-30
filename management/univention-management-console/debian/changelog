@@ -1,3 +1,9 @@
+univention-management-console (0.7.21-4) unstable; urgency=low
+
+  * Show code name in about dialog
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 15:11:32 +0200
+
 univention-management-console (0.7.21-3) unstable; urgency=low
 
   * changed templatenames for ucs-overview

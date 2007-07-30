@@ -53,6 +53,11 @@ class About( base.Page ):
 		baseConfig = univention_baseconfig.baseConfig()
 		baseConfig.load()
 
+		build_version = v.build 
+
+		if baseConfig.has_key("version/releasename"):
+			build_version = build_version + "(" + baseConfig["version/releasename"] + ")"
+
 		## UMC
 		rows.append( uniparts.tablerow("",{},{"obs":[
 				uniparts.tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
@@ -67,7 +72,7 @@ class About( base.Page ):
 
 		rows.append(uniparts.tablerow("",{},{"obs":[
 				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[ _('Build')]})]}),
-				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[v.build]})]})
+				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[build_version]})]})
 				]}))
 
 		## UCS
