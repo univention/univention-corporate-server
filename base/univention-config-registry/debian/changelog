@@ -1,3 +1,9 @@
+univention-config-registry (2.2.7-3) unstable; urgency=low
+
+  * Pre-define the new version/releasename variable
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 11:10:34 +0200
+
 univention-config-registry (2.2.7-2) unstable; urgency=low
 
   * added some variables and LDAP category

@@ -109,6 +109,8 @@ univention-config-registry set sshd/permitroot?yes
 univention-config-registry set sshd/xforwarding?no
 univention-config-registry set sshd/challengeresponse?no
 
+univention-config-registry set version/releasename="common beech"
+
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.33; then
 	chown root:root /tmp/
 	chmod 1777 /tmp/
