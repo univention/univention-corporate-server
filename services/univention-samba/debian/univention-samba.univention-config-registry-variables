@@ -244,3 +244,39 @@ Description[en]=Should Samba act as a WINS server
 Type=str
 Categories=Network
 
+[samba/adminusers]
+Description[de]=Liste von Benutzern mit administrativen Rechten in Samba
+Description[en]=List of users with administrative rights in samba
+Type=str
+Categories=Network
+
+[samba/autostart]
+Description[de]=Aktiviere/Deaktiviere den Samba Start beim Booten
+Description[en]=Enable/Disable Samba start on bootup
+Type=str
+Categories=Network
+
+[samba/debug/level]
+Description[de]=Debug Level für Samba Prozesse
+Description[en]=Debug level for samba processes
+Type=str
+Categories=Network
+
+[samba/generate_smbpasswd]
+Description[de]=Aktiviere/Deaktiviere die Verwendung der lokalen TDBSAM-Datanbank bei der Samba-Installation
+Description[en]=Enable/Disable usage of the local TDBSAM database on Samba installation
+Type=str
+Categories=Network
+
+[samba/os/level]
+Description[de]=Level des Samba-Servers für die Wahl des Domain-Browsers
+Description[en]=The level Samba advertises itself as for browse elections
+Type=str
+Categories=Network
+
+[samba/winbind/nested/groups]
+Description[de]=Aktiviere/Deaktiviere die Unterstützung für verschachtelte Gruppen
+Description[en]=Enable/Disable support for nested groups
+Type=str
+Categories=Network
+

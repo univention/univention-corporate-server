@@ -1,3 +1,9 @@
+univention-samba (1.0.4-8) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 12:05:14 +0200
+
 univention-samba (1.0.4-7) unstable; urgency=low
 
   * try to fix crv file
