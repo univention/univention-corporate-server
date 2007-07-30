@@ -1,3 +1,9 @@
+univention-installer (1.6.14-1) unstable; urgency=low
+
+  * fixed traceback in security profile handling
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jul 2007 18:50:39 +0200
+
 univention-installer (1.6.13-11) unstable; urgency=low
 
   * Fix layout order in security profile selection

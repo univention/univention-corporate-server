@@ -100,10 +100,10 @@ class object(content):
 			followup_element = len(self.elements)
 			
 
-		if key in [ 10, 32 ] and elif self.get_elem('BT_back').get_status():
+		if key in [ 10, 32 ] and self.get_elem('BT_back').get_status():
 			return 'prev'
 
-		elif key in [ 10, 32 ] and elif self.get_elem('BT_next').get_status():
+		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
 		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
