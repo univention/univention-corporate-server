@@ -73,8 +73,6 @@ univention-config-registry set domainname=$domainname
 univention-config-registry set windows/domain=$windows_domain
 hostname $hostname
 
-univention-config-registry set version/releasename="common beech"
-
 if [ -n "$eth0_type" -a "$eth0_type" = "dynamic" ]; then
 	univention-config-registry set interfaces/eth0/type=dhcp
 fi
