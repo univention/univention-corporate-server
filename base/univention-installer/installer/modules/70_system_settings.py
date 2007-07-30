@@ -77,18 +77,18 @@ class object(content):
 		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))
 
-		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY, self.minX+2))
+		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY+5, self.minX+2))
 
 		dict={}
-		dict['Normal']=['normal',0]
-		dict['Strict']=['strict',1]
-		dict['Open']=['open',2]
+		dict['Open']=['open',0]
+		dict['Normal']=['normal',1]
+		dict['Strict']=['strict',2]
 
 		list=['normal','strict','open']
 		select=0
 #		if self.all_results.has_key('security_profile'):
 #			select=list.index(self.mapping(self.all_results['security_profile']))
-		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,40,10,[select]))
+		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+6,self.minX+2,40,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
 	def input(self,key):
