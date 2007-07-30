@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.0-13) unstable; urgency=low
+
+  * corrected default-setting of masquerade_domains
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 14:18:10 +0200
+
 univention-mail-postfix (1.0.0-12) unstable; urgency=low
 
   * added descriptions for config registry variables
