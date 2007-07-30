@@ -1,3 +1,9 @@
+univention-heimdal (2.0.3-3) unstable; urgency=low
+
+  * fix univention-heimdal-kdc variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 16:58:11 +0200
+
 univention-heimdal (2.0.3-2) unstable; urgency=low
 
   * removed kerberos/v4tickets configuration directive, fixes Bug #8878

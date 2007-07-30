@@ -1,18 +1,18 @@
 [kerberos/adminserver]
-Description[de]=
-Description[en]=
+Description[de]=Kerberos Admin-Server für den Realm
+Description[en]=Kerberos admin server for therealm
 Type=str
-Categories=
+Categories=System
 
 [kerberos/kdc]
-Description[de]=
-Description[en]=
+Description[de]=Liste von KDCs für den Realm
+Description[en]=List of KDC's for the realm
 Type=str
-Categories=
+Categories=System
 
 [kerberos/realm]
-Description[de]=
-Description[en]=
+Description[de]=Kerberos Realm der Domäne
+Description[en]=Kerberos realm of the domain
 Type=str
-Categories=
+Categories=System
 
