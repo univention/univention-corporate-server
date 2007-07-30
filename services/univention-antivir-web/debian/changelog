@@ -1,3 +1,10 @@
+univention-antivir-web (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policy
+  * remove viralator.cgi and squirm configuration
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 30 Jul 2007 13:09:11 +0200
+
 univention-antivir-web (1.0-8) unstable; urgency=low
 
   * add GPL headers

@@ -30,8 +30,6 @@
 
 #export DH_VERBOSE=1
 
-export DH_COMPAT=3
-
 ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
 	CFLAGS += -g
 endif
@@ -66,11 +64,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install files/etc/viralator/languages/english.txt $(CURDIR)/debian/univention-antivir-web/etc/viralator/languages/english.txt
-	install files/usr/lib/cgi-bin/viralator.cgi $(CURDIR)/debian/univention-antivir-web/usr/lib/cgi-bin/viralator.cgi
-	install files/var/www/downloads/index.htm $(CURDIR)/debian/univention-antivir-web/var/www/downloads/index.htm
-
-	univention-install-baseconfig
+	univention-install-config-registry
 
 binary-indep: build install
 # We have nothing to do by default.
