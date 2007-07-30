@@ -1,0 +1,48 @@
+[gdm/allowremoteroot]
+Description[de]=Erlaube root Login via XDMCP
+Description[en]=Allow login as root via XDMCP
+Type=str
+Categories=Desktop
+
+[gdm/allowroot]
+Description[de]=Erlaube root Login am GDM
+Description[en]=Allow root login at GDM
+Type=str
+Categories=Desktop
+
+[gdm/menu/language]
+Description[de]=Aktiviere/Deaktiviere die Schaltfläche für die Sprachauswahl
+Description[en]=Enable/Disable language button
+Type=str
+Categories=Desktop
+
+[gdm/menu/securesystem]
+Description[de]=Erlaube/Verbiete Benutzern das Herrunterfahren des Systems
+Description[en]=Allow/Disallow users to shutdown the system
+Type=str
+Categories=Desktop
+
+[gdm/menu/system]
+Description[de]=Aktiviere/Deaktiviere GMD-Menüs
+Description[en]=Enalbe/Disable GDM menus
+Type=str
+Categories=Desktop
+
+[gdm/theme]
+Description[de]=Name des zu verwendenden GDM-Theme
+Description[en]=Name of the GDM theme to use
+Type=str
+Categories=Desktop
+
+[gdm/theme/dir]
+Description[de]=Pfad zum GDM-Theme Verzeichnis
+Description[en]=Pah to the GDM theme directory
+Type=str
+Categories=Desktop
+
+[univentionAutoStartScript]
+Description[de]=Aktiviere automatischen Login
+Description[en]=Enable automatic login
+Type=str
+Categories=Desktop
+

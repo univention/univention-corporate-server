@@ -1,3 +1,9 @@
+univention-gdm (1.0.3-2) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 14:16:13 +0200
+
 univention-gdm (1.0.3-1) unstable; urgency=low
 
   * add Configuration Registry variable gdm/autostart
