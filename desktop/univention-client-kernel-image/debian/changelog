@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-2) unstable; urgency=low
+
+  * depend on kernel 2.6.18
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jul 2007 11:38:04 +0200
+
 univention-client-kernel-image (1:1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
