@@ -50,7 +50,7 @@ else:
 append_dot_mydomain = no
 
 @!@
-print 'masquerade_domains = %s' % baseConfig.get('postfix/masquerade/domains', '@%@domainname@%@')
+print 'masquerade_domains = %s' % baseConfig.get('postfix/masquerade/domains', '$mydomain')
 print 'masquerade_exceptions = %s' % baseConfig.get('postfix/masquerade/exceptions', 'root')
 @!@
 
