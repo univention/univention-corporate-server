@@ -1,0 +1,19 @@
+Type: file
+File: etc/squid/squid.conf
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: proxy/redirect
+Variables: proxy/force
+Variables: proxy/ldapauth
+Variables: proxy/parent
+Variables: interfaces/eth0/address
+Variables: interfaces/eth1/address
+Variables: interfaces/eth2/address
+Variables: interfaces/eth3/address
+
+Type: file
+File: etc/squirm.local
+Variables: interfaces/eth0/address
+Variables: interfaces/eth1/address
+Variables: interfaces/eth2/address
+Variables: interfaces/eth3/address

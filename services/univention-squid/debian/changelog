@@ -1,0 +1,68 @@
+univention-squid (1.0-11) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 11:26:20 +0100
+
+univention-squid (1.0-10) unstable; urgency=low
+
+  * added missing Header to squid.conf
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 27 Mar 2006 11:16:18 +0200
+
+univention-squid (1.0-9) unstable; urgency=low
+
+  * Minor fix for better univention-antivir-squid support
+  *
+
+ -- Alexander Reelsen <reelsen@univention.de>  Thu, 26 Jan 2006 13:15:52 +0100
+
+univention-squid (1.0-8) unstable; urgency=low
+
+  * Small patch for new univention-antivir-squid package
+
+ -- Alexander Reelsen <reelsen@univention.de>  Tue, 10 Jan 2006 12:55:23 +0100
+
+univention-squid (1.0-7) unstable; urgency=low
+
+  * changed the way squid is restarted in postinst script
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 10 Oct 2005 15:11:00 +0200
+
+univention-squid (1.0-6) unstable; urgency=low
+
+  * destination port 21 is now allowed
+  * user www-data is no more redirected
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 14 Mar 2005 14:35:19 +0100
+
+univention-squid (1.0-5) unstable; urgency=low
+
+  * New location of squid.conf
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 19 Aug 2004 11:45:11 +0200
+
+univention-squid (1.0-4) unstable; urgency=low
+
+  * Do not use parent proxy to access local networks
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 16 Jul 2004 10:48:00 +0200
+
+univention-squid (1.0-3) unstable; urgency=low
+
+  * do not restrict processes started by root
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri,  9 Jul 2004 14:42:49 +0200
+
+univention-squid (1.0-2) unstable; urgency=low
+
+  * allow local traffic to be forwarded to proxy
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 11 Jun 2004 16:10:15 +0200
+
+univention-squid (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
+
