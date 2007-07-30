@@ -21,6 +21,8 @@ Variables: ldap/port
 Variables: ldap/server
 Variables: mail/smtp/helo/name
 Variables: mail/localmailboxsizelimit
+Variables: postfix/masquerade/domains
+Variables: postfix/masquerade/exceptions
 
 Type: subfile
 Multifile: etc/postfix/main.cf

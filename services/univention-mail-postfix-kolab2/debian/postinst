@@ -35,6 +35,9 @@ univention-baseconfig set postfix/allow-unauth?yes
 
 eval `univention-baseconfig shell`
 
+univention-baseconfig set postfix/masquerade/domains?@%@domainname@%@
+univention-baseconfig set postfix/masquerade/exceptions?root
+
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then
       touch /etc/postfix/$file

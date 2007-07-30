@@ -49,8 +49,10 @@ else:
 
 append_dot_mydomain = no
 
-masquerade_domains = $mydomain
-masquerade_exceptions = root
+@!@
+print 'masquerade_domains = %s' % baseConfig.get('postfix/masquerade/domains', '@%@domainname@%@')
+print 'masquerade_exceptions = %s' % baseConfig.get('postfix/masquerade/exceptions', 'root')
+@!@
 
 # this defines which domains are considered to be "own" domains and
 # therefor are not forwarded to the relay host.
