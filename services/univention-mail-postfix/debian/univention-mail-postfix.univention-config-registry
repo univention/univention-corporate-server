@@ -16,6 +16,8 @@ Variables: mail/postfix/mynetworks
 Variables: server/role
 Variables: mail/messagesizelimit
 Variables: mail/smtpauth
+Variables: postfix/masquerade/domains
+Variables: postfix/masquerade/exceptions
 
 Type: file
 File: etc/postfix/master.cf
