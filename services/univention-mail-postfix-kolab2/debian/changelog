@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.1-5) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 13:27:19 +0200
+
 univention-mail-postfix-kolab2 (1.0.1-4) unstable; urgency=low
 
   * added config-registry Variables postfix/masquerade/domains and postfix/masquerade/exceptions
