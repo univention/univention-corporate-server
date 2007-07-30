@@ -129,6 +129,11 @@ class object(content):
 		else:
 			result['create_home_share']='false'
 
-		result['security_profile'] = 'foo'
+		if self.get_elem('security_profile_radio').result() == 0:
+			result['security_profile'] = 'open'
+		elif self.get_elem('security_profile_radio').result() == 1:
+			result['security_profile'] = 'normal'
+		elif self.get_elem('security_profile_radio').result() == 2:
+			result['security_profile'] = 'strict'
 
 		return result
