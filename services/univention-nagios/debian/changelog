@@ -1,3 +1,9 @@
+univention-nagios (1.0.2-7) unstable; urgency=low
+
+  * fixed Typo
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 30 Jul 2007 13:28:52 +0200
+
 univention-nagios (1.0.2-6) unstable; urgency=low
 
   * changed templatenames for ucs-overview 
