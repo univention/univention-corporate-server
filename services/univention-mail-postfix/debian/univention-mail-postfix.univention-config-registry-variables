@@ -76,3 +76,15 @@ Description[en]=Enable/Disable the automatic of Postfix
 Type=str
 Categories=Mail
 
+[postfix/masquerade/domains]
+Description[de]=Liste von Domänen für die Masquerading aktiviert ist
+Description[en]=List of domains for which masquerading is enabled
+Type=str
+Categories=Mail
+
+[postfix/masquerade/exceptions]
+Description[de]=E-Mail Adressen die vom Masquerading ausgenommen werden
+Description[en]=E-Mail addresses tp except from masquerading
+Type=str
+Categories=Mail
+
