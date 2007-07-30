@@ -118,6 +118,8 @@ class modabout(unimodule.unimodule):
 			]}))
 
 		version_string = ""
+		codename = ""
+		
 		for key in ['version/version','version/patchlevel','version/security-patchlevel']:
 			if baseConfig.has_key(key) and baseConfig[key]:
 				if version_string:
@@ -125,9 +127,12 @@ class modabout(unimodule.unimodule):
 				else:
 					version_string = baseConfig[key]
 
+		if baseConfig.has_key("version/releasename"):
+			codename = baseConfig["version/releasename"]
+
 		rows.append(tablerow("",{},{"obs":[
 			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('local Installation')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s" % (_('UCS Version'), version_string)]})]})
+			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s (%s)" % (_('UCS Version'), version_string, codename)]})]})
 			]}))
 
 		days = baseConfig.get( 'ssl/validity/days', '' )

@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-9) unstable; urgency=low
+
+  * Display UCS release code name in "about" dialog.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 14:44:15 +0200
+
 univention-directory-manager (4.0.3-8) unstable; urgency=low
 
   * added descriptions for config registry variables
