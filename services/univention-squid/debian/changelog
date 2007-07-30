@@ -1,3 +1,10 @@
+univention-squid (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+  * remove squirm and squirm support
+
+ -- Wolf Wiegand <wiegand@univention.de>  Mon, 30 Jul 2007 12:01:57 +0200
+
 univention-squid (1.0-11) unstable; urgency=low
 
   * add GPL headers

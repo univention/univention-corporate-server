@@ -28,8 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
-
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
@@ -57,17 +55,10 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	mkdir -p $(CURDIR)/debian/univention-squid/usr/bin
-	tar -zxf squirm-1.0betaB.tar.gz
-	sh -c "cd squirm-1.0betaB/regex; ./configure; make; cp regex.o regex.h ..; cd ..; patch -Np1 <../univention-squirm.patch; make"
-	mv squirm-1.0betaB/squirm $(CURDIR)/debian/univention-squid/usr/bin
-	rm -rf squirm-1.0betaB
-	
 	cp -d -r files/* $(CURDIR)/debian/univention-squid/
-	chmod 755 $(CURDIR)/debian/univention-squid/etc/network/if-*.d/??-squid
-	find $(CURDIR)/debian/univention-squid/ -type d -name CVS -exec rm -rf {} \; || true
+	find $(CURDIR)/debian/univention-squid/ -type d -name .svn -exec rm -rf {} \; || true
 	
-	univention-install-baseconfig
+	univention-install-config-registry
 
 
 # Build architecture-independent files here.

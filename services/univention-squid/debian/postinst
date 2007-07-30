@@ -33,8 +33,6 @@ set -e
 case "$1" in
     configure)
 
-	chown proxy: /var/log/squirm
-
 	univention-baseconfig set proxy/redirect?no
 	univention-baseconfig set proxy/force?yes
 	univention-baseconfig set proxy/ldapauth?no
