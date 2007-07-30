@@ -16,6 +16,12 @@ Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str
 Categories=Management
 
+[directory/manager/cmd/timeout]
+Description[de]=Sitzungslaufzeit des Kommandozeilen Univention Directory Manager
+Description[en]=Session timeout of the commandline Univention Directory Manager
+Type=str
+Categories=Management
+
 [directory/manager/cmd/debug/level]
 Description[de]=Debug-Level des Kommandozeilen Univention Directory Manager
 Description[en]=Debug level of the commandline Univention Directory Manager
