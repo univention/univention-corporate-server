@@ -1,3 +1,9 @@
+univention-installer (1.6.13-7) unstable; urgency=low
+
+  * Configure version/releasename at installation time
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 11:01:58 +0200
+
 univention-installer (1.6.13-6) unstable; urgency=low
 
   * Show release name in installer
