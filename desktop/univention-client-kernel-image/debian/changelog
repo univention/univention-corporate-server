@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-3) unstable; urgency=low
+
+  * fix conflicts line in debian/control
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jul 2007 11:47:32 +0200
+
 univention-client-kernel-image (1:1.0.0-2) unstable; urgency=low
 
   * depend on kernel 2.6.18
