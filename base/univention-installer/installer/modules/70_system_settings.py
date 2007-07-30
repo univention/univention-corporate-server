@@ -79,6 +79,9 @@ class object(content):
 
 		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY+5, self.minX+2))
 
+		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX,30)) #7
+		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37,30)) #8
+
 		dict={}
 		dict['Open']=['open',0]
 		dict['Normal']=['normal',1]
@@ -96,12 +99,15 @@ class object(content):
 		if followup_element > len(self.elements):
 			followup_element = len(self.elements)
 			
-		if key in [ 10, 32 ] and self.get_elem_by_id(self.current).active:
+
+		if key in [ 10, 32 ] and elif self.get_elem('BT_back').get_status():
+			return 'prev'
+
+		elif key in [ 10, 32 ] and elif self.get_elem('BT_next').get_status():
 			return 'next'
+
 		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
 			return 0
-		elif key in [ 10, 32 ] and self.get_elem_by_id(followup_element).active:
-			return 'prev'
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)
 
