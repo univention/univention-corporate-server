@@ -62,6 +62,7 @@ install: build
 	install -m644 keytab.py debian/univention-heimdal-member/usr/lib/univention-ldap-listener/system
 	
 	univention-install-config-registry
+	univention-install-config-registry-info
 	univention-install-service-info
 
 	#logroate can't handle .debian files
