@@ -1,0 +1,11 @@
+Source: univention-antivir-web
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev, unzip
+
+Package: univention-antivir-web
+Architecture: all
+Depends: univention-squid, apache | www-server, libwww-perl, univention-baseconfig, clamav-daemon | kav4fileservers | sophie
+Description: univention antivirus web
+ univention antivirus web module

@@ -1,0 +1,18 @@
+Type: file
+File: etc/squirm.patterns
+Variables: hostname
+Variables: domainname
+Variables: interfaces/eth0/address
+Variables: interfaces/eth1/address
+Variables: interfaces/eth2/address
+Variables: interfaces/eth3/address
+
+Type: file
+File: etc/viralator/viralator.conf
+Variables: proxy/parent/host
+Variables: proxy/parent/port
+Variables: proxy/antivir/scanner
+Variables: proxy/antivir/virusscanner
+Variables: proxy/antivir/scannerpath
+Variables: proxy/antivir/viruscmd
+Variables: proxy/antivir/alert

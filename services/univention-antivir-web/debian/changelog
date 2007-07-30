@@ -1,0 +1,40 @@
+univention-antivir-web (1.0-8) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Nov 2006 17:27:12 +0100
+
+univention-antivir-web (1.0-6) unstable; urgency=low
+
+  * new version of virlator which includes support for clamav
+  * added dependencies to virus-scanners
+  * scan .pif-files
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 14 Mar 2005 15:07:31 +0100
+
+univention-antivir-web (1.0-4) unstable; urgency=low
+
+  * Fix permission of CGI
+  * German language support
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu,  9 Sep 2004 09:38:47 +0200
+
+univention-antivir-web (1.0-3) unstable; urgency=low
+
+  * Added -i3 flag to kavscanner
+  * Extended list of files to scan
+  * Added Proxy support
+
+ -- Sven Dreyer <dreyer@univention.de>  Fri, 16 Jul 2004 11:49:14 +0200
+
+univention-antivir-web (1.0-2) unstable; urgency=low
+
+  * Added dependency to kav4fileservers
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 15 Jul 2004 08:07:35 +0200
+
+univention-antivir-web (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
