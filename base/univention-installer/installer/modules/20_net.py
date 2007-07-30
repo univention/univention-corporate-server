@@ -149,16 +149,17 @@ class object(content):
 				if not self.ignore('dsn_forwarder_1'):
 					self.message=invalid+_("DNS-Forwarder")
 					return False
-		if self.all_results['proxy_http'].strip() and not self.all_results['proxy_http'].strip() in ['http://', 'https://']: 
+		if self.all_results['proxy_http'].strip() and (self.all_results['proxy_http'].strip() !='http://' or self.all_results['proxy_http'].strip() !='https://'): 
 			proxy=self.all_results['proxy_http'].strip()
 			if not (proxy.startswith('http://') or proxy.startswith('https://')):
 				if not self.ignore('proxy_http'):
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
 					return False
-			if proxy.startswith('https://'):
-				proxy=proxy.replace('https://','')
 			else:
-				proxy=proxy.replace('http://','')
+				if proxy.startswith('https://'):
+					proxy=proxy.replace('https://','')
+				elif proxy.startswith('http://'):
+					proxy=proxy.replace('http://','')
 
 			proxy=proxy.split(':')
 			if len(proxy) != 2:

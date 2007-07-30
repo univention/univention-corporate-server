@@ -1,3 +1,9 @@
+univention-installer (1.6.13-10) unstable; urgency=low
+
+  * Added handling fpr https proxies 
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 30 Jul 2007 16:28:52 +0200
+
 univention-installer (1.6.13-9) unstable; urgency=low
 
   * Fix position of security profile radio button
