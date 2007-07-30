@@ -96,6 +96,15 @@ def readonlyinput_map( storage, umcp_part ):
 mapper.add( umcd.TextInput, textinput_map )
 mapper.add( umcd.ReadOnlyInput, readonlyinput_map )
 
+def password_map( storage, umcp_part ):
+	quest = question_secure( unicode( umcp_part ), utils.layout_attrs( storage, umcp_part ),
+							{ 'usertext' : '' } )
+	storage[ umcp_part.id() ] = ( quest, umcp_part )
+
+	return quest
+
+mapper.add( umcd.SecretInput, password_map )
+
 def longtext_map( storage, umcp_part ):
 	default = utils.default( umcp_part )
 	attributes = utils.layout_attrs( storage, umcp_part )

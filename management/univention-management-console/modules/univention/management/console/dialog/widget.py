@@ -82,6 +82,13 @@ register( values.Integer, _text_input )
 register( values.EMailAddress, _text_input )
 register( values.IP_Address, _text_input )
 
+# Password
+def _password_input( option, **kwargs ):
+	name, syntax = option
+	return input.SecretInput( option, **kwargs )
+
+register( values.Password, _password_input )
+
 # longer text fields
 
 def _long_text_input( option, **kwargs ):

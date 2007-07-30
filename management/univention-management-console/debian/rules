@@ -70,6 +70,10 @@ install-ext-%:
 
 	echo -n "`date +"%d.%m.%Y"`" > debian/univention-management-console/usr/share/univention-management-console/frontend/builddate
 	cat debian/changelog | head -1 > debian/univention-management-console/usr/share/univention-management-console/frontend/buildversion
+	install -m 0744 vnc/*.jar debian/univention-management-console/usr/share/univention-management-console/www/vnc/
+	install -m 0744 vnc/*.php debian/univention-management-console/usr/share/univention-management-console/www/vnc/
+	install -m 0744 vnc/univention-vnc-setpassword debian/univention-management-console/usr/share/univention-management-console/
+
 
 	install -m 0744 usr/sbin/univention-management-console-proxy.py debian/univention-management-console-proxy/usr/sbin/univention-management-console-proxy
 	install -m 0744 usr/sbin/univention-management-console-server.py debian/univention-management-console-server/usr/sbin/univention-management-console-server

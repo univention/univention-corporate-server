@@ -78,6 +78,11 @@ class TextInput( Input ):
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
 		Input.__init__( self, option, default, static_options, attributes )
 
+class SecretInput( Input ):
+	"""This class represent a password input field."""
+	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
+		Input.__init__( self, option, default, static_options, attributes )
+
 class MultiLineInput( Input ):
 	"""This class represent a simple string input field."""
 	def __init__( self, option = ( None, None ), default = '', static_options = {}, attributes = {} ):
@@ -116,5 +121,5 @@ class Selection( Input ):
 				return ( key, descr )
 		return ( value, value )
 
-InputTypes = ( type( ReadOnlyInput() ), type( TextInput() ), type( Checkbox() ), type( Selection() ),
-			   type( MultiLineInput() ) )
+InputTypes = ( type( ReadOnlyInput() ), type( TextInput() ), type( SecretInput() ),
+			   type( Checkbox() ), type( Selection() ), type( MultiLineInput() ) )

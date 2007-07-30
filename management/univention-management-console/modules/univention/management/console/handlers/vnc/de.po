@@ -1,0 +1,77 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-07-30 16:18+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: unicode\n"
+
+#: __init__.py:49
+msgid "VNC"
+msgstr "VNC"
+
+#: __init__.py:50
+msgid "Access to a System via VNC Session"
+msgstr "Zugriff auf ein System mittel NVC"
+
+#: __init__.py:55
+msgid "VNC Configuration"
+msgstr "VNC Konfiguration"
+
+#: __init__.py:61 __init__.py:66
+msgid "VNC Connection"
+msgstr "VNC Verbindung"
+
+#: __init__.py:71
+msgid "VNC Password"
+msgstr "VNC Password"
+
+#: __init__.py:73
+msgid "Password"
+msgstr "Passwort"
+
+#: __init__.py:100 __init__.py:123
+msgid "You are not permitted to run this command."
+msgstr "Es ist nicht erlaubt dieses Kommando auszuführen"
+
+#: _revamp.py:65
+msgid "Connect to the VNC Server"
+msgstr "Verbindung zum VNC-Server aufbauen"
+
+#: _revamp.py:72
+msgid "As a first step a password for the VNC access has to be set."
+msgstr "Zuerst muss ein Passwort für den VNC-Zugriff vergeben werden."
+
+#: _revamp.py:79
+msgid "Set VNC Password"
+msgstr "Setzen des VNC-Passwortes"
+
+#: _revamp.py:81
+msgid "Currently there is no VNC Server running."
+msgstr "Momentan läuft noch kein VNC-Server."
+
+#: _revamp.py:84
+msgid "Start"
+msgstr "Starten"
+
+#: _revamp.py:87
+msgid "Start VNC Server"
+msgstr "Starten des VNC-Server"
+
+#: _revamp.py:89
+msgid "Password is set and the VNC Server is running."
+msgstr "Ein Passwort existiert und der VNC-Server läuft bereits."
+
+#: _revamp.py:91
+msgid "Connect to VNC Session"
+msgstr "Verbindung zum VNC-Server aufbauen"

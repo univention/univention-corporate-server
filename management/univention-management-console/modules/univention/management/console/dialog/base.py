@@ -109,7 +109,8 @@ class Fill( Text ):
 		else:
 			Text.__init__( self, text, { 'rowspan' : str( columns ) } )
 
-TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( HTML() ), type( Fill() ) )
+TextTypes = ( type( Text() ), type( Date() ), type( Number() ), type( HTML() ),
+			  type( Fill() ) )
 
 def _verify_list_items( sequence ):
 	# map strings to umcd.Text

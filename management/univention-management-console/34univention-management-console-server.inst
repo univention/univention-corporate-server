@@ -62,6 +62,13 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="modutils/search" \
 	--append operation="modutils/load"
 
+# create vnc operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=vnc \
+	--set description="VNC Session" \
+	--append operation="vnc/*"
+
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=baseconfig \
@@ -165,6 +172,15 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set category="Kernel Module" \
 	--set ldapbase="$ldap_base" \
 	--set command="modutils/*" \
+	--set description="All Operations"
+
+# create vnc session acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=vnc-all \
+	--set category="VNC Session" \
+	--set ldapbase="$ldap_base" \
+	--set command="vnc/*" \
 	--set description="All Operations"
 
 # create baseconfig acls
@@ -292,7 +308,8 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=wizard-basis-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base
+	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base
 # 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
 univention-admin policies/console_access create $@ --ignore_exists \

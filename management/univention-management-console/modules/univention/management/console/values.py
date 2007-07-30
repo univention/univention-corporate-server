@@ -121,6 +121,11 @@ class String( Value ):
 		Value.__init__( self, label, basestring, required = required, regex = regex,
 						may_change = may_change )
 
+class Password( Value ):
+	def __init__( self, label, required = True, regex = None, may_change = True ):
+		Value.__init__( self, label, basestring, required = required, regex = regex,
+						may_change = may_change )
+
 class Text( Value ):
 	def __init__( self, label, required = True, regex = None, may_change = True ):
 		Value.__init__( self, label, basestring, required = required, regex = regex,
