@@ -1,3 +1,9 @@
+univention-heimdal (2.0.3-4) unstable; urgency=low
+
+  * fixed typo
+
+ -- Janis Meybohm <meybohm@univention.de>  Mon, 30 Jul 2007 17:12:45 +0200
+
 univention-heimdal (2.0.3-3) unstable; urgency=low
 
   * fix univention-heimdal-kdc variables

@@ -1,6 +1,6 @@
 [kerberos/adminserver]
 Description[de]=Kerberos Admin-Server für den Realm
-Description[en]=Kerberos admin server for therealm
+Description[en]=Kerberos admin server for the realm
 Type=str
 Categories=System
 
