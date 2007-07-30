@@ -92,9 +92,15 @@ class object(content):
 		self.get_elem('security_profile_radio').current = select
 
 	def input(self,key):
-		if key in [ 10, 32 ] and self.btn_next():
+		followup_element = self.current + 1
+		if followup_element > len(self.elements):
+			followup_element = len(self.elements)
+			
+		if key in [ 10, 32 ] and self.get_elem_by_id(self.current).active:
 			return 'next'
-		elif key in [ 10, 32 ] and self.btn_back():
+		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
+			return 0
+		elif key in [ 10, 32 ] and self.get_elem_by_id(followup_element).active:
 			return 'prev'
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)

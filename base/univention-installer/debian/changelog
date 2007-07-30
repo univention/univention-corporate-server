@@ -1,3 +1,11 @@
+univention-installer (1.6.13-6) unstable; urgency=low
+
+  * Show release name in installer
+  * Fix usage of btn_back() and btn_next() in conjunction with new menu layout
+    classes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 10:56:17 +0200
+
 univention-installer (1.6.13-5) unstable; urgency=low
 
   * Clear on-screen layout

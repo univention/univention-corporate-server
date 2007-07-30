@@ -1175,6 +1175,7 @@ class content:
 		return ''
 
 	def btn_next(self):
+		# Should not be used in conjunction with the new menu classes
 		#self.debug('(content)btn_next')
 		return self.elements[0].get_status()
 
@@ -1188,6 +1189,7 @@ class content:
 		self.elements[self.current].set_on()
 
 	def btn_back(self):
+		# Should not be used in conjunction with the new menu classes
 		#self.debug('(content)btn_back')
 		if self.elements[1].usable():
 			return self.elements[1].get_status()
