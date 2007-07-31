@@ -1,3 +1,9 @@
+univention-nt-password-sync (0.2-5) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 15:40:49 +0200
+
 univention-nt-password-sync (0.2-4) unstable; urgency=low
 
   * encoded files utf-8

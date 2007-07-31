@@ -55,7 +55,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m644 files/nt-password-sync.py $(NT_SYNC_DEST)/usr/lib/univention-ldap-listener/system
+	install -m644 files/nt-password-sync.py $(NT_SYNC_DEST)/usr/lib/univention-directory-listener/system
 	install -m744 files/usr/share/univention-nt-password-sync/nt-password-sync.py $(NT_SYNC_DEST)/usr/share/univention-nt-password-sync
 
 	install -D -m644 windows/ucs-ad-connector/msi-package/UCS\ AD\ Connector/ucs-ad-connector.msi $(NT_SYNC_DEST)/usr/share/univention-nt-password-sync/ucs-ad-connector.msi
