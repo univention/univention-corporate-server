@@ -223,7 +223,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	# set keyboard to German
 	ln -sf ../../usr/share/keymaps/i386/qwertz/de-latin1.kmap.gz /etc/console/boottime.kmap.gz || true
 	ln -sf ../../usr/share/zoneinfo/Europe/Berlin /etc/localtime || true
-	/usr/sbin/univention-baseconfig set locale='de_DE.UTF-8'; locale-gen
+	# /usr/sbin/univention-baseconfig set locale='de_DE.UTF-8'; locale-gen
 	apt-get clean
 
 	umount -f -n /proc || true

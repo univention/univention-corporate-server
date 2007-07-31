@@ -1,10 +1,11 @@
-univention-client-basesystem (2.0.9-1) unstable; urgency=low
+univention-client-basesystem (2.0.10-1) unstable; urgency=low
 
   * some more ucs 2.0 updates
   * don't disable portmap init script
   * added console-data to the package list
+  * don't set locale
 
- -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jul 2007 10:27:48 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jul 2007 10:42:34 +0200
 
 univention-client-basesystem (2.0.5-2) unstable; urgency=low
 
