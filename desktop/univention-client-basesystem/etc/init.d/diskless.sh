@@ -68,7 +68,11 @@ loadkeys de >/dev/null 2>&1
 echo ""
 
 #prepare ramdisk
-test -d /proc || mount /proc
+
+mkdir -p /proc
+
+mount /proc
+
 mount -t tmpfs /dev/shm "$ramdisk"
 mkdir -p -m 1777 "$ramdisk/tmp" "$ramdisk/var/tmp"
 for dir in "/var/lib/dhcp3" "/etc/univention" "/home" "/var/lib/univention-home-mounter" "/var/run/cups" "/etc/network/run" "/etc/X11" "/etc/apt" "/etc/cron.d" "/etc/default" "/etc/init.d" "/etc/samba";
@@ -101,7 +105,7 @@ for n in `echo $subnetmask.$myip | awk -F '.' '{print $4"."$8" "$3"."$7" "$2"."$
   do
   mnm=`echo $n | awk -F '.' '{print $1}'`
   mip=`echo $n | awk -F '.' '{print $2}'`
-  if [ $mnm = "255" ]
+  if [ "$mnm" = "255" ]
 	  then
 	  network="."$mip$network
 	  else
