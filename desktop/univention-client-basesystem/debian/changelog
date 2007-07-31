@@ -1,8 +1,9 @@
-univention-client-basesystem (2.0.6-1) unstable; urgency=low
+univention-client-basesystem (2.0.7-1) unstable; urgency=low
 
   * some more ucs 2.0 updates
+  * don't disable portmap init script
 
- -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jul 2007 09:42:05 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 31 Jul 2007 10:01:53 +0200
 
 univention-client-basesystem (2.0.5-2) unstable; urgency=low
 
