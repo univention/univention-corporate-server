@@ -3,7 +3,7 @@
 # Univention Print Server
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -63,9 +63,9 @@ fi
 
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-ldap-listener
+	if test -f /etc/init.d/univention-directory-listener
 		then
-		/etc/init.d/univention-ldap-listener crestart
+		/etc/init.d/univention-directory-listener crestart
 	fi
 
 fi
@@ -86,7 +86,7 @@ fi
 # Version 0.9 may not update printers.conf
 # Version 0.17 may not set ppd's on added spoolhosts
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.18; then
-	/usr/sbin/univention-ldap-listener-ctrl resync cups-printers
+	/usr/sbin/univention-directory-listener-ctrl resync cups-printers
 fi
 
 exit 0

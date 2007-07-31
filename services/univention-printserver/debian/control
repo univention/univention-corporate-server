@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-printserver
 Architecture: all
-Depends: univention-baseconfig (>=0.06), cupsys, cupsys-client, cupsys-bsd, foomatic-filters-ppds, foomatic-db-gimp-print, foomatic-db-hpijs, cupsys-driver-gimpprint, univention-ldap-listener (>=0.4), univention-printclient
+Depends: univention-baseconfig (>=0.06), cupsys, cupsys-client, cupsys-bsd, foomatic-filters-ppds, foomatic-db-gimp-print, foomatic-db-hpijs, cupsys-driver-gimpprint, univention-directory-listener, univention-printclient
 Description: UCS - print server
  This packages provides the printer configuration. Printers
  can be managed with Univention Admin.

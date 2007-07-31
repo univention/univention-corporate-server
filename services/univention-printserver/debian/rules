@@ -3,7 +3,7 @@
 # Univention Print Server
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -58,7 +58,7 @@ install: build
 	ln -s univention-cupsadmin ${D}/usr/sbin/univention-cups-accept
 	ln -s ../sbin/univention-cupsadmin ${D}/usr/bin/univention-cups-disable
 	ln -s ../sbin/univention-cupsadmin ${D}/usr/bin/univention-cups-enable
-	install -m 644 cups-printers.py ${D}/usr/lib/univention-ldap-listener/system
+	install -m 644 cups-printers.py ${D}/usr/lib/univention-directory-listener/system
 	install -m 0755 79univention-printserver.inst ${D}/usr/lib/univention-install/
 	install -D -m0755 ppds.py ${D}/usr/lib/univention-printserver/univention-ppds
 

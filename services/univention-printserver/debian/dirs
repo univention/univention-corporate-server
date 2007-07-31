@@ -1,5 +1,5 @@
 /etc/cups
-/usr/lib/univention-ldap-listener/system
+/usr/lib/univention-directory-listener/system
 /usr/lib/univention-install/
 /usr/sbin/
 /usr/bin/

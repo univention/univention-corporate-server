@@ -1,3 +1,9 @@
+univention-printserver (1.0.3-4) unstable; urgency=low
+
+  * Depend on Univentin Directory Listener plus the necessary changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:57:38 +0200
+
 univention-printserver (1.0.3-3) unstable; urgency=low
 
   * added descriptions for config registry variables
