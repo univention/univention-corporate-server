@@ -1,3 +1,9 @@
+univention-ssl (2.0.1-5) unstable; urgency=low
+
+  * Adapt code to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:31:54 +0200
+
 univention-ssl (2.0.1-4) unstable; urgency=low
 
   * Depend on Univention Directory Listener

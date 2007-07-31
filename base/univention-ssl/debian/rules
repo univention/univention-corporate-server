@@ -55,7 +55,7 @@ install: build
 	install -d debian/univention-ssl/var/www
 	install -m 644 make-certificates.sh debian/univention-ssl/usr/share/univention-ssl/
 	install -m 0755 ssl-sync debian/univention-ssl/usr/share/univention-ssl/
-	install -m 0755 gencertificate.py debian/univention-ssl/usr/lib/univention-ldap-listener/system
+	install -m 0755 gencertificate.py debian/univention-ssl/usr/lib/univention-directory-listener/system
 	install -m 0755 univention-certificate debian/univention-ssl/usr/sbin/
 	install -m 0755 univention-certificate-check-validity debian/univention-ssl/usr/sbin/
 
