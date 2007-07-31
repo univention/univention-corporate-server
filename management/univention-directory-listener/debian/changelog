@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.0-3) unstable; urgency=low
+
+  * Add missing Replaces: on univention-ldap-listener
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 11:25:47 +0200
+
 univention-directory-listener (2.1.0-2) unstable; urgency=low
 
   * Fix build failure

@@ -8,6 +8,7 @@ Package: univention-directory-listener
 Architecture: any
 Depends: ${shlibs:Depends}, univention-runit, python2.4-univention | python2.4-univention-2005, python2.4-univention-debug
 Conflicts: univention-ldap-replication (<< 0.5), univention-ldap-listener (<< 2.1)
+Replaces: univention-ldap-listener
 Provides: univention-ldap-listener
 Description: UCS - Directory Listener
  Univention Directory Listener is a client for the Univention
