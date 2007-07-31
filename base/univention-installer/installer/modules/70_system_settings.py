@@ -106,8 +106,8 @@ class object(content):
 		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
-		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
-			return 0
+#		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
+#			return 0
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)
 
