@@ -1,3 +1,9 @@
+univention-heimdal (2.0.3-5) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 15:19:05 +0200
+
 univention-heimdal (2.0.3-4) unstable; urgency=low
 
   * fixed typo

@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -44,9 +44,9 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 fi
 
 if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.6; then
-	if [ -e /usr/sbin/univention-ldap-listener-ctrl ]; then
+	if [ -e /usr/sbin/univention-directory-listener-ctrl ]; then
 		rm -f /etc/krb5.keytab
-		/usr/sbin/univention-ldap-listener-ctrl resync keytab
+		/usr/sbin/univention-directory-listener-ctrl resync keytab
 	fi
 fi
 
@@ -58,9 +58,9 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25.22;
 fi
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-ldap-listener
+	if test -f /etc/init.d/univention-directory-listener
 		then
-		/etc/init.d/univention-ldap-listener crestart
+		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
 

@@ -1,4 +1,4 @@
 usr/share/univention-heimdal
 usr/lib/univention-install
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system
 var/lib/univention-heimdal/

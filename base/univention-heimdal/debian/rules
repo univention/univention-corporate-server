@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -57,9 +57,9 @@ install: build
 	install -m755 11univention-heimdal-init.inst ${D}/usr/lib/univention-install
 	install -m755 02univention-heimdal-member.inst debian/univention-heimdal-member/usr/lib/univention-install
 	install -m755 15univention-heimdal-kdc.inst ${D}/usr/lib/univention-install
-	install -m644 keytab.py debian/univention-heimdal-kdc/usr/lib/univention-ldap-listener/system
-	install -m644 keytab-member.py debian/univention-heimdal-kdc/usr/lib/univention-ldap-listener/system
-	install -m644 keytab.py debian/univention-heimdal-member/usr/lib/univention-ldap-listener/system
+	install -m644 keytab.py debian/univention-heimdal-kdc/usr/lib/univention-directory-listener/system
+	install -m644 keytab-member.py debian/univention-heimdal-kdc/usr/lib/univention-directory-listener/system
+	install -m644 keytab.py debian/univention-heimdal-member/usr/lib/univention-directory-listener/system
 	
 	univention-install-config-registry
 	univention-install-config-registry-info
