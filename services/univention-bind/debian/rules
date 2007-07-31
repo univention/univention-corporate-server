@@ -54,7 +54,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0755 bind.py ${D}/usr/lib/univention-ldap-listener/system
+	install -m 0755 bind.py ${D}/usr/lib/univention-directory-listener/system
 	install -m 0755 05univention-bind.inst ${D}/usr/lib/univention-install/
 	install -m 0755 90univention-bind-proxy.inst ${D}-proxy/usr/lib/univention-install/
 	install -m 0644 etc/bind/db.root.fake ${D}/etc/bind/

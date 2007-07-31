@@ -69,9 +69,9 @@ fi
 
 if [ "$1" = "configure" ]
 	then
-	if test -f /etc/init.d/univention-ldap-listener
+	if test -f /etc/init.d/univention-directory-listener
 		then
-		/etc/init.d/univention-ldap-listener crestart
+		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
 

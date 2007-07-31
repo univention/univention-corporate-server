@@ -1,4 +1,4 @@
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system
 usr/lib/univention-install/
 etc/bind
 etc/runit/univention-bind
