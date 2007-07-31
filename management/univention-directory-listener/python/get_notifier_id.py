@@ -4,7 +4,7 @@
 # Univention LDAP Listener
 #  read the notifier id from the dc master
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #

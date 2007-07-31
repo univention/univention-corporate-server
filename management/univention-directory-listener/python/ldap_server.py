@@ -3,7 +3,7 @@
 # Univention LDAP Listener
 #  listener script for setting ldap server
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
