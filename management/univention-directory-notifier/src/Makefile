@@ -1,8 +1,8 @@
 #
-# Univention LDAP Notifier
+# Univention Directory Notifier
 #  Makefile
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,19 +30,19 @@
 CC=gcc
 CFLAGS=-Wall -g -D_FILE_OFFSET_BITS=64
 LDADD=-luniventiondebug
-NOTIFIER_OBJS=index.o sem.o cache.o callback.o network.o notify.o univention-ldap-notifier.o
+NOTIFIER_OBJS=index.o sem.o cache.o callback.o network.o notify.o univention-directory-notifier.o
 NOTIFIER_LDADD=$(LDADD) -lldap -lpthread
 DUMP_OBJS=index.o index-dump.o
 DUMP_LDADD=$(LDADD)
 
 
-all: univention-ldap-notifier
+all: univention-directory-notifier
 
 univention-ldap-notifier: $(NOTIFIER_OBJS)
-	$(CC) $(CFLAGS) -o univention-ldap-notifier $(NOTIFIER_OBJS) $(NOTIFIER_LDADD)
+	$(CC) $(CFLAGS) -o univention-directory-notifier $(NOTIFIER_OBJS) $(NOTIFIER_LDADD)
 	
 univention-ldap-notifier-index-dump: $(DUMP_OBJS)
-	$(CC) $(CFLAGS) -o univention-ldap-notifier-index-dump $(DUMP_OBJS) $(DUMP_LDADD)
+	$(CC) $(CFLAGS) -o univention-directory-notifier-index-dump $(DUMP_OBJS) $(DUMP_LDADD)
 
 clean:
-	@rm -f *.o core univention-ldap-notifier univention-ldap-notifier-index-dump
+	@rm -f *.o core univention-directory-notifier univention-directory-notifier-index-dump

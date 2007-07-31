@@ -1,8 +1,7 @@
 /*
- * Univention LDAP Notifier
- *  univention-ldap-notifier.c
+ * Univention Directory Notifier
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -68,7 +67,7 @@ long long notifier_lock_time=100;
 
 void usage(void)
 {
-	fprintf(stderr, "Usage: univention-ldap-notifier [options]\n");
+	fprintf(stderr, "Usage: univention-directory-notifier [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
 	fprintf(stderr, "   -o   only notify, ignore replog\n");
