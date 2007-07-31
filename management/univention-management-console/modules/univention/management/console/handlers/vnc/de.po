@@ -49,7 +49,7 @@ msgstr "Verbindung zum VNC-Server aufbauen"
 
 #: _revamp.py:59
 msgid "To setup a VNC Session a password is required and a running VNC server."
-msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort und ein laufender VNC-Server ben√tigt."
+msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort und ein laufender VNC-Server ben√∂tigt."
 
 #: _revamp.py:68
 msgid "Set VNC Password"

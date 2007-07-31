@@ -1,3 +1,9 @@
+univention-management-console (0.7.23-2) unstable; urgency=low
+
+  * fixed encoding of german translation file 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 Jul 2007 08:44:56 +0200
+
 univention-management-console (0.7.23-1) unstable; urgency=low
 
   * vnc module: add a 'kill vnc server' button 
