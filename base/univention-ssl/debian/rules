@@ -59,7 +59,8 @@ install: build
 	install -m 0755 univention-certificate debian/univention-ssl/usr/sbin/
 	install -m 0755 univention-certificate-check-validity debian/univention-ssl/usr/sbin/
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 binary-indep: build install

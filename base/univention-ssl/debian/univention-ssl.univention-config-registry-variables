@@ -1,0 +1,66 @@
+[ssl/common]
+Description[de]=Common name für das Root SSL-Zertifikat
+Description[en]=Common name for the root SSL certificate
+Type=str
+Categories=SSL
+
+[ssl/country]
+Description[de]=Zweistelliger Ländercode der in SSL-Zertifikaten angegeben wird
+Description[en]=Two letter country code to use in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/email]
+Description[de]=E-Mail Adresse die in SSL-Zertifikaten angegeben wird
+Description[en]=E-mail address to use in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/state]
+Description[de]=Staat der in SSL-Zertifikaten angegeben wird
+Description[en]=State to use in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/locality]
+Description[de]=Lokalität die in SSL-Zertifikaten angegeben wird
+Description[en]=Locality used in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/organization]
+Description[de]=Organisation die in SSL-Zertifikaten angegeben wird
+Description[en]=Organization used in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/organizationalunit]
+Description[de]=Organisationseinheit die in SSL-Zertifikaten angegeben wird
+Description[en]=Organizational unit used in SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/default/days]
+Description[de]=Standard Lebensdauer für neue SSL-Zertifikate
+Description[en]=Default lifetime of new SSL certificates
+Type=str
+Categories=SSL
+
+[ssl/validity/check]
+Description[de]=Aktiviere/Deaktiviere die regelmäßige Gültigkeitsprüfung für Zertifikate
+Description[en]=Enable/Disable regular checks for certificate validity
+Type=str
+Categories=SSL
+
+[ssl/validity/days]
+Description[de]=Anzahl an Tagen die das Root SSL-Zertifikat gültig ist
+Description[en]=Number of days which the root certificate is valid
+Type=str
+Categories=SSL
+
+[ssl/validity/warning]
+Description[de]=Warnmeldungen ausgeben wenn die Gültigkeit des Root-Zertifikats die angegebenen Tage unterschreitet
+Description[en]=Print warnings if the root certificates validity ends within this amount of days
+Type=str
+Categories=SSL
+

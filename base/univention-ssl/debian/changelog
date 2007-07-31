@@ -1,3 +1,9 @@
+univention-ssl (2.0.1-6) unstable; urgency=low
+
+  * added descriptions for config registry variables
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 31 Jul 2007 15:02:10 +0200
+
 univention-ssl (2.0.1-5) unstable; urgency=low
 
   * Adapt code to Univention Directory Listener.
