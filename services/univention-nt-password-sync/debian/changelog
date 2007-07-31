@@ -1,3 +1,9 @@
+univention-nt-password-sync (0.2-7) unstable; urgency=low
+
+  * Bump version.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 16:17:15 +0200
+
 univention-nt-password-sync (0.2-6) unstable; urgency=low
 
   * Bump version for further Univention Directory Listener fixes.
