@@ -5,7 +5,8 @@ Variables: ldap/base
 Variables: proxy/redirect
 Variables: proxy/force
 Variables: proxy/ldapauth
-Variables: proxy/parent
+Variables: proxy/parent/host
+Variables: proxy/parent/port
 Variables: interfaces/eth0/address
 Variables: interfaces/eth1/address
 Variables: interfaces/eth2/address

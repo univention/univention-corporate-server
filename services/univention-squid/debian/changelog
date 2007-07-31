@@ -7,6 +7,7 @@ univention-squid (2.0.0-1) unstable; urgency=low
     instead of ldap.
   * multiple group names can be set to check user membership against them
     (when using user authentication)
+  * fix error with registration of variables squid/parent/*
 
  -- Wolf Wiegand <wiegand@univention.de>  Mon, 30 Jul 2007 16:48:25 +0200
 
