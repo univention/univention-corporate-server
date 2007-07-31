@@ -1,3 +1,9 @@
+univention-nfs (1.0.0-4) unstable; urgency=low
+
+  * Adapt and depend on Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:46:29 +0200
+
 univention-nfs (1.0.0-3) unstable; urgency=low
 
   * call exit 0 at the end of the postinst scripts

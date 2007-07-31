@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-nfs-server
 Architecture: all
-Depends: nfs-kernel-server, univention-ldap-listener (>= 0.4), univention-shares
+Depends: nfs-kernel-server, univention-directory-listener, univention-shares
 Description: UCS - NFS server
  This package configures the Network FileSystem (NFS).
  Shares, that are directories which can be accessed by

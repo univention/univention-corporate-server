@@ -3,7 +3,7 @@
 # Univention NFS
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -48,7 +48,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 nfs-shares.py debian/tmp/usr/lib/univention-ldap-listener/system
+	install -m 755 nfs-shares.py debian/tmp/usr/lib/univention-directory-listener/system
 	install -m 755 81univention-nfs-server.inst debian/tmp/usr/lib/univention-install/
 	install -m 744 files/etc/heartbeat/resource.d/nfs-kernel-server debian/univention-nfs-server-ha/etc/heartbeat/resource.d/
 	dh_install
