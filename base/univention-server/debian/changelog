@@ -1,3 +1,10 @@
+univention-server (2.1.2-3) unstable; urgency=low
+
+  * Depend on univention-directory-listener and univention-directory-notifier
+    instead of univention-ldap-listener and univention-ldap-notifier
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 12:11:32 +0200
+
 univention-server (2.1.2-2) unstable; urgency=low
 
   * Make server and client roles depend on univention-firewall.
