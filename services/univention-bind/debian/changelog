@@ -1,3 +1,9 @@
+univention-bind (2.0.3-5) unstable; urgency=low
+
+  * Depend on Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:25:50 +0200
+
 univention-bind (2.0.3-4) unstable; urgency=low
 
   * added descriptions for config registry variables
