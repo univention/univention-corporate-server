@@ -47,7 +47,7 @@ default inst
 prompt 0
 
 # Display the bootup message
-display pxeboot.msg
+display windows-installer.msg
 
 # Boot automatically after 30 seconds from local disk
 timeout 300

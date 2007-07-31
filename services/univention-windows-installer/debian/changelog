@@ -1,3 +1,9 @@
+univention-windows-installer (2.0.0-2) unstable; urgency=low
+
+  * fixed bootup message for generated profiles 
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 31 Jul 2007 08:40:06 +0200
+
 univention-windows-installer (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
