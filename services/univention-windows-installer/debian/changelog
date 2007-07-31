@@ -1,4 +1,4 @@
-univention-windows-installer (2.0.0-2) unstable; urgency=low
+univention-windows-installer (2.0.0-3) unstable; urgency=low
 
   * fixed bootup message for generated profiles 
 

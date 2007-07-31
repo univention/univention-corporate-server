@@ -1,2 +1,3 @@
 /var/lib/univention-windows-installer/install/linuxaux
 /var/lib/univention-windows-installer/linux/
+/var/lib/univention-client-boot

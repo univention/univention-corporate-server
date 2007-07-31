@@ -85,8 +85,8 @@ install: build
 	cp -r installer-image-linux/linuxaux $(INST_IMAGE)/var/lib/univention-windows-installer/install/
 	cp installer-image-linux/master $(INST_IMAGE)/var/lib/univention-windows-installer/linux/
 	find $(INST_IMAGE) -name '.svn' | xargs -- rm -rf
-	cp installer-image-linux/bzImage $(INST_IMAGE)/var/lib/univention-client-boot
-	cp installer-image-linux/initrd $(INST_IMAGE)/var/lib/univention-client-boot
+	cp installer-image-linux/bzImage $(INST_IMAGE)/var/lib/univention-client-boot/
+	cp installer-image-linux/initrd $(INST_IMAGE)/var/lib/univention-client-boot/
 
 	univention-install-config-registry
 	
