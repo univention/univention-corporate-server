@@ -79,6 +79,23 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		global command_description
 		umch.simpleHandler.__init__( self, command_description )
 
+	def _vnc_cmdline( self ):
+		vncdir = os.path.join( '/home', self._username, '.vnc' )
+		pidfile = None
+		if os.path.isdir( vncdir ):
+			for item in os.listdir( vncdir ):
+				if os.path.isfile( os.path.join( vncdir, item ) ) and item.endswith( '.pid' ):
+					pidfile = os.path.join( vncdir, item )
+					break
+
+		fd = open( os.path.join( pidfile ), 'r' )
+		pid = fd.readline()[ : -1 ]
+		fd.close()
+		fd = open( os.path.join( '/proc', pid, 'cmdline' ), 'r' )
+		cmdline = fd.readline()[ : -1 ]
+		fd.close()
+		return cmdline.split( '\x00' )
+
 	def _vnc_status( self ):
 		vncdir = os.path.join( '/home', self._username, '.vnc' )
 		if os.path.isfile( os.path.join( vncdir, 'passwd' ) ):
@@ -113,7 +130,11 @@ class handler( umch.simpleHandler, _revamp.Web ):
 	def vnc_stop( self, object ):
 		pwdexists, running = self._vnc_status()
 		if running:
-			os.system( 'su - %s -c "vncserver -kill"' % self._username )
+			args = self._vnc_cmdline()
+			if '-rfbport' in args:
+				port = args[ args.index( '-rfbport' ) + 1 ]
+				port = int( port ) - 5900
+				os.system( 'su - %s -c "vncserver -kill :%d"' % ( self._username, port ) )
 
 		self.finished( object.id(), True )
 

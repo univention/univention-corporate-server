@@ -41,22 +41,9 @@ import univention.debug as ud
 _ = umc.Translation( 'univention.management.console.handlers.vnc' ).translate
 
 class Web( object ):
-	def _create_vnc_url( self ):
-		vncdir = os.path.join( '/home', self._username, '.vnc' )
-		pidfile = None
-		if os.path.isdir( vncdir ):
-			for item in os.listdir( vncdir ):
-				if os.path.isfile( os.path.join( vncdir, item ) ) and item.endswith( '.pid' ):
-					pidfile = os.path.join( vncdir, item )
-					break
 
-		fd = open( os.path.join( pidfile ), 'r' )
-		pid = fd.readline()[ : -1 ]
-		fd.close()
-		fd = open( os.path.join( '/proc', pid, 'cmdline' ), 'r' )
-		cmdline = fd.readline()[ : -1 ]
-		fd.close()
-		args = cmdline.split( '\x00' )
+	def _create_vnc_url( self ):
+		args = self._vnc_cmdline()
 		if '-rfbport' in args:
 			port = args[ args.index( '-rfbport' ) + 1 ]
 
@@ -90,5 +77,10 @@ class Web( object ):
 		else:
 			lst.add_row( [ umcd.InfoBox( _( 'Password is set and the VNC Server is running.' ) ) ] )
 			lst.add_row( [ umcd.HTML( self._create_vnc_url() ) ] )
+			req = umcp.Command( args = [ 'vnc/stop' ] )
+			req_config = umcp.Command( args = [ 'vnc/config' ] )
+			btn = umcd.Button( _( 'Stop VNC Server' ), 'actions/ok',
+							   actions = [ umcd.Action( req ), umcd.Action( req_config ) ] )
+			lst.add_row( [ btn ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Connect to VNC Session' ) ) ]
 		self.revamped( object.id(), res )

@@ -3,17 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-30 16:18+0200\n"
+"POT-Creation-Date: 2007-07-31 08:31+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
 #: __init__.py:49
@@ -40,38 +39,42 @@ msgstr "VNC Password"
 msgid "Password"
 msgstr "Passwort"
 
-#: __init__.py:100 __init__.py:123
+#: __init__.py:117 __init__.py:144
 msgid "You are not permitted to run this command."
 msgstr "Es ist nicht erlaubt dieses Kommando auszuführen"
 
-#: _revamp.py:65
+#: _revamp.py:52
 msgid "Connect to the VNC Server"
 msgstr "Verbindung zum VNC-Server aufbauen"
 
-#: _revamp.py:72
-msgid "As a first step a password for the VNC access has to be set."
-msgstr "Zuerst muss ein Passwort für den VNC-Zugriff vergeben werden."
+#: _revamp.py:59
+msgid "To setup a VNC Session a password is required and a running VNC server."
+msgstr "Zum Aufbauen einer VNC-Sitzung wird ein Passwort und ein laufender VNC-Server ben�tigt."
 
-#: _revamp.py:79
+#: _revamp.py:68
 msgid "Set VNC Password"
 msgstr "Setzen des VNC-Passwortes"
 
-#: _revamp.py:81
+#: _revamp.py:70
 msgid "Currently there is no VNC Server running."
 msgstr "Momentan läuft noch kein VNC-Server."
 
-#: _revamp.py:84
+#: _revamp.py:73
 msgid "Start"
 msgstr "Starten"
 
-#: _revamp.py:87
+#: _revamp.py:76
 msgid "Start VNC Server"
 msgstr "Starten des VNC-Server"
 
-#: _revamp.py:89
+#: _revamp.py:78
 msgid "Password is set and the VNC Server is running."
 msgstr "Ein Passwort existiert und der VNC-Server läuft bereits."
 
-#: _revamp.py:91
+#: _revamp.py:82
+msgid "Stop VNC Server"
+msgstr "Stoppen des VNC-Server"
+
+#: _revamp.py:85
 msgid "Connect to VNC Session"
 msgstr "Verbindung zum VNC-Server aufbauen"

@@ -1,3 +1,9 @@
+univention-management-console (0.7.23-1) unstable; urgency=low
+
+  * vnc module: add a 'kill vnc server' button 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 31 Jul 2007 08:33:50 +0200
+
 univention-management-console (0.7.22-2) unstable; urgency=low
 
   * add missing files required for 'vnc' module
