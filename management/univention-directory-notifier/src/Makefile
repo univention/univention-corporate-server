@@ -38,10 +38,10 @@ DUMP_LDADD=$(LDADD)
 
 all: univention-directory-notifier
 
-univention-ldap-notifier: $(NOTIFIER_OBJS)
+univention-directory-notifier: $(NOTIFIER_OBJS)
 	$(CC) $(CFLAGS) -o univention-directory-notifier $(NOTIFIER_OBJS) $(NOTIFIER_LDADD)
 	
-univention-ldap-notifier-index-dump: $(DUMP_OBJS)
+univention-directory-notifier-index-dump: $(DUMP_OBJS)
 	$(CC) $(CFLAGS) -o univention-directory-notifier-index-dump $(DUMP_OBJS) $(DUMP_LDADD)
 
 clean:
