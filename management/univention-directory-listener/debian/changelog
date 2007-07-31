@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.0-2) unstable; urgency=low
+
+  * Fix build failure
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 10:28:11 +0200
+
 univention-directory-listener (2.1.0-1) unstable; urgency=low
 
   * Wording changes: univention-ldap-listener has been renamed to
