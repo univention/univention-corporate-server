@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 #
-# Univention LDAP Notifier
+# Univention Directory Notifier
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-ldap-notifier
+package=univention-directory-notifier
 
 build: build-stamp
 
@@ -53,16 +53,14 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-
-
-	install -m 700 src/univention-ldap-notifier debian/univention-ldap-notifier/usr/sbin
+	install -m 700 src/univention-directory-notifier debian/univention-directory-notifier/usr/sbin
 
 	univention-install-baseconfig
 
-	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/finish
-	touch debian/univention-ldap-notifier/etc/runit/univention-ldap-notifier/down
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-directory-notifier/etc/runit/univention-directory-notifier/finish
+	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
 
-	install -m 755 02univention-ldap-notifier.inst debian/univention-ldap-notifier/usr/lib/univention-install/
+	install -m 755 02univention-ldap-notifier.inst debian/univention-directory-notifier/usr/lib/univention-install/
 
 	univention-install-service-info
 

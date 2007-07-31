@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention LDAP Notifier
+# Univention Directory Notifier
 #  init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ ! -e /etc/runit/univention/univention-ldap-notifier ]; then
+if [ ! -e /etc/runit/univention/univention-directory-notifier ]; then
 	exit 0
 fi
 
@@ -38,22 +38,22 @@ case "$1" in
 		if [ -z "$notifier_autostart" -o "$notifier_autostart" != "yes" ]; then
 			exit 0
 		fi
-		echo -n "Starting univention-ldap-notifier daemon: "
-		sv start univention-ldap-notifier
+		echo -n "Starting univention-directory-notifier daemon: "
+		sv start univention-directory-notifier
 		echo ""
 		;;
 	stop)
-		echo -n "Stopping univention-ldap-notifier daemon: "
-		sv stop univention-ldap-notifier
+		echo -n "Stopping univention-directory-notifier daemon: "
+		sv stop univention-directory-notifier
 		echo ""
 		;;
 	restart|force-reload)
-		echo -n "Restarting univention-ldap-notifier daemon: "
-		sv restart univention-ldap-notifier
+		echo -n "Restarting univention-directory-notifier daemon: "
+		sv restart univention-directory-notifier
 		echo ""
 		;;
 	crestart)
-		if sv status univention-ldap-notifier | grep ^run: > /dev/null 2>&1
+		if sv status univention-directory-notifier | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
@@ -61,7 +61,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-ldap-notifier {start|stop|restart|crestart|force-reload}"
+		echo "Usage: /etc/init.d/univention-directory-notifier {start|stop|restart|crestart|force-reload}"
 		exit 1
 		;;
 esac

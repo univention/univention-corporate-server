@@ -1,9 +1,9 @@
 #!/bin/sh -e
 #
-# Univention LDAP Notifier
+# Univention Directory Notifier
 #  preinst
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,7 +31,7 @@
 # dpkg doesn't handle moving configuration files correctly
 if [ ! -z "$2" ]; then
 	origsum=80059d0b205c7c9333eb89fc37c17307
-	file=/etc/init.d/univention-ldap-notifier
+	file=/etc/init.d/univention-directory-notifier
 	
 	if ! [ -e "$file" ]; then
 		continue
