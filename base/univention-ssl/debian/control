@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-ssl
 Architecture: all
-Depends: openssl, makepasswd, univention-ldap-listener (>=0.4)
+Depends: openssl, makepasswd, univention-directory-listener (>=0.4)
 Description: UCS - SSL/TLS certificates
  This packages can create a root CA certificate to be used
  with UCS. It provides facilities to create further
