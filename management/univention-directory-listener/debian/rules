@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-ldap-listener
+package=univention-directory-listener
 
 build:
 	dh_testdir
@@ -51,19 +51,19 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 src/listener debian/univention-ldap-listener/usr/sbin/univention-ldap-listener
-	install -m 755 src/dump debian/univention-ldap-listener/usr/sbin/univention-ldap-listener-dump
-	install -m 755 src/verify debian/univention-ldap-listener/usr/sbin/univention-ldap-listener-verify
+	install -m 755 src/listener debian/univention-directory-listener/usr/sbin/univention-directory-listener
+	install -m 755 src/dump debian/univention-directory-listener/usr/sbin/univention-directory-listener-dump
+	install -m 755 src/verify debian/univention-directory-listener/usr/sbin/univention-directory-listener-verify
 	
-	install -m 755 src/listener-ctrl debian/univention-ldap-listener/usr/sbin/univention-ldap-listener-ctrl
-	install -m 644 python/listener.py debian/univention-ldap-listener/usr/lib/python2.4/site-packages
-	install -m 755 python/ldap_server.py debian/univention-ldap-listener/usr/lib/univention-ldap-listener/system
-	install -m 755 03univention-ldap-listener.inst debian/univention-ldap-listener/usr/lib/univention-install/
-	install -m 755 python/get_notifier_id.py debian/univention-ldap-listener/usr/share/univention-ldap-listener/
+	install -m 755 src/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
+	install -m 644 python/listener.py debian/univention-directory-listener/usr/lib/python2.4/site-packages
+	install -m 755 python/ldap_server.py debian/univention-directory-listener/usr/lib/univention-directory-listener/system
+	install -m 755 03univention-directory-listener.inst debian/univention-directory-listener/usr/lib/univention-install/
+	install -m 755 python/get_notifier_id.py debian/univention-directory-listener/usr/share/univention-directory-listener/
 
-	touch debian/univention-ldap-listener/etc/runit/univention-ldap-listener/down
+	touch debian/univention-directory-listener/etc/runit/univention-directory-listener/down
 	univention-install-baseconfig
-	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-ldap-listener/etc/runit/univention-ldap-listener/finish
+	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-directory-listener/etc/runit/univention-directory-listener/finish
 
 	univention-install-service-info
 	dh_install

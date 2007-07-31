@@ -3,7 +3,7 @@
 # Univention LDAP Listener
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 
 univention-baseconfig set listener/autostart?yes
 
-adduser --quiet --system --home /var/lib/univention-ldap-listener listener
+adduser --quiet --system --home /var/lib/univention-directory-listener listener
 
 if [ ! -e "/var/log/univention/listener.log" ]; then
 	touch /var/log/univention/listener.log
@@ -69,9 +69,9 @@ fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.12; then
-		/etc/init.d/univention-ldap-listener restart
+		/etc/init.d/univention-directory-listener restart
 	else
-		/etc/init.d/univention-ldap-listener crestart
+		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
 

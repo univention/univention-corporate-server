@@ -1,5 +1,5 @@
 Type: file
-File: etc/runit/univention-ldap-listener/run
+File: etc/runit/univention-directory-listener/run
 Variables: listener/debug/level
 Variables: server/role
 Variables: listener/ignoremaster

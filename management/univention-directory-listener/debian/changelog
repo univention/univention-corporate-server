@@ -1,3 +1,10 @@
+univention-ldap-listener (2.1.0-1) unstable; urgency=low
+
+  * Wording changes: univention-ldap-listener has been renamed to
+    univention-directory-listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 30 Jul 2007 17:07:50 +0200
+
 univention-ldap-listener (2.0.5-3) unstable; urgency=low
 
   * add service description

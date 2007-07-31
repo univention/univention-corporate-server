@@ -7,10 +7,11 @@ Build-Depends: debhelper, libssl-dev, libldap2-dev, libdb3-dev, python2.4-dev, l
 Package: univention-ldap-listener
 Architecture: any
 Depends: ${shlibs:Depends}, univention-runit, python2.4-univention | python2.4-univention-2005, python2.4-univention-debug
-Conflicts: univention-ldap-replication (<< 0.5)
-Description: UCS - LDAP Listener
- Univention LDAP Listener is a client for the Univention
- LDAP Notifier that calls Python handlers on changes. By
+Conflicts: univention-ldap-replication (<< 0.5), univention-ldap-listener (<< 2.1)
+Provides: univention-ldap-listener
+Description: UCS - Directory Listener
+ Univention Directory Listener is a client for the Univention
+ Directory Notifier which calls Python handlers upon changes. By
  keeping a local cache, it can detect the change of single
  attributes and only run the appropriate handlers, providing
  both, the old and new objects to the handler. Through

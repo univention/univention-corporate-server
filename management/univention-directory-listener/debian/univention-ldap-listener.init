@@ -3,7 +3,7 @@
 # Univention LDAP Listener
 #  init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ ! -e /etc/runit/univention/univention-ldap-listener ]; then
+if [ ! -e /etc/runit/univention/univention-directory-listener ]; then
 	exit 0
 fi
 
@@ -39,21 +39,21 @@ case "$1" in
 			exit 0
 		fi
 		echo -n "Starting univention-ldap-listener daemon: "
-		sv up univention-ldap-listener
+		sv up univention-directory-listener
 		echo ""
 		;;
 	stop)
 		echo -n "Stopping univention-ldap-listener daemon: "
-		sv down univention-ldap-listener
+		sv down univention-directory-listener
 		echo ""
 		;;
 	restart|force-reload)
 		echo -n "Restarting univention-ldap-listener daemon: "
-		sv restart univention-ldap-listener
+		sv restart univention-directory-listener
 		echo ""
 		;;
 	crestart)
-		if sv status univention-ldap-listener | grep ^run: > /dev/null 2>&1
+		if sv status univention-directory-listener | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
 		else
@@ -61,7 +61,7 @@ case "$1" in
 		fi
 		;;
 	*)
-		echo "Usage: /etc/init.d/univention-ldap-listener {start|stop|restart|crestart|force-reload}"
+		echo "Usage: /etc/init.d/univention-directory-listener {start|stop|restart|crestart|force-reload}"
 		exit 1
 		;;
 esac
