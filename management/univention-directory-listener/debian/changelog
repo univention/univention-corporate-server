@@ -1,4 +1,4 @@
-univention-ldap-listener (2.1.0-1) unstable; urgency=low
+univention-directory-listener (2.1.0-1) unstable; urgency=low
 
   * Wording changes: univention-ldap-listener has been renamed to
     univention-directory-listener.
