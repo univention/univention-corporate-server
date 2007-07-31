@@ -98,7 +98,7 @@ case "$1" in
 	fi
 
 	mkdir -p /etc/univention
-	# touch /etc/univention/disable_baseconfig
+	touch /etc/univention/disable_baseconfig
 
 	usermod -p '!' root
 

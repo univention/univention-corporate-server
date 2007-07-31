@@ -1,4 +1,4 @@
-univention-client-basesystem (2.0.12-1) unstable; urgency=low
+univention-client-basesystem (2.0.13-1) unstable; urgency=low
 
   * some more ucs 2.0 updates
   * don't disable portmap init script
