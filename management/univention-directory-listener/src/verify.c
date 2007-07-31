@@ -1,8 +1,8 @@
 /*
- * Univention LDAP Listener
+ * Univention Directory Listener
  *  verify that Listener DB and local LDAP match
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -45,7 +45,7 @@
 #include "cache.h"
 #include "common.h"
 
-char *cache_dir = "/var/lib/univention-ldap-listener";
+char *cache_dir = "/var/lib/univention-directory-listener";
 
 int INIT_ONLY=0;
 
@@ -122,7 +122,7 @@ void compare_entries(char *dn, CacheEntry *entry, LDAP *ld, LDAPMessage *ldap_en
 
 void usage(void)
 {
-	fprintf(stderr, "Usage: univention-ldap-listener-verify [options]\n");
+	fprintf(stderr, "Usage: univention-directory-listener-verify [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
 	fprintf(stderr, "   -c   Listener cache path\n");

@@ -1,8 +1,8 @@
 /*
- * Univention LDAP Listener
+ * Univention Directory Listener
  *  main.c
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -62,7 +62,7 @@ struct server_list *server_list = NULL;
 int server_list_entries = 0;
 int backup_notifier=0;
 
-char *cache_dir = "/var/lib/univention-ldap-listener";
+char *cache_dir = "/var/lib/univention-directory-listener";
 char **module_dirs = NULL;
 int module_dir_count = 0;
 char pidfile[PATH_MAX];
@@ -149,7 +149,7 @@ void drop_privileges(void)
 
 static void usage(void)
 {
-	fprintf(stderr, "Usage: univention-ldap-listener [options]\n");
+	fprintf(stderr, "Usage: univention-directory-listener [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
 	fprintf(stderr, "   -F   run in foreground (intended for process supervision)\n");
@@ -307,7 +307,7 @@ int main(int argc, char* argv[])
 #endif
 	struct stat			 stbuf;
 
-	if (stat("/var/lib/univention-ldap-listener/bad_cache", &stbuf) == 0) {
+	if (stat("/var/lib/univention-directory-listener/bad_cache", &stbuf) == 0) {
 		exit(3);
 	}
 

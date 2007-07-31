@@ -1,8 +1,8 @@
 #
-# Univention LDAP Listener
-#  MAkefile for the listener
+# Univention Directory Listener
+#  Makefile for the listener
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #

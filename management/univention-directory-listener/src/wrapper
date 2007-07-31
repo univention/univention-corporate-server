@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-CACHE=/var/lib/univention-ldap-listener
+CACHE=/var/lib/univention-directory-listener
 if [ -e "$CACHE/__db.001" ] || [ -e "$CACHE/log.0000000001" ] || ! [ -e "$CACHE/cache.db" ]; then
 	exec $0.db42 $*
 else

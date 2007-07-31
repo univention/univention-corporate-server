@@ -1,9 +1,9 @@
 #!/bin/sh -e
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  resync modules
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -41,13 +41,13 @@ case "$1" in
 		shift
 		[ -z "$1" ] && usage
 		
-		sv down univention-ldap-listener
+		sv down univention-directory-listener
 		i=0
-		while ! sv status univention-ldap-listener | grep ^down: >/dev/null ; do
+		while ! sv status univention-directory-listener | grep ^down: >/dev/null ; do
 			i=$((i+1))
 			if [ $i -gt 300 ]; then
 				echo "Sending SIGKILL"
-				pids=`pidof univention-ldap-listener`
+				pids=`pidof univention-directory-listener`
 				if [ -n "$pids" ]; then
 					kill -9 $pids
 					i=0
@@ -58,9 +58,9 @@ case "$1" in
 		done;
 		echo shutdown done
 		for i in $*; do
-			rm "/var/lib/univention-ldap-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
+			rm "/var/lib/univention-directory-listener/handlers/$i" 2>/dev/null || echo "W: handler \"$i\" is unknown"
 		done
-		sv up univention-ldap-listener
+		sv up univention-directory-listener
 		
 		;;
 	*)

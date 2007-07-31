@@ -1,8 +1,8 @@
 /*
- * Univention LDAP Listener
+ * Univention Directory Listener
  *  cache_lowlevel.c
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -258,7 +258,7 @@ int parse_entry(void *data, u_int32_t size, CacheEntry *entry)
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "first 100 bytes of current entry:");
 			hex_dump(UV_DEBUG_ERROR, data, pos, pos+1000 > size ? size-pos : 1000);
 
-			if ((file=fopen("/var/lib/univention-ldap-listener/bad_cache", "w")) != NULL) {
+			if ((file=fopen("/var/lib/univention-directory-listener/bad_cache", "w")) != NULL) {
 				fprintf(file, "Check log file");
 				fclose(file);
 			}

@@ -1,9 +1,9 @@
 /*
- * Univention LDAP Listener
+ * Univention Directory Listener
  *  header information for base64.c
  *  tool to dump the cache.
  *
- * Copyright (C) 2004, 2005, 2006 Univention GmbH
+ * Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
  *
  * http://www.univention.de/
  *
@@ -45,13 +45,13 @@
 #include "cache.h"
 #include "common.h"
 
-char *cache_dir = "/var/lib/univention-ldap-listener";
+char *cache_dir = "/var/lib/univention-directory-listener";
 
 int INIT_ONLY=0;
 
 void usage(void)
 {
-	fprintf(stderr, "Usage: univention-ldap-listener-dump [options]\n");
+	fprintf(stderr, "Usage: univention-directory-listener-dump [options]\n");
 	fprintf(stderr, "Options:\n");
 	fprintf(stderr, "   -d   debugging\n");
 	fprintf(stderr, "   -c   Listener cache path\n");

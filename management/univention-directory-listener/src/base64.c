@@ -1,5 +1,5 @@
 /*
- * Modified by Univention for inclusion in Univention LDAP Listener
+ * Modified by Univention for inclusion in Univention Directory Listener
  * Modified by Kurt D. Zeilenga for inclusion into OpenLDAP
  */
 
