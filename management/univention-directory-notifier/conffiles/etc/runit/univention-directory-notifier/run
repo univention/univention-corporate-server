@@ -34,5 +34,5 @@ fi
 
 options="$options -F"
 
-exec /usr/sbin/univention-ldap-notifier $options >>/var/log/univention/notifier.log 2>&1
+exec /usr/sbin/univention-directory-notifier $options >>/var/log/univention/notifier.log 2>&1
 
