@@ -98,7 +98,7 @@ case "$1" in
 	fi
 
 	mkdir -p /etc/univention
-	touch /etc/univention/disable_baseconfig
+	# touch /etc/univention/disable_baseconfig
 
 	usermod -p '!' root
 
@@ -194,14 +194,14 @@ chmod 755 "/sbin/start-stop-daemon"
 	find etc/univention/templates/files -type f | while read f; do
 	    n=${f#etc/univention/templates/files}
 	    if test "$n" = "/.templates" -o "$n" = "/.not-templates"; then
-		continue
+			continue
 	    fi
 
 	    echo "installing $n..."
 	    if ! test -L "$n"; then
-		rm -f "$n"
-		mkdir -p "`dirname \"$n\"`"
-		ln -s "/ramdisk$n" "$n"
+			rm -f "$n"
+			mkdir -p "`dirname \"$n\"`"
+			ln -s "/ramdisk$n" "$n"
 	    fi
 
 	done
