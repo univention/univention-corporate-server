@@ -3,7 +3,7 @@
 # Univention Local Users
 #  postinst script for the debian package
 #
-# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2003, 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,8 +33,8 @@ univention-baseconfig set local-user-sync/passwd?true
 
 #DEBHELPER#
 
-if [ -x /etc/init.d/univention-ldap-listener ]; then
-	/etc/init.d/univention-ldap-listener crestart
+if [ -x /etc/init.d/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 exit 0
