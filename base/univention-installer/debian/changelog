@@ -1,3 +1,12 @@
+univention-installer (1.6.14-2) unstable; urgency=low
+
+  * Make next and forward buttons less broad
+  * Reorder tabs
+  * Set default security profile to normal
+  * Make System role the first tab
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 13:47:58 +0200
+
 univention-installer (1.6.14-1) unstable; urgency=low
 
   * fixed traceback in security profile handling

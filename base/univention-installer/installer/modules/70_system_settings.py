@@ -79,20 +79,22 @@ class object(content):
 
 		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY+5, self.minX+2))
 
-		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX,30)) #7
-		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37,30)) #8
-
 		dict={}
 		dict['Open']=['open',0]
 		dict['Normal']=['normal',1]
 		dict['Strict']=['strict',2]
 
 		list=['normal','strict','open']
-		select=0
+		select=1
 #		if self.all_results.has_key('security_profile'):
 #			select=list.index(self.mapping(self.all_results['security_profile']))
 		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+6,self.minX+2,40,10,[select]))
 		self.get_elem('security_profile_radio').current = select
+
+		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))
+		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37))
+
+		self.current = self.get_elem_id('create_local_repo')
 
 	def input(self,key):
 		followup_element = self.current + 1
@@ -106,8 +108,6 @@ class object(content):
 		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
-#		elif key in [ 10, 32 ] and (self.get_elem_by_id(followup_element).disabled == 1):
-#			return 0
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)
 
