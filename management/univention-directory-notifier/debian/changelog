@@ -1,3 +1,9 @@
+univention-directory-notifier (2.1.0-4) unstable; urgency=low
+
+  * More wording changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 14:15:51 +0200
+
 univention-directory-notifier (2.1.0-3) unstable; urgency=low
 
   * Fix Makefile error
