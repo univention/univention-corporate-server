@@ -3,7 +3,7 @@
 # Univention DHCP
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -54,7 +54,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0755 dhcp.py ${D}/usr/lib/univention-ldap-listener/system
+	install -m 0755 dhcp.py ${D}/usr/lib/univention-directory-listener/system
 	install -m 0755 25univention-dhcp.inst ${D}/usr/lib/univention-install/
 	install -m 0755 conffiles/etc/runit/univention-dhcp/run ${D}/etc/runit/univention-dhcp/
 	install -m 0644 conffiles/etc/dhcp3/local.conf ${D}/etc/dhcp3/
