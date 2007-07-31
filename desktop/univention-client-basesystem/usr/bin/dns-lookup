@@ -29,7 +29,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-import sys, types, string, DNS
+import sys
+
+# import the python support path
+sys.path.append('/var/lib/python-support/python2.4')
+
+import types, string, DNS
 
 name, qtype=sys.argv[1:]
 DNS.DiscoverNameServers()

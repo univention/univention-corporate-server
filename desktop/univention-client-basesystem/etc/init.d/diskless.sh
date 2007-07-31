@@ -58,6 +58,11 @@ getXModul()
     echo "$driver" | head -1 |  tr [:upper:] [:lower:]
 }
 
+preparePythonEnvironment ()
+{
+	mkdir -p /var/lib/python-support/python2.4/
+	update-python-modules -i /usr/share/python-support/python-dns
+}
 
 ramdisk="/ramdisk"
 
@@ -94,6 +99,8 @@ find etc/univention/templates/files -type d | while read d; do
 	n=${d#etc/univention/templates/files}
 	mkdir -p "$ramdisk$n"
 done
+
+preparePythonEnvironment
 
 echo -n "   ip address: "
 ipcmd=`cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g'`
