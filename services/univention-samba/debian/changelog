@@ -1,3 +1,9 @@
+univention-samba (1.0.4-9) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 31 Jul 2007 15:03:17 +0200
+
 univention-samba (1.0.4-8) unstable; urgency=low
 
   * added descriptions for config registry variables
