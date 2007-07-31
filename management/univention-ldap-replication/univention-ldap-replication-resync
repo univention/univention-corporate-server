@@ -90,9 +90,9 @@ fi
 
 date >> /var/log/univention/ldap-replication-resync.log
 echo "Try to sync changes stored in $1 into local LDAP" | tee -a /var/log/univention/ldap-replication-resync.log
-sv down univention-ldap-listener
+sv down univention-directory-listener
 echo -n "waiting for listener-shutdown "
-while ! sv status univention-ldap-listener | grep ^down: >/dev/null
+while ! sv status univention-directory-listener | grep ^down: >/dev/null
   do sleep 1
   echo -n " ."
 done
@@ -109,7 +109,7 @@ then
 		mkdir -p /var/lib/univention-ldap-replication; chmod -R 700 /var/lib/univention-ldap-replication
 	fi
 	mv $1 /var/lib/univention-ldap-replication/replayed.ldif_$d; chmod 600 /var/lib/univention-ldap-replication/replayed.ldif_$d
-	/etc/init.d/univention-ldap-listener start
+	/etc/init.d/univention-directory-listener start
 	exit 0
 else
 	echo "some DNs have failed and have to be synced manually:"
@@ -117,7 +117,7 @@ else
 	echo ""
 	echo "You can find the failed modifications in ${faileddns}"
 	echo "Check them for being sync with the master-LDAP, then delete $1 and start the listener again typing:"
-	echo "/etc/init.d/univention-ldap-listener start"
+	echo "/etc/init.d/univention-directory-listener start"
 	exit 1
 fi
 

@@ -3,7 +3,7 @@
 # Univention LDAP Replication
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -34,6 +34,6 @@ test -f /etc/ldap/rootpw.conf && chmod 600 /etc/ldap/rootpw.conf || true
 
 #DEBHELPER#
 
-/etc/init.d/univention-ldap-listener crestart
+/etc/init.d/univention-directory-listener crestart
 
 exit 0

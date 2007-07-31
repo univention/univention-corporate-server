@@ -3,7 +3,7 @@
 # Univention LDAP Replication
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,7 +53,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 replication.py debian/${package}/usr/lib/univention-ldap-listener/system/replication.py
+	install -m 755 replication.py debian/${package}/usr/lib/univention-directory-listener/system/replication.py
 	cat univention-ldap-replication-resync | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-ldap-replication-resync_tmp
 	install -m 744 univention-ldap-replication-resync_tmp debian/${package}/usr/sbin/univention-ldap-replication-resync
 	rm univention-ldap-replication-resync_tmp
