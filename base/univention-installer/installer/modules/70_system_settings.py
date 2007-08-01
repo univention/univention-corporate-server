@@ -77,7 +77,7 @@ class object(content):
 		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))
 
-		self.add_elem('security_profile_label', textline(_('Security profile:'), self.minY+5, self.minX+2))
+		self.add_elem('security_profile_label', textline(_('Activate filtering of system services:'), self.minY+5, self.minX+2))
 
 		dict={}
 		dict['Open']=['open',0]
@@ -108,6 +108,13 @@ class object(content):
 		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
+		elif key in [ 10, 32 ] and self.get_elem('security_profile_radio').get_status() and self.get_elem('security_profile_radio').result() == 2:
+			msglist= [ _('This option is only intended for!'),
+				   _('an initial locked-down system setup.'),
+				   _('For a fully functional system you will'),
+				   _('need to enable further services.') ]
+			self.sub=msg_win(self.sub, self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),1,1, msglist)
+			self.sub.draw()
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)
 

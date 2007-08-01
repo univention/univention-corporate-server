@@ -1,3 +1,10 @@
+univention-installer (1.6.14-4) unstable; urgency=low
+
+  * Display a warning if "strict" is selected
+  * Reformulate description
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 09:21:29 +0200
+
 univention-installer (1.6.14-3) unstable; urgency=low
 
   * resort package lists
