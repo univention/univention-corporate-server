@@ -1,3 +1,9 @@
+univention-updater (2.0.6-4) unstable; urgency=low
+
+  * Adapt to Univention Directory Policy.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 17:07:22 +0200
+
 univention-updater (2.0.6-3) unstable; urgency=low
 
   * fix rules and control

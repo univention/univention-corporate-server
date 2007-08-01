@@ -3,7 +3,7 @@
 # Univention Updater
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -101,8 +101,8 @@ if [ "$1" = "configure" ]; then
 		fi
 	fi
 	# update cronjob-entries
-	if [ -x /usr/lib/univention-ldap-policy/univention-policy-maintenance ]; then
-		/usr/lib/univention-ldap-policy/univention-policy-maintenance
+	if [ -x /usr/lib/univention-directory-policy/univention-policy-maintenance ]; then
+		/usr/lib/univention-directory-policy/univention-policy-maintenance
 	fi
 	# coloured warning in univention-maintenance
 	univention-baseconfig set update/warning?"no"
