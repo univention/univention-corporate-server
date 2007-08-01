@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.3-10) unstable; urgency=low
+
+  * Writeout UCS in full in the about dialog.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 09:32:48 +0200
+
 univention-directory-manager (4.0.3-9) unstable; urgency=low
 
   * Display UCS release code name in "about" dialog.

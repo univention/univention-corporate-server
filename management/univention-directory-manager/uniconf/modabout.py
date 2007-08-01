@@ -132,7 +132,7 @@ class modabout(unimodule.unimodule):
 
 		rows.append(tablerow("",{},{"obs":[
 			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('local Installation')]})]}),
-			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s (%s)" % (_('UCS Version'), version_string, codename)]})]})
+			tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':["%s %s (%s)" % (_('Univention Corporate Server'), version_string, codename)]})]})
 			]}))
 
 		days = baseConfig.get( 'ssl/validity/days', '' )
