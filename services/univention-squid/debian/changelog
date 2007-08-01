@@ -1,4 +1,4 @@
-univention-squid (2.0.0-2) unstable; urgency=low
+univention-squid (2.0.0-3) unstable; urgency=low
 
   * add configuration option for http_port
 
