@@ -1,9 +1,9 @@
 #! /bin/sh
 #
-# Univention LDAP Policy
+# Univention Directory Policy
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -35,10 +35,10 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-ldap-policy successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-directory-policy successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-run-parts /usr/lib/univention-ldap-policy >>/var/log/univention/join.log 2>&1
+run-parts /usr/lib/univention-directory-policy >>/var/log/univention/join.log 2>&1
 
-test -n "`grep "univention-ldap-policy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-policy successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-directory-policy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-policy successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
