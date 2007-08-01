@@ -1,3 +1,9 @@
+univention-server (2.1.2-5) unstable; urgency=low
+
+  * Adapt to Univention Directory Policy.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 17:20:06 +0200
+
 univention-server (2.1.2-4) unstable; urgency=low
 
   * Adapt to Univention Directory Policy.
