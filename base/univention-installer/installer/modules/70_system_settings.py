@@ -41,11 +41,11 @@ import string
 
 class object(content):
 	def checkname(self):
-		return ['local_repository','create_home_share', 'security_profile']
+		return ['local_repository','create_home_share']
 
 
 	def modvars(self):
-		return ['local_repository','create_home_share', 'security_profile']
+		return ['local_repository','create_home_share']
 
 	def mod_depends(self):
 		return {'system_role': ['domaincontroller_master', 'domaincontroller_backup','domaincontroller_slave','memberserver','basesystem'] }
@@ -53,16 +53,8 @@ class object(content):
 	def depends(self):
 		return {}
 
- 	def mapping(self,value):
-		if value in ['normal','Normal']:
-			return 'normal'
-		elif value in ['strict','Strict']:
-			return 'strict'
-		elif value in ['open','Open']:
-			return 'open'
-
 	def profile_complete(self):
-		if self.check('local_repository') | self.check('create_home_share') | self.check('security_profile'):
+		if self.check('local_repository') | self.check('create_home_share'):
 			return False
 		return True
 
@@ -77,30 +69,12 @@ class object(content):
 		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))
 
-		self.add_elem('security_profile_label', textline(_('Activate filtering of system services:'), self.minY+5, self.minX+2))
-
-		dict={}
-		dict['Open']=['open',0]
-		dict['Normal']=['normal',1]
-		dict['Strict']=['strict',2]
-
-		list=['normal','strict','open']
-		select=1
-#		if self.all_results.has_key('security_profile'):
-#			select=list.index(self.mapping(self.all_results['security_profile']))
-		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+6,self.minX+2,40,10,[select]))
-		self.get_elem('security_profile_radio').current = select
-
 		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))
 		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37))
 
 		self.current = self.get_elem_id('create_local_repo')
 
 	def input(self,key):
-		followup_element = self.current + 1
-		if followup_element > len(self.elements):
-			followup_element = len(self.elements)
-			
 
 		if key in [ 10, 32 ] and self.get_elem('BT_back').get_status():
 			return 'prev'
@@ -108,13 +82,6 @@ class object(content):
 		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
-		elif key in [ 10, 32 ] and self.get_elem('security_profile_radio').get_status() and self.get_elem('security_profile_radio').result() == 2:
-			msglist= [ _('This option is only intended for!'),
-				   _('an initial locked-down system setup.'),
-				   _('For a fully functional system you will'),
-				   _('need to enable further services.') ]
-			self.sub=msg_win(self.sub, self.sub.minY+(self.sub.maxHeight/8)+2,self.sub.minX+(self.sub.maxWidth/8),1,1, msglist)
-			self.sub.draw()
 		else:
 			return self.get_elem_by_id(self.current).key_event(key)
 
@@ -141,12 +108,5 @@ class object(content):
 				result['create_home_share']='false'
 		else:
 			result['create_home_share']='false'
-
-		if self.get_elem('security_profile_radio').result() == 0:
-			result['security_profile'] = 'open'
-		elif self.get_elem('security_profile_radio').result() == 1:
-			result['security_profile'] = 'normal'
-		elif self.get_elem('security_profile_radio').result() == 2:
-			result['security_profile'] = 'strict'
 
 		return result
