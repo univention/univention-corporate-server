@@ -1,3 +1,9 @@
+univention-system-setup (1.1.1-2) unstable; urgency=low
+
+  * Add a new security module 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 15:10:31 +0200
+
 univention-system-setup (1.1.1-1) unstable; urgency=low
 
   * more rename stuff
