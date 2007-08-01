@@ -1,3 +1,9 @@
+univention-squid (2.0.0-2) unstable; urgency=low
+
+  * add configuration option for http_port
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  1 Aug 2007 09:30:21 +0200
+
 univention-squid (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
