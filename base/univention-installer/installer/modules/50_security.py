@@ -67,13 +67,13 @@ class object(content):
 
 	def layout(self):
 		self.reset_layout()
-		self.add_elem('security_profile_label0', textline(_('Activate filtering of system services:'), self.minY+5, self.minX+2))
-		self.add_elem('security_profile_label1', textline(_('These options control how many system services are'), self.minY+6, self.minX+2))
-		self.add_elem('security_profile_label2', textline(_('initially blocked by a packet filter (iptables):'), self.minY+7, self.minX+2))
-		self.add_elem('security_profile_label3', textline(_('strict: Only SSH and HTTPS are allowed. This is only'), self.minY+8, self.minX+2))
-		self.add_elem('security_profile_label4', textline(_('        intended for an initial, locked-down setup.'), self.minY+9, self.minX+2))
-		self.add_elem('security_profile_label6', textline(_('normal: Typical selection of services, recommended'), self.minY+10, self.minX+2))
-		self.add_elem('security_profile_label7', textline(_('open  : No service is filtered'), self.minY+11, self.minX+2))
+		self.add_elem('security_profile_label0', textline(_('Activate filtering of system services:'), self.minY+1, self.minX+2))
+		self.add_elem('security_profile_label1', textline(_('These options control how many system services are'), self.minY+2, self.minX+2))
+		self.add_elem('security_profile_label2', textline(_('initially blocked by a packet filter (iptables):'), self.minY+3, self.minX+2))
+		self.add_elem('security_profile_label3', textline(_('strict: Only SSH and HTTPS are allowed. This is only'), self.minY+4, self.minX+2))
+		self.add_elem('security_profile_label4', textline(_('        intended for an initial, locked-down setup.'), self.minY+5, self.minX+2))
+		self.add_elem('security_profile_label6', textline(_('normal: Typical selection of services, recommended'), self.minY+6, self.minX+2))
+		self.add_elem('security_profile_label7', textline(_('open  : No service is filtered'), self.minY+7, self.minX+2))
 
 		dict={}
 		dict['Open']=['open',0]
@@ -85,7 +85,7 @@ class object(content):
 		select=1
 #		if self.all_results.has_key('security_profile'):
 #			select=list.index(self.mapping(self.all_results['security_profile']))
-		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+6,self.minX+2,40,10,[select]))
+		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+9,self.minX+2,40,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
 		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))

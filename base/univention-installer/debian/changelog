@@ -1,3 +1,10 @@
+univention-installer (1.6.14-8) unstable; urgency=low
+
+  * Restructure menu layout of security module
+  * Fix traceback caused by installer design flaw
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 12:24:47 +0200
+
 univention-installer (1.6.14-7) unstable; urgency=low
 
   * Add security module
