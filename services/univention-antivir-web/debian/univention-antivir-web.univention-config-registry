@@ -34,7 +34,7 @@ File: etc/dansguardian/exceptioniplist
 Variables: squid/contentscan/whitelist/ip
 
 Type: file
-File: etc/dansguardian/execptionuserlist
+File: etc/dansguardian/exceptionuserlist
 Variables: squid/contentscan/whitelist/user
 
 Type: file
