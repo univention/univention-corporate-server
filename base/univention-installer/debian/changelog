@@ -1,3 +1,9 @@
+univention-installer (1.6.14-10) unstable; urgency=low
+
+  * Cleanups.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 15:11:35 +0200
+
 univention-installer (1.6.14-9) unstable; urgency=low
 
   * Results are returned as strings
