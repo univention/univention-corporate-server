@@ -71,6 +71,7 @@ install: build
 	install -m 640 installer/modules/20_net.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/30_ssl.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/31_join.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/50_security.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/60_software.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/70_system_settings.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/95_overview.py ${DD}/lib/univention-installer/modules/
