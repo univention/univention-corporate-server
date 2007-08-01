@@ -1,0 +1,108 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/bannedsitelist
+#
+
+#domains in banned list
+#Don't bother with the www. or the http://
+
+#The bannedurllist is for blocking PART of a site
+#The bannedsitelist is for blocking ALL of a site
+
+#As of DansGuardian 2.7.3 you can now include
+#.tld so for example you can match .gov for example
+
+#The 'grey' lists override the 'banned' lists.
+#The 'exception' lists override the 'banned' lists also.
+#The difference is that the 'exception' lists completely switch
+#off *all* other filtering for the match.  'grey' lists only
+#stop the URL filtering and allow the normal filtering to work.
+
+#An example of grey list use is when in Blanket Block (whitelist)
+#mode and you want to allow some sites but still filter as normal
+#on their content
+
+#Another example of grey list use is when you ban a site but want
+#to allow part of it.
+
+#To include additional files in this list use this example:
+#.Include</etc/dansguardian/anotherbannedurllist>
+
+#You can have multiple .Includes.
+
+#List other sites to block:
+
+# badboys.com
+
+
+
+#Blanket Block.  To block all sites except those in the
+#exceptionsitelist and greysitelist files remove
+#the # from the next line to leave only a '**':
+#**
+
+#Blanket IP Block.  To block all sites specified only as an IP
+#remove the # from the next line to leave only a '*ip':
+#*ip
+
+
+
+#Remove the # from the following and edit as needed to use a stock
+#squidGuard/urlblacklist blacklists collection.
+#.Include</etc/dansguardian/blacklists/ads/domains>
+#.Include</etc/dansguardian/blacklists/adult/domains>
+#.Include</etc/dansguardian/blacklists/aggressive/domains>
+#.Include</etc/dansguardian/blacklists/artnudes/domains>
+#.Include</etc/dansguardian/blacklists/audio-video/domains>
+#.Include</etc/dansguardian/blacklists/beerliquorinfo/domains>
+#.Include</etc/dansguardian/blacklists/beerliquorsale/domains>
+#.Include</etc/dansguardian/blacklists/chat/domains>
+#.Include</etc/dansguardian/blacklists/childcare/domains>
+#.Include</etc/dansguardian/blacklists/clothing/domains>
+#.Include</etc/dansguardian/blacklists/culinary/domains>
+#.Include</etc/dansguardian/blacklists/dialers/domains>
+#.Include</etc/dansguardian/blacklists/drugs/domains>
+#.Include</etc/dansguardian/blacklists/entertainment/domains>
+#.Include</etc/dansguardian/blacklists/forums/domains>
+#.Include</etc/dansguardian/blacklists/frencheducation/domains>
+#.Include</etc/dansguardian/blacklists/gambling/domains>
+#.Include</etc/dansguardian/blacklists/government/domains>
+#.Include</etc/dansguardian/blacklists/hacking/domains>
+#.Include</etc/dansguardian/blacklists/homerepair/domains>
+#.Include</etc/dansguardian/blacklists/hygiene/domains>
+#.Include</etc/dansguardian/blacklists/jewelry/domains>
+#.Include</etc/dansguardian/blacklists/jobsearch/domains>
+#.Include</etc/dansguardian/blacklists/kidstimewasting/domains>
+#.Include</etc/dansguardian/blacklists/mail/domains>
+#.Include</etc/dansguardian/blacklists/news/domains>
+#.Include</etc/dansguardian/blacklists/onlineauctions/domains>
+#.Include</etc/dansguardian/blacklists/onlinegames/domains>
+#.Include</etc/dansguardian/blacklists/onlinepayment/domains>
+#.Include</etc/dansguardian/blacklists/personalfinance/domains>
+#.Include</etc/dansguardian/blacklists/pets/domains>
+#.Include</etc/dansguardian/blacklists/porn/domains>
+#.Include</etc/dansguardian/blacklists/proxy/domains>
+#.Include</etc/dansguardian/blacklists/publicite/domains>
+#.Include</etc/dansguardian/blacklists/redirector/domains>
+#.Include</etc/dansguardian/blacklists/ringtones/domains>
+#.Include</etc/dansguardian/blacklists/sportnews/domains>
+#.Include</etc/dansguardian/blacklists/sports/domains>
+#.Include</etc/dansguardian/blacklists/vacation/domains>
+#.Include</etc/dansguardian/blacklists/violence/domains>
+#.Include</etc/dansguardian/blacklists/virusinfected/domains>
+#.Include</etc/dansguardian/blacklists/warez/domains>
+
+# You will need to edit to add and remove categories you want
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('squid/contentscan/bannedsites', '') == '':
+                # custom list of banned sites
+                for site in baseConfig['squid/contentscan/bannedsites'].split(" "):
+                        print site
+@!@

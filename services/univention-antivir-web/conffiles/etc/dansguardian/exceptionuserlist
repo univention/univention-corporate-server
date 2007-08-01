@@ -1,0 +1,21 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/exceptionuserlist
+#
+
+#Users names, who, if basic
+#proxy authentication is
+#enabled, will automatically
+#not be filtered
+
+@!@
+if not baseConfig.get('squid/contentscan/whitelist/ip', '') == '':
+        for user in baseConfig['squid/contentscan/whitelist/user'].split(" "):
+                print user
+@!@
+

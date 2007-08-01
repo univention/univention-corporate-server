@@ -1,18 +1,54 @@
 Type: file
-File: etc/squirm.patterns
+File: etc/dansguardian/dansguardian.conf
+Variables: squid/virusscan
+Variables: squid/virusscan/notifyemail
 Variables: hostname
 Variables: domainname
-Variables: interfaces/eth0/address
-Variables: interfaces/eth1/address
-Variables: interfaces/eth2/address
-Variables: interfaces/eth3/address
 
 Type: file
-File: etc/viralator/viralator.conf
-Variables: proxy/parent/host
-Variables: proxy/parent/port
-Variables: proxy/antivir/scanner
-Variables: proxy/antivir/virusscanner
-Variables: proxy/antivir/scannerpath
-Variables: proxy/antivir/viruscmd
-Variables: proxy/antivir/alert
+File: etc/dansguardian/dansguardianf1.conf
+Variables: squid/virusscan
+
+Type: file
+File: etc/dansguardian/bannedextensionlist
+Variables: squid/contentscan/bannedextensions
+
+Type: file
+File: etc/dansguardian/bannediplist
+Variables: squid/contentscan/bannedclientips
+
+Type: file
+File: etc/dansguardian/bannedmimetypelist
+Variables: squid/contentscan/bannedmimetypes
+
+Type: file
+File: etc/dansguardian/bannedsitelist
+Variables: squid/contentscan/bannedsites
+
+Type: file
+File: etc/dansguardian/bannedurllist
+Variables: squid/contentscan/bannedurls
+
+Type: file
+File: etc/dansguardian/execptioniplist
+Variables: squid/contentscan/whitelist/ip
+
+Type: file
+File: etc/dansguardian/execptionuserlist
+Variables: squid/contentscan/whitelist/user
+
+Type: file
+File: etc/dansguardian/exceptionvirusextensionlist
+Variables: squid/virusscan/whitelist/extension
+
+Type: file
+File: etc/dansguardian/exceptionvirusmimetypelist
+Variables: squid/virusscan/whitelist/mimetypes
+
+Type: file
+File: etc/dansguardian/exceptionvirussitelist
+Variables: squid/virusscan/whitelist/sites
+
+Type: file
+File: etc/dansguardian/exceptionvirusurllist
+Variables: squid/virusscan/whitelist/urls

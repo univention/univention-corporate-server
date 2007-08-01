@@ -1,0 +1,73 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/bannedurllist
+#
+
+#URLs in banned list
+#Don't bother with the http:// or the www
+
+#The bannedurllist is for blocking PART of a site
+#The bannedsitelist is for blocking ALL of a site
+
+#The 'grey' lists override the 'banned' lists.
+#The 'exception' lists override the 'banned' lists also.
+#The difference is that the 'exception' lists completely switch
+#off *all* other filtering for the match.  'grey' lists only
+#stop the URL filtering and allow the normal filtering to work.
+
+#An example of grey list use is when in Blanket Block (whitelist)
+#mode and you want to allow some sites but still filter as normal
+#on their content
+
+#Another example of grey list use is when you ban a site but want
+#to allow part of it.
+
+#To include additional files in this list use this example:
+#.Include</etc/dansguardian/anotherbannedurllist>
+
+#You can have multiple .Includes.
+
+#List other URLs to block:
+
+#members.home.net/uporn
+
+
+#Remove the # from the following and edit as needed to use a stock
+#squidGuard blacklists collection.
+#.Include</etc/dansguardian/blacklists/ads/urls>
+#.Include</etc/dansguardian/blacklists/adult/urls>
+#.Include</etc/dansguardian/blacklists/aggressive/urls>
+#.Include</etc/dansguardian/blacklists/audio-video/urls>
+#.Include</etc/dansguardian/blacklists/chat/urls>
+#.Include</etc/dansguardian/blacklists/drugs/urls>
+#.Include</etc/dansguardian/blacklists/entertainment/urls>
+#.Include</etc/dansguardian/blacklists/frencheducation/urls>
+#.Include</etc/dansguardian/blacklists/gambling/urls>
+#.Include</etc/dansguardian/blacklists/government/urls>
+#.Include</etc/dansguardian/blacklists/hacking/urls>
+#.Include</etc/dansguardian/blacklists/jobsearch/urls>
+#.Include</etc/dansguardian/blacklists/kidstimewasting/urls>
+#.Include</etc/dansguardian/blacklists/mail/urls>
+#.Include</etc/dansguardian/blacklists/news/urls>
+#.Include</etc/dansguardian/blacklists/porn/urls>
+#.Include</etc/dansguardian/blacklists/proxy/urls>
+#.Include</etc/dansguardian/blacklists/publicite/urls>
+#.Include</etc/dansguardian/blacklists/redirector/urls>
+#.Include</etc/dansguardian/blacklists/violence/urls>
+#.Include</etc/dansguardian/blacklists/virusinfected/urls>
+#.Include</etc/dansguardian/blacklists/warez/urls>
+# You will need to edit to add and remove categories you want
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('squid/contentscan/bannedurls', '') == '':
+                # custom list of banned urls
+                for url in baseConfig['squid/contentscan/bannedurls'].split(" "):
+                        print url
+@!@
+

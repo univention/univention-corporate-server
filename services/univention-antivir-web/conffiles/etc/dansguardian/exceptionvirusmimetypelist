@@ -1,0 +1,20 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/exceptionvirusmimetypelist
+#
+
+
+# MIME types the virus scanning code ignores.
+
+@!@
+if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('squid/virusscan/whitelist/mimetypes', '') == '':
+                for extension in baseConfig['squid/virusscan/whitelist/mimetypes'].split(" "):
+                        print extension
+@!@
+

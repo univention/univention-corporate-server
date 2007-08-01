@@ -1,0 +1,23 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/bannediplist
+
+#IP addresses of client machines to
+#disallow web access to
+#
+#Only put IP addresses here,
+#not host names
+#
+#This is not the IP of web servers
+#you want to filter.
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+	for ip in baseConfig.get('squid/contentscan/bannedclientips', '').split(" "):
+		print ip
+@!@

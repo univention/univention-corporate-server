@@ -1,0 +1,20 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/exceptionvirusextensionlist
+#
+
+
+#Exception Virus extension list
+# The Virus scanning code will ignore files with these extensions.
+
+@!@
+if baseConfig.get('squid/virusscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('squid/virusscan/whitelist/extensions', '') == '':
+                for extension in baseConfig['squid/virusscan/whitelist/extensions'].split(" "):
+                        print extension
+@!@

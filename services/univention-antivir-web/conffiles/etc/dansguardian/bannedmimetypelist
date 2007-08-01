@@ -1,0 +1,40 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/dansguardian/bannedmimetypelist
+#
+
+# banned MIME types
+
+@!@
+if baseConfig.get('squid/contentscan', 'no').lower() in [ 'yes', 'true' ]:
+        if not baseConfig.get('squid/contentscan/bannedmimetypes', '') == '':
+                # custom list of banned extensions
+                for mimetype in baseConfig['squid/contentscan/bannedmimetypes'].split(" "):
+                        print mimetype
+        else:
+                # print default config file entry
+                print '''
+
+audio/mpeg
+audio/x-mpeg
+audio/x-pn-realaudio
+audio/x-wav
+video/mpeg
+video/x-mpeg2
+video/acorn-replay
+video/quicktime
+video/x-msvideo
+video/msvideo
+application/gzip
+application/x-gzip
+application/zip
+application/compress
+application/x-compress
+application/java-vm
+'''
+@!@
