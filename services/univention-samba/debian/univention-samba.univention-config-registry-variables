@@ -226,7 +226,7 @@ Description[en]=Alternative LDAP admin DN
 Type=str
 Categories=Network
 
-[samba/winbind_trusted_domains_only]
+[samba/winbind/trusted/domains/only]
 Description[de]=Erlaube Samba-Memberservern einer Samba-Domäne, von LDAP/NIS/rsync verteilte UNIX Accounts als uids für Winbindd Benutzer zu verwenden
 Description[en]=Allow Samba member-servers of a samba domain to use UNIX accounts distributet via LDAP/NIS/rsync as the uid's for winbindd users
 Type=str

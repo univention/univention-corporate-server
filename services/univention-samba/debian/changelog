@@ -1,3 +1,9 @@
+univention-samba (1.0.4-10) unstable; urgency=low
+
+  * corrected naming of samba/winbind/trusted/domains/only
+
+ -- Tobias Scherer <scherer@univention.de>  Wed,  1 Aug 2007 17:03:53 +0200
+
 univention-samba (1.0.4-9) unstable; urgency=low
 
   * Adapt to Univention Directory Listener.

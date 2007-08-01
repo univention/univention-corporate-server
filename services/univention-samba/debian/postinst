@@ -104,7 +104,7 @@ univention-config-registry set samba/script/adduser?true \
 				samba/script/setprimarygroup?true \
 				samba/script/postusermodify?false \
 				samba/winbind/nested/groups?no \
-				samba/winbind_trusted_domains_only?yes \
+				samba/winbind/trusted/domains/only?yes \
 				samba/encrypt_passwords?yes \
 				samba/use_spnego?yes \
 				samba/client_use_spnego?yes \

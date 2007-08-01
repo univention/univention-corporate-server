@@ -20,7 +20,7 @@ if ldaphosts:
 	idmap uid = 55000-64000
 	idmap gid = 55000-64000
 @!@
-print '\twinbind trusted domains only = %s' % baseConfig.get('samba/winbind_trusted_domains_only', 'yes')	
+print '\twinbind trusted domains only = %s' % baseConfig.get('samba/winbind/trusted/domains/only', 'yes')	
 
 if baseConfig.has_key('samba/winbind/nested/groups') and baseConfig['samba/winbind/nested/groups']:
 	print '\twinbind nested groups = %s' % baseConfig['samba/winbind/nested/groups']

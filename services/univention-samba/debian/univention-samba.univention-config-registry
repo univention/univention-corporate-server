@@ -42,7 +42,7 @@ Subfile: etc/samba/smb.conf.d/21univention-samba_winbind
 Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
-Variables: samba/winbind_trusted_domains_only
+Variables: samba/winbind/trusted/domains/only
 
 Type: subfile
 Multifile: etc/samba/smb.conf
