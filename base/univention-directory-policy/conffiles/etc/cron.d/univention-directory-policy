@@ -1,5 +1,0 @@
-# /etc/cron.d/univention-ldap-policy
-
-# Run queue every @%@ldap/policy/interval@%@ minutes
-@%@ldap/policy/cron@%@   root   if [ -d /usr/lib/univention-directory-policy ]; then /usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy; fi
-
