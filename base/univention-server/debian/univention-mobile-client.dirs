@@ -5,5 +5,5 @@ etc/bootsplash/themes/mobileclient
 etc/bootsplash/themes/mobileclient/images
 etc/bootsplash/themes/mobileclient/config
 usr/share/apps/kdesktop/DesktopLinks
-usr/lib/univention-ldap-policy
+usr/lib/univention-directory-policy
 usr/share/univention-mobile-client
