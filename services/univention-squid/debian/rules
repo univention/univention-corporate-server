@@ -55,9 +55,6 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	cp -d -r files/* $(CURDIR)/debian/univention-squid/
-	find $(CURDIR)/debian/univention-squid/ -type d -name .svn -exec rm -rf {} \; || true
-	
 	univention-install-config-registry
 
 
