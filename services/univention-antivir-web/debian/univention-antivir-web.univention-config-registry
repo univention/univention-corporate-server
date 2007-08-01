@@ -30,7 +30,7 @@ File: etc/dansguardian/bannedurllist
 Variables: squid/contentscan/bannedurls
 
 Type: file
-File: etc/dansguardian/execptioniplist
+File: etc/dansguardian/exceptioniplist
 Variables: squid/contentscan/whitelist/ip
 
 Type: file
