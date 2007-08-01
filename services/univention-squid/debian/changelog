@@ -1,3 +1,9 @@
+univention-squid (2.0.0-4) unstable; urgency=low
+
+  * include copyright and changelog files in /usr/share/doc/univention-squid
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  1 Aug 2007 09:46:41 +0200
+
 univention-squid (2.0.0-3) unstable; urgency=low
 
   * add configuration option for http_port

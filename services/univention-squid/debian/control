@@ -5,7 +5,7 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, univention-config-dev
 
 Package: univention-squid
-Architecture: any
+Architecture: all
 Depends: squid, univention-config-registry
 Description: univention squid
  univention squid extension
