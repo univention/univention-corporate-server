@@ -12,4 +12,5 @@ usr/lib/univention-system-setup/scripts/net
 usr/lib/univention-system-setup/scripts/ssl
 usr/lib/univention-system-setup/scripts/join
 usr/lib/univention-system-setup/scripts/software
+usr/lib/univention-system-setup/scripts/security
 usr/lib/univention-system-setup/scripts/system_settings

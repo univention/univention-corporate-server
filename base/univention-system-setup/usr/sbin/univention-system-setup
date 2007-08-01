@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Setup
+# Univention System Setup
 #  main script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -650,13 +650,14 @@ name_mapping={  'timezone':			'04_timezone',
 				'language':			'06_language',
 				'defaultlocale':		'07_dl',
 				'basis':			'11_basis',
+				'security':			'50_security',
 				'net':				'20_net',
 				'software':			'60_software' }
 
 if cmdline.has_key('modules'):
 	for i in cmdline['modules'].split(','):
 		if i.strip() == 'all':
-			cmdline['modules'] = 'timezone, keyboard,language,defaultlocale,basis,net,software'
+			cmdline['modules'] = 'timezone, keyboard,language,defaultlocale,basis,net,security,software'
 
 debug( '[%s] Calling %s' % (time.ctime(),sys.argv))
 if sys.argv[0].split('/')[-1] == 'univention-system-setup':

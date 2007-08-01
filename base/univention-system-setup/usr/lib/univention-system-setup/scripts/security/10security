@@ -1,0 +1,105 @@
+#!/bin/sh
+#
+# Univention System Setup
+#  Univention System Setup script to alter the security profile of a system
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+. /usr/lib/univention-system-setup/scripts/setup_utils.sh
+
+is_variable_set "security_profile"
+
+if [ $? = 0 ]; then
+	exit 0
+fi
+
+eval $(univention-config-registry shell)
+
+security_profile=`get_profile_var "security_profile"`
+
+if [ -z "$security_profile" ]; then
+	exit 0
+fi
+
+echo `date` : "Configuring security profile : " $new_securityprofile  >> /var/log/univention/setup.log
+
+if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
+
+  univention-config-registry set security/profile="strict"
+
+  if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled"
+    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" security/services/x11="disabled"
+    univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
+    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
+    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"
+    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"
+  fi
+
+
+  # Right now the selection is identical to DC M/B, eventually merge later
+  if [ "$server_role" = "managed_client" -o "$server_role" = "mobile_client" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver"]; then
+    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled"
+    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" 
+    univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
+    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
+    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"
+    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"
+  fi
+
+fi
+
+if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
+
+  univention-config-registry set security/profile="normal"
+
+  if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver"]; then
+    univention-config-registry set security/services/telnet="disabled" security/services/ftp="disabled"
+  fi
+
+  if [ "$server_role" = "managed_client" -o "$server_role" = "mobile_client" ]; then
+    univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled"
+    univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled"
+    univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
+    univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled"
+    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"
+    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"
+  fi
+fi   
+
+if [ -n "$security_profile" -a "$security_profile" = "open" ]; then
+
+  univention-config-registry set security/profile="open"
+  univention-config-registry set security/packetfilter/disabled="true"
+
+fi
+
+echo `date` : "Restarting univention-iptables "  >> /var/log/univention/setup.log
+
+/etc/init.d/univention-iptables
+
+exit 0
+

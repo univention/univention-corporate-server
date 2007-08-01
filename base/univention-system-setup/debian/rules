@@ -72,6 +72,7 @@ install: build
 	install -m 700 usr/lib/univention-system-setup/scripts/basis/14ldap_basis ${D}/usr/lib/univention-system-setup/scripts/basis/
 	install -m 700 usr/lib/univention-system-setup/scripts/basis/16windows_domain ${D}/usr/lib/univention-system-setup/scripts/basis/
 	install -m 700 usr/lib/univention-system-setup/scripts/basis/18root_password ${D}/usr/lib/univention-system-setup/scripts/basis/
+	install -m 700 usr/lib/univention-system-setup/scripts/security/10security ${D}/usr/lib/univention-system-setup/scripts/security/
 	install -m 700 usr/lib/univention-system-setup/scripts/software/10software ${D}/usr/lib/univention-system-setup/scripts/software/
 	dh_install
 
