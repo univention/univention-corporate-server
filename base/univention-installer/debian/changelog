@@ -1,3 +1,9 @@
+univention-installer (1.6.14-3) unstable; urgency=low
+
+  * resort package lists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  1 Aug 2007 08:25:55 +0200
+
 univention-installer (1.6.14-2) unstable; urgency=low
 
   * Make next and forward buttons less broad
