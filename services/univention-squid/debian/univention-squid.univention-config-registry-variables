@@ -52,3 +52,9 @@ Description[en]=Port that squid listens on
 Type=str
 Categories=Network
 
+[squid/webports]
+Description[de]=Ports, auf die über squid zugegriffen werden darf
+Description[en]=Ports that may be accessed through squid
+Type=str
+Categories=Network
+

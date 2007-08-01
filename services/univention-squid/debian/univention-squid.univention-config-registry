@@ -11,6 +11,7 @@ Variables: squid/parent/host
 Variables: squid/parent/port
 Variables: squid/parent/directnetworks
 Variables: squid/httpport
+Variables: squid/webports
 Variables: interfaces/eth0/address
 Variables: interfaces/eth0/netmask
 Variables: interfaces/eth1/address
