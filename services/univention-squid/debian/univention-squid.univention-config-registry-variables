@@ -1,0 +1,54 @@
+[squid/virusscan]
+Description[de]=Virenscanner für squid aktivieren
+Description[en]=Activate virus scanner for squid
+Type=str
+Categories=Network
+
+[squid/contentscan]
+Description[de]=Inhaltsscanner für squid aktivieren
+Description[en]=Activate content scanner for squid
+Type=str
+Categories=Network
+
+[squid/ldapauth]
+Description[de]=Anmeldung für squid voraussetzen
+Description[en]=Require authentication for using squid
+Type=str
+Categories=Network
+
+[squid/ldapauth/groups]
+Description[de]=Benutzergruppen, die auf squid zugreifen dürfen
+Description[en]=User groups that are allowed to access squid
+Type=str
+Categories=Network
+
+[squid/allowfrom]
+Description[de]=Zusätzliche Netzwerke, von denen auf squid zugegriffen werden darf
+Description[en]=Additional networks squid allows access from
+Type=str
+Categories=Network
+
+[squid/parent/host]
+Description[de]=Adresse eines übergeordneten Proxys für squid
+Description[en]=Address of a parent proxy for squid
+Type=str
+Categories=Network
+
+[squid/parent/port]
+Description[de]=Portnummer eines übergeordneten Proxys für squid
+Description[en]=Port of a parent proxy for squid
+Type=str
+Categories=Network
+
+[squid/parent/directnetworks]
+Description[de]=Netzwerke, auf die squid nicht über einen übergeordneten Proxy zugreift
+Description[en]=Networks, which squid accesses without using a parent proxy
+Type=str
+Categories=Network
+
+[squid/httpport]
+Description[de]=Port, über den squid erreichbar ist
+Description[en]=Port that squid listens on
+Type=str
+Categories=Network
+
