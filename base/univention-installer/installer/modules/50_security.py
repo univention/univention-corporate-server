@@ -123,11 +123,11 @@ class object(content):
 	def result(self):
 		result={}
 
-		if self.get_elem('security_profile_radio').result() == 0:
+		if self.get_elem('security_profile_radio').result() == 'open':
 			result['security_profile'] = 'open'
-		elif self.get_elem('security_profile_radio').result() == 1:
+		elif self.get_elem('security_profile_radio').result() == 'normal':
 			result['security_profile'] = 'normal'
-		elif self.get_elem('security_profile_radio').result() == 2:
+		elif self.get_elem('security_profile_radio').result() == 'strict':
 			result['security_profile'] = 'strict'
 
 		return result
