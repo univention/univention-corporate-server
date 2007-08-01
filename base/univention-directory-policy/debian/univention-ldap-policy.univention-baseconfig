@@ -1,2 +1,2 @@
 Type: file
-File: etc/cron.d/univention-ldap-policy
+File: etc/cron.d/univention-directory-policy

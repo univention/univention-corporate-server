@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention LDAP Policy
+# Univention Directory Policy
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,7 +33,7 @@ univention-baseconfig set ldap/policy/cron?"5 * * * *"
 #DEBHELPER#
 
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 0.2; then
-	update-rc.d univention-ldap-policy defaults 90 || true
+	update-rc.d univention-directory-policy defaults 90 || true
 elif [ -z "$2" ]; then
-	update-rc.d univention-ldap-policy defaults 90 || true
+	update-rc.d univention-directory-policy defaults 90 || true
 fi

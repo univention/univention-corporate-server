@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.0-1) unstable; urgency=low
+
+  * Univention LDAP Policy has been renamed to Univention Directory Policy
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 1 Aug 2007 16:29:07 +0200
+
 univention-ldap-policy (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
