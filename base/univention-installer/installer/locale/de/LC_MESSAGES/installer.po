@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-31 14:34+0200\n"
+"POT-Creation-Date: 2007-08-01 15:17+0200\n"
 "PO-Revision-Date: 2007-07-17 14:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "A Python Exception has occured!"
 msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
-#: installer/main.py:251 installer/main.py:282 installer/objects.py:1710
+#: installer/main.py:251 installer/main.py:282 installer/objects.py:1720
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
 #: installer/modules/04_profile.py:54 installer/modules/12_partition.py:3577
 #: installer/modules/12_partition.py:3593 installer/modules/20_net.py:666
@@ -66,9 +66,9 @@ msgid " UCS - %s (%s)"
 msgstr ""
 
 #: installer/main.py:355
-#, python-format
-msgid " UCS %s (%s)"
-msgstr ""
+#, fuzzy, python-format
+msgid " Univention Corporate Server %s (%s)"
+msgstr " Univention Corporate Server %s (%s)"
 
 #: installer/main.py:361
 msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
@@ -112,8 +112,8 @@ msgid " End"
 msgstr " Ende"
 
 #: installer/objects.py:1148 installer/modules/12_partition.py:1859
-#: installer/modules/60_software.py:342
-#: installer/modules/70_system_settings.py:95
+#: installer/modules/50_security.py:92 installer/modules/60_software.py:342
+#: installer/modules/70_system_settings.py:73
 msgid "F12-Next"
 msgstr "F12-Weiter"
 
@@ -130,21 +130,22 @@ msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
 #: installer/objects.py:1159 installer/modules/12_partition.py:1858
-#: installer/modules/60_software.py:338 installer/modules/60_software.py:343
-#: installer/modules/70_system_settings.py:94
+#: installer/modules/50_security.py:91 installer/modules/60_software.py:338
+#: installer/modules/60_software.py:343
+#: installer/modules/70_system_settings.py:72
 msgid "F11-Back"
 msgstr "F11-Zurück"
 
-#: installer/objects.py:1227 installer/objects.py:1506
+#: installer/objects.py:1237 installer/objects.py:1516
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:1661 installer/modules/12_partition.py:3424
+#: installer/objects.py:1671 installer/modules/12_partition.py:3424
 #: installer/modules/12_partition.py:3545
 msgid "Yes"
 msgstr "Ja"
 
-#: installer/objects.py:1662 installer/modules/12_partition.py:3425
+#: installer/objects.py:1672 installer/modules/12_partition.py:3425
 #: installer/modules/12_partition.py:3546
 msgid "No"
 msgstr "Nein"
@@ -261,240 +262,231 @@ msgstr "Dienste"
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:149 installer/package_list.py:154
-msgid "Print Server"
-msgstr "Druckserver"
-
-#: installer/package_list.py:157
-msgid "Print Quota"
-msgstr "Druck-Quota"
-
-#: installer/package_list.py:162
-msgid "Print Quota Support"
-msgstr "Druck Quota Unterstützung"
-
-#: installer/package_list.py:165
-msgid "Nagios Server"
-msgstr "Nagios-Server"
-
-#: installer/package_list.py:170 installer/package_list.py:178
-msgid "Host, service and network monitoring program "
-msgstr "Rechner, Dienste und Netzwerk Überwachungsdienst"
-
-#: installer/package_list.py:173
-msgid "Nagios Client"
-msgstr "Nagios-Client"
-
-#: installer/package_list.py:181
-msgid "Univention AD Connector"
-msgstr "Univention AD Connector"
-
-#: installer/package_list.py:186
-msgid "Sync users and groups with Active Directory"
-msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
-
-#: installer/package_list.py:189 installer/package_list.py:194
-msgid "Fax Server"
-msgstr "Fax-Server"
-
-#: installer/package_list.py:197
-msgid "Squid Proxyserver"
-msgstr "Squid-Proxyserver"
-
-#: installer/package_list.py:202
-msgid "Web Proxy Services"
-msgstr "Web Proxy Dienste"
-
-#: installer/package_list.py:205
-msgid "OpenSSH Server"
-msgstr "OpenSSH Server"
-
-#: installer/package_list.py:210
-msgid "Secure shell server, an rshd replacemen"
-msgstr "Secure shell server, ein rshd Ersatz"
-
-#: installer/package_list.py:213 installer/package_list.py:218
-msgid "FreeNX Server"
-msgstr "FreeNX-Server"
-
-#: installer/package_list.py:221
-msgid "VNC Server"
-msgstr "VNC-Server"
-
-#: installer/package_list.py:226
-msgid "Server for remote desktop access"
-msgstr "Server für den Zugriff auf entferte Benutzeroberflächen"
-
-#: installer/package_list.py:229
-msgid "Network Installer"
-msgstr "Netzwerk Installationsserver"
-
-#: installer/package_list.py:234
-msgid "Install UCS over the network"
-msgstr "Netzwerkinstallation von UCS"
-
-#: installer/package_list.py:239
-msgid "Terminal Service"
-msgstr "Terminal-Dienste"
-
-#: installer/package_list.py:241
-msgid "Terminal Service Components, required for ThinClients"
-msgstr "Terminal Dienst Komponenten werden für Thin Clients benötigt"
-
-#: installer/package_list.py:245
+#: installer/package_list.py:149
 msgid "Terminalserver"
 msgstr "Terminalserver"
 
-#: installer/package_list.py:250
+#: installer/package_list.py:154
 msgid "X-Window-System Client for Terminal Services"
 msgstr "X-Window-System Client für Terminal Dienste"
 
-#: installer/package_list.py:253
+#: installer/package_list.py:157
 msgid "Thinclient Environment"
 msgstr "Thinclient-Umgebung"
 
-#: installer/package_list.py:258
+#: installer/package_list.py:162
 msgid "ThinClient Interface"
 msgstr "Thin Client Schnittstelle"
 
-#: installer/package_list.py:261 installer/package_list.py:381
-msgid "KDE Desktop"
-msgstr "KDE Desktop"
+#: installer/package_list.py:165 installer/package_list.py:170
+msgid "Print Server"
+msgstr "Druckserver"
 
-#: installer/package_list.py:266 installer/package_list.py:386
-msgid "KDE - K Desktop Environment"
-msgstr "KDE - K Desktop Umgebung"
+#: installer/package_list.py:173
+msgid "Print Quota"
+msgstr "Druck-Quota"
 
-#: installer/package_list.py:269 installer/package_list.py:389
-msgid "OpenOffice.org"
-msgstr "OpenOffice.org"
+#: installer/package_list.py:178
+msgid "Print Quota Support"
+msgstr "Druck Quota Unterstützung"
 
-#: installer/package_list.py:274 installer/package_list.py:394
-msgid "OpenOffice.org Office Suite"
-msgstr "OpenOffice.org Office Suite"
+#: installer/package_list.py:181
+msgid "Nagios Server"
+msgstr "Nagios-Server"
 
-#: installer/package_list.py:277 installer/package_list.py:397
-msgid "Mozilla Firefox"
-msgstr "Mozilla Firefox"
+#: installer/package_list.py:186 installer/package_list.py:194
+msgid "Host, service and network monitoring program "
+msgstr "Rechner, Dienste und Netzwerk Überwachungsdienst"
 
-#: installer/package_list.py:282 installer/package_list.py:402
-msgid "Firefox Webbrowser"
-msgstr "Firefox Webbrowser"
+#: installer/package_list.py:189
+msgid "Nagios Client"
+msgstr "Nagios-Client"
 
-#: installer/package_list.py:285 installer/package_list.py:405
-msgid "Java Plugin/Runtime"
-msgstr "Java Plugin/Java Umgebung"
+#: installer/package_list.py:197
+msgid "Univention AD Connector"
+msgstr "Univention AD Connector"
 
-#: installer/package_list.py:290 installer/package_list.py:410
-#: installer/package_list.py:586
-msgid "Java Virtual Machine"
-msgstr "Java Virtual Machine"
+#: installer/package_list.py:202
+msgid "Sync users and groups with Active Directory"
+msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
-#: installer/package_list.py:293 installer/package_list.py:413
-msgid "Flash Plugin"
-msgstr "Flash Plugin"
+#: installer/package_list.py:205 installer/package_list.py:210
+msgid "Fax Server"
+msgstr "Fax-Server"
 
-#: installer/package_list.py:298 installer/package_list.py:418
-msgid "Flashplugin for webbrowsers"
-msgstr "Flashplugin für Webbrowser"
+#: installer/package_list.py:213
+msgid "Squid Proxyserver"
+msgstr "Squid-Proxyserver"
 
-#: installer/package_list.py:301 installer/package_list.py:421
-msgid "Mplayer Plugin"
-msgstr "Mplayer Plugin"
+#: installer/package_list.py:218
+msgid "Web Proxy Services"
+msgstr "Web Proxy Dienste"
 
-#: installer/package_list.py:306 installer/package_list.py:426
-msgid "Mplayer for webbrowsers"
-msgstr "Mplayer für Webbrowser"
+#: installer/package_list.py:221
+msgid "OpenSSH Server"
+msgstr "OpenSSH Server"
 
-#: installer/package_list.py:311
+#: installer/package_list.py:226
+msgid "Secure shell server, an rshd replacemen"
+msgstr "Secure shell server, ein rshd Ersatz"
+
+#: installer/package_list.py:229 installer/package_list.py:234
+msgid "FreeNX Server"
+msgstr "FreeNX-Server"
+
+#: installer/package_list.py:237
+msgid "VNC Server"
+msgstr "VNC-Server"
+
+#: installer/package_list.py:242
+msgid "Server for remote desktop access"
+msgstr "Server für den Zugriff auf entferte Benutzeroberflächen"
+
+#: installer/package_list.py:245
+msgid "Network Installer"
+msgstr "Netzwerk Installationsserver"
+
+#: installer/package_list.py:250
+msgid "Install UCS over the network"
+msgstr "Netzwerkinstallation von UCS"
+
+#: installer/package_list.py:255
 msgid "Administration"
 msgstr "Administration"
 
-#: installer/package_list.py:313
+#: installer/package_list.py:257
 msgid "Administration Tools"
 msgstr "Administrations Werkzeuge"
 
-#: installer/package_list.py:317
+#: installer/package_list.py:261
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
 
-#: installer/package_list.py:322
+#: installer/package_list.py:266
 msgid "Univention Director Manager Web Frontend"
 msgstr "Univention Directory manager Web-Oberfläche"
 
-#: installer/package_list.py:325
+#: installer/package_list.py:269
 msgid "Univention Management Console"
 msgstr "Univention Management Console"
 
-#: installer/package_list.py:330
+#: installer/package_list.py:274
 msgid "Configuration Frontend for Servers and Clients"
 msgstr "Konfigurationsioberfläche für Server und Clients"
 
-#: installer/package_list.py:333
+#: installer/package_list.py:277
 msgid "Univention Software Monitor"
 msgstr "Univention Software Monitor"
 
-#: installer/package_list.py:338
+#: installer/package_list.py:282
 msgid "Univention packagestatus database"
 msgstr "Univention Paketstatus Datenbank"
 
-#: installer/package_list.py:343
+#: installer/package_list.py:287
 msgid "Backup"
 msgstr "Backup"
 
-#: installer/package_list.py:345
+#: installer/package_list.py:289
 msgid "Backup Tools"
 msgstr "Backup-Werkzeuge"
 
-#: installer/package_list.py:349
+#: installer/package_list.py:293
 msgid "Unidump"
 msgstr "Unidump"
 
-#: installer/package_list.py:354
+#: installer/package_list.py:298
 msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
-#: installer/package_list.py:357
+#: installer/package_list.py:301
 msgid "Remote Backup"
 msgstr "Remote-Backup"
 
-#: installer/package_list.py:362
+#: installer/package_list.py:306
 msgid "Backup Software based on rsync"
 msgstr "Backup Software basierend auf rsync"
 
-#: installer/package_list.py:367
+#: installer/package_list.py:311
 msgid "Desktop Environment"
 msgstr "Desktop-Umgebung"
 
-#: installer/package_list.py:369
+#: installer/package_list.py:313
 msgid "Desktop Environment packages"
 msgstr "Pakete der Desktop Umgebungs"
 
-#: installer/package_list.py:373
+#: installer/package_list.py:317
 msgid "Graphical User Interface"
 msgstr "Grafische Benutzeroberfläche"
 
-#: installer/package_list.py:378
+#: installer/package_list.py:322
 msgid "Core Packages for a Graphical Desktop Environment"
 msgstr "Basispakete für die grafische Desktop Umgebung"
 
-#: installer/package_list.py:429 installer/package_list.py:434
+#: installer/package_list.py:325
+msgid "KDE Desktop"
+msgstr "KDE Desktop"
+
+#: installer/package_list.py:330
+msgid "KDE - K Desktop Environment"
+msgstr "KDE - K Desktop Umgebung"
+
+#: installer/package_list.py:333
+msgid "OpenOffice.org"
+msgstr "OpenOffice.org"
+
+#: installer/package_list.py:338
+msgid "OpenOffice.org Office Suite"
+msgstr "OpenOffice.org Office Suite"
+
+#: installer/package_list.py:341
+msgid "Mozilla Firefox"
+msgstr "Mozilla Firefox"
+
+#: installer/package_list.py:346
+msgid "Firefox Webbrowser"
+msgstr "Firefox Webbrowser"
+
+#: installer/package_list.py:349
+msgid "Java Plugin/Runtime"
+msgstr "Java Plugin/Java Umgebung"
+
+#: installer/package_list.py:354 installer/package_list.py:530
+msgid "Java Virtual Machine"
+msgstr "Java Virtual Machine"
+
+#: installer/package_list.py:357
+msgid "Flash Plugin"
+msgstr "Flash Plugin"
+
+#: installer/package_list.py:362
+msgid "Flashplugin for webbrowsers"
+msgstr "Flashplugin für Webbrowser"
+
+#: installer/package_list.py:365
+msgid "Mplayer Plugin"
+msgstr "Mplayer Plugin"
+
+#: installer/package_list.py:370
+msgid "Mplayer for webbrowsers"
+msgstr "Mplayer für Webbrowser"
+
+#: installer/package_list.py:373 installer/package_list.py:378
 msgid "Gimp"
 msgstr "Gimp"
 
-#: installer/package_list.py:437
+#: installer/package_list.py:381
 msgid "Acrobat Reader"
 msgstr "Acrobat Reader"
 
-#: installer/package_list.py:442
+#: installer/package_list.py:386
 msgid "PDF Viewer"
 msgstr "PDF-Betrachter"
 
-#: installer/package_list.py:445
+#: installer/package_list.py:389
 msgid "Additional KDE Applications"
 msgstr "Weitere KDE Anwendungen"
 
-#: installer/package_list.py:450
+#: installer/package_list.py:394
 msgid ""
 "More KDE applications, like k3b, kdegraphics, kdeadmin, kdeartwork, kdetoys "
 "or kdeutils"
@@ -502,123 +494,123 @@ msgstr ""
 "Weitere KDE Applikationen, wie k3b, kdegraphics, kdeadmin, kdeartwork, "
 "kdetoys oder kdeutils"
 
-#: installer/package_list.py:453
+#: installer/package_list.py:397
 msgid "Multimedia Applications"
 msgstr "Multimedia-Anwendungen"
 
-#: installer/package_list.py:458
+#: installer/package_list.py:402
 msgid "Multimedia applications, like amarok, kmplayer or mplayer"
 msgstr "Multimedia Anwendungen, wie amarok, kmplayer oder mplayer"
 
-#: installer/package_list.py:461 installer/package_list.py:466
+#: installer/package_list.py:405 installer/package_list.py:410
 msgid "Fax Client"
 msgstr "Fax-Client"
 
-#: installer/package_list.py:469
+#: installer/package_list.py:413
 msgid "Evolution"
 msgstr "Evolution"
 
-#: installer/package_list.py:474
+#: installer/package_list.py:418
 msgid "The GNOME Mailer"
 msgstr "Das GNOME Milprogramm"
 
-#: installer/package_list.py:477
+#: installer/package_list.py:421
 msgid "VNC Viewer"
 msgstr "VNC-Betrachter"
 
-#: installer/package_list.py:482
+#: installer/package_list.py:426
 msgid "Client for remote desktop Access"
 msgstr "Client für den Zugriff auf entfernte Benutzeroberflächen"
 
-#: installer/package_list.py:485 installer/package_list.py:490
+#: installer/package_list.py:429 installer/package_list.py:434
 msgid "Microsoft Fonts"
 msgstr "Microsoft Schriften"
 
-#: installer/package_list.py:495
+#: installer/package_list.py:439
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: installer/package_list.py:497
+#: installer/package_list.py:441
 msgid "Extra Tools"
 msgstr "Zusatz-Werkzeuge"
 
-#: installer/package_list.py:501
+#: installer/package_list.py:445
 msgid "OpenSSH client"
 msgstr "OpenSSH-Client"
 
-#: installer/package_list.py:506
+#: installer/package_list.py:450
 msgid "Secure shell client, an rlogin/rsh/rcp replacement"
 msgstr "SSH Client, ein Ersatz für rlogin/rsh/rcp"
 
-#: installer/package_list.py:509
+#: installer/package_list.py:453
 msgid "dhcp client"
 msgstr "DHCP-Client"
 
-#: installer/package_list.py:514
+#: installer/package_list.py:458
 msgid "Dynamic IP configuration"
 msgstr "Dynamische IP Konfiguration"
 
-#: installer/package_list.py:517
+#: installer/package_list.py:461
 msgid "vim"
 msgstr "vim"
 
-#: installer/package_list.py:522
+#: installer/package_list.py:466
 msgid "Vi IMproved - enhanced vi editor"
 msgstr "Vi IMproved - enhanced vi editor"
 
-#: installer/package_list.py:525
+#: installer/package_list.py:469
 msgid "emacs"
 msgstr "emacs"
 
-#: installer/package_list.py:530
+#: installer/package_list.py:474
 msgid "The GNU Emacs editor"
 msgstr "The GNU Emacs Editor"
 
-#: installer/package_list.py:533
+#: installer/package_list.py:477
 msgid "less"
 msgstr "less"
 
-#: installer/package_list.py:538
+#: installer/package_list.py:482
 msgid "Pager program similar to more"
 msgstr "Ein Programm ähnlich wie less "
 
-#: installer/package_list.py:541
+#: installer/package_list.py:485
 msgid "elinks"
 msgstr "elinks"
 
-#: installer/package_list.py:546
+#: installer/package_list.py:490
 msgid "Advanced text-mode WWW browser"
 msgstr "Erweiterter Text-Mode Web-Browser"
 
-#: installer/package_list.py:549
+#: installer/package_list.py:493
 msgid "wget"
 msgstr "wget"
 
-#: installer/package_list.py:554
+#: installer/package_list.py:498
 msgid "Retrieves files from the web"
 msgstr "Zum Herunterladen von Datei aus dem WWW"
 
-#: installer/package_list.py:557
+#: installer/package_list.py:501
 msgid "nmap"
 msgstr "nmap"
 
-#: installer/package_list.py:562 installer/package_list.py:570
+#: installer/package_list.py:506 installer/package_list.py:514
 msgid "The Network Mapper"
 msgstr "Portscanning-Tool"
 
-#: installer/package_list.py:565
+#: installer/package_list.py:509
 msgid "zip/unzip"
 msgstr "zip/unzip"
 
-#: installer/package_list.py:573
+#: installer/package_list.py:517
 msgid "eject"
 msgstr "eject"
 
-#: installer/package_list.py:578
+#: installer/package_list.py:522
 msgid "ejects CDs and operates CD-Changers under Linux"
 msgstr "wirft CDs aus und bedient CD-Wechsler unter Linux"
 
-#: installer/package_list.py:581
+#: installer/package_list.py:525
 msgid "Java"
 msgstr "Java"
 
@@ -1993,6 +1985,46 @@ msgstr ""
 msgid "Join-Settings"
 msgstr "Join-Optionen"
 
+#: installer/modules/50_security.py:70
+msgid "Activate filtering of system services:"
+msgstr "Filterung von Systemdiensten"
+
+#: installer/modules/50_security.py:71
+msgid "These options control how many system services are"
+msgstr "Diese Optionen konfigurieren, welche Systemendienste"
+
+#: installer/modules/50_security.py:72
+msgid "initially blocked by a packet filter (iptables):"
+msgstr "initial durch einen Paketfilter blockiert werden:"
+
+#: installer/modules/50_security.py:73
+msgid "strict: Only SSH and HTTPS are allowed. This is only"
+msgstr "strict: Nur SSH und HTTPS sind erlaubt. Nur für eine"
+
+#: installer/modules/50_security.py:74
+msgid "        intended for an initial, locked-down setup."
+msgstr "        abgesicherte Grundinstallation empfohlen."
+
+
+#: installer/modules/50_security.py:75
+msgid "normal: Typical selection of services, recommended"
+msgstr "normal: Empfohlenen Auswahl an Systemdiensten"
+
+#: installer/modules/50_security.py:76
+msgid "open  : No service is filtered"
+msgstr "open  : Kein Dienst wird gefiltert"
+
+#: installer/modules/50_security.py:118
+msgid ""
+"Security Settings  \n"
+" \n"
+" Pre-defined packet filter configuration options for various system roles"
+msgstr ""
+
+#: installer/modules/50_security.py:121
+msgid "Security Settings"
+msgstr "Sicherheits-Optionen"
+
 #: installer/modules/60_software.py:81
 msgid "Preparing Package List"
 msgstr "Bereite Paketliste vor"
@@ -2025,21 +2057,17 @@ msgstr ""
 msgid "Software"
 msgstr "Software"
 
-#: installer/modules/70_system_settings.py:72
-#: installer/modules/70_system_settings.py:74
+#: installer/modules/70_system_settings.py:64
+#: installer/modules/70_system_settings.py:66
 msgid "Create local repository"
 msgstr "Lokales Repository erstellen"
 
-#: installer/modules/70_system_settings.py:76
-#: installer/modules/70_system_settings.py:78
+#: installer/modules/70_system_settings.py:68
+#: installer/modules/70_system_settings.py:70
 msgid "Create home share"
 msgstr "Heimatverzeichnis Freigabe"
 
-#: installer/modules/70_system_settings.py:80
-msgid "Security profile:"
-msgstr "Sicherheits-Profil"
-
-#: installer/modules/70_system_settings.py:118
+#: installer/modules/70_system_settings.py:92
 msgid ""
 "System-Settings  \n"
 " \n"
@@ -2049,7 +2077,7 @@ msgstr ""
 " \n"
 " Verschiedene System Einstellungen"
 
-#: installer/modules/70_system_settings.py:121
+#: installer/modules/70_system_settings.py:95
 msgid "System-Settings"
 msgstr "System-Optionen"
 
@@ -2164,26 +2192,32 @@ msgstr "LDAP Passwort"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:823
+#: ../univention-system-setup/usr/sbin/univention-system-setup:824
 msgid "Updating configuration "
 msgstr "Aktualisiere Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:823
+#: ../univention-system-setup/usr/sbin/univention-system-setup:824
 #, python-format
 msgid "Updating %s configuration"
 msgstr "Aktualisiere %s Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:834
+#: ../univention-system-setup/usr/sbin/univention-system-setup:835
 msgid "Processing postrun scripts "
 msgstr "Verarbeite postrun-Skripte"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:834
+#: ../univention-system-setup/usr/sbin/univention-system-setup:835
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
 
+#~ msgid "Terminal Service"
+#~ msgstr "Terminal-Dienste"
+
+#~ msgid "Terminal Service Components, required for ThinClients"
+#~ msgstr "Terminal Dienst Komponenten werden für Thin Clients benötigt"
+
+#~ msgid "Security profile:"
+#~ msgstr "Sicherheits-Profil"
+
 #~ msgid " Univention Groupware Server %s"
 #~ msgstr " Univention Groupware Server %s"
-
-#~ msgid " Univention Corporate Server %s"
-#~ msgstr " Univention Corporate Server %s"
