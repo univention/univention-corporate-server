@@ -1,3 +1,9 @@
+univention-dhcp (2.0.5-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:45:19 +0200
+
 univention-dhcp (2.0.4-3) unstable; urgency=low
 
   * Adapt to Univention Directory Listener.
