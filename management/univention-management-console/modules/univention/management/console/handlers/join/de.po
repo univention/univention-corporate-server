@@ -82,7 +82,7 @@ msgstr "fehlgeschlagen"
 #: _revamp.py:87
 #, python-format
 msgid "Join Script: %s"
-msgstr "Domänenbeitrittsskript"
+msgstr "Domänenbeitrittsskript: %s"
 
 #: _revamp.py:92
 msgid "Current Status"

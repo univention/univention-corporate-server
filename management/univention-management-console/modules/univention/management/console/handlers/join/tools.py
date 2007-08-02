@@ -36,6 +36,8 @@ import univention.management.console.tools as umct
 
 import os
 
+import univention.debug as ud
+
 _join_dir = '/usr/lib/univention-install'
 _join_index = '.index.txt'
 
@@ -82,6 +84,7 @@ def _read_index( scripts ):
 			script.success = True
 		else:
 			script.success = False
+		ud.debug( ud.ADMIN, ud.INFO, 'read index script: %s' % script.filename )
 
 def read_status():
 	global _join_dir, _join_index
@@ -90,6 +93,7 @@ def read_status():
 	for item in os.listdir( _join_dir ):
 		if item == _join_index or not item.endswith( '.inst' ):
 			continue
+		ud.debug( ud.ADMIN, ud.INFO, 'read script: %s' % item )
 		script = Script( item )
 		_read_script( script )
 		scripts.append( script )

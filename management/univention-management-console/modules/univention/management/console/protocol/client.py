@@ -113,15 +113,7 @@ class Client( signals.Provider ):
 		fcntl.fcntl(self.__realsocket.fileno(), fcntl.F_SETFD, 1)
 
 		if self.__ssl and not self.__unix:
-			self.__socket = SSL.Connection( self.__crypto_context,
-											self.__realsocket )
-			try:
-				self.__socket.do_handshake()
-			except SSL.Error, e:
-				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
-				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
-				self.__ssl = False
-				self.__socket = None
+			self.__socket = SSL.Connection( self.__crypto_context, self.__realsocket )
 		else:
 			self.__socket = None
 
@@ -143,7 +135,17 @@ class Client( signals.Provider ):
 			if self.__ssl and not self.__unix:
 				self.__socket.connect( ( self.__server, self.__port ) )
 				self.__socket.setblocking( 0 )
-				notifier.socket_add( self.__socket, self._recv )
+				try:
+					self.__socket.do_handshake()
+					notifier.socket_add( self.__socket, self._recv )
+				except SSL.Error, e:
+					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
+					self.__ssl = False
+					self.__socket = None
+					self.__realsocket.connect( ( self.__server, self.__port ) )
+					self.__realsocket.setblocking( 0 )
+					notifier.socket_add( self.__realsocket, self._recv )
 				ud.debug( ud.ADMIN, ud.INFO, 'Client.connect: SSL connection established' )
 			else:
 				if self.__unix:

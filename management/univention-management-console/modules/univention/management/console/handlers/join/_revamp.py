@@ -47,8 +47,8 @@ class Web( object ):
 		lst = umcd.List()
 
 		if joined:
-			lst.set_header( [ _( 'Script' ), _( 'Status' ), _( 'Current Version' ),
-							  _( 'Last Version' ) ] )
+			lst.set_header( [ umcd.Text( _( 'Script' ), attributes = { 'colspan' : '2' } ),
+							  _( 'Status' ), _( 'Current Version' ), _( 'Last Version' ) ] )
 			for script in scripts:
 				runnable = False
 				if not script.current_version:
@@ -84,11 +84,28 @@ class Web( object ):
 												 'name' : name }, incomplete = True )
 					req.set_flag( 'web:startup', True )
 					req.set_flag( 'web:startup_dialog', True )
-					req.set_flag( 'web:startup_format', _( 'Join Script: %s' ) % name )
+					ud.debug( ud.ADMIN, ud.INFO, 'revamp join/status 2.3.1: %s' % _( "Join Script: %(name)s" ) )
+					bla = _( "Join Script: %(name)s" ) % { 'name' : name }
+					ud.debug( ud.ADMIN, ud.INFO, 'revamp join/status 2.3.1: %s' % bla )
+
+					req.set_flag( 'web:startup_format', bla )
 					btn = umcd.Button( name, 'join/script', umcd.Action( req ) )
+					btn[ 'colspan' ] = '2'
 					lst.add_row( [ btn, success, cur, last ] )
 				else:
-					lst.add_row( [ name, success, cur, last ] )
+					btn = umcd.Image( 'join/script_inactive',
+									  attributes = { 'type' : 'umc_list_element_part_left' } )
+					txt = umcd.Text( name, attributes = { 'type' : 'umc_list_element_part_right' } )
+					lst.add_row( [ btn, txt, success, cur, last ],
+								 attributes = { 'type' : 'umc_list_inactive' } )
+			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
+																'domaincontroller_backup' ):
+				req = umcp.Command( args = [ 'join/rejoin' ] )
+				req.set_flag( 'web:startup', True )
+				req.set_flag( 'web:startup_dialog', True )
+				req.set_flag( 'web:startup_format', _( 'Re-join' ) )
+				lst.add_row( [ umcd.Button( _( 'Re-join the System' ), 'actions/ok',
+											[ umcd.Action( req ) ] ) ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Current Status' ) ) ]
 		else:
 			lst.add_row( [ umcd.InfoBox( _( 'The system has not been joined yet.' ) ) ] )
@@ -105,7 +122,7 @@ class Web( object ):
 	def _web_join_rejoin( self, object, res ):
 		lst = umcd.List()
 		if object.incomplete:
-			user = umcd.make( self[ 'join/rejoin' ][ 'account' ] )
+			user = umcd.make( self[ 'join/rejoin' ][ 'account' ], default = self._username )
 			pwd =  umcd.make( self[ 'join/rejoin' ][ 'password' ] )
 
 			lst.add_row( [ user, pwd ] )
@@ -130,9 +147,8 @@ class Web( object ):
 		lst = umcd.List()
 		if object.incomplete or not object.options[ 'account' ] or not object.options[ 'password' ]:
 			user = umcd.make( self[ 'join/script' ][ 'account' ],
-							  default = object.options.get( 'account' ) )
-			pwd =  umcd.make( self[ 'join/script' ][ 'password' ],
-							  default = object.options.get( 'password' ) )
+							  default = object.options.get( 'account', self._username ) )
+			pwd =  umcd.make( self[ 'join/script' ][ 'password' ] )
 
 			lst.add_row( [ user, pwd ] )
 			req = umcp.Command( args = [ 'join/script' ],

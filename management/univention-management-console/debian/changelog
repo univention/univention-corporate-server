@@ -1,3 +1,10 @@
+univention-management-console (0.7.25-1) unstable; urgency=low
+
+  * a few fixes in the join module 
+  * fixed (hopefully) automagical SSL detection
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 16:59:52 +0200
+
 univention-management-console (0.7.24-1) unstable; urgency=low
 
   * new module 'join': (re-)join a computer, run single join scripts, re-run

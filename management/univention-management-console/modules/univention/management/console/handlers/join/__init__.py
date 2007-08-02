@@ -61,8 +61,8 @@ command_description = {
 	'join/rejoin' : umch.command(
 		short_description = _( 'Rejoin' ),
 		method = 'join_rejoin',
-		values = { 'account' : umc.String( _( 'Username' ) ),
-				   'password' : umc.Password( _( 'Password' ) ) },
+		values = { 'account' : umc.String( _( 'Username' ), required = False ),
+				   'password' : umc.Password( _( 'Password' ), required = False ) },
 	),
 	'join/script' : umch.command(
 		short_description = _( 'Run Join Script' ),
@@ -128,9 +128,14 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			self.finished( object.id(), None )
 		else:
 			logfile = _create_tempfile()
-			cmd = '/usr/lib/univention-install/%s --binddn %s --bindpwd %s > %s 2>&1' % \
-				  ( object.options[ 'script' ], object.options[ 'account' ],
-					object.options[ 'password' ], logfile )
+			if umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
+															'domaincontroller_backup' ):
+				cmd = '/usr/lib/univention-install/%s > %s 2>&1' % \
+					  ( object.options[ 'script' ], logfile )
+			else:
+				cmd = '/usr/lib/univention-install/%s --binddn %s --bindpwd %s > %s 2>&1' % \
+				  ( object.options[ 'script' ], object.options.get( 'account', '' ),
+					object.options.get( 'password', '' ), logfile )
 			proc = notifier.popen.Shell( cmd )
 			proc.signal_connect( 'finished',
 								 notifier.Callback( self._join_script, object, logfile ) )
