@@ -1,3 +1,9 @@
+univention-printserver (1.0.4-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 10:11:17 +0200
+
 univention-printserver (1.0.3-4) unstable; urgency=low
 
   * Depend on Univentin Directory Listener plus the necessary changes
