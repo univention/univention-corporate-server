@@ -1,0 +1,3 @@
+usr/sbin/univention-directory-listener usr/sbin/univention-ldap-listener
+usr/lib/univention-directory-listener/system usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener usr/lib/univention-ldap-listener
