@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-02 10:46+0200\n"
+"POT-Creation-Date: 2007-08-02 12:54+0200\n"
 "PO-Revision-Date: 2007-07-17 14:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,6 +66,7 @@ msgid " UCS - %s (%s)"
 msgstr ""
 
 #: installer/main.py:355
+#, python-format
 msgid " Univention Corporate Server %s (%s)"
 msgstr " Univention Corporate Server %s (%s)"
 
@@ -2001,12 +2002,10 @@ msgid "    allowed."
 msgstr "    HTTPS sind erlaubt."
 
 #: installer/modules/50_security.py:78
-#, fuzzy
 msgid "Disabled"
 msgstr "Deaktiviert"
 
 #: installer/modules/50_security.py:79
-#, fuzzy
 msgid "Typical selection of services, recommended"
 msgstr "Empfohlene Auswahl an Systemdiensten"
 
