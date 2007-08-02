@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 touch /usr/lib/univention-install/.index.txt
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -35,13 +37,13 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-ldap-notifier successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-ldap-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 ln -sf /etc/runit/univention-ldap-notifier /etc/runit/univention/univention-ldap-notifier
 
 /etc/init.d/univention-ldap-notifier start
 
-test -n "`grep "univention-ldap-notifier successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-notifier successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-ldap-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-notifier v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 
