@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,7 +37,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-kde-ugsprofile-mixed successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-kde-ugsprofile-mixed v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -45,6 +47,6 @@ if [ -z "$res" ]; then
 	univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.ugs-mixed" >/dev/null 2>&1
 fi
 
-test -n "`grep "univention-kde-ugsprofile-mixed successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile-mixed successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-kde-ugsprofile-mixed v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile-mixed v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
