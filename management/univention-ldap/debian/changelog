@@ -1,3 +1,9 @@
+univention-ldap (2.2.8-1) unstable; urgency=low
+
+  * add version number to join scripts
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:08:10 +0200
+
 univention-ldap (2.2.7-5) unstable; urgency=low
 
   * fix variables file
