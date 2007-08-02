@@ -1,4 +1,4 @@
-[univention-ldap-listener]
+[univention-directory-listener]
 Description[de]=Univention LDAP Listener
 Description[en]=Univention LDAP Listener
 programs=/usr/sbin/univention-directory-listener

@@ -38,17 +38,17 @@ case "$1" in
 		if [ -z "$listener_autostart" -o "$listener_autostart" != "yes" ]; then
 			exit 0
 		fi
-		echo -n "Starting univention-ldap-listener daemon: "
+		echo -n "Starting univention-directory-listener daemon: "
 		sv up univention-directory-listener
 		echo ""
 		;;
 	stop)
-		echo -n "Stopping univention-ldap-listener daemon: "
+		echo -n "Stopping univention-directory-listener daemon: "
 		sv down univention-directory-listener
 		echo ""
 		;;
 	restart|force-reload)
-		echo -n "Restarting univention-ldap-listener daemon: "
+		echo -n "Restarting univention-directory-listener daemon: "
 		sv restart univention-directory-listener
 		echo ""
 		;;

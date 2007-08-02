@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-7) unstable; urgency=low
+
+  * More wording changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 15:34:42 +0200
+
 univention-directory-listener (2.1.1-6) unstable; urgency=low
 
   * More wording changes.
