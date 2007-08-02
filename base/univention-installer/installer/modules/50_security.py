@@ -69,16 +69,15 @@ class object(content):
 		self.reset_layout()
 		self.add_elem('security_profile_label0', textline(_('Activate filtering of system services:'), self.minY+1, self.minX+2))
 		self.add_elem('security_profile_label1', textline(_('These options control how many system services are'), self.minY+2, self.minX+2))
-		self.add_elem('security_profile_label2', textline(_('initially blocked by a packet filter (iptables):'), self.minY+3, self.minX+2))
-		self.add_elem('security_profile_label3', textline(_('strict: Only SSH and HTTPS are allowed. This is only'), self.minY+4, self.minX+2))
-		self.add_elem('security_profile_label4', textline(_('        intended for an initial, locked-down setup.'), self.minY+5, self.minX+2))
-		self.add_elem('security_profile_label6', textline(_('normal: Typical selection of services, recommended'), self.minY+6, self.minX+2))
-		self.add_elem('security_profile_label7', textline(_('open  : No service is filtered'), self.minY+7, self.minX+2))
+		self.add_elem('security_profile_label2', textline(_('initially blocked by a packet filter (iptables)'), self.minY+3, self.minX+2))
+
+#		self.add_elem('security_profile_label3', textline(_('    allowed. Unsuitable for a typical production setup.'), self.minY+8, self.minX+2))
+		self.add_elem('security_profile_label3', textline(_('    allowed.'), self.minY+8, self.minX+2))
 
 		dict={}
-		dict['Open']=['open',0]
-		dict['Normal']=['normal',1]
-		dict['Strict']=['strict',2]
+		dict['Disabled']=['open',0]
+		dict['Typical selection of services, recommended']=['normal',1]
+		dict['Locked-down setup. Only SSH, LDAP and HTTPS are']=['strict',2]
 
 		list=['normal','strict','open']
 		select=1
@@ -89,7 +88,7 @@ class object(content):
 			elif self.all_results['security/profile'] == "strict":
 				select = 2
 		
-		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+9,self.minX+2,40,10,[select]))
+		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,48,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
 		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))
