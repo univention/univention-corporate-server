@@ -37,13 +37,13 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-ldap-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-directory-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-ln -sf /etc/runit/univention-ldap-notifier /etc/runit/univention/univention-ldap-notifier
+ln -sf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
 
-/etc/init.d/univention-ldap-notifier start
+/etc/init.d/univention-directory-notifier start
 
-test -n "`grep "univention-ldap-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-notifier v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-directory-notifier v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-notifier v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 
