@@ -1,4 +1,4 @@
-univention-antivir-web (2.0.0-5) unstable; urgency=low
+univention-antivir-web (2.0.0-6) unstable; urgency=low
 
   * add support for dansguardian
 
