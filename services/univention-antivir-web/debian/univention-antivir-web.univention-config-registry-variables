@@ -1,0 +1,71 @@
+[squid/virusscan/notifyemail]
+Description[de]=Benachrichtigungsadresse bei von squid gefundenen Viren
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/bannedextensions]
+Description[de]=Geblockte Dateiendungen in squid
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/bannedclientips]
+Description[de]=Rechneradressen, denen der Zugriff auf squid verboten wird
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/bannedmimetypes]
+Description[de]=Geblockte MIME-Types in squid
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/bannedsites]
+Description[de]=In squid geblockte Webseiten
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/bannedurls]
+Description[de]=In squid geblockte URLs
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/whitelist/ip]
+Description[de]=Rechneradressen, deren Zugriffe nicht durch squid gefiltert werden
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/contentscan/whitelist/user]
+Description[de]=Benutzernamen, deren Zugriffe nicht durch squid gefiltert werden
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/virusscan/whitelist/extension]
+Description[de]=Dateiendungen, die nicht von squid auf Viren geprüft werden
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/virusscan/whitelist/mimetypes]
+Description[de]=MIME-Types, die nicht von squid auf Viren geprüft werden
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/virusscan/whitelist/sites]
+Description[de]=Webseiten, bei denen squid nicht auf Viren prüft
+Description[en]=
+Type=str
+Categories=Network
+
+[squid/virusscan/whitelist/urls]
+Description[de]=URLs, bei denen squid nicht auf URLs prüft
+Description[en]=
+Type=str
+Categories=Network
