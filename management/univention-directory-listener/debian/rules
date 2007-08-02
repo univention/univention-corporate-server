@@ -58,7 +58,7 @@ install: build
 	install -m 755 src/listener-ctrl debian/univention-directory-listener/usr/sbin/univention-directory-listener-ctrl
 	install -m 644 python/listener.py debian/univention-directory-listener/usr/lib/python2.4/site-packages
 	install -m 755 python/ldap_server.py debian/univention-directory-listener/usr/lib/univention-directory-listener/system
-	install -m 755 03univention-ldap-listener.inst debian/univention-directory-listener/usr/lib/univention-install/
+	install -m 755 03univention-directory-listener.inst debian/univention-directory-listener/usr/lib/univention-install/
 	install -m 755 python/get_notifier_id.py debian/univention-directory-listener/usr/share/univention-directory-listener/
 
 	touch debian/univention-directory-listener/etc/runit/univention-directory-listener/down
