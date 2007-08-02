@@ -1,3 +1,9 @@
+univention-nfs (1.0.1-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 10:32:38 +0200
+
 univention-nfs (1.0.0-4) unstable; urgency=low
 
   * Adapt and depend on Univention Directory Listener.
