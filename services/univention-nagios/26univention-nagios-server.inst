@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 eval `univention-baseconfig shell`
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -37,7 +39,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep 'univention-nagios-server successful' /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-nagios-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 # create nagios container
 univention-admin container/cn create $@ --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
@@ -82,7 +84,7 @@ univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,
 
 /etc/init.d/nagios2 restart 2> /dev/null > /dev/null || true
 
-test -n "`grep 'univention-nagios-server successful' /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-server successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-nagios-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 
 exit 0
