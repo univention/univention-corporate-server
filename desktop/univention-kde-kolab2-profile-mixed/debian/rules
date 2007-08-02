@@ -1,9 +1,9 @@
 #!/usr/bin/make -f
 #
-# Univention KDE UGS Profile Mixed-Mode
+# Univention KDE Kolab2 Profile Mixed-Mode
 #  rules file for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -50,10 +50,10 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	(cd profiles && find kde.ugs-mixed ! -path "*CVS*" -type d -exec install  -d "../debian/univention-kde-ugsprofile-mixed/usr/share/univention-kde-profiles/"{} \;)
-	(cd profiles && find kde.ugs-mixed ! -path "*CVS*" -type f -exec install {} "../debian/univention-kde-ugsprofile-mixed/usr/share/univention-kde-profiles/"{} \;)
-	install -d debian/univention-kde-ugsprofile-mixed/kde.ugs-mixed/.kde/share/config/kresources/kolab
-	install -m 0755 79univention-kde-ugsprofile-mixed.inst debian/univention-kde-ugsprofile-mixed/usr/lib/univention-install/
+	(cd profiles && find kde.ugs-mixed ! -path "*CVS*" -type d -exec install  -d "../debian/univention-kde-kolab2-profile-mixed/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find kde.ugs-mixed ! -path "*CVS*" -type f -exec install {} "../debian/univention-kde-kolab2-profile-mixed/usr/share/univention-kde-profiles/"{} \;)
+	install -d debian/univention-kde-kolab2-profile-mixed/kde.ugs-mixed/.kde/share/config/kresources/kolab
+	install -m 0755 79univention-kde-kolab2-profile-mixed.inst debian/univention-kde-kolab2-profile-mixed/usr/lib/univention-install/
 	univention-install-baseconfig
 
 binary-arch: build install
