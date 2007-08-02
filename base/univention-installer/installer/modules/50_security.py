@@ -81,10 +81,14 @@ class object(content):
 		dict['Strict']=['strict',2]
 
 		list=['normal','strict','open']
-	
 		select=1
-#		if self.all_results.has_key('security_profile'):
-#			select=list.index(self.mapping(self.all_results['security_profile']))
+
+		if self.all_results.has_key('security/profile'):
+			if self.all_results['security/profile'] == "open":
+				select = 0
+			elif self.all_results['security/profile'] == "strict":
+				select = 2
+		
 		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+9,self.minX+2,40,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
