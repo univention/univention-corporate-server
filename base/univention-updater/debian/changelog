@@ -1,3 +1,9 @@
+univention-updater (2.0.6-6) unstable; urgency=low
+
+  * Bump version.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 09:07:31 +0200
+
 univention-updater (2.0.6-5) unstable; urgency=low
 
   * More changes for Univention Directory Policy
