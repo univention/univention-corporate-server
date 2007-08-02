@@ -52,6 +52,17 @@ class UpToDateNoError(Exception):
 		Exception.__init__(self, value)
 		self.reboot = value
 
+def proxyAddress():
+	baseConfig=univention_baseconfig.baseConfig()
+        baseConfig.load()
+
+        if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
+                return baseConfig['proxy/http'].lower().replace('http://','')
+        elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
+                return os.environ['http_proxy'].lower().replace('http://','')
+        else:
+                return ""
+
 def dprint(str, fd=[]):
 	if len(fd) < 1:
 		print str
@@ -84,8 +95,14 @@ def download_sh_files(update_server, tempdir, level):
 	for sh in ['preup.sh', 'postup.sh']:
 		if os.path.exists(os.path.join(tempdir,sh)):
 			os.remove(os.path.join(tempdir,sh))
-		conn = httplib.HTTPConnection(update_server)
-		p=os.path.join('/', 'univention-cdrom/ucs-updates', level, sh)
+
+		proxy = proxyAddress()
+		if not proxy == "":
+			conn = httplib.HTTPConnection(proxy)
+		else:
+			conn = httplib.HTTPConnection(update_server)
+
+		p=os.path.join(update_server, '/', 'univention-cdrom/ucs-updates', level, sh)
 		conn.request("GET", p)
 		resp_p = conn.getresponse()
 		if  resp_p.status != 200:
@@ -201,16 +218,23 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 
 
 	elif mode == 'net':
-		dprint('Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
-
-		conn = httplib.HTTPConnection(baseConfig['update/server'].replace('http://','').split('/')[0])
-		p=os.path.join('/', 'univention-cdrom', 'ucs-updates/', 'ucs_%s-%s.txt' % (vv,vp))
+		proxy = proxyAddress()
+		if not proxy == "":
+			dprint('Connecting to server <%s> (using proxy server %s)' %(baseConfig['update/server'].replace('http://','').split('/')[0], proxy), [stdout,sys_stdout])
+			conn = httplib.HTTPConnection(proxy)
+		else:
+			dprint('Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+			conn = httplib.HTTPConnection(baseConfig['update/server'].replace('http://','').split('/')[0])
+		p=os.path.join(baseConfig['update/server'].replace('http://','').split('/')[0], '/', 'univention-cdrom', 'ucs-updates/', 'ucs_%s-%s.txt' % (vv,vp))
 		
 		try:
 			conn.request("GET", p)
 		except socket.error:
 			update=0
-			dprint('Failed to connect to Server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+			if not proxy == "":
+				dprint('Failed to connect to proxy server %s' % proxy , [stdout,sys_stdout])
+			else:
+				dprint('Failed to connect to Server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
 			if internal:
 				sys_stdout.close()
 				raise UpdateError
