@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,7 +37,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-kolab2-framework successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-kolab2-framework v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -53,6 +55,6 @@ fi
 
 univention-admin mail/domain create $@ --ignore_exists --set name=$domainname --position cn=domain,cn=mail,$ldap_base
 
-test -n "`grep "univention-kolab2-framework successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kolab2-framework successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-kolab2-framework v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kolab2-framework v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

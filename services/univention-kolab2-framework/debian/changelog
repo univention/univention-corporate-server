@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.1-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 11:22:42 +0200
+
 univention-kolab2-framework (1.0.0-5) unstable; urgency=low
 
   * added descriptions for config registry variables
