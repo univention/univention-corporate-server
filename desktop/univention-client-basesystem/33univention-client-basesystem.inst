@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,7 +37,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-client-basesystem successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-client-basesystem v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -49,6 +51,6 @@ if [ -e "/etc/univention/ssl/udsCA/CAcert.pem" ]; then
 	chmod 644 /var/lib/univention-client-root/etc/univention/ssl/udsCA/CAcert.pem
 fi
 
-test -n "`grep "univention-client-basesystem successful" /usr/lib/univention-install/.index.txt`" || echo "univention-client-basesystem successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-client-basesystem v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-client-basesystem v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
