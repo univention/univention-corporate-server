@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.1-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 11:57:53 +0200
+
 univention-spamassassin (1.0.0-4) unstable; urgency=low
 
   * fix rules file

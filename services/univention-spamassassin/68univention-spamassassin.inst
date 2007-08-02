@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 touch /usr/lib/univention-install/.index.txt
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -35,7 +37,7 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-spamassassin successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-spamassassin v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -43,7 +45,7 @@ p=`makepasswd --chars 8`
 
 univention-admin users/user create $@ --position "cn=users,$ldap_base" --option mail --option person --set username=spam --set mailPrimaryAddress=spam@$domainname --set lastname="Spam IMAP Account" --set password=$p --set disabled=1
 
-test -n "`grep "univention-spamassassin successful" /usr/lib/univention-install/.index.txt`" || echo "univention-spamassassin successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-spamassassin v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-spamassassin v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 
