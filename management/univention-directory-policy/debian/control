@@ -5,8 +5,11 @@ Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, univention-config-dev
 Standards-Version: 3.5.2
 
-Package: univention-ldap-policy
+Package: univention-directory-policy
 Architecture: all
+Replaces: univention-ldap-policy
+Provides: univention-ldap-policy
+Conflicts: univention-ldap-policy (<< 1.1)
 Depends: univention-config-registry, netcat
 Description: UCS - Directory Policy handler
  This package manages the scripts in /usr/lib/univention-directory-policy
