@@ -1,3 +1,10 @@
+univention-python-heimdal (1.0.1-0) unstable; urgency=low
+
+  * added a missing depenency on hdb to setup.py otherwise it doesn't work
+    with heimdal 1.0, thanks to Love
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  2 Aug 2007 07:18:20 +0200
+
 univention-python-heimdal (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
