@@ -520,9 +520,7 @@ class object(content):
 			if i.isdigit() or i in ['!', '#','*','.',':',';']:
 				valid=0
 				break
-		if valid:
-			return 0
-		return 1
+		return valid
 
 	def is_port(self, port):
 		if len(port) < 1:
