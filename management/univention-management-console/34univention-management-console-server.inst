@@ -1,5 +1,7 @@
 #!/bin/sh
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -7,7 +9,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-management-console-server successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-management-console-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval $( univention-baseconfig shell ldap/base )
 
@@ -68,6 +70,13 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--set name=vnc \
 	--set description="VNC Session" \
 	--append operation="vnc/*"
+
+# create join operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=join \
+	--set description="Join to UCS Domain" \
+	--append operation="join/*"
 
 # create baseconfig operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -181,6 +190,15 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set category="VNC Session" \
 	--set ldapbase="$ldap_base" \
 	--set command="vnc/*" \
+	--set description="All Operations"
+
+# create join acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=join-all \
+	--set category="Domain Join" \
+	--set ldapbase="$ldap_base" \
+	--set command="join/*" \
 	--set description="All Operations"
 
 # create baseconfig acls
@@ -299,7 +317,10 @@ univention-admin container/cn create $@ --ignore_exists --position cn=policies,$
 univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
-	--set name=default-admin \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
@@ -309,6 +330,7 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--append allow=cn=top-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=join-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base
 # 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
@@ -330,8 +352,6 @@ univention-admin groups/group modify $@ --ignore_exists --dn "cn=Domain Admins,c
 	--policy-reference="cn=default-admin,cn=console,cn=policies,$ldap_base"
 
 
-ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
-
-test -n "`grep "univention-management-console-server successful" /usr/lib/univention-install/.index.txt`" || echo "univention-management-console-server successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-management-console-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-management-console-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

@@ -161,7 +161,6 @@ class modconsole(unimodule.unimodule):
 			self.userinfo( report )
 		self.subobjs.extend( layout )
 
-
 		if self.notebook.refresh():
 			self.atts['refresh']='1000'
 

@@ -209,8 +209,8 @@ class Module( base.Page ):
 
 				self.__storage.clear()
 				self.__dialog = self.__storage.to_uniparts( self.__layout )
-				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ]})
-				row = uniparts.tablerow( '', {}, { 'obs' : [ col ]})
+				col = uniparts.tablecol( '', {}, { 'obs' : [ self.__dialog ] } )
+				row = uniparts.tablerow( '', {}, { 'obs' : [ col ] } )
 				rows.append( row )
 			else:
 				self._refresh = True

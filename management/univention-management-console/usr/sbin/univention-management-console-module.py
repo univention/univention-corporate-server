@@ -53,7 +53,7 @@ if __name__ == '__main__':
 	parser.add_option( '-s', '--socket', type = 'string', action = 'store',
 					   dest = 'socket', help = 'defines the socket to bind to' )
 	parser.add_option( '-l', '--language', type = 'string', action = 'store',
-					   dest = 'language', default = 'de_DE',
+					   dest = 'language', default = 'de_DE.utf8',
 					   help = 'defines the language to use' )
 	parser.add_option( '-m', '--module', type = 'string',
 					   action = 'store', dest = 'module',

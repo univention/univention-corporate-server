@@ -125,6 +125,12 @@ class CancelButton( ISignalButton ):
 		ISignalButton.__init__( self, label = _( 'Cancel' ), tag = 'actions/cancel',
 								actions = [ '::cancel' ], attributes = attributes )
 
+class CloseButton( ISignalButton ):
+	"""Can be used for cancel buttons"""
+	def __init__( self, attributes = {} ):
+		ISignalButton.__init__( self, label = _( 'Close' ), tag = 'actions/ok',
+								actions = [ '::cancel' ], attributes = attributes )
+
 class ErrorButton( ISignalButton ):
 	"""Can be used for error ok buttons"""
 	def __init__( self, attributes = {} ):
@@ -138,6 +144,7 @@ class ResetButton( ISignalButton ):
 								actions = [ '::reset' ], attributes = attributes )
 		self.fields = fields
 
-ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ), type( CancelButton() ),
+ButtonTypes = ( type( Button() ), type( SelectionButton() ), type( ChoiceButton() ),
+				type( CancelButton() ), type( CloseButton() ),
 				type( ErrorButton() ), type( ResetButton() ), type( SearchButton() ),
 				type( SetButton() ), type( AddButton() ) )

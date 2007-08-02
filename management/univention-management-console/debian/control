@@ -22,7 +22,7 @@ Description: Univention Management Console - Web based computer administration t
 
 Package: univention-management-console-server
 Architecture: all
-Depends: python-univention-management-console, python-apt, python-pam, python-notifier (>=0.6.0), libpam-passwdcache, libnss-passwdcache, univention-runit, python-pyopenssl, procps
+Depends: python-univention-management-console, python-apt, python-pam, python-notifier (>=0.6.0), libpam-passwdcache, libnss-passwdcache, univention-runit, python-pyopenssl, procps, tightvncserver
 XB-Python-Version: ${python:Versions}
 Description: Univention Management Console - server
  Univention Console is a web based program to manage computers.

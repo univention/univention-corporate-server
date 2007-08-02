@@ -73,6 +73,7 @@ install-ext-%:
 	install -m 0744 vnc/*.jar debian/univention-management-console/usr/share/univention-management-console/www/vnc/
 	install -m 0744 vnc/*.php debian/univention-management-console/usr/share/univention-management-console/www/vnc/
 	install -m 0744 vnc/univention-vnc-setpassword debian/univention-management-console/usr/share/univention-management-console/
+	install -m 0744 univention-create-acls debian/univention-management-console/usr/share/univention-management-console/
 
 
 	install -m 0744 usr/sbin/univention-management-console-proxy.py debian/univention-management-console-proxy/usr/sbin/univention-management-console-proxy

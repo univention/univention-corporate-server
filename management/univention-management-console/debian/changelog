@@ -1,3 +1,12 @@
+univention-management-console (0.7.24-1) unstable; urgency=low
+
+  * new module 'join': (re-)join a computer, run single join scripts, re-run
+    newer versions of join scripts 
+  * new 'close' button
+  * add dependency to tightvncserver; required by vnc module
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 08:30:45 +0200
+
 univention-management-console (0.7.23-2) unstable; urgency=low
 
   * fixed encoding of german translation file 

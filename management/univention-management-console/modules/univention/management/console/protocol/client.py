@@ -74,9 +74,12 @@ class Client( signals.Provider ):
 			self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
 			try:
 				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
-			except Exception, e:
-				ud.debug( ud.ADMIN, ud.ERROR, 'Client.__init__: Crypto Context initialisation failed: %s' % str( e ) )
+			except SSL.Error, e:
+				# SSL is not possible
+				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
 				self.__crypto_context = None
+				self.__ssl = False
 		self.__port = port
 		self.__server = servername
 		self.__unix = unix
@@ -112,6 +115,13 @@ class Client( signals.Provider ):
 		if self.__ssl and not self.__unix:
 			self.__socket = SSL.Connection( self.__crypto_context,
 											self.__realsocket )
+			try:
+				self.__socket.do_handshake()
+			except SSL.Error, e:
+				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
+				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
+				self.__ssl = False
+				self.__socket = None
 		else:
 			self.__socket = None
 

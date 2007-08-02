@@ -1,0 +1,61 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Management Console
+#  Create UMC ACLs for local user
+#
+# Copyright (C) 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import cPickle
+import os
+from optparse import OptionParser
+
+import univention.config_registry as ucr
+
+_cache_dir = '/var/cache/univention-management-console/acls'
+
+parser = OptionParser()
+parser.add_option( '-u', '--user', action = 'store',
+				   dest = 'user', default = 'root',
+				   help = 'define the user who should get access' )
+parser.add_option( '-a', '--allow', type = 'string', action = 'append',
+				   dest = 'allow', default = [],
+				   help = 'define the accessable UMC commands (or patterns)' )
+
+( options, args ) = parser.parse_args()
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
+
+hostname = configRegistry[ 'hostname' ]
+acls = { 'allow' : [], 'disallow' : [] }
+for allow in options.allow:
+	acls[ 'allow' ].append( { 'fromUser': False, 'host': hostname,
+							  'command': allow, 'options': {} } )
+
+fd = open( os.path.join( _cache_dir, options.user ), 'w' )
+fd.write( cPickle.dumps( acls ) )
+fd.close()

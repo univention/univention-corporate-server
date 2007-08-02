@@ -53,7 +53,7 @@ class MagicBucket( object ):
 		self.exit()
 
 	def new( self, client, socket ):
-		ud.debug( ud.ADMIN, ud.PROCESS, 'established connection:', client )
+		ud.debug( ud.ADMIN, ud.PROCESS, 'established connection: %s' % client )
 		state = session.State( client, socket )
 		state.signal_connect( 'authenticated', self._authenticated )
 		self.__states[ socket ] = state
@@ -202,15 +202,26 @@ class Server( signals.Provider ):
 # used for debugging purposes ==> cert that is not trustworthy
 #			self.crypto_context.use_privatekey_file( '/root/server.pkey' )
 #			self.crypto_context.use_certificate_file( '/root/server.cert' )
-			self.crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
-			self.crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
-			self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+			try:
+				self.crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
+				self.crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
+				self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+			except SSL.Error, e:
+				# SSL is not possible
+				ud.debug( ud.ADMIN, ud.ERROR, 'Setting up SSL configuration failed: %s' % str( e ) )
+				ud.debug( ud.ADMIN, ud.ERROR, 'Communication will not be encrypted!' )
+				self.__ssl = False
+				self.crypto_context = None
+				self.__realsocket.bind( ( '', self.__port ) )
+				ud.debug( ud.ADMIN, ud.INFO, 'Server listening to connects' )
+				self.__realsocket.listen( 10 )
 
-			self.connection = SSL.Connection( self.crypto_context , self.__realsocket )
-			self.connection.setblocking(0)
-			self.connection.bind( ( '', self.__port ) )
-			ud.debug( ud.ADMIN, ud.INFO, 'Server listening to SSL connects' )
-			self.connection.listen( 10 )
+			if self.crypto_context:
+				self.connection = SSL.Connection( self.crypto_context , self.__realsocket )
+				self.connection.setblocking(0)
+				self.connection.bind( ( '', self.__port ) )
+				ud.debug( ud.ADMIN, ud.INFO, 'Server listening to SSL connects' )
+				self.connection.listen( 10 )
 		else:
 			self.crypto_context = None
 			if self.__unix:

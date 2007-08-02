@@ -19,7 +19,7 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 
 	echo "kill all running univention-cli-server"
 
-	pkill -f '/usr/bin/python.*univention-admin-tools.*univention-cli-server'
+	pkill -f '/usr/bin/python.*univention-*-tools.*univention-cli-server'
 
 	/usr/lib/univention-install/34univention-management-console-server.inst
 fi
@@ -41,14 +41,13 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	/etc/init.d/univention-management-console-server crestart
 
 elif [ "$1" = "configure" ]; then
+	ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
 
-	if test -e "/usr/share/univention-join/.joined"; then
-		ln -s /etc/runit/univention-management-console-server /etc/runit/univention/univention-management-console-server >/dev/null 2>&1
-	fi
-
+	/usr/share/univention-management-console/univention-create-acls --user root \
+		--allow 'join/*' --allow 'baseconfig/*' --allow 'service/*'
 	echo "wait for runsv to sync..."
 	count=0
-	until runsvstat /etc/runit/univention-management-console-server > /dev/null 2>&1 || test $count -gt 10; do
+	until sv status univention-management-console-server > /dev/null 2>&1 || test $count -gt 10; do
 		sleep 1
 		((count=count+1))
 	done

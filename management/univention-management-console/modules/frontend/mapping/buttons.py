@@ -288,6 +288,7 @@ class SignalButtonMap( ButtonMap, mapper.IMapper ):
 			return []
 
 mapper.add( umcd.CancelButton, SignalButtonMap() )
+mapper.add( umcd.CloseButton, SignalButtonMap() )
 mapper.add( umcd.ErrorButton, SignalButtonMap() )
 
 class ResetButtonMap( ButtonMap, mapper.IMapper ):

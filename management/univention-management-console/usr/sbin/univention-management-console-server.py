@@ -56,7 +56,7 @@ def main():
 					   dest = 'daemon_mode', default = True,
 					   help = 'if set the process will not fork into the background' )
 	parser.add_option( '-l', '--language', type = 'string', action = 'store',
-					   dest = 'language', default = 'de_DE@euro',
+					   dest = 'language', default = 'de_DE.utf8',
 					   help = 'defines the language to use' )
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
