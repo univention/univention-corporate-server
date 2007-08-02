@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+VERSION=1
+
 touch /usr/lib/univention-install/.index.txt
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -35,9 +37,9 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-bind successful" /usr/lib/univention-install/.index.txt`" || exit 1
+test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || exit 1
 
-test -n "`grep "univention-bind-proxy successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-bind-proxy v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -84,7 +86,6 @@ if [ -z "$old" -o "$old" = "None" ]; then
     univention-admin policies/dhcp_dns modify $@ --ignore_exists --dn "cn=default-settings,cn=dns,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set domain_name=$domainname --set domain_name_servers=$interfaces_eth0_address
 fi
 
-
-test -n "`grep "univention-bind-proxy successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind-proxy successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-bind-proxy v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind-proxy v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

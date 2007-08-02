@@ -1,3 +1,9 @@
+univention-bind (2.0.4-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:30:30 +0200
+
 univention-bind (2.0.3-6) unstable; urgency=low
 
   * Adapt code to Univention Directory Listener.

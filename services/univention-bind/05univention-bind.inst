@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+VERSION=1
+
 wait_for_dns(){
 eval `univention-baseconfig shell`
 if [ "$server_role" != "domaincontroller_master" ]
@@ -43,7 +45,7 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-bind successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -86,6 +88,6 @@ ln -s /etc/runit/univention-bind /etc/runit/univention/univention-bind >/dev/nul
 
 sleep 10
 
-test -n "`grep "univention-bind successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-bind v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-bind v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
