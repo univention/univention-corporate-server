@@ -1,3 +1,9 @@
+univention-heimdal (2.0.4-1) unstable; urgency=low
+
+  * add version number to join scripts
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:37:31 +0200
+
 univention-heimdal (2.0.3-5) unstable; urgency=low
 
   * Adapt to Univention Directory Listener.
