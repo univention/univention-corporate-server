@@ -3,7 +3,7 @@
 # Univention KDE UGS Profiles
 #  postinst script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,5 +33,5 @@
 eval `univention-baseconfig shell server/role`
 
 if [ -n "$server_role" -a "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-	/usr/lib/univention-install/79univention-kde-ugsprofile.inst || true
+	/usr/lib/univention-install/79univention-kde-kolab2-profile.inst || true
 fi

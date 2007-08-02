@@ -1,11 +1,11 @@
-Source: univention-kde-ugsprofile
+Source: univention-kde-kolab2-profile
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Build-Depends: debhelper, univention-config-dev
 Standards-Version: 3.5.2
 
-Package: univention-kde-ugsprofile
+Package: univention-kde-kolab2-profile
 Architecture: all
 Description: KDE desktop configuration for using UGS
  A KDE configuration for using kontact without having to configure it first

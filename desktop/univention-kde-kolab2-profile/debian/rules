@@ -3,7 +3,7 @@
 # Univention KDE UGS Profiles
 #  rules file for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,11 +52,11 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	(cd profiles && find kde.ugs ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
-	(cd profiles && find kde.ugs ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde-ugsprofile/usr/share/univention-kde-profiles/"{} \;)
-	install -d debian/univention-kde-ugsprofile/kde.ugs/.kde/share/config/kresources/kolab
-	install -m 0755 79univention-kde-ugsprofile.inst debian/univention-kde-ugsprofile/usr/lib/univention-install/
-	install -m 0755 ugs-kde-settings debian/univention-kde-ugsprofile/usr/bin/
+	(cd profiles && find kde.ugs ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde-kolab2-profile/usr/share/univention-kde-profiles/"{} \;)
+	(cd profiles && find kde.ugs ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde-kolab2-profile/usr/share/univention-kde-profiles/"{} \;)
+	install -d debian/univention-kde-kolab2-profile/kde.ugs/.kde/share/config/kresources/kolab
+	install -m 0755 79univention-kde-kolab2-profile.inst debian/univention-kde-kolab2-profile/usr/lib/univention-install/
+	install -m 0755 ugs-kde-settings debian/univention-kde-kolab2-profile/usr/bin/
 	univention-install-baseconfig
 
 binary-arch: build install

@@ -1,3 +1,9 @@
+univention-kde-kolab2-profile (1.1.0-1) unstable; urgency=low
+
+  * Rename to univention-kde-kolab2-profile
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 02 Aug 2007 14:20:15 +0200
+
 univention-kde-ugsprofile (1.0.0-4) unstable; urgency=low
 
   * dont install .svn dirs
