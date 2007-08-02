@@ -88,7 +88,7 @@ class object(content):
 			elif self.all_results['security/profile'] == "strict":
 				select = 2
 		
-		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,48,10,[select]))
+		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,50,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
 		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))
