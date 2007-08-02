@@ -1,15 +1,18 @@
-Source: univention-ldap-replication
+Source: univention-directory-replication
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 Build-Depends: debhelper
 
-Package: univention-ldap-replication
+Package: univention-directory-replication
 Architecture: all
+Replaces: univention-ldap-replication
+Provides: univention-ldap-replication
+Conflicts: univention-ldap-replication (<< 1.1)
 Depends: univention-ldap-server (>= 1.8), univention-directory-listener, python2.4-univention | python2.4-univention-2005, python2.4-univention-debug, python2.4-ldap
-Description: UCS - LDAP replication
- This package implements a client initiated LDAP master-slave
- replication, based on the Univention LDAP Notifier/Listener.
+Description: UCS - Directory replication
+ This package implements a client initiated LDAP master/slave
+ replication, based on the Univention Directory Notifier/Listener.
  .
  It is part of Univention Corporate Server (UCS), an integrated,
  directory driven solution for managing corporate environments.

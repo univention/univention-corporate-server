@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention LDAP Replication
+# Univention Directory Replication
 #  rules file for the debian package
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
@@ -31,7 +31,7 @@
 
 copyrightyear=`date +%Y`
 
-package=univention-ldap-replication
+package=univention-directory-replication
 
 
 build: build-stamp
@@ -54,9 +54,9 @@ install: build
 	dh_installdirs
 
 	install -m 755 replication.py debian/${package}/usr/lib/univention-directory-listener/system/replication.py
-	cat univention-ldap-replication-resync | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-ldap-replication-resync_tmp
-	install -m 744 univention-ldap-replication-resync_tmp debian/${package}/usr/sbin/univention-ldap-replication-resync
-	rm univention-ldap-replication-resync_tmp
+	cat univention-directory-replication-resync | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-directory-replication-resync_tmp
+	install -m 744 univention-directory-replication-resync_tmp debian/${package}/usr/sbin/univention-directory-replication-resync
+	rm univention-directory-replication-resync_tmp
 
 	dh_install
 
@@ -65,7 +65,6 @@ binary-indep: build install
 	dh_testroot -i
 	dh_installchangelogs -i
 	dh_installdocs -i
-	dh_installexamples -i
 	dh_installman -i
 	dh_link -i
 	dh_compress -i

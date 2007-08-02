@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention LDAP Replication
+# Univention Directory Replication
 #  postinst script for the debian package
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
