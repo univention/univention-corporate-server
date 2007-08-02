@@ -30,30 +30,30 @@
 
 if [ "$1" = "upgrade" -a -n "$2" ];
 	for file in \
-		bannedextensionlist
-		bannedsitelist     
-		dansguardianf1.conf  
-		exceptionurllist             
-		exceptionvirusurllist
-		bannediplist         
-		bannedurllist      
-		dlmgrextensionlist   
-		exceptionuserlist            
-		filtergroupslist
-		bannedmimetypelist   
-		banneduserlist     
-		exceptioniplist      
-		exceptionvirusextensionlist  
-		greysitelist
-		bannedphraselist     
-		contentregexplist  
-		exceptionphraselist  
-		exceptionvirusmimetypelist   
-		greyurllist
-		bannedregexpurllist  
-		dansguardian.conf  
-		exceptionsitelist    
-		exceptionvirussitelist       
+		bannedextensionlis \
+		bannedsitelis \
+		dansguardianf1.con \
+		exceptionurllis \
+		exceptionvirusurllis \
+		bannediplis \
+		bannedurllis \
+		dlmgrextensionlis \
+		exceptionuserlis \
+		filtergroupslis \
+		bannedmimetypelis \
+		banneduserlis \
+		exceptioniplis \
+		exceptionvirusextensionlis \
+		greysitelis \
+		bannedphraselis \
+		contentregexplis \
+		exceptionphraselis \
+		exceptionvirusmimetypelis \
+		greyurllis \
+		bannedregexpurllis \
+		dansguardian.con \
+		exceptionsitelis \
+		exceptionvirussitelis \
 		weightedphraselist; do
 			dpkg-divert --package univention-antivir-web --add --rename --divert /etc/dansguardian/${file}.orig /etc/dansguardian/${file}
 	done
