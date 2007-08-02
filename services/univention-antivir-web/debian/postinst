@@ -51,11 +51,16 @@ set -e
 #     installation fails and the `postinst' is called with `abort-upgrade',
 #     `abort-remove' or `abort-deconfigure'.
 
-univention-baseconfig set proxy/redirect?yes
-
 case "$1" in
     configure)
 
+		univention-config-registry set squid/virusscan?yes
+		univention-config-registry set squid/contentscan?no
+		/etc/init.d/squid restart
+		eval $(univention-config-registry shell squid/virusscan squid/contentscan)
+		if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
+			/etc/init.d/dansguardian restart
+		fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
