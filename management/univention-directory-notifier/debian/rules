@@ -60,7 +60,7 @@ install: build
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-directory-notifier/etc/runit/univention-directory-notifier/finish
 	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
 
-	install -m 755 02univention-ldap-notifier.inst debian/univention-directory-notifier/usr/lib/univention-install/
+	install -m 755 02univention-directory-notifier.inst debian/univention-directory-notifier/usr/lib/univention-install/
 
 	univention-install-service-info
 
@@ -71,7 +71,6 @@ binary-indep: build install
 	dh_testroot -a
 	dh_installchangelogs -a
 	dh_installdocs -a
-	dh_installexamples -a
 	dh_installinit --no-start -r
 	dh_installman -a
 	dh_link -a
