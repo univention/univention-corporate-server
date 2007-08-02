@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 #
-# Univention LDAP Replication
-#  listener module for LDAP replication
+# Univention Directory Replication
+#  listener module for Directory replication
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,7 +27,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# Univention LDAP Listener replication module
+# Univention Directory Listener replication module
 
 # Possible initialization scenarios:
 # 1. New slave
@@ -51,7 +51,7 @@ if listener.baseConfig['ldap/server/type'] == 'slave':
 if listener.baseConfig['ldap/slave/filter']:
 	filter=listener.baseConfig['ldap/slave/filter']
 
-LDIF_FILE = '/var/lib/univention-ldap-replication/failed.ldif'
+LDIF_FILE = '/var/lib/univention-directory-replication/failed.ldif'
 
 EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates']
 

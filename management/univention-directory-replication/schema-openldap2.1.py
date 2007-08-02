@@ -1,10 +1,10 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention LDAP Replication
+# Univention Directory Replication
 #  listener module for LDAP replication
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #

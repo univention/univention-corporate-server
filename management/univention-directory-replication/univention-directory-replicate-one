@@ -1,9 +1,9 @@
 #!/usr/bin/python2.4 -OO
 #
-# Univention LDAP Replication
+# Univention Directory Replication
 #  replicate one LDAP object
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,7 +27,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-# Univention LDAP Listener replication module
+# Univention Directory Listener replication module
 
 import sys, os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64
 import univention_baseconfig, univention.debug
@@ -39,7 +39,7 @@ baseConfig = baseConfig
 baseDN = baseConfig['ldap/base']
 
 def print_usage():
-	print "\nUse: univention-ldap-replicate-one <dn> (<server>)\n"
+	print "\nUse: univention-directory-replicate-one <dn> (<server>)\n"
 	print "The given <dn> will be read from <server> (or if server is not given from ldap_master)",
 	print "and differences of the local settings will be changed to meet the given one.",
 
@@ -51,7 +51,7 @@ if baseConfig['ldap/server/type'] == 'slave':
 if baseConfig['ldap/slave/filter']:
 	filter=baseConfig['ldap/slave/filter']
 
-LDIF_FILE = '/var/lib/univention-ldap-replication/failed.ldif'
+LDIF_FILE = '/var/lib/univention-directory-replication/failed.ldif'
 
 EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates']
 

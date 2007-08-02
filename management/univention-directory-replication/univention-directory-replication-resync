@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Univention LDAP Replication
+# Univention Directory Replication
 #  re-synchronize the local LDAP directory
 #
 # Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
@@ -36,7 +36,7 @@ export faileddns=`tempfile`
 
 display_header() {
         echo ""
-        echo "univention-ldap-replication-resync: Resync local LDAP using a failed.ldif"
+        echo "univention-directory-replication-resync: Resync local LDAP using a failed.ldif"
         echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
 		echo "usage: $0 <failed.ldif>"
         echo ""
@@ -105,10 +105,10 @@ then
 	d=`date +%F-%X`
 	echo "Restored modifies sucessfuly, the ldif-file will be moved to /tmp/replayed.ldif_$d"
 	rm "${faileddns}"
-	if [ ! -d /var/lib/univention-ldap-replication ]; then
-		mkdir -p /var/lib/univention-ldap-replication; chmod -R 700 /var/lib/univention-ldap-replication
+	if [ ! -d /var/lib/univention-directory-replication ]; then
+		mkdir -p /var/lib/univention-directory-replication; chmod -R 700 /var/lib/univention-directory-replication
 	fi
-	mv $1 /var/lib/univention-ldap-replication/replayed.ldif_$d; chmod 600 /var/lib/univention-ldap-replication/replayed.ldif_$d
+	mv $1 /var/lib/univention-directory-replication/replayed.ldif_$d; chmod 600 /var/lib/univention-directory-replication/replayed.ldif_$d
 	/etc/init.d/univention-directory-listener start
 	exit 0
 else
