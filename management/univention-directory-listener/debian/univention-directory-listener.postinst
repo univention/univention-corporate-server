@@ -69,7 +69,7 @@ if [ -e /var/lib/univention-ldap/replog/replog ]; then
 	chmod 600 /var/lib/univention-ldap/replog/replog
 fi
 
-/usr/lib/univention-install/03univention-ldap-listener.inst || true
+/usr/lib/univention-install/03univention-directory-listener.inst || true
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.12; then

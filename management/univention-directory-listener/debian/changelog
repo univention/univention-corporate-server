@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-5) unstable; urgency=low
+
+  * Fix name of join script
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 14:16:39 +0200
+
 univention-directory-listener (2.1.1-4) unstable; urgency=low
 
   * Fix link generation, dh_links can't handle symlinks on directories
