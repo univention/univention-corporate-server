@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+VERSION=1
+
 touch /usr/lib/univention-install/.index.txt
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -35,11 +37,11 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-apache successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-apache v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 a2enmod ssl
 /etc/init.d/apache2 force-reload
 
-test -n "`grep "univention-apache successful" /usr/lib/univention-install/.index.txt`" || echo "univention-apache successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-apache v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-apache v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
