@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Installer
-#  configure Univention Baseconfig
+#  Configure Univention Config Registry
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -110,7 +110,7 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
     univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" security/services/x11="disabled"
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
     univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
-    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"
+    univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled"
     univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"
   fi
 
@@ -121,7 +121,7 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
     univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled" 
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
     univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
-    univention-config-registry set security/services/ldap="disabled" security/services/postgres="disabled" security/services/samba="disabled"
+    univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled"
     univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled"
   fi
 
