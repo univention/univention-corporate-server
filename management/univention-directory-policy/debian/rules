@@ -52,7 +52,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 20univention-ldap-policy.inst debian/univention-directory-policy/usr/lib/univention-install
+	install -m 755 20univention-directory-policy.inst debian/univention-directory-policy/usr/lib/univention-install
 	install -m 755 univention-directory-policy debian/univention-directory-policy/etc/init.d/
 	univention-install-baseconfig
 
