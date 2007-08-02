@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-01 15:17+0200\n"
+"POT-Creation-Date: 2007-08-02 10:46+0200\n"
 "PO-Revision-Date: 2007-07-17 14:59+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,7 +66,6 @@ msgid " UCS - %s (%s)"
 msgstr ""
 
 #: installer/main.py:355
-#, fuzzy, python-format
 msgid " Univention Corporate Server %s (%s)"
 msgstr " Univention Corporate Server %s (%s)"
 
@@ -112,7 +111,7 @@ msgid " End"
 msgstr " Ende"
 
 #: installer/objects.py:1148 installer/modules/12_partition.py:1859
-#: installer/modules/50_security.py:92 installer/modules/60_software.py:342
+#: installer/modules/50_security.py:95 installer/modules/60_software.py:342
 #: installer/modules/70_system_settings.py:73
 msgid "F12-Next"
 msgstr "F12-Weiter"
@@ -130,7 +129,7 @@ msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
 #: installer/objects.py:1159 installer/modules/12_partition.py:1858
-#: installer/modules/50_security.py:91 installer/modules/60_software.py:338
+#: installer/modules/50_security.py:94 installer/modules/60_software.py:338
 #: installer/modules/60_software.py:343
 #: installer/modules/70_system_settings.py:72
 msgid "F11-Back"
@@ -1994,34 +1993,35 @@ msgid "These options control how many system services are"
 msgstr "Diese Optionen konfigurieren, welche Systemendienste"
 
 #: installer/modules/50_security.py:72
-msgid "initially blocked by a packet filter (iptables):"
+msgid "initially blocked by a packet filter (iptables)"
 msgstr "initial durch einen Paketfilter blockiert werden:"
 
-#: installer/modules/50_security.py:73
-msgid "strict: Only SSH and HTTPS are allowed. This is only"
-msgstr "strict: Nur SSH und HTTPS sind erlaubt. Nur für eine"
-
-#: installer/modules/50_security.py:74
-msgid "        intended for an initial, locked-down setup."
-msgstr "        abgesicherte Grundinstallation empfohlen."
-
-
 #: installer/modules/50_security.py:75
-msgid "normal: Typical selection of services, recommended"
-msgstr "normal: Empfohlenen Auswahl an Systemdiensten"
+msgid "    allowed."
+msgstr "    HTTPS sind erlaubt."
 
-#: installer/modules/50_security.py:76
-msgid "open  : No service is filtered"
-msgstr "open  : Kein Dienst wird gefiltert"
+#: installer/modules/50_security.py:78
+#, fuzzy
+msgid "Disabled"
+msgstr "Deaktiviert"
 
-#: installer/modules/50_security.py:118
+#: installer/modules/50_security.py:79
+#, fuzzy
+msgid "Typical selection of services, recommended"
+msgstr "Empfohlene Auswahl an Systemdiensten"
+
+#: installer/modules/50_security.py:80
+msgid "Locked-down setup. Only SSH, LDAP and HTTPS are"
+msgstr "Abgesicherte Grundinstallation. Nur SSH, LDAP und"
+
+#: installer/modules/50_security.py:121
 msgid ""
 "Security Settings  \n"
 " \n"
 " Pre-defined packet filter configuration options for various system roles"
 msgstr ""
 
-#: installer/modules/50_security.py:121
+#: installer/modules/50_security.py:124
 msgid "Security Settings"
 msgstr "Sicherheits-Optionen"
 
@@ -2209,6 +2209,15 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "strict: Only SSH and HTTPS are allowed. This is only"
+#~ msgstr "strict: Nur SSH und HTTPS sind erlaubt. Nur für eine"
+
+#~ msgid "        intended for an initial, locked-down setup."
+#~ msgstr "        abgesicherte Grundinstallation empfohlen."
+
+#~ msgid "open  : No service is filtered"
+#~ msgstr "open  : Kein Dienst wird gefiltert"
 
 #~ msgid "Terminal Service"
 #~ msgstr "Terminal-Dienste"

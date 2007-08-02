@@ -2,9 +2,11 @@ univention-installer (1.6.14-12) unstable; urgency=low
 
   * When running univention-system-setup-software, take previous settings into
     account within the menu layout.
-  * Allow LDAP in strict mode	
-  * Restructure security module layout	
-
+  * Allow LDAP in strict mode.
+  * Restructure security module layout.
+  * Mark menu selections as translatable.	
+  * Update translations.
+	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 09:51:36 +0200
 
 univention-installer (1.6.14-11) unstable; urgency=low

@@ -75,9 +75,9 @@ class object(content):
 		self.add_elem('security_profile_label3', textline(_('    allowed.'), self.minY+8, self.minX+2))
 
 		dict={}
-		dict['Disabled']=['open',0]
-		dict['Typical selection of services, recommended']=['normal',1]
-		dict['Locked-down setup. Only SSH, LDAP and HTTPS are']=['strict',2]
+		dict[_('Disabled')]=['open',0]
+		dict[_('Typical selection of services, recommended')]=['normal',1]
+		dict[_('Locked-down setup. Only SSH, LDAP and HTTPS are')]=['strict',2]
 
 		list=['normal','strict','open']
 		select=1
