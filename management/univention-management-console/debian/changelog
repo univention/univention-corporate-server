@@ -1,3 +1,10 @@
+univention-management-console (0.7.25-2) unstable; urgency=low
+
+  * join module: no credentials are required an master and backup;
+  * show join scripts in correct order
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 19:16:30 +0200
+
 univention-management-console (0.7.25-1) unstable; urgency=low
 
   * a few fixes in the join module 

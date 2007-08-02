@@ -90,7 +90,9 @@ def read_status():
 	global _join_dir, _join_index
 
 	scripts = []
-	for item in os.listdir( _join_dir ):
+	files = os.listdir( _join_dir )
+	files.sort()
+	for item in files:
 		if item == _join_index or not item.endswith( '.inst' ):
 			continue
 		ud.debug( ud.ADMIN, ud.INFO, 'read script: %s' % item )

@@ -7,12 +7,12 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-02 08:33+0200\n"
+"POT-Creation-Date: 2007-08-02 19:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
 #: __init__.py:50
@@ -55,11 +55,11 @@ msgstr "Es fehlen die Berechtigungen das Komando auszuführen"
 msgid "Script"
 msgstr "Skript"
 
-#: _revamp.py:50
+#: _revamp.py:51
 msgid "Status"
 msgstr "Status"
 
-#: _revamp.py:50
+#: _revamp.py:51
 msgid "Current Version"
 msgstr "Aktuelle Version"
 
@@ -79,47 +79,59 @@ msgstr "erfolgreich"
 msgid "failed"
 msgstr "fehlgeschlagen"
 
-#: _revamp.py:87
-#, python-format
-msgid "Join Script: %s"
+#: _revamp.py:87 _revamp.py:88
+#, fuzzy, python-format
+msgid "Join Script: %(name)s"
 msgstr "Domänenbeitrittsskript: %s"
 
-#: _revamp.py:92
+#: _revamp.py:106
+msgid "Re-join"
+msgstr "Erneut Beitreten"
+
+#: _revamp.py:107
+msgid "Re-join the System"
+msgstr "Erneuter Domänenbeitritt"
+
+#: _revamp.py:109
 msgid "Current Status"
 msgstr "Aktueller Status"
 
-#: _revamp.py:94
+#: _revamp.py:111
 msgid "The system has not been joined yet."
 msgstr "Das System ist der Domäne noch nicht beigetreten."
 
-#: _revamp.py:98 _revamp.py:113 _revamp.py:140
+#: _revamp.py:115 _revamp.py:130 _revamp.py:158
 msgid "Join"
 msgstr "Beitritt"
 
-#: _revamp.py:99
+#: _revamp.py:116
 msgid "Join the System"
 msgstr "Domänenbeitritt"
 
-#: _revamp.py:116 _revamp.py:144
+#: _revamp.py:133 _revamp.py:162 _revamp.py:170
 msgid "Credentials for Join"
 msgstr "Authentisierungsdaten für den Domänenbeitritt"
 
-#: _revamp.py:120
+#: _revamp.py:137
 msgid "The Join Process was successful!"
 msgstr "Der Domänenbeitritt war erfolgreich!"
 
-#: _revamp.py:122
+#: _revamp.py:139
 msgid "The Join Process has failed!"
 msgstr "Der Domänenbeitritt ist fehlgeschlagen!"
 
-#: _revamp.py:125 _revamp.py:154
+#: _revamp.py:142 _revamp.py:181
 msgid "Log File"
 msgstr "Protokolldatei"
 
-#: _revamp.py:148
+#: _revamp.py:167
+msgid "Run Script"
+msgstr "Starte Domänenbeitrittsskript"
+
+#: _revamp.py:175
 msgid "The Join Script was successful!"
 msgstr "Das Domönenbeitrittsskript wurde erfolgreich ausgeführt!"
 
-#: _revamp.py:150
+#: _revamp.py:177
 msgid "The Join Script has failed!"
 msgstr "Das Domönenbeitrittsskript ist fehlgeschlagen!"

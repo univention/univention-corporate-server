@@ -146,18 +146,29 @@ class Web( object ):
 	def _web_join_script( self, object, res ):
 		lst = umcd.List()
 		if object.incomplete or not object.options[ 'account' ] or not object.options[ 'password' ]:
-			user = umcd.make( self[ 'join/script' ][ 'account' ],
-							  default = object.options.get( 'account', self._username ) )
-			pwd =  umcd.make( self[ 'join/script' ][ 'password' ] )
+			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
+																'domaincontroller_backup' ):
+				user = umcd.make( self[ 'join/script' ][ 'account' ],
+								  default = object.options.get( 'account', self._username ) )
+				pwd =  umcd.make( self[ 'join/script' ][ 'password' ] )
 
-			lst.add_row( [ user, pwd ] )
-			req = umcp.Command( args = [ 'join/script' ],
-								opts = { 'script' : object.options[ 'script' ] } )
-			lst.add_row( [ umcd.Button( _( 'Join' ), 'actions/ok',
-										umcd.Action( req, [ user.id(), pwd.id() ] ),
-										close_dialog = False ),
-						   umcd.CancelButton() ] )
-			res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+				lst.add_row( [ user, pwd ] )
+				req = umcp.Command( args = [ 'join/script' ],
+									opts = { 'script' : object.options[ 'script' ] } )
+				lst.add_row( [ umcd.Button( _( 'Join' ), 'actions/ok',
+											umcd.Action( req, [ user.id(), pwd.id() ] ),
+											close_dialog = False ),
+							   umcd.CancelButton() ] )
+				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+			else:
+				lst.add_row( [ umcd.InfoBox( 'No Credentials are required.' ) ] )
+				req = umcp.Command( args = [ 'join/script' ],
+									opts = { 'script' : object.options[ 'script' ] } )
+				lst.add_row( [ umcd.Button( _( 'Run Script' ), 'actions/ok',
+											umcd.Action( req ), close_dialog = False ),
+							   umcd.CancelButton() ] )
+				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
+
 		else:
 			success, log = res.dialog
 			if success:
