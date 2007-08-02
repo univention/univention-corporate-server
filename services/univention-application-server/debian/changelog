@@ -1,3 +1,9 @@
+univention-application-server (2.0.1-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 10:16:02 +0200
+
 univention-application-server (2.0.0-3) unstable; urgency=low
 
   * encoded files utf-8

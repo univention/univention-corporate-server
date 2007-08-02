@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,7 +37,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-application-server successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-application-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell`
 
@@ -43,7 +45,7 @@ old=`univention-admin policies/thinclient list $@ --filter cn=default-settings |
 
 univention-admin policies/thinclient modify $@ --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --set linuxTerminalServer=$hostname.$domainname $old
 
-test -n "`grep "univention-application-server successful" /usr/lib/univention-install/.index.txt`" || echo "univention-application-server successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-application-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-application-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 
