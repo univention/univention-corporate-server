@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 09:23:15 +0200
+
 univention-directory-listener (2.1.0-3) unstable; urgency=low
 
   * Add missing Replaces: on univention-ldap-listener

@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 touch /usr/lib/univention-install/.index.txt
 
 if ! test -e "/usr/share/univention-join/.joined"; then
@@ -35,7 +37,7 @@ if ! test -e "/usr/share/univention-join/.joined"; then
 	exit 1
 fi
 
-test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-ldap-listener v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 ln -sf /etc/runit/univention-ldap-listener /etc/runit/univention/univention-ldap-listener
 
@@ -55,7 +57,7 @@ fi
 eval `univention-baseconfig shell`
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener successful" >>/usr/lib/univention-install/.index.txt
+	test -n "`grep "univention-ldap-listener v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 	exit 0
 fi
 cachedir=/var/lib/univention-ldap-listener
@@ -68,7 +70,7 @@ if [ "$server_role" != "domaincontroller_master" ]; then
 	fi
 fi
 
-univention-baseconfig set ldap/database/ldbm/dbsync="10" >>/var/log/univention/join.log 2>&1
+univention-baseconfig set ldap/database/ldbm/dbsync="10"
 
 if [ "`echo $ldap_master_bind | tr A-Z a-z`" = "gssapi" ]; then
 	options="$options -K"
@@ -82,25 +84,25 @@ options="$options -i -h $ldap_master -b \"$ldap_base\" -m $moduledir -c $cachedi
 if [ -n "$server_role" ]; then
 
 	if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
-		/usr/sbin/univention-ldap-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret >>/var/log/univention/join.log 2>&1
+		/usr/sbin/univention-ldap-listener $options -D "cn=admin,$ldap_base" -y /etc/ldap.secret
 	else
-		/usr/sbin/univention-ldap-listener $options -D "`univention-baseconfig get ldap/hostdn`" -y /etc/machine.secret >>/var/log/univention/join.log 2>&1
+		/usr/sbin/univention-ldap-listener $options -D "`univention-baseconfig get ldap/hostdn`" -y /etc/machine.secret
 	fi
 	
 else
-	/usr/sbin/univention-ldap-listener $options >>/var/log/univention/join.log 2>&1
+	/usr/sbin/univention-ldap-listener $options
 fi
 
 exit_status=$?
 
-univention-baseconfig set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync >>/var/log/univention/join.log 2>&1
+univention-baseconfig set ldap/database/ldbm/dbsync=$ldap_database_ldbm_dbsync
 
 # needed for db sync
 sleep 15
 
 if [ -f /etc/init.d/slapd ]
     then
-    /etc/init.d/slapd restart >>/var/log/univention/join.log 2>&1
+    /etc/init.d/slapd restart
 fi
 
 if [ $exit_status != 0 ]; then
@@ -117,7 +119,7 @@ fi
 test -x /usr/sbin/nscd && /usr/sbin/nscd -i passwd
 test -x /usr/sbin/nscd && /usr/sbin/nscd -i group
 
-test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-ldap-listener v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-ldap-listener v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
 
