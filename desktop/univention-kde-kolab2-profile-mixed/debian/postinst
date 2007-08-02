@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention KDE UGS Profile Mixed-Mode
+# Univention KDE UGS Kolab2 Profile Mixed-Mode
 #  postinst script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,4 +30,4 @@
 
 #DEBHELPER#
 
-/usr/lib/univention-install/79univention-kde-ugsprofile-mixed.inst || true
+/usr/lib/univention-install/79univention-kde-kolab2-profile-mixed.inst || true

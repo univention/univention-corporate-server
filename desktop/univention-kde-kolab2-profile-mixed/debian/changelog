@@ -1,3 +1,9 @@
+univention-kde-kolab2-profile-mixed (1.1.0-1) unstable; urgency=low
+
+  * Renamed to univention-kde-kolab2-profile-mixed.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 13:09:17 +0200
+
 univention-kde-ugsprofile-mixed (1.0.1-1) unstable; urgency=low
 
   * add version number to join script
