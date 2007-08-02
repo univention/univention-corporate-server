@@ -1,3 +1,9 @@
+univention-samba (1.0.5-1) unstable; urgency=low
+
+  * add version number to join script
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  2 Aug 2007 10:00:55 +0200
+
 univention-samba (1.0.4-10) unstable; urgency=low
 
   * corrected naming of samba/winbind/trusted/domains/only
