@@ -1,3 +1,9 @@
+univention-java (2.0.1-1) unstable; urgency=low
+
+  * Update dependencies: Switch to sun-java5 from Debian/non-free.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  3 Aug 2007 10:49:46 +0200
+
 univention-java (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies

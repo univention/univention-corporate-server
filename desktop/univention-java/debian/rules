@@ -3,7 +3,7 @@
 # Univention Java
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,12 +31,12 @@
 # Uncomment this to turn on verbose mode.
 #export DH_VERBOSE=1
 
-ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
-	CFLAGS += -g
-endif
-ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
-	INSTALL_PROGRAM += -s
-endif
+#ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+#	CFLAGS += -g
+#endif
+#ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+#	INSTALL_PROGRAM += -s
+#endif
 
 configure: configure-stamp
 configure-stamp:
@@ -65,9 +65,9 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	cp -d -r files/* $(CURDIR)/debian/univention-java/
-	find $(CURDIR)/debian/univention-java/ -type d -name CVS -exec rm -rf {} \; || true
-	ln -s /etc/alternatives/javaplugin_oji.so $(CURDIR)/debian/univention-java/usr/lib/mozilla-firefox/plugins/
+#	cp -d -r files/* $(CURDIR)/debian/univention-java/
+#	find $(CURDIR)/debian/univention-java/ -type d -name CVS -exec rm -rf {} \; || true
+#	ln -s /etc/alternatives/javaplugin_oji.so $(CURDIR)/debian/univention-java/usr/lib/mozilla-firefox/plugins/
 
 
 binary-indep: build install
@@ -76,7 +76,6 @@ binary-indep: build install
 binary-arch: build install
 	dh_testdir
 	dh_testroot
-	dh_strip
 	dh_fixperms
 	dh_installdeb
 	dh_shlibdeps
