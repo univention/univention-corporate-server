@@ -1,3 +1,10 @@
+univention-nagios (1.0.4-1) unstable; urgency=low
+
+  * fixed nagios.cfg: new uplink version merged misccommands.cfg and
+    checkcommands.cfg to commands.cfg
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 03 Aug 2007 12:06:56 +0200
+
 univention-nagios (1.0.3-1) unstable; urgency=low
 
   * add version number to join scripts
