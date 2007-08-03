@@ -28,39 +28,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#
-# see: dh_installdeb(1)
-
 set -e
-
-# summary of how this script can be called:
-#        * <postinst> `configure' <most-recently-configured-version>
-#        * <old-postinst> `abort-upgrade' <new version>
-#        * <conflictor's-postinst> `abort-remove' `in-favour' <package>
-#          <new-version>
-#        * <deconfigured's-postinst> `abort-deconfigure' `in-favour'
-#          <failed-install-package> <version> `removing'
-#          <conflicting-package> <version>
-# for details, see http://www.debian.org/doc/debian-policy/ or
-# the debian-policy package
-#
-# quoting from the policy:
-#     Any necessary prompting should almost always be confined to the
-#     post-installation script, and should be protected with a conditional
-#     so that unnecessary prompting doesn't happen if a package's
-#     installation fails and the `postinst' is called with `abort-upgrade',
-#     `abort-remove' or `abort-deconfigure'.
 
 case "$1" in
     configure)
 
-		univention-config-registry set squid/virusscan?yes
-		univention-config-registry set squid/contentscan?no
-		/etc/init.d/squid restart
-		eval $(univention-config-registry shell squid/virusscan squid/contentscan)
-		if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
-			/etc/init.d/dansguardian restart
-		fi
+        CONFREG=univention-config-registry
+
+        if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
+                # Merge pre-UCS2.0-settings:
+                eval $($CONFREG eval proxy/redirect proxy/antivir/scanner proxy/antivir/virusscanner proxy/antivir/scannerpath proxy/antivir/viruscmd proxy/antivir/alert)
+
+                [ $proxy_redirect ] && ( $CONFREG squid/virusscan=$proxy_redirect ; $CONFREG squid/contentscan=false )
+                [ $proxy_antivir_scanner ] && (
+                        [ $proxy_antivir_scanner != clamav ] || echo Warning: Different virus scanners than clamav are not supported anymore by univention-antivir-web
+                        )
+                [ $proxy_antivir_virusscanner -o $proxy_antivir_scannerpath -o $proxy_antivir_viruscmd -o $proxy_antivir_alert ] && (
+                        echo Warning: Different virus scanners than clamav are not supported anymore by univention-antivir-web
+                        )
+        fi
+
+        $CONFREG set squid/virusscan?yes
+        $CONFREG set squid/contentscan?no
+
+	/etc/init.d/squid restart
+	eval $($CONFREG shell squid/virusscan squid/contentscan)
+	if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
+		/etc/init.d/dansguardian restart
+	fi
     ;;
 
     abort-upgrade|abort-remove|abort-deconfigure)
