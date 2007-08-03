@@ -105,12 +105,11 @@ class object(content):
 		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
 			return 'next'
 
-		# Prevent tracebacks for situations, in which the focus isn't established yet
-		elif key in [ 10, 32 ] and self.get_elem('security_profile_label0').get_status():
-			pass
-
 		else:
-			return self.get_elem_by_id(self.current).key_event(key)
+			try:
+				return self.get_elem_by_id(self.current).key_event(key)
+			except:
+				pass
 
 	def incomplete(self):
 		return 0
