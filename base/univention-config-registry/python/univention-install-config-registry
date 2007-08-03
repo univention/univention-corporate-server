@@ -85,7 +85,7 @@ if __name__ == '__main__':
 			file = extFile(package, 'univention-baseconfig')
 			if not os.path.exists(file):
 				continue
-	
+
 		postinst = open(extFile(package, 'postinst.debhelper'), 'a')
 		preinst = open(extFile(package, 'preinst.debhelper'), 'a')
 		postrm = open(extFile(package, 'postrm.debhelper'), 'a')
@@ -138,6 +138,10 @@ if __name__ == '__main__':
 
 		doIt(['install', '-d', destDir('', package, 'info')])
 		doIt(['install', '-m644', file, destPath(package+'.info', package, 'info')])
+		mapping_file = extFile( package, 'univention-config-registry-mapping')
+		if os.path.exists(mapping_file):
+			doIt(['install', '-d', destDir('', package, 'mapping')])
+			doIt(['install', '-m644', mapping_file, destPath(package+'.univention-config-registry-mapping', package, 'mapping')])
 
 		postinst.write('test -x /usr/sbin/univention-config-registry && univention-config-registry register %s || true\n' % package)
 

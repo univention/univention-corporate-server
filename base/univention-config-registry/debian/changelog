@@ -1,3 +1,10 @@
+univention-config-registry (2.2.8-1) unstable; urgency=low
+
+  * added univention-config-registry-mapping, the mapping file contains a
+    comparsion between the old and the new config registry values
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 11:17:08 +0200
+
 univention-config-registry (2.2.7-5) unstable; urgency=low
 
   * set a conflict to older univention-baseconfig versions
