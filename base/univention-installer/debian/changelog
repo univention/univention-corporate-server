@@ -1,3 +1,9 @@
+univention-installer (1.6.15-3) unstable; urgency=low
+
+  * Initialise TAB focus.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  3 Aug 2007 11:16:59 +0200
+
 univention-installer (1.6.15-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

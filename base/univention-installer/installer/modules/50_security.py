@@ -95,6 +95,7 @@ class object(content):
 		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37))
 
 		self.current = self.get_elem_id('security_profile_radio')
+		self.get_elem_by_id(self.current).set_on()
 
 	def input(self,key):
 
