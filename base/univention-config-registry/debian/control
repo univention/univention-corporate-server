@@ -10,7 +10,7 @@ Package: univention-config-registry
 Architecture: all
 Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils,  acl, xfsprogs, lsof, console-data, console-tools
 Replaces: univention-baseconfig
-Conflicts: univention-baseconfig (<=2.0.0)
+Conflicts: univention-baseconfig (<=2.2.0)
 Provides: univention-baseconfig
 Description: UCS - base configuration
  This package contains the base configuration for UCS.

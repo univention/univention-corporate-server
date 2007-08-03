@@ -1,3 +1,9 @@
+univention-config-registry (2.2.7-5) unstable; urgency=low
+
+  * set a conflict to older univention-baseconfig versions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 08:55:25 +0200
+
 univention-config-registry (2.2.7-4) unstable; urgency=low
 
   * added descriptions for config registry variables
