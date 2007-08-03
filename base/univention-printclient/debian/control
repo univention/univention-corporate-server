@@ -8,7 +8,7 @@ Standards-Version: 3.5.2
 Package: univention-printclient
 Architecture: all
 Conflicts: univention-printserver (<<0.12)
-Depends: univention-baseconfig (>=0.06), cupsys-client, cupsys-bsd
+Depends: univention-config-registry (>=0.06), cupsys-client, cupsys-bsd
 Description: UCS - print client
  This packages provides the printer configuration.
  .

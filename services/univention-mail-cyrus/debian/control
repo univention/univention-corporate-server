@@ -19,7 +19,7 @@ Description: UCS - imap configuration
 
 Package: univention-mail-cyrus-imap
 Architecture: all
-Depends: univention-baseconfig (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules
+Depends: univention-config-registry (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules
 Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail
 Description: UCS - imap configuration
  The UCS cyrus imapd mail package
@@ -31,7 +31,7 @@ Description: UCS - imap configuration
 
 Package: univention-mail-cyrus-pop
 Architecture: all
-Depends: univention-baseconfig (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules, cyrus-pop3d-2.2 | cyrus21-pop3d
+Depends: univention-config-registry (>= 1.2), libpam-univentionmailcyrus, cyrus-imapd-2.2 | cyrus21-imapd, sasl2-bin, libsasl2-modules, cyrus-pop3d-2.2 | cyrus21-pop3d
 Conflicts: univention-mail-tiny, univention-mail-imap, univention-mail-pop, univention-mail
 Description: UCS - imap configuration
  The UCS cyrus imapd mail package

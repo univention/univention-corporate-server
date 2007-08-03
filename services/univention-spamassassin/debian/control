@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-spamassassin
 Architecture: all
-Depends: univention-baseconfig, spamassassin (>= 3.0.4), spamc
+Depends: univention-config-registry, spamassassin (>= 3.0.4), spamc
 Description: univention mail antispam
  univention mail antispam module
  .

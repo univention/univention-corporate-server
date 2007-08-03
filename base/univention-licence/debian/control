@@ -59,7 +59,7 @@ Description: UCS - tools to create and sign licenses
 
 Package: univention-license-import
 Architecture: all
-Depends: univention-baseconfig, univention-config (>= 1.20), ldap-utils, sysutils
+Depends: univention-config-registry, univention-config (>= 1.20), ldap-utils, sysutils
 Description: UCS - tool to import new licenses
  This packages contains the tool to import new UCS
  licenses.

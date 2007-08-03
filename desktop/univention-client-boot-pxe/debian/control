@@ -8,7 +8,7 @@ Standards-Version: 3.5.5
 Package: univention-client-boot-pxe
 Architecture: all
 Depends: univention-tftp, syslinux | syslinux-bin
-Pre-Depends: univention-baseconfig (>> 1.54-30)
+Pre-Depends: univention-config-registry (>> 1.54-30)
 Description: UCS - network boot infrastructure (PXE)
  The PreExecution Environment (PXE) allows for computers to
  boot from the network. No local storage is required. PXE

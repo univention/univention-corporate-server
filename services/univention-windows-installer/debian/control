@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-windows-installer
 Architecture: all
-Depends: univention-client-boot-pxe, syslinux | syslinux-bin, univention-baseconfig, univention-samba, lynx, unzip, univention-windows-installer-image-linux
+Depends: univention-client-boot-pxe, syslinux | syslinux-bin, univention-config-registry, univention-samba, lynx, unzip, univention-windows-installer-image-linux
 Description: UCS - unattended Windows installation
  The Univention Windows Installer integrates Microsoft's
  unattended installation into UCS. Windows computers can
@@ -21,7 +21,7 @@ Description: UCS - unattended Windows installation
 
 Package: univention-windows-installer-image-linux
 Architecture: any 
-Depends: lynx, unzip, python2.4, univention-baseconfig
+Depends: lynx, unzip, python2.4, univention-config-registry
 Conflicts: univention-windows-installer (<< 1.2-1)
 Description: Customized Linux-based Windows installation image
  This package downloads a Linux-image from the unattended-website,

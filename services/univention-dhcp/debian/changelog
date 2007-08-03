@@ -1,3 +1,10 @@
+univention-dhcp (2.0.5-2) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:34 +0200
+
 univention-dhcp (2.0.5-1) unstable; urgency=low
 
   * add version number to join script

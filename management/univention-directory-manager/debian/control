@@ -7,7 +7,7 @@ Build-Depends: debhelper, python2.4, python-xml, univention-config-dev
 
 Package: univention-directory-manager
 Architecture: all
-Depends: python2.4, python-xml, python-univention-directory-manager, univention-baseconfig (>=1.3), univention-webui, python-m2crypto, univention-apache
+Depends: python2.4, python-xml, python-univention-directory-manager, univention-config-registry (>=1.3), univention-webui, python-m2crypto, univention-apache
 Provides: univention-admin
 Replaces: univention-admin
 Conflicts: univention-admin (<= 3.2.3-7)

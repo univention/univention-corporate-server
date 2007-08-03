@@ -9,7 +9,7 @@ XS-Python-Version: all
 Package: univention-pkgdb
 Architecture: all
 Pre-Depends: univention-postgresql (>> 0.3.9 )
-Depends: univention-baseconfig, postgresql-client, univention-pkgdb-tools 
+Depends: univention-config-registry, postgresql-client, univention-pkgdb-tools 
 Description: UCS - PkgDB
  This package contains server-side-components for the Univention package database.
  .
@@ -20,7 +20,7 @@ Description: UCS - PkgDB
 
 Package: python-univention-pkgdb
 Architecture: all
-Depends:  ${python:Depends}, python-apt, python-pygresql, python-dns, univention-baseconfig
+Depends:  ${python:Depends}, python-apt, python-pygresql, python-dns, univention-config-registry
 Provides: ${python:Provides}, univention-pkgdb-lib
 XB-Python-Version: ${python:Versions}
 Conflicts: univention-pkgdb-lib
@@ -35,7 +35,7 @@ Description: UCS - PkgDB
 
 Package: univention-pkgdb-tools
 Architecture: all
-Depends: univention-baseconfig, python-univention-pkgdb
+Depends: univention-config-registry, python-univention-pkgdb
 Recommends: postgresql-client
 Description: UCS - PkgDB-Tools
  This package contains client-side-tools for the Univention package database.

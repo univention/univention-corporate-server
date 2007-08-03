@@ -6,7 +6,7 @@ Build-Depends: debhelper
 
 Package: univention-local-users
 Architecture: all
-Depends: univention-directory-listener, python-univention, univention-baseconfig
+Depends: univention-directory-listener, python-univention, univention-config-registry
 Description: UCS - Replicates users from LDAP to flat files
  The included Univention LDAP Listener module replicates
  a selected group of LDAP users to /etc/passwd. This can is

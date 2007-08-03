@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-maintenance
 Architecture: all
-Depends: bc, ldap-utils, httpd, nmap, mrtg, netcat, mail-transport-agent, cron, univention-baseconfig
+Depends: bc, ldap-utils, httpd, nmap, mrtg, netcat, mail-transport-agent, cron, univention-config-registry
 Description: UCS - maintenance tools
  This package monitors your server, creates a logfile in
  root's homedir and produces HTML statistics about

@@ -1,3 +1,10 @@
+univention-kde (2.0.1-13) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:38 +0200
+
 univention-kde (2.0.1-12) unstable; urgency=low
 
   * Re-add kdesktoprc patch from desktop scope.

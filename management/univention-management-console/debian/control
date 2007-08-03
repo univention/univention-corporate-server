@@ -54,7 +54,7 @@ Description: Univention Management Console - Web based computer administration t
 
 Package: python-univention-management-console
 Architecture: all
-Depends: ${python:Depends}, python-univention-baseconfig, python-univention, python-univention-admin, python-pyopenssl, python-notifier (>=0.6.0)
+Depends: ${python:Depends}, python-univention-config-registry, python-univention, python-univention-admin, python-pyopenssl, python-notifier (>=0.6.0)
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: Univention Management Console - Python Modules

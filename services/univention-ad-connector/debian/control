@@ -9,7 +9,7 @@ XS-Python-Version: all
 Package: python-univention-connector
 Architecture: all
 Depends: ${python:Depends}, python-univention, python-univention-license, univention-server-master | univention-server-backup
-Pre-Depends: univention-baseconfig (>> 1.54-30)
+Pre-Depends: univention-config-registry (>> 1.54-30)
 Provides: ${python:Provides}, python2.4-univention-connector
 XB-Python-Version: ${python:Versions}
 Conflicts: univention-server-slave, univention-server-member
@@ -25,7 +25,7 @@ Description: UCS - Modules for connector sychronisation
 Package: python-univention-connector-ad
 Architecture: all
 Depends: ${python:Depends}, python-univention, python-univention-license, python-univention-connector, python-m2crypto
-Pre-Depends: univention-baseconfig (>> 1.54-30)
+Pre-Depends: univention-config-registry (>> 1.54-30)
 Provides: ${python:Provides}, python2.4-univention-connector-ad
 XB-Python-Version: ${python:Versions}
 Description: UCS - Modules for connector sychronisation
@@ -40,7 +40,7 @@ Description: UCS - Modules for connector sychronisation
 Package: univention-ad-connector
 Architecture: all
 Depends: python-univention, python-univention-license, python-univention-connector-ad
-Pre-Depends: univention-baseconfig (>> 1.54-30)
+Pre-Depends: univention-config-registry (>> 1.54-30)
 Conflicts: python2.3-univention-connector-ad
 Replaces: python2.3-univention-connector-ad
 Description: UCS - Modules for sync ucs and active directory

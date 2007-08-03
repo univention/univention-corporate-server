@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-bootsplash
 Architecture: all
-Pre-Depends: univention-baseconfig
+Pre-Depends: univention-config-registry
 Depends: bootsplash
 Description: UCS - bootsplash
  Univention Bootsplash manages splashimages on bootup.

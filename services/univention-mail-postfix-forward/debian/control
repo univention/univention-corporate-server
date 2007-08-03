@@ -2,11 +2,11 @@ Source: univention-mail-postfix-forward
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, univention-baseconfig-dev
+Build-Depends: debhelper, univention-config-dev
 
 Package: univention-mail-postfix-forward
 Architecture: all
-Depends: univention-baseconfig, postfix
+Depends: univention-config-registry, postfix
 Conflicts: univention-mail, univention-mail-postfix, univention-mail-tiny, courier-mta, exim4, exim4-base, exim4-config
 Description: UCS - postfix forward configuration
  This package contains the configuration for the postfix

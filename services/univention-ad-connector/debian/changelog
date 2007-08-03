@@ -1,3 +1,10 @@
+univention-ad-connector (1.1.1-2) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:37 +0200
+
 univention-ad-connector (1.1.1-1) unstable; urgency=low
 
   * don't delete a object on ucs site if the object should be ignored

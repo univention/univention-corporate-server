@@ -1,3 +1,10 @@
+univention-pam (1.1.0-14) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:43 +0200
+
 univention-pam (1.1.0-13) unstable; urgency=low
 
   * Always add pam_rootok lines, not conditionally on

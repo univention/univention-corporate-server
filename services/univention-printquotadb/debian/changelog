@@ -1,3 +1,10 @@
+univention-printquotadb (1.0.0-3) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:37 +0200
+
 univention-printquotadb (1.0.0-2) unstable; urgency=low
 
   * added descriptions for config registry variables

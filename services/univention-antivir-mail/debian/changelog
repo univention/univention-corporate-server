@@ -1,3 +1,10 @@
+univention-antivir-mail (1.3.2-3) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:33 +0200
+
 univention-antivir-mail (1.3.2-2) unstable; urgency=low
 
   * konvert sources to utf-8

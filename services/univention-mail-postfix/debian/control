@@ -2,11 +2,11 @@ Source: univention-mail-postfix
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, univention-baseconfig-dev
+Build-Depends: debhelper, univention-config-dev
 
 Package: univention-mail-postfix
 Architecture: all
-Pre-Depends: postfix, univention-baseconfig (>> 1.54-30)
+Pre-Depends: postfix, univention-config-registry (>> 1.54-30)
 Depends: postfix-ldap
 Conflicts: univention-mail, univention-mail-postfix-forward, exim4, exim4-base, exim4-config
 Description: UCS - postfix configuration

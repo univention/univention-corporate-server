@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-initrd
 Architecture: all
-Depends: univention-baseconfig, univention-bootsplash, modutils (>= 2.4.26), initramfs-tools, e2fsprogs
+Depends: univention-config-registry, univention-bootsplash, modutils (>= 2.4.26), initramfs-tools, e2fsprogs
 Description: UCS - initrd scripts
  This package contain the initrd scripts.
  .

@@ -1,3 +1,10 @@
+univention-installer (1.6.15-2) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:48:39 +0200
+
 univention-installer (1.6.15-1) unstable; urgency=low
 
   * fix test for valid proxy hostname

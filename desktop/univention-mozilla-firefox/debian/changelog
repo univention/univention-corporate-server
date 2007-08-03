@@ -1,3 +1,10 @@
+univention-mozilla-firefox (1.2-9) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:39 +0200
+
 univention-mozilla-firefox (1.2-8) unstable; urgency=low
 
   * change firefox homepage to ucd-welcome-2_0-0.html

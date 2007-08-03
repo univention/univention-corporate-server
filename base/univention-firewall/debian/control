@@ -8,7 +8,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-firewall
 Architecture: all
-Depends: univention-baseconfig, python2.4, iptables
+Depends: univention-config-registry, python2.4, iptables
 Description: UCS - firewall integration
  This package contains scripts to combine iptables with
  univention-baseconfig
