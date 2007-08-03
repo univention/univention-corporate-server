@@ -1,3 +1,9 @@
+univention-squid (2.0.1-1) unstable; urgency=low
+
+  * include netfilter configuration for transparent proxy
+
+ -- Wolf Wiegand <wiegand@univention.de>  Fri,  3 Aug 2007 09:56:25 +0200
+
 univention-squid (2.0.0-5) unstable; urgency=low
 
   * include copyright and changelog files in /usr/share/doc/univention-squid
