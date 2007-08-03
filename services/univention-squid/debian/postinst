@@ -32,15 +32,25 @@ set -e
 
 case "$1" in
     configure)
+    	
+	CONFREG=univention-config-registry
 
-	univention-baseconfig set proxy/redirect?no
-	univention-baseconfig set proxy/force?yes
-	univention-baseconfig set proxy/ldapauth?no
+	if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
+		# Merge pre-UCS2.0-settings:
+		eval $(univention-config-registry eval proxy/ldapauth proxy/force proxy/parent/host proxy/parent/port )
 
-	if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.0-5; then
+		[ $proxy_ldapauth ] && $CONFREG squid/ldapauth=proxy_ldapauth
+		[ $proxy_force ] && $CONFREG squid/transparentproxy=$proxy_force
+		[ $proxy_parent_host ] && $CONFREG squid/parent/host=$proxy_parent_host
+		[ $proxy_parent_port ] && $CONFREG squid/parent/port=$proxy_parent_port
+	
+		# remove unneeded config file
 		rm -f /etc/squid.conf
 	fi
-	
+			
+	$CONFREG set squid/transparentproxy?false
+	$CONFREG set squid/ldapauth?no
+
 	/etc/init.d/squid stop
 	/etc/init.d/squid start
 

@@ -1,6 +1,7 @@
 univention-squid (2.0.1-1) unstable; urgency=low
 
   * include netfilter configuration for transparent proxy
+  * merge old univention-config-registry settings to new variable names
 
  -- Wolf Wiegand <wiegand@univention.de>  Fri,  3 Aug 2007 09:56:25 +0200
 
