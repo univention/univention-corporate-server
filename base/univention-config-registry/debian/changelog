@@ -1,3 +1,10 @@
+univention-config-registry (2.2.9-1) unstable; urgency=low
+
+  * added config-registry mapping file
+    debian/univention-config-registry.univention-config-registry-mapping
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 13:30:32 +0200
+
 univention-config-registry (2.2.8-1) unstable; urgency=low
 
   * added univention-config-registry-mapping, the mapping file contains a
