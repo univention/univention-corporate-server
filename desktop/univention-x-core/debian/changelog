@@ -1,3 +1,9 @@
+univention-x-core (1.1.2-1) unstable; urgency=low
+
+  * added file for variables mapping
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 11:23:22 +0200
+
 univention-x-core (1.1.1-4) unstable; urgency=low
 
   * depend on univention-config-registry instead of univention-baseconfig
