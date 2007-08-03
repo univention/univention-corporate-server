@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-nagios-server
 Architecture: any
-Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager
+Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager, univention-directory-listener
 Description: UCS: nagios server support
  This package installs the required packages to allow monitoring
  clients by nagios.
@@ -19,7 +19,7 @@ Description: UCS: nagios server support
 
 Package: univention-nagios-client
 Architecture: any
-Depends: nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, python-univention-directory-manager
+Depends: nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, python-univention-directory-manager, univention-directory-listener
 Description: UCS: nagios client support
  This package installs the required packages to allow clients
  to be monitored by nagios.

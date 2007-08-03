@@ -3,7 +3,7 @@
 #
 # Univention Nagios
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -38,10 +38,10 @@ class ReplicationCheck:
 	def __init__(self):
 		self.PROGNAME='check_univention_replication'
 		self.REVISION='1.0'
-		self.FAILED_LDIF_FN='/var/lib/univention-ldap-replication/failed.ldif'
+		self.FAILED_LDIF_FN='/var/lib/univention-directory-replication/failed.ldif'
 		self.CACHEFN='/var/lib/univention-nagios/check_univention_replication.cache'
-		self.PROG_GETNOTIFIERID='/usr/share/univention-ldap-listener/get_notifier_id.py'
-		self.PROG_GETLISTENERID='cat /var/lib/univention-ldap-listener/notifier_id'
+		self.PROG_GETNOTIFIERID='/usr/share/univention-directory-listener/get_notifier_id.py'
+		self.PROG_GETLISTENERID='cat /var/lib/univention-directory-listener/notifier_id'
 		self.diff_warning=0
 		self.diff_critical=0
 		self.history_size=0

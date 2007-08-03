@@ -74,8 +74,8 @@ install: build
 	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/contactgrps
 	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/timeperiods
 	install -d -m 755 -o root -g root ${DS}/etc/nagios2/conf.univention.d/services
-	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-ldap-listener/system
-	install -m 755 nagios-server.py ${DS}/usr/lib/univention-ldap-listener/system
+	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-directory-listener/system
+	install -m 755 nagios-server.py ${DS}/usr/lib/univention-directory-listener/system
 
 	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-install
 	install -m 755 26univention-nagios-server.inst ${DS}/usr/lib/univention-install/26univention-nagios-server.inst
@@ -124,8 +124,8 @@ install: build
     # install client listener
 	install -d -m 755 -o root -g root ${DC}/etc/nagios/nrpe.local.d
 	install -d -m 755 -o root -g root ${DC}/etc/nagios/nrpe.univention.d
-	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-ldap-listener/system
-	install -m 755 nagios-client.py ${DC}/usr/lib/univention-ldap-listener/system
+	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-directory-listener/system
+	install -m 755 nagios-client.py ${DC}/usr/lib/univention-directory-listener/system
 
 	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-install
 	install -m 755 30univention-nagios-client.inst ${DC}/usr/lib/univention-install/30univention-nagios-client.inst

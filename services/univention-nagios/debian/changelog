@@ -1,3 +1,11 @@
+univention-nagios (1.0.4-2) unstable; urgency=low
+
+  * Depend on univention-directory-listener
+  * Adapt to univention-ldap-rename
+  * Restart Apache 2 instead of Apache
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  3 Aug 2007 15:27:40 +0200
+
 univention-nagios (1.0.4-1) unstable; urgency=low
 
   * fixed nagios.cfg: new uplink version merged misccommands.cfg and
