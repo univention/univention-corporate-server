@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/security/netfilter.d/20dhcp
+#
+
+@!@
+if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
+	squidport = baseConfig.get('squid/httpport', '3128')
+	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
+		print 'iptables -t nat -A OUTPUT -m owner --uid-owner proxy -p tcp --dport %s -j ACCEPT' % port
+	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
+		print ' iptables -t nat -A OUTPUT -p tcp --dport %s -j DNAT --to 127.0.0.1:%s' % (port, squidport)
+@!@
