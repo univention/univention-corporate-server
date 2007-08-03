@@ -1,3 +1,10 @@
+univention-management-console (0.7.26-1) unstable; urgency=low
+
+  * join module: re-join a system is possible
+  * connection: fix fallback to not encrypted connection for UMCP client
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  3 Aug 2007 10:56:03 +0200
+
 univention-management-console (0.7.25-3) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

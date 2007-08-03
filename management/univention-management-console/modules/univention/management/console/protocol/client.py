@@ -141,9 +141,10 @@ class Client( signals.Provider ):
 				except SSL.Error, e:
 					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
 					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
+					self.__realsocket.shutdown( socket.SHUT_RDWR )
 					self.__ssl = False
-					self.__socket = None
-					self.__realsocket.connect( ( self.__server, self.__port ) )
+					self._init_socket()
+ 					self.__realsocket.connect( ( self.__server, self.__port ) )
 					self.__realsocket.setblocking( 0 )
 					notifier.socket_add( self.__realsocket, self._recv )
 				ud.debug( ud.ADMIN, ud.INFO, 'Client.connect: SSL connection established' )
@@ -155,8 +156,8 @@ class Client( signals.Provider ):
 				self.__realsocket.setblocking( 0 )
 				notifier.socket_add( self.__realsocket, self._recv )
 			return True
-		except:
-			ud.debug( ud.ADMIN, ud.ERROR, 'Client.connect: failed' )
+		except Exception, e:
+			ud.debug( ud.ADMIN, ud.ERROR, 'Client.connect: failed: %s' % str( e ) )
 			return False
 
 	def _resend( self, socket ):

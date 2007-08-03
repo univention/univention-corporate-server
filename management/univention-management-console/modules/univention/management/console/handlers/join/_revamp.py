@@ -84,11 +84,8 @@ class Web( object ):
 												 'name' : name }, incomplete = True )
 					req.set_flag( 'web:startup', True )
 					req.set_flag( 'web:startup_dialog', True )
-					ud.debug( ud.ADMIN, ud.INFO, 'revamp join/status 2.3.1: %s' % _( "Join Script: %(name)s" ) )
-					bla = _( "Join Script: %(name)s" ) % { 'name' : name }
-					ud.debug( ud.ADMIN, ud.INFO, 'revamp join/status 2.3.1: %s' % bla )
-
-					req.set_flag( 'web:startup_format', bla )
+					req.set_flag( 'web:startup_format',
+								  _( "Join Script: %(name)s" ) % { 'name' : name } )
 					btn = umcd.Button( name, 'join/script', umcd.Action( req ) )
 					btn[ 'colspan' ] = '2'
 					lst.add_row( [ btn, success, cur, last ] )
@@ -98,9 +95,8 @@ class Web( object ):
 					txt = umcd.Text( name, attributes = { 'type' : 'umc_list_element_part_right' } )
 					lst.add_row( [ btn, txt, success, cur, last ],
 								 attributes = { 'type' : 'umc_list_inactive' } )
-			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
-																'domaincontroller_backup' ):
-				req = umcp.Command( args = [ 'join/rejoin' ] )
+			if not umc.registry.get( 'server/role', None ) == 'domaincontroller_master':
+				req = umcp.Command( args = [ 'join/rejoin' ], incomplete = True )
 				req.set_flag( 'web:startup', True )
 				req.set_flag( 'web:startup_dialog', True )
 				req.set_flag( 'web:startup_format', _( 'Re-join' ) )
@@ -128,7 +124,8 @@ class Web( object ):
 			lst.add_row( [ user, pwd ] )
 			req = umcp.Command( args = [ 'join/rejoin' ] )
 			lst.add_row( [ umcd.Button( _( 'Join' ), 'actions/ok',
-										umcd.Action( req, [ user.id(), pwd.id() ] ) ),
+										umcd.Action( req, [ user.id(), pwd.id() ] ),
+										close_dialog = False ),
 						   umcd.CancelButton() ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
 		else:
@@ -138,7 +135,9 @@ class Web( object ):
 			else:
 				lst.add_row( [ umcd.InfoBox( _( 'The Join Process has failed!' ) ) ] )
 			html = '<pre>' + '\n'.join( log ) + '</pre>'
+			html = html.replace( '\x1b[60G', '\t\t\t' )
 			lst.add_row( [ umcd.HTML( html ) ] )
+			lst.add_row( [ umcd.CloseButton() ] )
 			res.dialog = [ umcd.Frame( [ lst ], _( 'Log File' ) ) ]
 
 		self.revamped( object.id(), res )

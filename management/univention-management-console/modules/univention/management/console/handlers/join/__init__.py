@@ -106,7 +106,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			pwdfile = _create_tempfile()
 			logfile = _create_tempfile()
 			fd = open( pwdfile, 'w' )
-			fd.writeline( object.options[ 'password' ] )
+			fd.write( object.options[ 'password' ] )
 			fd.close()
 			cmd = '/usr/sbin/univention-join -dcaccount %s -dcpwd %s > %s 2>&1' % \
 				  ( object.options[ 'account' ], pwdfile, logfile )
