@@ -1,3 +1,9 @@
+univention-x-core (1.1.1-4) unstable; urgency=low
+
+  * depend on univention-config-registry instead of univention-baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:03:53 +0200
+
 univention-x-core (1.1.1-3) unstable; urgency=low
 
   * added descriptions for config registry variables
