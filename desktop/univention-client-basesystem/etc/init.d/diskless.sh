@@ -228,7 +228,7 @@ univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/
 policy_file=$(mktemp)
 policy_file_result=$(mktemp)
 
-univention_policy_result -h $ldapServer -b $myDN | sed 's|fixedAttributes=[^ ]*||' >$policy_file
+univention_policy_result -h $ldapServer -s $myDN | sed 's|fixedAttributes=[^ ]*||' >$policy_file
 cat $policy_file | while read line; do
 
 	# split the line a=b in a and b
@@ -237,7 +237,11 @@ cat $policy_file | while read line; do
 
 	if [ -n "$var" ] && [ -n "$val" ]; then
 		new_value=$(grep "$var=" /etc/univention/templates/mapping/* | head -n 1 | sed -e 's|.*=||;s|"||g')
-		cat $line | sed -e "s|${var}=|${new_value}=|g" >>$policy_file_result
+		if [ -n "${new_value}" ]; then
+			echo $line | sed -e "s|${var}=|${new_value}=|g" >>$policy_file_result
+		else
+			echo $line >>$policy_file_result
+		fi
 	fi
 
 done
@@ -286,7 +290,7 @@ eval `univention-baseconfig shell`
 
 vals=""
 if [ -z "$xorg_device_drive" ]; then
-	vals="$vals xorg/device/drive?`eval getXModul`"
+	vals="$vals xorg/device/driver?`eval getXModul`"
 fi
 if [ -z "$xorg_resolution" ]; then
 	vals="$vals xorg/resolution=1024x768"
@@ -315,14 +319,14 @@ mkdir -p /ramdisk/etc/cups/ppd/
 mkdir -p /var/spool/cups/cert/
 
 # DEBUG-Messages for tty10
-echo "Local-Settings:" > /dev/tty9
-echo "Policy-Settings:" > /dev/tty10
+echo "Local-Settings:" > /dev/tty8
+echo "Policy-Settings:" > /dev/tty9
 
-univention-baseconfig dump | grep -v univention > /dev/tty9
-univention-baseconfig dump | grep univention > /dev/tty10
+univention-baseconfig dump | grep -v univention > /dev/tty8
+univention-baseconfig dump | grep univention > /dev/tty9
 
 if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]; then
-    modprobe mousedev
+    modprobe usbmouse
 fi
 
 echo "done."

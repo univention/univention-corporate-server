@@ -216,7 +216,6 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d disklesshardware.sh start 12 2 .
 	update-rc.d disklessfinish.sh start 98 2 .
 	# update-rc.d portmap start 80 2 .
-	update-rc.d xsession start 99 2 .
 
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
