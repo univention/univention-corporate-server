@@ -70,7 +70,7 @@ class object(content):
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[ ]))
 
 		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX+2))
-		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+16+(self.width)-37))
+		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+20+(self.width)-37))
 
 		self.current = self.get_elem_id('create_local_repo')
 
