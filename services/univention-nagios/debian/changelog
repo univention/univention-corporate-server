@@ -1,3 +1,11 @@
+univention-nagios (1.0.5-1) unstable; urgency=low
+
+  * fixed apache2.conf: use pam stack to authenticate
+  * fixed pam config: added broken_shadow flag to pam_unix
+  * updated pam config
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 06 Aug 2007 13:02:40 +0200
+
 univention-nagios (1.0.4-2) unstable; urgency=low
 
   * Depend on univention-directory-listener
