@@ -1,3 +1,13 @@
+univention-config-registry (2.3.0-1) unstable; urgency=low
+
+  * config registry uses to new registries by default: base.conf (old one),
+    base-ldap.conf (used by LDAP policies) and base-forced.conf (forces local
+    settings)
+  * set und unset support to new options: '--forced' to write values to
+    base-forced.conf and '--ldap-policy' to write to base-ldap.conf
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Aug 2007 14:41:15 +0200
+
 univention-config-registry (2.2.9-1) unstable; urgency=low
 
   * added config-registry mapping file
@@ -36,7 +46,7 @@ univention-config-registry (2.2.7-2) unstable; urgency=low
 
  -- Janis Meybohm <meybohm@univention.de>  Fri, 27 Jul 2007 11:40:05 +0200
 
-univention-config-registry (2.2.7-1) unstable; urgency=low
+univention-config-registry (2.2.7-1 ) unstable; urgency=low
 
   * UnicodeConfig: removed function 'read' as the codecs module does not help
     to fix the encoding problem
@@ -72,7 +82,7 @@ univention-config-registry (2.2.5-2) unstable; urgency=low
   * register new init scripts as configuration registry variables
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 25 Jul 2007 12:02:25 +0200
-
+ 
 univention-config-registry (2.2.5-1) unstable; urgency=low
 
   * add init scripts for ntp, cron, inetd, portmap, nscd

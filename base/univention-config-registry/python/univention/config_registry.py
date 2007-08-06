@@ -72,20 +72,109 @@ def warning_string(prefix='# ', width=80, srcfiles=[]):
 def filesort(x,y):
 	return cmp(os.path.basename(x), os.path.basename(y))
 
+class ConfigRegistry( dict ):
+	NORMAL, LDAP, FORCED, CUSTOM = range( 4 )
+	PREFIX = '/etc/univention'
+	BASES = { NORMAL : 'base.conf',
+			  LDAP : 'base-ldap.conf',
+			  FORCED : 'base-forced.conf' }
 
-class ConfigRegistry(dict):
-	
-	def __init__(self, file=None):
-		super(ConfigRegistry, self).__init__()
+	def __init__( self, filename = None, write_registry = NORMAL ):
+		dict.__init__( self )
 		if os.getenv( 'UNIVENTION_BASECONF' ):
 			self.file = os.getenv( 'UNIVENTION_BASECONF' )
-		elif file:
+		elif filename:
+			self.file = filename
+		else:
+			self.file = None
+		if self.file:
+			self._write_registry = ConfigRegistry.CUSTOM
+		else:
+			self._write_registry = write_registry
+		self._registry = {}
+		if not self.file:
+			self._registry[ ConfigRegistry.NORMAL ] = self._create_registry( ConfigRegistry.NORMAL )
+			self._registry[ ConfigRegistry.LDAP ] = self._create_registry( ConfigRegistry.LDAP )
+			self._registry[ ConfigRegistry.FORCED ] = self._create_registry( ConfigRegistry.FORCED )
+			self._registry[ ConfigRegistry.CUSTOM ] = {}
+		else:
+			self._registry[ ConfigRegistry.NORMAL ] = {}
+			self._registry[ ConfigRegistry.LDAP ] = {}
+			self._registry[ ConfigRegistry.FORCED ] = {}
+			self._registry[ ConfigRegistry.CUSTOM ] = self._create_registry( ConfigRegistry.CUSTOM )
+
+	def _create_registry( self, reg ):
+		if reg == ConfigRegistry.CUSTOM:
+			return _ConfigRegistry( file = self.file )
+		else:
+			return _ConfigRegistry( file = os.path.join( ConfigRegistry.PREFIX,
+														 ConfigRegistry.BASES[ reg ] ) )
+	def load( self ):
+		for reg in self._registry.values():
+			if isinstance( reg, _ConfigRegistry ):
+				reg.load()
+
+	def save( self ):
+		self._registry[ self._write_registry ].save()
+
+	def lock( self ):
+		pass
+
+	def unlock( self ):
+		pass
+
+	def __getitem__( self, key ):
+		return self.get( key )
+
+	def __setitem__( self, key, value ):
+		self._registry[ self._write_registry ][ key ] = value
+
+	def get( self, key, default = '' ):
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.LDAP, ConfigRegistry.NORMAL ):
+			if self._registry[ reg ].has_key( key ):
+				return self._registry[ reg ][ key ]
+
+		return self._registry[ ConfigRegistry.CUSTOM ].get( key, default )
+
+	def has_key( self, key, write_registry_only = False ):
+		if write_registry_only:
+			return self._registry[ self._write_registry ].has_key( key )
+		else:
+			return self.get( key, None ) != None
+
+	def _merge( self ):
+		merge = {}
+		for reg in ( ConfigRegistry.FORCED, ConfigRegistry.LDAP, ConfigRegistry.NORMAL,
+					 ConfigRegistry.CUSTOM ):
+			if not isinstance( self._registry[ reg ], _ConfigRegistry ):
+				continue
+			for key in self._registry[ reg ].keys():
+				if not merge.has_key( key ):
+					merge[ key ] = self._registry[ reg ][ key ]
+		return merge
+
+	def items( self ):
+		merge = self._merge()
+		return merge.items()
+
+	def keys( self ):
+		merge = self._merge()
+		return merge.keys()
+
+	def values( self ):
+		merge = self._merge()
+		return merge.values()
+
+class _ConfigRegistry( dict ):
+	def __init__(self, file = None):
+		dict.__init__( self )
+		if file:
 			self.file = file
 		else:
 			self.file = '/etc/univention/base.conf'
 		self.__create_base_conf()
 		self.backup_file = self.file + '.bak'
-		
+
 	def load(self):
 		self.clear()
 		import_failed = 0
@@ -113,7 +202,7 @@ class ConfigRegistry(dict):
 
 			key, value = line.split(': ', 1)
 			value = value.strip()
-			if len(value) == 0: #if variable was set without an value 
+			if len(value) == 0: #if variable was set without an value
 				value = ''
 
 			self[key] = value
@@ -121,7 +210,7 @@ class ConfigRegistry(dict):
 
 		if import_failed:
 			self.__save_file(self.file)
-	
+
 	def __create_base_conf( self ):
 		if not os.path.exists( self.file ):
 			try:
@@ -130,7 +219,7 @@ class ConfigRegistry(dict):
 			except OSError:
 				print "error: the configuration file '%s' does not exist und could not be created" % self.file
 				exception_occured()
-				
+
 	def __save_file(self, filename):
 		fp = open(filename, 'w')
 
@@ -142,11 +231,11 @@ class ConfigRegistry(dict):
 			os.system('/bin/sync > /dev/null 2>&1')
 		except:
 			pass
-	
+
 	def save(self):
 		for filename in (self.backup_file, self.file):
 			self.__save_file(filename)
-			
+
 	def lock(self):
 		pass
 
@@ -155,7 +244,7 @@ class ConfigRegistry(dict):
 
 	def __getitem__(self, key):
 		try:
-			return super(ConfigRegistry, self).__getitem__(key)
+			return dict.__getitem__( self, key )
 		except KeyError:
 			return ''
 
@@ -174,7 +263,7 @@ def directoryFiles(dir):
 				all.append(f)
 	os.path.walk(dir, _walk, all)
 	return all
-		
+
 def filter(template, dir, srcfiles=[]):
 
 	while 1:
@@ -183,7 +272,7 @@ def filter(template, dir, srcfiles=[]):
 			start = i.next()
 			end = i.next()
 			name = template[start.end():end.start()]
-			
+
 			if dir.has_key(name):
 				value = dir[name]
 			elif warning_pattern.match(name):
@@ -191,7 +280,7 @@ def filter(template, dir, srcfiles=[]):
 				value = warning_string(prefix, srcfiles=srcfiles)
 			else:
 				value = ''
-				
+
 			if type(value) == types.ListType or type(value) == types.TupleType:
 				value = value[0]
 			template = template[:start.start()]+value+template[end.end():]
@@ -203,19 +292,19 @@ def filter(template, dir, srcfiles=[]):
 		try:
 			start = i.next()
 			end = i.next()
-			
+
 			child_stdin, child_stdout = os.popen2('/usr/bin/python2.4', 'w+')
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
-			# for compability
+			# for compatibility
 			child_stdin.write('baseConfig = configRegistry\n')
 			child_stdin.write(template[start.end():end.start()])
 			child_stdin.close()
 			value=child_stdout.read()
 			child_stdout.close()
 			template = template[:start.start()]+value+template[end.end():]
-		
+
 		except StopIteration:
 			break
 
@@ -247,13 +336,13 @@ class configHandler:
 	variables = []
 
 class configHandlerMultifile(configHandler):
-	
+
 	def __init__(self, dummy_from_file, to_file):
 		self.variables = []
 		self.from_files = []
 		self.dummy_from_file = dummy_from_file
 		self.to_file = to_file
-	
+
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
 			if not from_file in self.from_files:
@@ -266,7 +355,7 @@ class configHandlerMultifile(configHandler):
 		bc, changed = args
 		self.from_files.sort(filesort)
 		print 'Multifile: %s' % self.to_file
-		
+
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
 			os.makedirs(to_dir, 0755)
@@ -362,7 +451,7 @@ def parseRfc822(f):
 			ent[key].append(value)
 		res.append(ent)
 	return res
-	
+
 def grepVariables(f):
 	return variable_pattern.findall(f)
 
@@ -409,7 +498,7 @@ class configHandlers:
 
 	def stripBasepath(self, path, basepath):
 		return path.replace(basepath, '')
-	
+
 	def getHandler(self, entry):
 
 		if not entry.has_key('Type'):
@@ -472,7 +561,7 @@ class configHandlers:
 		else:
 			object = None
 		return object
-	
+
 	def update(self):
 
 		self._handlers.clear()
@@ -495,7 +584,7 @@ class configHandlers:
 				if not self._handlers.has_key(v):
 					self._handlers[v] = []
 				self._handlers[v].append(object)
-					
+
 		fp = open(cache_file, 'w')
 		fp.write(cache_version_notice)
 		p = cPickle.Pickler(fp)
@@ -504,7 +593,7 @@ class configHandlers:
 		p.dump(self._subfiles)
 		p.dump(self._multifiles)
 		fp.close()
-	
+
 	def register(self, package, bc):
 
 		objects = []
@@ -521,7 +610,7 @@ class configHandlers:
 			object((bc, d))
 
 	def unregister(self, package, bc):
-	
+
 		file = os.path.join(info_dir, package+'.info')
 		for s in parseRfc822(open(file).read()):
 			object = self.getHandler(s)
@@ -608,14 +697,21 @@ def randpw():
 	fp.close()
 	return pw
 
-def handler_set(args):
-	b = ConfigRegistry()
-	b.load()
-	b.lock()
-	
+def handler_set( args, opts = {} ):
 	c = configHandlers()
 	c.load()
-	
+
+	reg = None
+	if opts.get( 'ldap-policy', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
+	elif opts.get( 'forced', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+	else:
+		reg = ConfigRegistry()
+
+	reg.lock()
+	reg.load()
+
 	changed = {}
 	for arg in args:
 		sep_set = arg.find('=') # set
@@ -631,13 +727,13 @@ def handler_set(args):
 				sep = min(sep_set, sep_def)
 		key = arg[0:sep]
 		value = arg[sep+1:]
-		old = b[key]
-		if (not b[key] or sep == sep_set) and validateKey(key):
-			if b[key]:
+		old = reg[key]
+		if (not reg[key] or sep == sep_set) and validateKey(key):
+			if reg.has_key( key, write_registry_only = True ):
 				print 'Setting '+key
 			else:
 				print 'Create '+key
-			b[key] = value
+			reg[key] = value
 			changed[key] = (old, value)
 		else:
 			if old:
@@ -645,41 +741,46 @@ def handler_set(args):
 			else:
 				print 'Not setting '+key
 
-	b.save()
-	b.unlock()
-	
-	c(changed.keys(), (b, changed))	
+	reg.save()
+	reg.unlock()
+	c( changed.keys(), ( reg, changed ) )
 
-def handler_unset(args):
-	b = ConfigRegistry()
-	b.lock()
-	b.load()
+def handler_unset( args, opts = {} ):
+	reg = None
+	if opts.get( 'ldap-policy', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.LDAP )
+	elif opts.get( 'forced', False ):
+		reg = ConfigRegistry( write_registry = ConfigRegistry.FORCED )
+	else:
+		reg = ConfigRegistry()
+	reg.lock()
+	reg.load()
 
 	c = configHandlers()
 	c.load()
-	
+
 	changed = {}
 	for arg in args:
-		changed[arg] = (b[arg], '')
-		if b.has_key(arg):
-			del b[arg]
+		changed[arg] = ( reg[arg], '' )
+		if reg.has_key( arg, write_registry_only = True ):
+			del reg[arg]
 		else:
 			print "The config registry variable to be unset does not exist."
 			return None
-	b.save()
-	b.unlock()
-	c(changed.keys(), (b, changed))	
+	reg.save()
+	reg.unlock()
+	c( changed.keys(), ( reg, changed ) )
 
-def handler_dump(args):
+def handler_dump( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 	print b
 
-def handler_update(args):
+def handler_update( args, opts = {} ):
 	c = configHandlers()
 	c.update()
 
-def handler_commit(args):
+def handler_commit( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
@@ -687,7 +788,7 @@ def handler_commit(args):
 	c.load()
 	c.commit(b, args)
 
-def handler_register(args):
+def handler_register( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
@@ -697,7 +798,7 @@ def handler_register(args):
 	c.register(args[0], b)
 	#c.commit((b, {}))
 
-def handler_unregister(args):
+def handler_unregister( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 
@@ -706,7 +807,7 @@ def handler_unregister(args):
 	c.load()
 	c.unregister(args[0], b)
 
-def handler_randpw(args):
+def handler_randpw( args, opts = {} ):
 	print randpw()
 
 def replaceDict(line, dict):
@@ -743,39 +844,32 @@ def valueEscape(line):
 def validateKey(k):
 	old = k
 	k = replaceUmlaut(k)
-	
+
 	if old != k:
 		sys.stderr.write('Please fix invalid umlaut in config variables key "%s" to %s \n' % (old, k))
 		return 0
-	
+
 	if len(k) > 0:
 		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\\\]');
 		match = regex.search(k);
-		
+
 		if not match:
 			return 1
 		else:
 			sys.stderr.write('Please fix invalid char "%s" in config registry key "%s"\n'% (match.group(), k));
 	return 0
 
-def handler_filter(args):
+def handler_filter( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 	sys.stdout.write(filter(sys.stdin.read(), b))
 
-def handler_search(args):
+def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
 	keys = True
-	for arg in copy.copy( args ):
-		if arg.startswith( '--' ):
-			if arg == '--key':
-				keys = True
-			elif arg == '--value':
-				keys = False
-		else:
-			break
-		args.pop( 0 )
+	if opts.get( 'value', False ):
+		keys = False
 	regex = []
 	for arg in args:
 		try:
@@ -788,74 +882,76 @@ def handler_search(args):
 			if ( keys and reg.search( key ) ) or ( not keys and reg.search( value ) ):
 				print '%s: %s' % ( key, value )
 				break
-	
-def handler_get(args):
+
+def handler_get( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
-	print b[args[0]]
 
-def handler_help(args):
-        print 'univention-config-registry: base configuration for UCS'
-        print 'copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany'
-        print ''
-	print 'Syntax:'
-	print '  univention-config-registry [options] <action> [parameters]'
-	print ''
-	print 'Options:'
-	print ''
-	print '  -h | --help | -?:'
-	print '    print this usage message and exit program'
-	print ''
-	print '  --version | -v:'
-	print '    print version information and exit program'
-	print ''
-	print '  --shell (valid actions: dump, search):'
-	print '    convert key/value pair into shell compatible format, e.g.'
-	print '    `version/version: 1.0` => `version_version="1.0"`'
-	print ''
-	print '  --keys-only (valid actions: dump, search):'
-	print '    print only the keys'
-	print ''
-	print 'Actions:'
-	print '  set <key>=<value> [... <key>=<value>]:'
-	print '    set one or more keys to specified values; if a key is non-existent'
-	print '    in the configuration database it will be created'
-	print ''
-	print '  get <key>:'
-	print '    retrieve the value of the specified key from the configuration'
-	print '    database'
-	print ''
-	print '  unset <key> [... <key>]:'
-	print '    remove one or more keys (and its associated values) from'
-	print '    configuration database'
-	print ''
-	print '  dump:'
-	print '    display all key/value pairs which are stored in the'
-	print '    configuration database'
-	print ''
-	print '  search [--key|--value] <regex> [... <regex>]:'
-	print '    displays all key/value pairs matching the regular expression'
-	print '    when the option --value is given the value must match the regular expression'
-	print '    otherwise the key is checked'
-	print ''
-	print '  shell [key]:'
-	print '    convert key/value pair into shell compatible format, e.g.'
-	print '    `version/version: 1.0` => `version_version="1.0"`'
-	print '    (deprecated: use --shell dump instead)'
-	print ''
-	print '  commit [file1 ...]:'
-	print '    rebuild configuration file from univention template; if'
-	print '    no file is specified ALL configuration files are rebuilt'
-	print ''
-	print 'Description:'
-	print '  univention-config-registry is a tool to handle the basic configuration for UCS'
-	print ''
-	print 'Known-Bugs:'
-	print '  -None-'
-	print ''
+	print b.get( args[ 0 ], '' )
+
+def handler_help( args, opts = {} ):
+	print '''
+univention-config-registry: base configuration for UCS
+copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany
+
+Syntax:
+  univention-config-registry [options] <action> [options] [parameters]
+
+Options:
+
+  -h | --help | -?:
+	print this usage message and exit program
+
+  --version | -v:
+	print version information and exit program
+
+  --shell (valid actions: dump, search):
+	convert key/value pair into shell compatible format, e.g.
+	`version/version: 1.0` => `version_version="1.0"`
+
+  --keys-only (valid actions: dump, search):
+	print only the keys
+
+Actions:
+  set [--force] <key>=<value> [... <key>=<value>]:
+	set one or more keys to specified values; if a key is non-existent
+	in the configuration registry it will be created
+
+  get <key>:
+	retrieve the value of the specified key from the configuration
+	database
+
+  unset <key> [... <key>]:
+	remove one or more keys (and its associated values) from
+	configuration database
+
+  dump:
+	display all key/value pairs which are stored in the
+	configuration database
+
+  search [--key|--value] <regex> [... <regex>]:
+	displays all key/value pairs matching the regular expression
+	when the option --value is given the value must match the regular expression
+	otherwise the key is checked
+
+  shell [key]:
+	convert key/value pair into shell compatible format, e.g.
+	`version/version: 1.0` => `version_version="1.0"`
+	(deprecated: use --shell dump instead)
+
+  commit [file1 ...]:
+	rebuild configuration file from univention template; if
+	no file is specified ALL configuration files are rebuilt
+
+Description:
+  univention-config-registry is a tool to handle the basic configuration for UCS
+
+Known-Bugs:
+  -None-
+'''
 	sys.exit(0)
 
-def handler_version(args):
+def handler_version( args, opts = {} ):
 	print 'univention-config-registry @%@package_version@%@'
 	sys.exit(0);
 
@@ -881,13 +977,13 @@ def filter_shell( args, text ):
 		if validateKey( key ):
 			out.append( '%s="%s"' % ( key, valueEscape( value ) ) )
 	return out
-		
+
 def filter_keys_only( args, text ):
 	out = []
 	for line in text:
 		out.append( line.split( ': ', 1 )[ 0 ] )
 	return out
-		
+
 def filter_sort( args, text ):
 	text.sort()
 	return text
@@ -934,7 +1030,14 @@ def main(args):
 			10 : [ 'sort', filter_sort, False, ( 'dump', 'search' ) ],
 			99 : [ 'shell', filter_shell, False, ( 'dump', 'search', 'shell' ) ],
 			}
-
+		opt_commands = {
+			'set' : { 'forced' : False,
+					  'ldap-policy' : False },
+			'unset' : { 'forced' : False,
+						'ldap-policy' : False },
+			'search' : { 'key' : True,
+						 'value' : False }
+			}
 		# close your eyes ...
 		if not args: args.append( '--help' )
 		# search for options in command line arguments
@@ -964,7 +1067,7 @@ def main(args):
 		for k in opt_actions:
 			if opt_actions[ k ][ 1 ]:
 				opt_actions[ k ][ 0 ](args)
-				
+
 		# find action
 		action = args[ 0 ]
 		args.pop( 0 )
@@ -994,18 +1097,30 @@ def main(args):
 					print 'invalid option --%s for command %s' % ( opt[ 0 ], action )
 					sys.exit( 1 )
 				else:
-					filter = True					
-		
+					filter = True
+
+		# check command options
+		cmd_opts = opt_commands.get( action, {} )
+		for arg in copy.copy( args ):
+			if not arg.startswith( '--' ): break
+			if arg[ 2: ] in cmd_opts.keys():
+				cmd_opts[ arg[ 2 : ] ] = True
+			else:
+				opt_actions[ 'help' ][ 1 ] = True
+				print 'invalid option %s for command %s' % ( arg, action )
+				sys.exit( 1 )
+			args.pop( 0 )
+
 		# action!
 		if action in handlers.keys():
 			# enough arguments?
 			if len( args ) < handlers[ action ][ 1 ]:
 				missing_parameter( action )
-			# if any wilter option is set
+			# if any filter option is set
 			if filter:
 				old_stdout = sys.stdout
 				sys.stdout = Output()
-			handlers[ action ][ 0 ]( args )
+			handlers[ action ][ 0 ]( args, cmd_opts )
 			# let the filter options do their job
 			if filter:
 				out = sys.stdout
@@ -1023,6 +1138,6 @@ def main(args):
 
 	except IOError, TypeError:
 		exception_occured();
-	
+
 if __name__ == '__main__':
 	main(sys.argv[1:])
