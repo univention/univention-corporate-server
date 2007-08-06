@@ -123,6 +123,10 @@ class ConfigRegistry( dict ):
 	def unlock( self ):
 		pass
 
+	def __delitem__( self, key ):
+		if self._registry[ self._write_registry ].has_key( key ):
+			del self._registry[ self._write_registry ][ key ]
+
 	def __getitem__( self, key ):
 		return self.get( key )
 
