@@ -33,15 +33,8 @@ echo -n "Detecting hardware:"
 
 # select video server
 test -d /ramdisk/etc/X11 || mkdir -p /ramdisk/etc/X11
-if echo $x_module | grep -q '^XF86_.*'; then
-	# we are using XFree86 3.3.x
-	ln -fs "/usr/bin/X11/$x_module" /ramdisk/etc/X11/X
-else
-	# we are using XFree86 4.x
-	#ln -fs /usr/bin/X11/XFree86 /ramdisk/etc/X11/X
-	# we are using Xorg
-	ln -fs /usr/bin/X11/Xorg /ramdisk/etc/X11/X
-fi
+# we are using Xorg
+ln -fs /usr/bin/X11/Xorg /ramdisk/etc/X11/X
 echo -n " video"
 
 # select sound driver

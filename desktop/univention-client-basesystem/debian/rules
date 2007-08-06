@@ -39,6 +39,10 @@ build-stamp:
 clean:
 	dh_testdir
 	dh_testroot
+	
+	test -d debian/univention-client-basesystem/var/lib/univention-client-root/proc && \
+		umount debian/univention-client-basesystem/var/lib/univention-client-root/proc
+
 	rm -f build-stamp configure-stamp
 
 	rm -rf debian/tmp

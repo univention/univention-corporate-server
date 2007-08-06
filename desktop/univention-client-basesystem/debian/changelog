@@ -1,3 +1,9 @@
+univention-client-basesystem (2.0.15-1) unstable; urgency=low
+
+  * more ucs 2.0 updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  6 Aug 2007 09:13:15 +0200
+
 univention-client-basesystem (2.0.14-1) unstable; urgency=low
 
   * add version number to join script

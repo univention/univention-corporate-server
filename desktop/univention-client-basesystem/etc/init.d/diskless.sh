@@ -221,30 +221,40 @@ fi
 myDN=`ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(cn=$hostname)(objectClass=univentionThinClient))" -LLL dn | grep -A4 "^dn:" | perl -e '$f=""; $f.=$_ while(<>); $f =~ s/\n //g; print $f;' | grep "^dn:" | sed -e 's/dn: //g'`
 
 univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/mydn=$myDN
-res=`univention_policy_result -h $ldapServer -b $myDN | sed 's/fixedAttributes=[^ ]*//' | sed -e 's|"||g'`
-univention-baseconfig set $res
 
-ldapServerBasecf=`univention-baseconfig get univentionLDAPServer`
-if [ -z "$ldapServerBasecf" ]
-	then
-	for server in `univention_policy_result  -h $ldapServer -s $myDN | grep univentionLDAPServer | awk -F '=' '{print $2}'`
-	  do
-	  ping -c 1 $server 1>/dev/null 2>/dev/null
-	  if [ "$?" -eq 0 ]
-		  then
-		  univention-baseconfig set ldap/server/name=$server
-		  break
-	  fi
-	done
-fi
+
+## get the policies
+
+policy_file=$(mktemp)
+policy_file_result=$(mktemp)
+
+univention_policy_result -h $ldapServer -b $myDN | sed 's|fixedAttributes=[^ ]*||' >$policy_file
+cat $policy_file | while read line; do
+
+	# split the line a=b in a and b
+	var="${line%%=*}"
+	val="${line#*=}"
+
+	if [ -n "$var" ] && [ -n "$val" ]; then
+		new_value=$(grep "$var=" /etc/univention/templates/mapping/* | head -n 1 | sed -e 's|.*=||;s|"||g')
+		cat $line | sed -e "s|${var}=|${new_value}=|g" >>$policy_file_result
+	fi
+
+done
+
+univention-baseconfig set $(cat $policy_file_result)
+
+eval $(univention-baseconfig shell)
 
 # set all desktopServer as possible timeserver
+
 timeserver=''
-for i in `univention_policy_result -h $ldapServer -s $myDN | grep univentionDesktopServer | sed -e 's|.*univentionDesktopServer=||' | sed -e 's|"||g'`
-  do
+for i in `cat $policy_file_result | grep univentionDesktopServer | sed -e 's|.*univentionDesktopServer=||' | sed -e 's|"||g'`; do
   timeserver=`echo $timeserver ' ' $i`
 done
+
 univention-baseconfig set ntpdate/server="$timeserver"
+
 for i in $timeserver; do
 	if /bin/netcat -q0 -w4 $i 37 </dev/null >/dev/null 2>&1; then
 		/usr/sbin/rdate $i >/dev/null 2>&1
@@ -257,16 +267,17 @@ done
 
 
 authserver=''
-for i in `univention_policy_result -h $ldapServer -s $myDN | grep univentionAuthServer | sed -e 's|.*univentionAuthServer=||' | sed -e 's|"||g'`; do
+for i in `cat $policy_file_result | grep univentionAuthServer | sed -e 's|.*univentionAuthServer=||' | sed -e 's|"||g'`; do
   authserver="$authserver $i"
 done
+
 if [ -n "$authserver" ]; then
 	univention-baseconfig set univentionAuthServer="$authserver"
 fi
 
 realm=`/usr/bin/dns-lookup _kerberos.$domainname txt | head -1`
 if [ -z "$realm" ]; then
-    echo "kerberos/realm not found"
+    echo "WARNING: Kerberos realm TXT record not found. Check the DNS for the TXT record _kerberos.$domainname"
 else
 	univention-baseconfig set kerberos/realm=$realm
 fi
@@ -274,20 +285,20 @@ fi
 eval `univention-baseconfig shell`
 
 vals=""
-if [ -z "$univentionXModule" ]; then
-	vals="$vals univentionXModule?`eval getXModul`"
+if [ -z "$xorg_device_drive" ]; then
+	vals="$vals xorg/device/drive?`eval getXModul`"
 fi
-if [ -z "$univentionXResolution" ]; then
-	vals="$vals univentionXResolution=1024x768"
+if [ -z "$xorg_resolution" ]; then
+	vals="$vals xorg/resolution=1024x768"
 fi
-if [ -z "$univentionXColorDepth" ]; then
-	vals="$vals univentionXColorDepth=24"
+if [ -z "$xorg_screen_DefaultDepth" ]; then
+	vals="$vals xorg/screen/DefaultDepth=24"
 fi
 if [ -n "$vals" ]; then
 	univention-baseconfig set $vals
 fi
 
-univention-baseconfig set locale?"de_DE@euro:ISO-8859-15"
+# univention-baseconfig set locale?"de_DE@euro:ISO-8859-15"
 
 univention-baseconfig set univentionAutoStartScript="`univention-policy-result -h $ldapServer -s $myDN  | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||' `"
 # prepare to run gdm
@@ -310,8 +321,7 @@ echo "Policy-Settings:" > /dev/tty10
 univention-baseconfig dump | grep -v univention > /dev/tty9
 univention-baseconfig dump | grep univention > /dev/tty10
 
-if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]
-    then
+if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]; then
     modprobe mousedev
 fi
 
