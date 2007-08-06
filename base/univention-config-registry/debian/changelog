@@ -1,3 +1,9 @@
+univention-config-registry (2.3.1-1) unstable; urgency=low
+
+  * add __str__ operator to new ConfigRegistry class to fix the 'dump' command
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  6 Aug 2007 14:58:59 +0200
+
 univention-config-registry (2.3.0-1) unstable; urgency=low
 
   * config registry uses to new registries by default: base.conf (old one),

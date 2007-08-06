@@ -165,6 +165,10 @@ class ConfigRegistry( dict ):
 		merge = self._merge()
 		return merge.values()
 
+	def __str__( self ):
+		merge = self._merge()
+		return '\n'.join( [ '%s: %s' % ( key, val ) for key, val in merge.items() ] )
+
 class _ConfigRegistry( dict ):
 	def __init__(self, file = None):
 		dict.__init__( self )
