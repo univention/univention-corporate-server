@@ -91,8 +91,8 @@ class object(content):
 		self.add_elem('security_profile_radio', radiobutton(dict,self.minY+5,self.minX+2,50,10,[select]))
 		self.get_elem('security_profile_radio').current = select
 
-		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX))
-		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+(self.width)-37))
+		self.add_elem('BT_back', button(_('F11-Back'),self.minY+18,self.minX+2))
+		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+16+(self.width)-37))
 
 		self.current = self.get_elem_id('security_profile_radio')
 		self.get_elem_by_id(self.current).set_on()

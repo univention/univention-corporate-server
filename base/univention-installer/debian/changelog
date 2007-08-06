@@ -1,3 +1,9 @@
+univention-installer (1.6.15-7) unstable; urgency=low
+
+  * Improve alignment of Back and Forward buttons.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  6 Aug 2007 14:39:31 +0200
+
 univention-installer (1.6.15-6) unstable; urgency=low
 
   * Updated translation.
