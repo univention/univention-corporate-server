@@ -1,0 +1,97 @@
+#!/bin/sh
+#
+# Univention Groupware Webclient
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+modules-config apache enable mod_php4
+
+# create database, user and tables
+share=/usr/share/univention-groupware-webclient/
+su - postgres -c "psql -d template1 -f $share/create.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/horde_datatree.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/horde_prefs.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/kronolith.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/turba_objects.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/nag.pgsql.sql &> /dev/null"
+su - postgres -c "psql -d horde -f $share/mnemo.pgsql.sql &> /dev/null"
+
+
+eval `univention-baseconfig --shell dump`
+
+# create horde user
+if [ ! -e /etc/horde.secret ]; then
+	tmp=$(mktemp)
+	makepasswd --nocrypt > $tmp
+	passwd=$(cat $tmp)
+	hash=$(mkpasswd --hash=md5 -s < $tmp)
+	touch /etc/horde.secret
+	chmod 600 /etc/horde.secret
+	echo $passwd > /etc/horde.secret
+	chown www-data /etc/horde.secret
+	rm -f $tmp
+	# set passwd for database user horde
+	su - postgres -c "echo \"ALTER USER horde WITH PASSWORD '$passwd'\" | psql -d template1 -f -"
+fi
+
+# FIXME: horde should be able to use de_DE@euro or similar locales
+if ! echo $locale | grep de_DE:; then
+	univention-baseconfig set locale="$locale de_DE:iso-8859-15"
+fi
+
+if [ -n "$interfaces_eth0_address" ]; then
+	univention-baseconfig set horde/servername?$interfaces_eth0_address
+fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2.0-47; then
+	univention-baseconfig set horde/application/gollem?false
+fi
+
+univention-baseconfig set horde/application/turba?true horde/application/kronolith?true horde/application/mnemo?true horde/application/nag?true horde/application/gollem?true
+
+univention-baseconfig set php/memory/limit?32
+
+#DEBHELPER#
+
+# restart services
+/etc/init.d/postgresql restart
+if [ -x /etc/init.d/cyrus22 ]; then
+	/etc/init.d/cyrus22 restart
+fi
+/etc/init.d/apache restart
+
+
+if [ "$1" = configure -a -z "$2" ]; then
+	/usr/share/univention-groupware-webclient/turba-permissions.py
+fi
+
+if [ -x /etc/init.d/univention-ldap-listener ]; then
+	/etc/init.d/univention-ldap-listener crestart
+fi
+
+exit 0
+

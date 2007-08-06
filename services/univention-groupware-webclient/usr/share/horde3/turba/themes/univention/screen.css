@@ -1,0 +1,29 @@
+
+.listitem {
+    background-color: #ffffff;
+}
+.listitem-hi {
+    background-color: #DEE8F8;
+}
+.oldlistitem {
+    background-color: #dddddd;
+}
+.oldlistitem-hi {
+    background-color: #EEE;
+}
+
+/* Menu bottom margin, added for BC. */
+#menu {
+    margin-bottom: 8px;
+}
+
+/**
+ * ROWS
+ */
+.rowEven {
+    background-color: white;
+    }
+
+.rowOdd {
+    background-color: #F6f6f6;
+    }

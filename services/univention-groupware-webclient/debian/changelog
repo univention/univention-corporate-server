@@ -1,0 +1,279 @@
+univention-groupware-webclient (0.2.0-50) stable; urgency=low
+
+  * if the horde authentication uses horde/imap then the user name should be
+    mapped from the primary mailaddress to the uid
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 31 May 2007 09:18:37 +0200
+
+univention-groupware-webclient (0.2.0-47) stable; urgency=low
+
+  * integrate gollem into the horde framework
+  * support ldap or horde as horde authentication mechanism (horde/auth=ldap)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 May 2007 08:38:12 +0200
+
+univention-groupware-webclient (0.2.0-46) stable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:43 +0100
+
+univention-groupware-webclient (0.2.0-44) stable; urgency=low
+
+  * don't depend on univention-kolab2-framework
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Nov 2006 20:58:33 +0100
+
+univention-groupware-webclient (0.2.0-42) stable; urgency=low
+
+  * added baseconfig headers to baseconfig template files
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Nov 2006 21:11:58 +0100
+
+univention-groupware-webclient (0.2.0-41) stable; urgency=low
+
+  * only search fpr inetOrgPerson objects in the ldap directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  4 Nov 2006 22:31:45 +0100
+
+univention-groupware-webclient (0.2.0-40) stable; urgency=low
+
+  * depend on univention-apache and added ssl configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Oct 2006 17:07:57 +0200
+
+univention-groupware-webclient (0.2.0-39) stable; urgency=low
+
+  * added listener module for horde preferences
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Oct 2006 14:40:21 +0200
+
+univention-groupware-webclient (0.2.0-38) stable; urgency=low
+
+  * create a addressbook for the user if non exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Oct 2006 09:41:40 +0200
+
+univention-groupware-webclient (0.2.0-37) stable; urgency=low
+
+  * remove horde system user
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 21 Oct 2006 16:06:52 +0200
+
+univention-groupware-webclient (0.2.0-36) stable; urgency=low
+
+  * support the new share driver
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 20 Oct 2006 21:28:41 +0200
+
+univention-groupware-webclient (0.2.0-35) stable; urgency=low
+
+  * append a / to the mbox_redirect link
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 14 Oct 2006 20:09:39 +0200
+
+univention-groupware-webclient (0.2.0-34) stable; urgency=low
+
+  * revised logo
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 20 Sep 2006 09:41:12 +0200
+
+univention-groupware-webclient (0.2.0-33) stable; urgency=low
+
+  * revised logo
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 19 Sep 2006 13:20:13 +0200
+
+univention-groupware-webclient (0.2.0-32) stable; urgency=low
+
+  * added logo in upperleft corner
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 19 Sep 2006 12:55:08 +0200
+
+univention-groupware-webclient (0.2.0-31) stable; urgency=low
+
+  * changed some iconstyles
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 19 Sep 2006 10:46:23 +0200
+
+univention-groupware-webclient (0.2.0-30) stable; urgency=low
+
+  * correction of last change
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 13 Sep 2006 17:25:15 +0200
+
+univention-groupware-webclient (0.2.0-29) stable; urgency=low
+
+  * adapted some Font-sizes
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 13 Sep 2006 17:17:30 +0200
+
+univention-groupware-webclient (0.2.0-28) stable; urgency=low
+
+  * added a config value for the server fqdn
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 12 Sep 2006 08:29:54 +0200
+
+univention-groupware-webclient (0.2.0-25) stable; urgency=low
+
+  * set permisssions for the global ldap addressbook
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Sep 2006 15:15:07 +0200
+
+univention-groupware-webclient (0.2.0-23) stable; urgency=low
+
+  * added baseconfig variables to disable the modules:
+  horde/application/turba
+  horde/application/kronolith
+  horde/application/mnemo
+  horde/application/nag
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Sep 2006 10:24:59 +0200
+
+univention-groupware-webclient (0.2.0-22) stable; urgency=low
+
+  * remove top from objectClass search list, otherwise we have a lot of
+  results
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 11 Sep 2006 07:56:13 +0200
+
+univention-groupware-webclient (0.2.0-21) stable; urgency=low
+
+  * show groupware icons and redirect to groupware modules
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  9 Sep 2006 18:36:27 +0200
+
+univention-groupware-webclient (0.2.0-19) stable; urgency=low
+
+  * added baseconfig variable horde/servername
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  9 Sep 2006 15:59:18 +0200
+
+univention-groupware-webclient (0.2.0-17) stable; urgency=low
+
+  * deleted wrong files
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  8 Sep 2006 15:01:41 +0200
+
+univention-groupware-webclient (0.2.0-16) stable; urgency=low
+
+  * added mnemo,nag; corrected turba; changed trash-icons
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  8 Sep 2006 13:39:18 +0200
+
+univention-groupware-webclient (0.2.0-15) stable; urgency=low
+
+  * deleted wrong folders
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  8 Sep 2006 12:56:01 +0200
+
+univention-groupware-webclient (0.2.0-14) stable; urgency=low
+
+  * readded accidentally removed file
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  8 Sep 2006 11:55:39 +0200
+
+univention-groupware-webclient (0.2.0-13) stable; urgency=low
+
+  * deleted and changed some icons
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  8 Sep 2006 11:40:30 +0200
+
+univention-groupware-webclient (0.2.0-12) stable; urgency=low
+
+  * added mnemo2 to the horde framework
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  8 Sep 2006 06:43:00 +0200
+
+univention-groupware-webclient (0.2.0-11) stable; urgency=low
+
+  * added nag2 to the horde framework
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  8 Sep 2006 06:28:20 +0200
+
+univention-groupware-webclient (0.2.0-10) stable; urgency=low
+
+  * modified colors in univention-theme
+
+ -- Tobias Scherer <scherer@univention.de>  Thu,  7 Sep 2006 13:24:49 +0200
+
+univention-groupware-webclient (0.2.0-9) stable; urgency=low
+
+  * added prefs.php
+
+ -- Tobias Scherer <scherer@univention.de>  Wed,  6 Sep 2006 17:27:38 +0200
+
+univention-groupware-webclient (0.2.0-8) stable; urgency=low
+
+  * fixed dirs and rules
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed,  6 Sep 2006 17:23:10 +0200
+
+univention-groupware-webclient (0.2.0-7) stable; urgency=low
+
+  * added new univention-theme
+
+ -- Tobias Scherer <scherer@univention.de>  Wed,  6 Sep 2006 17:05:38 +0200
+
+univention-groupware-webclient (0.2.0-6) stable; urgency=low
+
+  * add support for external imap server
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 24 Aug 2006 17:38:22 +0200
+
+univention-groupware-webclient (0.2.0-4) stable; urgency=low
+
+  * add dependency to turba2 component
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  4 Jul 2006 08:26:25 +0200
+
+univention-groupware-webclient (0.2.0-2) stable; urgency=low
+
+  * add locale de_DE if it does not exist
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Jun 2006 14:22:59 +0200
+
+univention-groupware-webclient (0.2.0-1) stable; urgency=low
+
+  * add support for turba2
+  * add pear module Mail_Mime
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Jun 2006 13:25:38 +0200
+
+univention-groupware-webclient (0.1.3-1) stable; urgency=low
+
+  * updated horde configuration: use a real cyrus admin
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 15 Jun 2006 14:53:03 +0200
+
+univention-groupware-webclient (0.1.2-1) stable; urgency=low
+
+  * updated horde, imp and kronolith configuration templates
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 14 Jun 2006 14:46:34 +0200
+
+univention-groupware-webclient (0.1.1-2) stable; urgency=low
+
+  * added dependency to univention-postgresql
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Jun 2006 13:01:16 +0200
+
+univention-groupware-webclient (0.1.1-1) stable; urgency=low
+
+  * composing a mail in an extra windows works again (closes #5991)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  1 Jun 2006 14:05:46 +0200
+
+univention-groupware-webclient (0.1-2) stable; urgency=low
+
+  * fixed build dependencies
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  1 Jun 2006 09:51:48 +0200
+
+univention-groupware-webclient (0.1-1) stable; urgency=low
+
+  * Initial Release.
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 May 2006 11:59:38 +0200
+
+

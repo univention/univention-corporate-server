@@ -1,0 +1,78 @@
+Type: file
+File: etc/horde/horde3/conf.php
+Variables: ldap/server/name
+Variables: ldap/base
+Variables: mail/alias/webmaster
+Variables: mail/hosteddomains
+Variables: ldap/server/master
+Variables: horde/imapserver
+Variables: horde/hosteddomain
+Variables: horde/adminuser
+Variables: horde/passwordfile
+Variables: horde/servername
+Variables: horde/auth
+
+Type: file
+File: etc/horde/horde3/motd.php
+
+Type: file
+File: etc/horde/horde3/hooks.php
+Variables: horde/application/turba
+Variables: horde/application/kronolith
+Variables: horde/application/mnemo
+Variables: horde/application/nag
+
+Type: file
+File: etc/horde/horde3/prefs.php
+
+Type: file
+File: etc/horde/horde3/registry.php
+Variables: horde/application/imp
+Variables: horde/application/turba
+Variables: horde/application/kronolith
+Variables: horde/application/mnemo
+Variables: horde/application/nag
+Variables: horde/application/gollem
+
+Type: file
+File: etc/horde/imp4/conf.php
+
+Type: file
+File: etc/horde/imp4/servers.php
+
+Type: file
+File: etc/horde/turba2/conf.php
+
+Type: file
+File: etc/horde/turba2/attributes.php
+
+Type: file
+File: etc/horde/turba2/sources.php
+
+Type: file
+File: etc/horde/kronolith2/conf.php
+Variables: domainname
+
+Type: file
+File: etc/horde/gollem/conf.php
+
+Type: file
+File: etc/horde/gollem/backends.php
+Variables: horde/webaccess/share.*
+Variables: horde/auth
+
+Type: file
+File: etc/horde/nag2/conf.php
+
+Type: file
+File: etc/horde/mnemo2/conf.php
+
+Type: file
+File: etc/univention/apache/96univention-horde
+Variables: interfaces/eth0/type
+Variables: hostname
+Variables: domainname
+
+Type: subfile
+Multifile: etc/postgresql/pg_hba.conf
+Subfile: etc/postgresql/pg_hba.conf.d/11-horde_user

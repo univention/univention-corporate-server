@@ -1,0 +1,140 @@
+
+/**
+ * MESSAGE LIST
+ */
+
+/* Table */
+.messageList {
+    table-layout : fixed;
+    width        : 100%;
+}
+
+/* Rows */
+.messageList tr {
+    height : 20px;
+}
+
+/* Column headers */
+.messageList th {
+    text-align     : left;
+    vertical-align : middle;
+    cursor         : pointer;
+    white-space    : nowrap;
+}
+
+
+.messageList td {
+    white-space   : nowrap;
+    overflow      : hidden;
+    text-overflow : ellipsis;
+}
+.messageList img {
+    vertical-align: middle;
+}
+
+/* Legend styles. */
+.mailboxLegend {
+    padding: 5px;
+}
+.mailboxLegend li {
+    color: black;
+    font-family: Geneva,Arial,Helvetica,sans-serif;
+    font-size: 11px;
+    list-style: none;
+    display: inline;
+}
+.mailboxLegend li div {
+    float: left;
+    margin-right: 1em;
+}
+.mailboxLegend li div div {
+    padding: 2px;
+    border: 1px solid #666666;
+    margin-right: .3em;
+}
+
+/* Textarea were you compose a message */
+.composebody {
+    font-family: Courier New, Monospace;
+    font-size: 9pt;
+
+}
+
+.folders {
+    font-size: 11px;
+}
+.seen {
+    background-color: #f6f6f6;
+}
+.seen:hover {
+    background-color: #cccccc;
+}
+.seen-over {
+    background-color: #cccccc;
+}
+.deleted {
+    background-color: #f6f6f6;
+}
+.deleted:hover {
+    background-color: #cccccc;
+}
+.deleted-over {
+    background-color: #cccccc;
+}
+tr.deleted:hover, tr.deleted-over {
+    background: #cccccc;
+}
+.important {
+    /*color: black;*/
+    background-color: #ffcccc;
+}
+.important:hover {
+    background-color: #ffaaaa;
+}
+.important-over {
+    background-color: #ffaaaa;
+}
+tr.important:hover, tr.important-over {
+    /*color: white;*/
+    background: #ffaaaa;
+}
+.unseen {
+    background-color: #f6f6f6;
+}
+.unseen:hover {
+    background-color: #cccccc;
+}
+.unseen-over {
+    background-color: #cccccc;
+}
+tr.unseen:hover, tr.unseen-over {
+    background: #cccccc;
+}
+.answered {
+    background-color: #f6f6f6;
+}
+.answered:hover {
+    background-color: #cccccc;
+}
+.answered-over {
+    background-color: #cccccc;
+}
+tr.answered:hover, tr.answered-over {
+    background: #cccccc;
+}
+.folderunsub {
+    font-style: italic;
+}
+.quotawarn {
+    color: black;
+    background-color: yellow;
+}
+.quotaalert {
+    color: white;
+    background-color: red;
+}
+
+table {
+    border: none;
+}
+

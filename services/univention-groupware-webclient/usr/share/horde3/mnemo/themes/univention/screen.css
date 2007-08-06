@@ -1,0 +1,45 @@
+/**
+ * $Horde: mnemo/themes/screen.css,v 1.4.2.1 2005/10/18 13:01:19 jan Exp $
+ */
+
+/* Menu bottom margin, added for BC. */
+#menu {
+    margin-bottom: 8px;
+}
+
+/* Image alignment, added for BC. */
+img {
+    vertical-align: middle;
+}
+
+/* Sort arrow styles, added for BC. */
+.sortup {
+    background: #bbcbff url("graphics/za.png") center left no-repeat;
+    padding-left: 10px;
+}
+.sortdown {
+    background: #bbcbff url("graphics/az.png") center left no-repeat;
+    padding-left: 10px;
+}
+
+/* Table CSS, added for BC. */
+th {
+    color: #333;
+    font-family: Verdana,Helvetica,sans-serif;
+    font-size: 11px;
+    border-bottom: 1px solid #999;
+}
+
+/* RTL styles, added for BC. */
+.leftAlign {
+    text-align: left;
+}
+.rightAlign {
+    text-align: right;
+}
+.leftFloat {
+    float: left;
+}
+.rightFloat {
+    float: right;
+}

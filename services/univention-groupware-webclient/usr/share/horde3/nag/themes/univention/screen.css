@@ -1,0 +1,29 @@
+
+.overdue {
+    color: #ff0000;
+}
+.overdue-link {
+    color: #ff0000;
+}
+.closed {
+    color: #aaaaaa;
+}
+.linethrough {
+    text-decoration: line-through;
+    color: #aaaaaa;
+}
+.pri-1 {
+    color: #ff0000;
+}
+.pri-2 {
+    color: #ff3300;
+}
+.pri-3 {
+    color: black;
+}
+.pri-4 {
+    color: #0033ff;
+}
+.pri-5 {
+    color: #0000ff;
+}

@@ -1,0 +1,36 @@
+
+#filelist {
+    width: 100%;
+}
+
+#filelist caption {
+    font-weight: bold;
+    text-align: left;
+    caption-side: bottom;
+}
+
+#filelist td, #filelist th {
+    white-space: nowrap;
+}
+
+.managerhidden {
+    background-color: #000;
+    position: absolute;
+    left: 200px;
+    top: 20px;
+    width: 200px;
+    visibility: hidden;
+    padding: 1px;
+}
+
+.centerAlign {
+    text-align: center;
+}
+
+/* Align styles, added for BC. */
+.leftAlign {
+   text-align: left;
+}
+.rightAlign {
+   text-align: right;
+}

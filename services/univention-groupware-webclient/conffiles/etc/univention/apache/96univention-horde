@@ -1,0 +1,51 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/etc/univention/apache/96univention-horde
+#
+@!@
+if (baseConfig.has_key('interfaces/eth0/type') and baseConfig['interfaces/eth0/type'] == 'dhcp') or not baseConfig.has_key('hostname') or not baseConfig['hostname'] or not baseConfig.has_key('domainname') or not baseConfig['domainname']:
+	print 'NameVirtualHost *:443'
+	print ''
+	print '<VirtualHost *:443>'
+else:
+	print 'NameVirtualHost %s.%s:443'%(baseConfig['hostname'],baseConfig['domainname'])
+	print ''
+	print '<VirtualHost %s.%s:443>'%(baseConfig['hostname'],baseConfig['domainname'])
+@!@
+
+RewriteEngine On
+RewriteOptions inherit
+
+	<IfModule mod_ssl.c>
+		SSLEngine on
+		SSLCertificateFile /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
+		SSLCertificateKeyFile /etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
+		#SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown
+
+		# Workaround for IE
+		# see http://www.modssl.org/docs/2.8/ssl_faq.html#io-ie
+		SetEnvIf User-Agent ".*MSIE.*" nokeepalive ssl-unclean-shutdown downgrade-1.0 force-response-1.0
+		#SSLProtocol all -SSLv3
+		#SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP
+
+	</IfModule>
+	DocumentRoot /usr/share/univention-admin/www
+</VirtualHost>
+
+
+<Directory /usr/share/univention-admin/www/>
+	AddType application/x-httpd-php .php .php3 .php4 .phtml
+	AddType application/x-httpd-php-source .phps
+</Directory>
+
+<Directory /usr/share/univention-console/www/>
+	AddType application/x-httpd-php .php .php3 .php4 .phtml
+	AddType application/x-httpd-php-source .phps
+</Directory>
+
+Alias /horde3 /usr/share/horde3

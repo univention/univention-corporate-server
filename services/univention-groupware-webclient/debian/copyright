@@ -1,0 +1,403 @@
+Copyright 2002,2003,2004,2005,2006 by
+
+Univention GmbH
+http://www.univention.de/
+
+All rights reserved.
+
+The source code of the software contained in this package
+as well as the source package itself are made available
+under the terms of the GNU General Public License version 2
+(GNU GPL V2) as published by the Free Software Foundation.
+
+Binary versions of this package provided by Univention to you as
+well as other copyrighted, protected or trademarked materials like
+Logos, graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between
+you and Univention.
+
+In the case you use the software under the terms of the GNU GPL V2,
+the program is provided in the hope hat it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License with
+the Debian GNU/Linux or Univention distribution in file
+/usr/share/common-licenses/GPL; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+On Univention and Debian systems, the complete text of the GNU General Public
+License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+
+****************************
+This package uses horde example modules.
+
+License:
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Library General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Library General Public License for more details.
+
+A copy of the GNU Library General Public License is available as
+/usr/share/common-licenses/LGPL in the Debian GNU/Linux distribution
+or on the World Wide Web at http://www.gnu.org/copyleft/lgpl.html.
+You can also obtain it by writing to the Free Software Foundation,
+Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
+
+****************************
+This package contains the PHP pear packages PEAR, XML_Parser,
+Archive Tar and Console Getopt:
+
+--------------------------------------------------------------------
+                  The PHP License, version 3.0
+Copyright (c) 1999 - 2006 The PHP Group. All rights reserved.
+--------------------------------------------------------------------
+
+Redistribution and use in source and binary forms, with or without
+modification, is permitted provided that the following conditions
+are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+
+  3. The name "PHP" must not be used to endorse or promote products
+     derived from this software without prior written permission. For
+     written permission, please contact group@php.net.
+
+  4. Products derived from this software may not be called "PHP", nor
+     may "PHP" appear in their name, without prior written permission
+     from group@php.net.  You may indicate that your software works in
+     conjunction with PHP by saying "Foo for PHP" instead of calling
+     it "PHP Foo" or "phpfoo"
+
+  5. The PHP Group may publish revised and/or new versions of the
+     license from time to time. Each version will be given a
+     distinguishing version number.
+     Once covered code has been published under a particular version
+     of the license, you may always continue to use it under the terms
+     of that version. You may also choose to use such covered code
+     under the terms of any subsequent version of the license
+     published by the PHP Group. No one other than the PHP Group has
+     the right to modify the terms applicable to covered code created
+     under this License.
+
+  6. Redistributions of any form whatsoever must retain the following
+     acknowledgment:
+     "This product includes PHP, freely available from
+     <http://www.php.net/>".
+
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--------------------------------------------------------------------
+
+This software consists of voluntary contributions made by many
+individuals on behalf of the PHP Group.
+
+The PHP Group can be contacted via Email at group@php.net.
+
+For more information on the PHP Group and the PHP project,
+please see <http://www.php.net>.
+
+This product includes the Zend Engine, freely available at
+<http://www.zend.com>.
+
+
+
+****************************
+This package contains the PHP Pear package Date:
+
+Redistribution and use in source and binary forms, with or without modification
+, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, th
+is list of conditions and the following disclaimer.
+
+2. Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation and/
+or other materials provided with the distribution.
+
+3. The name of the author may not be used to endorse or promote products derived
+from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED WA
+RRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABIL
+ITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR C
+ONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOW
+EVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABIL
+TY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE U
+SE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+****************************
+This package contains the PHP Pear package Mail_Mime:
+
+| Copyright (c) 2002-2003  Richard Heyes                                |
+| Copyright (c) 2003-2005  The PHP Group                                |
+| All rights reserved.                                                  |
+|                                                                       |
+| Redistribution and use in source and binary forms, with or without    |
+| modification, are permitted provided that the following conditions    |
+| are met:                                                              |
+|                                                                       |
+| o Redistributions of source code must retain the above copyright      |
+|   notice, this list of conditions and the following disclaimer.       |
+| o Redistributions in binary form must reproduce the above copyright   |
+|   notice, this list of conditions and the following disclaimer in the |
+|   documentation and/or other materials provided with the distribution.|
+| o The names of the authors may not be used to endorse or promote      |
+|   products derived from this software without specific prior written  |
+|   permission.                                                         |
+|                                                                       |
+| THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS   |
+| "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT     |
+| LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR |
+| A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT  |
+| OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, |
+| SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT      |
+| LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, |
+| DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY |
+| THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT   |
+| (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE |
+| OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.  |
+
+
+****************************
+This package contains the PHP Pear packages Net_Socket, Net_IMAP with the
+license:
+--------------------------------------------------------------------
+                  The PHP License, version 2.02
+Copyright (c) 1999 - 2002 The PHP Group. All rights reserved.
+--------------------------------------------------------------------
+
+Redistribution and use in source and binary forms, with or without
+modification, is permitted provided that the following conditions
+are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above
+     copyright notice, this list of conditions and the following
+     disclaimer in the documentation and/or other materials provided
+     with the distribution.
+
+  3. The name "PHP" must not be used to endorse or promote products
+     derived from this software without prior permission from the
+     PHP Group.  This does not apply to add-on libraries or tools
+     that work in conjunction with PHP.  In such a case the PHP
+     name may be used to indicate that the product supports PHP.
+
+  4. The PHP Group may publish revised and/or new versions of the
+     license from time to time. Each version will be given a
+     distinguishing version number.
+     Once covered code has been published under a particular version
+     of the license, you may always continue to use it under the
+     terms of that version. You may also choose to use such covered
+     code under the terms of any subsequent version of the license
+     published by the PHP Group. No one other than the PHP Group has
+     the right to modify the terms applicable to covered code created
+     under this License.
+
+  5. Redistributions of any form whatsoever must retain the following
+     acknowledgment:
+     "This product includes PHP, freely available from
+     http://www.php.net/".
+
+  6. The software incorporates the Zend Engine, a product of Zend
+     Technologies, Ltd. ("Zend"). The Zend Engine is licensed to the
+     PHP Association (pursuant to a grant from Zend that can be
+     found at http://www.php.net/license/ZendGrant/) for
+     distribution to you under this license agreement, only as a
+     part of PHP.  In the event that you separate the Zend Engine
+     (or any portion thereof) from the rest of the software, or
+     modify the Zend Engine, or any portion thereof, your use of the
+     separated or modified Zend Engine software shall not be governed
+     by this license, and instead shall be governed by the license
+     set forth at http://www.zend.com/license/ZendLicense/.
+
+
+
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--------------------------------------------------------------------
+
+This software consists of voluntary contributions made by many
+individuals on behalf of the PHP Group.
+
+The PHP Group can be contacted via Email at group@php.net.
+
+For more information on the PHP Group and the PHP project,
+please see <http://www.php.net>.
+
+****************************
+
+The PEAR Log module and the XML RPC module are licenced under the PHP License
+version 3.01 reproduced below.
+
+
+--------------------------------------------------------------------
+                  The PHP License, version 3.01
+Copyright (c) 1999 - 2006 The PHP Group. All rights reserved.
+--------------------------------------------------------------------
+
+Redistribution and use in source and binary forms, with or without
+modification, is permitted provided that the following conditions
+are met:
+
+  1. Redistributions of source code must retain the above copyright
+     notice, this list of conditions and the following disclaimer.
+
+  2. Redistributions in binary form must reproduce the above copyright
+     notice, this list of conditions and the following disclaimer in
+     the documentation and/or other materials provided with the
+     distribution.
+
+  3. The name "PHP" must not be used to endorse or promote products
+     derived from this software without prior written permission. For
+     written permission, please contact group@php.net.
+
+  4. Products derived from this software may not be called "PHP", nor
+     may "PHP" appear in their name, without prior written permission
+     from group@php.net.  You may indicate that your software works in
+     conjunction with PHP by saying "Foo for PHP" instead of calling
+     it "PHP Foo" or "phpfoo"
+
+  5. The PHP Group may publish revised and/or new versions of the
+     license from time to time. Each version will be given a
+     distinguishing version number.
+     Once covered code has been published under a particular version
+     of the license, you may always continue to use it under the terms
+     of that version. You may also choose to use such covered code
+     under the terms of any subsequent version of the license
+     published by the PHP Group. No one other than the PHP Group has
+     the right to modify the terms applicable to covered code created
+     under this License.
+
+  6. Redistributions of any form whatsoever must retain the following
+     acknowledgment:
+     "This product includes PHP software, freely available from
+     <http://www.php.net/software/>".
+
+THIS SOFTWARE IS PROVIDED BY THE PHP DEVELOPMENT TEAM ``AS IS'' AND
+ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE PHP
+DEVELOPMENT TEAM OR ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT,
+INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
+OF THE POSSIBILITY OF SUCH DAMAGE.
+
+--------------------------------------------------------------------
+
+This software consists of voluntary contributions made by many
+individuals on behalf of the PHP Group.
+
+The PHP Group can be contacted via Email at group@php.net.
+
+For more information on the PHP Group and the PHP project,
+please see <http://www.php.net>.
+
+PHP includes the Zend Engine, freely available at
+<http://www.zend.com>.
+
+****************************
+This package contains nuvola_graphics with the following copyright:
+
+TITLE:	NUVOLA ICON THEME for KDE 3.x
+AUTHOR:	David Vignoni
+SITE:	http://www.icon-king.com
+MAILING LIST: http://mail.icon-king.com/mailman/listinfo/nuvola_icon-king.com
+
+Copyright (c)  2003-2004  David Vignoni.
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation,
+version 2.1 of the License.
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+You should have received a copy of the GNU Lesser General Public
+License along with this library (see the the license.txt file); if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#######**** NOTE THIS ADD-ON ****#######
+The GNU Lesser General Public License or LGPL is written for software libraries
+in the first place. The LGPL has to be considered valid for this artwork
+library too.
+Nuvola icon theme for KDE 3.x is a special kind of software library, it is an
+artwork library, it's elements can be used in a Graphical User Interface, or
+GUI.
+Source code, for this library means:
+ - raster png image* .
+The LGPL in some sections obliges you to make the files carry
+notices. With images this is in some cases impossible or hardly usefull.
+With this library a notice is placed at a prominent place in the directory
+containing the elements. You may follow this practice.
+The exception in section 6 of the GNU Lesser General Public License covers
+the use of elements of this art library in a GUI.
+dave [at] icon-king.com
+
+Date:		6 august 2004
+Version:	1.0 rc1
+
+DESCRIPTION:
+
+NUVOLA is an SVG based icon theme.
+This mean that all icons where designed with a vector graphics
+application and SVG files are available.
+Icons of the KDE version of Nuvola are PNG images (unscalable).
+SVG files are available at www.icon-king.com from the day 15 may 2004.
+
+
+LICENSE
+
+Released under GNU Lesser General Public License (LGPL)
+Look at the license.txt file.
+
+CONTACT
+
+David Vignoni	
+e-mail :		dave [at] icon-king.com
+ICQ :			117761009
+http:           	http://www.icon-king.com
+
