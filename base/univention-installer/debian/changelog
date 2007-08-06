@@ -1,3 +1,9 @@
+univention-installer (1.6.15-6) unstable; urgency=low
+
+  * Updated translation.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  6 Aug 2007 14:08:30 +0200
+
 univention-installer (1.6.15-5) unstable; urgency=low
 
   * Add exception handling

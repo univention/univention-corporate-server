@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-02 12:54+0200\n"
-"PO-Revision-Date: 2007-07-17 14:59+0200\n"
+"POT-Creation-Date: 2007-08-06 14:04+0200\n"
+"PO-Revision-Date: 2007-08-06 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -47,8 +47,8 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: installer/main.py:251 installer/main.py:282 installer/objects.py:1720
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
 #: installer/modules/04_profile.py:54 installer/modules/12_partition.py:3577
-#: installer/modules/12_partition.py:3593 installer/modules/20_net.py:666
-#: installer/modules/20_net.py:893
+#: installer/modules/12_partition.py:3593 installer/modules/20_net.py:664
+#: installer/modules/20_net.py:891
 #: ../univention-system-setup/usr/sbin/univention-system-setup:143
 #: ../univention-system-setup/usr/sbin/univention-system-setup:170
 #: ../univention-system-setup/usr/sbin/univention-system-setup:189
@@ -641,8 +641,8 @@ msgstr "Speichern"
 #: installer/modules/12_partition.py:3079
 #: installer/modules/12_partition.py:3126
 #: installer/modules/12_partition.py:3352
-#: installer/modules/12_partition.py:3391 installer/modules/20_net.py:667
-#: installer/modules/20_net.py:894
+#: installer/modules/12_partition.py:3391 installer/modules/20_net.py:665
+#: installer/modules/20_net.py:892
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -1200,8 +1200,8 @@ msgstr "Möchten Sie LVM2 verwenden?"
 msgid " Partition dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/12_partition.py:1713 installer/modules/20_net.py:788
-#: installer/modules/20_net.py:790
+#: installer/modules/12_partition.py:1713 installer/modules/20_net.py:786
+#: installer/modules/20_net.py:788
 msgid "Device"
 msgstr "Gerät"
 
@@ -1621,7 +1621,7 @@ msgstr "Installiere den Bootloader in:"
 msgid "Master Boot Record"
 msgstr "Master Boot Record"
 
-#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:629
+#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:627
 msgid "Device:"
 msgstr "Gerät:"
 
@@ -1786,77 +1786,77 @@ msgstr ""
 " Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
 "nutzen. z.B: http://192.168.1.123:3128"
 
-#: installer/modules/20_net.py:513 installer/modules/20_net.py:810
-#: installer/modules/20_net.py:812
+#: installer/modules/20_net.py:513 installer/modules/20_net.py:808
+#: installer/modules/20_net.py:810
 msgid "Network"
 msgstr "Netzwerk"
 
-#: installer/modules/20_net.py:636
+#: installer/modules/20_net.py:634
 msgid "Dynamic (DHCP)"
 msgstr "Dynamisch (DHCP)"
 
-#: installer/modules/20_net.py:636 installer/modules/20_net.py:639
+#: installer/modules/20_net.py:634 installer/modules/20_net.py:637
 msgid "Static"
 msgstr "Statisch"
 
-#: installer/modules/20_net.py:642
+#: installer/modules/20_net.py:640
 msgid "IP address:"
 msgstr "IP-Adresse:"
 
-#: installer/modules/20_net.py:648
+#: installer/modules/20_net.py:646
 msgid "Netmask:"
 msgstr "Netzmaske:"
 
-#: installer/modules/20_net.py:654
+#: installer/modules/20_net.py:652
 msgid "Broadcast:"
 msgstr "Broadcast:"
 
-#: installer/modules/20_net.py:660
+#: installer/modules/20_net.py:658
 msgid "Network:"
 msgstr "Netzwerk:"
 
-#: installer/modules/20_net.py:768
+#: installer/modules/20_net.py:766
 msgid " Interface configuration"
 msgstr " Interface Konfiguration"
 
-#: installer/modules/20_net.py:782 installer/modules/20_net.py:919
+#: installer/modules/20_net.py:780 installer/modules/20_net.py:917
 #: installer/modules/30_ssl.py:63 installer/modules/30_ssl.py:165
 #: installer/modules/31_join.py:49 installer/modules/31_join.py:136
 msgid "The following value is missing: "
 msgstr "Der folgende Wert fehlt:"
 
-#: installer/modules/20_net.py:783 installer/modules/20_net.py:920
+#: installer/modules/20_net.py:781 installer/modules/20_net.py:918
 msgid "The following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:795 installer/modules/20_net.py:797
+#: installer/modules/20_net.py:793 installer/modules/20_net.py:795
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: installer/modules/20_net.py:800 installer/modules/20_net.py:802
+#: installer/modules/20_net.py:798 installer/modules/20_net.py:800
 msgid "Netmask"
 msgstr "Netzmaske"
 
-#: installer/modules/20_net.py:805 installer/modules/20_net.py:807
+#: installer/modules/20_net.py:803 installer/modules/20_net.py:805
 msgid "Broadcast"
 msgstr "Broadcast"
 
-#: installer/modules/20_net.py:868
+#: installer/modules/20_net.py:866
 #, python-format
 msgid "1. %s"
 msgstr "1. %s"
 
-#: installer/modules/20_net.py:877
+#: installer/modules/20_net.py:875
 #, python-format
 msgid "2. %s"
 msgstr "2. %s"
 
-#: installer/modules/20_net.py:885
+#: installer/modules/20_net.py:883
 #, python-format
 msgid "3. %s"
 msgstr "3. %s"
 
-#: installer/modules/20_net.py:901
+#: installer/modules/20_net.py:899
 #, python-format
 msgid " More %ss"
 msgstr "Mehr %ss"
@@ -1991,7 +1991,7 @@ msgstr "Filterung von Systemdiensten"
 
 #: installer/modules/50_security.py:71
 msgid "These options control how many system services are"
-msgstr "Diese Optionen konfigurieren, welche Systemendienste"
+msgstr "Diese Optionen konfigurieren, welche Systemdienste"
 
 #: installer/modules/50_security.py:72
 msgid "initially blocked by a packet filter (iptables)"
@@ -2013,14 +2013,17 @@ msgstr "Empfohlene Auswahl an Systemdiensten"
 msgid "Locked-down setup. Only SSH, LDAP and HTTPS are"
 msgstr "Abgesicherte Grundinstallation. Nur SSH, LDAP und"
 
-#: installer/modules/50_security.py:121
+#: installer/modules/50_security.py:118
 msgid ""
 "Security Settings  \n"
 " \n"
 " Pre-defined packet filter configuration options for various system roles"
 msgstr ""
+"Sicherheits-Einstellungen  \n"
+" \n"
+" Vordefinierte Paketfiltereinstellungen für verschiedene Systemrollen."
 
-#: installer/modules/50_security.py:124
+#: installer/modules/50_security.py:121
 msgid "Security Settings"
 msgstr "Sicherheits-Optionen"
 
