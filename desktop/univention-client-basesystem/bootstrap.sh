@@ -63,10 +63,10 @@ case "$1" in
 	touch "$destdir/.univention-bootstrap"
 	chroot "$destdir" /bootstrap.sh install
 
-	find etc usr -type d ! -path '*/CVS*' | while read d; do
+	find etc usr -type d ! -path '*/.svn*' | while read d; do
 	    mkdir -p "$destdir/$d"
 	done
-	find etc usr -type f ! -path '*/CVS*' ! -name '.cvsignore' | while read f; do
+	find etc usr -type f ! -path '*/.svn*' ! -name '.cvsignore' | while read f; do
 	    cp -a "$f" "$destdir/$f"
 	done
 
@@ -75,11 +75,11 @@ case "$1" in
 		"$destdir/etc/univention/templates/files" \
 		"$destdir/etc/univention/templates/scripts"
 	install -m644 univention-client-basesystem.info "$destdir/etc/univention/templates/info"
-	find conffiles -type d ! -path '*/CVS*' | while read d; do
+	find conffiles -type d ! -path '*/.svn*' | while read d; do
 	    n=${d#conffiles}
 	    mkdir -p "$destdir/etc/univention/templates/files/$n"
 	done
-	find conffiles -type f ! -path '*/CVS*' ! -name '.cvsignore' | while read f; do
+	find conffiles -type f ! -path '*/.svn*' ! -name '.cvsignore' | while read f; do
 	    n=${f#conffiles}
 	    cp -a "$f" "$destdir/etc/univention/templates/files/$n"
 	done
