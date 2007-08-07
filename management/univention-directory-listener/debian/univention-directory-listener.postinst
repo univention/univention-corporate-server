@@ -71,6 +71,12 @@ fi
 
 /usr/lib/univention-install/03univention-directory-listener.inst || true
 
+if [ -h "/var/service/univention-ldap-listener" ]; then
+       rm /var/service/univention-ldap-listener
+       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
+fi
+
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.12; then
 		/etc/init.d/univention-directory-listener restart
