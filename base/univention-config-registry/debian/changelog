@@ -1,3 +1,9 @@
+univention-config-registry (2.3.2-2) unstable; urgency=low
+
+  * don't install the bash completion file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Aug 2007 14:54:08 +0200
+
 univention-config-registry (2.3.2-1) unstable; urgency=low
 
   * fixed command 'unset'; just delete keys from the current registry with
