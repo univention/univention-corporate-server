@@ -1,0 +1,23 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/pam.d/nagios
+# 
+
+@!@
+if 'nagios' in baseConfig['auth/user/services'].split(' '):
+	scheme='common'
+elif 'nagios' in baseConfig['auth/admin/services'].split(' '):
+	scheme='admin'
+else:
+	scheme='deny'
+
+if baseConfig.has_key('auth/nagios/accessfile') and baseConfig['auth/nagios/accessfile']:
+	print 'account  required                pam_access.so accessfile=%s listsep=,' % baseConfig['auth/nagios/accessfile']
+print '@include %s-account' % scheme
+print '@include %s-auth' % scheme
+@!@

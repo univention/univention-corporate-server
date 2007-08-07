@@ -1,12 +1,12 @@
 [nagios/server/autostart]
-Description[de]=Starte Nagios Server bei Konfigurationsänderungen neu
-Description[en]=Restart nagios server on configuration changes
+Description[de]=Starte Nagios-Server bei Konfigurationsänderungen neu
+Description[en]=Restart Nagios server on configuration changes
 Type=str
 Categories=System
 
 [nagios/server/authenticate]
-Description[de]=Aktivier/Deaktiviere die Anmeldung am Nagios Webfrontend
-Description[en]=Enable/Disable authentication for the nagios web frontend
+Description[de]=Aktivier/Deaktiviere die Anmeldung am Nagios-Webfrontend
+Description[en]=Enable/Disable authentication for the Nagios web frontend
 Type=str
 Categories=System
 
@@ -17,14 +17,14 @@ Type=str
 Categories=System
 
 [nagios/server/refreshrate]
-Description[de]=Automatischer Aktualisierungsintervall des Nagios Webfrontends
-Description[en]=Refresh rate of the nagios web frontend in seconds
+Description[de]=Automatischer Aktualisierungsintervall des Nagios-Webfrontends
+Description[en]=Refresh rate of the Nagios web frontend in seconds
 Type=str
 Categories=System
 
 [nagios/server/theme]
-Description[de]=Name des zu verwendenden Nagios Theme
-Description[en]=Name of the nagios theme to use
+Description[de]=Name des zu verwendenden Nagios-Theme
+Description[en]=Name of the Nagios theme to use
 Type=str
 Categories=System
 
@@ -41,8 +41,8 @@ Type=str
 Categories=System
 
 [nagios/server/user/configinfo]
-Description[de]=Erlaube den angegebenen Benuzter Lesezugriff auf die Nagios Konfiguration
-Description[en]=Grant read access to the nagios configuration to the given users
+Description[de]=Erlaube den angegebenen Benutzer Lesezugriff auf die Nagios-Konfiguration
+Description[en]=Grant read access to the Nagios configuration to the given users
 Type=str
 Categories=System
 
@@ -59,8 +59,8 @@ Type=str
 Categories=System
 
 [nagios/server/hostcheck/enable]
-Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios Hosts
-Description[en]=Enablae/Disable the regular availability checks for all nagios hosts
+Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios-Rechner
+Description[en]=Enable/Disable the regular availability checks for all Nagios hosts
 Type=str
 Categories=System
 
@@ -70,3 +70,8 @@ Description[en]=Wait the given time in minutes before sending the same notificat
 Type=str
 Categories=System
 
+[auth/nagios/accessfile]
+Description[de]=Dateiname für die Konfigurationsdatei zur Zugangskontrolle über pam_access
+Description[en]=Filename of pam_access config file for nagios access control
+Type=str
+Categories=System

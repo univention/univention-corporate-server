@@ -27,10 +27,10 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-eval `univention-baseconfig shell ldap/hostdn ldap/base server/role hostname domainname lilo/root`
+eval `univention-config-registry shell ldap/hostdn ldap/base server/role hostname domainname lilo/root`
 
 # set default baseconfig settings
-univention-baseconfig set 'nagios/server/refreshrate?90' \
+univention-config-registry set 'nagios/server/refreshrate?90' \
                           'nagios/server/authenticate?yes' \
                           'nagios/server/user/systeminfo?*' \
                           'nagios/server/user/configinfo?*' \
@@ -43,6 +43,12 @@ univention-baseconfig set 'nagios/server/refreshrate?90' \
                           'nagios/server/theme?nuvola' \
 						  'nagios/server/autostart?yes'
 
+USERSERVICES=$(univention-config-registry get auth/user/services | egrep "(^| )nagios( |$)" -c)
+ADMINSERVICES=$(univention-config-registry get auth/admin/services | egrep "(^| )nagios( |$)" -c)
+if [ "$USERSERVICES" = "0" -a "$ADMINSERVICES" = "0" ] ; then
+	eval `univention-config-registry shell`
+	univention-config-registry set auth/admin/services="$auth_admin_services nagios"
+fi
 
 #DEBHELPER#
 

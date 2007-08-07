@@ -1,3 +1,11 @@
+univention-nagios (1.0.6-1) unstable; urgency=low
+
+  * root access to nagios http interface is now disabled
+  * added evaluation of auth/user/services and auth/admin/services
+  * added auth/nagios/accessfile
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 07 Aug 2007 14:43:50 +0200
+
 univention-nagios (1.0.5-1) unstable; urgency=low
 
   * fixed apache2.conf: use pam stack to authenticate
