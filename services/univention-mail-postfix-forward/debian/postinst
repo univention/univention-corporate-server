@@ -3,7 +3,7 @@
 # Univention mail Postfix Forward
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,21 +30,21 @@
 
 #DEBHELPER#
 
-univention-baseconfig set postfix/autostart=yes
+univention-config-registry set postfix/autostart=yes
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 
 adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
-univention-baseconfig set mail/alias/root?systemmail@$hostname.$domainname
-univention-baseconfig set mail/alias/postmaster?root
+univention-config-registry set mail/alias/root?systemmail@$hostname.$domainname
+univention-config-registry set mail/alias/postmaster?root
 
 if [ -x /usr/bin/newaliases ]; then
 	/usr/bin/newaliases
 fi
 
-univention-baseconfig commit /etc/mailname
+univention-config-registry commit /etc/mailname
 
-/etc/init.d/univention-ldap-listener crestart
+/etc/init.d/univention-directory-listener crestart
 /etc/init.d/postfix reload
 
 exit 0
