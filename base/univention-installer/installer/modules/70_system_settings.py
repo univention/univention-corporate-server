@@ -73,6 +73,7 @@ class object(content):
 		self.add_elem('BT_next', button(_('F12-Next'),self.minY+18,self.minX+20+(self.width)-37))
 
 		self.current = self.get_elem_id('create_local_repo')
+		self.get_elem_by_id(self.current).set_on()
 
 	def input(self,key):
 
