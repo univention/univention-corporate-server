@@ -140,11 +140,10 @@ update-rc.d rdate defaults 21 >/dev/null 2>&1 || true
 
 if [ "$1" = configure -a -n "$2" ]; then
 	eval `univention-config-registry shell`
-	if [ -n "$interfaces_eth0_type" ]; then
-		if [ "$interfaces_eth0_type" == "dhcp" ]; then
-			dhclient eth0 || true
-		fi
-	fi
+	set | grep "interfaces_eth.*_type=dhcp" | while read line; do
+		interface=$(echo $line | sed -e 's|interfaces_||;s|_type.*||')
+		dhclient $interface || true
+	done
 fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.53-6; then

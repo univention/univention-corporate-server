@@ -1,3 +1,10 @@
+univention-config-registry (2.3.2-3) unstable; urgency=low
+
+  * call dhclient for all dhcp interfaces during the update (updating the
+    resolv.conf)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Aug 2007 16:49:39 +0200
+
 univention-config-registry (2.3.2-2) unstable; urgency=low
 
   * don't install the bash completion file
