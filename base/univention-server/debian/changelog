@@ -1,3 +1,10 @@
+univention-server (2.1.2-8) unstable; urgency=low
+
+  * added a meta package for the basesystem
+  * depend on univention-grub
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Aug 2007 15:19:37 +0200
+
 univention-server (2.1.2-7) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

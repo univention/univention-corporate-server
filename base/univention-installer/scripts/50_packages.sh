@@ -122,7 +122,7 @@ elif [ "$server_role" = "managed_client" ]; then
 elif [ "$server_role" = "mobile_client" ]; then
 	$PIPE apt-get install univention-mobile-client --yes
 elif [ "$server_role" = "basesystem" ]; then
-	$PIPE apt-get install univention-updater --yes
+	$PIPE apt-get install univention-basesystem --yes
 fi
 
 $PIPE dpkg --configure -a

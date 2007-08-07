@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-server-master
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-debmirror, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin,  univention-admin-tools, univention-setup, univention-bind, univention-firewall
+Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-debmirror, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin,  univention-admin-tools, univention-setup, univention-bind, univention-firewall, univention-grub
 Pre-Depends: univention-config-registry
 Conflicts: exim
 Description: UCS - master domain controller
@@ -20,7 +20,7 @@ Description: UCS - master domain controller
 
 Package: univention-server-backup
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-directory-replication, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, univention-debmirror, ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, univention-admin-tools, univention-setup, univention-firewall
+Depends: univention-config-registry, univention-join, univention-ssl, univention-ldap-server, univention-directory-replication, univention-maintenance, univention-showload, univention-heimdal-kdc, univention-directory-notifier, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-ldap-client, univention-ldap-acl-master, univention-debmirror, ntp-server, univention-home-mounter, univention-nfs-server, univention-license-import, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, univention-admin-tools, univention-setup, univention-firewall, univention-grub
 Conflicts: exim
 Description: UCS - backup domain controller
  This package installs a UCS backup domain controller.
@@ -34,7 +34,7 @@ Description: UCS - backup domain controller
 
 Package: univention-server-slave
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-ldap-server, univention-maintenance,, univention-showload, univention-heimdal-kdc, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-directory-replication, univention-ldap-client, univention-ldap-acl-slave, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup, univention-firewall
+Depends: univention-config-registry, univention-join, univention-ldap-server, univention-maintenance,, univention-showload, univention-heimdal-kdc, univention-directory-listener, univention-updater, nscd, univention-policy-tools, univention-directory-replication, univention-ldap-client, univention-ldap-acl-slave, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup, univention-firewall, univention-grub
 Conflicts: exim
 Description: UCS - slave domain controller
  This package installs a UCS slave domain controller.
@@ -48,7 +48,7 @@ Description: UCS - slave domain controller
 
 Package: univention-server-member
 Architecture: all
-Depends: univention-config-registry, univention-join, univention-showload, univention-maintenance, univention-heimdal-member, univention-directory-listener, univention-updater, univention-policy-tools, univention-policy-tools, univention-ldap-client, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup, univention-firewall
+Depends: univention-config-registry, univention-join, univention-showload, univention-maintenance, univention-heimdal-member, univention-directory-listener, univention-updater, univention-policy-tools, univention-policy-tools, univention-ldap-client, univention-home-mounter, univention-nfs-server, ntp-server, univention-mail-postfix-forward | univention-mail-postfix | univention-mail | sendmail, univention-quota, univention-pkgdb-tools, python-univention-admin, univention-admin-tools, univention-setup, univention-firewall, univention-grub
 Conflicts: exim
 Description: UCS - member server
  This package installs a UCS member server.
@@ -62,7 +62,7 @@ Package: univention-mobile-client
 Architecture: all
 Pre-Depends: univention-config-registry (>=0.06), univention-pam
 Conflicts: univention-application-server
-Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-admin, univention-firewall
+Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python-univention-admin, univention-firewall, univention-grub
 Description: UCS - Mobile Client
  This is a Meta-package, that sets up a UCS mobile client
  .
@@ -77,9 +77,21 @@ Pre-Depends: univention-config-registry (>=0.06), univention-pam
 Conflicts: univention-application-server, univention-fat-client, univention-fat-client-small
 Replaces: univention-fat-client, univention-fat-client-small
 Provides: univention-fat-client, univention-fat-client-small
-Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python2.4-univention-admin | python2.4-univention-admin-2005, univention-firewall
+Depends: ssh, univention-policy-tools, univention-updater, ldap-utils, ntp-server, univention-x-core, univention-join, libnss-passwdcache, libpam-passwdcache, menu, univention-directory-listener, univention-heimdal-member, univention-ldap-client, nscd, vim, bind9-host, strace, anacron, ifplugd, univention-mail-postfix-forward, nfs-common, univention-directory-policy, univention-printclient, univention-pkgdb-tools, univention-gdm-sessions, python2.4-univention-admin | python2.4-univention-admin-2005, univention-firewall, univention-grub
 Description: UCS - Managed Client
  This is a Meta-package, that sets up a UCS fat client
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-basesystem
+Architecture: all
+Pre-Depends: univention-config-registry (>=0.06), univention-pam
+Depends: univention-updater, univention-grub
+Description: UCS - Basesytem
+ This is a Meta-package, that sets up a UCS Basesystem
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

@@ -1,3 +1,9 @@
+univention-installer (1.6.16-1) unstable; urgency=low
+
+  * install univention-basesystem on a basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Aug 2007 15:25:28 +0200
+
 univention-installer (1.6.15-9) unstable; urgency=low
 
   * Fix focus.
