@@ -387,11 +387,19 @@ PackageList=[
 				},
 				{
 					'Name': _('Additional KDE Applications'),
-					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager' ],
+					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager', 'kdepim' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('More KDE applications, like k3b, kdegraphics, kdeadmin, kdeartwork, kdetoys or kdeutils'),
+				},
+				{
+					'Name': _('Desktop Search (kerry/beagle)'),
+					'Packages': ['kerry' ],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['mobile_client', 'managed_client'],
+					'Possible': ['all'],
+					'Description': _('Desktop Search with kerry and beagle'),
 				},
 				{
 					'Name': _('Multimedia Applications'),

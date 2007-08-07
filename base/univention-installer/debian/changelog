@@ -1,3 +1,9 @@
+univention-installer (1.6.16-2) unstable; urgency=low
+
+  * added kerry/beagle
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  7 Aug 2007 16:07:06 +0200
+
 univention-installer (1.6.16-1) unstable; urgency=low
 
   * install univention-basesystem on a basesystem

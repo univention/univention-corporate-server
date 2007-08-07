@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-08-06 14:04+0200\n"
+"POT-Creation-Date: 2007-08-07 16:07+0200\n"
 "PO-Revision-Date: 2007-08-06 14:05+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -450,7 +450,7 @@ msgstr "Firefox Webbrowser"
 msgid "Java Plugin/Runtime"
 msgstr "Java Plugin/Java Umgebung"
 
-#: installer/package_list.py:354 installer/package_list.py:530
+#: installer/package_list.py:354 installer/package_list.py:538
 msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
@@ -495,122 +495,130 @@ msgstr ""
 "kdetoys oder kdeutils"
 
 #: installer/package_list.py:397
+msgid "Desktop Search (kerry/beagle)"
+msgstr "Desktop Suchprogramm (kerry/beagle)"
+
+#: installer/package_list.py:402
+msgid "Desktop Search with kerry and beagle"
+msgstr "Desktop Suche mit kerry und beagle"
+
+#: installer/package_list.py:405
 msgid "Multimedia Applications"
 msgstr "Multimedia-Anwendungen"
 
-#: installer/package_list.py:402
+#: installer/package_list.py:410
 msgid "Multimedia applications, like amarok, kmplayer or mplayer"
 msgstr "Multimedia Anwendungen, wie amarok, kmplayer oder mplayer"
 
-#: installer/package_list.py:405 installer/package_list.py:410
+#: installer/package_list.py:413 installer/package_list.py:418
 msgid "Fax Client"
 msgstr "Fax-Client"
 
-#: installer/package_list.py:413
+#: installer/package_list.py:421
 msgid "Evolution"
 msgstr "Evolution"
 
-#: installer/package_list.py:418
+#: installer/package_list.py:426
 msgid "The GNOME Mailer"
 msgstr "Das GNOME Milprogramm"
 
-#: installer/package_list.py:421
+#: installer/package_list.py:429
 msgid "VNC Viewer"
 msgstr "VNC-Betrachter"
 
-#: installer/package_list.py:426
+#: installer/package_list.py:434
 msgid "Client for remote desktop Access"
 msgstr "Client für den Zugriff auf entfernte Benutzeroberflächen"
 
-#: installer/package_list.py:429 installer/package_list.py:434
+#: installer/package_list.py:437 installer/package_list.py:442
 msgid "Microsoft Fonts"
 msgstr "Microsoft Schriften"
 
-#: installer/package_list.py:439
+#: installer/package_list.py:447
 msgid "Tools"
 msgstr "Werkzeuge"
 
-#: installer/package_list.py:441
+#: installer/package_list.py:449
 msgid "Extra Tools"
 msgstr "Zusatz-Werkzeuge"
 
-#: installer/package_list.py:445
+#: installer/package_list.py:453
 msgid "OpenSSH client"
 msgstr "OpenSSH-Client"
 
-#: installer/package_list.py:450
+#: installer/package_list.py:458
 msgid "Secure shell client, an rlogin/rsh/rcp replacement"
 msgstr "SSH Client, ein Ersatz für rlogin/rsh/rcp"
 
-#: installer/package_list.py:453
+#: installer/package_list.py:461
 msgid "dhcp client"
 msgstr "DHCP-Client"
 
-#: installer/package_list.py:458
+#: installer/package_list.py:466
 msgid "Dynamic IP configuration"
 msgstr "Dynamische IP Konfiguration"
 
-#: installer/package_list.py:461
+#: installer/package_list.py:469
 msgid "vim"
 msgstr "vim"
 
-#: installer/package_list.py:466
+#: installer/package_list.py:474
 msgid "Vi IMproved - enhanced vi editor"
 msgstr "Vi IMproved - enhanced vi editor"
 
-#: installer/package_list.py:469
+#: installer/package_list.py:477
 msgid "emacs"
 msgstr "emacs"
 
-#: installer/package_list.py:474
+#: installer/package_list.py:482
 msgid "The GNU Emacs editor"
 msgstr "The GNU Emacs Editor"
 
-#: installer/package_list.py:477
+#: installer/package_list.py:485
 msgid "less"
 msgstr "less"
 
-#: installer/package_list.py:482
+#: installer/package_list.py:490
 msgid "Pager program similar to more"
 msgstr "Ein Programm ähnlich wie less "
 
-#: installer/package_list.py:485
+#: installer/package_list.py:493
 msgid "elinks"
 msgstr "elinks"
 
-#: installer/package_list.py:490
+#: installer/package_list.py:498
 msgid "Advanced text-mode WWW browser"
 msgstr "Erweiterter Text-Mode Web-Browser"
 
-#: installer/package_list.py:493
+#: installer/package_list.py:501
 msgid "wget"
 msgstr "wget"
 
-#: installer/package_list.py:498
+#: installer/package_list.py:506
 msgid "Retrieves files from the web"
 msgstr "Zum Herunterladen von Datei aus dem WWW"
 
-#: installer/package_list.py:501
+#: installer/package_list.py:509
 msgid "nmap"
 msgstr "nmap"
 
-#: installer/package_list.py:506 installer/package_list.py:514
+#: installer/package_list.py:514 installer/package_list.py:522
 msgid "The Network Mapper"
 msgstr "Portscanning-Tool"
 
-#: installer/package_list.py:509
+#: installer/package_list.py:517
 msgid "zip/unzip"
 msgstr "zip/unzip"
 
-#: installer/package_list.py:517
+#: installer/package_list.py:525
 msgid "eject"
 msgstr "eject"
 
-#: installer/package_list.py:522
+#: installer/package_list.py:530
 msgid "ejects CDs and operates CD-Changers under Linux"
 msgstr "wirft CDs aus und bedient CD-Wechsler unter Linux"
 
-#: installer/package_list.py:525
+#: installer/package_list.py:533
 msgid "Java"
 msgstr "Java"
 
@@ -2069,7 +2077,7 @@ msgstr "Lokales Repository erstellen"
 msgid "Create home share"
 msgstr "Heimatverzeichnis Freigabe"
 
-#: installer/modules/70_system_settings.py:92
+#: installer/modules/70_system_settings.py:93
 msgid ""
 "System-Settings  \n"
 " \n"
@@ -2079,7 +2087,7 @@ msgstr ""
 " \n"
 " Verschiedene System Einstellungen"
 
-#: installer/modules/70_system_settings.py:95
+#: installer/modules/70_system_settings.py:96
 msgid "System-Settings"
 msgstr "System-Optionen"
 
