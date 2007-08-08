@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  postinst script
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
@@ -50,10 +50,6 @@ update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
 #DEBHELPER#
 
 univention-baseconfig set listener/debug/level?2
-
-if [ ! -e /var/lib/univention-ldap-listener ]; then
-    ln -s /usr/lib/univention-directory-listener /usr/lib/univention-ldap-listener
-fi
 
 mkdir -p /var/lib/univention-ldap/schema/id/
 

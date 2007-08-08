@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-9) unstable; urgency=low
+
+  * Add new transition preinst to cope with the wording changes.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 09:46:53 +0200
+
 univention-directory-listener (2.1.1-8) unstable; urgency=low
 
   * Fix runit symlink in postinst
