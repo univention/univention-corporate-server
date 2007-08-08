@@ -171,6 +171,7 @@ chmod 755 "/sbin/start-stop-daemon"
 		for f in base.conf base.conf.bak base-ldap.conf base-forced.conf; do
 	    	touch /ramdisk/etc/univention/$f
 	    	ln -fs /ramdisk/etc/univention/$f /etc/univention/$f
+		done
 
 	    touch /ramdisk/etc/mtab.fuselock
 	    touch /ramdisk/etc/hosts

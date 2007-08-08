@@ -1,4 +1,4 @@
-univention-client-basesystem (2.0.17-2) unstable; urgency=low
+univention-client-basesystem (2.0.17-3) unstable; urgency=low
 
   * create base-ldap.conf and base-forced.conf during the bootstrap process
 
