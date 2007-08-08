@@ -2,7 +2,7 @@ etc/init.d
 etc/univention/apache
 etc/univention/daemons
 usr/lib/univention-install
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system
 usr/lib/univention-scalix
 usr/share/univention-scalix/conffiles
 var/lib/univention-setup/hostname.post

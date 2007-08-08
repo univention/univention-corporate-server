@@ -3,7 +3,7 @@
 # Univention Scalix
 #  preinst script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -63,7 +63,7 @@ install: build
 	cp -a static_conffiles/* $(D)/usr/share/univention-scalix/conffiles/
 
 	# listener module
-	install -D scalix-user.py $(D)/usr/lib/univention-ldap-listener/system/scalix-user.py
+	install -D scalix-user.py $(D)/usr/lib/univention-directory-listener/system/scalix-user.py
 
 	# init scripts, univention console service entries
 	install -D etc/init.d/univention-scalix $(D)/etc/init.d/univention-scalix
@@ -71,10 +71,10 @@ install: build
 	install -D etc/univention/daemons/univention-scalix $(D)/etc/univention/daemons/univention-scalix
 
 	# univention-setup hooks
-	install -m 0755 var/lib/univention-setup/domainname.post/univention-scalix ${D}/var/lib/univention-setup/domainname.post/
-	install -m 0755 var/lib/univention-setup/hostname.post/univention-scalix ${D}/var/lib/univention-setup/hostname.post/
-	install -m 0755 var/lib/univention-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-setup/ldapbase.post/
-	install -m 0755 var/lib/univention-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-setup/interfaces.post/
+	install -m 0755 var/lib/univention-system-setup/domainname.post/univention-scalix ${D}/var/lib/univention-system-setup/domainname.post/
+	install -m 0755 var/lib/univention-system-setup/hostname.post/univention-scalix ${D}/var/lib/univention-system-setup/hostname.post/
+	install -m 0755 var/lib/univention-system-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-system-setup/ldapbase.post/
+	install -m 0755 var/lib/univention-system-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-system-setup/interfaces.post/
 
 	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
 	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
