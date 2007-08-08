@@ -3,7 +3,7 @@
 # Univention Kolab2 Framework
 #  rules file for the debian package
 #
-# Copyright (C) 2005, 2006 Univention GmbH
+# Copyright (C) 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -72,8 +72,8 @@ install: build
 	sh -c " cd files; find var/lib/univention-kolab2-framework/kolab-pear/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
 
 	install -m 755 65univention-kolab2-framework.inst debian/univention-kolab2-framework/usr/lib/univention-install
-	install -m 755 kolabserver.py debian/univention-kolab2-framework/usr/lib/univention-ldap-listener/system/
-	install -m 755 kolabdomain.py debian/univention-kolab2-framework/usr/lib/univention-ldap-listener/system/
+	install -m 755 kolabserver.py debian/univention-kolab2-framework/usr/lib/univention-directory-listener/system/
+	install -m 755 kolabdomain.py debian/univention-kolab2-framework/usr/lib/univention-directory-listener/system/
 	install -m 755 files/usr/share/outlook-setup/konfig2000.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
 	install -m 755 files/usr/share/outlook-setup/konfig2003.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/
 	install -m 755 files/usr/share/outlook-setup/readme.txt debian/univention-kolab2-framework/usr/share/univention-kolab2-framework/outlook-setup/

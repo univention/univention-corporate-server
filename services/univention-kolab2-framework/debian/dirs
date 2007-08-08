@@ -6,7 +6,7 @@ var/lib/univention-kolab2-framework/freebusy/
 var/lib/univention-kolab2-framework/fbview/
 var/www/freebusy/cache/
 usr/lib/univention-install
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system
 etc/kolab2
 usr/share/php/PEAR/Mail
 usr/share/php/PEAR/Net
