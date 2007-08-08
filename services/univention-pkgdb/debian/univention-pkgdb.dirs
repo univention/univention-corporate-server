@@ -3,7 +3,7 @@ etc/cron.weekly
 usr/sbin
 var/lib/postgres
 usr/lib/univention-install
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system
 usr/share/locale/de/LC_MESSAGES
 usr/share/univention-pkgdb
 usr/share/univention-webui-style/icon

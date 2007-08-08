@@ -3,7 +3,7 @@
 # Univention Package Database
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -63,8 +63,8 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
   /usr/lib/univention-install/50univention-pkgdb.inst || true
 fi
 
-if [ -x "/etc/init.d/univention-ldap-listener" ]; then
-  /etc/init.d/univention-ldap-listener crestart
+if [ -x "/etc/init.d/univention-directory-listener" ]; then
+  /etc/init.d/univention-directory-listener crestart
 fi
 
 if [ ! -e /var/log/univention/pkgdb.log ]; then
