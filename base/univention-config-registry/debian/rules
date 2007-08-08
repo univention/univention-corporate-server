@@ -104,7 +104,7 @@ install-ext-%:
 	install -m 755 etc/X11/Xsession.d/33-univention-environment debian/univention-config-registry/etc/X11/Xsession.d/33-univention-environment
 	# install -m 644 etc/bash_completion.d/univention-config-registry debian/univention-config-registry/etc/bash_completion.d/univention-config-registry
 
-	install -m 755 univention-ldap-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-ldap-policy/nfsmounts
+	install -m 755 univention-directory-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-directory-policy/nfsmounts
 
 	chmod 755 python/univention-install-config-registry python/univention-install-config-registry-info
 
