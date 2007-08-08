@@ -31,14 +31,14 @@
 eval `univention-baseconfig shell`
 
 #remove replication listener modul
-dpkg-divert --divert /usr/lib/univention-ldap-listener/replication.py.divert --rename --add /usr/lib/univention-ldap-listener/system/replication.py
+dpkg-divert --divert /usr/lib/univention-directory-listener/replication.py.divert --rename --add /usr/lib/univention-directory-listener/system/replication.py
 
 # stop openldap, samba, kerberos, listener and notifier
 test -x /etc/init.d/slapd && /etc/init.d/slapd stop
 test -x /etc/init.d/samba && /etc/init.d/samba stop
 test -x /etc/init.d/heimdal-kdc && /etc/init.d/heimdal-kdc stop
-test -x /etc/init.d/univention-ldap-notifier && /etc/init.d/univention-ldap-notifier stop
-test -x /etc/init.d/univention-ldap-listener && /etc/init.d/univention-ldap-listener stop
+test -x /etc/init.d/univention-directory-notifier && /etc/init.d/univention-directory-notifier stop
+test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener stop
 
 old_ldap_master="$ldap_master"
 # set baseconfig variables
@@ -52,8 +52,8 @@ univention-baseconfig set windows/wins-support=yes
 test -x /etc/init.d/slapd && /etc/init.d/slapd start
 test -x /etc/init.d/samba && /etc/init.d/samba start
 test -x /etc/init.d/heimdal-kdc && /etc/init.d/heimdal-kdc start
-test -x /etc/init.d/univention-ldap-notifier && /etc/init.d/univention-ldap-notifier start
-test -x /etc/init.d/univention-ldap-listener && /etc/init.d/univention-ldap-listener start
+test -x /etc/init.d/univention-directory-notifier && /etc/init.d/univention-directory-notifier start
+test -x /etc/init.d/univention-directory-listener && /etc/init.d/univention-directory-listener start
 
 /usr/share/univention-admin-tools/univention-dnsedit --ignore-exists $domainname add srv kerberos-adm tcp 0 0 88 $hostname.$domainname.
 /usr/share/univention-admin-tools/univention-dnsedit --ignore-exists $domainname remove srv kerberos-adm tcp 0 0 88 $old_ldap_master.

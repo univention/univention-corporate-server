@@ -123,9 +123,9 @@ if baseConfig['ldap/server/type']=="master":
 
     echo "."
 
-	if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
+	if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
     	echo -n "Found failed.ldif. Importing ..."
-		test -x /usr/sbin/univention-ldap-replication-resync && /usr/sbin/univention-ldap-replication-resync /var/lib/univention-ldap-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
+		test -x /usr/sbin/univention-directory-replication-resync && /usr/sbin/univention-directory-replication-resync /var/lib/univention-directory-replication/failed.ldif >>/var/log/univention/listener.log 2>&1
 		if [ $? = 0 ]; then
 			echo " done"
 		else
