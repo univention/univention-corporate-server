@@ -719,7 +719,7 @@ class object(content):
 		result = self.test_old_device_syntax(key)
 		if result:
 			if result[0] != None:
-				return [ 'PHY', '%s%s' % result, value ]   # [ PHY, /dev/sda2, LINE ]
+				return [ 'PHY', '%s%s' % (result[0], result[1]), value ]   # [ PHY, /dev/sda2, LINE ]
 
 		regex = re.compile('^dev_\d+$')
 		if regex.match(key):
