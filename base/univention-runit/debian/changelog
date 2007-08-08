@@ -1,3 +1,9 @@
+univention-runit (1.0.0-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener/Notifier
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 13:32:27 +0200
+
 univention-runit (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
