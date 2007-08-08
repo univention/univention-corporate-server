@@ -3,7 +3,7 @@
 # Univention Groupware Webclient
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -91,8 +91,8 @@ install: build
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type f -exec install -m 0644 {} $(HORDESHARE){} \;)
 
-	install -m 755 webaccess-share.py ${D}/usr/lib/univention-ldap-listener/system/
-	install -m 755 horde-prefs.py ${D}/usr/lib/univention-ldap-listener/system/
+	install -m 755 webaccess-share.py ${D}/usr/lib/univention-directory-listener/system/
+	install -m 755 horde-prefs.py ${D}/usr/lib/univention-directory-listener/system/
 
 	univention-install-baseconfig
 
