@@ -53,7 +53,7 @@ Optional parameters: (UCS default values are used, they're only necessary in non
 --groupbase     The default LDAP container for users
 
 The script runs considerably faster if you stop the LDAP notifier for the conversion:
-# /etc/init.d/univention-ldap-notifier stop
+# /etc/init.d/univention-directory-notifier stop
 
 
 
