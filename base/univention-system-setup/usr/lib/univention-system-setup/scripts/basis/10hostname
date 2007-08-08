@@ -63,7 +63,7 @@ if [ -d "/var/lib/univention-system-setup/hostname.pre" ]; then
     run-parts /var/lib/univention-system-setup/hostname.pre --arg=$old_hostname --arg=$new_hostname
 fi
 	
-service_stop nscd heimdal-kdc univention-ldap-notifier
+service_stop nscd heimdal-kdc univention-directory-notifier
 
 binddn=`ldap_binddn`
 bindpwd=`ldap_bindpwd`
@@ -470,7 +470,7 @@ fi
 
 hostname -F /etc/hostname
 
-service_start univention-ldap-notifier
+service_start univention-directory-notifier
 
 is_variable_set "UMC_MODE"
 if [ $? = 0 ]; then
@@ -525,7 +525,7 @@ if [ -n "$passfile" ]; then
 	service_stop samba; sleep 1; service_start samba
 fi
 
-service_stop univention-ldap-listener; sleep 1; service_start univention-ldap-listener
+service_stop univention-directory-listener; sleep 1; service_start univention-directory-listener
 
 if [ -d "/var/lib/univention-system-setup/hostname.post" ]; then
 	run-parts /var/lib/univention-system-setup/hostname.post --arg=$old_hostname --arg=$new_hostname

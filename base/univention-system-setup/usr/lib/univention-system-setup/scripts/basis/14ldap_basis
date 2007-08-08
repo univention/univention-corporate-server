@@ -61,9 +61,9 @@ fi
 
 # Remove old NFS exports and resync from LDAP
 sed -i "/$oldbn/d" /etc/exports
-rm /var/lib/univention-ldap-listener/nfs-shares
+rm /var/lib/univention-directory-listener/nfs-shares
 
-service_stop nscd slapd univention-ldap-notifier heimdal-kdc
+service_stop nscd slapd univention-directory-notifier heimdal-kdc
 
 d=`date +%Y%m%d%H%M%S`
 
@@ -96,7 +96,7 @@ univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 slapadd </var/cache/univention-system-setup/new_ldif.$d
 
-service_start slapd univention-ldap-notifier nscd heimdal-kdc
+service_start slapd univention-directory-notifier nscd heimdal-kdc
 
 eval $(univention-config-registry shell samba/user ldap/hostdn)
 

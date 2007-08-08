@@ -69,7 +69,7 @@ echo $old_domainname > /var/univention-system-setup/old_domainname
 binddn=`ldap_binddn`
 bindpwd=`ldap_bindpwd`
 
-service_stop nscd heimdal-kdc univention-ldap-notifier
+service_stop nscd heimdal-kdc univention-directory-notifier
 
 if [ $ldap_available = 1 ]; then
 
@@ -548,7 +548,7 @@ if [ $? = 0 ]; then
 		/usr/sbin/apachectl start
 	fi
 fi
-service_start univention-ldap-notifier
+service_start univention-directory-notifier
 
 if [ -x /usr/sbin/postmap ] && [ -e /etc/postfix/transport ]; then
 	/usr/sbin/postmap /etc/postfix/transport
@@ -571,7 +571,7 @@ service_start univention-bind univention-bind-proxy
 #invalidate the hosts cache
 nscd -i hosts
 
-service_stop univention-ldap-listener; sleep 1; service_start univention-ldap-listener
+service_stop univention-directory-listener; sleep 1; service_start univention-directory-listener
 
 
 
