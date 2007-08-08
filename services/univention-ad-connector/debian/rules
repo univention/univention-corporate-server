@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  rules file for the ad connector debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -77,7 +77,7 @@ install-ext-%:
 	install -m 0644 modules/univention/connector/ad/mapping.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
 	install -m 0644 modules/univention/connector/ad/password.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
 
-	install -m 0644 ad-connector.py $(AD_TOOLS_DEST)/usr/lib/univention-ldap-listener/system
+	install -m 0644 ad-connector.py $(AD_TOOLS_DEST)/usr/lib/univention-directory-listener/system
 
 	#baseconfig metainfo
 	# cp files/etc/univention/base.meta/connector* $(MODULES_CONNECTOR_AD_DEST)/etc/univention/base.meta
@@ -95,28 +95,19 @@ binary-arch: build install
 binary-indep: build install
 	dh_testdir
 	dh_testroot
-#	dh_installdebconf	
 	dh_installdocs
 	dh_installexamples
 	dh_installmenu
-#	dh_installlogrotate
-#	dh_installemacsen
-#	dh_installpam
-#	dh_installmime
 	dh_installinit --no-start -u"defaults 97"
 	dh_installcron
 	dh_installman
-	dh_installinfo
-#	dh_undocumented
 	dh_installchangelogs
 	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress
 	dh_fixperms
-#	dh_makeshlibs
 	dh_installdeb
-#	dh_perl
 	dh_shlibdeps
 	dh_gencontrol
 	dh_md5sums

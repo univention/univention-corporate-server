@@ -593,7 +593,7 @@ class ucs:
 	
 	def poll_ucs(self):
 		'''
-		poll changes from UCS: iterates over files exported by ldap-listener module
+		poll changes from UCS: iterates over files exported by directory-listener module
 		'''
 		_d=univention.debug.function('ldap.poll_ucs')
 		# check for changes from ucs ldap directory

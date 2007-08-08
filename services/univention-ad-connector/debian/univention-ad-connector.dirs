@@ -1,3 +1,3 @@
 usr/sbin
 etc/univention/connector/ad
-usr/lib/univention-ldap-listener/system
+usr/lib/univention-directory-listener/system

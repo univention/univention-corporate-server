@@ -3,7 +3,7 @@
 # Univention AD Connector
 #  postinst script of the ad connector package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -44,7 +44,7 @@ if [ ! -d /var/lib/univention-connector/ad ]; then
 fi
 
 /etc/init.d/univention-ad-connector crestart || true
-/etc/init.d/univention-ldap-listener crestart || true
+/etc/init.d/univention-directory-listener crestart || true
 
 #DEBHELPER#
 
