@@ -41,16 +41,16 @@ test -n "`grep "univention-directory-listener v${VERSION} successful" /usr/lib/u
 
 ln -sf /etc/runit/univention-ldap-listener /etc/runit/univention/univention-ldap-listener
 
-listener_pid=`pidof univention-ldap-listener`
+listener_pid=`pidof univention-directory-listener`
 if [ -n "$listener_pid" ]; then
 	sv down univention-directory-listener
 fi
 
-if [ -e "/var/lib/univention-ldap-listener" ]; then
+if [ -e "/var/lib/univention-directory-listener" ]; then
 	rm -Rf /var/lib/univention-directory-listener/*
 fi
 
-if [ -e "/var/lib/univention-ldap-replication" ]; then
+if [ -e "/var/lib/univention-directory-replication" ]; then
 	rm -Rf /var/lib/univention-directory-replication/*
 fi
 

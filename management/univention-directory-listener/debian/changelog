@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-11) unstable; urgency=low
+
+  * Fix Univention Directory Listener PID
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:16:32 +0200
+
 univention-directory-listener (2.1.1-10) unstable; urgency=low
 
   * Fix runit service link
