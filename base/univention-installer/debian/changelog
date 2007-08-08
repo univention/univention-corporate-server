@@ -1,3 +1,10 @@
+univention-installer (1.6.16-3) unstable; urgency=low
+
+  * encode german translation file in ISO-8859-1; the installation
+    environment does not support UTF-8
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Aug 2007 13:53:04 +0200
+
 univention-installer (1.6.16-2) unstable; urgency=low
 
   * added kerry/beagle
