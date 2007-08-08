@@ -1,7 +1,7 @@
 # Univention Setup
 #  ldap available check script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,9 +31,9 @@ nc -z $ldap_master 389 2> /dev/null
 
 if [ $? = 1 ]; then
     echo "LDAP master not available"
-    echo "no-ldap" > /var/run/univention-setup.ldap
+    echo "no-ldap" > /var/run/univention-system-setup.ldap
 else
     echo "LDAP master available"
-    echo "ldap" > /var/run/univention-setup.ldap
+    echo "ldap" > /var/run/univention-system-setup.ldap
 fi
 
