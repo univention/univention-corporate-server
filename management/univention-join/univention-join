@@ -429,7 +429,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 			fi
 
 			if [ "`basename $i`" = "03univention-directory-listener.inst" ]; then
-				if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
+				if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
 					failed_message "FAILED: failed.ldif exists."
 				fi
 				univention-scp $DCPWD -r $DCACCOUNT@$DCNAME:/var/lib/univention-ldap/notify/transaction /tmp/ >/dev/null 2>&1
@@ -505,7 +505,7 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 				echo -e "\033[60Gdone"
 			fi
 			if [ "`basename $i`" = "03univention-directory-listener.inst" ]; then
-				if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
+				if [ -e /var/lib/univention-directory-replication/failed.ldif ]; then
 					failed_message "FAILED: failed.ldif exists."
 				fi
 				if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
