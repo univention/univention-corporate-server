@@ -1,3 +1,9 @@
+univention-mail-cyrus (1.0.1-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 11:52:08 +0200
+
 univention-mail-cyrus (1.0.1-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

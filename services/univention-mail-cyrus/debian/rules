@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -63,7 +63,7 @@ install: build
 	./univention-pycompile mailquota.py mailquota.pyo
 
 	install -m 0755 usr/sbin/univention-cyrus-mkdir ${DI}/usr/sbin/univention-cyrus-mkdir
-	install -m 0755 cyrus.py ${DI}/usr/lib/univention-ldap-listener/system/
+	install -m 0755 cyrus.py ${DI}/usr/lib/univention-directory-listener/system/
 	install -m 0755 81univention-mail-cyrus.inst ${D}/usr/lib/univention-install/
 	install -m 0755 usr/sbin/univention-cyrus-set-quota ${D}/usr/sbin/univention-cyrus-set-quota
 

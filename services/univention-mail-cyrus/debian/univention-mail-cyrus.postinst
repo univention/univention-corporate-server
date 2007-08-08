@@ -3,7 +3,7 @@
 # Univention Mail Cyrus
 #  postinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -89,7 +89,7 @@ else
     /etc/init.d/cyrus21 restart
 fi
 
-/etc/init.d/univention-ldap-listener crestart
+/etc/init.d/univention-directory-listener crestart
 
 #freebusy
 freebusy_pwd=`mkpasswd --hash=md5 -s freebusy`
