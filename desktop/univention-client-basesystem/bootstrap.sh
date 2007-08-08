@@ -221,8 +221,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d diskless.sh start 02 S .
 	update-rc.d disklesshardware.sh start 12 2 .
 	update-rc.d disklessfinish.sh start 98 2 .
-	update-rc.d -f portmap start 80 2 .
-
+	ln -sf /etc/init.d/portmap /etc/rc2.d/S80portmap
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
 	# set keyboard to German
