@@ -3,7 +3,7 @@
 # Univention Samba
 #  takes over a Windows NT4 domain
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -264,7 +264,7 @@ while [ -z "$answer" ]; do
 	fi
 	case "$answer" in
 		Y | y) 	info "stopping LDAP Notifier ... " -n
-				/etc/init.d/univention-ldap-notifier stop >> $LOGFILE 2>&1 || error "failed to stop LDAP Notitifer"
+				/etc/init.d/univention-directory-notifier stop >> $LOGFILE 2>&1 || error "failed to stop LDAP Notitifer"
 				info "OK."
 				;;
 		N | n)	shutdown_notifier="no"
@@ -288,7 +288,7 @@ info "OK"
 
 if [ "$shutdown_notifier" = "yes" ]; then
 	info "starting LDAP Notifier ... " -n
-	/etc/init.d/univention-ldap-notifier start >> $LOGFILE 2>&1 || error "failed to start LDAP Notifier"
+	/etc/init.d/univention-directory-notifier start >> $LOGFILE 2>&1 || error "failed to start LDAP Notifier"
 	info "OK."
 fi
 
