@@ -1,3 +1,9 @@
+univention-server (2.1.2-10) unstable; urgency=low
+
+  * Adapt to Univention Directory Replication
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 13:44:07 +0200
+
 univention-server (2.1.2-9) unstable; urgency=low
 
   * Adapt to Univention Directory Listener
