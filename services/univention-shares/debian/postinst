@@ -3,7 +3,7 @@
 # Univention Share
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-	/etc/init.d/univention-ldap-listener crestart
+	/etc/init.d/univention-directory-listener crestart
 fi
 
 exit 0

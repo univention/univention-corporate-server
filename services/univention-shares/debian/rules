@@ -3,7 +3,7 @@
 # Univention Share
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -50,7 +50,7 @@ install: build
 	dh_installdirs
 
 	install -m 0755 univention-share-replication debian/univention-shares/usr/sbin
-	install -m 0644 homedirs.py debian/univention-shares/usr/lib/univention-ldap-listener/system
+	install -m 0644 homedirs.py debian/univention-shares/usr/lib/univention-directory-listener/system
 	univention-install-baseconfig
 	
 	dh_install
