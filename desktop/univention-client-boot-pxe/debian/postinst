@@ -3,7 +3,7 @@
 # Univention Client Boot PXE
 #  postinst script
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -36,9 +36,9 @@ eval `univention-baseconfig shell`
 
 
 if [ "$1" = "configure" ]; then
-	if test -f /etc/init.d/univention-ldap-listener
+	if test -f /etc/init.d/univention-directory-listener
 		then
-		/etc/init.d/univention-ldap-listener crestart
+		/etc/init.d/univention-directory-listener crestart
 	fi
 fi
 
