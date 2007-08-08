@@ -32,7 +32,7 @@ export suite=univention
 mirror=http://192.168.0.10/build2/ucs_2.0-0/
 
 # fixme: univention-python
-export packages="univention-config-registry python-support python-univention libnss-ldap libpam-ldap nfs-common heimdal-clients openssh-client gdm samba samba-common univention-x-core univention-fonts python2.4 bind9-host pam-runasroot ntpdate ntp less rdesktop fuse-utils univention-automount arts kcontrol dhcp3-client libpam-heimdal heimdal-clients cupsys univention-policy-tools libunivention-policy0 libldap2 ldap-utils python-dns kudzu-2.6 univention-gdm lynx locales univention-xnumlock univention-home-mounter rdate netcat fuse-utils smbfs univention-automount univention-client-devices-client univention-bootsplash univention-kde-setdirs console-data"
+export packages="univention-config-registry python-support python-univention libnss-ldap libpam-ldap nfs-common heimdal-clients openssh-client gdm samba samba-common univention-x-core univention-fonts python2.4 bind9-host pam-runasroot ntpdate ntp less rdesktop fuse-utils univention-automount arts kcontrol dhcp3-client libpam-heimdal heimdal-clients cupsys univention-policy-tools libunivention-policy0 libldap2 ldap-utils python-dns kudzu-2.6 univention-gdm lynx locales univention-xnumlock univention-home-mounter rdate netcat fuse-utils smbfs univention-automount univention-client-devices-client univention-bootsplash univention-kde-setdirs console-data portmap"
 export reinstall_packages="univention-client-session univention-gdm univention-gdm-sessions"
 # adduser, e2fsprogs
 export exclude="lilo,pcmcia-cs,base-config,exim,mailx,at,logrotate,cpio,ipchains,dhcp-client,manpages,modconf,mbr,man-db,makedev,telnet,libdb4.0,info,diff,whiptail,syslinux,libsepol1"
