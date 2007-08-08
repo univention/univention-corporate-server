@@ -11,3 +11,6 @@ TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/privat
 TLSCACertificateFile	/etc/univention/ssl/udsCA/CAcert.pem
 
 sizelimit		@%@ldap/sizelimit@%@
+
+attributeoptions "entry-"
+
