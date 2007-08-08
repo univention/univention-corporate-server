@@ -1,3 +1,9 @@
+univention-printserver (1.0.4-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 12:02:05 +0200
+
 univention-printserver (1.0.4-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

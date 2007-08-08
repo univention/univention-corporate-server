@@ -3,7 +3,7 @@
 # Univention Print Server
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -2654,7 +2654,7 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 
 
 
-rm /var/lib/univention-ldap-listener/handlers/cups-printers >/dev/null 2>&1|| true
+rm /var/lib/univention-directory-listener/handlers/cups-printers >/dev/null 2>&1|| true
 
 test -n "`grep "univention-printserver v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printserver v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
