@@ -3,7 +3,7 @@
 # Univention Join
 #  joins a system into a UCS domain
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -331,21 +331,21 @@ if [ -e "/etc/univention/ssl" ]; then
 fi
 
 # Stop Notifier
-notifier_pid=`pidof univention-ldap-notifier`
-if [ -n "$notifier_pid" -a -e /etc/runit/univention/univention-ldap-notifier ]; then
-	echo -n "Stopping univention-ldap-notifier daemon: "
-	/etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1
-	while ! sv status univention-ldap-notifier | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+notifier_pid=`pidof univention-directory-notifier`
+if [ -n "$notifier_pid" -a -e /etc/runit/univention/univention-directory-notifier ]; then
+	echo -n "Stopping univention-directory-notifier daemon: "
+	/etc/init.d/univention-directory-notifier stop >/dev/null 2>&1
+	while ! sv status univention-directory-notifier | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-directory-notifier stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
 
 # Stop Listener
-listener_pid=`pidof univention-ldap-listener`
-if [ -e /etc/runit/univention/univention-ldap-listener ]; then
-	echo -n "Stopping univention-ldap-listener daemon: "
-	/etc/init.d/univention-ldap-listener stop >/dev/null 2>&1
-	while ! sv status univention-ldap-listener | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-ldap-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
+listener_pid=`pidof univention-directory-listener`
+if [ -e /etc/runit/univention/univention-directory-listener ]; then
+	echo -n "Stopping univention-directory-listener daemon: "
+	/etc/init.d/univention-directory-listener stop >/dev/null 2>&1
+	while ! sv status univention-directory-listener | grep "^down" >/dev/null ; do sleep 1; /etc/init.d/univention-directory-listener stop >/dev/null 2>&1; echo -n "." ;done; echo "" done
 fi
-rm -Rf /var/lib/univention-ldap-listener/*
+rm -Rf /var/lib/univention-directory-listener/*
 
 if [ "$server_role" = "domaincontroller_backup" ]; then
 
@@ -428,7 +428,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 				echo -e "\033[60Gdone"
 			fi
 
-			if [ "`basename $i`" = "03univention-ldap-listener.inst" ]; then
+			if [ "`basename $i`" = "03univention-directory-listener.inst" ]; then
 				if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
 					failed_message "FAILED: failed.ldif exists."
 				fi
@@ -437,7 +437,7 @@ if [ "$server_role" = "domaincontroller_backup" ]; then
 					failed_message " FAILED: failed do copy /var/lib/univention-ldap/notify/transaction from the dc master. Please try again."
 				fi
 
-				id=`cat /var/lib/univention-ldap-listener/notifier_id`
+				id=`cat /var/lib/univention-directory-listener/notifier_id`
 				cat /tmp/transaction | awk -F ' ' '{ if ( $1 <= '$id') print }' >/var/lib/univention-ldap/notify/transaction
 				rm /tmp/transaction
 				echo "">/var/lib/univention-ldap/replog/replog
@@ -504,13 +504,13 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 			else
 				echo -e "\033[60Gdone"
 			fi
-			if [ "`basename $i`" = "03univention-ldap-listener.inst" ]; then
+			if [ "`basename $i`" = "03univention-directory-listener.inst" ]; then
 				if [ -e /var/lib/univention-ldap-replication/failed.ldif ]; then
 					failed_message "FAILED: failed.ldif exists."
 				fi
 				if [ -n "$listener_supply_notifier" -a "$listener_supply_notifier" = "yes" ]; then
 					univention-scp $DCPWD -r $DCACCOUNT@$DCNAME:/var/lib/univention-ldap/notify/transaction /tmp/ >/dev/null 2>&1
-					id=`cat /var/lib/univention-ldap-listener/notifier_id`
+					id=`cat /var/lib/univention-directory-listener/notifier_id`
 					cat /tmp/transaction | awk -F ' ' '{ if ( $1 <= '$id') print }' >/var/lib/univention-ldap/notify/transaction
 					rm /tmp/transaction
 					echo "">/var/lib/univention-ldap/replog/replog
@@ -595,13 +595,13 @@ else
 
 fi
 
-if [ -d /etc/runit/univention-ldap-notifier ]; then
-	/etc/init.d/univention-ldap-notifier restart >>/var/log/univention/join.log 2>&1
+if [ -d /etc/runit/univention-directory-notifier ]; then
+	/etc/init.d/univention-directory-notifier restart >>/var/log/univention/join.log 2>&1
 	sleep 3
 fi
 
-if [ -d /etc/runit/univention-ldap-listener ]; then
-	/etc/init.d/univention-ldap-listener restart >>/var/log/univention/join.log 2>&1
+if [ -d /etc/runit/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener restart >>/var/log/univention/join.log 2>&1
 fi
 
 if [ -n "$REMOVE_PWD_FILE" -a -n "$DCPWD" ]; then

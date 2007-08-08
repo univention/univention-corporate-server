@@ -1,3 +1,9 @@
+univention-join (1.0.6-3) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener / Notifier
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:25:28 +0200
+
 univention-join (1.0.6-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
