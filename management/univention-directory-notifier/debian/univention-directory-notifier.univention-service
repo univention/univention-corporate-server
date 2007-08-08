@@ -1,4 +1,4 @@
-[univention-ldap-notifier]
+[univention-directory-notifier]
 Description[de]=Univention LDAP Notifier
 Description[en]=Univention LDAP Notifier
 programs=/usr/sbin/univention-directory-notifier
