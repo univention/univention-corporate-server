@@ -1,3 +1,9 @@
+univention-client-basesystem (2.0.18-1) unstable; urgency=low
+
+  * activate portmap by default
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  8 Aug 2007 14:25:06 +0200
+
 univention-client-basesystem (2.0.17-4) unstable; urgency=low
 
   * create base-ldap.conf and base-forced.conf during the bootstrap process

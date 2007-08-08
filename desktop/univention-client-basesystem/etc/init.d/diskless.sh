@@ -228,7 +228,7 @@ univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/
 policy_file=$(mktemp)
 policy_file_result=$(mktemp)
 
-univention_policy_result -h $ldapServer -s $myDN | sed 's|fixedAttributes=[^ ]*||' >$policy_file
+univention_policy_result -h $ldapServer -s $myDN | sed 's|fixedAttributes=[^ ]*||;s|"||g' >$policy_file
 cat $policy_file | while read line; do
 
 	# split the line a=b in a and b

@@ -190,6 +190,8 @@ chmod 755 "/sbin/start-stop-daemon"
 	ln -fs /ramdisk/var/run/cups /var/run/cups
 	ln -fs /ramdisk/var/spool/postfix /var/spool/postfix
 	ln -fs /ramdisk/etc/X11/X /etc/X11/X
+	mkdir -p /ramdisk/etc/udev/rules.d
+	ln -sf /ramdisk/etc/udev/rules.d/z25_persistent-net.rules /etc/udev/rules.d/z25_persistent-net.rules
 
 	rm -f /etc/univention/disable_baseconfig
 
@@ -219,7 +221,7 @@ chmod 755 "/sbin/start-stop-daemon"
 	update-rc.d diskless.sh start 02 S .
 	update-rc.d disklesshardware.sh start 12 2 .
 	update-rc.d disklessfinish.sh start 98 2 .
-	# update-rc.d portmap start 80 2 .
+	update-rc.d portmap start 80 2 .
 
 
 	mv "/sbin/start-stop-daemon.REAL" "/sbin/start-stop-daemon"
