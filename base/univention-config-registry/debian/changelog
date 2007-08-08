@@ -1,3 +1,9 @@
+univention-config-registry (2.3.2-7) unstable; urgency=low
+
+  * Fix directory name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 15:30:19 +0200
+
 univention-config-registry (2.3.2-6) unstable; urgency=low
 
   * Adapt to Univention Directory Policy
