@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-12) unstable; urgency=low
+
+  * Adapt to Univention Directory Replication
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:45:47 +0200
+
 univention-directory-listener (2.1.1-11) unstable; urgency=low
 
   * Fix Univention Directory Listener PID

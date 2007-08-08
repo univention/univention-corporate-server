@@ -110,7 +110,7 @@ int notifier_write_transaction_file(NotifierEntry entry)
 	 * otherwise the notifier notifiies the other listeners and nothing changed
 	 * in our local LDAP.
 	 */
-	if( (stat("/var/lib/univention-ldap-replication/failed.ldif", &stat_buf)) != 0 ) {
+	if( (stat("/var/lib/univention-directory-replication/failed.ldif", &stat_buf)) != 0 ) {
 
 		if ((file = fopen_lock(TRANSACTION_FILE, "a+", &l_file)) == NULL) {
 			univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not open %s\n",TRANSACTION_FILE);
@@ -120,7 +120,7 @@ int notifier_write_transaction_file(NotifierEntry entry)
 		fprintf(file, "%ld %s %c\n", entry.id, entry.dn, entry.command);
 		res = fclose_lock ( file, l_file );
 	} else {
-		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for /var/lib/univention-ldap-replication/failed.ldif\n",TRANSACTION_FILE);
+		univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ERROR, "Could not write to transaction file %s. Check for /var/lib/univention-directory-replication/failed.ldif\n",TRANSACTION_FILE);
 		res = -1;
 	}
 
