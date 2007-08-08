@@ -1,3 +1,9 @@
+univention-config-registry (2.3.2-4) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener and Univention Directory Notifier
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 10:49:13 +0200
+
 univention-config-registry (2.3.2-3) unstable; urgency=low
 
   * call dhclient for all dhcp interfaces during the update (updating the
