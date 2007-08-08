@@ -1,3 +1,9 @@
+univention-client-basesystem (2.0.17-2) unstable; urgency=low
+
+  * create base-ldap.conf and base-forced.conf during the bootstrap process
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  8 Aug 2007 11:12:09 +0200
+
 univention-client-basesystem (2.0.17-1) unstable; urgency=low
 
   * don't install .svn files
