@@ -136,8 +136,9 @@ class Client( signals.Provider ):
 				self.__socket.connect( ( self.__server, self.__port ) )
 				self.__socket.setblocking( 0 )
 				try:
-					self.__socket.do_handshake()
+					self.__socket.set_connect_state()
 					notifier.socket_add( self.__socket, self._recv )
+					ud.debug( ud.ADMIN, ud.INFO, 'Client.connect: SSL connection established' )
 				except SSL.Error, e:
 					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )
 					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
@@ -147,7 +148,7 @@ class Client( signals.Provider ):
  					self.__realsocket.connect( ( self.__server, self.__port ) )
 					self.__realsocket.setblocking( 0 )
 					notifier.socket_add( self.__realsocket, self._recv )
-				ud.debug( ud.ADMIN, ud.INFO, 'Client.connect: SSL connection established' )
+					ud.debug( ud.ADMIN, ud.INFO, 'Client.connect: connection established' )
 			else:
 				if self.__unix:
 					self.__realsocket.connect( self.__unix )
@@ -160,15 +161,30 @@ class Client( signals.Provider ):
 			ud.debug( ud.ADMIN, ud.ERROR, 'Client.connect: failed: %s' % str( e ) )
 			return False
 
-	def _resend( self, socket ):
-		if self.__resend_queue.has_key(socket):
-			for i in self.__resend_queue[socket]:
+	def _resend( self, sock ):
+		if self.__resend_queue.has_key(sock):
+			for i in self.__resend_queue[sock]:
 				try:
-					socket.send( str( i ) )
+					sock.send( str( i ) )
 				except ( SSL.WantReadError, SSL.WantWriteError,
 						 SSL.WantX509LookupError ), e:
 					return True
-			del self.__resend_queue[socket]
+				except SSL.Error, e:
+					ud.debug( ud.ADMIN, ud.ERROR,
+							  'Client: Setting up SSL configuration failed: %s' % str( e ) )
+					ud.debug( ud.ADMIN, ud.ERROR, 'Client: Communication will not be encrypted!' )
+					save = self.__resend_queue[ self.__socket ]
+					del self.__resend_queue[ self.__socket ]
+					self.__realsocket.shutdown( socket.SHUT_RDWR )
+					self.__ssl = False
+					self._init_socket()
+ 					self.__realsocket.connect( ( self.__server, self.__port ) )
+					self.__realsocket.setblocking( 0 )
+					self.__resend_queue[ self.__realsocket ] = save
+					notifier.socket_add( self.__realsocket, self._recv )
+					notifier.socket_add( self.__realsocket, self._resend, notifier.IO_WRITE )
+					return False
+			del self.__resend_queue[sock]
 		return False
 
 	def request( self, msg ):

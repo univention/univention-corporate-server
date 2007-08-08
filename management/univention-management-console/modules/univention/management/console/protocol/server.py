@@ -220,6 +220,7 @@ class Server( signals.Provider ):
 				self.connection = SSL.Connection( self.crypto_context , self.__realsocket )
 				self.connection.setblocking(0)
 				self.connection.bind( ( '', self.__port ) )
+				self.connection.set_accept_state()
 				ud.debug( ud.ADMIN, ud.INFO, 'Server listening to SSL connects' )
 				self.connection.listen( 10 )
 		else:

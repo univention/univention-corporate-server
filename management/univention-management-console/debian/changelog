@@ -1,3 +1,10 @@
+univention-management-console (0.7.27-1) unstable; urgency=low
+
+  * fallback to not encrypted connection, if sending data to the server fails
+    with an SSL error
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  8 Aug 2007 15:55:31 +0200
+
 univention-management-console (0.7.26-1) unstable; urgency=low
 
   * join module: re-join a system is possible

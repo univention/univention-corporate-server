@@ -287,9 +287,9 @@ class modconsole(unimodule.unimodule):
 					ldapc.disconnect()
 				self.save.put( 'consolemode', 'login' )
 				self.save.put( 'logout', None )
-				self.save.put( 'auth_ok', None )
 				self.save.put( 'notebook', None )
 				self.save.put( 'umc_connected', False )
+				self.save.put( 'auth_ok', False )
 				self.userinfo( _('Logout successful.' ) )
 
 		elif self.save.get('consolemode') == 'process':
