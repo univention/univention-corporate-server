@@ -149,7 +149,7 @@ class object(content):
 				if not self.ignore('dsn_forwarder_1'):
 					self.message=invalid+_("DNS-Forwarder")
 					return False
-		if self.all_results['proxy_http'].strip() and (self.all_results['proxy_http'].strip() !='http://' or self.all_results['proxy_http'].strip() !='https://'): 
+		if self.all_results['proxy_http'].strip() and (self.all_results['proxy_http'].strip() !='http://' and self.all_results['proxy_http'].strip() !='https://'): 
 			proxy=self.all_results['proxy_http'].strip()
 			if not (proxy.startswith('http://') or proxy.startswith('https://')):
 				if not self.ignore('proxy_http'):
@@ -486,7 +486,7 @@ class object(content):
 		if not self.elements[13].result().strip() == '':
 			if not self.is_ip(self.elements[13].result()):
 				return invalid+_("DNS-Forwarder")
-		if self.elements[16] and self.elements[16].result().strip() and (self.elements[16].result().strip() != 'http://' or self.elements[16].result().strip() != 'https://'):
+		if self.elements[16] and self.elements[16].result().strip() and (self.elements[16].result().strip() != 'http://' and self.elements[16].result().strip() != 'https://'):
 			proxy=self.elements[16].result().strip()
 			if not proxy:
 				return 0

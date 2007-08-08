@@ -1,3 +1,9 @@
+univention-installer (1.6.18-1) unstable; urgency=low
+
+  * 20_net.py: fixed syntax handling for http/https proxy
+
+ -- Bastian Neumann <neumann@univention.de>  Wed,  8 Aug 2007 15:58:11 +0200
+
 univention-installer (1.6.17-1) unstable; urgency=low
 
   * 12_partition: fixed typo in profile code
