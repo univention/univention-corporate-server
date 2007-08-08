@@ -486,13 +486,18 @@ class object(content):
 		if not self.elements[13].result().strip() == '':
 			if not self.is_ip(self.elements[13].result()):
 				return invalid+_("DNS-Forwarder")
-		if self.elements[16] and self.elements[16].result().strip() and self.elements[16].result().strip() != 'http://':
+		if self.elements[16] and self.elements[16].result().strip() and (self.elements[16].result().strip() != 'http://' or self.elements[16].result().strip() != 'https://'):
 			proxy=self.elements[16].result().strip()
 			if not proxy:
 				return 0
-			if not proxy.startswith('http://'):
+			if not (proxy.startswith('http://') or proxy.startswith('https://')):
 				return invalid+_('Proxy, example http://10.201.1.1:8080')
-			proxy=proxy.replace('http://','')
+			
+			if proxy.startswith('http://'):
+				proxy=proxy.replace('http://','')
+			elif proxy.startswith('https://'):
+				proxy=proxy.replace('https://','')
+
 			proxy=proxy.split(':')
 			if len(proxy) != 2:
 				return invalid+_('Proxy, example http://10.201.1.1:8080')

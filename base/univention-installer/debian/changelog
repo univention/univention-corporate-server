@@ -1,3 +1,9 @@
+univention-installer (1.6.16-4) unstable; urgency=low
+
+  * added https proxy support 
+
+ -- Bastian Neumann <neumann@univention.de>  Wed,  8 Aug 2007 14:47:59 +0200
+
 univention-installer (1.6.16-3) unstable; urgency=low
 
   * encode german translation file in ISO-8859-1; the installation
