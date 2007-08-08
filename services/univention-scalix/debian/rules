@@ -70,7 +70,7 @@ install: build
 	install -D etc/init.d/univention-scalix-stunnel $(D)/etc/init.d/univention-scalix-stunnel
 	install -D etc/univention/daemons/univention-scalix $(D)/etc/univention/daemons/univention-scalix
 
-	# univention-setup hooks
+	# univention-system-setup hooks
 	install -m 0755 var/lib/univention-system-setup/domainname.post/univention-scalix ${D}/var/lib/univention-system-setup/domainname.post/
 	install -m 0755 var/lib/univention-system-setup/hostname.post/univention-scalix ${D}/var/lib/univention-system-setup/hostname.post/
 	install -m 0755 var/lib/univention-system-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-system-setup/ldapbase.post/

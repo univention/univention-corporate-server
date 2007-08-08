@@ -1,3 +1,10 @@
+univention-scalix (1.0.1-4) stable; urgency=low
+
+  * Adapt to Univention System Setup
+  * Adapt to new Java
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 13:18:41 +0200
+
 univention-scalix (1.0.1-3) stable; urgency=low
 
   * Adapt to Univention Directory Listener and Univention System Setup.
