@@ -3,7 +3,7 @@
 # Univention Windows Installer
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -53,5 +53,5 @@ fi
 
 /etc/init.d/samba reload
 
-/etc/init.d/univention-ldap-listener restart
+/etc/init.d/univention-directory-listener restart
 

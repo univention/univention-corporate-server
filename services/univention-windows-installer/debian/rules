@@ -76,7 +76,7 @@ install: build
 
 	install -m0755 usr/sbin/univention-prepare-unattended $(INST)/usr/sbin/univention-prepare-unattended
 	install -m0755 usr/sbin/univention-update-unattended-supportfiles $(INST)/usr/sbin/univention-update-unattended-supportfiles
-	install -m0755 usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py $(INST)/usr/lib/univention-ldap-listener/system/windowsinstallerpxe.py
+	install -m0755 usr/lib/univention-directory-listener/system/windowsinstallerpxe.py $(INST)/usr/lib/univention-directory-listener/system/windowsinstallerpxe.py
 	ln -s /usr/lib/syslinux/memdisk $(INST)/var/lib/univention-client-boot/memdisk
 	install -d ${INST}/var/lib/univention-windows-installer/install/policy
 
