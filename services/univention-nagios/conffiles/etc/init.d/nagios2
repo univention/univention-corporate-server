@@ -261,6 +261,7 @@ case "$1" in
     log_daemon_msg "Restarting $DESC" "$NAME"
     stop
     if [ -z "$?" -o "$?" = "0" ]; then
+	  sleep 2s
       start
     fi
     log_end_msg $?

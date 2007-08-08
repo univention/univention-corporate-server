@@ -1,3 +1,9 @@
+univention-nagios (1.0.6-3) unstable; urgency=low
+
+  * added "sleep 2s" in restart()
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 08 Aug 2007 16:33:44 +0200
+
 univention-nagios (1.0.6-2) unstable; urgency=low
 
   * updated registration of config registry files
