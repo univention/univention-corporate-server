@@ -68,8 +68,7 @@ fi
 /usr/lib/univention-install/03univention-directory-listener.inst || true
 
 if [ -h "/var/service/univention-ldap-listener" ]; then
-       rm /var/service/univention-ldap-listener
-       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
+       ln -s /etc/runit/univention-ldap-listener /var/service/univention-directory-listener
 fi
 
 
