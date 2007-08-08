@@ -1,3 +1,9 @@
+univention-windows-installer (2.0.0-6) unstable; urgency=low
+
+  * Fix directory name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 15:02:38 +0200
+
 univention-windows-installer (2.0.0-5) unstable; urgency=low
 
   * Adapt to Univention Directory Listener
