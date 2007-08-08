@@ -1,3 +1,9 @@
+univention-printclient (1.0.0-7) unstable; urgency=low
+
+  * Fix directory name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 14:56:50 +0200
+
 univention-printclient (1.0.0-6) unstable; urgency=low
 
   * Adapt to Univention Directory Policy
