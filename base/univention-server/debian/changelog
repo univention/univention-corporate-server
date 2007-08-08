@@ -1,3 +1,9 @@
+univention-server (2.1.2-9) unstable; urgency=low
+
+  * Adapt to Univention Directory Listener
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  8 Aug 2007 13:36:13 +0200
+
 univention-server (2.1.2-8) unstable; urgency=low
 
   * added a meta package for the basesystem
