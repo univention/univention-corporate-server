@@ -3,7 +3,7 @@
 # Univention Print Client
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,7 +52,7 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 755 univention-ldap-policy/univention-policy-set-print-server debian/univention-printclient/usr/lib/univention-ldap-policy/
+	install -m 755 univention-directory-policy/univention-policy-set-print-server debian/univention-printclient/usr/lib/univention-directory-policy/
 
 	univention-install-config-registry
 	univention-install-config-registry-info
