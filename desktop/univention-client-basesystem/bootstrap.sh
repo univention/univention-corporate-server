@@ -168,9 +168,11 @@ chmod 755 "/sbin/start-stop-daemon"
 	if ! test -L /etc/univention/base.conf; then
 	    test -d /ramdisk/etc/univention || mkdir -p /ramdisk/etc/univention
 	    test -d /ramdisk/etc/default || mkdir -p /ramdisk/etc/default
-		for f in base.conf base.conf.bak base-ldap.conf base-forced.conf; do
-	    	touch /ramdisk/etc/univention/$f
-	    	ln -fs /ramdisk/etc/univention/$f /etc/univention/$f
+		for f in base.conf base-ldap.conf base-forced.conf ; do
+	    	touch /ramdisk/etc/univention/${f}
+	    	touch /ramdisk/etc/univention/${f}.bak
+	    	ln -fs /ramdisk/etc/univention/${f} /etc/univention/${f}
+	    	ln -fs /ramdisk/etc/univention/${f}.bak /etc/univention/${f}.bak
 		done
 
 	    touch /ramdisk/etc/mtab.fuselock
