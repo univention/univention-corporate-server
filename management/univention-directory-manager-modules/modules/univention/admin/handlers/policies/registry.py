@@ -47,7 +47,7 @@ class xfreeFixedAttributes(univention.admin.syntax.select):
 module='policies/registry'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionPolicyRegistryConfiguration'
+policy_oc='univentionPolicyRegistry'
 policy_apply_to=[]
 policy_position_dn_prefix="cn=registry"
 usewizard=1
@@ -229,4 +229,4 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 
-	return 'univentionPolicyXConfiguration' in attr.get('objectClass', [])
+	return 'univentionPolicyRegistry' in attr.get('objectClass', [])
