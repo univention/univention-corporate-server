@@ -1,3 +1,9 @@
+univention-installer (1.6.19-1) unstable; urgency=low
+
+  * advanced german translation for aborting installation 
+
+ -- Bastian Neumann <neumann@univention.de>  Thu,  9 Aug 2007 09:58:18 +0200
+
 univention-installer (1.6.18-1) unstable; urgency=low
 
   * 20_net.py: fixed syntax handling for http/https proxy

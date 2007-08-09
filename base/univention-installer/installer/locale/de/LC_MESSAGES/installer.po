@@ -2,7 +2,7 @@
 #~ # Univention GmbH <packages@univention.de>
 #~ # This file is distributed under the same license as this package.
 #~ #
-#~ #, fuzzy
+#~, fuzzy
 #~ msgid ""
 #~ msgstr ""
 #~ "Project-Id-Version: PACKAGE VERSION\n"
@@ -22,8 +22,8 @@ msgid ""
 "please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
 msgstr ""
 "Drücken Sie Strg-C um den Installler zu verlassen oder eine "
-"beliebigeTastefortfahren. Nachdem Sie das Installationsprogramm beendet "
-"habe, können Sidas System neu start oder mittels Strg-lt-F2 zu einer Shell "
+"beliebige Taste um fortzufahren. Nachdem Sie das Installationsprogramm beendet "
+"haben, können Sie das System neu starten oder mittels Strg-Alt-F2 zu einer Shell "
 "gelangen."
 
 #: installer/main.py:213
