@@ -164,8 +164,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate)
 
-	def open(self):
-		univention.admin.handlers.simplePolicy.open(self)
 		if self.dn:
 			self['registry']=[]
 			for key in self.oldattr.keys():
