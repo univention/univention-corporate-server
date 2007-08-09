@@ -19,7 +19,7 @@ locale_default="de_DE.UTF-8:UTF-8"
 keymap="de-latin1"
 
 # [Systemrolle]
-system_role="Base"
+system_role="basesystem"
 
 # [Zeitzone]
 timezone="Europe/Berlin"
