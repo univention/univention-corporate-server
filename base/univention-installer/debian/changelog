@@ -1,3 +1,9 @@
+univention-installer (1.6.20-1) unstable; urgency=low
+
+  * fixed german translation file
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 09 Aug 2007 10:43:29 +0200
+
 univention-installer (1.6.19-1) unstable; urgency=low
 
   * advanced german translation for aborting installation 
