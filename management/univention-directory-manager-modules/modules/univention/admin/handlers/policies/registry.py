@@ -179,10 +179,12 @@ class object(univention.admin.handlers.simplePolicy):
 		if self.hasChanged('registry'):
 			old_keys = []
 			new_keys = []
-			for line in self.info['registry']:
-				new_keys.append(line.split('=')[0])
-			for line in self.oldinfo['registry']:
-				old_keys.append(line.split('=')[0])
+			if self.info.has_key('registry'):
+				for line in self.info['registry']:
+					new_keys.append(line.split('=')[0])
+			if self.oldinfo.has_key('registry'):
+				for line in self.oldinfo['registry']:
+					old_keys.append(line.split('=')[0])
 			for k in old_keys:
 				if not k in new_keys:
 					ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k, ''), ''))
