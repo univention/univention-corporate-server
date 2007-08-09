@@ -127,7 +127,7 @@ class object(content):
 
 				if mpoint == '/':
 					root_device = 'PHY'
-					if fstype in ['xfs','ext2','ext3']:
+					if fstype.lower() in ['xfs','ext2','ext3']:
 						root_fs = True
 
 		for lvname, lv in self.container['profile']['lvmlv']['create'].items():
@@ -145,7 +145,7 @@ class object(content):
 
 			if mpoint == '/':
 				root_device = 'LVM'
-				if fstype in ['xfs','ext2','ext3']:
+				if fstype.lower() in ['xfs','ext2','ext3']:
 					root_fs = True
 
 		if root_device == None:
@@ -577,7 +577,7 @@ class object(content):
 								parms[1]=0
 
 							temp={	'type':parms[0],
-								'fstype':parms[2],
+								'fstype':parms[2].lower(),
 								'start': parms[3],
 								'end': parms[4],
 								'mpoint':mpoint,
@@ -597,7 +597,7 @@ class object(content):
 						temp={	'vg': vgname,
 								'type':parms[0],
 								'format':parms[1],
-								'fstype':parms[2],
+								'fstype':parms[2].lower(),
 								'start':parms[3],
 								'end':parms[4],
 								'mpoint':parms[5],
@@ -883,7 +883,7 @@ class object(content):
 						fstype = self.parent.container['profile']['create'][disk][num]['fstype']
 						start = self.parent.container['profile']['create'][disk][num]['start']
 						end = self.parent.container['profile']['create'][disk][num]['end']
-						if not fstype or fstype in [ 'None', 'none' ]:
+						if not fstype or fstype.lower() in [ 'none' ]:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -s %s -e %s 2>&1' % (disk, type, start, end))
 						else:
 							self.run_cmd('/sbin/PartedCreate -d %s -t %s -f %s -s %s -e %s 2>&1' % (disk, type, fstype, start, end))

@@ -1,3 +1,9 @@
+univention-installer (1.6.21-1) unstable; urgency=low
+
+  * convert filesystem types to lower case
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 09 Aug 2007 11:16:07 +0200
+
 univention-installer (1.6.20-1) unstable; urgency=low
 
   * fixed german translation file
