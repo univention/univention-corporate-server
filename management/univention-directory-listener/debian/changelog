@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-13) unstable; urgency=low
+
+  * Fix postinst
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Thu,  9 Aug 2007 11:50:27 +0200
+
 univention-directory-listener (2.1.1-12) unstable; urgency=low
 
   * Adapt to Univention Directory Replication

@@ -67,8 +67,12 @@ fi
 
 /usr/lib/univention-install/03univention-directory-listener.inst || true
 
+
+# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
+# and can be removed in UCS 2.1
 if [ -h "/var/service/univention-ldap-listener" ]; then
-       ln -s /etc/runit/univention-ldap-listener /var/service/univention-directory-listener
+       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
+       rm /var/service/univention-ldap-listener
 fi
 
 
