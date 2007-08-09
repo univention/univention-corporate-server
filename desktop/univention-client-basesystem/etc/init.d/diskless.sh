@@ -293,29 +293,30 @@ fi
 
 eval `univention-baseconfig shell`
 
-vals=""
+vals="portmap/autostart?yes locale/default?de_DE.UTF-8:UTF-8"
+
 if [ -z "$xorg_device_drive" ]; then
 	vals="$vals xorg/device/driver?`eval getXModul`"
 fi
 if [ -z "$xorg_resolution" ]; then
-	vals="$vals xorg/resolution=1024x768"
+	vals="$vals xorg/resolution?1024x768"
 fi
 if [ -z "$xorg_screen_DefaultDepth" ]; then
-	vals="$vals xorg/screen/DefaultDepth=24"
+	vals="$vals xorg/screen/DefaultDepth?24"
 fi
 if [ -n "$vals" ]; then
 	univention-baseconfig set $vals >/dev/tty8 2>&1
 fi
 
-# univention-baseconfig set locale?"de_DE@euro:ISO-8859-15"
+# univention-baseconfig set locale/default?"de_DE@euro:ISO-8859-15"
 
 univention-baseconfig set univentionAutoStartScript="`univention-policy-result -h $ldapServer -s $myDN  | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||' `" >/dev/tty8 2>&1
 # prepare to run gdm
-univention-baseconfig commit /etc/default/gdm >/dev/tty8 2>&1
-univention-baseconfig commit /etc/gdm/gdm.conf >/dev/tty8 2>&1
-univention-baseconfig commit /etc/gdm/Init/Default >/dev/tty8 2>&1
-
-univention-baseconfig commit /usr/share/gdm/themes/univention/univention.xml /etc/pam.d/gdm-autologin >/dev/tty8 2>&1
+univention-baseconfig commit	/etc/default/gdm \
+								/etc/gdm/gdm.conf \
+								/etc/gdm/Init/Default \
+								/usr/share/gdm/themes/univention/univention.xml\
+								/etc/pam.d/gdm-autologin >/dev/tty8 2>&1
 
 chown gdm.gdm /var/lib/gdm
 chmod 0750 /var/lib/gdm

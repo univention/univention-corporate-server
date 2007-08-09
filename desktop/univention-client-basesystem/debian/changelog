@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.1-1) unstable; urgency=low
+
+  * set portmap/autostart to yes 
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  9 Aug 2007 09:53:21 +0200
+
 univention-client-basesystem (2.1.0-1) unstable; urgency=low
 
   * update to ucs 2.0
