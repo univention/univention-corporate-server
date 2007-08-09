@@ -38,7 +38,7 @@ export reinstall_packages="univention-client-session univention-gdm univention-g
 export exclude="lilo,pcmcia-cs,base-config,exim,mailx,at,logrotate,cpio,ipchains,dhcp-client,manpages,modconf,mbr,man-db,makedev,telnet,libdb4.0,info,diff,whiptail,syslinux,libsepol1"
 export remove_packages="apt-utils postfix"
 export disable_init="bootmisc.sh hostname.sh cron atd samba mountall.sh checkroot.sh nfs-common hwclock.sh hwclockfirst.sh kudzu winbind console-screen.sh"
-export remove_files="etc/gdm/Sessions/* etc/pam.d/* etc/cups/ppd usr/X11R6/man usr/doc usr/games usr/share/man usr/share/man-db usr/share/info usr/share/doc usr/share/doc-base usr/share/gtk-doc usr/share/apps usr/share/icons usr/share/common_licenses usr/share/dict usr/share/calendar usr/share/applnk usr/share/applications usr/share/application-registry usr/share/wallpapers usr/share/cups/doc-root etc/network/if-up.d/postfix etc/network/if-down.d/postfix"
+export remove_files="etc/gdm/Sessions/* etc/pam.d/* usr/X11R6/man usr/doc usr/games usr/share/man usr/share/man-db usr/share/info usr/share/doc usr/share/doc-base usr/share/gtk-doc usr/share/apps usr/share/icons usr/share/common_licenses usr/share/dict usr/share/calendar usr/share/applnk usr/share/applications usr/share/application-registry usr/share/wallpapers usr/share/cups/doc-root etc/network/if-up.d/postfix etc/network/if-down.d/postfix"
 
 case "$1" in
 

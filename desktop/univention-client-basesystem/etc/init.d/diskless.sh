@@ -66,11 +66,13 @@ preparePythonEnvironment ()
 
 ramdisk="/ramdisk"
 
-echo "Setting up diskless filesystem: "
+echo -n "Setting up diskless filesystem: "
 
-echo -n "   Loadkeys de: "
-loadkeys de >/dev/null 2>&1
-echo ""
+dmesg -n 1
+
+echo -n "   Loadkeys de: " >>/dev/tty8
+loadkeys de >/dev/tty8 2>&1
+echo  "" >>/dev/tty8
 
 #prepare ramdisk
 
@@ -80,17 +82,17 @@ mount /proc
 
 mount -t tmpfs /dev/shm "$ramdisk"
 mkdir -p -m 1777 "$ramdisk/tmp" "$ramdisk/var/tmp"
-for dir in "/var/lib/dhcp3" "/etc/univention" "/home" "/var/lib/univention-home-mounter" "/var/run/cups" "/etc/network/run" "/etc/X11" "/etc/apt" "/etc/cron.d" "/etc/default" "/etc/init.d" "/etc/samba";
+for dir in "/var/lib/dhcp3" "/etc/univention" "/home" "/var/lib/univention-home-mounter" "/var/run/cups" "/etc/network/run" "/etc/X11" "/etc/apt" "/etc/cron.d" "/etc/default" "/etc/init.d" "/etc/samba" "/etc/udev/rules.d";
   do
   mkdir -p "$ramdisk$dir"
 done
 
-for file in "/etc/network/ifstate" "/etc/network/interfaces";
+for file in "/etc/network/ifstate" "/etc/network/interfaces" "/etc/udev/rules.d/z25_persistent-net.rules" "/modules.dep";
   do
   touch "$ramdisk$file"
 done
 
-echo "   creating cache directory "
+echo "   creating cache directory " >>/dev/tty8
 mkdir -p /var/cache/univention-config
 
 # install template directories
@@ -102,7 +104,7 @@ done
 
 preparePythonEnvironment
 
-echo -n "   ip address: "
+echo -n "   ip address: " >>/dev/tty8
 ipcmd=`cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g'`
 myip=`echo $ipcmd | awk -F ':' '{print $1}'`
 subnetmask=`echo $ipcmd | awk -F ':' '{print $4}'`
@@ -122,37 +124,40 @@ done
 network=`echo $network | sed -e "s/.//"`
 
 if [ ! -z $myip ]; then
-	echo "  $myip"
+	echo "  $myip" >>/dev/tty8
 else  fqn
-	echo "  Failed"
+	echo " failed"
+	echo "  Failed to get the ip address from the /proc/cmdline."
+	echo "  /proc/cmdline: $(cat /proc/cmdline)"
 	read
 	halt
 fi
 
-echo -n "   dns server: "
+echo -n "   dns server: " >>/dev/tty8
 nameserver=`cat /proc/cmdline | grep DNSSERVER | sed -e 's/.*DNSSERVER=//g' | awk '{print $1}'`
 if [ ! -z $nameserver ]; then
-	echo "  $nameserver"
+	echo "  $nameserver" >>/dev/tty8
 	echo "nameserver $nameserver" >/etc/resolv.conf
 else
-	echo "  Failed"
+	echo "  failed"
+	echo "Missing the DNSSERVER parameter in /proc/cmdline. Try to set the Univention Config Registry variable pxe/nameserver and resync the clientbootpxe listener module"
 	read
 	halt
 fi
 
 nameserver_fqdn=`/usr/bin/dns-lookup $nameserver ptr | head -1`
 
-echo -n "   FQDN: "
+echo -n "   FQDN: " >>/dev/tty8
 fqn=`/usr/bin/dns-lookup $myip ptr | head -1`
 
   hostname=`echo $fqn | cut -d'.' -f 1`
 domainname=`echo $fqn | cut -d'.' -f 2-`
 
-echo "  $hostname.$domainname"
+echo "  $hostname.$domainname" >>/dev/tty8
 
 
-hostname $hostname
-univention-baseconfig set hostname="$hostname" domainname="$domainname" nameserver="$nameserver" interfaces/eth0/address="$myip" interfaces/eth0/netmask="$subnetmask" interfaces/eth0/network="$network"
+hostname $hostname >>/dev/tty8
+univention-baseconfig set hostname="$hostname" domainname="$domainname" nameserver="$nameserver" interfaces/eth0/address="$myip" interfaces/eth0/netmask="$subnetmask" interfaces/eth0/network="$network"  >/dev/tty8 2>&1
 
 # searching ldap server for this subnet
 res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
@@ -220,7 +225,7 @@ fi
 
 myDN=`ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(cn=$hostname)(objectClass=univentionThinClient))" -LLL dn | grep -A4 "^dn:" | perl -e '$f=""; $f.=$_ while(<>); $f =~ s/\n //g; print $f;' | grep "^dn:" | sed -e 's/dn: //g'`
 
-univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/mydn=$myDN
+univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/mydn=$myDN >/dev/tty8 2>&1
 
 
 ## get the policies
@@ -246,7 +251,7 @@ cat $policy_file | while read line; do
 
 done
 
-univention-baseconfig set $(cat $policy_file_result)
+univention-baseconfig set $(cat $policy_file_result) >/dev/tty8 2>&1
 
 eval $(univention-baseconfig shell)
 
@@ -257,13 +262,13 @@ for i in `cat $policy_file_result | grep univentionDesktopServer | sed -e 's|.*u
   timeserver=`echo $timeserver ' ' $i`
 done
 
-univention-baseconfig set ntpdate/server="$timeserver"
+univention-baseconfig set ntpdate/server="$timeserver" >/dev/tty8 2>&1
 
 for i in $timeserver; do
 	if /bin/netcat -q0 -w4 $i 37 </dev/null >/dev/null 2>&1; then
-		/usr/sbin/rdate $i >/dev/null 2>&1
+		/usr/sbin/rdate $i >/dev/tty8 2>&1
 	fi
-	/usr/sbin/ntpdate $i >/dev/null 2>&1 && break
+	/usr/sbin/ntpdate $i >/dev/tty8 2>&1 && break
 done
 
 /sbin/hwclock --systohc
@@ -276,14 +281,14 @@ for i in `cat $policy_file_result | grep univentionAuthServer | sed -e 's|.*univ
 done
 
 if [ -n "$authserver" ]; then
-	univention-baseconfig set univentionAuthServer="$authserver"
+	univention-baseconfig set univentionAuthServer="$authserver" >/dev/tty8 2>&1
 fi
 
 realm=`/usr/bin/dns-lookup _kerberos.$domainname txt | head -1`
 if [ -z "$realm" ]; then
     echo "WARNING: Kerberos realm TXT record not found. Check the DNS for the TXT record _kerberos.$domainname"
 else
-	univention-baseconfig set kerberos/realm=$realm
+	univention-baseconfig set kerberos/realm=$realm >/dev/tty8 2>&1
 fi
 
 eval `univention-baseconfig shell`
@@ -299,18 +304,18 @@ if [ -z "$xorg_screen_DefaultDepth" ]; then
 	vals="$vals xorg/screen/DefaultDepth=24"
 fi
 if [ -n "$vals" ]; then
-	univention-baseconfig set $vals
+	univention-baseconfig set $vals >/dev/tty8 2>&1
 fi
 
 # univention-baseconfig set locale?"de_DE@euro:ISO-8859-15"
 
-univention-baseconfig set univentionAutoStartScript="`univention-policy-result -h $ldapServer -s $myDN  | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||' `"
+univention-baseconfig set univentionAutoStartScript="`univention-policy-result -h $ldapServer -s $myDN  | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||' `" >/dev/tty8 2>&1
 # prepare to run gdm
-univention-baseconfig commit /etc/default/gdm
-univention-baseconfig commit /etc/gdm/gdm.conf
-univention-baseconfig commit /etc/gdm/Init/Default
+univention-baseconfig commit /etc/default/gdm >/dev/tty8 2>&1
+univention-baseconfig commit /etc/gdm/gdm.conf >/dev/tty8 2>&1
+univention-baseconfig commit /etc/gdm/Init/Default >/dev/tty8 2>&1
 
-univention-baseconfig commit /usr/share/gdm/themes/univention/univention.xml /etc/pam.d/gdm-autologin
+univention-baseconfig commit /usr/share/gdm/themes/univention/univention.xml /etc/pam.d/gdm-autologin >/dev/tty8 2>&1
 
 chown gdm.gdm /var/lib/gdm
 chmod 0750 /var/lib/gdm
@@ -326,7 +331,7 @@ univention-baseconfig dump | grep -v univention > /dev/tty8
 univention-baseconfig dump | grep univention > /dev/tty9
 
 if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]; then
-    modprobe usbmouse
+    modprobe usbmouse >/dev/tty8 2>&1
 fi
 
 echo "done."
