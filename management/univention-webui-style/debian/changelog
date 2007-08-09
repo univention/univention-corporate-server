@@ -1,3 +1,9 @@
+univention-webui-style (1.0.4-7) unstable; urgency=low
+
+  * added links to forum.univention and documentation no ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Thu,  9 Aug 2007 13:10:59 +0200
+
 univention-webui-style (1.0.4-6) unstable; urgency=low
 
   *  added except/try on role-check for ucs-overview
