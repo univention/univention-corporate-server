@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.6-3) unstable; urgency=low
+
+  * changed PackagePolicy name client to managedclient
+
+ -- Tobias Scherer <scherer@univention.de>  Thu,  9 Aug 2007 11:55:08 +0200
+
 univention-directory-manager-modules (2.0.6-2) unstable; urgency=low
 
   * add conflict to univention-admin-modules <= 1.2.3-9

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Admin Modules
-#  admin policy for the client packages
+#  admin policy for the managedclient packages
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
@@ -43,11 +43,11 @@ _=translation.translate
 class clientPackagesFixedAttributes(univention.admin.syntax.select):
 	name='clientPackagesFixedAttributes'
 	choices=[
-		('univentionClientPackages', _('Client Package Installation List')),
-		('univentionClientPackagesRemove', _('Client Package Removal List')),
+		('univentionClientPackages', _('Managed Client Package Installation List')),
+		('univentionClientPackagesRemove', _('Managed Client Package Removal List')),
 		]
 
-module='policies/clientpackages'
+module='policies/managedclientpackages'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicyPackagesClient'
@@ -55,8 +55,8 @@ policy_apply_to=["computers/managedclient"]
 policy_position_dn_prefix="cn=packages,cn=update"
 
 childs=0
-short_description=_('Policy: Packages Client')
-policy_short_description=_('Packages Client')
+short_description=_('Policy: Packages Managed Client')
+policy_short_description=_('Packages Managed Client')
 long_description=''
 options={
 }
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'clientPackages': univention.admin.property(
-			short_description=_('Client Package Installation List'),
+			short_description=_('Managed Client Package Installation List'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'clientPackagesRemove': univention.admin.property(
-			short_description=_('Client Package Remove List'),
+			short_description=_('Managed Client Package Remove List'),
 			long_description='',
 			syntax=univention.admin.syntax.packageList,
 			multivalue=1,
