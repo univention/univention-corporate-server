@@ -1,4 +1,4 @@
-univention-directory-manager-modules (2.0.7-5) unstable; urgency=low
+univention-directory-manager-modules (2.0.7-6) unstable; urgency=low
 
   * first incomplete version of the registry policy module
 

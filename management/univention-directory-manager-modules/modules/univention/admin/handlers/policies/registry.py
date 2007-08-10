@@ -190,7 +190,11 @@ class object(univention.admin.handlers.simplePolicy):
 			for k in new_keys:
 				for line in self.info['registry']:
 					if line.startswith('%s=' % k ):
-						ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), '%s' % string.join(line.split('=')[1:])) )
+						value=string.join(line.split('=')[1:])
+						if value == "None":
+							ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), None ) )
+						else:
+							ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), value ) )
 						break
 		return ml
 
