@@ -128,7 +128,6 @@ property_descriptions={
 			dontsearch=1
 		)
 }
-default_property_descriptions=copy.deepcopy(property_descriptions)
 layout=[
 	univention.admin.tab(_('General'),_('Config Registry Settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_normalmode=1) ],
