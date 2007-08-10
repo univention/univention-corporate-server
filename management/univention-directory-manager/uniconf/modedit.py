@@ -149,6 +149,7 @@ class modedit(unimodule.unimodule):
 		self.xinput={}
 		self.zinput={}
 		self.tinput={}
+		self.registryinput={}
 		self.fileinput={}
 		self.input_multiedit_overwrite = {}
 
@@ -3053,6 +3054,54 @@ class modedit(unimodule.unimodule):
 									]}))
 						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
 
+					elif property.syntax.name == 'configRegistry':
+
+						self.registryinput={}
+						registryinput_rows=[]
+						key_names=[]
+						atts=copy.deepcopy(attributes)
+
+
+						if value:
+							for v in value:
+								key_names.append('%s' % v.split('=')[0])
+							key_names.sort()
+
+							found=False
+							for key_name in key_names:
+								for v in value:
+									if v.startswith('%s=' % key_name):
+										found=True
+										break
+
+								if found:
+
+									self.registryinput[v]=question_text(_('%s' % key_name ),atts,{"helptext":_('Config Registry value %s' % key_name), 'usertext': '%s' % string.join(v.split('=')[1:])})
+
+									registryinput_rows.append(tablerow("",{},{"obs":[\
+												tablecol('',{}, {'obs': [\
+													self.registryinput[v]\
+												]})\
+											]}))
+
+						self.registryinput['new_value']=question_text(_('Name of the new Config Registry value' ),atts,{"helptext":_('Add a new Config Registry value' ) })
+						self.registryinput['new_button']=get_addbutton(atts,_('Add the new Config Registry value'))
+
+						registryinput_rows.append(tablerow("",{},{"obs":[\
+									tablecol('',{}, {'obs': [\
+										self.registryinput['new_value']\
+									]}),\
+									tablecol('',{}, {'obs': [\
+										self.registryinput['new_button']\
+									]})\
+							]}))
+
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":registryinput_rows})]}))
+
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'registry: append to col')
+						# xml objects must be placed into a colum before they can be inserted into a tablerow
+						# cols.append(tablecol('',{'type':'tab_layout'}, {'obs': inputs}))
+
 
 					elif property.syntax.name == 'listAttributes':
 						self.xinput[name]=[]
@@ -4681,6 +4730,28 @@ class modedit(unimodule.unimodule):
 			new=current_object[key]
 			if mitem[0].pressed():
 				self.save.put("z_choice_value_of_%s"%key,mitem[1].getselected())
+		
+		n_value=None
+		n_button=False
+		for key, registryitem in self.registryinput.items():
+			if key == 'new_button':
+				if registryitem.pressed():
+					n_button=True
+			elif key == 'new_value':
+				n_value=registryitem.get_input()
+			else:
+				pos=0
+				for v in current_object['registry']:
+					if v.startswith('%s=' % key.split('=')[0]):
+						current_object['registry'][pos]='%s=%s' %(key.split('=')[0],registryitem.get_input())
+					pos=pos+1
+
+			if n_value and n_button:
+
+				current_object['registry'].append( '%s=' % n_value )
+
+				n_value=None
+				n_button=False
 
 		# copy multi-value values to object
 		for key, mitem in self.minput.items():

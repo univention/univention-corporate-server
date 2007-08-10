@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, string
+import sys, string, copy
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -38,10 +38,9 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
 
-class xfreeFixedAttributes(univention.admin.syntax.select):
+class registryFixedAttributes(univention.admin.syntax.select):
 	name='registryFixedAttributes'
 	choices=[
-		('univentionXVideoRam',_('Description')),
 		]
 
 module='policies/registry'
@@ -71,7 +70,7 @@ property_descriptions={
 	'registry': univention.admin.property(
 			short_description=_('Config Registry'),
 			long_description='',
-			syntax=univention.admin.syntax.string,
+			syntax=univention.admin.syntax.configRegistry,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -101,7 +100,7 @@ property_descriptions={
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed Attributes'),
 			long_description='',
-			syntax=xfreeFixedAttributes,
+			syntax=registryFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -111,7 +110,7 @@ property_descriptions={
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty Attributes'),
 			long_description='',
-			syntax=xfreeFixedAttributes,
+			syntax=registryFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -129,8 +128,9 @@ property_descriptions={
 			dontsearch=1
 		)
 }
+default_property_descriptions=copy.deepcopy(property_descriptions)
 layout=[
-	univention.admin.tab(_('General'),_('Display Settings'), [
+	univention.admin.tab(_('General'),_('Config Registry Settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('filler', hide_in_normalmode=1) ],
 		[univention.admin.field('registry'), univention.admin.field('filler')],
 	]),
@@ -153,6 +153,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
 		global mapping
 		global property_descriptions
+		global layout
 
 		self.co=co
 		self.lo=lo
@@ -168,8 +169,8 @@ class object(univention.admin.handlers.simplePolicy):
 			self['registry']=[]
 			for key in self.oldattr.keys():
 				if key.startswith('univentionRegistry;entry-'):
-					self['registry'].append('%s=%s' % (key.split('univentionRegistry;entry-')[1].replace('-','/'), self.oldattr[key][0]))
-
+					key_name=key.split('univentionRegistry;entry-')[1].replace('-','/')
+					self['registry'].append('%s=%s' % (key_name, self.oldattr[key][0].strip()))
 		self.save()
 
 	def _ldap_modlist(self):
@@ -185,13 +186,12 @@ class object(univention.admin.handlers.simplePolicy):
 					old_keys.append(line.split('=')[0])
 			for k in old_keys:
 				if not k in new_keys:
-					ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k, ''), ''))
+					ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), ''))
 			for k in new_keys:
-				if not k in old_keys:
-					for line in self.info['registry']:
-						if line.startswith('%s=' % k ):
-							ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), '', '%s' % string.join(line.split('=')[1:])) )
-							break
+				for line in self.info['registry']:
+					if line.startswith('%s=' % k ):
+						ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), '%s' % string.join(line.split('=')[1:])) )
+						break
 		return ml
 
 

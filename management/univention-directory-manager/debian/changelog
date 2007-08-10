@@ -1,3 +1,9 @@
+univention-directory-manager (4.0.5-1) unstable; urgency=low
+
+  * first incomplete version of the registry policy module
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 10 Aug 2007 11:39:43 +0200
+
 univention-directory-manager (4.0.4-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

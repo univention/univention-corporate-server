@@ -1749,6 +1749,11 @@ class nagiosServiceDn(simple):
 	def parse(self, text):
 		return text
 
+class configRegistry(simple):
+	name='configRegistry'
+	def parse(self, text):
+		return text
+
 
 class LDAP_Search( select ):
 	FILTER_PATTERN = '(&(objectClass=univentionSyntax)(cn=%s))'
