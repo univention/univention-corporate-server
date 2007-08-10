@@ -1795,6 +1795,7 @@ class object(content):
 
 					self.part_objects[ len(dict) ] = [ 'part', dev, part_list[i], i ]
 					dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
+					self.parent.debug('==> DEV = %s   PART = %s' % (dev,part))
 
 			# display LVM items if enabled
 			if self.container['lvm']['enabled'] and self.container['lvm'].has_key('vg'):
@@ -1972,7 +1973,7 @@ class object(content):
 				if key == 266:# F2 - Create
 					self.parent.debug('create')
 					if self.resolve_type(type) == 'free' and self.possible_type(self.container['disk'][disk],part):
-						self.parent.debug('create!')
+						self.parent.debug('create (%s)' % type)
 						self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 						self.sub.draw()
 					elif selected[0] == 'lvm_vg_free':
@@ -1989,7 +1990,7 @@ class object(content):
 							self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-14, msglist)
 							self.sub.draw()
 						else:
-							self.parent.debug('edit!')
+							self.parent.debug('edit! (%s)' % type)
 							self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 							self.sub.draw()
 					elif selected[0] == 'lvm_lv':
@@ -2002,6 +2003,7 @@ class object(content):
 						self.parent.debug('delete!')
 						self.part_delete(self.get_elem('SEL_part').result()[0])
 					elif type == PARTTYPE_EXTENDED:
+						self.parent.debug('delete ext!')
 						self.sub=self.del_extended(self,self.minY+4,self.minX-2,self.maxWidth+16,self.maxHeight-5)
 						self.sub.draw()
 
@@ -2053,6 +2055,10 @@ class object(content):
 							else:
 								self.sub=self.edit(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
 								self.sub.draw()
+						elif selected[0] == 'lvm_lv':
+							self.parent.debug('edit lvm!')
+							self.sub=self.edit_lvm_lv(self,self.minY-1,self.minX+4,self.maxWidth,self.maxHeight+3)
+							self.sub.draw()
 					elif self.get_elem('BT_delete').get_status():#delete
 						if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL or type == PARTTYPE_LVM_LV:
 							self.part_delete(self.get_elem('SEL_part').result()[0])

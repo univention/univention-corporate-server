@@ -1,3 +1,10 @@
+univention-installer (1.6.23-1) unstable; urgency=low
+
+  * reenabled edit of LVMLV by selecting edit button
+  * additional debug output
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 10 Aug 2007 15:54:21 +0200
+
 univention-installer (1.6.22-1) unstable; urgency=low
 
   * change system/role in the base profile from base to basesystem
