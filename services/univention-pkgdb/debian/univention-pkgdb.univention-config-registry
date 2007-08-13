@@ -1,5 +1,5 @@
 Type: subfile
-Multifile: etc/postgresql/pg_hba.conf
-Subfile: etc/postgresql/pg_hba.conf.d/10-pg_hba.conf
+Multifile: etc/postgresql/7.4/main/pg_hba.conf
+Subfile: etc/postgresql/7.4/main/pg_hba.conf.d/10-pg_hba.conf
 Variables: pgsql/pkgdb/network
 Variables: pgsql/pkgdb/netmask
