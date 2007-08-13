@@ -3471,6 +3471,87 @@ class modedit(unimodule.unimodule):
 						self.pinput[name]=printer_models_select
 						self.printermanuf=printer_manufs_select
 
+					elif property.syntax.name in [ 'windowsTerminalServer', 'linuxTerminalServer', 'authenticationServer', 'fileServer' ]:
+						self.minput[name]=[]
+						self.xinput[name]=[]
+						minput_rows=[]
+
+						atts=copy.deepcopy(attributes)
+
+						mvaluelist=[]
+						i=0
+						if value:
+							for v in value:
+								try:
+									mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
+								except univention.admin.uexceptions.valueInvalidSyntax, e:
+									pass
+								i+=1
+
+						if name:
+							packages=[]
+							if property.syntax.searchFilter:
+								dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+
+								for dn in dns:
+									vals = self.lo.get(dn=dn, attr=[ 'cn', 'aRecord' ] )
+									cn = vals['cn'][0]
+
+									# aRecord present?
+									if not 'aRecord' in vals.keys():
+										continue
+
+									aRecord = vals['aRecord'][0]
+									zoneDNs = self.lo.searchDn("(&(aRecord=%s)(objectClass=dNSZone))" % aRecord, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+									zone = self.lo.get(dn=zoneDNs[0], attr=[ 'zoneName' ] )['zoneName'][0]
+									fqdn="%s.%s" % (cn, zone)
+									packages.append({'name': fqdn, 'description': fqdn})
+
+							packages.sort(compare_dicts_by_attr('name'))
+
+							#minput does not have all needed fields.
+							update_choices=button('lmanusel',{},{'helptext':_('select package list')})
+							self.xinput[name].append(update_choices)
+							self.minput[name].append(question_select(property.short_description,atts,{'choicelist':packages,'helptext':''}))
+
+							# [1]: add button
+							atts=copy.deepcopy(attributes)
+							b_atts=copy.deepcopy(attributes)
+							b2_atts=copy.deepcopy(attributes)
+							self.minput[name].append(get_addbutton(b_atts,_("Add %s") % name))
+							# [2]: mselect list widget
+							self.minput[name].append(question_mselect(_("Entries:"),atts,{"helptext":_("Current entries for '%s'") % name,"choicelist":mvaluelist}))
+							# [3]: remove button
+							self.minput[name].append(get_removebutton(b_atts,_("Remove selected '%s' entrie(s) from list") % name))
+
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+											#input field
+											self.minput[name][0]\
+										]}),\
+										tablecol('',{'type':'multi_add_top'}, {'obs': [\
+											#add button
+											self.minput[name][1]\
+										]})\
+									]}))
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+											#mselect list
+											self.minput[name][2]\
+										]}),\
+										tablecol('',{'type':'multi_remove_img'}, {'obs': [\
+											#remove button
+											self.minput[name][3]\
+										]})\
+									]}))
+						else:
+							minput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+										]}),\
+										tablecol('',{}, {'obs': [\
+										]})\
+									]}))
+						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":minput_rows})]}))
 					elif property.syntax.name == 'packageList':
 						self.minput[name]=[]
 						self.xinput[name]=[]
