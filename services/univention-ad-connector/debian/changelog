@@ -1,3 +1,9 @@
+univention-ad-connector (1.1.1-5) unstable; urgency=low
+
+  * install python files into the univention/connector dir
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 21:18:23 +0200
+
 univention-ad-connector (1.1.1-4) unstable; urgency=low
 
   * Bump version.

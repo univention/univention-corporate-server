@@ -67,15 +67,15 @@ install-ext-%:
 	install -m600 conffiles/etc/univention/connector/ad/mapping.py ${AD_TOOLS_DEST}/etc/univention/connector/ad/mapping
 	
 	# Connector Modules
-	install -d debian/python-univention-connector/usr/lib/python$*/site-packages/univention/
-	install -m 0644 modules/univention/connector/__init__.py debian/python-univention-connector/usr/lib/python$*/site-packages/univention/
+	install -d debian/python-univention-connector/usr/lib/python$*/site-packages/univention/connector/
+	install -m 0644 modules/univention/connector/__init__.py debian/python-univention-connector/usr/lib/python$*/site-packages/univention/connector/
 
 	# AD Connector Modules
-	install -d debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
-	install -m 0644 modules/univention/connector/ad/__init__.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
-	install -m 0644 modules/univention/connector/ad/main.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
-	install -m 0644 modules/univention/connector/ad/mapping.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
-	install -m 0644 modules/univention/connector/ad/password.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/
+	install -d debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
+	install -m 0644 modules/univention/connector/ad/__init__.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
+	install -m 0644 modules/univention/connector/ad/main.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
+	install -m 0644 modules/univention/connector/ad/mapping.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
+	install -m 0644 modules/univention/connector/ad/password.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
 
 	install -m 0644 ad-connector.py $(AD_TOOLS_DEST)/usr/lib/univention-directory-listener/system
 
