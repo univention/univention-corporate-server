@@ -16,6 +16,9 @@ Type: file
 File: etc/horde/horde3/motd.php
 
 Type: file
+File: etc/horde/horde3/kolab.php
+
+Type: file
 File: etc/horde/horde3/hooks.php
 Variables: horde/application/turba
 Variables: horde/application/kronolith
@@ -36,6 +39,9 @@ Variables: horde/application/gollem
 
 Type: file
 File: etc/horde/imp4/conf.php
+
+Type: file
+File: etc/horde/imp4/prefs.php
 
 Type: file
 File: etc/horde/imp4/servers.php
@@ -62,10 +68,19 @@ Variables: horde/webaccess/share.*
 Variables: horde/auth
 
 Type: file
+File: etc/horde/ingo1/prefs.php
+
+Type: file
 File: etc/horde/nag2/conf.php
 
 Type: file
+File: etc/horde/nag2/prefs.php
+
+Type: file
 File: etc/horde/mnemo2/conf.php
+
+Type: file
+File: etc/horde/mnemo2/prefs.php
 
 Type: file
 File: etc/univention/apache/96univention-horde

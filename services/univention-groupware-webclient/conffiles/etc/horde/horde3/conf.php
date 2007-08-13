@@ -64,7 +64,7 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['auth']['params']['port'] = 143;"
 	print "$conf['auth']['params']['protocol'] = 'imap/notls';"
 	print "$conf['auth']['params']['imapconfig'] = 'separate';"
-	print "$conf['auth']['driver'] = 'imap';"
+	print "$conf['auth']['driver'] = 'kolab';"
 else:
 	print "$conf['auth']['params']['hostspec'] = '%s';" % baseConfig['ldap/server/name']
 	print "$conf['auth']['params']['basedn'] = '%s';" % baseConfig['ldap/base']
@@ -123,7 +123,7 @@ $conf['menu']['links']['options'] = 'authenticated';
 $conf['menu']['links']['problem'] = 'all';
 $conf['menu']['links']['login'] = 'all';
 $conf['menu']['links']['logout'] = 'authenticated';
-$conf['hooks']['permsdenied'] = true;
+$conf['hooks']['permsdenied'] = false;
 $conf['hooks']['username'] = false;
 $conf['hooks']['preauthenticate'] = false;
 $conf['hooks']['postauthenticate'] = false;
@@ -154,12 +154,13 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['kolab']['imap']['port'] = 143;"
 	print "$conf['kolab']['imap']['sieveport'] = 2000;"
 	print "$conf['kolab']['imap']['sieveport'] = 2000;"
-	print "$conf['share']['driver'] = 'kolab';"
 	print "$conf['kolab']['imap']['maildomain'] = '%s';" % res;
 	print "$conf['problems']['maildomain'] = '%s';" % res;
+	print "$conf['kolab']['imap']['virtdomains'] = false;"
 
 	print "$conf['kolab']['imap']['virtdomains'] = false;"
 	print "$conf['kolab']['smtp']['port'] = 25;"
+	print "$conf['kolab']['misc']['multidomain'] = false;"
 	print "$conf['kolab']['enabled'] = true;"
 
 	fqdn = "%s.%s" % ( baseConfig[ 'hostname' ], baseConfig[ 'domainname' ] )

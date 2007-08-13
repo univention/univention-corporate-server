@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-modules-config apache enable mod_php4
+a2enmod php5
 
 # create database, user and tables
 share=/usr/share/univention-groupware-webclient/
@@ -75,7 +75,8 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/application/kronolith?true \
 							horde/application/mnemo?true \
 							horde/application/nag?true \
-							horde/application/gollem?true
+							horde/application/gollem?true \
+							horde/application/ingo?false
 
 univention-baseconfig set php/memory/limit?32
 
