@@ -79,13 +79,12 @@ install: build
 	$(PEAR) pear/XML_RPC-1.5.1.tgz
 	$(PEAR) pear/PEAR-1.3.3.tgz
 	$(PEAR) pear/PEAR-1.4.9.tgz
-	$(PEAR) pear/PEAR-1.6.1.tgz
 	$(PEAR) pear/Net_Socket-1.0.8.tgz
 	$(PEAR) pear/Net_IMAP-1.0.3.tgz
 	$(PEAR) pear/Date-1.4.7.tgz
 	$(PEAR) pear/Log-1.9.11.tgz
 	$(PEAR) pear/XML_Parser-1.2.8.tgz
-	$(PEAR) pear/Mail_Mime-1.5.2.tgz
+	$(PEAR) pear/Mail_Mime-1.4.0.tgz
 	
 	
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)

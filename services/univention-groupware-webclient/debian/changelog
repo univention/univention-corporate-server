@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.2-1) stable; urgency=low
+
+  * use pear package Mail_Mime in version 1.4.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 12:03:56 +0200
+
 univention-groupware-webclient (1.0.1-1) stable; urgency=low
 
   * update the pear packages
