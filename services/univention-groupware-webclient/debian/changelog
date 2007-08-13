@@ -1,4 +1,4 @@
-univention-groupware-webclient (1.0.0-1) stable; urgency=low
+univention-groupware-webclient (1.0.0-2) stable; urgency=low
 
   * update to new hore version (pre 3.2)
   * update to UCS 2.0 policies
