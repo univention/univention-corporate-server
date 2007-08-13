@@ -1,4 +1,4 @@
-univention-groupware-webclient (1.0.2-2) stable; urgency=low
+univention-groupware-webclient (1.0.2-3) stable; urgency=low
 
   * fix dependency list
 
