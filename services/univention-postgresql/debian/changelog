@@ -1,3 +1,9 @@
+univention-postgresql (1.0.1-1) unstable; urgency=low
+
+  * updated paths of baseconfig templates due to new postgresql config dir
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 13 Aug 2007 17:40:02 +0200
+
 univention-postgresql (1.0.0-3) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
