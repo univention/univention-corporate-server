@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.1-1) stable; urgency=low
+
+  * update the pear packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 11:54:34 +0200
+
 univention-groupware-webclient (1.0.0-4) stable; urgency=low
 
   * update to new hore version (pre 3.2)

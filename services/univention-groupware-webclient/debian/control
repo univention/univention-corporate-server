@@ -2,7 +2,7 @@ Source: univention-groupware-webclient
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends-Indep: debhelper, univention-config-dev, php4-pear
+Build-Depends-Indep: debhelper, univention-config-dev, php-pear
 Standards-Version: 3.5.5
 
 Package: univention-groupware-webclient
