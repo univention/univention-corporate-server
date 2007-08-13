@@ -1,4 +1,4 @@
--- $Horde: horde/scripts/sql/horde_datatree.sql,v 1.1 2004/09/18 17:20:59 chuck Exp $
+-- $Horde: horde/scripts/sql/horde_datatree.sql,v 1.3 2006/12/13 04:58:19 chuck Exp $
 
 CREATE TABLE horde_datatree (
     datatree_id INT NOT NULL,
@@ -16,7 +16,6 @@ CREATE TABLE horde_datatree (
 --  datatree_data VARCHAR(4096),
 
     datatree_serialized SMALLINT DEFAULT 0 NOT NULL,
-    datatree_updated TIMESTAMP,
 
     PRIMARY KEY (datatree_id)
 );
@@ -38,7 +37,3 @@ CREATE TABLE horde_datatree_attributes (
 CREATE INDEX datatree_attribute_idx ON horde_datatree_attributes (datatree_id);
 CREATE INDEX datatree_attribute_name_idx ON horde_datatree_attributes (attribute_name);
 CREATE INDEX datatree_attribute_key_idx ON horde_datatree_attributes (attribute_key);
-
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_datatree TO horde;
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_datatree_attributes TO horde;

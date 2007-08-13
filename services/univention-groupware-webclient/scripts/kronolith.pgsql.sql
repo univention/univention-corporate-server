@@ -1,4 +1,4 @@
--- $Horde: kronolith/scripts/sql/kronolith.pgsql.sql,v 1.3 2004/12/21 15:52:32 chuck Exp $
+-- $Horde: kronolith/scripts/sql/kronolith.pgsql.sql,v 1.8 2007/03/23 10:43:59 jan Exp $
 
 CREATE TABLE kronolith_events (
     event_id VARCHAR(32) NOT NULL,
@@ -13,14 +13,16 @@ CREATE TABLE kronolith_events (
     event_exceptions TEXT,
     event_title VARCHAR(255),
     event_category VARCHAR(80),
-    event_recurtype VARCHAR(11) DEFAULT 0,
-    event_recurinterval VARCHAR(11),
-    event_recurdays VARCHAR(11),
+    event_recurtype SMALLINT DEFAULT 0,
+    event_recurinterval SMALLINT,
+    event_recurdays SMALLINT,
     event_recurenddate TIMESTAMP,
+    event_recurcount INT,
     event_start TIMESTAMP,
     event_end TIMESTAMP,
     event_alarm INT DEFAULT 0,
     event_modified INT NOT NULL,
+    event_private INT DEFAULT 0 NOT NULL,
 
     PRIMARY KEY (event_id)
 );
@@ -28,16 +30,12 @@ CREATE TABLE kronolith_events (
 CREATE INDEX kronolith_calendar_idx ON kronolith_events (calendar_id);
 CREATE INDEX kronolith_uid_idx ON kronolith_events (event_uid);
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON kronolith_events TO horde;
-
 
 CREATE TABLE kronolith_storage (
     vfb_owner      VARCHAR(255) DEFAULT NULL,
-    vfb_email      VARCHAR(255) NOT NULL DEFAULT '',
+    vfb_email      VARCHAR(255) DEFAULT '' NOT NULL,
     vfb_serialized TEXT NOT NULL
 );
 
 CREATE INDEX kronolith_vfb_owner_idx ON kronolith_storage (vfb_owner);
 CREATE INDEX kronolith_vfb_email_idx ON kronolith_storage (vfb_email);
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON kronolith_storage TO horde;
