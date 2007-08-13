@@ -82,10 +82,18 @@ univention-baseconfig set php/memory/limit?32
 #DEBHELPER#
 
 # restart services
-/etc/init.d/postgresql restart
+if [ -x /etc/init.d/postgresql ]; then
+	/etc/init.d/postgresql restart
+fi
+
+if [ -x /etc/init.d/postgresql-7.4 ]; then
+	/etc/init.d/postgresql-7.4 restart
+fi
+
 if [ -x /etc/init.d/cyrus22 ]; then
 	/etc/init.d/cyrus22 restart
 fi
+
 /etc/init.d/apache2 reload
 
 

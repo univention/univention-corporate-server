@@ -1,3 +1,11 @@
+univention-groupware-webclient (1.0.2-4) stable; urgency=low
+
+  * check for init scripts during the installation
+  * create www links
+  * add php5-pgsql to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 13:44:56 +0200
+
 univention-groupware-webclient (1.0.2-3) stable; urgency=low
 
   * fix dependency list
