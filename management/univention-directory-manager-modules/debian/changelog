@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.7-9) unstable; urgency=low
+
+  * add ATI/AMD and NVidia closed source driver
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 13 Aug 2007 11:26:10 +0200
+
 univention-directory-manager-modules (2.0.7-8) unstable; urgency=low
 
   * first incomplete version of the registry policy module
