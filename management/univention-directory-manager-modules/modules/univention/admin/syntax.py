@@ -1027,6 +1027,26 @@ class groupID(integer):
 class shareHost(string):
 	name='shareHost'
 
+class windowsTerminalServer(string):
+        name='windowsTerminalServer'
+        searchFilter='(&(cn=*)(objectClass=univentionWindows))'
+        description=_('Windows Terminal Server Hosts')
+
+class linuxTerminalServer(string):
+        name='linuxTerminalServer'
+        searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
+        description=_('Linux Terminal Server Hosts')
+
+class authenticationServer(string):
+        name='authenticationServer'
+        searchFilter='(&(cn=*)(objectClass=univentionDomainController))'
+        description=_('Authentication Server')
+
+class fileServer(string):
+        name='fileServer'
+        searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
+        description=_('FileServer')
+
 class repositoryServer(string):
 	name='repositoryServer'
 
