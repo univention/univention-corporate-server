@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.4-2) stable; urgency=low
+
+  * remove conffile from debian dir
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 20:56:01 +0200
+
 univention-groupware-webclient (1.0.4-1) stable; urgency=low
 
   * move to the new postgresql config directory
