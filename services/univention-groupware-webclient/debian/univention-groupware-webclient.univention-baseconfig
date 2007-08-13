@@ -89,5 +89,5 @@ Variables: hostname
 Variables: domainname
 
 Type: subfile
-Multifile: etc/postgresql/pg_hba.conf
-Subfile: etc/postgresql/pg_hba.conf.d/11-horde_user
+Multifile: etc/postgresql/7.4/main/pg_hba.conf
+Subfile: etc/postgresql/7.4/main/pg_hba.conf.d/11-horde_user

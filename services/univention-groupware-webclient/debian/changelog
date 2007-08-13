@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.4-1) stable; urgency=low
+
+  * move to the new postgresql config directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 13 Aug 2007 20:48:04 +0200
+
 univention-groupware-webclient (1.0.3-1) stable; urgency=low
 
   * switch to apache2
