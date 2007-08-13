@@ -31,4 +31,4 @@ system_role="MemberServer"
 timezone="Europe/Berlin"
 
 # [Software]
-packages="univention-printserver cupsys univention-printquota pykota univention-printquotadb univention-console xtightvncviewer ssh-krb5 wget vim winbind univention-samba samba univention-x-core univention-gdm univention-gdm-sessions univention-kde ispell ingerman"
+packages="univention-printserver cupsys univention-printquota pykota univention-printquotadb univention-console xtightvncviewer openssh-server openssh-client wget vim winbind univention-samba samba univention-x-core univention-gdm univention-gdm-sessions univention-kde ispell ingerman"
