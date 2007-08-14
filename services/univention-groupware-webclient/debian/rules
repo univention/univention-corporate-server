@@ -86,14 +86,14 @@ install: build
 	$(PEAR) pear/XML_Parser-1.2.8.tgz
 	$(PEAR) pear/Mail_Mime-1.4.0.tgz
 
-	rm -Rf .pc
-	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
-
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type f -exec install -m 0644 {} $(HORDESHARE){} \;)
 
 	install -m 755 webaccess-share.py ${D}/usr/lib/univention-directory-listener/system/
 	install -m 755 horde-prefs.py ${D}/usr/lib/univention-directory-listener/system/
+
+	rm -Rf .pc
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
 
 	univention-install-baseconfig
 
