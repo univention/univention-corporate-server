@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.8-1) unstable; urgency=low
+
+  * create more defaults in the horde_prefs listener module
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 15:32:26 +0200
+
 univention-groupware-webclient (1.0.7-7) unstable; urgency=low
 
   * fixed permissions of /var/log/horde
