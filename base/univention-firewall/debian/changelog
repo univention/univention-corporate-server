@@ -1,3 +1,9 @@
+univention-firewall (1.1.0-5) unstable; urgency=low
+
+  * Extent nfs service definition by rcp.mountd
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Aug 2007 10:06:39 +0200
+
 univention-firewall (1.1.0-4) unstable; urgency=low
 
   * Fix service definition for POP3
