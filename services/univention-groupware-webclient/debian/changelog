@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-7) unstable; urgency=low
+
+  * fixed permissions of /var/log/horde
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 14:43:55 +0200
+
 univention-groupware-webclient (1.0.7-6) unstable; urgency=low
 
   * fixed creation of initial/default calendar
