@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-1) unstable; urgency=low
+
+  * added an empty backend if no gollem share is defined
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 11:18:24 +0200
+
 univention-groupware-webclient (1.0.6-2) unstable; urgency=low
 
   * fixed build dependencies

@@ -51,6 +51,9 @@ for share in shares:
 	print "'clipboard' => true,"
 	print "'attributes' => array('type', 'name', 'download', 'modified', 'size')"
 	print ');'
+
+if len(shares) < 1:
+	print '$backends = array();'
 @!@
 	
 
