@@ -1003,10 +1003,11 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             $email = ldap_get_values($ds, $entry, 'mail');
             return $email[0];
         }
-        function _imp_hook_mbox_redirect($mailbox)
-        {
-            switch (Kolab::getMailboxType($mailbox)) {
-			@!@
+	}
+	function _imp_hook_mbox_redirect($mailbox)
+	{
+		switch (Kolab::getMailboxType($mailbox)) {
+		@!@
 if not baseConfig.has_key('horde/application/kronolith') or not baseConfig['horde/application/kronolith'].lower() in [ 'no', 'false' ]:
 	print "            case 'event':"
 	print "                return $GLOBALS['registry']->get('webroot', 'kronolith') . '/';"
@@ -1024,59 +1025,59 @@ if not baseConfig.has_key('horde/application/turba') or not baseConfig['horde/ap
 	print "                return $GLOBALS['registry']->get('webroot', 'turba') . '/';"
 @!@
 
-            default:
-                return '';
-            }
-        }
-        function _imp_hook_mbox_icons()
-        {
-            $folders = Kolab::listFolders();
+		default:
+			return '';
+		}
+	}
+	function _imp_hook_mbox_icons()
+	{
+		static $icons;
 
-            $icons = array();
+		if (!empty($icons)) {
+			return $icons;
+		}
 
-            foreach ($folders as $folder) {
-                $name = preg_replace('/^{[^}]+}/', '', $folder[0]);
+		$folders = Kolab::listFolders();
 
-                switch ($folder[1]) {
-                case 'event':
-                    $icons[$name] = Horde::img(
-                        $GLOBALS['registry']->get('icon', 'kronolith'),
-                        _("Calendar"),
-                        'width="16" height="16" style="vertical-align:middle"',
-                        ''
-                    );
-                    break;
+		$icons = array();
 
-                case 'task':
-                    $icons[$name] = Horde::img(
-                        $GLOBALS['registry']->get('icon', 'nag'),
-                        _("Tasks"),
-                        'width="16" height="16" style="vertical-align:middle"',
-                        ''
-                    );
-                    break;
+		foreach ($folders as $folder) {
+			$name = preg_replace('/^{[^}]+}/', '', $folder[0]);
 
-                case 'note':
-                    $icons[$name] = Horde::img(
-                        $GLOBALS['registry']->get('icon', 'mnemo'),
-                        _("Notes"),
-                        'width="16" height="16" style="vertical-align:middle"',
-                        ''
-                    );
-                    break;
+			switch ($folder[1]) {
+				case 'event':
+					$icons[$name] = array(
+							'icon' => 'kronolith.png',
+							'icondir' => $GLOBALS['registry']->getImageDir('kronolith'),
+							'alt' => _("Calendar")
+							);
+					break;
 
-                case 'contact':
-                    $icons[$name] = Horde::img(
-                        $GLOBALS['registry']->get('icon', 'turba'),
-                        _("Contacts"),
-                        'width="16" height="16" style="vertical-align:middle"',
-                        ''
-                    );
-                    break;
-                }
-            }
+				case 'task':
+					$icons[$name] = array(
+							'icon' => 'nag.png',
+							'icondir' => $GLOBALS['registry']->getImageDir('nag'),
+							'alt' => _("Tasks")
+							);
+					break;
 
-            return $icons;
-        }
-    }
+				case 'note':
+					$icons[$name] = array(
+							'icon' => 'mnemo.png',
+							'icondir' => $GLOBALS['registry']->getImageDir('mnemo'),
+							'alt' => _("Notes")
+							);
+					break;
+
+				case 'contact':
+					$icons[$name] = array(
+							'icon' => 'turba.png',
+							'icondir' => $GLOBALS['registry']->getImageDir('turba'),
+							'alt' => _("Contacts")
+							);
+					break;
+				}
+		}
+		return $icons;
+	}
 }

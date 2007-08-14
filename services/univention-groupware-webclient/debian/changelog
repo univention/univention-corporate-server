@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-3) unstable; urgency=low
+
+  * added spam folder icon
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 11:53:16 +0200
+
 univention-groupware-webclient (1.0.7-2) unstable; urgency=low
 
   * use pear package Mail in version 1.1.14
