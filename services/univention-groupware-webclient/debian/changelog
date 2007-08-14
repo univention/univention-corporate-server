@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.6-2) unstable; urgency=low
+
+  * fixed build dependencies
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 10:43:45 +0200
+
 univention-groupware-webclient (1.0.6-1) unstable; urgency=low
 
   * added gollem prefs.php file
