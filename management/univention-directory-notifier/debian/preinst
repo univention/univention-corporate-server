@@ -44,5 +44,21 @@ if [ ! -z "$2" ]; then
 	
 fi
 
+# The following is for transition purposes only and can be removed once 2.1 is
+# released
+
+if [ -e /etc/init.d/univention-ldap-notifier ]; then
+    /etc/init.d/univention-ldap-notifier stop
+fi
+
+if [ -e /etc/init.d/univention-directory-notifier ]; then
+    /etc/init.d/univention-directory-notifier stop
+fi
+
+if [ -e /etc/runit/univention-ldap-notifier -a ! -h /etc/runit/univention-ldap-notifier ]; then
+    mv /etc/runit/univention-ldap-notifier /etc/runit/univention-directory-notifier
+fi
+
+
 #DEBHELPER#
 

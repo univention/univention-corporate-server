@@ -1,3 +1,9 @@
+univention-directory-notifier (2.1.1-6) unstable; urgency=low
+
+  * Add transition code for wording changes
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Aug 2007 09:49:27 +0200
+
 univention-directory-notifier (2.1.1-5) unstable; urgency=low
 
   * Fixed permissions of transaction file
