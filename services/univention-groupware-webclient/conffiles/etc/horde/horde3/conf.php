@@ -123,7 +123,7 @@ $conf['menu']['links']['options'] = 'authenticated';
 $conf['menu']['links']['problem'] = 'all';
 $conf['menu']['links']['login'] = 'all';
 $conf['menu']['links']['logout'] = 'authenticated';
-$conf['hooks']['permsdenied'] = false;
+$conf['hooks']['permsdenied'] = true;
 $conf['hooks']['username'] = false;
 $conf['hooks']['preauthenticate'] = false;
 $conf['hooks']['postauthenticate'] = false;
@@ -139,7 +139,7 @@ if horde_auth.lower() == 'kolab':
 	elif baseConfig.has_key("mail/hosteddomains"):
 		domains = baseConfig["mail/hosteddomains"]
 	else:
-		domains=""
+		domains=baseConfig['domainname']
 
 	if domains.find( ' ' ) != -1:
 		res = domains[ : domains.find( ' ' ) ]
@@ -153,14 +153,13 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['kolab']['ldap']['bindpw'] = '';"
 	print "$conf['kolab']['imap']['port'] = 143;"
 	print "$conf['kolab']['imap']['sieveport'] = 2000;"
-	print "$conf['kolab']['imap']['sieveport'] = 2000;"
 	print "$conf['kolab']['imap']['maildomain'] = '%s';" % res;
 	print "$conf['problems']['maildomain'] = '%s';" % res;
+	print "$conf['share']['driver'] = 'kolab';"
 	print "$conf['kolab']['imap']['virtdomains'] = false;"
 
 	print "$conf['kolab']['imap']['virtdomains'] = false;"
 	print "$conf['kolab']['smtp']['port'] = 25;"
-	print "$conf['kolab']['misc']['multidomain'] = false;"
 	print "$conf['kolab']['enabled'] = true;"
 
 	fqdn = "%s.%s" % ( baseConfig[ 'hostname' ], baseConfig[ 'domainname' ] )

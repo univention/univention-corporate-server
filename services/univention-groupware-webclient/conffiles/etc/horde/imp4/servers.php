@@ -28,7 +28,7 @@ if ($GLOBALS['conf']['kolab']['enabled']) {
         'realm' => '',
         'preferred' => '',
         'quota' => array(
-            'driver' => 'cyrus',
+            'driver' => 'imap',
             'params' => array(
                 'userhierarchy' => 'user.'
             )

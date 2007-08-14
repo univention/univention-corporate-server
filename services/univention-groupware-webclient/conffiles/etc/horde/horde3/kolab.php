@@ -1,5 +1,5 @@
 <?php
-$conf['cookie']['domain'] = '@%@hostname.@%@domainname@%@';
+$conf['cookie']['domain'] = '@%@hostname@%@.@%@domainname@%@';
 $conf['problems']['email'] = 'postmaster@@%@domainname@%@';
 $conf['problems']['maildomain'] = '@%@domainame@%@';
 $conf['kolab']['ldap']['basedn'] = 'dc=knut,dc=univention,dc=de';

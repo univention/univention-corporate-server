@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.5-1) stable; urgency=low
+
+  * change imp server driver from cyrus to imap
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 08:13:01 +0200
+
 univention-groupware-webclient (1.0.4-2) stable; urgency=low
 
   * remove conffile from debian dir
