@@ -34,6 +34,8 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.8; then
 	fi
 fi
 
+univention-config-registry set nfs/ports?static
+
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
 		then
