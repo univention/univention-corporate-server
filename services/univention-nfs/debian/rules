@@ -52,9 +52,6 @@ install: build
 	install -m 755 81univention-nfs-server.inst debian/univention-nfs-server/usr/lib/univention-install/
 	install -m 744 files/etc/heartbeat/resource.d/nfs-kernel-server debian/univention-nfs-server-ha/etc/heartbeat/resource.d/
 
-	install -m 444 conffiles/etc/default/nfs-kernel-server debian/univention-nfs-server/etc/default
-	install -m 444 conffiles/etc/default/nfs-common debian/univention-nfs-server/etc/default
-
 	dh_install
 
 	univention-install-config-registry

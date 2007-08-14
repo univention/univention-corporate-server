@@ -1,3 +1,10 @@
+univention-nfs (1.0.1-4) unstable; urgency=low
+
+  * Don't install Config Registry templates explicitly, let univention-
+    install-config-registry do the grunt work
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Tue, 14 Aug 2007 15:49:07 +0200
+
 univention-nfs (1.0.1-3) unstable; urgency=low
 
   * Register NFS ports statically unless configured differently
