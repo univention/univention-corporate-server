@@ -57,7 +57,7 @@ def __kronolith_settings ( db, mail ):
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'day_hour_start', '16');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'week_start_monday', '1');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'time_between_days', '0');" % mail)
-	db.query( "insert into horde_prefs values('%s', 'kronolith', 'defaultview', 'workweek');" % mail)
+	db.query( "insert into horde_prefs values('%s', 'kronolith', 'defaultview', 'week');" % mail)
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'confirm_delete', '1');" % mail)
 
 def __horde_settings ( db, mail, fullname ):
