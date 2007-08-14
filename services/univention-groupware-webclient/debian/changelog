@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-5) unstable; urgency=low
+
+  * added univention theme graphics
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 13:37:06 +0200
+
 univention-groupware-webclient (1.0.7-4) unstable; urgency=low
 
   * added missing imp config option "sentmail" and set sentmail driver to none
