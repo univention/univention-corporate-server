@@ -109,7 +109,10 @@ class webui_out{			# PHP ---> Python
 		$this->ref_config = &$config;
 		$this->input($usrinput);
 		$file = $config->session_dir.($config->number-1);
-		$this->pipe=fsockopen("unix://".$config->socket_filename, 0);  	# Python Backend
+		$socket_file = $config->socket_filename;
+		if (file_exists($socket_file)) {
+			$this->pipe=fsockopen("unix://".$config->socket_filename, 0);  	# Python Backend
+		} else { $file=""; }
 
 		if (file_exists($file) && is_file($file) && $this->pipe){
 
