@@ -44,7 +44,7 @@ Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/maxchilds
 
 Type: file
-File: etc/default/cyrus22
+File: etc/default/cyrus2.2
 
 Type: file
-File: etc/init.d/cyrus22
+File: etc/init.d/cyrus2.2

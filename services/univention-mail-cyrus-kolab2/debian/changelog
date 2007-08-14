@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.3-1) unstable; urgency=low
+
+  * rename pam_heimdal to pam_krb5
+  * rename the init script from cyrus22 to cyrus2.2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 11:07:15 +0200
+
 univention-mail-cyrus-kolab2 (1.0.2-3) unstable; urgency=low
 
   * Adapt to Univention Directory Listener

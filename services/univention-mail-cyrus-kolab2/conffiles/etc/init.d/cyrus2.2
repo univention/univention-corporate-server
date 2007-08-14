@@ -1,12 +1,12 @@
 #! /bin/sh
 #
-# cyrus22	/etc/init.d/ script for cyrus2 IMAPd
+# cyrus2.2	/etc/init.d/ script for cyrus2 IMAPd
 #		This file manages the Cyrus IMAPd master process.
 #
 #		Copr. 2001 by Henrique de Moraes Holschuh <hmh@debian.org>
 #		Distributed under the GPL version 2
 #
-# $Id: cyrus22,v 1.1.2.5 2005/09/26 05:53:32 stefan Exp $
+# $Id: cyrus2.2,v 1.1.2.5 2005/09/26 05:53:32 stefan Exp $
 
 # Make sure we get sane results on borked locales
 LC_ALL=C
@@ -15,7 +15,7 @@ export LC_ALL
 # Overridable defaults
 unset CYRUS_VERBOSE
 unset LISTENQUEUE
-[ -r /etc/default/cyrus22 ] && . /etc/default/cyrus22
+[ -r /etc/default/cyrus2.2 ] && . /etc/default/cyrus2.2
 
 [ "x${CYRUS_VERBOSE}" != "x" ] && export CYRUS_VERBOSE
 OPTIONS="-d"
@@ -80,7 +80,7 @@ case "$1" in
 	  -d /var/spool/cyrus/mail/user -a ! -d /var/spool/cyrus/mail/stage. ] && {
 	  	echo "$0: It appears that you still have an version 1.5 spool" 1>&2
 		echo "$0: that needs to be upgraded. Please refer to the guide" 1>&2
-		echo "$0: at /usr/share/doc/cyrus22-common/UPGRADE.Debian" 1>&2
+		echo "$0: at /usr/share/doc/cyrus2.2-common/UPGRADE.Debian" 1>&2
 		echo
 		echo "$0: Cyrmaster not started."
 		exit 2
@@ -96,7 +96,7 @@ case "$1" in
 		    echo "$0: Database backends mismatch! You must manually" 1>&2
 		    echo "$0: verify and update the Cyrus databases to the" 1>&2
 		    echo "$0: new backends." 1>&2
-		    echo "$0: Please refer to /usr/share/doc/cyrus22-common/README.Debian" 1>&2
+		    echo "$0: Please refer to /usr/share/doc/cyrus2.2-common/README.Debian" 1>&2
 		    echo "$0: for instructions." 1>&2
 		    echo
 		    echo "$0: Cyrmaster not started."
