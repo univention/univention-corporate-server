@@ -1,0 +1,23 @@
+--- univention-groupware-webclient.orig/debian/univention-groupware-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php	2007-08-14 10:20:04.000000000 +0200
++++ univention-groupware-webclient/debian/univention-groupware-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php	2007-08-14 10:22:14.000000000 +0200
+@@ -699,9 +699,9 @@
+             return new PEAR_Error('socket disconnect failed');
+         }
+ 
+-        return $args;
++        //return $args;
+         // not for now
+-        //return $this->_genericImapResponseParser($args,$cmdid);
++        return $this->_genericImapResponseParser($args,$cmdid);
+ 
+     }
+ 
+@@ -2706,7 +2706,7 @@
+         */
+ 
+             $str_line = rtrim( substr( $this->_getToEOL( $str , false ) , 1 ) );
+-            $result_array[] = array( "COMMAND"=>$command , "EXT"=> $str_line );
++            $result_array[] = array( "COMMAND"=>token , "EXT"=> $str_line );
+             return $result_array;
+             break;
+ 

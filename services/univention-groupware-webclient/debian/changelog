@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.5-4) unstable; urgency=low
+
+  * added patch 00_PEAR_IMAP_pearbug3438_fixed_disconnect_error_msg.patch
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 10:35:47 +0200
+
 univention-groupware-webclient (1.0.5-3) unstable; urgency=low
 
   * added quilt to build process
