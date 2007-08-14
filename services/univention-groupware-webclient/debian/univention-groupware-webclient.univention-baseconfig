@@ -57,6 +57,9 @@ Type: file
 File: etc/horde/gollem/conf.php
 
 Type: file
+File: etc/horde/gollem/prefs.php
+
+Type: file
 File: etc/horde/gollem/backends.php
 Variables: horde/webaccess/share.*
 Variables: horde/auth
