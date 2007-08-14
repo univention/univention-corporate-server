@@ -17,7 +17,7 @@
  
              $str_line = rtrim( substr( $this->_getToEOL( $str , false ) , 1 ) );
 -            $result_array[] = array( "COMMAND"=>$command , "EXT"=> $str_line );
-+            $result_array[] = array( "COMMAND"=>token , "EXT"=> $str_line );
++            $result_array[] = array( "COMMAND"=>$token , "EXT"=> $str_line );
              return $result_array;
              break;
  
