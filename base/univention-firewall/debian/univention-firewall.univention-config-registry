@@ -31,6 +31,10 @@ File: etc/security/netfilter.d/20nagios
 Variables: security/services/nagios
 
 Type: file
+File: etc/security/netfilter.d/20ipp
+Variables: security/services/ipp
+
+Type: file
 File: etc/security/netfilter.d/20notifier
 Variables: security/services/notifier
 

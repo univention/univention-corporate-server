@@ -1,3 +1,10 @@
+univention-firewall (1.1.0-4) unstable; urgency=low
+
+  * Fix service definition for POP3
+  * Add service definition for IPP
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Aug 2007 09:12:41 +0200
+
 univention-firewall (1.1.0-3) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

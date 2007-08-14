@@ -7,11 +7,11 @@
 #          univention-baseconfig <FC>berschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
-#       /etc/univention/templates/files/etc/security/netfilter.d/20pop
+#       /etc/univention/templates/files/etc/security/netfilter.d/20ipp
 #
 
 @!@
-if baseConfig.has_key('security/services/pop3') and baseConfig['security/services/pop3'] == 'disabled':
-	print '/sbin/iptables -A INPUT  -p tcp --dport 110 -j REJECT'
-	print '/sbin/iptables -A INPUT  -p tcp --dport 995 -j REJECT'
+if baseConfig.has_key('security/services/ipp') and baseConfig['security/services/ipp'] == 'disabled':
+	print '/sbin/iptables -A INPUT  -p tcp --dport 631 -j REJECT'
+	print '/sbin/iptables -A INPUT  -p udp --dport 631 -j REJECT'
 @!@
