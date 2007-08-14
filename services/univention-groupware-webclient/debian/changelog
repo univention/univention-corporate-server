@@ -1,3 +1,11 @@
+univention-groupware-webclient (1.0.9-1) unstable; urgency=low
+
+  * activate ingo per default
+  * set php memory limit to 64 MB
+  * added pear package Net_Sieve
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Aug 2007 16:45:48 +0200
+
 univention-groupware-webclient (1.0.8-2) unstable; urgency=low
 
   * show week as default view for kronolith

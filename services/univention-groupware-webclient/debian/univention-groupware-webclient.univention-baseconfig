@@ -68,6 +68,12 @@ Type: file
 File: etc/horde/ingo1/prefs.php
 
 Type: file
+File: etc/horde/ingo1/conf.php
+
+Type: file
+File: etc/horde/ingo1/backends.php
+
+Type: file
 File: etc/horde/nag2/conf.php
 
 Type: file
