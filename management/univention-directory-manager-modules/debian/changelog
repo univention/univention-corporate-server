@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.0.9-2) unstable; urgency=low
+
+  * remove shadows in all icons
+  * add new scalix- and nagios-icons
+
+ -- Ingo Steuwer <steuwer@pipen.knut.univention.de>  Tue, 14 Aug 2007 14:25:33 +0200
+
 univention-directory-manager-modules (2.0.9-1) unstable; urgency=low
 
   * fixed error handling for univention-dnsedit
