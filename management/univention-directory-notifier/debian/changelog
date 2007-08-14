@@ -1,3 +1,9 @@
+univention-directory-notifier (2.1.1-7) unstable; urgency=low
+
+  * Fix directory name
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 14 Aug 2007 10:51:46 +0200
+
 univention-directory-notifier (2.1.1-6) unstable; urgency=low
 
   * Add transition code for wording changes

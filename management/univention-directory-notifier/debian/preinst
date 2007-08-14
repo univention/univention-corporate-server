@@ -55,8 +55,8 @@ if [ -e /etc/init.d/univention-directory-notifier ]; then
     /etc/init.d/univention-directory-notifier stop
 fi
 
-if [ -e /etc/runit/univention-ldap-notifier -a ! -h /etc/runit/univention-ldap-notifier ]; then
-    mv /etc/runit/univention-ldap-notifier /etc/runit/univention-directory-notifier
+if [ -e /etc/runit/univention/univention-ldap-notifier -a ! -h /etc/runit/univention/univention-ldap-notifier ]; then
+    mv /etc/runit/univention/univention-ldap-notifier /etc/runit/univention/univention-directory-notifier
 fi
 
 
