@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-2) unstable; urgency=low
+
+  * use pear package Mail in version 1.1.14
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 11:23:23 +0200
+
 univention-groupware-webclient (1.0.7-1) unstable; urgency=low
 
   * added an empty backend if no gollem share is defined

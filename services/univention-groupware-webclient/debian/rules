@@ -84,6 +84,7 @@ install: build
 	$(PEAR) pear/Date-1.4.7.tgz
 	$(PEAR) pear/Log-1.9.11.tgz
 	$(PEAR) pear/XML_Parser-1.2.8.tgz
+	$(PEAR) pear/Mail-1.1.14.tgz
 	$(PEAR) pear/Mail_Mime-1.4.0.tgz
 
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)
