@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.1-1) unstable; urgency=low
+
+  * moved files to new postgresql config directory
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 09:02:24 +0200
+
 univention-printquotadb (1.0.0-3) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
