@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-4) unstable; urgency=low
+
+  * added missing imp config option "sentmail" and set sentmail driver to none
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 11:55:47 +0200
+
 univention-groupware-webclient (1.0.7-3) unstable; urgency=low
 
   * added spam folder icon

@@ -62,3 +62,4 @@ $conf['hooks']['spam_bounce'] = false;
 $conf['maillog']['use_maillog'] = true;
 $conf['tasklist']['use_tasklist'] = true;
 $conf['notepad']['use_notepad'] = true;
+$conf['sentmail']['driver'] = 'none';
