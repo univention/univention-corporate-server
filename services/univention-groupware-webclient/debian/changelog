@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.7-6) unstable; urgency=low
+
+  * fixed creation of initial/default calendar
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Aug 2007 13:59:22 +0200
+
 univention-groupware-webclient (1.0.7-5) unstable; urgency=low
 
   * added univention theme graphics

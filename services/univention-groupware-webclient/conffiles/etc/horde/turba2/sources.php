@@ -695,7 +695,7 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
         $params = array(
 	        'sourceType' => 'kolab'
         );
-        Turba::createShare( $params, true);
+        Turba::createShare( md5(mt_rand()), $params );
         $books = Turba::listShares();
     }
 
