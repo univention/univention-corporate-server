@@ -1,0 +1,20 @@
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/default/quota
+#
+
+# Set to "true" if warnquota should be run in cron.daily
+run_warnquota=
+
+# Add options to rpc.rquotad here
+@!@
+if baseConfig.has_key('nfs/ports') and baseConfig['nfs/ports'] == 'static':
+        print 'RPCRQUOTADOPTS="-p 32769"'
+else:
+	print 'RPCRQUOTADOPTS='
+@!@
