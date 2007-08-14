@@ -1,3 +1,10 @@
+univention-nfs (1.0.1-2) unstable; urgency=low
+
+  * New Config Registry variable nfs/ports to configure static NFS port
+    assignment
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Tue, 14 Aug 2007 11:37:48 +0200
+
 univention-nfs (1.0.1-1) unstable; urgency=low
 
   * add version number to join script

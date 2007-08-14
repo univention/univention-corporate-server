@@ -1,0 +1,14 @@
+Type: file
+File: etc/init.d/nfs-kernel-server
+
+Type: file
+File: etc/default/nfs-kernel-server
+Variables: nfs/ports
+
+Type: file
+File: etc/default/nfs-common
+Variables: nfs/ports
+
+Type: file
+File: etc/default/quota
+Variables: nfs/ports
