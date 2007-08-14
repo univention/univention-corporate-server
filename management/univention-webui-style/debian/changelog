@@ -1,3 +1,10 @@
+univention-webui-style (1.0.4-8) unstable; urgency=low
+
+  * smaller icons for submodules
+  * remove lower shadows in all icons
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 14 Aug 2007 13:08:59 +0200
+
 univention-webui-style (1.0.4-7) unstable; urgency=low
 
   * added links to forum.univention and documentation no ucs-overview
