@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.9-1) unstable; urgency=low
+
+  * fixed error handling for univention-dnsedit
+
+ -- Bastian Neumann <neumann@univention.de>  Tue, 14 Aug 2007 10:53:28 +0200
+
 univention-directory-manager-modules (2.0.8-1) unstable; urgency=low
 
   * add syntax definitions for linux- and windows-terminal-servers,

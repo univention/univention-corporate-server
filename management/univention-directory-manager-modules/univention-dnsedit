@@ -186,9 +186,13 @@ def lookup_zone(zone_name):
 			sys.exit(1)
 	return zones[0]
 
-zone_name=args[0]
-command=args[1]
-type=args[2]
+try:
+	zone_name=args[0]
+	command=args[1]
+	type=args[2]
+except IndexError:
+	print >>sys.stderr, 'E: Missing command or value. Use --help for further Information'
+	sys.exit(1)
 
 if type != 'zone' or command == 'remove':
 	zone=lookup_zone(zone_name)
@@ -392,5 +396,6 @@ elif command == 'remove':
 	if type == 'srv':
 		remove_srv_record(nargs)
 	pass
-
-
+else:
+	print >>sys.stderr, 'E: No valid command not. Use --help for further information'
+	sys.exit(1)
