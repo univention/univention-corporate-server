@@ -1,0 +1,18 @@
+Source: univention-xen
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.6.2
+
+Package: univention-xen
+Architecture: i386
+Depends: xen-tools, univention-debootstrap
+Description: UCS - Xen configuration and management subsystem
+ This packages provides the basic configuration for the
+ Xen virtualisation technology.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

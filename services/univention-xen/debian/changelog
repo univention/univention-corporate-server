@@ -1,0 +1,9 @@
+univention-xen (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  14 Aug 2007 16:39:19 +0200
+
+Local variables:
+mode: debian-changelog
+End:
