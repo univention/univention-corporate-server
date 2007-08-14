@@ -389,6 +389,14 @@ if command == 'add':
 		if not options['ignore-exists']:
 			print >>sys.stderr, 'E: Object exists'
 			sys.exit(1)
+	except ValueError,e:
+		print 'failed'
+		print 'E: %s'%e
+		sys.exit(1)
+	except univention.admin.uexceptions.valueInvalidSyntax,err:
+		print 'failed'
+		print 'E: %s'%err
+		sys.exit(1)
 	
 	print 'done'
 elif command == 'remove':
@@ -397,5 +405,5 @@ elif command == 'remove':
 		remove_srv_record(nargs)
 	pass
 else:
-	print >>sys.stderr, 'E: No valid command not. Use --help for further information'
+	print >>sys.stderr, 'E: No valid command found. Use --help for further information'
 	sys.exit(1)
