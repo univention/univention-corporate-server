@@ -1,4 +1,4 @@
-univention-groupware-webclient (1.0.5-1) stable; urgency=low
+univention-groupware-webclient (1.0.5-2) stable; urgency=low
 
   * change imp server driver from cyrus to imap
 

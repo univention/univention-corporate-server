@@ -1,13 +1,21 @@
 <?php
-$conf['cookie']['domain'] = '@%@hostname@%@.@%@domainname@%@';
-$conf['problems']['email'] = 'postmaster@@%@domainname@%@';
-$conf['problems']['maildomain'] = '@%@domainame@%@';
-$conf['kolab']['ldap']['basedn'] = 'dc=knut,dc=univention,dc=de';
-#$conf['kolab']['ldap']['binddn'] = 'cn=manager,cn=internal,dc=knut,dc=univention,dc=de';
-#$conf['kolab']['ldap']['bindpw'] = 'univention';
-# $conf['kolab']['ldap']['phpdn'] = 'cn=nobody,cn=internal,dc=knut,dc=univention,dc=de';
-# $conf['kolab']['ldap']['phppw'] = 'ezjq80wTLuZlBO7ZcXGdFfyLbv8BBOIsmTp11GS4';
-$conf['kolab']['imap']['server'] = '@%@horde/imapserver@%@';
-$conf['kolab']['imap']['maildomain'] = '@%@domainame@%@';
-# $conf['kolab']['imap']['adminpw'] = 'univention';
+@!@
+	if baseConfig.has_key("horde/hosteddomain"):
+		domains = baseConfig["horde/hosteddomain"]
+	elif baseConfig.has_key("mail/hosteddomains"):
+		domains = baseConfig["mail/hosteddomains"]
+	else:
+		domains=baseConfig['domainname']
+
+	if domains.find( ' ' ) != -1:
+		d = domains[ : domains.find( ' ' ) ]
+	else:
+		d = domains
+
+	print "$conf['cookie']['domain'] = '%s.%s';" % (baseConfig['hostname'],d)
+	print "$conf['problems']['email'] = '%s';" % baseConfig['mail/alias/webmaster']
+	print "$conf['problems']['maildomain'] = '%s';" % d
+	print "$conf['kolab']['ldap']['basedn'] = '%s';" % baseconfig['ldap/base']
+	print "$conf['kolab']['imap']['server'] = '%s';" % baseconfig['horde/imapserver']
+	print "$conf['kolab']['imap']['maildomain'] = '%s';" % d
 ?>

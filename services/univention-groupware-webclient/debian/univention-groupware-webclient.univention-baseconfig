@@ -5,37 +5,31 @@ Variables: ldap/base
 Variables: mail/alias/webmaster
 Variables: mail/hosteddomains
 Variables: ldap/server/master
-Variables: horde/imapserver
-Variables: horde/hosteddomain
-Variables: horde/adminuser
-Variables: horde/passwordfile
-Variables: horde/servername
-Variables: horde/auth
+Variables: horde/.*
+Variables: domainname
 
 Type: file
 File: etc/horde/horde3/motd.php
 
 Type: file
 File: etc/horde/horde3/kolab.php
+Variables: horde/.*
+Variables: mail/hosteddomains
+Variables: mail/alias/webmaster
+Variables: ldap/base
+Variables: hostname
+Variables: domainname
 
 Type: file
 File: etc/horde/horde3/hooks.php
-Variables: horde/application/turba
-Variables: horde/application/kronolith
-Variables: horde/application/mnemo
-Variables: horde/application/nag
+Variables: horde/application/.*
 
 Type: file
 File: etc/horde/horde3/prefs.php
 
 Type: file
 File: etc/horde/horde3/registry.php
-Variables: horde/application/imp
-Variables: horde/application/turba
-Variables: horde/application/kronolith
-Variables: horde/application/mnemo
-Variables: horde/application/nag
-Variables: horde/application/gollem
+Variables: horde/application/.*
 
 Type: file
 File: etc/horde/imp4/conf.php
