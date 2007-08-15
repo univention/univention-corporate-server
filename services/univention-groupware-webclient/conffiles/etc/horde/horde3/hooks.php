@@ -1081,9 +1081,8 @@ if not baseConfig.has_key('horde/application/turba') or not baseConfig['horde/ap
 		return $icons;
 	}
 }
-
-if (!function_exists('_passwd_hook_username')) {
-	function _passwd_hook_username($userID)
+if (!function_exists('_hook_default_username')) {
+	function _hook_default_username($userID)
 	{
 		// Connect to the LDAP server.
 		$ds = ldap_connect(
@@ -1112,6 +1111,14 @@ if (!function_exists('_passwd_hook_username')) {
 		}
 		$username = ldap_get_values($ds, $entry, 'uid');
 		return $username[0];
+	}
+}
+
+
+if (!function_exists('_passwd_hook_username')) {
+	function _passwd_hook_username($userID)
+	{
+		return _hook_default_username($userID)
 	}
 }
 

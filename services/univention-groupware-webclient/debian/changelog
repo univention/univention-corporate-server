@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-1) unstable; urgency=low
+
+  * added function _hook_default_username
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 16:31:44 +0200
+
 univention-groupware-webclient (1.0.12-1) unstable; urgency=low
 
   * added dropdown icon for timepicker
