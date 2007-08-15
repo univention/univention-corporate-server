@@ -1,3 +1,9 @@
+univention-installer (1.6.24-2) unstable; urgency=low
+
+  * Disable IPP in strict mode
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 16:36:07 +0200
+
 univention-installer (1.6.24-1) unstable; urgency=low
 
   * add openssh-client and openssh-server to the default profiles and remove
