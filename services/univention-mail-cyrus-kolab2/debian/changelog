@@ -1,3 +1,13 @@
+univention-mail-cyrus-kolab2 (1.0.4-1) unstable; urgency=low
+
+  * add sieve pam file
+  * cleanup the cyrus and cyrus-sieve listener modules
+  * chown the sieve directory to cyrus:mail, so the cyrus dameon could
+    write new sieve scripts. This is needed for the horde application
+    ingo
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 08:39:49 +0200
+
 univention-mail-cyrus-kolab2 (1.0.3-1) unstable; urgency=low
 
   * rename pam_heimdal to pam_krb5

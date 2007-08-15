@@ -69,7 +69,7 @@ univention-config-registry set mail/cyrus/imap?yes
 univention-config-registry set mail/cyrus/imap/lookup_groups?yes
 univention-config-registry set mail/cyrus/pop?yes
 univention-config-registry set ldap/port=389
-univention-config-registry set mail/cyrus/sieve/listen_host?localhost
+univention-config-registry set mail/cyrus/sieve/listen_host?all
 
 dpkg-statoverride --add root sasl 660 /etc/sasldb2 || true
 

@@ -62,6 +62,9 @@ def handler(dn, new, old):
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not write a  sieve script for user: %s' % new['mailPrimaryAddress'][0])
 				return
 
+			cyrus_id=pwd.getpwnam('cyrus')[2]
+			mail_id=grp.getgrnam('mail')[2]
+
 			user_name = new['mailPrimaryAddress'][0]
 			userpart=user_name.split('@')[0]
 			userpart=string.lower(userpart)
@@ -237,12 +240,12 @@ def handler(dn, new, old):
 			class sievescr:
 				def __init__(self):
 					self.thescript=''
+
 				def append(self, line):
 					self.thescript+='%s\n' %line
+
 				def write(self, where):
 					listener.setuid(0)
-					cyrus_id = pwd.getpwnam('cyrus')[2]
-					mail_id  = grp.getgrnam('mail')[2]
 					try:
 						scr=open(where, 'w')
 						scr.write(self.thescript)
@@ -250,6 +253,7 @@ def handler(dn, new, old):
 
 						where_default=where.replace('sieve.siv', 'defaultbc')
 						os.system('/usr/lib/cyrus/bin/sievec %s %s' % (where, where_default))
+						os.chown(os.path.dirname(where), cyrus_id, mail_id)
 						os.chown(where, cyrus_id, mail_id)
 						os.chown(where_default, cyrus_id, mail_id)
 					except:
