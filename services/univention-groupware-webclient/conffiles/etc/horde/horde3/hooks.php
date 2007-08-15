@@ -1004,10 +1004,13 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             return $email[0];
         }
 	}
-	function _imp_hook_mbox_redirect($mailbox)
-	{
-		switch (Kolab::getMailboxType($mailbox)) {
-		@!@
+
+    if (!function_exists('_imp_hook_mbox_redirect')) {
+
+		function _imp_hook_mbox_redirect($mailbox)
+		{
+			switch (Kolab::getMailboxType($mailbox)) {
+			@!@
 if not baseConfig.has_key('horde/application/kronolith') or not baseConfig['horde/application/kronolith'].lower() in [ 'no', 'false' ]:
 	print "            case 'event':"
 	print "                return $GLOBALS['registry']->get('webroot', 'kronolith') . '/';"
@@ -1025,62 +1028,66 @@ if not baseConfig.has_key('horde/application/turba') or not baseConfig['horde/ap
 	print "                return $GLOBALS['registry']->get('webroot', 'turba') . '/';"
 @!@
 
-		default:
-			return '';
+			default:
+				return '';
+			}
 		}
 	}
-	function _imp_hook_mbox_icons()
-	{
-		static $icons;
+    if (!function_exists('_imp_hook_mbox_icons')) {
+		function _imp_hook_mbox_icons()
+		{
+			static $icons;
 
-		if (!empty($icons)) {
+			if (!empty($icons)) {
+				return $icons;
+			}
+
+			$folders = Kolab::listFolders();
+
+			$icons = array();
+
+			foreach ($folders as $folder) {
+				$name = preg_replace('/^{[^}]+}/', '', $folder[0]);
+
+				switch ($folder[1]) {
+					case 'event':
+						$icons[$name] = array(
+								'icon' => 'kronolith.png',
+								'icondir' => $GLOBALS['registry']->getImageDir('kronolith'),
+								'alt' => _("Calendar")
+								);
+						break;
+
+					case 'task':
+						$icons[$name] = array(
+								'icon' => 'nag.png',
+								'icondir' => $GLOBALS['registry']->getImageDir('nag'),
+								'alt' => _("Tasks")
+								);
+						break;
+
+					case 'note':
+						$icons[$name] = array(
+								'icon' => 'mnemo.png',
+								'icondir' => $GLOBALS['registry']->getImageDir('mnemo'),
+								'alt' => _("Notes")
+								);
+						break;
+
+					case 'contact':
+						$icons[$name] = array(
+								'icon' => 'turba.png',
+								'icondir' => $GLOBALS['registry']->getImageDir('turba'),
+								'alt' => _("Contacts")
+								);
+						break;
+					}
+			}
 			return $icons;
 		}
-
-		$folders = Kolab::listFolders();
-
-		$icons = array();
-
-		foreach ($folders as $folder) {
-			$name = preg_replace('/^{[^}]+}/', '', $folder[0]);
-
-			switch ($folder[1]) {
-				case 'event':
-					$icons[$name] = array(
-							'icon' => 'kronolith.png',
-							'icondir' => $GLOBALS['registry']->getImageDir('kronolith'),
-							'alt' => _("Calendar")
-							);
-					break;
-
-				case 'task':
-					$icons[$name] = array(
-							'icon' => 'nag.png',
-							'icondir' => $GLOBALS['registry']->getImageDir('nag'),
-							'alt' => _("Tasks")
-							);
-					break;
-
-				case 'note':
-					$icons[$name] = array(
-							'icon' => 'mnemo.png',
-							'icondir' => $GLOBALS['registry']->getImageDir('mnemo'),
-							'alt' => _("Notes")
-							);
-					break;
-
-				case 'contact':
-					$icons[$name] = array(
-							'icon' => 'turba.png',
-							'icondir' => $GLOBALS['registry']->getImageDir('turba'),
-							'alt' => _("Contacts")
-							);
-					break;
-				}
-		}
-		return $icons;
 	}
 }
+
 if (!function_exists('_hook_default_username')) {
 	function _hook_default_username($userID)
 	{
