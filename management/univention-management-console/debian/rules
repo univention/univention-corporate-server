@@ -84,6 +84,11 @@ install-ext-%:
 	install -m 0755 34univention-management-console-server.inst debian/univention-management-console-server/usr/lib/univention-install/
 	install -m 0755 35univention-management-console-proxy.inst debian/univention-management-console-proxy/usr/lib/univention-install/
 
+	install -m644 icons/32x32/* debian/univention-management-console/usr/share/univention-webui-style/icon/applications/32x32
+	install -m644 icons/64x64/* debian/univention-management-console/usr/share/univention-webui-style/icon/applications/64x64
+	install -m644 icons/128x128/* debian/univention-management-console/usr/share/univention-webui-style/icon/applications/128x128
+	install -m644 icons/scalable/* debian/univention-management-console/usr/share/univention-webui-style/icon/applications/scalable
+
 	touch debian/univention-management-console-server/etc/runit/univention-management-console-server/down
 	ln -s /usr/share/univention-runit/sleep-dynamic debian/univention-management-console-server/etc/runit/univention-management-console-server/finish
 
