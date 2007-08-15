@@ -7,7 +7,7 @@ Standards-Version: 3.6.2
 
 Package: univention-xen
 Architecture: i386
-Depends: xen-tools, univention-debootstrap
+Depends: xen-tools, univention-debootstrap, wget
 Description: UCS - Xen configuration and management subsystem
  This packages provides the basic configuration for the
  Xen virtualisation technology.

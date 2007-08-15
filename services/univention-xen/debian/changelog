@@ -1,3 +1,10 @@
+univention-xen (0.2.3) unstable; urgency=low
+
+  * Create apt source inside Xen image by fetching sources from repository
+  * Allow external sources list override
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 12:09:27 +0200
+
 univention-xen (0.2.2) unstable; urgency=low
 
   * Bump version number

@@ -1,4 +1,14 @@
 #!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#         /etc/univention/templates/files/usr/lib/xen-tools/univention.d/20-setup-apt
+#
 #
 #  This script sets up the /etc/apt/sources.list for APT, and it disables
 # TLS where appropriate.
@@ -58,52 +68,21 @@ done
 
 
 #
-# Setup the sources.list file for new installations of Debian GNU/Linux.
-#
-cat <<E_O_APT > ${prefix}/etc/apt/sources.list
-#
-#  /etc/apt/sources.list
+# Setup the sources.list file
 #
 
+@!@
+if baseConfig.has_key('xen/repository/aptsource') and baseConfig.has_key('xen/repository') and not baseConfig['xen/repository/aptsource'] == '':
+    print 'wget @%@xen/repository/aptsource@%@/sources.list -O ${prefix}/etc/apt/sources.list'
+else:
+    print 'wget @%@xen/repository@%@/sources.list -O ${prefix}/etc/apt/sources.list'
+@!@
 
-#
-# ${dist}
-#
-deb     ${mirror}     ${dist} main contrib non-free
-deb-src ${mirror}     ${dist} main contrib non-free
-
-E_O_APT
-
-
-#
-#  If the host system has security support then enable that here too.
-#
-if ( grep ^deb.*security.debian.org /etc/apt/sources.list >/dev/null 2>/dev/null ) ; then
-
-    cat <<E_O_APT >> ${prefix}/etc/apt/sources.list
-# 
-#  Security updates
-# 
-deb     http://security.debian.org/ ${dist}/updates  main contrib non-free
-deb-src http://security.debian.org/ ${dist}/updates  main contrib non-free
-E_O_APT
-
-else
-    cat <<E_O_APT >> ${prefix}/etc/apt/sources.list
-# 
-#  Security updates - Uncomment to enable.
-# 
-# deb     http://security.debian.org/ ${dist}/updates  main contrib non-free
-# deb-src http://security.debian.org/ ${dist}/updates  main contrib non-free
-E_O_APT
-
-fi
     
 #
 #  Now that the sources have been setup make sure the system is up to date.
 #
 chroot ${prefix} /usr/bin/apt-get update
-
 
 
 #
@@ -117,20 +96,10 @@ if [ "`uname -m`" = "x86_64" ]; then
 
 else
 
-    case "${dist}" in
-        etch|lenny|sid)
-            logMessage "Installing xen-aware libc6"
-    
-            installDebianPackage ${prefix} libc6-xen
-            ;;
-        *)
-            logMessage "Disabling TLS"
-            mv ${prefix}/lib/tls ${prefix}/lib/tls.disabled
-            mkdir ${prefix}/lib/tls
-            ;;
-    esac
-fi
+    logMessage "Installing xen-aware libc6"
+    installDebianPackage ${prefix} libc6-xen
 
+fi
 
 
 #
