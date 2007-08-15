@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.10-1) unstable; urgency=low
+
+  * added icons for ingo
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 08:51:03 +0200
+
 univention-groupware-webclient (1.0.9-1) unstable; urgency=low
 
   * activate ingo per default
