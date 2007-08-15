@@ -447,7 +447,7 @@ if not baseConfig.has_key('horde/application/passwd') or not baseConfig['horde/a
 	print "	$this->applications['passwd'] = array("
 	print "		'fileroot' => '/usr/share/horde3/lib' . '/../passwd',"
 	print "		'webroot' => $this->applications['horde']['webroot'] . '/passwd',"
-	print "		'name' => _("Password"),"
+	print "		'name' => _(\"Password\"),"
 	print "		'status' => 'active',"
 	print "		'menu_parent' => 'myaccount'"
 	print "	);"

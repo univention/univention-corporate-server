@@ -1,8 +1,9 @@
-univention-groupware-webclient (1.0.11-2) unstable; urgency=low
+univention-groupware-webclient (1.0.11-3) unstable; urgency=low
 
   * added configuration for sork-passwd
+  * added php5-mcrypt to the dependency
 
- -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 10:59:34 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 11:47:02 +0200
 
 univention-groupware-webclient (1.0.10-2) unstable; urgency=low
 
