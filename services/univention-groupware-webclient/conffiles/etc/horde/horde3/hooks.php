@@ -1125,7 +1125,7 @@ if (!function_exists('_hook_default_username')) {
 if (!function_exists('_passwd_hook_username')) {
 	function _passwd_hook_username($userID)
 	{
-		return _hook_default_username($userID)
+		return _hook_default_username($userID);
 	}
 }
 
