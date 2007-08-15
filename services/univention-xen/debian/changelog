@@ -1,3 +1,10 @@
+univention-xen (0.2) unstable; urgency=low
+
+  * Make UCS the default distribution to install
+  * Create a initial /usr/lib/xen-tools/univention.d configuration set, based on Etch
+	
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 09:38:38 +0200
+
 univention-xen (0.1) unstable; urgency=low
 
   * Initial Release.

@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+#  This script enforces the use of a shadow password file.
+#
+# Steve
+# --
+# http://www.steve.org.uk/
+
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+#
+# Enable the shadow passwords if the command is found.
+#
+if [ -x ${prefix}/sbin/shadowconfig ]; then
+
+   chroot ${prefix} /sbin/shadowconfig on
+else
+
+   logMessage "/sbin/shadowconfig not found.  skipping."
+fi
+
+
+#
+# Log our finish
+#
+logMessage Script $0 finished.
+

@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+#  This script removes the file which prevents daemons from running.
+#
+# Steve
+# --
+# http://www.steve.org.uk/
+
+
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+#
+#  Remove the script if present.
+#
+if [ -x "${prefix}/usr/sbin/policy-rc.d" ]; then
+
+    rm -f "${prefix}/usr/sbin/policy-rc.d"
+
+    logMessage "Removed: ${prefix}/usr/sbin/policy-rc.d"
+
+fi
+
+
+#
+# Log our finish
+#
+logMessage Script $0 finished

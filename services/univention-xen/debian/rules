@@ -49,11 +49,13 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
+	cp -a usr debian/univention-xen
+
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
 
-#	find debian/univention-xen/ -regex '.*/.svn' -print0 | xargs -0 rm -rf
+	find debian/univention-xen/ -regex '.*/.svn' -print0 | xargs -0 rm -rf
 
 binary-arch: build install
 
@@ -62,7 +64,6 @@ binary-indep: build install
 	dh_testroot
 	dh_installchangelogs
 	dh_link
-	dh_strip
 	dh_compress
 	dh_fixperms
 	dh_installdeb

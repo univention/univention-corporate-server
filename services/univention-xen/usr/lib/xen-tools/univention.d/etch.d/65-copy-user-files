@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+#  Copy files from a 'skel' directory, if present, into the
+# new images
+#
+
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+#
+#  Copy everything from the skel directory into the new instance
+# if that directory exists.
+#
+if [ -d /etc/xen-tools/skel ]; then
+
+    logMessage Copying files from /etc/xen-tools/skel
+
+    (cd /etc/xen-tools/skel; tar -cf - . ) | (cd ${prefix}/; tar -xpf -)
+
+    logMessage Finished
+
+else
+
+    logMessage skel directory, /etc/xen-tools/skell, not present ignoring.
+
+fi
+
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished

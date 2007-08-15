@@ -1,0 +1,181 @@
+#!/usr/bin/perl -w
+#
+#  This script attempts to copy all user accounts from the host to
+# the guest.  It does this by copying all user accounts which are not
+# already present.
+#
+#  NOTE:  Unless '--accounts' was specified upon the 'xen-create-image'
+# command line we don't do this.
+#
+# Steve
+# --
+# http://www.steve.org.uk/
+
+
+use strict;
+use Env;
+
+
+my $prefix = shift;
+
+die "Prefix must be given"       unless defined( $prefix );
+die "Prefix must be a directory" unless ( -d $prefix );
+
+
+#
+#  Exit unless the 'accounts' variable is set.
+#
+exit unless ( $ENV{'accounts'} );
+
+#
+#  Make sure we have $prefix/etc
+#
+die "Prefix is missing /etc : $prefix" unless ( -d $prefix . "/etc" );
+
+
+#
+#  Read all accounts from the installed /etc/passwd on the guest.
+#
+my %present;
+if ( -e $prefix . "/etc/passwd" )
+{
+    %present = readAccounts( $prefix . "/etc/passwd" );
+}
+
+
+#
+#  Now read the accounts on the host.
+#
+my %host = readAccounts( "/etc/passwd" );
+
+
+#
+#  For each account not present on new installation then add it
+#
+foreach my $account ( sort keys( %host ) )
+{
+    if ( ! $present{ $account } )
+    {
+        print "Adding: $account\n";
+        addAccount( $account );
+
+        #
+        #  Find any groups the user is member of on the host
+        # and add them on the guest system
+        #
+        addGroups( $account );
+    }
+}
+
+
+
+#
+#  Read the accounts which are already present on the guest image.
+#
+sub readAccounts
+{
+    my ( $file ) = ( @_ );
+
+
+    my %found;
+
+    open( EXISTING, "<", $file );
+    foreach my $line ( <EXISTING> )
+    {
+        #
+        #  Record the userid + username
+        #
+        if ( $line =~ /^([^:]+):([^:]+):([^:]+)/ )
+        {
+            my $user = $1;
+            my $pass = $2;
+            my $uid  = $3;
+
+            $found{$user} = 1;
+        }
+    }
+    close( EXISTING );
+
+    return( %found );
+}
+
+
+
+
+#
+#  Add the passwd + shadow accounts for the given user.
+#
+sub addAccount
+{
+    my ( $user ) = ( @_ );
+
+    #
+    #  passwd file.
+    #
+    open( PASSWD, "<", "/etc/passwd" );
+    foreach my $line ( <PASSWD> )
+    {
+        chomp( $line );
+        if ( $line =~ /^\Q$user\E:/ )
+        {
+            #
+            #  Add the line
+            #
+            open( OUTY, ">>", $prefix . "/etc/passwd" );
+            print OUTY $line . "\n";
+            close( OUTY );
+        }
+    }
+    close( PASSWD );
+
+
+    #
+    #  shadow file.
+    #
+    open( SHADOW, "<", "/etc/shadow" ) or die "Failed to open : $!";
+    foreach my $line ( <SHADOW> )
+    {
+        chomp( $line );
+        if ( $line =~ /^\Q$user\E:/ )
+        {
+            #
+            #  Add the line
+            #
+            open( OUTY, ">>", $prefix . "/etc/shadow" );
+            print OUTY $line . "\n";
+            close( OUTY );
+        }
+    }
+    close( SHADOW );
+}
+
+
+
+#
+#  Find the groups a user is member of on the host, and add them to
+# those groups on the new guest.
+#
+sub addGroups
+{
+    my( $username ) = ( @_ );
+
+    #
+    #  Get the groups.
+    #
+    my $groups = `groups $username`;
+    # split off the usernmame.
+    if ( $groups =~ /^([^:]+):(.*)/ )
+    {
+        $groups = $2;
+        print "User: $username is member of the groups: $groups\n";
+    }
+
+    foreach my $g ( split( / /, $groups ) )
+    {
+        # Make sure the group exists.
+        system( "chroot $prefix /usr/sbin/addgroup $g" );
+
+        # add the user to it.
+        system( "chroot $prefix /usr/sbin/adduser $username $g" );
+    }
+}

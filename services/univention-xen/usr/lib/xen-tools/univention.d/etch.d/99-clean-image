@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+#  This script cleans the newly created image's apt-get archive.
+#
+# Steve
+# --
+# http://www.steve.org.uk/
+
+
+prefix=$1
+
+
+#
+#  Source our common functions
+#
+if [ -e /usr/lib/xen-tools/common.sh ]; then
+    . /usr/lib/xen-tools/common.sh
+else
+    . ./hooks/common.sh
+fi
+
+
+#
+# Log our start
+#
+logMessage Script $0 starting
+
+
+#
+#  Clean the APT package cache for Debian GNU/Linux.
+#
+chroot ${prefix} /usr/bin/apt-get clean
+
+
+#
+#  Log our finish
+#
+logMessage Script $0 finished
