@@ -1,3 +1,9 @@
+univention-xen (0.2.4) unstable; urgency=low
+
+  * Remove stray lines
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 12:59:04 +0200
+
 univention-xen (0.2.3) unstable; urgency=low
 
   * Create apt source inside Xen image by fetching sources from repository
