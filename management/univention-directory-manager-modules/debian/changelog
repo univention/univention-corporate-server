@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.0.10-2) unstable; urgency=low
+
+  * add icons fpr nfsmount-policy
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 15 Aug 2007 09:29:02 +0200
+
 univention-directory-manager-modules (2.0.10-1) unstable; urgency=low
 
   * advanced error handling for univention-dnsedit 
