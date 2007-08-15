@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.1.1-1) unstable; urgency=low
+
+  * migrate webaccess patches from UCS 1.3-2 management scope
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Aug 2007 15:49:39 +0200
+
 univention-directory-manager-modules (2.0.10-2) unstable; urgency=low
 
   * add icons fpr nfsmount-policy

@@ -1836,9 +1836,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			if not ( 'posix' in self.options or 'samba' in self.options or 'person' in self.options):
 				#no objectClass which provides uid...
 				raise univention.admin.uexceptions.invalidOptions, _('Need one of %s, %s or %s in options to create user.')%(
-					options['posix'].short_description,
-					options['samba'].short_description,
-					options['person'].short_description)
+					'posix',
+					'samba',
+					'person')
 
 			if 'posix' in self.options or 'samba' in self.options:
 				if self['primaryGroup']:
@@ -2007,6 +2007,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self.modifypassword=1
 
 	def _remove_attr(self, ml, attr):
+		for m in ml:
+			if m[0] == attr:
+				ml.remove(m)
 		if self.oldattr.get(attr, []):
 			ml.insert(0, (attr, self.oldattr.get(attr, []), ''))
 		return ml
@@ -2017,9 +2020,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		shadowLastChangeValue = ''
 		sambaPwdLastSetValue = ''
 
-		# `self.oldattr' is `False' while adding the object.
-		# Don't mess with the objectClass while adding.
-		if self.oldattr and self.options != self.old_options:
+		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
 			if 'groupware' in self.options and not 'groupware' in self.old_options:

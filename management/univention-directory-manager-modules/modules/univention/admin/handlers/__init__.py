@@ -495,7 +495,9 @@ class simpleLdap(base):
 				# if we've come here, we found a property that does not apply
 				# to the chosen options and may cause harm when writing to
 				# the LDAP.
-				self.mapping.unregister(desc)
+				# see Bug #8386, if we remove this value from the mapping table,
+				# we can't modify this value during the session.
+				#self.mapping.unregister(desc)
 
 		ml=univention.admin.mapping.mapDiff(self.mapping, self.diff())
 

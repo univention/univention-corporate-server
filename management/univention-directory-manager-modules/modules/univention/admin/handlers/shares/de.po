@@ -825,6 +825,19 @@ msgstr "MSDFS-Wurzel"
 msgid "Export share as MSDFS root"
 msgstr "Freigabe als MSDFS-Wurzel freigeben"
 
+#: share.py:600
+msgid "Name of the webaccess share."
+msgstr "Name der Webzugriff Freigabe"
+
+#: share.py:609
+msgid "IP Address"
+msgstr "IP Adresse"
+
+#: share.py:610
+msgid "IP address of the webaccess share host."
+msgstr "Die IP Adresse des Rechners, der die Freigabe bereitstellt"
+
+
 #~ msgid "Directorymode"
 #~ msgstr "Verzeichnis-Modus"
 

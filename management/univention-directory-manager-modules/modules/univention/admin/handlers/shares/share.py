@@ -28,12 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, string
+import sys, string, copy
 import univention.admin.uldap
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
+import univention.debug
 
 translation=univention.admin.localization.translation('univention.admin.handlers.shares')
 _=translation.translate
@@ -61,12 +62,19 @@ long_description=''
 options={
 	'samba': univention.admin.option(
 			short_description=_('Export for Samba Clients'),
+			editable=1,
 			default=1
 		),
 	'nfs': univention.admin.option(
 			short_description=_('Export for NFS Clients'),
+			editable=1,
 			default=1
 		),
+	'webaccess': univention.admin.option(
+			short_description=_('Export for Web Clients'),
+			editable=1,
+			default=0
+		),								
 }
 property_descriptions={
 	'name': univention.admin.property(
@@ -210,7 +218,7 @@ property_descriptions={
 			long_description=_('This is the NetBIOS name. Among other places, it appears in the Windows Network Neighborhood.'),
 			syntax=univention.admin.syntax.string_numbers_letters_dots_spaces,
 			multivalue=0,
-			options=['samba'],
+			options=['samba', 'webaccess'],
 			required=0,
 			may_change=1,
 			identifies=0,
@@ -587,6 +595,26 @@ property_descriptions={
 			identifies=0,
 			default='0'
 		),
+	'webaccessName': univention.admin.property(
+			short_description=_('Name'),
+			long_description=_('Name of the webaccess share.'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=['webaccess'],
+			required=1,
+			may_change=1,
+			identifies=0,
+		),
+	'webaccessIpaddress': univention.admin.property(
+			short_description=_('IP Address'),
+			long_description=_('IP address of the webaccess share host.'),
+			syntax=univention.admin.syntax.ipAddress,
+			multivalue=0,
+			options=['webaccess'],
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('General Settings'),[
@@ -599,6 +627,9 @@ layout=[
 			[univention.admin.field('writeable'), univention.admin.field('sync')],
 			[univention.admin.field('subtree_checking'), univention.admin.field('root_squash')],
 			[univention.admin.field('nfs_hosts')],
+		]),
+	univention.admin.tab(_('Webaccess General'),_('General Webaccess Settings'),[
+			[univention.admin.field('webaccessName'), univention.admin.field('webaccessIpaddress')],
 		]),
 	univention.admin.tab(_('Samba General'),_('General Samba Settings'),[
 			[univention.admin.field('sambaName'), univention.admin.field('sambaWriteable')],
@@ -709,6 +740,9 @@ mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', None, univ
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool)
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool)
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
+mapping.register('webaccessName', 'univentionShareWebaccessName', None, univention.admin.mapping.ListToString)
+mapping.register('webaccessIpaddress', 'univentionShareWebaccessIpaddress', None, univention.admin.mapping.ListToString)
+mapping.register('webaccessHordeauth', 'univentionShareWebaccessHordeauth', boolToString, stringToBool)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
@@ -735,6 +769,11 @@ class object(univention.admin.handlers.simpleLdap):
 	def open(self):
 		univention.admin.handlers.simpleLdap.open(self)
 
+		# copy the mapping table, we need this for the option handling
+		self.mapping_list = {}
+		for key in self.descriptions.keys():
+			self.mapping_list[key] = mapping.mapName(key)
+
 		if self.oldattr.has_key('objectClass'):
 			global options
 			self.options = []
@@ -742,10 +781,14 @@ class object(univention.admin.handlers.simpleLdap):
 				self.options.append( 'samba' )
 			if 'univentionShareNFS' in self.oldattr['objectClass']:
 				self.options.append( 'nfs' )
+			if 'univentionShareWebaccess' in self.oldattr['objectClass']:
+				self.options.append( 'webaccess' )
 			try:
 				self['printablename'] = "%s (%s)" % (self['name'], self['host'])
 			except:
 				pass
+
+		self.old_options = copy.deepcopy( self.options )
 
 		self.save()
 
@@ -757,13 +800,69 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def _ldap_addlist(self):
 		ocs = ['top', 'univentionShare']
+		if not ( 'samba' in self.options or 'nfs' in self.options):
+			raise univention.admin.uexceptions.invalidOptions, _('Need  %s or %s in options to create a share.')%(
+				options['samba'].short_description,
+				options['nfs'].short_description)
+
+		if 'webaccess' in self.options and not 'samba' in self.options:
+			raise univention.admin.uexceptions.invalidOptions, _('Need  %s option to create a %s share.')%(
+				options['samba'].short_description,
+				options['webaccess'].short_description)
+
 		if 'samba' in self.options:
 			ocs.append('univentionShareSamba')
 		if 'nfs' in self.options:
 			ocs.append('univentionShareNFS')
+		if 'webaccess' in self.options:
+			ocs.append('univentionShareWebaccess')
 		return [
 			('objectClass', ocs)
 		]
+
+	def _remove_attr(self, ml, attr):
+		for m in ml:
+			if m[0] == attr:
+				ml.remove(m)
+		if self.oldattr.get(attr, []):
+			ml.insert(0, (attr, self.oldattr.get(attr, []), ''))
+		return ml
+
+	def _ldap_modlist(self):
+
+		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+
+		if not ( 'samba' in self.options or 'nfs' in self.options):
+			raise univention.admin.uexceptions.invalidOptions, ('Need  %s or %s in options to create a share.')%(
+				options['samba'].short_description,
+				options['nfs'].short_description)
+
+		if 'webaccess' in self.options and not 'samba' in self.options:
+			raise univention.admin.uexceptions.invalidOptions, _('Need  %s option to create a %s share.')%(
+				options['samba'].short_description,
+				options['webaccess'].short_description)
+
+
+		if self.options != self.old_options:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'old_options: %s' % self.old_options)
+			for option,objectClass in [ ('samba','univentionShareSamba'), ('nfs','univentionShareNFS'), ('webaccess','univentionShareWebaccess') ]:
+
+				if option in self.options and not option in self.old_options:
+					ocs=self.oldattr.get('objectClass', [])
+					if not objectClass in ocs:
+						ml.insert(0, ('objectClass', '', objectClass))
+
+				if not option in self.options and option in self.old_options:
+					ocs=self.oldattr.get('objectClass', [])
+					if objectClass in ocs:
+						ml.insert(0, ('objectClass', objectClass, ''))
+					for key in self.descriptions.keys():
+						if self.descriptions[key].options == [option]:
+							ml = self._remove_attr(ml, self.mapping_list[key] )
+
+		return ml
+
 	def _ldap_pre_remove(self):
 		if not hasattr(self,"options"):
 			self.open()
