@@ -1,3 +1,9 @@
+univention-system-setup (1.1.1-6) unstable; urgency=low
+
+  * Disable IPP in strict mode
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 15 Aug 2007 16:36:57 +0200
+
 univention-system-setup (1.1.1-5) unstable; urgency=low
 
   * Fix ldap_available.sh
