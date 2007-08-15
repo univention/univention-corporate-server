@@ -1,4 +1,4 @@
-univention-groupware-webclient (1.0.11-1) unstable; urgency=low
+univention-groupware-webclient (1.0.11-2) unstable; urgency=low
 
   * added configuration for sork-passwd
 

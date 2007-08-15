@@ -101,10 +101,10 @@ if not baseConfig.has_key('horde/application/imp') or not baseConfig['horde/appl
 		print "$this->applications['ingo'] = array("
 		print "    'fileroot' => '/usr/share/horde3/lib' . '/../ingo',"
 		print "    'webroot' => $this->applications['horde']['webroot'] . '/ingo',"
-		print "    'name' => _(\"Filters\"),"
+		print "    'name' => 'E-Mail ' . _(\"Filters\"),"
 		print "    'status' => 'active',"
 		print "    'provides' => array('mail/blacklistFrom', 'mail/showBlacklist', 'mail/whitelistFrom', 'mail/showWhitelist', 'mail/applyFilters', 'mail/canApplyFilters', 'mail/showFilters'),"
-		print "    'menu_parent' => 'imp'"
+		print "    'menu_parent' => 'myaccount'"
 		print ");"
 		print ""
 	print "$this->applications['sam'] = array("
@@ -442,13 +442,16 @@ if not baseConfig.has_key('horde/application/gollem') or not baseConfig['horde/a
 	print ");"
 @!@
 
-$this->applications['passwd'] = array(
-    'fileroot' => '/usr/share/horde3/lib' . '/../passwd',
-    'webroot' => $this->applications['horde']['webroot'] . '/passwd',
-    'name' => _("Password"),
-    'status' => 'active',
-    'menu_parent' => 'myaccount'
-);
+@!@
+if not baseConfig.has_key('horde/application/passwd') or not baseConfig['horde/application/passwd'].lower() in [ 'no', 'false' ]:
+	print "	$this->applications['passwd'] = array("
+	print "		'fileroot' => '/usr/share/horde3/lib' . '/../passwd',"
+	print "		'webroot' => $this->applications['horde']['webroot'] . '/passwd',"
+	print "		'name' => _("Password"),"
+	print "		'status' => 'active',"
+	print "		'menu_parent' => 'myaccount'"
+	print "	);"
+@!@
 
 $this->applications['jeta'] = array(
     'fileroot' => '/usr/share/horde3/lib' . '/../jeta',
