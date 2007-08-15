@@ -76,7 +76,8 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/application/mnemo?true \
 							horde/application/nag?true \
 							horde/application/gollem?true \
-							horde/application/ingo?true
+							horde/application/ingo?true \
+							horde/application/passwd?true
 
 univention-baseconfig set php/memory/limit?64
 

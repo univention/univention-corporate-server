@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-groupware-webclient
 Architecture: all
-Depends: horde, imp, kronolith, turba, nag, mnemo, gollem, ingo, univention-apache, univention-config-registry, smbclient, univention-postgresql, python-pexpect, liburi-perl, libnet-ldap-perl, php-db, php5-pgsql
+Depends: horde, imp, kronolith, turba, nag, mnemo, gollem, ingo, sork-passwd, univention-apache, univention-config-registry, smbclient, univention-postgresql, python-pexpect, liburi-perl, libnet-ldap-perl, php-db, php5-pgsql, heimdal-clients
 Description: univention package the UGS webclient based on horde
  -
  This package provides configurations for the the horde framework

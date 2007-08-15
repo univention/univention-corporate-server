@@ -74,6 +74,12 @@ Type: file
 File: etc/horde/ingo1/backends.php
 
 Type: file
+File: etc/horde/passwd/conf.php
+
+Type: file
+File: etc/horde/passwd/backends.php
+
+Type: file
 File: etc/horde/nag2/conf.php
 
 Type: file

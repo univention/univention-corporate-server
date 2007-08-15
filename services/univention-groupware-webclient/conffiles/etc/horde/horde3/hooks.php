@@ -1081,3 +1081,37 @@ if not baseConfig.has_key('horde/application/turba') or not baseConfig['horde/ap
 		return $icons;
 	}
 }
+
+if (!function_exists('_passwd_hook_username')) {
+	function _passwd_hook_username($userID)
+	{
+		// Connect to the LDAP server.
+		$ds = ldap_connect(
+				$GLOBALS['conf']['kolab']['ldap']['server'],
+				$GLOBALS['conf']['kolab']['ldap']['port']
+				);
+		if (!$ds) {
+			return $userID;
+		}
+		ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+		// Bind anonymously.
+		$result = @ldap_bind($ds);
+		if (!$result) {
+			return $userID;
+		}
+		// Find the user's DN.
+		$result = ldap_search(
+				$ds,
+				$GLOBALS['conf']['kolab']['ldap']['basedn'],
+				'mail=' . $userID
+				);
+		$entry = ldap_first_entry($ds, $result);
+		if ($entry === false) {
+			// The user already authenticated with his email address.
+			return $userID;
+		}
+		$username = ldap_get_values($ds, $entry, 'uid');
+		return $username[0];
+	}
+}
+
