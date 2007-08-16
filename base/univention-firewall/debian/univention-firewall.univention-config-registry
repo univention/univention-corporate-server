@@ -27,6 +27,10 @@ File: etc/security/netfilter.d/20nfs
 Variables: security/services/nfs
 
 Type: file
+File: etc/security/netfilter.d/20umc
+Variables: security/services/umc
+
+Type: file
 File: etc/security/netfilter.d/20nagios
 Variables: security/services/nagios
 
