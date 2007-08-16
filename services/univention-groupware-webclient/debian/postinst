@@ -81,6 +81,8 @@ univention-baseconfig set	horde/application/turba?true \
 
 univention-baseconfig set php/memory/limit?64
 
+dpkg-statoverride --force --update --add www-data adm 755 /var/log/horde
+
 #DEBHELPER#
 
 # restart services

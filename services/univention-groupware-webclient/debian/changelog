@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-6) unstable; urgency=low
+
+  * moved permission change of /var/log/horde from rules to postinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Aug 2007 12:11:43 +0200
+
 univention-groupware-webclient (1.0.13-5) unstable; urgency=low
 
   * added patch 01_PEAR_IMAP_unitialized_index_0.patch for Net_IMAP pear
