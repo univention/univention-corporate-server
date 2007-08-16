@@ -1,3 +1,10 @@
+univention-system-setup (1.1.1-9) unstable; urgency=low
+
+  * Don't disable the packetfilter in System Setup, this would interfere with
+    a self-made firewalling or NAT setup.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2007 15:49:25 +0200
+
 univention-system-setup (1.1.1-8) unstable; urgency=low
 
   * Fix typo
