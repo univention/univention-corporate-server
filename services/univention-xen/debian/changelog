@@ -1,3 +1,10 @@
+univention-xen (0.2.5) unstable; urgency=low
+
+  * Start managing the xend config in Config Registry
+  * Make bridging interface configurable. If not set, eth0 will be used
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2007 15:45:14 +0200
+
 univention-xen (0.2.4) unstable; urgency=low
 
   * Remove stray lines
