@@ -1,3 +1,9 @@
+univention-apache (2.0.10-3) unstable; urgency=low
+
+  * fixed apache2/allowoverride
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Aug 2007 11:23:34 +0200
+
 univention-apache (2.0.10-2) unstable; urgency=low
 
   * added config registry header to /etc/apache2/sites-available/default

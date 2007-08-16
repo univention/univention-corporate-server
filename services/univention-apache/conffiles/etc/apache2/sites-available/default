@@ -53,7 +53,6 @@ if baseConfig.has_key('apache2/allowoverride'):
 else:
 	print 'AllowOverride AuthConfig Limit'
 @!@
-	AllowOverride None
 	Order allow,deny
 	allow from all
 	@!@
