@@ -16,6 +16,8 @@ if baseConfig.has_key('security/services/nfs') and baseConfig['security/services
 	print '/sbin/iptables -A INPUT  -p udp --dport 111 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p tcp --dport 2049 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p udp --dport 2049 -j REJECT'
+	print '/sbin/iptables -A INPUT  -p tcp --dport 4660 -j REJECT'
+	print '/sbin/iptables -A INPUT  -p udp --dport 4660 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p tcp --dport 32765:32769 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p udp --dport 32765:32769 -j REJECT'
 @!@

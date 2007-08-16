@@ -1,7 +1,8 @@
 univention-firewall (1.1.0-8) unstable; urgency=low
 
   * Added umc service definition
-
+  * Extend NFS service definition by kernel server port
+	
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2007 09:39:59 +0200
 
 univention-firewall (1.1.0-7) unstable; urgency=low
