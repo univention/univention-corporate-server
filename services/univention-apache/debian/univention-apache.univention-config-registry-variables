@@ -1,4 +1,10 @@
-[apache/startsite]
+[apache2/allowoverride]
+Description[de]=Angabe der durch .htaccess-Dateien überschreibbaren Konfigurationsdirektiven
+Description[en]=Directives that can be overridden by .htaccess files
+Type=str
+Categories=Network
+
+[apache2/startsite]
 Description[de]=Pfad zur Startseite des Webservers
 Description[en]=Path to webservers index page
 Type=str

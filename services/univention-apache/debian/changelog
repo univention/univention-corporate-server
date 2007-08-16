@@ -1,3 +1,9 @@
+univention-apache (2.0.10-1) unstable; urgency=low
+
+  * added apache2/allowoverride and renamed apache/startsite to apache2/startsite
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Aug 2007 11:07:56 +0200
+
 univention-apache (2.0.9-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

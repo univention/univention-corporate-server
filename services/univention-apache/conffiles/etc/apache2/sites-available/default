@@ -38,11 +38,17 @@ NameVirtualHost *
 
 <Directory /var/www/>
 	Options Indexes FollowSymLinks MultiViews
+	@!@
+if baseConfig.has_key('apache2/allowoverride'):
+	print 'AllowOverride %s' % baseConfig['apache2/allowoverride']
+else:
+	print 'AllowOverride AuthConfig Limit'
+@!@
 	AllowOverride None
 	Order allow,deny
 	allow from all
 	@!@
-if baseConfig.has_key('apache/startsite'):
-	print 'RedirectMatch ^/$ /%s' % baseConfig['apache/startsite']
+if baseConfig.has_key('apache2/startsite'):
+	print 'RedirectMatch ^/$ /%s' % baseConfig['apache2/startsite']
 @!@
 </Directory>
