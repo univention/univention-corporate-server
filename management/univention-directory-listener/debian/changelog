@@ -1,3 +1,9 @@
+univention-directory-listener (2.1.1-14) unstable; urgency=low
+
+  * Start the wording transition code earlier
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2007 13:36:50 +0200
+
 univention-directory-listener (2.1.1-13) unstable; urgency=low
 
   * Fix postinst
