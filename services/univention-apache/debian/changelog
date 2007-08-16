@@ -1,3 +1,9 @@
+univention-apache (2.0.10-4) unstable; urgency=low
+
+  * renamed apache/loglevel to apache2/loglevel and updated postinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 16 Aug 2007 12:05:35 +0200
+
 univention-apache (2.0.10-3) unstable; urgency=low
 
   * fixed apache2/allowoverride

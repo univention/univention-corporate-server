@@ -32,8 +32,8 @@ a2enmod auth_pam
 a2enmod unique_id
 
 univention-config-registry set apache2/autostart?"yes"
-univention-config-registry set apache/loglevel?"warn"
-univention-config-registry set apache/startsite?"ucs-overview/de.html"
+univention-config-registry set apache2/loglevel?"warn"
+univention-config-registry set apache2/startsite?"ucs-overview/de.html"
 univention-config-registry set mail/alias/webmaster?root
 
 eval $(univention-config-registry shell)

@@ -29,7 +29,7 @@ NameVirtualHost *
 
 	# Possible values include: debug, info, notice, warn, error, crit,
 	# alert, emerg.
-	LogLevel @%@apache/loglevel@%@
+	LogLevel @%@apache2/loglevel@%@
 
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
