@@ -8,9 +8,10 @@
 //
 // 	/etc/univention/templates/files/etc/horde/turba2/conf.php
 //
-$conf['menu']['import_export'] = false;
+$conf['menu']['import_export'] = true;
 $conf['menu']['apps'] = array();
-$conf['client']['addressbook'] = 'kolab_global';
-$conf['comments']['allow'] = false;
-$conf['documents']['params']['vfsroot'] = '/tmp';
-$conf['documents']['type'] = 'file';
+$conf['client']['addressbook'] = 'kolab_local';
+$conf['shares']['source'] = 'kolab';
+$conf['comments']['allow'] = true;
+$conf['documents']['type'] = 'horde';
+// $conf['documents']['params']['vfsroot'] = '/tmp';
