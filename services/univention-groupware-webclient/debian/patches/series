@@ -1,1 +1,2 @@
 00_PEAR_IMAP_pearbug3438_fixed_disconnect_error_msg.patch
+01_PEAR_IMAP_unitialized_index_0.patch

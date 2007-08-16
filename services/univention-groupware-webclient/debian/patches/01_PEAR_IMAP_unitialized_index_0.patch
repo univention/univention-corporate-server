@@ -1,0 +1,11 @@
+--- univention-groupware-webclient-1.0.13/debian/univention-groupware-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php.orig	2007-08-16 09:23:30.527991000 +0200
++++ univention-groupware-webclient-1.0.13/debian/univention-groupware-webclient/usr/share/horde3/lib/Net/IMAPProtocol.php	2007-08-16 09:23:41.476675250 +0200
+@@ -2269,7 +2269,7 @@
+             $content=$str;
+             return $len;
+         }
+-        switch( $str[0] ){
++	switch(substr($str, 0, 1)) {
+         case '{':
+             if( ($posClosingBraces = $this->_getClosingBracesPos($str, '{' , '}' )) == false ){
+                 $this->_prot_error("_getClosingBracesPos() error!!!" , __LINE__ , __FILE__ );
