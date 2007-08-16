@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-8) unstable; urgency=low
+
+  * changed Horde Styles and added link on ucs-overview 
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 16 Aug 2007 16:16:13 +0200
+
 univention-groupware-webclient (1.0.13-7) unstable; urgency=low
 
   * replaced config files for turba (sources.php and conf.php) by Kolab's version

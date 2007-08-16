@@ -16,20 +16,32 @@ body.scrollbar-quirk {
  * THEME LOGO
  */
 #themelogo {
-    background-image    : url('graphics/logo_white.png');
+    background-image    : url('graphics/logo_white_longe.png');
+    float: right;
     height              : 50px;
-    width               : 150px;
+    width               : 350px;
 }
 
 img {
     border         : none;
-    vertical-align : middle;
+    vertical-align : right;
+/*    background-image	: url('graphics/grey_bottom_right.png');
+    background-repeat:	no-repeat*/
 }
 
+tr.mboxcontrol {
+background:#FFFFFF none repeat scroll 0% 50%;
+color:#000000;
+}
+td.mboxcontrol {
+background:#FFFFFF none repeat scroll 0% 50%;
+color:#000000;
+}
 /* Info box when you shall confirm delete in Kronolith */
 .box {
     border             : 1px solid #cc0033;
-    background-color   : #dddddd;
+    #background-color   : #dddddd;
+    background-color   : red;
     -moz-border-radius : 8px;
 }
 
@@ -205,6 +217,13 @@ table.nopadding td, table.nopadding th {
     /* padding        : 5px;
     padding-top    : 2px; */
 }
+/* .mboxcontrol {
+background:#CCCCCC;
+}
+.mboxcontrol {
+background:#FFFFFF none repeat scroll 0% 50%;
+color:#000000;
+} */
 
 
 /**
@@ -250,11 +269,14 @@ a.widget:hover {
 #menu {
     color            : #999999;
     font-weight      : normal;
-    background-color : #cc0033;
+    background-color : #dddddd;
+    background-image : url("graphics/hordeoben.png");
+    background-position: top;
+    background-repeat: repeat-x;
     font-family      : Verdana,Helvetica,sans-serif;
     border-bottom    : 0px solid red; /* #95B3DE;*/ /* #657DA6*/
-    height           : 50px !important;
-    height           : 54px;
+   /* height           : 50px !important;
+    height           : 54px;*/
 }
 
 #menu ul {
@@ -269,7 +291,7 @@ a.widget:hover {
 }
 
 #menu a {
-    color            : white;
+    color            : #000000;
     font-weight      : normal;
     font-family      : Verdana,Helvetica,sans-serif;
     display: block;
@@ -277,28 +299,30 @@ a.widget:hover {
     font-size: 11px;
     text-decoration: none;
     padding: 3px;
+    margin-top: 1px;
+    margin-top: 1px;
     -moz-border-radius: 3px;
 }
 
 #menu a:hover {
-    color              : black;
-    border-bottom      : 1px solid #999999;
-    border-right       : 1px solid #999999;
-    border-top         : 1px solid #999999;
-    border-left        : 1px solid #999999;
+    color              : #666666;
+    border-bottom      : 1px solid #666666;
+    border-right       : 1px solid #666666;
+    border-top         : 1px solid #666666;
+    border-left        : 1px solid #666666;
     padding            : 2px;
     -moz-border-radius : 5px;
 }
 
 #menu a.current {
     background-color   : white;
-    border-bottom      : 1px solid #999999;
-    border-right       : 1px solid #999999;
-    border-top         : 1px solid #999999;
-    border-left        : 1px solid #999999;
+    border-bottom      : 1px solid #666666;
+    border-right       : 1px solid #666666;
+    border-top         : 1px solid #666666;
+    border-left        : 1px solid #666666;
     padding            : 2px;
     -moz-border-radius : 5px;
-    color            : #999999;
+    color            : #666666;
     font-weight      : normal;
     font-family      : Verdana,Helvetica,sans-serif;
     display: block;
@@ -312,7 +336,7 @@ a.widget:hover {
 #menu h1 {
     font-family : Arial,Verdana,Helvetica,sans-serif;
     font-weight : bold;
-    color       : white;
+    color       : black;
     font-size   : 15pt;
     font-style  : italic;
 
@@ -350,6 +374,7 @@ th.header {
     /* border-bottom    : 2px solid #67A; */
     padding          : 3px;
     padding-left     : 10px;
+    margin-right     : 2px;
     height           : 16px; /* 20px */
 }
 
@@ -422,9 +447,10 @@ a.smallheader:hover {
 
 th.item {
     background-color : #cccccc;
-    /* border           : 2px solid #9BD; */
+    border           : 2px solid ;
     padding          : 0px;
     padding-left     : 5px;
+    margin-left	     : 2px;
 /*    background-image : url("graphics/header_bg.png");
     background-image : repeat-x;*/
     }
@@ -507,6 +533,7 @@ input, select {
     font-family : Geneva,Arial,Helvetica,sans-serif;
     font-size   : 9pt;
     font-weight : normal;
+    margin-right: 2px;
 }
 input, option {
     padding     : 1px;
@@ -687,6 +714,11 @@ option {
     border-right     : 3px solid #990000;
 
 }
+
+ul.msgactions, ul.msgactions ul {
+    list-style: none;
+    }
+
 
 /**
  * SIDEBAR
