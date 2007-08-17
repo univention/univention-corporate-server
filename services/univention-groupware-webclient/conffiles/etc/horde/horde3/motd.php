@@ -12,5 +12,5 @@
 <!-- It will be included below the log-in form on the login page. -->
 
 <br />
-<table width="100%"><tr><td align="center"><img src="themes/graphics/horde-power1.png" alt="Powered by Horde" /></td></tr></table>
+<table width="100%"><tr><td align="center"><img src="themes/graphics/horde-power1.png" alt="Powered by Horde" style="position:absolute;bottom:10px;right:10px;" /></td></tr></table>
 
