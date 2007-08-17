@@ -36,6 +36,7 @@ fi
 
 univention-config-registry set nfs/ports?static
 
+
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
 		then

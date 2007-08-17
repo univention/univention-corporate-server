@@ -1,3 +1,10 @@
+univention-nfs (1.0.1-5) unstable; urgency=low
+
+  * If nfs/ports is configured to "static" and the kernel NFS server is used, the
+    ports for the lockd needs to be passed to the lockd kernel module.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 17 Aug 2007 10:07:11 +0200
+
 univention-nfs (1.0.1-4) unstable; urgency=low
 
   * Don't install Config Registry templates explicitly, let univention-
