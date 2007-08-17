@@ -106,7 +106,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Mail Services (smtp/pop/imap)'),
-					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus', 'univention-spamassassin'],
+					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
