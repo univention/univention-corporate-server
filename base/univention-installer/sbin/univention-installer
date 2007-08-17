@@ -50,15 +50,15 @@ else
 			fi
 			if [ -x "$i" ]; then
 				if [ -e /tmp/logging ]; then
-					$i >/dev/tty1 </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
+					$i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
 				else
-					$i >/dev/tty1 </dev/tty1
+					$i </dev/tty1
 				fi
 			elif [ -e "$i" ]; then
 				if [ -e /tmp/logging ]; then
-					. $i >/dev/tty1 </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
+					. $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
 				else
-					. $i >/dev/tty1 </dev/tty1
+					. $i </dev/tty1
 				fi
 			fi
 		done
