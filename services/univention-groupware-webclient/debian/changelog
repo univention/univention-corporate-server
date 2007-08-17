@@ -1,4 +1,4 @@
-univention-groupware-webclient (1.0.13-10) unstable; urgency=low
+univention-groupware-webclient (1.0.13-11) unstable; urgency=low
 
   * update turba/attributes.php from
     http://cvs.horde.org/co.php?r=1.50&f=turba%2Fconfig%2Fattributes.php

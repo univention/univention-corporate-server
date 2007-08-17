@@ -226,7 +226,7 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
     );
 
 
-     * The local address books for a Kolab user. These are stored in specially
+    /* The local address books for a Kolab user. These are stored in specially
      * flagged contact folder within the users Cyrus IMAP mailbox.
      */
 
