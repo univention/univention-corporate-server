@@ -17,7 +17,8 @@ body.scrollbar-quirk {
  */
 #themelogo {
     background-image    : url('graphics/logo_white_long.png');
-    float: right;
+    margin-left         : -200px;
+    float               : right;
     height              : 50px;
     width               : 350px;
 }
