@@ -1,3 +1,9 @@
+univention-nfs (1.0.1-6) unstable; urgency=low
+
+  * Register /etc/modprobe.d/nfs-kernel-server for nfs/ports
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 17 Aug 2007 10:25:15 +0200
+
 univention-nfs (1.0.1-5) unstable; urgency=low
 
   * If nfs/ports is configured to "static" and the kernel NFS server is used, the

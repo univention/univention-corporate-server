@@ -9,3 +9,7 @@ Variables: nfs/ports
 Type: file
 File: etc/default/quota
 Variables: nfs/ports
+
+Type: file
+File: etc/modprobe.d/nfs-kernel-lockd
+Variables: nfs/ports
