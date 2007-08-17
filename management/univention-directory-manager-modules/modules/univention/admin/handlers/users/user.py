@@ -1826,6 +1826,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.modifypassword=0
 		else:
 			self.modifypassword=1
+		
+		if self['mailPrimaryAddress']:
+			self['mailPrimaryAddress']=self['mailPrimaryAddress'].lower()
 
 	def _ldap_addlist(self):
 
@@ -1980,6 +1983,10 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] )
 
 	def _ldap_pre_modify(self):
+		if self.hasChanged('mailPrimaryAddress'):
+			if self['mailPrimaryAddress']:
+				self['mailPrimaryAddress']=self['mailPrimaryAddress'].lower()
+
 		if self.hasChanged('username'):
 			try:
 				uid=univention.admin.allocators.request(self.lo, self.position, 'uid', value=self['username'])
