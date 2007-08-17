@@ -1,4 +1,14 @@
 <?php
+// Warning: This file is auto-generated and might be overwritten by
+//          univention-baseconfig.
+//          Please edit the following file instead:
+// Warnung: Diese Datei wurde automatisch generiert und kann durch
+//          univention-baseconfig überschrieben werden.
+//          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+//
+//     /etc/univention/templates/files/etc/horde/turba2/attributes.php
+//
+
 /**
  * $Horde: turba/config/sources.php.dist,v 1.166 2007/05/23 22:08:54 wrobel Exp $
  *
@@ -162,7 +172,7 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             'objectclass' => array(
                 'inetOrgPerson'
             ),
-            'scope' => 'one',
+            'scope' => 'sub',
             'charset' => 'utf-8',
             'version' => 3,
             'bind_dn' => '',
@@ -215,7 +225,7 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
         'browse' => true,
     );
 
-    /**
+
      * The local address books for a Kolab user. These are stored in specially
      * flagged contact folder within the users Cyrus IMAP mailbox.
      */

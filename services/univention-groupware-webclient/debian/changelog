@@ -1,3 +1,12 @@
+univention-groupware-webclient (1.0.13-10) unstable; urgency=low
+
+  * update turba/attributes.php from
+    http://cvs.horde.org/co.php?r=1.50&f=turba%2Fconfig%2Fattributes.php
+    .dist
+  * set ldap search scope for turba to subtree
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Aug 2007 08:16:47 +0200
+
 univention-groupware-webclient (1.0.13-9) unstable; urgency=low
 
   * added graphic for Horde
