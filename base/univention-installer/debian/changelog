@@ -1,3 +1,9 @@
+univention-installer (1.6.25-4) unstable; urgency=low
+
+  * Bump version
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 17 Aug 2007 15:49:50 +0200
+
 univention-installer (1.6.25-3) unstable; urgency=low
 
   * remove univention-spamassassin from univention-mail
