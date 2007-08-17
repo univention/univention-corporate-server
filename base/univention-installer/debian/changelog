@@ -1,4 +1,4 @@
-univention-installer (1.6.25-1) unstable; urgency=low
+univention-installer (1.6.25-2) unstable; urgency=low
 
   * remove univention-spamassassin from univention-mail
   * redirect input and output, try to solve the chfn problem

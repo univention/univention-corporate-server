@@ -161,4 +161,4 @@ fi
 __EOT__
 
 chmod +x /instmnt/install_packages.sh
-chroot /instmnt ./install_packages.sh
+chroot /instmnt ./install_packages.sh >/dev/tty1 </dev/tty1
