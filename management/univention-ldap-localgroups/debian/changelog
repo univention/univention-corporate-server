@@ -1,3 +1,9 @@
+univention-ldap-localgroups (0.2.0-1) unstable; urgency=low
+
+  * adapt to UCS 2.0 policies
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 20 Aug 2007 11:29:35 +0200
+
 univention-ldap-localgroups (0.1-12) unstable; urgency=low
 
   * modified handling for empty groups in addon-localgroup.py
