@@ -48,7 +48,7 @@ for share in shares:
 	print "),"
 
 	print "'loginparams' => array(),"
-	print "'clipboard' => true,"
+	print "'clipboard' => false,"
 	print "'attributes' => array('type', 'name', 'download', 'modified', 'size')"
 	print ');'
 
