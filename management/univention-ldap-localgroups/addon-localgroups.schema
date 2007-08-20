@@ -1,0 +1,16 @@
+# Copyright (C) 2004,2005,2006,2007 Univention GmbH
+
+# addon-localgroups.schema
+# $OID: 1.3.6.1.4.1.10176.1041.1
+
+
+attributetype ( 1.3.6.1.4.1.10176.1041.1 NAME 'univentionLocalGroupMember'
+        SUBSTR caseIgnoreSubstringsMatch
+        DESC 'Membership for local Groups'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+
+objectclass ( 1.3.6.1.4.1.10176.1041.2 NAME 'univentionLocalGroup'
+        DESC 'Group is Member of local Group' SUP top AUXILIARY
+        MAY ( univentionLocalGroupMember ) )                                                                        

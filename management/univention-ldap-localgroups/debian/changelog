@@ -1,0 +1,12 @@
+univention-ldap-localgroups (0.1-12) unstable; urgency=low
+
+  * modified handling for empty groups in addon-localgroup.py
+
+ -- Bastian Neumann <neumann@univention.de>  Mon, 11 Jun 2007 11:49:41 +0200
+
+univention-ldap-localgroups (0.1-11) unstable; urgency=low
+
+  * Initial Release
+
+ -- bastian <neumann@univention.de>  Sat, 24 Feb 2007 20:59:35 +0100
+

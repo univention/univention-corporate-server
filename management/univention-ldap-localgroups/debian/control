@@ -1,0 +1,12 @@
+Source: univention-ldap-localgroups
+Section: univention
+Priority: optional
+Maintainer:<packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0), univention-config-dev
+Standards-Version: 3.6.1
+
+Package: univention-ldap-localgroups
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, ${python:Depends}, 
+Description: Addon for univention-listener.
+	Package includes Management for local groups

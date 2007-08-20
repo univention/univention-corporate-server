@@ -1,0 +1,28 @@
+#! /bin/sh
+# postinst script for univention-ldap-localgroups
+set -e
+
+#DEBHELPER#
+
+case "$1" in
+    configure)
+	
+	/etc/init.d/slapd restart
+	/etc/init.d/univention-ldap-listener restart
+	/etc/init.d/nscd restart
+	/usr/lib/univention-install/99univention-ldap-localgroups.inst
+    ;;
+
+    abort-upgrade|abort-remove|abort-deconfigure)
+
+    ;;
+
+    *)
+        echo "postinst called with unknown argument \`$1'" >&2
+        exit 1
+    ;;
+esac
+
+exit 0
+
+
