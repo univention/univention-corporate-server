@@ -12,7 +12,7 @@
 #
 @!@
 interval='*/5 * * * *'
-if baseConfig.has_key('horde/kronolith/reminders/cron') and baseConfig['horde/kronolith/reminders/cron'];
+if baseConfig.has_key('horde/kronolith/reminders/cron') and baseConfig['horde/kronolith/reminders/cron']:
 	interval=baseConfig['horde/kronolith/reminders/cron']
 print '%s www-data test -x /usr/bin/php && /usr/bin/php -q /usr/share/horde3/kronolith/scripts/reminders.php 1>&2 > /dev/null
 @!@
