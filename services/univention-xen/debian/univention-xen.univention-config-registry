@@ -10,3 +10,4 @@ Variables: xen/repository/aptsource
 Type: file
 File: etc/xen/xend-config.sxp
 Variables: xen/bridge/interface
+Variables: xen/vnc/listen
