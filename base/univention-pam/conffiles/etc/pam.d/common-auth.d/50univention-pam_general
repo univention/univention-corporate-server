@@ -26,11 +26,11 @@ else:
 pam_cache='''
 # cache password (on successful authentification)
 auth     [success=done new_authtok_reqd=ok \
-	ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user='%s'%value
+	ignore=ignore default=bad]         pam_passwdcache.so try_first_pass insert max_user=%s
 # remove password from cache (on failed authentification)
-auth     required                           pam_passwdcache.so try_first_pass delete max_user='%s'%value
+auth     required                           pam_passwdcache.so try_first_pass delete max_user=%s
 # authenticate against cache (if a service fails)
-auth     required                         pam_passwdcache.so try_first_pass'''
+auth     required                         pam_passwdcache.so try_first_pass'''%(value, value)
 
 pam_cache_only='''
 # authenticate against cache

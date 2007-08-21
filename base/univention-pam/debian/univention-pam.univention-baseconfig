@@ -74,6 +74,7 @@ Variables: auth/user/methods
 Type: multifile
 Multifile: etc/pam.d/common-auth
 Variables: auth/user/methods
+Variables: auth/passwdcache/max_user
 
 Type: subfile
 Multifile: etc/pam.d/common-auth
