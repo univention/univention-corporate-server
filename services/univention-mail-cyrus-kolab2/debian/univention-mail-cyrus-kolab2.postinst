@@ -89,6 +89,13 @@ elif [ -z "$2" ]; then
 	add_kolab2cal_user
 fi
 
+if [ "$1" = configure -a -z "$2" ] ; then
+	# default for new installs
+	univention-config-registry set mail/cyrus/squatter/cron?"30 3 * * Sun"
+else
+	univention-config-registry set mail/cyrus/squatter/cron?"#30 3 * * Sun"
+fi
+
 if [ -z "$2" ]; then
 	univention-config-registry set mail/cyrus/imap/quota?"yes"
 	univention-config-registry set mail/cyrus/imap/quotawarnpercent?90

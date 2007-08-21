@@ -79,3 +79,11 @@ Categories=Mail
 [mail/cyrus/autostart]
 Description[de]=Definiert ob Cyrus beim Booten des Rechners gestartet wird
 Description[en]=Defines if cyrus should be started when booting the computer
+Type=str
+Categories=Mail
+
+[mail/cyrus/squatter/cron]
+Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indiziert
+Description[en]=Defines the interval to have the indexservice squatter process mails
+Type=str
+Categories=Mail
