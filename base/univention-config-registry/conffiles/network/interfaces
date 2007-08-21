@@ -24,7 +24,7 @@ def check_gateway (ip, netmask, gateway):
 		return 0
 	if samenet == 1:
 		return 1
-		
+
 
 gateway=False
 for i in range(0,4):
@@ -76,4 +76,13 @@ for i in range(0,4):
 				if check_gateway(configRegistry['interfaces/eth%s_%s/address' % (i,j)].split('.'), configRegistry['interfaces/eth%s_%s/netmask' % (i,j)].split('.'), configRegistry['gateway'].split('.')):
 					print 'gateway '+configRegistry['gateway']
 					gateway=True
+
+	for key,value in configRegistry.items():
+		if key.startswith('interfaces/eth%s/route/' % i):
+			if value.startswith('host ') or value.startswith('net '):
+				print 'up route add -%s dev eth%d' % (value, i)
+
+	for key,value in configRegistry.items():
+		if key.startswith('interfaces/eth%s/options/' % i):
+			print value
 @!@

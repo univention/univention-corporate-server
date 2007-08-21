@@ -114,7 +114,19 @@ Categories=Network
 
 [interfaces/eth.*/type]
 Description[de]=Netztypen für die einzelnen Interfaces
-Description[en]=Type of network for each the network interface
+Description[en]=Type of network for each network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/route/.*]
+Description[de]=Zusätzliche Routen für die einzelnen Interfaces
+Description[en]=Additional routing entries for each network interface
+Type=str
+Categories=Network
+
+[interfaces/eth.*/options/.*]
+Description[de]=Zusätzliche Einstellungen für die einzelnen Interfaces
+Description[en]=Additional options for each network interface
 Type=str
 Categories=Network
 

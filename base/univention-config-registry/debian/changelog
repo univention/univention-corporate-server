@@ -1,3 +1,9 @@
+univention-config-registry (2.3.4-1) unstable; urgency=low
+
+  * added interfaces/ethX/route/Y and interfaces/ethX/options/Y
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 21 Aug 2007 17:17:49 +0200
+
 univention-config-registry (2.3.3-1) unstable; urgency=low
 
   * added univention-policy-update-config-registry
