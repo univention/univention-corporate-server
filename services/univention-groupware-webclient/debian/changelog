@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-18) unstable; urgency=low
+
+  * added cronjob for kronolith's reminders
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 21 Aug 2007 13:26:47 +0200
+
 univention-groupware-webclient (1.0.13-17) unstable; urgency=low
 
   * several style changes

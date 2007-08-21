@@ -92,6 +92,10 @@ Type: file
 File: etc/horde/mnemo2/prefs.php
 
 Type: file
+File: etc/cron.d/kronolith2
+Variables: horde/kronolith/reminders/cron
+
+Type: file
 File: etc/univention/apache/96univention-horde
 Variables: interfaces/eth0/type
 Variables: hostname
