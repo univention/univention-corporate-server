@@ -73,6 +73,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.5; then
 	/usr/sbin/univention-baseconfig set mail/cyrus/imap/quotawarnkb?0
 fi
 
+if [ "$1" = configure -a -z "$2" ] ; then
+       # default for new installs
+	univention-config-registry set mail/cyrus/squatter/cron?"30 3 * * Sun"
+else
+	univention-config-registry set mail/cyrus/squatter/cron?"#30 3 * * Sun"
+fi
+
 
 if [ -x /etc/init.d/postfix ]; then
 	/etc/init.d/postfix restart

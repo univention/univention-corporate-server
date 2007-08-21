@@ -58,3 +58,9 @@ Description[en]=The maximum amount of free space (in kB) in which to give a quot
 Type=str
 Categories=Mail
 
+[mail/cyrus/squatter/cron]
+Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indiziert
+Description[en]=Defines the interval to have the indexservice squatter process mails
+Type=str
+Categories=Mail
+

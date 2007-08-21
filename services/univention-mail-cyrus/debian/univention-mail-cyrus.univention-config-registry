@@ -16,3 +16,8 @@ Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/imap/maxchilds
 Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/maxchilds
+
+Type: file
+File: etc/cron.d/univention-cyrus-squatter
+Variables: mail/cyrus/squatter/cron
+
