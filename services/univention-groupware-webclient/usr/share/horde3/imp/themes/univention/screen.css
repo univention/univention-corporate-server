@@ -138,3 +138,9 @@ table {
     border: none;
 }
 
+#messageBody {
+background:#EEEEEE none repeat scroll 0%;
+border-bottom:1px solid #CCCCCC;
+border-top:1px solid #CCCCCC;
+padding:8px;
+}

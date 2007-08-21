@@ -437,6 +437,10 @@ a.smallheader:hover {
 }
 
 
+.control:hover {
+    color            : #333333;
+}
+
 /* Column headers in Kronolith, IMP for example */
 .item {
     color            : #999999;
@@ -483,7 +487,7 @@ th {
  */
 .text {
     color            : black;
-    background-color : white;
+    background:#EEEEEE none repeat scroll 0%;
 }
 .text-over {
     background-color : #cc0033;
@@ -612,11 +616,11 @@ option {
 
 /* Alternating styles. */
 .item0 {
-   background-color : white;
+   background-color : #EEEEEE;
    border-bottom    : 1px solid #EEE;
 }
 .item1 {
-   background-color : white;
+   background-color : #EEEEEE;
    border-bottom    : 1px solid #EEE;
 }
 
