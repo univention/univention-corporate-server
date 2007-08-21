@@ -43,6 +43,12 @@ fi
 
 SA_LEARN="/usr/bin/sa-learn"
 
+if [ ! -f /var/lib/amavis/.spamassassin/bayes_toks ]; then	
+	touch /var/lib/amavis/.spamassassin/bayes_toks
+	chown amavis:amavis /var/lib/amavis/.spamassassin/bayes_toks
+	chmod 600 /var/lib/amavis/.spamassassin/bayes_toks
+fi
+
 $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --spam "$MAILFOLDER/Spam"
 $SA_LEARN --dbpath /var/lib/amavis/.spamassassin --ham "$MAILFOLDER/Ham"
 
