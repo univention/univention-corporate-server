@@ -32,6 +32,13 @@ univention-baseconfig set listener/autostart?yes
 
 adduser --quiet --system --home /var/lib/univention-directory-listener listener
 
+# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
+# and can be removed in UCS 2.1
+if [ -h "/var/service/univention-ldap-listener" ]; then
+       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
+       rm /var/service/univention-ldap-listener
+fi
+
 if [ ! -e "/var/log/univention/listener.log" ]; then
 	touch /var/log/univention/listener.log
 	chmod 600 /var/log/univention/listener.log
@@ -47,12 +54,6 @@ fi
 # Scriptposition changed, force remove old
 update-rc.d -f univention-ldap-listener remove >/dev/null 2>&1
 
-# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
-# and can be removed in UCS 2.1
-if [ -h "/var/service/univention-ldap-listener" ]; then
-       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
-       rm /var/service/univention-ldap-listener
-fi
 
 #DEBHELPER#
 
@@ -75,6 +76,12 @@ fi
 /usr/lib/univention-install/03univention-directory-listener.inst || true
 
 
+# This is only needed for the transition from univention-ldap-listener to univention-directory-listener
+# and can be removed in UCS 2.1
+if [ -h "/var/service/univention-ldap-listener" ]; then
+       ln -s /etc/runit/univention-directory-listener /var/service/univention-directory-listener
+       rm /var/service/univention-ldap-listener
+fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.12; then
