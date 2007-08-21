@@ -132,7 +132,7 @@ class Web( object ):
 									 		  'loaded' : object.options[ 'loaded' ],
 											  'key' : object.options[ 'key' ] } )
 			result.add_row( [ umcd.Question( _( "Unloading a kernel module may result in an unstable system. Are you sure the module '%s' should be unloaded?" ) % mod.name,
-										actions = [ umcd.Action( req ), umcd.Action( req_list ) ] ) ], okay = _( 'Unload' ) )
+										actions = [ umcd.Action( req ), umcd.Action( req_list ) ] , okay = _( 'Unload' ) ) ] )
 
 		res.dialog = [ result ]
 		self.revamped( object.id(), res )
