@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-20) unstable; urgency=low
+
+  * fixed cronjob template
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 21 Aug 2007 16:07:05 +0200
+
 univention-groupware-webclient (1.0.13-19) unstable; urgency=low
 
   * fixed typo
