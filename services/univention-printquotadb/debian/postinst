@@ -30,7 +30,13 @@
 
 #DEBHELPER#
 
-/etc/init.d/postgresql reload
+if [ -x /etc/init.d/postgresql ]; then
+	/etc/init.d/postgresql reload
+fi
+
+if [ -x /etc/init.d/postgresql-7.4 ]; then
+	/etc/init.d/postgresql-7.4 reload
+fi
 
 eval `univention-baseconfig shell`
 

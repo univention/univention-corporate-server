@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.2-1) unstable; urgency=low
+
+  * restart postgresql with /etc/init.d/postgresql-7.4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 14:57:59 +0200
+
 univention-printquotadb (1.0.1-1) unstable; urgency=low
 
   * moved files to new postgresql config directory
