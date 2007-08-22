@@ -1,3 +1,9 @@
+univention-webui-style (1.0.6-1) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:40:10 +0200
+
 univention-webui-style (1.0.5-1) unstable; urgency=low
 
   * rename apache/startsite to apache2/startsite
