@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.3-1) unstable; urgency=low
+
+  * add version number to join script 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 15:57:44 +0200
+
 univention-printquotadb (1.0.2-1) unstable; urgency=low
 
   * restart postgresql with /etc/init.d/postgresql-7.4

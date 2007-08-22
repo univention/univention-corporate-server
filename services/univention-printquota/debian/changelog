@@ -1,3 +1,9 @@
+univention-printquota (1.0.1-1) unstable; urgency=low
+
+  * add version number to join script 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 15:52:22 +0200
+
 univention-printquota (1.0.0-4) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

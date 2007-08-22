@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+VERSION=1
+
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
 	exit 1
@@ -35,6 +37,6 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-printquotadb successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printquotadb successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-printquotadb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printquotadb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
