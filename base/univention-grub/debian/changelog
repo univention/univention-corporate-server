@@ -1,3 +1,9 @@
+univention-grub (1.0.16-3) unstable; urgency=low
+
+  * added univention-config-registry header to menu.lst template file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 16:37:06 +0200
+
 univention-grub (1.0.16-2) unstable; urgency=low
 
   * added descriptions for config registry variables
