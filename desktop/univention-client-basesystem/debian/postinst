@@ -51,10 +51,10 @@ fi
 
 #DEBHELPER#
 
-if [ -e "/etc/univention/ssl/udsCA/CAcert.pem" ]; then
-	mkdir -p /var/lib/univention-client-root/etc/univention/ssl/udsCA
-	cp /etc/univention/ssl/udsCA/CAcert.pem /var/lib/univention-client-root/etc/univention/ssl/udsCA
-	chmod 644 /var/lib/univention-client-root/etc/univention/ssl/udsCA/CAcert.pem
+if [ -e "/etc/univention/ssl/ucsCA/CAcert.pem" ]; then
+	mkdir -p /var/lib/univention-client-root/etc/univention/ssl/ucsCA
+	cp /etc/univention/ssl/ucsCA/CAcert.pem /var/lib/univention-client-root/etc/univention/ssl/ucsCA
+	chmod 644 /var/lib/univention-client-root/etc/univention/ssl/ucsCA/CAcert.pem
 fi
 
 

@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.2-1) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:20:18 +0200
+
 univention-client-basesystem (2.1.1-1) unstable; urgency=low
 
   * set portmap/autostart to yes 
