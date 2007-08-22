@@ -248,6 +248,8 @@ fi
 echo "$timezone" >/etc/timezone
 ln -sf /usr/share/zoneinfo/$timezone /etc/localtime
 
+mkdir -p /etc/console
+
 if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	cp /usr/share/keymaps/powerpc/*/$keymap.kmap.gz /etc/console/boottime.kmap.gz >/dev/null 2>&1
 else

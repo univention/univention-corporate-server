@@ -1,3 +1,10 @@
+univention-installer (1.6.27-1) unstable; urgency=low
+
+  * create /etc/console during the configuration, otherwise the default
+    keymap isn't available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 14:45:25 +0200
+
 univention-installer (1.6.26-1) unstable; urgency=low
 
   * added extra "installation complete" msg just before reboot
