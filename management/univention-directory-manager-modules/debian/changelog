@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.1.3-1) unstable; urgency=low
+
+  * don't show in univention-license-check that less then zero accounts
+    are used
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 15:48:11 +0200
+
 univention-directory-manager-modules (2.1.2-1) unstable; urgency=low
 
   * replace last appearance of admin/cmd/debug/level with

@@ -141,6 +141,7 @@ def check_license(lo, dn, list_dns, expired):
 			odn = objs[i]
 			if t == License.ACCOUNT:
 				n -= License.SYSACCOUNTS
+				if n < 0: n=0
 			e = i+1
 			l = _license.names[t]
 			if m:
