@@ -74,7 +74,7 @@ fixdirs () {
 case "$1" in
   start)
         eval $(univention-baseconfig shell mail/cyrus21/autostart)
-        if [ -z "$mail_cyrus_autostart" -o "$mail_cyrus_autostart" != "yes" ]; then
+        if [ -z "$mail_cyrus21_autostart" -o "$mail_cyrus21_autostart" != "yes" ]; then
                 exit 0
         fi
 
