@@ -205,7 +205,7 @@ class Server( signals.Provider ):
 			try:
 				self.crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
 				self.crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
-				self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+				self.crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 			except SSL.Error, e:
 				# SSL is not possible
 				ud.debug( ud.ADMIN, ud.ERROR, 'Setting up SSL configuration failed: %s' % str( e ) )

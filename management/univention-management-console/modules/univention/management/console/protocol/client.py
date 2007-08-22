@@ -73,7 +73,7 @@ class Client( signals.Provider ):
 			self.__crypto_context.set_cipher_list('DEFAULT')
 			self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
 			try:
-				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+				self.__crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 			except SSL.Error, e:
 				# SSL is not possible
 				ud.debug( ud.ADMIN, ud.ERROR, 'Client: Setting up SSL configuration failed: %s' % str( e ) )

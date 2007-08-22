@@ -1,3 +1,9 @@
+univention-management-console (0.7.28-1) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:27:56 +0200
+
 univention-management-console (0.7.27-3) unstable; urgency=low
 
   * fixed typo in handlers/modutils/_revamp.py
