@@ -8,7 +8,7 @@ allow			bind_v2 update_anon
 
 TLSCertificateFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/cert.pem
 TLSCertificateKeyFile	/etc/univention/ssl/@%@hostname@%@.@%@domainname@%@/private.key
-TLSCACertificateFile	/etc/univention/ssl/udsCA/CAcert.pem
+TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 
 sizelimit		@%@ldap/sizelimit@%@
 
