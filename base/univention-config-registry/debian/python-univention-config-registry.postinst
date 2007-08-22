@@ -1,0 +1,11 @@
+#!/bin/sh
+
+
+if which pycentral >/dev/null 2>&1; then
+	pycentral pkginstall python-univention-config-registry
+fi
+
+#DEBHELPER#
+
+exit 0
+

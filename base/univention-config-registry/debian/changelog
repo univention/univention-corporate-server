@@ -1,3 +1,9 @@
+univention-config-registry (2.3.5-1) unstable; urgency=low
+
+  * overwrite debhelper section from dh_pycentral
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 11:33:50 +0200
+
 univention-config-registry (2.3.4-1) unstable; urgency=low
 
   * added interfaces/ethX/route/Y and interfaces/ethX/options/Y

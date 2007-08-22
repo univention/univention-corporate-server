@@ -128,7 +128,7 @@ binary-arch: build install
 	dh_installinfo
 	dh_installchangelogs
 	dh_install --sourcedir=debian/tmp
-	dh_pycentral --no-package=univention-config-registry -Nunivention-config -Nunivention-config-dev -Nlibunivention-config0 -Nlibunivention-config-dev
+	dh_pycentral --no-package=univention-config-registry -Nunivention-config -Nunivention-config-dev -Nlibunivention-config0 -Nlibunivention-config-dev -n
 	dh_link
 	dh_strip
 	dh_compress
