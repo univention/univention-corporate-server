@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.3-1) unstable; urgency=low
+
+  * check for /etc/init.d/postfix before restarting postfix
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 14:17:29 +0200
+
 univention-spamassassin (1.0.2-1) unstable; urgency=low
 
   * ensure correct ownership of bayes token file, if it is created by

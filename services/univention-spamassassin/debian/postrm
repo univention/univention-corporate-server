@@ -34,6 +34,9 @@ set -e
 #DEBHELPER#
 
 univention-baseconfig unset mail/antispam
-/etc/init.d/postfix restart
+
+if [ -x /etc/init.d/postfix ]; then
+	/etc/init.d/postfix restart
+fi
 
 exit 0
