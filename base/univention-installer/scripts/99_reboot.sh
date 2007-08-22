@@ -35,6 +35,18 @@ architecture=`/bin/uname -m`
 /bin/umount /instmnt > /dev/null 2>&1
 /bin/umount -l /instmnt > /dev/null 2>&1
 
+echo ""
+echo ""
+echo ""
+echo ""
+echo ""
+echo "******************************************************************"
+echo "***                                                            ***"
+echo "***                   INSTALLATION COMPLETE                    ***"
+echo "***                                                            ***"
+echo "******************************************************************"
+echo ""
+echo ""
 if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
 	echo "Auto reboot"
 else

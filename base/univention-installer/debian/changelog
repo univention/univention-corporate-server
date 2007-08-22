@@ -1,3 +1,9 @@
+univention-installer (1.6.26-1) unstable; urgency=low
+
+  * added extra "installation complete" msg just before reboot
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 10:14:24 +0200
+
 univention-installer (1.6.25-5) unstable; urgency=low
 
   * Bump version
