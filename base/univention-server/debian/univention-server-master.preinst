@@ -31,7 +31,6 @@
 eval `univention-baseconfig shell`
 
 mkdir -p /usr/share/univention-install/
-touch /usr/share/univention-install/.joined
 
 # generate ssl certificate
 if ! test -e /etc/univention/ssl/$hostname/cert.pem; then
