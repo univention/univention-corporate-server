@@ -1,0 +1,263 @@
+#! /bin/sh
+#
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#   /etc/univention/templates/files/etc/init.d/cyrus2.2
+#
+
+# Make sure we get sane results on borked locales
+LC_ALL=C
+export LC_ALL
+
+# Overridable defaults
+unset CYRUS_VERBOSE
+unset LISTENQUEUE
+unset CONF
+unset MASTERCONF
+[ -r /etc/default/cyrus2.2 ] && . /etc/default/cyrus2.2
+
+[ "x${CYRUS_VERBOSE}" != "x" ] && export CYRUS_VERBOSE
+# Make sure the master process is daemonized
+OPTIONS="${OPTIONS} -d"
+[ "x${CONF}" != "x" ] && OPTIONS="-C ${CONF} ${OPTIONS}"
+[ "x${MASTERCONF}" != "x" ] && OPTIONS="-M ${MASTERCONF} ${OPTIONS}"
+[ "x${LISTENQUEUE}" != "x" ] && OPTIONS="-l ${LISTENQUEUE} ${OPTIONS}"
+
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DAEMON=/usr/sbin/cyrmaster
+NAME=cyrmaster
+[ "x${PIDFILE}" = "x" ] && PIDFILE="/var/run/${NAME}.pid"
+DESC="Cyrus IMAPd"
+
+#Check if Cyrus 2.2 is installed
+test -x ${DAEMON} || exit 0
+grep -qE '^PACKAGE_VERSION[[:blank:]]+2[.]2' \
+	/usr/lib/cyrus/cyrus-hardwired-config.txt >/dev/null 2>&1 || exit 0
+
+set -e
+
+START="--start --quiet --pidfile ${PIDFILE} --exec ${DAEMON} --name ${NAME} -- ${OPTIONS}"
+
+verifydb() {
+   while read -r DBKEY DBVALUE ; do
+	match=`sort -u < $1 | gawk "/^${DBKEY}[[:blank:]]/ { print \\$2 }"`
+	[ "x${match}" != "x${DBVALUE}" ] && return 0
+   done
+   return 1
+}
+
+createdir() {
+# $1 = user
+# $2 = group
+# $3 = permissions (octal)
+# $4 = path to directory
+	[ -d "$4" ] || mkdir -p "$4"
+	chown -c -h "$1:$2" "$4"
+	chmod -c "$3" "$4"
+}
+
+missingstatoverride () {
+	echo "$0: You are missing a dpkg-statoverride on $1.  Add it." >&2
+	exit 1
+}
+
+fixdirs () {
+	dir=`dpkg-statoverride --list /var/run/cyrus` \
+		|| missingstatoverride /var/run/cyrus
+	[ -z "$dir" ] \
+		|| createdir $dir
+	dir=`dpkg-statoverride --list /var/run/cyrus/socket` \
+		|| missingstatoverride /var/run/cyrus/socket
+	[ -z "$dir" ] \
+		|| createdir $dir
+}
+
+check_status () {
+	if [ "$1" = "verbose" ]; then
+		PRINTIT=echo
+	else
+		PRINTIT=true 
+	fi
+	if [ ! -f ${PIDFILE} ]; then
+		# using [c] in the grep avoids catching the grep 
+		# process itself
+		if ps auxww | grep -qE 'usr/sbin/[c]yrmaster' ; then
+			# Damn, PID file doesn't exist, but cyrmaster process
+			# exists. Though strictly speaking, we should not
+			# do this, reconstruct the PID file here.
+			pidof /usr/sbin/cyrmaster > /dev/null 2>&1 \
+			&& pidof /usr/sbin/cyrmaster > ${PIDFILE}
+			${PRINTIT} "cyrmaster running with PID `cat ${PIDFILE}`"
+			return 0
+		fi
+	fi	
+	if [ -s ${PIDFILE} ] && kill -0 `cat ${PIDFILE}` > /dev/null 2>&1; then
+		${PRINTIT} "cyrmaster running with PID `cat ${PIDFILE}`"
+		return 0
+	else
+		# the PID file might simply not match the cyrmaster process.
+		if pidof /usr/sbin/cyrmaster > /dev/null 2>&1 ; then
+			# go ahead and fix it
+			pidof /usr/sbin/cyrmaster > ${PIDFILE}
+			${PRINTIT} "cyrmaster running with PID `cat ${PIDFILE}`"
+			return 0
+		else
+			# no process and/or no PID file, return failure
+			${PRINTIT} "cyrmaster not running with"
+			return 1
+		fi
+	fi
+	# this point should never be reached, return unknown status if it 
+	# is anyway
+	return 4
+}
+
+case "$1" in
+  start)
+  	eval $(univention-baseconfig shell mail/cyrus22/autostart)
+	if [ -z "$mail_cyrus22_autostart" -o "$mail_cyrus22_autostart" != "yes" ]; then
+		exit 0
+	fi
+  	# Verify if there are old Cyrus 1.5 spools that were not upgraded
+	[ -f /var/lib/cyrus/mailboxes -a -d /var/lib/cyrus/deliverdb -a \
+	  -d /var/spool/cyrus/mail/user -a ! -d /var/spool/cyrus/mail/stage. ] && {
+	  	echo "$0: It appears that you still have an version 1.5 spool" 1>&2
+		echo "$0: that needs to be upgraded. Please refer to the guide" 1>&2
+		echo "$0: at /usr/share/doc/cyrus-common-2.2/UPGRADE.Debian" 1>&2
+		echo
+		echo "$0: Cyrmaster not started."
+		exit 6
+	}
+	# Verify consistency of database backends
+	[ -f /usr/lib/cyrus/cyrus-db-types.active ] && {
+		# is it safe to start cyrmaster? compare "key value" pairs
+		# from the (old) active database types file with the new one
+		( sort -u /usr/lib/cyrus/cyrus-db-types.active \
+		  | grep DBENGINE \
+		  | verifydb /usr/lib/cyrus/cyrus-db-types.txt \
+		) && {
+		    echo "$0: Database backends mismatch! You must manually" 1>&2
+		    echo "$0: verify and update the Cyrus databases to the" 1>&2
+		    echo "$0: new backends." 1>&2
+		    echo "$0: Please refer to /usr/share/doc/cyrus-common-2.2/README.Debian" 1>&2
+		    echo "$0: for instructions." 1>&2
+		    echo
+		    echo "$0: Cyrmaster not started."
+		    exit 6
+		}
+	}
+	echo -n "Starting ${DESC}: "
+	fixdirs
+	if check_status ; then
+		echo "${DAEMON} already running."
+		exit 0
+	fi
+	if start-stop-daemon ${START} >/dev/null 2>&1 ; then
+		echo "$NAME."
+	else
+		if ! check_status ; then
+			echo "(failed)."
+			exit 1
+		fi
+	fi
+
+	sleep 5
+
+	if [ -d /var/spool/cyrus/jobs/mailbox/create/user -a -x /usr/sbin/univention-cyrus-mkdir ]; then
+		(
+			cd /var/spool/cyrus/jobs/mailbox/create/user/
+			for i in *; do
+				if [ "$i" != "*" ]; then
+					/usr/sbin/univention-cyrus-mkdir $i || true
+				fi
+			done
+		)
+	fi
+	if [ -d /var/spool/cyrus/jobs/mailbox/create/admin -a -x /usr/sbin/univention-cyrus-mkdir ]; then
+		(
+			cd /var/spool/cyrus/jobs/mailbox/create/admin/
+			for i in *; do
+				if [ "$i" != "*" ]; then
+					/usr/sbin/univention-cyrus-mkdir -a $i || true
+				fi
+			done
+		)
+	fi
+	;;
+  stop)
+	echo -n "Stopping $DESC: "
+	if start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
+		--name ${NAME} --quiet --startas $DAEMON >/dev/null 2>&1 ; then
+		echo "$NAME."
+		rm -f ${PIDFILE}
+		exit 0
+	else
+		# process running?
+		if check_status; then
+			# Yes, report failure.
+			echo "(failed)."
+			exit 1
+		else
+			# No, return as if stopped a running process 
+			# successfully.
+			echo "."
+			rm -f ${PIDFILE}
+			exit 0
+		fi
+	fi
+	;;
+  reload|force-reload)
+	echo "Reloading $DESC configuration files."
+	if start-stop-daemon --stop --signal 1 --quiet \
+		--name ${NAME} --pidfile /var/run/$NAME.pid >/dev/null 2>&1 ; then
+		exit 0
+	else
+		exit 1
+	fi
+  	;;
+  restart)
+  	$0 stop && {
+	  echo -n "Waiting for complete shutdown..."
+	  i=5
+	  while [ $i -gt 0 ] ; do
+	  	# exit look when server is not running
+	  	check_status || break
+		sleep 2s
+		i=$(($i - 1))
+		echo -n "."
+	  done
+	  [ $i -eq 0 ] && {
+	  	echo
+		echo "fatal: incomplete shutdown detected, aborting."
+		exit 1
+	  }
+	  echo
+	}
+	exec $0 start
+	;;
+  status)
+  	check_status verbose
+	exit $?
+	;;
+  try-restart)
+  	check_status
+	if [ "$?" -eq 0 ]; then
+		exec $0 restart
+	else
+  		# LSB says to return 0 in try-restart if the service is
+		# not running.
+		exit 0
+	fi
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|reload|force-reload}" 1>&2
+	exit 1
+	;;
+esac
+
+exit 0
