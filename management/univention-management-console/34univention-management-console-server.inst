@@ -311,10 +311,9 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 
 
 # policy container
-univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
 
 # default policies
-univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin
