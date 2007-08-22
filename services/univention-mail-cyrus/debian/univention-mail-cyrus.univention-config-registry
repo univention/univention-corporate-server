@@ -18,5 +18,11 @@ Variables: mail/cyrus/pop/maxchilds
 Variables: mail/cyrus/sieve/maxchilds
 
 Type: file
+File: etc/init.d/cyrus21
+
+Type: file
+File: etc/init.d/cyrus2.2
+
+Type: file
 File: etc/cron.d/univention-cyrus-squatter
 Variables: mail/cyrus/squatter/cron

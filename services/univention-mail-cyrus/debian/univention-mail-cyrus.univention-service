@@ -1,0 +1,14 @@
+[cyrus2.1]
+Description[de]=Cyrus IMAP/POP-Server
+Description[en]=Cyrus IMAP/POP Server
+programs=/usr/sbin/cyrmaster
+icon=service/cyrus
+start_type=mail/cyrus21/autostart
+
+[cyrus2.2]
+Description[de]=Cyrus IMAP/POP-Server
+Description[en]=Cyrus IMAP/POP Server
+programs=/usr/sbin/cyrmaster
+icon=service/cyrus
+start_type=mail/cyrus22/autostart
+

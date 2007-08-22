@@ -64,3 +64,14 @@ Description[en]=Defines the interval to have the indexservice squatter process m
 Type=str
 Categories=Mail
 
+[mail/cyrus21/autostart]
+Description[de]=Bestimmt, ob Cyrus 2.1 beim Systemstart gestartet wird
+Description[en]=Controls whether cyrus 2.1 will be started upon system boot
+Type=str
+Categories=Mail
+
+[mail/cyrus22/autostart]
+Description[de]=Bestimmt, ob Cyrus 2.2 beim Systemstart gestartet wird
+Description[en]=Controls whether cyrus 2.2 will be started upon system boot
+Type=str
+Categories=Mail
