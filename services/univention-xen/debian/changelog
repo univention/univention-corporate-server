@@ -1,3 +1,9 @@
+univention-xen (0.2.7) unstable; urgency=low
+
+  * Provide a commented configuration for VMX operation in examples/
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 22 Aug 2007 15:15:36 +0200
+
 univention-xen (0.2.6) unstable; urgency=low
 
   * Depend on Xen 3.1 hypervisor
