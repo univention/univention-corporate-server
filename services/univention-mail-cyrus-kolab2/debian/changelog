@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-2) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 14:13:08 +0200
+
 univention-mail-cyrus-kolab2 (1.0.5-1) unstable; urgency=low
 
   * add option to run squatter indexing tool regularly using cron
