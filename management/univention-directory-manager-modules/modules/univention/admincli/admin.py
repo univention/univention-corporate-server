@@ -576,8 +576,8 @@ def doit(arglist):
 
 	baseDN=baseConfig['ldap/base']
 
-	if baseConfig.has_key('admin/cmd/debug/level'):
-		debug_level=baseConfig['admin/cmd/debug/level']
+	if baseConfig.has_key('directory/manager/cmd/debug/level'):
+		debug_level=baseConfig['directory/manager/cmd/debug/level']
 	else:
 		debug_level=0
 
