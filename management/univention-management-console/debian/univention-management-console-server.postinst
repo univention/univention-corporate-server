@@ -17,10 +17,6 @@ fi
 
 if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 
-	echo "kill all running univention-cli-server"
-
-	pkill -f '/usr/bin/python.*univention-*-tools.*univention-cli-server'
-
 	/usr/lib/univention-install/34univention-management-console-server.inst
 fi
 

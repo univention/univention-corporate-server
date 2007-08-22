@@ -1,3 +1,9 @@
+univention-management-console (0.8.1-1) unstable; urgency=low
+
+  * move umc admin modules to univention directory manager
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 16:47:09 +0200
+
 univention-management-console (0.7.29-1) unstable; urgency=low
 
   * UMCP client: fixed fallback to not encrypted connection if SSL certificate could not be read

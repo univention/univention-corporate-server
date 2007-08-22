@@ -1225,6 +1225,61 @@ msgstr "Display-Grösse (mm)"
 msgid "RAM on the Graphics Board in kB"
 msgstr "RAM auf der Grafikkarte in kB"
 
+#: console_access.py:45
+msgid "Allowed Operations"
+msgstr "Erlaube Operationen"
+
+#: console_access.py:46
+msgid "Disallowed Operations"
+msgstr "Nicht erlaubte Operationen"
+
+#: console_access.py:57
+msgid "Policy: UMC Access"
+msgstr "Richtlinie: UMC Zugriff"
+
+#: console_access.py:58
+msgid "UMC Access"
+msgstr "UMC Zugriff"
+
+#: console_access.py:64
+msgid "Name"
+msgstr "Name"
+
+#: console_access.py:74
+msgid "Allow ACL"
+msgstr "Erlaubte Zugriffe"
+
+#: console_access.py:84
+msgid "Disallow ACL"
+msgstr "Nicht erlaubte Zugriffe"
+
+#: console_access.py:94
+msgid "Required Object Classes"
+msgstr "BenÃ¶tigte Objektklassen"
+
+#: console_access.py:104
+msgid "Prohibited Object Classes"
+msgstr "Ausgeschlossene Objektklassen"
+
+#: console_access.py:114
+msgid "Fixed Attributes"
+msgstr "Festgelegte Attribute"
+
+#: console_access.py:124
+msgid "Empty Attributes"
+msgstr "Leere Attribute"
+
+#: console_access.py:145
+msgid "General"
+msgstr "Allgemein"
+
+#: console_access.py:145
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
+#: console_access.py:149
+msgid "Object"
+msgstr "Objekt"
 #~ msgid "Policy: Packages Client"
 #~ msgstr "Richtlinie: Pakete Client"
 

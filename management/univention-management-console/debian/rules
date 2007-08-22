@@ -65,8 +65,6 @@ install-ext-%:
 	make PACKAGE=univention-management-console install-locales-frontend
 	make PACKAGE=python-univention-management-console install-modules
 	make PACKAGE=python-univention-management-console install-locales-backend
-	make PACKAGE=python-univention-management-console install-admin-modules
-	make PACKAGE=python-univention-management-console install-locales-admin
 
 	echo -n "`date +"%d.%m.%Y"`" > debian/univention-management-console/usr/share/univention-management-console/frontend/builddate
 	cat debian/changelog | head -1 > debian/univention-management-console/usr/share/univention-management-console/frontend/buildversion

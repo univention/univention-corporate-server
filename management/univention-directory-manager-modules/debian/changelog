@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.1-1) unstable; urgency=low
+
+  * move umc admin modules to univention directory manager
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 16:49:31 +0200
+
 univention-directory-manager-modules (2.1.3-1) unstable; urgency=low
 
   * don't show in univention-license-check that less then zero accounts

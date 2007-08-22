@@ -938,6 +938,75 @@ msgstr "Bildschirm Grösse (mm)"
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
 
+#: console_acl.py:21
+msgid "Settings: UMC ACLs"
+msgstr "Einstellungen: UMC ACLs"
+
+#: console_acl.py:22
+msgid "List of ACLs for Univention Management Console"
+msgstr "Liste der ACLs für Univention Management Console"
+
+#: console_acl.py:27 console_acl.py:28 console_operation.py:27
+#: console_operation.py:28
+msgid "Name"
+msgstr "Name"
+
+#: console_acl.py:37 console_acl.py:38 console_operation.py:37
+#: console_operation.py:38
+msgid "Description"
+msgstr "Beschreibung"
+
+#: console_acl.py:48
+msgid "Category"
+msgstr "Kategorie"
+
+#: console_acl.py:49
+msgid "Console ACL Category"
+msgstr "UMC ACL Kategorie"
+
+#: console_acl.py:59
+msgid "Hosts"
+msgstr "Rechner"
+
+#: console_acl.py:60
+msgid "Hosts or host group for this ACL"
+msgstr "Rechner oder Rechnergruppe für die ACLs"
+
+#: console_acl.py:70 console_acl.py:71
+msgid "LDAP search base"
+msgstr "LDAP Basis"
+
+#: console_acl.py:81
+msgid "command"
+msgstr "Kommando"
+
+#: console_acl.py:82
+msgid "Console command"
+msgstr "UMC Kommando"
+
+#: console_acl.py:94 console_operation.py:61
+msgid "General"
+msgstr "Allgemein"
+
+#: console_acl.py:94 console_operation.py:61
+msgid "Package List"
+msgstr "Paketliste"
+
+#: console_operation.py:21
+msgid "Settings: UMC Operation"
+msgstr "Einstellungen: UMC Operationen"
+
+#: console_operation.py:22
+msgid "List of Operations for Univention Management Console"
+msgstr "Liste von Operationen für Univention Management Console"
+
+#: console_operation.py:48
+msgid "Operation"
+msgstr "Operation"
+
+#: console_operation.py:49
+msgid "List of Console operations"
+msgstr "Liste von UMC-Operationen"
 #~ msgid "Accessible LDAP DNs"
 #~ msgstr "Sichtbare LDAP-DNs"
 
