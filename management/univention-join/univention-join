@@ -53,7 +53,7 @@ display_help() {
 	  --version:               print version information and exit program
 
 	Description:
-	  univention-join joins a computer to an univention domain,
+	  univention-join joins a computer to an ucs domain,
 	  e.g. univention-join -dcaccount backup_join -dcpwd /tmp/pwd_secret
 
 	Known-Bugs:
@@ -63,7 +63,7 @@ display_help() {
 }
 
 display_header() {
-	echo "univention-join: joins a computer to an univention domain"
+	echo "univention-join: joins a computer to an ucs domain"
 	echo "copyright (c) 2001-@%@copyright_lastyear@%@ Univention GmbH, Germany"
 	echo ""
 }
