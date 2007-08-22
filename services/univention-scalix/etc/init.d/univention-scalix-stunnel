@@ -56,7 +56,7 @@ start_stunnel() {
 	/usr/sbin/stunnel \
         -p /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem \
         -a /etc/univention/ssl/${HOSTNAME}/ \
-        -A /etc/univention/ssl/udsCA/CAcert.pem \
+        -A /etc/univention/ssl/ucsCA/CAcert.pem \
         -s ${SET_USER} -g ${SET_GROUP} -d $SRCPORT -r $DSTPORT \
 		-P /var/run/stunnel_${SRCPORT}_${DSTPORT}.pid
 }
