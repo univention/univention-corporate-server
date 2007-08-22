@@ -9,14 +9,10 @@
 #
 #   /etc/univention/templates/files/etc/init.d/cyrus21
 #
-# cyrus21	/etc/init.d/ script for cyrus2 IMAPd
-#		This file manages the Cyrus IMAPd master process.
-#
-#		Copr. 2001 by Henrique de Moraes Holschuh <hmh@debian.org>
-#		Distributed under the GPL version 2
-#
-# Version:	$Id: cyrus21,v 1.1.2.7.12.1 2006/12/01 09:49:31 andreas Exp $
-#
+
+# Make sure we get sane results on borked locales
+LC_ALL=C
+export LC_ALL
 
 # Overridable defaults
 unset CYRUS_VERBOSE
@@ -32,7 +28,10 @@ DAEMON=/usr/sbin/cyrmaster
 NAME=cyrmaster
 DESC="Cyrus IMAPd"
 
+# Check if Cyrus 2.1 is installed
 test -x ${DAEMON} || exit 0
+grep -qE '^PACKAGE_VERSION[[:blank:]]+2[.]1' \
+	/usr/lib/cyrus/cyrus-hardwired-config.txt >/dev/null 2>&1 || exit 0
 
 set -e
 
@@ -74,6 +73,11 @@ fixdirs () {
 
 case "$1" in
   start)
+        eval $(univention-baseconfig shell mail/cyrus21/autostart)
+        if [ -z "$mail_cyrus_autostart" -o "$mail_cyrus_autostart" != "yes" ]; then
+                exit 0
+        fi
+
   	# Verify if there are old Cyrus 1.5 spools that were not upgraded
 	[ -f /var/lib/cyrus/mailboxes -a -d /var/lib/cyrus/deliverdb -a \
 	  -d /var/spool/cyrus/mail/user -a ! -d /var/spool/cyrus/mail/stage. ] && {
@@ -86,6 +90,8 @@ case "$1" in
 	}
 	# Verify consistency of database backends
 	[ -f /usr/lib/cyrus/cyrus-db-types.active ] && {
+		# is it safe to start cyrmaster? compare "key value" pairs
+		# from the (old) active database types file with the new one
 		verifydb /usr/lib/cyrus/cyrus-db-types.txt \
 		    < /usr/lib/cyrus/cyrus-db-types.active && {
 		    echo "$0: Database backends mismatch! You must manually" 1>&2
