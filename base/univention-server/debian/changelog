@@ -1,3 +1,10 @@
+univention-server (2.1.3-1) unstable; urgency=low
+
+  * check if makepasswd returned an empty password during the server password
+    change
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 08:26:12 +0200
+
 univention-server (2.1.2-11) unstable; urgency=low
 
   * Depend on univention-system-setup
