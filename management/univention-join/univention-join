@@ -461,8 +461,8 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
 	univention-baseconfig set ldap/server/type=slave >>/var/log/univention/join.log 2>&1
 
-	mkdir -p /etc/univention/ssl/udsCA
-	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/udsCA/" >>/var/log/univention/join.log 2>&1
+	mkdir -p /etc/univention/ssl/ucsCA
+	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 
 	download_host_certificate
 
@@ -521,13 +521,13 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 
 elif [ "$server_role" = "memberserver" ]; then
-	mkdir -p /etc/univention/ssl/udsCA
-	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/udsCA/" >>/var/log/univention/join.log 2>&1
+	mkdir -p /etc/univention/ssl/ucsCA
+	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 
 	download_host_certificate
 
 	univention-baseconfig set ldap/master=$DCNAME >>/var/log/univention/join.log 2>&1
-	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/udsCA/CAcert.pem" >>/etc/ldap/ldap.conf
+	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	# invalidate the nscd hosts cache
 	nscd -i hosts
@@ -559,9 +559,9 @@ else
 # Client and Mobile Client
 
 
-	mkdir -p /etc/univention/ssl/udsCA
+	mkdir -p /etc/univention/ssl/ucsCA
 
-	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/udsCA/" >>/var/log/univention/join.log 2>&1
+	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
 
 	download_host_certificate
 
@@ -572,7 +572,7 @@ else
 	univention-baseconfig set ldap/master="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-baseconfig set kerberos/adminserver="$DCNAME" >>/var/log/univention/join.log 2>&1
 	univention-baseconfig set kerberos/realm=$(univention-ssh $DCPWD $DCACCOUNT@$DCNAME /usr/sbin/univention-baseconfig get kerberos/realm | sed -e 's, ,,g' | grep [A-Za-z0-9] ) >>/var/log/univention/join.log 2>&1
-	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/udsCA/CAcert.pem" >>/etc/ldap/ldap.conf
+	cat /etc/ldap/ldap.conf  | sed -e "s|#.*||g" | grep TLS_CACERT || echo "TLS_CACERT /etc/univention/ssl/ucsCA/CAcert.pem" >>/etc/ldap/ldap.conf
 
 	touch /usr/share/univention-join/.joined
 	univention-baseconfig set nsswitch/ldap=yes >>/var/log/univention/join.log 2>&1

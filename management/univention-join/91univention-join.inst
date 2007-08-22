@@ -88,14 +88,14 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 
 	test -d "/etc/univention/ssl/$hostname" && chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$hostname" && chmod g+rwx "/etc/univention/ssl/$hostname" && find "/etc/univention/ssl/$hostname/" -type f | xargs chmod g+rw
 
-	if [ -d /etc/univention/ssl/udsCA ]; then
-		chgrp -R "DC Backup Hosts" /etc/univention/ssl/udsCA
-		find /etc/univention/ssl/udsCA/ -type d | xargs chmod g+rwx
-		find /etc/univention/ssl/udsCA/ -type f | xargs chmod g+rw
+	if [ -d /etc/univention/ssl/ucsCA ]; then
+		chgrp -R "DC Backup Hosts" /etc/univention/ssl/ucsCA
+		find /etc/univention/ssl/ucsCA/ -type d | xargs chmod g+rwx
+		find /etc/univention/ssl/ucsCA/ -type f | xargs chmod g+rw
 	fi
 
 	test -e /etc/ldap-backup.secret && chgrp "Slave Join"  /etc/ldap-backup.secret && chmod 644 /etc/ldap-backup.secret
-	test -e /etc/univention/ssl/udsCA/CAcert.pem && chgrp "DC Slave Hosts"  /etc/univention/ssl/udsCA/CAcert.pem && chmod 644 /etc/univention/ssl/udsCA/CAcert.pem
+	test -e /etc/univention/ssl/ucsCA/CAcert.pem && chgrp "DC Slave Hosts"  /etc/univention/ssl/ucsCA/CAcert.pem && chmod 644 /etc/univention/ssl/ucsCA/CAcert.pem
 
 	if [ -d "/etc/univention/ssl/univention-admin" ]; then
 		chgrp -R "DC Backup Hosts" /etc/univention/ssl/univention-admin
