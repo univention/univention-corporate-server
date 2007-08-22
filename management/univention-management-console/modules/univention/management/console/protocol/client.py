@@ -68,7 +68,9 @@ class Client( signals.Provider ):
 		signals.Provider.__init__( self )
 		self.__authenticated = ( not auth )
 		self.__auth_id = None
-		if ssl and not unix:
+		self.__ssl = ssl
+		self.__unix = unix
+		if self.__ssl and not self.__unix:
 			self.__crypto_context = SSL.Context(SSL.SSLv23_METHOD)
 			self.__crypto_context.set_cipher_list('DEFAULT')
 			self.__crypto_context.set_verify( SSL.VERIFY_PEER | SSL.VERIFY_FAIL_IF_NO_PEER_CERT, self.__verify_cert_cb )
@@ -82,8 +84,6 @@ class Client( signals.Provider ):
 				self.__ssl = False
 		self.__port = port
 		self.__server = servername
-		self.__unix = unix
-		self.__ssl = ssl
 		self.__resend_queue = {}
 
 		self.__realsocket = self.__socket = None
