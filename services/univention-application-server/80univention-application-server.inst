@@ -41,9 +41,7 @@ test -n "`grep "univention-application-server v${VERSION} successful" /usr/lib/u
 
 eval `univention-baseconfig shell`
 
-old=`univention-admin policies/thinclient list $@ --filter cn=default-settings | grep -v ": None" | grep linuxTerminalServer | sed -e 's|.*linuxTerminalServer: |--set linuxTerminalServer=|'`
-
-univention-admin policies/thinclient modify $@ --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --set name=default-settings --set linuxTerminalServer=$hostname.$domainname $old
+univention-admin policies/thinclient modify $@ --ignore_exists --dn "cn=default-settings,cn=thinclient,cn=policies,$ldap_base" --append linuxTerminalServer=$hostname.$domainname
 
 test -n "`grep "univention-application-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-application-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 

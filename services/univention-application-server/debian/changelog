@@ -1,3 +1,9 @@
+univention-application-server (2.0.2-1) unstable; urgency=low
+
+  * only append the new linux terminal server in the join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Aug 2007 09:47:16 +0200
+
 univention-application-server (2.0.1-1) unstable; urgency=low
 
   * add version number to join script
