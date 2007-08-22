@@ -1,3 +1,9 @@
+univention-updater (2.0.9-1) unstable; urgency=low
+
+  * added code in preup.sh for renaming /etc/univention/ssl/udsCA to ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 22 Aug 2007 15:54:52 +0200
+
 univention-updater (2.0.8-1) unstable; urgency=low
 
   * install univention-basesystem on a basesystem during the ucs 2.0 update

@@ -48,10 +48,13 @@ then
 	check_space "/var/cache/apt/archives" "1000000" "1 GB"
 	check_space "/boot" "6000" "6 MB"
     check_space "/" "1200000" "1.2 GB"
-    
+
 else
     echo "WARNING: skipped disk-usage-test as you requested"
 fi
-    
 
 
+if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
+	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
+	ln -s ucsCA /etc/univention/ssl/udsCA
+fi
