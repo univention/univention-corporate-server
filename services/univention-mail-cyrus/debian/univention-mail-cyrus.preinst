@@ -31,13 +31,13 @@
 if [  -z "$2" ]; then
     # new installation
     univention-config-registry set mail/cyrus/version?"2.2"
-    univention-config-registry set mail/cyrus21/autostart=no
-    univention-config-registry set mail/cyrus22/autostart=yes
+    univention-config-registry set mail/cyrus21/autostart?no
+    univention-config-registry set mail/cyrus22/autostart?yes
 else
     # update
     univention-baseconfig set mail/cyrus/version?"2.1"
-    univention-config-registry set mail/cyrus21/autostart=yes
-    univention-config-registry set mail/cyrus22/autostart=no
+    univention-config-registry set mail/cyrus21/autostart?yes
+    univention-config-registry set mail/cyrus22/autostart?no
 fi
 
 #DEBHELPER#
