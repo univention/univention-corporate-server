@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.3-2) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:30:08 +0200
+
 univention-printquotadb (1.0.3-1) unstable; urgency=low
 
   * add version number to join script 
