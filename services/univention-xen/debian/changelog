@@ -1,3 +1,9 @@
+univention-xen (0.2.8) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:45:16 +0200
+
 univention-xen (0.2.7) unstable; urgency=low
 
   * Provide a commented configuration for VMX operation in examples/
