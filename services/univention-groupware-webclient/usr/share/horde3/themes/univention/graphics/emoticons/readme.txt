@@ -16,7 +16,7 @@ Installation: (deutsch)
 	   -> http://yourdomain.com/phpbb/images/smilies/
 	2. Nun gehe in die phpBB-Administration und klick im Menu auf "Smilies"!
 	3. Nun Klick auf "Import Smiley Pack".
-	4. Wähle nun sc_smilies.pak aus!
+	4. WÃ¤hle nun sc_smilies.pak aus!
 	5. Ab jetzt denke ich brauchste keine Hilfe mehr... :)
 
 

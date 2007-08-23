@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Groupware Webclient
 #  set default perferences for a horde user

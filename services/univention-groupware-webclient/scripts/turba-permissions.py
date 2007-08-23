@@ -1,9 +1,10 @@
 #!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
 #
 # Univention Groupware Webclient
 #  set turba permissions
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #

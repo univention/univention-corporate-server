@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Groupware Webclient
 #  create webaccess shares
