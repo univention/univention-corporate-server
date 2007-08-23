@@ -1,3 +1,9 @@
+univention-client-boot-pxe (2.0.1-2) unstable; urgency=low
+
+  * fixed encoding & copyright, removed .cvsignore files
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 13:30:03 +0200
+
 univention-client-boot-pxe (2.0.1-1) unstable; urgency=low
 
   * add version number to join script 
@@ -69,7 +75,7 @@ univention-client-boot-pxe (1.11) unstable; urgency=low
 
   * new initrd image containing new background images
 
- -- Andreas Büsching <buesching@univention.de>  Mon, 12 Dec 2005 18:33:58 +0100
+ -- Andreas BÃ¼sching <buesching@univention.de>  Mon, 12 Dec 2005 18:33:58 +0100
 
 univention-client-boot-pxe (1.10) unstable; urgency=low
 

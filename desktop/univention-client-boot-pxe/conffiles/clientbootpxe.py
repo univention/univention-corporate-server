@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #
 # Univention Client Boot PXE
 #  baseconfig/listener module: update nameserver for PXE clients
