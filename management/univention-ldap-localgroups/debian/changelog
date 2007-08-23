@@ -1,3 +1,9 @@
+univention-ldap-localgroups (0.2.0-2) unstable; urgency=low
+
+  * fixed copyright
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:06:13 +0200
+
 univention-ldap-localgroups (0.2.0-1) unstable; urgency=low
 
   * adapt to UCS 2.0 policies
