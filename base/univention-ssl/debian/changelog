@@ -1,3 +1,9 @@
+univention-ssl (2.0.1-7) unstable; urgency=low
+
+  * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 14:17:02 +0200
+
 univention-ssl (2.0.1-6) unstable; urgency=low
 
   * added descriptions for config registry variables

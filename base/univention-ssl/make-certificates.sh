@@ -33,7 +33,7 @@
 # http://www.pca.dfn.de/dfnpca/certify/ssl/handbuch/ossl092/
 
 SSL_BASE=/etc/univention/ssl
-CA=udsCA
+CA=ucsCA
 DEFAULT_DAYS=$(/usr/sbin/univention-baseconfig get ssl/default/days)
 if [ -z "$DEFAULT_DAYS" ]; then
 	DEFAULT_DAYS=730

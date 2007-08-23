@@ -28,9 +28,19 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-CERTPATH=/etc/univention/ssl/udsCA/certs
+# update paths (dir name changed on switch from 1.3-2 to 2.0-0)
+if [ ! -e /etc/univention/ssl/ucsCA -a -d /etc/univention/ssl/udsCA ] ; then
+	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
+fi
+
+CERTPATH=/etc/univention/ssl/ucsCA/certs
 
 test -d $CERTPATH || /bin/mkdir -p $CERTPATH
+
+# add symlink for backward compatibility (will be removed in future releases!)
+if [ ! -e /etc/univention/ssl/udsCA ] ; then
+	ln -s ucsCA /etc/univention/ssl/udsCA
+fi
 
 eval `univention-baseconfig shell domainname`
 
@@ -64,14 +74,14 @@ fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.3; then
 	# generate root ca request
 	(cd /etc/univention/ssl
-	openssl x509 -x509toreq -in udsCA/CAcert.pem -signkey udsCA/private/CAkey.pem -out udsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
+	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
 	)
 fi
 
 if [ "$1" = "$configure" -a -z "$2" ]; then
 	# generate root ca request
 	(cd /etc/univention/ssl
-	openssl x509 -x509toreq -in udsCA/CAcert.pem -signkey udsCA/private/CAkey.pem -out udsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
+	openssl x509 -x509toreq -in ucsCA/CAcert.pem -signkey ucsCA/private/CAkey.pem -out ucsCA/CAreq.pem -passin pass:`cat /etc/univention/ssl/password`
 	)
 fi
 
