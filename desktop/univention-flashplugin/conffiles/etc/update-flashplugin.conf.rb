@@ -2,7 +2,7 @@
 #          univention-baseconfig.
 #          Please edit the files in the following directory instead:
 # Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig ueberschrieben werden.
+#          univention-baseconfig überschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die Dateien in
 #          folgendem Verzeichnis:
 #
