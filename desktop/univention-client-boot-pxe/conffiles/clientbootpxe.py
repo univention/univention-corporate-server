@@ -3,7 +3,7 @@
 # Univention Client Boot PXE
 #  baseconfig/listener module: update nameserver for PXE clients
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #

@@ -1,3 +1,9 @@
+univention-client-boot-pxe (2.0.1-3) unstable; urgency=low
+
+  * fixed copyright
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:05:23 +0200
+
 univention-client-boot-pxe (2.0.1-2) unstable; urgency=low
 
   * fixed encoding & copyright, removed .cvsignore files
