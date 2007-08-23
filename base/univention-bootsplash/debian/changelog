@@ -1,3 +1,11 @@
+univention-bootsplash (1.0.3-1) unstable; urgency=low
+
+  * append all splash images to the initrd if the keyword all was set for the
+    splash size
+  * added univention-config-registry variables description
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Aug 2007 09:21:47 +0200
+
 univention-bootsplash (1.0.2-2) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

@@ -48,7 +48,7 @@ eval `univention-baseconfig shell`
 
 if [ -n "$splash_theme" ]; then
 	univention-baseconfig set bootsplash/theme?"$splash_theme"
-	univention-baseconfig set bootsplash/size?"640x480"
+	univention-baseconfig set bootsplash/size?all
 	univention-baseconfig unset splash/theme
 fi
 
@@ -58,7 +58,7 @@ fi
 
 univention-baseconfig set grub/vga?785
 
-univention-baseconfig set bootsplash/size?"640x480"
+univention-baseconfig set bootsplash/size?all
 
 
 #DEBHELPER#

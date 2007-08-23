@@ -1,0 +1,12 @@
+[bootsplash/theme]
+Description[de]=Name des Bootsplash Theme unterhalb von /etc/bootsplash/theme
+Description[en]=Name of the bootsplash theme below /etc/bootsplash/theme
+Type=str
+Categories=System
+
+[bootsplash/size]
+Description[de]=Grö des Bootsplash Image ffü die initiale Ramdisk, Standardwert ist all.
+Description[en]=Size for the bootsplash-image in the initrd, default is all.
+Type=str
+Categories=System
+
