@@ -61,6 +61,7 @@ install: build
 	touch debian/univention-directory-notifier/etc/runit/univention-directory-notifier/down
 
 	install -m 755 02univention-directory-notifier.inst debian/univention-directory-notifier/usr/lib/univention-install/
+	install -m 755 15univention-directory-notifier-post.inst debian/univention-directory-notifier/usr/lib/univention-install/
 
 	univention-install-service-info
 

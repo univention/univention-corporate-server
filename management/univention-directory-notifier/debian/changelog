@@ -1,3 +1,9 @@
+univention-directory-notifier (2.1.1-10) unstable; urgency=low
+
+  * added permission fix of transaction file in additional join script
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 10:02:05 +0200
+
 univention-directory-notifier (2.1.1-9) unstable; urgency=low
 
   * Fixed two typos in postinst
