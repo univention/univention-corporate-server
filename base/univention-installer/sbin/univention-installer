@@ -48,18 +48,10 @@ else
 				mkdir -p /instmnt/var/log/univention/
 				touch installation.log
 			fi
-			if [ -x "$i" ]; then
-				if [ -e /tmp/logging ]; then
-					$i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
-				else
-					$i </dev/tty1
-				fi
-			elif [ -e "$i" ]; then
-				if [ -e /tmp/logging ]; then
-					. $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
-				else
-					. $i </dev/tty1
-				fi
+			if [ -e /tmp/logging ]; then
+				/bin/sh $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
+			else
+				/bin/sh $i </dev/tty1
 			fi
 		done
 		lib/univention-installer-scripts.d/99_reboot.sh
