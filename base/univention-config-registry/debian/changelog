@@ -1,3 +1,9 @@
+univention-config-registry (2.3.6-2) unstable; urgency=low
+
+  * fixed permissions of config registry template
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 12:08:45 +0200
+
 univention-config-registry (2.3.6-1) unstable; urgency=low
 
   * added interfaces/ethX/mac
