@@ -13,6 +13,9 @@ Variables: sshd/xdisplayoffset
 Variables: sshd/xuselocalhost
 
 Type: file
+File: etc/init.d/networking
+
+Type: file
 File: etc/init.d/sysklogd
 
 Type: file

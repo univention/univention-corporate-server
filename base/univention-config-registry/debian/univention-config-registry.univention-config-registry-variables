@@ -100,6 +100,12 @@ Description[en]=Broadcase address of the network interface
 Type=str
 Categories=Network
 
+[interfaces/eth.*/mac]
+Description[de]=MAC-Adresse des Netz-Interfaces
+Description[en]=MAC address of the network interface
+Type=str
+Categories=Network
+
 [interfaces/eth.*/netmask]
 Description[de]=Netzmaske des Netz-Interfaces
 Description[en]=Netmask of the network interface

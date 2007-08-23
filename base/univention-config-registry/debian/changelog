@@ -1,3 +1,9 @@
+univention-config-registry (2.3.6-1) unstable; urgency=low
+
+  * added interfaces/ethX/mac
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 11:22:27 +0200
+
 univention-config-registry (2.3.5-1) unstable; urgency=low
 
   * overwrite debhelper section from dh_pycentral
