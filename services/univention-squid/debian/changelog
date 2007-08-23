@@ -1,3 +1,9 @@
+univention-squid (2.0.1-2) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:36:40 +0200
+
 univention-squid (2.0.1-1) unstable; urgency=low
 
   * include netfilter configuration for transparent proxy
