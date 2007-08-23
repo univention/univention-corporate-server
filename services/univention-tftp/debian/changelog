@@ -1,3 +1,9 @@
+univention-tftp (2.0.0-2) unstable; urgency=low
+
+  * fixed copyright, fixed encoding, removed cvsignore files
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:38:44 +0200
+
 univention-tftp (2.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
