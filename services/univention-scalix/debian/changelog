@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-2) unstable; urgency=low
+
+  * fixed adaption to Univention System Setup
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 23 Aug 2007 09:35:18 +0200
+
 univention-scalix (1.0.2-1) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
