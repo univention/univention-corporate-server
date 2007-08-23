@@ -487,7 +487,6 @@ th {
  */
 .text {
     color            : black;
-    background:#EEEEEE none repeat scroll 0%;
 }
 .text-over {
     background-color : #cc0033;
@@ -634,7 +633,7 @@ option {
  *  EMAIL STYLES
  */
 .signature {
-    color: #ccc;
+    color: #666666;
 }
 .signature-fixed {
     color: #ccc;

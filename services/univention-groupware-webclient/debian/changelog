@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.0.13-21) unstable; urgency=low
+
+  * edited Webmail Styles
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 23 Aug 2007 13:01:35 +0200
+
 univention-groupware-webclient (1.0.13-20) unstable; urgency=low
 
   * fixed cronjob template
