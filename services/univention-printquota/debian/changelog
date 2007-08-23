@@ -1,3 +1,9 @@
+univention-printquota (1.0.1-2) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:28:38 +0200
+
 univention-printquota (1.0.1-1) unstable; urgency=low
 
   * add version number to join script 
