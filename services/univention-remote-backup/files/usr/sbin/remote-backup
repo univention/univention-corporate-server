@@ -3,7 +3,7 @@
 # Univention Remote Backup
 #  client and server for remote backup
 #
-# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2003, 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -143,7 +143,7 @@ for line in `egrep -v "^ *#|^ *$" $CONFFILE`; do
 		if [ -z "$remuser" ]; then
 			remuser=root
 		fi
-		mountpoint="`echo "$dir" | sed 's°/°_=_°g'`"
+		mountpoint="`echo "$dir" | sed 'sÂ°/Â°_=_Â°g'`"
 		mkdir -p "$BACKUPROOT/0/$host/$mountpoint"
 		if rsync -e ssh -ar -x --password-file /dev/null --safe-links --delete "$remuser@$host:$dir" "$BACKUPROOT/0/$host/$mountpoint" </dev/null >/dev/null 2>&1; then
 			echo "OK"
@@ -153,8 +153,8 @@ for line in `egrep -v "^ *#|^ *$" $CONFFILE`; do
 		fi
 	done
 	echo -n "Removing orphaned dirs... "
-	for checkdir in `find "$BACKUPROOT/0/$host" -type d -maxdepth 1 | grep -v "^$BACKUPROOT/0/$host$" | sed "s°^$BACKUPROOT/0/$host/°°g"`; do
-		if ! echo "$dirs" | sed 's°/°_=_°g' | egrep "^$checkdir| $checkdir|$checkdir |$checkdir$" >/dev/null; then
+	for checkdir in `find "$BACKUPROOT/0/$host" -type d -maxdepth 1 | grep -v "^$BACKUPROOT/0/$host$" | sed "sÂ°^$BACKUPROOT/0/$host/Â°Â°g"`; do
+		if ! echo "$dirs" | sed 'sÂ°/Â°_=_Â°g' | egrep "^$checkdir| $checkdir|$checkdir |$checkdir$" >/dev/null; then
 			rm -rf "$BACKUPROOT/0/$host/$checkdir"
 		fi
 	done
