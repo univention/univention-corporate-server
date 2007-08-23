@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-5) unstable; urgency=low
+
+  * fixed copyright
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 13:32:45 +0200
+
 univention-client-kernel-image (1:1.0.0-4) unstable; urgency=low
 
   * depend on univention-client-kernel-image...
