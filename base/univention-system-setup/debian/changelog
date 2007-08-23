@@ -1,3 +1,9 @@
+univention-system-setup (1.1.1-10) unstable; urgency=low
+
+  * Still use fatclient instead of managed_client in config registry
+
+ -- Moritz Mühlenhoff <jmm@ivar.knut.univention.de>  Thu, 23 Aug 2007 10:05:38 +0200
+
 univention-system-setup (1.1.1-9) unstable; urgency=low
 
   * Don't disable the packetfilter in System Setup, this would interfere with

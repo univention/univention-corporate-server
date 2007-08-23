@@ -76,7 +76,7 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
 
 
   # Right now the selection is identical to DC M/B, eventually merge later
-  if [ "$server_role" = "managed_client" -o "$server_role" = "mobile_client" ]; then
+  if [ "$server_role" = "fatclient" -o "$server_role" = "mobile_client" ]; then
     univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled" security/services/x11="disabled"  >> /var/log/univention/setup.log
     univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled" security/services/nfs="disabled"  >> /var/log/univention/setup.log
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
@@ -112,7 +112,7 @@ if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
     univention-config-registry set security/services/telnet="disabled" security/services/ftp="disabled"  >> /var/log/univention/setup.log
   fi
 
-  if [ "$server_role" = "managed_client" -o "$server_role" = "mobile_client" ]; then
+  if [ "$server_role" = "fatclient" -o "$server_role" = "mobile_client" ]; then
     univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled" security/services/notifier="disabled"  >> /var/log/univention/setup.log
     univention-config-registry set security/services/kerberos="disabled" security/services/krsh="disabled"  >> /var/log/univention/setup.log
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled"  >> /var/log/univention/setup.log
