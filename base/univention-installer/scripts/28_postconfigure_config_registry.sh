@@ -261,6 +261,10 @@ univention-config-registry set version/patchlevel=$version_patchlevel
 
 univention-config-registry commit
 
+# Start syslogd
+/etc/init.d/sysklogd start
+
+
 __EOT__
 
 chmod +x /instmnt/postconfigure_config_registry.sh
