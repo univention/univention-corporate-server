@@ -1,3 +1,9 @@
+univention-windows-installer (2.0.0-7) unstable; urgency=low
+
+  * fixed copyright, fixed encoding
+
+ -- Janis Meybohm <meybohm@univention.de>  Thu, 23 Aug 2007 14:43:04 +0200
+
 univention-windows-installer (2.0.0-6) unstable; urgency=low
 
   * Fix directory name

@@ -3,7 +3,7 @@
 # Univention Windows Installer
 #  download required additional components (djgpp and perl)
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -125,7 +125,7 @@ if [ ! -e "$SHARE/install/djgpp/readme.1st" ]; then
         echo "done."
 fi
 
-# Perlumgebung herunterladen (ist zwingend notwendig für die weitere Abarbeitung der unattended Inst.!)
+# Perlumgebung herunterladen (ist zwingend notwendig fÃ¼r die weitere Abarbeitung der unattended Inst.!)
 # Hier werden MD5-Summen verglichen
 if get_file "MD5SUM" $PERL_URL > "$SHARE/install/packages/MD5SUM"; then
         MDSUM=`grep ActivePerl-5.8.8.819-MSWin32-x86-267479.msi $SHARE/install/packages/MD5SUM | awk '{print$1}'`
