@@ -1,3 +1,9 @@
+univention-installer (1.6.29-1) unstable; urgency=low
+
+  * encrypt the root password with md5
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Aug 2007 15:00:26 +0200
+
 univention-installer (1.6.28-1) unstable; urgency=low
 
   * call installer scripts with /bin/sh
