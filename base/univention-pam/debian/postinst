@@ -36,9 +36,9 @@ univention-baseconfig set \
 	nscd/group/positive_time_to_live?3600 \
 	nscd/hosts/positive_time_to_live?3600 \
 	auth/user/methods?"krb5 ldap unix" \
-	auth/user/services?"kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
+	auth/user/services?"chfn chsh kde kscreensaver kcheckpass rsh ssh su sudo passwd cron" \
 	auth/admin/methods?"krb5 ldap unix" \
-	auth/admin/services?"chfn chsh ftp gdm login other ppp rlogin screen"
+	auth/admin/services?"ftp gdm login other ppp rlogin screen"
 
 # remove old non-mutlifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then

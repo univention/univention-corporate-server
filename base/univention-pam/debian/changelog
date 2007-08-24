@@ -1,3 +1,9 @@
+univention-pam (1.1.1-1) unstable; urgency=low
+
+  * move chfn and chsh to user services
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 07:36:09 +0200
+
 univention-pam (1.1.0-15) unstable; urgency=low
 
   * fixed syntax for pam passwd cache for sucessful authentifications 
