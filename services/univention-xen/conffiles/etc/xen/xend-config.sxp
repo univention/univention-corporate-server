@@ -129,8 +129,8 @@
 #
 # use
 #
-#
-#(network-script network-bridge)
+
+network-script network-bridge)
 
 # Your default ethernet device is used as the outgoing interface, by default. 
 # To use a different one (e.g. eth1) use
@@ -149,7 +149,7 @@ if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/int
 # two fake interfaces per guest domain.  To do things like this, write
 # yourself a wrapper script, and call network-bridge from it, as appropriate.
 #
-(network-script network-dummy)
+#(network-script network-dummy)
 
 # The script used to control virtual interfaces.  This can be overridden on a
 # per-vif basis when creating a domain or a configuring a new vif.  The
