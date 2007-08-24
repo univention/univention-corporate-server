@@ -1,3 +1,9 @@
+univention-installer (1.6.33-1) unstable; urgency=low
+
+  * add kompose to the list of additional KDE applications
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 13:57:14 +0200
+
 univention-installer (1.6.32-1) unstable; urgency=low
 
   * install hunspell-de-de instead of myspell-de-de during the

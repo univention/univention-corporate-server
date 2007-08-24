@@ -387,7 +387,7 @@ PackageList=[
 				},
 				{
 					'Name': _('Additional KDE Applications'),
-					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager', 'kdepim' ],
+					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager', 'kdepim', 'kompose' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
