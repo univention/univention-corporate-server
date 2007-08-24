@@ -1,3 +1,9 @@
+univention-webui-style (1.0.6-2) unstable; urgency=low
+
+  * changed webmailer icon on ucs-overview
+
+ -- Tobias Scherer <scherer@univention.de>  Fri, 24 Aug 2007 11:19:36 +0200
+
 univention-webui-style (1.0.6-1) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
