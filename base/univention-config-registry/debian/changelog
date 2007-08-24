@@ -1,3 +1,9 @@
+univention-config-registry (2.3.7-1) unstable; urgency=low
+
+  * added console-common to the dependency of univention-config-registry
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 10:07:05 +0200
+
 univention-config-registry (2.3.6-2) unstable; urgency=low
 
   * fixed permissions of config registry template
