@@ -1,4 +1,4 @@
-univention-ooffice2 (1.0.2-1) unstable; urgency=low
+univention-ooffice2 (1.0.2-2) unstable; urgency=low
 
   * install libpaper-utils, otherwise we got an error message during the
     ooimpress start
