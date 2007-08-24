@@ -1,3 +1,9 @@
+univention-bootsplash (1.0.4-1) unstable; urgency=low
+
+  * fix the path in the theme config file for the splash images
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 10:19:08 +0200
+
 univention-bootsplash (1.0.3-1) unstable; urgency=low
 
   * append all splash images to the initrd if the keyword all was set for the
