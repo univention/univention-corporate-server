@@ -1,3 +1,9 @@
+univention-installer (1.6.31-1) unstable; urgency=low
+
+  * undo md5 hash
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 09:30:37 +0200
+
 univention-installer (1.6.30-1) unstable; urgency=low
 
   * start the syslogd during the installation
