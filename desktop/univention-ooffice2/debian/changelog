@@ -1,3 +1,10 @@
+univention-ooffice2 (1.0.2-1) unstable; urgency=low
+
+  * install libpaper-utils, otherwise we got an error message during the
+    ooimpress start
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 13:26:15 +0200
+
 univention-ooffice2 (1.0.1-1) unstable; urgency=low
 
   * added patches from the desktop scope
