@@ -47,7 +47,11 @@ function other() {
 	export G_BROKEN_FILENAMES=1
 
 	if [ -z "$LANG" ]; then
-		export LANG=de_DE@euro
+		if [ -n "$locale_default" ]; then
+			export LANG=$(echo $locale_default | awk -F ':' '{print $1}')
+		else
+			export LANG=de_DE@euro
+		fi
 	fi
 	if [ $USER = "root" ]; then
     	export PATH=/usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games

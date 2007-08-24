@@ -56,7 +56,11 @@ case "$1" in
 	fi
 
 	if [ -z "$LANG" ]; then
-		echo setenv LANG "de_DE@euro"
+		if [ -n "$locale_default" ]; then
+			echo setenv LANG "$(echo $locale_default | awk -F ':' '{print $1}')"
+		else
+			echo setenv LANG "de_DE@euro"
+		fi
 	fi
 
 	if [ $USER = "root" ]; then

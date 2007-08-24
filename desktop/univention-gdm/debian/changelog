@@ -1,3 +1,9 @@
+univention-gdm (1.0.4-1) unstable; urgency=low
+
+  * use locale/default as default locale setting
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 13:22:42 +0200
+
 univention-gdm (1.0.3-2) unstable; urgency=low
 
   * added descriptions for config registry variables
