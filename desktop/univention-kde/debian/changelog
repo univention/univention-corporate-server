@@ -1,3 +1,9 @@
+univention-kde (2.0.2-1) unstable; urgency=low
+
+  * added akregator to the dependency of univention-kde
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 13:54:04 +0200
+
 univention-kde (2.0.1-14) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
