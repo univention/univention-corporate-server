@@ -331,7 +331,7 @@ PackageList=[
 				},
 				{
 					'Name': _('OpenOffice.org'),
-					'Packages': ['univention-ooffice2', 'myspell-de-de'],
+					'Packages': ['univention-ooffice2', 'hunspell-de-de'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
