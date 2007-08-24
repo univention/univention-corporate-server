@@ -1,3 +1,9 @@
+univention-x-core (1.1.4-2) unstable; urgency=low
+
+  * check for xorg/mouse/*/Identifier instead of xorg/mouse/*/identifier
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2007 14:57:53 +0200
+
 univention-x-core (1.1.4-1) unstable; urgency=low
 
   * rename extension to extensions
