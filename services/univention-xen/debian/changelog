@@ -2,6 +2,7 @@ univention-xen (0.2.11) unstable; urgency=low
 
   * Create /var/lib/xen
   * Fix configuration of network bridge settings	 
+  * Add dependency on bridge-utils	
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 24 Aug 2007 10:22:37 +0200
 

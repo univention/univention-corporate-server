@@ -130,7 +130,7 @@
 # use
 #
 
-network-script network-bridge)
+(network-script network-bridge)
 
 # Your default ethernet device is used as the outgoing interface, by default. 
 # To use a different one (e.g. eth1) use
@@ -164,7 +164,7 @@ if baseConfig.has_key('xen/bridge/interface') and not baseConfig['xen/bridge/int
 # If you are using only one bridge, the vif-bridge script will discover that,
 # so there is no need to specify it explicitly.
 #
-(vif-script vif-bridge)
+#(vif-script vif-bridge)
 
 ## Use the following if network traffic is routed, as an alternative to the
 # settings for bridged networking given above.
