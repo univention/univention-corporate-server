@@ -1,3 +1,9 @@
+univention-grub (1.0.16-4) unstable; urgency=low
+
+  * changed uniboot.xpm.gz
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 27 Aug 2007 16:53:34 +0200
+
 univention-grub (1.0.16-3) unstable; urgency=low
 
   * added univention-config-registry header to menu.lst template file
