@@ -56,6 +56,7 @@ install: build
 	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
 
 	install -m 0644 files/univention-wallpaper.jpg debian/univention-kde/usr/share/wallpapers/
+	install -m 0644 files/ucs-background-1280x1024.png debian/univention-kde/usr/share/wallpapers/
 	
 	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/
 	install -m 0755 univention-kde-profile-builder-dialog debian/univention-kde/usr/bin/
