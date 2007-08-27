@@ -1,3 +1,9 @@
+univention-bootsplash (1.1.1-1) unstable; urgency=low
+
+  * new bootsplash images
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2007 14:16:56 +0200
+
 univention-bootsplash (1.0.4-1) unstable; urgency=low
 
   * fix the path in the theme config file for the splash images

@@ -1,8 +1,8 @@
-univention-server (2.1.7-1) unstable; urgency=low
+univention-server (2.2.1-1) unstable; urgency=low
 
-  * change bootsplash images
+  * new bootsplash images
 
- -- Stefan Gohmann <stefan@visdalen.knut.univention.de>  Mon, 27 Aug 2007 12:10:59 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2007 12:10:59 +0200
 
 univention-server (2.1.6-1) unstable; urgency=low
 
