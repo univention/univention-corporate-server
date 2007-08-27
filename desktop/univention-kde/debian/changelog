@@ -1,3 +1,9 @@
+univention-kde (2.0.2-2) unstable; urgency=low
+
+  * added ucs-background-1280x1024.png
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 27 Aug 2007 09:45:21 +0200
+
 univention-kde (2.0.2-1) unstable; urgency=low
 
   * added akregator to the dependency of univention-kde
