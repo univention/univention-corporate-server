@@ -41,17 +41,6 @@
   </item>
 
   <item type="rect">
-    <pos anchor="c" x="40.5%" y="36.5%" width="box" height="box"/>
-    <box orientation="vertical" min-width="340" xpadding="30" ypadding="30" spacing="10">
-      <item type="label" id="login">
-        <pos anchor="n" x="50%"/>
-        <normal color="#ffffff" font="Sans 16"/>
-		<text>Login</text>
-		<text xml:lang="de">Anmeldung</text>
-      </item>
-	</box>
-  </item>
-  <item type="rect">
     <pos anchor="c" x="50%" y="67%" width="23%" height="box"/>
     <box orientation="vertical" min-width="320" xpadding="5" ypadding="5" spacing="5">
 		<item type="label" id="pam-prompt">
