@@ -56,7 +56,7 @@ if [ -z "`echo $grub_append | grep splash`" ] ; then
 	univention-baseconfig set grub/append="splash=silent $grub_append"
 fi
 
-univention-baseconfig set grub/vga?785
+univention-baseconfig set grub/vga?791
 
 univention-baseconfig set bootsplash/size?all
 
