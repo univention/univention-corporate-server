@@ -1,3 +1,9 @@
+univention-gdm (1.1.1-1) unstable; urgency=low
+
+  * change the default gdm theme
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2007 16:06:58 +0200
+
 univention-gdm (1.0.4-1) unstable; urgency=low
 
   * use locale/default as default locale setting

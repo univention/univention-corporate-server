@@ -52,7 +52,7 @@
 	</box>
   </item>
   <item type="rect">
-    <pos anchor="c" x="50%" y="47%" width="23%" height="box"/>
+    <pos anchor="c" x="50%" y="67%" width="23%" height="box"/>
     <box orientation="vertical" min-width="320" xpadding="5" ypadding="5" spacing="5">
 		<item type="label" id="pam-prompt">
         	<pos anchor="nw" x="10%" y="-10%"/>
@@ -82,11 +82,11 @@
   <item type="rect" id="session_button" button="true">
 @!@
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '    <pos x="85%" y="75%" width="100%" height="1"/>'
+	print '    <pos x="85%" y="85%" width="100%" height="1"/>'
 elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
 	print '    <pos x="85%" y="95%" width="100%" height="1"/>'
 else:
-	print '    <pos x="85%" y="85%" width="100%" height="1"/>'
+	print '    <pos x="85%" y="90%" width="100%" height="1"/>'
 @!@
     <box orientation="horizontal" spacing="10" xpadding="10">
       <item type="pixmap">
@@ -112,7 +112,7 @@ if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] =
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
 		print '    <pos x="85%" y="95%" width="100%" height="1"/>'
 	else:
-		print '    <pos x="85%" y="85%" width="100%" height="1"/>'
+		print '    <pos x="85%" y="90%" width="100%" height="1"/>'
  	print '    <box orientation="horizontal" spacing="10" xpadding="10">'
  	print '  	  <item type="pixmap">'
  	print '  	    <normal file="language.png" tint="#dddddd"/>'
