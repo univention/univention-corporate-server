@@ -15,7 +15,7 @@ for share in shares:
 	conf = {}
 	conf[ 'port' ]  = 139
 	conf[ 'smbclient' ]  = '/usr/bin/smbclient'
-	conf[ 'clipboard' ]  = 'true'
+	conf[ 'clipboard' ]  = 'false'
 	conf[ 'driver' ]  = 'smb'
 	for key in baseConfig.keys():
 		if key.startswith(share):

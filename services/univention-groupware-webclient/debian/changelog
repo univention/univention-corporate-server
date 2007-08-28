@@ -1,3 +1,9 @@
+univention-groupware-webclient (1.1.1-1) unstable; urgency=low
+
+  * disable the gollem clipboard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2007 16:21:24 +0200
+
 univention-groupware-webclient (1.0.13-22) unstable; urgency=low
 
   * fixed copyright, fixed encoding
