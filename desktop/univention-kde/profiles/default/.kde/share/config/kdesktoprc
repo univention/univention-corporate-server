@@ -17,7 +17,7 @@ Wallpaper=/usr/share/wallpapers/ucs-background-1280x1024.png
 WallpaperMode=Scaled
 
 [FMSettings]
-NormalTextColor=0,0,0
+NormalTextColor=255,255,255
 UnderlineLinks=true
 TextWidth=100
 

@@ -1,3 +1,9 @@
+univention-kde (2.1.2-1) unstable; urgency=low
+
+  * set default icon color to white
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2007 14:48:07 +0200
+
 univention-kde (2.1.1-1) unstable; urgency=low
 
   * bump version
