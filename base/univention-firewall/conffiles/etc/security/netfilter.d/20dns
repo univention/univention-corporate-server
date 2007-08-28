@@ -11,7 +11,7 @@
 #
 
 @!@
-if baseConfig.has_key('security/services/imap') and baseConfig['security/services/imap'] == 'disabled':
+if baseConfig.has_key('security/services/dns') and baseConfig['security/services/dns'] == 'disabled':
 	print '/sbin/iptables -A INPUT  -p tcp --dport 53 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p udp --dport 53 -j REJECT'
 	print '/sbin/iptables -A INPUT  -p tcp --dport 7777 -j REJECT'
