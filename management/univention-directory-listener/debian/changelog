@@ -1,3 +1,9 @@
+univention-directory-listener (2.2.1-1) unstable; urgency=low
+
+  * more wording stuff
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Aug 2007 14:39:23 +0200
+
 univention-directory-listener (2.1.1-15) unstable; urgency=low
 
   * Test twice for the dangling symlink caused by the new wording scheme
