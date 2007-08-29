@@ -1241,10 +1241,6 @@ msgstr "Richtlinie: UMC Zugriff"
 msgid "UMC Access"
 msgstr "UMC Zugriff"
 
-#: console_access.py:64
-msgid "Name"
-msgstr "Name"
-
 #: console_access.py:74
 msgid "Allow ACL"
 msgstr "Erlaubte Zugriffe"
@@ -1252,14 +1248,6 @@ msgstr "Erlaubte Zugriffe"
 #: console_access.py:84
 msgid "Disallow ACL"
 msgstr "Nicht erlaubte Zugriffe"
-
-#: console_access.py:94
-msgid "Required Object Classes"
-msgstr "BenÃ¶tigte Objektklassen"
-
-#: console_access.py:104
-msgid "Prohibited Object Classes"
-msgstr "Ausgeschlossene Objektklassen"
 
 #~ msgid "Policy: Packages Client"
 #~ msgstr "Richtlinie: Pakete Client"
