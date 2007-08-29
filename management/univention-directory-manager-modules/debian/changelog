@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.2-1) unstable; urgency=low
+
+  * remove translation syntax errors
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Aug 2007 08:53:01 +0200
+
 univention-directory-manager-modules (2.2.1-1) unstable; urgency=low
 
   * move umc admin modules to univention directory manager
