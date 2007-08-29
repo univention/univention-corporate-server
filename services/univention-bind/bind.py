@@ -123,15 +123,18 @@ def postrun():
 					fp.write('include "%s";\n' % os.path.join(named_conf_dir, f))
 		fp.close()
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DNS: Reloading BIND')
+		restart=False
 		for file in os.listdir('/var/cache/univention-bind-proxy'):
 			if not os.path.exists(os.path.join('/var/cache/bind', file)):
-				os.spawnv(os.P_WAIT, '/etc/init.d/univention-bind-proxy', ['univention-bind-proxy', 'restart'])
-				os.spawnv(os.P_WAIT, '/etc/init.d/univention-bind', ['univention-bind', 'restart'])
+				restart=True
 			else:
 				if os.path.exists('/usr/sbin/rndc'):
 					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 55555', 'reload', file])
 					os.spawnv(os.P_WAIT, '/usr/sbin/rndc', ['rndc', '-p 953', 'reload', file])
 			os.remove(os.path.join('/var/cache/univention-bind-proxy', file))
+		if restart:
+			os.spawnv(os.P_WAIT, '/etc/init.d/univention-bind-proxy', ['univention-bind-proxy', 'restart'])
+			os.spawnv(os.P_WAIT, '/etc/init.d/univention-bind', ['univention-bind', 'restart'])
 
 	finally:
 		listener.unsetuid()
