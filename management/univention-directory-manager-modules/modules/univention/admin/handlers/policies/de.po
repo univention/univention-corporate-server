@@ -1261,25 +1261,6 @@ msgstr "BenÃ¶tigte Objektklassen"
 msgid "Prohibited Object Classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: console_access.py:114
-msgid "Fixed Attributes"
-msgstr "Festgelegte Attribute"
-
-#: console_access.py:124
-msgid "Empty Attributes"
-msgstr "Leere Attribute"
-
-#: console_access.py:145
-msgid "General"
-msgstr "Allgemein"
-
-#: console_access.py:145
-msgid "Basic Values"
-msgstr "Grundeinstellungen"
-
-#: console_access.py:149
-msgid "Object"
-msgstr "Objekt"
 #~ msgid "Policy: Packages Client"
 #~ msgstr "Richtlinie: Pakete Client"
 
