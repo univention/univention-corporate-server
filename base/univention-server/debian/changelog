@@ -1,3 +1,9 @@
+univention-server (2.2.3-1) unstable; urgency=low
+
+  * use the correct red color for the bootsplah progessbar on DC Backup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Aug 2007 08:50:12 +0200
+
 univention-server (2.2.2-1) unstable; urgency=low
 
   * new bootsplash images
