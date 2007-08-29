@@ -76,7 +76,7 @@ doopt() {
 domac () {
     eval $(univention-config-registry shell)
 
-    for i in 1 2 3 4; do
+    for i in 0 1 2 3; do
         var=interfaces_eth${i}_mac
         if [ ${!var} ]; then
             ifconfig eth${i} hw ether ${!var}
@@ -85,12 +85,12 @@ domac () {
 }
 
 process_options() {
+    domac
     [ -e /etc/network/options ] || return 0
     log_warning_msg "/etc/network/options is deprecated (see README.Debian of netbase)."
     doopt spoofprotect yes
     doopt syncookies no
     doopt ip_forward no
-    domac
 }
 
 case "$1" in
