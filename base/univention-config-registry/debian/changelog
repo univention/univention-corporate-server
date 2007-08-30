@@ -1,4 +1,4 @@
-univention-config-registry (2.3.8-1) unstable; urgency=low
+univention-config-registry (2.3.8-2) unstable; urgency=low
 
   * fixed processing of interfaces/ethX/mac
 

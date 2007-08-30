@@ -85,7 +85,6 @@ domac () {
 }
 
 process_options() {
-    domac
     [ -e /etc/network/options ] || return 0
     log_warning_msg "/etc/network/options is deprecated (see README.Debian of netbase)."
     doopt spoofprotect yes
@@ -96,6 +95,7 @@ process_options() {
 case "$1" in
 start)
 	process_options
+    domac
 	log_action_begin_msg "Configuring network interfaces"
 	if ifup -a; then
 	    log_action_end_msg $?
@@ -123,6 +123,7 @@ force-reload|restart)
 	process_options
 	log_action_begin_msg "Reconfiguring network interfaces"
 	ifdown -a --exclude=lo || true
+    domac
 	if ifup -a --exclude=lo; then
 	    log_action_end_msg $?
 	else
