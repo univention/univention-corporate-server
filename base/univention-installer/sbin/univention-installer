@@ -3,6 +3,10 @@
 recover=`cat /proc/cmdline | grep " recover"`
 params="--cmdline"
 
+# disable console blanking
+setterm -powersave off
+setterm -powerdown 0
+setterm -blank 0
 
 #check architecture
 architecture=`uname -m`
