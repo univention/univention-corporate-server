@@ -3,7 +3,7 @@
 # Univention Fax Server
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -50,28 +50,28 @@ if [ -x "/etc/init.d/capi4hylafax" ]; then
 fi
 
 if [ "$1" = "configure" -a -n "$2" ]; then
-	eval `univention-baseconfig shell`
-	univention-baseconfig set fax/modem0/head/number?"$fax_head_number"
-	univention-baseconfig unset fax/head/number
-	univention-baseconfig set fax/modem0/head/sender?"$fax_head_sender"
-	univention-baseconfig unset fax/head/sender
-	univention-baseconfig set fax/modem0/in/msn?"$fax_in_msn"
-	univention-baseconfig unset fax/in/msn
-	univention-baseconfig set fax/modem0/out/msn?"$fax_out_msn"
-	univention-baseconfig unset fax/out/msn
-	univention-baseconfig set fax/modem0/prefix?"$fax_out_prefix"
-	univention-baseconfig unset fax/out/prefix	
+	eval `univention-config-registry shell`
+	univention-config-registry set fax/modem0/head/number?"$fax_head_number"
+	univention-config-registry unset fax/head/number
+	univention-config-registry set fax/modem0/head/sender?"$fax_head_sender"
+	univention-config-registry unset fax/head/sender
+	univention-config-registry set fax/modem0/in/msn?"$fax_in_msn"
+	univention-config-registry unset fax/in/msn
+	univention-config-registry set fax/modem0/out/msn?"$fax_out_msn"
+	univention-config-registry unset fax/out/msn
+	univention-config-registry set fax/modem0/prefix?"$fax_out_prefix"
+	univention-config-registry unset fax/out/prefix
 else
-	univention-baseconfig set fax/modem0/name?"faxCAPI"
-	univention-baseconfig set fax/areacode?"000"
-	univention-baseconfig set fax/countrycode?"49"
-	univention-baseconfig set fax/modem0/in/msn?"000000"
-	univention-baseconfig set fax/modem0/prefix?""
-	univention-baseconfig set fax/modem0/head/number?"+49 000 0000000"
-	univention-baseconfig set fax/modem0/head/sender?"Univention Faxserver"
-	univention-baseconfig set fax/modem0/out/msn?"000000"
-	univention-baseconfig set fax/in/mailto?"root"
-	univention-baseconfig set fax/hosts?"localhost 127.0.0.1"
+	univention-config-registry set fax/modem0/name?"faxCAPI"
+	univention-config-registry set fax/areacode?"000"
+	univention-config-registry set fax/countrycode?"49"
+	univention-config-registry set fax/modem0/in/msn?"000000"
+	univention-config-registry set fax/modem0/prefix?""
+	univention-config-registry set fax/modem0/head/number?"+49 000 0000000"
+	univention-config-registry set fax/modem0/head/sender?"Univention Faxserver"
+	univention-config-registry set fax/modem0/out/msn?"000000"
+	univention-config-registry set fax/in/mailto?"root"
+	univention-config-registry set fax/hosts?"localhost 127.0.0.1"
 fi
 
 

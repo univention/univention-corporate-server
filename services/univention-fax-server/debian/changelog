@@ -1,3 +1,9 @@
+univention-fax-server (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 31 Aug 2007 10:21:36 +0200
+
 univention-fax-server (1.13-4) unstable; urgency=low
 
   * added isdnactive cards init script
@@ -56,7 +62,7 @@ univention-fax-server (1.10) unstable; urgency=low
   * adapted capi4hylafax init script: the FIFO files are now located at
     /var/spool/hylafax/ (hylafax >=4.21).
 
- -- Andreas B�sching <buesching@univention.de>  Tue, 15 Nov 2005 16:51:04 +0100
+ -- Andreas Büsching <buesching@univention.de>  Tue, 15 Nov 2005 16:51:04 +0100
 
 univention-fax-server (1.9) unstable; urgency=low
 

@@ -3,7 +3,7 @@
 # Univention FAX Server
 #  init-script for capiinit
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # init-script for capi4hylafax, originally by a debian-capi4hylafax-maintainer
-# modifications by Univention GmbH to respect univention-baseconfig ha-settings
+# modifications by Univention GmbH to respect univention-config-registry ha-settings
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DAEMON=/usr/sbin/capiinit

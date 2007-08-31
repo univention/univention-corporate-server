@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # init-script for capi4hylafax, originally by a debian-capi4hylafax-maintainer
-# modifications by Univention GmbH to respect univention-baseconfig ha-settings
+# modifications by Univention GmbH to respect univention-config-registry ha-settings
 #
 # Start or stop c2faxrecv daemon
 #

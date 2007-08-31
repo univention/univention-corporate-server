@@ -1,9 +1,9 @@
 #!/bin/sh -e
 #
-# Univention Fax Server
+# Univention Fax Common
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,7 +30,7 @@
 
 dpkg-divert --rename --add /etc/hylafax/faxcover.ps
 
-univention-baseconfig set fax/sendcover?no
+univention-config-registry set fax/sendcover?no
 
 #DEBHELPER#
 
