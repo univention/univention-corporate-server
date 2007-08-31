@@ -1,0 +1,86 @@
+#!/bin/sh -e
+#
+# Univention Fax Server
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+if [ -e /var/spool/hylafax/etc/hosts.hfaxd ]; then
+	chmod 600 /var/spool/hylafax/etc/hosts.hfaxd
+fi
+
+if [ -e  /var/spool/hylafax/log/xferfaxlog ]; then
+	chown uucp.uucp /var/spool/hylafax/log/xferfaxlog
+else
+	touch /var/spool/hylafax/log/xferfaxlog
+	chown uucp.uucp /var/spool/hylafax/log/xferfaxlog
+fi
+
+chmod 600 /etc/univention/templates/files/etc/hylafax/hosts.hfaxd
+chown uucp: /etc/univention/templates/files/etc/hylafax/hosts.hfaxd
+
+#DEBHELPER#
+
+if [ -x "/etc/init.d/capi4hylafax" ]; then
+	update-rc.d capi4hylafax defaults 21 >/dev/null || exit 0
+fi
+
+if [ "$1" = "configure" -a -n "$2" ]; then
+	eval `univention-baseconfig shell`
+	univention-baseconfig set fax/modem0/head/number?"$fax_head_number"
+	univention-baseconfig unset fax/head/number
+	univention-baseconfig set fax/modem0/head/sender?"$fax_head_sender"
+	univention-baseconfig unset fax/head/sender
+	univention-baseconfig set fax/modem0/in/msn?"$fax_in_msn"
+	univention-baseconfig unset fax/in/msn
+	univention-baseconfig set fax/modem0/out/msn?"$fax_out_msn"
+	univention-baseconfig unset fax/out/msn
+	univention-baseconfig set fax/modem0/prefix?"$fax_out_prefix"
+	univention-baseconfig unset fax/out/prefix	
+else
+	univention-baseconfig set fax/modem0/name?"faxCAPI"
+	univention-baseconfig set fax/areacode?"000"
+	univention-baseconfig set fax/countrycode?"49"
+	univention-baseconfig set fax/modem0/in/msn?"000000"
+	univention-baseconfig set fax/modem0/prefix?""
+	univention-baseconfig set fax/modem0/head/number?"+49 000 0000000"
+	univention-baseconfig set fax/modem0/head/sender?"Univention Faxserver"
+	univention-baseconfig set fax/modem0/out/msn?"000000"
+	univention-baseconfig set fax/in/mailto?"root"
+	univention-baseconfig set fax/hosts?"localhost 127.0.0.1"
+fi
+
+
+adduser uucp dialout
+
+chmod 660 /dev/capi20
+chown uucp /dev/capi20
+
+/etc/init.d/hylafax restart || true
+
+exit 0
+

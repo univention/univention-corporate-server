@@ -1,0 +1,5 @@
+@!@
+import string
+for host in string.split(baseConfig["fax/hosts"], ' '):
+	print host
+@!@

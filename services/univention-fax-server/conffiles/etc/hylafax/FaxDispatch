@@ -1,0 +1,3 @@
+FILETYPE=pdf
+SENDTO=@%@fax/in/mailto@%@
+

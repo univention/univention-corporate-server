@@ -1,0 +1,12 @@
+#ContCoverPage:			"etc/cover.templ"
+#DestControls:			"etc/destctrls"
+#DialStringRules:		"etc/dialrules"
+#QualifyCID:			"etc/cid"
+#QualifyTSI:			"etc/tsi"
+#ServerTracing:			0x08501
+InternationalPrefix:    00
+LongDistancePrefix:     0
+AreaCode:               @%@fax/areacode@%@
+CountryCode:            @%@fax/countrycode@%@
+SendFaxCmd:				"/usr/bin/univention-faxsend"
+FaxSendCmd:				"/usr/bin/univention-faxsend"

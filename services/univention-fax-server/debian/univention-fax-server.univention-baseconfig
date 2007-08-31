@@ -1,0 +1,54 @@
+Type: file
+File: etc/hylafax/FaxDispatch
+Variables: fax/in/mailto
+
+Type: file
+File: etc/hylafax/config
+Variables: fax/areacode
+Variables: fax/countrycode
+
+Type: file
+File: etc/init.d/hylafax
+Variables: fax/modem.*/name
+
+Type: file
+File: etc/init.d/capi4hylafax
+
+Type: file
+File: etc/init.d/isdnactivecards
+
+Type: file
+File: etc/hylafax/modem.conf
+Variables: fax/modem.*/name
+Variables: fax/modem.*/in/msn
+Variables: fax/modem.*/out/msn
+Variables: fax/modem.*/head/number
+Variables: fax/modem.*/head/sender
+Variables: fax/modem.*/prefix
+Variables: fax/modem.*/in/controller
+Variables: fax/modem.*/out/controller
+
+Type: file
+File: etc/hylafax/hosts.hfaxd
+Variables: fax/hosts
+
+Type: file
+File: etc/hylafax/setup.cache
+
+Type: file
+File: etc/hylafax/setup.modem
+
+Type: file
+File: etc/hylafax/tsi
+
+Type: file
+File: etc/hylafax/cid
+
+Type: file
+File: etc/default/capi4hylafax
+
+Type: file
+File: etc/default/hylafax
+
+Type: file
+File: etc/isdn/capi.conf

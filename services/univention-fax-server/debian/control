@@ -1,0 +1,29 @@
+Source: univention-fax-server
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-fax-server
+Architecture: all
+Depends: hylafax-server (>= 4.2.1), capi4hylafax, isdnactivecards, mgetty, mgetty-voice, univention-psstamp, univention-fax-common, metamail
+Description: meta package for hylafax
+ This package contains the hylafax configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-fax-common
+Architecture: all
+Conflicts: univention-fax-client (<< 1.3)
+Description: meta package for hylafax
+ This package contains the hylafax configuration.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

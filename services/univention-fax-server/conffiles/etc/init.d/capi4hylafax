@@ -1,0 +1,89 @@
+#! /bin/sh
+#
+# Univention FAX Server
+#  init-script for capi4hylafax
+#
+# Copyright (C) 2004, 2005, 2006 Giuseppe Sacco <eppesuig@debian.org>
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# init-script for capi4hylafax, originally by a debian-capi4hylafax-maintainer
+# modifications by Univention GmbH to respect univention-baseconfig ha-settings
+#
+# Start or stop c2faxrecv daemon
+#
+
+test -x /usr/bin/c2faxrecv || exit 0
+
+run_capi4hylafax=0
+if [ -f /etc/default/capi4hylafax ]; then
+    . /etc/default/capi4hylafax
+fi
+
+if [ $run_capi4hylafax = 0 ]; then
+    cat <<EOF
+
+Please edit the file /etc/hylafax/config.faxCAPI according to your needs.
+The current /etc/hylafax/config.faxCAPI is just the sample file that is
+provided with the upstream package, so it will not be useful at all for
+you. (Please read /usr/share/doc/capi4hylafax/README.Debian)
+
+After you are done you will have to edit /etc/default/capi4hylafax as
+well. There you will have to set the variable run_capi4hylafax to 1,
+and then type "/etc/init.d/capi4hylafax start" to start the c2faxrecv
+daemon.
+
+EOF
+	exit 0
+fi
+
+C2FAXRECVPID=/var/run/c2faxrecv.pid
+
+case "$1" in
+	start)
+		echo -n "Starting capi4hylafax: c2faxrev"
+		/bin/rm /var/spool/hylafax/FIFO.*
+		start-stop-daemon --start --quiet --background --make-pidfile --pidfile $C2FAXRECVPID \
+			--exec /usr/bin/c2faxrecv -- -C /etc/hylafax/modem.conf
+		echo "."
+		;;
+	stop)
+		echo -n "Stopping capi4hylafax: c2faxrev"
+		start-stop-daemon --stop --quiet --pidfile $C2FAXRECVPID
+		rm -f $C2FAXRECVPID
+		echo "."
+		;;
+	restart | force-reload)
+		echo -n "Restarting capi4hylafax: c2faxrev"
+		start-stop-daemon --stop --quiet --pidfile $C2FAXRECVPID
+		sleep 5
+		start-stop-daemon --start --quiet --background --make-pidfile --pidfile $C2FAXRECVPID \
+			--exec /usr/bin/c2faxrecv -- -C /etc/hylafax/modem.conf
+		echo "."
+		;;
+	*)
+		echo "Usage: /etc/init.d/capi4hylafax {start|stop|restart|force-reload}"
+		exit 1
+esac
+exit 0

@@ -1,0 +1,4 @@
+#
+# Uncomment this line once capi4hylafax has been fully configured.
+#
+run_capi4hylafax=1

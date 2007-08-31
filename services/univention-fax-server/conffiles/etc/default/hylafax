@@ -1,0 +1,12 @@
+# default settings for hylafax server
+
+# Use faxgetty by default, since /usr/sbin/faxmodem is deprecated
+# If for some reason faxmodem is desired over faxgetty, change the
+# following variable value to "no".
+USE_FAXGETTY=no
+
+#
+# Uncomment this line once hylafax has been fully configured and/or
+# you want to disable the server.
+#
+RUN_HYLAFAX=1

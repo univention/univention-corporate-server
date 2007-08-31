@@ -1,0 +1,5 @@
+Type: file
+File: etc/hylafax/hyla.conf
+Variables: fax/server
+Variables: fax/modem
+Variables: fax/sendcover

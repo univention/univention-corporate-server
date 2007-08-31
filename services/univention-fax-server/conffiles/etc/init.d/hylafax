@@ -1,0 +1,207 @@
+#!/bin/sh
+#
+# Univention FAX Server
+#  init-script for hylafax
+#
+# Copyright (C) 2004, 2005, 2006 Giuseppe Sacco <eppesuig@debian.org>
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+# init-script for hylafax, originally by a debian-hylafax-maintainer
+# modifications by Univention GmbH to respect univention-baseconfig settings
+
+# Start or stop HylaFAX
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+HYLAFAX_HOME=/var/spool/hylafax
+FAXGETTY=/usr/sbin/faxgetty
+FAXMODEM=/usr/sbin/faxmodem
+
+RUN_HYLAFAX=0
+
+chmod 600 /etc/hylafax/hosts.hfaxd
+
+if [ -f /etc/default/hylafax ]; then
+  . /etc/default/hylafax
+fi
+
+test -x /usr/sbin/faxq || exit 0
+test -x /usr/sbin/hfaxd || exit 0
+test -f /var/spool/hylafax/etc/setup.cache || exit 0
+
+if [ "$RUN_HYLAFAX" -ne 1 ]; then
+  echo "hylafax is disabled, see /etc/default/hylafax"
+  exit 0
+fi
+
+echo_fax_devices()
+{
+@!@
+print 'for device in config.tty[MS][0-9]',
+i=0
+while baseConfig.has_key("fax/modem%d/name"%i) and baseConfig["fax/modem%d/name"%i]:
+	print 'config.%s'%baseConfig["fax/modem%d/name"%i],
+	i = i+1
+print '; do'
+@!@
+#  for device in config.tty[MS][0-9] config.faxWURM config.faxWURM1 config.faxWURM2 config.faxWURM3; do
+    if [ -f "$device" ]; then
+      echo "$device"
+    fi
+  done
+}
+
+
+x()
+{
+	echo + "$@" 1>&2
+	eval "$@"
+}
+
+
+update_dir()
+{
+  # This function won't copy dot-files.
+  for src in "$1/"*
+  do
+    if [ "$src" != "${src%%\~}" ] || [ "$src" != "${src%%.bak}" ]
+    then
+      continue
+    fi
+    dst="$2/"$(basename $src)
+    if [ ! -e "$dst" ] ;
+    then
+      /bin/cp -a "$src" "$dst"
+    else
+      if [ -d "$dst" ];
+      then
+        update_dir "$src" "$dst"
+      else
+        if [ -L "$dst" -a \
+           '(' ! -L "$src" -o x$(readlink "$dst") != x$(readlink "$src") ')' ];
+        then
+          /bin/rm -f "$dst"
+          /bin/cp -a "$src" "$dst"
+        else
+          if [ "$src" -nt "$dst" ];
+          then
+            # The configuration file has been changed in $src
+            /bin/cp -a "$src" "$dst"
+          else
+            if [ "$dst" -nt "$src" ];
+            then
+              # The configuration file has been changed in $dst
+              echo "ERROR: $dst is newer than $src" 1>&2
+              echo "Please send a bug report on the hylafax-server package" 1>&2
+              exit 1
+            fi
+          fi
+        fi
+      fi
+    fi
+  done
+}
+
+copy_slash_etc()
+{
+  SPOOL=$(grep SPOOL= /etc/hylafax/setup.cache | awk -F= '{print $2}' | tr -d \'\")
+
+  if [ -z "$SPOOL" ];
+  then
+    echo "ERROR: You must run faxsetup before starting hylafax" 1>&2
+    echo "and be sure to check that the SPOOL variable is assigned." 1>&2
+    exit 1
+  fi
+
+  if [ -d "$SPOOL/etc" ];
+  then
+    update_dir "/etc/hylafax" "$SPOOL/etc"
+  else
+    echo "Can't create directory $SPOOL/etc" 1>&2
+    exit 1
+  fi
+
+}
+
+case "$1" in
+  start)
+    if [ ${USE_FAXGETTY} = "yes" ]
+    then
+      count=$(ps --no-headers -Chfaxd,faxq,faxgetty | wc -l)
+    else
+      count=$(ps --no-headers -Chfaxd,faxq | wc -l)
+    fi
+
+
+    if [ $count -eq 0 ];
+    then
+		 copy_slash_etc
+		echo -n "Starting HylaFAX daemons:"
+		echo -n " faxq"
+		start-stop-daemon --start --exec /usr/sbin/faxq
+		echo -n " hfaxd"
+		start-stop-daemon --start --exec /usr/sbin/hfaxd -- -i 4559 -o 4557 -s 444
+		cd ${HYLAFAX_HOME}/etc
+		devices="`echo_fax_devices`"
+		if [ ${USE_FAXGETTY} = "yes" ]; then
+		  echo -n " faxgetty"
+		  for device in $devices none; do
+			[ "$device" = none ] && continue
+			${FAXGETTY} `echo $device | cut -d . -f 2` &
+		  done
+		else
+		  echo -n " faxmodem"
+		  for device in $devices none; do
+			[ "$device" = none ] && continue
+			${FAXMODEM} `echo $device | cut -d . -f 2` &
+		  done
+		fi
+    else
+      echo "Not starting HylaFAX daemons since they are already running." 1>&2
+      exit 1
+    fi
+    echo "."
+    ;;
+  stop)
+    echo -n "Stopping HylaFAX daemons:"
+    echo -n " faxq"
+    start-stop-daemon --stop --name faxq
+    echo -n " hfaxd"
+    start-stop-daemon --stop --name hfaxd -- -i 4559 -o 4557 -s 444
+    echo -n " faxgetty"
+    killall faxgetty 2> /dev/null || true
+    echo "."
+    ;;
+  restart|force-reload)
+  	$0 stop
+	sleep 1
+	$0 start
+    ;;
+  *)
+    echo "Usage: /etc/init.d/hylafax {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
+exit 0
