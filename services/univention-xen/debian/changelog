@@ -1,3 +1,9 @@
+univention-xen (0.2.12) unstable; urgency=low
+
+  * Update example config
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 31 Aug 2007 15:22:39 +0200
+
 univention-xen (0.2.11) unstable; urgency=low
 
   * Create /var/lib/xen
