@@ -135,17 +135,6 @@ if [ -n "$packages" ]; then
 	done
 fi
 
-links=`echo $packages | grep links-ssl`
-if [ -z "\$links" ]; then
-	# apache needs a www-browser package
-	res=\`apt-get remove -s links-ssl elinks lynx | grep apache\`
-	if [ -z "\$res" ]; then
-		$PIPE apt-get remove links-ssl elinks lynx
-		$PIPE dpkg --configure -a
-	fi
-
-fi
-
 if [ -n "$extra_packages" ]; then
 	for p in $extra_packages; do
 		$PIPE apt-get install \$p

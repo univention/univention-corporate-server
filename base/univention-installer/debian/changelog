@@ -1,3 +1,9 @@
+univention-installer (1.7.2-1) unstable; urgency=low
+
+  * no longer remove the text browsers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Aug 2007 13:51:44 +0200
+
 univention-installer (1.7.1-1) unstable; urgency=low
 
   * use package dhcp-client instead of dhcp3-client
