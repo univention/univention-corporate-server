@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-config-registry
 Architecture: all
-Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils,  acl, xfsprogs, lsof, console-data, console-tools, console-common
+Depends: univention-config, locales, ntp, ntpdate, rdate, coreutils,  acl, xfsprogs, lsof, console-data, console-tools, console-common, bzip2
 Replaces: univention-baseconfig
 Conflicts: univention-baseconfig (<=2.2.0)
 Provides: univention-baseconfig

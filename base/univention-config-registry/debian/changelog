@@ -1,3 +1,9 @@
+univention-config-registry (2.4.0-1) unstable; urgency=low
+
+  * add bzip2 to the dependency list of univention-config-registry
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Aug 2007 13:37:28 +0200
+
 univention-config-registry (2.3.8-2) unstable; urgency=low
 
   * fixed processing of interfaces/ethX/mac
