@@ -3,7 +3,7 @@
 # Univention Server Installation
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -37,10 +37,10 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-server-installation successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval `univention-config-registry shell`
 # create ucs-cdrom share
-univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
-univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-cdrom --set path=/var/lib/univention-server-cdrom --set host=$hostname.$domainname
+univention-directory-manager container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
+univention-directory-manager shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=ucs-cdrom --set path=/var/lib/univention-server-cdrom --set host=$hostname.$domainname
 
 test -n "`grep "univention-server-installation successful" /usr/lib/univention-install/.index.txt`" || echo "univention-server-installation successful" >>/usr/lib/univention-install/.index.txt
 

@@ -3,7 +3,7 @@
 # Univention Server Installation
 #  pstinst script for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -62,14 +62,14 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m0755 serverinstallerpxe.py $(D)/usr/lib/univention-ldap-listener/system/
+	install -m0755 serverinstallerpxe.py $(D)/usr/lib/univention-directory-listener/system/
 	install -m0755 81univention-server-installation.inst $(D)/usr/lib/univention-install/
 
 	ln -sf /var/lib/univention-server-cdrom/isolinux/linux $(D)/var/lib/univention-client-boot/linux-server
 	ln -sf /var/lib/univention-server-cdrom/isolinux/linux.bin $(D)/var/lib/univention-client-boot/linux.bin
 
 
-	univention-install-baseconfig
+	univention-install-config-registry
 
 binary-indep: build install
 # We have nothing to do by default.

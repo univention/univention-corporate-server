@@ -2,7 +2,7 @@
 # Univention Server Installation
 #  listener module: creates PXE boot configurations
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,9 +27,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import univention_baseconfig
+import univention.config_registry
 
-baseConfig=univention_baseconfig.baseConfig()
+baseConfig=univention.config_registry.baseConfig()
 
 name='serverinstallerpxe'
 description='PXE configuration for the Server installer'
