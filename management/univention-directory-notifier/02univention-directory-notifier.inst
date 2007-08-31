@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention LDAP Notifier
+# Univention Directory Notifier
 #  join script
 #
 # Copyright (C) 2007 Univention GmbH
