@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-psstamp
 Architecture: all
-Depends: univention-baseconfig
+Depends: univention-config-registry
 Description: Univention Postscript Stamper
  Insert watermarks into Postscript Files
  .
