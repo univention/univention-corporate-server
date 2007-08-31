@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-kolab2
 Architecture: all
-Depends: univention-kolab2-framework, univention-mail-postfix-kolab2, univention-mail-cyrus-kolab2, python-univention-admin
+Depends: univention-kolab2-framework, univention-mail-postfix-kolab2, univention-mail-cyrus-kolab2, python-univention-directory-manager
 Description: UCS meta package for kolab2
  .
  This package is part of Univention Corporate Server (UCS),

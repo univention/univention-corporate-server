@@ -1,3 +1,9 @@
+univention-directory-replication (1.1.0-2) unstable; urgency=low
+
+  * more dependency/wording stuff
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Aug 2007 15:15:15 +0200
+
 univention-directory-replication (1.1.0-1) unstable; urgency=low
 
   * Rename to Univention Directory Replication
