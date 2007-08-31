@@ -496,10 +496,20 @@ class object(content):
 			self.debug('read_profile: no autopart')
 			for key in self.all_results.keys():
 				self.debug('read_profile: key=%s' % key)
+				delete_all_lvmlv = False
 				if key == 'part_delete':
 					delete=self.all_results['part_delete'].replace("'","").split(' ')
 					for entry in delete:
 						if entry == 'all': # delete all existing partitions
+
+							# if all partitions shall be deleted all volumegroups prior have to be deleted
+							if not self.all_results.has_key('lvmlv_delete'):
+								delete_all_lvmlv = True
+								s = ''
+								for vg in self.container['lvm']['vg'].keys():
+									s += ' ' + vg
+								self.all_results['lvmlv_delete'] = s.strip()
+							
 							for disk in self.container['disk'].keys():
 								if len(self.container['disk'][disk]['partitions'].keys()):
 									self.container['profile']['delete'][disk]=[]
@@ -520,7 +530,7 @@ class object(content):
 							else:
 								self.container['profile']['delete'][disk].append(partnum)
 
-				if key == 'lvmlv_delete':
+				if key == 'lvmlv_delete' or delete_all_lvmlv:
 					lvmdelete=self.all_results['lvmlv_delete'].replace("'","").split(' ')
 					for entry in lvmdelete:
 						# /dev/vgname         ==> delete all LVs in VG
