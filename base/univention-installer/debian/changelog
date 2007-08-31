@@ -1,3 +1,9 @@
+univention-installer (1.7.4-1) unstable; urgency=low
+
+  * shortened a german translation string
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 31 Aug 2007 14:40:26 +0200
+
 univention-installer (1.7.3-1) unstable; urgency=low
 
   * readded myspell instead of hunspell, otherwise the firefox will be

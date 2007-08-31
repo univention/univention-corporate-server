@@ -1346,9 +1346,7 @@ msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
 
 #: installer/modules/12_partition.py:2138
 msgid "Please use \"pvmove\" to move data to other physical volumes."
-msgstr ""
-"Bitte nutzen Sie \"pvmove\", um die Daten auf ein anderes physikalisches "
-"Medium zu verschieben."
+msgstr "Bitte verschieben Sie die Daten mit \"pvmove\" auf ein anderes phys. Medium."
 
 #: installer/modules/12_partition.py:2668
 msgid "No device files found for following devices. Please"
