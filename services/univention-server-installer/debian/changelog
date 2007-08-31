@@ -1,0 +1,49 @@
+univention-server-installer (0.8) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  4 Dec 2006 12:41:57 +0100
+
+univention-server-installer (0.7) unstable; urgency=low
+
+  * setting of pxe/append does not require restarting the ldap-listener 
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Fri,  3 Mar 2006 15:37:18 +0100
+
+univention-server-installer (0.6) unstable; urgency=low
+
+  * the append line of the pxe boot files can be set using
+    univention-baseconfig set pxe/append 
+
+ -- Wolf Wiegand <wolf@anton.knut.univention.de>  Fri,  3 Mar 2006 14:32:11 +0100
+
+univention-server-installer (0.5) unstable; urgency=low
+
+  * depends on syslinux or syslinux-bin, needed for powerpc
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Feb 2006 11:35:01 +0100
+
+univention-server-installer (0.4) unstable; urgency=low
+
+  * Support for spaces in ldap base
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 14 Dec 2004 18:54:55 +0100
+
+univention-server-installer (0.3) unstable; urgency=low
+
+  * rename package from univention-server-installer to univention-net-installer
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 25 Aug 2004 10:58:04 +0200
+
+univention-server-installer (0.2) unstable; urgency=low
+
+  * support for Managed Clients
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Aug 2004 12:22:48 +0200
+
+univention-server-installer (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Mar 2004 08:53:32 +0100
+
