@@ -1,0 +1,4 @@
+Type: file
+File: etc/univention/skel/.kde/share/config/kdeprintfaxrc
+Variables: fax/server
+Variables: fax/modem

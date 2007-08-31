@@ -1,0 +1,16 @@
+[Fax]
+Device=@%@fax/modem@%@
+Page=a4
+Resolution=High
+Server=@%@fax/server@%@
+
+[General]
+ABSize=400,200
+
+[Personal]
+Company=
+Name=
+Number=
+
+[System]
+System=hylafax
