@@ -459,7 +459,7 @@ PackageList=[
 				},
 				{
 					'Name': _('dhcp client'),
-					'Packages': ['dhcp3-client'],
+					'Packages': ['dhcp-client'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': [ 'all' ],

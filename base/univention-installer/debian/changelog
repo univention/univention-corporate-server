@@ -1,3 +1,9 @@
+univention-installer (1.7.1-1) unstable; urgency=low
+
+  * use package dhcp-client instead of dhcp3-client
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Aug 2007 12:55:47 +0200
+
 univention-installer (1.6.35-1) unstable; urgency=low
 
   * updated reboot message
