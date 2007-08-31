@@ -89,7 +89,7 @@ elif [ -z "$2" ]; then
         univention-config-registry set grub/timeout?5 \
 								grub/append="$append splash=silent" \
 								grub/root="$rootdevice" \
-								grub/vga=785 \
+								grub/vga=791 \
 								grub/memtest86=true
 
 fi
