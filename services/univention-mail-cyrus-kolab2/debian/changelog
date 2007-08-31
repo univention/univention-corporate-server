@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-3) unstable; urgency=low
+
+  * added config registry header to /etc/init.d/cyrus2.2
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 31 Aug 2007 14:00:01 +0200
+
 univention-mail-cyrus-kolab2 (1.0.5-2) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
