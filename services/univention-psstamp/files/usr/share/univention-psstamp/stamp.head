@@ -1,0 +1,10 @@
+%!PS
+
+/ImageData
+currentfile
+<< /Filter
+   /SubFileDecode
+   /DecodeParms
+   << /EODCount 0 /EODString (*EOD*) >>
+>> /ReusableStreamDecode filter
+%%STARTLOGO

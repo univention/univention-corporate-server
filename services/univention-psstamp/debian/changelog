@@ -1,0 +1,11 @@
+univention-psstamp (1.1-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas Büsching <buesching@univention.de>  Sun,  3 Dec 2006 11:38:41 +0100
+
+univention-psstamp (1.0-1) unstable; urgency=low
+
+  * Initial release 
+
+ -- Sven Dreyer <dreyer@univention.de>  Tue, 25 May 2004 11:42:50 +0200

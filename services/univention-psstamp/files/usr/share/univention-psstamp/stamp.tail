@@ -1,0 +1,30 @@
+%%STOPLOGO
+*EOD*
+def
+
+/LogoForm
+<< /FormType 1
+   /BBox [0 0 612 792]
+   /Matrix [ 1 0 0 1 0 0]
+   /PaintProc
+   { pop
+       /ostate save def
+         /showpage {} def
+         /setpagedevice /pop load def
+         0 0 translate % change to the position you need
+         1 1 scale     % remove or alter to change size
+         ImageData 0 setfileposition ImageData cvx exec
+       ostate restore
+   } bind
+>> def
+
+<<
+   /BeginPage
+   { gsave
+       LogoForm execform
+     grestore
+   } bind
+
+>> setpagedevice
+
+%EOF

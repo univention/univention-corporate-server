@@ -1,0 +1,16 @@
+Source: univention-psstamp
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-psstamp
+Architecture: all
+Depends: univention-baseconfig
+Description: Univention Postscript Stamper
+ Insert watermarks into Postscript Files
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
