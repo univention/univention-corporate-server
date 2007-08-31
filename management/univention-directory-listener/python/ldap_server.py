@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  listener script for setting ldap server
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH

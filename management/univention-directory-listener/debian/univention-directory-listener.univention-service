@@ -1,6 +1,6 @@
 [univention-directory-listener]
-Description[de]=Univention LDAP Listener
-Description[en]=Univention LDAP Listener
+Description[de]=Univention Directory Listener
+Description[en]=Univention Directory Listener
 programs=/usr/sbin/univention-directory-listener
 icon=service/ldap-listener
 start_type=listener/autostart

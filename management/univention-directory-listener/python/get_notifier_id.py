@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention LDAP Listener
+# Univention Directory Listener
 #  read the notifier id from the dc master
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
