@@ -43,13 +43,27 @@ security_profile=`get_profile_var "security_profile"`
 
 reset_services ()
 {
-    univention-config-registry unset security/services/smtp security/services/pop3 >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/kerberos security/services/krsh security/services/nfs security/services/x11 >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/imap security/services/nagios security/services/dhcp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/dns security/services/ftp security/services/http >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ldap security/services/postgres security/services/samba >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/telnet security/services/tftp security/services/ipp >> /var/log/univention/setup.log
-    univention-config-registry unset security/services/ldap security/services/pop3 security/services/postgres >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/smtp >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/pop3 >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/krsh >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/nfs >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/x11 >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/nagios >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/dhcp >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/ftp >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/http >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/postgres >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/samba >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/tftp >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/ipp >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/pop3 >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/postgres >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/kerberos >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/imap >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/dns >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/ldap >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/telnet >> /var/log/univention/setup.log
+    univention-config-registry unset security/services/ldap >> /var/log/univention/setup.log
 }
 
 
@@ -58,7 +72,7 @@ if [ -z "$security_profile" ]; then
 	exit 0
 fi
 
-echo `date` : "Configuring security profile : " $new_securityprofile  >> /var/log/univention/setup.log
+echo `date` : "Configuring security profile : " $security_profile  >> /var/log/univention/setup.log
 
 if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
 
