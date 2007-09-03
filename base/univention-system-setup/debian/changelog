@@ -1,3 +1,9 @@
+univention-system-setup (1.1.1-11) unstable; urgency=low
+
+  * Clear netfilter input chain if security profile is set to "open".
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  3 Sep 2007 13:17:19 +0200
+
 univention-system-setup (1.1.1-10) unstable; urgency=low
 
   * Still use fatclient instead of managed_client in config registry
