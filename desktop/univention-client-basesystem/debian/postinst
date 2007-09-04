@@ -64,7 +64,7 @@ else
 	cp /etc/apt/sources.list /var/lib/univention-client-root/etc/apt/sources.list
 fi
 
-for path in usr/share/fonts/ usr/X11R6/lib/X11/fonts/ usr/local/share/fonts/; do
+for path in usr/share/fonts/ usr/X11R6/lib/X11/fonts/ ; do
 	/usr/bin/fc-cache /var/lib/univention-client-root/$path
 done
 

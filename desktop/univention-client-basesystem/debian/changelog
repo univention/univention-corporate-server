@@ -1,3 +1,10 @@
+univention-client-basesystem (2.1.2-2) unstable; urgency=low
+
+  * /usr/local/share/fonts no longer exists in X.org from 2.0, adapt
+    postinst to fix installation
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  4 Sep 2007 11:47:39 +0200
+
 univention-client-basesystem (2.1.2-1) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
