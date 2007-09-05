@@ -1,0 +1,8 @@
+Type: file
+File: etc/ftpchroot
+Variables: ftp/chroot.*
+
+Type: file
+File: etc/ftpusers
+Variables: ftp/allow.*
+Variables: ftp/denyall

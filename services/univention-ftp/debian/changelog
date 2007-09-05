@@ -1,0 +1,12 @@
+univention-ftp (1.0-2) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 28 Nov 2006 14:02:34 +0100
+
+univention-ftp (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Nov 2004 15:11:33 +0100
+
