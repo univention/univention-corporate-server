@@ -29,8 +29,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # This is the debhelper compatibility version to use.
-export DH_COMPAT=3
-
 
 configure: configure-stamp
 configure-stamp:
@@ -57,7 +55,7 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	univention-install-baseconfig
+	univention-install-config-registry
 
 # Build architecture-independent files here.
 binary-indep: build install

@@ -28,5 +28,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-baseconfig set ftp/denyall?true
+univention-config-registry set ftp/denyall?true
 
+if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt "2.0"; then
+	eval $(univention-config-registry shell)
+	export INC=0
+	while true; do
+		NEXTVAR=ftp_allow$INC
+		if [ ${!NEXTVAR} ]; then
+			univention-config-registry set ftp/deny$INC=${NEXTVAR}
+		else
+			break
+		fi
+		INC=$(($INC+1))
+	done
+fi

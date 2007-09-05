@@ -1,3 +1,10 @@
+univention-ftp (2.0.0-1) unstable; urgency=low
+
+  * adjust for UCS 2.0
+  * use ftp/deny* instead of ftp/allow*
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  5 Sep 2007 12:41:05 +0200
+
 univention-ftp (1.0-2) unstable; urgency=low
 
   * add GPL headers
