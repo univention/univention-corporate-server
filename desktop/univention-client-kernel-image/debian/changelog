@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-6) unstable; urgency=low
+
+  * Update thin client kernel image
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  6 Sep 2007 10:02:28 +0200
+
 univention-client-kernel-image (1:1.0.0-5) unstable; urgency=low
 
   * fixed copyright

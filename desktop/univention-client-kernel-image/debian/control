@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-client-kernel-image
 Architecture: all
-Depends: univention-client-kernel-image-2.6.18.1-univention.thinclient.10
+Depends: univention-client-kernel-image-2.6.18.1-univention.thinclient.67
 Conflicts: univention-client-kernel-image (<< 1:0.7), univention-client-kernel-image-2.4.31-univention.3, univention-client-kernel-image-2.4.31-univention.thinclient.41, univention-client-kernel-image-2.4.31-univention.thinclient.44, univention-client-kernel-image-2.4.31-univention.thinclient.53, univention-client-kernel-image-2.4.31-univention.thinclient.59, univention-client-kernel-image-2.4.31-univention.thinclient.61, univention-client-kernel-image-2.4.31-univention.thinclient.62, univention-client-kernel-image-2.4.32-univention.thinclient.2, univention-client-kernel-image-2.4.32-univention.thinclient.7, univention-client-kernel-image-2.4.32-univention.thinclient.10, univention-client-kernel-image-2.4.32-univention.thinclient.11, univention-client-kernel-image-2.4.32-univention.thinclient.13, univention-client-kernel-image-2.4.32-univention.thinclient.14, univention-client-kernel-image-2.4.32-univention.thinclient.15, univention-client-kernel-image-2.4.32-univention.thinclient.16, univention-client-kernel-image-2.4.32-univention.thinclient.17, univention-client-kernel-image-2.4.32-univention.thinclient.18
 Description: UCS - Linux kernel for thin clients
  This package installs the Linux kernel for thin clients
