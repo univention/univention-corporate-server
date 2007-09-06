@@ -249,7 +249,10 @@ class LDIFObject:
 		if '\n' in value:
 			encode = 1
 		try:
-			(newval,leng)=value
+			if type(value) == type(()):
+				(newval,leng)=value
+			else:
+				newval=value
 			newval=newval.encode('ascii')
 		except UnicodeError:
 			encode = 1
