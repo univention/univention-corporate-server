@@ -1,3 +1,9 @@
+univention-heimdal (2.1.0-1) unstable; urgency=low
+
+  * update the list of the default encryption types in the krb5.conf file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Sep 2007 13:01:53 +0200
+
 univention-heimdal (2.0.4-1) unstable; urgency=low
 
   * add version number to join scripts
