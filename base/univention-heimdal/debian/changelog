@@ -1,3 +1,9 @@
+univention-heimdal (2.1.1-1) unstable; urgency=low
+
+  * readded des3-hmac-sha1 to the encryption type list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  7 Sep 2007 10:05:11 +0200
+
 univention-heimdal (2.1.0-1) unstable; urgency=low
 
   * update the list of the default encryption types in the krb5.conf file
