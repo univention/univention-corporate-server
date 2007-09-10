@@ -31,6 +31,7 @@
 univention-config-registry set ftp/denyall?true
 
 if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt "2.0"; then
+	# upgrade from earlier versions
 	eval $(univention-config-registry shell)
 	export INC=0
 	while true; do
@@ -42,4 +43,17 @@ if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt "2.0"; then
 		fi
 		INC=$(($INC+1))
 	done
+	univention-config-registry commit \
+		/etc/proftpd/proftpd.conf \
+		/etc/proftpd/modules.conf
+fi
+
+if [ "$1" = "install" ]; then
+	univention-config-registry commit \
+		/etc/proftpd/proftpd.conf \
+		/etc/proftpd/modules.conf
+fi
+
+if [ ! -f /etc/proftpd/local.conf ]; then
+	cp /usr/share/doc/univention-ftp/local.conf.sample /etc/proftpd/local.conf
 fi
