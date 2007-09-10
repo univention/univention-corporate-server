@@ -6,10 +6,3 @@ Type: file
 File: etc/ftpusers
 Variables: ftp/allow.*
 Variables: ftp/denyall
-
-Type: file
-File: etc/proftpd/proftpd.conf
-Variables: hostname
-
-Type: file
-File: etc/proftpd/modules.conf

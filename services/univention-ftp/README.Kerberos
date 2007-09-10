@@ -1,0 +1,12 @@
+proftpd, as provided with UCS 2.0 and higher, has been enhanced with 
+kerberos support using mod_gss.
+
+To activate kerberos support for proftpd, add the following line to
+/etc/proftpd/modules.conf:
+
+LoadModule mod_gss.c
+
+/etc/proftpd/proftpd.conf has to be adjusted accordingly. See
+http://gssmod.sourceforge.net/ for details.
+
+
