@@ -57,3 +57,5 @@ fi
 if [ ! -f /etc/proftpd/local.conf ]; then
 	cp /usr/share/doc/univention-ftp/local.conf.sample /etc/proftpd/local.conf
 fi
+
+/etc/init.d/proftpd restart
