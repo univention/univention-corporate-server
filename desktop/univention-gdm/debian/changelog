@@ -1,3 +1,9 @@
+univention-gdm (1.1.2-2) unstable; urgency=low
+
+  * changes on gdm loginscreen and GraphicalThemedColor is now black
+
+ -- Tobias Scherer <scherer@univention.de>  Mon, 10 Sep 2007 13:42:44 +0200
+
 univention-gdm (1.1.2-1) unstable; urgency=low
 
   * change the default gdm theme
