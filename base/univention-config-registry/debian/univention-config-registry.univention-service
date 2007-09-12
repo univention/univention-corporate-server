@@ -33,3 +33,9 @@ programs=/sbin/portmap
 start_type=portmap/autostart
 icon=service/portmap
 
+[ssh]
+Description[de]=SSH Dienst
+Description[en]=SSH Server
+programs=/usr/sbin/sshd
+start_type=sshd/autostart
+icon=service/ssh

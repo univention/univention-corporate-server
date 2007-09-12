@@ -51,6 +51,7 @@ univention-config-registry set cron/autostart?yes
 univention-config-registry set inetd/autostart?yes
 univention-config-registry set nscd/autostart?yes
 univention-config-registry set ntp/autostart?yes
+univention-config-registry set sshd/autostart?yes
 univention-config-registry set portmap/autostart?yes
 
 # this must be done _before_ dephelper runs

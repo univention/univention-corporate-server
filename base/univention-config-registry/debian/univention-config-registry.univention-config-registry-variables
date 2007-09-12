@@ -16,6 +16,12 @@ Description[en]=Default umask for Users
 Type=str
 Categories=System
 
+[sshd/autostart]
+Description[de]=Definiert, ob der SSH-Dienst automatisch gestartet werden soll
+Description[en]=defines if the SSH daemon should be started automatically
+Type=str
+Categories=Network
+
 [sshd/port]
 Description[de]=Port für den SSH-Dienst
 Description[en]=Port for the SSH daemon
@@ -387,4 +393,3 @@ Description[de]=Codename des UCS-Release
 Description[en]=Codename for UCS releases
 Type=str
 Categories=System
-
