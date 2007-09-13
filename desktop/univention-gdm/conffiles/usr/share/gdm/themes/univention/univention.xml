@@ -14,8 +14,8 @@
 
   <item type="rect" id="caps-lock-warning">
     <normal color="#FFFFFF" alpha="0.5"/>
-    <pos anchor="c" x="44%" y="55%" width="box" height="box"/>
-    <box orientation="vertical" min-width="400" xpadding="10" ypadding="5" spacing="0">
+    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>
+    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">
 
       <item type="label">
         <normal color="#000000" font="helvetica Bold 14"/>
@@ -31,7 +31,7 @@
     <show type="timed"/>
     <normal color="#FFFFFF" alpha="0.5"/>
     <pos anchor="c" x="50%" y="55%" width="box" height="box"/>
-    <box orientation="vertical" min-width="400" xpadding="10" ypadding="5" spacing="0">
+    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">
 
       <item type="label" id="timed-label">
         <normal color="#000000" font="helvetica 12"/>
@@ -45,22 +45,22 @@
 
   <item type="rect">
     <pos anchor="nw" x="24%" y="63%" width="box" height="box"/>
-      <box orientation="vertical" min-width="120" xpadding="5" ypadding="5" spacing="5">
+      <box orientation="vertical" width="420" xpadding="5" ypadding="5" spacing="5">
 
 	<item type="label" id="pam-prompt">
-	  <pos anchor="nw" y="-10%"/>
-        	<normal color="#666666" font="helvetica Bold 12"/>
+	  <pos anchor="nw" width="420"/>
+        	<normal color="#666666" font="helvetica Bold 16"/>
     		<!-- Stock label for: Username: -->
 	    	<stock type="username-label"/>
 	</item>
 
      	<item type="rect">
 	  <normal color="#000000"/>
-	     <pos anchor="nw" height="24" width="130"/>
+	     <pos anchor="nw" height="34" width="420"/>
 	     
 		<fixed>
 	  	<item type="entry" id="user-pw-entry">
-		  <normal color="#000000" font="helvetica 12"/>
+		  <normal color="#000000" font="helvetica Bold 18"/>
 		  <pos anchor="nw" x="1" y="1" height="-2" width="-2"/>
 		</item>
 		</fixed>
@@ -74,7 +74,7 @@
     <pos anchor="c" x="50%" y="80%" width="box" height="box"/>
       <box orientation="vertical" min-width="650" >
         <item type="label" id="pam-error">
-          <normal color="#000000" font="helvetica 12"/>
+          <normal color="#000000" font="helvetica Bold 12"/>
           <pos x="50%" anchor="n"/>
           <text></text>
         </item>
@@ -84,17 +84,17 @@
   <item type="rect" id="session_button" button="true">
 @!@
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '    <pos anchor="nw" x="60%" y="73%" width="100%" height="1"/>'
+	print '    <pos anchor="nw" x="90%" y="73%" width="100%" height="1"/>'
 elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
-	print '    <pos x="60%" y="65%" width="100%" height="1"/>'
+	print '    <pos x="90%" y="65%" width="100%" height="1"/>'
 else:
-	print '    <pos x="60%" y="69%" width="100%" height="1"/>'
+	print '    <pos x="90%" y="69%" width="100%" height="1"/>'
 @!@
     <box orientation="horizontal" spacing="10" xpadding="10">
 	  <item type="label">
-	    <normal color="#666666" font="helvetica Bold 10"/>
-		<prelight color="#dd1144" font="helvetica Bold 10"/>
-		<active color="#cc0033" font="helvetica Bold 10"/>
+	    <normal color="#666666" font="helvetica 10"/>
+		<prelight color="#dd1144" font="helvetica 10"/>
+		<active color="#cc0033" font="helvetica 10"/>
 		<pos y="50%" anchor="w"/>
 		<!-- Stock label for: _Session -->
 		<stock type="session"/>
@@ -107,14 +107,14 @@ else:
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
  	print '  <item type="rect" id="language_button" button="true">'
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
-		print '    <pos x="60%" y="65%" width="100%" height="1"/>'
+		print '    <pos x="90%" y="65%" width="100%" height="1"/>'
 	else:
-		print '    <pos x="60%" y="69%" width="100%" height="1"/>'
+		print '    <pos x="90%" y="69%" width="100%" height="1"/>'
  	print '    <box orientation="horizontal" spacing="10" xpadding="10">'
  	print '  	  <item type="label">'
- 	print '  	    <normal color="#666666" font="helvetica Bold 10"/>'
- 	print '  	    <prelight color="#dd1144" font="helvetica Bold 10"/>'
- 	print '  	    <active color="#cc0033" font="helvetica Bold 10"/>'
+ 	print '  	    <normal color="#666666" font="helvetica 10"/>'
+ 	print '  	    <prelight color="#dd1144" font="helvetica 10"/>'
+ 	print '  	    <active color="#cc0033" font="helvetica 10"/>'
  	print '  	    <pos y="50%" anchor="w"/>'
  	print '  	    <!-- Stock label for: _Language -->'
  	print '  	    <stock type="language"/>'
@@ -124,13 +124,13 @@ if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] =
 
 if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
 	print ' <item type="rect" id="system_button" button="true">'
-	print '   <pos anchor="nw" x="60%" y="65%" width="100%" height="1" ypadding="5" />'
+	print '   <pos anchor="nw" x="90%" y="65%" width="100%" height="1" ypadding="5" />'
 	print '   <box orientation="horizontal" spacing="10" xpadding="10">'
 
 	print ' 	  <item type="label">'
-	print ' 	    <normal color="#666666" font="helvetica Bold 10"/>'
-	print ' 	    <prelight color="#dd1144" font="helvetica Bold 10"/>'
-	print ' 	    <active color="#cc0033" font="helvetica Bold 10"/>'
+	print ' 	    <normal color="#666666" font="helvetica 10"/>'
+	print ' 	    <prelight color="#dd1144" font="helvetica 10"/>'
+	print ' 	    <active color="#cc0033" font="helvetica 10"/>'
 	print ' 	    <pos y="50%" anchor="w"/>'
 	print ' 	    <!-- Stock label for: _System -->'
 	print ' 	    <stock type="system"/>'
