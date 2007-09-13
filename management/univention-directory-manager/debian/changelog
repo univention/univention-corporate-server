@@ -1,3 +1,10 @@
+univention-directory-manager (4.1.1-1) unstable; urgency=low
+
+  * update the config registry module, don't show the variables and values in
+    the "merge view"
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Sep 2007 11:31:27 +0200
+
 univention-directory-manager (4.0.6-2) unstable; urgency=low
 
   * new icon for univention-directory-manager

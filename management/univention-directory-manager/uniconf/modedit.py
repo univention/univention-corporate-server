@@ -3062,45 +3062,59 @@ class modedit(unimodule.unimodule):
 						atts=copy.deepcopy(attributes)
 
 
-						if value:
-							for v in value:
-								key_names.append('%s' % v.split('=')[0])
-							key_names.sort()
-
-							found=False
-							for key_name in key_names:
+						if current_module == module:
+							if value:
 								for v in value:
-									if v.startswith('%s=' % key_name):
-										found=True
-										break
+									key_names.append('%s' % v.split('=')[0])
+								key_names.sort()
 
-								if found:
+								found=False
+								for key_name in key_names:
+									for v in value:
+										if v.startswith('%s=' % key_name):
+											found=True
+											break
 
-									self.registryinput[v]=question_text(_('%s' % key_name ),atts,{"helptext":_('Config Registry value %s' % key_name), 'usertext': '%s' % string.join(v.split('=')[1:])})
+									if found:
 
-									registryinput_rows.append(tablerow("",{},{"obs":[\
-												tablecol('',{}, {'obs': [\
-													self.registryinput[v]\
-												]})\
-											]}))
+										self.registryinput[v]=question_text(_('Variable: %s' % key_name ),atts,{"helptext":_('Config Registry value for %s' % key_name), 'usertext': '%s' % string.join(v.split('=')[1:])})
 
-						self.registryinput['new_value']=question_text(_('Name of the new Config Registry value' ),atts,{"helptext":_('Add a new Config Registry value' ) })
-						self.registryinput['new_button']=get_addbutton(atts,_('Add the new Config Registry value'))
+										registryinput_rows.append(tablerow("",{},{"obs":[\
+													tablecol('',{}, {'obs': [\
+														self.registryinput[v]\
+													]})\
+												]}))
+										registryinput_rows.append(tablerow("",{},{"obs":[\
+													tablecol('',{}, {'obs': [\
+														# needed freespace
+														htmltext("",{},{'htmltext':['&nbsp;']})
+													]})\
+												]}))
 
-						registryinput_rows.append(tablerow("",{},{"obs":[\
-									tablecol('',{}, {'obs': [\
-										self.registryinput['new_value']\
-									]}),\
-									tablecol('',{}, {'obs': [\
-										self.registryinput['new_button']\
-									]})\
-							]}))
+							self.registryinput['new_value']=question_text(_('Name of the new Config Registry variable' ),atts,{"helptext":_('Add a new Config Registry variable' ) })
+							self.registryinput['new_button']=get_addbutton(atts,_('Add the new Config Registry variable'))
 
-						cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":registryinput_rows})]}))
+							if value:
+								registryinput_rows.append(tablerow("",{},{"obs":[\
+											tablecol('',{}, {'obs': [\
+												# needed freespace
+												htmltext("",{},{'htmltext':['&nbsp;']})
+											]})\
+										]}))
+							registryinput_rows.append(tablerow("",{},{"obs":[\
+										tablecol('',{}, {'obs': [\
+											self.registryinput['new_value']\
+										]}),\
+										tablecol('',{}, {'obs': [\
+											self.registryinput['new_button']\
+										]})\
+								]}))
 
-						univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'registry: append to col')
-						# xml objects must be placed into a colum before they can be inserted into a tablerow
-						# cols.append(tablecol('',{'type':'tab_layout'}, {'obs': inputs}))
+							cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":registryinput_rows})]}))
+
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'registry: append to col')
+							# xml objects must be placed into a colum before they can be inserted into a tablerow
+							# cols.append(tablecol('',{'type':'tab_layout'}, {'obs': inputs}))
 
 
 					elif property.syntax.name == 'listAttributes':
@@ -4829,8 +4843,10 @@ class modedit(unimodule.unimodule):
 
 			if n_value and n_button:
 
-				current_object['registry'].append( '%s=' % n_value )
+				new=current_object['registry']
+				new.append( '%s=' % n_value )
 
+				current_object['registry']=new
 				n_value=None
 				n_button=False
 
