@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.3-1) unstable; urgency=low
+
+  * update translation for registry policy
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Sep 2007 11:21:24 +0200
+
 univention-directory-manager-modules (2.2.2-3) unstable; urgency=low
 
   * remove translation syntax errors
