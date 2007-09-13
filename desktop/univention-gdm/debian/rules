@@ -50,6 +50,7 @@ install: build
 	install -m 0644 univention/quit.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/session-prelight.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/univention.png debian/univention-gdm/usr/share/gdm/themes/univention/
+	install -m 0644 univention/*.jpg debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/disconnect.png debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/GdmGreeterTheme.desktop debian/univention-gdm/usr/share/gdm/themes/univention/
 	install -m 0644 univention/language-prelight.png debian/univention-gdm/usr/share/gdm/themes/univention/

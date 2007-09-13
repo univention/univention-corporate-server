@@ -1,3 +1,9 @@
+univention-gdm (1.1.2-5) unstable; urgency=low
+
+  * gdm loginscreen-configuration depends on xorg/resolution now 
+
+ -- Tobias Scherer <scherer@univention.de>  Thu, 13 Sep 2007 12:52:57 +0200
+
 univention-gdm (1.1.2-4) unstable; urgency=low
 
   * changes on gdm loginscreen 

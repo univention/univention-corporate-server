@@ -2,108 +2,183 @@
 <!-- Copyright (C) 2004, 2005, 2006 Univention GmbH -->
 <!DOCTYPE greeter SYSTEM "greeter.dtd">
 <greeter>
-  <item type="pixmap">
-    <normal file="univention.png"/>
-    <pos x="0" y="0" width="100%" height="100%"/>
-  </item>
-
-  <item type="rect">
-    <normal color="#FFFFFF" alpha="1.0"/>
-    <pos anchor="nw" x="0%" y="62.24%" width="100%" height="13.2%"/>
-  </item>
-
-  <item type="rect" id="caps-lock-warning">
-    <normal color="#FFFFFF" alpha="0.5"/>
-    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>
-    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">
-
-      <item type="label">
-        <normal color="#000000" font="helvetica Bold 14"/>
-        <pos x="50%" anchor="n"/>
-	<!-- Stock label for: You've got capslock on! -->
-	<stock type="caps-lock-warning"/>
-      </item>
-
-    </box>
-  </item>
-
-  <item type="rect">
-    <show type="timed"/>
-    <normal color="#FFFFFF" alpha="0.5"/>
-    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>
-    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">
-
-      <item type="label" id="timed-label">
-        <normal color="#000000" font="helvetica 12"/>
-        <pos x="50%" anchor="n"/>
-	<!-- Stock label for: User %s will login in %d seconds -->
-	<stock type="timed-label"/>
-      </item>
-
-    </box>
-  </item>
-
-  <item type="rect">
-    <pos anchor="nw" x="24%" y="63%" width="box" height="box"/>
-      <box orientation="vertical" width="420" xpadding="5" ypadding="5" spacing="5">
-
-	<item type="label" id="pam-prompt">
-	  <pos anchor="nw" width="420"/>
-        	<normal color="#666666" font="helvetica Bold 16"/>
-    		<!-- Stock label for: Username: -->
-	    	<stock type="username-label"/>
-	</item>
-
-     	<item type="rect">
-	  <normal color="#000000"/>
-	     <pos anchor="nw" height="34" width="420"/>
-	     
-		<fixed>
-	  	<item type="entry" id="user-pw-entry">
-		  <normal color="#000000" font="helvetica Bold 18"/>
-		  <pos anchor="nw" x="1" y="1" height="-2" width="-2"/>
-		</item>
-		</fixed>
-
-     	</item>
-
-    </box>
-  </item>
-
-  <item type="rect">
-    <pos anchor="c" x="50%" y="80%" width="box" height="box"/>
-      <box orientation="vertical" min-width="650" >
-        <item type="label" id="pam-error">
-          <normal color="#000000" font="helvetica Bold 12"/>
-          <pos x="50%" anchor="n"/>
-          <text></text>
-        </item>
-    </box>
-  </item>
-
-  <item type="rect" id="session_button" button="true">
 @!@
+availableres = ['640x480','800x600','1024x768','1280x1024','1600x1200']
+
+if baseConfig.has_key('xorg/resolution') and baseConfig['xorg/resolution'] in availableres:
+	resolution = baseConfig['xorg/resolution']
+	print '  <item type="pixmap">'
+	print '    <normal file="' + resolution + '_start_1.jpg"/>'
+	print '    <pos x="0" y="0" width="100%" height="100%"/>'
+	print '  </item>'
+else:
+	resolution = False
+	print '  <item type="pixmap">'
+	print '    <normal file="univention.png"/>'
+	print '    <pos x="0" y="0" width="100%" height="100%"/>'
+	print '  </item>'
+print ''
+print ' <item type="rect">'
+print '    <normal color="#FFFFFF" alpha="1.0"/>'
+print '    <pos anchor="nw" x="0%" y="62.24%" width="100%" height="13.2%"/>'
+print '  </item>'
+print ''
+print '  <item type="rect" id="caps-lock-warning">'
+print '    <normal color="#FFFFFF" alpha="0.5"/>'
+print '    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>'
+print '    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">'
+print ''
+print '      <item type="label">'
+print '        <normal color="#000000" font="helvetica Bold 14"/>'
+print '        <pos x="50%" anchor="n"/>'
+print "	<!-- Stock label for: You've got capslock on! -->"
+print '	<stock type="caps-lock-warning"/>'
+print '      </item>'
+print '    </box>'
+print '  </item>'
+print ''
+print '  <item type="rect">'
+print '    <show type="timed"/>'
+print '    <normal color="#FFFFFF" alpha="0.5"/>'
+print '    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>'
+print '    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">'
+print ''
+print '      <item type="label" id="timed-label">'
+print '        <normal color="#000000" font="helvetica 12"/>'
+print '        <pos x="50%" anchor="n"/>'
+print "	<!-- Stock label for: User %s will login in %d seconds -->"
+print '	<stock type="timed-label"/>'
+print '      </item>'
+print '    </box>'
+print '  </item>'
+
+if resolution == '640x480':
+	print '  <item type="rect">'
+	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="245" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="245"/>'
+	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="23" width="245"/>'
+elif resolution == '800x600':
+	print ' <item type="rect">'
+	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="317" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="317"/>'
+	print '      <normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="28" width="317"/>'
+elif resolution == '1024x768':
+	print '  <item type="rect">'
+	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="406" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="406"/>'
+	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="34" width="406"/>'
+elif resolution == '1280x1024':
+	print '  <item type="rect">'
+	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="395" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="395"/>'
+	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="38" width="395"/>'
+elif resolution == '1600x1200':
+	print '  <item type="rect">'
+	print '    <pos anchor="nw" x="300" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="350" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="350"/>'
+	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="34" width="350"/>'
+else:
+	print '  <item type="rect">'
+	print '    <pos anchor="nw" x="25%" y="63%" width="box" height="box"/>'
+	print '      <box orientation="vertical" width="405" xpadding="5" ypadding="5" spacing="5">'
+	print ''
+	print '	<item type="label" id="pam-prompt">'
+	print '	  <pos anchor="nw" width="405"/>'
+	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
+	print "    		<!-- Stock label for: Username: -->"
+	print '	    	<stock type="username-label"/>'
+	print '	</item>'
+	print '	<item type="rect">'
+	print '	  <normal color="#000000"/>'
+	print '	     <pos anchor="nw" height="34" width="405"/>'
+print '		<fixed>'
+print '	  	<item type="entry" id="user-pw-entry">'
+print '		  <normal color="#000000" font="helvetica Bold 18"/>'
+print '		  <pos anchor="nw" x="1" y="1" height="-2" width="-2"/>'
+print '		</item>'
+print '		</fixed>'
+print ''
+print '     	</item>'
+print ''
+print '   </box>'
+print '  </item>'
+print ''
+print '  <item type="rect">'
+print '    <pos anchor="c" x="50%" y="80%" width="box" height="box"/>'
+print '      <box orientation="vertical" min-width="650" >'
+print '        <item type="label" id="pam-error">'
+print '          <normal color="#000000" font="helvetica Bold 12"/>'
+print '          <pos x="50%" anchor="n"/>'
+print '          <text></text>'
+print '        </item>'
+print '    </box>'
+print '  </item>'
+print ''
+print '  <item type="rect" id="session_button" button="true">'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
 	print '    <pos anchor="nw" x="90%" y="73%" width="100%" height="1"/>'
 elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
 	print '    <pos x="90%" y="65%" width="100%" height="1"/>'
 else:
 	print '    <pos x="90%" y="69%" width="100%" height="1"/>'
-@!@
-    <box orientation="horizontal" spacing="10" xpadding="10">
-	  <item type="label">
-	    <normal color="#666666" font="helvetica 10"/>
-		<prelight color="#dd1144" font="helvetica 10"/>
-		<active color="#cc0033" font="helvetica 10"/>
-		<pos y="50%" anchor="w"/>
-		<!-- Stock label for: _Session -->
-		<stock type="session"/>
-	  </item>
-	  
-	</box>
-  </item>
-		
-@!@
+print '    <box orientation="horizontal" spacing="10" xpadding="10">'
+print '	  <item type="label">'
+print '	    <normal color="#666666" font="helvetica 10"/>'
+print '		<prelight color="#dd1144" font="helvetica 10"/>'
+print '		<active color="#cc0033" font="helvetica 10"/>'
+print '		<pos y="50%" anchor="w"/>'
+print "		<!-- Stock label for: _Session -->"
+print '		<stock type="session"/>'
+print '    </item>'
+print ''
+print '	</box>'
+print '  </item>'
+print '		'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
  	print '  <item type="rect" id="language_button" button="true">'
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
