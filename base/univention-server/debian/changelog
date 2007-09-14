@@ -1,10 +1,4 @@
-univention-server (2.2.3-4) unstable; urgency=low
-
-  *  change package priority from standard to important
-
- -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 14:09:01 +0200
-
-univention-server (2.2.3-3) unstable; urgency=low
+univention-server (2.2.4-1) unstable; urgency=low
 
   * change package priority from optional to standard
 
