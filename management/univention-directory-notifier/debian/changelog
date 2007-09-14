@@ -1,3 +1,9 @@
+univention-directory-notifier (2.2.1-2) unstable; urgency=low
+
+  * added univention-ldap-notifier transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 11:56:37 +0200
+
 univention-directory-notifier (2.2.1-1) unstable; urgency=low
 
   * more wording stuff
