@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.3-2) unstable; urgency=low
+
+  * added transition packages for the update process
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 14:20:16 +0200
+
 univention-directory-manager-modules (2.2.3-1) unstable; urgency=low
 
   * update translation for registry policy
