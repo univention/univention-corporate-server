@@ -892,7 +892,7 @@ msgstr "Variable: %s"
 #: uniconf/modedit.py:3080
 #, python-format
 msgid "Config Registry value for %s"
-msgstr "Config Registry Wert für %s"
+msgstr "Config Registry Wert fÃ¼r %s"
 
 #: uniconf/modedit.py:3094
 msgid "Name of the new Config Registry variable"
@@ -900,7 +900,7 @@ msgstr "Name der neuen Config Registry Variable"
 
 #: uniconf/modedit.py:3094
 msgid "Add a new Config Registry variable"
-msgstr "Eine neue Config Registry Variable hinzufügen"
+msgstr "Eine neue Config Registry Variable hinzufÃ¼gen"
 
 #: uniconf/modedit.py:3147 uniconf/modedit.py:3199 uniconf/modedit.py:4172
 msgid "DN"

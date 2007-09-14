@@ -1,3 +1,9 @@
+univention-directory-manager (4.1.2-1) unstable; urgency=low
+
+  * remove non utf8 string from the po file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 12:47:01 +0200
+
 univention-directory-manager (4.1.1-2) unstable; urgency=low
 
   * added univention-admin transition package
