@@ -1,3 +1,10 @@
+univention-server (2.2.4-2) unstable; urgency=low
+
+  * change dependency to ntp or ntp-server. The ntp package replaces the
+    ntp-server package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 14:53:27 +0200
+
 univention-server (2.2.4-1) unstable; urgency=low
 
   * change package priority from optional to standard
