@@ -1,3 +1,9 @@
+univention-directory-replication (1.2.0-2) unstable; urgency=low
+
+  * added univention-ldap-replication transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 12:42:42 +0200
+
 univention-directory-replication (1.2.0-1) unstable; urgency=low
 
   * adjustment of the new python-ldap version

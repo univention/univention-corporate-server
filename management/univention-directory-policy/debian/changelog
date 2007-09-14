@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.1-5) unstable; urgency=low
+
+  * added univention-ldap-policy transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 12:42:33 +0200
+
 univention-directory-policy (1.1.1-4) unstable; urgency=low
 
   * Renamed baseconfig config 

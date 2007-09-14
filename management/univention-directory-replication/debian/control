@@ -6,9 +6,6 @@ Build-Depends: debhelper
 
 Package: univention-directory-replication
 Architecture: all
-Replaces: univention-ldap-replication
-Provides: univention-ldap-replication
-Conflicts: univention-ldap-replication (<< 1.1)
 Depends: univention-ldap-server (>= 1.8), univention-directory-listener, python-univention | python2.4-univention | python2.4-univention-2005, python2.4-univention-debug, python2.4-ldap
 Description: UCS - Directory replication
  This package implements a client initiated LDAP master/slave
@@ -18,3 +15,12 @@ Description: UCS - Directory replication
  directory driven solution for managing corporate environments.
  For more information about UCS, refer to: 
  http://www.univention.de/
+
+Package: univention-ldap-replication
+Architecture: any
+Depends: univention-directory-replication
+Description: Transition package
+ Package to ease upgrading from old package
+ univention-ldap-replication to the new package.  This package
+ can be purged at anytime once the
+ univention-directory-replication package has been installed.

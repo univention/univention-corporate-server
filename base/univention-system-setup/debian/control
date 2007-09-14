@@ -7,10 +7,7 @@ Build-Depends: debhelper
 
 Package: univention-system-setup
 Architecture: all
-Provides: univention-setup
 Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc
-Conflicts: univention-setup (<= 1.0.2)
-Replaces: univention-setup
 Description: univention system setup tools
  .
  It is part of Univention Corporate Server (UCS), an
@@ -30,3 +27,12 @@ Description: starting univention-system-setup on next boot
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-setup
+Architecture: any
+Depends: univention-setup
+Description: Transition package
+ Package to ease upgrading from old package
+ univention-setup to the new package.  This package
+ can be purged at anytime once the
+ univention-system-setup package has been installed.
