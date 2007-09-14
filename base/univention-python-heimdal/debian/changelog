@@ -1,3 +1,9 @@
+univention-python-heimdal (1.0.1-1) unstable; urgency=low
+
+  * added python2.4-heimdal transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 13:07:25 +0200
+
 univention-python-heimdal (1.0.1-0) unstable; urgency=low
 
   * added a missing depenency on hdb to setup.py otherwise it doesn't work

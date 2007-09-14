@@ -1,3 +1,9 @@
+univention-config-registry (2.4.1-2) unstable; urgency=low
+
+  * added univention-baseconfig transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 13:02:55 +0200
+
 univention-config-registry (2.4.1-1) unstable; urgency=low
 
   * add configuration registry variable sshd/autostart to control start type

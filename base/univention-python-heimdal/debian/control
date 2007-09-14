@@ -9,8 +9,8 @@ Standards-Version: 3.6.0
 Package: python-univention-heimdal
 Architecture: all
 Depends: ${python:Depends}, ${shlibs:Depends}, python-ldap
-Replaces: python-heimdal, python2.4-heimdal
-Provides: ${python:Provides}, python-heimdal, python2.4-heimdal
+Replaces: python-heimdal
+Provides: ${python:Provides}, python-heimdal
 XB-Python-Version: ${python:Versions}
 Description: UCS - Kerberos interface module for Python.
  This module provides a Python interface to the Heimdal Kerberos library.
@@ -21,3 +21,12 @@ Description: UCS - Kerberos interface module for Python.
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: python2.4-heimdal
+Architecture: any
+Depends: python-univention-heimdal
+Description: Transition package
+ Package to ease upgrading from old package
+ python2.4-heimdal to the new package.  This package
+ can be purged at anytime once the
+ python-univention-heimdal package has been installed.

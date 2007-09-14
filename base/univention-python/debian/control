@@ -8,9 +8,9 @@ XS-Python-Version: 2.4
 Package: python-univention
 Architecture: all
 Depends: ${python:Depends}, python-ldap, python-dns, python-univention-debug, univention-config, univention-config-registry
-Conflicts: univention-python, univention-dhcp (<< 1.2), univention-dns, python2.3-univention, python2.4-univention
-Replaces: univention-python, python2.4-univention
-Provides: ${python:Provides}, univention-python, python2.4-univention
+Conflicts: univention-dhcp (<< 1.2), univention-dns, python2.3-univention, python-univention, univention-python
+Replaces: univnetion-python
+Provides: ${python:Provides}, univention-python
 XB-Python-Version: ${python:Versions}
 Description: UCS - common Python modules
  This package contains Python modules used by various
@@ -21,3 +21,11 @@ Description: UCS - common Python modules
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: python2.4-univention
+Architecture: any
+Depends: python-univention
+Description: Transition package
+ Package to ease upgrading from old package
+ python2.4-univention to the new package.  This package
+ can be purged at anytime once the
+ python-univention package has been installed.

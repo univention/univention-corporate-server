@@ -1,3 +1,9 @@
+univention-python (2.2.1-3) unstable; urgency=low
+
+  * added univention-python transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 13:05:11 +0200
+
 univention-python (2.2.1-2) unstable; urgency=low
 
   * no password encoding to ISO-8859-1 anymore 

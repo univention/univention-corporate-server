@@ -20,6 +20,15 @@ Description: UCS - base configuration
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: univention-baseconfig
+Architecture: all
+Depends: univention-config-registry
+Description: Transition package
+ Package to ease upgrading from old package
+ univention-baseconfig to the new package.  This package
+ can be purged at anytime once the
+ univention-config-registry package has been installed.
+
 Package: univention-config
 Architecture: all
 Pre-Depends: python-univention-config-registry
@@ -75,9 +84,7 @@ Description: UCS - C interface to configuration manager (development files)
 Package: python-univention-config-registry
 Architecture: all
 Depends: ${python:Depends}
-Provides: ${python:Provides}, python-univention-baseconfig
-Conflicts: python-univention-baseconfig
-Replaces: python-univention-baseconfig
+Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS - Python interface to configuration registry
  This package includes the Python interface to the
@@ -88,3 +95,11 @@ Description: UCS - Python interface to configuration registry
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: python-univention-baseconfig
+Architecture: any
+Depends: python-univention-config-registry
+Description: Transition package
+ Package to ease upgrading from old package
+ python-univention-baseconfig to the new package.  This package
+ can be purged at anytime once the
+ python-univention-config-registry package has been installed.
