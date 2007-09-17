@@ -1,3 +1,10 @@
+univention-pkgdb (1.0.4-3) unstable; urgency=low
+
+  * expand the dependency list
+  * change the package priority from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:10:51 +0200
+
 univention-pkgdb (1.0.4-2) unstable; urgency=low
 
   * added univention-pkgdb-lib transition package

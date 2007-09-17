@@ -1,6 +1,6 @@
 Source: univention-pkgdb
 Section: univention
-Priority: optional
+Priority: standard
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper, python, python-all-dev, python-central, univention-config-dev
 Standards-Version: 3.5.2
@@ -20,7 +20,7 @@ Description: UCS - PkgDB
 
 Package: python-univention-pkgdb
 Architecture: all
-Depends:  ${python:Depends}, python-apt, python-pygresql, python-dns, univention-config-registry
+Depends:  ${python:Depends}, python-apt | python2.4-apt, python-pygresql | python2.4-pygresql, python-dns | python2.4-dns, univention-config-registry
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS - PkgDB
