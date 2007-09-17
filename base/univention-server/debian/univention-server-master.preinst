@@ -28,16 +28,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-eval `univention-baseconfig shell`
 
 mkdir -p /usr/share/univention-install/
 
-# generate ssl certificate
-if ! test -e /etc/univention/ssl/$hostname/cert.pem; then
-  	eval `univention-baseconfig shell hostname domainname`
-	. /usr/share/univention-ssl/make-certificates.sh
-	gencert "$hostname.$domainname" "$hostname.$domainname"
-	ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+if [ -e /etc/hostname ]; then
+	hostname=$(cat /etc/hostname)
+fi
+
+domainname=$(/bin/dnsdomainname)
+
+if [ -n "$hostname" -a -n "$domainname" ]; then
+	# generate ssl certificate
+	if ! test -e /etc/univention/ssl/$hostname/cert.pem; then
+		. /usr/share/univention-ssl/make-certificates.sh
+		gencert "$hostname.$domainname" "$hostname.$domainname"
+		ln -sf /etc/univention/ssl/$hostname.$domainname /etc/univention/ssl/$hostname
+	fi
 fi
 
 if ! test -e /etc/ldap.secret; then
@@ -52,5 +58,5 @@ if ! test -e /etc/ldap-backup.secret; then
 	makepasswd > /etc/ldap-backup.secret
 fi
 
-univention-baseconfig set ldap/server/name=$hostname.$domainname
-univention-baseconfig set ldap/server/type=master
+exit 0
+
