@@ -1,3 +1,10 @@
+univention-server (2.2.4-5) unstable; urgency=low
+
+  * call univention-baseconfig shell in the univention-server master postinst
+    script.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 15:58:44 +0200
+
 univention-server (2.2.4-4) unstable; urgency=low
 
   * make the pre dependency to univention-config-registry obsolete
