@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-4) unstable; urgency=low
+
+  * change package priotiry from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:16:30 +0200
+
 univention-mail-cyrus-kolab2 (1.0.5-3) unstable; urgency=low
 
   * added config registry header to /etc/init.d/cyrus2.2

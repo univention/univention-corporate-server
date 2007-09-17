@@ -1,3 +1,9 @@
+univention-printquotadb (1.0.3-3) unstable; urgency=low
+
+  * change package priotiry from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:13:12 +0200
+
 univention-printquotadb (1.0.3-2) unstable; urgency=low
 
   * fixed copyright, fixed encoding

@@ -1,3 +1,9 @@
+univention-kolab2 (1.0.0-5) unstable; urgency=low
+
+  * change package priotiry from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 09:13:45 +0200
+
 univention-kolab2 (1.0.0-4) unstable; urgency=low
 
   * more dependency/wording stuff
