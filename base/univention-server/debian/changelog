@@ -1,3 +1,10 @@
+univention-server (2.2.4-3) unstable; urgency=low
+
+  * remove univention-config-registry dependency for univention-server-
+    master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 17 Sep 2007 10:23:55 +0200
+
 univention-server (2.2.4-2) unstable; urgency=low
 
   * change dependency to ntp or ntp-server. The ntp package replaces the
