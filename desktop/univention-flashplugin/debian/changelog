@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.0-5) unstable; urgency=low
+
+  * Add missing file.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Sep 2007 13:30:44 +0200
+
 univention-flashplugin (2.0.0-4) unstable; urgency=low
 
   * Move update-flashplugin script to univention-flashplugin
