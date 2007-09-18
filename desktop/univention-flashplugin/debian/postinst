@@ -30,8 +30,6 @@
 
 #DEBHELPER#
 
-univention-baseconfig set flashplugin/downloadserver?fpdownload.macromedia.com flashplugin/downloadpath?/get/flashplayer/current/
-
 update-flashplugin || echo "Warning: flash-update failed, run update-flashplugin manually"
 
 exit 0

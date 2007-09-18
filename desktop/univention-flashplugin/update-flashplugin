@@ -51,7 +51,7 @@ fp_download_and_unpack() {
 		# downloading the plugin
 		echo "Downloading..."
 		rm -f install_flash_player_9_linux.tar.gz
-		if [ -n $flashplugin_downloadserver -a -n $flashplugin_downloadpath ]; then
+		if [ ! -z $flashplugin_downloadserver -a ! -z $flashplugin_downloadpath ]; then
 			WGETRC=wgetrc wget $flashplugin_downloadserver$flashplugin_downloadpath \
 				|| fp_exit_with_error "download failed"
 		else
