@@ -1,3 +1,10 @@
+univention-flashplugin (2.0.0-4) unstable; urgency=low
+
+  * Move update-flashplugin script to univention-flashplugin
+    Re-enable config registry settings for new package.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Sep 2007 13:00:07 +0200
+
 univention-flashplugin (2.0.0-3) unstable; urgency=low
 
   * Tighten dependency on flashplugin-nonfree.

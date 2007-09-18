@@ -66,6 +66,7 @@ install: build
 	dh_installdirs
 
 	install -m755 redo-update $(D)/usr/lib/univention-flashplugin/
+	install -m755 update-flashplugin $(D)/usr/bin/
 
 	univention-install-baseconfig
 
