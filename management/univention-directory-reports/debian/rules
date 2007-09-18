@@ -1,0 +1,79 @@
+#!/usr/bin/make -f
+#
+# Univention Directory Reports
+#  rules file for the debian package
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+package=univention-directory-reports
+destdir=debian/univention-directory-reports/
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+	make
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -rf *~ debian/tmp debian/*~ debian/files* debian/substvars
+	make clean
+	rm -f build-stamp
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	make install DESTDIR=debian/python2.4-univention-directory-reports/
+	install -m 644 univention_logo.png $(destdir)/usr/share/$(package)/
+	install -m 644 templates/users.tex $(destdir)/etc/univention/directory/reports/default/
+	install -m 644 templates/groups.tex $(destdir)/etc/univention/directory/reports/default/
+	install -m 755 univention-directory-reports $(destdir)/usr/bin/
+	univention-install-baseconfig
+
+binary-indep: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_installchangelogs -i
+	dh_installdocs -i
+	dh_installexamples -i
+	dh_installman -i
+	dh_link -i
+	dh_compress -i
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+
+binary-arch: build install
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install

@@ -1,0 +1,61 @@
+univention-directory-reports (0.3.4-1) unstable; urgency=low
+
+  * fixes in users template
+  * replace _ with \_ for LaTeX
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Aug 2007 15:40:37 +0200
+
+univention-directory-reports (0.3.3-2) unstable; urgency=low
+
+  * add postinst script 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 29 Aug 2007 10:29:03 +0200
+
+univention-directory-reports (0.3.3-1) unstable; urgency=low
+
+  * fixed a typo in the help message
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 18:42:34 +0200
+
+univention-directory-reports (0.3.2-1) unstable; urgency=low
+
+  * fixed a typo in the users template 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 18:33:37 +0200
+
+univention-directory-reports (0.3.1-1) unstable; urgency=low
+
+  * clean up in templates; remove parts from template 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 18:10:15 +0200
+
+univention-directory-reports (0.3.0-1) unstable; urgency=low
+
+  * users.tex: fixed typo in attribute gidNumber
+  * interpreter: attributes supports new options: append and prepend
+  * univention-directory-reports: remove unused option -t; show help if
+    mandatory options are missing
+  * config.ini is now a Baseconfig template
+  * update user and group templates (fixes and additional information)
+  * interpreter: support for encapsulated entities of the template language
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 28 Aug 2007 11:08:05 +0200
+
+univention-directory-reports (0.2.0-1) unstable; urgency=low
+
+  * add support for several reports per admin module
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 27 Aug 2007 09:19:41 +0200
+
+univention-directory-reports (0.1.0-2) unstable; urgency=low
+
+  * add dependencies to tetex packages
+  * add missing files
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 23 Aug 2007 15:14:52 +0200
+
+univention-directory-reports (0.1.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Andreas Büsching <buesching@univention.de>  Tue,  7 Aug 2007 10:19:35 +0200

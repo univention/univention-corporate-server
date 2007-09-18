@@ -1,0 +1,36 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-08-23 08:57+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ISO-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: filter.py:50 interpreter.py:132 interpreter.py:134
+msgid "Yes"
+msgstr "Ja"
+
+#: filter.py:52 interpreter.py:130
+msgid "No"
+msgstr "Nein"
+
+#: filter.py:67
+msgid "Domain Group"
+msgstr "Globale Gruppe"
+
+#: filter.py:68
+msgid "Local Group"
+msgstr "Lokale Gruppe"
+
+#: filter.py:69
+msgid "Well-Known Group"
+msgstr "Bekannte Gruppe"
