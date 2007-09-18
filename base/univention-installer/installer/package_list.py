@@ -92,7 +92,7 @@ PackageList=[
 					'Packages': ['univention-kolab2', 'univention-kolab2-framework', 'univention-mail-postfix-kolab2', 'univention-mail-cyrus-kolab2'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Edition': [ 'ugs' ],
-					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
+					'Active': ['domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Description': _('Groupware based on Kolab2'),
 				},
@@ -101,7 +101,7 @@ PackageList=[
 					'Packages': ['univention-groupware-webclient'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [], 
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
+					'Possible': ['domaincontroller_master'],
 					'Description': _('Horde Webclient for UGS'),
 				},
 				{

@@ -31,4 +31,6 @@ system_role="domaincontroller_slave"
 timezone="Europe/Berlin"
 
 # [Software]
-packages="univention-kolab2 univention-kolab2-framework univention-mail-postfix-kolab2 univention-mail-cyrus-kolab2 univention-printserver cupsys univention-printquota pykota univention-printquotadb univention-console univention-dhcp dhcp3-server univention-bind univention-bind-proxy bind9 xtightvncviewer openssh-server openssh-client wget vim univention-samba samba univention-x-core univention-gdm univention-gdm-sessions univention-kde ispell ingerman"
+packages="univention-samba samba univention-dhcp dhcp3-server univention-bind univention-bind-proxy bind9 univention-management-console univention-x-core univention-gdm univention-gdm-sessions xtightvncviewer univention-nagios-client openssh-server univention-printquota pykota univention-printquotadb univention-printserver cupsys openssh-client eject less nmap vim wget"
+
+
