@@ -63,6 +63,7 @@ install: build
 	install -m644 icons/128x128/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/applications/128x128
 	install -m644 icons/scalable/* debian/univention-directory-manager/usr/share/univention-webui-style/icon/applications/scalable
 	install -m 0755 25univention-directory-manager.inst debian/univention-directory-manager/usr/lib/univention-install/
+	install -m 0755 univention-directory-reports-cleanup debian/univention-directory-manager/usr/share/univention-directory-manager/
 
 	univention-install-config-registry
 	univention-install-config-registry-info

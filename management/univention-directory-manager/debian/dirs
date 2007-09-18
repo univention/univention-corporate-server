@@ -5,6 +5,7 @@ usr/share/univention-webui-style/icon/applications/32x32
 usr/share/univention-webui-style/icon/applications/64x64
 usr/share/univention-webui-style/icon/applications/128x128
 usr/share/univention-directory-manager/www/locale/de/LC_MESSAGES
+usr/share/univention-directory-manager/www/directory-reports
 var/lib/univention-directory-manager/tmp
 var/lib/univention-directory-manager/log
 usr/sbin

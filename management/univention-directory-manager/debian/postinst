@@ -45,7 +45,7 @@ function bc_rename() {
 		univention-config-registry set "${new}?${old}"
 	else
 		univention-config-registry set "${new}?${predefined}"
-	fi		
+	fi
 }
 
 if [ "$1" = configure ]; then
@@ -54,12 +54,14 @@ if [ "$1" = configure ]; then
 		admin_web_language="de_DE.utf8"
 	elif [ "$admin_web_language" = "en" ]; then
 		admin_web_language="en_US.utf8"
-	fi 
+	fi
 	bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
 	bc_rename "$admin_timeout" "directory/manager/timeout" "300"
-fi		
+fi
 
 univention-config-registry set ssl/validity/check?yes
+univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
+univention-config-registry set directory/reports/cleanup/age?43200
 
 for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then
@@ -72,6 +74,9 @@ test -h /usr/share/univention-directory-manager/www/file.php || ln -s /usr/share
 
 test -h /var/www/univention-directory-manager || ln -s /usr/share/univention-directory-manager/www /var/www/univention-directory-manager
 
+
+chown www-data:www-data /usr/share/univention-directory-manager/www/directory-reports
+chmod 700 /usr/share/univention-directory-manager/www/directory-reports
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.4-1; then
 	ln -sf /usr/share/univention-webui-style/icon /usr/share/univention-directory-manager/www/icon

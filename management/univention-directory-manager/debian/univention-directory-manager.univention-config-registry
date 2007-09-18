@@ -25,3 +25,7 @@ Subfile: var/www/ucs-overview/de.html.d/10univention-directory-manager-de.html
 Type: subfile
 Multifile: var/www/ucs-overview/en.html
 Subfile: var/www/ucs-overview/en.html.d/10univention-directory-manager-en.html
+
+Type: file
+File: etc/cron.d/univention-directory-reports-cleanup
+Variables: directory/reports/cleanup/cron

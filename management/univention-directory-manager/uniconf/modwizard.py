@@ -39,6 +39,10 @@ import univention.admin.modules
 import univention.admin.objects
 import unimodule
 
+import univention.directory.reports as udr
+
+import operator
+import shutil
 import string
 import ldap
 import types
@@ -336,6 +340,281 @@ class modwizard(unimodule.unimodule):
 					  {"obs" : main_rows})
 				    )
 
+	def report( self, search_type ):
+		'''creates reports for all objects defined by the search criterias'''
+
+		# get the relevant admin module
+		module_object = univention.admin.modules.get( search_type )
+		module_description=univention.admin.modules.short_description( module_object )
+		if not module_object:
+			return
+
+		# layout: header
+		self.subobjs.append(table("",
+					  {'type':'content_header'},
+					  {"obs":[tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[]})]})]}))
+
+		title = _( 'Create %s Reports' ) % univention.admin.modules.short_description( module_object )
+		self.nbook=notebook('', {}, {'buttons': [( title, title )], 'selected': 0})
+		self.subobjs.append(self.nbook)
+
+		rows = []
+		# Available reports
+		mods = univention.admin.modules.childModules( module_object )
+		mods.insert( 0, univention.admin.modules.name( module_object ) )
+		udr_cfg = univention.directory.reports.Config()
+		report_list = []
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'report: %s' % mods )
+		for mod in mods:
+			reports = udr_cfg.get_report_names( mod )
+			mod_obj = univention.admin.modules.get( mod )
+			mod_descr = univention.admin.modules.short_description( mod_obj )
+			for report in reports:
+				key = '%s:%s' % ( mod, report )
+				description = '%s (%s)' % ( mod_descr, report )
+				report_list.append( { 'name' : key, 'description' : description } )
+
+		self.report_select = question_select( _( "Select Report:" ),{ 'width' : '300' }, { "helptext" : _( "Select Report" ), "choicelist" : report_list } )
+		self.create_report_button=button(_('create report'),{'icon':'/style/ok.gif'},{'helptext':_('Create Reports')})
+
+		description = _( 'Select the report you want to create: ' )
+		rows.append(tablerow("",{},{"obs":[
+			tablecol("",{"colspan": "3", 'type' : 'wizard_layout' },
+					 { 'obs' : [ text('',{},{'text':[ description ]}) ] } )	]}))
+		rows.append(tablerow("",{},{"obs":[
+			tablecol( '', { 'type':'wizard_layout'},{'obs':[self.report_select]}),
+			tablecol( '', { 'colspan' : '2', 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
+												]}))
+		rows.append(tablerow("",{},{"obs":[
+			tablecol( '', { 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } ),
+			tablecol( '', { 'type' : 'wizard_layout_bottom' },{ 'obs' : [ self.create_report_button ] } ),
+			tablecol( '', { 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
+												]}))
+		rows.append(tablerow("",{},{"obs":[
+			tablecol( '', { 'colspan' : '3', 'type' : 'wizard_layout' },{ 'obs' : [ text('',{},{'text':[ '' ] } ) ] } )
+												]}))
+
+		# generate search table
+		main_rows = []
+		main_rows.append(
+			tablerow("",{},{"obs":[tablecol("",{'type':'content_main'},{"obs":[table("",{'type':'search_header'},{"obs":rows})]})]})
+		)
+
+		main_rows.append(
+			tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[space('',{'size':'1'},{})]})]})
+		)
+
+		if self.save.get( 'uc_report_create' ) == True:
+			nresults, module_descr, report_name, url = self.create_report()
+			if url:
+				icon_path='/icon/generic.png'
+				if not os.path.exists('/usr/share/univention-directory-manager/www'+icon_path):
+					icon_path='/icon/generic.gif'
+
+				icon_widget = icon( '', { 'url' : icon_path }, {} )
+				main_rows.append(
+					tablerow( '', {},
+							  { "obs" : [ tablecol( '', { 'type' : 'wizard_layout' },
+													{ 'obs' : [ header( _( "Report was created successfully: %(count)d '%(module)s' objects included" ) % { 'count' : nresults, 'module' : module_descr },
+																		{ "type" : "2" }, {} ) ] } ) ] } ) )
+				main_rows.append(
+					tablerow("",{},{"obs":[
+										   tablecol("",{'type':'wizard_layout'},{ "obs":[ icon_widget, htmltext( "", {}, { "htmltext" : [ url ] }) ] } ) ] } )
+					)
+
+		# main table
+		self.subobjs.append(table("",
+					  {'type':'content_main'},
+					  {"obs":main_rows})
+				    )
+
+	def create_report( self ):
+		position=self.position
+		position.setDn(position.getBase())
+		settings=self.save.get('settings')
+		if self.save.get('reload_settings'):
+			self.save.put('reload_settings', None)
+			settings.reload(self.lo)
+
+		module_name, report_name = self.save.get( 'uc_report_template', ':' ).split( ':', 1 )
+		module_obj = univention.admin.modules.get( module_name )
+		module_descr = univention.admin.modules.short_description( module_obj )
+
+		search_domain_only=1
+		search_one_level=0
+
+		search_property_name = self.save.get('wizard_search_property')
+		if not module_obj.property_descriptions.has_key( search_property_name ):
+			search_property_name = '*'
+
+		if search_property_name != '*':
+			search_value=self.save.get('wizard_search_value')
+		else:
+			search_value='*'
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: search_property: %s' % search_property_name )
+
+		allstr = _( "all registered %s containers" ) % module_descr
+		domainstr = _( "selected domain" )
+		domainincsubstr = _( "selected domain including subdomains" )
+
+		if self.save.get( 'wizard_find_pathlist', None ):
+			pathlist = self.save.get('wizard_find_pathlist',None)
+		else:
+			pathlist=[]
+
+			container_name=string.split(search_type, '/')[0]
+			if settings.default_containers.has_key(container_name):
+				pathlist.extend(settings.default_containers[container_name])
+			else:
+				# retrieve path info from 'cn=directory,cn=univention,...' object
+				pathResult = self.lo.get('cn=directory,cn=univention,'+domain_preselect)
+				if not pathResult:
+					pathResult = self.lo.get('cn=default containers,cn=univention,'+domain_preselect)
+				infoattr=univention.admin.modules.wizardPath(search_module)
+				if not infoattr:
+					infoattr="univention%s%sObject" % (container_name[0].upper(), container_name[1:])
+				if pathResult.has_key(infoattr) and pathResult[infoattr]:
+					pathlist=pathResult[infoattr]
+				if not pathlist:
+					pathlist.extend( univention.admin.modules.defaultContainers( search_module ) )
+
+			new_pathlist=[]
+			for i in settings.filterDNs(pathlist, parents=0):
+				try:
+					self.lo.searchDn(base=i, scope='base')
+					new_pathlist.append(i)
+				except Exception, e:
+					pass
+			pathlist=new_pathlist
+
+			# temporary position object
+			pathpos=univention.admin.uldap.position(position.getBase())
+
+			self.save.put('wizard_find_pathlist',pathlist)
+
+		path_preselect=self.save.get('wizard_path')
+		if not path_preselect:
+			if pathlist:
+				path_preselect=allstr
+			else:
+				path_preselect=domainstr
+
+		searchpath=[path_preselect]
+		if searchpath[0] == allstr:
+			# search all registered containers
+			searchpath=pathlist
+			search_one_level=1
+			search_domain_only=0
+		if searchpath[0] == domainstr:
+			# search entire domain
+			searchpath=[domain_preselect]
+		if searchpath[0] == domainincsubstr:
+			# search entire domain including sub domains
+			searchpath=[domain_preselect]
+			search_domain_only=0
+
+		if search_domain_only:
+			scope="domain"
+		elif search_one_level:
+			scope="one"
+		else:
+			scope="sub"
+
+		result={}
+		nresults=0
+		cache=0
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: search_path: %s' % searchpath )
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: scope: %s' % scope )
+		for path in searchpath:
+			searchposition=univention.admin.uldap.position(position.getBase())
+			searchposition.setDn(path)
+
+			# search...
+			if search_property_name != '*':
+				filter=univention.admin.filter.expression(search_property_name, search_value)
+			else:
+				filter=''
+			try:
+				bas=searchposition.getDn()
+				result[ searchposition.getDn() ] = settings.filterObjects( univention.admin.modules.lookup( module_obj, None, self.lo, base = bas, filter = filter, scope = scope ) )
+				nresults = nresults + len( result[ searchposition.getDn() ] )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: more results: %s' % len( result[ searchposition.getDn() ] ) )
+			except univention.admin.uexceptions.ldapError, msg:
+				result = {}
+
+			list_attributes = settings.getListAttributes( module_name )
+			if result.has_key( searchposition.getDn() ) and ( search_property_name != '*' or list_attributes ):
+				for i in result[ searchposition.getDn() ]:
+					if not i.has_key( search_property_name ) or not i[ search_property_name ] or list_attributes:
+						try:
+							univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'open object %s' % ( i ) )
+							univention.admin.objects.open( i )
+						except univention.admin.uexceptions.insufficientInformation, m:
+							self.usermessage(_('Failed to open object, insufficient or ambiguous values returned from search (%s)')%m)
+							try:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to open object, insufficient or ambiguous values returned from search (%s) at result %s'%(m,i))
+							except:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to open object, insufficient or ambiguous values returned from search (%s)'%(m))
+
+		sorted_result = {}
+
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: results: %s' % result.values() )
+		sorting_helper_list=[]
+		for pos, items in result.items():
+			# sort items
+			for n in range( len( items ) ):
+				name = univention.admin.objects.description(items[n])
+				sorting_helper_list.append( ( name, items[ n ] ) )
+
+		def caseigncompare(a, b):
+			a2=a.upper()
+			b2=b.upper()
+			if a2 == b2:
+				# fallback to casecompare
+				if a == b:
+					return 0
+				l=[a, b]
+				l.sort()
+				if l.index(a) < l.index(b):
+					return -1
+				else:
+					return 1
+
+			l=[a2, b2]
+			l.sort()
+
+			if l.index(a2) < l.index(b2):
+				return -1
+			else:
+				return 1
+
+		sorting_helper_list = sorted( sorting_helper_list, cmp = caseigncompare, key = operator.itemgetter( 0 ) )
+		udr.admin.connect( access = self.lo )
+		cfg = udr.Config()
+		doc = udr.Document( cfg.get_report( module_name, report_name ), header = cfg.get_header(), footer = cfg.get_footer() )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: list: %s' % [ item[ 1 ] for item in sorting_helper_list ] )
+		tmpfile = doc.create_latex( [ item[ 1 ] for item in sorting_helper_list ] )
+		pdffile = doc.create_pdf( tmpfile )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % tmpfile )
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % pdffile )
+		os.unlink( tmpfile )
+		try:
+			os.unlink( tmpfile[ : -4 ] + 'aux' )
+			os.unlink( tmpfile[ : -4 ] + 'log' )
+		except:
+			pass
+		if pdffile:
+			shutil.copy( pdffile, '/usr/share/univention-directory-manager/www/directory-reports' )
+			os.unlink( pdffile )
+
+			url = '/univention-directory-manager/directory-reports/%s' % os.path.basename( pdffile )
+			link = '<a href="%s">%s (%s)</a>' % ( url, module_descr, report_name )
+
+			return ( nresults, module_descr, report_name, link )
+		else:
+			return ( 0, module_descr, report_name, '<b>%s</b>' % _( 'Error: The report could not be created!' ) )
+
+
 	def find(self, search_type):
 		position=self.position
 		position.setDn(position.getBase())
@@ -616,10 +895,23 @@ class modwizard(unimodule.unimodule):
 		self.search_button=button(_('search'),{'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
 		self.reset_button=button(_('reset'),{'icon':'/style/cancel.gif'},{'helptext':_("reset search")})
 
-		rows.append(tablerow("",{},{"obs":[
-			tablecol('',{'type':'wizard_layout'},{'obs':[self.search_visible]}),
-			tablecol("",{"colspan":"2",'type':'wizard_layout_bottom'},{"obs":[ self.search_button, self.reset_button]})
-												]}))
+		mods = univention.admin.modules.childModules( search_module )
+		mods.insert( 0, univention.admin.modules.name( search_module ) )
+		udr_cfg = univention.directory.reports.Config()
+		reports = []
+		for mod in mods:
+			reports.extend( udr_cfg.get_report_names( mod ) )
+		if reports:
+			self.report_button=button(_('create report'),{'icon':'/style/ok.gif'},{'helptext':_('Create Reports')})
+			rows.append(tablerow("",{},{"obs":[
+				tablecol('',{'type':'wizard_layout'},{'obs':[self.search_visible]}),
+				tablecol("",{"colspan":"2",'type':'wizard_layout_bottom'},{"obs":[ self.search_button, self.report_button, self.reset_button ]})
+				]}))
+		else:
+			rows.append(tablerow("",{},{"obs":[
+				tablecol('',{'type':'wizard_layout'},{'obs':[self.search_visible]}),
+				tablecol("",{"colspan":"2",'type':'wizard_layout_bottom'},{"obs":[ self.search_button, self.reset_button ]})
+				]}))
 
 		# generate search table
 		main_rows = []
@@ -1038,7 +1330,10 @@ class modwizard(unimodule.unimodule):
 		elif self.save.get("uc_submodule")=="add":
 			self.add(self.save.get("uc_virtualmodule"))
 		else:
-			self.find(self.save.get("uc_virtualmodule"))
+			if self.save.get( 'uc_report' ) == True:
+				self.report( self.save.get( 'uc_virtualmodule' ) )
+			else:
+				self.find(self.save.get("uc_virtualmodule"))
 
 	def apply(self):
 		if self.applyhandlemessages():
@@ -1209,6 +1504,16 @@ class modwizard(unimodule.unimodule):
 			self.save.put('wizard_selected_dns', {})
 			return
 
+		self.save.put( 'uc_report', False )
+		if hasattr(self, 'create_report_button') and self.create_report_button.pressed():
+			self.save.put( 'uc_report_create', True )
+			self.save.put( 'uc_report_template', self.report_select.getselected() )
+			self.save.put( 'uc_report', True )
+			return
+
+		if hasattr(self, 'report_button') and self.report_button.pressed():
+			self.save.put( 'uc_report', True )
+			return
 
 		if hasattr(self, 'delboxes') and hasattr(self, 'selection_commit_button'):
 

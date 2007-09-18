@@ -11,3 +11,9 @@ RedirectMatch ^/udm(/$|$) /univention-directory-manager/
 RedirectMatch ^/directory-manager(/$|$) /univention-directory-manager/
 RedirectMatch ^/univention-directory-manager$ /univention-directory-manager/
 RedirectMatch ^/univention-directory-manager/style/(.*) /style/$1
+
+
+<Directory /var/www/univention-directory-manager/directory-reports>
+        Options -Indexes
+</Directory>
+
