@@ -31,17 +31,20 @@
 package=univention-directory-reports
 destdir=debian/univention-directory-reports/
 
-build: build-stamp
+MO_FILES=$(shell find modules -name '*.po' | sed 's/\.po/\.mo/g')
+
+%.mo:	%.po
+	msgfmt -o $@ $<
+
+build: build-stamp $(MO_FILES)
 build-stamp:
 	dh_testdir
-	make
 	touch build-stamp
 
 clean:
 	dh_testdir
 	dh_testroot
 	rm -rf *~ debian/tmp debian/*~ debian/files* debian/substvars
-	make clean
 	rm -f build-stamp
 	dh_clean
 
@@ -51,7 +54,18 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	make install DESTDIR=debian/python2.4-univention-directory-reports/
+	@for i in $(shell find modules/univention/directory/ -name '*.py'); do\
+		o=debian/python-univention-directory-reports/usr/lib/python$*/site-packages/$${i#modules/};\
+		install -d "`dirname $$o`";\
+		install -m755 $$i $$o;\
+	done
+	@for i in $(MO_FILES); do\
+		lang=`basename $$i .mo`;\
+		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/python-univention-directory-reports/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
 	install -m 644 univention_logo.png $(destdir)/usr/share/$(package)/
 	install -m 644 templates/users.tex $(destdir)/etc/univention/directory/reports/default/
 	install -m 644 templates/groups.tex $(destdir)/etc/univention/directory/reports/default/
@@ -65,6 +79,7 @@ binary-indep: build install
 	dh_installdocs -i
 	dh_installexamples -i
 	dh_installman -i
+	dh_pycentral -Nunivention-directory-reports
 	dh_link -i
 	dh_compress -i
 	dh_fixperms -i

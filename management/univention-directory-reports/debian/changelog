@@ -1,3 +1,10 @@
+univention-directory-reports (0.4.0-1) unstable; urgency=low
+
+  * adapt to UCS 2.0 policies
+  * fixed dependencies; use python-central
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 Sep 2007 15:53:37 +0200
+
 univention-directory-reports (0.3.4-1) unstable; urgency=low
 
   * fixes in users template
