@@ -1,6 +1,6 @@
-univention-grub (1.1.1-3) unstable; urgency=low
+univention-grub (1.1.2-1) unstable; urgency=low
 
-  * change the package priority from optional to important
+  * change the package priority from optional to standard
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Sep 2007 13:33:06 +0200
 
