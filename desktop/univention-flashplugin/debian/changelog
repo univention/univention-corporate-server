@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.0-3) unstable; urgency=low
+
+  * Tighten dependency on flashplugin-nonfree.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Sep 2007 12:03:40 +0200
+
 univention-flashplugin (2.0.0-2) unstable; urgency=low
 
   * fixed encoding, changelog, copyright
