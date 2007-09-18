@@ -1,3 +1,9 @@
+univention-config-registry (2.4.1-4) unstable; urgency=low
+
+  * add pre-dependency on newer versions of cron and netbase
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 Sep 2007 15:11:35 +0200
+
 univention-config-registry (2.4.1-3) unstable; urgency=low
 
   * add pre-dependency to cron and netbase 
