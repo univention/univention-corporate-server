@@ -28,6 +28,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+PACKAGE_NAME=univention-directory-reports
+MODULE_NAME=univention-directory-reports
+
+PYVERS=$(shell pyversions -vr)
+
 package=univention-directory-reports
 destdir=debian/univention-directory-reports/
 
@@ -48,7 +53,9 @@ clean:
 	rm -f build-stamp
 	dh_clean
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k

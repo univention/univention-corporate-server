@@ -80,7 +80,7 @@ def main():
 					   dest = 'no_cleanup', default = False,
 					   help = 'do not remove the temporary LaTeX file (for debugging)' )
 	parser.add_option( '-c', '--config', action = 'store',
-					   dest = 'config', default = '/etc/univention/admin/reports/config.ini',
+					   dest = 'config', default = '/etc/univention/directory/reports/config.ini',
 					   help = 'location of the configuration file' )
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
@@ -108,7 +108,7 @@ def main():
 		parser.print_help()
 		sys.exit( 1 )
 
-	ud.init( '/var/log/univention/admin-reports.log', 1, 1 )
+	ud.init( '/var/log/univention/directory-reports.log', 1, 1 )
 	ud.set_level( ud.ADMIN, options.debug )
 
 	cfg = udr.Config()
