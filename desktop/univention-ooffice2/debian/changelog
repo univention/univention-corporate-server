@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.2-4) unstable; urgency=low
+
+  * change package priority from optional to standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 18 Sep 2007 07:50:30 +0200
+
 univention-ooffice2 (1.0.2-3) unstable; urgency=low
 
   * added univention-ooffice transition package
