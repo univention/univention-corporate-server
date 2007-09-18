@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.0-6) unstable; urgency=low
+
+  * Bump version
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 18 Sep 2007 14:40:05 +0200
+
 univention-flashplugin (2.0.0-5) unstable; urgency=low
 
   * Add missing file.
