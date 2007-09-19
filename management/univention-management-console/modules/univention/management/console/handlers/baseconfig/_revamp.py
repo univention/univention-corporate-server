@@ -88,7 +88,11 @@ class Web( object ):
 					else:
 						descr_text = ''
 					if len( descr_text ) > 40:
-						descr_text = '%s&nbsp;...' % str( unicode( descr_text )[ : 40 ] )
+						try:
+							descr_text = '%s&nbsp;...' % str( unicode( descr_text )[ : 40 ] )
+						except:
+							# buggy encoding may cause trouble -> ignore it
+							descr_text = ''
 
 					value = var.value
 					if not isinstance( value, basestring ):

@@ -47,8 +47,8 @@ class Web( object ):
 		if '-rfbport' in args:
 			port = args[ args.index( '-rfbport' ) + 1 ]
 
-		url = 'http://%s.%s/univention-management-console/vnc/connect.php?port=%s&username=%s' % \
-			  ( umc.registry[ 'hostname' ], umc.registry[ 'domainname' ], port, self._username )
+		url = '/univention-management-console/vnc/connect.php?port=%s&username=%s' % \
+			  ( port, self._username )
 		return '<a href="%s" target="_blank">%s</a>' % ( url, _( 'Connect to the VNC Server' ) )
 
 	def _web_vnc_config( self, object, res ):
