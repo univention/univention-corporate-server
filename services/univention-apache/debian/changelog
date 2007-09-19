@@ -1,3 +1,9 @@
+univention-apache (2.0.11-1) unstable; urgency=low
+
+  * if started by UMC do not force the reload of apache 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 16:09:08 +0200
+
 univention-apache (2.0.10-4) unstable; urgency=low
 
   * renamed apache/loglevel to apache2/loglevel and updated postinst

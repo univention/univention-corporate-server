@@ -40,7 +40,9 @@ fi
 test -n "`grep "univention-apache v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 a2enmod ssl
-/etc/init.d/apache2 force-reload
+if [ -z "$UMC_MODE" ]; then
+	/etc/init.d/apache2 force-reload
+fi
 
 test -n "`grep "univention-apache v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-apache v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
