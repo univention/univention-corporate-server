@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.0-3) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Sep 2007 15:33:44 +0200
+
 univention-directory-manager (4.2.0-2) unstable; urgency=low
 
   * add dependency to univention-directory-reports
