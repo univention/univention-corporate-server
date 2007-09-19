@@ -38,7 +38,6 @@ import ldap, traceback
 import univention
 import univention.connector
 import univention.connector.ad
-import univention.utf8
 
 import univention_baseconfig
 

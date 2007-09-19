@@ -34,7 +34,6 @@ import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
 import array
 import univention.uldap
 import univention.connector
-import univention.utf8
 
 def activate_user (connector, key, object):
         # set userAccountControl to 544
@@ -1443,7 +1442,7 @@ class ad(univention.connector.ucs):
 							raise
 						except:
 							self._debug_traceback(univention.debug.ERROR,
-												  "sync of rejected object failed \n\t%s" % (univention.utf8.encode(object['dn'])))
+												  "sync of rejected object failed \n\t%s" % (object['dn']))
 							sync_successfull = False
 						if sync_successfull:
 							change_count+=1
@@ -1720,7 +1719,7 @@ class ad(univention.connector.ucs):
 		else:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN,
 								   "unknown modtype (%s : %s)" %
-								   (univention.utf8.encode(object['dn']),univention.utf8.encode(object['modtype'])))
+								   (object['dn'],object['modtype']))
 			return False
 
 

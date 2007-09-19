@@ -880,7 +880,7 @@ class ucs:
 			if object['modtype'] == 'delete':
 				if not old_object:
 					univention.debug.debug(univention.debug.LDAP, univention.debug.WARN,
-										   "Object to delete doesn't exsist, ignore (%s)" % univention.utf8.encode(object['dn']))
+										   "Object to delete doesn't exsist, ignore (%s)" % object['dn'])
 					result = True
 				else:
 					result = self.delete_in_ucs(property_type, object, module, position)
@@ -896,7 +896,7 @@ class ucs:
 				
 			if not result:
 				univention.debug.debug(univention.debug.LDAP, univention.debug.WARN,
-						       "Failed to get Result for DN (%s)" % univention.utf8.encode(object['dn']))
+						       "Failed to get Result for DN (%s)" % object['dn'])
 				return False
 
 			try:
@@ -909,17 +909,17 @@ class ucs:
 				result = False				
 
 			univention.debug.debug(univention.debug.LDAP, univention.debug.PROCESS,
-					       "Return  result for DN (%s)" % univention.utf8.encode(object['dn']))
+					       "Return  result for DN (%s)" % object['dn'])
 			return result
 		
 		except univention.admin.uexceptions.valueInvalidSyntax, msg:
 			try:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "InvalidSyntax: %s (%s)" % (msg,univention.utf8.encode(object['dn'])))
+				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "InvalidSyntax: %s (%s)" % (msg,object['dn']))
 			except:
 				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "InvalidSyntax: %s" % msg)
 			return False
 		except univention.admin.uexceptions.valueMayNotChange, msg:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Value may not change: %s (%s)" % (msg,univention.utf8.encode(object['dn'])))
+			univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Value may not change: %s (%s)" % (msg,object['dn']))
 			return False
 		except ldap.SERVER_DOWN:
 			raise ldap.SERVER_DOWN
