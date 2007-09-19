@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-9) unstable; urgency=low
+
+  * Provide a smooth upgrade path from the thin client image of UCS 1.3-1
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 19 Sep 2007 17:07:44 +0200
+
 univention-client-kernel-image (1:1.0.0-8) unstable; urgency=low
 
   * Add another conflicting kernel.
