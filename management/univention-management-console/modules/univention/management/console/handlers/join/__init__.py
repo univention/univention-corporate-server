@@ -100,7 +100,9 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 
 	def join_rejoin( self, object ):
-		if object.incomplete:
+		if object.incomplete or not object.options.has_key( 'password' ) or \
+			   not object.options.has_key( 'account' ):
+			object.incomplete = True
 			self.finished( object.id(), None )
 		else:
 			pwdfile = _create_tempfile()
@@ -108,6 +110,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			fd = open( pwdfile, 'w' )
 			fd.write( object.options[ 'password' ] )
 			fd.close()
+			os.putenv( 'UMC_MODE', 'yes' )
 			cmd = '/usr/sbin/univention-join -dcaccount %s -dcpwd %s > %s 2>&1' % \
 				  ( object.options[ 'account' ], pwdfile, logfile )
 			proc = notifier.popen.Shell( cmd )
