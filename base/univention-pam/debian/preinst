@@ -73,7 +73,7 @@ EOF
 
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
 	if [ -e "/etc/pam.d/ssh" ]; then
 		res=`grep "auth.*required.*pam_listfile.so.*onerr=succeed.*item=user.*sense=deny.*file=" /etc/pam.d/ssh`
 		if [ -n "$res" ]; then
@@ -82,7 +82,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.11; then
 	fi
 fi
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
 	#move chfn and chsh to user auth methods
 
 	admin_auth=$(univention-baseconfig get auth/admin/services)
