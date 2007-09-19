@@ -102,7 +102,7 @@ binary-indep: build install
 	dh_installcron
 	dh_installman
 	dh_installchangelogs
-	dh_pycentral
+	dh_pycentral -Nunivention-ad-connector
 	dh_link
 	dh_strip
 	dh_compress
