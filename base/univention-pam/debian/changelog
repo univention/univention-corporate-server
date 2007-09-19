@@ -1,3 +1,9 @@
+univention-pam (1.2.2-1) unstable; urgency=low
+
+  * move chfn and chsh to user services during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Sep 2007 07:45:43 +0200
+
 univention-pam (1.2.1-1) unstable; urgency=low
 
   * don't depend on libpam-smbpass when using/testing samba 4
