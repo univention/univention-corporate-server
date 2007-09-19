@@ -7,7 +7,7 @@ Build-Depends: debhelper, python2.4, python-xml, univention-config-dev
 
 Package: univention-directory-manager
 Architecture: all
-Depends: python2.4, python-xml, python-univention-directory-manager, python-univention-directory-reports, univention-config-registry (>=1.3), univention-webui, python-m2crypto, univention-apache
+Depends: python2.4, python-xml, python-univention-directory-manager, univention-directory-reports, univention-config-registry (>=1.3), univention-webui, python-m2crypto, univention-apache
 Description: UCS - Web based administration tool
  Univention Admin is a web based program to manage UCS. It
  has an extensible architecture, using modules to implement
