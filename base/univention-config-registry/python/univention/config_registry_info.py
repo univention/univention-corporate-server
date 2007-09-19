@@ -121,7 +121,7 @@ class ConfigRegistryInfo( object ):
 
 	def check_patterns( self ):
 		# in install mode
-		if not self.__configRegistry:
+		if self.__configRegistry == None:
 			return
 		for pattern, data in self.__patterns.items():
 			regex = re.compile( pattern )

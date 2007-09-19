@@ -1,3 +1,9 @@
+univention-config-registry (2.4.2-1) unstable; urgency=low
+
+  * pattern matching was skipped because of a buggy condition 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 14:51:03 +0200
+
 univention-config-registry (2.4.1-4) unstable; urgency=low
 
   * add pre-dependency on newer versions of cron and netbase
