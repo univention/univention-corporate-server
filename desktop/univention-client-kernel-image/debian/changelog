@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.0-8) unstable; urgency=low
+
+  * Add another conflicting kernel.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 19 Sep 2007 08:34:20 +0200
+
 univention-client-kernel-image (1:1.0.0-7) unstable; urgency=low
 
   * Conflict against previous thin client kernel.
