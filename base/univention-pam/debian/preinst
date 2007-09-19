@@ -104,3 +104,13 @@ fi
 
 
 #DEBHELPER#
+
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; then
+	# we need the pam_rootok.so in the pam file during the slapd upgrade
+	cat /etc/pam.d/chfn | sed -e 's|@include common-auth|auth  sufficient   pam_rootok.so\
+@include common-auth|' >/etc/pam.d/chfn
+	cat /etc/pam.d/chsh | sed -e 's|@include common-auth|auth  sufficient   pam_rootok.so\
+@include common-auth|' >/etc/pam.d/chsh
+fi
+
+exit 0

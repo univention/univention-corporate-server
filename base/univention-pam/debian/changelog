@@ -1,4 +1,4 @@
-univention-pam (1.2.2-3) unstable; urgency=low
+univention-pam (1.2.3-1) unstable; urgency=low
 
   * move chfn and chsh to user services during the update
 
