@@ -91,14 +91,14 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.2.2; the
 	chsh=$(echo "$user_auth" | grep chsh)
 
 	if [ -z "$chfn" -a -z "$chsh" ]; then
-		univention-baseconfig get auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||;s|chsh||')"
-		univention-baseconfig get auth/user/services="$user_auth chfn chsh"
+		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||;s|chsh||')"
+		univention-baseconfig set auth/user/services="$user_auth chfn chsh"
 	elif [ -z "$chfn" ]; then
-		univention-baseconfig get auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||')"
-		univention-baseconfig get auth/user/services="$user_auth chfn"
+		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chfn||')"
+		univention-baseconfig set auth/user/services="$user_auth chfn"
 	elif [ -z "$chsh" ]; then
-		univention-baseconfig get auth/admin/services="$(echo $admin_auth | sed -e 's|chsh||')"
-		univention-baseconfig get auth/user/services="$user_auth chsh"
+		univention-baseconfig set auth/admin/services="$(echo $admin_auth | sed -e 's|chsh||')"
+		univention-baseconfig set auth/user/services="$user_auth chsh"
 	fi
 fi
 
