@@ -22,6 +22,7 @@ Package: python-univention-pkgdb
 Architecture: all
 Depends:  ${python:Depends}, python-apt | python2.4-apt, python-pygresql | python2.4-pygresql, python-dns | python2.4-dns, univention-config-registry
 Provides: ${python:Provides}
+Conflicts: univention-pkgdb-lib (<<1.0.4)
 XB-Python-Version: ${python:Versions}
 Description: UCS - PkgDB
  This package contains python libraries needed for all Univention package database components.
