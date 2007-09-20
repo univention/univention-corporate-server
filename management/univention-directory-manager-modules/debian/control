@@ -9,7 +9,7 @@ XS-Python-Version: all
 Package: python-univention-directory-manager
 Architecture: all
 Depends: ${python:Depends}, python-univention, python-univention-heimdal, makepasswd, univention-newsid, univention-smbencrypt, univention-webui-style, python2.4-m2crypto, python-univention-directory-manager-cli
-Conflicts: univention-admin-modules (<= 1.2.3-9), univention-admin (<< 2.1), python2.3-univention-admin-mail, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python2.3-univention-admin
+Conflicts: univention-admin-modules (<= 1.2.3-9), univention-admin (<< 2.1), python2.3-univention-admin-mail, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python2.3-univention-admin, python2.4-univention-admin (<< 2.2.3)
 Replaces: univention-admin-modules, univention-mail-cyrus-quota-master, python2.4-univention-admin-mail, python-univention-admin
 Suggests: univention-directory-manager, univention-directory-manager-tools
 Provides: ${python:Provides}, python2.4-univention-directory-manager, python-univention-admin

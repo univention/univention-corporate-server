@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.3-4) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 09:05:09 +0200
+
 univention-directory-manager-modules (2.2.3-3) unstable; urgency=low
 
   * added conflict to the old transition package
