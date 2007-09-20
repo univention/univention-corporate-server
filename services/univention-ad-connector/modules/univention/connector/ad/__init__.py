@@ -283,7 +283,8 @@ def group_dn_mapping(connector, given_object, dn_mapping_stored, isUCSobject):
 def old_user_dn_mapping(connector, given_object):
 	object = copy.deepcopy(given_object)
 
-	ctrls = [ldap.create_control('LDAP_SERVER_SHOW_DELETED_OID')]
+	# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
+	ctrls = [LDAPControl('1.2.840.113556.1.4.417',criticality=1)]
 	samaccountname = ''
 
 	if object.has_key('sAMAccountName'):
@@ -709,7 +710,8 @@ class ad(univention.connector.ucs):
 		_d=univention.debug.function('ldap.__search_ad')
 		ctrls=[]
 		if show_deleted:
-			ctrls.append(ldap.create_control('LDAP_SERVER_SHOW_DELETED_OID'))
+			# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
+			ctrls.append(LDAPControl('1.2.840.113556.1.4.417',criticality=1))
 		return encode_ad_resultlist(self.lo_ad.lo.search_ext_s(self.lo_ad.base,ldap.SCOPE_SUBTREE,filter,serverctrls=ctrls))
 		
 

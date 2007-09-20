@@ -109,7 +109,8 @@ if login_pw[-1] == '\n':
 
 lo.simple_bind_s(login_dn, login_pw)
 
-lc1 = ldap.create_control("LDAP_SERVER_SHOW_DELETED_OID")
+# LDAP_SERVER_SHOW_DELETED_OID -> 1.2.840.113556.1.4.417
+lc1 = LDAPControl('1.2.840.113556.1.4.417',criticality=1)
 
 filter_tmp=sys.argv[1].decode('latin')
 filter = ""
