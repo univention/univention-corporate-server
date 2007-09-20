@@ -12,7 +12,7 @@ Depends: ${python:Depends}, python-univention, python-univention-license, univen
 Pre-Depends: univention-config-registry (>> 1.54-30)
 Provides: ${python:Provides}, python2.4-univention-connector
 XB-Python-Version: ${python:Versions}
-Conflicts: univention-server-slave, univention-server-member
+Conflicts: univention-server-slave, univention-server-member, python2.4-univention-connector (<<1.2.1)
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
  features of Univention AD Connector.
@@ -22,11 +22,21 @@ Description: UCS - Modules for connector sychronisation
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
+Package: python2.4-univention-connector
+Architecture: all
+Depends: python-univention-connector
+Description: Transition package
+ Package to ease upgrading from old package
+ python2.4-univention-connector to the new package.  This package
+ can be purged at anytime once the python-univention-connector
+ package has been installed.
+
 Package: python-univention-connector-ad
 Architecture: all
 Depends: ${python:Depends}, python-univention, python-univention-license, python-univention-connector, python-m2crypto
 Pre-Depends: univention-config-registry (>> 1.54-30)
 Provides: ${python:Provides}, python2.4-univention-connector-ad
+Conflicts: python2.4-univention-connector-ad (<<1.2.1)
 XB-Python-Version: ${python:Versions}
 Description: UCS - Modules for connector sychronisation
  This package contains the modules that implement the
@@ -36,6 +46,15 @@ Description: UCS - Modules for connector sychronisation
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: python2.4-univention-connector-ad
+Architecture: all
+Depends: python-univention-connector-ad
+Description: Transition package
+ Package to ease upgrading from old package
+ python2.4-univention-connector-ad to the new package.  This package
+ can be purged at anytime once the python-univention-connector-ad
+ package has been installed.
 
 Package: univention-ad-connector
 Architecture: all

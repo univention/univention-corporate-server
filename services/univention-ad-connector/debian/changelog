@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.1-2) unstable; urgency=low
+
+  * added transition packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 13:57:45 +0200
+
 univention-ad-connector (1.2.1-1) unstable; urgency=low
 
   * use the new python-ldap control interface
