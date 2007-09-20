@@ -11,6 +11,7 @@ Architecture: all
 Depends: ${python:Depends}, ${shlibs:Depends}, python-ldap
 Replaces: python-heimdal
 Provides: ${python:Provides}, python-heimdal
+Conflicts: python2.4-heimdal (<<1.0.1)
 XB-Python-Version: ${python:Versions}
 Description: UCS - Kerberos interface module for Python.
  This module provides a Python interface to the Heimdal Kerberos library.

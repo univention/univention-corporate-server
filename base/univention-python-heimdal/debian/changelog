@@ -1,3 +1,9 @@
+univention-python-heimdal (1.0.1-2) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 08:16:20 +0200
+
 univention-python-heimdal (1.0.1-1) unstable; urgency=low
 
   * added python2.4-heimdal transition package
