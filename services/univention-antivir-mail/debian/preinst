@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.3.2; then
+	# move old amavisd.conf
+
+	if [ -e /etc/amavis/amavisd.conf ]; then
+		mv /etc/amavis/amavisd.conf /etc/amavis/amavisd.conf.UCS_2_0_upgrade
+	fi
+	if [ -e /etc/amavis/amavisd.conf.disabled ]; then
+		mv /etc/amavis/amavisd.conf.disabled /etc/amavis/amavisd.conf.disabled.UCS_2_0_upgrade
+	fi
+fi
+
+exit 0
