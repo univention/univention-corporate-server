@@ -1,3 +1,9 @@
+univention-directory-replication (1.2.0-3) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 08:22:50 +0200
+
 univention-directory-replication (1.2.0-2) unstable; urgency=low
 
   * added univention-ldap-replication transition package
