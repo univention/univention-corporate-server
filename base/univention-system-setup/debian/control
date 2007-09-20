@@ -7,6 +7,7 @@ Build-Depends: debhelper
 
 Package: univention-system-setup
 Architecture: all
+Conflicts: univention-setup (<<1.1.2)
 Depends: univention-installer-modules, python2.4, python2.4-apt, univention-ipcalc
 Description: univention system setup tools
  .
