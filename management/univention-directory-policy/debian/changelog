@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.1-6) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 08:21:52 +0200
+
 univention-directory-policy (1.1.1-5) unstable; urgency=low
 
   * added univention-ldap-policy transition package
