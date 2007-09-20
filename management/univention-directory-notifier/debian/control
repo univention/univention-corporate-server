@@ -8,6 +8,7 @@ Package: univention-directory-notifier
 Architecture: any
 Pre-Depends: univention-ssl
 Depends: libssl0.9.7, libldap2, libunivention-config0, libunivention-debug0, univention-runit
+Conflicts: univention-ldap-notifier (<<2.2.1)
 Description: UCS - Directory Notifier
  Univention Directory Notifier propagates changes on the LDAP
  server to clients listening for them. In doing so, just the
