@@ -1,3 +1,9 @@
+univention-config-registry (2.4.2-2) unstable; urgency=low
+
+  * added conflict to the old transition package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 20 Sep 2007 08:14:40 +0200
+
 univention-config-registry (2.4.2-1) unstable; urgency=low
 
   * pattern matching was skipped because of a buggy condition 

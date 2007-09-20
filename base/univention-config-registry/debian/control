@@ -87,6 +87,7 @@ Architecture: all
 Depends: ${python:Depends}
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
+Conflicts: python-univention-baseconfig (<<2.4.2)
 Description: UCS - Python interface to configuration registry
  This package includes the Python interface to the
  UCS configuration manager.
