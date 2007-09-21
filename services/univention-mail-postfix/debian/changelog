@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-4) unstable; urgency=low
+
+  * support for the zarafa groupware
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Sep 2007 08:31:40 +0200
+
 univention-mail-postfix (1.0.1-3) unstable; urgency=low
 
   * change default value for postfix/masquerade/domains from

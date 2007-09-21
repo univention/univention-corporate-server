@@ -156,6 +156,11 @@ local_recipient_maps = ldap:accounts
 #   is also used.
 # mailbox_transport = lmtp:unix:/var/run/cyrus/socket/lmtp
 
+@!@
+if baseConfig.has_key('postfix/mailbox_transport') and not baseConfig['postfix/mailbox_transport'].lower() in ['none', 'false']:
+	print '%s ' % baseConfig['postfix/mailbox_transport']
+@!@
+
 
 @!@
 if baseConfig.has_key('mail/archivefolder') and not baseConfig['mail/archivefolder'] == '':

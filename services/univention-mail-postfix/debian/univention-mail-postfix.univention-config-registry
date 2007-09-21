@@ -16,6 +16,7 @@ Variables: mail/postfix/mynetworks
 Variables: server/role
 Variables: mail/messagesizelimit
 Variables: mail/smtpauth
+Variables: postfix/mailbox_transport
 Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
 
@@ -28,6 +29,7 @@ Variables: interfaces/eth.*/network
 Variables: interfaces/eth.*/netmask
 Variables: mail/smtpauth
 Variables: mail/smtpport
+Variables: postfix/zarafa
 
 Type: file
 File: etc/mailname
