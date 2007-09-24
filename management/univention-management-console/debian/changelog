@@ -1,3 +1,9 @@
+univention-management-console (0.9.2-1) unstable; urgency=low
+
+  * improved searchform widget 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 24 Sep 2007 12:59:55 +0200
+
 univention-management-console (0.9.1-1) unstable; urgency=low
 
   * join module: if password and/or account is missing for join/rejoin command

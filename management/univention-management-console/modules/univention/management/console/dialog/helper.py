@@ -57,7 +57,7 @@ class Question( base.List ):
 		self.add_row( [ '', button.Button( okay, 'actions/ok', actions = actions ), btn ] )
 
 class SearchForm( base.List ):
-	def __init__( self, command = None, fields = [] ):
+	def __init__( self, command = None, fields = [], opts = {} ):
 		base.List.__init__( self )
 		ids = []
 		defaults = {}
@@ -73,8 +73,8 @@ class SearchForm( base.List ):
 				else:
 					line.append( pair )
 			self.add_row( line )
-		req = umcp.Command( args = [ command ] )
- 		btn = button.SearchButton( button.Action( req, ids ) )
+		req = umcp.Command( args = [ command ], opts = opts )
+		btn = button.SearchButton( button.Action( req, ids ) )
 		reset = button.ResetButton( fields = defaults )
 		num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per Page' ) ) ),
 										   attributes = { 'width' : '100' } )
