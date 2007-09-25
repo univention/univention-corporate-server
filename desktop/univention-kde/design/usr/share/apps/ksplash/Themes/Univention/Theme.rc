@@ -1,0 +1,20 @@
+# Default KSplash/ML Theme
+
+[KSplash Theme: Univention]
+Name = Univention Splash Screen
+Description = Univention Corporate Desktop
+Version = 1.0
+Author = Ingo Steuwer <steuwer@univention.de>
+
+# Theme behaviour settings.
+Engine = Default
+#Engine = Redmond
+
+# Should icons blink ala KDE, or not?
+Icons Flashing = false
+
+# Show progress bar?
+Always Show Progress = true
+
+# Status text colour
+Label Foreground = #FFFFFF
