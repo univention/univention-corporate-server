@@ -88,13 +88,34 @@ class MultiValue( input.Input ):
 			self.field_ids.append( field.id() )
 
 class ObjectSelect( input.Input ):
+	'''
+	  |------------------------------------------|
+	  | Search for object properties             |
+	  |------------------------------------------|
+	  |             |          |                 |
+	  |             |----------|                 |
+	  |    list1    |    >     |      list2      |
+	  |             |----------|                 |
+  	  |             |    <     |                 |
+	  |------------------------------------------|
+
+	  modulename = name of module (e.g. computers/computer)
+	  default = list of object dn to be displayed in list2
+	  attr_display = name of attribute to be shown for each object
+	  filter = ldap filter
+	  basedn = ldap base dn
+	  scope = ldap scope
+	  search_disabled = enable/disable object property search (if disabled, display all matching objects)
+	  search_properties = list of property keys that are available during search (if list is empty, all properties are enabled)
+	'''
 	def __init__( self, option = ( None, None ),
 				  modulename = None, filter = None, attr_display = [ 'dn' ],
-				  default = [], search_disabled = False, basedn = None, scope = 'sub' ):
+				  default = [], search_properties = [], search_disabled = False, basedn = None, scope = 'sub' ):
 		input.Input.__init__( self, option )
 		self.modulename = modulename
 		self.filter = filter
 		self.attr_display = attr_display
+		self.search_properties = search_properties
 		self.search_disabled = search_disabled
 		self.default = default
 		self.basedn = basedn

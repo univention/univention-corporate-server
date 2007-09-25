@@ -1,3 +1,9 @@
+univention-management-console (0.9.3-1) unstable; urgency=low
+
+  * improved ObjectSelect widget
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 25 Sep 2007 10:04:45 +0200
+
 univention-management-console (0.9.2-1) unstable; urgency=low
 
   * improved searchform widget 

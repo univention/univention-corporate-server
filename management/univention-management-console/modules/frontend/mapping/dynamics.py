@@ -270,8 +270,9 @@ class ObjectSelectMap( mapper.IMapper ):
 		# build property dropdown list
 		search_properties=[]
 		for pname, pproperty in search_module.property_descriptions.items():
-			if not (hasattr(pproperty, 'dontsearch') and pproperty.dontsearch==1):
-				search_properties.append({'name': pname, 'description': pproperty.short_description})
+			if not umcp_part.search_properties or pname in umcp_part.search_properties:
+				if not (hasattr(pproperty, 'dontsearch') and pproperty.dontsearch==1):
+					search_properties.append({'name': pname, 'description': pproperty.short_description})
 		search_properties.sort()
 		# insert ANY and NONE at beginning of select list
 		search_properties.insert(0, {'name': '*', 'description': _('any')})
