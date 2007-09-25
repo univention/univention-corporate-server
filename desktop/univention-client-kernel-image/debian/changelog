@@ -1,3 +1,9 @@
+univention-client-kernel-image (1:1.0.1-1) unstable; urgency=low
+
+  * depend on thin client kernel .72 that generates the modules.dep file
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 16:10:41 +0200
+
 univention-client-kernel-image (1:1.0.0-11) unstable; urgency=low
 
   * Depend on thin client kernel .71, which introduced the necessary Conflicts:
