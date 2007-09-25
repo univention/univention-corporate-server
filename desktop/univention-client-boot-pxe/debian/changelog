@@ -1,3 +1,9 @@
+univention-client-boot-pxe (2.0.1-5) unstable; urgency=low
+
+  * added initrd.splash for multiple resolutions 
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 25 Sep 2007 16:27:37 +0200
+
 univention-client-boot-pxe (2.0.1-4) unstable; urgency=low
 
   * added new initrd.splash with new coporate Bootsplash
