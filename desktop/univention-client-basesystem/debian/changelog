@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.2-3) unstable; urgency=low
+
+  * /etc/defaut/bootsplash will now be committed after ramdisk exists
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 25 Sep 2007 13:46:21 +0200
+
 univention-client-basesystem (2.1.2-2) unstable; urgency=low
 
   * /usr/local/share/fonts no longer exists in X.org from 2.0, adapt

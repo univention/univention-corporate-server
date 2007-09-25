@@ -104,6 +104,8 @@ done
 
 preparePythonEnvironment
 
+univention-baseconfig commit /etc/default/bootsplash
+
 echo -n "   ip address: " >>/dev/tty8
 ipcmd=`cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g'`
 myip=`echo $ipcmd | awk -F ':' '{print $1}'`
