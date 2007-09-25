@@ -57,7 +57,7 @@ install: build
 
 	install -m 0644 files/univention-wallpaper.jpg debian/univention-kde/usr/share/wallpapers/
 	install -m 0644 files/ucs-background-1280x1024.png debian/univention-kde/usr/share/wallpapers/
-	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention/* debian/univention-kde/usr/share/wallpapers/
+	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention
 
 	
 	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/

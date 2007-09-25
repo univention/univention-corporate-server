@@ -1,3 +1,9 @@
+univention-kde (2.1.4-1) unstable; urgency=low
+
+  * fixed splash-theme installation
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 25 Sep 2007 09:47:39 +0200
+
 univention-kde (2.1.4-0) unstable; urgency=low
 
   * added Univention ksplash-theme
