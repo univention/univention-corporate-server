@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.2-4) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 14:15:27 +0200
+
 univention-mail-postfix-kolab2 (1.0.2-3) unstable; urgency=low
 
   * change default value for postfix/masquerade/domains from
