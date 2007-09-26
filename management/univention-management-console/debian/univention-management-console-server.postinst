@@ -1,5 +1,13 @@
 #!/bin/sh
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 #DEBHELPER#
 
 eval $( univention-baseconfig shell)
@@ -23,6 +31,11 @@ fi
 if [ "${locale/de_DE.UTF-8:UTF-8//}" = "$locale" ]; then
 	univention-baseconfig set locale="$locale de_DE.UTF-8:UTF-8"
 fi
+
+# default logfiles
+createLogfile /var/log/univention/management-console-server.log "root:adm" 640
+createLogfile /var/log/univention/management-console-web.log "www-data:adm" 640
+createLogfile /var/log/univention/management-console-module.log "root:adm" 640
 
 # default directory for UNIX sockets daemon <-> module
 socket_dir=/var/run/univention-management-console/

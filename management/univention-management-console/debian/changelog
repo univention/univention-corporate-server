@@ -1,3 +1,9 @@
+univention-management-console (0.9.3-2) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:53:02 +0200
+
 univention-management-console (0.9.3-1) unstable; urgency=low
 
   * improved ObjectSelect widget
