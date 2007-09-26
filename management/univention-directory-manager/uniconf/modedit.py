@@ -3866,14 +3866,14 @@ class modedit(unimodule.unimodule):
 							fixedFilter='(&(objectClass=univentionNagiosHostClass)(univentionNagiosEnabled=1)(aRecord=*))'
 
 						search_module=univention.admin.modules.get( module_name )
-						search_property_name=self.save.get('membership_search_property')
+						search_property_name=self.save.get('membership_search_property'+name)
 						filter=None
 						valid=1
 						if not search_module.property_descriptions.has_key(search_property_name):
 							if not search_property_name=="*":
 								search_property_name="_"
 						if not search_property_name=="*":
-							membership_search_value=self.save.get("membership_search_value")
+							membership_search_value=self.save.get("membership_search_value"+name)
 							if not membership_search_value:
 								membership_search_value="*"
 							filter="(%s=%s)"%(search_property_name,membership_search_value)
@@ -3884,8 +3884,8 @@ class modedit(unimodule.unimodule):
 							else:
 								filter=fixedFilter
 
-						if self.save.get('membership_search_ok') and not self.parent.input and search_property_name!="_": # we have no input
-							self.save.put('membership_search_ok',None)
+						if self.save.get('membership_search_ok'+name) and not self.parent.input and search_property_name!="_": # we have no input
+							self.save.put('membership_search_ok'+name,None)
 							groups=[]
 							if filter:
 								gr=search_module.lookup(None,self.lo,filter,scope="domain",base=position.getDomain())
@@ -3894,9 +3894,9 @@ class modedit(unimodule.unimodule):
 							else:
 								gr=[]
 							groups=gr
-							self.save.put("membership_search_result",groups)
+							self.save.put("membership_search_result"+name,groups)
 						else:
-							groups=self.save.get("membership_search_result")
+							groups=self.save.get("membership_search_result"+name)
 							if not groups:
 								groups=[]
 						is_in={}
@@ -4429,10 +4429,11 @@ class modedit(unimodule.unimodule):
 			self.save.put("uc_module",return_to)
 			self.save.put('tab', None)
 			self.save.put('validtabs', None)
-			self.save.put('membership_search_result',None)
-			self.save.put('membership_search_ok',None)
-			self.save.put('membership_search_value',None)
-			self.save.put('membership_search_property',None)
+			for key in self.ginput.keys():
+				self.save.put('membership_search_result'+key,None)
+				self.save.put('membership_search_ok'+key,None)
+				self.save.put('membership_search_value'+key,None)
+				self.save.put('membership_search_property'+key,None)
 			self.save.put('edit_policydn_preselect', None)
 			self.save.put('edit_policy', None)
 			self.save.put('edit_policy_original_reference', None)
@@ -4620,10 +4621,11 @@ class modedit(unimodule.unimodule):
 					self.save.put("uc_module",return_to)
 					self.save.put('tab', None)
 					self.save.put('validtabs', None)
-					self.save.put('membership_search_result',None)
-					self.save.put('membership_search_ok',None)
-					self.save.put('membership_search_value',None)
-					self.save.put('membership_search_property',None)
+					for key in self.ginput.keys():
+						self.save.put('membership_search_result'+key,None)
+						self.save.put('membership_search_ok'+key,None)
+						self.save.put('membership_search_value'+key,None)
+						self.save.put('membership_search_property'+key,None)
 					self.save.put('edit_policydn_preselect', None)
 					self.save.put('edit_policy', None)
 					self.save.put('edit_policy_original_reference', None)
@@ -5025,17 +5027,17 @@ class modedit(unimodule.unimodule):
 					new.remove(value)
 			# search_property_select
 			elif mitem[6].pressed():
-				self.save.put("membership_search_property",mitem[5].get_input())
-				self.save.put("membership_search_ok",None)
-				self.save.put("membership_search_result",None)
+				self.save.put("membership_search_property"+key,mitem[5].get_input())
+				self.save.put("membership_search_ok"+key,None)
+				self.save.put("membership_search_result"+key,None)
 			elif mitem[4].pressed():
 				try:
-					self.save.put("membership_search_value",mitem[7].get_input())
-					if self.save.get("membership_search_property")=="_":
-						self.save.put("membership_search_result",None)
+					self.save.put("membership_search_value"+key,mitem[7].get_input())
+					if self.save.get("membership_search_property"+key)=="_":
+						self.save.put("membership_search_result"+key,None)
 				except:
-					self.save.put("membership_search_value",None)
-				self.save.put("membership_search_ok",1)
+					self.save.put("membership_search_value"+key,None)
+				self.save.put("membership_search_ok"+key,1)	
 			try:
 				current_object[key]=new
 			except univention.admin.uexceptions.valueError, e:
@@ -5076,10 +5078,11 @@ class modedit(unimodule.unimodule):
 				self.save.put("validtabs", validtabs)
 
 				if tab != self.save.get('tab') or tab != tabbing.at(self.nbook.getselected()):
-					self.save.put('membership_search_result',None)
-					self.save.put('membership_search_ok',None)
-					self.save.put('membership_search_value',None)
-					self.save.put('membership_search_property',None)
+					for key in self.ginput.keys():
+						self.save.put('membership_search_result'+key,None)
+						self.save.put('membership_search_ok'+key,None)
+						self.save.put('membership_search_value'+key,None)
+						self.save.put('membership_search_property'+key,None)			
 
 				# change to selected tab
 				if tab != self.save.get('tab'):
@@ -5146,10 +5149,11 @@ class modedit(unimodule.unimodule):
 					self.save.put("uc_module",return_to)
 					self.save.put('tab', None)
 					self.save.put('validtabs', None)
-					self.save.put('membership_search_result',None)
-					self.save.put('membership_search_ok',None)
-					self.save.put('membership_search_value',None)
-					self.save.put('membership_search_property',None)
+					for key in self.ginput.keys():
+						self.save.put('membership_search_result'+key,None)
+						self.save.put('membership_search_ok'+key,None)
+						self.save.put('membership_search_value'+key,None)
+						self.save.put('membership_search_property'+key,None)
 					self.save.put('printer_manufacturer_selected',None)
 					self.save.put('package_class_selected',None)
 				else:
@@ -5174,10 +5178,11 @@ class modedit(unimodule.unimodule):
 					self.save.put("uc_module",return_to)
 					self.save.put('tab', None)
 					self.save.put('validtabs', None)
-					self.save.put('membership_search_result',None)
-					self.save.put('membership_search_ok',None)
-					self.save.put('membership_search_value',None)
-					self.save.put('membership_search_property',None)
+					for key in self.ginput.keys():
+						self.save.put('membership_search_result'+key,None)
+						self.save.put('membership_search_ok'+key,None)
+						self.save.put('membership_search_value'+key,None)
+						self.save.put('membership_search_property'+key,None)
 					self.save.put('printer_manufacturer_selected',None)
 					self.save.put('package_class_selected',None)
 				if okMessage and not self.save.get("usermessages"):
@@ -5210,10 +5215,11 @@ class modedit(unimodule.unimodule):
 		self.save.put("uc_module",return_to)
 		self.save.put('tab', None)
 		self.save.put('validtabs', None)
-		self.save.put('membership_search_result',None)
-		self.save.put('membership_search_ok',None)
-		self.save.put('membership_search_value',None)
-		self.save.put('membership_search_property',None)
+		for key in self.ginput.keys():
+			self.save.put('membership_search_result'+key,None)
+			self.save.put('membership_search_ok'+key,None)
+			self.save.put('membership_search_value'+key,None)
+			self.save.put('membership_search_property'+key,None)
 		self.save.put('printer_manufacturer_selected',None)
 		self.save.put('package_class_selected',None)
 

@@ -1256,7 +1256,7 @@ msgstr "Übergeordnetes Objekt"
 
 #: modwizard.py:307 modwizard.py:858
 msgid "Select Type:"
-msgstr "Typ auswählen:"
+msgstr "Typ auswählen A:"
 
 #: modwizard.py:307
 msgid "Choose the desired object type."
@@ -1355,7 +1355,7 @@ msgstr "Wo soll gesucht werden"
 
 #: modwizard.py:858
 msgid "Select Type"
-msgstr "Typ auswählen:"
+msgstr "Typ auswählen B:"
 
 #: modwizard.py:887
 msgid "choose property"
