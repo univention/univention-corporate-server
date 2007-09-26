@@ -52,12 +52,16 @@ eval `univention-baseconfig shell`
 
 if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
 	if [ "$server_role" = "memberserver" ]; then
+		joinuser="Administrator"
 		if [ "$3" == "--bindpwd" ]; then
 			passwd=$4
 		fi
+		if [ "$1" == "--binddn" ]; then
+			joinuser=$(ldapsearch -x -LLL -b $2 uid | grep ^uid: | cut -d' ' -f2-)
+		fi
 
 		if [ -n "$passwd" ]; then
-			net join MEMBER -U root%$passwd
+			net join MEMBER -U ${joinuser}%${passwd}
 		fi
 	fi
 
