@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.4-1) unstable; urgency=low
+
+  * fixed permissions of /var/log/univention/admin-cmd.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 14:03:28 +0200
+
 univention-directory-manager-modules (2.2.3-4) unstable; urgency=low
 
   * added conflict to the old transition package
