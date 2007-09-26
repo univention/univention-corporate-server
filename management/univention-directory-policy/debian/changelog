@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.1-7) unstable; urgency=low
+
+  * fixed permissions of /var/log/univention/ldap-policy.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:58:09 +0200
+
 univention-directory-policy (1.1.1-6) unstable; urgency=low
 
   * added conflict to the old transition package

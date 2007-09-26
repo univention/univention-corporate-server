@@ -32,6 +32,12 @@ univention-baseconfig set ldap/policy/cron?"5 * * * *"
 
 #DEBHELPER#
 
+if [ ! -e /var/log/univention/ldap-policy.log ] ; then
+	touch /var/log/univention/ldap-policy.log
+	chown root:adm /var/log/univention/ldap-policy.log
+	chmod 640 /var/log/univention/ldap-policy.log
+fi
+
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 0.2; then
 	update-rc.d univention-directory-policy defaults 90 || true
 elif [ -z "$2" ]; then
