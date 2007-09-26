@@ -51,6 +51,8 @@ else
 			if [ -e /tmp/logging ]; then
 				mkdir -p /instmnt/var/log/univention/
 				touch installation.log
+				chown root:adm installation.log
+				chmod 640 installation.log
 			fi
 			if [ -e /tmp/logging ]; then
 				/bin/sh $i </dev/tty1 2>&1 | tee -a /instmnt/var/log/univention/installation.log
@@ -62,5 +64,3 @@ else
 
 	done
 fi
-
-

@@ -1,3 +1,9 @@
+univention-installer (1.7.7-1) unstable; urgency=low
+
+  * fixed permissions of /var/log/univention/installation.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:37:19 +0200
+
 univention-installer (1.7.6-1) unstable; urgency=low
 
   * activate UGS only on a DC Master
