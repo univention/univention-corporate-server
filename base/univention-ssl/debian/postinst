@@ -56,6 +56,11 @@ univention-baseconfig set ssl/validity/warning?30
 
 eval `univention-baseconfig shell`
 
+if [ ! -e "/var/log/univention/ssl-sync.log" ]; then
+	touch /var/log/univention/ssl-sync.log
+	chown root:adm /var/log/univention/ssl-sync.log
+	chmod 640 /var/log/univention/ssl-sync.log
+fi
 if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ "$server_role" = "basesystem" ]; then
 	if [ ! -s $CERTPATH/00.pem ] && [ ! -e "/etc/univention/ssl/$hostname.$domainname" ]; then
 		. /usr/share/univention-ssl/make-certificates.sh;
@@ -63,11 +68,6 @@ if [ "$server_role" = "domaincontroller_master" ] || [ -z "$server_role" ] || [ 
 		univention-certificate new -name $hostname.$domainname
 	else
 		echo "skipped. SSL Certificate found in $CERTPATH ";
-	fi
-else
-	if [ ! -e "/var/log/univention/ssl-sync.log" ]; then
-		touch /var/log/univention/ssl-sync.log
-		chmod 600 /var/log/univention/ssl-sync.log
 	fi
 fi
 

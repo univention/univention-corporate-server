@@ -1,3 +1,9 @@
+univention-ssl (2.0.1-8) unstable; urgency=low
+
+  * fixed permissions of ssl-sync.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:25:23 +0200
+
 univention-ssl (2.0.1-7) unstable; urgency=low
 
   * renamed /etc/univention/ssl/udsCA to /etc/univention/ssl/ucsCA
@@ -161,7 +167,3 @@ univention-ssl (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Mon,  8 Oct 2001 13:47:19 +0200
-
-Local variables:
-mode: debian-changelog
-End:
