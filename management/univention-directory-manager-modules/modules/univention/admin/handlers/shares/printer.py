@@ -41,6 +41,14 @@ import univention.admin.uexceptions
 translation=univention.admin.localization.translation('univention.admin.handlers.shares')
 _=translation.translate
 
+class printerACLTypes(univention.admin.syntax.select):
+        name='printerACLTypes'
+        choices=[
+		('allow all',_('Allow all users.')),
+                ('allow',_('Allow only choosen users/groups.')),
+                ('deny',_('Deny choosen users/groups.')),
+                ]
+
 module='shares/printer'
 operations=['add','edit','remove','search','move']
 
@@ -151,6 +159,37 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'ACLtype': univention.admin.property(
+			short_description=_('Access list'),
+			long_description=_('Access list can allow or deny listed users and groups.'),
+			syntax=printerACLTypes,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default="allow all"
+		),
+	'ACLUsers': univention.admin.property(
+			short_description=_('Allowed/denied users'),
+			long_description=_('For the given users printing is explicitly allowed or denied.'),
+			syntax=univention.admin.syntax.userDn,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
+	'ACLGroups': univention.admin.property(
+			short_description=_('Allowed/denied groups'),
+			long_description=_('For the given groups printing is explicitly allowed or denied.'),
+			syntax=univention.admin.syntax.groupDn,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
 }
 layout=[
 	univention.admin.tab(_('General'),_('General Settings'),[
@@ -159,6 +198,11 @@ layout=[
 			[ univention.admin.field( 'location' ), univention.admin.field( 'description' ) ],
 			[univention.admin.field('setQuota'), univention.admin.field('model')],
 			[univention.admin.field('pagePrice'),univention.admin.field('jobPrice')],
+			]),
+	univention.admin.tab(_('Access Control'),_('Access Control for users and groups'),[
+			[univention.admin.field('ACLtype')],
+			[univention.admin.field('ACLUsers')],
+			[univention.admin.field('ACLGroups')],
 			]),
 ]
 
@@ -184,6 +228,9 @@ mapping.register('sambaName', 'univentionPrinterSambaName', None, univention.adm
 mapping.register('setQuota', 'univentionPrinterQuotaSupport', None, univention.admin.mapping.ListToString)
 mapping.register('pagePrice', 'univentionPrinterPricePerPage', None, univention.admin.mapping.ListToString)
 mapping.register('jobPrice', 'univentionPrinterPricePerJob', None, univention.admin.mapping.ListToString)
+mapping.register('ACLUsers', 'univentionPrinterACLUsers')
+mapping.register('ACLGroups', 'univentionPrinterACLGroups')
+mapping.register('ACLtype', 'univentionPrinterACLtype', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module

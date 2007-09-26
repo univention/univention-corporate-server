@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.2.5-1) unstable; urgency=low
+
+  * migrate printer acl patch from UCS 1.3-2
+  * updated translations
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 15:55:38 +0200
+
 univention-directory-manager-modules (2.2.4-1) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/admin-cmd.log
@@ -1838,7 +1845,3 @@ univention-admin-modules (0.1) unstable; urgency=low
   * initial release
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Tue, 20 May 2003 13:49:40 +0200
-
-Local variables:
-mode: debian-changelog
-End:
