@@ -57,7 +57,7 @@ if [ "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver
 			passwd=$4
 		fi
 		if [ "$1" == "--binddn" ]; then
-			joinuser=$(ldapsearch -x -LLL -b $2 uid | grep ^uid: | cut -d' ' -f2-)
+			joinuser=$(ldapsearch -x -LLL -b $2 uid | grep ^uid: | cut -d' ' -f2- | tr -d '\n')
 		fi
 
 		if [ -n "$passwd" ]; then
