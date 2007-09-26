@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-5) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 14:13:37 +0200
+
 univention-mail-postfix (1.0.1-4) unstable; urgency=low
 
   * support for the zarafa groupware
