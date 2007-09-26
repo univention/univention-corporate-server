@@ -40,6 +40,14 @@ args=sys.argv[1:]
 baseConfig=univention.baseconfig.baseConfig()
 baseConfig.load()
 
+lpadminexec = '/usr/sbin/lpadmin'
+for path in [ '/usr/bin/enable', '/usr/sbin/cupsenable' ]:
+	if os.path.exists(path):	
+		enableexec = path
+for path in [ '/usr/sbin/accept', '/usr/sbin/cupsaccept' ]:
+	if os.path.exists(path):	
+		acceptexec = path
+
 # read machine password
 secretFile=open('/etc/machine.secret','r')
 pwdLine=secretFile.readline()
@@ -48,7 +56,7 @@ machine_password=re.sub('\n','',pwdLine)
 machine_uid=pwd.getpwnam('%s$' % (baseConfig['hostname']))[2]
 old_uid=os.getuid()
 os.setuid(machine_uid)
-child = spawn('/usr/sbin/lpadmin %s' % string.join(args, ' '))
+child = spawn('%s %s' % (lpadminexec, string.join(args, ' ')))
 i=0
 timeout=60
 while not i == 3:
@@ -56,22 +64,20 @@ while not i == 3:
 	if i in [0,1,2]:
 		child.sendline(machine_password)
 
-print 'testing group'
-
 if '-c' in args:
 	groupname = args[args.index('-c')+1]
-	print 'found %s' % groupname
+	#print 'found %s' % groupname
 	i = 0
-	child = spawn('/usr/bin/enable %s' % groupname)
+	child = spawn('%s %s' % (enableexec, groupname))
 	while not i == 3:
 		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
-		print "enable %s" % i
+		#print "enable %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)
 	i = 0
-	child = spawn('/usr/sbin/accept %s' % groupname)
+	child = spawn('%s %s' % (acceptexec, groupname))
 	while not i == 3:
 		i = child.expect(['%s.%s\?' %(baseConfig['hostname'],baseConfig['domainname']), '%s\?' % baseConfig['hostname'], 'localhost\?', EOF], timeout=timeout)
-		print "accept %s" % i
+		#print "accept %s" % i
 		if i in [0,1,2]:
 			child.sendline(machine_password)

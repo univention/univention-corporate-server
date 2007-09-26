@@ -39,7 +39,7 @@ ip=listener.baseConfig['interfaces/eth0/address']
 name='cups-printers'
 description='Manage CUPS printer configuration'
 filter='(|(objectClass=univentionPrinter)(objectClass=univentionPrinterGroup))'
-attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember']
+attributes=['univentionPrinterSpoolHost', 'univentionPrinterModel', 'univentionPrinterURI', 'univentionPrinterLocation', 'description', 'univentionPrinterSambaName','univentionPrinterPricePerPage','univentionPrinterPricePerJob','univentionPrinterQuotaSupport','univentionPrinterGroupMember', 'univentionPrinterACLUsers', 'univentionPrinterACLGroups', 'univentionPrinterACLtype',]
 
 def lpadmin(args):
 	univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, "cups-printers: lpadmin args=%s" % args)
@@ -137,6 +137,11 @@ def handler(dn, new, old):
 		description=""
 		page_price=0
 		job_price=0
+		aclUsers = []
+		aclGroups = []
+		
+		args = [] # lpadmin args
+
 		if new.has_key('univentionPrinterSambaName'):
 			description=new['univentionPrinterSambaName'][0]
 		if new.has_key('univentionPrinterPricePerPage'):
@@ -144,9 +149,23 @@ def handler(dn, new, old):
 		if new.has_key('univentionPrinterPricePerJob'):
 			job_price=new['univentionPrinterPricePerJob'][0]
 
+		if new.has_key('univentionPrinterACLtype'):
+			if new['univentionPrinterACLtype'][0] == 'allow all':
+				args.append('-u')
+				args.append('allow:all')
+			elif (new.has_key('univentionPrinterACLUsers') and len(new['univentionPrinterACLUsers']) > 0) or (new.has_key('univentionPrinterACLGroups') and len(new['univentionPrinterACLGroups']) > 0):
+				args.append('-u')
+				argument = "%s:" % new['univentionPrinterACLtype'][0]
+				if new.has_key('univentionPrinterACLUsers'):
+					for userDn in new['univentionPrinterACLUsers']:
+						argument += '"%s",' % userDn[userDn.find('=')+1:userDn.find(',')]
+				if new.has_key('univentionPrinterACLGroups'):
+					for groupDn in new['univentionPrinterACLGroups']:
+						argument += '"@%s",' % groupDn[groupDn.find('=')+1:groupDn.find(',')]
+				args.append(argument[:-1])
+
 		# Add/Modify Printergroup
 		if printer_is_group:
-			args=[]
 			add = []
 			if old: # Diff old <==> new
 				rem = old['univentionPrinterGroupMember']
@@ -181,7 +200,8 @@ def handler(dn, new, old):
 		# Add/Modify Printer
 		else:
 
-			args=['-p', new['cn'][0]]
+			args.append('-p')
+			args.append(new['cn'][0])
 			for a in changes:
 				if a == 'univentionPrinterQuotaSupport':
 					if new['univentionPrinterQuotaSupport'][0]=='1':
