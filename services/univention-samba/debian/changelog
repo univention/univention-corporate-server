@@ -1,3 +1,9 @@
+univention-samba (1.0.7-1) unstable; urgency=low
+
+  * fixed permissions of /var/log/univention/samba-sync.log
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Sep 2007 13:40:44 +0200
+
 univention-samba (1.0.6-1) unstable; urgency=low
 
   * fixed username used to join host into domain

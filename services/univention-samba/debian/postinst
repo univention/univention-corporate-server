@@ -30,6 +30,12 @@
 
 eval `univention-config-registry shell`
 
+if [ ! -e /var/log/univention/samba-sync.log ] ; then
+	touch /var/log/univention/samba-sync.log
+	chown root:adm /var/log/univention/samba-sync.log
+	chmod 640 /var/log/univention/samba-sync.log
+fi
+
 if [ -z "$2" ]
 	then
 	mkdir -p /home/groups
