@@ -69,6 +69,8 @@ fi
 
 if [ ! -e /var/log/univention/pkgdb.log ]; then
 	touch /var/log/univention/pkgdb.log
+	chown root:adm /var/log/univention/pkgdb.log
+	chmod 640 /var/log/univention/pkgdb.log
 fi
 
 exit 0
