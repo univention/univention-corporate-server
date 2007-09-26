@@ -30,6 +30,17 @@
 
 
 if [ "$1" = "configure" ]; then
+	if [ ! -e "/var/log/univention/updater.log" ] ; then
+		touch /var/log/univention/updater.log
+		chown root:adm /var/log/univention/updater.log
+		chmod 640 /var/log/univention/updater.log
+	fi
+	if [ ! -e "/var/log/univention/actualise.log" ] ; then
+		touch /var/log/univention/actualise.log
+		chown root:adm /var/log/univention/actualise.log
+		chmod 640 /var/log/univention/actualise.log
+	fi
+
 	eval `univention-baseconfig shell version/version`
 	eval `univention-baseconfig shell version/patchlevel`
 	if [ -z "$version_version" -o -z "$version_patchlevel" ]; then
