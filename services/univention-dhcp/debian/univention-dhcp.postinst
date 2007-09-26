@@ -32,6 +32,12 @@ set -e
 
 #DEBHELPER#
 
+if [ ! -e /var/log/univention/dhcp.log ] ; then
+	touch /var/log/univention/dhcp.log
+	chown root:adm /var/log/univention/dhcp.log
+	chmod 640 /var/log/univention/dhcp.log
+fi
+
 update-rc.d -f dhcp3-server remove >/dev/null 2>&1
 update-rc.d -f dhcp remove >/dev/null 2>&1
 
@@ -42,7 +48,7 @@ if [ -n "$dhcpd_enable" ]; then
 		univention-baseconfig set dhcpd/autostart?"yes"
 	else
 		univention-baseconfig set dhcpd/autostart?"no"
-	fi	
+	fi
 	univention-baseconfig unset dhcpd/enable
 else
 	univention-baseconfig set dhcpd/autostart?"yes"
