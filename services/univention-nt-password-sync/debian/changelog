@@ -1,3 +1,9 @@
+univention-nt-password-sync (0.2-9) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 15:29:15 +0200
+
 univention-nt-password-sync (0.2-8) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
