@@ -30,6 +30,16 @@
 
 #DEBHELPER#
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/directory-reports.log "root:adm" 640
+
 univention-baseconfig set directory/reports/logo?/usr/share/univention-directory-reports/univention_logo.png
 univention-baseconfig set directory/reports/templates/default1?"users/user \"Standard Report\" /etc/univention/directory/reports/default/users.tex"
 univention-baseconfig set directory/reports/templates/default2?"groups/group \"Standard Report\" /etc/univention/directory/reports/default/groups.tex"

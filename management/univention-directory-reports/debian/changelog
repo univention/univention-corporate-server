@@ -1,3 +1,9 @@
+univention-directory-reports (0.4.0-3) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 14:57:31 +0200
+
 univention-directory-reports (0.4.0-2) unstable; urgency=low
 
   * fixed package build: python module are now installed into correct path
