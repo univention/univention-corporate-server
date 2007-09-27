@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.2-1) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 14:26:19 +0200
+
 univention-directory-manager (4.2.1-2) unstable; urgency=low
 
   * fixed translation

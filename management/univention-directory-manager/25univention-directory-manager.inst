@@ -39,6 +39,14 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-directory-manager v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 /etc/init.d/apache2 stop >/dev/null 2>&1
 
 eval `univention-baseconfig shell hostname domainname`
@@ -72,9 +80,7 @@ if [ $? != 0 ]; then exit 1; fi
 /usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls $domainname add cname univention-directory-manager $hostname 2>/dev/null || true
 
 mkdir -p /var/log/univention/
-touch /var/log/univention/directory-manager-web.log
-chown www-data.www-data /var/log/univention/directory-manager-web.log
-chmod 600 /var/log/univention/directory-manager-web.log
+createLogfile /var/log/univention/directory-manager-web.log "www-data:adm" 640
 
 /etc/init.d/apache2 start >/dev/null 2>&1
 
