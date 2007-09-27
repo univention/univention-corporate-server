@@ -34,7 +34,6 @@ fi
 
 # default logfiles
 createLogfile /var/log/univention/management-console-server.log "root:adm" 640
-createLogfile /var/log/univention/management-console-web.log "www-data:adm" 640
 createLogfile /var/log/univention/management-console-module.log "root:adm" 640
 
 # default directory for UNIX sockets daemon <-> module

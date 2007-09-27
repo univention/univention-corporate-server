@@ -1,4 +1,4 @@
-univention-management-console (0.9.3-2) unstable; urgency=low
+univention-management-console (0.9.3-3) unstable; urgency=low
 
   * fixed logfile permissions
 

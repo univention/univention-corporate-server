@@ -1,6 +1,16 @@
 #!/bin/sh
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 #DEBHELPER#
+
+createLogfile /var/log/univention/management-console-proxy.log "root:adm" 640
 
 eval $( univention-baseconfig shell server/role )
 

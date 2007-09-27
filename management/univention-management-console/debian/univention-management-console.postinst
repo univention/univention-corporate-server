@@ -1,5 +1,13 @@
 #!/bin/sh
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 for path in /usr/share/univention-management-console/www/icon /usr/share/univention-management-console/www/style /usr/share/univention-management-console/www/includes; do
     if [ -d $path -a ! -h $path ]; then
         rm -r $path
@@ -18,9 +26,7 @@ univention-baseconfig set umc/web/timeout?300
 univention-baseconfig set umc/web/language?de_DE.utf8
 univention-baseconfig set umc/web/debug/level?1
 
-
-touch /var/log/univention/management-console-web.log
-chown www-data:www-data /var/log/univention/management-console-web.log
+createLogfile /var/log/univention/management-console-web.log "www-data:adm" 640
 
 #DEBHELPER#
 
