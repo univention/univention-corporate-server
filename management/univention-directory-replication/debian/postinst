@@ -29,6 +29,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 # Univention LDAP Listener replication module
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/ldap-replication-resync.log "root:adm" 640
+
 # make sure rootpw.conf is not readable
 test -f /etc/ldap/rootpw.conf && chmod 600 /etc/ldap/rootpw.conf || true
 
