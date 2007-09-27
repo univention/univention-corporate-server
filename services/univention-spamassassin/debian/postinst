@@ -28,6 +28,16 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/spamassassin-learn.log "root:adm" 640
+
 if [ -f /var/spool/procmail/user/procmail.spam@domain ]; then
 	eval `univention-baseconfig shell domainname`
 	mv /var/spool/procmail/user/procmail.spam@domain /var/spool/procmail/user/procmail.spam@$domainname

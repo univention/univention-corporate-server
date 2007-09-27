@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.3-2) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 15:49:09 +0200
+
 univention-spamassassin (1.0.3-1) unstable; urgency=low
 
   * check for /etc/init.d/postfix before restarting postfix
