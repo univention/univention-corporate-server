@@ -28,6 +28,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+
 univention-baseconfig set listener/autostart?yes
 
 adduser --quiet --system --home /var/lib/univention-directory-listener listener
@@ -39,10 +48,7 @@ if [ -h "/var/service/univention-ldap-listener" ]; then
        rm /var/service/univention-ldap-listener
 fi
 
-if [ ! -e "/var/log/univention/listener.log" ]; then
-	touch /var/log/univention/listener.log
-	chmod 600 /var/log/univention/listener.log
-fi
+createLogfile /var/log/univention/listener.log "root:adm" 640
 
 mkdir -p /var/lib/univention-ldap/listener
 if [ ! -e /var/lib/univention-ldap/listener/listener ]; then

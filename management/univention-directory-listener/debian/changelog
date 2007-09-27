@@ -1,3 +1,9 @@
+univention-directory-listener (2.2.3-1) unstable; urgency=low
+
+  * fixed logfile permissions
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 14:06:40 +0200
+
 univention-directory-listener (2.2.2-2) unstable; urgency=low
 
   * added univention-ldap-listener transition package
