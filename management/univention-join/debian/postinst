@@ -30,6 +30,18 @@
 
 #DEBHELPER#
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/check_join_status.log "root:adm" 640
+createLogfile /var/log/univention/server-join.log "root:adm" 640
+createLogfile /var/log/univention/join.log "root:adm" 640
+
 /usr/lib/univention-install/91univention-join.inst || true
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.7; then
