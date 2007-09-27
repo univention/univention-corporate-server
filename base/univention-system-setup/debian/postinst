@@ -28,5 +28,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/setup.log "root:adm" 640
+
 chmod -R 700 /var/cache/univention-system-setup
 
