@@ -30,6 +30,14 @@
 
 univention-baseconfig set notifier/autostart?yes
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 #DEBHELPER#
 
 for i in replog-slurpd notify save; do
@@ -89,11 +97,7 @@ univention-baseconfig unset notifier/replog/sleep
 
 univention-baseconfig set listener/supply/notifier?yes
 
-if [ ! -e "/var/log/univention/notifier.log" ]; then
-	#create log file
-	touch /var/log/univention/notifier.log
-	chmod 600 /var/log/univention/notifier.log
-fi
+createLogfile /var/log/univention/notifier.log "root:adm" 640
 
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.10; then
