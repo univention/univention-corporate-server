@@ -98,7 +98,7 @@ PackageList=[
 				},
 				{
 					'Name': _('UGS Webclient'),
-					'Packages': ['univention-groupware-webclient'],
+					'Packages': ['univention-kolab2-webclient'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [], 
 					'Possible': ['domaincontroller_master'],
