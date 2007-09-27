@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Univention Groupware Webclient
+# Univention Kolab2 Webclient
 #  postinst script
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
@@ -31,7 +31,7 @@
 a2enmod php5
 
 # create database, user and tables
-share=/usr/share/univention-groupware-webclient/
+share=/usr/share/univention-kolab2-webclient/
 su - postgres -c "psql -d template1 -f $share/create.pgsql.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_datatree.sql &> /dev/null"
 su - postgres -c "psql -d horde -f $share/horde_prefs.sql &> /dev/null"
@@ -102,7 +102,7 @@ fi
 
 
 if [ "$1" = configure -a -z "$2" ]; then
-	/usr/share/univention-groupware-webclient/turba-permissions.py
+	/usr/share/univention-kolab2-webclient/turba-permissions.py
 fi
 
 if [ -x /etc/init.d/univention-directory-listener ]; then

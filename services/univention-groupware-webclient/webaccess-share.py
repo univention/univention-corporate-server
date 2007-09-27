@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Groupware Webclient
+# Univention Kolab2 Webclient
 #  create webaccess shares
 #
 # Copyright (C) 2007 Univention GmbH

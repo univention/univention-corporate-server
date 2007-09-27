@@ -1,3 +1,9 @@
+univention-kolab2-webclient (1.2.0-1) unstable; urgency=low
+
+  * renamed univention-groupware-webclient to univention-kolab2-webclient 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Sep 2007 11:00:22 +0200
+
 univention-groupware-webclient (1.1.1-1) unstable; urgency=low
 
   * disable the gollem clipboard

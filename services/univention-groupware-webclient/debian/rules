@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 #
-# Univention Groupware Webclient
+# Univention Kolab2 Webclient
 #  rules file for the debian package
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
@@ -48,8 +48,8 @@ clean:
 	rm -f build-stamp configure-stamp
 	dh_clean
 
-D=$(CURDIR)/debian/univention-groupware-webclient
-SHARE=$(D)/usr/share/univention-groupware-webclient
+D=$(CURDIR)/debian/univention-kolab2-webclient
+SHARE=$(D)/usr/share/univention-kolab2-webclient
 HORDESHARE=$(D)/usr/share/horde3/
 php_dir=$(D)/usr/share/horde3/lib
 doc_dir=$(D)/usr/share/horde3/lib/docs

@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
-# Univention Groupware Webclient
+# Univention Kolab2 Webclient
 #  set turba permissions
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
