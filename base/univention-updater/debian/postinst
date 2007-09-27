@@ -28,19 +28,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+createLogfile /var/log/univention/repository.log "root:adm" 640
+createLogfile /var/log/univention/security-updates.log "root:adm" 640
+createLogfile /var/log/univention/updater.log "root:adm" 640
+createLogfile /var/log/univention/actualise.log "root:adm" 640
 
 if [ "$1" = "configure" ]; then
-	if [ ! -e "/var/log/univention/updater.log" ] ; then
-		touch /var/log/univention/updater.log
-		chown root:adm /var/log/univention/updater.log
-		chmod 640 /var/log/univention/updater.log
-	fi
-	if [ ! -e "/var/log/univention/actualise.log" ] ; then
-		touch /var/log/univention/actualise.log
-		chown root:adm /var/log/univention/actualise.log
-		chmod 640 /var/log/univention/actualise.log
-	fi
-
 	eval `univention-baseconfig shell version/version`
 	eval `univention-baseconfig shell version/patchlevel`
 	if [ -z "$version_version" -o -z "$version_patchlevel" ]; then
@@ -93,7 +94,7 @@ if [ "$1" = "configure" ]; then
 				vp=`cat /var/lib/univention-server-cdrom/.univention_install | grep "PATCHLEVEL=" | sed -e 's|PATCHLEVEL=||g'`
 				echo "$vv-$vp" >>/var/lib/univention-server-cdrom/ucs-updates/index.list
 			fi
-				
+
 			for dir in /var/lib/univention-server-cdrom/ucs-updates/*; do
 				if [ -d "$dir" ]; then
 					echo "deb http://$hostname.$domainname/univention-cdrom/ucs-updates/`basename $dir`/ ./">> /var/lib/univention-server-cdrom/sources.list
@@ -122,7 +123,7 @@ if [ "$1" = "configure" ]; then
 	univention-baseconfig set update/warning/tty?"/dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 /dev/tty5 /dev/tty6 /dev/tty7"
 
 fi
-	
+
 if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.36-7; then
 	#create index.list
 	if [ -d "/var/lib/univention-server-cdrom/ucs-updates" ]; then
