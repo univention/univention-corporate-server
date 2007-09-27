@@ -65,8 +65,9 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-#	cp -d -r files/* $(CURDIR)/debian/univention-java/
-#	find $(CURDIR)/debian/univention-java/ -type d -name CVS -exec rm -rf {} \; || true
+	cp -d -r files/* $(CURDIR)/debian/univention-java/
+	find $(CURDIR)/debian/univention-java/ -type d -name CVS -exec rm -rf {} \; || true
+	find $(CURDIR)/debian/univention-java/ -type d -name ".svn" -exec rm -rf {} \; || true
 #	ln -s /etc/alternatives/javaplugin_oji.so $(CURDIR)/debian/univention-java/usr/lib/mozilla-firefox/plugins/
 
 
