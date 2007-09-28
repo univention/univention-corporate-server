@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Mail Postfix
-#  postinst script for the debian package
+#  preinst script for the debian package
 #
 # Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
@@ -28,37 +28,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
 #DEBHELPER#
 
-univention-baseconfig set postfix/autostart=yes
-
-eval `univention-baseconfig shell`
-
-univention-baseconfig set postfix/masquerade/domains?"\$mydomain"
-univention-baseconfig set postfix/masquerade/exceptions?root
-
-for file in transport virtual canonical access;
-do
-  if [ ! -e /etc/postfix/$file ]
-      then
-      touch /etc/postfix/$file
-  fi
-  postmap /etc/postfix/$file
-done
-
-adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
-univention-baseconfig set ldap/port?389
-univention-baseconfig set mail/alias/root?systemmail@$hostname.$domainname
-univention-baseconfig set mail/alias/postmaster?root
-univention-baseconfig set mail/messagesizelimit?10240000
-newaliases
-
-adduser postfix sasl
-
-univention-baseconfig commit /etc/mailname
-
-/etc/init.d/postfix reload
-
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.16; then
-    test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
-fi
+createLogfile /var/log/mail.err root:root 644
+createLogfile /var/log/mail.info root:adm 640
+createLogfile /var/log/mail.log root:adm 640
+createLogfile /var/log/mail.warn root:root 644
