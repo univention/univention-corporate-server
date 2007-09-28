@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-6) unstable; urgency=low
+
+  * moved logfile permission check to preinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 28 Sep 2007 16:24:05 +0200
+
 univention-mail-postfix (1.0.1-5) unstable; urgency=low
 
   * fixed logfile permissions
