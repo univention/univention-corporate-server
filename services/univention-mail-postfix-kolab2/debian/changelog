@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.2-5) unstable; urgency=low
+
+  * moved logfile permission check to preinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 28 Sep 2007 16:26:15 +0200
+
 univention-mail-postfix-kolab2 (1.0.2-4) unstable; urgency=low
 
   * fixed logfile permissions
