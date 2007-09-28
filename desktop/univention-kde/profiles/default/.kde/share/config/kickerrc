@@ -34,6 +34,7 @@ IExist=true
 UntrustedApplets=
 UntrustedExtensions=
 UseBackgroundTheme=true
+Transparent=true
 
 [KMenuButton_1]
 FreeSpace2=0

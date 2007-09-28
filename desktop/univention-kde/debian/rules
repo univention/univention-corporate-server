@@ -51,18 +51,27 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	
+
 	(cd profiles && find . ! -path "*.svn*" -type d -exec install  -d "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
 	(cd profiles && find . ! -path "*.svn*" -type f -exec install {} "../debian/univention-kde/usr/share/univention-kde-profiles/"{} \;)
 
 	install -m 0644 files/univention-wallpaper.jpg debian/univention-kde/usr/share/wallpapers/
 	install -m 0644 files/ucs-background-1280x1024.png debian/univention-kde/usr/share/wallpapers/
-	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention
+	install -m 0644 design/usr/share/apps/ksplash/Themes/Univention/*{rc,png} debian/univention-kde/usr/share/apps/ksplash/Themes/Univention/
+	install -m 0644 design/usr/share/apps/kdisplay/color-schemes/UniventionGreen.kcsrc debian/univention-kde/usr/share/apps/kdisplay/color-schemes/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/128x128/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/128x128/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/16x16/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/16x16/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/22x22/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/22x22/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/32x32/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/32x32/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/48x48/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/48x48/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/64x64/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention/scalable/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention/index.theme
+	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"
 
-	
 	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/
 	install -m 0755 univention-kde-profile-builder-dialog debian/univention-kde/usr/bin/
-	
+
 	install -m 0644 files/libVncExt.so.2.0 debian/univention-kde-vncmodule/usr/X11R6/lib/libVncExt.so.2.0
 	install -m 0755 files/kvncevent debian/univention-kde-vncmodule/usr/bin/kvncevent
 	install -m 0755 files/vncevent debian/univention-kde-vncmodule/usr/bin/vncevent

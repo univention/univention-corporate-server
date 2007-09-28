@@ -10,7 +10,7 @@
     <wallpaper mode="NoWallpaper" url="theme:/wallpapers/desktop/blue-bend.jpg" />
   </desktop>
   <screensaver name="" />
-  <icons name="crystalsvg" >
+  <icons name="crystalsvg-univention" >
     <Animated value="0" object="desktop" />
     <DoublePixels value="0" object="desktop" />
     <Size value="32" object="desktop" />
