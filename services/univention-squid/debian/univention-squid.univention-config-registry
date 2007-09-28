@@ -52,3 +52,7 @@ Variables: interfaces/eth3_2/address
 Variables: interfaces/eth3_2/netmask
 Variables: interfaces/eth3_3/address
 Variables: interfaces/eth3_3/netmask
+
+Type: file
+File: etc/security/netfilter.d/20squid
+Variables: squid/transparentproxy

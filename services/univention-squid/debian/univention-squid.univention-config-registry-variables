@@ -58,3 +58,8 @@ Description[en]=Ports that may be accessed through squid
 Type=str
 Categories=Network
 
+[squid/transparentproxy]
+Description[de]=iptables-Regeln für transparenten Proxy aktivieren
+Description[en]=Activate iptables rules for transparent proxy
+Type=str
+Categories=Network
