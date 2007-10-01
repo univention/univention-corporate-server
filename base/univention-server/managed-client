@@ -59,6 +59,11 @@ getXModul()
 	echo "$driver" | head -1 |  tr [:upper:] [:lower:]
 }
 
+if [ ! -e /var/log/univention/managed-client.log ] ; then
+	touch /var/log/univention/managed-client.log
+	chown root:adm /var/log/univention/managed-client.log
+	chmod 640 /var/log/univention/managed-client.log
+fi
 
 case $1 in
 	start)
@@ -102,7 +107,27 @@ case $1 in
 					# get policy result
 					univention-baseconfig unset univentionAutoStartScript
 					univention-baseconfig set ldap/mydn="$use_dn" >/dev/null 2>&1
-					univention_policy_result "$use_dn" -s | xargs univention-baseconfig set >>/var/log/univention/managed-client.log 2>&1
+
+					univention_policy_result -s $use_dn > $policy_file
+
+					cat $policy_file | while read line; do
+
+						# split the line a=b in a and b
+						var="${line%%=*}"
+						val="${line#*=}"
+
+						if [ -n "$var" ] && [ -n "$val" ]; then
+							new_value=$(grep "$var=" /etc/univention/templates/mapping/* | head -n 1 | sed -e 's|.*=||;s|"||g')
+							if [ -n "${new_value}" ]; then
+								echo $line | sed -e "s|${var}=|${new_value}=|g" >> $policy_file_result
+							else
+								echo $line >> $policy_file_result
+							fi
+						fi
+
+					done
+
+					univention-baseconfig set $(cat $policy_file_result) >> /var/log/univention/managed-client.log 2>&1
 				fi
 	
 	
