@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.5-1) unstable; urgency=low
+
+  * no longer depend on python2.4-* packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Oct 2007 08:39:24 +0200
+
 univention-pkgdb (1.0.4-5) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/pkgdb.log
