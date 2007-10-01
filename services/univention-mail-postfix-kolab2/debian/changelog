@@ -1,4 +1,4 @@
-univention-mail-postfix-kolab2 (1.0.2-5) unstable; urgency=low
+univention-mail-postfix-kolab2 (1.0.2-7) unstable; urgency=low
 
   * moved logfile permission check to preinst
 
