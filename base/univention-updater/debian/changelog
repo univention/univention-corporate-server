@@ -1,3 +1,9 @@
+univention-updater (2.1.1-1) unstable; urgency=low
+
+  * switch from apt-get to aptitude during the dist-upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Oct 2007 08:42:13 +0200
+
 univention-updater (2.0.10-2) unstable; urgency=low
 
   * fixed logfile permissions

@@ -569,11 +569,11 @@ def main():
 	while os.path.exists('/var/run/apt-get.lock') and count < 300:
 		time.sleep(1)
 		count=count+1
-	resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade >>/var/log/univention/updater.log 2>&1')
+	resultCode=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive aptitude -o DPkg::Options::=--force-confold -y dist-upgrade >>/var/log/univention/updater.log 2>&1')
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if resultCode != 0:
-		dprint('Failed to execute apt-get -u dist-upgrade', [sys.stdout,stdout])
+		dprint('Failed to execute aptitude dist-upgrade', [sys.stdout,stdout])
 		raise UpdateError
 		
 
