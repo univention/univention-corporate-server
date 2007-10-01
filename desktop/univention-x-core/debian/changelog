@@ -1,3 +1,13 @@
+univention-x-core (1.1.5-1) unstable; urgency=low
+
+  * fixed xorg.conf config registry template
+    - insert "load" statement only if there is a module to load
+    - fixed typo
+    - fixed mouse driver selection via policy
+  	- eliminate empty sections
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Oct 2007 14:28:07 +0200
+
 univention-x-core (1.1.4-2) unstable; urgency=low
 
   * check for xorg/mouse/*/Identifier instead of xorg/mouse/*/identifier
