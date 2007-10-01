@@ -77,6 +77,7 @@ install-ext-%:
 	PYTHON=$* make install DESTDIR=`pwd`/debian/tmp
 
 	install -m 755 scripts/jitter debian/univention-config/usr/sbin
+	install -m 755 scripts/univention-set-logfile-permissions debian/univention-config/usr/sbin
 	install -m 755 scripts/ldapsearch-wrapper debian/univention-config/usr/bin
 	install -m 755 scripts/univention-keyboardmapping debian/univention-config/usr/bin
 

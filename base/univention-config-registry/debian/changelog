@@ -1,3 +1,10 @@
+univention-config-registry (2.4.3-1) unstable; urgency=low
+
+  * updated logrotate template
+  * added "permission fix" script for logrotate
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Oct 2007 16:13:38 +0200
+
 univention-config-registry (2.4.2-3) unstable; urgency=low
 
   * updated logfile permissions
