@@ -250,6 +250,14 @@ PackageList=[
 					'Description': _('Xen hypervisor environment to run virtualised hosts.'),
 				},
 				{
+					'Name': _('Xen kernel images)'),
+					'Packages': ['univention-kernel-image-2.6.18-xen'],
+					'Architecture': [ 'x86' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('Xen kernel images to Xen guests.'),
+				},
+				{
 					'Name': _('Network Installer'),
 					'Packages': ['univention-net-installer'],
 					'Architecture': [ 'x86', 'powerpc' ],

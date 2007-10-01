@@ -1,6 +1,12 @@
+univention-installer (1.7.8-3) unstable; urgency=low
+
+  * Add Xen client kernel images to the list of installable software components.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  1 Oct 2007 16:35:24 +0200
+
 univention-installer (1.7.8-2) unstable; urgency=low
 
-  * Add univention-xen to the installable software components.
+  * Add univention-xen to the list of installable software components.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  1 Oct 2007 16:18:54 +0200
 
