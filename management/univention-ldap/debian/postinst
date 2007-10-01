@@ -80,7 +80,17 @@ if [ "$1" = "configure" -a -n "$2" ];
         # always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
 		if [ "$server_role" = "domaincontroller_master" ]
 			then
-			/etc/init.d/slapd restart
+			/etc/init.d/slapd stop
+			sleep 1
+			if [ -n "$(pidof slapd)" ]; then
+				killall slapd
+				sleep 1
+				if [ -n "$(pidof slapd)" ]; then
+					killall -9 slapd
+					sleep 1
+				fi
+			fi
+			/etc/init.d/slapd start
 		else
 			/etc/init.d/slapd crestart
 		fi
