@@ -58,3 +58,10 @@ if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
 	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
 	ln -s ucsCA /etc/univention/ssl/udsCA
 fi
+
+dpkg -l freenx 2>&1
+if [ $? = 0 ]; then
+	univention-baseconfig set update/2.0/freenx/reinstall?1
+	apt-get remove freenx
+fi
+
