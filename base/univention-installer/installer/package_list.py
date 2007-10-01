@@ -242,6 +242,14 @@ PackageList=[
 					'Description': _("Server for remote desktop access"),
 				},
 				{
+					'Name': _('Xen hypervisor)'),
+					'Packages': ['univention-xen'],
+					'Architecture': [ 'x86' ],
+					'Active': [ ],
+					'Possible': ['all'],
+					'Description': _('Xen hypervisor environment to run virtualised hosts.'),
+				},
+				{
 					'Name': _('Network Installer'),
 					'Packages': ['univention-net-installer'],
 					'Architecture': [ 'x86', 'powerpc' ],

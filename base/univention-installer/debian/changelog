@@ -1,3 +1,9 @@
+univention-installer (1.7.8-2) unstable; urgency=low
+
+  * Add univention-xen to the installable software components.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  1 Oct 2007 16:18:54 +0200
+
 univention-installer (1.7.8-1) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/join.log
