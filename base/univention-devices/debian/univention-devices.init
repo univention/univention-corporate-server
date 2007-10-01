@@ -30,6 +30,12 @@
 
 eval $(univention-baseconfig shell)
 
+if [ ! -e /var/log/univention/fuse.log ] ; then
+	touch /var/log/univention/fuse.log
+	chown root:adm /var/log/univention/fuse.log
+	chmod 640 /var/log/univention/fuse.log
+fi
+
 case $1 in
 	start)
 		

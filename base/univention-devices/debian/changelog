@@ -1,3 +1,9 @@
+univention-devices (1.0.1-1) unstable; urgency=low
+
+  * fixed logfile permission
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Oct 2007 15:51:30 +0200
+
 univention-devices (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
