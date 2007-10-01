@@ -69,7 +69,13 @@ if [ "$1" = "configure" ]; then
 		univention-baseconfig set update/security/server="http://download.univention.de"
 	fi
 
-	univention-baseconfig set update/security/prefix="updates/security-desktop"
+	eval `univention-baseconfig shell update/security/prefix`
+
+	if [ "$update_security_prefix" = "updates/security-desktop" ]; then
+		univention-baseconfig set update/security/prefix="updates/security"
+	fi
+
+	univention-baseconfig set update/security/prefix?"updates/security"
 	univention-baseconfig set update/directory?"ucs-updates"
 
 	mkdir -p /var/cache/univention-update

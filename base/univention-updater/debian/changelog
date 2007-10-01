@@ -1,3 +1,9 @@
+univention-updater (2.1.2-1) unstable; urgency=low
+
+  * set the update/security/prefix variable to updates/security
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  1 Oct 2007 09:06:27 +0200
+
 univention-updater (2.1.1-2) unstable; urgency=low
 
   * fix the dependency to support the installation on UCS 1.3-x
