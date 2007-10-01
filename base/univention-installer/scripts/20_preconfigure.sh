@@ -95,6 +95,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 mkdir -p /var/log/univention
 touch /var/log/univention/join.log
+chown root:adm /var/log/univention/join.log
 chmod 600 /var/log/univention/join.log
 tail -f /var/log/syslog >/dev/tty3 2>&1 &
 tail -f /var/log/univention/join.log >/dev/tty4 2>&1 &
