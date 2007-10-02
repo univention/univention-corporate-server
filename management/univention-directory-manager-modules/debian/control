@@ -26,6 +26,7 @@ Description: UCS - Modules for administration tools
 Package: python-univention-directory-manager-cli
 Architecture: all
 Depends: ${python:Depends}, python-univention
+Conflicts: python2.4-univention-admin (<< 2.1)
 Provides: ${python:Provides}
 XB-Python-Version: ${python:Versions}
 Description: UCS - Modules for administration tools
@@ -62,7 +63,6 @@ Description: Transition package
 Package: python-univention-admin-cli
 Architecture: any
 Depends: python-univention-directory-manager-cli
-Conflicts: python2.4-univention-admin (<< 2.1)
 Description: Transition package
  Package to ease upgrading from old package
  python-univention-admin-cli to the new package.  This package

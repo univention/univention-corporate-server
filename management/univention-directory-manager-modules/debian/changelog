@@ -1,6 +1,6 @@
-univention-directory-manager-modules (2.2.6-2) unstable; urgency=low
+univention-directory-manager-modules (2.2.6-3) unstable; urgency=low
 
-  * package python-univention-admin-cli conflicts to the old python2.4-
+  * package python-univention-directory-manager-cli conflicts to the old python2.4-
     univention-admin package
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Oct 2007 11:30:23 +0200
