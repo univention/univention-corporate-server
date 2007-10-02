@@ -229,13 +229,16 @@ myDN=`ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(cn=$hostname)(o
 
 univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/mydn=$myDN >/dev/tty8 2>&1
 
+# update config registry entries via ldap policies
+/usr/lib/univention-directory-policy/univention-policy-update-config-registry $myDN
 
 ## get the policies
 
 policy_file=$(mktemp)
 policy_file_result=$(mktemp)
 
-univention_policy_result -h $ldapServer -s $myDN | sed 's|fixedAttributes=[^ ]*||;s|"||g' >$policy_file
+# remove univentionRegistry entries - handled earlier by univention-policy-update-config-registry
+univention_policy_result -h $ldapServer -s $myDN | sed -e 's|fixedAttributes=[^ ]*||;s|"||g' -e 's|^univentionRegistry;entry-.*||;s|"||g' >$policy_file
 cat $policy_file | while read line; do
 
 	# split the line a=b in a and b

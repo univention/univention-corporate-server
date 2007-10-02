@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.3-1) unstable; urgency=low
+
+  * update config registry entries via config registry policies
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 02 Oct 2007 15:57:07 +0200
+
 univention-client-basesystem (2.1.2-4) unstable; urgency=low
 
   * generate locales on package installation
