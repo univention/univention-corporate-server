@@ -68,4 +68,18 @@ for path in usr/share/fonts/ usr/X11R6/lib/X11/fonts/ ; do
 	/usr/bin/fc-cache /var/lib/univention-client-root/$path
 done
 
+# generate locales
+case "`uname -m`" in
+        i?86)
+				mv /var/lib/univention-client-root/etc/locale.gen /var/lib/univention-client-root/etc/locale.gen.BACKUP
+				echo -e "de_DE.UTF-8 UTF-8\nen_US.UTF-8 UTF-8" > /var/lib/univention-client-root/etc/locale.gen
+				chroot /var/lib/univention-client-root /usr/sbin/locale-gen
+				rm -f /var/lib/univention-client-root/etc/locale.gen
+				mv /var/lib/univention-client-root/etc/locale.gen.BACKUP /var/lib/univention-client-root/etc/locale.gen
+                ;;
+        *)
+				echo "no i386 system - update of default locales skipped"
+                ;;
+esac
+
 /usr/lib/univention-install/33univention-client-basesystem.inst || true

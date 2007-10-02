@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.2-4) unstable; urgency=low
+
+  * generate locales on package installation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 02 Oct 2007 12:00:44 +0200
+
 univention-client-basesystem (2.1.2-3) unstable; urgency=low
 
   * /etc/defaut/bootsplash will now be committed after ramdisk exists
@@ -284,7 +290,3 @@ univention-client-basesystem (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Roland Bauerschmidt <bauerschmidt@univention.de>  Sun, 28 Oct 2001 15:18:55 +0100
-
-Local variables:
-mode: debian-changelog
-End:
