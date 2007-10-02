@@ -242,7 +242,7 @@ PackageList=[
 					'Description': _("Server for remote desktop access"),
 				},
 				{
-					'Name': _('Xen hypervisor)'),
+					'Name': _('Xen hypervisor'),
 					'Packages': ['univention-xen'],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
@@ -250,7 +250,7 @@ PackageList=[
 					'Description': _('Xen hypervisor environment to run virtualised hosts.'),
 				},
 				{
-					'Name': _('Xen kernel images)'),
+					'Name': _('Xen kernel images'),
 					'Packages': ['univention-kernel-image-2.6.18-xen'],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
