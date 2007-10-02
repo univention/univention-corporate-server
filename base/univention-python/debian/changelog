@@ -1,10 +1,4 @@
-univention-python (2.2.1-5) unstable; urgency=low
-
-  * added a conflict to the old python2.4-univention-admin package
-
- -- Stefan Gohmann <gohmann@univention.de>  Tue,  2 Oct 2007 10:15:21 +0200
-
-univention-python (2.2.1-4) unstable; urgency=low
+univention-python (2.2.2-1) unstable; urgency=low
 
   * added conflict to the old transition package
 
