@@ -1,4 +1,4 @@
-univention-updater (2.1.4-2) unstable; urgency=low
+univention-updater (2.1.5-1) unstable; urgency=low
 
   * replace univention-console with univention-management-console
 
