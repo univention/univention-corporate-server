@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 Package: python-univention
 Architecture: all
 Depends: ${python:Depends}, python-ldap, python-dns, python-univention-debug, univention-config, univention-config-registry
-Conflicts: univention-dhcp (<< 1.2), univention-dns, python2.3-univention, python-univention, univention-python, python2.4-univention (<<2.2.1)
+Conflicts: univention-dhcp (<< 1.2), univention-dns, python2.3-univention, python-univention, univention-python, python2.4-univention (<<2.2.1), python2.4-univention-admin (<<1.0)
 Replaces: univnetion-python
 Provides: ${python:Provides}, univention-python
 XB-Python-Version: ${python:Versions}
