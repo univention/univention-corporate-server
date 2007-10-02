@@ -119,9 +119,9 @@ case $1 in
 						if [ -n "$var" ] && [ -n "$val" ]; then
 							new_value=$(grep "$var=" /etc/univention/templates/mapping/* | head -n 1 | sed -e 's|.*=||;s|"||g')
 							if [ -n "${new_value}" ]; then
-								echo $line | sed -e "s|${var}=|${new_value}=|g" >> $policy_file_result
+								echo $line | sed -e "s|${var}=|${new_value}=|g" -e 's|="|=|' -e 's|"$||' >> $policy_file_result
 							else
-								echo $line >> $policy_file_result
+								echo $line | sed -e 's|="|=|' -e 's|"$||' >> $policy_file_result
 							fi
 						fi
 
