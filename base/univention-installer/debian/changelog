@@ -1,3 +1,10 @@
+univention-installer (1.7.8-4) unstable; urgency=low
+
+  * Update i18n
+  * Fix refresh-i18n to convert file information to ISO-8859-15 instead of UTF-8.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Oct 2007 10:24:37 +0200
+
 univention-installer (1.7.8-3) unstable; urgency=low
 
   * Add Xen client kernel images to the list of installable software components.
