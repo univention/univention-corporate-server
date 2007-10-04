@@ -4,7 +4,7 @@
 
 check_and_install ()
 {
-	dpkg -l $1 >/dev/null 2>&1
+	dpkg -l $1 | grep ^ii >/dev/null 2>&1
 	if [ $? = 0 ]; then
 		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>/var/log/univention/updater.log 2>&1 
 	fi
@@ -47,7 +47,7 @@ check_and_install univention-pkgdb-tools
 check_and_install univention-admin
 check_and_install univention-java
 
-dpkg -l univention-console >/dev/null 2>&1
+dpkg -l univention-console | grep ^ii >/dev/null 2>&1
 if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-management-console >>/var/log/univention/updater.log 2>&1 
 fi
