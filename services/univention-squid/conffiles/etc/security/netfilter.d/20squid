@@ -7,7 +7,7 @@
 #          univention-baseconfig <FC>berschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
-#       /etc/univention/templates/files/etc/security/netfilter.d/20dhcp
+#       /etc/univention/templates/files/etc/security/netfilter.d/20squid
 #
 
 @!@
