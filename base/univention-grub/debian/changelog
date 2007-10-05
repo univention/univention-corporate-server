@@ -1,3 +1,10 @@
+univention-grub (1.1.2-2) unstable; urgency=low
+
+  * switch back from univention-config-registry to univention-baseconfig
+    and upgrade even if grub/append was already set
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  5 Oct 2007 10:07:54 +0200
+
 univention-grub (1.1.2-1) unstable; urgency=low
 
   * change the package priority from optional to standard

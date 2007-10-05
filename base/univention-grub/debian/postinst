@@ -1,8 +1,8 @@
 #!/bin/sh
 
-eval $(univention-config-registry shell)
+eval $(univention-baseconfig shell)
 
-if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
+if [ "$1" = configure -a -z "$2" ]; then
 
         vars="grub/timeout=5 "
 
@@ -60,12 +60,12 @@ if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
         fi
 
         if [ -n "$grub_append" ]; then
-                univention-config-registry set grub/append="$grub_append"
+                univention-baseconfig set grub/append="$grub_append"
         fi
 
-        univention-config-registry set $vars grub/memtest86=true
+        univention-baseconfig set $vars grub/memtest86=true
 
-        univention-config-registry unset lilo/append/acpi \
+        univention-baseconfig unset lilo/append/acpi \
                                 lilo/append/pci_acpi \
                                 lilo/append \
                                 lilo/boot \
@@ -86,7 +86,7 @@ elif [ -z "$2" ]; then
                 append="$append root=$rootdevice "
         fi
 
-        univention-config-registry set grub/timeout?5 \
+        univention-baseconfig set grub/timeout?5 \
 								grub/append="$append splash=silent" \
 								grub/root="$rootdevice" \
 								grub/vga=791 \
@@ -173,7 +173,7 @@ if [ "$grepcnt" = "0" ] ; then
 	fi
 fi
 
-eval $(univention-config-registry shell)
+eval $(univention-baseconfig shell)
 
 #DEBHELPER#
 
@@ -194,10 +194,10 @@ if [ -z "$grub_groot" ] ; then
 		grubdev=$(mount | grep " on / " | cut -d' ' -f1)
 	fi
 	groot=$(convert $grubdev)
-	univention-config-registry set grub/groot="$groot"
+	univention-baseconfig set grub/groot="$groot"
 fi
 
-univention-config-registry set kernel/postinst_hook?"/usr/sbin/update-grub"
+univention-baseconfig set kernel/postinst_hook?"/usr/sbin/update-grub"
 
 exit 0
 
