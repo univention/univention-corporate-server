@@ -2,7 +2,7 @@
 
 eval $(univention-baseconfig shell)
 
-if [ "$1" = configure -a -z "$2" ]; then
+if [ "$1" = configure -a -z "$2" ] && [ -z "$grub_append" ]; then
 
         vars="grub/timeout=5 "
 
