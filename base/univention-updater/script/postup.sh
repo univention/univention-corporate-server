@@ -24,7 +24,7 @@ fi
 echo "univention-server-master install" | dpkg --set-selections
 echo "univention-server-backup install" | dpkg --set-selections
 echo "univention-server-slave install" | dpkg --set-selections
-echo "univention-memberserver install" | dpkg --set-selections
+echo "univention-server-member install" | dpkg --set-selections
 echo "univention-managed-client install" | dpkg --set-selections
 echo "univention-fat-client install" | dpkg --set-selections
 echo "univention-mobile-client install" | dpkg --set-selections

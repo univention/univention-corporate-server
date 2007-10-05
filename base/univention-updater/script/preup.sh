@@ -67,7 +67,7 @@ fi
 echo "univention-server-master hold" | dpkg --set-selections
 echo "univention-server-backup hold" | dpkg --set-selections
 echo "univention-server-slave hold" | dpkg --set-selections
-echo "univention-memberserver hold" | dpkg --set-selections
+echo "univention-server-member hold" | dpkg --set-selections
 echo "univention-managed-client hold" | dpkg --set-selections
 echo "univention-fat-client hold" | dpkg --set-selections
 echo "univention-mobile-client hold" | dpkg --set-selections
