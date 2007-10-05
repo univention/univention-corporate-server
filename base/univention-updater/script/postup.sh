@@ -1,7 +1,5 @@
 #!/bin/sh
 
-# remove old cache file
-
 check_and_install ()
 {
 	dpkg -l $1 | grep ^ii >/dev/null 2>&1
@@ -10,12 +8,18 @@ check_and_install ()
 	fi
 }
 
+# remove old cache file
 rm -f /var/cache/univention-config/cache
 
-univention-baseconfig unset repository/patchlevel \
-							repository/version
-
 eval $(univention-baseconfig shell)
+
+if [ -n "$repository_patchlevel" ]; then
+	univention-baseconfig unset repository/patchlevel
+fi
+
+if [ -n "$repository_version" ]; then
+	univention-baseconfig unset repository/version
+fi
 
 echo "univention-server-master install" | dpkg --set-selections
 echo "univention-server-backup install" | dpkg --set-selections
@@ -41,11 +45,20 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-managed-client  >>/var/log/univention/updater.log 2>&1 
 fi
 
+echo "univention-pkgdb install" | dpkg --set-selections
+echo "univention-application-server install" | dpkg --set-selections
+
 check_and_install univention-groupware-webclient
+check_and_install univention-application-server
 check_and_install univention-pkgdb
 check_and_install univention-pkgdb-tools
 check_and_install univention-admin
 check_and_install univention-java
+check_and_install univention-client-kernel-image
+check_and_install univention-mozilla-firefox
+check_and_install kdebase
+check_and_install kdenetwork
+
 
 dpkg -l univention-console | grep ^ii >/dev/null 2>&1
 if [ $? = 0 ]; then
