@@ -1,0 +1,19 @@
+#!/usr/bin/make -f
+SHELL := sh -e
+
+include debian/rules.defs
+include /usr/src/linux-support-$(KERNELVERSION)/modules/rules.include
+
+setup: debian/control $(STAMPS_DIR)/setup-base
+$(STAMPS_DIR)/setup-base: $(BUILD_DIR) $(STAMPS_DIR)
+	dh_testdir
+	$(MAKE) -f debian/rules.gen setup-$(DEB_HOST_ARCH)
+	touch $@
+
+$(BUILD_STAMP): $(STAMPS_DIR)/setup-base
+
+GENCONTROL = debian/bin/gencontrol.py
+
+maintainerclean:
+	-rm debian/control debian/control.md5sum debian/rules.gen
+

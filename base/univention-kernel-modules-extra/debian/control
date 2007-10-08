@@ -1,0 +1,493 @@
+Source: univention-kernel-modules-extra-2.6
+Section: devel
+Priority: optional
+Maintainer: Univention GmBH <packages@univention.de>
+Uploaders: Bastian Blank <waldi@debian.org>, Daniel Baumann <daniel@debian.org>
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5), linux-support-2.6.18-4, linux-headers-2.6.18-4-all-amd64 [amd64], linux-headers-2.6.18-4-all-i386 [i386], linux-headers-2.6.18-4-all-powerpc [powerpc], squashfs-source
+
+Package: squashfs-modules-2.6.18-4-amd64
+Architecture: amd64 i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-amd64
+Description: Squash filesystem modules for Linux 2.6.18 on AMD64
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on all 64bit single- and multiprocessor AMD and Intel
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-amd64
+Architecture: amd64 i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-amd64
+Description: Squash filesystem modules for Linux 2.6 on AMD64
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on all 64bit single- and multiprocessor AMD and Intel machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-xen-amd64
+Architecture: amd64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-xen-amd64
+Description: Squash filesystem modules for Linux 2.6.18 on AMD64
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on all 64bit single- and multiprocessor AMD and Intel
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-xen-amd64
+Architecture: amd64
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-xen-amd64
+Description: Squash filesystem modules for Linux 2.6 on AMD64
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on all 64bit single- and multiprocessor AMD and Intel machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-486
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-486
+Description: Squash filesystem modules for Linux 2.6.18 on x86
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on x86 and compatible machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-486
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-486
+Description: Squash filesystem modules for Linux 2.6 on x86
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on x86 and compatible machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-686
+Description: Squash filesystem modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-686
+Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-k7
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-k7
+Description: Squash filesystem modules for Linux 2.6.18 on AMD K7
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on 32bit AMD Duron/Athlon/AthlonXP machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-k7
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-k7
+Description: Squash filesystem modules for Linux 2.6 on AMD K7
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on 32bit AMD Duron/Athlon/AthlonXP machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-686-bigmem
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-686-bigmem
+Description: Squash filesystem modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
+ with 4-64G RAM machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-686-bigmem
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-686-bigmem
+Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4 with
+ 4-64G RAM machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-xen-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-xen-686
+Description: Squash filesystem modules for Linux 2.6.18 on i686
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on i686 and compatible machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-xen-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-xen-686
+Description: Squash filesystem modules for Linux 2.6 on i686
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on i686 and compatible machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-powerpc
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc
+Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor 32-bit PowerPC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on uniprocessor 32-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-powerpc
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-powerpc
+Description: Squash filesystem modules for Linux 2.6 on uniprocessor 32-bit PowerPC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on uniprocessor 32-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-powerpc-smp
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc-smp
+Description: Squash filesystem modules for Linux 2.6.18 on multiprocessor 32-bit PowerPC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on multiprocessor 32-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-powerpc-smp
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-powerpc-smp
+Description: Squash filesystem modules for Linux 2.6 on multiprocessor 32-bit PowerPC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on multiprocessor 32-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-powerpc-miboot
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc-miboot
+Description: Squash filesystem modules for Linux 2.6.18 on 32-bit PowerPC for miboot floppy
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on 32-bit PowerPC for miboot floppy machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-powerpc-miboot
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-powerpc-miboot
+Description: Squash filesystem modules for Linux 2.6 on 32-bit PowerPC for miboot floppy
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on 32-bit PowerPC for miboot floppy machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-powerpc64
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc64
+Description: Squash filesystem modules for Linux 2.6.18 on 64-bit PowerPC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on 64-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-powerpc64
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-powerpc64
+Description: Squash filesystem modules for Linux 2.6 on 64-bit PowerPC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on 64-bit PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6.18-4-prep
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-prep
+Description: Squash filesystem modules for Linux 2.6.18 on PReP PowerPC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on PReP PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-prep
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-prep
+Description: Squash filesystem modules for Linux 2.6 on PReP PowerPC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on PReP PowerPC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.

@@ -1,0 +1,5 @@
+univention-kernel-modules-extra-2.6 (1.0.0-1) unstable; urgency=low
+
+  * Initial release based on linux-modules-extra-2.6 2.6.18-7+etch3
+
+ -- Moritz Muehlenhoff <jmm@debian.org>  Mon, 08 Oct 2007 15:05:49 -0200

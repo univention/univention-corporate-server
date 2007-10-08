@@ -1,0 +1,84 @@
+SHELL  := sh -e
+
+export DH_OPTIONS
+
+include /usr/src/linux-support-$(UPSTREAMVERSION)$(ABINAME)/modules/rules.real.include
+
+BUILD_STAMP = $(STAMPS_DIR)/build_$(ARCH)_$(SUBARCH)_$(FLAVOUR)_$(MODULE)
+SETUP_STAMP = $(STAMPS_DIR)/setup_$(ARCH)_$(SUBARCH)_$(FLAVOUR)_$(MODULE)
+SOURCE_STAMP = $(STAMPS_DIR)/source_$(MODULE)
+
+ifdef DEBIAN_KERNEL_JOBS
+  JOBS_ARG = -j$(DEBIAN_KERNEL_JOBS)
+endif
+
+MODULEVERSION = $(shell dpkg -s $(MODULESOURCE) | perl -ne 'print $$2 if m/^Version: (\d+:)?(.*?)(-[^-]+)?$$/;')
+ifeq (,$(MODULEVERSION))
+$(error Was not able to retreive version of $(MODULESOURCE))
+endif
+
+#
+# Targets
+#
+binary-arch: install-real
+build: $(BUILD_STAMP)
+setup: $(SETUP_STAMP)
+
+$(SETUP_STAMP) $(BUILD_STAMP) install: DIR=$(BUILD_DIR)/build_$(ARCH)_$(SUBARCH)_$(FLAVOUR)_$(MODULE)
+$(SOURCE_STAMP) $(SETUP_STAMP): SOURCE_DIR=$(BUILD_DIR)/source_$(MODULE)
+
+$(SOURCE_STAMP): TAR = /usr/src/$(MODULE).tar.bz2
+$(SOURCE_STAMP): TMP_DIR = $(BUILD_DIR)/tmp
+$(SOURCE_STAMP):
+	@rm -rf $(TMP_DIR) $(SOURCE_DIR)
+	mkdir -p $(TMP_DIR)
+	tar -C $(TMP_DIR) -xjf $(TAR)
+	mv $(TMP_DIR)/modules/$(MODULE) $(SOURCE_DIR)
+	rm -rf $(TMP_DIR)
+	touch $@
+
+$(SETUP_STAMP): $(SOURCE_STAMP)
+$(SETUP_STAMP):
+	@rm -rf $(DIR)
+	cp -al $(SOURCE_DIR) $(DIR)
+	touch $@
+
+$(BUILD_STAMP): $(SETUP_STAMP)
+$(BUILD_STAMP):
+	$(MAKE) -C $(HEADERS_DIR) M=$(CURDIR)/$(DIR) $(JOBS_ARG)
+	touch $@
+
+install-base: DH_OPTIONS = -p$(PACKAGE)
+install-base:
+	dh_installchangelogs
+	dh_installdocs
+	install -D -m 644 $(MODULE)/copyright debian/$(PACKAGE)/usr/share/doc/$(PACKAGE)/copyright
+	dh_installmodules
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol -- $(GENCONTROL_ARGS)
+	dh_md5sums
+	dh_builddeb
+
+install install-real: REAL_VERSION = $(UPSTREAMVERSION)$(ABINAME)$(LOCALVERSION)
+install install-real: PACKAGE_NAME = $(MODULE)-modules-$(REAL_VERSION)
+
+install: PACKAGE_DIR = $(CURDIR)/debian/$(PACKAGE_NAME)
+
+install-real: PACKAGE_LATEST_NAME = $(MODULE)-modules-$(MAJOR)$(LOCALVERSION)
+
+install: $(BUILD_STAMP)
+install:
+	$(MAKE) -C $(HEADERS_DIR) M=$(CURDIR)/$(DIR) modules_install INSTALL_MOD_PATH=$(PACKAGE_DIR) INSTALL_MOD_DIR=extra/$(MODULE)
+
+install-real:
+	$(MAKE) -f debian/rules.real install
+	$(MAKE) -f debian/rules.real install-base \
+		GENCONTROL_ARGS="-v$(VERSION_SOURCE)+$(MODULEVERSION)-$(VERSION_DEBIAN)" \
+		PACKAGE="$(PACKAGE_NAME)"
+	$(MAKE) -f debian/rules.real install-base \
+		GENCONTROL_ARGS="-v2:$(VERSION_SOURCE)-$(VERSION_DEBIAN)" \
+		PACKAGE="$(PACKAGE_LATEST_NAME)"
+
+-include $(MODULE)/rules
