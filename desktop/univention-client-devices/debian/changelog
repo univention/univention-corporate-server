@@ -1,3 +1,9 @@
+univention-client-devices (1.0.1-1) unstable; urgency=low
+
+  * export-devices is now udev aware
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 09 Oct 2007 11:56:09 +0200
+
 univention-client-devices (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
@@ -45,7 +51,3 @@ univention-client-devices (0.1.univention) unstable; urgency=low
   * Initial Release.
 
  -- Peter H. Ganten <ganten@univention.de>  Tue, 14 Aug 2001 17:13:35 +0200
-
-Local variables:
-mode: debian-changelog
-End:

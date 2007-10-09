@@ -35,33 +35,24 @@ DRIVE_LETTERS=(K L M N O P Q R S T U V W X Y Z)
 
 drive_index="0"
 DEVICES=""
-if [ -e "/dev/.devfsd" ]; then
+if [ -e "/dev/.udev" ]; then
 	# detect floppy drives
-	if [ -d "/dev/floppy" ]; then
-		for d in `ls -1 /dev/floppy/[0-9]`; do
-			b=$(basename $d)
-			if [ "$b" == "0" ]; then
-				DEVICES="$DEVICES floppy:$d:vfat:rw:${DRIVE_LETTERS[$drive_index]}"
-				drive_index=$[$drive_index + 1]
-			else
-				DEVICES="$DEVICES floppy$b:$d:vfat:rw:${DRIVE_LETTERS[$drive_index]}"
-				drive_index=$[$drive_index + 1]
-			fi
-		done
-	fi
+	for d in `ls -1 /dev/fd[0-9]`; do
+		b=$(basename $d)
+		if [ "$b" == "fd0" ]; then
+			DEVICES="$DEVICES floppy:$d:vfat:rw:${DRIVE_LETTERS[$drive_index]}"
+			drive_index=$[$drive_index + 1]
+		else
+			DEVICES="$DEVICES floppy$b:$d:vfat:rw:${DRIVE_LETTERS[$drive_index]}"
+			drive_index=$[$drive_index + 1]
+		fi
+	done
 	# detect cdrom drives
-	if [ -d "/dev/cdroms" ]; then
-		for d in `ls -1 /dev/cdroms/*`; do
-			b=$(basename $d)
-			if [ "$b" == "cdrom0" ]; then
-				DEVICES="$DEVICES cdrom:$d:iso9660:ro:${DRIVE_LETTERS[$drive_index]}"
-				drive_index=$[$drive_index + 1]
-			else
-				DEVICES="$DEVICES $b:$d:iso9660:ro:${DRIVE_LETTERS[$drive_index]}"
-				drive_index=$[$drive_index + 1]
-			fi
-		done
-	fi
+	for d in `ls -1 /dev/cdrom*`; do
+		b=$(basename $d)
+		DEVICES="$DEVICES $b:$d:iso9660:ro:${DRIVE_LETTERS[$drive_index]}"
+		drive_index=$[$drive_index + 1]
+	done
 else
 	DEVICES="floppy:/dev/fd0:vfat:rw:K cdrom:/dev/hda:iso9660:ro:L"
 fi
