@@ -1,10 +1,244 @@
 Source: univention-kernel-modules-extra-2.6
 Section: devel
 Priority: optional
-Maintainer: Univention GmBH <packages@univention.de>
+Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Uploaders: Bastian Blank <waldi@debian.org>, Daniel Baumann <daniel@debian.org>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), linux-support-2.6.18-4, linux-headers-2.6.18-4-all-amd64 [amd64], linux-headers-2.6.18-4-all-i386 [i386], linux-headers-2.6.18-4-all-powerpc [powerpc], squashfs-source
+Build-Depends: debhelper (>= 5), linux-support-2.6.18-4, linux-headers-2.6.18-4-all-alpha [alpha], linux-headers-2.6.18-4-all-amd64 [amd64], linux-headers-2.6.18-4-all-arm [arm], linux-headers-2.6.18-4-all-hppa [hppa], linux-headers-2.6.18-4-all-i386 [i386], linux-headers-2.6.18-4-all-ia64 [ia64], linux-headers-2.6.18-4-all-m68k [m68k], linux-headers-2.6.18-4-all-mips [mips], linux-headers-2.6.18-4-all-mipsel [mipsel], linux-headers-2.6.18-4-all-powerpc [powerpc], linux-headers-2.6.18-4-all-s390 [s390], linux-headers-2.6.18-4-all-sparc [sparc], squashfs-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc], drbd8-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc]
+
+Package: squashfs-modules-2.6.18-4-alpha-generic
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-generic
+Description: Squash filesystem modules for Linux 2.6.18 on Alpha
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Alpha machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-alpha-generic
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-alpha-generic
+Description: Squash filesystem modules for Linux 2.6 on Alpha
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Alpha machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-alpha-generic
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-generic
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Alpha machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-alpha-generic
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-alpha-generic
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Alpha machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-alpha-smp
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-smp
+Description: Squash filesystem modules for Linux 2.6.18 on Alpha SMP
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Alpha SMP machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-alpha-smp
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-alpha-smp
+Description: Squash filesystem modules for Linux 2.6 on Alpha SMP
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Alpha SMP machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-alpha-smp
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha SMP
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Alpha SMP machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-alpha-smp
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-alpha-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha SMP
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Alpha SMP machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-alpha-legacy
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-legacy
+Description: Squash filesystem modules for Linux 2.6.18 on Alpha Legacy
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Alpha Legacy machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-alpha-legacy
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-alpha-legacy
+Description: Squash filesystem modules for Linux 2.6 on Alpha Legacy
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Alpha Legacy machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-alpha-legacy
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-alpha-legacy
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha Legacy
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Alpha Legacy machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-alpha-legacy
+Architecture: alpha
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-alpha-legacy
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha Legacy
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Alpha Legacy machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
 
 Package: squashfs-modules-2.6.18-4-amd64
 Architecture: amd64 i386
@@ -47,6 +281,46 @@ Description: Squash filesystem modules for Linux 2.6 on AMD64
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-amd64
+Architecture: amd64 i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-amd64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD64
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on all 64bit single- and
+ multiprocessor AMD and Intel machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-amd64
+Architecture: amd64 i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-amd64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD64
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on all 64bit single- and
+ multiprocessor AMD and Intel machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-xen-amd64
 Architecture: amd64
 Section: admin
@@ -88,6 +362,46 @@ Description: Squash filesystem modules for Linux 2.6 on AMD64
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-xen-amd64
+Architecture: amd64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-xen-amd64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD64
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on all 64bit single- and
+ multiprocessor AMD and Intel machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-xen-amd64
+Architecture: amd64
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-xen-amd64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD64
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on all 64bit single- and
+ multiprocessor AMD and Intel machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-486
 Architecture: i386
 Section: admin
@@ -127,6 +441,45 @@ Description: Squash filesystem modules for Linux 2.6 on x86
  use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
+
+Package: drbd8-modules-2.6.18-4-486
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-486
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on x86
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on x86 and compatible
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-486
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-486
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on x86
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on x86 and compatible machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
 
 Package: squashfs-modules-2.6.18-4-686
 Architecture: i386
@@ -170,6 +523,46 @@ Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-686
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Pentium Pro/Celeron/Pentium
+ II/Pentium III/Pentium 4 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-686
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Pentium Pro/Celeron/Pentium
+ II/Pentium III/Pentium 4 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-k7
 Architecture: i386
 Section: admin
@@ -209,6 +602,46 @@ Description: Squash filesystem modules for Linux 2.6 on AMD K7
  use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
+
+Package: drbd8-modules-2.6.18-4-k7
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-k7
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD K7
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on 32bit AMD
+ Duron/Athlon/AthlonXP machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-k7
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-k7
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD K7
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on 32bit AMD Duron/Athlon/AthlonXP
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
 
 Package: squashfs-modules-2.6.18-4-686-bigmem
 Architecture: i386
@@ -252,6 +685,46 @@ Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-686-bigmem
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-686-bigmem
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Pentium Pro/Celeron/Pentium
+ II/Pentium III/Pentium 4 with 4-64G RAM machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-686-bigmem
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-686-bigmem
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Pentium Pro/Celeron/Pentium
+ II/Pentium III/Pentium 4 with 4-64G RAM machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-xen-686
 Architecture: i386
 Section: admin
@@ -291,6 +764,1083 @@ Description: Squash filesystem modules for Linux 2.6 on i686
  use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
+
+Package: drbd8-modules-2.6.18-4-xen-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-xen-686
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on i686
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on i686 and compatible
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-xen-686
+Architecture: i386
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-xen-686
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on i686
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on i686 and compatible machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-itanium
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-itanium
+Description: Squash filesystem modules for Linux 2.6.18 on Itanium
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Itanium machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-itanium
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-itanium
+Description: Squash filesystem modules for Linux 2.6 on Itanium
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Itanium machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-itanium
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-itanium
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Itanium
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Itanium machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-itanium
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-itanium
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Itanium
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Itanium machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-mckinley
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-mckinley
+Description: Squash filesystem modules for Linux 2.6.18 on Itanium II
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Itanium II machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-mckinley
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-mckinley
+Description: Squash filesystem modules for Linux 2.6 on Itanium II
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Itanium II machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-mckinley
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-mckinley
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Itanium II
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Itanium II machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-mckinley
+Architecture: ia64
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-mckinley
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Itanium II
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Itanium II machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-amiga
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-amiga
+Description: Squash filesystem modules for Linux 2.6.18 on Amiga
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Amiga machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-amiga
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-amiga
+Description: Squash filesystem modules for Linux 2.6 on Amiga
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Amiga machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-amiga
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-amiga
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Amiga
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Amiga machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-amiga
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-amiga
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Amiga
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Amiga machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-atari
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-atari
+Description: Squash filesystem modules for Linux 2.6.18 on Atari
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Atari machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-atari
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-atari
+Description: Squash filesystem modules for Linux 2.6 on Atari
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Atari machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-atari
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-atari
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Atari
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Atari machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-atari
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-atari
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Atari
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Atari machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-mac
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-mac
+Description: Squash filesystem modules for Linux 2.6.18 on Macintosh
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Macintosh machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-mac
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-mac
+Description: Squash filesystem modules for Linux 2.6 on Macintosh
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Macintosh machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-mac
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-mac
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Macintosh
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Macintosh machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-mac
+Architecture: m68k
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-mac
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Macintosh
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Macintosh machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-r4k-ip22
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r4k-ip22
+Description: Squash filesystem modules for Linux 2.6.18 on SGI IP22
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on SGI IP22 (Indy, Indigo2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-r4k-ip22
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-r4k-ip22
+Description: Squash filesystem modules for Linux 2.6 on SGI IP22
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on SGI IP22 (Indy, Indigo2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-r4k-ip22
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r4k-ip22
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on SGI IP22
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on SGI IP22 (Indy, Indigo2)
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-r4k-ip22
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-r4k-ip22
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on SGI IP22
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on SGI IP22 (Indy, Indigo2) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-r5k-ip32
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r5k-ip32
+Description: Squash filesystem modules for Linux 2.6.18 on SGI IP32
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on SGI IP32 (O2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-r5k-ip32
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-r5k-ip32
+Description: Squash filesystem modules for Linux 2.6 on SGI IP32
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on SGI IP32 (O2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-r5k-ip32
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r5k-ip32
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on SGI IP32
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on SGI IP32 (O2) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-r5k-ip32
+Architecture: mips
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-r5k-ip32
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on SGI IP32
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on SGI IP32 (O2) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-sb1-bcm91250a
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sb1-bcm91250a
+Description: Squash filesystem modules for Linux 2.6.18 on BCM91250A
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Broadcom BCM91250A (aka SWARM) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-sb1-bcm91250a
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-sb1-bcm91250a
+Description: Squash filesystem modules for Linux 2.6 on BCM91250A
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Broadcom BCM91250A (aka SWARM) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-sb1-bcm91250a
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sb1-bcm91250a
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on BCM91250A
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Broadcom BCM91250A (aka
+ SWARM) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-sb1-bcm91250a
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-sb1-bcm91250a
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on BCM91250A
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Broadcom BCM91250A (aka SWARM)
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-sb1a-bcm91480b
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sb1a-bcm91480b
+Description: Squash filesystem modules for Linux 2.6.18 on BCM91480B
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Broadcom BCM91480B (aka BigSur) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-sb1a-bcm91480b
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-sb1a-bcm91480b
+Description: Squash filesystem modules for Linux 2.6 on BCM91480B
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Broadcom BCM91480B (aka BigSur) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-sb1a-bcm91480b
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sb1a-bcm91480b
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on BCM91480B
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Broadcom BCM91480B (aka
+ BigSur) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-sb1a-bcm91480b
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-sb1a-bcm91480b
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on BCM91480B
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Broadcom BCM91480B (aka BigSur)
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-qemu
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-qemu
+Description: Squash filesystem modules for Linux 2.6.18 on QEMU
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on QEMU virtual machine machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-qemu
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-qemu
+Description: Squash filesystem modules for Linux 2.6 on QEMU
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on QEMU virtual machine machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-qemu
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-qemu
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on QEMU
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on QEMU virtual machine
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-qemu
+Architecture: mips mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-qemu
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on QEMU
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on QEMU virtual machine machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-r5k-cobalt
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r5k-cobalt
+Description: Squash filesystem modules for Linux 2.6.18 on Cobalt
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on Cobalt (Qube, RaQ, Qube2, RaQ2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-r5k-cobalt
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-r5k-cobalt
+Description: Squash filesystem modules for Linux 2.6 on Cobalt
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on Cobalt (Qube, RaQ, Qube2, RaQ2) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-r5k-cobalt
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r5k-cobalt
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Cobalt
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on Cobalt (Qube, RaQ, Qube2,
+ RaQ2) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-r5k-cobalt
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-r5k-cobalt
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Cobalt
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on Cobalt (Qube, RaQ, Qube2, RaQ2)
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-r3k-kn02
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r3k-kn02
+Description: Squash filesystem modules for Linux 2.6.18 on R3000 based DECstation
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on R3000 based DECstations with KN02 mainboard, such as the
+ DECstation 5000/1xx series with xx=20,25,33 and the DECstation 5000/240
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-r3k-kn02
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-r3k-kn02
+Description: Squash filesystem modules for Linux 2.6 on R3000 based DECstation
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on R3000 based DECstations with KN02 mainboard, such as the
+ DECstation 5000/1xx series with xx=20,25,33 and the DECstation 5000/240
+ machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-r3k-kn02
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r3k-kn02
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on R3000 based DECstation
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on R3000 based DECstations
+ with KN02 mainboard, such as the DECstation 5000/1xx series with
+ xx=20,25,33 and the DECstation 5000/240 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-r3k-kn02
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-r3k-kn02
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on R3000 based DECstation
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on R3000 based DECstations with KN02
+ mainboard, such as the DECstation 5000/1xx series with xx=20,25,33 and the
+ DECstation 5000/240 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-r4k-kn04
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r4k-kn04
+Description: Squash filesystem modules for Linux 2.6.18 on R4x00 based DECstation
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on R4x00 based DECstations with KN04 mainboard, such as the
+ DECstation 5000/150, the Personal DECstation 5000/50 and the DECstation
+ 5000/260 machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-r4k-kn04
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-r4k-kn04
+Description: Squash filesystem modules for Linux 2.6 on R4x00 based DECstation
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on R4x00 based DECstations with KN04 mainboard, such as the
+ DECstation 5000/150, the Personal DECstation 5000/50 and the DECstation
+ 5000/260 machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-r4k-kn04
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-r4k-kn04
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on R4x00 based DECstation
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on R4x00 based DECstations
+ with KN04 mainboard, such as the DECstation 5000/150, the Personal
+ DECstation 5000/50 and the DECstation 5000/260 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-r4k-kn04
+Architecture: mipsel
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-r4k-kn04
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on R4x00 based DECstation
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on R4x00 based DECstations with KN04
+ mainboard, such as the DECstation 5000/150, the Personal DECstation
+ 5000/50 and the DECstation 5000/260 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
 
 Package: squashfs-modules-2.6.18-4-powerpc
 Architecture: powerpc
@@ -332,6 +1882,46 @@ Description: Squash filesystem modules for Linux 2.6 on uniprocessor 32-bit Powe
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-powerpc
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor 32-bit PowerPC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on uniprocessor 32-bit PowerPC
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-powerpc
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-powerpc
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor 32-bit PowerPC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on uniprocessor 32-bit PowerPC
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-powerpc-smp
 Architecture: powerpc
 Section: admin
@@ -371,6 +1961,46 @@ Description: Squash filesystem modules for Linux 2.6 on multiprocessor 32-bit Po
  use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
+
+Package: drbd8-modules-2.6.18-4-powerpc-smp
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on multiprocessor 32-bit PowerPC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on multiprocessor 32-bit
+ PowerPC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-powerpc-smp
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-powerpc-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on multiprocessor 32-bit PowerPC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on multiprocessor 32-bit PowerPC
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
 
 Package: squashfs-modules-2.6.18-4-powerpc-miboot
 Architecture: powerpc
@@ -412,6 +2042,46 @@ Description: Squash filesystem modules for Linux 2.6 on 32-bit PowerPC for miboo
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-powerpc-miboot
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc-miboot
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on 32-bit PowerPC for miboot floppy
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on 32-bit PowerPC for miboot
+ floppy machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-powerpc-miboot
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-powerpc-miboot
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on 32-bit PowerPC for miboot floppy
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on 32-bit PowerPC for miboot floppy
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-powerpc64
 Architecture: powerpc
 Section: admin
@@ -452,6 +2122,44 @@ Description: Squash filesystem modules for Linux 2.6 on 64-bit PowerPC
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
+Package: drbd8-modules-2.6.18-4-powerpc64
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-powerpc64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on 64-bit PowerPC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on 64-bit PowerPC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-powerpc64
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-powerpc64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on 64-bit PowerPC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on 64-bit PowerPC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
 Package: squashfs-modules-2.6.18-4-prep
 Architecture: powerpc
 Section: admin
@@ -491,3 +2199,438 @@ Description: Squash filesystem modules for Linux 2.6 on PReP PowerPC
  use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
+
+Package: drbd8-modules-2.6.18-4-prep
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-prep
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PReP PowerPC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on PReP PowerPC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-prep
+Architecture: powerpc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-prep
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PReP PowerPC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on PReP PowerPC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-s390
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-s390
+Description: Squash filesystem modules for Linux 2.6.18 on IBM S/390
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on IBM S/390 machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-s390
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-s390
+Description: Squash filesystem modules for Linux 2.6 on IBM S/390
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on IBM S/390 machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-s390
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-s390
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on IBM S/390
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on IBM S/390 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-s390
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-s390
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on IBM S/390
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on IBM S/390 machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-s390x
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-s390x
+Description: Squash filesystem modules for Linux 2.6.18 on IBM zSeries
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on IBM zSeries machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-s390x
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-s390x
+Description: Squash filesystem modules for Linux 2.6 on IBM zSeries
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on IBM zSeries machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-s390x
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-s390x
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on IBM zSeries
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on IBM zSeries machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-s390x
+Architecture: s390
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-s390x
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on IBM zSeries
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on IBM zSeries machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-sparc32
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc32
+Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor sparc32 (sun4m)
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on uniprocessor sparc32 (sun4m) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-sparc32
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-sparc32
+Description: Squash filesystem modules for Linux 2.6 on uniprocessor sparc32 (sun4m)
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on uniprocessor sparc32 (sun4m) machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-sparc32
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc32
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor sparc32 (sun4m)
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on uniprocessor sparc32
+ (sun4m) machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-sparc32
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-sparc32
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor sparc32 (sun4m)
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on uniprocessor sparc32 (sun4m)
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-sparc64
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc64
+Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor 64-bit UltraSPARC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on uniprocessor 64-bit UltraSPARC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-sparc64
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-sparc64
+Description: Squash filesystem modules for Linux 2.6 on uniprocessor 64-bit UltraSPARC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on uniprocessor 64-bit UltraSPARC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-sparc64
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor 64-bit UltraSPARC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on uniprocessor 64-bit
+ UltraSPARC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-sparc64
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-sparc64
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor 64-bit UltraSPARC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on uniprocessor 64-bit UltraSPARC
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: squashfs-modules-2.6.18-4-sparc64-smp
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc64-smp
+Description: Squash filesystem modules for Linux 2.6.18 on multiprocessor 64-bit UltraSPARC
+ This package provides the Squash filesystem modules for the Linux kernel
+ version 2.6.18 on multiprocessor 64-bit UltraSPARC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: squashfs-modules-2.6-sparc64-smp
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: squashfs-modules-2.6.18-4-sparc64-smp
+Description: Squash filesystem modules for Linux 2.6 on multiprocessor 64-bit UltraSPARC
+ This package depends on the Squash filesystem modules for latest Linux
+ kernel 2.6 on multiprocessor 64-bit UltraSPARC machines.
+ .
+ Squashfs is a highly compressed read-only filesystem for Linux.  It uses
+ zlib compression to compress both files, inodes and directories.  Inodes
+ in the system are very small and all blocks are packed to minimise data
+ overhead.  Block sizes greater than 4K are supported up to a maximum of
+ 64K.
+ .
+ Squashfs is intended for general read-only filesystem use, for archival
+ use (i.e.  in cases where a .tar.gz  file may be used), and in constrained
+ block device/memory systems (e.g.  embedded systems) where low overhead is
+ needed.
+
+Package: drbd8-modules-2.6.18-4-sparc64-smp
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: linux-modules-2.6.18-4-sparc64-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on multiprocessor 64-bit UltraSPARC
+ This package provides the RAID 1 over tcp/ip for Linux module source
+ modules for the Linux kernel version 2.6.18 on multiprocessor 64-bit
+ UltraSPARC machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
+Package: drbd8-modules-2.6-sparc64-smp
+Architecture: sparc
+Section: admin
+Priority: optional
+Depends: drbd8-modules-2.6.18-4-sparc64-smp
+Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on multiprocessor 64-bit UltraSPARC
+ This package depends on the RAID 1 over tcp/ip for Linux module source
+ modules for latest Linux kernel 2.6 on multiprocessor 64-bit UltraSPARC
+ machines.
+ .
+ Drbd is a block device which is designed to build high availability
+ clusters by providing a virtual shared device which keeps disks in nodes
+ synchronised using TCP/IP. This simulates RAID 1 but avoiding the use of
+ uncommon hardware (shared SCSI buses or Fibre Channel). It is currently
+ limited to fail-over HA clusters.
+ .
+ This package contains the source code for the drbd kernel module.
+ .
+ Homepage: http://www.drbd.org
+
