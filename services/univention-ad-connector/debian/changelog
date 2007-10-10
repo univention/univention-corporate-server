@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-3) unstable; urgency=low
+
+  * import LDAPControl from ldap.controls
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 10 Oct 2007 14:14:30 +0200
+
 univention-ad-connector (1.2.2-2) unstable; urgency=low
 
   * fixed logfile permissions

@@ -31,6 +31,7 @@
 
 
 import sys, codecs, univention_baseconfig, os
+from ldap.controls import LDAPControl
 import ldap
 
 def encode_object_sid(sid_string, encode_in_base64=True):
