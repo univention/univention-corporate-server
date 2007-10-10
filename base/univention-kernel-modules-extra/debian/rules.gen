@@ -1,5 +1,101 @@
 .NOTPARALLEL:
 binary-indep:
+binary-arch:: binary-arch-alpha
+binary-arch-alpha:: binary-arch-alpha-real
+build:: build-alpha
+build-alpha:: build-alpha-real
+setup:: setup-alpha
+setup-alpha:: setup-alpha-real
+source:: source-alpha
+source-alpha:: source-alpha-real
+binary-arch-alpha-real:
+build-alpha-real:
+setup-alpha-real:
+source-alpha-real:
+binary-arch-alpha:: binary-arch-alpha-none
+binary-arch-alpha-none:: binary-arch-alpha-none-real
+build-alpha:: build-alpha-none
+build-alpha-none:: build-alpha-none-real
+setup-alpha:: setup-alpha-none
+setup-alpha-none:: setup-alpha-none-real
+source-alpha:: source-alpha-none
+source-alpha-none:: source-alpha-none-real
+binary-arch-alpha-none-real:
+build-alpha-none-real:
+setup-alpha-none-real:
+source-alpha-none-real:
+binary-arch-alpha-none:: binary-arch-alpha-none-alpha-generic
+build-alpha-none:: build-alpha-none-alpha-generic
+setup-alpha-none:: setup-alpha-none-alpha-generic
+source-alpha-none:: source-alpha-none-alpha-generic
+binary-arch-alpha-none-alpha-generic:: binary-arch-alpha-none-alpha-generic-squashfs
+build-alpha-none-alpha-generic:: build-alpha-none-alpha-generic-squashfs
+setup-alpha-none-alpha-generic:: setup-alpha-none-alpha-generic-squashfs
+source-alpha-none-alpha-generic:: source-alpha-none-alpha-generic-squashfs
+binary-arch-alpha-none-alpha-generic-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-generic-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-generic-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+binary-arch-alpha-none-alpha-generic:: binary-arch-alpha-none-alpha-generic-drbd8
+build-alpha-none-alpha-generic:: build-alpha-none-alpha-generic-drbd8
+setup-alpha-none-alpha-generic:: setup-alpha-none-alpha-generic-drbd8
+source-alpha-none-alpha-generic:: source-alpha-none-alpha-generic-drbd8
+binary-arch-alpha-none-alpha-generic-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-generic-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-generic-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-generic' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-generic' ARCH='alpha' VERSION_DEBIAN='4'
+binary-arch-alpha-none:: binary-arch-alpha-none-alpha-smp
+build-alpha-none:: build-alpha-none-alpha-smp
+setup-alpha-none:: setup-alpha-none-alpha-smp
+source-alpha-none:: source-alpha-none-alpha-smp
+binary-arch-alpha-none-alpha-smp:: binary-arch-alpha-none-alpha-smp-squashfs
+build-alpha-none-alpha-smp:: build-alpha-none-alpha-smp-squashfs
+setup-alpha-none-alpha-smp:: setup-alpha-none-alpha-smp-squashfs
+source-alpha-none-alpha-smp:: source-alpha-none-alpha-smp-squashfs
+binary-arch-alpha-none-alpha-smp-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-smp-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-smp-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+binary-arch-alpha-none-alpha-smp:: binary-arch-alpha-none-alpha-smp-drbd8
+build-alpha-none-alpha-smp:: build-alpha-none-alpha-smp-drbd8
+setup-alpha-none-alpha-smp:: setup-alpha-none-alpha-smp-drbd8
+source-alpha-none-alpha-smp:: source-alpha-none-alpha-smp-drbd8
+binary-arch-alpha-none-alpha-smp-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-smp-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-smp-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-smp' ARCH='alpha' VERSION_DEBIAN='4'
+binary-arch-alpha-none:: binary-arch-alpha-none-alpha-legacy
+build-alpha-none:: build-alpha-none-alpha-legacy
+setup-alpha-none:: setup-alpha-none-alpha-legacy
+source-alpha-none:: source-alpha-none-alpha-legacy
+binary-arch-alpha-none-alpha-legacy:: binary-arch-alpha-none-alpha-legacy-squashfs
+build-alpha-none-alpha-legacy:: build-alpha-none-alpha-legacy-squashfs
+setup-alpha-none-alpha-legacy:: setup-alpha-none-alpha-legacy-squashfs
+source-alpha-none-alpha-legacy:: source-alpha-none-alpha-legacy-squashfs
+binary-arch-alpha-none-alpha-legacy-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-legacy-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-legacy-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
+binary-arch-alpha-none-alpha-legacy:: binary-arch-alpha-none-alpha-legacy-drbd8
+build-alpha-none-alpha-legacy:: build-alpha-none-alpha-legacy-drbd8
+setup-alpha-none-alpha-legacy:: setup-alpha-none-alpha-legacy-drbd8
+source-alpha-none-alpha-legacy:: source-alpha-none-alpha-legacy-drbd8
+binary-arch-alpha-none-alpha-legacy-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
+build-alpha-none-alpha-legacy-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
+setup-alpha-none-alpha-legacy-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='alpha-legacy' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='alpha' ABINAME='-4' LOCALVERSION='-alpha-legacy' ARCH='alpha' VERSION_DEBIAN='4'
 binary-arch:: binary-arch-amd64
 binary-arch-amd64:: binary-arch-amd64-real
 build:: build-amd64
@@ -33,11 +129,21 @@ build-amd64-none-amd64:: build-amd64-none-amd64-squashfs
 setup-amd64-none-amd64:: setup-amd64-none-amd64-squashfs
 source-amd64-none-amd64:: source-amd64-none-amd64-squashfs
 binary-arch-amd64-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
 build-amd64-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
 setup-amd64-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+binary-arch-amd64-none-amd64:: binary-arch-amd64-none-amd64-drbd8
+build-amd64-none-amd64:: build-amd64-none-amd64-drbd8
+setup-amd64-none-amd64:: setup-amd64-none-amd64-drbd8
+source-amd64-none-amd64:: source-amd64-none-amd64-drbd8
+binary-arch-amd64-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+build-amd64-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+setup-amd64-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='amd64' VERSION_DEBIAN='4'
 binary-arch-amd64:: binary-arch-amd64-xen
 binary-arch-amd64-xen:: binary-arch-amd64-xen-real
 build-amd64:: build-amd64-xen
@@ -59,11 +165,141 @@ build-amd64-xen-amd64:: build-amd64-xen-amd64-squashfs
 setup-amd64-xen-amd64:: setup-amd64-xen-amd64-squashfs
 source-amd64-xen-amd64:: source-amd64-xen-amd64-squashfs
 binary-arch-amd64-xen-amd64-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
 build-amd64-xen-amd64-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
 setup-amd64-xen-amd64-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+binary-arch-amd64-xen-amd64:: binary-arch-amd64-xen-amd64-drbd8
+build-amd64-xen-amd64:: build-amd64-xen-amd64-drbd8
+setup-amd64-xen-amd64:: setup-amd64-xen-amd64-drbd8
+source-amd64-xen-amd64:: source-amd64-xen-amd64-drbd8
+binary-arch-amd64-xen-amd64-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+build-amd64-xen-amd64-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+setup-amd64-xen-amd64-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-xen-amd64' ARCH='amd64' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-arm
+binary-arch-arm:: binary-arch-arm-real
+build:: build-arm
+build-arm:: build-arm-real
+setup:: setup-arm
+setup-arm:: setup-arm-real
+source:: source-arm
+source-arm:: source-arm-real
+binary-arch-arm-real:
+build-arm-real:
+setup-arm-real:
+source-arm-real:
+binary-arch-arm:: binary-arch-arm-none
+binary-arch-arm-none:: binary-arch-arm-none-real
+build-arm:: build-arm-none
+build-arm-none:: build-arm-none-real
+setup-arm:: setup-arm-none
+setup-arm-none:: setup-arm-none-real
+source-arm:: source-arm-none
+source-arm-none:: source-arm-none-real
+binary-arch-arm-none-real:
+build-arm-none-real:
+setup-arm-none-real:
+source-arm-none-real:
+binary-arch-arm-none:: binary-arch-arm-none-footbridge
+build-arm-none:: build-arm-none-footbridge
+setup-arm-none:: setup-arm-none-footbridge
+source-arm-none:: source-arm-none-footbridge
+binary-arch-arm-none-footbridge:
+build-arm-none-footbridge:
+setup-arm-none-footbridge:
+source-arm-none-footbridge:
+binary-arch-arm-none:: binary-arch-arm-none-iop32x
+build-arm-none:: build-arm-none-iop32x
+setup-arm-none:: setup-arm-none-iop32x
+source-arm-none:: source-arm-none-iop32x
+binary-arch-arm-none-iop32x:
+build-arm-none-iop32x:
+setup-arm-none-iop32x:
+source-arm-none-iop32x:
+binary-arch-arm-none:: binary-arch-arm-none-ixp4xx
+build-arm-none:: build-arm-none-ixp4xx
+setup-arm-none:: setup-arm-none-ixp4xx
+source-arm-none:: source-arm-none-ixp4xx
+binary-arch-arm-none-ixp4xx:
+build-arm-none-ixp4xx:
+setup-arm-none-ixp4xx:
+source-arm-none-ixp4xx:
+binary-arch-arm-none:: binary-arch-arm-none-rpc
+build-arm-none:: build-arm-none-rpc
+setup-arm-none:: setup-arm-none-rpc
+source-arm-none:: source-arm-none-rpc
+binary-arch-arm-none-rpc:
+build-arm-none-rpc:
+setup-arm-none-rpc:
+source-arm-none-rpc:
+binary-arch-arm-none:: binary-arch-arm-none-s3c2410
+build-arm-none:: build-arm-none-s3c2410
+setup-arm-none:: setup-arm-none-s3c2410
+source-arm-none:: source-arm-none-s3c2410
+binary-arch-arm-none-s3c2410:
+build-arm-none-s3c2410:
+setup-arm-none-s3c2410:
+source-arm-none-s3c2410:
+binary-arch:: binary-arch-hppa
+binary-arch-hppa:: binary-arch-hppa-real
+build:: build-hppa
+build-hppa:: build-hppa-real
+setup:: setup-hppa
+setup-hppa:: setup-hppa-real
+source:: source-hppa
+source-hppa:: source-hppa-real
+binary-arch-hppa-real:
+build-hppa-real:
+setup-hppa-real:
+source-hppa-real:
+binary-arch-hppa:: binary-arch-hppa-none
+binary-arch-hppa-none:: binary-arch-hppa-none-real
+build-hppa:: build-hppa-none
+build-hppa-none:: build-hppa-none-real
+setup-hppa:: setup-hppa-none
+setup-hppa-none:: setup-hppa-none-real
+source-hppa:: source-hppa-none
+source-hppa-none:: source-hppa-none-real
+binary-arch-hppa-none-real:
+build-hppa-none-real:
+setup-hppa-none-real:
+source-hppa-none-real:
+binary-arch-hppa-none:: binary-arch-hppa-none-parisc
+build-hppa-none:: build-hppa-none-parisc
+setup-hppa-none:: setup-hppa-none-parisc
+source-hppa-none:: source-hppa-none-parisc
+binary-arch-hppa-none-parisc:
+build-hppa-none-parisc:
+setup-hppa-none-parisc:
+source-hppa-none-parisc:
+binary-arch-hppa-none:: binary-arch-hppa-none-parisc-smp
+build-hppa-none:: build-hppa-none-parisc-smp
+setup-hppa-none:: setup-hppa-none-parisc-smp
+source-hppa-none:: source-hppa-none-parisc-smp
+binary-arch-hppa-none-parisc-smp:
+build-hppa-none-parisc-smp:
+setup-hppa-none-parisc-smp:
+source-hppa-none-parisc-smp:
+binary-arch-hppa-none:: binary-arch-hppa-none-parisc64
+build-hppa-none:: build-hppa-none-parisc64
+setup-hppa-none:: setup-hppa-none-parisc64
+source-hppa-none:: source-hppa-none-parisc64
+binary-arch-hppa-none-parisc64:
+build-hppa-none-parisc64:
+setup-hppa-none-parisc64:
+source-hppa-none-parisc64:
+binary-arch-hppa-none:: binary-arch-hppa-none-parisc64-smp
+build-hppa-none:: build-hppa-none-parisc64-smp
+setup-hppa-none:: setup-hppa-none-parisc64-smp
+source-hppa-none:: source-hppa-none-parisc64-smp
+binary-arch-hppa-none-parisc64-smp:
+build-hppa-none-parisc64-smp:
+setup-hppa-none-parisc64-smp:
+source-hppa-none-parisc64-smp:
 binary-arch:: binary-arch-i386
 binary-arch-i386:: binary-arch-i386-real
 build:: build-i386
@@ -97,11 +333,21 @@ build-i386-none-486:: build-i386-none-486-squashfs
 setup-i386-none-486:: setup-i386-none-486-squashfs
 source-i386-none-486:: source-i386-none-486-squashfs
 binary-arch-i386-none-486-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-none-486-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-none-486-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-none-486:: binary-arch-i386-none-486-drbd8
+build-i386-none-486:: build-i386-none-486-drbd8
+setup-i386-none-486:: setup-i386-none-486-drbd8
+source-i386-none-486:: source-i386-none-486-drbd8
+binary-arch-i386-none-486-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-none-486-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-none-486-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='486' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-486' ARCH='i386' VERSION_DEBIAN='4'
 binary-arch-i386-none:: binary-arch-i386-none-686
 build-i386-none:: build-i386-none-686
 setup-i386-none:: setup-i386-none-686
@@ -111,11 +357,21 @@ build-i386-none-686:: build-i386-none-686-squashfs
 setup-i386-none-686:: setup-i386-none-686-squashfs
 source-i386-none-686:: source-i386-none-686-squashfs
 binary-arch-i386-none-686-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-none-686-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-none-686-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-none-686:: binary-arch-i386-none-686-drbd8
+build-i386-none-686:: build-i386-none-686-drbd8
+setup-i386-none-686:: setup-i386-none-686-drbd8
+source-i386-none-686:: source-i386-none-686-drbd8
+binary-arch-i386-none-686-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-none-686-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-none-686-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686' ARCH='i386' VERSION_DEBIAN='4'
 binary-arch-i386-none:: binary-arch-i386-none-k7
 build-i386-none:: build-i386-none-k7
 setup-i386-none:: setup-i386-none-k7
@@ -125,11 +381,21 @@ build-i386-none-k7:: build-i386-none-k7-squashfs
 setup-i386-none-k7:: setup-i386-none-k7-squashfs
 source-i386-none-k7:: source-i386-none-k7-squashfs
 binary-arch-i386-none-k7-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-none-k7-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-none-k7-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-none-k7:: binary-arch-i386-none-k7-drbd8
+build-i386-none-k7:: build-i386-none-k7-drbd8
+setup-i386-none-k7:: setup-i386-none-k7-drbd8
+source-i386-none-k7:: source-i386-none-k7-drbd8
+binary-arch-i386-none-k7-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-none-k7-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-none-k7-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='k7' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-k7' ARCH='i386' VERSION_DEBIAN='4'
 binary-arch-i386-none:: binary-arch-i386-none-686-bigmem
 build-i386-none:: build-i386-none-686-bigmem
 setup-i386-none:: setup-i386-none-686-bigmem
@@ -139,11 +405,21 @@ build-i386-none-686-bigmem:: build-i386-none-686-bigmem-squashfs
 setup-i386-none-686-bigmem:: setup-i386-none-686-bigmem-squashfs
 source-i386-none-686-bigmem:: source-i386-none-686-bigmem-squashfs
 binary-arch-i386-none-686-bigmem-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-none-686-bigmem-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-none-686-bigmem-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-none-686-bigmem:: binary-arch-i386-none-686-bigmem-drbd8
+build-i386-none-686-bigmem:: build-i386-none-686-bigmem-drbd8
+setup-i386-none-686-bigmem:: setup-i386-none-686-bigmem-drbd8
+source-i386-none-686-bigmem:: source-i386-none-686-bigmem-drbd8
+binary-arch-i386-none-686-bigmem-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-none-686-bigmem-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-none-686-bigmem-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686-bigmem' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-686-bigmem' ARCH='i386' VERSION_DEBIAN='4'
 binary-arch-i386-none:: binary-arch-i386-none-amd64
 build-i386-none:: build-i386-none-amd64
 setup-i386-none:: setup-i386-none-amd64
@@ -153,11 +429,21 @@ build-i386-none-amd64:: build-i386-none-amd64-squashfs
 setup-i386-none-amd64:: setup-i386-none-amd64-squashfs
 source-i386-none-amd64:: source-i386-none-amd64-squashfs
 binary-arch-i386-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-none-amd64-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-none-amd64:: binary-arch-i386-none-amd64-drbd8
+build-i386-none-amd64:: build-i386-none-amd64-drbd8
+setup-i386-none-amd64:: setup-i386-none-amd64-drbd8
+source-i386-none-amd64:: source-i386-none-amd64-drbd8
+binary-arch-i386-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-none-amd64-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amd64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='x86_64' ABINAME='-4' LOCALVERSION='-amd64' ARCH='i386' VERSION_DEBIAN='4'
 binary-arch-i386:: binary-arch-i386-xen
 binary-arch-i386-xen:: binary-arch-i386-xen-real
 build-i386:: build-i386-xen
@@ -179,11 +465,501 @@ build-i386-xen-686:: build-i386-xen-686-squashfs
 setup-i386-xen-686:: setup-i386-xen-686-squashfs
 source-i386-xen-686:: source-i386-xen-686-squashfs
 binary-arch-i386-xen-686-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
 build-i386-xen-686-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
 setup-i386-xen-686-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch-i386-xen-686:: binary-arch-i386-xen-686-drbd8
+build-i386-xen-686:: build-i386-xen-686-drbd8
+setup-i386-xen-686:: setup-i386-xen-686-drbd8
+source-i386-xen-686:: source-i386-xen-686-drbd8
+binary-arch-i386-xen-686-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
+build-i386-xen-686-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
+setup-i386-xen-686-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='686' SUBARCH='xen' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='i386' ABINAME='-4' LOCALVERSION='-xen-686' ARCH='i386' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-ia64
+binary-arch-ia64:: binary-arch-ia64-real
+build:: build-ia64
+build-ia64:: build-ia64-real
+setup:: setup-ia64
+setup-ia64:: setup-ia64-real
+source:: source-ia64
+source-ia64:: source-ia64-real
+binary-arch-ia64-real:
+build-ia64-real:
+setup-ia64-real:
+source-ia64-real:
+binary-arch-ia64:: binary-arch-ia64-none
+binary-arch-ia64-none:: binary-arch-ia64-none-real
+build-ia64:: build-ia64-none
+build-ia64-none:: build-ia64-none-real
+setup-ia64:: setup-ia64-none
+setup-ia64-none:: setup-ia64-none-real
+source-ia64:: source-ia64-none
+source-ia64-none:: source-ia64-none-real
+binary-arch-ia64-none-real:
+build-ia64-none-real:
+setup-ia64-none-real:
+source-ia64-none-real:
+binary-arch-ia64-none:: binary-arch-ia64-none-itanium
+build-ia64-none:: build-ia64-none-itanium
+setup-ia64-none:: setup-ia64-none-itanium
+source-ia64-none:: source-ia64-none-itanium
+binary-arch-ia64-none-itanium:: binary-arch-ia64-none-itanium-squashfs
+build-ia64-none-itanium:: build-ia64-none-itanium-squashfs
+setup-ia64-none-itanium:: setup-ia64-none-itanium-squashfs
+source-ia64-none-itanium:: source-ia64-none-itanium-squashfs
+binary-arch-ia64-none-itanium-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+build-ia64-none-itanium-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+setup-ia64-none-itanium-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+binary-arch-ia64-none-itanium:: binary-arch-ia64-none-itanium-drbd8
+build-ia64-none-itanium:: build-ia64-none-itanium-drbd8
+setup-ia64-none-itanium:: setup-ia64-none-itanium-drbd8
+source-ia64-none-itanium:: source-ia64-none-itanium-drbd8
+binary-arch-ia64-none-itanium-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+build-ia64-none-itanium-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+setup-ia64-none-itanium-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='itanium' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-itanium' ARCH='ia64' VERSION_DEBIAN='4'
+binary-arch-ia64-none:: binary-arch-ia64-none-mckinley
+build-ia64-none:: build-ia64-none-mckinley
+setup-ia64-none:: setup-ia64-none-mckinley
+source-ia64-none:: source-ia64-none-mckinley
+binary-arch-ia64-none-mckinley:: binary-arch-ia64-none-mckinley-squashfs
+build-ia64-none-mckinley:: build-ia64-none-mckinley-squashfs
+setup-ia64-none-mckinley:: setup-ia64-none-mckinley-squashfs
+source-ia64-none-mckinley:: source-ia64-none-mckinley-squashfs
+binary-arch-ia64-none-mckinley-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+build-ia64-none-mckinley-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+setup-ia64-none-mckinley-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+binary-arch-ia64-none-mckinley:: binary-arch-ia64-none-mckinley-drbd8
+build-ia64-none-mckinley:: build-ia64-none-mckinley-drbd8
+setup-ia64-none-mckinley:: setup-ia64-none-mckinley-drbd8
+source-ia64-none-mckinley:: source-ia64-none-mckinley-drbd8
+binary-arch-ia64-none-mckinley-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+build-ia64-none-mckinley-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+setup-ia64-none-mckinley-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mckinley' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ia64' ABINAME='-4' LOCALVERSION='-mckinley' ARCH='ia64' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-m68k
+binary-arch-m68k:: binary-arch-m68k-real
+build:: build-m68k
+build-m68k:: build-m68k-real
+setup:: setup-m68k
+setup-m68k:: setup-m68k-real
+source:: source-m68k
+source-m68k:: source-m68k-real
+binary-arch-m68k-real:
+build-m68k-real:
+setup-m68k-real:
+source-m68k-real:
+binary-arch-m68k:: binary-arch-m68k-none
+binary-arch-m68k-none:: binary-arch-m68k-none-real
+build-m68k:: build-m68k-none
+build-m68k-none:: build-m68k-none-real
+setup-m68k:: setup-m68k-none
+setup-m68k-none:: setup-m68k-none-real
+source-m68k:: source-m68k-none
+source-m68k-none:: source-m68k-none-real
+binary-arch-m68k-none-real:
+build-m68k-none-real:
+setup-m68k-none-real:
+source-m68k-none-real:
+binary-arch-m68k-none:: binary-arch-m68k-none-amiga
+build-m68k-none:: build-m68k-none-amiga
+setup-m68k-none:: setup-m68k-none-amiga
+source-m68k-none:: source-m68k-none-amiga
+binary-arch-m68k-none-amiga:: binary-arch-m68k-none-amiga-squashfs
+build-m68k-none-amiga:: build-m68k-none-amiga-squashfs
+setup-m68k-none-amiga:: setup-m68k-none-amiga-squashfs
+source-m68k-none-amiga:: source-m68k-none-amiga-squashfs
+binary-arch-m68k-none-amiga-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-amiga-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-amiga-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch-m68k-none-amiga:: binary-arch-m68k-none-amiga-drbd8
+build-m68k-none-amiga:: build-m68k-none-amiga-drbd8
+setup-m68k-none-amiga:: setup-m68k-none-amiga-drbd8
+source-m68k-none-amiga:: source-m68k-none-amiga-drbd8
+binary-arch-m68k-none-amiga-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-amiga-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-amiga-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='amiga' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-amiga' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch-m68k-none:: binary-arch-m68k-none-atari
+build-m68k-none:: build-m68k-none-atari
+setup-m68k-none:: setup-m68k-none-atari
+source-m68k-none:: source-m68k-none-atari
+binary-arch-m68k-none-atari:: binary-arch-m68k-none-atari-squashfs
+build-m68k-none-atari:: build-m68k-none-atari-squashfs
+setup-m68k-none-atari:: setup-m68k-none-atari-squashfs
+source-m68k-none-atari:: source-m68k-none-atari-squashfs
+binary-arch-m68k-none-atari-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-atari-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-atari-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch-m68k-none-atari:: binary-arch-m68k-none-atari-drbd8
+build-m68k-none-atari:: build-m68k-none-atari-drbd8
+setup-m68k-none-atari:: setup-m68k-none-atari-drbd8
+source-m68k-none-atari:: source-m68k-none-atari-drbd8
+binary-arch-m68k-none-atari-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-atari-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-atari-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='atari' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-atari' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch-m68k-none:: binary-arch-m68k-none-mac
+build-m68k-none:: build-m68k-none-mac
+setup-m68k-none:: setup-m68k-none-mac
+source-m68k-none:: source-m68k-none-mac
+binary-arch-m68k-none-mac:: binary-arch-m68k-none-mac-squashfs
+build-m68k-none-mac:: build-m68k-none-mac-squashfs
+setup-m68k-none-mac:: setup-m68k-none-mac-squashfs
+source-m68k-none-mac:: source-m68k-none-mac-squashfs
+binary-arch-m68k-none-mac-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-mac-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-mac-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch-m68k-none-mac:: binary-arch-m68k-none-mac-drbd8
+build-m68k-none-mac:: build-m68k-none-mac-drbd8
+setup-m68k-none-mac:: setup-m68k-none-mac-drbd8
+source-m68k-none-mac:: source-m68k-none-mac-drbd8
+binary-arch-m68k-none-mac-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+build-m68k-none-mac-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+setup-m68k-none-mac-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='mac' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='m68k' ABINAME='-4' LOCALVERSION='-mac' ARCH='m68k' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-mips
+binary-arch-mips:: binary-arch-mips-real
+build:: build-mips
+build-mips:: build-mips-real
+setup:: setup-mips
+setup-mips:: setup-mips-real
+source:: source-mips
+source-mips:: source-mips-real
+binary-arch-mips-real:
+build-mips-real:
+setup-mips-real:
+source-mips-real:
+binary-arch-mips:: binary-arch-mips-none
+binary-arch-mips-none:: binary-arch-mips-none-real
+build-mips:: build-mips-none
+build-mips-none:: build-mips-none-real
+setup-mips:: setup-mips-none
+setup-mips-none:: setup-mips-none-real
+source-mips:: source-mips-none
+source-mips-none:: source-mips-none-real
+binary-arch-mips-none-real:
+build-mips-none-real:
+setup-mips-none-real:
+source-mips-none-real:
+binary-arch-mips-none:: binary-arch-mips-none-r4k-ip22
+build-mips-none:: build-mips-none-r4k-ip22
+setup-mips-none:: setup-mips-none-r4k-ip22
+source-mips-none:: source-mips-none-r4k-ip22
+binary-arch-mips-none-r4k-ip22:: binary-arch-mips-none-r4k-ip22-squashfs
+build-mips-none-r4k-ip22:: build-mips-none-r4k-ip22-squashfs
+setup-mips-none-r4k-ip22:: setup-mips-none-r4k-ip22-squashfs
+source-mips-none-r4k-ip22:: source-mips-none-r4k-ip22-squashfs
+binary-arch-mips-none-r4k-ip22-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-r4k-ip22-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-r4k-ip22-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none-r4k-ip22:: binary-arch-mips-none-r4k-ip22-drbd8
+build-mips-none-r4k-ip22:: build-mips-none-r4k-ip22-drbd8
+setup-mips-none-r4k-ip22:: setup-mips-none-r4k-ip22-drbd8
+source-mips-none-r4k-ip22:: source-mips-none-r4k-ip22-drbd8
+binary-arch-mips-none-r4k-ip22-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-r4k-ip22-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-r4k-ip22-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-ip22' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-ip22' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none:: binary-arch-mips-none-r5k-ip32
+build-mips-none:: build-mips-none-r5k-ip32
+setup-mips-none:: setup-mips-none-r5k-ip32
+source-mips-none:: source-mips-none-r5k-ip32
+binary-arch-mips-none-r5k-ip32:: binary-arch-mips-none-r5k-ip32-squashfs
+build-mips-none-r5k-ip32:: build-mips-none-r5k-ip32-squashfs
+setup-mips-none-r5k-ip32:: setup-mips-none-r5k-ip32-squashfs
+source-mips-none-r5k-ip32:: source-mips-none-r5k-ip32-squashfs
+binary-arch-mips-none-r5k-ip32-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-r5k-ip32-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-r5k-ip32-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none-r5k-ip32:: binary-arch-mips-none-r5k-ip32-drbd8
+build-mips-none-r5k-ip32:: build-mips-none-r5k-ip32-drbd8
+setup-mips-none-r5k-ip32:: setup-mips-none-r5k-ip32-drbd8
+source-mips-none-r5k-ip32:: source-mips-none-r5k-ip32-drbd8
+binary-arch-mips-none-r5k-ip32-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-r5k-ip32-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-r5k-ip32-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-ip32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-ip32' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none:: binary-arch-mips-none-sb1-bcm91250a
+build-mips-none:: build-mips-none-sb1-bcm91250a
+setup-mips-none:: setup-mips-none-sb1-bcm91250a
+source-mips-none:: source-mips-none-sb1-bcm91250a
+binary-arch-mips-none-sb1-bcm91250a:: binary-arch-mips-none-sb1-bcm91250a-squashfs
+build-mips-none-sb1-bcm91250a:: build-mips-none-sb1-bcm91250a-squashfs
+setup-mips-none-sb1-bcm91250a:: setup-mips-none-sb1-bcm91250a-squashfs
+source-mips-none-sb1-bcm91250a:: source-mips-none-sb1-bcm91250a-squashfs
+binary-arch-mips-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none-sb1-bcm91250a:: binary-arch-mips-none-sb1-bcm91250a-drbd8
+build-mips-none-sb1-bcm91250a:: build-mips-none-sb1-bcm91250a-drbd8
+setup-mips-none-sb1-bcm91250a:: setup-mips-none-sb1-bcm91250a-drbd8
+source-mips-none-sb1-bcm91250a:: source-mips-none-sb1-bcm91250a-drbd8
+binary-arch-mips-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none:: binary-arch-mips-none-sb1a-bcm91480b
+build-mips-none:: build-mips-none-sb1a-bcm91480b
+setup-mips-none:: setup-mips-none-sb1a-bcm91480b
+source-mips-none:: source-mips-none-sb1a-bcm91480b
+binary-arch-mips-none-sb1a-bcm91480b:: binary-arch-mips-none-sb1a-bcm91480b-squashfs
+build-mips-none-sb1a-bcm91480b:: build-mips-none-sb1a-bcm91480b-squashfs
+setup-mips-none-sb1a-bcm91480b:: setup-mips-none-sb1a-bcm91480b-squashfs
+source-mips-none-sb1a-bcm91480b:: source-mips-none-sb1a-bcm91480b-squashfs
+binary-arch-mips-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none-sb1a-bcm91480b:: binary-arch-mips-none-sb1a-bcm91480b-drbd8
+build-mips-none-sb1a-bcm91480b:: build-mips-none-sb1a-bcm91480b-drbd8
+setup-mips-none-sb1a-bcm91480b:: setup-mips-none-sb1a-bcm91480b-drbd8
+source-mips-none-sb1a-bcm91480b:: source-mips-none-sb1a-bcm91480b-drbd8
+binary-arch-mips-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none:: binary-arch-mips-none-qemu
+build-mips-none:: build-mips-none-qemu
+setup-mips-none:: setup-mips-none-qemu
+source-mips-none:: source-mips-none-qemu
+binary-arch-mips-none-qemu:: binary-arch-mips-none-qemu-squashfs
+build-mips-none-qemu:: build-mips-none-qemu-squashfs
+setup-mips-none-qemu:: setup-mips-none-qemu-squashfs
+source-mips-none-qemu:: source-mips-none-qemu-squashfs
+binary-arch-mips-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch-mips-none-qemu:: binary-arch-mips-none-qemu-drbd8
+build-mips-none-qemu:: build-mips-none-qemu-drbd8
+setup-mips-none-qemu:: setup-mips-none-qemu-drbd8
+source-mips-none-qemu:: source-mips-none-qemu-drbd8
+binary-arch-mips-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+build-mips-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+setup-mips-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mips' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-mipsel
+binary-arch-mipsel:: binary-arch-mipsel-real
+build:: build-mipsel
+build-mipsel:: build-mipsel-real
+setup:: setup-mipsel
+setup-mipsel:: setup-mipsel-real
+source:: source-mipsel
+source-mipsel:: source-mipsel-real
+binary-arch-mipsel-real:
+build-mipsel-real:
+setup-mipsel-real:
+source-mipsel-real:
+binary-arch-mipsel:: binary-arch-mipsel-none
+binary-arch-mipsel-none:: binary-arch-mipsel-none-real
+build-mipsel:: build-mipsel-none
+build-mipsel-none:: build-mipsel-none-real
+setup-mipsel:: setup-mipsel-none
+setup-mipsel-none:: setup-mipsel-none-real
+source-mipsel:: source-mipsel-none
+source-mipsel-none:: source-mipsel-none-real
+binary-arch-mipsel-none-real:
+build-mipsel-none-real:
+setup-mipsel-none-real:
+source-mipsel-none-real:
+binary-arch-mipsel-none:: binary-arch-mipsel-none-r5k-cobalt
+build-mipsel-none:: build-mipsel-none-r5k-cobalt
+setup-mipsel-none:: setup-mipsel-none-r5k-cobalt
+source-mipsel-none:: source-mipsel-none-r5k-cobalt
+binary-arch-mipsel-none-r5k-cobalt:: binary-arch-mipsel-none-r5k-cobalt-squashfs
+build-mipsel-none-r5k-cobalt:: build-mipsel-none-r5k-cobalt-squashfs
+setup-mipsel-none-r5k-cobalt:: setup-mipsel-none-r5k-cobalt-squashfs
+source-mipsel-none-r5k-cobalt:: source-mipsel-none-r5k-cobalt-squashfs
+binary-arch-mipsel-none-r5k-cobalt-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r5k-cobalt-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r5k-cobalt-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-r5k-cobalt:: binary-arch-mipsel-none-r5k-cobalt-drbd8
+build-mipsel-none-r5k-cobalt:: build-mipsel-none-r5k-cobalt-drbd8
+setup-mipsel-none-r5k-cobalt:: setup-mipsel-none-r5k-cobalt-drbd8
+source-mipsel-none-r5k-cobalt:: source-mipsel-none-r5k-cobalt-drbd8
+binary-arch-mipsel-none-r5k-cobalt-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r5k-cobalt-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r5k-cobalt-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r5k-cobalt' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r5k-cobalt' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none:: binary-arch-mipsel-none-sb1-bcm91250a
+build-mipsel-none:: build-mipsel-none-sb1-bcm91250a
+setup-mipsel-none:: setup-mipsel-none-sb1-bcm91250a
+source-mipsel-none:: source-mipsel-none-sb1-bcm91250a
+binary-arch-mipsel-none-sb1-bcm91250a:: binary-arch-mipsel-none-sb1-bcm91250a-squashfs
+build-mipsel-none-sb1-bcm91250a:: build-mipsel-none-sb1-bcm91250a-squashfs
+setup-mipsel-none-sb1-bcm91250a:: setup-mipsel-none-sb1-bcm91250a-squashfs
+source-mipsel-none-sb1-bcm91250a:: source-mipsel-none-sb1-bcm91250a-squashfs
+binary-arch-mipsel-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-sb1-bcm91250a-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-sb1-bcm91250a:: binary-arch-mipsel-none-sb1-bcm91250a-drbd8
+build-mipsel-none-sb1-bcm91250a:: build-mipsel-none-sb1-bcm91250a-drbd8
+setup-mipsel-none-sb1-bcm91250a:: setup-mipsel-none-sb1-bcm91250a-drbd8
+source-mipsel-none-sb1-bcm91250a:: source-mipsel-none-sb1-bcm91250a-drbd8
+binary-arch-mipsel-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-sb1-bcm91250a-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1-bcm91250a' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1-bcm91250a' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none:: binary-arch-mipsel-none-sb1a-bcm91480b
+build-mipsel-none:: build-mipsel-none-sb1a-bcm91480b
+setup-mipsel-none:: setup-mipsel-none-sb1a-bcm91480b
+source-mipsel-none:: source-mipsel-none-sb1a-bcm91480b
+binary-arch-mipsel-none-sb1a-bcm91480b:: binary-arch-mipsel-none-sb1a-bcm91480b-squashfs
+build-mipsel-none-sb1a-bcm91480b:: build-mipsel-none-sb1a-bcm91480b-squashfs
+setup-mipsel-none-sb1a-bcm91480b:: setup-mipsel-none-sb1a-bcm91480b-squashfs
+source-mipsel-none-sb1a-bcm91480b:: source-mipsel-none-sb1a-bcm91480b-squashfs
+binary-arch-mipsel-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-sb1a-bcm91480b-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-sb1a-bcm91480b:: binary-arch-mipsel-none-sb1a-bcm91480b-drbd8
+build-mipsel-none-sb1a-bcm91480b:: build-mipsel-none-sb1a-bcm91480b-drbd8
+setup-mipsel-none-sb1a-bcm91480b:: setup-mipsel-none-sb1a-bcm91480b-drbd8
+source-mipsel-none-sb1a-bcm91480b:: source-mipsel-none-sb1a-bcm91480b-drbd8
+binary-arch-mipsel-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-sb1a-bcm91480b-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sb1a-bcm91480b' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-sb1a-bcm91480b' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none:: binary-arch-mipsel-none-r3k-kn02
+build-mipsel-none:: build-mipsel-none-r3k-kn02
+setup-mipsel-none:: setup-mipsel-none-r3k-kn02
+source-mipsel-none:: source-mipsel-none-r3k-kn02
+binary-arch-mipsel-none-r3k-kn02:: binary-arch-mipsel-none-r3k-kn02-squashfs
+build-mipsel-none-r3k-kn02:: build-mipsel-none-r3k-kn02-squashfs
+setup-mipsel-none-r3k-kn02:: setup-mipsel-none-r3k-kn02-squashfs
+source-mipsel-none-r3k-kn02:: source-mipsel-none-r3k-kn02-squashfs
+binary-arch-mipsel-none-r3k-kn02-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r3k-kn02-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r3k-kn02-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-r3k-kn02:: binary-arch-mipsel-none-r3k-kn02-drbd8
+build-mipsel-none-r3k-kn02:: build-mipsel-none-r3k-kn02-drbd8
+setup-mipsel-none-r3k-kn02:: setup-mipsel-none-r3k-kn02-drbd8
+source-mipsel-none-r3k-kn02:: source-mipsel-none-r3k-kn02-drbd8
+binary-arch-mipsel-none-r3k-kn02-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r3k-kn02-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r3k-kn02-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r3k-kn02' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r3k-kn02' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none:: binary-arch-mipsel-none-r4k-kn04
+build-mipsel-none:: build-mipsel-none-r4k-kn04
+setup-mipsel-none:: setup-mipsel-none-r4k-kn04
+source-mipsel-none:: source-mipsel-none-r4k-kn04
+binary-arch-mipsel-none-r4k-kn04:: binary-arch-mipsel-none-r4k-kn04-squashfs
+build-mipsel-none-r4k-kn04:: build-mipsel-none-r4k-kn04-squashfs
+setup-mipsel-none-r4k-kn04:: setup-mipsel-none-r4k-kn04-squashfs
+source-mipsel-none-r4k-kn04:: source-mipsel-none-r4k-kn04-squashfs
+binary-arch-mipsel-none-r4k-kn04-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r4k-kn04-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r4k-kn04-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-r4k-kn04:: binary-arch-mipsel-none-r4k-kn04-drbd8
+build-mipsel-none-r4k-kn04:: build-mipsel-none-r4k-kn04-drbd8
+setup-mipsel-none-r4k-kn04:: setup-mipsel-none-r4k-kn04-drbd8
+source-mipsel-none-r4k-kn04:: source-mipsel-none-r4k-kn04-drbd8
+binary-arch-mipsel-none-r4k-kn04-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-r4k-kn04-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-r4k-kn04-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='r4k-kn04' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-r4k-kn04' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none:: binary-arch-mipsel-none-qemu
+build-mipsel-none:: build-mipsel-none-qemu
+setup-mipsel-none:: setup-mipsel-none-qemu
+source-mipsel-none:: source-mipsel-none-qemu
+binary-arch-mipsel-none-qemu:: binary-arch-mipsel-none-qemu-squashfs
+build-mipsel-none-qemu:: build-mipsel-none-qemu-squashfs
+setup-mipsel-none-qemu:: setup-mipsel-none-qemu-squashfs
+source-mipsel-none-qemu:: source-mipsel-none-qemu-squashfs
+binary-arch-mipsel-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-qemu-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
+binary-arch-mipsel-none-qemu:: binary-arch-mipsel-none-qemu-drbd8
+build-mipsel-none-qemu:: build-mipsel-none-qemu-drbd8
+setup-mipsel-none-qemu:: setup-mipsel-none-qemu-drbd8
+source-mipsel-none-qemu:: source-mipsel-none-qemu-drbd8
+binary-arch-mipsel-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
+build-mipsel-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
+setup-mipsel-none-qemu-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='qemu' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='mips' ABINAME='-4' LOCALVERSION='-qemu' ARCH='mipsel' VERSION_DEBIAN='4'
 binary-arch:: binary-arch-powerpc
 binary-arch-powerpc:: binary-arch-powerpc-real
 build:: build-powerpc
@@ -212,74 +988,74 @@ binary-arch-powerpc-none:: binary-arch-powerpc-none-powerpc
 build-powerpc-none:: build-powerpc-none-powerpc
 setup-powerpc-none:: setup-powerpc-none-powerpc
 source-powerpc-none:: source-powerpc-none-powerpc
-binary-arch-powerpc-none-powerpc:: binary-arch-powerpc-none-powerpc-mol
-build-powerpc-none-powerpc:: build-powerpc-none-powerpc-mol
-setup-powerpc-none-powerpc:: setup-powerpc-none-powerpc-mol
-source-powerpc-none-powerpc:: source-powerpc-none-powerpc-mol
-binary-arch-powerpc-none-powerpc-mol:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-build-powerpc-none-powerpc-mol:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-setup-powerpc-none-powerpc-mol:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
 binary-arch-powerpc-none-powerpc:: binary-arch-powerpc-none-powerpc-squashfs
 build-powerpc-none-powerpc:: build-powerpc-none-powerpc-squashfs
 setup-powerpc-none-powerpc:: setup-powerpc-none-powerpc-squashfs
 source-powerpc-none-powerpc:: source-powerpc-none-powerpc-squashfs
 binary-arch-powerpc-none-powerpc-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
 build-powerpc-none-powerpc-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
 setup-powerpc-none-powerpc-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch-powerpc-none-powerpc:: binary-arch-powerpc-none-powerpc-drbd8
+build-powerpc-none-powerpc:: build-powerpc-none-powerpc-drbd8
+setup-powerpc-none-powerpc:: setup-powerpc-none-powerpc-drbd8
+source-powerpc-none-powerpc:: source-powerpc-none-powerpc-drbd8
+binary-arch-powerpc-none-powerpc-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
+build-powerpc-none-powerpc-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
+setup-powerpc-none-powerpc-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc' ARCH='powerpc' VERSION_DEBIAN='4'
 binary-arch-powerpc-none:: binary-arch-powerpc-none-powerpc-smp
 build-powerpc-none:: build-powerpc-none-powerpc-smp
 setup-powerpc-none:: setup-powerpc-none-powerpc-smp
 source-powerpc-none:: source-powerpc-none-powerpc-smp
-binary-arch-powerpc-none-powerpc-smp:: binary-arch-powerpc-none-powerpc-smp-mol
-build-powerpc-none-powerpc-smp:: build-powerpc-none-powerpc-smp-mol
-setup-powerpc-none-powerpc-smp:: setup-powerpc-none-powerpc-smp-mol
-source-powerpc-none-powerpc-smp:: source-powerpc-none-powerpc-smp-mol
-binary-arch-powerpc-none-powerpc-smp-mol:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-build-powerpc-none-powerpc-smp-mol:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-setup-powerpc-none-powerpc-smp-mol:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
 binary-arch-powerpc-none-powerpc-smp:: binary-arch-powerpc-none-powerpc-smp-squashfs
 build-powerpc-none-powerpc-smp:: build-powerpc-none-powerpc-smp-squashfs
 setup-powerpc-none-powerpc-smp:: setup-powerpc-none-powerpc-smp-squashfs
 source-powerpc-none-powerpc-smp:: source-powerpc-none-powerpc-smp-squashfs
 binary-arch-powerpc-none-powerpc-smp-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
 build-powerpc-none-powerpc-smp-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
 setup-powerpc-none-powerpc-smp-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch-powerpc-none-powerpc-smp:: binary-arch-powerpc-none-powerpc-smp-drbd8
+build-powerpc-none-powerpc-smp:: build-powerpc-none-powerpc-smp-drbd8
+setup-powerpc-none-powerpc-smp:: setup-powerpc-none-powerpc-smp-drbd8
+source-powerpc-none-powerpc-smp:: source-powerpc-none-powerpc-smp-drbd8
+binary-arch-powerpc-none-powerpc-smp-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
+build-powerpc-none-powerpc-smp-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
+setup-powerpc-none-powerpc-smp-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-smp' ARCH='powerpc' VERSION_DEBIAN='4'
 binary-arch-powerpc-none:: binary-arch-powerpc-none-powerpc-miboot
 build-powerpc-none:: build-powerpc-none-powerpc-miboot
 setup-powerpc-none:: setup-powerpc-none-powerpc-miboot
 source-powerpc-none:: source-powerpc-none-powerpc-miboot
-binary-arch-powerpc-none-powerpc-miboot:: binary-arch-powerpc-none-powerpc-miboot-mol
-build-powerpc-none-powerpc-miboot:: build-powerpc-none-powerpc-miboot-mol
-setup-powerpc-none-powerpc-miboot:: setup-powerpc-none-powerpc-miboot-mol
-source-powerpc-none-powerpc-miboot:: source-powerpc-none-powerpc-miboot-mol
-binary-arch-powerpc-none-powerpc-miboot-mol:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-build-powerpc-none-powerpc-miboot-mol:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
-setup-powerpc-none-powerpc-miboot-mol:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='mol-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='mol' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
 binary-arch-powerpc-none-powerpc-miboot:: binary-arch-powerpc-none-powerpc-miboot-squashfs
 build-powerpc-none-powerpc-miboot:: build-powerpc-none-powerpc-miboot-squashfs
 setup-powerpc-none-powerpc-miboot:: setup-powerpc-none-powerpc-miboot-squashfs
 source-powerpc-none-powerpc-miboot:: source-powerpc-none-powerpc-miboot-squashfs
 binary-arch-powerpc-none-powerpc-miboot-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
 build-powerpc-none-powerpc-miboot-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
 setup-powerpc-none-powerpc-miboot-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch-powerpc-none-powerpc-miboot:: binary-arch-powerpc-none-powerpc-miboot-drbd8
+build-powerpc-none-powerpc-miboot:: build-powerpc-none-powerpc-miboot-drbd8
+setup-powerpc-none-powerpc-miboot:: setup-powerpc-none-powerpc-miboot-drbd8
+source-powerpc-none-powerpc-miboot:: source-powerpc-none-powerpc-miboot-drbd8
+binary-arch-powerpc-none-powerpc-miboot-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
+build-powerpc-none-powerpc-miboot-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
+setup-powerpc-none-powerpc-miboot-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc-miboot' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc-miboot' ARCH='powerpc' VERSION_DEBIAN='4'
 binary-arch-powerpc-none:: binary-arch-powerpc-none-powerpc64
 build-powerpc-none:: build-powerpc-none-powerpc64
 setup-powerpc-none:: setup-powerpc-none-powerpc64
@@ -289,11 +1065,21 @@ build-powerpc-none-powerpc64:: build-powerpc-none-powerpc64-squashfs
 setup-powerpc-none-powerpc64:: setup-powerpc-none-powerpc64-squashfs
 source-powerpc-none-powerpc64:: source-powerpc-none-powerpc64-squashfs
 binary-arch-powerpc-none-powerpc64-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
 build-powerpc-none-powerpc64-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
 setup-powerpc-none-powerpc64-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch-powerpc-none-powerpc64:: binary-arch-powerpc-none-powerpc64-drbd8
+build-powerpc-none-powerpc64:: build-powerpc-none-powerpc64-drbd8
+setup-powerpc-none-powerpc64:: setup-powerpc-none-powerpc64-drbd8
+source-powerpc-none-powerpc64:: source-powerpc-none-powerpc64-drbd8
+binary-arch-powerpc-none-powerpc64-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
+build-powerpc-none-powerpc64-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
+setup-powerpc-none-powerpc64-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='powerpc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='powerpc' ABINAME='-4' LOCALVERSION='-powerpc64' ARCH='powerpc' VERSION_DEBIAN='4'
 binary-arch-powerpc-none:: binary-arch-powerpc-none-prep
 build-powerpc-none:: build-powerpc-none-prep
 setup-powerpc-none:: setup-powerpc-none-prep
@@ -303,8 +1089,186 @@ build-powerpc-none-prep:: build-powerpc-none-prep-squashfs
 setup-powerpc-none-prep:: setup-powerpc-none-prep-squashfs
 source-powerpc-none-prep:: source-powerpc-none-prep-squashfs
 binary-arch-powerpc-none-prep-squashfs:
-	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
 build-powerpc-none-prep-squashfs:
-	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
 setup-powerpc-none-prep-squashfs:
-	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='7+etch3'
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch-powerpc-none-prep:: binary-arch-powerpc-none-prep-drbd8
+build-powerpc-none-prep:: build-powerpc-none-prep-drbd8
+setup-powerpc-none-prep:: setup-powerpc-none-prep-drbd8
+source-powerpc-none-prep:: source-powerpc-none-prep-drbd8
+binary-arch-powerpc-none-prep-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
+build-powerpc-none-prep-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
+setup-powerpc-none-prep-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='prep' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='ppc' ABINAME='-4' LOCALVERSION='-prep' ARCH='powerpc' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-s390
+binary-arch-s390:: binary-arch-s390-real
+build:: build-s390
+build-s390:: build-s390-real
+setup:: setup-s390
+setup-s390:: setup-s390-real
+source:: source-s390
+source-s390:: source-s390-real
+binary-arch-s390-real:
+build-s390-real:
+setup-s390-real:
+source-s390-real:
+binary-arch-s390:: binary-arch-s390-none
+binary-arch-s390-none:: binary-arch-s390-none-real
+build-s390:: build-s390-none
+build-s390-none:: build-s390-none-real
+setup-s390:: setup-s390-none
+setup-s390-none:: setup-s390-none-real
+source-s390:: source-s390-none
+source-s390-none:: source-s390-none-real
+binary-arch-s390-none-real:
+build-s390-none-real:
+setup-s390-none-real:
+source-s390-none-real:
+binary-arch-s390-none:: binary-arch-s390-none-s390
+build-s390-none:: build-s390-none-s390
+setup-s390-none:: setup-s390-none-s390
+source-s390-none:: source-s390-none-s390
+binary-arch-s390-none-s390:: binary-arch-s390-none-s390-squashfs
+build-s390-none-s390:: build-s390-none-s390-squashfs
+setup-s390-none-s390:: setup-s390-none-s390-squashfs
+source-s390-none-s390:: source-s390-none-s390-squashfs
+binary-arch-s390-none-s390-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+build-s390-none-s390-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+setup-s390-none-s390-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+binary-arch-s390-none-s390:: binary-arch-s390-none-s390-drbd8
+build-s390-none-s390:: build-s390-none-s390-drbd8
+setup-s390-none-s390:: setup-s390-none-s390-drbd8
+source-s390-none-s390:: source-s390-none-s390-drbd8
+binary-arch-s390-none-s390-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+build-s390-none-s390-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+setup-s390-none-s390-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390' ARCH='s390' VERSION_DEBIAN='4'
+binary-arch-s390-none:: binary-arch-s390-none-s390x
+build-s390-none:: build-s390-none-s390x
+setup-s390-none:: setup-s390-none-s390x
+source-s390-none:: source-s390-none-s390x
+binary-arch-s390-none-s390x:: binary-arch-s390-none-s390x-squashfs
+build-s390-none-s390x:: build-s390-none-s390x-squashfs
+setup-s390-none-s390x:: setup-s390-none-s390x-squashfs
+source-s390-none-s390x:: source-s390-none-s390x-squashfs
+binary-arch-s390-none-s390x-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+build-s390-none-s390x-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+setup-s390-none-s390x-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+binary-arch-s390-none-s390x:: binary-arch-s390-none-s390x-drbd8
+build-s390-none-s390x:: build-s390-none-s390x-drbd8
+setup-s390-none-s390x:: setup-s390-none-s390x-drbd8
+source-s390-none-s390x:: source-s390-none-s390x-drbd8
+binary-arch-s390-none-s390x-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+build-s390-none-s390x-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+setup-s390-none-s390x-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='s390x' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='s390' ABINAME='-4' LOCALVERSION='-s390x' ARCH='s390' VERSION_DEBIAN='4'
+binary-arch:: binary-arch-sparc
+binary-arch-sparc:: binary-arch-sparc-real
+build:: build-sparc
+build-sparc:: build-sparc-real
+setup:: setup-sparc
+setup-sparc:: setup-sparc-real
+source:: source-sparc
+source-sparc:: source-sparc-real
+binary-arch-sparc-real:
+build-sparc-real:
+setup-sparc-real:
+source-sparc-real:
+binary-arch-sparc:: binary-arch-sparc-none
+binary-arch-sparc-none:: binary-arch-sparc-none-real
+build-sparc:: build-sparc-none
+build-sparc-none:: build-sparc-none-real
+setup-sparc:: setup-sparc-none
+setup-sparc-none:: setup-sparc-none-real
+source-sparc:: source-sparc-none
+source-sparc-none:: source-sparc-none-real
+binary-arch-sparc-none-real:
+build-sparc-none-real:
+setup-sparc-none-real:
+source-sparc-none-real:
+binary-arch-sparc-none:: binary-arch-sparc-none-sparc32
+build-sparc-none:: build-sparc-none-sparc32
+setup-sparc-none:: setup-sparc-none-sparc32
+source-sparc-none:: source-sparc-none-sparc32
+binary-arch-sparc-none-sparc32:: binary-arch-sparc-none-sparc32-squashfs
+build-sparc-none-sparc32:: build-sparc-none-sparc32-squashfs
+setup-sparc-none-sparc32:: setup-sparc-none-sparc32-squashfs
+source-sparc-none-sparc32:: source-sparc-none-sparc32-squashfs
+binary-arch-sparc-none-sparc32-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc32-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc32-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+binary-arch-sparc-none-sparc32:: binary-arch-sparc-none-sparc32-drbd8
+build-sparc-none-sparc32:: build-sparc-none-sparc32-drbd8
+setup-sparc-none-sparc32:: setup-sparc-none-sparc32-drbd8
+source-sparc-none-sparc32:: source-sparc-none-sparc32-drbd8
+binary-arch-sparc-none-sparc32-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc32-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc32-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc32' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc' ABINAME='-4' LOCALVERSION='-sparc32' ARCH='sparc' VERSION_DEBIAN='4'
+binary-arch-sparc-none:: binary-arch-sparc-none-sparc64
+build-sparc-none:: build-sparc-none-sparc64
+setup-sparc-none:: setup-sparc-none-sparc64
+source-sparc-none:: source-sparc-none-sparc64
+binary-arch-sparc-none-sparc64:: binary-arch-sparc-none-sparc64-squashfs
+build-sparc-none-sparc64:: build-sparc-none-sparc64-squashfs
+setup-sparc-none-sparc64:: setup-sparc-none-sparc64-squashfs
+source-sparc-none-sparc64:: source-sparc-none-sparc64-squashfs
+binary-arch-sparc-none-sparc64-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc64-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc64-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+binary-arch-sparc-none-sparc64:: binary-arch-sparc-none-sparc64-drbd8
+build-sparc-none-sparc64:: build-sparc-none-sparc64-drbd8
+setup-sparc-none-sparc64:: setup-sparc-none-sparc64-drbd8
+source-sparc-none-sparc64:: source-sparc-none-sparc64-drbd8
+binary-arch-sparc-none-sparc64-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc64-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc64-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64' ARCH='sparc' VERSION_DEBIAN='4'
+binary-arch-sparc-none:: binary-arch-sparc-none-sparc64-smp
+build-sparc-none:: build-sparc-none-sparc64-smp
+setup-sparc-none:: setup-sparc-none-sparc64-smp
+source-sparc-none:: source-sparc-none-sparc64-smp
+binary-arch-sparc-none-sparc64-smp:: binary-arch-sparc-none-sparc64-smp-squashfs
+build-sparc-none-sparc64-smp:: build-sparc-none-sparc64-smp-squashfs
+setup-sparc-none-sparc64-smp:: setup-sparc-none-sparc64-smp-squashfs
+source-sparc-none-sparc64-smp:: source-sparc-none-sparc64-smp-squashfs
+binary-arch-sparc-none-sparc64-smp-squashfs:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc64-smp-squashfs:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc64-smp-squashfs:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='squashfs-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='squashfs' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
+binary-arch-sparc-none-sparc64-smp:: binary-arch-sparc-none-sparc64-smp-drbd8
+build-sparc-none-sparc64-smp:: build-sparc-none-sparc64-smp-drbd8
+setup-sparc-none-sparc64-smp:: setup-sparc-none-sparc64-smp-drbd8
+source-sparc-none-sparc64-smp:: source-sparc-none-sparc64-smp-drbd8
+binary-arch-sparc-none-sparc64-smp-drbd8:
+	$(MAKE) -f debian/rules.real binary-arch MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
+build-sparc-none-sparc64-smp-drbd8:
+	$(MAKE) -f debian/rules.real build MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
+setup-sparc-none-sparc64-smp-drbd8:
+	$(MAKE) -f debian/rules.real setup MAJOR='2.6' MODULESOURCE='drbd8-source' FLAVOUR='sparc64-smp' SUBARCH='none' UPSTREAMVERSION='2.6.18' MODULE='drbd8' VERSION_SOURCE='2.6.18' VERSION='2.6.18' KERNEL_ARCH='sparc64' ABINAME='-4' LOCALVERSION='-sparc64-smp' ARCH='sparc' VERSION_DEBIAN='4'
