@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -39,18 +39,18 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-heimdal-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-config-registry shell`
+eval `univention-baseconfig shell`
 
 if [ -z "$kerberos_realm" ]; then
                                                                                       #| FIXME for multi-doamin
 	realm=`echo $domainname | sed -e 's/dc=//g' | sed -e 's/,/./g' | tr "[:lower:]" "[:upper:]"`
 
-	univention-config-registry set kerberos/realm?$realm
+	univention-baseconfig set kerberos/realm?$realm
 fi
 
-univention-config-registry set kerberos/kdc?$hostname
+univention-baseconfig set kerberos/kdc?$hostname
 
-eval `univention-config-registry shell kerberos/realm`
+eval `univention-baseconfig shell kerberos/realm`
 
 if ! kadmin -l dump | grep -q "^krbtgt/"; then
     kadmin -l init --realm-max-ticket-life=unlimited --realm-max-renewable-life=unlimited $kerberos_realm >/dev/null 2>&1
@@ -60,8 +60,8 @@ if ! kadmin -l dump | grep -q "^krbtgt/"; then
 fi
 
 # we need to reinitialize the keytab module
-if [ -e "/var/lib/univention-directory-listener/handlers/keytab" ]; then
-	rm /var/lib/univention-directory-listener/handlers/keytab
+if [ -e "/var/lib/univention-ldap-listener/handlers/keytab" ]; then
+	rm /var/lib/univention-ldap-listener/handlers/keytab
 fi
 
 test -n "`grep "univention-heimdal-init v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-heimdal-init v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
