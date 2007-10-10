@@ -1,0 +1,35 @@
+Die Kernel-Meta-Pakete sind in der Handhabung nicht ganz simpel:
+Aufgrund der Vielzahl der Kernel-Varianten und Module werden die
+Dateien des Buildsystems über ein Script erzeugt. Dann wird über eine
+MD5-Summe auf Changelog und zwei Template-Dateien geprüft ob es
+Änderungen gab. Das bedeutet, dass solche Pakete immer von Hand gebaut
+werden müssen, dann das Source-Paket über "im sr local" importiert
+werden muss und innerhalb von Repo-NG mit "ed sc" die Veränderung des
+Changelog beim Bauen abgeschaltet werden muss.
+
+
+Folgende Schritte sind nötig um das Source-Paket zu modifizieren (das
+ist nötig, wenn ein neues Kernel-Image hinzugefügt werden muss
+
+- Für das neue Modul muss ein weiteres Unterverzeichnis angelegt
+  werden und dieses Verzeichnis unter "defines" eingetragen werden.
+
+- Es muss in dem neuen Verzeichnis eine "rules"-Datei angelegt
+  werden. Diese muss eine Zeile für die Kernel-Config als
+  Shell-Variable exportieren, in der das neue Module als Modul gebaut
+  wird: Außerdem muss eine Makefile-Zeile für den Build des Moduls
+  definiert werden (der Name ist identisch mit dem
+  Unterverzeichnis-Namen) und eine Zeile für die Installation (Ziel:
+  install). Am besten sollte eine Vorlage aus dem SVN genommen werden.
+
+- Anschließend müssen die Build-Dateien und das Control-File neu
+  erzeugt werden. Dazu muss das passende linux-support-KERNELVERSION
+  Paket installiert sein. Es gibt keine Build-Dependency! Das
+  geschieht mit folgendem Befehl: (Die dann folgende Ausgabe sieht aus
+  wie eine Fehlermeldung, ist aber notwendig) 
+
+  make -f debian/rules debian/control-real
+
+- Anschließend muss noch der Name des Source-Pakets in debian/control
+  editiert werden (von "Source: linux-kernel-extra-VERSION" auf
+  "Source: univention-kernel-modules-extra-2.6") 
