@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.1-8) unstable; urgency=low
+
+  * remove old ldap-policy init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Oct 2007 08:01:21 +0200
+
 univention-directory-policy (1.1.1-7) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/ldap-policy.log
