@@ -52,18 +52,15 @@ fi
 
 #DEBHELPER#
 
-if [ "$1" = "configure" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 2.4.0;  then
-		if [ ! -e /etc/kernel-img.conf ]; then
-			if [ -e /etc/univention/templates/files/etc/kernel-img.conf ]; then
-				cat /etc/univention/templates/files/etc/kernel-img.conf | univention-baseconfig filter >/etc/kernel-img.conf
-			fi
-		fi
-		if [ ! -e /etc/kernel-img.conf ]; then
-			if [ -e /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new ]; then
-				cat /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new | univention-baseconfig filter >/etc/kernel-img.conf
-			fi
-		fi
+#be sure the /etc/kernel-img.conf exists
+if [ ! -e /etc/kernel-img.conf ]; then
+	if [ -e /etc/univention/templates/files/etc/kernel-img.conf ]; then
+		cat /etc/univention/templates/files/etc/kernel-img.conf | univention-baseconfig filter >/etc/kernel-img.conf
+	fi
+fi
+if [ ! -e /etc/kernel-img.conf ]; then
+	if [ -e /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new ]; then
+		cat /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new | univention-baseconfig filter >/etc/kernel-img.conf
 	fi
 fi
 
