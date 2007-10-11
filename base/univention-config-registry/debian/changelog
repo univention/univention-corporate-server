@@ -1,3 +1,9 @@
+univention-config-registry (2.4.4-1) unstable; urgency=low
+
+  * be sure /etc/kernel-img.conf exists during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Oct 2007 09:41:01 +0200
+
 univention-config-registry (2.4.3-1) unstable; urgency=low
 
   * updated logrotate template

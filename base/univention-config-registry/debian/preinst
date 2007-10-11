@@ -50,6 +50,14 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 
 fi
 
-
 #DEBHELPER#
 
+if [ "$1" = "configure" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt 2.4.0;  then
+		if [ ! -e /etc/kernel-img.conf ]; then
+			cat /etc/univention/templates/files/etc/kernel-img.conf | univention-baseconfig filter >/etc/kernel-img.conf
+		fi
+	fi
+fi
+
+exit 0
