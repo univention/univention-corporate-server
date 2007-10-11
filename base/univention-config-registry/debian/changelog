@@ -1,4 +1,4 @@
-univention-config-registry (2.4.4-1) unstable; urgency=low
+univention-config-registry (2.4.4-2) unstable; urgency=low
 
   * be sure /etc/kernel-img.conf exists during the update
 
