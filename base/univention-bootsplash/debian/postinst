@@ -61,4 +61,12 @@ univention-baseconfig set bootsplash/size?all
 
 #DEBHELPER#
 
+update-initramfs -u
+
+if [ -x /usr/bin/update-grub ]; then
+	update-grub
+elif [ -x /sbin/lilo ]; then
+	lilo
+fi
+
 exit 0
