@@ -54,14 +54,10 @@ fi
 
 #be sure the /etc/kernel-img.conf exists
 if [ ! -e /etc/kernel-img.conf ]; then
-	if [ -e /etc/univention/templates/files/etc/kernel-img.conf ]; then
-		cat /etc/univention/templates/files/etc/kernel-img.conf | univention-baseconfig filter >/etc/kernel-img.conf
-	fi
-fi
-if [ ! -e /etc/kernel-img.conf ]; then
-	if [ -e /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new ]; then
-		cat /etc/univention/templates/files/etc/kernel-img.conf.dpkg-new | univention-baseconfig filter >/etc/kernel-img.conf
-	fi
+	echo "do_initrd = yes" >>/etc/kernel-img.conf
+	echo "do_bootfloppy = no" >>/etc/kernel-img.conf
+	echo "silent_loader = yes" >>/etc/kernel-img.conf
+	echo "clobber_modules = yes" >>/etc/kernel-img.conf
 fi
 
 exit 0
