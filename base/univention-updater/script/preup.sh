@@ -1,5 +1,6 @@
 #!/bin/sh
 
+echo "Running preup.sh script"
 
 # check if user is logged in using ssh
 
@@ -19,7 +20,7 @@ if [ -n "$SSH_CLIENT" ]
 fi
 	
 
-eval `univention-baseconfig shell`
+eval $(univention-baseconfig shell) >/dev/null 2>&1
 
 
 check_space(){
@@ -60,7 +61,7 @@ fi
 
 dpkg -l freenx | grep ^ii >/dev/null 2>&1
 if [ $? = 0 ]; then
-	univention-baseconfig set update/2_0/freenx/reinstall?1
+	univention-baseconfig set update/2_0/freenx/reinstall?1 >/dev/null 2>&1
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove freenx  >>/var/log/univention/updater.log 2>&1 
 fi
 
