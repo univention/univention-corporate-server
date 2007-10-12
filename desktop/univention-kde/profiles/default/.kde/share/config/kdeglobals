@@ -1,5 +1,18 @@
 [General]
 BrowserApplication=!firefox
+alternateBackground=238,246,255
+background=246,246,246
+buttonBackground=246,246,246
+buttonForeground=51,51,51
+foreground=51,51,51
+linkColor=0,0,238
+selectBackground=51,139,0
+selectForeground=246,246,246
+shadeSortColumn=true
+visitedLinkColor=82,24,139
+windowBackground=255,255,255
+windowForeground=51,51,51
+
 
 [KFileDialog Settings]
 Automatically select filename extension=true

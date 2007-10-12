@@ -1,3 +1,9 @@
+univention-kde (2.1.5-1) unstable; urgency=low
+
+  * set selected text background color to our green
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2007 14:29:43 +0200
+
 univention-kde (2.1.5-0) unstable; urgency=low
 
   * added icon-theme with "Univention"-kmenu Icon
