@@ -2,7 +2,7 @@
 
 check_and_install ()
 {
-	dpkg -l $1 | grep ^ii >/dev/null 2>&1
+	dpkg -l $1 | grep ^ii >>/var/log/univention/updater.log 2>&1
 	if [ $? = 0 ]; then
 		DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install $1 >>/var/log/univention/updater.log 2>&1 
 	fi
@@ -13,14 +13,14 @@ echo "Running postup.sh script"
 # remove old cache file
 rm -f /var/cache/univention-config/cache
 
-eval $(univention-baseconfig shell) >/dev/null 2>&1
+eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
 
 if [ -n "$repository_patchlevel" ]; then
-	univention-baseconfig unset repository/patchlevel >/dev/null 2>&1
+	univention-baseconfig unset repository/patchlevel >>/var/log/univention/updater.log 2>&1
 fi
 
 if [ -n "$repository_version" ]; then
-	univention-baseconfig unset repository/version >/dev/null 2>&1
+	univention-baseconfig unset repository/version >>/var/log/univention/updater.log 2>&1
 fi
 
 echo "univention-server-master install" | dpkg --set-selections
@@ -62,7 +62,7 @@ check_and_install kdebase
 check_and_install kdenetwork
 
 
-dpkg -l univention-console | grep ^ii >/dev/null 2>&1
+dpkg -l univention-console | grep ^ii >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-management-console >>/var/log/univention/updater.log 2>&1 
 fi
@@ -73,9 +73,10 @@ DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --f
 reinstall=$(univention-baseconfig get update/2_0/freenx/reinstall)
 if [ "$reinstall" = "1" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install freenx >>/var/log/univention/updater.log 2>&1 
-	univention-baseconfig unset update/2_0/freenx/reinstall >/dev/null 2>&1
+	univention-baseconfig unset update/2_0/freenx/reinstall >>/var/log/univention/updater.log 2>&1
 fi
 
+univention-baseconfig commit >>/var/log/univention/updater.log 2>&1
 
 exit 0
 

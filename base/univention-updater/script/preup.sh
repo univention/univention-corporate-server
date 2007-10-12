@@ -20,7 +20,7 @@ if [ -n "$SSH_CLIENT" ]
 fi
 	
 
-eval $(univention-baseconfig shell) >/dev/null 2>&1
+eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
 
 
 check_space(){
@@ -59,9 +59,9 @@ if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
 	ln -s ucsCA /etc/univention/ssl/udsCA
 fi
 
-dpkg -l freenx | grep ^ii >/dev/null 2>&1
+dpkg -l freenx | grep ^ii >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
-	univention-baseconfig set update/2_0/freenx/reinstall?1 >/dev/null 2>&1
+	univention-baseconfig set update/2_0/freenx/reinstall?1 >>/var/log/univention/updater.log 2>&1
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove freenx  >>/var/log/univention/updater.log 2>&1 
 fi
 

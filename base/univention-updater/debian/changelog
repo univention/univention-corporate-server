@@ -1,4 +1,4 @@
-univention-updater (2.1.7-1) unstable; urgency=low
+univention-updater (2.1.7-2) unstable; urgency=low
 
   * upgrade pre- and postup.sh
 
