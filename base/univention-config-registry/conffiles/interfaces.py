@@ -48,13 +48,13 @@ def restore_gateway(gateway):
 		os.system('route del default')
 		os.system('route add default gw %s' % gateway)
 
-def preinst(configRegistry, changes):
+def preinst(baseConfig, changes):
 	for iface in set(changes):
-		if configRegistry.has_key('interfaces/%s/address'%iface):
+		if baseConfig.has_key('interfaces/%s/address'%iface):
 			stop_iface(interface(iface))
 
-def postinst(configRegistry, changes):
+def postinst(baseConfig, changes):
 	for iface in set(changes):
-		if configRegistry.has_key('interfaces/%s/address'%iface):
+		if baseConfig.has_key('interfaces/%s/address'%iface):
 			start_iface(interface(iface))
-	restore_gateway(configRegistry.get('gateway'))
+	restore_gateway(baseConfig.get('gateway'))

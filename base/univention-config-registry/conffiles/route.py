@@ -35,6 +35,6 @@ def restore_gateway(gateway):
 		os.system('route del default')
 		os.system('route add default gw %s' % gateway)
 
-def handler(configRegistry, changes):
-	gw = configRegistry.get('gateway')
+def handler(baseConfig, changes):
+	gw = baseConfig.get('gateway')
 	restore_gateway(gw)
