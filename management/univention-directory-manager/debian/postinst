@@ -65,8 +65,22 @@ if [ "$1" = configure ]; then
 	elif [ "$admin_web_language" = "en" ]; then
 		admin_web_language="en_US.utf8"
 	fi
-	bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
+	if [ -n "$locale_default" ]; then
+		univention-baseconfig set directory/manager/web/language="$(echo $local_default | sed -e 's|:.*||')"
+	else
+		bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
+
 	bc_rename "$admin_timeout" "directory/manager/timeout" "300"
+
+	if [ -n "$admin_timeout" ]; then
+		univention-baseconfig unset admin/timeout
+	fi
+	if [ -n "$admin_web_language" ]; then
+		univention-baseconfig unset admin/web/language
+	fi
+	if [ -n "$admin_web_debug_level" ]; then
+		univention-baseconfig unset admin/web/debug/level
+	fi
 fi
 
 univention-config-registry set ssl/validity/check?yes
