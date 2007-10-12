@@ -1,3 +1,9 @@
+univention-updater (2.1.9-1) unstable; urgency=low
+
+  * set univention-printquota on hold during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 12 Oct 2007 11:43:37 +0200
+
 univention-updater (2.1.8-1) unstable; urgency=low
 
   * call update-initramfs at the end of the update

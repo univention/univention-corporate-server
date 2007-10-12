@@ -48,6 +48,7 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 fi
 
 echo "univention-pkgdb install" | dpkg --set-selections
+echo "univention-printquota install" | dpkg --set-selections
 echo "univention-application-server install" | dpkg --set-selections
 
 check_and_install univention-groupware-webclient

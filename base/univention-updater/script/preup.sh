@@ -73,5 +73,6 @@ echo "univention-managed-client hold" | dpkg --set-selections
 echo "univention-fat-client hold" | dpkg --set-selections
 echo "univention-mobile-client hold" | dpkg --set-selections
 echo "univention-pkgdb hold" | dpkg --set-selections
+echo "univention-printquota hold" | dpkg --set-selections
 echo "univention-application-server hold" | dpkg --set-selections
 
