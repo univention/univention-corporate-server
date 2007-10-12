@@ -78,5 +78,7 @@ fi
 
 univention-baseconfig commit >>/var/log/univention/updater.log 2>&1
 
+update-initramfs -u >>/var/log/univention/updater.log 2>&1
+
 exit 0
 
