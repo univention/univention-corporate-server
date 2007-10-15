@@ -1,3 +1,12 @@
+univention-directory-manager (4.2.3-1) unstable; urgency=low
+
+  * do not recreate report when selecting any action while being on the report
+    result page
+  * selecting 'selected domain' in search dialog works now
+  * explicitly delete some python objects after creating reports
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 15 Oct 2007 15:53:57 +0200
+
 univention-directory-manager (4.2.2-2) unstable; urgency=low
 
   * set the admin language to the locale/default value

@@ -406,6 +406,7 @@ class modwizard(unimodule.unimodule):
 
 		if self.save.get( 'uc_report_create' ) == True:
 			nresults, module_descr, report_name, url = self.create_report()
+			self.save.put( 'uc_report_create', False )
 			if url:
 				icon_path='/icon/generic.png'
 				if not os.path.exists('/usr/share/univention-directory-manager/www'+icon_path):
@@ -499,6 +500,10 @@ class modwizard(unimodule.unimodule):
 			else:
 				path_preselect=domainstr
 
+		domain_preselect=self.save.get('wizard_domain')
+		if not domain_preselect:
+			domain_preselect=position.getLoginDomain()
+
 		searchpath=[path_preselect]
 		if searchpath[0] == allstr:
 			# search all registered containers
@@ -556,8 +561,6 @@ class modwizard(unimodule.unimodule):
 							except:
 								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'Failed to open object, insufficient or ambiguous values returned from search (%s)'%(m))
 
-		sorted_result = {}
-
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: results: %s' % result.values() )
 		sorting_helper_list=[]
 		for pos, items in result.items():
@@ -592,12 +595,12 @@ class modwizard(unimodule.unimodule):
 		udr.admin.connect( access = self.lo )
 		cfg = udr.Config()
 		doc = udr.Document( cfg.get_report( module_name, report_name ), header = cfg.get_header(), footer = cfg.get_footer() )
-		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: list: %s' % [ item[ 1 ] for item in sorting_helper_list ] )
 		tmpfile = doc.create_latex( [ item[ 1 ] for item in sorting_helper_list ] )
 		pdffile = doc.create_pdf( tmpfile )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % tmpfile )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % pdffile )
 		os.unlink( tmpfile )
+		del result, sorting_helper_list, cfg, doc
 		try:
 			os.unlink( tmpfile[ : -4 ] + 'aux' )
 			os.unlink( tmpfile[ : -4 ] + 'log' )
