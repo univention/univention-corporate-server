@@ -106,6 +106,11 @@ class AdminConnection( object ):
 		if not prop:
 			return ( key, value )
 		else:
+			if isinstance( value, ( list, tuple ) ):
+				for v in value:
+					v = v.replace( '\\', '$\\backslash$' )
+			elif value:
+				value = value.replace( '\\', '$\\backslash$' )
 			filter = filter_get( prop.syntax )
 			if filter:
 				return filter( prop, key, value )
