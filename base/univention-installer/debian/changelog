@@ -1,3 +1,10 @@
+univention-installer (1.7.8-5) unstable; urgency=low
+
+  * reactivate lvm volume groups in post-installer-scripts
+  * copy installer logs to new system 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 15 Oct 2007 17:15:05 +0200
+
 univention-installer (1.7.8-4) unstable; urgency=low
 
   * Update i18n

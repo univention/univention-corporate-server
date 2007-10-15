@@ -145,6 +145,9 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	done
 fi
 
+# reactivate all volume groups
+vgchange -ay
+
 count=1
 echo "Creating disks"
 set | egrep "^dev_" | while read line; do
