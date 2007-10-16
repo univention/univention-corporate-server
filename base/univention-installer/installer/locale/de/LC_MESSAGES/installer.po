@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-02 10:33+0200\n"
+"POT-Creation-Date: 2007-10-16 11:26+0200\n"
 "PO-Revision-Date: 2007-08-08 13:51+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -342,7 +342,6 @@ msgid "Server for remote desktop access"
 msgstr "Server für den Zugriff auf entferte Benutzeroberflächen"
 
 #: installer/package_list.py:245
-#, fuzzy
 msgid "Xen hypervisor"
 msgstr "Xen-Hypervisor"
 
@@ -351,7 +350,6 @@ msgid "Xen hypervisor environment to run virtualised hosts."
 msgstr "Xen-Hypervisor für den Betrieb virtualisierter Systeme."
 
 #: installer/package_list.py:253
-#, fuzzy
 msgid "Xen kernel images"
 msgstr "Xen Kernel-Images"
 
@@ -2218,20 +2216,20 @@ msgstr "LDAP Passwort"
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:824
+#: ../univention-system-setup/usr/sbin/univention-system-setup:827
 msgid "Updating configuration "
 msgstr "Aktualisiere Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:824
+#: ../univention-system-setup/usr/sbin/univention-system-setup:827
 #, python-format
 msgid "Updating %s configuration"
 msgstr "Aktualisiere %s Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:835
+#: ../univention-system-setup/usr/sbin/univention-system-setup:838
 msgid "Processing postrun scripts "
 msgstr "Verarbeite postrun-Skripte"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:835
+#: ../univention-system-setup/usr/sbin/univention-system-setup:838
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"

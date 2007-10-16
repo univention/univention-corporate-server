@@ -1,3 +1,9 @@
+univention-installer (1.7.8-6) unstable; urgency=low
+
+  * Update translation.
+
+ -- Moritz Mühlenhoff <jmm@ivar.knut.univention.de>  Tue, 16 Oct 2007 11:27:42 +0200
+
 univention-installer (1.7.8-5) unstable; urgency=low
 
   * reactivate lvm volume groups in post-installer-scripts
