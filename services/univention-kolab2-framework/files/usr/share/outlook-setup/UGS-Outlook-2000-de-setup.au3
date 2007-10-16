@@ -24,25 +24,25 @@
 ;
 ; You should have received a copy of the GNU General Public License
 ; along with this program; if not, write to the Free Software
-; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	02110-1301	USA
+; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA    02110-1301      USA
 
 ;GuiDatei einbinden
 #include <GuiConstants.au3>
 
 ;Starten der Installation OK? Abbrechen? Nach 10 Sek. automatisch OK
 ;$answer = MsgBox(65,"Installation","Die automatische Konfiguration von Outlook2000 als UGS-Client starten?",10)
-;If $answer = 2 Then
+;If $answer = 2 Then	
 ;	Exit
 ;EndIf
 
 ;oeffnen der Konfigurationsdatei
 If $CmdLine[0] = 1 Then
 	$file = FileOpen($CmdLine[1],0)
-Else
+Else	
 	$file = FileOpen("konfig2000.txt", 0)
 EndIf
 ;Zeilenweises einlesen der Konfigurationsdatei.
-$name1 = FileReadLine($file,1)
+$name1 = FileReadLine($file,1)   
 $name2 = FileReadLine($file,2)
 $mail1 = FileReadLine($file,3)
 $mail2 = FileReadLine($file,4)
@@ -55,7 +55,7 @@ $checkhow = FileReadLine($file,9)
 ;Konfigurationsdatei schliessen
 FileClose($file)
 
-If $checkhow = ("1") Then
+If $checkhow = ("1") Then 
 	$checkCNx = ("-1")
 	$checkCNy = ("1")
 	$checkUNx = ("0")
@@ -112,7 +112,7 @@ GUICtrlSetColor(-1,$pflicht)
 $line01 = GUICtrlCreateInput($name1,"110","120","100","","")
 If $name1 = ("") Then
 	GUICtrlSetState(-1,$GUI_FOCUS)
-EndIf
+EndIf	
 GUICtrlCreateLabel("Vorname","218","123","80")
 GUICtrlCreateLabel("*","260","123")
 GUICtrlSetColor(-1,$pflicht)
@@ -157,17 +157,17 @@ GUICtrlCreateLabel("© UNIVENTION GmbH, 2006, www.univention.de, Version 1.01","1
 
 ;Das Fenster öffnen
 GUISetState()
-
-While 1
+	
+While 1 
 
 	$msg = GUIGetMsg()
 	;warten auf welchen Button gedrückt wird
 	if $msg = $Gui_Event_Close Then Exit
-
+		
 	if $msg = $cancel Then Exit
-
+		
 	if $msg = $ok Then ExitLoop
-
+	
 WEnd
 
 ;Die Benutzereingaben übernehmen und abspeichern
@@ -188,18 +188,18 @@ If $pwchk <> $pwrd Then
 Else
 	$ctrl = ("ok")
 EndIf
-
+	
 $pflicht = ("0xff0000")
 GUIDelete()
 
 ContinueLoop
-WEnd
+WEnd	
 
 If $line0 = ("") Then
 	$offic = ("C:\Programme\Microsoft Office\OFFICE\OUTLOOK.EXE")
 	Else
 		$offic = $line0
-EndIf
+EndIf	
 If Not FileExists($offic) Then
 	MsgBox(64,"Fehler","Die Konfiguration wird abgebrochen, die Datei OUTLOOK.EXE konnte nicht gefunden werden.")
 	Exit
@@ -214,12 +214,12 @@ While 1
 		WinActivate("Benutzername")
 		Send ("{Enter}")
 	EndIf
-
+	
 	If WinActive("Microsoft Outlook Setup-Assistent") Then
-		ExitLoop
+		ExitLoop	
 	Endif
 WEnd
-
+	
 WinWait("Microsoft Outlook Setup-Assistent")
 WinActivate("Microsoft Outlook Setup-Assistent")
 Send ("{DOWN}")
@@ -294,8 +294,6 @@ Send ("{TAB}")
 WinActivate("E-Mail-Kontoeigenschaften")
 Send ("{TAB}")
 WinActivate("E-Mail-Kontoeigenschaften")
-Send ("{SPACE}")
-WinActivate("E-Mail-Kontoeigenschaften")
 Send ("{TAB}")
 WinActivate("E-Mail-Kontoeigenschaften")
 Send ("{SPACE}")
@@ -342,8 +340,8 @@ If WinExists("Microsoft Outlook") Then
 		WinActivate("Microsoft Outlook")
 		Send ("{ENTER}")
 		ExitLoop
-	else
-		ExitLoop
+	else 
+		ExitLoop	
 	EndIf
 WEnd
 Sleep(2000)
@@ -362,8 +360,8 @@ If WinExists("Microsoft Outlook") Then
 		WinActivate("Microsoft Outlook")
 		Send ("{ENTER}")
 		ExitLoop
-	else
-		ExitLoop
+	else 
+		ExitLoop	
 	EndIf
 WEnd
 Sleep(5000)
@@ -382,8 +380,8 @@ While 1
 		WinActivate("Microsoft Outlook")
 		Send ("{ENTER}")
 		ExitLoop
-	else
-		ExitLoop
+	else 
+		ExitLoop	
 	EndIf
 WEnd
 Sleep(2000)
@@ -433,7 +431,7 @@ While 1
 		Else
 			ExitLoop
 		EndIf
-	Else
+	Else 
 		ExitLoop
 	EndIf
 WEnd
@@ -505,7 +503,7 @@ While 1
 Wend
 If $checkUNy = 1 Then
 ;Toltec einrichten. Achtung Lizenz muss Installiert sein!
-If not WinExists("Posteingang - Microsoft Outlook") Then
+If not WinExists("Posteingang - Microsoft Outlook") Then 
 	Run ($offic)
 EndIf
 Sleep(3000)
@@ -514,8 +512,8 @@ If WinExists("Microsoft Outlook") Then
 		WinActivate("Microsoft Outlook")
 		Send ("{ENTER}")
 		ExitLoop
-	else
-		ExitLoop
+	else 
+		ExitLoop	
 	EndIf
 WEnd
 While 1
@@ -532,8 +530,8 @@ If WinExists("Microsoft Outlook") Then
 		WinActivate("Microsoft Outlook")
 		Send ("{ENTER}")
 		ExitLoop
-	else
-		ExitLoop
+	else 
+		ExitLoop	
 	EndIf
 WEnd
 Winwait ("Posteingang - Microsoft Outlook")
@@ -550,12 +548,13 @@ Send ("{RIGHT}")
 Send ("{RIGHT}")
 Send ("{RIGHT}")
 Send ("{RIGHT}")
-send ("{TAB}")
+WinWait("Optionen","Toltec")
 WinActivate("Optionen")
-Send ("{ENTER}")
+ControlClick ( "Optionen", "Toltec", "Button2") 
+Sleep(2000)
 Send ("!w")
-Send ("{ENTER}")
-Send ("{ENTER}")
+Send ("!w")
+Send ("!w")
 Send($serv)
 send ("{TAB}")
 Send ($mail1)
@@ -576,6 +575,7 @@ While 1
 		ExitLoop
 	EndIf
 Wend
+Send ("{Tab}")
 Send ("!w")
 Send ("{ENTER}")
 Send ("{Tab}")

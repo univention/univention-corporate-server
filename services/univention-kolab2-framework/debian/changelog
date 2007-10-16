@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.1-4) unstable; urgency=low
+
+  * new Version of Outlookconfigurating AutoIt scripts for Toltec 2.1.1
+
+ -- Tobias Scherer <scherer@univention.de>  Tue, 16 Oct 2007 14:02:21 +0200
+
 univention-kolab2-framework (1.0.1-3) unstable; urgency=low
 
   * Adapt to Univention Directory Listener.

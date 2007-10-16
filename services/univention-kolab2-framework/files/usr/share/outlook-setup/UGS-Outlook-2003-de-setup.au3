@@ -24,25 +24,25 @@
 ;
 ; You should have received a copy of the GNU General Public License
 ; along with this program; if not, write to the Free Software
-; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	02110-1301	USA
+; Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA    02110-1301      USA
 
 ;GuiDatei einbinden
 #include <GuiConstants.au3>
 
 ;Starten der Installation OK? Abbrechen? Nach 10 Sek. automatisch OK
 ;$answer = MsgBox(65,"Installation","Die automatische Konfiguration von Outlook2003 als UGS-Client starten?",10)
-;If $answer = 2 Then
+;If $answer = 2 Then	
 ;	Exit
 ;EndIf
 
 ;oeffnen der Konfigurationsdatei
 If $CmdLine[0] = 1 Then
 	$file = FileOpen($CmdLine[1],0)
-Else
+Else	
 	$file = FileOpen("konfig2003.txt", 0)
 EndIf
 ;Zeilenweises einlesen der Konfigurationsdatei.
-$name1 = FileReadLine($file,1)
+$name1 = FileReadLine($file,1)   
 $name2 = FileReadLine($file,2)
 $mail1 = FileReadLine($file,3)
 $mail2 = FileReadLine($file,4)
@@ -55,7 +55,7 @@ $checkhow = FileReadLine($file,9)
 ;Konfigurationsdatei schliessen
 FileClose($file)
 
-If $checkhow = ("1") Then
+If $checkhow = ("1") Then 
 	$checkCNx = ("-1")
 	$checkCNy = ("1")
 	$checkUNx = ("0")
@@ -80,9 +80,9 @@ EndIf
 $pflicht=("")
 $ctrl = ("")
 If $name1 <> ("") And $name2 <> ("") And $mail1 <> ("") And $mail2 <> ("") And $serv <> ("") And $pwrd <> ("") And $line0 <> ("") Then $ctrl = ("ok")
-
+	
 While $name1 = ("") or $name2 = ("") or $mail1 = ("") or $mail2 = ("") or $serv = ("") or $pwrd = ("") or $ctrl = ("")
-
+	
 ;Hauptfenster erstellen
 GUICreate("Outlook 2003 als UGS-Client mit Toltec Connector",405,440)
 GUICtrlCreateLabel("Tool zur automatisierten Konfiguration ","15","15")
@@ -107,7 +107,7 @@ GuiCtrlSetState($checkUNx, $GUI_CHECKED)
 ;Bezeichnung für folgende Eingabeaufforderung
 GUICtrlCreateLabel("Name","15","123","60")
 GUICtrlCreateLabel("*","47","123","","")
-GUICtrlSetColor(-1,$pflicht)
+GUICtrlSetColor(-1,$pflicht) 
 ;Eingabeaufforderung mit Default-Wert
 $line01 = GUICtrlCreateInput($name1,"110","120","100","","")
 If $name1 = ("") Then
@@ -158,18 +158,18 @@ GUICtrlCreateLabel("© UNIVENTION GmbH, 2006, www.univention.de, Version 1.01","1
 ;Das Fenster öffnen
 GUISetState()
 
-While 1
-
+While 1 
+	
 	$msg = GUIGetMsg()
 	;warten auf welchen Button gedrückt wird
 	if $msg = $Gui_Event_Close Then Exit
-
+		
 	if $msg = $cancel Then Exit
-
+		
 	if $msg = $ok Then ExitLoop
-
+		
 WEnd
-
+	
 ;Die Benutzereingaben übernehmen und abspeichern
 $name1 = GUICtrlRead($line01)
 $name2 = GUICtrlRead($line02)
@@ -188,8 +188,8 @@ If $pwchk <> $pwrd Then
 Else
 	$ctrl = ("ok")
 EndIf
-
-$pflicht = ("0xff0000")
+	
+$pflicht = ("0xff0000")	
 GUIDelete()
 ContinueLoop
 WEnd
@@ -198,13 +198,13 @@ If $line0 = ("") Then
 	$offic = ("C:\Programme\Microsoft Office\OFFICE11\OUTLOOK.EXE")
 	Else
 		$offic = $line0
-EndIf
+EndIf	
 If Not FileExists($offic) Then
 	MsgBox(64,"Fehler","Die Konfiguration wird abgebrochen, die Datei OUTLOOK.EXE konnte nicht gefunden werden.")
 	Exit
 EndIf
-
-If $checkCNy = 1 Then
+	
+If $checkCNy = 1 Then	
 ;outlook starten
 run ($offic)
 Sleep (5000)
@@ -304,12 +304,13 @@ Send ("{RIGHT}")
 Send ("{RIGHT}")
 Send ("{RIGHT}")
 Send ("{RIGHT}")
-send ("{TAB}")
+WinWait("Optionen","Toltec")
 WinActivate("Optionen")
-Send ("{ENTER}")
-Send ("{ENTER}")
-Send ("{ENTER}")
-Send ("{ENTER}")
+ControlClick ( "Optionen", "Toltec", "Button2") 
+Sleep(2000)
+Send ("!w")
+Send ("!w")
+Send ("!w")
 Send($serv)
 send ("{TAB}")
 Send ($mail1)
@@ -321,6 +322,7 @@ send ("{TAB}")
 Send ("{SPACE}")
 Send ("{ENTER}")
 Sleep (20000)
+Send ("{TAB}")
 While 1
 	If WinExists("Internetsicherheitshinweis") Then
 		WinActivate("Internetsicherheitshinweis")
