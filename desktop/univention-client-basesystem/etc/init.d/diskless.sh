@@ -104,7 +104,6 @@ done
 
 preparePythonEnvironment
 
-univention-baseconfig commit /etc/default/bootsplash
 
 echo -n "   ip address: " >>/dev/tty8
 ipcmd=`cat /proc/cmdline | grep ip | sed -e 's/.*ip=//g'`
@@ -317,7 +316,9 @@ fi
 
 univention-baseconfig set univentionAutoStartScript="`univention-policy-result -h $ldapServer -s $myDN  | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||' `" >/dev/tty8 2>&1
 # prepare to run gdm
-univention-baseconfig commit	/etc/default/gdm \
+univention-baseconfig commit	/etc/default/bootsplash \
+								/etc/init.d/portmap \
+								/etc/default/gdm \
 								/etc/gdm/gdm.conf \
 								/etc/gdm/Init/Default \
 								/usr/share/gdm/themes/univention/univention.xml\

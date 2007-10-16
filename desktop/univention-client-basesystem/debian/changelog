@@ -1,3 +1,11 @@
+univention-client-basesystem (2.1.4-1) unstable; urgency=low
+
+  * update the sources.list with -today
+  * commit /etc/init.d/portmap otherwise portmap won't start during the
+    boot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Oct 2007 21:50:16 +0200
+
 univention-client-basesystem (2.1.3-1) unstable; urgency=low
 
   * update config registry entries via config registry policies

@@ -2,4 +2,7 @@
 deb http://192.168.0.3/build2/ ucs_2.0-0/all/
 deb http://192.168.0.3/build2/ ucs_2.0-0/i386/
 
+deb http://192.168.0.3/build2/ ucs_2.0-0-today/all/
+deb http://192.168.0.3/build2/ ucs_2.0-0-today/i386/
+
 
