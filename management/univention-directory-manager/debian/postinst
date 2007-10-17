@@ -69,6 +69,7 @@ if [ "$1" = configure ]; then
 		univention-baseconfig set directory/manager/web/language="$(echo $local_default | sed -e 's|:.*||')"
 	else
 		bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
+	fi
 
 	bc_rename "$admin_timeout" "directory/manager/timeout" "300"
 

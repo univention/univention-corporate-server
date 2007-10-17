@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.3-2) unstable; urgency=low
+
+  * fix a syntax error in the postinst script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 11:47:21 +0200
+
 univention-directory-manager (4.2.3-1) unstable; urgency=low
 
   * do not recreate report when selecting any action while being on the report
