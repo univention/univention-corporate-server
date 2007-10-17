@@ -11,22 +11,22 @@
 
 menutitle=''
 
-if   configRegistry['server/role'] == 'fatclient':
+if   baseConfig['server/role'] == 'fatclient':
 	menutitle="Univention Managed Client"
-elif configRegistry['server/role'] =='mobileclient':
+elif baseConfig['server/role'] =='mobileclient':
 	menutitle="Univention Mobile Client"
-elif configRegistry['server/role'] =='domaincontroller_master':
+elif baseConfig['server/role'] =='domaincontroller_master':
 	menutitle="Univention DC Master"
-elif configRegistry['server/role'] =='domaincontroller_backup':
+elif baseConfig['server/role'] =='domaincontroller_backup':
 	menutitle="Univention DC Backup"
-elif configRegistry['server/role'] =='domaincontroller_slave':
+elif baseConfig['server/role'] =='domaincontroller_slave':
 	menutitle="Univention DC Slave"
-elif configRegistry['server/role'] =='memberserver':
+elif baseConfig['server/role'] =='memberserver':
 	menutitle="Univention Memberserver"
 else:
 	menutitle="Univention Corporate Server"
 
-print  '%s %s-%s-%s' % (menutitle, configRegistry['version/version'], configRegistry['version/patchlevel'], configRegistry['version/security-patchlevel'])
+print  '%s %s-%s-%s' % (menutitle, baseConfig['version/version'], baseConfig['version/patchlevel'], baseConfig['version/security-patchlevel'])
 							
 @!@
 

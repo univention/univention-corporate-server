@@ -1,3 +1,9 @@
+univention-config-registry (2.4.6-1) unstable; urgency=low
+
+  * switch from configRegistry to baseConfig in the issue conffiles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 07:59:07 +0200
+
 univention-config-registry (2.4.5-1) unstable; urgency=low
 
   * switch from configRegistry to baseConfig in the  baseconfig modules
