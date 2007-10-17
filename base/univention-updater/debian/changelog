@@ -1,3 +1,9 @@
+univention-updater (2.1.10-1) unstable; urgency=low
+
+  * overwrite bootsplash init script with the new version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 09:41:02 +0200
+
 univention-updater (2.1.9-1) unstable; urgency=low
 
   * set univention-printquota on hold during the update
