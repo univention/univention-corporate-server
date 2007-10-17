@@ -66,7 +66,7 @@ if [ "$1" = configure ]; then
 		admin_web_language="en_US.utf8"
 	fi
 	if [ -n "$locale_default" ]; then
-		univention-baseconfig set directory/manager/web/language="$(echo $local_default | sed -e 's|:.*||')"
+		univention-baseconfig set directory/manager/web/language="$(echo $locale_default | sed -e 's|:.*||')"
 	else
 		bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
 	fi
