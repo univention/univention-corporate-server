@@ -116,7 +116,7 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 	for i in `ps -ef | egrep "/usr/bin/python2.4.*/usr/share/univention-admin/uniconf/univention-admin.py" | awk '{print $2}'`; do
 		kill $i >/dev/null 2>&1
 	done
-	rm -f /etc/apache2/sites-enabled/univention-admin
+	a2dissite univention-admin
 
 	sleep 1
 

@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.3-3) unstable; urgency=low
+
+  * use a2dissite to disable the univention-admin site
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 11:54:54 +0200
+
 univention-directory-manager (4.2.3-2) unstable; urgency=low
 
   * fix a syntax error in the postinst script
