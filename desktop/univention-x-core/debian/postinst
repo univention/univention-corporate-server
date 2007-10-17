@@ -141,6 +141,7 @@ univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							\
 							xorg/mouse/serial1/Identifier?"Serial Mouse" \
 							xorg/mouse/serial1/Driver?mouse \
+							xorg/mouse/serial1/disabled?true \
 							xorg/mouse/serial1/options/protocol?"auto" \
 							xorg/mouse/serial1/options/device?"/dev/ttyS0" \
 							xorg/mouse/serial1/options/Emulate3Buttons?true \
@@ -149,6 +150,7 @@ univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							\
 							xorg/mouse/serial2/Identifier?"Serial Mouse ttyS1" \
 							xorg/mouse/serial2/Driver?mouse \
+							xorg/mouse/serial2/disabled?true \
 							xorg/mouse/serial2/options/protocol?"auto" \
 							xorg/mouse/serial2/options/device?"/dev/ttyS1" \
 							xorg/mouse/serial2/options/Emulate3Buttons?true \
@@ -157,6 +159,7 @@ univention-baseconfig set	xorg/device/driver?$(eval getXModul) \
 							\
 							xorg/mouse/psaux/Identifier?"PS/2 Mouse" \
 							xorg/mouse/psaux/Driver?mouse \
+							xorg/mouse/psaux/disabled?true \
 							xorg/mouse/psaux/options/protocol?"auto" \
 							xorg/mouse/psaux/options/device?"/dev/psaux" \
 							xorg/mouse/psaux/options/Emulate3Buttons?true \
