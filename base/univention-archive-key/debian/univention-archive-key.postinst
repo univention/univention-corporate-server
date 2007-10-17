@@ -1,0 +1,5 @@
+#!/bin/sh
+
+if [ -x /usr/bin/apt-key ]; then
+    /usr/bin/apt-key update
+fi
