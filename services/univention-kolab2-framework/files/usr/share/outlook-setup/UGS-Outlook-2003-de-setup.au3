@@ -318,11 +318,10 @@ Send ("@")
 Send ($mail2)
 send ("{TAB}")
 Send ($pwrd)
-send ("{TAB}")
-Send ("{SPACE}")
+ControlEnable ( "Toltec Connector", "Sicherheit", "Button4" )
+ControlClick ( "Toltec Connector", "Sicherheit", "Button4" )
 Send ("{ENTER}")
 Sleep (20000)
-Send ("{TAB}")
 While 1
 	If WinExists("Internetsicherheitshinweis") Then
 		WinActivate("Internetsicherheitshinweis")
@@ -334,18 +333,8 @@ Wend
 Send ("!w")
 Send ("{ENTER}")
 Send ("{Tab}")
-Send ("{Tab}")
 WinActivate("Optionen")
 Send ("{ENTER}")
-Send ("{Tab}")
-Send ("{Tab}")
-Send ("{Tab}")
-Send ("{Tab}")
-Send ("{Tab}")
-Send ("{Tab}")
-Send ("{SPACE}")
-Send ("{ENTER}")
-Send ("{ESC}")
 EndIf
 If $checkCNy = 1 Then
 ;free-busy listen einrichten

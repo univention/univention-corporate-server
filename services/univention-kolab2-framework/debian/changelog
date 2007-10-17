@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.1-5) unstable; urgency=low
+
+  * fixed navigation probem in outlook configuration skripts
+
+ -- Tobias Scherer <scherer@univention.de>  Wed, 17 Oct 2007 16:38:14 +0200
+
 univention-kolab2-framework (1.0.1-4) unstable; urgency=low
 
   * new Version of Outlookconfigurating AutoIt scripts for Toltec 2.1.1
