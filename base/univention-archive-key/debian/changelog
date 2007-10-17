@@ -1,3 +1,9 @@
+univention-archive-key (1.0.0-3) unstable; urgency=low
+
+  * Fix apt-key call
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 17 Oct 2007 11:56:39 +0200
+
 univention-archive-key (1.0.0-2) unstable; urgency=low
 
   * Automatically update apt keys in postinst.
