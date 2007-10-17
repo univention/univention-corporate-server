@@ -1,3 +1,9 @@
+univention-config-registry (2.4.7-1) unstable; urgency=low
+
+  * call univention-config-registry with the full /usr/sbin path
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 13:17:40 +0200
+
 univention-config-registry (2.4.6-1) unstable; urgency=low
 
   * switch from configRegistry to baseConfig in the issue conffiles

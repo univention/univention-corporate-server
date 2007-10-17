@@ -34,7 +34,7 @@ fi
 
 case "$1" in
     start)
-	eval $(univention-config-registry shell portmap/autostart)
+	eval $(/usr/sbin/univention-config-registry shell portmap/autostart)
 	if [ -z "$portmap_autostart" -o "$portmap_autostart" != "yes" ]; then
 		exit 0
 	fi
