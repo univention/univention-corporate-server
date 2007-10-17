@@ -463,6 +463,9 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 
 	mkdir -p /etc/univention/ssl/ucsCA
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
+		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	fi
 
 	download_host_certificate
 
@@ -523,6 +526,9 @@ elif [ "$server_role" = "domaincontroller_slave" ]; then
 elif [ "$server_role" = "memberserver" ]; then
 	mkdir -p /etc/univention/ssl/ucsCA
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
+		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	fi
 
 	download_host_certificate
 
@@ -562,6 +568,9 @@ else
 	mkdir -p /etc/univention/ssl/ucsCA
 
 	univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/ucsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	if [ ! -e /etc/univention/ssl/ucsCA/CAcert.pem ]; then
+		univention-scp $DCPWD "-r $DCACCOUNT@$DCNAME:/etc/univention/ssl/udsCA/CAcert.pem /etc/univention/ssl/ucsCA/" >>/var/log/univention/join.log 2>&1
+	fi
 
 	download_host_certificate
 
