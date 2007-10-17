@@ -1,3 +1,9 @@
+univention-x-core (1.1.6-2) unstable; urgency=low
+
+  * don't write the mouse disabled flag as option
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Oct 2007 13:14:30 +0200
+
 univention-x-core (1.1.6-1) unstable; urgency=low
 
   * only enable /dev/input/mice by default
