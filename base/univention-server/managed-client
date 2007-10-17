@@ -108,6 +108,9 @@ case $1 in
 					univention-baseconfig unset univentionAutoStartScript
 					univention-baseconfig set ldap/mydn="$use_dn" >/dev/null 2>&1
 
+					policy_file=$(mktemp)
+					policy_file_result=$(mktemp)
+
 					univention_policy_result -s $use_dn > $policy_file
 
 					cat $policy_file | while read line; do
