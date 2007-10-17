@@ -1,3 +1,9 @@
+univention-server (2.2.8-2) unstable; urgency=low
+
+  * Add dependencies on univention-archive-key to all system roles.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 17 Oct 2007 14:27:57 +0200
+
 univention-server (2.2.8-1) unstable; urgency=low
 
   * switch the bootsplash theme from fatclient to managedclient
