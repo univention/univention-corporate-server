@@ -73,6 +73,9 @@ if [ -n "$splash_theme" ]; then
 	univention-baseconfig unset splash/theme
 fi
 
+if [ "$bootsplash_theme" = "fatclient" ]; then
+	univention-baseconfig set bootsplash/theme=managedclient
+fi
 univention-baseconfig set bootsplash/theme?managedclient
 
 univention-baseconfig set ldap/connection/check?"*/3 * * * *"
