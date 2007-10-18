@@ -55,7 +55,10 @@ check_and_install univention-groupware-webclient
 check_and_install univention-application-server
 check_and_install univention-pkgdb
 check_and_install univention-pkgdb-tools
-check_and_install univention-admin
+dpkg -l univention-admin | grep ^ii >>/var/log/univention/updater.log 2>&1
+if [ $? = 0 ]; then
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-directory-manager >>/var/log/univention/updater.log 2>&1 
+fi
 check_and_install univention-java
 check_and_install univention-client-kernel-image
 check_and_install univention-mozilla-firefox

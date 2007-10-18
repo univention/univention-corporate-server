@@ -1,3 +1,10 @@
+univention-updater (2.1.11-1) unstable; urgency=low
+
+  * install univention-directory-manager if univention-admin is
+    installed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Oct 2007 16:19:04 +0200
+
 univention-updater (2.1.10-1) unstable; urgency=low
 
   * overwrite bootsplash init script with the new version
