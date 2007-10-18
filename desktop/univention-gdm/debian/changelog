@@ -1,3 +1,9 @@
+univention-gdm (1.1.4-1) unstable; urgency=low
+
+  * gdm-autologin: replace pam_heimdal with pam_krb5 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 18 Oct 2007 17:00:22 +0200
+
 univention-gdm (1.1.3-1) unstable; urgency=low
 
   * the X tools moved from usr/X11R6/bin to /usr/bin
