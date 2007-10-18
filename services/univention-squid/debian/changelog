@@ -2,7 +2,7 @@ univention-squid (2.0.2-1) unstable; urgency=low
 
   * only allow access from localhost if virus or content scanning is enabled
 
- -- Wolf Wiegand <wolf@univention.de>  Wed, 17 Oct 2007 17:34:52 +0200
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 17 Oct 2007 17:34:52 +0200
 
 univention-squid (2.0.1-2) unstable; urgency=low
 
