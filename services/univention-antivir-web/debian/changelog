@@ -1,3 +1,9 @@
+univention-antivir-web (2.0.1-2) unstable; urgency=low
+
+  * fix error in postinst script
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 18 Oct 2007 14:18:31 +0200
+
 univention-antivir-web (2.0.1-1) unstable; urgency=low
 
   * fixed copyright

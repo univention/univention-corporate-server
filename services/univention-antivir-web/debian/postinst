@@ -37,7 +37,7 @@ case "$1" in
 
         if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
                 # Merge pre-UCS2.0-settings:
-                eval $($CONFREG eval proxy/redirect proxy/antivir/scanner proxy/antivir/virusscanner proxy/antivir/scannerpath proxy/antivir/viruscmd proxy/antivir/alert)
+                eval $($CONFREG shell proxy/redirect proxy/antivir/scanner proxy/antivir/virusscanner proxy/antivir/scannerpath proxy/antivir/viruscmd proxy/antivir/alert)
 
                 [ $proxy_redirect ] && ( $CONFREG squid/virusscan=$proxy_redirect ; $CONFREG squid/contentscan=false )
                 [ $proxy_antivir_scanner ] && (
