@@ -1,3 +1,11 @@
+univention-directory-notifier (2.2.2-3) unstable; urgency=low
+
+  * check if /etc/runit/univention/univention-ldap-notifier is a
+    symbolic link and replace the link with
+    /etc/runit/univention/univention-directory-notifier
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 18 Oct 2007 17:12:51 +0200
+
 univention-directory-notifier (2.2.2-2) unstable; urgency=low
 
   * remove old ldap-notifier init script
