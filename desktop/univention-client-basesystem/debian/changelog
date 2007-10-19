@@ -1,4 +1,4 @@
-univention-client-basesystem (2.1.6-1) unstable; urgency=low
+univention-client-basesystem (2.1.6-2) unstable; urgency=low
 
   * added the udev rules sound permission file to the univention-client-
     basesystem info file

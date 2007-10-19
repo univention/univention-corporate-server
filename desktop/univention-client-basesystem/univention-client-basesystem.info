@@ -149,4 +149,4 @@ Type: file
 File: var/lib/scrollkeeper/tr/scrollkeeper_extended_cl.xml
 
 Type: file
-file: etc/udev/rules.d/z90_permissions_sound.rules
+File: etc/udev/rules.d/z90_permissions_sound.rules
