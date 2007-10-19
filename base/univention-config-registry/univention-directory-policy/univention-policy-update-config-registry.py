@@ -61,6 +61,8 @@ def main():
 
 	if configRegistry.has_key('ldap/hostdn'):
 		dn = configRegistry['ldap/hostdn']
+	elif configRegistry.has_key('ldap/mydn'):
+		dn = configRegistry['ldap/mydn']
 
 	# parse command line
 	try:
