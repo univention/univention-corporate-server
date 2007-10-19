@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.5-2) unstable; urgency=low
+
+  * added a udev rule for the sound permissions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2007 11:13:42 +0200
+
 univention-client-basesystem (2.1.5-1) unstable; urgency=low
 
   * install alsa-base

@@ -318,6 +318,7 @@ univention-baseconfig set univentionAutoStartScript="`univention-policy-result -
 # prepare to run gdm
 univention-baseconfig commit	/etc/default/bootsplash \
 								/etc/init.d/portmap \
+								/etc/udev/rules.d/z90_permissions_sound.rules \
 								/etc/default/gdm \
 								/etc/gdm/gdm.conf \
 								/etc/gdm/Init/Default \
@@ -340,5 +341,9 @@ univention-baseconfig dump | grep univention > /dev/tty9
 if [ "`univention-baseconfig get univentionXMouseDevice`" = "/dev/input/mice" ]; then
     modprobe usbmouse >/dev/tty8 2>&1
 fi
+
+#reload udev rules
+udevcontrol reload_rules
+udevtrigger
 
 echo "done."
