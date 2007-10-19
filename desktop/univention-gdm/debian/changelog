@@ -1,3 +1,10 @@
+univention-gdm (1.1.5-1) unstable; urgency=low
+
+  * with kernel 2.6 we use alsa on the thin client, so also we check for
+    /dev/sndstat
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2007 09:23:20 +0200
+
 univention-gdm (1.1.4-1) unstable; urgency=low
 
   * gdm-autologin: replace pam_heimdal with pam_krb5 

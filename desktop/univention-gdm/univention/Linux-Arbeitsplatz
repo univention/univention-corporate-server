@@ -100,11 +100,13 @@ function thinclient() {
 	echo ""
 
 	# start sound server
-	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
-		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
-		mkdir -p "/tmp/ksocket-${USERNAME}"
-		/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
-		artspid="$!"
+	if [ -e "/usr/bin/artswrapper" ]; then
+		if [ -e "/dev/dsp" ] || [ -e "/dev/sndstat" ]; then
+			#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
+			mkdir -p "/tmp/ksocket-${USERNAME}"
+			/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
+			artspid="$!"
+		fi
 	fi
 
 	eval `/usr/sbin/univention-baseconfig shell univentionClientDevicesActivate`
