@@ -37,7 +37,7 @@ case "$1" in
 
 	if dpkg --compare-versions "$2" lt-nl "2.0.0-1"; then
 		# Merge pre-UCS2.0-settings:
-		eval $(univention-config-registry eval proxy/ldapauth proxy/force proxy/parent/host proxy/parent/port )
+		eval $($CONFREG shell proxy/ldapauth proxy/force proxy/parent/host proxy/parent/port )
 
 		[ $proxy_ldapauth ] && $CONFREG squid/ldapauth=proxy_ldapauth
 		[ $proxy_force ] && $CONFREG squid/transparentproxy=$proxy_force
