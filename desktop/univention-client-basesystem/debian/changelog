@@ -1,3 +1,10 @@
+univention-client-basesystem (2.1.6-1) unstable; urgency=low
+
+  * added the udev rules sound permission file to the univention-client-
+    basesystem info file
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Oct 2007 13:01:01 +0200
+
 univention-client-basesystem (2.1.5-2) unstable; urgency=low
 
   * added a udev rule for the sound permissions
