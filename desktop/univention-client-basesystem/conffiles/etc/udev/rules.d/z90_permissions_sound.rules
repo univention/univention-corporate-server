@@ -9,7 +9,7 @@
 #
 
 @!@
-if not baseConfig has_key('udev/sound/disabled') and baseConfig['udev/sound/disabled'] in ['true', 'yes']:
+if not baseConfig.has_key('udev/sound/disabled') and not baseConfig['udev/sound/disabled'] in ['true', 'yes']:
 	print 'SUBSYSTEM=="sound",                             GROUP="%s", OWNER="%s"' % ( baseConfig.get('udev/sound/owner', 'root'), baseConfig.get( 'udev/sound/group', 'Domain Users' ))
 @!@
 
