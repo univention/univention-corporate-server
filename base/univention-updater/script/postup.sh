@@ -23,13 +23,15 @@ if [ -n "$repository_version" ]; then
 	univention-baseconfig unset repository/version >>/var/log/univention/updater.log 2>&1
 fi
 
-echo "univention-server-master install" | dpkg --set-selections
-echo "univention-server-backup install" | dpkg --set-selections
-echo "univention-server-slave install" | dpkg --set-selections
-echo "univention-server-member install" | dpkg --set-selections
-echo "univention-managed-client install" | dpkg --set-selections
-echo "univention-fat-client install" | dpkg --set-selections
-echo "univention-mobile-client install" | dpkg --set-selections
+for p in	univention-server-master \
+			univention-server-backup \
+			univention-server-slave \
+			univention-server-member \
+			univention-managed-client \
+			univention-fat-client \
+			univention-mobile-client; do
+	echo "$p install" | dpkg --set-selections
+done
 
 if [ -z "$server_role" ] || [ "$server_role" = "basesystem" ] || [ "$server_role" = "basissystem" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-basesystem >>/var/log/univention/updater.log 2>&1 
@@ -47,23 +49,44 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-managed-client  >>/var/log/univention/updater.log 2>&1 
 fi
 
-echo "univention-pkgdb install" | dpkg --set-selections
-echo "univention-printquota install" | dpkg --set-selections
-echo "univention-application-server install" | dpkg --set-selections
+for p in	univention-pkgdb \
+			univention-printquota \
+			univention-application-server \
+			univention-bind \
+			univention-bind-proxy \
+			univention-kolab2 \
+			univention-nagios-client \
+			univention-nagios-server \
+			univention-samba; do
+	echo "$p install" | dpkg --set-selections
+done
 
-check_and_install univention-groupware-webclient
-check_and_install univention-application-server
-check_and_install univention-pkgdb
-check_and_install univention-pkgdb-tools
+for p in	univention-groupware-webclient \
+			univention-application-server \
+			univention-pkgdb \
+			univention-pkgdb-tools \
+			univention-samba \
+			univention-bind \
+			univention-bind-proxy \
+			univention-kolab2 \
+			univention-nagios-client \
+			univention-nagios-server; do
+	check_and_install $p
+done
+
+
 dpkg -l univention-admin | grep ^ii >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-directory-manager >>/var/log/univention/updater.log 2>&1 
 fi
-check_and_install univention-java
-check_and_install univention-client-kernel-image
-check_and_install univention-mozilla-firefox
-check_and_install kdebase
-check_and_install kdenetwork
+
+for p in	univention-java \
+			univention-client-kernel-image \
+			univention-mozilla-firefox \
+			kdebase \
+			kdenetwork; do
+	check_and_install $p
+done
 
 
 dpkg -l univention-console | grep ^ii >>/var/log/univention/updater.log 2>&1

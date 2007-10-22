@@ -1,3 +1,10 @@
+univention-updater (2.2.1-1) unstable; urgency=low
+
+  * kill the running updater if there isn't enough free space
+  * set more packages to hold during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Oct 2007 10:40:19 +0200
+
 univention-updater (2.1.11-1) unstable; urgency=low
 
   * install univention-directory-manager if univention-admin is

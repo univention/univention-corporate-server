@@ -37,6 +37,8 @@ check_space(){
 		echo "         baseconfig variable update20/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		echo ""
+		# kill the running univention-updater process
+		killall univention-updater
 		exit 1
 	fi
 }
@@ -65,14 +67,22 @@ if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove freenx  >>/var/log/univention/updater.log 2>&1 
 fi
 
-echo "univention-server-master hold" | dpkg --set-selections
-echo "univention-server-backup hold" | dpkg --set-selections
-echo "univention-server-slave hold" | dpkg --set-selections
-echo "univention-server-member hold" | dpkg --set-selections
-echo "univention-managed-client hold" | dpkg --set-selections
-echo "univention-fat-client hold" | dpkg --set-selections
-echo "univention-mobile-client hold" | dpkg --set-selections
-echo "univention-pkgdb hold" | dpkg --set-selections
-echo "univention-printquota hold" | dpkg --set-selections
-echo "univention-application-server hold" | dpkg --set-selections
+for p in 	univention-server-master \
+			univention-server-backup \
+			univention-server-slave \
+			univention-server-member \
+			univention-managed-client \
+			univention-fat-client \
+			univention-mobile-client \
+			univention-bind \
+			univention-bind-proxy \
+			univention-kolab2 \
+			univention-nagios-client \
+			univention-nagios-server \
+			univention-samba \
+			univention-pkgdb \
+			univention-printquota \
+			univention-application-server; do
+	echo "$p hold" | dpkg --set-selections
+done
 
