@@ -1,0 +1,7 @@
+@!@
+if configRegistry.has_key('update/secure_apt'):
+	if configRegistry['update/secure_apt'] == 'no':
+		print APT::Get::AllowUnauthenticated 1 ;
+else:
+	print APT::Get::AllowUnauthenticated 0 ;
+@!@

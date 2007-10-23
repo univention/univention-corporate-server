@@ -46,6 +46,8 @@ univention-config-registry set log/rotate/weeks?12
 
 univention-config-registry set nameserver/option/timeout?2
 
+univention-config-registry set update/secure_apt?yes
+
 # services
 univention-config-registry set cron/autostart?yes
 univention-config-registry set inetd/autostart?yes
