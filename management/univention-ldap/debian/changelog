@@ -1,3 +1,9 @@
+univention-ldap (2.4.5-1) unstable; urgency=low
+
+  * slurpd uses the replog/replog file instead of replog-slurpd/replog
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Oct 2007 13:45:26 +0200
+
 univention-ldap (2.4.4-1) unstable; urgency=low
 
   * really restart the slapd during the upgrade

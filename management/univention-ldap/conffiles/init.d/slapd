@@ -116,7 +116,7 @@ if baseConfig['ldap/database/type'] == 'bdb':
    @!@
 if baseConfig['ldap/server/type']=="master":	   
     print "    replicas=`grep ^replica $REPLICACONF`"
-    print '    test -z "$replicas" || (echo -n " slurpd" && start-stop-daemon --start --quiet --name slurpd --exec $SLURPD -- -r /var/lib/univention-ldap/replog-slurpd/replog -t /var/lib/univention-ldap/slurpd)'
+    print '    test -z "$replicas" || (echo -n " slurpd" && start-stop-daemon --start --quiet --name slurpd --exec $SLURPD -- -r /var/lib/univention-ldap/replog/replog -t /var/lib/univention-ldap/slurpd)'
     print 'check_subschema >/dev/null 2>&1'
    @!@
 
