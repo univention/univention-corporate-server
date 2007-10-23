@@ -3,7 +3,7 @@
 # Univention Installer
 #  create sources.list
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -31,14 +31,11 @@
 mkdir -p /instmnt/etc/apt/
 mkdir -p /instmnt/sourcedevice
 cat >/instmnt/etc/apt/sources.list <<__EOT__
-#UCS Installtion
+#UCS Installation
 
 deb file:/sourcedevice/packages ./
 
 __EOT__
 
-echo "APT::Get::AllowUnauthenticated 1 ;" >/instmnt/etc/apt/apt.conf
-
-chmod 644 /instmnt/etc/apt/apt.conf
 chmod 644 /instmnt/etc/apt/sources.list
 rm -Rf /instmnt/etc/apt/sources.list.d

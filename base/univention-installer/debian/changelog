@@ -1,3 +1,10 @@
+univention-installer (1.7.9-2) unstable; urgency=low
+
+  * Don't disable apt-secure in generated apt.conf. This can now be configured through
+    Univention Config Registry.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 13:09:28 +0200
+
 univention-installer (1.7.9-1) unstable; urgency=low
 
   * updated installer log handling
