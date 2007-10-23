@@ -88,6 +88,10 @@ Variables: pkgdb/scan
 Variables: pkgdb/overwrite/joincheck
 
 Type: file
+File: etc/apt/apt.conf.d/20secureapt
+Variables: update/secure_apt
+
+Type: file
 File: etc/network/interfaces
 Preinst: interfaces.py
 Postinst: interfaces.py
