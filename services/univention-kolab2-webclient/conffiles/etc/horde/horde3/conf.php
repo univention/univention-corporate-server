@@ -20,6 +20,7 @@ if horde_auth.lower() == 'kolab':
 		print "$conf['server']['name'] = $_SERVER['SERVER_NAME'];"
 @!@
 $conf['server']['port'] = $_SERVER['SERVER_PORT'];
+$conf['safe_ips'] = array();
 $conf['compress_pages'] = true;
 $conf['umask'] = 077;
 $conf['session']['name'] = 'Horde';
@@ -108,6 +109,8 @@ $conf['token']['driver'] = 'none';
 $conf['mailer']['params']['sendmail_path'] = '/usr/sbin/sendmail';
 $conf['mailer']['params']['sendmail_args'] = '-oi';
 $conf['mailer']['type'] = 'sendmail';
+$conf['mailformat']['brokenrfc2231'] = false;
+$conf['tmpdir'] = '/tmp/';
 $conf['vfs']['params']['vfsroot'] = '/tmp';
 $conf['vfs']['type'] = 'file';
 $conf['sessionhandler']['type'] = 'none';
@@ -131,6 +134,7 @@ $conf['hooks']['authldap'] = false;
 $conf['portal']['fixed_blocks'] = array();
 $conf['accounts']['driver'] = 'null';
 $conf['imsp']['enabled'] = false;
+$conf['memcache']['enabled'] = false;
 @!@
 horde_auth=baseConfig.get('horde/auth', 'kolab')
 if horde_auth.lower() == 'kolab':
@@ -156,8 +160,8 @@ if horde_auth.lower() == 'kolab':
 	print "$conf['kolab']['imap']['maildomain'] = '%s';" % res;
 	print "$conf['problems']['maildomain'] = '%s';" % res;
 	print "$conf['share']['driver'] = 'kolab';"
-	print "$conf['kolab']['imap']['virtdomains'] = false;"
-
+	print "$conf['share']['no_sharing'] = false;"
+	print "$conf['share']['cache'] = true;"
 	print "$conf['kolab']['imap']['virtdomains'] = false;"
 	print "$conf['kolab']['smtp']['port'] = 25;"
 	print "$conf['kolab']['enabled'] = true;"

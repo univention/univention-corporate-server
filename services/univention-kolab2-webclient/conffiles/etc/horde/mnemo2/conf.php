@@ -9,5 +9,6 @@
 // 	/etc/univention/templates/files/etc/horde/mnemo2/conf.php
 //
 $conf['storage']['driver'] = 'kolab';
+// $conf['utils']['gnupg'] = '/usr/bin/gpg';
 $conf['menu']['print'] = true;
 $conf['menu']['import_export'] = true;

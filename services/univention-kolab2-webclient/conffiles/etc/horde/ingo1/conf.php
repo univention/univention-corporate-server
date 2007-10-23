@@ -8,6 +8,7 @@ $conf['rules']['usefolderapi'] = true;
 $conf['spam']['enabled'] = true;
 $conf['spam']['header'] = 'X-Spam-Level';
 $conf['spam']['char'] = '*';
+$conf['spam']['compare'] = 'string';
 $conf['hooks']['vacation_addresses'] = false;
 $conf['hooks']['vacation_only'] = true;
 
