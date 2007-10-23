@@ -1,3 +1,9 @@
+univention-config-registry (2.4.8-3) unstable; urgency=low
+
+  * Use old name scheme for easier upgradability
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 11:35:33 +0200
+
 univention-config-registry (2.4.8-2) unstable; urgency=low
 
   * Introduce new config registry variable to configure, whether an unauthenticated
