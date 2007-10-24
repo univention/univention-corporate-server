@@ -31,6 +31,10 @@
 a2enmod auth_pam
 a2enmod unique_id
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1; then
+	a2enmod ssl
+fi
+
 univention-config-registry set apache2/autostart?"yes"
 univention-config-registry set apache2/loglevel?"warn"
 univention-config-registry set apache2/startsite?"ucs-overview/de.html"

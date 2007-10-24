@@ -1,3 +1,9 @@
+univention-apache (2.0.11-2) unstable; urgency=low
+
+  * enable the ssl module during the UCS 2.0 upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2007 11:59:53 +0200
+
 univention-apache (2.0.11-1) unstable; urgency=low
 
   * if started by UMC do not force the reload of apache 
