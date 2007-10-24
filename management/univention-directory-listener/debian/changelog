@@ -1,3 +1,9 @@
+univention-directory-listener (2.2.3-3) unstable; urgency=low
+
+  * added a conflict to the old univention-ldap-listner package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2007 11:41:32 +0200
+
 univention-directory-listener (2.2.3-2) unstable; urgency=low
 
   * remove old ldap-listener init script
