@@ -1,3 +1,10 @@
+univention-server (2.2.9-1) unstable; urgency=low
+
+  * change path in managedclient bootsplah from fatclient to
+    managedclient
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2007 07:49:37 +0200
+
 univention-server (2.2.8-2) unstable; urgency=low
 
   * Add dependencies on univention-archive-key to all system roles.
