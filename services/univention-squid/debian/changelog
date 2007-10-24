@@ -1,3 +1,10 @@
+univention-squid (2.0.3-1) unstable; urgency=low
+
+  * fix some errors regarding parent proxy configuration in squid.conf
+  * re-activate logging to /var/log/squid/access.log
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 24 Oct 2007 11:57:24 +0200
+
 univention-squid (2.0.2-1) unstable; urgency=low
 
   * only allow access from localhost if virus or content scanning is enabled
