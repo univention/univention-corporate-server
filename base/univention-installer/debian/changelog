@@ -1,3 +1,10 @@
+univention-installer (1.7.9-3) unstable; urgency=low
+
+  * Enable APT::Get::AllowUnauthenticated for all installation steps, which
+    run apt-get install to install further components.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 24 Oct 2007 15:48:07 +0200
+
 univention-installer (1.7.9-2) unstable; urgency=low
 
   * Don't disable apt-secure in generated apt.conf. This can now be configured through

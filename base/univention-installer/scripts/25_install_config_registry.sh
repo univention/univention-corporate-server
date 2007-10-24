@@ -34,9 +34,9 @@ PIPE="yes yes '' |"
 cat >>/instmnt/install_config_registry.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
-$PIPE apt-get install univention-config-registry
+$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-config-registry
 $PIPE dpkg --configure -a
-$PIPE apt-get install bind9-host
+$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install bind9-host
 $PIPE dpkg --configure -a
 
 __EOT__

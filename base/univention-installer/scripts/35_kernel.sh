@@ -40,7 +40,7 @@ cat >>/instmnt/install_initrd.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
-$PIPE apt-get install initrd-tools
+$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install initrd-tools
 $PIPE dpkg --configure -a
 
 __EOT__
@@ -101,15 +101,15 @@ if [ -n "$module" ]; then
 fi
 
 if [ "$architecture" = "powerpc" ]; then
-	$PIPE apt-get install initramfs-tools parted
+	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install initramfs-tools parted
 else
-	$PIPE apt-get install univention-grub univention-initrd
+	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-grub univention-initrd
 fi
 
-$PIPE apt-get install $kernel_package
+$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install $kernel_package
 if [ "\$?" != "0" ]; then
 	if [ -n "$fallback_kernel_package" ]; then
-		$PIPE apt-get install $fallback_kernel_package
+		$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install $fallback_kernel_package
 	fi
 fi
 
