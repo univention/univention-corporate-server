@@ -1,7 +1,7 @@
 univention-updater (2.3.2-1) unstable; urgency=low
 
- * include fixes for proxy support for univention-updater
-   univention-repository-update
+  * include fixes for proxy support for univention-updater
+    univention-repository-update
 
  -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 11:54:50 +0200
 
