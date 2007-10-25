@@ -1,3 +1,9 @@
+univention-kernel-modules-extra-2.6 (2.6.18-ucs57) unstable; urgency=low
+
+  * Update to latest kernel build.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 25 Oct 2007 16:09:43 +0200
+
 univention-kernel-modules-extra-2.6 (2.6.18-4) unstable; urgency=low
 
   * Initial release based on linux-modules-extra-2.6 2.6.18-7+etch3

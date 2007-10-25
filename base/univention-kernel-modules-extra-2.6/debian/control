@@ -1,16 +1,16 @@
-Source: univention-kernel-modules-extra-2.6
+Source: linux-modules-extra-2.6
 Section: devel
 Priority: optional
 Maintainer: Debian Kernel Team <debian-kernel@lists.debian.org>
 Uploaders: Bastian Blank <waldi@debian.org>, Daniel Baumann <daniel@debian.org>
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), linux-support-2.6.18-4, linux-headers-2.6.18-4-all-alpha [alpha], linux-headers-2.6.18-4-all-amd64 [amd64], linux-headers-2.6.18-4-all-arm [arm], linux-headers-2.6.18-4-all-hppa [hppa], linux-headers-2.6.18-4-all-i386 [i386], linux-headers-2.6.18-4-all-ia64 [ia64], linux-headers-2.6.18-4-all-m68k [m68k], linux-headers-2.6.18-4-all-mips [mips], linux-headers-2.6.18-4-all-mipsel [mipsel], linux-headers-2.6.18-4-all-powerpc [powerpc], linux-headers-2.6.18-4-all-s390 [s390], linux-headers-2.6.18-4-all-sparc [sparc], squashfs-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc], drbd8-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc]
+Build-Depends: debhelper (>= 5), linux-support-2.6.18-ucs57, linux-headers-2.6.18-ucs57-all-alpha [alpha], linux-headers-2.6.18-ucs57-all-amd64 [amd64], linux-headers-2.6.18-ucs57-all-arm [arm], linux-headers-2.6.18-ucs57-all-hppa [hppa], linux-headers-2.6.18-ucs57-all-i386 [i386], linux-headers-2.6.18-ucs57-all-ia64 [ia64], linux-headers-2.6.18-ucs57-all-m68k [m68k], linux-headers-2.6.18-ucs57-all-mips [mips], linux-headers-2.6.18-ucs57-all-mipsel [mipsel], linux-headers-2.6.18-ucs57-all-powerpc [powerpc], linux-headers-2.6.18-ucs57-all-s390 [s390], linux-headers-2.6.18-ucs57-all-sparc [sparc], squashfs-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc], drbd8-source [alpha amd64 i386 ia64 m68k mips mipsel powerpc s390 sparc]
 
-Package: squashfs-modules-2.6.18-4-alpha-generic
+Package: squashfs-modules-2.6.18-ucs57-alpha-generic
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-generic
+Depends: linux-modules-2.6.18-ucs57-alpha-generic
 Description: Squash filesystem modules for Linux 2.6.18 on Alpha
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Alpha machines.
@@ -30,7 +30,7 @@ Package: squashfs-modules-2.6-alpha-generic
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-alpha-generic
+Depends: squashfs-modules-2.6.18-ucs57-alpha-generic
 Description: Squash filesystem modules for Linux 2.6 on Alpha
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Alpha machines.
@@ -46,11 +46,11 @@ Description: Squash filesystem modules for Linux 2.6 on Alpha
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-alpha-generic
+Package: drbd8-modules-2.6.18-ucs57-alpha-generic
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-generic
+Depends: linux-modules-2.6.18-ucs57-alpha-generic
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Alpha machines.
@@ -69,7 +69,7 @@ Package: drbd8-modules-2.6-alpha-generic
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-alpha-generic
+Depends: drbd8-modules-2.6.18-ucs57-alpha-generic
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Alpha machines.
@@ -84,11 +84,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-alpha-smp
+Package: squashfs-modules-2.6.18-ucs57-alpha-smp
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-smp
+Depends: linux-modules-2.6.18-ucs57-alpha-smp
 Description: Squash filesystem modules for Linux 2.6.18 on Alpha SMP
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Alpha SMP machines.
@@ -108,7 +108,7 @@ Package: squashfs-modules-2.6-alpha-smp
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-alpha-smp
+Depends: squashfs-modules-2.6.18-ucs57-alpha-smp
 Description: Squash filesystem modules for Linux 2.6 on Alpha SMP
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Alpha SMP machines.
@@ -124,11 +124,11 @@ Description: Squash filesystem modules for Linux 2.6 on Alpha SMP
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-alpha-smp
+Package: drbd8-modules-2.6.18-ucs57-alpha-smp
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-smp
+Depends: linux-modules-2.6.18-ucs57-alpha-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha SMP
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Alpha SMP machines.
@@ -147,7 +147,7 @@ Package: drbd8-modules-2.6-alpha-smp
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-alpha-smp
+Depends: drbd8-modules-2.6.18-ucs57-alpha-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha SMP
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Alpha SMP machines.
@@ -162,11 +162,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-alpha-legacy
+Package: squashfs-modules-2.6.18-ucs57-alpha-legacy
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-legacy
+Depends: linux-modules-2.6.18-ucs57-alpha-legacy
 Description: Squash filesystem modules for Linux 2.6.18 on Alpha Legacy
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Alpha Legacy machines.
@@ -186,7 +186,7 @@ Package: squashfs-modules-2.6-alpha-legacy
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-alpha-legacy
+Depends: squashfs-modules-2.6.18-ucs57-alpha-legacy
 Description: Squash filesystem modules for Linux 2.6 on Alpha Legacy
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Alpha Legacy machines.
@@ -202,11 +202,11 @@ Description: Squash filesystem modules for Linux 2.6 on Alpha Legacy
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-alpha-legacy
+Package: drbd8-modules-2.6.18-ucs57-alpha-legacy
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-alpha-legacy
+Depends: linux-modules-2.6.18-ucs57-alpha-legacy
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Alpha Legacy
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Alpha Legacy machines.
@@ -225,7 +225,7 @@ Package: drbd8-modules-2.6-alpha-legacy
 Architecture: alpha
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-alpha-legacy
+Depends: drbd8-modules-2.6.18-ucs57-alpha-legacy
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Alpha Legacy
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Alpha Legacy machines.
@@ -240,11 +240,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-amd64
+Package: squashfs-modules-2.6.18-ucs57-amd64
 Architecture: amd64 i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-amd64
+Depends: linux-modules-2.6.18-ucs57-amd64
 Description: Squash filesystem modules for Linux 2.6.18 on AMD64
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on all 64bit single- and multiprocessor AMD and Intel
@@ -265,7 +265,7 @@ Package: squashfs-modules-2.6-amd64
 Architecture: amd64 i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-amd64
+Depends: squashfs-modules-2.6.18-ucs57-amd64
 Description: Squash filesystem modules for Linux 2.6 on AMD64
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on all 64bit single- and multiprocessor AMD and Intel machines.
@@ -281,11 +281,11 @@ Description: Squash filesystem modules for Linux 2.6 on AMD64
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-amd64
+Package: drbd8-modules-2.6.18-ucs57-amd64
 Architecture: amd64 i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-amd64
+Depends: linux-modules-2.6.18-ucs57-amd64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD64
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on all 64bit single- and
@@ -305,7 +305,7 @@ Package: drbd8-modules-2.6-amd64
 Architecture: amd64 i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-amd64
+Depends: drbd8-modules-2.6.18-ucs57-amd64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD64
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on all 64bit single- and
@@ -321,11 +321,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-xen-amd64
+Package: squashfs-modules-2.6.18-ucs57-xen-amd64
 Architecture: amd64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-xen-amd64
+Depends: linux-modules-2.6.18-ucs57-xen-amd64
 Description: Squash filesystem modules for Linux 2.6.18 on AMD64
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on all 64bit single- and multiprocessor AMD and Intel
@@ -346,7 +346,7 @@ Package: squashfs-modules-2.6-xen-amd64
 Architecture: amd64
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-xen-amd64
+Depends: squashfs-modules-2.6.18-ucs57-xen-amd64
 Description: Squash filesystem modules for Linux 2.6 on AMD64
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on all 64bit single- and multiprocessor AMD and Intel machines.
@@ -362,11 +362,11 @@ Description: Squash filesystem modules for Linux 2.6 on AMD64
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-xen-amd64
+Package: drbd8-modules-2.6.18-ucs57-xen-amd64
 Architecture: amd64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-xen-amd64
+Depends: linux-modules-2.6.18-ucs57-xen-amd64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD64
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on all 64bit single- and
@@ -386,7 +386,7 @@ Package: drbd8-modules-2.6-xen-amd64
 Architecture: amd64
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-xen-amd64
+Depends: drbd8-modules-2.6.18-ucs57-xen-amd64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD64
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on all 64bit single- and
@@ -402,11 +402,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-486
+Package: squashfs-modules-2.6.18-ucs57-486
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-486
+Depends: linux-modules-2.6.18-ucs57-486
 Description: Squash filesystem modules for Linux 2.6.18 on x86
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on x86 and compatible machines.
@@ -426,7 +426,7 @@ Package: squashfs-modules-2.6-486
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-486
+Depends: squashfs-modules-2.6.18-ucs57-486
 Description: Squash filesystem modules for Linux 2.6 on x86
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on x86 and compatible machines.
@@ -442,11 +442,11 @@ Description: Squash filesystem modules for Linux 2.6 on x86
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-486
+Package: drbd8-modules-2.6.18-ucs57-486
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-486
+Depends: linux-modules-2.6.18-ucs57-486
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on x86
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on x86 and compatible
@@ -466,7 +466,7 @@ Package: drbd8-modules-2.6-486
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-486
+Depends: drbd8-modules-2.6.18-ucs57-486
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on x86
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on x86 and compatible machines.
@@ -481,11 +481,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-686
+Package: squashfs-modules-2.6.18-ucs57-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-686
+Depends: linux-modules-2.6.18-ucs57-686
 Description: Squash filesystem modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
@@ -506,7 +506,7 @@ Package: squashfs-modules-2.6-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-686
+Depends: squashfs-modules-2.6.18-ucs57-686
 Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
@@ -523,11 +523,11 @@ Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-686
+Package: drbd8-modules-2.6.18-ucs57-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-686
+Depends: linux-modules-2.6.18-ucs57-686
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Pentium Pro/Celeron/Pentium
@@ -547,7 +547,7 @@ Package: drbd8-modules-2.6-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-686
+Depends: drbd8-modules-2.6.18-ucs57-686
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Pentium Pro/Celeron/Pentium
@@ -563,11 +563,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-k7
+Package: squashfs-modules-2.6.18-ucs57-k7
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-k7
+Depends: linux-modules-2.6.18-ucs57-k7
 Description: Squash filesystem modules for Linux 2.6.18 on AMD K7
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on 32bit AMD Duron/Athlon/AthlonXP machines.
@@ -587,7 +587,7 @@ Package: squashfs-modules-2.6-k7
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-k7
+Depends: squashfs-modules-2.6.18-ucs57-k7
 Description: Squash filesystem modules for Linux 2.6 on AMD K7
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on 32bit AMD Duron/Athlon/AthlonXP machines.
@@ -603,11 +603,11 @@ Description: Squash filesystem modules for Linux 2.6 on AMD K7
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-k7
+Package: drbd8-modules-2.6.18-ucs57-k7
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-k7
+Depends: linux-modules-2.6.18-ucs57-k7
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on AMD K7
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on 32bit AMD
@@ -627,7 +627,7 @@ Package: drbd8-modules-2.6-k7
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-k7
+Depends: drbd8-modules-2.6.18-ucs57-k7
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on AMD K7
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on 32bit AMD Duron/Athlon/AthlonXP
@@ -643,11 +643,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-686-bigmem
+Package: squashfs-modules-2.6.18-ucs57-686-bigmem
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-686-bigmem
+Depends: linux-modules-2.6.18-ucs57-686-bigmem
 Description: Squash filesystem modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4
@@ -668,7 +668,7 @@ Package: squashfs-modules-2.6-686-bigmem
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-686-bigmem
+Depends: squashfs-modules-2.6.18-ucs57-686-bigmem
 Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Pentium Pro/Celeron/Pentium II/Pentium III/Pentium 4 with
@@ -685,11 +685,11 @@ Description: Squash filesystem modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-686-bigmem
+Package: drbd8-modules-2.6.18-ucs57-686-bigmem
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-686-bigmem
+Depends: linux-modules-2.6.18-ucs57-686-bigmem
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PPro/Celeron/PII/PIII/P4
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Pentium Pro/Celeron/Pentium
@@ -709,7 +709,7 @@ Package: drbd8-modules-2.6-686-bigmem
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-686-bigmem
+Depends: drbd8-modules-2.6.18-ucs57-686-bigmem
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PPro/Celeron/PII/PIII/P4
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Pentium Pro/Celeron/Pentium
@@ -725,11 +725,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-xen-686
+Package: squashfs-modules-2.6.18-ucs57-xen-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-xen-686
+Depends: linux-modules-2.6.18-ucs57-xen-686
 Description: Squash filesystem modules for Linux 2.6.18 on i686
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on i686 and compatible machines.
@@ -749,7 +749,7 @@ Package: squashfs-modules-2.6-xen-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-xen-686
+Depends: squashfs-modules-2.6.18-ucs57-xen-686
 Description: Squash filesystem modules for Linux 2.6 on i686
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on i686 and compatible machines.
@@ -765,11 +765,11 @@ Description: Squash filesystem modules for Linux 2.6 on i686
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-xen-686
+Package: drbd8-modules-2.6.18-ucs57-xen-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-xen-686
+Depends: linux-modules-2.6.18-ucs57-xen-686
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on i686
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on i686 and compatible
@@ -789,7 +789,7 @@ Package: drbd8-modules-2.6-xen-686
 Architecture: i386
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-xen-686
+Depends: drbd8-modules-2.6.18-ucs57-xen-686
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on i686
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on i686 and compatible machines.
@@ -804,11 +804,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-itanium
+Package: squashfs-modules-2.6.18-ucs57-itanium
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-itanium
+Depends: linux-modules-2.6.18-ucs57-itanium
 Description: Squash filesystem modules for Linux 2.6.18 on Itanium
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Itanium machines.
@@ -828,7 +828,7 @@ Package: squashfs-modules-2.6-itanium
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-itanium
+Depends: squashfs-modules-2.6.18-ucs57-itanium
 Description: Squash filesystem modules for Linux 2.6 on Itanium
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Itanium machines.
@@ -844,11 +844,11 @@ Description: Squash filesystem modules for Linux 2.6 on Itanium
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-itanium
+Package: drbd8-modules-2.6.18-ucs57-itanium
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-itanium
+Depends: linux-modules-2.6.18-ucs57-itanium
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Itanium
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Itanium machines.
@@ -867,7 +867,7 @@ Package: drbd8-modules-2.6-itanium
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-itanium
+Depends: drbd8-modules-2.6.18-ucs57-itanium
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Itanium
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Itanium machines.
@@ -882,11 +882,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-mckinley
+Package: squashfs-modules-2.6.18-ucs57-mckinley
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-mckinley
+Depends: linux-modules-2.6.18-ucs57-mckinley
 Description: Squash filesystem modules for Linux 2.6.18 on Itanium II
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Itanium II machines.
@@ -906,7 +906,7 @@ Package: squashfs-modules-2.6-mckinley
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-mckinley
+Depends: squashfs-modules-2.6.18-ucs57-mckinley
 Description: Squash filesystem modules for Linux 2.6 on Itanium II
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Itanium II machines.
@@ -922,11 +922,11 @@ Description: Squash filesystem modules for Linux 2.6 on Itanium II
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-mckinley
+Package: drbd8-modules-2.6.18-ucs57-mckinley
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-mckinley
+Depends: linux-modules-2.6.18-ucs57-mckinley
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Itanium II
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Itanium II machines.
@@ -945,7 +945,7 @@ Package: drbd8-modules-2.6-mckinley
 Architecture: ia64
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-mckinley
+Depends: drbd8-modules-2.6.18-ucs57-mckinley
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Itanium II
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Itanium II machines.
@@ -960,11 +960,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-amiga
+Package: squashfs-modules-2.6.18-ucs57-amiga
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-amiga
+Depends: linux-modules-2.6.18-ucs57-amiga
 Description: Squash filesystem modules for Linux 2.6.18 on Amiga
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Amiga machines.
@@ -984,7 +984,7 @@ Package: squashfs-modules-2.6-amiga
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-amiga
+Depends: squashfs-modules-2.6.18-ucs57-amiga
 Description: Squash filesystem modules for Linux 2.6 on Amiga
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Amiga machines.
@@ -1000,11 +1000,11 @@ Description: Squash filesystem modules for Linux 2.6 on Amiga
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-amiga
+Package: drbd8-modules-2.6.18-ucs57-amiga
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-amiga
+Depends: linux-modules-2.6.18-ucs57-amiga
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Amiga
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Amiga machines.
@@ -1023,7 +1023,7 @@ Package: drbd8-modules-2.6-amiga
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-amiga
+Depends: drbd8-modules-2.6.18-ucs57-amiga
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Amiga
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Amiga machines.
@@ -1038,11 +1038,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-atari
+Package: squashfs-modules-2.6.18-ucs57-atari
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-atari
+Depends: linux-modules-2.6.18-ucs57-atari
 Description: Squash filesystem modules for Linux 2.6.18 on Atari
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Atari machines.
@@ -1062,7 +1062,7 @@ Package: squashfs-modules-2.6-atari
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-atari
+Depends: squashfs-modules-2.6.18-ucs57-atari
 Description: Squash filesystem modules for Linux 2.6 on Atari
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Atari machines.
@@ -1078,11 +1078,11 @@ Description: Squash filesystem modules for Linux 2.6 on Atari
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-atari
+Package: drbd8-modules-2.6.18-ucs57-atari
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-atari
+Depends: linux-modules-2.6.18-ucs57-atari
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Atari
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Atari machines.
@@ -1101,7 +1101,7 @@ Package: drbd8-modules-2.6-atari
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-atari
+Depends: drbd8-modules-2.6.18-ucs57-atari
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Atari
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Atari machines.
@@ -1116,11 +1116,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-mac
+Package: squashfs-modules-2.6.18-ucs57-mac
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-mac
+Depends: linux-modules-2.6.18-ucs57-mac
 Description: Squash filesystem modules for Linux 2.6.18 on Macintosh
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Macintosh machines.
@@ -1140,7 +1140,7 @@ Package: squashfs-modules-2.6-mac
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-mac
+Depends: squashfs-modules-2.6.18-ucs57-mac
 Description: Squash filesystem modules for Linux 2.6 on Macintosh
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Macintosh machines.
@@ -1156,11 +1156,11 @@ Description: Squash filesystem modules for Linux 2.6 on Macintosh
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-mac
+Package: drbd8-modules-2.6.18-ucs57-mac
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-mac
+Depends: linux-modules-2.6.18-ucs57-mac
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Macintosh
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Macintosh machines.
@@ -1179,7 +1179,7 @@ Package: drbd8-modules-2.6-mac
 Architecture: m68k
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-mac
+Depends: drbd8-modules-2.6.18-ucs57-mac
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Macintosh
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Macintosh machines.
@@ -1194,11 +1194,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-r4k-ip22
+Package: squashfs-modules-2.6.18-ucs57-r4k-ip22
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r4k-ip22
+Depends: linux-modules-2.6.18-ucs57-r4k-ip22
 Description: Squash filesystem modules for Linux 2.6.18 on SGI IP22
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on SGI IP22 (Indy, Indigo2) machines.
@@ -1218,7 +1218,7 @@ Package: squashfs-modules-2.6-r4k-ip22
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-r4k-ip22
+Depends: squashfs-modules-2.6.18-ucs57-r4k-ip22
 Description: Squash filesystem modules for Linux 2.6 on SGI IP22
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on SGI IP22 (Indy, Indigo2) machines.
@@ -1234,11 +1234,11 @@ Description: Squash filesystem modules for Linux 2.6 on SGI IP22
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-r4k-ip22
+Package: drbd8-modules-2.6.18-ucs57-r4k-ip22
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r4k-ip22
+Depends: linux-modules-2.6.18-ucs57-r4k-ip22
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on SGI IP22
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on SGI IP22 (Indy, Indigo2)
@@ -1258,7 +1258,7 @@ Package: drbd8-modules-2.6-r4k-ip22
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-r4k-ip22
+Depends: drbd8-modules-2.6.18-ucs57-r4k-ip22
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on SGI IP22
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on SGI IP22 (Indy, Indigo2) machines.
@@ -1273,11 +1273,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-r5k-ip32
+Package: squashfs-modules-2.6.18-ucs57-r5k-ip32
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r5k-ip32
+Depends: linux-modules-2.6.18-ucs57-r5k-ip32
 Description: Squash filesystem modules for Linux 2.6.18 on SGI IP32
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on SGI IP32 (O2) machines.
@@ -1297,7 +1297,7 @@ Package: squashfs-modules-2.6-r5k-ip32
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-r5k-ip32
+Depends: squashfs-modules-2.6.18-ucs57-r5k-ip32
 Description: Squash filesystem modules for Linux 2.6 on SGI IP32
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on SGI IP32 (O2) machines.
@@ -1313,11 +1313,11 @@ Description: Squash filesystem modules for Linux 2.6 on SGI IP32
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-r5k-ip32
+Package: drbd8-modules-2.6.18-ucs57-r5k-ip32
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r5k-ip32
+Depends: linux-modules-2.6.18-ucs57-r5k-ip32
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on SGI IP32
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on SGI IP32 (O2) machines.
@@ -1336,7 +1336,7 @@ Package: drbd8-modules-2.6-r5k-ip32
 Architecture: mips
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-r5k-ip32
+Depends: drbd8-modules-2.6.18-ucs57-r5k-ip32
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on SGI IP32
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on SGI IP32 (O2) machines.
@@ -1351,11 +1351,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-sb1-bcm91250a
+Package: squashfs-modules-2.6.18-ucs57-sb1-bcm91250a
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sb1-bcm91250a
+Depends: linux-modules-2.6.18-ucs57-sb1-bcm91250a
 Description: Squash filesystem modules for Linux 2.6.18 on BCM91250A
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Broadcom BCM91250A (aka SWARM) machines.
@@ -1375,7 +1375,7 @@ Package: squashfs-modules-2.6-sb1-bcm91250a
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-sb1-bcm91250a
+Depends: squashfs-modules-2.6.18-ucs57-sb1-bcm91250a
 Description: Squash filesystem modules for Linux 2.6 on BCM91250A
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Broadcom BCM91250A (aka SWARM) machines.
@@ -1391,11 +1391,11 @@ Description: Squash filesystem modules for Linux 2.6 on BCM91250A
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-sb1-bcm91250a
+Package: drbd8-modules-2.6.18-ucs57-sb1-bcm91250a
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sb1-bcm91250a
+Depends: linux-modules-2.6.18-ucs57-sb1-bcm91250a
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on BCM91250A
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Broadcom BCM91250A (aka
@@ -1415,7 +1415,7 @@ Package: drbd8-modules-2.6-sb1-bcm91250a
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-sb1-bcm91250a
+Depends: drbd8-modules-2.6.18-ucs57-sb1-bcm91250a
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on BCM91250A
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Broadcom BCM91250A (aka SWARM)
@@ -1431,11 +1431,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-sb1a-bcm91480b
+Package: squashfs-modules-2.6.18-ucs57-sb1a-bcm91480b
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sb1a-bcm91480b
+Depends: linux-modules-2.6.18-ucs57-sb1a-bcm91480b
 Description: Squash filesystem modules for Linux 2.6.18 on BCM91480B
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Broadcom BCM91480B (aka BigSur) machines.
@@ -1455,7 +1455,7 @@ Package: squashfs-modules-2.6-sb1a-bcm91480b
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-sb1a-bcm91480b
+Depends: squashfs-modules-2.6.18-ucs57-sb1a-bcm91480b
 Description: Squash filesystem modules for Linux 2.6 on BCM91480B
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Broadcom BCM91480B (aka BigSur) machines.
@@ -1471,11 +1471,11 @@ Description: Squash filesystem modules for Linux 2.6 on BCM91480B
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-sb1a-bcm91480b
+Package: drbd8-modules-2.6.18-ucs57-sb1a-bcm91480b
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sb1a-bcm91480b
+Depends: linux-modules-2.6.18-ucs57-sb1a-bcm91480b
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on BCM91480B
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Broadcom BCM91480B (aka
@@ -1495,7 +1495,7 @@ Package: drbd8-modules-2.6-sb1a-bcm91480b
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-sb1a-bcm91480b
+Depends: drbd8-modules-2.6.18-ucs57-sb1a-bcm91480b
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on BCM91480B
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Broadcom BCM91480B (aka BigSur)
@@ -1511,11 +1511,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-qemu
+Package: squashfs-modules-2.6.18-ucs57-qemu
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-qemu
+Depends: linux-modules-2.6.18-ucs57-qemu
 Description: Squash filesystem modules for Linux 2.6.18 on QEMU
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on QEMU virtual machine machines.
@@ -1535,7 +1535,7 @@ Package: squashfs-modules-2.6-qemu
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-qemu
+Depends: squashfs-modules-2.6.18-ucs57-qemu
 Description: Squash filesystem modules for Linux 2.6 on QEMU
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on QEMU virtual machine machines.
@@ -1551,11 +1551,11 @@ Description: Squash filesystem modules for Linux 2.6 on QEMU
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-qemu
+Package: drbd8-modules-2.6.18-ucs57-qemu
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-qemu
+Depends: linux-modules-2.6.18-ucs57-qemu
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on QEMU
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on QEMU virtual machine
@@ -1575,7 +1575,7 @@ Package: drbd8-modules-2.6-qemu
 Architecture: mips mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-qemu
+Depends: drbd8-modules-2.6.18-ucs57-qemu
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on QEMU
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on QEMU virtual machine machines.
@@ -1590,11 +1590,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-r5k-cobalt
+Package: squashfs-modules-2.6.18-ucs57-r5k-cobalt
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r5k-cobalt
+Depends: linux-modules-2.6.18-ucs57-r5k-cobalt
 Description: Squash filesystem modules for Linux 2.6.18 on Cobalt
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on Cobalt (Qube, RaQ, Qube2, RaQ2) machines.
@@ -1614,7 +1614,7 @@ Package: squashfs-modules-2.6-r5k-cobalt
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-r5k-cobalt
+Depends: squashfs-modules-2.6.18-ucs57-r5k-cobalt
 Description: Squash filesystem modules for Linux 2.6 on Cobalt
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on Cobalt (Qube, RaQ, Qube2, RaQ2) machines.
@@ -1630,11 +1630,11 @@ Description: Squash filesystem modules for Linux 2.6 on Cobalt
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-r5k-cobalt
+Package: drbd8-modules-2.6.18-ucs57-r5k-cobalt
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r5k-cobalt
+Depends: linux-modules-2.6.18-ucs57-r5k-cobalt
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on Cobalt
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on Cobalt (Qube, RaQ, Qube2,
@@ -1654,7 +1654,7 @@ Package: drbd8-modules-2.6-r5k-cobalt
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-r5k-cobalt
+Depends: drbd8-modules-2.6.18-ucs57-r5k-cobalt
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on Cobalt
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on Cobalt (Qube, RaQ, Qube2, RaQ2)
@@ -1670,11 +1670,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-r3k-kn02
+Package: squashfs-modules-2.6.18-ucs57-r3k-kn02
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r3k-kn02
+Depends: linux-modules-2.6.18-ucs57-r3k-kn02
 Description: Squash filesystem modules for Linux 2.6.18 on R3000 based DECstation
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on R3000 based DECstations with KN02 mainboard, such as the
@@ -1696,7 +1696,7 @@ Package: squashfs-modules-2.6-r3k-kn02
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-r3k-kn02
+Depends: squashfs-modules-2.6.18-ucs57-r3k-kn02
 Description: Squash filesystem modules for Linux 2.6 on R3000 based DECstation
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on R3000 based DECstations with KN02 mainboard, such as the
@@ -1714,11 +1714,11 @@ Description: Squash filesystem modules for Linux 2.6 on R3000 based DECstation
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-r3k-kn02
+Package: drbd8-modules-2.6.18-ucs57-r3k-kn02
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r3k-kn02
+Depends: linux-modules-2.6.18-ucs57-r3k-kn02
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on R3000 based DECstation
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on R3000 based DECstations
@@ -1739,7 +1739,7 @@ Package: drbd8-modules-2.6-r3k-kn02
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-r3k-kn02
+Depends: drbd8-modules-2.6.18-ucs57-r3k-kn02
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on R3000 based DECstation
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on R3000 based DECstations with KN02
@@ -1756,11 +1756,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-r4k-kn04
+Package: squashfs-modules-2.6.18-ucs57-r4k-kn04
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r4k-kn04
+Depends: linux-modules-2.6.18-ucs57-r4k-kn04
 Description: Squash filesystem modules for Linux 2.6.18 on R4x00 based DECstation
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on R4x00 based DECstations with KN04 mainboard, such as the
@@ -1782,7 +1782,7 @@ Package: squashfs-modules-2.6-r4k-kn04
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-r4k-kn04
+Depends: squashfs-modules-2.6.18-ucs57-r4k-kn04
 Description: Squash filesystem modules for Linux 2.6 on R4x00 based DECstation
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on R4x00 based DECstations with KN04 mainboard, such as the
@@ -1800,11 +1800,11 @@ Description: Squash filesystem modules for Linux 2.6 on R4x00 based DECstation
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-r4k-kn04
+Package: drbd8-modules-2.6.18-ucs57-r4k-kn04
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-r4k-kn04
+Depends: linux-modules-2.6.18-ucs57-r4k-kn04
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on R4x00 based DECstation
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on R4x00 based DECstations
@@ -1825,7 +1825,7 @@ Package: drbd8-modules-2.6-r4k-kn04
 Architecture: mipsel
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-r4k-kn04
+Depends: drbd8-modules-2.6.18-ucs57-r4k-kn04
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on R4x00 based DECstation
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on R4x00 based DECstations with KN04
@@ -1842,11 +1842,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-powerpc
+Package: squashfs-modules-2.6.18-ucs57-powerpc
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc
+Depends: linux-modules-2.6.18-ucs57-powerpc
 Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor 32-bit PowerPC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on uniprocessor 32-bit PowerPC machines.
@@ -1866,7 +1866,7 @@ Package: squashfs-modules-2.6-powerpc
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-powerpc
+Depends: squashfs-modules-2.6.18-ucs57-powerpc
 Description: Squash filesystem modules for Linux 2.6 on uniprocessor 32-bit PowerPC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on uniprocessor 32-bit PowerPC machines.
@@ -1882,11 +1882,11 @@ Description: Squash filesystem modules for Linux 2.6 on uniprocessor 32-bit Powe
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-powerpc
+Package: drbd8-modules-2.6.18-ucs57-powerpc
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc
+Depends: linux-modules-2.6.18-ucs57-powerpc
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor 32-bit PowerPC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on uniprocessor 32-bit PowerPC
@@ -1906,7 +1906,7 @@ Package: drbd8-modules-2.6-powerpc
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-powerpc
+Depends: drbd8-modules-2.6.18-ucs57-powerpc
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor 32-bit PowerPC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on uniprocessor 32-bit PowerPC
@@ -1922,11 +1922,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-powerpc-smp
+Package: squashfs-modules-2.6.18-ucs57-powerpc-smp
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc-smp
+Depends: linux-modules-2.6.18-ucs57-powerpc-smp
 Description: Squash filesystem modules for Linux 2.6.18 on multiprocessor 32-bit PowerPC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on multiprocessor 32-bit PowerPC machines.
@@ -1946,7 +1946,7 @@ Package: squashfs-modules-2.6-powerpc-smp
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-powerpc-smp
+Depends: squashfs-modules-2.6.18-ucs57-powerpc-smp
 Description: Squash filesystem modules for Linux 2.6 on multiprocessor 32-bit PowerPC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on multiprocessor 32-bit PowerPC machines.
@@ -1962,11 +1962,11 @@ Description: Squash filesystem modules for Linux 2.6 on multiprocessor 32-bit Po
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-powerpc-smp
+Package: drbd8-modules-2.6.18-ucs57-powerpc-smp
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc-smp
+Depends: linux-modules-2.6.18-ucs57-powerpc-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on multiprocessor 32-bit PowerPC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on multiprocessor 32-bit
@@ -1986,7 +1986,7 @@ Package: drbd8-modules-2.6-powerpc-smp
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-powerpc-smp
+Depends: drbd8-modules-2.6.18-ucs57-powerpc-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on multiprocessor 32-bit PowerPC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on multiprocessor 32-bit PowerPC
@@ -2002,11 +2002,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-powerpc-miboot
+Package: squashfs-modules-2.6.18-ucs57-powerpc-miboot
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc-miboot
+Depends: linux-modules-2.6.18-ucs57-powerpc-miboot
 Description: Squash filesystem modules for Linux 2.6.18 on 32-bit PowerPC for miboot floppy
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on 32-bit PowerPC for miboot floppy machines.
@@ -2026,7 +2026,7 @@ Package: squashfs-modules-2.6-powerpc-miboot
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-powerpc-miboot
+Depends: squashfs-modules-2.6.18-ucs57-powerpc-miboot
 Description: Squash filesystem modules for Linux 2.6 on 32-bit PowerPC for miboot floppy
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on 32-bit PowerPC for miboot floppy machines.
@@ -2042,11 +2042,11 @@ Description: Squash filesystem modules for Linux 2.6 on 32-bit PowerPC for miboo
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-powerpc-miboot
+Package: drbd8-modules-2.6.18-ucs57-powerpc-miboot
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc-miboot
+Depends: linux-modules-2.6.18-ucs57-powerpc-miboot
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on 32-bit PowerPC for miboot floppy
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on 32-bit PowerPC for miboot
@@ -2066,7 +2066,7 @@ Package: drbd8-modules-2.6-powerpc-miboot
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-powerpc-miboot
+Depends: drbd8-modules-2.6.18-ucs57-powerpc-miboot
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on 32-bit PowerPC for miboot floppy
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on 32-bit PowerPC for miboot floppy
@@ -2082,11 +2082,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-powerpc64
+Package: squashfs-modules-2.6.18-ucs57-powerpc64
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc64
+Depends: linux-modules-2.6.18-ucs57-powerpc64
 Description: Squash filesystem modules for Linux 2.6.18 on 64-bit PowerPC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on 64-bit PowerPC machines.
@@ -2106,7 +2106,7 @@ Package: squashfs-modules-2.6-powerpc64
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-powerpc64
+Depends: squashfs-modules-2.6.18-ucs57-powerpc64
 Description: Squash filesystem modules for Linux 2.6 on 64-bit PowerPC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on 64-bit PowerPC machines.
@@ -2122,11 +2122,11 @@ Description: Squash filesystem modules for Linux 2.6 on 64-bit PowerPC
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-powerpc64
+Package: drbd8-modules-2.6.18-ucs57-powerpc64
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-powerpc64
+Depends: linux-modules-2.6.18-ucs57-powerpc64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on 64-bit PowerPC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on 64-bit PowerPC machines.
@@ -2145,7 +2145,7 @@ Package: drbd8-modules-2.6-powerpc64
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-powerpc64
+Depends: drbd8-modules-2.6.18-ucs57-powerpc64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on 64-bit PowerPC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on 64-bit PowerPC machines.
@@ -2160,11 +2160,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-prep
+Package: squashfs-modules-2.6.18-ucs57-prep
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-prep
+Depends: linux-modules-2.6.18-ucs57-prep
 Description: Squash filesystem modules for Linux 2.6.18 on PReP PowerPC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on PReP PowerPC machines.
@@ -2184,7 +2184,7 @@ Package: squashfs-modules-2.6-prep
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-prep
+Depends: squashfs-modules-2.6.18-ucs57-prep
 Description: Squash filesystem modules for Linux 2.6 on PReP PowerPC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on PReP PowerPC machines.
@@ -2200,11 +2200,11 @@ Description: Squash filesystem modules for Linux 2.6 on PReP PowerPC
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-prep
+Package: drbd8-modules-2.6.18-ucs57-prep
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-prep
+Depends: linux-modules-2.6.18-ucs57-prep
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on PReP PowerPC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on PReP PowerPC machines.
@@ -2223,7 +2223,7 @@ Package: drbd8-modules-2.6-prep
 Architecture: powerpc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-prep
+Depends: drbd8-modules-2.6.18-ucs57-prep
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on PReP PowerPC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on PReP PowerPC machines.
@@ -2238,11 +2238,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-s390
+Package: squashfs-modules-2.6.18-ucs57-s390
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-s390
+Depends: linux-modules-2.6.18-ucs57-s390
 Description: Squash filesystem modules for Linux 2.6.18 on IBM S/390
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on IBM S/390 machines.
@@ -2262,7 +2262,7 @@ Package: squashfs-modules-2.6-s390
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-s390
+Depends: squashfs-modules-2.6.18-ucs57-s390
 Description: Squash filesystem modules for Linux 2.6 on IBM S/390
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on IBM S/390 machines.
@@ -2278,11 +2278,11 @@ Description: Squash filesystem modules for Linux 2.6 on IBM S/390
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-s390
+Package: drbd8-modules-2.6.18-ucs57-s390
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-s390
+Depends: linux-modules-2.6.18-ucs57-s390
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on IBM S/390
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on IBM S/390 machines.
@@ -2301,7 +2301,7 @@ Package: drbd8-modules-2.6-s390
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-s390
+Depends: drbd8-modules-2.6.18-ucs57-s390
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on IBM S/390
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on IBM S/390 machines.
@@ -2316,11 +2316,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-s390x
+Package: squashfs-modules-2.6.18-ucs57-s390x
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-s390x
+Depends: linux-modules-2.6.18-ucs57-s390x
 Description: Squash filesystem modules for Linux 2.6.18 on IBM zSeries
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on IBM zSeries machines.
@@ -2340,7 +2340,7 @@ Package: squashfs-modules-2.6-s390x
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-s390x
+Depends: squashfs-modules-2.6.18-ucs57-s390x
 Description: Squash filesystem modules for Linux 2.6 on IBM zSeries
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on IBM zSeries machines.
@@ -2356,11 +2356,11 @@ Description: Squash filesystem modules for Linux 2.6 on IBM zSeries
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-s390x
+Package: drbd8-modules-2.6.18-ucs57-s390x
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-s390x
+Depends: linux-modules-2.6.18-ucs57-s390x
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on IBM zSeries
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on IBM zSeries machines.
@@ -2379,7 +2379,7 @@ Package: drbd8-modules-2.6-s390x
 Architecture: s390
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-s390x
+Depends: drbd8-modules-2.6.18-ucs57-s390x
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on IBM zSeries
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on IBM zSeries machines.
@@ -2394,11 +2394,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-sparc32
+Package: squashfs-modules-2.6.18-ucs57-sparc32
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc32
+Depends: linux-modules-2.6.18-ucs57-sparc32
 Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor sparc32 (sun4m)
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on uniprocessor sparc32 (sun4m) machines.
@@ -2418,7 +2418,7 @@ Package: squashfs-modules-2.6-sparc32
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-sparc32
+Depends: squashfs-modules-2.6.18-ucs57-sparc32
 Description: Squash filesystem modules for Linux 2.6 on uniprocessor sparc32 (sun4m)
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on uniprocessor sparc32 (sun4m) machines.
@@ -2434,11 +2434,11 @@ Description: Squash filesystem modules for Linux 2.6 on uniprocessor sparc32 (su
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-sparc32
+Package: drbd8-modules-2.6.18-ucs57-sparc32
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc32
+Depends: linux-modules-2.6.18-ucs57-sparc32
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor sparc32 (sun4m)
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on uniprocessor sparc32
@@ -2458,7 +2458,7 @@ Package: drbd8-modules-2.6-sparc32
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-sparc32
+Depends: drbd8-modules-2.6.18-ucs57-sparc32
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor sparc32 (sun4m)
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on uniprocessor sparc32 (sun4m)
@@ -2474,11 +2474,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-sparc64
+Package: squashfs-modules-2.6.18-ucs57-sparc64
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc64
+Depends: linux-modules-2.6.18-ucs57-sparc64
 Description: Squash filesystem modules for Linux 2.6.18 on uniprocessor 64-bit UltraSPARC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on uniprocessor 64-bit UltraSPARC machines.
@@ -2498,7 +2498,7 @@ Package: squashfs-modules-2.6-sparc64
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-sparc64
+Depends: squashfs-modules-2.6.18-ucs57-sparc64
 Description: Squash filesystem modules for Linux 2.6 on uniprocessor 64-bit UltraSPARC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on uniprocessor 64-bit UltraSPARC machines.
@@ -2514,11 +2514,11 @@ Description: Squash filesystem modules for Linux 2.6 on uniprocessor 64-bit Ultr
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-sparc64
+Package: drbd8-modules-2.6.18-ucs57-sparc64
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc64
+Depends: linux-modules-2.6.18-ucs57-sparc64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on uniprocessor 64-bit UltraSPARC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on uniprocessor 64-bit
@@ -2538,7 +2538,7 @@ Package: drbd8-modules-2.6-sparc64
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-sparc64
+Depends: drbd8-modules-2.6.18-ucs57-sparc64
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on uniprocessor 64-bit UltraSPARC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on uniprocessor 64-bit UltraSPARC
@@ -2554,11 +2554,11 @@ Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on
  .
  Homepage: http://www.drbd.org
 
-Package: squashfs-modules-2.6.18-4-sparc64-smp
+Package: squashfs-modules-2.6.18-ucs57-sparc64-smp
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc64-smp
+Depends: linux-modules-2.6.18-ucs57-sparc64-smp
 Description: Squash filesystem modules for Linux 2.6.18 on multiprocessor 64-bit UltraSPARC
  This package provides the Squash filesystem modules for the Linux kernel
  version 2.6.18 on multiprocessor 64-bit UltraSPARC machines.
@@ -2578,7 +2578,7 @@ Package: squashfs-modules-2.6-sparc64-smp
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: squashfs-modules-2.6.18-4-sparc64-smp
+Depends: squashfs-modules-2.6.18-ucs57-sparc64-smp
 Description: Squash filesystem modules for Linux 2.6 on multiprocessor 64-bit UltraSPARC
  This package depends on the Squash filesystem modules for latest Linux
  kernel 2.6 on multiprocessor 64-bit UltraSPARC machines.
@@ -2594,11 +2594,11 @@ Description: Squash filesystem modules for Linux 2.6 on multiprocessor 64-bit Ul
  block device/memory systems (e.g.  embedded systems) where low overhead is
  needed.
 
-Package: drbd8-modules-2.6.18-4-sparc64-smp
+Package: drbd8-modules-2.6.18-ucs57-sparc64-smp
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: linux-modules-2.6.18-4-sparc64-smp
+Depends: linux-modules-2.6.18-ucs57-sparc64-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6.18 on multiprocessor 64-bit UltraSPARC
  This package provides the RAID 1 over tcp/ip for Linux module source
  modules for the Linux kernel version 2.6.18 on multiprocessor 64-bit
@@ -2618,7 +2618,7 @@ Package: drbd8-modules-2.6-sparc64-smp
 Architecture: sparc
 Section: admin
 Priority: optional
-Depends: drbd8-modules-2.6.18-4-sparc64-smp
+Depends: drbd8-modules-2.6.18-ucs57-sparc64-smp
 Description: RAID 1 over tcp/ip for Linux module source modules for Linux 2.6 on multiprocessor 64-bit UltraSPARC
  This package depends on the RAID 1 over tcp/ip for Linux module source
  modules for latest Linux kernel 2.6 on multiprocessor 64-bit UltraSPARC
