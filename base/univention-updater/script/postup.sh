@@ -57,6 +57,7 @@ for p in	univention-pkgdb \
 			univention-kolab2 \
 			univention-nagios-client \
 			univention-nagios-server \
+			univention-thin-client \
 			univention-samba; do
 	echo "$p install" | dpkg --set-selections
 done
@@ -70,7 +71,8 @@ for p in	univention-groupware-webclient \
 			univention-bind-proxy \
 			univention-kolab2 \
 			univention-nagios-client \
-			univention-nagios-server; do
+			univention-nagios-server \
+			univention-thin-client; do
 	check_and_install $p
 done
 
