@@ -1,3 +1,10 @@
+univention-config-registry (2.4.10-1) unstable; urgency=low
+
+  * fix check for existence of self.__configRegistry object (do not use
+    __nonzero__ operator) 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 25 Oct 2007 14:41:06 +0200
+
 univention-config-registry (2.4.9-1) unstable; urgency=low
 
   * read current value of configuration registry variables extracted from

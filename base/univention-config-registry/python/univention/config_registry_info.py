@@ -201,10 +201,9 @@ class ConfigRegistryInfo( object ):
 			var = Variable()
 			for name, value in cfg.items( sec ):
 				var[ name ] = value
-			if self.__configRegistry and self.__configRegistry.has_key( sec ):
-				var.value = self.__configRegistry[ sec ]
 			# set current value
-			var.value = self.__configRegistry.get( sec, None )
+			if self.__configRegistry != None:
+				var.value = self.__configRegistry.get( sec, None )
 			self.variables[ sec ] = var
 
 	def __load_variables( self, registered_only = True ):
