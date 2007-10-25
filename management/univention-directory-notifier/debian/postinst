@@ -99,6 +99,13 @@ univention-baseconfig set listener/supply/notifier?yes
 
 createLogfile /var/log/univention/notifier.log "root:adm" 640
 
+/usr/lib/univention-install/02univention-directory-notifier.inst || true
+
+if [ -h /etc/runit/univention/univention-ldap-notifier ]; then
+	ln -sf /etc/runit/univention-directory-notifier /etc/runit/univention/univention-directory-notifier
+    rm /etc/runit/univention/univention-ldap-notifier
+fi
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 	if dpkg --compare-versions "$2" lt 1.10; then
 		/etc/init.d/univention-directory-notifier restart || true
