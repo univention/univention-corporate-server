@@ -104,25 +104,29 @@ def download_deb(conn, file, new_file):
 def download_packages(patchlevel, dir_name, packages_list):
 
 	proxy = proxyAddress()
+	prefix = ""
 	if not proxy == "":
 		conn = httplib.HTTPConnection(proxy)
+		prefix = "http://%s" % update_server
 	else:
 		conn = httplib.HTTPConnection(update_server)
 	
 	exists=1
+
+	path = "%s/univention-cdrom/%s/Packages.lock" % (prefix, patchlevel)
+
 	while exists == 1:
-		p=os.path.join(update_server, '/', 'univention-cdrom', patchlevel, 'Packages.lock')
-		conn.request("GET", p)
+		conn.request("GET", path)
 		resp_p = conn.getresponse()
 		if  resp_p.status != 200:
 			exists=0
 		conn.close()
 
-	p=os.path.join(update_server, '/', 'univention-cdrom', patchlevel, 'Packages.gz')
-	conn.request("GET", p)
+	path = "%s/univention-cdrom/%s/Packages.gz" % (prefix, patchlevel)
+	conn.request("GET", path)
 	resp_p = conn.getresponse()
 	if  resp_p.status != 200:
-		print 'failed to download %s' % p
+		print 'failed to download %s' % path
 		print ' %s: %s' % (resp_p.status,resp_p.reason)
 		return
 
@@ -145,17 +149,20 @@ def download_sh_files(dir, show_debug=0):
 			continue
 
 		proxy = proxyAddress()
+		prefix = ""
+
 		if not proxy == "":
 			conn = httplib.HTTPConnection(proxy)
+			prefix = "http://%s" % update_server
 		else:
 			conn = httplib.HTTPConnection(update_server)
 		
-		p=os.path.join(update_server, '/', 'univention-cdrom', dir, sh)
-		conn.request("GET", p)
+		path = "%s/univention-cdrom/%s/%s" % ( prefix, dir, sh )
+		conn.request("GET", path)
 		resp_p = conn.getresponse()
 		if  resp_p.status != 200:
 			if show_debug:
-				print 'failed to download %s' % p
+				print 'failed to download %s' % path
 				print ' %s: %s' % (resp_p.status,resp_p.reason)
 			continue
 		resp_data=resp_p.read()
@@ -169,19 +176,21 @@ def download_sh_files(dir, show_debug=0):
 def download_txt_files(actual,show_debug=0):
 
 	proxy = proxyAddress()
+	prefix = ""
 	if not proxy == "":
 		conn = httplib.HTTPConnection(proxy)
+		prefix = "http://%s" % update_server
 	else:
 		conn = httplib.HTTPConnection(update_server)
 
 	line='ucs_%s.txt' % actual
 	print line
-	p=os.path.join(update_server, '/', 'univention-cdrom', 'ucs-updates/', line)
-	conn.request("GET", p)
+	path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
+	conn.request("GET", path)
 	resp_line = conn.getresponse()
 	if  resp_line.status != 200:
 		if show_debug:
-			print 'failed to download %s' % p
+			print 'failed to download %s' % path
 			print ' %s: %s' % (resp_line.status,resp_line.reason)
 	else:
 		data=resp_line.read()
@@ -191,12 +200,12 @@ def download_txt_files(actual,show_debug=0):
 
 	conn.close()
 
-	p=os.path.join(update_server, '/', 'univention-cdrom', 'ucs-updates/', 'index.list')
-	conn.request("GET", p)
+	path = "%s/univention-cdrom/ucs-updates/index.list" % prefix
+	conn.request("GET", path)
 	resp_p = conn.getresponse()
 	if  resp_p.status != 200:
 		if show_debug:
-			print 'failed to download %s' % p
+			print 'failed to download %s' % path
 			print ' %s: %s' % (resp_p.status,resp_p.reason)
 		return
 	resp_data=resp_p.read()
@@ -207,12 +216,12 @@ def download_txt_files(actual,show_debug=0):
 		if line:
 			line='ucs_%s.txt' % line
 			print line
-			p=os.path.join(update_server, '/', 'univention-cdrom', 'ucs-updates/', line)
-			conn.request("GET", p)
+			path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
+			conn.request("GET", path)
 			resp_line = conn.getresponse()
 			if  resp_line.status != 200:
 				if show_debug:
-					print 'failed to download %s' % p
+					print 'failed to download %s' % path
 					print ' %s: %s' % (resp_line.status,resp_line.reason)
 			else:
 				data=resp_line.read()
@@ -225,12 +234,14 @@ def download_txt_files(actual,show_debug=0):
 def download_sources_list(tempdir):
 
 	proxy = proxyAddress()
+	prefix = ""
 	if not proxy == "":
 		conn = httplib.HTTPConnection(proxy)
+		prefix = "http://%s" % update_server
 	else:
 		conn = httplib.HTTPConnection(update_server)
 
-	sources=os.path.join(update_server, '/', 'univention-cdrom', 'sources.list')
+	sources = "%s/univention-cdrom/sources.list" % prefix
 	conn.request("GET", sources)
 	resp_sources = conn.getresponse()
 	if  resp_sources.status != 200:
@@ -382,10 +393,18 @@ if __name__ == '__main__':
 
 				if len(to_copy) > 0 or len(to_remove) > 0:
 					if len(to_copy) > 0:
-						conn = httplib.HTTPConnection(update_server)
+						proxy = proxyAddress()
+						prefix = ""
+						if not proxy == "":
+							conn = httplib.HTTPConnection(proxy)
+							prefix = "http://%s" % update_server
+						else:
+							conn = httplib.HTTPConnection(update_server)
+
 						for package in to_copy:
 							print 'Download: %s' % package.strip('.').strip('/')
-							download_deb(conn, os.path.join('/univention-cdrom',sources_list[i][1],package), os.path.join(package_path,package))
+							path = "%s/univention-cdrom/%s/%s" % ( prefix, sources_list[i][1], package )
+							download_deb(conn, path, os.path.join(package_path,package))
 							print '    done'
 					os.chdir(package_path)
 
