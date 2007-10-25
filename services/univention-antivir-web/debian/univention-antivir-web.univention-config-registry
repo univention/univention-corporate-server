@@ -11,44 +11,44 @@ Variables: squid/virusscan
 
 Type: file
 File: etc/dansguardian/bannedextensionlist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/bannediplist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/bannedmimetypelist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/bannedsitelist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/bannedurllist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptioniplist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptionuserlist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptionvirusextensionlist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptionvirusmimetypelist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptionvirussitelist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
 
 Type: file
 File: etc/dansguardian/exceptionvirusurllist
-Variables: squid/.*scan/.*
+Variables: squid/.*scan.*
