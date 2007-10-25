@@ -1,3 +1,9 @@
+univention-kolab2-webclient (1.2.0-4) unstable; urgency=low
+
+  * added php5-imap to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Oct 2007 16:01:04 +0200
+
 univention-kolab2-webclient (1.2.0-3) unstable; urgency=low
 
   * updated config files
