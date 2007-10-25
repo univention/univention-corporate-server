@@ -1,3 +1,10 @@
+univention-squid (2.0.6-1) unstable; urgency=low
+
+  * fix iptables rules for transparent proxy, make iptables script as
+    executable
+
+ -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 16:14:23 +0200
+
 univention-squid (2.0.5-1) unstable; urgency=low
 
   * add missing rule to allow access from localhost when dansguardian is used

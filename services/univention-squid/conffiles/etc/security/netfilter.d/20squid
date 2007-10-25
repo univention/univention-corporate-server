@@ -13,8 +13,15 @@
 @!@
 if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
 	squidport = baseConfig.get('squid/httpport', '3128')
+	
+	# allow outgoing traffic coming from proxy server
+	print 'iptables -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
+
+	# redirect packages forwarded for other clients
 	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
-		print 'iptables -t nat -A OUTPUT -m owner --uid-owner proxy -p tcp --dport %s -j ACCEPT' % port
+		print 'iptables -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
+	
+	# redirect locally created packages
 	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
-		print ' iptables -t nat -A OUTPUT -p tcp --dport %s -j DNAT --to 127.0.0.1:%s' % (port, squidport)
+		print 'iptables -t nat -A OUTPUT -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
 @!@
