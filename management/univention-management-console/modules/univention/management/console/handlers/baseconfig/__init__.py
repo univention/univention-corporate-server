@@ -195,7 +195,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				cat = category
 
 			for name, var in baseInfo.get_variables( cat ).items():
-				if key == 'value' and var.value:
+				if key == 'value':
 					if var.value and fnmatch( var.value, filter ):
 						variables[ name ] = var
 				elif key == 'description' and var[ 'description' ]:

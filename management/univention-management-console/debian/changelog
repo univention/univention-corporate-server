@@ -1,3 +1,9 @@
+univention-management-console (0.9.4-1) unstable; urgency=low
+
+  * baseconfig module: fix search for variable values 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 25 Oct 2007 13:34:00 +0200
+
 univention-management-console (0.9.3-3) unstable; urgency=low
 
   * fixed logfile permissions
