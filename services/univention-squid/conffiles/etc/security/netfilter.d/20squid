@@ -1,0 +1,27 @@
+#!/bin/sh
+
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig <FC>berschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/security/netfilter.d/20squid
+#
+
+@!@
+if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
+	squidport = baseConfig.get('squid/httpport', '3128')
+	
+	# allow outgoing traffic coming from proxy server
+	print 'iptables -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
+
+	# redirect packages forwarded for other clients
+	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
+		print 'iptables -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
+	
+	# redirect locally created packages
+	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
+		print 'iptables -t nat -A OUTPUT -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
+@!@
