@@ -2,8 +2,13 @@ univention-squid (2.0.6-1) unstable; urgency=low
 
   * fix iptables rules for transparent proxy, make iptables script as
     executable
+  * improve postinst script to only start squid after configuration file has
+    been written
+  * append 'transparent' to http_port definition in squid.conf if transparent
+    proxy mode is activated
+  * remove quotes around group names for access control
 
- -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 16:14:23 +0200
+ -- Wolf Wiegand <wiegand@univention.de>  Fri, 26 Oct 2007 14:42:10 +0200
 
 univention-squid (2.0.5-1) unstable; urgency=low
 

@@ -1,0 +1,2 @@
+/etc/univention/templates/files/etc/squid/squid.conf
+/etc/univention/templates/files/etc/security/netfilter.d/20squid

@@ -13,12 +13,22 @@
 @!@
 if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
 	squidport = baseConfig.get('squid/httpport', '3128')
-	
-	# allow outgoing traffic coming from proxy server
-	print 'iptables -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
+	local_addresses=[]
 
-	# redirect packages forwarded for other clients
+	for iface in range(0,4):
+		if not baseConfig.get('interfaces/eth%s/address' % iface, '') == '':
+			local_addresses.append(baseConfig.get('interfaces/eth%s/address' % iface))
+		for iface_virt in range(0,4):
+			if not baseConfig.get('interfaces/eth%s_%s/address'% (iface, iface_virt) , '') == '':
+				local_addresses.append('interfaces/eth%s_%s/address'% (iface, iface_virt))
+
+	# allow outgoing traffic coming from proxy server
+	print 'iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
+
+	# redirect packages forwarded for other clients, but allow access to local addresses
 	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
+		for address in local_addresses:
+			print 'iptables -t nat -A PREROUTING -d %s -p tcp -m tcp --dport %s -j ACCEPT' % (address, port)
 		print 'iptables -t nat -A PREROUTING -p tcp -m tcp --dport %s -j REDIRECT --to-ports %s' % (port, squidport)
 	
 	# redirect locally created packages
