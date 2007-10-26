@@ -1,3 +1,9 @@
+univention-installer (1.8.1-1) unstable; urgency=low
+
+  * change the default packages on the diffrent system roles
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Oct 2007 13:30:56 +0200
+
 univention-installer (1.7.9-3) unstable; urgency=low
 
   * Enable APT::Get::AllowUnauthenticated for all installation steps, which
