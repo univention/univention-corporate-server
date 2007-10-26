@@ -41,7 +41,7 @@ pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
 baseConfig = univention.config_registry.baseConfig()
 baseConfig.load()
 
-	pxeconfig_install = \
+pxeconfig_install = \
 '''# Perform an unattended installation by default
 default inst
 
