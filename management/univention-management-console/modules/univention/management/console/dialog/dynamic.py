@@ -37,9 +37,12 @@ import input
 class DynamicList( base.List, input.Input ):
 	"""Represent a list, that may change its appearance by appending or
 	removing table rows"""
-	def __init__( self, option = ( None, None ), header = [], row = [], default = None ):
+	def __init__( self, option = ( None, None ), header = [], row = [], default = None,
+				  modifier = None, modified = {} ):
 		base.List.__init__( self, header )
 		input.Input.__init__( self, option )
+		self.modifier = modifier
+		self.modified = modified
 		self.set_row( row )
 		self.__items = []
 		if row and default:
@@ -49,6 +52,11 @@ class DynamicList( base.List, input.Input ):
 			self.append_row()
 
 	def set_row( self, row ):
+		if self.modifier and self.modified:
+			new_modifier = copy.deepcopy( self.modifier )
+			new_modified = copy.deepcopy( self.modified[ new_modifier.default ] )
+			row.insert( 0, new_modifier )
+			row.append( new_modified )
 		for item in row:
 			if isinstance( item, input.Input ):
 				item.set_text( '' )
@@ -72,6 +80,14 @@ class DynamicList( base.List, input.Input ):
 	def remove_row( self, i ):
 		base.List.remove_row( self, i )
 		self.__items.pop( i )
+
+	def modify_row( self, i, key ):
+		if not self.modifier or not self.modified:
+			return
+
+		row = self.get_row( i )
+		del row[ -1 ]
+		row.append( copy.deepcopy( self.modified[ key ] ) )
 
 	def get_items( self ):
 		return self.__items

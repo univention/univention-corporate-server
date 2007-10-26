@@ -110,6 +110,8 @@ def _select_input( option, **kwargs ):
 	return input.Selection( option, **kwargs )
 
 register( values.StaticSelection, _select_input )
+register( values.LanguageSelection, _select_input )
+register( values.SystemRoleSelection, _select_input )
 
 # ObjectSelect
 def _dnlist_input( option, **kwargs ):

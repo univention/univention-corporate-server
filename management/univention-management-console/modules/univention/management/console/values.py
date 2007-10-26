@@ -199,6 +199,18 @@ class LanguageSelection( StaticSelection ):
 	def choices( self ):
 		return ( ( 'de', _( 'German' ) ), ( 'en', _( 'English' ) ) )
 
+class SystemRoleSelection( StaticSelection ):
+	def __init__( self, label, required = True, may_change = True ):
+		StaticSelection.__init__( self, label, required = required, may_change = may_change )
+
+	def choices( self ):
+		return ( ( 'domaincontroller_master', _( 'Domaincontroller Master' ) ),
+				 ( 'domaincontroller_backup', _( 'Domaincontroller Backup' ) ),
+				 ( 'domaincontroller_slave', _( 'Domaincontroller Slave' ) ),
+				 ( 'memberserver', _( 'Member Server' ) ),
+				 ( 'managed_client', _( 'Managed Client' ) ),
+				 ( 'mobile_client', _( 'Mobile Client' ) ) )
+
 # multi values
 class IMultiSequenceValue( MultiValue ):
 	def __init__( self, label, syntax, required = True, may_change = True ):

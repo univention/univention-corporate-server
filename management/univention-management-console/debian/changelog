@@ -1,3 +1,10 @@
+univention-management-console (0.9.4-2) unstable; urgency=low
+
+  * first step for a new module: software monitor 
+  * minor fixes in the base: register existing syntax definitions
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 15:29:07 +0200
+
 univention-management-console (0.9.4-1) unstable; urgency=low
 
   * baseconfig module: fix search for variable values 

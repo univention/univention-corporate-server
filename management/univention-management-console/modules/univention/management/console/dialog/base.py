@@ -191,6 +191,9 @@ class List( Element ):
 		except:
 			pass
 
+	def get_row( self, i ):
+		return self.__content[ i ]
+
 	def clear_content( self ):
 		del self.__content
 		self.__content = []

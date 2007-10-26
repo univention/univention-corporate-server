@@ -62,8 +62,21 @@ class DynamicListMap( mapper.IMapper ):
 		rows = [ tablerow( '', { 'type' : 'umc_list_head' }, { 'obs' : headers } ) ]
 
 		remove_btns = []
+		select_btns = []
+		ud.debug( ud.ADMIN, ud.INFO, 'DynamicList: rows=%d"' % len( umcp_part.get_content() ) )
 		for row in umcp_part.get_content():
 			up = storage.to_uniparts( row )
+			ud.debug( ud.ADMIN, ud.INFO, 'DynamicList: row=%s"' % row )
+			ud.debug( ud.ADMIN, ud.INFO, 'DynamicList: up=%s"' % up )
+# 			if umcp_part.modifier:
+			# INFO: Hier muss jetzt das erste Element in einen Button umgewandelt werden
+			# INFO: Man kann an eine question_select ein Button-Objekt hängen.
+			# INFO: der button muss dann in select_btns gespeichert werden
+			# INFO: -> siehe auskommentierte Funktion __layout_modifier
+# 				ud.debug( ud.ADMIN, ud.INFO, 'DynamicList: row[0]=%s"' % row[ 0 ] )
+# 				ud.debug( ud.ADMIN, ud.INFO, 'DynamicList: row[1]=%s"' % row[ 1 ] )
+# 				uni_item, umcp_item = storage.find_by_umcp_id( row[ 0 ].id() )
+# 				select_btns.append( uni_item )
 			icon = { 'icon' : umc_tools.image_get( 'actions/remove', umc_tools.SIZE_SMALL ) }
 			but = button( '', icon, { 'helptext' : '' } )
 			remove_btns.append( but )
@@ -75,18 +88,37 @@ class DynamicListMap( mapper.IMapper ):
 		fill_col = tablecol( '', { 'colspan' : str( umcp_part.num_columns() ) ,
 								   'type' : 'umc_list_element' },
 							 { 'obs' : [ text( '', {}, { 'text' : [ '' ] } ) ] } )
-		icon = { 'icon' : umc_tools.image_get( 'actions/add',
-											   umc_tools.SIZE_MEDIUM ) }
+		icon = { 'icon' : umc_tools.image_get( 'actions/add', umc_tools.SIZE_MEDIUM ) }
 		but = button( _( 'Add' ), icon, { 'helptext' : _( 'Add' ) } )
-		storage[  umcp_part.id() ] = ( ( but, remove_btns ), umcp_part )
+		storage[  umcp_part.id() ] = ( ( but, remove_btns, select_btns ), umcp_part )
 		btn_col = tablecol( '', { 'type' : 'umc_list_element' },
 							{ 'obs' : [ but ] } )
 		rows.append( tablerow( '', {}, { 'obs': [ fill_col, btn_col ] } ) )
 
 		return table( '', { 'type' : 'umc_list' }, { 'obs' : rows } )
 
+# 	def __layout_modifier( self, storage, umcp_part, up, select_btns ):
+# 		if not umcp_part.modifier or not umcp_part.modified:
+# 			return False
+# 		choices = []
+# 		# dynamic selection button
+# 		commit_button = button( '', {}, { 'helptext' : '' } )
+# 		for key, descr in umcp_part.modifier.choices:
+# 			choices.append( { 'name' : key, 'description' : descr } )
+# 		selection = question_select( '', { 'helptext' : '', 'choicelist' : choices,
+# 										   'button' : commit_button } )
+# 		select_btns.append( commit_button )
+# 		up.args[ 'obs' ].insert( 0, selection )
+
+# 		# modifiable element
+# 		default = utils.default( umcp_part )
+# 		elem = storage.to_uniparts( self.modified[ default ] )
+# 		up.args[ 'obs' ].append( elem )
+
+# 		return True
+
 	def apply( self, storage, dyn, params ):
-		btn, rm_btns = params
+		btn, rm_btns, select_btns = params
 		# cache current values
 		for rows in dyn.get_items():
 			for item_id in rows:
@@ -104,7 +136,14 @@ class DynamicListMap( mapper.IMapper ):
 					dyn.remove_row( i )
 					return True
 				i += 1
-
+			# change a row?
+			i = 0
+			for btn in select_btns:
+				if btn.pressed():
+					row = dyn.get_row( i )
+					dyn.modify_row( i, row[ 0 ].cached )
+					return True
+				i += 1
 		return False
 
 	def parse( self, storage, dyn, params ):
@@ -427,7 +466,7 @@ class ObjectSelectMap( mapper.IMapper ):
 		# label
 		#
 		# [select property] [property filter] [searchbtn]
-		# 
+		#
 		# |---------------------------------------------|
 		# |                |          |                 |
 		# |                |----------|                 |

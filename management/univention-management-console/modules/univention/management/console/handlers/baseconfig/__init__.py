@@ -198,8 +198,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				if key == 'value':
 					if var.value and fnmatch( var.value, filter ):
 						variables[ name ] = var
-				elif key == 'description' and var[ 'description' ]:
-					if fnmatch( var[ 'description' ], filter ):
+				elif key == 'description':
+					if var[ 'description' ] and fnmatch( var[ 'description' ], filter ):
 						variables[ name ] = var
 				else:
 					if fnmatch( name, filter ):
