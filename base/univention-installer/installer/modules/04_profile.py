@@ -472,11 +472,11 @@ class object(content):
 						self.parent.debug('mount %s' % p)
 						if not os.path.exists(p):
 							os.mkdir(p)
-						self.parent.debug('mount %s %s -t vfat >/dev/null 2>&1'%(d,p))
-						res=os.system('mount %s %s -t vfat >/dev/null 2>&1'%(d,p))
+						self.parent.debug('/bin/mount %s %s -t vfat >/dev/null 2>&1'%(d,p))
+						res=os.system('/bin/mount %s %s -t vfat >/dev/null 2>&1'%(d,p))
 						if res != 0:
-							self.parent.debug('mount %s %s >/dev/null 2>&1'%(d,p))
-							res=os.system('mount %s %s >/dev/null 2>&1'%(d,p))
+							self.parent.debug('/bin/mount %s %s >/dev/null 2>&1'%(d,p))
+							res=os.system('/bin/mount %s %s >/dev/null 2>&1'%(d,p))
 							if res != 0:
 								try:
 									os.rmdir('%s' % p)
@@ -486,16 +486,16 @@ class object(content):
 					self.parent.mount[1]='/profmnt'
 				else:
 					if self.data.startswith('nfs:'):
-						res=os.system('mount -t nfs %s /profmnt >/dev/null 2>&1' % (self.data.replace('nfs:', '')))
+						res=os.system('/bin/mount -t nfs %s /profmnt >/dev/null 2>&1' % (self.data.replace('nfs:', '')))
 						self.parent.debug('Mount /profmnt: "%s"'%res)
 					elif self.data.startswith('smbfs:'):
-						res=os.system('mount -t smbfs %s /profmnt >/dev/null 2>&1' % (self.data.replace('smbfs:', '')))
+						res=os.system('/bin/mount -t smbfs %s /profmnt >/dev/null 2>&1' % (self.data.replace('smbfs:', '')))
 						self.parent.debug('Mount /profmnt: "%s"'%res)
 					else:
-						res=os.system('mount %s /profmnt -t vfat >/dev/null 2>&1'%self.data)
+						res=os.system('/bin/mount %s /profmnt -t vfat >/dev/null 2>&1'%self.data)
 						if res != 0:
 							#Warning Window - try again without vfat
-							res=os.system('mount %s /profmnt >/dev/null 2>&1'%self.data)
+							res=os.system('/bin/mount %s /profmnt >/dev/null 2>&1'%self.data)
 						self.parent.debug('Mount /profmnt: "%s"'%res)
 					self.parent.mount[0]=self.data
 					self.parent.mount[1]='/profmnt'

@@ -92,11 +92,11 @@ class object(content):
 						cdrom_device=self.parent.all_results['cdrom_device']
 
 						if cdrom_device.startswith('nfs:'):
-							res = os.system('mount -t nfs %s /mnt >/dev/null 2>&1' % (cdrom_device.replace('nfs:', '')))
+							res = os.system('/bin/mount -t nfs %s /mnt >/dev/null 2>&1' % (cdrom_device.replace('nfs:', '')))
 						elif cdrom_device.startswith('smbfs:'):
-							res = os.system('mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
+							res = os.system('/bin/mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
 						else:
-							res=os.system('mount -t iso9660 %s /mnt >/dev/null 2>&1'%cdrom_device)
+							res=os.system('/bin/mount -t iso9660 %s /mnt >/dev/null 2>&1'%cdrom_device)
 					if os.path.exists('/mnt/packages/Packages'):
 						fp = open('/mnt/packages/Packages', 'r')
 						for line in fp.readlines():

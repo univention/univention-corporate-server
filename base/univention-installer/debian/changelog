@@ -1,3 +1,9 @@
+univention-installer (1.8.2-1) unstable; urgency=low
+
+  * switch from mount to /bin/mount
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Oct 2007 14:23:37 +0200
+
 univention-installer (1.8.1-1) unstable; urgency=low
 
   * change the default packages on the diffrent system roles

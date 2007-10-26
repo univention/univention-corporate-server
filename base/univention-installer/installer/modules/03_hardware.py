@@ -358,21 +358,21 @@ class object(content):
 				for dev in result_list:
 					if dev.startswith('nfs:'):
 						dev=dev.replace('nfs:', '')
-						res=os.system('mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
+						res=os.system('/bin/mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='nfs:%s' % dev
 					elif dev.startswith('smbfs:'):
 						dev=dev.replace('smbfs:', '')
-						res=os.system('mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
+						res=os.system('/bin/mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='smbfs:%s' % dev
 					else:
 						if dev.startswith('/dev'):
-							res=os.system('mount -t iso9660 %s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('/bin/mount -t iso9660 %s /mnt -o exec >/dev/null 2>&1' % dev)
 						else:
-							res=os.system('mount -t iso9660 /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('/bin/mount -t iso9660 /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']=dev
@@ -386,28 +386,28 @@ class object(content):
 					dev=self.parent.container['cdrom_device']
 					if dev.startswith('nfs:'):
 						dev=dev.replace('nfs:', '')
-						res=os.system('mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
+						res=os.system('/bin/mount -t nfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='nfs:%s' % dev
 					elif dev.startswith('smbfs:'):
 						dev=dev.replace('smbfs:', '')
-						res=os.system('mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
+						res=os.system('/bin/mount -t smbfs %s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']='smbfs:%s' % dev
 					else:
 						if dev.startswith('/dev'):
-							res=os.system('mount %s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('/bin/mount %s /mnt -o exec >/dev/null 2>&1' % dev)
 						else:
-							res=os.system('mount /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
+							res=os.system('/bin/mount /dev/%s /mnt -o exec >/dev/null 2>&1' % dev)
 						if res == 0:
 							if os.path.exists('/mnt/.univention_install'):
 								self.parent.container['cdrom_device']=dev
 				if os.path.exists('/mnt/images/runtime.img'):
 					os.system('cp /mnt/images/runtime.img /tmp')
 					os.mkdir('/tmp/runtime')
-					os.system('mount -o loop /tmp/runtime.img /tmp/runtime')
+					os.system('/bin/mount -o loop /tmp/runtime.img /tmp/runtime')
 				if os.path.exists('/mnt/script/installer/package_list.py'):
 					os.remove('/lib/univention-installer/package_list.py')
 					os.system('cp /mnt/script/installer/package_list.py /lib/univention-installer/')
