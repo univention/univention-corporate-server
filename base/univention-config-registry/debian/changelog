@@ -1,3 +1,10 @@
+univention-config-registry (2.4.11-1) unstable; urgency=low
+
+  * when resolving patterns in configuration registry descriptions set current
+    value of variable too
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 26 Oct 2007 12:01:58 +0200
+
 univention-config-registry (2.4.10-1) unstable; urgency=low
 
   * fix check for existence of self.__configRegistry object (do not use

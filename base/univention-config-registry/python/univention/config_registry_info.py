@@ -134,14 +134,14 @@ class ConfigRegistryInfo( object ):
 					if not bvar in vars:
 						vars.append( bvar )
 
-			# create variable object with values
-			var = Variable()
-			for name, value in data:
-				var[ name ] = value
-
 			# add a reference for each config registry variable to the
 			# Variable object
 			for key in vars:
+				# create variable object with values
+				var = Variable()
+				for name, value in data:
+					var[ name ] = value
+				var.value = self.__configRegistry.get( key, None )
 				self.variables[ key ] = var
 
 		# all patterns processed
