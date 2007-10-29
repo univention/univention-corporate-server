@@ -1,4 +1,4 @@
-univention-squid (2.0.6-1) unstable; urgency=low
+univention-squid (2.0.6-2) unstable; urgency=low
 
   * fix iptables rules for transparent proxy, make iptables script as
     executable
