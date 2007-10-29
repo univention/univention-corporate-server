@@ -1,6 +1,7 @@
 univention-antivir-web (2.0.1-4) unstable; urgency=low
 
-  * fix registration of config registry variables
+  * fix registration of config registry variables and configuration file
+    diversions
 
  -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 14:55:09 +0200
 
