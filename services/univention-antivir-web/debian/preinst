@@ -28,22 +28,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1 || \
-   [ "$1" = "install" ]; then
-	for file in \
-		bannedextensionlist \
-		bannediplist \
-		bannedmimetypelist \
-		bannedsitelist \
-		bannedurllist \
-		exceptioniplist \
-		exceptionuserlist \
-		exceptionvirusextensionlist \
-		exceptionvirusmimetypelist \
-		exceptionvirussitelist \
-		exceptionvirusurllist \
-		dansguardianf1.conf \
-		dansguardian.conf ; do 
-			dpkg-divert --package univention-antivir-web --add --rename --divert /etc/dansguardian/${file}.orig /etc/dansguardian/${file}
-	done
-fi
+#if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1 || \
+#   [ "$1" = "install" ]; then
+#	for file in \
+#		bannedextensionlist \
+#		bannediplist \
+#		bannedmimetypelist \
+#		bannedsitelist \
+#		bannedurllist \
+#		exceptioniplist \
+#		exceptionuserlist \
+#		exceptionvirusextensionlist \
+#		exceptionvirusmimetypelist \
+#		exceptionvirussitelist \
+#		exceptionvirusurllist \
+#		dansguardianf1.conf \
+#		dansguardian.conf ; do 
+#			dpkg-divert --package univention-antivir-web --add --rename --divert /etc/dansguardian/${file}.orig /etc/dansguardian/${file}
+#	done
+#fi
+
+set -e
+
+#DEBHELPER#
+
+exit 0
