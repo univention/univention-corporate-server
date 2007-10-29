@@ -1,3 +1,10 @@
+univention-management-console (0.9.5-1) unstable; urgency=low
+
+  * added icons for the modules softmon and packages
+  * create packsages acls
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2007 10:12:19 +0100
+
 univention-management-console (0.9.4-2) unstable; urgency=low
 
   * first step for a new module: software monitor 

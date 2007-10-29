@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -163,8 +163,44 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set name=softmon-all \
 	--set category="Software Monitor" \
 	--set ldapbase="$ldap_base" \
-	--set command="top/*" \
+	--set command="softmon/*" \
 	--set description="All Software Monitor Operations"
+
+# create package acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-all \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/*" \
+	--set description="All Package Management Operations"
+
+# search package acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-search \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/search" \
+	--set description="Search packages"
+
+# search package acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-show \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/show" \
+	--set description="Show packages"
+
+# install package acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=packages-install \
+	--set category="Package Management" \
+	--set ldapbase="$ldap_base" \
+	--set command="packages/install" \
+	--set description="Install packages"
 
 # create process overview acls
 univention-admin settings/console_acl create $@ --ignore_exists \
@@ -349,6 +385,7 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=join-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=packages-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base
 # 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
