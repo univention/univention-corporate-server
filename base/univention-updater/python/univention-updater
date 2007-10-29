@@ -181,13 +181,13 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 					update=1
 			else:
 				update=0
-				dprint("CD-Rom does not contain update for version %s-%s."%(vv,vp), [stdout,sys_stdout])
+				dprint("CD does not contain an update for version %s-%s."%(vv,vp), [stdout,sys_stdout])
 				if internal:
 					sys_stdout.close()
 					raise UpdateError
 		else:
 			update=0
-			dprint("CD-Rom is no UCS-Update media", [stdout,sys_stdout])
+			dprint("CD is not a valid UCS update medium", [stdout,sys_stdout])
 			if internal:
 				sys_stdout.close()
 				raise UpdateError
@@ -240,7 +240,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 			if not proxy == "":
 				dprint('Failed to connect to proxy server %s' % proxy , [stdout,sys_stdout])
 			else:
-				dprint('Failed to connect to Server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+				dprint('Failed to connect to server http://%s' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
 			if internal:
 				sys_stdout.close()
 				raise UpdateError
