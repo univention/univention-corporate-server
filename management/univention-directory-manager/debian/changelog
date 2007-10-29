@@ -1,3 +1,10 @@
+univention-directory-manager (4.2.4-1) unstable; urgency=low
+
+  * the path to univention-directory-reports-cleanup is
+    /usr/share/univention-directory-manager
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2007 07:14:01 +0100
+
 univention-directory-manager (4.2.3-4) unstable; urgency=low
 
   * fixed a typo during the language settings in the postinst script
