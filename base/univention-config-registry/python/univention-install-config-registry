@@ -132,8 +132,14 @@ if __name__ == '__main__':
 				for f in item['File']:
 					if f[0] != '/':
 						f = '/'+f
-					preinst.write('test "$1" = "install" && dpkg-divert --rename --divert %s --add %s || true\n' % (f+'.debian', f))
-					postrm.write('test "$1" = "remove" && dpkg-divert --rename --divert %s --remove %s || true\n' % (f+'.debian', f))
+					preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
+					postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+			elif item.has_key('Multifile'):
+				for f in item['Multifile']:
+					if f[0] != '/':
+						f = '/'+f
+					preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
+					postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
 		fp.close()
 
 		doIt(['install', '-d', destDir('', package, 'info')])

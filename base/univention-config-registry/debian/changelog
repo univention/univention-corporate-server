@@ -1,3 +1,10 @@
+univention-config-registry (2.5.1-1) unstable; urgency=low
+
+  * correct divert baseconfig multifiles
+  * in the preinst script execute dpkg-divert also during the upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2007 13:53:01 +0100
+
 univention-config-registry (2.4.11-1) unstable; urgency=low
 
   * when resolving patterns in configuration registry descriptions set current
