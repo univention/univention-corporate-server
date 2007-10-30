@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-10-16 11:26+0200\n"
+"POT-Creation-Date: 2007-10-30 07:11+0100\n"
 "PO-Revision-Date: 2007-08-08 13:51+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,8 +166,8 @@ msgid "Samba Services"
 msgstr "Samba-Dienste"
 
 #: installer/package_list.py:50
-msgid "Windows Installer 4"
-msgstr "Windows Installer 4"
+msgid "Windows Installer"
+msgstr "Windows Installer"
 
 #: installer/package_list.py:55
 msgid "Automatic Installation for Windows Clients"
@@ -206,28 +206,28 @@ msgid "The Scalix Groupware"
 msgstr "Scalix Groupware"
 
 #: installer/package_list.py:91
-msgid "UGS Server"
-msgstr "UGS Server"
+msgid "Kolab 2 for UCS"
+msgstr "Kolab 2 für UCS"
 
 #: installer/package_list.py:97
-msgid "Groupware based on Kolab2"
-msgstr "Groupware basierend auf Kolab2"
+msgid "Groupware based on Kolab 2"
+msgstr "Groupware basierend auf Kolab 2"
 
 #: installer/package_list.py:100
-msgid "UGS Webclient"
-msgstr "UGS Webclient"
+msgid "Kolab 2 Webclient"
+msgstr "Kolab 2 Webclient"
 
 #: installer/package_list.py:105
-msgid "Horde Webclient for UGS"
-msgstr "Horde Webclient für UGS"
+msgid "Horde Webclient for Kolab 2 for UCS"
+msgstr "Horde Webclient für Kolab 2 für UCS"
 
 #: installer/package_list.py:108
-msgid "Mail Services (smtp/pop/imap)"
-msgstr "Mail-Dienste (smtp/pop/imap)"
+msgid "Standard Mail Services (smtp/pop/imap)"
+msgstr "Standard Mail-Dienste (smtp/pop/imap)"
 
 #: installer/package_list.py:113
-msgid "Standard Mail Services"
-msgstr "Standard Mail Dienste"
+msgid "Standard Mail Services with postfix and cyrus"
+msgstr "Standard Mail Dienste mit Postfix und Cyrus"
 
 #: installer/package_list.py:118
 msgid "IP Management"
@@ -261,33 +261,29 @@ msgstr "Dienste"
 msgid "Additional Services"
 msgstr "Weitere Dienste"
 
-#: installer/package_list.py:149
-msgid "Terminalserver"
-msgstr "Terminalserver"
-
-#: installer/package_list.py:154
-msgid "X-Window-System Client for Terminal Services"
-msgstr "X-Window-System Client für Terminal Dienste"
-
 #: installer/package_list.py:157
 msgid "Thinclient Environment"
 msgstr "Thinclient-Umgebung"
 
 #: installer/package_list.py:162
-msgid "ThinClient Interface"
-msgstr "Thin Client Schnittstelle"
+msgid "Thinclient Infrastructure"
+msgstr "Thinclient Infrastruktur"
 
-#: installer/package_list.py:165 installer/package_list.py:170
+#: installer/package_list.py:165
 msgid "Print Server"
 msgstr "Druckserver"
+
+#: installer/package_list.py:170
+msgid "Print Server based on cups"
+msgstr "Druckserver basierend auf Cups"
 
 #: installer/package_list.py:173
 msgid "Print Quota"
 msgstr "Druck-Quota"
 
 #: installer/package_list.py:178
-msgid "Print Quota Support"
-msgstr "Druck Quota Unterstützung"
+msgid "Print Quota Support based on pykota"
+msgstr "Druck Quota Unterstützung basierend auf Pykota"
 
 #: installer/package_list.py:181
 msgid "Nagios Server"
@@ -309,9 +305,13 @@ msgstr "Univention AD Connector"
 msgid "Sync users and groups with Active Directory"
 msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
-#: installer/package_list.py:205 installer/package_list.py:210
+#: installer/package_list.py:205
 msgid "Fax Server"
 msgstr "Fax-Server"
+
+#: installer/package_list.py:210
+msgid "Fax Server based on hylafax"
+msgstr "Fax Server basierend auf hylafax"
 
 #: installer/package_list.py:213
 msgid "Squid Proxyserver"
@@ -2233,6 +2233,15 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "UGS Server"
+#~ msgstr "UGS Server"
+
+#~ msgid "Terminalserver"
+#~ msgstr "Terminalserver"
+
+#~ msgid "X-Window-System Client for Terminal Services"
+#~ msgstr "X-Window-System Client für Terminal Dienste"
 
 #~ msgid "strict: Only SSH and HTTPS are allowed. This is only"
 #~ msgstr "strict: Nur SSH und HTTPS sind erlaubt. Nur für eine"

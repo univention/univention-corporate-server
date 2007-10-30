@@ -1,3 +1,9 @@
+univention-installer (1.8.3-1) unstable; urgency=low
+
+  * cleanup the packages list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2007 07:14:27 +0100
+
 univention-installer (1.8.2-1) unstable; urgency=low
 
   * switch from mount to /bin/mount
