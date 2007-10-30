@@ -1,3 +1,10 @@
+univention-ooffice2 (1.0.3-2) unstable; urgency=low
+
+  * added openoffice.org-help-de and openoffice.org-help-en-us to the
+    dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2007 19:55:36 +0100
+
 univention-ooffice2 (1.0.3-1) unstable; urgency=low
 
   * added postinst and univention-ooffice2.univention-baseconfig

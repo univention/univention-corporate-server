@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-ooffice2
 Architecture: all
-Depends: openoffice.org, openoffice.org-core, openoffice.org-l10n-de, openoffice.org-l10n-en-us, openoffice.org-kde, libpaper-utils
+Depends: openoffice.org, openoffice.org-core, openoffice.org-l10n-de, openoffice.org-l10n-en-us, openoffice.org-kde, libpaper-utils, openoffice.org-help-de, openoffice.org-help-en-us
 Conflicts: univention-ooffice-mimelnk, univention-ooffice (<<1.0.2)
 Description: UCS - Openoffice.org 2
  This package installs Openoffice.org 2, including German
