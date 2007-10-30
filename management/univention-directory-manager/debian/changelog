@@ -1,3 +1,10 @@
+univention-directory-manager (4.2.5-1) unstable; urgency=low
+
+  * call /usr/sbin/univention-certificate-check-validity in the join
+    script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2007 20:14:51 +0100
+
 univention-directory-manager (4.2.4-1) unstable; urgency=low
 
   * the path to univention-directory-reports-cleanup is

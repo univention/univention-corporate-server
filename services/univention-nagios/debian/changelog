@@ -1,3 +1,10 @@
+univention-nagios (1.0.7-1) unstable; urgency=low
+
+  * call /usr/sbin/univention-certificate-check-validity in the join
+    script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2007 20:13:48 +0100
+
 univention-nagios (1.0.6-3) unstable; urgency=low
 
   * added "sleep 2s" in restart()

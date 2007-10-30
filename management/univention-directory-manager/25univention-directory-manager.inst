@@ -49,7 +49,7 @@ createLogfile () {
 
 /etc/init.d/apache2 stop >/dev/null 2>&1
 
-eval `univention-baseconfig shell hostname domainname`
+eval `univention-baseconfig shell`
 
 # generate ssl certificate
 if test -e /etc/univention/ssl/univention-admin/cert.pem; then
@@ -60,6 +60,10 @@ else
 		chmod g+rx /etc/univention/ssl/univention-directory-manager.$domainname
 		chmod g+r /etc/univention/ssl/univention-directory-manager.$domainname/*
 	ln -s /etc/univention/ssl/univention-directory-manager.$domainname /etc/univention/ssl/univention-directory-manager
+fi
+
+if [ "$ssl_validity_check" = "yes" ] && [ -x /usr/sbin/univention-certificate-check-validity ]; then
+       /usr/sbin/univention-certificate-check-validity
 fi
 
 univention-baseconfig set ldap/algorithmicalridbase?1000

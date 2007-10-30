@@ -41,6 +41,11 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-nagios-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
+if [ "$ssl_validity_check" = "yes" ] && [ -x /usr/sbin/univention-certificate-check-validity ]; then
+	/usr/sbin/univention-certificate-check-validity
+fi
+
+
 # create nagios container
 univention-admin container/cn create $@ --ignore_exists --position="$ldap_base" --set name="nagios" --set description="Nagios Objects"
 
