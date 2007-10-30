@@ -1,3 +1,9 @@
+univention-kde (2.1.7-3) unstable; urgency=low
+
+  * removed gnokii from the depends
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2007 20:21:25 +0100
+
 univention-kde (2.1.7-2) unstable; urgency=low
 
   * added suggested packages from kontact
