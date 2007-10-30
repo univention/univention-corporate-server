@@ -2,13 +2,13 @@
 role = "@%@server/role@%@"
 if role == "domaincontroller_master" or role == "domaincontroller_backup" :
         print'<tr>'
-        print'<td class="overview"><a href="http://@%@hostname@%@/ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>'
-        print'<td class="overview"><a href="http://@%@hostname@%@/ucs-root-ca.crt">Zertifikat Importieren</a></td>'
+        print'<td class="overview"><a href="../ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>'
+        print'<td class="overview"><a href="../ucs-root-ca.crt">Zertifikat Importieren</a></td>'
         print'<td class="overview">Root Zertifikat des Servers</td>'
         print'</tr>'
         print'<tr>'
-        print'<td class="overview"><a href="http://@%@hostname@%@/ucsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>'
-        print'<td class="overview"><a href="http://@%@hostname@%@/ucsCA.crl">Zertifikat R&uuml;ckzugsliste</a></td>'
+        print'<td class="overview"><a href="../ucsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>'
+        print'<td class="overview"><a href="../ucsCA.crl">Zertifikat R&uuml;ckzugsliste</a></td>'
         print'<td class="overview">Ung&uuml;ltig gewordene Zertifikate</td>'
         print'</tr>'
 @!@
