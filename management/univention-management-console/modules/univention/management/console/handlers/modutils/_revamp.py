@@ -79,7 +79,7 @@ class Web( object ):
 						req.set_flag( 'web:startup', True )
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
-						req.set_flag( 'web:startup_referrer', False )
+						req.set_flag( 'web:startup_referrer', True )
 						req.set_flag( 'web:startup_format', _( 'Unload Module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 					else:
@@ -94,7 +94,7 @@ class Web( object ):
 						req.set_flag( 'web:startup', True )
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
-						req.set_flag( 'web:startup_referrer', False )
+						req.set_flag( 'web:startup_referrer', True )
 						req.set_flag( 'web:startup_format', _( 'Load Module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 
