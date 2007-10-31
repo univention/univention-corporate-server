@@ -1,6 +1,6 @@
 [update/server]
-Description[de]=Server für das Univention Repository
-Description[en]=Server holding the Univention Repository
+Description[de]=Server, auf dem das Repository vorgehalten wird
+Description[en]=Server holding the Repository
 Type=str
 Categories=System
 
@@ -23,7 +23,7 @@ Type=str
 Categories=System
 
 [update/security/proxy]
-Description[de]=Proxy für das Beziehen der security updates
+Description[de]=Zu verwendender Proxy beim Laden von Sicherheits-Updates
 Description[en]=Proxy to use while fetching security updates
 Type=str
 Categories=System
@@ -36,13 +36,13 @@ Categories=System
 
 
 [update/warning]
-Description[de]=Aktivier/Deaktiviere Warnmeldungen vor automatischen Updates
+Description[de]=Aktiviere/deaktiviere Warnmeldungen vor automatischen Updates
 Description[en]=Enable/Disable warning messages before automatic updates
 Type=str
 Categories=System
 
 [update/warning/coloured]
-Description[de]=Aktivier/Deaktiviere farbige Warnmeldungen
+Description[de]=Aktiviere/deaktiviere farbige Warnmeldungen
 Description[en]=Enable/Disable colors in warning messages
 Type=str
 Categories=System
