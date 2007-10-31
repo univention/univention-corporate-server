@@ -541,7 +541,7 @@ def doit(arglist):
 				value=None
 			else:
 				name=val[:pos]
-				value = _utf8( val[ pos + 1 : ] )
+				value = _2utf8( val[ pos + 1 : ] )
 			was_set=0
 			for mod, (properties,options) in information.items():
 				if properties.has_key(name):

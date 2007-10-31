@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.8-1) unstable; urgency=low
+
+  * fixed typo s/_utf8/_2utf8 in admincli/admin.py
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 20:42:39 +0100
+
 univention-directory-manager-modules (2.2.7-1) unstable; urgency=low
 
   * fix typo in translation
