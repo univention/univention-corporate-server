@@ -61,8 +61,7 @@ for p in	univention-pkgdb \
 	echo "$p install" | dpkg --set-selections
 done
 
-for p in	univention-groupware-webclient \
-			univention-application-server \
+for p in	univention-application-server \
 			univention-pkgdb \
 			univention-pkgdb-tools \
 			univention-samba \
@@ -73,6 +72,11 @@ for p in	univention-groupware-webclient \
 			univention-nagios-server; do
 	check_and_install $p
 done
+
+dpkg -l univention-groupware-webclient | grep ^ii >>/var/log/univention/updater.log 2>&1
+if [ $? = 0 ]; then
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-kolab2-webclient >>/var/log/univention/updater.log 2>&1 
+fi
 
 
 dpkg -l univention-admin | grep ^ii >>/var/log/univention/updater.log 2>&1

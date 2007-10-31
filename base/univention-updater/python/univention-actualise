@@ -205,11 +205,12 @@ def main():
 			rem_packages=getPackageList(baseConfig, 'remove')
 			for package in rem_packages:
 				waitForLock()
-				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) #ein Packet muss nur dann entfernt werden, wenn es auch existiert.
-				if res==0:
+				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) # check if the package exists 
+				if res == 0:
 					print("Removing packages: %s" % package)
 					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/actualise.log 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get remove --yes %s >>/var/log/univention/actualise.log 2>&1' % package)
 				else:
+					print("The package %s doesn't exists." % package)
 					res=0
 				if os.path.exists('/var/run/apt-get.lock'):
 					os.unlink('/var/run/apt-get.lock')
@@ -224,7 +225,15 @@ def main():
 			for package in add_packages:
 				waitForLock()
 				print("Installing packages: %s" % package)
-				res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install %s >>/var/log/univention/actualise.log 2>&1' % package)
+				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) # check if the package exists 
+
+				if res == 0:
+					print("Installing packages: %s" % package)
+					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install %s >>/var/log/univention/actualise.log 2>&1' % package)
+				else
+					print("The package %s doesn't exists." % package)
+					res=0
+
 				if os.path.exists('/var/run/apt-get.lock'):
 					os.unlink('/var/run/apt-get.lock')
 				if res != 0:
