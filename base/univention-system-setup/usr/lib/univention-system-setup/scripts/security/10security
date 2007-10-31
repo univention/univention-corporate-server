@@ -77,7 +77,7 @@ echo `date` : "Configuring security profile : " $security_profile  >> /var/log/u
 if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
 
   univention-config-registry set security/profile="strict"  >> /var/log/univention/setup.log
-#  univention-config-registry unset security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
+  univention-config-registry set security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
     univention-config-registry set security/services/smtp="disabled" security/services/pop3="disabled"  >> /var/log/univention/setup.log
@@ -115,8 +115,7 @@ if [ -n "$security_profile" -a "$security_profile" = "normal" ]; then
 
   reset_services 
   univention-config-registry set security/profile="normal"  >> /var/log/univention/setup.log
-#  univention-config-registry unset security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
-
+  univention-config-registry set security/packetfilter/disabled="false"  >> /var/log/univention/setup.log
 
   if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
     univention-config-registry set security/services/telnet="disabled" security/services/ftp="disabled"  >> /var/log/univention/setup.log
@@ -140,7 +139,7 @@ if [ -n "$security_profile" -a "$security_profile" = "open" ]; then
   iptables -F    
   reset_services
   univention-config-registry set security/profile="open"  >> /var/log/univention/setup.log
-#  univention-config-registry set security/packetfilter/disabled="true"  >> /var/log/univention/setup.log
+  univention-config-registry set security/packetfilter/disabled="true"  >> /var/log/univention/setup.log
 
 fi
 
