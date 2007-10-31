@@ -83,8 +83,8 @@ Type=str
 Categories=Network
 
 [gateway]
-Description[de]=Gateway
-Description[en]=Gateway
+Description[de]=Standard-Netz-Gateway
+Description[en]=Default gateway of network
 Type=str
 Categories=Network
 
@@ -150,12 +150,12 @@ Categories=System
 
 [kernel/clobber_modules]
 Description[de]=Verschiebe Modulverzeichnis wenn gleiche Kernelversion installiert wird
-Description[en]=Move modules directory if same kernel version gets installed
+Description[en]=Move modules directory if the same kernel version gets installed
 Type=str
 Categories=System
 
 [kernel/do_bootfloppy]
-Description[de]=Unterbinde Fragen zum erstellen einer Bootdiskette
+Description[de]=Unterbinde Fragen bzgl. Erstellung einer Bootdiskette
 Description[en]=Prevent questions about creating a boot floppy
 Type=str
 Categories=System
@@ -203,8 +203,8 @@ Type=str
 Categories=LDAP
 
 [ldap/server/name]
-Description[de]=FQDN des LDAP-Servers
-Description[en]=FQDN of the LDAP server
+Description[de]=Vollständiger Rechnername (FQDN) des LDAP-Servers
+Description[en]=Fully qualified domain name of LDAP server
 Type=str
 Categories=LDAP
 
@@ -215,14 +215,14 @@ Type=str
 Categories=LDAP
 
 [ldap/binaryattributes]
-Description[de]=Attribute die von Zeichensatz Kodierungen ausgenommen werden
+Description[de]=Von Zeichensatz-Kodierungen ausgenommene Attribute
 Description[en]=Attributes which don't get encoded/decoded
 Type=str
 Categories=LDAP
 
 [ldap/server/ip]
 Description[de]=IP-Adresse des lokalen LDAP-Servers
-Description[en]=IP address of the loacal LDAP server
+Description[en]=IP address of the local LDAP server
 Type=str
 Categories=LDAP
 
@@ -239,8 +239,8 @@ Type=str
 Categories=LDAP
 
 [ldap/policy/cron]
-Description[de]=Cronjob für das regelmäßige Ausführen der Univention-Policy Scripte
-Description[en]=Cronjob for regular execution of Univention-Ploicy scripts
+Description[de]=Cronjob-Intervall für das regelmäßige Ausführen der Univention Directory Policy-Skripte
+Description[en]=Cron job interval for regular execution of Univention Directory Policy scripts
 Type=str
 Categories=LDAP
 
@@ -293,7 +293,7 @@ Type=str
 Categories=System
 
 [log/rotate/weeks]
-Description[de]=Nach wievielen Wochen die Log-Dateien rotiert werden
+Description[de]=Rotations-Intervall für System-Logdateien (in Wochen)
 Description[en]=Rotation interval for system log files (in weeks)
 Type=str
 Categories=System
@@ -329,19 +329,19 @@ Type=str
 Categories=System
 
 [pkgdb/scan]
-Description[de]=Soll die Software-Datenbank aktualisiert werden
-Description[en]=Should the software database be updated
+Description[de]=Konfiguriert die Aktualisierung der Software-Monitor-Datenbank
+Description[en]=Configure update of the software monitor database
 Type=str
 Categories=System
 
 [proxy/password]
-Description[de]=Passwort für die Authentisierung beim Proxy
+Description[de]=Passwort für die Authentifizierung am HTTP-Proxy-Server
 Description[en]=Password for the proxy authentication
 Type=str
 Categories=Network
 
 [proxy/username]
-Description[de]=Benutzername für die Authentisierung beim Proxy
+Description[de]=Benutzername für die Authentifizierung am HTTP-Proxy-Server
 Description[en]=Username for the proxy authentication
 Type=str
 Categories=Network
@@ -383,7 +383,7 @@ Type=str
 Categories=System
 
 [version/version]
-Description[de]=Hauptversion Version von UCS
+Description[de]=Hauptversion der installierten UCS-Version
 Description[en]=Major version of UCS
 Type=str
 Categories=System
