@@ -3,7 +3,7 @@
 # Univention Winprinters
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,10 +27,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-export DH_COMPAT=3
-version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
-copyrightyear=`date +%Y`
 
 configure: configure-stamp
 configure-stamp:
@@ -57,20 +53,9 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	cat univention-get-winprinters | sed -e "s/@%@package_version@%@/${version}/" > univention-get-winprinters_tmp
-	cat univention-get-winprinters_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-get-winprinters_tmp2
-	install -m755 univention-get-winprinters_tmp2 ${D}/usr/bin/univention-get-winprinters
-	rm univention-get-winprinters_tmp*
-
-	cat univention-list-winprinters | sed -e "s/@%@package_version@%@/${version}/" > univention-list-winprinters_tmp
-	cat univention-list-winprinters_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-list-winprinters_tmp2
-	install -m755 univention-list-winprinters_tmp2 ${D}/usr/bin/univention-list-winprinters
-	rm univention-list-winprinters_tmp*
-	
-	cat univention-put-winprinters | sed -e "s/@%@package_version@%@/${version}/" > univention-put-winprinters_tmp
-	cat univention-put-winprinters_tmp | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-put-winprinters_tmp2
-	install -m755 univention-put-winprinters_tmp2 ${D}/usr/sbin/univention-put-winprinters
-	rm univention-put-winprinters_tmp*
+	install -m755 univention-get-winprinters ${D}/usr/bin/univention-get-winprinters
+	install -m755 univention-list-winprinters ${D}/usr/bin/univention-list-winprinters
+	install -m755 univention-put-winprinters ${D}/usr/sbin/univention-put-winprinters
 
 	install -m644 winprinters_smb.conf ${D}/var/lib/winprt-data/winprinters_smb.conf
 
@@ -82,11 +67,6 @@ binary-indep: build install
 	dh_testdir
 	dh_testroot
 	dh_installdocs
-	dh_installexamples
-	dh_installmenu
-	dh_installcron
-	dh_installman
-	dh_installinfo
 	dh_installchangelogs
 	dh_link
 	dh_strip
