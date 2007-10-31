@@ -62,7 +62,7 @@ def main():
 		value = baseConfig[key]
 		#print "[%s]\t\t%s" % (key, value)
 
-		if key.startswith('security/packetfilter/tcp/accept') or key.startswith('security/packetfilter/udp/'):
+		if key.startswith('security/packetfilter/tcp/') or key.startswith('security/packetfilter/udp/'):
 			tmp = key.split('/')
 			proto = tmp[2]
 			action = tmp[3]
