@@ -1,0 +1,25 @@
+univention-netlogon-proxy (2.0.0-1) unstable; urgency=low
+
+  * Update to UCS 2.0 policies
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 15:04:01 +0100
+
+univention-netlogon-proxy (1.0.2-2) unstable; urgency=low
+
+  * Fix vbscript complaints about required constant integer
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 08 Aug 2007 09:52:12 +0200
+
+univention-netlogon-proxy (1.0.1-1) unstable; urgency=low
+
+  * changed baseconfig prefix from "proxy/netlogon/*" to
+    "samba/netlogoscript/proxy/*"
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 03 Aug 2007 09:27:07 +0200
+
+univention-netlogon-proxy (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 31 Jul 2007 09:17:40 +0200
+

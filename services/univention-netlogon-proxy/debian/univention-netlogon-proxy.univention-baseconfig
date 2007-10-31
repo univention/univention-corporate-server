@@ -1,0 +1,7 @@
+Type: file
+File: var/lib/samba/netlogon/univention-netlogon-proxy.vbs
+Variables: samba/netlogonscript/proxy/host
+Variables: samba/netlogonscript/proxy/port
+Variables: samba/netlogonscript/proxy/whitelist
+Variables: samba/netlogonscript/proxy/enable/firefox
+Variables: samba/netlogonscript/proxy/enable/iexplorer
