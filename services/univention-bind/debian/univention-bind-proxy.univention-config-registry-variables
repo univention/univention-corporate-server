@@ -17,8 +17,8 @@ Type=str
 Categories=Network
 
 [dns/master/address]
-Description[de]=Erlaube bind-proxy Anfragen von dieser IP-Adresse
-Description[en]=Allow bind-proxy querrys from this ip adress
+Description[de]=Erlaube Bind-Proxy-Anfragen von dieser IP-Adresse
+Description[en]=Allow Bind proxy queries from this IP address
 Type=str
 Categories=Network
 
