@@ -1,18 +1,18 @@
 [grub/append]
-Description[de]=Zusätzliche Kernel Optionen
-Description[en]=Additional kernel options
+Description[de]=Weitere durch den Grub-Bootloader übergebene Kernel-Optionen
+Description[en]=Additional kernel options passed to the Grub boot loader
 Type=str
 Categories=System
 
 [grub/groot]
-Description[de]=Standard Grub root Gerät
-Description[en]=Default grub root device
+Description[de]=Standard-Festplatte oder -laufwerk für Grub-Bootloader
+Description[en]=Default device of Grub boot loader (Grub notation)
 Type=str
 Categories=System
 
 [grub/root]
-Description[de]=Boot Partition
-Description[en]=Boot partition
+Description[de]=Wurzelverzeichnis für Grub-Bootloader
+Description[en]=Root device of Grub boot loader
 Type=str
 Categories=System
 

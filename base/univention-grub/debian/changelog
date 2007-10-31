@@ -1,3 +1,9 @@
+univention-grub (1.1.2-4) unstable; urgency=low
+
+  * Correct Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 12:43:16 +0100
+
 univention-grub (1.1.2-3) unstable; urgency=low
 
   * rechange postinst
