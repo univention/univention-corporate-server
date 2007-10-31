@@ -104,7 +104,7 @@ locate_repos() {
 
 testurl() {
 	# Test if the given URL is available.
-	HTTP_ERR=`wget -S --spider "$1" 2>&1 | grep "^ 1" | tail -n 1 | awk '{print $3}'`
+	HTTP_ERR=`wget -S --spider "$1" 2>&1 | grep "^ *HTTP/1.1 " | tail -n 1 | awk '{print $2}'`
 	if [ -z $HTTP_ERR ]; then
 		echo "Error: Host not found"
 		return 1
@@ -242,6 +242,7 @@ else
 		wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -q -A ".deb" "$URL/$LASTPARM/all/"
 		testurl "$URL/$LASTPARM/$HOST_ARCH/"
 		if [ $? -eq 0 ]; then
+			set -x
 			wget -P $TMPDIR -t 5 -l 1 -nd -nH -r -q -A ".deb" "$URL/$LASTPARM/$HOST_ARCH/"
 		fi
 	fi

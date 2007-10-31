@@ -1,3 +1,9 @@
+univention-updater (2.3.5-1) unstable; urgency=low
+
+  * adapt univention-addon-download to the new wget version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 09:49:19 +0100
+
 univention-updater (2.3.4-1) unstable; urgency=low
 
   * fix a python indent problem in univention-repository-update
