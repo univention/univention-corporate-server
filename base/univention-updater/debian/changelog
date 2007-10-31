@@ -1,3 +1,10 @@
+univention-updater (2.3.6-1) unstable; urgency=low
+
+  * don't set univention-nagios-server and univention-nagios-client to
+    hold during the ucs 2.0 upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 10:09:57 +0100
+
 univention-updater (2.3.5-1) unstable; urgency=low
 
   * adapt univention-addon-download to the new wget version

@@ -77,8 +77,6 @@ for p in 	univention-server-master \
 			univention-bind \
 			univention-bind-proxy \
 			univention-kolab2 \
-			univention-nagios-client \
-			univention-nagios-server \
 			univention-samba \
 			univention-pkgdb \
 			univention-printquota \
