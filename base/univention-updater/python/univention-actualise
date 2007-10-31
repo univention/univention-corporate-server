@@ -230,7 +230,7 @@ def main():
 				if res == 0:
 					print("Installing packages: %s" % package)
 					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install %s >>/var/log/univention/actualise.log 2>&1' % package)
-				else
+				else:
 					print("The package %s doesn't exists." % package)
 					res=0
 

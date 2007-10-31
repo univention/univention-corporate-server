@@ -1,4 +1,4 @@
-univention-updater (2.3.6-1) unstable; urgency=low
+univention-updater (2.3.6-2) unstable; urgency=low
 
   * don't set univention-nagios-server and univention-nagios-client to
     hold during the ucs 2.0 upgrade
