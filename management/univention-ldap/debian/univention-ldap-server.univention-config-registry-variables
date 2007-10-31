@@ -5,14 +5,14 @@ Type=str
 Categories=LDAP
 
 [ldap/replog]
-Description[de]=Aktiviere/Deaktiviere das Schreiben der Replications-Log Datei
+Description[de]=Aktiviere/Deaktiviere das Schreiben der Replikations-Logdatei
 Description[en]=Enable/Disable writing of replication log file
 Type=str
 Categories=LDAP
 
 [ldap/translogfile]
-Description[de]=Pfad zur Transaktions-Log Datei
-Description[en]=Path to transactions log file
+Description[de]=Pfad zur LDAP-Transaktions-Logdatei
+Description[en]=Path to LDAP transaction log file
 Type=str
 Categories=LDAP
 
@@ -24,32 +24,32 @@ Categories=LDAP
 
 [ldap/page-results]
 Description[de]=Aktiviere/Deaktiviere das Aufteilen der Ergebnisse einer Suchoperation
-Description[en]=Enable/Disable pagination for the data returned from search operations
+Description[en]=Enable/Disable pagination of data returned by search operations
 Type=str
 Categories=LDAP
 
 [ldap/sizelimit]
-Description[de]=Maximale Anzahl von Einträge die von einer Suchoperation zurückgegeben werden
-Description[en]=Maximum number of entries to return from a search operation
+Description[de]=Maximale Anzahl von Einträgen, die von einer Suchoperation zurückgegeben werden
+Description[en]=Maximum amount of entries returned by a search operation
 Type=str
 Categories=LDAP
 
 [ldap/threads]
-Description[de]=Maximalgröße des primären Thread-Pools
-Description[en]=Maximum size of the primary thread pool
+Description[de]=Anzahl der verwendeten Server-Threads
+Description[en]=Threads used by the LDAP server
 Type=str
 Categories=LDAP
 
 
 [ldap/schema/export]
 Description[de]=Exportiere die LDAP-Schemata beim LDAP-Start in das Webverzeichnis
-Description[en]=Export LDAP shemata to webroot at startup
+Description[en]=Export LDAP schemas to webroot at startup
 Type=str
 Categories=LDAP
 
 [ldap/database/type]
-Description[de]=Typ des LDAP-Backends
-Description[en]=Type of LDAP backend to use
+Description[de]=LDAP-Datenbank-Typ (bdb oder ldbm)
+Description[en]=LDAP database type (bdb or ldbm)
 Type=str
 Categories=LDAP
 
@@ -73,18 +73,18 @@ Categories=LDAP
 
 [ldap/database/bdb/set_cachesize]
 Description[de]=Anzahl der Einträge die vom BDB-Backend zwischengespeichert werden
-Description[en]=Amount of entries that are cached by the BDB backend
+Description[en]=Amount of entries being cached by the BDB LDAP backend
 Type=str
 Categories=LDAP
 
 [ldap/database/bdb/set_lg_bsize]
-Description[de]=Maximale größe der BDB-Transaction-Log Dateien in Byte
+Description[de]=Maximale Größe der BDB-Transaction-Logdateien in Byte
 Description[en]=Maximum size of BDB transaction logs in byte
 Type=str
 Categories=LDAP
 
 [ldap/database/bdb/set_lg_max]
-Description[de]=Maximales Alter der BDB-Transaction-Log Dateien
+Description[de]=Maximales Alter der BDB-Transaction-Logdateien
 Description[en]=Maximum age of BDB transaction logs
 Type=str
 Categories=LDAP
@@ -97,8 +97,8 @@ Categories=LDAP
 
 
 [ldap/database/ldbm/dbsync]
-Description[de]=Häufigkeit in der die Datenbank-Buffer auf die Festplatte geschrieben werden
-Description[en]=Frequency for flushing database buffers to disk
+Description[de]=Häufigkeit, mit der die LDBM-Datenbank-Buffer auf die Festplatte geschrieben werden
+Description[en]=Frequency of flushing LDBM database buffers to disk
 Type=str
 Categories=LDAP
 
