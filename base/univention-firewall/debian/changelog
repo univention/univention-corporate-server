@@ -1,3 +1,9 @@
+univention-firewall (1.1.1-5) unstable; urgency=low
+
+  * Make generated rules executable
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 16:46:04 +0100
+
 univention-firewall (1.1.1-4) unstable; urgency=low
 
   * Remove debug code

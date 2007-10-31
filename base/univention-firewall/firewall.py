@@ -114,4 +114,5 @@ fh_accept.write('\n')
 fh_deny.write('\n')
 fh_accept.close()
 fh_deny.close()
-
+os.system("chmod a+x /etc/security/netfilter.d/10accept")
+os.system("chmod a+x /etc/security/netfilter.d/15deny")
