@@ -1,3 +1,9 @@
+univention-nagios (1.0.7-2) unstable; urgency=low
+
+  * Correct Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 11:50:50 +0100
+
 univention-nagios (1.0.7-1) unstable; urgency=low
 
   * call /usr/sbin/univention-certificate-check-validity in the join

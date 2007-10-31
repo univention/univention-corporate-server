@@ -1,29 +1,29 @@
 [nagios/server/autostart]
-Description[de]=Starte Nagios-Server bei Konfigurationsänderungen neu
-Description[en]=Restart Nagios server on configuration changes
+Description[de]=Starte Nagios-Server bei Systemstart
+Description[en]=Start Nagios server during system startup
 Type=str
 Categories=System
 
 [nagios/server/authenticate]
-Description[de]=Aktivier/Deaktiviere die Anmeldung am Nagios-Webfrontend
+Description[de]=Aktiviere/Deaktiviere die Anmeldung am Nagios-Webfrontend
 Description[en]=Enable/Disable authentication for the Nagios web frontend
 Type=str
 Categories=System
 
 [nagios/server/checkexternalcmd]
-Description[de]=Deaktiviere das Übergeben von Kommandos aus dem Webfrontend
-Description[en]=Completely disable the ability to run commands thru the web frontend
+Description[de]=Aktiviere/Deaktiviere das Übergeben von Kommandos aus dem Webfrontend
+Description[en]=Enable/Disable the ability to run commands through the web frontend
 Type=str
 Categories=System
 
 [nagios/server/refreshrate]
-Description[de]=Automatischer Aktualisierungsintervall des Nagios-Webfrontends
+Description[de]=Automatischer Aktualisierungsintervall des Nagios-Webfrontends (in Sekunden)
 Description[en]=Refresh rate of the Nagios web frontend in seconds
 Type=str
 Categories=System
 
 [nagios/server/theme]
-Description[de]=Name des zu verwendenden Nagios-Theme
+Description[de]=Name des zu verwendenden Nagios-Themes
 Description[en]=Name of the Nagios theme to use
 Type=str
 Categories=System
@@ -35,7 +35,7 @@ Type=str
 Categories=System
 
 [nagios/server/user/allinfo]
-Description[de]=Erlaube diesen Benutzer alle Rechner und Diensteinformationen einzusehen
+Description[de]=Erlaube diesen Benutzern alle Rechner- und Dienst-informationen einzusehen
 Description[en]=Allow these users to view all available system and process information
 Type=str
 Categories=System
@@ -60,13 +60,13 @@ Categories=System
 
 [nagios/server/hostcheck/enable]
 Description[de]=Aktiviere/Deaktiviere die regelmäßige Erreichbarkeitsprüfung aller Nagios-Rechner
-Description[en]=Enable/Disable the regular availability checks for all Nagios hosts
+Description[en]=Enable/Disable regular availability checks for all Nagios hosts
 Type=str
 Categories=System
 
 [nagios/server/hostcheck/notificationinterval]
-Description[de]=Warte die angegebene Zeitspanne in Minuten bevor die selbe Benachrichtigung erneut versendet wird
-Description[en]=Wait the given time in minutes before sending the same notification again
+Description[de]=Zeitspanne bevor eine erneute Hostcheck-Benachrichtigung versendet wird (in Minuten)
+Description[en]=Time span in minutes before resending a host check notification (in minutes)
 Type=str
 Categories=System
 
