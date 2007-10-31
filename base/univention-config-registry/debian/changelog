@@ -1,4 +1,4 @@
-univention-config-registry (2.6.1-1) unstable; urgency=low
+univention-config-registry (2.6.1-2) unstable; urgency=low
 
   * remove the config file when removing the package
   * remove the package info file when removing the package
