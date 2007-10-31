@@ -60,8 +60,6 @@ def add_iptables_entry(proto, port, action):
 	return ('$iptables -A INPUT -p %s --dport %s -j %s\n' % (proto, port, jump))
 
 
-print "Hallo"
-	
 # Important initialize
 # This is the data one firewall-service record consists of
 # After all data has been collected out of the baseconfig the
@@ -91,8 +89,6 @@ for key in base:
 		tmp = key.split('/')
 		proto = tmp[2]
 		action = tmp[3]
-
-		print "X1", tmp
 
 		if action == 'accept' or action == 'deny':
 			port = value
