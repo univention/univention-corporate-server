@@ -1,3 +1,9 @@
+univention-ssl (2.0.1-9) unstable; urgency=low
+
+  * Fix Config Registry descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 10:35:35 +0100
+
 univention-ssl (2.0.1-8) unstable; urgency=low
 
   * fixed permissions of ssl-sync.log
