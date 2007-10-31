@@ -89,7 +89,7 @@ class ActiveProcess( object ):
 
 class Module( base.Page ):
 	def __init__( self, module_name, module ):
-		base.Page.__init__( self, module_name, module[ 'short_description' ] )
+		base.Page.__init__( self, module_name, module[ 'short_description' ], closeable = True )
 		self.__module = module
 		self.__storage = mapping.Storage()
 		self.__layout = None

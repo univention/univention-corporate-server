@@ -37,12 +37,13 @@ import univention.debug as ud
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
 class Page( object ):
-	def __init__( self, id, title ):
+	def __init__( self, id, title, closeable = False ):
 		self.__title = title
 		self.id = id
 		self.selected = 0
 		self.selection_changed = True
 		self.reselected = False
+		self.page_closeable = closeable
 		self.closed = False
 		self.categories = []
 		self.categorylist = None
@@ -56,8 +57,8 @@ class Page( object ):
 				status = umc_tools.image_get( 'actions/progress-active', umc_tools.SIZE_SMALL )
 			else:
 				status = umc_tools.image_get( 'actions/progress', umc_tools.SIZE_SMALL )
-			return ( self.__title, self.__title, self.icon, status )
-		return ( self.__title, self.__title, self.icon, None )
+			return ( self.__title, self.__title, self.icon, status, self.page_closeable )
+		return ( self.__title, self.__title, self.icon, None, self.page_closeable )
 
 	def layout( self ):
 		rows = []

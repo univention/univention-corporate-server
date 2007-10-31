@@ -108,8 +108,10 @@ class ModuleProcess( Client ):
 		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: dying' )
 		self.disconnect()
 		self.__process.stop()
+		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: child stopped' )
 
 	def _died( self, pid, status ):
+		ud.debug( ud.ADMIN, ud.PROCESS, 'ModuleProcess: child died' )
 		self.signal_emit( 'finished', pid, status, self.name )
 
 	def _response( self, msg ):
@@ -135,6 +137,8 @@ class Processor( signals.Provider ):
 		# stores the module processes [ modulename ] = <>
 		self.__processes = {}
 		self.__locale = None
+
+		self.__killtimer = {}
 
 		lo = ldap.open( umc.baseconfig[ 'ldap/server/name' ] )
 
@@ -164,7 +168,10 @@ class Processor( signals.Provider ):
 
 	def request( self, msg ):
 
-		if msg.command == 'GET':
+		if msg.command == 'EXIT':
+			self.handle_request_exit( msg )
+
+		elif msg.command == 'GET':
 			self.handle_request_get( msg )
 
 		elif msg.command == 'SET':
@@ -187,6 +194,28 @@ class Processor( signals.Provider ):
 
 		else:
 			self.handle_request_unknown( msg )
+
+	def _purge_child(self, module_name):
+		if self.__processes.has_key( module_name ):
+			ud.debug( ud.ADMIN, ud.INFO, 'session.py: module %s is still running - purging module out of memory' % module_name)
+			pid = self.__processes[ module_name ].pid()
+			os.kill(pid, 9)
+		return False
+
+	def handle_request_exit( self, msg ):
+		if len( msg.arguments ) < 1:
+			return self.handle_request_unknown( msg )
+
+		module_name = msg.arguments[0]
+		if module_name:
+			if self.__processes.has_key( module_name ):
+				self.__processes[ module_name ].request( msg )
+				ud.debug( ud.ADMIN, ud.INFO, 'session.py: got EXIT: asked module %s to shutdown gracefully' % module_name)
+				# added timer to kill away module after 3000ms
+				cb = notifier.Callback( self._purge_child, module_name )
+				self.__killtimer[ module_name ] = notifier.timer_add( 3000, cb )
+			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'session.py: got EXIT: module %s is not running' % module_name )
 
 	def handle_request_version( self, msg ):
 		res = Response( msg )
@@ -331,6 +360,11 @@ class Processor( signals.Provider ):
 			res.status( 502 ) # module process died unexpectedly
 		else:
 			ud.debug( ud.ADMIN, ud.INFO, 'module process died: everything fine' )
+		# if killtimer has been set then remove it
+		if self.__killtimer.has_key( name ):
+			ud.debug( ud.ADMIN, ud.INFO, 'module process died: stopping killtimer of "%s"' % name )
+			notifier.timer_remove( self.__killtimer[ name ] )
+			del self.__killtimer[ name ]
 		del self.__processes[ name ]
 
 	def handle_request_status( self, msg ):

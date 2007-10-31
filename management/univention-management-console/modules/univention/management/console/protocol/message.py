@@ -185,11 +185,9 @@ class Request( Message ):
 	console daemon"""
 
 	__counter = 0
-	def __init__( self, command, args = [], opts = {}, hosts = None,
-				  incomplete = False ):
+	def __init__( self, command, args = [], opts = {}, hosts = None, incomplete = False ):
 		if not command_is_known( command ):
-			raise UnknownCommandError( "'%s' is not a valid UMCP command" % \
-									   command )
+			raise UnknownCommandError( "'%s' is not a valid UMCP command" % command )
 		Message.__init__( self, Message.REQUEST, command, arguments = args,
 						  options = opts, hosts = hosts,
 						  incomplete = incomplete )

@@ -1,3 +1,10 @@
+univention-management-console (0.9.7-1) unstable; urgency=low
+
+  * added close button to modules
+  * added EXIT command to UMCP
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 31 Oct 2007 12:04:16 +0100
+
 univention-management-console (0.9.6-1) unstable; urgency=low
 
   * fixed traceback in modutils when pressing cancel button

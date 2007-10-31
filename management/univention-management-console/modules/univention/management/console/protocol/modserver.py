@@ -94,6 +94,7 @@ class ModuleServer( Server ):
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def _timed_out( self ):
+		ud.debug( ud.ADMIN, ud.INFO, "modserver.py: _timed_out: commiting suicide" )
 		self.exit()
 		sys.exit( 0 )
 
@@ -133,6 +134,17 @@ class ModuleServer( Server ):
 		return True
 
 	def handle( self, msg ):
+		if msg.command == 'EXIT':
+			shutdown_timeout = 500
+			ud.debug( ud.ADMIN, ud.INFO, "modserver.py: got EXIT: module shutdown in %dms" % shutdown_timeout )
+			# shutdown module after one second
+			resp = Response( msg )
+			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
+			resp.status( 200 )
+			self.response( resp )
+			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
+			return
+
 		if msg.command == 'SET':
 			resp = Response( msg )
 			resp.status( 200 )

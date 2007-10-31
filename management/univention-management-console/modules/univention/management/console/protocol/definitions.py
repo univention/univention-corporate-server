@@ -46,6 +46,7 @@ COMMANDS = {
 	'CLOSE' : ( False, None ),
 	'CANCEL' : ( False, ( 'ids', ) ),
 	'STATUS' : ( False, ( 'ids', ) ),
+	'EXIT' : ( True, () ),
 }
 
 STATUSINFORMATION = {

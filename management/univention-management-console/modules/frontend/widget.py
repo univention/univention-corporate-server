@@ -29,9 +29,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import univention.management.console.protocol as umcp
 import univention.management.console as umc
 import univention.debug as ud
 
+import client
 import uniparts
 import pages
 
@@ -116,8 +118,28 @@ class Notebook( object ):
 		'''If the selection has changed the user has selected another
 		page/module. Otherwise the user has clicked anything on the
 		current page that should be evaulated by the associated object'''
-		if self.selected != self.notebook.getselected():
+		self.closedModule = self.notebook.getclosed()
+		ud.debug(ud.ADMIN, ud.INFO, 'SYNTAX: Notebook.apply: closedModule=%s' % self.closedModule )
+		if self.closedModule > -1:
+
+			# send EXIT to module
+			ud.debug(ud.ADMIN, ud.INFO, 'SYNTAX: Notebook.apply: sending EXIT to module %s' % self.pages[ self.closedModule ].id )
+			req = umcp.Request( 'EXIT', args = [ self.pages[ self.closedModule ].id ] )
+			id = client.request_send( req )
+			response = client.response_wait( id, timeout = 10 )
+			if response:
+				resp = response.body.get('status', None)
+				ud.debug(ud.ADMIN, ud.INFO, 'SYNTAX: Notebook.apply: EXIT response: %s' % resp )
+
+			del self.pages[ self.closedModule ]
 			self.selected = self.notebook.getselected()
+			if self.closedModule <= self.selected and self.selected > 0:
+				self.selected -= 1
 			self.pages[ self.selected ].focused()
 		else:
-			self.pages[ self.selected ].apply()
+			if self.selected != self.notebook.getselected():
+				self.selected = self.notebook.getselected()
+				self.pages[ self.selected ].focused()
+			else:
+				self.pages[ self.selected ].apply()
+
