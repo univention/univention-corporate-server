@@ -1,0 +1,25 @@
+univention-log-collector (2.0.0-1) unstable; urgency=low
+
+  * Update to UCS 2.0 policies
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 14:46:14 +0100
+
+univention-log-collector (1.0.1-2) unstable; urgency=low
+
+  * fixed typo in postinst of log-collector-server 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 08 Aug 2007 10:49:25 +0200
+
+univention-log-collector (1.0.1-1) unstable; urgency=low
+
+  * fixed bug that could lead to tracebacks in log-collector-client if 
+    SSL connection dies
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 03 Aug 2007 09:01:07 +0200
+
+univention-log-collector (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 02 Aug 2007 14:16:46 +0200
+
