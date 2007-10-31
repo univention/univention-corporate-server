@@ -1,3 +1,9 @@
+univention-squid (2.0.6-3) unstable; urgency=low
+
+  * add missing arguments to univention-config-registry in postinst
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed, 31 Oct 2007 10:53:36 +0100
+
 univention-squid (2.0.6-2) unstable; urgency=low
 
   * fix iptables rules for transparent proxy, make iptables script as

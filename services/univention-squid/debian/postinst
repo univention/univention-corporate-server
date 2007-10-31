@@ -41,10 +41,10 @@ case "$1" in
 		# Merge pre-UCS2.0-settings:
 		eval $($CONFREG shell proxy/ldapauth proxy/force proxy/parent/host proxy/parent/port )
 
-		[ $proxy_ldapauth ] && $CONFREG squid/ldapauth=proxy_ldapauth
-		[ $proxy_force ] && $CONFREG squid/transparentproxy=$proxy_force
-		[ $proxy_parent_host ] && $CONFREG squid/parent/host=$proxy_parent_host
-		[ $proxy_parent_port ] && $CONFREG squid/parent/port=$proxy_parent_port
+		[ $proxy_ldapauth ] && $CONFREG set squid/ldapauth=proxy_ldapauth
+		[ $proxy_force ] && $CONFREG set squid/transparentproxy=$proxy_force
+		[ $proxy_parent_host ] && $CONFREG set squid/parent/host=$proxy_parent_host
+		[ $proxy_parent_port ] && $CONFREG set squid/parent/port=$proxy_parent_port
 	
 		# remove unneeded config file
 		rm -f /etc/squid.conf
