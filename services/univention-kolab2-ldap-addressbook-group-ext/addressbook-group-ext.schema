@@ -1,0 +1,11 @@
+objectclass ( 1.3.6.1.4.1.10176.99999.63.1
+	NAME 'adrGroupExt'
+	DESC 'contains additional attributes for groups'
+	SUP top AUXILIARY
+	MUST ( sn ) )
+
+objectclass ( 1.3.6.1.4.1.10176.99999.63.2
+	NAME 'adrMailingListExt'
+	DESC 'contains additional attributes for mailing lists'
+	SUP top AUXILIARY
+	MUST ( sn ) )

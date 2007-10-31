@@ -1,0 +1,1 @@
+include /usr/share/univention-ldap/schema/addressbook-group-ext.schema

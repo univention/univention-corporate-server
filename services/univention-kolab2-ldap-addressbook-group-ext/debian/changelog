@@ -1,0 +1,19 @@
+univention-kolab2-ldap-addressbook-group-ext (1.0.0-1) unstable; urgency=low
+
+  * Rename source package name (binary names remain identical)
+  * Update to UCS 2.0 policies
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 13:30:51 +0100
+
+univention-ldap-addressbook-group-ext (0.2) unstable; urgency=low
+
+  * Add a Replaces: entry for a previous package, which provided similar functionality.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 27 Mar 2007 09:48:02 +0200
+
+univention-ldap-addressbook-group-ext (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Feb 2007 10:44:15 +0200
+

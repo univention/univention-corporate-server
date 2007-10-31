@@ -1,0 +1,19 @@
+Source: univention-kolab2-ldap-addressbook-group-ext
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends-Indep: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.5
+
+Package: univention-ldap-addressbook-group-ext
+Replaces: univention-lkf-ldap-group-ext
+Architecture: all
+Depends: univention-ldap-server
+Description: Extentions for the LDAP Group Defintion
+ This package contains additional LDAP schema
+ definition extension for the group definition.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
