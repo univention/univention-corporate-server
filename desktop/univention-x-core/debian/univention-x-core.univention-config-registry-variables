@@ -5,20 +5,20 @@ Type=str
 Categories=Desktop
 
 [xorg/resolution]
-Description[de]=Display Auflösung
+Description[de]=Bildschirm-Auflösung (Breite x Höhe in Pixeln)
 Description[en]=Display resolution
 Type=str
 Categories=Desktop
 
 [xorg/module/load]
 Description[de]=Beim X-Serverstart zu ladende Xorg-Module
-Description[en]=Xorg modules to load on x-startup
+Description[en]=X.org modules to load on X11 startup
 Type=str
 Categories=Desktop
 
 [xorg/screen/DefaultDepth]
-Description[de]=Standard Farbtiefe
-Description[en]=Default color depth
+Description[de]=Standard-Farbtiefe (in Bit)
+Description[en]=Default color depth (in bits)
 Type=str
 Categories=Desktop
 
@@ -36,7 +36,7 @@ Type=str
 Categories=Desktop
 
 [xorg/serverflags/options/AllowMouseOpenFail]
-Description[de]=Starte auch wenn die Maus nicht geöffnet/initialisiert werden konnte
+Description[de]=Starte auch wenn die Maus nicht initialisiert werden konnte
 Description[en]=Start up even if the mouse device can't be opened/initialised
 Type=str
 Categories=Desktop
@@ -49,7 +49,7 @@ Type=str
 Categories=Desktop
 
 [xorg/mouse/.*/Driver]
-Description[de]=Maustreiber modul
+Description[de]=Maustreiber
 Description[en]=Mouse driver module
 Type=str
 Categories=Desktop
@@ -116,8 +116,8 @@ Type=str
 Categories=Desktop
 
 [xorg/monitor/DisplaySize]
-Description[de]=Breite und höhe des sichtbaren Bereiches des Monitors in Millimetern
-Description[en]=Width and height of the picture area of the monitor in millimetres
+Description[de]=Breite und Höhe des sichtbaren Bereichs des Monitors (in mm)
+Description[en]=Width and height of the picture area of the monitor (in milli metres)
 Type=str
 Categories=Desktop
 
@@ -190,21 +190,21 @@ Type=str
 Categories=Desktop
 
 [xorg/device/options/VideoRam]
-Description[de]=Verfügbarer Grafikspeicher auf der Grafikkarte in kB
-Description[en]=Amount of video ram that installed on the graphics board in kB
+Description[de]=Verfügbarer Grafikspeicher auf der Grafikkarte (in kB)
+Description[en]=Amount of video memory installed on the graphics board (in kB)
 Type=str
 Categories=Desktop
 
 
 [xorg/vnc/exporttype]
 Description[de]=Aktiviere/Deaktiviere VNC-Displayfreigabe
-Description[en]=Enable/Disable VNC-export
+Description[en]=Enable/disable VNC display export
 Type=str
 Categories=Desktop
 
 [xorg/vnc/viewonly]
 Description[de]=VNC-Displayfreigabe ohne Eingabemöglichkeit
-Description[en]=VNC-export with read-only access
+Description[en]=VNC display export with read-only access
 Type=str
 Categories=Desktop
 

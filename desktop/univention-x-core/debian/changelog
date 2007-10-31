@@ -1,3 +1,9 @@
+univention-x-core (1.1.6-3) unstable; urgency=low
+
+  * Correct Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 12:49:58 +0100
+
 univention-x-core (1.1.6-2) unstable; urgency=low
 
   * don't write the mouse disabled flag as option
