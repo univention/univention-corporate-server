@@ -4,8 +4,8 @@
 
 /etc/init.d/slapd restart
 
-eval `/usr/sbin/univention-baseconfig --shell dump`
+eval `/usr/sbin/univention-config-registry --shell dump`
 
-univention-admin settings/customattribute create --ignore_exists --position=cn=custom\ attributes,cn=univention,$ldap_base --set name="Adressbuch-Gruppen-Beschreibung" --set module=groups/group --set objectClass=adrGroupExt --set ldapMapping=sn --set shortDescription="Gruppen Beschreibung" --set deleteObjectClass=1 --set syntax=string --set multivalue=0 --set tabName=Adressbuch --set tabPosition=0
+univention-directory-manager settings/customattribute create --ignore_exists --position=cn=custom\ attributes,cn=univention,$ldap_base --set name="Adressbuch-Gruppen-Beschreibung" --set module=groups/group --set objectClass=adrGroupExt --set ldapMapping=sn --set shortDescription="Gruppen Beschreibung" --set deleteObjectClass=1 --set syntax=string --set multivalue=0 --set tabName=Adressbuch --set tabPosition=0
 
-univention-admin settings/customattribute create --ignore_exists --position=cn=custom\ attributes,cn=univention,$ldap_base --set name="Adressbuch-Mailinglisten-Beschreibung" --set module=mail/lists --set objectClass=adrMailingListExt --set ldapMapping=sn --set shortDescription="Mailinglisten Beschreibung" --set deleteObjectClass=1 --set syntax=string --set multivalue=0 --set tabName=Adressbuch --set tabPosition=0
+univention-directory-manager settings/customattribute create --ignore_exists --position=cn=custom\ attributes,cn=univention,$ldap_base --set name="Adressbuch-Mailinglisten-Beschreibung" --set module=mail/lists --set objectClass=adrMailingListExt --set ldapMapping=sn --set shortDescription="Mailinglisten Beschreibung" --set deleteObjectClass=1 --set syntax=string --set multivalue=0 --set tabName=Adressbuch --set tabPosition=0
