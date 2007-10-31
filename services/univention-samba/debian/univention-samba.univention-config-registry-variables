@@ -29,8 +29,8 @@ Type=str
 Categories=Network
 
 [samba/deadtime]
-Description[de]=Anzahl Minuten nach denen eine Verbindung als dead betrachtet und geschlossen wird
-Description[en]=Number of minutes of inactivity before a connection is considered dead and it is disconnected
+Description[de]=Zeitraum nach dem eine Verbindung als abgelaufen angesehen und geschlossen wird (in Minuten)
+Description[en]=Time span of inactivity before a connection is considered dead and eventually disconnected (in minutes)
 Type=str
 Categories=Network
 
@@ -53,8 +53,8 @@ Type=str
 Categories=Network
 
 [samba/encrypt_passwords]
-Description[de]=Versuche verschlüsselte Passwörter mit dem Client auszuhanden
-Description[en]=Controls whether encrypted passwords will be negotiated with the client
+Description[de]=Versuche verschlüsselte Passwörter mit dem Client auszuhandeln
+Description[en]=Negotiate encrypted passwords with the client
 Type=str
 Categories=Network
 
@@ -66,30 +66,30 @@ Categories=Network
 
 [samba/guest_account]
 Description[de]=Benutzername der für den Zugriff auf "guest ok" Services verwendet wird
-Description[en]=Username which will be used for access to services which are specified as guest ok
+Description[en]=Username for unauthenticated services (guest ok)
 Type=str
 Categories=Network
 
 [samba/homedirletter]
-Description[de]=Lokaler Pfad mit dem das Heimatverzeichnis des Benutzers verbunden wird
-Description[en]=Local path to which the home directory will be connected
+Description[de]=Laufwerk für das Heimatverzeichnis des Benutzers
+Description[en]=Drive for the home directory
 Type=str
 Categories=Network
 
 [samba/homedirpath]
-Description[de]=Gibt den Pfad zum Heimatverzeichnis für Win95/98 or NT Workstations vor
-Description[en]=Specifies the home directory location for Win95/98 or NT Workstations
+Description[de]=Pfad zum Heimatverzeichnis für Win95/98 or NT Workstations
+Description[en]=Path to the home directory for Win95/98 or NT workstation
 Type=str
 Categories=Network
 
 [samba/homedirserver]
-Description[de]=FQDN des Servers der Heimatverzeichnisse bereitstellt
-Description[en]=FQDN of the server sharing the home directorys
+Description[de]=Vollständiger Domainname des Servers, der die Heimatverzeichnisse bereitstellt
+Description[en]=Fully qualified domain name of the server providing the home directories
 Type=str
 Categories=Network
 
 [samba/invalid_users]
-Description[de]=Liste von Benutzern die sich nicht am Samba-Service anmelden dürfen
+Description[de]=Liste von Benutzern, die sich nicht am Samba-Service anmelden dürfen
 Description[en]=List of users that are not allowed to login to this samba service 
 Type=str
 Categories=Network
@@ -119,20 +119,20 @@ Type=str
 Categories=Network
 
 [samba/map_to_guest]
-Description[de]=Verhalten bei Anmeldung von Benutzer für die kein gültiger UNIX Benutzer existiert
+Description[de]=Verhalten bei Anmeldung von Benutzern, für die kein gültiger UNIX Benutzer existiert
 Description[en]=What to do with user login requests that don't match a valid UNIX user
 Type=str
 Categories=Network
 
 [samba/max_xmit]
-Description[de]=Maximale Paketgröße die ausgehaldelt werden kann
+Description[de]=Maximal aushandelbare Paketgröße
 Description[en]=Maximum packet size that will be negotiated
 Type=str
 Categories=Network
 
 [samba/netbios/aliases]
-Description[de]=Zusätzliche NetBIOS Namen für den Samba Server
-Description[en]=Additional NetBIOS names by which the Samba server is known
+Description[de]=Zusätzliche NetBIOS-Namen für den Samba-Server
+Description[en]=Additional NetBIOS names under which the Samba server is known
 Type=str
 Categories=Network
 
@@ -149,7 +149,7 @@ Type=str
 Categories=Network
 
 [samba/preserve_case]
-Description[de]=Kontrolliert ob neue Dateinamen mit der Groß/Kleinschreibung wie vom Client gesendet angelegt, oder auf standard Groß/Kleinschreibung geändert werden
+Description[de]=Kontrolliert ob neue Dateinamen mit der Groß-/Kleinschreibung wie vom Client gesendet angelegt oder auf Standard-Groß-/Kleinschreibung geändert werden
 Description[en]=Controls if new filenames are created with the case that the client passes, or if they are forced to be the default case
 Type=str
 Categories=Network
@@ -161,7 +161,7 @@ Type=str
 Categories=Network
 
 [samba/profileserver]
-Description[de]=Samba Server auf dem die Roaming Profile gespeichert werden
+Description[de]=Samba-Server, auf dem die Roaming-Profile gespeichert werden
 Description[en]=Specifies the samba server where roaming profiles are stored
 Type=str
 Categories=Network
@@ -203,7 +203,7 @@ Type=str
 Categories=Network
 
 [samba/socket_options]
-Description[de]=Zusätzliche Socket Optionen die bei Verbindungen mit Clients verwendet werden
+Description[de]=Zusätzliche Socket-Optionen die bei Verbindungen mit Samba-Clients verwendet werden
 Description[en]=Extra socket options to be used when talking with the client
 Type=str
 Categories=Network
@@ -215,7 +215,7 @@ Type=str
 Categories=Network
 
 [samba/time_server]
-Description[de]=Samba als Zeitserver für Windows Clients
+Description[de]=Verwende Samba als Zeitserver für Windows Clients
 Description[en]=Advertises samba as a time server to Windows clients
 Type=str
 Categories=Network
@@ -233,13 +233,13 @@ Type=str
 Categories=Network
 
 [windows/wins-server]
-Description[de]=WINS Server an dem Samba sich registriert
+Description[de]=WINS-Server an dem Samba sich registriert
 Description[en]=WINS server that samba should register with
 Type=str
 Categories=Network
 
 [windows/wins-support]
-Description[de]=Aktiviert/Deaktiviert Samba als WINS Server
+Description[de]=Aktiviert/Deaktiviert WINS-Funktionalität im Samba-Dienst
 Description[en]=Should Samba act as a WINS server
 Type=str
 Categories=Network
