@@ -533,9 +533,9 @@ if __name__ == '__main__':
 
 		if len(file) > 0:
 			res=os.system('rm -Rf "%s" >>/var/log/univention/repository.log 2>&1' % dir)
-		if res != 0:
-			dprint('E: Failed to remove tempdir %s' % dir, [stdout,sys.stdout])
-			sys.exit(res)
+			if res != 0:
+				dprint('E: Failed to remove tempdir %s' % dir, [stdout,sys.stdout])
+				sys.exit(res)
 
 
 	if not os.path.exists('/var/lib/univention-server-cdrom/ucs-updates'):
