@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.5-2) unstable; urgency=low
+
+  * Correct Config Registy descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 13:03:57 +0100
+
 univention-directory-manager (4.2.5-1) unstable; urgency=low
 
   * call /usr/sbin/univention-certificate-check-validity in the join

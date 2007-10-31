@@ -11,25 +11,25 @@ Type=str
 Categories=Management
 
 [directory/manager/timeout]
-Description[de]=Sitzungslaufzeit des Univention Directory Manager Webfrontends
+Description[de]=Sitzungsablauflaufintervall des Univention Directory Manager-Webfrontends
 Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str
 Categories=Management
 
 [directory/manager/cmd/timeout]
-Description[de]=Sitzungslaufzeit des Kommandozeilen Univention Directory Manager
+Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Session timeout of the commandline Univention Directory Manager
 Type=str
 Categories=Management
 
 [directory/manager/cmd/debug/level]
-Description[de]=Debug-Level des Kommandozeilen Univention Directory Manager
+Description[de]=Debug-Level des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Debug level of the commandline Univention Directory Manager
 Type=str
 Categories=Management
 
 [directory/manager/cmd/language]
-Description[de]=Sprache des Kommandozeilen Univention Directory Manager
+Description[de]=Sprache des Univention Directory Manager-Kommandozeilenfrontends
 Description[en]=Language of the commandline Univention Directory Manager
 Type=str
 Categories=Management
