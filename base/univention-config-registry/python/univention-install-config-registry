@@ -146,9 +146,6 @@ if __name__ == '__main__':
 						postrm.write('test "$1" = "remove" && rm -f %s; dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
 						filelist.append(f)
 
-		# be sure the info file will be removed
-		postrm.write('test "$1" = "remove" && rm -f /etc/univention/templates/info/%s.info || true\n' % (package))
-
 		fp.close()
 
 		doIt(['install', '-d', destDir('', package, 'info')])
