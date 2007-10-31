@@ -1,3 +1,9 @@
+univention-config-registry (2.5.2-1) unstable; urgency=low
+
+  * check if the file was already diverted
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 09:01:05 +0100
+
 univention-config-registry (2.5.1-1) unstable; urgency=low
 
   * correct divert baseconfig multifiles

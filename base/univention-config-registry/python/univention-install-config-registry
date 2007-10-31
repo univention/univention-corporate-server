@@ -94,6 +94,7 @@ if __name__ == '__main__':
 		except IOError:	bla=[]
 		conffiles = open('debian/'+package+'.conffiles','a')
 		fp = open(file)
+		filelist = []
 		for item in univention.config_registry.parseRfc822(fp.read()):
 			if item['Type'][0] == 'file':
 				f = item['File'][0]
@@ -132,14 +133,18 @@ if __name__ == '__main__':
 				for f in item['File']:
 					if f[0] != '/':
 						f = '/'+f
-					preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-					postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+					if not f in filelist:
+						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
+						postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+						filelist.append(f)
 			elif item.has_key('Multifile'):
 				for f in item['Multifile']:
 					if f[0] != '/':
 						f = '/'+f
-					preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-					postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+					if not f in filelist:
+						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
+						postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+						filelist.append(f)
 		fp.close()
 
 		doIt(['install', '-d', destDir('', package, 'info')])
