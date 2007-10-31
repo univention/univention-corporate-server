@@ -1,3 +1,10 @@
+univention-webui (1.3.3-1) unstable; urgency=low
+
+  * added optional close button to notebook pages
+  * fixed typo in css class: categoryitemactiveclosable vs categoryitemactivecloseable
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 31 Oct 2007 11:58:48 +0100
+
 univention-webui (1.3.2-2) unstable; urgency=low
 
   * handle backend-timeout

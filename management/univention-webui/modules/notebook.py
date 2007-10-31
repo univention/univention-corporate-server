@@ -44,10 +44,14 @@ class notebook(uniconf):
 	def mytype(self):
 		return("notebook")
 	def myivars(self):
-		if self.ivars.get("selected"):
-			return {"selected":self.ivars["selected"]}
-		else:
-			return {"selected":"0"}
+		selected = "0";
+		closed = "-1";
+		if self.ivars.get( "selected" ):
+			selected = self.ivars[ "selected" ]
+		if self.ivars.get( "closed" ):
+			closed = self.ivars[ "closed" ]
+		return { "selected": selected, "closed" : closed }
+
 	def myinit(self):
 		if self.args.get("selected"):
 			self.ivars["selected"]=unicode(self.args["selected"])
@@ -91,27 +95,46 @@ class notebook(uniconf):
 		valuetext=xmlob.createTextNode(unicode(self.args.get("selected","0")))
 		value.appendChild(valuetext)
 		for button in self.args.get("buttons",[]):
-			if len(button) == 4: # specific for UMC
+			closeable = False
+			icon, statusicon = "", ""
+			if len(button) == 5: # specific for UMC
+				text, help, icon, statusicon, closeable = button
+			elif len(button) == 4: # specific for UMC
 				text, help, icon, statusicon = button
 			else: # Univention Admin
 				text, help = button
-				icon, statusicon = "", ""
+
+			if closeable:
+				closeable = "1"
+			else:
+				closeable = "0"
+
 			tag=xmlob.createElement("button")
+			if closeable:
+				tag.setAttribute( 'closeable', closeable )
 			if icon:
 				tag.setAttribute( 'icon', icon )
 			if statusicon:
 				tag.setAttribute( 'statusicon', statusicon )
 			node.appendChild(tag)
-			if self.args.get("selected"):
-				if int(self.args["selected"])==number:
-					xmlob=self.butrepr(xmlob,tag,text,help,1)
-				else:
-					xmlob=self.butrepr(xmlob,tag,text,help,0)
-			else:
-				if number==0:
-					xmlob=self.butrepr(xmlob,tag,text,help,1)
-				else:
-					xmlob=self.butrepr(xmlob,tag,text,help,0)
+
+			active = 0
+			if self.args.get("selected") and int(self.args["selected"]) == number:
+				active = 1
+			elif not self.args.get("selected") and number == 0:
+				active = 1
+
+			xmlob=self.butrepr(xmlob,tag,text,help,active)
+
+			if closeable == "1": # add a "close"-button
+				#number +=1
+				tag=xmlob.createElement("button")
+
+				tag.setAttribute( 'closebutton', "1" )
+
+				node.appendChild(tag)
+				xmlob=self.butrepr(xmlob, tag, text, help, active)
+
 			number+=1
 		return xmlob
 
@@ -123,6 +146,9 @@ class notebook(uniconf):
 		if self.input and node!=None:
 			num=0
 			for n in getSubnodesByName(node,"button"):
+				closebutton = False
+				if n.attributes.has_key("closebutton"):
+					closebutton = True
 				vars=getSubnodesByName(n,"var")
 				for v in vars:
 					nametag=getSubnodesByName(v,"name")[0]
@@ -130,9 +156,14 @@ class notebook(uniconf):
 					name=self.gettagtext(nametag.childNodes)
 					value=self.gettagtext(valuetag.childNodes)
 					if value:
-						self.ivars["selected"]=unicode(num)
-						self.bpressed=1
-				num+=1
+						if closebutton:
+							self.closed = 1
+							self.ivars["closed"]=unicode(num-1)
+						else:
+							self.ivars["selected"]=unicode(num)
+							self.bpressed = 1
+				if not closebutton:
+					num+=1
 			if not self.bpressed:
 				self.ivars["selected"]=unicode(self.args.get("selected"))
 
@@ -140,3 +171,8 @@ class notebook(uniconf):
 		if not self.input:
 			return None
 		return int(self.ivars.get("selected",0))
+
+	def getclosed(self):
+		if not self.input:
+			return None
+		return int(self.ivars.get("closed",-1))

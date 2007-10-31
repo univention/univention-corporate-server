@@ -468,8 +468,9 @@ class button extends extra{
 		     {
 		      $img_str = "";
 		      $close_str = "";
-		      if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1"))
+		      if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1")) {
 		        $cssclass .= "closeablestart";
+			  }
 		      if (isset($this->attribute["icon"]))
 		       {
 		         $img_str = "<input src=\"".$this->attribute["icon"]."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
@@ -484,11 +485,14 @@ class button extends extra{
 		elseif($this->js && $class == 'notebook'){
 		  $tdclass="tab";
 		  $img="\"style/reiter_grau18x24.gif\"";
+
+		  $close_icon_str = "/icon/close_page_inactive.gif";
 		  if($this->basket['active'])
 		    {
 		      $class = 'notebook_on';
 		      $tdclass = "tab_on";
 		      $img="\"style/reiter_rot18x24.gif\"";
+			  $close_icon_str = "/icon/close_page_active.gif";
 		    }
 		  if(isset($this->attribute["passive"]))
 		    {
@@ -496,23 +500,39 @@ class button extends extra{
 		    }
 		  else
 		    {
-		      $str .= "<td class=\"$tdclass\" nowrap>\n";
-			  $str .= "<table style=\"padding: 0px;\"><tr>";
-		      $str .= "<td><a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
+			  if (isset($this->attribute["closebutton"]) && ($this->attribute["closebutton"] == "1"))
+			  {
+                # close button
+				$class .= "closeableend";
+				$str .= "<td class=\"$tdclass\" nowrap><a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
+				$str .= " title=\"close\">";
+				$str .= "<input src=\"".$close_icon_str."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
+				$str .= "</a></td>";
+			  } 
+			  else
+			  {
+				if (isset($this->attribute["closeable"]) && ($this->attribute["closeable"] == "1")) {
+				  $class .= "closeablestart";
+				}
+
+				$str .= "<td class=\"$tdclass\" nowrap>\n";
+				$str .= "<table style=\"padding: 0px;\"><tr>";
+				$str .= "<td><a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
 				if (  isset( $this->attribute[ "icon" ] ) ) {
-					$str .= " title=\"".$this->basket["helptext"]."\">";
-					$str .= "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>";
+				  $str .= " title=\"".$this->basket["helptext"]."\">";
+				  $str .= "<img class=\"$class\" src=\"".$this->attribute["icon"]."\" alt=\"\"></img>";
 				} else {
-					$str .= " title=\"".$this->basket["helptext"]."\">";
+				  $str .= " title=\"".$this->basket["helptext"]."\">";
 				}
 				$str .= "&nbsp;";
-		      $str .= $this->basket["text"];
-		      $str .= "</a></td>\n";
+				$str .= $this->basket["text"];
+				$str .= "</a></td>\n";
 				if (  isset( $this->attribute[ "statusicon" ] ) ) {
-					$str .= "<td><img class=\"$class\" src=\"".$this->attribute["statusicon"]."\" alt=\"\"></img></td>";
+				  $str .= "<td><img class=\"$class\" src=\"".$this->attribute["statusicon"]."\" alt=\"\"></img></td>";
 				}
-		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
-		      $str .= "</tr></table></td>\n";
+				$str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
+				$str .= "</tr></table></td>\n";
+			  }
 		    }
 		}
 		else
@@ -740,7 +760,7 @@ class categorylist{
     for($i=1; $i < $this->count+1; $i++) # i is index for button-object-array
       {
         if ( $this->category_buttons[$i]->attribute["closeable"] )
-	  $cssclass = "categoryitemactiveclosable";
+	  $cssclass = "categoryitemactivecloseable";
 	else
 	  $cssclass = "categoryitem-active";
 	if( $this->category_buttons[$i]->basket[active] )
@@ -804,13 +824,21 @@ class notebook{
 		$length = 0;
 		$pressed = FALSE;
 		$factor = 7; // pixel per letter
-		$spare = 20; // width pixel between
 		$one_line=TRUE;
 		for($i=1; $i < $this->count+1; $i++){ # i is index for button-object-array
-			if((($length + $factor*(strlen($this->all_notebook[$i]->basket[text]))) > 764) || $i == $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764
+
+  		    $itemlength = $factor*(strlen($this->all_notebook[$i]->basket[text]));
+			if ($this->all_notebook[$i]->attribute["closebutton"] == "1") {
+			  $itemlength = 14; // width of closebutton object
+			  $spare = 10; // width pixel between
+			} else {
+			  $spare = 20; // width pixel between
+			}
+
+			if((($length + $itemlength) > 764) || $i == $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764
 				if($i == $this->count){
 					$end=$i+1;
-					$length += ($factor*strlen($this->all_notebook[$i]->basket[text])+$spare);
+					$length += ($itemlength+$spare);
 					}
 				else {	$one_line=FALSE;
 					$end=$i;
@@ -882,24 +910,37 @@ class notebook{
 
 					$this->all_notebook[$j]->tabindex++;
 					if($this->config->browser=="Text"){$img=""; $img_end="";}
-					if($j == $end-1)$width = (490 - $total)+3;
-					else{
-						$width = $factor*strlen($this->all_notebook[$j]->basket[text]);
-						$total += $width;
-						#$width -= 11;      # Bildbreite
-						}
+					if($j == $end-1) {
+					  $width = (490 - $total)+3;
+					} else {
+					  $width = $factor*(strlen($this->all_notebook[$j]->basket[text]));
+					  if ($this->all_notebook[$j]->attribute["closebutton"] == "1") {
+						$width = 14; // width of closebutton object
+					  }
+					  $total += $width;
+					  #$width -= 11;      # Bildbreite
+					}
+					
+					$show_start = TRUE;
+					$show_end = TRUE;
+					if ($this->all_notebook[$j]->attribute["closebutton"] == "1") {
+					  $show_start = FALSE;
+					}
+					if ($this->all_notebook[$j]->attribute["closeable"]) {
+					  $show_end = FALSE;
+					}
 #############################################################################################################################
 					if($pressed)
 					  {
-					    if ($image!="") $str[pressed] .= '<td class="tab">'.$image."</td>\n";
+					    if (($image!="") && $show_start) $str[pressed] .= '<td class="tab">'.$image."</td>\n";
 					    $str[pressed] .= $this->all_notebook[$j]->show($width);
-					    if($img_end != '') $str[pressed] .= '<td class="tab">'.$image_end."</td>\n";
+					    if (($img_end != '') && $show_end)  $str[pressed] .= '<td class="tab">'.$image_end."</td>\n";
 					  }
 					else
 					  {
-					    if ($image!="") $str[$x] .= '<td class="tab">'.$image."</td>\n";
+					    if (($image!="") && $show_start)  $str[$x] .= '<td class="tab">'.$image."</td>\n";
 					    $str[$x] .= $this->all_notebook[$j]->show($width);
-					    if($img_end != '') $str[$x] .= '<td class="tab">'.$image_end."</td>\n";
+					    if (($img_end != '') && $show_end) $str[$x] .= '<td class="tab">'.$image_end."</td>\n";
 					  }
 ##############################################################################################################################
 					} #end of for
@@ -907,7 +948,7 @@ class notebook{
 				$length = 0;
 				$total = 0;
 			}
-			$length += $factor*strlen($this->all_notebook[$i]->basket[text])+$spare;
+			$length += $itemlength+$spare;
 			if($this->all_notebook[$i]->basket[active]) {$pressed = TRUE;}
 
 		} # end of for
@@ -917,8 +958,8 @@ class notebook{
 		  {
 		    if($key != 'pressed')
 		      {
-			$passive .= "    <tr><td>\n<table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-			$passive .= "     <tr class=\"notebook\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><nobr>\n".$val."</nobr></tr>\n";
+			$passive .= "    <tr class=\"notebook_line\"><td class=\"notebook_line\"><table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+			$passive .= "     <tr class=\"notebook\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">".$val."</tr>\n";
 			$passive .= "    </table></td></tr><tr><td class=\"notebook_spacer\"></td></tr>\n";
 		      }
 		  }
