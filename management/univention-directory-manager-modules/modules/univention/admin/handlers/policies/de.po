@@ -1030,7 +1030,7 @@ msgstr "Richtlinie: Config Registry"
 
 #: registry.py:55 registry.py:132
 msgid "Config Registry Settings"
-msgstr "Repository Config Registry Einstellungen"
+msgstr "Config Registry Einstellungen"
 
 #: registry.py:71
 msgid "Config Registry"
