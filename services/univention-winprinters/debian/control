@@ -1,0 +1,20 @@
+Source: univention-winprinters
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper
+Standards-Version: 3.5.2
+
+Package: univention-winprinters
+Architecture: all
+Depends: univention-baseconfig, fakeroot, univention-admin-tools, python2.4-samba, smbclient, recode
+Description: UCS - install printer drivers from Windows computers
+ This package allows for downloading Windows printer
+ drivers from Windows computers. The drivers are bundled
+ up in Debian packages, so they can easily be distributed
+ to other servers.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

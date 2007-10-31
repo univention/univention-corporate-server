@@ -1,0 +1,89 @@
+#!/usr/bin/python2.4
+# -*- coding: iso-8859-15 -*-
+#
+# Univention Winprinters
+#  list winprinters
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, os, string, re, getopt
+
+def usage():
+	print 'list_winprinters: List Windows-Printer in UCS'
+	print 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print ''
+	print 'Syntax:'
+	print '  list_winprinters [options]'
+	print ''
+	print 'options:'
+	print '  -h | --help | -?:'
+	print '    print this usage message and exit program'
+	print ''
+	print '  --version:'
+	print '    print version information and exit program'
+	print ''
+	print 'Description:'
+	print '  list_winprinters is a tool to list the possible windows-printer to install in UCS.'
+	print ''
+	print 'Known-Bugs:'
+	print '  -None-'
+	print ''
+	sys.exit(1)
+
+def main(args):
+	# ------------------------------------------------------------------------------
+	# Argumente parsen
+	# ------------------------------------------------------------------------------
+	shortopts = '?h'
+	longopts = [ 'help', 'version' ]
+
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	for opt, val in opts:
+		if opt == '-?':
+			usage()
+		if opt == '-h':
+			usage()
+		elif opt == '--help':
+			usage()
+		elif opt == '--version':
+			print 'version @%@package_version@%@'
+
+	try:
+		dirs = os.listdir( '/var/lib/winprt-data' )
+	except:
+		print 'No directory /var/lib/winprt-data found.'
+	else:
+		for filename in dirs:
+			if string.find( filename, 'winprt-' ) == 0:
+				print filename
+
+if __name__ == '__main__':
+	main(sys.argv[1:])

@@ -1,0 +1,150 @@
+univention-winprinters (1.0.0-1) unstable; urgency=low
+
+  * Update to UCS 2.0 policies
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 09:47:55 +0100
+
+univention-winprinters (0.22) unstable; urgency=low
+
+  * Add note about PPC.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  8 Dec 2006 14:51:27 +0100
+
+univention-winprinters (0.21) unstable; urgency=low
+
+  * Widen exception handling to more Unicode calls, which can fail with Samba 3.0.23d
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  8 Dec 2006 12:01:42 +0100
+
+univention-winprinters (0.20) unstable; urgency=low
+
+  * Document new Samba Python-RPC behaviour with a new error message, which
+    advises the user about potential workarounds.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  8 Dec 2006 11:35:20 +0100
+
+univention-winprinters (0.19) unstable; urgency=low
+
+  * Only emit endianess warning on big endian machines.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  8 Dec 2006 10:30:39 +0100
+
+univention-winprinters (0.18) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 15:27:30 +0100
+
+univention-winprinters (0.17) unstable; urgency=low
+
+  * univention-get-winprinters doesn't work properly on big endian architectures
+    if non-ASCII printer names are chosen. Skip problematic entries and present
+    an error message.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Nov 2006 13:40:12 +0100
+
+univention-winprinters (0.16) unstable; urgency=low
+
+  * added auto-generated copyright date
+
+ -- Janis Meybohm <meybohm@univention.de>  Tue, 20 Jun 2006 15:53:12 +0200
+
+univention-winprinters (0.15) unstable; urgency=low
+
+  * fixed a bug with special characters
+  * Hint: even with this fix the use of umlauts in passwords is not possible!
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 22 Jul 2005 13:59:20 +0200
+
+univention-winprinters (0.14) unstable; urgency=low
+
+  * added option for import in specific ldap-container
+  * recognize more network-printers
+  * optimized output
+  * delete temporary files on failures
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue,  8 Mar 2005 09:52:29 +0100
+
+univention-winprinters (0.13) unstable; urgency=low
+
+  * fixed an import-failure related bug
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  3 Mar 2005 11:16:24 +0100
+
+univention-winprinters (0.12) unstable; urgency=low
+
+  * Fehler beim Import von spolss ab samba 3.0.10 behoben
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 24 Feb 2005 13:21:31 +0100
+
+univention-winprinters (0.11) unstable; urgency=low
+
+  * Leere Einträge in DevMode erzeugen keine Warnung mehr.
+  * Scripte sind unbenannt worden (Changelog fehlt)
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu,  2 Dec 2004 10:47:22 +0100
+
+univention-winprinters (0.10) unstable; urgency=low
+
+  * Alle unerlaubten Zeichen in Cups-Namwen substituieren
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Mon, 20 Sep 2004 10:47:27 +0200
+
+univention-winprinters (0.9) unstable; urgency=low
+
+  * Aufruf von put_winprinters auch von nicht Master-Systemen ermöglicht
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Mon, 13 Sep 2004 14:37:06 +0200
+
+univention-winprinters (0.8) unstable; urgency=low
+
+  * Deutsche Sonderzeichen werden nun in Cups ersetzt
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed, 28 Jul 2004 14:20:22 +0200
+
+univention-winprinters (0.7) unstable; urgency=low
+
+  * Prüfen und warten, bis der Drucker in Samba gefunden wurde.
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu, 22 Jul 2004 14:24:05 +0200
+
+univention-winprinters (0.6) unstable; urgency=low
+
+  * sambaName wird nun gesetzt
+  * Sonderzeichen machen aber immer noch Probleme
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu, 22 Jul 2004 11:40:16 +0200
+
+univention-winprinters (0.5) unstable; urgency=low
+
+  * Leerzeichen in Druckername zulassen
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Tue, 13 Jul 2004 14:38:18 +0200
+
+univention-winprinters (0.4) unstable; urgency=low
+
+  * Netprinter-Namen automatisch korrigieren
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Wed,  7 Jul 2004 16:46:31 +0200
+
+univention-winprinters (0.3) unstable; urgency=low
+
+  * Installed-Size: eingeführtr. Muss aber noch den richtigen Wert erhalten.
+
+ -- Thomas Kaminski <thomas@anton.knut.univention.de>  Thu, 17 Jun 2004 14:36:07 +0200
+
+univention-winprinters (0.2) unstable; urgency=low
+
+  * Fix up package description. 
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 15:18:19 +0200
+
+univention-winprinters (0.1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Thomas Kaminski <kaminski@univention.de>  Fri, 19 Mar 2004 11:49:15 +0100
+
+Local variables:
+mode: debian-changelog
+End:

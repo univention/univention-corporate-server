@@ -1,0 +1,583 @@
+#!/usr/bin/python2.4
+# -*- coding: iso-8859-15 -*-
+#
+# Univention Winprinters
+#  get winprinters
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, os, string, re, pickle, getopt, codecs, getpass
+
+try:
+	import spoolss
+except:
+	import samba.spoolss
+	spoolss=samba.spoolss
+	
+class printerdata_access:
+    def __init__(self, host, creds = {}, access = 0x02000000):
+	# For read access, use MAXIMUM_ALLOWED_ACCESS = 0x02000000
+	# For write access, use PRINTER_ACCESS_ADMINISTER = 0x00000004
+        self.hnd = spoolss.openprinter(host, creds = creds, access = access)
+
+    def keys(self):
+        return self.hnd.enumprinterdata().keys()
+
+    def __getitem__(self, key):
+        return self.hnd.getprinterdata(key)['data']
+
+    def __setitem__(self, key, value):
+        # Store as REG_BINARY for now
+        self.hnd.setprinterdata({"key": "", "value": key, "type": 3,
+                                 "data": value})
+
+def usage():
+	print 'get_winprinters: copy Windows-Printer to UCS'
+	print 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print ''
+	print 'Syntax:'
+	print '  get_winprinters [options]'
+	print ''
+	print 'options:'
+	print '  --nt4_server=<nt-server-name>'
+	print '    <nt-server-name> is the name of the windows-nt-server.'
+	print ''
+	print '  [ --nt4_domain=<nt-server-domain> ]'
+	print ''
+	print '  [ --nt4_ipaddr=<nt-ipaddr> ]'
+	print ''
+	print '  -h | --help | -?:'
+	print '    print this usage message and exit program'
+	print ''
+	print '  --version:'
+	print '    print version information and exit program'
+	print ''
+	print 'Description:'
+	print '  get_winprinters is a tool to copy windows-printer with driver and devmode for UCS'
+	print ''
+	print 'Known-Bugs:'
+	print '  -None-'
+	print ''
+	sys.exit(1)
+
+
+def cleanup(directory):
+	# ------------------------------------------------------------------------------
+	# Loesche temporaere Dateien
+	# ------------------------------------------------------------------------------
+	cmd='rm -r ' + directory
+	try:
+		os.system( cmd )
+	except:
+		print 'Error remove %s' %(directory)
+		sys.exit(1)
+
+
+def main(args):
+	if len(args) < 1:
+		usage()
+
+	# ------------------------------------------------------------------------------
+	# Argumente parsen
+	# ------------------------------------------------------------------------------
+	shortopts = '?h'
+	longopts = [ 'nt4_server=',
+		   'nt4_username=',
+		   'nt4_password=',
+		   'nt4_domain=',
+	           'nt4_ipaddr=',
+		   'help',
+		   'version' ]
+
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
+	except getopt.error, msg:
+		print msg
+		sys.exit(1)
+
+	nt4_domain=''
+	nt4_server=''
+	nt4_username=''
+	nt4_password=''
+	nt4_ipaddr=''
+	
+
+	for opt, val in opts:
+		if opt == '--nt4_domain':
+			nt4_domain=val
+		elif opt == '--nt4_server':
+			nt4_server=val
+		elif opt == '--nt4_ipaddr':
+			nt4_ipaddr=val
+		elif opt == '-?':
+			usage()
+		elif opt == '-h':
+			usage()
+		elif opt == '--help':
+			usage()
+		elif opt == '--version':
+			print 'version @%@package_version@%@'
+	
+	if len(nt4_server) == 0:
+		print 'Error: No nt4_server defined.'
+		usage()
+		sys.exit(1)
+
+	while not nt4_username:
+		nt4_username=raw_input("Please enter NT4-Administrator-Username: ")
+
+	while not nt4_password:
+		nt4_password=getpass.getpass("Please enter NT4-Password: ")
+	
+
+	rpcclient_smbconf = '/var/lib/winprt-data/winprinters_smb.conf'	
+	local_basedir='./'
+	dest_basedir='var/lib/winprt-data/'
+	printerlist_filename='printers-' + nt4_server + '.list'
+	
+	# ------------------------------------------------------------------------------
+	# Lokale Funktionen
+	# ------------------------------------------------------------------------------
+	
+	# gibt den teilstring hinter den letzten backslash zurueck
+	def cut_rpcfilename( rpc_string ):
+		return rpc_string[ string.rfind( rpc_string, "\\" ) + 1:]
+	
+	# erzeugt ein dictonary mit den wesentlichen druckertreiberdaten
+	def parse_rpc_string( rpc_string ):
+		data={}
+		string_array=[]
+		string_array = string.split( rpc_string, sep='\n' )
+		for i in range( 0, len(string_array) ):
+			raw_row=string_array[i]
+			raw_row.strip()
+			
+			searched_row,found=re.subn( "^\tDriver Name: \[", "",  raw_row )
+			if found > 0:
+				try:
+					if len(data["Driver_Name"]) > 0:
+						# fertig, keine doppelten infos verarbeiten
+						return data
+				except:
+					pass
+				data["Driver_Name"] = searched_row[:-1]
+				continue
+	
+			searched_row,found=re.subn( "^\tVersion: \[", "",  raw_row )
+			if found > 0:
+				data["Version"] = searched_row[:-1]
+				continue
+	
+			searched_row,found=re.subn( "^\tArchitecture: \[", "",  raw_row )
+			if found > 0:
+				data["Architecture"] = searched_row[:-1]
+				continue
+	
+			searched_row,found=re.subn( "^\tDriver Path: \[", "",  raw_row )
+			if found > 0:
+				data["Driver_Path"] = cut_rpcfilename( searched_row[:-1] )
+				continue
+	
+			searched_row,found=re.subn( "^\tDatafile: \[", "",  raw_row )
+			if found > 0:
+				data["Datafile"] = cut_rpcfilename( searched_row[:-1] )
+				continue
+	
+			searched_row,found=re.subn( "^\tConfigfile: \[", "",  raw_row )
+			if found > 0:
+				data["Configfile"] = cut_rpcfilename( searched_row[:-1] )
+				continue
+	
+			searched_row,found=re.subn( "^\tHelpfile: \[", "",  raw_row )
+			if found > 0:
+				data["Helpfile"] = cut_rpcfilename( searched_row[:-1] )
+	
+		return data
+	
+	
+	print 'Get list of printer from %s' %(nt4_server)
+	
+	auth={}
+	auth['domain']=nt4_domain
+	auth['username']=nt4_username
+	auth['password']=nt4_password#.decode('latin-1').encode('utf8') # set unix charset = latin in smb.conf instead
+	
+	pw_string=' -U "'+nt4_username+'%'+nt4_password+'" '
+	if len(nt4_ipaddr) > 0:
+		pw_string = pw_string+'-I '+nt4_ipaddr+' '
+	
+	# ------------------------------------------------------------------------------
+	# Hole Druckernamen
+	# ------------------------------------------------------------------------------
+	try:
+		prt_list = spoolss.enumprinters( '\\\\%s' %nt4_server )
+	except Exception, e:
+		print 'Error enumerating printers on nt4_server:\"%s\": %s' % (nt4_server,e)
+		sys.exit(1)
+	
+	# ------------------------------------------------------------------------------
+	# Eventuell Servername vor Druckername entfernen
+	# ------------------------------------------------------------------------------
+	for (printer_name_alt,items) in prt_list.items():
+		pos=printer_name_alt.rfind( "\\" )
+		if pos != -1:
+			printer_name_neu = printer_name_alt[pos+1:]
+			print 'Rename (Net)Printer %s %s' %(printer_name_alt,printer_name_neu)
+			del prt_list[printer_name_alt]
+			prt_list[printer_name_neu]=items
+
+	# ------------------------------------------------------------------------------
+	# ist noch was uebrig
+	# ------------------------------------------------------------------------------
+	prt_count = len(prt_list)
+	if prt_count == 0:
+		print 'NT4_Server:\"%s\" is not sharing any valid printers.' %(nt4_server)
+		sys.exit(0)
+	
+	# ------------------------------------------------------------------------------
+	# Lokales Zielverzeichnis erzeugen
+	# ------------------------------------------------------------------------------
+	try:
+		os.makedirs( local_basedir )
+	except:
+		pass
+	
+	try:
+		printerlist_file = open( local_basedir+printerlist_filename, 'w' )
+	except:
+		print 'Could not open %s%s for writing.' %(local_basedir,printerlist_filename)
+		cleanup(prt_basedir_name)
+		sys.exit(1)
+		
+	for i in range( 0, prt_count ):
+		printer_name = prt_list.keys()[i]
+
+		try:
+			printer_name_tmp = codecs.utf_8_decode(printer_name)[0]
+			
+			printer_name_samba = str(codecs.latin_1_encode(printer_name_tmp)[0])
+
+			printer_name_cups = string.lower(codecs.unicode_internal_encode(printer_name_tmp)[0])
+		except UnicodeDecodeError:
+			print "The conversion of Windows printer names failed. This can result from two different"
+			print "sources of defect:"
+			print "1. If you are running get_winprinters on a machine with little endian byte order"
+			print "   (i386 and AMD64 architectures) you need to adapt your local Samba encoding"
+			print "   temporarily for the creation of the printer .deb-package:"
+			print "   a) Look up your current Samba charset encodings:"
+			print "      # univention-baseconfig get samba/charset/display"
+			print "      # univention-baseconfig get samba/charset/dos"
+			print "      # univention-baseconfig get samba/charset/unix"
+			print "   b) Configure Samba charset encodings to UTF-8:"
+			print "      # univention-baseconfig set samba/charset/unix=utf8"
+			print "      # univention-baseconfig set samba/charset/dos=utf8"
+			print "      # univention-baseconfig set samba/charset/display=utf8"
+			print "   c) Run get_winprinters again"
+			print "   d) Restore your Samba settings as retrieved above"
+			print "2. The RPC procedures to fetch printer information do not work on big-endian"
+			print "   machines. You need to create the printer packages on a little-endian system."
+			sys.exit(-1)
+		
+		# unerlaubte Zeichen substituieren
+		printer_name_cups = printer_name_cups.replace( 'ä', 'a' )
+		printer_name_cups = printer_name_cups.replace( 'ö', 'o' )
+		printer_name_cups = printer_name_cups.replace( 'ü', 'u' )
+		printer_name_cups = printer_name_cups.replace( 'ß', 's' )
+		# sonstige unerlaubte Zeichen in ein '-' wandeln
+		for j in range( len(printer_name_cups)/4 ):
+			if printer_name_cups[j*4] not in (string.lowercase + string.digits):
+				printer_name_cups = printer_name_cups.replace( printer_name_cups[j*4], '-' )
+		try:
+			printer_name_cups = str(codecs.unicode_internal_decode(printer_name_cups)[0])
+		except UnicodeDecodeError:
+			print "The conversion of Windows printer names failed. This can result from two different"
+			print "sources of defect:"
+			print "1. If you are running get_winprinters on a machine with little endian byte order"
+			print "   (i386 and AMD64 architectures) you need to adapt your local Samba encoding"
+			print "   temporarily for the creation of the printer .deb-package:"
+			print "   a) Look up your current Samba charset encodings:"
+			print "      # univention-baseconfig get samba/charset/display"
+			print "      # univention-baseconfig get samba/charset/dos"
+			print "      # univention-baseconfig get samba/charset/unix"
+			print "   b) Configure Samba charset encodings to UTF-8:"
+			print "      # univention-baseconfig set samba/charset/unix=utf8"
+			print "      # univention-baseconfig set samba/charset/dos=utf8"
+			print "      # univention-baseconfig set samba/charset/display=utf8"
+			print "   c) Run get_winprinters again"
+			print "   d) Restore your Samba settings as retrieved above"
+			print "2. The RPC procedures to fetch printer information do not work on big-endian"
+			print "   machines. You need to create the printer packages on a little-endian system."
+			sys.exit(-1)
+			
+		while printer_name_cups[-1] == '-':
+			printer_name_cups = printer_name_cups[:-1]
+		
+		debian_package_name = 'winprt-' + printer_name_cups
+
+		print 'Printer %u: "%s"' %(i+1,printer_name_samba)
+
+		prt_basedir_name = local_basedir + debian_package_name + '/'
+		prt_fulldir_name = prt_basedir_name + dest_basedir + debian_package_name + '/'
+	
+		printerlist_file.write( printer_name_cups + ' ' + debian_package_name + '\n' )
+
+		# ------------------------------------------------------------------------------
+		# Erzeuge Unterverzeichnisse fuer Drucker
+		# ------------------------------------------------------------------------------
+		created_dirs = []
+		try:
+			os.makedirs( prt_basedir_name )
+		except Exception,e:
+			print 'prt_basedir_name=\"%s\" (%s)' %(prt_basedir_name,type(prt_basedir_name))
+			print e
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+
+		try:
+			os.makedirs( prt_basedir_name + dest_basedir )
+			os.makedirs( prt_basedir_name + 'DEBIAN' )
+			os.makedirs( prt_fulldir_name )
+		except Exception,e:
+			print e
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		# ------------------------------------------------------------------------------
+		# Hole den DevMode mit Python::printerdata
+		# ------------------------------------------------------------------------------
+		try:
+			printer_data=printerdata_access( '\\\\%s\\%s' %(nt4_server,printer_name), auth )
+	
+			printer_datal2_list={}
+			printer_datal0_list=printer_data.hnd.getprinter(level=0)
+	
+			printer_datal2_list={}
+			printer_datal1_list=printer_data.hnd.getprinter(level=1)
+	
+			printer_datal2_list={}
+			printer_datal2_list=printer_data.hnd.getprinter(level=2)
+	
+			printer_datal3_list={}
+			printer_datal3_list=printer_data.hnd.getprinter(level=3)
+	
+			printer_data_keys={}
+			for key in printer_data.keys():
+				printer_data_keys[key]=printer_data.hnd.getprinterdata(key)
+		except Exception, e:
+			print "Can't get device-data for %s: %s" %(printer_name,e)
+			print "wrong account/password ?"
+			cleanup(prt_basedir_name)
+			raise
+			sys.exit(1)
+	
+		prtdevdata_filename = prt_fulldir_name + 'PrtDevDataL0.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'w' )
+			pickle.dump( printer_datal0_list, prtdevdata_file )
+		except Exception, e:
+			print 'Cannot dump DeviceData Level 0 for %s in %s: %s' %(printer_name,prtdevdata_filename,e)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdevdata_file.close()
+	
+		prtdevdata_filename = prt_fulldir_name + 'PrtDevDataL1.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'w' )
+			pickle.dump( printer_datal1_list, prtdevdata_file )
+		except:
+			print 'Cannot dump DeviceData Level 1 for %s in %s' %(printer_name,prtdevdata_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdevdata_file.close()
+	
+		prtdevdata_filename = prt_fulldir_name + 'PrtDevDataL2.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'w' )
+			pickle.dump( printer_datal2_list, prtdevdata_file )
+		except:
+			print 'Cannot dump DeviceData Level 2 for %s in %s' %(printer_name,prtdevdata_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdevdata_file.close()
+	
+		prtdevdata_filename = prt_fulldir_name + 'PrtDevDataL3.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'w' )
+			pickle.dump( printer_datal3_list, prtdevdata_file )
+		except:
+			print 'Cannot dump DeviceData Level 3 for %s in %s' %(printer_name,prtdevdata_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdevdata_file.close()
+	
+		prtdevkeys_filename = prt_fulldir_name + 'PrtDevKeys.pickle'
+		try:
+			prtdevkeys_file = open( prtdevkeys_filename, 'w' )
+			pickle.dump( printer_data_keys, prtdevkeys_file )
+		except:
+			print 'Cannot dump DeviceData keys for %s in %s' %(printer_name,prtdevkeys_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdevkeys_file.close()
+		spoolss.closeprinter( printer_data.hnd )
+	
+		# ------------------------------------------------------------------------------
+		# Hole die Treibernamen mit rpc
+		# ------------------------------------------------------------------------------
+		cmd='rpcclient %s -c \"getdriver \\\"%s\\\" 3\" %s' %(pw_string,printer_name,nt4_server)
+		try:
+			cmd_pipe=os.popen( cmd )
+			cmd_ret = cmd_pipe.read()
+		except:
+			print 'Error do rpcclient'
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		# nur zur Diagnose speichern
+		prtdrv_filename = prt_fulldir_name + 'PrtDrv.rpc_getdriver_output'
+		try:
+			prtdrv = open( prtdrv_filename, 'w' )
+			prtdrv.write( cmd_ret )
+			prtdrv.close()
+		except:
+			print 'Cannot open %s for write' %(prtdrv_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		
+		# info parsen
+		prtdrv_list = parse_rpc_string( cmd_ret )
+		if len(prtdrv_list) == 0:
+			print "No Driverdata found"
+			continue
+		
+		# zusaetzliche info dazu packen
+		prtdrv_list['nt4_domain']=nt4_domain
+		prtdrv_list['nt4_server']=nt4_server
+		prtdrv_list['nt4_printername']=str(printer_name)
+		prtdrv_list['printername_cups']=str(printer_name_cups)
+		prtdrv_list['printername_samba']=printer_name_samba
+		
+		# Treibernamenliste speichern
+		prtdrvlst_filename = prt_fulldir_name + 'PrtDrvLst.pickle'
+		try:
+			prtdrvlst_file = open( prtdrvlst_filename, 'w' )
+			pickle.dump( prtdrv_list, prtdrvlst_file )
+		except:
+			print 'Cannot open %s for write' %(prtdrvlst_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		prtdrvlst_file.close()
+		
+		# ------------------------------------------------------------------------------
+		# Hole die Treiberdateien mit smb
+		# ------------------------------------------------------------------------------
+		get_list = 'get ' + prtdrv_list['Driver_Path'] + \
+			';get ' + prtdrv_list['Datafile'] + \
+			';get ' + prtdrv_list['Configfile'] + \
+			';get ' + prtdrv_list['Helpfile']
+			
+		if prtdrv_list['Version'] =='2':
+			cmd='cd %s; smbclient //%s/print$ %s -c \"cd W32X86/2;%s\" > /dev/null 2>&1' %(prt_fulldir_name,nt4_server,pw_string,get_list)
+		elif prtdrv_list['Version'] =='3':
+			cmd='cd %s; smbclient //%s/print$ %s -c \"cd W32X86/3;%s\" > /dev/null 2>&1' %(prt_fulldir_name,nt4_server,pw_string,get_list)
+		else:
+			cmd='cd %s; smbclient //%s/print$ %s -c \"cd W32X86;%s\" > /dev/null 2>&1' %(prt_fulldir_name,nt4_server,pw_string,get_list)
+		
+		try:
+			os.system( cmd )
+		except:
+			print 'Error do smbclient'
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		# ------------------------------------------------------------------------------
+		# Erzeuge DEBIAN/control
+		# ------------------------------------------------------------------------------
+		debctrl_filename = prt_basedir_name+'DEBIAN/control'
+		try:
+			debctrl = open( debctrl_filename, 'w' )
+			debctrl.write( 'Package: ' + debian_package_name + '\n' )
+			# todo: Size von DEBIAN/tmp ermitteln
+			debctrl.write( 'Installed-Size: 1\n' )
+			debctrl.write( 'Maintainer: Thomas Kaminski, Univention <kaminski@univention.de>\n' )
+			debctrl.write( 'Description: Windows printerdriver and settings\n' )
+			debctrl.write( 'Version: 0.1\n' )
+			debctrl.write( 'Section: net\n' )
+			debctrl.write( 'Priority: extra\n' )
+			debctrl.write( 'Architecture: all\n' )
+			debctrl.write( 'Depends: univention-config, univention-winprinters\n' )
+			debctrl.close()
+		except:
+			print 'Cannot open %s for write' %(debctrl_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		# ------------------------------------------------------------------------------
+		# Erzeuge DEBIAN/postinst
+		# ------------------------------------------------------------------------------
+		debpostinst_filename = prt_basedir_name+'DEBIAN/postinst'
+		try:
+			debpostinst = open( debpostinst_filename, 'w' )
+			debpostinst.write( '#!/bin/sh\n' )
+			debpostinst.write( '\n' )
+			debpostinst.write( 'set -e\n' )
+			debpostinst.write( '\n' )
+			debpostinst.write( '#if [ \"$1\" = configure ]; then\n' )
+			debpostinst.write( '#  echo \"try to install the windows printer \\\"'+printer_name+'\\\"\"\n' )
+			debpostinst.write( '#  setup_winprinters '+debian_package_name+'\n' )
+			debpostinst.write( '#fi\n' )
+			debpostinst.write( '\n' )
+			debpostinst.write( 'exit 0\n' )
+			debpostinst.close()
+		except:
+			print 'Cannot open %s for write' %(debpostinst_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		try:
+			os.chmod( debpostinst_filename, 0755 )
+		except:
+			print 'Cannot change mode for %s' %(debpostinst_filename)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+	
+		# ------------------------------------------------------------------------------
+		# Erzeuge Debian-Paket
+		# ------------------------------------------------------------------------------
+		cmd='cd ' + local_basedir + ';fakeroot dpkg -b ' + debian_package_name
+		try:
+			os.system( cmd )
+		except:
+			print 'Error do %s' %(cmd)
+			cleanup(prt_basedir_name)
+			sys.exit(1)
+		
+		cleanup(prt_basedir_name)
+		
+	printerlist_file.close()
+
+if __name__ == '__main__':
+	main(sys.argv[1:])

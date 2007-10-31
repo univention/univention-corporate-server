@@ -1,0 +1,3 @@
+/usr/bin/univention-list-winprinters /usr/bin/list_winprinters
+/usr/sbin/univention-put-winprinters /usr/sbin/put_winprinters
+/usr/bin/univention-get-winprinters /usr/bin/get_winprinters

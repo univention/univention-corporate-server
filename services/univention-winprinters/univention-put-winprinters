@@ -1,0 +1,457 @@
+#!/usr/bin/python2.4
+# -*- coding: iso-8859-15 -*-
+#
+# Univention Winprinters
+#  put winprinters
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, os, string, re, pickle, getopt, time, getpass
+try:
+	import spoolss
+except:
+	import samba.spoolss
+	spoolss=samba.spoolss
+
+import univention_baseconfig
+
+class printerdata_access:
+    def __init__(self, host, creds = {}, access = 0x02000000):
+	# For read access, use MAXIMUM_ALLOWED_ACCESS = 0x02000000
+	# For write access, use PRINTER_ACCESS_ADMINISTER = 0x00000004
+        self.hnd = spoolss.openprinter(host, creds = creds, access = access)
+
+    def keys(self):
+        return self.hnd.enumprinterdata().keys()
+
+    def __getitem__(self, key):
+        return self.hnd.getprinterdata(key)['data']
+
+    def __setitem__(self, key, value):
+        # Store as REG_BINARY for now
+        self.hnd.setprinterdata({"key": "", "value": key, "type": 3,
+                                 "data": value})
+
+def usage():
+	print 'put_winprinters: copy Windows-Printer to UCS'
+	print 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print ''
+	print 'Syntax:'
+	print '  put_winprinters [options] [parameters]'
+	print ''
+	print 'options:'
+	print '  --samba_hostname=<samba-hostname>'
+	print ''
+	print '  [--ldap_binddn=<ldap-binddn>]'
+	print '  [--ldap_bindpwf=<ldap-bindpw-file>]'
+	print '  [--ldap_position=<ldap-position-dn>]'
+	print ''
+	print 'parameters:'
+	print '  printername1 {printername2...}'
+	print ''
+	print '  -h | --help | -?:'
+	print '    print this usage message and exit program'
+	print ''
+	print '  --version:'
+	print '    print version information and exit program'
+	print ''
+	print 'Description:'
+	print '  put_winprinters is a tool to copy windows-printer with driver and devmode for UCS'
+	print ''
+	print 'Known-Bugs:'
+	print '  -None-'
+	print ''
+	sys.exit(1)
+
+def main(args):
+	if len(args) < 1:
+		usage()
+
+	# ------------------------------------------------------------------------------
+	# Argumente parsen
+	# ------------------------------------------------------------------------------
+	shortopts = '?h'
+	longopts = [ 'samba_hostname=',
+		     'samba_username=',
+		     'samba_password=',
+		     'ldap_binddn=',
+		     'ldap_bindpwf=',
+		     'ldap_position=',
+		     '?',
+		     'h',
+		     'help',
+		     'version' ]
+	
+	try:
+		opts, args = getopt.getopt(sys.argv[1:], shortopts, longopts)
+	except getopt.error, msg:
+		print msg
+		usage()
+
+	if len(args)<1:
+		print ''
+		print "Error: No printer given."
+		print ''
+		usage()
+	
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	samba_server = ''
+	samba_username = ''
+	samba_password = ''
+	ldap_binddn = None
+	ldap_bindpwf = None
+	ldap_position = 'cn=printers,'+baseConfig['ldap/base']
+	
+	for opt, val in opts:
+		if opt == '--samba_hostname':
+			samba_server=val
+		elif opt == '--ldap_binddn':
+			ldap_binddn=val
+		elif opt == '--ldap_bindpwf':
+			ldap_bindpwf=val
+		elif opt == '--version':
+			print 'version @%@package_version@%@'
+			sys.exit(0)
+		elif opt == '--ldap_position':
+			ldap_position=val
+		else:
+			usage()
+	
+	if len(samba_server) == 0:
+		print ''
+		print 'Error: No samba-hostname defined.'
+		print ''
+		usage()
+
+	while not samba_username:
+		samba_username=raw_input("Please enter Samba-Username: ")
+
+	while not samba_password:
+		samba_password=getpass.getpass("Please enter Samba-Password: ")
+
+	
+	winprinter_basedir  = '/var/lib/winprt-data/'
+
+	if baseConfig.has_key('server/role') and baseConfig['server/role']=='domaincontroller_master':
+		# We are on the master
+		if not ldap_binddn or not ldap_bindpwf:
+			ldap_bind = ''
+    		else:
+			ldap_bind = ' --binddn=' + ldap_binddn + ' --bindpwd=`cat ' + ldap_bindpwf + '`'
+	else:
+		# We are not on the master
+		if not ldap_binddn or not ldap_bindpwf:
+			print ''
+			print 'Error: We need binddn and bindpw for ldap'
+			print ''
+			usage()
+    		else:
+			ldap_bind = ' --binddn=' + ldap_binddn + ' --bindpwd=`cat ' + ldap_bindpwf + '`'
+
+	spool_host = samba_server + '.' + baseConfig['domainname']
+	samba_domain = baseConfig['windows/domain']
+		
+	# ------------------------------------------------------------------------------
+	# Hier geht's los
+	# ------------------------------------------------------------------------------
+	print 'Put printers to samba_server=%s samba_domain=%s' %(samba_server,samba_domain)
+	
+	auth={}
+	auth['domain']=samba_domain
+	auth['username']=samba_username
+	auth['password']=samba_password
+	
+	pw_string=' -U '+samba_username+'%'+samba_password+' '
+	
+	printer_count = 0
+	for printer in args:
+		printer_count += 1
+		prt_fulldir_name = winprinter_basedir + printer + '/'
+	
+		# ------------------------------------------------------------------------------
+		# gespeicherte Treibernamenliste holen
+		# ------------------------------------------------------------------------------
+		prtdrvlst_filename = prt_fulldir_name+'PrtDrvLst.pickle'
+		try:
+			prtdrvlst_file = open( prtdrvlst_filename, 'r' )
+			prtdrv_list = pickle.load( prtdrvlst_file )
+			prtdrvlst_file.close()
+		except Exception,e:
+			print 'Cannot open %s for read: %s' %(prtdrvlst_filename,e)
+			continue
+	
+	        printer_name = str(prtdrv_list['nt4_printername'])
+		printer_cups_name = str(prtdrv_list['printername_cups'])
+		printer_samba_name = str(prtdrv_list['printername_samba'])
+		print 'Insert Printer %u  Samba:"%s" (Cups: "%s")' %(printer_count,printer_samba_name,printer_cups_name)
+
+		# ------------------------------------------------------------------------------
+		# Hole gespeicherte DevData
+		# ------------------------------------------------------------------------------
+		prtdevdata_filename = prt_fulldir_name+'PrtDevDataL2.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'r' )
+			prtdevdatal2_list = pickle.load( prtdevdata_file )
+		except Exception,e:
+			print 'Cannot load DeviceData Level 2 for %s in %s: %s' %(printer_cups_name,prtdevdata_filename,e)
+			continue
+		prtdevdata_file.close()
+	
+		# ------------------------------------------------------------------------------
+		# Hole gespeicherte DevData
+		# ------------------------------------------------------------------------------
+		prtdevdata_filename = prt_fulldir_name+'PrtDevDataL2.pickle'
+		try:
+			prtdevdata_file = open( prtdevdata_filename, 'r' )
+			prtdevdatal2_list = pickle.load( prtdevdata_file )
+		except:
+			print 'Cannot load DeviceData Level 2 for %s in %s' %(printer_cups_name,prtdevdata_filename)
+			continue
+		prtdevdata_file.close()
+	
+		prtdevkeys_filename = prt_fulldir_name+'PrtDevKeys.pickle'
+		try:
+			prtdevkeys_file = open( prtdevkeys_filename, 'r' )
+			prtdevkeys_list = pickle.load( prtdevkeys_file )
+		except:
+			print 'Cannot load DeviceKeys for %s in %s' %(printer_cups_name,prtdevkeys_filename)
+			continue
+		prtdevkeys_file.close()
+	
+		# ------------------------------------------------------------------------------
+		# Schnittstellenbezeichnung von NT nach Linux wandeln
+		# ------------------------------------------------------------------------------
+		# lpinfo -v
+		# network socket
+		#	socket://hostname
+		#	socket://hostname:9100
+		# network http
+		#	http://hostname:631/ipp/port1
+		#	http://hostname:631/printers/name
+		# network ipp
+		#	ipp://hostname/ipp/port1
+		#	ipp://hostname/printers/name
+		# network lpd
+		#	lpd://hostname/queue
+		# direct parallel:/dev/lp0
+		# direct scsi
+		# serial serial:/dev/ttyS0?baud=115200
+		# direct usb:/dev/usb/lp0
+		# network smb
+	
+		prt_port_nt = string.lower(prtdevdatal2_list['port_name'])
+		if prt_port_nt == 'file:':
+			prt_port_lx = 'file:/dev/null'
+		elif prt_port_nt == 'lpt1:':
+			prt_port_lx = 'parallel:/dev/lp0'
+		elif prt_port_nt == 'lpt2:':
+			prt_port_lx = 'parallel:/dev/lp1'
+		elif prt_port_nt == 'lpt3:':
+			prt_port_lx = 'parallel:/dev/lp2'
+		elif prt_port_nt == 'lpt4:':
+			prt_port_lx = 'parallel:/dev/lp3'
+		elif prt_port_nt == 'com1:':
+			prt_port_lx = 'serial:/dev/ttyS0?baud=115200'
+		elif prt_port_nt == 'com2:':
+			prt_port_lx = 'serial:/dev/ttyS1?baud=115200'
+		elif prt_port_nt == 'com3:':
+			prt_port_lx = 'serial:/dev/ttyS2?baud=115200'
+		elif prt_port_nt == 'com4:':
+			prt_port_lx = 'serial:/dev/ttyS3?baud=115200'
+		elif prt_port_nt == 'com5:':
+			prt_port_lx = 'serial:/dev/ttyS4?baud=115200'
+		elif prt_port_nt == 'com6:':
+			prt_port_lx = 'serial:/dev/ttyS5?baud=115200'
+		elif prt_port_nt[:3].lower() == "ip_":
+			prt_port_lx = "socket://%s"%prt_port_nt[3:]
+		else: # sometimes there are strange sockets....
+			print "Warning: Unknown Port, set as socket"
+			prt_port_lx = 'socket://%s'%prt_port_nt
+
+	
+		# ------------------------------------------------------------------------------
+		# Drucker in Univention eintragen
+		# ------------------------------------------------------------------------------
+		
+		cmd = 'univention-admin shares/printer create' + ldap_bind + \
+			' --position \"' + ldap_position + '\"' + \
+			' --set name=\"' + printer_cups_name + '\"' + \
+			' --set sambaName=\"' + printer_samba_name + '\"' + \
+	                ' --set spoolHost=\"' + spool_host + '\"' + \
+			' --set uri=\"' + prt_port_lx + '\"' + \
+	                ' --set model=\"smb\"' + \
+			' --ignore_exists > /dev/null'
+	
+		try:
+			retcode = os.system( cmd )
+    			if retcode != 0:
+				raise "Error in univention-admin while creating printer."
+		except Exception,e:
+			print e
+			continue
+	
+		# ------------------------------------------------------------------------------
+		# Sende die Treiberdateien mit smb
+		# ------------------------------------------------------------------------------
+		cmd = 'cd ' + prt_fulldir_name + '; smbclient //' + samba_server+ '/print$ ' + \
+			pw_string +' -c \"cd W32X86;' + \
+			'put ' + prtdrv_list['Driver_Path'] + \
+			';put ' + prtdrv_list['Datafile'] + \
+			';put ' + prtdrv_list['Configfile'] + \
+			';put ' + prtdrv_list['Helpfile'] + '\"' +\
+			'> /dev/null 2>&1'
+	
+		try:
+			os.system( cmd )
+		except:
+			print 'Error in smbclient put list'
+			continue
+	
+		# ------------------------------------------------------------------------------
+		# Melde die Treiberdateien mit rpc an
+		# ------------------------------------------------------------------------------
+
+		try:
+			recoder = os.popen('echo "%s" | recode -p latin1..UTF-8'%printer_samba_name)
+			printername_unicode = recoder.readline()[:-1]
+			recoder.close()
+		except:
+			print "recode failed, is package recode installed ?"
+			sys.exit(1)
+
+		rpc_cmd = 'adddriver \\\"' + prtdrv_list['Architecture'] + '\\\"'+\
+			' \\\"' + prtdrv_list['Driver_Name'] + '\\\"' +\
+			':' + prtdrv_list['Driver_Path'] +\
+			':' + prtdrv_list['Datafile'] +\
+			':' + prtdrv_list['Configfile'] +\
+			':' + prtdrv_list['Helpfile'] +\
+			':\\\"NULL\\\"' +\
+			':\\\"NULL\\\":'+\
+			prtdrv_list['Driver_Path'] + ',' +\
+			prtdrv_list['Datafile'] + ',' +\
+			prtdrv_list['Configfile'] + ',' +\
+			prtdrv_list['Helpfile']
+		cmd = 'rpcclient' + pw_string + '-c \"' + rpc_cmd + '\" ' + samba_server + ">/dev/null"
+
+		try:
+			#print cmd
+			os.system( cmd )
+		except:
+			print 'Error in rpcclient adddriver'
+			continue
+	
+		# ------------------------------------------------------------------------------
+		# Prüfe, ob Drucker in Samba vorhanden ist
+		# ------------------------------------------------------------------------------
+		cmd = 'rpcclient' + pw_string + '-c \"getprinter \\\"' + '%s'%printername_unicode + '\\\" ' +\
+			' " ' + samba_server
+			
+		print 'waiting for samba to upload driver:',
+		sys.stdout.flush()
+		try:
+			#print cmd
+			found   = 0
+			counter = 100
+			while found == 0:
+				found = 1
+				counter -= 1
+				for f in os.popen( cmd ):
+					if 'result was WERR_INVALID_PRINTER_NAME' in f:
+						if counter > 0:
+							found = 0
+							print ' %d'%(counter),
+							sys.stdout.flush()
+							time.sleep( 5 )
+
+			if counter == 0:
+				print ' - Printer not found in Samba!'
+				continue
+			else:
+				print ' - Connection OK.'
+		except:			
+			print 'Error in rpcclient getprinter'
+			continue
+
+		# ------------------------------------------------------------------------------
+		# Treiber an Drucker binden
+		# ------------------------------------------------------------------------------
+	
+		cmd = 'rpcclient' + pw_string + '-c \"setdriver \\\"' + printername_unicode + '\\\" ' +\
+			'\\\"' + prtdevdatal2_list['driver_name'] + '\\\" " ' + samba_server
+			
+		try:
+			os.system( cmd )
+		except:
+			print 'Error in rpcclient setdriver'
+			continue
+	
+		# ------------------------------------------------------------------------------
+		# Ueberschreibe DevData
+		# ------------------------------------------------------------------------------
+		try:
+			# verbinde mit drucker
+			printer_data=printerdata_access( '\\\\%s\\%s' %(samba_server,printername_unicode), creds=auth, access=4 )
+		except:
+			print 'Cannot connect for set Printerdata %s' %(printer_cups_name)
+			continue
+		
+		for key in prtdevkeys_list.keys():
+			p = prtdevkeys_list[key]
+			if not p['data']:
+				p['data'] = ''
+			if not p['key']:
+				p['key'] = ''
+			if not p['value']:
+				p['value'] = ''
+			try:
+				# allg. printerkeys schreiben
+				printer_data.hnd.setprinterdata(p)
+			except:
+				print 'Cannot set DeviceData Keys %s for %s' %(key,printer_cups_name)
+	
+		try:
+			# hole level2-structur
+			tmp_data = printer_data.hnd.getprinter(level=2)
+		except:
+			print 'Cannot get DeviceData for %s' %(printer_cups_name)
+			continue
+	
+		# ueberschreibe einige elemente (insbesondere devmode)
+		tmp_data['location']=prtdevdatal2_list['location']
+		tmp_data['comment']=prtdevdatal2_list['comment']
+		tmp_data['device_mode']=prtdevdatal2_list['device_mode']
+	
+		try:
+			# schreibe level2-structur zurueck
+			printer_data.hnd.setprinter(tmp_data)
+		except:
+			print 'Cannot set DeviceData for %s' %(printer_cups_name)
+			pass
+
+if __name__ == '__main__':
+	main(sys.argv[1:])
