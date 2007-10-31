@@ -1,3 +1,9 @@
+univention-config-registry (2.5.2-2) unstable; urgency=low
+
+  * Correct Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2007 10:46:08 +0100
+
 univention-config-registry (2.5.2-1) unstable; urgency=low
 
   * check if the file was already diverted

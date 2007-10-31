@@ -5,8 +5,8 @@ Type=str
 Categories=Network
 
 [locale/default]
-Description[de]=Standardsprache
-Description[en]=default locale
+Description[de]=Standard-Lokalisierung (Sprache der Oberfläche, Zeichensätze, etc.)
+Description[en]=Default localisation (Interface language, character sets, etc.)
 Type=str
 Categories=System
 
@@ -245,8 +245,8 @@ Type=str
 Categories=LDAP
 
 [lilo/append]
-Description[de]=Weitere Kommandozeilenparameter von Lilo
-Description[en]=Additional parameters for lilo
+Description[de]=Zusätzliche Kernel-Optionen für den Lilo-Bootloader
+Description[en]=Additional kernel options passed to the Lilo boot loader
 Type=str
 Categories=System
 
@@ -269,14 +269,14 @@ Type=str
 Categories=System
 
 [lilo/default]
-Description[de]=Standardkernel
-Description[en]=Default kernel
+Description[de]=Standardkernel für den Lilo-Bootloader
+Description[en]=Default kernel for the Lilo boot loader
 Type=str
 Categories=System
 
 [lilo/root]
-Description[de]=root-Partition
-Description[en]=root partition
+Description[de]=Wurzelverzeichnis für Lilo-Bootloader
+Description[en]=Root device of Lilo boot loader
 Type=str
 Categories=System
 
@@ -287,14 +287,14 @@ Type=str
 Categories=System
 
 [locale]
-Description[de]=Spracheinstellung
-Description[en]=Language setting
+Description[de]=Installierte Lokalisierungen (Sprache der Oberfläche, Zeichensätze, etc.)
+Description[en]=Installed localisation data (Interface language, character sets, etc.)
 Type=str
 Categories=System
 
 [log/rotate/weeks]
 Description[de]=Nach wievielen Wochen die Log-Dateien rotiert werden
-Description[en]=After how many weeks the log files will be rotated
+Description[en]=Rotation interval for system log files (in weeks)
 Type=str
 Categories=System
 
