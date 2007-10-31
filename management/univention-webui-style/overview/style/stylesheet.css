@@ -232,7 +232,11 @@ tr.global_menu,
 tr.tab,
 tr.tab_on,
 tr.notebook,
-tr.notebook_on{
+tr.notebookcloseablestart,
+tr.notebookcloseableend,
+tr.notebook_on,
+tr.notebook_oncloseablestart,
+tr.notebook_oncloseableend{
 border:0px;
 border-width:0px;
 border-style:none;
@@ -244,7 +248,11 @@ tr.global_menu,
 tr.tab,
 tr.tab_on,
 tr.notebook,
-tr.notebook_on{
+tr.notebookcloseablestart,
+tr.notebookcloseableend,
+tr.notebook_on,
+tr.notebook_oncloseablestart,
+tr.notebook_oncloseableend{
 padding:0px;
 }
 
@@ -253,7 +261,11 @@ tr.global_menu,
 tr.tab,
 tr.tab_on,
 tr.notebook,
-tr.notebook_on{
+tr.notebookcloseablestart,
+tr.notebookcloseableend,
+tr.notebook_on,
+tr.notebook_oncloseablestart,
+tr.notebook_oncloseableend{
 text-align:left;
 vertical-align:middle;
 }
@@ -265,7 +277,11 @@ background-color:#CC0033;
 tr.tab,
 tr.tab_on,
 tr.notebook,
-tr.notebook_on{
+tr.notebookcloseablestart,
+tr.notebookcloseableend,
+tr.notebook_on,
+tr.notebook_oncloseablestart,
+tr.notebook_oncloseableend{
 background-color:#FFFFFF;
 }
 
@@ -278,7 +294,11 @@ margin:0px;
 tr.tab,
 tr.tab_on,
 tr.notebook,
-tr.notebook_on{
+tr.notebookcloseablestart,
+tr.notebookcloseableend,
+tr.notebook_on,
+tr.notebook_oncloseablestart,
+tr.notebook_oncloseableend{
 height:22px;
 }
 
@@ -360,6 +380,10 @@ td.submenu_spacer,
 td.tab,
 td.tab_on,
 td.notebook,
+td.notebookcloseablestart,
+td.notebookcloseableend,
+td.notebook_oncloseablestart,
+td.notebook_oncloseableend,
 td.notebook_on,
 td.notebook_spacer,
 td.notebook_pressed,
@@ -388,6 +412,8 @@ td.tab,
 td.tab_on,
 td.notebook,
 td.notebook_on,
+td.notebook_oncloseablestart,
+td.notebook_oncloseableend,
 td.notebook_spacer,
 td.notebook_pressed,
 td.border,
@@ -448,6 +474,8 @@ td.tab,
 td.tab_on,
 td.notebook,
 td.notebook_on,
+td.notebook_oncloseablestart,
+td.notebook_oncloseableend,
 td.notebook_spacer,
 td.notebook_pressed,
 td.border,
@@ -541,7 +569,11 @@ height:1px;
 td.tab,
 td.tab_on,
 td.notebook,
-td.notebook_on{
+td.notebookcloseablestart,
+td.notebookcloseableend,
+td.notebook_on,
+td.notebook_oncloseablestart,
+td.notebook_oncloseableend{
 line-height:22px !important;
 }
 
@@ -643,7 +675,11 @@ td.multi_remove_img,
 td.tab,
 td.tab_on,
 td.notebook,
+td.notebookcloseablestart,
+td.notebookcloseableend,
 td.notebook_on,
+td.notebook_oncloseablestart,
+td.notebook_oncloseableend,
 td.notebook_pressed,
 td.notebook_spacer{
 background-color:#FFFFFF;
@@ -698,11 +734,15 @@ a:active {
 color:#666666;
 }
 a.notebook,
-a.notebook_on{
+a.notebookcloseablestart,
+a.notebookcloseableend,
+a.notebook_on,
+a.notebook_oncloseablestart,
+a.notebook_oncloseableend{
 padding-left:10px;
 }
 
-a.notebook_on:active, a.notebook_on:hover {
+a.notebook_oncloseablestart:active, a.notebook_oncloseablestart:hover, a.notebook_on:active, a.notebook_on:hover {
 color:#FFFFFF;
 }
 
@@ -727,6 +767,8 @@ color:#CC0033;
 /* Schriftzug "Logged in as" und aktive Tabs */
 .Stil2,
 .notebook_on,
+.notebook_oncloseablestart,
+.notebook_oncloseableend,
 .tab_on  {
 color:#FFFFFF;
 font-weight:bold;
@@ -755,6 +797,8 @@ font-size:11px
 .notetext,
 .tab,
 .notebook,
+.notebookcloseablestart,
+.notebookcloseableend,
 textarea {
 font-size:11px;
 font-weight:bold;
