@@ -1,3 +1,10 @@
+univention-config-registry (2.6.1-1) unstable; urgency=low
+
+  * remove the config file when removing the package
+  * remove the package info file when removing the package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2007 13:02:44 +0100
+
 univention-config-registry (2.5.2-2) unstable; urgency=low
 
   * Correct Config Registry descriptions

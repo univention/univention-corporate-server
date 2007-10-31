@@ -135,7 +135,7 @@ if __name__ == '__main__':
 						f = '/'+f
 					if not f in filelist:
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-						postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+						postrm.write('test "$1" = "remove" && rm -f %s; dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
 						filelist.append(f)
 			elif item.has_key('Multifile'):
 				for f in item['Multifile']:
@@ -143,8 +143,12 @@ if __name__ == '__main__':
 						f = '/'+f
 					if not f in filelist:
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
-						postrm.write('test "$1" = "remove" && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f+'.debian', f))
+						postrm.write('test "$1" = "remove" && rm -f %s; dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
 						filelist.append(f)
+
+		# be sure the info file will be removed
+		postrm.write('test "$1" = "remove" && rm -f /etc/univention/templates/info/%s.info || true\n' % (package))
+
 		fp.close()
 
 		doIt(['install', '-d', destDir('', package, 'info')])
