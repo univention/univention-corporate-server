@@ -1,7 +1,8 @@
-univention-antivir-web (2.0.1-5) unstable; urgency=low
+univention-antivir-web (2.0.1-6) unstable; urgency=low
 
   * fix registration of config registry variables and configuration file
     diversions
+  * add missing arguments to univention-config-registry-calls in postinst
 
  -- Wolf Wiegand <wiegand@univention.de>  Thu, 25 Oct 2007 14:55:09 +0200
 

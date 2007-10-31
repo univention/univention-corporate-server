@@ -28,25 +28,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#if [ "$1" = "remove" -o "$1" = "purge" ]; then
-#	for file in \
-#                bannedextensionlist \
-#                bannediplist \
-#                bannedmimetypelist \
-#                bannedsitelist \
-#                bannedurllist \
-#                exceptioniplist \
-#                exceptionuserlist \
-#                exceptionvirusextensionlist \
-#                exceptionvirusmimetypelist \
-#                exceptionvirussitelist \
-#                exceptionvirusurllist \
-#                dansguardianf1.conf \
-#                dansguardian.conf ; do
-#			dpkg-divert --package univention-antivir-web --remove --divert /etc/dansguardian/${file}.orig /etc/dansguardian/${file}
-#	done
-#fi
-
 set -e
 
 #DEBHELPER#

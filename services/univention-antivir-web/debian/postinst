@@ -44,7 +44,7 @@ case "$1" in
                 # Merge pre-UCS2.0-settings:
                 eval $($CONFREG shell proxy/redirect proxy/antivir/scanner proxy/antivir/virusscanner proxy/antivir/scannerpath proxy/antivir/viruscmd proxy/antivir/alert)
 
-                [ $proxy_redirect ] && ( $CONFREG squid/virusscan=$proxy_redirect ; $CONFREG squid/contentscan=false )
+                [ $proxy_redirect ] && ( $CONFREG set squid/virusscan=$proxy_redirect ; $CONFREG set squid/contentscan=false )
                 [ $proxy_antivir_scanner ] && (
                         [ $proxy_antivir_scanner != clamav ] || echo Warning: Different virus scanners than clamav are not supported anymore by univention-antivir-web
                         )
