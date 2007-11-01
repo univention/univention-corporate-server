@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.8-4) unstable; urgency=low
+
+  * Add a versioned conflict for the Nagios transition
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:19:44 +0100
+
 univention-directory-manager-modules (2.2.8-3) unstable; urgency=low
 
   * Hint apt resolution by providing Replaces: and Provides:
