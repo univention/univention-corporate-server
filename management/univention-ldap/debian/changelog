@@ -1,3 +1,10 @@
+univention-ldap (2.4.5-4) unstable; urgency=low
+
+  * Drop alternative dependency on univention-admin-tools-2005, it's now
+    provided by univention-directory-manager-tools
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:02:13 +0100
+
 univention-ldap (2.4.5-3) unstable; urgency=low
 
   * Update Config Registry descriptions
