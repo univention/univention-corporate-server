@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.8-3) unstable; urgency=low
+
+  * Hint apt resolution by providing Replaces: and Provides:
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:08:45 +0100
+
 univention-directory-manager-modules (2.2.8-2) unstable; urgency=low
 
   * Add transition path wrt univention-admin-tools-2005
