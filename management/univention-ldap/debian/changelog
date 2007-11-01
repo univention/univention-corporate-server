@@ -1,3 +1,10 @@
+univention-ldap (2.4.5-5) unstable; urgency=low
+
+  * Add a versioned depend on the conflict against univention-admin-nagios, since
+    it provides this nowadays
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  1 Nov 2007 17:28:47 +0100
+
 univention-ldap (2.4.5-4) unstable; urgency=low
 
   * Drop alternative dependency on univention-admin-tools-2005, it's now

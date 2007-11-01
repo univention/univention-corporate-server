@@ -9,7 +9,7 @@ Package: univention-ldap-server
 Architecture: all
 Pre-Depends: slapd (>>2.1), univention-ldap-client
 Depends: db4.2-util, univention-config-registry (>=1.2), univention-ssl, univention-ldap-config, whois, makepasswd, univention-directory-manager-tools (>>0.46-76), univention-newsid, univention-ipcalc, univention-ldap-acl-master | univention-ldap-acl-slave, bind9-host
-Conflicts: univention-5250 (<< 0.5), univention-mail-cyrus-quota-master, univention-admin-nagios
+Conflicts: univention-5250 (<< 0.5), univention-mail-cyrus-quota-master, univention-admin-nagios (<< 1.0)
 Replaces: univention-mail-cyrus-quota-master
 Description: UCS - LDAP server configuration
  This package contains the configuration for the OpenLDAP
