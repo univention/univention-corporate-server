@@ -310,28 +310,28 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set category="Druckserver" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="cups/*" \
-																				 --set description="Alle Druckserver-Operationen"
+																				 --set description="All print server operations"
 
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=cups-list \
 																				 --set category="Druckserver" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="cups/list" \
-																				 --set description="Druckerliste anzeigen"
+																				 --set description="Show printer list"
 
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=cups-printer \
 																				 --set category="Druckserver" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="cups/printer/*" \
-																				 --set description="Drucker anhalten und neustarten"
+																				 --set description="Start/stop printers"
 
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=cups-jobs \
 																				 --set category="Druckserver" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="cups/job/*" \
-																				 --set description="Druckaufträge anzeigen, löschen und verschieben"
+																				 --set description="Display, stop and move print jobs"
 
 
 # create quota acls
@@ -340,7 +340,7 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set category="Quota" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="quota/*" \
-																				 --set description="Alle Quota-Operationen"
+																				 --set description="All quota operations"
 
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=quota-list \
@@ -354,14 +354,14 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set category="Quota" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="quota/partition/*" \
-																				 --set description="Quota (de)aktivieren"
+																				 --set description="Activate/deactivate quota"
 
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=quota-user \
 																				 --set category="Quota" \
 																				 --set ldapbase="$ldap_base" \
 																				 --append command="quota/user/*" \
-																				 --set description="Benutzer-Quota setzen"
+																				 --set description="Set user quota"
 
 
 # policy container
