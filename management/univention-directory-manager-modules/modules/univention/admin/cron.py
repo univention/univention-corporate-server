@@ -65,7 +65,10 @@ def cron_create(cronlist):
 	for key in keys:
 		if cronlist.has_key(key):
 			if len(cronlist[key]) == 0:
-				string+='* '
+				if key == 'minute':
+					string+='00 '
+				else:
+					string+='* '
 				continue
 			for i in range(len(cronlist[key])):
 				if i > 0:
@@ -97,12 +100,6 @@ def cron_create(cronlist):
 							string+='0,5,10,15,20,25,30,35,40,45,50,55'
 					else:
 						string+='%s' % cronlist[key][i]
-		else:
-			if key == 'minute':
-				string+='00'
-			else:
-				string+='*'
-		string+=' '
 	return string
 
 def cron_split(cronlist):
