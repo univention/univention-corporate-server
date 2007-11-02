@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-8) unstable; urgency=low
+
+  * baseconfig variable mail/cyrus will now be removed in postinst
+
+ -- Tobias Scherer <scherer@univention.de>  Fri,  2 Nov 2007 16:11:20 +0100
+
 univention-mail-postfix (1.0.1-7) unstable; urgency=low
 
   * moved logfile permission check to preinst
