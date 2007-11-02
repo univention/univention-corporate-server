@@ -37,7 +37,7 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies.umc')
+translation=univention.admin.localization.translation('univention.admin.handlers.policies')
 _=translation.translate
 
 class consoleAccessFixedAttributes(univention.admin.syntax.select):
