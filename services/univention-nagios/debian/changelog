@@ -1,3 +1,9 @@
+univention-nagios (1.0.7-4) unstable; urgency=low
+
+  * Force Univention Config Registry commit in postinst.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  2 Nov 2007 13:19:26 +0100
+
 univention-nagios (1.0.7-3) unstable; urgency=low
 
   * Bump version.
