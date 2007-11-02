@@ -35,6 +35,10 @@ univention-baseconfig set postfix/allow-unauth?yes
 
 eval `univention-baseconfig shell`
 
+if [ -n "$mail_cyrus" ]; then
+univention-baseconfig unset mail/cyrus
+; fi
+
 univention-baseconfig set postfix/masquerade/domains?"\$mydomain"
 univention-baseconfig set postfix/masquerade/exceptions?root
 
