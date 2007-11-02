@@ -34,6 +34,8 @@ import copy
 import base
 import input
 
+import univention.debug as ud
+
 class DynamicList( base.List, input.Input ):
 	"""Represent a list, that may change its appearance by appending or
 	removing table rows"""
@@ -65,6 +67,7 @@ class DynamicList( base.List, input.Input ):
 		if row:
 			self.__row = base._verify_list_items( self.__row )
 
+	# value == default values
 	def append_row( self, value = {} ):
 		new_row = copy.deepcopy( self.__row )
 		ids = []
@@ -76,18 +79,34 @@ class DynamicList( base.List, input.Input ):
 				ids.append( item.id() )
 		self.__items.append( ids )
 		self.add_row( new_row )
+		# if modifier and modified is set then change modified object corresponding
+		# to modifier object and set correct default value
+		if self.modifier and self.modified:
+			if len(new_row) > 1:
+				if value.has_key( new_row[0].option ):
+					defaultval = value[ new_row[-1].option ]
+					self.modify_row( len(self.__items)-1, value[ new_row[0].option ], defaultval )
 
 	def remove_row( self, i ):
 		base.List.remove_row( self, i )
 		self.__items.pop( i )
 
-	def modify_row( self, i, key ):
+	def modify_row( self, i, key, default = None ):
 		if not self.modifier or not self.modified:
 			return
-
+		# get row number i
 		row = self.get_row( i )
-		del row[ -1 ]
-		row.append( copy.deepcopy( self.modified[ key ] ) )
+		# remove last element (modified obj)
+		row.pop()
+		# create new object depending on value of modifier object (key)
+		modified_item = copy.deepcopy( self.modified[ key ] )
+		modified_item.recreate_id()
+		row.append( modified_item )
+		if default != None:
+			modified_item.default = default
+		# update id list
+		self.__items[i].pop()
+		self.__items[i].append( modified_item.id() )
 
 	def get_items( self ):
 		return self.__items

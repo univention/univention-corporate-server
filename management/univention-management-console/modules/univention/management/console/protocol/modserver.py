@@ -135,7 +135,7 @@ class ModuleServer( Server ):
 
 	def handle( self, msg ):
 		if msg.command == 'EXIT':
-			shutdown_timeout = 500
+			shutdown_timeout = 100
 			ud.debug( ud.ADMIN, ud.INFO, "modserver.py: got EXIT: module shutdown in %dms" % shutdown_timeout )
 			# shutdown module after one second
 			resp = Response( msg )

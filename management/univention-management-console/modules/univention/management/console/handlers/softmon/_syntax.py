@@ -48,15 +48,18 @@ class SoftMonSearchOperator( umc.StaticSelection ):
 				 ( 'le', _( 'less equal' ) ) )
 
 class SoftMonSystemVersions( umc.StaticSelection ):
-	def __init__( self ):
-		umc.StaticSelection.__init__( self, _( 'Operator' ) )
-		self._choices = []
+	def __init__( self, system_versions = None ):
+		umc.StaticSelection.__init__( self, '' )
+		if system_versions:
+			self._choices = system_versions
+		else:
+			self._choices = ( ( '1.3-0-0', '1.3-0-0' ),
+							  ( '1.3-1-0', '1.3-1-0' ),
+							  ( '1.3-2-0', '1.3-2-0' ),
+							  ( '2.0-0-0', '2.0-0-0' ) )
 
 	def choices( self ):
-		return ( ( '1.3-0-0', '1.3-0-0' ),
-				 ( '1.3-1-0', _( '1.3-1-0' ) ),
-				 ( '1.3-2-0', _( '1.3-2-0' ) ),
-				 ( '2.0-0-0', _( '2.0-0-0' ) ) )
+		return self._choices
 
 class SoftMonSystemSearchKey( umc.StaticSelection ):
 	def __init__( self ):
