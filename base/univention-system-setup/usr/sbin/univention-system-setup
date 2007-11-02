@@ -573,7 +573,7 @@ os.close(tmp_file2)
 stdscr = curses.initscr()
 
 # univention-system-setup couldn't start in a pure utf-8 environment
-os.system("echo -n -e '\033%@ >/dev/console")
+os.system("echo -n -e '\033%@' >/dev/console")
 
 if cmdline.has_key('simple'):
 	curses.MY_VLINE='|'

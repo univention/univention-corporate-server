@@ -1,3 +1,9 @@
+univention-system-setup (1.1.3-3) unstable; urgency=low
+
+  * Fix syntax error.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  2 Nov 2007 13:01:09 +0100
+
 univention-system-setup (1.1.3-2) unstable; urgency=low
 
   * Disable univention-iptables in Univention Config Registry if security mode
