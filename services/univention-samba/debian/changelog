@@ -1,3 +1,9 @@
+univention-samba (1.0.7-5) unstable; urgency=low
+
+  * More corrections to Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:31:45 +0100
+
 univention-samba (1.0.7-4) unstable; urgency=low
 
   * make samba as pre-depends

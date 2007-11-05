@@ -29,8 +29,8 @@ Type=str
 Categories=Network
 
 [samba/deadtime]
-Description[de]=Zeitraum nach dem eine Verbindung als abgelaufen angesehen und geschlossen wird (in Minuten)
-Description[en]=Time span of inactivity before a connection is considered dead and eventually disconnected (in minutes)
+Description[de]=Anzahl Minuten nach denen eine Verbindung als abgelaufen angesehen und geschlossen wird
+Description[en]=Time span of inactivity in minutes before a connection is considered dead and eventually disconnected
 Type=str
 Categories=Network
 
@@ -65,7 +65,7 @@ Type=str
 Categories=Network
 
 [samba/guest_account]
-Description[de]=Benutzername der für den Zugriff auf "guest ok" Services verwendet wird
+Description[de]=Benutzername, der für den Zugriff auf nicht-authentifizierte Dienste verwendet wird (guest ok)
 Description[en]=Username for unauthenticated services (guest ok)
 Type=str
 Categories=Network
@@ -77,8 +77,8 @@ Type=str
 Categories=Network
 
 [samba/homedirpath]
-Description[de]=Pfad zum Heimatverzeichnis für Win95/98 or NT Workstations
-Description[en]=Path to the home directory for Win95/98 or NT workstation
+Description[de]=Pfad zum Heimatverzeichnis für Win95/98 oder NT Workstations
+Description[en]=Path to the home directory for Win95/98 or NT workstations
 Type=str
 Categories=Network
 
@@ -234,13 +234,13 @@ Categories=Network
 
 [windows/wins-server]
 Description[de]=WINS-Server an dem Samba sich registriert
-Description[en]=WINS server that samba should register with
+Description[en]=WINS server, on which Samba should register
 Type=str
 Categories=Network
 
 [windows/wins-support]
 Description[de]=Aktiviert/Deaktiviert WINS-Funktionalität im Samba-Dienst
-Description[en]=Should Samba act as a WINS server
+Description[en]=Enables/disables WINS services of Samba
 Type=str
 Categories=Network
 
