@@ -1,3 +1,9 @@
+univention-x-core (1.1.6-4) unstable; urgency=low
+
+  * Fix typo
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:52:57 +0100
+
 univention-x-core (1.1.6-3) unstable; urgency=low
 
   * Correct Config Registry descriptions

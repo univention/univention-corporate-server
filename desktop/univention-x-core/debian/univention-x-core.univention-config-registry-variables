@@ -117,7 +117,7 @@ Categories=Desktop
 
 [xorg/monitor/DisplaySize]
 Description[de]=Breite und Höhe des sichtbaren Bereichs des Monitors (in mm)
-Description[en]=Width and height of the picture area of the monitor (in milli metres)
+Description[en]=Width and height of the picture area of the monitor (in millimetres)
 Type=str
 Categories=Desktop
 
