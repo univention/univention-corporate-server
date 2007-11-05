@@ -1,3 +1,11 @@
+univention-ldap (2.4.5-6) unstable; urgency=low
+
+  * The old Nagios schema definition was marked as a conffile, so it's kept even
+    though univention-admin-nagios is in removed state. Remove the schema manually
+    and the nagios info file manually during upgrades.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 11:46:36 +0100
+
 univention-ldap (2.4.5-5) unstable; urgency=low
 
   * Add a versioned depend on the conflict against univention-admin-nagios, since

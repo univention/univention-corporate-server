@@ -130,6 +130,15 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.19; then
 	fi
 fi
 
+# Transition code to facilitate an upgrade path from the UCS 1.3.x Nagios packages, this snippet
+# can be removed in UCS 2.1
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" gt 2.4.5; then
+	if [ -e /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-nagios_schema ]; then
+	    rm /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-nagios_schema
+	    rm /etc/univention/templates/info/univention-admin-nagios.info
+	fi
+fi
+
 if [ "$1" = "configure" -a -n "$2" ]; then
 	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
