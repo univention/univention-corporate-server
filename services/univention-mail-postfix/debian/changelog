@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-9) unstable; urgency=low
+
+  * fixed deletion of mail/cyrus in postinst
+
+ -- Tobias Scherer <scherer@univention.de>  Mon,  5 Nov 2007 08:08:02 +0100
+
 univention-mail-postfix (1.0.1-8) unstable; urgency=low
 
   * baseconfig variable mail/cyrus will now be removed in postinst
