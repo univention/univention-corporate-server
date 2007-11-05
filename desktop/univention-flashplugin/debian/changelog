@@ -1,3 +1,11 @@
+univention-flashplugin (2.0.0-7) unstable; urgency=low
+
+  * Fix syntax error
+  * Bail out properly if an error occurs
+  * Cleanups
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 11:01:13 +0100
+
 univention-flashplugin (2.0.0-6) unstable; urgency=low
 
   * Bump version
