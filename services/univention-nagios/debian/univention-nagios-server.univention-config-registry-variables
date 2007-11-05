@@ -65,7 +65,7 @@ Type=str
 Categories=System
 
 [nagios/server/hostcheck/notificationinterval]
-Description[de]=Zeitspanne bevor eine erneute Hostcheck-Benachrichtigung versendet wird (in Minuten)
+Description[de]=Zeitspanne in Minuten bevor eine erneute Hostcheck-Benachrichtigung versendet wird
 Description[en]=Time span in minutes before resending a host check notification (in minutes)
 Type=str
 Categories=System

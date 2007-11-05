@@ -1,3 +1,9 @@
+univention-nagios (1.0.7-5) unstable; urgency=low
+
+  * Correct Config Registry descriptions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:47:21 +0100
+
 univention-nagios (1.0.7-4) unstable; urgency=low
 
   * Force Univention Config Registry commit in postinst.
