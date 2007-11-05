@@ -1,3 +1,9 @@
+univention-directory-listener (2.2.4-1) unstable; urgency=low
+
+  * be sure the listener has stopped before starting the upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Nov 2007 21:36:48 +0100
+
 univention-directory-listener (2.2.3-3) unstable; urgency=low
 
   * added a conflict to the old univention-ldap-listner package
