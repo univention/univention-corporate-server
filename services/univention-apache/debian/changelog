@@ -1,3 +1,9 @@
+univention-apache (2.0.11-3) unstable; urgency=low
+
+  * Fix Config Registry description
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:49:48 +0100
+
 univention-apache (2.0.11-2) unstable; urgency=low
 
   * enable the ssl module during the UCS 2.0 upgrade

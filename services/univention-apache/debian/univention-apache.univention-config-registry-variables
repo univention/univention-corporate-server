@@ -6,7 +6,7 @@ Categories=Network
 
 [apache2/startsite]
 Description[de]=Pfad zur Startseite des Webservers
-Description[en]=Path to webservers index page
+Description[en]=Path to the web server index page
 Type=str
 Categories=Network
 
