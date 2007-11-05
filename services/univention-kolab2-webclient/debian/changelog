@@ -1,3 +1,10 @@
+univention-kolab2-webclient (1.2.0-5) unstable; urgency=low
+
+  * mv debian/univention-groupware-webclient.univention-baseconfig
+    debian/univention-kolab2-webclient.univention-baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 Nov 2007 21:16:55 +0100
+
 univention-kolab2-webclient (1.2.0-4) unstable; urgency=low
 
   * added php5-imap to the dependency list
