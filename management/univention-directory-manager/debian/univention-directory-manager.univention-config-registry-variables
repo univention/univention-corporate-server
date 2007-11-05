@@ -11,7 +11,7 @@ Type=str
 Categories=Management
 
 [directory/manager/timeout]
-Description[de]=Sitzungsablauflaufintervall des Univention Directory Manager-Webfrontends
+Description[de]=Sitzungsablaufintervall des Univention Directory Manager-Webfrontends
 Description[en]=Session timeout of the Univention Directory Manager web frontend
 Type=str
 Categories=Management

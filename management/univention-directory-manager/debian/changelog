@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.5-3) unstable; urgency=low
+
+  * Correct Config Registy descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:45:43 +0100
+
 univention-directory-manager (4.2.5-2) unstable; urgency=low
 
   * Correct Config Registy descriptions.
