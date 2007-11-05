@@ -6,7 +6,7 @@ Categories=LDAP
 
 [ldap/acl/user/password/change]
 Description[de]=Erlaube Benutzern ihr Passwort im Univention Directory Manager zu ändern
-Description[en]=
+Description[en]=Allow users to modify their password in Univention Directory Manager
 Type=str
 Categories=LDAP
 

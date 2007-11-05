@@ -1,3 +1,9 @@
+univention-ldap (2.4.5-7) unstable; urgency=low
+
+  * Correct Config registry descriptions.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  5 Nov 2007 13:42:42 +0100
+
 univention-ldap (2.4.5-6) unstable; urgency=low
 
   * The old Nagios schema definition was marked as a conffile, so it's kept even
