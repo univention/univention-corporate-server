@@ -4,5 +4,5 @@ Variables: ftp/chroot.*
 
 Type: file
 File: etc/ftpusers
-Variables: ftp/allow.*
+Variables: ftp/deny.*
 Variables: ftp/denyall

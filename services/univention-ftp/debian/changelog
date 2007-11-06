@@ -1,3 +1,10 @@
+univention-ftp (2.0.1-1) unstable; urgency=low
+
+  * catch up change from ftp/allow* to ftp/deny* in template for /etc/ftpusers
+  * same goes for the variable description file
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue,  6 Nov 2007 13:06:19 +0100
+
 univention-ftp (2.0.0-1) unstable; urgency=low
 
   * adjust for UCS 2.0

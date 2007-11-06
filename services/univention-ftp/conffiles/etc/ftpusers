@@ -10,8 +10,8 @@
 
 @!@
 i=0
-while baseConfig.has_key('ftp/allow%s'%i):
-	print "%s allow"%baseConfig['ftp/allow%s'%i]
+while baseConfig.has_key('ftp/deny%s'%i):
+	print "%s allow"%baseConfig['ftp/deny%s'%i]
 	i += 1
 
 if baseConfig.has_key('ftp/denyall') and baseConfig['ftp/denyall']!='false':
