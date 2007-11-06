@@ -31,11 +31,23 @@
 #DEBHELPER#
 
 # The path to the flash plugin had been configured in a previous security
-# update for 1.3. We need to remove it on upgrades. This code can be dropped
+# update for 1.3. Remove them if we upgrade from UCS 1.3, as update-flashplugin
+# downloads the default if no variables are set. This code can be dropped
 # after UCS 2.1
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1; then
-    univention-config-registry unset flashplugin/downloadpath
-    univention-config-registry unset flashplugin/downloadserver
+
+old_server=`univention-config-registry get flashplugin/downloadserver`
+old_path=`univention-config-registry get flashplugin/downloadpath`
+
+if [ -n $old_server ]; then
+    if [ "$old_server" = "fpdownload.macromedia.com" ]; then
+	univention-config-registry unset flashplugin/downloadserver
+    fi
+fi
+
+if [ -n $old_path ]; then
+    if [ "$old_path" = "/get/flashplayer/current/" ]; then
+	univention-config-registry unset flashplugin/downloadpath
+    fi
 fi
 
 update-flashplugin || echo "Warning: flash-update failed, run update-flashplugin manually"
