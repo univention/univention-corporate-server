@@ -33,6 +33,8 @@
 #    {'operator': u'gt', 'pattern': u'1.3-0-0', 				   'key': u'ucs_version'},
 #    {'operator': u'eq', 'pattern': u'mein-master', 			   'key': u'name'} ]
 
+import univention.debug as ud
+
 QUERY_TYPE_2_SQL = { 'ne': ('!~', True),
 					 'gt': ('>',  False),
 					 'lt': ('<',  False),
@@ -43,9 +45,12 @@ QUERY_TYPE_2_SQL = { 'ne': ('!~', True),
 
 def convertSearchFilterToQuery( filterlist ):
 	query = 'true'
+	need_join_systems = 0
 
+	ud.debug( ud.ADMIN, ud.INFO, 'SOFTMON: filterlist=%s' % filterlist )
 	for filteritem in filterlist:
 		if not(filteritem.has_key('operator') and filteritem.has_key('pattern') and filteritem.has_key('key')):
+			ud.debug( ud.ADMIN, ud.INFO, 'SOFTMON: value is missing: %s' % filteritem )
 			continue
 
 		(qt, re) = QUERY_TYPE_2_SQL['default']
@@ -55,10 +60,10 @@ def convertSearchFilterToQuery( filterlist ):
 
 		# leeren Parameter korrigieren
 		s = filteritem['pattern']
-# 		if s == 'ascii-null-escape':
-# 			s = '0'
-# 		elif s == 'None':
-# 			s = ''
+		if s == 'ascii-null-escape':
+			s = '0'
+		elif s == 'None':
+			s = ''
 
 		if re:
 			# convert simple regular expression into postgres reg exp
@@ -107,15 +112,35 @@ def convertSearchFilterToQuery( filterlist ):
 
 		sv = "'" + s + "'"
 
-
 		if filteritem['pattern']:
 			if filteritem['key'] == 'name':
 				query += ' and sysname' + qt + sv
 
 			elif filteritem['key'] == 'role':
 				query += ' and sysrole' + qt + sv
+				need_join_systems = 0
 
 			elif filteritem['key'] == 'ucs_version':
 				query += ' and sysversion' + qt + sv
+				need_join_systems = 0
 
-	return query
+			elif filteritem['key'] == 'pkg_name':
+				query += ' and pkgname' + qt + sv
+
+			elif filteritem['key'] == 'pkg_version':
+				query += ' and vername' + qt + sv
+
+			elif filteritem['key'] == 'selected_state':
+				query += ' and selectedstate' + qt + sv
+
+			elif filteritem['key'] == 'installed_state':
+				query += ' and inststate' + qt + sv
+
+			elif filteritem['key'] == 'current_state':
+				query += ' and currentstate' + qt + sv
+
+			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'SOFTMON: unknown key: %s' % filteritem['key'] )
+
+
+	return (query, need_join_systems)

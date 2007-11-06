@@ -49,7 +49,8 @@ import univention.pkgdb as updb
 _ = umc.Translation( 'univention.management.console.handlers.softmon' ).translate
 
 SAVEPATH="/var/lib/univention-management-console"
-PREFIX='SavedSoftMonSearch-'
+SYSTEMPREFIX='SavedSoftMonSystemSearch-'
+PACKAGEPREFIX='SavedSoftMonPackageSearch-'
 SUFFIX='.pickle'
 
 name = 'softmon'
@@ -66,15 +67,13 @@ command_description = {
 	'softmon/system/search' : umch.command(
 		short_description = _( 'Search Systems' ),
 		method = 'softmon_system_search',
-		values = { 'filter' : filter_type,
-					'maxresults' : filter_type },
+		values = { 'filter' : filter_type },
 		startup = True,
 	),
 	'softmon/package/search' : umch.command(
 		short_description = _( 'Search Packages' ),
 		method = 'softmon_package_search',
-		values = { 'pattern' : umc.Boolean( _( 'Loaded modules only' ) ),
-				    },
+		values = { 'filter' : filter_type },
 		startup = True,
 	),
 }
@@ -88,9 +87,16 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		umch.simpleHandler.__init__( self, command_description )
 		self._system_roles = None
 		self._system_versions = None
+		self.selectedStates={ '0': 'unkown', '1':'install', '2':'hold', '3':'deinstall', '4':'purge' }
+		self.instStates={ '0': 'ok', '1': 'reinst required', '2': 'hold', '3': 'hold reinst required' }
+		self.currentStates={ '0': 'not installed', '1': 'unpacked', '2': 'half-configured', '3': 'uninstalled', '4': 'half-installed', '5': 'config-files', '6': 'installed' }
 
 
 	def _get_system_roles_and_versions( self ):
+		if not self._system_versions == None and not self._system_roles == None:
+			ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: system roles and versions already set" )
+			return
+
 		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: trying to get system roles and versions" )
 		# load system roles
 		try:
@@ -132,10 +138,10 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 		# stop here if thread failed
 		if self._system_versions == None or self._system_roles == None:
-			report = _('Loading of system roles and system versions failed. Please check installation of univention-pkgdb and run ')
+			report = _('Loading system roles and system versions from Univention PKGDB failed. Please check installation of univention-pkgdb and run "univention-pkgdb-check" and "univention-pkgdb-scan".')
 			self.finished( object.id(), {}, report = report, success = False )
 
-		ss = SearchSavesets()
+		ss = SearchSavesets(prefix=SYSTEMPREFIX)
 		result = {}
 
 		# set system roles / versions
@@ -146,6 +152,13 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if self._system_versions:
 			result[ 'system_versions_default' ] = self._system_versions[0]
 
+		# delete search filter
+		if object.options.get('delete', False):
+			searchname = object.options.get('searchname', None)
+			if searchname:
+				ss.delete( searchname )
+			object.incomplete = True
+			object.options['searchname'] = None
 
 		# load search filters if selected
 		searchname = object.options.get('searchname', None)
@@ -155,8 +168,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			result[ 'filter_items' ] = searchfilter
 			result[ 'current_search' ] = searchname
 
-
-		# save search filters
+		# save search filter
 		if object.options.get('save', False):
 			newsearchname = object.options.get('newsearchname', None)
 			searchfilter = object.options.get('filter', None)
@@ -176,36 +188,161 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if object.incomplete:
 			self.finished( object.id(), result )
 		else:
+			result[ 'filter_items' ] = object.options.get('filter', None)
+
 			ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: search for: %s" % object.options.get( 'filter', [] ) )
 
 			if object.options.get('search', False):
-				query = _psql.convertSearchFilterToQuery( object.options.get('filters',[]) )
-				pkgdb_connect_string = updb.sql_create_localconnectstring( umc.baseconfig['hostname']  )
-				if len(pkgdb_connect_string) > 0:
-					query_result = updb.sql_get_systems_by_query( pkgdb_connect_string, query )
-					ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query_result = %s" % query_result )
+				query, tmp1 = _psql.convertSearchFilterToQuery( object.options.get('filter',[]) )
+				ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query: %s" % query )
 
-# query_result = [['master200', '2.0-0-0', 'domaincontroller_master', '2007-11-02 15:26:30', 'cn=master200,cn=dc,cn=computers,dc=nstx,dc=de']]
-
-#				cb = notifier.Callback( self._softmon_system_search2, object )
-#				func = notifier.Callback( self._get_system_roles_and_versions )
-#				thread = notifier.threads.Simple( 'softmon', func, cb )
-#				thread.run()
+				cb = notifier.Callback( self._softmon_system_search3, object, result )
+				func = notifier.Callback( self._get_systems_by_query, query )
+				thread = notifier.threads.Simple( 'softmon', func, cb )
+				thread.run()
 
 
 	def _softmon_system_search3( self, thread, threadresult, object, result ):
+		search_results = []
+		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query_result: %s" % threadresult )
+		for item in threadresult:
+			search_results.append( { 'name': item[0],
+									 'version': item[1],
+									 'role': item[2],
+									 'date': item[3],
+									 'dn': item[4] } )
+		result[ 'search_results' ] = search_results
 		self.finished( object.id(), result )
 
+
+	def _get_systems_by_query( self, query ):
+		pkgdb_connect_string = updb.sql_create_localconnectstring( umc.baseconfig['hostname']  )
+		if len(pkgdb_connect_string) < 1:
+			return None
+
+		query_result = updb.sql_get_systems_by_query( pkgdb_connect_string, query )
+		# query_result = [['master200', '2.0-0-0', 'domaincontroller_master', '2007-11-02 15:26:30', 'cn=master200,cn=dc,cn=computers,dc=nstx,dc=de']]
+		return query_result
+
+
+
+
+
+
+
+
+
+
+
+
+	def softmon_package_search( self, object ):
+		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: object.options=%s" % object.options )
+		cb = notifier.Callback( self._softmon_package_search2, object )
+		func = notifier.Callback( self._get_system_roles_and_versions )
+		thread = notifier.threads.Simple( 'softmon', func, cb )
+		thread.run()
+
+
+	def _softmon_package_search2( self, thread, result, object ):
+		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: object.options=%s" % object.options )
+
+		# stop here if thread failed
+		if self._system_versions == None or self._system_roles == None:
+			report = _('Loading system roles and system versions from Univention PKGDB failed. Please check installation of univention-pkgdb and run "univention-pkgdb-check" and "univention-pkgdb-scan".')
+			self.finished( object.id(), {}, report = report, success = False )
+
+		ss = SearchSavesets(prefix=PACKAGEPREFIX)
+		result = {}
+
+		# set system roles / versions
+		result[ 'system_versions' ] = self._system_versions
+		if self._system_versions:
+			result[ 'system_versions_default' ] = self._system_versions[0]
+
+		# delete search filter
+		if object.options.get('delete', False):
+			searchname = object.options.get('searchname', None)
+			if searchname:
+				ss.delete( searchname )
+			object.incomplete = True
+			object.options['searchname'] = None
+
+		# load search filters if selected
+		searchname = object.options.get('searchname', None)
+		if searchname:
+			searchfilter = ss.load( searchname )
+			object.incomplete = True
+			result[ 'filter_items' ] = searchfilter
+			result[ 'current_search' ] = searchname
+
+		# save search filter
+		if object.options.get('save', False):
+			newsearchname = object.options.get('newsearchname', None)
+			searchfilter = object.options.get('filter', None)
+			if newsearchname:
+				ss.save( newsearchname, searchfilter )
+			object.incomplete = True
+			result[ 'filter_items' ] = searchfilter
+
+
+		max_results_default = object.options.get('max_results', None)
+		if max_results_default:
+			result[ 'max_results_default' ] = max_results_default
+
+		# load existing searches
+		result[ 'saved_searches' ] = ss.listfiles()
+
+		if object.incomplete:
+			self.finished( object.id(), result )
+		else:
+			result[ 'filter_items' ] = object.options.get('filter', None)
+
+			ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: search for: %s" % object.options.get( 'filter', [] ) )
+
+			if object.options.get('search', False):
+				query, need_join_systems = _psql.convertSearchFilterToQuery( object.options.get('filter',[]) )
+				ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query: %s" % query )
+
+				cb = notifier.Callback( self._softmon_system_search3, object, result )
+				func = notifier.Callback( self._get_packages_by_query, query, need_join_systems )
+				thread = notifier.threads.Simple( 'softmon', func, cb )
+				thread.run()
+
+
+	def _softmon_system_search3( self, thread, threadresult, object, result ):
+		search_results = []
+		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query_result: %s" % threadresult )
+		for item in threadresult:
+			search_results.append( { 'sysname': item[0],
+									 'pkgname': item[1],
+									 'version': item[2],
+									 'date': item[3],
+									 'selected_state': self.selectedStates[ str(item[5]) ],
+									 'installation_state': self.instStates[ str(item[6]) ],
+									 'current_state': self.currentStates[ str(item[7]) ],
+									 } )
+		result[ 'search_results' ] = search_results
+		self.finished( object.id(), result )
+
+
+	def _get_packages_by_query( self, query, need_join_systems ):
+		pkgdb_connect_string = updb.sql_create_localconnectstring( umc.baseconfig['hostname']  )
+		if len(pkgdb_connect_string) < 1:
+			return None
+
+		query_result = updb.sql_get_packages_in_systems_by_query( pkgdb_connect_string, query, need_join_systems )
+		# query_result = [['master200', 'univention-pkgdb', '1.0.5-1.51.200710191112', '2007-11-06 09:49:59', 'i', 1, 0, 6], ... ]
+		return query_result
 
 
 
 class SearchSavesets:
-	def __init__(self,path=SAVEPATH,prefix=PREFIX,suffix=SUFFIX):
+	def __init__(self, path=SAVEPATH, prefix=SYSTEMPREFIX, suffix=SUFFIX):
 		self.path=path
 		self.prefix=prefix
 		self.suffix=suffix
 
-	def save(self, name, obj ):
+	def save(self, name, obj):
 		filename = os.path.join( self.path, self.prefix + name + self.suffix )
 		try:
 			fd = open( filename, 'w' )
@@ -214,7 +351,7 @@ class SearchSavesets:
 		pickle.dump( obj, fd )
 		fd.close()
 
-	def load(self,name ):
+	def load(self, name):
 		filename = os.path.join( self.path, self.prefix + name + self.suffix )
 		obj = None
 		try:
@@ -236,7 +373,7 @@ class SearchSavesets:
 				sets.append(name)
 		return sets
 
-	def delete(self,name ):
+	def delete(self, name):
 		filename = os.path.join( self.path, self.prefix + name + self.suffix )
 		try:
 			os.unlink( filename )

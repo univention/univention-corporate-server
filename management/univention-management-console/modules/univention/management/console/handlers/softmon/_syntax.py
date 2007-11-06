@@ -61,6 +61,49 @@ class SoftMonSystemVersions( umc.StaticSelection ):
 	def choices( self ):
 		return self._choices
 
+
+class SoftMonStateSelected( umc.StaticSelection ):
+	def __init__( self, system_versions = None ):
+		umc.StaticSelection.__init__( self, '' )
+		self._choices = ( ( '1', _('Install') ),
+						  ( '2', _('Hold') ),
+						  ( '3', _('DeInstall') ),
+						  ( '4', _('Purge') ),
+						  ( '0', _('Unknown') )
+						  )
+
+	def choices( self ):
+		return self._choices
+
+class SoftMonStateInstalled( umc.StaticSelection ):
+	def __init__( self, system_versions = None ):
+		umc.StaticSelection.__init__( self, '' )
+		self._choices = ( ( '0', _('Ok') ),
+						  ( '1', _('ReInstReq') ),
+						  ( '2', _('Hold') ),
+						  ( '3', _('HoldReInstReq') )
+						  )
+
+	def choices( self ):
+		return self._choices
+
+
+class SoftMonStateCurrent( umc.StaticSelection ):
+	def __init__( self, system_versions = None ):
+		umc.StaticSelection.__init__( self, '' )
+		self._choices = ( ( '0', _('NotInstalled') ),
+						  ( '1', _('UnPacked') ),
+						  ( '2', _('HalfConfigured') ),
+						  ( '3', _('UnInstalled') ),
+						  ( '4', _('HalfInstalled') ),
+						  ( '5', _('ConfigFiles') ),
+						  ( '6', _('Installed') )
+						  )
+
+	def choices( self ):
+		return self._choices
+
+
 class SoftMonSystemSearchKey( umc.StaticSelection ):
 	def __init__( self ):
 		umc.StaticSelection.__init__( self, _( 'Search Key' ) )
@@ -77,11 +120,11 @@ class SoftMonPackageSearchKey( umc.StaticSelection ):
 		self._choices = []
 
 	def choices( self ):
-		return ( ( 'name', _( 'Package Name' ) ),
+		return ( ( 'pkg_name', _( 'Package Name' ) ),
 				 ( 'pkg_version', _( 'Package Version' ) ),
-				 ( 'selected_status', _( 'Selected Status' ) ),
-				 ( 'installed_status', _( 'Installation Status' ) ),
-				 ( 'current_status', _( 'Current Status' ) ),
+				 ( 'selected_state', _( 'Selected State' ) ),
+				 ( 'installed_state', _( 'Installation State' ) ),
+				 ( 'current_state', _( 'Current State' ) ),
 				 ( 'ucs_version', _( 'UCS Version' ) ) )
 
 system_filter_types = { 'name' : umc.String( _( 'Text' ) ),
@@ -92,3 +135,6 @@ umcd.copy( umc.StaticSelection, SoftMonSystemSearchKey )
 umcd.copy( umc.StaticSelection, SoftMonPackageSearchKey )
 umcd.copy( umc.StaticSelection, SoftMonSearchOperator )
 umcd.copy( umc.StaticSelection, SoftMonSystemVersions )
+umcd.copy( umc.StaticSelection, SoftMonStateSelected )
+umcd.copy( umc.StaticSelection, SoftMonStateInstalled )
+umcd.copy( umc.StaticSelection, SoftMonStateCurrent )
