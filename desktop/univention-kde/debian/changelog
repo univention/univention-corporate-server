@@ -1,3 +1,10 @@
+univention-kde (2.1.7-4) unstable; urgency=low
+
+  * Fix path in dialog frontend
+  * Fix encoding of umlauts
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  6 Nov 2007 13:36:26 +0100
+
 univention-kde (2.1.7-3) unstable; urgency=low
 
   * removed gnokii from the depends

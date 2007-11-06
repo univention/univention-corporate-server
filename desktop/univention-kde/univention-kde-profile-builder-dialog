@@ -7,7 +7,7 @@
 # -desktop <locked/restricted>    Desktop could be locked or restricted for user (required !)
 
 # check requirements
-if ! hash -r /usr/sbin/univention-kde-profile-builder; then
+if ! hash -r /usr/bin/univention-kde-profile-builder; then
 	echo "error: could not find univention-kde-profile-builder"
 	exit 1
 fi
@@ -37,7 +37,7 @@ if [ $? -ne 0 ]; then exit 1; fi
 name=`cat $tmpfile | grep -v KWrited | tail -n -1`
 echo "NAME:" $name
 
-kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewÃ€hlt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
+kdialog --msgbox "Im folgenden Dialog muss das Heimatverzeichnis des Benutzers ausgewählt werden mit dem das KDE-Profil erstellt wurde." &>/dev/null
 
 $cmd --title "Auswahl des Heimatverzeichnisses" --getexistingdirectory $default_path 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
@@ -47,15 +47,15 @@ $cmd --inputbox "Versionsnummer des Profils" "0.1" 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
 version=`cat $tmpfile | grep -v KWrited | tail -n -1`
 
-$cmd --radiolist "Art des Profils" restricted "VerÃ€nderbare Vorgabe" off locked "UnverÃ€nderbare Vorgabe" on 2>/dev/null >$tmpfile
+$cmd --radiolist "Art des Profils" restricted "Veränderbare Vorgabe" off locked "Unveränderbare Vorgabe" on 2>/dev/null >$tmpfile
 if [ $? -ne 0 ]; then exit 1; fi
 desktop=`cat $tmpfile | grep -v KWrited | tail -n -1`
 
 rm $tmpfile
 
-echo /usr/sbin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop"
+echo /usr/bin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop"
 
-if /usr/sbin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop" | grep "pkg-deb: .*univention-kde-profile-$name"; then
+if /usr/bin/univention-kde-profile-builder -name "$name" -path "$path" -version "$version" -desktop "$desktop" | grep "pkg-deb: .*univention-kde-profile-$name"; then
 	kdialog --msgbox "das Profil-Paket wurde erfolgreich erstellt und im aktuellen Verzeichnis ($PWD) abgelegt."
 else
 	kdialog --error "Leider ist die Erstellung des Profil-Paketes fehlgeschlagen"
