@@ -43,71 +43,67 @@ eval `univention-baseconfig shell`
 
 getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
 
+# Test, whether a UCS 1.3 joint script has been run successfully
+previous=`grep "univention-printserver successful" /usr/lib/univention-install/.index.txt`
+
+if [ -n "$previous" ]; then
+
+cups_keep_ppds=`univention-baseconfig get cups/keep_ppds`
+if [ "$cups_keep_ppds" != "true" ]; then
+
 # Store a backup copy of the old printer definitions in LDAP
 backupfile=/var/backups/ldap-ppds-`date +"%d-%m-%y-%H-%M-%S"`
 ldapsearch -x 'objectclass=univentionPrinterModels' >  $backupfile
 
-cups_keep_ppds=`univention-baseconfig get cups/keep_ppds`
-
-if [ -z $cups_keep_ppds ]; then
-    cups_keep_ppds="unset"
-fi
-
-if [ $cups_keep_ppds != "true" ]; then
-
-# Search for UCS 1.3 printer definition in LDAP and remove them if found
-previous=`ldapsearch -x cn=Alps | grep foomatic-ppds/Alps/Alps-MD-1000-ppmtocpva.ppd.gz | wc -l`
-
-if [ "$previous" = "1" ]; then
-univention-admin settings/printermodel remove --dn cn=Alps,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Anitech,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Apollo,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Apple,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Avery,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Brother,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=CItoh,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Canon,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Citizen,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Compaq,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=DEC,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Dell,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Dymo,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Epson,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Fujitsu,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Generic,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Gestetner,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=HP,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Heidelberg,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Hitachi,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=IBM,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Imagen,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Infotec,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Kodak,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Kyocera,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Lanier,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Lexmark,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Minolta,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Mitsubishi,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=NEC,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=NRG,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Oce,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Okidata,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Olivetti,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=PCPI,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Panasonic,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Pentax,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=QMS,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Raven,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Ricoh,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Samsung,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Savin,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Seiko,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Sharp,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Sony,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Star,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Tally,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Tektronix,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove --dn cn=Xerox,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Alps,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Anitech,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Apollo,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Apple,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Avery,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Brother,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=CItoh,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Canon,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Citizen,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Compaq,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=DEC,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Dell,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Dymo,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Epson,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Fujitsu,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Generic,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Gestetner,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=HP,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Heidelberg,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Hitachi,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=IBM,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Imagen,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Infotec,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Kodak,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Kyocera,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Lanier,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Lexmark,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Minolta,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Mitsubishi,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=NEC,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=NRG,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Oce,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Okidata,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Olivetti,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=PCPI,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Panasonic,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Pentax,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=QMS,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Raven,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Ricoh,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Samsung,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Savin,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Seiko,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Sharp,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Sony,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Star,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Tally,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Tektronix,cn=cups,cn=univention,$ldap_base
+univention-admin settings/printermodel remove $@ --dn cn=Xerox,cn=cups,cn=univention,$ldap_base
 fi
 
 fi
