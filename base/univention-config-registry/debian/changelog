@@ -1,3 +1,10 @@
+univention-config-registry (2.6.3-1) unstable; urgency=low
+
+  * add *.debian to taboo list in logrotate.conf to ignore diverted
+    configuration files
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  7 Nov 2007 14:28:36 +0100
+
 univention-config-registry (2.6.2-1) unstable; urgency=low
 
   * don't divert the mutlifile in a subfile declaration
