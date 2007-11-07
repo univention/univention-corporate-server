@@ -1,3 +1,9 @@
+univention-management-console (0.9.11-1) unstable; urgency=low
+
+  * removed software monitor
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 07 Nov 2007 18:56:46 +0100
+
 univention-management-console (0.9.10-1) unstable; urgency=low
 
   * when running join scripts pass user DN instead of username as argument
