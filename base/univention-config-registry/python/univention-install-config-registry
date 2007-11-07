@@ -137,6 +137,14 @@ if __name__ == '__main__':
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
 						postrm.write('test "$1" = "remove" && rm -f %s; dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
 						filelist.append(f)
+			elif item.has_key('Subfile'):
+				for f in item['Subfile']:
+					if f[0] != '/':
+						f = '/'+f
+					if not f in filelist:
+						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
+						postrm.write('test "$1" = "remove" && rm -f %s; dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
+						filelist.append(f)
 			elif item.has_key('Multifile'):
 				for f in item['Multifile']:
 					if f[0] != '/':
