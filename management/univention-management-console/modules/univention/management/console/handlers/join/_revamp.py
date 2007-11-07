@@ -144,7 +144,8 @@ class Web( object ):
 
 	def _web_join_script( self, object, res ):
 		lst = umcd.List()
-		if object.incomplete or not object.options[ 'account' ] or not object.options[ 'password' ]:
+		if object.incomplete:#  or not object.options.get( 'account', None ) or not \
+# 				object.options.get( 'password', None ):
 			if not umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
 																'domaincontroller_backup' ):
 				user = umcd.make( self[ 'join/script' ][ 'account' ],
@@ -160,7 +161,7 @@ class Web( object ):
 							   umcd.CancelButton() ] )
 				res.dialog = [ umcd.Frame( [ lst ], _( 'Credentials for Join' ) ) ]
 			else:
-				lst.add_row( [ umcd.InfoBox( 'No Credentials are required.' ) ] )
+				lst.add_row( [ umcd.InfoBox( _( 'No Credentials are required.' ) ) ] )
 				req = umcp.Command( args = [ 'join/script' ],
 									opts = { 'script' : object.options[ 'script' ] } )
 				lst.add_row( [ umcd.Button( _( 'Run Script' ), 'actions/ok',

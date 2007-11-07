@@ -1,3 +1,11 @@
+univention-management-console (0.9.10-1) unstable; urgency=low
+
+  * when running join scripts pass user DN instead of username as argument
+  * set UMC_MODE also whenn running join scripts
+  * update german translation 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  7 Nov 2007 16:54:43 +0100
+
 univention-management-console (0.9.7-2) unstable; urgency=low
 
   * Convert remaining ACL descriptions to English.

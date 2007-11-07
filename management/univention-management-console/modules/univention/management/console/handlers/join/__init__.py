@@ -34,6 +34,10 @@ import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
 
+import univention.admin.modules as ua_modules
+import univention.admin.config as ua_config
+import univention.uldap
+
 import base64
 import os
 import time
@@ -130,14 +134,25 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if object.incomplete:
 			self.finished( object.id(), None )
 		else:
+			os.putenv( 'UMC_MODE', 'yes' )
 			logfile = _create_tempfile()
 			if umc.registry.get( 'server/role', None ) in ( 'domaincontroller_master',
 															'domaincontroller_backup' ):
 				cmd = '/usr/lib/univention-install/%s > %s 2>&1' % \
 					  ( object.options[ 'script' ], logfile )
 			else:
-				cmd = '/usr/lib/univention-install/%s --binddn %s --bindpwd %s > %s 2>&1' % \
-				  ( object.options[ 'script' ], object.options.get( 'account', '' ),
+				# LDAP connection
+				lo = univention.uldap.access( host = umc.registry[ 'ldap/server/name' ],
+											  base = umc.registry[ 'ldap/base' ], start_tls = 2 )
+
+				# get DN from username
+				usermodule = ua_modules.get( 'users/user' )
+				result = ua_modules.lookup( usermodule, None, lo, scope = 'sub', superordinate = None,
+											base = umc.registry[ 'ldap/base' ],
+											filter = 'uid=%s' % object.options[ 'account' ] )
+
+				cmd = '/usr/lib/univention-install/%s --binddn "%s" --bindpwd "%s" > %s 2>&1' % \
+				  ( object.options[ 'script' ], result[ 0 ].dn,
 					object.options.get( 'password', '' ), logfile )
 			proc = notifier.popen.Shell( cmd )
 			proc.signal_connect( 'finished',
