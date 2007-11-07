@@ -75,31 +75,31 @@ def cron_create(cronlist):
 					string+=','
 				if key == 'month':
 					if cronlist[key][i] == 'all':
-						string+='1,2,3,4,5,6,7,8,9,10,11,12'
+						string+='1,2,3,4,5,6,7,8,9,10,11,12 '
 					else:
-						string+='%s' % month_map(cronlist[key][i])
+						string+='%s ' % month_map(cronlist[key][i])
 				elif key == 'weekday':
 					if cronlist[key][i] == 'all':
-						string+='1,2,3,4,5,6,7'
+						string+='1,2,3,4,5,6,7 '
 					else:
-						string+='%s' % weekday_map(cronlist[key][i])
+						string+='%s ' % weekday_map(cronlist[key][i])
 				elif key == 'day':
 					if cronlist[key][i] == '00':
-						string+='0'
+						string+='0 '
 					elif cronlist[key][i] == 'all':
-						string+='1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31'
+						string+='1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31 '
 					else:
-						string+='%s' % cronlist[key][i]
+						string+='%s ' % cronlist[key][i]
 				else:
 					if cronlist[key][i] == '00':
-						string+='0'
+						string+='0 '
 					elif cronlist[key][i] == 'all':
 						if key == 'hour':
-							string+='0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
+							string+='0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23 '
 						else:
-							string+='0,5,10,15,20,25,30,35,40,45,50,55'
+							string+='0,5,10,15,20,25,30,35,40,45,50,55 '
 					else:
-						string+='%s' % cronlist[key][i]
+						string+='%s ' % cronlist[key][i]
 	return string
 
 def cron_split(cronlist):
