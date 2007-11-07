@@ -1,3 +1,12 @@
+univention-ftp (2.0.2-1) unstable; urgency=low
+
+  * remove support for /etc/ftpusers and /etc/ftpchroot in configuration
+    files
+  * delete templates for /etc/ftpusers and /etc/ftpchroot upon upgrade to
+    current versions, but keep the files themselves
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  7 Nov 2007 11:09:55 +0100
+
 univention-ftp (2.0.1-1) unstable; urgency=low
 
   * catch up change from ftp/allow* to ftp/deny* in template for /etc/ftpusers

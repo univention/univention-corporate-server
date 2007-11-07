@@ -28,20 +28,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-config-registry set ftp/denyall?true
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt "3.0"; then
 
-if [ "$1" = "upgrade" ] && dpkg --compare-versions "$2" lt "2.0"; then
-	# upgrade from earlier versions
+	# upgrade from earlier versions, remove old variables and templates 
+
+	rm /etc/univention/templates/files/etc/ftpchroot
+	rm /etc/univention/templates/files/etc/ftpusers
+
+	univention-config-registry unset ftp/denyall
+
 	eval $(univention-config-registry shell)
+
 	export INC=0
 	while true; do
-		NEXTVAR=ftp_allow$INC
+		NEXTVAR=ftp_chroot$INC
 		if [ ${!NEXTVAR} ]; then
-			univention-config-registry set ftp/deny$INC=${NEXTVAR}
+			univention-config-registry unset ftp/chroot$INC
 		else
 			break
 		fi
 		INC=$(($INC+1))
 	done
+
+	export INC=0
+	while true; do
+		NEXTVAR=ftp_allow$INC
+		if [ ${!NEXTVAR} ]; then
+			univention-config-registry unset ftp/deny$INC
+		else
+			break
+		fi
+		INC=$(($INC+1))
+	done
+
 	/etc/init.d/proftpd restart
 fi
