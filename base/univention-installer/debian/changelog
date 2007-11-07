@@ -1,3 +1,9 @@
+univention-installer (1.8.4-2) unstable; urgency=low
+
+  * Disable time service in "strict" profile
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 13:19:48 +0100
+
 univention-installer (1.8.4-1) unstable; urgency=low
 
   * install Acrobat Reader on all systems

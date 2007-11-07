@@ -111,7 +111,7 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
     univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
     univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled"
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled"
+    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/time="disabled"
   fi
 
 
@@ -122,7 +122,7 @@ if [ -n "$security_profile" -a "$security_profile" = "strict" ]; then
     univention-config-registry set security/services/imap="disabled" security/services/nagios="disabled" security/services/dhcp="disabled" 
     univention-config-registry set security/services/dns="disabled" security/services/ftp="disabled" security/services/http="disabled"
     univention-config-registry set security/services/postgres="disabled" security/services/samba="disabled"
-    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled"
+    univention-config-registry set security/services/telnet="disabled" security/services/tftp="disabled" security/services/ipp="disabled" security/services/time="disabled"
   fi
 
 fi
