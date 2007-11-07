@@ -90,7 +90,7 @@ class LogCollectorClient( object ):
 #		dir = '/etc/univention/ssl/%s' % umc.baseconfig[ 'hostname' ]
 #		self._crypto_context.use_privatekey_file( os.path.join( dir, 'private.key' ) )
 #		self._crypto_context.use_certificate_file( os.path.join( dir, 'cert.pem' ) )
-		self._crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/udsCA', 'CAcert.pem' ) )
+		self._crypto_context.load_verify_locations( os.path.join( dir, '/etc/univention/ssl/ucsCA', 'CAcert.pem' ) )
 
 		self._init_socket()
 		self.connect()

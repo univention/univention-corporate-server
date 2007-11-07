@@ -1,3 +1,9 @@
+univention-log-collector (2.0.1-1) unstable; urgency=low
+
+  * switch from udsCA to ucsCA
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Nov 2007 09:41:10 +0100
+
 univention-log-collector (2.0.0-1) unstable; urgency=low
 
   * Update to UCS 2.0 policies
