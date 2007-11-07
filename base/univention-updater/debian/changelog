@@ -1,3 +1,9 @@
+univention-updater (2.3.8-1) unstable; urgency=low
+
+  * use posix output for df (-P)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Nov 2007 09:54:23 +0100
+
 univention-updater (2.3.7-1) unstable; urgency=low
 
   * remove the functionality to upgrade from a local directory

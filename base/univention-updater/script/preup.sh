@@ -27,7 +27,7 @@ check_space(){
 	partition=$1
 	size=$2
 	usersize=$3
-	if [ `df $partition|tail -n1 | awk '{print $4}'` -gt "$size" ]
+	if [ `df -P $partition|tail -n1 | awk '{print $4}'` -gt "$size" ]
 		then 
 		echo -e "Space on $partition:\t OK"
 	else
