@@ -31,14 +31,16 @@
 
 # This preinst has only transitional purposes and can be removed in UCS 2.1
 
-if [ -e /etc/init.d/univention-ldap-listener ]; then
-	sv down univention-ldap-listener
-	echo -n "waiting for listener-shutdown "
-	while ! sv status univention-directory-listener | grep ^down: >/dev/null; do
-		sleep 1
-    	echo -n " ."
-	done
-	echo " shutdown done"
+if [ "$1" = upgrade -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.5-1; then
+	if [ -e /etc/init.d/univention-ldap-listener ]; then
+		sv down univention-ldap-listener
+		echo -n "waiting for listener-shutdown "
+		while ! sv status univention-directory-listener | grep ^down: >/dev/null; do
+			sleep 1
+			echo -n " ."
+		done
+		echo " shutdown done"
+	fi
 fi
 
 if [ -e /var/lib/univention-ldap-listener ]; then

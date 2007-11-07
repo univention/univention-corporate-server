@@ -1,3 +1,10 @@
+univention-directory-listener (2.2.5-1) unstable; urgency=low
+
+  * stop the listener in the preinst only during the upgrade from UCS
+    1.3-2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Nov 2007 09:27:22 +0100
+
 univention-directory-listener (2.2.4-1) unstable; urgency=low
 
   * be sure the listener has stopped before starting the upgrade
