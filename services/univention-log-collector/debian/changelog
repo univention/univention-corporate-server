@@ -1,3 +1,9 @@
+univention-log-collector (2.0.1-2) unstable; urgency=low
+
+  * Install changelog and copyright file
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 10:23:31 +0100
+
 univention-log-collector (2.0.1-1) unstable; urgency=low
 
   * switch from udsCA to ucsCA
