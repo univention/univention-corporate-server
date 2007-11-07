@@ -76,7 +76,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'copyright (c) 2005-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom,directory> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--src <sourcedir>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
@@ -311,8 +311,6 @@ def main():
 		command='cdrom'
 	elif sys.argv[1] == 'local':
 		command='local'
-	elif sys.argv[1] == 'directory':
-		command='directory'
 	else:
 		usage(stdout)
 		fp_debug.close()

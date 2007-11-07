@@ -1,3 +1,9 @@
+univention-updater (2.3.7-1) unstable; urgency=low
+
+  * remove the functionality to upgrade from a local directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Nov 2007 09:34:54 +0100
+
 univention-updater (2.3.6-3) unstable; urgency=low
 
   * Update Config Registry variable descriptions
