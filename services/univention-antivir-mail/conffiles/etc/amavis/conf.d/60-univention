@@ -70,6 +70,8 @@ $MYHOME = '/var/lib/amavis';   # (default is '/var/amavis')
 # $mydomain is never used directly by the program.
 $mydomain = '@%@domainname@%@';      # (no useful default)
 
+$myhostname = '@%@hostname@%@.@%@domainname@%@';  # fqdn of this host
+
 # Set the user and group to which the daemon will change if started as root
 # (otherwise just keeps the UID unchanged, and these settings have no effect):
 $daemon_user  = 'amavis';	# (no default (undef))
