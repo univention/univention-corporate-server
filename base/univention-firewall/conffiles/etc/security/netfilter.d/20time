@@ -7,8 +7,10 @@
 #          univention-baseconfig <FC>berschrieben werden.
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
-#       /etc/univention/templates/files/etc/security/netfilter.d/00blank
+#       /etc/univention/templates/files/etc/security/netfilter.d/20time
 #
 
-# Flush 
-/sbin/iptables -F
+@!@
+if baseConfig.has_key('security/services/time') and baseConfig['security/services/time'] == 'disabled':
+	print '/sbin/iptables -A INPUT  -p tcp --dport 37 -j REJECT'
+@!@

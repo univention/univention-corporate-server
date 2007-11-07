@@ -1,3 +1,11 @@
+univention-firewall (1.1.1-6) unstable; urgency=low
+
+  * Remove general rule to filter the time service, since it's needed
+    for thin clients. Instead, introduce a separate service definition,
+    which can be used in the "strict" profile. 
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 13:14:49 +0100
+
 univention-firewall (1.1.1-5) unstable; urgency=low
 
   * Make generated rules executable

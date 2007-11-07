@@ -19,6 +19,10 @@ File: etc/security/netfilter.d/20kerberos
 Variables: security/services/kerberos
 
 Type: file
+File: etc/security/netfilter.d/20time
+Variables: security/services/time
+
+Type: file
 File: etc/security/netfilter.d/20krsh
 Variables: security/services/krsh
 
