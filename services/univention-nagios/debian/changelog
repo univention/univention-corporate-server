@@ -1,3 +1,10 @@
+univention-nagios (1.0.7-6) unstable; urgency=low
+
+ * One of the configuration variables, allowed_hosts, uses ldap/master as a default
+ * Since ldap/master is only set during the join process we force a commit on the nrpe.cfg
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  7 Nov 2007 17:03:32 +0100
+
 univention-nagios (1.0.7-5) unstable; urgency=low
 
   * Correct Config Registry descriptions

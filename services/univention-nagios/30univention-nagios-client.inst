@@ -41,6 +41,11 @@ test -n "`grep "univention-nagios-client v${VERSION} successful" /usr/lib/univen
 
 eval `univention-baseconfig shell`
 
+# One of the configuration variables, allowed_hosts, uses ldap/master as a default
+# Since ldap/master is only set during the join process we force a commit on the nrpe.cfg
+
+univention-config-registry commit /etc/nagios/nrpe.cfg
+
 # only register host to ldap if nagios/client/autoregister is not "no"
 if [ ! "$nagios_client_autoregister" = "no" ] ; then
 

@@ -58,8 +58,6 @@ if [ "$1" = "configure" ]; then
 	fi
 fi
 
-univention-config-registry commit /etc/nagios/nrpe.cfg
-
 /etc/init.d/nagios-nrpe-server restart
 
 # call join script if installed on master or backup
