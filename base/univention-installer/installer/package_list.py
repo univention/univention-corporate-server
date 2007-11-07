@@ -397,7 +397,7 @@ PackageList=[
 					'Name': _('Acrobat Reader'),
 					'Packages': ['acroread-de'],
 					'Architecture': [ 'x86' ],
-					'Active': ['mobile_client', 'managed_client'],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
 					'Description': _('PDF Viewer'),
 				},

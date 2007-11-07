@@ -1,3 +1,9 @@
+univention-installer (1.8.4-1) unstable; urgency=low
+
+  * install Acrobat Reader on all systems
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  7 Nov 2007 08:50:11 +0100
+
 univention-installer (1.8.3-1) unstable; urgency=low
 
   * cleanup the packages list
