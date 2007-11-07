@@ -64,6 +64,7 @@ install: build
 	# windows installer
 	install -m0644 conffiles/etc/samba/installs.conf $(INST)/etc/samba/installs.conf
 	install -m0644 var/lib/univention-client-boot/pxelinux.cfg/localboot $(INST)/var/lib/univention-client-boot/pxelinux.cfg/localboot
+	install -m0644 var/lib/univention-client-boot/windows-installer.msg $(INST)/var/lib/univention-client-boot/windows-installer.msg
 
 	mkdir $(INST)/var/lib/univention-windows-installer/tmp
 	unzip -qq -L -o -d $(INST)/var/lib/univention-windows-installer/tmp unattended-4.6.zip

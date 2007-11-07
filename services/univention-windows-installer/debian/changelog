@@ -1,3 +1,9 @@
+univention-windows-installer (2.0.2-1) unstable; urgency=low
+
+  * re-add and modify bootup message 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Wed,  7 Nov 2007 09:39:45 +0100
+
 univention-windows-installer (2.0.1-1) unstable; urgency=low
 
   * fixed syntax error in the listener module
