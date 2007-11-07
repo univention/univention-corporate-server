@@ -31,11 +31,18 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 
 PYVERS=$(shell pyversions -vr)
+PACKAGE=python-univention-pkgdb
+UMC_MODULES=$(shell find modules/univention -name '*.py')
+UMC_MO_FILES=$(shell find modules/univention -name '*.po' | sed 's/\.po/\.mo/g')
 
 D=${CURDIR}/debian/univention-pkgdb
 DT=${CURDIR}/debian/univention-pkgdb-tools
 
-build: build-stamp
+%.mo:	%.po
+	msgfmt -o $@ $<
+
+
+build: build-stamp $(UMC_MO_FILES)
 build-stamp:
 	dh_testdir
 	touch build-stamp
@@ -50,9 +57,9 @@ clean:
 	rm -rf debian/univention-pkgdb-tools
 	dh_clean
 
-install: install-stamp
+install: install-stamp $(UMC_MO_FILES)
 install-stamp: build-stamp $(PYVERS:%=install-ext-%)
-install-ext-%:
+install-ext-%: 
 	# don't install Univention Console module
 	# ./py_compile ./modpkgdb.py
 
@@ -71,6 +78,23 @@ install-ext-%:
 	install -m 0755 conffiles/etc/cron.weekly/univention-pkgdb-clean ${D}/etc/cron.weekly
 	install -m 0755 50univention-pkgdb.inst ${D}/usr/lib/univention-install
 	install -m 0755 pkgdb.py ${D}/usr/lib/univention-directory-listener/system
+
+	# install Univention Management Console Module
+	install -d debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages
+	@for i in $(UMC_MODULES); do\
+		o=debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages/$${i#modules};\
+		install -d "`dirname $$o`";\
+		install -m755 $$i $$o;\
+	done
+	# install UMC locales
+	@for i in $(UMC_MO_FILES); do\
+		lang=`basename $$i .mo`;\
+		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/$(PACKAGE)/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname $$o`";\
+		install -m 644 $$i $$o;\
+	done
+
 
 	# don't install Univention Console Module
 	# install -m 0755 modpkgdb.pyo ${D}/usr/share/univention-console/uniconf

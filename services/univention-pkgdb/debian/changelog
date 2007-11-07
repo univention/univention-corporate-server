@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.7-1) unstable; urgency=low
+
+  * moved UMC SoftMon module to univention-pkgdb
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 07 Nov 2007 18:59:36 +0100
+
 univention-pkgdb (1.0.6-1) unstable; urgency=low
 
   * change the pass for the pkgdb.py module in univention-pkgdb-check

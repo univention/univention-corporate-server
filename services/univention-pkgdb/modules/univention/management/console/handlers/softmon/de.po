@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"PO-Revision-Date: 2007-11-07 18:36+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: __init__.py:58
+msgid "Software Monitor"
+msgstr "Software Monitor"
+
+#: __init__.py:59
+msgid "Monitor Software Status on all Your Systems"
+msgstr "Software Status Anzeige für alle UCS Systeme"
+
+#: __init__.py:62
+msgid "Search Filters"
+msgstr "Suchfilter"
+
+#: __init__.py:68 _revamp.py:161
+msgid "Search Systems"
+msgstr "Systeme suchen"
+
+#: __init__.py:74 _revamp.py:163
+msgid "Search Packages"
+msgstr "Pakete suchen"
+
+#: __init__.py:80
+msgid "Problem identification"
+msgstr "Probleme identifizieren"
+
+#: __init__.py:147 __init__.py:254
+msgid ""
+"Loading system roles and system versions from Univention PKGDB failed. "
+"Please check installation of univention-pkgdb and run \"univention-pkgdb-"
+"check\" and \"univention-pkgdb-scan\"."
+msgstr "Das Laden der Systemrollen und Systemversionen von der Univention Paketstatus-Datenbank ist fehlgeschlagen. Bitte überprüfen Sie Ihre Installation von univention-pkgdb und rufen \"univention-pkgdb-check\" und \"univention-pkgdb-scan\" auf."
+
+#: _revamp.py:72 _revamp.py:205
+msgid "Results per Page"
+msgstr "Ergebnisse pro Seite"
+
+#: _revamp.py:104
+msgid "Searchkey"
+msgstr "Filterobjekt"
+
+#: _revamp.py:104 _syntax.py:39
+msgid "Operator"
+msgstr "Filterbedingung"
+
+#: _revamp.py:104
+msgid "Pattern"
+msgstr "Filtermuster"
+
+#: _revamp.py:115
+msgid "Save Search Filter As"
+msgstr "Suchfilter speichern als:"
+
+#: _revamp.py:119
+msgid "--- Please Select ---"
+msgstr "--- Bitte auswählen ---"
+
+#: _revamp.py:127
+msgid "Select Saved Search Filters"
+msgstr "Gespeicherten Suchfilter auswählen:"
+
+#: _revamp.py:133
+msgid "Save Search Filter"
+msgstr "Suchfilter speichern"
+
+#: _revamp.py:137
+msgid "Delete Search Filter"
+msgstr "Suchfilter löschen"
+
+#: _revamp.py:179
+msgid "system name"
+msgstr "System-Name"
+
+#: _revamp.py:179
+msgid "UCS role"
+msgstr "UCS-Rolle"
+
+#: _revamp.py:179
+msgid "current version"
+msgstr "vorhandene Version"
+
+#: _revamp.py:179 _revamp.py:187
+msgid "collect date"
+msgstr "Erfassungszeit"
+
+#: _revamp.py:182 _revamp.py:190
+#, python-format
+msgid "%d Search Result(s)"
+msgstr "%s Suchergebnis(se)"
+
+#: _revamp.py:187
+msgid "system"
+msgstr "System-Name"
+
+#: _revamp.py:187
+msgid "package"
+msgstr "Paket"
+
+#: _revamp.py:187
+msgid "version"
+msgstr "Version"
+
+#: _revamp.py:187
+msgid "select state"
+msgstr "Erfassungszeit"
+
+#: _revamp.py:187
+msgid "installation state"
+msgstr "Installationszustand"
+
+#: _revamp.py:187
+msgid "current state"
+msgstr "aktueller Paketstatus"
+
+#: _revamp.py:216
+msgid "Not updated systems"
+msgstr "Nicht aktualisierte Systeme"
+
+#: _revamp.py:219
+msgid "Incomplete installed packages"
+msgstr "Unvollständig installierte Systeme"
+
+#: _revamp.py:227
+msgid "Select check:"
+msgstr "Überprüfung auswählen:"
+
+#: _revamp.py:258
+msgid "Problem Identification"
+msgstr "Probleme identifizieren"
+
+#: _syntax.py:43
+msgid "equal"
+msgstr "gleich"
+
+#: _syntax.py:44
+msgid "not equal"
+msgstr "ungleich"
+
+#: _syntax.py:45
+msgid "greater than"
+msgstr "größer"
+
+#: _syntax.py:46
+msgid "less than"
+msgstr "kleiner"
+
+#: _syntax.py:47
+msgid "greater equal"
+msgstr "größer oder gleich"
+
+#: _syntax.py:48
+msgid "less equal"
+msgstr "kleiner oder gleich"
+
+#: _syntax.py:68
+msgid "Install"
+msgstr ""
+
+#: _syntax.py:69 _syntax.py:83
+msgid "Hold"
+msgstr ""
+
+#: _syntax.py:70
+msgid "DeInstall"
+msgstr ""
+
+#: _syntax.py:71
+msgid "Purge"
+msgstr ""
+
+#: _syntax.py:72
+msgid "Unknown"
+msgstr ""
+
+#: _syntax.py:81
+msgid "Ok"
+msgstr ""
+
+#: _syntax.py:82
+msgid "ReInstReq"
+msgstr ""
+
+#: _syntax.py:84
+msgid "HoldReInstReq"
+msgstr ""
+
+#: _syntax.py:94
+msgid "NotInstalled"
+msgstr ""
+
+#: _syntax.py:95
+msgid "UnPacked"
+msgstr ""
+
+#: _syntax.py:96
+msgid "HalfConfigured"
+msgstr ""
+
+#: _syntax.py:97
+msgid "UnInstalled"
+msgstr ""
+
+#: _syntax.py:98
+msgid "HalfInstalled"
+msgstr ""
+
+#: _syntax.py:99
+msgid "ConfigFiles"
+msgstr ""
+
+#: _syntax.py:100
+msgid "Installed"
+msgstr ""
+
+#: _syntax.py:109 _syntax.py:119
+msgid "Search Key"
+msgstr "Suchfilter"
+
+#: _syntax.py:113
+msgid "System Name"
+msgstr "System-Name"
+
+#: _syntax.py:114 _syntax.py:132
+msgid "System Role"
+msgstr "System-Rolle"
+
+#: _syntax.py:115 _syntax.py:128
+msgid "UCS Version"
+msgstr "UCS-Version"
+
+#: _syntax.py:123
+msgid "Package Name"
+msgstr "Paketname"
+
+#: _syntax.py:124
+msgid "Package Version"
+msgstr "Paketversion"
+
+#: _syntax.py:125
+msgid "Selected State"
+msgstr "Paketauswahlstatus"
+
+#: _syntax.py:126
+msgid "Installation State"
+msgstr "Installationszustand"
+
+#: _syntax.py:127
+msgid "Current State"
+msgstr "aktueller Paketstatus"
+
+#: _syntax.py:131
+msgid "Text"
+msgstr "Text"
