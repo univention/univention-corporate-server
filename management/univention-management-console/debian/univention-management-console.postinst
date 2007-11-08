@@ -26,6 +26,17 @@ univention-baseconfig set umc/web/timeout?300
 univention-baseconfig set umc/web/language?de_DE.utf8
 univention-baseconfig set umc/web/debug/level?1
 
+# set memory limit for php processes to 32 (if not already set)
+eval $(univention-baseconfig shell php/memory/limit)
+
+if [ -n "$php_memory_limit" ]; then
+        if [ "$php_memory_limit" -lt 32 ]; then
+                univention-baseconfig set php/memory/limit=32
+        fi
+else
+    univention-baseconfig set php/memory/limit=32
+fi
+
 createLogfile /var/log/univention/management-console-web.log "www-data:adm" 640
 
 #DEBHELPER#

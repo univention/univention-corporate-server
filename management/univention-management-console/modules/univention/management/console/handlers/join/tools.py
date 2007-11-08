@@ -59,6 +59,8 @@ def _read_script( script ):
 def _read_index( scripts ):
 	global _join_dir, _join_index
 
+	if not os.path.exists( os.path.join( _join_dir, _join_index ) ):
+		return 
 	fd = open( os.path.join( _join_dir, _join_index ), 'r' )
 	for line in fd:
 		args = line[ : -1 ].split( ' ', 2 )

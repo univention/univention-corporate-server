@@ -53,7 +53,7 @@ class About( base.Page ):
 		baseConfig = univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		build_version = v.build 
+		build_version = v.build
 
 		if baseConfig.has_key("version/releasename"):
 			build_version = build_version + "(" + baseConfig["version/releasename"] + ")"
@@ -84,7 +84,7 @@ class About( base.Page ):
 				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[ _('Hostname')]})]}),
 				uniparts.tablecol("",{'type':'about_layout'},{"obs":[uniparts.text('',{},{'text':[baseConfig['hostname']]})]})
 				]}))
-		
+
 		version_string = ""
 		for key in ['version/version','version/patchlevel','version/security-patchlevel']:
 			if baseConfig.has_key(key) and baseConfig[key]:

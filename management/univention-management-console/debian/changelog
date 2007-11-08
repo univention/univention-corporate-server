@@ -1,3 +1,11 @@
+univention-management-console (0.9.13-1) unstable; urgency=low
+
+  * check if .index.txt exists before trying to read it 
+  * main widget of frontend is not stored in the save object anymore
+  * set memory limit for php process to 32MB
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 11:49:17 +0100
+
 univention-management-console (0.9.12-2) unstable; urgency=low
 
   * removed some superfluous softmon icons

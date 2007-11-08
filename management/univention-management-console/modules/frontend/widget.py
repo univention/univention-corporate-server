@@ -142,4 +142,3 @@ class Notebook( object ):
 				self.pages[ self.selected ].focused()
 			else:
 				self.pages[ self.selected ].apply()
-

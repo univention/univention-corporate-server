@@ -54,7 +54,7 @@ class Web( object ):
 						  default = object.options.get( 'pattern', '*' ),
 						  attributes = { 'width' : '250' } )
 		loaded = umcd.make( self[ 'modutils/search' ][ 'loaded' ],
-						  default = object.options.get( 'loaded', False ) )
+						  default = object.options.get( 'loaded', True ) )
 
 		form = umcd.SearchForm( 'modutils/search', [ [ ( select, 'all' ), ( loaded, 'loaded' ) ],
 													   [ ( key, 'name' ), ( text, '*' ) ] ] )
@@ -107,7 +107,7 @@ class Web( object ):
 		res.dialog = main
 
 		self.revamped( object.id(), res )
-	
+
 	def _web_modutils_show( self, object, res ):
 		result = umcd.List()
 		mod = res.dialog
@@ -115,7 +115,7 @@ class Web( object ):
 			result.add_row( [ umcd.make_readonly( self[ 'modutils/load' ][ 'module' ],
 												  default = object.options[ 'module' ] ) ] )
 			args = umcd.make( self[ 'modutils/load' ][ 'arguments' ] )
-			result.add_row( [ args ] ) 
+			result.add_row( [ args ] )
 			req = umcp.Command( args = [ 'modutils/load' ], opts = { 'module' : mod.name } )
 			req_list = umcp.Command( args = [ 'modutils/search' ],
 									 opts = { 'category' : object.options[ 'category' ],

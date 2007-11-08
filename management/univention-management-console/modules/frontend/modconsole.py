@@ -53,8 +53,10 @@ baseConfig.load()
 
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
+notebook_widget = None
+
 def create(a,b,c):
-	return modconsole(a,b,c)
+	return modconsole( a, b, c )
 
 ## def myinfo(settings):
 ##	if settings.listAdminModule('modconsole'):
@@ -75,6 +77,9 @@ def mymenuicon():
 	return '/icon/console.gif'
 
 class modconsole(unimodule.unimodule):
+	def __init__( self, a, b, c ):
+		unimodule.unimodule.__init__( self, a, b, c )
+
 	def __commonHeader(self, layoutType):
 		obs = []
 ##		if self.save.get( 'auth_ok', None ):
@@ -152,16 +157,17 @@ class modconsole(unimodule.unimodule):
 			))
 
 	def __process(self):
+		global notebook_widget
 		self.__commonHeader('about_layout')
-		layout = self.notebook.layout()
-		report = self.notebook.report()
+		layout = notebook_widget.layout()
+		report = notebook_widget.report()
 
 		if report:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, '__process: report: %s' % report )
 			self.userinfo( report )
 		self.subobjs.extend( layout )
 
-		if self.notebook.refresh():
+		if notebook_widget.refresh():
 			self.atts['refresh']='1000'
 
 			# This "link button" is needed in order for the refresh to
@@ -208,17 +214,14 @@ class modconsole(unimodule.unimodule):
 			if client.error_get() != client.NOERROR:
 				self.save.put( 'consolemode', None )
 				self.save.put( 'auth_ok', False )
-				self.save.put( 'notebook', None )
 				self.save.put( 'umc_connected', False )
 				return
 			self.save.put('consolemode','process')
-			if self.save.get( 'notebook', None ):
-				self.notebook = self.save.get( 'notebook' )
-			else:
-				self.notebook = widget.Notebook( self.save )
+			global notebook_widget
+			if not notebook_widget:
+				notebook_widget = widget.Notebook( self.save )
 
 			self.__process()
-			self.save.put( 'notebook', self.notebook )
 
 	def apply(self):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: apply')
@@ -287,19 +290,17 @@ class modconsole(unimodule.unimodule):
 					ldapc.disconnect()
 				self.save.put( 'consolemode', 'login' )
 				self.save.put( 'logout', None )
-				self.save.put( 'notebook', None )
 				self.save.put( 'umc_connected', False )
 				self.save.put( 'auth_ok', False )
-				self.userinfo( _('Logout successful.' ) )
+				self.userinfo( _( 'Logout successful.' ) )
 
 		elif self.save.get('consolemode') == 'process':
-			self.notebook = self.save.get( 'notebook' )
-			self.notebook.apply()
-			report = self.notebook.report()
+			global notebook_widget
+			notebook_widget.apply()
+			report = notebook_widget.report()
 			if report:
 				self.userinfo( report )
 
-			self.notebook = self.save.put( 'notebook', self.notebook )
 		elif self.save.get('consolemode'):
 			raise "unknown consolemode"
 		else:
