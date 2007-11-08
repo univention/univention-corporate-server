@@ -1,3 +1,10 @@
+univention-directory-listener (2.2.6-1) unstable; urgency=low
+
+  * stop the listener if /etc/runit/univention/univention-ldap-listener
+    exists
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Nov 2007 13:53:09 +0100
+
 univention-directory-listener (2.2.5-2) unstable; urgency=low
 
   * Move /usr/lib/univention-ldap-listener as well
