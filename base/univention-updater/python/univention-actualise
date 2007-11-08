@@ -224,7 +224,6 @@ def main():
 			add_packages=getPackageList(baseConfig, 'add')
 			for package in add_packages:
 				waitForLock()
-				print("Installing packages: %s" % package)
 				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) # check if the package exists 
 
 				if res == 0:
