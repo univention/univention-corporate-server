@@ -1,0 +1,9 @@
+Type: file
+File: var/lib/samba/netlogon/printer-assignment.vbs
+Variables: ldap/base
+Variables: ldap/server/name
+Variables: ldap/server/addition
+Variables: printer/assignment/ldapserver
+Variables: printer/assignment/ldapsearch
+Variables: printer/assignment/removeall
+Variables: printer/assignment/debug

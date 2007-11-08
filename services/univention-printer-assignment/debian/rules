@@ -1,0 +1,69 @@
+#!/usr/bin/make -f
+
+D=$(CURDIR)/debian/univention-printer-assignment
+
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+
+ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
+	CFLAGS += -g
+endif
+ifeq (,$(findstring nostrip,$(DEB_BUILD_OPTIONS)))
+	INSTALL_PROGRAM += -s
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+
+build-stamp: configure-stamp 
+	dh_testdir
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp telepoint-netlogon.zip
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	univention-install-baseconfig
+
+	install -m 644 netlogon/README.txt ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/ldapsearch.exe ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libcrypto.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/liblber.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libldap.dll ${D}/var/lib/samba/netlogon/
+	install -m 644 netlogon/libssl.dll ${D}/var/lib/samba/netlogon/
+
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

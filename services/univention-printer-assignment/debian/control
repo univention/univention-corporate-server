@@ -1,0 +1,14 @@
+Source: univention-printer-assignment
+Section: master
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 1.0.0
+
+Package: univention-printer-assignment
+Architecture: all
+Depends: univention-config-registry, python-univention-directory-manager
+Description: Assign printers to groups containing computers
+ This package allows the assignment of printers to groups that
+ contain computers. On Windows systems a Netlogon script will
+ connect the assigned printers.

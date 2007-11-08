@@ -1,0 +1,45 @@
+univention-printer-assignment (1.1.0-1) unstable; urgency=low
+
+  * Update to UCS 2.0 policies
+  * Extend copyright file
+	
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 14:50:10 +0100
+
+univention-printer-assignment (1.0.5-1) unstable; urgency=low
+
+  * fixed handling of %CLIENTNAME%
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 23 Oct 2007 14:58:38 +0200
+
+univention-printer-assignment (1.0.4-1) unstable; urgency=low
+
+  * removed dependency to univention-admin
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 11 Jul 2007 12:02:38 +0200
+
+univention-printer-assignment (1.0.3) unstable; urgency=low
+
+  * handle wrapped lines in ldapsearch output
+  * move logon script, ldapsearch.exe and DLLs to netlogon root to avoid 
+    problems while loading DLLs
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Apr 2007 13:23:13 +0200
+
+univention-printer-assignment (1.0.2) unstable; urgency=low
+
+  * use printer/assignment/ldapserver instead of ldap/server/ip
+  * do ldap server load balancing 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 23 Apr 2007 13:32:16 +0200
+
+univention-printer-assignment (1.0.1) unstable; urgency=low
+
+  * added dependency
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Apr 2007 14:21:59 +0200
+
+univention-printer-assignment (1.0.0) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Mar 2007 10:53:30 +0100

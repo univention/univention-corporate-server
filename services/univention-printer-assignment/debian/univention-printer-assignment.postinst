@@ -1,0 +1,57 @@
+#!/bin/sh
+#
+#  Postinst script for the debian package
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+eval `univention-config-registry shell`
+
+if [ "$server_role" = "domaincontroller_master" ] ; then
+	univention-directory-manager settings/syntax create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="univention-printer-syntax" \
+		--set description="syntax for custom attribute univention-printer-list" \
+		--set attribute="shares/printer: name" \
+		--set value="shares/printer: dn" \
+		--set filter="(objectclass=univentionPrinter)" \
+		--set base="$ldap_base" \
+		--set viewonly="FALSE"
+
+	univention-directory-manager settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+		--set name="univention-printer-list" \
+ 		--set module="groups/group" \
+		--set tabName="Druckerzuordnung" \
+		--set tabPosition="0" \
+		--set objectClass="univentionGroup" \
+		--set shortDescription="Zugewiesene Drucker" \
+		--set syntax="univention-printer-syntax" \
+ 		--set ldapMapping="univentionAssignedPrinter" \
+		--set multivalue="1"
+fi
+
+univention-config-registry set printer/assignment/removeall?no
+univention-config-registry set printer/assignment/debug?no
