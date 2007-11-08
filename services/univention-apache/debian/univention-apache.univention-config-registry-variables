@@ -1,5 +1,5 @@
 [apache2/allowoverride]
-Description[de]=Angabe der durch .htaccess-Dateien überschreibbaren Konfigurationsdirektiven
+Description[de]=Angabe der durch .htaccess-Dateien Ã¼berschreibbaren Konfigurationsdirektiven
 Description[en]=Directives that can be overridden by .htaccess files
 Type=str
 Categories=Network

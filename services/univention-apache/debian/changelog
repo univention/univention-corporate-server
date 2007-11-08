@@ -1,3 +1,9 @@
+univention-apache (2.0.11-5) unstable; urgency=low
+
+  * fixed encoding of variable description 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 17:24:29 +0100
+
 univention-apache (2.0.11-4) unstable; urgency=low
 
   * Register apache2/autostart and apache2/allowoverride in Config Registry
