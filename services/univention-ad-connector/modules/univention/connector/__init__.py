@@ -1102,7 +1102,7 @@ class ucs:
 		dn_mapping_stored = []
 		for dntype in ['dn','olddn']: # check if all available dn's are already mapped
 			if object.has_key(dntype):
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"_dn_type %s %s" % (object_type, str(object)))
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"_dn_type %s" % (object_type)) # don't send str(object) to debug, may lead to segfaults
 
 				if (object_type == 'ucs' and self._get_dn_by_ucs(object[dntype]) != ''):
 					object[dntype] = self._get_dn_by_ucs(object[dntype])

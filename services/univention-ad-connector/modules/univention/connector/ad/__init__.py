@@ -795,7 +795,10 @@ class ad(univention.connector.ucs):
 		object['dn'] = self.encode(element[0])
 		deleted_object = False
 		GUID = element[1]['objectGUID'][0]
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "GUID: %s " % str(GUID))
+		try:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__object_from_element: GUID: %s " % str(GUID))
+		except TypeError:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__object_from_element: GUID unprintable for object %s " % object['dn'])
 
 		# modtype
 		if element[1].has_key('isDeleted') and element[1]['isDeleted'][0] == 'TRUE':
@@ -1481,10 +1484,17 @@ class ad(univention.connector.ucs):
 		done_counter = 0
 
 		for element in changes:
-			if element[0] == 'None': # referrals
-				continue
-			old_element = copy.deepcopy(element)
-			object = self.__object_from_element(element)
+			try:
+				if element[0] == 'None': # referrals
+					continue
+				old_element = copy.deepcopy(element)
+				object = self.__object_from_element(element)
+			except:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
+				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "This object will not be synced again!")
+				# debug-trace may lead to a segfault here :(
+				# self._debug_traceback(univention.debug.ERROR,"Exception during poll/object-mapping, object will not be synced again!")
+				
 			if object:
 				property_key = self.__identify(object)
 				if property_key and not self._ignore_object(property_key,object):
@@ -1500,7 +1510,7 @@ class ad(univention.connector.ucs):
 						if msg == "Can't contact LDAP server":
 							raise ldap.SERVER_DOWN
 						else:
-							self._debug_traceback(univention.debug.WARN,"Exception during poll")
+							self._debug_traceback(univention.debug.WARN,"Exception during poll/sync_to_ucs")
 					except univention.admin.uexceptions.ldapError, msg:
 						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Exception during poll with message (2) %s"%msg)
 						if msg == "Can't contact LDAP server":
@@ -1509,7 +1519,7 @@ class ad(univention.connector.ucs):
 							self._debug_traceback(univention.debug.WARN,"Exception during poll")
 					except:
 						self._debug_traceback(univention.debug.WARN,
-								"Exception during poll")
+								"Exception during poll/sync_to_ucs")
 
 
 

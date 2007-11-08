@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-4) unstable; urgency=low
+
+  * add Error-handling during object-mapping
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  8 Nov 2007 11:57:42 +0100
+
 univention-ad-connector (1.2.2-3) unstable; urgency=low
 
   * import LDAPControl from ldap.controls
