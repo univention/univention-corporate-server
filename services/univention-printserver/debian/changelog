@@ -1,3 +1,9 @@
+univention-printserver (1.0.5-4) unstable; urgency=low
+
+  * Correct PPD base directory
+
+ -- Moritz Mühlenhoff <jmm@ivar.knut.univention.de>  Thu,  8 Nov 2007 09:42:04 +0100
+
 univention-printserver (1.0.5-3) unstable; urgency=low
 
   * Pass credentials to the univention-directory-manager calls, which remove the
