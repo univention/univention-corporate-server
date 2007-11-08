@@ -1,3 +1,9 @@
+univention-directory-listener (2.2.5-2) unstable; urgency=low
+
+  * Move /usr/lib/univention-ldap-listener as well
+
+ -- Moritz Mühlenhoff <jmm@ivar.knut.univention.de>  Thu,  8 Nov 2007 10:41:14 +0100
+
 univention-directory-listener (2.2.5-1) unstable; urgency=low
 
   * stop the listener in the preinst only during the upgrade from UCS

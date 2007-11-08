@@ -45,6 +45,7 @@ fi
 
 if [ -e /var/lib/univention-ldap-listener ]; then
     mv /var/lib/univention-ldap-listener /var/lib/univention-directory-listener
+    mv /usr/lib/univention-ldap-listener /usr/lib/univention-directory-listener
     ln -s /usr/lib/univention-directory-listener /usr/lib/univention-ldap-listener
 fi
 
