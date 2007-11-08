@@ -47,15 +47,6 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="top/view" \
 	--append operation="top/kill"
 
-# create software monitor operations
-univention-admin settings/console_operation create $@ --ignore_exists \
-	--position cn=operations,cn=console,cn=univention,$ldap_base \
-	--set name=softmon \
-	--set description="Software Monitor" \
-	--append operation="softmon/*" \
-	--append operation="softmon/system/search" \
-	--append operation="softmon/package/search"
-
 # create mrtg operations
 univention-admin settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -156,15 +147,6 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 	--set ldapbase="$ldap_base" \
 	--set command="wizard/basis/*" \
 	--set description="Basis Wizard"
-
-# create softmon acls
-univention-admin settings/console_acl create $@ --ignore_exists \
-	--position cn=acls,cn=console,cn=univention,$ldap_base \
-	--set name=softmon-all \
-	--set category="Software Monitor" \
-	--set ldapbase="$ldap_base" \
-	--set command="softmon/*" \
-	--set description="All Software Monitor Operations"
 
 # create package acls
 univention-admin settings/console_acl create $@ --ignore_exists \
@@ -384,7 +366,6 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 	--append allow=cn=mrtg-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=join-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=packages-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base
 # 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
