@@ -46,6 +46,39 @@ if [ -z "$res" ]; then
 	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv pkgdb tcp 0 0 5432 $hostname.$domainname.
 fi
 
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+
+# create software monitor operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=softmon \
+	--set description="Software Monitor" \
+	--append operation="softmon/*" \
+	--append operation="softmon/system/search" \
+	--append operation="softmon/package/search" \
+	--append operation="softmon/problem/identification"
+
+# create softmon acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+	--position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=softmon-all \
+	--set category="Software Monitor" \
+	--set ldapbase="$ldap_base" \
+	--set command="softmon/*" \
+	--set description="All Software Monitor Operations"
+
+# add to default policies
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+
 test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

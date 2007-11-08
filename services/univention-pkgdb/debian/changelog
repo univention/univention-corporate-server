@@ -1,6 +1,7 @@
-univention-pkgdb (1.0.9-1) unstable; urgency=low
+univention-pkgdb (1.0.9-2) unstable; urgency=low
 
   * fixed problems with a specific key in staticselect widgets
+  * updated join script
 
  -- Soenke Schwardt <schwardt@univention.de>  Thu, 08 Nov 2007 12:57:06 +0100
 
