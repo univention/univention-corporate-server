@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-1) unstable; urgency=low
+
+  * do not restart apache in join script if UMC_MODE is set 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 16:59:17 +0100
+
 univention-directory-manager (4.2.5-3) unstable; urgency=low
 
   * Correct Config Registy descriptions.

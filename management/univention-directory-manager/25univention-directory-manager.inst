@@ -47,7 +47,9 @@ createLogfile () {
 	fi
 }
 
-/etc/init.d/apache2 stop >/dev/null 2>&1
+if [ -z "$UMC_MODE" ]; then
+	/etc/init.d/apache2 stop >/dev/null 2>&1
+fi
 
 eval `univention-baseconfig shell`
 
@@ -86,7 +88,9 @@ if [ $? != 0 ]; then exit 1; fi
 mkdir -p /var/log/univention/
 createLogfile /var/log/univention/directory-manager-web.log "www-data:adm" 640
 
-/etc/init.d/apache2 start >/dev/null 2>&1
+if [ -z "$UMC_MODE" ]; then
+	/etc/init.d/apache2 start >/dev/null 2>&1
+fi
 
 test -n "`grep "univention-directory-manager v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-manager v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
