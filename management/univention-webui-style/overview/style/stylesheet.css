@@ -734,11 +734,7 @@ a:active {
 color:#666666;
 }
 a.notebook,
-a.notebookcloseablestart,
-a.notebookcloseableend,
-a.notebook_on,
-a.notebook_oncloseablestart,
-a.notebook_oncloseableend{
+a.notebook_on{
 padding-left:10px;
 }
 
@@ -903,7 +899,14 @@ float:none;
 display:inline;
 }
 
-
+img.notebookcloseablestart,
+img.notebookcloseableend,
+img.notebook_oncloseablestart,
+img.notebook_oncloseableend
+{
+padding-top:2px;
+padding-left:7px;
+}
 
 /* ################# Input  ################# */
 
