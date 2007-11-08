@@ -35,8 +35,9 @@ Description: UCS - LDAP client configuration
 Package: univention-ldap-config
 Architecture: all
 Pre-Depends: slapd
-Conflicts: univention-5250 (<< 0.5.23), univention-5250-powerterm (<< 1.4.11), univention-mail-cyrus-quota-master
-Replaces: univention-mail-cyrus-quota-master
+Conflicts: univention-5250 (<< 0.5.23), univention-5250-powerterm (<< 1.4.11), univention-mail-cyrus-quota-master, univention-admin-nagios (<< 1.0)
+Replaces: univention-mail-cyrus-quota-master, univention-admin-nagios
+Provides: univention-admin-nagios
 Description: UCS - common LDAP configuration
  This package contains the general configuration for the
  OpenLDAP server such as the base LDIF file and the

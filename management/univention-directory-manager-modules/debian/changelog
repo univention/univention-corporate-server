@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.2.8-8) unstable; urgency=low
+
+  * move the provide and replace of univention-admin-nagios from python-
+    univention-directory-manager to univention-ldap-config
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Nov 2007 07:42:57 +0100
+
 univention-directory-manager-modules (2.2.8-7) unstable; urgency=low
 
   * Fix spaces between cron tab entries
