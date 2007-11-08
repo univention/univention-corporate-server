@@ -1,6 +1,7 @@
 Type: file
 File: etc/apache2/sites-available/default
-Variables: apache/startsite
+Variables: apache2/startsite
+Variables: apache2/allowoverride
 
 Type: file
 File: etc/apache2/mods-available/ssl.conf

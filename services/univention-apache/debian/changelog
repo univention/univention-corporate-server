@@ -1,3 +1,9 @@
+univention-apache (2.0.11-4) unstable; urgency=low
+
+  * Register apache2/autostart and apache2/allowoverride in Config Registry
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 13:08:15 +0100
+
 univention-apache (2.0.11-3) unstable; urgency=low
 
   * Fix Config Registry description
