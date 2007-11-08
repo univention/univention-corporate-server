@@ -73,13 +73,13 @@ class Web( object ):
 											opts = { 'module' : mod.name, 'load' : False,
 													 'category' : object.options.get( 'category', 'all' ),
 													 'pattern' : object.options.get( 'pattern', '*' ),
-													 'loaded' : object.options.get( 'loaded', False ),
+													 'loaded' : object.options.get( 'loaded', True ),
 													 'key' : object.options.get( 'key', 'name' ),
 													 } )
 						req.set_flag( 'web:startup', True )
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
-						req.set_flag( 'web:startup_referrer', True )
+						req.set_flag( 'web:startup_referrer', False )
 						req.set_flag( 'web:startup_format', _( 'Unload Module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 					else:
@@ -88,13 +88,13 @@ class Web( object ):
 											opts = { 'module' : mod.name, 'load' : True,
 													 'category' : object.options.get( 'category', 'all' ),
 													 'pattern' : object.options.get( 'pattern', '*' ),
-													 'loaded' : object.options.get( 'loaded', False ),
+													 'loaded' : object.options.get( 'loaded', True ),
 													 'key' : object.options.get( 'key', 'name' ),
 													 } )
 						req.set_flag( 'web:startup', True )
 						req.set_flag( 'web:startup_cache', False )
 						req.set_flag( 'web:startup_dialog', True )
-						req.set_flag( 'web:startup_referrer', True )
+						req.set_flag( 'web:startup_referrer', False )
 						req.set_flag( 'web:startup_format', _( 'Load Module: %(module)s' ) )
 						btn = umcd.Button( mod.name, 'modutils/kmodule', umcd.Action( req ) )
 
