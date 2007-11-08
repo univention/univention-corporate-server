@@ -25,7 +25,7 @@ Description: UCS - Web based administration tool
  refer to: http://www.univention.de/
 
 Package: univention-admin
-Architecture: any
+Architecture: all
 Depends: univention-directory-manager
 Description: Transition package
  Package to ease upgrading from old package

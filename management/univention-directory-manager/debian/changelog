@@ -1,3 +1,10 @@
+univention-directory-manager (4.2.6-2) unstable; urgency=low
+
+  * change architecture of transitional package univention-admin to all;
+    otherwise it will not be build 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 17:41:21 +0100
+
 univention-directory-manager (4.2.6-1) unstable; urgency=low
 
   * do not restart apache in join script if UMC_MODE is set 
