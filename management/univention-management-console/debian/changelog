@@ -1,3 +1,10 @@
+univention-management-console (0.9.15-1) unstable; urgency=low
+
+  * when dialog is cancelled go back to referrer even if web:startup_referrer is
+    False
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  8 Nov 2007 15:11:48 +0100
+
 univention-management-console (0.9.14-1) unstable; urgency=low
 
   * (un)loading kernel modules works again; web:startup_referrer must be False

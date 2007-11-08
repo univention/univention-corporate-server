@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-07-29 16:35+0200\n"
+"POT-Creation-Date: 2007-11-08 15:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -97,15 +97,19 @@ msgstr "Es wurden keine Kernel-Module gefunden."
 msgid "Search Result"
 msgstr "Suchergebnis"
 
-#: _revamp.py:134
+#: _revamp.py:125
+msgid "Load"
+msgstr "Laden"
+
+#: _revamp.py:136
 #, python-format
 msgid ""
 "Unloading a kernel module may result in an unstable system. Are you sure the "
 "module '%s' should be unloaded?"
 msgstr ""
-"Das Entladen eines Kernel-Modul kann zu einem instabilen System führen. Soll das"
-"Modul '%s' wirklich entladen werden?"
+"Das Entladen eines Kernel-Modul kann zu einem instabilen System führen. Soll "
+"dasModul '%s' wirklich entladen werden?"
 
-#: _revamp.py:135
+#: _revamp.py:137
 msgid "Unload"
 msgstr "Entladen"

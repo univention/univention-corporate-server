@@ -122,7 +122,9 @@ class Web( object ):
 									 		  'pattern' : object.options[ 'pattern' ],
 									 		  'loaded' : object.options[ 'loaded' ],
 											  'key' : object.options[ 'key' ] } )
-			result.add_row( [ umcd.SetButton( actions = [ umcd.Action( req, [ args.id() ] ), umcd.Action( req_list ) ] ),
+			result.add_row( [ umcd.Button( label = _( 'Load' ), tag = 'actions/ok',
+										   actions = [ umcd.Action( req, [ args.id() ] ),
+													   umcd.Action( req_list ) ] ),
 							  umcd.CancelButton() ] )
 		else:
 			req = umcp.Command( args = [ 'modutils/unload' ], opts = { 'module' : mod.name } )
