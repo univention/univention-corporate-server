@@ -1,3 +1,9 @@
+univention-installer (1.8.5-1) unstable; urgency=low
+
+  * fixed bug in log handling
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 08 Nov 2007 15:36:33 +0100
+
 univention-installer (1.8.4-2) unstable; urgency=low
 
   * Disable time service in "strict" profile

@@ -44,7 +44,7 @@ else
 		echo "------------------------------------------" >> /tmp/installer.log
 		echo " PROFILE COMPLETE - STARTING INSTALLATION" >> /tmp/installer.log
 		echo "------------------------------------------" >> /tmp/installer.log
-		echo "" > /tmp/installer.log
+		echo "" >> /tmp/installer.log
 
 		lib/univention-installer-scripts.d/00_scripts.sh
 		for i in lib/univention-installer-scripts.d/*; do
