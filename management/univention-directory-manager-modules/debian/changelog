@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.2.8-9) unstable; urgency=low
+
+  * Revert cron.py to the state before 2.2.8-6, the bugfix unveiled other
+    problems, we'll address later.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 16:32:57 +0100
+
 univention-directory-manager-modules (2.2.8-8) unstable; urgency=low
 
   * move the provide and replace of univention-admin-nagios from python-
