@@ -1,3 +1,12 @@
+univention-pam (1.2.3-3) unstable; urgency=low
+
+  * Map memberUid to uniqueMember in NSS. This resolves the problem that group
+    members appear twice in getent(1) since the additional attribute is set.
+    To disable this (which should hardly be necessary) the Config Registry
+    setting ldap/nss/group_mapping can be set to "disabled".
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 16:14:19 +0100
+
 univention-pam (1.2.3-2) unstable; urgency=low
 
   * move chfn and chsh to user services during the update
