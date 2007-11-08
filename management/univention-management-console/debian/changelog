@@ -1,6 +1,12 @@
+univention-management-console (0.9.12-1) unstable; urgency=low
+
+  * removed some superfluous softmon icons
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 08 Nov 2007 10:32:51 +0100
+
 univention-management-console (0.9.11-1) unstable; urgency=low
 
-  * removed software monitor
+  * moved software monitor to univention-pkgdb
 
  -- Soenke Schwardt <schwardt@univention.de>  Wed, 07 Nov 2007 18:56:46 +0100
 
