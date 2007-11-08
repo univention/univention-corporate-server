@@ -8,7 +8,7 @@ Build-Depends: debhelper, univention-config-dev
 Package: univention-heimdal-kdc
 Architecture: all
 Pre-Depends: heimdal-kdc (>> 0.6.3)
-Depends: univention-config-registry, textutils, libsasl2-modules-gssapi-heimdal, heimdal-servers, python-univention, python-univention-heimdal, univention-directory-listener, univention-directory-manager-tools
+Depends: univention-config-registry, textutils, libsasl2-modules-gssapi-heimdal, heimdal-servers, python-univention, python-univention-heimdal, univention-directory-listener, univention-directory-manager-tools | univention-admin-tools
 Description: UCS - Kerberos KDC
  This package installs a Kerberos Key Distribution Center
  (KDC) using LDAP for the key storage.

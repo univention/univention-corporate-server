@@ -1,3 +1,9 @@
+univention-heimdal (2.1.1-4) unstable; urgency=low
+
+  * Add an alternate depends on univention-admin-tools.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 12:57:47 +0100
+
 univention-heimdal (2.1.1-3) unstable; urgency=low
 
   * univention-dnsedit has been moved from /usr/share/univention-admin-tools/ to
