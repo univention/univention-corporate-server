@@ -92,9 +92,9 @@ class Web( object ):
 			values = {
 				'pkg_name' : umcd.TextInput( ( 'pattern', umc.String( '' ) ), default = '*' ),
 				'pkg_version' : umcd.TextInput( ( 'pattern', umc.String( '' ) ), default = '*' ),
-				'selected_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateSelected( system_versions ) ),	default = None ),
-				'installed_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateInstalled( system_versions ) ),	default = None ),
-				'current_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateCurrent( system_versions ) ),	default = None ),
+				'selected_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateSelected( system_versions ) ),	default = 'key-1' ),
+				'installed_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateInstalled( system_versions ) ),	default = 'key-0' ),
+				'current_state' : umcd.Selection( ( 'pattern', _syntax.SoftMonStateCurrent( system_versions ) ),	default = 'key-6' ),
 				'ucs_version' : umcd.Selection( ( 'pattern', _syntax.SoftMonSystemVersions( system_versions ) ),	default = system_versions_default ),
 				}
 		else:

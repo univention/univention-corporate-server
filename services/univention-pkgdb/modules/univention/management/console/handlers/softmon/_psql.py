@@ -60,6 +60,13 @@ def convertSearchFilterToQuery( filterlist ):
 
 		# leeren Parameter korrigieren
 		s = filteritem['pattern']
+
+		# HACK: since frontend is unable to handle '0' as key of selections
+		# (after translation to 'ascii-null-escape' the UMC syntax check goes bananas)
+		# all integer keys are prepended by 'key-'
+		if filteritem['key'] in [ 'selected_state', 'installed_state', 'current_state' ] and s.startswith('key-'):
+			s = s[4:]
+
 		if s == 'ascii-null-escape':
 			s = '0'
 		elif s == 'None':

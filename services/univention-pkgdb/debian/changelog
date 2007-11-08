@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.9-1) unstable; urgency=low
+
+  * fixed problems with a specific key in staticselect widgets
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 08 Nov 2007 12:57:06 +0100
+
 univention-pkgdb (1.0.8-1) unstable; urgency=low
 
   * added some missing images for UMC softmon module

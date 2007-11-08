@@ -65,11 +65,11 @@ class SoftMonSystemVersions( umc.StaticSelection ):
 class SoftMonStateSelected( umc.StaticSelection ):
 	def __init__( self, system_versions = None ):
 		umc.StaticSelection.__init__( self, '' )
-		self._choices = ( ( '1', _('Install') ),
-						  ( '2', _('Hold') ),
-						  ( '3', _('DeInstall') ),
-						  ( '4', _('Purge') ),
-						  ( '0', _('Unknown') )
+		self._choices = ( ( 'key-1', _('Install') ),
+						  ( 'key-2', _('Hold') ),
+						  ( 'key-3', _('DeInstall') ),
+						  ( 'key-4', _('Purge') ),
+						  ( 'key-0', _('Unknown') )
 						  )
 
 	def choices( self ):
@@ -78,10 +78,10 @@ class SoftMonStateSelected( umc.StaticSelection ):
 class SoftMonStateInstalled( umc.StaticSelection ):
 	def __init__( self, system_versions = None ):
 		umc.StaticSelection.__init__( self, '' )
-		self._choices = ( ( '0', _('Ok') ),
-						  ( '1', _('ReInstReq') ),
-						  ( '2', _('Hold') ),
-						  ( '3', _('HoldReInstReq') )
+		self._choices = ( ( 'key-0', _('Ok') ),
+						  ( 'key-1', _('ReInstReq') ),
+						  ( 'key-2', _('Hold') ),
+						  ( 'key-3', _('HoldReInstReq') )
 						  )
 
 	def choices( self ):
@@ -91,13 +91,13 @@ class SoftMonStateInstalled( umc.StaticSelection ):
 class SoftMonStateCurrent( umc.StaticSelection ):
 	def __init__( self, system_versions = None ):
 		umc.StaticSelection.__init__( self, '' )
-		self._choices = ( ( '0', _('NotInstalled') ),
-						  ( '1', _('UnPacked') ),
-						  ( '2', _('HalfConfigured') ),
-						  ( '3', _('UnInstalled') ),
-						  ( '4', _('HalfInstalled') ),
-						  ( '5', _('ConfigFiles') ),
-						  ( '6', _('Installed') )
+		self._choices = ( ( 'key-0', _('NotInstalled') ),
+						  ( 'key-1', _('UnPacked') ),
+						  ( 'key-2', _('HalfConfigured') ),
+						  ( 'key-3', _('UnInstalled') ),
+						  ( 'key-4', _('HalfInstalled') ),
+						  ( 'key-5', _('ConfigFiles') ),
+						  ( 'key-6', _('Installed') )
 						  )
 
 	def choices( self ):
