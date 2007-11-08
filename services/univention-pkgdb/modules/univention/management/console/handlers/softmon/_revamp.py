@@ -130,11 +130,11 @@ class Web( object ):
 
 		# save button
 		req = umcp.Command( args = [ umc_command ], opts= { 'filter': [], 'save': True } )
-		save_search_btn = umcd.Button( label = _('Save Search Filter'), tag = 'addfilter', actions = umcd.Action( req, idlist_save ), attributes = { 'width': '250'} )
+		save_search_btn = umcd.Button( label = _('Save Search Filter'), tag = 'softmon/add', actions = umcd.Action( req, idlist_save ), attributes = { 'width': '250'} )
 
 		# save button
 		req = umcp.Command( args = [ umc_command ], opts= { 'searchname': current_search, 'delete': True } )
-		delete_search_btn = umcd.Button( label = _('Delete Search Filter'), tag = 'removefilter', actions = umcd.Action( req, [ saved_search_select.id() ] ), attributes = { 'width': '250'} )
+		delete_search_btn = umcd.Button( label = _('Delete Search Filter'), tag = 'softmon/remove', actions = umcd.Action( req, [ saved_search_select.id() ] ), attributes = { 'width': '250'} )
 
 		###################################################
 		# search button

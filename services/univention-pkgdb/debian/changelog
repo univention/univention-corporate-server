@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.8-1) unstable; urgency=low
+
+  * added some missing images for UMC softmon module
+
+ -- Soenke Schwardt <schwardt@univention.de>  Thu, 08 Nov 2007 10:29:02 +0100
+
 univention-pkgdb (1.0.7-1) unstable; urgency=low
 
   * moved UMC SoftMon module to univention-pkgdb

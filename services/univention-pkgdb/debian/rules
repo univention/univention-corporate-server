@@ -31,9 +31,11 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 
 PYVERS=$(shell pyversions -vr)
-PACKAGE=python-univention-pkgdb
+PACKAGE_UMCMOD=python-univention-pkgdb
+PACKAGE_IMAGES=univention-pkgdb
 UMC_MODULES=$(shell find modules/univention -name '*.py')
 UMC_MO_FILES=$(shell find modules/univention -name '*.po' | sed 's/\.po/\.mo/g')
+UMC_IMAGES=$(shell find images -name '*.gif' -o -name '*.png')
 
 D=${CURDIR}/debian/univention-pkgdb
 DT=${CURDIR}/debian/univention-pkgdb-tools
@@ -80,9 +82,9 @@ install-ext-%:
 	install -m 0755 pkgdb.py ${D}/usr/lib/univention-directory-listener/system
 
 	# install Univention Management Console Module
-	install -d debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages
+	install -d debian/$(PACKAGE_UMCMOD)/usr/share/pycentral/$(PACKAGE_UMCMOD)/site-packages
 	@for i in $(UMC_MODULES); do\
-		o=debian/$(PACKAGE)/usr/share/pycentral/$(PACKAGE)/site-packages/$${i#modules};\
+		o=debian/$(PACKAGE_UMCMOD)/usr/share/pycentral/$(PACKAGE_UMCMOD)/site-packages/$${i#modules};\
 		install -d "`dirname $$o`";\
 		install -m755 $$i $$o;\
 	done
@@ -90,9 +92,14 @@ install-ext-%:
 	@for i in $(UMC_MO_FILES); do\
 		lang=`basename $$i .mo`;\
 		domain=`dirname $$i | sed 's,^modules/,,;s,/,-,g'`;\
-		o=debian/$(PACKAGE)/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		o=debian/$(PACKAGE_UMCMOD)/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
 		install -d "`dirname $$o`";\
 		install -m 644 $$i $$o;\
+	done
+	@for i in $(UMC_IMAGES); do\
+		o=debian/$(PACKAGE_IMAGES)/usr/share/univention-management-console/www/themes/$$i;\
+		install -d "`dirname $$o`";\
+		install -m755 $$i $$o;\
 	done
 
 
