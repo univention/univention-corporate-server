@@ -79,7 +79,8 @@ class Overview( base.Page ):
 			self.module_categories = response.body[ 'categories' ]
 			for cat in self.module_categories:
 				self.categories.append( ( cat.name, cat.description ) )
-		self.categories.append( ( _( 'Favorites' ), _( 'Favorite Univention Management Console Modules' ) ) )
+		# TODO: not implemented yet
+# 		self.categories.append( ( _( 'Favorites' ), _( 'Favorite Univention Management Console Modules' ) ) )
 
 	def layout( self ):
 		ud.debug( ud.ADMIN, ud.INFO, 'Overview.layout' )
