@@ -506,8 +506,10 @@ class button extends extra{
 				$class .= "closeableend";
 				$str .= "<td class=\"$tdclass\" nowrap><a class=\"$class\" onClick=\"sendForm(".$this->byteindex.")\"";
 				$str .= " title=\"close\">";
-				$str .= "<input src=\"".$close_icon_str."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
-				$str .= "</a></td>";
+				$str .= "<img class=\"$class\" src=\"".$close_icon_str."\">\n";
+				$str .= "</a>";
+				$str .= "<input id=\"". $this->byteindex ."\" name=\"usrinput[".$this->byteindex."]\" type=\"hidden\" value=\"\"></input>\n";
+				$str .= "</td>";
 			  } 
 			  else
 			  {
