@@ -3,7 +3,7 @@
 # Univention Heimdal
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -42,15 +42,17 @@ test -n "`grep "univention-heimdal-kdc v${VERSION} successful" /usr/lib/univenti
 eval `univention-baseconfig shell`
 
 if [ "$server_role" = "domaincontroller_master" ]; then
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add txt _kerberos $kerberos_realm
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos tcp 0 0 88 $hostname.$domainname.
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos udp 0 0 88 $hostname.$domainname.
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos-adm tcp 0 0 88 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add txt _kerberos $kerberos_realm
+
+
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos tcp 0 0 88 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos udp 0 0 88 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos-adm tcp 0 0 88 $hostname.$domainname.
 fi
 
 if [ "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" ]; then
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos tcp 0 0 88 $hostname.$domainname.
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos udp 0 0 88 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos tcp 0 0 88 $hostname.$domainname.
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists $domainname add srv kerberos udp 0 0 88 $hostname.$domainname.
 fi
 
 

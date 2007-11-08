@@ -1,3 +1,12 @@
+univention-heimdal (2.1.1-3) unstable; urgency=low
+
+  * univention-dnsedit has been moved from /usr/share/univention-admin-tools/ to
+    /usr/share/univention-directory-manager-tools/, adapt join script.
+  * Also declare an explicit dependency upon univention-directory-manager-tools
+    in the KDC package
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  8 Nov 2007 10:54:31 +0100
+
 univention-heimdal (2.1.1-2) unstable; urgency=low
 
   * change package priority from optional to standard
