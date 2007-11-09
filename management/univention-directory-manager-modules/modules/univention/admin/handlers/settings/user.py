@@ -227,6 +227,16 @@ layout=[
 		[ univention.admin.field( 'selfAttributes' ), univention.admin.field( 'listAttributes' )],
 		[ univention.admin.field( 'listNavigationAttributes' ), univention.admin.field( 'filler' )],
 	]),
+# TODO: default container
+#	univention.admin.tab(_('Users'),_('User Links'),[[univention.admin.field("users")]]),
+#	univention.admin.tab(_('Groups'),_('Group Links'),[[univention.admin.field("groups")]]),
+#	univention.admin.tab(_('Computers'),_('Computer Links'),[[univention.admin.field("computers")]]),
+#	univention.admin.tab(_('Policy'),_('Policy Links'),[[univention.admin.field("policy")]]),
+#	univention.admin.tab(_('DNS'),_('DNS Links'),[[univention.admin.field("dns")]]),
+#	univention.admin.tab(_('DHCP'),_('DHCP Links'),[[univention.admin.field("dhcp")]]),
+#	univention.admin.tab(_('Network'),_('Network Links'),[[univention.admin.field("networks")]]),
+#	univention.admin.tab(_('Shares'),_('Shares Links'),[[univention.admin.field("shares")]]),
+#	univention.admin.tab(_('Printers'),_('Printers Links'),[[univention.admin.field("printers")]]),
 ]
 
 mapping=univention.admin.mapping.mapping()
