@@ -32,7 +32,7 @@ DEVICES="cdrom:/dev/hda:iso9660:ro:L floppy:/dev/fd0:vfat:rw:K"
 MNT_ROOT="/var/lib/univention-client-devices"
 ACTION=$1
 USER=$2
-CLIENT=$3
+CLIENT=${3/.*/}
 export USER PASSWD
 HOME=`getent passwd $USER | awk 'BEGIN { FS=":" }{ print $6 }'`;
 
@@ -55,7 +55,7 @@ cleanup_device() {
 	if [ -L "$HOME/$name" ]; then
 		rm -f "$HOME/$name"
 	fi
-	umount "$MNT_ROOT/$CLIENT/$name"
+	umount -l "$MNT_ROOT/$CLIENT/$name"
 	rmdir "$MNT_ROOT/$CLIENT/$name"
 }
 

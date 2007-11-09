@@ -60,7 +60,7 @@ int main(int argc, char* argv[])
 	}
 
 	for (p = argv[2]; *p != '\0'; ++p) {
-		if (!isalnum(*p)) {
+	  if (!isalnum(*p) && (*p != '-') && (*p != '_') && (*p != '.')) {
 			fprintf(stderr, "hostname seems bad\n");
 			exit(1);
 		}

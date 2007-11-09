@@ -1,3 +1,11 @@
+univention-client-devices (1.0.1-2) unstable; urgency=low
+
+  * Perform a lazy umount to ensure devices are unmounted even if they're
+    still open for writes.
+  * Correct extraction of FQDN hostname in KDE shutdown
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 10:30:16 +0100
+
 univention-client-devices (1.0.1-1) unstable; urgency=low
 
   * export-devices is now udev aware
