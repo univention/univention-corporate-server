@@ -5,10 +5,16 @@ if baseConfig['ldap/server/type'] == 'master':
 else:
 	access = 'read'
 
-dn = 'cn=admin-settings,cn=univention,%s' % ldap_base
+print '''
+access to dn="cn=admin-settings,cn=univention,%(base)s" attrs="children"
+	by users %(access)s
+	by * none
 
-print 'access to dn.subtree="%s"' % dn
-print '   by users self%s' % access
-print '   by * none'
+access to dn.regex="uid=([^,]+),cn=admin-settings,cn=univention,%(base)s"
+	by dn.regex="uid=$1,.*,%(base)s" %(access)s
+	by * none
 
+access to dn.regex=".*,cn=admin-settings,cn=univention,%(base)s"
+	by * none
+''' % { 'base' : ldap_base, 'access' : access }
 @!@

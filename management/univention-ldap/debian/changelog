@@ -1,3 +1,9 @@
+univention-ldap (2.4.6-1) unstable; urgency=low
+
+  * fix access rights to own admin settings object 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  9 Nov 2007 15:58:22 +0100
+
 univention-ldap (2.4.5-11) unstable; urgency=low
 
   * Add some alternate depends on transition packages.
