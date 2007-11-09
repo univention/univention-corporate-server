@@ -1,3 +1,9 @@
+univention-updater (2.3.8-2) unstable; urgency=low
+
+  * remove duplicated install-message
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  8 Nov 2007 16:45:13 +0100
+
 univention-updater (2.3.8-1) unstable; urgency=low
 
   * use posix output for df (-P)
