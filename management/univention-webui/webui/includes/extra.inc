@@ -458,10 +458,8 @@ class button extends extra{
 			  	$icon_str = "/icon/close_tab_inactive.gif";
 			  }
 		      $cssclass .= "closeableend"; // closebuttons are always the last in a closable categoryitem
-		      $img_str = "<input src=\"".$icon_str."\" tabindex=\"".$this->tabindex."\" name=\"usrinput[".$this->byteindex."]\" type=\"image\" value=\"pressed\" class=\"button_icon\" title=\"".$this->basket["helptext"]."\"></input>\n";
-		      $str .= "<a class=\"$cssclass\" onClick=\"sendForm(".$this->byteindex.")\"";
-		      $str .= " title=\"".$this->basket["helptext"]."\">".$img_str;
-		      $str .= "</a>\n";
+		      $img_str = "<img src=\"".$icon_str."\" class=\"img$cssclass\">";
+		      $str .= "<a class=\"$cssclass\" onClick=\"sendForm(".$this->byteindex.")\" title=\"X\">".$img_str."</a>";
 		      $str .= "<input type=\"hidden\" id=\"".$this->byteindex."\" name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 		     }
 		    else
