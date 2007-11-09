@@ -8,8 +8,8 @@
 # 	/etc/univention/templates/files/etc/pam.d/common-auth
 # 
 
-# local unix authentification; don't cache passwords
-account  sufficient                         pam_unix.so
+# local unix authentification; don't cache passwords, deny access if account is expired
+account [success=done new_authtok_reqd=done acct_expired=bad default=ignore]    pam_unix.so
 
 # remote authentification; if a service
 # - fails, we'll fall back to cache authentification
