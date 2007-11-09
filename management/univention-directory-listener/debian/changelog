@@ -1,3 +1,11 @@
+univention-directory-listener (2.2.6-2) unstable; urgency=low
+
+  * maybe the ldap-listener is during the preinst of the directory-
+    listener no longer configured by runsv, so we have to kill the
+    listener process manually
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  9 Nov 2007 06:56:36 +0100
+
 univention-directory-listener (2.2.6-1) unstable; urgency=low
 
   * stop the listener if /etc/runit/univention/univention-ldap-listener

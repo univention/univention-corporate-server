@@ -35,12 +35,22 @@ if [ -e /etc/runit/univention/univention-ldap-listener ]; then
 	if [ -e /etc/init.d/univention-ldap-listener ]; then
 		sv down univention-ldap-listener
 		echo -n "waiting for listener-shutdown "
-		while ! sv status univention-directory-listener | grep ^down: >/dev/null; do
+		while ! sv status univention-ldap-listener | grep ^down: >/dev/null; do
 			sleep 1
 			echo -n " ."
 		done
 		echo " shutdown done"
 	fi
+else
+	pid=`pidof /usr/sbin/univention-ldap-listener`
+	while test -n "$pid" ; do
+		echo -n "waiting for listener-shutdown "
+		kill $pid
+		sleep 1
+		echo -n " ."
+		pid=`pidof /usr/sbin/univention-ldap-listener`
+	done
+	echo " shutdown done"
 fi
 
 if [ -e /var/lib/univention-ldap-listener ]; then
