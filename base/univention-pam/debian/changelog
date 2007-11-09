@@ -1,3 +1,9 @@
+univention-pam (1.2.3-5) unstable; urgency=low
+
+  * Apply the previous change to admin-account as well.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 14:26:53 +0100
+
 univention-pam (1.2.3-4) unstable; urgency=low
 
   * Rewrite pam_unix check in common-account. Newer PAM has more fine-grained
