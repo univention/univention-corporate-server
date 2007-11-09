@@ -38,7 +38,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-kde-kolab2-profile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-baseconfig shell ldap/base`
 res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | grep "defaultKdeProfiles: /usr/share/univention-kde-profiles/kde.ugs" | sed -e 's|.*default|default|'`
@@ -49,6 +49,6 @@ fi
 
 univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base --set name="UGS Deutsch" --set language="de_DE@euro" --set profile="/usr/share/univention-kde-profiles/kde.ugs"
 	
-test -n "`grep "univention-kde-ugsprofile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-kde-kolab2-profile v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-ugsprofile v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

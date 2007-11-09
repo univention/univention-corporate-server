@@ -1,3 +1,9 @@
+univention-kde-kolab2-profile (1.1.1-1) unstable; urgency=low
+
+  * use the correct join script name in the join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  9 Nov 2007 08:53:30 +0100
+
 univention-kde-kolab2-profile (1.1.0-1) unstable; urgency=low
 
   * Rename to univention-kde-kolab2-profile
