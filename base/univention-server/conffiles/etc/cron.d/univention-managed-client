@@ -1,2 +1,2 @@
-@%@ldap/connection/check@%@ root /usr/share/univention-fat-client/check_connection
-@reboot /usr/share/univention-fat-client/check_connection
+@%@ldap/connection/check@%@ root /usr/share/univention-managed-client/check_connection
+@reboot root /usr/share/univention-managed-client/check_connection
