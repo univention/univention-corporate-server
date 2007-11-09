@@ -1,3 +1,9 @@
+univention-ldap (2.4.5-10) unstable; urgency=low
+
+  * Move Nagios transition code into preinst
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 08:32:57 +0100
+
 univention-ldap (2.4.5-9) unstable; urgency=low
 
   * Fix comparison.

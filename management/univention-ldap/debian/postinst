@@ -38,6 +38,7 @@ chmod 0600 /var/lib/univention-ldap/replog/replog
 test -f /var/lib/univention-ldap/replog/replog.lock || \
 	touch /var/lib/univention-ldap/replog/replog.lock
 
+
 univention-baseconfig set ldap/autostart?yes
 
 #DEBHELPER#
@@ -127,15 +128,6 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.19; then
 	eval `univention-baseconfig shell hostname domainname server/role ldap/base`
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-admin container/cn create --ignore_exists --set name=mac --position="cn=temporary,cn=univention,$ldap_base" || true
-	fi
-fi
-
-# Transition code to facilitate an upgrade path from the UCS 1.3.x Nagios packages, this snippet
-# can be removed in UCS 2.1
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.4.5; then
-	if [ -e /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-nagios_schema ]; then
-	    rm /etc/univention/templates/files/etc/ldap/slapd.conf.d/11univention-nagios_schema
-	    rm /etc/univention/templates/info/univention-admin-nagios.info
 	fi
 fi
 
