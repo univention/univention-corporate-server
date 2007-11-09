@@ -3,7 +3,7 @@
 # Univention OpenOffice.Org 2
 #  postinst script for the debian package
 #
-# Copyright (C) 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2007 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,6 +33,11 @@
 univention-baseconfig set openoffice/fontscaling?100
 univention-baseconfig set openoffice/usesystemfiledialog?true
 univention-baseconfig set openoffice/database/default?HSQLDB
+
+if [ -x /usr/bin/fc-cache ] && [ -e /etc/fonts/fonts.conf ]; then
+	echo "Updating fontconfig cache..."
+	fc-cache -fs
+fi
 
 exit 0
 

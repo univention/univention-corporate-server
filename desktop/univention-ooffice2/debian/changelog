@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.3-3) unstable; urgency=low
+
+  * Update fontconfig cache in postinst
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 08:53:52 +0100
+
 univention-ooffice2 (1.0.3-2) unstable; urgency=low
 
   * added openoffice.org-help-de and openoffice.org-help-en-us to the
