@@ -1074,12 +1074,18 @@ padding:3px 0 0 8px;
         font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;
         background: #EEEEEE; }
 #category .categoryitemcloseableend {
-        padding: 6px 8px 5px 8px;
+        padding: 6px 5px 5px 0px;
         border-bottom: 2px solid #FFFFFF;
         border-right: 1px solid #FFFFFF;
         margin: 0px -2px 0px -2px;
         font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;
         background: #EEEEEE; }
+#category .imgcategoryitemcloseableend {
+        padding: 0 0 0 0;
+        margin: -2px 0px;
+        font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;
+        background: #EEEEEE;
+		float: none; }
 #category .categoryitem-activecloseable .categoryitem-activecloseable {
 	font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;	}
 #category .categoryitemactivecloseable a {
@@ -1098,6 +1104,13 @@ padding:3px 0 0 8px;
         background: #EEEEEE !important;
         color: #CC0033;
         font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;   }
+#category .imgcategoryitemactivecloseableend {
+        padding: 0 0 0 0 !important;
+        margin: -2px 0px;
+        background: #EE0000 !important;
+        color: #CC0033;
+        font: normal 11px/26px Verdana, Arial, Helvetica, sans-serif;
+		float: none; }
 #category .categoryitemactivecloseablestart {
         padding: 6px 8px 5px 18px;
         margin: 0 -2px 0 -2px;
