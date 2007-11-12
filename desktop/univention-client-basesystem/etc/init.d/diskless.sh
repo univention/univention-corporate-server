@@ -297,7 +297,7 @@ fi
 
 eval `univention-baseconfig shell`
 
-vals="portmap/autostart?yes locale/default?de_DE.UTF-8:UTF-8"
+vals="portmap/autostart?yes locale/default?de_DE.UTF-8:UTF-8 xorg/keyboard/options/XkbLayout?de"
 
 if [ -z "$xorg_device_drive" ]; then
 	vals="$vals xorg/device/driver?`eval getXModul`"

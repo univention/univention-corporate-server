@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.8-1) unstable; urgency=low
+
+  * set default keyboard layout to 'de' 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 12 Nov 2007 13:08:28 +0100
+
 univention-client-basesystem (2.1.7-1) unstable; urgency=low
 
   * install the alsa-utils packages
