@@ -81,6 +81,106 @@ class object(content):
 	def MB2MiB(self, mb):
 		return mb * 1000.0 * 1000.0 / 1024.0 / 1024.0
 
+	def MiB2CHSstr(self, disk, pos):
+		return "%(cyls)d/%(heads)d/%(sectors)d" % self.MiB2CHS(pos, self.container['disk'][disk]['geometry'] )
+
+	def MiB2CHS(self, pos, geometry):
+		# pos: position as float in MiBytes
+		# geometry: disk geometry as dict: { 'cyls': 123, 'heads': 255, 'sectors': 63 }
+		# returns dict: { 'cyls': 123, 'heads': 255, 'sectors': 63, 'remainder': 0, 'valid': True }
+
+		val = pos * 1024.0 * 1024.0  # convert MiB to Bytes
+		result = {}
+		size = {}
+
+		size['sector'] = 512
+		size['head'] = geometry['sectors'] * size['sector']
+		size['cyl'] = geometry['heads'] * size['head']
+
+		result['cyls'] = int(val / size['cyl'])
+		val = val - (result['cyls'] * size['cyl'] )
+
+		result['heads'] = int(val / size['head'] )
+		val = val - (result['heads'] * size['head'] )
+
+		result['sectors'] = int(val / size['sector'] )
+		result['remainder'] = val - (result['sectors'] * size['sector'] )
+
+		result['valid'] = (result['remainder'] == 0)
+
+		return result
+
+	def printPartitionsCHS(self):
+		self.debug('PARTITIONS-CHS:')
+		disk_list = self.container['disk'].keys()
+		disk_list.sort()
+		for diskitem in disk_list:
+			disk = self.container['disk'][diskitem]
+			part_list = disk['partitions'].keys()
+			part_list.sort()
+			for partitem in part_list:
+				part = disk['partitions'][partitem]
+				pos_start = self.getCHSandPosition( partitem, disk['geometry'], part['type'] )
+				pos_end = self.getCHSandPosition( partitem + part['size'], disk['geometry'], part['type'] )
+				self.debug('%s%s:  type=%d   start=%5d/%3d/%2d   end=%5d/%3d/%2d' % (diskitem, part['num'], part['type'],
+																					 pos_start['cyls'], pos_start['heads'], pos_start['sectors'],
+																					 pos_end['cyls'], pos_end['heads'], pos_end['sectors'] ) )
+
+	def CHS2MiB(self, chs, geometry):
+		size = {}
+		size['sector'] = 512
+		size['head'] = geometry['sectors'] * size['sector']
+		size['cyl'] = geometry['heads'] * size['head']
+		return (chs['cyls'] * size['cyl'] + chs['heads'] * size['head'] + chs['sectors'] * size['sector']) / 1024.0 / 1024.0
+
+	def getCHSnextCyl(self, pos_end, geometry, parttype, correction = 'increase', force = True):
+		pos = self.getCHSandPosition(pos_end, geometry, parttype, correction = correction, force = force)
+		next_pos = (pos['position']*1024.0*1024.0 + 512) / 1024.0 / 1024.0
+		next_pos = self.getCHSandPosition(next_pos, geometry, parttype, correction = 'decrease', force = True)
+		return next_pos['position']
+
+	def getCHSlastCyl(self, pos_end, geometry, parttype, correction = 'decrease', force = True):
+		pos = self.getCHSandPosition(pos_end, geometry, parttype, correction = correction, force = force)
+		next_pos = (pos['position']*1024.0*1024.0 - 512) / 1024.0 / 1024.0
+		next_pos = self.getCHSandPosition(next_pos, geometry, parttype, correction = 'increase', force = True)
+		return next_pos['position']
+
+	def getCHSandPosition(self, pos, geometry, parttype, correction = False, force = False):
+		# correction in [ 'increase', 'decrease' ]
+		result = self.MiB2CHS(pos, geometry)
+		result['position'] = pos
+
+		# force increase/decrease
+		if force:
+			result['valid'] = False
+
+		# correct chs values
+		if not result['valid'] and correction:
+			if correction == 'decrease':
+				result['remainder'] = 0
+				result['sectors'] = 0
+				result['heads'] = 0
+				# logical partitions always start at head +1, primary and extended partitions start at head 0
+				if parttype == PARTTYPE_LOGICAL:
+					result['heads'] += 1
+				# first partition always starts at head 1 otherwise 0
+				if result['cyls'] == 0:
+					result['heads'] += 1
+				# calculate new position
+				result['position'] = self.CHS2MiB( result, geometry )
+				result['valid'] = True
+			elif correction == 'increase':
+				result['remainder'] = 0
+				result['sectors'] = geometry['sectors'] - 1
+				result['heads'] = geometry['heads'] - 1
+				# calculate new position
+				result['position'] = self.CHS2MiB( result, geometry )
+				result['valid'] = True
+		return result
+
+#geometry = {'cyls': 32635, 'heads': 255, 'sectors': 63 }
+#print getCHSandPosition(0/1024.0/1024.0, geometry, PARTTYPE_PRIMARY, decrease = True, force = True)
+
 	def checkname(self):
 		return ['devices']
 
@@ -492,131 +592,129 @@ class object(content):
 
 				self.profile_autopart()
 
-		if not auto_part or True:
-			self.debug('read_profile: no autopart')
-			for key in self.all_results.keys():
-				self.debug('read_profile: key=%s' % key)
-				delete_all_lvmlv = False
-				if key == 'part_delete':
-					delete=self.all_results['part_delete'].replace("'","").split(' ')
-					for entry in delete:
-						if entry == 'all': # delete all existing partitions
+		self.debug('read_profile: no autopart')
+		for key in self.all_results.keys():
+			self.debug('read_profile: key=%s' % key)
+			delete_all_lvmlv = False
+			if key == 'part_delete':
+				delete=self.all_results['part_delete'].replace("'","").split(' ')
+				for entry in delete:
+					if entry == 'all': # delete all existing partitions
 
-							# if all partitions shall be deleted all volumegroups prior have to be deleted
-							if not self.all_results.has_key('lvmlv_delete'):
-								delete_all_lvmlv = True
-								s = ''
-								for vg in self.container['lvm']['vg'].keys():
-									s += ' ' + vg
-								self.all_results['lvmlv_delete'] = s.strip()
-							
-							for disk in self.container['disk'].keys():
-								if len(self.container['disk'][disk]['partitions'].keys()):
-									self.container['profile']['delete'][disk]=[]
-								for part in self.container['disk'][disk]['partitions'].keys():
-									if self.container['disk'][disk]['partitions'][part]['num'] > 0:
-										self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
-							self.container['profile']['empty'].append('all')
-						elif self.test_old_device_syntax(entry):
-							disk, partnum = self.test_old_device_syntax(entry)
-#							result[0]=self.get_device_name(result[0])
-							if not self.container['profile']['delete'].has_key(disk):
+						# if all partitions shall be deleted all volumegroups prior have to be deleted
+						if not self.all_results.has_key('lvmlv_delete'):
+							delete_all_lvmlv = True
+							s = ''
+							for vg in self.container['lvm']['vg'].keys():
+								s += ' ' + vg
+							self.all_results['lvmlv_delete'] = s.strip()
+
+						for disk in self.container['disk'].keys():
+							if len(self.container['disk'][disk]['partitions'].keys()):
 								self.container['profile']['delete'][disk]=[]
-							if not partnum and self.container['disk'].has_key(disk) and len(self.container['disk'][disk]['partitions'].keys()):
-								# case delete complete /dev/sda
-								for part in self.container['disk'][disk]['partitions'].keys():
+							for part in self.container['disk'][disk]['partitions'].keys():
+								if self.container['disk'][disk]['partitions'][part]['num'] > 0:
 									self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
-								self.container['profile']['empty'].append(disk)
-							else:
-								self.container['profile']['delete'][disk].append(partnum)
-
-				if key == 'lvmlv_delete' or delete_all_lvmlv:
-					lvmdelete=self.all_results['lvmlv_delete'].replace("'","").split(' ')
-					for entry in lvmdelete:
-						# /dev/vgname         ==> delete all LVs in VG
-						# /dev/vgname/        ==> delete all LVs in VG
-						# /dev/vgname/*       ==> delete all LVs in VG
-						# /dev/vgname/lvname  ==> delete specific LV in VG
-						# vgname              ==> delete all LVs in VG
-						# vgname/lvname       ==> delete specific LV in VG
-						dev = entry.rstrip(' /*')
-						if dev.startswith('/dev/'):
-							dev = dev[5:]
-						if dev.count('/'):
-							vgname, lvname = dev.split('/',1)
-							self.debug('deleting LV %s of VG %s' % (lvname, vgname))
-							if self.container['lvm']['vg'].has_key(vgname):
-								if self.container['lvm']['vg'][vgname]['lv'].has_key(lvname):
-									self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': lvname,
-																							  'vg': vgname }
-								else:
-									self.debug('WARNING: LVM LV %s not found in VG %s! Ignoring it' % (lvname, vgname))
-							else:
-								self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
+						self.container['profile']['empty'].append('all')
+					elif self.test_old_device_syntax(entry):
+						disk, partnum = self.test_old_device_syntax(entry)
+						if not self.container['profile']['delete'].has_key(disk):
+							self.container['profile']['delete'][disk]=[]
+						if not partnum and self.container['disk'].has_key(disk) and len(self.container['disk'][disk]['partitions'].keys()):
+							# case delete complete /dev/sda
+							for part in self.container['disk'][disk]['partitions'].keys():
+								self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
+							self.container['profile']['empty'].append(disk)
 						else:
-							vgname = dev
-							self.debug('deleting whole VG %s' % vgname)
-							if self.container['lvm']['vg'].has_key(vgname):
-								self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': '',
+							self.container['profile']['delete'][disk].append(partnum)
+
+			if key == 'lvmlv_delete' or delete_all_lvmlv:
+				lvmdelete=self.all_results['lvmlv_delete'].replace("'","").split(' ')
+				for entry in lvmdelete:
+					# /dev/vgname         ==> delete all LVs in VG
+					# /dev/vgname/        ==> delete all LVs in VG
+					# /dev/vgname/*       ==> delete all LVs in VG
+					# /dev/vgname/lvname  ==> delete specific LV in VG
+					# vgname              ==> delete all LVs in VG
+					# vgname/lvname       ==> delete specific LV in VG
+					dev = entry.rstrip(' /*')
+					if dev.startswith('/dev/'):
+						dev = dev[5:]
+					if dev.count('/'):
+						vgname, lvname = dev.split('/',1)
+						self.debug('deleting LV %s of VG %s' % (lvname, vgname))
+						if self.container['lvm']['vg'].has_key(vgname):
+							if self.container['lvm']['vg'][vgname]['lv'].has_key(lvname):
+								self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': lvname,
 																						  'vg': vgname }
 							else:
-								self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
-
-				elif self.get_device_entry(key): # test for matching syntax (dev_sda2, /dev/sda2, dev_2 etc)
-					self.debug('profread: key=%s  val=%s' % (key, self.all_results[key]))
-					parttype, device, parms = self.get_device_entry(key)
-					parms=parms.replace("'","").split()
-
-					self.container['result'][key] = ''
-
-					if parttype == 'PHY':
-						disk, partnum = self.test_old_device_syntax(device)
-						if not self.container['profile']['create'].has_key(disk):
-							self.container['profile']['create'][disk]={}
-						if len(parms) >= 5:
-							flag = ''
-							if len(parms) < 6 or parms[5] == 'None' or parms[5] == 'linux-swap':
-								mpoint = ''
-							else:
-								mpoint = parms[5]
-							if len(parms) >= 7:
-								flag = parms[-1]
-								if flag.lower() == 'none':
-									flag = ''
-							if parms[0] == 'only_mount':
-								parms[1]=0
-
-							temp={	'type':parms[0],
-								'fstype':parms[2].lower(),
-								'start': parms[3],
-								'end': parms[4],
-								'mpoint':mpoint,
-								'format':parms[1],
-								'flag': flag,
-								}
-
-							self.debug('Added to create physical container: %s' % temp)
-							self.container['profile']['create'][disk][partnum]=temp
+								self.debug('WARNING: LVM LV %s not found in VG %s! Ignoring it' % (lvname, vgname))
 						else:
-							self.debug('Syntax error for key[%s]' % key)
-							pass
-					elif parttype == 'LVM':
+							self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
+					else:
+						vgname = dev
+						self.debug('deleting whole VG %s' % vgname)
+						if self.container['lvm']['vg'].has_key(vgname):
+							self.container['profile']['lvmlv']['delete'][ entry ] = { 'lv': '',
+																					  'vg': vgname }
+						else:
+							self.debug('WARNING: LVM VG %s not found! Ignoring it' % vgname)
+
+			elif self.get_device_entry(key): # test for matching syntax (dev_sda2, /dev/sda2, dev_2 etc)
+				self.debug('profread: key=%s  val=%s' % (key, self.all_results[key]))
+				parttype, device, parms = self.get_device_entry(key)
+				parms=parms.replace("'","").split()
+
+				self.container['result'][key] = ''
+
+				if parttype == 'PHY':
+					disk, partnum = self.test_old_device_syntax(device)
+					if not self.container['profile']['create'].has_key(disk):
+						self.container['profile']['create'][disk]={}
+					if len(parms) >= 5:
+						flag = ''
+						if len(parms) < 6 or parms[5] == 'None' or parms[5] == 'linux-swap':
+							mpoint = ''
+						else:
+							mpoint = parms[5]
+						if len(parms) >= 7:
+							flag = parms[-1]
+							if flag.lower() == 'none':
+								flag = ''
 						if parms[0] == 'only_mount':
 							parms[1]=0
-						vgname, lvname = device.split('/')[-2:]         # /dev/VolumeGroup/LogicalVolume
-						temp={	'vg': vgname,
-								'type':parms[0],
-								'format':parms[1],
-								'fstype':parms[2].lower(),
-								'start':parms[3],
-								'end':parms[4],
-								'mpoint':parms[5],
-								'flag':parms[6],
-								}
-						self.debug('Added to create lvm volume: %s' % temp)
-						self.container['profile']['lvmlv']['create'][lvname]=temp
+
+						temp={	'type':parms[0],
+							'fstype':parms[2].lower(),
+							'start': parms[3],
+							'end': parms[4],
+							'mpoint':mpoint,
+							'format':parms[1],
+							'flag': flag,
+							}
+
+						self.debug('Added to create physical container: %s' % temp)
+						self.container['profile']['create'][disk][partnum]=temp
 					else:
-						self.debug('%s devices in profile unsupported' % parttype)
+						self.debug('Syntax error for key[%s]' % key)
+						pass
+				elif parttype == 'LVM':
+					if parms[0] == 'only_mount':
+						parms[1]=0
+					vgname, lvname = device.split('/')[-2:]         # /dev/VolumeGroup/LogicalVolume
+					temp={	'vg': vgname,
+							'type':parms[0],
+							'format':parms[1],
+							'fstype':parms[2].lower(),
+							'start':parms[3],
+							'end':parms[4],
+							'mpoint':parms[5],
+							'flag':parms[6],
+							}
+					self.debug('Added to create lvm volume: %s' % temp)
+					self.container['profile']['lvmlv']['create'][lvname]=temp
+				else:
+					self.debug('%s devices in profile unsupported' % parttype)
 
 	def get_device_name(self, partition):
 		match=0
@@ -1213,7 +1311,6 @@ class object(content):
 		diskList={}
 		_re_warning=re.compile('^Warning: Unable to open .*')
 		_re_error=re.compile('^Error: Unable to open .*')
-		_re_disk_geometry=re.compile('^Disk geometry for .*')
 		devices_remove=[]
 		for dev in devices:
 			dev=dev.strip()
@@ -1249,7 +1346,7 @@ class object(content):
 				line=line.strip()
 				if not _re_int.match(line):
 					if _re_error.match(line):
-						self.debug('Line starts wirh Error: [%s]' % line)
+						self.debug('Line starts with Error: [%s]' % line)
 						self.debug('Remove device %s' % dev)
 						devices_remove.append(dev)
 					continue
@@ -1322,10 +1419,27 @@ class object(content):
 					'primary':primary,
 					'extended':extended,
 					'logical':logical,
-					'size':mb_size
+					'size':mb_size,
+					'geometry': None,
 					}
 
 			p.close()
+
+			p = os.popen('/sbin/parted -s %s unit chs print 2>&1'% dev)
+			for line in p.readlines():
+				if line.startswith('BIOS cylinder,head,sector geometry: '):
+					line = line[36:]
+					chs = line.split('. ')[0]
+					chs = chs.split(',')
+					if len(chs) != 3:
+						self.debug('ERROR: cannot get drive geometry: bad line: %s' % line)
+						self.debug('ERROR: removing drive %s' % dev)
+						del diskList[dev]
+					else:
+						diskList[dev]['geometry'] = { 'cyls': int(chs[0]), 'heads': int(chs[1]), 'sectors': int(chs[2]) }
+						self.debug('INFO: %s: BIOS CHS geometry = %s/%s/%s' % (dev, chs[0], chs[1], chs[2]))
+			p.close()
+
 		for d in devices_remove:
 			devices.remove(d)
 		return diskList
@@ -1733,6 +1847,7 @@ class object(content):
 			device.sort()
 
 			self.parent.debug('LAYOUT')
+			self.parent.printPartitionsCHS()
 
 			dict=[]
 			for dev in device:
@@ -1805,7 +1920,7 @@ class object(content):
 
 					self.part_objects[ len(dict) ] = [ 'part', dev, part_list[i], i ]
 					dict.append('%s %s %s %s %s %s'%(path,area,type,format,mount,size))
-					self.parent.debug('==> DEV = %s   PART = %s' % (dev,part))
+					self.parent.debug('==> DEV = %s   PART(%s) = %s' % (dev,part_list[i],part))
 
 			# display LVM items if enabled
 			if self.container['lvm']['enabled'] and self.container['lvm'].has_key('vg'):
@@ -2269,62 +2384,115 @@ class object(content):
 			result=self.part_objects[index]
 			self.part_create_generic(result[1], result[2], mpoint, size, fstype, type, flag, format, end)
 
-
 		def part_create_generic(self,arg_disk,arg_part,mpoint,size,fstype,type,flag,format,end=0):
 			part_list = self.container['disk'][arg_disk]['partitions'].keys()
 			part_list.sort()
 			old_size=self.container['disk'][arg_disk]['partitions'][arg_part]['size']
 			old_type=self.container['disk'][arg_disk]['partitions'][arg_part]['type']
 			old_sectors=self.container['disk'][arg_disk]['partitions'][arg_part]['size']
-			new_sectors=size
+
+			# getCHSandPosition( positionOnDisk, geometry, parttype )
+			# get start of partition and correct it if neccessary
+			free_part_start = self.parent.getCHSandPosition(arg_part, self.container['disk'][arg_disk]['geometry'], type)
+			self.parent.debug("free_part_start_orig=%s" % str(free_part_start))
+			free_part_start = self.parent.getCHSandPosition(arg_part, self.container['disk'][arg_disk]['geometry'], type, correction = 'decrease', force = True)
+			self.parent.debug("free_part_start_corr=%s" % str(free_part_start))
+
+			# move startpoint of current disk if needed
+			if arg_part != free_part_start['position']:
+				self.container['disk'][arg_disk]['partitions'][ free_part_start['position'] ] = self.container['disk'][arg_disk]['partitions'][arg_part]
+				del self.container['disk'][arg_disk]['partitions'][arg_part]
+				arg_part = free_part_start['position']
+
+			# get end of partition and correct it if neccessary
+			free_part_end = self.parent.getCHSandPosition(arg_part + self.container['disk'][arg_disk]['partitions'][arg_part]['size'],
+													 self.container['disk'][arg_disk]['geometry'], type, correction = 'increase', force = True)
+			self.parent.debug("free_part_end_corr=%s" % str(free_part_end))
+			# calculate size of free partition space
+			free_part_size = free_part_end['position'] - free_part_start['position']
+			self.parent.debug("free_part_size=%s" % str(free_part_size))
+
+
+			new_part_start = free_part_start
+			new_part_size = free_part_size
+			# consistency checks
+			if new_part_size > size:
+				new_part_size = size
+			if new_part_size < size:
+				self.parent.debug('CONSISTENCY CHECK ERROR: requested size is too large: new_part_size=%s   requested size=%s' % (new_part_size, size))
+			new_part_end = self.parent.getCHSandPosition(arg_part + new_part_size, self.container['disk'][arg_disk]['geometry'], type, correction = 'increase', force = True)
+
+			new_part_size = new_part_end['position'] - new_part_start['position']
+			self.parent.debug("new_part_start_corr=%s" % str(new_part_start))
+			self.parent.debug("new_part_end_corr=%s" % str(new_part_end))
+			self.parent.debug("new_part_size=%s" % str(new_part_size))
+
+
 			if type == PARTTYPE_PRIMARY or type == PARTTYPE_LOGICAL: #create new primary/logical disk
-				current=arg_part
+				current = arg_part
 				if type == PARTTYPE_LOGICAL: # need to modify/create extended
 					if not self.container['disk'][arg_disk]['extended']: #create extended
-						size=new_sectors+float(0.01)
-						self.container['disk'][arg_disk]['partitions'][arg_part]['size']=size
-						self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
-						self.container['disk'][arg_disk]['partitions'][arg_part]['mpoint']=''
-						self.container['disk'][arg_disk]['partitions'][arg_part]['fstype']=''
-						self.container['disk'][arg_disk]['partitions'][arg_part]['flag']=[]
-						self.container['disk'][arg_disk]['partitions'][arg_part]['format']=0
-						self.container['disk'][arg_disk]['partitions'][arg_part]['type']=PARTTYPE_EXTENDED
-						self.container['disk'][arg_disk]['partitions'][arg_part]['num']=0
+						ext_part_start = self.parent.getCHSandPosition( current, self.container['disk'][arg_disk]['geometry'], PARTTYPE_EXTENDED, correction = 'decrease', force = True)
+						ext_part_end = new_part_end
+						ext_part_size = ext_part_end['position'] - ext_part_start['position']
+						ext_part = ext_part_start['position']
+						self.parent.debug("ext_part_start_corr=%s" % str(ext_part_start))
+						self.parent.debug("ext_part_end_corr=%s" % str(ext_part_end))
+						self.parent.debug("ext_part_size=%s" % str(ext_part_size))
+
+						self.container['disk'][arg_disk]['partitions'][ext_part] = {}
+						self.container['disk'][arg_disk]['partitions'][ext_part]['size'] = ext_part_size
+						self.container['disk'][arg_disk]['partitions'][ext_part]['touched']=1
+						self.container['disk'][arg_disk]['partitions'][ext_part]['mpoint']=''
+						self.container['disk'][arg_disk]['partitions'][ext_part]['fstype']=''
+						self.container['disk'][arg_disk]['partitions'][ext_part]['flag']=[]
+						self.container['disk'][arg_disk]['partitions'][ext_part]['format']=0
+						self.container['disk'][arg_disk]['partitions'][ext_part]['type']=PARTTYPE_EXTENDED
+						self.container['disk'][arg_disk]['partitions'][ext_part]['num']=0
 						self.container['disk'][arg_disk]['primary']+=1
 						self.container['disk'][arg_disk]['extended']=1
-						self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
+						self.container['history'].append('/sbin/parted --script %s unit chs mkpart %s %s %s' %
 														 (arg_disk,
 														  self.resolve_type(PARTTYPE_EXTENDED),
-														  self.parent.MiB2MB(arg_part),
-														  self.parent.MiB2MB(arg_part+size)))
-						current += float(0.01)
-						size -= float(0.01)
+														  self.parent.MiB2CHSstr(arg_disk, ext_part),
+														  self.parent.MiB2CHSstr(arg_disk, ext_part+ext_part_size)))
 
-					else: # resize extended
+					else: # resize extended 
 						for part in self.container['disk'][arg_disk]['partitions'].keys():
 							if self.container['disk'][arg_disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
 								break #found extended leaving loop
-						if (part + self.container['disk'][arg_disk]['partitions'][part]['size']) < arg_part+1:
-							self.container['disk'][arg_disk]['partitions'][part]['size']+=new_sectors
+						if (part + self.container['disk'][arg_disk]['partitions'][part]['size']) < arg_part:
+							# starting point of extended partition is smaller than starting point of new logical partition
+							# extended partition is getting larger at the end
+							self.container['disk'][arg_disk]['partitions'][part]['size'] = new_part_end['position'] - part
 							self.container['disk'][arg_disk]['partitions'][part]['touched']=1
-							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+							self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
 															 (arg_disk,
 															  self.container['disk'][arg_disk]['partitions'][part]['num'],
-															  self.parent.MiB2MB(part),
-															  self.parent.MiB2MB(part+self.container['disk'][arg_disk]['partitions'][part]['size'])))
-							size -= float(0.01)
+															  self.parent.MiB2CHSstr(arg_disk, part),
+															  self.parent.MiB2CHSstr(arg_disk, part + self.container['disk'][arg_disk]['partitions'][part]['size'])))
 						elif part > arg_part:
-							self.container['disk'][arg_disk]['partitions'][part]['size']+=(part-arg_part)
-							self.container['disk'][arg_disk]['partitions'][arg_part]=self.container['disk'][arg_disk]['partitions'][part]
-							self.container['disk'][arg_disk]['partitions'][arg_part]['touched']=1
-							self.container['disk'][arg_disk]['partitions'].pop(part)
-							self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+							# starting point of extended partition is larger than starting point of new logical partition
+							# extended partition grows at the beginning
+							extendpos = part + self.container['disk'][arg_disk]['partitions'][part]['size']
+							ext_part_start = self.parent.getCHSandPosition( current, self.container['disk'][arg_disk]['geometry'], PARTTYPE_EXTENDED, correction = 'decrease', force = True)
+							ext_part_end = self.parent.getCHSandPosition( extendpos, self.container['disk'][arg_disk]['geometry'], PARTTYPE_EXTENDED, correction = 'increase', force = True)
+							ext_part_size = ext_part_end['position'] - ext_part_start['position']
+							ext_part = ext_part_start['position']
+							self.parent.debug("ext_part_start_corr=%s" % str(ext_part_start))
+							self.parent.debug("ext_part_end_corr=%s" % str(ext_part_end))
+							self.parent.debug("ext_part_size=%s" % str(ext_part_size))
+
+							self.container['disk'][arg_disk]['partitions'][ ext_part ] = self.container['disk'][arg_disk]['partitions'][part]
+							del self.container['disk'][arg_disk]['partitions'][part]
+
+							self.container['disk'][arg_disk]['partitions'][ext_part]['size'] = ext_part_size
+							self.container['disk'][arg_disk]['partitions'][ext_part]['touched']=1
+							self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
 															 (arg_disk,
 															  self.container['disk'][arg_disk]['partitions'][arg_part]['num'],
-															  self.parent.MiB2MB(arg_part),
-															  self.parent.MiB2MB(arg_part+self.container['disk'][arg_disk]['partitions'][arg_part]['size'])))
-							current += float(0.01)
-							size -= float(0.01)
+															  self.parent.MiB2CHSstr(arg_disk, arg_part),
+															  self.parent.MiB2CHSstr(arg_disk, arg_part + self.container['disk'][arg_disk]['partitions'][arg_part]['size'])))
 
 				if not self.container['disk'][arg_disk]['partitions'].has_key(current):
 					self.container['disk'][arg_disk]['partitions'][current]={}
@@ -2337,27 +2505,41 @@ class object(content):
 				self.container['disk'][arg_disk]['partitions'][current]['format']=format
 				self.container['disk'][arg_disk]['partitions'][current]['type']=type
 				self.container['disk'][arg_disk]['partitions'][current]['num']=0
-				self.container['disk'][arg_disk]['partitions'][current]['size']=new_sectors
-				self.container['history'].append('/sbin/parted --script %s mkpart %s %s %s' %
-												 (arg_disk,self.resolve_type(type), self.parent.MiB2MB(current), self.parent.MiB2MB(current+size)))
+				self.container['disk'][arg_disk]['partitions'][current]['size']=new_part_size
+				self.container['history'].append('/sbin/parted --script %s unit chs mkpart %s %s %s' %
+												 (arg_disk,
+												  self.resolve_type(type),
+												  self.parent.MiB2CHSstr(arg_disk, current),
+												  self.parent.MiB2CHSstr(arg_disk, current + new_part_size)))
 				if type == PARTTYPE_PRIMARY:
 					self.container['disk'][arg_disk]['primary']+=1
-				if not (old_size - size) < self.container['min_size']:
-					self.container['disk'][arg_disk]['partitions'][current]['size']=new_sectors
+				# if partition is greater/equal than min_size then create free space entry
+				if (old_size - size) >= self.container['min_size']:
+					self.container['disk'][arg_disk]['partitions'][current]['size'] = new_part_size
 					if not end: #start at first sector of freespace
-						new_free=current+new_sectors
+						# calculate start position of next cyl
+						self.parent.debug('current=%s' % current)
+						self.parent.debug('new_part_size=%s' % new_part_size)
+						new_free_start = self.parent.getCHSnextCyl(current + new_part_size, self.container['disk'][arg_disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY)
+						self.parent.debug('new_free_start=%s' % new_free_start)
+						new_free_size = free_part_end['position'] - new_free_start
+						self.parent.debug('new_free_size=%s' % new_free_size)
 					else: # new partition at the end of freespace
-						self.container['disk'][arg_disk]['partitions'][current+old_sectors-newsectors]=self.container['disk'][arg_disk]['partitions'][current]
-						new_free=current
-					self.container['disk'][arg_disk]['partitions'][new_free]={}
-					self.container['disk'][arg_disk]['partitions'][new_free]['touched']=1
-					self.container['disk'][arg_disk]['partitions'][new_free]['size']=old_sectors-new_sectors
-					self.container['disk'][arg_disk]['partitions'][new_free]['mpoint']=''
-					self.container['disk'][arg_disk]['partitions'][new_free]['fstype']=''
-					self.container['disk'][arg_disk]['partitions'][new_free]['flag']=[]
-					self.container['disk'][arg_disk]['partitions'][new_free]['format']=0
-					self.container['disk'][arg_disk]['partitions'][new_free]['type']=PARTTYPE_FREESPACE_PRIMARY
-					self.container['disk'][arg_disk]['partitions'][new_free]['num']=-1 #temporary wrong num
+						newpos = self.parent.getCHSandPosition( free_part_end['position'] - new_part_size, self.container['disk'][arg_disk]['geometry'], type, correction = 'decrease', force = True )
+						self.container['disk'][arg_disk]['partitions'][ newpos['position'] ] = self.container['disk'][arg_disk]['partitions'][current]
+
+						new_free_end = self.parent.getCHSlastCyl( newpos['position'], self.container['disk'][arg_disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY)
+						new_free_start = current
+						new_free_size = new_free_end - new_free_start
+					self.container['disk'][arg_disk]['partitions'][new_free_start]={}
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['touched']=1
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['size'] = new_free_size
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['mpoint']=''
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['fstype']=''
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['flag']=[]
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['format']=0
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['type']=PARTTYPE_FREESPACE_PRIMARY
+					self.container['disk'][arg_disk]['partitions'][new_free_start]['num']=-1 #temporary wrong num
 				if type == PARTTYPE_LOGICAL:
 					self.minimize_extended(arg_disk)
 				self.rebuild_table( self.container['disk'][arg_disk],arg_disk)
@@ -2372,11 +2554,13 @@ class object(content):
 				for h in self.container['history']:
 					self.parent.debug('==> %s' % h)
 
+			self.parent.printPartitionsCHS()
+
 
 		def pv_create(self, disk, part):
 			device = '%s%d' % (disk,self.container['disk'][disk]['partitions'][part]['num'])
 			ucsvgname = self.container['lvm']['ucsvgname']
-			
+
 			# create new PV entry
 			pesize = self.container['lvm']['vg'][ ucsvgname ]['PEsize']
 			# number of physical extents
@@ -2387,7 +2571,7 @@ class object(content):
 			self.parent.debug('pv_create: pesize=%sk   partsize=%sM=%sk  pecnt=%sPE  totalpe=%sPE' %
 							  (pesize, self.container['disk'][disk]['partitions'][part]['size'],
 							   self.container['disk'][disk]['partitions'][part]['size'] * 1024, pecnt, totalpe))
-			
+
 			self.container['lvm']['pv'][ device ] = { 'touched': 1,
 													  'vg': ucsvgname,
 													  'PEsize': pesize,
@@ -2395,14 +2579,14 @@ class object(content):
 													  'freePE': totalpe,
 													  'allocPE': 0,
 													  }
-			
+
 			# update VG entry
 			self.container['lvm']['vg'][ ucsvgname ]['touched'] = 1
 			self.container['lvm']['vg'][ ucsvgname ]['totalPE'] += totalpe
 			self.container['lvm']['vg'][ ucsvgname ]['freePE'] += totalpe
 			self.container['lvm']['vg'][ ucsvgname ]['size'] = (self.container['lvm']['vg'][ ucsvgname ]['totalPE'] *
 																self.container['lvm']['vg'][ ucsvgname ]['PEsize'] / 1024.0)
-			
+
 			device = self.parent.get_device(disk, part)
 #			self.container['history'].append('/sbin/pvscan')
 			self.container['history'].append('/sbin/pvcreate %s' % device)
@@ -2417,7 +2601,7 @@ class object(content):
 
 
 
-		def minimize_extended(self, disk):
+		def minimize_extended_old(self, disk):
 			self.parent.debug('### minimize: %s'%disk)
 			new_start=float(-1)
 			start=new_start
@@ -2443,25 +2627,87 @@ class object(content):
 					self.parent.debug('### minimize at start: %s'%[new_start,start])
 					self.container['disk'][disk]['partitions'][start]['size']=end-new_start
 					self.container['disk'][disk]['partitions'][new_start]=self.container['disk'][disk]['partitions'][start]
-					self.container['history'].append('/sbin/parted --script %s resize %s %s %s; #1' %
+					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s; #1' %
 													 (disk,
 													  self.container['disk'][disk]['partitions'][start]['num'],
-													  self.parent.MiB2MB(new_start),
-													  self.parent.MiB2MB(new_end)))
+													  self.parent.MiB2CHSstr(disk, new_start),
+													  self.parent.MiB2CHSstr(disk, new_end)))
 					self.container['disk'][disk]['partitions'].pop(start)
 				elif new_end > end:
 					self.parent.debug('### minimize at end: %s'%[new_end,end])
 					self.container['disk'][disk]['partitions'][part_list[-1]]['type']=PARTTYPE_FREESPACE_LOGICAL
 					self.container['disk'][disk]['partitions'][part_list[-1]]['num']=-1
-					self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
 													 (disk,
 													  self.container['disk'][disk]['partitions'][start]['num'],
-													  self.parent.MiB2MB(start),
-													  self.parent.MiB2MB(new_end)))
+													  self.parent.MiB2CHSstr(disk, start),
+													  self.parent.MiB2CHSstr(disk, new_end)))
 
 
 			self.layout()
 			self.draw()
+
+
+		def minimize_extended(self, disk):
+			self.parent.debug('minimize_extended: %s' % disk)
+			ext_start = float(-1)
+			ext_end = float(-1)
+			new_start = float(-1)
+			new_end = float(-1)
+
+			part_list=self.container['disk'][disk]['partitions'].keys()
+			# sort part_list to make sure to get all partitions in ascending order
+			part_list.sort()
+			for part in part_list:
+				# check all logical parts and find minimum size for extended
+				if self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_LOGICAL:
+					# if new_end is not set (-1) or is smaller than the end position of current logical partition then save end pos to new_end
+					if new_end < 0 or new_end < part+self.container['disk'][disk]['partitions'][part]['size']:
+						new_end = part+self.container['disk'][disk]['partitions'][part]['size']
+					if new_start < 0 or part < new_start:
+						new_start = part
+				elif self.container['disk'][disk]['partitions'][part]['type'] == PARTTYPE_EXTENDED:
+					ext_start = part
+					ext_end = part + self.container['disk'][disk]['partitions'][part]['size']
+			if new_start >= 0 and new_end >= 0:
+				newpos = self.parent.getCHSandPosition( new_start, self.container['disk'][disk]['geometry'], PARTTYPE_EXTENDED, correction = 'decrease', force = True )
+				new_start = newpos['position']
+				newpos = self.parent.getCHSandPosition( new_end, self.container['disk'][disk]['geometry'], PARTTYPE_EXTENDED, correction = 'increase', force = True )
+				new_end = newpos['position']
+
+			if ext_start >= 0:
+				if new_start > ext_start:
+					self.parent.debug('minimize_extended: minimize at start: old_start=%s  new_start=%s' % (ext_start, new_start))
+					# correct size if current ext partition
+					self.container['disk'][disk]['partitions'][ext_start]['size'] = ext_end - new_start
+					self.container['disk'][disk]['partitions'][new_start] = self.container['disk'][disk]['partitions'][ext_start]
+					# create primary free space after ext partition
+					free_start = ext_start
+					free_end = self.parent.getCHSlastCyl( new_start, self.container['disk'][disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY )
+					self.container['disk'][disk]['partitions'][ free_start ] = self.parent.generate_freespace( free_start, free_end )
+					# run parted
+					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s; #1' %
+													 (disk,
+													  self.container['disk'][disk]['partitions'][ext_start]['num'],
+													  self.parent.MiB2CHSstr(disk, new_start),
+													  self.parent.MiB2CHSstr(disk, ext_end)))
+				elif new_end < ext_end:
+					self.parent.debug('minimize_extended: minimize at end: old_end=%s  new_end=%s' % (ext_end, new_end))
+					# correct size of current ext partition
+					self.container['disk'][disk]['partitions'][ext_start]['size'] = new_end - ext_start
+					# create primary free space after ext partition
+					free_end = ext_end
+					free_start = self.parent.getCHSnextCyl( new_end, self.container['disk'][disk]['geometry'], PARTTYPE_FREESPACE_PRIMARY )
+					self.container['disk'][disk]['partitions'][ free_start ] = self.parent.generate_freespace( free_start, free_end )
+					# run parted
+					self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
+													 (disk,
+													  self.container['disk'][disk]['partitions'][ext_start]['num'],
+													  self.parent.MiB2CHSstr(disk, ext_start),
+													  self.parent.MiB2CHSstr(disk, new_end)))
+
+				self.layout()
+				self.draw()
 
 
 		def rebuild_table(self, disc, device):
@@ -2524,11 +2770,11 @@ class object(content):
 						new_start=part[i]
 						new_end=new_start+old[part[i-1]]['size']
 						new[new_start]=old[part[i-1]]
-						self.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+						self.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
 														 (device,
 														  old[part[i-1]]['num'],
-														  self.parent.MiB2MB(new_start),
-														  self.parent.MiB2MB(new_end)))
+														  self.parent.MiB2CHSstr(device, new_start),
+														  self.parent.MiB2CHSstr(device, new_end)))
 						new[part[i-1]]=old[part[i]]
 						redo=1
 
@@ -3458,16 +3704,16 @@ class object(content):
 								self.parent.parent.debug('resize_extended: end=%s  start=%s' % (end, start))
 								self.parent.container['disk'][disk]['partitions'][part]['size']=end-start
 								self.parent.container['disk'][disk]['partitions'][start]=self.parent.container['disk'][disk]['partitions'][part]
-								self.parent.container['history'].append('/sbin/parted --script %s resize %s %s %s' %
+								self.parent.container['history'].append('/sbin/parted --script %s unit chs resize %s %s %s' %
 																		(disk,
 																		 self.parent.container['disk'][disk]['partitions'][part]['num'],
-																		 self.parent.parent.MiB2MB(start),
-																		 self.parent.parent.MiB2MB(end)))
-								self.parent.parent.debug('COMMAND: /sbin/parted --script %s resize %s %s %s' %
+																		 self.parent.parent.MiB2CHSstr(disk, start),
+																		 self.parent.parent.MiB2CHSstr(disk, end)))
+								self.parent.parent.debug('COMMAND: /sbin/parted --script %s unit chs resize %s %s %s' %
 														 (disk,
 														  self.parent.container['disk'][disk]['partitions'][part]['num'],
-														  self.parent.parent.MiB2MB(start),
-														  self.parent.parent.MiB2MB(end)))
+														  self.parent.parent.MiB2CHSstr(disk, start),
+														  self.parent.parent.MiB2CHSstr(disk, end)))
 								self.parent.container['disk'][disk]['partitions'].pop(part)
 						self.parent.container['temp']={}
 						self.parent.rebuild_table(self.parent.container['disk'][disk],disk)
