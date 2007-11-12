@@ -1,3 +1,9 @@
+univention-ldap (2.4.6-2) unstable; urgency=low
+
+  * Fix postinst
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 12 Nov 2007 15:24:38 +0100
+
 univention-ldap (2.4.6-1) unstable; urgency=low
 
   * fix access rights to own admin settings object 
