@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-5) unstable; urgency=low
+
+  * Add alternative univention-baseconfig depends to allow upgrades
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 12 Nov 2007 15:35:22 +0100
+
 univention-ad-connector (1.2.2-4) unstable; urgency=low
 
   * add Error-handling during object-mapping
