@@ -1,6 +1,6 @@
 univention-installer (1.8.6-1) unstable; urgency=low
 
-  * readd univention-application-server
+  * readd univention-application-server.
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2007 21:37:40 +0100
 
