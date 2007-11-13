@@ -1,3 +1,11 @@
+univention-ssl (2.0.2-1) unstable; urgency=low
+
+  * no longer change the owner and group of all ssl certificates under
+    /etc/univention/ssl after revoke or renew a certifcate with
+    univention-certificate
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2007 21:27:52 +0100
+
 univention-ssl (2.0.1-9) unstable; urgency=low
 
   * Fix Config Registry descriptions.

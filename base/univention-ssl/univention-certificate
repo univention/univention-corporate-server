@@ -110,30 +110,11 @@ case "$command" in
 		if [ $? = 0 ]; then
 			chgrp -R "DC Backup Hosts" "/etc/univention/ssl/$name"
 			chmod -R g+rx "/etc/univention/ssl/$name"
-			res=`find /etc/univention/ssl/ -group root`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group root | xargs chown root."DC Backup Hosts"
-			fi
-			res=`find /etc/univention/ssl/ -group nogroup`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group nogroup | xargs chown root."DC Backup Hosts"
-			fi
 		fi
 		;;
 	"revoke")
 		echo "Revoke certificate: $name"
 		revoke_cert "$name"
-		getent group "DC Backup Hosts" 2>&1 >/dev/null
-		if [ $? = 0 ]; then
-			res=`find /etc/univention/ssl/ -group root`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group root | xargs chown root."DC Backup Hosts"
-			fi
-			res=`find /etc/univention/ssl/ -group nogroup`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group nogroup | xargs chown root."DC Backup Hosts"
-			fi
-		fi
 		;;
 	"renew")
 		if [ -z "$days" ]; then
@@ -141,17 +122,6 @@ case "$command" in
 		fi
 		echo "Renew certificate: $name"
 		renew_cert "$name" "$days"
-		getent group "DC Backup Hosts" 2>&1 >/dev/null
-		if [ $? = 0 ]; then
-			res=`find /etc/univention/ssl/ -group root`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group root | xargs chown root."DC Backup Hosts"
-			fi
-			res=`find /etc/univention/ssl/ -group nogroup`
-			if [ -n "$res" ]; then
-				find /etc/univention/ssl/ -group nogroup | xargs chown root."DC Backup Hosts"
-			fi
-		fi
 		;;
 	"check")
 		echo -n "Certificate \"$name\" is "
