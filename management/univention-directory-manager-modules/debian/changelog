@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.2.8-10) unstable; urgency=low
+
+  * Add missing comma in month definition
+  * Rewrite entry handling handle to make the code more clear
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 13 Nov 2007 17:45:04 +0100
+
 univention-directory-manager-modules (2.2.8-9) unstable; urgency=low
 
   * Revert cron.py to the state before 2.2.8-6, the bugfix unveiled other

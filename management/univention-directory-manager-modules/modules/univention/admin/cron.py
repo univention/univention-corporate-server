@@ -31,7 +31,7 @@
 import sys, string
 
 def month_map(month):
-	month_list=['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August' 'September', 'October', 'November', 'December']
+	month_list=['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 	if month == '*':
 		return '*'
 	if month in month_list:
@@ -87,21 +87,20 @@ def cron_create(cronlist):
 						string+='1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31'
 					else:
 						string+='%s' % cronlist[key][i]
-				else:
+				elif key == 'hour':
 					if cronlist[key][i] == '00':
 						string+='0'
 					elif cronlist[key][i] == 'all':
-						if key == 'hour':
-							string+='0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
-						else:
-							string+='0,5,10,15,20,25,30,35,40,45,50,55'
+						string+='0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23'
 					else:
 						string+='%s' % cronlist[key][i]
-		else:
-			if key == 'minute':
-				string+='00'
-			else:
-				string+='*'
+				elif key == 'minute':
+					if cronlist[key][i] == '00':
+						string+='0'
+					elif cronlist[key][i] == 'all':
+						string+='0,5,10,15,20,25,30,35,40,45,50,55'
+					else:
+						string+='%s' % cronlist[key][i]
 		string+=' '
 	return string
 
