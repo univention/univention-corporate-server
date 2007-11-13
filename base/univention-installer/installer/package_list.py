@@ -145,14 +145,14 @@ PackageList=[
 	'Description': _("Additional Services"),
 	'Packages':
 			[
-				#{
-				#	'Name': _('Terminalserver'),
-				#	'Packages': ['univention-application-server'],
-				#	'Architecture': [ 'x86', 'powerpc' ],
-				#	'Active': ['domaincontroller_master', 'domaincontroller_backup'],
-				#	'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-				#	'Description': _('X-Window-System Client for Terminal Services'),
-				#},
+				{
+					'Name': _('Terminalserver'),
+					'Packages': ['univention-application-server'],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Description': _('X-Window-System Client for Terminal Services'),
+				},
 				{
 					'Name': _('Thinclient Environment'),
 					'Packages': ['univention-thin-client'],
