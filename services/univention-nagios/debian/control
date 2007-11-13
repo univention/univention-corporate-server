@@ -19,7 +19,7 @@ Description: UCS: nagios server support
 
 Package: univention-nagios-client
 Architecture: any
-Depends: nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, python-univention-directory-manager, univention-directory-listener
+Depends: nagios-plugins, nagios-nrpe-server, sed, grep, coreutils, cron, raidutils, python-univention-directory-manager |python2.4-univention-admin , univention-directory-listener
 Description: UCS: nagios client support
  This package installs the required packages to allow clients
  to be monitored by nagios.
@@ -28,4 +28,3 @@ Description: UCS: nagios client support
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
-
