@@ -1,3 +1,10 @@
+univention-directory-listener (2.2.6-3) unstable; urgency=low
+
+  * link /var/lib/univention-ldap-listener to /var/lib/univention-
+    directory-listener
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 13 Nov 2007 21:20:22 +0100
+
 univention-directory-listener (2.2.6-2) unstable; urgency=low
 
   * maybe the ldap-listener is during the preinst of the directory-
