@@ -1,3 +1,10 @@
+univention-printserver (1.0.5-5) unstable; urgency=low
+
+  * Call univention-admin instead of univention-directory-manager to ensure
+    upgrade path.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 13 Nov 2007 10:18:01 +0100
+
 univention-printserver (1.0.5-4) unstable; urgency=low
 
   * Correct PPD base directory
