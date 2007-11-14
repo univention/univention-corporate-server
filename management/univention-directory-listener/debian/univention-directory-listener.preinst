@@ -60,4 +60,9 @@ if [ -e /var/lib/univention-ldap-listener ]; then
     ln -s /var/lib/univention-directory-listener /var/lib/univention-ldap-listener
 fi
 
+VERSION=1
+if [ -e /usr/lib/univention-install/.index.txt ]; then
+	test -n "`grep "univention-ldap-listener successful" /usr/lib/univention-install/.index.txt`" && echo "univention-directory-listener v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+fi
+
 exit 0
