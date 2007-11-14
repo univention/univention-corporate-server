@@ -7,17 +7,17 @@ pam_krb5='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<fail>]                         pam_krb5.so use_first_pass'''
+         default=<unknown>]                         pam_krb5.so use_first_pass'''
 pam_ldap='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<fail>]                         pam_ldap.so use_first_pass'''
+         default=<unknown>]                         pam_ldap.so use_first_pass'''
 pam_winbind='''
 auth     [success=<succ> new_authtok_reqd=ok \
          user_unknown=<unknown> \
          service_err=<unavail> authinfo_unavail=<unavail> \
-         default=<fail>]                         pam_winbind.so use_first_pass'''
+         default=<unknown>]                         pam_winbind.so use_first_pass'''
 
 if baseConfig.has_key('auth/passwdcache/max_user') and baseConfig['auth/passwdcache/max_user']:
         value=baseConfig['auth/passwdcache/max_user'].strip('"')

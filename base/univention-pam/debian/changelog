@@ -1,3 +1,10 @@
+univention-pam (1.2.4-1) unstable; urgency=low
+
+  * if the kerberos password failed during the login jump to the next
+    pam module
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2007 09:46:40 +0100
+
 univention-pam (1.2.3-5) unstable; urgency=low
 
   * Apply the previous change to admin-account as well.
