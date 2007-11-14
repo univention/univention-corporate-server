@@ -40,7 +40,6 @@
 #  - Profile code uses (mostly) factor 1000 for KB and MB. Some parts (extent calculation for LVM) use factor 1024.
 #  - imported and created profiles use factor 1000 for KB and MB !!!
 # ==> look at MiB2MB and MB2MiB
-#
 
 import objects
 from objects import *
@@ -149,6 +148,17 @@ class object(content):
 		# correction in [ 'increase', 'decrease' ]
 		result = self.MiB2CHS(pos, geometry)
 		result['position'] = pos
+
+		# consistency check
+		if result['cyls'] >= geometry['cyls']:
+			self.debug('WARNING: CONSISTENCY CHECK FAILED: cyls is too large (%s) - setting to possible max (%s)' % (result['cyls'], geometry['cyls']-1))
+			result['cyls'] = geometry['cyls'] - 1
+		if result['heads'] >= geometry['heads']:
+			self.debug('WARNING: CONSISTENCY CHECK FAILED: heads is too large (%s) - setting to possible max (%s)' % (result['heads'], geometry['heads']-1))
+			result['heads'] = geometry['heads'] - 1
+		if result['sectors'] >= geometry['sectors']:
+			self.debug('WARNING: CONSISTENCY CHECK FAILED: sectors is too large (%s) - setting to possible max (%s)' % (result['sectors'], geometry['sectors']-1))
+			result['sectors'] = geometry['sectors'] - 1
 
 		# force increase/decrease
 		if force:
@@ -1314,7 +1324,7 @@ class object(content):
 		devices_remove=[]
 		for dev in devices:
 			dev=dev.strip()
-			p = os.popen('/sbin/parted -s %s unit MB p 2>&1 | grep [a-z]'% dev)
+			p = os.popen('/sbin/parted -s %s unit B p 2>&1 | grep [a-z]'% dev)
 
 			first_line=p.readline().strip()
 			self.debug('first line: [%s]' % first_line)
@@ -1325,17 +1335,41 @@ class object(content):
 				continue
 			elif _re_error.match(first_line):
 				os.system('/sbin/install-mbr -f %s' % dev)
-				p = os.popen('/sbin/parted %s unit MB p 2>&1 | grep [a-z]'% dev)
+				p = os.popen('/sbin/parted %s unit B p 2>&1 | grep [a-z]'% dev)
 				first_line=p.readline()
 				if _re_error.match(first_line):
 					self.debug('Firstline starts with error')
 					self.debug('Remove device %s' % dev)
 					devices_remove.append(dev)
 					continue
+
+			# get CHS geometry
+			geometry = None
+			pchs = os.popen('/sbin/parted -s %s unit chs print 2>&1'% dev)
+			for line in pchs.readlines():
+				if line.startswith('BIOS cylinder,head,sector geometry: '):
+					line = line[36:]
+					chs = line.split('. ')[0]
+					chs = chs.split(',')
+					if len(chs) != 3:
+						self.debug('ERROR: cannot get drive geometry: bad line: %s' % line)
+						self.debug('ERROR: removing drive %s' % dev)
+						del diskList[dev]
+					else:
+						geometry = { 'cyls': int(chs[0]), 'heads': int(chs[1]), 'sectors': int(chs[2]) }
+						self.debug('INFO: %s: BIOS CHS geometry = %s/%s/%s' % (dev, chs[0], chs[1], chs[2]))
+			pchs.close()
+
+			# parse disk size
 			if first_line.startswith('Disk '):
-				mb_size = int(self.MB2MiB(int(first_line.split(' ')[-1].split('MB')[0].split(',')[0])))
+				mb_size = int(first_line.split(' ')[-1].split('B')[0].split(',')[0]) / 1024.0 / 1024.0
+				tmpsize = self.getCHSandPosition(mb_size, geometry, PARTTYPE_PRIMARY, correction = 'increase', force = True)
+				self.debug('DEBUG: mb_size = %f  tmpsize = %f  chs=%s/%s/%s' % (mb_size, tmpsize['position'],
+																				tmpsize['cyls'], tmpsize['heads'], tmpsize['sectors']))
+				mb_size = tmpsize['position']
 			else:
 				mb_size = 0
+
 			extended=0
 			primary=0
 			logical=0
@@ -1354,9 +1388,9 @@ class object(content):
 				cols=line.split()
 				num=cols[0]
 				part=dev+cols[0]
-				start=self.MB2MiB(float(cols[1].split('MB')[0].replace(',','.')))
+				start=float( int(cols[1].split('B')[0].replace(',','.')) / 1024.0 / 1024.0 )
 				#
-				end=self.MB2MiB(float(cols[2].split('MB')[0].replace(',','.')))
+				end=float( int(cols[2].split('B')[0].replace(',','.')) / 1024.0 / 1024.0 )
 				# EVIL EVIL EVIL START ==> FIXME TODO
 				# start is used as identifier but extended and logical partition can have same start point
 				while start in partList.keys():
@@ -1390,10 +1424,16 @@ class object(content):
 				for i in range(6,10):
 					if len(cols) > i:
 						flag.append(cols[i].strip(','))
+
+				# add free space between partitions
 				if ( start - last_end) > self.container['min_size']:
-					free_start=last_end+float(0.01)
-					free_end = start-float(0.01)
-					partList[free_start]=self.generate_freespace(free_start,free_end)
+					if last_end == 0:
+						free_start = self.getCHSandPosition( 0.5, geometry, PARTTYPE_FREESPACE_PRIMARY, correction = 'decrease', force = True )['position']
+					else:
+						free_start = self.getCHSnextCyl(last_end, geometry, PARTTYPE_FREESPACE_PRIMARY)
+					free_end = self.getCHSlastCyl(start, geometry, PARTTYPE_FREESPACE_PRIMARY)
+					if free_end - free_start > self.container['min_size']:
+						partList[free_start] = self.generate_freespace(free_start,free_end)
 
 
 				partList[start]={'type':ptype,
@@ -1411,33 +1451,23 @@ class object(content):
 					last_end=start
 				else:
 					last_end=end
+			# 
 			if ( mb_size - last_end) > self.container['min_size']:
-				free_start=last_end+float(0.01)
+				if last_end == 0:
+					free_start = self.getCHSandPosition( 0.5, geometry, PARTTYPE_FREESPACE_PRIMARY, correction = 'decrease', force = True )['position']
+				else:
+					free_start = self.getCHSnextCyl(last_end, geometry, PARTTYPE_FREESPACE_PRIMARY)
 				free_end = float(mb_size)
 				partList[free_start]=self.generate_freespace(free_start,free_end)
+
 			diskList[dev]={'partitions':partList,
 					'primary':primary,
 					'extended':extended,
 					'logical':logical,
 					'size':mb_size,
-					'geometry': None,
+					'geometry': geometry,
 					}
 
-			p.close()
-
-			p = os.popen('/sbin/parted -s %s unit chs print 2>&1'% dev)
-			for line in p.readlines():
-				if line.startswith('BIOS cylinder,head,sector geometry: '):
-					line = line[36:]
-					chs = line.split('. ')[0]
-					chs = chs.split(',')
-					if len(chs) != 3:
-						self.debug('ERROR: cannot get drive geometry: bad line: %s' % line)
-						self.debug('ERROR: removing drive %s' % dev)
-						del diskList[dev]
-					else:
-						diskList[dev]['geometry'] = { 'cyls': int(chs[0]), 'heads': int(chs[1]), 'sectors': int(chs[2]) }
-						self.debug('INFO: %s: BIOS CHS geometry = %s/%s/%s' % (dev, chs[0], chs[1], chs[2]))
 			p.close()
 
 		for d in devices_remove:
@@ -1856,7 +1886,7 @@ class object(content):
 				txt = '%s  (%s) %s' % (dev.split('/',2)[-1], _('diskdrive'), '-'*(col1+col2+col3+col4+col5+10))
 				path = self.get_col(txt,col1+col2+col3+col4+col5+4,'l')
 
-				size = self.get_col('%s'%disk['size'],col6)
+				size = self.get_col('%s'%int(disk['size']),col6)
 				# save for later use (evaluating inputs)
 				self.part_objects[ len(dict) ] = [ 'disk', dev ]
 				dict.append('%s %s' % (path,size))

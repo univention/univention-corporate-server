@@ -1,3 +1,10 @@
+univention-installer (1.8.6-2) unstable; urgency=low
+
+  * partition module uses now CHS disk geometry for interactive
+    installation
+
+ -- Soenke Schwardt <schwardt@univention.de>  Wed, 14 Nov 2007 11:12:47 +0100
+
 univention-installer (1.8.6-1) unstable; urgency=low
 
   * readd univention-application-server.
