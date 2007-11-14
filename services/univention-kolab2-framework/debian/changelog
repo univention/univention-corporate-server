@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.2-1) unstable; urgency=low
+
+  * set log_level in freebusy.conf from RM_LOG_DEBUG to RM_LOG_ERROR
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2007 16:25:12 +0100
+
 univention-kolab2-framework (1.0.1-5) unstable; urgency=low
 
   * fixed navigation probem in outlook configuration skripts
