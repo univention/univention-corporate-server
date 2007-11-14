@@ -94,6 +94,7 @@ done
 
 # copy the fontcache
 if [ -e /usr/share/fontconfig/cache/fontconfig ]; then
+	mkdir -p /var/cache/
 	cp -a /usr/share/fontconfig/cache/fontconfig /var/cache/fontconfig
 fi
 

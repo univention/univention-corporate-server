@@ -1,4 +1,4 @@
-univention-client-basesystem (2.1.9-1) unstable; urgency=low
+univention-client-basesystem (2.1.9-2) unstable; urgency=low
 
   * copy the fontcache dir during the bootstrap to /usr/share/fontconfig
     and copy it back during the thinclient boot
