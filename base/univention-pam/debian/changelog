@@ -1,3 +1,9 @@
+univention-pam (1.2.4-2) unstable; urgency=low
+
+  * Fix schema mapping
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Nov 2007 13:22:15 +0100
+
 univention-pam (1.2.4-1) unstable; urgency=low
 
   * if the kerberos password failed during the login jump to the next
