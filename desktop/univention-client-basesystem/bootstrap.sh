@@ -230,6 +230,14 @@ chmod 755 "/sbin/start-stop-daemon"
 	# /usr/sbin/univention-baseconfig set locale='de_DE.UTF-8'; locale-gen
 	apt-get clean
 
+	# copy the fontcache to /usr/share/fontconfig/cache
+	# generate the fontcache
+	fc-cache
+	if [ -d /var/cache/fontconfig ]; then
+		mkdir -p /usr/share/fontconfig/cache
+		cp -a /var/cache/fontconfig /usr/share/fontconfig/cache
+	fi
+
 	umount -f -n /proc || true
 	rm -f /bootstrap.sh /.univention-bootstrap
 

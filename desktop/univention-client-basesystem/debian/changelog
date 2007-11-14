@@ -1,3 +1,10 @@
+univention-client-basesystem (2.1.9-1) unstable; urgency=low
+
+  * copy the fontcache dir during the bootstrap to /usr/share/fontconfig
+    and copy it back during the thinclient boot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 14 Nov 2007 10:41:46 +0100
+
 univention-client-basesystem (2.1.8-1) unstable; urgency=low
 
   * set default keyboard layout to 'de' 

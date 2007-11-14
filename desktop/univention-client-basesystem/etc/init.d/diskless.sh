@@ -92,6 +92,11 @@ for file in "/etc/network/ifstate" "/etc/network/interfaces" "/etc/udev/rules.d/
   touch "$ramdisk$file"
 done
 
+# copy the fontcache
+if [ -e /usr/share/fontconfig/cache/fontconfig ]; then
+	cp -a /usr/share/fontconfig/cache/fontconfig /var/cache/fontconfig
+fi
+
 echo "   creating cache directory " >>/dev/tty8
 mkdir -p /var/cache/univention-config
 
