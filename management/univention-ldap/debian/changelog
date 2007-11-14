@@ -1,3 +1,10 @@
+univention-ldap (2.4.6-3) unstable; urgency=low
+
+  * Config Registry is run in the preinst, so we need to declare a pre-dependency
+    on it instead of a dependency.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 14 Nov 2007 15:46:48 +0100
+
 univention-ldap (2.4.6-2) unstable; urgency=low
 
   * Fix postinst

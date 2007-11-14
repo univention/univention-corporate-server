@@ -7,8 +7,8 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-ldap-server
 Architecture: all
-Pre-Depends: slapd (>>2.1), univention-ldap-client
-Depends: db4.2-util, univention-config-registry | univention-baseconfig, univention-ssl, univention-ldap-config, whois, makepasswd, univention-directory-manager-tools | univention-admin-tools, univention-newsid, univention-ipcalc, univention-ldap-acl-master | univention-ldap-acl-slave, bind9-host
+Pre-Depends: slapd (>>2.1), univention-ldap-client, univention-config-registry | univention-baseconfig
+Depends: db4.2-util, univention-ssl, univention-ldap-config, whois, makepasswd, univention-directory-manager-tools | univention-admin-tools, univention-newsid, univention-ipcalc, univention-ldap-acl-master | univention-ldap-acl-slave, bind9-host
 Conflicts: univention-5250 (<< 0.5), univention-mail-cyrus-quota-master, univention-admin-nagios (<< 1.0)
 Replaces: univention-mail-cyrus-quota-master
 Description: UCS - LDAP server configuration
