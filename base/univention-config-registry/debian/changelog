@@ -1,3 +1,9 @@
+univention-config-registry (2.6.3-3) unstable; urgency=low
+
+  * Fix error in template for secure apt configuration
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Nov 2007 16:12:48 +0100
+
 univention-config-registry (2.6.3-2) unstable; urgency=low
 
   * Initialise object variable in commit() function, which prevents
