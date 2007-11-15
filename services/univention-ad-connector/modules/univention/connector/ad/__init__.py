@@ -763,7 +763,7 @@ class ad(univention.connector.ucs):
 		return self.__search_ad(filter=filter, show_deleted=show_deleted)
 
 
-	def __dn_from_deleted_object(self, object):
+	def __dn_from_deleted_object(self, object, GUID):
 		'''
 		gets dn for deleted object (original dn before the object was moved into the deleted objects container)
 		'''
@@ -772,12 +772,18 @@ class ad(univention.connector.ucs):
 		# In Windows 2000 there's no lastKnownParent attribute. Thus, we have to map the
 		# relevant object according to the objectGUID of the removed object
 		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__dn_from_deleted_object: DN fallback to w2k-mode: get dn from GUID-mapping-cache")
 			GUID = object['objectGUID'][0]
 			return self._get_DN_for_GUID(GUID)
 
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
  		rdn = object['dn'][:string.find(object['dn'],'DEL:')-3]
  		if object['attributes'].has_key('lastKnownParent'):
+			try:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)"
+						       % (object['attributes']['lastKnownParent'][0], rdn))
+			except:
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__dn_from_deleted_object: get DN from lastKnownParent")
  			return rdn + "," + object['attributes']['lastKnownParent'][0]							
  		else:
  			univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, 'lastKnownParent attribute for deleted object rdn="%s" was not set, so we must ignore the object' % rdn )
@@ -805,13 +811,6 @@ class ad(univention.connector.ucs):
 			object['modtype'] = 'delete'
 			deleted_object = True
 
-			# Windows 2000 doesn't provide a LastKnownParent attribute for deleted objects
-			# Thus, we need to perform mapping according to the objectGUID, so do not delete
-			# it if running against Windows 2000
-			if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
-				pass
-			else:
-				self._remove_GUID(GUID)
 		else:
 			#check if is moved
 			olddn = self.encode(self._get_DN_for_GUID(GUID))
@@ -834,8 +833,9 @@ class ad(univention.connector.ucs):
 			
 		if deleted_object: # dn is in deleted-objects-container, need to parse to original dn
 			object['deleted_dn'] = object['dn']
-			object['dn'] = self._get_DN_for_GUID(GUID)
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "w2k: DN of removed object: %s" % object['dn'])
+			object['dn'] = self.__dn_from_deleted_object(object, GUID)
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_from_element: DN of removed object: %s" % object['dn'])
+			#self._remove_GUID(GUID) # cache is not needed anymore?
 			
 			if not object['dn']:
 				return None
@@ -1497,7 +1497,7 @@ class ad(univention.connector.ucs):
 				
 			if object:
 				property_key = self.__identify(object)
-				if property_key and not self._ignore_object(property_key,object):
+				if property_key and not self._ignore_object(property_key,object): # doesn't ignore in deletion?
 
 					sync_successfull = False
 					try:

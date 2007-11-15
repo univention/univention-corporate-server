@@ -810,11 +810,7 @@ class ucs:
 	def delete_in_ucs(self, property_type, object, module, position):
 		_d=univention.debug.function('ldap.delete_in_ucs')		
 		module = self.modules[property_type]
-		ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
-
-		if self._ignore_object(property_type,ucs_object):
-			self._debug_traceback(univention.debug.WARN, "get_ucs_object: ignore object")
-			return True
+		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 
 		try:
 			return ucs_object.remove()
@@ -1056,15 +1052,19 @@ class ucs:
 		'''
 		_d=univention.debug.function('ldap._ignore_object')
 		if not object.has_key('dn'):
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "_ignore_object: ignore object without DN")
 			return True # ignore not existing object
 		for subtree in self.property[key].ignore_subtree:
 			if self._subtree_match(object['dn'], subtree):
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "_ignore_object: ignore object because of subtree match")
 				return True		
 
 		if self.property[key].ignore_filter and self._filter_match(self.property[key].ignore_filter,object['attributes']):
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "_ignore_object: ignore object because of ignore_filter")
 			return True
 
 		if self.property[key].match_filter and not self._filter_match(self.property[key].match_filter,object['attributes']):
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "_ignore_object: ignore object because of match_filter")
 			return True
 
 		return False
