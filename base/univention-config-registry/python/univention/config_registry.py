@@ -649,6 +649,7 @@ class configHandlers:
 			for s in parseRfc822(open(file).read()):
 				if not s.has_key('Type'):
 					continue
+				object = None
 				if filelist:
 					if s.has_key('File'):
 						object = None

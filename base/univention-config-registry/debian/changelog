@@ -1,3 +1,10 @@
+univention-config-registry (2.6.3-2) unstable; urgency=low
+
+  * Initialise object variable in commit() function, which prevents
+    a traceback in corner case situations.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 15 Nov 2007 13:53:48 +0100
+
 univention-config-registry (2.6.3-1) unstable; urgency=low
 
   * add *.debian to taboo list in logrotate.conf to ignore diverted
