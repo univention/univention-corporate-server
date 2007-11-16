@@ -1,3 +1,9 @@
+univention-installer (1.8.8-1) unstable; urgency=low
+
+  * fixed traceback caused by overlong translation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 16 Nov 2007 17:00:41 +0100
+
 univention-installer (1.8.7-1) unstable; urgency=low
 
   * fixed another bug in log handling

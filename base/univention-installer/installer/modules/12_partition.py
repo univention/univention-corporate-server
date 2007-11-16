@@ -2296,8 +2296,9 @@ class object(content):
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!'),
-									_('Please use "pvmove" to move data to other physical volumes.') ]
-						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
+									_('Please use "pvmove" to move data to other'),
+									_('physical volumes.') ]
+						self.sub = msg_win(self, self.pos_y+3, self.pos_x+4, self.width-8, self.height-13, msglist)
 						self.draw()
 						return True
 					else:
