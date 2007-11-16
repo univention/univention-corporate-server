@@ -1,3 +1,9 @@
+univention-installer (1.8.7-1) unstable; urgency=low
+
+  * fixed another bug in log handling
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 16 Nov 2007 11:14:33 +0100
+
 univention-installer (1.8.6-2) unstable; urgency=low
 
   * partition module uses now CHS disk geometry for interactive

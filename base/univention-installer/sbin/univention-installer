@@ -40,7 +40,7 @@ else
 			continue
 		fi
 
-		echo "" > /tmp/installer.log
+		echo "" >> /tmp/installer.log
 		echo "------------------------------------------" >> /tmp/installer.log
 		echo " PROFILE COMPLETE - STARTING INSTALLATION" >> /tmp/installer.log
 		echo "------------------------------------------" >> /tmp/installer.log
@@ -60,7 +60,7 @@ else
 				chown root:adm /instmnt/var/log/univention/installation.log
 				chmod 640 /instmnt/var/log/univention/installation.log
 
-				if [ -e /tmp/installer.log ] ; then
+				if [ -e /tmp/installer.log -a ! -e /instmnt/var/log/univention/installer.log ] ; then
 					cat /tmp/installer.log >> /instmnt/var/log/univention/installer.log
 					chown root:adm /instmnt/var/log/univention/installer.log
 					chmod 640 /instmnt/var/log/univention/installer.log
