@@ -43,6 +43,17 @@ eval `univention-baseconfig shell`
 
 getent group lp | grep -q "$hostname" || adduser $hostname\$ lp || true
 
+
+# Copy the previously fetched SSL certificates to the Cups directory:
+if test -e "/etc/univention/ssl/$hostname.$domainname/cert.pem"; then
+      cp -p /etc/univention/ssl/$hostname.$domainname/cert.pem /etc/cups/ssl/server.crt
+fi
+
+if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
+      cp -p /etc/univention/ssl/$hostname.$domainname/private.key /etc/cups/ssl/server.key
+fi
+
+
 # Test, whether a UCS 1.3 joint script has been run successfully
 previous=`grep "univention-printserver successful" /usr/lib/univention-install/.index.txt`
 

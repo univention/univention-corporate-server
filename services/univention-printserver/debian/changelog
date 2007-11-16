@@ -1,3 +1,12 @@
+univention-printserver (1.0.5-6) unstable; urgency=low
+
+  * If no SSL certificates are present Cups uses GnuTLS to generate the certificate
+    and key. On systems without entropy sources (such as many server systems this
+    leads to a non-functional, blocking cupsd and printer shares being written out
+    to /etc/cups/printers.conf. We now use the general domain-wide UCS certificates.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 16 Nov 2007 09:04:42 +0100
+
 univention-printserver (1.0.5-5) unstable; urgency=low
 
   * Call univention-admin instead of univention-directory-manager to ensure
