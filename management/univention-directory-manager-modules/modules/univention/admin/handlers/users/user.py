@@ -371,6 +371,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'departmentNumber': univention.admin.property(
+			short_description=_('Department Number'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=['person'],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'employeeType': univention.admin.property(
 			short_description=_('Employee Type'),
 			long_description='',
@@ -1055,10 +1065,11 @@ layout=[
 		[univention.admin.field("street"), univention.admin.field("filler")],
 		[univention.admin.field("postcode"), univention.admin.field("city")],
 	]),
-	univention.admin.tab(_('Employee'),_('Employee Information'),[
+	univention.admin.tab(_('Organisation'),_('Organisational Information'),[
 		[univention.admin.field("employeeNumber")],
 		[univention.admin.field("employeeType")],
 		[univention.admin.field("roomNumber")],
+		[univention.admin.field("departmentNumber")],
 		[univention.admin.field("secretary")]
 	]),
 	univention.admin.tab(_('Private Contact'),_('Private Contact Information'),[
@@ -1322,6 +1333,7 @@ mapping.register('roomNumber', 'roomNumber', None, univention.admin.mapping.List
 mapping.register('employeeNumber', 'employeeNumber', None, univention.admin.mapping.ListToString)
 mapping.register('employeeType', 'employeeType', None, univention.admin.mapping.ListToString)
 mapping.register('secretary', 'secretary')
+mapping.register('departmentNumber', 'departmentNumber', None, univention.admin.mapping.ListToString)
 mapping.register('mobileTelephoneNumber', 'mobile')
 mapping.register('pagerTelephoneNumber', 'pager')
 mapping.register('homeTelephoneNumber', 'homePhone')

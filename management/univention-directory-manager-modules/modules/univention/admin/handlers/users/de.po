@@ -187,6 +187,9 @@ msgstr "Telefonnummer"
 msgid "Employee Number"
 msgstr "Mitarbeiternummer"
 
+msgid "Department Number"
+msgstr "Abteilungsnummer"
+
 #: user.py:322
 msgid "Room Number"
 msgstr "Raumnummer"
@@ -559,6 +562,9 @@ msgstr "Mitarbeiter"
 #: user.py:1025
 msgid "Employee Information"
 msgstr "Mitarbeiterinformationen"
+
+msgid "Organisational Information"
+msgstr "Organisations-/Mitarbeiterinformationen"
 
 #: user.py:1031
 msgid "Private Contact"

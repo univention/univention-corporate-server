@@ -251,6 +251,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'departmentNumber': univention.admin.property(
+			short_description=_('Department Number'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=['person'],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'employeeType': univention.admin.property(
 			short_description=_('Employee Type'),
 			long_description='',
@@ -542,6 +552,7 @@ layout=[
 	]),
 	univention.admin.tab(_('Employee'),_('Employee Information'),[
 		[univention.admin.field("employeeType")],
+		[univention.admin.field("departmentNumber")],
 		[univention.admin.field("secretary")]
 	]),
 	univention.admin.tab(_('Linux'),_('Unix Account Settings'), [

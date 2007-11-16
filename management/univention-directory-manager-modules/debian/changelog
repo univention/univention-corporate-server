@@ -1,3 +1,11 @@
+univention-directory-manager-modules (2.2.8-11) unstable; urgency=low
+
+  * Rename "employee" tab to "organisation" to better reflect the stored
+    attributes
+  * Add a new attribute to store the department number of a user
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 16 Nov 2007 10:12:38 +0100
+
 univention-directory-manager-modules (2.2.8-10) unstable; urgency=low
 
   * Add missing comma in month definition
