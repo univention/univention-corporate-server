@@ -1,3 +1,9 @@
+univention-printserver (1.0.5-7) unstable; urgency=low
+
+  * Create symbolic links rather than copying the files
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 16 Nov 2007 10:03:11 +0100
+
 univention-printserver (1.0.5-6) unstable; urgency=low
 
   * If no SSL certificates are present Cups uses GnuTLS to generate the certificate
