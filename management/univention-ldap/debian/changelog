@@ -1,3 +1,9 @@
+univention-ldap (2.4.7-1) unstable; urgency=low
+
+  * provide access to admin settings objects for cn=admin 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Nov 2007 12:01:16 +0100
+
 univention-ldap (2.4.6-3) unstable; urgency=low
 
   * Config Registry is run in the preinst, so we need to declare a pre-dependency

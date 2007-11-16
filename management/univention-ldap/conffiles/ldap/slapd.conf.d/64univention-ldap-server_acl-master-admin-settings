@@ -8,13 +8,13 @@ else:
 print '''
 access to dn="cn=admin-settings,cn=univention,%(base)s" attrs="children"
 	by users %(access)s
-	by * none
+	by * none break
 
 access to dn.regex="uid=([^,]+),cn=admin-settings,cn=univention,%(base)s"
 	by dn.regex="uid=$1,.*,%(base)s" %(access)s
-	by * none
+	by * none break
 
 access to dn.regex=".*,cn=admin-settings,cn=univention,%(base)s"
-	by * none
+	by * none break
 ''' % { 'base' : ldap_base, 'access' : access }
 @!@
