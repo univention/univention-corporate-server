@@ -53,7 +53,7 @@ if listener.baseConfig['ldap/slave/filter']:
 
 LDIF_FILE = '/var/lib/univention-directory-replication/failed.ldif'
 
-EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates']
+EXCLUDE_ATTRIBUTES=['subschemaSubentry', 'hasSubordinates', 'entryDN']
 
 # don't use built-in OIDs from slapd
 BUILTIN_OIDS=[
