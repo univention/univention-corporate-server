@@ -43,8 +43,8 @@ import widget
 _ = locales.Translation( 'univention.management.console.dialog' ).translate
 
 class InfoBox( base.Text, image.Image ):
-	def __init__( self, text = '', columns = 1 ):
-		image.Image.__init__( self, 'actions/info', umct.SIZE_SMALL )
+	def __init__( self, text = '', columns = 1, icon = 'actions/info', size = umct.SIZE_SMALL ):
+		image.Image.__init__( self, icon, size )
 		base.Text.__init__( self, text, attributes = { 'colspan' : str( columns ) } )
 
 class Question( base.List ):
