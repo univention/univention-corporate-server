@@ -464,18 +464,7 @@ def doit(arglist):
 		elif opt == '--append-option':
 			parsed_append_options.append(val)
 		elif opt == '--filter':
-			try:
-				tmp_attr,tmp_val= val.split('=')
-			except ValueError:
-				msg="Filter is not valid"
-				out.append(msg)
-				return out + usage() + ["OPERATION FAILED"]
-			if not ((len(tmp_attr)>0) and (len(tmp_val)>0)):
-				msg="Filter is not valid"
-				out.append(msg)
-				return out + usage() + ["OPERATION FAILED"]
-			else:
-				filter=val
+			filter=val
 		elif opt == '--customattribute':
 			pos=val.find('=')
 			name=val[:pos]
