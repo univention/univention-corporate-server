@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.4-1) unstable; urgency=low
+
+  * check for openoffice/cups/support in all wrapper scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Nov 2007 20:06:33 +0100
+
 univention-ooffice2 (1.0.3-3) unstable; urgency=low
 
   * Update fontconfig cache in postinst

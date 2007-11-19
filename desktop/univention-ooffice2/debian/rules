@@ -55,6 +55,15 @@ install: build
 	dh_installdirs
 
 	install -m755 ooo-wrapper $(D)/usr/bin/ooo-wrapper
+	install -m755 oobase $(D)/usr/bin/oobase
+	install -m755 oocalc $(D)/usr/bin/oocalc
+	install -m755 oodraw $(D)/usr/bin/oodraw
+	install -m755 ooffice $(D)/usr/bin/ooffice
+	install -m755 oofromtemplate $(D)/usr/bin/oofromtemplate
+	install -m755 ooimpress $(D)/usr/bin/ooimpress
+	install -m755 oomath $(D)/usr/bin/oomath
+	install -m755 ooweb $(D)/usr/bin/ooweb
+	install -m755 oowriter $(D)/usr/bin/oowriter
 
 	for d in locolor hicolor; do \
 		for s in 16x16 22x22 32x32 48x48; do \

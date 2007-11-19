@@ -1,0 +1,11 @@
+#!/bin/sh
+
+if [ -x /usr/sbin/univention-baseconfig ]; then
+	CUPS=`/usr/sbin/univention-baseconfig get openoffice/cups/support`
+	if [ "$CUPS" -a "$CUPS" = "false" ]; then
+		export SAL_DISABLE_CUPS=1
+	fi
+fi
+
+export OOO_EXTRA_ARG='-math'
+/usr/lib/openoffice/program/ooqstart  "$@"

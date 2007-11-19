@@ -30,6 +30,15 @@
 
 if [ "$1" = "remove" -o "$1" = "purge" ]; then
 	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/ooo-wrapper.real /usr/bin/ooo-wrapper
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oobase.real /usr/bin/oobase
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oocalc.real /usr/bin/oocalc
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oodraw.real /usr/bin/oodraw
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/ooffice.real /usr/bin/ooffice
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oofromtemplate.real /usr/bin/oofromtemplate
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/ooimpress.real /usr/bin/ooimpress
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oomath.real /usr/bin/oomath
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/ooweb.real /usr/bin/ooweb
+	dpkg-divert --package univention-ooffice2 --remove --divert /usr/bin/oowriter.real /usr/bin/oowriter
 fi
 
 #DEBHELPER#
