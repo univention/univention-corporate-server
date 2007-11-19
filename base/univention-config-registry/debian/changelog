@@ -1,3 +1,9 @@
+univention-config-registry (2.6.4-1) unstable; urgency=low
+
+  * fix preinst and postinst interface scripts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Nov 2007 15:39:56 +0100
+
 univention-config-registry (2.6.3-4) unstable; urgency=low
 
   * Allow unauthenticated apt by default.

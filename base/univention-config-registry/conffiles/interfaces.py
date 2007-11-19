@@ -50,11 +50,11 @@ def restore_gateway(gateway):
 
 def preinst(baseConfig, changes):
 	for iface in set(changes):
-		if baseConfig.has_key('interfaces/%s/address'%iface):
+		if baseConfig.has_key(iface):
 			stop_iface(interface(iface))
 
 def postinst(baseConfig, changes):
 	for iface in set(changes):
-		if baseConfig.has_key('interfaces/%s/address'%iface):
+		if baseConfig.has_key(iface):
 			start_iface(interface(iface))
 	restore_gateway(baseConfig.get('gateway'))
