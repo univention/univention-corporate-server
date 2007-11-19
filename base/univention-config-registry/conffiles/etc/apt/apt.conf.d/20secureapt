@@ -1,9 +1,9 @@
 @!@
 if baseConfig.has_key('update/secure_apt'):
-	if baseConfig['update/secure_apt'].lower() in ['false', 'no']:
-		print 'APT::Get::AllowUnauthenticated 1 ;'
-	else:
+	if baseConfig['update/secure_apt'].lower() in ['true', 'yes']:
 		print 'APT::Get::AllowUnauthenticated 0 ;'
+	else:
+		print 'APT::Get::AllowUnauthenticated 1 ;'
 else:
-	print 'APT::Get::AllowUnauthenticated 0 ;'
+	print 'APT::Get::AllowUnauthenticated 1 ;'
 @!@
