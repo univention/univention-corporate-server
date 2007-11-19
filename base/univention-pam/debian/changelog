@@ -1,3 +1,10 @@
+univention-pam (1.2.5-1) unstable; urgency=low
+
+  * remove the libnss group mapping stuff. We made the change in the
+    libnss-ldap source package.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 Nov 2007 13:46:35 +0100
+
 univention-pam (1.2.4-2) unstable; urgency=low
 
   * Fix schema mapping
