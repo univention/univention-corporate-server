@@ -37,6 +37,10 @@ chmod -R g+rw /etc/pykota
 # should be enabled for cups 1.2
 # chmod o+r /etc/pykota/pykotadmin.conf /etc/pykota/pykota.conf
 
+# if all users have access to /usr/share/pykota/cupspykota thenn 
+# pykota will run as user lp
+dpkg-statoverride --update --add root root 700 /usr/share/pykota/cupspykota >/dev/null || true
+
 adduser lp pykota
 /etc/init.d/cupsys restart
 

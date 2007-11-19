@@ -75,7 +75,7 @@ except:
 	sys.exit('To Few Arguments, need username and printer')
 
 
-lo = univention.uldap.access(host=bc['ldap/server'], base=bc['ldap/base'], binddn=None, bindpw=None, start_tls=2)
+lo = univention.uldap.access(host=bc['ldap/server/name'], base=bc['ldap/base'], binddn=None, bindpw=None, start_tls=2)
 try:
 	user_dn,attrs=lo.search('(&(objectClass=person)(uid=%s))' % usr_filter, required=1, unique=1, attr=['uid'])[0]
 except:
