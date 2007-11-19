@@ -1,3 +1,10 @@
+univention-ldap (2.4.8-1) unstable; urgency=low
+
+  * only the user herself and cn=admin may access the user's admin settings
+    object 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 19 Nov 2007 11:40:01 +0100
+
 univention-ldap (2.4.7-1) unstable; urgency=low
 
   * provide access to admin settings objects for cn=admin 
