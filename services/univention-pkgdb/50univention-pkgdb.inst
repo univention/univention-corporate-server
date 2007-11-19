@@ -74,6 +74,10 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin
 
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
 univention-admin policies/console_access modify $@ --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base
