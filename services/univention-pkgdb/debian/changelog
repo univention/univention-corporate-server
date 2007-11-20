@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.11-1) unstable; urgency=low
+
+  * remove duplicate function _softmon_system_search3
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 15:23:42 +0100
+
 univention-pkgdb (1.0.10-1) unstable; urgency=low
 
   * create the default umc admin policy

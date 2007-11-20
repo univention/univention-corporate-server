@@ -312,22 +312,6 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				thread.run()
 
 
-	def _softmon_system_search3( self, thread, threadresult, object, result ):
-		search_results = []
-		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query_result: %s" % threadresult )
-		for item in threadresult:
-			search_results.append( { 'sysname': item[0],
-									 'pkgname': item[1],
-									 'version': item[2],
-									 'date': item[3],
-									 'selected_state': self.selectedStates[ str(item[5]) ],
-									 'installation_state': self.instStates[ str(item[6]) ],
-									 'current_state': self.currentStates[ str(item[7]) ],
-									 } )
-		result[ 'search_results' ] = search_results
-		self.finished( object.id(), result )
-
-
 	def _get_packages_by_query( self, query, need_join_systems ):
 		try:
 			pkgdb_connect_string = updb.sql_create_localconnectstring( umc.baseconfig['hostname']  )
