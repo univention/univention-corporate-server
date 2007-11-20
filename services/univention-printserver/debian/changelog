@@ -1,3 +1,10 @@
+univention-printserver (1.0.6-1) unstable; urgency=low
+
+  * with cups 1.2 the enable and disable binaries are renamed to
+    cupsenable and cupsdisable
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 15:43:22 +0100
+
 univention-printserver (1.0.5-7) unstable; urgency=low
 
   * Create symbolic links rather than copying the files

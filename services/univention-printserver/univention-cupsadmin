@@ -49,9 +49,9 @@ if cmd[-len("univention-cupsadmin"):]=="univention-cupsadmin":
 # argv[0] should be something like .../univention-cups... Cut
 # univention-cups from it
 if os.path.basename(cmd)=="univention-cups-enable" or os.path.basename(cmd)=="univention-cups-disable":
-	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/")
+	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/bin/cups")
 else:
-	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/")
+	cmd=os.path.basename(cmd).replace("univention-cups-", "/usr/sbin/cups")
 
 # check if target executable exists
 if not(os.path.exists(cmd)):
