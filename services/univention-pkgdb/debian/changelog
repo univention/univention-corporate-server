@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.13-2) unstable; urgency=low
+
+  * readded and rename the search function
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 19:51:44 +0100
+
 univention-pkgdb (1.0.12-1) unstable; urgency=low
 
   * fix translation 'select state' -> Paketauswahlstatus

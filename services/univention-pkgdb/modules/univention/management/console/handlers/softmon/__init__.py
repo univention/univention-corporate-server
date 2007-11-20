@@ -306,10 +306,26 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				query, need_join_systems = _psql.convertSearchFilterToQuery( object.options.get('filter',[]) )
 				ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query: %s" % query )
 
-				cb = notifier.Callback( self._softmon_system_search3, object, result )
+				cb = notifier.Callback( self._softmon_system_search4, object, result )
 				func = notifier.Callback( self._get_packages_by_query, query, need_join_systems )
 				thread = notifier.threads.Simple( 'softmon', func, cb )
 				thread.run()
+
+
+	def _softmon_system_search4( self, thread, threadresult, object, result ):
+		search_results = []
+		ud.debug( ud.ADMIN, ud.INFO, "SOFTMON: query_result: %s" % threadresult )
+		for item in threadresult:
+			search_results.append( { 'sysname': item[0],
+									 'pkgname': item[1],
+									 'version': item[2],
+									 'date': item[3],
+									 'selected_state': self.selectedStates[ str(item[5]) ],
+									 'installation_state': self.instStates[ str(item[6]) ],
+									 'current_state': self.currentStates[ str(item[7]) ],
+									 } )
+		result[ 'search_results' ] = search_results
+		self.finished( object.id(), result )
 
 
 	def _get_packages_by_query( self, query, need_join_systems ):
