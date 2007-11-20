@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.12-1) unstable; urgency=low
+
+  * fix translation 'select state' -> Paketauswahlstatus
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 15:25:44 +0100
+
 univention-pkgdb (1.0.11-1) unstable; urgency=low
 
   * remove duplicate function _softmon_system_search3

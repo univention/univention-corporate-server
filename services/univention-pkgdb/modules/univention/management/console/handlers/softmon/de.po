@@ -114,7 +114,7 @@ msgstr "Version"
 
 #: _revamp.py:187
 msgid "select state"
-msgstr "Erfassungszeit"
+msgstr "Paketauswahlstatus"
 
 #: _revamp.py:187
 msgid "installation state"
