@@ -1,3 +1,9 @@
+univention-ldap (2.4.9-1) unstable; urgency=low
+
+  * fix admin-settings permissions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 Nov 2007 14:45:54 +0100
+
 univention-ldap (2.4.8-1) unstable; urgency=low
 
   * only the user herself and cn=admin may access the user's admin settings
