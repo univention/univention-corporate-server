@@ -51,11 +51,5 @@ else
 	univention-config-registry set locale="$locale"
 fi
 
-if [ -z "$default_locale" ]; then
-	univention-config-registry unset "locale/default"
-else
-	univention-config-registry set "locale/default"="$default_locale"
-fi
-
 
 exit 0
