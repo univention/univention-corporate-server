@@ -848,7 +848,9 @@ class simpleComputer( simpleLdap ):
 	def __is_ip( self, ip ):
 		_re = re.compile( '^[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+\.[ 0-9 ]+$' )
 		if _re.match ( ip ):
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> Yes' % ip )
 			return True
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'IP[%s]? -> No' % ip )
 		return False
 
 	def open( self ):
@@ -1110,8 +1112,10 @@ class simpleComputer( simpleLdap ):
 
 		if self.__is_ip ( ip ):
 			zone = string.join( entry.split( ' ' )[ :-1 ], ' ' )
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into zone [%s] and ip [%s]' % (entry, zone, ip))
 			return ( zone, ip )
 		else:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'Split entry [%s] into zone [%s] and ip [%s]' % (entry, entry, None))
 			return ( entry, None )
 
 
@@ -1253,6 +1257,18 @@ class simpleComputer( simpleLdap ):
 				new_ip_list.append( new_ip )
 				self.lo.modify( dn, [ ( 'aRecord', attr[ 'aRecord' ],  new_ip_list ) ] )
 
+			if not zoneDn:
+				zone = string.join( ldap.explode_dn( dn )[ 1: ], ',' )
+			else:
+				zone = zoneDn
+
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'update the zon sOARecord for the zone: %s' % zone)
+
+			zone=univention.admin.handlers.dns.forward_zone.object( self.co, self.lo, self.position, zone )
+			zone.open( )
+			zone.modify( )
+					
+
 	def __add_dns_forward_object( self, name, zoneDn, ip ):
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'we should add a dns forward object: zoneDn="%s", name="%s", ip="%s"' % ( zoneDn, name, ip ) )
 		if name and ip and zoneDn:
@@ -1358,7 +1374,8 @@ class simpleComputer( simpleLdap ):
 					if not changed_ip:
 						self.__add_dns_forward_object( self[ 'name' ], self[ 'dnsEntryZoneForward' ][ 0 ], entry )
 				if self.has_key( 'dnsEntryZoneReverse' ) and len( self[ 'dnsEntryZoneReverse' ] ) > 0:
-					self.__add_dns_reverse_object( self[ 'name' ], self[ 'dnsEntryZoneReverse' ][ 0 ], entry )
+					x, ip = self.__split_dns_line( self[ 'dnsEntryZoneReverse' ][ 0 ] )
+					self.__add_dns_reverse_object( self[ 'name' ], x, entry )
 
 		if self.__changes[ 'name' ]:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'simpleComputer: name has changed' )
