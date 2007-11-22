@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.9-4) unstable; urgency=low
+
+  * Run the commands properly _inside_ the chroot.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 22 Nov 2007 13:43:01 +0100
+
 univention-client-basesystem (2.1.9-3) unstable; urgency=low
 
   * Regenerate fontconfig cache in postinst and copy it into the expected

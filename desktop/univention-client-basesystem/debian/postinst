@@ -77,8 +77,8 @@ case "`uname -m`" in
 				rm -f /var/lib/univention-client-root/etc/locale.gen
 				mv /var/lib/univention-client-root/etc/locale.gen.BACKUP /var/lib/univention-client-root/etc/locale.gen
 				# gdm requires the fontconfig cache to be regenerated
-				fc-cache
-				cp /var/cache/fontconfig/* /usr/share/fontconfig/cache/fontconfig/
+				chroot /var/lib/univention-client-root/ /usr/bin/fc-cache
+				chroot /var/lib/univention-client-root/ /bin/sh -c "cp  /var/cache/fontconfig/* /usr/share/fontconfig/cache/fontconfig/"
                 ;;
         *)
 				echo "no i386 system - update of default locales skipped"
