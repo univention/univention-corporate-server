@@ -1,4 +1,4 @@
-univention-ldap (2.4.9-1) unstable; urgency=low
+univention-ldap (2.4.10-1) unstable; urgency=low
 
   * fix admin-settings permissions
 
