@@ -101,7 +101,7 @@ PackageList=[
 					'Packages': ['univention-kolab2-webclient'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master' ],
-					'Possible': ['domaincontroller_master'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Description': _('Horde Webclient for Kolab 2 for UCS'),
 				},
 				{
