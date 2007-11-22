@@ -36,11 +36,11 @@ if [ -n "$cdrom_device" ]; then
 	nfs=`echo $cdrom_device | grep "nfs:"`
 	smbfs=`echo $cdrom_device | grep "smbfs:"`
 	if [ -n "$nfs" ]; then
-		mount -t nfs `echo $cdrom_device | sed -e 's|nfs:||'` /mnt
+		/bin/mount -t nfs `echo $cdrom_device | sed -e 's|nfs:||'` /mnt
 	elif [ -n "$smbfs" ]; then
-		mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /mnt
+		/bin/mount -t smbfs `echo $cdrom_device | sed -e 's|smbfs:||'` /mnt
 	else
-		mount -t iso9660 $cdrom_device /mnt
+		/bin/mount -t iso9660 $cdrom_device /mnt
 	fi
 fi
 
@@ -59,4 +59,4 @@ else
 	fi
 fi
 
-umount /mnt
+/bin/umount /mnt

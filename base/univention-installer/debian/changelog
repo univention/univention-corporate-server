@@ -1,3 +1,9 @@
+univention-installer (1.8.10-1) unstable; urgency=low
+
+  * use /bin/mount instead of mount (the busybox mount)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Nov 2007 07:37:20 +0100
+
 univention-installer (1.8.9-1) unstable; urgency=low
 
   * show the kolab2 webclient on all dc systems

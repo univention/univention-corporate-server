@@ -178,7 +178,7 @@ set | egrep "^dev_" | while read line; do
 	echo "device_mp=$device_mp"
 
 	if [ "$device_mp" = '/' ]; then
-		mount -t $device_fs $device_num /instmnt $LOG
+		/bin/mount -t $device_fs $device_num /instmnt $LOG
 		touch /instmnt/.log
 		python2.4 /sbin/univention-config-registry set installer/device/0/name=$device_num
 		python2.4 /sbin/univention-config-registry set installer/device/0/fs=$device_fs
