@@ -1,3 +1,9 @@
+univention-config-registry (2.6.4-2) unstable; urgency=low
+
+  * Default to secure apt to no
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 22 Nov 2007 17:50:50 +0100
+
 univention-config-registry (2.6.4-1) unstable; urgency=low
 
   * fix preinst and postinst interface scripts
