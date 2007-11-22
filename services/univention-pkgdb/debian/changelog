@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.14-1) unstable; urgency=low
+
+  * create standard umc containers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Nov 2007 11:21:43 +0100
+
 univention-pkgdb (1.0.13-2) unstable; urgency=low
 
   * readded and rename the search function

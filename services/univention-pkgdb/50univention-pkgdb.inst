@@ -70,6 +70,10 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set description="All Software Monitor Operations"
 
 # add to default policies
+univention-admin container/cn create $@ --ignore_exists --position cn=univention,$ldap_base --set name=console
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=acls
+univention-admin container/cn create $@ --ignore_exists --position cn=console,cn=univention,$ldap_base --set name=operations
+
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=default-admin
