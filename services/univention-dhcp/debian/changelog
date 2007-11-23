@@ -1,3 +1,10 @@
+univention-dhcp (2.0.7-1) unstable; urgency=low
+
+  * be sure the dhcp3-server is already installed before divert the init
+    script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Nov 2007 14:17:38 +0100
+
 univention-dhcp (2.0.6-1) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/dhcp.log
