@@ -84,7 +84,8 @@ for p in	univention-java \
 			univention-client-kernel-image \
 			univention-mozilla-firefox \
 			kdebase \
-			kdenetwork; do
+			kdenetwork \
+			jade; do
 	check_and_install $p
 done
 
