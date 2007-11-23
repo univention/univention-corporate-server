@@ -1,3 +1,10 @@
+univention-config-registry (2.6.5-1) unstable; urgency=low
+
+  * call dhclient after commit /etc/resolv.conf if the client is configured as
+    dhcp client
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Nov 2007 14:02:30 +0100
+
 univention-config-registry (2.6.4-2) unstable; urgency=low
 
   * Default to secure apt to no
