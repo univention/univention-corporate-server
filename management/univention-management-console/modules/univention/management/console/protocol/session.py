@@ -321,7 +321,7 @@ class Processor( signals.Provider ):
 				ud.debug( ud.ADMIN, ud.ERROR, 'connection to module process failed')
 				res = Response( msg )
 				res.status( 503 ) # error connecting to module process
-				res.report = definitions.status_information( 503 )
+				res.report = status_information( 503 )
 				self.signal_emit( 'response', res )
 			else:
 				mod._connect_retries += 1

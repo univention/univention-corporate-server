@@ -91,10 +91,15 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		fd = open( os.path.join( pidfile ), 'r' )
 		pid = fd.readline()[ : -1 ]
 		fd.close()
-		fd = open( os.path.join( '/proc', pid, 'cmdline' ), 'r' )
-		cmdline = fd.readline()[ : -1 ]
-		fd.close()
-		return cmdline.split( '\x00' )
+		try:
+			fd = open( os.path.join( '/proc', pid, 'cmdline' ), 'r' )
+			cmdline = fd.readline()[ : -1 ]
+			fd.close()
+			return cmdline.split( '\x00' )
+		except:
+			os.unlink( os.path.join( pidfile ) )
+			pass
+		return ()
 
 	def _vnc_status( self ):
 		vncdir = os.path.join( '/home', self._username, '.vnc' )
