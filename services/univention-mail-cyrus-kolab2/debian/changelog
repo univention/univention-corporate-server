@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-5) unstable; urgency=low
+
+  * Add a dependency on whois, since mkpasswd is used during postinst.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 26 Nov 2007 13:04:19 +0100
+
 univention-mail-cyrus-kolab2 (1.0.5-4) unstable; urgency=low
 
   * change package priotiry from optional to standard
