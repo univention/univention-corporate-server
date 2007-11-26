@@ -39,6 +39,10 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-pkgdb-tools v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
+if [ -x /usr/sbin/univention-pkgdb-check ]; then
+	/usr/sbin/univention-pkgdb-check
+fi
+
 univention-pkgdb-scan
 
 test -n "`grep "univention-pkgdb-tools v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb-tools v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
