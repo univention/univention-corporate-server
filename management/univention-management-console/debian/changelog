@@ -1,3 +1,9 @@
+univention-management-console (0.9.19-1) unstable; urgency=low
+
+  * VNC module: check if VNC server could be started 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 26 Nov 2007 13:35:30 +0100
+
 univention-management-console (0.9.18-1) unstable; urgency=low
 
   * fix minor bugs in VNC module 

@@ -33,6 +33,7 @@ import univention.management.console as umc
 import univention.management.console.handlers as umch
 import univention.management.console.dialog as umcd
 import univention.management.console.tools as umct
+import univention.debug as ud
 
 import univention.service_info as usi
 
@@ -88,7 +89,10 @@ class handler( umch.simpleHandler, _revamp.Web ):
 					pidfile = os.path.join( vncdir, item )
 					break
 
-		fd = open( os.path.join( pidfile ), 'r' )
+		if not pidfile:
+			return ()
+
+		fd = open( pidfile, 'r' )
 		pid = fd.readline()[ : -1 ]
 		fd.close()
 		try:
@@ -97,7 +101,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			fd.close()
 			return cmdline.split( '\x00' )
 		except:
-			os.unlink( os.path.join( pidfile ) )
+			os.unlink( pidfile )
 			pass
 		return ()
 
@@ -111,9 +115,18 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		if os.path.isdir( vncdir ):
 			for item in os.listdir( vncdir ):
 				if os.path.isfile( os.path.join( vncdir, item ) ) and item.endswith( '.pid' ):
-					running = True
+					try:
+						fd = open( os.path.join( vncdir, item ), 'r' )
+						pid= fd.readline()[ : -1 ]
+						fd.close()
+						if os.path.isfile( os.path.join( '/proc', pid, 'cmdline' ) ):
+							running = True
+					except:
+						pass
+
 					break
 
+		ud.debug( ud.ADMIN, ud.ERROR, 'VNC server status: passwort exists: %s running %s' % ( pwdexists, running ) )
 		return ( pwdexists, running )
 
 	def vnc_config( self, object ):
@@ -127,10 +140,12 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def vnc_start( self, object ):
 		pwdexists, running = self._vnc_status()
-		if not running:
-			os.system( 'su - %s -c "vncserver -geometry 800x600"' % self._username )
+		res = 0
 
-		self.finished( object.id(), True )
+		if not running:
+			res = os.system( 'su - %s -c "vncserver -geometry 800x600"' % self._username )
+
+		self.finished( object.id(), res == 0 )
 
 	def vnc_stop( self, object ):
 		pwdexists, running = self._vnc_status()
