@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.16-1) unstable; urgency=low
+
+  * moved umc module from python-univention-pkgdb to univention-pkgdb
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 26 Nov 2007 16:19:10 +0100
+
 univention-pkgdb (1.0.15-1) unstable; urgency=low
 
   * create default console policy container

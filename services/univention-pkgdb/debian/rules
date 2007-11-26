@@ -31,7 +31,7 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 
 PYVERS=$(shell pyversions -vr)
-PACKAGE_UMCMOD=python-univention-pkgdb
+PACKAGE_UMCMOD=univention-pkgdb
 PACKAGE_IMAGES=univention-pkgdb
 UMC_MODULES=$(shell find modules/univention -name '*.py')
 UMC_MO_FILES=$(shell find modules/univention -name '*.po' | sed 's/\.po/\.mo/g')
