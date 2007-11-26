@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.18-1) unstable; urgency=low
+
+  * move the hostname create into the univention-pkdb join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Nov 2007 22:11:04 +0100
+
 univention-pkgdb (1.0.17-1) unstable; urgency=low
 
   * execute /usr/sbin/univention-pkgdb-check before starting univention-

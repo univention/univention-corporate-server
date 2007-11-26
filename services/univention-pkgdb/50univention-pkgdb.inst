@@ -84,6 +84,9 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
 	--append allow=cn=softmon-all,cn=acls,cn=console,cn=univention,$ldap_base
 
+if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py ]; then
+	python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
+fi
 
 test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
