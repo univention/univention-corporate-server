@@ -1,3 +1,10 @@
+univention-pkgdb (1.0.19-2) unstable; urgency=low
+
+  * do dh_pycentral for univention-pkgdb
+  * restart umc server on installation of univention-pkgdb
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 27 Nov 2007 09:41:12 +0100
+
 univention-pkgdb (1.0.19-1) unstable; urgency=low
 
   * execute univention-pkgdb-scan during the join

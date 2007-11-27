@@ -73,4 +73,8 @@ if [ ! -e /var/log/univention/pkgdb.log ]; then
 	chmod 640 /var/log/univention/pkgdb.log
 fi
 
+if [ -x "/etc/init.d/univention-management-console-server" ] ; then
+	/etc/init.d/univention-management-console-server crestart || true
+fi
+
 exit 0

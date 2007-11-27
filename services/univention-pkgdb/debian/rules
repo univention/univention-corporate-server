@@ -129,7 +129,7 @@ binary-arch: build install
 	dh_installlogrotate
 	dh_installcron
 	dh_installchangelogs
-	dh_pycentral -Nunivention-pkgdb -Nunivention-pkgdb-tools
+	dh_pycentral -Nunivention-pkgdb-tools
 	dh_link
 	dh_strip
 	dh_compress
