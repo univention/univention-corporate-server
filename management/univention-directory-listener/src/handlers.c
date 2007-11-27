@@ -108,7 +108,6 @@ static PyObject* module_import(char *filename)
 
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "execCodeModuleEx %s", filename);
 	m = PyImport_ExecCodeModuleEx(name, (PyObject*) co, filename);
-	Py_DECREF(co);
 	free(name);
 	univention_debug(UV_DEBUG_LISTENER, UV_DEBUG_ALL, "Module done %s", filename);
 
