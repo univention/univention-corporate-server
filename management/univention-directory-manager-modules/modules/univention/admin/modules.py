@@ -559,6 +559,6 @@ def wizardOperations(module_name):
 def childModules(module_name):
 	'''return child modules if module is a super module'''
 	module = get(module_name)
-	return getattr(module, 'childmodules', [])
+	return copy.deepcopy( getattr(module, 'childmodules', []) )
 
 update()

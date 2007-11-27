@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.11-1) unstable; urgency=low
+
+  * fixed bug in search wizards
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 27 Nov 2007 13:36:15 +0100
+
 univention-directory-manager-modules (2.2.10-1) unstable; urgency=low
 
   * be sure the dns serial will be updated during the ip address change
