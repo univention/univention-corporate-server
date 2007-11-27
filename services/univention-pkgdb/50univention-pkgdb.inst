@@ -86,6 +86,7 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 
 if [ -x /usr/sbin/univention-pkgdb-check ] && [ -e /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py ]; then
 	python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --db-server $hostname.$domainname --add $hostname\$
+	univention-pkgdb-scan --db-server $hostname.$domainname
 fi
 
 test -n "`grep "univention-pkgdb v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-pkgdb v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
