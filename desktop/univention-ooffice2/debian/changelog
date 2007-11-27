@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.4-2) unstable; urgency=low
+
+  * Enable verbose output in fontconfig management.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 27 Nov 2007 15:06:15 +0100
+
 univention-ooffice2 (1.0.4-1) unstable; urgency=low
 
   * check for openoffice/cups/support in all wrapper scripts

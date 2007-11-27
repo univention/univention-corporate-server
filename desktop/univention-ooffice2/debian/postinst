@@ -36,7 +36,7 @@ univention-baseconfig set openoffice/database/default?HSQLDB
 
 if [ -x /usr/bin/fc-cache ] && [ -e /etc/fonts/fonts.conf ]; then
 	echo "Updating fontconfig cache..."
-	fc-cache -fs
+	fc-cache -fvs
 fi
 
 exit 0
