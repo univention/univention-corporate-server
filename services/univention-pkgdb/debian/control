@@ -10,6 +10,7 @@ Package: univention-pkgdb
 Architecture: all
 Pre-Depends: univention-postgresql (>> 0.3.9 )
 Depends: univention-config-registry, postgresql-client, univention-pkgdb-tools 
+XB-Python-Version: ${python:Versions}
 Description: UCS - PkgDB
  This package contains server-side-components for the Univention package database.
  .
