@@ -80,6 +80,7 @@ for p in 	univention-server-master \
 			univention-samba \
 			univention-pkgdb \
 			univention-printquota \
+			univention-groupware-webclient \
 			univention-application-server; do
 	echo "$p hold" | dpkg --set-selections
 done

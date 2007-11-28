@@ -69,6 +69,7 @@ for p in	univention-application-server \
 	check_and_install $p
 done
 
+echo "univention-groupware-webclient install" | dpkg --set-selections
 dpkg -l univention-groupware-webclient | grep ^ii >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-kolab2-webclient >>/var/log/univention/updater.log 2>&1 

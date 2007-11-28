@@ -1,3 +1,9 @@
+univention-updater (2.3.10-1) unstable; urgency=low
+
+  * set univention-groupware-webclient to hold during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Nov 2007 13:08:00 +0100
+
 univention-updater (2.3.9-1) unstable; urgency=low
 
   * update jade in the postup.sh script
