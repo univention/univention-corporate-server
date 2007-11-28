@@ -2,6 +2,7 @@
 
 echo "Running preup.sh script"
 
+
 # check if user is logged in using ssh
 
 if [ -n "$SSH_CLIENT" ]
@@ -55,6 +56,8 @@ else
     echo "WARNING: skipped disk-usage-test as you requested"
 fi
 
+
+dpkg --configure -a
 
 if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
 	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA

@@ -1,3 +1,9 @@
+univention-updater (2.3.10-2) unstable; urgency=low
+
+  * call dpkg --configure -a in the preup.sh script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Nov 2007 21:21:11 +0100
+
 univention-updater (2.3.10-1) unstable; urgency=low
 
   * set univention-groupware-webclient to hold during the update
