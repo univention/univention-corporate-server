@@ -1,3 +1,9 @@
+univention-nagios (1.0.8-1) unstable; urgency=low
+
+  * be sure setuid is set in the nagios-server listener module
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Nov 2007 20:56:26 +0100
+
 univention-nagios (1.0.7-8) unstable; urgency=low
 
   * Add alternative depends on transition package

@@ -444,6 +444,7 @@ def handleService(dn, new, old):
 											   'NAGIOS-SERVER: handleService: contactgrp for host %s does not exist - using fallback' % host)
 
 						createContactGroup( 'cg-%s' % host, [ __fallbackContact ] )
+						listener.setuid(0)
 
 		finally:
 			listener.unsetuid()
