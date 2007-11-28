@@ -1,3 +1,9 @@
+univention-ooffice2 (1.0.4-4) unstable; urgency=low
+
+  * Add an additional safety net in case fc-cache fails ever again
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 28 Nov 2007 16:17:31 +0100
+
 univention-ooffice2 (1.0.4-3) unstable; urgency=low
 
   * Bump version.
