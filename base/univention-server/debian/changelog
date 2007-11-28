@@ -1,3 +1,9 @@
+univention-server (2.2.12-1) unstable; urgency=low
+
+  * redirect the normal output to /dev/null in check_connection
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Nov 2007 08:25:28 +0100
+
 univention-server (2.2.11-1) unstable; urgency=low
 
   * fix a syntax error in the chech_connection cron job on managed and
