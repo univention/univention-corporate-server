@@ -230,7 +230,7 @@ cleanup() {
 	olist[54]="cn=testadminuserpolicy,$ldap_base"
 	olist[55]="cn=testautostartpolicy,$ldap_base"
 	olist[56]="cn=testclientdevicespolicy,$ldap_base"
-	olist[57]="cn=testclientpackagespolicy,$ldap_base"
+	olist[57]="cn=testmanagedclientpackagespolicy,$ldap_base"
 	olist[58]="cn=testdhcpbootpolicy,$ldap_base"
 	olist[59]="cn=testldapserverpolicy,$ldap_base"
 	olist[60]="cn=testmailquotapolicy,$ldap_base"
@@ -2323,7 +2323,7 @@ then
 					ckthere "cn=testnetwork" "BASE" "(univentionDnsReverseZone=zoneName=$revzonename,cn=dns,$ldap_base)" "testnetwork" "dns reverse zone" $LINENO
 					ckthere "cn=testnetwork" "BASE" "(univentionDhcpEntry=cn=testdhcpservice,cn=dhcp,$ldap_base)" "testnetwork" "dhcp entry" $LINENO
 					num=32
-				for hosttype in client domaincontroller_master domaincontroller_slave domaincontroller_backup ipmanagedclient thinclient mobileclient windows memberserver macos;do
+				for hosttype in managedclient domaincontroller_master domaincontroller_slave domaincontroller_backup ipmanagedclient thinclient mobileclient windows memberserver macos;do
 					options=""
 					if [ "$mode" = 1 ]; then posixopt="1"; kerberosopt="" ;remref=" --remove_referring ";usenetwork="network";fi
 					if [ "$mode" = 2 ]; then posixopt="1"; kerberosopt="1";remref=" --remove_referring ";usenetwork="network";fi
@@ -3020,12 +3020,15 @@ then
 	############################################################################
 	for uhost in Master Slave Member Client MobileClient; do
 		mhost=`echo $uhost |tr [:upper:] [:lower:]`
-		if [ "$uhost" == "MobileClient" ]
+		if [ "$uhost" = "MobileClient" ]
 		then 
 			host=client
 		else
 			host=$mhost
 		fi
+		if [ "$mhost" = "client" ]; then
+			mhost="managedclient"
+		fi	
 		adminwrap $LINENO policies/${mhost}packages create \
 		--set name=test${mhost}packagespolicy \
 		--set ${host}Packages=this \
@@ -5906,7 +5909,7 @@ then
 			"policies admin_user" \
 			"policies autostart" \
 			"policies clientdevices" \
-			"policies clientpackages" \
+			"policies managedclientpackages" \
 			"policies desktop" \
 			"policies dhcp_boot" \
 			"policies dhcp_dns" \
