@@ -1,3 +1,9 @@
+univention-kolab2-webclient (1.2.1-1) unstable; urgency=low
+
+  * add univention-postgresql as pre dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Nov 2007 15:40:36 +0100
+
 univention-kolab2-webclient (1.2.0-5) unstable; urgency=low
 
   * mv debian/univention-groupware-webclient.univention-baseconfig
