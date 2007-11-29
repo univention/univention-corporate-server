@@ -69,10 +69,10 @@ class PolicyMemberPackagesTestCase(PolicyPackagesBaseCase):
 		super(PolicyMemberPackagesTestCase,
 		      self).__init__(*args, **kwargs)
 
-class PolicyClientPackagesTestCase(PolicyPackagesBaseCase):
+class PolicyManagedClientPackagesTestCase(PolicyPackagesBaseCase):
 	def __init__(self, *args, **kwargs):
-		self.type = 'client'
-		super(PolicyClientPackagesTestCase,
+		self.type = 'managedclient'
+		super(PolicyManagedClientPackagesTestCase,
 		      self).__init__(*args, **kwargs)
 
 class PolicyMobileClientPackagesTestCase(PolicyPackagesBaseCase):
@@ -89,7 +89,7 @@ def suite():
 	suite.addTest(PolicyMasterPackagesTestCase())
 	suite.addTest(PolicySlavePackagesTestCase())
 	suite.addTest(PolicyMemberPackagesTestCase())
-	suite.addTest(PolicyClientPackagesTestCase())
+	suite.addTest(PolicyManagedClientPackagesTestCase())
 	suite.addTest(PolicyMobileClientPackagesTestCase())
 	return suite
 
