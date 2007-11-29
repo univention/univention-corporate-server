@@ -74,6 +74,7 @@ class PolicyManagedClientPackagesTestCase(PolicyPackagesBaseCase):
 		self.type = 'managedclient'
 		super(PolicyManagedClientPackagesTestCase,
 		      self).__init__(*args, **kwargs)
+		self.type = 'client'
 
 class PolicyMobileClientPackagesTestCase(PolicyPackagesBaseCase):
 	def __init__(self, *args, **kwargs):
