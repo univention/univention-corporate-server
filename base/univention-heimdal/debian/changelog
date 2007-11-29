@@ -1,3 +1,9 @@
+univention-heimdal (2.1.2-1) unstable; urgency=low
+
+  * don't call ktutil twice
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Nov 2007 14:22:54 +0100
+
 univention-heimdal (2.1.1-4) unstable; urgency=low
 
   * Add an alternate depends on univention-admin-tools.

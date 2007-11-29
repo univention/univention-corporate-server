@@ -80,8 +80,6 @@ def handler(dn, new, old):
 			if old:
 				os.spawnv(os.P_WAIT, '/usr/sbin/ktutil', ['ktutil', 'remove', '-p', old['krb5PrincipalName'][0]])
 			if new:
-				#FIXME: otherwise the keytab entry is duplicated
-				os.spawnv(os.P_WAIT, '/usr/sbin/ktutil', ['ktutil', 'remove', '-p', new['krb5PrincipalName'][0]])
 				os.spawnv(os.P_WAIT, '/usr/sbin/kadmin', ['kadmin', '-l', 'ext', new['krb5PrincipalName'][0]])
 
 		finally:
