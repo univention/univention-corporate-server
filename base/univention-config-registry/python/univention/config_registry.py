@@ -229,12 +229,20 @@ class _ConfigRegistry( dict ):
 				exception_occured()
 
 	def __save_file(self, filename):
-		fp = open(filename, 'w')
+		try:
+			fp = open(filename, 'w')
 
-		fp.write('# univention_ base.conf\n\n')
-		fp.write(self.__str__())
+			fp.write('# univention_ base.conf\n\n')
+			fp.write(self.__str__())
 
-		fp.close()
+			fp.close()
+		except IOError, (errno, strerror):
+			# errno 13: Permission denied
+			#
+			# suppress certain errors
+			if not errno in [ 13 ]:
+				raise
+
 		try:
 			os.system('/bin/sync > /dev/null 2>&1')
 		except:

@@ -1,3 +1,9 @@
+univention-config-registry (2.6.6-1) unstable; urgency=low
+
+  * suppress "permission denied" error while writing base.conf
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 29 Nov 2007 12:18:36 +0100
+
 univention-config-registry (2.6.5-1) unstable; urgency=low
 
   * call dhclient after commit /etc/resolv.conf if the client is configured as
