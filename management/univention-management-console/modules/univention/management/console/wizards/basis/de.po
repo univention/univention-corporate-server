@@ -41,7 +41,7 @@ msgstr "Domäne"
 
 #: __init__.py:69
 msgid "Windows Domain"
-msgstr "Windows DomÃ€ne"
+msgstr "Windows Domäne"
 
 #: __init__.py:70
 msgid "LDAP Basis"

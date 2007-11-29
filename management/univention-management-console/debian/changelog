@@ -1,3 +1,10 @@
+univention-management-console (0.9.20-1) unstable; urgency=low
+
+  * fixed wording bug
+  * fixed encoding bug in german translation
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 29 Nov 2007 15:07:54 +0100
+
 univention-management-console (0.9.19-1) unstable; urgency=low
 
   * VNC module: check if VNC server could be started 

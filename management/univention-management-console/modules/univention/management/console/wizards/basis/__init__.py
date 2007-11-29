@@ -87,7 +87,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 	def basis_set( self, object ):
 		umc.baseconfig.load()
-		fp = open( '/var/cache/univention-setup/profile', 'w' )
+		fp = open( '/var/cache/univention-system-setup/profile', 'w' )
 		fp.write( "UMC_MODE=true\n" )
 		for key, value in object.options.items():
 			if value != umc.baseconfig.get( key.replace( '_', '/' ) ):
@@ -99,7 +99,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 		thread.run()
 
 	def _basis_run( self, object ):
-		_path = '/usr/lib/univention-setup/scripts/basis/'
+		_path = '/usr/lib/univention-system-setup/scripts/basis/'
 		failed = []
 		for script in os.listdir( _path ):
 			filename = os.path.join( _path, script )
