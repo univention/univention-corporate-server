@@ -65,7 +65,7 @@ else
 fi
 
 for path in usr/share/fonts/ usr/X11R6/lib/X11/fonts/ ; do
-	/usr/bin/fc-cache /var/lib/univention-client-root/$path
+	/usr/bin/fc-cache -fs /var/lib/univention-client-root/$path || true
 done
 
 # generate locales
@@ -77,7 +77,7 @@ case "`uname -m`" in
 				rm -f /var/lib/univention-client-root/etc/locale.gen
 				mv /var/lib/univention-client-root/etc/locale.gen.BACKUP /var/lib/univention-client-root/etc/locale.gen
 				# gdm requires the fontconfig cache to be regenerated
-				chroot /var/lib/univention-client-root/ /usr/bin/fc-cache
+				chroot /var/lib/univention-client-root/ /usr/bin/fc-cache -fvs || true
 				chroot /var/lib/univention-client-root/ /bin/sh -c "cp  /var/cache/fontconfig/* /usr/share/fontconfig/cache/fontconfig/"
                 ;;
         *)
