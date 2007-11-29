@@ -1,4 +1,4 @@
-univention-updater (2.3.11-1) unstable; urgency=low
+univention-updater (2.3.11-2) unstable; urgency=low
 
   * call dpkg --configure -a in the preup.sh script
 

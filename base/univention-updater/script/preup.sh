@@ -57,7 +57,8 @@ else
 fi
 
 
-dpkg --configure -a
+echo "Checking for unconfigured packages"
+dpkg --configure -a >>/var/log/univention/updater.log 2>&1
 
 if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
 	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
