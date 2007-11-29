@@ -26,7 +26,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, getopt
+import os, sys, getopt, subprocess
 import univention.config_registry as confreg
 
 def usage():
@@ -92,9 +92,16 @@ def main():
 		print 'Simulating update...'
 
 	# get policy result
-	p = os.popen('univention-policy-result %s | grep -A1 "^Attribute: univentionRegistry;entry-"' % dn)
-	result = p.read()
-	p.close()
+	p1 = subprocess.Popen('univention-policy-result %s' % dn, shell=True, stdout=subprocess.PIPE)
+	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;entry-"',
+						  shell=True, stdin=p1.stdout, stdout=subprocess.PIPE)
+	result = p2.communicate()[0]
+	# if univention-policy-result fails then quit and do not parse output
+	if p1.wait() != 0:
+		# no output: this script is called by cron
+		# print 'WARN: univention-policy-result failed - LDAP server may be down'
+		sys.exit(0)
+
 
 	result = result.strip('\n')
 
