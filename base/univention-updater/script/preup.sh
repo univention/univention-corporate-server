@@ -59,6 +59,12 @@ fi
 
 echo "Checking for unconfigured packages"
 dpkg --configure -a >>/var/log/univention/updater.log 2>&1
+if [ $? != 0 ]; then
+	echo "Failed to configure the unconfigured packages. Please run 'dpkg --configure -a' manually"
+	# kill the running univention-updater process
+	killall univention-updater
+	exit 1
+fi
 
 if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
 	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
