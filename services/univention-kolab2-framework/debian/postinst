@@ -35,6 +35,8 @@ if [ ! -d /usr/share/univention-admin/www ]; then
 	mkdir -p /usr/share/univention-admin/www
 fi
 
+a2ensite kolab2-freebusy || true
+
 ln -s /var/www/freebusy /usr/share/univention-admin/www/freebusy
 /etc/init.d/apache2 reload || true
 touch /var/log/freebusy.log
