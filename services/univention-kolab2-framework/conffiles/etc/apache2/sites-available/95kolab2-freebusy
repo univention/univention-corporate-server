@@ -1,0 +1,66 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/univention/apache/95kolab2-freebusy
+# 
+
+RewriteEngine On
+RewriteRule ^/freebusy/([^/]+)\.ifb /freebusy/freebusy.php?uid=$1
+RewriteRule ^/freebusy/([^/]+)\.vfb /freebusy/freebusy.php?uid=$1
+RewriteRule ^/freebusy/([^/]+)\.xfb /freebusy/freebusy.php?uid=$1&extended=1
+RewriteRule ^/freebusy/trigger/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=0
+RewriteRule ^/freebusy/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=1
+RewriteRule ^/freebusy/trigger/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=0&extended=1
+RewriteRule ^/freebusy/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=1&extended=1
+
+
+<Directory /var/www/freebusy>
+@!@
+if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '   AuthPAM_Enabled on'
+@!@
+   AllowOverride None
+   Options FollowSymlinks ExecCGI
+@!@
+if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '   # Disallow for everyone as default'
+	print '   Order allow,deny'
+	print '   <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>'
+	print '       Allow from all'
+	print '       Require valid-user'
+	print '   </Limit>'
+	print '   AuthType Basic'
+	print '   AuthName "Kolab Freebusy"'
+@!@
+
+   php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php:/usr/share/php4:/usr/share/pear/"
+
+</Directory>
+
+<Directory /usr/share/univention-admin/www/freebusy>
+@!@
+if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '   AuthPAM_Enabled on'
+@!@
+   AllowOverride None
+   Options FollowSymlinks ExecCGI
+@!@
+if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '   # Disallow for everyone as default'
+	print '   Order allow,deny'
+	print '   <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>'
+	print '       Allow from all'
+	print '       Require valid-user'
+	print '   </Limit>'
+	print '   AuthType Basic'
+	print '   AuthName "Kolab Freebusy"'
+@!@
+
+   php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php:/usr/share/php4:/usr/share/pear/"
+
+
+</Directory>
