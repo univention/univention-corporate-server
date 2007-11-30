@@ -7,5 +7,5 @@ Type: file
 File: etc/kolab2/freebusy.conf
 
 Type: file
-File: etc/univention/apache/95kolab2-freebusy
+File: etc/apache2/sites-available/kolab2-freebusy
 Variables: freebusy/http/legacy

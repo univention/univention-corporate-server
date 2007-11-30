@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.3-1) unstable; urgency=low
+
+  * switch from apache to apache2
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Nov 2007 17:04:52 +0100
+
 univention-kolab2-framework (1.0.2-1) unstable; urgency=low
 
   * set log_level in freebusy.conf from RM_LOG_DEBUG to RM_LOG_ERROR
