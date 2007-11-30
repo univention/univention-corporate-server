@@ -41,6 +41,12 @@ test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-ins
 
 rm -f /var/cache/samba/dont_start >/dev/null 2>&1
 
+# Stop the NFS Kernel Server
+nfsd_pid=`pidof nfsd`
+if [ -n "$nfsd_pid" ]; then
+	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server stop
+fi
+
 restart=0
 samba_pid=`pidof smbd`
 if [ -n "$samba_pid" ]; then
@@ -100,6 +106,10 @@ sleep 2
 /etc/init.d/samba stop >/dev/null 2>&1
 sleep 2
 /etc/init.d/samba start >/dev/null 2>&1
+
+if [ -n "$nfsd_pid" ]; then
+	test -x /etc/init.d/nfs-kernel-server && /etc/init.d/nfs-kernel-server start
+fi
 
 test -n "`grep "univention-samba v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-samba v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 

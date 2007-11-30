@@ -1,3 +1,9 @@
+univention-samba (1.0.8-1) unstable; urgency=low
+
+  * stop the nfsd during the samba join
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Nov 2007 07:54:30 +0100
+
 univention-samba (1.0.7-5) unstable; urgency=low
 
   * More corrections to Config Registry descriptions
