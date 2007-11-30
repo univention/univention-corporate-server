@@ -58,7 +58,8 @@ fi
 
 
 echo "Checking for unconfigured packages"
-dpkg --configure -a >>/var/log/univention/updater.log 2>&1
+DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/updater.log 2>&1
+
 if [ $? != 0 ]; then
 	echo "Failed to configure the unconfigured packages. Please run 'dpkg --configure -a' manually"
 	# kill the running univention-updater process
