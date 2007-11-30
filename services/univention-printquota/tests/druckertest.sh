@@ -56,7 +56,7 @@ else
 	# eine Rundablage
 
 	univention-admin shares/printer create --set name="rundablage" \
-	--set uri="file:///tmp/druckoutput" --set spoolHost=$remotehost \
+	--set uri="parallel:///dev/lp0" --set spoolHost=$remotehost \
 	--set model=None --position="cn=printers,$ldap_base"
 
 	# Benutzer, Benutzergruppen
