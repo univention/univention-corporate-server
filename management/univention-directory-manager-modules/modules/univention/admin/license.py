@@ -184,9 +184,10 @@ class License( object ):
 			disable_add = self.checkObjectCounts(lic, real)
 			if disable_add: self._expired = True
 
-			license_base = univention.license.getValue ( 'univentionLicenseBaseDN' )
-			if license_base == 'Free for personal use edition':
-				disable_add=5
+			if not disable_add:
+				license_base = univention.license.getValue ( 'univentionLicenseBaseDN' )
+				if license_base == 'Free for personal use edition':
+					disable_add=5
 
 		# check modules list for validity and accepted operations
 		self.checkModules()
