@@ -30,19 +30,19 @@
 
 #DEBHELPER#
 
-univention-config-registry set postfix/autostart=yes
+univention-baseconfig set postfix/autostart=yes
 
-eval `univention-config-registry shell`
+eval `univention-baseconfig shell`
 
 adduser --quiet --system --home /var/lib/systemmail --shell /bin/bash systemmail
-univention-config-registry set mail/alias/root?systemmail@$hostname.$domainname
-univention-config-registry set mail/alias/postmaster?root
+univention-baseconfig set mail/alias/root?systemmail@$hostname.$domainname
+univention-baseconfig set mail/alias/postmaster?root
 
 if [ -x /usr/bin/newaliases ]; then
 	/usr/bin/newaliases
 fi
 
-univention-config-registry commit /etc/mailname
+univention-baseconfig commit /etc/mailname
 
 /etc/init.d/univention-directory-listener crestart
 /etc/init.d/postfix reload

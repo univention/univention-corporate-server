@@ -1,3 +1,10 @@
+univention-mail-postfix-forward (1.0.0-17) unstable; urgency=low
+
+  * replace calls to univention-config-registry with
+    univention-baseconfig
+
+ -- Andreas B�sching <buesching@univention.de>  Mon,  3 Dec 2007 17:54:00 +0100
+
 univention-mail-postfix-forward (1.0.0-16) unstable; urgency=low
 
   * Pre-depend on postfix.
