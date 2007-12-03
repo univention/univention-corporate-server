@@ -35,12 +35,12 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1; t
 	a2enmod ssl
 fi
 
-univention-config-registry set apache2/autostart?"yes"
-univention-config-registry set apache2/loglevel?"warn"
-univention-config-registry set apache2/startsite?"ucs-overview/de.html"
-univention-config-registry set mail/alias/webmaster?root
+univention-baseconfig set apache2/autostart?"yes"
+univention-baseconfig set apache2/loglevel?"warn"
+univention-baseconfig set apache2/startsite?"ucs-overview/de.html"
+univention-baseconfig set mail/alias/webmaster?root
 
-eval $(univention-config-registry shell)
+eval $(univention-baseconfig shell)
 
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/08univention-apache.inst || true
