@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.0.3-2) unstable; urgency=low
+
+  * enable apache2 rewrite module
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon,  3 Dec 2007 17:56:56 +0100
+
 univention-kolab2-framework (1.0.3-1) unstable; urgency=low
 
   * switch from apache to apache2
