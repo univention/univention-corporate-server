@@ -1,3 +1,9 @@
+univention-nagios (1.0.9-1) unstable; urgency=low
+
+  * create the apache2 conf.d link
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Dec 2007 19:51:28 +0100
+
 univention-nagios (1.0.8-1) unstable; urgency=low
 
   * be sure setuid is set in the nagios-server listener module

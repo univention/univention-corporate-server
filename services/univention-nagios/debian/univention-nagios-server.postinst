@@ -62,6 +62,11 @@ if [ "$server_role" = "domaincontroller_master" -o \
 	/usr/lib/univention-install/30univention-nagios-client.inst || true
 fi
 
+if [ ! -d /etc/apache2/conf.d ]; then
+	mkdir -p /etc/apache2/conf.d
+fi
+
+ln -sf /etc/nagios2/apache2.conf /etc/apache2/conf.d/nagios2.conf
 
 if [ "$1" = "configure" ]; then
 	if test -f /etc/init.d/univention-directory-listener
