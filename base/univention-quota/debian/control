@@ -6,7 +6,8 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-quota
 Architecture: all
-Depends: univention-pam (>> 0.8), univention-config, univention-policy-tools, ldap-utils, quota
+Pre-Depends: quota
+Depends: univention-pam (>> 0.8), univention-config, univention-policy-tools, ldap-utils
 Description: UCS - set default-quotas for users
  This package can set default-quotas for a user at login.
  The quotas are set by resolving the shares corresponding

@@ -1,3 +1,9 @@
+univention-quota (1.0.0-3) unstable; urgency=low
+
+  * Pre-depend on quota to allow updates.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  3 Dec 2007 11:28:15 +0100
+
 univention-quota (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
