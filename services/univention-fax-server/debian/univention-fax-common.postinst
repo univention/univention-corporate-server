@@ -30,7 +30,7 @@
 
 dpkg-divert --rename --add /etc/hylafax/faxcover.ps
 
-univention-config-registry set fax/sendcover?no
+univention-baseconfig set fax/sendcover?no
 
 #DEBHELPER#
 
