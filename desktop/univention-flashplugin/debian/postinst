@@ -35,18 +35,18 @@
 # downloads the default if no variables are set. This code can be dropped
 # after UCS 2.1
 
-old_server=`univention-config-registry get flashplugin/downloadserver`
-old_path=`univention-config-registry get flashplugin/downloadpath`
+old_server=`univention-baseconfig get flashplugin/downloadserver`
+old_path=`univention-baseconfig get flashplugin/downloadpath`
 
 if [ -n $old_server ]; then
     if [ "$old_server" = "fpdownload.macromedia.com" ]; then
-	univention-config-registry unset flashplugin/downloadserver
+	univention-baseconfig unset flashplugin/downloadserver
     fi
 fi
 
 if [ -n $old_path ]; then
     if [ "$old_path" = "/get/flashplayer/current/" ]; then
-	univention-config-registry unset flashplugin/downloadpath
+	univention-baseconfig unset flashplugin/downloadpath
     fi
 fi
 
