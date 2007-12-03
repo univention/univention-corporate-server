@@ -28,11 +28,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-a2enmod auth_pam
-a2enmod unique_id
+#DEBHELPER#
 
-if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.0-1; then
-	a2enmod ssl
+a2enmod auth_pam || true
+a2enmod unique_id || true
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.11-1; then
+	a2dismod ssl || true
+	a2enmod ssl || true
+elif [ "$1" = configure -a -z "$2" ]; then
+	a2dismod ssl || true
+	a2enmod ssl || true
 fi
 
 univention-baseconfig set apache2/autostart?"yes"
@@ -45,10 +51,6 @@ eval $(univention-baseconfig shell)
 if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/08univention-apache.inst || true
 fi
-
-
-#DEBHELPER#
-
 
 if [ -x /etc/init.d/apache2 ]; then
 	/etc/init.d/apache2 restart
