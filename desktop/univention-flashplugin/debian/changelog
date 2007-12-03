@@ -1,4 +1,4 @@
-univention-flashplugin (2.0.0-10) unstable; urgency=low
+univention-flashplugin (2.0.0-11) unstable; urgency=low
 
   * replace calls to univention-config-registry with
     univention-baseconfig

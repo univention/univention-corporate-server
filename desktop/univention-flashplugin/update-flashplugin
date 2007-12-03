@@ -7,7 +7,7 @@ set -e
 # previously : FP9_plugin_beta_112006.tar.gz and flash-player-plugin-9.0.21.78/
 # currently  : install_flash_player_9_linux.tar.gz and install_flash_player_9_linux/
 
-eval $(univention-config-registry shell)
+eval $(univention-baseconfig shell)
 
 fp_exit_with_error() {
 	echo $1
