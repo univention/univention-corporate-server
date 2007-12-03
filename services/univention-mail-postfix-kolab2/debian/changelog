@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.2-10) unstable; urgency=low
+
+  * Pre-depend on postfix to facilitate updates
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  3 Dec 2007 12:01:40 +0100
+
 univention-mail-postfix-kolab2 (1.0.2-9) unstable; urgency=low
 
   * fixed deletion of mail/cyrus in postinst

@@ -6,7 +6,8 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-mail-postfix-kolab2
 Architecture: all
-Depends: postfix (>=2.2.3), postfix-ldap (>=2.2.3), sasl2-bin, univention-kolab2-framework, libpam-univentionmailcyrus, univention-antivir-mail, univention-spamassassin
+Pre-Depends: postfix
+Depends: postfix-ldap (>=2.2.3), sasl2-bin, univention-kolab2-framework, libpam-univentionmailcyrus, univention-antivir-mail, univention-spamassassin
 Pre-Depends: univention-config-registry (>> 1.54-30)
 Conflicts: univention-mail, univention-mail-postfix-forward, univention-mail-postfix, univention-mail-cyrus, univention-mail-cyrus22, exim4, exim4-base, exim4-config
 Provides: univention-mail-postfix
