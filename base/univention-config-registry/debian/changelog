@@ -1,3 +1,10 @@
+univention-config-registry (2.6.7-2) unstable; urgency=low
+
+  * replace calls to univention-config-registry with
+    univention-baseconfig
+
+ -- Andreas B�sching <buesching@univention.de>  Mon,  3 Dec 2007 17:41:01 +0100
+
 univention-config-registry (2.6.7-1) unstable; urgency=low
 
   * check return code of univention-policy-result and do not change
