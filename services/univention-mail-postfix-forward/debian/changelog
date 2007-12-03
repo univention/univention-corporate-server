@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-16) unstable; urgency=low
+
+  * Pre-depend on postfix.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  3 Dec 2007 10:15:30 +0100
+
 univention-mail-postfix-forward (1.0.0-15) unstable; urgency=low
 
   * Update Univention Config Registry descriptions
