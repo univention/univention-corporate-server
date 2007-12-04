@@ -72,7 +72,7 @@ done
 echo "univention-groupware-webclient install" | dpkg --set-selections
 dpkg -l univention-groupware-webclient | grep ^ii >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-kolab2-webclient >>/var/log/univention/updater.log 2>&1 
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-kolab2-webclient horde>>/var/log/univention/updater.log 2>&1 
 fi
 
 

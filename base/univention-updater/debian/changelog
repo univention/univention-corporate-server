@@ -1,3 +1,10 @@
+univention-updater (2.3.14-1) unstable; urgency=low
+
+  * install univention-kolab2-webclient and horde directly with apt-get
+    install
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Dec 2007 08:02:57 +0100
+
 univention-updater (2.3.13-1) unstable; urgency=low
 
   * run dpkg --configure -a with DEBIAN_FRONTEND=noninteractive
