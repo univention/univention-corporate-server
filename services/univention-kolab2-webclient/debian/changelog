@@ -1,3 +1,9 @@
+univention-kolab2-webclient (1.2.2-1) unstable; urgency=low
+
+  * added conflict to the old groupware-webclient package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Dec 2007 07:59:27 +0100
+
 univention-kolab2-webclient (1.2.1-1) unstable; urgency=low
 
   * add univention-postgresql as pre dependency
