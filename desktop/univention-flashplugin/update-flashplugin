@@ -54,14 +54,12 @@ fp_download_and_unpack() {
 
 	# verify MD5 checksum of (copied or downloaded) tarball
 	rm -rf install_flash_player_9_linux/
-	echo "821cc72359a937caef85bb4cc74ef5cd  install_flash_player_9_linux.tar.gz"| md5sum -c > /dev/null 2>&1 \
+	echo "93b7c48eaa492237b807a3ae1de65cf9  install_flash_player_9_linux.tar.gz"| md5sum -c > /dev/null 2>&1 \
 		|| fp_exit_with_error "md5sum mismatch install_flash_player_9_linux.tar.gz"
 
 	# unpacking and checking the plugin
 	tar xzf install_flash_player_9_linux.tar.gz || fp_exit_with_error "cannot unpack plugin"
-	echo "be5a2f9032f8fc8bccbbf5d96c5028f9  install_flash_player_9_linux/libflashplayer.so"| md5sum -c > /dev/null 2>&1 \
-		|| fp_exit_with_error "plugin changed, not trusted"
-	echo "a81fd3b03b8c6d6e5a14298110718d3f  install_flash_player_9_linux/flashplayer.xpt"| md5sum -c > /dev/null 2>&1 \
+	echo "13ce705df5d47422a9192b29827544e8  install_flash_player_9_linux/libflashplayer.so"| md5sum -c > /dev/null 2>&1 \
 		|| fp_exit_with_error "plugin changed, not trusted"
 }
 
@@ -76,7 +74,8 @@ safe_move() {
 fp_download_and_unpack
 
 install -m 644 install_flash_player_9_linux/libflashplayer.so /usr/lib/flashplugin-nonfree
-install -m 644 install_flash_player_9_linux/flashplayer.xpt /usr/lib/flashplugin-nonfree
+# nicht mehr im Paket enthalten: install_flash_player_9_linux/flashplayer.xpt
+rm -f /usr/lib/flashplugin-nonfree/flashplayer.xpt
 echo "Flash Plugin installed."
 rm -rf install_flash_player_9_linux/
 

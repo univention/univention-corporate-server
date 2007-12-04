@@ -28,14 +28,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ -e /var/cache/univention-flashplugin/libflashplayer.so ] && [ -e /var/cache/univention-flashplugin/flashplayer.xpt ]; then
+if [ -e /var/cache/univention-flashplugin/libflashplayer.so ]; then
 
 	cp /var/cache/univention-flashplugin/libflashplayer.so /usr/lib/flashplayer/
-	cp /var/cache/univention-flashplugin/flashplayer.xpt /usr/lib/flashplayer/
 
 	ln -s /usr/lib/flashplayer/libflashplayer.so /usr/lib/mozilla/plugins/libflashplayer.so
-	ln -s /usr/lib/flashplayer/flashplayer.xpt /usr/lib/mozilla/plugins/flashplayer.xpt
 	ln -s /usr/lib/flashplayer/libflashplayer.so /usr/lib/mozilla-firefox/plugins/libflashplayer.so
+
+fi
+
+if [ -e /var/cache/univention-flashplugin/flashplayer.xpt ]; then
+
+	cp /var/cache/univention-flashplugin/flashplayer.xpt /usr/lib/flashplayer/
+
+	ln -s /usr/lib/flashplayer/flashplayer.xpt /usr/lib/mozilla/plugins/flashplayer.xpt
 	ln -s /usr/lib/flashplayer/flashplayer.xpt /usr/lib/mozilla-firefox/plugins/flashplayer.xpt
 
 fi

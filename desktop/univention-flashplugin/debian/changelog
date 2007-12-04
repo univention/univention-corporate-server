@@ -1,3 +1,10 @@
+univention-flashplugin (2.0.0-12) unstable; urgency=low
+
+  * update-flashplugin: updated md5 sums for current install_flash_player_9_linux.tar.gz
+  * update-flashplugin: remove flashplayer.xpt which is not shipped any longer
+
+ -- Arvid Requate <requate@univention.de>  Tue, 04 Dec 2007 13:44:54 +0100
+
 univention-flashplugin (2.0.0-11) unstable; urgency=low
 
   * replace calls to univention-config-registry with
