@@ -1,3 +1,10 @@
+univention-ldap (2.4.11-1) unstable; urgency=low
+
+  * set ldap/translogfile after converting the dc backup to the dc
+    master
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  5 Dec 2007 19:34:24 +0100
+
 univention-ldap (2.4.10-1) unstable; urgency=low
 
   * fix admin-settings permissions
