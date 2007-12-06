@@ -1,3 +1,9 @@
+univention-samba (1.0.9-1) unstable; urgency=low
+
+  * create the Windows Vista profile directories
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  6 Dec 2007 12:05:48 +0100
+
 univention-samba (1.0.8-1) unstable; urgency=low
 
   * stop the nfsd during the samba join
