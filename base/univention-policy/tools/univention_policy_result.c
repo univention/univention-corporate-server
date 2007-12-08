@@ -125,7 +125,6 @@ int main(int argc, char* argv[])
 							}
 						}
 						printf("=\"%s\"\n", attribute->values->values[i]);
-						}
 					}
 				} else { /* output == OUTPUT_BASECONFIG */
 					if (attribute != policy->attributes)
@@ -139,7 +138,7 @@ int main(int argc, char* argv[])
 			}
 		}
 
-		univention_policy_close(handle);
-	} else return 1;
+	univention_policy_close(handle);
+} else return 1;
 	return 0;
 }
