@@ -1,3 +1,10 @@
+univention-management-console (0.9.21-1) unstable; urgency=low
+
+  * fixed logic error in frontend: if the referrer auf a dialog is not cache
+    the commands of a button were ignored 
+
+ -- Andreas B�sching <buesching@univention.de>  Sat,  8 Dec 2007 14:53:41 +0100
+
 univention-management-console (0.9.20-1) unstable; urgency=low
 
   * fixed wording bug

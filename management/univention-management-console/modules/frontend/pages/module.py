@@ -402,7 +402,7 @@ class Module( base.Page ):
 							self.selected = idx
 							self.__layout = cmd.cache
 						else:
-							requests = [ referrer ]
+							requests.append( referrer )
 					else:
 						self.selected = 0
 
