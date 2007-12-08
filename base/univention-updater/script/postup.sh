@@ -99,6 +99,11 @@ fi
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1 
 
 
+reinstall=$(univention-baseconfig get update/2_0/ooffice/reinstall)
+if [ "$reinstall" = "1" ]; then
+	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-ooffice2 >>/var/log/univention/updater.log 2>&1 
+	univention-baseconfig unset update/2_0/ooffice/reinstall >>/var/log/univention/updater.log 2>&1
+fi
 reinstall=$(univention-baseconfig get update/2_0/freenx/reinstall)
 if [ "$reinstall" = "1" ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install freenx >>/var/log/univention/updater.log 2>&1 

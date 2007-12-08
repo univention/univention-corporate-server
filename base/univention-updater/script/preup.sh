@@ -78,6 +78,11 @@ if [ $? = 0 ]; then
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove freenx  >>/var/log/univention/updater.log 2>&1 
 fi
 
+dpkg -l univention-ooffice | grep ^ii >>/var/log/univention/updater.log 2>&1
+if [ $? = 0 ]; then
+	univention-baseconfig set update/2_0/ooffice/reinstall?1 >>/var/log/univention/updater.log 2>&1
+fi
+
 for p in 	univention-server-master \
 			univention-server-backup \
 			univention-server-slave \

@@ -1,3 +1,10 @@
+univention-updater (2.3.15-1) unstable; urgency=low
+
+  * be sure univention-ooffice2 is installed after the upgrade if
+    univnetion-ooffice was installed
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat,  8 Dec 2007 17:09:51 +0100
+
 univention-updater (2.3.14-1) unstable; urgency=low
 
   * install univention-kolab2-webclient and horde directly with apt-get
