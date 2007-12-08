@@ -334,6 +334,10 @@ univention-baseconfig commit	/etc/default/bootsplash \
 chown gdm.gdm /var/lib/gdm
 chmod 0750 /var/lib/gdm
 
+# create $HOME for autostart
+mkdir /var/tmp/autostart
+chown autostart /var/tmp/autostart
+
 mkdir -p /ramdisk/etc/cups/ppd/
 mkdir -p /var/spool/cups/cert/
 

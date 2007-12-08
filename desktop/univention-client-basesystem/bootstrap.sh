@@ -195,7 +195,7 @@ chmod 755 "/sbin/start-stop-daemon"
 
 	rm -f /etc/univention/disable_baseconfig
 
-	adduser --system --home /tmp --shell "/bin/bash" --disabled-password autostart
+	adduser --system --home /var/tmp/autostart --shell "/bin/bash" --disabled-password autostart
 
 	find etc/univention/templates/files -type f | while read f; do
 	    n=${f#etc/univention/templates/files}

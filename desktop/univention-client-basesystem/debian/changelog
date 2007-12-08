@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.10-1) unstable; urgency=low
+
+  * create $HOME for autostart user that is accepted by gdm 
+
+ -- Andreas B�sching <buesching@univention.de>  Sat,  8 Dec 2007 17:11:35 +0100
+
 univention-client-basesystem (2.1.9-5) unstable; urgency=low
 
   * Handle eventual fontconfig cache errors more gracefully
