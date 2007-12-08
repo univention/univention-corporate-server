@@ -1,4 +1,4 @@
-univention-policy (1.0.3-1) unstable; urgency=low
+univention-policy (1.0.4-1) unstable; urgency=low
 
   * replace - and ; in univention-policy-result shell output mode with _
 

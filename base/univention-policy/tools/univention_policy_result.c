@@ -117,7 +117,7 @@ int main(int argc, char* argv[])
 					printf("\n");
 				} else if (output == OUTPUT_SHELL) {
 					for (i=0; attribute->values->values[i] != NULL; i++) {
-						for (j=0; j<len(attribute->name); j++) {
+						for (j=0; j<strlen(attribute->name); j++) {
 							if (attribute->name[j] == ';' || attribute->name[j] == '-') {
 								printf("_");
 							} else {
