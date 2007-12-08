@@ -106,7 +106,7 @@ int main(int argc, char* argv[])
 			if (output == OUTPUT_BASECONFIG && policy != handle->policies)
 				printf(" ");
 			for (attribute=policy->attributes; attribute != NULL; attribute=attribute->next) {
-				int i;
+				int i, j;
 				if (attribute->values == NULL)
 					continue;
 				if (output == OUTPUT_VERBOSE) {
