@@ -111,7 +111,7 @@ i=0
 for fs in `cat /etc/mtab | grep usrquota | awk '{print $1}'`
   do
   quota_set=0
-  quota -v $USER | egrep "[0-9]+[ ]+0[ ]+0[ ]+[0-9]+[ ]+0[ ]+0" | grep -q "$fs" || quota_set=1;
+  quota -v -w $USER | egrep "[0-9]+[ ]+0[ ]+0[ ]+[0-9]+[ ]+0[ ]+0" | grep -q "$fs" || quota_set=1;
   if [ $quota_set -lt 1 ]
 	  then
 	  mpoint[$i]=`cat /etc/mtab | grep usrquota | grep "$fs" | awk '{print $2}'`
