@@ -109,7 +109,7 @@ int main(int argc, char* argv[])
 				int i;
 				if (attribute->values == NULL)
 					continue;
-                		if (output == OUTPUT_VERBOSE) {
+				if (output == OUTPUT_VERBOSE) {
 					printf("Policy: %s\n", attribute->values->policy_dn);
 					printf("Attribute: %s\n", attribute->name);
 					for (i=0; attribute->values->values[i] != NULL; i++)
@@ -117,9 +117,17 @@ int main(int argc, char* argv[])
 					printf("\n");
 				} else if (output == OUTPUT_SHELL) {
 					for (i=0; attribute->values->values[i] != NULL; i++) {
-						printf("%s=\"%s\"\n", attribute->name, attribute->values->values[i]);
+						for (j=0; j<len(attribute->name); j++) {
+							if (attribute->name[j] == ';' || attribute->name[j] == '-') {
+								printf("_");
+							} else {
+								printf("%c", attribute->name[j]);
+							}
+						}
+						printf("=\"%s\"\n", attribute->values->values[i]);
+						}
 					}
-                		} else { /* output == OUTPUT_BASECONFIG */
+				} else { /* output == OUTPUT_BASECONFIG */
 					if (attribute != policy->attributes)
 						printf(" ");
 					for (i=0; attribute->values->values[i] != NULL; i++) {
@@ -127,10 +135,10 @@ int main(int argc, char* argv[])
 							printf(" ");
 						printf("%s=\"%s\"", attribute->name, attribute->values->values[i]);
 					}
-		                }
+				}
 			}
 		}
-		
+
 		univention_policy_close(handle);
 	} else return 1;
 	return 0;
