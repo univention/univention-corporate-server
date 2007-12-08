@@ -2181,7 +2181,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						else:
 							expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()) + (expiryInterval*3600*24))))
 					if expiry == '0':
-						krb5PasswordEnd='0'
+						krb5PasswordEnd='20360101000000Z'
 					else:
 						krb5PasswordEnd="%s" % "20"+expiry[6:8]+expiry[3:5]+expiry[0:2]+"000000Z"
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
@@ -2201,7 +2201,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				if 'kerberos' in self.options:
 					old_krb5PasswordEnd=self.oldattr.get('krb5PasswordEnd', '')
 					if old_krb5PasswordEnd:
-						ml.append(('krb5PasswordEnd',old_krb5PasswordEnd, '0'))
+						ml.append(('krb5PasswordEnd',old_krb5PasswordEnd, '20360101000000Z'))
 
 
 			disabled=""
