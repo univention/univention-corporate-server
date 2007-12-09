@@ -32,38 +32,44 @@
 
 import sys, os, gzip
 
-def getPath(manufacturer, filename):
-	base = 'foomatic-ppds'
-	return os.path.join(base, manufacturer, filename)
+def get_ppd_infos( filename ):
+	nickname = manufacturer = None
 
-def getName(filename):
-	nickname = '*NickName:'
-	file = gzip.open(filename)
-	names = [ line.split('"')[1] for line in file if line.startswith(nickname) ]
-	if not names:
-		# report malformed PPD
-		print >>sys.stderr, "Something went wrong in %s...\n" % filename
-		return 'Unknown'
-	return names[0]
+	if filename.endswith( '.ppd.gz' ):
+		file = gzip.open(filename)
+	else:
+		file = open(filename)
+	for line in file:
+		if line.startswith( '*NickName:' ):
+			nickname = line.split( '"' )[ 1 ]		
+		if line.startswith( '*Manufacturer:' ):
+			manufacturer = line.split( '"' )[ 1 ]		
+		if manufacturer and nickname:
+			break
+	return ( manufacturer, nickname )
 
-def getCommand(manufacturer, models):
+def get_udm_command(manufacturer, models):
 	first = 'univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
 	rest = [ r'--append printmodel="\"%s\" \"%s\""' % (path, name) for path, name in models ]
-	rest.insert(0, first)
-	return ' \\\n\t'.join(rest)
+	rest.insert( 0, first )
+	return '# Manufacturer: %s Printers: %d\n' % ( manufacturer, len( models ) ) + ' \\\n\t'.join(rest)
 
-def createPrinterModels(ppdPath):
-	def create(dir):
-		path = os.path.join(ppdPath, dir)
-		files = os.listdir(path)
-		files.sort()
-		models = [ (getPath(dir, file), getName(os.path.join(path, file))) for file in files ]
-		return getCommand(dir, models)
-	dirs = os.listdir(ppdPath)
-	dirs.sort()
-	cmds = [ create(dir) for dir in dirs ]
-	return '\n\n'.join(cmds)
+def __check_dir( commands, dirname, files ):
+	for file in files:
+		filename = os.path.join( dirname, file )
+		if os.path.isfile( filename ) and ( filename.endswith( '.ppd' ) or filename.endswith( '.ppd.gz' ) ):
+			rel_path = filename[ len( '/usr/share/ppd/' ) : ]
+			manu, nick = get_ppd_infos( filename )
+			if commands.has_key( manu ):
+				commands[ manu ].append( ( rel_path, nick ) )
+			else:
+				commands[ manu ] = [ ( rel_path, nick ) ]
+	return files
 
 if __name__ == '__main__':
-	ppdPath = '/usr/share/ppd'
-	print createPrinterModels(ppdPath)
+	printers = {}
+	cmds = []
+	os.path.walk( '/usr/share/ppd/', __check_dir, printers ) 
+	for manu, models in printers.items():
+		cmds.append( get_udm_command( manu, models ) )
+	print '\n\n'.join(cmds)
