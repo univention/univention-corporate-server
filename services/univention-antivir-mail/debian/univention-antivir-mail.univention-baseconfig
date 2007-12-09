@@ -17,6 +17,11 @@ Variables: mail/antivir/banned/rfc2046
 Variables: scalix/smtpfilter
 
 Type: file
+File: etc/amavis/conf.d/15-content_filter_mode
+Variables: mail/antivir/scanner
+Variables: mail/antivir/spam
+
+Type: file
 File: etc/clamav/clamd.conf
 
 Type: file
