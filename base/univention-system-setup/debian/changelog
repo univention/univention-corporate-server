@@ -1,3 +1,11 @@
+univention-system-setup (1.1.5-1) unstable; urgency=low
+
+  * add an info dialog that is displayed on all system roles but a
+    domaincontroller master and a basesystem if one of basis or network
+    module is started. It informs the user to re-join the system afterwards.
+
+ -- Andreas B�sching <buesching@univention.de>  Sun,  9 Dec 2007 15:34:41 +0100
+
 univention-system-setup (1.1.4-1) unstable; urgency=low
 
   * don't touch the locale/default variable in the language module
