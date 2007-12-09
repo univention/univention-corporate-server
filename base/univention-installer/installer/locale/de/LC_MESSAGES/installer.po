@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-16 16:57+0100\n"
+"POT-Creation-Date: 2007-12-09 14:56+0100\n"
 "PO-Revision-Date: 2007-11-16 16:59+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,8 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 #: ../univention-system-setup/usr/sbin/univention-system-setup:143
 #: ../univention-system-setup/usr/sbin/univention-system-setup:170
 #: ../univention-system-setup/usr/sbin/univention-system-setup:189
-#: ../univention-system-setup/usr/sbin/univention-system-setup:531
+#: ../univention-system-setup/usr/sbin/univention-system-setup:209
+#: ../univention-system-setup/usr/sbin/univention-system-setup:551
 msgid "Ok"
 msgstr "Ok"
 
@@ -2159,7 +2160,8 @@ msgstr "Drücken Sie zum Verlassen F8 oder eine beliebige Taste zum Fortfahren."
 
 #: ../univention-system-setup/usr/sbin/univention-system-setup:162
 #: ../univention-system-setup/usr/sbin/univention-system-setup:186
-#: ../univention-system-setup/usr/sbin/univention-system-setup:342
+#: ../univention-system-setup/usr/sbin/univention-system-setup:205
+#: ../univention-system-setup/usr/sbin/univention-system-setup:362
 msgid " Univention Corporate Server - Setup Tools"
 msgstr " Univention Corporate Server - Setup Tools"
 
@@ -2199,48 +2201,60 @@ msgstr "Der LDAP-Server ist nicht erreichbar. Das System muss zu"
 msgid "system into the domain with univention-join at a later point."
 msgstr "einem späteren Zeitpunkt mit univention-join beitreten."
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:347
+#: ../univention-system-setup/usr/sbin/univention-system-setup:206
+msgid "You are running Univention System Setup on another system role"
+msgstr "Sie führen Univention System Setup auf einer anderen Systemrolle als"
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:207
+msgid "than a domaincontroller master or a basesystem."
+msgstr "einem Domaincontroller Master oder einem Basissystem aus."
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:208
+msgid "Afterwards the system should be re-joined."
+msgstr "Anschließend soll das System neu gejoint werden"
+
+#: ../univention-system-setup/usr/sbin/univention-system-setup:367
 msgid " F1-Help | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F12-Übernehmen | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:349
+#: ../univention-system-setup/usr/sbin/univention-system-setup:369
 msgid " F1-Help | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:352
+#: ../univention-system-setup/usr/sbin/univention-system-setup:372
 msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12Übernehmen | Strg+c-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:354
+#: ../univention-system-setup/usr/sbin/univention-system-setup:374
 msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
 msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | F8-Abbruch"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:526
+#: ../univention-system-setup/usr/sbin/univention-system-setup:546
 msgid "LDAP Username"
 msgstr "LDAP Benutzername"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:528
+#: ../univention-system-setup/usr/sbin/univention-system-setup:548
 msgid "LDAP Password"
 msgstr "LDAP Passwort"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:532
+#: ../univention-system-setup/usr/sbin/univention-system-setup:552
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:827
+#: ../univention-system-setup/usr/sbin/univention-system-setup:855
 msgid "Updating configuration "
 msgstr "Aktualisiere Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:827
+#: ../univention-system-setup/usr/sbin/univention-system-setup:855
 #, python-format
 msgid "Updating %s configuration"
 msgstr "Aktualisiere %s Konfiguration"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:838
+#: ../univention-system-setup/usr/sbin/univention-system-setup:866
 msgid "Processing postrun scripts "
 msgstr "Verarbeite postrun-Skripte"
 
-#: ../univention-system-setup/usr/sbin/univention-system-setup:838
+#: ../univention-system-setup/usr/sbin/univention-system-setup:866
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"

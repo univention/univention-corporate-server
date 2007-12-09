@@ -1,3 +1,9 @@
+univention-installer (1.8.10-2) unstable; urgency=low
+
+  * updated translations for Univention System Setup 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun,  9 Dec 2007 15:37:54 +0100
+
 univention-installer (1.8.10-1) unstable; urgency=low
 
   * use /bin/mount instead of mount (the busybox mount)
