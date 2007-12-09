@@ -735,8 +735,6 @@ try:
 				if error.input(c):
 					break
 
-	print baseConfig.get( 'server/role', '' )
-	print cmdline[ 'loaded_modules' ]
 	if rejoin_warning and not baseConfig.get( 'server/role', '' ) in ( 'domaincontroller_master', 'basesystem' ):
 		dlg = rejoin_popup(None, err_min_y, err_min_x, err_width+2, err_height)
 		dlg.draw()
