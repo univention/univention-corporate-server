@@ -1,3 +1,9 @@
+univention-updater (2.3.16-1) unstable; urgency=low
+
+  * added xterm warning
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun,  9 Dec 2007 13:13:57 +0100
+
 univention-updater (2.3.15-1) unstable; urgency=low
 
   * be sure univention-ooffice2 is installed after the upgrade if

@@ -3,25 +3,29 @@
 echo "Running preup.sh script"
 
 
-# check if user is logged in using ssh
-
-if [ -n "$SSH_CLIENT" ]
-    then
-    echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-    echo "         I will wait 10 seconds until starting the update. If you are not sure press Strg+C to quit."
-    echo -n "         " 
-    
-    for i in `seq 1 10`
-      do
-      echo -n "."
-      sleep 1
-    done
-    echo ""
-
-fi
-	
 
 eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
+
+# check if user is logged in using ssh
+if [ -n "$SSH_CLIENT" ]; then
+	if [ "$update20_ignoressh" != "yes" ]; then
+		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
+		echo "Please log in under the console or set the baseconfig variable update20/ignoressh to yes to ignore it."
+		killall univention-updater
+		exit 1
+	fi
+    
+fi
+
+if [ "$TERM" = "xterm" ]; then
+	if [ "$update20_ignoreterm" != "yes" ]; then
+		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
+		echo "Please log in under the console or set the baseconfig variable update20/ignoreterm to yes to ignore it."
+		killall univention-updater
+		exit 1
+	fi
+fi
+
 
 
 check_space(){
