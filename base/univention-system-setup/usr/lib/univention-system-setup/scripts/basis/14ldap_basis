@@ -94,6 +94,8 @@ done
 
 univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
+sed -i "s|univentionNagiosCheckArgs: $ldap_base|univentionNagiosCheckArgs: $new_ldap_base|" /var/cache/univention-system-setup/new_ldif.$d
+
 slapadd </var/cache/univention-system-setup/new_ldif.$d
 
 service_start slapd univention-directory-notifier nscd heimdal-kdc
