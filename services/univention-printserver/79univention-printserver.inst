@@ -473,7 +473,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7350-hpijs.ppd.gz\" \"HP PhotoSmart 7350 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7400-hpijs.ppd.gz\" \"HP PhotoSmart 7400 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7550-hpijs.ppd.gz\" \"HP PhotoSmart 7550 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
-	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7660-hpijs.ppd.gz\" \"HP PhotoSmart 7660 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
+	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7660-hpijs.ppd.gz\" \"HP PhotoSmart 7660 Foomatic/hpijs (recommended) - HPLIP 1.6.10\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7760-hpijs.ppd.gz\" \"HP PhotoSmart 7760 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7800-hpijs.ppd.gz\" \"HP PhotoSmart 7800 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-PhotoSmart_7960-hpijs.ppd.gz\" \"HP PhotoSmart 7960 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
@@ -574,7 +575,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"hpijs/HP/HP-LaserJet_4P-hpijs.ppd.gz\" \"HP LaserJet 4P Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-LaserJet_4Si-hpijs.ppd.gz\" \"HP LaserJet 4Si Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-LaserJet_4V-hpijs.ppd.gz\" \"HP LaserJet 4V Foomatic/hpijs - HPLIP 1.6.10\"" \
-	--append printmodel="\"hpijs/HP/HP-LaserJet_5-hpijs.ppd.gz\" \"HP LaserJet 5 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
+	--append printmodel="\"hpijs/HP/HP-LaserJet_5-hpijs.ppd.gz\" \"HP LaserJet 5 Foomatic/hpijs (recommended) - HPLIP 1.6.10\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"hpijs/HP/HP-LaserJet_5L-hpijs.ppd.gz\" \"HP LaserJet 5L Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-LaserJet_5M-hpijs.ppd.gz\" \"HP LaserJet 5M Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-LaserJet_5MP-hpijs.ppd.gz\" \"HP LaserJet 5MP Foomatic/hpijs - HPLIP 1.6.10\"" \
@@ -675,7 +677,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"hpijs/HP/HP-Business_InkJet_2300-hpijs.ppd.gz\" \"HP Business Inkjet 2300 Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-Business_InkJet_2600-hpijs.ppd.gz\" \"HP Business Inkjet 2600 Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-Business_InkJet_2800-hpijs.ppd.gz\" \"HP Business Inkjet 2800 Foomatic/hpijs - HPLIP 1.6.10\"" \
-	--append printmodel="\"hpijs/HP/HP-Business_InkJet_3000-hpijs.ppd.gz\" \"HP Business Inkjet 3000 Foomatic/hpijs - HPLIP 1.6.10\"" \
+	--append printmodel="\"hpijs/HP/HP-Business_InkJet_3000-hpijs.ppd.gz\" \"HP Business Inkjet 3000 Foomatic/hpijs - HPLIP 1.6.10\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"hpijs/HP/HP-Color_LaserJet_5-hpijs.ppd.gz\" \"HP Color LaserJet 5 Foomatic/hpijs (recommended) - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-Color_LaserJet_5M-hpijs.ppd.gz\" \"HP Color LaserJet 5M Foomatic/hpijs - HPLIP 1.6.10\"" \
 	--append printmodel="\"hpijs/HP/HP-DeskJet_1200C-hpijs.ppd.gz\" \"HP DeskJet 1200C Foomatic/hpijs - HPLIP 1.6.10\"" \
@@ -776,7 +779,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_612C-pcl3.ppd.gz\" \"HP DeskJet 612C Foomatic/pcl3\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_648C-cdj550.ppd.gz\" \"HP DeskJet 648C Foomatic/cdj550\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_660C-pcl3.ppd.gz\" \"HP DeskJet 660C Foomatic/pcl3\"" \
-	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_670C-pcl3.ppd.gz\" \"HP DeskJet 670C Foomatic/pcl3\"" \
+	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_670C-pcl3.ppd.gz\" \"HP DeskJet 670C Foomatic/pcl3\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_672C-cdj670.ppd.gz\" \"HP DeskJet 672C Foomatic/cdj670\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_680C-cdj670.ppd.gz\" \"HP DeskJet 680C Foomatic/cdj670\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-DeskJet_680C-pcl3.ppd.gz\" \"HP DeskJet 680C Foomatic/pcl3\"" \
@@ -877,7 +881,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1200-lj5gray.ppd.gz\" \"HP LaserJet 1200 Foomatic/lj5gray\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1200-ljet4.ppd.gz\" \"HP LaserJet 1200 Foomatic/ljet4\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1200-pxlmono.ppd.gz\" \"HP LaserJet 1200 Foomatic/pxlmono (recommended)\"" \
-	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1220-lj4dith.ppd.gz\" \"HP LaserJet 1220 Foomatic/lj4dith\"" \
+	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1220-lj4dith.ppd.gz\" \"HP LaserJet 1220 Foomatic/lj4dith\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1220-ljet4.ppd.gz\" \"HP LaserJet 1220 Foomatic/ljet4\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1220-pxlmono.ppd.gz\" \"HP LaserJet 1220 Foomatic/pxlmono\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_1300-lj4dith.ppd.gz\" \"HP LaserJet 1300 Foomatic/lj4dith\"" \
@@ -978,7 +983,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_6L-ljet4.ppd.gz\" \"HP LaserJet 6L Foomatic/ljet4 (recommended)\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_6P-lj4dith.ppd.gz\" \"HP LaserJet 6P Foomatic/lj4dith\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_6P-ljet4.ppd.gz\" \"HP LaserJet 6P Foomatic/ljet4\"" \
-	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_8150-lj4dith.ppd.gz\" \"HP LaserJet 8150 Foomatic/lj4dith\"" \
+	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_8150-lj4dith.ppd.gz\" \"HP LaserJet 8150 Foomatic/lj4dith\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_8150-lj5gray.ppd.gz\" \"HP LaserJet 8150 Foomatic/lj5gray\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_8150-ljet4.ppd.gz\" \"HP LaserJet 8150 Foomatic/ljet4\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_8150-pxlmono.ppd.gz\" \"HP LaserJet 8150 Foomatic/pxlmono\"" \
@@ -1079,7 +1085,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_4200-pxlmono.ppd.gz\" \"HP LaserJet 4200 Foomatic/pxlmono\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_4_Plus-lj4dith.ppd.gz\" \"HP LaserJet 4 Plus Foomatic/lj4dith\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-LaserJet_5Si-lj5gray.ppd.gz\" \"HP LaserJet 5Si Foomatic/lj5gray\"" \
-	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-OfficeJet_710-cdj670.ppd.gz\" \"HP OfficeJet 710 Foomatic/cdj670\"" \
+	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-OfficeJet_710-cdj670.ppd.gz\" \"HP OfficeJet 710 Foomatic/cdj670\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-OfficeJet_G85-cdj550.ppd.gz\" \"HP OfficeJet G85 Foomatic/cdj550\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-OfficeJet_Pro_1150C-cdj550.ppd.gz\" \"HP OfficeJet Pro 1150C Foomatic/cdj550\"" \
 	--append printmodel="\"foomatic-rip/linuxprinting.org-gs-builtin/HP/HP-OfficeJet_R45-cdj1600.ppd.gz\" \"HP OfficeJet R45 Foomatic/cdj1600\"" \
@@ -1180,7 +1187,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_952c.5.0.ppd.gz\" \"HP DeskJet 952C - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_955c.5.0.ppd.gz\" \"HP DeskJet 955C - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_957c.5.0.ppd.gz\" \"HP DeskJet 957C - CUPS+Gutenprint v5.0.0\"" \
-	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_959c.5.0.ppd.gz\" \"HP DeskJet 959C - CUPS+Gutenprint v5.0.0\"" \
+	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_959c.5.0.ppd.gz\" \"HP DeskJet 959C - CUPS+Gutenprint v5.0.0\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_960c.5.0.ppd.gz\" \"HP DeskJet 960C - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_970c.5.0.ppd.gz\" \"HP DeskJet 970C - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-dj_975c.5.0.ppd.gz\" \"HP DeskJet 975C - CUPS+Gutenprint v5.0.0\"" \
@@ -1281,7 +1289,8 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_725.5.0.ppd.gz\" \"HP OfficeJet 725 - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_5105.5.0.ppd.gz\" \"HP OfficeJet 5105 - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_5110.5.0.ppd.gz\" \"HP OfficeJet 5110 - CUPS+Gutenprint v5.0.0\"" \
-	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_5110xi.5.0.ppd.gz\" \"HP OfficeJet 5110xi - CUPS+Gutenprint v5.0.0\"" \
+	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_5110xi.5.0.ppd.gz\" \"HP OfficeJet 5110xi - CUPS+Gutenprint v5.0.0\""
+univention-admin settings/printermodel modify $@ --ignore_exists --dn "cn=HP,cn=cups,cn=univention,$ldap_base" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_6105.5.0.ppd.gz\" \"HP OfficeJet 6105 - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_6110.5.0.ppd.gz\" \"HP OfficeJet 6110 - CUPS+Gutenprint v5.0.0\"" \
 	--append printmodel="\"gutenprint/5.0/en/stp-hp-oj_7110.5.0.ppd.gz\" \"HP OfficeJet 7110 - CUPS+Gutenprint v5.0.0\"" \
