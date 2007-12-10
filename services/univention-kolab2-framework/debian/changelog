@@ -1,3 +1,10 @@
+univention-kolab2-framework (1.0.4-1) unstable; urgency=low
+
+  * fix some php4 / php5 issues
+  * remove unused directory from the apache2 configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 07:34:19 +0100
+
 univention-kolab2-framework (1.0.3-2) unstable; urgency=low
 
   * enable apache2 rewrite module

@@ -305,7 +305,8 @@ class MIME_Structure {
         /* Put the object into imap_parsestructure() form. */
         MIME_Structure::_convertMimeDecodeData($structure);
 
-        return $ret = &MIME_Structure::parse($structure);
+        $ret = &MIME_Structure::parse($structure);
+        return $ret;
     }
 
     /**

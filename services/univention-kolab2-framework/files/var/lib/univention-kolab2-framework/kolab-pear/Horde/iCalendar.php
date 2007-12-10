@@ -44,7 +44,8 @@ class Horde_iCalendar {
         $class = 'Horde_iCalendar_' . $type;
         @include_once dirname(__FILE__) . '/iCalendar/' . $type . '.php';
         if (class_exists($class)) {
-            return $ret = &new $class($container);
+            $ret = &new $class($container);
+			return $ret;
         } else {
             // Should return an dummy x-unknown type class here.
             return false;
