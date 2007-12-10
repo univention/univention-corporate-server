@@ -1,4 +1,4 @@
-univention-kolab2-framework (1.0.6-1) unstable; urgency=low
+univention-kolab2-framework (1.0.6-2) unstable; urgency=low
 
   * update the pam auth configuration for the apache-mod-pam update
 

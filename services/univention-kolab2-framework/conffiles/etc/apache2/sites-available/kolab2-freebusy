@@ -41,3 +41,4 @@ if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http
 
    php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php5:/usr/share/php:/usr/share/pear/"
 
+</Directory>
