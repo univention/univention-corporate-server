@@ -47,7 +47,7 @@ univention-baseconfig set ldap/server/type=master
 univention-baseconfig set server/role=domaincontroller_master
 univention-baseconfig set kerberos/adminserver=$hostname.$domainname
 univention-baseconfig set windows/wins-support=yes
-univention-baseconfig set ldap/translogfile=/var/lib/univention-ldap/notify/transaction
+univention-baseconfig set ldap/translogfile=/var/lib/univention-ldap/listener/listener
 
 # start openldap, samba, kerberos, notifier and listener
 test -x /etc/init.d/slapd && /etc/init.d/slapd start
