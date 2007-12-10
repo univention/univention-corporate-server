@@ -28,7 +28,7 @@ if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http
 	print '	AuthBasicAuthoritative Off'
 	print '	AuthType Basic'
 	print '	AuthPAM_Enabled on'
-	print '	AuthPAM_Service httpd'
+	print '	AuthPAM_Service httpd-freebusy'
 	print '	AuthName "Kolab Freebusy"'
 
 	print '   # Disallow for everyone as default'

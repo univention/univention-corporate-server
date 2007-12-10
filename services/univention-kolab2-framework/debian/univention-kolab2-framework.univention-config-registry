@@ -9,3 +9,6 @@ File: etc/kolab2/freebusy.conf
 Type: file
 File: etc/apache2/sites-available/kolab2-freebusy
 Variables: freebusy/http/legacy
+
+Type: file
+File: etc/pam.d/httpd-freebusy
