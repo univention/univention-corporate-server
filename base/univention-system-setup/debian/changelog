@@ -1,3 +1,10 @@
+univention-system-setup (1.1.7-1) unstable; urgency=low
+
+  * and change the basis dn in the nagios config file
+    /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 13:53:09 +0100
+
 univention-system-setup (1.1.6-1) unstable; urgency=low
 
   * change univentionNagiosCheckArgs value from the old ldapbase to the
