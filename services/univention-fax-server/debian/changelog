@@ -1,3 +1,10 @@
+univention-fax-server (2.0.0-3) unstable; urgency=low
+
+  * set BASE64ENCODE in FaxDispatch
+  * depend und mime-codecs
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 10 Dec 2007 21:09:48 +0100
+
 univention-fax-server (2.0.0-2) unstable; urgency=low
 
   * replace calls to univention-config-registry with
