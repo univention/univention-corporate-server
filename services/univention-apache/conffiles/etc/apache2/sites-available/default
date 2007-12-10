@@ -31,6 +31,9 @@ NameVirtualHost *
 	# alert, emerg.
 	LogLevel @%@apache2/loglevel@%@
 
+	RewriteEngine on
+	RewriteOptions Inherit
+
 	CustomLog /var/log/apache2/access.log combined
 	ServerSignature On
 

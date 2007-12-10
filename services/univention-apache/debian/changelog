@@ -1,3 +1,9 @@
+univention-apache (2.0.13-1) unstable; urgency=low
+
+  * inherit rewrite by default
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 09:31:20 +0100
+
 univention-apache (2.0.12-1) unstable; urgency=low
 
   * be sure the ssl module ist full operational
