@@ -1,12 +1,4 @@
-univention-directory-manager-modules (2.2.12-1) unstable; urgency=low
-
-  * set the kerberos password end to 2036 if no password end was set.
-    Otherwise heimdal will set a cached password end or an password end
-    in one year.
-
- -- Stefan Gohmann <gohmann@univention.de>  Sat,  8 Dec 2007 18:24:55 +0100
-
-univention-directory-manager-modules (2.2.11-2) unstable; urgency=low
+univention-directory-manager-modules (2.2.13-1) unstable; urgency=low
 
   * fix "Free for personal use edition"-license check
 
