@@ -49,7 +49,7 @@ def get_ppd_infos( filename ):
 	return ( manufacturer, nickname )
 
 def get_udm_command(manufacturer, models):
-	first = 'univention-directory-manager settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
+	first = 'univention-admin settings/printermodel create $@ --ignore_exists --position "cn=cups,cn=univention,$ldap_base" --set name=%s' % manufacturer
 	rest = [ r'--append printmodel="\"%s\" \"%s\""' % (path, name) for path, name in models ]
 	rest.insert( 0, first )
 	return '# Manufacturer: %s Printers: %d\n' % ( manufacturer, len( models ) ) + ' \\\n\t'.join(rest)

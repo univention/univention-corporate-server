@@ -1,3 +1,10 @@
+univention-printserver (1.0.8-1) unstable; urgency=low
+
+  * use univention-admin instead of univention-directory-manager in join
+    script 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 10 Dec 2007 16:53:06 +0100
+
 univention-printserver (1.0.7-1) unstable; urgency=low
 
   * update univention-ppds to be able to read _all_ printer driver information 
