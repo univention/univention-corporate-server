@@ -525,6 +525,10 @@ if [ -n "$passfile" ]; then
 	service_stop samba; sleep 1; service_start samba
 fi
 
+if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
+	sed -i "s|$old_hostname|$new_hostname|" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
+fi
+
 service_stop univention-directory-listener; sleep 1; service_start univention-directory-listener
 
 if [ -d "/var/lib/univention-system-setup/hostname.post" ]; then
