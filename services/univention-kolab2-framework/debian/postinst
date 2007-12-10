@@ -36,6 +36,7 @@ if [ ! -d /usr/share/univention-admin/www ]; then
 fi
 
 a2enmod rewrite || true
+a2enmod auth_pam || true
 a2ensite kolab2-freebusy || true
 
 ln -s /var/www/freebusy /usr/share/univention-admin/www/freebusy

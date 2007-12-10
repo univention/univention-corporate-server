@@ -19,25 +19,25 @@ RewriteRule ^/freebusy/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=1&extended=1
 
 
 <Directory /var/www/freebusy>
-@!@
-if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
-	print '   AuthPAM_Enabled on'
-@!@
    AllowOverride None
    Options FollowSymlinks ExecCGI
 @!@
 if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '	AuthPAM_Enabled on'
+	print '	AllowOverride AuthConfig'
+	print '	AuthBasicAuthoritative Off'
+	print '	AuthType Basic'
+	print '	AuthPAM_Enabled on'
+	print '	AuthPAM_Service httpd'
+	print '	AuthName "Kolab Freebusy"'
+
 	print '   # Disallow for everyone as default'
 	print '   Order allow,deny'
 	print '   <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>'
 	print '       Allow from all'
 	print '       Require valid-user'
 	print '   </Limit>'
-	print '   AuthType Basic'
-	print '   AuthName "Kolab Freebusy"'
 @!@
 
    php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php5:/usr/share/php:/usr/share/pear/"
-
-</Directory>
 
