@@ -430,6 +430,14 @@ def main():
 
 		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
 
+		if not (baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes')):
+
+			resultCode=os.system('mount %s' % ( cdrom_mount_point))
+			if resultCode != 0:
+				res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+				if res != 0:
+					dprint('Failed to mount cdrom', [stdout,sys_stdout])
+
 		copy_sh_files(tempdir,os.path.join(cdrom_mount_point,'ucs-updates', '%s' % nextversion ))
 
 		dprint('List tempdir = %s' % os.listdir(tempdir))

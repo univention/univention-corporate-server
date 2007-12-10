@@ -1,3 +1,9 @@
+univention-updater (2.3.17-1) unstable; urgency=low
+
+  * sync cdrom_mode patch from the management scope
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 16:44:58 +0100
+
 univention-updater (2.3.16-1) unstable; urgency=low
 
   * added xterm warning
