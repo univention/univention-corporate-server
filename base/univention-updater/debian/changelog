@@ -1,3 +1,9 @@
+univention-updater (2.3.18-1) unstable; urgency=low
+
+  * fix indenting
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 19:57:57 +0100
+
 univention-updater (2.3.17-1) unstable; urgency=low
 
   * sync cdrom_mode patch from the management scope

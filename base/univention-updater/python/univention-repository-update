@@ -64,14 +64,14 @@ def usage(fd=sys.stdout):
 
 def proxyAddress():
 	baseConfig=univention_baseconfig.baseConfig()
-        baseConfig.load()
+	baseConfig.load()
 
-        if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
-                return baseConfig['proxy/http'].lower().replace('http://','')
-        elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
-                return os.environ['http_proxy'].lower().replace('http://','')
-        else:
-                return ""
+	if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
+		return baseConfig['proxy/http'].lower().replace('http://','')
+	elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
+		return os.environ['http_proxy'].lower().replace('http://','')
+	else:
+		return ""
 
 def read_packagelist(packagelist):
 	try:
