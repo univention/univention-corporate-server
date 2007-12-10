@@ -78,4 +78,9 @@ if [ -x /etc/init.d/cyrus22 ]; then
     /etc/init.d/cyrus22 restart
 fi
 
+if [ ! -e /var/www/freebusy/cache/pfbcache.db ]; then
+	/var/lib/univention-kolab2-framework/generate_pfbcache.pl
+	chown www-data /var/www/freebusy/cache/pfbcache.db
+fi
+
 exit 0

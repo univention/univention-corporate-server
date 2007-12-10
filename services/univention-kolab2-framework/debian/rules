@@ -66,6 +66,8 @@ install: build
 	install -m755 files/var/lib/univention-kolab2-framework/freebusy/freebusyldap.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
 	install -m755 files/var/lib/univention-kolab2-framework/freebusy/misc.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
 	install -m755 files/var/lib/univention-kolab2-framework/freebusy/recurrence.class.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
+	install -m755 files/var/lib/univention-kolab2-framework/generate_pfbcache.pl debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
 
 	sh -c " cd files; find usr/share/php/PEAR/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
 	sh -c " cd files; find var/lib/univention-kolab2-framework/fbview/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"

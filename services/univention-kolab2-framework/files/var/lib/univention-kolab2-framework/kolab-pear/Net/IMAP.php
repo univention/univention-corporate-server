@@ -177,9 +177,9 @@ class Net_IMAP extends Net_IMAPProtocol {
             }
         }
         $ret=$this->cmdLogout();
-        if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
-            return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
-        }
+        // if(strtoupper($ret["RESPONSE"]["CODE"]) != "OK"){
+        //    return new PEAR_Error($ret["RESPONSE"]["CODE"] . ", " . $ret["RESPONSE"]["STR_CODE"]);
+        // }
         return true;
     }
 

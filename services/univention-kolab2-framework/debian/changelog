@@ -1,3 +1,15 @@
+univention-kolab2-framework (1.0.5-1) unstable; urgency=low
+
+  * more php4 / php5 issues
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 08:29:13 +0100
+
+univention-kolab2-framework (1.0.4-2) unstable; urgency=low
+
+  * generate /var/www/freebusy/cache/pfbcache.db during the installation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 07:53:29 +0100
+
 univention-kolab2-framework (1.0.4-1) unstable; urgency=low
 
   * fix some php4 / php5 issues

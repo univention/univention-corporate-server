@@ -19,6 +19,7 @@
  */
 
 require_once '/var/lib/univention-kolab2-framework/freebusy/recurrence.class.php';
+require_once '/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php';
 
 class FreeBusyRecurrence extends Recurrence {
   function FreeBusyRecurrence( &$vfb, &$extra ) {
@@ -244,7 +245,9 @@ class FreeBusy {
     $vCal->addComponent($this->clearExtra($vFb));
   
     // Generate the vCal file.
-    return array( $vCal->exportvCalendar(), $xvCal->exportvCalendar() );
+    // return array( $vCal->exportvCalendar(), $xvCal->exportvCalendar() );
+    $ret = array( $vCal->exportvCalendar(), $xvCal->exportvCalendar() );
+    return $ret;
   }
 
   /********************** Private API below this line ********************/
