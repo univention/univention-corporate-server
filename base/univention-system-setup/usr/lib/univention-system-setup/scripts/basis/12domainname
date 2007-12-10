@@ -533,6 +533,10 @@ if [ $ldap_available = 1 ]; then
 
 fi
 
+if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
+	sed -i "s|$domainname|$new_domainname|" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
+fi
+
 is_variable_set "UMC_MODE"
 if [ $? = 0 ]; then
 	if [ -x /usr/sbin/apachectl ]; then
