@@ -1,3 +1,9 @@
+univention-updater (2.3.19-1) unstable; urgency=low
+
+  * allow a reboot parameter for univention-updater
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2007 21:28:40 +0100
+
 univention-updater (2.3.18-1) unstable; urgency=low
 
   * fix indenting

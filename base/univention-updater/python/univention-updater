@@ -320,7 +320,7 @@ def main():
 	reboot = None
 	clean  = True
 	
-	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot', 'no-clean', 'check']
+	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
