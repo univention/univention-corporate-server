@@ -80,6 +80,10 @@ install: build
 	install -d -m 755 -o root -g root ${DS}/usr/lib/univention-install
 	install -m 755 26univention-nagios-server.inst ${DS}/usr/lib/univention-install/26univention-nagios-server.inst
 
+    # add nagios tools
+	install -d -m 755 -o root -g root ${DS}/usr/share/univention-nagios-server/tools/
+	install -m 755 -o root -g root usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool ${DS}/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool
+
     # add univention icons
 	install -d -m 755 -o root -g root ${DS}/usr/share/univention-nagios-server/icons/
 	find usr/share/univention-nagios-server/icons/ -type f | xargs -n1 -i install -m 644 -o root -g root {} ${DS}/usr/share/univention-nagios-server/icons/

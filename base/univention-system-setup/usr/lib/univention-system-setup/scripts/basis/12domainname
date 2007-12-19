@@ -102,6 +102,9 @@ if [ $ldap_available = 1 ]; then
 	echo `date` : "Configure hostname for groupware account in LDAP: " $hostname.$new_domainname  >> /var/log/univention/setup.log
 	ldapmodrdn -x -D "$binddn" -w "$bindpwd" -r "cn=$hostname.$old_domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$hostname.$new_domainname Groupware Account"
 
+	if [ -x /usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool ] ; then
+		/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool -m -o $hostname.$old_domainname -n $hostname.$new_domainname -D "$binddn" -w "$bindpwd"
+	fi
 fi
 
 set_baseconfig_variable ()
@@ -534,7 +537,7 @@ if [ $ldap_available = 1 ]; then
 fi
 
 if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
-	sed -i "s|$domainname|$new_domainname|" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
+	sed -i "s|\.$domainname |.$new_domainname |" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
 fi
 
 is_variable_set "UMC_MODE"
