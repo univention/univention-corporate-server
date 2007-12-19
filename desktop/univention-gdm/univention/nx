@@ -34,7 +34,7 @@ NX_DIR="/ramdisk/tmp/nx"
 
 mkdir -p $NX_DIR/config $NX_DIR/temp
 
-univention-policy-result -s $ldap_mydn | while read line; do
+univention-policy-result -s "$ldap_mydn" | while read line; do
 
 	host=${line#univentionDesktopServer=}
 	if [ "$host" = "$line" ]; then
