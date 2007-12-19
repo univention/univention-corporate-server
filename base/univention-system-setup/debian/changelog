@@ -1,14 +1,22 @@
+univention-system-setup (1.1.10-1) unstable; urgency=low
+
+  * update hostname and domainname in Nagios service LDAP objects
+  * fixed update of hostname and domainname in Nagios service
+    configuration UNIVENTION_LDAP.cfg
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 19 Dec 2007 11:10:32 +0100
+
 univention-system-setup (1.1.9-1) unstable; urgency=low
 
   * updated hostname in Nagios service configuration UNIVENTION_LDAP.cfg 
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 10 Dec 2007 17:41:37 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 17:41:37 +0100
 
 univention-system-setup (1.1.8-1) unstable; urgency=low
 
   * updated domainname in Nagios service configuration UNIVENTION_LDAP.cfg 
 
- -- Andreas B�sching <buesching@univention.de>  Mon, 10 Dec 2007 17:14:46 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 17:14:46 +0100
 
 univention-system-setup (1.1.7-1) unstable; urgency=low
 
@@ -30,7 +38,7 @@ univention-system-setup (1.1.5-1) unstable; urgency=low
     domaincontroller master and a basesystem if one of basis or network
     module is started. It informs the user to re-join the system afterwards.
 
- -- Andreas B�sching <buesching@univention.de>  Sun,  9 Dec 2007 15:34:41 +0100
+ -- Andreas Büsching <buesching@univention.de>  Sun,  9 Dec 2007 15:34:41 +0100
 
 univention-system-setup (1.1.4-1) unstable; urgency=low
 
@@ -245,7 +253,7 @@ univention-setup (0.3.83) unstable; urgency=low
 
   * updated english text and german translation 
 
- -- Andreas BÃŒsching <buesching@univention.de>  Mon, 11 Dec 2006 13:28:32 +0100
+ -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:28:32 +0100
 
 univention-setup (0.3.82) unstable; urgency=low
 
