@@ -19,6 +19,7 @@
  */
 
 require_once '/var/lib/univention-kolab2-framework/kolabfilter/misc.php';
+require_once '/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php';
 
 // What actions we can take when receiving an event request
 define('RM_ACT_ALWAYS_ACCEPT',              1);
@@ -693,7 +694,7 @@ function imapConnect($resource, $inbox = false)
       return false;
     }
 
-    myLog("Connected to $calmbox, imap object is $imap", RM_LOG_DEBUG);
+    myLog("Connected to $calmbox, imap object is " . print_r($imap, true), RM_LOG_DEBUG);
     return $imap;
 }
 
