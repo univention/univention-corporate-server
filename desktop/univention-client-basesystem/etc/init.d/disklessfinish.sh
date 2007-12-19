@@ -37,7 +37,7 @@ mount -n -t nfs "$univentionFileServer:/ha/home" /home || mounted=1
 if [ $mounted -gt 0 ]; then
 	echo "--- mount $univentionFileServer failed"
 	eval `univention-baseconfig shell ldap/mydn`
-	for i in `univention_policy_result -s $ldap_mydn | grep univentionFileServer | sed -e 's|.*univentionFileServer=||'`
+	for i in `univention_policy_result -s "$ldap_mydn" | grep univentionFileServer | sed -e 's|.*univentionFileServer=||'`
 	  do
 	  if [ $mounted -gt 0 -a $univentionFileServer != $i ]
 		  then
