@@ -56,7 +56,7 @@ install: build
 	install -D 66univention-scalix.inst $(D)/usr/lib/univention-install/66univention-scalix.inst
 
 	# apache configuration
-	install -D 95scalix-jakarta.conf $(D)/etc/univention/apache/95scalix-jakarta.conf
+	install -D etc/apache2/conf.d/scalix-jakarta.conf $(D)/etc/apache2/conf.d/scalix-jakarta.conf
 
 	# files for creation of static configuration files
 	install -D univention-scalix-conffile $(D)/usr/share/univention-scalix/univention-scalix-conffile

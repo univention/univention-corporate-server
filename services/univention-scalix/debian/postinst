@@ -182,10 +182,13 @@ done
 mv /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out \
 /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out.pre-inst
 
+# activate jakarta module
+ln -s ../mods-available/jk.load /etc/apache2/mods-enabled
+
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart
 /etc/init.d/ldapmapper start
-/etc/init.d/apache restart
+/etc/init.d/apache2 restart
 
 # initial ldapsync
 echo
@@ -209,5 +212,19 @@ fi
 update-rc.d univention-scalix-stunnel defaults 55 15
 /etc/init.d/univention-scalix-stunnel restart
 
+## tell firefox to allow popups from the local site, otherwise login fails
+## commented out, as it would require care in the univention-system-setup scripts
+# if [ ! -f /opt/firefox/defaults/profile/hostperm.1 ]; then
+# 	cat <<-EOF > /opt/firefox/defaults/profile/hostperm.1
+# 	# Permission File
+# 	# This is a generated file! Do not edit.
+# 	
+# 	EOF
+# fi
+# cat <<EOF | univention-config-registry filter >> /opt/firefox/defaults/profile/hostperm.1
+# host	popup	1	@%@interfaces/eth0/address@%@
+# host	popup	1	@%@scalix/mailnode@%@
+# host	popup	1	@%@scalix/mailnode@%@.@%@domainname@%@
+# EOF
 
 exit 0

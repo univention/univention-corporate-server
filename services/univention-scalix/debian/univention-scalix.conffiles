@@ -1,2 +1,2 @@
-/etc/univention/apache/95scalix-jakarta.conf
+/etc/apache2/conf.d/scalix-jakarta.conf
 /etc/univention/templates/files/etc/init.d/scalix-tomcat
