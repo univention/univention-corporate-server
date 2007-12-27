@@ -1,5 +1,4 @@
 etc/init.d
-etc/univention/apache
 etc/univention/daemons
 usr/lib/univention-install
 usr/lib/univention-directory-listener/system

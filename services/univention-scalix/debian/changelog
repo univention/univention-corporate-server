@@ -1,3 +1,15 @@
+univention-scalix (1.0.2-4.120.200711071011) ucs2-0-0-0; urgency=low
+
+  * changes for apache2
+
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Dec 2007 15:52:39 +0100
+
+univention-scalix (1.0.2-4.120.200711071010) ucs2-0-0-0; urgency=low
+
+  * auto-build
+
+ -- Univention builddaemon <buildd@univention.de>  Wed,  7 Nov 2007 10:10:57 +0100
+
 univention-scalix (1.0.2-4) unstable; urgency=low
 
   * fixed logfile permissions

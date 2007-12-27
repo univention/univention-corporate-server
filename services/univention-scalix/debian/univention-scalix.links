@@ -1,1 +1,1 @@
-/opt/scalix/global/httpd/scalix-web-client.conf /etc/univention/apache/94scalix 
+/opt/scalix/global/httpd/scalix-web-client.conf /etc/apache2/sites-enabled/scalix 
