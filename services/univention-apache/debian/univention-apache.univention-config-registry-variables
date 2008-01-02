@@ -21,3 +21,9 @@ Description[de]=Automatischer Start des Apache Webservers
 Description[en]=Automatically start of the apache webserver
 Type=str
 Categories=System
+
+[apache2/proxy/allow]
+Description[de]=Domainenname, der vom proxy Modul bedient werden soll
+Description[en]=Domainname that shall be served by the proxy module
+Type=str
+Categories=Network
