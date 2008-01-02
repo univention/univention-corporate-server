@@ -79,6 +79,7 @@ install: build
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
 
 	find $(D) -type d -name CVS | xargs rm -rf
+	find $(D) -type d -name .svn | xargs rm -rf
 
 	univention-install-baseconfig
 
