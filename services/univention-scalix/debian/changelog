@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-10) unstable; urgency=low
+
+  * depend on updated univention-apache version
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 14:56:18 +0100
+
 univention-scalix (1.0.2-9) unstable; urgency=low
 
   * don't include content of .svn directories into debian config file management
