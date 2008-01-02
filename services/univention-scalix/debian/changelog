@@ -1,14 +1,40 @@
-univention-scalix (1.0.2-4.120.200711071011) ucs2-0-0-0; urgency=low
+univention-scalix (1.0.2-10) ucs2-0-0-1; urgency=low
+
+  * depend on updated univention-apache version
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 14:56:18 +0100
+
+univention-scalix (1.0.2-9) ucs2-0-0-1; urgency=low
+
+  * don't include content of .svn directories into debian config file management
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 14:44:31 +0100
+
+univention-scalix (1.0.2-8) ucs2-0-0-1; urgency=low
+
+  * set univention-config-registry variable apache2/proxy/allow to allow proxy_ajp requests
+    from local domain
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 13:55:14 +0100
+
+univention-scalix (1.0.2-7) ucs2-0-0-1; urgency=low
+
+  * clean debian rules from scalix-jakarta.conf
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 11:55:33 +0100
+
+univention-scalix (1.0.2-6) ucs2-0-0-1; urgency=low
+
+  * removed static jakarta configuration file
+  * generate proxy_ajp and jk configfiles without VitualHost environments
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 11:42:29 +0100
+
+univention-scalix (1.0.2-5) ucs2-0-0-1; urgency=low
 
   * changes for apache2
 
- -- Arvid Requate <requate@univention.de>  Thu, 27 Dec 2007 15:52:39 +0100
-
-univention-scalix (1.0.2-4.120.200711071010) ucs2-0-0-0; urgency=low
-
-  * auto-build
-
- -- Univention builddaemon <buildd@univention.de>  Wed,  7 Nov 2007 10:10:57 +0100
+ -- Arvid Requate <requate@univention.de>  Thu, 27 Dec 2007 16:42:11 +0100
 
 univention-scalix (1.0.2-4) unstable; urgency=low
 

@@ -182,8 +182,9 @@ done
 mv /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out \
 /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out.pre-inst
 
-# activate jakarta module
-ln -s ../mods-available/jk.load /etc/apache2/mods-enabled
+## tell mod_proxy to allow requests from the local domain
+eval $(univention-config-registry shell domainname)
+univention-config-registry set apache2/proxy/allow?".${domainname}"
 
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart

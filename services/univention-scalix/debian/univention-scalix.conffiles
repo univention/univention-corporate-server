@@ -1,6 +1,1 @@
-/etc/apache2/conf.d/scalix-jakarta.conf
 /etc/univention/templates/files/etc/init.d/scalix-tomcat
-/etc/univention/templates/files/var/www/ucs-overview/de.html.d/30scalix-admin-de.html
-/etc/univention/templates/files/var/www/ucs-overview/en.html.d/30scalix-admin-en.html
-/etc/univention/templates/files/var/www/ucs-overview/de.html.d/35scalix-webmail-de.html
-/etc/univention/templates/files/var/www/ucs-overview/en.html.d/35scalix-webmail-en.html

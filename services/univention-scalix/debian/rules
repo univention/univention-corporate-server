@@ -55,9 +55,6 @@ install: build
 	# join script
 	install -D 66univention-scalix.inst $(D)/usr/lib/univention-install/66univention-scalix.inst
 
-	# apache configuration
-	install -D etc/apache2/conf.d/scalix-jakarta.conf $(D)/etc/apache2/conf.d/scalix-jakarta.conf
-
 	# files for creation of static configuration files
 	install -D univention-scalix-conffile $(D)/usr/share/univention-scalix/univention-scalix-conffile
 	cp -a static_conffiles/* $(D)/usr/share/univention-scalix/conffiles/
@@ -82,6 +79,7 @@ install: build
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
 
 	find $(D) -type d -name CVS | xargs rm -rf
+	find $(D) -type d -name .svn | xargs rm -rf
 
 	univention-install-baseconfig
 
