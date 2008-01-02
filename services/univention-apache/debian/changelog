@@ -1,3 +1,16 @@
+univention-apache (2.0.15-2) ucs2-0-0-1; urgency=low
+
+  * svn add conffiles/etc/apache2/mods-available/proxy.conf
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 13:45:47 +0100
+
+univention-apache (2.0.15-1) ucs2-0-0-1; urgency=low
+
+  * tell proxy module to allow requests from domain specified by config-registry variable
+    'apache2/proxy/allow'
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 13:22:49 +0100
+
 univention-apache (2.0.14-1) unstable; urgency=low
 
   * add rewrite inherit in the ssl virtual host configuration
