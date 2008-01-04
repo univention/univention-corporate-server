@@ -1,3 +1,11 @@
+univention-scalix (1.0.2-13) unstable; urgency=low
+
+  * replaced Scalix configuration recipe by univention static_conffiles to
+    allow univention-setup updates
+  * Scalix moved update_mod_jk code to sxtomcat-create-instance since 11.2
+
+ -- Arvid Requate <requate@univention.de>  Fri,  4 Jan 2008 11:58:37 +0100
+
 univention-scalix (1.0.2-12) unstable; urgency=low
 
   * static_conffile changes for Scalix 11.3

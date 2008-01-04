@@ -167,61 +167,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	/opt/scalix-postgres/bin/sxpsql-setpwd $(cat /etc/scalix.secret)
 	/opt/scalix-postgres/bin/sxpsql-whitelist $interfaces_eth0_address
 
-	# Configure Scalix (as suggested by Scalix wiki)
-	tomcatport=80
-
-	files="$base/res/config/res.properties \
-	       $base/mobile/mobile.properties"
-
-	for file in $files; do
-		DEST=$file
-		DEST_TMP=$file.neu
-
-		if [ ! -f $DEST ]; then
-			echo WARNING: Could not read source file $DEST
-		else
-			mkdir -p /var/univention-backup/scalix/`dirname $DEST`
-			cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
-
-			#univention-baseconfig filter < $SRC > $DEST
-			sed -e "s;%LOCALDOMAIN%;$domainname;g" \
-			    -e "s;%LOCALHOST%;$hostname.$domainname;g" \
-			    -e "s;%PLATFORMURL%;http://$hostname.$domainname:8080/api;g" \
-			    -e "s;__SECURED_MODE__;false;g" \
-			    -e "s;ubermanager/__FQHN_HOST__@__KERBEROS_REALM__;;g" \
-			    -e "s;__KERBEROS_REALM__;;g" \
-			    -e "s;__FQHN_FOR_KDC_HOST__;;g" \
-			    -e "s;__FQHN_QUERY_SERVER_NAME__;$hostname.$domainname;g" \
-			    -e "s;__UBERMGR_USE_EXTERNAL_AUTH__;false;g" \
-			    -e "s;__UBERMGR_ALLOW_EXTERNAL_AUTH__;false;g" \
-			    -e "s;__UBERMGR_MAXLIST_SIZE__;100;g" \
-			    -e "s;__UBERMGR_MAIL_DOMAINS_LIST__;$domainname;g" \
-			    -e "s;__UBERMGR_EXTERNAL_DOMAIN_AUTH_LIST__;;g" \
-			    -e "s;__CONFIGURED__;true;g" \
-			    -e "s;__FQHN_FOR_UBERMANAGER__;$hostname.$domainname;g" \
-			    -e "s;__TOMCAT_PORT__;$tomcatport;g" \
-			    -e "s;localhost;$hostname.$domainname;g" \
-			    -e "s;%SIS-LANGUAGE%;German;g" \
-			    -e "s;%INDEX-WHITELIST%;$hostname.$domainname;g" \
-			    -e "s;%SEARCH-WHITELIST%;$hostname.$domainname;g" \
-			    -e "s;%IMAPHOST%;$hostname.$domainname;g" \
-			    -e "s;%SMTPHOST%;$hostname.$domainname;g" \
-			    -e "s;%LDAPPORT%;3890;g" \
-			    -e "s;%DBHOST%;$hostname.$domainname:5733;g" \
-			    $DEST > $DEST_TMP
-
-			if [ $? = 0 ]; then
-				mv $DEST_TMP $DEST
-				echo "File: $DEST"
-				cp $DEST /var/univention-backup/scalix/$DEST.current
-			else
-				echo WARNING: Processing $DEST failed!
-			fi
-		fi
-	done
-
-	# additional adjustments of configuration files for univention:
+	# Configure Scalix
 	# change hardcoded %LDAPPORT%=389 to 3890 and read %DBPASSWD% directly from /etc/scalix.secret
+	# and replace Scalix __Variables__ by univention config-registry variables
 	/usr/share/univention-scalix/univention-scalix-conffile
 
 elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
