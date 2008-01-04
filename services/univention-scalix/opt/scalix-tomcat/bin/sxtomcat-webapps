@@ -186,11 +186,11 @@ update_mod_jk_workers() {
     else
        all_instances=$(hostname -s)
     fi
-    WORKER_LIST="JkWorkerProperty worker.list="
 
-## <univention comment="It's not Scalix job to switch on ssl, this is done in mods-available/ssl.conf"/>
+## <univention comment="SSL is switched on in mods-available/ssl.conf"/>
     #ssl_has_ok_config
     #should_do_ssl=$?
+    should_do_ssl=0
     
     ssl_proto_string=""
     if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
@@ -206,62 +206,77 @@ update_mod_jk_workers() {
         tomcathost=$(determine_instance_host $instance)
         # AJP:
 ## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
-#<VirtualHost ${tomcathost}:80>
-        cat >$connectordir/ajp/instance-$instance.conf <<EOF
-    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
-EOF
+        cat >$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:80>
+	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
 
     # AJP SSL
-## <univention comment="A) The VirtualHost environment supplied by Scalix collides with the default site. B) It's not Scalix job to switch on ssl, this is done in mods-available/ssl.conf"/>
-#     if [ $should_do_ssl -ne 0 ]; then
-#         cat >>$connectordir/ajp/instance-$instance.conf <<EOF
-# <VirtualHost ${tomcathost}:443>
-#        SSLEngine on
-#        $ssl_proto_string
-#        $ssl_ciphersuite_string
-#        SSLCertificateFile ${SXTOMCAT_CERTFILE}
-#        SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
-#        Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
-# </VirtualHost>
-# EOF
-#     fi
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+        if [ $should_do_ssl -ne 0 ]; then
+            cat >>$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:443>
+	    SSLEngine on
+	    $ssl_proto_string
+	    $ssl_ciphersuite_string
+	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
+	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
+        fi
 
         # JK:
 ## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
 #<VirtualHost ${tomcathost}:80>
-    cat >$connectordir/jk/instance-$instance.conf <<EOF
-    Include /etc/opt/scalix-tomcat/connector/jk/app-${instance}.*.conf
-EOF
+        cat >$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:80>
+	    Include /etc/opt/scalix-tomcat/connector/jk/app-${instance}.*.conf
+	#</VirtualHost>
+	!!EOF!!
 
     # JK SSL
-## <univention comment="A) The VirtualHost environment supplied by Scalix collides with the default site. B) It's not Scalix job to switch on ssl, this is done in mods-available/ssl.conf"/>
-#     if [ $should_do_ssl -ne 0 ]; then
-#         cat >>$connectordir/jk/instance-$instance.conf <<EOF
-# <VirtualHost ${tomcathost}:443>
-#        SSLEngine on
-#        $ssl_proto_string
-#        $ssl_ciphersuite_string
-#        SSLCertificateFile ${SXTOMCAT_CERTFILE}
-#        SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
-#        Include /etc/opt/scalix-tomcat/connector/jk/app-$instance.*.conf
-# </VirtualHost>
-# EOF
-#     fi
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+        if [ $should_do_ssl -ne 0 ]; then
+            cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:443>
+	    SSLEngine on
+	    $ssl_proto_string
+	    $ssl_ciphersuite_string
+	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
+	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+	    Include /etc/opt/scalix-tomcat/connector/jk/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
+        fi
 
-    cat >>$connectordir/jk/instance-$instance.conf <<EOF
-JkWorkerProperty worker.${instance}.type=ajp13
-JkWorkerProperty worker.${instance}.host=${tomcathost}
-JkWorkerProperty worker.${instance}.port=8009
-JkWorkerProperty worker.${instance}.lbfactor=50
-JkWorkerProperty worker.${instance}.cachesize=10
-JkWorkerProperty worker.${instance}.cache_timeout=600
-JkWorkerProperty worker.${instance}.socket_keepalive=1
-JkWorkerProperty worker.${instance}.recycle_timeout=300
+        cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	JkWorkerProperty worker.${instance}.type=ajp13
+	JkWorkerProperty worker.${instance}.host=${tomcathost}
+	JkWorkerProperty worker.${instance}.port=8009
+	JkWorkerProperty worker.${instance}.lbfactor=50
+	JkWorkerProperty worker.${instance}.cachesize=10
+	JkWorkerProperty worker.${instance}.cache_timeout=600
+	JkWorkerProperty worker.${instance}.socket_keepalive=1
+	JkWorkerProperty worker.${instance}.recycle_timeout=300
 
-EOF
-		WORKER_LIST="$WORKER_LIST${instance},"
+	!!EOF!!
+
+        workers=""
+        if [ -f ${connectordir}/jk/workers.conf ]; then
+            workers=`grep 'JkWorkerProperty[ 	]*worker.list=' ${connectordir}/jk/workers.conf | sed -e 's/.*=//'`
+            workers=`echo $workers | sed -e "s/^${instance},//" -e "s/,${instance},/,/" -e "s/,${instance}$//"`
+        fi
+
+        if [ "${workers}" ]; then
+            workers=${workers},${instance}
+        else
+            workers=${instance}
+        fi
+
+        echo "JkWorkerProperty worker.list=$workers" >${connectordir}/jk/workers.conf
     done
-	echo "$WORKER_LIST" | sed "s/,$//" > $connectordir/jk/workers.conf
 }
 
 add_webapps() {

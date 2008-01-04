@@ -74,6 +74,7 @@ install: build
 	install -m 0755 var/lib/univention-system-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-system-setup/interfaces.post/
 
 	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance ${D}/opt/scalix-tomcat/bin/sxtomcat-create-instance
 	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
 	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst

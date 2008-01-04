@@ -43,27 +43,15 @@ createLogfile () {
 
 createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 
-/usr/sbin/univention-baseconfig set scalix/version=11.0.3
+/usr/sbin/univention-baseconfig set scalix/version=11.3.0
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes
 /usr/sbin/univention-baseconfig set scalix/imaps?yes
 
 #DEBHELPER#
 
-. /etc/opt/scalix/instance.cfg
-INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
-INSTANCE=${INSTANCE/\/s/}
-
 eval $(univention-baseconfig shell)
 
-# We need de_DE.UTF-8@euro:UTF-8 and de_DE@euro:ISO-8859-15
-
-if [ "${locale/de_DE.UTF-8@euro:UTF-8//}" = "$locale" ]; then
-	univention-baseconfig set locale="$locale de_DE.UTF-8@euro:UTF-8"
-fi
-if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
-	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
-fi
-
+# Determine Scalix mailnode
 echo
 echo Trying to find a suitable name for the primary mailnode.
 echo -n Checking scalix/mailnode...
@@ -87,6 +75,29 @@ fi
 univention-baseconfig set scalix/mailnode=$MAILNODE
 
 echo
+
+# scalix initializes itself into /var/opt/scalix/INSTANCE/, we have
+# to find and substitute the actual path.
+# to be safe check that ommakeom has setup the instance file before this script is run
+if [ ! -f /etc/opt/scalix/instance.cfg ]; then
+        echo WARN: /etc/opt/scalix/instance.cfg missing
+	# set INSTANCE as suggested by Scalix wiki
+	INSTANCE=${MAILNODE:0:1}${MAILNODE: -1:1}
+else
+	. /etc/opt/scalix/instance.cfg
+	INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+	INSTANCE=${INSTANCE/\/s/}
+fi
+base=/var/opt/scalix/$INSTANCE
+
+# We need de_DE.UTF-8@euro:UTF-8 and de_DE@euro:ISO-8859-15
+
+if [ "${locale/de_DE.UTF-8@euro:UTF-8//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE.UTF-8@euro:UTF-8"
+fi
+if [ "${locale/de_DE@euro:ISO-8859-15//}" = "$locale" ]; then
+	univention-baseconfig set locale="$locale de_DE@euro:ISO-8859-15"
+fi
 
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/66univention-scalix.inst || true
@@ -122,9 +133,8 @@ done
 [ ! -d /var/opt/scalix-postgres/data ] && RM_PGDIR=true
 
 if [ "$1" = "configure" ] && [ -z "$2" ]; then
-	# adjust configuration files
-	/usr/share/univention-scalix/univention-scalix-conffile
 
+	omadmidp -a -s 66000 -n 100
 	omaddu -n sxadmin/$MAILNODE --class limited -c admin -p $(cat /etc/scalix.secret) sxadmin || true
 
 	if [ ! -z "$server_role" -a "$server_role" != "basissystem" ]; then
@@ -146,17 +156,74 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
 	# create standard scalix admin groups
 	omaddpdl -l ScalixUserAdmins/$MAILNODE
-	omaddpdl -l ScalixGroupAdmins/$MAILNODE
 	omaddpdl -l ScalixUserAttributesAdmins/$MAILNODE
+	omaddpdl -l ScalixGroupAdmins/$MAILNODE
 	omaddpdl -l ScalixAdmins/$MAILNODE
 
 	# link to password
-
-	ln -s /etc/scalix.secret /var/opt/scalix/$INSTANCE/caa/scalix.res/config/psdata
+	ln -s /etc/scalix.secret $base/caa/scalix.res/config/psdata
 
 	# scalix-postgres
 	/opt/scalix-postgres/bin/sxpsql-setpwd $(cat /etc/scalix.secret)
 	/opt/scalix-postgres/bin/sxpsql-whitelist $interfaces_eth0_address
+
+	# Configure Scalix (as suggested by Scalix wiki)
+	tomcatport=80
+
+	files="$base/res/config/res.properties \
+	       $base/mobile/mobile.properties"
+
+	for file in $files; do
+		DEST=$file
+		DEST_TMP=$file.neu
+
+		if [ ! -f $DEST ]; then
+			echo WARNING: Could not read source file $DEST
+		else
+			mkdir -p /var/univention-backup/scalix/`dirname $DEST`
+			cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
+
+			#univention-baseconfig filter < $SRC > $DEST
+			sed -e "s;%LOCALDOMAIN%;$domainname;g" \
+			    -e "s;%LOCALHOST%;$hostname.$domainname;g" \
+			    -e "s;%PLATFORMURL%;http://$hostname.$domainname:8080/api;g" \
+			    -e "s;__SECURED_MODE__;false;g" \
+			    -e "s;ubermanager/__FQHN_HOST__@__KERBEROS_REALM__;;g" \
+			    -e "s;__KERBEROS_REALM__;;g" \
+			    -e "s;__FQHN_FOR_KDC_HOST__;;g" \
+			    -e "s;__FQHN_QUERY_SERVER_NAME__;$hostname.$domainname;g" \
+			    -e "s;__UBERMGR_USE_EXTERNAL_AUTH__;false;g" \
+			    -e "s;__UBERMGR_ALLOW_EXTERNAL_AUTH__;false;g" \
+			    -e "s;__UBERMGR_MAXLIST_SIZE__;100;g" \
+			    -e "s;__UBERMGR_MAIL_DOMAINS_LIST__;$domainname;g" \
+			    -e "s;__UBERMGR_EXTERNAL_DOMAIN_AUTH_LIST__;;g" \
+			    -e "s;__CONFIGURED__;true;g" \
+			    -e "s;__FQHN_FOR_UBERMANAGER__;$hostname.$domainname;g" \
+			    -e "s;__TOMCAT_PORT__;$tomcatport;g" \
+			    -e "s;localhost;$hostname.$domainname;g" \
+			    -e "s;%SIS-LANGUAGE%;German;g" \
+			    -e "s;%INDEX-WHITELIST%;$hostname.$domainname;g" \
+			    -e "s;%SEARCH-WHITELIST%;$hostname.$domainname;g" \
+			    -e "s;%IMAPHOST%;$hostname.$domainname;g" \
+			    -e "s;%SMTPHOST%;$hostname.$domainname;g" \
+			    -e "s;%LDAPPORT%;3890;g" \
+			    -e "s;%DBHOST%;$hostname.$domainname:5733;g" \
+			    $DEST > $DEST_TMP
+
+			if [ $? = 0 ]; then
+				mv $DEST_TMP $DEST
+				echo "File: $DEST"
+				cp $DEST /var/univention-backup/scalix/$DEST.current
+			else
+				echo WARNING: Processing $DEST failed!
+			fi
+		fi
+	done
+
+	# additional adjustments of configuration files for univention:
+	# change hardcoded %LDAPPORT%=389 to 3890 and read %DBPASSWD% directly from /etc/scalix.secret
+	/usr/share/univention-scalix/univention-scalix-conffile
+
 elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
 fi
@@ -178,9 +245,9 @@ done
 # remove old logfile, so we can see when tomcat has completed its
 # startup in the new logfile
 
-[ -f /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out ] && \
-mv /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out \
-/var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out.pre-inst
+[ -f $base/tomcat/logs/catalina.out ] && \
+mv $base/tomcat/logs/catalina.out \
+$base/tomcat/logs/catalina.out.pre-inst
 
 ## tell mod_proxy to allow requests from the local domain
 eval $(univention-config-registry shell domainname)
@@ -200,7 +267,7 @@ trap sighndl 2
 
 RET=0
 while [ $RET -ne 1 ]; do
-	grep -q "Server startup in" /var/opt/scalix/$INSTANCE/tomcat/logs/catalina.out && break
+	grep -q "Server startup in" $base/tomcat/logs/catalina.out && break
 	echo -n . || RET=1
 	sleep 1 || RET=1
 done
