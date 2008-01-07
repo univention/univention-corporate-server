@@ -78,16 +78,9 @@ echo
 
 # scalix initializes itself into /var/opt/scalix/INSTANCE/, we have
 # to find and substitute the actual path.
-# to be safe check that ommakeom has setup the instance file before this script is run
-if [ ! -f /etc/opt/scalix/instance.cfg ]; then
-        echo WARN: /etc/opt/scalix/instance.cfg missing
-	# set INSTANCE as suggested by Scalix wiki
-	INSTANCE=${MAILNODE:0:1}${MAILNODE: -1:1}
-else
-	. /etc/opt/scalix/instance.cfg
-	INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
-	INSTANCE=${INSTANCE/\/s/}
-fi
+. /etc/opt/scalix/instance.cfg			# has been set up by ommakeom in preinst
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+INSTANCE=${INSTANCE/\/s/}
 base=/var/opt/scalix/$INSTANCE
 
 # We need de_DE.UTF-8@euro:UTF-8 and de_DE@euro:ISO-8859-15

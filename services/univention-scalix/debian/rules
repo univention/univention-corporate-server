@@ -73,18 +73,18 @@ install: build
 	install -m 0755 var/lib/univention-system-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-system-setup/ldapbase.post/
 	install -m 0755 var/lib/univention-system-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-system-setup/interfaces.post/
 
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance ${D}/opt/scalix-tomcat/bin/sxtomcat-create-instance
 	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
 	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
-
-	install -m 0644 etc/apache2/conf.d/scalix-tomcat-connector.conf $(D)/etc/apache2/conf.d/scalix-tomcat-connector.conf
 
 	find $(D) -type d -name CVS | xargs rm -rf
 	find $(D) -type d -name .svn | xargs rm -rf
 
 	univention-install-baseconfig
+
+	# rules for the univention-scalix-tomcat package
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps $(CURDIR)/debian/univention-scalix-tomcat/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance $(CURDIR)/debian/univention-scalix-tomcat/opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 binary-arch: build install
 

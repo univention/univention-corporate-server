@@ -1,7 +1,3 @@
-Type: file
-File: etc/init.d/scalix-tomcat
-Variables: locale/default
-
 Type: module
 Module: sendmail-smarthost.py
 Variables: mail/sendmail/relayhost
@@ -22,8 +18,3 @@ Subfile: var/www/ucs-overview/de.html.d/35scalix-webmail-de.html
 Type: subfile
 Multifile: var/www/ucs-overview/en.html
 Subfile: var/www/ucs-overview/en.html.d/35scalix-webmail-en.html
-
-Type: file
-File: etc/opt/scalix-tomcat/connector/jk/workers.conf
-Variables: hostname
-Variables: domainname

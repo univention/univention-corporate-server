@@ -115,46 +115,62 @@ create_instance_config() {
     fi
 
     # AJP:
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
     cat >$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
-	<VirtualHost ${tomcathost}:80>
+	#<VirtualHost ${tomcathost}:80>
 	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
-	</VirtualHost>
+	#</VirtualHost>
 	!!EOF!!
 
     # AJP SSL
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
     if [ $should_do_ssl -ne 0 ]; then
         cat >>$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
-	<VirtualHost ${tomcathost}:443>
+	#<VirtualHost ${tomcathost}:443>
 	    SSLEngine on
 	    $ssl_proto_string
 	    SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
 	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
 	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
 	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
-	</VirtualHost>
+	#</VirtualHost>
 	!!EOF!!
     fi
 
     # JK:
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
     cat >$connectordir/jk/instance-$instance.conf <<-!!EOF!!
-	<VirtualHost ${tomcathost}:80>
+	#<VirtualHost ${tomcathost}:80>
 	    Include /etc/opt/scalix-tomcat/connector/jk/app-${instance}.*.conf
-	</VirtualHost>
+	#</VirtualHost>
 	!!EOF!!
 
     # JK SSL
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
     if [ $should_do_ssl -ne 0 ]; then
         cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
-	<VirtualHost ${tomcathost}:443>
+	#<VirtualHost ${tomcathost}:443>
 	    SSLEngine on
 	    $ssl_proto_string
 	    SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
 	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
 	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
 	    Include /etc/opt/scalix-tomcat/connector/jk/app-$instance.*.conf
-	</VirtualHost>
+	#</VirtualHost>
 	!!EOF!!
     fi
+
+    cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	JkWorkerProperty worker.${instance}.type=ajp13
+	JkWorkerProperty worker.${instance}.host=${tomcathost}
+	JkWorkerProperty worker.${instance}.port=8009
+	JkWorkerProperty worker.${instance}.lbfactor=50
+	JkWorkerProperty worker.${instance}.cachesize=10
+	JkWorkerProperty worker.${instance}.cache_timeout=600
+	JkWorkerProperty worker.${instance}.socket_keepalive=1
+	JkWorkerProperty worker.${instance}.recycle_timeout=300
+
+	!!EOF!!
 
     workers=""
     if [ -f ${connectordir}/jk/workers.conf ]; then
@@ -168,19 +184,7 @@ create_instance_config() {
         workers=${instance}
     fi
 
-    #cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
-    cat >$connectordir/jk/workers.conf <<-!!EOF!!
-	JkWorkerProperty worker.${instance}.type=ajp13
-	JkWorkerProperty worker.${instance}.host=${tomcathost}
-	JkWorkerProperty worker.${instance}.port=8009
-	JkWorkerProperty worker.${instance}.lbfactor=50
-	JkWorkerProperty worker.${instance}.cachesize=10
-	JkWorkerProperty worker.${instance}.cache_timeout=600
-	JkWorkerProperty worker.${instance}.socket_keepalive=1
-	JkWorkerProperty worker.${instance}.recycle_timeout=300
-	JkWorkerProperty worker.list=${workers}
-
-	!!EOF!!
+    echo "JkWorkerProperty worker.list=$workers" >${connectordir}/jk/workers.conf
 }
 
 #

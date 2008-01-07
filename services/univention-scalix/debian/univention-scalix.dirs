@@ -10,4 +10,3 @@ var/lib/univention-system-setup/ldapbase.post
 var/lib/univention-system-setup/interfaces.post
 opt/scalix-tomcat/bin
 opt/scalix/install
-etc/apache2/conf.d

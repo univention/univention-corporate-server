@@ -51,21 +51,11 @@ if [ ! -f /etc/opt/scalix/instance.cfg ]; then
 	exit 1
 fi
 
-if [ "$1" = "upgrade" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 0.4-33; then
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
-	elif dpkg --compare-versions "$2" lt 1.0.2-13; then
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
-		# divert /etc/apache2/conf.d/scalix-tomcat-connector.conf manually to a different directory
-		[ -d /var/univention-backup/scalix/etc/apache2/conf.d ] || mkdir -p /var/univention-backup/scalix/etc/apache2/conf.d
-		dpkg-divert --package univention-scalix --add --rename --divert /var/univention-backup/scalix/etc/apache2/conf.d/scalix-tomcat-connector.conf.real /etc/apache2/conf.d/scalix-tomcat-connector.conf
-	fi
+if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4-33; then
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
 elif [ "$1" = "install" ]; then
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
