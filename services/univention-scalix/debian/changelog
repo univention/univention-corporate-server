@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-15) unstable; urgency=low
+
+  * fixed package internal path of scalix-tomcat-connector.conf
+
+ -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 12:07:27 +0100
+
 univention-scalix (1.0.2-14) unstable; urgency=low
 
   * divert jk/workers.conf to template, as sxtomcat-create-instance may already
