@@ -80,7 +80,8 @@ install: build
 	find $(D) -type d -name CVS | xargs rm -rf
 	find $(D) -type d -name .svn | xargs rm -rf
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 	# rules for the univention-scalix-tomcat package
 	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps $(CURDIR)/debian/univention-scalix-tomcat/opt/scalix-tomcat/bin/sxtomcat-webapps
