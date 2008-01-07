@@ -79,6 +79,8 @@ install: build
 	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
 
+	install -m 0644 etc/apache2/conf.d/scalix-tomcat-connector.conf $(D)/etc/apache2/conf.d/scalix-tomcat-connector.conf
+
 	find $(D) -type d -name CVS | xargs rm -rf
 	find $(D) -type d -name .svn | xargs rm -rf
 

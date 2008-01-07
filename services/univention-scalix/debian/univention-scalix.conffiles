@@ -1,1 +1,2 @@
 /etc/univention/templates/files/etc/init.d/scalix-tomcat
+/etc/univention/templates/files/etc/opt/scalix-tomcat/connector/jk/workers.conf
