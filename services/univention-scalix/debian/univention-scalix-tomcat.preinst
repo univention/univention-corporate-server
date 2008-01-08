@@ -30,18 +30,26 @@
 
 Package=univention-scalix-tomcat
 
-if [ "$1" = "upgrade" -a -n "$2" ]; then
-	if dpkg --compare-versions "$2" lt 1.0.2-21; then
-		# remove old diversion owned by univention-scalix
-		if dpkg --compare-versions "$2" ge 0.4-33; then
-			rm /opt/scalix-tomcat/bin/sxtomcat-webapps
-			dpkg-divert --package univention-scalix --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real --remove /opt/scalix-tomcat/bin/sxtomcat-webapps
-		fi
-		# and put up new diversion owned by univention-scalix-tomcat
+if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.2-22; then
 		dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 		dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
-	fi
 elif [ "$1" = "install" ]; then
+
+	## divert for sxtomcat-webapps will be transferred from univention-scalix to this package
+	divert=/opt/scalix-tomcat/bin/sxtomcat-webapps
+	current_divert_owner=univention-scalix
+	# determine package version of $current_divert_owner
+	univention_scalix_version=$(dpkg -l $current_divert_owner 2>/dev/null | grep ii |awk '{print $3}')
+	if dpkg --compare-versions "$univention_scalix_version" ge 0.4-33; then
+		# check if the divert really belongs to $current_divert_owner
+		if [ "$(dpkg-divert --list $divert | awk '{print $7}')" == $current_divert_owner ]; then
+			# remove old diversion owned by $old_divert_owner
+			rm $divert
+			dpkg-divert --package $current_divert_owner --rename --divert ${divert}.real --remove ${divert}
+		fi
+	fi
+
+	# put up new diversions owned by univention-scalix-tomcat
 	dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 	dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 fi

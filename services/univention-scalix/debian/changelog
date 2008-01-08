@@ -1,3 +1,12 @@
+univention-scalix (1.0.2-22) unstable; urgency=low
+
+  * added Scalix packges new in 11.3 to dependency list
+  * moved code for transfer of diversion from 'upgrade' to 'install' in
+    univention-scalix-tomcat.preinst
+  * include univention-scalix-tomcat.univention-baseconfig
+
+ -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 16:31:40 +0100
+
 univention-scalix (1.0.2-21) unstable; urgency=low
 
   * turned ucs-overview links into relative URLs

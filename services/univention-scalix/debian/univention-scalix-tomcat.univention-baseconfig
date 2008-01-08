@@ -1,0 +1,3 @@
+Type: file
+File: etc/init.d/scalix-tomcat
+Variables: locale/default
