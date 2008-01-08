@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-23) unstable; urgency=low
+
+  * take care of package univention-scalix beeing placed on status 'hold'
+
+ -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 17:57:43 +0100
+
 univention-scalix (1.0.2-22) unstable; urgency=low
 
   * added Scalix packges new in 11.3 to dependency list
