@@ -39,7 +39,7 @@ elif [ "$1" = "install" ]; then
 	divert=/opt/scalix-tomcat/bin/sxtomcat-webapps
 	current_divert_owner=univention-scalix
 	# determine package version of $current_divert_owner
-	univention_scalix_version=$(dpkg -l $current_divert_owner 2>/dev/null | grep "^.i *$current_divert_owner" |awk '{print $3}')
+	univention_scalix_version=$(dpkg -l $current_divert_owner 2>/dev/null | grep "^.i " |awk '{print $3}')
 	if dpkg --compare-versions "$univention_scalix_version" ge 0.4-33; then
 		# check if the divert really belongs to $current_divert_owner
 		if [ "$(dpkg-divert --list $divert | awk '{print $7}')" == $current_divert_owner ]; then
