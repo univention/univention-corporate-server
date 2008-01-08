@@ -28,12 +28,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.2-17; then
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
+Package=univention-scalix-tomcat
+
+if [ "$1" = "upgrade" -a -n "$2" ]; then
+	if dpkg --compare-versions "$2" lt 0.4-33; then
+		dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	elif dpkg --compare-versions "$2" lt 1.0.2-20; then
+		dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
+	fi
 elif [ "$1" = "install" ]; then
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
+	dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	dpkg-divert --package $Package --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 fi
 
 #DEBHELPER#
