@@ -3,7 +3,7 @@
 # Univention Scalix
 #  preinst script for the debian package
 #
-# Copyright (C) 2006, 2007 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -82,9 +82,9 @@ install: build
 
 	univention-install-baseconfig
 
-	# rules for the univention-scalix-tomcat package
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps $(CURDIR)/debian/univention-scalix-tomcat/opt/scalix-tomcat/bin/sxtomcat-webapps
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance $(CURDIR)/debian/univention-scalix-tomcat/opt/scalix-tomcat/bin/sxtomcat-create-instance
+	# rules for the univention-scalix-tomcat-connector package
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps $(CURDIR)/debian/univention-scalix-tomcat-connector/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance $(CURDIR)/debian/univention-scalix-tomcat-connector/opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 binary-arch: build install
 

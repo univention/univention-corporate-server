@@ -3,7 +3,7 @@
 # Univention Baseconfig
 #  set relay host / smarthost in sendmail cfg
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
