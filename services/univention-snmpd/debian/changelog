@@ -1,0 +1,12 @@
+univention-snmpd (0.2) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 10:55:50 +0100
+
+univention-snmpd (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Thomas Kaminski <kaminski@univention.de>  Wed, 23 Mar 2005 16:00:38 +0100
+

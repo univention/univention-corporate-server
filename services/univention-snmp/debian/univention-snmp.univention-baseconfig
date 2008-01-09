@@ -1,0 +1,6 @@
+Type: multifile
+Multifile: etc/snmp/snmp.conf
+
+Type: subfile
+Multifile: etc/snmp/snmp.conf
+Subfile: etc/snmp/snmp.conf.d/00-snmp.conf

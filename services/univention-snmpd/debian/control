@@ -1,0 +1,19 @@
+Source: univention-snmpd
+Section: univention
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-snmpd
+Architecture: all
+Depends: univention-baseconfig, snmpd, snmp
+Replaces:
+Conflicts: univention-monitoring(<=1.6)
+Description: UCS - snmpd configuration
+ This package contains the configuration for the
+ snmpd package.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
