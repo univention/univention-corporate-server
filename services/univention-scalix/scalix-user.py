@@ -3,7 +3,7 @@
 # Univention Scalix
 #  listener module: synchronizing information between UCS and Scalix
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #

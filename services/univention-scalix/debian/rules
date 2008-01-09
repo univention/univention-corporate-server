@@ -3,7 +3,7 @@
 # Univention Scalix
 #  preinst script for the debian package
 #
-# Copyright (C) 2006, 2007 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -73,15 +73,17 @@ install: build
 	install -m 0755 var/lib/univention-system-setup/ldapbase.post/univention-scalix ${D}/var/lib/univention-system-setup/ldapbase.post/
 	install -m 0755 var/lib/univention-system-setup/interfaces.post/univention-scalix ${D}/var/lib/univention-system-setup/interfaces.post/
 
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
 	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
 	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance ${D}/opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 	find $(D) -type d -name CVS | xargs rm -rf
 	find $(D) -type d -name .svn | xargs rm -rf
 
 	univention-install-baseconfig
+
 
 binary-arch: build install
 

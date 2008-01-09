@@ -3,7 +3,7 @@
 # Univention Scalix
 #  preinst script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -52,15 +52,17 @@ if [ ! -f /etc/opt/scalix/instance.cfg ]; then
 fi
 
 if [ "$1" = "upgrade" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.4-33; then
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 elif [ "$1" = "install" ]; then
-	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
 	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
+	dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 fi
 
 if [ ! -e /usr/bin/cyrmaster ]; then

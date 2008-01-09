@@ -4,7 +4,7 @@
 #  tool for creating Scalix configuration files using
 #  Univention Baseconfig
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -66,7 +66,7 @@ process(){
 		echo WARNING: Could not read source file $SRC
 	else
 		mkdir -p /var/univention-backup/scalix/`dirname $DEST`
-		cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
+		[ -f $DEST ] && cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
 		univention-baseconfig filter < $SRC > $DEST
 		if [ $? = 0 ]; then
 			echo "File: $DEST"

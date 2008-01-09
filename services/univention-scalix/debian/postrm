@@ -3,7 +3,7 @@
 # Univention Scalix
 #  postrm script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,10 +29,11 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 
-test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real --remove /opt/scalix-tomcat/bin/sxtomcat-webapps
 test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix/install/OM-LDAP.inst.real --remove /opt/scalix/install/OM-LDAP.inst
 test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix/install/OM-ADM.inst.real --remove /opt/scalix/install/OM-ADM.inst
 test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix/install/OM-UNIX.inst.real --remove /opt/scalix/install/OM-UNIX.inst
+test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real --remove /opt/scalix-tomcat/bin/sxtomcat-webapps
+test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real --remove /opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 #DEBHELPER#
 

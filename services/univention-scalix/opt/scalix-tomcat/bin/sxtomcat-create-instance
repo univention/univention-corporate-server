@@ -1,0 +1,266 @@
+#!/bin/sh
+#
+# This script creates a new Scalix Tomcat instance.
+#
+
+OMCHECKGC=/opt/scalix/bin/omcheckgc
+
+instdir=$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-dir "$1")
+instname=$(/opt/scalix-tomcat/bin/sxtomcat-get-inst-name "$1")
+
+basedir="/opt/scalix-tomcat"
+connectordir="/etc/opt/scalix-tomcat/connector"
+ssl_conf_possible_paths="/etc/apache2/mods-enabled/ssl.conf /etc/httpd/conf.d/ssl.conf /etc/apache2/vhosts.d/vhost.conf"
+
+get_ssl_conf_info() {
+    f=$1
+    key=$2
+    if [ -z "$f" ] || [ -z "$key" ] || [ ! -f "$f" ]; then
+       return 1
+    fi
+    value="`sed -n \"/^[ \t]*${key}/p\" $f | sed 's/[ \t]\{1,\}/ /g' | sed 's/^ *//' | cut -d' ' -f2-`"
+    if [ 1 -ne `echo "$value" | wc -l` ]; then
+       return 1
+    fi
+    echo "$value"
+    return 0
+}
+
+#Call this before adding / upgrading a web app if SSL settings are needed for Apache.
+set_ssl_conf_defaults() {
+    if [ -z "$SXTOMCAT_CERTFILE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_CERTFILE=`get_ssl_conf_info $sslfile SSLCertificateFile`
+              if [ ! -z "$SXTOMCAT_CERTFILE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+    
+    if [ -z "$SXTOMCAT_KEYFILE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_KEYFILE=`get_ssl_conf_info $sslfile SSLCertificateKeyFile`
+              if [ ! -z "$SXTOMCAT_KEYFILE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+    
+    if [ -z "$SXTOMCAT_CIPHERSUITE" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_CIPHERSUITE=`get_ssl_conf_info $sslfile SSLCipherSuite`
+              if [ ! -z "$SXTOMCAT_CIPHERSUITE" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+
+    if [ -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+      for sslfile in $ssl_conf_possible_paths
+      do
+          if [ -r "$sslfile" ]; then
+              SXTOMCAT_SSLPROTOCOL=`get_ssl_conf_info $sslfile SSLProtocol`
+              if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+                  break
+              fi
+          fi
+      done
+    fi
+
+    export SXTOMCAT_CERTFILE SXTOMCAT_KEYFILE SXTOMCAT_CIPHERSUITE SXTOMCAT_SSLPROTOCOL
+}
+
+ssl_has_ok_config() {
+    #1 = true, 0 = false
+    ret=1
+    if [ -z "$SXTOMCAT_CERTFILE" ] || \
+       [ -z "$SXTOMCAT_KEYFILE" ]; then
+       #It is OK if SXTOMCAT_CIPHERSUITE is empty, as it has a default setting
+       #It is OK if SXTOMCAT_SSLPROTOCOL is empty, as it has a default setting
+       ret=0
+    fi
+    if [ ! -e "$SXTOMCAT_CERTFILE" ] || \
+       [ ! -e "$SXTOMCAT_KEYFILE" ]; then
+       ret=0
+    fi
+    return $ret
+}
+
+create_instance_config() {
+    instance="$1"
+    tomcathost="$2"
+
+## <univention comment="SSL is switched on in mods-available/ssl.conf"/>
+    #ssl_has_ok_config
+    #should_do_ssl=$?
+    should_do_ssl=0
+    
+    ssl_proto_string=""
+    if [ ! -z "$SXTOMCAT_SSLPROTOCOL" ]; then
+        ssl_proto_string="SSLProtocol ${SXTOMCAT_SSLPROTOCOL}"
+    fi
+
+    ssl_ciphersuite_string=""
+    if [ ! -z "$SXTOMCAT_CIPHERSUITE" ]; then
+        ssl_ciphersuite_string="SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}"
+    fi
+
+    # AJP:
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+    cat >$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:80>
+	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
+
+    # AJP SSL
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+    if [ $should_do_ssl -ne 0 ]; then
+        cat >>$connectordir/ajp/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:443>
+	    SSLEngine on
+	    $ssl_proto_string
+	    SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
+	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
+	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+	    Include /etc/opt/scalix-tomcat/connector/ajp/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
+    fi
+
+    # JK:
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+    cat >$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:80>
+	    Include /etc/opt/scalix-tomcat/connector/jk/app-${instance}.*.conf
+	#</VirtualHost>
+	!!EOF!!
+
+    # JK SSL
+## <univention comment="The VirtualHost environment supplied by Scalix collides with the default site."/>
+    if [ $should_do_ssl -ne 0 ]; then
+        cat >>$connectordir/jk/instance-$instance.conf <<-!!EOF!!
+	#<VirtualHost ${tomcathost}:443>
+	    SSLEngine on
+	    $ssl_proto_string
+	    SSLCipherSuite ${SXTOMCAT_CIPHERSUITE}
+	    SSLCertificateFile ${SXTOMCAT_CERTFILE}
+	    SSLCertificateKeyFile ${SXTOMCAT_KEYFILE}
+	    Include /etc/opt/scalix-tomcat/connector/jk/app-$instance.*.conf
+	#</VirtualHost>
+	!!EOF!!
+    fi
+
+    workers=""
+    if [ -f ${connectordir}/jk/workers.conf ]; then
+        workers=`grep 'JkWorkerProperty[ 	]*worker.list=' ${connectordir}/jk/workers.conf | sed -e 's/.*=//'`
+        workers=`echo $workers | sed -e "s/^${instance},//" -e "s/,${instance},/,/" -e "s/,${instance}$//"`
+    fi
+
+    if [ "${workers}" ]; then
+        workers=${workers},${instance}
+    else
+        workers=${instance}
+    fi
+
+    cat >$connectordir/jk/workers.conf <<-!!EOF!!
+	JkWorkerProperty worker.${instance}.type=ajp13
+	JkWorkerProperty worker.${instance}.host=${tomcathost}
+	JkWorkerProperty worker.${instance}.port=8009
+	JkWorkerProperty worker.${instance}.lbfactor=50
+	JkWorkerProperty worker.${instance}.cachesize=10
+	JkWorkerProperty worker.${instance}.cache_timeout=600
+	JkWorkerProperty worker.${instance}.socket_keepalive=1
+	JkWorkerProperty worker.${instance}.recycle_timeout=300
+	JkWorkerProperty worker.list=$workers
+
+	!!EOF!!
+
+}
+
+#
+# MAIN
+#
+
+if [ -d "$instdir" ] ; then
+    echo "Error: instance $instname already exists" >&2
+    exit 1
+fi
+
+# create the instance from template:
+mkdir -p $instdir
+cp --archive $basedir/instance-template/* $instdir
+
+portnum=0
+# adjust hostname setting:
+if [ -f "$OMCHECKGC" -a -x "$OMCHECKGC" ]
+then
+        # Does the instance exist ?
+        if [ $($OMCHECKGC -l | grep "^${instname}$" | wc -l) -eq 1 ]
+        then
+			tomcathost="$(OMCURRENT=$instname $OMCHECKGC -h)"
+
+			if [ -f $instdir/conf/server.xml ]
+			then
+				portnum=$(grep -i "<Server" $INSTDIR/conf/server.xml | cut -d'"' -f 2)
+			fi
+		else
+			tomcathost=${OMHOSTNAME:-${instname}.$(hostname -d)}
+		fi
+else
+	tomcathost=${OMHOSTNAME:-${instname}.$(hostname -d)}
+fi
+
+# Create instance configs for both AJP and connector
+
+
+PORT_TABLE=/etc/opt/scalix-tomcat/ports
+# Check to see if the instance is already in the file
+if [ $portnum -eq 0 ]
+then
+	portnum=$(grep "^${tomcathost}+" $PORT_TABLE | cut -d "+" -f 2)
+
+	if [ -z "$portnum" ]
+	then
+		portnum=0
+	fi
+fi
+
+if [ $portnum -eq 0 ]
+then
+	portnum=8005
+	if [ -f $PORT_TABLE ]
+	then
+		while [ $portnum -le 8019 ]
+		do
+			if [ $(grep "+$portnum$" $PORT_TABLE | wc -l) -ge 1 ]
+			then
+				portnum=$(expr $portnum + 1)
+			else
+				break
+			fi
+		done
+	fi
+	echo "$tomcathost+$portnum" >> $PORT_TABLE
+fi
+
+cat /etc/opt/scalix-tomcat/conf/server.xml.in | \
+    sed -e "s/@HOST@/$tomcathost/g" | \
+	sed -e "s/@SHUTDOWN_PORT@/$portnum/g" \
+    >$instdir/conf/server.xml
+
+rm -rf $instdir/conf/Catalina/$tomcathost
+ln -sf localhost $instdir/conf/Catalina/$tomcathost
+
+set_ssl_conf_defaults
+create_instance_config ${instname} ${tomcathost}
+
