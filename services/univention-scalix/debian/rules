@@ -76,15 +76,14 @@ install: build
 	install -m 0555 opt/scalix/install/OM-LDAP.inst ${D}/opt/scalix/install/OM-LDAP.inst
 	install -m 0555 opt/scalix/install/OM-ADM.inst ${D}/opt/scalix/install/OM-ADM.inst
 	install -m 0555 opt/scalix/install/OM-UNIX.inst ${D}/opt/scalix/install/OM-UNIX.inst
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps ${D}/opt/scalix-tomcat/bin/sxtomcat-webapps
+	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance ${D}/opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 	find $(D) -type d -name CVS | xargs rm -rf
 	find $(D) -type d -name .svn | xargs rm -rf
 
 	univention-install-baseconfig
 
-	# rules for the univention-scalix-tomcat-connector package
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-webapps $(CURDIR)/debian/univention-scalix-tomcat-connector/opt/scalix-tomcat/bin/sxtomcat-webapps
-	install -m 0555 opt/scalix-tomcat/bin/sxtomcat-create-instance $(CURDIR)/debian/univention-scalix-tomcat-connector/opt/scalix-tomcat/bin/sxtomcat-create-instance
 
 binary-arch: build install
 
