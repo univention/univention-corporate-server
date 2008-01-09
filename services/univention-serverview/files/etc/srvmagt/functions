@@ -288,6 +288,12 @@ function SetSvEnv() {
 		SV_NICKNAME="RHEL${tmpvers%%.*}"
 		SV_VENDOR="$(rpm -qf --queryformat %{vendor} /etc/redhat-release 2>/dev/null)"
 
+	elif [ -e /etc/univention/base.conf ]; then
+		SV_SYSTEM="UCS"
+		SV_OS=$(lsb_release -sd)
+		SV_VVOS="UCS $(lsb_release -sr)"
+		SV_NICKNAME="UCS_$(lsb_release -sr)"
+		SV_VENDOR="Univention"
 	else
 		SV_SYSTEM="unknown"
 		SV_OS="unknown"
