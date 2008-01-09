@@ -8,5 +8,4 @@ var/lib/univention-system-setup/hostname.post
 var/lib/univention-system-setup/domainname.post
 var/lib/univention-system-setup/ldapbase.post
 var/lib/univention-system-setup/interfaces.post
-opt/scalix-tomcat/bin
 opt/scalix/install

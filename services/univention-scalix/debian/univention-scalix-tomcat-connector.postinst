@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Univention Scalix Tomcat
-#  postrm script for the debian package
+# Univention Scalix Tomcat Connector
+#  postinst script for the debian package
 #
-# Copyright (C) 2006 Univention GmbH
+# Copyright (C) 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,11 +28,24 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
-test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real --remove /opt/scalix-tomcat/bin/sxtomcat-webapps
-test "$1" = "remove" && dpkg-divert --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real --remove /opt/scalix-tomcat/bin/sxtomcat-create-instance
-
 #DEBHELPER#
 
-exit 0
+sighndl(){
+	export RET=1
+	trap 2
+}
 
+trap sighndl 2
+
+## postinst code from scalix-tomcat-connector:
+
+# enable required Apache modules:
+a2enmod deflate >/dev/null
+
+if [ -f /etc/apache2/mods-available/proxy_ajp.load ] ; then
+    a2enmod proxy_ajp >/dev/null
+elif [ -f /etc/apache2/mods-available/jk.load ] ; then
+    a2enmod jk >/dev/null
+fi
+
+exit 0

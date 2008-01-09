@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-26) unstable; urgency=low
+
+  * commit changes to repository
+
+ -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 10:39:23 +0100
+
 univention-scalix (1.0.2-25) unstable; urgency=low
 
   * change name of univention-scalix-tomcat package to univention-scalix-tomcat-connector
