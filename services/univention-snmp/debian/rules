@@ -1,8 +1,8 @@
 #!/usr/bin/make -f
-# Univention Snmp
+# Univention snmp
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -27,7 +27,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-export DH_COMPAT=3
 package=univention-snmp
 
 configure: configure-stamp

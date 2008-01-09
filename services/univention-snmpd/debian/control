@@ -6,8 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-snmpd
 Architecture: all
-Depends: univention-baseconfig, snmpd, snmp
-Replaces:
+Depends: univention-config-registry | univention-baseconfig, snmpd, snmp
 Conflicts: univention-monitoring(<=1.6)
 Description: UCS - snmpd configuration
  This package contains the configuration for the

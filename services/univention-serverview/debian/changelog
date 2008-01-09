@@ -1,3 +1,9 @@
+univention-serverview (1.0.0-1) unstable; urgency=low
+
+  * upgrade to ucs 2.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Jan 2008 08:40:24 +0100
+
 univention-serverview (0.2-3) unstable; urgency=low
 
   * add GPL headers
@@ -15,8 +21,4 @@ univention-serverview (0.2-0) unstable; urgency=low
   * Rebuild from univention-srvmagt
 
  -- Ingo Steuwer <steuwer@univention.de>  Fri, 29 Apr 2005 11:15:09 +0200
-
-Local variables:
-mode: debian-changelog
-End:
 

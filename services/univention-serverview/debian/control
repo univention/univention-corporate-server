@@ -1,5 +1,5 @@
 Source: univention-serverview
-Section: contrib
+Section: univention
 Priority: extra
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends-Indep: debhelper (>= 4), univention-config-dev
@@ -7,8 +7,7 @@ Standards-Version: 3.5.10
 
 Package: univention-serverview-agents
 Architecture: all
-Pre-Depends: univention-snmpd, univention-snmp, srvmagt-agents, srvmagt-eecd
-Depends: univention-baseconfig
+Depends: univention-baseconfig, univention-snmpd, univention-snmp
 Conflicts: univention-srvmagt
 Replaces: univention-srvmagt
 Description: simple configuration for Fujitsu Siemens Computers ServerView Agents and Deamons

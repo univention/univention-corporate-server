@@ -1,3 +1,9 @@
+univention-snmp (1.0.0-1) unstable; urgency=low
+
+  * upgrade to ucs 2.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Jan 2008 08:24:25 +0100
+
 univention-snmp (0.2) unstable; urgency=low
 
   * add GPL headers
