@@ -1,3 +1,11 @@
 Type: file
 File: etc/init.d/scalix-tomcat
 Variables: locale/default
+
+Type: file
+File: etc/apache2/conf.d/scalix-tomcat-connector.conf
+Variables: hostname
+
+Type: file
+File: etc/opt/scalix-tomcat/connector/jk/workers.conf
+Variables: hostname
