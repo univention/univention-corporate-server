@@ -37,5 +37,35 @@ else
 	univention-baseconfig set serverview/community?svcommunity
 fi
 
+# from srvmagt-agents
+MACHINE=$(uname -m)
+/bin/ln -f /usr/sbin/busagt_32bit /usr/sbin/busagt
+[ "$MACHINE" = "ia64" ] && {
+        /bin/ln -f /usr/sbin/busagt_64bit /usr/sbin/busagt
+}
+
+# from srvmagt-scs
+[ "$(uname -m)" = "ia64" ] && LIB_PATH_PREFIX="/emul/ia32-linux"
+
+LIBS="$LIB_PATH_PREFIX/usr/lib/libssl.so.0.9.8 $LIB_PATH_PREFIX/usr/lib/libssl.so.0.9.7"
+for name in $LIBS; do
+        [ ! -e /etc/srvmagt/SCS/lib/libssl.so.0.9.0 ] && [ -e $name ] && ln -s $name  /etc/srvmagt/SCS/lib/libssl.so.0.9.0
+done
+
+LIBS="$LIB_PATH_PREFIX/usr/lib/libcrypto.so.0.9.8 $LIB_PATH_PREFIX/usr/lib/libcrypto.so.0.9.7"
+for name in $LIBS; do
+	[ ! -e /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0 ] && [ -e $name ] && ln -s $name  /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0
+done
+
+if [ -x "/etc/init.d/serverview" ]; then
+    update-rc.d serverview defaults 21 19 >/dev/null
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		invoke-rc.d serverview start || exit $?
+	else
+		/etc/init.d/serverview start || exit $?
+	fi
+fi
+
+
 exit 0
 

@@ -7,7 +7,7 @@ Standards-Version: 3.5.10
 
 Package: univention-serverview-agents
 Architecture: all
-Depends: univention-baseconfig, univention-snmpd, univention-snmp
+Depends: univention-baseconfig, univention-snmpd, univention-snmp, lsb_release
 Conflicts: univention-srvmagt
 Replaces: univention-srvmagt
 Description: simple configuration for Fujitsu Siemens Computers ServerView Agents and Deamons

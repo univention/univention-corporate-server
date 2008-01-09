@@ -1,9 +1,9 @@
 #!/bin/sh
 #
 # Univention Serverview
-#  postrm script
+#  init script
 #
-# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
+# Copyright (C) 2008 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -28,13 +28,38 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-#DEBHELPER#
 
-if [ "$1" = "purge" ] ; then
-    update-rc.d serverview remove >/dev/null || exit $?
-fi
+START_SCRIPTS="eecd_mods_src eecd srvmagt srvmagt_scs"
+STOP_SCRIPTS="srvmagt_scs srvmagt eecd eecd_mods_src"
 
-test "$1" = "remove" && rm -f /etc/srvmagt/functions; dpkg-divert --rename --quiet --divert /etc/srvmagt/functions.debian --remove /etc/srvmagt/functions || true
+case "$1" in 
+start)
+	for s in $START_SCRIPTS; do
+		/etc/init.d/$s start
+		ret=$?
+		if [ "$ret" != 0 ]; then
+			exit $ret
+		fi
+	done
+	;;
+stop)
+	for s in $STOP_SCRIPTS; do
+		/etc/init.d/$s stop
+		ret=$?
+		if [ "$ret" != 0 ]; then
+			exit $ret
+		fi
+	done
+	;;
+restart)
+	$0 stop
+	$0 start
+	;;
+*)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+	;;
+esac
 
 exit 0
 

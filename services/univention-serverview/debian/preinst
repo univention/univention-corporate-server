@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Serverview
-#  postrm script
+#  preinst script
 #
 # Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
@@ -30,11 +30,10 @@
 
 #DEBHELPER#
 
-if [ "$1" = "purge" ] ; then
-    update-rc.d serverview remove >/dev/null || exit $?
-fi
 
-test "$1" = "remove" && rm -f /etc/srvmagt/functions; dpkg-divert --rename --quiet --divert /etc/srvmagt/functions.debian --remove /etc/srvmagt/functions || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /etc/srvmagt/functions.debian --add /etc/srvmagt/functions || true
 
 exit 0
+
+
 
