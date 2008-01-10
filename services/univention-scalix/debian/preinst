@@ -56,9 +56,9 @@ if [ "$1" = "upgrade" -a -n "$2" ]; then
 		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-LDAP.inst.real /opt/scalix/install/OM-LDAP.inst
 		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-ADM.inst.real /opt/scalix/install/OM-ADM.inst
 		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix/install/OM-UNIX.inst.real /opt/scalix/install/OM-UNIX.inst
+		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 	fi
 	if dpkg --compare-versions "$2" lt 1.0.2-31; then
-		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-webapps.real /opt/scalix-tomcat/bin/sxtomcat-webapps
 		dpkg-divert --package univention-scalix --add --rename --divert /opt/scalix-tomcat/bin/sxtomcat-create-instance.real /opt/scalix-tomcat/bin/sxtomcat-create-instance
 	fi
 elif [ "$1" = "install" ]; then
