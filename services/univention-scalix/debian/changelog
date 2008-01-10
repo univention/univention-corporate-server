@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-32) unstable; urgency=low
+
+  * ucs_1.3-2 ships 0.4-54, fix preinst upgrade test for 'lower than 0.4-33'
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Jan 2008 17:39:54 +0100
+
 univention-scalix (1.0.2-31) unstable; urgency=low
 
   * revert univention-scalix-tomcat-connector configuration files to static_conffile
