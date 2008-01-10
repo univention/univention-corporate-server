@@ -118,8 +118,9 @@ class Module( base.Page ):
 
 	def focused( self ):
 		cmd = self.__startups[ self.selected ]
-		if not self.active and cmd.reload():
+		if not self.active and cmd.reload() and not self.__operation_is_progress:
 			self.active.single( client.request_send( cmd.request ) )
+		self.__operation_is_progress = False
 
 	def layout( self ):
 		rows = base.Page.layout( self )
@@ -214,6 +215,7 @@ class Module( base.Page ):
 				rows.append( row )
 			else:
 				self._refresh = True
+				self.__operation_is_progress = True
 				lst = umcd.List()
 				lst.add_row( [ umcd.Image( 'actions/info', umc_tools.SIZE_MEDIUM ),
 							   _( 'Operation still in progress. Please wait ...' ) ] )
