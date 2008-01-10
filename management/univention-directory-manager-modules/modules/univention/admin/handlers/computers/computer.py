@@ -107,6 +107,10 @@ property_descriptions={
 }
 
 mapping=univention.admin.mapping.mapping()
+mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('inventoryNumber', 'univentionInventoryNumber')
+mapping.register('mac', 'macAddress' )
+mapping.register('ip', 'aRecord' )
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
