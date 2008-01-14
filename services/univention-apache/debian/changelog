@@ -1,3 +1,9 @@
+univention-apache (2.0.15-5) unstable; urgency=low
+
+  * fixed typo
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Jan 2008 19:18:14 +0100
+
 univention-apache (2.0.15-4) unstable; urgency=low
 
   * inverted order of proxy access rule: default to "Allow from all"
