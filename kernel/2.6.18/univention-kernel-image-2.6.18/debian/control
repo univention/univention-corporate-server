@@ -133,7 +133,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-2.6.18
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -144,7 +144,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-2.6.18-64gb
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -155,7 +155,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-2.6.18
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -166,7 +166,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-2.6.18-64gb
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -392,7 +392,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-mobileclient-2.6.18
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -403,7 +403,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-mobileclient-2.6.18-64gb
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -414,7 +414,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.18
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -425,7 +425,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.18-64gb
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -651,7 +651,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-managedclient-2.6.18
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -662,7 +662,7 @@ Description: UCS - Linux kernel
 
 Package: univention-serverview-modules-managedclient-2.6.18-64gb
 Architecture: i386
-Depends: serverview-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
  .
@@ -673,7 +673,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-managedclient-2.6.18
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion}
+Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
@@ -684,7 +684,7 @@ Description: UCS - Linux kernel
 
 Package: univention-fsc-srv-modules-managedclient-2.6.18-64gb
 Architecture: i386
-Depends: fsc-srv-modules-${F:KernelVersion64}
+Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
  .
