@@ -22,8 +22,20 @@ Description[en]=Automatically start of the apache webserver
 Type=str
 Categories=System
 
-[apache2/proxy/allow]
-Description[de]=Domainenname, der vom proxy Modul bedient werden soll
-Description[en]=Domainname that shall be served by the proxy module
+[apache2/proxy/access/order]
+Description[de]=Reihenfolge der mod_access Regeln (http://httpd.apache.org/docs/2.0/mod/mod_access.html)
+Description[en]=Order of the mod_access Rules (http://httpd.apache.org/docs/2.0/mod/mod_access.html)
+Type=str
+Categories=Network
+
+[apache2/proxy/access/allow]
+Description[de]=Liste von Domainennamen, die vom proxy Modul bedient werden sollen (getrennt durch Leerzeichen)
+Description[en]=List of Domainnames that shall be served by the proxy module (space separated)
+Type=str
+Categories=Network
+
+[apache2/proxy/access/deny]
+Description[de]=Liste von Domainennamen, denen der Zugriff vom proxy Modul verweigert werden soll (Trennung: Leerzeichen)
+Description[en]=List of domainnames that shall be denied access by the proxy module (space separated)
 Type=str
 Categories=Network
