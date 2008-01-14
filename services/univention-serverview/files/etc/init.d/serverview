@@ -1,0 +1,65 @@
+#!/bin/sh
+#
+# Univention Serverview
+#  init script
+#
+# Copyright (C) 2008 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+START_SCRIPTS="eecd_mods_src eecd srvmagt srvmagt_scs"
+STOP_SCRIPTS="srvmagt_scs srvmagt eecd eecd_mods_src"
+
+case "$1" in 
+start)
+	for s in $START_SCRIPTS; do
+		/etc/init.d/$s start
+		ret=$?
+		if [ "$ret" != 0 ]; then
+			exit $ret
+		fi
+	done
+	;;
+stop)
+	for s in $STOP_SCRIPTS; do
+		/etc/init.d/$s stop
+		ret=$?
+		if [ "$ret" != 0 ]; then
+			exit $ret
+		fi
+	done
+	;;
+restart)
+	$0 stop
+	$0 start
+	;;
+*)
+	echo "Usage: $0 {start|stop|status|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
+

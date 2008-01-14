@@ -1,0 +1,450 @@
+
+# $Copyright$
+# Copyright (C) Fujitsu Siemens Computers GmbH 2007
+# All rights reserved
+#
+# This function library is part of ServerView Linux Agents
+
+# LSB function library does not exist on ESX 3,
+#  so emulate here what is necessary
+
+[ -f /etc/vmware-release ] && {
+	. /etc/init.d/functions
+
+	function log_success_msg () {
+		echo -n $*
+		success "$*"
+		echo
+		return 0
+	}
+
+	function log_failure_msg () {
+		echo -n $*
+		failure "$*"
+		echo
+		return 0
+	}
+}
+
+MYNAME=$(basename $0)
+
+# log - append log for script $MYNAME with time stamp to $LOGFILE
+
+function log () {
+	echo -e "$(LANG=en date +'%b %e %T') $HOSTNAME $MYNAME: $*" >>$LOGFILE
+}
+
+# mylog_success_msg() - log to stdout and into /var/log/messages
+# mylog_failure_msg() - log to stdout and into /var/log/messages
+#
+# We should use LSB function log_{success,failure}_msg.
+# But on RHEL5, LSB log_{success,failure}_msg no longer logs to syslog.
+# Since the init activity is important, reintroduce it privately
+#
+# $*		log message
+# Returns always 0.
+
+function mylog_success_msg() {
+	log_success_msg $*
+	logger -p daemon.notice  -t $MYNAME "$* succeeded"
+	return 0
+}
+
+function mylog_failure_msg() {
+	log_failure_msg $*
+	logger -p daemon.err -t $MYNAME "$* failed"
+	return 0
+}
+
+# mypidof() - get the pid of processes
+#
+# We should use LSB function pidofproc.
+# But on RHEL5, LSB pidofproc exposes problems in the GA release with
+# /etc/init.d/eecd init script, because it has the same name as
+# /usr/sbin/eecd daemon.
+# This problem does not appear if pidof is used instead of pidofproc.
+# pidof is also available on SLES.
+#
+# $1		absolute name of process's program file
+# stdout	pid of process
+# Returns 0 or 1 if process exists or not.
+
+function mypidof() {
+	local pid
+
+	pid=$(pidof $1) || pid=$(pidof ${1##*/}) || return 1
+	echo "$pid"
+	return 0
+}
+
+# testVersionViewFile - test VersionView.sav for consistency and force its rebuild if not
+#
+# No argument or return value.
+
+function testVersionViewFile() {
+
+	[ -f /etc/srvmagt/VersionView.sav ] && {
+		gawk -f /etc/srvmagt/vvcheck.awk /etc/srvmagt/VersionView.sav >/dev/null || \
+			rm -f /etc/srvmagt/VersionView.sav
+	}
+}
+
+# writeAuthConf - write authentication configuration to eecd /etc/srvmagt/config
+#                 to eecd for use with the Remote SCU
+#
+# No argument or return value.
+
+function writeAuthConf() {
+
+	if [ "$NoAccountCheck" == "" -o "$NoAccountCheck" == "0" ]; then
+		eecdcp -c oc=e002 oe=3812 01 >/dev/null
+	else
+		eecdcp -c oc=e002 oe=3812 00 >/dev/null
+	fi
+	eecdcp -c oc=e002 oe=3813 \"$UserGroup\" >/dev/null
+}
+
+# mapAgtState - map the subagent's operational state from int to string
+#
+# $1		name of the subagent
+# stdout	status value as string
+# No return value.
+
+# Agent state according to their /etc/srvmagt/agent_table/{agt}agt
+#  1=running, 2=degraded, 3=error, 4=failed, 5=unused, else=unknown
+agtstate=("unknown" "running" "degraded" "error" "failed" "unused")
+
+function mapAgtState() {
+	local state
+
+	# Show what status the subagents holds about itself from line 3 of its status file
+
+	state=0
+	[ -f /etc/srvmagt/agent_table/${1}agt ] && {
+		line=0
+		while read state; do
+			line=$((line + 1))
+			[ $line -eq 3 ] && break
+		done < /etc/srvmagt/agent_table/${1}agt
+
+		#  1=running, 2=degraded, 3=error, 4=failed, 5=unused, else=unknown
+
+		[ $state -lt 1 -o $state -gt 5 ] && state=0
+	}
+	echo ${agtstate[$state]}
+}
+
+# wait4eecd - have some parience with eecd initialization
+#
+# No return value.
+
+function wait4eecd() {
+	local count
+
+	echo -e "Waiting for eecd ready ..\c"
+	count=25	# If >99 adjust \b's below
+	while [ $count -gt 0 ]; do
+		sleep 1
+		:
+		count=$(($count - 1))
+		if [ $count -ge 10 ]; then
+			echo -e "\b\b$count\c"
+		else
+			echo -e "\b\b$count \c"
+		fi
+	done
+	echo -e "\b\bdone ($count)"
+}
+
+
+# getAgentXsocket - get the AgentX socket used by the running snmpd
+#
+# stdout	name of AgentX socket or ""
+# Returns 0 or 1 if the AgentX socket name exists or not
+
+function getAgentXsocket() {
+	local snmpd_pid=0
+	local sleep_count=5
+
+	# Particularly during reboot give snmpd time to complete initialization
+	# and to establish the AgentX socket
+
+	while [ $sleep_count -gt 0 ]; do
+		[ -f /var/run/snmpd.pid ] && snmpd_pid=$(cat /var/run/snmpd.pid) && break # SLES 9+10
+		[ -f /var/run/snmpd ] && snmpd_pid=$(cat /var/run/snmpd) && break # RHEL 3+4
+		sleep 1
+		let sleep_count--
+	done
+
+	echo "$(LANG=en date) getAgentXsocket pid = [$snmpd_pid], sleep_count = $sleep_count " >> /var/log/log.getAgentXsocket
+	[ $snmpd_pid -gt 0 ] && {
+		socket=$(LANG=en netstat -nlpx | awk -v PID=$snmpd_pid '
+			# unix 2 [ ACC ] STREAM LISTENING 3399511 1074/snmpd /var/agentx/master
+			$7 == "LISTENING" && $9 == PID"/snmpd" {
+				print $NF
+				exit 0
+			}
+		')
+		printf "$socket"
+		return 0
+	}
+
+	printf ""
+	return 1
+}
+
+# SetSvEnv - setup the ServerView environment
+#
+# environment
+#	various variable with example values
+#	SV_AGENT_X_SOCKET="/var/agentx/master"
+#	SV_HOSTNAME="SM3RX220"
+#	SV_HOSTOSREVMAJOR=2
+#	SV_HOSTOSREVMINOR=6
+#	SV_HWPLATFORM="x86_64"
+#	SV_NICKNAME="SLES9"
+#	SV_OS="SUSE LINUX Enterprise Server 9"
+#	SV_RELEASE="V2.6.5-7.191-smp"
+#	SV_SYSNAME="Linux"
+#	SV_SYSTEM="suse"
+#	SV_VENDOR="SuSE Linux AG, Nuernberg, Germany"
+#	SV_VERSION="#1 SMP Tue Jun 28 14:58:56 UTC 2005"
+#	SV_VVOS="SUSE Enterprise Server 9"
+# No return value.
+
+function SetSvEnv() {
+	local i line release=
+
+	release="$(uname -r)"
+	SV_RELEASE="V$release"
+	SV_HOSTOSREVMAJOR=${release%%.*}
+	SV_HOSTOSREVMINOR=${release#*.} && SV_HOSTOSREVMINOR=${SV_HOSTOSREVMINOR%%.*}
+
+	SV_HOSTNAME="$(uname -n)" && SV_HOST=${SV_HOST%%.*}
+	SV_SYSNAME="$(uname -s)"
+	SV_VERSION="$(uname -v)"
+	SV_HWPLATFORM="$(uname -i)"
+
+	SV_AGENT_X_SOCKET=$(getAgentXsocket)
+
+	if [ -f /etc/SuSE-release ]; then
+		# SUSE LINUX Enterprise Server 9 (i586)
+		# VERSION = 9
+		# PATCHLEVEL = 2
+		# ->   SV_OS="SUSE LINUX Enterprise Server 9"
+		# -> SV_VVOS="SUSE Enterprise Server 9"
+		# SuSE SLES-8 (i386)
+		# VERSION = 8.1
+		# ->   SV_OS="SUSE SLES-8"
+		# -> SV_VVOS="SUSE Enterprise Server 9"
+
+		SV_SYSTEM="suse"
+		for i in 1 2 3; do
+			read line[i]
+		done < /etc/SuSE-release
+		SV_OS=${line[1]%% (*}
+		SV_VVOS=${SV_OS/LINUX /}
+		SV_NICKNAME="SLES${line[2]##* }"
+		SV_VENDOR="$(rpm -qf --queryformat %{vendor} /etc/SuSE-release 2>/dev/null)"
+
+	elif [ -f /etc/vmware-release ]; then
+		# NOTE: Do this BEFORE the Red Hat test!
+		# VMware ESX Server 3 (Dali)
+		# ->   SV_OS="VMware ESX Server 3"
+		# -> SV_VVOS="VMware ESX Server 3"
+
+		SV_SYSTEM="vmware"
+		read line < /etc/vmware-release
+		line=${line%% (*}
+		SV_OS=$line
+		SV_VVOS=$SV_OS
+		SV_NICKNAME="ESX${line#*Server }"
+		SV_VENDOR="$(rpm -qf --queryformat %{vendor} /etc/vmware-release 2>/dev/null)"
+
+	elif [ -f /etc/vmware ]; then
+		# NOTE: Do this AFTER the ESX 3 test!
+		# VMware ESX Server 2.5.4
+		# ->   SV_OS="VMware ESX Server 2.5.4"
+		# -> SV_VVOS="VMware ESX Server 2.5.4"
+
+		SV_SYSTEM="vmware"
+		SV_OS=$(grep VMware /etc/issue)
+		SV_VVOS=$SV_OS
+		SV_NICKNAME="ESX${line#*Server }"
+		SV_VENDOR="$(rpm -qf --queryformat %{vendor} /etc/vmware 2>/dev/null)"
+
+	elif [ -f /etc/redhat-release ]; then
+		# NOTE: Do this AFTER the VMware tests!
+		# Red Hat Enterprise Linux AS release 3 (Taroon Update 4)
+		# ->   SV_OS="Red Hat Enterprise Linux AS 3"
+		# -> SV_VVOS="Red Hat Enterprise AS 3"
+
+		SV_SYSTEM="redhat"
+		read line < /etc/redhat-release
+		line=${line%% (*}
+		SV_OS=${line/release /}
+		SV_VVOS=${SV_OS/Linux /}
+		tmpvers=${line#*release }
+		SV_NICKNAME="RHEL${tmpvers%%.*}"
+		SV_VENDOR="$(rpm -qf --queryformat %{vendor} /etc/redhat-release 2>/dev/null)"
+
+	elif [ -e /etc/univention/base.conf ]; then
+		SV_SYSTEM="UCS"
+		SV_OS=$(lsb_release -sd)
+		SV_VVOS="UCS $(lsb_release -sr)"
+		SV_NICKNAME="UCS_$(lsb_release -sr)"
+		SV_VENDOR="Univention"
+	else
+		SV_SYSTEM="unknown"
+		SV_OS="unknown"
+		SV_NICKNAME="unknown"
+		SV_VENDOR=""
+
+		echo "Cannot fully identify this OS from '/etc/*-release'!\n"
+	fi
+
+	[ "$SV_VENDOR" ] || SV_VENDOR=$SV_VVOS
+
+	export SV_OS SV_VVOS SV_RELEASE SV_VENDOR SV_HOSTNAME SV_HOSTOSREVMAJOR \
+		SV_HOSTOSREVMINOR SV_SYSNAME SV_VERSION SV_SYSTEM SV_HWPLATFORM \
+		SV_AGENT_X_SOCKET SV_NICKNAME
+}
+
+# getKernelSourceDir - determine path to kernel source
+#
+# $1		OS nick name SLES9 | SLES10 | RHEL4 | RHEL5 | RHEL3 | ESX3
+# stdout	calculated path with kernel source
+# Return 0 or 1 if kernel source found or not
+
+function getKernelSourceDir() {
+	local path release arch
+
+	release=$(uname -r)
+	arch=$(uname -m)
+	path="unknown"
+	case $1 in
+	SLES8*)
+		# /usr/src/linux-2.4.19.SuSE
+		#                2.4.19-64GB-SMP
+
+		path="/usr/src/linux-${release%%-*}.SuSE"
+		printf "$path"
+		[ -d $path ] && return 0 ;;
+
+	SLES9|SLES10)
+		# /usr/src/linux-2.6.5-7.191
+		#                2.6.5-7.191-smp
+
+		path="/usr/src/linux-${release%-*}"
+		printf "$path"
+		[ -d $path ] && return 0 ;;
+
+	RHEL3|ESX3)
+		# /usr/src/linux-2.4.21-27.EL     /usr/src/linux-2.4.21-37.0.2.EL
+		#                2.4.21-27.ELsmp                 2.4.21-37.0.2.ELvmnix
+
+		path="/usr/src/linux-${release%.EL*}.EL"
+		printf "$path"
+		[ -d $path ] && return 0 ;;
+
+	RHEL4)
+		# /usr/src/kernels/2.6.9-42.EL-smp-x86_64
+		#                  2.6.9-42.ELsmp
+
+		path="/usr/src/kernels/${release}-${arch}"
+		[ "${release#*EL}" != "" ] && path="/usr/src/kernels/${release%.EL*}.EL-${release#*EL}-${arch}"
+		printf "$path"
+		[ -d $path ] && return 0 ;;
+
+	RHEL5)
+		# /usr/src/kernels/2.6.18-8.el5-i686
+		#                  2.6.18-8.el5
+
+		path="/usr/src/kernels/${release}-${arch}"
+		printf "$path"
+		[ -d $path ] && return 0 ;;
+
+	esac
+	return 1
+}
+
+# isCOPAsystem - test if this system has an Copernicus-A service processor
+#
+# This is driven by these assumptions:
+# The Copernicus-A exists in two flavors and there are always 3 PCI devices:
+#
+# 1. onboard on the PRIMERGY TX600/RX600
+#    vendor:device = 110a:007b subsystem vendor:subsystem device = 1734:1014
+#                     SNI:FSC Remote Service Controller, mailbox device
+#                  = 110a:007c                                   = 1734:1014
+#                  = 110a:007d                                   = 1734:1014
+# 2. on the RSB
+#    vendor:device = 110a:007b subsystem vendor:subsystem device = 110a:007e
+#                     SNI:FSC Remote Service Controller, mailbox device
+#                  = 110a:007c                                   = 110a:007e
+#                  = 110a:007d                                   = 110a:007e
+# The subsystem device 007e thus indicates the RSB.
+# We identify simply by the first vendor:device = 110a:007b.
+#
+# Return 0 or 1 if the test succeeds or fails
+
+isCOPAsystem () {
+
+    lspci -n | grep -q '110a:007b' && return 0
+    return 1
+}
+
+# isRSAIIsystem - test if this system has an RSA II controller
+# RSAIIdaemonRuns - test if the RSA II daemon ibmasm runs
+#
+# On RX800 S2, eecd needs an exisiting and started ibmasm daemon
+# to access the RSA II controller.
+#
+# This is driven by these assumptions:
+# 1. the RX800 S2 is uniquely identified by the USB Ids 04b3:4001,04b3:4003
+#    and absence of PCI Vendor:Device 1014:010f (RX800 Condor) and 1014:0302 (RX801 Raptor).
+# 2. the API is in shared library /lib/libsysSp.so
+# 3. two ibmasm process incarnation indicate that it is properly initialized
+# Without ibmasm to acces RSA II, ServerView is not operable on RX800 S2
+#
+# Return 0 or 1 if the test succeeds or fails
+
+isRSAIIsystem () {
+
+    lsusb 2> /dev/null | egrep -q '04b3:4001|04b3:4003' && \
+        !(lspci -n | grep -q '1014:010f' || lspci -n | grep -q '1014:0302') && return 0
+    return 1
+}
+
+RSAIIdaemonRuns () {
+	local pids
+
+    pids=($(mypidof "/sbin/ibmasm"))
+    [ -L /lib/libsysSp.so -a ${#pids[@]} -eq 2 ] && return 0
+    return 1
+}
+
+function edac_disable () {
+	local edac_mods mod
+	
+	edac_mods=$(lsmod | grep edac_mc)
+	[ -z "$edac_mods" ] && return 2
+	
+	mod=${edac_mods#* [0-9] }
+	modprobe -s -r $mod || return 1
+	
+	echo -e "$mod" >/etc/srvmagt/edacModule
+	return 0
+}
+
+function edac_enable () {
+	local mod
+	[ -s "/etc/srvmagt/edacModule" ] || return 2
+	
+	read mod </etc/srvmagt/edacModule
+	modprobe -s $mod || return 1
+		
+	 >/etc/srvmagt/edacModule
+	return 0
+}
+# EOF

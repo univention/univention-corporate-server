@@ -1,0 +1,12 @@
+Type: subfile
+Multifile: etc/snmp/snmp.conf
+Subfile: etc/snmp/snmp.conf.d/20-snmp-serverview.conf
+
+Type: subfile
+Multifile: etc/snmp/snmpd.conf
+Subfile: etc/snmp/snmpd.conf.d/20-snmpd-serverview.conf
+Variables: interfaces/eth.*
+Variables: serverview/.*
+
+Type: file
+File: etc/srvmagt/functions

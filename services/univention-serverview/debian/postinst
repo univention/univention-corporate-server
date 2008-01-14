@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# Univention Serverview
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+#DEBHELPER#
+
+univention-baseconfig set serverview/community?svcommunity
+
+mkdir -p /var/lock/subsys/
+
+/etc/init.d/snmpd restart
+
+# from srvmagt-agents
+MACHINE=$(uname -m)
+/bin/ln -f /usr/sbin/busagt_32bit /usr/sbin/busagt
+[ "$MACHINE" = "ia64" ] && {
+        /bin/ln -f /usr/sbin/busagt_64bit /usr/sbin/busagt
+}
+
+# from srvmagt-scs
+[ "$(uname -m)" = "ia64" ] && LIB_PATH_PREFIX="/emul/ia32-linux"
+
+LIBS="$LIB_PATH_PREFIX/usr/lib/libssl.so.0.9.8 $LIB_PATH_PREFIX/usr/lib/libssl.so.0.9.7"
+for name in $LIBS; do
+        [ ! -e /etc/srvmagt/SCS/lib/libssl.so.0.9.0 ] && [ -e $name ] && ln -s $name  /etc/srvmagt/SCS/lib/libssl.so.0.9.0
+done
+
+LIBS="$LIB_PATH_PREFIX/usr/lib/libcrypto.so.0.9.8 $LIB_PATH_PREFIX/usr/lib/libcrypto.so.0.9.7"
+for name in $LIBS; do
+	[ ! -e /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0 ] && [ -e $name ] && ln -s $name  /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0
+done
+
+[ ! -e /dev/pci ] && install -d -m 755 -o root -g root /dev/pci
+
+if [ -x "/etc/init.d/serverview" ]; then
+    update-rc.d serverview defaults 21 19 >/dev/null
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		invoke-rc.d serverview start || exit $?
+	else
+		/etc/init.d/serverview start || exit $?
+	fi
+fi
+
+
+exit 0
+
