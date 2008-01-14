@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (1.1.2-1) unstable; urgency=low
+
+  * consider the new fsc serverview module name
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 13:17:57 +0100
+
 univention-kernel-image-2.6.18 (1.1.1-7) unstable; urgency=low
 
   * Adapt to new AVM packages
