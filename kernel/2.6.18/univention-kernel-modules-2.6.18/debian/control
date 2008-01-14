@@ -1,0 +1,19 @@
+Source: univention-kernel-modules-2.6.18
+Section: devel
+Priority: optional
+Maintainer: Univention GmbH
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5), module-assistant, srvmagt-modules, univention-kernel-headers-2.6.18, univention-kernel-headers-2.6.18-64gb, univention-kernel-headers-2.6.18-xen
+
+Package: univention-kernel-modules-2.6.18
+Architecture: i386 amd64
+Section: admin
+Priority: optional
+Depends: srvmagt-modules
+Description: Meta package for proprietary addon kernel modules
+ This package provides a meta package to compile external kernel
+ addons against specific versions of the Linux kernel.
+ .
+ The required kernel images are installed automatically during
+ compile time and not codified in package relationships.
+
