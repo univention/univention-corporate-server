@@ -20,4 +20,6 @@ Variables: apache2/autostart
 
 Type: file
 File: etc/apache2/mods-available/proxy.conf
-Variables: apache2/proxy/allow
+Variables: apache2/proxy/access/order
+Variables: apache2/proxy/access/allow
+Variables: apache2/proxy/access/deny
