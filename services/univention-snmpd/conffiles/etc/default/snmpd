@@ -1,0 +1,21 @@
+# This file controls the activity of snmpd and snmptrapd
+
+# MIB directories.  /usr/share/snmp/mibs is the default, but
+# including it here avoids some strange problems.
+export MIBDIRS=/usr/share/snmp/mibs
+
+# snmpd control (yes means start daemon).
+SNMPDRUN=@!@baseConfig.get('snmpd/autostart', 'yes')@!@
+
+# snmpd options (use syslog, close stdin/out/err).
+SNMPDOPTS='-Lsd -Lf /dev/null -u snmp -I -smux -p /var/run/snmpd.pid'
+
+# snmptrapd control (yes means start daemon).  As of net-snmp version
+# 5.0, master agentx support must be enabled in snmpd before snmptrapd
+# can be run.  See snmpd.conf(5) for how to do this.
+TRAPDRUN=@!@baseConfig.get('snmptrapd/autostart', 'no')@!@
+
+# snmptrapd options (use syslog).
+TRAPDOPTS='-Lsd -p /var/run/snmptrapd.pid'
+
+

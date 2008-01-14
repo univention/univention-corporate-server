@@ -4,3 +4,8 @@ Multifile: etc/snmp/snmpd.conf
 Type: subfile
 Multifile: etc/snmp/snmpd.conf
 Subfile: etc/snmp/snmpd.conf.d/00-snmpd.conf
+
+Type: file
+File: etc/default/snmpd
+Variables: snmpd/.*
+Variables: snmptrapd/.*
