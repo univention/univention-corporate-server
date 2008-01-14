@@ -35,6 +35,9 @@ univention-baseconfig set serverview/community?svcommunity
 
 mkdir -p /var/lock/subsys/
 
+univention-baseconfig set snmptrapd/autostart?yes
+univention-baseconfig set snmpd/autostart?yes
+
 /etc/init.d/snmpd restart
 
 # from srvmagt-agents
