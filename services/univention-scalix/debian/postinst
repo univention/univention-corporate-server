@@ -167,6 +167,9 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 
 elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
+elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
+	# update files provided or created by scalix-tomcat-connector
+	/usr/share/univention-scalix/univention-scalix-conffile /etc/apache2/conf.d/scalix-tomcat-connector.conf /etc/opt/scalix-tomcat/connector/jk/workers.conf
 fi
 
 # stop all services

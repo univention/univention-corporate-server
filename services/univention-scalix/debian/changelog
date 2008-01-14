@@ -1,3 +1,22 @@
+univention-scalix (1.0.2-34) ucs2-0-0-1; urgency=low
+
+  * override apache2 config files shipped by scalix-tomcat-connector on upgrade
+    of this package.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 14 Jan 2008 11:34:05 +0100
+
+univention-scalix (1.0.2-33) ucs2-0-0-1; urgency=low
+
+  * new divert only for sxtomcat-create-instance
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Jan 2008 17:50:21 +0100
+
+univention-scalix (1.0.2-32) ucs2-0-0-1; urgency=low
+
+  * ucs_1.3-2 ships 0.4-54, fix preinst upgrade test for 'lower than 0.4-33'
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Jan 2008 17:39:54 +0100
+
 univention-scalix (1.0.2-31) ucs2-0-0-1; urgency=low
 
   * revert univention-scalix-tomcat-connector configuration files to static_conffile
