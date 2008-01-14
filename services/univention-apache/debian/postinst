@@ -54,7 +54,9 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 fi
 
 if [ -x /etc/init.d/apache2 ]; then
-	/etc/init.d/apache2 restart
+	# better stop&start, as this behaves differently to restart
+	/etc/init.d/apache2 stop
+	/etc/init.d/apache2 start
 fi
 
 exit 0
