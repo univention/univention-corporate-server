@@ -31,7 +31,6 @@
 #DEBHELPER#
 
 
-test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /etc/srvmagt/functions.debian --add /etc/srvmagt/functions || true
 
 exit 0
 

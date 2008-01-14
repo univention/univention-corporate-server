@@ -7,3 +7,6 @@ Multifile: etc/snmp/snmpd.conf
 Subfile: etc/snmp/snmpd.conf.d/20-snmpd-serverview.conf
 Variables: interfaces/eth.*
 Variables: serverview/.*
+
+Type: file
+File: etc/srvmagt/functions

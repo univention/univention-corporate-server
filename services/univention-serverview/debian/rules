@@ -52,7 +52,6 @@ install: build
 	dh_installdirs
 
 	install -m755 files/etc/init.d/serverview debian/univention-serverview-agents/etc/init.d/serverview
-	install -m755 files/etc/srvmagt/functions debian/univention-serverview-agents/etc/srvmagt/functions
 
 	univention-install-baseconfig 
 

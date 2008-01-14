@@ -31,11 +31,11 @@
 
 #DEBHELPER#
 
-if [ "$1" = "configure" ] && [ -z $2 ]; then
-	univention-baseconfig set serverview/community?public
-else
-	univention-baseconfig set serverview/community?svcommunity
-fi
+univention-baseconfig set serverview/community?svcommunity
+
+mkdir -p /var/lock/subsys/
+
+/etc/init.d/snmpd restart
 
 # from srvmagt-agents
 MACHINE=$(uname -m)
@@ -56,6 +56,8 @@ LIBS="$LIB_PATH_PREFIX/usr/lib/libcrypto.so.0.9.8 $LIB_PATH_PREFIX/usr/lib/libcr
 for name in $LIBS; do
 	[ ! -e /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0 ] && [ -e $name ] && ln -s $name  /etc/srvmagt/SCS/lib/libcrypto.so.0.9.0
 done
+
+[ ! -e /dev/pci ] && install -d -m 755 -o root -g root /dev/pci
 
 if [ -x "/etc/init.d/serverview" ]; then
     update-rc.d serverview defaults 21 19 >/dev/null
