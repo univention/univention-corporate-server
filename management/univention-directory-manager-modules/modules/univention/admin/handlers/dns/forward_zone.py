@@ -38,7 +38,7 @@ _=translation.translate
 
 def makeContactPerson(object, arg):
 	domain=object.position.getDomain()
-	return 'root@%s' %(domain.replace(',dc=','.').replace('dc=',''))
+	return 'root@%s.' %(domain.replace(',dc=','.').replace('dc=',''))
 
 module='dns/forward_zone'
 operations=['add','edit','remove','search']
