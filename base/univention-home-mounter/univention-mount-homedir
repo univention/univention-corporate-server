@@ -107,9 +107,16 @@ if [ -z "$homeattr" ]; then
 
 	if [ -z "$server_role" ]; then
 		# Thin Client
+		# Homedir already mounted?
+		if `mounted_directories | grep -q "/ramdisk/home"` ; then
+			source=`mount_source /ramdisk/home`
+			logger "Home directory already mounted: $source"
+			exit 0
+		fi
+		# Otherwise look for servers
 		eval `univention-baseconfig shell ldap/mydn`
 		for server in `univention_policy_result -s "$ldap_mydn" | grep "univentionFileServer" | sed -e 's|.*univentionFileServer=||' | sed -e 's|"||g'`; do
-			if [ -n "$server" ] && [ ! `mounted_directories | grep -q "/ramdisk/home"` ]; then
+			if [ -n "$server" ]; then
 				# mount in heartbeat-situations needs to be done from /ha/home, but normally /home fits
 				if mount -t nfs $server:/home /ramdisk/home || mount -t nfs $server:/ha/home /ramdisk/home
 					then
