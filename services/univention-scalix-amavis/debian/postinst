@@ -1,0 +1,51 @@
+#!/bin/sh
+#
+# Univention Scalix Amavis
+#  postinst script for the debian package
+#
+# Copyright (C) 2006,2007,2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+eval `univention-baseconfig shell`
+
+# set new permissions for /var/lib/amavis
+dpkg-statoverride --remove /var/lib/amavis || true
+dpkg-statoverride --update --add amavis amavis 0750 /var/lib/amavis
+
+# enable milter support within sendmail
+univention-baseconfig set mail/sendmail/milter?yes
+/etc/init.d/sendmail restart
+
+# enable smtpfilter support in scalix
+univention-baseconfig set scalix/smtpfilter?yes
+/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/sys/smtpd.cfg
+
+# restart scalix smtp daemon
+/opt/scalix/bin/omoff -d0 smtpd && /opt/scalix/bin/omon smtpd
+
+# restart amavis
+/etc/init.d/amavis restart

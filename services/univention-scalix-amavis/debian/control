@@ -1,0 +1,21 @@
+Source: univention-scalix-amavis
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0), univention-config-dev
+Standards-Version: 3.6.1
+
+Package: univention-scalix-amavis
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}, amavisd-milter, univention-scalix, univention-antivir-mail (>= 1.2-12.39.200705071602)
+Description: univention package for installation of amavisd-new for scalix groupware
+ -
+ Meta package for installation and configuration of 
+ amavisd-new for Scalix groupware solution. This can be
+ installed on any type of UCS system that also contains the
+ package univention-admin-scalix.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
