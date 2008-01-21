@@ -57,3 +57,4 @@ zone "255.in-addr.arpa" {
 };
 
 include "/etc/bind/univention.conf.proxy";
+include "/etc/bind/local.conf.proxy";
