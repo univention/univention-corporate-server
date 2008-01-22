@@ -7,7 +7,7 @@ Standards-Version: 3.6.1
 
 Package: univention-scalix-amavis
 Architecture: all
-Depends: ${shlibs:Depends}, ${misc:Depends}, amavisd-new-milter | amavisd-milter, univention-scalix, univention-antivir-mail (>= 1.2-12.39.200705071602)
+Depends: ${shlibs:Depends}, ${misc:Depends}, amavisd-milter, univention-scalix, univention-antivir-mail (>= 1.2-12.39.200705071602)
 Description: univention package for installation of amavisd-new for scalix groupware
  -
  Meta package for installation and configuration of 
