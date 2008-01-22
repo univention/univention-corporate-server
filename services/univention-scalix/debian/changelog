@@ -1,3 +1,9 @@
+univention-scalix (1.0.2-36) unstable; urgency=low
+
+  * readded swa.user.locale baseconfig block
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jan 2008 08:39:07 +0100
+
 univention-scalix (1.0.2-35) unstable; urgency=low
 
   * external Scalix packages are linked against libssl0.9.7, add dependency
