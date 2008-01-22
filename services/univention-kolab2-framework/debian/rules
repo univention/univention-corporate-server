@@ -69,9 +69,9 @@ install: build
 	install -m755 files/var/lib/univention-kolab2-framework/freebusy/domxml-php4-to-php5.php debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/freebusy/
 	install -m755 files/var/lib/univention-kolab2-framework/generate_pfbcache.pl debian/univention-kolab2-framework/var/lib/univention-kolab2-framework/
 
-	sh -c " cd files; find usr/share/php/PEAR/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
-	sh -c " cd files; find var/lib/univention-kolab2-framework/fbview/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
-	sh -c " cd files; find var/lib/univention-kolab2-framework/kolab-pear/ ! \( -name CVS -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	sh -c " cd files; find usr/share/php/PEAR/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	sh -c " cd files; find var/lib/univention-kolab2-framework/fbview/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
+	sh -c " cd files; find var/lib/univention-kolab2-framework/kolab-pear/ ! \( -name CVS -o -name .svn -o -name Tag -o -name Entries -o -name Repository -o -name Root -o -name Entries.Log \) -type f -exec cp {} ../debian/univention-kolab2-framework/{} \;"
 
 	install -m 755 65univention-kolab2-framework.inst debian/univention-kolab2-framework/usr/lib/univention-install
 	install -m 755 kolabserver.py debian/univention-kolab2-framework/usr/lib/univention-directory-listener/system/
