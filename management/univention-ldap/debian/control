@@ -50,6 +50,7 @@ Description: UCS - common LDAP configuration
 
 Package: univention-ldap-acl-master
 Architecture: all
+Pre-Depends: slapd
 Conflicts: univention-ldap-acl-slave
 Description: UCS - LDAP server ACLs for master servers
  This package contains the OpenLDAP server ACLs for master

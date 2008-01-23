@@ -1,3 +1,10 @@
+univention-ldap (2.4.11-3) unstable; urgency=low
+
+  * Prevent univention-ldap-acl-master from diverting slapd.conf before
+    slapd configures
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Jan 2008 11:21:11 +0100
+
 univention-ldap (2.4.11-2) unstable; urgency=low
 
   * set ldap/translogfile after converting the dc backup to the dc
