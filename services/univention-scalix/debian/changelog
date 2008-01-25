@@ -1,3 +1,10 @@
+univention-scalix (1.0.3-1) unstable; urgency=low
+
+  * allow sending mails via sendmail with an invalid sender domain if
+    mail/sendmail/nocanonify is set to true
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Jan 2008 10:00:20 +0100
+
 univention-scalix (1.0.2-37) unstable; urgency=low
 
   * create the missing DH parameters for the stunnel start
