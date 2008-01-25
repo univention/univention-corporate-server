@@ -46,6 +46,7 @@ createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 /usr/sbin/univention-baseconfig set scalix/version=11.3.0
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes
 /usr/sbin/univention-baseconfig set scalix/imaps?yes
+/usr/sbin/univention-baseconfig set mail/sendmail/nocanonify?true
 
 #DEBHELPER#
 
