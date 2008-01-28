@@ -1,24 +1,31 @@
-univention-scalix (1.0.3-1) unstable; urgency=low
+univention-scalix (1.0.3-2) ucs2-0-0-1; urgency=low
+
+  * whitelist attributes in sis.properties only accept IPs
+  * create /var/opt/scalix/<instance>/indexes, as indexer seems to insist on using it
+
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jan 2008 17:34:56 +0100
+
+univention-scalix (1.0.3-1) ucs2-0-0-1; urgency=low
 
   * allow sending mails via sendmail with an invalid sender domain if
     mail/sendmail/nocanonify is set to true
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Jan 2008 10:00:20 +0100
 
-univention-scalix (1.0.2-37) unstable; urgency=low
+univention-scalix (1.0.2-37) ucs2-0-0-1; urgency=low
 
   * create the missing DH parameters for the stunnel start
   * hack for sendmailconfig bug
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jan 2008 15:17:08 +0100
 
-univention-scalix (1.0.2-36) unstable; urgency=low
+univention-scalix (1.0.2-36) ucs2-0-0-1; urgency=low
 
   * readded swa.user.locale baseconfig block
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jan 2008 08:39:07 +0100
 
-univention-scalix (1.0.2-35) unstable; urgency=low
+univention-scalix (1.0.2-35) ucs2-0-0-1; urgency=low
 
   * the external Scalix packages are linked against libssl0.9.7, add dependency
 
