@@ -38,7 +38,6 @@ dpkg-statoverride --update --add amavis amavis 0750 /var/lib/amavis
 
 # enable milter support within sendmail
 univention-baseconfig set mail/sendmail/milter?yes
-/etc/init.d/sendmail restart
 
 # enable smtpfilter support in scalix
 univention-baseconfig set scalix/smtpfilter?yes
@@ -50,10 +49,10 @@ univention-baseconfig set scalix/smtpfilter?yes
 # restart amavis
 /etc/init.d/amavis stop
 /etc/init.d/amavisd-milter stop
-sleep 1
+/etc/init.d/sendmail stop
+sleep 3
 /etc/init.d/amavis start
-
-# we have some trouble with the restart in the installer environment
-/etc/init.d/amavisd-milter start & 
+/etc/init.d/amavisd-milter start
+/etc/init.d/sendmail start
 
 exit 0
