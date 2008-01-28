@@ -49,7 +49,9 @@ univention-baseconfig set scalix/smtpfilter?yes
 
 # restart amavis
 /etc/init.d/amavis stop
+/etc/init.d/amavisd-milter stop
 sleep 1
-/etc/init.d/amavis start </dev/null
+/etc/init.d/amavis start
+/etc/init.d/amavisd-milter start
 
 exit 0
