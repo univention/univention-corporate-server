@@ -48,4 +48,8 @@ univention-baseconfig set scalix/smtpfilter?yes
 /opt/scalix/bin/omoff -d0 smtpd && /opt/scalix/bin/omon smtpd
 
 # restart amavis
-/etc/init.d/amavis restart
+/etc/init.d/amavis stop
+sleep 1
+/etc/init.d/amavis start </dev/null
+
+exit 0
