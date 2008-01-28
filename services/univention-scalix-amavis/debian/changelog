@@ -1,3 +1,9 @@
+univention-scalix-amavis (1.0.0-5) unstable; urgency=low
+
+  * don't restart amavisd-milter
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Jan 2008 17:46:00 +0100
+
 univention-scalix-amavis (1.0.0-4) unstable; urgency=low
 
   * restart amavis, amavisd-milter and sendmail in the correct order
