@@ -52,6 +52,8 @@ univention-baseconfig set scalix/smtpfilter?yes
 /etc/init.d/amavisd-milter stop
 sleep 1
 /etc/init.d/amavis start
-/etc/init.d/amavisd-milter start
+
+# we have some trouble with the restart in the installer environment
+/etc/init.d/amavisd-milter start & 
 
 exit 0
