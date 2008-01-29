@@ -1,3 +1,9 @@
+univention-scalix (1.0.3-4) unstable; urgency=low
+
+  * set and use value of univention-config-registry variable mail/sendmail/domain
+
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jan 2008 13:50:22 +0100
+
 univention-scalix (1.0.3-3) unstable; urgency=low
 
   * set DOMAIN_NAME to $m, allowing e.g. MX for local zone to point to the mailhost
