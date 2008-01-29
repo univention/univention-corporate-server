@@ -46,8 +46,10 @@ univention-baseconfig set scalix/smtpfilter?yes
 # restart scalix smtp daemon
 /opt/scalix/bin/omoff -d0 smtpd && /opt/scalix/bin/omon smtpd
 
+# if we don't stop the amavisd-milter process, the postinst script
+# wouldn't finish during the installation
+/etc/init.d/amavisd-milter stop
 /etc/init.d/sendmail restart
 /etc/init.d/amavis restart
-# /etc/init.d/amavisd-milter start
 
 exit 0

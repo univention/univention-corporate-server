@@ -1,3 +1,9 @@
+univention-scalix-amavis (1.0.0-6) unstable; urgency=low
+
+  * stop the amavisd-milter process during the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jan 2008 06:57:50 +0100
+
 univention-scalix-amavis (1.0.0-5) unstable; urgency=low
 
   * don't restart amavisd-milter
