@@ -35,7 +35,6 @@ cffile = '/etc/mail/sendmail.cf'
 
 def handler(baseConfig, changes):
 	patDomain = re.compile("define\(`confDOMAIN_NAME', `[^']*'\)dnl")
-	strDomain = "define(`confDOMAIN_NAME', `$m')dnl"
 
 	fh=open(mcfile, 'r')
 	lines = fh.read().splitlines()
@@ -43,17 +42,21 @@ def handler(baseConfig, changes):
 
 	sendmail_domain = False
 	if baseConfig.has_key('mail/sendmail/domain'):
+		strDomain = "define(`confDOMAIN_NAME', `%s')dnl" % baseConfig['mail/sendmail/domain']
 		sendmail_domain = True
 
 	changed = False
-	mailer_index = 0
-
 	strDomain_found = False
+	mailer_index = 0
 
 	for idx in range(len(lines)):
 		if patDomain.match(lines[idx]):
-			lines.remove(lines[idx])
-			changed = True
+			match_idx=idx
+			strDomain_found = True
+
+	if strDomain_found:
+		lines.remove(lines[match_idx])
+		changed = True
 
 	for idx in range(len(lines)):
 		# save the index of the first mailer entry

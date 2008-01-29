@@ -74,6 +74,7 @@ if [ -z "$MAILNODE" ]; then
 fi
 
 univention-baseconfig set scalix/mailnode=$MAILNODE
+univention-baseconfig set mail/sendmail/domain='$m'
 
 echo
 
