@@ -1,0 +1,6 @@
+univention-drbd (1.0.0-1) unstable; urgency=low
+
+  * Initial Release
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 30 Jan 2008 07:17:11 +0100
+
