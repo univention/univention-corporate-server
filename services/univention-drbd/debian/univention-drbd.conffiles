@@ -1,1 +1,2 @@
 /etc/univention/templates/files/etc/drbd.conf
+/etc/univention/templates/files/etc/ldap/slapd.conf.d/13univention-drbd.schema
