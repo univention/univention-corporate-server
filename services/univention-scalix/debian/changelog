@@ -1,3 +1,9 @@
+univention-scalix (1.0.3-6) unstable; urgency=low
+
+  * fix typo
+
+ -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 15:04:42 +0100
+
 univention-scalix (1.0.3-5) unstable; urgency=low
 
   * set platform.url to standard apache tomcat port
