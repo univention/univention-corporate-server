@@ -1,3 +1,9 @@
+univention-scalix (1.0.3-7) unstable; urgency=low
+
+  * set ubermanager.console.defaultCountry to 'DE' as ssl/country syntax is unrestricted
+
+ -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 16:40:51 +0100
+
 univention-scalix (1.0.3-6) unstable; urgency=low
 
   * fix typo
