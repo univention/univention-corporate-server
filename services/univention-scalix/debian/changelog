@@ -1,3 +1,11 @@
+univention-scalix (1.0.3-5) unstable; urgency=low
+
+  * set platform.url to standard apache tomcat port
+  * set ubermanager.console.defaultCountry to ssl/country
+  * set res.env.lang and .charset from locale/default
+
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jan 2008 17:58:50 +0100
+
 univention-scalix (1.0.3-4) unstable; urgency=low
 
   * set and use value of univention-config-registry variable mail/sendmail/domain
