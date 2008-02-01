@@ -1,3 +1,9 @@
+univention-drbd (1.0.0-6) unstable; urgency=low
+
+  * mount the drbd device at the end of the setup
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Feb 2008 10:15:19 +0100
+
 univention-drbd (1.0.0-5) unstable; urgency=low
 
   * improve init script

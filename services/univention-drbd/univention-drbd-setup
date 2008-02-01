@@ -155,7 +155,6 @@ umount $drbd_disk
 
 if [ -n "$drbdPrimary" ]; then
 	sed -i "s|^$drbd_disk |$drbd_device |" /etc/fstab
-	mount $drbd_device
 else
 	sed -i "s|^$drbd_disk |#$drbd_device |" /etc/fstab
 fi
@@ -166,6 +165,9 @@ INIT_VERSION=fake drbdadm up $drbd_resource
 
 if [ -n "$drbdPrimary" ]; then
 	drbdsetup $drbd_device primary -o
+	sleep 3
+	mount $drbd_device
 fi
+
 
 exit 0
