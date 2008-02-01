@@ -1,3 +1,10 @@
+univention-drbd (1.0.0-3) unstable; urgency=low
+
+  * added init script
+  * check if /etc/init.d/slapd is available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Feb 2008 06:23:53 +0100
+
 univention-drbd (1.0.0-2) unstable; urgency=low
 
   * added join script and the univention-drbd-setup script

@@ -69,6 +69,7 @@ binary-arch: build install
 	dh_testroot
 	dh_installdocs
 	dh_installchangelogs
+	dh_installinit --no-start -u"defaults 97"
 	dh_strip
 	dh_fixperms
 	dh_installdeb

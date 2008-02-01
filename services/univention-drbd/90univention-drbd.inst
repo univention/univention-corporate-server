@@ -93,7 +93,13 @@ univention-admin settings/syntax create \
     --set viewonly=FALSE
 
 if [ -z "$drbd_configured" ]; then
-	/usr/share/univention-drbd/univention-drbd-setup
+	# during the installation the profile isn't available
+	if [ -e /etc/univention/installation_profile ]; then
+		/usr/share/univention-drbd/univention-drbd-setup
+	else
+		univention-baseconfig set drbd/reconfigure=true
+	fi
+		
 fi
 
 univention-baseconfig set drbd/configured=true

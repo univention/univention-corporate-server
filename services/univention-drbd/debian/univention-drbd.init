@@ -1,0 +1,21 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		reconfigure=$(univention-baseconfig get drbd/reconfigure)
+		if [ -n "$reconfigure" ] = [ "$reconfigure" = "true" -o "$reconfigure" = "yes" ]; then
+			/usr/share/univention-drbd/univention-drbd-setup
+			univention-baseconfig set drbd/reconfigure=false 
+		else
+			echo " done"
+		fi
+	;;
+	stop)
+		echo " done"
+	;;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+		;;
+esac
+

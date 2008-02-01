@@ -32,7 +32,7 @@
 
 #DEBHELPER#
 
-/etc/init.d/slapd crestart
+test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 
 eval $(univention-baseconfig shell)
 
@@ -41,3 +41,4 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 fi
 
 exit 0
+
