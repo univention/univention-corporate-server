@@ -1,3 +1,10 @@
+univention-drbd (1.0.0-5) unstable; urgency=low
+
+  * improve init script
+  * mount drbd device on the primary host
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Feb 2008 09:21:06 +0100
+
 univention-drbd (1.0.0-4) unstable; urgency=low
 
   * disable the drbd disk in /etc/fstab

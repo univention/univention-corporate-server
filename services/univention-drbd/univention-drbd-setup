@@ -153,7 +153,12 @@ fi
 
 umount $drbd_disk
 
-sed -i "s|^$drbd_disk |#$drbd_disk |" /etc/fstab
+if [ -n "$drbdPrimary" ]; then
+	sed -i "s|^$drbd_disk |$drbd_device |" /etc/fstab
+	mount $drbd_device
+else
+	sed -i "s|^$drbd_disk |#$drbd_device |" /etc/fstab
+fi
 
 yes yes | INIT_VERSION=fake drbdadm create-md  $drbd_resource
 
