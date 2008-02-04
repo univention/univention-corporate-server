@@ -39,6 +39,9 @@ dpkg-statoverride --update --add amavis amavis 0750 /var/lib/amavis
 # enable milter support within sendmail
 univention-baseconfig set mail/sendmail/milter?yes
 
+# enable spamassassin support
+univention-baseconfig set mail/antivir/spam?yes
+
 # enable smtpfilter support in scalix
 univention-baseconfig set scalix/smtpfilter?yes
 /usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/sys/smtpd.cfg

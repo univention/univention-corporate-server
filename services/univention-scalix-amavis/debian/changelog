@@ -1,3 +1,9 @@
+univention-scalix-amavis (1.0.0-7) unstable; urgency=low
+
+  * enable spamassassin support during postinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 04 Feb 2008 10:57:45 +0100
+
 univention-scalix-amavis (1.0.0-6) unstable; urgency=low
 
   * stop the amavisd-milter process during the postinst
