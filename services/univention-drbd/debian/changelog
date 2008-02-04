@@ -1,3 +1,9 @@
+univention-drbd (1.0.0-7) unstable; urgency=low
+
+  * split the schema file into a separate package univention-drbd-schema
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Feb 2008 07:42:17 +0100
+
 univention-drbd (1.0.0-6) unstable; urgency=low
 
   * mount the drbd device at the end of the setup
