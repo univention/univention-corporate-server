@@ -8,7 +8,7 @@ Standards-Version: 3.5.5
 Package: univention-scalix
 Architecture: all
 Pre-Depends: scalix-univention-server (>= 11), sendmail
-Depends: univention-directory-manager-tools, scalix-res (>= 11), scalix-sac (>= 11), scalix-univention-server (>= 11), scalix-swa (>= 11), scalix-mobile (>= 11), scalix-platform (>= 11), scalix-postgres (>= 11), scalix-sis (>= 11), scalix-tomcat (>= 5.5.16-44), scalix-tomcat-connector (>= 11), scalix-chardet, scalix-libical, scalix-text-extractors, sendmail, libapache2-mod-jk, univention-ldap-config (>=1.43-10), python-univention-directory-manager, sun-j2re1.5, univention-apache (>= 2.0.15-2), univention-config-registry (>=1.54-46), univention-system-setup, stunnel, libssl0.9.7
+Depends: univention-directory-manager-tools, scalix-res (>= 11), scalix-sac (>= 11), scalix-univention-server (>= 11), scalix-swa (>= 11), scalix-mobile (>= 11), scalix-platform (>= 11), scalix-postgres (>= 11), scalix-sis (>= 11), scalix-tomcat (>= 5.5.16-44), scalix-tomcat-connector (>= 11), scalix-chardet, scalix-libical, scalix-text-extractors, sendmail, libapache2-mod-jk, python-univention-directory-manager, sun-j2re1.5, univention-apache (>= 2.0.15-2), univention-config-registry (>=1.54-46), univention-system-setup, stunnel, libssl0.9.7
 Conflicts: pop3-server, imap-server, cyrus-common, cyrus21-common, cyrus22-common, exim4, exim4-base, exim4-config
 Suggests: univention-admin-scalix
 Description: univention package for installation of scalix groupware
