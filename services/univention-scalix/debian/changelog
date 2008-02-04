@@ -1,3 +1,10 @@
+univention-scalix (1.0.3-8) ucs2-0-0-1; urgency=low
+
+  * domain masquerading now customizable via univention-config-registry
+    variable mail/sendmail/masqueradeas
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 04 Feb 2008 15:47:33 +0100
+
 univention-scalix (1.0.3-7) ucs2-0-0-1; urgency=low
 
   * set ubermanager.console.defaultCountry to 'DE' as ssl/country syntax is unrestricted
