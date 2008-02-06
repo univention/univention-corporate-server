@@ -170,18 +170,14 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	/usr/share/univention-scalix/univention-scalix-conffile
 fi
 
-elif dpkg --compare-versions "$2" lt-nl "0.5-6"; then
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "0.5-6"; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
 	# overwrite the sync.cfg
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
-elif dpkg --compare-versions "$2" lt "0.6-0"; then
+elif [ -n "$2" ] && dpkg --compare-versions "$2" lt "0.6-0"; then
 	# overwrite the sync.cfg
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
-fi
-
-elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
-	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
-elif [ "$1" = "configure" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
+elif [ -n "$2" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
 	# update files provided or created by scalix-tomcat-connector
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/apache2/conf.d/scalix-tomcat-connector.conf /etc/opt/scalix-tomcat/connector/jk/workers.conf
 fi
