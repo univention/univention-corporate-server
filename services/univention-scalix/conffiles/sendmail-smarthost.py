@@ -54,6 +54,7 @@ def handler(baseConfig, changes):
 	changed = False
 	foundHost = False
 	foundAuth = False
+	foundSASL = False
 
 	for idx in range(len(lines)):
 		pos = lines[idx].find(strA)
@@ -62,7 +63,7 @@ def handler(baseConfig, changes):
 			changed = True
 			foundHost = True
 
-		for key in [ strB, strC ]:
+		for key in [ strB, strC, strD ]:
 			pos = lines[idx].find(key)
 			if (pos == 0) or (pos == 4):
 				# found?
@@ -76,6 +77,9 @@ def handler(baseConfig, changes):
 				if not relayauth and pos == 0:
 					lines[idx] = 'dnl ' + lines[idx]
 					changed = True
+
+				if lines[idx].startswith(strD):
+					foundSASL = True
 
 	if not foundHost:
 		for i in range(len(lines)):
@@ -107,7 +111,20 @@ def handler(baseConfig, changes):
 			lines.append('')
 			changed = True
 
+	if relayauth and not foundSASL:
+		mark='''include(`/usr/share/sendmail/cf/m4/cf.m4')dnl'''
+		for i in range(len(lines)):
+			if lines[i].startswith(mark):
+				lines.insert(i+1, '''include(`/etc/mail/sasl/sasl.m4')dnl''')
+				changed = True
+				break
 
+	if relayauth:
+		# check if sasl include file exists, create it otherwise
+		if not os.path.isfile("/etc/mail/sasl/sasl.m4"):
+			if os.path.isfile("/usr/share/sendmail/update_authm4"):
+				os.system("/usr/share/sendmail/update_authm4")
+				
 	if changed:
 		fh=open(mcfile, 'w')
 		fh.write( '\n'.join(lines) )

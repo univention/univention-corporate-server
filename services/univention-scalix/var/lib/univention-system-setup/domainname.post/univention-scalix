@@ -30,13 +30,26 @@ if [ -e /opt/scalix/global/config ]; then
 	sed -i "s|OMHOSTNAME=$oldfqdn|OMHOSTNAME=$newfqdn|" /opt/scalix/global/config
 fi
 
-for dir in /var/opt/scalix/${INSTANCE} /opt/scalix /etc/opt/scalix /etc/opt/scalix-tomcat; do
-	if [ -d ${dir} ]; then
-		grep -iRl $oldfqdn ${dir} | grep -v "\.dat" | grep -v "\.key" | grep -v "log" | while read line; do
-			echo "Change Scalix config: sed -i \"s|$oldfqdn|$newfqdn|g\" $line;"
-			sed -i "s|$oldfqdn|$newfqdn|g" $line
-		done
-	fi
+source /opt/scalix/global/config
+
+for dir in /var/opt/scalix/${INSTANCE}/* /opt/scalix /etc/opt/scalix /etc/opt/scalix-tomcat; do
+        if [ -d ${dir} ]; then
+                if [ ${dir} != $OMDATADIR ]; then
+                        SRCHDIRS="${SRCHDIRS} $dir"
+                fi
+        fi
+done
+
+for dir in $SRCHDIRS; do
+        find $dir -type f ! -name "*.dat*" ! -name "*.key*" ! -name "*log*" | xargs grep -il $oldfqdn | while read line
+                do
+                        echo "Change Scalix config: sed -i \"s|$oldfqdn|$newfqdn|g\" $line;"
+                        sed -i "s|$oldfqdn|$newfqdn|g" $line
+                done
+done
+
+omshowu -m all| while read line; do
+	ommodu "$line" --index `omshowu -n "$line"|grep -i sis| sed -e "s/^.*$oldfqdn/sxidx:\/\/$newfqdn/g"`;
 done
 
 if [ ! -e /var/cache/univention-system-setup/postrun/univention-scalix ]; then

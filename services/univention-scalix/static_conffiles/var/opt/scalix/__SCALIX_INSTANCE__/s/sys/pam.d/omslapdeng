@@ -1,8 +1,69 @@
-auth    required om_om2authid
+@!@
+if baseConfig.get('server/role', 'basesystem').lower()!='basesystem':
+	print """auth    required om_om2authid
 auth    sufficient om_auth
 auth    required /lib/security/pam_ldap.so
 account sufficient om_auth
 account required /lib/security/pam_ldap.so
 password required om_om2authid
 password required /lib/security/pam_ldap.so
-session required /lib/security/pam_ldap.so
+session required /lib/security/pam_ldap.so"""
+else:
+	print """# Standard Scalix Authentication
+#
+# Comment this out if you want to use one of the alternative authentication
+# schemes below.
+auth     required om_auth nullok
+
+#
+# Kerberos authentication 1
+#
+# With this scheme we attempt local authentication first and, if that
+# fails, we try kerberos authentication. Note that if we do it the other
+# way around we run the risk of the KDC locking a principal account for
+# users that are known to both Kerberos and Scalix. See om_krb5(8) for more
+# information.
+#
+# auth  sufficient om_auth nullok
+# auth  sufficient om_krb5 use_first_pass
+# auth  required pam_deny
+
+# Kerberos authentication 2
+#
+# With this scheme, users that are known to the kerberos KDC, must
+# authenticate using kerberos. Users not known to the kerberos KDC can log
+# in using their Scalix password. See om_krb5(8) for more information.
+#
+# auth  required om_krb5 user_unknown=ignore
+# auth  optional om_auth nullok use_first_pass
+
+# LDAP Authentication.
+# There are two possible schemes corresponding to the two Kerberos schemes.
+# above See om_ldap(8) for more information.
+#
+# LDAP authentication 1
+# auth  sufficient om_auth nullok
+# auth  sufficient om_ldap use_first_pass
+# auth  required pam_deny
+#
+# LDAP authentication 2
+# auth required om_ldap user_unknown=ignore
+# auth optional om_auth nullok use_first_pass
+
+
+# Combined authentication
+#
+# It is possible to combine Kerberos authentication 1 and LDAP
+# authentication 1, although there is no good way to escape false negative
+# authentication attempts with one or the other scheme. If users are known
+# to either Kerberos or LDAP then we can extend scheme 2 for combined
+# authentication:
+#
+# auth  required om_krb5 user_unknown=ignore
+# auth required om_ldap user_unknown=ignore
+# auth optional om_auth nullok use_first_pass
+
+
+account  required om_auth"""
+@!@
+

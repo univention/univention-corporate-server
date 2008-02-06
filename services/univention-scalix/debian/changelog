@@ -1,3 +1,9 @@
+univention-scalix (1.0.4-1) unstable; urgency=low
+
+  * adapt changes from last cvs updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Feb 2008 19:07:18 +0100
+
 univention-scalix (1.0.3-9) unstable; urgency=low
 
   * removed dependency on univention-ldap-config

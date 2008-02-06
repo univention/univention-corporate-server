@@ -38,39 +38,34 @@ description='update scalix user information'
 # attributes=['scalixHideUserEntry', 'scalixMailboxClass', 'scalixLimitMailboxSize', 'scalixLimitOutboundMail', 'scalixLimitInboundMail', 'scalixLimitNotifyUser', 'scalixScalixObject', 'scalixMailnode', 'scalixServerLanguage', 'scalixAdministrator', 'scalixMailboxAdministrator', 'scalixEmailAddress', 'member', 'dn', 'uid', 'objectClass', 'displayName', 'sn', 'givenname', 'initials', 'mail' 'cn', 'facsimileTelephoneNumber', 'homephone', 'street', 'st', 'telephoneNumber', 'title', 'c', 'company', 'departmentNumber', 'description', 'l', 'mobile', 'pager', 'physicalDeliveryOfficeName', 'postalCode', 'mailPrimaryAddress', 'mailAlternativeAddress', 'uniqueMember']
 attributes=[]
 
-filter='(scalixScalixObject=TRUE)'
-
-def sync():
-	try:
-		listener.setuid(0)
-		
-		# ensure a utf-8-environment
-		old_env=None
-		if os.environ.has_key('LC_ALL'):
-			old_env=os.environ['LC_ALL']
-		os.environ['LC_ALL']='de_DE.UTF-8'
-
-		baseConfig = univention_baseconfig.baseConfig()
-		baseConfig.load()
-		if baseConfig.has_key('scalix/omldapsync/parameter'):
-			os.system("/opt/scalix/bin/omldapsync %s >>/var/log/univention/scalix-sync.log" % baseConfig['scalix/omldapsync/parameter'])
-		else:
-			os.system("/opt/scalix/bin/omldapsync -u ucs2scalix -S >> /var/log/univention/scalix-sync.log")
-
-		if not old_env==None:
-			os.environ['LC_ALL']=old_env
-		else:
-			del os.environ['LC_ALL']
-
-	finally:
-		listener.unsetuid()
+filter='(|(objectClass=univentionGroup)(&(objectClass=posixAccount)(objectClass=shadowAccount)))'
 
 def handler(dn, new, old):
 
-	if old:
-		sync ()
-	elif new:
-		sync ()
+	try:
+		listener.setuid(0)
+		
+		if (new and new.has_key('scalixScalixObject')) or (old and old.has_key('scalixScalixObject')):
+			# ensure a utf-8-environment
+			old_env=None
+			if os.environ.has_key('LC_ALL'):
+				old_env=os.environ['LC_ALL']
+			os.environ['LC_ALL']='de_DE.UTF-8'
+
+			baseConfig = univention_baseconfig.baseConfig()
+			baseConfig.load()
+			if baseConfig.has_key('scalix/omldapsync/parameter'):
+				os.system("/opt/scalix/bin/omldapsync %s >>/var/log/univention/scalix-sync.log" % baseConfig['scalix/omldapsync/parameter'])
+			else:
+				os.system("/opt/scalix/bin/omldapsync -u ucs2scalix -S >> /var/log/univention/scalix-sync.log")
+
+			if not old_env==None:
+				os.environ['LC_ALL']=old_env
+			else:
+				del os.environ['LC_ALL']
+
+	finally:
+		listener.unsetuid()
 
 def initialize():
 	pass

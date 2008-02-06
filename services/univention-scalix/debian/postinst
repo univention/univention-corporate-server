@@ -43,7 +43,9 @@ createLogfile () {
 
 createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 
-/usr/sbin/univention-baseconfig set scalix/version=11.3.0
+scalix_version=11.3.0
+
+/usr/sbin/univention-baseconfig set scalix/version="$scalix_version"
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes
 /usr/sbin/univention-baseconfig set scalix/imaps?yes
 /usr/sbin/univention-baseconfig set mail/sendmail/nocanonify?true
@@ -132,7 +134,7 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	omadmidp -a -s 66000 -n 100
 	omaddu -n sxadmin/$MAILNODE --class limited -c admin -p $(cat /etc/scalix.secret) sxadmin || true
 
-	if [ ! -z "$server_role" -a "$server_role" != "basissystem" ]; then
+	if [ ! -z "$server_role" -a "$server_role" != "basissystem" -a "$server_role" != "basesystem" ]; then
 		# add admin account for Administrator (LDAP account)
 		omaddu -n Administrator/$MAILNODE --class limited -c admin --lock-password Administrator
 	fi
@@ -166,6 +168,16 @@ if [ "$1" = "configure" ] && [ -z "$2" ]; then
 	# change hardcoded %LDAPPORT%=389 to 3890 and read %DBPASSWD% directly from /etc/scalix.secret
 	# and replace Scalix __Variables__ by univention config-registry variables
 	/usr/share/univention-scalix/univention-scalix-conffile
+fi
+
+elif dpkg --compare-versions "$2" lt-nl "0.5-6"; then
+	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
+	# overwrite the sync.cfg
+	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
+elif dpkg --compare-versions "$2" lt "0.6-0"; then
+	# overwrite the sync.cfg
+	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
+fi
 
 elif dpkg --compare-versions "$2" lt-nl "0.4-45"; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
@@ -198,6 +210,14 @@ $base/tomcat/logs/catalina.out.pre-inst
 ## tell mod_proxy to allow requests from the local domain
 eval $(univention-config-registry shell domainname)
 univention-config-registry set apache2/proxy/allow?".${domainname}"
+
+rm -Rf /var/opt/scalix/$INSTANCE/tomcat/temp/*
+rm -Rf /var/opt/scalix/$INSTANCE/tomcat/work/*
+rm -Rf /var/opt/scalix/$INSTANCE/tomcat/logs/*
+rm -Rf /var/opt/scalix/$INSTANCE/tomcat/webapps/*
+
+sed -i "s|^ubermanager.version=.*|ubermanager.version=$scalix_version|" /var/opt/scalix/$INSTANCE/caa/scalix.res/config/ubermanager.properties
+sed -i "s|^res.version=.*|res.version=$scalix_version|" /var/opt/scalix/$INSTANCE/caa/scalix.res/config/ubermanager.properties
 
 /etc/init.d/scalix start
 /etc/init.d/scalix-tomcat restart

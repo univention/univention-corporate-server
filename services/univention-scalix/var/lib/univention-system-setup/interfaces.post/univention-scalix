@@ -1,10 +1,18 @@
 #!/bin/sh
 
-# oldip=$(echo $1 | sed -e 's|-.*||'`)
-# newip=$(echo $2 | sed -e 's|-.*||'`)
+oldip=$(echo $1 | sed -e 's|-.*||')
+newip=$(echo $2 | sed -e 's|-.*||')
 
 /etc/init.d/univention-scalix stop
 
+. /etc/opt/scalix/instance.cfg
+INSTANCE=${OMDATADIR/\/var\/opt\/scalix\//}
+export INSTANCE=${INSTANCE/\/s/}
+
+for file in /var/opt/scalix/${INSTANCE}/postgres/data/pg_hba.conf; do
+		echo "Change Scalix config: sed -i \"s|$oldip|$newip|g\" $file"
+		sed -i "s|$oldip|$newip|g" $file
+done
 if [ ! -e /var/cache/univention-system-setup/postrun/univention-scalix ]; then
 	mkdir -p /var/cache/univention-system-setup/postrun
 	echo "#!/bin/sh" >/var/cache/univention-system-setup/postrun/univention-scalix
