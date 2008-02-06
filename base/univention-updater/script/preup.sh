@@ -97,6 +97,7 @@ for p in 	univention-server-master \
 			univention-bind \
 			univention-bind-proxy \
 			univention-kolab2 \
+			univention-scalix \
 			univention-samba \
 			univention-pkgdb \
 			univention-printquota \
