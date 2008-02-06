@@ -1,4 +1,4 @@
-univention-scalix (1.0.4-2) unstable; urgency=low
+univention-scalix (1.0.4-3) unstable; urgency=low
 
   * update the postinst upgrade checks
 

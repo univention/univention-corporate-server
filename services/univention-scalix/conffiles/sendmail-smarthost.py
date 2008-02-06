@@ -38,6 +38,7 @@ def handler(baseConfig, changes):
 	strAfull = "define(`SMART_HOST',`%s')dnl"
 	strB = "define(`confAUTH_MECHANISMS', `EXTERNAL GSSAPI DIGEST-MD5 CRAM-MD5 LOGIN PLAIN')dnl"
 	strC = "FEATURE(`authinfo', `hash /etc/mail/auth/client-info')dnl"
+	strD = "include(`/etc/mail/sasl/sasl.m4')dnl"
 
 	relayhost = ""
 	if baseConfig.has_key('mail/sendmail/relayhost'):
