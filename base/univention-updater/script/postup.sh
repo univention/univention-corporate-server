@@ -55,6 +55,7 @@ for p in	univention-pkgdb \
 			univention-bind \
 			univention-bind-proxy \
 			univention-kolab2 \
+			univention-scalix \
 			univention-samba; do
 	echo "$p install" | dpkg --set-selections
 done
@@ -82,6 +83,7 @@ if [ $? = 0 ]; then
 fi
 
 for p in	univention-java \
+			univention-scalix \
 			univention-client-kernel-image \
 			univention-mozilla-firefox \
 			kdebase \
