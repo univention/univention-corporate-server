@@ -1,101 +1,107 @@
-univention-scalix (1.0.3-9) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.4-1) unstable; urgency=low
+
+  * adapt changes from last cvs updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Feb 2008 19:07:18 +0100
+
+univention-scalix (1.0.3-9) unstable; urgency=low
 
   * removed dependency on univention-ldap-config
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 04 Feb 2008 16:46:56 +0100
 
-univention-scalix (1.0.3-8) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-8) unstable; urgency=low
 
   * domain masquerading now customizable via univention-config-registry
     variable mail/sendmail/masqueradeas
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 04 Feb 2008 15:47:33 +0100
 
-univention-scalix (1.0.3-7) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-7) unstable; urgency=low
 
   * set ubermanager.console.defaultCountry to 'DE' as ssl/country syntax is unrestricted
 
- -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 16:38:43 +0100
+ -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 16:40:51 +0100
 
-univention-scalix (1.0.3-6) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-6) unstable; urgency=low
 
   * fix typo
 
- -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 15:05:30 +0100
+ -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 15:04:42 +0100
 
-univention-scalix (1.0.3-5) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-5) unstable; urgency=low
 
   * set platform.url to standard apache tomcat port
   * set ubermanager.console.defaultCountry to ssl/country
   * set res.env.lang and .charset from locale/default
 
- -- Arvid Requate <requate@univention.de>  Fri,  1 Feb 2008 13:13:39 +0100
+ -- Arvid Requate <requate@univention.de>  Thu, 31 Jan 2008 17:58:50 +0100
 
-univention-scalix (1.0.3-4) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-4) unstable; urgency=low
 
   * set and use value of univention-config-registry variable mail/sendmail/domain
 
- -- Arvid Requate <requate@univention.de>  Tue, 29 Jan 2008 13:54:44 +0100
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jan 2008 13:50:22 +0100
 
-univention-scalix (1.0.3-3) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-3) unstable; urgency=low
 
   * set DOMAIN_NAME to $m, allowing e.g. MX for local zone to point to the mailhost
 
- -- Arvid Requate <requate@univention.de>  Tue, 29 Jan 2008 13:28:08 +0100
+ -- Arvid Requate <requate@univention.de>  Tue, 29 Jan 2008 13:24:27 +0100
 
-univention-scalix (1.0.3-2) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-2) unstable; urgency=low
 
   * whitelist attributes in sis.properties only accept IPs
-  * create /var/opt/scalix/<instance>/indexes, as indexer seems to insist on using it
+  * create /var/opt/scalix/<instance>/indexes, as indexer seems to insist to use it
 
- -- Arvid Requate <requate@univention.de>  Mon, 28 Jan 2008 17:34:56 +0100
+ -- Arvid Requate <requate@univention.de>  Mon, 28 Jan 2008 16:44:13 +0100
 
-univention-scalix (1.0.3-1) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.3-1) unstable; urgency=low
 
   * allow sending mails via sendmail with an invalid sender domain if
     mail/sendmail/nocanonify is set to true
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Jan 2008 10:00:20 +0100
 
-univention-scalix (1.0.2-37) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-37) unstable; urgency=low
 
   * create the missing DH parameters for the stunnel start
   * hack for sendmailconfig bug
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jan 2008 15:17:08 +0100
 
-univention-scalix (1.0.2-36) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-36) unstable; urgency=low
 
   * readded swa.user.locale baseconfig block
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jan 2008 08:39:07 +0100
 
-univention-scalix (1.0.2-35) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-35) unstable; urgency=low
 
-  * the external Scalix packages are linked against libssl0.9.7, add dependency
+  * external Scalix packages are linked against libssl0.9.7, add dependency
 
- -- Arvid Requate <requate@univention.de>  Tue, 15 Jan 2008 14:35:49 +0100
+ -- Arvid Requate <requate@univention.de>  Tue, 15 Jan 2008 18:29:12 +0100
 
-univention-scalix (1.0.2-34) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-34) unstable; urgency=low
 
   * override apache2 config files shipped by scalix-tomcat-connector on upgrade
     of this package.
 
  -- Arvid Requate <requate@univention.de>  Mon, 14 Jan 2008 11:34:05 +0100
 
-univention-scalix (1.0.2-33) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-33) unstable; urgency=low
 
   * new divert only for sxtomcat-create-instance
 
  -- Arvid Requate <requate@univention.de>  Thu, 10 Jan 2008 17:50:21 +0100
 
-univention-scalix (1.0.2-32) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-32) unstable; urgency=low
 
   * ucs_1.3-2 ships 0.4-54, fix preinst upgrade test for 'lower than 0.4-33'
 
  -- Arvid Requate <requate@univention.de>  Thu, 10 Jan 2008 17:39:54 +0100
 
-univention-scalix (1.0.2-31) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-31) unstable; urgency=low
 
   * revert univention-scalix-tomcat-connector configuration files to static_conffile
     treatment
@@ -103,39 +109,39 @@ univention-scalix (1.0.2-31) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 18:58:46 +0100
 
-univention-scalix (1.0.2-30) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-30) unstable; urgency=low
 
   * divert config files provided by scalix-tomcat in case this package
     installs later
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 17:32:35 +0100
 
-univention-scalix (1.0.2-29) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-29) unstable; urgency=low
 
   * revert 'Provides' for scalic-tomcat-connector, it gets installed anyway
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 14:16:56 +0100
 
-univention-scalix (1.0.2-28) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-28) unstable; urgency=low
 
   * removed dependency on scalix-tomcat-connector
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 13:32:13 +0100
 
-univention-scalix (1.0.2-27) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-27) unstable; urgency=low
 
   * moved code for transfer of diversion from 'install' to 'upgrade' in
     univention-scalix-tomcat-connector.preinst
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 11:34:18 +0100
 
-univention-scalix (1.0.2-26) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-26) unstable; urgency=low
 
   * commit changes to repository
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 10:39:23 +0100
 
-univention-scalix (1.0.2-25) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-25) unstable; urgency=low
 
   * change name of univention-scalix-tomcat package to univention-scalix-tomcat-connector
   * univention-scalix-tomcat-connector 'Provides' scalix-tomcat-connector, which
@@ -146,19 +152,19 @@ univention-scalix (1.0.2-25) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Wed,  9 Jan 2008 09:25:53 +0100
 
-univention-scalix (1.0.2-24) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-24) unstable; urgency=low
 
   * take care of truncated package names output by dpkg -l
 
  -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 18:24:31 +0100
 
-univention-scalix (1.0.2-23) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-23) unstable; urgency=low
 
   * take care of package univention-scalix beeing placed on status 'hold'
 
  -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 17:57:43 +0100
 
-univention-scalix (1.0.2-22) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-22) unstable; urgency=low
 
   * added Scalix packges new in 11.3 to dependency list
   * moved code for transfer of diversion from 'upgrade' to 'install' in
@@ -167,33 +173,33 @@ univention-scalix (1.0.2-22) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 16:31:40 +0100
 
-univention-scalix (1.0.2-21) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-21) unstable; urgency=low
 
   * turned ucs-overview links into relative URLs
   * fixed upgrade path for sxtomcat-webmail
 
  -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 15:15:35 +0100
 
-univention-scalix (1.0.2-20) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-20) unstable; urgency=low
 
   * fixed diversion of univention-scalix-tomcat scripts
   * reverted to univention-install-baseconfig for current upgrade compatibility
 
  -- Arvid Requate <requate@univention.de>  Tue,  8 Jan 2008 09:29:41 +0100
 
-univention-scalix (1.0.2-19) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-19) unstable; urgency=low
 
   * removed univention-scalix-tomcat.conffiles, generated during build
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 18:05:39 +0100
 
-univention-scalix (1.0.2-18) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-18) unstable; urgency=low
 
   * switched from univention-baseconfig to univention-config-registry
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 17:54:29 +0100
 
-univention-scalix (1.0.2-17) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-17) unstable; urgency=low
 
   * put patched sxtomcat scripts into separate package univention-scalix-tomcat
     which is to be installed before ommakeom is called via univention-scalix.preinst
@@ -201,19 +207,19 @@ univention-scalix (1.0.2-17) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 16:46:53 +0100
 
-univention-scalix (1.0.2-16) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-16) unstable; urgency=low
 
   * added etc/apache2/conf.d to package dirs
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 12:15:48 +0100
 
-univention-scalix (1.0.2-15) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-15) unstable; urgency=low
 
   * fixed package internal path of scalix-tomcat-connector.conf
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 12:07:27 +0100
 
-univention-scalix (1.0.2-14) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-14) unstable; urgency=low
 
   * divert jk/workers.conf to template, as sxtomcat-create-instance may already
     have run when this package installs
@@ -225,7 +231,7 @@ univention-scalix (1.0.2-14) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Mon,  7 Jan 2008 11:23:50 +0100
 
-univention-scalix (1.0.2-13) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-13) unstable; urgency=low
 
   * replaced Scalix configuration recipe by univention static_conffiles to
     allow univention-setup updates
@@ -233,7 +239,7 @@ univention-scalix (1.0.2-13) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Fri,  4 Jan 2008 11:58:37 +0100
 
-univention-scalix (1.0.2-12) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-12) unstable; urgency=low
 
   * static_conffile changes for Scalix 11.3
   * replace Scalix variables according to recipe Scalix wiki to improve internal documentation
@@ -242,45 +248,45 @@ univention-scalix (1.0.2-12) ucs2-0-0-1; urgency=low
 
  -- Arvid Requate <requate@univention.de>  Fri,  4 Jan 2008 11:07:07 +0100
 
-univention-scalix (1.0.2-11) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-11) unstable; urgency=low
 
   * updated package dependencies
 
  -- Arvid Requate <requate@univention.de>  Thu,  3 Jan 2008 10:07:40 +0100
 
-univention-scalix (1.0.2-10) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-10) unstable; urgency=low
 
   * depend on updated univention-apache version
 
  -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 14:56:18 +0100
 
-univention-scalix (1.0.2-9) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-9) unstable; urgency=low
 
   * don't include content of .svn directories into debian config file management
 
  -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 14:44:31 +0100
 
-univention-scalix (1.0.2-8) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-8) unstable; urgency=low
 
   * set univention-config-registry variable apache2/proxy/allow to allow proxy_ajp requests
     from local domain
 
  -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 13:55:14 +0100
 
-univention-scalix (1.0.2-7) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-7) unstable; urgency=low
 
   * clean debian rules from scalix-jakarta.conf
 
  -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 11:55:33 +0100
 
-univention-scalix (1.0.2-6) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-6) unstable; urgency=low
 
   * removed static jakarta configuration file
   * generate proxy_ajp and jk configfiles without VitualHost environments
 
  -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 11:42:29 +0100
 
-univention-scalix (1.0.2-5) ucs2-0-0-1; urgency=low
+univention-scalix (1.0.2-5) unstable; urgency=low
 
   * changes for apache2
 

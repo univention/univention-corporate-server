@@ -1,8 +1,15 @@
-auth    required om_om2authid
+@!@
+if baseConfig.get('server/role', 'basesystem').lower()!='basesystem':
+	print """auth    required om_om2authid
 auth    sufficient om_auth
 auth    required /lib/security/pam_ldap.so
 account sufficient om_auth
 account required /lib/security/pam_ldap.so
 password required om_om2authid
 password required /lib/security/pam_ldap.so
-session required /lib/security/pam_ldap.so
+session required /lib/security/pam_ldap.so"""
+else:
+	print """auth     required om_auth
+account  required om_auth
+password required om_auth"""
+@!@

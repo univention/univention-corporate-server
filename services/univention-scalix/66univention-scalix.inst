@@ -61,7 +61,7 @@ eval `univention-baseconfig shell`
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" -o "$server_role" = "domaincontroller_slave" -o "$server_role" = "memberserver" ]; then
 
 	# if there is no scalix mailnode yet, set default mailnode
-	defNode=`univention-admin settings/default list --filter='cn=default' | grep defaultScalixMailnode | sed 's/ *defaultScalixMailnode: //'`
+	defNode=`univention-admin settings/default list $@ --filter='cn=default' | grep defaultScalixMailnode | sed 's/ *defaultScalixMailnode: //'`
 	if [ "$defNode" = "None" ]; then
 		univention-admin settings/default modify $@ --dn cn=default,cn=univention,$ldap_base --set defaultScalixMailnode=$scalix_mailnode
 		defNode="--set default=$scalix_mailnode"

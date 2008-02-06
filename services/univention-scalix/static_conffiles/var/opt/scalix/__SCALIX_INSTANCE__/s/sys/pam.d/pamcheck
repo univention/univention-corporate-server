@@ -1,4 +1,6 @@
-auth required om_debug
+@!@
+if baseConfig.get('server/role', 'basesystem').lower()!='basesystem':
+	print """auth required om_debug
 account required om_debug
 session required om_debug
 password required om_debug
@@ -7,4 +9,5 @@ auth    required /lib/security/pam_ldap.so
 account required /lib/security/pam_ldap.so
 password required om_om2authid
 password required /lib/security/pam_ldap.so
-session required /lib/security/pam_ldap.so
+session required /lib/security/pam_ldap.so"""
+@!@

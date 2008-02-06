@@ -66,11 +66,15 @@ process(){
 		echo WARNING: Could not read source file $SRC
 	else
 		mkdir -p /var/univention-backup/scalix/`dirname $DEST`
-		[ -f $DEST ] && cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
+		if [ -e "$DEST" ]; then
+			cp $DEST /var/univention-backup/scalix/$DEST.`date +%y%m%d%H%M%S`
+		fi
 		univention-baseconfig filter < $SRC > $DEST
 		if [ $? = 0 ]; then
 			echo "File: $DEST"
-			cp $DEST /var/univention-backup/scalix/$DEST.current
+			if [ -e "$DEST" ]; then
+				cp $DEST /var/univention-backup/scalix/$DEST.current
+			fi
 		else
 			echo WARNING: Processing $DEST failed!
 		fi
