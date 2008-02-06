@@ -2036,8 +2036,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 
-		shadowLastChangeValue = ''
-		sambaPwdLastSetValue = ''
+		shadowLastChangeValue = ''	# if is filled, it will be added to ml in the end
+		sambaPwdLastSetValue = ''	# if is filled, it will be added to ml in the end
 
 		if self.options != self.old_options:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'options: %s' % self.options)
@@ -2094,7 +2094,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					if old_gecos == self.oldinfo.get( 'gecos', '' ):
 						ml.append( ( 'gecos', self.oldinfo.get( 'gecos', [ '' ] )[ 0 ], gecos( self ) ) )
 
-		shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
+		# shadowlastchange=self.oldattr.get('shadowLastChange',[str(long(time.time())/3600/24)])[0]
 
 		pwd_change_next_login=0
 		if self.hasChanged('pwdChangeNextLogin') and self['pwdChangeNextLogin'] == '1':
@@ -2139,22 +2139,22 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 					pwhistoryPolicy['expiryInterval']=''
 					expiryInterval=-1
 				if 'posix' in self.options or 'mail' in self.options:
+					now=(long(time.time())/3600/24)
 					if pwd_change_next_login == 1:
-						old_shadowLastChange=self.oldattr.get('shadowLastChange', '')
 						if expiryInterval == -1:
 							shadowMax = "1"
-							shadowLastChangeValue = str(int(old_shadowLastChange[0])-2)
 						else:
 							shadowMax="%d" % expiryInterval
-							now=(long(time.time())/3600/24)
-							shadowLastChangeValue = str(int(now) - expiryInterval -1)
+
+						shadowLastChangeValue = str(int(now) - int(shadowMax) - 1)
 					else:
-						if not expiryInterval==-1:
-							shadowMax="%d" % expiryInterval
-							now=(long(time.time())/3600/24)
-							shadowLastChangeValue = str(int(now))
-						else:
+						if expiryInterval==-1:
 							shadowMax=''
+						else:
+							shadowMax="%d" % expiryInterval
+
+						shadowLastChangeValue = str(int(now))
+
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'shadowMax: %s' % shadowMax)
 					old_shadowMax=self.oldattr.get('shadowMax', '')
 					if old_shadowMax != shadowMax:
@@ -2348,9 +2348,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 				if expiryInterval == -1:
 					shadowMax = "1"
-					now=(long(time.time())/3600/24) - 2
 				else:
-					now=(long(time.time())/3600/24) - expiryInterval -1
 					shadowMax="%d" % expiryInterval
 
 				now=(long(time.time())/3600/24)
@@ -2435,7 +2433,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		if sambaPwdLastSetValue:
 			ml.append(('sambaPwdLastSet', self.oldattr.get('sambaPwdLastSet', [''])[0], sambaPwdLastSetValue))
 
-		ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange', ''), shadowLastChangeValue))
+		if shadowLastChangeValue:
+			ml.append(('shadowLastChange',self.oldattr.get('shadowLastChange', [''])[0], shadowLastChangeValue))
 
 		return ml
 
