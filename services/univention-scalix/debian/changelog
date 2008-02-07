@@ -1,3 +1,10 @@
+univention-scalix (1.0.4-4) unstable; urgency=low
+
+  * commit the apache/tomcat config files
+  * create the indexes directory
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Feb 2008 07:27:37 +0100
+
 univention-scalix (1.0.4-3) unstable; urgency=low
 
   * update the postinst upgrade checks
