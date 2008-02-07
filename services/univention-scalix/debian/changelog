@@ -1,3 +1,9 @@
+univention-scalix (1.0.6-1) unstable; urgency=low
+
+  * set mail/sendmail/masqueradeas to __DISABLED__
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Feb 2008 13:02:13 +0100
+
 univention-scalix (1.0.5-1) unstable; urgency=low
 
   * deflect the dd and openssl stderr output in the init script to
