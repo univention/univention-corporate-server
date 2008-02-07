@@ -1,3 +1,10 @@
+univention-scalix (1.0.5-1) unstable; urgency=low
+
+  * deflect the dd and openssl stderr output in the init script to
+    /dev/null
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  7 Feb 2008 09:04:03 +0100
+
 univention-scalix (1.0.4-4) unstable; urgency=low
 
   * commit the apache/tomcat config files

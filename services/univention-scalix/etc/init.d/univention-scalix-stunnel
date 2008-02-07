@@ -48,7 +48,7 @@ merge_ssl_cert_and_key() {
 	echo "" >> /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
 	cat /etc/univention/ssl/${HOSTNAME}/private.key >> /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
 	echo "" >> /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
-	dd if=/dev/urandom count=2 | openssl dhparam -rand - 512 >>/etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
+	dd if=/dev/urandom count=2 2>/dev/null | openssl dhparam -rand - 512 >>/etc/univention/ssl/${HOSTNAME}/cert_and_key.pem 2>/dev/null
 	chmod 0600 /etc/univention/ssl/${HOSTNAME}/cert_and_key.pem
 }
 
