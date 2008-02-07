@@ -174,10 +174,12 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt-nl "0.5-6"; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
 	# overwrite the sync.cfg
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
-elif [ -n "$2" ] && dpkg --compare-versions "$2" lt "0.6-0"; then
+fi
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt "0.6-0"; then
 	# overwrite the sync.cfg
 	/usr/share/univention-scalix/univention-scalix-conffile /var/opt/scalix/__SCALIX_INSTANCE__/s/ldapsync/ucs2scalix/sync.cfg
-elif [ -n "$2" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
+fi
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
 	# update files provided or created by scalix-tomcat-connector
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/apache2/conf.d/scalix-tomcat-connector.conf /etc/opt/scalix-tomcat/connector/jk/workers.conf
 fi
@@ -207,6 +209,10 @@ $base/tomcat/logs/catalina.out.pre-inst
 eval $(univention-config-registry shell domainname)
 univention-config-registry set apache2/proxy/allow?".${domainname}"
 
+if [ ! -d /var/opt/scalix/$INSTANCE/indexes ]; then
+	/usr/share/univention-scalix/univention-scalix-conffile var/opt/scalix/__SCALIX_INSTANCE__/indexes/.createthisdirectory
+fi
+	
 rm -Rf /var/opt/scalix/$INSTANCE/tomcat/temp/*
 rm -Rf /var/opt/scalix/$INSTANCE/tomcat/work/*
 rm -Rf /var/opt/scalix/$INSTANCE/tomcat/logs/*
