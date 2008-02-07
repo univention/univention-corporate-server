@@ -41,7 +41,7 @@ def handler(baseConfig, changes):
 	fh.close()
 
 	sendmail_masqueradeas = False
-	if baseConfig.get('mail/sendmail/masqueradeas',''):
+	if baseConfig.get('mail/sendmail/masqueradeas', '__DISABLED__') != '__DISABLED__' :
 		strMasqueradeAs = "MASQUERADE_AS(`%s')dnl" % baseConfig['mail/sendmail/masqueradeas']
 		sendmail_masqueradeas = True
 

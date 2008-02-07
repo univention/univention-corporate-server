@@ -49,6 +49,7 @@ scalix_version=11.3.0
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes
 /usr/sbin/univention-baseconfig set scalix/imaps?yes
 /usr/sbin/univention-baseconfig set mail/sendmail/nocanonify?true
+/usr/sbin/univention-baseconfig set mail/sendmail/masqueradeas?__DISABLED__
 
 #DEBHELPER#
 
