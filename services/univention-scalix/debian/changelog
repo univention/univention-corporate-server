@@ -1,3 +1,9 @@
+univention-scalix (1.0.7-1) unstable; urgency=low
+
+  * also change the ip in the postgres configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  8 Feb 2008 14:36:26 +0100
+
 univention-scalix (1.0.6-1) unstable; urgency=low
 
   * set mail/sendmail/masqueradeas to __DISABLED__
