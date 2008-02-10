@@ -58,6 +58,7 @@ install: build
 	install -m 644 schema/univention-drbd.schema debian/univention-drbd-schema/usr/share/univention-drbd/schema/
 	install -m 755 univention-drbd-setup debian/univention-drbd/usr/share/univention-drbd/
 	install -m 755 90univention-drbd.inst debian/univention-drbd/usr/lib/univention-install/
+	install -m 755 89univention-drbd-schema.inst debian/univention-drbd-schema/usr/lib/univention-install/
 	univention-install-config-registry
 
 # Build architecture-independent files here.

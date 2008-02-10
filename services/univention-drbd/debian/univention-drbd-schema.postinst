@@ -32,6 +32,10 @@
 
 #DEBHELPER#
 
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/89univention-drbd-schema.inst || true
+fi
+
 test -x /etc/init.d/slapd && /etc/init.d/slapd crestart
 
 exit 0
