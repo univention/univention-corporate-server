@@ -8,7 +8,7 @@ attributetype ( 1.3.6.1.4.1.10176.1000.307.1.1 NAME 'univentionDrbdPrimary'
  	EQUALITY caseIgnoreIA5Match
   	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
 
-attributetype ( 1.3.6.1.4.1.10176.1000.307.1.2 NAME 'univentionDrbdSecondayAddress'
+attributetype ( 1.3.6.1.4.1.10176.1000.307.1.2 NAME 'univentionDrbdSecondaryAddress'
 	DESC 'name of the secondary'
  	EQUALITY caseIgnoreIA5Match
   	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26)
@@ -20,5 +20,5 @@ attributetype ( 1.3.6.1.4.1.10176.1000.307.1.3 NAME 'univentionDrbdIp'
 
 objectclass ( 1.3.6.1.4.1.10176.1000.307.2.1 NAME 'univentionDrbd'
 	SUP 'top' AUXILIARY
-	MAY ( univentionDrbdPrimary $ univentionDrbdSecondayAddress $ univentionDrbdIp )
+	MAY ( univentionDrbdPrimary $ univentionDrbdSecondaryAddress $ univentionDrbdIp )
 	DESC 'drdb settings' )

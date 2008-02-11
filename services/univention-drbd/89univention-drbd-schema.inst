@@ -57,7 +57,7 @@ univention-admin settings/customattribute create --ignore_exists --position "cn=
 	--set tabPosition=1
 
 univention-admin settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
-	--set name=drbd-secondayAddress \
+	--set name=drbd-secondaryAddress \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
 	--append module=computers/domaincontroller_slave \
@@ -65,7 +65,7 @@ univention-admin settings/customattribute create --ignore_exists --position "cn=
 	--set syntax=drbd-hosts \
 	--set objectClass=univentionDrbd \
 	--set tabName=DRBD \
-	--set ldapMapping=univentionDrbdSecondayAddress \
+	--set ldapMapping=univentionDrbdSecondaryAddress \
 	--set shortDescription="DRBD Secondary Host" \
 	--set tabPosition=3
 

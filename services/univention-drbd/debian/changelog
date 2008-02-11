@@ -1,3 +1,9 @@
+univention-drbd (1.0.2-1) unstable; urgency=low
+
+  * fixed typo in attribute name
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 11 Feb 2008 17:24:35 +0100
+
 univention-drbd (1.0.1-1) unstable; urgency=low
 
   * move custom attributes to the schema package

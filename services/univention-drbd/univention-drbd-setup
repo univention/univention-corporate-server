@@ -20,7 +20,7 @@ if [ -n "$drbdPrimary" ]; then
 	if [ -z "$drbdPrimaryIP" ]; then
 		drbdPrimaryIP=`univention-baseconfig get interfaces/eth0/address`
 	fi
-	drbdSecondaryName=`ldapsearch -x -b "$ldap_hostdn" -LLL univentionDrbdSecondayAddress | grep ^univentionDrbdSecondayAddress: | sed -e 's|univentionDrbdSecondayAddress: ||'`
+	drbdSecondaryName=`ldapsearch -x -b "$ldap_hostdn" -LLL univentionDrbdSecondaryAddress | grep ^univentionDrbdSecondaryAddress: | sed -e 's|univentionDrbdSecondaryAddress: ||'`
 	if [ -z "$drbdSecondaryName" ]; then
 		echo "ERROR: The drbd secondary host entry for this drbd primary was not found."
 		exit 1
@@ -44,9 +44,9 @@ else
 	fi
 
 	#search my master
-	drbdPrimaryName=`ldapsearch -x "(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberserver))(univentionDrbdSecondayAddress=$hostname)(!(cn=$hostname)))" | grep ^cn: | sed -e 's|cn: ||'`
+	drbdPrimaryName=`ldapsearch -x "(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberserver))(univentionDrbdSecondaryAddress=$hostname)(!(cn=$hostname)))" | grep ^cn: | sed -e 's|cn: ||'`
 	if [ -z "$drbdPrimaryName" ]; then
-		echo "ERROR: The drbd secondary host entry was not found in the ldap directory. ldap search filter: \"univentionDrbdSecondayAddress=$hostname\""
+		echo "ERROR: The drbd secondary host entry was not found in the ldap directory. ldap search filter: \"univentionDrbdSecondaryAddress=$hostname\""
 		exit 1
 	fi
 
