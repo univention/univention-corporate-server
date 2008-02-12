@@ -32,6 +32,8 @@
 
 #DEBHELPER#
 
+eval $(univention-baseconfig shell)
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/89univention-drbd-schema.inst || true
 fi

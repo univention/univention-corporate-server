@@ -1,3 +1,9 @@
+univention-drbd (1.0.2-3) unstable; urgency=low
+
+  * fixed postinst (join script 89... was never called)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 12 Feb 2008 11:19:44 +0100
+
 univention-drbd (1.0.2-2) unstable; urgency=low
 
   * added missing passthrough of credentials for join scripts
