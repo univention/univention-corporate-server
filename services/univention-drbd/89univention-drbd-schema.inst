@@ -43,7 +43,7 @@ test -n "`grep "univention-drbd-schema v${VERSION} successful" /usr/lib/univenti
 
 eval $(univention-baseconfig shell)
 
-univention-admin settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-admin settings/customattribute create $@ --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=drbd-primary \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
@@ -56,7 +56,7 @@ univention-admin settings/customattribute create --ignore_exists --position "cn=
 	--set shortDescription="DRBD Primary" \
 	--set tabPosition=1
 
-univention-admin settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-admin settings/customattribute create $@ --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=drbd-secondaryAddress \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
@@ -69,7 +69,7 @@ univention-admin settings/customattribute create --ignore_exists --position "cn=
 	--set shortDescription="DRBD Secondary Host" \
 	--set tabPosition=3
 
-univention-admin settings/customattribute create --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
+univention-admin settings/customattribute create $@ --ignore_exists --position "cn=custom attributes,cn=univention,$ldap_base" \
 	--set name=drbd-localAddress \
 	--append module=computers/domaincontroller_master \
 	--append module=computers/domaincontroller_backup \
@@ -82,7 +82,7 @@ univention-admin settings/customattribute create --ignore_exists --position "cn=
 	--set shortDescription="Local IP" \
 	--set tabPosition=4
 
-univention-admin settings/syntax create \
+univention-admin settings/syntax create $@ \
     --ignore_exists \
     --position "cn=custom attributes,cn=univention,$ldap_base" \
     --set name=drbd-hosts \
