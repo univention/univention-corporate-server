@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.11-1) unstable; urgency=low
+
+  * update to ucs 2.0-1
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 13 Feb 2008 17:38:25 +0100
+
 univention-client-basesystem (2.1.10-1) unstable; urgency=low
 
   * create $HOME for autostart user that is accepted by gdm 
