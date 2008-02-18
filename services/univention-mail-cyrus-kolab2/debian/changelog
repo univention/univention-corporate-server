@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-6) unstable; urgency=low
+
+  * Support for univention-mail-cyrus-murder
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Feb 2008 19:01:35 +0100
+
 univention-mail-cyrus-kolab2 (1.0.5-5) unstable; urgency=low
 
   * Add a dependency on whois, since mkpasswd is used during postinst.
