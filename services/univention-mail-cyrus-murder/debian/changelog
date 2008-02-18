@@ -1,0 +1,5 @@
+univention-mail-cyrus-murder (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Feb 2008 17:28:31 +0100
