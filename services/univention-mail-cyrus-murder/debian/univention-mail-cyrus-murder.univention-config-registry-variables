@@ -16,3 +16,21 @@ Description[en]=List of Cyrus Murder frontends
 Type=str
 Categories=Mail
 
+[mail/cyrus/murder/backend/hostname]
+Description[de]=Separater hostname für das lokale Cyrus Murder Backend
+Description[en]=Separate hostname for the local Cyrus Murder backend
+Type=str
+Categories=Mail
+
+[mail/cyrus/murder/backend/interface]
+Description[de]=Netzwerkinterface für das lokale Cyrus Murder Backend
+Description[en]=Network interface for the local Cyrus Murder backend
+Type=str
+Categories=Mail
+
+[mail/cyrus/murder/backend/interface]
+Description[de]=Netzwerkinterface für das lokale Cyrus Murder Frontend
+Description[en]=Network interface for the local Cyrus Murder frontend
+Type=str
+Categories=Mail
+

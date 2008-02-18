@@ -61,11 +61,11 @@ def handler(dn, new, old):
 		elif old and old.has_key('cn'):
 			if configRegistry.has_key('mail/cyrus/murder/backendhostname') and configRegistry['mail/cyrus/murder/backendhostname'] != '':
 				fqdn = configRegistry['mail/cyrus/murder/backendhostname']
-				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','unset', 'mail/cyrus/murder/backendhostname'], uid=0)
 			else:
 				fqdn = "%s.%s" % (new['cn'][0], configRegistry['domainname'])
 			if fqdn in configRegistry['mail/cyrus/murder/backends'].split(' '):
 				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends=%s' % ( configRegistry['mail/cyrus/murder/backends'].replace(fqdn, ''))], uid=0)
+			# leave the backendhostname set, so the service can be switched on again easily
 	finally:
 		listener.unsetuid()
 
