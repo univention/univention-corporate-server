@@ -1,14 +1,18 @@
 Type: file
 File: etc/imapd/imapd.conf
-Variables: mail/cyrus/loginrealms
-Variables: mail/hosteddomains
+Variables: mail/cyrus/murder/backend/hostname
 Variables: mail/cyrus/admins
-Variables: mail/cyrus/imap/quota
+Variables: mail/cyrus/imap/admins
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
-Variables: mail/cyrus/imap/admins
-Variables: mail/cyrus/imap/lookup_groups
+Variables: mail/cyrus/loginrealms
+Variables: mail/hosteddomains
 Variables: domainname
+Variables: mail/cyrus/imap/lookup_groups
+Variables: mail/cyrus/murder/master
+Variables: hostname
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/frontends
 
 Type: file
 File: etc/imapd/pam_ldap_imap.conf
@@ -37,14 +41,57 @@ Variables: mail/cyrus/imap/quota
 Type: file
 File: etc/default/saslauthd
 
-Type: file
-File: etc/imapd/cyrus.conf
+Type: multifile
+Multifile: etc/imapd/cyrus.conf
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/frontends
 Variables: mail/cyrus/imap
-Variables: mail/cyrus/pop
-Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/imap/maxchilds
+Variables: mail/cyrus/pop
 Variables: mail/cyrus/pop/maxchilds
+Variables: mail/cyrus/sieve/listen_host
 Variables: mail/cyrus/sieve/maxchilds
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/10_START_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/frontends
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/20_SERVICES_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+Variables: mail/cyrus/murder/backend/hostname
+Variables: mail/cyrus/murder/backend/interface
+Variables: mail/cyrus/murder/frontends
+Variables: mail/cyrus/imap
+Variables: mail/cyrus/imap/maxchilds
+Variables: mail/cyrus/pop
+Variables: mail/cyrus/pop/maxchilds
+Variables: mail/cyrus/sieve/listen_host
+Variables: mail/cyrus/sieve/maxchilds
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/30_EVENT_spool
+Variables: hostname
+Variables: domainname
+Variables: mail/cyrus/murder/master
+Variables: mail/cyrus/murder/backends
+
+Type: subfile
+Multifile: etc/imapd/cyrus.conf
+Subfile: etc/imapd/cyrus.conf.d/90_FINISH
 
 Type: file
 File: etc/default/cyrus2.2

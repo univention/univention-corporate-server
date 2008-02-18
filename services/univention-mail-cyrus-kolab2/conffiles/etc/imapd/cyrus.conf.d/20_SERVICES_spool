@@ -1,0 +1,91 @@
+}
+
+# UNIX sockets start with a slash and are absolute paths
+# you can use a maxchild=# to limit the maximum number of forks of a service
+# you can use babysit=true and maxforkrate=# to keep tight tabs on the service
+# most services also accept -U (limit number of reuses) and -T (timeout)
+SERVICES {
+@!@
+myfqdn = '.'.join([ baseConfig['hostname'], baseConfig['domainname'] ])
+if baseConfig.has_key('mail/cyrus/murder/backend/hostname') and baseConfig['mail/cyrus/murder/backend/hostname'] != '':
+	backend_hostname = baseConfig['mail/cyrus/murder/backend/hostname']
+else:
+	backend_hostname = myfqdn
+
+# If we run without a Cyrus Murder Master MUPDATE server
+# or if we have registered as a 'kolab2' service provider (aka 'backend' or 'spool')
+if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/murder/master'] != '') \
+   or (baseConfig.has_key('mail/cyrus/murder/backends') \
+       and backend_hostname in baseConfig['mail/cyrus/murder/backends'].split(' ')):
+	print '\t# --- Normal cyrus spool, or Murder backends ---'
+
+	if baseConfig.has_key('mail/cyrus/imap') and baseConfig['mail/cyrus/imap'] == 'yes':
+
+		if baseConfig.has_key( 'mail/cyrus/imap/maxchilds' ):
+			maxchild = baseConfig[ 'mail/cyrus/imap/maxchilds' ]
+		else:
+			maxchild = '50'
+
+		bindprefix = ''
+		if baseConfig.has_key('mail/cyrus/murder/frontends') and myfqdn in baseConfig['mail/cyrus/murder/frontends'].split(' '):
+			if baseConfig.has_key('mail/cyrus/murder/backend/interface') and baseConfig['mail/cyrus/murder/backend/interface'] != '':
+				interface=baseConfig['mail/cyrus/murder/backend/interface']
+				ucrVariable='interfaces/' + interface + '/address'
+				if baseConfig.has_key(ucrVariable) and baseConfig[ucrVariable] != '':
+					bindprefix = "%s:" % baseConfig[ucrVariable]
+
+		print '\timap		cmd="/usr/lib/cyrus/bin/imapd -C /etc/imapd/imapd.conf -U 30" listen="%simap" prefork=0 maxchild=%s' % (bindprefix, maxchild)
+		print '\timaps		cmd="/usr/lib/cyrus/bin/imapd -C /etc/imapd/imapd.conf -s -U 30" listen="%simaps" prefork=0 maxchild=%s' % (bindprefix, maxchild)
+
+	if baseConfig.has_key('mail/cyrus/pop') and baseConfig['mail/cyrus/pop'] == 'yes':
+		if baseConfig.has_key( 'mail/cyrus/pop/maxchilds' ):
+			maxchild = baseConfig[ 'mail/cyrus/pop/maxchilds' ]
+		else:
+			maxchild = '50'
+
+		print '\tpop3		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -U 30" listen="pop3" prefork=0 maxchild=%s' % maxchild
+		print '\tpop3s		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -s -U 30" listen="pop3s" prefork=0 maxchild=%s' % maxchild
+
+	print'''
+	# At least one form of LMTP is required for delivery
+	# (you must keep the Unix socket name in sync with imap.conf)
+	lmtp		cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf -a" listen="localhost:2003" prefork=0 maxchild=20
+	lmtpunix	cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20
+	# ----------------------------------------------
+
+	# useful if you need to give users remote access to sieve
+	# by default, we limit this to localhost in Debian
+'''
+
+	if baseConfig.has_key( 'mail/cyrus/sieve/maxchilds' ):
+		maxchild = baseConfig[ 'mail/cyrus/sieve/maxchilds' ]
+	else:
+		maxchild = '50'
+	if baseConfig.has_key('mail/cyrus/sieve/listen_host') and baseConfig['mail/cyrus/sieve/listen_host']:
+		if baseConfig['mail/cyrus/sieve/listen_host'] == "all":
+			print'\tsieve		cmd="timsieved -C /etc/imapd/imapd.conf" listen=":sieve" prefork=0 maxchild=%s' % maxchild
+		else:
+			print'\tsieve		cmd="timsieved -C /etc/imapd/imapd.conf" listen="%s:sieve" prefork=0 maxchild=%s' % ( baseConfig['mail/cyrus/sieve/listen_host'], maxchild )
+	else:
+	    print'\tsieve		cmd="timsieved -C /etc/imapd/imapd.conf" listen="localhost:sieve" prefork=0 maxchild=%s' % maxchild
+
+elif baseConfig.has_key('mail/cyrus/murder/frontends') and myfqdn in baseConfig['mail/cyrus/murder/frontends'].split(' '):
+	print'\n\t# useful if you need to give users remote access to sieve'
+	print'\t# by default, we limit this to localhost in Debian'
+
+	if baseConfig.has_key( 'mail/cyrus/sieve/maxchilds' ):
+		maxchild = baseConfig[ 'mail/cyrus/sieve/maxchilds' ]
+	else:
+		maxchild = '50'
+	if baseConfig.has_key('mail/cyrus/sieve/listen_host') and baseConfig['mail/cyrus/sieve/listen_host']:
+		if baseConfig['mail/cyrus/sieve/listen_host'] == "all":
+			print'\tsieve		cmd="timsieved -C /etc/imapd/frontend.conf" listen=":sieve" prefork=0 maxchild=%s' % maxchild
+		else:
+			print'\tsieve		cmd="timsieved -C /etc/imapd/frontend.conf" listen="%s:sieve" prefork=0 maxchild=%s' % ( baseConfig['mail/cyrus/sieve/listen_host'], maxchild )
+	else:
+	    print'\tsieve		cmd="timsieved -C /etc/imapd/frontend.conf" listen="localhost:sieve" prefork=0 maxchild=%s' % maxchild
+@!@
+
+	# this one is needed for the notification services
+#notify		cmd="notifyd" listen="/var/run/cyrus/socket/notify" proto="udp" prefork=1
+
