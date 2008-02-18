@@ -13,12 +13,14 @@ Variables: mail/cyrus/murder/master
 Variables: hostname
 Variables: mail/cyrus/murder/backends
 Variables: mail/cyrus/murder/frontends
+Variables: ldap/base
+Variables: ldap/server
+Variables: ldap/port
 
 Type: file
 File: etc/imapd/pam_ldap_imap.conf
-Variables: hostname
-Variables: domainname
 Variables: ldap/base
+Variables: ldap/server/name
 
 Type: file
 File: etc/pam.d/imap
