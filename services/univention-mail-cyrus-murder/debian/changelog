@@ -1,3 +1,10 @@
+univention-mail-cyrus-murder (0.2) unstable; urgency=low
+
+  * add /etc/imapd/pam_ldap_mupdate.conf
+  * register remaining UCR variables and add dirs
+
+ -- Arvid Requate <requate@univention.de>  Mon, 18 Feb 2008 18:56:13 +0100
+
 univention-mail-cyrus-murder (0.1) unstable; urgency=low
 
   * Initial release.
