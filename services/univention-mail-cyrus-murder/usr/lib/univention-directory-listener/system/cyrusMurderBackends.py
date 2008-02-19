@@ -47,8 +47,8 @@ def handler(dn, new, old):
 	listener.setuid(0)
 	try:
 		if new and new.has_key('univentionService') and 'kolab2' in new['univentionService']:
-			if configRegistry.has_key('mail/cyrus/murder/backendhostname') and configRegistry['mail/cyrus/murder/backendhostname'] != '':
-				fqdn = configRegistry['mail/cyrus/murder/backendhostname']
+			if configRegistry.has_key('mail/cyrus/murder/backend/hostname') and configRegistry['mail/cyrus/murder/backend/hostname'] != '':
+				fqdn = configRegistry['mail/cyrus/murder/backend/hostname']
 			else:
 				fqdn = "%s.%s" % (new['cn'][0], configRegistry['domainname'])
 
@@ -59,13 +59,13 @@ def handler(dn, new, old):
 				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends' % (name)], uid=0)
 
 		elif old and old.has_key('cn'):
-			if configRegistry.has_key('mail/cyrus/murder/backendhostname') and configRegistry['mail/cyrus/murder/backendhostname'] != '':
-				fqdn = configRegistry['mail/cyrus/murder/backendhostname']
+			if configRegistry.has_key('mail/cyrus/murder/backend/hostname') and configRegistry['mail/cyrus/murder/backend/hostname'] != '':
+				fqdn = configRegistry['mail/cyrus/murder/backend/hostname']
 			else:
 				fqdn = "%s.%s" % (new['cn'][0], configRegistry['domainname'])
 			if fqdn in configRegistry['mail/cyrus/murder/backends'].split(' '):
 				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends=%s' % ( configRegistry['mail/cyrus/murder/backends'].replace(fqdn, ''))], uid=0)
-			# leave the backendhostname set, so the service can be switched on again easily
+			# leave the backend/hostname set, so the service can be switched on again easily
 	finally:
 		listener.unsetuid()
 

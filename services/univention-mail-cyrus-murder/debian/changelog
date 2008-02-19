@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (0.3) unstable; urgency=low
+
+  * Fix variable name backend/hostname
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Feb 2008 10:01:18 +0100
+
 univention-mail-cyrus-murder (0.2) unstable; urgency=low
 
   * add /etc/imapd/pam_ldap_mupdate.conf

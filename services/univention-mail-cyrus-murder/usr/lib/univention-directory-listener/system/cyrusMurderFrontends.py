@@ -58,7 +58,7 @@ def handler(dn, new, old):
 			if fqdn in configRegistry['mail/cyrus/murder/frontends'].split(' '):
 				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/frontends=%s' % ( configRegistry['mail/cyrus/murder/frontends'].replace(fqdn, ''))], uid=0)
 			# if a frontend service is removed, the backend continues to run
-			# on the backendhostname (if running at all)
+			# on the backend/hostname (if running at all)
 	finally:
 		listener.unsetuid()
 

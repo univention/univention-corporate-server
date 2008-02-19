@@ -87,7 +87,7 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	# Provide initial defaults:
 	univention-config-registry set 'mail/cyrus/murder/frontend/interface'?eth0
 	univention-config-registry set 'mail/cyrus/murder/backend/interface'?eth1
-	univention-config-registry set 'mail/cyrus/murder/backend/hostname'?"${hostname}-cyrus-backend"
+	univention-config-registry set 'mail/cyrus/murder/backend/hostname'?"${hostname}-cyrus-backend.$domain"
 	## Set the backendhost email address (for authentification) ... manually
 	# univention-admin "computers/$server_role" modify $@ --dn="$ldap_hostdn" \
 	# --customattribute Hostmailaddress="$hostname.$domainname@$domainname"
