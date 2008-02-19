@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.5-7) unstable; urgency=low
+
+  * use backend/hostname for authentication against MUPDATE
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Feb 2008 09:59:10 +0100
+
 univention-mail-cyrus-kolab2 (1.0.5-6) unstable; urgency=low
 
   * Support for univention-mail-cyrus-murder
