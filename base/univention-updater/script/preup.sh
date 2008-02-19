@@ -52,9 +52,9 @@ check_space(){
 if [ "$update20_checkfilesystems" != "no" ]
 then
 
-	check_space "/var/cache/apt/archives" "1400000" "1.4 GB"
+	check_space "/var/cache/apt/archives" "600000" "600 MB"
 	check_space "/boot" "6000" "6 MB"
-    check_space "/" "1400000" "1.4 GB"
+    check_space "/" "900000" "900 MB"
 
 else
     echo "WARNING: skipped disk-usage-test as you requested"
@@ -70,39 +70,4 @@ if [ $? != 0 ]; then
 	killall univention-updater
 	exit 1
 fi
-
-if [ ! -e "/etc/univention/ssl/ucsCA" -a -d "/etc/univention/ssl/udsCA" ] ; then
-	mv /etc/univention/ssl/udsCA /etc/univention/ssl/ucsCA
-	ln -s ucsCA /etc/univention/ssl/udsCA
-fi
-
-dpkg -l freenx | grep ^ii >>/var/log/univention/updater.log 2>&1
-if [ $? = 0 ]; then
-	univention-baseconfig set update/2_0/freenx/reinstall?1 >>/var/log/univention/updater.log 2>&1
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes remove freenx  >>/var/log/univention/updater.log 2>&1 
-fi
-
-dpkg -l univention-ooffice | grep ^ii >>/var/log/univention/updater.log 2>&1
-if [ $? = 0 ]; then
-	univention-baseconfig set update/2_0/ooffice/reinstall?1 >>/var/log/univention/updater.log 2>&1
-fi
-
-for p in 	univention-server-master \
-			univention-server-backup \
-			univention-server-slave \
-			univention-server-member \
-			univention-managed-client \
-			univention-fat-client \
-			univention-mobile-client \
-			univention-bind \
-			univention-bind-proxy \
-			univention-kolab2 \
-			univention-scalix \
-			univention-samba \
-			univention-pkgdb \
-			univention-printquota \
-			univention-groupware-webclient \
-			univention-application-server; do
-	echo "$p hold" | dpkg --set-selections
-done
 

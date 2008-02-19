@@ -49,77 +49,10 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-managed-client  >>/var/log/univention/updater.log 2>&1 
 fi
 
-for p in	univention-pkgdb \
-			univention-printquota \
-			univention-application-server \
-			univention-bind \
-			univention-bind-proxy \
-			univention-kolab2 \
-			univention-scalix \
-			univention-samba; do
-	echo "$p install" | dpkg --set-selections
-done
-
-for p in	univention-application-server \
-			univention-pkgdb \
-			univention-pkgdb-tools \
-			univention-samba \
-			univention-bind \
-			univention-bind-proxy \
-			univention-kolab2; do
-	check_and_install $p
-done
-
-echo "univention-groupware-webclient install" | dpkg --set-selections
-dpkg -l univention-groupware-webclient | grep ^ii >>/var/log/univention/updater.log 2>&1
-if [ $? = 0 ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-kolab2-webclient horde>>/var/log/univention/updater.log 2>&1 
-fi
-
-
-dpkg -l univention-admin | grep ^ii >>/var/log/univention/updater.log 2>&1
-if [ $? = 0 ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-directory-manager >>/var/log/univention/updater.log 2>&1 
-fi
-
-for p in	univention-java \
-			univention-scalix \
-			univention-client-kernel-image \
-			univention-mozilla-firefox \
-			kdebase \
-			kdenetwork \
-			jade; do
-	check_and_install $p
-done
-
-
-dpkg -l univention-console | grep ^ii >>/var/log/univention/updater.log 2>&1
-if [ $? = 0 ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-management-console >>/var/log/univention/updater.log 2>&1 
-fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1 
 
-
-reinstall=$(univention-baseconfig get update/2_0/ooffice/reinstall)
-if [ "$reinstall" = "1" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-ooffice2 >>/var/log/univention/updater.log 2>&1 
-	univention-baseconfig unset update/2_0/ooffice/reinstall >>/var/log/univention/updater.log 2>&1
-fi
-reinstall=$(univention-baseconfig get update/2_0/freenx/reinstall)
-if [ "$reinstall" = "1" ]; then
-	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install freenx >>/var/log/univention/updater.log 2>&1 
-	univention-baseconfig unset update/2_0/freenx/reinstall >>/var/log/univention/updater.log 2>&1
-fi
-
 univention-baseconfig commit >>/var/log/univention/updater.log 2>&1
-
-update-initramfs -u >>/var/log/univention/updater.log 2>&1
-
-#overwrite bootsplash init script with the new version
-if [ -e "/etc/init.d/bootsplash.dpkg-dist" ]; then
-	mv /etc/init.d/bootsplash.dpkg-dist /etc/init.d/bootsplash
-fi
 
 exit 0
 
