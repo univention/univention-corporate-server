@@ -9,8 +9,7 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	if baseConfig['mail/cyrus/murder/master'] == myfqdn:
 		print'''
 	# --- Mupdate master ---------------------------
-	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/master.conf"
-'''
+	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/master.conf"'''
 
 	if baseConfig.has_key('mail/cyrus/murder/backends') and backend_hostname in baseConfig['mail/cyrus/murder/backends'].split(' '):
 		print'''
@@ -19,8 +18,7 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	# this is useful on backend nodes of a Murder cluster
 	# it causes the backend to syncronize its mailbox list with
 	# the mupdate master upon startup
- 	mupdatepush   cmd="/usr/sbin/ctl_mboxlist -m -C /etc/imapd/impad.conf"
-'''
+ 	mupdatepush   cmd="/usr/sbin/ctl_mboxlist -m -C /etc/imapd/impad.conf"'''
 
 	if baseConfig.has_key('mail/cyrus/murder/frontends') and myfqdn in baseConfig['mail/cyrus/murder/frontends'].split(' '):
 		print''' 
@@ -28,6 +26,5 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/frontend.conf"
   
 	# this is recommended if caching TLS sessions
-	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf"
-'''
+	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf"'''
 @!@

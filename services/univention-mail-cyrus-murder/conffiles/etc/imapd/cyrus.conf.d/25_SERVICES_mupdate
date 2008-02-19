@@ -14,19 +14,17 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	# mupdate database service - must prefork at least 1
 	mupdate       cmd="mupdate -m -C /etc/imapd/master.conf" listen=3905 prefork=1
 	# ----------------------------------------------'''
-	else
+	else:
 		mupdateMaster=0		# used below to avoid deep nesting
 
 	if baseConfig.has_key('mail/cyrus/murder/frontends') and myfqdn in baseConfig['mail/cyrus/murder/frontends'].split(' '):
 		print '''
 	# --- Murder frontends -------------------------
-	# (mupdate slaves) except for sieve (which deals automatically with Mupdate)
-'''
+	# (mupdate slaves) except for sieve (which deals automatically with Mupdate)'''
 		if not mupdateMaster:
 			print '''
 	# mupdate database service - must prefork at least 1
-	mupdate		cmd="mupdate -C /etc/imapd/frontend.conf" listen="3905" prefork=1
-'''
+	mupdate		cmd="mupdate -C /etc/imapd/frontend.conf" listen="3905" prefork=1'''
 
 		bindprefix = ''
 		if baseConfig.has_key('mail/cyrus/murder/backends') and backend_hostname in baseConfig['mail/cyrus/murder/backends'].split(' '):

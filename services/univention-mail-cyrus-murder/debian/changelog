@@ -1,9 +1,15 @@
+univention-mail-cyrus-murder (0.5) unstable; urgency=low
+
+  * fix typos
+
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Feb 2008 17:40:53 +0100
+
 univention-mail-cyrus-murder (0.4) unstable; urgency=low
 
   * publish host email address to backend machine account if 'mail/cyrus/murder/backend/hostname'
     is set before join.
 
- -- Arvid Requate <requate@univention.de>  Tue, 19 Feb 2008 11:29:57 +0100
+ -- Arvid Requate <requate@univention.de>  Tue, 19 Feb 2008 17:40:28 +0100
 
 univention-mail-cyrus-murder (0.3) unstable; urgency=low
 

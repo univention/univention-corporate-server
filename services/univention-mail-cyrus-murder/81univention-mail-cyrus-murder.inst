@@ -73,8 +73,8 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 		# Nothing set yet, so let's claim the master role. No special qualifications needed.
 		univention-admin policies/registry create --ignore_exists $@ \
 		--position "cn=policies,$ldap_base" --set name="$policyName" \
-		--set registry="$ucrVariable=$hostname.$domainame"
-		univention-config-registry set "$ucrVariable"?"$hostname.$domainame"
+		--set registry="$ucrVariable=$hostname.$domainname"
+		univention-config-registry set "$ucrVariable"?"$hostname.$domainname"
 	else
 		# just set it now locally, in case it's not propagated to the local registry yet
 		univention-config-registry set "$ucrVariable"?"$masterName"
@@ -90,10 +90,12 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	univention-config-registry set 'mail/cyrus/murder/backend/interface'?eth1
 	if [ -n "$mail_cyrus_murder_backend_hostname" ]; then
 		## Set the backend/hostname email address
-		backend_hostname=`echo "$backend_hostname" | /usr/bin/awk -F'.' '{print $1}'`
-		backend_hostdn=`echo "$ldap_hostdn" | /bin/sed -e "s|$hostname|$backend_hostname|"`
-		univention-admin "computers/$server_role" modify $@ --dn="$backend_hostdn" \
-		--customattribute Hostmailaddress="$mail_cyrus_murder_backend_hostname@$domainname"
+		backend_hostname=`echo "$mail_cyrus_murder_backend_hostname" | /usr/bin/awk -F'.' '{print $1}'`
+		backend_hostdn=`univention-admin computers/computer list $@ --filter "cn=$backend_hostname" | grep 'DN: ' | /usr/bin/awk -F': ' '{print $2}'`
+		if [ -n "$backend_hostdn" ]; then
+			univention-admin "computers/$server_role" modify $@ --dn="$backend_hostdn" \
+			--customattribute Hostmailaddress="$mail_cyrus_murder_backend_hostname@$domainname"
+		fi
 	else
 		univention-config-registry set 'mail/cyrus/murder/backend/hostname'?"${hostname}-cyrus-backend.$domain"
 		## Set the backendhost email address (for authentification) ... manually
