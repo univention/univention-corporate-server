@@ -82,15 +82,22 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 
 	### Register as running a frontend serice
 	## currently every backend also runs a frontend
-	# cyrus-imap-2.2 does not support the 'murder_config=unified' yet, so the backend is startet
-	# on a separate ip/hostname.
+
+	## cyrus-imap-2.2 does not support the 'murder_config=unified' yet, so the backend is startet
+	## on a separate ip/hostname.
 	# Provide initial defaults:
 	univention-config-registry set 'mail/cyrus/murder/frontend/interface'?eth0
 	univention-config-registry set 'mail/cyrus/murder/backend/interface'?eth1
-	univention-config-registry set 'mail/cyrus/murder/backend/hostname'?"${hostname}-cyrus-backend.$domain"
-	## Set the backendhost email address (for authentification) ... manually
-	# univention-admin "computers/$server_role" modify $@ --dn="$ldap_hostdn" \
-	# --customattribute Hostmailaddress="$hostname.$domainname@$domainname"
+	if [ -n "$mail_cyrus_murder_backend_hostname" ]; then
+		## Set the backend/hostname email address
+		backend_hostname=`echo "$backend_hostname" | /usr/bin/awk -F'.' '{print $1}'`
+		backend_hostdn=`echo "$ldap_hostdn" | /bin/sed -e "s|$hostname|$backend_hostname|"`
+		univention-admin "computers/$server_role" modify $@ --dn="$backend_hostdn" \
+		--customattribute Hostmailaddress="$mail_cyrus_murder_backend_hostname@$domainname"
+	else
+		univention-config-registry set 'mail/cyrus/murder/backend/hostname'?"${hostname}-cyrus-backend.$domain"
+		## Set the backendhost email address (for authentification) ... manually
+	fi
 
 	# register "kolab2-frontend" service to be considered in the 'mail/cyrus/murder/frontends' list
 	univention-admin container/cn create --ignore_exists $@ --position "cn=univention,$ldap_base" --set name=services
