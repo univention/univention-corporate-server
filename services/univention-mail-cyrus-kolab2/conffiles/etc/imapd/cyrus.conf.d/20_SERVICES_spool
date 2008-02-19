@@ -54,8 +54,7 @@ if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyru
 	# ----------------------------------------------
 
 	# useful if you need to give users remote access to sieve
-	# by default, we limit this to localhost in Debian
-'''
+	# by default, we limit this to localhost in Debian'''
 
 	if baseConfig.has_key( 'mail/cyrus/sieve/maxchilds' ):
 		maxchild = baseConfig[ 'mail/cyrus/sieve/maxchilds' ]

@@ -35,6 +35,5 @@ if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyru
 	# this is recommended if using duplicate delivery suppression
 	delprune	cmd="/usr/sbin/ctl_deliver -E 3 -C /etc/imapd/imapd.conf"
 	# this is recommended if caching TLS sessions
-	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/imapd.conf"
-'''
+	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/imapd.conf"'''
 @!@
