@@ -43,8 +43,8 @@ if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyru
 		else:
 			maxchild = '50'
 
-		print '\tpop3		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -U 30" listen="pop3" prefork=0 maxchild=%s' % maxchild
-		print '\tpop3s		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -s -U 30" listen="pop3s" prefork=0 maxchild=%s' % maxchild
+		print '\tpop3		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -U 30" listen="%spop3" prefork=0 maxchild=%s' % (bindprefix, maxchild)
+		print '\tpop3s		cmd="/usr/lib/cyrus/bin/pop3d -C /etc/imapd/imapd.conf -s -U 30" listen="%spop3s" prefork=0 maxchild=%s' % (bindprefix, maxchild)
 
 	print'''
 	# At least one form of LMTP is required for delivery

@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.5-9) unstable; urgency=low
+
+  * cyrus murder mode: add backend and frontend email-IDs to imapd.conf 'admins' list
+  * cyrus murder mode: use bind_prefix pop3 services as well
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2008 20:14:39 +0100
+
 univention-mail-cyrus-kolab2 (1.0.5-8) unstable; urgency=low
 
   * fix typos
