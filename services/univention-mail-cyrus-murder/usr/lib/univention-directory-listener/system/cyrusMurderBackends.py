@@ -35,7 +35,7 @@ import univention.debug
 
 name='cyrusMurderBackends'
 description='Update Cyrus Murder Backend List'
-filter="(&(objectClass=univentionDomainController)(univentionService=kolab2))"
+filter="(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=kolab2-backend))"
 attributes=[]
 
 def initialize():
@@ -46,17 +46,13 @@ def handler(dn, new, old):
 	configRegistry.load()
 	listener.setuid(0)
 	try:
-		if new and new.has_key('univentionService') and 'kolab2' in new['univentionService']:
-			if configRegistry.has_key('mail/cyrus/murder/backend/hostname') and configRegistry['mail/cyrus/murder/backend/hostname'] != '':
-				fqdn = configRegistry['mail/cyrus/murder/backend/hostname']
-			else:
-				fqdn = "%s.%s" % (new['cn'][0], configRegistry['domainname'])
-
+		if new and new.has_key('univentionService') and 'kolab2-backend' in new['univentionService']:
+			fqdn = "%s.%s" % (new['cn'][0], configRegistry['domainname'])
 			if configRegistry.has_key('mail/cyrus/murder/backends'):
 				if not fqdn in configRegistry['mail/cyrus/murder/backends'].split(' '):
 					listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends=%s %s' % ( configRegistry['mail/cyrus/murder/backends'], fqdn)], uid=0)
 			else:
-				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends' % (name)], uid=0)
+				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/backends=%s' % (fqdn)], uid=0)
 
 		elif old and old.has_key('cn'):
 			if configRegistry.has_key('mail/cyrus/murder/backend/hostname') and configRegistry['mail/cyrus/murder/backend/hostname'] != '':

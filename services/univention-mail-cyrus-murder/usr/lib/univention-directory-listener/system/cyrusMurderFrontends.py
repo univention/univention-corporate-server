@@ -35,7 +35,7 @@ import univention.debug
 
 name='cyrusMurderFrontends'
 description='Update Cyrus Murder Frontend List'
-filter="(&(objectClass=univentionDomainController)(univentionService=kolab2-frontend))"
+filter="(&(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer))(univentionService=kolab2-frontend))"
 attributes=[]
 
 def initialize():
@@ -52,7 +52,7 @@ def handler(dn, new, old):
 				if not fqdn in configRegistry['mail/cyrus/murder/frontends'].split(' '):
 					listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/frontends=%s %s' % ( configRegistry['mail/cyrus/murder/frontends'], fqdn)], uid=0)
 			else:
-				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/frontends' % (name)], uid=0)
+				listener.run('/usr/sbin/univention-config-registry', ['univention-config-registry','set', 'mail/cyrus/murder/frontends=%s' % (fqdn)], uid=0)
 		elif old and old.has_key('cn'):
 			fqdn="%s.%s" % (old['cn'][0], configRegistry['domainname'])
 			if fqdn in configRegistry['mail/cyrus/murder/frontends'].split(' '):

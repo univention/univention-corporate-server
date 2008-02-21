@@ -22,27 +22,13 @@
 
 ### Authentication Section
 #
-# remote authentification; if a service
-# - fails, we'll fall back to cache authentification
-# - is successful, cache the password
-# - isn't aware of the user, proceed with the next service
-
-# turn email addresses into cn
-
-auth	optional     pam_univentionmailcyrus.so ldap_host=master.site.tld ldap_base=dc=site,dc=tld from_attr=mailPrimaryAddress to_attr=cn
-
-# auth     [success=done new_authtok_reqd=ok          user_unknown=ignore          service_err=die authinfo_unavail=die          default=ignore]                         pam_krb5.so use_first_pass
-
-auth    [success=done new_authtok_reqd=ok          user_unknown=die          service_err=die authinfo_unavail=die          default=die]              pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_mupdate.conf
+auth    sufficient    pam_unix.so
+auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=cn
+auth    [success=1 default=ignore]    pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_mupdate.conf
+auth    [success=ok default=die]      pam_krb5.so use_first_pass
 
 ### Account Section
 #
-# remote authentification; if a service
-# - fails, we'll fall back to cache authentification
-# - is successful, cache the password
-# - isn't aware of the user, proceed with the next service
-
-# account  sufficient                         pam_krb5.so
-
+account  sufficient   pam_unix.so
 account  required     pam_ldap.so config=/etc/imapd/pam_ldap_mupdate.conf
 

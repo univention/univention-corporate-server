@@ -1,3 +1,11 @@
+univention-mail-cyrus-murder (0.6) unstable; urgency=low
+
+  * new service 'kolab2-backend', attached to backend machine account
+  * put backend_hostname into backends list instead of machine hostname
+  * add frontend email-ID to frontend.conf 'admins' list
+
+ -- Arvid Requate <requate@univention.de>  Thu, 21 Feb 2008 20:08:45 +0100
+
 univention-mail-cyrus-murder (0.5) unstable; urgency=low
 
   * fix typos

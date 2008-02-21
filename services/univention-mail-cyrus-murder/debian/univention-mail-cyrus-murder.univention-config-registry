@@ -57,6 +57,8 @@ Variables: mail/cyrus/murder/frontends
 
 Type: file
 File: etc/pam.d/mupdate
+Variables: ldap/base
+Variables: ldap/server/name
 
 Type: file
 File: etc/imapd/pam_ldap_mupdate.conf

@@ -58,6 +58,8 @@ install: build
 	dh_installdirs
 
 	install -m 0755 81univention-mail-cyrus-murder.inst ${D}/usr/lib/univention-install/
+	install -m 0755 usr/lib/univention-directory-listener/system/cyrusMurderBackends.py ${D}/usr/lib/univention-directory-listener/system/cyrusMurderBackends.py
+	install -m 0755 usr/lib/univention-directory-listener/system/cyrusMurderFrontends.py ${D}/usr/lib/univention-directory-listener/system/cyrusMurderFrontends.py
 
 	univention-install-config-registry
 	univention-install-config-registry-info
