@@ -1,3 +1,9 @@
+univention-mail-cyrus-murder (0.7) unstable; urgency=low
+
+  * start lmtpproxy, add modified lmtp pam stack which allows email-IDs
+
+ -- Arvid Requate <requate@univention.de>  Fri, 22 Feb 2008 16:29:56 +0100
+
 univention-mail-cyrus-murder (0.6) unstable; urgency=low
 
   * new service 'kolab2-backend', attached to backend machine account

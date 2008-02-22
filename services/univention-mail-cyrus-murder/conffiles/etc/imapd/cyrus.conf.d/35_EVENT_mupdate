@@ -5,7 +5,7 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 		mupdateMaster=1
 		print'''
 	# --- Mupdate master ---------------------------
-	checkpoint	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30
+	checkpointmaster	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/master.conf" period=30
 	# ----------------------------------------------'''
 	else:
 		mupdateMaster=0		# used below to avoid deep nesting
@@ -14,10 +14,10 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 		if not mupdateMaster:
 			print'''
 	# --- Mupdate slave ----------------------------
-	checkpoint	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30
+	checkpointslave	cmd="/usr/sbin/ctl_cyrusdb -c -C /etc/imapd/frontend.conf" period=30
 	# ----------------------------------------------'''
 
 		print'''
 	# this is only necessary if caching TLS sessions
-	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf" at=0401'''
+	tlsprunefrontend	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf" at=0401'''
 @!@

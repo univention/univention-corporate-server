@@ -54,7 +54,7 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 
 			#currently we leave it up to postfix to route mail to the backends
 			#so we leave this commented out
-			print '\t#lmtp            cmd="lmtpproxyd -C /etc/imapd/frontend.conf -a" listen="localhost:2003" prefork=0 maxchild=20'
-			print '\t#lmtp            cmd="lmtpproxyd -C /etc/imapd/frontend.conf -a" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
+			print '\tlmtpproxy            cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="%s2003" prefork=0 maxchild=20' % bindprefix
+			print '\t#lmtpproxy            cmd="lmtpproxyd -C /etc/imapd/frontend.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
 			print '\t# ----------------------------------------------'
 @!@

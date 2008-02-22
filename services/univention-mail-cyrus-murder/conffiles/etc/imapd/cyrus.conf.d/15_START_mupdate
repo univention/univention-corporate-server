@@ -9,7 +9,7 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	if baseConfig['mail/cyrus/murder/master'] == myfqdn:
 		print'''
 	# --- Mupdate master ---------------------------
-	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/master.conf"'''
+	recovermaster		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/master.conf"'''
 
 	if baseConfig.has_key('mail/cyrus/murder/backends') and backend_hostname in baseConfig['mail/cyrus/murder/backends'].split(' '):
 		print'''
@@ -23,8 +23,8 @@ if baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyrus/mur
 	if baseConfig.has_key('mail/cyrus/murder/frontends') and myfqdn in baseConfig['mail/cyrus/murder/frontends'].split(' '):
 		print''' 
 	# --- Murder frontends -------------------------
-	recover		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/frontend.conf"
+	recoverslave		cmd="/usr/sbin/ctl_cyrusdb -r -C /etc/imapd/frontend.conf"
   
 	# this is recommended if caching TLS sessions
-	tlsprune	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf"'''
+	tlsprunefrontend	cmd="/usr/sbin/tls_prune -C /etc/imapd/frontend.conf"'''
 @!@

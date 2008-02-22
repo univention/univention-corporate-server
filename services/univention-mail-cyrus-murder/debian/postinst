@@ -34,11 +34,15 @@
 dpkg-statoverride --add root sasl 660 /etc/imapd/master.conf || true
 dpkg-statoverride --add root sasl 660 /etc/imapd/frontend.conf || true
 
-mkdir -p /var/lib/mupdate       # already done by entry in 'dirs', but just in case..
-cyrus-makedirs /etc/imapd/frontend.conf
-
 eval `univention-baseconfig shell hostname domainname`
 
 #DEBHELPER#
+
+mkdir -p /var/lib/mupdate       # already done by entry in 'dirs', but just in case..
+univention-config-registry commit /etc/imapd/frontend.conf
+cyrus-makedirs /etc/imapd/frontend.conf
+
+# activate the listener modules
+/etc/init.d/univention-directory-listener restart
 
 exit 0
