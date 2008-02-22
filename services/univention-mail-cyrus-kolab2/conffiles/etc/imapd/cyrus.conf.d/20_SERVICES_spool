@@ -49,8 +49,14 @@ if not (baseConfig.has_key('mail/cyrus/murder/master') and baseConfig['mail/cyru
 	print'''
 	# At least one form of LMTP is required for delivery
 	# (you must keep the Unix socket name in sync with imap.conf)
-	lmtp		cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf -a" listen="localhost:2003" prefork=0 maxchild=20
-	lmtpunix	cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20
+'''
+	if bindprefix:
+		print '\tlmtp		cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf -a" listen="%s2003" prefork=0 maxchild=20' % bindprefix
+		print '\t#lmtpunix	cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
+	else:
+		print '\tlmtp		cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf -a" listen="localhost:2003" prefork=0 maxchild=20'
+		print '\t#lmtpunix	cmd="/usr/lib/cyrus/bin/lmtpd -C /etc/imapd/imapd.conf" listen="/var/run/cyrus/socket/lmtp" prefork=0 maxchild=20'
+	print'''
 	# ----------------------------------------------
 
 	# useful if you need to give users remote access to sieve
