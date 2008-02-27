@@ -1,65 +1,44 @@
-# Warning: This file is auto-generated and might be overwritten by
+# Warning: This file is auto-generated and might be overwritten by 
 #          univention-baseconfig.
 #          Please edit the following file instead:
-# Warnung: Diese Datei wurde automatisch generiert und kann durch
-#          univention-baseconfig überschrieben werden.
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
-#
-#       /etc/univention/templates/files/etc/univention/apache/95kolab2-freebusy
-#       
+# 
+# 	/etc/univention/templates/files/etc/univention/apache/95kolab2-freebusy
+# 
 
 RewriteEngine On
-@!@
-if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
-	print 'RewriteRule ^/freebusy/([^/]+)\.ifb /freebusy/freebusy.php?uid=$1'
-	print 'RewriteRule ^/freebusy/([^/]+)\.vfb /freebusy/freebusy.php?uid=$1'
-	print 'RewriteRule ^/freebusy/([^/]+)\.xfb /freebusy/freebusy.php?uid=$1&extended=1'
-	print 'RewriteRule ^/freebusy/trigger/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=0'
-	print 'RewriteRule ^/freebusy/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=1'
-	print 'RewriteRule ^/freebusy/trigger/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=0&extended=1'
-	print 'RewriteRule ^/freebusy/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=1&extended=1'
-        print '<Directory /var/www/freebusy-legacy>'
-        print '   AllowOverride None'
-        print '   Order allow,deny'
-        print '   Deny from all'
-        print '</Directory>'
-					
-elif (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
-	print 'RewriteRule ^/freebusy/([^/]+)\.ifb /freebusy-legacy/freebusy.php?uid=$1'
-	print 'RewriteRule ^/freebusy/([^/]+)\.vfb /freebusy-legacy/freebusy.php?uid=$1'
-	print 'RewriteRule ^/freebusy/([^/]+)\.xfb /freebusy-legacy/freebusy.php?uid=$1&extended=1'
-	print 'RewriteRule ^/freebusy/trigger/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=0'
-	print 'RewriteRule ^/freebusy/(.+)\.pfb /freebusy-legacy/pfb.php?folder=$1&cache=1'
-	print 'RewriteRule ^/freebusy/trigger/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=0&extended=1'
-	print 'RewriteRule ^/freebusy/(.+)\.xpfb /freebusy-legacy/pfb.php?folder=$1&cache=1&extended=1'
-	print ''
-	print '<Directory /var/www/freebusy-legacy>'
-	print '   AllowOverride None'
-	print '   Options FollowSymlinks ExecCGI'
-	
-	print '   php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php5:/usr/share/php:/usr/share/pear/"'
-	print '</Directory>'
-@!@
+RewriteRule ^/freebusy/([^/]+)\.ifb /freebusy/freebusy.php?uid=$1
+RewriteRule ^/freebusy/([^/]+)\.vfb /freebusy/freebusy.php?uid=$1
+RewriteRule ^/freebusy/([^/]+)\.xfb /freebusy/freebusy.php?uid=$1&extended=1
+RewriteRule ^/freebusy/trigger/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=0
+RewriteRule ^/freebusy/(.+)\.pfb /freebusy/pfb.php?folder=$1&cache=1
+RewriteRule ^/freebusy/trigger/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=0&extended=1
+RewriteRule ^/freebusy/(.+)\.xpfb /freebusy/pfb.php?folder=$1&cache=1&extended=1
+
 
 <Directory /var/www/freebusy>
    AllowOverride None
    Options FollowSymlinks ExecCGI
-        AuthPAM_Enabled on
-        AllowOverride AuthConfig
-        AuthBasicAuthoritative Off
-        AuthType Basic
-        AuthPAM_Enabled on
-        AuthPAM_Service httpd-freebusy
-        AuthName "Kolab Freebusy"
-   # Disallow for everyone as default
-   Order allow,deny
-   <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>
-       Allow from all
-       Require valid-user
-   </Limit>
+@!@
+if not (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/legacy'].lower() in ['true', 'yes']):
+	print '	AuthPAM_Enabled on'
+	print '	AllowOverride AuthConfig'
+	print '	AuthBasicAuthoritative Off'
+	print '	AuthType Basic'
+	print '	AuthPAM_Enabled on'
+	print '	AuthPAM_Service httpd-freebusy'
+	print '	AuthName "Kolab Freebusy"'
 
+	print '   # Disallow for everyone as default'
+	print '   Order allow,deny'
+	print '   <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>'
+	print '       Allow from all'
+	print '       Require valid-user'
+	print '   </Limit>'
+@!@
 
    php_value include_path ".:/var/lib/univention-kolab2-framework/kolab-pear/:/var/lib/univention-kolab2-framework/kolab-pear/Horde/:/var/lib/univention-kolab2-framework/fbview/:/var/lib/univention-kolab2-framework/fbview/framework/:/var/lib/univention-kolab2-framework/fbview/framework/Horde/:/usr/share/php5:/usr/share/php:/usr/share/pear/"
 
 </Directory>
-
