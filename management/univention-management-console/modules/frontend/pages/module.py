@@ -98,6 +98,7 @@ class Module( base.Page ):
 		self.__in_progress = None
 		self.__dialog = None
 		self.__restore_referrer = False
+		self.__operation_is_progress = False
 
 		# check for icon
 		if self.__module.has_key( 'icon' ) and self.__module[ 'icon' ]:
