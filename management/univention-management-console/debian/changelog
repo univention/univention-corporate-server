@@ -1,3 +1,9 @@
+univention-management-console (0.9.23-1) unstable; urgency=low
+
+  * fixed traceback related to progress dialog
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 03 Mar 2008 15:19:48 +0100
+
 univention-management-console (0.9.22-2) unstable; urgency=low
 
   * fixed display of wrong command if progress dialog has been shown
