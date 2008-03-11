@@ -111,6 +111,15 @@ img {
     -moz-border-radius: 5px;
     padding-left: 5px;
 }
+
+a {
+    padding: 3px;
+}
+
+a:hover {
+    padding: 3px;
+}
+
 .day-eventbox {
     border-width: 1px;
     border-style: solid;
@@ -237,5 +246,5 @@ a.newEvent:hover {
     }
 
 .rowOdd {
-    background-color: #F6f6f6;
+    background-color: #e1e1e1;
     }

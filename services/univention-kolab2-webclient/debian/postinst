@@ -77,7 +77,16 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/application/nag?true \
 							horde/application/gollem?true \
 							horde/application/ingo?true \
-							horde/application/passwd?true
+							horde/application/passwd?true \
+							horde/calendar/day/inline_time?false \
+							horde/calendar/week/inline_time?false \
+							horde/calendar/workweek/display?true \
+							horde/calendar/edit/save_as_new?true \
+							horde/calendar/invitation/send?true \
+							horde/menu/options?true \
+							horde/menu/hide_groupware?false \
+							horde/menu/width?250 \
+							horde/menu/save_state?true \
 
 univention-baseconfig set php/memory/limit?64
 

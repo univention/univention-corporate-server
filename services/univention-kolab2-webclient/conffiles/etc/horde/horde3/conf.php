@@ -123,6 +123,15 @@ $conf['menu']['always'] = false;
 $conf['menu']['links']['help'] = 'all';
 $conf['menu']['links']['help_about'] = true;
 $conf['menu']['links']['options'] = 'authenticated';
+@!@
+if baseConfig.has_key('horde/menu/options') and baseConfig['horde/menu/options'] in ['0', 'false', 'no' ]:
+	print "$conf['menu']['options'] = false;"
+
+if baseConfig.has_key('horde/menu/save_state') and baseConfig['horde/menu/save_state'] in ['0', 'false', 'no' ]:
+	print "$conf['menu']['save_state'] = false;"
+else:
+	print "$conf['menu']['save_state'] = true;"
+@!@
 $conf['menu']['links']['problem'] = 'all';
 $conf['menu']['links']['login'] = 'all';
 $conf['menu']['links']['logout'] = 'authenticated';
@@ -177,5 +186,9 @@ if horde_auth.lower() == 'kolab':
 		print "$conf['kolab']['smtp']['server'] = '%s';" % fqdn
 		print "$conf['kolab']['imap']['server'] = '%s';" % fqdn
 		print "$conf['kolab']['server']['fqdn'] = '%s';" % fqdn
+
+if baseConfig.get('horde/menu/hide_groupware','false') in ['1','yes','true']:
+	print "$conf['menu']['hide_groupware'] = true;"
+
 @!@
 /* CONFIG END. DO NOT CHANGE ANYTHING IN OR BEFORE THIS LINE. */
