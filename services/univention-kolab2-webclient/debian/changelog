@@ -1,8 +1,41 @@
-univention-kolab2-webclient (1.2.3-1) unstable; urgency=low
+univention-kolab2-webclient (2.0-0-1) unstable; urgency=low
 
   * added themed_graphics files
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Mar 2008 17:01:33 +0100
+
+univention-kolab2-webclient (1.3.5-1) unstable; urgency=low
+
+  * added two hooks to update sharelist in kolab driver:
+    _horde_hook_share_add, _horde_hook_share_remove
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 22 Jan 2008 16:32:53 +0100
+
+univention-kolab2-webclient (1.3.4-1) unstable; urgency=low
+
+  * added more kronolith icons
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Nov 2007 08:08:35 +0100
+
+univention-kolab2-webclient (1.3.3-1) unstable; urgency=low
+
+  * don't uncomment the ['menu']['save_state'] statement if
+    horde/menu/save_state is set to false
+  * changed the default inline_time values from true to false
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Nov 2007 06:32:59 +0100
+
+univention-kolab2-webclient (1.3.2-1) unstable; urgency=low
+
+  * rename horde/menu/show_all into horde/menu/hide_groupware
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Nov 2007 09:29:56 +0100
+
+univention-kolab2-webclient (1.3.0-1) unstable; urgency=low
+
+  * added new options
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Nov 2007 17:09:37 +0100
 
 univention-kolab2-webclient (1.2.2-1) unstable; urgency=low
 

@@ -1129,3 +1129,24 @@ if (!function_exists('_passwd_hook_username')) {
 	}
 }
 
+
+require_once 'Horde/SessionObjects.php';
+if (!function_exists('_horde_hook_share_add')) {
+        function _horde_hook_share_add($shares)
+        {
+                static $folders = array();
+                $session = &Horde_SessionObjects::singleton();
+                $session->overwrite('horde_kolab_imaplist', $folders, false);
+                return 0;
+        }
+}
+
+if (!function_exists('_horde_hook_share_remove')) {
+        function _horde_hook_share_remove($shares)
+        {
+                static $folders = array();
+                $session = &Horde_SessionObjects::singleton();
+                $session->overwrite('horde_kolab_imaplist', $folders, false);
+                return 0;
+        }
+}

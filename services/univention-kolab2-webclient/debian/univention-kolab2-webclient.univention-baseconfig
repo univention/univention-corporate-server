@@ -33,6 +33,7 @@ Variables: horde/application/.*
 
 Type: file
 File: etc/horde/imp4/conf.php
+Variables: horde/.*
 
 Type: file
 File: etc/horde/imp4/prefs.php
@@ -42,6 +43,7 @@ File: etc/horde/imp4/servers.php
 
 Type: file
 File: etc/horde/turba2/conf.php
+Variables: horde/.*
 
 Type: file
 File: etc/horde/turba2/attributes.php
@@ -52,6 +54,7 @@ File: etc/horde/turba2/sources.php
 Type: file
 File: etc/horde/kronolith2/conf.php
 Variables: domainname
+Variables: horde/.*
 
 Type: file
 File: etc/horde/gollem/conf.php

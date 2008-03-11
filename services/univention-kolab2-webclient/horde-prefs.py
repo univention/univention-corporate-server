@@ -36,9 +36,8 @@ attributes=[]
 import listener, univention_baseconfig
 import univention.debug
 
-import pg
+import pg, string
 
-baseConfig = univention_baseconfig.baseConfig()
 
 def __create_db_identity( mail, fullname ):
  	name = 'Default Identity'
@@ -62,6 +61,15 @@ def __kronolith_settings ( db, mail ):
 	db.query( "insert into horde_prefs values('%s', 'kronolith', 'confirm_delete', '1');" % mail)
 
 def __horde_settings ( db, mail, fullname ):
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	menu_width = baseConfig.get('horde/menu/width', '200')
+	categories = {}
+	for k in baseConfig.keys():
+		if k.startswith('horde/calendar/category/'):
+			categories[k.split('/')[-1]] = '#%s' % baseConfig[k]
+
 	db.query( "insert into horde_prefs values('%s','horde', 'identities','%s');" % (mail, __create_db_identity( mail, fullname )) )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'confirm_maintenance', '0');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'do_maintenance', '0');" % mail )
@@ -70,7 +78,7 @@ def __horde_settings ( db, mail, fullname ):
 	db.query( "insert into horde_prefs values('%s', 'horde', 'initial_application', 'horde');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'menu_refresh_time', '300');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'menu_view', 'both');" % mail )
-	db.query( "insert into horde_prefs values('%s', 'horde', 'sidebar_width', '200');" % mail )
+	db.query( "insert into horde_prefs values('%s', 'horde', 'sidebar_width', '%s');" % (mail, menu_width ))
 	db.query( "insert into horde_prefs values('%s', 'horde', 'show_sidebar', '1');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'summary_refresh_time', '300');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'theme', 'univention');" % mail )
@@ -78,6 +86,15 @@ def __horde_settings ( db, mail, fullname ):
 	db.query( "insert into horde_prefs values('%s', 'horde', 'twentyFour', '1');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'timezone', '0');" % mail )
 	db.query( "insert into horde_prefs values('%s', 'horde', 'language', '0');" % mail )
+
+	if len(categories) > 0:
+		db.query( "insert into horde_prefs values('%s', 'horde', 'categories', '%s');" % (mail,string.join(categories.keys(),'|') ) )
+		category_colors = '_default_:#FFFFFF|_unfiled_:#DDDDDD'
+		for k in categories.keys():
+			category_colors = '%s:%s|%s' % (k, categories[k],category_colors)
+		db.query( "insert into horde_prefs values('%s', 'horde', 'category_colors', '%s');" % (mail,category_colors))
+		#category_colors          | bla:#FFFFFF|foobar:#112233|_default_:#FFFFFF|_unfiled_:#DDDDDD
+		
 
 def handler(dn, new, old):
 	if not old and new and new.has_key( 'mailPrimaryAddress' ):
