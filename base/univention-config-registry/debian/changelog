@@ -1,4 +1,4 @@
-univention-config-registry (2.6.7-3) unstable; urgency=low
+univention-config-registry (2.6.8-1) unstable; urgency=low
 
   * allow user, group and mode as config registry template options, for
     example:
