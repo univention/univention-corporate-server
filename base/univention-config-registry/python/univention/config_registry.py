@@ -30,6 +30,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os, sys, re, string, cPickle, types, copy
+import pwd, grp
 
 variable_pattern = re.compile('@%@([^@]+)@%@')
 variable_token = re.compile('@%@')
@@ -358,6 +359,9 @@ class configHandlerMultifile(configHandler):
 		self.from_files = []
 		self.dummy_from_file = dummy_from_file
 		self.to_file = to_file
+		self.user = None
+		self.group = None
+		self.mode = None
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -389,7 +393,16 @@ class configHandlerMultifile(configHandler):
 				continue
 			to_fp.write(filter(from_fp.read(), bc, self.from_files))
 
-		if st:
+		if self.user or self.group or self.mode:
+			if self.mode:
+				os.chmod(self.to_file, self.mode)
+			if self.user and self.group:
+				os.chown(self.to_file, self.user, self.group)
+			elif self.user:
+				os.chown(self.to_file, self.user, 0)
+			elif self.group:
+				os.chown(self.to_file, 0, self.group)
+		elif st:
 			os.chmod(self.to_file, st[0])
 
 class configHandlerFile(configHandler):
@@ -399,6 +412,9 @@ class configHandlerFile(configHandler):
 		self.to_file = to_file
 		self.preinst = None
 		self.postinst = None
+		self.user = None
+		self.group = None
+		self.mode = None
 
 	def __call__(self, args):
 		bc, changed = args
@@ -420,7 +436,17 @@ class configHandlerFile(configHandler):
 		from_fp = open(self.from_file)
 		to_fp = open(self.to_file, 'w')
 		to_fp.write(filter(from_fp.read(), bc, [self.from_file]))
-		os.chmod(self.to_file, st[0])
+		if self.user or self.group or self.mode:
+			if self.mode:
+				os.chmod(self.to_file, self.mode)
+			if self.user and self.group:
+				os.chown(self.to_file, self.user, self.group)
+			elif self.user:
+				os.chown(self.to_file, self.user, 0)
+			elif self.group:
+				os.chown(self.to_file, 0, self.group)
+		else:
+			os.chmod(self.to_file, st[0])
 		from_fp.close()
 		to_fp.close()
 
@@ -534,6 +560,18 @@ class configHandlers:
 				object.postinst = entry['Postinst'][0]
 			if entry.has_key('Variables'):
 				object.variables += entry['Variables']
+			if entry.has_key('User'):
+				try:
+					object.user = pwd.getpwnam(entry['User'][0]).pw_uid
+				except:
+					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
+			if entry.has_key('Group'):
+				try:
+					object.group = grp.getgrnam(entry['Group'][0]).gr_gid
+				except:
+					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
+			if entry.has_key('Mode'):
+				object.mode = int(entry['Mode'][0])
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
@@ -553,6 +591,18 @@ class configHandlers:
 				object = configHandlerMultifile(os.path.join(file_dir, entry['Multifile'][0]), os.path.join('/', entry['Multifile'][0]))
 			if entry.has_key('Variables'):
 				object.variables += entry['Variables']
+			if entry.has_key('User'):
+				try:
+					object.user = pwd.getpwnam(entry['User'][0]).pw_uid
+				except:
+					print 'Warning: failed to convert the username %s to the uid' % entry['User'][0]
+			if entry.has_key('Group'):
+				try:
+					object.group = grp.getgrnam(entry['Group'][0]).gr_gid
+				except:
+					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
+			if entry.has_key('Mode'):
+				object.mode = int(entry['Mode'][0])
 			self._multifiles[entry['Multifile'][0]] = object
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
