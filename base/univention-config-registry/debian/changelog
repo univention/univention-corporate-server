@@ -1,3 +1,15 @@
+univention-config-registry (2.6.8-1) unstable; urgency=low
+
+  * allow user, group and mode as config registry template options, for
+    example:
+         Type: file
+         File: etc/horde/horde3/conf.php
+         User: www-data
+         Group: root
+         Mode: 416
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Mar 2008 14:28:16 +0100
+
 univention-config-registry (2.6.7-2) unstable; urgency=low
 
   * replace calls to univention-config-registry with
