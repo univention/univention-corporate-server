@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0-0-3) unstable; urgency=low
+
+  * don't set the horde/servername ucr variable during the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 11 Mar 2008 17:08:22 +0100
+
 univention-kolab2-webclient (2.0-0-2) unstable; urgency=low
 
   * allow www-data to read /etc/horde/horde3/conf.php

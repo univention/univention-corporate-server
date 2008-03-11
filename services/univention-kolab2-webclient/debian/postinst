@@ -58,15 +58,6 @@ if [ ! -e /etc/horde.secret ]; then
 	su - postgres -c "echo \"ALTER USER horde WITH PASSWORD '$passwd'\" | psql -d template1 -f -"
 fi
 
-# FIXME: horde should be able to use de_DE@euro or similar locales
-# if ! echo $locale | grep de_DE:; then
-#	 univention-baseconfig set locale="$locale de_DE:iso-8859-15"
-# fi
-
-if [ -n "$interfaces_eth0_address" ]; then
-	univention-baseconfig set horde/servername?$interfaces_eth0_address
-fi
-
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.2.0-47; then
 	univention-baseconfig set horde/application/gollem?false
 fi
