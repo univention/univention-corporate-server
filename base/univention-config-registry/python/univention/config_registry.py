@@ -571,7 +571,7 @@ class configHandlers:
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				object.mode = int(entry['Mode'][0])
+				object.mode = int(entry['Mode'][0], 8)
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
