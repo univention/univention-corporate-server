@@ -40,6 +40,7 @@ file_dir = '/etc/univention/templates/files'
 script_dir = '/etc/univention/templates/scripts'
 module_dir = '/etc/univention/templates/modules'
 info_dir = '/etc/univention/templates/info'
+override_dir = '/etc/univention/override'
 cache_file = '/var/cache/univention-config/cache'
 cache_version = 1
 cache_version_min = 0
@@ -72,6 +73,9 @@ def warning_string(prefix='# ', width=80, srcfiles=[]):
 
 def filesort(x,y):
 	return cmp(os.path.basename(x), os.path.basename(y))
+
+def isDetached(filename):
+	return (os.path.islink(filename) and os.readlink(filename).find(override_dir)==0)
 
 class ConfigRegistry( dict ):
 	NORMAL, LDAP, FORCED, CUSTOM = range( 4 )
@@ -108,8 +112,7 @@ class ConfigRegistry( dict ):
 		if reg == ConfigRegistry.CUSTOM:
 			return _ConfigRegistry( file = self.file )
 		else:
-			return _ConfigRegistry( file = os.path.join( ConfigRegistry.PREFIX,
-														 ConfigRegistry.BASES[ reg ] ) )
+			return _ConfigRegistry( file = os.path.join( ConfigRegistry.PREFIX, ConfigRegistry.BASES[ reg ] ) )
 	def load( self ):
 		for reg in self._registry.values():
 			if isinstance( reg, _ConfigRegistry ):
@@ -354,7 +357,7 @@ class configHandler:
 
 class configHandlerMultifile(configHandler):
 
-	def __init__(self, dummy_from_file, to_file):
+	def __init__(self, dummy_from_file, to_file, info_file):
 		self.variables = []
 		self.from_files = []
 		self.dummy_from_file = dummy_from_file
@@ -374,7 +377,11 @@ class configHandlerMultifile(configHandler):
 	def __call__(self, args):
 		bc, changed = args
 		self.from_files.sort(filesort)
-		print 'Multifile: %s' % self.to_file
+		if isDetached(self.to_file):
+			print 'Preserving detached file: %s' % self.to_file
+			self.to_file = '/dev/null'
+		else:
+			print 'Multifile: %s' % self.to_file
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
@@ -407,9 +414,10 @@ class configHandlerMultifile(configHandler):
 
 class configHandlerFile(configHandler):
 
-	def __init__(self, from_file, to_file):
+	def __init__(self, from_file, to_file, info_file):
 		self.from_file = from_file
 		self.to_file = to_file
+		self.info_file = info_file
 		self.preinst = None
 		self.postinst = None
 		self.user = None
@@ -422,7 +430,11 @@ class configHandlerFile(configHandler):
 		if hasattr( self, 'preinst') and self.preinst:
 			runModule(self.preinst, 'preinst', bc, changed)
 
-		print 'File: %s' % self.to_file
+		if isDetached(self.to_file):
+			print 'Preserving detached file: %s' % self.to_file
+			self.to_file = '/dev/null'
+		else:
+			print 'File: %s' % self.to_file
 
 		to_dir = os.path.dirname(self.to_file)
 		if not os.path.isdir(to_dir):
@@ -499,10 +511,10 @@ def grepVariables(f):
 
 class configHandlers:
 
-	_handlers = {}
-	_files = {}
-	_multifiles = {}
-	_subfiles = {}
+	_handlers = {}		# variable -> handler
+	_files = {}		# filename -> handler
+	_multifiles = {}	# multifilename(~ to_file) -> handler
+	_subfiles = {}		# multifilename -> (from_file, variables) [temporary, to gather 'early' subfile entries]
 
 	def _check_cache_version(self, fp):
 		version = 0
@@ -541,16 +553,19 @@ class configHandlers:
 	def stripBasepath(self, path, basepath):
 		return path.replace(basepath, '')
 
-	def getHandler(self, entry):
+	def getHandler(self, entry, info_file):
 
 		if not entry.has_key('Type'):
 			object = None
 		elif entry['Type'][0] == 'file':
-			from_path = os.path.join(file_dir, entry['File'][0])
-			to_path = os.path.join('/', entry['File'][0])
-			if not entry.has_key('File') or not os.path.exists(from_path):
+			if not entry.has_key('File'):
 				return None
-			object = configHandlerFile(from_path, to_path)
+			filename = entry['File'][0]
+			from_path = os.path.join(file_dir, filename)
+			to_path = os.path.join('/', filename)
+			if not os.path.exists(from_path):
+				return None
+			object = configHandlerFile(from_path, to_path, info_file)
 			if not object:
 				return None
 			object.variables = grepVariables(open(from_path).read())
@@ -571,7 +586,7 @@ class configHandlers:
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				object.mode = int(entry['Mode'][0])
+				object.mode = int(entry['Mode'][0], 8)
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
@@ -585,10 +600,12 @@ class configHandlers:
 		elif entry['Type'][0] == 'multifile':
 			if not entry.has_key('Multifile'):
 				return None
-			if self._multifiles.has_key(entry['Multifile'][0]):
-				object = self._multifiles[entry['Multifile'][0]]
+			mfile = entry['Multifile'][0]
+			if self._multifiles.has_key(mfile):
+				object = self._multifiles[mfile]
 			else:
-				object = configHandlerMultifile(os.path.join(file_dir, entry['Multifile'][0]), os.path.join('/', entry['Multifile'][0]))
+				object = configHandlerMultifile(os.path.join(file_dir, mfile), os.path.join('/', mfile), info_file)
+				self._multifiles[mfile] = object
 			if entry.has_key('Variables'):
 				object.variables += entry['Variables']
 			if entry.has_key('User'):
@@ -602,7 +619,7 @@ class configHandlers:
 				except:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
-				object.mode = int(entry['Mode'][0])
+				object.mode = int(entry['Mode'][0], 8)
 			self._multifiles[entry['Multifile'][0]] = object
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
@@ -628,6 +645,14 @@ class configHandlers:
 			object = None
 		return object
 
+	def getInfo(self, filename):
+		if self._files.has_key(filename):
+			return self._files[filename].info_file
+		elif self._multifiles.has_key(filename):
+			return self._multifiles[filename].info_file
+		else:
+			return None
+
 	def update(self):
 
 		self._handlers.clear()
@@ -642,7 +667,7 @@ class configHandlers:
 			for s in parseRfc822(open(file).read()):
 				if not s.has_key('Type'):
 					continue
-				object = self.getHandler(s)
+				object = self.getHandler(s, file)
 				if object:
 					objects.append(object)
 		for object in objects:
@@ -665,7 +690,7 @@ class configHandlers:
 		objects = []
 		file = os.path.join(info_dir, package+'.info')
 		for s in parseRfc822(open(file).read()):
-			object = self.getHandler(s)
+			object = self.getHandler(s, file)
 			if object and not object in objects:
 				objects.append(object)
 
@@ -679,12 +704,22 @@ class configHandlers:
 
 		file = os.path.join(info_dir, package+'.info')
 		for s in parseRfc822(open(file).read()):
-			object = self.getHandler(s)
+			object = self.getHandler(s, file)
 			if s.has_key('File'):
 				for f in s['File']:
 					if f[0] != '/':
 						f = '/'+f
 					if os.path.exists(f):
+						if isDetached(f):
+							print 'Preserving detached file: %s' % f
+						os.unlink(f)
+			elif s.has_key('Multifile'):
+				for f in s['Multifile']:
+					if f[0] != '/':
+						f = '/'+f
+					if os.path.exists(f):
+						if isDetached(f):
+							print 'Preserving detached file: %s' % f
 						os.unlink(f)
 
 	def __call__(self, variables, arg):
@@ -715,7 +750,7 @@ class configHandlers:
 							if f[0] != '/':
 								f = '/'+f
 							if f in filelist:
-								object = self.getHandler(s)
+								object = self.getHandler(s, file)
 								break
 						if not object:
 							continue
@@ -725,12 +760,12 @@ class configHandlers:
 							if f[0] != '/':
 								f = '/'+f
 							if f in filelist:
-								object = self.getHandler(s)
+								object = self.getHandler(s, file)
 								break
 						if not object:
 							continue
 				else:
-					object = self.getHandler(s)
+					object = self.getHandler(s, file)
 				if object and not object in objects:
 					objects.append(object)
 		for object in objects:
@@ -956,6 +991,69 @@ def handler_get( args, opts = {} ):
 
 	print b.get( args[ 0 ], '' )
 
+def handler_detach( args, opts = {} ):
+	configfile = args[0]
+	if not os.path.isabs(configfile):
+		configfile = os.path.abspath(configfile)
+        if not os.path.exists(configfile):
+		print "File %s does not exsist." % configfile
+		sys.exit(1)
+        if isDetached(configfile):
+		print "File %s is already detached to %s" % (configfile, os.readlink(configfile))
+		sys.exit(1)
+
+	# check if handler is there
+	c = configHandlers()
+	c.update()
+	c.load()
+	if not c.getInfo(configfile[1:]):
+		print "File %s is not under control of univention-config-registry" % configfile
+		sys.exit(1)
+
+	# ok, doit
+	override = os.path.join( override_dir, configfile[1:])
+        if os.path.exists(override):
+		print "Error: File %s already exists, will not remove it." % override
+		sys.exit(1)
+	destination = os.path.dirname(override)
+        if not os.path.exists(destination):
+		os.makedirs(destination)
+	os.rename(configfile, override)
+	os.symlink(override, configfile)
+	print "Detach: %s is now detached from univention-config-registry.\n        You may modify %s with care." % (configfile, override)
+
+def handler_reattach( args, opts = {} ):
+	configfile = args[0]
+	if not os.path.isabs(configfile):
+		configfile = os.path.abspath(configfile)
+        if not os.path.exists(configfile):
+		print "File %s not found." % configfile
+		sys.exit(1)
+        if not isDetached(configfile):
+		print "File %s is not a detached config file." % configfile
+		sys.exit(1)
+
+	# check if handler is there
+	c = configHandlers()
+	c.update()
+	c.load()
+	if not c.getInfo(configfile[1:]):
+		print "File %s is not under control of univention-config-registry" % configfile
+		sys.exit(1)
+
+	# ok, doit
+	override = os.readlink(configfile)
+        if not os.path.exists(override):
+		print "Warning: File %s does not exsist (just wanted to remove it)." % override
+	else:
+		os.unlink(override)
+	os.unlink(configfile)
+	# rebuild the current configfile
+	handler_commit( [ configfile ] )
+	# clean up:
+	os.chdir(override_dir)
+	os.removedirs(os.path.dirname(configfile)[1:])
+
 def handler_help( args, opts = {} ):
 	print '''
 univention-config-registry: base configuration for UCS
@@ -1083,6 +1181,8 @@ def main(args):
 			'filter': (handler_filter, 0),
 			'search': (handler_search, 1),
 			'get': (handler_get, 1),
+			'detach': (handler_detach, 1),
+			'reattach': (handler_reattach, 1),
 			}
 		# action options: each of these options perform an action
 		opt_actions = {
