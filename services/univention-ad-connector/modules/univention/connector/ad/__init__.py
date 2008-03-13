@@ -1228,7 +1228,7 @@ class ad(univention.connector.ucs):
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
 							   "ad_members %s" % ad_members)
 
-		ucs_members_from_ad = []
+		ucs_members_from_ad = { 'user' : [], 'group': [] }
 		
 		# map members from AD to UCS and check if they exist
 		for member_dn in ad_members:
@@ -1240,7 +1240,7 @@ class ad(univention.connector.ucs):
 				ucs_dn = self._object_mapping(key, {'dn':member_dn,'attributes':member_object})['dn']
 				try:
 					if self.lo.get(ucs_dn):
-						ucs_members_from_ad.append(ucs_dn.lower())
+						ucs_members_from_ad[key].append(ucs_dn.lower())
 				except ldap.SERVER_DOWN:
 					raise
 				except:
@@ -1248,7 +1248,7 @@ class ad(univention.connector.ucs):
 				
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
-			if not member_dn.lower() in ucs_members_from_ad:
+			if not (member_dn.lower() in ucs_members_from_ad['user'] or member_dn.lower() in ucs_members_from_ad['group']):
 				try:
 					ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
 
@@ -1263,7 +1263,8 @@ class ad(univention.connector.ucs):
 					ad_dn = self._object_mapping(key, ucs_object, 'ucs')['dn']
 
 					if not self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
-						ucs_members_from_ad.append(member_dn.lower())
+						# member does not exist in AD but should stay a member in UCS
+						ucs_members_from_ad['key'].append(member_dn.lower())
 				except ldap.SERVER_DOWN:
 					raise
 				except:
@@ -1273,34 +1274,49 @@ class ad(univention.connector.ucs):
 		# direct compare is not possible, because ucs_members_from_ad are all lowercase, ad_members are not, so we need to iterate...
 		# FIXME: should be done in the last iteration (above)
 		add_members = ucs_members_from_ad
-		del_members = []
+		del_members = { 'user' : [], 'group': [] }
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "ucs_members: %s" % ucs_members)
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "ucs_members_from_ad: %s" % ucs_members_from_ad)
 
 		for member_dn in ucs_members:
-			if member_dn.lower() in ucs_members_from_ad:
-				add_members.remove(member_dn.lower())
+			if member_dn.lower() in ucs_members_from_ad['user']:
+				add_members['user'].remove(member_dn.lower())
+			elif member_dn.lower() in ucs_members_from_ad['group']:
+				add_members['group'].remove(member_dn.lower())
 			else:
-				del_members.append(member_dn)
+				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
+				for k in self.property.keys():
+					if self.modules[k].identify(member_dn, ucs_object['attributes']):
+						key=k
+						break
+
+				del_members[key].append(member_dn)
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "members to add: %s" % add_members)
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "members to del: %s" % del_members)
 
-		if add_members or del_members:
-			ucs_members = ucs_members + add_members
-			for member in del_members:
-				ucs_members.remove(member)
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
-								   "members result: %s" % ucs_members)
+		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group']:
+			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
+			ucs_admin_object.open()
 
-			modlist_members = []
-			for member in ucs_members:
-				modlist_members.append(member)
+			modlist_members = { 'user' : [] , 'group' : [] }
+			for tempdn in ucs_admin_object['users']:
+				modlist_members['user'].append(tempdn.lower())
+			for tempdn in ucs_admin_object['nestedGroup']:
+				modlist_members['group'].append(tempdn.lower())
+
+			for key in ['user', 'group']:
+				modlist_members[key] = modlist_members[key] + add_members[key]
+				for member in del_members[key]:
+					modlist_members[key].remove(member)
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+							       "members %s result: %s" % (key,ucs_members[key]) )
 
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()
-			ucs_admin_object['users'] = modlist_members
+			ucs_admin_object['users'] = modlist_members['user']
+			ucs_admin_object['nestedGroup'] = modlist_members['group']
 			ucs_admin_object.modify()
 
 		else:
@@ -1482,6 +1498,7 @@ class ad(univention.connector.ucs):
 		print "done:",
 		sys.stdout.flush()
 		done_counter = 0
+		object = None
 
 		for element in changes:
 			try:
