@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0-0-4) unstable; urgency=low
+
+  * use the new mode format
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 13 Mar 2008 08:16:32 +0100
+
 univention-kolab2-webclient (2.0-0-3) unstable; urgency=low
 
   * don't set the horde/servername ucr variable during the postinst
