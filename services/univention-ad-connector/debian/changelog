@@ -1,3 +1,11 @@
+univention-ad-connector (1.2.2-7) unstable; urgency=low
+
+  * add differentiation for users and groups in group-memberships
+  * use functions from python-ldap to explode DNs
+  * detect rename of OU/CN as modification instead of a move
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 13 Mar 2008 16:36:04 +0100
+
 univention-ad-connector (1.2.2-6) unstable; urgency=low
 
   * remove extra filter-mapping for object-deletion

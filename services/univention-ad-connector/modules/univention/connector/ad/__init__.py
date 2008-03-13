@@ -815,12 +815,15 @@ class ad(univention.connector.ucs):
 			#check if is moved
 			olddn = self.encode(self._get_DN_for_GUID(GUID))
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_from_element: olddn: %s"%olddn)
-			if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower(): #.encode('ISO-8859-1'): # FIXME: better encoding possible
+			if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower() and ldap.explode_rdn(compatible_modstring(olddn).lower()) == ldap.explode_rdn(compatible_modstring(self.encode(element[0])).lower()): 
 				object['modtype'] = 'move'
 				object['olddn'] = olddn
 				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_from_element: detected move of AD-Object")
 			else:
 				object['modtype'] = 'modify'
+				if olddn and not compatible_modstring(olddn).lower() == compatible_modstring(self.encode(element[0])).lower(): # modrdn
+					object['olddn'] = olddn
+				
 
 		object['attributes'] = element[1]
 		for key in object['attributes'].keys():
@@ -1311,7 +1314,7 @@ class ad(univention.connector.ucs):
 				for member in del_members[key]:
 					modlist_members[key].remove(member)
 					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
-							       "members %s result: %s" % (key,ucs_members[key]) )
+							       "members %s result: %s" % (key,modlist_members[key]) )
 
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()
@@ -1507,10 +1510,10 @@ class ad(univention.connector.ucs):
 				old_element = copy.deepcopy(element)
 				object = self.__object_from_element(element)
 			except:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
-				univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "This object will not be synced again!")
+				#univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
+				#univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "This object will not be synced again!")
 				# debug-trace may lead to a segfault here :(
-				# self._debug_traceback(univention.debug.ERROR,"Exception during poll/object-mapping, object will not be synced again!")
+				self._debug_traceback(univention.debug.ERROR,"Exception during poll/object-mapping, object will not be synced again!")
 				
 			if object:
 				property_key = self.__identify(object)
