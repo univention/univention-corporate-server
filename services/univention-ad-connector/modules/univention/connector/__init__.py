@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy
+import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy, time
 import ldap
 import pdb
 import univention_baseconfig
@@ -403,12 +403,21 @@ class ucs:
 		'''
 		exc_info = sys.exc_info()
 		_d=univention.debug.function('ldap._debug_traceback')
+		tracebackFile = '/var/log/univention/connector-tracebacks.log'
+
+		univention.debug.debug(univention.debug.LDAP, level , text)
+		univention.debug.debug(univention.debug.LDAP, level , ' --  for details see %s -- ' % tracebackFile)		
+		
 		lines = apply(traceback.format_exception, exc_info)
 		text = text + '\n'
 		for line in lines:
 			text += line
-		univention.debug.debug(univention.debug.LDAP, level , text)
-		#print text
+
+		text = str( time.asctime(time.localtime())) + "\n" + text
+                f = open( tracebackFile, 'a' )
+                print >>f, text
+                f.close()			
+
 
 	def _get_rdn(self,dn):
 		_d=univention.debug.function('ldap._get_rdn')

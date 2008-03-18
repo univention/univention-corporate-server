@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-8) unstable; urgency=low
+
+  * write tracebacks without univention-debug to /var/log/univention/connector-tracebacks.log
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Mar 2008 09:32:46 +0100
+
 univention-ad-connector (1.2.2-7) unstable; urgency=low
 
   * add differentiation for users and groups in group-memberships
