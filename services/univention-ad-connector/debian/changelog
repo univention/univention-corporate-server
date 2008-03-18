@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-9) unstable; urgency=low
+
+  * don't send GUID to univention-debug
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Mar 2008 15:25:17 +0100
+
 univention-ad-connector (1.2.2-8) unstable; urgency=low
 
   * write tracebacks without univention-debug to /var/log/univention/connector-tracebacks.log

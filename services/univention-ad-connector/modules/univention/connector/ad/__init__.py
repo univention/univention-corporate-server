@@ -800,11 +800,7 @@ class ad(univention.connector.ucs):
 		object = {}
 		object['dn'] = self.encode(element[0])
 		deleted_object = False
-		GUID = element[1]['objectGUID'][0]
-		try:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__object_from_element: GUID: %s " % str(GUID))
-		except TypeError:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__object_from_element: GUID unprintable for object %s " % object['dn'])
+		GUID = element[1]['objectGUID'][0] # don't send this GUID to univention-debug
 
 		# modtype
 		if element[1].has_key('isDeleted') and element[1]['isDeleted'][0] == 'TRUE':
