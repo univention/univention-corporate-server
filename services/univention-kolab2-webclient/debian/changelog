@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0.0-5) unstable; urgency=low
+
+  * added additional config settings for new horde upstream release
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 17 Mar 2008 17:46:30 +0100
+
 univention-kolab2-webclient (2.0-0-4) unstable; urgency=low
 
   * use the new mode format
