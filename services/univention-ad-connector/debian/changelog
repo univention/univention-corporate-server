@@ -1,3 +1,9 @@
+univention-ad-connector (1.2.2-10) unstable; urgency=low
+
+  * don't try to get GUID manually for deleted objects if it is already given
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Mar 2008 09:36:11 +0100
+
 univention-ad-connector (1.2.2-9) unstable; urgency=low
 
   * don't send GUID to univention-debug

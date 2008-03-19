@@ -773,7 +773,7 @@ class ad(univention.connector.ucs):
 		# relevant object according to the objectGUID of the removed object
 		if self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000":
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__dn_from_deleted_object: DN fallback to w2k-mode: get dn from GUID-mapping-cache")
-			GUID = object['objectGUID'][0]
+			#GUID = object['objectGUID'][0] #the GUID is given
 			return self._get_DN_for_GUID(GUID)
 
 		# FIXME: should be called recursively, if containers are deleted subobjects have lastKnowParent in deletedObjects
