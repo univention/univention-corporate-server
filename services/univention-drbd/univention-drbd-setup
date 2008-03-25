@@ -146,6 +146,10 @@ if [ "$drbd" = "yes" -o "$drbd" = "true" ]; then
 	if [ -n "$drbd_startup_degr_wfc_timeout" ]; then
 		univention-baseconfig set drbd/resource/$drbd_resource/startup/degr-wfc-timeout="$drbd_startup_degr_wfc_timeout"
 	fi
+
+	if [ -n "$drbd_common_syncer_rate" ]; then
+		univention-baseconfig set drbd/common/syncer/rate="$drbd_common_syncer_rate"
+	fi
 else
 	echo "ERROR: drbd=yes is not set in /etc/univention/installation_profile"
 	exit 1
