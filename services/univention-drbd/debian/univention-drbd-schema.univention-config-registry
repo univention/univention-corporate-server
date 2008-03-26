@@ -1,3 +1,0 @@
-Type: subfile
-Multifile: etc/ldap/slapd.conf
-Subfile: etc/ldap/slapd.conf.d/13univention-drbd.schema
