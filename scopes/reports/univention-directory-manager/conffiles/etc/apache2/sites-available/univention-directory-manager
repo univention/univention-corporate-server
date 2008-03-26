@@ -1,0 +1,19 @@
+# Warning: This file is auto-generated and might be overwritten by 
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch 
+#          univention-baseconfig überschrieben werden. 
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+# 
+# 	/etc/univention/templates/files/etc/apache2/sites-available/univention-directory-manager
+
+RedirectMatch ^/udm(/$|$) /univention-directory-manager/
+RedirectMatch ^/directory-manager(/$|$) /univention-directory-manager/
+RedirectMatch ^/univention-directory-manager$ /univention-directory-manager/
+RedirectMatch ^/univention-directory-manager/style/(.*) /style/$1
+
+
+<Directory /var/www/univention-directory-manager/directory-reports>
+        Options -Indexes
+</Directory>
+

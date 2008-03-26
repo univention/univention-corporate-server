@@ -1,0 +1,27 @@
+Source: univention-directory-reports
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper, python, , python-all-dev, python-central, python-xml, univention-config-dev
+XS-Python-Version: all
+
+Package: univention-directory-reports
+Architecture: all
+Depends: python-univention-directory-reports, tetex-bin, tetex-base, tetex-extra
+Description: Creates reports about Univention Admin objects
+ Univention Report Generator creates reports in PDF format using
+ LaTex template files that contain a special template syntax to
+ describe LDAP attributes and objects that should replace the patterns
+
+Package: python-univention-directory-reports
+Architecture: all
+Depends: ${python:Depends}, python-univention-directory-manager, univention-config-registry, univention-webui
+Conflicts: python2.4-univention-directory-reports
+Replaces: python2.4-univention-directory-reports
+Provides: ${python:Provides}, python2.4-univention-directory-reports
+XB-Python-Version: ${python:Versions}
+Description: Creates reports about Univention Admin objects
+ Univention Report Generator creates reports in PDF format using
+ LaTex template files that contain a special template syntax to
+ describe LDAP attributes and objects that should replace the patterns

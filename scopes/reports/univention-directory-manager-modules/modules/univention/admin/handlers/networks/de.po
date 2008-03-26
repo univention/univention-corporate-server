@@ -1,0 +1,106 @@
+# Copyright (C) 2006 Univention GmbH
+# Univention GmbH <packages@univention.de>
+# This file is distributed under the same license as this package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-12-11 09:25+0100\n"
+"PO-Revision-Date: 2006-01-12 13:25+0100\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: network.py:45 network.py:64
+msgid "Network"
+msgstr "Netzwerk"
+
+#: network.py:46
+msgid "Add, edit and delete networks"
+msgstr "Hinzufügen, bearbeiten und löschen von Netzwerken"
+
+#: network.py:47
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: network.py:47
+msgid "Add Network Object"
+msgstr "Netz-Objekte hinzufügen"
+
+#: network.py:47
+msgid "Find"
+msgstr "Suchen"
+
+#: network.py:47
+msgid "Find Network Object(s)"
+msgstr "Netz-Objekt(e) suchen"
+
+#: network.py:50
+msgid "Networks: Network"
+msgstr "Netze: Netz"
+
+#: network.py:55
+msgid "Name"
+msgstr "Name"
+
+#: network.py:73
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: network.py:82
+msgid "Next IP Address"
+msgstr "nächste IP-Adresse"
+
+#: network.py:91
+msgid "IP Address Range"
+msgstr "IP-Adressbereich"
+
+#: network.py:101
+msgid "DNS Entry Position"
+msgstr "Forward Lookup Zone für DNS-Einträge"
+
+#: network.py:112
+msgid "DNS Entry Zone Reverse"
+msgstr "Reverse Lookup Zone für DNS-Einträge"
+
+#: network.py:123
+msgid "DHCP Entry"
+msgstr "DHCP-Einträge"
+
+#: network.py:146
+msgid "General"
+msgstr "Allgemein"
+
+#: network.py:146
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
+#: network.py:150
+msgid "IP"
+msgstr "IP"
+
+#: network.py:150
+msgid "IP Address Ranges"
+msgstr "IP-Adressbereiche"
+
+#: network.py:153
+msgid "DNS"
+msgstr "DNS"
+
+#: network.py:153
+msgid "DNS Preferences"
+msgstr "DNS-Einstellungen"
+
+#: network.py:157
+msgid "DHCP"
+msgstr "DHCP"
+
+#~ msgid "nextIp"
+#~ msgstr "nächste IP-Adresse"
+
+#~ msgid "Network Manager"
+#~ msgstr "Netzwerkverwaltung"

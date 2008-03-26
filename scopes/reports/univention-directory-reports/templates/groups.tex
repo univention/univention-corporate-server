@@ -1,0 +1,80 @@
+%% -*- coding: utf-8 -*-
+%%
+%% Univention Reports
+%%  template file for group reports
+%%
+%% Copyright (C) 2007 Univention GmbH
+%%
+%% http://www.univention.de/
+%%
+%% All rights reserved.
+%%
+%% This program is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License version 2 as
+%% published by the Free Software Foundation.
+%%
+%% Binary versions of this file provided by Univention to you as
+%% well as other copyrighted, protected or trademarked materials like
+%% Logos, graphics, fonts, specific documentations and configurations,
+%% cryptographic keys etc. are subject to a license agreement between
+%% you and Univention.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+\ihead{Gruppen-Report: <@attribute name="name"@>}
+
+
+\section*{Gruppeneinzelnachweis: <@attribute name="name"@>}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Name &     <@attribute name="name"@>\\
+Beschreibung & <@attribute name="description" default="-"@>\\
+Gruppen ID & <@attribute name="gidNumber"@>\\
+Relative ID & <@attribute name="sambaRID"@>\\
+Gruppentyp & <@attribute name="sambaGroupType"@>\\
+E-Mail-Adresse & <@attribute name="mailAddress" default="-"@>\\
+\end{tabularx}
+
+\vspace{5mm}
+
+\section*{Scalix Informationen}
+
+\begin{tabular}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Scalix-Nutzer & <@attribute name="ScalixObject"@> \\
+Mail-Node & <@attribute name="Mailnode"@> \\
+Adressbucheintrag & <@attribute name="HideUserEntry"@> \\
+\end{tabular}
+
+\section*{Mitglied folgender Gruppen}
+
+<@resolve module="groups/group" dn-attribute="memberOf" header="\begin{itemize}" footer="\end{itemize}" alternative="Diese Gruppe ist in keiner anderen Gruppe Mitglied."@>
+\item <@attribute name="name"@> (<@attribute name="description"@>)
+<@/resolve@>
+
+
+\section*{Gruppen in dieser Gruppe}
+
+<@query module="groups/group" start="nestedGroup" next="nestedGroup" header="\begin{itemize}" footer="\end{itemize}" alternative="Keine Gruppe ist Mitglied dieser Gruppe."@>
+  \item <@attribute name="name"@> (<@attribute name="description"@>)
+<@/query@>
+
+\section*{Benutzer in dieser Gruppe}
+
+<@resolve module="users/user" dn-attribute="users" header="\begin{itemize}" footer="\end{itemize}" alternative="Kein Benutzer ist Mitglied dieser Gruppe."@>
+  \item <@attribute name="username"@> (<@attribute name="lastname"@>, <@attribute name="firstname"@>)
+<@/resolve@>
+
+<@query module="groups/group" start="nestedGroup" next="nestedGroup" alternative="Keine indirekten Gruppenmitgliedschaften."@>
+  \subsubsection*{Gruppe: <@attribute name="name"@> (<@attribute name="description"@>)}
+  <@resolve module="users/user" dn-attribute="users" header="\begin{itemize}" footer="\end{itemize}" alternative="Keine Mitglieder in dieser Gruppe"@>
+    \item <@attribute name="username"@> (<@attribute name="lastname"@>)
+  <@/resolve@>
+<@/query@>
+
+\newpage

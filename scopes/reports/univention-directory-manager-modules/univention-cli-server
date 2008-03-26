@@ -1,0 +1,284 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Admin Modules
+#  the comannd line server
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import SocketServer, socket, select
+import os, sys, types, string, time
+import traceback
+import univention_baseconfig, univention.debug
+import univention.admincli.adduser
+import univention.admincli.admin
+import univention.admincli.passwd
+try:
+	import univention.admincli.license_check
+	licenseImportError=False
+except ImportError:
+	licenseImportError=True
+
+logfile=''
+
+class myRequestHandler(SocketServer.BaseRequestHandler):
+	def handle(self):
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'daemon [%s] new connection [%s]' % (os.getppid(), os.getpid()))
+		sarglist=''
+		while 1:
+			buf = self.request.recv(1024)
+			if buf[-1] == '\0':
+				buf = buf[0:-1]
+				sarglist += buf
+				break
+			else:
+				sarglist += buf
+		doit(sarglist, self.request)
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'daemon [%s] connection closed [%s]' % (os.getppid(), os.getpid()))
+		
+
+	def finish(self):
+		pass
+
+class ForkingTCPServer(SocketServer.ForkingTCPServer):
+	
+	address_family=socket.AF_UNIX
+	allow_reuse_address = 1
+	def server_bind(self):
+		SocketServer.TCPServer.server_bind(self)
+		host, port = self.socket.getsockname()[:2]
+		self.server_name = 'localhost' #socket.getfqdn(host)
+		self.server_port = port
+
+def main():
+	global logfile
+	logfile=''
+	if len(sys.argv) < 2:
+		logfile='/var/log/univention/directory-manager-cmd.log'
+	else:
+		logfile=sys.argv[1]
+		
+	socket_dir='/tmp/admincli_%s/' % os.getuid()
+	socket_filename='sock'
+	socket_path=(socket_dir+socket_filename)
+
+	univention.debug.init(logfile, 1, 0)
+	
+	if os.path.isfile('%s.run' % socket_path):
+		runs=1
+		runfile=open('%s.run' % socket_path, 'r')
+		line=runfile.readlines()
+		runfile.close()
+		try:
+			pid=line[0]
+		except:
+			pid=''
+		if len(pid)>0 and pid[-1:] == '\n':
+			pid = pid[:-1]
+		if pid:
+			try:
+				os.kill(int(pid), 18)
+			except OSError:
+				pid=''
+		if not pid: # no pid found or no server running
+			runs=0
+			os.unlink(socket_path)
+			os.unlink('%s.run' % socket_path)
+			os.rmdir(socket_dir)
+		if not runs==0:
+			print 'E: Server already running [Pid: %s]' % pid
+			sys.exit(1)
+
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+	if baseConfig.has_key('directory/manager/cmd/debug/level'):
+		debug_level=baseConfig['directory/manager/cmd/debug/level']
+	else:
+		debug_level=1
+	univention.debug.set_level(univention.debug.ADMIN, int(debug_level))
+	univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'daemon [%s] forked to background' % os.getpid())
+	
+	try:
+		os.mkdir(socket_dir)
+		os.chmod(socket_dir, 0700)
+	except:	
+		print 'E: Socket directory exists (%s)' % socket_dir
+	
+	if baseConfig.has_key('directory/manager/cmd/timeout'):
+		timeout=baseConfig['directory/manager/cmd/timeout']
+		if int(timeout) > 2147483647:
+			timeout=2147483647
+	else:
+		timeout=300
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'daemon [%s] baseconfig key directory/manager/cmd/timeout not set, setting to default (%s seconds)' % (os.getpid(), timeout))
+	try:
+		s=ForkingTCPServer(socket_path, myRequestHandler)
+		os.chmod(socket_path, 0600)
+	except:
+		print 'E: Failed creating socket (%s). Daemon stopped.' % socket_path
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'daemon [%s] Failed creating socket (%s). Daemon stopped.' %
+		(os.getpid(), socket_filename))
+		sys.exit(1)
+	
+	#s.listen(2)
+	try:
+		runfile=open('%s.run' % socket_path, 'w')
+	except IOError:
+		print 'E: Can`t write runfile'
+	
+	runfile.write(str(os.getpid()))
+	runfile.close()
+	try:	
+		while 1:
+			input=[]
+			output=[]
+			exc=[]
+			input, output, exc = select.select([s],[],[],float(timeout))	
+			for handler in input:
+				handler.handle_request()
+			if not input:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'daemon [%s] stopped after %s seconds idle' % (os.getpid(), timeout))
+				sys.exit(0)
+			
+	finally:
+		os.unlink(socket_path)
+		os.unlink('%s.run' % socket_path)
+		os.rmdir(socket_dir)
+		univention.debug.exit()
+		
+			
+def doit(sarglist, conn):
+
+	def sendMessage(output):
+		back=u''
+		back=repr(output)
+		conn.send(back+'\0')
+		conn.close()
+
+	global logfile
+	arglist=eval(sarglist)
+	
+	l=0
+	b=0
+	h=0
+	lsf=1
+	oldlogfile=logfile
+	for i in arglist:
+		if l == 1:
+			logfile=i
+			l=0
+		if i[:9] == '--logfile':
+			if len(i) > 10 and i[9] == "=":
+				logfile=i[10:]
+			else:
+				l=1
+		if i[:8] == '--binddn':
+			b=1
+		if i[:6] == '--help':
+			h=1
+		if i[:2] == '-h':
+			h=1
+		if i[:2] == '-?':
+			h=1
+		if i[:9] == '--version':
+			h=1
+		
+	if b == 0:
+		try:
+			ls=open('/etc/ldap.secret', 'r')
+		except IOError:
+			lsf=0
+			if h == 0:
+				sendMessage(["E: Permission denied, try --logfile, --binddn and --bindpw"])
+				sys.exit(1)
+	
+	if logfile!=oldlogfile:
+		univention.debug.exit()
+		univention.debug.init(logfile, 1, 0)
+	
+	cmdfile=os.path.basename(arglist[0])
+	if cmdfile == 'univention-admin' or cmdfile == 'univention-directory-manager':
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+		try:
+			output = univention.admincli.admin.doit(arglist)
+		except:
+			info = sys.exc_info()
+			output = apply(traceback.format_exception, info)
+			output = [line[:-1] for line in output]
+			output.append("OPERATION FAILED")
+											
+	elif cmdfile == 'univention-passwd':
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-passwd' % (os.getppid(), os.getpid()))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+		try:
+			output = univention.admincli.passwd.doit(arglist)
+		except:
+			info = sys.exc_info()
+			output = apply(traceback.format_exception, info)
+			output = [line[:-1] for line in output]
+			output.append("OPERATION FAILED")
+	elif cmdfile == 'univention-license-check':
+		if licenseImportError:
+			output=['The license check is disabled. You are using the GPL version without any support or maintenance by Univention.']
+		else:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-license-check' % (os.getppid(), os.getpid()))
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+			try:
+				output = univention.admincli.license_check.doit(arglist)
+			except:
+				info = sys.exc_info()
+				output = apply(traceback.format_exception, info)
+				output = [line[:-1] for line in output]
+				output.append("OPERATION FAILED")
+	else:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-adduser' % (os.getppid(), os.getpid()))
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
+		try:
+			output = univention.admincli.adduser.doit(arglist)
+		except:
+			info = sys.exc_info()
+			output = apply(traceback.format_exception, info)
+			output = [line[:-1] for line in output]
+			output.append("OPERATION FAILED")
+
+	sendMessage(output)
+
+	if h == 1 and b == 0 and lsf == 0:
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'daemon [%s] [%s] stopped, because User has no read/write permissions' % (os.getppid(), os.getpid()))
+		sys.exit(0)
+		
+
+if __name__ == "__main__":
+	pid = os.fork()
+	if not pid:
+		os.setsid()
+		main()
+		sys.exit(0)
+	else:
+		os.waitpid(pid,os.P_NOWAIT)
+

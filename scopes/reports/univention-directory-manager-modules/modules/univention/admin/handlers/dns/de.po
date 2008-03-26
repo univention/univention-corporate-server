@@ -1,0 +1,234 @@
+# Copyright (C) 2006 Univention GmbH
+# Univention GmbH <packages@univention.de>
+# This file is distributed under the same license as this package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2006-12-11 09:21+0100\n"
+"PO-Revision-Date: 2004-04-20 13:57+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: alias.py:44
+msgid "DNS: Alias Record"
+msgstr "DNS: Alias Record"
+
+#: alias.py:50 alias.py:85
+msgid "Alias"
+msgstr "Alias"
+
+#: alias.py:60 forward_zone.py:62 host_record.py:59 reverse_zone.py:62
+#: srv_record.py:69
+msgid "Zone Time-to-Live"
+msgstr "Zone Time-to-Live"
+
+#: alias.py:71
+msgid "Canonical Name"
+msgstr "Kanonischer Name"
+
+#: alias.py:72 ptr_record.py:59
+msgid "FQDNs must end with '.'"
+msgstr "Der FQDN muss mit einem '.' enden"
+
+#: alias.py:81 dns.py:79 forward_zone.py:160 host_record.py:98
+#: ptr_record.py:68 reverse_zone.py:160 srv_record.py:81 zone_mx_record.py:60
+#: zone_txt_record.py:60
+msgid "General"
+msgstr "Allgemein"
+
+#: alias.py:81 dns.py:79 forward_zone.py:160 host_record.py:98
+#: ptr_record.py:68 reverse_zone.py:160 srv_record.py:81 zone_mx_record.py:60
+#: zone_txt_record.py:60
+msgid "Basic Values"
+msgstr "Grundeinstellungen"
+
+#: alias.py:85
+msgid "Alias for this Host"
+msgstr "Alias des Rechners"
+
+#: dns.py:52 dns.py:56
+msgid "DNS"
+msgstr "DNS"
+
+#: dns.py:57
+msgid "Add, edit and delete DNS Objects"
+msgstr "Hinzufügen, bearbeiten und löschen eines DNS-Objektes"
+
+#: dns.py:58
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: dns.py:58
+msgid "Add DNS Object"
+msgstr "DNS-Objekt hinzufügen"
+
+#: dns.py:58
+msgid "Find"
+msgstr "Suchen"
+
+#: dns.py:58
+msgid "Find DNS Object(s)"
+msgstr "DNS-Objekt(e) suchen"
+
+#: dns.py:69 srv_record.py:50
+msgid "Name"
+msgstr "Name"
+
+#: forward_zone.py:46
+msgid "DNS: Forward Lookup Zone"
+msgstr "DNS: Forward Lookup Zone"
+
+#: forward_zone.py:52
+msgid "Zone Name"
+msgstr "Name der Zone"
+
+#: forward_zone.py:73 reverse_zone.py:73
+msgid "Responsible Person"
+msgstr "Verantwortliche Person"
+
+#: forward_zone.py:84 reverse_zone.py:84
+msgid "Serial Number"
+msgstr "Seriennummer"
+
+#: forward_zone.py:95 reverse_zone.py:95
+msgid "Refresh Interval"
+msgstr "Aktualisierungsintervall"
+
+#: forward_zone.py:106 reverse_zone.py:106
+msgid "Retry Interval"
+msgstr "Intervall für erneute Versuche"
+
+#: forward_zone.py:117 reverse_zone.py:117
+msgid "Expire Interval"
+msgstr "Ablaufintervall"
+
+#: forward_zone.py:128 reverse_zone.py:128
+msgid "Minimum Time-to-Live"
+msgstr "Minimum Time-to-Live"
+
+#: forward_zone.py:139
+msgid "Name Server"
+msgstr "Nameserver"
+
+#: forward_zone.py:164 reverse_zone.py:164
+msgid "Start of Authority"
+msgstr "Start of Authority Eintrag"
+
+#: forward_zone.py:164 reverse_zone.py:164
+msgid "Primary Name Server Information"
+msgstr "Primäre Nameserver Informationen"
+
+#: forward_zone.py:166 reverse_zone.py:166
+msgid "Primary Name Server"
+msgstr "Primärer Nameserver"
+
+#: forward_zone.py:170 reverse_zone.py:139 reverse_zone.py:170
+msgid "Name Servers"
+msgstr "Nameserver"
+
+#: forward_zone.py:170 reverse_zone.py:170
+msgid "Additional Name Servers"
+msgstr "Zusätzliche Nameserver"
+
+#: forward_zone.py:196 host_record.py:156 ptr_record.py:97 reverse_zone.py:209
+#: srv_record.py:134
+msgid "neither DN nor position present"
+msgstr "Weder ein DN noch eine Position wurde angegeben"
+
+#: host_record.py:49
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: host_record.py:70
+msgid "IP Address"
+msgstr "IP-Adresse"
+
+#: host_record.py:79
+msgid "Mail Exchanger"
+msgstr "Mail Exchanger"
+
+#: host_record.py:88 zone_txt_record.py:50
+msgid "Text Record"
+msgstr "Text Record"
+
+#: host_record.py:100
+msgid "Primary IP-Address"
+msgstr "Primäre IP-Adresse"
+
+#: host_record.py:103
+msgid "IP-Addresses"
+msgstr "IP-Adressen"
+
+#: host_record.py:103
+msgid "IP Addresses of the Host"
+msgstr "IP-Adressen des Rechners"
+
+#: host_record.py:106
+msgid "Mail"
+msgstr "Mail"
+
+#: host_record.py:106
+msgid "Mail Exchangers for this Host"
+msgstr "Mail Exchanger für diesen Rechner"
+
+#: host_record.py:109
+msgid "Text"
+msgstr "Text"
+
+#: host_record.py:109
+msgid "Optional Text"
+msgstr "Optionaler Text"
+
+#: host_record.py:154 ptr_record.py:95 srv_record.py:132 zone_mx_record.py:99
+#: zone_txt_record.py:100
+msgid "superordinate object not present"
+msgstr "Ein übergeordnetes Objekt ist nicht vorhanden"
+
+#: ptr_record.py:43
+msgid "DNS: Pointer"
+msgstr "DNS: Pointer"
+
+#: ptr_record.py:49
+msgid "Address"
+msgstr "Adresse"
+
+#: ptr_record.py:58
+msgid "Pointer"
+msgstr "Pointer"
+
+#: reverse_zone.py:46
+msgid "DNS: Reverse Lookup Zone"
+msgstr "DNS: Reverse Lookup Zone"
+
+#: reverse_zone.py:52
+msgid "Subnet"
+msgstr "Subnetz"
+
+#: srv_record.py:44
+msgid "DNS: Service Record"
+msgstr "DNS: Service Record"
+
+#: srv_record.py:60
+msgid "Location"
+msgstr "Ort"
+
+#: zone_mx_record.py:44
+msgid "DNS: Zone Mail Exchanger"
+msgstr "DNS: Zone Mail Exchanger"
+
+#: zone_mx_record.py:50
+msgid "Mail Exchanger Host"
+msgstr "Mail Exchanger Rechner"
+
+#: zone_txt_record.py:44
+msgid "DNS: Zone Text"
+msgstr "DNS: Zone Text"
+
+#~ msgid "Update/Create Reverse Record"
+#~ msgstr "Reverse Record erstellen/erneuern"

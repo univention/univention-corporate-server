@@ -1,0 +1,4 @@
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+@%@directory/reports/cleanup/cron@%@ root /usr/share/univention-directory-manager/univention-directory-reports-cleanup >>/var/log/univention/directory-reports-cleanup.log

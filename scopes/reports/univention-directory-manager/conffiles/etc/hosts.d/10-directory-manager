@@ -1,0 +1,12 @@
+@!@
+for i in range(0,4):
+	if baseConfig['interfaces/eth%s/address' % i]:
+		print '%s\tunivention-admin.%s univention-admin' % (baseConfig['interfaces/eth%s/address' % i],baseConfig['domainname'])
+		print '%s\tunivention-directory-manager.%s univention-directory-manager' % (baseConfig['interfaces/eth%s/address' % i],baseConfig['domainname'])
+
+for i in range(0,4):
+	for j in range(0,4):
+		if baseConfig['interfaces/eth%s_%s/address' % (i,j)]:
+			print '%s\tunivention-admin.%s univention-admin' % (baseConfig['interfaces/eth%s_%s/address' % (i,j)],baseConfig['domainname'])
+			print '%s\tunivention-directory-manager.%s univention-directory-manager' % (baseConfig['interfaces/eth%s_%s/address' % (i,j)],baseConfig['domainname'])
+@!@

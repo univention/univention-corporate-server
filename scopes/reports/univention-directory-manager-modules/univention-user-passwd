@@ -1,0 +1,66 @@
+#!/bin/sh
+#
+# Univention Admin Modules
+#  simple script for modifying a user password
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+source $1
+
+PWUSER=$USERNAME
+OLDPW=$OLDPASSWORD
+NEWPW=$NEWPASSWORD
+
+if [ -z "$USER" ]; then
+    read -p "username    : " USER
+fi
+
+if [ -z "$OLDPW" ]; then
+    read -s -p "old password: " OLDPW
+    echo ""
+fi
+
+if [ -z "$NEWPW" ]; then
+    read -s -p "new password: " NEWPW
+    echo ""
+    read -s -p "retype new password: " NEWPWR
+    echo ""
+    if [ "$NEWPW" != "$NEWPWR" ]; then
+	echo "ERROR: Passwords don't match"
+	exit 1
+    fi
+fi
+
+DN=`ldapsearch -x '(&(uid='"$PWUSER"')(objectClass=posixAccount))' dn -LLL| ldapsearch-wrapper | grep ^dn | sed -e 's|^dn: ||'`
+
+REVAL=1
+
+/usr/sbin/univention-admin users/user modify --dn "$DN" --set password="$NEWPW" --binddn="$DN" --bindpw="$OLDPW" --logfile=/tmp/$PWUSER-admin.log && REVAL=0
+
+test -f /tmp/$PWUSER-admin.log && rm /tmp/$PWUSER-admin.log
+
+exit $REVAL

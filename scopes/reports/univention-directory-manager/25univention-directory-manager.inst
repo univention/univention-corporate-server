@@ -1,0 +1,98 @@
+#!/bin/sh
+#
+# Univention Directory Manager
+#  join script for univention directory manager
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+VERSION=1
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-directory-manager v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+createLogfile () {
+	if [ ! -e $1 ] ; then
+		touch $1
+		chown $2 $1
+		chmod $3 $1
+	fi
+}
+
+if [ -z "$UMC_MODE" ]; then
+	/etc/init.d/apache2 stop >/dev/null 2>&1
+fi
+
+eval `univention-baseconfig shell`
+
+# generate ssl certificate
+if test -e /etc/univention/ssl/univention-admin/cert.pem; then
+	( cd /etc/univention/ssl; ln -s univention-admin.$domainname univention-directory-manager.$domainname; ln -s univention-admin.$domainname univention-directory-manager )
+else
+        . /usr/share/univention-ssl/make-certificates.sh
+        gencert "univention-directory-manager.$domainname" "univention-directory-manager.$domainname" >/dev/null 2>&1
+		chmod g+rx /etc/univention/ssl/univention-directory-manager.$domainname
+		chmod g+r /etc/univention/ssl/univention-directory-manager.$domainname/*
+	ln -s /etc/univention/ssl/univention-directory-manager.$domainname /etc/univention/ssl/univention-directory-manager
+fi
+
+if [ "$ssl_validity_check" = "yes" ] && [ -x /usr/sbin/univention-certificate-check-validity ]; then
+       /usr/sbin/univention-certificate-check-validity
+fi
+
+univention-baseconfig set ldap/algorithmicalridbase?1000
+univention-baseconfig set ldap/port?389
+
+#tmp dir for download files
+chown www-data.www-data /var/lib/univention-directory-manager/tmp
+
+if ! test -d /usr/share/univention-directory-manager/uniconf/messages; then
+	mkdir /usr/share/univention-directory-manager/uniconf/messages
+	chown www-data.www-data /usr/share/univention-directory-manager/uniconf/messages
+	chmod 770 /usr/share/univention-directory-manager/uniconf/messages
+fi
+
+/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls --ignore-exists $domainname add zone root.$domainname 1 28 72 60 86 $hostname.$domainname
+if [ $? != 0 ]; then exit 1; fi
+
+/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --stoptls $domainname add cname univention-directory-manager $hostname 2>/dev/null || true
+
+mkdir -p /var/log/univention/
+createLogfile /var/log/univention/directory-manager-web.log "www-data:adm" 640
+
+if [ -z "$UMC_MODE" ]; then
+	/etc/init.d/apache2 start >/dev/null 2>&1
+fi
+
+test -n "`grep "univention-directory-manager v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-directory-manager v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
+

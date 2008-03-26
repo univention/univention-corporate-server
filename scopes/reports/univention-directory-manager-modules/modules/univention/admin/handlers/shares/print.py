@@ -1,0 +1,149 @@
+# -*- coding: utf-8 -*-
+#
+# Univention Admin Modules
+#  admin module for printer shares
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import sys, string
+import univention.admin.filter
+import univention.admin.handlers
+import univention.admin.localization
+
+translation=univention.admin.localization.translation('univention.admin.handlers.shares')
+_=translation.translate
+
+import univention.admin.handlers.shares.printer
+import univention.admin.handlers.shares.printergroup
+
+module='shares/print'
+usewizard=1
+wizardmenustring=_("Printers")
+wizarddescription=_("Add, edit and delete print shares")
+wizardoperations={"add":[_("Add"), _("Add Printer Object")],"find":[_("Find"), _("Find Printer Object(s)")]}
+wizardpath='univentionPrintersObject'
+childmodules=['shares/printer','shares/printergroup']
+
+childs=0
+short_description=_('Print Share')
+long_description=''
+operations=['search']
+virtual=1
+options={
+}
+property_descriptions={
+	'name': univention.admin.property(
+			short_description=_('Name'),
+			long_description='',
+			syntax=univention.admin.syntax.printerName,
+			multivalue=0,
+			options=[],
+			required=1,
+			may_change=0,
+			identifies=1
+		),
+	'spoolHost': univention.admin.property(
+			short_description=_('Spool Host'),
+			long_description='',
+			syntax=univention.admin.syntax.spoolHost,
+			multivalue=1,
+			options=[],
+			required=1,
+			may_change=1,
+			identifies=0
+		),
+	'sambaName': univention.admin.property(
+			short_description=_('Samba Name'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			unique=1
+		),
+	'setQuota': univention.admin.property(
+			short_description=_('Enable Quota Support'),
+			long_description='',
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'pagePrice': univention.admin.property(
+			short_description=_('Price per Page'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'jobPrice': univention.admin.property(
+			short_description=_('Price per Printjob'),
+			long_description='',
+			syntax=univention.admin.syntax.integer,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+}
+
+mapping=univention.admin.mapping.mapping()
+
+class object(univention.admin.handlers.simpleLdap):
+	module=module
+
+	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+		global mapping
+		global property_descriptions
+
+		self.co=co
+		self.lo=lo
+		self.dn=dn
+		self.position=position
+		self._exists=0
+		self.mapping=mapping
+		self.descriptions=property_descriptions
+
+		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
+
+	def exists(self):
+		return self._exists
+	
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+
+	return univention.admin.handlers.shares.printer.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit) + univention.admin.handlers.shares.printergroup.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
+
+def identify(dn, attr, canonical=0):
+	pass
+

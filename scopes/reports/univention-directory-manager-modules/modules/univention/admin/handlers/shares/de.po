@@ -1,0 +1,930 @@
+# Copyright (C) 2006 Univention GmbH
+# Univention GmbH <packages@univention.de>
+# This file is distributed under the same license as this package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-09-26 15:35+0200\n"
+"PO-Revision-Date: 2007-09-26 15:55+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+"Generated-By: pygettext.py 1.5\n"
+
+#: print.py:44
+msgid "Printers"
+msgstr "Drucker"
+
+#: print.py:45
+msgid "Add, edit and delete print shares"
+msgstr "Hinzufügen, bearbeiten und löschen von Druckerfreigaben"
+
+#: print.py:46 share.py:52
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: print.py:46
+msgid "Add Printer Object"
+msgstr "Drucker-Objekt hinzufügen"
+
+#: print.py:46 share.py:52
+msgid "Find"
+msgstr "Suchen"
+
+#: print.py:46
+msgid "Find Printer Object(s)"
+msgstr "Drucker-Objekt(e) suchen"
+
+#: print.py:51
+msgid "Print Share"
+msgstr "Druckerfreigabe"
+
+#: print.py:59 printer.py:62 printergroup.py:51 share.py:81 share.py:82
+#: share.py:599
+msgid "Name"
+msgstr "Name"
+
+#: print.py:69 printer.py:92 printergroup.py:61
+msgid "Spool Host"
+msgstr "Server"
+
+#: print.py:79 printer.py:122 printergroup.py:81 share.py:217
+msgid "Samba Name"
+msgstr "Samba-Name"
+
+#: print.py:90 printer.py:133 printergroup.py:92
+msgid "Enable Quota Support"
+msgstr "Quota aktivieren"
+
+#: print.py:100 printer.py:143 printergroup.py:102
+msgid "Price per Page"
+msgstr "Preis pro Seite"
+
+#: print.py:110
+msgid "Price per Printjob"
+msgstr "Preis pro Druckauftrag"
+
+#: printer.py:47
+msgid "Allow all users."
+msgstr "Zugriff für alle Benutzer/Gruppen zulassen."
+
+#: printer.py:48
+msgid "Allow only choosen users/groups."
+msgstr "Zugriff nur für ausgewählte Benutzer/Gruppen zulassen."
+
+#: printer.py:49
+msgid "Deny choosen users/groups."
+msgstr "Zugriff für ausgewählte Benutzer/Gruppen verweigern."
+
+#: printer.py:56
+msgid "Print-Share: Printer"
+msgstr "Druckerfreigabe: Drucker"
+
+#: printer.py:72
+msgid "Location"
+msgstr "Standort"
+
+#: printer.py:82
+msgid "Description"
+msgstr "Beschreibung"
+
+#: printer.py:102
+msgid "Protocol"
+msgstr "Protokoll"
+
+#: printer.py:112
+msgid "Printer Model"
+msgstr "Drucker-Modell"
+
+#: printer.py:153 printergroup.py:112
+msgid "Price per Print Job"
+msgstr "Preis pro Druckauftrag"
+
+#: printer.py:163
+msgid "Access list"
+msgstr "Zugriffslisten"
+
+#: printer.py:164
+msgid "Access list can allow or deny listed users and groups."
+msgstr "Zugriffslisten können Benutzer oder Gruppen freischalten oder zurückweisen."
+
+#: printer.py:174
+msgid "Allowed/denied users"
+msgstr "Zugelassene/abgewiesene Benutzer"
+
+#: printer.py:175
+msgid "For the given users printing is explicitly allowed or denied."
+msgstr "Für die angegebenen Benutzer wird der Zugriff erlaubt oder abgewiesen."
+
+#: printer.py:184
+msgid "Allowed/denied groups"
+msgstr "Zugelassene/abgewiesene Gruppen"
+
+#: printer.py:185
+msgid "For the given groups printing is explicitly allowed or denied."
+msgstr "Für die angegebenen Gruppen wird der Zugriff erlaubt oder abgewiesen."
+
+#: printer.py:195 printergroup.py:123 share.py:620
+msgid "General"
+msgstr "Allgemein"
+
+#: printer.py:195 printergroup.py:123 share.py:620
+msgid "General Settings"
+msgstr "Grundeinstellungen"
+
+#: printer.py:202
+msgid "Access Control"
+msgstr "Zugriffskontrolle"
+
+#: printer.py:202
+msgid "Access Control for users and groups"
+msgstr "Zugriffskontrolle für Benutzer und Gruppen"
+
+#: printer.py:276 printergroup.py:194
+#, python-format
+msgid "%s is member of following quota printer groups %s"
+msgstr "%s ist Mitglied der folgenden Quota-Druckergruppen %s"
+
+#: printer.py:288 printergroup.py:212
+#, python-format
+msgid "%s is the last member of the printer group %s. "
+msgstr "%s ist das letzte Mitglied in der Druckergruppe %s."
+
+#: printergroup.py:45
+msgid "Print-Share: Printer Group"
+msgstr "Druckerfreigabe: Druckergruppe"
+
+#: printergroup.py:71
+msgid "Group Members"
+msgstr "Gruppenmitglieder"
+
+#: printergroup.py:199
+#, python-format
+msgid "%s is disabled for quota support. "
+msgstr "Quota an %s ist deaktiviert. "
+
+#: printergroup.py:229
+#, python-format
+msgid "%s is not a valid printer on Spoolhost %s."
+msgstr "%s ist kein gültiger Drucker auf dem Server %s"
+
+#: share.py:44
+msgid "manual"
+msgstr "manuell"
+
+#: share.py:44
+msgid "documents"
+msgstr "Dokumente"
+
+#: share.py:44
+msgid "programs"
+msgstr "Programme"
+
+#: share.py:44
+msgid "disable"
+msgstr "deaktivieren"
+
+#: share.py:50
+msgid "Shares"
+msgstr "Freigaben"
+
+#: share.py:51
+msgid "Add, edit and delete shares"
+msgstr "Hinzufügen, bearbeiten und löschen von Verzeichnisfreigaben"
+
+#: share.py:52
+msgid "Add Share Object"
+msgstr "Freigabe-Objekt hinzufügen"
+
+#: share.py:52
+msgid "Find Shares Object(s)"
+msgstr "Freigabe-Objekt(e) suchen"
+
+#: share.py:60
+msgid "Share: Directory"
+msgstr "Freigabe: Verzeichnis"
+
+#: share.py:64
+msgid "Export for Samba Clients"
+msgstr "Für Samba-Clients exportieren"
+
+#: share.py:69
+msgid "Export for NFS Clients"
+msgstr "Für NFS-Clients exportieren"
+
+#: share.py:74
+msgid "Export for Web Clients"
+msgstr "Für Web-Clients exportieren"
+
+#: share.py:91 share.py:92
+msgid "Printable Name"
+msgstr "Anzeigename"
+
+#: share.py:101
+msgid "Host"
+msgstr "Server"
+
+#: share.py:102
+msgid "The computer that exports this share"
+msgstr "Der Rechner, auf dem die Freigabe eingerichtet wird."
+
+#: share.py:111
+msgid "Path"
+msgstr "Pfad"
+
+#: share.py:112
+msgid "Directory that is exported."
+msgstr "Verzeichnis, das freigegeben wird."
+
+#: share.py:121
+msgid "Directory Owner"
+msgstr "Verzeichnis-Besitzer"
+
+#: share.py:122
+msgid "The owner of the directory. If none is given root will be owner."
+msgstr "Besitzer des freigegebenen Verzeichnisses. Vorgabe ist root."
+
+#: share.py:132
+msgid "Directory Group"
+msgstr "Verzeichnisgruppe"
+
+#: share.py:133
+msgid "The primary group of the directory, if none give group 0 will be used."
+msgstr "Primäre Gruppe des Verzeichnisses. Ohne Angabe wird 0 verwendet."
+
+#: share.py:143 share.py:262
+msgid "Directory Mode"
+msgstr "Verzeichnis-Modus"
+
+#: share.py:144
+msgid "Mode of the directory."
+msgstr "Verzeichnis-Modus"
+
+#: share.py:155
+msgid "NFS Writeable"
+msgstr "NFS-Schreibzugriff"
+
+#: share.py:156
+msgid "Define if the share is writable when accessed via NFS."
+msgstr "Gibt an, ob die Freigabe beim Zugriff über NFS schreibbar ist."
+
+#: share.py:166
+msgid "NFS Synchronisation"
+msgstr "NFS-Synchronisation"
+
+#: share.py:167
+msgid "Use synchronous or asynchronous mode for the NFS share."
+msgstr "Synchroner oder asynchroner Modus für die NFS-Freigabe."
+
+#: share.py:176
+msgid "Subtree checking"
+msgstr "Subtree Überprüfung"
+
+#: share.py:177
+msgid ""
+"When only a subtree of a mounted filesystem is exported this option ensures "
+"that an accessed file really is in that subtree. (May cause complications "
+"with renamed files.)"
+msgstr ""
+"Wird nur ein Unterverzeichnis eines eingebundenen Dateisystems exportiert, "
+"so stellt diese Option sicher, dass eine Datei auf die zugegriffen wird "
+"wirklich innerhalb dieses Unterverzeichnisses liegt. (Kann probleme mit "
+"umbenannten Dateien verursachen.)"
+
+#: share.py:186
+msgid "Rewrite root Access"
+msgstr "Root-Zugriff umlenken"
+
+#: share.py:187
+msgid "Rewrite accesses to a non-privileged ID."
+msgstr "Zugriff auf eine nicht privilegierte Kennung umlenken."
+
+#: share.py:196 share.py:434
+msgid "Allowed Hosts"
+msgstr "Zugelassene Rechner"
+
+#: share.py:197
+msgid "A network or a selection of hosts that may mount this share."
+msgstr ""
+"Ein Netzwerk, oder eine Auswahl von Rechnern, die diese Freigabe einbinden "
+"dürfen."
+
+#: share.py:206
+msgid "Samba Writeable"
+msgstr "Samba-Schreibzugriff"
+
+#: share.py:207
+msgid "Define if the share is writable when accessed via Samba."
+msgstr "Erlaubt den Schreibzugriff auf die Freigabe über Samba."
+
+#: share.py:218
+msgid ""
+"This is the NetBIOS name. Among other places, it appears in the Windows "
+"Network Neighborhood."
+msgstr ""
+"Der NetBIOS-Name. Er erscheint unter anderem in der Windows-Netzwerkumgebung."
+
+#: share.py:228
+msgid "Browseable"
+msgstr "Sichtbar"
+
+#: share.py:229
+msgid "Share is listed in the Windows Network Neighborhood"
+msgstr "Freigabe wird in der Windows-Netzwerkumgebung angezeigt"
+
+#: share.py:239
+msgid "Public"
+msgstr "Öffentlich"
+
+#: share.py:240
+msgid "Allow guest access"
+msgstr "Gastzugriff erlauben"
+
+#: share.py:250
+msgid "File Mode"
+msgstr "Dateimodus"
+
+#: share.py:251
+msgid ""
+"When a file is created, the necessary permissions are calculated  according "
+"to the mapping from DOS modes to UNIX permissions, and the resulting UNIX "
+"mode is then bit-wise 'AND'ed with this parameter. This parameter may be "
+"thought of as a bit-wise MASK for the UNIX modes of a file. Any bit not set "
+"here will be removed from the modes set on a file when it is created."
+msgstr ""
+"Wird eine Datei erstellt, erfolgt die Vergabe von Unix-Dateirechten anhand "
+"der gegebenen DOS-Dateirechte und anschließendem Bit-weisem UND mit den hier "
+"angegebenen Rechten. Dieser Parameter kann als Bitmaske für die Unix-Rechte "
+"einer Datei Betrachtet werden. Ein bit, das hier nicht gesetzt ist, wird aus "
+"den Rechten entfernt, wenn die Datei angelegt wird."
+
+#: share.py:263
+msgid ""
+"When a directory is created, the necessary permissions are calculated  "
+"according to the mapping from DOS modes to UNIX permissions, and the "
+"resulting UNIX mode is then bit-wise 'AND'ed with this parameter. This "
+"parameter may be thought of as a bit-wise MASK for the UNIX modes of a "
+"directory. Any bit not set here will be removed from the modes set on a "
+"directory when it is created."
+msgstr ""
+"Wird ein Verzeichnis erstellt, erfolgt die Vergabe von Unix-Dateirechten "
+"anhand der gegebenen DOS-Dateirechte und anschließendem Bit-weisem UND mit "
+"den hier angegebenen Rechten. Dieser Parameter kann als Bitmaske für die "
+"Unix-Rechte eines Verzeichnisses betrachtet werden. Ein bit, das hier nicht "
+"gesetzt ist, wird aus den Rechten entfernt, wenn das Verzeichnis angelegt "
+"wird."
+
+#: share.py:274
+msgid "Force File Mode"
+msgstr "Erzwinge Dateimodus"
+
+#: share.py:275
+msgid ""
+"This parameter specifies a set of UNIX mode bit permissions that will always "
+"be set on a file created by Samba. This is done by bitwise 'OR'ing these "
+"bits onto the mode bits of a file that is being created or having its "
+"permissions changed. The modes in this parameter are bitwise 'OR'ed onto the "
+"file mode after the mask set in the create mask parameter is applied."
+msgstr ""
+"Die hier definierten Dateirechte werden mit den übermittelten DOS-Rechten "
+"durch Bit-weises ODER abgeglichen, so dass Dateien immer mindestens diese "
+"Zugriffsrechte bekommen. Dies wird nach der 'Dateimodus' Maske ausgewertet."
+
+#: share.py:286
+msgid "Force Directory Mode"
+msgstr "Erzwinge Verzeichnismodus"
+
+#: share.py:287
+msgid ""
+"This parameter specifies a set of UNIX mode bit permissions that will always "
+"be set on a directory created by Samba. This is done by bitwise 'OR'ing "
+"these bits onto the mode bits of a directory that is being created or having "
+"its permissions changed. The modes in this parameter are bitwise 'OR'ed onto "
+"the directory mode after the mask set in the create mask parameter is "
+"applied."
+msgstr ""
+"Die hier definierten Verzeichnisrechte werden mit den übermittelten DOS-"
+"Rechten durch Bit-weises ODER abgeglichen, so dass Verzeichnisse immer "
+"mindestens diese Zugriffsrechte bekommen. Dies wird nach der "
+"'Verzeichnismodus' Maske ausgewertet."
+
+#: share.py:298
+msgid "Security Mode"
+msgstr "Sicherheitsmodus"
+
+#: share.py:299
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when a "
+"Windows NT client is manipulating the UNIX permission on a file using the "
+"native NT security dialog box. This parameter is applied as a mask (AND'ed "
+"with) to the changed permission bits, thus preventing any bits not in this "
+"mask from being modified. Essentially, zero bits in this mask may be treated "
+"as a set of bits the user is not allowed to change."
+msgstr ""
+"Die hier definierten Dateirechte werden bei Änderungen mit den durch Windows "
+"übermittelten Rechten durch Bit-weises UND abgeglichen. Es können von "
+"Windows-Clients daher Zugriffsrechte die nicht in dieser Maske sind nicht "
+"ändern. Im Prinzip können Nullbits in dieser Maske betrachtet werden als "
+"Bits, die der Benutzer nicht ändern darf."
+
+#: share.py:310
+msgid "Directory Security Mode"
+msgstr "Verzeichnis-Sicherheitsmodus"
+
+#: share.py:311
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when a "
+"Windows NT client is manipulating the UNIX permission on a directory using "
+"the native NT security dialog box. This parameter is applied as a mask "
+"(AND'ed with) to the changed permission bits, thus preventing any bits not "
+"in this mask from being modified. Essentially, zero bits in this mask may be "
+"treated as a set of bits the user is not allowed to change."
+msgstr ""
+"Die hier definierten Verzeichnisrechte werden bei Änderungen mit den durch "
+"Windows übermittelten Rechten durch Bit-weises UND abgeglichen. Es können "
+"von Windows-Clients daher Zugriffsrechte die nicht in dieser Maske sind "
+"nicht ändern.werden. Im Prinzip können Nullbits in dieser Maske betrachtet "
+"werden als Bits, die der Benutzer nicht ändern darf."
+
+#: share.py:322
+msgid "Force Security Mode"
+msgstr "Erzwinge Sicherheitsmodus"
+
+#: share.py:323
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when a "
+"Windows NT client is manipulating the UNIX permission on a file using the "
+"native NT security dialog box. This parameter is applied as a mask (OR'ed "
+"with) to the changed permission bits, thus forcing any bits in this mask "
+"that the user may have modified to be on. Essentially, one bits in this mask "
+"may be treated as a set of bits that, when modifying security on a file, the "
+"user has always set to be 'on'."
+msgstr ""
+"Dieser Parameter kontrolliert welche Unix-Rechte-Bits geändert werden "
+"dürfen, wenn ein Windows NT client die Unix-rechte einer Datei mittels des "
+"NT Sicherheits Dialogs anpasst. Dieser Parameter wird als Maske ( Oder-"
+"Maske ) auf die geänderten Rechte-Bits angewendet, schaltet also alle Bits "
+"in der Maske, die der Benutzer geändert haben könnte an. Im Prinzip bedeuten "
+"Eingeschaltete Bits in dieser maske, wenn die Sicherheit einer Datei "
+"geändert wird, dass diese Bits immer 'an' bleiben."
+
+#: share.py:334
+msgid "Force Directory Security Mode"
+msgstr "Erzwinge Verzeichnis-Sicherheitsmodus"
+
+#: share.py:335
+msgid ""
+"This parameter controls what UNIX permission bits can be modified when a "
+"Windows NT client is manipulating the UNIX permission on a directory using "
+"the native NT security dialog box. This parameter is applied as a mask "
+"(OR'ed with) to the changed permission bits, thus forcing any bits in this "
+"mask that the user may have modified to be on. Essentially, one bits in this "
+"mask may be treated as a set of bits that, when modifying security on a "
+"directory, the user has always set to be 'on'."
+msgstr ""
+"Dieser Parameter kontrolliert welche Unix-Rechte-Bits geändert werden "
+"dürfen, wenn ein Windows NT client die Unix-rechte eines Verzeichnisses "
+"mittels des NT Sicherheits Dialogs anpasst. Dieser Parameter wird als Maske "
+"( Oder-Maske ) auf die geänderten Rechte-Bits angewendet, schaltet also alle "
+"Bits in der Maske, die der Benutzer geändert haben könnte an. Im Prinzip "
+"bedeuten Eingeschaltete Bits in dieser maske, wenn die Sicherheit eines "
+"Verzeichnisses geändert wird, dass diese Bits immer 'an' bleiben."
+
+#: share.py:346
+msgid "Locking"
+msgstr "Locking"
+
+#: share.py:347
+msgid ""
+"This controls whether or not locking will be performed by the server in "
+"response to lock requests from the client. Be careful about disabling "
+"locking, as lack of locking may result in data corruption."
+msgstr ""
+"Kontrolliert, ob der Server Datei-Locking betreiben soll wenn Clients "
+"Locking Requests senden. Deaktivieren von Datei-Locking wird nicht "
+"empfohlen, da es zu Datenverlusten führen kann. "
+
+#: share.py:357
+msgid "Blocking Locks"
+msgstr "Blocking Locks"
+
+#: share.py:358
+msgid ""
+"This parameter controls the behavior of Samba when given a request by a "
+"client to obtain a byte range lock on a region of an open file, and the "
+"request has a time limit associated with it. If this parameter is set and "
+"the lock range requested cannot be immediately satisfied, samba will "
+"internally queue the lock request, and periodically attempt to obtain the "
+"lock until the timeout period expires."
+msgstr ""
+"Bestimmt das Verhalten des Servers bei Locking-Anfragen auf Dateibereiche, "
+"die von anderen Locks blockiert werden. Ist dieser Parameter aktiviert und "
+"die Lock-Anfrage kann nicht sofort erfüllt werden, kommt die Anfragein eine "
+"Warteschlage, und es wird regelmäßig versucht das Lock zu bekommen, bis ein "
+"Timeout auftritt."
+
+#: share.py:368
+msgid "Strict Locking"
+msgstr "Strict Locking"
+
+#: share.py:369
+msgid ""
+"This is a boolean that controls the handling of file locking in the server. "
+"When this is set to yes, the server will check every read and write access "
+"for file locks, and deny access if locks exist. This can be slow on some "
+"systems. When strict locking is disabled, the server performs file lock "
+"checks only when the client explicitly asks for them."
+msgstr ""
+"Dieser Schalter Bestimmt die Überprüfung von Datei-Locking bei "
+"Schreibzugriffen. Ist Strict Locking aktiv, werden bei allen Zugriffen die "
+"existierenden Locks überprüft, und der Zugriff unterbunden, wenn Locks "
+"existieren. Dies kann auf einigen Systemen langsam sein. Wenn Strict Locking "
+"deaktiviert ist, findet die Überprüfung nur auf Anfrage des Clients statt."
+
+#: share.py:379
+msgid "Oplocks"
+msgstr "Oplocks"
+
+#: share.py:380
+#, python-format
+msgid ""
+"This boolean option tells Samba whether to issue oplocks (opportunistic "
+"locks) to file open requests on this share. The oplock code can dramatically "
+"(approx. 30% or more) improve the speed of access to files on Samba servers. "
+"It allows the clients to aggressively cache files locally and you may want "
+"to disable this option for unreliable network environments (it is turned on "
+"by default in Windows NT Servers)."
+msgstr ""
+"Dieser Schalter sagt Samba, ob Oplocks (opportunistic locks) gegen Datei-"
+"Öffnungs-Anfragen für diese Freigabe ausgestellt werden sollen. Der Opplock-"
+"Code kann den Zugriff auf Dateien auf Samba-Servern dramatisch (etwa 30% "
+"oder mehr) beschleunigen.Dies erlaubt den Clients dateien massiv lokal "
+"zwischen zu speichern und es ist ratsam dise Option in unzuverlässigen "
+"Netzen zu deaktivieren. (sie ist auf Windows NT Servern Standardmäßig "
+"aktiviert)"
+
+#: share.py:391
+msgid "Level 2 Oplocks"
+msgstr "Level 2 Oplocks"
+
+#: share.py:392
+msgid ""
+"This parameter controls whether Samba supports level2 (read-only) oplocks on "
+"a share. Level2, or read-only oplocks allow Windows NT clients that have an "
+"oplock on a file to downgrade from a read-write oplock to a read-only oplock "
+"once a second client opens the file (instead of releasing all oplocks on a "
+"second open, as in traditional, exclusive oplocks). This allows all openers "
+"of the file that support level2 oplocks to cache the file for read-ahead "
+"only (ie. they may not cache writes or lock requests) and increases "
+"performance for many accesses of files that are not commonly written (such "
+"as application .EXE files). Once one of the clients which have a read-only "
+"oplock writes to the file all clients are notified (no  reply  is  needed or "
+"waited for) and told to break their oplocks to \"none\" and delete any read-"
+"ahead caches. It is recommended that this parameter be turned on to speed "
+"access to shared executables."
+msgstr ""
+"Erlaubt die Verwendung von Level 2 oplocks (read-only oplocks). Level2, oder "
+"nur-lese Opplocks Erlauben Windows NT clients die ein oplock auf eine Datei "
+"haben dieses von einem schreib-lese Oplock in ein nur-lese Oplock zu "
+"verringern, wenn ein zweiter Client diese Datei öffnet (anstatt alle Oplocks "
+"bei einem zweiten Öffnen freizugeben, wie bei den traditionellen exclusiven "
+"Oplocks). Dies erlaubt Allen, die eine Datei öffnen und Level 2 Oplocks "
+"unterstützen diese Datei lokal zwischenzuspeichern für read-ahead (also "
+"nicht für Schreib, oder Lockingzugriffe) und verbessert die Performanz bei "
+"vielen Zugriffen auf Dateien auf die normalerweise kein Schreibzugriff "
+"stattfindet (wie .EXE Dateien von Anwendungen). Wenn einer der Clients, die "
+"ein nur-lese Oplock haben, in die Datei schreibt, werden alle anderen "
+"benachrichtigt (es wird keine Antwort benötigt oder erwartet) und angewiesen "
+"ihr Oplock abzugeben und alle Lese-Zwischenspeicher zu löschen. Es ist "
+"ratsam diese Option zu Aktivieren um den Zugriff auf gemeinsame Programme zu "
+"beschleunigen."
+
+#: share.py:402
+msgid "Fake Oplocks"
+msgstr "Fake Oplocks"
+
+#: share.py:403
+msgid ""
+"Oplocks are the way that Samba clients get permission from a server to "
+"locally cache file operations.  If a server grants an oplock (opportunistic "
+"lock) then the client is free to assume that it is the only one accessing "
+"the file and it will aggressively cache file data. With some  oplock  types "
+"the client may even cache file open/close operations. This can give enormous "
+"performance benefits. When you activate this parameter, Samba will always "
+"grant oplock requests no matter how many clients are using the file. It is "
+"generally much better to use the real oplocks support rather than this "
+"parameter. If you enable this option on all read-only shares or shares that "
+"you know will only be accessed from one client at a time such as physically "
+"read-only media like CDROMs, you will see a big performance improvement on "
+"many operations. If you enable this option on shares where multiple clients "
+"may be accessing the files read-write at the same  time you can get data "
+"corruption. Use this option carefully!"
+msgstr ""
+"Mit Hilfe von Oplocks erhalten Samba Clients die Erlaubnis vom Server "
+"Dateizugriffe lokal zwischen zu speichern.  Wenn ein Server ein Oplock "
+"(opportunistic lock) genehmigt kann der Client davon ausgehen, dass er der "
+"einzige ist, der darauf zugreift, und wird massiv Daten dieser Datei "
+"zwischenspeichern. Bei einigen Oplock-Arten kann der Client sogar das Öffnen "
+"und Schliessen von Dateien zwischenspeichern. Dies kann enorme "
+"Geschwindigkeitsvorteile bedeuten. Wird dieser Parameter aktiviert, so "
+"genehmigt Samba jede Oplock-Anfrage, egal wie viele Clients eine Datei "
+"benutzen. Es ist im Algemeinen viel besser die echte Oplock unterstützung zu "
+"verwenden, als diesen Parameter zu aktivieren. Wenn diese Option bei allen "
+"Nur-Lese-Freigaben aktiviert wird, oder bei Freigaben von denen sicher ist, "
+"dass nur ein Client zur zeit auf sie zugreift, wie ein Physikalisches Nur-"
+"Lese-Laufwerk etwa ein Cdrom, kann ein deutlicher Geschwindigkeitsvorteil "
+"bei vielen Operationen beobachtet werden. Wird diese option auf Freigaben "
+"aktiviert, wo mehrere Clients Schreib-Lese zugriff zur selben Zeit haben, "
+"kann das zu Datenkorruption führen. Diese option sollte vorsichtig verwendet "
+"werden!"
+
+#: share.py:413
+msgid "Block Size"
+msgstr "Block Größe"
+
+#: share.py:423
+msgid "Client-side Caching Policy"
+msgstr "Richtlinie für das Caching beim Client"
+
+#: share.py:424
+msgid ""
+"The way clients capable of offline caching will cache the files in the share."
+msgstr ""
+"Bestimmt das Verfahren, mit dem Clients Dateiinhalte lokal zwischenspeichern."
+
+#: share.py:444
+msgid "Denied Hosts"
+msgstr "Nicht zugelassene Rechner"
+
+#: share.py:454
+msgid "Valid Users"
+msgstr "Gültiger Benutzer"
+
+#: share.py:464
+msgid "Invalid Users"
+msgstr "Nicht erlaubte Benutzer"
+
+#: share.py:474
+msgid "Force User"
+msgstr "Erzwungener Benutzer"
+
+#: share.py:475
+msgid ""
+"This specifies a UNIX user name that will be assigned as the default user "
+"for all users connecting to this service. This is useful for sharing files. "
+"You should also use it carefully as using it incorrectly can cause security "
+"problems."
+msgstr ""
+"Dies gibt einen Unix Benutzernamen an, der als standard Benutzer verwendet "
+"wird für alle Benutzer, die sich mit diesem Dienst verbinden.Die Option ist "
+"nützlich für Dateien, die von mehreren Benutzern verwendet werden sollen. "
+"Diese Option sollte vorsichtig verwendet werden, da eine unsachgemäße "
+"Benutzung Sicherheitsprobleme verursachen kann."
+
+#: share.py:484
+msgid "Force Group"
+msgstr "Erzwungene Gruppen"
+
+#: share.py:485
+msgid ""
+"This specifies a UNIX group name that will be assigned as the default "
+"primary group for all users connecting to this service. This is useful for "
+"sharing files by ensuring that all access to files on service will use the "
+"named group for their permissions checking. Thus, by assigning permissions "
+"for this group to the files and directories within this service the Samba "
+"administrator can restrict or allow sharing of these files."
+msgstr ""
+"Dies gibt den Namen einer Unix-Gruppe an, die als standard Primärgruppe für "
+"alle Benutzer verwendet wird, die sich mit diesem Dienst verbinden. Dies ist "
+"nützlich, für gemeinsamen Dateizugriff, da sichergestellt wird, dass jeder "
+"zugriff auf dateien in diesem Dienst diese Gruppe zum prüfen der "
+"Zugriffsrechte benutzt. Also kann der Samba Administrator durch zuweisen von "
+"Rechten an den dateien und verzeichnissen dieses Dienstes für diese Gruppe, "
+"deren gemeinsame Nutzung einschränken, oder erlauben."
+
+#: share.py:494
+msgid "Hide Files"
+msgstr "Verstecke Dateien"
+
+#: share.py:504
+msgid "NT ACL Support"
+msgstr "NT ACL Support"
+
+#: share.py:505
+msgid ""
+"This boolean parameter controls whether Samba will attempt to map UNIX "
+"permissions into Windows NT access control lists."
+msgstr ""
+"Kontrolliert, ob Samba die UNIX-Dateirechte in Windows NT-Zugriffsrechte "
+"(access control lists) umsetzt."
+
+#: share.py:515
+msgid "Inherit ACLs"
+msgstr "Ererbte ACLs"
+
+#: share.py:516
+msgid ""
+"This parameter can be used to ensure that if default acls exist on parent "
+"directories, they are always honored when creating a subdirectory. The "
+"default behavior is to use the mode specified when creating the directory. "
+"Enabling this option sets the mode to 0777, thus guaranteeing that default "
+"directory acls are propagated."
+msgstr ""
+"Dieser Parameter kann benutzt werden, um sicherzustellen, dass wenn Standard "
+"ACLs auf übergeordneten Ordern besteden, diese immer berücksichtigt werden, "
+"wenn ein unterverzeichnis erzeugt wird. Das standard Verhalten ist, die "
+"Rechte zu verwenden, die beim Erzeugen des Verzeichnisses angegeben wurden. "
+"Das aktivieren dieser Option setzt die Rechte auf 0777, garantiert also, "
+"dass die standard verzeichnis ACLs weitergegeben werden."
+
+#: share.py:526
+msgid "Postexec Script"
+msgstr "Postexec-Skript"
+
+#: share.py:527
+msgid ""
+"This option specifies a command to be run whenever the service is "
+"disconnected. It takes the usual substitutions."
+msgstr ""
+"Das angegebene Skript wird nach jedem Verbindungsende zu dieser Freigabe "
+"ausgeführt. Die üblichen Platzhalter werden ersetzt."
+
+#: share.py:536
+msgid "Preexec Script"
+msgstr "Preexec-Skript"
+
+#: share.py:537
+msgid ""
+"This option specifies a command to be run whenever the service is connected "
+"to. It takes the usual substitutions."
+msgstr ""
+"Das angegebene Skript wird bei jedem Verbindungsaufbau zu dieser Freigabe "
+"ausgeführt. Die üblichen Platzhalter werden ersetzt."
+
+#: share.py:546
+msgid "Write List"
+msgstr "Liste von Schreibberechtigten"
+
+#: share.py:556
+msgid "VFS Objects"
+msgstr "VFS-Objekte"
+
+#: share.py:557
+msgid "Specifies which VFS Objects to use."
+msgstr "Spezifiziert welche VFS-Objekte benutzt werden sollen"
+
+#: share.py:566
+msgid "MSDFS Root"
+msgstr "MSDFS-Wurzel"
+
+#: share.py:567
+msgid "Export share as MSDFS root"
+msgstr "Freigabe als MSDFS-Wurzel freigeben"
+
+#: share.py:577
+msgid "Inherit Owner"
+msgstr "Besitzer erben"
+
+#: share.py:578
+msgid ""
+"Ownership for new files and directories is controlled by the ownership of "
+"the parent directory."
+msgstr ""
+"Neue Dateien und Verzeichnisse erhalten den Besitzer des übergeordneten "
+"Verzeichnisses."
+
+#: share.py:588
+msgid "Inherit Permissions"
+msgstr "Rechte erben"
+
+#: share.py:589
+msgid "New files and directories inherit the mode of the parent directory."
+msgstr ""
+"Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
+"übergeordneten Verzeichnisses."
+
+#: share.py:600
+msgid "Name of the webaccess share."
+msgstr "Name der Webzugriff Freigabe"
+
+#: share.py:609
+msgid "IP Address"
+msgstr "IP Adresse"
+
+#: share.py:610
+msgid "IP address of the webaccess share host."
+msgstr "Die IP Adresse des Rechners, der die Freigabe bereitstellt"
+
+#: share.py:626
+msgid "NFS General"
+msgstr "NFS-Allgemein"
+
+#: share.py:626
+msgid "General NFS Settings"
+msgstr "NFS-Grundeinstellungen"
+
+#: share.py:631
+msgid "Webaccess General"
+msgstr "Webzugriff-Allgemein"
+
+#: share.py:631
+msgid "General Webaccess Settings"
+msgstr "Allgemeine Webzugriff-Einstellungen"
+
+#: share.py:634
+msgid "Samba General"
+msgstr "Samba-Allgemein"
+
+#: share.py:634
+msgid "General Samba Settings"
+msgstr "Samba-Grundeinstellungen"
+
+#: share.py:640
+msgid "Samba Permissions"
+msgstr "Samba-Rechte"
+
+#: share.py:640
+msgid "Samba Permission Settings"
+msgstr "Samba-Zugriffsrechte"
+
+#: share.py:648
+msgid "Samba Extended Permissions"
+msgstr "Samba-Erweiterte-Rechte"
+
+#: share.py:648
+msgid "Samba Extended Permission Settings"
+msgstr "Samba Erweiterte Zugriffsrechte"
+
+#: share.py:654
+msgid "Samba Performance"
+msgstr "Samba-Performance"
+
+#: share.py:654
+msgid "Samba Performance Settings"
+msgstr "Samba-Performance-Einstellungen"
+
+#: share.py:804
+#, python-format
+msgid "Need  %s or %s in options to create a share."
+msgstr "%s oder %s wird in den Optionen benötigt, um eine Freigabe anzulegen."
+
+#: share.py:809 share.py:841
+#, python-format
+msgid "Need  %s option to create a %s share."
+msgstr "Die Option %s wird benötigt, um eine %s Freigabe anzulegen."
+
+#: share.py:876
+msgid "uses"
+msgstr "benutzt"
+
+#: share.py:877
+msgid "user"
+msgstr "Benutzer"
+
+#: share.py:879
+msgid "users"
+msgstr "Benutzer"
+
+#: share.py:880
+msgid "use"
+msgstr "nutzt"
+
+#: share.py:884
+#, python-format
+msgid " and %s more"
+msgstr "und %s mehr"
+
+#: share.py:895
+#, python-format
+msgid "The %s %s%s %s this share as home share!"
+msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
+
+#: share.py:900
+#, python-format
+msgid "%s (%s on %s)"
+msgstr "%s (%s auf %s)"
+
+#~ msgid "Directorymode"
+#~ msgstr "Verzeichnis-Modus"
+
+#~ msgid "Is writing on the share allowed via NFS."
+#~ msgstr "Erlaubt den Schreibzugriff auf die Freibgabe über NFS."
+
+#~ msgid "Printer Manager"
+#~ msgstr "Druckerverwaltung"
+
+#~ msgid "Shares Manager"
+#~ msgstr "Freigabeverwaltung"
+
+#~ msgid ", a path has to start with \"/\"!"
+#~ msgstr ", ein Pfad muss mit \"/\" beginnen!"
+
+#~ msgid "URI"
+#~ msgstr "URI"
+
+#~ msgid "Samba"
+#~ msgstr "Samba"

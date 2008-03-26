@@ -1,0 +1,139 @@
+%% -*- coding: utf-8 -*-
+%%
+%% Univention Reports
+%%  template file for user reports
+%%
+%% Copyright (C) 2007 Univention GmbH
+%%
+%% http://www.univention.de/
+%%
+%% All rights reserved.
+%%
+%% This program is free software; you can redistribute it and/or modify
+%% it under the terms of the GNU General Public License version 2 as
+%% published by the Free Software Foundation.
+%%
+%% Binary versions of this file provided by Univention to you as
+%% well as other copyrighted, protected or trademarked materials like
+%% Logos, graphics, fonts, specific documentations and configurations,
+%% cryptographic keys etc. are subject to a license agreement between
+%% you and Univention.
+%%
+%% This program is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+%% GNU General Public License for more details.
+%%
+%% You should have received a copy of the GNU General Public License
+%% along with this program; if not, write to the Free Software
+%% Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+\ihead{Benutzer-Report: <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@>}
+
+
+\begin{multicols}{2}[\section*{Benutzereinzelnachweis: <@attribute name="lastname"@>, <@attribute name="firstname"@>}]
+\raggedcolumns
+\section*{}
+\vspace{-8mm}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Name &     <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@> \\
+Benutzer & <@attribute name="username"@> \\
+Beschreibung & <@attribute name="description"@>\\
+Organisation & <@attribute name="organisation"@>\\
+\end{tabularx}
+
+\section*{}
+\vspace{-8mm}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
+Mitarbeiternr. & <@attribute name="employeeNumber"@>\\
+Mitarbeitertype & <@attribute name="employeeType"@>\\
+Raumnummer & <@attribute name="roomNumber"@>\\
+Vorgesetzter &
+<@resolve module="users/user" dn-attribute="secretary" alternative=""@>
+    <@attribute name="lastname"@><@attribute name="firstname" prepend=", "@>
+<@/resolve@>
+\end{tabularx}
+\end{multicols}
+
+\vspace{5mm}
+
+\begin{multicols}{2}
+\raggedcolumns
+\subsection*{Kontakt}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Telefon & <@attribute name="phone"@> \\
+Mobiltelefon & <@attribute name="mobileTelephoneNumber"@>\\
+Straße & <@attribute name="street"@>\\
+\end{tabularx}
+
+\subsection*{Passwort-Richtlinie}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Ererbt & <@policy module="policies/pwdhistory" inherited=""@> \\
+History Länge & <@attribute name="length"@>\\
+Passwort Länge & <@attribute name="pwLength"@>\\
+Ablaufintervall & <@attribute name="expiryInterval" default="-"@>\\
+\end{tabularx}
+\end{multicols}
+
+\begin{multicols}{2}
+\raggedcolumns
+\section*{Kontoeinstellungen}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Deaktiviert & <@attribute name="disabled" default="Nein"@> \\
+Gesperrt & <@attribute name="locked" default="Nein"@> \\
+Kontoablaufdatum & <@attribute name="userexpiry" default="nicht gesetzt"@> \\
+Passwortablaufdatum & <@attribute name="passwordexpiry" default="nicht gesetzt"@> \\
+Passwortänderung  & <@attribute name="pwdChangeNextLogin" default="Nein"@> \\
+\end{tabularx}
+\section*{Mail}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+E-Mail-Adresse & <@attribute name="mailPrimaryAddress" default="Keine"@> \\
+weitere Adressen & <@attribute name="mailAlternativeAddress" default="Keine"@> \\
+Globaler SPAM-Ordner & <@attribute name="mailGlobalSpamFolder" default="-"@>
+\end{tabularx}
+\end{multicols}
+
+\begin{multicols}{2}
+\raggedcolumns
+\section*{Linux/UNIX}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Benutzer-ID & <@attribute name="uidNumber"@> \\
+Gruppen-ID & <@attribute name="gidNumber"@>\\
+Login-Shell & <@attribute name="shell"@> \\
+
+Heimatverzeichnis & <@attribute name="unixhome"@> \\
+Freigabepfad & <@attribute name="homeSharePath"@> \\
+Freigabe & <@resolve module="shares/share" dn-attribute="homeShare"@>
+    <@attribute name="printablename"@>
+<@/resolve@> \\
+\end{tabularx}
+\section*{Windows}
+
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Heimatverzeichnis & <@attribute name="sambahome"@> \\
+Laufwerk für Heimatverzeichnis & <@attribute name="homedrive"@> \\
+Profilverzeichnis & <@attribute name="profilepath"@> \\
+Anmeldeskript & <@attribute name="scriptpath"@> \\
+Relative ID & <@attribute name="sambaRID"@> \\
+\end{tabularx}
+\end{multicols}
+
+\section*{Scalix Informationen}
+
+\begin{tabular}{l@{\hspace{2mm}:\hspace{2mm}}l}
+Scalix-Nutzer & <@attribute name="ScalixObject"@> \\
+Mail-Node & <@attribute name="Mailnode"@> \\
+Mail-Klasse & <@attribute name="MailboxClass"@> \\
+\end{tabular}
+
+\section*{Mitglied in folgenden Gruppen}
+
+<@query module="groups/group" start="groups" next="memberOf" regex="name=^[^(s\-)([a\-)(i\-)(h\-)]" header="\begin{description}" footer="\end{description}" alternative="Der Benutzer ist in keiner weiteren Gruppen enthalten"@>
+  \item[<@attribute name="name"@>] (<@attribute name="description"@>)
+<@/query@>
+
+\newpage

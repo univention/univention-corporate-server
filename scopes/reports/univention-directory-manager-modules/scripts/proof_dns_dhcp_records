@@ -1,0 +1,101 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Univention Directory Manager Modules
+#  check for unused dhcp records
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+
+import ldap, string, sys
+
+import univention.baseconfig
+
+baseConfig=univention.baseconfig.baseConfig()
+baseConfig.load()
+
+baseDN=baseConfig['ldap/base']
+
+lo=ldap.open('localhost', 389)
+bindpw=open('/etc/ldap.secret').read()
+if bindpw[-1] == '\n':
+        bindpw=bindpw[0:-1]
+	lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+
+# check for dhcp records without matching computer object
+
+computers=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=univentionDhcpHost', ['dhcpHWAddress'])
+
+print "Found no computer objects for these dhcp records:\n"
+
+for comp in computers:
+	mac = comp[1]["dhcpHWAddress"][0]
+	if mac.find(" ")>=0:
+		mac = mac.split(" ")[1]
+	
+	match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(macAddress=%s))'%mac,[])
+
+	if len(match_cmp_rec)==0:
+		print "\t%s"%comp[0]
+print
+
+# check for dns host records without matching computers objects (match IP)
+
+deadEndRecords={}	# needed later for reverse lookup checks
+allRecords={}
+
+computers=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['aRecord', 'relativeDomainName', 'zoneName'])
+
+print "Found no computer objects for these dns records:\n"
+
+for comp in computers:
+	if comp[1].has_key("aRecord"):
+		relative_domain_name=comp[1]['relativeDomainName'][0]
+		zone_name=comp[1]['zoneName'][0]
+		allRecords[relative_domain_name + "." + zone_name]=comp
+		match_cmp_rec = lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionHost)(aRecord=%s))'%comp[1]["aRecord"][0], [])
+		if len(match_cmp_rec)==0:
+			deadEndRecords[relative_domain_name + "." + zone_name]=comp
+			print "\t%s"%comp[0]
+print
+
+# check for dns reverse lookup records without match computer names
+
+computers=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=dNSZone', ['pTRRecord'])
+
+print "Found no computer objects for theses dns reverse lookup records:\n"
+
+for comp in computers:
+	if comp[1].has_key('pTRRecord'):
+		parts = comp[1]['pTRRecord'][0].split(".")
+		relative_domain_name = parts[0]
+		zone_name = ".".join(parts[1:-1])
+		
+		# check if there is a corresponding valid forward entry for this object
+		if deadEndRecords.has_key(relative_domain_name + "." + zone_name):
+			print "\t%s"%comp[0]
+		elif not(allRecords.has_key(relative_domain_name + "." + zone_name)):
+			print "\t%s"%comp[0]
