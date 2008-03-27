@@ -1,3 +1,10 @@
+univention-kolab2-webclient (2.0.0-6) unstable; urgency=low
+
+  * added history driver settings
+  * updated sql init files
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Mar 2008 16:33:31 +0100
+
 univention-kolab2-webclient (2.0.0-5) unstable; urgency=low
 
   * added additional config settings for new horde upstream release
