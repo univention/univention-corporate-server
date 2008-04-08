@@ -7,5 +7,9 @@ if [ -x /usr/sbin/univention-baseconfig ]; then
 	fi
 fi
 
-export OOO_EXTRA_ARG='-math'
-/usr/lib/openoffice/program/ooqstart  "$@"
+if [ -x /usr/lib/openoffice/program/ooqstart ]; then
+	export OOO_EXTRA_ARG='-math'
+	/usr/lib/openoffice/program/ooqstart  "$@"
+else
+	/usr/lib/openoffice/program/soffice -math "$@"
+fi
