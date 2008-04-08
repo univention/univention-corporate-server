@@ -1,3 +1,10 @@
+univention-installer (1.8.12-2) unstable; urgency=low
+
+  * disable the utf8 console by default, see
+    http://bugzilla.kernel.org/show_bug.cgi?id=9319
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 15:51:29 +0200
+
 univention-installer (1.8.12-1) unstable; urgency=low
 
   * get the correct kernel boot version
