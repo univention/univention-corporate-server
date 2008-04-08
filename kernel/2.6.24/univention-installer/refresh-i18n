@@ -1,0 +1,71 @@
+#! /bin/sh
+#
+# Univention Installer
+#  Refresh gettext entries for univention-installer and univention-system-setup
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+po=de
+
+if  [ ! -e ../univention-system-setup/usr/sbin/univention-system-setup ]; then
+	echo "Please checkout univention-system-setup, the installer combines i18n strings"
+	echo "from both the installer and univention-system-setup"
+	exit
+fi
+
+
+xgettext -L Python -o $po.pot.tmp installer/*py installer/modules/*.py ../univention-system-setup/usr/sbin/univention-system-setup*
+
+grep "Content-Type: text/plain; charset=CHARSET" $po.pot.tmp
+
+if [ $? -eq 0 ]; then
+	echo "Rewriting encoding information from CHARSET to ISO-8859-15"
+	sed "s#Content-Type: text/plain; charset=CHARSET#Content-Type: text/plain; charset=ISO-8859-15#" $po.pot.tmp > $po.pot
+fi
+
+echo "Merging old gettext data with newly introduced strings"
+msgmerge ./installer/locale/$po/LC_MESSAGES/installer.po  $po.pot > $po.pox
+
+echo "Now you need to fix up all "fuzzy" entries in your editor"
+read
+
+if [ -n "$EDITOR" ]; then
+    $EDITOR $po.pox
+else
+	nano $po.pox
+fi
+
+echo "Use this entry? (Y/n)"
+read yn
+
+if [ -z "$yn" -o "$yn" = "y" ]; then
+    echo "Copying po file"
+    cp $po.pox ./installer/locale/$po/LC_MESSAGES/installer.po
+    echo "Regenerating mo file"
+    msgfmt -o ./installer/locale/$po/LC_MESSAGES/installer.mo ./installer/locale/$po/LC_MESSAGES/installer.po
+fi
+
+rm -rf $po.pot $po.pox $po.pot

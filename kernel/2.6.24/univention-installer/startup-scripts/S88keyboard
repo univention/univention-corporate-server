@@ -1,0 +1,7 @@
+#!/bin/sh
+
+
+echo 'string F40 = "\033[Z"
+shift keycode 15 = F40
+' | loadkeys -
+
