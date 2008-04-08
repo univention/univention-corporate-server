@@ -36,4 +36,8 @@ if [ -x /usr/sbin/univention-baseconfig ]; then
 		export SAL_DISABLE_CUPS=1
 	fi
 fi
-exec /usr/bin/ooo-wrapper.real "$@"
+if [ -x /usr/bin/ooo-wrapper.real ]; then
+	exec /usr/bin/ooo-wrapper.real "$@"
+else
+	exec /usr/bin/ooffice
+fi

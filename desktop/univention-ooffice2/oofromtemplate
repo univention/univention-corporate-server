@@ -7,5 +7,9 @@ if [ -x /usr/sbin/univention-baseconfig ]; then
 	fi
 fi
 
-export OOO_EXTRA_ARG=''
-/usr/lib/openoffice/program/ooqstart slot:5500 "$@"
+if [ -x /usr/lib/openoffice/program/ooqstart ]; then
+	export OOO_EXTRA_ARG=''
+	/usr/lib/openoffice/program/ooqstart slot:5500 "$@"
+else
+	/usr/lib/openoffice/program/soffice slot:5500 "$@"
+fi
