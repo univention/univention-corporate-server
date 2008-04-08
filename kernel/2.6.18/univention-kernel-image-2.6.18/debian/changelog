@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.18 (1.1.2-2) unstable; urgency=low
+
+  * support for amd64
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 06:40:50 +0200
+
 univention-kernel-image-2.6.18 (1.1.2-1) unstable; urgency=low
 
   * consider the new fsc serverview module name

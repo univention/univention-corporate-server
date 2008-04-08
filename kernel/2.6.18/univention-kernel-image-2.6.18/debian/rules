@@ -30,9 +30,14 @@
 
 export DH_COMPAT=4
 
-POWERPC_SOURCE_VERSION=2.6.18
-POWERPC_VERSION=2.6.18-ucs57-powerpc
-POWERPC_VERSION_64=2.6.18-ucs57-powerpc64
+AMD64_SOURCE_VERSION=2.6.18
+AMD64_VERSION=2.6.18-ucs57-amd64
+AMD64_VERSION_64=2.6.18-ucs57-amd64
+AMD64_VERSION_XEN=2.6.18-ucs57-xen-amd64
+AMD64_VERSION_MANAGEDCLIENT=2.6.18-ucs57-amd64
+AMD64_VERSION_MANAGEDCLIENT_64=2.6.18-ucs57-amd64
+AMD64_VERSION_MOBILECLIENT=2.6.18-ucs57-amd64
+AMD64_VERSION_MOBILECLIENT_64=2.6.18-ucs57-amd64
 I386_SOURCE_VERSION=2.6.18
 I386_VERSION=2.6.18-ucs57-686
 I386_VERSION_64=2.6.18-ucs57-686-bigmem
@@ -44,10 +49,17 @@ I386_VERSION_MOBILECLIENT_64=2.6.18-ucs57-686-bigmem
 
 DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
 
-ifneq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
-	SOURCEVERSION=${POWERPC_SOURCE_VERSION}
-	KERNELVERSION=${POWERPC_VERSION}
-	KERNELVERSION64=${POWERPC_VERSION_64}
+ifneq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
+	SOURCEVERSION=${AMD64_SOURCE_VERSION}
+	KERNELVERSION=${AMD64_VERSION}
+	KERNELVERSION64=${AMD64_VERSION_64}
+	KERNELVERSIONXEN=${AMD64_VERSION_XEN}
+	SOURCEVERSION_MANAGEDCLIENT=${AMD64_SOURCE_VERSION}
+	KERNELVERSION_MANAGEDCLIENT=${AMD64_VERSION_MANAGEDCLIENT}
+	KERNELVERSION_MANAGEDCLIENT64=${AMD64_VERSION_MANAGEDCLIENT_64}
+	SOURCEVERSION_MOBILECLIENT=${AMD64_SOURCE_VERSION}
+	KERNELVERSION_MOBILECLIENT=${AMD64_VERSION_MOBILECLIENT}
+	KERNELVERSION_MOBILECLIENT64=${AMD64_VERSION_MOBILECLIENT_64}
 else
 	SOURCEVERSION=${I386_SOURCE_VERSION}
 	KERNELVERSION=${I386_VERSION}
@@ -152,7 +164,6 @@ binary-arch: build install
 	dh_md5sums -punivention-kernel-headers-64gb
 	dh_builddeb -punivention-kernel-headers-64gb
 
-ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-avm-capi-fcpci-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-avm-capi-fcpci-modules-2.6.18
 	dh_builddeb -punivention-avm-capi-fcpci-modules-2.6.18
@@ -188,9 +199,7 @@ ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-vmware-player-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-vmware-player-modules-2.6.18
 	dh_builddeb -punivention-vmware-player-modules-2.6.18
-endif
 
-ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-kernel-image-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-image-2.6.18-64gb
 	dh_builddeb -punivention-kernel-image-2.6.18-64gb
@@ -242,9 +251,7 @@ ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-vmware-player-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-vmware-player-modules-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-2.6.18-64gb
-endif
 
-ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	# Mobileclient kernel packages
 	dh_gencontrol -punivention-kernel-image-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
 	dh_md5sums -punivention-kernel-image-mobileclient-2.6.18
@@ -337,9 +344,7 @@ ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-vmware-player-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
 	dh_md5sums -punivention-vmware-player-modules-mobileclient-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-mobileclient-2.6.18-64gb
-endif
 
-ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	# Managedclient kernel packages
 	dh_gencontrol -punivention-kernel-image-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
 	dh_md5sums -punivention-kernel-image-managedclient-2.6.18
@@ -432,7 +437,6 @@ ifeq (,$(findstring powerpc-linux,$(DEB_BUILD_GNU_TYPE)))
 	dh_gencontrol -punivention-vmware-player-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
 	dh_md5sums -punivention-vmware-player-modules-managedclient-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-managedclient-2.6.18-64gb
-endif
 
 
 
