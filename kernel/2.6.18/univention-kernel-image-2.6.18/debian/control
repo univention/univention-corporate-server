@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
 Package: univention-kernel-image-2.6.18
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
 Conflicts: univention-kernel-image-2.6 (<<1.0.1), univention-kernel-image (<<1.0.1)
@@ -19,7 +19,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-2.6.18-xen
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersionXen}, xfsprogs
 Description: UCS - Linux kernel
@@ -31,7 +31,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
 Conflicts: univention-kernel-image-2.6-64gb (<<1.0.1), univention-kernel-image-64gb (<<1.0.1)
@@ -44,7 +44,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -55,7 +55,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -66,7 +66,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-2.6.18-xen
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersionXen}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -77,7 +77,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -88,7 +88,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -99,7 +99,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-avm-capi-fcpci-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
@@ -110,7 +110,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -121,7 +121,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -132,7 +132,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -143,7 +143,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -154,7 +154,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -165,7 +165,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -176,7 +176,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
 Conflicts: univention-vmware5-modules-2.6.18
 Description: UCS - Linux kernel
@@ -188,7 +188,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
 Conflicts: univention-vmware5-modules-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -200,7 +200,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
 Conflicts: univention-vmware4-modules-2.6.18
 Description: UCS - Linux kernel
@@ -212,7 +212,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
 Conflicts: univention-vmware4-modules-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -224,7 +224,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -235,7 +235,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -246,7 +246,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -257,7 +257,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -268,7 +268,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -279,7 +279,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -290,7 +290,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
 Description: UCS - Linux kernel
@@ -302,7 +302,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
 Description: UCS - Linux kernel
@@ -314,7 +314,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -325,7 +325,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -336,7 +336,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -347,7 +347,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -358,7 +358,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-avm-capi-fcpci-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
@@ -369,7 +369,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -380,7 +380,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -391,7 +391,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -402,7 +402,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -413,7 +413,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -424,7 +424,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -435,7 +435,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
 Conflicts: univention-vmware5-modules-mobileclient-2.6.18
 Description: UCS - Linux kernel
@@ -447,7 +447,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
 Conflicts: univention-vmware5-modules-mobileclient-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -459,7 +459,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
 Conflicts: univention-vmware4-modules-mobileclient-2.6.18
 Description: UCS - Linux kernel
@@ -471,7 +471,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
 Conflicts: univention-vmware4-modules-mobileclient-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -483,7 +483,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -494,7 +494,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -505,7 +505,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-server-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -516,7 +516,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-server-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -527,7 +527,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-mobileclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -538,7 +538,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-mobileclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -549,7 +549,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
 Description: UCS - Linux kernel
@@ -561,7 +561,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
 Description: UCS - Linux kernel
@@ -573,7 +573,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -584,7 +584,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-headers-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
  This meta-package installs the current kernel headers.
@@ -595,7 +595,7 @@ Description: UCS - Linux kernel headers
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -606,7 +606,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-kernel-source-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
  This meta-package installs the current kernel source.
@@ -617,7 +617,7 @@ Description: UCS - Linux kernel source
  refer to: http://www.univention.de/
 
 Package: univention-avm-capi-fcpci-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current AVM CAPI fcpci modules.
@@ -628,7 +628,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -639,7 +639,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-cpqhealth-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current cpqhealth modules.
@@ -650,7 +650,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -661,7 +661,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-serverview-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current serverview modules.
@@ -672,7 +672,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -683,7 +683,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-fsc-srv-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current fsc-srv modules.
@@ -694,7 +694,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
 Conflicts: univention-vmware5-modules-managedclient-2.6.18
 Description: UCS - Linux kernel
@@ -706,7 +706,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware4-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
 Conflicts: univention-vmware5-modules-managedclient-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -718,7 +718,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
 Conflicts: univention-vmware4-modules-managedclient-2.6.18
 Description: UCS - Linux kernel
@@ -730,7 +730,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware5-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
 Conflicts: univention-vmware4-modules-managedclient-2.6.18-64gb
 Description: UCS - Linux kernel
@@ -742,7 +742,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -753,7 +753,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-gsx3-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-gsx3 modules.
@@ -764,7 +764,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-server-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -775,7 +775,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-server-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-server-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
@@ -786,7 +786,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-managedclient-2.6.18
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -797,7 +797,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-vmware-player-modules-managedclient-2.6.18-64gb
-Architecture: i386
+Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-player modules.
@@ -808,7 +808,7 @@ Description: UCS - Linux kernel
  refer to: http://www.univention.de/
 
 Package: univention-kernel-image-2.6
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-image-2.6.18
 Description: Transition package
  Package to ease upgrading from old package
@@ -817,7 +817,7 @@ Description: Transition package
  univention-kernel-image-2.6.18 package has been installed.
 
 Package: univention-kernel-image-2.6-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-image-2.6.18-64gb
 Description: Transition package
  Package to ease upgrading from old package
@@ -826,7 +826,7 @@ Description: Transition package
  univention-kernel-image-2.6.18-64gb package has been installed.
 
 Package: univention-kernel-image
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-image-2.6.18
 Description: Transition package
  Package to ease upgrading from old package
@@ -835,7 +835,7 @@ Description: Transition package
  univention-kernel-image-2.6.18 package has been installed.
 
 Package: univention-kernel-image-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-image-2.6.18-64gb
 Description: Transition package
  Package to ease upgrading from old package
@@ -844,7 +844,7 @@ Description: Transition package
  univention-kernel-image-2.6.18-64gb package has been installed.
 
 Package: univention-kernel-headers-2.6
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.18
 Description: Transition package
  Package to ease upgrading from old package
@@ -853,7 +853,7 @@ Description: Transition package
  univention-kernel-image-2.6.18 package has been installed.
 
 Package: univention-kernel-headers-2.6-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.18-64gb
 Description: Transition package
  Package to ease upgrading from old package
@@ -862,7 +862,7 @@ Description: Transition package
  univention-kernel-image-2.6.18-64gb package has been installed.
 
 Package: univention-kernel-headers
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.18
 Description: Transition package
  Package to ease upgrading from old package
@@ -871,7 +871,7 @@ Description: Transition package
  univention-kernel-image-2.6.18 package has been installed.
 
 Package: univention-kernel-headers-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.18-64gb
 Description: Transition package
  Package to ease upgrading from old package
