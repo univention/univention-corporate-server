@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
 Package: univention-kernel-image-2.6.24
-Architecture: i386
+Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
 Conflicts: univention-kernel-image-2.6 (<<1.0.1), univention-kernel-image (<<1.0.1)
@@ -821,7 +821,7 @@ Description: Transition package
  univention-kernel-image-2.6.24-64gb package has been installed.
 
 Package: univention-kernel-headers-2.6
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.24
 Description: Transition package
  Package to ease upgrading from old package
@@ -830,7 +830,7 @@ Description: Transition package
  univention-kernel-image-2.6.24 package has been installed.
 
 Package: univention-kernel-headers-2.6-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.24-64gb
 Description: Transition package
  Package to ease upgrading from old package
@@ -839,7 +839,7 @@ Description: Transition package
  univention-kernel-image-2.6.24-64gb package has been installed.
 
 Package: univention-kernel-headers
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.24
 Description: Transition package
  Package to ease upgrading from old package
@@ -848,7 +848,7 @@ Description: Transition package
  univention-kernel-image-2.6.24 package has been installed.
 
 Package: univention-kernel-headers-64gb
-Architecture: i386
+Architecture: any
 Depends: univention-kernel-headers-2.6.24-64gb
 Description: Transition package
  Package to ease upgrading from old package
