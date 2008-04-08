@@ -107,9 +107,47 @@ $conf['cache']['params']['dir'] = Horde::getTempDir();
 $conf['cache']['params']['gc'] = 86400;
 $conf['cache']['driver'] = 'file';
 $conf['token']['driver'] = 'none';
-$conf['mailer']['params']['sendmail_path'] = '/usr/sbin/sendmail';
-$conf['mailer']['params']['sendmail_args'] = '-oi';
-$conf['mailer']['type'] = 'sendmail';
+@!@
+mailer_is_sendmail = False
+if baseConfig.has_key('horde/mailer/type') and baseConfig['horde/mailer/type'].lower() in ['sendmail', 'smtp' ]:
+	print "$conf['mailer']['type'] = '%s';" % baseConfig['horde/mailer/type'].lower()
+	mailer_is_sendmail = ( baseConfig['horde/mailer/type'].lower() == 'sendmail' )
+else:
+	print "$conf['mailer']['type'] = 'sendmail';"
+	mailer_is_sendmail = True
+
+if mailer_is_sendmail:
+	print "$conf['mailer']['params']['sendmail_path'] = '/usr/sbin/sendmail';"
+	print "$conf['mailer']['params']['sendmail_args'] = '-oi';"
+
+if not mailer_is_sendmail:
+	if baseConfig.has_key('horde/mailer/smtp/host'):
+		print "$conf['mailer']['params']['host'] = '%s';" % baseConfig['horde/mailer/smtp/host']
+	else:
+		print "$conf['mailer']['params']['host'] = 'localhost';"
+
+	if baseConfig.has_key('horde/mailer/smtp/port'):
+		print "$conf['mailer']['params']['port'] = %s;" % baseConfig['horde/mailer/smtp/port']
+	else:
+		print "$conf['mailer']['params']['port'] = 25;"
+
+	if baseConfig.has_key('horde/mailer/smtp/name'):
+		print "$conf['mailer']['params']['name'] = '%s';" % baseConfig['horde/mailer/smtp/name']
+	else:
+		print "$conf['mailer']['params']['name'] = 'localhost';"
+
+	if baseConfig.has_key('horde/mailer/smtp/auth'):
+		if baseConfig['horde/mailer/smtp/auth'].lower() in [ 'false', 'no', '0' ]:
+			print "$conf['mailer']['params']['auth'] = '0';"
+		elif baseConfig['horde/mailer/smtp/auth'].lower() in [ 'true', 'yes', '1' ]:
+			print "$conf['mailer']['params']['auth'] = '1';"
+		elif baseConfig['horde/mailer/smtp/auth'].upper() in [ 'DIGEST-MD5', 'CRAM-MD5', 'LOGIN', 'PLAIN' ]:
+			print "$conf['mailer']['params']['auth'] = '%s';" % baseConfig['horde/mailer/smtp/auth'].upper()
+		else:
+			print "$conf['mailer']['params']['auth'] = '1';"
+	else:
+		print "$conf['mailer']['params']['auth'] = '0';"
+@!@
 $conf['mailformat']['brokenrfc2231'] = false;
 $conf['tmpdir'] = '/tmp/';
 $conf['vfs']['params']['vfsroot'] = '/tmp';

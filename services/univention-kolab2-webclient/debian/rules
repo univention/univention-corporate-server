@@ -87,6 +87,8 @@ install: build
 	$(PEAR) pear/XML_Parser-1.2.8.tgz
 	$(PEAR) pear/Mail-1.1.14.tgz
 	$(PEAR) pear/Mail_Mime-1.4.0.tgz
+	$(PEAR) pear/Auth_SASL-1.0.2.tgz
+	$(PEAR) pear/Net_SMTP-1.2.11.tgz
 
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type d -exec install  -d $(HORDESHARE){} \;)
 	(cd usr/share/horde3/ && find . ! -path "*CVS*" -type f -exec install -m 0644 {} $(HORDESHARE){} \;)
