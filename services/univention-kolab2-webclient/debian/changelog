@@ -1,17 +1,10 @@
-univention-kolab2-webclient (2.0.0-7) unstable; urgency=low
+univention-kolab2-webclient (2.0.0-8) unstable; urgency=low
 
   * added additional pear packages
   * added additional baseconfig variables to switch between sendmail
     command and SMTP to pass mails to MTA
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Apr 2008 13:28:28 +0200
-
-univention-kolab2-webclient (2.0.0-6) unstable; urgency=low
-
-  * added history driver settings
-  * updated sql init files
-
- -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Mar 2008 16:33:31 +0100
 
 univention-kolab2-webclient (2.0.0-5) unstable; urgency=low
 
