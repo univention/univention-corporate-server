@@ -78,6 +78,7 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/menu/hide_groupware?false \
 							horde/menu/width?250 \
 							horde/menu/save_state?true \
+							horde/mailer/type?smtp
 
 univention-baseconfig set php/memory/limit?64
 
