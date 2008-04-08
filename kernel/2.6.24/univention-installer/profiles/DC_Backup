@@ -1,0 +1,35 @@
+#### UCS-Backup-Profile ####
+to_check="partition"
+
+# [Optionen]
+windows_domain="TEST"
+hostname="dc-backup"
+#root_password=''
+domainname="test.univention.de"
+
+# [System-Optionen]
+local_repository="false"
+create_home_share="true"
+
+# [Sprache]
+locales="de_DE.UTF-8:UTF-8"
+
+# [Standardsprache]
+locale_default="de_DE.UTF-8:UTF-8"
+
+# [Tastatur]
+keymap="de-latin1"
+
+# [Join-Optionen]
+domain_controller_account="root"
+#domain_controller_password=''
+
+# [Systemrolle]
+system_role="domaincontroller_backup"
+
+# [Zeitzone]
+timezone="Europe/Berlin"
+
+# [Software]
+packages="univention-samba samba univention-dhcp dhcp3-server univention-bind univention-bind-proxy bind9 univention-management-console univention-directory-manager python-univention-license univention-mozilla-firefox univention-kde ispell ingerman amarok kaffeine kmplayer kdemultimedia mplayer univention-java k3b k3b-i18n cdrdao kdeartwork-misc kdeartwork-emoticons kdeartwork-style kdeartwork-theme-icon kscreensaver kdewallpapers kdeartwork-theme-window kamera kfax kpdf kview kuickshow ksnapshot ark kcalc kgpg klaptopdaemon kwalletmanager kdepim univention-x-core univention-gdm univention-gdm-sessions univention-flashplugin xtightvncviewer mozilla-mplayer univention-nagios-client univention-thin-client openssh-server univention-printquota pykota univention-printquotadb univention-printserver cupsys univention-application-server openssh-client univention-java eject less nmap vim wget"
+

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+for f in /lib/univention-installer-startup.d/S[0-9][0-9]*; do
+	if [ -x "$f" ]; then
+		$f
+	elif [ -e "$f" ]; then
+		. $f
+	fi
+done
+

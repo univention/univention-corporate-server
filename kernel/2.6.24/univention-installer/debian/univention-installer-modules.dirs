@@ -1,0 +1,5 @@
+lib/univention-installer
+lib/univention-installer/modules
+lib/univention-installer/locale
+lib/univention-installer/locale/de
+lib/univention-installer/locale/de/LC_MESSAGES
