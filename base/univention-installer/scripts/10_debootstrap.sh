@@ -48,12 +48,16 @@ fi
 if [ -z "$USE_NO_LOG" ]; then
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
+	elif [ "$architecture" = "x86_64" ]; then
+		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
 	else
 		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages 2>&1 | tee -a /instmnt/.log
 	fi
 else
 	if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 		debootstrap --arch powerpc --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
+	elif [ "$architecture" = "x86_64" ]; then
+		debootstrap --arch amd64 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
 	else
 		debootstrap --arch i386 --exclude="pcmcia-cs" univention /instmnt/ file:/mnt/packages
 	fi
