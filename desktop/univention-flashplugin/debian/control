@@ -6,7 +6,7 @@ Build-Depends: debhelper, univention-config-dev
 Standards-Version: 3.5.2
 
 Package: univention-flashplugin
-Architecture: i386
+Architecture: i386 amd64
 Depends: flashplugin-nonfree (>= 9.0.48)
 Description: UCS - flashplayer plugin for netscape browsers
  This package is the flashplayer plugin for netscape browsers.

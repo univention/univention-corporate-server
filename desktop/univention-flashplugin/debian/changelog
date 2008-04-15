@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.1-1) unstable; urgency=low
+
+  * also build this package on amd64
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 15 Apr 2008 15:28:50 +0200
+
 univention-flashplugin (2.0.0-12) unstable; urgency=low
 
   * update-flashplugin: updated md5 sums for current install_flash_player_9_linux.tar.gz
