@@ -7,7 +7,7 @@ XS-Python-Version: all
 Standards-Version: 3.6.0
 
 Package: python-univention-heimdal
-Architecture: all
+Architecture: any
 Depends: ${python:Depends}, ${shlibs:Depends}, python-ldap
 Replaces: python-heimdal
 Provides: ${python:Provides}, python-heimdal
