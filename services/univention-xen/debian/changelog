@@ -1,4 +1,4 @@
-univention-xen (0.2.13) unstable; urgency=low
+univention-xen (0.2.13-1) unstable; urgency=low
 
   * also build the package on amd64
 
