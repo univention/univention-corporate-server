@@ -28,15 +28,15 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <sys/types.h>
 
-#include <bits/libc-lock.h> /* for libc-locking */
+#include <pthread.h>
 
 #include <nss.h>    /* for nss* types    */
 #include <pwd.h>    /* for struct passwd */
@@ -142,7 +142,7 @@ enum nss_status _nss_passwdcache_getgrnam_r( const char *name,
 /* -------------------------------------------------------------------------------- */
 
 /* Locks the static variables in this file.  */
-__libc_lock_define_initialized( static, lock )
+static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
 typedef enum { none, getent, getby } last_use_t;
 
@@ -267,7 +267,7 @@ static void internal_endpwent( void )
 
 /* Parsing the database file into `struct passwd' data structures.  */
 static enum nss_status internal_getpwent( struct passwd *result,
-                                          unsigned char *buffer,
+                                          char *buffer,
 					  size_t buflen,
 					  int *errnop )
 {
@@ -294,7 +294,7 @@ static enum nss_status internal_getpwent( struct passwd *result,
       *errnop = ENOENT;
       return NSS_STATUS_NOTFOUND;
     }
-    else if( buffer[buflen - 1] != 0xff)
+    else if( ( unsigned char ) buffer[buflen - 1] != 0xff)
     {
       *errnop = ERANGE;
       return NSS_STATUS_TRYAGAIN;
@@ -371,7 +371,7 @@ static void internal_endspent( void )
 
 /* Parsing the database file into `struct spwd' data structures.  */
 static enum nss_status internal_getspent( struct spwd *result,
-                                          unsigned char *buffer,
+                                          char *buffer,
 					  size_t buflen,
 					  int *errnop )
 {
@@ -398,7 +398,7 @@ static enum nss_status internal_getspent( struct spwd *result,
       *errnop = ENOENT;
       return NSS_STATUS_NOTFOUND;
     }
-    else if( buffer[buflen - 1] != 0xff)
+    else if( ( unsigned char ) buffer[buflen - 1] != 0xff)
     {
       *errnop = ERANGE;
       return NSS_STATUS_TRYAGAIN;
@@ -475,7 +475,7 @@ static void internal_endgrent( void )
 
 /* Parsing the database file into `struct group' data structures.  */
 static enum nss_status internal_getgrent( struct group *result,
-                                          unsigned char *buffer,
+                                          char *buffer,
 					  size_t buflen,
 					  int *errnop )
 {
@@ -502,7 +502,7 @@ static enum nss_status internal_getgrent( struct group *result,
       *errnop = ENOENT;
       return NSS_STATUS_NOTFOUND;
     }
-    else if( buffer[buflen - 1] != 0xff)
+    else if( ( unsigned char ) buffer[buflen - 1] != 0xff)
     {
       *errnop = ERANGE;
       return NSS_STATUS_TRYAGAIN;
@@ -537,7 +537,7 @@ enum nss_status _nss_passwdcache_setpwent( int stayopen )
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setpwent( stayopen );
 
@@ -550,7 +550,7 @@ enum nss_status _nss_passwdcache_setpwent( int stayopen )
 
   pw_last_use = getent;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -562,13 +562,13 @@ enum nss_status _nss_passwdcache_endpwent( void )
   fprintf( stderr, "Debug: _nss_passwdcache_endpwent()\n" );
   #endif
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   internal_endpwent();
 
   pw_keep_stream = 0;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return NSS_STATUS_SUCCESS;
 }
@@ -585,7 +585,7 @@ enum nss_status _nss_passwdcache_getpwent_r( struct passwd *result,
 
   enum nss_status status = NSS_STATUS_SUCCESS;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   if( pw_stream == NULL )
   {
@@ -620,7 +620,7 @@ enum nss_status _nss_passwdcache_getpwent_r( struct passwd *result,
     }
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -639,7 +639,7 @@ enum nss_status _nss_passwdcache_getpwuid_r( uid_t uid,
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setpwent( pw_keep_stream );
 
@@ -657,7 +657,7 @@ enum nss_status _nss_passwdcache_getpwuid_r( uid_t uid,
       internal_endpwent();
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -675,7 +675,7 @@ enum nss_status _nss_passwdcache_getpwnam_r( const char *name,
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setpwent( pw_keep_stream );
 
@@ -693,7 +693,7 @@ enum nss_status _nss_passwdcache_getpwnam_r( const char *name,
       internal_endpwent();
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -711,7 +711,7 @@ enum nss_status _nss_passwdcache_setspent( int stayopen )
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setspent( stayopen );
 
@@ -724,7 +724,7 @@ enum nss_status _nss_passwdcache_setspent( int stayopen )
 
   sp_last_use = getent;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -736,13 +736,13 @@ enum nss_status _nss_passwdcache_endspent( void )
   fprintf( stderr, "Debug: _nss_passwdcache_endspent()\n" );
   #endif
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   internal_endspent();
 
   sp_keep_stream = 0;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return NSS_STATUS_SUCCESS;
 }
@@ -760,7 +760,7 @@ enum nss_status _nss_passwdcache_getspent_r( struct spwd *result,
   /* Return next entry in sp file.  */
   enum nss_status status = NSS_STATUS_SUCCESS;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   if( sp_stream == NULL )
   {
@@ -795,7 +795,7 @@ enum nss_status _nss_passwdcache_getspent_r( struct spwd *result,
     }
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -813,7 +813,7 @@ enum nss_status _nss_passwdcache_getspnam_r( const char *name,
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setspent( sp_keep_stream );
 
@@ -831,7 +831,7 @@ enum nss_status _nss_passwdcache_getspnam_r( const char *name,
       internal_endspent();
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -850,7 +850,7 @@ enum nss_status _nss_passwdcache_setgrent( int stayopen )
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setgrent( stayopen );
 
@@ -863,7 +863,7 @@ enum nss_status _nss_passwdcache_setgrent( int stayopen )
 
   gr_last_use = getent;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -875,13 +875,13 @@ enum nss_status _nss_passwdcache_endgrent( void )
   fprintf( stderr, "Debug: _nss_passwdcache_endgrent()\n" );
   #endif
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   internal_endgrent();
 
   gr_keep_stream = 0;
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return NSS_STATUS_SUCCESS;
 }
@@ -899,7 +899,7 @@ enum nss_status _nss_passwdcache_getgrent_r( struct group *result,
   /* Return next entry in gr file.  */
   enum nss_status status = NSS_STATUS_SUCCESS;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   if( gr_stream == NULL )
   {
@@ -934,7 +934,7 @@ enum nss_status _nss_passwdcache_getgrent_r( struct group *result,
     }
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -952,7 +952,7 @@ enum nss_status _nss_passwdcache_getgrgid_r( gid_t gid,
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setgrent( gr_keep_stream );
 
@@ -970,7 +970,7 @@ enum nss_status _nss_passwdcache_getgrgid_r( gid_t gid,
       internal_endgrent();
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }
@@ -988,7 +988,7 @@ enum nss_status _nss_passwdcache_getgrnam_r( const char *name,
 
   enum nss_status status;
 
-  __libc_lock_lock( lock );
+  pthread_mutex_lock( &lock );
 
   status = internal_setgrent( gr_keep_stream );
 
@@ -1006,7 +1006,7 @@ enum nss_status _nss_passwdcache_getgrnam_r( const char *name,
       internal_endgrent();
   }
 
-  __libc_lock_unlock( lock );
+  pthread_mutex_unlock( &lock );
 
   return status;
 }

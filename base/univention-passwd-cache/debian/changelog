@@ -1,3 +1,10 @@
+univention-passwd-cache (0.3.3-1) unstable; urgency=low
+
+  * removed preprocessor flag _IO_MTSAFE_IO
+  * replaced libc locks with pthread mutex locks
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 16 Apr 2008 15:54:48 +0200
+
 univention-passwd-cache (0.3.2-2) unstable; urgency=low
 
   * encoded files utf-8
