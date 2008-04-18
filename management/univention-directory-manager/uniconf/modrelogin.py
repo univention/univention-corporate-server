@@ -89,17 +89,35 @@ class modrelogin(unimodule.unimodule):
 				    )
 		self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
-
+                
 		# input fields:
-		self.usernamein=question_text(_("Username"),{},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
-		self.passwdin=question_secure(_("Password"),{},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
-		self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
+		self.usernamein=question_text(_("Username"),{'width':'255'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
-
+		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
+			self.passwdin=question_secure(_("Password"),{'width':'255'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
+		else:
+			self.passwdin=question_secure(_("Password"),{'width':'255','passive':'true'},
+							{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
 
 		rows=[]
+
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.passwdin]})]}))
+
+                #check if http should realy be used
+                if int(os.environ["HTTPS"]) != 1:
+                        sel = ""
+                        if self.save.get("http") == 1:
+                                sel = "selected"
+                        self.httpbut = button('httpbut',{},{"helptext":_("")})
+                        self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {},
+                                                        {'helptext': _("Not using a secure SSL connection. Click to continue."),'button':self.httpbut,'usertext':sel})
+
+                        use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
+                        rows.append(tablerow("",{},{"obs":[use_httpbool]}))
+
 
 		# select domain...
 		domaindns=[]
@@ -113,14 +131,13 @@ class modrelogin(unimodule.unimodule):
 			(domaindescr,domaindepth) = domainpos.getPrintable_depth()
 			domainlist.append({"level":str(domaindepth),"name":domainpos.getDn(),"description":domaindescr})
 		if domainlist:
-			self.choosedomain=question_select(_("Login Domain:"),{},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
+			self.choosedomain=question_select(_("Login Domain:"),{'width':'265'},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
 			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.choosedomain]})]}))
 
 		# ok / cancel
 		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
-		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})
+		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})		
 		rows.append(tablerow("",{},{"obs":[okcol,cacol]}))
-
 
 		self.subobjs.append(table("",
 					  {'type':'content_main'},
@@ -143,8 +160,15 @@ class modrelogin(unimodule.unimodule):
 		self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
 		self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
 		mu=0
+		
+		if int(os.environ["HTTPS"]) != 1 and self.httpbool.selected():
+			self.save.put("http",1)
+		else:
+			self.save.put("http",0)
+
 		if self.cabut.pressed():
 			self.save.put("logout",1)
+
 		if self.okbut.pressed() or mu and self.input:
 			self.save.put("user",self.save.get("relogin_username"))
 			self.save.put("pass",self.save.get("relogin_password"))

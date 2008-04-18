@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-3) unstable; urgency=low
+
+  *  Display warning when used with HTTP
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Apr 2008 13:05:35 +0200
+
 univention-directory-manager (4.2.6-2) unstable; urgency=low
 
   * change architecture of transitional package univention-admin to all;

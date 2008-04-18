@@ -11,6 +11,12 @@ $temp_dir="/tmp/webui/";
 # Zugriffsrechte des temporären Verzeichnis als oktalwert
 $temp_mode=0700;
 
+# Pruefen ob die Webseite uber HTTPS aufgerufen wurde oder nicht
+$https = "0";
+if (isset( $_SERVER["HTTPS"])) {
+         $https = "1";
+}
+
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 @!@
@@ -38,6 +44,7 @@ if time  > 2147483647:
 else:
         timeout='-t %s '%baseConfig['directory/manager/timeout']
 
+run=run+" -e $https "
 run=run+debug
 run=run+timeout
 run=run+lang
