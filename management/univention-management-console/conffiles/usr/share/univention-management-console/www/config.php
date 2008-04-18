@@ -14,6 +14,11 @@ $temp_mode=0700;
 # Programmaufruf (die Variable wir in folgenden String eingefügt "$run > /temp_dir/session_id" )
 #$run="./examples/dummy.pl";
 
+$https = "0";
+if (isset( $_SERVER["HTTPS"])) {
+        $https = "1";
+}
+
 @!@
 run='$run="/usr/bin/python2.4 /usr/share/univention-management-console/frontend/univention-console-frontend.py '
 if baseConfig.has_key('umc/web/debug/level'):
@@ -42,6 +47,7 @@ if time  > 2147483647:
 else:
 	timeout='-t %s '%baseConfig['umc/web/timeout']
 
+run=run+" -e $https "
 run=run+debug
 run=run+timeout
 run=run+lang

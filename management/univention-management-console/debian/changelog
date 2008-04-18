@@ -1,3 +1,9 @@
+univention-management-console (0.9.23-2) unstable; urgency=low
+
+  * Display a warning if the connection mode has fallen back to HTTP
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Apr 2008 12:56:29 +0200
+
 univention-management-console (0.9.23-1) unstable; urgency=low
 
   * fixed traceback related to progress dialog
