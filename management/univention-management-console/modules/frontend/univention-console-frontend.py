@@ -72,6 +72,9 @@ def main(argv):
 	parser.add_option( '-d', '--debug', action = 'store', type = 'int',
 					   dest = 'debug', default = 0,
 					   help = 'if given than debugging is activated and set to the specified level' )
+	parser.add_option( '-e', '--https', action = 'store', type = 'int', 
+					   dest = 'https', default = 0,
+					   help = 'if set to 1 HTTPS is used' )
 
 	# parse command line arguments
 	( options, arguments ) = parser.parse_args()
@@ -82,6 +85,8 @@ def main(argv):
 		ud.set_level( ud.ADMIN, options.debug )
 	else:
 		ud.init('/dev/null', 0, 0)
+	
+	os.environ["HTTPS"] = "%s" % options.https
 
 	if options.socket == '-':
 		filename = sys.stdin.read()

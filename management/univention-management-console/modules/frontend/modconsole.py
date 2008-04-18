@@ -110,15 +110,31 @@ class modconsole(unimodule.unimodule):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: __login: log on to UMCP server')
 		self.__commonHeader('login_layout')
 
-		self.usernamein=question_text(_("Username"),{},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
-		self.passwdin=question_secure(_("Password"),{},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
-		self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
+		self.usernamein=question_text(_("Username"),{'width':'255'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort Login")})
+		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
+			self.passwdin=question_secure(_("Password"),{'width':'255'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
+		else:
+			self.passwdin=question_secure(_("Password"),{'width':'255','passive':'true'},
+						{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
 
 		rows = []
 
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.passwdin]})]}))
+
+		#check if http should realy be used
+		if int(os.environ["HTTPS"]) != 1:
+			sel = ""
+			if self.save.get("http") == 1:
+				sel = "selected"
+			self.httpbut = button('httpbut',{},{"helptext":_("")})
+			self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {'width':'255'},
+							{'helptext': _("Not using a secure SSL connection. Click to continue."),'button':self.httpbut,'usertext':sel})
+			use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
+			rows.append(tablerow("",{},{"obs":[use_httpbool]}))
 
 		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
 		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})
@@ -228,6 +244,12 @@ class modconsole(unimodule.unimodule):
 		self.applyhandlemessages()
 
 		if self.save.get('consolemode') == 'login':
+
+			if int(os.environ["HTTPS"]) != 1 and self.httpbool.selected():
+				self.save.put("http",1)
+			else:
+				self.save.put("http",0)
+
 			if self.cabut.pressed():
 				self.save.put( 'auth_ok', False ) # just to be sure
 

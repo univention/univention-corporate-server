@@ -1,3 +1,9 @@
+univention-management-console (0.9.21-2) unstable; urgency=low
+
+  * Display a warning if the connection mode has fallen back to HTTP
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Apr 2008 12:59:26 +0200
+
 univention-management-console (0.9.21-1) unstable; urgency=low
 
   * fixed logic error in frontend: if the referrer auf a dialog is not cache
