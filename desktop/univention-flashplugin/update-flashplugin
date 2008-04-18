@@ -54,12 +54,12 @@ fp_download_and_unpack() {
 
 	# verify MD5 checksum of (copied or downloaded) tarball
 	rm -rf install_flash_player_9_linux/
-	echo "93b7c48eaa492237b807a3ae1de65cf9  install_flash_player_9_linux.tar.gz"| md5sum -c > /dev/null 2>&1 \
+	echo "a311fd97aa6c214f63dc089a20cf7a39  install_flash_player_9_linux.tar.gz"| md5sum -c > /dev/null 2>&1 \
 		|| fp_exit_with_error "md5sum mismatch install_flash_player_9_linux.tar.gz"
 
 	# unpacking and checking the plugin
 	tar xzf install_flash_player_9_linux.tar.gz || fp_exit_with_error "cannot unpack plugin"
-	echo "13ce705df5d47422a9192b29827544e8  install_flash_player_9_linux/libflashplayer.so"| md5sum -c > /dev/null 2>&1 \
+	echo "1f26a6eeb8c06acf0af9433da2312d54  install_flash_player_9_linux/libflashplayer.so"| md5sum -c > /dev/null 2>&1 \
 		|| fp_exit_with_error "plugin changed, not trusted"
 }
 
