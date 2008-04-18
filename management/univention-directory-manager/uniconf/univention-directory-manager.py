@@ -54,9 +54,10 @@ def main(argv):
 	socket_timeout=60*5
 	debugging = 0
 	language='de_DE.utf8'
+	https = 0 
 
 	# parse command line arguments
-	opts, args = getopt.getopt(argv[1:], 's:t:d:l:')
+	opts, args = getopt.getopt(argv[1:], 's:t:d:l:e:')
 	for opt, val in opts:
 		if opt == '-s':
 			if val != '-':
@@ -71,6 +72,8 @@ def main(argv):
 			debugging = int(val)
 		elif opt == '-l':
 			language = val
+		elif opt == '-e':
+			https = val
 
 	if debugging >0:
 		univention.debug.init('/var/log/univention/directory-manager-web.log', 1, 1)
@@ -79,6 +82,7 @@ def main(argv):
 	else:
 		univention.debug.init('/dev/null', 0, 0)
 
+	os.environ["HTTPS"] = https
 	os.environ["LC_MESSAGES"]=language
 	locale.setlocale( locale.LC_MESSAGES, language )
 
