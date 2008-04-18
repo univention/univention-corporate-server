@@ -1,3 +1,9 @@
+univention-flashplugin (2.0.2-1) unstable; urgency=low
+
+  * update MD5 sums for flashplugin archive  
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 18 Apr 2008 10:47:06 +0200
+
 univention-flashplugin (2.0.1-1) unstable; urgency=low
 
   * also build this package on amd64
