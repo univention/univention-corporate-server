@@ -1,3 +1,9 @@
+univention-management-console (0.9.21-4) unstable; urgency=low
+
+  * Fix PO file
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 10:46:38 +0200
+
 univention-management-console (0.9.21-3) unstable; urgency=low
 
   * Improve error message.

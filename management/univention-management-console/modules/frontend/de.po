@@ -23,12 +23,6 @@ msgstr "Benutzername"
 msgid "Please enter your uid."
 msgstr "Bitte geben Sie Ihren Benutzernamen ein."
 
-msgid "Cancel"
-msgstr "Abbrechen"
-
-msgid "Abort Login"
-msgstr "Anmeldung abbrechen"
-
 msgid "Not using a secure SSL connection. Please accept to continue anyway."
 msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte bestätigen um dennoch fortzufahren."
 
