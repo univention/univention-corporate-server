@@ -112,8 +112,8 @@ class modrelogin(unimodule.unimodule):
                         if self.save.get("http") == 1:
                                 sel = "selected"
                         self.httpbut = button('httpbut',{},{"helptext":_("")})
-                        self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {},
-                                                        {'helptext': _("Not using a secure SSL connection. Click to continue."),'button':self.httpbut,'usertext':sel})
+                        self.httpbool= question_bool(   _("Not using a secure SSL connection. Please accept to continue anyway."), {},
+                                                        {'helptext': _("Not using a secure SSL connection. Please accept to continue anyway."),'button':self.httpbut,'usertext':sel})
 
                         use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
                         rows.append(tablerow("",{},{"obs":[use_httpbool]}))
