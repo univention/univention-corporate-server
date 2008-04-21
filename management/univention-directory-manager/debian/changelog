@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-4) unstable; urgency=low
+
+  * Improve error message
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 09:53:20 +0200
+
 univention-directory-manager (4.2.6-3) unstable; urgency=low
 
   *  Display warning when used with HTTP
