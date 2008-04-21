@@ -3,12 +3,11 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: modconsole.py:133
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-17 10:41+0200\n"
+"POT-Creation-Date: 2007-06-12 14:15+0200\n"
 "PO-Revision-Date: 2007-06-01 14:29+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,59 +15,64 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modconsole.py:113
+#: modconsole.py:107
 msgid "Username"
 msgstr "Benutzername"
 
-#: modconsole.py:113
+#: modconsole.py:107
 msgid "Please enter your uid."
 msgstr "Bitte geben Sie Ihren Benutzernamen ein."
 
-#: modconsole.py:114 modconsole.py:156
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: modconsole.py:114
 msgid "Abort Login"
 msgstr "Anmeldung abbrechen"
 
-#: modconsole.py:116 modconsole.py:119
+msgid "Not using a secure SSL connection. Please accept to continue anyway."
+msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte bestätigen um dennoch fortzufahren."
+
+#: modconsole.py:108
 msgid "Password"
 msgstr "Passwort"
 
-#: modconsole.py:116 modconsole.py:120
+#: modconsole.py:108
 msgid "please enter your password."
 msgstr "Bitte geben Sie Ihr Passwort ein."
 
-#: modconsole.py:117 modconsole.py:121
+#: modconsole.py:109
 msgid "OK"
 msgstr "OK"
 
-#: modconsole.py:117 modconsole.py:121 modconsole.py:143
+#: modconsole.py:109 modconsole.py:121
 msgid "Login"
 msgstr "Anmeldung"
 
-#: modconsole.py:134 modconsole.py:135
-msgid "Not using a secure SSL connection. Click to continue."
-msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um fortzufahren."
+#: modconsole.py:110 modconsole.py:134
+msgid "Cancel"
+msgstr "Abbrechen"
 
-#: modconsole.py:155 modconsole.py:167
+#: modconsole.py:110
+msgid "Abort Login"
+msgstr "Anmeldung abbrechen"
+
+#: modconsole.py:133 modconsole.py:145
 msgid "Logout"
 msgstr "Abmeldung"
 
-#: modconsole.py:156
+#: modconsole.py:134
 msgid "abort logout"
 msgstr "Anmeldung abbrechen"
 
-#: modconsole.py:160
+#: modconsole.py:138
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
-#: modconsole.py:191
+#: modconsole.py:169
 msgid "Update status"
 msgstr "Status aktualisieren"
 
-#: modconsole.py:223
+#: modconsole.py:201
 msgid ""
 "Authentication failed: A connection to the UMC daemon could not be "
 "established."
@@ -76,155 +80,192 @@ msgstr ""
 "Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
 "hergestellt werden"
 
-#: modconsole.py:302
+#: modconsole.py:277
 #, python-format
 msgid "Authentication failed: %s"
 msgstr "Authentisierungsfehler: %s"
 
-#: modconsole.py:317
+#: modconsole.py:293
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
 
-#: unidialog.py:119
+#: pages/overview.py:22
+msgid "Overview"
+msgstr "Überblick"
+
+#: pages/overview.py:54
+msgid "Favorites"
+msgstr "Favoriten"
+
+#: pages/overview.py:54
+msgid "Favorite Univention Management Console Modules"
+msgstr "Am häufigsten genutzte Module"
+
+#: pages/overview.py:86 pages/about.py:103
+msgid "Logout from Univention Management Console"
+msgstr "Abmelden von Univention Management Console"
+
+#: pages/module.py:218
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+
+#: pages/module.py:219
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/about.py:19
+msgid "About"
+msgstr "Über"
+
+#: pages/about.py:32
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
+
+#: pages/about.py:37
+msgid "Version"
+msgstr "Version"
+
+#: pages/about.py:42
+msgid "Build"
+msgstr "Build"
+
+#: pages/about.py:52
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: pages/about.py:65
+msgid "local Installation"
+msgstr "Lokale Installation"
+
+#: pages/about.py:66
+msgid "UCS Version"
+msgstr "UCS Version"
+
+#: pages/about.py:76
+msgid "Contact"
+msgstr "Kontakt"
+
+#: pages/about.py:88
+msgid "ALL RIGHTS RESERVED"
+msgstr "ALL RIGHTS RESERVED"
+
+#: pages/startup.py:42
+msgid "Bugreport: Univention Management Console"
+msgstr "Fehlerbericht: Univention Management Console"
+
+#: pages/startup.py:43
+msgid ""
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
+msgstr ""
+"\n"
+"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen einzutragen\n"
+"\n"
+"1) Schritte, um den Fehler zu reproduzieren\n"
+"\n"
+"2) Erwartetes Ergebnis\n"
+"\n"
+"3) Beobachtetes Ergebnis\n"
+"\n"
+
+#: pages/startup.py:76
+msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+msgstr ""
+"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
+
+#: pages/startup.py:79
+msgid "An Error has occured"
+msgstr "Ein Fehler ist aufgetreten"
+
+#: unidialog.py:118
 #, python-format
 msgid "error while modifying: %s %s"
 msgstr "WÃ€hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
-#~ msgid "Overview"
-#~ msgstr "Überblick"
+#: mapping/dynamics.py:79
+msgid "Add"
+msgstr "Hinzufügen"
 
-#~ msgid "Favorites"
-#~ msgstr "Favoriten"
+#: mapping/dynamics.py:165
+msgid "Entries:"
+msgstr "Einträge:"
 
-#~ msgid "Favorite Univention Management Console Modules"
-#~ msgstr "Am häufigsten genutzte Module"
+#: mapping/dynamics.py:166
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Einträge für '%s'"
 
-#~ msgid "Logout from Univention Management Console"
-#~ msgstr "Abmelden von Univention Management Console"
+#: mapping/dynamics.py:276
+msgid "any"
+msgstr "Alle"
 
-#~ msgid "Operation still in progress. Please wait ..."
-#~ msgstr ""
-#~ "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+#: mapping/dynamics.py:277
+msgid "none"
+msgstr "Keine"
 
-#~ msgid "Information"
-#~ msgstr "Hinweis"
+#: mapping/dynamics.py:290
+msgid "enter search filter"
+msgstr "Suchfilter"
 
-#~ msgid "About"
-#~ msgstr "Über"
+#: mapping/dynamics.py:298
+msgid "go ahead"
+msgstr "Anzeigen"
 
-#~ msgid "Univention Management Console"
-#~ msgstr "Univention Management Console"
+#: mapping/dynamics.py:299
+msgid "property"
+msgstr "Eigenschaft"
 
-#~ msgid "Version"
-#~ msgstr "Version"
+#: mapping/dynamics.py:299
+msgid "select attribute"
+msgstr "Wählen Sie ein Attribut aus"
 
-#~ msgid "Build"
-#~ msgstr "Build"
+#: mapping/dynamics.py:419
+msgid "All"
+msgstr "Alles"
 
-#~ msgid "Hostname"
-#~ msgstr "Rechnername"
+#: mapping/dynamics.py:419
+msgid "choose objects to add"
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
 
-#~ msgid "local Installation"
-#~ msgstr "Lokale Installation"
+#: mapping/dynamics.py:420
+msgid "Current"
+msgstr "Aktuell"
 
-#~ msgid "UCS Version"
-#~ msgstr "UCS Version"
+#: mapping/dynamics.py:420
+msgid "choose objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
 
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
+#: mapping/buttons.py:146
+msgid "Do"
+msgstr "Ausführen"
 
-#~ msgid "ALL RIGHTS RESERVED"
-#~ msgstr "ALL RIGHTS RESERVED"
+#: mapping/buttons.py:147
+msgid "Do action with selected objects."
+msgstr "Aktion mit ausgewählten Objekten ausführen"
 
-#~ msgid "Bugreport: Univention Management Console"
-#~ msgstr "Fehlerbericht: Univention Management Console"
+#: mapping/buttons.py:149
+msgid "Invert Selection"
+msgstr "Auswahl umkehren"
 
-#~ msgid ""
-#~ "\n"
-#~ "Please take a second to provide the following information\n"
-#~ "\n"
-#~ "1) Steps to reproduce the failure\n"
-#~ "\n"
-#~ "2) Expected result\n"
-#~ "\n"
-#~ "3) Actual result\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
-#~ "einzutragen\n"
-#~ "\n"
-#~ "1) Schritte, um den Fehler zu reproduzieren\n"
-#~ "\n"
-#~ "2) Erwartetes Ergebnis\n"
-#~ "\n"
-#~ "3) Beobachtetes Ergebnis\n"
-#~ "\n"
+#: mapping/buttons.py:150
+msgid "Select All"
+msgstr "Alle auswählen"
 
-#~ msgid ""
-#~ "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
-#~ msgstr ""
-#~ "Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
+#: mapping/buttons.py:153 mapping/buttons.py:155
+msgid "Do with selected objects ..."
+msgstr "Ausgewählte Objekte ..."
 
-#~ msgid "An Error has occured"
-#~ msgstr "Ein Fehler ist aufgetreten"
+#: mapping/buttons.py:217
+msgid "Select"
+msgstr "Auswählen"
 
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Entries:"
-#~ msgstr "Einträge:"
-
-#~ msgid "Current entries for '%s'"
-#~ msgstr "Existierende Einträge für '%s'"
-
-#~ msgid "any"
-#~ msgstr "Alle"
-
-#~ msgid "none"
-#~ msgstr "Keine"
-
-#~ msgid "enter search filter"
-#~ msgstr "Suchfilter"
-
-#~ msgid "go ahead"
-#~ msgstr "Anzeigen"
-
-#~ msgid "property"
-#~ msgstr "Eigenschaft"
-
-#~ msgid "select attribute"
-#~ msgstr "Wählen Sie ein Attribut aus"
-
-#~ msgid "All"
-#~ msgstr "Alles"
-
-#~ msgid "choose objects to add"
-#~ msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
-
-#~ msgid "Current"
-#~ msgstr "Aktuell"
-
-#~ msgid "choose objects to remove"
-#~ msgstr "Wählen Sie die zu entfernenden Objekte aus."
-
-#~ msgid "Do"
-#~ msgstr "Ausführen"
-
-#~ msgid "Do action with selected objects."
-#~ msgstr "Aktion mit ausgewählten Objekten ausführen"
-
-#~ msgid "Invert Selection"
-#~ msgstr "Auswahl umkehren"
-
-#~ msgid "Select All"
-#~ msgstr "Alle auswählen"
-
-#~ msgid "Do with selected objects ..."
-#~ msgstr "Ausgewählte Objekte ..."
-
-#~ msgid "Select"
-#~ msgstr "Auswählen"
-
-#~ msgid "Select entry"
-#~ msgstr "Auswählen eines Eintrags"
+#: mapping/buttons.py:218
+msgid "Select entry"
+msgstr "Auswählen eines Eintrags"
