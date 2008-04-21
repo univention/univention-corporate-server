@@ -1461,9 +1461,6 @@ msgstr ""
 "Univention Tools finden Sie im Handbuch oder im Online Forum auf <a "
 "target=parent href=http://www.univention.de>www.univention.de</a>."
 
-msgid "cancel login procedure"
-msgstr "Abbruch des Anmeldevorgangs."
-
 
 #~ msgid "UCS Version"
 #~ msgstr "UCS Version"
