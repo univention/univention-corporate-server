@@ -341,7 +341,7 @@ msgid "go"
 msgstr "Start"
 
 msgid "Not using a secure SSL connection. Please accept to continue anyway."
-msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte bestÃ¤tigen um dennoch fortzufahren."
+msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte bestätigen um dennoch fortzufahren."
 
 #: modbrowse.py:386
 msgid "type"
