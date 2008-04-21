@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-6) unstable; urgency=low
+
+  * Fix encoding error.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 16:35:20 +0200
+
 univention-directory-manager (4.2.6-5) unstable; urgency=low
 
   * Fix PO file
