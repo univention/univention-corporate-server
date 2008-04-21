@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0.0-8) unstable; urgency=low
+
+  * added script syncml_interrupt.sh for detecting syncml interrupts
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Apr 2008 13:29:39 +0200
+
 univention-kolab2-webclient (2.0.0-7) unstable; urgency=low
 
   * added additional pear packages
