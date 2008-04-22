@@ -1,3 +1,9 @@
+univention-check-printers (2.0.0-1) unstable; urgency=low
+
+  * silence possible lpstat messages to stderr
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Apr 2008 14:31:46 +0200
+
 univention-check-printers (2.0.0-0) unstable; urgency=low
 
   * port to UCS 2.0

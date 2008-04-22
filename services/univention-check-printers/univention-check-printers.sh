@@ -33,7 +33,7 @@ disabled=''
 eval `/usr/sbin/univention-config-registry shell cups/checkprinters/mail/subject cups/checkprinters/mail/address`
 
 # search disabled printers
-for printer in $(lpstat -a | sed 's/ .*//'); do
+for printer in $(lpstat -a 2>/dev/null | sed 's/ .*//'); do
 	if ! /usr/sbin/lpc status $printer | grep 'printing is enabled' &>/dev/null ; then
 		disabled="$disabled $printer"
 	fi
