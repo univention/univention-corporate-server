@@ -29,13 +29,14 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 count=0
+syslogfile=/var/log/syslogd
 #Kernel 2.4
 
 #Kernel 2.6
 #str=`dmesg | grep -A4 "USB Mass Storage" | grep ": SCSI emulation for USB Mass Storage device" | sed -e 's| .*||'`
 
 if [ "$1" = "2.4" ]; then
-	str=`cat /var/log/syslogd | grep -A5 "USB Mass Storage" | sed -e 's|.* kernel: ||' | grep Attached |\
+	str=`cat $syslogfile | grep -A5 "USB Mass Storage" | sed -e 's|.* kernel: ||' | grep Attached |\
 		sed 	-e 's/.*disk //' \
 			-e 's/,\ channel.*//' \
 			-e 's/at //' \
@@ -67,23 +68,39 @@ if [ "$1" = "2.4" ]; then
 	done
 
 else
-	str=`cat /var/log/syslogd | grep -A5 "USB Mass Storage" | sed -e 's|.* kernel: ||' | grep [": SCSI emulation for USB Mass Storage device","SCSI device "]| sed -e 's|SCSI device ||' | sed -e 's| .*||' | grep [a-z] | grep -v "usb-storage" | grep -v ": new " | grep -v Initializing | grep -v usbcore | sed -e 's|:||g'`
+
+	unset mounted remove
+	cleanup ( ) {
+		[ -z "$mounted" ] || /bin/umount "${sysfsmtpt}"
+		[ -z "$remove"  ] || /bin/rmdir "${sysfsmtpt}"
+	}
+	trap cleanup exit
+
+	# prepare sysfs
+	sysfsmtpt=$(/bin/mount | /bin/grep "type sysfs" |
+		    /bin/sed 's|.\+ on \(.\+\) type sysfs.*|\1|');
+	[[ -n "${sysfsmtpt}" ]] || {
+	  sysfsmtpt=/sys
+	  [[ -d "${sysfsmtpt}" ]] || { /bin/mkdir "${sysfsmtpt}"; remove=1; }
+	  /bin/mount -tsysfs -onodev,noexec,nosuid sysfs "${sysfsmtpt}" >/dev/null 2>&1\
+	  || exit 1
+	  mounted=1
+	}
+
+	# get info
 	i=0
-
-	for d in $str; do
-		if [ -z "$scsi" ]; then
-			scsi=$d
-			continue
-		fi
-
-		file=`grep -l "$scsi" /proc/scsi/usb-storage/* `
-		if [ -n "$file" ]; then
-			vendor=`grep "Vendor:" $file | awk -F ':' '{print $2}'|  sed -e 's|^ *||g;s| |_|g' `
-			echo "$i $vendor $scsi $d"
-			i=$((i+1))
-		fi
-		scsi=''
+	dir="${sysfsmtpt}/bus/usb/drivers/usb-storage"
+	for s in `/bin/ls -d ${dir}/*:*/host*/target*:*:*/*:*:*:*/block:* 2>/dev/null`;
+	do
+	  # Nearly everything we need is encoded in this path, let's grab the pieces:
+	  str=$(echo "$s" | /bin/sed -e "s|${dir}/\(.\+\):.\+/host\(.\+\)/target\2:\(.\+\):\(.\+\)/\2:\3:\4:.\+/block:\(.\+\)|\1 scsi\2 \5|")
+	  token=`echo $str| awk '{ print $1 }'`
+	  bus=`echo $str| awk '{ print $2 }'`
+	  device=`echo $str| awk '{ print $3 }'`
+	  manufact=$(/bin/cat /sys/bus/usb/devices/"${token}"/manufacturer |
+		     /bin/sed -e 's| *$||' -e 's| |_|g')
+	  echo $i "${manufact}" "${bus}" "${device}"
+	  i=$(($i + 1))
 	done
-
 
 fi
