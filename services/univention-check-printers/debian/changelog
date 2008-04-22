@@ -1,0 +1,34 @@
+univention-check-printers (2.0.0-0) unstable; urgency=low
+
+  * port to UCS 2.0
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Apr 2008 14:29:57 +0200
+
+univention-check-printers (1.0.3-1) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Andreas BÃ¼sching <buesching@univention.de>  Fri, 24 Nov 2006 10:12:58 +0100
+
+univention-check-printers (1.0.2-1) unstable; urgency=low
+
+  * ensure an exit code of 0 to suppress error codes from
+    univention-cups-enable of not local printers
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  3 Jul 2006 13:57:22 +0200
+
+univention-check-printers (1.0.1-2) unstable; urgency=low
+
+  * fixed a bug in the cron job file
+  * add an absolute path to lpc and univention-baseconfig, because /usr/sbin
+    is not on $PATH
+  * redirect output of univention-cups-enable to /dev/null to avoid an empty
+    mail from the cron daemon
+
+ -- Andreas Büsching <buesching@univention.de>  Mon,  3 Jul 2006 11:24:01 +0200
+
+univention-check-printers (1.0.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 28 Apr 2006 13:30:11 +0200
