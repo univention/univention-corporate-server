@@ -1,0 +1,17 @@
+Source: univention-check-printers
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-check-printers
+Architecture: all
+Depends: univention-config-registry (>=1.3)
+Description: A script monitoring the state of USB printers.
+ It re-activates stopped printers and sends an status e-mail.
+ .
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
