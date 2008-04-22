@@ -61,6 +61,7 @@ if [ -n "\$host" ]; then
 elif [ -n "$hostname" ]; then
 	univention-config-registry set hostname=$hostname
 fi
+hostname \`univention-config-registry get hostname\`		# finally
 __EOT__
 
 chmod +x /instmnt/hostname.sh
@@ -69,9 +70,7 @@ chroot /instmnt ./hostname.sh
 cat >>/instmnt/postconfigure_config_registry.sh <<__EOT__
 
 univention-config-registry set domainname=$domainname
-#univention-config-registry set hostname=$hostname
 univention-config-registry set windows/domain=$windows_domain
-hostname $hostname
 
 if [ -n "$eth0_type" -a "$eth0_type" = "dynamic" ]; then
 	univention-config-registry set interfaces/eth0/type=dhcp

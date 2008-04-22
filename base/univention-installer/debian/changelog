@@ -1,3 +1,9 @@
+univention-installer (1.9.1-5) unstable; urgency=low
+
+  * fix for Bug #9989 'Installation mit "scan=hostname" joint nicht'
+
+ -- Arvid Requate <requate@univention.de>  Tue, 22 Apr 2008 16:55:42 +0200
+
 univention-installer (1.9.1-4) unstable; urgency=low
 
   * fix for Bug #4077 "Installer USB-Profile funktionieren nicht mit jedem USB-Stick"
