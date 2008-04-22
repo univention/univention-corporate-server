@@ -9,8 +9,7 @@ background = 000000
 #or change colors like this
 #color cyan/blue white/blue
 
-
-title UCS Recover Kernel 2.6
+title UCS Recover
 kernel (cd)/boot/linux26 root=/dev/ram ro ramdisk_size=65536 flavor=linux recover
 initrd (cd)/boot/linux26-recover.bin
 
