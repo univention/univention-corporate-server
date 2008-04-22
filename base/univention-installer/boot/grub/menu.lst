@@ -10,27 +10,27 @@ background = 000000
 #color cyan/blue white/blue
 
 
-title Univention Installer Kernel 2.6
+title Univention Installer
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text
 initrd (cd)/boot/linux26.bin
 
-title Univention Installer Kernel 2.6 Profil 
+title Univention Installer Profil 
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile
 initrd (cd)/boot/linux26.bin
 
-title Univention Installer Kernel 2.6 Profil Floppy
+title Univention Installer Profil Floppy
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile floppy
 initrd (cd)/boot/linux26.bin
 
-title Univention Installer Kernel 2.6 Profil USB
+title Univention Installer Profil USB
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux profile usb
 initrd (cd)/boot/linux26.bin
 
-title Univention Installer Kernel 2.6 pci=noacpi
+title Univention Installer pci=noacpi
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 pci=noacpi flavor=linux text
 initrd (cd)/boot/linux26.bin
 
-title Univention Installer Kernel 2.6 acpi=off
+title Univention Installer acpi=off
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 acpi=off flavor=linux text
 initrd (cd)/boot/linux26.bin
 
