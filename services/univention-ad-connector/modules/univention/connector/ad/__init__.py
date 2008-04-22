@@ -53,6 +53,9 @@ def group_members_sync_from_ucs(connector, key, object):
 def group_members_sync_to_ucs(connector, key, object):
 	return connector.group_members_sync_to_ucs(key, object)
 
+def object_memberships_sync_to_ucs(connector, key, object):
+	return connector.object_memberships_sync_to_ucs(key, object)
+
 def primary_group_sync_from_ucs(connector, key, object):
 	return connector.primary_group_sync_from_ucs(key, object)
 	
@@ -724,32 +727,44 @@ class ad(univention.connector.ucs):
 		lastUSN = self._get_lastUSN()
 		# filter erweitern um "(|(uSNChanged>=lastUSN+1)(uSNCreated>=lastUSN+1))"
 		# +1 da suche nur nach '>=', nicht nach '>' möglich
-		if filter != '':
-			newfilter = '(&(%s)(|(uSNChanged>=%s)(uSNCreated>=%s)))' % (filter,lastUSN+1,lastUSN+1)
-		else:
-			newfilter = '(|(uSNChanged>=%s)(uSNCreated>=%s))' % (lastUSN+1,lastUSN+1)
+
+		def search_ad_changes_by_attribute( attribute, lowerUSN, higherUSN = '' ):
+			if higherUSN:
+				usnFilter = '(&(%s>=%s)(%s<=%s))' % (attribute, lowerUSN, attribute, higherUSN)
+			else:
+				usnFilter = '(%s>=%s)' % (attribute, lowerUSN)
+
+			if filter !='':
+				usnFilter = '(&(%s)(%s))' % ( filter, usnFilter )
+				
+			return self.__search_ad( filter=usnFilter, show_deleted=show_deleted)
+
+
+		# search fpr objects with uSNCreated and uSNChanged in the known range
+
+		returnObjects = []
 		try:
-			return self.__search_ad(filter=newfilter, show_deleted=show_deleted)
+			returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
+			returnObjects += search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1 )
 		except ldap.SERVER_DOWN:
 			raise
 		except: #AD can`t return > 1000 results, we are going to split the search
-			returnd=[]
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 			tmpUSN=lastUSN
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__search_ad_changes: need to split results. highest USN is %s, lastUSN is %s"%(highestCommittedUSN,lastUSN))
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+					       "__search_ad_changes: need to split results. highest USN is %s, lastUSN is %s"%(highestCommittedUSN,lastUSN))
 			while (tmpUSN != highestCommittedUSN):
 				lastUSN=tmpUSN
 				tmpUSN+=999
 				if tmpUSN > highestCommittedUSN:
 					tmpUSN=highestCommittedUSN
-				if filter != '':
-					newfilter = '(&(%s)(&(|(uSNChanged>=%s)(uSNCreated>=%s))(uSNChanged<=%s)))' %(filter,lastUSN+1,lastUSN+1,tmpUSN)
-				else:
-					newfilter = '(&(|(uSNChanged>=%s)(uSNCreated>=%s))(uSNChanged<=%s))' %(lastUSN+1,lastUSN+1,tmpUSN)
+
 				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__search_ad_changes: search between USNs %s and %s"%(lastUSN+1,tmpUSN))
-				returnd=returnd+self.__search_ad(filter=newfilter, show_deleted=show_deleted)
-			return returnd
+
+				returnObjects += search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1, tmpUSN )
+				returnObjects += search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1, tmpUSN )
 				
+		return returnObjects
 
 	def __search_ad_changeUSN(self, changeUSN, show_deleted=True, filter=''):
 		'''
@@ -1186,9 +1201,25 @@ class ad(univention.connector.ucs):
 			return True
 		else:
 			return True
-			
+
+	def object_memberships_sync_to_ucs(self, key, object):
+		"""
+		sync group membership in UCS if object was changend in AD
+		"""
+		_d=univention.debug.function('ldap.object_memberships_sync_to_ucs')
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
+
+		if object['attributes'].has_key('memberOf'):
+			for groupDN in object['attributes']['memberOf']:
+				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': object['modtype']}
+				if not self._ignore_object( 'group', ad_object ):
+					sync_object = self._object_mapping( 'group' , ad_object )
+					self.group_members_sync_to_ucs( 'group', sync_object )
 		
 	def group_members_sync_to_ucs(self, key, object):
+		"""
+		sync groupmembers in UCS if changend in AD
+		"""
 		_d=univention.debug.function('ldap.group_members_sync_to_ucs')
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "group_members_sync_to_ucs: object: %s" % object)
 
