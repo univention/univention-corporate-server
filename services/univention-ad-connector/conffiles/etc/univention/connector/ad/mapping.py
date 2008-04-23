@@ -54,7 +54,7 @@ ad_mapping = {
 			ucs_module='users/user',
 
 			# read, write, sync, none
-			sync_mode='sync',
+			sync_mode='@%@connector/ad/ldap/syncmode@%@',
 			scope='sub',
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
@@ -95,6 +95,7 @@ ad_mapping = {
 
 			post_con_modify_functions=[ univention.connector.ad.password.password_sync_ucs,
 						    univention.connector.ad.primary_group_sync_from_ucs,
+						    univention.connector.ad.object_memberships_sync_from_ucs,
 						    univention.connector.ad.disable_user_from_ucs,
 						    ],
 
@@ -186,7 +187,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 
 			ucs_module='groups/group',
 
-			sync_mode='sync',
+			sync_mode='@%@connector/ad/ldap/syncmode@%@',
 			scope='sub',
 
 			ignore_filter='(|(sambaGroupType=5)(groupType=5))',
@@ -197,7 +198,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 
 			con_create_objectclass=['top', 'group'],
 
-			post_con_modify_functions=[ univention.connector.ad.group_members_sync_from_ucs ],
+			post_con_modify_functions=[ univention.connector.ad.group_members_sync_from_ucs, univention.connector.ad.object_memberships_sync_from_ucs ],
 
 			post_ucs_modify_functions=[ univention.connector.ad.group_members_sync_to_ucs, univention.connector.ad.object_memberships_sync_to_ucs ],
 
@@ -234,10 +235,15 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 				},
 
 			mapping_table = {
+						@!@
+if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['connector/ad/mapping/group/language'] in ['de','DE']:
+	print """
 				'cn': [( u'Domain Users' , u'Domänen-Benutzer'), ( u'Domain Users' , u'Domain Users'),
 						(u'Domain Admins', u'Domänen-Admins'), (u'Domain Admins', u'Domain Admins'),
 						(u'Windows Hosts', u'Domänencomputer'), (u'Windows Hosts', u'Windows Hosts'),
 						(u'Domain Guests', u'Domänen-Gäste'), (u'Domain Guests', u'Domain Guests')]
+					"""
+					@!@
 			},
 
 		),
@@ -245,7 +251,7 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 	'container': univention.connector.property (
 			ucs_module='container/cn',
 
-			sync_mode='sync',
+			sync_mode='@%@connector/ad/ldap/syncmode@%@',
 
 			scope='sub',
 
@@ -277,7 +283,7 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 	'ou': univention.connector.property (
 			ucs_module='container/ou',
 
-			sync_mode='sync',
+			sync_mode='@%@connector/ad/ldap/syncmode@%@',
 
 			scope='sub',
 

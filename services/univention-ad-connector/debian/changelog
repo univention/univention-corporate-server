@@ -1,3 +1,15 @@
+univention-ad-connector (1.2.4-0) unstable; urgency=low
+
+  * replace univention-baseconfig with univention-config-registry
+  * add config registry variable-descriptions
+  * add config-registry variable connector/ad/ldap/syncmode with default "sync"
+  * add config-registry variable connector/ad/mapping/group/language with default "de"
+  * implement additional group-membership-functionality for sync of "groups in groups" from ucs to ad
+  * fix group membership synchronisation if user is synced later than his groups
+  * fix failure if object is moved from an ignored container into a synced one
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 23 Apr 2008 15:35:18 +0200
+
 univention-ad-connector (1.2.3-1) unstable; urgency=low
 
   * fix synchronisation of groups with hosts as member in UCS

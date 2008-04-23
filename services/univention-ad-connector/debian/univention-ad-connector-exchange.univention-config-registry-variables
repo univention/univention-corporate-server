@@ -1,0 +1,5 @@
+[connector/ad/mapping/user/exchange]
+Description[de]=Aktiviert die Synchronisation von Exchange-Attributen zwischen UCS und AD.
+Description[en]=
+Type=str
+Categories=AD-Connector

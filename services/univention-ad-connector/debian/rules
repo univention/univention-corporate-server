@@ -88,7 +88,8 @@ install-ext-%:
 	# exchange extension
 	install -m644  files/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema $(EXCHANGE_DEST)/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema
 
-	univention-install-baseconfig
+	univention-install-config-registry
+	univention-install-config-registry-info
 
 binary-arch: build install
 

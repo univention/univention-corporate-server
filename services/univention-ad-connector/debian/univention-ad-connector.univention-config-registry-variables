@@ -1,0 +1,95 @@
+[connector/ad/listener/dir]
+Description[de]=Verzeichnis-Pfad in dem UCS-Änderungen durch das Directory-Listener-Plugin gespeichert werden.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/poll/sleep]
+Description[de]=Wartezeit in Sekunden bevor auf neue Änderungen in AD oder UCS geprüft wird.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/retryrejected]
+Description[de]=Anzahl der durch Synchronisationsläufe bevor erneut versucht wird fehgeschlagene Änderungen zu synchronisieren.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/port]
+Description[de]=TCP-Port über den das AD-LDAP erreichbar ist (default: 389).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/host]
+Description[de]=FQDN des Active Directory Servers.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/debug/function]
+Description[de]=Debug-Level für die Rückverfolgung von Funktionsaufrufen im AD-Connector (0 oder 1).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/debug/level]
+Description[de]=Debug-Level für die Ausgaben in der connector.log (0-4).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/mapping/user/primarymail]
+Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Benutzern durchgeführt werden soll (default: false).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/mapping/group/primarymail]
+Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Gruppen durchgeführt werden soll (default: false).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/mapping/group/language]
+Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im UCS auf anderssprachige Standardgruppen im AD durchgeführt werden soll (default: de).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/syncmode]
+Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/windows_version]
+Description[de]=Definiert die Windows-Server Version, mit der Active Directory betrieben wird, ohne Angabe wird Windows 2003 vorausgesetzt..
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/base]
+Description[de]=LDAP Basis des Active Directories.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/binddn]
+Description[de]=LDAP-DN des Synchronisationsaccounts im Active Directory.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/bindpw]
+Description[de]=Pfad zur Datei aus der das Passwort des Synchronisationsaccounts gelesen werden soll.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/ldap/certificate]
+Description[de]=Pfad zum SSL-Zertifikat des Active Directory Servers.
+Description[en]=
+Type=str
+Categories=AD-Connector
