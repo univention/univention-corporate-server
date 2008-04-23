@@ -214,6 +214,44 @@ class object(content):
 		self.read_profile()
 		return {}
 
+	def check_space_for_autopart(self):
+		self.debug('checking free space for autopart...')
+		disklist = {}
+		disksizeall = 0.0
+		for diskname, disk in self.container['disk'].items():
+			disksize = 0.0
+			for partname, part in self.container['disk'][diskname]['partitions'].items():
+				disksize += part['size']
+			disklist[diskname] = disksize
+			disksizeall += disksize
+		self.debug('disklist=%s' % disklist)
+		if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN:
+			result = _('not enough space for autopartitioning: sum of disk sizes=%s  required=%s') % (disksizeall, PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN)
+			self.debug( result)
+			return result
+
+		added_boot = False
+		added_swap = False
+		disklist_sorted = disklist.keys()
+		disklist_sorted.sort()
+		for diskname in disklist_sorted:
+			disksize = disklist[diskname]
+			if disksize > PARTSIZE_BOOT and not added_boot:
+				disksize -= PARTSIZE_BOOT
+				added_boot = True
+			if disksize > PARTSIZE_SWAP_MIN and not added_swap:
+				disksize -= PARTSIZE_SWAP_MIN
+				added_swap = True
+		if not added_swap or not added_boot:
+			result = _('cannot autopart disk: /boot or swap does not fit on harddisk (required=%s)') % max(PARTSIZE_BOOT, PARTSIZE_SWAP_MIN)
+			self.debug( result )
+			self.debug('cannot autopart disk: bootsize=%s swapsize=%s disklist=%s' % (PARTSIZE_BOOT, PARTSIZE_SWAP_MIN, disklist))
+			return result
+
+		# everything ok - enough space for auto_part
+		self.debug('found enough free space for autopart')
+		return None
+
 	def profile_complete(self):
 		self.debug('profile_complete')
 		if self.check('partitions') | self.check('partition'):
@@ -274,34 +312,9 @@ class object(content):
 
 		if 'auto_part' in self.all_results.keys():
 			if self.all_results['auto_part'] in [ 'full_disk' ]:
-				disklist = {}
-				disksizeall = 0.0
-				for diskname, disk in self.container['disk'].items():
-					disksize = 0.0
-					for partname, part in self.container['disk'][diskname]['partitions'].items():
-						disksize += part['size']
-					disklist[diskname] = disksize
-					disksizeall += disksize
-				if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MAX:
-					self.message='not enough space for autopartitioning: sum of disk sizes=%s  required=%s' % (disksizeall,
-																											   PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MAX)
-					return False
-
-				added_boot = False
-				added_swap = False
-				disklist_sorted = disklist.keys()
-				disklist_sorted.sort()
-				for diskname in disklist_sorted:
-					disksize = disklist[diskname]
-					if disksize > PARTSIZE_BOOT and not added_boot:
-						disksize -= PARTSIZE_BOOT
-						added_boot = True
-					if disksize > PARTSIZE_SWAP_MIN and not added_swap:
-						disksize -= PARTSIZE_SWAP_MIN
-						added_swap = True
-				if not added_swap or not added_boot:
-					self.message='cannot autopart disk: /boot or swap does not fit'
-					self.debug('cannot autopart disk: bootsize=%s swapsize=%s disklist=%s' % (PARTSIZE_BOOT, PARTSIZE_SWAP_MIN, disklist))
+				result = self.check_space_for_autopart()
+				if result:
+					self.message = result
 					return False
 		return True
 
@@ -1615,7 +1628,7 @@ class object(content):
 
 		def auto_partitioning(self, result):
 			self.container['autopartition'] = True
-			self.parent.debug('AUTO PARTITIONING')
+			self.parent.debug('INTERACTIVE AUTO PARTITIONING')
 
 			# remove all LVM LVs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -1791,6 +1804,17 @@ class object(content):
 				self.act = self.active(self,_('Detecting LVM devices'),_('Please wait ...'),name='act',action='read_lvm')
 				self.act.draw()
 				self.draw()
+
+			# check for free space for auto partitioning
+			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
+				result = self.parent.check_space_for_autopart()
+				if result:
+					self.container['autopartition'] = False
+					msglist = [ _('WARNING: not enough free space for auto partitioning!'),
+								_('Auto partitioning has been disabled!')
+								]
+					self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
+					self.draw()
 
 			# ask for auto partitioning
 			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
