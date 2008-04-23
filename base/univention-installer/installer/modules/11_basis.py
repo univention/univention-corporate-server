@@ -98,6 +98,15 @@ class object(content):
 		self.elements.append(password(self.all_results['root_password'],self.minY+13+int(self.append_spaces),self.minX+2,30)) #13
 
 	def tab(self):
+		if self.current == 3:
+			if len(self.elements[3].text) and not self.elements[3].text.islower():
+				text = self.elements[3].text.lower()
+				self.guessed[ 'hostname' ] = text
+				self.elements[3].text = text
+				self.elements[3].cursor=len(text)
+				self.elements[3].set_off()
+				self.elements[3].draw()
+				self.draw()
 		if self.current == 5:
 			if len(self.elements[5].text):
 				pos=7
@@ -113,13 +122,34 @@ class object(content):
 					self.draw()
 				if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 					if not len(self.elements[7].text) or not self.guessed.has_key( 'ldap_base' ) or self.guessed[ 'ldap_base' ] == self.elements[ 7 ].text:
-						text = "dc=" + string.join( self.elements[ 5 ].text.split( '.' ), ',dc=' )
+						text = "dc=" + string.join( self.elements[ 5 ].text.split( '.' ), ',dc=' ).lower()
 						self.guessed[ 'ldap_base' ] = text
 						self.elements[7].text = text
 						self.elements[7].cursor=len(text)
 						self.elements[7].set_off()
 						self.elements[7].draw()
 						self.draw()
+				if not self.elements[5].text.islower():
+					text = self.elements[5].text.lower()
+					self.guessed[ 'domainname' ] = text
+					self.elements[5].text = text
+					self.elements[5].cursor=len(text)
+					self.elements[5].set_off()
+					self.elements[5].draw()
+					self.draw()
+		if  self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
+			pos_windows_domain=9
+		else:
+			pos_windows_domain=7
+		if self.current == pos_windows_domain:
+			if len(self.elements[pos_windows_domain].text) and not self.elements[pos_windows_domain].text.isupper():
+				text = self.elements[pos_windows_domain].text.upper()
+				self.guessed[ 'windows_domain' ] = text
+				self.elements[pos_windows_domain].text = text
+				self.elements[pos_windows_domain].cursor=len(text)
+				self.elements[pos_windows_domain].set_off()
+				self.elements[pos_windows_domain].draw()
+				self.draw()
 		content.tab(self)
 
 
@@ -143,12 +173,12 @@ class object(content):
 			if not self.ignore('hostname'):
 				if focus:
 					self.move_focus( 3 )
-				return _("Please insert a valid Hostname.")
+				return _("Please insert a valid hostname in lowercase.")
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
 				if focus:
 					self.move_focus( 5 )
-				return _("Please insert a valid Domainname.")
+				return _("Please insert a valid domainname in lowercase.")
 		if len(hostname.strip()+domainname.strip()) >= 64:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:
@@ -262,18 +292,18 @@ class object(content):
 
 	def result(self):
 		result={}
-		result['hostname']='%s' % self.elements[3].result().strip()
-		result['domainname']='%s' % self.elements[5].result().strip()
+		result['hostname']='%s' % self.elements[3].result().strip().lower()
+		result['domainname']='%s' % self.elements[5].result().strip().lower()
 		if self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master':
 			result['ldap_base']='%s' % self.elements[7].result().strip()
-			result['windows_domain']='%s' % self.elements[9].result().strip()
+			result['windows_domain']='%s' % self.elements[9].result().strip().upper()
 			if self.all_results.has_key('root_password_crypted'):
 				result['root_password_crypted']=self.all_results['root_password_crypted']
 			else:
 				if self.elements[11].result().strip() == self.elements[13].result().strip() and len(self.elements[11].result().strip()) >7:
 					result['root_password']='%s' % self.elements[11].result().strip()
 		else:
-			result['windows_domain']='%s' % self.elements[7].result().strip()
+			result['windows_domain']='%s' % self.elements[7].result().strip().upper()
 			if self.all_results.has_key('root_password_crypted'):
 				result['root_password_crypted']=self.all_results['root_password_crypted']
 			else:

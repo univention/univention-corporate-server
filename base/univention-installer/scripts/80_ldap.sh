@@ -34,14 +34,13 @@ if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
 
-
 cat >>/instmnt/ldap.sh <<__EOT__
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then
 	eval \`univention-config-registry shell\`
 	echo "Create User Administrator"
-	univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password=$root_password --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
+	univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password="\$root_password" --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
 	univention-directory-manager groups/group modify --dn "cn=DC Backup Hosts,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base" > /dev/null 2>&1
 
 	#create default network
@@ -56,4 +55,6 @@ fi
 __EOT__
 
 chmod +x /instmnt/ldap.sh
+export root_password	# for a second, better than writing into the script file
 chroot /instmnt ./ldap.sh
+export -n root_password

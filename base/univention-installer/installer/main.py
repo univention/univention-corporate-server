@@ -503,15 +503,15 @@ class mods:
 				profile.write('\n# [%s]\n' % key)
 				for subkey in self.profile[key].keys():
 					if self.profile[key][subkey]:
-						profile.write('%s="%s"\n\n' % (subkey,self.profile[key][subkey]))
+						profile.write("%s='%s'\n\n" % (subkey,self.profile[key][subkey]))
 		else:
 			for key in self.result.keys():
 				if key.strip(" ") == "":
 					continue
 				if self.result[key]:
-					profile.write('%s="%s"\n' % (key,self.result[key]))
+					profile.write("%s='%s'\n" % (key,self.result[key]))
 				else:
-					profile.write('#%s=\n' % key)
+					profile.write("#%s=\n" % key)
 		profile.flush()
 		profile.close()
 
