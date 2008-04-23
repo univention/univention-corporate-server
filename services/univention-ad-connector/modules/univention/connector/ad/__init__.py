@@ -50,6 +50,9 @@ def activate_user (connector, key, object):
 def group_members_sync_from_ucs(connector, key, object):
 	return connector.group_members_sync_from_ucs(key, object)
 	
+def object_memberships_sync_from_ucs(connector, key, object):
+	return connector.object_memberships_sync_from_ucs(key, object)
+
 def group_members_sync_to_ucs(connector, key, object):
 	return connector.group_members_sync_to_ucs(key, object)
 
@@ -1029,6 +1032,20 @@ class ad(univention.connector.ucs):
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
 								   "primary_group_sync_to_ucs: change of primary Group in ucs not needed")
 		
+	def object_memberships_sync_from_ucs(self, key, object):
+		"""
+		sync group membership in AD if object was changend in UCS
+		"""
+		_d=univention.debug.function('ldap.object_memberships_sync_from_ucs')
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
+
+		if object['attributes'].has_key('memberOf'):
+			for groupDN in object['attributes']['memberOf']:
+				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': object['modtype']}
+				if not self._ignore_object( 'group', ad_object ):
+					sync_object = self._object_mapping( 'group' , ad_object )
+					self.group_members_sync_to_ucs( 'group', sync_object )
+		
 
 	def group_members_sync_from_ucs(self, key, object): # object mit ad-dn
 		"""
@@ -1234,7 +1251,7 @@ class ad(univention.connector.ucs):
 			ucs_members = ldap_object_ucs['uniqueMember']
 		else:
 			ucs_members = []
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"ucs_members: %s" % ucs_members)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,"group_members_sync_to_ucs:ucs_members: %s" % ucs_members)
 		
 		ldap_object_ad = self.get_object(ad_object['dn']) # FIXME: may fail if object doesn't exist
 		if ldap_object_ad and ldap_object_ad.has_key('member'):
@@ -1256,7 +1273,7 @@ class ad(univention.connector.ucs):
 				ad_members.append(prim_dn)
 
 		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
-							   "ad_members %s" % ad_members)
+							   "group_members_sync_to_ucs: ad_members %s" % ad_members)
 
 		ucs_members_from_ad = { 'user' : [], 'group': [] }
 		
@@ -1274,7 +1291,7 @@ class ad(univention.connector.ucs):
 				except ldap.SERVER_DOWN:
 					raise
 				except:
-					self._debug_traceback(univention.debug.INFO, "failed to get dn from ucs, assume object doesn't exist")
+					self._debug_traceback(univention.debug.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
 		for member_dn in ucs_members:
@@ -1287,27 +1304,29 @@ class ad(univention.connector.ucs):
 
 					for k in self.property.keys():
 						if self.modules[k].identify(member_dn, ucs_object['attributes']):
-							key=k
-							break
+							ad_dn = self._object_mapping(k, ucs_object, 'ucs')['dn']
 
-					ad_dn = self._object_mapping(key, ucs_object, 'ucs')['dn']
+							# search only for cn to suppress coding errors
+							if not self.lo_ad.get(ad_dn,attr=['cn']): 
+								# member does not exist in AD but should
+								# stay a member in UCS
+								ucs_members_from_ad[k].append(member_dn.lower())
+						break
 
-					if not self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
-						# member does not exist in AD but should stay a member in UCS
-						ucs_members_from_ad['key'].append(member_dn.lower())
 				except ldap.SERVER_DOWN:
 					raise
 				except:
-					self._debug_traceback(univention.debug.INFO, "failed to get dn from ucs which is groupmember")
+					self._debug_traceback(univention.debug.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
 
 		# compare lists and generate modlist
-		# direct compare is not possible, because ucs_members_from_ad are all lowercase, ad_members are not, so we need to iterate...
+		# direct compare is not possible, because ucs_members_from_ad are all lowercase,
+		# ad_members are not, so we need to iterate...
 		# FIXME: should be done in the last iteration (above)
 		add_members = ucs_members_from_ad
 		del_members = { 'user' : [], 'group': [] }
 
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "ucs_members: %s" % ucs_members)
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "ucs_members_from_ad: %s" % ucs_members_from_ad)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "group_members_sync_to_ucs: ucs_members: %s" % ucs_members)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "group_members_sync_to_ucs: ucs_members_from_ad: %s" % ucs_members_from_ad)
 
 		for member_dn in ucs_members:
 			if member_dn.lower() in ucs_members_from_ad['user']:
@@ -1317,14 +1336,14 @@ class ad(univention.connector.ucs):
 			else:
 				ucs_object = {'dn':member_dn,'modtype':'modify','attributes':self.lo.get(member_dn)}
 				for k in self.property.keys():
+					# identify if DN is a user or a group (will be ignored it is a host)
 					if self.modules[k].identify(member_dn, ucs_object['attributes']):
-						key=k
-						break
+						del_members[k].append(member_dn)
+						break					
 
-				del_members[key].append(member_dn)
 
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "members to add: %s" % add_members)
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "members to del: %s" % del_members)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "group_members_sync_to_ucs: members to add: %s" % add_members)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "group_members_sync_to_ucs: members to del: %s" % del_members)
 
 		if add_members['user'] or add_members['group'] or del_members['user'] or del_members['group']:
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
@@ -1339,9 +1358,11 @@ class ad(univention.connector.ucs):
 			for key in ['user', 'group']:
 				modlist_members[key] = modlist_members[key] + add_members[key]
 				for member in del_members[key]:
-					modlist_members[key].remove(member)
 					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
-							       "members %s result: %s" % (key,modlist_members[key]) )
+							       "group_members_sync_to_ucs: members[%s] remove: %s" % (key, member.lower()) )
+					modlist_members[key].remove(member.lower())
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+						       "group_members_sync_to_ucs: members %s result: %s" % (key,modlist_members[key]) )
 
 			ucs_admin_object=univention.admin.objects.get(self.modules[object_key], co='', lo=self.lo, position='', dn=object['dn'])
 			ucs_admin_object.open()

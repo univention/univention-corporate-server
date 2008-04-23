@@ -1,3 +1,8 @@
+univention-ad-connector (1.2.3-1) unstable; urgency=low
+
+  * fix synchronisation of groups with hosts as member in UCS
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 23 Apr 2008 10:50:18 +0200
+
 univention-ad-connector (1.2.3) unstable; urgency=low
 
   * seperated search for uSNCreated and uSNChanged during poll
