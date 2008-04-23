@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy
+import sys, codecs, base64, string, os, cPickle, types, random, traceback, copy, time
 import ldap
 import pdb
 import univention_baseconfig
@@ -403,11 +403,21 @@ class ucs:
 		'''
 		exc_info = sys.exc_info()
 		_d=univention.debug.function('ldap._debug_traceback')
+		tracebackFile = '/var/log/univention/connector-tracebacks.log'
+
+		univention.debug.debug(univention.debug.LDAP, level , text)
+		univention.debug.debug(univention.debug.LDAP, level , ' --  for details see %s -- ' % tracebackFile)		
+		
 		lines = apply(traceback.format_exception, exc_info)
 		text = text + '\n'
 		for line in lines:
 			text += line
-		univention.debug.debug(univention.debug.LDAP, level , text)
+
+		text = str( time.asctime(time.localtime())) + "\n" + text
+                f = open( tracebackFile, 'a' )
+                print >>f, text
+                f.close()			
+
 
 	def _get_rdn(self,dn):
 		_d=univention.debug.function('ldap._get_rdn')
@@ -786,7 +796,10 @@ class ucs:
 	def modify_in_ucs(self, property_type, object, module, position):
 		_d=univention.debug.function('ldap.modify_in_ucs')
 		module = self.modules[property_type]
-		ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
+		if object.has_key('olddn'):
+			ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
+		else:
+			ucs_object=univention.admin.objects.get(module, None, self.lo, dn=object['dn'], position='')
 		self.__set_values(property_type,object,ucs_object)
 		return ucs_object.modify() and self.__modify_custom_attributes(property_type, object, ucs_object, module, position)
 
@@ -850,8 +863,11 @@ class ucs:
 		if self.property[property_type].sync_mode in ['write', 'none']:
 			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_to_ucs ignored, sync_mode is %s" % self.property[property_type].sync_mode)
 			return True
-		
-		old_object = self.get_ucs_object(property_type,object['dn'])
+
+		if object.has_key('olddn'):
+			old_object = self.get_ucs_object(property_type,object['olddn'])
+		else:
+			old_object = self.get_ucs_object(property_type,object['dn'])
 		if old_object and object['modtype'] == 'add':
 			object['modtype'] = 'modify'
 		if not old_object and object['modtype'] == 'modify':
@@ -865,8 +881,10 @@ class ucs:
 		
 		module = self.modules[property_type]
 		position=univention.admin.uldap.position(self.baseConfig['ldap/base'])
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,'sync_to_ucs: set position to %s' % object['dn'][string.find(object['dn'],',')+1:].lower())
-		position.setDn(object['dn'][string.find(object['dn'],',')+1:].lower())
+
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+				       'sync_to_ucs: set position to %s' % string.join( ldap.explode_dn( object['dn'] )[1:], "," ) )
+		position.setDn( string.join( ldap.explode_dn( object['dn'] )[1:], "," ) ) 
 
 		try:
 			result = False

@@ -1,3 +1,36 @@
+univention-ad-connector (1.2.3) unstable; urgency=low
+
+  * seperated search for uSNCreated and uSNChanged during poll
+  * sync group memberships ("memberOf") after syncing users and groups
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 21 Apr 2008 16:54:54 +0200
+
+univention-ad-connector (1.2.2-10) unstable; urgency=low
+
+  * don't try to get GUID manually for deleted objects if it is already given
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 19 Mar 2008 09:36:11 +0100
+
+univention-ad-connector (1.2.2-9) unstable; urgency=low
+
+  * don't send GUID to univention-debug
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Mar 2008 15:25:17 +0100
+
+univention-ad-connector (1.2.2-8) unstable; urgency=low
+
+  * write tracebacks without univention-debug to /var/log/univention/connector-tracebacks.log
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 18 Mar 2008 09:32:46 +0100
+
+univention-ad-connector (1.2.2-7) unstable; urgency=low
+
+  * add differentiation for users and groups in group-memberships
+  * use functions from python-ldap to explode DNs
+  * detect rename of OU/CN as modification instead of a move
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu, 13 Mar 2008 16:36:04 +0100
+
 univention-ad-connector (1.2.2-6) unstable; urgency=low
 
   * remove extra filter-mapping for object-deletion

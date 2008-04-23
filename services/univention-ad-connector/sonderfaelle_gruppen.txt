@@ -1,0 +1,70 @@
+Allgemein:
+
+Die beschriebenen Fälle sind Besonderheiten bei der Synchronisation von Gruppenmitgliedschaften. Sie können anstelle eines "Users" auch bei verschachtelten Gruppen oder Computer-Accounts auftreten.
+
+Die Behandlung der Fälle muss sowohl beim initialen als auch beim laufenden Sync kokrrekt sein. Da aber in beiden Fällen die definierten Änderungen im Zuge eines Sync ("poll") synchronisiert werden könnten, ist die Problemstellung identisch.
+
+======= Fälle =======
+
+1)
+- Gruppe A anlegen
+- User anlegen mit prim. Gr. A
+- Gruppe B Anlegen
+- User prim. Gruppe B zuweisen
+
+2)
+- Gruppe A anlegen
+- Gruppe B anlegen
+- User anlegen mit prim. Gr. A
+- User in Gruppe B aufnehmen 
+
+3)
+- Gruppe A anlegen
+- Gruppe B anlegen
+- User anlegen mit prim. Gr. A
+- User in Gruppe B aufnehmen 
+- Beschreibung an User ändern 
+
+4)
+- Gruppe A anlegen
+- Gruppe B anlegen
+- User anlegen mit prim. Gr. A - User wird aus anderem Grund rejected
+- User in Gruppe B aufnehmen 
+- Beschreibung an User ändern 
+
+Dieser Fall kann vergleichbar auftreten wenn der User selektiv von AD nach UCS synchronisiert wird.
+
+
+======= Suche nach usnChanged und usnCreated (aktuelles Vorgehen) =======
+
+Der Filter ist: '(&(|(uSNChanged>=%s)(uSNCreated>=%s))(uSNChanged<=%s))' %(lastUSN+1,lastUSN+1,tmpUSN)
+Gesucht wird also nach uSNChanged zwischen lastUSN und tmpUSN sowie nach Objekten mit uSNCreated größer lastUSN und uSNChaged kleiner tmpUSN. Letzteres dürfte kaum auftreten, eigentlich wird fast nur nach usnChanged gesucht.
+
+1) Der User würde initial vor seiner primären Gruppe synchronisiert und daher beim Anlegen rejected.
+
+2) Beim initialen Sync wird Gruppe B ohne den User synchronisiert, da dieser noch nicht im UCS angelegt ist.
+
+3) Gruppe B sollte nach dem User "nochmal" synchronisiert werden, Sync sollte daher korrekt sein
+
+4) ein Resync des Users legt ihn nicht in Gruppe B
+
+======= Suche nur nach usnChanged =======
+
+1) korrekter Sync
+
+2) korrekter Sync
+
+3) User wird nach der Gruppe B synchronisert, also die Gruppenmitgliedschaft in B nicht vermerkt
+
+4) ein Resync des Users legt ihn nicht in Gruppe B
+
+======= Suche zuerst nach usnCreated, dann nach usnChanged =======
+
+1) korrekter Sync
+
+2) korrekter Sync
+
+3) korrekter Sync
+
+4) ein Resync des Users legt ihn nicht in Gruppe B
+ -> Sync von Benutzern erfordert immer auch ein Prüfen aller Gruppen in denen er ist.

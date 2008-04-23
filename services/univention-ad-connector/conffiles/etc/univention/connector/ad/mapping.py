@@ -88,20 +88,21 @@ ad_mapping = {
 						),
 				},
 
-			ucs_create_functions = [ 	univention.connector.set_ucs_passwd_user,
-										univention.connector.check_ucs_lastname_user,
-										univention.connector.set_primary_group_user
-										],
+			ucs_create_functions = [ univention.connector.set_ucs_passwd_user,
+						 univention.connector.check_ucs_lastname_user,
+						 univention.connector.set_primary_group_user
+						 ],
 
-			post_con_modify_functions=[ 	univention.connector.ad.password.password_sync_ucs,
-											univention.connector.ad.primary_group_sync_from_ucs,
-											univention.connector.ad.disable_user_from_ucs,
-											],
+			post_con_modify_functions=[ univention.connector.ad.password.password_sync_ucs,
+						    univention.connector.ad.primary_group_sync_from_ucs,
+						    univention.connector.ad.disable_user_from_ucs,
+						    ],
 
 			post_ucs_modify_functions=[ univention.connector.ad.password.password_sync,
-										univention.connector.ad.primary_group_sync_to_ucs,
-										univention.connector.ad.disable_user_to_ucs,
-										],
+						    univention.connector.ad.primary_group_sync_to_ucs,
+						    univention.connector.ad.object_memberships_sync_to_ucs,
+						    univention.connector.ad.disable_user_to_ucs,
+						    ],
 
 			post_attributes={
 					'organisation': univention.connector.attribute (
@@ -198,7 +199,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 
 			post_con_modify_functions=[ univention.connector.ad.group_members_sync_from_ucs ],
 
-			post_ucs_modify_functions=[ univention.connector.ad.group_members_sync_to_ucs ],
+			post_ucs_modify_functions=[ univention.connector.ad.group_members_sync_to_ucs, univention.connector.ad.object_memberships_sync_to_ucs ],
 
 			dn_mapping_function=[ univention.connector.ad.group_dn_mapping ],
 
