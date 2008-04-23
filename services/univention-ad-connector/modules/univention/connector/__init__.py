@@ -461,20 +461,42 @@ class ucs:
 		old = recode_attribs(old)
 
 		key=None
-		for k in self.property.keys():
-			if not new:
-				change_type="delete"
+		if not new:
+			change_type="delete"
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: objected was deleted")
+			for k in self.property.keys():
 				if self.modules[k].identify(unicode(dn,'utf8'), old):
 					key=k
 					break
-			else:
-				if old and new:
-					change_type="modify"
-				else:
-					change_type="add"
+		else:
+			for k in self.property.keys():
 				if self.modules[k].identify(unicode(dn,'utf8'), new):
 					key=k
 					break
+			#univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: old: %s" % old)
+			#univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: new: %s" % new)
+			if old and new:
+				change_type = "modify"
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: objected was modified")
+				if old_dn and not old_dn == dn:
+					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: objected was moved")
+					# object was moved
+					new_object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
+					old_object = { 'dn': unicode(old_dn,'utf8'), 'modtype': change_type, 'attributes': old}
+					if self._ignore_object(key, new_object):
+						# moved into ignored subtree, delete:
+						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: moved object is now ignored, will delete it")
+						change_type = 'delete'
+					
+					if self._ignore_object(key, old_object):
+						# moved from ignored subtree, add:
+						univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: moved object was ignored, will add it")
+						change_type = 'add'
+				
+			else:
+				change_type="add"
+				old_dn = '' # there may be an old_dn if object was moved from ignored container
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "__sync_file_from_ucs: objected was added")
 
 		if key:
 			if change_type == 'delete':
@@ -482,7 +504,7 @@ class ucs:
 			else:
 				object = { 'dn': unicode(dn,'utf8'), 'modtype': change_type, 'attributes': new}
 
-			if old_dn:
+			if change_type == 'modify' and old_dn:
 				object['olddn'] = unicode(old_dn, 'utf8') # needed for correct samaccount-mapping
 
 			if not self._ignore_object(key,object):

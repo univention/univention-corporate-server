@@ -1037,14 +1037,28 @@ class ad(univention.connector.ucs):
 		sync group membership in AD if object was changend in UCS
 		"""
 		_d=univention.debug.function('ldap.object_memberships_sync_from_ucs')
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_memberships_sync_from_ucs: object: %s" % object)
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+				       "object_memberships_sync_from_ucs: object: %s" % object)
 
-		if object['attributes'].has_key('memberOf'):
-			for groupDN in object['attributes']['memberOf']:
-				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': object['modtype']}
+		# search groups in UCS which have this object as member
+
+		object_ucs = self._object_mapping(key, object)
+
+		ucs_groups_ldap = self.lo.search(filter='(&(objectClass=univentionGroup)(uniqueMember=%s))' % object_ucs['dn'])
+
+		if ucs_groups_ldap == []:
+			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+					       "object_memberships_sync_from_ucs: No group-memberships in UCS for %s" % object['dn'])
+			return
+
+		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO,
+				       "object_memberships_sync_from_ucs: is member in %s groups " % len(ucs_groups_ldap))
+		for groupDN, attributes in ucs_groups_ldap:
+			if groupDN not in ['None','',None]:
+				ad_object = { 'dn' : groupDN, 'attributes': attributes, 'modtype': 'modify'}
 				if not self._ignore_object( 'group', ad_object ):
-					sync_object = self._object_mapping( 'group' , ad_object )
-					self.group_members_sync_to_ucs( 'group', sync_object )
+					sync_object = self._object_mapping( 'group' , ad_object, 'ucs' )
+					self.group_members_sync_from_ucs( 'group', sync_object )
 		
 
 	def group_members_sync_from_ucs(self, key, object): # object mit ad-dn
@@ -1228,7 +1242,7 @@ class ad(univention.connector.ucs):
 
 		if object['attributes'].has_key('memberOf'):
 			for groupDN in object['attributes']['memberOf']:
-				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': object['modtype']}
+				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': 'modify'}
 				if not self._ignore_object( 'group', ad_object ):
 					sync_object = self._object_mapping( 'group' , ad_object )
 					self.group_members_sync_to_ucs( 'group', sync_object )
