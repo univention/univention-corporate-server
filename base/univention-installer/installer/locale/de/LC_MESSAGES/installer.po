@@ -1043,12 +1043,12 @@ msgid "Password for root (retype):"
 msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
 
 #: installer/modules/11_basis.py:146
-msgid "Please insert a valid Hostname."
-msgstr "Bitte geben Sie einen gültigen Systemnamen an."
+msgid "Please insert a valid hostname in lowercase."
+msgstr "Bitte geben Sie einen gültigen, kleingeschriebenen Systemnamen an."
 
 #: installer/modules/11_basis.py:151
-msgid "Please insert a valid Domainname."
-msgstr "Bitte geben Sie einen gültigen Domänennamen an."
+msgid "Please insert a valid domainname in lowercase."
+msgstr "Bitte geben Sie einen gültigen, kleingeschriebenen Domänennamen an."
 
 #: installer/modules/11_basis.py:156
 msgid "The length of host and domainname is greater then 64."

@@ -1,3 +1,9 @@
+univention-installer (1.9.1-8) unstable; urgency=low
+
+  * lowercase hostname and domainname, uppercase windows_domain in dialog
+
+ -- Arvid Requate <requate@univention.de>  Wed, 23 Apr 2008 16:34:16 +0200
+
 univention-installer (1.9.1-7) unstable; urgency=low
 
   * switch to ''-quoting for profile variables
