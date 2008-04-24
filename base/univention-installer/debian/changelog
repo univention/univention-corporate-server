@@ -1,3 +1,9 @@
+univention-installer (1.9.1-9) unstable; urgency=low
+
+  * fixed wrong translation strings
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Apr 2008 09:54:43 +0200
+
 univention-installer (1.9.1-8) unstable; urgency=low
 
   * lowercase hostname and domainname, uppercase windows_domain in dialog

@@ -226,7 +226,8 @@ class object(content):
 			disksizeall += disksize
 		self.debug('disklist=%s' % disklist)
 		if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN:
-			result = _('not enough space for autopartitioning: sum of disk sizes=%s  required=%s') % (disksizeall, PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN)
+			result = _('not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  required=%(required)s') % { 'disksizeall': disksizeall,
+																															  'required': (PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN) }
 			self.debug( result)
 			return result
 
