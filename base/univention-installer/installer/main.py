@@ -53,7 +53,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -72,7 +72,7 @@ if len(sys.argv) > 1:
 			cmdline['profile']='usb'
 		elif opt == '--noprobe':
 			cmdline['noprobe']=1
-		elif opt == '--loadmodules':
+		elif opt == '--loadmodules' or opt == '--loadmodule':
 			cmdline['loadmodules']=val
 		elif opt == '--nfspath':
 			cmdline['nfspath']=val
@@ -119,9 +119,9 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['profile']='usb'
 		elif opt == 'noprobe':
 			cmdline['noprobe']=1
-		elif opt == 'loadmodules' and val:
+		elif (opt == 'loadmodules' or opt == 'loadmodule') and val:
 			cmdline['loadmodules']=val.strip('\'"')
-		elif opt == 'excludemodules' and val:
+		elif (opt == 'excludemodules' or opt == 'excludemodule') and val:
 			cmdline['excludemodules']=val.strip('\'"')
 		elif opt == 'nfspath' and val:
 			cmdline['nfspath']=val.strip('\'"')
