@@ -491,7 +491,7 @@ class mods:
 	def input(self,key):
 		if key == 27 and hasattr(self.obj[self.current],"sub"):
 			self.obj[self.current].kill_subwin()
-		elif key in [ 3, 9, 10, 27 ] + range(32,277) + [ 360 ]:
+		elif key in [ 3, 9, 10, 27 ] + range(32,277) + [ 338, 339, 360 ]:
 			return self.obj[self.current].input(key)
 
 	def write_profile(self, profile_mode=0):
