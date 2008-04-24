@@ -46,6 +46,12 @@ Description[en]=
 Type=str
 Categories=AD-Connector
 
+[connector/ad/mapping/user/win2000/description]
+Description[de]=Konfiguriert, ob der Abgleich von Benutzer-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
+Description[en]=
+Type=str
+Categories=AD-Connector
+
 [connector/ad/mapping/group/primarymail]
 Description[de]=Konfiguriert, ob die Synchronisation der primären Mailadresse von Gruppen durchgeführt werden soll (default: false).
 Description[en]=
@@ -54,6 +60,12 @@ Categories=AD-Connector
 
 [connector/ad/mapping/group/language]
 Description[de]=Konfiguriert, ob ein Mapping der englischen Standardgruppen im UCS auf anderssprachige Standardgruppen im AD durchgeführt werden soll (default: de).
+Description[en]=
+Type=str
+Categories=AD-Connector
+
+[connector/ad/mapping/group/win2000/description]
+Description[de]=Konfiguriert, ob der Abgleich von Gruppen-Beschreibungen bei der Synchronisation mit Windows 2000 Domänencontrolern aktiviert werden soll.
 Description[en]=
 Type=str
 Categories=AD-Connector

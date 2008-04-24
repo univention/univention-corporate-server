@@ -130,7 +130,7 @@ if baseConfig.has_key('connector/ad/mapping/user/exchange') and baseConfig['conn
 							con_attribute='mailNickname',
 					),
 					"""
-if not baseConfig.has_key('connector/ad/windows_version') or baseConfig['connector/ad/windows_version'] != 'win2000':
+if not baseConfig.has_key('connector/ad/windows_version') or baseConfig['connector/ad/mapping/user/win2000/description'].lower() in ['yes', 'true'] or baseConfig['connector/ad/windows_version'] != 'win2000':
 	print """
 					'description': univention.connector.attribute (
 						ucs_attribute='description',
@@ -212,12 +212,15 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 							required=1,
 							compare_function=univention.connector.compare_lowercase,
 						),
+						@!@
+if not baseConfig.has_key('connector/ad/windows_version') or baseConfig['connector/ad/mapping/group/win2000/description'].lower() in ['yes', 'true'] or baseConfig['connector/ad/windows_version'] != 'win2000':
+	print """
 					'description': univention.connector.attribute (
 							ucs_attribute='description',
 							ldap_attribute='description',
 							con_attribute='description',
 						),
-						@!@
+					"""
 if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['connector/ad/mapping/group/primarymail'] in ['yes','true']:
 	print """
 					'mailAddress': univention.connector.attribute (
