@@ -1058,7 +1058,9 @@ class ad(univention.connector.ucs):
 				ad_object = { 'dn' : groupDN, 'attributes': attributes, 'modtype': 'modify'}
 				if not self._ignore_object( 'group', ad_object ):
 					sync_object = self._object_mapping( 'group' , ad_object, 'ucs' )
-					self.group_members_sync_from_ucs( 'group', sync_object )
+					sync_object_ad = self.get_object( sync_object['dn'] )
+					if sync_object_ad:
+						self.group_members_sync_from_ucs( 'group', sync_object )
 		
 
 	def group_members_sync_from_ucs(self, key, object): # object mit ad-dn
