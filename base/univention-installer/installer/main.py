@@ -351,8 +351,9 @@ class mods:
 	def header(self):
 		codename = "common beech"
 		if self.cmdline.has_key('product') and self.cmdline['product'].lower() == "ugs":
-			return objects.headline(_(' UCS - %s (%s)' % (codename, self.cmdline.get('version', ''))),max_y/2-12,max_x/2-35)
-		return objects.headline(_(' Univention Corporate Server %s (%s)' % (self.cmdline.get('version', ''), codename)),max_y/2-12,max_x/2-35)
+			return objects.headline(_(' UCS - %(codename)s (%(version)s)') % { 'codename': codename,
+																			   'version': self.cmdline.get('version', '')}, max_y/2-12,max_x/2-35)
+		return objects.headline(_(' Univention Corporate Server %(version)s (%(codename)s)') % {'version': self.cmdline.get('version', ''), 'codename': codename }, max_y/2-12,max_x/2-35)
 
 	def footer(self, last):
 		if last[0]==0: # first

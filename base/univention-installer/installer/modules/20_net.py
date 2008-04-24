@@ -868,7 +868,7 @@ class object(content):
 		def layout(self):
 			MAXIP=18
 			# 1. Nameserver/DNS-Fwd
-			self.elements.append(textline(_('1. %s' %self.type),self.pos_y+2,self.pos_x+2)) #0
+			self.elements.append(textline( _('1. %s') % self.type,self.pos_y+2,self.pos_x+2)) #0
 			if self.type == 'Nameserver':
 				server=self.parent.elements[10].result().strip()
 			elif self.type == 'DNS-Forwarder':
@@ -877,7 +877,7 @@ class object(content):
 				server=''
 			self.elements.append(textline(server,self.pos_y+2,self.pos_x+20)) #1
 			# 2.Nameserver/DNS-Fwd
-			self.elements.append(textline(_('2. %s' %self.type),self.pos_y+3,self.pos_x+2)) #2
+			self.elements.append(textline( _('2. %s') % self.type,self.pos_y+3,self.pos_x+2)) #2
 			if self.type == 'Nameserver' and self.parent.dns.has_key('nameserver_2') and self.parent.dns['nameserver_2']:
 				self.elements.append(input(self.parent.dns['nameserver_2'],self.pos_y+3,self.pos_x+20,MAXIP)) #3
 			elif self.type == 'DNS-Forwarder' and self.parent.dns.has_key('dns_forwarder_2') and self.parent.dns['dns_forwarder_2']:
@@ -885,7 +885,7 @@ class object(content):
 			else:
 				self.elements.append(input('',self.pos_y+3,self.pos_x+20,MAXIP)) #3
 			# 3. Nameserver/DNS-Fwd
-			self.elements.append(textline(_('3. %s' %self.type),self.pos_y+4,self.pos_x+2)) #4
+			self.elements.append(textline(_('3. %s') % self.type,self.pos_y+4,self.pos_x+2)) #4
 			if self.type == 'Nameserver' and self.parent.dns.has_key('nameserver_3') and self.parent.dns['nameserver_3']:
 				self.elements.append(input(self.parent.dns['nameserver_3'],self.pos_y+4,self.pos_x+20,MAXIP)) #5
 			elif self.type == 'DNS-Forwarder' and self.parent.dns.has_key('dns_forwarder_3') and self.parent.dns['dns_forwarder_3']:
@@ -901,7 +901,7 @@ class object(content):
 		def helptext(self):
 			return self.parent.helptext()
 		def modheader(self):
-			return _(' More %ss'%self.type)
+			return _( ' More %ss' ) % self.type
 		def put_result(self):
 			result={}
 			i=2
