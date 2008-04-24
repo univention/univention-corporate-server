@@ -1245,7 +1245,11 @@ class ad(univention.connector.ucs):
 				ad_object = { 'dn' : groupDN, 'attributes': self.get_object(groupDN), 'modtype': 'modify'}
 				if not self._ignore_object( 'group', ad_object ):
 					sync_object = self._object_mapping( 'group' , ad_object )
-					self.group_members_sync_to_ucs( 'group', sync_object )
+					ldap_object_ucs = self.get_ucs_ldap_object( sync_object['dn'] )
+					# check if group exists in UCS, may fail
+					# if the group will be synced later
+					if ldap_object_ucs:
+						self.group_members_sync_to_ucs( 'group', sync_object )
 		
 	def group_members_sync_to_ucs(self, key, object):
 		"""
