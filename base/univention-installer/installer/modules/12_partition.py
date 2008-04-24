@@ -2317,7 +2317,9 @@ class object(content):
 						return True
 
 					# check if PV is empty
-					if pv['allocPE'] > 0 and not force:
+					self.parent.debug( 'pv_delete: remaining LV: %s' % self.container['lvm']['vg'][ vgname ]['lv'].keys() )
+					self.parent.debug( 'pv_delete: allocPE: %s' % pv['allocPE'] )
+					if len(self.container['lvm']['vg'][ vgname ]['lv']) > 0 and pv['allocPE'] > 0 and not force:
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
 									_('Physical volume contains used physical extents!'),
