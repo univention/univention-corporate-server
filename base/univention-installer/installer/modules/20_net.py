@@ -37,6 +37,7 @@
 import objects, re, string, curses
 from objects import *
 from local import _
+import inspect
 
 class object(content):
 
@@ -52,6 +53,12 @@ class object(content):
 
 		#For more nameservers and dns-forwarders
 		self.dns={}
+
+	def debug(self, txt):
+		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
+		line = info[1]
+		content.debug(self, 'NETWORK:%d: %s' % (line,txt))
+
 	def start(self):
 		for i in range(0,4):
 			if self.all_results.has_key('eth%d_type' % i) and (self.all_results['eth%d_type' % i] == 'dynamic' or self.all_results['eth%d_type' % i] == 'dhcp'):
@@ -149,31 +156,14 @@ class object(content):
 				if not self.ignore('dsn_forwarder_1'):
 					self.message=invalid+_("DNS-Forwarder")
 					return False
-		if self.all_results['proxy_http'].strip() and (self.all_results['proxy_http'].strip() !='http://' and self.all_results['proxy_http'].strip() !='https://'): 
-			proxy=self.all_results['proxy_http'].strip()
+
+		proxy = self.all_results['proxy_http'].strip()
+		self.debug('PROXY=%s' % proxy)
+		if proxy and proxy !='http://' and proxy !='https://':
 			if not (proxy.startswith('http://') or proxy.startswith('https://')):
 				if not self.ignore('proxy_http'):
+					self.debug('PROXY INVALID!')
 					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
-					return False
-			else:
-				if proxy.startswith('https://'):
-					proxy=proxy.replace('https://','')
-				elif proxy.startswith('http://'):
-					proxy=proxy.replace('http://','')
-
-			proxy=proxy.split(':')
-			if len(proxy) != 2:
-				if not self.ignore('proxy_http'):
-					self.message=invalid+_('Proxy, example http://10.201.1.1:8080')
-					return False
-			if not self.is_ip(proxy[0]):
-				if not self.is_hostname(proxy[0]):
-					if not self.ignore('proxy_http'):
-						self.message=invalid+_('Proxy, for example http://10.201.1.1:8080')
-						return False
-			if not self.is_port(proxy[1]):
-				if not self.ignore('proxy_http'):
-					self.message=invalid+_('Proxy, for example http://10.201.1.1:8080')
 					return False
 
 		_re=re.compile('eth.*_ip')
@@ -274,7 +264,7 @@ class object(content):
 		self.container['Gateway']=[self.elements[8].result().strip()]
 		self.container['Nameserver']=[self.elements[10].result().strip()]
 		self.container['DNS-Forwarder']=[self.elements[13].result().strip()]
-		self.container['proxy/http']=[self.elements[16].result().strip()]
+		self.container['proxy_http']=[self.elements[16].result().strip()]
 		self.container['current']=self.current
 		if self.already_redraw:
 			self.already_redraw=1
@@ -486,26 +476,12 @@ class object(content):
 		if not self.elements[13].result().strip() == '':
 			if not self.is_ip(self.elements[13].result()):
 				return invalid+_("DNS-Forwarder")
-		if self.elements[16] and self.elements[16].result().strip() and (self.elements[16].result().strip() != 'http://' and self.elements[16].result().strip() != 'https://'):
-			proxy=self.elements[16].result().strip()
-			if not proxy:
-				return 0
-			if not (proxy.startswith('http://') or proxy.startswith('https://')):
+		if self.elements[16]:
+			proxy = self.elements[16].result().strip()
+			self.debug('PROXY=%s' % proxy)
+			if proxy and not proxy.startswith('http://') and not proxy.startswith('https://'):
+				self.debug('INVALID PROXY!')
 				return invalid+_('Proxy, example http://10.201.1.1:8080')
-			
-			if proxy.startswith('http://'):
-				proxy=proxy.replace('http://','')
-			elif proxy.startswith('https://'):
-				proxy=proxy.replace('https://','')
-
-			proxy=proxy.split(':')
-			if len(proxy) != 2:
-				return invalid+_('Proxy, example http://10.201.1.1:8080')
-			if  not self.is_ip(proxy[0]):
-				if not self.is_hostname(proxy[0]):
-					return invalid+_('Proxy, for example http://10.201.1.1:8080')
-			if not self.is_port(proxy[1]):
-				return invalid+_('Proxy, for example http://10.201.1.1:8080')
 
 		if len(self.interfaces) == 0:
 			return _("You have to add one or more network interfaces.")
@@ -559,10 +535,11 @@ class object(content):
 			result['dns_forwarder_1']='%s' %self.elements[13].result().strip()
 		else:
 			result['dns_forwarder_1']=''
-		if self.elements[16].result().strip() and self.elements[16].result().strip() != 'http://':
-			result['proxy_http']='%s' %self.elements[16].result().strip()
-		else:
-			result['proxy_http']=''
+
+		proxy = self.elements[16].result().strip()
+		result['proxy_http']=''
+		if proxy and  proxy != 'http://' and proxy != 'https://':
+			result['proxy_http']='%s' % proxy
 
 		#Fill in more Forwarders and Nameservers
 		for key in self.dns.keys():

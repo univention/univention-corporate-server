@@ -1,3 +1,9 @@
+univention-installer (1.9.3-1) unstable; urgency=low
+
+  * relaxed http_proxy check
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Apr 2008 17:11:39 +0200
+
 univention-installer (1.9.2-1) unstable; urgency=low
 
   * allow keycode 338 and 339 for page up and page down
