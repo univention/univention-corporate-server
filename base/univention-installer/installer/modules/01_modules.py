@@ -75,7 +75,7 @@ class object(content):
 
 	def profile_prerun(self):
 		self.start()
-		if self.cmdline.has_key('loadmodules') and self.cmdline['loadmodules']:
+		if self.cmdline.get('loadmodules'):
 			for m in self.cmdline['loadmodules'].split(' '):
 				if len(m.strip(' ')) > 0:
 					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
@@ -83,8 +83,8 @@ class object(content):
 					self.sub.loadmodule=m
 					self.sub.draw()
 		for m in self.container['hardware']['kudzu']:
-			if self.cmdline.has_key('excludemodule') and self.cmdline['excludemodule']:
-				if m in self.cmdline['excludemodule'].split(' '):
+			if self.cmdline.get('excludemodules'):
+				if m in self.cmdline['excludemodules'].split(' '):
 					continue
 			self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 			self.sub.action='loadmodule'
@@ -275,7 +275,7 @@ class object(content):
 		f=open('/proc/modules')
 		proc_lines=f.readlines()
 		f.close()
-		if self.cmdline.has_key('extramodules') and self.cmdline['extramodules']:
+		if self.cmdline.get('extramodules'):
 			for m in self.cmdline['extramodules'].split(' '):
 				if len(m.strip(' ')) > 0:
 					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
@@ -294,8 +294,8 @@ class object(content):
 						load=0
 						break
 			if load:
-				if self.cmdline.has_key('excludemodule') and self.cmdline['excludemodule']:
-					if m in self.cmdline['excludemodule'].split(' '):
+				if self.cmdline.get('excludemodules'):
+					if m in self.cmdline['excludemodules'].split(' '):
 						continue
 				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
