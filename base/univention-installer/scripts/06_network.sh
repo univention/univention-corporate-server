@@ -32,45 +32,49 @@
 
 ifconfig lo 127.0.0.1 up
 
-set | egrep "^eth.*_type=" | while read line; do
-	network_device=`echo $line | sed -e 's|_type.*||'`
-	if [ -z "$network_device" ]; then
-		continue
-	fi
-	dynamic=`echo $line | sed -e 's|.*=||'`
-	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
-		python2.4 /sbin/univention-config-registry set interfaces/$network_device/type=dhcp
-	fi
-	network_device=`echo $network_device | sed -e 's|_|:|g'`
+# setup physical interfaces during first run
+# setup virtual interfaces during second run
+for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
+    set | egrep "${ifaceregex}type=" | while read line; do
+    	network_device=`echo $line | sed -e 's|_type.*||'`
+    	if [ -z "$network_device" ]; then
+    		continue
+    	fi
+    	dynamic=`echo $line | sed -e 's|.*=||'`
+    	if [ -n "$dynamic" ] && [ "$dynamic" = "dynamic" -o "$dynamic" = "dhcp" ]; then
+    		python2.4 /sbin/univention-config-registry set interfaces/$network_device/type=dhcp
+    	fi
+    	network_device=`echo $network_device | sed -e 's|_|:|g'`
 
-	ifconfig $network_device up
-done
-set | egrep "^eth.*_ip=" | while read line; do
+    	ifconfig $network_device up
+    done
+    set | egrep "${ifaceregex}ip=" | while read line; do
 
-	network_device=`echo $line | sed -e 's|_ip.*||'`
+    	network_device=`echo $line | sed -e 's|_ip.*||'`
 
-	if [ -z "$network_device" ]; then
-		continue
-	fi
+    	if [ -z "$network_device" ]; then
+    		continue
+    	fi
 
-	address=`echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-	netmask=`set | egrep "^${network_device}_netmask=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-	broadcast=`set | egrep "^${network_device}_broadcast=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
-	network=`set | egrep "^${network_device}_network=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
+    	address=`echo $line | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
+    	netmask=`set | egrep "^${network_device}_netmask=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
+    	broadcast=`set | egrep "^${network_device}_broadcast=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
+    	network=`set | egrep "^${network_device}_network=" | sed -e 's|.*=||' | sed -e 's|"||g' | sed -e "s|'||g"`
 
-	if [ -z "$address" ] || [ -z "$netmask" ] || [ -z "$broadcast" ] || [ -z "$network" ]; then
-		continue
-	fi
+    	if [ -z "$address" ] || [ -z "$netmask" ] || [ -z "$broadcast" ] || [ -z "$network" ]; then
+    		continue
+    	fi
 
-	python2.4 /sbin/univention-config-registry set interfaces/$network_device/address=$address
-	python2.4 /sbin/univention-config-registry set interfaces/$network_device/netmask=$netmask
-	python2.4 /sbin/univention-config-registry set interfaces/$network_device/broadcast=$broadcast
-	python2.4 /sbin/univention-config-registry set interfaces/$network_device/network=$network
+    	python2.4 /sbin/univention-config-registry set interfaces/$network_device/address=$address
+    	python2.4 /sbin/univention-config-registry set interfaces/$network_device/netmask=$netmask
+    	python2.4 /sbin/univention-config-registry set interfaces/$network_device/broadcast=$broadcast
+    	python2.4 /sbin/univention-config-registry set interfaces/$network_device/network=$network
 
-	network_device=`echo $network_device | sed -e 's|_|:|g'`
+    	network_device=`echo $network_device | sed -e 's|_|:|g'`
 
-	ifconfig $network_device $address netmask $netmask broadcast $broadcast up
+    	ifconfig $network_device $address netmask $netmask broadcast $broadcast up
 
+    done
 done
 
 if [ -n "$gateway" ]; then

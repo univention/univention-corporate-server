@@ -1,3 +1,9 @@
+univention-installer (1.9.1-13) unstable; urgency=low
+
+  * fixed setup of virtual network interfaces
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 24 Apr 2008 15:49:25 +0200
+
 univention-installer (1.9.1-12) unstable; urgency=low
 
   * create /etc/udev/rules.d/z25_persistent-net.rules during installation
