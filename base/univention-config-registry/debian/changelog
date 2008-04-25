@@ -1,3 +1,9 @@
+univention-config-registry (2.6.8-5) unstable; urgency=low
+
+  * add encoding option for filter/templates
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 25 Apr 2008 08:54:40 +0200
+
 univention-config-registry (2.6.8-4) unstable; urgency=low
 
   * added ldapsearch-decode64 wrapper

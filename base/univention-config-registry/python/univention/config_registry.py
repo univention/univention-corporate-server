@@ -364,6 +364,7 @@ class configHandlerMultifile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
+		self.encode_utf8 = False
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -388,12 +389,16 @@ class configHandlerMultifile(configHandler):
 			st = None
 		to_fp = open(self.to_file, 'w')
 
+		filter_opts = {}
+		if self.encode_utf8:
+			filter_opts['encode-utf8'] = True
+
 		for from_file in self.from_files:
 			try:
 				from_fp = open(from_file)
 			except IOError:
 				continue
-			to_fp.write(filter(from_fp.read(), bc, self.from_files))
+			to_fp.write(filter(from_fp.read(), bc, srcfiles = self.from_files, opts = filter_opts))
 
 		if self.user or self.group or self.mode:
 			if self.mode:
@@ -417,6 +422,7 @@ class configHandlerFile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
+		self.encode_utf8 = False
 
 	def __call__(self, args):
 		bc, changed = args
@@ -437,7 +443,13 @@ class configHandlerFile(configHandler):
 			return None
 		from_fp = open(self.from_file)
 		to_fp = open(self.to_file, 'w')
-		to_fp.write(filter(from_fp.read(), bc, [self.from_file]))
+
+		filter_opts = {}
+		if self.encode_utf8:
+			filter_opts['encode-utf8'] = True
+
+		to_fp.write(filter(from_fp.read(), bc, srcfiles = [self.from_file], opts = filter_opts))
+
 		if self.user or self.group or self.mode:
 			if self.mode:
 				os.chmod(self.to_file, self.mode)
@@ -574,6 +586,8 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0], 8)
+			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
+				object.encode_utf8 = True
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
@@ -605,6 +619,8 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0])
+			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
+				object.encode_utf8 = True
 			self._multifiles[entry['Multifile'][0]] = object
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
