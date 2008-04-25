@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0.0-9) unstable; urgency=low
+
+  * fixed typo in config option
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Apr 2008 09:39:16 +0200
+
 univention-kolab2-webclient (2.0.0-8) unstable; urgency=low
 
   * added script syncml_interrupt.sh for detecting syncml interrupts
