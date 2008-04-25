@@ -32,6 +32,12 @@
 import gettext
 import sys
 
+def debug(text):
+	file='/tmp/installer.log'
+	f=open(file, 'a+')
+	f.write("%s\n" % text)
+	f.close()
+
 def _(val):
 	try:
 		try:
@@ -40,6 +46,6 @@ def _(val):
 			t=gettext.translation('installer', 'locale' )
 		newval=t.gettext(val)
 	except:
-		#sys.stderr.write("could not translate string: \"%s\"\n"%val)
+		debug("could not translate string: \"%s\"\n" % val)
 		newval=val
 	return  newval
