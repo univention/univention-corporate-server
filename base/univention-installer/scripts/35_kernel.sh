@@ -56,6 +56,8 @@ loaded_modules=$(echo $loaded_modules | sed -e 's| |;|g')
 if [ -n "$modules" ]; then
 	modules=$(echo $modules | sed -e 's| |;|g')
 fi
+export loaded_modules
+export modules
 
 if [ -n "$kernel_version" ]; then
 	v=`echo $kernel_version | grep ^2.4`
@@ -94,10 +96,10 @@ cat >>/instmnt/install_kernel.sh <<__EOT__
 export DEBIAN_FRONTEND=noninteractive
 
 if [ -n "$loaded_modules" ]; then
-	univention-config-registry set mkinird/modules="$loaded_modules"
+	univention-config-registry set mkinitrd/modules="$loaded_modules"
 fi
-if [ -n "$module" ]; then
-	univention-config-registry set kernel/modules="$module"
+if [ -n "$modules" ]; then
+	univention-config-registry set kernel/modules="$modules"
 fi
 
 if [ "$architecture" = "powerpc" ]; then

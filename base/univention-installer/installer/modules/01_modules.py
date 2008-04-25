@@ -38,6 +38,7 @@ import objects
 import time
 from objects import *
 from local import _
+import inspect
 
 import os, string
 
@@ -69,6 +70,11 @@ class object(content):
 	#def tab():
 	#def btn_next():
 	#def btn_back():
+
+	def debug(self, txt):
+		info = inspect.getframeinfo(inspect.currentframe().f_back)[0:3]
+		line = info[1]
+		content.debug(self, 'MODULES:%d: %s' % (line,txt))
 
 	def checkname(self):
 		return ['modules']
@@ -253,7 +259,12 @@ class object(content):
 
 	def result(self):
 		result={}
-		result['modules']="%s"%string.join(self.elements[3].result()," ")
+		modlist = []
+		# cut off slashes in module list
+		for mod in self.elements[3].result():
+			modlist.append( mod.split('/')[-1] )
+		result['modules'] = " ".join(modlist)
+		self.debug('Final module list = %s' % result['modules'])
 		return result
 
 	def start(self):
