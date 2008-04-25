@@ -281,7 +281,7 @@ def directoryFiles(dir):
 	os.path.walk(dir, _walk, all)
 	return all
 
-def filter(template, dir, srcfiles=[]):
+def filter(template, dir, srcfiles=[], opts = {}):
 
 	while 1:
 		i = variable_token.finditer(template)
@@ -311,6 +311,8 @@ def filter(template, dir, srcfiles=[]):
 			end = i.next()
 
 			child_stdin, child_stdout = os.popen2('/usr/bin/python2.4', 'w+')
+			if opts.get( 'encode-utf8', False ):
+				child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
@@ -929,7 +931,7 @@ def validateKey(k):
 def handler_filter( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
-	sys.stdout.write(filter(sys.stdin.read(), b))
+	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
 
 def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
@@ -1010,9 +1012,9 @@ Actions:
 	rebuild configuration file from univention template; if
 	no file is specified ALL configuration files are rebuilt
 
-  filter [--encoding=<encoding>] [file]:
-	evaluate a template file, optionaly use the specified
-	encoding (default: US-ASCII)
+  filter [--encode-utf8] [file]:
+	evaluate a template file, optionaly expect python
+	inline code in UTF8 (default: US-ASCII)
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for UCS
@@ -1107,7 +1109,8 @@ def main(args):
 			'unset' : { 'forced' : False,
 						'ldap-policy' : False },
 			'search' : { 'key' : True,
-						 'value' : False }
+						 'value' : False },
+			'filter' : { 'encode-utf8' : False }
 			}
 		# close your eyes ...
 		if not args: args.append( '--help' )
