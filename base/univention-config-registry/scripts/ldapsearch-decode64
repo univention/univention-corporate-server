@@ -1,0 +1,20 @@
+#!/usr/bin/python
+#
+import sys, re, base64
+
+regEx = re.compile('^([a-zA-Z0-9-]*):: (.*)')
+
+try:
+	line = sys.stdin.readline()
+	while line != '':
+		res = regEx.search(line)
+		if res:
+			try:
+				print '%s: %s' % (res.group(1), base64.decodestring(res.group(2)))
+			except:
+				pass
+		else:
+			print line,
+		line = sys.stdin.readline()
+except:
+	sys.stdout.flush()

@@ -281,7 +281,7 @@ def directoryFiles(dir):
 	os.path.walk(dir, _walk, all)
 	return all
 
-def filter(template, dir, srcfiles=[]):
+def filter(template, dir, srcfiles=[], opts = {}):
 
 	while 1:
 		i = variable_token.finditer(template)
@@ -311,6 +311,8 @@ def filter(template, dir, srcfiles=[]):
 			end = i.next()
 
 			child_stdin, child_stdout = os.popen2('/usr/bin/python2.4', 'w+')
+			if opts.get( 'encode-utf8', False ):
+				child_stdin.write('# -*- coding: utf-8 -*-\n')
 			child_stdin.write('import univention.config_registry\n')
 			child_stdin.write('configRegistry = univention.config_registry.ConfigRegistry()\n')
 			child_stdin.write('configRegistry.load()\n')
@@ -362,6 +364,7 @@ class configHandlerMultifile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
+		self.encode_utf8 = False
 
 	def addSubfiles(self, subfiles):
 		for from_file, variables in subfiles:
@@ -386,12 +389,16 @@ class configHandlerMultifile(configHandler):
 			st = None
 		to_fp = open(self.to_file, 'w')
 
+		filter_opts = {}
+		if self.encode_utf8:
+			filter_opts['encode-utf8'] = True
+
 		for from_file in self.from_files:
 			try:
 				from_fp = open(from_file)
 			except IOError:
 				continue
-			to_fp.write(filter(from_fp.read(), bc, self.from_files))
+			to_fp.write(filter(from_fp.read(), bc, srcfiles = self.from_files, opts = filter_opts))
 
 		if self.user or self.group or self.mode:
 			if self.mode:
@@ -415,6 +422,7 @@ class configHandlerFile(configHandler):
 		self.user = None
 		self.group = None
 		self.mode = None
+		self.encode_utf8 = False
 
 	def __call__(self, args):
 		bc, changed = args
@@ -435,7 +443,13 @@ class configHandlerFile(configHandler):
 			return None
 		from_fp = open(self.from_file)
 		to_fp = open(self.to_file, 'w')
-		to_fp.write(filter(from_fp.read(), bc, [self.from_file]))
+
+		filter_opts = {}
+		if self.encode_utf8:
+			filter_opts['encode-utf8'] = True
+
+		to_fp.write(filter(from_fp.read(), bc, srcfiles = [self.from_file], opts = filter_opts))
+
 		if self.user or self.group or self.mode:
 			if self.mode:
 				os.chmod(self.to_file, self.mode)
@@ -572,6 +586,8 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0], 8)
+			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
+				object.encode_utf8 = True
 		elif entry['Type'][0] == 'script':
 			if not entry.has_key('Variables') or not entry.has_key('Script'):
 				return None
@@ -603,6 +619,8 @@ class configHandlers:
 					print 'Warning: failed to convert the groupname %s to the gid' % entry['Group'][0]
 			if entry.has_key('Mode'):
 				object.mode = int(entry['Mode'][0])
+			if entry.has_key('Encode-utf8') and entry['Encode-utf8'][0].lower() in ['true', 'yes'] :
+				object.encode_utf8 = True
 			self._multifiles[entry['Multifile'][0]] = object
 			if self._subfiles.has_key(entry['Multifile'][0]):
 				object.addSubfiles(self._subfiles[entry['Multifile'][0]])
@@ -929,7 +947,7 @@ def validateKey(k):
 def handler_filter( args, opts = {} ):
 	b = ConfigRegistry()
 	b.load()
-	sys.stdout.write(filter(sys.stdin.read(), b))
+	sys.stdout.write(filter(sys.stdin.read(), b, opts = opts))
 
 def handler_search( args, opts = {} ):
 	b = ConfigRegistry()
@@ -980,7 +998,7 @@ Options:
 	print only the keys
 
 Actions:
-  set [--force] <key>=<value> [... <key>=<value>]:
+  set [--forced] <key>=<value> [... <key>=<value>]:
 	set one or more keys to specified values; if a key is non-existent
 	in the configuration registry it will be created
 
@@ -988,7 +1006,7 @@ Actions:
 	retrieve the value of the specified key from the configuration
 	database
 
-  unset <key> [... <key>]:
+  unset [--forced] <key> [... <key>]:
 	remove one or more keys (and its associated values) from
 	configuration database
 
@@ -1009,6 +1027,10 @@ Actions:
   commit [file1 ...]:
 	rebuild configuration file from univention template; if
 	no file is specified ALL configuration files are rebuilt
+
+  filter [--encode-utf8] [file]:
+	evaluate a template file, optionaly expect python
+	inline code in UTF8 (default: US-ASCII)
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for UCS
@@ -1103,7 +1125,8 @@ def main(args):
 			'unset' : { 'forced' : False,
 						'ldap-policy' : False },
 			'search' : { 'key' : True,
-						 'value' : False }
+						 'value' : False },
+			'filter' : { 'encode-utf8' : False }
 			}
 		# close your eyes ...
 		if not args: args.append( '--help' )
