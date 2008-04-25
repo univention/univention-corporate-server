@@ -1,3 +1,9 @@
+univention-installer (1.9.8-2) unstable; urgency=low
+
+  * update the packages_list.py and the translation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Apr 2008 13:27:35 +0200
+
 univention-installer (1.9.8-1) unstable; urgency=low
 
   * do not include usb storage devices if they are not explicitely

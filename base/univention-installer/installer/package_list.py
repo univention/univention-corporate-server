@@ -55,12 +55,12 @@ PackageList=[
 					'Description': _("Automatic Installation for Windows Clients"),
 				},
 				{
-					'Name': _('DC Slave as Samba PDC'),
+					'Name': _('Samba PDC on Non-DC Master'),
 					'Packages': ['univention-samba-slave-pdc'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-					'Description': _("Samba as PDC on a DC Slave"),
+					'Description': _("Samba PDC on Non-DC Master"),
 				},
 				{
 					'Name': _('Winbind'),
@@ -536,7 +536,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['all'],
 					'Possible': ['all'],
-					'Description': _('The Network Mapper'),
+					'Description': _('Archiver/De-Archiver for .zip files'),
 				},
 				{
 					'Name': _('eject'),
