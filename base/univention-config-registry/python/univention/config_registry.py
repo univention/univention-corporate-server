@@ -980,7 +980,7 @@ Options:
 	print only the keys
 
 Actions:
-  set [--force] <key>=<value> [... <key>=<value>]:
+  set [--forced] <key>=<value> [... <key>=<value>]:
 	set one or more keys to specified values; if a key is non-existent
 	in the configuration registry it will be created
 
@@ -988,7 +988,7 @@ Actions:
 	retrieve the value of the specified key from the configuration
 	database
 
-  unset <key> [... <key>]:
+  unset [--forced] <key> [... <key>]:
 	remove one or more keys (and its associated values) from
 	configuration database
 
@@ -1009,6 +1009,10 @@ Actions:
   commit [file1 ...]:
 	rebuild configuration file from univention template; if
 	no file is specified ALL configuration files are rebuilt
+
+  filter [--encoding=<encoding>] [file]:
+	evaluate a template file, optionaly use the specified
+	encoding (default: US-ASCII)
 
 Description:
   univention-config-registry is a tool to handle the basic configuration for UCS
