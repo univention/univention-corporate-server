@@ -1,3 +1,9 @@
+univention-installer (1.9.6-2) unstable; urgency=low
+
+  * use "unset" instead of "export -n" in busybox sh
+
+ -- Arvid Requate <requate@univention.de>  Fri, 25 Apr 2008 09:24:36 +0200
+
 univention-installer (1.9.6-1) unstable; urgency=low
 
   * support the online repository on amd64 installations
