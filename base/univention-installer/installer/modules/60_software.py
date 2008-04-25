@@ -38,7 +38,6 @@
 import objects
 import string
 import os
-import package_list
 from objects import *
 from local import _
 
@@ -85,6 +84,7 @@ class object(content):
 	class active(act_win):
 		def function(self):
 			if self.action == 'preparing-package-list':
+				import package_list
 				filter = True
 				PackagesList = []
 				if not ( self.parent.cmdline.has_key('mode') and self.parent.cmdline['mode'] == 'setup' ):
