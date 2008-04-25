@@ -1,3 +1,9 @@
+univention-installer (1.9.11-1) unstable; urgency=low
+
+  * loaded kernel modules are now passed to installed system correctly
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Apr 2008 16:55:18 +0200
+
 univention-installer (1.9.10-1) unstable; urgency=low
 
   * load the package_list in the active-class, otherwise the translation
