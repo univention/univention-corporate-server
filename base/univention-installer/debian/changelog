@@ -1,3 +1,9 @@
+univention-installer (1.9.3-2) unstable; urgency=low
+
+  * added the online repository to the sources.list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Apr 2008 06:46:13 +0200
+
 univention-installer (1.9.3-1) unstable; urgency=low
 
   * relaxed http_proxy check
