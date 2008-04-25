@@ -1,3 +1,9 @@
+univention-installer (1.9.6-1) unstable; urgency=low
+
+  * support the online repository on amd64 installations
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 25 Apr 2008 09:22:29 +0200
+
 univention-installer (1.9.5-1) unstable; urgency=low
 
   * fixes for the online repository change
