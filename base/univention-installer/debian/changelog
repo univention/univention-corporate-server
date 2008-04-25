@@ -1,4 +1,11 @@
-univention-installer (1.9.6-2) unstable; urgency=low
+univention-installer (1.9.8-1) unstable; urgency=low
+
+  * do not include usb storage devices if they are not explicitely
+    included
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 25 Apr 2008 13:07:53 +0200
+
+univention-installer (1.9.7-1) unstable; urgency=low
 
   * use "unset" instead of "export -n" in busybox sh
 

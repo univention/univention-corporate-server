@@ -214,6 +214,20 @@ class object(content):
 		self.read_profile()
 		return {}
 
+	def get_usb_storage_device_list(self):
+		disklist_usbstorage = []
+		self.debug('looking for usb storage devices')
+		p = os.popen('/lib/univention-installer/usb-device.sh')
+		data = p.read()
+		p.close()
+		for line in data.splitlines():
+			items = line.split(' ')
+			if len(items) >= 4:
+				disklist_blacklist.append( items[-1] )
+		self.debug('found usb storage devices = %s' % disklist_usbstorage)
+		return disklist_usbstorage
+
+
 	def check_space_for_autopart(self):
 		self.debug('checking free space for autopart...')
 		disklist = {}
@@ -493,6 +507,7 @@ class object(content):
 		self.container['temp']={}
 		self.container['selected']=1
 		self.container['autopartition'] = None
+		self.container['autopart_usbstorage'] = None
 		self.container['lvm'] = {}
 		self.container['lvm']['enabled'] = None
 		self.container['lvm']['lvm1available'] = False
@@ -500,11 +515,11 @@ class object(content):
 		self.container['lvm']['ucsvgname'] = None
 		self.container['lvm']['lvmconfigread'] = False
 
-	def profile_autopart(self):
+	def profile_autopart(self, disklist_blacklist = [], part_delete = 'all' ):
 		self.debug('PROFILE BASED AUTOPARTITIONING: full_disk')
 
 		# add all physical partitions for deletion
-		self.all_results['part_delete'] = 'all'
+		self.all_results['part_delete'] = part_delete
 
 		# add all logical volumes for deletion
 		tmpstr = ''
@@ -535,11 +550,14 @@ class object(content):
 		disklist = {}
 		disksizeall = 0.0
 		for diskname, disk in self.container['disk'].items():
-			disksize = 0.0
-			for partname, part in self.container['disk'][diskname]['partitions'].items():
-				disksize += part['size']
-			disklist[diskname] = disksize
-			disksizeall += disksize
+			if diskname in disklist_blacklist:
+				self.debug('AUTOPART-PROFILE: disk %s is blacklisted' % diskname)
+			else:
+				disksize = 0.0
+				for partname, part in self.container['disk'][diskname]['partitions'].items():
+					disksize += part['size']
+				disklist[diskname] = disksize
+				disksizeall += disksize
 		self.debug('AUTOPART-PROFILE: disklist=%s' % disklist)
 
 		# place partitions
@@ -602,7 +620,6 @@ class object(content):
 	def read_profile(self):
 		self.debug('read_profile')
 		self.container['result']={}
-		self.container['profile']['empty']=[]
 		self.container['profile']['delete']={}
 		self.container['profile']['create']={}
 		self.container['profile']['lvmlv']={}
@@ -610,20 +627,31 @@ class object(content):
 		self.container['profile']['lvmlv']['delete']={}
 		auto_part = False
 		device_cnt = 0
+
+		# create disk list with usb storage devices
+		disklist_usbstorage = self.get_usb_storage_device_list()
+
 		if 'auto_part' in self.all_results.keys():
+			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
 			if self.all_results['auto_part'] in [ 'full_disk' ]:
 				auto_part = True
+				self.profile_autopart( disklist_blacklist = disklist_blacklist, part_delete = 'all' )
+			elif self.all_results['auto_part'] in [ 'full_disk_usb' ]:
+				auto_part = True
+				self.profile_autopart( disklist_blacklist = [], part_delete = 'all_usb' )
+		else:
+			self.debug('read_profile: no auto_part key found')
 
-				self.profile_autopart()
-
-		self.debug('read_profile: no autopart')
 		for key in self.all_results.keys():
 			self.debug('read_profile: key=%s' % key)
 			delete_all_lvmlv = False
 			if key == 'part_delete':
 				delete=self.all_results['part_delete'].replace("'","").split(' ')
 				for entry in delete:
-					if entry == 'all': # delete all existing partitions
+					if entry in [ 'all', 'all_usb' ]: # delete all existing partitions (all_usb) or all existing partitions exclusive usb storage devices (all)
+						# PLEASE NOTE:
+						# part_delete=all does also delete ALL logical volumes and ALL volume groups on any LVMPV.
+						# Even if LVMPV is located on a usb storage device LVMLV and LVMVG will be deleted!
 
 						# if all partitions shall be deleted all volumegroups prior have to be deleted
 						if not self.all_results.has_key('lvmlv_delete'):
@@ -634,23 +662,34 @@ class object(content):
 							self.all_results['lvmlv_delete'] = s.strip()
 
 						for disk in self.container['disk'].keys():
-							if len(self.container['disk'][disk]['partitions'].keys()):
-								self.container['profile']['delete'][disk]=[]
-							for part in self.container['disk'][disk]['partitions'].keys():
-								if self.container['disk'][disk]['partitions'][part]['num'] > 0:
-									self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
-						self.container['profile']['empty'].append('all')
+							# continue if usb storage devices shall also be deleted or
+							# disk is not in usb storage device list
+							if entry == 'all' and disk in disklist_usbstorage:
+								self.debug('read_profile: new syntax: disk %s is usb storage device and blacklisted' % disk)
+							if entry == 'all_usb' or disk not in disklist_usbstorage:
+								if len(self.container['disk'][disk]['partitions'].keys()):
+									self.container['profile']['delete'][disk]=[]
+								for part in self.container['disk'][disk]['partitions'].keys():
+									if self.container['disk'][disk]['partitions'][part]['num'] > 0:
+										self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
+
 					elif self.test_old_device_syntax(entry):
 						disk, partnum = self.test_old_device_syntax(entry)
-						if not self.container['profile']['delete'].has_key(disk):
-							self.container['profile']['delete'][disk]=[]
-						if not partnum and self.container['disk'].has_key(disk) and len(self.container['disk'][disk]['partitions'].keys()):
-							# case delete complete /dev/sda
-							for part in self.container['disk'][disk]['partitions'].keys():
-								self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
-							self.container['profile']['empty'].append(disk)
-						else:
-							self.container['profile']['delete'][disk].append(partnum)
+
+						# continue if usb storage devices shall also be deleted or
+						# disk is not in usb storage device list
+						if entry == 'all' and disk in disklist_usbstorage:
+							self.debug('read_profile: old syntax: disk %s is usb storage device and blacklisted' % disk)
+						if entry == 'all_usb' or disk not in disklist_usbstorage:
+							if not self.container['profile']['delete'].has_key(disk):
+								self.container['profile']['delete'][disk]=[]
+
+							if not partnum and self.container['disk'].has_key(disk) and len(self.container['disk'][disk]['partitions'].keys()):
+								# case delete complete /dev/sda
+								for part in self.container['disk'][disk]['partitions'].keys():
+									self.container['profile']['delete'][disk].append(self.container['disk'][disk]['partitions'][part]['num'])
+							else:
+								self.container['profile']['delete'][disk].append(partnum)
 
 			if key == 'lvmlv_delete' or delete_all_lvmlv:
 				lvmdelete=self.all_results['lvmlv_delete'].replace("'","").split(' ')
@@ -1626,10 +1665,34 @@ class object(content):
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
 			self.check_lvm_msg()
 
+		def auto_partitioning_question_usbstorage_callback(self, result):
+			self.container['autopart_usbstorage'] = True
+			self.parent.debug('INCLUDE USB STORAGE DEVICES WITHIN AUTOPART')
+			self.auto_partitioning(result)
 
 		def auto_partitioning(self, result):
+
+			# create disk list with usb storage devices
+			disk_blacklist = self.parent.get_usb_storage_device_list()
+			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
+				msglist=[ _('Include USB storage devices while auto-partitioning?'),
+						  '',
+						  _('WARNING: choosing "Yes" prepares for deletion of all'),
+						  _('partitions on all disks! This includes USB harddisks'),
+						  _('and USB sticks. In any case *ALL* LVM LV and LVM VG'),
+						  _('will be deleted!'),
+						  ]
+				self.container['autopart_usbstorage'] = False
+				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-14, msglist, default='no', callback_yes=self.auto_partitioning_question_usbstorage_callback)
+				self.draw()
+				return
+
 			self.container['autopartition'] = True
 			self.parent.debug('INTERACTIVE AUTO PARTITIONING')
+
+			# if usb storage devices shall be included in autopart then delete blacklist
+			if self.container['autopart_usbstorage']:
+				disk_blacklist = []
 
 			# remove all LVM LVs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -1647,10 +1710,14 @@ class object(content):
 			# remove all logical partitions, next all extended partitions and finally all primary partitions
 			for parttype in [ PARTTYPE_LOGICAL, PARTTYPE_EXTENDED, PARTTYPE_PRIMARY ]:
 				for diskname, disk in self.container['disk'].items():
-					for partname, part in disk['partitions'].items():
-						if part['type'] == parttype:
-							self.parent.debug('deleting part: %s on %s (%s)' % (partname, diskname, self.parent.get_device(diskname, partname)))
-							self.part_delete_generic( 'part', diskname, partname, force=True )
+					# do not use blacklisted devices
+					if diskname in disk_blacklist:
+						self.parent.debug('disk %s is blacklisted (parttype=%s)' % (diskname, parttype))
+					else:
+						for partname, part in disk['partitions'].items():
+							if part['type'] == parttype:
+								self.parent.debug('deleting part: %s on %s (%s)' % (partname, diskname, self.parent.get_device(diskname, partname)))
+								self.part_delete_generic( 'part', diskname, partname, force=True )
 
 			# remove internal data avout LVM VGs and LVM PGs
 			for vgname,vg in self.container['lvm']['vg'].items():
@@ -1668,6 +1735,13 @@ class object(content):
 			# get disk list
 			disklist = self.container['disk'].keys()
 			disklist.sort()
+			self.parent.debug('original disklist = %s' % disklist)
+			self.parent.debug('disk_blacklist = %s' % disk_blacklist)
+			# remove blacklisted devices from disklist
+			for disk in disk_blacklist:
+				if disk in disklist:
+					disklist.remove(disk)
+			self.parent.debug('final disklist = %s' % disklist)
 
 			# get system memory
 			p = os.popen('free')
@@ -1708,7 +1782,7 @@ class object(content):
 			freespacelist = []
 			freespacemax = 0.0
 			freespacesum = 0.0
-			for disk in self.container['disk'].keys():
+			for disk in disklist:
 				for part in self.container['disk'][disk]['partitions'].keys():
 					if self.container['disk'][disk]['partitions'][part]['type'] in [ PARTTYPE_FREESPACE_PRIMARY ]:
 						freespacelist.append( ( int(self.container['disk'][disk]['partitions'][part]['size']), disk, part ) )
