@@ -34,6 +34,8 @@ if [ -n "$system_role" ]; then
 	export server_role="$system_role"
 fi
 
+eval `UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 /sbin/univention-config-registry shell`
+
 sources_list ()
 {
 		host univention-repository.$domainname >/dev/null 2>&1 
@@ -47,7 +49,7 @@ sources_list ()
 			echo "# deb http://apt.univention.de/$version_version/unmaintained/ ${version_version}-${version_patchlevel}/extern/" >>/instmnt/etc/apt/sources.list
 			echo "# deb-src http://apt.univention.de/$version_version/unmaintained/ ${version_version}-${version_patchlevel}/source/" >>/instmnt/etc/apt/sources.list
 		else
-			echo "deb http://univention-repository.$domainname/univention-cdrom/packages/ ./">/instmnt/etc/apt/sources.list
+			echo "#deb http://univention-repository.$domainname/univention-cdrom/packages/ ./">/instmnt/etc/apt/sources.list
 			echo "deb http://apt.univention.de/2.0/$version_version/ ${version_version}-${version_patchlevel}/all/" >>/instmnt/etc/apt/sources.list
 			echo "deb http://apt.univention.de/2.0/$version_version/ ${version_version}-${version_patchlevel}/i386/" >>/instmnt/etc/apt/sources.list
 			echo "deb http://apt.univention.de/2.0/$version_version/ ${version_version}-${version_patchlevel}/extern/" >>/instmnt/etc/apt/sources.list
