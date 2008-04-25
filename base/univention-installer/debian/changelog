@@ -1,4 +1,4 @@
-univention-installer (1.9.3-2) unstable; urgency=low
+univention-installer (1.9.4-1) unstable; urgency=low
 
   * added the online repository to the sources.list
 
