@@ -9,7 +9,7 @@ XS-Python-Version: all
 Package: python-univention-connector
 Architecture: all
 Depends: ${python:Depends}, python-univention, python-univention-license, univention-server-master | univention-server-backup
-Pre-Depends: univention-config-registry | univention-baseconfig
+Pre-Depends: univention-config-registry (>= 2.6.8-5) | univention-baseconfig
 Provides: ${python:Provides}, python2.4-univention-connector
 XB-Python-Version: ${python:Versions}
 Conflicts: univention-server-slave, univention-server-member
