@@ -1,3 +1,9 @@
+univention-installer (1.9.14-1) unstable; urgency=low
+
+  * use default blocksize of /etc/mke2fs.conf for ext2 and ext3 filesystems
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 28 Apr 2008 09:42:39 +0200
+
 univention-installer (1.9.13-1) unstable; urgency=low
 
   * fix the online repository url
