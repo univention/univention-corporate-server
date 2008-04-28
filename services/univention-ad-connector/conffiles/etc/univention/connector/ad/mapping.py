@@ -228,6 +228,9 @@ if baseConfig.has_key('connector/ad/mapping/group/primarymail') and baseConfig['
 						ldap_attribute='mailPrimaryAddress',
 						con_attribute='mail',
 					),
+					"""
+if baseConfig.has_key('connector/ad/mapping/group/exchange') and baseConfig['connector/ad/mapping/group/exchange'] in ['yes','true']:
+	print """
 					'Exchange-Nickname': univention.connector.attribute (
 						ucs_attribute='Exchange-Nickname',
 						ldap_attribute='univentionADmailNickname',

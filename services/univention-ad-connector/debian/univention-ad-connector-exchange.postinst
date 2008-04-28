@@ -32,6 +32,7 @@
 univention-config-registry set connector/ad/mapping/user/primarymail=true
 univention-config-registry set connector/ad/mapping/group/primarymail=true
 univention-config-registry set connector/ad/mapping/user/exchange=true
+univention-config-registry set connector/ad/mapping/group/exchange=true
 
 #DEBHELPER#
 
