@@ -352,7 +352,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
-					'Description': _('OpenOffice.org Office Suite'),
+					'Description': _('OpenOffice.org is a full-featured office productivity suite.'),
 				},
 				{
 					'Name': _('Mozilla Firefox'),
@@ -488,7 +488,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
 					'Possible': [ 'all' ],
-					'Description': _("Vi IMproved - enhanced vi editor"),
+					'Description': _("Vim is an advanced text editor."),
 				},
 				{
 					'Name': _('emacs'),
@@ -496,7 +496,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ '' ],
 					'Possible': [ 'all' ],
-					'Description': _("The GNU Emacs editor"),
+					'Description': _("GNU Emacs is an advanced text editor."),
 				},
 				{
 					'Name': _('less'),
