@@ -292,6 +292,10 @@ if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['con
 
 			con_search_filter='objectClass=organizationalUnit',
 
+			ignore_filter='',
+
+			ignore_subtree = global_ignore_subtree,
+
 			con_create_objectclass=[ 'top', 'organizationalUnit' ],
 
 			attributes= {

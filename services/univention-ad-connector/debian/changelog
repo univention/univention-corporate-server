@@ -7,8 +7,9 @@ univention-ad-connector (1.2.4-0) unstable; urgency=low
   * implement additional group-membership-functionality for sync of "groups in groups" from ucs to ad
   * fix group membership synchronisation if user is synced later than his groups
   * fix failure if object is moved from an ignored container into a synced one
+  * include global_ignore_subtree in ou mapping
 
- -- Ingo Steuwer <steuwer@univention.de>  Wed, 23 Apr 2008 15:35:18 +0200
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 28 Apr 2008 15:01:35 +0200
 
 univention-ad-connector (1.2.3-1) unstable; urgency=low
 
