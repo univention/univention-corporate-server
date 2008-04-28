@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-28 11:37+0200\n"
+"POT-Creation-Date: 2008-04-28 16:53+0200\n"
 "PO-Revision-Date: 2008-04-28 11:41+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -176,7 +176,7 @@ msgstr "Automatische Installation für Windows-Clients"
 
 #: installer/package_list.py:58 installer/package_list.py:63
 msgid "Samba PDC on Non-DC Master"
-msgstr "Samba PDC auf einem Nicht-DC Master"
+msgstr "Samba PDC auf Nicht-DC Master"
 
 #: installer/package_list.py:66
 msgid "Winbind"
@@ -455,8 +455,8 @@ msgid "OpenOffice.org"
 msgstr "OpenOffice.org"
 
 #: installer/package_list.py:355
-msgid "OpenOffice.org Office Suite"
-msgstr "OpenOffice.org Office Suite"
+msgid "OpenOffice.org is a full-featured office productivity suite."
+msgstr "OpenOffice.org ist eine vollständige Büro-Programmsammlung."
 
 #: installer/package_list.py:358
 msgid "Mozilla Firefox"
@@ -583,16 +583,16 @@ msgid "vim"
 msgstr "vim"
 
 #: installer/package_list.py:491
-msgid "Vi IMproved - enhanced vi editor"
-msgstr "Vi IMproved - enhanced vi editor"
+msgid "Vim is an advanced text editor."
+msgstr "Vim ist ein erweiteter Texteditor."
 
 #: installer/package_list.py:494
 msgid "emacs"
 msgstr "emacs"
 
 #: installer/package_list.py:499
-msgid "The GNU Emacs editor"
-msgstr "The GNU Emacs Editor"
+msgid "GNU Emacs is an advanced text editor."
+msgstr "GNU Emacs ist ein erweiteter Texteditor."
 
 #: installer/package_list.py:502
 msgid "less"
@@ -2295,6 +2295,15 @@ msgstr "Verarbeite postrun-Skripte"
 #, python-format
 msgid "Processing %s "
 msgstr "Verarbeite %s"
+
+#~ msgid "OpenOffice.org Office Suite"
+#~ msgstr "OpenOffice.org Office Suite"
+
+#~ msgid "Vi IMproved - enhanced vi editor"
+#~ msgstr "Vi IMproved - enhanced vi editor"
+
+#~ msgid "The GNU Emacs editor"
+#~ msgstr "The GNU Emacs Editor"
 
 #~ msgid "DC Slave as Samba PDC"
 #~ msgstr "DC Slave als Samba PDC"

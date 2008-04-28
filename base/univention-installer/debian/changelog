@@ -1,3 +1,9 @@
+univention-installer (1.9.15-1) unstable; urgency=low
+
+  * update translation and package description
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Apr 2008 16:59:02 +0200
+
 univention-installer (1.9.14-1) unstable; urgency=low
 
   * use default blocksize of /etc/mke2fs.conf for ext2 and ext3 filesystems
