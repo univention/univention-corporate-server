@@ -48,7 +48,7 @@ univention-config-registry set connector/debug/function?0
 univention-config-registry set connector/debug/level?1
 univention-config-registry set connector/ad/mapping/user/primarymail?false connector/ad/mapping/user/win2000/description?false
 univention-config-registry set connector/ad/mapping/group/primarymail?false connector/ad/mapping/group/win2000/description?false connector/ad/mapping/group/language?de
-univention-config-registry set connector/ad/ldap/syncmode?sync
+univention-config-registry set connector/ad/mapping/syncmode?sync
 
 if [ ! -d /var/lib/univention-connector/ad ]; then
 	mkdir -p /var/lib/univention-connector/ad

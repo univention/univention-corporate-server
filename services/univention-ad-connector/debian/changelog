@@ -2,7 +2,7 @@ univention-ad-connector (1.2.4-0) unstable; urgency=low
 
   * replace univention-baseconfig with univention-config-registry
   * add config registry variable-descriptions
-  * add config-registry variable connector/ad/ldap/syncmode with default "sync"
+  * add config-registry variable connector/ad/mapping/syncmode with default "sync"
   * add config-registry variable connector/ad/mapping/group/language with default "de"
   * implement additional group-membership-functionality for sync of "groups in groups" from ucs to ad
   * fix group membership synchronisation if user is synced later than his groups

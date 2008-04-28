@@ -70,7 +70,7 @@ Description[en]=
 Type=str
 Categories=AD-Connector
 
-[connector/ad/ldap/syncmode]
+[connector/ad/mapping/syncmode]
 Description[de]=Konfiguriert, ob bidirectional ("sync", default) oder unidirektional ("read" oder "write") synchronisiert werden soll.
 Description[en]=
 Type=str

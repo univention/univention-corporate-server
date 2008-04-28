@@ -54,7 +54,7 @@ ad_mapping = {
 			ucs_module='users/user',
 
 			# read, write, sync, none
-			sync_mode='@%@connector/ad/ldap/syncmode@%@',
+			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 			scope='sub',
 
 			con_search_filter='(&(objectClass=user)(!objectClass=computer))',
@@ -187,7 +187,7 @@ if baseConfig.has_key('connector/ad/mapping/user/primarymail') and baseConfig['c
 
 			ucs_module='groups/group',
 
-			sync_mode='@%@connector/ad/ldap/syncmode@%@',
+			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 			scope='sub',
 
 			ignore_filter='(|(sambaGroupType=5)(groupType=5))',
@@ -254,7 +254,7 @@ if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['con
 	'container': univention.connector.property (
 			ucs_module='container/cn',
 
-			sync_mode='@%@connector/ad/ldap/syncmode@%@',
+			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 
 			scope='sub',
 
@@ -286,7 +286,7 @@ if baseConfig.has_key('connector/ad/mapping/group/language') and baseConfig['con
 	'ou': univention.connector.property (
 			ucs_module='container/ou',
 
-			sync_mode='@%@connector/ad/ldap/syncmode@%@',
+			sync_mode='@%@connector/ad/mapping/syncmode@%@',
 
 			scope='sub',
 
