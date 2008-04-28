@@ -1,3 +1,9 @@
+univention-installer (1.9.13-1) unstable; urgency=low
+
+  * fix the online repository url
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Apr 2008 07:39:38 +0200
+
 univention-installer (1.9.12-1) unstable; urgency=low
 
   * online repository updates
