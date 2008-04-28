@@ -1,3 +1,9 @@
+univention-installer (1.9.12-1) unstable; urgency=low
+
+  * online repository updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Apr 2008 06:23:36 +0200
+
 univention-installer (1.9.11-1) unstable; urgency=low
 
   * loaded kernel modules are now passed to installed system correctly

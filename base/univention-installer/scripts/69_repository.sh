@@ -38,7 +38,6 @@ eval `UNIVENTION_BASECONF=/instmnt/etc/univention/base.conf /bin/python2.4 /sbin
 
 sources_list ()
 {
-		host univention-repository.$domainname >/dev/null 2>&1 
 		architecture=`/bin/uname -m`
 
 		if [ "$architecture" = "x86_64" ]; then
@@ -46,6 +45,8 @@ sources_list ()
 		else
 			arch="i386"
 		fi
+
+		host univention-repository.$domainname >/dev/null 2>&1 
 
 		if [ $? = 0 ]; then
 			echo "deb http://univention-repository.$domainname/univention-cdrom/packages/ ./">/instmnt/etc/apt/sources.list
