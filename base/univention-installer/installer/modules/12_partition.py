@@ -47,8 +47,6 @@ from local import _
 import os, re, string, curses
 import inspect
 
-BLOCK_SIZE_FS_EXT2 = 4096
-
 # some autopartitioning config values
 PARTSIZE_BOOT = 96           # size of /boot partition
 PARTSIZE_SYSTEM_MIN = 4096   # minimum free space for system
@@ -1096,9 +1094,7 @@ class object(content):
 
 						mkfs_cmd = None
 						fstype = fstype.lower()
-						if fstype in ['ext2','ext3']:
-							mkfs_cmd='/sbin/mkfs.%s -b %s %s' % (fstype, BLOCK_SIZE_FS_EXT2, self.get_real_partition_device_name(disk,num))
-						elif fstype in ['vfat','msdos']:
+						if fstype in ['ext2','ext3','vfat','msdos']:
 							mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,self.get_real_partition_device_name(disk,num))
 						elif fstype == 'xfs':
 							mkfs_cmd='/sbin/mkfs.xfs -f %s' % self.get_real_partition_device_name(disk,num)
@@ -1115,9 +1111,7 @@ class object(content):
 
 					mkfs_cmd = None
 					fstype = fstype.lower()
-					if fstype in ['ext2','ext3']:
-						mkfs_cmd='/sbin/mkfs.%s -b %s %s' % (fstype, BLOCK_SIZE_FS_EXT2, device)
-					elif fstype in ['vfat','msdos']:
+					if fstype in ['ext2','ext3','vfat','msdos']:
 						mkfs_cmd='/sbin/mkfs.%s %s' % (fstype, device)
 					elif fstype == 'xfs':
 						mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
@@ -3133,9 +3127,7 @@ class object(content):
 							if self.parent.container['disk'][disk]['partitions'][part]['format']:
 								device = self.parent.parent.get_device(disk, part)
 								fstype=self.parent.container['disk'][disk]['partitions'][part]['fstype']
-								if fstype in ['ext2','ext3']:
-									mkfs_cmd='/sbin/mkfs.%s -b %s %s' % (fstype, BLOCK_SIZE_FS_EXT2, device)
-								elif fstype in ['vfat','msdos']:
+								if fstype in ['ext2','ext3','vfat','msdos']:
 									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
@@ -3156,7 +3148,7 @@ class object(content):
 								device = vg['lv'][lvname]['dev']
 								fstype = vg['lv'][lvname]['fstype']
 								if fstype in ['ext2','ext3','vfat','msdos']:
-									mkfs_cmd='/sbin/mkfs.%s -b %s %s' % (fstype, BLOCK_SIZE_FS_EXT2, device)
+									mkfs_cmd='/sbin/mkfs.%s %s' % (fstype,device)
 								elif fstype == 'xfs':
 									mkfs_cmd='/sbin/mkfs.xfs -f %s' % device
 								elif fstype == 'linux-swap':
