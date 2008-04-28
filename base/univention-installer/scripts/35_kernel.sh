@@ -50,14 +50,12 @@ if [ "$architecture" != "powerpc" ]; then
 	chroot /instmnt ./install_initrd.sh
 fi
 
-loaded_modules=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`
-loaded_modules=$(echo $loaded_modules | sed -e 's| |;|g')
+#loaded_modules=`cat /proc/modules | awk '{print $1}' | grep -v ^Module`
+#loaded_modules=$(echo $loaded_modules | sed -e 's| |;|g')
 
 if [ -n "$modules" ]; then
 	modules=$(echo $modules | sed -e 's| |;|g')
 fi
-export loaded_modules
-export modules
 
 if [ -n "$kernel_version" ]; then
 	v=`echo $kernel_version | grep ^2.4`
@@ -95,9 +93,6 @@ cat >>/instmnt/install_kernel.sh <<__EOT__
 
 export DEBIAN_FRONTEND=noninteractive
 
-if [ -n "$loaded_modules" ]; then
-	univention-config-registry set mkinitrd/modules="$loaded_modules"
-fi
 if [ -n "$modules" ]; then
 	univention-config-registry set kernel/modules="$modules"
 fi
