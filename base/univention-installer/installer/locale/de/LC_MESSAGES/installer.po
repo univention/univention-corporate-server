@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-25 13:16+0200\n"
-"PO-Revision-Date: 2008-04-24 09:53+0200\n"
+"POT-Creation-Date: 2008-04-28 11:37+0200\n"
+"PO-Revision-Date: 2008-04-28 11:41+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -646,29 +646,29 @@ msgstr "wirft CDs aus und bedient CD-Wechsler unter Linux"
 msgid "Java"
 msgstr "Java"
 
-#: installer/modules/01_modules.py:81 installer/modules/01_modules.py:89
-#: installer/modules/01_modules.py:281 installer/modules/01_modules.py:300
+#: installer/modules/01_modules.py:87 installer/modules/01_modules.py:95
+#: installer/modules/01_modules.py:292 installer/modules/01_modules.py:311
 msgid "Load modules"
 msgstr "Lade Module"
 
-#: installer/modules/01_modules.py:81 installer/modules/01_modules.py:89
-#: installer/modules/01_modules.py:281 installer/modules/01_modules.py:300
+#: installer/modules/01_modules.py:87 installer/modules/01_modules.py:95
+#: installer/modules/01_modules.py:292 installer/modules/01_modules.py:311
 #, python-format
 msgid "Loading module %s"
 msgstr "Lade Modul %s"
 
-#: installer/modules/01_modules.py:106
+#: installer/modules/01_modules.py:112
 msgid "Additional modules to load:"
 msgstr "Weitere zu ladende Module:"
 
-#: installer/modules/01_modules.py:115 installer/modules/12_partition.py:3472
+#: installer/modules/01_modules.py:121 installer/modules/12_partition.py:3472
 #: installer/modules/12_partition.py:3519
 #: installer/modules/12_partition.py:3745
 #: installer/modules/12_partition.py:3784
 msgid "Save"
 msgstr "Speichern"
 
-#: installer/modules/01_modules.py:116 installer/modules/03_hardware.py:259
+#: installer/modules/01_modules.py:122 installer/modules/03_hardware.py:259
 #: installer/modules/03_hardware.py:293 installer/modules/04_profile.py:55
 #: installer/modules/12_partition.py:3473
 #: installer/modules/12_partition.py:3520
@@ -678,19 +678,19 @@ msgstr "Speichern"
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: installer/modules/01_modules.py:118
+#: installer/modules/01_modules.py:124
 msgid "Modules"
 msgstr "Module"
 
-#: installer/modules/01_modules.py:148
+#: installer/modules/01_modules.py:154
 msgid "The following hardware was found:"
 msgstr "Die folgende Hardware wurde gefunden:"
 
-#: installer/modules/01_modules.py:200
+#: installer/modules/01_modules.py:206
 msgid "Add modules"
 msgstr "Module hinzufügen"
 
-#: installer/modules/01_modules.py:249
+#: installer/modules/01_modules.py:255
 msgid ""
 "Hardware-Scan \n"
 " \n"
@@ -704,11 +704,11 @@ msgstr ""
 " Sollte Hardware nicht aufgelistet sein bitte wählen Sie \"Modul hinzufügen"
 "\" und markieren Sie die fehlende Hardware mit der 'Space'-Taste."
 
-#: installer/modules/01_modules.py:252 installer/modules/01_modules.py:270
+#: installer/modules/01_modules.py:258 installer/modules/01_modules.py:281
 msgid "Hardware-Scan"
 msgstr "Hardware-Suche"
 
-#: installer/modules/01_modules.py:270 installer/modules/04_profile.py:459
+#: installer/modules/01_modules.py:281 installer/modules/04_profile.py:459
 #: installer/modules/05_keyboard.py:61 installer/modules/05_keyboard.py:120
 msgid "Please wait..."
 msgstr "Bitte warten..."
@@ -726,7 +726,7 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/12_partition.py:1879
 #: installer/modules/12_partition.py:3089
 #: installer/modules/12_partition.py:3092
-#: installer/modules/12_partition.py:3094 installer/modules/60_software.py:81
+#: installer/modules/12_partition.py:3094 installer/modules/60_software.py:80
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
@@ -1192,7 +1192,8 @@ msgstr "Formatiere Partitionen"
 
 #: installer/modules/12_partition.py:1678
 msgid "Include USB storage devices while auto-partitioning?"
-msgstr "Sollen USB-Partitionen während der Auto-Partitionierung verwendet werden?"
+msgstr ""
+"Sollen USB-Partitionen während der Auto-Partitionierung verwendet werden?"
 
 #: installer/modules/12_partition.py:1680
 #: installer/modules/12_partition.py:1898
@@ -1929,7 +1930,7 @@ msgstr "3. %s"
 #: installer/modules/20_net.py:881
 #, python-format
 msgid " More %ss"
-msgstr "Mehr %ss"
+msgstr "Weitere %s"
 
 #: installer/modules/30_ssl.py:64 installer/modules/30_ssl.py:166
 msgid "The following value is too long, only 128 characters allowed: "
@@ -2097,7 +2098,7 @@ msgstr ""
 msgid "Security Settings"
 msgstr "Sicherheits-Optionen"
 
-#: installer/modules/60_software.py:81
+#: installer/modules/60_software.py:80
 msgid "Preparing Package List"
 msgstr "Bereite Paketliste vor"
 
