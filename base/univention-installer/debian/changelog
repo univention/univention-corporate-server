@@ -1,3 +1,9 @@
+univention-installer (1.9.16-1) unstable; urgency=low
+
+  * updated translation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 29 Apr 2008 10:17:00 +0200
+
 univention-installer (1.9.15-1) unstable; urgency=low
 
   * update translation and package description
