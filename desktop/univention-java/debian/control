@@ -6,8 +6,8 @@ Standards-Version: 3.5.5
 Build-Depends: debhelper
 
 Package: univention-java
-Architecture: all
-Depends: sun-java5-jre, sun-java5-bin, sun-java5-plugin
+Architecture: any
+Depends: sun-java5-jre, sun-java5-bin, sun-java5-plugin [i386], ia32-sun-java5-bin [amd64], ia32-sun-java5-plugin [amd64]
 Description: UCS - Java support
  This package provides Java support for UCS.
  .
