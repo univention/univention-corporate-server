@@ -119,32 +119,37 @@ class object(content):
 			for i in self.parent.container['hardware']['local']:
 				if i in kernel_modules.keys():
 					selected.append( kernel_modules[i][1] )
-			self.elements.append(checkbox(kernel_modules, self.pos_y+3,self.pos_x+2, 40, 13, selected )) #1
-			self.elements.append(button('F12-'+_("Save"),self.pos_y+15,self.pos_x+(self.width)-4,align="right")) #3
-			self.elements.append(button('ESC-'+_("Cancel"),self.pos_y+15,self.pos_x+5,18)) #2
+			self.elements.append(checkbox(kernel_modules, self.pos_y+3,self.pos_x+2, 40, 11, selected )) #1
+			self.elements.append(button('ESC-'+_("Cancel"),self.pos_y+15,self.pos_x+5,align='left')) #3
+			self.elements.append(button('F12-'+_("Save"),self.pos_y+15,self.pos_x+(self.width)-4,align="right")) #2
+			self.elements[2].set_off()
+			self.elements[3].set_off()
+			self.current=1
+			self.elements[1].set_on()
+			self.draw()
 		def modheader(self):
 			return _('Modules')
 		def input(self, key):
 			if key in [ 10, 32, 276 ]:
-				if ( self.elements[2].usable() and self.elements[2].get_status() ) or key == 276:
+				if ( self.elements[3].usable() and self.elements[3].get_status() ) or key == 276:
 					self.parent.container['hardware']['local']=self.elements[1].result()
 					return 0
-				if self.elements[3].usable() and self.elements[3].get_status():
+				if self.elements[2].usable() and self.elements[2].get_status():
 					return 0
 				if self.current == 1 and key == 32:
 					self.elements[self.current].key_event(key)
-			elif key == 261 and self.elements[3].get_status():
-				self.elements[3].set_off()
-				self.elements[3].draw()
-				self.elements[2].set_on()
-				self.elements[2].draw()
-				# move right
-			elif key == 260 and self.elements[2].get_status():
-				# move left
+			elif key == 261 and self.elements[2].get_status():
 				self.elements[2].set_off()
 				self.elements[2].draw()
 				self.elements[3].set_on()
 				self.elements[3].draw()
+				# move right
+			elif key == 260 and self.elements[3].get_status():
+				# move left
+				self.elements[3].set_off()
+				self.elements[3].draw()
+				self.elements[2].set_on()
+				self.elements[2].draw()
 			elif self.elements[self.current].usable():
 				self.elements[self.current].key_event(key)
 			return 1
@@ -153,7 +158,7 @@ class object(content):
 
 		self.elements=[]
 		self.std_button()
-		self.elements.append(textline(_('The following hardware was found:'),self.minY+1,self.minX+2)) #2
+		self.elements.append(textline(_('The following hardware was found:'),self.minY,self.minX+2)) #2
 		selected=[]
 		fixed=[]
 		count=0
@@ -182,27 +187,23 @@ class object(content):
 			hwlist[ h ] = [ h, count ]
 			selected.append(count)
 			count += 1
-# 		for h in range(0,len(tmplist)):
-# 			if hwlist.has_key(tmplist[h]):
-# 				continue
-# 			hwlist[tmplist[h]]=[tmplist[h], count]
-# 			selected.append(count)
-# 			count=count+1
 
-		self.debug('LAYOUT: excludemodules = %s' % self.all_results.get('excludemodules'))
-		for m in self.all_results.get('excludemodules','').split(','):
+		self.debug('LAYOUT: hwlist=%s' % str(hwlist))
+		self.debug('LAYOUT: fixed=%s' % str(fixed))
+		self.debug('LAYOUT: selected=%s' % str(selected))
+
+		self.debug('LAYOUT: excludemodules = %s' % str(self.cmdline.get('excludemodules')))
+		for m in self.cmdline.get('excludemodules','').split(','):
 			if m in hwlist:
 				fixed.append(hwlist[m][1])
 				selected.remove(hwlist[m][1])
-# 		if self.all_results.has_key('exclude_modules'):
-# 			exmod=self.all_results['exclude_modules'].split()
-# 			for m in range(0,len(exmod)):
-# 				if hwlist.has_key(exmod[m]):
-# 					fixed.append(hwlist[exmod[m]][1])
-# 					selected.remove(hwlist[exmod[m]][1])
 
-		self.debug('LAYOUT: loadmodules = %s' % self.all_results.get('loadmodules'))
-		for m in self.all_results.get('loadmodules','').split(','):
+		self.debug('LAYOUT: hwlist=%s' % str(hwlist))
+		self.debug('LAYOUT: fixed=%s' % str(fixed))
+		self.debug('LAYOUT: selected=%s' % str(selected))
+
+		self.debug('LAYOUT: loadmodules = %s' % str(self.cmdline.get('loadmodules','')))
+		for m in self.cmdline.get('loadmodules','').split(','):
 			if m in hwlist:
 				fixed.append(hwlist[m][1])
 				continue
@@ -210,20 +211,12 @@ class object(content):
 			selected.append(count)
 			fixed.append(count)
 			count += 1
-# 		if self.all_results.has_key('include_modules'):
-# 			incmod=self.all_results['include_modules'].split()
-# 			for m in range(0,len(incmod)):
-# 				if hwlist.has_key(incmod[m]):
-# 					fixed.append(hwlist[incmod[m]][1])
-# 					continue
-# 				hwlist[incmod[m]]=[incmod[m],count]
-# 				selected.append(count)
-# 				fixed.append(count)
-# 				count+=1
 
+		self.debug('LAYOUT: hwlist=%s' % str(hwlist))
+		self.debug('LAYOUT: fixed=%s' % str(fixed))
+		self.debug('LAYOUT: selected=%s' % str(selected))
 
-
-		self.elements.append(checkbox(hwlist, self.minY+2,self.minX+4, 40, 10, selected,fixed)) #3
+		self.elements.append(checkbox(hwlist, self.minY+1,self.minX+4, 40, 14, selected,fixed)) #3
 
 		self.elements.append(button(_('Add modules'),self.maxY-1,self.minX+(self.width/2)-2,align="middle")) #4
 		self.elements[0].set_off()
