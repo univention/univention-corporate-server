@@ -106,12 +106,12 @@ PackageList=[
 					'Description': _('Horde Webclient for Kolab 2 for UCS'),
 				},
 				{
-					'Name': _('Standard Mail Services (smtp/pop/imap)'),
+					'Name': _('Standard Mail Services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
-					'Description': _('Standard Mail Services with postfix and cyrus'),
+					'Description': _('Standard Mail Services with postfix and cyrus (SMTP/POP/IMAP)'),
 				},
 			],
 },
@@ -392,7 +392,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
-					'Description': _('Gimp'),
+					'Description': _('The GNU Image Manipulation Program'),
 				},
 				{
 					'Name': _('Acrobat Reader'),
