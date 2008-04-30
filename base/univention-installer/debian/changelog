@@ -1,3 +1,9 @@
+univention-installer (1.9.21-1) unstable; urgency=low
+
+  * modules code cleanup and additional improvements
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Apr 2008 15:44:27 +0200
+
 univention-installer (1.9.20-1) unstable; urgency=low
 
   * updated translations and package descriptions
