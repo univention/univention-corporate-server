@@ -1266,6 +1266,7 @@ class object(content):
 																					  }
 
 	def read_devices(self):
+		self.debug('entering read_devices')
 		if os.path.exists('/lib/univention-installer/partitions'):
 			file=open('/lib/univention-installer/partitions')
 			self.debug('Reading from /lib/univention-installer/partitions')
@@ -1456,12 +1457,18 @@ class object(content):
 					ptype=PARTTYPE_EXTENDED
 					extended=1
 					primary+=1
-				if type == 'primary':
+				elif type == 'primary':
 					ptype=PARTTYPE_PRIMARY
 					primary+=1
-				if type == 'logical':
+				elif type == 'logical':
 					ptype=PARTTYPE_LOGICAL
 					logical+=1
+				else:
+					self.debug('ERROR: parted returned no valid partition type')
+					self.debug('ERROR: line = "%s"' % line)
+					self.debug('Removing device %s' % dev)
+					devices_remove.append(dev)
+					continue
 
 				fstype=''
 				flag=[]
