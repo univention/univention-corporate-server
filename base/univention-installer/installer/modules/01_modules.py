@@ -82,17 +82,16 @@ class object(content):
 	def profile_prerun(self):
 		self.start()
 		self.debug('profile_prerun: loadmodules = %s' % str(self.cmdline.get('loadmodules')))
-		if self.cmdline.get('loadmodules'):
-			for m in self.cmdline['loadmodules'].split(' '):
-				if len(m.strip(' ')) > 0:
-					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
-					self.sub.action='loadmodule'
-					self.sub.loadmodule=m
-					self.sub.draw()
+		for m in self.cmdline.get('loadmodules','').split(','):
+			if m:
+				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+				self.sub.action='loadmodule'
+				self.sub.loadmodule=m
+				self.sub.draw()
 		self.debug('profile_prerun: modules found by kudzu = %s' % str(self.container['hardware']['kudzu']))
 		for m in self.container['hardware']['kudzu']:
 			if self.cmdline.get('excludemodules'):
-				if m in self.cmdline['excludemodules'].split(' '):
+				if m in self.cmdline['excludemodules'].split(','):
 					self.debug('profile_prerun: modules "%s" is blacklisted' % m)
 					continue
 			self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
@@ -120,7 +119,7 @@ class object(content):
 			for i in self.parent.container['hardware']['local']:
 				if i in kernel_modules.keys():
 					selected.append( kernel_modules[i][1] )
-			self.elements.append(checkbox(kernel_modules, self.pos_y+3,self.pos_x+2, 40, 10, selected )) #1
+			self.elements.append(checkbox(kernel_modules, self.pos_y+3,self.pos_x+2, 40, 13, selected )) #1
 			self.elements.append(button('F12-'+_("Save"),self.pos_y+15,self.pos_x+(self.width)-4,align="right")) #3
 			self.elements.append(button('ESC-'+_("Cancel"),self.pos_y+15,self.pos_x+5,18)) #2
 		def modheader(self):
@@ -171,38 +170,56 @@ class object(content):
 
 		tmplist_local = self.container['hardware']['local']
 		tmplist_local.sort()
-		tmplist+=tmplist_local
+		tmplist += tmplist_local
 
 		tmplist_profile = self.container['hardware']['profile']
 		tmplist_profile.sort()
-		tmplist+=tmplist_profile
+		tmplist += tmplist_profile
 
-		for h in range(0,len(tmplist)):
-			if hwlist.has_key(tmplist[h]):
+		for h in tmplist:
+			if h in hwlist:
 				continue
-			hwlist[tmplist[h]]=[tmplist[h], count]
+			hwlist[ h ] = [ h, count ]
 			selected.append(count)
-			count=count+1
+			count += 1
+# 		for h in range(0,len(tmplist)):
+# 			if hwlist.has_key(tmplist[h]):
+# 				continue
+# 			hwlist[tmplist[h]]=[tmplist[h], count]
+# 			selected.append(count)
+# 			count=count+1
 
-		if self.all_results.has_key('exclude_modules'):
-			self.debug('LAYOUT: include_modules = %s' % self.all_results.get('exclude_modules'))
-			exmod=self.all_results['exclude_modules'].split()
-			for m in range(0,len(exmod)):
-				if hwlist.has_key(exmod[m]):
-					fixed.append(hwlist[exmod[m]][1])
-					selected.remove(hwlist[exmod[m]][1])
+		self.debug('LAYOUT: excludemodules = %s' % self.all_results.get('excludemodules'))
+		for m in self.all_results.get('excludemodules','').split(','):
+			if m in hwlist:
+				fixed.append(hwlist[m][1])
+				selected.remove(hwlist[m][1])
+# 		if self.all_results.has_key('exclude_modules'):
+# 			exmod=self.all_results['exclude_modules'].split()
+# 			for m in range(0,len(exmod)):
+# 				if hwlist.has_key(exmod[m]):
+# 					fixed.append(hwlist[exmod[m]][1])
+# 					selected.remove(hwlist[exmod[m]][1])
 
-		if self.all_results.has_key('include_modules'):
-			self.debug('LAYOUT: include_modules = %s' % self.all_results.get('include_modules'))
-			incmod=self.all_results['include_modules'].split()
-			for m in range(0,len(incmod)):
-				if hwlist.has_key(incmod[m]):
-					fixed.append(hwlist[incmod[m]][1])
-					continue
-				hwlist[incmod[m]]=[incmod[m],count]
-				selected.append(count)
-				fixed.append(count)
-				count+=1
+		self.debug('LAYOUT: loadmodules = %s' % self.all_results.get('loadmodules'))
+		for m in self.all_results.get('loadmodules','').split(','):
+			if m in hwlist:
+				fixed.append(hwlist[m][1])
+				continue
+			hwlist[m]=[m,count]
+			selected.append(count)
+			fixed.append(count)
+			count += 1
+# 		if self.all_results.has_key('include_modules'):
+# 			incmod=self.all_results['include_modules'].split()
+# 			for m in range(0,len(incmod)):
+# 				if hwlist.has_key(incmod[m]):
+# 					fixed.append(hwlist[incmod[m]][1])
+# 					continue
+# 				hwlist[incmod[m]]=[incmod[m],count]
+# 				selected.append(count)
+# 				fixed.append(count)
+# 				count+=1
 
 
 
@@ -292,14 +309,15 @@ class object(content):
 		f=open('/proc/modules')
 		proc_lines=f.readlines()
 		f.close()
-		self.debug('postrun: extramodules = %s' % self.cmdline.get('extramodules'))
-		if self.cmdline.get('extramodules'):
-			for m in self.cmdline['extramodules'].split(' '):
-				if len(m.strip(' ')) > 0:
-					self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
-					self.sub.action='loadmodule'
-					self.sub.loadmodule=m
-					self.sub.draw()
+		self.debug('postrun: loadmodules = %s' % self.cmdline.get('loadmodules'))
+		for m in self.cmdline.get('loadmodules','').split(','):
+			if m:
+				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+				self.sub.action='loadmodule'
+				self.sub.loadmodule=m
+				self.sub.draw()
+		self.debug('postrun: excludemodules = %s' % self.cmdline.get('excludemodules'))
+		self.debug('postrun: elements[3].result = %s' % ', '.join(self.elements[3].result()))
 		for m in self.elements[3].result():
 			load=1
 			for l in proc_lines:
@@ -312,11 +330,10 @@ class object(content):
 						load=0
 						break
 			if load:
-				self.debug('postrun: excludemodules = %s' % self.cmdline.get('excludemodules'))
-				if self.cmdline.get('excludemodules'):
-					if m in self.cmdline['excludemodules'].split(' '):
-						self.debug('postrun: module "%s" is blacklisted' % m)
-						continue
+				if m in self.cmdline.get('excludemodules','').split(','):
+					self.debug('postrun: module "%s" is blacklisted' % m)
+					continue
+				self.debug('postrun: loading module "%s"' % m)
 				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
