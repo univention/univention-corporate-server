@@ -3523,8 +3523,8 @@ class object(content):
 						else:
 							self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[])) #10
 
-						self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-8,align="right")) #11
-						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+6,15)) #12
+						self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #11
+						self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align='left')) #12
 						if filesystem_num == 3:
 							self.get_elem('INP_mpoint').disable()
 
@@ -3788,8 +3788,8 @@ class object(content):
 					else:
 						self.add_elem('CB_format', checkbox({_('format'):'1'},self.pos_y+12,self.pos_x+33,14,1,[])) #7
 
-					self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-8,align="right")) #8
-					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+6,15)) #9
+					self.add_elem('BT_save', button("F12-"+_("Save"),self.pos_y+17,self.pos_x+(self.width)-4,align="right")) #8
+					self.add_elem('BT_cancel', button("ESC-"+_("Cancel"),self.pos_y+17,self.pos_x+4,align='left')) #9
 
 		class del_extended(subwin):
 			def input(self, key):
