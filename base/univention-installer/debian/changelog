@@ -1,3 +1,9 @@
+univention-installer (1.9.18-1) unstable; urgency=low
+
+  * added additional debug output for 01_modules.py
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 30 Apr 2008 12:28:16 +0200
+
 univention-installer (1.9.17-1) unstable; urgency=low
 
   * fixed traceback for harddisks without partition table

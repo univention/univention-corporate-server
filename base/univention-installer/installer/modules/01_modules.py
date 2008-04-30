@@ -81,6 +81,7 @@ class object(content):
 
 	def profile_prerun(self):
 		self.start()
+		self.debug('profile_prerun: loadmodules = %s' % str(self.cmdline.get('loadmodules')))
 		if self.cmdline.get('loadmodules'):
 			for m in self.cmdline['loadmodules'].split(' '):
 				if len(m.strip(' ')) > 0:
@@ -88,9 +89,11 @@ class object(content):
 					self.sub.action='loadmodule'
 					self.sub.loadmodule=m
 					self.sub.draw()
+		self.debug('profile_prerun: modules found by kudzu = %s' % str(self.container['hardware']['kudzu']))
 		for m in self.container['hardware']['kudzu']:
 			if self.cmdline.get('excludemodules'):
 				if m in self.cmdline['excludemodules'].split(' '):
+					self.debug('profile_prerun: modules "%s" is blacklisted' % m)
 					continue
 			self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 			self.sub.action='loadmodule'
@@ -182,6 +185,7 @@ class object(content):
 			count=count+1
 
 		if self.all_results.has_key('exclude_modules'):
+			self.debug('LAYOUT: include_modules = %s' % self.all_results.get('exclude_modules'))
 			exmod=self.all_results['exclude_modules'].split()
 			for m in range(0,len(exmod)):
 				if hwlist.has_key(exmod[m]):
@@ -189,6 +193,7 @@ class object(content):
 					selected.remove(hwlist[exmod[m]][1])
 
 		if self.all_results.has_key('include_modules'):
+			self.debug('LAYOUT: include_modules = %s' % self.all_results.get('include_modules'))
 			incmod=self.all_results['include_modules'].split()
 			for m in range(0,len(incmod)):
 				if hwlist.has_key(incmod[m]):
@@ -264,7 +269,7 @@ class object(content):
 		for mod in self.elements[3].result():
 			modlist.append( mod.split('/')[-1] )
 		result['modules'] = " ".join(modlist)
-		self.debug('Final module list = %s' % result['modules'])
+		self.debug('result: final module list = %s' % result['modules'])
 		return result
 
 	def start(self):
@@ -273,6 +278,7 @@ class object(content):
 		self.container['hardware']['kudzu']=[]
 		self.container['hardware']['local']=[]
 		self.container['hardware']['profile']=[]
+		self.debug('start: NOPROBE = %s' % str(self.cmdline.has_key('noprobe')))
 		if not self.cmdline.has_key('noprobe'):
 			if self.all_results.has_key('modules'):
 				self.container['hardware']['profile']=self.all_results['modules'].split()
@@ -286,6 +292,7 @@ class object(content):
 		f=open('/proc/modules')
 		proc_lines=f.readlines()
 		f.close()
+		self.debug('postrun: extramodules = %s' % self.cmdline.get('extramodules'))
 		if self.cmdline.get('extramodules'):
 			for m in self.cmdline['extramodules'].split(' '):
 				if len(m.strip(' ')) > 0:
@@ -305,8 +312,10 @@ class object(content):
 						load=0
 						break
 			if load:
+				self.debug('postrun: excludemodules = %s' % self.cmdline.get('excludemodules'))
 				if self.cmdline.get('excludemodules'):
 					if m in self.cmdline['excludemodules'].split(' '):
+						self.debug('postrun: module "%s" is blacklisted' % m)
 						continue
 				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
