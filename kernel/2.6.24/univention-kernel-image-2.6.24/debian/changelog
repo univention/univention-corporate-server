@@ -1,3 +1,10 @@
+univention-kernel-image-2.6.24 (1.3.1-3) unstable; urgency=low
+
+  * remove the transition packages. Otherwise it would be difficult to
+    ship Kernel 2.6.18 and Kernel 2.6.24 in one release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  2 May 2008 07:27:06 +0200
+
 univention-kernel-image-2.6.24 (1.3.1-2) unstable; urgency=low
 
   * amd64 updates for debian/control
