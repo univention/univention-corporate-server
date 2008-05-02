@@ -1,3 +1,10 @@
+univention-installer (1.9.23-1) unstable; urgency=low
+
+  * fixed modules dialog if boot parameter "loadmodules" and
+    "excludemodules" are empty
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 02 May 2008 09:55:24 +0200
+
 univention-installer (1.9.22-1) unstable; urgency=low
 
   * fixed modules dialog and boot parameter "loadmodules" and "excludemodules"
