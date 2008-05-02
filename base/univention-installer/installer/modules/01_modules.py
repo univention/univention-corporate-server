@@ -194,6 +194,8 @@ class object(content):
 
 		self.debug('LAYOUT: excludemodules = %s' % str(self.cmdline.get('excludemodules')))
 		for m in self.cmdline.get('excludemodules','').split(','):
+			if not m:
+				continue
 			if m in hwlist:
 				fixed.append(hwlist[m][1])
 				selected.remove(hwlist[m][1])
@@ -202,8 +204,10 @@ class object(content):
 		self.debug('LAYOUT: fixed=%s' % str(fixed))
 		self.debug('LAYOUT: selected=%s' % str(selected))
 
-		self.debug('LAYOUT: loadmodules = %s' % str(self.cmdline.get('loadmodules','')))
+		self.debug('LAYOUT: loadmodules = %s' % str(self.cmdline.get('loadmodules')))
 		for m in self.cmdline.get('loadmodules','').split(','):
+			if not m:
+				continue
 			if m in hwlist:
 				fixed.append(hwlist[m][1])
 				continue
