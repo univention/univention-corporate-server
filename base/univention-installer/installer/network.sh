@@ -43,7 +43,9 @@ if [ -n "$ip_cmdline" ]; then
 	fi
 	echo -n " eth0 "
 	ifconfig eth0 $_ip netmask $_netmask
-	route add default gw $_gateway
+	if [ ! "$_gateway" = "0.0.0.0" ] ; then
+		route add default gw $_gateway
+	fi
 fi
 
 echo ""

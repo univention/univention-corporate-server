@@ -1,3 +1,9 @@
+univention-installer (1.9.27-1) unstable; urgency=low
+
+  * cleanup noprobe logic
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 05 May 2008 16:57:26 +0200
+
 univention-installer (1.9.26-1) unstable; urgency=low
 
   * fixed noprobe logic of modules dialog

@@ -326,7 +326,7 @@ class object(content):
 			return False
 
 		if 'auto_part' in self.all_results.keys():
-			if self.all_results['auto_part'] in [ 'full_disk' ]:
+			if self.all_results['auto_part'] in [ 'full_disk', 'full_disk_usb' ]:
 				result = self.check_space_for_autopart()
 				if result:
 					self.message = result

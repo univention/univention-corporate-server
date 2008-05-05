@@ -179,10 +179,6 @@ class object(content):
 		tmplist_local.sort()
 		tmplist += tmplist_local
 
-		tmplist_profile = self.container['hardware']['profile']
-		tmplist_profile.sort()
-		tmplist += tmplist_profile
-
 		for h in tmplist:
 			if h in hwlist:
 				continue
@@ -295,12 +291,8 @@ class object(content):
 		self.container['hardware']={}
 		self.container['hardware']['kudzu']=[]
 		self.container['hardware']['local']=[]
-		self.container['hardware']['profile']=[]
-		self.debug('start: NOPROBE = %s' % str(self.cmdline.has_key('noprobe')))
 		if self.cmdline.has_key('noprobe'):
-			if self.all_results.has_key('modules'):
-				self.container['hardware']['profile']=self.all_results['modules'].split()
-			#if self.all_results.has_key('to_scan') and ("hardware" in self.all_results['to_scan'].split()):
+			self.debug('start: hardware probing by kudzu has been DISABLED by cmdline (noprobe)')
 		else:
 			self.debug('start: self.initialized=%s' % self.initialized)
 			if self.initialized:
