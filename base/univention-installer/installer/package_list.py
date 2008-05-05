@@ -224,7 +224,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
 					'Possible': [ 'all' ],
-					'Description': _("Secure shell server, an rshd replacemen"),
+					'Description': _("Secure shell server, an rshd replacement"),
 				},
 				{
 					'Name': _('FreeNX Server'),
