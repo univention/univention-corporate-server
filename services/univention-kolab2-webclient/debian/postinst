@@ -90,7 +90,7 @@ univention-baseconfig set php/memory/limit?64
 display_errors=$(cat /etc/php5/apache2/php.ini  | sed -e 's|;.*||' | grep display_errors)
 
 if [ -n "$display_errors" ]; then
-	sed -i /etc/php5/apache2/php.ini 's|^display_errors *=.*|display_errors = Off|'
+	sed -i 's|^display_errors *=.*|display_errors = Off|' /etc/php5/apache2/php.ini
 else
 	echo "display_errors = Off" >> /etc/php5/apache2/php.ini
 fi
