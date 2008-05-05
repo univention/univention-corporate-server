@@ -1,17 +1,17 @@
--- $Horde: horde/scripts/sql/create.pgsql.sql,v 1.16 2007/06/24 22:39:48 slusarz Exp $
+-- $Horde: horde/scripts/sql/create.pgsql.sql,v 1.1.10.7 2008/03/12 17:43:50 chuck Exp $
 --
--- Uncomment the ALTER line below, and change the password.  Then run as:
+-- Uncomment the ALTER line below and change the password.  Then run as:
 --
 -- $ psql -d template1 -f create.pgsql.sql
 
 CREATE DATABASE horde;
 
-\c horde;
-
 CREATE USER horde;
-
 -- ALTER USER horde WITH PASSWORD 'pass';
 
+GRANT CREATE on DATABASE horde to horde;
+
+\c horde horde;
 
 CREATE TABLE horde_users (
     user_uid                    VARCHAR(255) NOT NULL,
@@ -21,9 +21,6 @@ CREATE TABLE horde_users (
 --
     PRIMARY KEY (user_uid)
 );
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_users TO horde;
-
 
 CREATE TABLE horde_prefs (
     pref_uid        VARCHAR(255) NOT NULL,
@@ -36,9 +33,6 @@ CREATE TABLE horde_prefs (
 
 CREATE INDEX pref_uid_idx ON horde_prefs (pref_uid);
 CREATE INDEX pref_scope_idx ON horde_prefs (pref_scope);
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_prefs TO horde;
-
 
 CREATE TABLE horde_datatree (
     datatree_id INT NOT NULL,
@@ -58,7 +52,7 @@ CREATE INDEX datatree_group_idx ON horde_datatree (group_uid);
 CREATE INDEX datatree_user_idx ON horde_datatree (user_uid);
 CREATE INDEX datatree_order_idx ON horde_datatree (datatree_order);
 CREATE INDEX datatree_serialized_idx ON horde_datatree (datatree_serialized);
-
+CREATE INDEX datatree_parents_idx ON horde_datatree (datatree_parents);
 
 CREATE TABLE horde_datatree_attributes (
     datatree_id INT NOT NULL,
@@ -70,10 +64,7 @@ CREATE TABLE horde_datatree_attributes (
 CREATE INDEX datatree_attribute_idx ON horde_datatree_attributes USING HASH(datatree_id);
 CREATE INDEX datatree_attribute_name_idx ON horde_datatree_attributes (attribute_name);
 CREATE INDEX datatree_attribute_key_idx ON horde_datatree_attributes (attribute_key);
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_datatree TO horde;
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_datatree_attributes TO horde;
-
+CREATE INDEX datatree_attribute_value_idx ON horde_datatree_attributes (attribute_value);
 
 CREATE TABLE horde_tokens (
     token_address    VARCHAR(100) NOT NULL,
@@ -82,9 +73,6 @@ CREATE TABLE horde_tokens (
 --
     PRIMARY KEY (token_address, token_id)
 );
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_tokens TO horde;
-
 
 CREATE TABLE horde_vfs (
     vfs_id        BIGINT NOT NULL,
@@ -100,9 +88,6 @@ CREATE TABLE horde_vfs (
 
 CREATE INDEX vfs_path_idx ON horde_vfs (vfs_path);
 CREATE INDEX vfs_name_idx ON horde_vfs (vfs_name);
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_vfs TO horde;
-
 
 CREATE TABLE horde_histories (
     history_id       BIGINT NOT NULL,
@@ -120,18 +105,12 @@ CREATE INDEX history_action_idx ON horde_histories (history_action);
 CREATE INDEX history_ts_idx ON horde_histories (history_ts);
 CREATE INDEX history_uid_idx ON horde_histories (object_uid);
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_histories TO horde;
-
-
 CREATE TABLE horde_sessionhandler (
     session_id             VARCHAR(32) NOT NULL,
     session_lastmodified   BIGINT NOT NULL,
     session_data           TEXT,
     PRIMARY KEY (session_id)
 );
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_sessionhandler TO horde;
-
 
 CREATE TABLE horde_syncml_map (
     syncml_syncpartner VARCHAR(64) NOT NULL,
@@ -144,9 +123,6 @@ CREATE TABLE horde_syncml_map (
 
 CREATE INDEX syncml_cuid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_cuid);
 CREATE INDEX syncml_suid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_suid);
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_syncml_map TO horde;
-
 
 CREATE TABLE horde_alarms (
     alarm_id        VARCHAR(255) NOT NULL,
@@ -169,9 +145,6 @@ CREATE INDEX alarm_end_idx ON horde_alarms (alarm_end);
 CREATE INDEX alarm_snooze_idx ON horde_alarms (alarm_snooze);
 CREATE INDEX alarm_dismissed_idx ON horde_alarms (alarm_dismissed);
 
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_alarms TO horde;
-
-
 CREATE TABLE horde_cache (
     cache_id          VARCHAR(32) NOT NULL,
     cache_timestamp   BIGINT NOT NULL,
@@ -179,5 +152,3 @@ CREATE TABLE horde_cache (
 --
     PRIMARY KEY  (cache_id)
 );
-
-GRANT SELECT, INSERT, UPDATE, DELETE ON horde_cache TO horde;

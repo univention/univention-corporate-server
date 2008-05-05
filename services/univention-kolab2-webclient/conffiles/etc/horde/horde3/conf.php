@@ -94,6 +94,7 @@ $conf['prefs']['params']['driverconfig'] = 'horde';
 $conf['prefs']['driver'] = 'sql';
 $conf['datatree']['params']['driverconfig'] = 'horde';
 $conf['datatree']['driver'] = 'sql';
+$conf['history']['driver'] = 'sql';
 $conf['group']['params']['hostspec'] = '@%@ldap/server/name@%@';
 $conf['group']['params']['basedn'] = '@%@ldap/base@%@';
 $conf['group']['params']['version'] = '3';
