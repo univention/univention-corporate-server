@@ -223,7 +223,7 @@ class object(content):
 		for line in data.splitlines():
 			items = line.split(' ')
 			if len(items) >= 4:
-				disklist_blacklist.append( items[-1] )
+				disklist_usbstorage.append( items[-1] )
 		self.debug('found usb storage devices = %s' % disklist_usbstorage)
 		return disklist_usbstorage
 
@@ -626,7 +626,6 @@ class object(content):
 		self.container['profile']['lvmlv']['create']={}
 		self.container['profile']['lvmlv']['delete']={}
 		auto_part = False
-		device_cnt = 0
 
 		# create disk list with usb storage devices
 		disklist_usbstorage = self.get_usb_storage_device_list()
@@ -930,7 +929,7 @@ class object(content):
 
 		else:
 			return  0
-		return ["%s"%dev.strip(),num]
+		return ["%s" % dev.strip(), num]
 
 	def customsize2MiB(self, size):
 		size = size.upper().strip()

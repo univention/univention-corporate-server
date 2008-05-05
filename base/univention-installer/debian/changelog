@@ -1,3 +1,9 @@
+univention-installer (1.9.24-1) unstable; urgency=low
+
+  * fixed typo in partitioning module
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 05 May 2008 10:04:40 +0200
+
 univention-installer (1.9.23-1) unstable; urgency=low
 
   * fixed modules dialog if boot parameter "loadmodules" and
