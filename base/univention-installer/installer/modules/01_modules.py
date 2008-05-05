@@ -80,6 +80,7 @@ class object(content):
 		return ['modules']
 
 	def profile_prerun(self):
+		self.debug('ENTER: profile_prerun')
 		self.start()
 		self.debug('profile_prerun: loadmodules = %s' % str(self.cmdline.get('loadmodules')))
 		for m in self.cmdline.get('loadmodules','').split(','):
@@ -155,6 +156,7 @@ class object(content):
 			return 1
 
 	def layout(self):
+		self.debug('ENTER: layout')
 
 		self.elements=[]
 		self.std_button()
@@ -277,6 +279,7 @@ class object(content):
 		return _('Hardware-Scan')
 
 	def result(self):
+		self.debug('ENTER: result')
 		result={}
 		modlist = []
 		# cut off slashes in module list
@@ -287,22 +290,27 @@ class object(content):
 		return result
 
 	def start(self):
+		self.debug('ENTER: start')
 		self.action=''
 		self.container['hardware']={}
 		self.container['hardware']['kudzu']=[]
 		self.container['hardware']['local']=[]
 		self.container['hardware']['profile']=[]
 		self.debug('start: NOPROBE = %s' % str(self.cmdline.has_key('noprobe')))
-		if not self.cmdline.has_key('noprobe'):
+		if self.cmdline.has_key('noprobe'):
 			if self.all_results.has_key('modules'):
 				self.container['hardware']['profile']=self.all_results['modules'].split()
 			#if self.all_results.has_key('to_scan') and ("hardware" in self.all_results['to_scan'].split()):
+		else:
+			self.debug('start: self.initialized=%s' % self.initialized)
 			if self.initialized:
 				self.sub = self.active(self,_('Hardware-Scan'),_('Please wait...'))
 				self.sub.draw()
 		uname=os.popen('/bin/uname -r')
 		self.container['kernelversion']=uname.readline().strip()
+
 	def postrun(self):
+		self.debug('ENTER: postrun')
 		f=open('/proc/modules')
 		proc_lines=f.readlines()
 		f.close()
