@@ -1,3 +1,13 @@
+univention-kolab2-webclient (2.0.0-10) unstable; urgency=low
+
+  * added UCR variable horde/debug/level
+  * added empty options for ldap phpdn and ldap phppw
+  * added syncml_reset_user.sh script to remove all syncml settings for
+    an user from the database
+  * set needed php values in the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 May 2008 08:30:34 +0200
+
 univention-kolab2-webclient (2.0.0-9) unstable; urgency=low
 
   * fixed typo in config option
@@ -7,8 +17,9 @@ univention-kolab2-webclient (2.0.0-9) unstable; urgency=low
 univention-kolab2-webclient (2.0.0-8) unstable; urgency=low
 
   * added script syncml_interrupt.sh for detecting syncml interrupts
+  * upstream fixes for syncml_interrupt.sh
 
- -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Apr 2008 13:29:39 +0200
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Apr 2008 15:16:36 +0200
 
 univention-kolab2-webclient (2.0.0-7) unstable; urgency=low
 

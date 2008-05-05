@@ -79,8 +79,10 @@ else:
 	print "$conf['auth']['params']['password_expiration'] = 'no';"
 	print "$conf['auth']['driver'] = 'ldap';"
 @!@
+$conf['kolab']['ldap']['phpdn'] = '';
+$conf['kolab']['ldap']['phppw'] = '';
 $conf['signup']['allow'] = false;
-$conf['log']['priority'] = PEAR_LOG_ERR;
+$conf['log']['priority'] = @%@horde/debug/level@%@;
 $conf['log']['ident'] = 'HORDE';
 $conf['log']['params'] = array();
 $conf['log']['name'] = '/var/log/horde/horde3.log';

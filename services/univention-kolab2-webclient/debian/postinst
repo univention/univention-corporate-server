@@ -80,9 +80,32 @@ univention-baseconfig set	horde/application/turba?true \
 							horde/menu/hide_groupware?false \
 							horde/menu/width?250 \
 							horde/menu/save_state?true \
-							horde/mailer/type?smtp
+							horde/mailer/type?smtp \
+							horde/debug/level?"PEAR_LOG_ERR"
 
 univention-baseconfig set php/memory/limit?64
+
+# set php values
+
+display_errors=$(cat /etc/php5/apache2/php.ini  | sed -e 's|;.*||' | grep display_errors)
+
+if [ -n "$display_errors" ]; then
+	sed -i /etc/php5/apache2/php.ini 's|^display_errors *=.*|display_errors = Off|'
+else
+	echo "display_errors = Off" >> /etc/php5/apache2/php.ini
+fi
+
+error_log=$(cat /etc/php5/apache2/php.ini  | sed -e 's|;.*||' | grep error_log)
+if [ -z "$error_log" ]; then
+	echo "error_log = /var/log/php_error.log" >> /etc/php5/apache2/php.ini
+	toch /var/log/php_error.log
+	chown www-data /var/log/php_error.log
+fi
+
+error_reporting=$(cat /etc/php5/apache2/php.ini  | sed -e 's|;.*||' | grep error_reporting)
+if [ -z "$error_reporting" ]; then
+	echo "error_reporting = E_ALL" >> /etc/php5/apache2/php.ini
+fi
 
 dpkg-statoverride --force --update --add www-data adm 755 /var/log/horde
 

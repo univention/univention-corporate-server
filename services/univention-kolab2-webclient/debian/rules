@@ -72,8 +72,11 @@ install: build
 	install -m 644 scripts/horde_prefs.sql $(SHARE)
 	install -m 644 scripts/kronolith.pgsql.sql $(SHARE)
 	install -m 644 scripts/turba_objects.pgsql.sql $(SHARE)
+	install -m 644 scripts/horde_histories.sql $(SHARE)
+	install -m 644 scripts/horde_syncml.sql $(SHARE)
 	install -m 755 scripts/turba-permissions.py $(SHARE)
 	install -m 755 scripts/syncml_interrupt.sh $(SHARE)
+	install -m 755 scripts/syncml_reset_user.sh $(SHARE)
 
 	$(PEAR) pear/Archive_Tar-1.3.2.tgz
 	$(PEAR) pear/Console_Getopt-1.2.3.tgz
