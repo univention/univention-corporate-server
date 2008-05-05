@@ -1,3 +1,9 @@
+univention-installer (1.9.25-1) unstable; urgency=low
+
+  * updated translations
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 05 May 2008 11:17:58 +0200
+
 univention-installer (1.9.24-1) unstable; urgency=low
 
   * fixed typo in partitioning module
