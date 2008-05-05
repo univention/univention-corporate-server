@@ -98,7 +98,7 @@ fi
 error_log=$(cat /etc/php5/apache2/php.ini  | sed -e 's|;.*||' | grep error_log)
 if [ -z "$error_log" ]; then
 	echo "error_log = /var/log/php_error.log" >> /etc/php5/apache2/php.ini
-	toch /var/log/php_error.log
+	touch /var/log/php_error.log
 	chown www-data /var/log/php_error.log
 fi
 

@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0.0-13) unstable; urgency=low
+
+  * fixed a typo in the postinst script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  5 May 2008 09:30:45 +0200
+
 univention-kolab2-webclient (2.0.0-12) unstable; urgency=low
 
   * added UCR variable horde/debug/level
