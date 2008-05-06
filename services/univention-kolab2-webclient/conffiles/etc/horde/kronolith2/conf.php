@@ -10,8 +10,8 @@
 //
 $conf['calendar']['driver'] = 'kolab';
 $conf['storage']['default_domain'] = '@%@doaminname@%@';
-$conf['storage']['freebusy']['protocol'] = 'http';
-$conf['storage']['freebusy']['port'] = 80;
+$conf['storage']['freebusy']['protocol'] = 'https';
+$conf['storage']['freebusy']['port'] = 443;
 $conf['storage']['driver'] = 'kolab';
 $conf['metadata']['keywords'] = false;
 $conf['reminder']['server_name'] = 'localhost';

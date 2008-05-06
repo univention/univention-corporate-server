@@ -179,6 +179,9 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             'bind_password' => '',
             'read_only' => true,
         ),
+
+
+
         'map' => array(
             '__key'             => 'dn',
             'name'              => 'cn',
@@ -226,8 +229,13 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
     );
 
 
-    /* The local address books for a Kolab user. These are stored in specially
+    /**
+     * The local address books for a Kolab user. These are stored in specially
      * flagged contact folder within the users Cyrus IMAP mailbox.
+     *
+     * Still missing attributes are:
+     *
+     *   picture, sensitivity
      */
 
     $cfgSources['kolab'] = array(
@@ -238,19 +246,24 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
         ),
         'map' => array(
             '__key' => 'uid',
-            'name'              => 'full-name',
+            '__uid' => 'uid',
+            /* Personal */
+            'name' => array('fields' => array('firstname', 'middlenames', 'lastname'),
+                            'format' => '%s %s %s',
+                            'attribute' => 'full-name'),
             'firstname'         => 'given-name',
             'lastname'          => 'last-name',
-            'title'             => 'job-title',
-            'company'           => 'organization',
-            'notes'             => 'body',
-            'website'           => 'web-page',
+            'middlenames'       => 'middle-names',
+            'namePrefix'        => 'prefix',
+            'nameSuffix'        => 'suffix',
+            'initials'          => 'initials',
             'nickname'          => 'nick-name',
-            'emails'            => 'emails',
-            'homePhone'         => 'phone-home1',
-            'workPhone'         => 'phone-business1',
-            'cellPhone'         => 'phone-mobile',
-            'fax'               => 'phone-businessfax',
+            'gender'            => 'gender',
+            'birthday'          => 'birthday',
+            'spouse'            => 'spouse-name',
+            'anniversary'       => 'anniversary',
+            'children'          => 'children',
+            /* Location */
             'workStreet'        => 'addr-business-street',
             'workCity'          => 'addr-business-locality',
             'workProvince'      => 'addr-business-region',
@@ -261,19 +274,61 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             'homeProvince'      => 'addr-home-region',
             'homePostalCode'    => 'addr-home-postal-code',
             'homeCountry'       => 'addr-home-country',
+            /* Communications */
+            'emails'            => 'emails',
+            'homePhone'         => 'phone-home1',
+            'workPhone'         => 'phone-business1',
+            'cellPhone'         => 'phone-mobile',
+            'fax'               => 'phone-businessfax',
+            'instantMessenger'  => 'im-address',
+            /* Organization */
+            'title'             => 'job-title',
+            'role'              => 'profession',
+            'company'           => 'organization',
+            'department'        => 'department',
+            'office'            => 'office-location',
+            'manager'           => 'manager-name',
+            'assistant'         => 'assistant',
+            /* Other */
+            'category'          => 'categories',
+            'notes'             => 'body',
+            'website'           => 'web-page',
+            'freebusyUrl'       => 'free-busy-url',
+            'language'          => 'language',
+            'latitude'          => 'latitude',
+            'longitude'         => 'longitude',
+        ),
+        'tabs' => array(
+            _("Personal") => array('name', 'firstname', 'lastname', 'middlenames',
+                                   'namePrefix', 'nameSuffix', 'initials', 'nickname',
+                                   'gender', 'birthday', 'spouse', 'anniversary',
+                                   'children'),
+            _("Location") => array('homeStreet', 'homeCity', 'homeProvince',
+                                   'homePostalCode', 'homeCountry', 'workStreet',
+                                   'workCity', 'workProvince', 'workPostalCode',
+                                   'workCountry'),
+            _("Communications") => array('emails', 'homePhone', 'workPhone',
+                                         'cellPhone', 'fax', 'instantMessenger'),
+            _("Organization") => array('title', 'role', 'company', 'department',
+                                       'office', 'manager', 'assistant'),
+            _("Other") => array('category', 'notes', 'website', 'freebusyUrl',
+                                'language', 'latitude', 'longitude'),
         ),
         'search' => array(
-            'name',
+            /* Personal */
             'firstname',
             'lastname',
-            'emails',
-            'title',
-            'company',
-            'notes',
-            'homePhone',
-            'workPhone',
-            'cellPhone',
-            'fax',
+            'middlenames',
+            'namePrefix',
+            'nameSuffix',
+            'initials',
+            'nickname',
+            'gender',
+            'birthday',
+            'spouse',
+            'anniversary',
+            'children',
+            /* Location */
             'workStreet',
             'workCity',
             'workProvince',
@@ -284,8 +339,26 @@ if (!empty($GLOBALS['conf']['kolab']['enabled'])) {
             'homeProvince',
             'homePostalCode',
             'homeCountry',
+            /* Communications */
+            'emails',
+            'homePhone',
+            'workPhone',
+            'cellPhone',
+            'fax',
+            'instantMessenger',
+            /* Organization */
+            'title',
+            'role',
+            'company',
+            'department',
+            'office',
+            'manager',
+            'assistant',
+            /* Other */
+            'category',
+            'notes',
             'website',
-            'nickname'
+            'language',
         ),
         'strict' => array(
             'uid',
