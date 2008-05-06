@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-05-05 11:07+0200\n"
-"PO-Revision-Date: 2008-04-30 14:03+0200\n"
+"POT-Creation-Date: 2008-05-06 13:39+0200\n"
+"PO-Revision-Date: 2008-05-06 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,8 +45,8 @@ msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
 
 #: installer/main.py:251 installer/main.py:282 installer/objects.py:1720
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
-#: installer/modules/04_profile.py:54 installer/modules/12_partition.py:3977
-#: installer/modules/12_partition.py:3993 installer/modules/20_net.py:646
+#: installer/modules/04_profile.py:54 installer/modules/12_partition.py:3989
+#: installer/modules/12_partition.py:4005 installer/modules/20_net.py:646
 #: installer/modules/20_net.py:873
 #: ../univention-system-setup/usr/sbin/univention-system-setup:143
 #: ../univention-system-setup/usr/sbin/univention-system-setup:170
@@ -111,7 +111,7 @@ msgstr " Warnung"
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1148 installer/modules/12_partition.py:2120
+#: installer/objects.py:1148 installer/modules/12_partition.py:2132
 #: installer/modules/50_security.py:95 installer/modules/60_software.py:342
 #: installer/modules/70_system_settings.py:73
 msgid "F12-Next"
@@ -129,7 +129,7 @@ msgstr "F12-Recover Shell starten"
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1159 installer/modules/12_partition.py:2119
+#: installer/objects.py:1159 installer/modules/12_partition.py:2131
 #: installer/modules/50_security.py:94 installer/modules/60_software.py:338
 #: installer/modules/60_software.py:343
 #: installer/modules/70_system_settings.py:72
@@ -140,13 +140,13 @@ msgstr "F11-Zurück"
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:1671 installer/modules/12_partition.py:3824
-#: installer/modules/12_partition.py:3945
+#: installer/objects.py:1671 installer/modules/12_partition.py:3836
+#: installer/modules/12_partition.py:3957
 msgid "Yes"
 msgstr "Ja"
 
-#: installer/objects.py:1672 installer/modules/12_partition.py:3825
-#: installer/modules/12_partition.py:3946
+#: installer/objects.py:1672 installer/modules/12_partition.py:3837
+#: installer/modules/12_partition.py:3958
 msgid "No"
 msgstr "Nein"
 
@@ -356,19 +356,19 @@ msgstr "Xen-Hypervisor für den Betrieb virtualisierter Systeme."
 
 #: installer/package_list.py:254
 msgid "Xen kernel images"
-msgstr "Xen Kernel-Images"
+msgstr "Xen-Kernel-Images"
 
 #: installer/package_list.py:259
 msgid "Xen kernel images to Xen guests."
-msgstr "Xen Kernel-Images für Xen-Gastinstanzen."
+msgstr "Xen-Kernel-Images für Xen-Gastinstanzen."
 
 #: installer/package_list.py:262
-msgid "Network Installer"
-msgstr "Netzwerk Installationsserver"
+msgid "UCS Net Installer"
+msgstr "UCS Net Installer"
 
 #: installer/package_list.py:267
 msgid "Install UCS over the network"
-msgstr "Netzwerkinstallation von UCS"
+msgstr "PXE-Installation von UCS"
 
 #: installer/package_list.py:272
 msgid "Administration"
@@ -444,7 +444,7 @@ msgstr "Basispakete für die grafische Desktop-Umgebung"
 
 #: installer/package_list.py:342
 msgid "KDE Desktop"
-msgstr "KDE Desktop"
+msgstr "KDE-Desktop"
 
 #: installer/package_list.py:347
 msgid "KDE - K Desktop Environment"
@@ -468,7 +468,7 @@ msgstr "Firefox Webbrowser"
 
 #: installer/package_list.py:366
 msgid "Java Plugin/Runtime"
-msgstr "Java Plugin/Java Umgebung"
+msgstr "Java-Plugin/Java-Umgebung"
 
 #: installer/package_list.py:371 installer/package_list.py:555
 msgid "Java Virtual Machine"
@@ -476,7 +476,7 @@ msgstr "Java Virtual Machine"
 
 #: installer/package_list.py:374
 msgid "Flash Plugin"
-msgstr "Flash Plugin"
+msgstr "Flash-Plugin"
 
 #: installer/package_list.py:379
 msgid "Flashplugin for webbrowsers"
@@ -520,7 +520,7 @@ msgstr ""
 
 #: installer/package_list.py:414
 msgid "Desktop Search (kerry/beagle)"
-msgstr "Desktop-Suchprg. (kerry/beagle)"
+msgstr "Desktop-Suche (kerry/beagle)"
 
 #: installer/package_list.py:419
 msgid "Desktop Search with kerry and beagle"
@@ -651,12 +651,12 @@ msgid "Java"
 msgstr "Java"
 
 #: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
-#: installer/modules/01_modules.py:320 installer/modules/01_modules.py:342
+#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
 msgid "Load modules"
 msgstr "Lade Module"
 
 #: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
-#: installer/modules/01_modules.py:320 installer/modules/01_modules.py:342
+#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
 #, python-format
 msgid "Loading module %s"
 msgstr "Lade Modul %s"
@@ -667,18 +667,18 @@ msgstr "Weitere zu ladende Module:"
 
 #: installer/modules/01_modules.py:124 installer/modules/03_hardware.py:259
 #: installer/modules/03_hardware.py:293 installer/modules/04_profile.py:55
-#: installer/modules/12_partition.py:3479
-#: installer/modules/12_partition.py:3526
-#: installer/modules/12_partition.py:3752
-#: installer/modules/12_partition.py:3791 installer/modules/20_net.py:647
+#: installer/modules/12_partition.py:3491
+#: installer/modules/12_partition.py:3538
+#: installer/modules/12_partition.py:3764
+#: installer/modules/12_partition.py:3803 installer/modules/20_net.py:647
 #: installer/modules/20_net.py:874
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: installer/modules/01_modules.py:125 installer/modules/12_partition.py:3478
-#: installer/modules/12_partition.py:3525
-#: installer/modules/12_partition.py:3751
-#: installer/modules/12_partition.py:3790
+#: installer/modules/01_modules.py:125 installer/modules/12_partition.py:3490
+#: installer/modules/12_partition.py:3537
+#: installer/modules/12_partition.py:3763
+#: installer/modules/12_partition.py:3802
 msgid "Save"
 msgstr "Speichern"
 
@@ -690,11 +690,11 @@ msgstr "Module"
 msgid "The following hardware was found:"
 msgstr "Die folgende Hardware wurde gefunden:"
 
-#: installer/modules/01_modules.py:227
+#: installer/modules/01_modules.py:223
 msgid "Add modules"
 msgstr "Module hinzufügen"
 
-#: installer/modules/01_modules.py:276
+#: installer/modules/01_modules.py:272
 msgid ""
 "Hardware-Scan \n"
 " \n"
@@ -708,11 +708,11 @@ msgstr ""
 " Sollte Hardware nicht aufgelistet sein bitte wählen Sie \"Modul hinzufügen"
 "\" und markieren Sie die fehlende Hardware mit der 'Space'-Taste."
 
-#: installer/modules/01_modules.py:279 installer/modules/01_modules.py:307
+#: installer/modules/01_modules.py:275 installer/modules/01_modules.py:299
 msgid "Hardware-Scan"
 msgstr "Hardware-Suche"
 
-#: installer/modules/01_modules.py:307 installer/modules/04_profile.py:459
+#: installer/modules/01_modules.py:299 installer/modules/04_profile.py:459
 #: installer/modules/05_keyboard.py:61 installer/modules/05_keyboard.py:120
 msgid "Please wait..."
 msgstr "Bitte warten..."
@@ -724,13 +724,13 @@ msgstr "Suche CD-ROM-Laufwerk"
 #: installer/modules/03_hardware.py:79 installer/modules/03_hardware.py:88
 #: installer/modules/03_hardware.py:94 installer/modules/03_hardware.py:167
 #: installer/modules/03_hardware.py:172 installer/modules/03_hardware.py:245
-#: installer/modules/12_partition.py:207 installer/modules/12_partition.py:956
-#: installer/modules/12_partition.py:959 installer/modules/12_partition.py:962
-#: installer/modules/12_partition.py:965 installer/modules/12_partition.py:968
-#: installer/modules/12_partition.py:1885
-#: installer/modules/12_partition.py:3095
-#: installer/modules/12_partition.py:3098
-#: installer/modules/12_partition.py:3100 installer/modules/60_software.py:80
+#: installer/modules/12_partition.py:207 installer/modules/12_partition.py:964
+#: installer/modules/12_partition.py:967 installer/modules/12_partition.py:970
+#: installer/modules/12_partition.py:973 installer/modules/12_partition.py:976
+#: installer/modules/12_partition.py:1895
+#: installer/modules/12_partition.py:3107
+#: installer/modules/12_partition.py:3110
+#: installer/modules/12_partition.py:3112 installer/modules/60_software.py:80
 msgid "Please wait ..."
 msgstr "Bitte warten ..."
 
@@ -1123,7 +1123,7 @@ msgstr "Optionen"
 msgid "Reading LVM config"
 msgstr "Suche LVM-Geräte"
 
-#: installer/modules/12_partition.py:243
+#: installer/modules/12_partition.py:246
 #, python-format
 msgid ""
 "not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  "
@@ -1132,7 +1132,7 @@ msgstr ""
 "Nicht genügend Platz für Autopartitionierung: vorhanden=%(disksizeall)s  "
 "benötigt=%(required)s"
 
-#: installer/modules/12_partition.py:261
+#: installer/modules/12_partition.py:264
 #, python-format
 msgid ""
 "cannot autopart disk: /boot or swap does not fit on harddisk (required=%s)"
@@ -1140,218 +1140,217 @@ msgstr ""
 "Autopart. nicht möglich: /boot oder swap passen nicht auf Festplatte "
 "(benötigt=%s)"
 
-#: installer/modules/12_partition.py:412 installer/modules/12_partition.py:427
+#: installer/modules/12_partition.py:415 installer/modules/12_partition.py:430
 #, python-format
 msgid "Double Mount-Point '%s'"
 msgstr "Doppelter Mount-Point '%s'"
 
-#: installer/modules/12_partition.py:436
+#: installer/modules/12_partition.py:439
 msgid "Missing '/' as mountpoint"
 msgstr "Fehlender '/' als Mountpoint"
 
-#: installer/modules/12_partition.py:440
+#: installer/modules/12_partition.py:443
 #, python-format
 msgid "Wrong filesystemtype '%s' for mountpoint '/'"
 msgstr "Falsches Dateisystem '%s' für '/'"
 
-#: installer/modules/12_partition.py:462
+#: installer/modules/12_partition.py:465
 msgid "Unable to create bootable config!"
 msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen!"
 
-#: installer/modules/12_partition.py:463
+#: installer/modules/12_partition.py:466
 msgid "/-partition is located on LVM and"
 msgstr "/-Partition liegt auf einem LVM und"
 
-#: installer/modules/12_partition.py:464
+#: installer/modules/12_partition.py:467
 msgid "/boot-partition is missing or located"
 msgstr "die /boot-Partition fehlt oder ist auch"
 
-#: installer/modules/12_partition.py:465
+#: installer/modules/12_partition.py:468
 msgid "on LVM too."
 msgstr "auf einem LVM."
 
-#: installer/modules/12_partition.py:498
+#: installer/modules/12_partition.py:501
 msgid "Partition"
 msgstr "Partition"
 
-#: installer/modules/12_partition.py:956
+#: installer/modules/12_partition.py:964
 msgid "Deleting LVM volumes"
 msgstr "Lösche LVM-Geräte"
 
-#: installer/modules/12_partition.py:959
+#: installer/modules/12_partition.py:967
 msgid "Deleting partitions"
 msgstr "Lösche Partitionen"
 
-#: installer/modules/12_partition.py:962
+#: installer/modules/12_partition.py:970
 msgid "Creating partitions"
 msgstr "Lösche Partitionen"
 
-#: installer/modules/12_partition.py:965
+#: installer/modules/12_partition.py:973
 msgid "Creating LVM volumes"
 msgstr "Erstelle LVM-Geräte"
 
-#: installer/modules/12_partition.py:968
+#: installer/modules/12_partition.py:976
 msgid "Formatting partitions"
 msgstr "Formatiere Partitionen"
 
-#: installer/modules/12_partition.py:1684
+#: installer/modules/12_partition.py:1693
 msgid "Include USB storage devices while auto-partitioning?"
-msgstr ""
-"Sollen USB-Partitionen während der Auto-Partitionierung verwendet werden?"
+msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
 
-#: installer/modules/12_partition.py:1686
-#: installer/modules/12_partition.py:1904
+#: installer/modules/12_partition.py:1695
+#: installer/modules/12_partition.py:1915
 msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
 msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
 
-#: installer/modules/12_partition.py:1687
+#: installer/modules/12_partition.py:1696
 msgid "partitions on all disks! This includes USB harddisks"
 msgstr "allen Festplatten vor! Das beinhaltet auch USB-Festplatten"
 
-#: installer/modules/12_partition.py:1688
+#: installer/modules/12_partition.py:1697
 msgid "and USB sticks. In any case *ALL* LVM LV and LVM VG"
 msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
 
-#: installer/modules/12_partition.py:1689
+#: installer/modules/12_partition.py:1698
 msgid "will be deleted!"
 msgstr "gelöscht!"
 
-#: installer/modules/12_partition.py:1781
-#: installer/modules/12_partition.py:1841
+#: installer/modules/12_partition.py:1791
+#: installer/modules/12_partition.py:1851
 msgid "Not enough disk space found for /boot!"
 msgstr "Nicht genug Speicherplatz für /boot!"
 
-#: installer/modules/12_partition.py:1782
-#: installer/modules/12_partition.py:1813
-#: installer/modules/12_partition.py:1842
+#: installer/modules/12_partition.py:1792
+#: installer/modules/12_partition.py:1823
+#: installer/modules/12_partition.py:1852
 msgid "Auto-partitioning aborted."
 msgstr "Automatische Partitionierung abgebrochen."
 
-#: installer/modules/12_partition.py:1812
+#: installer/modules/12_partition.py:1822
 msgid "Not enough disk space found!"
 msgstr "Nicht genügend Speicherplatz vorhanden!"
 
-#: installer/modules/12_partition.py:1885
+#: installer/modules/12_partition.py:1895
 msgid "Detecting LVM devices"
 msgstr "Suche LVM-Geräte"
 
-#: installer/modules/12_partition.py:1894
+#: installer/modules/12_partition.py:1904
 msgid "WARNING: not enough free space for auto partitioning!"
 msgstr "WARNUNG: Nicht genug Platz für Autopartitionierung!"
 
-#: installer/modules/12_partition.py:1895
+#: installer/modules/12_partition.py:1905
 msgid "Auto partitioning has been disabled!"
 msgstr "Automatische Partitionierung wurde deaktiviert!"
 
-#: installer/modules/12_partition.py:1902
+#: installer/modules/12_partition.py:1913
 msgid "Do you want to use auto-partitioning?"
 msgstr "Soll die automatische Partitionierung verwendet werden? "
 
-#: installer/modules/12_partition.py:1905
+#: installer/modules/12_partition.py:1916
 msgid "partitions on all disks! If auto-partition result is"
 msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
 
-#: installer/modules/12_partition.py:1906
+#: installer/modules/12_partition.py:1917
 msgid "unsuitable press F5 to restart partitioning."
 msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
 
-#: installer/modules/12_partition.py:1915
+#: installer/modules/12_partition.py:1926
 msgid "LVM1 volumes detected. To use LVM1 volumes all"
 msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
 
-#: installer/modules/12_partition.py:1916
+#: installer/modules/12_partition.py:1927
 msgid "existing LVM1 snapshots have to be removed!"
 msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
 
-#: installer/modules/12_partition.py:1917
+#: installer/modules/12_partition.py:1928
 msgid "Otherwise kernel is unable to mount them!"
 msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
 
-#: installer/modules/12_partition.py:1935
+#: installer/modules/12_partition.py:1947
 msgid "No LVM volume group found on current system."
 msgstr "Keine LVM-Gruppe gefunden."
 
-#: installer/modules/12_partition.py:1936
+#: installer/modules/12_partition.py:1948
 msgid "Do you want to use LVM2?"
 msgstr "Möchten Sie LVM2 verwenden?"
 
-#: installer/modules/12_partition.py:1955
+#: installer/modules/12_partition.py:1967
 msgid " Partition dialog "
 msgstr "Partitionierung"
 
-#: installer/modules/12_partition.py:1972 installer/modules/20_net.py:768
+#: installer/modules/12_partition.py:1984 installer/modules/20_net.py:768
 #: installer/modules/20_net.py:770
 msgid "Device"
 msgstr "Gerät"
 
-#: installer/modules/12_partition.py:1973
+#: installer/modules/12_partition.py:1985
 msgid "Area(MB)"
 msgstr "Bereich(MB)"
 
-#: installer/modules/12_partition.py:1974
+#: installer/modules/12_partition.py:1986
 msgid "Typ"
 msgstr "Typ"
 
-#: installer/modules/12_partition.py:1975
+#: installer/modules/12_partition.py:1987
 msgid "Form."
 msgstr "Form."
 
-#: installer/modules/12_partition.py:1976
-#: installer/modules/12_partition.py:3509
-#: installer/modules/12_partition.py:3782
+#: installer/modules/12_partition.py:1988
+#: installer/modules/12_partition.py:3521
+#: installer/modules/12_partition.py:3794
 msgid "Mount-Point"
 msgstr "Mount-Point"
 
-#: installer/modules/12_partition.py:1977
+#: installer/modules/12_partition.py:1989
 msgid "Size(MB)"
 msgstr "Größe(MB)"
 
-#: installer/modules/12_partition.py:1991
+#: installer/modules/12_partition.py:2003
 msgid "diskdrive"
 msgstr "Festplatte"
 
-#: installer/modules/12_partition.py:2017
+#: installer/modules/12_partition.py:2029
 msgid "(unassigned)"
 msgstr "(nicht zugewiesen)"
 
-#: installer/modules/12_partition.py:2043
+#: installer/modules/12_partition.py:2055
 msgid "unusable"
 msgstr "unbenutzbar"
 
-#: installer/modules/12_partition.py:2046
-#: installer/modules/12_partition.py:2050
+#: installer/modules/12_partition.py:2058
+#: installer/modules/12_partition.py:2062
 msgid "free"
 msgstr "frei"
 
-#: installer/modules/12_partition.py:2053
+#: installer/modules/12_partition.py:2065
 msgid "unknown"
 msgstr "unbekannt"
 
-#: installer/modules/12_partition.py:2071
+#: installer/modules/12_partition.py:2083
 msgid "LVM volume group"
 msgstr "LVM-Medien-Gruppe"
 
-#: installer/modules/12_partition.py:2114
+#: installer/modules/12_partition.py:2126
 msgid "F2-Create"
 msgstr "F2-Erstellen"
 
-#: installer/modules/12_partition.py:2115 installer/modules/20_net.py:364
+#: installer/modules/12_partition.py:2127 installer/modules/20_net.py:364
 msgid "F3-Edit"
 msgstr "F3-Editieren"
 
-#: installer/modules/12_partition.py:2116 installer/modules/20_net.py:365
+#: installer/modules/12_partition.py:2128 installer/modules/20_net.py:365
 msgid "F4-Delete"
 msgstr "F4-Löschen"
 
-#: installer/modules/12_partition.py:2117
+#: installer/modules/12_partition.py:2129
 msgid "F5-Reset changes"
 msgstr "F5-Änderungen verwerfen"
 
-#: installer/modules/12_partition.py:2118
+#: installer/modules/12_partition.py:2130
 msgid "F6-Write partitions"
 msgstr "F6-Änderungen schreiben"
 
-#: installer/modules/12_partition.py:2159
+#: installer/modules/12_partition.py:2171
 msgid ""
 "UCS-Partition-Tool \n"
 " \n"
@@ -1387,308 +1386,308 @@ msgstr ""
 " Bitte benutzen Sie  \"Änderungen schreiben\", um Ihre Einstellungen nun auf "
 "die Festplatte zu schreiben."
 
-#: installer/modules/12_partition.py:2249
-#: installer/modules/12_partition.py:2296
-#: installer/modules/12_partition.py:2312
+#: installer/modules/12_partition.py:2261
+#: installer/modules/12_partition.py:2308
+#: installer/modules/12_partition.py:2324
 msgid "LVM physical volumes cannot be modified!"
 msgstr "LVM Physikalische Medien können nicht verändert werden!"
 
-#: installer/modules/12_partition.py:2249
-#: installer/modules/12_partition.py:2296
-#: installer/modules/12_partition.py:2312
+#: installer/modules/12_partition.py:2261
+#: installer/modules/12_partition.py:2308
+#: installer/modules/12_partition.py:2324
 msgid "If necessary delete this partition."
 msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
 
-#: installer/modules/12_partition.py:2392
-#: installer/modules/12_partition.py:2403
+#: installer/modules/12_partition.py:2404
+#: installer/modules/12_partition.py:2415
 msgid "Unable to remove physical volume from"
 msgstr "Das Löschen des physikalischen Mediums der"
 
-#: installer/modules/12_partition.py:2393
-#: installer/modules/12_partition.py:2404
+#: installer/modules/12_partition.py:2405
+#: installer/modules/12_partition.py:2416
 #, python-format
 msgid "volume group \"%s\"!"
 msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
 
-#: installer/modules/12_partition.py:2394
-#: installer/modules/12_partition.py:2405
+#: installer/modules/12_partition.py:2406
+#: installer/modules/12_partition.py:2417
 msgid "Physical volume contains used physical extents!"
 msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
 
-#: installer/modules/12_partition.py:2406
+#: installer/modules/12_partition.py:2418
 msgid "Please use \"pvmove\" to move data to other"
 msgstr "Bitte verschieben Sie die Daten mit \"pvmove\""
 
-#: installer/modules/12_partition.py:2407
+#: installer/modules/12_partition.py:2419
 msgid "physical volumes."
 msgstr "auf ein anderes phys. Medium."
 
-#: installer/modules/12_partition.py:3068
+#: installer/modules/12_partition.py:3080
 msgid "No device files found for following devices. Please"
 msgstr "Keine Gerätedateien für die nachfolgenden Geräte gefunden. Bitte"
 
-#: installer/modules/12_partition.py:3069
+#: installer/modules/12_partition.py:3081
 msgid "decrease number of partitions on a single disk or use LVM."
 msgstr ""
 "reduzieren Sie die Anzahl der Partitionen auf einer Festplatte oder nutzen "
 "Sie LVM."
 
-#: installer/modules/12_partition.py:3095
+#: installer/modules/12_partition.py:3107
 msgid "Write partitions"
 msgstr "Schreibe Partitionen"
 
-#: installer/modules/12_partition.py:3098
+#: installer/modules/12_partition.py:3110
 msgid "Create LVM Volumes"
 msgstr "Erstelle LVM-Medien"
 
-#: installer/modules/12_partition.py:3100
+#: installer/modules/12_partition.py:3112
 msgid "Create Filesystems"
 msgstr "Erstelle Dateisysteme"
 
-#: installer/modules/12_partition.py:3273
-#: installer/modules/12_partition.py:3331
-#: installer/modules/12_partition.py:3640
-#: installer/modules/12_partition.py:3676
+#: installer/modules/12_partition.py:3285
+#: installer/modules/12_partition.py:3343
+#: installer/modules/12_partition.py:3652
+#: installer/modules/12_partition.py:3688
 msgid "The selected filesystem takes no"
 msgstr "Das gewählte Dateisystem ist nicht nutzbar,"
 
-#: installer/modules/12_partition.py:3274
-#: installer/modules/12_partition.py:3641
+#: installer/modules/12_partition.py:3286
+#: installer/modules/12_partition.py:3653
 msgid "effect, if format is not selected."
 msgstr "wenn formatieren nicht gewählt wurde."
 
-#: installer/modules/12_partition.py:3276
-#: installer/modules/12_partition.py:3328
-#: installer/modules/12_partition.py:3334
-#: installer/modules/12_partition.py:3643
-#: installer/modules/12_partition.py:3673
-#: installer/modules/12_partition.py:3679
+#: installer/modules/12_partition.py:3288
+#: installer/modules/12_partition.py:3340
+#: installer/modules/12_partition.py:3346
+#: installer/modules/12_partition.py:3655
+#: installer/modules/12_partition.py:3685
+#: installer/modules/12_partition.py:3691
 msgid "Do you want to format this partition?"
 msgstr "Wollen Sie diese Partition formatieren? "
 
-#: installer/modules/12_partition.py:3324
+#: installer/modules/12_partition.py:3336
 msgid "This partition is designated as root filesystem,"
 msgstr "Diese Partition ist als Root-Dateisystem gekennzeichnet,"
 
-#: installer/modules/12_partition.py:3325
-#: installer/modules/12_partition.py:3670
+#: installer/modules/12_partition.py:3337
+#: installer/modules/12_partition.py:3682
 msgid "but \"format\" is not selected. This can cause"
 msgstr "aber \"Formatieren\" wurde nicht ausgewählt. Dies"
 
-#: installer/modules/12_partition.py:3326
-#: installer/modules/12_partition.py:3671
+#: installer/modules/12_partition.py:3338
+#: installer/modules/12_partition.py:3683
 msgid "problems with preexisting data on disk!"
 msgstr " kann zu Problemen mit existierende Daten führen!"
 
-#: installer/modules/12_partition.py:3332
-#: installer/modules/12_partition.py:3677
+#: installer/modules/12_partition.py:3344
+#: installer/modules/12_partition.py:3689
 msgid "effect, if \"format\" is not selected."
 msgstr "wenn \"formatieren\" nicht gewählt wurde."
 
-#: installer/modules/12_partition.py:3415
+#: installer/modules/12_partition.py:3427
 msgid "Physical Diskdrive"
 msgstr "Physikalisches Laufwerk"
 
-#: installer/modules/12_partition.py:3416
+#: installer/modules/12_partition.py:3428
 #, python-format
 msgid "Device: %s"
 msgstr "Gerät: %s"
 
-#: installer/modules/12_partition.py:3417
+#: installer/modules/12_partition.py:3429
 #, python-format
 msgid "Size: %s"
 msgstr "Größe: %s"
 
-#: installer/modules/12_partition.py:3419
+#: installer/modules/12_partition.py:3431
 #, python-format
 msgid "Primary Partitions: %s"
 msgstr "Primäre Partitionen: %s"
 
-#: installer/modules/12_partition.py:3419
-#: installer/modules/12_partition.py:3461
-#: installer/modules/12_partition.py:3465
+#: installer/modules/12_partition.py:3431
+#: installer/modules/12_partition.py:3473
+#: installer/modules/12_partition.py:3477
 msgid "primary"
 msgstr "primär"
 
-#: installer/modules/12_partition.py:3420
+#: installer/modules/12_partition.py:3432
 #, python-format
 msgid "Logical Partitions: %s"
 msgstr "Logische Partitionen: %s"
 
-#: installer/modules/12_partition.py:3420
-#: installer/modules/12_partition.py:3463
-#: installer/modules/12_partition.py:3466
+#: installer/modules/12_partition.py:3432
+#: installer/modules/12_partition.py:3475
+#: installer/modules/12_partition.py:3478
 msgid "logical"
 msgstr "logisch"
 
-#: installer/modules/12_partition.py:3425
+#: installer/modules/12_partition.py:3437
 msgid "Next"
 msgstr "Weiter"
 
-#: installer/modules/12_partition.py:3436
+#: installer/modules/12_partition.py:3448
 msgid "New Partition:"
 msgstr "Neue Partition"
 
-#: installer/modules/12_partition.py:3438
-#: installer/modules/12_partition.py:3439
-#: installer/modules/12_partition.py:3441
-#: installer/modules/12_partition.py:3724
-#: installer/modules/12_partition.py:3725
-#: installer/modules/12_partition.py:3727
+#: installer/modules/12_partition.py:3450
+#: installer/modules/12_partition.py:3451
+#: installer/modules/12_partition.py:3453
+#: installer/modules/12_partition.py:3736
+#: installer/modules/12_partition.py:3737
+#: installer/modules/12_partition.py:3739
 msgid "Mount-Point:"
 msgstr "Mount-Point"
 
-#: installer/modules/12_partition.py:3440
-#: installer/modules/12_partition.py:3726
+#: installer/modules/12_partition.py:3452
+#: installer/modules/12_partition.py:3738
 msgid "Size (MB):"
 msgstr "Größe (MB)"
 
-#: installer/modules/12_partition.py:3442
-#: installer/modules/12_partition.py:3491
-#: installer/modules/12_partition.py:3728
-#: installer/modules/12_partition.py:3761
+#: installer/modules/12_partition.py:3454
+#: installer/modules/12_partition.py:3503
+#: installer/modules/12_partition.py:3740
+#: installer/modules/12_partition.py:3773
 msgid "Filesystem"
 msgstr "Dateisystem"
 
-#: installer/modules/12_partition.py:3469
-#: installer/modules/12_partition.py:3512
-#: installer/modules/12_partition.py:3514
+#: installer/modules/12_partition.py:3481
+#: installer/modules/12_partition.py:3524
+#: installer/modules/12_partition.py:3526
 msgid "bootable"
 msgstr "bootbar"
 
-#: installer/modules/12_partition.py:3471
-#: installer/modules/12_partition.py:3517
-#: installer/modules/12_partition.py:3519
+#: installer/modules/12_partition.py:3483
+#: installer/modules/12_partition.py:3529
+#: installer/modules/12_partition.py:3531
 msgid "PPC PreP"
 msgstr "PPC PreP"
 
-#: installer/modules/12_partition.py:3473
-#: installer/modules/12_partition.py:3475
-#: installer/modules/12_partition.py:3521
-#: installer/modules/12_partition.py:3523
-#: installer/modules/12_partition.py:3749
-#: installer/modules/12_partition.py:3786
-#: installer/modules/12_partition.py:3788
+#: installer/modules/12_partition.py:3485
+#: installer/modules/12_partition.py:3487
+#: installer/modules/12_partition.py:3533
+#: installer/modules/12_partition.py:3535
+#: installer/modules/12_partition.py:3761
+#: installer/modules/12_partition.py:3798
+#: installer/modules/12_partition.py:3800
 msgid "format"
 msgstr "formatieren"
 
-#: installer/modules/12_partition.py:3477
+#: installer/modules/12_partition.py:3489
 msgid "LVM PV"
 msgstr "LVM PV"
 
-#: installer/modules/12_partition.py:3485
+#: installer/modules/12_partition.py:3497
 #, python-format
 msgid "Partition: %s"
 msgstr "Partition: %s"
 
-#: installer/modules/12_partition.py:3487
+#: installer/modules/12_partition.py:3499
 msgid "Typ: primary"
 msgstr "Typ: primär"
 
-#: installer/modules/12_partition.py:3489
+#: installer/modules/12_partition.py:3501
 msgid "Typ: logical"
 msgstr "Typ: logisch"
 
-#: installer/modules/12_partition.py:3490
-#: installer/modules/12_partition.py:3760
+#: installer/modules/12_partition.py:3502
+#: installer/modules/12_partition.py:3772
 #, python-format
 msgid "Size: %s MB"
 msgstr "Größe: %s"
 
-#: installer/modules/12_partition.py:3599
+#: installer/modules/12_partition.py:3611
 msgid "Please enter volume name!"
 msgstr "Geben Sie den Namen des Medium ein!"
 
-#: installer/modules/12_partition.py:3601
+#: installer/modules/12_partition.py:3613
 msgid "Logical volume name contains illegal characters!"
 msgstr "Name des Logischen Mediums enthält nicht erlaubte Zeichen!"
 
-#: installer/modules/12_partition.py:3603
+#: installer/modules/12_partition.py:3615
 msgid "Logical volume name is already in use!"
 msgstr "Der Name des logischen Mediums wird bereits verwendet!"
 
-#: installer/modules/12_partition.py:3618
+#: installer/modules/12_partition.py:3630
 msgid "Size contains non-digit characters!"
 msgstr "Die Größenangabe enthält nicht nur Ziffern"
 
-#: installer/modules/12_partition.py:3631
+#: installer/modules/12_partition.py:3643
 msgid "Not enough free space on volume group!"
 msgstr "Nicht ausreichend Platz in der Medien-Gruppe!"
 
-#: installer/modules/12_partition.py:3669
+#: installer/modules/12_partition.py:3681
 msgid "This volume is designated as root filesystem,"
 msgstr "Dieses Medium ist als Root-Dateisystem gekennzeichnet,"
 
-#: installer/modules/12_partition.py:3722
-#: installer/modules/12_partition.py:3723
+#: installer/modules/12_partition.py:3734
+#: installer/modules/12_partition.py:3735
 msgid "New Logical Volume:"
 msgstr "Neues Logisches Medium:"
 
-#: installer/modules/12_partition.py:3759
+#: installer/modules/12_partition.py:3771
 #, python-format
 msgid "LVM Logical Volume: %s"
 msgstr "LVM Logisches Medium: %s"
 
-#: installer/modules/12_partition.py:3817
+#: installer/modules/12_partition.py:3829
 msgid "The selected partition is the extended partition of this disc."
 msgstr "Diese Partition ist die erweiterte Partition dieser Festplatte."
 
-#: installer/modules/12_partition.py:3819
+#: installer/modules/12_partition.py:3831
 msgid "The extended partition contains all logical partitions."
 msgstr "Diese Partition verwaltet alle logischen Partitionen."
 
-#: installer/modules/12_partition.py:3821
+#: installer/modules/12_partition.py:3833
 msgid "Do you really want to delete all logical partitions?"
 msgstr "Möchten Sie alle logischen Partitionen löschen?"
 
-#: installer/modules/12_partition.py:3863
+#: installer/modules/12_partition.py:3875
 msgid "Found over-sized extended partition."
 msgstr "Zu große erweiterte Partition gefunden"
 
-#: installer/modules/12_partition.py:3865
+#: installer/modules/12_partition.py:3877
 msgid "This program will resize them to free unused space"
 msgstr "Die Größe wird angepasst um die Partitionstabelle zu korrigieren."
 
-#: installer/modules/12_partition.py:3868
-#: installer/modules/12_partition.py:3912
+#: installer/modules/12_partition.py:3880
+#: installer/modules/12_partition.py:3924
 msgid "OK"
 msgstr "OK"
 
-#: installer/modules/12_partition.py:3897
+#: installer/modules/12_partition.py:3909
 msgid "UCS Installer supports only one LVM volume group."
 msgstr "UCS Installer unterstützt nur eine LVM-Medien-Gruppe."
 
-#: installer/modules/12_partition.py:3899
+#: installer/modules/12_partition.py:3911
 msgid "Please select volume group to use for installation."
 msgstr "Bitte wählen Sie die Medien-Gruppe für die Installation."
 
-#: installer/modules/12_partition.py:3901
+#: installer/modules/12_partition.py:3913
 msgid "Volume Group:"
 msgstr "Medien-Gruppe:"
 
-#: installer/modules/12_partition.py:3940
+#: installer/modules/12_partition.py:3952
 msgid "Do you really want to write all changes?"
 msgstr "Wollen Sie wirklich alle Änderungen schreiben?"
 
-#: installer/modules/12_partition.py:3942
+#: installer/modules/12_partition.py:3954
 msgid "This may destroy all data on modified discs!"
 msgstr "Dadurch können Daten vernichtet werden!"
 
-#: installer/modules/12_partition.py:3972
+#: installer/modules/12_partition.py:3984
 msgid "No disk detected!"
 msgstr "Keine Festplatte erkannt!"
 
-#: installer/modules/12_partition.py:3974
+#: installer/modules/12_partition.py:3986
 msgid "Please try to load the suitable module and rescan!"
 msgstr ""
 "Bitte versuchen Sie das passende Modul zu laden \n"
 " und es erneut vom Installer erkennen zu lassen!"
 
-#: installer/modules/12_partition.py:3988
+#: installer/modules/12_partition.py:4000
 msgid "Wrong filesystem type for mount-point \"/\" !"
 msgstr "Falsches Dateisystem für '/'"
 
-#: installer/modules/12_partition.py:3990
+#: installer/modules/12_partition.py:4002
 msgid "Please choose another filesystem."
 msgstr ""
 "Bitte wählen Sie ein anderes \n"
