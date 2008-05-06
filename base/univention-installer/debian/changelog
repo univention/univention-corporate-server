@@ -1,3 +1,10 @@
+univention-installer (1.9.29-1) unstable; urgency=low
+
+  * additional debug output in 12_partition
+  * fixed usb device blacklist
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 May 2008 13:57:40 +0200
+
 univention-installer (1.9.28-1) unstable; urgency=low
 
   * fixed oversized translation and some additional translation updates

@@ -223,7 +223,10 @@ class object(content):
 		for line in data.splitlines():
 			items = line.split(' ')
 			if len(items) >= 4:
-				disklist_usbstorage.append( items[-1] )
+				if '/' in items[-1]:
+					disklist_usbstorage.append( items[-1] )
+				else:
+					disklist_usbstorage.append( '/dev/%s' % items[-1] )
 		self.debug('found usb storage devices = %s' % disklist_usbstorage)
 		return disklist_usbstorage
 
@@ -646,11 +649,15 @@ class object(content):
 			delete_all_lvmlv = False
 			if key == 'part_delete':
 				delete=self.all_results['part_delete'].replace("'","").split(' ')
+				self.debug('part_delete=%s' % str(delete))
+				self.debug('disklist_usbstorage=%s' % str(disklist_usbstorage))
 				for entry in delete:
 					if entry in [ 'all', 'all_usb' ]: # delete all existing partitions (all_usb) or all existing partitions exclusive usb storage devices (all)
 						# PLEASE NOTE:
 						# part_delete=all does also delete ALL logical volumes and ALL volume groups on any LVMPV.
 						# Even if LVMPV is located on a usb storage device LVMLV and LVMVG will be deleted!
+
+						self.debug('Deleting all partitions')
 
 						# if all partitions shall be deleted all volumegroups prior have to be deleted
 						if not self.all_results.has_key('lvmlv_delete'):
@@ -659,6 +666,7 @@ class object(content):
 							for vg in self.container['lvm']['vg'].keys():
 								s += ' ' + vg
 							self.all_results['lvmlv_delete'] = s.strip()
+							self.debug('lvmlv_delete not found; adding it automagically: lvmlv_delete=%s' % self.all_results['lvmlv_delete'])
 
 						for disk in self.container['disk'].keys():
 							# continue if usb storage devices shall also be deleted or
@@ -1681,6 +1689,7 @@ class object(content):
 			# create disk list with usb storage devices
 			disk_blacklist = self.parent.get_usb_storage_device_list()
 			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
+				self.debug('requesting user input: use usb storage devices?')
 				msglist=[ _('Include USB storage devices while auto-partitioning?'),
 						  '',
 						  _('WARNING: choosing "Yes" prepares for deletion of all'),
@@ -1689,7 +1698,8 @@ class object(content):
 						  _('will be deleted!'),
 						  ]
 				self.container['autopart_usbstorage'] = False
-				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-14, msglist, default='no', callback_yes=self.auto_partitioning_question_usbstorage_callback)
+				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-14, msglist, default='no',
+									  callback_yes=self.auto_partitioning_question_usbstorage_callback, callback_yes=self.auto_partitioning)
 				self.draw()
 				return
 
@@ -1899,6 +1909,7 @@ class object(content):
 
 			# ask for auto partitioning
 			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
+				self.debug('requesting user input: use autopart?')
 				msglist=[ _('Do you want to use auto-partitioning?'),
 						  '',
 						  _('WARNING: choosing "Yes" prepares for deletion of all'),
@@ -1920,6 +1931,7 @@ class object(content):
 
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
+				self.debug('requesting user input: more that one LVMVG found')
 				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
 				self.draw()
 
