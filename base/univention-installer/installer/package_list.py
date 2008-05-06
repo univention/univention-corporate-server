@@ -259,7 +259,7 @@ PackageList=[
 					'Description': _('Xen kernel images to Xen guests.'),
 				},
 				{
-					'Name': _('Network Installer'),
+					'Name': _('UCS Net Installer'),
 					'Packages': ['univention-net-installer'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],

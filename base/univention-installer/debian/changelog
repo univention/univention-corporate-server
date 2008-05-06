@@ -1,3 +1,9 @@
+univention-installer (1.9.28-1) unstable; urgency=low
+
+  * fixed oversized translation and some additional translation updates
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 May 2008 13:47:09 +0200
+
 univention-installer (1.9.27-1) unstable; urgency=low
 
   * cleanup noprobe logic
