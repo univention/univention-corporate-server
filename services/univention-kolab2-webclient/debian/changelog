@@ -1,3 +1,10 @@
+univention-kolab2-webclient (2.0.0-15) unstable; urgency=low
+
+  * change the freebusy url to https
+  * merge the turba configuration with the upstream version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  6 May 2008 09:41:12 +0200
+
 univention-kolab2-webclient (2.0.0-14) unstable; urgency=low
 
   * updates for the postinst script
