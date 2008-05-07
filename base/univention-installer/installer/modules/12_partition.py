@@ -1689,7 +1689,7 @@ class object(content):
 			# create disk list with usb storage devices
 			disk_blacklist = self.parent.get_usb_storage_device_list()
 			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
-				self.debug('requesting user input: use usb storage devices?')
+				self.parent.debug('requesting user input: use usb storage devices?')
 				msglist=[ _('Include USB storage devices while auto-partitioning?'),
 						  '',
 						  _('WARNING: choosing "Yes" prepares for deletion of all'),
@@ -1909,7 +1909,7 @@ class object(content):
 
 			# ask for auto partitioning
 			if self.container['lvm']['lvmconfigread'] and self.container['autopartition'] == None and not hasattr(self,'sub'):
-				self.debug('requesting user input: use autopart?')
+				self.parent.debug('requesting user input: use autopart?')
 				msglist=[ _('Do you want to use auto-partitioning?'),
 						  '',
 						  _('WARNING: choosing "Yes" prepares for deletion of all'),
@@ -1931,7 +1931,7 @@ class object(content):
 
 			# if more than one volume group is present, ask which one to use
 			if not self.container['lvm']['ucsvgname'] and len(self.container['lvm']['vg'].keys()) > 1 and not hasattr(self,'sub'):
-				self.debug('requesting user input: more that one LVMVG found')
+				self.parent.debug('requesting user input: more that one LVMVG found')
 				self.sub = self.ask_lvm_vg(self,self.minY+2,self.minX+5,self.maxWidth,self.maxHeight-3)
 				self.draw()
 
