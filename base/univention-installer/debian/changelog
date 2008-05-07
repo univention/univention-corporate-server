@@ -1,3 +1,9 @@
+univention-installer (1.9.30-1) unstable; urgency=low
+
+  * fixed traceback in auto partitioning
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 07 May 2008 10:56:04 +0200
+
 univention-installer (1.9.29-1) unstable; urgency=low
 
   * additional debug output in 12_partition
