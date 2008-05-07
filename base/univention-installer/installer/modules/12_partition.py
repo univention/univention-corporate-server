@@ -637,7 +637,7 @@ class object(content):
 			self.debug('read_profile: auto_part key found: %s' % self.all_results['auto_part'])
 			if self.all_results['auto_part'] in [ 'full_disk' ]:
 				auto_part = True
-				self.profile_autopart( disklist_blacklist = disklist_blacklist, part_delete = 'all' )
+				self.profile_autopart( disklist_blacklist = disklist_usbstorage, part_delete = 'all' )
 			elif self.all_results['auto_part'] in [ 'full_disk_usb' ]:
 				auto_part = True
 				self.profile_autopart( disklist_blacklist = [], part_delete = 'all_usb' )
@@ -1699,7 +1699,7 @@ class object(content):
 						  ]
 				self.container['autopart_usbstorage'] = False
 				self.sub = yes_no_win(self, self.pos_y+4, self.pos_x+2, self.width-4, self.height-14, msglist, default='no',
-									  callback_yes=self.auto_partitioning_question_usbstorage_callback, callback_yes=self.auto_partitioning)
+									  callback_yes=self.auto_partitioning_question_usbstorage_callback, callback_no=self.auto_partitioning)
 				self.draw()
 				return
 
