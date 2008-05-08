@@ -1,3 +1,9 @@
+univention-kolab2-webclient (2.0.0-16) unstable; urgency=low
+
+  * fixed typo un the syncml_reset_user script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 May 2008 08:56:06 +0200
+
 univention-kolab2-webclient (2.0.0-15) unstable; urgency=low
 
   * change the freebusy url to https

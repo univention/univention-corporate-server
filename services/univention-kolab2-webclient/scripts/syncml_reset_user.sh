@@ -2,7 +2,7 @@
 
 email=$1
 
-if [ -z "$email ]; then
+if [ -z "$email" ]; then
 	echo ""
 	echo "Usage: $0 foobar@ucs.local"
 	echo ""
