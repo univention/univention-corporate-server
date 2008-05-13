@@ -1,3 +1,9 @@
+univention-ssh (1.0.0-5) unstable; urgency=low
+
+  * New script to recreate host keys
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 13 May 2008 16:38:00 +0200
+
 univention-ssh (1.0.0-4) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-

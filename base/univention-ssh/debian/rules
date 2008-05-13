@@ -64,6 +64,7 @@ install: build
 	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-ssh
 	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-scp
 	install -m755 univention-ssh_tmp2 ${D}/usr/sbin/univention-ssh-rsync
+	install -m755 univention-openssh-recreate-host-keys ${D}/usr/sbin/univention-openssh-recreate-host-keys
 
 	rm univention-ssh_tmp*
 

@@ -1,0 +1,11 @@
+#!/bin/sh -e
+
+echo "Storing backup copy"
+
+mv /etc/ssh/ssh_host_rsa_key /etc/ssh/ssh_host_rsa_key.backup-copy
+mv /etc/ssh/ssh_host_dsa_key /etc/ssh/ssh_host_dsa_key.backup-copy
+
+echo "Recreating SSH host keys"
+
+ssh-keygen -q -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+ssh-keygen -q -f /etc/ssh/ssh_host_dsa_key -N '' -t dsa
