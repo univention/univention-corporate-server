@@ -5136,8 +5136,18 @@ class modedit(unimodule.unimodule):
 							self.object.cancel()
 					try:
 						if hasattr(ex,'message'):
+							import traceback
+							info = sys.exc_info()
+							lines = traceback.format_exception(*info)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'CAUGHT EXCEPTION!\n%s %s\n%s' %
+												(ex.message,unicode(ex),''.join(lines)))
 							self.usermessage(_("error while modifying: %s %s") % (ex.message,ex))
 						else:
+							import traceback
+							info = sys.exc_info()
+							lines = traceback.format_exception(*info)
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'CAUGHT EXCEPTION!\n%s\n%s' %
+												(unicode(ex),''.join(lines)))
 							self.usermessage(_("error while modifying: %s %s") % ("",ex))
 					except UnicodeEncodeError, e: # raise fails if uid contains umlauts or other non-ASCII-characters
 						self.usermessage(_("internal error: %s") % unicode( e ) )
