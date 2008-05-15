@@ -69,12 +69,15 @@ check_started () {
   fi
 
   eval $check_cmd >/dev/null
-		
+
   if [ -f "$THEPIDFILE" ]; then
     pid="$(cat $THEPIDFILE)"
     if [ "$pid" ] && kill -0 $pid >/dev/null; then
       return 0    # Is started
     fi
+  fi
+  if [ `pidof nagios2 | wc -l` -gt 0 ]; then
+	  return 0
   fi
   return 1	# Isn't started
 }
@@ -192,12 +195,30 @@ stop () {
       ret=$?
     else
       if [ -e "$THEPIDFILE" ] ; then
-               killproc -p $THEPIDFILE
+        killproc -p $THEPIDFILE
         ret=$?
       else
         ret=0
       fi
     fi
+    if [ `pidof nagios2 | wc -l` -gt 0 ]; then
+		echo
+        echo -n "Waiting for nagios to die.."
+        cnt=0
+        while [ `pidof nagios2 | wc -l ` -gt 0 ]; do
+            cnt=`expr "$cnt" + 1`
+			if [ "$cnt" -eq 5 ]; then
+				kill -15 `pidof nagios2`
+            fi
+            if [ "$cnt" -gt 15 ]; then
+                kill -9 `pidof nagios2`
+                break
+            fi
+            sleep 1
+            echo -n "."
+        done
+    fi
+    echo
     if ! check_named_pipe; then
       rm -f $nagiospipe
     fi
@@ -229,7 +250,10 @@ reload () {
   # Check first
   if check_config; then
     if check_started; then
-      killproc -p $THEPIDFILE $DAEMON 1 
+#      killproc -p $THEPIDFILE $DAEMON 1
+       if [ `pidof nagios2 | wc -l ` -gt 0 ] ; then
+           kill -1 `pidof nagios2`
+       fi
     else
       log_failure_msg "Not running."
       log_end_msg 7
@@ -244,10 +268,10 @@ reload () {
 
 case "$1" in
   start)
-  	eval $(univention-baseconfig shell nagios/server/autostart)
-	if [ -z "$nagios_server_autostart" -o "$nagios_server_autostart" != "yes" ]; then
-		exit 0
-	fi
+    eval $(univention-baseconfig shell nagios/server/autostart)
+    if [ -z "$nagios_server_autostart" -o "$nagios_server_autostart" != "yes" ]; then
+      exit 0
+    fi
     log_daemon_msg "Starting $DESC" "$NAME"
     start
     log_end_msg $?
@@ -261,7 +285,7 @@ case "$1" in
     log_daemon_msg "Restarting $DESC" "$NAME"
     stop
     if [ -z "$?" -o "$?" = "0" ]; then
-	  sleep 2s
+      sleep 2s
       start
     fi
     log_end_msg $?
