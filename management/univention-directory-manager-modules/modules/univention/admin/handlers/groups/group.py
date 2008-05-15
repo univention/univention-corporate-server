@@ -439,7 +439,7 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers=copy.deepcopy(members)
 			newmembers=self.__case_insensitive_remove_from_list(self.dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__set_membership_attributes( group, members, newmembers )
 
 	def _ldap_post_move(self, olddn):
 
@@ -462,7 +462,7 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers=self.__case_insensitive_remove_from_list(olddn, newmembers)
 			newmembers.append(self.dn)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: updating supergroup %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
+			self.__set_membership_attributes( group, members, newmembers )
 
 	def cancel(self):
 		for i,j in self.alloc:
@@ -496,8 +496,7 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers=copy.deepcopy(members)
 			newmembers.append(self.dn)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: add to supergroup %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
-			self.__rewrite_member_uid( group )
+			self.__set_membership_attributes( group, members, newmembers )
 
 		for group in remove_from_group:
 			if type(group) == type([]):
@@ -508,16 +507,14 @@ class object(univention.admin.handlers.simpleLdap):
 			newmembers=copy.deepcopy(members)
 			newmembers=self.__case_insensitive_remove_from_list(self.dn, newmembers)
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: remove from supergroup %s'%group)
-			self.lo.modify(group, [('uniqueMember', members, newmembers)])
-			self.__rewrite_member_uid( group )
+			self.__set_membership_attributes( group, members, newmembers )
 
-	def __rewrite_member_uid( self, group, members = [] ):
+	def __set_membership_attributes( self, group, members, newmembers ):
 		uids = self.lo.getAttr( group, 'memberUid' )
-		if not members:
-			members = self.lo.getAttr( group, 'uniqueMember' )
-		new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], members )
-		self.lo.modify(group, [ ( 'memberUid', uids, new ) ] )
-		
+		newuids = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], newmembers )
+		self.lo.modify( group, [ ( 'uniqueMember', members, newmembers ) ] )
+		self.lo.modify( group, [ ( 'memberUid', uids, newuids ) ] )
+
 	def __case_insensitive_in_list(self, dn, list):
 		for element in list:
 			if dn.lower() == element.lower():
