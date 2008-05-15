@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-7) unstable; urgency=low
+
+  * improved exception message logging in modedit
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 May 2008 09:40:28 +0200
+
 univention-directory-manager (4.2.6-6) unstable; urgency=low
 
   * Fix encoding error.
