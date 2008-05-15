@@ -6,7 +6,7 @@ Build-Depends: debhelper (>> 5), tar, bzip2
 Standards-Version: 3.7.2
 
 Package: srvmagt-modules
-Architecture: i386
+Architecture: i386 amd64
 Description: Kernel modules for fujitsu-siemens (FSC)-related systemens
  Modules for hardware-monitoring and -management. Allows snmp-tools
  (fsc provides serverview) to monitor many components of compatible FSC-hardware.
