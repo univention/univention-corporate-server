@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.14-6) unstable; urgency=low
+
+  * fix syncronization of memberUid with uniqueMember attributes on memberOf-groups ("supergroups")
+
+ -- Arvid Requate <requate@univention.de>  Thu, 15 May 2008 14:34:29 +0200
+
 univention-directory-manager-modules (2.2.14-4) unstable; urgency=low
 
   * added mapping for computers/computer
