@@ -1,8 +1,26 @@
-univention-directory-manager (4.2.6-4) unstable; urgency=low
+univention-directory-manager (4.2.6-7) unstable; urgency=low
 
   * improved exception message logging in modedit
 
  -- Arvid Requate <requate@univention.de>  Thu, 15 May 2008 09:40:28 +0200
+
+univention-directory-manager (4.2.6-6) unstable; urgency=low
+
+  * Fix encoding error.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 16:35:20 +0200
+
+univention-directory-manager (4.2.6-5) unstable; urgency=low
+
+  * Fix PO file
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 10:02:42 +0200
+
+univention-directory-manager (4.2.6-4) unstable; urgency=low
+
+  * Improve error message
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Apr 2008 09:53:20 +0200
 
 univention-directory-manager (4.2.6-3) unstable; urgency=low
 
