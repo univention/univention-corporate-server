@@ -1,3 +1,9 @@
+univention-x-core (1.1.6-5) unstable; urgency=low
+
+  * Stop building x.org VNC modules
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 16 May 2008 13:47:40 +0200
+
 univention-x-core (1.1.6-4) unstable; urgency=low
 
   * Fix typo

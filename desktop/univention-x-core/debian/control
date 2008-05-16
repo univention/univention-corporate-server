@@ -8,7 +8,7 @@ Standards-Version: 3.5.5
 Package: univention-x-core
 Architecture: all
 Pre-Depends: univention-config-registry
-Depends: univention-policy-tools, kudzu-2.6 | kudzu, ldap-utils, univention-gdm, xserver-xorg (>>6.8.2), xbase-clients, univention-fonts, univention-x-core-vncmodule | univention-x-core-vncmodule-dummy
+Depends: univention-policy-tools, kudzu-2.6 | kudzu, ldap-utils, univention-gdm, xserver-xorg (>>6.8.2), xbase-clients, univention-fonts
 Conflicts: xserver-xfree86 (<<6.8.2)
 Description: UCS - X System
  This package contain a meta-package, that sets up a graphical login.
@@ -18,24 +18,3 @@ Description: UCS - X System
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-x-core-vncmodule
-Architecture: i386
-Conflicts: xserver-xfree86 (<<6.8.2), univention-x-core (<<0.7-6)
-Description: UCS - X System vnc module
- This package contain a binary vnc module for x.org
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-x-core-vncmodule-dummy
-Architecture: all
-Conflicts: xserver-xfree86 (<<6.8.2), univention-x-core (<<0.7-6)
-Description: UCS - X System dummy vnc module
- This package contain a dummy vnc module for x.org
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/

@@ -51,12 +51,23 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	install -m 0644 files/vnc.so debian/univention-x-core-vncmodule/usr/X11R6/lib/modules/extensions/libvnc.so
-
 	univention-install-config-registry
 	univention-install-config-registry-info
 
 binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
 binary-indep: build install
 	dh_testdir
