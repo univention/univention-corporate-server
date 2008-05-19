@@ -1,3 +1,9 @@
+univention-updater (2.3.21-1) unstable; urgency=low
+
+  * output warning msg if ldap/hostdn is not set and server/role!=basesystem
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 19 May 2008 13:12:23 +0200
+
 univention-updater (2.3.20-1) unstable; urgency=low
 
   * adjusted preup und postup for ucs 2.0-1

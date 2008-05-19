@@ -62,7 +62,7 @@ def getUpdate():
 
 def check(baseConfig, dist_upgrade=False):
 	# Just probe if there are packages to add or remove
-	
+
 	actualise = False
 	getUpdate()
 
@@ -71,19 +71,19 @@ def check(baseConfig, dist_upgrade=False):
 		cmd = 'dist-upgrade'
 	else:
 		cmd = 'upgrade'
-	
+
 	waitForLock()
 	res=commands.getoutput('touch /var/run/apt-get.lock && apt-get -us %s | egrep ".*[0-9] upgraded, [0-9].*"' %cmd)
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	sres=res.split()
-	
+
 	# These ones are nicer to read
 	upgraded = int(sres[0])
 	newlyinstalled = int(sres[2])
 	remove = int(sres[5])
 	notupgraded = int(sres[9])
-	
+
 	# If there are any pakages to upgrade, install or remove
 	if upgraded != 0 or newlyinstalled != 0 or remove != 0:
 		actualise = True
@@ -91,7 +91,7 @@ def check(baseConfig, dist_upgrade=False):
 	# Probe for policies
 	rem_packages=getPackageList(baseConfig, 'remove')
 	add_packages=getPackageList(baseConfig, 'add')
-	
+
 	if rem_packages or add_packages or actualise:
 		return 1
 	else:
@@ -100,7 +100,7 @@ def check(baseConfig, dist_upgrade=False):
 def getPackageList(baseConfig, job):
 	# Get a list of packages to remove or add, depending on the value of job
 	# getPackageList(baseConfigObject, pkgdb, job={add,remove})
-	
+
 	packageList=[]
 	packages_name=""
 
@@ -129,7 +129,7 @@ def getPackageList(baseConfig, job):
 	else:
 		print >>sys.stderr, "E: no valid job defined"
 		sys.exit(1)
-	
+
 	tmpfile=tempfile.mktemp()
 	res=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], tmpfile))
 	if res != 0:
@@ -161,7 +161,7 @@ def main():
 
 	try:
 		if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
-	
+
 			# parse arguments
 			for arg in sys.argv[1:]:
 				if arg == "--silent":
@@ -175,11 +175,11 @@ def main():
 				else:
 					# unknown parameter
 					print_usage=True
-	
+
 			if print_usage:
 				usage()
 				sys.exit(0)
-	
+
 			if silent:
 				# redirect stdout to /dev/null
 				sys.stdout = open("/dev/null", "w")
@@ -195,10 +195,10 @@ def main():
 			debug_file.close()
 
 			getUpdate()
-			
+
 			if baseConfig.has_key('pkgdb/scan') and baseConfig['pkgdb/scan']:
 				pkgdb=baseConfig['pkgdb/scan']
-		
+
 			if pkgdb:
 				univention_baseconfig.handler_set(['pkgdb/scan=no'])
 
@@ -220,7 +220,7 @@ def main():
 						univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
 					sys.exit(res)
 
-				
+
 			add_packages=getPackageList(baseConfig, 'add')
 			for package in add_packages:
 				waitForLock()
@@ -242,32 +242,38 @@ def main():
 					sys.exit(res)
 
 			waitForLock()
-			
-			msg = "Upgrading system"
-			cmd = "upgrade"
-			if dist_upgrade:
-				msg = "Dist-upgrading system"
-				cmd = "dist-upgrade"
-				
-			print(msg)
-			# TODO: use mkstemp and close directly the file descriptor
-			tmpfile = tempfile.mkstemp()
-			os.close( tmpfile[ 0 ] )
-			res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u %s 2>&1 | tee -a /var/log/univention/actualise.log %s >/dev/null' % ( cmd, tmpfile[ 1 ] ) )
-			
-			if not silent:
-				#TODO: support for more languages
-				os.system( 'egrep "(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)" %s' % tmpfile[ 1 ] )
-			os.unlink( tmpfile[ 1 ] )
-			if os.path.exists('/var/run/apt-get.lock'):
-				os.unlink('/var/run/apt-get.lock')
-	
+
+		else:
+			# ldap/hostdn is not set
+			if baseConfig['server/role'] != 'basesystem':
+				print >>sys.stderr, "W: ldap/hostdn is not set - please run univention-join"
+
+		msg = "Upgrading system"
+		cmd = "upgrade"
+		if dist_upgrade:
+			msg = "Dist-upgrading system"
+			cmd = "dist-upgrade"
+
+		print(msg)
+		# TODO: use mkstemp and close directly the file descriptor
+		tmpfile = tempfile.mkstemp()
+		os.close( tmpfile[ 0 ] )
+		res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u %s 2>&1 | tee -a /var/log/univention/actualise.log %s >/dev/null' % ( cmd, tmpfile[ 1 ] ) )
+
+		if not silent:
+			#TODO: support for more languages
+			os.system( 'egrep "(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)" %s' % tmpfile[ 1 ] )
+		os.unlink( tmpfile[ 1 ] )
+		if os.path.exists('/var/run/apt-get.lock'):
+			os.unlink('/var/run/apt-get.lock')
+
+		if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 			if res != 0:
 				print >>sys.stderr, "E: failed to upgrade"
 				if pkgdb:
 					univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
 				sys.exit(res)
-	
+
 	finally:
 		if pkgdb:
 			univention_baseconfig.handler_set(['pkgdb/scan=%s' % pkgdb])
