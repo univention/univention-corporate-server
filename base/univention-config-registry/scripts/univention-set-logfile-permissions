@@ -31,5 +31,9 @@
 FNLIST="/var/log/univention/directory-manager-web.log \
         /var/log/univention/management-console-web.log"
 
-chown www-data:adm $FNLIST
-chmod 640 $FNLIST
+for fn in $FNLIST ; do
+	if [ -f "$fn" ] ; do
+		chown www-data:adm $fn
+		chmod 640 $FNLIST
+	fi
+done
