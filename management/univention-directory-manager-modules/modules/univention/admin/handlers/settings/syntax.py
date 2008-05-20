@@ -96,6 +96,16 @@ property_descriptions = {
 				may_change = 1,
 				identifies = 0
 				),
+	'ldapattribute' : univention.admin.property(
+				short_description = _( 'Displayed LDAP Attributes' ),
+				long_description = '',
+				syntax = univention.admin.syntax.string,
+				multivalue = 1,
+				options = [],
+				required = 0,
+				may_change = 1,
+				identifies = 0
+				),
 	'viewonly' : univention.admin.property(
 				short_description = _( 'Show Only' ),
 				long_description = '',
@@ -116,25 +126,30 @@ property_descriptions = {
 				may_change = 1,
 				identifies = 0
 				),
+	'ldapvalue' : univention.admin.property(
+				short_description = _( 'Stored LDAP Attribute' ),
+				long_description = '',
+				syntax = univention.admin.syntax.string,
+				multivalue = 0,
+				options = [],
+				required = 0,
+				may_change = 1,
+				identifies = 0
+				),
 	}
 
 layout = [
 	univention.admin.tab( _( 'General' ), _( 'Basic Values' ),
-						  [ [ univention.admin.field( "name" ),
-							  univention.admin.field( "description" ) ],
-							[ univention.admin.field( "filter" ),
-							  univention.admin.field( "attribute" ) ],
-							[ univention.admin.field( "base" ),
-							  univention.admin.field( "value" ) ],
+						  [ [ univention.admin.field( "name" ), univention.admin.field( "description" ) ],
+							[ univention.admin.field( "filter" ), univention.admin.field( "base" ) ],
+							[ univention.admin.field( "attribute" ), univention.admin.field( "ldapattribute" ) ],
+							[ univention.admin.field( "value" ), univention.admin.field( "ldapvalue" ) ],
 							[ univention.admin.field( "viewonly" ) ] ] ) ]
 
 
 mapping = univention.admin.mapping.mapping()
 mapping.register( 'name', 'cn', None, univention.admin.mapping.ListToString )
 mapping.register( 'filter', 'univentionSyntaxLDAPFilter', None,
-				  univention.admin.mapping.ListToString )
-mapping.register( 'attribute', 'univentionSyntaxLDAPAttribute' )
-mapping.register( 'value', 'univentionSyntaxLDAPValue', None,
 				  univention.admin.mapping.ListToString )
 mapping.register( 'base', 'univentionSyntaxLDAPBase', None,
 				  univention.admin.mapping.ListToString )
@@ -171,6 +186,29 @@ class object( univention.admin.handlers.simpleLdap ):
 
 	def open( self ):
 		univention.admin.handlers.simpleLdap.open( self )
+		if self.dn:
+			# initialize items
+			self[ 'attribute' ] = []
+			self[ 'ldapattribute' ] = []
+			self[ 'value' ] = ''
+			self[ 'ldapvalue' ] = ''
+
+			# split ldap attribute value into two parts and add them to separate dir manager widgets
+			for item in self.oldattr.get('univentionSyntaxLDAPAttribute', []):
+				if ':' in item:
+					self[ 'attribute' ].append(item)
+				else:
+					self[ 'ldapattribute' ].append(item)
+
+			# set attribute name of value that shall be written to LDAP
+			# WARNING: drop down box is only used if string is not set
+			val = self.oldattr.get('univentionSyntaxLDAPValue', '')
+			if isinstance( val, ( list, tuple ) ):
+				val = val[ 0 ]
+			if val and ':' in val:
+				self[ 'value' ] = val
+			else:
+				self[ 'ldapvalue' ] = val
 
 	def exists( self ):
 		return self._exists
@@ -186,6 +224,20 @@ class object( univention.admin.handlers.simpleLdap ):
 
 	def _ldap_addlist(self):
 		return [ ( 'objectClass', [ 'top', 'univentionSyntax' ] ), ]
+
+	def _ldap_modlist(self):
+		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
+
+		attr = self[ 'attribute' ]
+		attr.extend( self['ldapattribute'] )
+		ml.append( ('univentionSyntaxLDAPAttribute', self.oldattr.get('univentionSyntaxLDAPAttribute', []), attr) )
+
+		vallist = [ self[ 'value' ] ]
+		if self[ 'ldapvalue' ]:
+			vallist = [ self[ 'ldapvalue' ] ]
+		ml.append( ('univentionSyntaxLDAPValue', self.oldattr.get('univentionSyntaxLDAPValue', []), vallist ) )
+
+		return ml
 
 def lookup( co, lo, filter_s, base = '', superordinate = None, scope = 'sub',
 			unique = 0, required = 0, timeout = -1, sizelimit = 0 ):

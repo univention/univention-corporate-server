@@ -618,7 +618,12 @@ class simpleLdap(base):
 					current_ocs=self.oldattr.get('objectClass')
 					for i in ml:
 						if i[0] == 'objectClass' and i[2]:
-							current_ocs=i[2]
+							if type(i[2]) == type(''):
+								current_ocs.append(i[2])
+							elif type(i[2]) == type([]):
+								current_ocs += i[2]
+							else:
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'ERROR in simpleLDAP._modify: i=%s'%i)
 					ml.append(('objectClass',self.oldattr.get('objectClass'), current_ocs+[oc]))
 
 				else:
