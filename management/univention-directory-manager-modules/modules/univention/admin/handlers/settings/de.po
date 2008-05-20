@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-12-11 10:10+0100\n"
-"PO-Revision-Date: 2006-02-14 10:41+0100\n"
+"POT-Creation-Date: 2007-11-28 13:58+0100\n"
+"PO-Revision-Date: 2007-11-28 14:14+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,36 +15,39 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: admin.py:45
+#: admin.py:46
 msgid "Preferences: Univention Admin Global Settings"
 msgstr "Einstellungen: Univention Admin Globale Einstellungen"
 
-#: admin.py:51 cn.py:50 customattribute.py:48 default.py:51 directory.py:52
-#: license.py:53 license.py:54 lock.py:53 lock.py:54 packages.py:53
-#: packages.py:54 printermodel.py:53 printermodel.py:54 printeruri.py:53
-#: printeruri.py:54 prohibited_username.py:53 prohibited_username.py:54
-#: usertemplate.py:50 xconfig_choices.py:53
+#: admin.py:52 cn.py:50 console_acl.py:54 console_acl.py:55
+#: console_operation.py:55 console_operation.py:56 customattribute.py:49
+#: default.py:52 directory.py:53 license.py:54 license.py:55 lock.py:54
+#: lock.py:55 packages.py:54 packages.py:55 printermodel.py:54
+#: printermodel.py:55 printeruri.py:54 printeruri.py:55
+#: prohibited_username.py:54 prohibited_username.py:55 usertemplate.py:50
+#: xconfig_choices.py:54
 msgid "Name"
 msgstr "Name"
 
-#: admin.py:61
+#: admin.py:62
 msgid "Visible Wizards"
 msgstr "Sichtbare Univention Admin Assistenten"
 
-#: admin.py:71
+#: admin.py:72
 msgid "Visible Modules"
 msgstr "Sichtbare Univention Admin Module"
 
-#: admin.py:83 cn.py:61 customattribute.py:170 default.py:163 directory.py:174
-#: lock.py:74 packages.py:75 printermodel.py:75 printeruri.py:75
-#: prohibited_username.py:74 sambaconfig.py:177 sambadomain.py:112
-#: service.py:60 syntax.py:121 usertemplate.py:524 xconfig_choices.py:174
+#: admin.py:84 cn.py:61 console_acl.py:121 console_operation.py:89
+#: customattribute.py:171 default.py:164 directory.py:175 lock.py:75
+#: packages.py:76 printermodel.py:76 printeruri.py:76
+#: prohibited_username.py:75 sambaconfig.py:178 sambadomain.py:113
+#: service.py:61 syntax.py:142 usertemplate.py:534 xconfig_choices.py:175
 msgid "General"
 msgstr "Allgemein"
 
-#: admin.py:83 cn.py:61 customattribute.py:170 default.py:163 directory.py:174
-#: sambaconfig.py:177 sambadomain.py:112 service.py:60 syntax.py:121
-#: usertemplate.py:524
+#: admin.py:84 cn.py:61 customattribute.py:171 default.py:164 directory.py:175
+#: sambaconfig.py:178 sambadomain.py:113 service.py:61 syntax.py:142
+#: usertemplate.py:534
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -52,335 +55,393 @@ msgstr "Grundeinstellungen"
 msgid "Univention Settings"
 msgstr "Univention-Einstellungen"
 
-#: customattribute.py:42
+#: console_acl.py:48
+msgid "Settings: UMC ACLs"
+msgstr "Einstellungen: UMC ACLs"
+
+#: console_acl.py:49
+msgid "List of ACLs for Univention Management Console"
+msgstr "Liste der ACLs für Univention Management Console"
+
+#: console_acl.py:64 console_acl.py:65 console_operation.py:65
+#: console_operation.py:66 customattribute.py:174 usertemplate.py:70
+msgid "Description"
+msgstr "Beschreibung"
+
+#: console_acl.py:75
+msgid "Category"
+msgstr "Kategorie"
+
+#: console_acl.py:76
+msgid "Console ACL Category"
+msgstr "UMC ACL Kategorie"
+
+#: console_acl.py:86
+msgid "Hosts"
+msgstr "Rechner"
+
+#: console_acl.py:87
+msgid "Hosts or host group for this ACL"
+msgstr "Rechner oder Rechnergruppe für die ACLs"
+
+#: console_acl.py:97 console_acl.py:98
+msgid "LDAP search base"
+msgstr "LDAP Basis"
+
+#: console_acl.py:108
+msgid "command"
+msgstr "Kommando"
+
+#: console_acl.py:109
+msgid "Console command"
+msgstr "UMC Kommando"
+
+#: console_acl.py:121 console_operation.py:89 packages.py:64 packages.py:65
+#: packages.py:76
+msgid "Package List"
+msgstr "Paketliste"
+
+#: console_operation.py:49
+msgid "Settings: UMC Operation"
+msgstr "Einstellungen: UMC Operationen"
+
+#: console_operation.py:50
+msgid "List of Operations for Univention Management Console"
+msgstr "Liste von Operationen für Univention Management Console"
+
+#: console_operation.py:76
+msgid "Operation"
+msgstr "Operation"
+
+#: console_operation.py:77
+msgid "List of Console operations"
+msgstr "Liste von UMC-Operationen"
+
+#: customattribute.py:43
 msgid "Settings: Attribute"
 msgstr "Einstellungen: Attribut"
 
-#: customattribute.py:58
+#: customattribute.py:59
 msgid "Short Description"
 msgstr "Kurzbeschreibung"
 
-#: customattribute.py:68
+#: customattribute.py:69
 msgid "Long Description"
 msgstr "Ausführliche Beschreibung"
 
-#: customattribute.py:78
+#: customattribute.py:79
 msgid "Syntax"
 msgstr "Syntax"
 
-#: customattribute.py:88
+#: customattribute.py:89
 msgid "Multivalue"
 msgstr "Mehrfachwert"
 
-#: customattribute.py:99
+#: customattribute.py:100
 msgid "Default Value"
 msgstr "Vorgabewert"
 
-#: customattribute.py:109
+#: customattribute.py:110
 msgid "Tab Name"
 msgstr "Name der Karteikarte"
 
-#: customattribute.py:119
+#: customattribute.py:120
 msgid "Number on Tab"
 msgstr "Nummer auf der Karteikarte"
 
-#: customattribute.py:129 customattribute.py:178
+#: customattribute.py:130 customattribute.py:179
 msgid "LDAP Mapping"
 msgstr "LDAP-Abbildung"
 
-#: customattribute.py:139
+#: customattribute.py:140
 msgid "Object Class"
 msgstr "Objektklasse"
 
 # customattribute.py:06
-#: customattribute.py:149
+#: customattribute.py:150
 msgid "Delete Object Class"
 msgstr "Objektklasse löschen"
 
-#: customattribute.py:159
+#: customattribute.py:160
 msgid "Needed Module"
 msgstr "Benötigtes Modul"
 
-#: customattribute.py:160
+#: customattribute.py:161
 msgid "\"users/user\" or \"computer/thinclient\""
 msgstr "\"users/user\" oder \"computer/thinclient\""
 
-#: customattribute.py:173 usertemplate.py:70
-msgid "Description"
-msgstr "Beschreibung"
-
-#: customattribute.py:175
+#: customattribute.py:176
 msgid "Object Classes"
 msgstr "Objektklassen"
 
-#: customattribute.py:175
+#: customattribute.py:176
 msgid "Object classes needed for this Attribute"
 msgstr "Objektklassen, die für dieses Attribut benötigt werden"
 
-#: customattribute.py:178
+#: customattribute.py:179
 msgid "Corresponding LDAP Attributes"
 msgstr "Zugehöriges LDAP-Attribut"
 
-#: default.py:45
+#: default.py:46
 msgid "Preferences: Default"
 msgstr "Einstellungen: Vorgabe"
 
-#: default.py:62
+#: default.py:63
 msgid "Default Primary Group"
 msgstr "Standard Primärgruppe"
 
-#: default.py:72
+#: default.py:73
 msgid "Default Computer Group"
 msgstr "Standard Rechnergruppe"
 
-#: default.py:82
+#: default.py:83
 msgid "Default DC Slave Computer Group"
 msgstr "Standardgruppe für DC Slave-Rechner"
 
-#: default.py:92
+#: default.py:93
 msgid "Default DC Master & Backup Server Group"
 msgstr "Standardgruppe für DC Master- und DC Backup-Rechner"
 
-#: default.py:102
+#: default.py:103
 msgid "Default Member Server Group"
 msgstr "Standardgruppe für Member-Server"
 
-#: default.py:112
+#: default.py:113
 msgid "Default Client Computer Group"
 msgstr "Standardgruppe für Clients"
 
-#: default.py:122
+#: default.py:123
 msgid "Default KDE Profiles"
 msgstr "Standard KDE-Profile"
 
-#: default.py:132
+#: default.py:133
 msgid "Default Kolab Home Server"
 msgstr "Standard Kolab Home Server"
 
-#: default.py:142
+#: default.py:143
 msgid "Default Scalix Mailnode"
 msgstr "Standard Scalix Mailnode"
 
-#: default.py:152 license.py:103
+#: default.py:153 license.py:104
 msgid "None"
 msgstr "Nichts"
 
-#: default.py:165
+#: default.py:166
 msgid "Primary Groups"
 msgstr "Primäre Gruppen"
 
-#: default.py:172
+#: default.py:173
 msgid "KDE Profiles"
 msgstr "KDE-Profile"
 
-#: default.py:175 usertemplate.py:567
+#: default.py:176 usertemplate.py:578
 msgid "Groupware"
 msgstr "Groupware"
 
-#: directory.py:46
+#: directory.py:47
 msgid "Preferences: Default Container"
 msgstr "Einstellungen: Standard-Container"
 
-#: directory.py:63 user.py:122
+#: directory.py:64 user.py:123
 msgid "Policy Link"
 msgstr "Richtlinienverweis"
 
-#: directory.py:73 user.py:132
+#: directory.py:74 user.py:133
 msgid "DNS Link"
 msgstr "DNS-Verweis"
 
-#: directory.py:83 user.py:142
+#: directory.py:84 user.py:143
 msgid "DHCP Link"
 msgstr "DHCP-Verweis"
 
-#: directory.py:93 user.py:152
+#: directory.py:94 user.py:153
 msgid "User Link"
 msgstr "Benutzerverweis"
 
-#: directory.py:103 user.py:162
+#: directory.py:104 user.py:163
 msgid "Group Link"
 msgstr "Gruppenverweis"
 
-#: directory.py:113 user.py:172
+#: directory.py:114 user.py:173
 msgid "Computer Link"
 msgstr "Rechnerverweis"
 
-#: directory.py:123 user.py:182
+#: directory.py:124 user.py:183
 msgid "Network Link"
 msgstr "Netzverweis"
 
-#: directory.py:133 user.py:192
+#: directory.py:134 user.py:193
 msgid "Share Link"
 msgstr "Freigabenverweis"
 
-#: directory.py:143 user.py:202
+#: directory.py:144 user.py:203
 msgid "Printer Link"
 msgstr "Druckerverweis"
 
-#: directory.py:153
+#: directory.py:154
 msgid "Mail Link"
 msgstr "Mailverweis"
 
-#: directory.py:163
+#: directory.py:164
 msgid "License Link"
 msgstr "Lizenzverweis"
 
-#: directory.py:175
+#: directory.py:176
 msgid "Users"
 msgstr "Benutzer"
 
-#: directory.py:175
+#: directory.py:176
 msgid "User Links"
 msgstr "Benutzerverweise"
 
-#: directory.py:176 usertemplate.py:265 usertemplate.py:555
+#: directory.py:177 usertemplate.py:275 usertemplate.py:566
 msgid "Groups"
 msgstr "Gruppen"
 
-#: directory.py:176
+#: directory.py:177
 msgid "Group Links"
 msgstr "Gruppenverweise"
 
-#: directory.py:177
+#: directory.py:178
 msgid "Computers"
 msgstr "Rechner"
 
-#: directory.py:177
+#: directory.py:178
 msgid "Computer Links"
 msgstr "Rechnerverweise"
 
-#: directory.py:178
+#: directory.py:179
 msgid "Policy"
 msgstr "Richtlinie"
 
-#: directory.py:178
+#: directory.py:179
 msgid "Policy Links"
 msgstr "Richtlinienverweise"
 
-#: directory.py:179
+#: directory.py:180
 msgid "DNS"
 msgstr "DNS"
 
-#: directory.py:179
+#: directory.py:180
 msgid "DNS Links"
 msgstr "DNS-Verweise"
 
-#: directory.py:180
+#: directory.py:181
 msgid "DHCP"
 msgstr "DHCP"
 
-#: directory.py:180
+#: directory.py:181
 msgid "DHCP Links"
 msgstr "DHCP-Verweise"
 
-#: directory.py:181
+#: directory.py:182
 msgid "Network"
 msgstr "Netz"
 
-#: directory.py:181
+#: directory.py:182
 msgid "Network Links"
 msgstr "Netzverweise"
 
-#: directory.py:182
+#: directory.py:183
 msgid "Shares"
 msgstr "Freigaben"
 
-#: directory.py:182
+#: directory.py:183
 msgid "Shares Links"
 msgstr "Freigabenverweise"
 
-#: directory.py:183
+#: directory.py:184
 msgid "Printers"
 msgstr "Drucker"
 
-#: directory.py:183
+#: directory.py:184
 msgid "Printers Links"
 msgstr "Druckerverweise"
 
-#: directory.py:184 usertemplate.py:533
+#: directory.py:185 usertemplate.py:543
 msgid "Mail"
 msgstr "Mail"
 
-#: directory.py:184
+#: directory.py:185
 msgid "Mail Links"
 msgstr "Mailverweise"
 
-#: directory.py:185 license.py:164
+#: directory.py:186 license.py:165
 msgid "License"
 msgstr "Lizenz"
 
-#: directory.py:185
+#: directory.py:186
 msgid "License Links"
 msgstr "Lizenzverweise"
 
-#: license.py:47
+#: license.py:48
 msgid "Settings: License"
 msgstr "Einstellungen: Lizenz"
 
-#: license.py:48
+#: license.py:49
 msgid "Univention License"
 msgstr "Univention Lizenz"
 
-#: license.py:63
+#: license.py:64
 msgid "Expiration Date"
 msgstr "Ablaufdatum"
 
-#: license.py:64
+#: license.py:65
 msgid "License Expiration Date"
 msgstr "Lizenz-Ablaufdatum"
 
-#: license.py:73
+#: license.py:74
 msgid "Module"
 msgstr "Modul"
 
-#: license.py:74
+#: license.py:75
 msgid "Module the license is valid for"
 msgstr "Für dieses Modul ist die Lizenz gültig."
 
-#: license.py:83
+#: license.py:84
 msgid "Base DN"
 msgstr "Basis-DN"
 
-#: license.py:84
+#: license.py:85
 msgid "Base DN the license is valid for"
 msgstr "Für diesen Basis-DN st die Lizenz gültig."
 
-#: license.py:93
+#: license.py:94
 msgid "Signature"
 msgstr "Signatur"
 
-#: license.py:94
+#: license.py:95
 msgid "This Signature is used to verify the authenticity of the license."
 msgstr ""
 "Diese Signatur wird verwendet, um die Authentizität der Lizenz zu überprüfen."
 
-#: license.py:113
+#: license.py:114
 msgid "Max. User Accounts"
 msgstr "Max. Benutzerkonten"
 
-#: license.py:114
+#: license.py:115
 msgid ""
 "Maximum number of user accounts managed with the Univention infrastructure"
 msgstr ""
 "Maximale Anzahl von Benutzerkonten, die mit der Univention Infrastruktur "
 "verwaltet werden."
 
-#: license.py:123
+#: license.py:124
 msgid "Max. Clients"
 msgstr "Max. Clients"
 
-#: license.py:124
+#: license.py:125
 msgid ""
 "Maximum number of client hosts managed with the Univention infrastructure"
 msgstr ""
 "Maximale Anzahl von Client-Rechnern, die mit der Univention Infrastruktur "
 "verwaltet werden."
 
-#: license.py:133
+#: license.py:134
 msgid "Max. Groupware Accounts"
 msgstr "Max. Groupware-Konten"
 
-#: license.py:134
+#: license.py:135
 msgid ""
 "Maximum number of groupware accounts managed with the Univention "
 "infrastructure"
@@ -388,11 +449,11 @@ msgstr ""
 "Maximale Anzahl von Groupware-Konten, die mit der Univention Infrastruktur "
 "verwaltet werden."
 
-#: license.py:143
+#: license.py:144
 msgid "Max. Desktops"
 msgstr "Max. Desktops"
 
-#: license.py:144
+#: license.py:145
 msgid ""
 "Maximum number of Univention desktop accounts managed with the Univention "
 "infrastructure"
@@ -400,253 +461,257 @@ msgstr ""
 "Maximale Anzahl von Desktop-Rechnern, die mit der Univention Infrastruktur "
 "verwaltet werden."
 
-#: license.py:153
+#: license.py:154
 msgid "Valid Product Types"
 msgstr "Gültige Produkttypen"
 
-#: license.py:154
+#: license.py:155
 msgid "Product types this license allows."
 msgstr "Produkttypen, für die die vorliegenden Lizenz gültig ist."
 
-#: license.py:164
+#: license.py:165
 msgid "Licensing Information"
 msgstr "Lizenz-Informationen"
 
-#: lock.py:47
+#: lock.py:48
 msgid "Settings: Lock"
 msgstr "Einstellungen: Sperrung"
 
-#: lock.py:48
+#: lock.py:49
 msgid "Lock objects"
 msgstr "Sperrobjekte"
 
-#: lock.py:63
+#: lock.py:64
 msgid "Lock Time"
 msgstr "Sperrzeit"
 
-#: lock.py:64
+#: lock.py:65
 msgid "Locked until"
 msgstr "Gesperrt bis"
 
-#: lock.py:74
+#: lock.py:75
 msgid "Lock Information"
 msgstr "Informationen über die Sperrung"
 
-#: packages.py:47
+#: packages.py:48
 msgid "Settings: Package List"
 msgstr "Einstellungen: Paketliste"
 
-#: packages.py:48
+#: packages.py:49
 msgid "List of Packages for UCS Systems"
 msgstr "Paketliste für UCS-Systeme"
 
-#: packages.py:63 packages.py:64 packages.py:75
-msgid "Package List"
-msgstr "Paketliste"
-
-#: printermodel.py:47
+#: printermodel.py:48
 msgid "Settings: Printer Driver List"
 msgstr "Einstellungen: Druckertreiberliste"
 
-#: printermodel.py:48
+#: printermodel.py:49
 msgid "List of drivers for printers"
 msgstr "Druckertreiberliste"
 
-#: printermodel.py:63 printermodel.py:64
+#: printermodel.py:64 printermodel.py:65
 msgid "Printer Model"
 msgstr "Druckermodell"
 
-#: printermodel.py:75
+#: printermodel.py:76
 msgid "Printer List"
 msgstr "Druckerliste"
 
-#: printeruri.py:47
+#: printeruri.py:48
 msgid "Settings: Printer URI List"
 msgstr "Einstellungen: Drucker-URI-Liste"
 
-#: printeruri.py:48
+#: printeruri.py:49
 msgid "List of URIs for printers"
 msgstr "Liste von Drucker-URIs"
 
-#: printeruri.py:63 printeruri.py:64 printeruri.py:75
+#: printeruri.py:64 printeruri.py:65 printeruri.py:76
 msgid "Printer URI"
 msgstr "Drucker-URI"
 
-#: prohibited_username.py:47
+#: prohibited_username.py:48
 msgid "Settings: Prohibited Usernames"
 msgstr "Einstellungen: Verbotene Benutzernamen"
 
-#: prohibited_username.py:48
+#: prohibited_username.py:49
 msgid "Univention Prohibited Usernames"
 msgstr "Univention Verbotene Benutzernamen"
 
-#: prohibited_username.py:63 prohibited_username.py:64
+#: prohibited_username.py:64 prohibited_username.py:65
 msgid "Prohibited Username"
 msgstr "Verbotener Benutzername"
 
-#: prohibited_username.py:74
+#: prohibited_username.py:75
 msgid "Prohibited Usernames"
 msgstr "Verbotene Benutzernamen"
 
-#: sambaconfig.py:61
+#: sambaconfig.py:62
 msgid "Settings: Samba Configuration"
 msgstr "Einstellungen: Samba-Konfiguration"
 
-#: sambaconfig.py:66
+#: sambaconfig.py:67
 msgid "Configuration Name"
 msgstr "Konfigurationsname"
 
-#: sambaconfig.py:76
+#: sambaconfig.py:77
 msgid "Password Length"
 msgstr "Passwort-Länge"
 
-#: sambaconfig.py:86
+#: sambaconfig.py:87
 msgid "Password History"
 msgstr "Passwort-History"
 
-#: sambaconfig.py:96
+#: sambaconfig.py:97
 msgid "Minimum Password Age"
 msgstr "Minimales Passwortalter"
 
-#: sambaconfig.py:106
+#: sambaconfig.py:107
 msgid "Bad Lockout Attempts"
 msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
-#: sambaconfig.py:116
+#: sambaconfig.py:117
 msgid "User must Logon to Change Password"
 msgstr "Änderung des Passwortes erfordert Anmeldung"
 
-#: sambaconfig.py:126
+#: sambaconfig.py:127
 msgid "Maximum Password Age"
 msgstr "Maximales Passwortalter"
 
-#: sambaconfig.py:136
+#: sambaconfig.py:137
 msgid "Lockout Duration Minutes"
 msgstr "Dauer der Aussperrung"
 
-#: sambaconfig.py:146
+#: sambaconfig.py:147
 msgid "Reset Count Minutes"
 msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
 
-#: sambaconfig.py:156
+#: sambaconfig.py:157
 msgid "Disconnect Time"
 msgstr "Verbindung trennen nach"
 
-#: sambaconfig.py:166
+#: sambaconfig.py:167
 msgid "Refuse Machine Password Change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
 
-#: sambadomain.py:52
+#: sambadomain.py:53
 msgid "Settings: Samba Domain"
 msgstr "Einstellungen: Samba-Domäne"
 
-#: sambadomain.py:57
+#: sambadomain.py:58
 msgid "Samba Domain Name"
 msgstr "Samba-Domänenname"
 
-#: sambadomain.py:67
+#: sambadomain.py:68
 msgid "Samba SID"
 msgstr "Samba-SID"
 
-#: sambadomain.py:78
+#: sambadomain.py:79
 msgid "Next User RID"
 msgstr "nächste Benutzer-RID"
 
-#: sambadomain.py:89
+#: sambadomain.py:90
 msgid "Next Group RID"
 msgstr "nächste Gruppen-RID"
 
-#: sambadomain.py:100
+#: sambadomain.py:101
 msgid "Next RID"
 msgstr "nächste RID"
 
-#: service.py:44
+#: service.py:45
 msgid "Settings: Service"
 msgstr "Einstellungen: Dienst"
 
-#: service.py:49
+#: service.py:50
 msgid "Service Name"
 msgstr "Dienstname"
 
-#: settings.py:48
+#: settings.py:49
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: syntax.py:44
+#: syntax.py:45
 msgid "Settings: Syntax Definition"
 msgstr "Einstellungen: Syntax-Definition"
 
-#: syntax.py:49
+#: syntax.py:50
 msgid "Syntax Name"
 msgstr "Syntax-Name"
 
-#: syntax.py:59
+#: syntax.py:60
 msgid "Syntax Description"
 msgstr "Kurzbeschreibung"
 
-#: syntax.py:69
+#: syntax.py:70
 msgid "LDAP Search Filter"
 msgstr "LDAP Suchfilter"
 
-#: syntax.py:79
+#: syntax.py:80
 msgid "LDAP Base"
 msgstr "LDAP Basis"
 
-#: syntax.py:89
+#: syntax.py:90
 msgid "Displayed Attributes"
 msgstr "Anzuzeigende Attribute"
 
-#: syntax.py:99
+#: syntax.py:100
+msgid "Displayed LDAP Attributes"
+msgstr "Anzuzeigende LDAP-Attribute"
+
+#: syntax.py:110
 msgid "Show Only"
 msgstr "Nur anzeigen"
 
-#: syntax.py:109
+#: syntax.py:120
 msgid "Stored Attribute"
 msgstr "Zu speicherndes Attribut"
 
-#: syntax.py:169
+#: syntax.py:130
+msgid "Stored LDAP Attribute"
+msgstr "Zu speicherndes LDAP-Attribut"
+
+#: syntax.py:185
 msgid ""
 "An LDAP attribute is required that should be used for storing the information"
 msgstr ""
 "Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
 
-#: user.py:46
+#: user.py:47
 msgid "Preferences: Univention Admin User Settings"
 msgstr "Einstellungen: Univention Admin Benutzereinstellungen"
 
-#: user.py:52
+#: user.py:53
 msgid "Username"
 msgstr "Benutzername"
 
-#: user.py:62
+#: user.py:63
 msgid "Visible Univention Admin Wizards"
 msgstr "Sichtbare Univention Admin Assistenten"
 
-#: user.py:72
+#: user.py:73
 msgid "Accessible User Attributes"
 msgstr "Sichtbare Benutzerattribute"
 
-#: user.py:82
+#: user.py:83
 msgid "Show these attributes in search results"
 msgstr "In Suchergebnissen werden diese Attribute angezeigt"
 
-#: user.py:92
+#: user.py:93
 msgid "Show these attributes in the navigation"
 msgstr "Zeige diese Attribute in der Navigation"
 
-#: user.py:102
+#: user.py:103
 msgid "Visible Univention Admin Modules"
 msgstr "Sichtbare Univention Admin Module"
 
-#: user.py:112
+#: user.py:113
 msgid "LDAP Base DN"
 msgstr "LDAP Basis-DN"
 
-#: user.py:223
+#: user.py:224
 msgid "Univention Admin"
 msgstr "Univention Admin"
 
-#: user.py:223
+#: user.py:224
 msgid "Univention Admin User Settings"
 msgstr "Einstellungen: Univention Admin Benutzer Einstellungen"
 
@@ -739,324 +804,205 @@ msgid "Secretary"
 msgstr "Vorgesetzter"
 
 #: usertemplate.py:255
+msgid "Department Number"
+msgstr "Abteilungsnummer"
+
+#: usertemplate.py:265
 msgid "Employee Type"
 msgstr "Mitarbeiterkategorie"
 
-#: usertemplate.py:275
+#: usertemplate.py:285
 msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
-#: usertemplate.py:288
+#: usertemplate.py:298
 msgid "Primary E-Mail Address"
 msgstr "Primäre E-Mail-Adresse"
 
-#: usertemplate.py:299
+#: usertemplate.py:309
 msgid "Use Global Spam Folder"
 msgstr "Globalen Spam-Ordner verwenden"
 
-#: usertemplate.py:300
+#: usertemplate.py:310
 msgid "Move Spam to a global spam folder instead of a local folder"
 msgstr "Spam in einen globalen statt in einen lokalen Ordner verschieben"
 
-#: usertemplate.py:310
+#: usertemplate.py:320
 msgid "Alternative E-Mail Addresses"
 msgstr "Alternative E-Mail-Adressen"
 
-#: usertemplate.py:322
+#: usertemplate.py:332
 msgid "Forward Mail"
 msgstr "Mails weiterleiten"
 
-#: usertemplate.py:333
+#: usertemplate.py:343
 msgid "Forward Address"
 msgstr "E-Mail-Adresse für Mailweiterleitung"
 
-#: usertemplate.py:344
+#: usertemplate.py:354
 msgid "Forward Keep Copy"
 msgstr "Kopie erstellen bei Mailweiterleitung"
 
-#: usertemplate.py:355
+#: usertemplate.py:365
 msgid "Kolab Home Server"
 msgstr "Kolab Home Server"
 
-#: usertemplate.py:366
+#: usertemplate.py:376
 msgid "Forward Spam"
 msgstr "Spam weiterleiten"
 
-#: usertemplate.py:377
+#: usertemplate.py:387
 msgid "Activate folderdelivery"
 msgstr "Eingehende Mails in einen ausgewählten Ordner verschieben"
 
-#: usertemplate.py:388
+#: usertemplate.py:398
 msgid "Deliver to Folder"
 msgstr "Ordner für eingehende Mails"
 
-#: usertemplate.py:399
+#: usertemplate.py:409
 msgid "Delegates"
 msgstr "Authorisierte E-Mail-Adressen"
 
-#: usertemplate.py:410
+#: usertemplate.py:420
 msgid "Vacation Address"
 msgstr "E-Mail-Adressen für Abwesenheitsnotiz"
 
-#: usertemplate.py:421
+#: usertemplate.py:431
 msgid "Activate Vacation"
 msgstr "Aktiviere Abwesenheitsnotiz"
 
-#: usertemplate.py:432
+#: usertemplate.py:442
 msgid "Vacation Text"
 msgstr "Abwesenheitstext"
 
-#: usertemplate.py:443
+#: usertemplate.py:453
 msgid "Vacation Resend Interval"
 msgstr "Interval: Abwesenheitsnotiz erneut senden (Tage)"
 
-#: usertemplate.py:454
+#: usertemplate.py:464
 msgid "Vacation Spam Reply"
 msgstr "Abwesenheitsnotiz als Antwort auf Spam Mails senden"
 
-#: usertemplate.py:465
+#: usertemplate.py:475
 msgid "React Domain"
 msgstr "Abwesenheitsnotiz an folgende Domänen senden"
 
-#: usertemplate.py:476
+#: usertemplate.py:486
 msgid "No React Domain"
 msgstr "Abwesenheitsnotiz an folgende nicht senden Domänen"
 
-#: usertemplate.py:487
+#: usertemplate.py:497
 msgid "Invitation Policy"
 msgstr "Richtlinien automatische Terminannahme"
 
-#: usertemplate.py:498
+#: usertemplate.py:508
 msgid "Options"
 msgstr "Optionen"
 
-#: usertemplate.py:530
+#: usertemplate.py:540
 msgid "User Account"
 msgstr "Benutzer-Konto"
 
-#: usertemplate.py:530
+#: usertemplate.py:540
 msgid "Account Settings"
 msgstr "Kontoeinstellungen"
 
-#: usertemplate.py:533
+#: usertemplate.py:543
 msgid "Mail Settings"
 msgstr "Maileinstellungen"
 
-#: usertemplate.py:538
+#: usertemplate.py:548
 msgid "User Contact"
 msgstr "Kontakt"
 
-#: usertemplate.py:538
+#: usertemplate.py:548
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
-#: usertemplate.py:543
+#: usertemplate.py:553
 msgid "Employee"
 msgstr "Mitarbeiter"
 
-#: usertemplate.py:543
+#: usertemplate.py:553
 msgid "Employee Information"
 msgstr "Mitarbeiterinformationen"
 
-#: usertemplate.py:547
+#: usertemplate.py:558
 msgid "Linux"
 msgstr "Linux/UNIX"
 
-#: usertemplate.py:547
+#: usertemplate.py:558
 msgid "Unix Account Settings"
 msgstr "UNIX-Kontoeinstellungen"
 
-#: usertemplate.py:551
+#: usertemplate.py:562
 msgid "Windows"
 msgstr "Windows"
 
-#: usertemplate.py:551
+#: usertemplate.py:562
 msgid "Windows Account Settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: usertemplate.py:555
+#: usertemplate.py:566
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: usertemplate.py:559
+#: usertemplate.py:570
 msgid "Vacation"
 msgstr "Abwesenheitsnotiz"
 
-#: usertemplate.py:567
+#: usertemplate.py:578
 msgid "Groupware Settings"
 msgstr "Groupware-Einstellungen"
 
-#: usertemplate.py:578
+#: usertemplate.py:589
 msgid "Invitation"
 msgstr "Terminannahme"
 
-#: xconfig_choices.py:47
+#: xconfig_choices.py:48
 msgid "Preferences: X Configuration Choices"
 msgstr "Einstellungen: X Konfigurationsauswahl"
 
-#: xconfig_choices.py:63
+#: xconfig_choices.py:64
 msgid "Resolution"
 msgstr "Auflösung"
 
-#: xconfig_choices.py:73
+#: xconfig_choices.py:74
 msgid "Color Depth"
 msgstr "Farb-Tiefe"
 
-#: xconfig_choices.py:83
+#: xconfig_choices.py:84
 msgid "Mouse Protocol"
 msgstr "Mausprotokoll"
 
-#: xconfig_choices.py:93
+#: xconfig_choices.py:94
 msgid "Mouse Device"
 msgstr "Maus-Device"
 
-#: xconfig_choices.py:103
+#: xconfig_choices.py:104
 msgid "Keyboard Layout"
 msgstr "Tastaturlayout"
 
-#: xconfig_choices.py:113
+#: xconfig_choices.py:114
 msgid "Keyboard Variant"
 msgstr "Tastaturvariante"
 
-#: xconfig_choices.py:123
+#: xconfig_choices.py:124
 msgid "Horizontal Sync"
 msgstr "Horizontale Synchronisation"
 
-#: xconfig_choices.py:133
+#: xconfig_choices.py:134
 msgid "Vertical Refresh"
 msgstr "Vertikale Wiederholungsrate"
 
-#: xconfig_choices.py:143
+#: xconfig_choices.py:144
 msgid "X Module"
 msgstr "X Modul"
 
-#: xconfig_choices.py:153
+#: xconfig_choices.py:154
 msgid "Display Size (mm)"
 msgstr "Bildschirm Grösse (mm)"
 
-#: xconfig_choices.py:174
+#: xconfig_choices.py:175
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
-
-#: console_acl.py:21
-msgid "Settings: UMC ACLs"
-msgstr "Einstellungen: UMC ACLs"
-
-#: console_acl.py:22
-msgid "List of ACLs for Univention Management Console"
-msgstr "Liste der ACLs für Univention Management Console"
-
-#: console_acl.py:48
-msgid "Category"
-msgstr "Kategorie"
-
-#: console_acl.py:49
-msgid "Console ACL Category"
-msgstr "UMC ACL Kategorie"
-
-#: console_acl.py:59
-msgid "Hosts"
-msgstr "Rechner"
-
-#: console_acl.py:60
-msgid "Hosts or host group for this ACL"
-msgstr "Rechner oder Rechnergruppe für die ACLs"
-
-#: console_acl.py:70 console_acl.py:71
-msgid "LDAP search base"
-msgstr "LDAP Basis"
-
-#: console_acl.py:81
-msgid "command"
-msgstr "Kommando"
-
-#: console_acl.py:82
-msgid "Console command"
-msgstr "UMC Kommando"
-
-#: console_operation.py:21
-msgid "Settings: UMC Operation"
-msgstr "Einstellungen: UMC Operationen"
-
-#: console_operation.py:22
-msgid "List of Operations for Univention Management Console"
-msgstr "Liste von Operationen für Univention Management Console"
-
-#: console_operation.py:48
-msgid "Operation"
-msgstr "Operation"
-
-#: console_operation.py:49
-msgid "List of Console operations"
-msgstr "Liste von UMC-Operationen"
-#~ msgid "Accessible LDAP DNs"
-#~ msgstr "Sichtbare LDAP-DNs"
-
-#~ msgid "Available Web-Admin Modules"
-#~ msgstr "Sichtbare Univention Admin Module"
-
-#~ msgid "Allow to Browse The DIT"
-#~ msgstr "Erlaube Zugriff auf den Navigationsbereich"
-
-#~ msgid "Show Self Menu Entry"
-#~ msgstr "Persönliche Einstellungen anzeigen"
-
-#~ msgid "Mailbox Directory"
-#~ msgstr "Postfach-Verzeichnis"
-
-#~ msgid "policy link"
-#~ msgstr "Standard-Richtlinien-Container"
-
-#~ msgid "dns link"
-#~ msgstr "Standard-DNS-Container"
-
-#~ msgid "dhcp link"
-#~ msgstr "Standard-DHCP-Container"
-
-#~ msgid "users link"
-#~ msgstr "Standard-Benutzer-Container"
-
-#~ msgid "groups link"
-#~ msgstr "Standard-Gruppen-Container"
-
-#~ msgid "computers link"
-#~ msgstr "Standard-Rechner-Container"
-
-#~ msgid "networks link"
-#~ msgstr "Standard-Netzwerk-Container"
-
-#~ msgid "shares link"
-#~ msgstr "Standard-Verzeichnisfreigabe-Container"
-
-#~ msgid "printers link"
-#~ msgstr "Standard-Druckerfreigabe-Container"
-
-#~ msgid "mailfolders link"
-#~ msgstr "Mailordner Link"
-
-#~ msgid "maildomains link"
-#~ msgstr "Maildomänen Link"
-
-#~ msgid "mailinglists link"
-#~ msgstr "Mailinglisten Link"
-
-#~ msgid "license link"
-#~ msgstr "Standard-Lizenz-Container"
-
-#~ msgid "Mailfolders Links"
-#~ msgstr "Mailordner Link"
-
-#~ msgid "Maildomains"
-#~ msgstr "Maildomänen"
-
-#~ msgid "Mailinglists"
-#~ msgstr "Maiinglisten"
-
-#~ msgid "Mailinglists Links"
-#~ msgstr "Mailinglisten Links"
-
-#~ msgid "Only list these LDAP DNs"
-#~ msgstr "Zeige nur diese LDAP DNs"
-
-#~ msgid "Only list these Wizards"
-#~ msgstr "Zeige nur diese Assistenten"

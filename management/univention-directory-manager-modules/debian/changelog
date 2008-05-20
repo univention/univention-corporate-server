@@ -1,3 +1,10 @@
+univention-directory-manager-modules (2.2.16-1) stable; urgency=low
+
+  * fixed bug in modlist handling
+  * updated settings/syntax module due to enchanced ldapsearch syntax
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 20 May 2008 16:36:22 +0200
+
 univention-directory-manager-modules (2.2.15-1) unstable; urgency=low
 
   * added listpwexpiry to univention-directory-manager-tools
