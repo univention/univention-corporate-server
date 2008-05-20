@@ -34,7 +34,7 @@ case "$1" in
 	start)
 		echo -n "Starting univention-system setup tools: "
 		if [ -n "$system_setup_boot_start" ] && [ "$system_setup_boot_start" = "yes" ] || [ "$system_setup_boot_start" = "true" ]; then
-			if [ -n "$boot_setup_modules" ]; then
+			if [ -n "$system_setup_boot_modules" ]; then
 				univention-system-setup --modules=`echo $system_setup_boot_modules | sed -e 's| |,|g'`
 				univention-config-registry set system/setup/boot/start=false
 				exit 0

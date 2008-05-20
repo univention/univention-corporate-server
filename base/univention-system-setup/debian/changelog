@@ -1,3 +1,9 @@
+univention-system-setup (1.1.11-1) unstable; urgency=low
+
+  * fixed bug in init.d script of univention-system-setup-boot
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 20 May 2008 14:16:53 +0200
+
 univention-system-setup (1.1.10-1) unstable; urgency=low
 
   * update hostname and domainname in Nagios service LDAP objects
