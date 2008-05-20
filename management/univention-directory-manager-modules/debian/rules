@@ -76,6 +76,7 @@ install-ext-%:
 	install -m755 scripts/proof_class_b_reverse ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_hostShadowAccounts ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 	install -m755 scripts/proof_dns_dhcp_records ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
+	install -m755 scripts/listpwexpiry ${TOOLS_DEST}/usr/share/univention-directory-manager-tools
 
 	# new tools with daemon mode
 	install -m755 univention-cli-client $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-cli-client

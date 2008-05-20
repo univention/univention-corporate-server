@@ -1,0 +1,23 @@
+#!/bin/sh
+#
+
+if [ -n "$1" ] ; then
+	INTERVAL=$1
+else
+	INTERVAL=7
+fi
+if [ -n "$2" ] ; then
+	BASE="-b $2"
+fi
+
+now=$(date +%Y%m%d | tr -d '\n')
+expiredate=$(date -d "$INTERVAL days" +%Y%m%d | tr -d '\n')
+
+ldapsearch -x -LLL $BASE '(&(objectClass=posixAccount)(krb5PasswordEnd=*))' dn krb5PasswordEnd | ldapsearch-wrapper | egrep "^(dn|krb5PasswordEnd):" | while read dn ; do
+	read datum
+	day=$(echo $datum | cut -b18-25)
+	if [ $now -le $day -a $day -le $expiredate ] ; then
+		echo -n "$day "
+		echo "$dn" | awk '{print $2}'
+	fi
+done

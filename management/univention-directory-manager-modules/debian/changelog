@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.15-1) unstable; urgency=low
+
+  * added listpwexpiry to univention-directory-manager-tools
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 20 May 2008 10:50:22 +0200
+
 univention-directory-manager-modules (2.2.14-6) unstable; urgency=low
 
   * fix syncronization of memberUid with uniqueMember attributes on memberOf-groups ("supergroups")
