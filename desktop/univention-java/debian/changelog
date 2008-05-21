@@ -1,3 +1,9 @@
+univention-java (2.0.2-2) stable; urgency=low
+
+  * verwaiste Links aus /etc/alternatives nach /usr/lib/j2re1.5-sun/ im postinst entfernen
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Wed, 21 May 2008 17:45:08 +0200
+
 univention-java (2.0.2-1) unstable; urgency=low
 
   * support for amd64
