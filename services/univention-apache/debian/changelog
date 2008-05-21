@@ -1,3 +1,11 @@
+univention-apache (2.0.15-7) stable; urgency=low
+
+  * move settings in catchall-virtualhost into main serverconfig to apply them
+    to all virtual hosts
+  * remove unnamed catchall-virtualhost on port 80
+
+ -- Arvid Requate <arequate@ivar.knut.univention.de>  Wed, 21 May 2008 15:10:30 +0200
+
 univention-apache (2.0.15-6) stable; urgency=low
 
   * add logging directives to ssl config

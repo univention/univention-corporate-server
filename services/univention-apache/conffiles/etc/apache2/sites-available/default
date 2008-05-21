@@ -7,46 +7,40 @@
 # 
 #       /etc/univention/templates/files/etc/apache2/sites-available/default
 
-NameVirtualHost *
-<VirtualHost *>
-	ServerAdmin webmaster@@%@hostname@%@.@%@domainname@%@
-	
-	DocumentRoot /var/www/
-	<Directory />
-		Options FollowSymLinks
-		AllowOverride None
-	</Directory>
+ServerAdmin webmaster@@%@hostname@%@.@%@domainname@%@
+ServerSignature On
 
-	ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
-	<Directory "/usr/lib/cgi-bin">
-		AllowOverride None
-		Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
-		Order allow,deny
-		Allow from all
-	</Directory>
+RewriteEngine on
+RewriteOptions Inherit
 
-	ErrorLog /var/log/apache2/error.log
+CustomLog /var/log/apache2/access.log combined
+ErrorLog /var/log/apache2/error.log
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel @%@apache2/loglevel@%@
 
-	# Possible values include: debug, info, notice, warn, error, crit,
-	# alert, emerg.
-	LogLevel @%@apache2/loglevel@%@
+DocumentRoot /var/www/
+<Directory />
+	Options FollowSymLinks
+	AllowOverride None
+</Directory>
 
-	RewriteEngine on
-	RewriteOptions Inherit
+ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+<Directory "/usr/lib/cgi-bin">
+	AllowOverride None
+	Options ExecCGI -MultiViews +SymLinksIfOwnerMatch
+	Order allow,deny
+	Allow from all
+</Directory>
 
-	CustomLog /var/log/apache2/access.log combined
-	ServerSignature On
-
-    Alias /doc/ "/usr/share/doc/"
-    <Directory "/usr/share/doc/">
-        Options Indexes MultiViews FollowSymLinks
-        AllowOverride None
-        Order deny,allow
-        Deny from all
-        Allow from 127.0.0.0/255.0.0.0 ::1/128
-    </Directory>
-
-</VirtualHost>
+Alias /doc/ "/usr/share/doc/"
+<Directory "/usr/share/doc/">
+Options Indexes MultiViews FollowSymLinks
+AllowOverride None
+Order deny,allow
+Deny from all
+Allow from 127.0.0.0/255.0.0.0 ::1/128
+</Directory>
 
 <Directory /var/www/>
 	Options Indexes FollowSymLinks MultiViews
