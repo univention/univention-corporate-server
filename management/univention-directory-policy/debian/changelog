@@ -1,3 +1,10 @@
+univention-directory-policy (1.1.1-9) unstable; urgency=low
+
+  * check for ldap/hostdn in univention-directory-policy crontab template
+  * remove reference to ldap/policy/interval
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Wed, 21 May 2008 16:58:34 +0200
+
 univention-directory-policy (1.1.1-8) unstable; urgency=low
 
   * remove old ldap-policy init script

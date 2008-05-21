@@ -1,5 +1,7 @@
 # /etc/cron.d/univention-ldap-policy
 
-# Run queue every @%@ldap/policy/interval@%@ minutes
-@%@ldap/policy/cron@%@   root   if [ -d /usr/lib/univention-directory-policy ]; then /usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy; fi
+@!@
+if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
+	print "%s   root   if [ -d /usr/lib/univention-directory-policy ]; then /usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy; fi" % configRegistry['ldap/policy/cron']
+@!@
 
