@@ -294,31 +294,56 @@ class question_syntax(uniconf.uniconf):
 					filter = prop._replace( filter, obj )
 				self.syntax._prepare( self.lo, filter )
 				for dn, val, attr in self.syntax.values:
-					val = val.split( ':', 1 )[ 1 ].strip()
-					attr = attr.split( ':', 1 )[ 1 ].strip()
 					attrs = self.lo.get( dn )
 					mod = univention.admin.modules.identify( dn, attrs )
 					object = univention.admin.objects.get( mod[ 0 ], None, self.lo, None, dn )
 					univention.admin.objects.open( object )
-					try:
-						if val == 'dn':
-							val = dn
+					if ':' in val:
+						val = val.split( ':', 1 )[ 1 ].strip()
+						try:
+							if val == 'dn':
+								val = dn
+							else:
+								val = object[ val ]
+								if isinstance( val, ( list, tuple ) ):
+									val = val[ 0 ]
+						except:
+							val = ''
+					else:
+						if attrs.has_key(val):
+							val = attrs[val]
 						else:
-							val = object[ val ]
-							if isinstance( val, ( list, tuple ) ):
-								val = val[ 0 ]
-					except:
-						val = ''
-					try:
-						if attr == 'dn':
-							attr = dn
+							val = ''
+
+					if ':' in attr:
+						attr = attr.split( ':', 1 )[ 1 ].strip()
+						try:
+							if attr == 'dn':
+								attr = dn
+							else:
+								attr = object[ attr ]
+								if isinstance( attr, ( list, tuple ) ):
+									attr = attr[ 0 ]
+						except:
+							attr = ''
+					else:
+						if attrs.has_key(attr):
+							attr = attrs[attr]
 						else:
-							attr = object[ attr ]
-							if isinstance( attr, ( list, tuple ) ):
-								attr = attr[ 0 ]
-					except:
-						attr = ''
-					self.syntax.choices.append( ( val, attr ) )
+							attr = ''
+
+					# convert val and attr to lists
+					if not isinstance( val, ( list, tuple ) ):
+						val = [ val ]
+					if not isinstance( attr, ( list, tuple ) ):
+						attr = [ attr ]
+
+					if not len(val) == len(attr):
+						# length of val and attr differs ==> use first element of attr and all elements of val
+						attr = [ attr[0] ] * len(val)
+
+					# val and attr have same length ==> merge them
+					self.syntax.choices.extend( zip(val, attr) )
 
 			choicelist=[]
 			if self.search:
