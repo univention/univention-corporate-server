@@ -90,7 +90,7 @@ class ModuleServer( Server ):
 		if final:
 			self.__active_requests -= 1
 		self.response( msg )
-		if not self.__active_requests:
+		if not self.__active_requests and self.__timer == None:
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	def _timed_out( self ):
@@ -106,6 +106,7 @@ class ModuleServer( Server ):
 	def _recv( self, socket ):
 		if self.__timer:
 			notifier.timer_remove( self.__timer )
+			self.__timer == None
 
 		data = socket.recv( 16384 )
 
@@ -122,6 +123,7 @@ class ModuleServer( Server ):
 			while self.__buffer:
 				msg = Message()
 				self.__buffer = msg.parse( self.__buffer )
+				ud.debug( ud.ADMIN, ud.INFO, "modserver.py: _recv: msg._id=%s" % msg.id() )
 				self.handle( msg )
 		except IncompleteMessageError, e:
 			pass
@@ -172,6 +174,9 @@ class ModuleServer( Server ):
 				resp = None
 			if resp:
 				self.response( resp )
+
+			if not self.__active_requests and self.__timer == None:
+				self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 			return
 
 		if msg.arguments:
@@ -180,11 +185,13 @@ class ModuleServer( Server ):
 				   ( not self.__check_acls or \
 					 self.__acls.is_command_allowed( cmd, options = msg.options ) ):
 				descr = self.__commands[ cmd ]
+				self.__active_requests += 1
 				# TODO: partial response
 # 				cb = notifier.Callback( self.__partial_response, msg )
 # 				self.__partial_timer = notifier.timer_add( 600, cb )
 				self.__handler.execute( descr.method, msg )
-				self.__active_requests += 1
+				if not self.__active_requests and self.__timer == None:
+					self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 				return
 			else:
 				resp = Response( msg )
@@ -196,7 +203,7 @@ class ModuleServer( Server ):
 					resp.report = status_information( 415 )
 				self.response( resp )
 
-		if not self.__active_requests:
+		if not self.__active_requests and self.__timer == None:
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	# TODO: partial response

@@ -1,3 +1,9 @@
+univention-management-console (0.9.24-1) unstable; urgency=low
+
+  * fixed timeout handling in module server
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 21 May 2008 15:01:30 +0200
+
 univention-management-console (0.9.23-2) unstable; urgency=low
 
   * Display a warning if the connection mode has fallen back to HTTP
