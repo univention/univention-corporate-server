@@ -1,3 +1,9 @@
+univention-directory-manager (4.2.6-8) unstable; urgency=low
+
+  * enhanced ldapsearch syntax
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 28 Nov 2007 14:27:19 +0100
+
 univention-directory-manager (4.2.6-7) unstable; urgency=low
 
   * improved exception message logging in modedit

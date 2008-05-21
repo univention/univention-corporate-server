@@ -3129,27 +3129,32 @@ class modedit(unimodule.unimodule):
 
 						mvaluelist=[]
 						i=0
-						if value:
+						if value and type(value) != type(''):
 							for v in value:
 								try:
-									# split the entry:
-									found=False
-									temp_module = v.split(':')[0]
-									temp_attribute = string.join(v.split(':')[1:], ':').strip(' ')
-									for admin_module in admin_modules:
-										if temp_module == admin_module[ 'name' ]:
-											for admin_attribute in admin_module['attributes']:
-												if temp_attribute == admin_attribute[ 'name' ]:
-													found=True
-													mvaluelist.append({'name': unicode(i), 'description': '%s: %s' % (admin_module[ 'description' ], admin_attribute[ 'description' ])})
-												elif temp_attribute == 'dn':
-													found = True
-													mvaluelist.append( { 'name': unicode( i ), 'description': '%s: %s' % ( admin_module[ 'description' ], _( 'DN' ) ) } )
-												if found:
-													break
-											break
-									if not found:
-										mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
+									if ':' in v:
+										# split the entry:
+										found=False
+										temp_module = v.split(':')[0]
+										temp_attribute = string.join(v.split(':')[1:], ':').strip(' ')
+										for admin_module in admin_modules:
+											if temp_module == admin_module[ 'name' ]:
+												for admin_attribute in admin_module['attributes']:
+													if temp_attribute == admin_attribute[ 'name' ]:
+														found=True
+														mvaluelist.append({'name': unicode(i), 'description': '%s: %s' % (admin_module[ 'description' ], admin_attribute[ 'description' ])})
+													elif temp_attribute == 'dn':
+														found = True
+														mvaluelist.append( { 'name': unicode( i ), 'description': '%s: %s' % ( admin_module[ 'description' ], _( 'DN' ) ) } )
+													if found:
+														break
+												break
+										if not found:
+											mvaluelist.append({'name': unicode(i), 'description': syntax.tostring(v)})
+									else:
+										# no ':' is present
+										mvaluelist.append({'name': unicode(i), 'description': syntax.tostring('LDAP_Attribute: '+v)})
+
 								except univention.admin.uexceptions.valueInvalidSyntax, e:
 									#self.usermessage(unicode(e))
 									pass
@@ -3184,7 +3189,8 @@ class modedit(unimodule.unimodule):
 									self.save.put( _save_p_choice, value )
 							selected_attr = self.save.get( _save_p_choice, '' )
 							if selected_attr:
-								selected_attr = selected_attr.split( ':', 1 )[ 1 ].strip()
+								if ':' in selected_attr:
+									selected_attr = selected_attr.split( ':', 1 )[ 1 ].strip()
 
 							for admin_module in admin_modules:
 								if admin_module[ 'name' ] == selected:
@@ -3199,7 +3205,6 @@ class modedit(unimodule.unimodule):
 										attrlist.append( { 'name' : '%s: %s' % ( admin_module[ 'name' ], 'dn' ), 'description' : _( 'DN' ) } )
 										if selected_attr == 'dn':
 											attrlist[ -1 ][ 'selected' ] = '1'
-
 
 							attrlist.sort( compare_dicts_by_attr( 'description' ) )
 
@@ -4191,34 +4196,54 @@ class modedit(unimodule.unimodule):
 							filter = property._replace( property.syntax.filter, self.object )
 							property.syntax._prepare( self.lo, filter )
 							for dn, val, attr in property.syntax.values:
-								val = val.split( ':', 1 )[ 1 ].strip()
-								attr = attr.split( ':', 1 )[ 1 ].strip()
 								attrs = self.lo.get( dn )
 								mod = univention.admin.modules.identify( dn, attrs )
 								object = univention.admin.objects.get( mod[ 0 ], None, self.lo, None, dn )
 								univention.admin.objects.open( object )
-								try:
-									if val == 'dn':
-										val = dn
-									else:
-										val = object[ val ]
+								if ':' in val:
+									# value contains "<module>: <attr>"
+									val = val.split( ':', 1 )[ 1 ].strip()
+									try:
+										if val == 'dn':
+											val = dn
+										else:
+											val = object[ val ]
+											if isinstance( val, ( list, tuple ) ):
+												val = val[ 0 ]
+									except:
+										val = ''
+								else:
+									# value contains "<ldap-attr>"
+									if attrs.has_key(val):
+										val = attrs[val]
 										if isinstance( val, ( list, tuple ) ):
 											val = val[ 0 ]
-										if not val:
-											continue
-								except:
-									continue
-								try:
-									if attr == 'dn':
-										attr = dn
 									else:
-										attr = object[ attr ]
+										val = ''
+
+								if ':' in attr:
+									# attr contains "<module>: <attr>"
+									attr = attr.split( ':', 1 )[ 1 ].strip()
+									try:
+										if attr == 'dn':
+											attr = dn
+										else:
+											attr = object[ attr ]
+											if isinstance( attr, ( list, tuple ) ):
+												attr = attr[ 0 ]
+									except:
+										attr = ''
 										if isinstance( attr, ( list, tuple ) ):
 											attr = attr[ 0 ]
-								except:
-									attr = ''
+								else:
+									# attr contains "<ldap-attr>"
+									if attrs.has_key(attr):
+										attr = attrs[attr]
+									else:
+										attr = ''
 
 								property.syntax.choices.append( ( val, attr ) )
+
 						if value:
 							for v in value:
 								try:
@@ -4321,30 +4346,52 @@ class modedit(unimodule.unimodule):
 							filter = property._replace( property.syntax.filter, self.object )
 							property.syntax._prepare( self.lo, filter )
 							for dn, val, attr in property.syntax.values:
-								val = val.split( ':', 1 )[ 1 ].strip()
-								attr = attr.split( ':', 1 )[ 1 ].strip()
 								attrs = self.lo.get( dn )
 								mod = univention.admin.modules.identify( dn, attrs )
 								object = univention.admin.objects.get( mod[ 0 ], None, self.lo, None, dn )
 								univention.admin.objects.open( object )
-								try:
-									if val == 'dn':
-										val = dn
-									else:
-										val = object[ val ]
+								if ':' in val:
+									# value contains "<module>: <attr>"
+									val = val.split( ':', 1 )[ 1 ].strip()
+									try:
+										if val == 'dn':
+											val = dn
+										else:
+											val = object[ val ]
+											if isinstance( val, ( list, tuple ) ):
+												val = val[ 0 ]
+									except:
+										val = ''
+								else:
+									# value contains "<ldap-attr>"
+									if attrs.has_key(val):
+										val = attrs[val]
 										if isinstance( val, ( list, tuple ) ):
 											val = val[ 0 ]
-								except:
-									val = ''
-								try:
-									if attr == 'dn':
-										attr = dn
 									else:
-										attr = object[ attr ]
+										val = ''
+
+								if ':' in attr:
+									# attr contains "<module>: <attr>"
+									attr = attr.split( ':', 1 )[ 1 ].strip()
+									try:
+										if attr == 'dn':
+											attr = dn
+										else:
+											attr = object[ attr ]
+											if isinstance( attr, ( list, tuple ) ):
+												attr = attr[ 0 ]
+									except:
+										attr = ''
 										if isinstance( attr, ( list, tuple ) ):
 											attr = attr[ 0 ]
-								except:
-									attr = ''
+								else:
+									# attr contains "<ldap-attr>"
+									if attrs.has_key(attr):
+										attr = attrs[attr]
+									else:
+										attr = ''
+
 								property.syntax.choices.append( ( val, attr ) )
 						if name:
 							self.input[name]=question_property('',attributes,{'property': property, 'field': field, 'value': value, 'name': name, 'lo': self.lo})
