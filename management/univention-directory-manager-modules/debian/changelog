@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.16-2) stable; urgency=low
+
+  * fixed bug in modlist handling: objectclasses have been added twice
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 May 2008 11:22:15 +0200
+
 univention-directory-manager-modules (2.2.16-1) stable; urgency=low
 
   * fixed bug in modlist handling
