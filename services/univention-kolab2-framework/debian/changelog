@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.1.1-1) unstable; urgency=low
+
+  * Bug fix for Free/Busy problems when legacy mode is on. (HTTP/HTTPS)
+
+ -- Andre Fenske <fenske@univention.de>  Tue,  4 Mar 2008 14:46:22 +0100
+
 univention-kolab2-framework (1.0.6-4) unstable; urgency=low
 
   * exclude .svn directories
