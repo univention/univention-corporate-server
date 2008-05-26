@@ -31,5 +31,5 @@
 #DEBHELPER#
 
 # remove all dangling links which match the pattern "/usr/lib/j2re1.5-sun/*"
-find -L /etc/alternatives -lname "/usr/lib/j2re1.5-sun/*" | xargs rm
+find -L /etc/alternatives -lname "/usr/lib/j2re1.5-sun/*" | xargs rm -f 
 
