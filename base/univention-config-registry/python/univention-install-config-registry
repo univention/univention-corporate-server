@@ -136,6 +136,7 @@ if __name__ == '__main__':
 					if not f in filelist:
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
 						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
+						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --rename --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
 						filelist.append(f)
 			elif item.has_key('Subfile'):
 				for f in item['Subfile']:
@@ -144,6 +145,8 @@ if __name__ == '__main__':
 					if not f in filelist:
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
 						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
+						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --rename --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
+						filelist.append(f)
 						filelist.append(f)
 			elif item.has_key('Multifile'):
 				for f in item['Multifile']:
@@ -152,6 +155,8 @@ if __name__ == '__main__':
 					if not f in filelist:
 						preinst.write('test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert %s --add %s || true\n' % (f+'.debian', f))
 						postrm.write('test "$1" = "remove" && rm -f %s && dpkg-divert --rename --quiet --divert %s --remove %s || true\n' % (f, f+'.debian', f))
+						postinst.write('res=$(dpkg-divert --list --quiet %s) && if [ -z "$res" ]; then dpkg-divert --rename --quiet --divert %s --add %s; fi || true\n' % (f,f+'.debian', f))
+						filelist.append(f)
 						filelist.append(f)
 
 		fp.close()

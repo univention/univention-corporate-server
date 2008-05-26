@@ -1,3 +1,9 @@
+univention-config-registry (2.6.11-1) unstable; urgency=low
+
+  * add a dpkg-divert check to the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 May 2008 17:02:30 +0200
+
 univention-config-registry (2.6.10-1) unstable; urgency=low
 
   * added missing dependency to pciutils for univention-sysinfo
