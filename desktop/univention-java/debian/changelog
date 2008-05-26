@@ -1,3 +1,9 @@
+univention-java (2.0.2-3) stable; urgency=low
+
+  * fix return code of postinst cleanup
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Mon, 26 May 2008 16:48:38 +0200
+
 univention-java (2.0.2-2) stable; urgency=low
 
   * verwaiste Links aus /etc/alternatives nach /usr/lib/j2re1.5-sun/ im postinst entfernen
