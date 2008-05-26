@@ -49,7 +49,7 @@ class clientDevicesFixedAttributes(univention.admin.syntax.select):
 module='policies/clientdevices'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionPolicyUpdate'
+policy_oc='univentionPolicyClientDevices'
 policy_apply_to=["computers/thinclient"]
 policy_position_dn_prefix="cn=thinclient"
 
