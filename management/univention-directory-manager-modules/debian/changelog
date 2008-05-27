@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.18-1) stable; urgency=low
+
+  * remove a nagiosParent from his client when he will be deleted.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 15:42:00 +0200
+
 univention-directory-manager-modules (2.2.17-1) stable; urgency=low
 
   * fixed policy_oc attribute of policy/clientdevices 
