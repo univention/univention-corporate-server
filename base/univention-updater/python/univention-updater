@@ -130,7 +130,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 	vp=baseConfig['version/patchlevel']
 
 	if mode == 'local':
-		dprint('Checking local repository', [stdout,sys_stdout])
+		print 'Checking local repository'
 
 		if os.path.exists('/var/lib/univention-server-cdrom/ucs-updates/ucs_%s-%s.txt' % (vv,vp)):
 			f=open('/var/lib/univention-server-cdrom/ucs-updates/ucs_%s-%s.txt' % (vv,vp))
@@ -224,11 +224,11 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 		prefix = ""
 
 		if not proxy == "":
-			dprint('Connecting to server <%s> (using proxy server %s)' %(baseConfig['update/server'].replace('http://','').split('/')[0], proxy), [stdout,sys_stdout])
+			print 'Connecting to server <%s> (using proxy server %s)' %(baseConfig['update/server'].replace('http://','').split('/')[0], proxy)
 			conn = httplib.HTTPConnection(proxy)
 			prefix = "http://%s" % baseConfig['update/server'].replace('http://','').split('/')[0]
 		else:
-			dprint('Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0]), [stdout,sys_stdout])
+			print 'Connecting to server <%s>' %(baseConfig['update/server'].replace('http://','').split('/')[0])
 			conn = httplib.HTTPConnection(baseConfig['update/server'].replace('http://','').split('/')[0])
 
 		path = "%s/univention-cdrom/ucs-updates/ucs_%s-%s.txt" % (prefix, vv, vp)

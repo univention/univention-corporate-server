@@ -1,3 +1,9 @@
+univention-updater (2.3.22-1) unstable; urgency=low
+
+  * removed some status information from stdout
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 08:58:33 +0200
+
 univention-updater (2.3.21-1) unstable; urgency=low
 
   * output warning msg if ldap/hostdn is not set and server/role!=basesystem
