@@ -1,7 +1,5 @@
-univention-kolab2-framework (1.1.2-1) unstable; urgency=low
+univention-kolab2-framework (1.1.2-2) unstable; urgency=low
 
-  * added dependency to univention-mail-cyrus-kolab2 because the pam
-    httpd-freebusy configuration needs /etc/imapd/pam_ldap_imap.conf
   * added the line 'auth    sufficient    pam_unix.so' to the httpd-
     freebusy pam configuration
 
