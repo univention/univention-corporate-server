@@ -1,3 +1,10 @@
+univention-client-boot-pxe (2.0.1-6) unstable; urgency=low
+
+  * set vt.default_utf8 to 0 because the default encoding in 2.6.24 is
+    utf8 and the UCS Installer is latin1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 08:44:00 +0200
+
 univention-client-boot-pxe (2.0.1-5) unstable; urgency=low
 
   * added initrd.splash for multiple resolutions 
