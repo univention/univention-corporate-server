@@ -1,3 +1,9 @@
+univention-nagios (1.0.13-1) unstable; urgency=low
+
+  * remove the group filename correct
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 15:25:09 +0200
+
 univention-nagios (1.0.12-1) unstable; urgency=low
 
   * use the host fqdn as well when the host description was set
