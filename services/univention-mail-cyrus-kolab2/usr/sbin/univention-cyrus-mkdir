@@ -105,7 +105,7 @@ if not os.path.exists(sieve_path) and not remote:
 	os.makedirs(sieve_path, mode=0777)
 	cyrus_id=pwd.getpwnam('cyrus')[2]
 	mail_id=grp.getgrnam('mail')[2]
-	os.chown(sieve_path cyrus_id, mail_id)
+	os.chown(sieve_path, cyrus_id, mail_id)
 
 if not os.path.exists('/var/spool/cyrus/mail/domain/%s/%s/%s/user/%s/Spam' % (domainpart[0], domainpart, userpart_modified[0], userpart_modified)) or remote:
 
