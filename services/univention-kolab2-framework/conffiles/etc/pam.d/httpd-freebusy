@@ -5,9 +5,10 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/imap
+# 	/etc/univention/templates/files/etc/pam.d/httpd-freebusy
 # 
 
+auth    sufficient    pam_unix.so
 auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
 auth    sufficient pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_imap.conf
 auth    required pam_krb5.so use_first_pass
