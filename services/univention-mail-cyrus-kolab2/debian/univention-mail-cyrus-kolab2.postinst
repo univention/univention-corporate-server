@@ -136,6 +136,14 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	/usr/lib/univention-install/81univention-mail-cyrus-kolab2.inst || true
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.5-6; then
+	if [ -d /var/spool/cyrus/sieve/domain ]; then
+		if [ ! -e /var/spool/cyrus/sieve/no_chmod_on_upgrade ]; then
+			chown -R mail.cyrus /var/spool/cyrus/sieve/domain
+		fi
+	fi
+fi
+
 #restart cyrus
 
 if [ -x /etc/init.d/cyrus2.2 ]; then
