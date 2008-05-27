@@ -1,3 +1,9 @@
+univention-config-registry (2.6.11-2) unstable; urgency=low
+
+  * don't move the diverted file in the postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 May 2008 06:27:02 +0200
+
 univention-config-registry (2.6.11-1) unstable; urgency=low
 
   * add a dpkg-divert check to the postinst
