@@ -361,7 +361,7 @@ def deleteHostGroup(grpname):
 	listener.setuid(0)
 	try:
 		if os.path.exists( grp_filename ):
-			os.unlink( os.path.join( __servicesdir, fn) )
+			os.unlink( os.path.join( __servicesdir, grp_filename) )
 	finally:
 		listener.unsetuid()
 
