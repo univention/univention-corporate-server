@@ -628,7 +628,7 @@ def handleHost(dn, new, old):
 			fp.write('define host {\n')
 			fp.write('    host_name               %s\n' % newfqdn)
 			if new.has_key('description') and new['description']:
-				fp.write('    alias                   %s\n' % new['description'][0])
+				fp.write('    alias                   %s (%s)\n' % (newfqdn,new['description'][0]))
 			else:
 				fp.write('    alias                   Host %s\n' % newfqdn)
 			fp.write('    address                 %s\n' % new['aRecord'][0])
