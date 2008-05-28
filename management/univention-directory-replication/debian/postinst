@@ -42,6 +42,10 @@ createLogfile /var/log/univention/ldap-replication-resync.log "root:adm" 640
 # make sure rootpw.conf is not readable
 test -f /etc/ldap/rootpw.conf && chmod 600 /etc/ldap/rootpw.conf || true
 
+univention-config-registry set	ldap/replication/filesystem/check?false \
+						ldap/replication/filesystem/limit?10 \
+						ldap/replication/filesystem/recipient?root
+
 #DEBHELPER#
 
 /etc/init.d/univention-directory-listener crestart

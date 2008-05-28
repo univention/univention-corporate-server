@@ -1,3 +1,13 @@
+univention-directory-replication (1.3.1-1) unstable; urgency=low
+
+  * added a free space check in the replication module. If the ucr
+    variable ldap/replication/filesystem/check was set to yes, the
+    listener would be stopped if the free space is less than
+    ldap/replication/filesystem/limit mb. There will be send a email to
+    ldap/replication/filesystem/recipient
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 May 2008 14:59:00 +0200
+
 univention-directory-replication (1.2.2-1) unstable; urgency=low
 
   * create symlink univention-ldap-replication-resync

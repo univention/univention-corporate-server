@@ -36,8 +36,11 @@
 #    use existing database
 
 import listener
-import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64
+import os, pwd, types, ldap, ldap.schema, re, time, copy, codecs, base64, string
 import univention_baseconfig, univention.debug
+import smtplib
+from email.MIMEText import MIMEText
+
 
 name='replication'
 description='LDAP slave replication'
@@ -456,6 +459,32 @@ def handler(dn, new, listener_old):
 		else:
 			connected=1
 	try:
+
+		if listener.baseConfig.get('ldap/replication/filesystem/check', 'false').lower() in ['true', 'yes']:
+			df = os.popen('df -P /var/lib/univention-ldap/').readlines()
+			free_space = float(df[1].strip().split()[3])*1024*1024 # free space in MB
+			limit = float(listener.baseConfig.get('ldap/replication/filesystem/limit', '10'))
+			if limit < free_space:
+
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Critical disk space. The Univention LDAP Listener was stopped')
+				msg = MIMEText('Critical disk space on %s.%s.\n\nThe Univention LDAP Listener was stopped' %(listener.baseConfig['hostname'], listener.baseConfig['domainname']))
+				msg = MIMEText('The Univention Listener process was stopped on %s.%s.\n\n\nThe result of df:\n%s\n\nPlease free up some disk space and restart the Univention LDAP Listener with the following command:\n/etc/init.d/univention-directory-listener start' %(listener.baseConfig['hostname'], listener.baseConfig['domainname'], string.join(df)))
+				msg['Subject'] = 'Alert: Critical disk space on %s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
+				sender = 'root'
+				recipient = listener.baseConfig.get('ldap/replication/filesystem/recipient', sender)
+
+				msg['From'] = sender
+				msg['To'] = recipient
+
+				s = smtplib.SMTP()
+				s.connect()
+				s.sendmail(sender, [recipient], msg.as_string())
+				s.close()
+
+				listener.setuid(0)
+				os.system('/etc/init.d/univention-directory-listener stop')
+				listener.unsetuid()
+
 		# Read old entry directly from LDAP server
 		if not isinstance(l, LDIFObject):
 			try:
