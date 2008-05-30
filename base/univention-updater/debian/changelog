@@ -1,3 +1,9 @@
+univention-updater (2.3.23-1) unstable; urgency=low
+
+  * don't call univention-baseconfig commit at the end of the upgrade
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 May 2008 07:18:39 +0200
+
 univention-updater (2.3.22-1) unstable; urgency=low
 
   * removed some status information from stdout
