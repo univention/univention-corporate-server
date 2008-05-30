@@ -139,7 +139,7 @@ fi
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.0.5-6; then
 	if [ -d /var/spool/cyrus/sieve/domain ]; then
 		if [ ! -e /var/spool/cyrus/sieve/no_chmod_on_upgrade ]; then
-			chown -R mail.cyrus /var/spool/cyrus/sieve/domain
+			chown -R cyrus.mail /var/spool/cyrus/sieve/domain
 		fi
 	fi
 fi
