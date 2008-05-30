@@ -467,7 +467,6 @@ def handler(dn, new, listener_old):
 			if limit < free_space:
 
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Critical disk space. The Univention LDAP Listener was stopped')
-				msg = MIMEText('Critical disk space on %s.%s.\n\nThe Univention LDAP Listener was stopped' %(listener.baseConfig['hostname'], listener.baseConfig['domainname']))
 				msg = MIMEText('The Univention Listener process was stopped on %s.%s.\n\n\nThe result of df:\n%s\n\nPlease free up some disk space and restart the Univention LDAP Listener with the following command:\n/etc/init.d/univention-directory-listener start' %(listener.baseConfig['hostname'], listener.baseConfig['domainname'], string.join(df)))
 				msg['Subject'] = 'Alert: Critical disk space on %s.%s' % (listener.baseConfig['hostname'], listener.baseConfig['domainname'])
 				sender = 'root'
