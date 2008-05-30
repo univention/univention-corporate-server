@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.6-3) unstable; urgency=low
+
+  * change the owner of the sieve directories to cyrus.mail instead of
+    mail.cyrus
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 May 2008 10:44:22 +0200
+
 univention-mail-cyrus-kolab2 (1.0.6-2) unstable; urgency=low
 
   * fixed typo in univention-cyrus-mkdir
