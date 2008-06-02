@@ -1,4 +1,11 @@
-univention-apache (2.0.15-7) stable; urgency=low
+univention-apache (2.0.15-8) unstable; urgency=low
+
+  * sleep for three seconds beetween the start and stop of the apache
+    daemon. Otherwise the apache won't start.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Jun 2008 06:48:08 +0200
+
+univention-apache (2.0.15-7) unstable; urgency=low
 
   * move settings in catchall-virtualhost into main serverconfig to apply them
     to all virtual hosts
