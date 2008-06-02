@@ -54,7 +54,7 @@ def handler(dn, new, old):
 	if baseConfig.has_key('pxe/append'):
 		append = baseConfig['pxe/append']
 	else:
-		append = "root=/dev/ram rw initrd=linux.bin ramdisk_size=98304  flavor=linux nfs"
+		append = "root=/dev/ram rw initrd=linux.bin ramdisk_size=98304 vt.default_utf8=0 flavor=linux nfs"
 
 	pxeconfig_start = \
 	'''# Perform an profile installation by default

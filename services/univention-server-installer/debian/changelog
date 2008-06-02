@@ -1,3 +1,10 @@
+univention-server-installer (1.0.1-1) unstable; urgency=low
+
+  * set vt.default_utf8 to 0 because the default encoding in 2.6.24 is
+    utf8 and the UCS Installer is latin1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  2 Jun 2008 15:30:03 +0200
+
 univention-server-installer (1.0.0-1) unstable; urgency=low
 
   * update to ucs 2.0 policies
