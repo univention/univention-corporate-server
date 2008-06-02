@@ -56,6 +56,7 @@ fi
 if [ -x /etc/init.d/apache2 ]; then
 	# better stop&start, as this behaves differently to restart
 	/etc/init.d/apache2 stop
+	sleep 3
 	/etc/init.d/apache2 start
 fi
 
