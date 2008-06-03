@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.18 (1.0.0-5) unstable; urgency=low
+
+  * build squashfs and drbd8
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 09:56:35 +0200
+
 univention-kernel-modules-2.6.18 (1.0.0-4) unstable; urgency=low
 
   * change the form of the m-a build

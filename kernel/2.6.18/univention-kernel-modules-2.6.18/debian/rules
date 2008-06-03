@@ -54,11 +54,13 @@ install:
 	dh_installdirs
 
 	
-	for i in /usr/src/linux-headers-*; do \
-		kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
-		m-a -t -l $$kversion prepare; \
-		m-a -f -u /tmp -l $$kversion -t a-b srvmagt-modules; \
-		mv /tmp/usr_src/modules/*.deb ../; \
+	for m in srvmagt-modules squashfs drbd8; do \
+		for i in /usr/src/linux-headers-*; do \
+			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
+			m-a -t -l $$kversion prepare; \
+			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
+			mv /tmp/usr_src/modules/*.deb ../; \
+		done \
 	done
 
 binary-indep: build install
