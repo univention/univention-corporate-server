@@ -32,7 +32,7 @@ case "$1" in
 	start|restart)
 		echo -n "Starting Univention Directory Policy: "
 
-		eval `univention-baseconfig shell`
+		eval `univention-config-registry shell`
 
 		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
 			run-parts /usr/lib/univention-directory-policy >>/var/log/univention/ldap-policy.log 2>&1
