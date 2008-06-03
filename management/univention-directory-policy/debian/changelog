@@ -1,3 +1,9 @@
+univention-directory-policy (1.1.1-10) unstable; urgency=low
+
+  * register UCR-Variables and replace univention-baseconfig by univention-config-registry
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue,  3 Jun 2008 17:32:51 +0200
+
 univention-directory-policy (1.1.1-9) unstable; urgency=low
 
   * check for ldap/hostdn in univention-directory-policy crontab template

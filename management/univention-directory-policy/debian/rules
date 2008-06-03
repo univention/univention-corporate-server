@@ -54,7 +54,7 @@ install: build
 
 	install -m 755 20univention-directory-policy.inst debian/univention-directory-policy/usr/lib/univention-install
 	install -m 755 univention-directory-policy debian/univention-directory-policy/etc/init.d/
-	univention-install-baseconfig
+	univention-install-config-registry
 
 binary-arch: build install
 

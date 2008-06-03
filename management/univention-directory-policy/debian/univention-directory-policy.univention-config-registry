@@ -1,2 +1,4 @@
 Type: file
 File: etc/cron.d/univention-directory-policy
+Variables: ldap/hostdn
+Variables: ldap/policy/cron
