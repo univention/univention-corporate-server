@@ -1,3 +1,10 @@
+univention-kernel-modules-2.6.18 (1.0.0-3) unstable; urgency=low
+
+  * try to build this package without using m-a prepare because the kernel of
+    the buildsystem could be different
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 08:47:29 +0200
+
 univention-kernel-modules-2.6.18 (1.0.0-2) unstable; urgency=low
 
   * run m-a -t prepare
