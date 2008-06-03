@@ -59,7 +59,7 @@ install:
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
 			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
-			mv /tmp/usr_src/modules/*.deb ../; \
+			mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
 		done \
 	done
 
