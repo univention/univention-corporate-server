@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.18 (1.0.0-4) unstable; urgency=low
+
+  * change the form of the m-a build
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 09:22:36 +0200
+
 univention-kernel-modules-2.6.18 (1.0.0-3) unstable; urgency=low
 
   * try to build this package without using m-a prepare because the kernel of
