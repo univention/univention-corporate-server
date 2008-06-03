@@ -32,4 +32,6 @@
 
 # remove all dangling links which match the pattern "/usr/lib/j2re1.5-sun/*"
 find -L /etc/alternatives -lname "/usr/lib/j2re1.5-sun/*" | xargs rm -f 
+# remove all dangling links which match the pattern "/usr/lib/j2se/1.4/*"
+find -L /etc/alternatives -lname "/usr/lib/j2se/1.4/*" | xargs rm -f 
 
