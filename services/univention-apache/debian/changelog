@@ -1,3 +1,9 @@
+univention-apache (2.0.15-9) unstable; urgency=low
+
+  * inherit RewriteOptions in SSL-VirtualHost (used to be inherited by default-VirtualHost)
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Wed,  4 Jun 2008 13:52:01 +0200
+
 univention-apache (2.0.15-8) unstable; urgency=low
 
   * sleep for three seconds beetween the start and stop of the apache
