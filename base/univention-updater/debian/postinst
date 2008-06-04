@@ -75,7 +75,13 @@ if [ "$1" = "configure" ]; then
 		univention-baseconfig set update/security/prefix="updates/security"
 	fi
 
+	arch=$(dpkg-architecture  -qDEB_BUILD_ARCH)
+
+	if [ "$arch" = "amd64" ]; then
+		univention-baseconfig set update/security/prefix?"updates/security-amd64"
+	fi
 	univention-baseconfig set update/security/prefix?"updates/security"
+	
 	univention-baseconfig set update/directory?"ucs-updates"
 
 	mkdir -p /var/cache/univention-update

@@ -1,3 +1,10 @@
+univention-updater (2.3.24-1) unstable; urgency=low
+
+  * set update/security/prefix to updates/security-amd64 on amd64
+    systems
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  4 Jun 2008 08:44:26 +0200
+
 univention-updater (2.3.23-1) unstable; urgency=low
 
   * don't call univention-baseconfig commit at the end of the upgrade
