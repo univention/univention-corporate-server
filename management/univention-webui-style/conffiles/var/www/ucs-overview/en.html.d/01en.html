@@ -75,10 +75,10 @@ print'<td class="notebook_spacer"></td>'
 print'</tr>'
 print'</table>'
 print'<table class="content_main_menuless">'
-if not role == "Domaincontroller Master" :
+if not role == "Domaincontroller Master" and baseConfig.has_key('ldap/master'):
 	print'<tr>'
-	print'<td class="overview"><a href="http://@%@ldap/master@%@/ucs-overview/en.html"><img src="../icon/about.png" alt="" border="0" /></a></td>'
-	print'<td class="overview"><a href="http://@%@ldap/master@%@/ucs-overview/en.html">@%@ldap/master@%@</a></td>'
+	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html"><img src="../icon/about.png" alt="" border="0" /></a></td>'
+	print'<td class="overview"><a href="https://@%@ldap/master@%@/ucs-overview/en.html">@%@ldap/master@%@</a></td>'
 	print'<td class="overview">Domaincontroller Master of UCS domain @%@domainname@%@</td>'
 	print'</tr>'
 	print'<tr>'

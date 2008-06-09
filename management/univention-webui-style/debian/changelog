@@ -1,3 +1,10 @@
+univention-webui-style (1.1.4-2) unstable; urgency=low
+
+  * use https for the link to the DC Master
+  * show the DC Master link if ldap/master is set
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Jun 2008 20:05:55 +0200
+
 univention-webui-style (1.1.4-1) unstable; urgency=low
 
   * stylesheet adjustment for category close buttons
