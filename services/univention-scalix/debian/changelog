@@ -1,3 +1,9 @@
+univention-scalix (1.0.8-5) unstable; urgency=low
+
+  * copy Osmtpd.cfg not 0smtpd.cfg ...
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 16:57:22 +0200
+
 univention-scalix (1.0.8-4) unstable; urgency=low
 
   * fixed bash syntax error in postinst
