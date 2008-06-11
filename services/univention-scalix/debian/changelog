@@ -1,3 +1,10 @@
+univention-scalix (1.0.8-3) unstable; urgency=low
+
+  * backup the s/sys/smtpd.cfg config under /var/univention-
+    backup/scalix because scalix changed the default behaviour
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 15:07:04 +0200
+
 univention-scalix (1.0.8-2) unstable; urgency=low
 
   * added diversion for /etc/default/ldapmapper
