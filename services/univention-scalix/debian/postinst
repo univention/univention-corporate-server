@@ -186,7 +186,7 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt "1.0.2-31"; then
 fi
 if dpkg --compare-versions "$2" lt 1.0.8-1; then
 	/usr/share/univention-scalix/univention-scalix-conffile /etc/default/ldapmapper
-	if [ -e $base/s/sys/0smtpd.cfg ]; 
+	if [ -e $base/s/sys/0smtpd.cfg ]; then
 		cp $base/s/sys/smtpd.cfg /var/univention-backup/scalix/$base/s/sys/smtpd.cfg.`date +%y%m%d%H%M%S`
 		cp $base/s/sys/0smtpd.cfg $base/s/sys/smtpd.cfg
 	fi
