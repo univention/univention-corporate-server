@@ -55,6 +55,7 @@ case "$1" in
 		log_daemon_msg "Starting GNOME Display Manager" "gdm"
 		start_daemon $DAEMON
 		log_end_msg $?
+		sleep @%@gdm/boot/timeout@%@
 	fi
   ;;
   stop)

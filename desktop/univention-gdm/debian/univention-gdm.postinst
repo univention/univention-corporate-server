@@ -53,7 +53,7 @@ if [ -n "$gdm_language" ] ; then
 	univention-baseconfig unset gdm/language
 fi
 
-univention-baseconfig set gdm/autostart?yes
+univention-baseconfig set gdm/autostart?yes gdm/boot/timeout?8
 
 #DEBHELPER#
 
