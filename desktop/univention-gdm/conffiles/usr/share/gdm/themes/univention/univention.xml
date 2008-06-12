@@ -7,212 +7,137 @@ availableres = ['640x480','800x600','1024x768','1280x1024','1600x1200']
 
 if baseConfig.has_key('xorg/resolution') and baseConfig['xorg/resolution'] in availableres:
 	resolution = baseConfig['xorg/resolution']
-	print '  <item type="pixmap">'
-	print '    <normal file="' + resolution + '_start_1.jpg"/>'
-	print '    <pos x="0" y="0" width="100%" height="100%"/>'
-	print '  </item>'
+	print '\t<item type="pixmap">'
+	print '\t\t<normal file="' + resolution + '_start_1.jpg"/>'
+	print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
+	print '\t</item>'
 else:
 	resolution = False
-	print '  <item type="pixmap">'
-	print '    <normal file="univention.png"/>'
-	print '    <pos x="0" y="0" width="100%" height="100%"/>'
-	print '  </item>'
-print ''
-print ' <item type="rect">'
-print '    <normal color="#FFFFFF" alpha="1.0"/>'
-print '    <pos anchor="nw" x="0%" y="62.24%" width="100%" height="13.2%"/>'
-print '  </item>'
-print ''
-print '  <item type="rect" id="caps-lock-warning">'
-print '    <normal color="#FFFFFF" alpha="0.5"/>'
-print '    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>'
-print '    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">'
-print ''
-print '      <item type="label">'
-print '        <normal color="#000000" font="helvetica Bold 14"/>'
-print '        <pos x="50%" anchor="n"/>'
-print "	<!-- Stock label for: You've got capslock on! -->"
-print '	<stock type="caps-lock-warning"/>'
-print '      </item>'
-print '    </box>'
-print '  </item>'
-print ''
-print '  <item type="rect">'
-print '    <show type="timed"/>'
-print '    <normal color="#FFFFFF" alpha="0.5"/>'
-print '    <pos anchor="c" x="50%" y="55%" width="box" height="box"/>'
-print '    <box orientation="vertical" min-width="90%" xpadding="10" ypadding="5" spacing="0">'
-print ''
-print '      <item type="label" id="timed-label">'
-print '        <normal color="#000000" font="helvetica 12"/>'
-print '        <pos x="50%" anchor="n"/>'
-print "	<!-- Stock label for: User %s will login in %d seconds -->"
-print '	<stock type="timed-label"/>'
-print '      </item>'
-print '    </box>'
-print '  </item>'
+	print '\t<item type="pixmap">'
+	print '\t\t<normal file="1600x1200_start_1.jpg"/>'
+	print '\t\t<pos x="0" y="0" width="100%" height="100%"/>'
+	print '</item>'
 
-if resolution == '640x480':
-	print '  <item type="rect">'
-	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="245" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="245"/>'
-	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="23" width="245"/>'
-elif resolution == '800x600':
-	print ' <item type="rect">'
-	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="317" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="317"/>'
-	print '      <normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="28" width="317"/>'
-elif resolution == '1024x768':
-	print '  <item type="rect">'
-	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="406" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="406"/>'
-	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="34" width="406"/>'
-elif resolution == '1280x1024':
-	print '  <item type="rect">'
-	print '    <pos anchor="nw" x="24,75%" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="395" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="395"/>'
-	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="38" width="395"/>'
-elif resolution == '1600x1200':
-	print '  <item type="rect">'
-	print '    <pos anchor="nw" x="300" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="350" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="350"/>'
-	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="34" width="350"/>'
+xresolution=baseConfig.get('xorg/resolution', '1600x1200').split('x')[0]
+yresolution=baseConfig.get('xorg/resolution', '1600x1200').split('x')[1]
+if int(xresolution) < 1024:
+	font='monospace 12'
 else:
-	print '  <item type="rect">'
-	print '    <pos anchor="nw" x="25%" y="63%" width="box" height="box"/>'
-	print '      <box orientation="vertical" width="405" xpadding="5" ypadding="5" spacing="5">'
-	print ''
-	print '	<item type="label" id="pam-prompt">'
-	print '	  <pos anchor="nw" width="405"/>'
-	print '        	<normal color="#666666" font="helvetica Bold 16"/>'
-	print "    		<!-- Stock label for: Username: -->"
-	print '	    	<stock type="username-label"/>'
-	print '	</item>'
-	print '	<item type="rect">'
-	print '	  <normal color="#000000"/>'
-	print '	     <pos anchor="nw" height="34" width="405"/>'
-print '		<fixed>'
-print '	  	<item type="entry" id="user-pw-entry">'
-print '		  <normal color="#000000" font="helvetica Bold 18"/>'
-print '		  <pos anchor="nw" x="1" y="1" height="-2" width="-2"/>'
-print '		</item>'
-print '		</fixed>'
+	font='monospace 12 bold'
+if int(xresolution) == 1024:
+	left_space=490
+elif int(xresolution) == '1280':
+	left_space=630
+elif int(xresolution) == '1600':
+	left_space=785
+else:
+	# 1600/785 = 2.038
+	left_space=int(xresolution)/float(2.038)
+
+left_space-=5 #5 pixel padding
+
+print '\t<item type="rect">'
+print '\t\t<normal color="#FFFFFF" alpha="1.0"/>'
+print '\t\t<pos anchor="nw" x="0" y="%d" width="100%%" height="100"/>' % (int(yresolution)-290)
+print '\t</item>'
+print '\t<item type="rect" id="caps-lock-warning">'
+print '\t\t<normal color="#FFFFFF" alpha="0.5"/>'
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-290+70))
+print '\t\t<box orientation="vertical" xpadding="5" ypadding="5" spacing="0">'
+print '\t\t\t<item type="label">'
+print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+print '\t\t\t\t<pos x="50%" anchor="n"/>'
+print '\t\t\t\t<stock type="caps-lock-warning"/>'
+print '\t\t\t</item>'
+print '\t\t</box>'
+print '\t</item>'
 print ''
-print '     	</item>'
+print '\t<item type="rect">'
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-290+5))
+print '\t\t<box orientation="vertical" width="200" xpadding="5" ypadding="5" spacing="5">'
+print '\t\t\t<item type="label" id="pam-prompt">'
+print '\t\t\t\t<pos anchor="nw" width="200"/>'
+print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+print '\t\t\t\t<!-- Stock label for: Username: -->'
+print '\t\t\t\t<stock type="username-label"/>'
+print '\t\t\t</item>'
+print '\t\t\t<item type="rect">'
+print '\t\t\t\t<normal color="#000000"/>'
+print '\t\t\t\t<pos anchor="nw" height="34" width="200"/>'
+print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+print '\t\t\t\t<fixed>'
+print '\t\t\t\t\t<item type="entry" id="user-pw-entry">'
+print '\t\t\t\t\t\t<normal color="#000000" font="%s"/>' % font.replace(' bold', '')
+print '\t\t\t\t\t\t<pos anchor="nw" x="1" y="1" height="-2" width="-2"/>'
+print '\t\t\t\t\t</item>'
+print '\t\t\t\t</fixed>'
+print '\t\t\t</item>'
+print '\t\t</box>'
+print '\t</item>'
+print '\t<item type="rect">'
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % ((left_space+5), (int(yresolution)-290+110))
+print '\t\t<box orientation="vertical" min-width="350" >'
+print '\t\t\t<item type="label" id="pam-error">'
+print '\t\t\t\t<normal color="#FFFFFF" font="%s"/>' % font
+print '\t\t\t\t<text></text>'
+print '\t\t\t</item>'
+print '\t\t</box>'
+print '\t</item>'
 print ''
-print '   </box>'
-print '  </item>'
-print ''
-print '  <item type="rect">'
-print '    <pos anchor="c" x="50%" y="80%" width="box" height="box"/>'
-print '      <box orientation="vertical" min-width="650" >'
-print '        <item type="label" id="pam-error">'
-print '          <normal color="#000000" font="helvetica Bold 12"/>'
-print '          <pos x="50%" anchor="n"/>'
-print '          <text></text>'
-print '        </item>'
-print '    </box>'
-print '  </item>'
-print ''
-print '  <item type="rect" id="session_button" button="true">'
+print '\t<item type="rect" id="session_button" button="true">'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '    <pos anchor="nw" x="90%" y="73%" width="100%" height="1"/>'
+	print '\t\t<pos anchor="nw" x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+10))
 elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
-	print '    <pos x="90%" y="65%" width="100%" height="1"/>'
+	print '\t\t<pos x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+70))
 else:
-	print '    <pos x="90%" y="69%" width="100%" height="1"/>'
-print '    <box orientation="horizontal" spacing="10" xpadding="10">'
-print '	  <item type="label">'
-print '	    <normal color="#666666" font="helvetica 10"/>'
-print '		<prelight color="#dd1144" font="helvetica 10"/>'
-print '		<active color="#cc0033" font="helvetica 10"/>'
-print '		<pos y="50%" anchor="w"/>'
-print "		<!-- Stock label for: _Session -->"
-print '		<stock type="session"/>'
-print '    </item>'
+	print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+30))
+print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
+print '\t\t\t<item type="label">'
+print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
+print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
+print '\t\t\t\t<pos y="50%" anchor="w"/>'
+print "\t\t\t\t<!-- Stock label for: _Session -->"
+print '\t\t\t\t<stock type="session"/>'
+print '\t\t\t</item>'
 print ''
-print '	</box>'
-print '  </item>'
+print '\tt</box>'
+print '\t</item>'
 print '		'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
- 	print '  <item type="rect" id="language_button" button="true">'
+ 	print '\t<item type="rect" id="language_button" button="true">'
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
-		print '    <pos x="90%" y="65%" width="100%" height="1"/>'
+		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+70))
 	else:
-		print '    <pos x="90%" y="69%" width="100%" height="1"/>'
- 	print '    <box orientation="horizontal" spacing="10" xpadding="10">'
- 	print '  	  <item type="label">'
- 	print '  	    <normal color="#666666" font="helvetica 10"/>'
- 	print '  	    <prelight color="#dd1144" font="helvetica 10"/>'
- 	print '  	    <active color="#cc0033" font="helvetica 10"/>'
- 	print '  	    <pos y="50%" anchor="w"/>'
- 	print '  	    <!-- Stock label for: _Language -->'
- 	print '  	    <stock type="language"/>'
- 	print '  	  </item>'
-  	print '   </box>'
-  	print ' </item>'
+		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+30))
+ 	print '\t\t <box orientation="horizontal" spacing="10" xpadding="10">'
+ 	print '\t\t\t<item type="label">'
+ 	print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+ 	print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
+ 	print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
+ 	print '\t\t\t\t<pos y="50%" anchor="w"/>'
+ 	print '\t\t\t\t<!-- Stock label for: _Language -->'
+ 	print '\t\t\t\t<stock type="language"/>'
+ 	print '\t\t\t</item>'
+  	print '\t\t</box>'
+  	print '\t</item>'
 
 if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print ' <item type="rect" id="system_button" button="true">'
-	print '   <pos anchor="nw" x="90%" y="65%" width="100%" height="1" ypadding="5" />'
-	print '   <box orientation="horizontal" spacing="10" xpadding="10">'
+	print '\t<item type="rect" id="system_button" button="true">'
+	print '\t\t<pos anchor="nw" x="90%%" y="%s" width="100%%" height="1" ypadding="5" />' % ((int(yresolution)-290+70))
+	print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
 
-	print ' 	  <item type="label">'
-	print ' 	    <normal color="#666666" font="helvetica 10"/>'
-	print ' 	    <prelight color="#dd1144" font="helvetica 10"/>'
-	print ' 	    <active color="#cc0033" font="helvetica 10"/>'
-	print ' 	    <pos y="50%" anchor="w"/>'
-	print ' 	    <!-- Stock label for: _System -->'
-	print ' 	    <stock type="system"/>'
-	print ' 	  </item>'
+	print '\t\t\t<item type="label">'
+	print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
+	print '\t\t\t\t<prelight color="#dd1144" font="%s"/>' % font
+	print '\t\t\t\t<active color="#cc0033" font="%s"/>' % font
+	print '\t\t\t\t<pos y="50%" anchor="w"/>'
+	print '\t\t\t\t<!-- Stock label for: _System -->'
+	print '\t\t\t\t<stock type="system"/>'
+	print '\t\t\t</item>'
 
-	print '   </box>'
-	print ' </item>'
+	print '\t\t</box>'
+	print '\t</item>'
 @!@
 
 </greeter>
