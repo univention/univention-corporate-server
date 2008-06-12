@@ -1,3 +1,9 @@
+univention-server (2.3.1-1) unstable; urgency=low
+
+  * use new bootsplash themes
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 09:02:39 +0200
+
 univention-server (2.2.12-1) unstable; urgency=low
 
   * redirect the normal output to /dev/null in check_connection
