@@ -24,7 +24,11 @@ if int(xresolution) < 1024:
 	font='monospace 12'
 else:
 	font='monospace 12 bold'
-if int(xresolution) == 1024:
+if int(xresolution) == 640:
+	left_space=310
+elif int(xresolution) == 800:
+	left_space=386
+elif int(xresolution) == 1024:
 	left_space=490
 elif int(xresolution) == '1280':
 	left_space=630
@@ -35,14 +39,20 @@ else:
 	left_space=int(xresolution)/float(2.038)
 
 left_space-=5 #5 pixel padding
+if int(yresolution) == 480:
+	space_white_bar=190
+elif int(yresolution) == 600:
+	space_white_bar=250
+else:
+	space_white_bar=290
 
 print '\t<item type="rect">'
 print '\t\t<normal color="#FFFFFF" alpha="1.0"/>'
-print '\t\t<pos anchor="nw" x="0" y="%d" width="100%%" height="100"/>' % (int(yresolution)-290)
+print '\t\t<pos anchor="nw" x="0" y="%d" width="100%%" height="100"/>' % (int(yresolution)-space_white_bar)
 print '\t</item>'
 print '\t<item type="rect" id="caps-lock-warning">'
 print '\t\t<normal color="#FFFFFF" alpha="0.5"/>'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-290+70))
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-space_white_bar+70))
 print '\t\t<box orientation="vertical" xpadding="5" ypadding="5" spacing="0">'
 print '\t\t\t<item type="label">'
 print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
@@ -53,7 +63,7 @@ print '\t\t</box>'
 print '\t</item>'
 print ''
 print '\t<item type="rect">'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-290+5))
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % (left_space, (int(yresolution)-space_white_bar+5))
 print '\t\t<box orientation="vertical" width="200" xpadding="5" ypadding="5" spacing="5">'
 print '\t\t\t<item type="label" id="pam-prompt">'
 print '\t\t\t\t<pos anchor="nw" width="200"/>'
@@ -75,7 +85,7 @@ print '\t\t\t</item>'
 print '\t\t</box>'
 print '\t</item>'
 print '\t<item type="rect">'
-print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % ((left_space+5), (int(yresolution)-290+110))
+print '\t\t<pos anchor="nw" x="%d" y="%d" width="box" height="box"/>' % ((left_space+5), (int(yresolution)-space_white_bar+110))
 print '\t\t<box orientation="vertical" min-width="350" >'
 print '\t\t\t<item type="label" id="pam-error">'
 print '\t\t\t\t<normal color="#FFFFFF" font="%s"/>' % font
@@ -86,11 +96,11 @@ print '\t</item>'
 print ''
 print '\t<item type="rect" id="session_button" button="true">'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true' and baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
-	print '\t\t<pos anchor="nw" x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+10))
+	print '\t\t<pos anchor="nw" x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+10))
 elif (not baseConfig.has_key('gdm/menu/language') or  baseConfig['gdm/menu/language'] != 'true') and (not baseConfig.has_key('gdm/menu/system') or baseConfig['gdm/menu/system'] != 'true'):
-	print '\t\t<pos x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+70))
+	print '\t\t<pos x="90%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+70))
 else:
-	print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+30))
+	print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+30))
 print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
 print '\t\t\t<item type="label">'
 print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
@@ -107,9 +117,9 @@ print '		'
 if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] == 'true':
  	print '\t<item type="rect" id="language_button" button="true">'
 	if not baseConfig.has_key('gdm/menu/system') or  baseConfig['gdm/menu/system'] != 'true':
-		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+70))
+		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+70))
 	else:
-		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-290+30))
+		print '\t\t<pos x="90%%" y="%s" width="100%%" height="1"/>' % ((int(yresolution)-space_white_bar+30))
  	print '\t\t <box orientation="horizontal" spacing="10" xpadding="10">'
  	print '\t\t\t<item type="label">'
  	print '\t\t\t\t<normal color="#000000" font="%s"/>' % font
@@ -124,7 +134,7 @@ if baseConfig.has_key('gdm/menu/language') and baseConfig['gdm/menu/language'] =
 
 if baseConfig.has_key('gdm/menu/system') and baseConfig['gdm/menu/system'] == 'true':
 	print '\t<item type="rect" id="system_button" button="true">'
-	print '\t\t<pos anchor="nw" x="90%%" y="%s" width="100%%" height="1" ypadding="5" />' % ((int(yresolution)-290+70))
+	print '\t\t<pos anchor="nw" x="90%%" y="%s" width="100%%" height="1" ypadding="5" />' % ((int(yresolution)-space_white_bar+70))
 	print '\t\t<box orientation="horizontal" spacing="10" xpadding="10">'
 
 	print '\t\t\t<item type="label">'
