@@ -1,3 +1,9 @@
+univention-kde (2.2.1-1) unstable; urgency=low
+
+  * move the old default profile into ucs-green and use this by default
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 09:14:57 +0200
+
 univention-kde (2.1.7-5) unstable; urgency=low
 
   * Bump version
