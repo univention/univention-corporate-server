@@ -1,3 +1,12 @@
+univention-gdm (2.1.2-1) unstable; urgency=low
+
+  * more gdm.conf cleanups
+  * set SoundOnLogin to false in the gdm.conf (no beep on startup)
+  * use the correct dimensioning for 800x600 and 640x480 resolutions
+  * added dependency from univention-gdm to univention-gdm-sessions
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 15:33:47 +0200
+
 univention-gdm (2.1.1-1) unstable; urgency=low
 
   * added the new design for UCS 2.1

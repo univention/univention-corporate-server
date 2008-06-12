@@ -7,7 +7,7 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-gdm
 Architecture: all
-Depends: gdm (>= 2.6), univention-x-core (>>0.7-2)
+Depends: gdm (>= 2.6), univention-x-core (>>0.7-2), univention-gdm-sessions
 Conflicts: univention-fat-client (<< 0.5.59), univention-mobile-client (<< 0.2)
 Description: UCS - GDM configuration
  The GNOME Display Manager (GDM) provides a graphical login
@@ -20,7 +20,6 @@ Description: UCS - GDM configuration
 
 Package: univention-gdm-sessions
 Architecture: all
-Pre-Depends: univention-gdm
 Conflicts: univention-fat-client (<< 0.5.59), univention-mobile-client (<< 0.2)
 Description: UCS - GDM DefaultWM
  This is a Meta-package, that sets up the default WM for GDM
