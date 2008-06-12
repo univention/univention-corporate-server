@@ -1,3 +1,9 @@
+univention-server (2.3.2-1) unstable; urgency=low
+
+  * update the 640x480 and 800x600 bootsplash configs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 15:14:18 +0200
+
 univention-server (2.3.1-1) unstable; urgency=low
 
   * use new bootsplash themes
