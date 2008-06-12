@@ -1,3 +1,9 @@
+univention-installer (2.0.0-1) unstable; urgency=low
+
+  * copy grub colours from univention-grub
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 15:58:16 +0200
+
 univention-installer (1.9.30-2) unstable; urgency=low
 
   * fixed traceback in auto partitioning
