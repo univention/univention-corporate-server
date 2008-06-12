@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 # Install script version
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -40,15 +40,35 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell ldap/base`
-res=`univention-admin settings/default list $@ | grep defaultKdeProfiles | sed -e 's|.*default|default|'`
+eval `univention-baseconfig shell`
 
-if [ -z "$res" -o "$res" = "defaultKdeProfiles: None" ]; then
-	univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --set name=default --set defaultKdeProfiles="none" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" --set defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" >/dev/null 2>&1
+univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap_base" --set name=default \
+				--append defaultKdeProfiles="none" \
+				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.restricted" \
+				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/kde.lockeddown" \
+				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-green"
+
+univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
+								--set name="KDE lockeddown Deutsch" --set language="de_DE@euro" \
+								--set profile="/usr/share/univention-kde-profiles/kde.lockeddown"
+
+univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
+								--set name="KDE restricted Deutsch" --set language="de_DE@euro" \
+								--set profile="/usr/share/univention-kde-profiles/kde.restricted"
+
+univention-admin policies/desktop  create --ignore_exists --position cn=desktop,cn=policies,$ldap_base\
+								--set name="UCS green" --set language="de_DE@euro" \
+								--set profile="/usr/share/univention-kde-profiles/ucs-green"
+
+set -x
+# check for the default policy
+test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
+if [ "$?" = 1 ]; then
+	res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile)
+	if [ -z "$res" ]; then
+		univention-admin container/dc modify $@ --dn "$ldap_base" --policy-reference "cn=UCS green,cn=desktop,cn=policies,$ldap_base"
+	fi
 fi
-
-univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base --set name="KDE lockeddown Deutsch" --set language="de_DE@euro" --set profile="/usr/share/univention-kde-profiles/kde.lockeddown"
-univention-admin policies/desktop create --ignore_exists --position cn=desktop,cn=policies,$ldap_base --set name="KDE restricted Deutsch" --set language="de_DE@euro" --set profile="/usr/share/univention-kde-profiles/kde.restricted"
 	
 test -n "`grep "univention-kde v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
