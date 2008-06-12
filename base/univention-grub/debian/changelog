@@ -1,3 +1,9 @@
+univention-grub (1.2.1-1) unstable; urgency=low
+
+  * use the new UCS design
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 12 Jun 2008 07:52:45 +0200
+
 univention-grub (1.1.2-4) unstable; urgency=low
 
   * Correct Config Registry descriptions
