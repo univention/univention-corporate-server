@@ -1,4 +1,4 @@
-univention-gdm (1.2.1-1) unstable; urgency=low
+univention-gdm (2.1.1-1) unstable; urgency=low
 
   * added the new design for UCS 2.1
   * cleaup the gdm.conf
