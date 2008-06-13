@@ -34,8 +34,8 @@ use Encode;
 $pass = <STDIN>;
 chomp $pass;
 
-$lm = lmhash( decode('latin1', $pass), "latin1");
-$nt = nthash( decode('latin1', $pass));
+$lm = lmhash( decode('utf-8', $pass), "utf-8");
+$nt = nthash( decode('utf-8', $pass));
 
 print $lm, "\:", $nt, "\n";
 
