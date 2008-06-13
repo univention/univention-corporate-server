@@ -137,7 +137,7 @@ property_descriptions={
 	'username': univention.admin.property(
 			short_description=_('Username'),
 			long_description='',
-			syntax=univention.admin.syntax.uid,
+			syntax=univention.admin.syntax.uid_umlauts,
 			multivalue=0,
 			required=1,
 			may_change=1,
