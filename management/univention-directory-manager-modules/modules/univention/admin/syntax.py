@@ -291,7 +291,7 @@ class uid_umlauts(simple):
 	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
 
 	def parse(self, text):
-		if self._re.match(text) != None and text != 'admin':
+		if self._re.match(text.decode("utf-8")) != None and text != 'admin':
 			return text
 		else:
 			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")

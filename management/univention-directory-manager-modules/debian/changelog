@@ -1,3 +1,9 @@
+univention-directory-manager-modules (2.2.18-4) stable; urgency=low
+
+  * Use UTF-8 encoding for the username
+
+ -- Arvid Requate <arequate@univention.de>  Fri, 13 Jun 2008 11:11:24 +0200
+
 univention-directory-manager-modules (2.2.18-3) stable; urgency=low
 
   * version increase for built
