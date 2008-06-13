@@ -88,6 +88,7 @@ class Overview( base.Page ):
 
 		buttonrows = []
 		buttoncols = []
+		iconcnt = 0
 		# find current category
 		# favorites is selected
 		if self.selected == ( len( self.module_categories ) ):
@@ -101,8 +102,14 @@ class Overview( base.Page ):
 				but1, but2, btable = self.__generate_module_icon( icon, module[ 'short_description' ] )
 				buttoncols.append( uniparts.tablecol( '', { }, { 'obs' : [ btable ] } ) )
 				self.module_buttons[ name ] = ( but1, but2 )
+				iconcnt += 1
+				if iconcnt >= 10:
+					buttonrows.append( uniparts.tablerow( '', { }, { 'obs' : buttoncols } ) )
+					buttoncols = []
+					iconcnt = 0
 
-		buttonrows.append( uniparts.tablerow( '', { }, { 'obs' : buttoncols } ) )
+		if buttoncols:
+			buttonrows.append( uniparts.tablerow( '', { }, { 'obs' : buttoncols } ) )
 		desktop_content = uniparts.table( '', { }, { 'obs': buttonrows } )
 		desktop_table = uniparts.table( '', { 'type' : 'desktop' }, { 'obs': [ uniparts.tablerow( '', { 'type' : 'desktop' }, { 'obs' : [ uniparts.tablecol( '', { 'type' : 'desktop' }, { 'obs' : [ desktop_content ] } ) ] } ) ] } )
 		col1 = uniparts.tablecol( '', {}, { 'obs' : [ desktop_table ] } )

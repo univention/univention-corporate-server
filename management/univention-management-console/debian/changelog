@@ -1,3 +1,9 @@
+univention-management-console (0.9.25-1) unstable; urgency=low
+
+  * in overview display at most 10 modules per row
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Jun 2008 13:42:31 +0200
+
 univention-management-console (0.9.24-1) unstable; urgency=low
 
   * fixed timeout handling in module server
