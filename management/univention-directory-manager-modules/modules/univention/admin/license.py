@@ -52,6 +52,8 @@ class License( object ):
 		self.disable_add = 0
 		self._expired = False
 		self.types= []
+		self.sysAccountNames = ( 'Administrator', 'join-backup', 'join-slave', 'spam' )
+		self.sysAccountsFound = 0
 		self.licenses = {
 				License.CLIENT : None, License.ACCOUNT : None,
 				License.DESKTOP : None, License.GROUPWARE : None,
@@ -167,6 +169,7 @@ class License( object ):
 		self.select( module )
 		self.__readLicense()
 		disable_add = 0
+		self.__countSysAccounts( lo )
 
 		if self.new_license:
 			self.__countObject( License.ACCOUNT, lo )
@@ -222,6 +225,19 @@ class License( object ):
 				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LICENSE: 4')
 				disable_add = 4
 		return disable_add
+
+	def __countSysAccounts( self, lo ):
+		userfilter = [ univention.admin.filter.expression('uid', account) for account in self.sysAccountNames ]
+                filter=univention.admin.filter.conjunction('&', [
+                         univention.admin.filter.conjunction('|', userfilter),
+                         self.filters[License.ACCOUNT] ])
+		try:
+			searchResult = lo.searchDn(filter=str(filter))
+			self.sysAccountsFound = len(searchResult)
+		except uexceptions.noObject:
+			pass
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
+				'LICENSE: Univention sysAccountsFound: %d' % self.sysAccountsFound )
 
 	def __countObject( self, obj, lo ):
 		if self.licenses[ obj ] and not self.licenses[ obj ] == 'unlimited':
