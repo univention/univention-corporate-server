@@ -1,3 +1,9 @@
+univention-ldap (2.4.11-5) stable; urgency=low
+
+  * version increase for built
+
+ -- Arvid Requate <requate@univention.de>  Fri, 13 Jun 2008 13:02:00 +0200
+
 univention-ldap (2.4.11-4) unstable; urgency=low
 
   * put slapd.pid and slapd.args back into /var/run/slapd
