@@ -1,3 +1,10 @@
+univention-ldap (2.4.11-4) unstable; urgency=low
+
+  * put slapd.pid and slapd.args back into /var/run/slapd
+  * enforce conditional restart on non-master-servers
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Apr 2008 12:02:10 +0200
+
 univention-ldap (2.4.11-3) unstable; urgency=low
 
   * Prevent univention-ldap-acl-master from diverting slapd.conf before

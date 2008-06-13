@@ -74,6 +74,21 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	/usr/lib/univention-install/10univention-ldap-server.inst || true
 fi
 
+restart_slapd ()
+{
+	/etc/init.d/slapd stop
+	sleep 1
+	if [ -n "$(pidof slapd)" ]; then
+		killall slapd
+		sleep 1
+		if [ -n "$(pidof slapd)" ]; then
+			killall -9 slapd
+			sleep 1
+		fi
+	fi
+	/etc/init.d/slapd start
+}
+
 if [ "$1" = "configure" -a -n "$2" ];
 	then
 	if test -x /etc/init.d/slapd
@@ -81,19 +96,12 @@ if [ "$1" = "configure" -a -n "$2" ];
         # always start on master, slapd may be down by schema-conflicts which are cleared by a new slapd.conf-template
 		if [ "$server_role" = "domaincontroller_master" ]
 			then
-			/etc/init.d/slapd stop
-			sleep 1
-			if [ -n "$(pidof slapd)" ]; then
-				killall slapd
-				sleep 1
-				if [ -n "$(pidof slapd)" ]; then
-					killall -9 slapd
-					sleep 1
-				fi
-			fi
-			/etc/init.d/slapd start
+			restart_slapd
 		else
-			/etc/init.d/slapd crestart
+			#/etc/init.d/slapd crestart
+			if [ -n "$(pidof slapd)" ]; then
+				restart_slapd
+			fi
 		fi
 	fi
 else

@@ -5,7 +5,7 @@
 
 # Installation steps (requires root login):
 #
-# 1. Stop OpenLDAP slapd server (e.g. kill -INT `cat /var/run/slapd.pid`)
+# 1. Stop OpenLDAP slapd server (e.g. kill -INT `cat /var/run/slapd/slapd.pid`)
 #
 # 2. Copy this file to OpenLDAP schema sub directory (e.g. /etc/openldap/schema)
 #
