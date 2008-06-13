@@ -1,3 +1,9 @@
+univention-smbencrypt (1.0.0-3) stable; urgency=low
+
+  * use UTF-8 encoding for lmhash and nthash
+
+ -- Arvid Requate <arequate@univention.de>  Fri, 13 Jun 2008 11:15:33 +0200
+
 univention-smbencrypt (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
