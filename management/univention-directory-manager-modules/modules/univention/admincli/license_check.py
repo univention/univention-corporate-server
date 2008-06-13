@@ -140,7 +140,7 @@ def check_license(lo, dn, list_dns, expired):
 			n = num[i]
 			odn = objs[i]
 			if t == License.ACCOUNT:
-				n -= _license.sysAccountsFound
+				n -= License.SYSACCOUNTS
 				if n < 0: n=0
 			e = i+1
 			l = _license.names[t]
@@ -153,7 +153,7 @@ def check_license(lo, dn, list_dns, expired):
 					for dnout in odn:
 	                                	out.extend( [ "  %s" % dnout, ] )
 				if list_dns and t == License.ACCOUNT:
-					out.append("  %s Systemaccounts are ignored." % _license.sysAccountsFound)
+					out.append("  %s Systemaccounts are ignored." % License.SYSACCOUNTS)
 	def check_time():
 		now = datetime.date.today()
 		then = lo.get(dn)['univentionLicenseEndDate'][0]

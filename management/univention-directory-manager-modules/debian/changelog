@@ -1,9 +1,3 @@
-univention-directory-manager-modules (2.2.18-2) stable; urgency=low
-
-  * Provide a list of system accounts that are not subject to the license count
-
- -- Arvid Requate <arequate@univention.de>  Fri, 13 Jun 2008 09:36:22 +0200
-
 univention-directory-manager-modules (2.2.18-1) stable; urgency=low
 
   * remove a nagiosParent from his client when he will be deleted.
