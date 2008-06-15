@@ -1,10 +1,10 @@
-univention-directory-manager (4.4.1-1) unstable; urgency=low
+univention-directory-manager (4.2.7-1) unstable; urgency=low
 
   * fixed typo in cleanup script
 
  -- Andreas B�sching <buesching@univention.de>  Thu, 27 Mar 2008 13:40:58 +0100
 
-univention-directory-manager (4.4.0-1) unstable; urgency=low
+univention-directory-manager (4.2.6-8) unstable; urgency=low
 
   * enhanced ldapsearch syntax
 
