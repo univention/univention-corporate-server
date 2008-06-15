@@ -41,7 +41,7 @@ print '%s: check for old reports' % time.ctime()
 max_age = int( baseConfig.get( 'directory/reports/cleanup/age', '43200' ) )
 
 old = []
-dirname = '/usr/share/univention-admin/www/directory-reports'
+dirname = '/usr/share/univention-directory-manager/www/directory-reports'
 for f in os.listdir( dirname ):
 	if not f.startswith( 'univention-directory-reports-' ) or not f.endswith( '.pdf' ):
 		continue
