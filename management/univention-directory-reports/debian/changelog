@@ -1,4 +1,4 @@
-univention-directory-reports (1.0.0-1) unstable; urgency=low
+univention-directory-reports (1.0.0-2) unstable; urgency=low
 
   * add support for CSV reports 
 
