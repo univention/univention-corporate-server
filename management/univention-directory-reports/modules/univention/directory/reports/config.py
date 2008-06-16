@@ -39,6 +39,7 @@ class Config( ConfigParser.ConfigParser ):
 		defaults = self.defaults()
 		self._header = defaults.get( 'header', None )
 		self._footer = defaults.get( 'footer', None )
+		self.default_report_name = defaults.get( 'report', None )
 		self._reports = {}
 
 		for key, value in self.items( 'reports' ):

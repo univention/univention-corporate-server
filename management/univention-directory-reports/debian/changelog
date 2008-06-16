@@ -1,3 +1,65 @@
+univention-directory-reports (1.0.0-1) unstable; urgency=low
+
+  * add support for CSV reports 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jun 2008 09:12:16 +0200
+
+univention-directory-reports (0.5.8-1) unstable; urgency=low
+
+  * add method to clear object cache 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 31 Mar 2008 14:48:44 +0200
+
+univention-directory-reports (0.5.7-1) unstable; urgency=low
+
+  * really deactivate filters for CSV reports 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 28 Mar 2008 11:41:18 +0100
+
+univention-directory-reports (0.5.6-1) unstable; urgency=low
+
+  * minor fixes in latex templates 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 28 Mar 2008 08:52:58 +0100
+
+univention-directory-reports (0.5.5-1) unstable; urgency=low
+
+  * fixed a typo in the report registration 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 28 Mar 2008 08:18:59 +0100
+
+univention-directory-reports (0.5.4-1) unstable; urgency=low
+
+  * add a flag to deactivate the formatting of attribute values (only required
+    for LaTeX)
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 27 Mar 2008 18:00:12 +0100
+
+univention-directory-reports (0.5.3-1) unstable; urgency=low
+
+  * add support for a default report 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 27 Mar 2008 17:30:29 +0100
+
+univention-directory-reports (0.5.2-1) unstable; urgency=low
+
+  * add default computer report for PDF and CSV output 
+  * removed Scalix attributes from user report
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 27 Mar 2008 11:31:57 +0100
+
+univention-directory-reports (0.5.1-1) unstable; urgency=low
+
+  * fixed field separators in user template
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 26 Mar 2008 11:11:57 +0100
+
+univention-directory-reports (0.5.0-1) unstable; urgency=low
+
+  * add support for generating reports in CSV format
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 20 Mar 2008 17:21:11 +0100
+
 univention-directory-reports (0.4.1-1) unstable; urgency=low
 
   * replace \ with $\backslash$ in attribute values 

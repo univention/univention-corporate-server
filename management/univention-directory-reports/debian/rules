@@ -74,8 +74,12 @@ install-ext-%:
 		install -m 644 $$i $$o;\
 	done
 	install -m 644 univention_logo.png $(destdir)/usr/share/$(package)/
+	install -m 644 templates/users.csv $(destdir)/etc/univention/directory/reports/default/
 	install -m 644 templates/users.tex $(destdir)/etc/univention/directory/reports/default/
+	install -m 644 templates/groups.csv $(destdir)/etc/univention/directory/reports/default/
 	install -m 644 templates/groups.tex $(destdir)/etc/univention/directory/reports/default/
+	install -m 644 templates/computers.csv $(destdir)/etc/univention/directory/reports/default/
+	install -m 644 templates/computers.tex $(destdir)/etc/univention/directory/reports/default/
 	install -m 755 univention-directory-reports $(destdir)/usr/bin/
 	univention-install-baseconfig
 

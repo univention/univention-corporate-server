@@ -40,15 +40,16 @@ import univention_baseconfig as ub
 from locales import *
 from filter import *
 
-__all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify' ]
+__all__ = [ 'connect', 'get_object', 'cache_object', 'connected', 'identify', 'set_format' ]
 
 _admin = None
 
 class AdminConnection( object ):
-	def __init__( self, userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None ):
+	def __init__( self, userdn = None, password = None, host = 'localhost', base = None, start_tls = 2, access = None, format = True ):
 		self._cached = {}
 		self._modules = {}
 		self._policies = {}
+		self._format = format
 		self._bc = ub.baseConfig()
 		self._bc.load()
 		if not base:
@@ -65,6 +66,10 @@ class AdminConnection( object ):
 
 	def cache_object( self, obj ):
 		return self.get_object( ua_objects.module( obj ), obj.dn )
+
+	def clear_cache( self ):
+		del self._cached
+		self._cached = {}
 
 	def get_object( self, module, dn ):
 		if self._cached.has_key( dn ):
@@ -85,8 +90,11 @@ class AdminConnection( object ):
 		new = ua_objects.get( module, self._config, self._access, position = self._position, dn = dn )
 		new.open()
 		for key, value in new.items():
-			i, j = self.format_property( new.descriptions, key, value )
-			new.info[ i ] = j
+			if self._format:
+				i, j = self.format_property( new.descriptions, key, value )
+				new.info[ i ] = j
+			else:
+				new.info[ key ] = value
 
 		self._get_policies( new )
 		self._cached[ dn ] = new
@@ -127,8 +135,11 @@ class AdminConnection( object ):
 				dict[attr_name]=value_dict[ 'value' ]
 
 			for key, value in ua_mapping.mapDict( module.mapping, dict ).items():
-				i, j = self.format_property( module.property_descriptions, key, value )
-				obj.info[ i ] = j
+				if self._format:
+					i, j = self.format_property( module.property_descriptions, key, value )
+					obj.info[ i ] = j
+				else:
+					obj.info[ key ] = value
 
 
 
@@ -144,11 +155,22 @@ def cache_object( obj ):
 		return None
 	return _admin.cache_object( obj )
 
+def clear_cache():
+	global _admin
+	if not _admin:
+		return
+	_admin.clear_cache()
+
 def get_object( module, dn ):
 	global _admin
 	if not _admin:
 		return None
 	return _admin.get_object( module, dn )
+
+def set_format( format ):
+	global _admin
+	if _admin:
+		_admin._format = format
 
 def identify( dn ):
 	global _admin

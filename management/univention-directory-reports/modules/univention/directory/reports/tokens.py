@@ -79,6 +79,14 @@ class QueryToken( IContextToken, list ):
 	def __init__( self, attrs = {}, closing = False ):
 		IContextToken.__init__( self, 'query', attrs, closing )
 
+class HeaderToken( IContextToken, list ):
+	def __init__( self, attrs = {}, closing = False ):
+		IContextToken.__init__( self, 'header', attrs, closing )
+
+class FooterToken( IContextToken, list ):
+	def __init__( self, attrs = {}, closing = False ):
+		IContextToken.__init__( self, 'footer', attrs, closing )
+
 class AttributeToken( TemplateToken ):
 	def __init__( self, attrs = {}, value = '' ):
 		TemplateToken.__init__( self, 'attribute', attrs )

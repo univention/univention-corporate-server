@@ -72,6 +72,14 @@ class Interpreter( object ):
 						token.extend( base_tokens )
 				else:
 					self.run( token, token.objects )
+				if token.attrs.has_key( 'separator' ):
+					cp = copy.deepcopy( (list( token ) ) )
+					while len( token ): token.pop()
+					for item in cp:
+						token.append( item )
+						token.append( TextToken( token.attrs[ 'separator' ] ) )
+					if len( token ):
+						token.pop()
 				if token.attrs.has_key( 'header' ):
 					token.insert( 0, TextToken( token.attrs[ 'header' ] ) )
 				if token.attrs.has_key( 'footer' ):

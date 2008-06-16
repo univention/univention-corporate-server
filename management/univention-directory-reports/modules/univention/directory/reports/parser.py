@@ -35,7 +35,7 @@ import shlex
 from tokens import *
 
 class Parser( object ):
-	REGEX_OPEN = re.compile( '<@(?P<tag>[^ ]+) +(?P<attrs>([a-z-0-9]+="[^"]*" *)*)@>' )
+	REGEX_OPEN = re.compile( '<@(?P<tag>[^/][^ ]+)( +(?P<attrs>([a-z-0-9]+="[^"]*" *)*)|)@>' )
 	REGEX_CLOSE = re.compile( '<@/(?P<tag>[^ ]+) *@>' )
 	START = '<@'
 	END = '@>'
@@ -49,6 +49,8 @@ class Parser( object ):
 		elif data:
 			self._data = data
 		self._tokens = []
+		self._header = None
+		self._footer = None
 		self._context = self._tokens
 		self._stack = [ self._tokens ]
 
@@ -62,7 +64,7 @@ class Parser( object ):
 				raise SyntaxError( "failed to parse token: '%s'" % token )
 			closing = True
 		d = m.groupdict()
-		if not closing:
+		if not closing and d.get( 'attrs', None ):
 			for attr in shlex.split( d[ 'attrs' ] ):
 				key, value = attr.split( '=', 1 )
 				attrs[ key ] = value
@@ -91,8 +93,6 @@ class Parser( object ):
 			max_len = len( self._data ) - start
 			raise SyntaxError( 'No matching end tag (tag: %s)' % \
 							   self._data[ start : min( 20, max_len ) ] )
-# 		if self._data.find( Parser.START, start + len( Parser.START ), end - len( Parser.END ) ) >= 0:
-# 			raise SyntaxError( 'Nested elements are not supported (line: %s)' % data[ start : end ] )
 		name, attrs, closing = self.parse_token( self._data[ start : end + len( Parser.END ) ] )
 		self._data = self._data[ end + len( Parser.END ) : ]
 		if name == 'attribute':
@@ -103,6 +103,10 @@ class Parser( object ):
 			return QueryToken( attrs, closing )
 		elif name == 'resolve':
 			return ResolveToken( attrs, closing )
+		elif name == 'header':
+			return HeaderToken( attrs, closing )
+		elif name == 'footer':
+			return FooterToken( attrs, closing )
 		else:
 			raise SyntaxError( 'Unknown tag: %s' % name )
 
@@ -110,7 +114,14 @@ class Parser( object ):
 		token = self.next_token()
 		while token:
 			if isinstance( token, ( TextToken, AttributeToken, PolicyToken ) ):
-				self._context.append( token )
+				if isinstance( token, TextToken ):
+					if token.data == '\n' and len( self._context ) and isinstance( self._context[ -1 ], HeaderToken ):
+						# ignore line feed after header
+						pass
+					else:
+						self._context.append( token )
+				else:
+					self._context.append( token )
 			elif isinstance( token, IContextToken ):
 				if not token.closing:
 					self._stack.append( self._context )
@@ -120,3 +131,22 @@ class Parser( object ):
 					self._context[ -1 ].closing = True
 					self._context = self._stack.pop()
 			token = self.next_token()
+		# strip header and footer, if exist
+		trash = []
+ 		for i in range( len( self._context ) ):
+ 			if isinstance( self._context[ i ], HeaderToken ):
+ 				self._header = self._context[ i ]
+				if len( self._header ) and isinstance( self._header[ 0 ], TextToken ):
+					self._header = self._header[ 0 ]
+ 				trash.append( i )
+ 			elif isinstance( self._context[ i ], FooterToken ):
+ 				self._footer = self._context[ i ]
+				if len( self._footer ) and isinstance( self._footer[ 0 ], TextToken ):
+					self._footer = self._footer[ 0 ]
+				if i > 0 and isinstance( self._context[ i - 1 ], TextToken ) and \
+					   self._context[ i - 1 ].data == '\n':
+					trash.append( i - 1 )
+ 				trash.append( i )
+		trash.reverse()
+		for rm in trash:
+			self._context.pop( rm )

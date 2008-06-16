@@ -8,3 +8,4 @@ File: etc/univention/directory/reports/footer.tex
 Type: file
 File: etc/univention/directory/reports/config.ini
 Variables: directory/reports/templates/.*
+Variables: directory/reports/default
