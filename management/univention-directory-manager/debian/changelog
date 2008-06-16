@@ -1,3 +1,10 @@
+univention-directory-manager (5.0.0-1) unstable; urgency=low
+
+  * increased major version
+  * add support for CSV directory reports
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jun 2008 08:42:36 +0200
+
 univention-directory-manager (4.2.7-1) unstable; urgency=low
 
   * fixed typo in cleanup script
