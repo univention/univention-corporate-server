@@ -57,10 +57,10 @@ def main():
 					   help = 'location of the configuration file' )
 	parser.add_option( '-H', '--header', action = 'store',
 					   dest = 'header', default = None,
-					   help = 'file containing the header for the LaTeX document' )
+					   help = 'file containing the header for the report' )
 	parser.add_option( '-F', '--footer', action = 'store',
 					   dest = 'footer', default = None,
-					   help = 'file containing the footer for the LaTeX document' )
+					   help = 'file containing the footer for the report' )
 	parser.add_option( '-s', '--server', action = 'store',
 					   dest = 'server', default = baseConfig.get( 'ldap/server/name', 'localhost' ),
 					   help = 'LDAP server' )
@@ -121,20 +121,26 @@ def main():
 	udr.admin.connect( options.user, options.password, host = options.server,
 					   base = options.base, start_tls = 0 )
 
-	doc = udr.Document( cfg.get_report( options.module ),
-						header = cfg.get_header(), footer = cfg.get_footer() )
-	tmpfile = doc.create_latex( args )
-	pdffile = doc.create_pdf( tmpfile )
+	template = cfg.get_report( options.module, options.report )
+	doc = udr.Document( template, header = cfg.get_header(), footer = cfg.get_footer() )
+	tmpfile = doc.create_source( args )
+	if template.endswith( '.tex' ):
+		pdffile = doc.create_pdf( tmpfile )
+	else:
+		pdffile = None
 	if options.no_cleanup:
-		print 'kept temporary LaTeX file at', tmpfile
+		print 'kept temporary source file at', tmpfile
 	else:
 		os.unlink( tmpfile )
-		os.unlink( tmpfile[ : -4 ] + '.aux' )
-		os.unlink( tmpfile[ : -4 ] + '.log' )
+		if template.endswith( '.tex' ):
+			os.unlink( tmpfile[ : -4 ] + '.aux' )
+			os.unlink( tmpfile[ : -4 ] + '.log' )
 
 	if pdffile:
 		print 'create PDF file:', pdffile
 		sys.exit( 0 )
+	elif template.endswith( '.csv' ):
+		print 'create CSV file:', tmpfile
 	else:
 		print >>sys.stderr, "error: PDF file could not be created"
 		sys.exit( 1 )

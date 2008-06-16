@@ -40,6 +40,20 @@ createLogfile () {
 
 createLogfile /var/log/univention/directory-reports.log "root:adm" 640
 
+eval $(univention-config-registry shell)
+
+# remove old variables
+if [ -n "$directory_reports_templates_default1" ]; then
+	univention-baseconfig unset directory/reports/templates/default1
+fi
+if [ -n "$directory_reports_templates_default2" ]; then
+	univention-baseconfig unset directory/reports/templates/default2
+fi
+
 univention-baseconfig set directory/reports/logo?/usr/share/univention-directory-reports/univention_logo.png
-univention-baseconfig set directory/reports/templates/default1?"users/user \"Standard Report\" /etc/univention/directory/reports/default/users.tex"
-univention-baseconfig set directory/reports/templates/default2?"groups/group \"Standard Report\" /etc/univention/directory/reports/default/groups.tex"
+univention-baseconfig set directory/reports/templates/pdf/user1?"users/user \"Standard Report\" /etc/univention/directory/reports/default/users.tex"
+univention-baseconfig set directory/reports/templates/pdf/group1?"groups/group \"Standard Report\" /etc/univention/directory/reports/default/groups.tex"
+univention-baseconfig set directory/reports/templates/pdf/computer1?"computers/computer \"Standard Report\" /etc/univention/directory/reports/default/computers.tex"
+univention-baseconfig set directory/reports/templates/csv/user1?"users/user \"Standard CSV Report\" /etc/univention/directory/reports/default/users.csv"
+univention-baseconfig set directory/reports/templates/csv/group1?"groups/group \"Standard CSV Report\" /etc/univention/directory/reports/default/groups.csv"
+univention-baseconfig set directory/reports/templates/csv/computer1?"computers/computer \"Standard CSV Report\" /etc/univention/directory/reports/default/computers.csv"

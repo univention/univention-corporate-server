@@ -43,14 +43,6 @@ E-Mail-Adresse & <@attribute name="mailAddress" default="-"@>\\
 
 \vspace{5mm}
 
-\section*{Scalix Informationen}
-
-\begin{tabular}{l@{\hspace{2mm}:\hspace{2mm}}l}
-Scalix-Nutzer & <@attribute name="ScalixObject"@> \\
-Mail-Node & <@attribute name="Mailnode"@> \\
-Adressbucheintrag & <@attribute name="HideUserEntry"@> \\
-\end{tabular}
-
 \section*{Mitglied folgender Gruppen}
 
 <@resolve module="groups/group" dn-attribute="memberOf" header="\begin{itemize}" footer="\end{itemize}" alternative="Diese Gruppe ist in keiner anderen Gruppe Mitglied."@>

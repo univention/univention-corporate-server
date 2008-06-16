@@ -60,7 +60,7 @@ Vorgesetzter &
 \begin{multicols}{2}
 \raggedcolumns
 \subsection*{Kontakt}
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 Telefon & <@attribute name="phone"@> \\
 Mobiltelefon & <@attribute name="mobileTelephoneNumber"@>\\
 Straße & <@attribute name="street"@>\\
@@ -68,7 +68,7 @@ Straße & <@attribute name="street"@>\\
 
 \subsection*{Passwort-Richtlinie}
 
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 Ererbt & <@policy module="policies/pwdhistory" inherited=""@> \\
 History Länge & <@attribute name="length"@>\\
 Passwort Länge & <@attribute name="pwLength"@>\\
@@ -80,7 +80,7 @@ Ablaufintervall & <@attribute name="expiryInterval" default="-"@>\\
 \raggedcolumns
 \section*{Kontoeinstellungen}
 
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 Deaktiviert & <@attribute name="disabled" default="Nein"@> \\
 Gesperrt & <@attribute name="locked" default="Nein"@> \\
 Kontoablaufdatum & <@attribute name="userexpiry" default="nicht gesetzt"@> \\
@@ -89,7 +89,7 @@ Passwortänderung  & <@attribute name="pwdChangeNextLogin" default="Nein"@> \\
 \end{tabularx}
 \section*{Mail}
 
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 E-Mail-Adresse & <@attribute name="mailPrimaryAddress" default="Keine"@> \\
 weitere Adressen & <@attribute name="mailAlternativeAddress" default="Keine"@> \\
 Globaler SPAM-Ordner & <@attribute name="mailGlobalSpamFolder" default="-"@>
@@ -100,7 +100,7 @@ Globaler SPAM-Ordner & <@attribute name="mailGlobalSpamFolder" default="-"@>
 \raggedcolumns
 \section*{Linux/UNIX}
 
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 Benutzer-ID & <@attribute name="uidNumber"@> \\
 Gruppen-ID & <@attribute name="gidNumber"@>\\
 Login-Shell & <@attribute name="shell"@> \\
@@ -113,7 +113,7 @@ Freigabe & <@resolve module="shares/share" dn-attribute="homeShare"@>
 \end{tabularx}
 \section*{Windows}
 
-\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}l}
+\begin{tabularx}{\linewidth}{l@{\hspace{2mm}:\hspace{2mm}}X}
 Heimatverzeichnis & <@attribute name="sambahome"@> \\
 Laufwerk für Heimatverzeichnis & <@attribute name="homedrive"@> \\
 Profilverzeichnis & <@attribute name="profilepath"@> \\
@@ -121,14 +121,6 @@ Anmeldeskript & <@attribute name="scriptpath"@> \\
 Relative ID & <@attribute name="sambaRID"@> \\
 \end{tabularx}
 \end{multicols}
-
-\section*{Scalix Informationen}
-
-\begin{tabular}{l@{\hspace{2mm}:\hspace{2mm}}l}
-Scalix-Nutzer & <@attribute name="ScalixObject"@> \\
-Mail-Node & <@attribute name="Mailnode"@> \\
-Mail-Klasse & <@attribute name="MailboxClass"@> \\
-\end{tabular}
 
 \section*{Mitglied in folgenden Gruppen}
 
