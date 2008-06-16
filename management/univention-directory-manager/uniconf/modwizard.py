@@ -365,6 +365,7 @@ class modwizard(unimodule.unimodule):
 		udr_cfg = univention.directory.reports.Config()
 		report_list = []
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'report: %s' % mods )
+		first = None
 		for mod in mods:
 			reports = udr_cfg.get_report_names( mod )
 			mod_obj = univention.admin.modules.get( mod )
@@ -372,8 +373,20 @@ class modwizard(unimodule.unimodule):
 			for report in reports:
 				key = '%s:%s' % ( mod, report )
 				description = '%s (%s)' % ( mod_descr, report )
-				report_list.append( { 'name' : key, 'description' : description } )
+				if report == udr_cfg.default_report_name and mod == mods[ 0 ]:
+					first = { 'name' : key, 'description' : description }
+				else:
+					report_list.append( { 'name' : key, 'description' : description } )
 
+		report_list = sorted( report_list, key = operator.itemgetter( 'description' ) )
+		if first:
+			report_list.insert( 0, first )
+		sel = self.save.get( 'uc_report_template', None )
+		if sel:
+			for i in range( len( report_list ) ):
+				if report_list[ i ][ 'name' ] == sel:
+					report_list[ i ][ 'selected' ] = '1'
+					break
 		self.report_select = question_select( _( "Select Report:" ),{ 'width' : '300' }, { "helptext" : _( "Select Report" ), "choicelist" : report_list } )
 		self.create_report_button=button(_('create report'),{'icon':'/style/ok.gif'},{'helptext':_('Create Reports')})
 
@@ -405,12 +418,14 @@ class modwizard(unimodule.unimodule):
 		)
 
 		if self.save.get( 'uc_report_create' ) == True:
-			nresults, module_descr, report_name, url = self.create_report()
+			nresults, module_descr, report_name, url, rep_type = self.create_report()
 			self.save.put( 'uc_report_create', False )
 			if url:
-				icon_path='/icon/generic.png'
-				if not os.path.exists('/usr/share/univention-directory-manager/www'+icon_path):
-					icon_path='/icon/generic.gif'
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'create report: url: %s' % url )
+				if rep_type == udr.Document.TYPE_LATEX:
+					icon_path = unimodule.selectIconByName( 'pdf-report' )
+				else:
+					icon_path = unimodule.selectIconByName( 'csv-report' )
 
 				icon_widget = icon( '', { 'url' : icon_path }, {} )
 				main_rows.append(
@@ -593,13 +608,20 @@ class modwizard(unimodule.unimodule):
 
 		sorting_helper_list = sorted( sorting_helper_list, cmp = caseigncompare, key = operator.itemgetter( 0 ) )
 		udr.admin.connect( access = self.lo )
+		udr.admin.clear_cache()
 		cfg = udr.Config()
-		doc = udr.Document( cfg.get_report( module_name, report_name ), header = cfg.get_header(), footer = cfg.get_footer() )
-		tmpfile = doc.create_latex( [ item[ 1 ] for item in sorting_helper_list ] )
-		pdffile = doc.create_pdf( tmpfile )
+		template = cfg.get_report( module_name, report_name )
+		doc = udr.Document( template, header = cfg.get_header(), footer = cfg.get_footer() )
+		tmpfile = doc.create_source( [ item[ 1 ] for item in sorting_helper_list ] )
+		if doc._type == udr.Document.TYPE_LATEX:
+			pdffile = doc.create_pdf( tmpfile )
+			os.unlink( tmpfile )
+		else:
+			pdffile = tmpfile
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % tmpfile )
 		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: LaTeX file: %s' % pdffile )
-		os.unlink( tmpfile )
+		doc_type = doc._type
+		univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO, 'create report: DOC-TYPE: %s' % doc_type )
 		del result, sorting_helper_list, cfg, doc
 		try:
 			os.unlink( tmpfile[ : -4 ] + 'aux' )
@@ -613,9 +635,9 @@ class modwizard(unimodule.unimodule):
 			url = '/univention-directory-manager/directory-reports/%s' % os.path.basename( pdffile )
 			link = '<a href="%s">%s (%s)</a>' % ( url, module_descr, report_name )
 
-			return ( nresults, module_descr, report_name, link )
+			return ( nresults, module_descr, report_name, link, doc_type )
 		else:
-			return ( 0, module_descr, report_name, '<b>%s</b>' % _( 'Error: The report could not be created!' ) )
+			return ( 0, module_descr, report_name, '<b>%s</b>' % _( 'Error: The report could not be created!' ), doc_type )
 
 
 	def find(self, search_type):
@@ -1334,7 +1356,7 @@ class modwizard(unimodule.unimodule):
 			self.add(self.save.get("uc_virtualmodule"))
 		else:
 			if self.save.get( 'uc_report' ) == True:
-				self.report( self.save.get( 'uc_virtualmodule' ) )
+				self.report( self.save.get( 'wizard_search_type', self.save.get( "uc_virtualmodule" ) ) )
 			else:
 				self.find(self.save.get("uc_virtualmodule"))
 
