@@ -1,3 +1,9 @@
+univention-webui-style (2.0.0-1) unstable; urgency=low
+
+  * add icons for CSV and PDF reports
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jun 2008 08:50:06 +0200
+
 univention-webui-style (1.2.1-1) unstable; urgency=low
 
   * use https for the link to the DC Master
