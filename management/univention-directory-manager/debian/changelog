@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.0-2) unstable; urgency=low
+
+  * Added warning and commit Checkbox when UDM is accesed via HTTP (unsecure). Bug 8400
+
+ -- Andre Fenske <fenske@univention.de>  Tue, 17 Jun 2008 13:26:03 +0200
+
 univention-directory-manager (5.0.0-1) unstable; urgency=low
 
   * increased major version
