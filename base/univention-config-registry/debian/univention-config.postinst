@@ -30,5 +30,30 @@
 
 rm -f /var/cache/univention-config/cache
 
+if ! getent passwd tss | grep -q '^tss'; then
+    useradd tss
+fi
+
+if ! getent group scanner | grep -q '^scanner'; then
+    groupadd scanner
+fi
+
+if ! getent group nvram | grep -q '^nvram'; then
+    groupadd nvram
+fi
+
+if ! getent group rdma | grep -q '^rdma'; then
+    groupadd rdma
+fi
+
+if ! getent group fuse | grep -q '^fuse'; then
+    groupadd fuse
+fi
+
+if ! getent group kvm | grep -q '^kvm'; then
+    groupadd kvm
+fi
+
+
 #DEBHELPER#
 
