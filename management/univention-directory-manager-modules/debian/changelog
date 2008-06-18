@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.0-1) stable; urgency=low
+
+  * add new user option 'ldap_pwd': just sets uid and password 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 18 Jun 2008 16:40:02 +0200
+
 univention-directory-manager-modules (2.2.18-4) stable; urgency=low
 
   * Use UTF-8 encoding for the username
