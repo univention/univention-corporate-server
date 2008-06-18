@@ -131,6 +131,12 @@ options={
 			short_description=_('Personal Information'),
 			default=1,
 			objectClasses = ['person', 'organizationalPerson', 'inetOrgPerson'],
+		),
+	'ldap_pwd' : univention.admin.option(
+			short_description=_( 'Simple Authentication Account' ),
+			default=0,
+			editable=1,
+			objectClasses = [ 'simpleSecurityObject', 'uidObject' ],
 		)
 }
 property_descriptions={
@@ -284,7 +290,7 @@ property_descriptions={
 			long_description='',
 			syntax=univention.admin.syntax.userPasswd,
 			multivalue=0,
-			options=['posix', 'samba', 'kerberos', 'mail'],
+			options=['posix', 'samba', 'kerberos', 'mail', 'ldap_pwd' ],
 			required=1,
 			may_change=1,
 			identifies=0,
@@ -1425,7 +1431,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		self.options=[]
 		if self.oldattr.has_key('objectClass'):
 			ocs = set(self.oldattr['objectClass'])
-			for opt in ('posix', 'samba', 'person', 'kerberos', 'mail', 'groupware', 'pki'):
+			for opt in ('posix', 'samba', 'person', 'kerberos', 'mail', 'groupware', 'pki', 'ldap_pwd'):
 				if options[opt].matches(ocs):
 					self.options.append(opt)
 		else:
@@ -1496,7 +1502,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			is_disabled = 0
 			self.modifypassword=0
 			self['password']='********'
-			if 'posix' in self.options or 'mail' in self.options:
+			if 'posix' in self.options or 'mail' in self.options or 'ldap_pwd' in self.options:
 				userPassword=self.oldattr.get('userPassword',[''])[0]
 				if userPassword:
 					self.info['password']=userPassword
@@ -1743,7 +1749,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			members = self.lo.getAttr( group, 'uniqueMember' )
 		new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], members )
 		self.lo.modify(group, [ ( 'memberUid', uids, new ) ] )
-		
+
 	def __primary_group(self):
 		self.newPrimaryGroupDn=0
 		self.oldPrimaryGroupDn=0
@@ -1838,7 +1844,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.modifypassword=0
 		else:
 			self.modifypassword=1
-		
+
 		if self['mailPrimaryAddress']:
 			self['mailPrimaryAddress']=self['mailPrimaryAddress'].lower()
 
@@ -1848,12 +1854,13 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			error=0
 			uid=None
 
-			if not ( 'posix' in self.options or 'samba' in self.options or 'person' in self.options):
+			if not ( 'posix' in self.options or 'samba' in self.options or 'person' in self.options or 'ldap_pwd' in self.options):
 				#no objectClass which provides uid...
-				raise univention.admin.uexceptions.invalidOptions, _('Need one of %s, %s or %s in options to create user.')%(
+				raise univention.admin.uexceptions.invalidOptions, _('Need one of %s, %s, %s or %s in options to create user.')%(
 					'posix',
 					'samba',
-					'person')
+					'person',
+					'ldap_pwd')
 
 			if 'posix' in self.options or 'samba' in self.options:
 				if self['primaryGroup']:
@@ -1951,7 +1958,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				#('sambaAcctFlags', [acctFlags.decode()])
 			if 'person' in self.options:
 				ocs.extend(['organizationalPerson','inetOrgPerson'])
-			if 'kerberos' in self.options:
+			if 'ldap_pwd' in self.options:
+				ocs.extend(['simpleSecurityObject','uidObject'])
+ 			if 'kerberos' in self.options:
 				domain=univention.admin.uldap.domain(self.lo, self.position)
 				realm=domain.getKerberosRealm()
 				if realm:
@@ -2073,6 +2082,19 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				ocs=self.oldattr.get('objectClass', [])
 				if 'pkiUser' in ocs:
 					ml.insert(0, ('objectClass', 'pkiUser', ''))
+			# ldap_pwd option add / remove
+			if 'ldap_pwd' in self.options and not 'ldap_pwd' in self.old_options:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'added ldap_pwd option')
+				ocs=self.oldattr.get('objectClass', [])
+				if not 'simpleSecurityObject' in ocs:
+					ml.insert(0, ('objectClass', '', 'simpleSecurityObject'))
+					ml.insert(0, ('objectClass', '', 'uidObject'))
+			if not 'ldap_pwd' in self.options and 'ldap_pwd' in self.old_options:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'remove ldap_pwd option')
+				ocs=self.oldattr.get('objectClass', [])
+				if 'simpleSecurityObject' in ocs:
+					ml.insert(0, ('objectClass', 'simpleSecurityObject', ''))
+					ml.insert(0, ('objectClass', 'uidObject', ''))
 
 
 
@@ -2181,7 +2203,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						else:
 							expiry=time.strftime("%d.%m.%y",time.gmtime((long(time.time()) + (expiryInterval*3600*24))))
 					if expiry == '0':
-						krb5PasswordEnd='0'
+						krb5PasswordEnd=''
 					else:
 						krb5PasswordEnd="%s" % "20"+expiry[6:8]+expiry[3:5]+expiry[0:2]+"000000Z"
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'krb5PasswordEnd: %s' % krb5PasswordEnd)
@@ -2213,7 +2235,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				disabled="!"
 
 			#                             FIXME: required for join user root
-			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options:
+			if 'posix' in self.options or ('samba' in self.options and self['username'] == 'root') or 'mail' in self.options or 'ldap_pwd' in self.options:
 				password_crypt = "{crypt}%s%s" % (disabled, univention.admin.password.crypt(self['password']))
 				#shadowlastchange=str(long(time.time())/3600/24)
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
@@ -2666,6 +2688,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			]),
 			univention.admin.filter.expression('objectClass', 'univentionMail'),
 			univention.admin.filter.expression('objectClass', 'sambaSamAccount'),
+			univention.admin.filter.expression('objectClass', 'simpleSecurityObject'),
 			univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('objectClass', 'person'),
 				univention.admin.filter.expression('objectClass', 'organizationalPerson'),
@@ -2695,6 +2718,7 @@ def identify(dn, attr, canonical=0):
 			  and 'shadowAccount' in attr.get('objectClass', []))
 			 or 'univentionMail' in attr.get('objectClass', [])
 			 or 'sambaSamAccount' in attr.get('objectClass', [])
+			 or 'simpleSecurityObject' in attr.get('objectClass', [])
 			 or
 			 ('person' in attr.get('objectClass', [])
 			  and	'organizationalPerson' in attr.get('objectClass', [])
