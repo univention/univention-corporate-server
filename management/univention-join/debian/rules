@@ -67,6 +67,11 @@ install: build
 	install -m755 univention-join_tmp2 ${D}/usr/share/univention-join/univention-join
 	rm univention-join_tmp*
 
+	cat univention-run-join-scripts | sed -e "s/@%@package_version@%@/${version}/" | \
+									  sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > univention-run-join-scripts_tmp
+	install -m755 univention-run-join-scripts_tmp ${D}/usr/share/univention-join/univention-run-join-scripts
+	rm univention-run-join-scripts_tmp
+
 	install -m755 check_join_status.sh ${D}/usr/share/univention-join/check_join_status
 	install -m755 91univention-join.inst ${D}/usr/lib/univention-install/
 	dh_install
