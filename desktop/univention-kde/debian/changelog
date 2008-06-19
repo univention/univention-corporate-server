@@ -1,3 +1,9 @@
+univention-kde (3.0-1-1) unstable; urgency=low
+
+  * added green21 theme for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 19 Jun 2008 10:14:24 +0200
+
 univention-kde (2.2.1-1) unstable; urgency=low
 
   * move the old default profile into ucs-green and use this by default
