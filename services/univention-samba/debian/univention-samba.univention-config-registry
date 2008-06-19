@@ -15,7 +15,7 @@ Variables: server/role
 Variables: samba/domainmaster
 Variables: samba/user
 Variables: samba/serverstring
-Variables: samba/charset*
+Variables: samba/charset.*
 Variables: samba/enable-privileges
 Variables: samba/socket_options
 

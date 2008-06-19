@@ -1,3 +1,12 @@
+univention-samba (1.0.10-1) unstable; urgency=low
+
+  * also use additional ldap servers specified in ldap/server/addition as
+    passdb backend
+  * added new UCR variable: set samba ldap timeout via samba/ldap/timeout
+  * fixed typo in UCR template registration
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 19 Jun 2008 11:44:49 +0200
+
 univention-samba (1.0.9-1) unstable; urgency=low
 
   * create the Windows Vista profile directories
