@@ -1,3 +1,10 @@
+univention-client-basesystem (2.1.11-3) unstable; urgency=low
+
+  * register also existing register host share container as standard share container
+  * increase version number of joinscript
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 16:52:18 +0200
+
 univention-client-basesystem (2.1.11-2) unstable; urgency=low
 
   * register host share container as standard share container
