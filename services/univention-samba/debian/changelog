@@ -1,3 +1,9 @@
+univention-samba (1.0.10-2) unstable; urgency=low
+
+  * register host share container as standard share container
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 15:16:22 +0200
+
 univention-samba (1.0.10-1) unstable; urgency=low
 
   * also use additional ldap servers specified in ldap/server/addition as

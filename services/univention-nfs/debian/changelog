@@ -1,3 +1,9 @@
+univention-nfs (1.0.1-7) unstable; urgency=low
+
+  * register host share container as standard share container
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 15:15:12 +0200
+
 univention-nfs (1.0.1-6) unstable; urgency=low
 
   * Register /etc/modprobe.d/nfs-kernel-server for nfs/ports
