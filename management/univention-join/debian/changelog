@@ -1,3 +1,9 @@
+univention-join (1.1.2-2) unstable; urgency=low
+
+  * added symlink to univention-run-join-scripts in /usr/sbin
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 20 Jun 2008 13:27:51 +0200
+
 univention-join (1.1.2-1) unstable; urgency=low
 
   * added univention-run-join-scripts
