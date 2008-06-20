@@ -1,3 +1,11 @@
+univention-directory-manager-modules (3.0.0-2) stable; urgency=low
+
+  * license check logic fixed:
+    - if they are less client licenses than account licenses check client licenses
+    - if otherwise check account licenses
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 13:46:35 +0200
+
 univention-directory-manager-modules (3.0.0-1) stable; urgency=low
 
   * add new user option 'ldap_pwd': just sets uid and password 
