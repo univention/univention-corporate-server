@@ -202,9 +202,9 @@ class License( object ):
 		lic_client, lic_account, lic_desktop, lic_groupware = lic
 		real_client, real_account, real_desktop, real_groupware = real
 		if lic_client and lic_account:
-			if self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( real_client, lic_client ):
+			if self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( real_client, lic_client ):
 				disable_add = 1
-			elif self.__cmp_gt( lic_account, lic_client ) and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
+			elif self.__cmp_gt( lic_client, lic_account ) and self.__cmp_gt( int( real_account ) - License.SYSACCOUNTS, lic_account ):
 				disable_add = 2
 			elif self.__cmp_eq(lic_client, lic_account):
 				if self.__cmp_gt( real_client, lic_client ):
