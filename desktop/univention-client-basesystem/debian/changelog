@@ -1,3 +1,9 @@
+univention-client-basesystem (2.1.11-2) unstable; urgency=low
+
+  * register host share container as standard share container
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 15:16:42 +0200
+
 univention-client-basesystem (2.1.11-1) unstable; urgency=low
 
   * update to ucs 2.0-1

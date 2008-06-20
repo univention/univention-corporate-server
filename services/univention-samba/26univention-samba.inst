@@ -93,7 +93,7 @@ chmod +s /var/lib/samba/drivers/W32X86
 
 if [ -n "$create_home_share" -a "$create_home_share" = "true" ]; then
 	univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
-	univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1
+	univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --set name=homes --set path=/home --set sambaName=homes --set host=$hostname.$domainname --set writeable=1 --set sambaWriteable=1 --set sharePath=1
 	univention-baseconfig unset create/home/share
 fi
 
