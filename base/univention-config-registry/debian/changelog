@@ -1,3 +1,9 @@
+univention-config-registry (2.6.11-4) unstable; urgency=low
+
+  * disallow characters '-' and '_' in UCR keys, necessary for encoding of UCR-policies
+
+ -- Arvid Requate <requate@univention.de>  Mon, 23 Jun 2008 16:00:07 +0200
+
 univention-config-registry (2.6.11-3) unstable; urgency=low
 
   * Create system groups scanner, nvram, rdma, kvm and fuse and a system

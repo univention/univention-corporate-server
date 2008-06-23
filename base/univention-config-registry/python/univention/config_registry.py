@@ -935,7 +935,7 @@ def validateKey(k):
 		return 0
 
 	if len(k) > 0:
-		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\\\]');
+		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\-\_\\\]');
 		match = regex.search(k);
 
 		if not match:
