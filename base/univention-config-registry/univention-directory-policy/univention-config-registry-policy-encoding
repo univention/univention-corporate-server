@@ -78,7 +78,7 @@ def main():
 			verbose=True
 
 	# get policy result
-	p1 = subprocess.Popen("ldapsearch -x '(&(univentionRegistry=*)(objectClass=univentionPolicyRegistry))' univentionRegistry", shell=True, stdout=subprocess.PIPE)
+	p1 = subprocess.Popen("ldapsearch -x '(&(univentionRegistry=*)(objectClass=univentionPolicyRegistry))' univentionRegistry | ldapsearch-wrapper", shell=True, stdout=subprocess.PIPE)
 	policyresult = p1.communicate()[0]
 
 	# if univention-policy-result fails then quit and do not parse output
