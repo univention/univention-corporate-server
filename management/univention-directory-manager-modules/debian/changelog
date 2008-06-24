@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.0-4) stable; urgency=low
+
+  * LDAP attribute tagging option ';hexentry-' renamed to ';entry-hex-' for backward-compatibility
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 24 Jun 2008 16:12:57 +0200
+
 univention-directory-manager-modules (3.0.0-3) stable; urgency=low
 
   * Univention Config Registry Policy Attributes are now encoded as hex

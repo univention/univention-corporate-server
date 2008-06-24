@@ -93,7 +93,7 @@ def main():
 
 	# get policy result
 	p1 = subprocess.Popen('univention-policy-result %s' % dn, shell=True, stdout=subprocess.PIPE)
-	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;hexentry-"',
+	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;entry-hex-"',
 						  shell=True, stdin=p1.stdout, stdout=subprocess.PIPE)
 	result = p2.communicate()[0]
 	# if univention-policy-result fails then quit and do not parse output
@@ -116,8 +116,8 @@ def main():
 			else:
 				key = None
 				value = None
-				if lines[0].startswith('Attribute: univentionRegistry;hexentry-'):
-					key = lines[0][ len('Attribute: univentionRegistry;hexentry-') : ]
+				if lines[0].startswith('Attribute: univentionRegistry;entry-hex-'):
+					key = lines[0][ len('Attribute: univentionRegistry;entry-hex-') : ]
 					#key = key.replace('-','/')
 					key = key.decode('hex')
 				else:

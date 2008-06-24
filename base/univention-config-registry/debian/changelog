@@ -1,3 +1,9 @@
+univention-config-registry (2.6.11-7) unstable; urgency=low
+
+  * LDAP attribute tagging option ';hexentry-' renamed to ';entry-hex-' for backward-compatibility
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 24 Jun 2008 16:09:24 +0200
+
 univention-config-registry (2.6.11-6) unstable; urgency=low
 
   * switch encoding of Univention Config Registry Policy Attributes to hex

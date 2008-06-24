@@ -38,7 +38,7 @@ def usage():
 	print ''
 
 oldkeyprefix='univentionRegistry;entry-'
-hexkeyprefix='univentionRegistry;hexentry-'
+hexkeyprefix='univentionRegistry;entry-hex-'
 
 ############
 ### MAIN ###
