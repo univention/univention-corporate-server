@@ -1,3 +1,11 @@
+univention-config-registry (2.6.11-6) unstable; urgency=low
+
+  * switch encoding of Univention Config Registry Policy Attributes to hex
+  * add conversion script univention-config-registry-policy-encoding to
+    convert 'univentionRegistry;entry-' attributes to ';hexentry-' encoding
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jun 2008 11:58:07 +0200
+
 univention-config-registry (2.6.11-3) unstable; urgency=low
 
   * Create system groups scanner, nvram, rdma, kvm and fuse and a system

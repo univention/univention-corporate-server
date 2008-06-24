@@ -185,4 +185,11 @@ if [ "$architecture" = "powerpc" -o "$architecture" = "ppc64" ]; then
 	univention-baseconfig set kernel/ramdisk?"mkinitramfs mkinitrd.yaird"
 fi
 
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.6.11-6; then
+	eval `univention-baseconfig shell server/role`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		/usr/lib/univention-directory-policy/univention-config-registry-policy-encoding --convert -v || true
+	fi
+fi
+
 exit 0
