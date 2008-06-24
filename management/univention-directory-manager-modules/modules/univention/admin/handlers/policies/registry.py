@@ -167,8 +167,8 @@ class object(univention.admin.handlers.simplePolicy):
 		if self.dn:
 			self['registry']=[]
 			for key in self.oldattr.keys():
-				if key.startswith('univentionRegistry;entry-'):
-					key_name=key.split('univentionRegistry;entry-')[1].replace('-','/')
+				if key.startswith('univentionRegistry;hexentry-'):
+					key_name=key.split('univentionRegistry;hexentry-')[1].decode('hex')
 					self['registry'].append('%s=%s' % (key_name, self.oldattr[key][0].strip()))
 		self.save()
 
@@ -185,15 +185,15 @@ class object(univention.admin.handlers.simplePolicy):
 					old_keys.append(line.split('=')[0])
 			for k in old_keys:
 				if not k in new_keys:
-					ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), ''))
+					ml.append( ('univentionRegistry;hexentry-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;hexentry-%s' % k.encode('hex'), ''), ''))
 			for k in new_keys:
 				for line in self.info['registry']:
 					if line.startswith('%s=' % k ):
 						value=string.join(line.split('=')[1:])
 						if value == "None":
-							ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), None ) )
+							ml.append( ('univentionRegistry;hexentry-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;hexentry-%s' % k.encode('hex'), ''), None ) )
 						else:
-							ml.append( ('univentionRegistry;entry-%s' % k.replace('/','-'), self.oldattr.get('univentionRegistry;entry-%s' % k.replace('/','-'), ''), value ) )
+							ml.append( ('univentionRegistry;hexentry-%s' % k.encode('hex'), self.oldattr.get('univentionRegistry;hexentry-%s' % k.encode('hex'), ''), value ) )
 						break
 		return ml
 

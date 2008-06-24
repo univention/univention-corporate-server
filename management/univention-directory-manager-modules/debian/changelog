@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.0-3) stable; urgency=low
+
+  * Univention Config Registry Policy Attributes are now encoded as hex
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jun 2008 14:23:48 +0200
+
 univention-directory-manager-modules (3.0.0-2) stable; urgency=low
 
   * license check logic fixed:
