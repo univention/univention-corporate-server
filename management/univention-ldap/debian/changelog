@@ -1,3 +1,9 @@
+univention-ldap (3.0.1-2) unstable; urgency=low
+
+  * add 'hexentry-' attribute tagging option
+
+ -- Arvid Requate <requate@univention.de>  Tue, 24 Jun 2008 12:12:10 +0200
+
 univention-ldap (3.0.1-1) unstable; urgency=low
 
   * update the samba schema to Samba 3.0.30

@@ -108,6 +108,7 @@ install-ext-%:
 
 	install -m 755 univention-directory-policy/nfsmounts.py debian/univention-config-registry/usr/lib/univention-directory-policy/nfsmounts
 	install -m 755 univention-directory-policy/univention-policy-update-config-registry.py debian/univention-config-registry/usr/lib/univention-directory-policy/univention-policy-update-config-registry
+	install -m 755 univention-directory-policy/univention-config-registry-policy-encoding debian/univention-config-registry/usr/lib/univention-directory-policy/univention-config-registry-policy-encoding
 
 	chmod 755 python/univention-install-config-registry python/univention-install-config-registry-info
 

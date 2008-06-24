@@ -1,0 +1,210 @@
+#!/usr/bin/python2.4
+# -*- coding: utf-8 -*-
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import os, sys, getopt, subprocess
+import univention.config_registry as confreg
+
+def usage():
+	print 'syntax: univention-config-registry-policy-encoding [--convert] [-h] [-v] [--removeold] [<dn>]'
+	print '     --convert        convert policy attributes from old to new encoding'
+	print '     -h or --help     print this help'
+	print '     --removeold      remove policy attributes in old encoding (if new encoding was created)'
+	print '     -v               print more information'
+	print ''
+
+oldkeyprefix='univentionRegistry;entry-'
+hexkeyprefix='univentionRegistry;hexentry-'
+
+############
+### MAIN ###
+############
+
+def main():
+
+	configRegistry = confreg.ConfigRegistry()
+	configRegistry.load()
+
+	convertList = {}
+	removeList = {}
+	removeold = False
+	convert = False
+	verbose = False
+
+	if configRegistry.has_key('ldap/base'):
+		ldap_base = configRegistry['ldap/base']
+
+	# parse command line
+	try:
+		(opts, pargs) = getopt.getopt(sys.argv[1:], 'hv', ['convert', 'help', 'removeold'])
+	except:
+		usage()
+		sys.exit(0)
+
+	# get command line data
+	for opt in opts:
+		if opt[0] == '--convert':
+			convert = True
+		elif opt[0] == '-h' or opt[0] == '--help':
+			usage()
+			sys.exit(0)
+		elif opt[0] == '--removeold':
+			removeold = True
+		elif opt[0] == '-v':
+			verbose=True
+
+	# get policy result
+	p1 = subprocess.Popen("ldapsearch -x '(&(univentionRegistry=*)(objectClass=univentionPolicyRegistry))' univentionRegistry | ldapsearch-wrapper", shell=True, stdout=subprocess.PIPE)
+	policyresult = p1.communicate()[0]
+
+	# if univention-policy-result fails then quit and do not parse output
+	if p1.wait() != 0:
+		# no output: this script is called by cron
+		# print 'WARN: univention-policy-result failed - LDAP server may be down'
+		sys.exit(0)
+
+	p2 = subprocess.Popen("grep -E '^(dn: |%s)'" % oldkeyprefix,
+						  shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+	p2.stdin.write(policyresult)
+	oldkeyresult = p2.communicate()[0]
+	oldkeyresult = oldkeyresult.strip('\n')
+
+	oldkeysfound = 0
+	if oldkeyresult:
+		if verbose: print 'INFO: Searching for Univention Config Registry Policy keys with old encoding'
+		for record in oldkeyresult.split('\ndn: '):
+			record = record.strip('\t\n\r ')
+
+			lines = record.splitlines()
+			dn = lines.pop(0)
+			if dn.startswith('dn: '):
+				dn = dn[ len('dn: ') : ]
+			if not dn in convertList:
+				convertList[dn] = []
+
+			for line in lines:
+				key = None
+				value = None
+				if line.startswith(oldkeyprefix):
+					attributevaluepair = line.split(': ')
+					if len(attributevaluepair) != 2:
+						print 'WARNING: attribute line contains multiple ": " separators: ', line
+						print '         at DN: ', dn
+					key = attributevaluepair[0][ len(oldkeyprefix) : ]
+					key = key.replace('-','/')
+					convertList[dn].append( (key, attributevaluepair[1]) )
+					oldkeysfound += 1
+				else:
+					print 'ERROR: cannot parse attribute line:', line
+					break
+		if verbose: print 'INFO: Found %s Univention Config Registry Policy keys in %s policy objects' % ( oldkeysfound, len(convertList) )
+
+
+	if removeold and oldkeysfound:
+		if verbose: print 'INFO: Searching for Univention Config Registry Policy keys converted to new encoding'
+		hexkeysfound = 0
+		p3 = subprocess.Popen("grep -E '^(dn: |%s)'" % hexkeyprefix,
+							  shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		p3.stdin.write(policyresult)
+		hexkeyresult = p3.communicate()[0]
+		hexkeyresult = hexkeyresult.strip('\n')
+		hexkeyList = {}
+		for record in hexkeyresult.split('\ndn: '):
+			record = record.strip('\t\n\r ')
+
+			lines = record.splitlines()
+			dn = lines.pop(0)
+			if dn.startswith('dn: '):
+				dn = dn[ len('dn: ') : ]
+			if not dn in removeList:
+				hexkeyList[dn] = []
+
+			for line in lines:
+				key = None
+				value = None
+				if line.startswith(hexkeyprefix):
+					attributevaluepair = line.split(': ')
+					if len(attributevaluepair) != 2:
+						print 'WARNING: attribute line contains multiple ": " separators: ', line
+						print '         at DN: ', dn
+					key = attributevaluepair[0][ len(hexkeyprefix) : ]
+					key = key.decode('hex')
+					hexkeyList[dn].append( key )
+					hexkeysfound += 1
+				else:
+					print 'ERROR: cannot parse attribute line:', line
+					break
+		if verbose: print 'INFO: Found %s Univention Config Registry Policy keys in %s policy objects' % ( hexkeysfound, len(removeList) )
+		oddList = {}
+		for dn, attrlist in convertList.items():
+			removeList[dn] = []
+			for key, value in attrlist:
+				if key in [ item for item in hexkeyList[dn] ]:
+					removeList[dn].append( key )
+				else:
+					if not dn in oddList:
+						oddList[dn] = []
+					oddList[dn].append( key )
+
+		if oddList:
+			print 'WARNING: Please check following Policy attributes manually for removal: '
+			for dn, keys in oddList.items():
+				print 'Policy: %s' % dn
+				for key in keys:
+					print 'Attribute: %s' % key
+				print '--'
+
+	if convert:
+		if convertList:
+			proc = subprocess.Popen('ldapmodify -x -D cn=admin,%s -w $(cat /etc/ldap.secret)' % ldap_base , shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+			for dn, attrlist in convertList.items():
+				if attrlist:
+					print >> proc.stdin, 'dn: %s' % dn
+					print >> proc.stdin, 'changetype: modify'
+					for key, value in attrlist:
+						hexkey = '%s%s' % ( hexkeyprefix, key.encode('hex') )
+						print >> proc.stdin, 'add: %s' % hexkey
+						print >> proc.stdin, '%s: %s' % ( hexkey, value )
+						print >> proc.stdin, '-'
+					print >> proc.stdin, ''
+	elif removeold:
+		if removeList:
+			proc = subprocess.Popen('ldapmodify -x -D cn=admin,%s -w $(cat /etc/ldap.secret)' % ldap_base , shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+			for dn, attrlist in removeList.items():
+				if attrlist:
+					print >> proc.stdin, 'dn: %s' % dn
+					print >> proc.stdin, 'changetype: modify'
+					for key in attrlist:
+						oldkey = '%s%s' % ( oldkeyprefix, key.replace('/','-') )
+						print >> proc.stdin, 'delete: %s' % oldkey
+						print >> proc.stdin, '-'
+					print >> proc.stdin, ''
+	sys.exit(0)
+
+
+if __name__ == '__main__':
+	main()
