@@ -1,3 +1,9 @@
+univention-ldap (3.0.1-3) unstable; urgency=low
+
+  * revert change 3.0.1-2 as this breaks replication to servers without this attribute option
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 24 Jun 2008 16:02:16 +0200
+
 univention-ldap (3.0.1-2) unstable; urgency=low
 
   * add 'hexentry-' attribute tagging option

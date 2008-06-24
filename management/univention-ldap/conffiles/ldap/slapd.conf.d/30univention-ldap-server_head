@@ -13,5 +13,4 @@ TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 sizelimit		@%@ldap/sizelimit@%@
 
 attributeoptions "entry-"
-attributeoptions "hexentry-"
 
