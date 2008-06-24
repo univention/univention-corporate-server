@@ -203,16 +203,6 @@ def main():
 						print >> proc.stdin, 'delete: %s' % oldkey
 						print >> proc.stdin, '-'
 					print >> proc.stdin, ''
-			for dn, attrlist in removeList.items():
-				if attrlist:
-					print 'dn: %s' % dn
-					print 'changetype: modify'
-					for key in attrlist:
-						oldkey = '%s%s' % ( oldkeyprefix, key.replace('/','-') )
-						print 'add: %s' % oldkey
-						print '%s: %s' % ( oldkey, value )
-						print '-'
-					print ''
 	sys.exit(0)
 
 
