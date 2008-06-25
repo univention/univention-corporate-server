@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.0-5) stable; urgency=low
+
+  * syntax for username now defaults to lowercase 'umlauts'
+    (allowing mixed case for existing mixed case usernames)
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jun 2008 11:21:50 +0200
+
 univention-directory-manager-modules (3.0.0-4) stable; urgency=low
 
   * LDAP attribute tagging option ';hexentry-' renamed to ';entry-hex-' for backward-compatibility

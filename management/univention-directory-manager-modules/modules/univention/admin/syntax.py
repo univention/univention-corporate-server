@@ -296,6 +296,22 @@ class uid_umlauts(simple):
 		else:
 			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")
 
+class uid_umlauts_lower(simple):
+	name='uid'
+	min_length=1
+	max_length=16
+	_re = re.compile('(?u)(^\w[\w -.]*\w$)|\w*$')
+
+	def parse(self, text):
+		unicode_text=text.decode("utf-8")
+		if not unicode_text.islower():
+			raise univention.admin.uexceptions.valueError, _("Value must contain lowercase characters only!")
+
+		if self._re.match(unicode_text) != None and unicode_text != 'admin':
+			return text
+		else:
+			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")
+
 class gid(simple):
 	name='gid'
 	min_length=1
@@ -1045,7 +1061,7 @@ class authenticationServer(string):
 class fileServer(string):
         name='fileServer'
         searchFilter='(&(cn=*)(|(objectClass=univentionDomainController)(objectClass=univentionMemberServer)))'
-        description=_('FileServer')
+        description=_('File Server')
 
 class repositoryServer(string):
 	name='repositoryServer'

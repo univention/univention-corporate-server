@@ -88,7 +88,7 @@ usewizard=1
 wizardmenustring=_("Users")
 wizarddescription=_("Add, edit and delete users")
 wizardoperations={"add":[_("Add"), _("Add User")],"find":[_("Find"), _("Find User(s)")]}
-uid_umlauts = 0
+uid_umlauts_mixedcase = 0
 
 childs=0
 short_description=_('User')
@@ -143,7 +143,7 @@ property_descriptions={
 	'username': univention.admin.property(
 			short_description=_('Username'),
 			long_description='',
-			syntax=univention.admin.syntax.uid_umlauts,
+			syntax=univention.admin.syntax.uid_umlauts_lower,
 			multivalue=0,
 			required=1,
 			may_change=1,
@@ -1471,8 +1471,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				s=self.descriptions['username'].syntax
 				try:
 					username_match=s.parse(uid)
-				except univention.admin.uexceptions.valueError,e: # uid contains already umlauts, so we switch
-					self.set_uid_umlauts()
+				except univention.admin.uexceptions.valueError,e: # uid contains already mixed case umlauts, so we switch
+					self.set_uid_umlauts_mixedcase()
 				self['username']=uid
 			# FIXME: we should NEVER catch all exceptions
 			except Exception, e:
@@ -1503,6 +1503,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.modifypassword=0
 			self['password']='********'
 			if 'posix' in self.options or 'mail' in self.options or 'ldap_pwd' in self.options:
+				#if 'username' not in self.oldattr and 'username' in self.info and len(self.info['username'][0]) > 0:
+				#	self.info['username'][0] = self.info['username'][0].lower()
+
 				userPassword=self.oldattr.get('userPassword',[''])[0]
 				if userPassword:
 					self.info['password']=userPassword
@@ -1810,9 +1813,9 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.__krb5_principal=self['username']+'@'+realm
 		return self.__krb5_principal
 
-	def set_uid_umlauts(self, umlauts=1):
-		self.uid_umlauts=umlauts
-		if umlauts:
+	def set_uid_umlauts_mixedcase(self, mixedcase=1):
+		self.uid_umlauts_mixedcase=mixedcase
+		if mixedcase:
 			self.descriptions['username'] = univention.admin.property(
 				short_description=_('Username'),
 				long_description='',
@@ -1826,7 +1829,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.descriptions['username'] = univention.admin.property(
 				short_description=_('Username'),
 				long_description='',
-				syntax=univention.admin.syntax.uid,
+				syntax=univention.admin.syntax.uid_umlauts_lower,
 				multivalue=0,
 				required=1,
 				may_change=1,
