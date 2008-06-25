@@ -44,6 +44,53 @@ import univention.admin.modules
 import univention_baseconfig
 import univention.debug
 
+import ldif
+
+class ldifParser(ldif.LDIFParser):
+        dn = None
+        mod_list = []
+        dncount = 0
+        base = None
+        err = ""
+        def __init__(self,input_file,ignored_attr_types=None,max_entries=0,process_url_schemes=None,line_sep='\n' ):
+                ldif.LDIFParser.__init__(self,input_file,ignored_attr_types,max_entries,process_url_schemes,line_sep)
+
+        def check(self,base):
+                ldif.LDIFParser.parse(self)
+
+                #count dn
+                if self.dncount == 0:
+                        self.err = _("No Base DN has been found.")
+                elif self.dncount > 1:
+                        self.err = _("More than one Base DN has been defined.")
+
+                #check base
+                if self.base != base or base == None:
+                        self.err = _("Wrong Base DN. Expected was %s but %s has been found.") % (base,self.base)
+
+                return self.err
+
+        def handle(self,dn,entry):
+                if dn == None or dn == "":
+                        self.err = _("No Base DN has been found.")
+                        return
+
+                self.dn = dn
+                self.dncount += 1
+
+                if 'univentionLicenseBaseDN' in entry:
+                        self.base = "%s" % entry['univentionLicenseBaseDN'][0]
+                else:
+                        self.err = _("No Base DN has been defined.")
+                        return
+
+                #create modification list
+                for atr in entry:
+                        val = ()
+                        for v in entry[atr]:
+                                val += (v,)
+                        self.mod_list.insert(0,(ldap.MOD_REPLACE, atr, val))
+
 def create(a,b,c):
 	return modabout(a,b,c)
 
@@ -220,6 +267,21 @@ class modabout(unimodule.unimodule):
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 			]}))
 
+                ##Upload License
+                self.certBrowse = question_file('', {} , {"helptext":_("Select a file")})
+                self.certLoadBtn = button(_("Load file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
+                rows.append(tablerow("",{},{"obs":[
+                                        tablecol("",{'type':'about_layout'},{"obs":[
+                                                header(_("Update License"),{"type":"4"},{})
+                                        ]}),
+                                        tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
+                                                self.certBrowse,
+                                                htmltext('',{},{'htmltext':['<br>']}),
+                                                self.certLoadBtn
+                                        ]})
+
+                        ]}))
+
 		## Contact
 		rows.append(tablerow("",{},{"obs":[
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
@@ -248,4 +310,43 @@ class modabout(unimodule.unimodule):
 		self.subobjs.append(table("",{'type':'content_main'},{"obs":rows}))
 
 	def apply(self):
+                # license import
+                if hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed():
+                        if self.certBrowse.get_input():
+                                import subprocess, tempfile
+                                #read content
+                                certFile = open(self.certBrowse.get_input())
+
+                                #read license from file
+                                ldif_parser = ldifParser(certFile)
+
+                                #check license
+                                position = self.save.get('ldap_position')
+                                base = position.getDomain()
+                                res = ldif_parser.check(base)
+
+                                #close
+                                certFile.close()
+
+                                #return result
+                                if res != "":
+                                        self.usermessage(_("An Error has occured:<br> %s") % res)
+                                else:
+                                        #install license
+                                        settings = self.save.get("settings")
+                                        pwd = self.save.get("pass")
+
+                                        ldap_con = ldap.open("localhost")
+                                        ldap_con.simple_bind_s(settings.userdn, pwd)
+                                        ldap_con.modify_s(ldif_parser.dn,ldif_parser.mod_list)
+                                        ldap_con.unbind_s()
+
+                                        self.usermessage(_("The License has been sucessfully installed. You have to relogin."))
+                                        self.save.put("LOGOUT",1)
+                                        self.save.put("logout",1)
+                                        self.save.put("uc_module","relogin")
+                                        self.save.put("uc_submodule","none")
+                                return
+
 		self.applyhandlemessages()
+
