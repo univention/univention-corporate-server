@@ -1,3 +1,21 @@
+univention-management-console (0.9.27-3) unstable; urgency=low
+
+  * escape shell characters in shutdown message to prevent command execution exploit
+
+ -- Arvid Requate <requate@univention.de>  Wed, 25 Jun 2008 16:29:41 +0200
+
+univention-management-console (0.9.27-2) unstable; urgency=low
+
+  * correctet systemmessage and translation 
+
+ -- Tobias Scherer <scherer@univention.de>  Tue,  8 Apr 2008 09:31:15 +0200
+
+univention-management-console (0.9.27-1) unstable; urgency=low
+
+  * added "reboot" Module
+
+ -- Tobias Scherer <scherer@univention.de>  Mon,  7 Apr 2008 14:47:28 +0200
+
 univention-management-console (0.9.26-1) unstable; urgency=low
 
   * do not save identical UMC ACLs multiple times

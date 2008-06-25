@@ -71,6 +71,13 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--set description="VNC Session" \
 	--append operation="vnc/*"
 
+# create reboot operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+       --position cn=operations,cn=console,cn=univention,$ldap_base \
+       --set name=reboot \
+       --set description="System Stop and Reboot" \
+       --append operation="reboot/*"
+
 # create join operations
 univention-admin settings/console_operation create $@ --ignore_exists \
 	--position cn=operations,cn=console,cn=univention,$ldap_base \
@@ -228,6 +235,15 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 	--set command="vnc/*" \
 	--set description="All VNC Session Operations"
 
+# create reboot acls
+univention-admin settings/console_acl create $@ --ignore_exists \
+       --position cn=acls,cn=console,cn=univention,$ldap_base \
+       --set name=reboot-all \
+       --set category="system" \
+       --set ldapbase="$ldap_base" \
+       --set command="reboot/*" \
+       --set description="System Stop and Reboot"
+
 # create join acls
 univention-admin settings/console_acl create $@ --ignore_exists \
 	--position cn=acls,cn=console,cn=univention,$ldap_base \
@@ -367,7 +383,8 @@ univention-admin policies/console_access modify $@ --ignore_exists \
 	--append allow=cn=modutils-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=join-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=packages-all,cn=acls,cn=console,cn=univention,$ldap_base \
-	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base
+	--append allow=cn=vnc-all,cn=acls,cn=console,cn=univention,$ldap_base \
+	--append allow=cn=reboot-all,cn=acls,cn=console,cn=univention,$ldap_base
 # 	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
 
 univention-admin policies/console_access create $@ --ignore_exists \
