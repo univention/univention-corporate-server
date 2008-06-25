@@ -205,61 +205,61 @@ class modrelogin(unimodule.unimodule):
 			except univention.admin.uexceptions.authFail,ex:
 				self.usermessage(_("Wrong Username or Password or Domain"))
 			except univention.admin.uexceptions.licenseNotFound:
-				self.usermessage(_('Licence not found. During this session add and modify are disabled.'))
+				self.usermessage(_('Licence not found. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseAccounts:
-				self.usermessage(_('You have too many user accounts for your licence. During this session add and modify are disabled.'))
+				self.usermessage(_('You have too many user accounts for your licence. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseClients:
-				self.usermessage(_('You have too many client accounts for your licence. During this session add and modify are disabled.'))
+				self.usermessage(_('You have too many client accounts for your licence. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseDesktops:
-				self.usermessage(_('You have too many desktop accounts for your licence. During this session add and modify are disabled.'))
+				self.usermessage(_('You have too many desktop accounts for your licence. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseGroupware:
-				self.usermessage(_('You have too many groupware accounts for your licence. During this session add and modify are disabled.'))
+				self.usermessage(_('You have too many groupware accounts for your licence. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseExpired:
-				self.usermessage(_('Your licence is expired. During this session add and modify are disabled.'))
+				self.usermessage(_('Your licence is expired. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseWrongBaseDn:
-				self.usermessage(_('Your licence is not valid for your LDAP-Base. During this session add and modify are disabled.'))
+				self.usermessage(_('Your licence is not valid for your LDAP-Base. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseInvalid:
-				self.usermessage(_('Your licence is not valid. During this session add and modify are disabled.'))
+				self.usermessage(_('Your licence is not valid. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseDisableModify:
-				self.usermessage(_('Your licence does not allow modifications. During this session add and modify are disabled.'))
+				self.usermessage(_('Your licence does not allow modifications. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))
 				self.save.put("uc_module","none")
 				self.save.put("auth_ok","1")
 				self.save.put("authfail",None)
 			except univention.admin.uexceptions.licenseGPLversion:
-				self.usermessage(_('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor.'))
+				self.usermessage(_('Your license status could not be validated. Thus, you are not eligible to support and maintenance. If you have bought a license, please contact Univention or your vendor. You can install a new License in the About section.'))
 				gpl_version = True
 				auth_ok = True
 			except univention.admin.uexceptions.freeForPersonalUse:
