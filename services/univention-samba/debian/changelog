@@ -1,3 +1,10 @@
+univention-samba (2.0.0-1) unstable; urgency=low
+
+  * removed samba-config listener object. Now samba reads the settings
+    from the ldap.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 12:02:32 +0200
+
 univention-samba (1.0.10-3) unstable; urgency=low
 
   * register also existing register host share container as standard share container
