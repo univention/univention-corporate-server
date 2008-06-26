@@ -3,7 +3,7 @@
 # Univention Admin Modules
 #  admin module for samba config
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 # 
@@ -58,7 +58,8 @@ def logonToChangePWUnmap(val):
 
 module='settings/sambaconfig'
 childs=0
-operations=['add','edit','remove','search','move']
+# since samba 3.0.30 and UCS 2.1 the domain configuration for samba will be stored in the samba domain object
+operations=['edit','remove','search','move']
 short_description=_('Settings: Samba Configuration')
 long_description=''
 options={}
