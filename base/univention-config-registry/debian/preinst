@@ -50,6 +50,8 @@ if [ "$1" = "configure" -a -n "$2" ]; then
 
 fi
 
+dpkg-divert --rename --quiet --divert /etc/motd.debian --add /etc/motd
+
 #DEBHELPER#
 
 #be sure the /etc/kernel-img.conf exists
