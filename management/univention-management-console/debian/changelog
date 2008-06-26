@@ -1,3 +1,9 @@
+univention-management-console (0.9.27-4) unstable; urgency=low
+
+  * Fixed login name problems. 
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 26 Jun 2008 13:23:29 +0200
+
 univention-management-console (0.9.27-3) unstable; urgency=low
 
   * escape shell characters in shutdown message to prevent command execution exploit
