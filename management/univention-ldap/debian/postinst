@@ -54,6 +54,7 @@ univention-baseconfig set ldap/index/sub?"uid,cn,sn,givenName,mail,description,d
 univention-baseconfig set ldap/index/approx?"none"
 univention-baseconfig set ldap/sizelimit?400000
 univention-baseconfig set ldap/cachesize?10000000
+univention-baseconfig set ldap/idletimeout?0
 univention-baseconfig set ldap/threads?16
 univention-baseconfig set ldap/page-results?on
 univention-baseconfig set ldap/acl/user/kolab2/change?yes
