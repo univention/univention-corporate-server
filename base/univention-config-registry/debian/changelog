@@ -1,3 +1,9 @@
+univention-config-registry (3.0.0-1) unstable; urgency=low
+
+  * divert the motd file from debian
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 16:23:54 +0200
+
 univention-config-registry (2.6.11-7) unstable; urgency=low
 
   * LDAP attribute tagging option ';hexentry-' renamed to ';entry-hex-' for backward-compatibility
