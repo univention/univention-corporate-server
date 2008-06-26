@@ -244,6 +244,8 @@ class modconsole(unimodule.unimodule):
 		self.applyhandlemessages()
 
 		if self.save.get('consolemode') == 'login':
+			self.save.put("relogin_username",self.usernamein.xvars.get("usertext",""))
+			self.save.put("relogin_password",self.passwdin.xvars.get("usertext",""))
 
 			if int(os.environ["HTTPS"]) != 1 and self.httpbool.selected():
 				self.save.put("http",1)
