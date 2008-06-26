@@ -48,8 +48,8 @@ eval `univention-baseconfig shell server/role`
 univention-baseconfig set ldap/debug/level?0
 univention-baseconfig set ldap/port?389
 univention-baseconfig set ldap/database/type?bdb
-univention-baseconfig set ldap/index/eq?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference"
-univention-baseconfig set ldap/index/pres?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference"
+univention-baseconfig set ldap/index/eq?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,sambaSID,sambaPrimaryGroupSID,sambaDomainName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,relativeDomainName,pTRRecord,zoneName,mailPrimaryAddress,mailAlternativeAddress,univentionServerRole,univentionService,kolabHomeServer,automountInformation,sambaAcctFlags,univentionPolicyReference,homeDirectory"
+univention-baseconfig set ldap/index/pres?"objectClass,uidNumber,gidNumber,memberUid,ou,uid,cn,sn,givenName,mail,description,displayName,uniqueMember,macAddress,dhcpHWAddress,krb5PrincipalName,aRecord,mailPrimaryAddress,mailAlternativeAddress,kolabHomeServer,univentionPolicyReference,homeDirectory"
 univention-baseconfig set ldap/index/sub?"uid,cn,sn,givenName,mail,description,displayName,mailPrimaryAddress,mailAlternativeAddress,default,zoneName,sambaSID"
 univention-baseconfig set ldap/index/approx?"none"
 univention-baseconfig set ldap/sizelimit?400000
