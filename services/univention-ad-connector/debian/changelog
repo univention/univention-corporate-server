@@ -1,4 +1,4 @@
-univention-ad-connector (1.2.4-0) unstable; urgency=low
+univention-ad-connector (2.0.0-1) unstable; urgency=low
 
   * replace univention-baseconfig with univention-config-registry
   * add config registry variable-descriptions
