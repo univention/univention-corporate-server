@@ -16,6 +16,12 @@ univention-management-console (0.9.27-1) unstable; urgency=low
 
  -- Tobias Scherer <scherer@univention.de>  Mon,  7 Apr 2008 14:47:28 +0200
 
+univention-management-console (0.9.26-1) unstable; urgency=low
+
+  * do not save identical UMC ACLs multiple times
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 13 Jun 2008 14:40:36 +0200
+
 univention-management-console (0.9.25-1) unstable; urgency=low
 
   * in overview display at most 10 modules per row

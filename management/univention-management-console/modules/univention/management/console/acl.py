@@ -148,7 +148,10 @@ class ACLs:
 				command, options = self.__parse_command( command )
 				if fromUser:
 					# we do not check if the group already has disallowed the command, because first we will append the user rules
-					self.acls[ right ].append( { 'fromUser': True, 'host': host, 'command': command, 'options': options } )
+					new_rule = { 'fromUser': True, 'host': host, 'command': command, 'options': options }
+					# do not add rule multiple times
+					if not new_rule in self.acls[ right ]:
+						self.acls[ right ].append( new_rule )
 				else:
 					# if we append a group allow rule, then we check if the command was disallowed by the user
 					append_rule = True
@@ -158,7 +161,10 @@ class ACLs:
 								if self.__command_match( acl[ 'command' ], command ) and self.__option_match( acl[ 'options' ], options ):
 									append_rule = False
 					if append_rule:
-						self.acls[ 'allow' ].append( { 'fromUser': False, 'host': host, 'command': command, 'options': options } )
+						new_rule = { 'fromUser': False, 'host': host, 'command': command, 'options': options }
+						# do not add rule multiple times
+						if not new_rule in self.acls[ 'allow' ]:
+							self.acls[ 'allow' ].append( new_rule )
 
 	def _append_allow( self, fromUser, object ): #fromUser, host, command, data ):
 		self.__append( 'allow', 'disallow', fromUser, object )
