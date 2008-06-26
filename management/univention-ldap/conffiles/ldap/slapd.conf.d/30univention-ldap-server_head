@@ -12,5 +12,7 @@ TLSCACertificateFile	/etc/univention/ssl/ucsCA/CAcert.pem
 
 sizelimit		@%@ldap/sizelimit@%@
 
+idletimeout		@%@ldap/idletimeout@%@
+
 attributeoptions "entry-"
 

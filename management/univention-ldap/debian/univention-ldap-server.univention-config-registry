@@ -26,6 +26,7 @@ Variables: ldap/index/sub
 Variables: ldap/index/approx
 Variables: ldap/replog
 Variables: ldap/translogfile
+Variables: ldap/timeout
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -38,6 +39,7 @@ Multifile: etc/ldap/slapd.conf
 Subfile: etc/ldap/slapd.conf.d/30univention-ldap-server_head
 Variables: ldap/server/type
 Variables: ldap/master
+Variables: ldap/timeout
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf

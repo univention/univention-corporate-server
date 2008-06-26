@@ -1,3 +1,11 @@
+univention-ldap (3.0.3-1) unstable; urgency=low
+
+  * added ucr variable ldap/idletimeout
+  * added ucr variable libnss/idle/timelimit for the idle_timelimit in
+    libnss-ldap.conf
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 08:03:05 +0200
+
 univention-ldap (3.0.2-1) unstable; urgency=low
 
   * added homeDirectory to the index
