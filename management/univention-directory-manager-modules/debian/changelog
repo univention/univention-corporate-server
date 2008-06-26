@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.2-1) stable; urgency=low
+
+  * added udm as alias to univention-directory-manager
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 17:13:04 +0200
+
 univention-directory-manager-modules (3.0.1-1) stable; urgency=low
 
   * move the samba config atrributes to the samba domain object
