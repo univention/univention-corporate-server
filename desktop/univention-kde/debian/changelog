@@ -1,3 +1,9 @@
+univention-kde (3.0-1-2) unstable; urgency=low
+
+  * removed debug statement from the join script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 08:53:11 +0200
+
 univention-kde (3.0-1-1) unstable; urgency=low
 
   * added green21 theme for UCS 2.1

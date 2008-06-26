@@ -65,7 +65,6 @@ univention-admin policies/desktop  create --ignore_exists --position cn=desktop,
 								--set name="UCS green 2.1" --set language="de_DE@euro" \
 								--set profile="/usr/share/univention-kde-profiles/ucs-green21"
 
-set -x
 # check for the default policy
 test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
 if [ "$?" = 1 ]; then
