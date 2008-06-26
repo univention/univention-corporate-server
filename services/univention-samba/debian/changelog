@@ -1,3 +1,9 @@
+univention-samba (2.0.1-1) unstable; urgency=low
+
+  * added the scripats to the smb.conf on a domainmaster
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 13:16:44 +0200
+
 univention-samba (2.0.0-1) unstable; urgency=low
 
   * removed samba-config listener object. Now samba reads the settings

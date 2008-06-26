@@ -3,7 +3,7 @@
 if baseConfig.has_key('samba/password/checkscript') and baseConfig['samba/password/checkscript']:
 	print ' check password script = %s' %  baseConfig['samba/password/checkscript']
 
-if baseConfig['server/role'] == 'domaincontroller_master':
+if baseConfig['server/role'] == 'domaincontroller_master' or (baseConfig.has_key('samba/domainmaster') and baseConfig['samba/domainmaster']=='yes'):
 	if baseConfig.has_key( 'samba/script/adduser' ) and not baseConfig[ 'samba/script/adduser' ].lower( ) in [ "none", "false", "no" ]:
 		print '	add user script = /usr/share/univention-admin-tools/univention-adduser "%u"'
 	if baseConfig.has_key( 'samba/script/deleteuser' ) and not baseConfig[ 'samba/script/deleteuser' ].lower( ) in [ "none", "false", "no" ]:
