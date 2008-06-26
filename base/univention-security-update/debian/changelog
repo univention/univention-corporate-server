@@ -1,3 +1,9 @@
+univention-security-update (2.1.0-0) unstable; urgency=low
+
+  * bump version for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 26 Jun 2008 14:00:01 +0200
+
 univention-security-update (2.0.0-3) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
