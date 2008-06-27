@@ -1,0 +1,38 @@
+univention-passwd-store (2.0.0-1) unstable; urgency=low
+
+  * moved from a customer scope to ucs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 08:25:49 +0200
+
+univention-passwd-store (1.0-0) unstable; urgency=low
+
+  * UCS 2.0 port
+
+ -- Arvid Requate <requate@univention.de>  Mon,  7 Apr 2008 16:11:37 +0200
+
+univention-passwd-store (0.1-5) unstable; urgency=low
+
+  * check if the password is really set
+  * added the script sso-ssh (Single-Sign-On SSH)
+  * move binaries to /usr/bin/
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 Feb 2007 15:07:06 +0100
+
+univention-passwd-store (0.1-3) unstable; urgency=low
+
+  * corrected baseconfig-info-file
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 18 Dec 2006 17:32:08 +0100
+
+univention-passwd-store (0.1-2) unstable; urgency=low
+
+  * removed logging
+
+ -- Ingo Steuwer <steuwer@univention.de>  Thu,  2 Nov 2006 07:28:45 +0100
+
+univention-passwd-store (0.1-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 30 Oct 2006 17:17:47 +0100
+

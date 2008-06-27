@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ `which rdesktop` ]; then
+	echo `cat ~/.univention-passwd-store/session_passwd` | rdesktop $@ -p -
+	rc=$?
+else
+	echo "rdesktop binary not found."
+	exit 1
+fi
+
+exit $rc
+

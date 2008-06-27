@@ -1,0 +1,4 @@
+@!@
+if baseConfig.has_key('auth/passwdstore') and baseConfig['auth/passwdstore'].lower() in ['yes','true']:
+	print 'session    required   pam_runasroot.so export_pass program=/usr/sbin/univention-passwd-store silent'
+@!@

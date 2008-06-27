@@ -1,0 +1,4 @@
+@!@
+if baseConfig.has_key('auth/passwdstore') and baseConfig['auth/passwdstore'].lower() in ['yes','true']:
+	print 'auth     required                           pam_runasroot.so save_pass'
+@!@

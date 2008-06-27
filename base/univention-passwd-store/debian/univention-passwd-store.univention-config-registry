@@ -1,0 +1,17 @@
+Type: multifile
+Multifile: etc/pam.d/common-session
+Variables: auth/passwdstore
+
+Type: subfile
+Multifile: etc/pam.d/common-session
+Subfile: etc/pam.d/common-session.d/90univention-passwd-store
+Variables: auth/passwdstore
+
+Type: multifile
+Multifile: etc/pam.d/common-auth
+Variables: auth/passwdstore
+
+Type: subfile
+Multifile: etc/pam.d/common-auth
+Subfile: etc/pam.d/common-auth.d/40univention-passwd-store
+Variables: auth/passwdstore

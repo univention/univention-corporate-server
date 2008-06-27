@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [ -x /usr/sbin/univention-ssh ]; then
+	/usr/sbin/univention-ssh ~/.univention-passwd-store/session_passwd -X $@ 
+	rc=$?
+else
+	echo "univention-ssh binary not found."
+	exit 1
+fi
+
+exit $rc
+
