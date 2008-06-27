@@ -3,7 +3,7 @@
 # Univention KDE
 #  helper script: set KDE profile for a user
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -107,3 +107,5 @@ if [ -n "$XDG_DATA_DIRS" ] && [ -n "$XDG_CONFIG_DIRS" ] && [ -n "$KDEDIRS" ]; th
 		echo "export LANG=$LANG" >>$HOME/.univention-environment
 	fi
 fi
+
+exit 0
