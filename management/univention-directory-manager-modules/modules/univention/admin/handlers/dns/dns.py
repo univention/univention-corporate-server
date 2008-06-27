@@ -38,8 +38,6 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.dns.alias
 import univention.admin.handlers.dns.host_record
 import univention.admin.handlers.dns.srv_record
-import univention.admin.handlers.dns.zone_mx_record
-import univention.admin.handlers.dns.zone_txt_record
 import univention.admin.handlers.dns.ptr_record
 
 
@@ -59,9 +57,9 @@ wizarddescription=_("Add, edit and delete DNS Objects")
 wizardoperations={"add":[_("Add"), _("Add DNS Object")],"find":[_("Find"), _("Find DNS Object(s)")]}
 wizardpath="univentionDnsObject"
 wizardsuperordinates=["None","dns/forward_zone","dns/reverse_zone"]
-wizardtypesforsuper={"None":["dns/forward_zone","dns/reverse_zone"],"dns/forward_zone":["dns/alias","dns/host_record","dns/srv_record","dns/zone_mx_record","dns/zone_txt_record"],"dns/reverse_zone":["dns/ptr_record"]}
+wizardtypesforsuper={"None":["dns/forward_zone","dns/reverse_zone"],"dns/forward_zone":["dns/alias","dns/host_record","dns/srv_record"],"dns/reverse_zone":["dns/ptr_record"]}
 
-childmodules=["dns/forward_zone","dns/reverse_zone","dns/alias","dns/host_record","dns/srv_record","dns/zone_mx_record","dns/zone_txt_record","dns/ptr_record"]
+childmodules=["dns/forward_zone","dns/reverse_zone","dns/alias","dns/host_record","dns/srv_record","dns/ptr_record"]
 virtual=1
 options={
 }
@@ -110,8 +108,6 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 			ret+=univention.admin.handlers.dns.host_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 			ret+= univention.admin.handlers.dns.alias.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 			ret+= univention.admin.handlers.dns.srv_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret+= univention.admin.handlers.dns.zone_mx_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
-			ret+= univention.admin.handlers.dns.zone_txt_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 		else:
 			ret+= univention.admin.handlers.dns.ptr_record.lookup(co, lo, filter_s, base, superordinate, scope, unique, required, timeout, sizelimit)
 	else:

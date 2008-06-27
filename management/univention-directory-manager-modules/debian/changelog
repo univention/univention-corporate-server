@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.4-1) stable; urgency=low
+
+  * merged dns/zone_mx_record and dns/zone_txt_record into dns/forward_zone
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Jun 2008 16:21:46 +0200
+
 univention-directory-manager-modules (3.0.3-1) stable; urgency=low
 
   * use the machine account if ldap.secret is not available
