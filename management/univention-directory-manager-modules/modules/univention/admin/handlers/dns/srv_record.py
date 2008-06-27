@@ -87,7 +87,7 @@ layout=[
 ]
 
 def unmapName(old):
-	service, protocol = old[0].split('.')
+	service, protocol = old[0].split('.',1)
 	service=service[1:]
 	protocol=protocol[1:]
 	return [service, protocol]

@@ -155,7 +155,25 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+		),
+	'mx': univention.admin.property(
+			short_description=_('Mail Exchanger Host'),
+			long_description='',
+			syntax=univention.admin.syntax.dnsMX,
+			multivalue=1,
+			options=[],
+			required=1,
+			may_change=1
+		),
+	'txt': univention.admin.property(
+			short_description=_('TXT Record'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=1,
+			may_change=1
+		),
 }
 layout=[
 	univention.admin.tab(_('General'), _('Basic Values'), [
@@ -170,13 +188,33 @@ layout=[
 	]),
 	univention.admin.tab(_('Name Servers'), _('Additional Name Servers'), [
 		[univention.admin.field('nameserver')]
-	])
+	]),
+	univention.admin.tab(_('MX Records'), _('Mail Exchanger Records'), [
+		[univention.admin.field('mx')]
+	]),
+	univention.admin.tab(_('TXT Records'), _('Text Records'), [
+		[univention.admin.field('txt')]
+	]),
 ]
+
+def mapMX(old):
+	lst = []
+	for entry in old:
+		lst.append( '%s %s' % (entry[0], entry[1]) )
+	return lst
+
+def unmapMX(old):
+	lst = []
+	for entry in old:
+		lst.append( entry.split(' ', 1) )
+	return lst
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('zone', 'zoneName', None, univention.admin.mapping.ListToString)
 mapping.register('nameserver', 'nSRecord')
 mapping.register('zonettl', 'dNSTTL', None, univention.admin.mapping.ListToString)
+mapping.register('mx', 'mXRecord', mapMX, unmapMX)
+mapping.register('txt', 'tXTRecord', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
