@@ -1,3 +1,9 @@
+univention-passwd-store (2.0.1-1) unstable; urgency=low
+
+  * added exit 0 to the end of the pam script univention-passwd-store.sh
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 08:28:24 +0200
+
 univention-passwd-store (2.0.0-1) unstable; urgency=low
 
   * moved from a customer scope to ucs
