@@ -34,3 +34,5 @@ echo -n "$PASSWD" > "$PASSWDFILE"
 # restrict access
 chmod 0400 "$PASSWDFILE"
 
+exit 0
+
