@@ -1,4 +1,4 @@
-univention-directory-manager-modules (3.0.3-1) stable; urgency=low
+univention-directory-manager-modules (3.0.3-2) stable; urgency=low
 
   * use the machine account if ldap.secret is not available
 
