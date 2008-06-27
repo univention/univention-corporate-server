@@ -1,3 +1,9 @@
+univention-config-registry (3.0.1-0) unstable; urgency=low
+
+  * added "ucr" as link to "univention-config-registry"
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 17:02:31 +0200
+
 univention-config-registry (3.0.0-1) unstable; urgency=low
 
   * divert the motd file from debian
