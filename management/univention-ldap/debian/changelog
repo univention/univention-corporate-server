@@ -1,3 +1,9 @@
+univention-ldap (3.0.5-1) unstable; urgency=low
+
+  * the DCs need access to the sambaDomain object
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 10:57:51 +0200
+
 univention-ldap (3.0.4-1) unstable; urgency=low
 
   * allow a windows client join against the samba pdc on a DC Slave
