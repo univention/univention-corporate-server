@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.0-3) unstable; urgency=low
+
+  * reduced search scope from "base+one" to "one"
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 27 Jun 2008 16:19:05 +0200
+
 univention-directory-manager (5.0.0-2) unstable; urgency=low
 
   * Added Patch for Lizenz installation in the About Section.
