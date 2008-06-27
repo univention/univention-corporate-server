@@ -1,0 +1,143 @@
+#!/bin/sh -e
+#
+# Univention Client Basesystem
+#  init script: setting up a thin client
+#
+# Copyright (C) 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+echo -n "Setting up Thin Client X.org configuration ... "
+
+getXModul()
+{
+    card=`kudzu -p --class=video | grep ^driver | sed -e 's/driver: Card://g'`
+    if [ -z "$card" ]; then
+		echo "vesa"
+		return
+    fi
+
+    driver=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep CHIPSET | sed -e 's/CHIPSET //g'`
+    if [ -z "$driver" ]; then
+		card=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep SEE | sed -e 's/SEE //g'`
+		if [ -z "$card" ]; then
+			if [ -n "`kudzu -p --class=video | grep 'desc: VMWare Inc|unknown'`" ]; then
+				echo "vmware"
+			else
+				echo "vesa"
+			fi
+			return
+		fi
+		driver=`cat /usr/share/hwdata/Cards | grep -1 "^NAME $card$" | grep CHIPSET | sed -e 's/CHIPSET //g'`
+		if [ -z "$driver" ] ; then
+			echo "vesa"
+			return
+		fi
+    else
+		driver=`cat /usr/share/hwdata/Cards | grep -2 "^NAME $card$" | grep DRIVER | sed -e 's/DRIVER //g'`
+    fi
+
+    echo "$driver" | head -1 |  tr [:upper:] [:lower:]
+}
+
+eval `univention-baseconfig shell ldap/server/name ldap/hostdn gdm/sessions/disabled`
+
+script=`univention-policy-result -h $ldap_server_name -s $ldap_hostdn | grep univentionAutoStartScript= | sed -e 's|univentionAutoStartScript=||'`
+
+univention-baseconfig set xorg/device/driver?$(eval getXModul) \
+    xorg/resolution?1024x768 \
+    xorg/screen/DefaultDepth?16 \
+    xorg/monitor/HorizSync?30-70 \
+    xorg/monitor/VertRefresh?50-90 \
+    xorg/serverflags/options/AllowMouseOpenFail?true \
+    xorg/keyboard/options/XkbLayout?de \
+    xorg/keyboard/options/XkbRules?xorg \
+    xorg/keyboard/options/XkbModel?pc105 \
+    \
+    xorg/mouse/serial1/Identifier?"Serial Mouse" \
+    xorg/mouse/serial1/Driver?mouse \
+    xorg/mouse/serial1/options/protocol?"auto" \
+    xorg/mouse/serial1/options/device?"/dev/ttyS0" \
+    xorg/mouse/serial1/options/Emulate3Buttons?true \
+    xorg/mouse/serial1/options/Emulate3Timeout?70 \
+    xorg/mouse/serial1/options/SendCoreEvents?true \
+    \
+    xorg/mouse/serial2/Identifier?"Serial Mouse ttyS1" \
+    xorg/mouse/serial2/Driver?mouse \
+    xorg/mouse/serial2/options/protocol?"auto" \
+    xorg/mouse/serial2/options/device?"/dev/ttyS1" \
+    xorg/mouse/serial2/options/Emulate3Buttons?true \
+    xorg/mouse/serial2/options/Emulate3Timeout?70 \
+    xorg/mouse/serial2/options/SendCoreEvents?true \
+    \
+    xorg/mouse/psaux/Identifier?"PS/2 Mouse" \
+    xorg/mouse/psaux/Driver?mouse \
+    xorg/mouse/psaux/options/protocol?"auto" \
+    xorg/mouse/psaux/options/device?"/dev/psaux" \
+    xorg/mouse/psaux/options/Emulate3Buttons?true \
+    xorg/mouse/psaux/options/Emulate3Timeout?70 \
+    xorg/mouse/psaux/options/SendCoreEvents?true \
+    xorg/mouse/psaux/options/Buttons?5 \
+    xorg/mouse/psaux/options/ZAxisMapping?"4 5" \
+    \
+    xorg/mouse/usb/Identifier?"USB Mouse" \
+    xorg/mouse/usb/Driver?mouse \
+    xorg/mouse/usb/options/protocol?"auto" \
+    xorg/mouse/usb/options/device?"/dev/input/mice" \
+    xorg/mouse/usb/options/SendCoreEvents?true \
+    xorg/mouse/usb/options/Buttons?5 \
+    xorg/mouse/usb/options/ZAxisMapping?"4 5" \
+    \
+    xorg/device/VendorName?All \
+    xorg/device/BoardName?All \
+    xorg/module/load?"bitmap;ddc;dri;extmod;freetype;glx;int10;vbe;dbe;GLcore;type1;record" \
+	\
+	univentionAutostartScript=$script \
+	\
+	gdm/session/dir="/etc/gdm/Sessions/enabled" >>/dev/tty8 2>&1
+
+# prepare to run gdm
+univention-baseconfig commit \
+	/etc/default/gdm \
+	/etc/gdm/gdm.conf \
+	/etc/gdm/Init/Default \
+	/usr/share/gdm/themes/univention/univention.xml \
+	/etc/pam.d/gdm \
+	/etc/pam.d/gdm-autologin  >>/dev/tty8 2>&1
+
+# create $HOME for autostart
+mkdir /var/tmp/autostart
+chown autostart /var/tmp/autostart
+
+# enable X.org sessions
+ls -1 /etc/gdm/Sessions/*.desktop | while read file; do
+	session=$(echo $file | sed 's|/etc/gdm/Sessions/||;s|\.desktop||')
+	if ! echo "$gdm_sessions_disabled" | egrep "(^${session}$|^${session}:|:${session}:|:${session}$)"; then
+		ln -s "$file" "/etc/gdm/Sessions/enabled/${session}.desktop"
+	fi
+done
+
+chown gdm.gdm /var/lib/gdm
+chmod 0750 /var/lib/gdm
+
+echo "done"

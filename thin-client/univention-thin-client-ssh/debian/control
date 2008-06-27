@@ -1,0 +1,28 @@
+Source: univention-thin-client-ssh
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-ssh
+Architecture: all
+Pre-Depends: univention-thin-client-basesystem
+Description: UCS - SSH for thin clients
+ This package provides the SSH daemon for thin clients
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-ssh-config
+Architecture: all
+Depends: openssh-server
+Description: UCS - SSH for thin clients
+ This package provides configuration the SSH daemon on thin clients
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

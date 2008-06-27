@@ -1,0 +1,15 @@
+Type: file
+File: etc/X11/Xresources/univention-client-basesystem
+
+Type: file
+File: etc/gdm/PostLogin/scripts/010_univention-user-info.sh
+
+Type: file
+File: etc/gdm/PostSession/scripts/090_univention-user-info.sh
+
+Type: file
+File: etc/gdm/PostLogin/scripts/020_univention-wait4session.sh
+
+Type: file
+File: etc/pam.d/gdm
+Variables: thinclient/mount/homedir

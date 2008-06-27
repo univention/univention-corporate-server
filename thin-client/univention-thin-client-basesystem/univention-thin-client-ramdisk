@@ -1,0 +1,105 @@
+#!/usr/bin/python
+#
+# Univention Thin Client Basesystem
+#  creates directories and files in ramdisk of thin client basesystem
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+import os
+import sys
+from optparse import OptionParser
+
+class RAM_Disk( object ):
+	DIR_FILE = 'etc/univention/ramdisk.dirs'
+	def __init__( self, options ):
+		self._dirs = options.ramdisk_dirs
+		self._files = options.ramdisk_files
+		self._prefix = options.prefix
+		fd = open( os.path.join( self._prefix, RAM_Disk.DIR_FILE ), 'r' )
+		self._content = fd.readlines()
+		fd.close()
+
+	def create( self ):
+		fd = open( os.path.join( self._prefix, RAM_Disk.DIR_FILE ), 'a' )
+		if self._dirs:
+			for dirname in self._dirs:
+				head, tail = os.path.split( dirname )
+				# make parent directory
+				pardir = os.path.join( self._prefix, head[ 1 : ] )
+				if not os.path.exists( pardir ):
+					os.makedirs( pardir )
+				# register directory to be created during boot in RAM disk
+				line = dirname + '\n'
+				if not line in self._content:
+					fd.write( line )
+					self._content.append( line )
+				if not os.path.islink( os.path.join( self._prefix, dirname[ 1 : ] ) ):
+					os.system( 'chroot %s ln -s %s %s &> /dev/null' % \
+						   ( self._prefix, os.path.join( '/ramdisk', dirname[ 1 : ] ), dirname ) )
+
+		if self._files:
+			for filename in self._files:
+				dirname = os.path.join( self._prefix, 'ramdisk', os.path.dirname( filename[ 1 : ] ) )
+				if not os.path.isdir( dirname ):
+					os.makedirs( dirname )
+					chroot_dir = os.path.dirname( filename )
+					if not chroot_dir in self._content:
+						fd.write( chroot_dir + '\n' )
+						self._content.append( chroot_dir )
+				if os.path.isfile( os.path.join( self._prefix, filename[ 1 : ] ) ):
+					realdir = os.path.join( self._prefix, os.path.dirname( filename[ 1 : ] ) )
+					if not os.path.isdir( realdir ):
+						os.makedirs( realdir )
+					os.rename( os.path.join( self._prefix, filename[ 1 : ] ),
+							   os.path.join( self._prefix, 'ramdisk', filename[ 1 : ] ) )
+				elif os.path.islink( os.path.join( self._prefix, filename[ 1 : ] ) ):
+					continue
+				os.system( 'chroot %s ln -s %s %s &> /dev/null' % \
+						   ( self._prefix, os.path.join( '/ramdisk', filename[ 1 : ] ), filename ) )
+		fd.close()
+
+def main():
+	parser = OptionParser( usage = "usage: %prog [options]" )
+	parser.add_option( '-p', '--prefix', type = 'string', action = 'store',
+					   dest = 'prefix', help = 'set prefix for thin client basesystem' )
+	parser.add_option( '-d', '--ramdisk-dir', type = 'string', action = 'append', metavar = 'DIR',
+					   dest = 'ramdisk_dirs', help = 'add given DIR to ramdisk' )
+	parser.add_option( '-f', '--ramdisk-file', type = 'string', action = 'append', metavar = 'FILE',
+					   dest = 'ramdisk_files', help = 'add given FILE to ramdisk' )
+	parser.set_defaults( prefix = '/var/lib/univention-client-root', debug = 0 )
+
+	( options, arguments ) = parser.parse_args()
+
+	if not os.path.isdir( options.prefix ):
+		print >>sys.stderr, "error: prefix does not exist: %s" % options.prefix
+		sys.exit( 1 )
+
+	if options.ramdisk_dirs or options.ramdisk_files:
+		rd = RAM_Disk( options )
+		rd.create()
+
+if __name__ == '__main__':
+	main()

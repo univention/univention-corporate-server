@@ -1,0 +1,23 @@
+#! /usr/bin/python2.4
+#
+
+import subprocess as sp
+import re
+import sys
+
+p = sp.Popen(("ps", "aux"), stdout=sp.PIPE)
+result = p.communicate()[0]
+
+regexp = re.compile(r'(.*)tmp/univention-client.sock.(.*)')
+matches = re.findall(regexp,result)
+
+if len(matches) > 1:
+	print "There's more than one client session running, bailing out"
+	sys.exit(-2)
+
+if len(matches) == 0:
+	print "No client session running"
+	sys.exit(-1)
+
+print matches[0][1]
+sys.exit(0)

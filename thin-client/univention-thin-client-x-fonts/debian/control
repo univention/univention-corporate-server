@@ -1,0 +1,28 @@
+Source: univention-thin-client-x-fonts
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-x-fonts
+Architecture: all
+Depends: univention-thin-client-x-base
+Description: UCS - thin client xorg fonts
+ This package provides fonts for the xorg environment on thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-x-fonts-config
+Architecture: all
+Description: UCS - thin client xorg fonts configuration
+ This package contains configuration for fonts for the xorg environment
+ on thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

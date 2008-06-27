@@ -1,0 +1,132 @@
+Type: file
+File: etc/default/ntpdate
+
+Type: file
+File: etc/network/ifstate
+
+Type: file
+File: etc/libnss-ldap.conf
+
+Type: file
+File: etc/nsswitch.conf
+Variables: nsswitch/ldap
+
+Type: file
+File: etc/pam_ldap.conf
+
+Type: file
+File: etc/krb5.conf
+
+Type: file
+File: etc/ldap/ldap.conf
+
+Type: file
+File: etc/resolv.conf
+
+Type: file
+File: etc/syslog.conf
+
+Type: file
+File: var/lib/scrollkeeper/scrollkeeper_docs
+
+Type: file
+File: var/lib/scrollkeeper/C/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/C/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/TOC/0
+
+Type: file
+File: var/lib/scrollkeeper/ca/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ca/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/da/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/da/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/de/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/de/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/el/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/el/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/es/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/es/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/hu/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/hu/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/index/0
+
+Type: file
+File: var/lib/scrollkeeper/ja/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ja/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ko/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ko/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/nl/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/nl/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/pt_BR/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/pt_BR/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ru/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/ru/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sk/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sk/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sl/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sl/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sv/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/sv/scrollkeeper_extended_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/tr/scrollkeeper_cl.xml
+
+Type: file
+File: var/lib/scrollkeeper/tr/scrollkeeper_extended_cl.xml

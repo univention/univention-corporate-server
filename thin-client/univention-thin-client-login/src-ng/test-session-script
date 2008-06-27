@@ -1,0 +1,7 @@
+#!/bin/sh
+
+echo "stdout /tmp/test.stdout"
+echo "stderr /tmp/test.stderr"
+echo "setenv DISPLAY ws1:0"
+echo "setenv XAUTHORITY /home/roland/.Xauthority"
+echo "start /usr/bin/X11/xterm"

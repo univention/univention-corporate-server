@@ -1,0 +1,102 @@
+univention-thin-client-sane (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:03 +0200
+
+univention-thin-client-sane (1.0.7-3) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:29 +0200
+
+univention-thin-client-sane (1.0.7-2) unstable; urgency=low
+
+  * reduce a output of init script 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 18 Jan 2008 13:53:36 +0100
+
+univention-thin-client-sane (1.0.7-1) unstable; urgency=low
+
+  * reduce output of init script 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 17 Jan 2008 18:23:56 +0100
+
+univention-thin-client-sane (1.0.6-3) unstable; urgency=low
+
+  * fixed two minor bugs in packaging 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 20 Dec 2007 17:21:03 +0100
+
+univention-thin-client-sane (1.0.6-2) unstable; urgency=low
+
+  * fixed typo 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 20 Dec 2007 17:04:39 +0100
+
+univention-thin-client-sane (1.0.6-1) unstable; urgency=low
+
+  * create a desktop file instead of a script on the desktop 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 20 Dec 2007 17:00:48 +0100
+
+univention-thin-client-sane (1.0.5-2) unstable; urgency=low
+
+  * remove postlogin script  
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 19 Dec 2007 16:53:19 +0100
+
+univention-thin-client-sane (1.0.5-1) unstable; urgency=low
+
+  * fixed removing of scanner
+  * add saned user to group scanner
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 19 Dec 2007 12:13:23 +0100
+
+univention-thin-client-sane (1.0.4-1) unstable; urgency=low
+
+  * change group of saned process 
+
+ -- Andreas B�sching <buesching@univention.de>  Tue, 18 Dec 2007 11:12:47 +0100
+
+univention-thin-client-sane (1.0.3-1) unstable; urgency=low
+
+  * fix Univention session command syntax
+  * minor fix in udev script
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 17 Dec 2007 19:06:33 +0100
+
+univention-thin-client-sane (1.0.2-1) unstable; urgency=low
+
+  * removed un-used configuration files
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 13 Dec 2007 14:53:59 +0100
+
+univention-thin-client-sane (1.0.1-1) unstable; urgency=low
+
+  * do not create desktop link for scanner on thin client (home directory may
+    not be mounted)
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 18 Nov 2007 17:13:16 +0100
+
+univention-thin-client-sane (1.0.0-3) unstable; urgency=low
+
+  * fixed some typos 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  4 Oct 2007 11:14:24 +0200
+
+univention-thin-client-sane (1.0.0-2) unstable; urgency=low
+
+  * fixed typo
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 29 Sep 2007 21:52:49 +0200
+
+univention-thin-client-sane (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 Sep 2007 15:11:00 +0200
+
+Local variables:
+mode: debian-changelog
+End:

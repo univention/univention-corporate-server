@@ -1,0 +1,95 @@
+univention-thin-client-ssh (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:04 +0200
+
+univention-thin-client-ssh (1.0.2-9) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:30 +0200
+
+univention-thin-client-ssh (1.0.2-8) unstable; urgency=low
+
+  * link /etc/ssh/sshd_not_to_be_run to RAM disk
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 25 Nov 2007 18:06:40 +0100
+
+univention-thin-client-ssh (1.0.2-6) unstable; urgency=low
+
+  * minor fixes in packaging 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 11 Nov 2007 11:29:41 +0100
+
+univention-thin-client-ssh (1.0.2-5) unstable; urgency=low
+
+  * fixed typo 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 14:57:19 +0200
+
+univention-thin-client-ssh (1.0.2-4) unstable; urgency=low
+
+  * fixed typos in init script 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Sep 2007 13:35:37 +0200
+
+univention-thin-client-ssh (1.0.2-3) unstable; urgency=low
+
+  * minor fixes in pre- and postinst scripts
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 21 Sep 2007 11:05:47 +0200
+
+univention-thin-client-ssh (1.0.2-2) unstable; urgency=low
+
+  * fixed typos; add #DEBHELPER# call 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Sep 2007 16:35:32 +0200
+
+univention-thin-client-ssh (1.0.2-1) unstable; urgency=low
+
+  * fixed init script 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Sep 2007 14:01:25 +0200
+
+univention-thin-client-ssh (1.0.1-1) unstable; urgency=low
+
+  * add init script for SSH daemon 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 20 Sep 2007 13:40:40 +0200
+
+univention-thin-client-ssh (1.0.2-2) unstable; urgency=low
+
+  * add pre-dependency to univention-thin-client-basesystem
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 13:48:41 +0200
+
+univention-thin-client-ssh (1.0.2-1) unstable; urgency=low
+
+  * use SSH keys created during installation or generate keys during boot
+    process
+  * add SSH host key files to RAM disk
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 Sep 2007 11:58:04 +0200
+
+univention-thin-client-ssh (1.0.1-1) unstable; urgency=low
+
+  * add PAM configuration for ssh 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 17:48:13 +0200
+
+univention-thin-client-ssh (1.0.0-2) unstable; urgency=low
+
+  * do not add directory /etc/ssh to RAM disk 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 17:14:25 +0200
+
+univention-thin-client-ssh (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 14:20:18 +0200
+
+Local variables:
+mode: debian-changelog
+End:

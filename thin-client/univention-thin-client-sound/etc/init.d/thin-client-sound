@@ -1,0 +1,77 @@
+#!/bin/sh -e
+#
+# Univention Thin Client Sound Support
+#  init script: setting up a thin client
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+eval $(univention-baseconfig shell thinclient/sound/volume thinclient/sound/daemon univentionSoundEnabled univentionSoundModule)
+
+echo -n "Setting up Thin Client Sound Device ... "
+
+if [ -z "$univentionSoundEnabled" ]; then
+	echo "disabled"
+	exit 0
+fi
+
+echo -n " video"
+
+# select sound driver
+if [ "$univentionSoundEnabled" = "1" ]; then
+	if [ ! -z "$univentionSoundModule" ]; then
+		if [ "$univentionSoundModule" == "auto" ]; then
+			if [ -e "/usr/sbin/kudzu" ]; then
+				sound_module=$(/usr/sbin/kudzu -p --class=AUDIO | grep ^driver | awk '{print $2}')
+				if test "$sound_module"; then
+					univention-baseconfig set univentionSoundModule=$sound_module
+				fi
+			else
+				sound_module=$univentionSoundModule
+			fi
+		else
+			sound_module=$univentionSoundModule
+		fi
+
+		if test "$sound_module"; then
+			/sbin/modprobe "$sound_module"
+		fi
+	fi
+
+	# load OSS compatiblity modules
+	modprobe snd-pcm-oss
+
+	# adjust volume
+	if test -e "/usr/bin/esd" -a -e "/dev/dsp" ; then
+		if [ -z "$thinclient_sound_volume" ]; then
+			volume=40
+		else
+			volume=$thinclient_sound_volume
+		fi
+		amixer -c 0 sset Master 100% unmute >/dev/null 2>&1
+		amixer -c 0 sset PCM ${volume}% unmute >/dev/null 2>&1
+	fi
+fi
+
+echo "done"

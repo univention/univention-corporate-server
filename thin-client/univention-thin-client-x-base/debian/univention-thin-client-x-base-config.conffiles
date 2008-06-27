@@ -1,0 +1,3 @@
+etc/univention/templates/files/etc/X11/Xresources/univention-client-basesystem
+etc/skel/.gnome/gdm
+/etc/univention/templates/files/etc/X11/Xresources/univention-client-basesystem

@@ -1,0 +1,92 @@
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# univention owns the namespace 10176.
+
+attributetype ( 1.3.6.1.4.1.10176.41 NAME 'univentionDesktopServer'
+	DESC 'univention_ desktop server'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.42 NAME 'univentionIPDomain'
+	DESC 'domain name'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.43 NAME 'univentionIPNameserver'
+	DESC 'domain name'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.44 NAME 'univentionWindowsServer'
+	DESC 'univention_ windows server'
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.45 NAME 'univentionWindowsDomain'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.46 NAME 'univentionFileServer'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.47 NAME 'univentionXResolution'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.48 NAME 'univentionXColorDepth'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.49 NAME 'univentionXMouseProtocol'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.50 NAME 'univentionXMouseDevice'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.51 NAME 'univentionXKeyboardLayout'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.52 NAME 'univentionXKeyboardVariant'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.53 NAME 'univentionXHSync'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.54 NAME 'univentionXVRefresh'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.55 NAME 'univentionXModule'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.56 NAME 'univentionLdapServer'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.57 NAME 'univentionLdapBase'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.58 NAME 'univentionKernelImage'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.59 NAME 'univentionBootServer'
+	DESC ''
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.40 NAME 'univentionClient'
+	DESC 'univention_ client'
+	MUST ( cn )
+	MAY ( univentionDesktopServer $ univentionIPDomain $ univentionIPNameserver $
+	      univentionWindowsServer $ univentionWindowsDomain $
+	      univentionFileServer $ univentionXResolution $
+	      univentionXColorDepth $ univentionXMouseProtocol $
+	      univentionXMouseDevice $ univentionXKeyboardLayout $
+	      univentionXKeyboardVariant $ univentionXHSync $
+	      univentionXVRefresh $ univentionXModule $
+	      univentionLdapServer $ univentionLdapBase $
+	      univentionKernelImage $ univentionBootServer $
+	      macAddress $ aRecord ) )

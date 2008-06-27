@@ -1,0 +1,28 @@
+Source: univention-thin-client-nagios
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-nagios
+Architecture: all
+Pre-Depends: univention-thin-client-basesystem
+Description: UCS - Nagios support for thin clients
+ This package provides Nagios support for thin clients
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-nagios-config
+Architecture: all
+Depends: nagios-plugins-basic, nagios-nrpe-server
+Description: UCS - Nagios support for thin clients
+ This package provides configuration for Nagios support on thin clients
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

@@ -1,0 +1,136 @@
+univention-thin-client-nagios (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:03 +0200
+
+univention-thin-client-nagios (1.0.3-4) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:28 +0200
+
+univention-thin-client-nagios (1.0.3-3) unstable; urgency=low
+
+  * minor fixes
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 16 Jan 2008 18:09:08 +0100
+
+univention-thin-client-nagios (1.0.3-1) unstable; urgency=low
+
+  * move output of init script to TTY 8 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 22:34:48 +0100
+
+univention-thin-client-nagios (1.0.2-1) unstable; urgency=low
+
+  * add init script to ensure nagios configuration files get written 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 22:08:57 +0100
+
+univention-thin-client-nagios (1.0.1-5) unstable; urgency=low
+
+  * Fix config registry syntax
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Jan 2008 15:22:13 +0100
+
+univention-thin-client-nagios (1.0.1-4) unstable; urgency=low
+
+  * Register config registry vars
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Jan 2008 15:18:24 +0100
+
+univention-thin-client-nagios (1.0.1-3) unstable; urgency=low
+
+  * Add nrpe.cfg to the ramdisk.
+
+ -- Moritz Mühlenhoff <jmm@anton.knut.univention.de>  Tue,  8 Jan 2008 13:09:20 +0100
+
+univention-thin-client-nagios (1.0.1-2) unstable; urgency=low
+
+  * Use ldap/server/name instead of ldap/master
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  8 Jan 2008 11:23:09 +0100
+
+univention-thin-client-nagios (1.0.1-1) unstable; urgency=low
+
+  * fixed nrpe configuration template 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 28 Dec 2007 09:11:21 +0100
+
+univention-thin-client-nagios (1.0.0-12) unstable; urgency=low
+
+  * Add the complete nrpe.cfg
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 12:14:56 +0100
+
+univention-thin-client-nagios (1.0.0-11) unstable; urgency=low
+
+  * Fix typo
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 11:35:32 +0100
+
+univention-thin-client-nagios (1.0.0-10) unstable; urgency=low
+
+  * Move nrpe_loca.cfg to nrpe.cfg
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 11:21:43 +0100
+
+univention-thin-client-nagios (1.0.0-9) unstable; urgency=low
+
+  * Fix syntax of template registry
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 09:54:08 +0100
+
+univention-thin-client-nagios (1.0.0-8) unstable; urgency=low
+
+  * Source nrpe.univention.de, since we can't install univention-nagios-client
+    inside the thin client environment.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 09:49:45 +0100
+
+univention-thin-client-nagios (1.0.0-7) unstable; urgency=low
+
+  * Register file in the ramdisk
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 09:38:54 +0100
+
+univention-thin-client-nagios (1.0.0-6) unstable; urgency=low
+
+  * Install templates for config package.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 09:17:39 +0100
+
+univention-thin-client-nagios (1.0.0-5) unstable; urgency=low
+
+  * Build fix.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 09:09:51 +0100
+
+univention-thin-client-nagios (1.0.0-4) unstable; urgency=low
+
+  * Remove C&P error.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 08:52:41 +0100
+
+univention-thin-client-nagios (1.0.0-3) unstable; urgency=low
+
+  * Remove old file.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 08:44:21 +0100
+
+univention-thin-client-nagios (1.0.0-2) unstable; urgency=low
+
+  * Make load check values configurable.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 08:32:35 +0100
+
+univention-thin-client-nagios (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 29 Oct 2007 14:52:29 +0100
+
+Local variables:
+mode: debian-changelog
+End:

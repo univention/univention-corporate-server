@@ -1,0 +1,88 @@
+#!/bin/sh -e
+#
+# Univention Client Basesystem
+#  init script: setting up a thin client
+#
+# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+preparePythonEnvironment ()
+{
+	mkdir -p /var/lib/python-support/python2.4/
+	update-python-modules -i /usr/share/python-support/python-dns
+}
+
+echo -n "Setting up Thin Client filesystem: "
+
+dmesg -n 1
+
+echo -n "   Loadkeys de: " >>/dev/tty8
+loadkeys de >>/dev/tty8 2>&1
+echo  "" >>/dev/tty8
+
+# prepare ramdisk
+ramdisk="/ramdisk"
+
+mount -t tmpfs /dev/shm "$ramdisk"
+
+# create directory structure in RAM disk
+cat /etc/univention/ramdisk.dirs | while read dir; do
+  mkdir -p "$ramdisk$dir"
+done
+
+# fix access rights
+chmod 1777 "$ramdisk/tmp"
+chmod 1777 "$ramdisk/var/tmp"
+
+for file in "/etc/network/ifstate" "/etc/network/interfaces" "/etc/udev/rules.d/z25_persistent-net.rules" "/modules.dep" "/etc/modules";
+  do
+  touch "$ramdisk$file"
+done
+
+echo "   creating cache directory " >>/dev/tty8
+mkdir -p /var/cache/univention-config
+
+# install template directories
+cd /
+find etc/univention/templates/files -type d | while read d; do
+	n=${d#etc/univention/templates/files}
+	mkdir -p "$ramdisk$n"
+done
+
+preparePythonEnvironment
+
+# necessary to make udev start correctly
+univention-baseconfig set nsswitch/ldap=no >>/dev/tty8 2>&1
+
+### end basic setup
+
+### start network setup
+# -> thin-client-network
+### end network setup
+
+### start policy result
+# -> thin-client-policies
+### start policy result
+
+echo "done."

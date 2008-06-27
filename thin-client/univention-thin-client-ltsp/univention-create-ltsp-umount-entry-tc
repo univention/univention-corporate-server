@@ -1,0 +1,10 @@
+#!/bin/sh
+
+username=`univention-thin-client-get-username`
+host=`hostname`
+
+cmd="run /usr/bin/univention-create-ltsp-mount-entry umount $1 /media/${host}-${username} ${username}"
+
+echo $cmd > /tmp/last-sent-umount-command.txt
+
+/usr/bin/univention-client-run -d65535 -m "$cmd"  -f /tmp/univention-client.sock.${username}

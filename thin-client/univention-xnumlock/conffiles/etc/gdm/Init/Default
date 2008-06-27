@@ -1,0 +1,44 @@
+#!/bin/sh
+# Stolen from the debian kdm setup, aren't I sneaky
+# Plus a lot of fun stuff added
+#  -George
+
+PATH=/usr/bin/X11:/usr/X11R6/bin:/opt/X11R6/bin:$PATH
+
+sysmodmap=/etc/X11/Xmodmap
+
+if command -v xmodmap > /dev/null 2>&1; then
+  if [ -z "$GDM_PARENT_DISPLAY" ]; then
+    if [ -f $sysmodmap ]; then
+      xmodmap $sysmodmap
+    fi
+  else
+    ( DISPLAY=$GDM_PARENT_DISPLAY XAUTHORITY=$GDM_PARENT_XAUTHORITY xmodmap -pke ) | xmodmap -
+  fi
+fi
+
+if command -v setxkbmap > /dev/null 2>&1; then
+  if [ -n "$GDM_PARENT_DISPLAY" ]; then
+    XKBSETUP=`( DISPLAY=$GDM_PARENT_DISPLAY XAUTHORITY=$GDM_PARENT_XAUTHORITY setxkbmap -v )`
+    if [ -n "$XKBSETUP" ]; then
+      XKBKEYMAP=`echo "$XKBSETUP" | grep '^keymap' | awk '{ print $2 }'`
+      XKBTYPES=`echo "$XKBSETUP" | grep '^types' | awk '{ print $2 }'`
+      XKBCOMPAT=`echo "$XKBSETUP" | grep '^compat' | awk '{ print $2 }'`
+      XKBSYMBOLS=`echo "$XKBSETUP" | grep '^symbols' | awk '{ print $2 }'`
+      XKBGEOMETRY=`echo "$XKBSETUP" | grep '^geometry' | awk '{ print $2 }'`
+      if [ -n "$XKBKEYMAP" ]; then
+        setxkbmap -keymap "$XKBKEYMAP"
+      elif [ -n "$XKBTYPES" -a -n "$XKBCOMPAT" -a -n "$XKBSYMBOLS" -a -n "$XKBGEOMETRY" ]; then
+        setxkbmap -types "$XKBTYPES" -compat "$XKBCOMPAT" -symbols "$XKBSYMBOLS" -geometry "$XKBGEOMETRY"
+      elif [ -n "$XKBTYPES" -a -n "$XKBCOMPAT" -a -n "$XKBSYMBOLS" ]; then
+        setxkbmap -types "$XKBTYPES" -compat "$XKBCOMPAT" -symbols "$XKBSYMBOLS"
+      elif [ -n "$XKBSYMBOLS" ]; then
+        setxkbmap -symbols "$XKBSYMBOLS"
+      fi
+    fi
+  fi
+fi
+
+xnumlock
+
+exit 0

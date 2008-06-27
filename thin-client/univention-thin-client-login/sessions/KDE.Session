@@ -1,0 +1,122 @@
+#!/bin/sh
+#
+# Univention Client Session
+#  KDE session script
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+case "$1" in
+
+    "start" )
+
+    echo "client: starting KDE session for user $USER ($HOSTNAME)" | logger;
+    echo "timeout baseconfig thinclient/session/startup"
+    echo "run /usr/share/univention-client-login/client_login.sh"
+    rm -f "$HOME"/.kde/.spacesaver || true
+    echo stdout "$HOME"/.KDE-stdout
+    echo stderr "$HOME"/.KDE-stderr
+
+    eval `/usr/sbin/univention-baseconfig shell`
+    userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | grep dn | sed -e 's/dn: //g'`
+    eval `univention_policy_result -h $ldap_server_name -s $userdn`
+
+	if [ -x "/usr/share/univeniton-kde/univention-set-kdedirs" ]; then
+		/usr/share/univeniton-kde/univention-set-kdedirs
+	fi
+
+	if [ -e "$HOME/.univention-thin-client-session" ]; then
+		cat "$HOME/.univention-thin-client-session" | while read line; do
+			echo $line
+		done
+		rm -f "$HOME/.univention-thin-client-session"
+	fi
+
+	if [ -e "$HOME/.univention-environment" ]; then
+		cat "$HOME/.univention-environment" | sed -e 's|export ||' | while read line; do
+			var=`echo $line | cut -d "=" -f 1`
+			value=`echo $line | cut -d "=" -f 2-`
+			echo setenv $var $value
+		done
+	fi
+
+	if [ -z "$LANG" ]; then
+		if [ -n "$locale_default" ]; then
+			echo setenv LANG "$(echo $locale_default | awk -F ':' '{print $1}')"
+		else
+			echo setenv LANG "de_DE@euro"
+		fi
+	fi
+
+	if [ $USER = "root" ]; then
+		echo setenv PATH /usr/sbin:/sbin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+	else
+		echo setenv PATH /usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/usr/games
+	fi
+
+    if [ -e $HOME/.kde/share/config/ksmserverrc ]
+    then
+		mv $HOME/.kde/share/config/ksmserverrc $HOME/.kde/share/config/ksmserverrc_SAVE
+		cat $HOME/.kde/share/config/ksmserverrc_SAVE | sed -e 's/=evolution,/=kshell,evolution,/' > $HOME/.kde/share/config/ksmserverrc
+		rm $HOME/.kde/share/config/ksmserverrc_SAVE
+    fi
+
+	FQDN="$HOSTNAME.$(dnsdomainname)"
+    DISPLAY=":"${DISPLAY/*:/};
+    if [ "$DISPLAY" == ${DISPLAY/*\./} ]; then DISPLAY="$DISPLAY"".0"; fi;
+    echo setenv DISPLAY "$FQDN""$DISPLAY";
+
+    LONGKEY=`xauth nextract - "$HOSTNAME"/unix"$DISPLAY"`
+    KEY=${LONGKEY/* /};
+    if [ -z "$KEY" ]; then
+	    echo "error"
+	    exit 1;
+    fi;
+    echo run univention-skel
+    echo setenv XAUTHORITY "$HOME/.Xauthority";
+    echo run xauth add "$FQDN""$DISPLAY" . "$KEY";
+
+    # this is needed for openoffice 1.1, otherwhise the fonts
+    # are way to small. Bug or Feature?
+	# echo "Xft.dpi: 104" | xrdb -merge  # Bug :)
+
+    echo "exit_on_last_child"
+    echo "cleanup /usr/share/univention-client-login/KDE.Shutdown"
+    if [ "$clientDevices" = "true" ] && [ -n "$PASSWD" ]; then
+		echo "setenv PASSWD $PASSWD"
+		test -x /usr/bin/export-devices && echo "start import-devices start $HOSTNAME"
+		echo "unsetenv PASSWD"
+    fi
+    echo "timeout baseconfig thinclient/session/default"
+    echo "start startkde"
+    ;;
+
+    "stop" )
+
+    echo "client: stopped KDE session for user $USER ($HOSTNAME)" | logger;
+
+    ;;
+
+esac;

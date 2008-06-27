@@ -1,0 +1,67 @@
+univention-xnumlock (3.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:06 +0200
+
+univention-xnumlock (2.0.0-6) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:32 +0200
+
+univention-xnumlock (2.0.0-5) unstable; urgency=low
+
+  * more wording change univention-config-registry and univention-
+    baseconfig
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  3 Aug 2007 09:45:38 +0200
+
+univention-xnumlock (2.0.0-4) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:11 +0200
+
+univention-xnumlock (2.0.0-3) unstable; urgency=low
+
+  * added libxtst-dev to build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 15:17:52 +0200
+
+univention-xnumlock (2.0.0-2) unstable; urgency=low
+
+  * change build dependency from xlibs-dev to xlibs-static-dev
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 15:14:44 +0200
+
+univention-xnumlock (2.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  5 Jun 2007 15:09:29 +0200
+
+univention-xnumlock (1.0-4) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 15:54:08 +0100
+
+univention-xnumlock (1.0-3) unstable; urgency=low
+
+  * fixed debian/control file (add Source and Standards-Version entry)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  3 Nov 2005 14:38:32 +0100
+
+univention-xnumlock (1.0-2) unstable; urgency=low
+
+  * Add proper package description.
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 16:11:06 +0200
+
+univention-xnumlock (1.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
+

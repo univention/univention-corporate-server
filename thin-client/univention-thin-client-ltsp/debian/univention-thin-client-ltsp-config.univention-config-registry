@@ -1,0 +1,8 @@
+Type: file
+File: etc/init.d/ltspfsd
+
+Type: file
+File: lib/udev/add_fstab_entry
+
+Type: file
+File: lib/udev/remove_fstab_entry

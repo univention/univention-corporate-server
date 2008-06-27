@@ -1,0 +1,11 @@
+Type: file
+File: etc/cups/cupsd.conf
+
+Type: file
+File: etc/cups/printers.conf
+
+Type: file
+File: etc/cups/ppds.dat
+
+Type: file
+File: etc/init.d/cupsys

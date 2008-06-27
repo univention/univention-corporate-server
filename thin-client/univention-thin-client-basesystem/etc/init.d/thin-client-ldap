@@ -1,0 +1,107 @@
+#!/bin/sh
+#
+# Univention Client Basesystem
+#  init script: setting up network connection for thin client
+#
+# Copyright (C) 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+echo -n "Setting up Thin Client LDAP configuration ... "
+
+eval $(univention-baseconfig shell hostname domainname nameserver1 interfaces/eth0/address interfaces/eth0/netmask interfaces/eth0/network)
+# searching ldap server for this subnet
+res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
+	while read priority weight ldap_port_tmp ldap_server_tmp; do
+		ldapIP=`host $ldap_server_tmp | awk '{print $4}'`
+		if [ "$ldapIP" != "3(NXDOMAIN)" -a "$ldapIP" != "found" ]; then
+			for ((i=1; i<5; i++)); do
+				if [ "`echo $interfaces_eth0_address | cut -d '.' -f $i`" == "`echo $ldapIP | cut -d '.' -f $i`" ]; then
+					continue
+				else
+					if [ "$(echo $interfaces_eth0_netmask | cut -d '.' -f $i)" == "255" ]; then
+						break
+					else
+						ldapServer=$ldap_server_tmp
+						break
+					fi
+				fi
+			done
+			if [ -n "$ldapServer" ]; then
+				ping -c 1 $ldapServer &>/dev/null
+				if [ "$?" -eq 0 ]; then
+					echo "$ldapServer $ldap_port_tmp"
+					break;
+				else
+					ldapServer=""
+				fi
+			fi
+		fi
+	done)
+
+if [ -z "$ldapServer" ]
+then
+	echo "No LDAP-Server server in local subnet found" >>/dev/tty8 2>&1
+
+	#if nothing found take the first we can ping
+	res=$(/usr/bin/dns-lookup _ldap._tcp.$domainname srv | \
+		while read priority weight ldap_port ldap_server; do
+			ldapIP=`host $ldap_server | awk '{print $4}'`
+			if [ -n "$ldap_server" ]; then
+				ping -c 1 $ldap_server &>/dev/null
+				if [ "$?" -eq 0 ]; then
+					echo "$ldap_server $ldap_port"
+					break;
+				else
+					ldap_server=""
+				fi
+			fi
+		done)
+fi
+
+ldapServer=`echo $res | awk '{ print $1 }'`
+ldapPort=`echo $res | awk '{ print $2 }'`
+if [ -z "$ldapServer" -o -z "$ldapPort" ]; then
+	echo "failed"
+	echo "error: LDAP server and/or port missing"
+	echo "  check dns entry _ldap._tcp.$domainname"
+	read
+	halt
+fi
+
+ldapBase=`ldapsearch -x -h $ldapServer -p $ldapPort -b "" -s base 'objectclass=*' NamingContexts -LLL | grep "namingContexts" | sed -e 's/.*namingContexts: //g'`
+if [ -z "$ldapBase" ]; then
+	echo "failed"
+	echo "error: could not find LDAP base"
+	echo "ldapsearch -x -h $ldapServer -p $ldapPort -b "" -s base 'objectclass=*' NamingContexts -LLL | grep "namingContexts" | sed -e 's/.*namingContexts: //g'"
+	read
+	halt
+fi
+
+# find the thin client's LDAP object
+mac_address=$(ip link show eth0 | grep link/ether | sed 's/.*link\/ether \([0-9a-f:]*\) .*/\1/')
+hostdn=$(ldapsearch -x -h $ldapServer -p $ldapPort -b $ldapBase "(&(macAddress=${mac_address})(objectClass=univentionThinClient))" -LLL dn | ldapsearch-wrapper | grep "^dn:" | sed -e 's/dn: //g')
+
+univention-baseconfig set ldap/server/name=$ldapServer ldap/port=$ldapPort ldap/base=$ldapBase ldap/hostdn=$hostdn ldap/mydn=$hostdn nsswitch/ldap=yes >>/dev/tty8 2>&1
+
+echo "done"

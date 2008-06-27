@@ -1,0 +1,52 @@
+Source: univention-thin-client-basesystem
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), debootstrap, univention-debootstrap
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-basesystem
+Architecture: all
+Depends: univention-thin-client-tools
+Conflicts: univention-client-login, univention-client-pam, univention-client-pam-heimdal, univention-client-devices, univention-client-basesystem (<< 3.0.0)
+Description: UCS - thin client base system
+ This package contains the root filesystem for Univention
+ Thin Clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-tools
+Architecture: all
+Description: UCS - thin client base configuration
+ This package contains the basic configuration for the root filesystem for Univention
+ Thin Clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-basesystem-config
+Architecture: all
+Description: UCS - thin client base configuration
+ This package contains the basic configuration for the root filesystem for Univention
+ Thin Clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-client-basesystem
+Architecture: all
+Depends: univention-thin-client-basesystem, univention-thin-client-x-base, univention-thin-client-x-fonts, univention-thin-client-cups, univention-thin-client-ltsp, univention-thin-client-login
+Description: UCS - thin client base system
+ This package is used for the update to the new modular thin client basesystem
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

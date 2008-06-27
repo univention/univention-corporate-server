@@ -1,0 +1,83 @@
+#! /bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/tc/init.d/ltspfsd
+
+# Based on ltsp-client init script from Debian
+
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DESC="ltsp setup"
+NAME=ltspfsd
+SCRIPTNAME=/etc/init.d/$NAME
+
+. /lib/lsb/init-functions
+
+configure_localdev() {
+        if [ ! -d /var/run/drives ];then
+            mkdir /var/run/drives
+        fi
+
+        /usr/bin/ltspfsd -a
+
+        # cdrom devices are handled by the cdpingerponger
+        #/usr/sbin/cdpinger cdrom # default for usb cdroms
+        # Disable cdpinger for now, as it's buggy, see #432669
+
+        # and start one for every additional cdrom device
+        if [ -L /dev/cdrom* ];then
+            for CDDEV in $(ls /dev/cdrom*); do
+                /usr/sbin/cdpinger $(basename ${CDDEV})
+            done
+        fi
+        # handle already plugged devices on login
+        /usr/sbin/delayed_mounter
+}
+
+case "$1" in
+  start)
+        log_begin_msg "Setting up LTSP"
+	
+		modprobe usbcore
+		modprobe usb-storage
+		modprobe ohci-hcd
+		modprobe uhci-hcd
+		modprobe ehci-hcd
+		modprobe usbhid
+		modprobe fuse
+        configure_localdev
+
+        log_end_msg 0
+	;;
+  stop)
+  		p=`pidof ltspfsd`; kill $p
+		sleep 1
+  		p=`pidof ltspfsd`
+		if [ -n "$p" ]; then
+			kill -9 $p
+		fi
+	;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	$0 stop
+	sleep 1
+	$0 start
+	echo "."
+	;;
+  *)
+	# echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

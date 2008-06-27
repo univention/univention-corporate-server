@@ -1,0 +1,749 @@
+<?xml version="1.0"?>
+<ScrollKeeperContentsList>
+
+<!--
+    ScrollKeeper Category Tree
+    Maintained by the ScrollKeeper project
+    http://scrollkeeper.sourceforge.net
+    Version: 0.1.0
+    Last Modified: Feb 14, 2001
+-->
+
+  <sect categorycode="Applications">
+    <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+    <sect categorycode="ApplicationsAmusement">
+      <title>&#x5A2F;&#x697D;</title>
+      </sect>
+    <sect categorycode="ApplicationsEducation">
+      <title>&#x6559;&#x80B2;</title>
+      <sect categorycode="ApplicationsEducationArts">
+        <title>&#x82B8;&#x8853;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationComputer Science">
+        <title>&#x82F1;&#x8A9E;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationEnglish">
+        <title>&#x6570;&#x5B66;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationLanguage">
+        <title>&#x97F3;&#x697D;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMaths">
+        <title>&#x79D1;&#x5B66;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMusic">
+        <title>&#x79D1;&#x5B66;&#x6280;&#x8853;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationScience">
+        <title>&#x30C6;&#x30B9;&#x30C8;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTechnology">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTesting">
+        <title>&#x30B2;&#x30FC;&#x30E0;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsGames">
+      <title>&#x30DC;&#x30FC;&#x30C9;</title>
+      <sect categorycode="ApplicationsGamesArcade">
+        <title>&#x30B7;&#x30E5;&#x30FC;&#x30C6;&#x30A3;&#x30F3;&#x30B0;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesBoard">
+        <title>&#x30D1;&#x30BA;&#x30EB;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesFirst Person Shooters">
+        <title>&#x30D5;&#x30E9;&#x30A4;&#x30C8;&#x30B7;&#x30E5;&#x30DF;&#x30EC;&#x30FC;&#x30BF;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesPuzzles">
+        <title>&#x30ED;&#x30FC;&#x30EB;&#x30D7;&#x30EC;&#x30A4;&#x30F3;&#x30B0;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesFighting">
+        <title>&#x6226;&#x7565;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesRole-Playing">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesSimulation">
+        <title>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30CD;&#x30C3;&#x30C8;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesStrategy">
+        <title>&#x30C1;&#x30E3;&#x30C3;&#x30C8;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsInternet">
+      <title>&#x30D5;&#x30A1;&#x30AF;&#x30B7;&#x30DF;&#x30EA;</title>
+      <sect categorycode="ApplicationsInternetChat">
+        <title>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x5171;&#x6709;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetEmail">
+        <title>FTP</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFax">
+        <title>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30CD;&#x30C3;&#x30C8;&#x96FB;&#x8A71;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFile Sharing">
+        <title>&#x30E1;&#x30C3;&#x30BB;&#x30FC;&#x30B8;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFTP">
+        <title>&#x30CB;&#x30E5;&#x30FC;&#x30B9;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetInternet Phone">
+        <title>&#x30D3;&#x30C7;&#x30AA;&#x4F1A;&#x8B70;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetMessaging">
+        <title>&#x30A6;&#x30A7;&#x30D6;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetNews">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetVideo Conferencing">
+        <title>&#x30DE;&#x30EB;&#x30C1;&#x30E1;&#x30C7;&#x30A3;&#x30A2;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetWeb">
+        <title>&#x30B0;&#x30E9;&#x30D5;&#x30A3;&#x30C3;&#x30AF;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsMultimedia">
+      <title>3D &#x30E2;&#x30C7;&#x30EA;&#x30F3;&#x30B0;</title>
+      <sect categorycode="ApplicationsMultimediaGraphics">
+        <title>3D &#x30EC;&#x30F3;&#x30C0;&#x30EA;&#x30F3;&#x30B0;</title>
+        <sect categorycode="ApplicationsMultimediaGraphics3D Modelling">
+          <title>CAD</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphics3D Rendering">
+          <title>&#x30AD;&#x30E3;&#x30D7;&#x30C1;&#x30E3;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsCAD">
+          <title>&#x30C7;&#x30FC;&#x30BF;&#x5909;&#x63DB;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsCapture">
+          <title>&#x30C9;&#x30ED;&#x30FC;&#x7CFB;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsConversion">
+          <title>&#x753B;&#x50CF;&#x7DE8;&#x96C6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsDrawing">
+          <title>&#x753B;&#x50CF;&#x95B2;&#x89A7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsEditing">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsViewing">
+          <title>&#x30B5;&#x30A6;&#x30F3;&#x30C9;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsOther">
+          <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaSound">
+        <title>CD &#x30DE;&#x30B9;&#x30BF;&#x30EA;&#x30F3;&#x30B0;</title>
+        <sect categorycode="ApplicationsMultimediaSoundAnalysis">
+          <title>&#x30C7;&#x30FC;&#x30BF;&#x5909;&#x63DB;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundCD Mastering">
+          <title>&#x97F3;&#x58F0;&#x7DE8;&#x96C6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundConversion">
+          <title>&#x753B;&#x50CF;&#x7DE8;&#x96C6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundEditing">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundMIDI">
+          <title>&#x30D7;&#x30EC;&#x30A4;&#x30E4;&#x30FC;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundMixers">
+          <title>&#x9332;&#x97F3;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundPlayers">
+          <title>&#x30B9;&#x30D4;&#x30FC;&#x30C1;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundRecording">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundSpeech">
+          <title>&#x52D5;&#x753B;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundOther">
+          <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaVideo">
+        <title>&#x30C7;&#x30FC;&#x30BF;&#x5909;&#x63DB;</title>
+        <sect categorycode="ApplicationsMultimediaVideoCapture">
+          <title>&#x30C9;&#x30ED;&#x30FC;&#x7CFB;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoConversion">
+          <title>&#x753B;&#x50CF;&#x7DE8;&#x96C6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoDisplay">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoEditing">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoOther">
+          <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsOffice">
+      <title>&#x30C7;&#x30FC;&#x30BF;&#x51E6;&#x7406;</title>
+      <sect categorycode="ApplicationsOfficeCalendar">
+        <title>&#x30C7;&#x30FC;&#x30BF;&#x30D9;&#x30FC;&#x30B9;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeData Processing">
+        <title>&#x96FB;&#x5B50;&#x30E1;&#x30FC;&#x30EB;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeDatabase">
+        <title>&#x30D5;&#x30A1;&#x30A4;&#x30CA;&#x30F3;&#x30B7;&#x30E3;&#x30EB;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeEmail">
+        <title>FTP</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeFinancial">
+        <title>&#x30B0;&#x30E9;&#x30D5;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePIM">
+        <title>&#x30D7;&#x30EC;&#x30BC;&#x30F3;&#x30C6;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePlotting">
+        <title>&#x51FA;&#x7248;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePresentation">
+        <title>&#x30EF;&#x30FC;&#x30D7;&#x30ED;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficePublishing">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        <sect categorycode="ApplicationsOfficePublishingWeb Publishing">
+          <title>&#x79D1;&#x5B66;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsOfficeWord Processing">
+        <title>&#x5929;&#x6587;&#x5B66;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsScientific">
+      <title>&#x6570;&#x5B66;</title>
+      <sect categorycode="ApplicationsScientificAstronomy">
+        <title>&#x53EF;&#x8996;&#x5316;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificAstrophysics">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificBiology">
+        <title>&#x30BB;&#x30AD;&#x30E5;&#x30EA;&#x30C6;&#x30A3;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificChemistry">
+        <title>&#x6697;&#x53F7;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificEDA">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificGenetics">
+        <title>&#x30C6;&#x30AD;&#x30B9;&#x30C8;&#x30A8;&#x30C7;&#x30A3;&#x30BF;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificMath">
+        <title>CLI</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificPhysics">
+        <title>GUI</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificVisualisation">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsSecurity">
+      <title>&#x5727;&#x7E2E;</title>
+      <sect categorycode="ApplicationsSecurityCryptography">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsSecurityOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsText Editors">
+      <title>&#x8A2D;&#x5B9A;</title>
+      <sect categorycode="ApplicationsText EditorsCLI">
+        <title>&#x30B9;&#x30AF;&#x30EA;&#x30FC;&#x30F3;&#x30BB;&#x30FC;&#x30D0;&#x30FC;</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsGUI">
+        <title>&#x30A6;&#x30A3;&#x30F3;&#x30C9;&#x30A6;&#x30DE;&#x30CD;&#x30FC;&#x30B8;&#x30E3;</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsUtilities">
+      <title>CDE</title>
+      <sect categorycode="ApplicationsUtilitiesArchiving">
+        <title>&#x958B;&#x767A;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCalculating">
+        <title>&#x30C7;&#x30FC;&#x30BF;&#x30D9;&#x30FC;&#x30B9;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesClocks">
+        <title>&#x958B;&#x767A;&#x30C4;&#x30FC;&#x30EB;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCompression">
+        <title>&#x69CB;&#x7BC9;&#x30C4;&#x30FC;&#x30EB;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesFile Utilities">
+        <title>&#x30B3;&#x30FC;&#x30C9;&#x751F;&#x6210;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesMonitors">
+        <title>&#x8A2D;&#x5B9A;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesPrinting">
+        <title>&#x30C7;&#x30D0;&#x30C3;&#x30AC;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesTerminals">
+        <title>&#x7D71;&#x5408;&#x958B;&#x767A;&#x74B0;&#x5883;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesText Utilities">
+        <title>&#x30D1;&#x30C3;&#x30B1;&#x30FC;&#x30B8;&#x30F3;&#x30B0;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsX">
+      <title>RAD</title>
+      <sect categorycode="ApplicationsXConfiguration">
+        <title>&#x5C65;&#x6B74;&#x7BA1;&#x7406;</title>
+        </sect>
+      <sect categorycode="ApplicationsXFonts">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="ApplicationsXLogin Managers">
+        <title>Environments</title>
+        </sect>
+      <sect categorycode="ApplicationsXScreensavers">
+        <title>ADA</title>
+        </sect>
+      <sect categorycode="ApplicationsXWindow Managers">
+        <title>C</title>
+        </sect>
+      <sect categorycode="ApplicationsXOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+  </sect>
+
+  <sect categorycode="CDE">
+    <title>GNOME</title>
+    </sect>
+
+  <sect categorycode="Development">
+    <title>GTK+</title>
+    <sect categorycode="DevelopmentDatabases">
+      <title>gtk++</title>
+      </sect>
+    <sect categorycode="DevelopmentDevelopment Tools">
+      <title>KDE</title>
+      <sect categorycode="DevelopmentDevelopment ToolsBuild Tools">
+        <title>Perl</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsCode Generators">
+        <title>Qt</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsConfiguration">
+        <title>&#x5C65;&#x6B74;&#x7BA1;&#x7406;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsDebuggers">
+        <title>WebML</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsIDEs">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsPackaging">
+        <title>&#x30AB;&#x30FC;&#x30CD;&#x30EB;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsProfiling">
+        <title>FreeBSD</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsRAD">
+        <title>Linux</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsVersion Control">
+        <title>NetBSD</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentEnvironments">
+      <title>&#x30E9;&#x30A4;&#x30D6;&#x30E9;&#x30EA;</title>
+      <sect categorycode="DevelopmentEnvironmentsADA">
+        <title>&#x30B7;&#x30B9;&#x30C6;&#x30E0;&#x30B3;&#x30FC;&#x30EB;</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsC">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsC++">
+        <title>&#x4E00;&#x822C;</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsGNOME">
+        <title>&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsGTK+">
+        <title>Linux</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsgtk++">
+        <title>&#x30C7;&#x30A3;&#x30B9;&#x30C8;&#x30EA;&#x30D3;&#x30E5;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsJava">
+        <title>Caldera</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsKDE">
+        <title>Debian</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsPerl">
+        <title>Mandrake</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsPython">
+        <title>Red Flag</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsQt">
+        <title>Red Hat</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsTcl/Tk">
+        <title>Slackware</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsWebML">
+        <title>SuSE</title>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentKernels">
+      <title>&#x4E00;&#x822C;</title>
+      <sect categorycode="DevelopmentKernelsFreeBSD">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsLinux">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsNetBSD">
+        <title>GNOME</title>
+        </sect>
+      <sect categorycode="DevelopmentKernelsOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentLibraries">
+      <title>&#x30A2;&#x30D7;&#x30EC;&#x30C3;&#x30C8;</title>
+      </sect>
+    <sect categorycode="DevelopmentSystem Calls">
+      <title>&#x904A;&#x3073;</title>
+      </sect>
+    <sect categorycode="DevelopmentOther">
+      <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+      </sect>
+  </sect>
+  <sect categorycode="General">
+    <title>&#x30E2;&#x30CB;&#x30BF;</title>
+    <sect categorycode="GeneralLicenses">
+      <title>&#x30DE;&#x30EB;&#x30C1;&#x30E1;&#x30C7;&#x30A3;&#x30A2;</title>
+      </sect>
+    <sect categorycode="GeneralLinux">
+      <title>&#x305D;&#x306E;&#x4ED6;</title>
+      <sect categorycode="GeneralLinuxDistributions">
+        <title>&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;</title>
+        <sect categorycode="GeneralLinuxDistributionsCaldera">
+          <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsDebian">
+          <title>&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsMandrake">
+          <title>&#x958B;&#x767A;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsRed Flag">
+          <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsRed Hat">
+          <title>&#x5165;&#x9580;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsSlackware">
+          <title>&#x30C1;&#x30E5;&#x30FC;&#x30C8;&#x30EA;&#x30A2;&#x30EB;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsSuSE">
+          <title>&#x767D;&#x66F8;</title>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsOther">
+          <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+          </sect>
+      </sect>
+      <sect categorycode="GeneralLinuxGeneral">
+        <title>&#x30E2;&#x30CB;&#x30BF;</title>
+        </sect>
+      <sect categorycode="GeneralLinuxOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GeneralOther">
+      <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="GNOME">
+    <title>&#x30E9;&#x30A4;&#x30BB;&#x30F3;&#x30B9;</title>
+    <sect categorycode="GNOMECore Desktop">
+      <title>&#x30B7;&#x30B9;&#x30C6;&#x30E0;</title>
+      </sect>
+    <sect categorycode="GNOMEApplets">
+      <title>&#x305D;&#x306E;&#x4ED6;</title>
+      <sect categorycode="GNOMEAppletsAmusement">
+        <title>&#x5A2F;&#x697D;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsClock">
+        <title>&#x30E6;&#x30FC;&#x30C6;&#x30A3;&#x30EA;&#x30C6;&#x30A3;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMonitors">
+        <title>&#x8A2D;&#x5B9A;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMultimedia">
+        <title>3D &#x30E2;&#x30C7;&#x30EA;&#x30F3;&#x30B0;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsNetwork">
+        <title>&#x30B0;&#x30E9;&#x30D5;&#x30A3;&#x30C3;&#x30AF;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsUtility">
+        <title>&#x30A4;&#x30F3;&#x30BF;&#x30FC;&#x30CD;&#x30C3;&#x30C8;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEApplications">
+      <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+      </sect>
+    <sect categorycode="GNOMEUtilities">
+      <title>CDE</title>
+      </sect>
+    <sect categorycode="GNOMEDevelopment">
+      <title>GTK+</title>
+      <sect categorycode="GNOMEDevelopmentApplications">
+        <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentIntroductory">
+        <title>&#x958B;&#x767A;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentTutorials">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentWhite Papers">
+        <title>&#x30B7;&#x30B9;&#x30C6;&#x30E0;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEGames">
+      <title>&#x30DC;&#x30FC;&#x30C9;</title>
+      </sect>
+    <sect categorycode="GNOMEGraphics">
+      <title>3D &#x30EC;&#x30F3;&#x30C0;&#x30EA;&#x30F3;&#x30B0;</title>
+      </sect>
+    <sect categorycode="GNOMEInternet">
+      <title>&#x30D5;&#x30A1;&#x30AF;&#x30B7;&#x30DF;&#x30EA;</title>
+      </sect>
+    <sect categorycode="GNOMEMultimedia">
+      <title>3D &#x30E2;&#x30C7;&#x30EA;&#x30F3;&#x30B0;</title>
+      </sect>
+    <sect categorycode="GNOMESettings">
+      <title>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;</title>
+      </sect>
+    <sect categorycode="GNOMESystem">
+      <title>&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;</title>
+      </sect>
+    <sect categorycode="GNOMEOther">
+      <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="KDE">
+    <title>Debian</title>
+    <sect categorycode="KDEUtilities">
+      <title>CDE</title>
+      </sect>
+    <sect categorycode="KDEApplications">
+      <title>&#x30A2;&#x30D7;&#x30EA;&#x30B1;&#x30FC;&#x30B7;&#x30E7;&#x30F3;</title>
+      </sect>
+    <sect categorycode="KDEGames">
+      <title>&#x30DC;&#x30FC;&#x30C9;</title>
+      </sect>
+    <sect categorycode="KDEGraphics">
+      <title>3D &#x30EC;&#x30F3;&#x30C0;&#x30EA;&#x30F3;&#x30B0;</title>
+      </sect>
+    <sect categorycode="KDEInternet">
+      <title>&#x30D5;&#x30A1;&#x30AF;&#x30B7;&#x30DF;&#x30EA;</title>
+      </sect>
+    <sect categorycode="KDEMultimedia">
+      <title>3D &#x30E2;&#x30C7;&#x30EA;&#x30F3;&#x30B0;</title>
+      </sect>
+    <sect categorycode="KDESettings">
+      <title>&#x30D5;&#x30A1;&#x30A4;&#x30EB;&#x30B7;&#x30B9;&#x30C6;&#x30E0;</title>
+      </sect>
+    <sect categorycode="KDESystem">
+      <title>&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;</title>
+      </sect>
+    <sect categorycode="KDEPrograms">
+      <title>&#x8A2D;&#x5B9A;&#x30C4;&#x30FC;&#x30EB;</title>
+      </sect>
+    <sect categorycode="KDEDevelopment">
+      <title>GTK+</title>
+      </sect>
+    <sect categorycode="KDEOther">
+      <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="System">
+    <title>&#x30CD;&#x30C3;&#x30C8;&#x30EF;&#x30FC;&#x30AF;</title>
+    <sect categorycode="SystemAdministration">
+      <title>&#x30CF;&#x30FC;&#x30C9;&#x30C7;&#x30A3;&#x30B9;&#x30AF;</title>
+      <sect categorycode="SystemAdministrationBackups">
+        <title>&#x30EA;&#x30E0;&#x30FC;&#x30D0;&#x30D6;&#x30EB;&#x30B9;&#x30C8;&#x30EC;&#x30FC;&#x30B8;</title>
+        <sect categorycode="SystemAdministrationBackupsLocal">
+          <title>&#x30E1;&#x30E2;&#x30EA;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationBackupsRemote">
+          <title>Ethernet/Modem</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationFilesystems">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="SystemAdministrationNetworking">
+        <title>&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;</title>
+        <sect categorycode="SystemAdministrationNetworkingAppleTalk">
+          <title>&#x30BB;&#x30AD;&#x30E5;&#x30EA;&#x30C6;&#x30A3;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingPPP">
+          <title>&#x30D5;&#x30A1;&#x30A4;&#x30A2;&#x30A6;&#x30A9;&#x30FC;&#x30EB;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingSMB">
+          <title>&#x4FB5;&#x5165;&#x691C;&#x51FA;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingTCP/IP">
+          <title>&#x30A6;&#x30A3;&#x30EB;&#x30B9;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingDNS">
+          <title>&#x305D;&#x306E;&#x4ED6;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingOther">
+          <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationUsers">
+        <title>HTTP</title>
+        </sect>
+      <sect categorycode="SystemAdministrationOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemConfiguration">
+      <title>&#x5C65;&#x6B74;&#x7BA1;&#x7406;</title>
+      <sect categorycode="SystemConfigurationConfig Files">
+        <title>SSH</title>
+        </sect>
+      <sect categorycode="SystemConfigurationConfiguration Tools">
+        <title>Telnet</title>
+        </sect>
+      <sect categorycode="SystemConfigurationOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemHardware">
+      <title>BIND</title>
+      <sect categorycode="SystemHardwareProcessor">
+        <title>&#x5370;&#x5237;</title>
+        </sect>
+      <sect categorycode="SystemHardwareStorage">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="SystemHardwareVideo">
+        <title>&#x30C7;&#x30FC;&#x30BF;&#x5909;&#x63DB;</title>
+        </sect>
+      <sect categorycode="SystemHardwareInput Devices">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="SystemHardwareNetworking">
+        <title>&#x30A4;&#x30F3;&#x30B9;&#x30C8;&#x30FC;&#x30EB;</title>
+        </sect>
+      <sect categorycode="SystemHardwarePCI/ISA/PCMCIA">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+      <sect categorycode="SystemHardwareOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemPackage Management">
+      <title>&#x30D5;&#x30A1;&#x30A4;&#x30A2;&#x30A6;&#x30A9;&#x30FC;&#x30EB;</title>
+      </sect>
+    <sect categorycode="SystemSecurity">
+      <title>&#x5727;&#x7E2E;</title>
+      <sect categorycode="SystemSecurityFirewall">
+        <title>&#x30B0;&#x30E9;&#x30D5;</title>
+        </sect>
+      <sect categorycode="SystemSecurityIntrusion Detection">
+        <title>&#x958B;&#x767A;</title>
+        </sect>
+      <sect categorycode="SystemSecurityVirus">
+        <title>&#x30B5;&#x30A6;&#x30F3;&#x30C9;</title>
+        </sect>
+      <sect categorycode="SystemSecurityOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemServices">
+      <title>&#x5727;&#x7E2E;</title>
+      <sect categorycode="SystemServicesHTTP">
+        <title>3D &#x30EC;&#x30F3;&#x30C0;&#x30EA;&#x30F3;&#x30B0;</title>
+        </sect>
+      <sect categorycode="SystemServicesFTP">
+        <title>&#x30CB;&#x30E5;&#x30FC;&#x30B9;</title>
+        </sect>
+      <sect categorycode="SystemServicesSMB">
+        <title>&#x4FB5;&#x5165;&#x691C;&#x51FA;</title>
+        </sect>
+      <sect categorycode="SystemServicesSSH">
+        <title>&#x4FB5;&#x5165;&#x691C;&#x51FA;</title>
+        </sect>
+      <sect categorycode="SystemServicesTelnet">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="SystemServicesSyslog">
+        <title>&#x767D;&#x66F8;</title>
+        </sect>
+      <sect categorycode="SystemServicesBIND">
+        <title>&#x305D;&#x306E;&#x4ED6;</title>
+        </sect>
+      <sect categorycode="SystemServicesPrinting">
+        <title>&#x30C7;&#x30D0;&#x30C3;&#x30AC;</title>
+        </sect>
+      <sect categorycode="SystemServicesOther">
+        <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemOther">
+      <title>&#x30A2;&#x30FC;&#x30B1;&#x30FC;&#x30C9;</title>
+      </sect>
+  </sect>
+</ScrollKeeperContentsList>

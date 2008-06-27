@@ -1,0 +1,22 @@
+Implement a cleanup script for the client, the current implementation is broken
+
+In the works:
+Finished, but yet to debug:
+Implement bidirectional communication
+
+Bugs:
+Aussenden des eigentlichen Kommunikations-Payloads in send_to_pipe()
+Scheitert momentan an falschen Buffer-Groessen, die in message_t
+gespeichert sind.
+
+Gegenseite zeigt noch keine Reaktion (select() timed out)
+
+Enhancements:
+Proper connection multiplexing
+Replace options parsing with getopt()
+
+API notes:
+protocol_send_message (message*) - send a msg to the opposite site
+add_timer - set a timer and its handler for an event related to a filedecriptor
+add_read_fd - add a file descriptor to the global list of fds to select()
+start_script - run a script and hang the pipe into the list of fds to select()

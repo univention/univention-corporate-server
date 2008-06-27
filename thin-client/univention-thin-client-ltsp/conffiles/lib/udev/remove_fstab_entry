@@ -1,0 +1,27 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/lib/udev/remove_fstab_entry
+#
+# remove_fstab_entry
+# place in /lib/udev
+
+devicename=$(basename $1)
+
+grep ${devicename} /var/run/ltspfs_fstab | while read DEV MOUNTPOINT TYPE OPTIONS DUMP PASS; do
+    umount -l ${DEV} 2>&1 >/dev/null
+    rmdir ${MOUNTPOINT}
+
+    host=`hostname`
+    univention-create-ltsp-umount-entry-tc $host:${MOUNTPOINT}
+
+done
+
+sed -e "/^\/dev\/$devicename /d" /var/run/ltspfs_fstab >/tmp/ltspfs_fstab
+cp /tmp/ltspfs_fstab /var/run
+rm /tmp/ltspfs_fstab

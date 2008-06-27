@@ -1,0 +1,95 @@
+#!/usr/bin/python
+#
+# Univention Thin Client Basesystem
+#  wrapper for APT to install packages for thin clients
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+import os
+import sys
+from optparse import OptionParser
+
+import univention.debug as ud
+
+# example command:
+# apt-get -o "DPkg::Options::=--instdir=$instdir" -o "DPkg::Options::=--admindir=$admindir" -o Dir::State::Status=$prefix/var/lib/dpkg/status install less
+class UC_APT( object ):
+	def __init__( self, options, args ):
+		self.options = options
+		self.arguments = args
+		self.prefix = os.environ.get( 'UNIVENTION_THIN_CLIENT_PREFIX', self.options.prefix )
+
+	def __create_command( self ):
+		opts = (
+			'-o "DPkg::Options::=--instdir=%s"' % self.prefix,
+			'-o "DPkg::Options::=--admindir=%s"' % os.path.join( self.prefix, 'var/lib/dpkg' ),
+			'-o DPkg::Options::=--force-confold',
+			'--force-yes', '-y',
+			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
+			'-o APT::Architecture=%s' % self.options.arch,
+			'-o Debug::NoLocking=True', # required if called by another apt-get process
+			)
+
+		return 'apt-get %s %s' % ( ' '.join( opts ), ' '.join( self.arguments ) )
+
+	def run( self ):
+		cmd = self.__create_command()
+		ret = os.system( cmd )
+
+		return ret == 0
+
+def main():
+	parser = OptionParser( usage = "usage: %prog [options]" )
+	parser.allow_interspersed_args = False
+	parser.add_option( '-p', '--prefix', type = 'string', action = 'store',
+					   dest = 'prefix', help = 'set prefix for thin client basesystem' )
+	parser.add_option( '-a', '--arch', action = 'store', dest = 'arch',
+					   choices = ( 'i386', 'powerpc', 'amd64' ),
+					   help = 'set architecture for packages' )
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug',
+					   help = 'if given debugging is activated and set to the specified level' )
+	parser.set_defaults( prefix = '/var/lib/univention-client-root', arch = 'i386', debug = 0 )
+
+	( options, arguments ) = parser.parse_args()
+
+	if options.debug > 0:
+		ud.init( '/var/log/univention/thin-client-apt.log', 1, 1 )
+		ud.set_level( ud.ADMIN, options.debug )
+	else:
+		ud.init( '/dev/null', 0, 0 )
+
+	if not os.path.isdir( options.prefix ):
+		print >>sys.stderr, "error: prefix does not exist: %s" % options.prefix
+		sys.exit( 1 )
+
+	cwd = os.getcwd()
+	os.chdir( options.prefix)
+	apt = UC_APT( options, arguments )
+	apt.run()
+	os.chdir( cwd )
+
+if __name__ == '__main__':
+	main()

@@ -1,0 +1,114 @@
+univention-thin-client-sound (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:04 +0200
+
+univention-thin-client-sound (1.0.8-2) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:29 +0200
+
+univention-thin-client-sound (1.0.8-1) unstable; urgency=low
+
+  * do not beep on startup
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 25 Nov 2007 18:37:19 +0100
+
+univention-thin-client-sound (1.0.7-3) unstable; urgency=low
+
+  * fixed syntax error 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Sep 2007 12:23:23 +0200
+
+univention-thin-client-sound (1.0.7-2) unstable; urgency=low
+
+  * fixed order of commands in postinst 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 27 Sep 2007 13:05:59 +0200
+
+univention-thin-client-sound (1.0.7-1) unstable; urgency=low
+
+  * undo last changes for udev rules file 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 16:57:46 +0200
+
+univention-thin-client-sound (1.0.6-2) unstable; urgency=low
+
+  * fixed symbolic link to RAM disk 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 15:23:20 +0200
+
+univention-thin-client-sound (1.0.6-1) unstable; urgency=low
+
+  * reduce default volume
+  * setup udev rules after start of udev
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 15:13:33 +0200
+
+univention-thin-client-sound (1.0.5-1) unstable; urgency=low
+
+  * redirect output of amixer to /dev/null
+  * fixed sytnax error in pre-session script
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 13:00:31 +0200
+
+univention-thin-client-sound (1.0.4-1) unstable; urgency=low
+
+  * fixed syntax error in post login script
+  * reload udev rules before triggering re-initialisation of sound subsystem
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 12:06:33 +0200
+
+univention-thin-client-sound (1.0.3-4) unstable; urgency=low
+
+  * fixed type in postinst 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 11:12:36 +0200
+
+univention-thin-client-sound (1.0.3-3) unstable; urgency=low
+
+  * add init script to package
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 11:08:43 +0200
+
+univention-thin-client-sound (1.0.3-2) unstable; urgency=low
+
+  * add dependency to alsa-utils 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 11:04:05 +0200
+
+univention-thin-client-sound (1.0.3-1) unstable; urgency=low
+
+  * set environment variable ESPEAKER on terminal server 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 10:34:08 +0200
+
+univention-thin-client-sound (1.0.2-1) unstable; urgency=low
+
+  * renamed GDM session scripts 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 09:24:02 +0200
+
+univention-thin-client-sound (1.0.1-1) unstable; urgency=low
+
+  * default sound daemon is esd
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 15:08:59 +0200
+
+univention-thin-client-sound (1.0.0-2) unstable; urgency=low
+
+  * add build-dependency to univention-config-dev 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 15:03:20 +0200
+
+univention-thin-client-sound (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 25 Sep 2007 10:02:18 +0200
+
+Local variables:
+mode: debian-changelog
+End:
