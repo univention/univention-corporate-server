@@ -1,12 +1,7 @@
 Type: file
 File: etc/gdm/gdm.conf
-Variables: gdm/menu/system
-Variables: gdm/menu/securesystem
-Variables: gdm/theme
-Variables: gdm/theme/dir
 Variables: univentionAutoStartScript
-Variables: gdm/allowroot
-Variables: gdm/allowremoteroot
+Variables: gdm/.*
 
 Type: file
 File: etc/pam.d/gdm-autologin
