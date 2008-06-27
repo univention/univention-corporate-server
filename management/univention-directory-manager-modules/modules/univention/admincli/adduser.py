@@ -130,9 +130,14 @@ def doit(arglist):
 		lo, position=univention.admin.uldap.getAdminConnection()
 	except Exception, e:
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
-		out.append('authentication error: %s' % str(e))
-		return out
-		pass
+		try:
+			lo, position=univention.admin.uldap.getMachineConnection()
+		except Exception, e2:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e2))
+			out.append('authentication error: %s' % str(e))
+			out.append('authentication error: %s' % str(e2))
+			return out
+			pass
 	
 	for i in range(0, len(args)):
 		try:

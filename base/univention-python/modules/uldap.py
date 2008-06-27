@@ -82,6 +82,15 @@ def getBackupConnection(start_tls=2, decode_ignorelist=[]):
 			raise ldap.SERVER_DOWN
 	return lo
 
+def getMachineConnection(start_tls=2, decode_ignorelist=[]):
+	baseConfig=univention_baseconfig.baseConfig()
+	baseConfig.load()
+	bindpw=open('/etc/machine.secret').read()
+	if bindpw[-1] == '\n':
+		bindpw=bindpw[0:-1]
+	lo=access(host=baseConfig['ldap/master'], base=baseConfig['ldap/base'], binddn=baseConfig['ldap/hostdn'], bindpw=bindpw, start_tls=start_tls, decode_ignorelist=decode_ignorelist)
+	return lo
+
 class access:
 
 	def __init__(self, host='localhost', port=389, base='', binddn='', bindpw='', start_tls=2, ca_certfile=None, decode_ignorelist=[]):

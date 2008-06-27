@@ -584,9 +584,17 @@ def doit(arglist):
 	   		pass
 
 	else:
-		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
+		if os.path.exists('/etc/ldap.secret'):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using cn=admin,%s account" % baseDN)
+			secretFileName='/etc/ldap.secret'
+			binddn='cn=admin,'+baseDN
+		elif os.path.exists('/etc/machine.secret'):
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "using %s account" % baseConfig['ldap/hostdn'])
+			secretFileName='/etc/machine.secret'
+			binddn=baseConfig['ldap/hostdn']
+
 		try:
-			secretFile=open('/etc/ldap.secret','r')
+			secretFile=open(secretFileName,'r')
 		except IOError:
 			out.append('E: Permission denied, try --binddn and --bindpw')
 			return out + ["OPERATION FAILED"]
@@ -594,7 +602,7 @@ def doit(arglist):
 		pwd=re.sub('\n','',pwdLine)
 
 		try:
-			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn='cn=admin,'+baseDN, bindpw=pwd, start_tls=tls)
+			lo=univention.admin.uldap.access(host=baseConfig['ldap/master'], base=baseDN, binddn=binddn, bindpw=pwd, start_tls=tls)
 		except Exception, e:
 	   		univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'authentication error: %s' % str(e))
 	   		out.append('authentication error: %s' % str(e))

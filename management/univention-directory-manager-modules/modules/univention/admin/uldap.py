@@ -55,6 +55,11 @@ def getAdminConnection(start_tls=2,decode_ignorelist=[]):
 	pos=position(lo.base)
 	return access(lo=lo), pos
 
+def getMachineConnection(start_tls=2,decode_ignorelist=[]):
+	lo=univention.uldap.getMachineConnection(start_tls, decode_ignorelist=decode_ignorelist)
+	pos=position(lo.base)
+	return access(lo=lo), pos
+
 class domain:
 	def __init__(self, lo, position):
 		self.lo=lo

@@ -1,3 +1,10 @@
+univention-python (3.0.0-1) unstable; urgency=low
+
+  * added a function for creating a ldap connection with the machine
+    account
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 09:08:36 +0200
+
 univention-python (2.2.2-2) unstable; urgency=low
 
   * readded the utf8 module
