@@ -1,0 +1,36 @@
+The following packet format is used "on the wire":
+
+struct raw_message_t {
+  unsigned int command;
+  unsigned long args_length;
+  unsigned long data_length;
+};
+
+
+The following command classes are defined:
+
+COMMAND_ACK		0x01
+COMMAND_ALIVE		0x02
+COMMAND_ERROR           0x03
+
+COMMAND_EXEC		0x11
+COMMAND_START           0x12
+
+COMMAND_FD_OPEN		0x21
+COMMAND_FD_CLOSE	0x22
+COMMAND_FD_DATA		0x23
+
+COMMAND_SETTING_GET	0x31
+COMMAND_SETTING_SET	0x32
+COMMAND_SETTING_SETENV  0x33
+COMMAND_SETTING_UNSETENV 0x34
+
+COMMAND_RED_STDOUT      0x51
+COMMAND_RED_STDERR      0x52
+
+COMMAND_END_EXIT        0x61
+COMMAND_END_WAITCHILD   0x62
+COMMAND_END_CLEANUP     0x63
+
+COMMAND_MOUNT           0x71
+

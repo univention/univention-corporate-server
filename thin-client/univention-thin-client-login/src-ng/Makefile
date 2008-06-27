@@ -1,0 +1,78 @@
+#
+# Univention Client Login
+#  Makefile for the session handler
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+PROGS	= client server client-run uniclient
+SRCS 	= signals.c connection.c script.c command.c protocol.c \
+	process.c debug.c pipe.c security.c alive.c select_loop.c \
+	session.c command_socket.c channels.c cmd_handler.c \
+	uniclient_main.c
+
+CL_SRCS		= client_main.c
+SRV_SRCS	= server_main.c
+CLR_SRCS	= client_run_main.c
+UNI_SRCS	= uniclient_main.c
+
+LIB	= libcs.a
+
+CFLAGS	= -g -Wall
+CC	= gcc
+
+all:	${PROGS}
+
+OBJS		= $(SRCS:.c=.o)
+CL_OBJS		= $(CL_SRCS:.c=.o)
+SRV_OBJS	= $(SRV_SRCS:.c=.o)
+CLR_OBJS	= $(CLR_SRCS:.c=.o)
+UNI_OBJS	= $(UNI_SRCS:.c=.o)
+
+
+${LIB}: ${OBJS}
+	ar rcu ${LIB} ${OBJS}
+
+client:	${LIB} ${CL_OBJS}
+	$(CC) -o client ${CL_OBJS} ${LIB} $(LIBS) $(LDFLAGS)
+
+server:	${LIB} ${SRV_OBJS}
+	$(CC) -o server ${SRV_OBJS} ${LIB} $(LIBS) $(LDFLAGS)
+
+client-run:	${LIB} ${CLR_OBJS}
+	$(CC) -o client-run ${CLR_OBJS} ${LIB} $(LIBS) $(LDFLAGS)
+
+uniclient:	${LIB} ${CLR_OBJS}
+	$(CC) -o uniclient ${UNI_OBJS} ${LIB} $(LIBS) $(LDFLAGS)
+
+install:	${PROGS}
+	install -d ${DESTDIR}/usr/bin \
+		${DESTDIR}/var/lib/univention-client-root/bin/usr/bin
+	install -m 4755 uniclient ${DESTDIR}/usr/bin/univention-session
+	install -m 4755 uniclient ${DESTDIR}/var/lib/univention-client-root/usr/bin/univention-login
+	install -m 755 client-run ${DESTDIR}/usr/bin/univention-client-run
+
+clean:
+	rm -f ${OBJS} ${OBJS} ${SRV_OBJS} ${CL_OBJS} {$CLR_OBJS} *~ ${PROGS} ${LIB}

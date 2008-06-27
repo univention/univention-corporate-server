@@ -1,0 +1,363 @@
+univention-thin-client-ltsp (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:02 +0200
+
+univention-thin-client-ltsp (1.0.4-8) unstable; urgency=low
+
+  * rename init script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 22 May 2008 09:04:11 +0200
+
+univention-thin-client-ltsp (1.0.4-7) unstable; urgency=low
+
+  * check if /var/lib/univention/ltsp exists and remove set -e from the
+    postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 16:37:13 +0200
+
+univention-thin-client-ltsp (1.0.4-6) unstable; urgency=low
+
+  * fixed a typo in the add_fstab_entry script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 15:01:35 +0200
+
+univention-thin-client-ltsp (1.0.4-5) unstable; urgency=low
+
+  * added usb device check
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 14:36:01 +0200
+
+univention-thin-client-ltsp (1.0.4-4) unstable; urgency=low
+
+  * changed the icon on the desktop
+  * the user gets the permissions for the desktop file
+  * added the ucr variable thinclient/ltsp/debug/level
+  * changed the ucr variable for the group to thinclient/ltsp/group
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 07:24:53 +0200
+
+univention-thin-client-ltsp (1.0.4-3) unstable; urgency=low
+
+  * call dh_installdirs before installing the files
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 06:26:06 +0200
+
+univention-thin-client-ltsp (1.0.4-2) unstable; urgency=low
+
+  * call dh_installdirs in debian/rules
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 May 2008 22:49:30 +0200
+
+univention-thin-client-ltsp (1.0.4-1) unstable; urgency=low
+
+  * fixed the ltspfsd init script
+  * fixed some package basics
+  * added baseconfig headers
+  * changed a lot of univention-ltsp-mountd daemon stuff
+  * fixed the univention-ltsp-mountd init script
+  * changed the permissions of some directories and removed a+w stuff
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 20 May 2008 17:17:11 +0200
+
+univention-thin-client-ltsp (1.0.3-37) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:28 +0200
+
+univention-thin-client-ltsp (1.0.3-36) unstable; urgency=low
+
+  * Fix unlink.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Jan 2008 14:52:11 +0100
+
+univention-thin-client-ltsp (1.0.3-35) unstable; urgency=low
+
+  * Remove desktop file during umount
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 21 Jan 2008 14:02:38 +0100
+
+univention-thin-client-ltsp (1.0.3-34) unstable; urgency=low
+
+  * Mount with "sync".
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Jan 2008 12:44:49 +0100
+
+univention-thin-client-ltsp (1.0.3-33) unstable; urgency=low
+
+  * Fix two syntax errors.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 18 Jan 2008 10:45:30 +0100
+
+univention-thin-client-ltsp (1.0.3-32) unstable; urgency=low
+
+  * Correct init script.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 17 Jan 2008 11:00:12 +0100
+
+univention-thin-client-ltsp (1.0.3-31) unstable; urgency=low
+
+  * Start mountd in postinst.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 17 Jan 2008 10:47:13 +0100
+
+univention-thin-client-ltsp (1.0.3-30) unstable; urgency=low
+
+  * Fix syntax error in config registry registration
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 17 Jan 2008 10:29:45 +0100
+
+univention-thin-client-ltsp (1.0.3-29) unstable; urgency=low
+
+  * Fix creation of desktop links
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 13:19:28 +0100
+
+univention-thin-client-ltsp (1.0.3-28) unstable; urgency=low
+
+  * Load fuse module automatically
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 12:04:20 +0100
+
+univention-thin-client-ltsp (1.0.3-27) unstable; urgency=low
+
+  * Fix path generation for desktop file.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 11:49:41 +0100
+
+univention-thin-client-ltsp (1.0.3-26) unstable; urgency=low
+
+  * Add missing import statement.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2007 10:31:23 +0100
+
+univention-thin-client-ltsp (1.0.3-25) unstable; urgency=low
+
+  * Since the activation trigger is run with user privileges, we need to 
+    allow unprivileged users to write into the mountd spool dir.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2007 16:47:14 +0100
+
+univention-thin-client-ltsp (1.0.3-24) unstable; urgency=low
+
+  * Create spool directories
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2007 16:01:47 +0100
+
+univention-thin-client-ltsp (1.0.3-23) unstable; urgency=low
+
+  * Add system startup links for mountd
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2007 15:36:26 +0100
+
+univention-thin-client-ltsp (1.0.3-22) unstable; urgency=low
+
+  * Fix typo.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2007 15:23:58 +0100
+
+univention-thin-client-ltsp (1.0.3-21) unstable; urgency=low
+
+  * Write a desktop file.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 13 Dec 2007 14:50:30 +0100
+
+univention-thin-client-ltsp (1.0.3-20) unstable; urgency=low
+
+  * LTSP-based client hardware management can now be controlled through the
+    directory manager.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 13 Dec 2007 11:51:19 +0100
+
+univention-thin-client-ltsp (1.0.3-19) unstable; urgency=low
+
+  * Pass fuse mount options to ltspfs
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 17:09:40 +0200
+
+univention-thin-client-ltsp (1.0.3-18) unstable; urgency=low
+
+  * Fix desktop shortcuts
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 16:12:59 +0200
+
+univention-thin-client-ltsp (1.0.3-17) unstable; urgency=low
+
+  * Create desktop files
+  * Support unmounting
+  * Fix directory permissions
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 14:21:03 +0200
+
+univention-thin-client-ltsp (1.0.3-16) unstable; urgency=low
+
+  * Fix syntax
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 23 Oct 2007 13:49:41 +0200
+
+univention-thin-client-ltsp (1.0.3-15) unstable; urgency=low
+
+  * Fix creation of mountd spool entry
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 13:14:25 +0200
+
+univention-thin-client-ltsp (1.0.3-14) unstable; urgency=low
+
+  * Correct quoting
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 12:58:38 +0200
+
+univention-thin-client-ltsp (1.0.3-13) unstable; urgency=low
+
+  * Call the correct, renamed binary.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 12:12:13 +0200
+
+univention-thin-client-ltsp (1.0.3-12) unstable; urgency=low
+
+  * Fix test for running session
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 12:03:09 +0200
+
+univention-thin-client-ltsp (1.0.3-11) unstable; urgency=low
+
+  * Bump version for complete rename.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 11:42:21 +0200
+
+univention-thin-client-ltsp (1.0.3-10) unstable; urgency=low
+
+  * Integrate the univention-specific code into the udev rule as the
+    necessary mount point information is available only there
+  * Fix typos
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 11:31:14 +0200
+
+univention-thin-client-ltsp (1.0.3-9) unstable; urgency=low
+
+  * LTSP udev wrapper on thin client
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 10:46:35 +0200
+
+univention-thin-client-ltsp (1.0.3-8) unstable; urgency=low
+
+  * Add univention-ltsp-mountd
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 22 Oct 2007 09:29:40 +0200
+
+univention-thin-client-ltsp (1.0.3-7) unstable; urgency=low
+
+  * Revert previous commit
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  4 Oct 2007 15:56:39 +0200
+
+univention-thin-client-ltsp (1.0.3-6) unstable; urgency=low
+
+  * Make the package directly setuid during package build.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  4 Oct 2007 15:43:17 +0200
+
+univention-thin-client-ltsp (1.0.3-5) unstable; urgency=low
+
+  * Set both uid and euid
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  4 Oct 2007 15:43:15 +0200
+
+univention-thin-client-ltsp (1.0.3-4) unstable; urgency=low
+
+  * Fix typo.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  4 Oct 2007 15:10:48 +0200
+
+univention-thin-client-ltsp (1.0.3-3) unstable; urgency=low
+
+  * Fuse mount points need to be user-writable.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  4 Oct 2007 15:06:21 +0200
+
+univention-thin-client-ltsp (1.0.3-2) unstable; urgency=low
+
+  * Rename univention-username-on-thin-client for consistency
+  * Use seteuid() instead of setuid()
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue,  2 Oct 2007 13:45:42 +0200
+
+univention-thin-client-ltsp (1.0.3-1) unstable; urgency=low
+
+  * add init script as baseconfig template 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 16:38:42 +0200
+
+univention-thin-client-ltsp (1.0.2-1) unstable; urgency=low
+
+  * use modprobe instead of insmod to load necessary modules 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 10:50:09 +0200
+
+univention-thin-client-ltsp (1.0.1-8) unstable; urgency=low
+
+  [ Moritz Muehlenhoff ]
+  * Install -config in thin client environment.
+
+  [ Andreas Büsching ]
+  * -
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 10:50:06 +0200
+
+univention-thin-client-ltsp (1.0.1-7) unstable; urgency=low
+
+  * Fix syntax
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Sep 2007 15:12:12 +0200
+
+univention-thin-client-ltsp (1.0.1-6) unstable; urgency=low
+
+  * Add missing build-dep.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Sep 2007 15:06:28 +0200
+
+univention-thin-client-ltsp (1.0.1-5) unstable; urgency=low
+
+  * Bump version
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Sep 2007 15:01:43 +0200
+
+univention-thin-client-ltsp (1.0.1-4) unstable; urgency=low
+
+  * Remove leftover
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Sep 2007 14:54:01 +0200
+
+univention-thin-client-ltsp (1.0.1-3) unstable; urgency=low
+
+  * Move the init script to the meta package
+  * Create a new -config package for the necessary configuration steps
+  * Use latest thin client kernel
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri, 21 Sep 2007 14:43:50 +0200
+
+univention-thin-client-ltsp (1.0.1-2) unstable; urgency=low
+
+  * New helper script to return the username of the current thin client user
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 20 Sep 2007 13:54:35 +0200
+
+univention-thin-client-ltsp (1.0.1-1) unstable; urgency=low
+
+  * Add setuid wrapper script for ltspfs-based FUSE mounts by users.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 12 Sep 2007 08:42:13 +0200
+
+univention-thin-client-ltsp (1.0.0-2) unstable; urgency=low
+
+  * Fix typo
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  6 Sep 2007 10:29:16 +0200
+
+univention-thin-client-ltsp (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  5 Sep 2007 12:51:59 +0200

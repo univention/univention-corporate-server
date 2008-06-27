@@ -1,0 +1,99 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-config-registry.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-config-registry überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+# 	/etc/univention/templates/files/lib/udev/add_fstab_entry
+#
+
+# add_fstab_entry
+# place in /lib/udev
+# $1 = devicename
+# $2 = fstype
+
+eval $(univention-baseconfig shell)
+
+devicename=$(basename $1)
+fstype=$2
+if [ -z "$fstype" ]; then
+    fstype="$ID_FS_TYPE"
+    if [ -z "$fstype" ]; then
+        # fstype unknown, do nothing
+        exit 1
+    fi
+fi
+
+export $(udevinfo -qenv -n $devicename)
+
+if [ -n "$thinclient_usbdevice_check" ] && [ "$thinclient_usbdevice_check" = "yes" -o "$thinclient_usbdevice_check" = "true" ]; then
+	if [ -z "$ID_SERIAL" ]; then
+		echo "add_fstab_entry: failed to get the serial id of the usb device" | logger
+		exit 1
+	fi
+
+	id=`echo $ID_SERIAL | sed -e 's|.*_||'`
+
+	result=`ldapsearch -x univentionUSBid=$id | grep ^univentionUSBid`
+	if [ -z "$result" ]; then
+		echo "add_fstab_entry: The USB device $id is not enabled!" | logger
+		echo "add_fstab_entry: The USB device $id is not enabled!" >/tmp/last-usb-device.txt
+		exit 1
+	fi
+
+	echo "add_fstab_entry: The USB device $id is enabled!" | logger
+fi
+
+LABEL=${ID_FS_LABEL_SAFE}
+
+BASEDEV=$(echo $devicename | tr -d "0-9")
+
+if [ ${BASEDEV} = "fd" ]; then
+    DEVNUM=$(echo $devicename | tr -d "fd")
+    LABEL="floppy${DEVNUM}"
+    FIXEDDEVICE="Y"
+elif [ -z ${LABEL} ]; then
+    LABEL=$(echo ${ID_BUS}${ID_TYPE}-$devicename |tr " " "_")
+fi
+
+
+# make sure the root we mount exists
+ROOT=/var/run/drives
+if [ ! -d $ROOT ];then
+	mkdir ${ROOT}
+fi
+
+# invent $MOUNTPOINT
+MOUNTPOINT=$ROOT/$LABEL
+mkdir ${MOUNTPOINT}
+
+echo "/dev/$devicename ${MOUNTPOINT} ${fstype} defaults 0 0" >> /var/run/ltspfs_fstab
+
+# Test if univention-session is already running (i.e. the user has successfully logged in)
+
+
+checkavail=`/usr/bin/univention-thin-client-get-username`
+# If no session exists yet, save for later use
+if [ "$checkavail" = "No client session running" ]; then
+
+    echo "${MOUNTPOINT} ${devicename} ${fstype}" >> /var/run/.delayed-mount
+    if [ ! -z "${FIXEDDEVICE}" ]; then
+        echo "${MOUNTPOINT} ${devicename} ${fstype}" >> /var/run/.static-device
+    else
+        echo "${MOUNTPOINT} ${devicename} ${fstype}" >> /var/run/.delayed-mount
+    fi
+else
+
+    hostdn=`/usr/sbin/univention-baseconfig get ldap/hostdn`
+    activated=`/usr/bin/univention-policy-result -s $hostdn | grep univentionClientDevicesActivate`
+
+    if [ "$activated" = "univentionClientDevicesActivate=\"1\"" ]; then
+	host=`hostname`
+	univention-create-ltsp-mount-entry-tc $host:${MOUNTPOINT}
+    fi
+
+fi
+
+

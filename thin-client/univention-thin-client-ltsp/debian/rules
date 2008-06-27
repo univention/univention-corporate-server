@@ -1,0 +1,79 @@
+#!/usr/bin/make -f
+#
+# Univention Thin Client LTSP package
+#  rules file for the debian package
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+build: build-stamp
+build-stamp:
+	dh_testdir
+
+	gcc -g -o univention-ltspmount-wrapper univention-ltspmount-wrapper.c
+	chmod a+s ./univention-ltspmount-wrapper
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	rm -rf debian/tmp
+
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_installdirs
+
+	install -m 4755 ./univention-ltspmount-wrapper debian/univention-thin-client-ltsp/usr/bin
+	install -m 755 ./univention-thin-client-get-username debian/univention-thin-client-ltsp/usr/bin
+	install -m 755 ./univention-ltsp-mountd debian/univention-thin-client-ltsp/usr/sbin
+	install -m 755 ./univention-thin-client-get-username debian/univention-thin-client-ltsp-config/usr/bin
+	install -m 755 ./univention-create-ltsp-mount-entry-tc debian/univention-thin-client-ltsp-config/usr/bin
+	install -m 755 ./univention-create-ltsp-umount-entry-tc debian/univention-thin-client-ltsp-config/usr/bin
+	install -m 755 ./univention-create-ltsp-mount-entry debian/univention-thin-client-ltsp/usr/bin
+
+	univention-install-config-registry
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs
+	dh_installinit --init-script=univention-ltsp-mountd
+	dh_strip
+	dh_link
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

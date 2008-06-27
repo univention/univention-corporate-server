@@ -1,0 +1,118 @@
+#!/bin/sh
+#
+# Univention Client Basesystem
+#  init script: setting up network connection for thin client
+#
+# Copyright (C) 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+echo -n "Setting up Thin Client network configuration "
+
+ramdisk="/ramdisk"
+
+FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
+if [ "$FLAGNFSBOOT" = "0" ] ; then
+	# FLASH BOOT
+	echo -n "(Flash Card) ... "
+	mkdir -p /var/lib/dhcp
+	dhclient -e >>/dev/tty8 2>&1
+	if [ ! "$?" = "0" ] ; then
+		echo "failed"
+		echo "Unable to get network configuration via DHCP - press ENTER to reboot"
+		read
+		halt
+	fi
+
+	if [ -f /config/network.conf ]; then
+		. /config/network.conf
+		nameserver="$FLASH_NAMESERVER"
+		domainname="$FLASH_DOMAIN"
+		hostname="$FLASH_HOSTNAME"
+	fi
+	nameserver2=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2;}')
+	univention-baseconfig set nameserver2=$nameserver2 &>/dev/null
+	if [ -z "$domainname" ]; then
+		domainname=$(cat /etc/resolv.conf | grep search | awk '{print $2;}')
+	fi
+
+	myip=""
+	# test interfaces and read ip address (do not use interface lo)
+	for interface in `ifconfig | grep "^[a-z]" | awk '{print $1;}' | grep -v 'lo'` ; do
+		addrline=$(ifconfig $interface | grep "inet addr:")
+		if [ ! -z "$addrline" ] ; then
+			echo "	  interface $interface is up and configured"
+			myip=$(echo "$addrline" | grep "inet addr:" | sed -e 's/.*inet addr://' -e 's/ .*$//')
+			subnetmask=$(echo "$addrline" | grep "Mask:" | sed -e 's/.*Mask://' -e 's/ .*$//')
+		fi
+	done
+
+	if [ -z "$myip" ] ; then
+		echo "DHCP was successful but still unable to get network config - press ENTER to reboot"
+		read
+		halt
+	fi
+
+else
+	# NFS BOOT
+	echo -n "(NFS) ... "
+	ipcmd=$(grep ip /proc/cmdline | sed -e 's/.*ip=//g')
+	nameserver=$(grep DNSSERVER /proc/cmdline | sed -e 's/.*DNSSERVER=//g' | awk '{print $1}' )
+	myip=$(echo $ipcmd | awk -F ':' '{print $1}')
+	subnetmask=$(echo $ipcmd | awk -F ':' '{print $4}')
+	network=""
+	echo "nameserver $nameserver" >/etc/resolv.conf
+
+	fqn=$(/usr/bin/dns-lookup $myip ptr | head -1)
+	hostname=$(echo $fqn | cut -d'.' -f 1)
+	domainname=$(echo $fqn | cut -d'.' -f 2-)
+fi
+
+if [ -z "$nameserver" ]; then
+	echo "failed"
+	echo "error: could not determine DNS server. Try to set the Univention Config Registry variable pxe/nameserver and resync the clientbootpxe listener module"
+	read
+	halt
+fi
+
+# calculate network address
+for n in `echo $subnetmask.$myip | awk -F '.' '{print $4"."$8" "$3"."$7" "$2"."$6" "$1"."$5}'`
+do
+	mnm=`echo $n | awk -F '.' '{print $1}'`
+	mip=`echo $n | awk -F '.' '{print $2}'`
+	if [ "$mnm" = "255" ]
+	then
+		network="."$mip$network
+	else
+		network=".0"$network
+	fi
+done
+network=`echo $network | sed -e "s/.//"`
+
+echo "$hostname.$domainname" >>/dev/tty8
+hostname "$hostname"
+univention-baseconfig set hostname="$hostname" domainname="$domainname" \
+	nameserver1="$nameserver" interfaces/eth0/address="$myip" \
+	interfaces/eth0/netmask="$subnetmask" interfaces/eth0/network="$network"  >>/dev/tty8 2>&1
+
+echo "done"

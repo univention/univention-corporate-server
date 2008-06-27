@@ -1,0 +1,850 @@
+# This file was automatically created based on description files (*.desc)
+# by sane-desc 3.2 from sane-backends 1.0.18 on Sat Apr 28 04:38:01 2007
+#
+# udev rules file for supported USB devices
+#
+# To add a USB device, add a rule to the list below between the SUBSYSTEM...
+# and LABEL... lines.
+#
+# To run a script when your device is plugged in, add RUN+="/path/to/script"
+# to the appropriate rule.
+#
+# The following list already contains a lot of scanners. If your scanner
+# isn't mentioned there, add it as explained above and mail the entry to
+# the sane-devel mailing list (sane-devel@lists.alioth.debian.org).
+#
+
+# ACTION!="add", GOTO="libsane_rules_end"
+SUBSYSTEM!="usb_device", GOTO="libsane_rules_end"
+
+# Hewlett-Packard ScanJet 4100C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0101", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard Photosmart S20 (C5101A) | Hewlett-Packard Photosmart S20xi (C7150A)
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0102", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4200C | Hewlett-Packard ScanJet 4200Cxi | Hewlett-Packard ScanJet 4200Cse
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0105", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 6200C | Hewlett-Packard ScanJet 6250C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0201", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3300c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0205", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4300c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0305", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5200C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0401", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3400c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0405", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 2100C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0505", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 6300C | Hewlett-Packard ScanJet 6350C | Hewlett-Packard ScanJet 6390C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0601", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 2200C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0605", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5300C | Hewlett-Packard ScanJet 5370C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0701", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 7400c | Hewlett-Packard ScanJet 7450c | Hewlett-Packard ScanJet 7490c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0801", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 2300C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0901", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 2400c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0a01", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 8200 | Hewlett-Packard ScanJet 8250 | Hewlett-Packard ScanJet 8290
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="0b01", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard Photo Scanner 1000
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5400c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5470c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1105", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4500C | Hewlett-Packard ScanJet 5550C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1205", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4570C | Hewlett-Packard ScanJet 5500C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1305", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3670c | Hewlett-Packard ScanJet 3690c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1405", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5530C Photosmart
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1605", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 5590
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1705", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 7650
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1805", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4850C | Hewlett-Packard ScanJet 4890C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="1b05", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3530C | Hewlett-Packard ScanJet 3570C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="2005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3500C
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="2205", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3770
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="2505", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 3800c
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="2605", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4600 | Hewlett-Packard ScanJet 4670
+SYSFS{idVendor}=="03f0", SYSFS{idProduct}=="3005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200
+SYSFS{idVendor}=="0400", SYSFS{idProduct}=="1000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200 | Mustek BearPaw 2400
+SYSFS{idVendor}=="0400", SYSFS{idProduct}=="1001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Kodak i30 | Kodak i30
+SYSFS{idVendor}=="040a", SYSFS{idProduct}=="6001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Kodak i40
+SYSFS{idVendor}=="040a", SYSFS{idProduct}=="6002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Kodak i50
+SYSFS{idVendor}=="040a", SYSFS{idProduct}=="6003", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Kodak i60
+SYSFS{idVendor}=="040a", SYSFS{idProduct}=="6004", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Kodak i80
+SYSFS{idVendor}=="040a", SYSFS{idProduct}=="6005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Creative WebCam Go Mini
+SYSFS{idVendor}=="041e", SYSFS{idProduct}=="4007", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre XK35c
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0020", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X70 | Lexmark X73
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="002d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X83
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="003d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X74 | Lexmark X75 | Lexmark X75 PrinTrio
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0060", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X5130
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0065", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X6170
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0072", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X1110 | Lexmark X1130 | Lexmark X1140
+# Lexmark X1150 | Lexmark X1170 | Lexmark X1180
+# Lexmark X1185
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="007c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark Photo 3150
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="007d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X5250
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0093", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark P6250
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="0097", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Lexmark X2330
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="00bb", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre Pro 412
+SYSFS{idVendor}=="043d", SYSFS{idProduct}=="4303", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage HR6 V1
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2004", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR6 V2
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2007", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR6 V2
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2008", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR6A
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2009", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid3x | Genius Colorpage Vivid3 V2
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2011", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR7
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2013", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid4
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2014", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR7LE
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2015", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage HR6X
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2016", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid3xe
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2017", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage HR7X
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2018", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage HR6X Slim
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2019", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid4xe
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid4x
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage HR8
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid 1200 X
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage Slim 1200
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius Colorpage Vivid 1200 XE
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="201f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage-Slim 1200 USB2
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2020", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Genius ColorPage-SF600
+SYSFS{idVendor}=="0458", SYSFS{idProduct}=="2021", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2-300
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0300", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2E-300
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0301", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2-300 #2
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0302", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2E-300 #2
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0303", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax Colorado USB 9600
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0340", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax Colorado 600U
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0341", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer 6200
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0345", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Memorex 6136u | TCE MK600U
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0346", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Memorex 6142u | Microtek ScanMaker 3630 | Primax Primascan Colorado 2600u
+# Tiny FU661E | Visioneer Onetouch 4400 | Visioneer Primascan Colorado 2600u
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0347", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax Colorado 1200u
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0361", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 2500
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0374", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD5345 | Medion/Lifetec/Tevion/Cytron MD6228 | Medion/Lifetec/Tevion/Cytron MD6471
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0377", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 6190 | Medion/Lifetec/Tevion/Cytron MD 41260 | Medion/Lifetec/Tevion/Cytron MD 41985
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="037b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2-600
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0380", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax ReadyScan 636i
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0381", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2-600 #2
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0382", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Primax G2E-600
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0383", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 3000 | UMAX Astra 3600
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="038a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox 2400 Onetouch
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="038b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 4100
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="038c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 6190
+SYSFS{idVendor}=="0461", SYSFS{idProduct}=="0392", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Logitech PageScan USB
+SYSFS{idVendor}=="046d", SYSFS{idProduct}=="040f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# NEC Petiscan
+SYSFS{idVendor}=="0475", SYSFS{idProduct}=="0100", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Relisys Eclipse 1200U | Relisys Episode
+SYSFS{idVendor}=="0475", SYSFS{idProduct}=="0103", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Relisys Scorpio Ultra 3
+SYSFS{idVendor}=="0475", SYSFS{idProduct}=="0210", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Trust Office Scan USB 19200
+SYSFS{idVendor}=="047b", SYSFS{idProduct}=="1000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Hewlett-Packard ScanJet 4300c/Silitek
+SYSFS{idVendor}=="047b", SYSFS{idProduct}=="1002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Compaq S4-100
+SYSFS{idVendor}=="049f", SYSFS{idProduct}=="001a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Compaq S200
+SYSFS{idVendor}=="049f", SYSFS{idProduct}=="0021", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 310U
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="1a20", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 620U
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="1a2a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 320U | Benq (Acer) 340U | Mitsubishi Diamondview 648UT
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="2022", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 620UT
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="2040", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 640U | Guillemot / Hercules Maxi Scan A4 USB 640U | Guillemot / Hercules Maxi A4 36 bit
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="2060", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 640bu
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="207e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 3300 | Benq (Acer) 4300 | Mitsubishi Diamondview 650U
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20b0", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 640BT
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20be", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 1240
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20c0", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 3300 | Benq (Acer) 4300 | Guillemot / Hercules Scan@home Touch 1248 (USB)
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20de", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 5000
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20f8", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 5000E | Benq (Acer) 5000U
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20fc", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 5300
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="20fe", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 5150 | Benq (Acer) 5250
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="2137", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Benq (Acer) 7400UT
+SYSFS{idVendor}=="04a5", SYSFS{idProduct}=="2202", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer OneTouch 5300
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0221", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanPort 3000 | Vantas 3000 | Visioneer OneTouch 4800 USB
+# Xerox One Touch 4800
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0224", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer OneTouch 5300 USB | Visioneer OneTouch 5800 USB
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0226", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Onetouch 7100
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0229", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer OneTouch 6600
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="022a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Onetouch 9000 | Visioneer Onetouch 9020
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="022c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer 6200 EPP/USB
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0311", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer OneTouch 8100
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0321", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Onetouch 9320
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0362", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Onetouch 8700 | Visioneer Onetouch 8920
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0371", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox 4800 One Touch
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="03a0", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Onetouch Pro 8800 | Visioneer Onetouch Pro 8820
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0410", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer 9450 USB
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0421", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer Strobe XP 100
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0427", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Visioneer OneTouch 7300
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0444", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox DocuMate 510
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0446", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox DocuMate252
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0449", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox DocuMate262
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="044c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox DocuMate272
+SYSFS{idVendor}=="04a7", SYSFS{idProduct}=="0475", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon IS 32
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="105d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon DR-2080C
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1601", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon DR-6080
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1607", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP110
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1700", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP130
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1701", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP750
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1706", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP780
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1707", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP760
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1708", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP150
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1709", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP170
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="170a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP450
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="170b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP500
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="170c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP800
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="170d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon PIXMA MP830
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="1713", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan FB320U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2201", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan FB620U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2202", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan fb630u | Canon CanoScan fb636u
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2204", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan FB1210U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2205", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan N650U/N656U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2206", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan N1220U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2207", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan D660U
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2208", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan D2400UF
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan D646U | Canon CanoScan D646U ex
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan D1250U2
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan N670U/N676U/LiDE20
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan N1240U/LiDE30
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 8000F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="220f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 9900F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2210", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 5000F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2212", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan LiDE 35 | Canon CanoScan LiDE 40 | Canon CanoScan LiDE 50
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2213", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan LiDE 80
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2214", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 3000 | Canon CanoScan 3000ex | Canon CanoScan 3000F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2215", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 5200F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2217", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 9950F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2219", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 4200F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="221b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan LiDE 60
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="221c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan 8400F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="221e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan LiDE 500F
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="221f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon CanoScan LiDE25
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2220", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon MultiPASS MP730
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="262f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon MultiPASS MP700
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="2630", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon Smartbase MP360
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="263c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Canon FS4000
+SYSFS{idVendor}=="04a9", SYSFS{idProduct}=="3042", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Nikon LS 40 ED
+SYSFS{idVendor}=="04b0", SYSFS{idProduct}=="4000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Nikon LS 50 ED | Nikon Coolscan V ED
+SYSFS{idVendor}=="04b0", SYSFS{idProduct}=="4001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Nikon Super Coolscan LS-5000 ED
+SYSFS{idVendor}=="04b0", SYSFS{idProduct}=="4002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 636U
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0101", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson GT-2200
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0102", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 610
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0103", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1200U | Epson Perfection 1200Photo
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0104", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson StylusScan 2000
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0105", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Expression 1600
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0107", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1640
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="010a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1240
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="010b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 640
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="010c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Expression 1680
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="010e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1250 | Epson Perfection 1250Photo
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="010f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1650
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0110", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 2450
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0112", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 660
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0114", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 2400
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="011b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 3200
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="011c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1260 | Epson Perfection 1260Photo
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="011d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1660
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="011e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1670
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="011f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 1270
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0120", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 2480 | Epson Perfection 2580
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0121", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 3490 | Epson Perfection 3590
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0122", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 4870
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0128", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Perfection 4990
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="012a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-5200 | Epson CX-5400
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0801", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-3200
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0802", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-6400 | Epson CX-6600
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0805", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson RX-600
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0806", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson RX-500
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0807", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-5400
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0808", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson Stylus CX-1500
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="080c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-4600
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="080d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-3600 | Epson CX-3650
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="080e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson RX-425
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="080f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson AcuLaser CX11 | Epson AcuLaser CX11NF
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0815", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-3700 | Epson CX-3800 | Epson DX-3800
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0818", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-4800
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0819", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Epson CX-4200
+SYSFS{idVendor}=="04b8", SYSFS{idProduct}=="0820", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4010CU | Fujitsu fi-4010CU | Fujitsu fi-4010C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1029", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4110CU | Fujitsu fi-4110CU
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1033", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4120C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1041", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4220C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1042", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-5110EOX
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1096", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-5110C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="1097", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4120C2
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10ae", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-4220C2
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10af", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-5120C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10e0", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-5220C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10e1", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu fi-5900C
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10e7", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Fujitsu S500
+SYSFS{idVendor}=="04c5", SYSFS{idProduct}=="10fe", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Konica e-mini
+SYSFS{idVendor}=="04c8", SYSFS{idProduct}=="0722", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre XK50cx
+SYSFS{idVendor}=="04e8", SYSFS{idProduct}=="3903", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Brother MFC 9600
+SYSFS{idVendor}=="04f9", SYSFS{idProduct}=="0101", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Brother MFC 7300c
+SYSFS{idVendor}=="04f9", SYSFS{idProduct}=="0106", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Aiptek Aiptek Pencam
+SYSFS{idVendor}=="0553", SYSFS{idProduct}=="0202", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1200 CU
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 600 CU
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1200 USB
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0003", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1200 UB | Trust Compact Scan USB 19200
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0006", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1200 USB Plus
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0007", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1200 CU Plus
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0008", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200 F
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0010", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress A3 USB
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0210", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2400 CS | Mustek BearPaw 2400 TA | Trust 240TH Easy Webscan Gold
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0218", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2400 CS Plus | Mustek BearPaw 2400 TA Plus | Mustek Plug-n-Scan 2400 MT
+# Mustek Plug-n-Scan 2400 M | Packard Bell Diamond 2450
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0219", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2448 CS Plus | Mustek BearPaw 2448 TA Plus
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200 CU Plus | Packard Bell Diamond 1200 Plus
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200 CU Plus | Mustek BearPaw 1248 CU | Packard Bell Diamond 1200 Plus
+# Trust Direct WebScan 19200
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2400 CU Plus
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 1200 CS | Mustek BearPaw 1200 TA
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 1248 UB
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="021f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2400 TA Pro
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0400", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2448 CU Pro
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0408", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 2448TA Pro
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0409", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 4800 TA Pro II
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="040a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 6400 TA Pro
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="040b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek ScanExpress 600 USB
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="0873", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Mustek BearPaw 4800 TA Pro
+SYSFS{idVendor}=="055f", SYSFS{idProduct}=="1000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avigramm Minidoc | Boeder Sm@rtScan Office | Compeye Simplex 1236C
+# IOMagic MobileScan USB | Memorex MaxxScan 6122 | Trust CombiScan 19200
+SYSFS{idVendor}=="05cb", SYSFS{idProduct}=="1483", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Artec/Ultima 1236 USB | Artec/Ultima Ultima 2000 (0x4001)
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Artec/Ultima Ultima 2000 | Artec/Ultima Ultima 2000 e+ | Boeder Sm@rtScan Slim Edition
+# Fujitsu 1200CUS | Googlegear 2000 | Medion/Lifetec/Tevion/Cytron MD 4394
+# Medion/Lifetec/Tevion/Cytron MD/LT 9375 | Medion/Lifetec/Tevion/Cytron MD/LT 9385 | Medion/Lifetec/Tevion/Cytron LT 9452
+# Medion/Lifetec/Tevion/Cytron MD 9458 | Mustek BearPaw 1200 CU | Mustek BearPaw 2400 CU
+# Mustek ScanExpress 1200 UB Plus | Mustek ScanExpress 2400 USB | Mustek ScanMagic 1200 UB Plus
+# Packard Bell Diamond 1200 | Trust Compact Scan USB 19200 | Trust Flat Scan USB 19200
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Artec/Ultima E+ 48U | Medion/Lifetec/Tevion/Cytron MD9693 | Medion/Lifetec/Tevion/Cytron MD9705
+# Medion/Lifetec/Tevion/Cytron MD4394 | Microstar MR 9791
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4003", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Artec/Ultima E+ Pro
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4004", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Memorex MEM 48U
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Trust Easy Webscan 19200
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4006", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Trust 240H Easy Webscan Gold
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4007", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX AstraSlim SE
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4009", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX AstraSlim 1200 SE
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4010", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Yakumo Scan50
+SYSFS{idVendor}=="05d8", SYSFS{idProduct}=="4011", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker X6USB
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="0099", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek SlimScan C6
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="009a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker V6USL
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="00a3", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker V6UPL
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="00b6", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker s400
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="201c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 5600
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20a7", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 8700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20b1", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 4700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20b4", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 5700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20bd", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 6700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20c9", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 9600XL | Microtek ScanMaker 9800XL
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="20de", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 40420 | Medion/Lifetec/Tevion/Cytron MD 42666 | Microtek ScanMaker 4850 II
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="3008", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3880
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="3021", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 90070 | Medion/Lifetec/Tevion/Cytron MD 90090
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="3022", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 4850 | Microtek ScanMaker 4900
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30b9", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3800 | Microtek ScanMaker 3830
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30ce", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 4800
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30cf", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3840
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30d4", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 5800 | Microtek ScanMaker 5900
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30d8", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 90009 | Microtek ScanMaker 6000 | Microtek ScanMaker 6100
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30e5", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker i320
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="30e6", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3600
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40b3", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40b8", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 4600
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40c7", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3600
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40ca", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3700
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40cb", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3750
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40dd", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker 3600
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="40ff", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek ScanMaker V6USL
+SYSFS{idVendor}=="05da", SYSFS{idProduct}=="80a3", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Microtek FilmScan 35 | PIE Primefilm 1800u | Reflecta iScan 1800
+SYSFS{idVendor}=="05e3", SYSFS{idProduct}=="0120", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# PIE Powerslide 3600 | Reflecta DigitDia 3600
+SYSFS{idVendor}=="05e3", SYSFS{idProduct}=="0142", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Reflecta ProScan 4000
+SYSFS{idVendor}=="05e3", SYSFS{idProduct}=="0143", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# iVina 1200U
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0268", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Minolta Dimage Scan Dual II
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="026a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision iVina 1600 | UMAX Astra 4500
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a10", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV600U
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a13", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Minolta-QMS SC-110
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a15", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision DS610CU Scancopier | Minolta-QMS SC-215
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a16", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV600U Plus
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a18", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV610
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a19", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision iVina FB1800 | UMAX Astra 4700
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a20", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV220
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a23", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV210
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a24", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV210
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a25", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV120
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a27", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV220C2 | Avision AV220C2
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a2a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV122
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a33", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV210C2
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a3a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV121
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a3c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV8300
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a40", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AM3000 Series
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a41", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision @V5100
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a45", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision IT8300
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a61", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV3850SU
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a66", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Avision AV8350
+SYSFS{idVendor}=="0638", SYSFS{idProduct}=="0a68", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Optoelectronics Barcode scanner
+SYSFS{idVendor}=="065a", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Siemens ID Mouse Professional
+SYSFS{idVendor}=="0681", SYSFS{idProduct}=="0005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Siemens Cherry FingerTIP ID Board - Sensor
+SYSFS{idVendor}=="0681", SYSFS{idProduct}=="0010", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Minolta Elite II
+SYSFS{idVendor}=="0686", SYSFS{idProduct}=="4004", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Minolta Dimage Scan Dual III | Konica Minolta Dual Scan III
+SYSFS{idVendor}=="0686", SYSFS{idProduct}=="400d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Minolta Dimage Scan Elite 5400 | Konica Minolta DiMAGE Scan Elite 5400
+SYSFS{idVendor}=="0686", SYSFS{idProduct}=="400e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan 1212U
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan 1236u
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="0002", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Agfa Snapscan Touch
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="0100", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Agfa DuoScan f40
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="02bf", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan 1212U_2
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="2061", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e40
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="208d", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e50
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="208f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e20
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="2091", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e10
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="2093", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e25
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="2095", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e26
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="2097", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e52
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="20fd", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# AGFA SnapScan e42
+SYSFS{idVendor}=="06bd", SYSFS{idProduct}=="20ff", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Prolink Winscan Pro 2448U
+SYSFS{idVendor}=="06dc", SYSFS{idProduct}=="0014", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Grandtek Scopecam 8x30 Binocular & Digital Camera
+SYSFS{idVendor}=="0797", SYSFS{idProduct}=="801c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U12 | Plustek OpticPro UT12 | Plustek OpticPro 1212U
+# RevScan RevScan Orange R48Ti | Genius ColorPage Vivid III USB
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0005", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0007", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="000f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U12
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0010", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U24
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0011", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device | Plustek Unknown Plustek Device | Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0012", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device (UT12?)
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0013", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0014", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U24
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0015", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek Unknown Plustek Device
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0016", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro UT12 | Plustek OpticPro UT16 | Plustek OpticPro UT24
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0017", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro 1248U | RevScan 19200i
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0400", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro 1248U
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0401", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U16B
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0402", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro U16B+ | Plustek OpticPro UT16B
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0403", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro S12 | Plustek OpticPro ST12
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="040b", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro S24
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="040e", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticSlim M12
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0412", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticSlim 1200
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0413", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticSlim 2400
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0422", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro S12 | Plustek OpticPro ST12 | Plustek OpticPro ST16
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0600", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro S24 | Plustek OpticPro ST24
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0601", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro ST48
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0800", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticPro S28 | Plustek OpticPro ST28
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0801", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticSlim 2420
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0806", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticFilm 7200
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0807", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek ScanCopy 115
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="081c", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Plustek OpticBook 3600
+SYSFS{idVendor}=="07b3", SYSFS{idProduct}=="0900", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Guillemot SCAN@HOME 48 USB | Hercules SCAN@HOME 48 USB | Teco VM6509F
+SYSFS{idVendor}=="080d", SYSFS{idProduct}=="0102", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX AstraSlim | UMAX AstraSlim 6000
+SYSFS{idVendor}=="080d", SYSFS{idProduct}=="0104", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Corex Cardscan 500
+SYSFS{idVendor}=="08f0", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Medion/Lifetec/Tevion/Cytron MD 85264
+SYSFS{idVendor}=="08ff", SYSFS{idProduct}=="2580", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Biolux 654 (micrOcular)
+SYSFS{idVendor}=="0923", SYSFS{idProduct}=="010f", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre PE16
+SYSFS{idVendor}=="0924", SYSFS{idProduct}=="4220", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre PE120i
+SYSFS{idVendor}=="0924", SYSFS{idProduct}=="4237", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Xerox WorkCentre M15i
+SYSFS{idVendor}=="0924", SYSFS{idProduct}=="ffef", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Iris IriScan
+SYSFS{idVendor}=="0a53", SYSFS{idProduct}=="1000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Syscan TravelScan FS-531
+SYSFS{idVendor}=="0a82", SYSFS{idProduct}=="0530", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Pentax DSmobile USB | Syscan TravelScan Pro
+SYSFS{idVendor}=="0a82", SYSFS{idProduct}=="2000", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Ambir Visigo A4 | Syscan TravelScan 460/464
+SYSFS{idVendor}=="0a82", SYSFS{idProduct}=="4600", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Scanshell 800N
+SYSFS{idVendor}=="0a82", SYSFS{idProduct}=="6605", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Syscan TravelScan 662
+SYSFS{idVendor}=="0a82", SYSFS{idProduct}=="6620", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Olivetti Job-Jet M400
+SYSFS{idVendor}=="0b3c", SYSFS{idProduct}=="a880", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# PLANon DocuPen R700
+SYSFS{idVendor}=="10c4", SYSFS{idProduct}=="ea60", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Digital Dream l' espion XS
+SYSFS{idVendor}=="1183", SYSFS{idProduct}=="0001", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Konica Minolta Dual Scan IV
+SYSFS{idVendor}=="132b", SYSFS{idProduct}=="000a", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Konica Minolta DiMAGE Scan Elite 5400 2
+SYSFS{idVendor}=="132b", SYSFS{idProduct}=="0012", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 1220U
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0010", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 1600U | UMAX Astra 2000U
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0030", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Umax UMAX 3400 | UMAX Astra 3400
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0050", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Umax UMAX 3400 | Umax UMAX Astranet ia101 | Umax UMAX 3450
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0060", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 4400 | UMAX Astra 4450
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0070", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 2100U
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0130", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Umax UMAX 5400
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0160", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 2200 (SU)
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="0230", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# UMAX Astra 4000
+SYSFS{idVendor}=="1606", SYSFS{idProduct}=="1030", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Dell A920
+SYSFS{idVendor}=="413c", SYSFS{idProduct}=="5105", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Dell A960
+SYSFS{idVendor}=="413c", SYSFS{idProduct}=="5107", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Dell 922
+SYSFS{idVendor}=="413c", SYSFS{idProduct}=="5109", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+# Dell 1600n
+SYSFS{idVendor}=="413c", SYSFS{idProduct}=="5250", MODE="664", GROUP="scanner", ENV{libsane_matched}="yes"
+
+# The following rule will run a script to create
+ENV{libsane_matched}=="yes", RUN+="/usr/sbin/univention-thin-client-udev-sane"
+
+LABEL="libsane_rules_end"

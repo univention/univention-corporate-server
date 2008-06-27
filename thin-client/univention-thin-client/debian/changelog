@@ -1,0 +1,75 @@
+univention-thin-client (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:01 +0200
+
+univention-thin-client (1.0.0-4) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:26 +0200
+
+univention-thin-client (1.0.0-3) unstable; urgency=low
+
+  * adapt dependencies to new package names 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 13:26:06 +0200
+
+univention-thin-client (1.0.0-2) unstable; urgency=low
+
+  * encoded files utf-8
+
+ -- Janis Meybohm <meybohm@univention.de>  Wed, 13 Jun 2007 13:31:10 +0200
+
+univention-thin-client (1.0.0-1) unstable; urgency=low
+
+  * update to ucs 2.0 policies
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  6 Jun 2007 09:38:45 +0200
+
+univention-thin-client (0.8) unstable; urgency=low
+
+  * add GPL headers
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  4 Dec 2006 11:51:58 +0100
+
+univention-thin-client (0.7) unstable; urgency=low
+
+  * a minor error in the post-installation script was fixed 
+
+ -- Wolf Wiegand <wiegand@univention.de>  Tue, 19 Apr 2005 10:38:29 +0200
+
+univention-thin-client (0.5) unstable; urgency=low
+
+  * added patch for client-basesystem diskless.sh script 
+
+ -- Sven Dreyer <dreyer@univention.de>  Mon, 18 Apr 2005 09:34:43 +0200
+
+univention-thin-client (0.4) unstable; urgency=low
+
+  * includes security-patches for client-basesystem
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed,  9 Feb 2005 10:13:21 +0100
+
+univention-thin-client (0.3) unstable; urgency=low
+
+  * Add proper package description. 
+
+ -- Roland Bauerschmidt <bauerschmidt@univention.de>  Fri, 30 Apr 2004 11:08:43 +0200
+
+univention-thin-client (0.2) unstable; urgency=low
+
+  * set dependency to univention-nfs-server
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Feb 2004 14:21:29 +0100
+
+univention-thin-client (0.1.univention) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Mar 2003 11:09:12 +0200
+
+Local variables:
+mode: debian-changelog
+End:

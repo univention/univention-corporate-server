@@ -1,0 +1,4 @@
+dn: ou=Hosts,dc=univention,dc=de
+objectClass: top
+objectClass: organizationalUnit
+ou: Hosts

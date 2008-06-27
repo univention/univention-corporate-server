@@ -1,0 +1,24 @@
+dn: ou=Hosts,@%@ldapbase@%@
+objectClass: top
+objectClass: organizationalUnit
+ou: Hosts
+
+dn: cn=.default,ou=Hosts,@%@ldapbase@%@
+objectClass: top
+objectClass: univentionClient
+cn: .default
+univentionIPDomain: @%@IP-Domainname@%@
+univentionIPNameserver: @%@IP-DNS-Server@%@
+univentionDesktopServer: @%@IP-Hostname@%@
+univentionWindowsServer: @%@VM-IP-Hostname@%@
+univentionWindowsDomain: @%@CIFS-Domainname@%@
+univentionFileServer: @%@IP-Hostname@%@
+univentionXResolution: 1024x768
+univentionXColorDepth: 16
+univentionXMouseProtocol: PS/2
+univentionXMouseDevice: /dev/psaux
+univentionXKeyboardLayout: de
+univentionXKeyboardVariant: nodeadkeys
+univentionXHSync: 30-75
+univentionXVRefresh: 50-160
+univentionXModule: vesa

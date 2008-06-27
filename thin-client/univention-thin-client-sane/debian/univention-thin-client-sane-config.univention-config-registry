@@ -1,0 +1,6 @@
+Type: file
+File: etc/udev/libsane.rules
+
+Type: file
+File: etc/sane.d/saned.conf
+Variables: saned/networks

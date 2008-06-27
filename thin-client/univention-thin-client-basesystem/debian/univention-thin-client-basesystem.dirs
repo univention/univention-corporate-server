@@ -1,0 +1,4 @@
+usr/bin
+usr/share/univention-thin-client-basesystem
+usr/lib/univention-ldap
+usr/lib/univention-install

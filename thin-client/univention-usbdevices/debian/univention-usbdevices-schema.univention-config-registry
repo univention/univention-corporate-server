@@ -1,0 +1,5 @@
+Type: subfile
+Multifile: etc/ldap/slapd.conf
+Subfile: etc/ldap/slapd.conf.d/11univention-usbdevices_schema
+Variables: ldap/server/type
+Variables: ldap/master

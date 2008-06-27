@@ -1,0 +1,103 @@
+Copyright 2001,2002,2003,2004,2005,2006 by
+
+Univention GmbH
+http://www.univention.de/
+
+All rights reserved.
+
+The source code of the software contained in this package
+as well as the source package itself are made available
+under the terms of the GNU General Public License version 2
+(GNU GPL V2) as published by the Free Software Foundation.
+
+Binary versions of this package provided by Univention to you as
+well as other copyrighted, protected or trademarked materials like
+Logos, graphics, fonts, specific documentations and configurations,
+cryptographic keys etc. are subject to a license agreement between
+you and Univention.
+
+In the case you use the software under the terms of the GNU GPL V2,
+the program is provided in the hope hat it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License with
+the Debian GNU/Linux or Univention distribution in file
+/usr/share/common-licenses/GPL; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+On Univention and Debian systems, the complete text of the GNU General Public
+License, version 2, can be found in /usr/share/common-licenses/GPL-2.
+Copyright (C) 2001-2005 Univention GmbH. All rights reserved.
+http://www.univention.de/
+
+=============================================================================
+
+The following files are excluded from the GPL license:
+ - usr/share/pixmaps/univention-gdm.png
+
+=============================================================================
+
+This package includes the Xvnc module from http://xf4vnc.sf.net
+
+
+Copyright (C) 2002 Alan Hourihane.  All Rights Reserved.
+
+This is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This software is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this software; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307,
+USA.
+
+Author: Alan Hourihane <alanh@fairlite.demon.co.uk>
+
+============================================================================
+
+This package contains files (under conffiles/var/lib/scrollkeeper/) from
+the ScrollKeeper projekt that are released under the LGPL and GFDL
+
+Copyright by the ScrollKeeper project
+
+Upstream Authors: See /usr/share/doc/scrollkeeper/AUTHORS
+
+============================================================================
+
+conffiles/etc/cups/cupsd.conf:
+
+  Copyright 1997-2002 by Easy Software Products, all rights reserved.
+
+  These coded instructions, statements, and computer programs are the
+  property of Easy Software Products and are protected by Federal
+  copyright law.  Distribution and use rights are outlined in the file
+  "LICENSE.txt" which should have been included with this file.  If this
+  file is missing or damaged please contact Easy Software Products
+  at:
+
+      Attn: CUPS Licensing Information
+      Easy Software Products
+      44141 Airport View Drive, Suite 204
+      Hollywood, Maryland 20636-3111 USA
+
+      Voice: (301) 373-9603
+      EMail: cups-info@cups.org
+        WWW: http://www.cups.org
+
+=============================================================================
+
+etc/init.d/gdm, etc/init.d/rc, etc/init.d/rcS:
+
+Orginally base on scripts from:
+
+Authors:	Miquel van Smoorenburg <miquels@cistron.nl>
+			Bruce Perens <Bruce@Pixar.com>
+

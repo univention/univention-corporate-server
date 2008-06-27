@@ -1,0 +1,11 @@
+univention-usbdevices (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:06 +0200
+
+univention-usbdevices (1.0.0-1) unstable; urgency=low
+
+  * Initial Release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 21 May 2008 11:11:00 +0200

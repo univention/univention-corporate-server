@@ -1,0 +1,28 @@
+Source: univention-thin-client-cups
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-cups
+Architecture: all
+Pre-Depends: univention-thin-client-basesystem
+Description: UCS - CUPS for thin clients
+ This package provides the CUPS service for thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-cups-config
+Architecture: all
+Depends: cupsys
+Description: UCS - CUPS configuration for thin clients
+ This package contains CUPS configuration files for thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

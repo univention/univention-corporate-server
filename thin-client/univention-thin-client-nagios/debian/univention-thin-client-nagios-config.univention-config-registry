@@ -1,0 +1,9 @@
+Type: file
+File: etc/nagios/nrpe.univention.d/UNIVENTION_LOAD.cfg
+Variables: thinclient/nagios/load/warning
+Variables: thinclient/nagios/load/critical
+
+Type: file
+File: etc/nagios/nrpe.cfg
+Variables: ldap/server/name
+Variables: nagios/client/allowedhosts

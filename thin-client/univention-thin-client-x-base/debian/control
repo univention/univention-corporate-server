@@ -1,0 +1,28 @@
+Source: univention-thin-client-x-base
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-x-base
+Architecture: all
+Pre-Depends: univention-thin-client-basesystem
+Depends: univention-thin-client-tools
+Description: UCS - thin client xorg base
+ This package contains the base packages for an xorg environment on thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-x-base-config
+Architecture: all
+Description: UCS - thin client xorg base configuration
+ This package contains the base packages for an xorg environment on thin clients.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/

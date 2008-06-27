@@ -1,0 +1,41 @@
+Source: univention-usbdevices
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>= 4.0.0), univention-config-dev
+Standards-Version: 3.5.2
+
+Package: univention-usbdevices
+Architecture: all
+Depends: python-univention-directory-manager, univention-directory-listener, univention-usbdevices-schema, univention-usbdevices-udm-module
+Description: USB device registration
+ This package installs the USB device registration
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-usbdevices-schema
+Architecture: all
+Depends: python-univention-directory-manager
+Description: USB device registration Schema Package
+ This package installs the required ldap schemata and
+ custom attributes required by univention-usbdevices.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-usbdevices-udm-module
+Architecture: all
+Depends: python-univention-directory-manager
+Description: USB device registration UDM module 
+ This package installs the required udm module required by univention-usbdevices.
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+

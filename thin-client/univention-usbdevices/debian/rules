@@ -1,0 +1,93 @@
+#!/usr/bin/make -f
+#
+# Univention USB devices
+#  rules file
+#
+# Copyright (C) 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	touch configure-stamp
+
+build: build-stamp
+build-stamp: configure-stamp
+	dh_testdir
+	touch build-stamp
+
+DM=$(CURDIR)/debian/univention-usbdevices-udm-module
+DS=$(CURDIR)/debian/univention-usbdevices-schema
+DL=$(CURDIR)/debian/univention-usbdevices
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+	rm -rf ${DS} ${DC}
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	install -m 644 schema/univention-usbdevices.schema ${DS}/usr/share/univention-ldap/schema/
+	install -m 644 modules/usbdevices.py ${DM}/usr/lib/python2.4/site-packages/univention/admin/handlers/settings/
+	install -m 644 modules/usbdevices.png ${DM}/usr/share/univention-webui-style/icon/settings/
+	install -m 644 modules/usbdevices.gif ${DM}/usr/share/univention-webui-style/icon/settings/
+	msgfmt -o ${DM}/usr/share/locale/de/LC_MESSAGES/univention-admin-handlers-settings-usbdevices.mo modules/de.po
+
+	install -m 755 40univention-usbdevices.inst ${DS}/usr/lib/univention-install/
+
+
+	univention-install-config-registry
+	univention-install-config-registry-info
+	univention-install-service-info
+	dh_install
+
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installchangelogs
+	dh_installdocs
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

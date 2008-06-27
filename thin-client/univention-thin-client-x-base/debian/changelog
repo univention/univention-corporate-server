@@ -1,0 +1,287 @@
+univention-thin-client-x-base (2.0.0-1) unstable; urgency=low
+
+  * UCS 2.1 import
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 13:34:05 +0200
+
+univention-thin-client-x-base (1.0.17-3) unstable; urgency=low
+
+  * commit the gdm.conf during the boot
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 10:46:42 +0200
+
+univention-thin-client-x-base (1.0.17-2) unstable; urgency=low
+
+  * customer rebuild
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 19 May 2008 08:51:30 +0200
+
+univention-thin-client-x-base (1.0.17-1) unstable; urgency=low
+
+  * thinclient/session/scripts/timeout: defines timeout to wait before
+    starting session init scripts in seconds (default is 20s)
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 17 Jan 2008 14:43:47 +0100
+
+univention-thin-client-x-base (1.0.16-1) unstable; urgency=low
+
+  * rename UCR variable thinclient/mount_homedir to thinclient/mount/homedir 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri,  4 Jan 2008 12:10:27 +0100
+
+univention-thin-client-x-base (1.0.15-3) unstable; urgency=low
+
+  * create autostart user
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 24 Dec 2007 10:03:28 +0100
+
+univention-thin-client-x-base (1.0.15-1) unstable; urgency=low
+
+  * create $HOME for autostart user
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 24 Dec 2007 09:55:53 +0100
+
+univention-thin-client-x-base (1.0.14-1) unstable; urgency=low
+
+  * wait some time before accessing the UNIX socket of univention-client 
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 21 Dec 2007 14:42:21 +0100
+
+univention-thin-client-x-base (1.0.13-1) unstable; urgency=low
+
+  * add postlogin script that waits for the start of the session to run
+    scripts located at /usr/lib/univnetion-thin-client-session-scripts/ 
+
+ -- Andreas B�sching <buesching@univention.de>  Thu, 20 Dec 2007 16:44:13 +0100
+
+univention-thin-client-x-base (1.0.12-1) unstable; urgency=low
+
+  * add possibility to run scripts after univention-client has been started
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 19 Dec 2007 16:40:34 +0100
+
+univention-thin-client-x-base (1.0.11-3) unstable; urgency=low
+
+  * fixed typo in PAM configuration 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 17 Dec 2007 16:47:05 +0100
+
+univention-thin-client-x-base (1.0.11-2) unstable; urgency=low
+
+  * fixed minor bug in packaging 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 25 Nov 2007 14:18:36 +0100
+
+univention-thin-client-x-base (1.0.11-1) unstable; urgency=low
+
+  * read gdm/sessions/disabled to restrict list of available sessions 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 25 Nov 2007 12:26:02 +0100
+
+univention-thin-client-x-base (1.0.10-1) unstable; urgency=low
+
+  * commit /etc/pam.d/gdm during boot process on thin client 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 18 Nov 2007 17:30:42 +0100
+
+univention-thin-client-x-base (1.0.9-1) unstable; urgency=low
+
+  * setting Univention configuration registry variable thinclient/mount_homedir
+    to 'no' will supress mounting home directory on thin client 
+  * current user is stored in temporary file on GDM postlogin script
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 18 Nov 2007 17:20:20 +0100
+
+univention-thin-client-x-base (1.0.8-1) unstable; urgency=low
+
+  * do not mount home directory of user if Univention configuration varialbe
+    thinclient/mount_homedir is set to no 
+  * retrieve user information in PostLogin script instead of PreSession script
+    (required for scanner support)
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 18 Nov 2007 16:57:49 +0100
+
+univention-thin-client-x-base (1.0.7-2) unstable; urgency=low
+
+  * add gdm session script to cache information about user who is currently
+    logged in
+  * add scripts to list of config registry templates
+
+ -- Andreas Büsching <buesching@univention.de>  Sat, 29 Sep 2007 22:04:02 +0200
+
+univention-thin-client-x-base (1.0.6-3) unstable; urgency=low
+
+  * minor fixes in output of init script 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 26 Sep 2007 11:37:02 +0200
+
+univention-thin-client-x-base (1.0.6-2) unstable; urgency=low
+
+  * removed GDM post login script 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 14:55:39 +0200
+
+univention-thin-client-x-base (1.0.6-1) unstable; urgency=low
+
+  * add post login script for gdm: to configure seervices on thin client based
+    on user that logged on
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 25 Sep 2007 11:03:31 +0200
+
+univention-thin-client-x-base (1.0.5-4) unstable; urgency=low
+
+  * setup initial Xorg configuration in init script 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 23 Sep 2007 13:38:42 +0200
+
+univention-thin-client-x-base (1.0.5-3) unstable; urgency=low
+
+  * add pre-dependency to univention-thin-client-basesystem 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 13:39:56 +0200
+
+univention-thin-client-x-base (1.0.5-2) unstable; urgency=low
+
+  * add dephelper call to postinst 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 18 Sep 2007 12:03:19 +0200
+
+univention-thin-client-x-base (1.0.5-1) unstable; urgency=low
+
+  * just set univentionAutostartScript if not empty
+  * fixed syntax error
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Sep 2007 10:30:54 +0200
+
+univention-thin-client-x-base (1.0.4-2) unstable; urgency=low
+
+  * set execute flag for init script 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Sep 2007 10:12:55 +0200
+
+univention-thin-client-x-base (1.0.4-1) unstable; urgency=low
+
+  * minor fixes
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 13 Sep 2007 13:18:36 +0200
+
+univention-thin-client-x-base (1.0.3-1) unstable; urgency=low
+
+  * add init script to initialize GDM configuration 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 12 Sep 2007 16:48:00 +0200
+
+univention-thin-client-x-base (1.0.2-13) unstable; urgency=low
+
+  * do not divert xorg.conf; move xorg.conf to RAM disk after installation 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Sep 2007 13:35:20 +0200
+
+univention-thin-client-x-base (1.0.2-12) unstable; urgency=low
+
+  * add --package to dpkg-divert calls 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Sep 2007 13:24:44 +0200
+
+univention-thin-client-x-base (1.0.2-11) unstable; urgency=low
+
+  * add she-bang line to preinst script
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 11 Sep 2007 11:18:48 +0200
+
+univention-thin-client-x-base (1.0.2-10) unstable; urgency=low
+
+  * add divert for /etc/pam.d/gdm 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Sep 2007 14:58:23 +0200
+
+univention-thin-client-x-base (1.0.2-9) unstable; urgency=low
+
+  * move xorg.conf to ramdisk to be writable during boot process 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Sep 2007 13:34:39 +0200
+
+univention-thin-client-x-base (1.0.2-8) unstable; urgency=low
+
+  * symbolic link to /etc/X11 in RAM disk is not required anymore 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Sep 2007 23:57:43 +0200
+
+univention-thin-client-x-base (1.0.2-7) unstable; urgency=low
+
+  * add symbolic link to /etc/X11 to RAM disc before X confguration is
+    installed 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Sep 2007 15:12:18 +0200
+
+univention-thin-client-x-base (1.0.2-6) unstable; urgency=low
+
+  * install univention-gdm instead of univention-x-base 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  7 Sep 2007 14:09:26 +0200
+
+univention-thin-client-x-base (1.0.2-5) unstable; urgency=low
+
+  * install arts, kdebase-data (sounds) and univention-xnumlock into thin
+    client basesystem 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  6 Sep 2007 16:59:14 +0200
+
+univention-thin-client-x-base (1.0.2-4) unstable; urgency=low
+
+  * fixed bug in package to include PAM configuration for gdm 
+
+ -- Andreas Büsching <buesching@univention.de>  Thu,  6 Sep 2007 14:30:14 +0200
+
+univention-thin-client-x-base (1.0.2-3) unstable; urgency=low
+
+  * install configuration files 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 21:59:57 +0200
+
+univention-thin-client-x-base (1.0.2-2) unstable; urgency=low
+
+  * removed x11-common from configuration files 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 21:38:21 +0200
+
+univention-thin-client-x-base (1.0.2-1) unstable; urgency=low
+
+  * add gdm configuration
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 21:35:07 +0200
+
+univention-thin-client-x-base (1.0.1-2) unstable; urgency=low
+
+  * remove x11-common init script; not required anymore 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 18:57:08 +0200
+
+univention-thin-client-x-base (1.0.1-1) unstable; urgency=low
+
+  * add x11-common script
+  * install x-base-confg in preinst
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 16:44:30 +0200
+
+univention-thin-client-x-base (1.0.0-3) unstable; urgency=low
+
+  * fixed dependencies 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 15:17:23 +0200
+
+univention-thin-client-x-base (1.0.0-2) unstable; urgency=low
+
+  * add build dependency to univention-config-dev 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed,  5 Sep 2007 14:36:29 +0200
+
+univention-thin-client-x-base (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 22 Aug 2007 14:20:18 +0200
+
+Local variables:
+mode: debian-changelog
+End:

@@ -1,0 +1,690 @@
+<?xml version="1.0"?>
+<ScrollKeeperContentsList>
+
+<!--
+    ScrollKeeper Category Tree
+    Maintained by the ScrollKeeper project
+    http://scrollkeeper.sourceforge.net
+    Version: 0.1.0
+    Last Modified: Feb 14, 2001
+-->
+
+  <sect categorycode="Applications">
+    <title>&#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3AD;&#x3C2;</title>
+    <sect categorycode="ApplicationsAmusement">
+      <title>&#x3A8;&#x3C5;&#x3C7;&#x3B1;&#x3B3;&#x3C9;&#x3B3;&#x3AF;&#x3B1;</title>
+      </sect>
+    <sect categorycode="ApplicationsEducation">
+      <title>&#x395;&#x3BA;&#x3C0;&#x3B1;&#x3AF;&#x3B4;&#x3B5;&#x3C5;&#x3C3;&#x3B7;</title>
+      <sect categorycode="ApplicationsEducationArts">
+        <title>&#x3A4;&#x3AD;&#x3C7;&#x3BD;&#x3B5;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationComputer Science">
+        <title>&#x3A0;&#x3BB;&#x3B7;&#x3C1;&#x3BF;&#x3C6;&#x3BF;&#x3C1;&#x3B9;&#x3BA;&#x3AE;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationEnglish">
+        <title>&#x391;&#x3B3;&#x3B3;&#x3BB;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationLanguage">
+        <title>&#x393;&#x3BB;&#x3CE;&#x3C3;&#x3C3;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMaths">
+        <title>&#x39C;&#x3B1;&#x3B8;&#x3B7;&#x3BC;&#x3B1;&#x3C4;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationMusic">
+        <title>&#x39C;&#x3BF;&#x3C5;&#x3C3;&#x3B9;&#x3BA;&#x3AE;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationScience">
+        <title>&#x395;&#x3C0;&#x3B9;&#x3C3;&#x3C4;&#x3AE;&#x3BC;&#x3B5;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTechnology">
+        <title>&#x3A4;&#x3B5;&#x3C7;&#x3BD;&#x3BF;&#x3BB;&#x3BF;&#x3B3;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationTesting">
+        <title>&#x394;&#x3BF;&#x3BA;&#x3B9;&#x3BC;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsEducationOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsGames">
+      <title>&#x3A0;&#x3B1;&#x3B9;&#x3C7;&#x3BD;&#x3AF;&#x3B4;&#x3B9;&#x3B1;</title>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsGamesBoard">
+        <title>&#x395;&#x3C0;&#x3B9;&#x3C4;&#x3C1;&#x3B1;&#x3C0;&#x3AD;&#x3B6;&#x3B9;&#x3B1;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsGamesPuzzles">
+        <title>&#x3A3;&#x3C0;&#x3B1;&#x3B6;&#x3BF;&#x3BA;&#x3B5;&#x3C6;&#x3B1;&#x3BB;&#x3B9;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesFighting">
+        <title>&#x39C;&#x3AC;&#x3C7;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsGamesSimulation">
+        <title>&#x3A0;&#x3C1;&#x3BF;&#x3C3;&#x3BF;&#x3BC;&#x3BF;&#x3B9;&#x3CE;&#x3C3;&#x3B5;&#x3B9;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesStrategy">
+        <title>&#x3A3;&#x3C4;&#x3C1;&#x3B1;&#x3C4;&#x3B7;&#x3B3;&#x3B9;&#x3BA;&#x3AE;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsGamesOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect>
+      <sect categorycode="ApplicationsInternetChat">
+        <title>&#x3A3;&#x3C5;&#x3BD;&#x3BF;&#x3BC;&#x3B9;&#x3BB;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetEmail">
+        <title>&#x397;&#x3BB;&#x3B5;&#x3BA;. &#x3B1;&#x3BB;&#x3BB;&#x3B7;&#x3BB;&#x3BF;&#x3B3;&#x3C1;&#x3B1;&#x3C6;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFax">
+        <title>&#x3A6;&#x3B1;&#x3BE;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetFile Sharing">
+        <title>&#x394;&#x3B9;&#x3B1;&#x3BC;&#x3BF;&#x3B9;&#x3C1;&#x3B1;&#x3C3;&#x3BC;&#x3CC;&#x3C2; &#x3B1;&#x3C1;&#x3C7;&#x3B5;&#x3AF;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsInternetInternet Phone">
+        <title>&#x3A4;&#x3B7;&#x3BB;&#x3B5;&#x3C6;&#x3C9;&#x3BD;&#x3AF;&#x3B1; &#x3BC;&#x3AD;&#x3C3;&#x3C9; Internet</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetMessaging">
+        <title>&#x391;&#x3C0;&#x3BF;&#x3C3;&#x3C4;&#x3BF;&#x3BB;&#x3AE; &#x3BC;&#x3B7;&#x3BD;&#x3C5;&#x3BC;&#x3AC;&#x3C4;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetNews">
+        <title>&#x39D;&#x3AD;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetVideo Conferencing">
+        <title>&#x3A4;&#x3B7;&#x3BB;&#x3B5;&#x3C3;&#x3C5;&#x3BD;&#x3B4;&#x3B9;&#x3AC;&#x3C3;&#x3BA;&#x3B5;&#x3C8;&#x3B7;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetWeb">
+        <title>&#x394;&#x3B9;&#x3BA;&#x3C4;&#x3C5;&#x3B1;&#x3BA;&#x3CC;&#x3C2; &#x3B9;&#x3C3;&#x3C4;&#x3CC;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsInternetOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsMultimedia">
+      <title>&#x3A0;&#x3BF;&#x3BB;&#x3C5;&#x3BC;&#x3AD;&#x3C3;&#x3B1;</title>
+      <sect categorycode="ApplicationsMultimediaGraphics">
+        <title>&#x393;&#x3C1;&#x3B1;&#x3C6;&#x3B9;&#x3BA;&#x3AC;</title>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsCapture">
+          <title>&#x3A3;&#x3CD;&#x3BB;&#x3BB;&#x3B7;&#x3C8;&#x3B7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsConversion">
+          <title>&#x39C;&#x3B5;&#x3C4;&#x3B1;&#x3C4;&#x3C1;&#x3BF;&#x3C0;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsDrawing">
+          <title>&#x3A3;&#x3C7;&#x3B5;&#x3B4;&#x3AF;&#x3B1;&#x3C3;&#x3B7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsEditing">
+          <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsViewing">
+          <title>&#x3A0;&#x3C1;&#x3BF;&#x3B2;&#x3BF;&#x3BB;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaGraphicsOther">
+          <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaSound">
+        <title>&#x389;&#x3C7;&#x3BF;&#x3C2;</title>
+        <sect categorycode="ApplicationsMultimediaSoundAnalysis">
+          <title>&#x391;&#x3BD;&#x3AC;&#x3BB;&#x3C5;&#x3C3;&#x3B7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundCD Mastering">
+          <title>&#x3A0;&#x3C1;&#x3BF;&#x3B5;&#x3C4;&#x3BF;&#x3B9;&#x3BC;&#x3B1;&#x3C3;&#x3AF;&#x3B1; CD</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundConversion">
+          <title>&#x39C;&#x3B5;&#x3C4;&#x3B1;&#x3C4;&#x3C1;&#x3BF;&#x3C0;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundEditing">
+          <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1;</title>
+          </sect>
+        <sect>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundMixers">
+          <title>&#x39C;&#x3AF;&#x3BA;&#x3C4;&#x3B5;&#x3C2;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundPlayers">
+          <title>&#x391;&#x3BD;&#x3B1;&#x3C0;&#x3B1;&#x3C1;&#x3B1;&#x3B3;&#x3C9;&#x3B3;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundRecording">
+          <title>&#x397;&#x3C7;&#x3BF;&#x3B3;&#x3C1;&#x3AC;&#x3C6;&#x3B7;&#x3C3;&#x3B7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundSpeech">
+          <title>&#x3A6;&#x3C9;&#x3BD;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaSoundOther">
+          <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaVideo">
+        <title>&#x392;&#x3AF;&#x3BD;&#x3C4;&#x3B5;&#x3BF;</title>
+        <sect categorycode="ApplicationsMultimediaVideoCapture">
+          <title>&#x3A3;&#x3CD;&#x3BB;&#x3BB;&#x3B7;&#x3C8;&#x3B7;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoConversion">
+          <title>&#x39C;&#x3B5;&#x3C4;&#x3B1;&#x3C4;&#x3C1;&#x3BF;&#x3C0;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoDisplay">
+          <title>&#x3A0;&#x3C1;&#x3BF;&#x3B2;&#x3BF;&#x3BB;&#x3AE;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoEditing">
+          <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1;</title>
+          </sect>
+        <sect categorycode="ApplicationsMultimediaVideoOther">
+          <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsMultimediaOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsOffice">
+      <title>&#x393;&#x3C1;&#x3B1;&#x3C6;&#x3B5;&#x3AF;&#x3BF;</title>
+      <sect categorycode="ApplicationsOfficeCalendar">
+        <title>&#x397;&#x3BC;&#x3B5;&#x3C1;&#x3BF;&#x3BB;&#x3CC;&#x3B3;&#x3B9;&#x3BF;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeData Processing">
+        <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1; &#x394;&#x3B5;&#x3B4;&#x3BF;&#x3BC;&#x3AD;&#x3BD;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeDatabase">
+        <title>&#x392;&#x3AC;&#x3C3;&#x3B7; &#x394;&#x3B5;&#x3B4;&#x3BF;&#x3BC;&#x3AD;&#x3BD;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeEmail">
+        <title>&#x397;&#x3BB;&#x3B5;&#x3BA;. &#x3B1;&#x3BB;&#x3BB;&#x3B7;&#x3BB;&#x3BF;&#x3B3;&#x3C1;&#x3B1;&#x3C6;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeFinancial">
+        <title>&#x39F;&#x3B9;&#x3BA;&#x3BF;&#x3BD;&#x3BF;&#x3BC;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsOfficePresentation">
+        <title>&#x3A0;&#x3B1;&#x3C1;&#x3BF;&#x3C5;&#x3C3;&#x3AF;&#x3B1;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect>
+        <sect>
+          </sect>
+      </sect>
+      <sect categorycode="ApplicationsOfficeWord Processing">
+        <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1; &#x39A;&#x3B5;&#x3B9;&#x3BC;&#x3AD;&#x3BD;&#x3BF;&#x3C5;</title>
+        </sect>
+      <sect categorycode="ApplicationsOfficeOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsScientific">
+      <title>&#x395;&#x3C0;&#x3B9;&#x3C3;&#x3C4;&#x3B7;&#x3BC;&#x3BF;&#x3BD;&#x3B9;&#x3BA;&#x3AC;</title>
+      <sect categorycode="ApplicationsScientificAstronomy">
+        <title>&#x391;&#x3C3;&#x3C4;&#x3C1;&#x3BF;&#x3BD;&#x3BF;&#x3BC;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificAstrophysics">
+        <title>&#x391;&#x3C3;&#x3C4;&#x3C1;&#x3BF;&#x3C6;&#x3C5;&#x3C3;&#x3B9;&#x3BA;&#x3AE;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificBiology">
+        <title>&#x392;&#x3B9;&#x3BF;&#x3BB;&#x3BF;&#x3B3;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificChemistry">
+        <title>&#x3A7;&#x3B7;&#x3BC;&#x3B5;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsScientificGenetics">
+        <title>&#x393;&#x3B5;&#x3BD;&#x3B5;&#x3C4;&#x3B9;&#x3BA;&#x3AE;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificMath">
+        <title>&#x39C;&#x3B1;&#x3B8;&#x3B7;&#x3BC;&#x3B1;&#x3C4;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect categorycode="ApplicationsScientificPhysics">
+        <title>&#x3A6;&#x3C5;&#x3C3;&#x3B9;&#x3BA;&#x3AE;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="ApplicationsScientificOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsSecurity">
+      <title>&#x391;&#x3C3;&#x3C6;&#x3AC;&#x3BB;&#x3B5;&#x3B9;&#x3B1;</title>
+      <sect categorycode="ApplicationsSecurityCryptography">
+        <title>&#x39A;&#x3C1;&#x3C5;&#x3C0;&#x3C4;&#x3BF;&#x3B3;&#x3C1;&#x3B1;&#x3C6;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsSecurityOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsText Editors">
+      <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3C4;&#x3AD;&#x3C2; &#x3BA;&#x3B5;&#x3B9;&#x3BC;&#x3AD;&#x3BD;&#x3BF;&#x3C5;</title>
+      <sect categorycode="ApplicationsText EditorsCLI">
+        <title>&#x395;&#x3AF;&#x3B4;&#x3BF;&#x3C5;&#x3C2; &#x3BA;&#x3BF;&#x3BD;&#x3C3;&#x3CC;&#x3BB;&#x3B1;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsGUI">
+        <title>&#x393;&#x3C1;&#x3B1;&#x3C6;&#x3B9;&#x3BA;&#x3BF;&#x3CD; &#x3C0;&#x3B5;&#x3C1;&#x3B9;&#x3B2;&#x3AC;&#x3BB;&#x3BB;&#x3BF;&#x3BD;&#x3C4;&#x3BF;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsText EditorsOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="ApplicationsUtilities">
+      <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1;</title>
+      <sect categorycode="ApplicationsUtilitiesArchiving">
+        <title>&#x391;&#x3C1;&#x3C7;&#x3B5;&#x3B9;&#x3BF;&#x3B8;&#x3AD;&#x3C4;&#x3B7;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCalculating">
+        <title>&#x3A5;&#x3C0;&#x3BF;&#x3BB;&#x3BF;&#x3B3;&#x3B9;&#x3C3;&#x3BC;&#x3CE;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesClocks">
+        <title>&#x3A1;&#x3BF;&#x3BB;&#x3CC;&#x3B3;&#x3B9;&#x3B1;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesCompression">
+        <title>&#x3A3;&#x3C5;&#x3BC;&#x3C0;&#x3AF;&#x3B5;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesFile Utilities">
+        <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1; &#x391;&#x3C1;&#x3C7;&#x3B5;&#x3AF;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesMonitors">
+        <title>&#x395;&#x3BB;&#x3B5;&#x3B3;&#x3BA;&#x3C4;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesPrinting">
+        <title>&#x395;&#x3BA;&#x3C4;&#x3CD;&#x3C0;&#x3C9;&#x3C3;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesTerminals">
+        <title>&#x3A4;&#x3B5;&#x3C1;&#x3BC;&#x3B1;&#x3C4;&#x3B9;&#x3BA;&#x3CE;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesText Utilities">
+        <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1; &#x39A;&#x3B5;&#x3B9;&#x3BC;&#x3AD;&#x3BD;&#x3BF;&#x3C5;</title>
+        </sect>
+      <sect categorycode="ApplicationsUtilitiesOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect>
+      <sect categorycode="ApplicationsXConfiguration">
+        <title>&#x3A1;&#x3CD;&#x3B8;&#x3BC;&#x3B9;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="ApplicationsXFonts">
+        <title>&#x393;&#x3C1;&#x3B1;&#x3BC;&#x3BC;&#x3B1;&#x3C4;&#x3BF;&#x3C3;&#x3B5;&#x3B9;&#x3C1;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsXLogin Managers">
+        <title>&#x394;&#x3B9;&#x3B1;&#x3C7;&#x3B5;&#x3B9;&#x3C1;&#x3B9;&#x3C3;&#x3C4;&#x3AD;&#x3C2; &#x391;&#x3C5;&#x3B8;&#x3B5;&#x3BD;&#x3C4;&#x3B9;&#x3BA;&#x3BF;&#x3C0;&#x3BF;&#x3AF;&#x3B7;&#x3C3;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsXScreensavers">
+        <title>&#x3A0;&#x3C1;&#x3BF;&#x3C6;&#x3CD;&#x3BB;&#x3B1;&#x3BE;&#x3B7; &#x39F;&#x3B8;&#x3CC;&#x3BD;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="ApplicationsXWindow Managers">
+        <title>&#x394;&#x3B9;&#x3B1;&#x3C7;&#x3B5;&#x3B9;&#x3C1;&#x3B9;&#x3C3;&#x3C4;&#x3AD;&#x3C2; &#x3A0;&#x3B1;&#x3C1;&#x3B1;&#x3B8;&#x3CD;&#x3C1;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="ApplicationsXOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+  </sect>
+
+  <sect>
+    </sect>
+
+  <sect categorycode="Development">
+    <title>&#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7;</title>
+    <sect categorycode="DevelopmentDatabases">
+      <title>&#x392;&#x3AC;&#x3C3;&#x3B5;&#x3B9;&#x3C2; &#x394;&#x3B5;&#x3B4;&#x3BF;&#x3BC;&#x3AD;&#x3BD;&#x3C9;&#x3BD;</title>
+      </sect>
+    <sect categorycode="DevelopmentDevelopment Tools">
+      <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1; &#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7;&#x3C2;</title>
+      <sect categorycode="DevelopmentDevelopment ToolsBuild Tools">
+        <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1; &#x39A;&#x3B1;&#x3C4;&#x3B1;&#x3C3;&#x3BA;&#x3B5;&#x3C5;&#x3AE;&#x3C2;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsCode Generators">
+        <title>&#x393;&#x3B5;&#x3BD;&#x3BD;&#x3AE;&#x3C4;&#x3C1;&#x3B9;&#x3B5;&#x3C2; &#x39A;&#x3CE;&#x3B4;&#x3B9;&#x3BA;&#x3B1;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsConfiguration">
+        <title>&#x3A1;&#x3CD;&#x3B8;&#x3BC;&#x3B9;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsDebuggers">
+        <title>&#x3A0;&#x3C1;&#x3BF;&#x3B3;&#x3C1;&#x3AC;&#x3BC;&#x3BC;&#x3B1;&#x3C4;&#x3B1; &#x395;&#x3BA;&#x3C3;&#x3C6;&#x3B1;&#x3BB;&#x3BC;&#x3AC;&#x3C4;&#x3C9;&#x3C3;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsIDEs">
+        <title>&#x3A0;&#x3B5;&#x3C1;&#x3B9;&#x3B2;&#x3AC;&#x3BB;&#x3BB;&#x3BF;&#x3BD;&#x3C4;&#x3B1; &#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7;&#x3C2; &#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3CE;&#x3BD;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsPackaging">
+        <title>&#x3A0;&#x3B1;&#x3BA;&#x3B5;&#x3C4;&#x3BF;&#x3C0;&#x3BF;&#x3AF;&#x3B7;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsProfiling">
+        <title>&#x388;&#x3BB;&#x3B5;&#x3B3;&#x3C7;&#x3BF;&#x3C2; &#x391;&#x3C0;&#x3CC;&#x3B4;&#x3BF;&#x3C3;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsRAD">
+        <title>&#x3A4;&#x3B1;&#x3C7;&#x3B5;&#x3AF;&#x3B1; &#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7; &#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3CE;&#x3BD;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsVersion Control">
+        <title>&#x388;&#x3BB;&#x3B5;&#x3B3;&#x3C7;&#x3BF;&#x3C2; &#x395;&#x3BA;&#x3B4;&#x3CC;&#x3C3;&#x3B5;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="DevelopmentDevelopment ToolsOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentEnvironments">
+      <title>&#x3A0;&#x3B5;&#x3C1;&#x3B9;&#x3B2;&#x3AC;&#x3BB;&#x3BB;&#x3BF;&#x3BD;&#x3C4;&#x3B1;</title>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="DevelopmentEnvironmentsOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentKernels">
+      <title>&#x3A0;&#x3C5;&#x3C1;&#x3AE;&#x3BD;&#x3B5;&#x3C2;</title>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="DevelopmentKernelsOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="DevelopmentLibraries">
+      <title>&#x392;&#x3B9;&#x3B2;&#x3BB;&#x3B9;&#x3BF;&#x3B8;&#x3AE;&#x3BA;&#x3B5;&#x3C2;</title>
+      </sect>
+    <sect categorycode="DevelopmentSystem Calls">
+      <title>&#x39A;&#x3BB;&#x3AE;&#x3C3;&#x3B5;&#x3B9;&#x3C2; &#x3A3;&#x3C5;&#x3C3;&#x3C4;&#x3AE;&#x3BC;&#x3B1;&#x3C4;&#x3BF;&#x3C2;</title>
+      </sect>
+    <sect categorycode="DevelopmentOther">
+      <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+      </sect>
+  </sect>
+  <sect categorycode="General">
+    <title>&#x393;&#x3B5;&#x3BD;&#x3B9;&#x3BA;&#x3AC;</title>
+    <sect categorycode="GeneralLicenses">
+      <title>&#x386;&#x3B4;&#x3B5;&#x3B9;&#x3B5;&#x3C2;</title>
+      </sect>
+    <sect>
+      <sect categorycode="GeneralLinuxDistributions">
+        <title>&#x394;&#x3B9;&#x3B1;&#x3BD;&#x3BF;&#x3BC;&#x3AD;&#x3C2;</title>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect categorycode="GeneralLinuxDistributionsOther">
+          <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="GeneralLinuxGeneral">
+        <title>&#x393;&#x3B5;&#x3BD;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect categorycode="GeneralLinuxOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GeneralOther">
+      <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+      </sect>
+  </sect>
+
+  <sect>
+    <sect categorycode="GNOMECore Desktop">
+      <title>&#x392;&#x3B1;&#x3C3;&#x3B9;&#x3BA;&#x3AE; &#x395;&#x3C0;&#x3B9;&#x3C6;&#x3AC;&#x3BD;&#x3B5;&#x3B9;&#x3B1; &#x395;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3AF;&#x3B1;&#x3C2;</title>
+      </sect>
+    <sect categorycode="GNOMEApplets">
+      <title>&#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3AF;&#x3B4;&#x3B9;&#x3B1;</title>
+      <sect categorycode="GNOMEAppletsAmusement">
+        <title>&#x3A8;&#x3C5;&#x3C7;&#x3B1;&#x3B3;&#x3C9;&#x3B3;&#x3AF;&#x3B1;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsClock">
+        <title>&#x3A1;&#x3BF;&#x3BB;&#x3CC;&#x3B3;&#x3B9;&#x3B1;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMonitors">
+        <title>&#x395;&#x3BB;&#x3B5;&#x3B3;&#x3BA;&#x3C4;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsMultimedia">
+        <title>&#x3A0;&#x3BF;&#x3BB;&#x3C5;&#x3BC;&#x3AD;&#x3C3;&#x3B1;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsNetwork">
+        <title>&#x394;&#x3AF;&#x3BA;&#x3C4;&#x3C5;&#x3BF;</title>
+        </sect>
+      <sect categorycode="GNOMEAppletsUtility">
+        <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEApplications">
+      <title>&#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3AD;&#x3C2;</title>
+      </sect>
+    <sect categorycode="GNOMEUtilities">
+      <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1;</title>
+      </sect>
+    <sect categorycode="GNOMEDevelopment">
+      <title>&#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7;</title>
+      <sect categorycode="GNOMEDevelopmentApplications">
+        <title>&#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3AD;&#x3C2;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentIntroductory">
+        <title>&#x395;&#x3B9;&#x3C3;&#x3B1;&#x3B3;&#x3C9;&#x3B3;&#x3B9;&#x3BA;&#x3AC;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentTutorials">
+        <title>&#x39F;&#x3B4;&#x3B7;&#x3B3;&#x3BF;&#x3AF;</title>
+        </sect>
+      <sect categorycode="GNOMEDevelopmentWhite Papers">
+        <title>&#x39A;&#x3B5;&#x3AF;&#x3BC;&#x3B5;&#x3BD;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="GNOMEGames">
+      <title>&#x3A0;&#x3B1;&#x3B9;&#x3C7;&#x3BD;&#x3AF;&#x3B4;&#x3B9;&#x3B1;</title>
+      </sect>
+    <sect categorycode="GNOMEGraphics">
+      <title>&#x393;&#x3C1;&#x3B1;&#x3C6;&#x3B9;&#x3BA;&#x3AC;</title>
+      </sect>
+    <sect>
+      </sect>
+    <sect categorycode="GNOMEMultimedia">
+      <title>&#x3A0;&#x3BF;&#x3BB;&#x3C5;&#x3BC;&#x3AD;&#x3C3;&#x3B1;</title>
+      </sect>
+    <sect categorycode="GNOMESettings">
+      <title>&#x3A1;&#x3C5;&#x3B8;&#x3BC;&#x3AF;&#x3C3;&#x3B5;&#x3B9;&#x3C2;</title>
+      </sect>
+    <sect categorycode="GNOMESystem">
+      <title>&#x3A3;&#x3CD;&#x3C3;&#x3C4;&#x3B7;&#x3BC;&#x3B1;</title>
+      </sect>
+    <sect categorycode="GNOMEOther">
+      <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+      </sect>
+  </sect>
+
+  <sect>
+    <sect categorycode="KDEUtilities">
+      <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1;</title>
+      </sect>
+    <sect categorycode="KDEApplications">
+      <title>&#x395;&#x3C6;&#x3B1;&#x3C1;&#x3BC;&#x3BF;&#x3B3;&#x3AD;&#x3C2;</title>
+      </sect>
+    <sect categorycode="KDEGames">
+      <title>&#x3A0;&#x3B1;&#x3B9;&#x3C7;&#x3BD;&#x3AF;&#x3B4;&#x3B9;&#x3B1;</title>
+      </sect>
+    <sect categorycode="KDEGraphics">
+      <title>&#x393;&#x3C1;&#x3B1;&#x3C6;&#x3B9;&#x3BA;&#x3AC;</title>
+      </sect>
+    <sect>
+      </sect>
+    <sect categorycode="KDEMultimedia">
+      <title>&#x3A0;&#x3BF;&#x3BB;&#x3C5;&#x3BC;&#x3AD;&#x3C3;&#x3B1;</title>
+      </sect>
+    <sect categorycode="KDESettings">
+      <title>&#x3A1;&#x3C5;&#x3B8;&#x3BC;&#x3AF;&#x3C3;&#x3B5;&#x3B9;&#x3C2;</title>
+      </sect>
+    <sect categorycode="KDESystem">
+      <title>&#x3A3;&#x3CD;&#x3C3;&#x3C4;&#x3B7;&#x3BC;&#x3B1;</title>
+      </sect>
+    <sect categorycode="KDEPrograms">
+      <title>&#x3A0;&#x3C1;&#x3BF;&#x3B3;&#x3C1;&#x3AC;&#x3BC;&#x3BC;&#x3B1;&#x3C4;&#x3B1;</title>
+      </sect>
+    <sect categorycode="KDEDevelopment">
+      <title>&#x391;&#x3BD;&#x3AC;&#x3C0;&#x3C4;&#x3C5;&#x3BE;&#x3B7;</title>
+      </sect>
+    <sect categorycode="KDEOther">
+      <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+      </sect>
+  </sect>
+
+  <sect categorycode="System">
+    <title>&#x3A3;&#x3CD;&#x3C3;&#x3C4;&#x3B7;&#x3BC;&#x3B1;</title>
+    <sect categorycode="SystemAdministration">
+      <title>&#x394;&#x3B9;&#x3B1;&#x3C7;&#x3B5;&#x3AF;&#x3C1;&#x3B9;&#x3C3;&#x3B7;</title>
+      <sect categorycode="SystemAdministrationBackups">
+        <title>&#x391;&#x3BD;&#x3C4;&#x3AF;&#x3B3;&#x3C1;&#x3B1;&#x3C6;&#x3B1; &#x391;&#x3C3;&#x3C6;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1;&#x3C2;</title>
+        <sect categorycode="SystemAdministrationBackupsLocal">
+          <title>&#x3A4;&#x3BF;&#x3C0;&#x3B9;&#x3BA;&#x3AC;</title>
+          </sect>
+        <sect categorycode="SystemAdministrationBackupsRemote">
+          <title>&#x391;&#x3C0;&#x3BF;&#x3BC;&#x3B1;&#x3BA;&#x3C1;&#x3C5;&#x3C3;&#x3BC;&#x3AD;&#x3BD;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationFilesystems">
+        <title>&#x3A3;&#x3C5;&#x3C3;&#x3C4;&#x3AE;&#x3BC;&#x3B1;&#x3C4;&#x3B1; &#x391;&#x3C1;&#x3C7;&#x3B5;&#x3AF;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="SystemAdministrationNetworking">
+        <title>&#x394;&#x3B9;&#x3BA;&#x3C4;&#x3CD;&#x3C9;&#x3C3;&#x3B7;</title>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect>
+          </sect>
+        <sect categorycode="SystemAdministrationNetworkingOther">
+          <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+          </sect>
+      </sect>
+      <sect categorycode="SystemAdministrationUsers">
+        <title>&#x3A7;&#x3C1;&#x3AE;&#x3C3;&#x3C4;&#x3B5;&#x3C2;</title>
+        </sect>
+      <sect categorycode="SystemAdministrationOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemConfiguration">
+      <title>&#x3A1;&#x3CD;&#x3B8;&#x3BC;&#x3B9;&#x3C3;&#x3B7;</title>
+      <sect categorycode="SystemConfigurationConfig Files">
+        <title>&#x391;&#x3C1;&#x3C7;&#x3B5;&#x3AF;&#x3B1; &#x3A1;&#x3C5;&#x3B8;&#x3BC;&#x3AF;&#x3C3;&#x3B5;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="SystemConfigurationConfiguration Tools">
+        <title>&#x395;&#x3C1;&#x3B3;&#x3B1;&#x3BB;&#x3B5;&#x3AF;&#x3B1; &#x3A1;&#x3C5;&#x3B8;&#x3BC;&#x3AF;&#x3C3;&#x3B5;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="SystemConfigurationOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemHardware">
+      <title>&#x3A5;&#x3BB;&#x3B9;&#x3BA;&#x3CC;</title>
+      <sect categorycode="SystemHardwareProcessor">
+        <title>&#x395;&#x3C0;&#x3B5;&#x3BE;&#x3B5;&#x3C1;&#x3B3;&#x3B1;&#x3C3;&#x3C4;&#x3AE;&#x3C2;</title>
+        </sect>
+      <sect categorycode="SystemHardwareStorage">
+        <title>&#x391;&#x3C0;&#x3BF;&#x3B8;&#x3AE;&#x3BA;&#x3B5;&#x3C5;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect categorycode="SystemHardwareVideo">
+        <title>&#x392;&#x3AF;&#x3BD;&#x3C4;&#x3B5;&#x3BF;</title>
+        </sect>
+      <sect categorycode="SystemHardwareInput Devices">
+        <title>&#x3A3;&#x3C5;&#x3C3;&#x3BA;&#x3B5;&#x3C5;&#x3AD;&#x3C2; &#x395;&#x3B9;&#x3C3;&#x3CC;&#x3B4;&#x3BF;&#x3C5;</title>
+        </sect>
+      <sect categorycode="SystemHardwareNetworking">
+        <title>&#x394;&#x3B9;&#x3BA;&#x3C4;&#x3CD;&#x3C9;&#x3C3;&#x3B7;</title>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="SystemHardwareOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemPackage Management">
+      <title>&#x394;&#x3B9;&#x3B1;&#x3C7;&#x3B5;&#x3AF;&#x3C1;&#x3B9;&#x3C3;&#x3B7; &#x3A0;&#x3B1;&#x3BA;&#x3AD;&#x3C4;&#x3C9;&#x3BD;</title>
+      </sect>
+    <sect categorycode="SystemSecurity">
+      <title>&#x391;&#x3C3;&#x3C6;&#x3AC;&#x3BB;&#x3B5;&#x3B9;&#x3B1;</title>
+      <sect>
+        </sect>
+      <sect categorycode="SystemSecurityIntrusion Detection">
+        <title>&#x395;&#x3BD;&#x3C4;&#x3BF;&#x3C0;&#x3B9;&#x3C3;&#x3BC;&#x3CC;&#x3C2; &#x3A0;&#x3B1;&#x3C1;&#x3B1;&#x3B2;&#x3B9;&#x3AC;&#x3C3;&#x3B5;&#x3C9;&#x3BD;</title>
+        </sect>
+      <sect categorycode="SystemSecurityVirus">
+        <title>&#x399;&#x3BF;&#x3AF;</title>
+        </sect>
+      <sect categorycode="SystemSecurityOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemServices">
+      <title>&#x3A5;&#x3C0;&#x3B7;&#x3C1;&#x3B5;&#x3C3;&#x3AF;&#x3B5;&#x3C2;</title>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect>
+        </sect>
+      <sect categorycode="SystemServicesPrinting">
+        <title>&#x395;&#x3BA;&#x3C4;&#x3CD;&#x3C0;&#x3C9;&#x3C3;&#x3B7;&#x3C2;</title>
+        </sect>
+      <sect categorycode="SystemServicesOther">
+        <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+        </sect>
+    </sect>
+    <sect categorycode="SystemOther">
+      <title>&#x386;&#x3BB;&#x3BB;&#x3B1;</title>
+      </sect>
+  </sect>
+</ScrollKeeperContentsList>
