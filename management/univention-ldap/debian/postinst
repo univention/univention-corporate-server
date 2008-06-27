@@ -59,6 +59,7 @@ univention-baseconfig set ldap/threads?16
 univention-baseconfig set ldap/page-results?on
 univention-baseconfig set ldap/acl/user/kolab2/change?yes
 univention-baseconfig set ldap/acl/user/password/change?no
+univention-baseconfig set ldap/acl/slavepdc?yes
 
 univention-baseconfig set ldap/database/bdb/db_config_options?"set_flags"
 univention-baseconfig set ldap/database/bdb/set_flags?"DB_LOG_AUTOREMOVE"

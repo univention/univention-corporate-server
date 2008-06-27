@@ -4,8 +4,7 @@ Variables: ldap/server/type
 Variables: ldap/master
 Variables: ldap/debug/level
 Variables: ldap/replog
-Variables: ldap/acl/user/password/change
-Variables: ldap/acl/user/kolab2/change
+Variables: ldap/acl/.*
 
 Type: subfile
 Multifile: etc/ldap/slapd.conf
@@ -44,3 +43,4 @@ Variables: ldap/server/type
 Variables: ldap/master
 Variables: interfaces/eth0/address
 Variables: ldap/replog
+Variables: ldap/acl/.*
