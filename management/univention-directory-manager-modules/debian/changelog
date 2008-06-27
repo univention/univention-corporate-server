@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.3-1) stable; urgency=low
+
+  * use the machine account if ldap.secret is not available
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 27 Jun 2008 09:30:23 +0200
+
 univention-directory-manager-modules (3.0.2-1) stable; urgency=low
 
   * added udm as alias to univention-directory-manager

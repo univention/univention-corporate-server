@@ -211,10 +211,13 @@ def doit(sarglist, conn):
 		try:
 			ls=open('/etc/ldap.secret', 'r')
 		except IOError:
-			lsf=0
-			if h == 0:
-				sendMessage(["E: Permission denied, try --logfile, --binddn and --bindpw"])
-				sys.exit(1)
+			try:
+				ls=open('/etc/machine.secret', 'r')
+			except IOError:
+				lsf=0
+				if h == 0:
+					sendMessage(["E: Permission denied, try --logfile, --binddn and --bindpw"])
+					sys.exit(1)
 	
 	if logfile!=oldlogfile:
 		univention.debug.exit()
