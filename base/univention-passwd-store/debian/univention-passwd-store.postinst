@@ -1,0 +1,5 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+univention-config-registry set auth/passwdstore?yes
