@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-17 10:41+0200\n"
-"PO-Revision-Date: 2007-06-01 14:29+0200\n"
+"POT-Creation-Date: 2008-06-30 09:44+0200\n"
+"PO-Revision-Date: 2008-06-30 09:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -50,7 +50,9 @@ msgstr "Anmeldung"
 
 #: modconsole.py:134 modconsole.py:135
 msgid "Not using a secure SSL connection. Click to continue."
-msgstr "Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um fortzufahren."
+msgstr ""
+"Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um "
+"fortzufahren."
 
 #: modconsole.py:155 modconsole.py:167
 msgid "Logout"
@@ -76,12 +78,12 @@ msgstr ""
 "Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
 "hergestellt werden"
 
-#: modconsole.py:302
+#: modconsole.py:304
 #, python-format
 msgid "Authentication failed: %s"
 msgstr "Authentisierungsfehler: %s"
 
-#: modconsole.py:317
+#: modconsole.py:319
 msgid "Logout successful."
 msgstr "Abmeldung erfolgreich"
 
@@ -90,141 +92,177 @@ msgstr "Abmeldung erfolgreich"
 msgid "error while modifying: %s %s"
 msgstr "WÃ€hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
-#~ msgid "Overview"
-#~ msgstr "Überblick"
+#: mapping/buttons.py:147
+msgid "Do"
+msgstr "Ausführen"
+
+#: mapping/buttons.py:148
+msgid "Do action with selected objects."
+msgstr "Aktion mit ausgewählten Objekten ausführen"
+
+#: mapping/buttons.py:150
+msgid "Invert Selection"
+msgstr "Auswahl umkehren"
+
+#: mapping/buttons.py:151
+msgid "Select All"
+msgstr "Alle auswählen"
+
+#: mapping/buttons.py:154 mapping/buttons.py:156
+msgid "Do with selected objects ..."
+msgstr "Ausgewählte Objekte ..."
+
+#: mapping/buttons.py:218
+msgid "Select"
+msgstr "Auswählen"
+
+#: mapping/buttons.py:219
+msgid "Select entry"
+msgstr "Auswählen eines Eintrags"
+
+#: mapping/dynamics.py:95
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: mapping/dynamics.py:192
+msgid "Entries:"
+msgstr "Einträge:"
+
+#: mapping/dynamics.py:193
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Existierende Einträge für '%s'"
+
+#: mapping/dynamics.py:304
+msgid "any"
+msgstr "Alle"
+
+#: mapping/dynamics.py:305
+msgid "none"
+msgstr "Keine"
+
+#: mapping/dynamics.py:318
+msgid "enter search filter"
+msgstr "Suchfilter"
+
+#: mapping/dynamics.py:326
+msgid "go ahead"
+msgstr "Anzeigen"
+
+#: mapping/dynamics.py:327
+msgid "property"
+msgstr "Eigenschaft"
+
+#: mapping/dynamics.py:327
+msgid "select attribute"
+msgstr "Wählen Sie ein Attribut aus"
+
+#: mapping/dynamics.py:447
+msgid "All"
+msgstr "Alles"
+
+#: mapping/dynamics.py:447
+msgid "choose objects to add"
+msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
+
+#: mapping/dynamics.py:448
+msgid "Current"
+msgstr "Aktuell"
+
+#: mapping/dynamics.py:448
+msgid "choose objects to remove"
+msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
+#: pages/about.py:46
+msgid "About"
+msgstr "Über"
+
+#: pages/about.py:64
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
+
+#: pages/about.py:69
+msgid "Version"
+msgstr "Version"
+
+#: pages/about.py:74
+msgid "Build"
+msgstr "Build"
+
+#: pages/about.py:84
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: pages/about.py:97
+msgid "local Installation"
+msgstr "Lokale Installation"
+
+#: pages/about.py:98
+msgid "UCS Version"
+msgstr "UCS Version"
+
+#: pages/about.py:108
+msgid "Contact"
+msgstr "Kontakt"
+
+#: pages/about.py:120
+msgid "ALL RIGHTS RESERVED"
+msgstr "ALL RIGHTS RESERVED"
+
+#: pages/about.py:135 pages/overview.py:122
+msgid "Logout from Univention Management Console"
+msgstr "Abmelden von Univention Management Console"
+
+#: pages/module.py:222
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+
+#: pages/module.py:223
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/overview.py:50
+msgid "Overview"
+msgstr "Überblick"
+
+#: pages/startup.py:43
+msgid "Bugreport: Univention Management Console"
+msgstr "Fehlerbericht: Univention Management Console"
+
+#: pages/startup.py:44
+msgid ""
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
+msgstr ""
+"\n"
+"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
+"einzutragen\n"
+"\n"
+"1) Schritte, um den Fehler zu reproduzieren\n"
+"\n"
+"2) Erwartetes Ergebnis\n"
+"\n"
+"3) Beobachtetes Ergebnis\n"
+"\n"
+
+#: pages/startup.py:79
+msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+msgstr ""
+"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
+
+#: pages/startup.py:84
+msgid "An Error has occured"
+msgstr "Ein Fehler ist aufgetreten"
 
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"
 
 #~ msgid "Favorite Univention Management Console Modules"
 #~ msgstr "Am häufigsten genutzte Module"
-
-#~ msgid "Logout from Univention Management Console"
-#~ msgstr "Abmelden von Univention Management Console"
-
-#~ msgid "Operation still in progress. Please wait ..."
-#~ msgstr ""
-#~ "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
-
-#~ msgid "Information"
-#~ msgstr "Hinweis"
-
-#~ msgid "About"
-#~ msgstr "Über"
-
-#~ msgid "Univention Management Console"
-#~ msgstr "Univention Management Console"
-
-#~ msgid "Version"
-#~ msgstr "Version"
-
-#~ msgid "Build"
-#~ msgstr "Build"
-
-#~ msgid "Hostname"
-#~ msgstr "Rechnername"
-
-#~ msgid "local Installation"
-#~ msgstr "Lokale Installation"
-
-#~ msgid "UCS Version"
-#~ msgstr "UCS Version"
-
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
-
-#~ msgid "ALL RIGHTS RESERVED"
-#~ msgstr "ALL RIGHTS RESERVED"
-
-#~ msgid "Bugreport: Univention Management Console"
-#~ msgstr "Fehlerbericht: Univention Management Console"
-
-#~ msgid ""
-#~ "\n"
-#~ "Please take a second to provide the following information\n"
-#~ "\n"
-#~ "1) Steps to reproduce the failure\n"
-#~ "\n"
-#~ "2) Expected result\n"
-#~ "\n"
-#~ "3) Actual result\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
-#~ "einzutragen\n"
-#~ "\n"
-#~ "1) Schritte, um den Fehler zu reproduzieren\n"
-#~ "\n"
-#~ "2) Erwartetes Ergebnis\n"
-#~ "\n"
-#~ "3) Beobachtetes Ergebnis\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
-#~ msgstr ""
-#~ "Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
-
-#~ msgid "An Error has occured"
-#~ msgstr "Ein Fehler ist aufgetreten"
-
-#~ msgid "Add"
-#~ msgstr "Hinzufügen"
-
-#~ msgid "Entries:"
-#~ msgstr "Einträge:"
-
-#~ msgid "Current entries for '%s'"
-#~ msgstr "Existierende Einträge für '%s'"
-
-#~ msgid "any"
-#~ msgstr "Alle"
-
-#~ msgid "none"
-#~ msgstr "Keine"
-
-#~ msgid "enter search filter"
-#~ msgstr "Suchfilter"
-
-#~ msgid "go ahead"
-#~ msgstr "Anzeigen"
-
-#~ msgid "property"
-#~ msgstr "Eigenschaft"
-
-#~ msgid "select attribute"
-#~ msgstr "Wählen Sie ein Attribut aus"
-
-#~ msgid "All"
-#~ msgstr "Alles"
-
-#~ msgid "choose objects to add"
-#~ msgstr "Wählen Sie die Objekte zum Hinzufügen aus."
-
-#~ msgid "Current"
-#~ msgstr "Aktuell"
-
-#~ msgid "choose objects to remove"
-#~ msgstr "Wählen Sie die zu entfernenden Objekte aus."
-
-#~ msgid "Do"
-#~ msgstr "Ausführen"
-
-#~ msgid "Do action with selected objects."
-#~ msgstr "Aktion mit ausgewählten Objekten ausführen"
-
-#~ msgid "Invert Selection"
-#~ msgstr "Auswahl umkehren"
-
-#~ msgid "Select All"
-#~ msgstr "Alle auswählen"
-
-#~ msgid "Do with selected objects ..."
-#~ msgstr "Ausgewählte Objekte ..."
-
-#~ msgid "Select"
-#~ msgstr "Auswählen"
-
-#~ msgid "Select entry"
-#~ msgstr "Auswählen eines Eintrags"

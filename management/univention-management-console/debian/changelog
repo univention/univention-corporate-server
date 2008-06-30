@@ -1,3 +1,9 @@
+univention-management-console (0.9.28-1) unstable; urgency=low
+
+  * Fixed missing translations
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 30 Jun 2008 10:45:20 +0200
+
 univention-management-console (0.9.27-5) unstable; urgency=low
 
   * show module 'Reboot' on tab 'all modules'
