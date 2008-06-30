@@ -25,6 +25,7 @@ Type: file
 File: etc/libnss-ldap.conf
 Variables: ldap/server/name
 Variables: ldap/server/addition
+Variables: nssldap/bindpolicy
 
 Type: file
 File: etc/nsswitch.conf
