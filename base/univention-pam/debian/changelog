@@ -1,6 +1,6 @@
 univention-pam (1.2.6-1) unstable; urgency=low
 
-  * in default setting "bind_policy" entry is written anymore to
+  * in default setting "bind_policy" entry is not written anymore to
     libnss-ldap.conf but it can be overridden by UCR variable
     nssldap/bindpolicy
 
