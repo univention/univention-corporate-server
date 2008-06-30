@@ -51,7 +51,7 @@ name = 'reboot'
 icon = 'reboot/exit'
 short_description = _( 'Reboot' )
 long_description = _( 'System Stop and Reboot' )
-categories = [ 'system' ]
+categories = [ 'system', 'all' ]
 
 class Choice( umc.StaticSelection ):
 	def __init__( self ):

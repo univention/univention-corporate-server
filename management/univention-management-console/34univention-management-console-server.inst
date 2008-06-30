@@ -1,6 +1,6 @@
 #!/bin/sh
 
-VERSION=2
+VERSION=3
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -239,7 +239,7 @@ univention-admin settings/console_acl create $@ --ignore_exists \
 univention-admin settings/console_acl create $@ --ignore_exists \
        --position cn=acls,cn=console,cn=univention,$ldap_base \
        --set name=reboot-all \
-       --set category="system" \
+       --set category="Reboot" \
        --set ldapbase="$ldap_base" \
        --set command="reboot/*" \
        --set description="System Stop and Reboot"
