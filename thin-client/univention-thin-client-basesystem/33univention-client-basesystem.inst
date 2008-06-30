@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -41,8 +41,13 @@ test -n "`grep "univention-client-basesystem v${VERSION} successful" /usr/lib/un
 
 eval `univention-baseconfig shell`
 
+# make existing host share container a standard share container
+if ldapsearch -x -s base -b "cn=$hostname.$domainname,cn=shares,$ldap_base" > /dev/null; then
+	univention-admin container/cn modify $@ --dn "cn=$hostname.$domainname,cn=shares,$ldap_base" --set sharePath=1
+fi
+
 # create client-root share
-univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname
+univention-admin container/cn create $@ --position "cn=shares,$ldap_base" --ignore_exists --set name=$hostname.$domainname --set sharePath=1
 univention-admin shares/share create $@ --position "cn=$hostname.$domainname,cn=shares,$ldap_base" --ignore_exists --option nfs --set name=client-root --set path=/var/lib/univention-client-root --set host=$hostname.$domainname --set root_squash=0
 
 if [ -e "/etc/univention/ssl/ucsCA/CAcert.pem" ]; then

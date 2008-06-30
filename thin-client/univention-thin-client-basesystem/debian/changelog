@@ -1,3 +1,16 @@
+univention-thin-client-basesystem (4.0.2-1) unstable; urgency=low
+
+  * switch to apt source 192.168.0.10
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 30 Jun 2008 11:09:49 +0200
+
+univention-thin-client-basesystem (4.0.1-1) unstable; urgency=low
+
+  * register also existing register host share container as standard share container
+  * increase version number of joinscript
+
+ -- Arvid Requate <requate@univention.de>  Fri, 20 Jun 2008 16:52:18 +0200
+
 univention-thin-client-basesystem (4.0.0-1) unstable; urgency=low
 
   * UCS 2.1 import
