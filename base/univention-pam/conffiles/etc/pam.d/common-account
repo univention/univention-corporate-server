@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/common-auth
+# 	/etc/univention/templates/files/etc/pam.d/common-account
 # 
 
 # local unix authentification; don't cache passwords, deny access if account is expired
