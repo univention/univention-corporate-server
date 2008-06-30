@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/deny-auth
+# 	/etc/univention/templates/files/etc/pam.d/deny-auth-nowrite
 # 
 
 auth       required   pam_deny.so

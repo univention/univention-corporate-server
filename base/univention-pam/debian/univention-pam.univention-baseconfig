@@ -61,6 +61,7 @@ Variables: auth/admin/methods
 
 Type: file
 File: etc/pam.d/admin-password
+Variables: auth/user/methods
 
 Type: file
 File: etc/pam.d/admin-session

@@ -5,7 +5,7 @@
 #          univention-baseconfig überschrieben werden. 
 #          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 # 
-# 	/etc/univention/templates/files/etc/pam.d/common-auth
+# 	/etc/univention/templates/files/etc/pam.d/admin-auth-nowrite	
 # 
 
 auth     requisite                          pam_nologin.so
@@ -75,7 +75,7 @@ if 'winbind' in methods:
 
 # cache is activated
 if index == 0:
-	print pam_cache	
+	print pam_cache
 
 # cache_store=['success', 'new_authtok_reqd']
 # cache_delete=['auth_err', 'perm_denied', 'cred_err', 'acct_expired', 'authtok_expired']
