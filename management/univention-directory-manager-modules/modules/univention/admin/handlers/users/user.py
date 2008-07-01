@@ -143,7 +143,7 @@ property_descriptions={
 	'username': univention.admin.property(
 			short_description=_('Username'),
 			long_description='',
-			syntax=univention.admin.syntax.uid_umlauts_lower,
+			syntax=univention.admin.syntax.uid_umlauts_lower_except_first_letter,
 			multivalue=0,
 			required=1,
 			may_change=1,
@@ -1476,13 +1476,19 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				self['username']=uid
 			# FIXME: we should NEVER catch all exceptions
 			except Exception, e:
+				# at least write some debuging output..
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Cought exception: %s' % e )
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Continuing without dn..')
 				self.dn=None
 				return
 
 		try:
 			self['firstname']=self.oldattr.get('givenName',[''])[0]
 			self['lastname']=self.oldattr.get('sn',[''])[0]
-		except Exception, e:
+		except Exception, e:					# FIXME: we should NEVER catch all exceptions
+			# at least write some debuging output..
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Cought exception: %s' % e )
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Continuing without dn..')
 			self.dn=None
 			return
 
@@ -1829,7 +1835,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.descriptions['username'] = univention.admin.property(
 				short_description=_('Username'),
 				long_description='',
-				syntax=univention.admin.syntax.uid_umlauts_lower,
+				syntax=univention.admin.syntax.uid_umlauts_lower_except_first_letter,
 				multivalue=0,
 				required=1,
 				may_change=1,
