@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.5-1) stable; urgency=low
+
+  * Allow first character of username to be uppercase
+  * Write a debug message if dn is not set due to syntax exception
+
+ -- Arvid Requate <requate@univention.de>  Tue,  1 Jul 2008 17:00:14 +0200
+
 univention-directory-manager-modules (3.0.4-1) stable; urgency=low
 
   * merged dns/zone_mx_record and dns/zone_txt_record into dns/forward_zone

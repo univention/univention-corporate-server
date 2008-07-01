@@ -294,9 +294,9 @@ class uid_umlauts(simple):
 		if self._re.match(text.decode("utf-8")) != None and text != 'admin':
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")
+			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
 
-class uid_umlauts_lower(simple):
+class uid_umlauts_lower_except_first_letter(simple):
 	name='uid'
 	min_length=1
 	max_length=16
@@ -304,13 +304,14 @@ class uid_umlauts_lower(simple):
 
 	def parse(self, text):
 		unicode_text=text.decode("utf-8")
-		if not unicode_text.islower():
-			raise univention.admin.uexceptions.valueError, _("Value must contain lowercase characters only!")
+		firstletter_lowercased = unicode_text[:1].lower() + unicode_text[1:]
+		if not firstletter_lowercased.islower():
+			raise univention.admin.uexceptions.valueError, _("Only the first letter of the username may be uppercase!")
 
 		if self._re.match(unicode_text) != None and unicode_text != 'admin':
 			return text
 		else:
-			raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots, and may not be admin!")
+			raise univention.admin.uexceptions.valueError, _("Username must only contain numbers, letters and dots, and may not be 'admin'!")
 
 class gid(simple):
 	name='gid'
