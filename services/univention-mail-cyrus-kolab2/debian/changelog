@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.7-1) unstable; urgency=low
+
+  * added postuser to imapd.conf template (required for mail delivery to
+    shared folders)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 14:01:00 +0200
+
 univention-mail-cyrus-kolab2 (1.0.6-3) unstable; urgency=low
 
   * change the owner of the sieve directories to cyrus.mail instead of
