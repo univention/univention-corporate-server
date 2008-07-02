@@ -1,0 +1,53 @@
+#! /bin/sh
+#
+# Univention Client Boot PXE
+#  join script for the client boot PXE debian package
+#
+# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006, 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+VERSION=1
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-client-boot-pxe v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-config-registry shell`
+
+old=`univention-admin policies/dhcp_boot list $@ --filter cn=default-settings | grep boot_filename | sed -e 's|.*boot_filename: |--set boot_filename=|'`
+if [ -z "$old" -o "$old" = "--set boot_filename=None" ]; then
+	univention-admin policies/dhcp_boot modify $@ --ignore_exists --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set boot_filename=pxelinux.0
+fi
+
+univention-config-registry set pxe/nameserver?$nameserver1
+
+test -n "`grep "univention-client-boot-pxe v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-client-boot-pxe v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
