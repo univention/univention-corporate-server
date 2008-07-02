@@ -119,8 +119,9 @@
     <alternateBackground rgb="#eef6ff" object="global" />
     <activeForeground rgb="#ffffff" object="kwin" />
     <inactiveBackground rgb="#338b00" object="kwin" />
+    <inactiveBackground rgb="#9c9c9c" object="kwin" />
     <inactiveBlend rgb="#9daaba" object="kwin" />
-    <activeBackground rgb="#4ac900" object="kwin" />
+    <activeBackground rgb="#006600" object="kwin" />
     <activeBlend rgb="#338b00" object="kwin" />
     <inactiveForeground rgb="#dddddd" object="kwin" />
     <activeTitleBtnBg rgb="#7f9ec8" object="kwin" />
