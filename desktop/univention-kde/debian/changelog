@@ -1,3 +1,9 @@
+univention-kde (3.0-2-1) unstable; urgency=low
+
+  * more design settings for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  2 Jul 2008 09:13:47 +0200
+
 univention-kde (3.0-1-3) unstable; urgency=low
 
   * added exit 0 to the end of univention-set-kdedirs
