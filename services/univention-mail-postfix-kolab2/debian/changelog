@@ -1,3 +1,16 @@
+univention-mail-postfix-kolab2 (1.0.4-1) unstable; urgency=low
+
+  * added ldap query for virtual mapping to enable mail delivery to shared
+    folders within "user" and "shared" namespace
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 15:12:21 +0200
+
+univention-mail-postfix-kolab2 (1.0.3-1) unstable; urgency=low
+
+  * added new virtual map ldap query for mail delivery to shared folders
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 26 Jun 2008 14:07:25 +0200
+
 univention-mail-postfix-kolab2 (1.0.2-10) unstable; urgency=low
 
   * Pre-depend on postfix to facilitate updates

@@ -1,5 +1,18 @@
 
 #
+# LDAP mail2sharedfolder support
+#
+
+ldapsharedfolder_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapsharedfolder_search_base = @%@ldap/base@%@
+ldapsharedfolder_query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)))
+ldapsharedfolder_result_attribute = univentionKolabSharedFolderDeliveryAddress
+ldapsharedfolder_result_filter = %s
+ldapsharedfolder_search_timeout = 15
+ldapsharedfolder_scope = sub
+ldapsharedfolder_version = 3
+
+#
 # LDAP Alias support
 #
 

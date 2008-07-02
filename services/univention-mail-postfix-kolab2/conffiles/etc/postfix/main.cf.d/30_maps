@@ -1,6 +1,6 @@
 
 canonical_maps = hash:/etc/postfix/canonical
-virtual_maps = hash:/etc/postfix/virtual, ldap:ldapgroups, ldap:ldapdistlist, ldap:ldapvirtual
+virtual_maps = hash:/etc/postfix/virtual, ldap:ldapgroups, ldap:ldapdistlist, ldap:ldapsharedfolder, ldap:ldapvirtual
 relocated_maps = hash:/etc/postfix/relocated
 
 alias_maps = hash:/etc/aliases
