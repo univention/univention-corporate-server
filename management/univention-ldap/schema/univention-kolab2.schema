@@ -102,9 +102,17 @@ attributetype ( 1.3.6.1.4.1.10176.1014.1.1
   EQUALITY booleanMatch
   SYNTAX 1.3.6.1.4.1.1466.115.121.1.7 SINGLE-VALUE)
 
+# use namespace 'user' for shared folders
+attributetype ( 1.3.6.1.4.1.10176.1014.1.2
+  NAME 'univentionKolabSharedFolderDeliveryAddress'
+  DESC 'use given mailaddress for mail delivery to shared folder'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
+
 # univention shared folder
 objectclass ( 1.3.6.1.4.1.10176.1014.2.1
   NAME 'univentionKolabSharedFolder'
   DESC 'Univention shared folder'
   SUP top AUXILIARY
-  MAY ( univentionKolabUserNamespace ) )
+  MAY ( mailPrimaryAddress $ mailAlternativeAddress $ univentionKolabUserNamespace $ univentionKolabSharedFolderDeliveryAddress ) )
