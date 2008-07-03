@@ -7,7 +7,8 @@ Standards-Version: 3.5.2
 
 Package: univention-thin-client
 Architecture: all
-Depends: univention-thin-client-basesystem, univention-client-boot-pxe,  univention-client-kernel-image, univention-session, univention-nfs-server, ntp-server
+Depends: univention-thin-client-basesystem, univention-client-boot-pxe,  univention-client-kernel-image, univention-session, univention-nfs-server, ntp-server, univention-thin-client-ltsp, univention-thin-client-sound, univention-thin-client-x-fonts, univention-thin-client-cups, univention-thin-client-ssh, univention-thin-client-sane, univention-thin-client-x-base
+
 Description: UCS: thin client support
  This package installs the required packages to allow thin
  clients to boot from your UCS.

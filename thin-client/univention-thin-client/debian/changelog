@@ -1,3 +1,10 @@
+univention-thin-client (2.0.1-1) unstable; urgency=low
+
+  * added thin-client packages to the dependency list of this meta
+    package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Jul 2008 12:48:09 +0200
+
 univention-thin-client (2.0.0-1) unstable; urgency=low
 
   * UCS 2.1 import
