@@ -237,6 +237,18 @@ class mail_folder_name(simple):
 		else:
 			return text
 
+class mail_folder_type(select):
+	name='mail_folder_type'
+	choices=[
+		('',        _('undefined') ),
+		('mail',    _('mails' ) ),
+		('event',   _('events') ),
+		('contact', _('contacts') ),
+		('task',    _('tasks') ),
+		('note',    _('notes') ),
+		('journal', _('journals') ),
+	]
+
 class string_numbers_letters_dots(simple):
 	name='string_numbers_letters_dots'
 

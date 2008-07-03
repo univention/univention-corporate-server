@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-25 11:04+0200\n"
-"PO-Revision-Date: 2007-01-31 16:32+0100\n"
+"POT-Creation-Date: 2008-07-03 12:13+0200\n"
+"PO-Revision-Date: 2008-07-03 15:18+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -211,17 +211,45 @@ msgstr ""
 msgid "Value may not contain whitespace or exclamation mark !"
 msgstr "Der Wert darf keine Leerzeichen oder Ausrufezeichen enthalten."
 
-#: syntax.py:249 syntax.py:273 syntax.py:325 syntax.py:579 syntax.py:588
-#: syntax.py:598
+#: syntax.py:243
+msgid "undefined"
+msgstr "nicht definiert"
+
+#: syntax.py:244
+msgid "mails"
+msgstr "Mails"
+
+#: syntax.py:245
+msgid "events"
+msgstr "Kalender"
+
+#: syntax.py:246
+msgid "contacts"
+msgstr "Kontakte"
+
+#: syntax.py:247
+msgid "tasks"
+msgstr "Aufgaben"
+
+#: syntax.py:248
+msgid "notes"
+msgstr "Notizen"
+
+#: syntax.py:249
+msgid "journals"
+msgstr "Journal"
+
+#: syntax.py:261 syntax.py:285 syntax.py:321 syntax.py:575 syntax.py:584
+#: syntax.py:594
 msgid "Value may not contain other than numbers, letters and dots!"
 msgstr "Der Wert darf nur Zahlen, Buchstaben und Punkte enthalten."
 
-#: syntax.py:260
+#: syntax.py:272
 msgid "Value may not contain other than numbers, letters, dots and spaces!"
 msgstr ""
 "Der Wert darf nur Zahlen, Buchstaben, Leerzeichen und Punkte enthalten."
 
-#: syntax.py:285 syntax.py:297 syntax.py:313
+#: syntax.py:297 syntax.py:309
 msgid ""
 "Value may not contain other than numbers, letters and dots, and may not be "
 "admin!"
@@ -237,11 +265,11 @@ msgstr "Der Wert darf nur Buchstaben in Kleinschreibung enthalten!"
 msgid ", a path must begin with \"/\"!"
 msgstr ", eine Pfadangabe muss mit \\\"/\\\" beginnen."
 
-#: syntax.py:337
+#: syntax.py:333
 msgid "Value may not contain double quotes (\")!"
 msgstr "Der Wert darf kein Anführungszeichen (\") enthalten!"
 
-#: syntax.py:351
+#: syntax.py:347
 msgid "The password is to short, at least 8 characters needed."
 msgstr "Das Passwort ist zu kurz, mindestens 8 Zeichen sind erforderlich."
 
@@ -688,15 +716,15 @@ msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: an"
 msgid "Enabled: Input: off, Message: off"
 msgstr "Aktiviert: Eingabe: aus, Benachrichtigen: aus"
 
-#: syntax.py:1773
+#: syntax.py:1769
 msgid "Enabled: Set by Caller"
 msgstr ""
 
-#: syntax.py:1774
+#: syntax.py:1770
 msgid "Enabled: No Call Back"
 msgstr ""
 
-#: syntax.py:1857
+#: syntax.py:1853
 msgid "NFS-Share"
 msgstr "NFS-Freigabe"
 
