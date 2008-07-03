@@ -86,6 +86,15 @@ def handler(dn, new, old, command):
 		except:
 			pass
 
+	def setfoldertype(mailbox, foldertype):
+		try:
+			listener.setuid(0)
+			p = os.popen( '/usr/sbin/univention-cyrus-set-foldertype-shared %s %s %s' % ( outlook, mailbox, foldertype ) )
+			p.close()
+			listener.unsetuid()
+		except:
+			pass
+
 	def setquota(mailbox, quota):
 		try:
 			listener.setuid(0)
@@ -152,6 +161,9 @@ def handler(dn, new, old, command):
 				if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
 					setquota(name, new['cyrus-userquota'][0])
 
+				if new.has_key('univentionKolabSharedFolderType') and new['univentionKolabSharedFolderType'][0]:
+					setfoldertype(name, new.get('univentionKolabSharedFolderType')[0])
+
 				listener.unsetuid()
 
 			except:
@@ -180,6 +192,10 @@ def handler(dn, new, old, command):
 	# 6. reader permissions were changed
 	if old and new:
 		name = '"%s"' % new['cn'][0]
+
+		if new.has_key('univentionKolabSharedFolderType') and new['univentionKolabSharedFolderType'][0]:
+			setfoldertype(name, new.get('univentionKolabSharedFolderType')[0])
+
 		if old.has_key('cyrus-userquota') and old['cyrus-userquota'][0] and not new.has_key('cyrus-userquota'):
 			setquota(name, "none")
 

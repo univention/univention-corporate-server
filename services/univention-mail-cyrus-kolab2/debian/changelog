@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.8-1) unstable; urgency=low
+
+  * set IMAP shared folder type
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 12:18:37 +0200
+
 univention-mail-cyrus-kolab2 (1.0.7-1) unstable; urgency=low
 
   * added postuser to imapd.conf template (required for mail delivery to
