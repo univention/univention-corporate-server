@@ -66,6 +66,7 @@ install: build
 	install -m 0755 usr/sbin/univention-cyrus-dump-acl ${D}/usr/sbin/univention-cyrus-dump-acl
 	install -m 0755 usr/sbin/univention-cyrus-delete-folder ${D}/usr/sbin/univention-cyrus-delete-folder
 	install -m 0755 usr/sbin/univention-cyrus-set-quota-shared ${D}/usr/sbin/univention-cyrus-set-quota-shared
+	install -m 0755 usr/sbin/univention-cyrus-set-foldertype-shared ${D}/usr/sbin/univention-cyrus-set-foldertype-shared
 
 	install -m 0755 cyrus.py ${D}/usr/lib/univention-directory-listener/system/
 	install -m 0755 cyrus-sieve.py ${D}/usr/lib/univention-directory-listener/system/
