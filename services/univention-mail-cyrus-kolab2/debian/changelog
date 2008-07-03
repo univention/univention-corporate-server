@@ -1,3 +1,10 @@
+univention-mail-cyrus-kolab2 (1.0.10-1) unstable; urgency=low
+
+  * set at least "lrsp" permission for user "anyone" to shared folder with
+    mail address
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 13:34:32 +0200
+
 univention-mail-cyrus-kolab2 (1.0.9-1) unstable; urgency=low
 
   * fixed creation of shared folder in "user" scope

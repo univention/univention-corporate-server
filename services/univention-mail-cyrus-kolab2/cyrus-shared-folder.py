@@ -124,6 +124,13 @@ def handler(dn, new, old, command):
 
 		return policy
 
+	def fix_anyone_acl( new, email, policy ):
+		if email == 'anyone' and new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
+			for flag in 'lrps':
+				if not flag in policy:
+					policy += flag
+		return policy
+
 	# split acl entry into mail adress/group name and access right
 	def split_acl_entry(entry):
 		last_space = entry.rfind(" ")
@@ -146,6 +153,8 @@ def handler(dn, new, old, command):
 					p = os.popen( '/usr/sbin/univention-cyrus-rename-mailbox %s %s %s' % (outlook, old_dn, name) )
 					p.close()
 
+				anyone_acl_set = False
+
 				if new.has_key('acl'):
 					for entry in new['acl']:
 						(email, policy) = split_acl_entry(entry)
@@ -153,11 +162,24 @@ def handler(dn, new, old, command):
 						# Set our new policy
 						policy = getpolicy(policy)
 
+						# add permissions "lrps" for user anyone if missing for mail delivery to shared folders
+						policy = fix_anyone_acl(new, email, policy)
+
 						if policy < 0:
 							univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'cyrus-shared-folder: Wrong policy entry "%s" for email %s' % (policy, email))
 							continue
 						else:
+							if email == 'anyone':
+								anyone_acl_set = True
 							setacl(name, email, policy)
+
+				# set at least "anyone lrps" permissions for mail delivery to shared folders
+				if not anyone_acl_set and new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
+					email = 'anyone'
+					policy = ''
+					policy = fix_anyone_acl( new, email, policy )
+					setacl(name, email, policy)
+
 				if new.has_key('cyrus-userquota') and new['cyrus-userquota'][0]:
 					setquota(name, new['cyrus-userquota'][0])
 
@@ -208,10 +230,12 @@ def handler(dn, new, old, command):
 				setacl(name, email, 'none')
 
 		#convert new acls to dict
+		anyone_acl_set = False
 		curacl={}
 		if new.has_key('acl'):
 			for entry in new['acl']:
 				(email, policy) = split_acl_entry(entry)
+				policy = fix_anyone_acl(new, email, policy)
 				curacl[email]=policy
 
 		if old.has_key('acl'):
