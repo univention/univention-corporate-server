@@ -88,6 +88,5 @@ while not i == 3:
 
 		child.sendline('disc')
 		child.sendline('exit')
-		print 'EXIT'
 	elif i == 2:
 		sys.exit(1)
