@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.9-1) unstable; urgency=low
+
+  * fixed creation of shared folder in "user" scope
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 03 Jul 2008 12:20:45 +0200
+
 univention-mail-cyrus-kolab2 (1.0.8-1) unstable; urgency=low
 
   * set IMAP shared folder type
