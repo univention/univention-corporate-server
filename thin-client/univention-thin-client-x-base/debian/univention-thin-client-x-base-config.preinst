@@ -28,6 +28,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
+univention-config-registry set gdm/disallow/tcp?no
+
 test "$1" = "install" && dpkg-divert --package univention-thin-client-x-base-config --rename --divert /etc/X11/Xresources/univention-client-basesystem.debian --add /etc/X11/Xresources/univention-client-basesystem || true
 test "$1" = "install" && dpkg-divert --package univention-thin-client-x-base-config --rename --divert /etc/pam.d/gdm.debian --add "/etc/pam.d/gdm" || true
 
