@@ -77,11 +77,17 @@ while not i == 3:
 		if not outlook:
 			child.sendline('cm shared/%s' % shared_name )
 		else:
-			name = shared_name.split( '@', 1 )[ 0 ]
-			child.sendline('cm user/%s' % shared_name )
-			child.sendline('cm user/%s/%s' % ( name, shared_name ) )
+			nameitems = shared_name.split( '@', 1 )[ 0 ].split('/')
+			domain = shared_name.split( '@', 1 )[ 1 ]
+
+			print 'cm user/%s@%s' % ( nameitems[0], domain )
+			child.sendline('cm user/%s@%s' % ( nameitems[0], domain ) )
+			for x in range(1, len(nameitems)+1):
+				print 'cm user/%s/%s@%s' % ( nameitems[0], '/'.join(nameitems[0:x]) , domain )
+				child.sendline('cm user/%s/%s@%s' % ( nameitems[0], '/'.join(nameitems[0:x]), domain ) )
 
 		child.sendline('disc')
 		child.sendline('exit')
+		print 'EXIT'
 	elif i == 2:
 		sys.exit(1)
