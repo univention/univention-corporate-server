@@ -1,3 +1,10 @@
+univention-gdm (3.0.5-1) unstable; urgency=low
+
+  * added ucr variable gdm/disallow/tcp to start the X server with -
+    nolisten tcp
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  3 Jul 2008 12:54:43 +0200
+
 univention-gdm (3.0.4-1) unstable; urgency=low
 
   * fixed python syntax errors in the theme file
