@@ -1,3 +1,9 @@
+univention-ldap (3.0.8-1) unstable; urgency=low
+
+  * added univentionKolabSharedFolderType to object class univentionKolabSharedFolder
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 02 Jul 2008 14:35:30 +0200
+
 univention-ldap (3.0.7-1) unstable; urgency=low
 
   * added mailAlternativeAddress and univentionKolabSharedFolderDeliveryAddress

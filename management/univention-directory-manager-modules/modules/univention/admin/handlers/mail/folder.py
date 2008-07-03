@@ -125,13 +125,24 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
+	'folderType': univention.admin.property(
+			short_description=_('IMAP folder type'),
+			long_description='',
+			syntax=univention.admin.syntax.mail_folder_type,
+			multivalue=0,
+			required=0,
+			dontsearch=0,
+			may_change=1,
+			identifies=0,
+		),
 }
 
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
 	[univention.admin.field("name"), univention.admin.field("mailDomain")],
 	[univention.admin.field("kolabHomeServer"), univention.admin.field("cyrus-userquota")],
-	[univention.admin.field("userNamespace"), univention.admin.field("mailPrimaryAddress")],
+	[univention.admin.field("folderType"), univention.admin.field("mailPrimaryAddress")],
+	[univention.admin.field("userNamespace"), ],
 	] ),
 	univention.admin.tab(_('Access Rights'),_('Access rights for shared folder'),[
 	[univention.admin.field("sharedFolderUserACL")],
@@ -144,6 +155,7 @@ mapping.register('cyrus-userquota', 'cyrus-userquota', None, univention.admin.ma
 mapping.register('kolabHomeServer', 'kolabHomeServer', None, univention.admin.mapping.ListToString)
 mapping.register('userNamespace', 'univentionKolabUserNamespace', None, univention.admin.mapping.ListToString)
 mapping.register('mailPrimaryAddress', 'mailPrimaryAddress', None, univention.admin.mapping.ListToString)
+mapping.register('folderType', 'univentionKolabSharedFolderType', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simpleLdap):
 	module=module
