@@ -1,3 +1,10 @@
+univention-gdm (3.0.6-1) unstable; urgency=low
+
+  * use the new thin client system in the Linux Arbeitsplatz session
+    script
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 11:38:15 +0200
+
 univention-gdm (3.0.5-1) unstable; urgency=low
 
   * added ucr variable gdm/disallow/tcp to start the X server with -

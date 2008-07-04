@@ -87,36 +87,22 @@ function thinclient() {
 
 	# kerberos or simple login
 	if klist > /dev/null 2> /dev/null; then
-		export SESSION_RSH=krsh
+		if [ -n "$thinclient_session_cmd" ]; then
+			export SESSION_RSH="$thinclient_session_cmd"
+		else
+			export SESSION_RSH=krsh
+		fi
 	else
 		export SESSION_RSH=rsh
 	fi
 
 	# debug
-	echo "Settings:"
-	/usr/sbin/univention-baseconfig dump
-	echo "SESSION_HOST: $SESSION_HOST"
-	echo "SESSION_RSH: $SESSION_RSH"
-	echo ""
-
-	# start sound server
-	if [ -e "/usr/bin/artswrapper" ]; then
-		if [ -e "/dev/dsp" ] || [ -e "/dev/sndstat" ]; then
-			#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
-			mkdir -p "/tmp/ksocket-${USERNAME}"
-			/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
-			artspid="$!"
-		fi
-	fi
-
-	eval `/usr/sbin/univention-baseconfig shell univentionClientDevicesActivate`
-
-	if [ -n "$univentionClientDevicesActivate" -a "$univentionClientDevicesActivate" = "1" ]; then
-		# export client devices
-		test -x /usr/bin/export-devices && export-devices start
-		export clientDevices="true"
-	else
-		export clientDevices="false"
+	if [ -n "$thinclient_debug" ]; then
+		echo "Settings:"
+		/usr/sbin/univention-baseconfig dump
+		echo "SESSION_HOST: $SESSION_HOST"
+		echo "SESSION_RSH: $SESSION_RSH"
+		echo ""
 	fi
 
 	if test -e /tmp/passwd; then
@@ -128,23 +114,20 @@ function thinclient() {
 	then
 		timeout=`$SESSION_RSH $SESSION_HOST /usr/sbin/univention-baseconfig get thinclient/session/startup`
 		timeout=`echo $timeout | egrep "^([0-9])+$"`
+
+		FIFOFILE=/tmp/univention-client.sock.$USER
+
 		if [ -n "$timeout" ]; then
-			univention-client -t$timeout -p /etc/univention/KDE.Session
+			univention-client -t$timeout -p /etc/univention/KDE.Session -f $FIFOFILE 2>&1
 		else
-			univention-client -p /etc/univention/KDE.Session
+			univention-client -p /etc/univention/KDE.Session  -f $FIFOFILE 2>&1
 		fi
+
+
 	else
 		echo starting "$univentionAutoStartScript"
 		/etc/gdm/Autostart/$univentionAutoStartScript
 	fi
-
-	if [ -n "$univentionClientDevicesActivate" -a "$univentionClientDevicesActivate" = "1" ]; then
-		# stop exporting client devices
-		test -x /usr/bin/export-devices && export-devices stop
-	fi
-
-	# stop sound server
-	test "$artspid" && kill "$artspid"
 }
 
 if [ -z $server_role ]; then
