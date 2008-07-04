@@ -1,3 +1,9 @@
+univention-x-core (1.1.6-6) unstable; urgency=low
+
+  * removed vnc support per Xserver module (xf4vnc)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  4 Jul 2008 16:16:39 +0200
+
 univention-x-core (1.1.6-5) unstable; urgency=low
 
   * Stop building x.org VNC modules
