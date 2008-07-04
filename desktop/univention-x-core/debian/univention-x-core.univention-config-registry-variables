@@ -195,16 +195,3 @@ Description[en]=Amount of video memory installed on the graphics board (in kB)
 Type=str
 Categories=Desktop
 
-
-[xorg/vnc/exporttype]
-Description[de]=Aktiviere/Deaktiviere VNC-Displayfreigabe
-Description[en]=Enable/disable VNC display export
-Type=str
-Categories=Desktop
-
-[xorg/vnc/viewonly]
-Description[de]=VNC-Displayfreigabe ohne Eingabemöglichkeit
-Description[en]=VNC display export with read-only access
-Type=str
-Categories=Desktop
-

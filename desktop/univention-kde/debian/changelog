@@ -1,3 +1,9 @@
+univention-kde (3.0-3-1) unstable; urgency=low
+
+  * removed vncevent module, desktop menu entry and vnc Xserver extension library (xf4vnc)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  4 Jul 2008 16:18:13 +0200
+
 univention-kde (3.0-2-1) unstable; urgency=low
 
   * more design settings for UCS 2.1

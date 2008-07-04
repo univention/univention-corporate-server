@@ -84,11 +84,6 @@ install: build
 	install -m 0755 univention-kde-profile-builder debian/univention-kde/usr/bin/
 	install -m 0755 univention-kde-profile-builder-dialog debian/univention-kde/usr/bin/
 
-	install -m 0644 files/libVncExt.so.2.0 debian/univention-kde-vncmodule/usr/X11R6/lib/libVncExt.so.2.0
-	install -m 0755 files/kvncevent debian/univention-kde-vncmodule/usr/bin/kvncevent
-	install -m 0755 files/vncevent debian/univention-kde-vncmodule/usr/bin/vncevent
-	install -m 0644 files/vncevent.desktop debian/univention-kde-vncmodule/usr/share/applnk/System/vncevent.desktop
-
 	install -m 0755 78univention-kde.inst debian/univention-kde/usr/lib/univention-install/
 	install -m 0755 univention-set-kdedirs debian/univention-kde-setdirs/usr/share/univention-kde/
 	univention-install-baseconfig

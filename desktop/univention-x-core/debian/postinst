@@ -85,18 +85,6 @@ if [ -n "$univentionXVRefresh" ]; then
 	univention-baseconfig set xorg/monitor/VertRefresh?$univentionXVRefresh
 	univention-baseconfig unset univentionVertRefresh
 fi
-if [ -n "$univentionXVNCExportType" ]; then
-	univention-baseconfig set xorg/vnc/exporttype?$univentionXVNCExportType
-	univention-baseconfig unset univentionXVNCExportType
-fi
-if [ -n "$X_VNC_Export_Type" ]; then
-	univention-baseconfig set xorg/vnc/exporttype?$X_VNC_Export_Type
-	univention-baseconfig unset X/VNC/ExportType
-fi
-if [ -n "$univentionXVNCExportViewonly" ]; then
-	univention-baseconfig set xorg/vnc/viewonly?$univentionXVNCExportViewonly
-	univention-baseconfig unset univentionXVNCExportViewonly
-fi
 
 if [ -n "$univentionXMouseDevice" ]; then
 	univention-baseconfig set xorg/mouse/device?$univentionXMouseDevice

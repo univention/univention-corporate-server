@@ -7,7 +7,7 @@ Standards-Version: 3.5.5
 
 Package: univention-kde
 Architecture: all
-Depends: xbase-clients,  kdebase, kdenetwork, ark, kcalc, kde-i18n-de, univention-config-registry (>=0.06), debhelper, kontact, kdepim-wizards, kmail, kaddressbook, kmailcvt, knode, korganizer, kdepim-kio-plugins, kdepim-kfile-plugins, univention-kde-vncmodule | univention-kde-vncmodule-dummy, univention-kde-setdirs, arts, alsa-base, fakeroot, akregator, kpilot, knewsticker, kweather
+Depends: xbase-clients,  kdebase, kdenetwork, ark, kcalc, kde-i18n-de, univention-config-registry (>=0.06), debhelper, kontact, kdepim-wizards, kmail, kaddressbook, kmailcvt, knode, korganizer, kdepim-kio-plugins, kdepim-kfile-plugins, univention-kde-setdirs, arts, alsa-base, fakeroot, akregator, kpilot, knewsticker, kweather
 Description: UCS - KDE desktop
  This package installs the KDE desktop.
  .
@@ -28,24 +28,3 @@ Description: UCS - Set Profile Path
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kde-vncmodule
-Architecture: i386
-Conflicts: univention-kde (<<1.15)
-Description: UCS - vnc module for the KDE desktop
- This package installs the vnc module for the KDE desktop.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-kde-vncmodule-dummy
-Architecture: all
-Conflicts: univention-kde (<<1.15)
-Description: UCS - dummy vnc module for the KDE desktop
- This package installs the dummy vnc module for the KDE desktop.
- .
- It is part of Univention Corporate Server (UCS), an
- integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
