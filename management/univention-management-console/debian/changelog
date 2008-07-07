@@ -1,3 +1,9 @@
+univention-management-console (0.9.29-1) unstable; urgency=low
+
+  * added safety check in frontend/pages/module.py to prevent tracebacks
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 07 Jul 2008 12:07:04 +0200
+
 univention-management-console (0.9.28-1) unstable; urgency=low
 
   * Fixed missing translations

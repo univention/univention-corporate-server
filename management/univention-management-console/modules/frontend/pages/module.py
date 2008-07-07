@@ -266,7 +266,7 @@ class Module( base.Page ):
 			cache = False
 			if req.has_flag( 'web:startup_cache' ):
 				cache = req.get_flag( 'web:startup_cache' )
- 			self.selected = self.__startups.add( req, title, title, caching = cache )
+			self.selected = self.__startups.add( req, title, title, caching = cache )
 			self.categories = self.__startups.categories()
 			if self.__startups[ self.selected ].dialog():
 				self.__startups[ self.selected ].referrer = \
@@ -277,6 +277,18 @@ class Module( base.Page ):
 
 	def __change_to_selected( self ):
 		cmd = self.__startups[ self.selected ]
+
+		# safety check
+		if cmd == None:
+			# cmd to be selected is None ==> UMC would crash if we continue here, so let's choose another valid startup if available
+			ud.debug( ud.ADMIN, ud.WARN, 'Module.__change_to_selected: selected item is None (self.selected=%s) (self.__startups=%s)' % (self.selected, str(self.__startups)))
+			for x in self.__startups:
+				if not x == None:
+					cmd = x
+					break
+			else:
+				ud.debug( ud.ADMIN, ud.ERROR, 'Module.__change_to_selected: all items in self.__startups are None')
+
 		# error message to show?
 		if cmd.error_active():
 			self.__layout = cmd.error_message()
