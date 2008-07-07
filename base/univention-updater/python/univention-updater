@@ -83,6 +83,30 @@ def usage(fd=sys.stdout):
 	print >>fd, '  -None-'
 	print >>fd, ''
 
+def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
+	cnt = 0
+	lines = []
+	deactivated_lines = []
+	f = open('/etc/apt/sources.list', 'r')
+	for line in f.readlines():
+		line=line.strip(' \n\t')
+		for method in methods:
+			if line.startswith( 'deb %s:' % method ) or line.startswith( 'deb-src %s:' % method ):
+				line = '#%s' % line
+				deactivated_lines.append(line)
+				cnt += 1
+		lines.append(line)
+	f.close()
+	if cnt:
+		f = open('/etc/apt/sources.list', 'w')
+		f.write( '\n'.join( lines ) )
+		f.write( '\n' )
+		f.close()
+		debug_file=open('/var/log/univention/actualise.log', 'a+')
+		debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
+		debug_file.write( '   %s\n' % '\n   '.join(deactivated_lines) )
+		debug_file.close()
+
 def copy_sh_files(tempdir,path):
 	for sh in ['preup.sh', 'postup.sh']:
 		if os.path.exists(os.path.join(tempdir,sh)):
@@ -361,6 +385,8 @@ def main():
 		dprint("In directory mode a sourcedir must be specified by the --src parameter.", [stdout,sys.stdout])
 		fp_debug.close()
 		sys.exit(2)
+
+	deactivateSourcesListMethods( methods = [ 'cdrom' ] )
 
 	if clean:
 		os.system('apt-get clean')

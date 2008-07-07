@@ -60,6 +60,30 @@ def getUpdate():
 		print >>sys.stderr, "E: failed to update"
 		sys.exit(res)
 
+def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
+	cnt = 0
+	lines = []
+	deactivated_lines = []
+	f = open('/etc/apt/sources.list', 'r')
+	for line in f.readlines():
+		line=line.strip(' \n\t')
+		for method in methods:
+			if line.startswith( 'deb %s:' % method ) or line.startswith( 'deb-src %s:' % method ):
+				line = '#%s' % line
+				deactivated_lines.append(line)
+				cnt += 1
+		lines.append(line)
+	f.close()
+	if cnt:
+		f = open('/etc/apt/sources.list', 'w')
+		f.write( '\n'.join( lines ) )
+		f.write( '\n' )
+		f.close()
+		debug_file=open('/var/log/univention/actualise.log', 'a+')
+		debug_file.write('Hint: deactivated %d lines in /etc/apt/sources.list:\n' % cnt)
+		debug_file.write( '   %s\n' % '\n   '.join(deactivated_lines) )
+		debug_file.close()
+
 def check(baseConfig, dist_upgrade=False):
 	# Just probe if there are packages to add or remove
 
@@ -193,6 +217,8 @@ def main():
 			debug_file=open('/var/log/univention/actualise.log', 'a+')
 			debug_file.write('***** Starting univention-actualise at %s\n' % time.ctime())
 			debug_file.close()
+
+			deactivateSourcesListMethods( methods = [ 'cdrom' ] )
 
 			getUpdate()
 
