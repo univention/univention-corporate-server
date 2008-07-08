@@ -1,0 +1,91 @@
+#!/usr/bin/make -f
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+PACKAGE_NAME=univention-vmware
+MODULE_NAME=univention-vmware
+
+DEB_BUILD_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+
+	touch configure-stamp
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+	touch $@
+
+	mkdir vm-tmp
+ifneq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
+	make-vmpkg -b vm-tmp-player -s -p player VMware-player-*.x86_64.tar.gz
+else
+	make-vmpkg -b vm-tmp-player -s -p player VMware-player-*.i386.tar.gz
+endif
+	cp vm-tmp-player/*/*.deb ../; rm -Rf vm-tmp-player
+	make-vmpkg -b vm-tmp-server -s -p server VMware-server-*.tar.gz
+	cp vm-tmp-server/*/*.deb ../; rm -Rf vm-tmp-server
+	make-vmpkg -b vm-tmp-any-any -s -p any-any vmware-any-any*.tar.gz
+	cp vm-tmp-any-any/*/*.deb ../; rm -Rf vm-tmp-any-any
+
+build-ext-%:
+	dh_testdir
+	make
+	touch $@
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -Rf configure-stamp build-stamp vm-tmp
+	dh_clean
+
+install:
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+binary-indep: build install
+
+binary-arch: build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: build clean binary-indep binary-arch binary install configure

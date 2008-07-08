@@ -1,0 +1,74 @@
+vmware (2.0.0-6) unstable; urgency=low
+
+  * rename package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Jul 2008 07:44:18 +0200
+
+univention-vmware (2.0.0-5) unstable; urgency=low
+
+  * more package updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Jul 2008 07:24:01 +0200
+
+univention-vmware (2.0.0-4) unstable; urgency=low
+
+  * added vmware-server tgz
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  7 Jul 2008 16:57:51 +0200
+
+univention-vmware (2.0.0-3) unstable; urgency=low
+
+  * call make-vmpkg without -u
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 10:03:43 +0200
+
+univention-vmware (2.0.0-2) unstable; urgency=low
+
+  * forcing upstream version
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 09:51:59 +0200
+
+univention-vmware (2.0.0-1) unstable; urgency=low
+
+  * update vmware packages
+  * added vmware-any-any package
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 09:15:51 +0200
+
+univention-vmware (1.0.0-6) unstable; urgency=low
+
+  * Bump version.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 16 Oct 2007 10:10:03 +0200
+
+univention-vmware (1.0.0-5) unstable; urgency=low
+
+  * Build packages in separate dirs to prevent overrides.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Tue, 16 Oct 2007 09:37:52 +0200
+
+univention-vmware (1.0.0-4) unstable; urgency=low
+
+  * Adapt path to tarballs.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 15 Oct 2007 16:53:43 +0200
+
+univention-vmware (1.0.0-3) unstable; urgency=low
+
+  * For mysterious reasons make-vmpkg complains about the "-b" option inside
+    pbuilder, so build inside the current directory instead.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 15 Oct 2007 16:25:13 +0200
+
+univention-vmware (1.0.0-2) unstable; urgency=low
+
+  * Fix typo
+  * Use wildcards for easier upgrades
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon, 15 Oct 2007 15:52:04 +0200
+
+univention-vmware (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed, 10 Oct 2007 16:29:49 -0200
