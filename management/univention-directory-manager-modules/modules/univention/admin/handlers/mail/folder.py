@@ -233,12 +233,14 @@ class object(univention.admin.handlers.simpleLdap):
 			else:
 				al.append(('univentionKolabSharedFolderDeliveryAddress', 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ) )
 
-			try:
-				self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
-				univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
-			except:
-				univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
-				raise univention.admin.uexceptions.mailAddressUsed
+			address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
+			if self[ 'userNamespace' ] != 'TRUE' or self[ 'mailPrimaryAddress' ] != address:
+				try:
+					self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
+					univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
+				except:
+					univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
+					raise univention.admin.uexceptions.mailAddressUsed
 
 		ocs.append('kolabSharedFolder')
 		ocs.append('univentionKolabSharedFolder')
@@ -288,12 +290,14 @@ class object(univention.admin.handlers.simpleLdap):
 								 self.oldattr.get( 'univentionKolabSharedFolderDeliveryAddress', [] ),
 								 [ 'univentioninternalpostuser+shared/%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] ) ] ) )
 
-				try:
-					self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
-					univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
-				except:
-					univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
-					raise univention.admin.uexceptions.mailAddressUsed
+				address = '%s@%s' % ( self[ 'name' ], self[ 'mailDomain' ] )
+				if self[ 'userNamespace' ] != 'TRUE' or self[ 'mailPrimaryAddress' ] != address:
+					try:
+						self.alloc.append( ( 'mailPrimaryAddress', self[ 'mailPrimaryAddress' ] ) )
+						univention.admin.allocators.request( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
+					except:
+						univention.admin.allocators.release( self.lo, self.position, 'mailPrimaryAddress', value = self[ 'mailPrimaryAddress' ] )
+						raise univention.admin.uexceptions.mailAddressUsed
 
 		if not self[ 'mailPrimaryAddress' ]:
 			ml.append( ( 'univentionKolabSharedFolderDeliveryAddress', self.oldattr.get( 'univentionKolabSharedFolderDeliveryAddress', [] ), [] ) )
