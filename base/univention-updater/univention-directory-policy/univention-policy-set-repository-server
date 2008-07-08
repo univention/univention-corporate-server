@@ -55,13 +55,14 @@ def query_baseconfig():
 	local  = '%s.%s' % (baseConfig['hostname'],baseConfig['domainname'])
 	repo   = baseConfig.has_key('local/repository') and \
 		 baseConfig['local/repository'].lower() in ('yes', 'true')
-	
-	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
-	return hostdn, server, local, repo, fqdn
 
-def query_policy(dn):
+	fqdn  = '%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
+
+	update = '%s-%s' % (baseConfig['version/version'], baseConfig['version/patchlevel'])
+	return hostdn, server, local, repo, fqdn, update
+
+def query_policy(dn, update):
 	server = None
-	update = None
 	policy = 'univention_policy_result'
 	pipe = os.popen('%s -s "%s"' % (policy, dn))
 	for line in pipe:
@@ -80,23 +81,23 @@ def query_policy(dn):
 def fetch_sourceslist(server):
 	path = os.path.join('/', 'univention-cdrom', 'ucs-updates', 'index.list')
 	url = 'http://%s%s' % (server, path)
-	file = urllib2.urlopen(url)
-	lines = [ line.strip() for line in file ]
-	file.close()
+	fd = urllib2.urlopen(url)
+	lines = [ line.strip() for line in fd ]
+	fd.close()
 	return lines
 
 def parse_sourceslist(server):
-	
+
 	serv = 'http://%s/univention-cdrom' % server
 	mark = 'end univention-updater section'
 	path = "/etc/apt/sources.list"
 
 	if os.path.exists(path):
-		file = open(path)
-		lines = [ line.strip() for line in file ]
-		file.close()
+		fd = open(path)
+		lines = [ line.strip() for line in fd ]
+		fd.close()
 		if [ line for line in lines
-		     if not line.startswith('#') and serv in line ]:
+				if not line.startswith('#') and serv in line ]:
 			# new server already in sources.list
 			return False, [], []
 		comment = True
@@ -117,31 +118,30 @@ def write_sourceslist(new, keep, cmnt, server, update):
 	time = datetime.datetime.now().strftime('%y%m%d%k%M%S')
 	shutil.copyfile(sourcesList, '/tmp/sources.list.%s' % time)
 	first=True
-	file = open(sourcesList, 'w')
+	fd = open(sourcesList, 'w')
 	for line in new:
 		if line:
 			if first:
-				file.write('deb http://%s/univention-cdrom/packages ./\n' % server)
+				fd.write('deb http://%s/univention-cdrom/packages ./\n' % server)
 				first=False
 			else:
-				file.write('deb http://%s/univention-cdrom/ucs-updates/%s/ ./\n' % (server, line))
+				fd.write('deb http://%s/univention-cdrom/ucs-updates/%s/ ./\n' % (server, line))
 			if line == update:
 				break
-	file.write('%s\n' % mark)
+	fd.write('%s\n' % mark)
 	for line in keep:
-		file.write('%s\n' % line)
+		fd.write('%s\n' % line)
 	for line in cmnt:
-		file.write('## %s\n' % line)
-	file.close()
-	pass
+		fd.write('## %s\n' % line)
+	fd.close()
 
 def main():
 	restore_server = None
-	ldap_host_dn, old_server, local_server, local_repo, fqdn = query_baseconfig()
+	ldap_host_dn, old_server, local_server, local_repo, fqdn, update = query_baseconfig()
 	if not ldap_host_dn:
 		# can't query policy without host-dn
 		exit(0)
-	new_server, update = query_policy(ldap_host_dn)
+	new_server, update = query_policy(ldap_host_dn, update)
 	if (not new_server or new_server == old_server) and not local_repo:
 		# no new server specified
 		exit(0)
