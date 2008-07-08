@@ -1,0 +1,49 @@
+univention-kernel-modules-2.6.18 (2.0.0-2) unstable; urgency=low
+
+  * build vmware modules
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Jul 2008 07:52:29 +0200
+
+univention-kernel-modules-2.6.18 (2.0.0-1) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 08:46:47 +0200
+
+univention-kernel-modules-2.6.18 (1.0.0-6) unstable; urgency=low
+
+  * the drbd modules package builds the debian packages under /tmp
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 10:37:15 +0200
+
+univention-kernel-modules-2.6.18 (1.0.0-5) unstable; urgency=low
+
+  * build squashfs and drbd8
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 09:56:35 +0200
+
+univention-kernel-modules-2.6.18 (1.0.0-4) unstable; urgency=low
+
+  * change the form of the m-a build
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 09:22:36 +0200
+
+univention-kernel-modules-2.6.18 (1.0.0-3) unstable; urgency=low
+
+  * try to build this package without using m-a prepare because the kernel of
+    the buildsystem could be different
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  3 Jun 2008 08:47:29 +0200
+
+univention-kernel-modules-2.6.18 (1.0.0-2) unstable; urgency=low
+
+  * run m-a -t prepare
+  * add bzip2 to the build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 13:00:43 +0100
+
+univention-kernel-modules-2.6.18 (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 11:34:14 +0100

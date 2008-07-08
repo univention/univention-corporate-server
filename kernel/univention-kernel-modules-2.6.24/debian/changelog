@@ -1,0 +1,42 @@
+univention-kernel-modules-2.6.24 (2.0-0-1) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 08:46:15 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-3) unstable; urgency=low
+
+  * disable xen for 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 11:20:00 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-2) unstable; urgency=low
+
+  * depend on 2.6.24 header packages
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 09:18:08 +0200
+
+univention-kernel-modules-2.6.24 (1.2.0-1) unstable; urgency=low
+
+  * update to kernel 2.6.24
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 06:23:56 +0200
+
+univention-kernel-modules-2.6.22 (1.1.0-1) unstable; urgency=low
+
+  * update to kernel 2.6.22
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jan 2008 20:46:32 +0100
+
+univention-kernel-modules-2.6.18 (1.0.0-2) unstable; urgency=low
+
+  * run m-a -t prepare
+  * add bzip2 to the build dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 13:00:43 +0100
+
+univention-kernel-modules-2.6.18 (1.0.0-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 14 Jan 2008 11:34:14 +0100
