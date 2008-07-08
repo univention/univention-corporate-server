@@ -64,6 +64,10 @@ install: build
 	install -m 755 python/univention-updater_tmp debian/univention-updater/usr/sbin/univention-updater
 	rm python/univention-updater_tmp
 	
+	cat python/univention-repository-create | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-create_tmp
+	install -m 755 python/univention-repository-create_tmp debian/univention-updater/usr/sbin/univention-repository-create
+	rm python/univention-repository-create_tmp
+	
 	cat python/univention-repository-merge | sed -e "s/@%@copyright_lastyear@%@/${copyrightyear}/" > python/univention-repository-merge_tmp
 	install -m 755 python/univention-repository-merge_tmp debian/univention-updater/usr/sbin/univention-repository-merge
 	rm python/univention-repository-merge_tmp

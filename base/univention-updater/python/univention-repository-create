@@ -1,0 +1,110 @@
+#!/bin/sh
+# -*- coding: utf-8 -*-
+#
+# Univention Updater
+#  repository create
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+#
+
+# check directories
+if [ -d "/var/lib/univention-server-cdrom/packages" ] ; then
+	echo "ERROR: /var/lib/univention-server-cdrom/packages does already exist"
+	exit 1
+fi
+
+# safety check
+echo -n "Are you sure you want to create a local repository? [yN]"
+read answer
+case $answer in
+	Y|y)
+	  ;;
+    *)
+	  echo "Aborted"
+      exit 1
+	  ;;
+esac
+
+
+# install univention-debmirror
+if [ ! dpkg -l univention-debmirror > /dev/null 2> /dev/null ] ; then
+  echo
+  echo "Please install package univention-debmirror. Aborted."
+  echo
+  exit 1
+fi
+if [ ! "$(dpkg -l univention-debmirror | grep -c ^ii)" = "1" ] ; then
+  echo
+  echo "Please check installation of package univention-debmirror. Aborted."
+  echo
+  exit 1
+fi
+
+# set local/repository
+if [ ! "$(univention-config-registry get local/repository)" = "yes" ] ; then
+	univention-config-registry set local/repository=yes
+else
+	echo "WARN: no change required: local/repository=yes"
+fi
+
+# create directory
+if [ ! -d /var/lib/univention-server-cdrom ] ; then
+  mkdir /var/lib/univention-server-cdrom
+fi
+
+# ask user to insert cdrom
+echo
+echo "Please insert UCS CDROM and press Enter"
+read foo
+echo "Mounting /cdrom... "
+mount /cdrom
+echo "done."
+
+# copy data
+echo
+echo -n "Copying data... please be patient... "
+cp -dpR /cdrom/* /var/lib/univention-server-cdrom/
+cp -dpR /cdrom/.univention_install /var/lib/univention-server-cdrom/
+echo "done."
+
+chmod o+rwx /var/lib/univention-server-cdrom/profiles
+
+eval $(univention-config-registry shell)
+echo "deb http://${hostname}.${domainname}/univention-server-cdrom/packages/ ./" >> /var/lib/univention-server-cdrom/sources.list
+
+. /var/lib/univention-server-cdrom/.univention_install
+mkdir /var/lib/univention-server-cdrom/ucs-updates
+echo "$VERSION-$PATCHLEVEL" >> /var/lib/univention-server-cdrom/ucs-updates/index.list
+echo "nextupdate=none" >> /var/lib/univention-server-cdrom/ucs-updates/ucs_$VERSION-$PATCHLEVEL.txt
+
+# setup for PXE install
+mkdir /var/lib/univention-server-cdrom/isolinux
+ln -sf /var/lib/univention-server-cdrom/boot/linux26 /var/lib/univention-server-cdrom/isolinux/linux
+ln -sf /var/lib/univention-server-cdrom/boot/linux26.bin /var/lib/univention-server-cdrom/isolinux/linux.bin
+
+echo
+echo "Local repository has been created."
+echo
