@@ -1,3 +1,9 @@
+avm-capi-fcpci-modules (1.0.0-9) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Jul 2008 08:10:51 +0200
+
 avm-capi-fcpci-modules (1.0.0-8) unstable; urgency=low
 
   * Fix binary package name in control file
