@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.11-1) unstable; urgency=low
+
+  * small fixes: deleting folders and setting acls
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 08 Jul 2008 13:50:30 +0200
+
 univention-mail-cyrus-kolab2 (1.0.10-1) unstable; urgency=low
 
   * set at least "lrsp" permission for user "anyone" to shared folder with

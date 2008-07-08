@@ -77,11 +77,14 @@ while not i == 3:
 			child.sendline('sam shared/%s cyrus cd' % shared_name)
 			child.sendline('dm shared/%s' % shared_name)
 		else:
-			name = shared_name.split( '@', 1 )[ 0 ]
+			name = shared_name.split( '@', 1 )[ 0 ].split( '/', 1 )[ 0 ]
+			domain = shared_name.split( '@', 1)[ 1 ]
 			child.sendline( 'sam user/%s/%s cyrus cd' % ( name, shared_name ) )
 			child.sendline( 'dm user/%s/%s' % ( name, shared_name ) )
-			child.sendline( 'sam user/%s cyrus cd' % shared_name )
-			child.sendline( 'dm user/%s' % shared_name )
+			# do not delete user/foo if folder user/foo/foo/bar is deleted
+			if not '/' in shared_name.split( '@', 1 )[ 0 ]:
+				child.sendline( 'sam user/%s@%s cyrus cd' % (name, domain) )
+				child.sendline( 'dm user/%s@%s' % (name, domain) )
 		child.sendline('disc')
 		child.sendline('exit')
 	elif i == 2:
