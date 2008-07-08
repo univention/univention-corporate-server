@@ -1,4 +1,4 @@
-Source: univention-vmware
+Source: vmware
 Section: devel
 Priority: optional
 Maintainer: Univention GmbH
