@@ -2,12 +2,12 @@ Source: univention-ssl
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends-Indep: debhelper (>> 3.0.0), univention-config-dev
+Build-Depends-Indep: debhelper, univention-config-dev
 Standards-Version: 3.5.5
 
 Package: univention-ssl
 Architecture: all
-Depends: openssl, makepasswd, univention-directory-listener (>=0.4)
+Depends: openssl, makepasswd, univention-directory-listener, openssl-blacklist
 Description: UCS - SSL/TLS certificates
  This packages can create a root CA certificate to be used
  with UCS. It provides facilities to create further
