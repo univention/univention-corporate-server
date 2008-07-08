@@ -1,0 +1,15 @@
+Source: univention-vmware
+Section: devel
+Priority: optional
+Maintainer: Univention GmbH
+Standards-Version: 3.7.2
+Build-Depends: debhelper (>= 5), vmware-package
+
+Package: univention-vmware
+Architecture: i386 amd64
+Section: admin
+Depends: vmware-package
+Priority: optional
+Description: Meta package to generate vmware packages
+ This package provides a meta package to compile vmware packages
+ using make-vmpkg.
