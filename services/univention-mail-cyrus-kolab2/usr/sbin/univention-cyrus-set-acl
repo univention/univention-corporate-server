@@ -81,7 +81,7 @@ while not i == 3:
 		if not outlook:
 			child.sendline('sam shared/%s %s %s' % (shared_name, email, permission))
 		else:
-			name = shared_name.split( '@', 1 )[ 0 ]
+			name = shared_name.split( '@', 1 )[ 0 ].split('/', 1)[ 0 ]
 			child.sendline( 'sam user/%s/%s %s %s' % ( name, shared_name, email, permission ) )
 
 		child.sendline('disc')
