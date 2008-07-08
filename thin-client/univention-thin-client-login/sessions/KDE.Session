@@ -43,8 +43,8 @@ case "$1" in
     userdn=`ldapsearch -x -h $ldap_server_name -p $ldap_port -b $ldap_base "(&(uid=$USER)(objectClass=posixAccount))" -LLL dn | grep dn | sed -e 's/dn: //g'`
     eval `univention_policy_result -h $ldap_server_name -s $userdn`
 
-	if [ -x "/usr/share/univeniton-kde/univention-set-kdedirs" ]; then
-		/usr/share/univeniton-kde/univention-set-kdedirs
+	if [ -x "/usr/share/univention-kde/univention-set-kdedirs" ]; then
+		/usr/share/univention-kde/univention-set-kdedirs
 	fi
 
 	if [ -e "$HOME/.univention-thin-client-session" ]; then
