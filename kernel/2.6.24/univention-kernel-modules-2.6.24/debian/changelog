@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.24 (2.0-0-1) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  4 Jul 2008 08:46:15 +0200
+
 univention-kernel-modules-2.6.24 (1.2.0-3) unstable; urgency=low
 
   * disable xen for 2.6.24

@@ -54,10 +54,14 @@ install:
 	dh_installdirs
 
 	
-	m-a -t prepare
-	m-a -f -u /tmp -k "$$(echo /usr/src/linux-headers-*)" -t a-b srvmagt-modules
-	mv /tmp/usr_src/modules/*.deb ../
-
+	for m in srvmagt-modules squashfs drbd8 vmware-kernel-source vmware-server-kernel-source; do \
+		for i in /usr/src/linux-headers-*; do \
+			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
+			m-a -t -l $$kversion prepare; \
+			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
+			mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
+		done \
+	done
 
 binary-indep: build install
 
