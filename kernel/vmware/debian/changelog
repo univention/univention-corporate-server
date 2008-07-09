@@ -1,3 +1,9 @@
+vmware (2.0.2-1) unstable; urgency=low
+
+  * rename vmware-any-any archive
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Jul 2008 06:47:07 +0200
+
 vmware (2.0.1-1) unstable; urgency=low
 
   * added vmware-any-any update 116
