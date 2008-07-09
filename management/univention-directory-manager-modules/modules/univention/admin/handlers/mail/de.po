@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-26 15:08+0200\n"
-"PO-Revision-Date: 2008-06-26 15:09+0200\n"
+"POT-Creation-Date: 2008-07-09 14:19+0200\n"
+"PO-Revision-Date: 2008-07-09 14:20+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -22,11 +22,11 @@ msgstr "Mail: Mail-Domäne"
 msgid "Name"
 msgstr "Name"
 
-#: domain.py:65 folder.py:131 lists.py:92 mail.py:73
+#: domain.py:65 folder.py:141 lists.py:92 mail.py:73
 msgid "General"
 msgstr "Allgemein"
 
-#: domain.py:65 folder.py:131 lists.py:92 mail.py:73
+#: domain.py:65 folder.py:141 lists.py:92 mail.py:73
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
@@ -66,11 +66,15 @@ msgstr " Outlook kann keine Ordner außerhalb des 'user' Namensraum anzeigen."
 msgid "E-Mail Address"
 msgstr "Mail-Adresse"
 
-#: folder.py:136
+#: folder.py:129
+msgid "IMAP folder type"
+msgstr "IMAP-Ordner-Typ"
+
+#: folder.py:147
 msgid "Access Rights"
 msgstr "Zugriffsrechte"
 
-#: folder.py:136
+#: folder.py:147
 msgid "Access rights for shared folder"
 msgstr "Zugriffsrechte für gemeinsamen Ordner"
 

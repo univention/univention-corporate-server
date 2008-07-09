@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.9-1) unstable; urgency=low
+
+  * updated translation
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Jul 2008 14:20:40 +0200
+
 univention-directory-manager-modules (3.0.8-1) unstable; urgency=low
 
   * fixed wrong mail address collision check for shared folders
