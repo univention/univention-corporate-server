@@ -234,6 +234,16 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.37 NAME 'univentionShareSambaMSDFS'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.38 NAME 'univentionShareSambaDosFilemode'
+	DESC 'Owner group may modify access rights'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.39 NAME 'univentionShareSambaHideUnreadable'
+	DESC 'Hide unreadable files/directories'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
 objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	AUXILIARY
 	DESC 'Samba share'
@@ -273,7 +283,9 @@ objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	univentionShareSambaInheritOwner $
 	univentionShareSambaInheritPermissions $
 	univentionShareSambaHostsAllow $
-	univentionShareSambaHostsDeny ))
+	univentionShareSambaHostsDeny $
+	univentionShareSambaDosFilemode $
+	univentionShareSambaHideUnreadable ))
 
 # $OID: 1.3.6.1.4.1.10176.1001.3 (Shares/NFS) $
 

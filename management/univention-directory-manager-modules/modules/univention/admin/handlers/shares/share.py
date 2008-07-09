@@ -74,7 +74,7 @@ options={
 			short_description=_('Export for Web Clients'),
 			editable=1,
 			default=0
-		),								
+		),
 }
 property_descriptions={
 	'name': univention.admin.property(
@@ -238,6 +238,28 @@ property_descriptions={
 	'sambaPublic': univention.admin.property(
 			short_description=_('Public'),
 			long_description=_('Allow guest access'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default='0'
+		),
+	'sambaDosFilename': univention.admin.property(
+			short_description=_('Owner group may modify access rights'),
+			long_description=_('Members of the owner group may modify access rights if the write access is set for the group'),
+			syntax=univention.admin.syntax.boolean,
+			multivalue=0,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default='0'
+		),
+	'sambaHideUnreadable': univention.admin.property(
+			short_description=_('Hide unreadable files/directories'),
+			long_description=_('Files and directories with no read access are hidden'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
@@ -636,6 +658,7 @@ layout=[
 			[univention.admin.field('sambaBrowseable'), univention.admin.field('sambaPublic')],
 			[univention.admin.field('sambaPostexec'), univention.admin.field('sambaPreexec')],
 			[univention.admin.field('sambaVFSObjects'), univention.admin.field('sambaMSDFSRoot') ],
+			[univention.admin.field('sambaDosFilemode'), univention.admin.field('sambaHideUnreadable') ],
 		]),
 	univention.admin.tab(_('Samba Permissions'),_('Samba Permission Settings'),[
 			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
@@ -707,6 +730,8 @@ mapping.register('subtree_checking', 'univentionShareNFSSubTree', boolToString, 
 mapping.register('sambaName', 'univentionShareSambaName', None, univention.admin.mapping.ListToString)
 mapping.register('sambaBrowseable', 'univentionShareSambaBrowseable', boolToString, stringToBool)
 mapping.register('sambaPublic', 'univentionShareSambaPublic', boolToString, stringToBool)
+mapping.register('sambaDosFilemode', 'univentionShareSambaDosFilemode', boolToString, stringToBool)
+mapping.register('sambaHideUnreadable', 'univentionShareSambaHideUnreadable', boolToString, stringToBool)
 mapping.register('sambaCreateMode', 'univentionShareSambaCreateMode', None, univention.admin.mapping.ListToString)
 mapping.register('sambaDirectoryMode', 'univentionShareSambaDirectoryMode', None, univention.admin.mapping.ListToString)
 mapping.register('sambaForceCreateMode', 'univentionShareSambaForceCreateMode', None, univention.admin.mapping.ListToString)
