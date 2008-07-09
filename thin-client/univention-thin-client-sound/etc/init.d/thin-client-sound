@@ -36,8 +36,6 @@ if [ -z "$univentionSoundEnabled" ]; then
 	exit 0
 fi
 
-echo -n " video"
-
 # select sound driver
 if [ "$univentionSoundEnabled" = "1" ]; then
 	if [ ! -z "$univentionSoundModule" ]; then
@@ -75,3 +73,4 @@ if [ "$univentionSoundEnabled" = "1" ]; then
 fi
 
 echo "done"
+

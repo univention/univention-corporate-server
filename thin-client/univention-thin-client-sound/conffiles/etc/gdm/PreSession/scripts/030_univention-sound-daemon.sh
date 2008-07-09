@@ -30,12 +30,12 @@
 
 eval $(univention-baseconfig shell univentionSoundEnabled thinclient/sound/daemon)
 
-if [ -z "$univentionSoundEnabled" -o $univentionSoundEnabled = "0" ]; then
+if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
 # start sound server (default: esd)
-if [ -n "$thinclient/sound/daemon" -a $thinclient_sound_daemon = "arts" ]; then
+if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "arts" ]; then
 	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
 		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
 		mkdir -p "/tmp/ksocket-${USERNAME}"

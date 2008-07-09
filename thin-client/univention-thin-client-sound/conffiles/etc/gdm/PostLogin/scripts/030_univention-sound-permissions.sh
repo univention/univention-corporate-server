@@ -30,7 +30,7 @@
 
 eval $(univention-baseconfig shell univentionSoundEnabled thinclient/sound/daemon)
 
-if [ -z "$univentionSoundEnabled" -o $univentionSoundEnabled = "0" ]; then
+if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 

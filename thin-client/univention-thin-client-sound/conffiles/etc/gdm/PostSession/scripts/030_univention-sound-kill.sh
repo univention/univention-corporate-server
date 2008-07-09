@@ -30,11 +30,11 @@
 
 eval $(univention-baseconfig shell univentionSoundEnabled thinclient/sound/daemon)
 
-if [ -z "$univentionSoundEnabled" -o $univentionSoundEnabled = "0" ]; then
+if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
-if [ -n "$thinclient/sound/daemon" -a $thinclient_sound_daemon = "arts" ]; then
+if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "arts" ]; then
 	killall artsd
 else
 	killall esd

@@ -27,7 +27,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 
-echo "Setting up Nagios NRPE Configuration ... "
+echo -n "Setting up Nagios NRPE Configuration ... "
 
-univention-config-registry set thinclient/nagios/load/warning?"0.2,0.2,0.2" thinclient/nagios/load/critical?"0.5,0.5,0.5" 2>&1 >>/dev/tty8
+univention-config-registry set thinclient/nagios/load/warning?"0.2,0.2,0.2" thinclient/nagios/load/critical?"0.5,0.5,0.5" >>/dev/tty8 2>&1 
 echo "done"

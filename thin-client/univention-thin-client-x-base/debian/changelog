@@ -1,3 +1,9 @@
+univention-thin-client-x-base (2.0.2-1) unstable; urgency=low
+
+  * redirect debug to tty8
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed,  9 Jul 2008 10:05:15 +0200
+
 univention-thin-client-x-base (2.0.1-1) unstable; urgency=low
 
   * set gdm/disallow/tcp to no so the X server doesn't start with -nolisten
