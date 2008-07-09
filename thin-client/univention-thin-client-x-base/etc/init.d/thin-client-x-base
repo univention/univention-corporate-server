@@ -126,8 +126,8 @@ univention-baseconfig commit \
 	/etc/pam.d/gdm-autologin  >>/dev/tty8 2>&1
 
 # create $HOME for autostart
-mkdir /var/tmp/autostart
-chown autostart /var/tmp/autostart
+mkdir /var/tmp/autostart >>/dev/tty8 2>&1
+chown autostart /var/tmp/autostart >>/dev/tty8 2>&1
 
 # enable X.org sessions
 ls -1 /etc/gdm/Sessions/*.desktop | while read file; do
@@ -137,7 +137,7 @@ ls -1 /etc/gdm/Sessions/*.desktop | while read file; do
 	fi
 done
 
-chown gdm.gdm /var/lib/gdm
-chmod 0750 /var/lib/gdm
+chown gdm.gdm /var/lib/gdm >>/dev/tty8 2>&1
+chmod 0750 /var/lib/gdm >>/dev/tty8 2>&1
 
 echo "done"

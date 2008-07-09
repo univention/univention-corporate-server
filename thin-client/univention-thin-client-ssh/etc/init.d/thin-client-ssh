@@ -32,7 +32,7 @@ echo -n "Setting up Thin Client SSH daemon ... "
 eval $(univention-baseconfig shell thinclient/sshd/generate_key)
 
 if [ "$thinclient_sshd_generate_key" = "yes" ]; then
-	ssh-keygen -q -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa
+	ssh-keygen -q -f /etc/ssh/ssh_host_rsa_key -N '' -t rsa >/dev/tty8 2>&1
 else
 	cp /etc/ssh/ssh_host_rsa_key.server /etc/ssh/ssh_host_rsa_key
 	cp /etc/ssh/ssh_host_rsa_key.pub.server /etc/ssh/ssh_host_rsa_key.pub
@@ -41,6 +41,6 @@ else
 fi
 
 univention-baseconfig set "sshd/port?22" "sshd/permitroot?yes" "sshd/xforwarding?no" \
-	"sshd/challengeresponse?no" "sshd/autostart?yes" >/dev/null 2>&1
+	"sshd/challengeresponse?no" "sshd/autostart?yes" >/dev/tty8 2>&1
 
 echo "done"
