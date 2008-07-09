@@ -1,10 +1,16 @@
-univention-directory-manager-modules (3.0.9-1) unstable; urgency=low
+univention-directory-manager-modules (3.0.10-1) stable; urgency=low
+
+  * support samba attributes 'dos filemode' and 'hide unreadable'
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Jun 2008 14:03:52 +0200
+
+univention-directory-manager-modules (3.0.9-1) stable; urgency=low
 
   * updated translation
 
  -- Sönke Schwardt <schwardt@univention.de>  Wed, 09 Jul 2008 14:20:40 +0200
 
-univention-directory-manager-modules (3.0.8-1) unstable; urgency=low
+univention-directory-manager-modules (3.0.8-1) stable; urgency=low
 
   * fixed wrong mail address collision check for shared folders
 

@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, md5, string
+import os, sys, md5, string, fcntl, copy
 
 home=os.getenv('HOME')
 if not home or not os.path.isdir(home):
@@ -49,30 +49,42 @@ class Stamps:
 		self.dirs=[]
 		if os.path.exists(os.path.join(base, 'dirs')):
 			fp=open(os.path.join(base, 'dirs'))
+			fcntl.lockf(fp, fcntl.LOCK_SH)
 			for line in fp.readlines():
 				dir=line[0:-1]
 				self.dirs.append(dir)
 			fp.close()
 		if os.path.exists(os.path.join(base, 'files')):
 			fp=open(os.path.join(base, 'files'))
+			fcntl.lockf(fp, fcntl.LOCK_SH)
 			for line in fp.readlines():
 				(file,md5sum)=line[0:-1].split('@%@')
 				self.files[file]=md5sum
 			fp.close()
+		self.oldfiles = copy.deepcopy(self.files)
+		self.olddirs = copy.deepcopy(self.dirs)
 	def write(self):
+		if self.oldfiles == self.files and self.olddirs == self.dirs:
+			return
 		if not os.path.exists(self.base):
 			os.mkdir(self.base)
 		fp=open(os.path.join(self.base, 'dirs'), 'w')
+		fcntl.lockf(fp, fcntl.LOCK_EX)
 		for dir in self.dirs:
 			fp.write(dir+'\n')
 		fp.close()
 		fp=open(os.path.join(self.base, 'files'), 'w')
+		fcntl.lockf(fp, fcntl.LOCK_EX)
 		for file in self.files.items():
 			fp.write(string.join(file, '@%@')+'\n')
 		fp.close()
 
 def md5sum(file):
-	return md5.md5(open(file).read()).hexdigest()
+	try:
+		x = md5.md5(open(file).read()).hexdigest()
+	except Exception, ex:
+		x = '0'
+	return x
 
 def i2h_file(file):
 	return file.replace(userconfig_templates, home)

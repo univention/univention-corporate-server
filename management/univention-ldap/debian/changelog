@@ -1,3 +1,10 @@
+univention-ldap (3.0.9-1) unstable; urgency=low
+
+  * and LDAP attributes for the samba attributes 'dos filemode' and 'hide
+    unreadable'
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 19 Jun 2008 14:03:07 +0200
+
 univention-ldap (3.0.8-1) unstable; urgency=low
 
   * added univentionKolabSharedFolderType to object class univentionKolabSharedFolder

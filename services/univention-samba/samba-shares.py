@@ -71,6 +71,8 @@ def handler(dn, new, old):
 				('univentionShareSambaWriteable', 'writeable'),
 				('univentionShareSambaBrowseable', 'browseable'),
 				('univentionShareSambaPublic', 'public'),
+				('univentionShareSambaDosFilemode', 'dos filemode'),
+				('univentionShareSambaHideUnreadable', 'hide unreadable'),
 				('univentionShareSambaCreateMode', 'create mode'),
 				('univentionShareSambaDirectoryMode', 'directory mode'),
 				('univentionShareSambaForceCreateMode', 'force create mode'),
