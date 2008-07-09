@@ -180,18 +180,6 @@ binary-arch: build install
 	dh_md5sums -punivention-fsc-srv-modules-2.6.18
 	dh_builddeb -punivention-fsc-srv-modules-2.6.18
 
-	dh_gencontrol -punivention-vmware4-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-vmware4-modules-2.6.18
-	dh_builddeb -punivention-vmware4-modules-2.6.18
-
-	dh_gencontrol -punivention-vmware5-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-vmware5-modules-2.6.18
-	dh_builddeb -punivention-vmware5-modules-2.6.18
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
-	dh_md5sums -punivention-vmware-gsx3-modules-2.6.18
-	dh_builddeb -punivention-vmware-gsx3-modules-2.6.18
-
 	dh_gencontrol -punivention-vmware-server-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
 	dh_md5sums -punivention-vmware-server-modules-2.6.18
 	dh_builddeb -punivention-vmware-server-modules-2.6.18
@@ -232,18 +220,6 @@ binary-arch: build install
 	dh_md5sums -punivention-fsc-srv-modules-2.6.18-64gb
 	dh_builddeb -punivention-fsc-srv-modules-2.6.18-64gb
 
-	dh_gencontrol -punivention-vmware4-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
-	dh_md5sums -punivention-vmware4-modules-2.6.18-64gb
-	dh_builddeb -punivention-vmware4-modules-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware5-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
-	dh_md5sums -punivention-vmware5-modules-2.6.18-64gb
-	dh_builddeb -punivention-vmware5-modules-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
-	dh_md5sums -punivention-vmware-gsx3-modules-2.6.18-64gb
-	dh_builddeb -punivention-vmware-gsx3-modules-2.6.18-64gb
-
 	dh_gencontrol -punivention-vmware-server-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-vmware-server-modules-2.6.18-64gb
 	dh_builddeb -punivention-vmware-server-modules-2.6.18-64gb
@@ -281,18 +257,6 @@ binary-arch: build install
 	dh_md5sums -punivention-fsc-srv-modules-mobileclient-2.6.18
 	dh_builddeb -punivention-fsc-srv-modules-mobileclient-2.6.18
 
-	dh_gencontrol -punivention-vmware4-modules-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-vmware4-modules-mobileclient-2.6.18
-	dh_builddeb -punivention-vmware4-modules-mobileclient-2.6.18
-
-	dh_gencontrol -punivention-vmware5-modules-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-vmware5-modules-mobileclient-2.6.18
-	dh_builddeb -punivention-vmware5-modules-mobileclient-2.6.18
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
-	dh_md5sums -punivention-vmware-gsx3-modules-mobileclient-2.6.18
-	dh_builddeb -punivention-vmware-gsx3-modules-mobileclient-2.6.18
-
 	dh_gencontrol -punivention-vmware-server-modules-mobileclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MOBILECLIENT}"
 	dh_md5sums -punivention-vmware-server-modules-mobileclient-2.6.18
 	dh_builddeb -punivention-vmware-server-modules-mobileclient-2.6.18
@@ -324,18 +288,6 @@ binary-arch: build install
 	dh_gencontrol -punivention-fsc-srv-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
 	dh_md5sums -punivention-fsc-srv-modules-mobileclient-2.6.18-64gb
 	dh_builddeb -punivention-fsc-srv-modules-mobileclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware4-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
-	dh_md5sums -punivention-vmware4-modules-mobileclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware4-modules-mobileclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware5-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
-	dh_md5sums -punivention-vmware5-modules-mobileclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware5-modules-mobileclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
-	dh_md5sums -punivention-vmware-gsx3-modules-mobileclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware-gsx3-modules-mobileclient-2.6.18-64gb
 
 	dh_gencontrol -punivention-vmware-server-modules-mobileclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MOBILECLIENT64}"
 	dh_md5sums -punivention-vmware-server-modules-mobileclient-2.6.18-64gb
@@ -374,18 +326,6 @@ binary-arch: build install
 	dh_md5sums -punivention-fsc-srv-modules-managedclient-2.6.18
 	dh_builddeb -punivention-fsc-srv-modules-managedclient-2.6.18
 
-	dh_gencontrol -punivention-vmware4-modules-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-vmware4-modules-managedclient-2.6.18
-	dh_builddeb -punivention-vmware4-modules-managedclient-2.6.18
-
-	dh_gencontrol -punivention-vmware5-modules-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-vmware5-modules-managedclient-2.6.18
-	dh_builddeb -punivention-vmware5-modules-managedclient-2.6.18
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
-	dh_md5sums -punivention-vmware-gsx3-modules-managedclient-2.6.18
-	dh_builddeb -punivention-vmware-gsx3-modules-managedclient-2.6.18
-
 	dh_gencontrol -punivention-vmware-server-modules-managedclient-2.6.18 -u-VF:KernelVersion="${KERNELVERSION_MANAGEDCLIENT}"
 	dh_md5sums -punivention-vmware-server-modules-managedclient-2.6.18
 	dh_builddeb -punivention-vmware-server-modules-managedclient-2.6.18
@@ -417,18 +357,6 @@ binary-arch: build install
 	dh_gencontrol -punivention-fsc-srv-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
 	dh_md5sums -punivention-fsc-srv-modules-managedclient-2.6.18-64gb
 	dh_builddeb -punivention-fsc-srv-modules-managedclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware4-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
-	dh_md5sums -punivention-vmware4-modules-managedclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware4-modules-managedclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware5-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
-	dh_md5sums -punivention-vmware5-modules-managedclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware5-modules-managedclient-2.6.18-64gb
-
-	dh_gencontrol -punivention-vmware-gsx3-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
-	dh_md5sums -punivention-vmware-gsx3-modules-managedclient-2.6.18-64gb
-	dh_builddeb -punivention-vmware-gsx3-modules-managedclient-2.6.18-64gb
 
 	dh_gencontrol -punivention-vmware-server-modules-managedclient-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION_MANAGEDCLIENT64}"
 	dh_md5sums -punivention-vmware-server-modules-managedclient-2.6.18-64gb
