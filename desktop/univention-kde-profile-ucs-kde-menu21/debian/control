@@ -1,6 +1,7 @@
 Source: univention-kde-profile-ucs-kde-menu21
 Section: univention
 Priority: optional
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
 
