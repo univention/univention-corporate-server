@@ -407,4 +407,13 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.2.3-1; t
 			--position=cn=policies,$ldap_base --set policyPath=1
 	fi
 fi
+
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; then
+	eval `univention-baseconfig shell server/role ldap/base domainname ldap/hostdn`
+	if [ "$server_role" = "domaincontroller_master" ]; then
+		univention-directory-manager groups/group modify  --ignore_exists \
+			--dn "cn=Domain Users,cn=groups,$ldap_base" \
+			--append users="uid=Administrator,cn=users,$ldap_base"
+	fi
+fi
 exit 0
