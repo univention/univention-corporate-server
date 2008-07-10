@@ -1,3 +1,9 @@
+univention-server (3.0.0-1) unstable; urgency=low
+
+  * increase version for UCS 2.1-0 release
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Jul 2008 16:48:17 +0200
+
 univention-server (2.3.2-2) unstable; urgency=low
 
   * depend univention-server-master on univention-kde-profile-ucs-kde-menu21
