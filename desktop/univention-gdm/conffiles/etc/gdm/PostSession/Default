@@ -1,0 +1,42 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/gdm/PostSession/Default
+
+for filename in /etc/gdm/PostSession/scripts/*; do
+	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
+		. "$filename"
+	fi
+done
+
+# copy'n'paste from the old Default script
+PATH="/usr/bin:$PATH:/bin:/usr/bin"
+OLD_IFS=$IFS
+
+gdmwhich () {
+  COMMAND="$1"
+  OUTPUT=
+  IFS=:
+  for dir in $PATH
+  do
+    if test -x "$dir/$COMMAND" ; then
+      if test "x$OUTPUT" = "x" ; then
+        OUTPUT="$dir/$COMMAND"
+      fi
+    fi
+  done
+  IFS=$OLD_IFS
+  echo "$OUTPUT"
+}
+
+SESSREG=`gdmwhich sessreg`
+if [ "x$SESSREG" != "x" ] ; then
+        "$SESSREG" -d -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DISPLAY"
+ "$USER"
+fi
+exit 0

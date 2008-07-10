@@ -1,0 +1,15 @@
+#!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
+#
+#       /etc/univention/templates/files/etc/gdm/PostLogin/Default
+
+for filename in /etc/gdm/PostLogin/scripts/*; do
+	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
+		. "$filename"
+	fi
+done
