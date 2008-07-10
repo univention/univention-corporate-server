@@ -1,0 +1,9 @@
+#!/bin/sh
+
+#DEBHELPER#
+
+eval $(univention-config-registry shell)
+
+if [ $server_role = domaincontroller_master -o $server_role = domaincontroller_backup ]; then
+	/usr/lib/univention-install/80univention-kde-profile_ucs-kde-menu21.inst || true
+fi
