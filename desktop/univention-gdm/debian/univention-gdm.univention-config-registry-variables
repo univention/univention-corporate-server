@@ -34,6 +34,12 @@ Description[en]=Name of the GDM theme to use
 Type=str
 Categories=Desktop
 
+[gdm/session/dir]
+Description[de]=Verzeichnis mit den verf√gbaren Sitzungsbeschreibungen
+Description[en]=Directory with descriptions of available sessions
+Type=str
+Categories=Desktop
+
 [gdm/theme/dir]
 Description[de]=Pfad zum GDM-Theme Verzeichnis
 Description[en]=Pah to the GDM theme directory

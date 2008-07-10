@@ -1,3 +1,11 @@
+univention-gdm (3.0.7-1) unstable; urgency=low
+
+  * added pre and post sessions scripts for the GDM. During the thin
+    client login these scripts will execute another script which will
+    start the sound daemon, for example the esd.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Jul 2008 07:03:45 +0200
+
 univention-gdm (3.0.6-1) unstable; urgency=low
 
   * use the new thin client system in the Linux Arbeitsplatz session

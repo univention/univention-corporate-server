@@ -1,32 +1,12 @@
 #!/bin/sh
+# Warning: This file is auto-generated and might be overwritten by
+#          univention-baseconfig.
+#          Please edit the following file instead:
+# Warnung: Diese Datei wurde automatisch generiert und kann durch
+#          univention-baseconfig überschrieben werden.
+#          Bitte bearbeiten Sie an Stelle dessen die folgende Datei:
 #
-# Univention GDM
-#  post session script for the debian package
-#
-# Copyright (C) 2007 Univention GmbH
-#
-# http://www.univention.de/
-#
-# All rights reserved.
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
-#
-# Binary versions of this file provided by Univention to you as
-# well as other copyrighted, protected or trademarked materials like
-# Logos, graphics, fonts, specific documentations and configurations,
-# cryptographic keys etc. are subject to a license agreement between
-# you and Univention.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+#       /etc/univention/templates/files/etc/gdm/PostSession/Default
 
 for filename in /etc/gdm/PostSession/scripts/*; do
 	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
