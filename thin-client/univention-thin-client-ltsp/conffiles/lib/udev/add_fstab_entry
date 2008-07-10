@@ -87,7 +87,7 @@ if [ "$checkavail" = "No client session running" ]; then
 else
 
     hostdn=`/usr/sbin/univention-baseconfig get ldap/hostdn`
-    activated=`/usr/bin/univention-policy-result -s $hostdn | grep univentionClientDevicesActivate`
+    activated=`/usr/bin/univention-policy-result -s "$hostdn" | grep univentionClientDevicesActivate`
 
     if [ "$activated" = "univentionClientDevicesActivate=\"1\"" ]; then
 	host=`hostname`
