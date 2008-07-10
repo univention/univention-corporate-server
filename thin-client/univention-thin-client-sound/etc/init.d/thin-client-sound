@@ -43,7 +43,7 @@ if [ "$univentionSoundEnabled" = "1" ]; then
 			if [ -e "/usr/sbin/kudzu" ]; then
 				sound_module=$(/usr/sbin/kudzu -p --class=AUDIO | grep ^driver | awk '{print $2}')
 				if test "$sound_module"; then
-					univention-baseconfig set univentionSoundModule=$sound_module
+					univention-baseconfig set univentionSoundModule=$sound_module >>/dev/tty8 2>&1
 				fi
 			else
 				sound_module=$univentionSoundModule
