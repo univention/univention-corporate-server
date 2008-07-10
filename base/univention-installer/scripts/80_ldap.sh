@@ -43,6 +43,7 @@ if [ "$server_role" = "domaincontroller_master" ]; then
 	univention-directory-manager users/user create --position="cn=users,\$ldap_base" --set username=Administrator --set unixhome=/home/Administrator --set lastname=Administrator --set password="\$root_password" --set primaryGroup="cn=Domain Admins,cn=groups,\$ldap_base" --policy-reference "cn=default-admins,cn=admin-settings,cn=users,cn=policies,\$ldap_base" >/dev/null 2>&1
         unset root_password
 	univention-directory-manager groups/group modify --dn "cn=DC Backup Hosts,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base" > /dev/null 2>&1
+	univention-directory-manager groups/group modify --dn "cn=Domain Users,cn=groups,\$ldap_base" --append users="uid=Administrator,cn=users,\$ldap_base" > /dev/null 2>&1
 
 	#create default network
 	forwardZone=\`univention-directory-manager dns/forward_zone list --filter zone=\$domainname | grep DN | head -1 | sed -e 's/DN: //g'\`
