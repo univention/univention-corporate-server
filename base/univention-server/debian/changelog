@@ -1,3 +1,10 @@
+univention-server (2.3.2-2) unstable; urgency=low
+
+  * depend univention-server-master on univention-kde-profile-ucs-kde-menu21
+    to install the corresponding univentionDesktopPolicy on a fresh installed system
+
+ -- Arvid Requate <requate@univention.de>  Thu, 10 Jul 2008 16:11:59 +0200
+
 univention-server (2.3.2-1) unstable; urgency=low
 
   * update the 640x480 and 800x600 bootsplash configs
