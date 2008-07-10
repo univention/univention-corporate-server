@@ -68,7 +68,7 @@ univention-admin policies/desktop  create --ignore_exists --position cn=desktop,
 # check for the default policy
 test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
 if [ "$?" = 1 ]; then
-	res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile)
+	res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile  | grep -v "ucs-kde-menu21")
 	if [ -z "$res" ]; then
 		univention-admin container/dc modify $@ --dn "$ldap_base" --policy-reference "cn=UCS green 2.1,cn=desktop,cn=policies,$ldap_base"
 	fi
