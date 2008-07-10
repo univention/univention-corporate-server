@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# Univention GDM
+#  post session script for the debian package
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+for filename in /etc/gdm/PostSession/scripts/*; do
+	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
+		. "$filename"
+	fi
+done
+
+# copy'n'paste from the old Default script
+PATH="/usr/bin:$PATH:/bin:/usr/bin"
+OLD_IFS=$IFS
+
+gdmwhich () {
+  COMMAND="$1"
+  OUTPUT=
+  IFS=:
+  for dir in $PATH
+  do
+    if test -x "$dir/$COMMAND" ; then
+      if test "x$OUTPUT" = "x" ; then
+        OUTPUT="$dir/$COMMAND"
+      fi
+    fi
+  done
+  IFS=$OLD_IFS
+  echo "$OUTPUT"
+}
+
+SESSREG=`gdmwhich sessreg`
+if [ "x$SESSREG" != "x" ] ; then
+        "$SESSREG" -d -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DISPLAY"
+ "$USER"
+fi
+exit 0

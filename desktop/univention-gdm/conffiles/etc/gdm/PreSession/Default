@@ -1,0 +1,115 @@
+#!/bin/sh
+#
+# Univention GDM
+#  pre session script for the debian package
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+for filename in /etc/gdm/PreSession/scripts/*; do
+	if [ -f $filename -a -x $filename -a ! $filename = "Default" ]; then
+		. "$filename"
+	fi
+done
+
+# copy'n'paste from the old Default script
+PATH="/usr/bin:$PATH:/bin:/usr/bin"
+OLD_IFS=$IFS
+
+gdmwhich () {
+  COMMAND="$1"
+  OUTPUT=
+  IFS=:
+  for dir in $PATH
+  do
+    if test -x "$dir/$COMMAND" ; then
+      if test "x$OUTPUT" = "x" ; then
+        OUTPUT="$dir/$COMMAND"
+      fi
+    fi
+  done
+  IFS=$OLD_IFS
+  echo "$OUTPUT"
+}
+
+# Set background color
+XSETROOT=`gdmwhich xsetroot`
+if [ "x$XSETROOT" != "x" ] ; then
+
+        CHECKBACKCOLOR="OK"
+        if [ "x$GDM_GREETER_TYPE" = "xTHEMED" ]; then
+                BACKCOLOR=`gdmflexiserver --command="GET_CONFIG greeter/GraphicalThemedColor $DISPLAY"`
+
+                CHECKBACKCOLOR=`echo $BACKCOLOR | sed 's/^\([^ ]*\) .*$/\1/'`
+                if [ "x$CHECKBACKCOLOR" = "xOK" ]; then
+                        BACKCOLOR=`echo $BACKCOLOR | sed 's/^.* \(.*\)$/\1/'`
+                else
+                        BACKCOLOR=""
+                fi
+        fi
+
+        # If we tried to load the themed backgroundcolor, but failed, then try loading plain color
+        if [ "x$CHECKBACKCOLOR" != "xOK" ] || [ "x$GDM_GREETER_TYPE" = "xPLAIN" ]; then
+
+                # Background type can be 0=None, 1=Image & Color, 2=Color, or 3=Image
+                BACKTYPE=`gdmflexiserver --command="GET_CONFIG greeter/BackgroundType $DISPLAY"`
+
+                # Skip if background type does not include a color
+                if [ "x$BACKTYPE" = "xOK 1" ] || [ "x$BACKTYPE" = "xOK 2" ]; then
+                        BACKCOLOR=`gdmflexiserver --command="GET_CONFIG greeter/BackgroundColor $DISPLA
+Y"`
+
+                        CHECKBACKCOLOR=`echo $BACKCOLOR | sed 's/^\([^ ]*\) .*$/\1/'`
+                        if [ "x$CHECKBACKCOLOR" = "xOK" ]; then
+                                BACKCOLOR=`echo $BACKCOLOR | sed 's/^.* \(.*\)$/\1/'`
+                        else
+                                BACKCOLOR=""
+                        fi
+                fi
+        fi
+
+        # Default value
+        if [ "x$BACKCOLOR" = "x" ]; then
+                BACKCOLOR="#76848F"
+        fi
+
+        "$XSETROOT" -cursor_name left_ptr -solid "$BACKCOLOR"
+fi
+
+SESSREG=`gdmwhich sessreg`
+if [ "x$SESSREG" != "x" ] ; then
+        # some output for easy debugging
+        echo "$0: Registering your session with wtmp and utmp"
+        echo "$0: running: $SESSREG -a -w /var/log/wtmp -u /var/run/utmp -x \"$X_SERVERS\" -h \"$REMOTE
+_HOST\" -l \"$DISPLAY\" \"$USER\""
+
+        exec "$SESSREG" -a -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DIS
+PLAY" "$USER"
+        # this is not reached
+fi
+
+# some output for easy debugging
+echo "$0: could not find the sessreg utility, cannot update wtmp and utmp"
+exit 0
