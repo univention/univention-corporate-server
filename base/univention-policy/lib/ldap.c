@@ -236,7 +236,6 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		if ((rv = ldap_sasl_interactive_bind_s(lp->ld, lp->binddn, lp->sasl_mech, NULL, NULL, LDAP_SASL_QUIET, sasl_interact, (void*) lp)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_sasl_interactive_bind: %s", ldap_err2string(rv));
 			ldap_unbind(lp->ld);
-			lp->ld = NULL;
 			return rv;
 		}
 	/* simple bind */
@@ -245,7 +244,6 @@ int univention_ldap_open(univention_ldap_parameters_t *lp)
 		if ((rv = ldap_simple_bind_s(lp->ld, lp->binddn, lp->bindpw)) != LDAP_SUCCESS) {
 			univention_debug(UV_DEBUG_LDAP, UV_DEBUG_ERROR, "ldap_simple_bind: %s", ldap_err2string(rv));
 			ldap_unbind(lp->ld);
-			lp->ld = NULL;
 			return rv;
 		}
 	}
@@ -260,46 +258,15 @@ void univention_ldap_close(univention_ldap_parameters_t* lp)
 	if (lp->ld != NULL) {
 		univention_debug(UV_DEBUG_LDAP, UV_DEBUG_INFO, "closing connection");
 		ldap_unbind(lp->ld);
-		lp->ld = NULL;
 	}
-	if (lp->uri != NULL) {
-		free(lp->uri);
-		lp->uri = NULL;
-	}
-	if (lp->host != NULL) {
-		free(lp->host);
-		lp->host = NULL;
-	}
-	if (lp->base != NULL) {
-		free(lp->base);
-		lp->base = NULL;
-	}
-	if (lp->binddn != NULL) {
-		free(lp->binddn);
-		lp->binddn = NULL;
-	}
-	if (lp->bindpw != NULL) {
-		free(lp->bindpw);
-		lp->bindpw = NULL;
-	}
-	if (lp->sasl_mech != NULL) {
-		free(lp->sasl_mech);
-		lp->sasl_mech = NULL;
-	}
-	if (lp->sasl_realm != NULL) {
-		free(lp->sasl_realm);
-		lp->sasl_realm = NULL;
-	}
-	if (lp->sasl_authcid != NULL) {
-		free(lp->sasl_authcid);
-		lp->sasl_authcid = NULL;
-	}
-	if (lp->sasl_authzid != NULL) {
-		free(lp->sasl_authzid);
-		lp->sasl_authzid = NULL;
-	}
-	if (lp != NULL) {
-		free(lp);
-		lp = NULL;
-	}
+	free(lp->uri);
+	free(lp->host);
+	free(lp->base);
+	free(lp->binddn);
+	free(lp->bindpw);
+	free(lp->sasl_mech);
+	free(lp->sasl_realm);
+	free(lp->sasl_authcid);
+	free(lp->sasl_authzid);
+	free(lp);
 }
