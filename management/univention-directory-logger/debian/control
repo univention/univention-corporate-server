@@ -1,0 +1,23 @@
+Source: univention-directory-logger
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.6.2
+Build-Depends: debhelper, univention-config-dev
+
+Package: univention-directory-logger
+Architecture: all
+Depends: univention-python, univention-directory-listener, slapd (>= 2.2.30-2)
+Description: UCS - Directory Logger
+ Univention Directory Logger is a module for the Univention Directory Listener
+ that logs changes to the UCS LDAP Directory as protocol records to a log file.
+ Each record reports the timestamp and kind of the modification along with
+ the authentification ID (LDAP DN) of the initiator of a modification. The
+ changed attributes are reported as well. Each record contains the hash value
+ of the previous record to build up a chain of trusted records.
+ The hash value of each new generated record is sent to the syslog where it may
+ be directed to remote hosts to allow independent auditing.
+ This package is part of Univention Corporate Server (UCS),
+ an integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
