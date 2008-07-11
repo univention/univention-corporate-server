@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Univention KDE
+# Univention KDE Profile: Univention KDE-Menu for UCS 2.1
 #  join script
 #
 # Copyright (C) 2008 Univention GmbH
@@ -52,17 +52,6 @@ if [ $server_role = domaincontroller_master ]; then
 		--position cn=desktop,cn=policies,$ldap_base\
 		--set name="UCS KDE Menu 2.1" --set language="de_DE@euro" \
 		--set profile="/usr/share/univention-kde-profiles/ucs-kde-menu21"
-
-	# check if some univentionDesktopProfile other than ucs-green21 has already been set
-	test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
-	if [ "$?" = 1 ]; then
-		res=$(univention_policy_result -s "$ldap_base" |grep univentionDesktopProfile |grep -v "ucs-green21")
-		# if not, then attach the "UCS KDE Menu 2.1" desktop policy with the domain object
-		if [ -z "$res" ]; then
-			univention-directory-manager container/dc modify $@ --dn "$ldap_base" \
-				--policy-reference "cn=UCS KDE Menu 2.1,cn=desktop,cn=policies,$ldap_base"
-		fi
-	fi
 fi
 
 test -n "`grep "univention-kde-profile_ucs-kde-menu21 successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_ucs-kde-menu21 successful" >>/usr/lib/univention-install/.index.txt
