@@ -1,6 +1,6 @@
 <!DOCTYPE Menu PUBLIC "-//freedesktop//DTD Menu 1.0//EN" "http://www.freedesktop.org/standards/menu-spec/1.0/menu.dtd">
 <Menu>
-  <Name>Univention KDE Men</Name>
+  <Name>Univention KDE Menu</Name>
   <Menu>
     <Name>Univention Office</Name>
     <Directory>kde-office.directory</Directory>
@@ -10,12 +10,11 @@
     <Include>
       <Filename>kde-Kontact.desktop</Filename>
       <Filename>evolution.desktop</Filename>
-      <Filename>ooo-base.desktop</Filename>
+      <Filename>ooo-writer.desktop</Filename>
       <Filename>ooo-calc.desktop</Filename>
-      <Filename>ooo-draw.desktop</Filename>
       <Filename>ooo-impress.desktop</Filename>
       <Filename>ooo-math.desktop</Filename>
-      <Filename>ooo-writer.desktop</Filename>
+      <Filename>ooo-base.desktop</Filename>
       <Filename>AdobeReader.desktop</Filename>
       <Filename>kde-kdict.desktop</Filename>
       <Filename>kde-kcalc.desktop</Filename>
@@ -24,12 +23,11 @@
     <Layout>
       <Filename>kde-Kontact.desktop</Filename>
       <Filename>evolution.desktop</Filename>
-      <Filename>ooo-base.desktop</Filename>
+      <Filename>ooo-writer.desktop</Filename>
       <Filename>ooo-calc.desktop</Filename>
-      <Filename>ooo-draw.desktop</Filename>
       <Filename>ooo-impress.desktop</Filename>
       <Filename>ooo-math.desktop</Filename>
-      <Filename>ooo-writer.desktop</Filename>
+      <Filename>ooo-base.desktop</Filename>
       <Filename>AdobeReader.desktop</Filename>
       <Filename>kde-kdict.desktop</Filename>
       <Filename>kde-kcalc.desktop</Filename>
@@ -44,6 +42,7 @@
     <Include>
       <Filename>kde-krfb.desktop</Filename>
       <Filename>kde-krdc.desktop</Filename>
+      <Filename>nxclient.desktop</Filename>
       <Filename>kde-knetattach.desktop</Filename>
       <Filename>kde-klipper.desktop</Filename>
       <Filename>kde-kappfinder.desktop</Filename>
@@ -88,12 +87,11 @@
       <All/>
     </Exclude>
     <Include>
+      <Filename>kde-konsole.desktop</Filename>
+      <Filename>kde-kjobviewer.desktop</Filename>
       <Filename>kde-kwrite.desktop</Filename>
       <Filename>kde-kate.desktop</Filename>
       <Filename>kde-ark.desktop</Filename>
-      <Filename>kde-kjobviewer.desktop</Filename>
-      <Filename>mplayer.desktop</Filename>
-      <Filename>kde-konsole.desktop</Filename>
       <Category>Univention Utilities</Category>
     </Include>
     <Layout>
@@ -102,7 +100,6 @@
       <Filename>kde-kwrite.desktop</Filename>
       <Filename>kde-kate.desktop</Filename>
       <Filename>kde-ark.desktop</Filename>
-      <Filename>mplayer.desktop</Filename>
       <Menuname>Univention Utilities Peripherals</Menuname>
     </Layout>
   </Menu>
@@ -114,12 +111,20 @@
     </Exclude>
     <Include>
       <Filename>The GIMP.desktop</Filename>
-      <Filename>GV.desktop</Filename>
+      <Filename>inkscape.desktop</Filename>
+      <Filename>ooo-draw.desktop</Filename>
+      <Filename>kde-kuickshow.desktop</Filename>
+      <Filename>kde-ksnapshot.desktop</Filename>
+      <Filename>mplayer.desktop</Filename>
       <Category>Univention Graphics</Category>
     </Include>
     <Layout>
-      <Filename>GV.desktop</Filename>
       <Filename>The GIMP.desktop</Filename>
+      <Filename>inkscape.desktop</Filename>
+      <Filename>ooo-draw.desktop</Filename>
+      <Filename>kde-kuickshow.desktop</Filename>
+      <Filename>kde-ksnapshot.desktop</Filename>
+      <Filename>mplayer.desktop</Filename>
     </Layout>
   </Menu>
   <Menu>
@@ -153,6 +158,7 @@
      <All/>
   </Exclude>
   <Include>
+    <Filename>kde-KControl.desktop</Filename>
     <Filename>kde-Help.desktop</Filename>
     <Category>Univention KDE Menu</Category>
   </Include>
@@ -162,6 +168,7 @@
     <Menuname>Univention Internet</Menuname>
     <Menuname>Univention Utilities</Menuname>
     <Menuname>Univention Graphics</Menuname>
+    <Filename>kde-KControl.desktop</Filename>
     <Filename>kde-Help.desktop</Filename>
   </Layout>
   <!-- Finally gather all remainig applications in a hidden menu, so they are known to KDE -->

@@ -63,7 +63,7 @@ StorageId=ooo-writer.desktop
 EnableIconZoom=true
 
 [menus]
-Extensions=find.desktop,prefmenu.desktop,systemmenu.desktop
+Extensions=find.desktop,systemmenu.desktop
 NumVisibleEntries=0
 UseBookmarks=false
 UseBrowser=false
