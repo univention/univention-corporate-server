@@ -226,10 +226,6 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 					dprint('skipping (invalid version) %s' % line, [], True)
 					failed='1'
 					continue
-				elif float(version[0]) < float(repository_vv) or ( float(version[0]) == float(repository_vv) and float(version[1]) < float(repository_vp) ):
-					dprint('skipping (too old version) %s' % line, [], True)
-					failed='1'
-					continue
 				elif float(version[0]) <= float(vv) and float(version[1]) <= float(vp):
 					break
 				else:
