@@ -244,6 +244,12 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.39 NAME 'univentionShareSambaHideUnre
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.1001.2.1.40  NAME 'univentionShareSambaCustomSetting'
+  DESC 'custom samba setting for samba share (key = value)'
+  EQUALITY caseIgnoreMatch
+  SUBSTR caseIgnoreSubstringsMatch
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15)
+
 objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	AUXILIARY
 	DESC 'Samba share'
@@ -285,7 +291,8 @@ objectclass ( 1.3.6.1.4.1.10176.1001.2.2.1 NAME 'univentionShareSamba'
 	univentionShareSambaHostsAllow $
 	univentionShareSambaHostsDeny $
 	univentionShareSambaDosFilemode $
-	univentionShareSambaHideUnreadable ))
+	univentionShareSambaHideUnreadable $
+	univentionShareSambaCustomSetting ))
 
 # $OID: 1.3.6.1.4.1.10176.1001.3 (Shares/NFS) $
 

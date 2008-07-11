@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-19 13:55+0200\n"
-"PO-Revision-Date: 2007-09-26 15:55+0200\n"
+"POT-Creation-Date: 2008-07-11 11:32+0200\n"
+"PO-Revision-Date: 2008-07-11 11:33+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,7 @@ msgid "Print-Share: Printer Group"
 msgstr "Druckerfreigabe: Druckergruppe"
 
 #: printergroup.py:51 printer.py:62 print.py:59 share.py:81 share.py:82
-#: share.py:621
+#: share.py:631
 msgid "Name"
 msgstr "Name"
 
@@ -48,11 +48,11 @@ msgstr "Preis pro Seite"
 msgid "Price per Print Job"
 msgstr "Preis pro Druckauftrag"
 
-#: printergroup.py:123 printer.py:195 share.py:642
+#: printergroup.py:123 printer.py:195 share.py:652
 msgid "General"
 msgstr "Allgemein"
 
-#: printergroup.py:123 printer.py:195 share.py:642
+#: printergroup.py:123 printer.py:195 share.py:652
 msgid "General Settings"
 msgstr "Grundeinstellungen"
 
@@ -353,8 +353,9 @@ msgstr "Besitzergruppen dürfen Zugriffsrechte verändern"
 msgid ""
 "Members of the owner group may modify access rights if the write access is "
 "set for the group"
-msgstr "Mitglieder der Besitzergruppe von Dateien und Verzeichnissen dürfen "
-"die Zugriffsrechte verändern, wenn Schreibrechte gesetzt sind"
+msgstr ""
+"Mitglieder der Besitzergruppe von Dateien und Verzeichnissen dürfen die "
+"Zugriffsrechte verändern, wenn Schreibrechte gesetzt sind"
 
 #: share.py:261
 msgid "Hide unreadable files/directories"
@@ -362,9 +363,9 @@ msgstr "Verstecke nicht lesbare Dateien und Verzeichnisse"
 
 #: share.py:262
 msgid "Files and directories with no read access are hidden"
-msgstr "Nicht lesbare Dateien und Verzeichnisse werdne versteckt"
-"Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
-"übergeordneten Verzeichnisses."
+msgstr ""
+"Nicht lesbare Dateien und Verzeichnisse werdne verstecktNeue Dateien und "
+"Verzeichnisse erhalten die Zugriffsrechte des übergeordneten Verzeichnisses."
 
 #: share.py:272
 msgid "File Mode"
@@ -829,124 +830,119 @@ msgstr ""
 "Neue Dateien und Verzeichnisse erhalten die Zugriffsrechte des "
 "übergeordneten Verzeichnisses."
 
+#: share.py:621
+msgid "Custom share settings"
+msgstr "Erweiterte Einstellungen für Freigaben"
+
 #: share.py:622
+msgid "Set new custom share settings"
+msgstr "Setzen von erweiterten Einstellungen im Key-Value-Format"
+
+#: share.py:632
 msgid "Name of the webaccess share."
 msgstr "Name der Webzugriff Freigabe"
 
-#: share.py:631
+#: share.py:641
 msgid "IP Address"
 msgstr "IP Adresse"
 
-#: share.py:632
+#: share.py:642
 msgid "IP address of the webaccess share host."
 msgstr "Die IP Adresse des Rechners, der die Freigabe bereitstellt"
 
-#: share.py:648
+#: share.py:658
 msgid "NFS General"
 msgstr "NFS-Allgemein"
 
-#: share.py:648
+#: share.py:658
 msgid "General NFS Settings"
 msgstr "NFS-Grundeinstellungen"
 
-#: share.py:653
+#: share.py:663
 msgid "Webaccess General"
 msgstr "Webzugriff-Allgemein"
 
-#: share.py:653
+#: share.py:663
 msgid "General Webaccess Settings"
 msgstr "Allgemeine Webzugriff-Einstellungen"
 
-#: share.py:656
+#: share.py:666
 msgid "Samba General"
 msgstr "Samba-Allgemein"
 
-#: share.py:656
+#: share.py:666
 msgid "General Samba Settings"
 msgstr "Samba-Grundeinstellungen"
 
-#: share.py:663
+#: share.py:673
 msgid "Samba Permissions"
 msgstr "Samba-Rechte"
 
-#: share.py:663
+#: share.py:673
 msgid "Samba Permission Settings"
 msgstr "Samba-Zugriffsrechte"
 
-#: share.py:671
+#: share.py:681
 msgid "Samba Extended Permissions"
 msgstr "Samba-Erweiterte-Rechte"
 
-#: share.py:671
+#: share.py:681
 msgid "Samba Extended Permission Settings"
 msgstr "Samba Erweiterte Zugriffsrechte"
 
-#: share.py:677
+#: share.py:687
 msgid "Samba Performance"
 msgstr "Samba-Performance"
 
-#: share.py:677
+#: share.py:687
 msgid "Samba Performance Settings"
 msgstr "Samba-Performance-Einstellungen"
 
-#: share.py:829
+#: share.py:693
+msgid "Samba Custom Settings"
+msgstr "Samba-Erweiterte-Einstellungen"
+
+#: share.py:693
+msgid "Custom Settings for Samba Shares"
+msgstr "Erweiterte Einstellungen für Samba-Freigaben"
+
+#: share.py:856
 #, python-format
 msgid "Need  %s or %s in options to create a share."
 msgstr "%s oder %s wird in den Optionen benötigt, um eine Freigabe anzulegen."
 
-#: share.py:834 share.py:866
+#: share.py:861 share.py:893
 #, python-format
 msgid "Need  %s option to create a %s share."
 msgstr "Die Option %s wird benötigt, um eine %s Freigabe anzulegen."
 
-#: share.py:901
+#: share.py:928
 msgid "uses"
 msgstr "benutzt"
 
-#: share.py:902
+#: share.py:929
 msgid "user"
 msgstr "Benutzer"
 
-#: share.py:904
+#: share.py:931
 msgid "users"
 msgstr "Benutzer"
 
-#: share.py:905
+#: share.py:932
 msgid "use"
 msgstr "nutzt"
 
-#: share.py:909
+#: share.py:936
 #, python-format
 msgid " and %s more"
 msgstr "und %s mehr"
 
-#: share.py:920
+#: share.py:947
 #, python-format
 msgid "The %s %s%s %s this share as home share!"
 msgstr "Die/Der %s %s%s %s diese Freigabe als Heimatverzeichnisfreigabe"
 
-#: share.py:925
+#: share.py:952
 #, python-format
 msgid "%s (%s on %s)"
 msgstr "%s (%s auf %s)"
-
-#~ msgid "Directorymode"
-#~ msgstr "Verzeichnis-Modus"
-
-#~ msgid "Is writing on the share allowed via NFS."
-#~ msgstr "Erlaubt den Schreibzugriff auf die Freibgabe über NFS."
-
-#~ msgid "Printer Manager"
-#~ msgstr "Druckerverwaltung"
-
-#~ msgid "Shares Manager"
-#~ msgstr "Freigabeverwaltung"
-
-#~ msgid ", a path has to start with \"/\"!"
-#~ msgstr ", ein Pfad muss mit \"/\" beginnen!"
-
-#~ msgid "URI"
-#~ msgstr "URI"
-
-#~ msgid "Samba"
-#~ msgstr "Samba"

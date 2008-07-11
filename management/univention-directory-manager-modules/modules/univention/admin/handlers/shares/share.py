@@ -617,6 +617,16 @@ property_descriptions={
 			identifies=0,
 			default='0'
 		),
+	'sambaCustomSettings': univention.admin.property(
+			short_description=_('Custom share settings'),
+			long_description=_('Set new custom share settings'),
+			syntax=univention.admin.syntax.keyAndValue,
+			multivalue=1,
+			options=['samba'],
+			required=0,
+			may_change=1,
+			identifies=0,
+		),
 	'webaccessName': univention.admin.property(
 			short_description=_('Name'),
 			long_description=_('Name of the webaccess share.'),
@@ -679,7 +689,10 @@ layout=[
 			[univention.admin.field('sambaStrictLocking'), univention.admin.field('sambaOplocks')],
 			[univention.admin.field('sambaLevel2Oplocks'), univention.admin.field('sambaFakeOplocks')],
 			[univention.admin.field('sambaBlockSize'), univention.admin.field('sambaCscPolicy')],
-		])
+		]),
+	univention.admin.tab(_('Samba Custom Settings'),_('Custom Settings for Samba Shares'), [
+			[univention.admin.field('sambaCustomSettings') , ],
+		]),
 ]
 
 def boolToString(value):
@@ -692,6 +705,19 @@ def stringToBool(value):
 		return '1'
 	else:
 		return '0'
+
+def mapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append( '%s = %s' % (entry[0], entry[1]) )
+	return lst
+
+def unmapKeyAndValue(old):
+	lst = []
+	for entry in old:
+		lst.append( entry.split(' = ', 1) )
+	return lst
+
 
 def insertQuotes(value):
 	'Turns @group name, user name into @"group name", "user name"'
@@ -765,6 +791,7 @@ mapping.register('sambaVFSObjects', 'univentionShareSambaVFSObjects', None, univ
 mapping.register('sambaMSDFSRoot', 'univentionShareSambaMSDFS', boolToString, stringToBool)
 mapping.register('sambaInheritOwner', 'univentionShareSambaInheritOwner', boolToString, stringToBool)
 mapping.register('sambaInheritPermissions', 'univentionShareSambaInheritPermissions', boolToString, stringToBool)
+mapping.register('sambaCustomSettings', 'univentionShareSambaCustomSetting', mapKeyAndValue, unmapKeyAndValue)
 mapping.register('webaccessName', 'univentionShareWebaccessName', None, univention.admin.mapping.ListToString)
 mapping.register('webaccessIpaddress', 'univentionShareWebaccessIpaddress', None, univention.admin.mapping.ListToString)
 mapping.register('webaccessHordeauth', 'univentionShareWebaccessHordeauth', boolToString, stringToBool)
