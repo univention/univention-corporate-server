@@ -1,3 +1,10 @@
+univention-kde (3.0-4-3) unstable; urgency=low
+
+  * ucs-kde-menu21 appends itself to policy "UCS green 2.1" only if installed on a master
+  * pass credentials to all univention-admin calls in join script
+
+ -- Arvid Requate <requate@univention.de>  Fri, 11 Jul 2008 17:05:29 +0200
+
 univention-kde (3.0-4-2) unstable; urgency=low
 
   * include the ucs-kde-menu21 profile into policy "UCS green 2.1"

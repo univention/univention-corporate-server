@@ -38,7 +38,7 @@ fi
 
 touch /usr/lib/univention-install/.index.txt
 
-test -n "`grep "univention-kde-profile_ucs-kde-menu21 successful" /usr/lib/univention-install/.index.txt`" && exit 1
+test -n "`grep "univention-kde-profile_ucs-kde-menu21 v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
 eval `univention-config-registry shell`
 
@@ -48,12 +48,23 @@ if [ $server_role = domaincontroller_master ]; then
 		--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-kde-menu21"
 
 	# register as new desktop policy
-	univention-directory-manager policies/desktop  create --ignore_exists \
+	univention-directory-manager policies/desktop  create $@ --ignore_exists \
 		--position cn=desktop,cn=policies,$ldap_base\
 		--set name="UCS KDE Menu 2.1" --set language="de_DE@euro" \
 		--set profile="/usr/share/univention-kde-profiles/ucs-kde-menu21"
+
+	# if no profile other than ucs-green21 has been connected yet, ship ucs-kde-menu21 with policy "UCS green 2.1"
+	test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
+	if [ "$?" = 1 ]; then
+		res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile | grep -v "ucs-green21")
+		if [ -z "$res" ]; then
+			univention-admin policies/desktop modify $@ \
+				--dn "cn=UCS green 2.1,cn=desktop,cn=policies,$ldap_base" \
+				--append profile="/usr/share/univention-kde-profiles/ucs-kde-menu21"
+		fi
+	fi
 fi
 
-test -n "`grep "univention-kde-profile_ucs-kde-menu21 successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_ucs-kde-menu21 successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-kde-profile_ucs-kde-menu21 v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-kde-profile_ucs-kde-menu21 v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
