@@ -149,6 +149,9 @@ def handler(dn, new, old):
 						os.chown(directory,uid,gid)
 					except:
 						pass
+			if new.has_key('univentionShareSambaCustomSetting') and new['univentionShareSambaCustomSetting']:
+				for setting in new['univentionShareSambaCustomSetting']:
+					print >>fp, setting
 		finally:
 			listener.unsetuid()
 
