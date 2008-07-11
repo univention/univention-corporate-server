@@ -73,7 +73,11 @@ class select:
 		return '*'
 
 class complex:
-	type='complex'
+	type = 'complex'
+	delimiter = ' '
+	# possible delimiters:
+	# delimiter = '='   ==> single string is used to concatenate all subitems
+	# delimiter = [ '', ': ', '=', '' ] ==> list of strings: e.g. 4 delimiter strings given to concatenate 3 subitems
 	def parse(self, texts):
 		parsed=[]
 
@@ -119,7 +123,16 @@ class complex:
 
 		if not newTexts:
 			return ''
-		return string.join(newTexts, ' ')
+
+		txt = ''
+		if type(self.delimiter) == type([]):
+			for i in range(0,len(newTexts)):
+				txt += self.delimiter[i] + newTexts[i]
+			txt += self.delimiter[-1]
+		elif type(self.delimiter) == type(''):
+			txt = self.delimiter.join(newTexts)
+
+		return txt
 
 	def new(self):
 		s=[]
@@ -610,6 +623,12 @@ class dnsNameDot(simple):
 
 		raise univention.admin.uexceptions.valueError, _("Value may not contain other than numbers, letters and dots!")
 
+
+class keyAndValue(complex):
+	name = 'keyAndValue'
+	delimiter = ' = '
+	subsyntaxes = [(_('Key'), string), (_('Value'), string)]
+	all_required = 1
 
 class dnsMX(complex):
 	name='dnsMX'
