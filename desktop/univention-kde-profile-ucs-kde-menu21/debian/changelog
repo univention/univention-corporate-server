@@ -1,3 +1,9 @@
+univention-kde-profile-ucs-kde-menu21 (0.6) unstable; urgency=low
+
+  * append this profile only to the "UCS green 2.1" policy if installed on a master
+
+ -- Arvid Requate <requate@univention.de>  Fri, 11 Jul 2008 17:03:31 +0200
+
 univention-kde-profile-ucs-kde-menu21 (0.5) unstable; urgency=low
 
   * include Kontrol-Center instead of activating the kicker settings menus
