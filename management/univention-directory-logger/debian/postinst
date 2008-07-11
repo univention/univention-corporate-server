@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# Univention Directory Logger
+#  postinst script
+#
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+#DEBHELPER#
+
+registrySection='ldap/logging'
+workdir=/var/lib/univention-directory-logger
+dellog=${workdir}/dellog
+
+[ -d "${workdir}" ] || /bin/mkdir -p "${workdir}"
+
+if [ -d "${dellog}" ]; then
+	/bin/rm -rf "${dellog}"
+	/bin/rm -f "${dellog}".lock
+	dpkg-statoverride --remove --force "${dellog}"
+fi
+
+/bin/mkdir -p "${dellog}"
+dpkg-statoverride --add --update root adm 700 "${dellog}"
+
+# if [ "$1" = "configure" -a -z "$2" ]; then	# only do this at installation time, not on update
+if [ "$1" = "configure" ]; then
+	## set config-registry vriables
+	univention-config-registry set "${registrySection}"?yes
+	univention-config-registry set "${registrySection}/dellogdir"?"${dellog}"
+
+	## commit the changes to slapd.conf multifile
+	univention-config-registry commit /etc/ldap/slapd.conf
+
+	## restart the OpenLDAP Server to load the module
+	/etc/init.d/slapd restart
+
+	# exclude temporary objects by default
+	eval `univention-config-registry shell ldap/base`
+	univention-config-registry set "${registrySection}/exclude1"?"cn=temporary,cn=univention,$ldap_base"
+
+	## load the listener module
+	/etc/init.d/univention-directory-listener crestart
+
+fi
+

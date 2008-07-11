@@ -1,0 +1,106 @@
+univention-directory-logger (0.4-1) unstable; urgency=low
+
+  * Adapt to UCS 2.0
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  5 Jun 2008 10:31:54 +0200
+
+univention-directory-logger (0.3-13) unstable; urgency=low
+
+  * use UTC time instead of localtime for log entries
+
+ -- Arvid Requate <requate@univention.de>  Wed,  2 Jan 2008 10:41:42 +0100
+
+univention-directory-logger (0.3-12) unstable; urgency=low
+
+  * remove listener 'handler' status file when purging the package
+
+ -- Arvid Requate <arequate@anton.knut.univention.de>  Thu, 27 Dec 2007 09:45:21 +0100
+
+univention-directory-logger (0.3-11) unstable; urgency=low
+
+  * reverted rename behaviour to 'delete'+'add' to stay consistent with 'ldap/logging/exclude' feature
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Fri, 21 Dec 2007 17:12:31 +0100
+
+univention-directory-logger (0.3-10) unstable; urgency=low
+
+  * report rename ('remove' and 'add') as single operation
+  * report initialization and resync
+  * fixed order of listener and slapd initialization at installation time
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Fri, 21 Dec 2007 09:38:23 +0100
+
+univention-directory-logger (0.3-9) unstable; urgency=low
+
+  * added support for rename operations: listener reports them as 'remove' and 'add'
+  * package removal now deactivated dellog overlay in slapd.conf
+  * fixed naming of 'ldap/logging/exclude' Univention Baseconfig key
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Thu, 20 Dec 2007 18:25:29 +0100
+
+univention-directory-logger (0.3-8) unstable; urgency=low
+
+  * PreDepends on univention-ldap-listener and slapd
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Thu, 20 Dec 2007 13:42:03 +0100
+
+univention-directory-logger (0.3-7) unstable; urgency=low
+
+  * changed debugging message
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 18 Dec 2007 17:58:51 +0100
+
+univention-directory-logger (0.3-6) unstable; urgency=low
+
+  * changed syslog message from "Logfile Hash" to "New Hash"
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 18 Dec 2007 17:00:26 +0100
+
+univention-directory-logger (0.3-5) unstable; urgency=low
+
+  * fixed install-time setup
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 18 Dec 2007 15:55:08 +0100
+
+univention-directory-logger (0.3-4) unstable; urgency=low
+
+  * fixed package dependence
+
+ -- Arvid Requate <arequate@omar.knut.univention.de>  Tue, 18 Dec 2007 15:21:01 +0100
+
+univention-directory-logger (0.3-3) unstable; urgency=low
+
+  * Paketierung: Anpassung der Depends-Versionsnummer für openldap2.2
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 14:46:07 +0100
+
+univention-directory-logger (0.3-2) unstable; urgency=low
+
+  * Paketierung: univention-config-dev fehlte als Build-dependency
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 11:19:01 +0100
+
+univention-directory-logger (0.3-1) unstable; urgency=low
+
+  * Paketierung
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 11:19:01 +0100
+
+univention-directory-logger (0.3) unstable; urgency=low
+
+  * Paketierung
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 11:19:01 +0100
+
+univention-directory-logger (0.2) unstable; urgency=low
+
+  * Added cleanup for leftover dellog entries to reduce useless log messages
+
+ -- Arvid Requate <requate@univention.de>  Tue, 18 Dec 2007 10:34:15 +0100
+
+univention-directory-logger (0.1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Arvid Requate <requate@univention.de>  Mon, 17 Dec 2007 10:15:48 +0100
+
