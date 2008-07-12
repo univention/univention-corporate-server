@@ -1,3 +1,9 @@
+univention-mozilla-firefox (2.0.0-1) unstable; urgency=low
+
+  * update to firefox 3
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 12 Jul 2008 14:01:26 +0200
+
 univention-mozilla-firefox (1.2-9) unstable; urgency=low
 
   * more wording change univention-config-registry and univention-
