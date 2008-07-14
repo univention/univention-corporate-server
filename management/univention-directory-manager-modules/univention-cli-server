@@ -224,7 +224,7 @@ def doit(sarglist, conn):
 		univention.debug.init(logfile, 1, 0)
 	
 	cmdfile=os.path.basename(arglist[0])
-	if cmdfile == 'univention-admin' or cmdfile == 'univention-directory-manager':
+	if cmdfile == 'univention-admin' or cmdfile == 'univention-directory-manager' or cmdfile == 'udm':
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.PROCESS, 'daemon [%s] [%s] Calling univention-directory-manager' % (os.getppid(), os.getpid()))
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'daemon [%s] [%s] arglist: %s' % (os.getppid(), os.getpid(), arglist))
 		try:
