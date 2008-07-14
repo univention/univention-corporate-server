@@ -1,4 +1,4 @@
-univention-directory-manager-modules (3.0.13-1) unstable; urgency=low
+univention-directory-manager-modules (3.0.13-2) unstable; urgency=low
 
   * do not require mx and txt records
 
