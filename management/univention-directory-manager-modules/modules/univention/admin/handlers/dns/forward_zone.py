@@ -162,7 +162,7 @@ property_descriptions={
 			syntax=univention.admin.syntax.dnsMX,
 			multivalue=1,
 			options=[],
-			required=1,
+			required=0,
 			may_change=1
 		),
 	'txt': univention.admin.property(
@@ -171,7 +171,7 @@ property_descriptions={
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
 			options=[],
-			required=1,
+			required=0,
 			may_change=1
 		),
 }
