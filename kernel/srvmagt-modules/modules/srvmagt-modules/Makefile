@@ -101,6 +101,8 @@ SOURCE_VER_2   := $(shell echo $$((($(SOURCE_KERNEL) >> 8) & 0xff)))
 SOURCE_VER_3   := $(shell echo $$(($(SOURCE_KERNEL) & 0xff)))
 endif
 
+SOURCE_VERSION := $(SOURCE_VER_1).$(SOURCE_VER_2).$(SOURCE_VER_3)
+
 MODULE_DIR     := /lib/modules/$(LINUX_VERSION)/srvmagt
 AUTOCONF_INC   := ./linux/autoconf.h
 VERSION_INC    := ./linux/version.h
@@ -142,7 +144,11 @@ endef
 ifeq ($(ARCH),ia64)
 SRCS           := ipmi.c smbus.c
 else
+ifeq ($(SOURCE_VERSION),2.6.24)
+SRCS           := ipmi.c smbus.c
+else
 SRCS           := copa.c ipmi.c smbus.c
+endif
 endif
 OBJS           := $(SRCS:%.c=%.o)
 MODS           := $(addprefix $(MODULE_DIR)/,$(OBJS))
@@ -279,6 +285,7 @@ show:
 				@echo 'SOURCE_VER_1:  "$(SOURCE_VER_1)"'
 				@echo 'SOURCE_VER_2:  "$(SOURCE_VER_2)"'
 				@echo 'SOURCE_VER_3:  "$(SOURCE_VER_3)"'
+				@echo 'SOURCE_VERSION:"$(SOURCE_VERSION)"'
 				@echo 'MODULE_DIR:    "$(MODULE_DIR)"'
 				@echo 'NOMODVERSIONS: "$(NOMODVERSIONS)"'
 				@echo 'SRCS:          "$(SRCS)"'

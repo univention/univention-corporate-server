@@ -3581,7 +3581,6 @@ int init_module(void)
 }
 void cleanup_module(void)
 {
-        int err;
         do { if (smbusDebug & (1 << (0))) printk(KERN_DEBUG "smbus(%d):" "cleanup_module entered (%d)\n", (int)(jiffies-jiffies0),0); } while (0);
         DRIVER_INTER_MODULE_UNREGISTER(smbus_PowerOff);
         DRIVER_INTER_MODULE_UNREGISTER(smbus_PowerOff_saved);
@@ -3592,10 +3591,16 @@ void cleanup_module(void)
         smbus_unregister_PowerOff_routine();
         smbus_unregister_ioctl32_all();
         free_all();
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23)
+	/* unregister_chrdev returns void now */
+        unregister_chrdev(smbus_major, SMBUS_DEV);
+#else
+        int err;
         err = unregister_chrdev(smbus_major, SMBUS_DEV);
         if (err < 0) {
                 printk(KERN_ERR "smbus(%d): " "unregister_chrdev(%i) failed! return = %d\n", (int)(jiffies-jiffies0), smbus_major, err);
         }
+#endif
 }
 static void smbus_register_PowerOff_routine(void)
 {
