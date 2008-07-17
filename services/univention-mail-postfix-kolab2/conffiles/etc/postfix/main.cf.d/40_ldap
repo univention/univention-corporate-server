@@ -1,16 +1,31 @@
 
 #
 # LDAP mail2sharedfolder support
+# find mail address for shared imap folders and do not rewrite recipient address if kolabHomeServer is NOT $myhostname
 #
 
-ldapsharedfolder_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
-ldapsharedfolder_search_base = @%@ldap/base@%@
-ldapsharedfolder_query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s)))
-ldapsharedfolder_result_attribute = univentionKolabSharedFolderDeliveryAddress
-ldapsharedfolder_result_filter = %s
-ldapsharedfolder_search_timeout = 15
-ldapsharedfolder_scope = sub
-ldapsharedfolder_version = 3
+ldapsharedfolderremote_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapsharedfolderremote_search_base = @%@ldap/base@%@
+ldapsharedfolderremote_query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(!(kolabHomeServer=$myhostname)))
+ldapsharedfolderremote_result_attribute = mailPrimaryAddress
+ldapsharedfolderremote_result_filter = %s
+ldapsharedfolderremote_search_timeout = 15
+ldapsharedfolderremote_scope = sub
+ldapsharedfolderremote_version = 3
+
+#
+# LDAP mail2sharedfolder support
+# rewrite mail address for shared imap folders if kolabHomeServer is $myhostname
+#
+
+ldapsharedfolderlocal_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapsharedfolderlocal_search_base = @%@ldap/base@%@
+ldapsharedfolderlocal_query_filter = (&(objectClass=univentionKolabSharedFolder)(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(kolabHomeServer=$myhostname))
+ldapsharedfolderlocal_result_attribute = univentionKolabSharedFolderDeliveryAddress
+ldapsharedfolderlocal_result_filter = %s
+ldapsharedfolderlocal_search_timeout = 15
+ldapsharedfolderlocal_scope = sub
+ldapsharedfolderlocal_version = 3
 
 #
 # LDAP Alias support
@@ -62,11 +77,12 @@ ldapdistlist_version = 3
 
 #
 # LDAP Transport for multilocation support
+# if mail shall not be delivered locally then send it to kolabHomeServer
 #
 
 ldaptransport_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
 ldaptransport_search_base = @%@ldap/base@%@
-ldaptransport_query_filter = (&(mailPrimaryAddress=%s)(objectClass=kolabInetOrgPerson)(!(kolabHomeServer=$myhostname)))
+ldaptransport_query_filter = (&(mailPrimaryAddress=%s)(|(objectClass=kolabInetOrgPerson)(objectClass=univentionKolabSharedFolder))(!(kolabHomeServer=$myhostname)))
 ldaptransport_result_attribute = kolabHomeServer
 ldaptransport_result_filter = smtp:[%s]
 ldaptransport_search_timeout = 15
