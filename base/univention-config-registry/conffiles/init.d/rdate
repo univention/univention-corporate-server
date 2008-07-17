@@ -15,13 +15,19 @@ test -n "$NTPSERVERS" || exit 0
 
 case "$1" in
 	start|restart)
-		echo -n "Running rdate to synchronize clock:"
+		echo -n "Synchronize clock:"
 		for srv in $NTPSERVERS; do
-			if /bin/netcat -q0 -w4 $srv time </dev/null >/dev/null 2>&1; then
+			if /bin/netcat -q0 -w1 $srv time </dev/null >/dev/null 2>&1; then
 				if /usr/sbin/rdate $srv >/dev/null 2>&1; then
 					echo " done."
 					exit 0
 				fi
+			fi
+		done
+		for srv in $NTPSERVERS; do
+			if /usr/sbin/ntpdate -b -t 0.2 $srv >/dev/null 2>&1; then
+				echo " done."
+				exit 0
 			fi
 		done
 		echo " failed!"
