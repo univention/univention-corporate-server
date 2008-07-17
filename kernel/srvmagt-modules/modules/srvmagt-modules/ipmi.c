@@ -1848,7 +1848,6 @@ int init_module(void)
 }
 void cleanup_module(void)
 {
-        int err;
         if (ipmiDebug) printk(KERN_DEBUG "ipmi(%d): " "cleanup_module: entered\n", (int)(jiffies-jiffies0));
         ipmi_disable_BMC_timer(&bmcTimer);
         DRIVER_INTER_MODULE_UNREGISTER(ipmi_lock);
@@ -1863,10 +1862,16 @@ void cleanup_module(void)
         }
         ipmi_unregister_PowerOff_routine();
         ipmi_unregister_ioctl32();
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,23)
+	/* unregister_chrdev returns void now */
+        unregister_chrdev(ipmi_major, IPMI_DEV);
+#else
+        int err;
         err = unregister_chrdev(ipmi_major, IPMI_DEV);
         if (err < 0) {
                 printk(KERN_ERR "ipmi(%d): " "unregister_chrdev(%i) failed! return = %d\n", (int)(jiffies-jiffies0), ipmi_major, err);
         }
+#endif
         ipmi_deviceOpen = -1;
 }
 static void ipmi_register_PowerOff_routine(void)
