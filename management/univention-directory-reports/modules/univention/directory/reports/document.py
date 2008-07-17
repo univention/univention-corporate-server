@@ -65,10 +65,14 @@ class Document( object ):
 								 filename )
 
 	def __create_tempfile( self ):
+		if self._type == Document.TYPE_LATEX:
+			suffix = '.src'
+		else:
+			suffix = '.csv'
 		umask = os.umask( 0077 )
 		unique = base64.encodestring( os.urandom( 12 ) )[ : -1 ]
 		unique = unique.replace( '/', '-' )
-		filename = os.path.join( '/tmp', 'univention-directory-reports-%d-%s.src' % ( os.getpid(), unique ) )
+		filename = os.path.join( '/tmp', 'univention-directory-reports-%d-%s%s' % ( os.getpid(), unique, suffix ) )
 		fd = open( filename, 'w' )
 		fd.close()
 		os.umask( umask )
