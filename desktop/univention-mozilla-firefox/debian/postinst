@@ -7,8 +7,8 @@ univention-baseconfig set firefox/prefs/checkdefaultbrowser?false
 
 eval $(univention-baseconfig shell firefox/prefs/homepage)
 
-if [ -z "$firefox_prefs_homepage" ] || [ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-1_3-2.html" ]; then
-	univention-baseconfig set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_0-0.html"
+if [ -z "$firefox_prefs_homepage" ] || [ "$firefox_prefs_homepage" = "http://www.univention.de/ucd-welcome-2.0-0.html" ]; then
+	univention-baseconfig set firefox/prefs/homepage="http://www.univention.de/ucd-welcome-2_1-0.html"
 fi
 
 update-alternatives --install /usr/bin/x-www-browser x-www-browser /usr/bin/firefox 101

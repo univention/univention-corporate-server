@@ -1,3 +1,9 @@
+univention-mozilla-firefox (2.0.1-1) unstable; urgency=low
+
+  * set default homepage to ucd-welcome-2_1-0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 17 Jul 2008 07:19:41 +0200
+
 univention-mozilla-firefox (2.0.0-1) unstable; urgency=low
 
   * update to firefox 3
