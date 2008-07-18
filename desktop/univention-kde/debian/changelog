@@ -1,3 +1,12 @@
+univention-kde (3.0-5-0) unstable; urgency=low
+
+  * add new wallpapers
+  * move wallpapers in package source
+  * set new default wallpaper in ucs-green21
+  * create new preview screenshot
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 18 Jul 2008 10:28:32 +0200
+
 univention-kde (3.0-4-3) unstable; urgency=low
 
   * ucs-kde-menu21 appends itself to policy "UCS green 2.1" only if installed on a master
