@@ -1792,17 +1792,18 @@ class ad(univention.connector.ucs):
 			for yank_empty_attr in attrs_to_remove_from_ad_object:
 				if ad_object.has_key(yank_empty_attr):
 					if value != None:
-						# the description attribute is managed internally by AD and cannot
-						# be removed directly. Thus we set it to " " instead
-						# FIXME: Make this configurable by baseconfig
-						if yank_empty_attr != "description":
+						# the description attribute in w2k is managed internally by AD and cannot
+						# be removed directly. Thus we set it to "x" instead
+						# This is configurable by config registry
+						if yank_empty_attr != "description" or not (self.baseConfig.has_key('connector/ad/windows_version') and self.baseConfig['connector/ad/windows_version'] == "win2000"):
+							univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_from_ucs: Empty value can be set")
 							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, ""))
 						else:
-							univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Value for description reset to a blank instead of removing attribute")
+							univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_from_ucs: Value for description reset to a 'x' instead of removing attribute due to w2k limitations")
 							modlist_empty_attrs.append((ldap.MOD_REPLACE, yank_empty_attr, "x"))
 
 			if len(modlist_empty_attrs) > 0:
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))
+				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "sync_from_ucs: Attributes were removed in UCS LDAP, removing them in AD likewise: %s " % str(modlist_empty_attrs))
 				
 				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']), compatible_modlist(modlist_empty_attrs))
 				modlist_empty_attrs = []
