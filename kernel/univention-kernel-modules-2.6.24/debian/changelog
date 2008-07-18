@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.24 (2.0-2-2) unstable; urgency=low
+
+  * fixed Makefile syntax error
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Jul 2008 06:45:31 +0200
+
 univention-kernel-modules-2.6.24 (2.0-2-1) unstable; urgency=low
 
   * readded srvmagt-modules for kernel 2.6.24
