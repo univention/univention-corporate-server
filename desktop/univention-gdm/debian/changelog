@@ -1,3 +1,9 @@
+univention-gdm (3.0.8-1) unstable; urgency=low
+
+  * set the background color to black
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 18 Jul 2008 13:35:52 +0200
+
 univention-gdm (3.0.7-1) unstable; urgency=low
 
   * added pre and post sessions scripts for the GDM. During the thin
