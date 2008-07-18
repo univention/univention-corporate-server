@@ -50,5 +50,12 @@ Upstream Authors: Kalle Dalheimer <kalle@kde.org> and many others.
 
 =============================================================================
 
+design/usr/share/wallpapers/lineart_univention_*
+
+The artwork is derived from lineart.svgz which is part of KDE (debian 
+package kdebase-data).
+
+=============================================================================
+
 The following files are excluded from the GPL license:
  - univention-background.png
