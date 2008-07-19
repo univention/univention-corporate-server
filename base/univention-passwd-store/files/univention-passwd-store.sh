@@ -11,6 +11,12 @@ if [ -z "$PASSWD" ]; then
 	exit 0
 fi
 
+# ignore computer accounts
+computer_account=$(echo "$USER" | grep "\$$")
+if [ -n "$computer_account" ]; then
+	exit 0
+fi
+
 PASSWDDIR="$HOME/.univention-passwd-store"
 PASSWDFILE="$PASSWDDIR/session_passwd"
 
