@@ -30,6 +30,7 @@
 
 #DEBHELPER#
 
+univention-thin-client-apt install openssh-server
 univention-thin-client-apt install univention-thin-client-ssh-config
 
 univention-thin-client-ramdisk -f /etc/ssh/sshd_not_to_be_run
