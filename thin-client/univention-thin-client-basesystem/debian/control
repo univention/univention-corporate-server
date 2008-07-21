@@ -7,7 +7,7 @@ Standards-Version: 3.5.2
 
 Package: univention-thin-client-basesystem
 Architecture: all
-Depends: univention-thin-client-tools
+Depends: univention-thin-client-tools, fontconfig
 Conflicts: univention-client-login, univention-client-pam, univention-client-pam-heimdal, univention-client-devices, univention-client-basesystem (<< 3.0.0)
 Description: UCS - thin client base system
  This package contains the root filesystem for Univention
