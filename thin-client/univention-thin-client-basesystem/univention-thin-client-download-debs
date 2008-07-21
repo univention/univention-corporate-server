@@ -45,5 +45,5 @@ if [ -z "$package" ] || [ -z "$package" ]; then
 	usage
 fi
 
-apt-get install --reinstall -d -o APT::Architecture=i386 -o APT::Cache=$destination $package
+apt-get install --yes --reinstall -d -o APT::Architecture=i386 -o APT::Cache=$destination $package
 
