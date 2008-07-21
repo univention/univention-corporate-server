@@ -45,5 +45,8 @@ if [ -z "$package" ] || [ -z "$package" ]; then
 	usage
 fi
 
-apt-get install --yes --reinstall -d -o APT::Architecture=i386 -o APT::Cache=$destination $package
+mkdir -p $destination/partial
+apt-get install --yes --force-yes --reinstall -d -o APT::Architecture=i386 -o Dir::Cache::archives=$destination -o APT::Cache=$destination $package
+rm -Rf $destination/partial $destination/lock
 
+exit 0
