@@ -55,6 +55,7 @@ install: build
 
 	install -D -m 0755 univention-thin-client-apt debian/univention-thin-client-tools/usr/bin/univention-thin-client-apt
 	install -m 0755 univention-thin-client-ramdisk debian/univention-thin-client-tools/usr/bin/univention-thin-client-ramdisk
+	install -m 0755 univention-thin-client-download-debs debian/univention-thin-client-tools/usr/bin/univention-thin-client-download-debs
 
 binary-indep: build install
 
