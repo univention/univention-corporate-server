@@ -1,0 +1,49 @@
+#!/bin/sh
+
+usage ()
+{
+cat <<-EOL
+
+`basename "$0"` (options)
+
+options:
+	-d destination
+	-p package
+
+EOL
+exit 1
+}
+
+
+while [ "$#" -gt "0" ]; do
+    case $1 in
+        -d)
+            destination=$2
+            shift 2
+            ;;
+        -p)
+            package="$package $2"
+            shift 2
+            ;;
+        -h)
+			usage
+			;;
+		-?)
+			usage
+			;;
+		--help)
+			usage
+			;;
+        *)
+            package="$package $1"
+			shift 1
+			;;
+    esac
+done
+
+if [ -z "$package" ] || [ -z "$package" ]; then
+	usage
+fi
+
+apt-get install --reinstall -d -o APT::Architecture=i386 -o APT::Cache=$destination $package
+
