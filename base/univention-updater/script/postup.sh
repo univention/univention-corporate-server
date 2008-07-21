@@ -52,6 +52,7 @@ fi
 
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1 
 
+update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1 
 
 exit 0
 
