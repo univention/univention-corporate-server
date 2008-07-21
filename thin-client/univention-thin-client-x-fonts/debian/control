@@ -18,6 +18,7 @@ Description: UCS - thin client xorg fonts
 
 Package: univention-thin-client-x-fonts-config
 Architecture: all
+Depends: fontconfig
 Description: UCS - thin client xorg fonts configuration
  This package contains configuration for fonts for the xorg environment
  on thin clients.

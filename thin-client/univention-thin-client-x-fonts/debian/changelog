@@ -1,3 +1,9 @@
+univention-thin-client-x-fonts (2.0.1-1) unstable; urgency=low
+
+  * added fontconfig to the dependency list
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Jul 2008 08:29:27 +0200
+
 univention-thin-client-x-fonts (2.0.0-1) unstable; urgency=low
 
   * UCS 2.1 import
