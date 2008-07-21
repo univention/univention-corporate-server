@@ -28,9 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-if [ -n "$ldap_hostdn" ]; then
-	univention-config-registry set ldap/policy/cron?"5 * * * *"
-fi
+univention-config-registry set ldap/policy/cron?"5 * * * *"
 
 #DEBHELPER#
 

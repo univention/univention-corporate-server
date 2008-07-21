@@ -1,3 +1,10 @@
+univention-directory-policy (2.0.0-1) unstable; urgency=low
+
+  * set ldap/policy/cron during the update even if ldap_hostdn isn't
+    set, because the conffile will check this
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 21 Jul 2008 13:21:09 +0200
+
 univention-directory-policy (1.1.1-10) unstable; urgency=low
 
   * register UCR-Variables and replace univention-baseconfig by univention-config-registry
