@@ -10,7 +10,7 @@ eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
 if [ -n "$SSH_CLIENT" ]; then
 	if [ "$update20_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the baseconfig variable update20/ignoressh to yes to ignore it."
+		echo "Please log in under the console or set the baseconfig variable update21/ignoressh to yes to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -18,9 +18,9 @@ if [ -n "$SSH_CLIENT" ]; then
 fi
 
 if [ "$TERM" = "xterm" ]; then
-	if [ "$update20_ignoreterm" != "yes" ]; then
+	if [ "$update21_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the baseconfig variable update20/ignoreterm to yes to ignore it."
+		echo "Please log in under the console or set the baseconfig variable update21/ignoreterm to yes to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -39,7 +39,7 @@ check_space(){
 		echo "ERROR:   Not enough space in $partition, need at least $usersize."
         echo "         This may interrupt the update and result in an inconsistent system!"
     	echo "         If neccessary you can skip this check by setting the value of the"
-		echo "         baseconfig variable update20/checkfilesystems to \"no\"."
+		echo "         baseconfig variable update21/checkfilesystems to \"no\"."
 		echo "         But be aware that this is not recommended!"
 		echo ""
 		# kill the running univention-updater process
@@ -49,7 +49,7 @@ check_space(){
 }
 
 # check space on filesystems
-if [ "$update20_checkfilesystems" != "no" ]
+if [ "$update21_checkfilesystems" != "no" ]
 then
 
 	check_space "/var/cache/apt/archives" "600000" "600 MB"
