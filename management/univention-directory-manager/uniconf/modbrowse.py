@@ -457,7 +457,7 @@ class modbrowse(unimodule.unimodule):
 					for m in sub_modules:
 						if univention.admin.modules.childs(m) or univention.admin.modules.virtual(m):
 							continue
-						tmpresult=settings.filterObjects(univention.admin.modules.lookup(m, None, self.lo, base=position.getDn(), filter='', scope='one', superordinate=shadow_object, timeout=-1, sizelimit=max_results-nresults))
+						tmpresult=settings.filterObjects(univention.admin.modules.lookup(m, None, self.lo, base=position.getDn(), filter='', scope='base+one', superordinate=shadow_object, timeout=-1, sizelimit=max_results-nresults))
 						already_open=False
 						for i in range(0, len(navigation_attributes)):
 							key=navigation_attributes[i][0]
@@ -476,7 +476,7 @@ class modbrowse(unimodule.unimodule):
 						filter=univention.admin.filter.expression(search_property_name, search_value)
 					else:
 						filter=''
-					tmpresult=settings.filterObjects(univention.admin.modules.lookup(search_module, None, self.lo, base=position.getDn(), filter=filter, scope='one', superordinate=shadow_object, timeout=-1, sizelimit=max_results-nresults))
+					tmpresult=settings.filterObjects(univention.admin.modules.lookup(search_module, None, self.lo, base=position.getDn(), filter=filter, scope='base+one', superordinate=shadow_object, timeout=-1, sizelimit=max_results-nresults))
 					already_open=False
 					for i in range(0, len(navigation_attributes)):
 						key=navigation_attributes[i][0]

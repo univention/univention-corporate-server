@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.1-1) unstable; urgency=low
+
+  * reverted reduced search scope back to "base+one"
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 21 Jul 2008 15:34:09 +0200
+
 univention-directory-manager (5.0.0-3) unstable; urgency=low
 
   * reduced search scope from "base+one" to "one"
