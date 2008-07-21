@@ -517,13 +517,13 @@ class object(univention.admin.handlers.simpleLdap):
 
 	def __case_insensitive_in_list(self, dn, list):
 		for element in list:
-			if dn.lower() == element.lower():
+			if dn.decode('utf8').lower() == element.decode('utf8').lower():
 				return True
 		return False
 
 	def __case_insensitive_remove_from_list(self, dn, list):
 		for element in list:
-			if dn.lower() == element.lower():
+			if dn.decode('utf8').lower() == element.decode('utf8').lower():
 				remove_element = element
 		list.remove(remove_element)
 		return list

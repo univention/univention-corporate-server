@@ -1702,14 +1702,15 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 		remove_from_group=[]
 
 		def case_insensitive_in_list(dn, list):
+			
 			for element in list:
-				if dn.lower() == element.lower():
+				if dn.decode('utf8').lower() == element.decode('utf8').lower():
 					return True
 			return False
 
 		def case_insensitive_remove_from_list(dn, list):
 			for element in list:
-				if dn.lower() == element.lower():
+				if dn.decode('utf8').lower() == element.decode('utf8').lower():
 					remove_element = element
 			list.remove(remove_element)
 			return list
@@ -1797,7 +1798,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		def case_insensitive_in_list(dn, list):
 			for element in list:
-				if dn.lower() == element.lower():
+				if dn.decode('utf8').lower() == element.decode('utf8').lower():
 					return True
 			return False
 
