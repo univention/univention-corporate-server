@@ -69,14 +69,14 @@ install: build
 	install -m 0644 design/usr/share/icons/crystalsvg-univention/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/64x64/apps/
 	install -m 0644 design/usr/share/icons/crystalsvg-univention/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention/scalable/apps/
 	install -m 0644 design/usr/share/icons/crystalsvg-univention/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention/index.theme
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/128x128/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/128x128/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/16x16/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/16x16/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/22x22/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/22x22/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/32x32/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/32x32/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/48x48/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/48x48/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention/64x64/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention/scalable/apps/
-	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention/index.theme
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/128x128/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/128x128/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/16x16/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/16x16/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/22x22/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/22x22/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/32x32/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/32x32/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/48x48/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/48x48/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/64x64/apps/kmenu.png debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/64x64/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/scalable/apps/kmenu.svg debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/scalable/apps/
+	install -m 0644 design/usr/share/icons/crystalsvg-univention-green21/index.theme debian/univention-kde/usr/share/icons/crystalsvg-univention-green21/index.theme
 	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-Green/"
 	install -m 0644 "design/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/"{*png,*xml} "debian/univention-kde/usr/share/apps/kthememanager/themes/Plastik-Univention-Green21/"
 
