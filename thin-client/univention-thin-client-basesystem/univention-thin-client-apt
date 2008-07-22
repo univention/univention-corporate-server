@@ -43,14 +43,14 @@ class UC_APT( object ):
 		self.prefix = os.environ.get( 'UNIVENTION_THIN_CLIENT_PREFIX', self.options.prefix )
 
 	def __create_sources_list( self ):
-		self.sources_list = os.patch.join(self.prefix, 'var/cache/sources.list')
+		self.sources_list = os.path.join(self.prefix, 'var/cache/sources.list')
 		if os.path.exists(self.sources_list):
 			os.remove(self.sources_list)
 		if os.path.exists('/etc/apt/sources.list'):
 			os.system('cp /etc/apt/sources.list %s' % self.sources_list)
-		fp = open(self.sources_list)
-		fp.write('deb file:/%s/var/cache/thin-client-archive/ ./\n' % self.prefix)
-		os.system('apt-ftparchive packages /%s/var/cache/thin-client-archive/ >/%s/var/cache/thin-client-archive/Packages' % self.prefix)
+		fp = open(self.sources_list, 'a+')
+		fp.write('deb file:%s/var/cache/thin-client-archive/ ./\n' % self.prefix)
+		os.system('apt-ftparchive packages /%s/var/cache/thin-client-archive/ >/%s/var/cache/thin-client-archive/Packages' % (self.prefix, self.prefix))
 		fp.close()
 
 	def __create_command( self ):
@@ -65,7 +65,7 @@ class UC_APT( object ):
 			'-o Debug::NoLocking=True', # required if called by another apt-get process
 			)
 
-		return 'apt-get %s %s' % ( ' '.join( opts ), ' '.join( self.arguments ) )
+		return 'apt-get update %s && apt-get %s %s' % ( ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
 		self.__create_sources_list()
