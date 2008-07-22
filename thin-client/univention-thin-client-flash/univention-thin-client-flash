@@ -1,0 +1,105 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+#
+# Univention Thin Client Basesystem
+#  creates directories and files in ramdisk of thin client basesystem
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+
+import os
+import sys
+from optparse import OptionParser
+
+class FlashBuilder( object ):
+	URL_PREFIX = '/var/www/univention-thin-client-flash'
+	def __init__( self, options ):
+		self._prefix = options.prefix
+		self._image = options.image
+
+	def _get_version( self ):
+		version = os.path.join( FlashBuilder.URL_PREFIX, self._image + '.vers' )
+		try:
+			fd = open( version, 'rw' )
+			number = int( fd.read() )
+			fd.close()
+		except:
+			number = 0
+
+		return number
+
+	def _set_version( self ):
+		version = os.path.join( FlashBuilder.URL_PREFIX, self._image + '.vers' )
+		number = self._get_version()
+		fd = open( version, 'w' )
+		fd.write( str( number + 1 ) )
+		fd.flush()
+		fd.close()
+
+	def build( self, image ):
+		url = os.path.join( FlashBuilder.URL_PREFIX, image )
+		print "create new flash image '%s' ..." % image,
+		res = os.system( 'mksquashfs %s %s -e %s/*' % ( self._prefix, url + '.tmp', os.path.join( self._prefix, 'ramdisk' ) ) )
+		if res == 0:
+			print 'done'
+			if os.path.exists( url ):
+				print 'create backup of old image ...',
+				os.rename( url, url + '.bak' )
+				os.chmod( url + '.bak', 0600 )
+				print 'done'
+			os.rename( url + '.tmp', url )
+			self._set_version()
+			os.chmod( url, 0644 )
+			return True
+		else:
+			print 'failed'
+
+		return False
+
+def main():
+	parser = OptionParser( usage = "usage: %prog [options]" )
+	parser.add_option( '-p', '--prefix', type = 'string', action = 'store',
+					   dest = 'prefix', help = 'set prefix for thin client flash basesystem' )
+	parser.add_option( '-i', '--image', type = 'string', action = 'store',
+					   dest = 'image', help = 'set name of flash image' )
+	parser.set_defaults( prefix = '/var/lib/univention-client-root', image = 'root.img' )
+
+	( options, arguments ) = parser.parse_args()
+
+	if not os.path.isdir( options.prefix ):
+		print >>sys.stderr, 'error: prefix does not exist: %s' + options.prefix
+		parser.print_usage()
+		sys.exit( 1 )
+
+	build = FlashBuilder( options )
+	if not build.build( options.image ):
+		print >>sys.stderr, 'error: image file could not be created'
+		parser.print_usage()
+		sys.exit( 1 )
+	else:
+		print 'The flash image was created successfully'
+
+if __name__ == '__main__':
+	main()

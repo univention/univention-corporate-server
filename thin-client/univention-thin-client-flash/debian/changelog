@@ -1,0 +1,127 @@
+univention-thin-client-flash (2.0.1-1) unstable; urgency=low
+
+  * rebuild for UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 09:53:39 +0200
+
+univention-thin-client-flash (1.0.10-2) unstable; urgency=low
+
+  * remove '-e' from init script
+
+ -- Andreas B�sching <buesching@univention.de>  Fri, 18 Jan 2008 12:04:52 +0100
+
+univention-thin-client-flash (1.0.10-1) unstable; urgency=low
+
+  * re-order init scripts 
+
+ -- Andreas B�sching <buesching@univention.de>  Wed, 16 Jan 2008 17:58:15 +0100
+
+univention-thin-client-flash (1.0.9-1) unstable; urgency=low
+
+  * use terminal server as default for image download instead of LDAP server 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 16:41:21 +0100
+
+univention-thin-client-flash (1.0.8-1) unstable; urgency=low
+
+  * write current network configuration to file during flash image update 
+
+ -- Andreas B�sching <buesching@univention.de>  Sun, 13 Jan 2008 13:04:20 +0100
+
+univention-thin-client-flash (1.0.7-1) unstable; urgency=low
+
+  * use ext2 instead of fat16 partition (extlinux instead of syslinux)
+  * ensure correct MBR on flash disk
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 31 Dec 2007 10:27:20 +0100
+
+univention-thin-client-flash (1.0.6-3) unstable; urgency=low
+
+  * add dependency to dosfstools, required for creating boot partition 
+
+ -- Andreas B�sching <buesching@univention.de>  Mon, 17 Dec 2007 14:00:59 +0100
+
+univention-thin-client-flash (1.0.6-2) unstable; urgency=low
+
+  * add syslinux and mtools to dependencies 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Oct 2007 13:32:40 +0200
+
+univention-thin-client-flash (1.0.6-1) unstable; urgency=low
+
+  * fixed typo; increasing flash image version failed 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Oct 2007 10:45:17 +0200
+
+univention-thin-client-flash (1.0.5-1) unstable; urgency=low
+
+  * minor bug fixes 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 22 Oct 2007 17:07:12 +0200
+
+univention-thin-client-flash (1.0.4-1) unstable; urgency=low
+
+  * usablitiy enhancements
+  * new configuration registry variables thinclient/flash/update/image,
+    thinclient/flash/update
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 30 Sep 2007 12:11:59 +0200
+
+univention-thin-client-flash (1.0.3-1) unstable; urgency=low
+
+  * prohibit listing of content under URL for flash images 
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 19 Sep 2007 13:26:23 +0200
+
+univention-thin-client-flash (1.0.2-1) unstable; urgency=low
+
+  * univention-thin-client-flash: backup old root image
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 15:33:57 +0200
+
+univention-thin-client-flash (1.0.1-2) unstable; urgency=low
+
+  * fix symbolic links to kernel and initrd 
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 13:41:38 +0200
+
+univention-thin-client-flash (1.0.1-1) unstable; urgency=low
+
+  * add initrd.splash to flash card image 
+  * univention-thin-client-flash: remove support for several flash images
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 13:10:49 +0200
+
+univention-thin-client-flash (1.0.0-5) unstable; urgency=low
+
+  * add directories for flash images and chroot environments to package
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 08:54:03 +0200
+
+univention-thin-client-flash (1.0.0-4) unstable; urgency=low
+
+  * add flash tool to package
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 08:45:04 +0200
+
+univention-thin-client-flash (1.0.0-3) unstable; urgency=low
+
+  * add #DEBHELPER# line to postinst
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 17 Sep 2007 08:40:10 +0200
+
+univention-thin-client-flash (1.0.0-2) unstable; urgency=low
+
+  * add build dependency to univention-config-dev 
+
+ -- Andreas Büsching <buesching@univention.de>  Sun, 16 Sep 2007 18:58:10 +0200
+
+univention-thin-client-flash (1.0.0-1) unstable; urgency=low
+
+  * inital release
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 14 Sep 2007 14:06:18 +0200
+
+Local variables:
+mode: debian-changelog
+End:

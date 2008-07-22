@@ -1,0 +1,28 @@
+Source: univention-thin-client-flash
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, univention-thin-client-tools
+Standards-Version: 3.5.2
+
+Package: univention-thin-client-flash
+Architecture: all
+Depends: univention-thin-client-tools, squashfs-tools
+Description: UCS - COMPAQ Flash Card Support for thin clients
+ This package provides tools to creates images thin clients with COMPAQ flahs cards
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
+
+Package: univention-thin-client-flash-config
+Architecture: all
+Depends: syslinux, mtools, dosfstools
+Description: UCS - COMPAQ Flash Card Support for thin clients
+ This package provides tools to creates images thin clients with COMPAQ flahs cards
+ .
+ It is part of Univention Corporate Server (UCS), an
+ integrated, directory driven solution for managing
+ corporate environments. For more information about UCS,
+ refer to: http://www.univention.de/
