@@ -2,4 +2,4 @@ usr/bin
 usr/sbin
 var/lib/univention/ltsp/done
 var/lib/univention/ltsp/rejected
-var/lib/univention-client-root/var/cache/thin-client-archive
+var/lib/univention-client-root/var/cache/thin-client-archive/ltsp

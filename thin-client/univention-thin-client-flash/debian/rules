@@ -53,7 +53,7 @@ install: build
 	install -D -m 755 univention-thin-client-flash debian/univention-thin-client-flash/usr/bin/univention-thin-client-flash
 	dh_installdirs
 	univention-install-config-registry
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-flash/var/lib/univention-client-root/var/cache/thin-client-archive -p syslinux mtools dosfstools
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-flash/var/lib/univention-client-root/var/cache/thin-client-archive/flash -p syslinux mtools dosfstools
 
 binary-indep: build install
 
