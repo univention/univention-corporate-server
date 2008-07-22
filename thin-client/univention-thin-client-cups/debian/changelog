@@ -1,3 +1,10 @@
+univention-thin-client-cups (2.0.1-4) unstable; urgency=low
+
+  * first install cupsys and then install univention-thin-client-cups-
+    config
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 19:51:21 +0200
+
 univention-thin-client-cups (2.0.1-3) unstable; urgency=low
 
   * use a separate download directory for every thin client package,

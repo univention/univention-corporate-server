@@ -30,6 +30,7 @@
 
 #DEBHELPER#
 
-univention-thin-client-apt install cupsys univention-thin-client-cups-config
+univention-thin-client-apt install cupsys
+univention-thin-client-apt install univention-thin-client-cups-config
 
 univention-thin-client-ramdisk -d /var/run/cups -f /etc/cups/cupsd.conf -f /etc/cups/printers.conf -f /etc/cups/ppds.dat
