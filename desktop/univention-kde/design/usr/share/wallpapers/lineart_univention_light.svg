@@ -14,8 +14,8 @@
    id="svg1"
    sodipodi:version="0.32"
    inkscape:version="0.44.1"
-   sodipodi:docbase="/home/steuwer/wallpaper-test"
-   sodipodi:docname="lineart_copy_replace_review.svg"
+   sodipodi:docbase="/home/steuwer/svn/dev/trunk/ucs/desktop/univention-kde/design/usr/share/wallpapers"
+   sodipodi:docname="lineart_univention_dark.svg"
    inkscape:export-filename="/home/jan/Wallpaper/kde svg/kde-svg-v02.1-1600.png"
    inkscape:export-xdpi="112.50000"
    inkscape:export-ydpi="112.50000">
@@ -620,7 +620,7 @@
      guidetolerance="2.0000000px"
      inkscape:window-width="1392"
      inkscape:window-height="997"
-     inkscape:window-x="-4"
+     inkscape:window-x="-12"
      inkscape:window-y="0"
      inkscape:grid-bbox="false"
      gridempspacing="2" />
@@ -719,7 +719,7 @@
      id="path1356" />
   <text
      xml:space="preserve"
-     style="font-size:12px;font-style:normal;font-weight:normal;fill:#008200;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Univers"
+     style="font-size:12px;font-style:normal;font-weight:normal;fill:white;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Univers"
      x="915.08185"
      y="784"
      id="text1988"><tspan
@@ -727,9 +727,9 @@
        id="tspan1990"
        x="915.08185"
        y="784"
-       style="font-size:18px;font-weight:bold;fill:#008200;fill-opacity:1">Univention Corporate Desktop</tspan></text>
+       style="font-size:18px;font-weight:bold;fill:white;fill-opacity:1">Univention Corporate Desktop</tspan></text>
   <g
-     transform="matrix(0.8125,0,0,0.804687,912.074,631.2883)"
+     transform="matrix(0.71875,0,0,0.695312,912.2962,647.6957)"
      id="g3114">
     <path
        style="fill:url(#path35_2_)"
