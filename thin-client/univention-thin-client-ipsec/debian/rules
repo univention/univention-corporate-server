@@ -53,6 +53,8 @@ install: build
 
 	univention-install-config-registry
 
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-ipsec/var/lib/univention-client-root/var/cache/thin-client-archive -p strongswan
+
 binary-indep: build install
 
 binary-arch: build install
