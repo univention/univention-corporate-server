@@ -1,4 +1,4 @@
-univention-thin-client-ipsec (2,0,1-1) unstable; urgency=low
+univention-thin-client-ipsec (2,0.1-1) unstable; urgency=low
 
   * rebuild for UCS 2.1
 
