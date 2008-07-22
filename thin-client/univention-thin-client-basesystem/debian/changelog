@@ -1,4 +1,4 @@
-univention-thin-client-basesystem (4.1.4-2) unstable; urgency=low
+univention-thin-client-basesystem (4.1.4-3) unstable; urgency=low
 
   * fixed typo in univention-thin-client-apt
 

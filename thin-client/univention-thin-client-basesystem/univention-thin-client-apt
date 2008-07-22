@@ -68,7 +68,7 @@ class UC_APT( object ):
 		return 'apt-get %s %s' % ( ' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
-		self.__create_sources_list():
+		self.__create_sources_list()
 		cmd = self.__create_command()
 		ret = os.system( cmd )
 
