@@ -4,7 +4,9 @@ nousbhid=`cat /proc/cmdline | grep -i nousbhid`
 
 if [ -z "$nousbhid" ]; then
 	echo "Loading USB HID module"
+	modprobe ehci-hcd
 	modprobe uhci-hcd
+	modprobe ohci-hcd
 	modprobe usbhid
 fi
 

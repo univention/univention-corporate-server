@@ -1,3 +1,10 @@
+univention-installer (2.0.2-1) unstable; urgency=low
+
+  * at the startup load the usb keyboard driver for the different usb
+    controller (OHCI, UHCI and EHCI)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 07:52:53 +0200
+
 univention-installer (2.0.1-1) unstable; urgency=low
 
   * Added Administrator to Domain Users. This is needed for the ltspd,
