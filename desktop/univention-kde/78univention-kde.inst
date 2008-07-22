@@ -50,19 +50,19 @@ univention-admin settings/default modify $@ --dn "cn=default,cn=univention,$ldap
 				--append defaultKdeProfiles="/usr/share/univention-kde-profiles/ucs-green21"
 
 univention-admin policies/desktop create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
-								--set name="KDE lockeddown Deutsch" --set language="de_DE@euro" \
+								--set name="KDE lockeddown Deutsch" \
 								--set profile="/usr/share/univention-kde-profiles/kde.lockeddown"
 
 univention-admin policies/desktop create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base \
-								--set name="KDE restricted Deutsch" --set language="de_DE@euro" \
+								--set name="KDE restricted Deutsch" \
 								--set profile="/usr/share/univention-kde-profiles/kde.restricted"
 
 univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base\
-								--set name="UCS green" --set language="de_DE@euro" \
+								--set name="UCS green" \
 								--set profile="/usr/share/univention-kde-profiles/ucs-green"
 
 univention-admin policies/desktop  create $@ --ignore_exists --position cn=desktop,cn=policies,$ldap_base\
-								--set name="UCS green 2.1" --set language="de_DE@euro" \
+								--set name="UCS green 2.1" \
 								--set profile="/usr/share/univention-kde-profiles/ucs-green21"
 
 # check for the default policy
