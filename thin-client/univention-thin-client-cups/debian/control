@@ -2,7 +2,7 @@ Source: univention-thin-client-cups
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 3.0.0), univention-config-dev
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, univention-thin-client-tools
 Standards-Version: 3.5.2
 
 Package: univention-thin-client-cups
@@ -18,7 +18,6 @@ Description: UCS - CUPS for thin clients
 
 Package: univention-thin-client-cups-config
 Architecture: all
-Depends: cupsys
 Description: UCS - CUPS configuration for thin clients
  This package contains CUPS configuration files for thin clients.
  .

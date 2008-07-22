@@ -1,3 +1,9 @@
+univention-thin-client-login (4.0.1-1) unstable; urgency=low
+
+  * switch to univention-thin-client-download-debs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 07:14:16 +0200
+
 univention-thin-client-login (4.0.0-2) unstable; urgency=low
 
   * fixed typo in KDE.Session which prevented univention-set-kdedirs to run

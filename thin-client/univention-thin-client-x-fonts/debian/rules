@@ -57,6 +57,8 @@ install: build
 		install -m 644 $$cfg $(DESTDIR)/$$cfg;\
 	done
 
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-ssh/var/lib/univention-client-root/var/cache/thin-client-archive -p univention-x-fonts fontconfig
+
 binary-indep: build install
 
 binary-arch: build install

@@ -1,3 +1,9 @@
+univention-thin-client-cups (2.0.1-1) unstable; urgency=low
+
+  * switch to univention-thin-client-download-debs
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 07:14:52 +0200
+
 univention-thin-client-cups (2.0.0-1) unstable; urgency=low
 
   * UCS 2.1 import

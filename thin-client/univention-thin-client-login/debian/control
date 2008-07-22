@@ -2,7 +2,7 @@ Source: univention-thin-client-login
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev, libunivention-config-dev, libunivention-debug-dev
+Build-Depends: debhelper, univention-config-dev, libunivention-config-dev, libunivention-debug-dev, univention-thin-client-tools
 Standards-Version: 3.6.2
 
 Package: univention-thin-client-login
