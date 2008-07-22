@@ -9,7 +9,7 @@ cat color-replace_dark-to-light |while read old new; do sed -i -e "s|$old|$new|"
 
 # create png-images
 IMAGES="lineart_univention_dark lineart_univention_light"
-RESOLUTIONS="640 800 1280 1600 1920"
+RESOLUTIONS="640 800 1024 1280 1600 1920"
 
 for image in $IMAGES;
 	do
