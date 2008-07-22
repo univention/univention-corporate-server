@@ -76,6 +76,7 @@ if command == 'create':
 	
 	if not os.path.isdir(path):
 		os.mkdir(path)
+		os.chmod(path, 0665)
 
 	# copy policy unattended.txt snippet
 	OS_media=""
@@ -86,6 +87,7 @@ if command == 'create':
 			fp = open(os.path.join(path, 'unattend.txt'), 'w')
 			fp.write(open(filename).read())
 			fp.close()
+			os.chmod(os.path.join(path, 'unattend.txt'), 0644)
 
 			# The os to install cannot be set in unattend.txt. Therefore,
 			# we have to find out which from which path installation should start

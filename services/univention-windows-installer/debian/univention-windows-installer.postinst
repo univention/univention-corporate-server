@@ -50,6 +50,8 @@ createLogfile /var/log/univention/windows-installer.log "root:adm" 640
 # chown all files below /var/lib/univention-windows-installer/install/ to UID 0
 chown -R 0:0 /var/lib/univention-windows-installer/install/
 
+chmod -R 755 /var/lib/univention-windows-installer/
+
 # create top/middle/bottom.bat files
 if [ ! -e /var/lib/univention-windows-installer/install/scripts/top.bat -a ! -e /var/lib/univention-windows-installer/install/scripts/middle.bat -a ! -e /var/lib/univention-windows-installer/install/scripts/bottom.bat ]; then
 cat <<EOL | todos >/var/lib/univention-windows-installer/install/scripts/top.bat
