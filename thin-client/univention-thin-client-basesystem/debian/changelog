@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.4-1) unstable; urgency=low
+
+  * fixed typo in univention-thin-client-apt
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 06:59:03 +0200
+
 univention-thin-client-basesystem (4.1.3-1) unstable; urgency=low
 
   * added Dir::Cache::archives to univention-thin-client-download-debs
