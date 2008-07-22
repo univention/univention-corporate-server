@@ -43,7 +43,7 @@ class UC_APT( object ):
 		self.prefix = os.environ.get( 'UNIVENTION_THIN_CLIENT_PREFIX', self.options.prefix )
 
 	def __create_sources_list( self ):
-		self.sources_list = os.patch.join(self.prefix, 'var/cache/sources.list'
+		self.sources_list = os.patch.join(self.prefix, 'var/cache/sources.list')
 		if os.path.exists(self.sources_list):
 			os.remove(self.sources_list)
 		if os.path.exists('/etc/apt/sources.list'):
