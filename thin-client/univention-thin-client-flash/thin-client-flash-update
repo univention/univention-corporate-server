@@ -1,0 +1,184 @@
+#!/bin/sh -e
+#
+# Univention Thin Client Basesystem
+#  init script: checking for new flash images
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+echo "Installing new Thin Client base system on flash:"
+
+FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
+if [ "$FLAGNFSBOOT" = "0" ] ; then
+    # FLASH BOOT
+    echo "Booting from flash - skipping update"
+    exit 0
+fi
+
+eval $(univention-baseconfig shell thinclient/flash/update thinclient/flash/update/url thinclient/flash/update/image univentionDesktopServer interfaces/eth0/address hostname domainname)
+
+if [ -n "$thinclient_flash_update" -a "$thinclient_flash_update" = "no" ]; then
+	echo "disabled"
+	exit 0
+fi
+
+if [ -z "$thinclient_flash_update_url" ]; then
+	url="http://${univentionDesktopServer}/univention-thin-client-flash/"
+else
+	url=$thinclient_flash_update_url
+fi
+
+if [ -z "$thinclient_flash_update_image" ]; then
+	image="root.img"
+else
+	image="$thinclient_flash_update_image"
+fi
+
+# get current version from server
+echo -n "  retrieve version information ... "
+new_version=$(wget -qqq -O - "$url/$image.vers")
+if [ -z "$new_version" ]; then
+	echo "not found"
+	exit 0
+else
+	echo "$new_version"
+fi
+
+# Find flashdrive
+echo -n "  search for flash disk drive ... "
+disk=""
+parts=$(sed -n '1,2d;p' < /proc/partitions | awk '{print $4;}' | grep "^[^0-9]*$")
+for i in $parts ; do
+	if [ -n "$disk" ]; then
+		echo "verbose" > /proc/splash
+		echo "failed"
+		echo "  error: More than one disk found. Not installing base system."
+		exit 1
+	fi
+	disk="/dev/$i"
+	echo $disk
+done
+
+if [ -z "$disk" ]; then
+	echo "verbose" > /proc/splash
+	echo "failed"
+	echo "error: No disks found. Not installing base system."
+	exit 1
+fi
+
+bootpart=${disk}1
+rootpart=${disk}2
+
+echo "	determined partitions: boot=$bootpart root=$rootpart"
+
+mount -t ext2 $bootpart /mnt || true
+trap "umount /mnt" 0
+version="0"
+if [ -f "/mnt/${image}.vers" ]; then
+	version=$(cat "/mnt/${image}.vers")
+fi
+
+# create partition table
+if [ "$version" = "0" ]; then
+	umount /mnt || true
+	trap - 0
+	echo -n "	partioning the drive ..."
+	# first partition: 10 MB, type 4 (FAT16 < 32MB), bootable
+	# second partition: rest, type Linux
+	sfdisk -uM -D $disk <<EOF >/dev/null 2>/dev/null
+,10,L,*
+,,L
+EOF
+	echo "done"
+	if ! [ -b "$bootpart" ] || ! [ -b "$rootpart" ]; then
+		echo "  error: could not find partions on flash drive."
+		exit 1
+	fi
+
+	echo -n "  setting up boot partition ..."
+	mkfs -t ext2 $bootpart
+	mount -t ext2 $bootpart /mnt
+	extlinux --install /mnt
+	trap "umount /mnt" 0
+	echo "done"
+fi
+
+nameserver=$(cat /proc/cmdline | grep DNSSERVER | sed -e 's/.*DNSSERVER=//g' | awk '{print $1;}')
+
+if [ "$version" -lt "$new_version" ]; then
+	echo "verbose" > /proc/splash
+    echo "	newer version available. Updating filesystem:"
+    echo
+    # ramdisk_blocksize=4096 is needed for cramfs
+    echo "default linux initrd=initrd.splash root=$rootpart DNSSERVER=$nameserver vga=785 splash=silent" > /mnt/extlinux.conf
+
+	# store current network configuration
+	echo "FLASH_HOSTNAME=$hostname" > /mnt/network.conf
+	echo "FLASH_DOMAIN=$domainname" >> /mnt/network.conf
+	echo "FLASH_NAMESERVER=$nameserver" >> /mnt/network.conf
+
+	echo -n "    downloading kernel image ..."
+    wget -O /mnt/linux "$url/linux"
+    if [ ! "$?" = "0" ] ; then
+      echo "not found"
+      read
+      halt
+    fi
+	echo "done"
+
+	echo -n "    downloading initrd ..."
+    wget -O /mnt/initrd.splash "$url/initrd.splash"
+    if [ ! "$?" = "0" ] ; then
+      echo "not found"
+      read
+      halt
+    fi
+	echo "done"
+
+    echo "$rootpart" > "/mnt/root.txt"
+
+	echo -n "    downloading root filesystem ..."
+    wget -O $rootpart "$url/$image"
+    if [ ! "$?" = "0" ] ; then
+      echo " failed"
+      read
+      halt
+    fi
+	echo "done"
+    echo "$new_version" > /mnt/${image}.vers
+
+    umount /mnt
+    sync
+	# create MBR on flash disk
+	cat /usr/lib/syslinux/mbr.bin > ${disk}
+    echo
+    echo "The update was successful. Please press any key to reboot the thin client!"
+    read
+    reboot
+else
+    echo "	filesystem seems to be up-to-date."
+fi
+
+umount /mnt
+trap - 0

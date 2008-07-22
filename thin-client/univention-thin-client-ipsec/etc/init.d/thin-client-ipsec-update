@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Univention Thin Client IPSec Support
+#  init script: Updating IPSec Konfiguration
+#
+# Copyright (C) 2007 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+
+echo -n "Setting up Thin Client IPSec configuration ... "
+
+FLAGNFSBOOT=$(grep -c "root=/dev/nfs" /proc/cmdline)
+if [ "$FLAGNFSBOOT" != "0" ] ; then
+    # NFS boot
+    echo "skipped"
+    exit 0
+fi
+
+eval $(univention-baseconfig shell thinclient/ipsec/update thinclient/ipsec/update/url univentionDesktopServer)
+if [ -z "$thinclient_ipsec_update" -o "$thinclient_ipsec_update" = "no" ]; then
+	echo "skipped"
+	exit 0
+else
+	echo "checking"
+fi
+
+echo -n "  Searching for IPSec Configuration ... "
+mac_address=$(ip link show eth0 | grep link/ether | sed 's/.*link\/ether \([0-9a-f:]*\) .*/\1/;s/:/-/g')
+
+if [ -z "$thinclient_ipsec_update_url" ]; then
+	url="http://${univentionDesktopServer}/univention-thin-client-ipsec/"
+else
+	url=$thinclient_ipsec_update_url
+fi
+
+url="${url}/${mac_address}.tar.gz"
+
+wget -O /tmp/ipsec.tar.gz "$url" >/dev/null 2>&1
+
+if [ ! "$?" = "0" ] ; then
+	echo "not found"
+	read
+    halt
+else
+	echo "found"
+fi
+
+echo -n "  Installing IPSec Configuration ... "
+
+tar xzf /tmp/ipsec.tar.gz -C /config >/dev/null 2>&1
+rm -f /tmp/ipsec.tar.gz >/dev/null 2>&1
+echo "done"
+
+echo "The IPSec configuration has been updated."
+echo "Press any key to reboot the thin client."
+echo
+echo "You should reset the UCR-Variable thinclient/ipsec/update to 'no'"
+read
+reboot

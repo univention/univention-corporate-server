@@ -1,0 +1,2 @@
+var/lib/univention-client-boot/linux /var/www/univention-thin-client-flash/linux
+var/lib/univention-client-boot/initrd.splash /var/www/univention-thin-client-flash/initrd.splash
