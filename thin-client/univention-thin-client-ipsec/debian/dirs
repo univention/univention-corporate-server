@@ -1,2 +1,2 @@
 var/www/univention-thin-client-ipsec
-var/lib/univention-client-root/var/cache/thin-client-archive
+var/lib/univention-client-root/var/cache/thin-client-archive/ipsec

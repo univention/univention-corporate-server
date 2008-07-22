@@ -1,3 +1,11 @@
+univention-thin-client-ssh (2.1.1-4) unstable; urgency=low
+
+  * use a separate download directory for every thin client package,
+    otherwise the downloaded packages wille be overwritten.  Part of Bug
+    #11560
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 22 Jul 2008 14:40:53 +0200
+
 univention-thin-client-ssh (2.1.1-3) unstable; urgency=low
 
   * add var/lib/univention-client-root/var/cache/thin-client-archive to
