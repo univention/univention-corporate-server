@@ -366,7 +366,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-mobileclient-2.6.18
 Architecture: any
-Depends: vmware-server-modules-${F:KernelVersion}
+Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -377,7 +377,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-mobileclient-2.6.18-64gb
 Architecture: any
-Depends: vmware-server-modules-${F:KernelVersion64}
+Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -555,7 +555,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-managedclient-2.6.18
 Architecture: any
-Depends: vmware-server-modules-${F:KernelVersion}
+Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .
@@ -566,7 +566,7 @@ Description: UCS - Linux kernel
 
 Package: univention-vmware-server-modules-managedclient-2.6.18-64gb
 Architecture: any
-Depends: vmware-server-modules-${F:KernelVersion64}
+Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
  This meta-package installs the current vmware-server modules.
  .

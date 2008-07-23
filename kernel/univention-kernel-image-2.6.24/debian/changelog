@@ -1,3 +1,9 @@
+univention-kernel-image-2.6.24 (2.0.1-2) unstable; urgency=low
+
+  * fix vmware-server modules dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 23 Jul 2008 06:28:51 +0200
+
 univention-kernel-image-2.6.24 (2.0.1-1) unstable; urgency=low
 
   * remove old vmware meta packages
