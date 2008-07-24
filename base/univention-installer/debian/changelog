@@ -1,3 +1,9 @@
+univention-installer (2.0.3-1) unstable; urgency=low
+
+  * use the new UCS 2.1 codename: mountain beech
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2008 07:03:54 +0200
+
 univention-installer (2.0.2-1) unstable; urgency=low
 
   * at the startup load the usb keyboard driver for the different usb
