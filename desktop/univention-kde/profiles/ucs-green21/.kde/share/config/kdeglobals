@@ -40,7 +40,7 @@ Height 1050=370
 Height 1200=370
 
 [Icons]
-Theme=crystalsvg-univention
+Theme=crystalsvg-univention-green21
 
 [DesktopIcons]
 Size=32
