@@ -199,7 +199,8 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 	for line in resp_data.split('\n'):
 		if line:
 			found=0
-			failed='0'
+			failed=False
+			too_old=False
 			try:
 				f=open(ALREADY_DOWNLOADED, 'r')
 			except:
@@ -216,25 +217,23 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 				continue
 
 			dir=line.split('/')
-			for i in dir:
-				if failed == '1':
-					continue
-				if i == '.':
-					continue
-				version=i.split('-')
-				if len(version) < 2:
-					dprint('skipping (invalid version) %s' % line, [], True)
-					failed='1'
-					continue
-				elif float(version[0]) <= float(vv) and float(version[1]) <= float(vp):
-					break
-				else:
-					dprint('skipping (newer update version) %s' % line, [], True)
-					failed='1'
-					continue
+			version=dir[0].split('-')
 
-			if failed == '0':
+			if len(version) < 2:
+				dprint('skipping (invalid version) %s' % line, [], True)
+				failed=True
+				continue
+
+			# Since UCS 2.0 all security updates are issued for a sub release, i.e.
+			# subsequent updates are issued for 2.0, 2.1 and so on. For releases prior
+			# to 2.0 this isn't true
+			if float(version[0]) >= 2 and float(version[0]) < float(vv) and float(version[0]) < float(repository_vv):
+				dprint('Skipping old version: %s' % line, [], True)
+				too_old=True
+
+			if not failed and not too_old:
 				filename = create_download_url(server ,baseConfig['update/security/prefix'], line)
+				
 				if not download_deb(conn, tempdir, line, filename):
 					dprint('failed to download %s: Try again' % file, [], True)
 					# try again
