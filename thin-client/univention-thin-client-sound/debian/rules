@@ -50,7 +50,7 @@ install: build
 	install -D -m 755 etc/init.d/thin-client-sound debian/univention-thin-client-sound-config/etc/init.d/thin-client-sound
 	univention-install-config-registry
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sound/var/lib/univention-client-root/var/cache/thin-client-archive/sound -p esound alsa-utils
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sound/var/lib/univention-client-root/thin-client-archive/sound -p esound alsa-utils
 
 binary-indep: build install
 

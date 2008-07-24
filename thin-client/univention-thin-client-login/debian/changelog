@@ -1,3 +1,12 @@
+univention-thin-client-login (4.0.1-4) unstable; urgency=low
+
+  * install the debs into var/lib/univention-client-root/thin-client-
+    archive/... instead of var/lib/univention-client-
+    root/var/cache/thin-client-archive/. Otherwise we get an error
+    during the upgrade of univention-thin-client-basesystem
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 24 Jul 2008 07:55:09 +0200
+
 univention-thin-client-login (4.0.1-3) unstable; urgency=low
 
   * use a separate download directory for every thin client package,

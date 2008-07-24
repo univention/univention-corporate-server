@@ -55,7 +55,7 @@ install: build
 
 	univention-install-config-registry
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sane/var/lib/univention-client-root/var/cache/thin-client-archive/sane -p sane-utils
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-sane/var/lib/univention-client-root/thin-client-archive/sane -p sane-utils
 
 binary-indep: build install
 
