@@ -39,8 +39,8 @@ Description: UCS - Modules for connector sychronisation
 
 Package: univention-ad-connector
 Architecture: all
-Depends: python-univention, python-univention-license, python-univention-connector-ad
-Pre-Depends: univention-config-registry | univention-baseconfig
+Depends: python-univention, python-univention-license
+Pre-Depends: univention-config-registry | univention-baseconfig, python-univention-connector-ad
 Conflicts: python2.3-univention-connector-ad
 Replaces: python2.3-univention-connector-ad
 Description: UCS - Modules for sync ucs and active directory
