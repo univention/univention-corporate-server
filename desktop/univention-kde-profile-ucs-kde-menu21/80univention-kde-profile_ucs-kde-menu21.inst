@@ -55,7 +55,7 @@ if [ $server_role = domaincontroller_master ]; then
 
 	# if no profile other than ucs-green21 has been connected yet, ship ucs-kde-menu21 with policy "UCS green 2.1"
 	test -n "`grep "univention-kde v2 successful" /usr/lib/univention-install/.index.txt`" 
-	if [ "$?" = 1 ]; then
+	if [ "$?" = 0 ]; then
 		res=$(univention_policy_result -s "$ldap_base" | grep univentionDesktopProfile | grep -v "ucs-green21")
 		if [ -z "$res" ]; then
 			univention-admin policies/desktop modify $@ \

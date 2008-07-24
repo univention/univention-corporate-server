@@ -1,3 +1,9 @@
+univention-kde-profile-ucs-kde-menu21 (0.7) unstable; urgency=low
+
+  * fixed logic of join script: append profile ucs-kde-menu21 to "UCS green 2.1" IF univenton-kde has joined
+
+ -- Arvid Requate <requate@univention.de>  Thu, 24 Jul 2008 09:20:46 +0200
+
 univention-kde-profile-ucs-kde-menu21 (0.6) unstable; urgency=low
 
   * append this profile only to the "UCS green 2.1" policy if installed on a master
