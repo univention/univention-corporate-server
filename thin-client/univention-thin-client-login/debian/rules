@@ -82,7 +82,7 @@ install: build
 	install -m 0755 sessions/rdesktop.Session ${C}/etc/univention
 	install -m 0755 sessions/rdesktop.Shutdown ${S}/usr/share/univention-client-login
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-login/var/lib/univention-client-root/var/cache/thin-client-archive/login -p univention-client-session
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-login/var/lib/univention-client-root/thin-client-archive/login -p univention-client-session
 
 	univention-install-baseconfig
 

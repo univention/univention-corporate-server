@@ -50,7 +50,7 @@ install: build
 
 	install -D -m 0755 thin-client-cups debian/univention-thin-client-cups-config/etc/init.d/thin-client-cups
 	univention-install-config-registry
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-cups/var/lib/univention-client-root/var/cache/thin-client-archive/cups/ -p cupsys
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-cups/var/lib/univention-client-root/thin-client-archive/cups/ -p cupsys
 
 binary-indep: build install
 

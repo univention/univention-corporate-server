@@ -51,7 +51,7 @@ install: build
 	univention-install-config-registry
 	rm -rf ./debian/univention-thin-client-nagios/etc/univention/templates/files/etc/nagios/nrpe.univention.d/.svn
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-nagios/var/lib/univention-client-root/var/cache/thin-client-archive/nagios -p nagios-plugins-basic nagios-nrpe-server
+	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-nagios/var/lib/univention-client-root/thin-client-archive/nagios -p nagios-plugins-basic nagios-nrpe-server
 
 binary-indep: build install
 
