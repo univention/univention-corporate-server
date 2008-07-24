@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# http://download.fujitsu-siemens.com/prim_supportcd/html/SNMP_Agents_e.html
+
 SERVER_URL="http://download.fujitsu-siemens.com/prim_supportcd/Software/ServerView/Linux/Agents/"
 AGENTS="srvmagt-mods_src srvmagt-eecd srvmagt-agents srvmagt-scs"
 VERSION="4.60-08"

@@ -7,7 +7,7 @@ Standards-Version: 3.5.10
 
 Package: univention-serverview-agents
 Architecture: all
-Depends: univention-baseconfig, univention-snmpd, univention-snmp, lsb-release, srvmagt-agents, srvmagt-scs, srvmagt-eecd, srvmagt-mods-src, pciutils, univention-serverview-modules-2.6.18 | univention-serverview-modules-2.6.18-64gb | univention-serverview-modules-mobileclient-2.6.18 | univention-serverview-modules-mobileclient-2.6.18-64gb | univention-serverview-modules-managedclient-2.6.18 | univention-serverview-modules-managedclient-2.6.18-64gb | srvmagt-modules, gawk
+Depends: univention-baseconfig, univention-snmpd, univention-snmp, lsb-release, srvmagt-agents, srvmagt-scs, srvmagt-eecd, srvmagt-mods-src, pciutils, univention-serverview-modules-2.6.18 | univention-serverview-modules-2.6.18-64gb | univention-serverview-modules-mobileclient-2.6.18 | univention-serverview-modules-mobileclient-2.6.18-64gb | univention-serverview-modules-managedclient-2.6.18 | univention-serverview-modules-managedclient-2.6.18-64gb | univention-serverview-modules-2.6.24 | univention-serverview-modules-2.6.24-64gb | univention-serverview-modules-mobileclient-2.6.24 | univention-serverview-modules-mobileclient-2.6.24-64gb | univention-serverview-modules-managedclient-2.6.24 | univention-serverview-modules-managedclient-2.6.24-64gb | srvmagt-modules, gawk
 Conflicts: univention-srvmagt
 Replaces: univention-srvmagt
 Description: simple configuration for Fujitsu Siemens Computers ServerView Agents and Deamons
