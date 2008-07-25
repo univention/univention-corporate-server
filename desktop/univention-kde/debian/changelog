@@ -1,3 +1,10 @@
+univention-kde (3.1.4-1) unstable; urgency=low
+
+  * attach ucs-kde-menu21 to policy "UCS green 2.1" unless UCR:kde/menu/keep is 'true'
+  * incorporate content of package univention-kde-profile-ucs-kde-menu21
+
+ -- Arvid Requate <requate@univention.de>  Fri, 25 Jul 2008 14:07:38 +0200
+
 univention-kde (3.1.3-1) unstable; urgency=low
 
   * use the new wallpaper in the theme file
