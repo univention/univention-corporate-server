@@ -33,6 +33,7 @@ import sys
 from optparse import OptionParser
 
 import univention.debug as ud
+import univention.config_registry as ucr
 
 # example command:
 # apt-get -o "DPkg::Options::=--instdir=$instdir" -o "DPkg::Options::=--admindir=$admindir" -o Dir::State::Status=$prefix/var/lib/dpkg/status install less
@@ -50,7 +51,7 @@ class UC_APT( object ):
 			os.system('cp /etc/apt/sources.list %s' % self.sources_list)
 		fp = open(self.sources_list, 'a+')
 		fp.write('deb file:%s/thin-client-archive/ ./\n' % self.prefix)
-		os.system('apt-ftparchive packages /%s/thin-client-archive/ >/%s/thin-client-archive/Packages' % (self.prefix, self.prefix))
+		os.system('cd %s ; apt-ftparchive packages . >Packages' % (self.prefix, self.prefix))
 		fp.close()
 
 	def __create_command( self ):
@@ -58,6 +59,7 @@ class UC_APT( object ):
 			'-o "DPkg::Options::=--instdir=%s"' % self.prefix,
 			'-o "DPkg::Options::=--admindir=%s"' % os.path.join( self.prefix, 'var/lib/dpkg' ),
 			'-o DPkg::Options::=--force-confold',
+			'-o DPkg::Options::=--force-architecture',
 			'--force-yes', '-y',
 			'-o "Dir::Etc::SourceList=%s"' % self.sources_list,
 			'-o Dir::State::Status=%s' % os.path.join( self.prefix, 'var/lib/dpkg/status' ),
@@ -68,9 +70,17 @@ class UC_APT( object ):
 		return 'apt-get update %s && apt-get %s %s' % ( ' '.join( opts ),' '.join( opts ), ' '.join( self.arguments ) )
 
 	def run( self ):
+		#backup the pkgdb/scan value
+		configRegistry=ucr.configRegistry()
+		configRegistry.load()
+		pkgdb_scan = configRegistry.get('pkgdb/scan', False)
+		if pkgdb_scan:
+			ucr.handler_set(['pkgdb/scan=no'])
 		self.__create_sources_list()
 		cmd = self.__create_command()
 		ret = os.system( cmd )
+		if pkgdb_scan:
+			ucr.handler_set(['pkgdb/scan=%s' % pkgdb_scan])
 
 		return ret == 0
 
