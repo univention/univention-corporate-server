@@ -413,7 +413,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 3.0.9-1; t
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-directory-manager groups/group modify  --ignore_exists \
 			--dn "cn=Domain Users,cn=groups,$ldap_base" \
-			--append users="uid=Administrator,cn=users,$ldap_base"
+			--append users="uid=Administrator,cn=users,$ldap_base" || true
 	fi
 fi
 exit 0
