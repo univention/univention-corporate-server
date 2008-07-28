@@ -1,3 +1,10 @@
+univention-ldap (3.0.11-1) unstable; urgency=low
+
+  * don't fail the upgrade process if Administrator is already member of
+    Domain Users
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Jul 2008 07:55:54 +0200
+
 univention-ldap (3.0.10-1) unstable; urgency=low
 
   * added LDAP attribute for custom settings for samba share objects
