@@ -71,7 +71,7 @@ class UC_APT( object ):
 
 	def run( self ):
 		#backup the pkgdb/scan value
-		configRegistry=ucr.configRegistry()
+		configRegistry=ucr.ConfigRegistry()
 		configRegistry.load()
 		pkgdb_scan = configRegistry.get('pkgdb/scan', False)
 		if pkgdb_scan:
