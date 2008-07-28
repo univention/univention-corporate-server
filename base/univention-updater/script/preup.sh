@@ -4,13 +4,13 @@ echo "Running preup.sh script"
 
 
 
-eval $(univention-baseconfig shell) >>/var/log/univention/updater.log 2>&1
+eval $(univention-config-registry shell) >>/var/log/univention/updater.log 2>&1
 
 # check if user is logged in using ssh
 if [ -n "$SSH_CLIENT" ]; then
-	if [ "$update20_ignoressh" != "yes" ]; then
+	if [ "$update21_ignoressh" != "yes" ]; then
 		echo "WARNING: You are logged in using SSH -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the baseconfig variable update21/ignoressh to yes to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update21/ignoressh\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
@@ -20,7 +20,7 @@ fi
 if [ "$TERM" = "xterm" ]; then
 	if [ "$update21_ignoreterm" != "yes" ]; then
 		echo "WARNING: You are logged in under X11 -- this may interrupt the update and result in an inconsistent system!"
-		echo "Please log in under the console or set the baseconfig variable update21/ignoreterm to yes to ignore it."
+		echo "Please log in under the console or set the Univention Configuration Registry variable \"update21/ignoreterm\" to \"yes\" to ignore it."
 		killall univention-updater
 		exit 1
 	fi
