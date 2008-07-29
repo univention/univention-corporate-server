@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.12-2) unstable; urgency=low
+
+  * rewrite the default bootsplash configuration
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jul 2008 13:54:19 +0200
+
 univention-thin-client-basesystem (4.1.12-1) unstable; urgency=low
 
   * install libidl0 during the bootstrap process
