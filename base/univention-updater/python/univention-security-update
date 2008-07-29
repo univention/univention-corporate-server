@@ -227,7 +227,8 @@ def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
 			# Since UCS 2.0 all security updates are issued for a sub release, i.e.
 			# subsequent updates are issued for 2.0, 2.1 and so on. For releases prior
 			# to 2.0 this isn't true
-			if float(version[0]) >= 2 and float(version[0]) < float(vv) and float(version[0]) < float(repository_vv):
+
+			if float(version[0]) < float(vv) and float(version[0]) < float(repository_vv):
 				dprint('Skipping old version: %s' % line, [], True)
 				too_old=True
 
