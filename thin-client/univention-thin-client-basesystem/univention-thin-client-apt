@@ -49,13 +49,14 @@ class UC_APT( object ):
 			os.remove(self.sources_list)
 		if os.path.exists('/etc/apt/sources.list'):
 			os.system('cp /etc/apt/sources.list %s' % self.sources_list)
-		fp = open(self.sources_list, 'a+')
-		fp.write('deb file:%s/thin-client-archive/ ./\n' % self.prefix)
-		cwd=os.getcwd()
-		os.chdir(os.path.join(self.prefix,'thin-client-archive'))
-		os.system('apt-ftparchive packages . >Packages')
-		os.chdir(cwd)
-		fp.close()
+		if os.path.exists(os.path.join(self.prefix, 'thin-client-archive')):
+			fp = open(self.sources_list, 'a+')
+			fp.write('deb file:%s/thin-client-archive/ ./\n' % self.prefix)
+			cwd=os.getcwd()
+			os.chdir(os.path.join(self.prefix,'thin-client-archive'))
+			os.system('apt-ftparchive packages . >Packages')
+			os.chdir(cwd)
+			fp.close()
 
 	def __create_command( self ):
 		opts = (
