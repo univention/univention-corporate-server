@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.9-1) unstable; urgency=low
+
+  * fixed another python syntax error in univention-thin-client-apt
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 29 Jul 2008 06:10:33 +0200
+
 univention-thin-client-basesystem (4.1.8-1) unstable; urgency=low
 
   * fixed python syntax error, use ucr.ConfigRegistry instead of
