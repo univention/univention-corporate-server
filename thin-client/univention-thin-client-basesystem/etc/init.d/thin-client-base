@@ -75,6 +75,10 @@ preparePythonEnvironment
 # necessary to make udev start correctly
 univention-baseconfig set nsswitch/ldap=no >>/dev/tty8 2>&1
 
+
+#don't switch to the default debian bootsplash
+univention-baseconfig commit /etc/default/bootsplash >>/dev/tty8 2>&1
+
 ### end basic setup
 
 ### start network setup

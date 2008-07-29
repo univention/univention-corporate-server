@@ -31,7 +31,7 @@
 export suite=univention
 mirror=http://192.168.0.10/build2/ucs_2.0-0/
 
-export packages="univention-config-registry python-support python-univention libnss-ldap libpam-ldap nfs-common heimdal-clients openssh-client python2.4 bind9-host pam-runasroot ntpdate ntp less univention-automount dhcp-client libpam-heimdal heimdal-clients univention-policy-tools libunivention-policy0 libldap2 ldap-utils python-dns kudzu-2.6 lynx locales univention-home-mounter rdate netcat univention-automount univention-bootsplash univention-kde-setdirs console-data univention-client-session gawk iproute  whiptail dialog file libmagic1"
+export packages="univention-config-registry python-support python-univention libnss-ldap libpam-ldap nfs-common heimdal-clients openssh-client python2.4 bind9-host pam-runasroot ntpdate ntp less univention-automount dhcp-client libpam-heimdal heimdal-clients univention-policy-tools libunivention-policy0 libldap2 ldap-utils python-dns kudzu-2.6 lynx locales univention-home-mounter rdate netcat univention-automount univention-bootsplash univention-kde-setdirs console-data univention-client-session gawk iproute  whiptail dialog file libmagic1 libidl0"
 export exclude="lilo,pcmcia-cs,base-config,exim,mailx,at,logrotate,cpio,ipchains,dhcp-client,manpages,modconf,mbr,man-db,makedev,telnet,libdb4.0,info,diff,syslinux"
 export remove_packages="apt-utils"
 export disable_init="bootmisc.sh hostname.sh cron atd samba mountall.sh checkroot.sh nfs-common hwclock.sh hwclockfirst.sh kudzu winbind console-screen.sh"
