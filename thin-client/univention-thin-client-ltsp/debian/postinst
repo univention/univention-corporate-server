@@ -44,7 +44,7 @@ fi
 
 modprobe fuse
 
-/usr/lib/univention-install/70univention-thin-client-ltsp.ltsp || true
+/usr/lib/univention-install/70univention-thin-client-ltsp.inst || true
 
 /etc/init.d/univention-ltsp-mountd restart
 
