@@ -38,7 +38,8 @@ translation=univention.admin.localization.translation('univention.admin.handlers
 _=translation.translate
 
 module='mail/folder'
-operations=['add','edit','remove','search','move']
+operations=['add','edit','remove','search'] # removed 'move' as a workaround for bug #11664
+#operations=['add','edit','remove','search','move']
 usewizard=1
 
 
