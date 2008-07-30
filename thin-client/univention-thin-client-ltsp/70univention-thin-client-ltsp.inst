@@ -50,6 +50,6 @@ fi
 chgrp "$thinclient_ltsp_group" /var/lib/univention/ltsp/
 chmod 770 /var/lib/univention/ltsp/
 
-test -n "`grep "univention-client-ltsp v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-client-ltsp v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+test -n "`grep "univention-thin-client-ltsp v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-thin-client-ltsp v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0
