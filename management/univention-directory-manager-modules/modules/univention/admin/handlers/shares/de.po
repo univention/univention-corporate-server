@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-07-11 11:32+0200\n"
-"PO-Revision-Date: 2008-07-11 11:33+0200\n"
+"PO-Revision-Date: 2008-07-30 08:13+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -346,16 +346,15 @@ msgid "Allow guest access"
 msgstr "Gastzugriff erlauben"
 
 #: share.py:250
-msgid "Owner group may modify access rights"
-msgstr "Besitzergruppen dürfen Zugriffsrechte verändern"
+msgid "users who has write access may modify permissions"
+msgstr "Benutzer mit Schreibrechten dürfen die Berechtigungen verändern"
 
 #: share.py:251
 msgid ""
-"Members of the owner group may modify access rights if the write access is "
-"set for the group"
+"users who has write access to a file or directory are able to change the permissions"
 msgstr ""
-"Mitglieder der Besitzergruppe von Dateien und Verzeichnissen dürfen die "
-"Zugriffsrechte verändern, wenn Schreibrechte gesetzt sind"
+"Benutzer, die Schreibrechte an Dateien und/oder Verzeichnissen haben, dürfen die "
+"Zugriffsrechte verändern"
 
 #: share.py:261
 msgid "Hide unreadable files/directories"

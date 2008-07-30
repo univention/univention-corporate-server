@@ -247,8 +247,8 @@ property_descriptions={
 			default='0'
 		),
 	'sambaDosFilemode': univention.admin.property(
-			short_description=_('Owner group may modify access rights'),
-			long_description=_('Members of the owner group may modify access rights if the write access is set for the group'),
+			short_description=_('users who has write access may modify permissions'),
+			long_description=_('users who has write access to a file or directory are able to change the permissions '),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=['samba'],
