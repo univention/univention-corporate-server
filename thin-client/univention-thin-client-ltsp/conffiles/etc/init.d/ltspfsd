@@ -25,6 +25,8 @@ configure_localdev() {
 
         /usr/bin/ltspfsd -a
 
+        touch /var/run/ltspfs_fstab
+
         # cdrom devices are handled by the cdpingerponger
         #/usr/sbin/cdpinger cdrom # default for usb cdroms
         # Disable cdpinger for now, as it's buggy, see #432669
