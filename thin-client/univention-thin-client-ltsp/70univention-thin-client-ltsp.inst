@@ -1,9 +1,9 @@
-#!/bin/sh
+#! /bin/sh
 #
-# Univention Thin Client LTSP support
-#  postinst script for the debian package
+# Univention Client Basesystem
+#  join script for the univention-thin-client-ltsp package
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,24 +28,28 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
 
-#DEBHELPER#
+VERSION=1
 
-univention-thin-client-apt install ltspfsd
-univention-thin-client-apt install univention-thin-client-ltsp-config
-
-univention-config-registry set thinclient/ltsp/group?"Domain Users"
-univention-config-registry set thinclient/ltsp/debug/level?1
-
-eval $(univention-config-registry shell)
-fuse=$(echo $kernel_modules | grep fuse)
-if [ -z "$fuse" ]; then
-	univention-config-registry set kernel/modules="$kernel_modules;fuse" 
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
 fi
 
-modprobe fuse
+touch /usr/lib/univention-install/.index.txt
 
-/usr/lib/univention-install/70univention-thin-client-ltsp.ltsp || true
+test -n "`grep "univention-thin-client-ltsp v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-/etc/init.d/univention-ltsp-mountd restart
+univention-config-registry set thinclient/ltsp/group?"Domain Users"
+
+eval `univention-baseconfig shell`
+
+if [ ! -d /var/lib/univention/ltsp ]; then
+	mkdir -p /var/lib/univention/ltsp
+fi
+
+chgrp "$thinclient_ltsp_group" /var/lib/univention/ltsp/
+chmod 770 /var/lib/univention/ltsp/
+
+test -n "`grep "univention-client-ltsp v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-client-ltsp v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
 exit 0

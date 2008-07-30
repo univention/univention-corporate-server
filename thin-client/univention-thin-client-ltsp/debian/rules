@@ -58,6 +58,8 @@ install: build
 	install -m 755 ./univention-create-ltsp-umount-entry-tc debian/univention-thin-client-ltsp-config/usr/bin
 	install -m 755 ./univention-create-ltsp-mount-entry debian/univention-thin-client-ltsp/usr/bin
 
+	install -m 755 70univention-thin-client-ltsp.inst debian/univention-thin-client-ltsp/usr/lib/univention-install/
+
 	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-ltsp/var/lib/univention-client-root/thin-client-archive/ltsp -p ltspfsd
 
 	univention-install-config-registry
