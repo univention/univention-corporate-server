@@ -10,7 +10,7 @@
 
 @!@
 user = baseConfig.get( 'udev/sound/owner', 'root' )
-group = baseConfig.get( 'udev/sound/group', 'audio' )
+group = baseConfig.get( 'udev/sound/group', 'Domain Users' )
 print 'SUBSYSTEM=="sound",                             GROUP="%s", OWNER="%s"' % ( group, user )
 @!@
 
