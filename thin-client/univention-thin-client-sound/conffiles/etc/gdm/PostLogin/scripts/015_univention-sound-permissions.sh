@@ -3,7 +3,7 @@
 # Univention Thin Client Sound support
 #  postinst script for the debian package
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007,2008 Univention GmbH
 #
 # http://www.univention.de/
 #
