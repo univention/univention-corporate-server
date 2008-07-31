@@ -4,7 +4,7 @@ Variables: udev/sound/owner
 Variables: udev/sound/group
 
 Type: file
-File: etc/gdm/PostLogin/scripts/030_univention-sound-permissions.sh
+File: etc/gdm/PostLogin/scripts/015_univention-sound-permissions.sh
 
 Type: file
 File: etc/gdm/PostSession/scripts/030_univention-sound-kill.sh
