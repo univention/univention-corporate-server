@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client Sound support
 #  postinst script for the debian package
@@ -40,3 +40,5 @@ univention-baseconfig set udev/sound/owner=$USER
 # tell udev to update devices of sound subsystems
 udevcontrol reload_rules
 udevtrigger --subsystem-match=sound
+
+exit 0

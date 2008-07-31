@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client Sound support
 #  postinst script for the debian package
@@ -35,15 +35,17 @@ if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 fi
 
 # start sound server (default: esd)
-if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "arts" ]; then
-	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
-		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
-		mkdir -p "/tmp/ksocket-${USERNAME}"
-		/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &
-	fi
-else
+if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "esd" ]; then
 	if test -e "/usr/bin/esd" -a -e "/dev/dsp"; then
 		/usr/bin/esd -tcp -public -nobeeps &
 		echo "setenv ESPEAKER $HOSTNAME.$(dnsdomainname)" >> ~/.univention-thin-client-session
 	fi
+else
+	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
+		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
+		su - ${USER} -c "mkdir -p \"/tmp/ksocket-${USER}\""
+		su - ${USER} -c "/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &"
+	fi
 fi
+
+exit 0

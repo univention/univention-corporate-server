@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention Thin Client Sound support
 #  postinst script for the debian package
@@ -34,8 +34,10 @@ if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
-if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "arts" ]; then
-	killall artsd
-else
+if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "esd" ]; then
 	killall esd
+else
+	killall artsd
 fi
+
+exit 0
