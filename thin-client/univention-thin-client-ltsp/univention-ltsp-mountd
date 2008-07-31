@@ -235,7 +235,7 @@ def track_mounts():
 					retire_file(mountpoint)
 
 					ldapc = LdapConnection()
-					sfilter = '(&(objectClass=person)(uid=%s))' % (user_to_umount)
+					sfilter = '(&(objectClass=person)(uid=%s))' % (user_to_mount)
 					sdn = ldapc.searchDn(filter = sfilter)
                                         homedir = ldapc.getAttr(sdn[0], "homeDirectory")
                                         desktop_filename = homedir[0] + "/Desktop/" + chunks[2].split("/")[-1]
