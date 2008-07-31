@@ -26,7 +26,7 @@
  *
  * The Original Code is mozilla.org code.
  *
- * The Initial Developer of the Original Code is 
+ * The Initial Developer of the Original Code is
  * Netscape Communications Corporation.
  * Portions created by the Initial Developer are Copyright (C) 1998
  * the Initial Developer. All Rights Reserved.
@@ -34,7 +34,7 @@
  * Contributor(s):
  *
  * Alternatively, the contents of this file may be used under the terms of
- * either the GNU General Public License Version 2 or later (the "GPL"), or 
+ * either the GNU General Public License Version 2 or later (the "GPL"), or
  * the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
  * in which case the provisions of the GPL or the LGPL are applicable instead
  * of those above. If you wish to allow use of your version of this file only
@@ -65,7 +65,7 @@ pref("xpinstall.dialog.progress.chrome", "chrome://mozapps/content/extensions/ex
 pref("xpinstall.dialog.progress.type.skin", "Extension:Manager");
 pref("xpinstall.dialog.progress.type.chrome", "Extension:Manager");
 
-// Developers can set this to |true| if they are constantly changing files in their 
+// Developers can set this to |true| if they are constantly changing files in their
 // extensions directory so that the extension system does not constantly think that
 // their extensions are being updated and thus reregistered every time the app is
 // started.
@@ -140,7 +140,7 @@ pref("app.update.promptWaitTime", 43200);
 pref("app.update.idletime", 60);
 
 // Whether or not we show a dialog box informing the user that the update was
-// successfully applied. This is off in Firefox by default since we show a 
+// successfully applied. This is off in Firefox by default since we show a
 // upgrade start page instead! Other apps may wish to show this UI, and supply
 // a whatsNewURL field in their brand.properties that contains a link to a page
 // which tells users what's new in this new update.
@@ -162,13 +162,13 @@ pref("app.update.incompatible.mode", 0);
 //
 pref("extensions.update.enabled", true);
 pref("extensions.update.url", "https://versioncheck.addons.mozilla.org/update/VersionCheck.php?reqVersion=%REQ_VERSION%&id=%ITEM_ID%&version=%ITEM_VERSION%&maxAppVersion=%ITEM_MAXAPPVERSION%&status=%ITEM_STATUS%&appID=%APP_ID%&appVersion=%APP_VERSION%&appOS=%APP_OS%&appABI=%APP_ABI%&locale=%APP_LOCALE%");
-pref("extensions.update.interval", 86400);  // Check for updates to Extensions and 
+pref("extensions.update.interval", 86400);  // Check for updates to Extensions and
                                             // Themes every day
 // Non-symmetric (not shared by extensions) extension-specific [update] preferences
 pref("extensions.getMoreExtensionsURL", "https://%LOCALE%.add-ons.mozilla.com/%LOCALE%/%APP%/%VERSION%/extensions/");
 pref("extensions.getMoreThemesURL", "https://%LOCALE%.add-ons.mozilla.com/%LOCALE%/%APP%/%VERSION%/themes/");
 pref("extensions.getMorePluginsURL", "https://%LOCALE%.add-ons.mozilla.com/%LOCALE%/%APP%/%VERSION%/plugins/");
-pref("extensions.dss.enabled", false);          // Dynamic Skin Switching                                               
+pref("extensions.dss.enabled", false);          // Dynamic Skin Switching
 pref("extensions.dss.switchPending", false);    // Non-dynamic switch pending after next
                                                 // restart.
 
@@ -187,7 +187,7 @@ pref("general.smoothScroll", false);
 pref("general.autoScroll", false);
 //@line 184 "/builds/tinderbox/Fx-Mozilla1.9-Release/Linux_2.6.18-53.1.13.el5_Depend/mozilla/browser/app/profile/firefox.js"
 
-// Whether or not the application should check at startup each time if it 
+// Whether or not the application should check at startup each time if it
 // is the default browser.
 @!@
 if baseConfig.has_key('firefox/prefs/checkdefaultbrowser') and baseConfig['firefox/prefs/checkdefaultbrowser']:
@@ -233,7 +233,7 @@ pref("browser.urlbar.search.chunkSize", 1000);
 pref("browser.urlbar.search.timeout", 100);
 
 // Number of milliseconds to wait for the http headers (and thus
-// the Content-Disposition filename) before giving up and falling back to 
+// the Content-Disposition filename) before giving up and falling back to
 // picking a filename without that info in hand so that the user sees some
 // feedback from their action.
 pref("browser.download.saveLinkAsFilenameTimeout", 1000);
@@ -263,7 +263,7 @@ pref("browser.search.defaultenginename",      "chrome://browser-region/locale/re
 // disable logging for the search service by default
 pref("browser.search.log", false);
 
-// Ordering of Search Engines in the Engine list. 
+// Ordering of Search Engines in the Engine list.
 pref("browser.search.order.1",                "chrome://browser-region/locale/region.properties");
 pref("browser.search.order.2",                "chrome://browser-region/locale/region.properties");
 
@@ -327,7 +327,7 @@ pref("browser.tabs.tabClipWidth", 140);
 // 3  at the end of the tabstrip
 pref("browser.tabs.closeButtons", 1);
 
-// When tabs opened by links in other tabs via a combination of 
+// When tabs opened by links in other tabs via a combination of
 // browser.link.open_newwindow being set to 3 and target="_blank" etc are
 // closed:
 // true   return to the tab that opened this tab (its owner)
@@ -343,7 +343,7 @@ pref("browser.bookmarks.sort.resource", "rdf:http://home.netscape.com/NC-rdf#Nam
 // be exported as HTML to the bookmarks.html file.
 pref("browser.bookmarks.autoExportHTML",          false);
 
-// The maximum number of daily bookmark backups to 
+// The maximum number of daily bookmark backups to
 // keep in {PROFILEDIR}/bookmarkbackups. Special values:
 // -1: unlimited
 //  0: no backups created (and deletes all existing backups)
@@ -357,9 +357,9 @@ pref("javascript.options.showInConsole",          false);
 
 // Make the status bar reliably present and unaffected by pages
 pref("dom.disable_window_open_feature.status",    true);
-// This is the pref to control the location bar, change this to true to 
-// force this instead of or in addition to the status bar - this makes 
-// the origin of popup windows more obvious to avoid spoofing. We would 
+// This is the pref to control the location bar, change this to true to
+// force this instead of or in addition to the status bar - this makes
+// the origin of popup windows more obvious to avoid spoofing. We would
 // rather not do it by default because it affects UE for web applications, but
 // without it there isn't a really good way to prevent chrome spoofing, see bug 337344
 pref("dom.disable_window_open_feature.location",  true);
@@ -374,7 +374,7 @@ pref("privacy.popups.policy",               1);
 pref("privacy.popups.usecustom",            true);
 pref("privacy.popups.firstTime",            true);
 pref("privacy.popups.showBrowserMessage",   true);
- 
+
 pref("privacy.item.history",     true);
 pref("privacy.item.formdata",    true);
 pref("privacy.item.passwords",   false);
@@ -428,7 +428,7 @@ pref("profile.allow_automigration", false);   // setting to false bypasses autom
 // Customizable toolbar stuff
 pref("custtoolbar.personal_toolbar_folder", "");
 
-// pref to control the alert notification 
+// pref to control the alert notification
 pref("alerts.slideIncrement", 1);
 pref("alerts.slideIncrementTime", 10);
 pref("alerts.totalOpenTime", 4000);
@@ -542,7 +542,7 @@ pref("browser.audioFeeds.handler", "ask");
 // At startup, if the handler service notices that the version number in the
 // region.properties file is newer than the version number in the handler
 // service datastore, it will add any new handlers it finds in the prefs (as
-// seeded by this file) to its datastore.  
+// seeded by this file) to its datastore.
 pref("gecko.handlerService.defaultHandlersVersion", "chrome://browser-region/locale/region.properties");
 
 // The default set of web-based protocol handlers shown in the application
@@ -745,48 +745,14 @@ pref("app.support.baseURL", "http://support.mozilla.com/1/%APP%/%VERSION%/%OS%/%
 // UCS extensions
 @!@
 if baseConfig.has_key('firefox/prefs/printing') and baseConfig['firefox/prefs/printing'].lower() == 'kprinter':
-	print 'pref("print.always_print_silent", true);'
-	print 'pref("print.postscript.cups.enabled", false);'
-	print 'pref("print.print_printer", "PostScript/default");'
-	print 'pref("print.printer_PostScript/default.print_bgcolor", false);'
-	print 'pref("print.printer_PostScript/default.print_bgimages", false);'
-	print 'pref("print.printer_PostScript/default.print_colorspace", "default");'
-	print 'pref("print.printer_PostScript/default.print_command", "kprinter");'
-	print 'pref("print.printer_PostScript/default.print_downloadfonts", false);'
-	print 'pref("print.printer_PostScript/default.print_evenpages", true);'
-	print 'pref("print.printer_PostScript/default.print_footercenter", "");'
-	print 'pref("print.printer_PostScript/default.print_footerleft", "&PT");'
-	print 'pref("print.printer_PostScript/default.print_footerright", "&D");'
-	print 'pref("print.printer_PostScript/default.print_headercenter", "");'
-	print 'pref("print.printer_PostScript/default.print_headerleft", "&T");'
-	print 'pref("print.printer_PostScript/default.print_headerright", "&U");'
-	print 'pref("print.printer_PostScript/default.print_in_color", true);'
-	print 'pref("print.printer_PostScript/default.print_margin_bottom", "0.5");'
-	print 'pref("print.printer_PostScript/default.print_margin_left", "0.5");'
-	print 'pref("print.printer_PostScript/default.print_margin_right", "0.5");'
-	print 'pref("print.printer_PostScript/default.print_margin_top", "0.5");'
-	print 'pref("print.printer_PostScript/default.print_oddpages", true);'
-	print 'pref("print.printer_PostScript/default.print_orientation", 0);'
-	print 'pref("print.printer_PostScript/default.print_pagedelay", 500);'
-	print 'pref("print.printer_PostScript/default.print_paper_data", 0);'
+	print '//pref("print.always_print_silent", true);'
+	print 'pref("print.printer_PostScript/default.print_command", "kprinter --stdin");'
 	print 'pref("print.printer_PostScript/default.print_paper_height", "297,00");'
 	print 'pref("print.printer_PostScript/default.print_paper_name", "A4");'
-	print 'pref("print.printer_PostScript/default.print_paper_size", 0);'
-	print 'pref("print.printer_PostScript/default.print_paper_size_type", 1);'
-	print 'pref("print.printer_PostScript/default.print_paper_size_unit", 1);'
 	print 'pref("print.printer_PostScript/default.print_paper_width", "210,00");'
-	print 'pref("print.printer_PostScript/default.print_plex_name", "default");'
-	print 'pref("print.printer_PostScript/default.print_resolution_name", "default");'
-	print 'pref("print.printer_PostScript/default.print_reversed", false);'
-	print 'pref("print.printer_PostScript/default.print_scaling", "  1,00");'
-	print 'pref("print.printer_PostScript/default.print_shrink_to_fit", true);'
-	print 'pref("print.printer_PostScript/default.print_to_file", false);'
-	print 'pref("print.print_command", "kprinter");'
-	print 'pref("print.postscript.print_command", "kprinter");'
-	print 'pref("print.postscript.paper_size", "A4");'
 elif not baseConfig.has_key('firefox/prefs/printing'):
-	print 'pref("print.print_command", "kprinter");'
-	print 'pref("print.postscript.print_command", "kprinter");'
+	print 'pref("print.print_command", "kprinter --stdin");'
+	print 'pref("print.postscript.print_command", "kprinter --stdin");'
 	print 'pref("print.postscript.paper_size", "A4");'
 
 if baseConfig.has_key('firefox/prefs/mailto') and baseConfig['firefox/prefs/mailto']:
@@ -795,4 +761,3 @@ if baseConfig.has_key('firefox/prefs/mailto') and baseConfig['firefox/prefs/mail
 if baseConfig.has_key('firefox/prefs/conffile') and baseConfig['firefox/prefs/conffile']:
 	print 'pref("general.config.filename", "%s");' % baseConfig['firefox/prefs/conffile']
 @!@
-
