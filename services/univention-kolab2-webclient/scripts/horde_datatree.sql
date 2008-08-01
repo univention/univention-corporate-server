@@ -19,6 +19,7 @@ CREATE TABLE horde_datatree (
 
     PRIMARY KEY (datatree_id)
 );
+ALTER TABLE horde_datatree OWNER TO horde;
 
 CREATE INDEX datatree_datatree_name_idx ON horde_datatree (datatree_name);
 CREATE INDEX datatree_group_idx ON horde_datatree (group_uid);
@@ -33,6 +34,8 @@ CREATE TABLE horde_datatree_attributes (
     attribute_key VARCHAR(255),
     attribute_value TEXT
 );
+
+ALTER TABLE horde_datatree_attributes OWNER TO horde;
 
 CREATE INDEX datatree_attribute_idx ON horde_datatree_attributes (datatree_id);
 CREATE INDEX datatree_attribute_name_idx ON horde_datatree_attributes (attribute_name);

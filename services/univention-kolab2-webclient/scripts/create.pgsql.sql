@@ -14,6 +14,8 @@ CREATE TABLE horde_users (
     PRIMARY KEY (user_uid)
 );
 
+ALTER TABLE horde_users OWNER TO horde;
+
 CREATE TABLE horde_prefs (
     pref_uid        VARCHAR(255) NOT NULL,
     pref_scope      VARCHAR(16) DEFAULT '' NOT NULL,
@@ -22,6 +24,8 @@ CREATE TABLE horde_prefs (
 --
     PRIMARY KEY (pref_uid, pref_scope, pref_name)
 );
+
+ALTER TABLE horde_prefs OWNER TO horde;
 
 CREATE INDEX pref_uid_idx ON horde_prefs (pref_uid);
 CREATE INDEX pref_scope_idx ON horde_prefs (pref_scope);
@@ -39,6 +43,8 @@ CREATE TABLE horde_datatree (
     PRIMARY KEY (datatree_id)
 );
 
+ALTER TABLE horde_datatree OWNER TO horde;
+
 CREATE INDEX datatree_datatree_name_idx ON horde_datatree (datatree_name);
 CREATE INDEX datatree_group_idx ON horde_datatree (group_uid);
 CREATE INDEX datatree_user_idx ON horde_datatree (user_uid);
@@ -53,6 +59,8 @@ CREATE TABLE horde_datatree_attributes (
     attribute_value TEXT
 );
 
+ALTER TABLE horde_datatree_attributes OWNER TO horde;
+
 CREATE INDEX datatree_attribute_idx ON horde_datatree_attributes USING HASH(datatree_id);
 CREATE INDEX datatree_attribute_name_idx ON horde_datatree_attributes (attribute_name);
 CREATE INDEX datatree_attribute_key_idx ON horde_datatree_attributes (attribute_key);
@@ -66,6 +74,8 @@ CREATE TABLE horde_tokens (
     PRIMARY KEY (token_address, token_id)
 );
 
+ALTER TABLE horde_tokens OWNER TO horde;
+
 CREATE TABLE horde_vfs (
     vfs_id        BIGINT NOT NULL,
     vfs_type      SMALLINT NOT NULL,
@@ -77,6 +87,8 @@ CREATE TABLE horde_vfs (
 
     PRIMARY KEY   (vfs_id)
 );
+
+ALTER TABLE horde_vfs OWNER TO horde;
 
 CREATE INDEX vfs_path_idx ON horde_vfs (vfs_path);
 CREATE INDEX vfs_name_idx ON horde_vfs (vfs_name);
@@ -104,6 +116,8 @@ CREATE TABLE horde_sessionhandler (
     PRIMARY KEY (session_id)
 );
 
+ALTER TABLE horde_sessionhandler OWNER TO horde;
+
 CREATE TABLE horde_syncml_map (
     syncml_syncpartner VARCHAR(64) NOT NULL,
     syncml_db          VARCHAR(64) NOT NULL,
@@ -112,6 +126,8 @@ CREATE TABLE horde_syncml_map (
     syncml_suid        VARCHAR(64),
     syncml_timestamp   BIGINT
 );
+
+ALTER TABLE horde_syncml_map OWNER TO horde;
 
 CREATE INDEX syncml_cuid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_cuid);
 CREATE INDEX syncml_suid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_suid);
@@ -130,6 +146,8 @@ CREATE TABLE horde_alarms (
     alarm_internal  TEXT
 );
 
+ALTER TABLE horde_alarms OWNER TO horde;
+
 CREATE INDEX alarm_id_idx ON horde_alarms (alarm_id);
 CREATE INDEX alarm_user_idx ON horde_alarms (alarm_uid);
 CREATE INDEX alarm_start_idx ON horde_alarms (alarm_start);
@@ -144,3 +162,5 @@ CREATE TABLE horde_cache (
 --
     PRIMARY KEY  (cache_id)
 );
+
+ALTER TABLE horde_cache OWNER TO horde;

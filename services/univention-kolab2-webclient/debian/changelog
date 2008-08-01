@@ -1,3 +1,9 @@
+univention-kolab2-webclient (3.0.2-1) unstable; urgency=low
+
+  * set the owner of the horde tables to horde
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Aug 2008 07:24:37 +0200
+
 univention-kolab2-webclient (3.0.1-1) unstable; urgency=low
 
   * use a separate script for the database and user creation

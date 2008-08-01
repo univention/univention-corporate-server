@@ -9,5 +9,7 @@ CREATE TABLE horde_prefs (
     PRIMARY KEY (pref_uid, pref_scope, pref_name)
 );
 
+ALTER TABLE horde_prefs OWNER TO horde;
+
 CREATE INDEX pref_uid_idx ON horde_prefs (pref_uid);
 CREATE INDEX pref_scope_idx ON horde_prefs (pref_scope);
