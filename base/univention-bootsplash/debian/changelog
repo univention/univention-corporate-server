@@ -1,3 +1,9 @@
+univention-bootsplash (1.2.2-3) unstable; urgency=low
+
+  * updated beam to the new colors
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri,  1 Aug 2008 16:49:19 +0200
+
 univention-bootsplash (1.2.2-2) unstable; urgency=low
 
   * added new bootsplashimages 
