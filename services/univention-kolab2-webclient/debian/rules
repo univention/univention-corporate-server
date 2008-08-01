@@ -67,6 +67,7 @@ install: build
 	dh_installdirs
 
 	mkdir -p $(SHARE)
+	install -m 644 scripts/scripts/create.database_and_user.sql $(SHARE)
 	install -m 644 scripts/create.pgsql.sql $(SHARE)
 	install -m 644 scripts/horde_datatree.sql $(SHARE)
 	install -m 644 scripts/horde_prefs.sql $(SHARE)
