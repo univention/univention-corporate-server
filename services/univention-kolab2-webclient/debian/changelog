@@ -1,3 +1,9 @@
+univention-kolab2-webclient (3.0.0-1) unstable; urgency=low
+
+  * use a separate script for the database and user creation
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  1 Aug 2008 07:03:03 +0200
+
 univention-kolab2-webclient (2.0.0-16) unstable; urgency=low
 
   * fixed typo un the syncml_reset_user script

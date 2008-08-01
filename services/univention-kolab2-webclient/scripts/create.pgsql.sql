@@ -4,14 +4,6 @@
 --
 -- $ psql -d template1 -f create.pgsql.sql
 
-CREATE DATABASE horde;
-
-CREATE USER horde;
--- ALTER USER horde WITH PASSWORD 'pass';
-
-GRANT CREATE on DATABASE horde to horde;
-
--- \c horde horde;
 
 CREATE TABLE horde_users (
     user_uid                    VARCHAR(255) NOT NULL,
