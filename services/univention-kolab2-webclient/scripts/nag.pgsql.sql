@@ -22,6 +22,8 @@ CREATE TABLE nag_tasks (
     PRIMARY KEY (task_id)
 );
 
+ALTER TABLE nag_tasks OWNER TO horde;
+
 CREATE INDEX nag_tasklist_idx ON nag_tasks (task_owner);
 CREATE INDEX nag_uid_idx ON nag_tasks (task_uid);
 CREATE INDEX nag_start_idx ON nag_tasks (task_start);

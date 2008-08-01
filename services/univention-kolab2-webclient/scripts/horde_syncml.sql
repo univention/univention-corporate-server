@@ -11,6 +11,8 @@ CREATE TABLE horde_syncml_map (
     syncml_timestamp   INTEGER
 );
 
+ALTER TABLE horde_syncml_map OWNER TO horde;
+
 CREATE INDEX syncml_cuid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_cuid);
 CREATE INDEX syncml_suid_idx ON horde_syncml_map (syncml_syncpartner, syncml_db, syncml_uid, syncml_suid);
 

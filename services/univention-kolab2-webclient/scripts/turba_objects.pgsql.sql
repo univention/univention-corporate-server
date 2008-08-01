@@ -47,4 +47,6 @@ CREATE TABLE turba_objects (
     PRIMARY KEY(object_id)
 );
 
+ALTER TABLE turba_objects OWNER TO horde;
+
 CREATE INDEX turba_owner_idx ON turba_objects (owner_id);

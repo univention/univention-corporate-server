@@ -12,6 +12,8 @@ CREATE TABLE horde_histories (
     PRIMARY KEY (history_id)
 );
 
+ALTER TABLE horde_histories OWNER TO horde;
+
 CREATE INDEX history_action_idx ON horde_histories (history_action);
 CREATE INDEX history_ts_idx ON horde_histories (history_ts);
 CREATE INDEX history_uid_idx ON horde_histories (object_uid);

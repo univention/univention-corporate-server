@@ -12,6 +12,8 @@ CREATE TABLE mnemo_memos (
     PRIMARY KEY (memo_owner, memo_id)
 );
 
+ALTER TABLE mnemo_memos OWNER TO horde;
+
 CREATE INDEX mnemo_notepad_idx ON mnemo_memos (memo_owner);
 CREATE INDEX mnemo_uid_idx ON mnemo_memos (memo_uid);
 

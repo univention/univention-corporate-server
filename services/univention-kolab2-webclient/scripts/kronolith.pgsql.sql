@@ -27,6 +27,8 @@ CREATE TABLE kronolith_events (
     PRIMARY KEY (event_id)
 );
 
+ALTER TABLE kronolith_events OWNER TO horde;
+
 CREATE INDEX kronolith_calendar_idx ON kronolith_events (calendar_id);
 CREATE INDEX kronolith_uid_idx ON kronolith_events (event_uid);
 
@@ -36,6 +38,8 @@ CREATE TABLE kronolith_storage (
     vfb_email      VARCHAR(255) DEFAULT '' NOT NULL,
     vfb_serialized TEXT NOT NULL
 );
+
+ALTER TABLE kronolith_storage OWNER TO horde;
 
 CREATE INDEX kronolith_vfb_owner_idx ON kronolith_storage (vfb_owner);
 CREATE INDEX kronolith_vfb_email_idx ON kronolith_storage (vfb_email);
