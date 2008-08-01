@@ -1,4 +1,4 @@
-univention-kolab2-webclient (3.0.0-1) unstable; urgency=low
+univention-kolab2-webclient (3.0.1-1) unstable; urgency=low
 
   * use a separate script for the database and user creation
 
