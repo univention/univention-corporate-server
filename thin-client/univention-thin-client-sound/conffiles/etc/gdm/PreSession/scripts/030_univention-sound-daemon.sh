@@ -34,8 +34,8 @@ if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
-# start sound server (default: esd)
-if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "esd" ]; then
+# start sound server (default: arts)
+if [ "$thinclient_sound_daemon" = "esd" ]; then
 	if test -e "/usr/bin/esd" -a -e "/dev/dsp"; then
 		/usr/bin/esd -tcp -public -nobeeps -port 1601 &
 		echo "setenv ESPEAKER $HOSTNAME.$(dnsdomainname):1601" >> ~/.univention-thin-client-session

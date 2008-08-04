@@ -1,3 +1,9 @@
+univention-thin-client-sound (2.0.7-3) unstable; urgency=low
+
+  * set default sound server to arts
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  4 Aug 2008 16:43:15 +0200
+
 univention-thin-client-sound (2.0.7-2) unstable; urgency=low
 
   * added variable ARTS_SERVER to allow the transportion of sound over the network
