@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-4) unstable; urgency=low
+
+  * renamed method set_uid_umlauts_mixedcase back to set_uid_umlauts
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  6 Aug 2008 09:29:19 +0200
+
 univention-directory-manager-modules (3.0.14-3) unstable; urgency=low
 
   * rename method set_uid_umlauts_mixedcase to set_uid_umlauts which is called by CLI
