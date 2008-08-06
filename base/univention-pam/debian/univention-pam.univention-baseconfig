@@ -26,6 +26,7 @@ File: etc/libnss-ldap.conf
 Variables: ldap/server/name
 Variables: ldap/server/addition
 Variables: nssldap/bindpolicy
+Variables: nssldap/idle/timelimit
 
 Type: file
 File: etc/nsswitch.conf
