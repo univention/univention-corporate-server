@@ -1472,7 +1472,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 				try:
 					username_match=s.parse(uid)
 				except univention.admin.uexceptions.valueError,e: # uid contains already mixed case umlauts, so we switch
-					self.set_uid_umlauts_mixedcase()
+					self.set_uid_umlauts()
 				self['username']=uid
 			# FIXME: we should NEVER catch all exceptions
 			except Exception, e:
@@ -1820,7 +1820,7 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			self.__krb5_principal=self['username']+'@'+realm
 		return self.__krb5_principal
 
-	def set_uid_umlauts_mixedcase(self, mixedcase=1):
+	def set_uid_umlauts(self, mixedcase=1):
 		self.uid_umlauts_mixedcase=mixedcase
 		if mixedcase:
 			self.descriptions['username'] = univention.admin.property(
