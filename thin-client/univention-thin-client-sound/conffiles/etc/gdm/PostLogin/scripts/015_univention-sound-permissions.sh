@@ -41,4 +41,9 @@ univention-baseconfig set udev/sound/owner=$USER
 udevcontrol reload_rules
 udevtrigger --subsystem-match=sound
 
+eval $(univention-baseconfig shell udev/sound/group)
+[ -z "$udev_sound_group" ] && udev_sound_group="Domain Users"
+chown "$USER" /dev/mixer /dev/audio /dev/dsp /dev/sequencer /dev/sequencer2
+chgrp "$udev_sound_group" /dev/mixer /dev/audio /dev/dsp /dev/sequencer /dev/sequencer2
+
 exit 0
