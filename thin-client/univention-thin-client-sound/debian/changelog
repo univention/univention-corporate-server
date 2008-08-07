@@ -1,3 +1,10 @@
+univention-thin-client-sound (2.0.7-4) unstable; urgency=low
+
+  * added a workaround for a non-working udevcontrol reload_rules and udevtrigger 
+  * fixed a missing entry for the default sound server arts
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu,  7 Aug 2008 13:24:53 +0200
+
 univention-thin-client-sound (2.0.7-3) unstable; urgency=low
 
   * set default sound server to arts

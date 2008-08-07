@@ -34,7 +34,7 @@ if [ -z "$univentionSoundEnabled" -o "$univentionSoundEnabled" = "0" ]; then
 	exit 0
 fi
 
-if [ -n "$thinclient_sound_daemon" -a "$thinclient_sound_daemon" = "esd" ]; then
+if [ "$thinclient_sound_daemon" = "esd" ]; then
 	killall -9 esd
 else
 	killall -9 artsd
