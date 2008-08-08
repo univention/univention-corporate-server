@@ -1,3 +1,9 @@
+univention-thin-client-cups (2.0.3-1) unstable; urgency=low
+
+  * add cupsys as univention-thin-client-cups-config dependency
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri,  8 Aug 2008 13:28:08 +0200
+
 univention-thin-client-cups (2.0.2-1) unstable; urgency=low
 
   * download the debian package patch

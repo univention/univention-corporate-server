@@ -18,6 +18,7 @@ Description: UCS - CUPS for thin clients
 
 Package: univention-thin-client-cups-config
 Architecture: all
+Depends: cupsys
 Description: UCS - CUPS configuration for thin clients
  This package contains CUPS configuration files for thin clients.
  .
