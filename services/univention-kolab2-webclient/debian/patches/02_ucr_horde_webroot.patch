@@ -1,0 +1,69 @@
+Index: univention-kolab2-webclient/debian/univention-kolab2-webclient.univention-baseconfig
+===================================================================
+--- univention-kolab2-webclient/debian/univention-kolab2-webclient.univention-baseconfig	(Revision 5420)
++++ univention-kolab2-webclient/debian/univention-kolab2-webclient.univention-baseconfig	(Arbeitskopie)
+@@ -32,6 +32,7 @@
+ Type: file
+ File: etc/horde/horde3/registry.php
+ Variables: horde/application/.*
++Variables: horde/webroot
+ 
+ Type: file
+ File: etc/horde/imp4/conf.php
+@@ -105,6 +106,7 @@
+ Variables: interfaces/eth0/type
+ Variables: hostname
+ Variables: domainname
++Variables: horde/webroot
+ 
+ Type: subfile
+ Multifile: etc/postgresql/7.4/main/pg_hba.conf
+Index: univention-kolab2-webclient/conffiles/etc/horde/horde3/conf.php
+===================================================================
+--- univention-kolab2-webclient/conffiles/etc/horde/horde3/conf.php	(Revision 5420)
++++ univention-kolab2-webclient/conffiles/etc/horde/horde3/conf.php	(Arbeitskopie)
+@@ -32,10 +32,13 @@
+ else:
+ 	print "$conf['cookie']['domain'] = $_SERVER['SERVER_NAME'];"
+ @!@
+-$conf['cookie']['path'] = '/horde3';
+ $conf['sql']['persistent'] = true;
+ $conf['sql']['username'] = 'horde';
+ @!@
++if baseConfig.has_key('horde/webroot'):
++      print "$conf['cookie']['path'] = '%s';" % baseConfig['horde/webroot']
++else:
++      print "$conf['cookie']['path'] = '/horde3';"
+ try:
+ 	f = open( '/etc/horde.secret', 'r' )
+ 	passwd = f.readlines()[ 0 ][ : -1 ]
+Index: univention-kolab2-webclient/conffiles/etc/horde/horde3/registry.php
+===================================================================
+--- univention-kolab2-webclient/conffiles/etc/horde/horde3/registry.php	(Revision 5420)
++++ univention-kolab2-webclient/conffiles/etc/horde/horde3/registry.php	(Arbeitskopie)
+@@ -69,6 +69,10 @@
+ } else {
+     $webroot = '/horde3';
+ }
++@!@
++if baseConfig.has_key('horde/webroot'):
++        print "$webroot = '%s';" % baseConfig['horde/webroot']
++@!@
+ 
+ $this->applications['horde'] = array(
+     'fileroot' => '/usr/share/horde3/lib' . '/..',
+Index: univention-kolab2-webclient/conffiles/etc/univention/apache/96univention-horde
+===================================================================
+--- univention-kolab2-webclient/conffiles/etc/univention/apache/96univention-horde	(Revision 5420)
++++ univention-kolab2-webclient/conffiles/etc/univention/apache/96univention-horde	(Arbeitskopie)
+@@ -48,4 +48,9 @@
+ 	AddType application/x-httpd-php-source .phps
+ </Directory>
+ 
+-Alias /horde3 /usr/share/horde3
++@!@
++if baseConfig.has_key('horde/webroot'):
++	print "Alias %s  /usr/share/horde3" % baseConfig['horde/webroot']
++else:
++	print "Alias /horde3  /usr/share/horde3"
++@!@
