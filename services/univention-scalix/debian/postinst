@@ -43,7 +43,7 @@ createLogfile () {
 
 createLogfile /var/log/univention/scalix-sync.log "root:adm" 640
 
-scalix_version=11.4.0
+scalix_version=11.4.1
 
 /usr/sbin/univention-baseconfig set scalix/version="$scalix_version"
 /usr/sbin/univention-baseconfig set scalix/pop3s?yes

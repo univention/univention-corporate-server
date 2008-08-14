@@ -1,3 +1,10 @@
+univention-scalix (2.0.1-1) unstable; urgency=low
+
+  * update to Scalix 11.4.1
+  * update to UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Aug 2008 21:29:43 +0200
+
 univention-scalix (1.0.8-5) unstable; urgency=low
 
   * copy Osmtpd.cfg not 0smtpd.cfg ...
