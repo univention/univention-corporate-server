@@ -1,3 +1,41 @@
+univention-scalix (2.0.1-1) unstable; urgency=low
+
+  * update to Scalix 11.4.1
+  * update to UCS 2.1
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 14 Aug 2008 21:29:43 +0200
+
+univention-scalix (1.0.8-5) unstable; urgency=low
+
+  * copy Osmtpd.cfg not 0smtpd.cfg ...
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 16:57:22 +0200
+
+univention-scalix (1.0.8-4) unstable; urgency=low
+
+  * fixed bash syntax error in postinst
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 16:13:17 +0200
+
+univention-scalix (1.0.8-3) unstable; urgency=low
+
+  * backup the s/sys/smtpd.cfg config under /var/univention-
+    backup/scalix because scalix changed the default behaviour
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 15:07:04 +0200
+
+univention-scalix (1.0.8-2) unstable; urgency=low
+
+  * added diversion for /etc/default/ldapmapper
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 11 Jun 2008 06:32:45 +0200
+
+univention-scalix (1.0.8-1) unstable; urgency=low
+
+  * update to Scalix 11.4
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Jun 2008 16:37:51 +0200
+
 univention-scalix (1.0.7-1) unstable; urgency=low
 
   * also change the ip in the postgres configuration
