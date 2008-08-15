@@ -39,7 +39,7 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 	fd, filename = tempfile.mkstemp()
 	os.close( fd )
 
-	result=os.system('univention_policy_result -s %s >>%s' %  (baseConfig['ldap/hostdn'], filename))
+	result=os.system('univention_policy_result -s "%s" >>%s' %  (baseConfig['ldap/hostdn'], filename))
 
 	if result != 0:
 		print 'failed to execute univention_policy_result'

@@ -45,7 +45,7 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 	for key in ['ldap/server/name', 'ldap/server/addition']:
 		if baseConfig.has_key(key):
 			for k in baseConfig[key].split(' '):
-				result=os.system('univention_policy_result -h %s -s %s >>%s' %  (k, baseConfig['ldap/hostdn'], tempfile))
+				result=os.system('univention_policy_result -h %s -s "%s" >>%s' %  (k, baseConfig['ldap/hostdn'], tempfile))
 				addition=[]
 
 				if result != 0:
