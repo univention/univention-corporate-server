@@ -126,7 +126,7 @@ def handler(dn, new, old, command):
 
 	def fix_anyone_acl( new, email, policy ):
 		if email == 'anyone' and new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0]:
-			for flag in 'lrps':
+			for flag in 'p':
 				if not flag in policy:
 					policy += flag
 		return policy
