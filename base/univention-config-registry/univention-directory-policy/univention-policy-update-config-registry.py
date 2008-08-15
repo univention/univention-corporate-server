@@ -92,7 +92,7 @@ def main():
 		print 'Simulating update...'
 
 	# get policy result
-	p1 = subprocess.Popen('univention-policy-result %s' % dn, shell=True, stdout=subprocess.PIPE)
+	p1 = subprocess.Popen('univention-policy-result "%s"' % dn, shell=True, stdout=subprocess.PIPE)
 	p2 = subprocess.Popen('grep -A1 "^Attribute: univentionRegistry;entry-hex-"',
 						  shell=True, stdin=p1.stdout, stdout=subprocess.PIPE)
 	result = p2.communicate()[0]
