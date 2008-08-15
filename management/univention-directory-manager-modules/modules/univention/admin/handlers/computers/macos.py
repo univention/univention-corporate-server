@@ -252,6 +252,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('mac', 'macAddress' )
+mapping.register('ip', 'aRecord' )
 mapping.register('network', 'univentionNetworkLink', None, univention.admin.mapping.ListToString)
 mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.ListToString)
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
@@ -302,7 +303,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
 		self.nagios_open()
-		ip=''
 
 		if self.dn:
 			if 'posix' in self.options:
