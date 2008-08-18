@@ -1617,7 +1617,7 @@ class simpleComputer( simpleLdap ):
 				continue
 			newmembers=copy.deepcopy(members)
 			newmembers.remove(self.dn)
-			self.lo.modify(grpdn, [('uniqueMember', oldmembers, newmembers)])
+			self.lo.modify(grpdn, [('uniqueMember', members, newmembers)])
 
 	def update_groups(self):
 		if not self.hasChanged('groups') and \
