@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-7) unstable; urgency=low
+
+  * change memberUid in groups after user rename in ./modules/univention/admin/handlers/users/user.py (Bug #11865)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 19 Aug 2008 13:11:22 +0200
+
 univention-directory-manager-modules (3.0.14-6) unstable; urgency=low
 
   * fixed var name typo in modules/univention/admin/handlers/__init__.py (Bug #10049)

@@ -1695,11 +1695,23 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 
 		if self.exists():
 			old_groups = self.oldinfo.get('groups', [])
+			old_uid = self.oldinfo.get( 'username', '' )
+			new_uid = self.info.get('username')
+			new_groups = self.info.get('groups', [])
 		else:
 			old_groups = []
+			old_uid = ""
+			new_uid=""
+			new_groups = []
 
 		add_to_group=[]
 		remove_from_group=[]
+
+		# change memberUid if we have a new username
+		if not old_uid == new_uid:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid after rename')
+			for group in new_groups:
+				self.__rewrite_member_uid( group )
 
 		def case_insensitive_in_list(dn, list):
 			
