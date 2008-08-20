@@ -49,11 +49,11 @@ if [ "$check_ldap_access" = "1" ]; then
 fi
 
 ldap_available=1
-if [ `cat /var/run/univention-system-setup.ldap` = "no-ldap" ]; then
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
     ldap_available=0
 fi
 
-new_hostname=`get_profile_var "hostname"`
+new_hostname=$(get_profile_var "hostname")
 if [ -z "$new_hostname" ]; then
 	exit 0
 fi
@@ -62,7 +62,7 @@ old_hostname=$(univention-config-registry get hostname)
 if [ -d "/var/lib/univention-system-setup/hostname.pre" ]; then
     run-parts /var/lib/univention-system-setup/hostname.pre --arg=$old_hostname --arg=$new_hostname
 fi
-	
+
 service_stop nscd heimdal-kdc univention-directory-notifier
 
 binddn=`ldap_binddn`
@@ -71,7 +71,7 @@ bindpwd=`ldap_bindpwd`
 #fallback for old univention admin version
 ua_version=`dpkg -s univention-directory-manager-tools | grep ^Version | sed -e 's|Version: ||'`
 
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 
 	dpkg --compare-versions $ua_version lt 1.10-1
 	if [ $? = 0 ]; then
@@ -111,7 +111,7 @@ if [ $ldap_available = 1 ]; then
 
 
 		ldapsearch -x -D "$binddn" -w "$bindpwd"  "(&(objectClass=univentionGroup)(uniqueMember=$ldap_hostdn))" -LLL dn | ldapsearch-wrapper | grep "^dn: " | sed -e 's|^dn: ||' | while read dn; do
-			univention-directory-manager groups/group modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append users="`echo $ldap_hostdn|sed -e"s|cn=$old_hostname,|cn=$new_hostname,|"`" --remove users=$ldap_hostdn
+			univention-directory-manager groups/group modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$dn" --append users="$(echo $ldap_hostdn|sed -e"s|cn=$old_hostname,|cn=$new_hostname,|")" --remove users=$ldap_hostdn
 		done
 
 		echo `date` : "Configure hostname for groupware account in LDAP: " $new_hostname.$domainname  >> /var/log/univention/setup.log
@@ -130,14 +130,14 @@ if [ $ldap_available = 1 ]; then
 
 
 	fi
-	if [ -x /usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool ] ; then
+	if [ -x "/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool" ] ; then
 		/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool -m -o $old_hostname.$domainname -n $new_hostname.$domainname -D "$binddn" -w "$bindpwd"
 	fi
 fi
 
 # modify ldap policies
 
-new_hostdn="`echo $ldap_hostdn | sed -e "s|cn=$old_hostname,|cn=$new_hostname,|"`"
+new_hostdn="$(echo $ldap_hostdn | sed -e "s|cn=$old_hostname,|cn=$new_hostname,|")"
 echo "new_hostdn=$new_hostdn"
 
 echo `date` : "Configure  host DN in baseconfig : " $new_hostdn  >> /var/log/univention/setup.log
@@ -146,7 +146,7 @@ univention-config-registry set ldap/hostdn="$new_hostdn"
 echo `date` : "Configure  hostname in baseconfig : " $new_hostname  >> /var/log/univention/setup.log
 univention-config-registry set hostname=$new_hostname
 
-new_mailroot="`echo $mail_alias_root | sed -e "s|\@$old_hostname\.|\@$new_hostname\.|"`"
+new_mailroot="$(echo $mail_alias_root | sed -e "s|\@$old_hostname\.|\@$new_hostname\.|")"
 echo `date` : "Configure  mail alias for root user in baseconfig : " $new_mailroot  >> /var/log/univention/setup.log
 univention-config-registry set mail/alias/root=$new_mailroot
 
@@ -164,7 +164,7 @@ set_baseconfig_variable ()
 set_baseconfig_variable_mail ()
 {
 	if [ -n "$2" ]; then
-		univention-config-registry set $1="`echo $2 | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|"`"
+		univention-config-registry set $1="$(echo $2 | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|")"
 	fi
 }
 set_baseconfig_variable_part ()
@@ -198,9 +198,9 @@ set_baseconfig_variable_part_mail ()
 	if [ -n "$2" ]; then
 		for i in $2; do
 			if [ -n "$value" ]; then
-				value="$value `echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;"`"
+				value="$value $(echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;")"
 			else
-				value="`echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;"`"
+				value="$(echo $i | sed -e "s|@$old_hostname.$domainname$|@$new_hostname.$domainname|;")"
 			fi
 		done
 
@@ -274,12 +274,12 @@ univention-config-registry commit /etc/pam.d/httpd \
 
 
 if [ "$server_role" = "domaincontroller_master" ]; then  # create the new certificate
-	if [ ! -d /etc/univention/ssl/$new_hostname.$domainname ]; then
+	if [ ! -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
 		source /usr/share/univention-ssl/make-certificates.sh;
 		gencert $new_hostname.$domainname $new_hostname.$domainname
 	fi
 else # download certificate from master
-	if [ -x /usr/sbin/univention-scp ]; then
+	if [ -x "/usr/sbin/univention-scp" ]; then
 		echo `date` : "Download host certificate"  >> /var/log/univention/setup.log
 		HOSTPWD="/etc/machine.secret"
 		HOSTACCOUNT="$new_hostname\$"
@@ -302,7 +302,7 @@ else # download certificate from master
 	fi
 fi
 
-if [ -d /etc/univention/ssl/$new_hostname.$domainname ]; then
+if [ -d "/etc/univention/ssl/$new_hostname.$domainname" ]; then
 	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
 	chown cyrus: /var/lib/cyrus/cert.pem
 	chmod 600 /var/lib/cyrus/cert.pem
@@ -314,7 +314,7 @@ rm -f /etc/univention/ssl/$new_hostname
 ln -sf /etc/univention/ssl/$new_hostname.$domainname /etc/univention/ssl/$new_hostname
 
 
-if [ -d /var/lib/cyrus/ ]; then
+if [ -d "/var/lib/cyrus/" ]; then
 	echo `date` : "Include new host certificate for Cyrus"  >> /var/log/univention/setup.log
 	cp /etc/univention/ssl/$new_hostname.$domainname/cert.pem /var/lib/cyrus/cert.pem
 	chown cyrus: /var/lib/cyrus/cert.pem
@@ -335,20 +335,20 @@ kadmin -l ext "ldap/$new_hostname.$domainname@`echo $kerberos_realm | tr [[lower
 
 
 #DNS settings
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 
 	# Forward Zone
 	univention-directory-manager dns/forward_zone list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|DN: ||' | while read super; do
 
 		# SRV records
 		univention-directory-manager dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter sRVRecord="* $old_hostname.$domainname*" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
-		
-			old_location=`univention-directory-manager dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "$(echo $dn | sed -e 's|,.*||g')" |grep "location.* $old_hostname.$domainnmae" | sed -e 's|.* location: ||'`
+
+			old_location=$(univention-directory-manager dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "$(echo $dn | sed -e 's|,.*||g')" |grep "location.* $old_hostname.$domainnmae" | sed -e 's|.* location: ||')
 			if [ -z "$old_location" ]; then
 				continue
 			fi
 
-			new_location=`echo $old_location | sed -e "s| $old_hostname.$domainname| $new_hostname.$domainname|"`
+			new_location=$(echo $old_location | sed -e "s| $old_hostname.$domainname| $new_hostname.$domainname|")
 
 			echo `date` : "Configure DNS service record location :" $new_location  >> /var/log/univention/setup.log
 
@@ -477,7 +477,7 @@ service_start univention-directory-notifier
 
 is_variable_set "UMC_MODE"
 if [ $? = 0 ]; then
-	if [ -x /usr/sbin/apachectl ]; then
+	if [ -x "/usr/sbin/apachectl" ]; then
 		/usr/sbin/apachectl stop
 		count=0
 		while pidof apache; do
@@ -500,15 +500,15 @@ service_start univention-bind univention-bind-proxy heimdal-kdc
 #invalidate the hosts cache
 nscd -i hosts
 
-if [ -x /usr/sbin/postmap ] && [ -e /etc/postfix/transport ]; then
+if [ -x "/usr/sbin/postmap" ] && [ -e "/etc/postfix/transport" ]; then
 	/usr/sbin/postmap /etc/postfix/transport
 fi
 
-if [ -x /usr/bin/newaliases ]; then
+if [ -x "/usr/bin/newaliases" ]; then
 	/usr/bin/newaliases
 fi
 
-if [ -x /etc/init.d/postfix ]; then
+if [ -x "/etc/init.d/postfix" ]; then
 	/etc/init.d/postfix reload
 fi
 
@@ -528,7 +528,7 @@ if [ -n "$passfile" ]; then
 	service_stop samba; sleep 1; service_start samba
 fi
 
-if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
+if [ -e "/etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg" ]; then
 	sed -i "s| $old_hostname.$domainname | $new_hostname.$domainname |" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
 fi
 

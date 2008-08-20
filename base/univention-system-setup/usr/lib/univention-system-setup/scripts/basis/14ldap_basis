@@ -40,10 +40,10 @@ if [ "$check_ldap_access" = "1" ]; then
 	exit 0
 fi
 
-new_ldap_base=`get_profile_var "ldap/base"`
+new_ldap_base=$(get_profile_var "ldap/base")
 
 ldap_available=1
-if [ `cat /var/run/univention-system-setup.ldap` = "no-ldap" ]; then
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
     ldap_available=0
 fi
 
@@ -65,7 +65,7 @@ rm /var/lib/univention-directory-listener/nfs-shares
 
 service_stop nscd slapd univention-directory-notifier heimdal-kdc
 
-d=`date +%Y%m%d%H%M%S`
+d=$(date +%Y%m%d%H%M%S)
 
 slapcat >/var/cache/univention-system-setup/ldif.$d
 
@@ -80,13 +80,13 @@ rm -Rf /var/lib/univention-ldap/ldap/*
 
 univention-config-registry set ldap/base="$new_ldap_base"
 
-for var in `univention-config-registry search --value $oldbn | cut -f 1 -d ":"`; do
+for var in $(univention-config-registry search --value $oldbn | cut -f 1 -d ":"); do
 	# the ldap/base is already set
 	if [ "$var" = "ldap/base" ]; then
 		continue
 	fi
-	old_value="`univention-config-registry get $var`"
-	new_value=`echo $old_value | sed -e "s|$oldbn|$new_ldap_base|"`
+	old_value="$(univention-config-registry get $var)"
+	new_value="$(echo $old_value | sed -e "s|$oldbn|$new_ldap_base|")"
 	echo "Replace baseconfig variable $var from $old_value to $new_value" >>/var/log/univention/setup.log
 	univention-config-registry set $var="$new_value"
 done
@@ -96,7 +96,7 @@ univention-config-registry commit /var/lib/univention-ldap/ldap/DB_CONFIG
 
 sed -i "s|univentionNagiosCheckArgs: $ldap_base|univentionNagiosCheckArgs: $new_ldap_base|" /var/cache/univention-system-setup/new_ldif.$d
 
-if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
+if [ -e "/etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg" ]; then
 	sed -i "s|$ldap_base|$new_ldap_base|" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
 fi
 
@@ -119,7 +119,7 @@ fi
 service_stop univention-bind univention-bind-proxy
 
 # set value in /etc files
-if [ -d /etc/bind/univention.conf.d ]; then
+if [ -d "/etc/bind/univention.conf.d" ]; then
 	for i in /etc/bind/univention.conf.d/*; do
 		sed -i "s|,$oldbn |,$new_ldap_base |g" $i
 	done
@@ -128,8 +128,8 @@ fi
 service_start univention-bind univention-bind-proxy
 
 if [ -n "$passfile" ]; then
-	if [ -x /usr/bin/smbpasswd ]; then
-		smbpasswd -w `cat $passfile`
+	if [ -x "/usr/bin/smbpasswd" ]; then
+		smbpasswd -w "$(cat $passfile)"
 		service_stop samba; sleep 1; service_start samba
 	fi
 fi

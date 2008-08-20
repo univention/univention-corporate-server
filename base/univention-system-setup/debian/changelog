@@ -1,3 +1,9 @@
+univention-system-setup (1.1.12-1) unstable; urgency=low
+
+  * bug #8702: fixed "unary operator expected" error messages
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 20 Aug 2008 10:42:34 +0200
+
 univention-system-setup (1.1.11-1) unstable; urgency=low
 
   * fixed bug in init.d script of univention-system-setup-boot
