@@ -42,7 +42,7 @@ fi
 
 ldap_available=1
 
-if [ `cat /var/run/univention-system-setup.ldap` = "no-ldap" ]; then
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
     ldap_available=0
 fi
 
@@ -62,7 +62,7 @@ service_stop samba
 
 eval $(univention-config-registry shell)
 
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		univention-directory-manager settings/sambadomain list --filter sambaDomainName="$windows_domain" | grep "^DN:" | sed -e 's|DN: ||' | while read dn; do
 			univention-directory-manager settings/sambadomain modify --dn "$dn" --set name="$new_windows_domain"

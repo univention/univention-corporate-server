@@ -48,7 +48,7 @@ if [ "$check_ldap_access" = "1" ]; then
 fi
 
 ldap_available=1
-if [ `cat /var/run/univention-system-setup.ldap` = "no-ldap" ]; then
+if [ "$(cat /var/run/univention-system-setup.ldap)" = "no-ldap" ]; then
     ldap_available=0
 fi
 
@@ -71,7 +71,7 @@ bindpwd=`ldap_bindpwd`
 
 service_stop nscd heimdal-kdc univention-directory-notifier
 
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 
 	echo `date` : "Configure Kerberos principal name in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 	echo "dn: $ldap_hostdn" >/var/cache/univention-system-setup/krb5principal.rename.ldif
@@ -81,7 +81,7 @@ if [ $ldap_available = 1 ]; then
 	ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/krb5principal.rename.ldif
 	rm /var/cache/univention-system-setup/krb5principal.rename.ldif
 
-	kerberos_ldap_dn=`ldapsearch -x cn="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||'`
+	kerberos_ldap_dn=$(ldapsearch -x cn="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||')
 	if [ -n "$kerberos_ldap_dn" ]; then
 		echo `date` : "Configure Kerberos principal name in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 		echo "dn: $kerberos_ldap_dn" >/var/cache/univention-system-setup/kerberos_ldap_service.ldif
@@ -90,7 +90,7 @@ if [ $ldap_available = 1 ]; then
 		echo "sn: ldap/$hostname.$new_domainname@$kerberos_realm" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "krb5PrincipalName: ldap/$hostname.$new_domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
+		echo "krb5PrincipalName: ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		rm /var/cache/univention-system-setup/kerberos_ldap_service.ldif
@@ -102,7 +102,7 @@ if [ $ldap_available = 1 ]; then
 	echo `date` : "Configure hostname for groupware account in LDAP: " $hostname.$new_domainname  >> /var/log/univention/setup.log
 	ldapmodrdn -x -D "$binddn" -w "$bindpwd" -r "cn=$hostname.$old_domainname Groupware Account,cn=templates,cn=univention,$ldap_base" "cn=$hostname.$new_domainname Groupware Account"
 
-	if [ -x /usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool ] ; then
+	if [ -x "/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool" ] ; then
 		/usr/share/univention-nagios-server/tools/univention-nagios-ldap-tool -m -o $hostname.$old_domainname -n $hostname.$new_domainname -D "$binddn" -w "$bindpwd"
 	fi
 fi
@@ -121,7 +121,7 @@ set_baseconfig_variable ()
 set_baseconfig_variable_mail ()
 {
 	if [ -n "$2" ]; then
-		univention-config-registry set $1="`echo $2 | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|"`"
+		univention-config-registry set $1="$(echo $2 | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|")"
 	fi
 }
 set_baseconfig_variable_part_mail ()
@@ -137,9 +137,9 @@ set_baseconfig_variable_part_mail ()
 		value=""
 		for i in $2; do
 			if [ -n "$value" ]; then
-				value="$value `echo $i | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|"`"
+				value="$value $(echo $i | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|")"
 			else
-				value="`echo $i | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|"`"
+				value="$(echo $i | sed -e "s|@$hostname.$old_domainname$|@$hostname.$new_domainname|;s|@$old_domainname$|@$new_domainname|")"
 			fi
 		done
 
@@ -185,16 +185,16 @@ set_baseconfig_variable_part ()
 
 
 
-if [ -x /usr/sbin/univention-dnsedit ]; then
+if [ -x "/usr/sbin/univention-dnsedit" ]; then
 	UNIVENTION_DNSEDIT="/usr/sbin/univention-dnsedit"
 else
 	UNIVENTION_DNSEDIT="/usr/share/univention-directory-manager-tools/univention-dnsedit"
 fi
 
-if [ -d /etc/univention/ssl/$hostname.$old_domainname ]; then
+if [ -d "/etc/univention/ssl/$hostname.$old_domainname" ]; then
 	# create the new certificate
 	echo `date` : "Create new host certificate: " $hostname.$new_domainname  >> /var/log/univention/setup.log
-	if [ ! -d /etc/univention/ssl/$hostname.$new_domainname ]; then
+	if [ ! -d "/etc/univention/ssl/$hostname.$new_domainname" ]; then
 		source /usr/share/univention-ssl/make-certificates.sh;
 		gencert $hostname.$new_domainname $hostname.$new_domainname
 	fi
@@ -206,10 +206,10 @@ eval $(univention-config-registry shell)
 
 echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
 rm -f /etc/krb5.keytab
-kadmin -l ext "host/$hostname.$new_domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`"
-kadmin -l ext "ldap/$hostname.$new_domainname@`echo $kerberos_realm | tr [[lower]] [[upper]]`"
+kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])"
+kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])"
 
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 
 	if [ "$server_role" = "domaincontroller_master" ]; then
 		echo `date` : "Configure NIS domainname  and associated domainname in LDAP: " $new_domainname  >> /var/log/univention/setup.log
@@ -296,14 +296,14 @@ univention-config-registry commit /etc/pam.d/httpd \
 service_stop slapd
 service_start slapd nscd heimdal-kdc
 
-if [ -x /etc/init.d/slapd ]; then
+if [ -x "/etc/init.d/slapd" ]; then
 	/etc/init.d/slapd restart
 fi
 
-if [ $ldap_available = 1 ]; then
+if [ "$ldap_available" = 1 ]; then
 
 	univention-directory-manager dhcp/service list --binddn "$binddn" --bindpwd "$bindpwd" --filter "cn=$old_domainname" | grep ^DN | sed -e 's|^DN: ||' |while read super; do
-		res=`univention-directory-manager dhcp/server list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "(!(cn=$hostname))" | grep DN`
+		res=$(univention-directory-manager dhcp/server list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter "(!(cn=$hostname))" | grep DN)
 		if [ -z "$res" ]; then
 			univention-directory-manager dhcp/service create --binddn "$binddn" --bindpwd "$bindpwd"  --position cn=dhcp,$ldap_base --set service=$new_domainname
 			univention-directory-manager dhcp/server remove --binddn "$binddn" --bindpwd "$bindpwd"  --superordinate "$super" --dn "cn=$hostname,$super"
@@ -328,7 +328,7 @@ if [ $ldap_available = 1 ]; then
 
 	univention-directory-manager dns/forward_zone list --filter "zoneName=$old_domainname" | grep "^DN" | sed -e 's|^DN: ||' | while read super; do
 		res=""
-		names=`univention-directory-manager dns/host_record list --superordinate "$super"  | grep -i name  | grep -v ^DN | sed -e 's|^ *||;s|name: ||'`
+		names=$(univention-directory-manager dns/host_record list --superordinate "$super"  | grep -i name  | grep -v ^DN | sed -e 's|^ *||;s|name: ||')
 		for name in $names; do
 			if [ "$name" = "_kerberos" ] || [ "$name" = "$hostname" ]; then
 				continue
@@ -536,13 +536,13 @@ if [ $ldap_available = 1 ]; then
 
 fi
 
-if [ -e /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg ]; then
+if [ -e "/etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg" ]; then
 	sed -i "s|\.$domainname |.$new_domainname |" /etc/nagios/nrpe.univention.d/UNIVENTION_LDAP.cfg
 fi
 
 is_variable_set "UMC_MODE"
 if [ $? = 0 ]; then
-	if [ -x /usr/sbin/apachectl ]; then
+	if [ -x "/usr/sbin/apachectl" ]; then
 		/usr/sbin/apachectl stop
 		count=0
 		while pidof apache; do
@@ -557,15 +557,15 @@ if [ $? = 0 ]; then
 fi
 service_start univention-directory-notifier
 
-if [ -x /usr/sbin/postmap ] && [ -e /etc/postfix/transport ]; then
+if [ -x "/usr/sbin/postmap" ] && [ -e "/etc/postfix/transport" ]; then
 	/usr/sbin/postmap /etc/postfix/transport
 fi
 
-if [ -x /usr/bin/newaliases ]; then
+if [ -x "/usr/bin/newaliases" ]; then
 	/usr/bin/newaliases
 fi
 
-if [ -x /etc/init.d/postfix ]; then
+if [ -x "/etc/init.d/postfix" ]; then
 	/etc/init.d/postfix reload
 fi
 
