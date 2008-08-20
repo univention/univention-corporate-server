@@ -90,7 +90,7 @@ if [ "$ldap_available" = 1 ]; then
 		echo "sn: ldap/$hostname.$new_domainname@$kerberos_realm" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "krb5PrincipalName: ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
+		echo "krb5PrincipalName: ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		rm /var/cache/univention-system-setup/kerberos_ldap_service.ldif
@@ -206,8 +206,8 @@ eval $(univention-config-registry shell)
 
 echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
 rm -f /etc/krb5.keytab
-kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])"
-kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[lower]] [[upper]])"
+kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])"
+kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])"
 
 if [ "$ldap_available" = 1 ]; then
 
