@@ -473,8 +473,26 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self.exists():
 			old_groups = self.oldinfo.get('memberOf', [])
+                        old_name = self.oldinfo.get('name')
+                        new_name = self.info.get('name')
 		else:
 			old_groups = []
+			old_name = ""
+                        new_name = ""
+
+		# rewrite membership attributes in "supergroup" if we have a new name (rename)
+		if not old_name == new_name:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: rewrite memberuid after rename')
+			newdn = self.position.getDn()
+			newdn = newdn.replace(old_name, new_name)
+			for group in self.info.get('memberOf', []):
+				if type(group) == type([]):
+					group=group[0]
+				members=self.lo.getAttr(group, 'uniqueMember')
+				newmembers=copy.deepcopy(members)
+				newmembers=self.__case_insensitive_remove_from_list(self.dn, newmembers)
+				newmembers.append(newdn)
+				self.__set_membership_attributes( group, members, newmembers )
 
 		add_to_group=[]
 		remove_from_group=[]
