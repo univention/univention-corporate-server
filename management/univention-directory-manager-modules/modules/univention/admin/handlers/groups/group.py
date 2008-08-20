@@ -473,18 +473,18 @@ class object(univention.admin.handlers.simpleLdap):
 
 		if self.exists():
 			old_groups = self.oldinfo.get('memberOf', [])
-                        old_name = self.oldinfo.get('name')
-                        new_name = self.info.get('name')
+			old_name = self.oldinfo.get('name')
+			new_name = self.info.get('name')
 		else:
 			old_groups = []
 			old_name = ""
-                        new_name = ""
+			new_name = ""
 
 		# rewrite membership attributes in "supergroup" if we have a new name (rename)
 		if not old_name == new_name:
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'groups/group: rewrite memberuid after rename')
-			newdn = self.position.getDn()
-			newdn = newdn.replace(old_name, new_name)
+			newdn = self.dn
+			newdn = newdn.replace(old_name, new_name, 1)
 			for group in self.info.get('memberOf', []):
 				if type(group) == type([]):
 					group=group[0]

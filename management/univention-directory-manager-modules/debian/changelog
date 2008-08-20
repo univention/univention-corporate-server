@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-9) unstable; urgency=low
+
+  * make __update_membership in ./modules/univention/admin/handlers/groups/group.py more robust (Bug #11164)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed, 20 Aug 2008 13:16:53 +0200
+
 univention-directory-manager-modules (3.0.14-8) unstable; urgency=low
 
   * rewrite memberUid/uniqueMember in supergroup after group rename in ./modules/univention/admin/handlers/groups/group.py (Bug #11164)
