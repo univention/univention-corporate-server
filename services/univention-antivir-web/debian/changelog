@@ -1,3 +1,9 @@
+univention-antivir-web (2.0.1-7) unstable; urgency=low
+
+  * temporarily deactivate freshclam before restarting dansguardian to avoid locking conflict on /var/lib/clamav
+
+ -- Arvid Requate <requate@univention.de>  Fri, 29 Aug 2008 19:08:34 +0200
+
 univention-antivir-web (2.0.1-6) unstable; urgency=low
 
   * fix registration of config registry variables and configuration file

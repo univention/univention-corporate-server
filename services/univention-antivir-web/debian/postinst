@@ -59,7 +59,14 @@ case "$1" in
 	/etc/init.d/squid restart
 	eval $($CONFREG shell squid/virusscan squid/contentscan)
 	if [ "$squid_virusscan" = yes -o "$squid_contentscan" = yes ]; then
+		unset freshclam_active
+		if [ -x /etc/init.d/clamav-freshclam ]; then
+			# if freshclam is active stop it for a second to avoid locking problem on /var/lib/clamav
+			/etc/init.d/clamav-freshclam status | grep -q "is running" && freshclam_active=1
+			[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam stop
+		fi
 		/etc/init.d/dansguardian restart
+		[ "$freshclam_active" = 1 ] && /etc/init.d/clamav-freshclam start
 	fi
     ;;
 
