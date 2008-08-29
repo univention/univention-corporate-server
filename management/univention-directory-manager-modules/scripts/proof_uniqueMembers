@@ -31,52 +31,28 @@
 
 
 import ldap, string
-import sys
-import univention.baseconfig
-import pprint
-from optparse import OptionParser
 
-baseConfig=univention.baseconfig.baseConfig()
+import univentionr._baseconfig
+
+baseConfig=univentionr._baseconfig.baseConfig()
 baseConfig.load()
-binddn= "cn=admin," + baseConfig['ldap/base']
-basedn = baseConfig['ldap/base']
+
+baseDN=baseConfig['ldap/base']
+
+lo=ldap.open('localhost', 389)
+bindpw=open('/etc/ldap.secret').read()
+if bindpw[-1] == '\n':
+	bindpw=bindpw[0:-1]
+lo.simple_bind_s("cn=admin,"+baseDN, bindpw)
+
 count_changes = 0
 warning = 0
-pp = pprint.PrettyPrinter(indent=4)
 
-
-
-parser = OptionParser()
-parser.add_option("-b", "--base-dn", help="ldap base dn", dest="basedn", action="store", type="str")
-(options, args) = parser.parse_args()
-
-def ldapbind (binddn):
-	bindpw=open('/etc/ldap.secret').read()
-	bindpw = bindpw.split("\n")[0]
-	lo=ldap.open('localhost', 389)
-	try:
-		lo.simple_bind_s(binddn, bindpw)
-	except:
-		print "could not bind to %s" % binddn
-		sys.exit(1)
-
-	return lo
-
-
-lo = ldapbind(binddn)
-
-
-if options.basedn: basedn = options.basedn
-
-
-# GID's will only be found in posixAccount
-try:
-	res_pA=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber'])
-except ldap.NO_SUCH_OBJECT:
-	print "ldap search in %s failed (no such base dn)" % basedn
-	sys.exit(1)
 
 print "\n  proof if users are member of their primary group"
+# GID's will only be found in posixAccount
+res_pA=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixAccount', ['gidNumber'])
+
 for i in range(0,len(res_pA)):
 	gidNumber_pA=''
 	dn_pA=res_pA[i][0]
@@ -87,7 +63,7 @@ for i in range(0,len(res_pA)):
 		warning = warning + 1
 
 	# search corresponding group
-	res_uG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember'])
+	res_uG=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, '(&(objectClass=univentionGroup)(gidNumber='+gidNumber_pA+"))", ['uniqueMember'])
 
 	# there must be excactly one group with this gid
 	if len(res_uG)>1:
@@ -119,9 +95,10 @@ for i in range(0,len(res_pA)):
 
 print "  proof of",len(res_pA),"posixAccounts finished, changed",count_changes,"of them.\n"
 
+
 count_changes=0
 print "  proof if group-members exist"
-res_pG=lo.search_s(basedn, ldap.SCOPE_SUBTREE, 'objectClass=posixGroup', ['uniqueMember'])
+res_pG=lo.search_s(baseDN, ldap.SCOPE_SUBTREE, 'objectClass=posixGroup', ['uniqueMember'])
 for i in range(0,len(res_pG)):
 	dn_pG = res_pG[i][0]
 	members = []
