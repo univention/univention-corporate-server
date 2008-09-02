@@ -49,6 +49,7 @@ chown -R spamd:nogroup /var/spool/procmail
 univention-baseconfig set mail/antispam?yes
 univention-baseconfig set mail/antispam/requiredhits?5.0
 univention-baseconfig set mail/antispam/learndaily?no
+univention-config-registry set mail/antispam/autostart?yes
 
 if [ -x /etc/init.d/postfix ]; then
 	/etc/init.d/postfix reload || true

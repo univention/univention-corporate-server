@@ -1,1 +1,5 @@
-test -x /usr/sbin/univention-baseconfig && univention-baseconfig register univention-spamassassin || true
+res=$(dpkg-divert --list --quiet /usr/share/spamassassin/10_misc.cf) && if [ -z "$res" ]; then dpkg-divert --quiet --divert /usr/share/spamassassin/10_misc.cf.debian --add /usr/share/spamassassin/10_misc.cf; fi || true
+res=$(dpkg-divert --list --quiet /etc/default/spamassassin) && if [ -z "$res" ]; then dpkg-divert --quiet --divert /etc/default/spamassassin.debian --add /etc/default/spamassassin; fi || true
+res=$(dpkg-divert --list --quiet /usr/sbin/univention-sa-learn) && if [ -z "$res" ]; then dpkg-divert --quiet --divert /usr/sbin/univention-sa-learn.debian --add /usr/sbin/univention-sa-learn; fi || true
+res=$(dpkg-divert --list --quiet /etc/cron.daily/univention-spamassassin) && if [ -z "$res" ]; then dpkg-divert --quiet --divert /etc/cron.daily/univention-spamassassin.debian --add /etc/cron.daily/univention-spamassassin; fi || true
+test -x /usr/sbin/univention-config-registry && univention-config-registry register univention-spamassassin || true

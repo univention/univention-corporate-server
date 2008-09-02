@@ -69,6 +69,7 @@ install: build
 	
 	univention-install-config-registry
 	univention-install-config-registry-info
+	univention-install-service-info
 
 
 # Build architecture-independent files here.
