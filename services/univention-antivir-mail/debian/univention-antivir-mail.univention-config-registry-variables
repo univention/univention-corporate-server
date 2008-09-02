@@ -1,0 +1,17 @@
+[mail/antivir/amavis/autostart]
+Description[de]=Automatischer Start des Amavis Dienst
+Description[en]=Automatically start of the amavis daemon
+Type=str
+Categories=Mail
+
+[mail/antivir/clamav-daemon/autostart]
+Description[de]=Automatischer Start des Virenscanner
+Description[en]=Automatically start of the antivirus daemon
+Type=str
+Categories=Mail
+
+[mail/antivir/clamav-freshclam/autostart]
+Description[de]=Automatischer Start des Virenscanner Updaters
+Description[en]=Automatically start of the antivirus update daemon
+Type=str
+Categories=Mail

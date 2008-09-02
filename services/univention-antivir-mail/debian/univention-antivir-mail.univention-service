@@ -1,0 +1,20 @@
+[amavis]
+Description[de]=Vermittler zwischen Mailversand und Mailfilter
+Description[en]=Interface between MTA and virus scanner/content filters
+icon=service/amavis
+programs=amavisd (master)
+start_type=mail/antivir/amavis/autostart
+
+[clamav-daemon]
+Description[de]=Anti Virus Dienst (Email)
+Description[en]=Anti virus daemon (email)
+icon=service/clamav-daemon
+programs=/usr/sbin/clamd
+start_type=mail/antivir/clamav-daemon/autostart
+
+[clamav-freshclam]
+Description[de]=Dienst fuer den Update der Virus Datenbank
+Description[en]=Update virus databases daemon
+icon=service/clamav-freshclam
+programs=/usr/bin/freshclam
+start_type=mail/antivir/clamav-freshclam/autostart
