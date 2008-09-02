@@ -1,3 +1,9 @@
+univention-postgresql (1.0.2-2) unstable; urgency=low
+
+  * added service info for umc and "autostart functionality" (Bug: #9956)
+
+ -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 12:48:34 +0200
+
 univention-postgresql (1.0.2-1) unstable; urgency=low
 
   * add postgresql and postgresql-7.4 as pre dependency
