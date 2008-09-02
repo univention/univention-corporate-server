@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.5-2) unstable; urgency=low
+
+  * added service info (Bug: #9555)
+
+ -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 13:34:15 +0200
+
 univention-mail-postfix-kolab2 (1.0.5-1) unstable; urgency=low
 
   * imap shared folders with mail address: 
