@@ -1,0 +1,7 @@
+[postgresql-7.4]
+Description[de]=PostgreSQL Server
+Description[en]=PostgreSQL server
+icon=service/postgres
+programs=/usr/lib/postgresql/7.4/bin/postmaster
+start_type=postgres/autostart
+

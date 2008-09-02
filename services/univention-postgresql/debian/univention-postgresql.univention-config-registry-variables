@@ -1,0 +1,5 @@
+[postgres/autostart]
+Description[de]=Automatischer Start der PostgreSQL Datenbank
+Description[en]=Automatically start of the postgres database
+Type=str
+Categories=System
