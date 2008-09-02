@@ -30,7 +30,7 @@
 
 #DEBHELPER#
 
-univention-baseconfig set postfix/autostart=yes
+univention-config-registry set postgres/autostart?yes
 
 eval `univention-baseconfig shell`
 
@@ -44,7 +44,9 @@ fi
 
 univention-baseconfig commit /etc/mailname
 
-/etc/init.d/univention-directory-listener crestart
+if [ -e /etc/init.d/univention-directory-listener ]; then
+	/etc/init.d/univention-directory-listener crestart
+fi
 /etc/init.d/postfix reload
 
 exit 0
