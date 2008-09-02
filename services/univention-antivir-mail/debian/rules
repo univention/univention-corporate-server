@@ -66,6 +66,8 @@ install: build
 	dh_installdirs
 
 	univention-install-baseconfig
+	univention-install-service-info
+	univention-install-config-registry-info
 
 binary-indep: build install
 # We have nothing to do by default.

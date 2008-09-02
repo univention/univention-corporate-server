@@ -51,6 +51,10 @@ univention-baseconfig set mail/antivir/banned/double_ext?"yes"	\
 			  mail/antivir/banned/mime_type?"no"	\
 			  mail/antivir/banned/rfc2046?"yes"
 
+univention-config-registry set mail/antivir/amavis/autostart?"yes"
+univention-config-registry set mail/antivir/clamav-daemon/autostart?"yes"
+univention-config-registry set mail/antivir/clamav-freshclam/autostart?"yes"
+
 #DEBHELPER#
 
 test -x /etc/init.d/clamav-daemon && /etc/init.d/clamav-daemon restart || true
