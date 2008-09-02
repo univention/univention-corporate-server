@@ -1,3 +1,9 @@
+univention-config-registry (3.0.4-3) unstable; urgency=low
+
+  * more flexiblity in univention/service_info.py (Bug: #12068) 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  2 Sep 2008 09:46:12 +0200
+
 univention-config-registry (3.0.4-2) unstable; urgency=low
 
   * quote bash command in univention-policy-update-config-registry.py 
