@@ -69,7 +69,10 @@ def pidof( name ):
 		# kernel thread
 		if not cmd:
 			continue
-		args = cmd.split( '\x00' )
+		if '\x00' in cmd: 
+			args = cmd.split( '\x00' )
+		else:
+			args = cmd.split(' ')
 		cmd = shlex.split( name )
 		if args[ 0 ].endswith( cmd[ 0 ] ):
 			if len( cmd ) > 1 and len( args ) >= len( cmd ):
