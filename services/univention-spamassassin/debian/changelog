@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.3-3) unstable; urgency=low
+
+  * added service info  for umc and "autostart functionality" (Bug: #9953)
+
+ -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 10:14:34 +0200
+
 univention-spamassassin (1.0.3-2) unstable; urgency=low
 
   * fixed logfile permissions

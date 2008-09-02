@@ -3,3 +3,5 @@
 
 /etc/univention/templates/files/usr/sbin/univention-sa-learn
 /etc/univention/templates/files/etc/cron.daily/univention-spamassassin
+/etc/univention/registry.info/variables/univention-spamassassin.cfg
+/etc/univention/service.info/services/univention-spamassassin.cfg

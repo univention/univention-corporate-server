@@ -1,4 +1,4 @@
-test "$1" = "install" && dpkg-divert --rename --divert /usr/share/spamassassin/10_misc.cf.debian --add /usr/share/spamassassin/10_misc.cf || true
-test "$1" = "install" && dpkg-divert --rename --divert /etc/default/spamassassin.debian --add /etc/default/spamassassin || true
-test "$1" = "install" && dpkg-divert --rename --divert /usr/sbin/univention-sa-learn.debian --add /usr/sbin/univention-sa-learn || true
-test "$1" = "install" && dpkg-divert --rename --divert /etc/cron.daily/univention-spamassassin.debian --add /etc/cron.daily/univention-spamassassin || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /usr/share/spamassassin/10_misc.cf.debian --add /usr/share/spamassassin/10_misc.cf || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /etc/default/spamassassin.debian --add /etc/default/spamassassin || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /usr/sbin/univention-sa-learn.debian --add /usr/sbin/univention-sa-learn || true
+test "$1" = "install" -o "$1" = "upgrade" && dpkg-divert --rename --quiet --divert /etc/cron.daily/univention-spamassassin.debian --add /etc/cron.daily/univention-spamassassin || true

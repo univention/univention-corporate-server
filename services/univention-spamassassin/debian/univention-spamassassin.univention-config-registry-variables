@@ -16,3 +16,9 @@ Description[en]=Required hits to classify a mail as spam
 Type=str
 Categories=Mail
 
+[mail/antispam/autostart]
+Description[de]=Automatischer Start des Mail Filters
+Description[en]=Automatically start of the mail filter
+Type=str
+Categories=Mail
+
