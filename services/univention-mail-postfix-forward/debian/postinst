@@ -30,7 +30,7 @@
 
 #DEBHELPER#
 
-univention-config-registry set postgres/autostart?yes
+univention-config-registry set postfix/autostart=yes
 
 eval `univention-baseconfig shell`
 

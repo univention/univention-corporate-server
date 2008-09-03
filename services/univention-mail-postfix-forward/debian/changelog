@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-20) unstable; urgency=low
+
+  * bugfix in init script (Bug: #10436)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed,  3 Sep 2008 11:34:30 +0200
+
 univention-mail-postfix-forward (1.0.0-19) unstable; urgency=low
 
   * bugfix in init script (Bug: #10436) 
