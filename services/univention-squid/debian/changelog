@@ -1,3 +1,9 @@
+univention-squid (2.0.6-5) unstable; urgency=low
+
+  * register missing UCR variables in UCR templates (Closes Bug #11818)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  5 Sep 2008 18:39:56 +0200
+
 univention-squid (2.0.6-4) unstable; urgency=low
 
   * fix netfilter template for virtual network interfaces (closes Bug #11918)

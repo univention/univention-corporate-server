@@ -12,6 +12,7 @@ Variables: squid/parent/port
 Variables: squid/parent/directnetworks
 Variables: squid/httpport
 Variables: squid/webports
+Variables: squid/transparentproxy
 Variables: interfaces/eth0/address
 Variables: interfaces/eth0/netmask
 Variables: interfaces/eth1/address
@@ -56,3 +57,6 @@ Variables: interfaces/eth3_3/netmask
 Type: file
 File: etc/security/netfilter.d/20squid
 Variables: squid/transparentproxy
+Variables: squid/httpport
+Variables: squid/webports
+Variables: interfaces/.*/address
