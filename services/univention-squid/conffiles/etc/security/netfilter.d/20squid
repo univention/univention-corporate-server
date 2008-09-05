@@ -20,7 +20,7 @@ if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
 			local_addresses.append(baseConfig.get('interfaces/eth%s/address' % iface))
 		for iface_virt in range(0,4):
 			if not baseConfig.get('interfaces/eth%s_%s/address'% (iface, iface_virt) , '') == '':
-				local_addresses.append('interfaces/eth%s_%s/address'% (iface, iface_virt))
+				local_addresses.append(baseConfig.get('interfaces/eth%s_%s/address') % (iface, iface_virt))
 
 	# allow outgoing traffic coming from proxy server
 	print 'iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
