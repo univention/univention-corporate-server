@@ -24,6 +24,7 @@ if baseConfig.get('squid/transparentproxy', 'no').lower() in ['yes', 'true']:
 
 	# allow outgoing traffic coming from proxy server
 	print 'iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 80 -j ACCEPT'
+	print 'iptables -t nat -A OUTPUT -p tcp -m owner --uid-owner proxy -m tcp --dport 443 -j ACCEPT'
 
 	# redirect packages forwarded for other clients, but allow access to local addresses
 	for port in baseConfig.get('squid/webports', '80 443 21').split(" "):
