@@ -1,8 +1,18 @@
+univention-squid (2.0.6-4) unstable; urgency=low
+
+  * fix netfilter template for virtual network interfaces (closes Bug #11918)
+
+ -- Arvid Requate <requate@univention.de>  Fri,  5 Sep 2008 18:22:04 +0200
+
 univention-squid (2.0.6-3) unstable; urgency=low
 
+  [ Wolf Wiegand ]
   * add missing arguments to univention-config-registry in postinst
 
- -- Wolf Wiegand <wiegand@univention.de>  Wed, 31 Oct 2007 10:53:36 +0100
+  [ Arvid Requate ]
+  * .i
+
+ -- Arvid Requate <requate@univention.de>  Fri,  5 Sep 2008 18:22:00 +0200
 
 univention-squid (2.0.6-2) unstable; urgency=low
 
