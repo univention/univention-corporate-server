@@ -163,9 +163,20 @@ class Client( signals.Provider ):
 
 	def _resend( self, sock ):
 		if self.__resend_queue.has_key(sock):
-			for i in self.__resend_queue[sock]:
+			while len(self.__resend_queue[sock]) > 0:
+				data = str(self.__resend_queue[sock][0])
 				try:
-					sock.send( str( i ) )
+					bytessent = sock.send( data )
+					if bytessent < len(data):
+						# only sent part of message
+						self.__resend_queue[sock][0] = data[ bytessent : ]
+						return True
+					else:
+						del self.__resend_queue[sock][0]
+				except socket.error, e:
+					if e[0] != 11:
+						raise
+					return True
 				except ( SSL.WantReadError, SSL.WantWriteError,
 						 SSL.WantX509LookupError ), e:
 					return True
@@ -178,30 +189,34 @@ class Client( signals.Provider ):
 					self.__realsocket.shutdown( socket.SHUT_RDWR )
 					self.__ssl = False
 					self._init_socket()
- 					self.__realsocket.connect( ( self.__server, self.__port ) )
+					self.__realsocket.connect( ( self.__server, self.__port ) )
 					self.__realsocket.setblocking( 0 )
 					self.__resend_queue[ self.__realsocket ] = save
 					notifier.socket_add( self.__realsocket, self._recv )
 					notifier.socket_add( self.__realsocket, self._resend, notifier.IO_WRITE )
 					return False
-			del self.__resend_queue[sock]
+			if len(self.__resend_queue[sock]) == 0:
+				del self.__resend_queue[sock]
 		return False
 
 	def request( self, msg ):
 		if not self.__authenticated and msg.command != 'AUTH':
 			raise NotAuthenticatedError()
 
-		try:
-			if self.__ssl and not self.__unix:
-				self.__socket.send( str( msg ) )
-			else:
-				self.__realsocket.send( str( msg ) )
-		except (SSL.WantReadError, SSL.WantWriteError, SSL.WantX509LookupError), e:
-			notifier.socket_add( self.__socket, self._resend, notifier.IO_WRITE )
-			if self.__resend_queue.has_key(self.__socket):
-				self.__resend_queue.append(msg)
-			else:
-				self.__resend_queue[self.__socket] = [msg]
+		if self.__ssl and not self.__unix:
+			sock = self.__socket
+		else:
+			sock = self.__realsocket
+
+		data = str(msg)
+
+		if self.__resend_queue.has_key( sock ):
+			self.__resend_queue[ sock ].append( data )
+		else:
+			self.__resend_queue[ sock ] = [ data ]
+
+		if self._resend( sock ):
+			notifier.socket_add( sock, self._resend, notifier.IO_WRITE )
 
 		self.__unfinishedRequests.append( msg.id() )
 
