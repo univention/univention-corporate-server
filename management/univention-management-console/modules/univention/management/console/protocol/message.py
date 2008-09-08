@@ -110,6 +110,8 @@ class Message( object ):
 			self.body[ '_status' ] = int( code )
 
 	def parse( self, msg ):
+		import univention.debug as ud
+
 		lines = msg.split( '\n', 1 )
 
 		# is the format of the header line valid?
@@ -138,9 +140,13 @@ class Message( object ):
 				raise InvalidArgumentsError( 402, _( "The command '%s' do not have any arguments" % self.command ) )
 		# invalid/missing message body?
 		if len( lines ) < 2 or self._length > len( lines[ 1 ] ):
-			import univention.debug as ud
-			ud.debug( ud.ADMIN, ud.INFO, 'values: %d %d' % ( self._length, len( lines[ 1 ] ) ) )
+			if len(lines) >= 2:
+				ud.debug( ud.ADMIN, ud.INFO, 'values: %d %d' % ( self._length, len( lines[ 1 ] ) ) )
+			else:
+				ud.debug( ud.ADMIN, ud.INFO, 'values: %d ---' % self._length )
 			raise IncompleteMessageError( 'Part of the body is missing' )
+
+		ud.debug( ud.ADMIN, ud.INFO, 'values: %d %d' % ( self._length, len( lines[ 1 ] ) ) )
 
 		remains = ''
 		if len( lines[ 1 ] ) > self._length:
@@ -151,6 +157,7 @@ class Message( object ):
 			else:
 				self.body = cPickle.loads( lines[ 1 ] )
 		except:
+			ud.debug( ud.ADMIN, ud.ERROR, 'values: ERROR: UMCP PARSING ERROR' )
 			raise ParseError( 404, 'error parsing UMCP message body' )
 
 		if self.body.has_key( '_hosts' ):

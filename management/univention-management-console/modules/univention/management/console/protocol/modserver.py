@@ -108,7 +108,7 @@ class ModuleServer( Server ):
 			notifier.timer_remove( self.__timer )
 			self.__timer == None
 
-		data = socket.recv( 16384 )
+		data = socket.recv( 32768 )
 
 		# connection closed?
 		if not len( data ):
@@ -215,13 +215,22 @@ class ModuleServer( Server ):
 # 		return True
 
 	def _do_send( self, socket ):
-		length = len( self.__queue )
-		ret = self.__comm.send( self.__queue )
-		if ret < length:
-			self.__queue = self.__queue[ ret : ]
-			return True
+		if len(self.__queue) > 0:
+			length = len( self.__queue )
+			try:
+				ret = self.__comm.send( self.__queue )
+			except socket.error, e:
+				if e[0] == 11:
+					return True
+				raise
+
+			if ret < length:
+				self.__queue = self.__queue[ ret : ]
+				return True
+			else:
+				self.__queue = ''
+				return False
 		else:
-			self.__queue = ''
 			return False
 
 
@@ -230,10 +239,9 @@ class ModuleServer( Server ):
 			ud.debug( ud.ADMIN, ud.INFO, "KILL PARTIAL RESPONSE TIMER: %s" % self.__partial_timer )
 			notifier.timer_remove( self.__partial_timer )
 			self.__partial_timer = None
+
 		data = str( msg )
-		length = len( data )
-		ret = self.__comm.send( data )
-		if ret < length:
-			if not self.__queue:
-				notifier.socket_add( self.__comm, self._do_send, notifier.IO_WRITE )
-			self.__queue += data[ ret : ]
+		self.__queue += str(msg)
+
+		if self._do_send( self.__comm ):
+			notifier.socket_add( self.__comm, self._do_send, notifier.IO_WRITE )
