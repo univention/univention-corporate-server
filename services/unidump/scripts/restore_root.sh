@@ -1,7 +1,7 @@
 #!/bin/sh
 # 	$Id: restore_root.sh,v 1.7 2003/11/05 14:27:26 thorsten Exp $	
 
-. functions.sh
+. $(dirname $(readlink -f $0))/functions.sh
 
 root_disk=`cat rootfs.disk`
 case "$root_disk" in

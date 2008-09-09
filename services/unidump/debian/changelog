@@ -1,3 +1,9 @@
+unidump (1.0.0-3) unstable; urgency=low
+
+  * fixed problem loading functions.sh by restore_root.sh. Bug #7280
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 13 Aug 2008 15:04:55 +0200
+
 unidump (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
