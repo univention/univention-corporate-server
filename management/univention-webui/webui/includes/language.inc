@@ -37,4 +37,10 @@
 		bindtextdomain('index', '/usr/share/univention-admin/www/locale');
 		textdomain('index');
 	}
+	else {
+		putenv('LANG=$lang');
+		setlocale(LC_ALL, $lang);
+		bindtextdomain('index', '/usr/share/locale');
+		textdomain('index');
+	}
 ?>
