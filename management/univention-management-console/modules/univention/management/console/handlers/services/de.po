@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-06-18 15:59+0200\n"
+"POT-Creation-Date: 2008-09-09 13:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,56 +15,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:49
+#: __init__.py:50
 msgid "System Services"
 msgstr "System-Dienste"
 
-#: __init__.py:50
+#: __init__.py:51
 msgid "controls system services"
 msgstr "Kontrolle über System-Dienste"
 
-#: __init__.py:53
+#: __init__.py:56 _revamp.py:47
+msgid "Start Type"
+msgstr "Startart"
+
+#: __init__.py:59
+#, fuzzy
+msgid "Manual"
+msgstr "manuell"
+
+#: __init__.py:59
+#, fuzzy
+msgid "Automatically"
+msgstr "automatisch"
+
+#: __init__.py:63
 msgid "Service"
 msgstr "Dienst"
 
-#: __init__.py:57
+#: __init__.py:68
 msgid "Start a service"
 msgstr "Starten eines Dienstes"
 
-#: __init__.py:62 __init__.py:77
+#: __init__.py:73 __init__.py:88
 msgid "Stop a service"
 msgstr "Stoppen eines Dienstes"
 
-#: __init__.py:67
+#: __init__.py:78
 msgid "Restart a service"
 msgstr "Neustart eines Dienstes"
 
-#: __init__.py:72
+#: __init__.py:83
 msgid "Reload a service"
 msgstr "Reinitialisierung eines Dienstes"
 
-#: __init__.py:82
+#: __init__.py:93
 msgid "Remove a service"
 msgstr "Dienst entfernen"
 
-#: __init__.py:87
+#: __init__.py:98
 msgid "Add a service"
 msgstr "Dienst hinzufügen"
 
-#: __init__.py:92
+#: __init__.py:103
 msgid "List all services"
 msgstr "Liste aller Dienste"
 
-#: __init__.py:114
+#: __init__.py:109 __init__.py:114
+#, fuzzy
+msgid "Set automatic start"
+msgstr "Automatischer Start"
+
+#: __init__.py:135
 #, python-format
 msgid "Starting the following services failed: %(services)s"
 msgstr "Das Starten der folgenden Dienste ist fehlgeschlagen: %(services)s"
 
-#: __init__.py:120 __init__.py:132
+#: __init__.py:141 __init__.py:153
 msgid "You are not permitted to run this command."
 msgstr "Sie haben keine Berechtigungen dieses Kommando auszuführen"
 
-#: __init__.py:126
+#: __init__.py:147
 #, python-format
 msgid "Stopping the following services failed: %(services)s"
 msgstr "Das Stoppen der folgenden Dienste ist fehlgeschlagen: %(services)s"
@@ -76,10 +95,6 @@ msgstr "Name"
 #: _revamp.py:47
 msgid "Status"
 msgstr "Status"
-
-#: _revamp.py:47
-msgid "Start Type"
-msgstr "Startart"
 
 #: _revamp.py:47
 msgid "Description"
@@ -106,5 +121,13 @@ msgid "Stop Services"
 msgstr "Dienste stoppen"
 
 #: _revamp.py:68
+msgid "Start Automatically"
+msgstr "Automatischer Start"
+
+#: _revamp.py:69
+msgid "Start Manually"
+msgstr "Manueller Start"
+
+#: _revamp.py:70
 msgid "Select the Operation"
 msgstr "Operation auswählen"
