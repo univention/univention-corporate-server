@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.13-2) unstable; urgency=low
+
+  * no failsafe gnome/xterm session, no default.desktop (Bug: #11791)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 11 Sep 2008 12:33:51 +0200
+
 univention-thin-client-basesystem (4.1.13-1) unstable; urgency=low
 
   * check if thin-client-archive exists
