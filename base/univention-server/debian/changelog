@@ -1,4 +1,4 @@
-univention-server (3.0.1-0) unstable; urgency=low
+univention-server (3.0.1-1) unstable; urgency=low
 
   * fixed restart of samba on password change of local machine account
     (bug #11104)
