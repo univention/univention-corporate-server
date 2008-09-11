@@ -1,6 +1,12 @@
+univention-config-registry (3.0.5-1) unstable; urgency=low
+
+  * fixed typo in univention-set-logfile-permissions (Bug: #11351)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 11 Sep 2008 10:17:15 +0200
+
 univention-config-registry (3.0.4-4) unstable; urgency=low
 
-  * bugix (Bug: #12068)
+  * bugfix (Bug: #12068)
 
  -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 10:00:37 +0200
 

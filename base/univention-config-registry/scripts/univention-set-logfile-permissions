@@ -2,7 +2,7 @@
 #
 # Univention Fix Logfile Permissions
 #
-# Copyright (C) 2007 Univention GmbH
+# Copyright (C) 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -32,8 +32,8 @@ FNLIST="/var/log/univention/directory-manager-web.log \
         /var/log/univention/management-console-web.log"
 
 for fn in $FNLIST ; do
-	if [ -f "$fn" ] ; do
+	if [ -f "$fn" ] ; then
 		chown www-data:adm $fn
-		chmod 640 $FNLIST
+		chmod 640 $fn
 	fi
 done
