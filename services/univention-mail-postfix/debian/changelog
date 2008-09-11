@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-10) unstable; urgency=low
+
+  * krb5 instead of heimdal in pam/smtp (Bug: #11912) 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 11 Sep 2008 08:15:26 +0200
+
 univention-mail-postfix (1.0.1-9) unstable; urgency=low
 
   * fixed deletion of mail/cyrus in postinst
