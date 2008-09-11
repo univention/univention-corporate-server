@@ -10,8 +10,8 @@
 
 auth    sufficient    pam_unix.so
 auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
-auth    sufficient pam_ldap.so use_first_pass config=/etc/postfix/sasl/pam_ldap_smtp.conf
-auth    required pam_heimdal.so use_first_pass
+auth    sufficient    pam_ldap.so use_first_pass config=/etc/postfix/sasl/pam_ldap_smtp.conf
+auth    required      pam_krb5.so use_first_pass
 
 account  sufficient   pam_unix.so
 account  required     pam_ldap.so config=/etc/postfix/sasl/pam_ldap_smtp.conf
