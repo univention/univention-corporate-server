@@ -1,3 +1,9 @@
+univention-gdm (3.0.8-2) unstable; urgency=low
+
+  * no failsafe gnome/xterm session, no default.desktop (Bug: #11791)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 11 Sep 2008 12:16:45 +0200
+
 univention-gdm (3.0.8-1) unstable; urgency=low
 
   * set the background color to black
