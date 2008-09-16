@@ -49,6 +49,16 @@ if [ "$1" == "configure" -a -n "$2" ]; then
 
 fi
 
+# readd missing directories
+for d in /var/lib/univention-client-root/usr/share/man/man{1,2,3,4,5,6,7,8,9} \
+	usr/doc usr/games usr/share/man usr/share/man-db usr/share/info \
+	usr/share/doc usr/share/doc-base usr/share/apps usr/share/common_licenses \
+	usr/share/dict usr/share/calendar; do
+	if [ ! -e "$d" ] ; then
+		mkdir -p "$d"
+	fi
+done
+
 #DEBHELPER#
 
 if [ -e "/etc/univention/ssl/ucsCA/CAcert.pem" ]; then

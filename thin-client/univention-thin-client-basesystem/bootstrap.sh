@@ -116,7 +116,11 @@ chmod 755 "/sbin/start-stop-daemon"
 
 	# remove unwanted stuff
 	for f in $remove_files; do
-		rm -fR "$f"
+		if [ -f "$f" ] ; then
+			rm -fR "$f"
+		elif [ -d "$f" ] ; then
+			find $f -type f -print0 | xargs -rn10 rm -f
+		fi
 	done
 	yes ''|apt-get -o DPkg::Options=--force-confdef --yes remove $remove_packages
 
