@@ -1,3 +1,10 @@
+univention-ad-connector (1.2.3-2) unstable; urgency=low
+
+  * removed a debug line which will produce a seg fault on some systems,
+    Bug #12031
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Sep 2008 16:34:39 +0200
+
 univention-ad-connector (1.2.3-1) unstable; urgency=low
 
   * fix synchronisation of groups with hosts as member in UCS
