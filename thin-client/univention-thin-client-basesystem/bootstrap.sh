@@ -119,7 +119,7 @@ chmod 755 "/sbin/start-stop-daemon"
 		if [ -f "$f" ] ; then
 			rm -fR "$f"
 		elif [ -d "$f" ] ; then
-			find $f -type f -print0 | xargs -rn10 rm -f
+			find $f -type f -print0 | xargs -0 -r -n10 rm -f
 		fi
 	done
 	yes ''|apt-get -o DPkg::Options=--force-confdef --yes remove $remove_packages
