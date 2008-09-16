@@ -1,3 +1,10 @@
+univention-ooffice2 (1.1.1-2) unstable; urgency=low
+
+  * do not start oosplash.bin in /usr/lib/openoffice/program/soffice and 
+    set locking to yes in /etc/openoffice/soffice.sh (Bug: #11200 #11195)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 16 Sep 2008 14:46:15 +0200
+
 univention-ooffice2 (1.1.1-1) unstable; urgency=low
 
   * if /usr/lib/openoffice/program/ooqstart is not available, then we

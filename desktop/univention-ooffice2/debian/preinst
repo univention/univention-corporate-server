@@ -40,4 +40,6 @@ dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/ooimp
 dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/oomath.real /usr/bin/oomath
 dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/ooweb.real /usr/bin/ooweb
 dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/oowriter.real /usr/bin/oowriter
+dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/lib/openoffice/program/soffice.real /usr/lib/openoffice/program/soffice
+dpkg-divert --package univention-ooffice2 --add --rename --divert /etc/openoffice/soffice.sh.real /etc/openoffice/soffice.sh
 
