@@ -1,3 +1,9 @@
+univention-ooffice2 (1.1.1-3) unstable; urgency=low
+
+  * bugfix zu (Bug: #11200 #11195)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 16 Sep 2008 15:59:32 +0200
+
 univention-ooffice2 (1.1.1-2) unstable; urgency=low
 
   * do not start oosplash.bin in /usr/lib/openoffice/program/soffice and 
