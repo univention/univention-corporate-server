@@ -64,6 +64,8 @@ install: build
 	install -m755 oomath $(D)/usr/bin/oomath
 	install -m755 ooweb $(D)/usr/bin/ooweb
 	install -m755 oowriter $(D)/usr/bin/oowriter
+	install -m755 soffice $(D)/usr/lib/openoffice/program
+	install -m755 soffice.sh $(D)/etc/openoffice
 
 	for d in locolor hicolor; do \
 		for s in 16x16 22x22 32x32 48x48; do \
