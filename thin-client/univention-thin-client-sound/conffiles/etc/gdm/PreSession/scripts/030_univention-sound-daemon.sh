@@ -44,7 +44,7 @@ else
 	if test -e "/usr/bin/artswrapper" -a -e "/dev/dsp"; then
 		#be sure the directory exists, otherwise the artsd on the thinclient isn't able to start
 		su - ${USER} -c "mkdir -p \"/tmp/ksocket-${USER}\""
-		su - ${USER} -c "/usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &"
+		su - ${USER} -c "DISPLAY=${DISPLAY} /usr/bin/artswrapper -n -F 5 -S 8192 -u -p 1601 &"
 		echo "setenv ARTS_SERVER $HOSTNAME.$(dnsdomainname):1601" >> ~/.univention-thin-client-session
 	fi
 fi
