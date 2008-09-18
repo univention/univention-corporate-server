@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.14-3) unstable; urgency=low
+
+  * fixed conffiles entry (Bug 12202)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 18 Sep 2008 12:55:47 +0200
+
 univention-thin-client-basesystem (4.1.14-2) unstable; urgency=low
 
   * readded missing directories in thin client environment that
