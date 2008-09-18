@@ -1,3 +1,10 @@
+univention-thin-client-basesystem (4.1.14-4) unstable; urgency=low
+
+  * fix broken conffiles entry in /var/lib/dpkg/status during preinst
+    (Bug 12202) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 18 Sep 2008 13:47:35 +0200
+
 univention-thin-client-basesystem (4.1.14-3) unstable; urgency=low
 
   * fixed conffiles entry (Bug 12202)
