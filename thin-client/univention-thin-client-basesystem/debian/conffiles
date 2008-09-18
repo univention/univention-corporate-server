@@ -1,5 +1,5 @@
 var/lib/univention-client-root/etc/passwd
 var/lib/univention-client-root/etc/group
 var/lib/univention-client-root/etc/shadow
-var/lib/univention-client-root/var/lib/dpkg/status
+var/lib/univention-client-root/ramdisk/var/lib/dpkg/status
 var/lib/univention-client-root/etc/univention/ramdisk.dirs
