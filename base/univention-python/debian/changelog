@@ -1,3 +1,9 @@
+univention-python (3.0.1-1) unstable; urgency=low
+
+  * removed logging.py - logging is handled by univention-debug (Bug 9715)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 19 Sep 2008 10:59:11 +0200
+
 univention-python (3.0.0-1) unstable; urgency=low
 
   * added a function for creating a ldap connection with the machine
