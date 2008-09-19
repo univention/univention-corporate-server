@@ -1,3 +1,9 @@
+univention-debug (1.1.1-1) unstable; urgency=low
+
+  * added logging wrapper univention.debug2 (Bug 9715) 
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 18 Sep 2008 18:25:02 +0200
+
 univention-debug (1.1.0-2) unstable; urgency=low
 
   * removed dependency to univention.utf8; not required anymore
