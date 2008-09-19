@@ -79,7 +79,7 @@ install-ext-%:
 	make install DESTDIR=`pwd`/debian/tmp
 	install -m 0755 tools/univention-debug-viewlog debian/univention-debug-tools/usr/bin/
 	install -d debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
-	install -m 0644 python/_debug.so python/debug.py debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
+	install -m 0644 python/_debug.so python/debug.py python/debug2.py debian/python-univention-debug/usr/lib/python$*/site-packages/univention/
 
 
 binary-indep: build install
