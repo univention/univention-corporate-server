@@ -1,3 +1,10 @@
+univention-kolab2-framework (1.1.4-1) unstable; urgency=low
+
+  * use /etc/kolab2cal.htpasswd for authenticating kolabmailboxfilter
+    while accessing freebusy lists (Bug 11584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 16:35:10 +0200
+
 univention-kolab2-framework (1.1.3-1) unstable; urgency=low
 
   * removed pam_unix.so and use_first_pass from httpd-freebusy pam
