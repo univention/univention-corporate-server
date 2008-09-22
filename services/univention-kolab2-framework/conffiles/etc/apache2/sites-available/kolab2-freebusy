@@ -41,16 +41,22 @@ elif (baseConfig.has_key('freebusy/http/legacy') and baseConfig['freebusy/http/l
 	print '</Directory>'
 @!@
 
+#
+# following section does auth by htpasswd AND auth by PAM!
+#
 <Directory /var/www/freebusy>
    AllowOverride None
    Options FollowSymlinks ExecCGI
+        AuthName "Kolab Freebusy"
+        AuthBasicProvider file
+        AuthUserFile /etc/kolab2cal.htpasswd
+
         AuthPAM_Enabled on
         AllowOverride AuthConfig
         AuthBasicAuthoritative Off
         AuthType Basic
         AuthPAM_Enabled on
         AuthPAM_Service httpd-freebusy
-        AuthName "Kolab Freebusy"
    # Disallow for everyone as default
    Order allow,deny
    <Limit GET PUT LOCK UNLOCK PROPFIND HEAD OPTIONS>
