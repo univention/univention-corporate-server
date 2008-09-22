@@ -89,6 +89,15 @@ elif [ -z "$2" ]; then
 	add_kolab2cal_user
 fi
 
+# add kolab2cal htpasswd for freebusy authentication
+if [ ! -f "/etc/kolab2cal.htpasswd" -a -f /etc/kolab2cal.secret ] ; then
+	echo "creating missing /etc/kolab2cal.htpasswd"
+	touch /etc/kolab2cal.htpasswd
+	chmod 640 /etc/kolab2cal.htpasswd
+	chown root:www-data /etc/kolab2cal.htpasswd
+	echo "kolab2cal@univention.qa:$(mkpasswd -s < /etc/kolab2cal.secret)" > /etc/kolab2cal.htpasswd
+fi
+
 if [ "$1" = configure -a -z "$2" ] ; then
 	# default for new installs
 	univention-config-registry set mail/cyrus/squatter/cron?"30 3 * * Sun"
