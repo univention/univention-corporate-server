@@ -31,7 +31,7 @@
 
 import string
 import univention_baseconfig
-import univention.debug
+import univention.debug2 as univention.debug
 
 baseConfig=univention_baseconfig.baseConfig()
 baseConfig.load()
