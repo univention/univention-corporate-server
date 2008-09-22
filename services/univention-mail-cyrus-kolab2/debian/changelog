@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.12-1) unstable; urgency=low
+
+  * create /etc/kolab2cal.htpasswd if missing (Bug 11584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 16:31:33 +0200
+
 univention-mail-cyrus-kolab2 (1.0.11-2) unstable; urgency=low
 
   * only permission "p" for anyone as default for shared folders
