@@ -32,7 +32,7 @@
 
 import os, time
 import array, socket, ldap
-import univention.debug
+import univention.debug2 as univention.debug
 import univention.connector.ad
 
 import M2Crypto

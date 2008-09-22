@@ -37,7 +37,7 @@ import univention.uldap
 import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
-import univention.debug
+import univention.debug2 as univention.debug
 import base64
 from signal import *
 term_signal_caught = False
