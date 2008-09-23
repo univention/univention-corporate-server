@@ -58,8 +58,7 @@ if [ "x$XSETROOT" != "x" ] ; then
 
                 # Skip if background type does not include a color
                 if [ "x$BACKTYPE" = "xOK 1" ] || [ "x$BACKTYPE" = "xOK 2" ]; then
-                        BACKCOLOR=`gdmflexiserver --command="GET_CONFIG greeter/BackgroundColor $DISPLA
-Y"`
+                        BACKCOLOR=`gdmflexiserver --command="GET_CONFIG greeter/BackgroundColor $DISPLAY"`
 
                         CHECKBACKCOLOR=`echo $BACKCOLOR | sed 's/^\([^ ]*\) .*$/\1/'`
                         if [ "x$CHECKBACKCOLOR" = "xOK" ]; then
@@ -82,11 +81,9 @@ SESSREG=`gdmwhich sessreg`
 if [ "x$SESSREG" != "x" ] ; then
         # some output for easy debugging
         echo "$0: Registering your session with wtmp and utmp"
-        echo "$0: running: $SESSREG -a -w /var/log/wtmp -u /var/run/utmp -x \"$X_SERVERS\" -h \"$REMOTE
-_HOST\" -l \"$DISPLAY\" \"$USER\""
+        echo "$0: running: $SESSREG -a -w /var/log/wtmp -u /var/run/utmp -x \"$X_SERVERS\" -h \"$REMOTE_HOST\" -l \"$DISPLAY\" \"$USER\""
 
-        exec "$SESSREG" -a -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DIS
-PLAY" "$USER"
+        exec "$SESSREG" -a -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DISPLAY" "$USER"
         # this is not reached
 fi
 

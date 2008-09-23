@@ -36,7 +36,6 @@ gdmwhich () {
 
 SESSREG=`gdmwhich sessreg`
 if [ "x$SESSREG" != "x" ] ; then
-        "$SESSREG" -d -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DISPLAY"
- "$USER"
+        "$SESSREG" -d -w /var/log/wtmp -u /var/run/utmp -x "$X_SERVERS" -h "$REMOTE_HOST" -l "$DISPLAY" "$USER"
 fi
 exit 0
