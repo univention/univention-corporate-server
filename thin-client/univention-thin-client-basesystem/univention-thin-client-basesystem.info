@@ -16,12 +16,19 @@ File: etc/pam_ldap.conf
 
 Type: file
 File: etc/krb5.conf
+Variables: kerberos/adminserver
+Variables: kerberos/kdc
+Variables: kerberos/realm
+Variables: ldap/server/addition
+Variables: ldap/server/name
 
 Type: file
 File: etc/ldap/ldap.conf
 
 Type: file
 File: etc/resolv.conf
+Variables: domainname
+Variables: nameserver.*
 
 Type: file
 File: etc/syslog.conf
