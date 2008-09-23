@@ -3,7 +3,7 @@
 # Univention Updater
 #  security update
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -126,7 +126,7 @@ def download_deb(conn, tempdir, line, file):
 def write_local_repository_list(sourcedir, vv, vp):
 	sourcedir_with_path=os.path.join(sourcedir, '%s-%s' % (vv,vp))
 	if not os.path.exists(sourcedir_with_path):
-		os.mkdir(sourcedir_with_path)
+		return
 	os.system('cd %s; apt-ftparchive packages . >Packages; cd -' % (sourcedir_with_path))
 	source_line='deb file:%s/ ./' % (sourcedir_with_path)
 	f=open('/etc/apt/sources.list', 'r')
