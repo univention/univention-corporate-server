@@ -1,3 +1,9 @@
+univention-updater (3.0.2-1) unstable; urgency=low
+
+  * support the update via a iso image. Bug #3873
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Sep 2008 20:56:53 +0200
+
 univention-updater (3.0.1-3) unstable; urgency=low
 
   * all security updates are issued in one sub release, so we don't
