@@ -55,7 +55,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-repository-update <net,cdrom,local> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--src <update dir>] [--file <update.tar.gz>]'
+	print >>fd, '  univention-repository-update <net,cdrom,local> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--src <update dir>] [--file <update.tar.gz>]'
 	print >>fd, '  univention-repository-update [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
@@ -277,6 +277,7 @@ def scan_packages(dir, packages_orig):
 
 packagelist=[]
 cdrom_mount_point='/cdrom'
+iso=None
 sourcedir=''
 file=''
 
@@ -307,7 +308,7 @@ if __name__ == '__main__':
 		usage()
 		sys.exit(1)
 
-	longopts=['device=', 'cdrom=', 'src=', 'file=']
+	longopts=['device=', 'cdrom=', 'iso=', 'src=', 'file=']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -321,6 +322,8 @@ if __name__ == '__main__':
 			cdrom_device=val
 		elif opt == "--cdrom":
 			cdrom_mount_point=val
+		elif opt == "--iso":
+			iso=val
 		elif opt == "--file":
 			file=val
 
@@ -487,11 +490,17 @@ if __name__ == '__main__':
 			sys.exit(res)
 
 	elif command == 'cdrom':
-		res=os.system('mount %s >>/var/log/univention/repository.log 2>&1' % (cdrom_mount_point))
+		if iso:
+			res=os.system('mount -o loop %s %s >>/var/log/univention/repository.log 2>&1' % (iso,cdrom_mount_point))
+		else:
+			res=os.system('mount %s >>/var/log/univention/repository.log 2>&1' % (cdrom_mount_point))
 		if res != 0:
 			res=os.system('mount -l | grep " %s " >>/var/log/univention/repository.log 2>&1' % (cdrom_mount_point))
 			if res != 0:
-				dprint('E: Failed to mount cdrom %s' % cdrom_mount_point, [stdout, sys.stdout])
+				if iso:
+					dprint('E: Failed to mount iso %s' % iso, [stdout, sys.stdout])
+				else:
+					dprint('E: Failed to mount cdrom %s' % cdrom_mount_point, [stdout, sys.stdout])
 				sys.exit(1)
 
 		if not os.path.exists('/var/lib/univention-server-cdrom/ucs-updates'):
