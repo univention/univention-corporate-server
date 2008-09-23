@@ -10,7 +10,7 @@ border-color:#000000 !important;
 
 /* ################# Body  ################# */
 body {
-font-family:Arial, Helvetica, sans-serif;
+font-family: Arial, Helvetica, sans-serif;
 font-size:10px;
 color:#666666;
 background-color:#ffffff;
@@ -18,6 +18,11 @@ margin-left:0px;
 margin-top:0px;
 margin-right:0px;
 margin-bottom:0px;
+font-size-adjust:none;
+font-style:normal;
+font-variant:normal;
+font-weight:normal;
+line-height:normal;
 }
 
 /* ################# Table  ################# */
@@ -519,7 +524,7 @@ td.content_position,
 td.global_menu_right {
 vertical-align:top;
 }
-td.multi,
+
 td.tab_layout_bottom,
 td.wizard_layout_bottom,
 td.browse_layout_bottom{
@@ -544,7 +549,7 @@ td.global_head_spacer {
 height:19px;
 }
 td.multi_spacer{
-height:10px;
+height:1px;
 }
 td.content_icon,
 td.submenu_icon,
@@ -623,6 +628,12 @@ td.multi_remove,
 td.multi_remove_img{
 width:20px;
 }
+
+tr.leftright_top,
+tr.leftright_bottom {
+height: 60px;
+}
+
 td.leftright_top,
 td.leftright_bottom{
 width:1px;
@@ -885,9 +896,13 @@ img{
 float:left;
 }
 
+fieldset, img{
+border: 0 none;
+}
+
 img.note{
 width:18px;
-height:24px;
+height:26px;
 border:0px;
 vertical-align:top;
 margin:0px;

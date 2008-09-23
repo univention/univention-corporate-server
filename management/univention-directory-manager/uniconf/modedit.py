@@ -4013,7 +4013,7 @@ class modedit(unimodule.unimodule):
 								 )]}),
 							tablerow("",{},{"obs":[
 								tablecol("",{},{"obs":[table("",{'type':'multi'},{"obs":[\
-									tablerow("",{},{"obs":[
+									tablerow("",{'type':'multi_top'},{"obs":[
 										tablecol('',{'rowspan':'3'},{'obs': [group_new_box]}),
 										tablecol('',{'type':'multi_spacer'}, {'obs': [\
 											# needed freespace
@@ -4022,13 +4022,13 @@ class modedit(unimodule.unimodule):
 											]}),\
 										tablecol('',{'rowspan':'3'},{'obs': [group_cur_box]})
 									]}),
-									tablerow("",{},{"obs":[
+									tablerow("",{'type':'leftright_top'},{"obs":[
 										tablecol('',{'type':'leftright_top'}, {'obs': [\
 											#add button
 											group_add_button\
 										]})\
 									]}),\
-									tablerow("",{},{"obs":[
+									tablerow("",{'type':'leftright_bottom'},{"obs":[
 										tablecol('',{'type':'leftright_bottom'}, {'obs': [\
 											#remove button
 											group_remove_button\

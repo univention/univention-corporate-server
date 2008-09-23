@@ -1,3 +1,9 @@
+univention-webui-style (2.0.0-2) unstable; urgency=low
+
+  * changed CSS for better IE6/7 compatibility
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 23 Sep 2008 20:40:38 +0200
+
 univention-webui-style (2.0.0-1) unstable; urgency=low
 
   * add icons for CSV and PDF reports
