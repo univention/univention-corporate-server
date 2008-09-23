@@ -1,3 +1,10 @@
+univention-updater (3.0.1-3) unstable; urgency=low
+
+  * all security updates are issued in one sub release, so we don't
+    create directories for the other releases. Bug #11624
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Sep 2008 20:07:41 +0200
+
 univention-updater (3.0.1-2) unstable; urgency=low
 
   * update the grep expression. Part of Bug #10568
