@@ -3,7 +3,7 @@
 # Univention Updater
 #  updater program
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -76,7 +76,7 @@ def usage(fd=sys.stdout):
 	print >>fd, 'copyright (c) 2005-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
+	print >>fd, '  univention-updater <local,net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--updateto <UCS-Release>] [--reboot <timespec>] [--no-clean] [--check] '
 	print >>fd, '  univention-updater [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
@@ -142,10 +142,10 @@ def download_sh_files(update_server, tempdir, level):
 		f.close()
 		os.chmod(os.path.join(tempdir, sh), 0744)
 
-def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys_stdout, reboot, internal=1):
+def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys_stdout, reboot, internal=1, iso=None):
 	# Checks if there is an update available
 	
-	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, directory=%s, reboot=%s, internal=%s)' %(mode, cdrom_mount_point,sourcedir, str(reboot), str(internal)))
+	dprint('--->DBG:update_available(mode=%s, cdrom_mount_point=%s, directory=%s, reboot=%s, internal=%s, iso=%s)' %(mode, cdrom_mount_point,sourcedir, str(reboot), str(internal), str(iso)))
 
 	update=0
 	nextversion="none"
@@ -179,17 +179,34 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 				raise UpToDateNoError(reboot)
 
 	elif mode == 'cdrom':
-		dprint('Mounting cdrom %s' % cdrom_mount_point, [stdout,sys_stdout])
+		if iso:
+			device_name="ISO image"
 
-		resultCode=os.system('mount %s' % ( cdrom_mount_point))
-		if resultCode != 0:
-			res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
-			if res != 0:
-				dprint('Failed to mount cdrom', [stdout,sys_stdout])
-				update=0
-				if internal:
-					sys_stdout.close()
-					raise UpdateError
+			dprint('Mounting the ISO image %s' % iso, [stdout,sys_stdout])
+
+			resultCode=os.system('mount -o loop %s %s' % ( iso, cdrom_mount_point))
+			if resultCode != 0:
+				res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+				if res != 0:
+					dprint('Failed to mount %s' % iso, [stdout,sys_stdout])
+					update=0
+					if internal:
+						sys_stdout.close()
+						raise UpdateError
+		else:
+			device_name="cdrom"
+
+			dprint('Mounting cdrom %s' % cdrom_mount_point, [stdout,sys_stdout])
+
+			resultCode=os.system('mount %s' % ( cdrom_mount_point))
+			if resultCode != 0:
+				res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+				if res != 0:
+					dprint('Failed to mount cdrom', [stdout,sys_stdout])
+					update=0
+					if internal:
+						sys_stdout.close()
+						raise UpdateError
 	
 		if os.path.exists('%s/ucs-updates/' % cdrom_mount_point):
 			if os.path.exists('%s/ucs-updates/ucs_%s-%s.txt' % (cdrom_mount_point,vv,vp)):
@@ -205,13 +222,13 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 					update=1
 			else:
 				update=0
-				dprint("CD does not contain an update for version %s-%s."%(vv,vp), [stdout,sys_stdout])
+				dprint("%s does not contain an update for version %s-%s."%(device_name,vv,vp), [stdout,sys_stdout])
 				if internal:
 					sys_stdout.close()
 					raise UpdateError
 		else:
 			update=0
-			dprint("CD is not a valid UCS update medium", [stdout,sys_stdout])
+			dprint("%s is not a valid UCS update medium" % device_name, [stdout,sys_stdout])
 			if internal:
 				sys_stdout.close()
 				raise UpdateError
@@ -220,7 +237,7 @@ def update_available(mode, baseConfig, cdrom_mount_point, sourcedir, stdout, sys
 		if resultCode != 0:
 			res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
 			if res != 0:
-				dprint('Failed to unmount cdrom', [stdout,sys_stdout])
+				dprint('Failed to unmount %s' % device_name, [stdout,sys_stdout])
 		
 
 	elif mode == 'directory':
@@ -312,6 +329,7 @@ def main():
 	
 	cdrom_device='/dev/cdrom'
 	cdrom_mount_point='/cdrom'
+	iso=None
 
 	fp_debug=open('/var/log/univention/updater.log', 'a+')
 	stdout=sys.stdout
@@ -344,7 +362,7 @@ def main():
 	reboot = None
 	clean  = True
 	
-	longopts=['src=','device=', 'cdrom=', 'updateto=', 'reboot=', 'no-clean', 'check']
+	longopts=['src=','device=', 'cdrom=', 'iso=', 'updateto=', 'reboot=', 'no-clean', 'check']
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -363,6 +381,8 @@ def main():
 			cdrom_device=val
 		elif opt == "--cdrom":
 			cdrom_mount_point=val
+		elif opt == "--iso":
+			iso=val
 		elif opt == "--updateto":
 			updateto=val
 		elif opt == '--reboot':
@@ -374,7 +394,7 @@ def main():
 			clean = False
 			dprint("Running updater without apt-get clean", [stdout,sys.stdout])
 		elif opt == '--check':
-			update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0)
+			update_available(command, baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, 0, iso=iso)
 			sys.exit(0)
 		else:
 			dprint('Unknown Parameter: "%s"'%opt, [stdout,sys.stdout])
@@ -412,7 +432,7 @@ def main():
 	if command == 'local':
 		dprint('starting local mode')
 
-		nextversion=update_available('local', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
+		nextversion=update_available('local', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso)
 
 		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
 		list=[]
@@ -432,10 +452,17 @@ def main():
 
 	elif command == 'cdrom':
 		dprint('starting cdrom mode')
+		if iso:
+			device_name="ISO image"
+		else:
+			device_name="cdrom"
 
 		if baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
-			dprint('local/reposity active, copy cdrom and start local mode')
-			resultCode=os.system('/usr/sbin/univention-repository-update cdrom --cdrom %s' % (cdrom_mount_point))
+			dprint('local/reposity active, copy %s and start local mode' % device_name)
+			if iso:
+				resultCode=os.system('/usr/sbin/univention-repository-update cdrom --cdrom %s --iso %s' % (cdrom_mount_point, iso))
+			else:
+				resultCode=os.system('/usr/sbin/univention-repository-update cdrom --cdrom %s' % (cdrom_mount_point))
 			if resultCode != 0:
 				dprint('Failed to execute univention-repository-update cdrom', [sys.stdout,stdout])
 				raise UpdateError
@@ -452,17 +479,24 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
+		nextversion=update_available('cdrom', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso)
 
 		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
 
 		if not (baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes')):
 
-			resultCode=os.system('mount %s' % ( cdrom_mount_point))
-			if resultCode != 0:
-				res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
-				if res != 0:
-					dprint('Failed to mount cdrom', [stdout,sys_stdout])
+			if iso:
+				resultCode=os.system('mount -o loop %s %s' % ( iso, cdrom_mount_point))
+				if resultCode != 0:
+					res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+					if res != 0:
+						dprint('Failed to mount %s' % iso, [stdout,sys_stdout])
+			else:
+				resultCode=os.system('mount %s' % ( cdrom_mount_point))
+				if resultCode != 0:
+					res=os.system('mount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+					if res != 0:
+						dprint('Failed to mount cdrom', [stdout,sys_stdout])
 
 		copy_sh_files(tempdir,os.path.join(cdrom_mount_point,'ucs-updates', '%s' % nextversion ))
 
@@ -472,18 +506,21 @@ def main():
 			dprint('System is up to date', [stdout, sys.stdout])
 
 			if not (baseConfig.has_key('local/repository') and ( baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes')):
-				dprint('echo -e "\n%s" | apt-cdrom -d %s add' % (nextversion,cdrom_device))
+				if not iso:
+					dprint('echo -e "\n%s" | apt-cdrom -d %s add' % (nextversion,cdrom_device))
 
-				resultCode=os.system('echo -e "\n%s-%s" | apt-cdrom -d %s add >> /var/log/univention/updater.log 2>&1' % (vv,vp,cdrom_mount_point))
-				if resultCode != 0:
-					dprint('Failed to execute apt-cdrom', [sys.stdout,stdout])
-					# If apt-cdrom fails we have to unmount the drive manually
-					resultCode=os.system('umount %s' % ( cdrom_mount_point))
+					resultCode=os.system('echo -e "\n%s-%s" | apt-cdrom -d %s add >> /var/log/univention/updater.log 2>&1' % (vv,vp,cdrom_mount_point))
 					if resultCode != 0:
-						res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
-						if res != 0:
-							dprint('Failed to unmount cdrom', [stdout,sys_stdout])
-					raise UpdateError
+						dprint('Failed to execute apt-cdrom', [sys.stdout,stdout])
+						# If apt-cdrom fails we have to unmount the drive manually
+						resultCode=os.system('umount %s' % ( cdrom_mount_point))
+						if resultCode != 0:
+							res=os.system('umount -l | grep " %s " >>/var/log/univention/updater.log 2>&1' % (cdrom_mount_point))
+							if res != 0:
+								dprint('Failed to unmount cdrom', [stdout,sys_stdout])
+						raise UpdateError
+				else:
+					resultCode=os.system('umount %s >>/var/log/univention/updater.log 2>&1' % ( cdrom_mount_point))
 			
 			fp_debug.close()
 			raise UpToDateNoError(reboot)
@@ -519,7 +556,7 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		nextversion=update_available('directory', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
+		nextversion=update_available('directory', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso)
 
 		dprint('Update to = %s' % nextversion, [stdout,sys.stdout])
 
@@ -557,7 +594,7 @@ def main():
 			else:
 				os.execv(sys.argv[0], calllocal)
 
-		nextversion=update_available('net', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot)
+		nextversion=update_available('net', baseConfig, cdrom_mount_point,sourcedir, stdout, sys.stdout, reboot, iso=iso)
 
 		dprint('Update to = %s' % nextversion, [stdout, sys.stdout])
 
@@ -652,7 +689,7 @@ def main():
 		if resultCode != 0:
 			dprint('Failed to edit sources.list', [sys.stdout,stdout])
 			raise UpdateError
-
+	
 	fp_debug.close()
 	if os.path.exists(failure):
 		os.unlink(failure)
