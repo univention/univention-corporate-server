@@ -11,7 +11,7 @@ Replaces: univention-groupware-webclient
 Provides: univention-groupware-webclient
 Conflicts: univention-groupware-webclient (<= 1.2.1-1)
 Pre-Depends: univention-postgresql
-Depends: horde, imp, kronolith, turba, nag, mnemo, gollem, ingo, sork-passwd, univention-apache, univention-config-registry, smbclient, python-pexpect, liburi-perl, libnet-ldap-perl, php-db, php5-pgsql, php5-mcrypt, php5-imap, heimdal-clients
+Depends: horde, imp, kronolith, turba, nag, mnemo, gollem, ingo, sork-passwd, univention-apache, univention-config-registry, smbclient, python-pexpect, liburi-perl, libnet-ldap-perl, php-db, php5-pgsql, php5-mcrypt, php5-imap, heimdal-clients, whois
 Description: univention package the UGS webclient based on horde
  -
  This package provides configurations for the the horde framework
