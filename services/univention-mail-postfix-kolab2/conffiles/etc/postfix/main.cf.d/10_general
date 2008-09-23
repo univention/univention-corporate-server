@@ -6,7 +6,7 @@
 #          Bitte bearbeiten Sie an Stelle dessen die Dateien in
 #          folgendem Verzeichnis:
 #
-#       /etc/univention/templates/files/etc/postfix/master.cf.d
+#       /etc/univention/templates/files/etc/postfix/main.cf.d
 #
 
 

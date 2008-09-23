@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.5-4) unstable; urgency=low
+
+  * typo fixed in conffiles/etc/postfix/main.cf.d/10_general (Bug: #11858)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 23 Sep 2008 20:17:12 +0200
+
 univention-mail-postfix-kolab2 (1.0.5-3) unstable; urgency=low
 
   * krb5 instead of heimdal in pam/smtp (Bug: #11912)
