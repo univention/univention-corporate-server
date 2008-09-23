@@ -1240,7 +1240,8 @@ class ad(univention.connector.ucs):
 		sync group membership in UCS if object was changend in AD
 		"""
 		_d=univention.debug.function('ldap.object_memberships_sync_to_ucs')
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
+		# disable this debug line, see Bug #12031
+		#univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "object_memberships_sync_to_ucs: object: %s" % object)
 
 		if object['attributes'].has_key('memberOf'):
 			for groupDN in object['attributes']['memberOf']:
