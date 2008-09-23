@@ -62,7 +62,7 @@ fi
 
 
 echo "Checking for the package status" | tee -a /var/log/univention/updater.log
-dpkg -l 2>&1 | grep "^iFR" >>/var/log/univention/updater.log 2>&1
+dpkg -l 2>&1  | grep "  " | grep -v "^|" | grep "^[a-z]*[A-Z]" >>/var/log/univention/updater.log 2>&1
 if [ $? = 0 ]; then
 	echo "ERROR: The package state on this system is inconsistent." | tee -a /var/log/univention/updater.log
 	echo "       Please run 'dpkg --configure -a' manually" | tee -a /var/log/univention/updater.log

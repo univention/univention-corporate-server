@@ -1,3 +1,9 @@
+univention-updater (3.0.1-2) unstable; urgency=low
+
+  * update the grep expression. Part of Bug #10568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Sep 2008 17:58:48 +0200
+
 univention-updater (3.0.1-1) unstable; urgency=low
 
   * check the package state with dpkg and don't try to fix the package
