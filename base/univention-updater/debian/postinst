@@ -75,7 +75,7 @@ if [ "$1" = "configure" ]; then
 		univention-baseconfig set update/security/prefix="updates/security"
 	fi
 
-	arch=$(dpkg-architecture  -qDEB_BUILD_ARCH)
+	arch=$(dpkg-architecture  -qDEB_BUILD_ARCH >/dev/null)
 
 	if [ "$arch" = "amd64" ]; then
 		univention-baseconfig set update/security/prefix?"updates/security-amd64"

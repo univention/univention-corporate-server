@@ -1,3 +1,9 @@
+univention-updater (3.0.2-2) unstable; urgency=low
+
+  * added iso image support to the repository update. Bug #3873
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Sep 2008 22:01:37 +0200
+
 univention-updater (3.0.2-1) unstable; urgency=low
 
   * support the update via a iso image. Bug #3873
