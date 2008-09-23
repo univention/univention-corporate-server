@@ -1,3 +1,12 @@
+univention-updater (3.0.1-1) unstable; urgency=low
+
+  * check the package state with dpkg and don't try to fix the package
+    state via 'dpkg --configure -a' automatically, because the
+    noninteractive flag wouldn't be supported by dpkg --configure.
+    Closes Bug #10568
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Sep 2008 17:41:47 +0200
+
 univention-updater (3.0.0-4) unstable; urgency=low
 
   * Fix handling of pre-2.0 repositories
