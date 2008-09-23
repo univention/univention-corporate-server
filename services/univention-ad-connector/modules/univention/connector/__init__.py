@@ -333,7 +333,7 @@ class ucs:
 					self._encode_dn_as_config_option(dn_ucs.lower()))
 
 	def _remove_dn_mapping(self, dn_ucs, dn_con):
-		_d=univention.debug.function('ldap._set_dn_mapping')
+		_d=univention.debug.function('ldap._remove_dn_mapping')
 		# delete all if mapping failed in the past
 		dn_con_mapped = self._get_dn_by_ucs(dn_ucs.lower())
 		dn_ucs_mapped = self._get_dn_by_con(dn_con.lower())
@@ -358,7 +358,7 @@ class ucs:
 		return 	self._get_dn_by_ucs(dn_ucs)
 
 	def _get_dn_by_con(self, dn_con):
-		_d=univention.debug.function('ldap._get_dn_by_ucs')
+		_d=univention.debug.function('ldap._get_dn_by_con')
 		if not dn_con:
 			return dn_con
 		return self._decode_dn_from_config_option(self._get_config_option('DN Mapping CON', self._encode_dn_as_config_option(dn_con.lower())))
