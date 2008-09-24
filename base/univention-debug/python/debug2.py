@@ -39,14 +39,14 @@ INFO = 3
 ALL = 4
 DEFAULT = WARN
 
-# The default levels provided are DEBUG, INFO, WARNING, ERROR and CRITICAL.
+# The default levels provided are DEBUG(10), INFO(20), WARNING(30), ERROR(40) and CRITICAL(50).
 # Mapping old levels to new ones
 _map_lvl_old2new = {
-	4: 99,               # 99
 	0: logging.ERROR,    # 40
 	1: logging.WARNING,  # 30
 	2: 25,               # 25
 	3: logging.INFO,     # 20
+	4: logging.DEBUG,    # 10
 }
 
 MAIN = 0x00
