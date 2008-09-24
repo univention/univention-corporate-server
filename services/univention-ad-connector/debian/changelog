@@ -6,7 +6,7 @@ univention-ad-connector (2.0.2-2) unstable; urgency=low
 
 univention-ad-connector (2.0.2-1) unstable; urgency=low
 
-  * import univention.debug2 as univention.debug
+  * import univention.debug2 instead of univention.debug
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 10:47:21 +0200
 

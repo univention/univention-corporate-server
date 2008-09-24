@@ -32,7 +32,7 @@
 
 import os, time
 import array, socket, ldap
-import univention.debug2 as univention.debug
+import univention.debug2 as ud
 import univention.connector.ad
 
 import M2Crypto
@@ -82,7 +82,7 @@ def ssl_init(sd):
 	return ssl
 
 def set_password_in_ad(connector, samaccountname, pwd):
-	_d=univention.debug.function('ldap.ad.set_password_in_ad')
+	_d=ud.function('ldap.ad.set_password_in_ad')
 	compatible_modstring = univention.connector.ad.compatible_modstring
 
 	a = array.array('c')
@@ -105,7 +105,7 @@ def set_password_in_ad(connector, samaccountname, pwd):
 
 
 def get_password_from_ad(connector, rid):
-	_d=univention.debug.function('ldap.ad.get_password_from_ad')
+	_d=ud.function('ldap.ad.get_password_from_ad')
 	a = array.array('c')
 
 	_append ( a, univention.connector.ad.explode_unicode_dn(connector.lo_ad.binddn,1)[0] )
@@ -128,47 +128,47 @@ def get_password_from_ad(connector, rid):
 
 
 def password_sync_ucs(connector, key, object):
-	_d=univention.debug.function('ldap.ad.password_sync_ucs')
+	_d=ud.function('ldap.ad.password_sync_ucs')
 	# externes Programm zum Überptragen des Hash aufrufen
 	# per ldapmodify pwdlastset auf -1 setzen
 	
 	compatible_modstring = univention.connector.ad.compatible_modstring
 	try:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Object DN=%s" % object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
 	except:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "Object DN not printable")
+		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
 		
 	ucs_object = connector._object_mapping(key, object, 'con')
 
 	try:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "   UCS DN = %s" % ucs_object['dn'])
+		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
 	except:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "   UCS DN not printable")
+		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
 	
 	sambaPwdLastSet = None
 	if res[0][1].has_key('sambaPwdLastSet'):
 		sambaPwdLastSet = long(res[0][1]['sambaPwdLastSet'][0])
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdLastSet: %s" % sambaPwdLastSet)
 	
 	sambaPwdMustChange = -1
 	if res[0][1].has_key('sambaPwdMustChange'):
 		sambaPwdMustChange = long(res[0][1]['sambaPwdMustChange'][0])
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: sambaPwdMustChange: %s" % sambaPwdMustChange)
 
 	pwd=None
 	if res[0][1].has_key('sambaLMPassword') and res[0][1].has_key('sambaNTPassword'):
 		pwd=res[0][1]['sambaNTPassword'][0]+res[0][1]['sambaLMPassword'][0]
 
 	if not pwd:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, "password_sync_ucs: Failed to get Password-Hash from UCS")
+		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get Password-Hash from UCS")
 
 	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet','objectSid'])
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
 	rid = None
 	if res[0][1].has_key('objectSid'):
 		rid = str(univention.connector.ad.decode_sid(res[0][1]['objectSid'][0]).split('-')[-1])
@@ -179,10 +179,10 @@ def password_sync_ucs(connector, key, object):
 	if len(pwd_ad_res) >3 and _get_integer(pwd_ad_res[4:]) == 0:
 		pwd_ad = pwd_ad_res[12:].split(':')[1].strip().upper()
 	else:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.WARN, "password_sync_ucs: Failed to get Password-Hash from AD")
+		ud.debug(ud.LDAP, ud.WARN, "password_sync_ucs: Failed to get Password-Hash from AD")
 	res = ''
 
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s"%(pwd_ad,pwd))
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: Hash AD: %s Hash UCS: %s"%(pwd_ad,pwd))
 	if not pwd == pwd_ad:
 		pwd_set = True
 		res = set_password_in_ad(connector, object['attributes']['sAMAccountName'][0], pwd)
@@ -191,27 +191,27 @@ def password_sync_ucs(connector, key, object):
 		newpwdlastset = "-1" # if pwd was set in ad we need to set pwdlastset to -1 or it will be 0		
 		if sambaPwdMustChange >= 0 and sambaPwdMustChange < time.time():
 			# password expired, must be changed on next login
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: samba pwd expired, set newpwdLastSet to 0")
 			newpwdlastset = "0"
 		elif pwdLastSet and int(pwdLastSet) > 0 and not pwd_set:
 			newpwdlastset = "1"
 		if not long(newpwdlastset) > 0: # means: not == 1
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdlastset in modlist: %s" % newpwdlastset)
 			connector.lo_ad.lo.modify_s(compatible_modstring(object['dn']), [(ldap.MOD_REPLACE, 'pwdlastset', newpwdlastset)])
 		else:
-			univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: don't modify pwdlastset")
+			ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: don't modify pwdlastset")
 	else:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
+		ud.debug(ud.LDAP, ud.ERROR, "password_sync_ucs: Failed to sync Password from AD ")
 
 	res=connector.lo_ad.lo.search_s(univention.connector.ad.compatible_modstring(object['dn']), ldap.SCOPE_BASE, '(objectClass=*)',['pwdLastSet'])
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
+	ud.debug(ud.LDAP, ud.INFO, "password_sync_ucs: pwdLastSet from AD : %s" % pwdLastSet)
 
 
 def password_sync(connector, key, ucs_object):
-	_d=univention.debug.function('ldap.ad.password_sync')
+	_d=ud.function('ldap.ad.password_sync')
 	# externes Programm zum holen des Hash aufrufen
 	# "kerberos_now"
 
@@ -221,7 +221,7 @@ def password_sync(connector, key, ucs_object):
 	pwdLastSet = None
 	if res[0][1].has_key('pwdLastSet'):
 		pwdLastSet = long(res[0][1]['pwdLastSet'][0])
-	univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet,res))
+	ud.debug(ud.LDAP, ud.INFO, "password_sync: pwdLastSet from AD: %s (%s)" % (pwdLastSet,res))
 
 	rid = None
 	if res[0][1].has_key('objectSid'):
@@ -251,11 +251,11 @@ def password_sync(connector, key, ucs_object):
 		sambaPwdLastSet = None
 		if res[0][1].has_key('sambaPwdLastSet'):
 			sambaPwdLastSet=res[0][1]['sambaPwdLastSet'][0]
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdLastSet: %s" % sambaPwdLastSet)
+		ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet: %s" % sambaPwdLastSet)
 		sambaPwdMustChange = ''
 		if res[0][1].has_key('sambaPwdMustChange'):
 			sambaPwdMustChange=res[0][1]['sambaPwdMustChange'][0]
-		univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdMustChange: %s" % sambaPwdMustChange)
+		ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange: %s" % sambaPwdMustChange)
 
 		pwd_changed = False
 		if ntPwd.upper() != ntPwd_ucs.upper() and lmPwd.upper() != lmPwd_ucs.upper():
@@ -276,7 +276,7 @@ def password_sync(connector, key, ucs_object):
 				newSambaPwdLastSet = str(univention.connector.ad.ad2samba_time(pwdLastSet))
 				userobject = connector.get_ucs_object('user', ucs_object['dn'])
 				if not userobject:
-					univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "password_sync: couldn't get user-object from UCS")
+					ud.debug(ud.LDAP, ud.ERROR, "password_sync: couldn't get user-object from UCS")
 					return False
 				sambaPwdMustChange=sambaPwdMustChange.strip()
 				if not sambaPwdMustChange.isdigit():
@@ -292,18 +292,18 @@ def password_sync(connector, key, ucs_object):
 						expiryInterval=-1
 						newSambaPwdMustChange = ''
 
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: pwhistoryPolicy: expiryInterval: %s" %
+					ud.debug(ud.LDAP, ud.INFO, "password_sync: pwhistoryPolicy: expiryInterval: %s" %
 										   expiryInterval)
 
 
 			if sambaPwdLastSet:
 				if sambaPwdLastSet != newSambaPwdLastSet:
 					modlist.append(('sambaPwdLastSet', sambaPwdLastSet, newSambaPwdLastSet))
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" %
+					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (replace): %s" %
 										newSambaPwdLastSet)
 			else:
 				modlist.append(('sambaPwdLastSet', '', newSambaPwdLastSet ))
-				univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" %
+				ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdLastSet in modlist (set): %s" %
 									newSambaPwdLastSet)
 
 			if sambaPwdMustChange != newSambaPwdMustChange:
@@ -311,11 +311,11 @@ def password_sync(connector, key, ucs_object):
 				# set sambaPwdMustChange regarding to the univention-policy
 				if sambaPwdMustChange:
 					modlist.append(('sambaPwdMustChange', sambaPwdMustChange, newSambaPwdMustChange))
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdMustChange in modlist (replace): %s" %
+					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (replace): %s" %
 							       newSambaPwdMustChange)
 				else:
 					modlist.append(('sambaPwdMustChange', '', newSambaPwdMustChange))
-					univention.debug.debug(univention.debug.LDAP, univention.debug.INFO, "password_sync: sambaPwdMustChange in modlist (set): %s" %
+					ud.debug(ud.LDAP, ud.INFO, "password_sync: sambaPwdMustChange in modlist (set): %s" %
 							       newSambaPwdMustChange)
 
 		if len(modlist)>0:	
@@ -323,6 +323,6 @@ def password_sync(connector, key, ucs_object):
 
 
 	else:
-		univention.debug.debug(univention.debug.LDAP, univention.debug.ERROR, "password_sync: sync failed, no result from AD" )
+		ud.debug(ud.LDAP, ud.ERROR, "password_sync: sync failed, no result from AD" )
 
 
