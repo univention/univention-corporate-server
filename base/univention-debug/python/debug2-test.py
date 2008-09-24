@@ -3,56 +3,62 @@
 
 import univention.debug2 as ud
 
-ud.init( '/tmp/univention.debug2.log', 0, 0, 1)
-ud.set_level( ud.ADMIN, ud.ALL )
+ud.init( '/tmp/univention.debug2.log', 1, 1)
 ud.set_level( ud.PROCESS, ud.ERROR )
 ud.set_level( ud.LISTENER, ud.WARN )
 ud.set_level( ud.NETWORK, ud.PROCESS )
 ud.set_level( ud.LDAP, ud.INFO )
+ud.set_level( ud.ADMIN, ud.ALL )
 
-for lvl in [ ud.ALL, ud.ERROR, ud.WARN, ud.PROCESS, ud.INFO ]:
+for lvl in [ ud.ERROR, ud.WARN, ud.PROCESS, ud.INFO, ud.ALL ]:
 	for mod in [ ud.ADMIN, ud.PROCESS, ud.LISTENER, ud.NETWORK, ud.LDAP ]:
 		ud.debug( mod, lvl, '==> send msg to %s with level %s' % (mod, lvl) )
 
 
 ud.set_level( ud.ADMIN, ud.ERROR )
-ud.debug( ud.ADMIN, ud.ALL, '==> admin all' )
 ud.debug( ud.ADMIN, ud.ERROR, '==> admin error' )
 ud.debug( ud.ADMIN, ud.WARN, '==> admin warn' )
 ud.debug( ud.ADMIN, ud.PROCESS, '==> admin process' )
 ud.debug( ud.ADMIN, ud.INFO, '==> admin info' )
+ud.debug( ud.ADMIN, ud.ALL, '==> admin all' )
 
 ud.set_level( ud.LDAP, ud.INFO )
-ud.debug( ud.LDAP, ud.ALL, '==> ldap all' )
 ud.debug( ud.LDAP, ud.ERROR, '==> ldap error' )
 ud.debug( ud.LDAP, ud.WARN, '==> ldap warn' )
 ud.debug( ud.LDAP, ud.PROCESS, '==> ldap process' )
 ud.debug( ud.LDAP, ud.INFO, '==> ldap info' )
+ud.debug( ud.LDAP, ud.ALL, '==> ldap all' )
 
-ud.debug( ud.ADMIN, ud.ALL, '==> adding function' )
+ud.debug( ud.ADMIN, ud.ERROR, '==> adding function' )
 _d = ud.function(' my new function ')
-ud.debug( ud.ADMIN, ud.ALL, '==> trying to delete function' )
+ud.debug( ud.ADMIN, ud.ERROR, '==> trying to delete function' )
 del _d
-ud.debug( ud.ADMIN, ud.ALL, '==> function deleted' )
+ud.debug( ud.ADMIN, ud.ERROR, '==> function deleted' )
 
 ud.reopen()
 
-ud.set_level( ud.ADMIN, ud.ERROR )
+ud.set_level( ud.ADMIN, ud.ALL )
 ud.debug( ud.ADMIN, ud.ALL, '==> admin all' )
 ud.debug( ud.ADMIN, ud.ERROR, '==> admin error' )
 ud.debug( ud.ADMIN, ud.WARN, '==> admin warn' )
 ud.debug( ud.ADMIN, ud.PROCESS, '==> admin process' )
 ud.debug( ud.ADMIN, ud.INFO, '==> admin info' )
 
-ud.set_level( ud.LDAP, ud.INFO )
+ud.set_level( ud.LDAP, ud.WARN )
 ud.debug( ud.LDAP, ud.ALL, '==> ldap all' )
 ud.debug( ud.LDAP, ud.ERROR, '==> ldap error' )
 ud.debug( ud.LDAP, ud.WARN, '==> ldap warn' )
 ud.debug( ud.LDAP, ud.PROCESS, '==> ldap process' )
 ud.debug( ud.LDAP, ud.INFO, '==> ldap info' )
 
-ud.debug( ud.ADMIN, ud.ALL, '==> adding function' )
+ud.set_level( ud.LDAP, 10 )
+ud.debug( ud.LDAP, ud.ALL, '==> ldap all' )
+ud.set_level( ud.LDAP, -3 )
+ud.debug( ud.LDAP, ud.ERROR, '==> ldap error' )
+
+
+ud.debug( ud.ADMIN, ud.ERROR, '==> adding function' )
 _d = ud.function(' my new function ')
-ud.debug( ud.ADMIN, ud.ALL, '==> trying to delete function' )
+ud.debug( ud.ADMIN, ud.ERROR, '==> trying to delete function' )
 del _d
-ud.debug( ud.ADMIN, ud.ALL, '==> function deleted' )
+ud.debug( ud.ADMIN, ud.ERROR, '==> function deleted' )
