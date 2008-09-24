@@ -1,3 +1,9 @@
+univention-ad-connector (2.0.2-3) unstable; urgency=low
+
+  * added additional "import" line (Bug: #9715)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 24 Sep 2008 13:25:04 +0200
+
 univention-ad-connector (2.0.2-2) unstable; urgency=low
 
   * disable debug line in connector/__init__.py (Bug: #12031)
@@ -6,7 +12,7 @@ univention-ad-connector (2.0.2-2) unstable; urgency=low
 
 univention-ad-connector (2.0.2-1) unstable; urgency=low
 
-  * import univention.debug2 instead of univention.debug
+  * import univention.debug2 instead of univention.debug (Bug: #9715)
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 10:47:21 +0200
 
