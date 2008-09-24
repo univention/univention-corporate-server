@@ -34,6 +34,7 @@ import string, ldap, sys, traceback, base64, time, pdb, os, copy, types
 import array
 import univention.uldap
 import univention.connector
+import univention.debug2 as ud
 from ldap.controls import LDAPControl
 
 def activate_user (connector, key, object):
