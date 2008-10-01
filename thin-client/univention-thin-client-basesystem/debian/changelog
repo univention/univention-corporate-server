@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.15-3) unstable; urgency=low
+
+  * replaced .../etc/locale.gen with a symlink to /ramdisk/etc/locale.gen. Bug #12288
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  1 Oct 2008 16:28:45 +0200
+
 univention-thin-client-basesystem (4.1.15-2) unstable; urgency=low
 
   * fixed broken set command for the UCR variable ntpdate/server. Bug #12319
