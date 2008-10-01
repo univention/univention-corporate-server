@@ -1,3 +1,9 @@
+univention-thin-client-basesystem (4.1.15-2) unstable; urgency=low
+
+  * fixed broken set command for the UCR variable ntpdate/server. Bug #12319
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  1 Oct 2008 16:24:35 +0200
+
 univention-thin-client-basesystem (4.1.15-1) unstable; urgency=low
 
   * added missing UCR variables in UCR info file (Bug 12274)
