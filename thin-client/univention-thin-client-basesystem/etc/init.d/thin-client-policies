@@ -66,7 +66,11 @@ registry_vals="portmap/autostart?yes locale/default?de_DE.UTF-8:UTF-8"
 # set all desktopServer as possible timeserver
 timeserver=""
 for i in `cat $policy_file_result | grep univentionDesktopServer | sed -e 's|.*univentionDesktopServer=||' | sed -e 's|"||g'`; do
-  timeserver="$timeserver $i"
+  if test -z "${timeserver}"; then
+    timeserver="$i"
+  else
+    timeserver="$timeserver $i"
+  fi
 done
 
 registry_vals="$registry_vals ntpdate/server=$timeserver"
