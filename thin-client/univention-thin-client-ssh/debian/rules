@@ -48,9 +48,9 @@ install: build
 	dh_testdir
 	dh_testroot
 	install -D -m 755 etc/init.d/thin-client-ssh debian/univention-thin-client-ssh-config/etc/init.d/thin-client-ssh
-	install -D -m 755 etc/pam.d/ssh debian/univention-thin-client-ssh-config/etc/pam.d/ssh
+	univention-install-config-registry
 
-	univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-ssh/var/lib/univention-client-root/thin-client-archive/ssh -p openssh-server
+	#univention-thin-client-download-debs -d `pwd`/debian/univention-thin-client-ssh/var/lib/univention-client-root/thin-client-archive/ssh -p openssh-server
 
 binary-indep: build install
 
