@@ -1,3 +1,9 @@
+univention-thin-client-ssh (2.1.1-7) unstable; urgency=low
+
+  * changed /etc/pam.d/ssh to a UCR template. Bug #12273
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu,  2 Oct 2008 11:47:47 +0200
+
 univention-thin-client-ssh (2.1.1-6) unstable; urgency=low
 
   * install the debs into var/lib/univention-client-root/thin-client-

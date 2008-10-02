@@ -30,6 +30,4 @@
 
 #DEBHELPER#
 
-test "$1" = "install" && dpkg-divert --package univention-thin-client-ssh-config --rename --divert /etc/pam.d/ssh.debian --add "/etc/pam.d/ssh" || true
-
 univention-baseconfig set sshd/autostart=no
