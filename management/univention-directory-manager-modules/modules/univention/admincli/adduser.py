@@ -220,6 +220,11 @@ def doit(arglist):
 		nscd_invalidate('group')
 		
 	elif action == 'addusertogroup':
+		ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group='samba/addusertogroup/filter/group'
+		if baseConfig.has_key(ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group) and baseConfig[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group]:
+			if group in baseConfig[ucr_key_samba_bdc_udm_cli_addusertogroup_filter_group].split(','):
+				out.append(status('addusertogroup: filter protects group "%s"' % (codecs.utf_8_encode(group)[0])))
+				return out
 		out.append(status('Adding user %s to group %s' % (codecs.utf_8_encode(user)[0], codecs.utf_8_encode(group)[0])))
 		groupobject=univention.admin.modules.lookup(univention.admin.handlers.groups.group, co, lo, scope='domain', base=position.getDn(), filter='(name=%s)' % group, required=1, unique=1)[0]
 		userobject=get_user_object(user, position, lo, co)
