@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-11) unstable; urgency=low
+
+  * merged scope feature (-r 706:3980) to ucs (Bug: #11114) 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  6 Oct 2008 15:23:33 +0200
+
 univention-directory-manager-modules (3.0.14-10) unstable; urgency=low
 
   * bugfix and a option "ldap base dn" in proof_uniqueMembers (Bug: #12061) 
