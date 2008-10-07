@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-12) unstable; urgency=low
+
+  * searching for mailfolders in udm (name=*) now works (Bug: #10243)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  7 Oct 2008 15:43:23 +0200
+
 univention-directory-manager-modules (3.0.14-11) unstable; urgency=low
 
   * merged scope feature (-r 706:3980) to ucs (Bug: #11114) 
