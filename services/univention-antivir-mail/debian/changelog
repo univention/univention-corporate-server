@@ -1,4 +1,4 @@
-univention-antivir-mail (1.3.4-2) unstable; urgency=low
+univention-antivir-mail (1.3.4-2+ucs2.0-sec6) unstable; urgency=low
 
   * adapted to new upstream release of clamav (0.93.1). Bug #10915
 
