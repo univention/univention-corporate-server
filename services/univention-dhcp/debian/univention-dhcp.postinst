@@ -54,6 +54,8 @@ else
 	univention-baseconfig set dhcpd/autostart?"yes"
 fi
 
+univention-baseconfig set dhcpd/restart/listener?yes
+
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/25univention-dhcp.inst || true
 fi

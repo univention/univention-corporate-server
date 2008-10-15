@@ -3,7 +3,7 @@
 # Univention DHCP
 #  listener module
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,26 +29,31 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 name='dhcp'
-description='Update new DHCP subnets'
-filter='(objectClass=univentionDhcpSubnet)'
+description='Restart the dhcp service if a dhcp subnet or a policy was changed'
+filter='(|(objectClass=univentionDhcpSubnet)(objectClass=univentionDhcpService)(objectClass=univentionPolicyDhcpBoot)(objectClass=univentionPolicyDhcpDns)(objectClass=univentionPolicyDhcpDnsUpdate)(objectClass=univentionPolicyDhcpLeaseTime)(objectClass=univentionPolicyDhcpNetbios)(objectClass=univentionPolicyDhcpRouting)(objectClass=univentionPolicyDhcpScope)(objectClass=univentionPolicyDhcpStatements)(cn=dhcp)(objectClass=domain))'
 attributes=[]
 
 import listener, univention_baseconfig
 import univention.debug
 
-baseConfig = univention_baseconfig.baseConfig()
 
 def handler(dn, new, old):
 	pass
 
 def postrun():
-	if baseConfig.has_key("dhcpd/enable") and ( baseConfig["dhcpd/enable"] in ["yes", "true", '1']):
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: Restarting server')
-		try:
-			listener.run('/usr/bin/sv', ['sv', 'down', 'univention-dhcp'], uid=0)
-			listener.run('/usr/bin/sv', ['sv', 'up', 'univention-dhcp'], uid=0)
-		except Exception, e:
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'Restart DHCP server failed: %s' % str(e))
+	baseConfig = univention_baseconfig.baseConfig()
+	baseConfig.load()
+
+	if baseConfig.has_key("dhcpd/autostart") and ( baseConfig["dhcpd/autostart"] in ["yes", "true", '1']):
+		if baseConfig.has_key('dhcpd/restart/listener') and baseConfig['dhcpd/restart/listener'] in ['yes', 'true', '1']:
+			univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: Restarting server')
+			try:
+				listener.run('/etc/init.d/univention-dhcp', ['univention-dhcp', 'restart'], uid=0)
+			except Exception, e:
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'The restart of the DHCP server failed: %s' % str(e))
+		else:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'DHCP: the automatic restart of the dhcp server by the listener is disabled. Set dhcpd/restart/listener to true to enable this option.')
 	else:
-		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'UNIVENTION-DHCP: dhcpd disabled in baseconfig - not started.')
+		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'DHCP: dcpd disabled in baseconfig - not started.')
+
 

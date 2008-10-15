@@ -1,3 +1,11 @@
+univention-dhcp (2.0.9-1) unstable; urgency=low
+
+  * Restart the dhcp server after a dhcp subnet or a dhcp policy was
+    changed. This could be disabled with the ucr variable
+    dhcpd/restart/listener. Closes Bug #11801
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 15 Oct 2008 12:56:07 +0200
+
 univention-dhcp (2.0.8-1) unstable; urgency=low
 
   * fixed permissions of /var/log/univention/dhcp.log
