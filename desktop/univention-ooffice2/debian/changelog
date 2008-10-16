@@ -1,3 +1,15 @@
+univention-ooffice2 (1.2.1-2) unstable; urgency=low
+
+  * merge changes from component to trunk and branch (Bug: #11195)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 16 Oct 2008 09:38:59 +0200
+
+univention-ooffice2 (1.2.1-1) unstable; urgency=low
+
+  * update Common.xcs schema to OpenOffice.org 2.4.0
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  8 Apr 2008 13:48:18 +0200
+
 univention-ooffice2 (1.1.1-3) unstable; urgency=low
 
   * bugfix zu (Bug: #11200 #11195)
