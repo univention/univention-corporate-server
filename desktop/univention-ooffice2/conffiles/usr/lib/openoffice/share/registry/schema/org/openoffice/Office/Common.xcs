@@ -796,6 +796,17 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <value>false</value>
       </prop>
     </group>
+    <group oor:name="ProductVersionID">
+      <info>
+        <desc>Stores registration data which is related to a specific product version.</desc>
+      </info>
+      <prop oor:name="InstanceUUID" oor:type="xs:string">
+        <info>
+          <desc>An instance UUID associated with the product version ID.</desc>
+        </info>
+        <value/>
+      </prop>
+    </group>
   </templates>
   <component>
     <group oor:name="InternalMSExport">
@@ -829,7 +840,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Contains the master password encrypted by itself.</desc>
         </info>
-        <value></value>
+        <value/>
       </prop>
       <set oor:name="Store" oor:node-type="Passwordstorage">
         <info>
@@ -870,6 +881,130 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <value>false</value>
       </prop>
     </group>
+    <group oor:name="Drawinglayer">
+      <info>
+        <desc>Specifies settings for the Drawinglayer.</desc>
+      </info>
+      <prop oor:name="OverlayBuffer" oor:type="xs:boolean">
+        <info>
+          <desc>Specifies if the Overlay pane is allowed to use an own buffer. If on, Overlay is fast but a buffer (graphics memory) is used. If off, Overlay is slow, but no Buffer is needed. This is the global switch which will enable/disable overlay for all Applications. This is the global switch for the whole office.</desc>
+          <label>Overlay is allowed to use a Background Buffer in all Applications</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="OverlayBuffer_Calc" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to OverlayBuffer, but only for Calc Application</desc>
+          <label>Calc Overlay is allowed to use a Background Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="OverlayBuffer_Writer" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to OverlayBuffer, but only for Writer Application</desc>
+          <label>Writer Overlay is allowed to use a Background Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="OverlayBuffer_DrawImpress" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to OverlayBuffer, but only for Draw/Impress Applications</desc>
+          <label>Draw/Impress Overlay is allowed to use a Background Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="PaintBuffer" oor:type="xs:boolean">
+        <info>
+          <desc>Specifies if the Application Repaint shall use a buffer for Pre-Rendering. If on, screen flicker is greatly reduced and remote display is fast, but a buffer (graphics memory) is needed. If off, screen flicker will occurr and remote display is slow, but no buffer is needed. This is the global switch for the whole office.</desc>
+          <label>Application Repaint is allowed to use Pre-Rendering Buffer.</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="PaintBuffer_Calc" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to PaintBuffer, but only for Calc Application. PaintBuffer is the global switch.</desc>
+          <label>Calc Repaint is allowed to use Pre-Rendering Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="PaintBuffer_Writer" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to PaintBuffer, but only for Writer Application. PaintBuffer is the global switch.</desc>
+          <label>Writer Repaint is allowed to use Pre-Rendering Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="PaintBuffer_DrawImpress" oor:type="xs:boolean">
+        <info>
+          <desc>Similar to PaintBuffer, but only for Draw/Impress Applications. PaintBuffer is the global switch.</desc>
+          <label>Draw/Impress Repaint is allowed to use Pre-Rendering Buffer</label>
+        </info>
+        <value>true</value>
+      </prop>
+      <prop oor:name="StripeColorA" oor:type="xs:int">
+        <info>
+          <desc>Specifies the first one of two colors used from overlay to display striped lines as helplines. Default is black.</desc>
+          <label>Use given color as first stripe color</label>
+        </info>
+        <value>0</value>
+      </prop>
+      <prop oor:name="StripeColorB" oor:type="xs:int">
+        <info>
+          <desc>Specifies the second one of two colors used from overlay to display striped lines as helplines. Default is white.</desc>
+          <label>Use given color as second stripe color</label>
+        </info>
+        <value>16777215</value>
+      </prop>
+      <prop oor:name="StripeLength" oor:type="xs:short">
+        <info>
+          <desc>Specifies the length in pixels of a single stripe used from overlay to display striped lines as helplines. Default is four.</desc>
+          <label>Use given length as stripe length</label>
+        </info>
+        <value>4</value>
+      </prop>
+      <prop oor:name="MaximumPaperWidth" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Paper Width for page definitions in 1/100th cm. Default is 3m. When this is changed to higher values, it is done on own risk.</desc>
+          <label>Maximum allowed Paper Width for page definitions</label>
+        </info>
+        <value>30000</value>
+      </prop>
+      <prop oor:name="MaximumPaperHeight" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Paper Height for page definitions in 1/100th cm. Default is 3m. When this is changed to higher values, it is done on own risk.</desc>
+          <label>Maximum allowed Paper Height for page definitions</label>
+        </info>
+        <value>30000</value>
+      </prop>
+      <prop oor:name="MaximumPaperLeftMargin" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Left Margin for the page definitions in 1/100th cm.</desc>
+          <label>Maximum allowed Left margin for page definitions</label>
+        </info>
+        <value>9999</value>
+      </prop>
+      <prop oor:name="MaximumPaperRightMargin" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Right Margin for the page definitions in 1/100th cm.</desc>
+          <label>Maximum allowed Right margin for page definitions</label>
+        </info>
+        <value>9999</value>
+      </prop>
+      <prop oor:name="MaximumPaperTopMargin" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Top Margin for the page definitions in 1/100th cm.</desc>
+          <label>Maximum allowed Top margin for page definitions</label>
+        </info>
+        <value>9999</value>
+      </prop>
+      <prop oor:name="MaximumPaperBottomMargin" oor:type="xs:int">
+        <info>
+          <desc>Specifies the maximum allowed Bottom Margin for the page definitions in 1/100th cm.</desc>
+          <label>Maximum allowed Bottom margin for page definitions</label>
+        </info>
+        <value>9999</value>
+      </prop>
+    </group>
     <group oor:name="AutoCorrect">
       <info>
         <desc>Contains miscellaneous settings for the auto correction.</desc>
@@ -893,7 +1028,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <desc>Specifies if the letter at the beginning of a sentence should be capitalized automatically.</desc>
           <label>Capitalize first letter of every sentence</label>
         </info>
-        <value>false</value>
+        <value>true</value>
       </prop>
       <prop oor:name="ChangeUnderlineWeight" oor:type="xs:boolean">
         <info>
@@ -936,6 +1071,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <label>Ignore double spaces</label>
         </info>
         <value>false</value>
+      </prop>
+      <prop oor:name="CorrectAccidentalCapsLock" oor:type="xs:boolean">
+        <info>
+          <desc>Specifies whether or not to correct accidental use of CAPS lock key.</desc>
+          <label>Correct accidental use of cAPS LOCK key</label>
+        </info>
+        <value>true</value>
       </prop>
       <prop oor:name="ReplaceSingleQuote" oor:type="xs:boolean">
         <info>
@@ -1031,14 +1173,14 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
             <desc>Specifies the maximum cache size for all graphical display objects.</desc>
             <label>Total Graphic Cache Size</label>
           </info>
-          <value>20480000</value>
+          <value>22000000</value>
         </prop>
         <prop oor:name="ObjectCacheSize" oor:type="xs:int">
           <info>
             <desc>Specifies the maximum cache size for a single graphic display object.</desc>
             <label>Graphic Object Cache Size</label>
           </info>
-          <value>5120000</value>
+          <value>5500000</value>
         </prop>
         <prop oor:name="ObjectReleaseTime" oor:type="xs:int">
           <info>
@@ -1061,13 +1203,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <deprecated/>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="OfficeInstallURL" oor:type="xs:string">
           <info>
             <deprecated/>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="Addin" oor:type="xs:string">
           <info>
@@ -1139,7 +1281,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the directory that is displayed when the dialog for opening a graphic or for saving a new graphic is called.</desc>
           </info>
-          <value>$(insturl)/share/gallery</value>
+          <value>$(userurl)/gallery</value>
         </prop>
         <prop oor:name="Help" oor:type="xs:string">
           <info>
@@ -1187,7 +1329,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the templates originate from these folders and sub-folders.</desc>
           </info>
-          <value oor:separator=":">$(insturl)/share/template/$(vlang):$(userurl)/template</value>
+          <value oor:separator=";">file:///usr/share/templates/ooo2/common;file:///usr/share/templates/ooo2/$(vlang);$(insturl)/share/template/common;$(insturl)/share/template/$(vlang);$(userurl)/template</value>
         </prop>
         <prop oor:name="UIConfig" oor:type="oor:string-list">
           <info>
@@ -1288,7 +1430,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the default directory used by the dialog for opening a graphic or for saving a new graphic.</desc>
           </info>
-          <value>$(insturl)/share/gallery</value>
+          <value>$(userurl)/gallery</value>
         </prop>
         <prop oor:name="Help" oor:type="xs:string">
           <info>
@@ -1330,13 +1472,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Specifies the default directory where all provided templates are located in folders and sub-folders.</desc>
           </info>
-          <value oor:separator=":">$(insturl)/share/template/$(vlang):$(userurl)/template</value>
+          <value oor:separator=";">file:///usr/share/templates/ooo2/common;file:///usr/share/templates/ooo2/$(vlang);$(insturl)/share/template/common;$(insturl)/share/template/$(vlang);$(userurl)/template</value>
         </prop>
         <prop oor:name="UIConfig" oor:type="oor:string-list">
           <info>
             <desc>Specifies the default directories for the global user interface configuration. The final user interface configuration is merged from UserConfig and from these folders.</desc>
           </info>
-          <value oor:separator=":"></value>
+          <value oor:separator=":"/>
         </prop>
         <prop oor:name="UserConfig" oor:type="xs:string">
           <info>
@@ -1501,7 +1643,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
               <desc>Defines the min range for the picklist size.</desc>
             </info>
           </minInclusive>
-          <maxInclusive oor:value="10">
+          <maxInclusive oor:value="100">
             <info>
               <desc>Defines the max range for the picklist size.</desc>
             </info>
@@ -1557,7 +1699,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Specifies the current or last temp directory. This directory will be removed during shutdown or next office start.</desc>
         </info>
-        <value></value>
+        <value/>
       </prop>
       <set oor:name="RecoveryList" oor:node-type="RecoveryEntry">
         <info>
@@ -1675,6 +1817,18 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           </info>
           <value>false</value>
         </prop>
+        <prop oor:name="SaveBackwardCompatibleODF" oor:type="xs:boolean">
+          <info>
+            <desc>If the  value is "true", then the ODF that is saved by OpenOffice.org will be backward compatible to previous minor versions.</desc>
+          </info>
+          <value>true</value>
+        </prop>
+        <prop oor:name="LoadPrinter" oor:type="xs:boolean">
+          <info>
+            <desc>Specifies if the printer settings will be loaded with the document.</desc>
+          </info>
+          <value>true</value>
+        </prop>
       </group>
       <group oor:name="Graphic">
         <info>
@@ -1749,7 +1903,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Lists all trustworthy URLs: file: All scripts from the local file system including a LAN; private:explorer: Scripts from the Explorer; private:help: Scripts in the help system; private:newmenu: Scripts that are executed by the commands File-New and AutoPilot; private:schedule: Scripts of the scheduler; private:searchfolder: Scripts of the searchfolder; private:user: Scripts that are entered in the URL field.</desc>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="OfficeBasic" oor:type="xs:int">
           <info>
@@ -1828,6 +1982,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           </info>
           <value>false</value>
         </prop>
+        <prop oor:name="HyperlinksWithCtrlClick" oor:type="xs:boolean">
+          <info>
+            <desc>Specifies whether ctrl-click is required to follow hyperlinks.</desc>
+          </info>
+          <value>true</value>
+        </prop>
         <prop oor:name="MacroSecurityLevel" oor:type="xs:int">
           <info>
             <desc>Level of Macro security.</desc>
@@ -1844,7 +2004,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
               </info>
             </maxInclusive>
           </constraints>
-          <value>1</value>
+          <value>2</value>
         </prop>
         <prop oor:name="DisableMacrosExecution" oor:type="xs:boolean">
           <info>
@@ -2114,7 +2274,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <deprecated/>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="State" oor:type="xs:boolean">
           <info>
@@ -2131,7 +2291,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <deprecated/>
           </info>
-          <value></value>
+          <value/>
         </prop>
       </group>
       <group oor:name="SplitWindow">
@@ -2142,7 +2302,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <deprecated/>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="Version" oor:type="xs:int">
           <info>
@@ -2474,13 +2634,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Determines the locale for the help pages.</desc>
         </info>
-        <value></value>
+        <value/>
       </prop>
       <prop oor:name="System" oor:type="xs:string">
         <info>
           <desc>Determines the operating system on which the help system is displayed.</desc>
         </info>
-        <value></value>
+        <value/>
       </prop>
       <prop oor:name="Tip" oor:type="xs:boolean">
         <info>
@@ -2538,17 +2698,23 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Contains various settings regarding the product registration feature.</desc>
         </info>
+        <prop oor:name="TemplateURL" oor:type="xs:string">
+          <info>
+            <desc>Contains a string specifying the URL with placeholders to be used for online registration.</desc>
+          </info>
+          <value/>
+        </prop>
         <prop oor:name="URL" oor:type="xs:string">
           <info>
-            <desc>Contains a string specifying the URL to be used for online registration.</desc>
+            <desc>Contains a string specifying the real URL to be used for online registration.</desc>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="ReminderDate" oor:type="xs:string">
           <info>
             <desc>Contains a string representation of the date on which the user receives a reminder (e.g. "13.02.2002").</desc>
           </info>
-          <value></value>
+          <value/>
         </prop>
         <prop oor:name="RequestDialog" oor:type="xs:int">
           <info>
@@ -2562,6 +2728,16 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           </info>
           <value>true</value>
         </prop>
+        <prop oor:name="ProductVersionID" oor:type="xs:string">
+          <info>
+            <desc>Current product ID.</desc>
+          </info>
+        </prop>
+        <set oor:name="ProductVersions" oor:node-type="ProductVersionID">
+          <info>
+            <desc>Specifies product specific IDs and associated instance UUIDs</desc>
+          </info>
+        </set>
       </group>
     </group>
     <group oor:name="Java">
@@ -3480,6 +3656,13 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <info>
             <desc>Contains settings for HTML import.</desc>
           </info>
+          <prop oor:name="NumbersEnglishUS" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies if numbers should be parsed according to the en-US locale instead of the user's locale.</desc>
+              <label>Use 'English (USA)' locale for numbers</label>
+            </info>
+            <value>false</value>
+          </prop>
           <prop oor:name="UnknownTag" oor:type="xs:boolean">
             <info>
               <desc>Specifies if unknown tags should be imported as fields.</desc>
@@ -3712,6 +3895,18 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
             </info>
             <value>false</value>
           </prop>
+          <prop oor:name="ExportBookmarks" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies if bookmarks are exported to PDF.</desc>
+            </info>
+            <value>true</value>
+          </prop>
+          <prop oor:name="OpenBookmarkLevels" oor:type="xs:int">
+            <info>
+              <desc>Specifies how many bookmark levels should be opened in the reader application when the PDF gets opened.</desc>
+            </info>
+            <value>-1</value>
+          </prop>
           <prop oor:name="ExportNotesPages" oor:type="xs:boolean">
             <info>
               <desc>Specifies if notes pages are exported to PDF. (Notes pages are available in Impress documents only).</desc>
@@ -3721,6 +3916,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <prop oor:name="UseTransitionEffects" oor:type="xs:boolean">
             <info>
               <desc>Specifies slide transitions are exported to PDF. This option is active only if storing Impress documents.</desc>
+            </info>
+            <value>true</value>
+          </prop>
+          <prop oor:name="ExportFormFields" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies whether form fields are exported as widgets or only their fixed print representation is exported.</desc>
             </info>
             <value>true</value>
           </prop>
@@ -3755,6 +3956,12 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <prop oor:name="IsSkipEmptyPages" oor:type="xs:boolean">
             <info>
               <desc>Specifies that automatically inserted empty pages are suppressed. This option is active only if storing Writer documents.</desc>
+            </info>
+            <value>false</value>
+          </prop>
+          <prop oor:name="IsAddStream" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that a stream is inserted to the PDF file which contains the original document for archiving purposes.</desc>
             </info>
             <value>false</value>
           </prop>
@@ -3848,8 +4055,25 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
                   <desc>Opens magnified to fit the entire width of its boundig box within the window (cuts out margins).</desc>
                 </info>
               </enumeration>
+              <enumeration oor:value="4">
+                <info>
+                  <desc>Opens with the zoom level specified in the Zoom property.</desc>
+                </info>
+              </enumeration>
             </constraints>
             <value>0</value>
+          </prop>
+          <prop oor:name="Zoom" oor:type="xs:int">
+            <info>
+              <desc>specifies the zoom level a PDF document is opened with. Only valid if "Magnification" is set to "4".</desc>
+            </info>
+            <value>100</value>
+          </prop>
+          <prop oor:name="InitialPage" oor:type="xs:int">
+            <info>
+              <desc>Specifies the page on which a PDF document should be opened in the viewer application.</desc>
+            </info>
+            <value>1</value>
           </prop>
           <prop oor:name="PageLayout" oor:type="xs:int">
             <info>
@@ -3882,6 +4106,133 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <prop oor:name="FirstPageOnLeft" oor:type="xs:boolean">
             <info>
               <desc>Used with the value 3 of the PageLayout property above, true if the first page (odd) should be on the left side of the screen.</desc>
+            </info>
+            <value>false</value>
+          </prop>
+          <prop oor:name="Printing" oor:type="xs:int">
+            <info>
+              <desc>Specifies what printing is allowed.</desc>
+            </info>
+            <constraints>
+              <enumeration oor:value="0">
+                <info>
+                  <desc>The document cannot be printed.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="1">
+                <info>
+                  <desc>The document can be printed at low resolution only.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="2">
+                <info>
+                  <desc>The document can be printed at maximum resolution.</desc>
+                </info>
+              </enumeration>
+            </constraints>
+            <value>2</value>
+          </prop>
+          <prop oor:name="Changes" oor:type="xs:int">
+            <info>
+              <desc>Specifies the change allowed to the document.</desc>
+            </info>
+            <constraints>
+              <enumeration oor:value="0">
+                <info>
+                  <desc>The document cannot be changed.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="1">
+                <info>
+                  <desc>Inserting deleting and rotating pages is allowed.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="2">
+                <info>
+                  <desc>Filling of form field is allowed.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="3">
+                <info>
+                  <desc>Both filling of form field and commenting is allowed.</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="4">
+                <info>
+                  <desc>All the changes of the previous selections are permitted, with the only exclusion of page extraction (copy).</desc>
+                </info>
+              </enumeration>
+            </constraints>
+            <value>4</value>
+          </prop>
+          <prop oor:name="EnableCopyingOfContent" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that the pages and the document content can be extracted to be used in other documents (copy and paste).</desc>
+            </info>
+            <value>true</value>
+          </prop>
+          <prop oor:name="EnableTextAccessForAccessibilityTools" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that the document content can be extracted to be used in accessibility applications.</desc>
+            </info>
+            <value>true</value>
+          </prop>
+          <prop oor:name="SelectPdfVersion" oor:type="xs:int">
+            <info>
+              <desc>Specifies the version of PDF to emit.</desc>
+            </info>
+            <constraints>
+              <enumeration oor:value="0">
+                <info>
+                  <desc>PDF 1.4 (default selection).</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="1">
+                <info>
+                  <desc>PDF/A-1 (ISO 19005-1:2005)</desc>
+                </info>
+              </enumeration>
+            </constraints>
+            <value>0</value>
+          </prop>
+          <prop oor:name="ExportLinksRelativeFsys" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that the file system related hyperlinks (file:// protocol) present in the document will be exported as relative to the source document location.</desc>
+            </info>
+            <value>false</value>
+          </prop>
+          <prop oor:name="PDFViewSelection" oor:type="xs:int">
+            <info>
+              <desc>Specifies the way the exported PDF will be viewed (experienced) by the user.</desc>
+            </info>
+            <constraints>
+              <enumeration oor:value="0">
+                <info>
+                  <desc>Specifies that the PDF will be exported with all the links external to the document treated as URI. This is the Default</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="1">
+                <info>
+                  <desc>Specifies that the PDF will be exported in order to be viewed through a PDF reader application only. Valid only if not exporting to PDF/A-1 (e.g. SelectPdfVersion not set to 1).</desc>
+                </info>
+              </enumeration>
+              <enumeration oor:value="2">
+                <info>
+                  <desc>Specifies that the PDF will be exported in order to be viewed through an Internet browser, using the PDF plug-in provided with it. The bookmark of the URI will be rendered compatible with the target bookmark generated with OOo PDF Export feature (see ExportBookmarksToPDFDestination, below).</desc>
+                </info>
+              </enumeration>
+            </constraints>
+            <value>0</value>
+          </prop>
+          <prop oor:name="ConvertOOoTargetToPDFTarget" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that the target documents with .od[tpgs] extension, will have that extension changed to .pdf when the link is exported to PDF. The source document remains untouched.</desc>
+            </info>
+            <value>false</value>
+          </prop>
+          <prop oor:name="ExportBookmarksToPDFDestination" oor:type="xs:boolean">
+            <info>
+              <desc>Specifies that the bookmarks contained in the source OpenOffice.org file should be exported to the PDF file as Named Destination (see PDF 1.4 section 8.2.1).</desc>
             </info>
             <value>false</value>
           </prop>
@@ -3956,12 +4307,17 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           </enumeration>
           <enumeration oor:value="industrial">
             <info>
-              <desc>Industrial - the Gnome default theme</desc>
+              <desc>Industrial</desc>
             </info>
           </enumeration>
           <enumeration oor:value="crystal">
             <info>
               <desc>Crystal - the KDE default theme</desc>
+            </info>
+          </enumeration>
+          <enumeration oor:value="tango">
+            <info>
+              <desc>Tango - the Gnome default theme</desc>
             </info>
           </enumeration>
         </constraints>
@@ -3991,12 +4347,6 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </info>
         <value>true</value>
       </prop>
-      <prop oor:name="ShowExperimentalFormControlProperties" oor:type="xs:boolean">
-        <info>
-          <desc>Enables or disables the property browser's access to form/control properties which are not officially supported.</desc>
-        </info>
-        <value>false</value>
-      </prop>
       <prop oor:name="FirstRun" oor:type="xs:boolean">
         <info>
           <desc>Specifies if the office has never before been started.</desc>
@@ -4013,41 +4363,63 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>specifies certain default layout settings for form controls. All those settings can be overruled in concrete documents, they specify creation-time defaults only.</desc>
         </info>
-        <node-ref oor:name="TextDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.text.TextDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in text documents</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="WebDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.text.WebDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in web pages</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="SpreadsheetDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.sheet.SpreadsheetDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in spreadsheet documents</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="DrawingDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.drawing.DrawingDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in drawing documents</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="PresentationDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.presentation.PresentationDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in presentation documents</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="XMLFormDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.xforms.XMLFormDocument" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in XML form documents</desc>
           </info>
         </node-ref>
-        <node-ref oor:name="DatabaseFormDocument" oor:node-type="ApplicationControlLayout">
+        <node-ref oor:name="com.sun.star.sdb.FormDesign" oor:node-type="ApplicationControlLayout">
           <info>
             <desc>specifies certain default layout settings for form controls in database form documents</desc>
           </info>
         </node-ref>
+        <node-ref oor:name="com.sun.star.sdb.TextReportDesign" oor:node-type="ApplicationControlLayout">
+          <info>
+            <desc>specifies certain default layout settings for form controls in database text report documents.</desc>
+          </info>
+        </node-ref>
+      </group>
+      <group oor:name="PropertyBrowser">
+        <info>
+          <desc>specifies settings for the property browser used for forms and form controls.</desc>
+        </info>
+        <prop oor:name="ExperimentalProperties" oor:type="xs:boolean">
+          <info>
+            <desc>Enables or disables the property browser's access to form/control properties which are not officially supported.</desc>
+          </info>
+          <value>false</value>
+        </prop>
+        <prop oor:name="DirectHelp" oor:type="xs:boolean">
+          <info>
+            <desc>Enables or disables a help section at the bottom of the property browser, which shows the help of the currently active property.</desc>
+          </info>
+          <value>false</value>
+        </prop>
       </group>
     </group>
     <group oor:name="AsianLayout">
@@ -4121,17 +4493,17 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         </info>
         <value>false</value>
       </prop>
-      <prop oor:name="ComponentSearchGroupLabel" oor:type="xs:string">
+      <prop oor:name="ComponentSearchGroupLabel" oor:type="xs:string" oor:localized="true">
         <info>
           <desc>Specifies the divider label in case of a component-based search extension.</desc>
         </info>
       </prop>
-      <prop oor:name="ComponentSearchCommandLabel1" oor:type="xs:string">
+      <prop oor:name="ComponentSearchCommandLabel1" oor:type="xs:string" oor:localized="true">
         <info>
           <desc>Specifies the label of the first component-based search command.</desc>
         </info>
       </prop>
-      <prop oor:name="ComponentSearchCommandLabel2" oor:type="xs:string">
+      <prop oor:name="ComponentSearchCommandLabel2" oor:type="xs:string" oor:localized="true">
         <info>
           <desc>Specifies the label of the second component-based search command.</desc>
         </info>
@@ -4353,7 +4725,7 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
         <info>
           <desc>Specifies the external mail application to be used.</desc>
         </info>
-        <value></value>
+        <value/>
       </prop>
       <prop oor:name="CommandProfile" oor:type="xs:string">
         <info>
@@ -4501,6 +4873,27 @@ Dymamic border coloring means that when the mouse is hovered over a control, and
           <deprecated/>
         </info>
       </set>
+    </group>
+    <group oor:name="SmartTags">
+      <info>
+        <desc>Contains settings for smart tags.</desc>
+      </info>
+      <group oor:name="Writer">
+        <info>
+          <desc>Contains Writer specific settings for smart tags.</desc>
+        </info>
+        <prop oor:name="RecognizeSmartTags" oor:type="xs:boolean">
+          <info>
+            <desc>Specifies whether smart tag recognization is enabled.</desc>
+          </info>
+          <value>true</value>
+        </prop>
+        <prop oor:name="ExcludedSmartTagTypes" oor:type="oor:string-list">
+          <info>
+            <desc>A list of excluded smart tag types.</desc>
+          </info>
+        </prop>
+      </group>
     </group>
   </component>
 </oor:component-schema>
