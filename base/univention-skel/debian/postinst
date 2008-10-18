@@ -35,5 +35,6 @@ if [ ! -e /etc/univention/skel/.bashrc ]; then
 	test -e /etc/skel/.bashrc && cp /etc/skel/.bashrc /etc/univention/skel
 fi
 
-exit 0
+univention-config-registry set skel/lock/retry=5
 
+exit 0
