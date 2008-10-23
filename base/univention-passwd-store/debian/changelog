@@ -1,3 +1,9 @@
+univention-passwd-store (2.0.2-2) unstable; urgency=low
+
+  * avoid subshell creation, which is inhibited by pam_runasroot and crashes the PAM stack (Bug #12455)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Thu, 23 Oct 2008 09:46:23 +0200
+
 univention-passwd-store (2.0.2-1) unstable; urgency=low
 
   * ignore computer accounts

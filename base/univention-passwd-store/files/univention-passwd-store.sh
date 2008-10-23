@@ -12,8 +12,7 @@ if [ -z "$PASSWD" ]; then
 fi
 
 # ignore computer accounts
-computer_account=$(echo "$USER" | grep "\$$")
-if [ -n "$computer_account" ]; then
+if [ "$USER" != "${USER%\$}" ]; then
 	exit 0
 fi
 
