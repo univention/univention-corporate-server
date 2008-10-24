@@ -1,0 +1,36 @@
+
+# check autostart variable of service and exit (a)
+# if variable eq false or no and (b) if var eq manually
+# and system boot is in progress
+function check_autostart () {
+
+    service=$1
+    variable=$2
+    ucr=/usr/sbin/univention-config-registry
+
+    [ -n "$service" ] || return 0
+    [ -n "$variable" ] || return 0
+    [ -x "$ucr" ] || return 0
+
+    autostart=`$ucr get $variable`
+
+    # service disabled
+    if [ "false" == "$autostart" ] || [ "no" == "$autostart" ]; then
+        echo "$service disabled by ucr var $variable=$autostart"
+        exit 0
+    fi
+
+    # manually start of service
+    # test if system is booting with "pidof getty", maybe
+    # there is a better way ...
+    if [ "manually" == "$autostart" ]; then
+        getties=`pidof getty`
+        if [ -z "$getties" ]; then
+            echo "$service disabled by ucr var $variable=$autostart"
+            exit 0
+        fi
+    fi
+
+    return 0
+}
+
