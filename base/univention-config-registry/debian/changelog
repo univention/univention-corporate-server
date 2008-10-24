@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-2) unstable; urgency=low
+
+  * one more little helper script used by autostart checking init scripts
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 24 Oct 2008 17:04:36 +0200
+
 univention-config-registry (3.0.6-1) unstable; urgency=low
 
   * add/modify of variable meta information does not require to provide all
