@@ -1,3 +1,12 @@
+univention-skel (1.0.1-1) unstable; urgency=low
+
+  * new UCR variables skel/permissions/directory and
+    skel/permissions/file to define default permissions for new skel files
+  * add directory /etc/univention/skel.meta: may contain scripts invoked after
+    creation of new skel files and directories in $HOME
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Oct 2008 10:54:59 +0200
+
 univention-skel (1.0.0-2) unstable; urgency=low
 
   * encoded files utf-8
