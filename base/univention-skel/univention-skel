@@ -4,7 +4,7 @@
 # Univention Skel
 #  skel script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -29,15 +29,32 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, md5, string
+import os, sys, md5, string, subprocess
+# for file locking
+import fcntl
+import time
 
-home=os.getenv('HOME')
-if not home or not os.path.isdir(home):
+import univention.config_registry
+
+home = os.getenv( 'HOME', '' )
+if not os.path.isdir( home ):
 	print >>sys.stderr, 'Invalid home directory'
-	sys.exit(1)
-	
+	sys.exit( 1 )
+
+cfgRegistry = univention.config_registry.ConfigRegistry()
+cfgRegistry.load()
+
+# directories
+user_skel_dir = '.univention-skel'
 userconfig_templates='/etc/univention/skel'
-userconfig_base=os.path.join(home, '.univention-skel')
+userconfig_meta='/etc/univention/skel.meta'
+userconfig_base=os.path.join(home, user_skel_dir )
+# locking
+lockfile = os.path.join( home, '.univention-skel.lock' )
+lock_fd = None
+# defaults
+perms_dir = cfgRegistry.get( 'skel/permissions/directory', '0700' )
+perms_file = cfgRegistry.get( 'skel/permissions/file', '0600' )
 
 class Stamps:
 	base=''
@@ -72,25 +89,41 @@ class Stamps:
 		fp.close()
 
 def md5sum(file):
+	# module md5 will be replace with hashlib in python 2.5
 	return md5.md5(open(file).read()).hexdigest()
 
 def i2h_file(file):
 	return file.replace(userconfig_templates, home)
+
 def h2i_file(file):
 	return file.replace(home, userconfig_templates)
-	
+
+def get_permissions( filename ):
+	if os.path.isdir( filename ):
+		return int( perms_dir, 8 )
+	else:
+		return int( perms_file, 8 )
+
+def run_script( filename ):
+	if os.path.isdir( filename ):
+		filename = os.path.join( filename, '.directory' )
+	filename = filename.replace( userconfig_templates, userconfig_meta )
+	if os.path.isfile( filename ):
+		subprocess.call( [ filename ], shell = True )
+
 def install_files(stamps, dir, files):
 	hstamps, istamps = stamps
 	hdir = i2h_file(dir)
 	istamps.dirs.append(dir)
-	#print hdir
+
+	# create directories if necessary
 	if not os.path.exists(hdir):
-		if hdir in hstamps.dirs:
-			pass
-		else:
+		if not hdir in hstamps.dirs:
 			hstamps.dirs.append(hdir)
-			print 'mkdir', hdir
-			os.mkdir(hdir)
+ 			os.mkdir( hdir, get_permissions( dir ) )
+			run_script( dir )
+
+	# check files
 	for file in files:
 		ifile = os.path.join(dir, file)
 		hfile = os.path.join(hdir, file)
@@ -107,28 +140,66 @@ def install_files(stamps, dir, files):
 				istamps.files[ifile] = 'symlink'
 			continue
 		istamps.files[ifile] = md5sum(ifile)
-		# no path exist should be a secure condition to provide a new file
-		if (not os.path.exists(hfile)) or (not hstamps.files.has_key(hfile)) or\
-				(os.path.exists(hfile) and md5sum(hfile) == hstamps.files.get(hfile, '') and
-				hstamps.files[hfile] != istamps.files[ifile]):
+		# copy file if:
+		## file does not exist
+		## there is no MD5 sum
+		## unmodified version of file exists and MD5 sums of skel and user version do not match
+		if ( not os.path.exists(hfile) ) or \
+			   ( not hstamps.files.has_key(hfile) ) or \
+			   ( os.path.exists(hfile) and md5sum(hfile) == hstamps.files.get(hfile, '') and \
+				 hstamps.files[hfile] != istamps.files[ifile] ):
 			print 'create', hfile
 			rfp=open(ifile)
-			wfp=open(hfile, 'w')
-			wfp.write(rfp.read())
-			wfp.close()
+			wfp = os.open( hfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, get_permissions( ifile ) )
+			os.write( wfp, rfp.read() )
+			os.close( wfp )
 			rfp.close()
+			run_script( ifile )
 			hstamps.files[hfile] = md5sum(hfile)
-		else:
-			#file exists
-			pass
 
-	
+def _lock():
+	'''try to lock skel operations. If lock could not be acquired will
+	retry it for skel/retries times'''
+	global lock_fd
+
+	count = int( cfgRegistry.get( 'skel/lock/retry', '5' ) )
+	lock_fd = os.open( lockfile, os.O_WRONLY | os.O_TRUNC | os.O_CREAT, 0600 )
+	while count:
+		try:
+			fcntl.lockf( lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB )
+			return True
+		except Exception ,e:
+			print str(e )
+			count -= 1
+			time.sleep( 0.05 ) # 50 milliseconds
+
+	return False
+
+def _unlock():
+	'''free lock for skel operations'''
+	global lock_fd
+
+	if not lock_fd: return False
+	fcntl.lockf( lock_fd, fcntl.LOCK_UN )
+	os.close( lock_fd )
+	lock_fd = None
+
+	return True
+
+if not _lock():
+	print >>sys.stderr, 'Unable to lock skel operations'
+	sys.exit( 1 )
+
+# for debugging
+# sys.stdout = open( '/tmp/univention-skel.log', 'w' )
 hstamps = Stamps()
 hstamps.read(userconfig_base)
 istamps = Stamps()
 
+print userconfig_templates
 os.path.walk(userconfig_templates, install_files, (hstamps, istamps))
 
+# delete old skel files
 delete_files=[]
 for hfile in hstamps.files.keys():
 	ifile = h2i_file(hfile)
@@ -144,6 +215,7 @@ for hfile in hstamps.files.keys():
 for file in delete_files:
 	del hstamps.files[file]
 
+# delete old skel directories
 hstamps.dirs.sort()
 hstamps.dirs.reverse()
 delete_dirs=[]
@@ -160,3 +232,7 @@ for dir in delete_dirs:
 	hstamps.dirs.remove(dir)
 
 hstamps.write()
+
+if not _unlock():
+	print >>sys.stderr, 'Unable to free lock of skel operations'
+	sys.exit( 1 )
