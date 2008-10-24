@@ -250,8 +250,7 @@ class ConfigRegistryInfo( object ):
 	def add_variable( self, key, variable ):
 		'''this methods adds a new variable information item or
 		overrides an old entry'''
-		if variable.check():
-			self.variables[ key ] = variable
+		self.variables[ key ] = variable
 
 def set_language( lang ):
 	global _locale

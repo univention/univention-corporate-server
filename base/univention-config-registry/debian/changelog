@@ -1,3 +1,10 @@
+univention-config-registry (3.0.6-1) unstable; urgency=low
+
+  * add/modify of variable meta information does not require to provide all
+    fields anymore
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 24 Oct 2008 15:29:35 +0200
+
 univention-config-registry (3.0.5-1) unstable; urgency=low
 
   * fixed typo in univention-set-logfile-permissions (Bug: #11351)
