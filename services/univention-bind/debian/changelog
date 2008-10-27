@@ -1,3 +1,9 @@
+univention-bind (2.0.5-6) unstable; urgency=low
+
+  * new autostart test in init script
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 27 Oct 2008 13:23:07 +0100
+
 univention-bind (2.0.5-5) unstable; urgency=low
 
   * Don't set a fixed source port for the Bind proxy, otherwise source port
