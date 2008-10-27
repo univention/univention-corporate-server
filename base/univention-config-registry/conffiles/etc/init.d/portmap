@@ -34,10 +34,11 @@ fi
 
 case "$1" in
     start)
-	eval $(/usr/sbin/univention-config-registry shell portmap/autostart)
-	if [ -z "$portmap_autostart" -o "$portmap_autostart" != "yes" ]; then
-		exit 0
-	fi
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            source "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart portmap portmap/autostart
+        fi
 	log_begin_msg "Starting portmap daemon..."
 	pid=`pidof portmap`
 	if [ -n "$pid" ] ; then

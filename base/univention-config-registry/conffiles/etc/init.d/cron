@@ -15,13 +15,16 @@ test -f /usr/sbin/cron || exit 0
 
 #LSBNAMES='-l'  # Uncomment for LSB name support in /etc/cron.d/
 
+
+
 case "$1" in
 start)	
-		eval $(univention-config-registry shell cron/autostart)
-		if [ -z "$cron_autostart" -o "$cron_autostart" != "yes" ]; then
-			exit 0
-		fi
-		echo -n "Starting periodic command scheduler: cron"
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart cron cron/autostart
+	fi
+	echo -n "Starting periodic command scheduler: cron"
         start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
         echo "." 
 	;;
@@ -31,6 +34,11 @@ stop)	echo -n "Stopping periodic command scheduler: cron"
         ;;
 restart) echo -n "Restarting periodic command scheduler: cron"
         start-stop-daemon --stop --retry 5 --quiet --pidfile /var/run/crond.pid --name cron
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            source "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart cron cron/autostart
+        fi
         start-stop-daemon --start --quiet --pidfile /var/run/crond.pid --name cron --startas /usr/sbin/cron -- $LSBNAMES
         echo "."
         ;;
