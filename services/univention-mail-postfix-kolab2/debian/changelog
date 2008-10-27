@@ -1,18 +1,24 @@
+univention-mail-postfix-kolab2 (1.0.5-5) unstable; urgency=low
+
+  * new autostart test in postfix init script 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 27 Oct 2008 11:24:35 +0100
+
 univention-mail-postfix-kolab2 (1.0.5-4) unstable; urgency=low
 
-  * typo fixed in conffiles/etc/postfix/main.cf.d/10_general (Bug: #11858)
+  * typo fixed in conffiles/etc/postfix/main.cf.d/10_general 
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 23 Sep 2008 20:17:12 +0200
 
 univention-mail-postfix-kolab2 (1.0.5-3) unstable; urgency=low
 
-  * krb5 instead of heimdal in pam/smtp (Bug: #11912)
+  * krb5 instead of heimdal in pam/smtp
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 11 Sep 2008 08:07:47 +0200
 
 univention-mail-postfix-kolab2 (1.0.5-2) unstable; urgency=low
 
-  * added service info (Bug: #9555)
+  * added service info 
 
  -- Felix Botner <botner@univention.de>  Tue,  2 Sep 2008 13:34:15 +0200
 
