@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-11) unstable; urgency=low
+
+  * new init.d script autostart test (Bug: #9555)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 27 Oct 2008 11:06:38 +0100
+
 univention-mail-postfix (1.0.1-10) unstable; urgency=low
 
   * krb5 instead of heimdal in pam/smtp (Bug: #11912) 
