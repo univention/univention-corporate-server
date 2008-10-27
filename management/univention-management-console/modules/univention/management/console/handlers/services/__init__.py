@@ -192,6 +192,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				value = 'no'
 				if object.arguments[ 0 ] == 'service/start_auto':
 					value = 'yes'
+				if object.arguments[ 0 ] == 'service/start_manual':
+					value = 'manually'
 				ucr.handler_set( [ '%s=%s' % ( key, value ) ] )
 		self.finished( object.id(), None )	
 
