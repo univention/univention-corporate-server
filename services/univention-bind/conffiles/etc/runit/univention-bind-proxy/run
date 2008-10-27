@@ -4,13 +4,10 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 OPTS="-c /etc/bind/named.conf.proxy -u bind -f"
 
-eval `univention-config-registry shell bind/autostart`
-if [ -n "$bind_autostart" ]; then
-	if [ "$bind_autostart"  == "no" ] || [ "$bind_autostart"  == "false" ]; then
-		echo " bind is disabled"
-		exit 0
-	fi
+# check ucr autostart setting
+if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+    source "/usr/share/univention-config-registry/init-autostart.lib"
+    check_autostart univention-bind-proxy bind/autostart
 fi
-
 
 exec /usr/sbin/named $OPTS
