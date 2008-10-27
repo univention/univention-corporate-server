@@ -41,9 +41,10 @@ UGID=$(getent passwd $RUNASUSER | cut -f 3,4 -d:) || true
 
 case $1 in
 	start)
-		eval $(univention-config-registry shell ntp/autostart)
-		if [ -z "$ntp_autostart" -o "$ntp_autostart" != "yes" ]; then
-			exit 0
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		    source "/usr/share/univention-config-registry/init-autostart.lib"
+		    check_autostart ntp ntp/autostart
 		fi
 		log_daemon_msg "Starting NTP server" "ntpd"
 		if [ -z "$UGID" ]; then

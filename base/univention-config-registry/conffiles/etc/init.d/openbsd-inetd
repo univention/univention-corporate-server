@@ -52,10 +52,11 @@ checknoservices () {
 
 case "$1" in
     start)
-		eval $(univention-config-registry shell inetd/autostart)
-		if [ -z "$inetd_autostart" -o "$inetd_autostart" != "yes" ]; then
-			exit 0
-		fi
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart inetd inetd/autostart
+	fi
 	checknoservices
         checkportmap
 	log_daemon_msg "Starting internet superserver" "inetd"
@@ -81,6 +82,11 @@ case "$1" in
 	start-stop-daemon --stop --quiet --pidfile /var/run/inetd.pid \
 	    --oknodo
 	checknoservices
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            source "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart inetd inetd/autostart
+        fi
 	sleep 1
 	start-stop-daemon --start --quiet --pidfile /var/run/inetd.pid \
 	    --exec $DAEMON -- $OPTIONS

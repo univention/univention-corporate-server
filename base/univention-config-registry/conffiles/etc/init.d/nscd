@@ -76,10 +76,11 @@ status()
 
 case "$1" in
 start)
-	eval $(univention-config-registry shell nscd/autostart)
-	if [ -z "$nscd_autostart" -o "$nscd_autostart" != "yes" ]; then
-		exit 0
-	fi
+        # check ucr autostart setting
+        if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+            source "/usr/share/univention-config-registry/init-autostart.lib"
+            check_autostart nscd nscd/autostart
+        fi
 	echo -n "Starting $DESC: $NAME"
 	start
 	case "$?" in
