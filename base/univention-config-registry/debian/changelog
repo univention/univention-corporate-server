@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-3) unstable; urgency=low
+
+  * init script update
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 27 Oct 2008 11:52:58 +0100
+
 univention-config-registry (3.0.6-2) unstable; urgency=low
 
   * one more little helper script used by autostart checking init scripts
