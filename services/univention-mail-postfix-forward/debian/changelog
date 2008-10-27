@@ -1,3 +1,9 @@
+univention-mail-postfix-forward (1.0.0-21) unstable; urgency=low
+
+  * new autostart test in postfix init script (Bug: #9553) 
+
+ -- Felix Botner <fbotner@omar.knut.univention.de>  Mon, 27 Oct 2008 11:20:57 +0100
+
 univention-mail-postfix-forward (1.0.0-20) unstable; urgency=low
 
   * bugfix in init script (Bug: #10436)
