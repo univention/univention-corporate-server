@@ -32,11 +32,11 @@ case "$1" in
     start)
 	echo -n "Starting mail transport agent: Postfix"
 
-	@!@
-if baseConfig.has_key('postfix/autostart') and  baseConfig['postfix/autostart'].lower() in ['no', 'false']:
-	print 'echo "  disabled"'
-	print 'exit 0'
-@!@
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		source "/usr/share/univention-config-registry/init-autostart.lib"
+		check_autostart postfix postfix/autostart
+	fi
 
 	# see if anything is running chrooted.
 	NEED_CHROOT=$(awk '/^[0-9a-z]/ && ($5 == "-") { print "y"; exit}' /etc/postfix/master.cf)
