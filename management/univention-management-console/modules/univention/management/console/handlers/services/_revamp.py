@@ -53,11 +53,13 @@ class Web( object ):
 			chk = umcd.Checkbox( static_options = { 'service' : name } )
 			boxes.append( chk.id() )
 			image = umcd.Image( 'services/default', umct.SIZE_MEDIUM )
-			type = _( 'manual' )
-			if srv.autostart:
+			type = _( 'automatically' )
+			if srv.autostart and srv.autostart == "yes":
 				type = _( 'automatically' )
-			elif srv.autostart == None:
-				type = _( 'unknown' )
+			elif srv.autostart and srv.autostart == "manually":
+				type = _( 'manual' )
+			elif srv.autostart and srv.autostart == "no":
+				type = _( 'never' )
 			lst.add_row( [ image, name, icon, type, srv[ 'description' ], chk ] )
 		req = umcp.Command( args = [], opts= { 'service' : [] } )
 		req_list = umcp.Command( args = [ 'service/list' ],
@@ -66,7 +68,8 @@ class Web( object ):
 		choices = [ ( 'service/start', _( 'Start Services' ) ),
 					( 'service/stop', _( 'Stop Services' ) ),
 					( 'service/start_auto', _( 'Start Automatically' ) ),
-					( 'service/start_manual', _( 'Start Manually' ) ), ]
+					( 'service/start_manual', _( 'Start Manually' ) ), 
+					( 'service/start_never', _( 'Start Never' ) ), ]
 		select = umcd.SelectionButton( _( 'Select the Operation' ), choices, actions )
 		lst.add_row( [ umcd.Fill( 5 ), select ] )
 		res.dialog = [ lst ]

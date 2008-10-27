@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-09 13:02+0200\n"
+"POT-Creation-Date: 2008-10-27 15:19+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,12 +28,10 @@ msgid "Start Type"
 msgstr "Startart"
 
 #: __init__.py:59
-#, fuzzy
 msgid "Manual"
 msgstr "manuell"
 
 #: __init__.py:59
-#, fuzzy
 msgid "Automatically"
 msgstr "automatisch"
 
@@ -69,21 +67,20 @@ msgstr "Dienst hinzufügen"
 msgid "List all services"
 msgstr "Liste aller Dienste"
 
-#: __init__.py:109 __init__.py:114
-#, fuzzy
+#: __init__.py:109 __init__.py:114 __init__.py:119
 msgid "Set automatic start"
 msgstr "Automatischer Start"
 
-#: __init__.py:135
+#: __init__.py:140
 #, python-format
 msgid "Starting the following services failed: %(services)s"
 msgstr "Das Starten der folgenden Dienste ist fehlgeschlagen: %(services)s"
 
-#: __init__.py:141 __init__.py:153
+#: __init__.py:146 __init__.py:158
 msgid "You are not permitted to run this command."
 msgstr "Sie haben keine Berechtigungen dieses Kommando auszuführen"
 
-#: __init__.py:147
+#: __init__.py:152
 #, python-format
 msgid "Stopping the following services failed: %(services)s"
 msgstr "Das Stoppen der folgenden Dienste ist fehlgeschlagen: %(services)s"
@@ -100,34 +97,41 @@ msgstr "Status"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: _revamp.py:56
-msgid "manual"
-msgstr "manuell"
-
-#: _revamp.py:58
+#: _revamp.py:56 _revamp.py:58
 msgid "automatically"
 msgstr "automatisch"
 
 #: _revamp.py:60
-msgid "unknown"
-msgstr "unbekannt"
+msgid "manual"
+msgstr "manuell"
 
-#: _revamp.py:66
+#: _revamp.py:62
+msgid "never"
+msgstr "nie"
+
+#: _revamp.py:68
 msgid "Start Services"
 msgstr "Dienste starten"
 
-#: _revamp.py:67
+#: _revamp.py:69
 msgid "Stop Services"
 msgstr "Dienste stoppen"
 
-#: _revamp.py:68
+#: _revamp.py:70
 msgid "Start Automatically"
 msgstr "Automatischer Start"
 
-#: _revamp.py:69
+#: _revamp.py:71
 msgid "Start Manually"
 msgstr "Manueller Start"
 
-#: _revamp.py:70
+#: _revamp.py:72
+msgid "Start Never"
+msgstr "Nie starten"
+
+#: _revamp.py:73
 msgid "Select the Operation"
 msgstr "Operation auswählen"
+
+#~ msgid "unknown"
+#~ msgstr "unbekannt"

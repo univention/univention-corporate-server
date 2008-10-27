@@ -115,6 +115,11 @@ command_description = {
 		method = 'service_start_type',
 		values = { 'type' : start_type }
 	),
+	'service/start_never': umch.command(
+		short_description = _( 'Set automatic start' ),
+		method = 'service_start_type',
+		values = { 'type' : start_type }
+	),
 }
 
 class handler( umch.simpleHandler, _revamp.Web ):
@@ -167,14 +172,17 @@ class handler( umch.simpleHandler, _revamp.Web ):
 
 		for name, srv in srvs.services.items():
 			key = '%s/autostart' % name
+			# default: autostart=yes
 			if srv.has_key( 'start_type' ):
 				key = srv[ 'start_type' ]
 			if not umc.registry.has_key( key ):
-				srv.autostart = None
-			elif umc.registry[ key ].lower() in ( 'yes', '1', 'true' ):
-				srv.autostart = True
+				srv.autostart = "yes"
+			elif umc.registry[ key ].lower() in ( 'no' ):
+				srv.autostart = "no"
+			elif umc.registry[ key ].lower() in ( 'manually' ):
+				srv.autostart = "manually"
 			else:
-				srv.autostart = False
+				srv.autostart = "yes"
 
 		self.finished( object.id(), srvs.services )
 
@@ -189,11 +197,13 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				if srv.has_key( 'start_type' ):
 					key = srv[ 'start_type' ]
 
-				value = 'no'
+				value = 'yes'
 				if object.arguments[ 0 ] == 'service/start_auto':
 					value = 'yes'
 				if object.arguments[ 0 ] == 'service/start_manual':
 					value = 'manually'
+				if object.arguments[ 0 ] == 'service/start_never':
+					value = 'no'
 				ucr.handler_set( [ '%s=%s' % ( key, value ) ] )
 		self.finished( object.id(), None )	
 
