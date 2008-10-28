@@ -94,9 +94,10 @@ test -f $DAEMON || exit 0
 
 case "$1" in
   start)
-	eval $(univention-config-registry shell ldap/autostart)
-	if [ -z "$ldap_autostart" -o "$ldap_autostart" != "yes" ]; then
-	  exit 0
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart ldap ldap/autostart
 	fi
    @!@
 if baseConfig['ldap/database/type'] == 'bdb':
