@@ -4,3 +4,4 @@
 /etc/univention/templates/files/etc/init.d/heimdal-kdc
 /etc/univention/templates/files/etc/logrotate.d/heimdal-kdc
 /etc/univention/service.info/services/univention-heimdal-kdc.cfg
+/etc/univention/registry.info/variables/univention-heimdal-kdc.cfg
