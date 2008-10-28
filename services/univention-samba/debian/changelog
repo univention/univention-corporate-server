@@ -1,3 +1,9 @@
+univention-samba (2.0.3-2) unstable; urgency=low
+
+  * new autostart test in init script
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 15:01:59 +0100
+
 univention-samba (2.0.3-1) unstable; urgency=low
 
   * added custom settings for samba share objects
