@@ -20,3 +20,6 @@ File: etc/gdm/PostSession/Default
 
 Type: file
 File: etc/gdm/PreSession/Default
+
+Type: file
+File: etc/init.d/gdm
