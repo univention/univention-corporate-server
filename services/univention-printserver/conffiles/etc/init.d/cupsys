@@ -26,10 +26,11 @@ fi
 
 case "$1" in
   start)
-  	eval $(univention-config-registry shell cups/autostart)
-	if [ "$cups_autostart" != "yes" ]; then
-		exit 0;
-	fi
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart cups cups/autostart
+	fi	
 	log_begin_msg "Starting $DESC: $NAME"
 	chown root:lpadmin /usr/share/cups/model 2>/dev/null || true
 	chmod 3775 /usr/share/cups/model 2>/dev/null || true
@@ -56,6 +57,11 @@ case "$1" in
   restart)
 	log_begin_msg "Restarting $DESC: $NAME"
 	if start-stop-daemon --stop --quiet --retry 5 --oknodo --pidfile $PIDFILE --name $NAME; then
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		    source "/usr/share/univention-config-registry/init-autostart.lib"
+		    check_autostart cups cups/autostart
+		fi
 		start-stop-daemon --start --quiet --pidfile "$PIDFILE" --exec $DAEMON
 	fi
 	log_end_msg $?
