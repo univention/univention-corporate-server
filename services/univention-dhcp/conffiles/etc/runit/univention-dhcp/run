@@ -1,9 +1,9 @@
 #! /bin/sh -e
 
-eval `/usr/sbin/univention-config-registry shell dhcpd/autostart`
-
-if [ "$dhcpd_autostart" = "yes" ] ; then
-	exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log
-else
-	logger -p local0.notice -t UNIVENTION-DHCP "dhcpd disabled in configuration registry - not started."
+# check ucr autostart setting
+if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+    source "/usr/share/univention-config-registry/init-autostart.lib"
+    check_autostart dhcpd dhcpd/autostart
 fi
+
+exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log
