@@ -69,11 +69,10 @@ test -e /var/cache/samba/dont_start && exit 0
 
 case "$1" in
 	start)
-		# Don't start before join-script has run
-
-		if [ "$samba_autostart" = "no" ]; then
-			echo "Not starting samba daemons"
-			exit 0
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		    source "/usr/share/univention-config-registry/init-autostart.lib"
+		    check_autostart samba samba/autostart
 		fi
 
 		echo -n "Starting Samba daemons:"
