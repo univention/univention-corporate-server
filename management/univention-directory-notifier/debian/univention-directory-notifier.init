@@ -34,9 +34,10 @@ fi
 
 case "$1" in
 	start)
-		eval $(univention-baseconfig shell notifier/autostart)
-		if [ -z "$notifier_autostart" -o "$notifier_autostart" != "yes" ]; then
-			exit 0
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+		    source "/usr/share/univention-config-registry/init-autostart.lib"
+		    check_autostart notifier notifier/autostart
 		fi
 		echo -n "Starting univention-directory-notifier daemon: "
 		sv start univention-directory-notifier
