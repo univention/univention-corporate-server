@@ -33,8 +33,6 @@ DESC2="Heimdal password server"
 PARAMS2=""
 #PARAMS2="--check-library=/usr/lib/libuniventionchkpwhistory.so --check-function=univention_chkpwhistory"
 
-START_KDC=@%@kerberos/autostart@%@
-START_KPASSWDD=@%@kerberos/autostart@%@
 START_MASTER=no
 START_SLAVE=no
 
@@ -45,22 +43,24 @@ set -e
 
 case "$1" in
   start)
-	if [ "$START_KDC" = "yes" ];
-	then
-		echo -n "Starting $DESC1: "
-		start-stop-daemon --start --quiet --background \
-			--make-pidfile --pidfile /var/run/$NAME1.pid \
-			--exec $DAEMON1 -- $PARAMS1
-		echo "$NAME1."
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart kdc-kpasswdd kerberos/autostart
 	fi
-	if [ "$START_KPASSWDD" = "yes" ];
-	then
-		echo -n "Starting $DESC2: "
-		start-stop-daemon --start --quiet --background \
-			--make-pidfile --pidfile /var/run/$NAME2.pid \
-			--exec $DAEMON2 -- $PARAMS2
-		echo "$NAME2."
-	fi
+
+	echo -n "Starting $DESC1: "
+	start-stop-daemon --start --quiet --background \
+		--make-pidfile --pidfile /var/run/$NAME1.pid \
+		--exec $DAEMON1 -- $PARAMS1
+	echo "$NAME1."
+
+	echo -n "Starting $DESC2: "
+	start-stop-daemon --start --quiet --background \
+		--make-pidfile --pidfile /var/run/$NAME2.pid \
+		--exec $DAEMON2 -- $PARAMS2
+	echo "$NAME2."
+
 	if [ "$START_MASTER" = "yes" ];
 	then
 		echo -n "Starting incremental propagation master: "
@@ -69,6 +69,7 @@ case "$1" in
 			--exec /usr/sbin/ipropd-master --
 		echo "ipropd-master."
 	fi
+
 	if [ "$START_SLAVE" = "yes" ];
 	then
 		echo -n "Starting incremental propagation slave: "
@@ -79,20 +80,16 @@ case "$1" in
 	fi
 	;;
   stop)
-	if [ "$START_KDC" = "yes" ];
-	then
-		echo -n "Stopping $DESC2: "
-		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME2.pid \
-			--exec $DAEMON2 -- $PARAMS2
-		echo "$NAME2."
-	fi
-	if [ "$START_KPASSWDD" = "yes" ];
-	then
-		echo -n "Stopping $DESC1: "
-		start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME1.pid \
-			--exec $DAEMON1 -- $PARAMS1
-		echo "$NAME1."
-	fi
+	echo -n "Stopping $DESC2: "
+	start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME2.pid \
+		--exec $DAEMON2 -- $PARAMS2
+	echo "$NAME2."
+
+	echo -n "Stopping $DESC1: "
+	start-stop-daemon --stop --oknodo --quiet --pidfile /var/run/$NAME1.pid \
+		--exec $DAEMON1 -- $PARAMS1
+	echo "$NAME1."
+
 	if [ "$START_MASTER" = "yes" ];
 	then
 		echo -n "Stopping incremental propagation master: "
