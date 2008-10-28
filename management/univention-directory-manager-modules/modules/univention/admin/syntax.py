@@ -329,9 +329,9 @@ class uid_umlauts_lower_except_first_letter(simple):
 
 	def parse(self, text):
 		unicode_text=text.decode("utf-8")
-		firstletter_lowercased = unicode_text[:1].lower() + unicode_text[1:]
-		if not firstletter_lowercased.islower():
-			raise univention.admin.uexceptions.valueError, _("Only the first letter of the username may be uppercase!")
+		for c in unicode_text[1:]:
+			if c.isupper():
+				raise univention.admin.uexceptions.valueError, _("Only the first letter of the username may be uppercase!")
 
 		if self._re.match(unicode_text) != None and unicode_text != 'admin':
 			return text

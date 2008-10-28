@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-14) unstable; urgency=low
+
+  * fixed broken uid check that discouraged UIDs consisting of digits only. (Bug #12497)
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 24 Oct 2008 14:41:06 +0200
+
 univention-directory-manager-modules (3.0.14-12) unstable; urgency=low
 
   * searching for mailfolders in udm (name=*) now works (Bug: #10243)
