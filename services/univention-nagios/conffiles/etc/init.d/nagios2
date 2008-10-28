@@ -268,9 +268,10 @@ reload () {
 
 case "$1" in
   start)
-    eval $(univention-baseconfig shell nagios/server/autostart)
-    if [ -z "$nagios_server_autostart" -o "$nagios_server_autostart" != "yes" ]; then
-      exit 0
+    # check ucr autostart setting
+    if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+        source "/usr/share/univention-config-registry/init-autostart.lib"
+        check_autostart nagios-server nagios/server/autostart
     fi
     log_daemon_msg "Starting $DESC" "$NAME"
     start
