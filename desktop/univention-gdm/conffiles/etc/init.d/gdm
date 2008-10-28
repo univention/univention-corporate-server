@@ -44,10 +44,11 @@ DEFAULT_DISPLAY_MANAGER_FILE=/etc/X11/default-display-manager
 
 case "$1" in
   start)
-    eval $(univention-baseconfig shell gdm/autostart)
-    if [ -z "$gdm_autostart" -o "$gdm_autostart" != "yes" ]; then
-      exit 0
-    fi
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart gdm gdm/autostart
+	fi
 
   	if [ -e "$DEFAULT_DISPLAY_MANAGER_FILE" -a "$HEED_DEFAULT_DISPLAY_MANAGER" = "true" -a "$(cat $DEFAULT_DISPLAY_MANAGER_FILE 2> /dev/null)" != "$DEBCONF_DAEMON" ]; then
 		log_action_msg "Not starting GNOME Display Manager; it is not the default display manager"
