@@ -73,10 +73,11 @@ fixdirs () {
 
 case "$1" in
   start)
-        eval $(univention-baseconfig shell mail/cyrus21/autostart)
-        if [ -z "$mail_cyrus21_autostart" -o "$mail_cyrus21_autostart" != "yes" ]; then
-                exit 0
-        fi
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart cyrus21 mail/cyrus21/autostart
+	fi
 
   	# Verify if there are old Cyrus 1.5 spools that were not upgraded
 	[ -f /var/lib/cyrus/mailboxes -a -d /var/lib/cyrus/deliverdb -a \
