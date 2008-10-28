@@ -53,9 +53,10 @@ set -e
 
 case "$1" in
   start)
-  	eval $(univention-baseconfig shell nagios/client/autostart)
-	if [ -z "$nagios_client_autostart" -o "$nagios_client_autostart" != "yes" ]; then
-		exit 0
+	# check ucr autostart setting
+	if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+	    source "/usr/share/univention-config-registry/init-autostart.lib"
+	    check_autostart nagios-client nagios/client/autostart
 	fi
 	log_daemon_msg "Starting $DESC" "$NAME"
 	start_daemon $NICENESS $DAEMON -c $CONFIG -d $DAEMON_OPTS
