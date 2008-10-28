@@ -1,6 +1,12 @@
+univention-mail-cyrus-kolab2 (1.0.12-2) unstable; urgency=low
+
+  * new autostart test in init script
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 28 Oct 2008 14:21:26 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-1) unstable; urgency=low
 
-  * create /etc/kolab2cal.htpasswd if missing (Bug 11584)
+  * create /etc/kolab2cal.htpasswd if missing
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 22 Sep 2008 16:31:33 +0200
 
