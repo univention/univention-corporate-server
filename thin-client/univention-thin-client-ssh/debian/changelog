@@ -1,3 +1,9 @@
+univention-thin-client-ssh (2.1.1-9) unstable; urgency=low
+
+  * added missing univention-config-registry-file. Bug #12273
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  3 Nov 2008 14:07:30 +0100
+
 univention-thin-client-ssh (2.1.1-8) unstable; urgency=low
 
   * added missing build dependency. Bug #12273
