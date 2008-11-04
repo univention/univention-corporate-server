@@ -11,6 +11,7 @@ SEDSCRIPT = 	s|__KVERS__|$(KVERS)|g; \
 		s|__DATE__|$(shell date -R)|g; \
 		s|__APPEND_TO_VERSION__|$(APPEND_TO_VERSION)|g
 
+MAKESED = s|\(KDIR\s*:= \).*|\1$(KSRC)|;
 
 debian/control: debian/control.template
 	sed -e "$(SEDSCRIPT)" debian/control.template > $@
@@ -24,7 +25,11 @@ configure-stamp: debian/control debian/changelog
 	sed -e "$(SEDSCRIPT)" debian/control.template > debian/control
 	sed -e "$(SEDSCRIPT)" debian/changelog.template > debian/changelog
 	dh_testdir
-
+	sed -e "$(MAKESED)" Makefile > Makefile.new
+	mv Makefile.new Makefile
+	sed -e "$(MAKESED)" src/Makefile > src/Makefile.new
+	mv src/Makefile.new src/Makefile
+	
 	touch configure-stamp
 
 
@@ -50,9 +55,9 @@ install: build
 	dh_clean -k
 	dh_installdirs
 
-	$(MAKE) install
+	#$(MAKE) install
 	mkdir -p $(CURDIR)/debian/avm-capi-fcpci-modules-$(KVERS)/lib/modules/$(KVERS)/kernel/drivers/isdn/capi
-	cp *.ko $(CURDIR)/debian/avm-capi-fcpci-modules-$(KVERS)/lib/modules/$(KVERS)/kernel/drivers/isdn/capi
+	cp src/fcpci.ko $(CURDIR)/debian/avm-capi-fcpci-modules-$(KVERS)/lib/modules/$(KVERS)/kernel/drivers/isdn/capi
 
 .PHONY:	configure configure-stamp build build-stamp clean install
 
