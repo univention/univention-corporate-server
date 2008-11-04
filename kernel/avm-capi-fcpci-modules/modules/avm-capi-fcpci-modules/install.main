@@ -1,0 +1,78 @@
+#! /bin/bash
+
+make_driver () {
+
+	PRINT "Generating $I_CARD driver for kernel $I_KERNVER..."
+	if ! test -d src; then
+		ALERT "No source code found!"
+		return 1
+	fi
+	if ! which make >> $LOGFILE 2>&1; then
+		ALERT "'make' is not installed! Can not generate driver..."
+		return 2
+	fi
+	if make -C src >> $LOGFILE 2>&1 ; then
+		if ! test -f src/$I_DRIVER.$OBJ; then
+			ALERT "Error while compiling src/$I_DRIVER.$OBJ, see $LOGFILE!"
+			return 3
+		fi
+		cp src/*.$OBJ .
+	else
+		ALERT "Error while making src/$I_DRIVER.$OBJ, see $LOGFILE!"
+		return 4
+	fi
+}
+
+copy_driver () {
+	local COPYDEST=/lib/modules/`uname -r`/extra
+
+	if ! test -d $COPYDEST; then
+		mkdir -p $COPYDEST >> $LOGFILE 2>&1
+	fi
+	PRINT "Copying $I_CARD driver...\n  $2 to $COPYDEST/$1.$OBJ"
+	$I_CKSUM $2 >> $LOGFILE 2>&1
+	copy_file $2 $COPYDEST/$1.$OBJ
+	if [ "$1" == "fcpcmcia" ]; then
+		local CS=fcpcmcia_cs
+		if   [ "${2%1.$OBJ}" != "$2" ]; then
+			CS=${CS}1
+		elif [ "${2%2.$OBJ}" != "$2" ]; then
+			CS=${CS}2
+		fi
+		CS=$CS.$OBJ
+		PRINT "  $CS to $COPYDEST/fcpcmcia_cs.$OBJ"
+		$I_CKSUM $CS >> $LOGFILE 2>&1
+		copy_file $CS $COPYDEST/fcpcmcia_cs.$OBJ
+	fi
+	depmod -a
+}
+
+install_main () {
+	local IKT=$I_KERN_TYPE
+	
+	if [ "$I_KERNVER" == "" -o "$I_DRIVER" == "" ]; then
+		ALERT "Internal installer error!"
+		return 1
+	fi
+	if [ $I_COMPILE -ne 0 ]; then
+		I_KERN_TYPE=
+	fi
+	if [ "$I_KERN_TYPE" == "" ]; then
+		if make_driver $I_DRIVER; then
+			copy_driver $I_DRIVER $I_DRIVER.$OBJ
+		else
+			ALERT "Could not generate $I_DRIVER.$OBJ!"
+			return 2
+		fi
+	else
+		case $I_KERN_TYPE in
+
+		1)	copy_driver $I_DRIVER ${I_DRIVER}1.$OBJ
+			;;
+		2)	copy_driver $I_DRIVER ${I_DRIVER}2.$OBJ
+			;;
+		esac
+	fi
+	I_KERN_TYPE=$IKT
+}
+

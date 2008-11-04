@@ -1,0 +1,68 @@
+#! /bin/bash
+
+file_check () {
+
+	while [ "$1" != "" ]; do
+		LOG "Looking for file $1..."
+		if ! test -f $1; then
+			ALERT "Driver file missing: $1!"
+			return 1
+		fi
+		shift
+	done
+}
+
+pre_install () {
+	local RET=0
+	
+	if [ "$I_SUSEREL" != "" ]; then
+		if [ "$I_LINUXVER" == "2.6" ]; then
+			I_KERN26=1
+			if   [ "$I_KERNVER" == "$KERNEL_UP" ]; then
+				I_KERN_TYPE=1
+			elif [ "$I_KERNVER" == "$KERNEL_SMP" ]; then
+				I_KERN_TYPE=2
+			else
+				I_KERN_TYPE=
+			fi
+		else
+			I_KERN26=0
+		fi
+	fi
+
+	if [ "$I_KERN_TYPE" != "" ]; then
+		local NAME
+		if ! file_check $I_DRIVER$I_KERN_TYPE.$OBJ; then
+			RET=1;
+		fi
+		if [ "$I_DRIVER" == "fcpcmcia" ]; then
+			if ! file_check ${I_DRIVER}_cs$I_KERN_TYPE.$OBJ; then
+				RET=1
+			fi
+		fi
+	fi
+	if [ "$I_FIRMWARE" != "" ]; then
+		if ! file_check $I_FIRMWARE; then
+			RET=1
+		fi
+	fi
+	if [ $I_DRDSL -ne 0 ]; then
+		if ! file_check drdsl drdsl.ini; then
+			RET=1
+		fi
+	fi
+	if ! file_check install_passive-d.html install_passive-e.html; then
+		RET=1
+	fi
+
+	if [ $I_BACKUP -ne 0 ]; then
+		if ! which zip > /dev/null 2>&1; then
+			ALERT "Cannot backup: 'zip' missing!"
+			RET=2
+		else
+			I_BACKUPFILE=$I_DRIVER-backup-$NOW.zip
+		fi
+	fi
+	return $RET
+}
+

@@ -1,0 +1,178 @@
+/*--------------------------------------------------------------------------*\
+    CAPI 2.0 Messages
+\*--------------------------------------------------------------------------*/
+
+/*-- informative values (corresponding message was processed) -----*/
+0x0001 "NCPI not supported by current protocol, NCPI ignored";
+0x0002 "Flags not supported by current protocol, flags ignored";
+0x0003 "Alert already sent by another application";
+
+/*-- error information concerning CAPI_REGISTER -----*/
+0x1001 "Too many applications"
+0x1002 "Logical block size to small, must be at least 128 Bytes"
+0x1003 "Buffer exceeds 64 kByte"
+0x1004 "Message buffer size too small, must be at least 1024 Bytes"
+0x1005 "Max. number of logical connections not supported"
+0x1006 "Reserved"
+0x1007 "The message could not be accepted because of an internal busy condition"
+0x1008 "OS resource error (no memory ?)"
+0x1009 "CAPI not installed"
+0x100A "Controller does not support external equipment"
+0x100B "Controller does only support external equipment"
+
+/*-- error information concerning message exchange functions -----*/
+0x1101 "Illegal application number"
+0x1102 "Illegal command or subcommand or message length less than 12 bytes"
+0x1103 "The message could not be accepted because of a queue full condition !! The error code does not imply that CAPI cannot receive messages directed to another controller, PLCI or NCCI"
+0x1104 "Queue is empty"
+0x1105 "Queue overflow, a message was lost !! This indicates a configuration error. The only recovery from this error is to perform a CAPI_RELEASE"
+0x1106 "Unknown notification parameter"
+0x1107 "The Message could not be accepted because of an internal busy condition"
+0x1108 "OS Resource error (no memory ?)"
+0x1109 "CAPI not installed"
+0x110A "Controller does not support external equipment"
+0x110B "Controller does only support external equipment"
+
+/*-- error information concerning resource / coding problems -----*/
+0x2001 "Message not supported in current state"
+0x2002 "Illegal Controller / PLCI / NCCI"
+0x2003 "Out of PLCI"
+0x2004 "Out of NCCI"
+0x2005 "Out of LISTEN"
+0x2006 "Out of FAX resources (protocol T.30)"
+0x2007 "Illegal message parameter coding"
+
+/*-- error information concerning requested services  -----*/
+0x3001 "B1 protocol not supported"
+0x3002 "B2 protocol not supported"
+0x3003 "B3 protocol not supported"
+0x3004 "B1 protocol parameter not supported"
+0x3005 "B2 protocol parameter not supported"
+0x3006 "B3 protocol parameter not supported"
+0x3007 "B protocol combination not supported"
+0x3008 "NCPI not supported"
+0x3009 "CIP Value unknown"
+0x300A "Flags not supported (reserved bits)"
+0x300B "Facility not supported"
+0x300C "Data length not supported by current protocol"
+0x300D "Reset procedure not supported by current protocol"
+0x300E "TEI assignment failed or supplementary service not supported"
+0x3010 "Request not allowed in this state"
+
+/*-- informations about the clearing of a physical connection -----*/
+0x3301 "Protocol error layer 1 (broken line or B-channel removed by signalling protocol)"
+0x3302 "Protocol error layer 2"
+0x3303 "Protocol error layer 3"
+0x3304 "Another application got that call"
+    /*-- T.30 specific reasons -----*/
+0x3311 "Connecting not successful (remote station is no FAX G3 machine)"
+0x3312 "Connecting not successful (training error)"
+0x3313 "Disconnected before transfer (remote station does not support transfer mode, e.g. resolution)"
+0x3314 "Disconnected during transfer (remote abort)"
+0x3315 "Disconnected during transfer (remote procedure error, e.g. unsuccessful repetition of T.30 commands)"
+0x3316 "Disconnected during transfer (local tx data underrun)"
+0x3317 "Disconnected during transfer (local rx data overflow)"
+0x3318 "Disconnected during transfer (local abort)"
+0x3319 "Illegal parameter coding (e.g. SFF coding error)"
+
+/*-- disconnect causes from the network according to ETS 300 102-1/Q.931 -----*/
+    /*----- normal event -----*/
+0x3481 "Unallocated (unassigned) number"
+0x3482 "No route to specified transit network"
+0x3483 "No route to destination"
+0x3486 "Channel unacceptable"
+0x3487 "Call awarded and being delivered in an established channel"
+0x3490 "Normal call clearing"
+0x3491 "User busy"
+0x3492 "No user responding"
+0x3493 "No answer from user (user alerted)"
+0x3495 "Call rejected"
+0x3496 "Number changed"
+0x349A "Non-selected user clearing"
+0x349B "Destination out of order"
+0x349C "Invalid number format"
+0x349D "Facility rejected"
+0x349E "Response to STATUS ENQUIRY"
+0x349F "Normal, unspecified"
+    /*----- resource unavailable -----*/
+0x34A2 "No circuit / channel available"
+0x34A6 "Network out of order"
+0x34A9 "Temporary failure"
+0x34AA "Switching equipment congestion"
+0x34AB "Access information discarded"
+0x34AC "Requested circuit / channel not available"
+0x34AF "Resources unavailable, unspecified"
+    /*----- service or option not available -----*/
+0x34B1 "Quality of service unavailable"
+0x34B2 "Requested facility not subscribed"
+0x34B9 "Bearer capability not authorized"
+0x34BA "Bearer capability not presently available"
+0x34BF "Service or option not available, unspecified"
+    /*----- service or option not implemented -----*/
+0x34C1 "Bearer capability not implemented"
+0x34C2 "Channel type not implemented"
+0x34C5 "Requested facility not implemented"
+0x34C6 "Only restricted digital information bearer capability is available"
+0x34CF "Service or option not implemented, unspecified"
+    /*----- invalid message -----*/
+0x34D1 "Invalid call reference value"
+0x34D2 "Identified channel does not exist"
+0x34D3 "A suspended call exists, but this call identity does not"
+0x34D4 "Call identity in use"
+0x34D5 "No call suspended"
+0x34D6 "Call having the requested call identity has been cleared"
+0x34D7 "User not a member of closed user group"
+0x34D8 "Incompatible destination"
+0x34DB "Invalid transit network selection"
+0x34DF "Invalid message, unspecified"
+    /*----- protocol error -----*/
+0x34E0 "Mandatory information element is missing"
+0x34E1 "Message type non-existent or not implemented"
+0x34E2 "Message not compatible with call state or message type non-existent or not implemented"
+0x34E3 "Information element non-existent or not implemented"
+0x34E4 "Invalid information element contents"
+0x34E5 "Message not compatible with call state"
+0x34E6 "Recovery on timer expiry"
+0x34EF "Protocol error, unspecified"
+    /*----- interworking -----*/
+0x34FF "Interworking, unspecified"
+
+/*-- B3 protocol 7 (Modem) -----*/
+0x3500 "Normal end of connection";
+0x3501 "Carrier lost";
+0x3502 "Error on negotiation, i.e. no modem with error correction at other end";
+0x3503 "No answer to protocol request";
+0x3504 "Remote modem only works in synchronous mode";
+0x3505 "Framing fails";
+0x3506 "Protocol negotiation fails";
+0x3507 "Other modem sends wrong protocol request";
+0x3508 "Sync information (data or flags) missing";
+0x3509 "Normal end of connection from the other modem";
+0x350a "No answer from other modem";
+0x350b "Protocol error";
+0x350c "Error on compression";
+0x350d "No connect (timeout or wrong modulation)";
+0x350e "No protocol fall-back allowed";
+0x350f "No modem or fax at requested number";
+0x3510 "Handshake error";
+
+/*-- error info concerning the requested supplementary service -----*/
+0x3600 "Supplementary service not subscribed";
+0x3603 "Supplementary service not available";
+0x3604 "Supplementary service not implemented";
+0x3606 "Invalid served user number";
+0x3607 "Invalid call state";
+0x3608 "Basic service not provided";
+0x3609 "Supplementary service not requested for an incoming call";
+0x360a "Supplementary service interaction not allowed";
+0x360b "Resource unavailable";
+
+/*-- error info concerning the context of a supplementary service request -----*/
+0x3700 "Duplicate invocation";
+0x3701 "Unrecognized operation";
+0x3702 "Mistyped argument";
+0x3703 "Resource limitation";
+0x3704 "Initiator releasing";
+0x3705 "Unrecognized linked-ID";
+0x3706 "Linked response unexpected";
+0x3707 "Unexpected child operation";

@@ -1,0 +1,85 @@
+#!/usr/bin/make -f 
+
+export DH_COMPAT=2
+
+SEDSCRIPT = 	s|__KVERS__|$(KVERS)|g; \
+		s|__KMAINT__|$(KMAINT)|g; \
+		s|__KEMAIL__|$(KEMAIL)|g; \
+		s|__KSRC__|$(KSRC)|g; \
+		s|__NONEPOCH__|$(NONEPOCH)|g; \
+		s|__EPOCH__|$(EPOCH)|g; \
+		s|__DATE__|$(shell date -R)|g; \
+		s|__APPEND_TO_VERSION__|$(APPEND_TO_VERSION)|g
+
+
+debian/control: debian/control.template
+	sed -e "$(SEDSCRIPT)" debian/control.template > $@
+
+debian/changelog: debian/changelog.template
+	sed -e "$(SEDSCRIPT)" debian/changelog.template > $@
+
+configure: configure-stamp 
+# why are debian/control and debian/changelog not build automaticly?
+configure-stamp: debian/control debian/changelog
+	sed -e "$(SEDSCRIPT)" debian/control.template > debian/control
+	sed -e "$(SEDSCRIPT)" debian/changelog.template > debian/changelog
+	dh_testdir
+
+	touch configure-stamp
+
+
+build: configure-stamp build-stamp
+build-stamp:
+	dh_testdir
+
+	$(MAKE)
+	touch build-stamp
+
+clean: debian/control debian/changelog
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp configure-stamp
+
+	dh_clean
+	rm debian/control debian/changelog
+
+
+install: build 
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+
+	$(MAKE) install
+	mkdir -p $(CURDIR)/debian/avm-capi-fcpci-modules-$(KVERS)/lib/modules/$(KVERS)/kernel/drivers/isdn/capi
+	cp *.ko $(CURDIR)/debian/avm-capi-fcpci-modules-$(KVERS)/lib/modules/$(KVERS)/kernel/drivers/isdn/capi
+
+.PHONY:	configure configure-stamp build build-stamp clean install
+
+kdist_configure: debian/control debian/changelog
+
+kdist_image: clean build install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installchangelogs 
+	dh_link
+	dh_strip
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+kdist: clean kdist_image
+	@echo >&2 'kdist- not implemented'
+
+.PHONY: kdist kdist_image kdist_configure
+
+
+binary binary-arch:
+	@echo >&2 'Use make-kpkg to compile this module' && false
+
+.PHONY: binary binary-arch 
+

@@ -1,0 +1,302 @@
+#! /bin/bash
+
+# install, v20050623
+
+# --- prelude ---
+
+OBJ=ko
+LOGFLAG=1
+NOW=`date +%Y%m%d%H%M`
+LOGFILE=`basename $0`.log
+LOGPREFIX=
+HERE=`dirname $0`
+RED1="\E[1;31m"
+RED0="\E[m\017"
+
+HAVE_PRE_INST=0
+HAVE_POST_INST=0
+HAVE_MAIN_INST=0
+HAVE_LAST_MSG=0
+
+# --- logging and console stuff ---
+
+LOG () {
+	
+	if [ $LOGFLAG -ne 0 ]; then
+		echo -e "$LOGPREFIX$*" | grep -v "^$LOGPREFIX$" >> $LOGFILE
+	fi
+	true
+}
+
+PRINT () {
+	
+	echo -e "$*"
+	LOG "$*"
+	true
+}
+
+ALERT () {
+	
+	echo -e "\a$RED1$*$RED0"
+	LOG "$*"
+	true
+}
+
+# --- saving, copying and finding files ---
+
+save_file () {
+
+	if ! test -f $1; then
+		return
+	fi
+	LOG "Saving $1..."
+	zip -9 $I_BACKUPFILE $1 >> $LOGFILE 2>&1
+}
+
+copy_file () {
+
+	if [ $I_BACKUP -ne 0 ]; then
+		save_file $2
+	fi
+	cp -vf $1 $2 >> $LOGFILE 2>&1
+}
+
+include_check () {
+	
+	local FLAG=HAVE_$1
+	local FILE=FILE_$1
+	local FLAGVAL=0
+	local FILEVAL=
+	eval FLAGVAL=\$$FLAG
+	eval FILEVAL=\$$FILE
+	if [ "$FLAGVAL" == "" ]; then
+		return 1
+	fi
+	if [ $FLAGVAL -eq 0 ]; then
+		return 1
+	fi
+	if [ "$FILEVAL" == "" ]; then
+		LOG "OOPS: Erraneous $1 flag!"
+		return 2
+	fi
+	if ! test -f $FILEVAL; then
+		LOG "OOPS: Missing file $FILEVAL, skipping $1 section!"
+		return 2
+	fi
+	return 0
+}
+
+# --- command line ---
+
+I_DEBUG=0
+I_BACKUP=0
+I_CHKPPPD=1
+I_COMPILE=0
+
+PRINT ""
+CMDLINE=( $* )
+CMDNERR=0
+LASTOPT=$0
+while getopts "cpBDL:" OPTION; do
+
+	case $OPTION in
+	
+	c)	I_COMPILE=1	;;
+	p)	I_CHKPPPD=1	;;
+	B)	I_BACKUP=1	;;
+	D)	I_DEBUG=1 	;;
+	L)	LOGFILE=$OPTARG	;;
+	
+	*)	ALERT "Unknown option (after '$LASTOPT')!" 
+		CMDNERR=$(($CMDNERR + 1))
+		;;
+	esac
+	LASTOPT=-$OPTION
+done 2> /dev/null
+shift $(($OPTIND - 1))
+if [ -n "$1" ]; then
+	ALERT "Extra characters on command line: '$1'!\n"
+	exit 1
+fi
+
+# --- startup ---
+
+if [ $LOGFLAG -ne 0 ]; then
+	if ! which cksum > /dev/null 2>&1; then
+		I_CKSUM=true
+		echo -e "\n\n$0 :" >> $LOGFILE
+	else
+		I_CKSUM=cksum
+		echo -en "\n\n" >> $LOGFILE
+		cksum install|awk '{ printf "%s(%d,%d)\n",$3,$1,$2 }' >> $LOGFILE
+	fi
+fi
+
+# --- package/system ---
+
+if ! test -f install.system; then
+	ALERT "Incomplete install package...\nFile install.system missing!\n"
+	exit 1
+fi
+. ./install.system
+
+# --- controller ---
+
+if ! test ./install.card; then
+	ALERT "Incomplete install package...\nFile install.card missing!\n"
+	exit 1
+fi
+. ./install.card
+
+I_FLAGCODE=0
+test -n "$I_FLAGS" && for FLAG in $I_FLAGS; do
+	case $FLAG in
+	DSL)	I_FLAGCODE=$(($I_FLAGCODE | 2))
+		;;
+	ISDN)	I_FLAGCODE=$(($I_FLAGCODE | 1))
+		;;
+	*)	;;
+	esac	
+done
+case $I_FLAGCODE in
+	0|1)	if [ $I_FLAGCODE -eq 0 ]; then
+			ALERT "Controller has not internal flag data!"
+		fi
+		I_CARDSTR="AVM ISDN-Controller"
+		;;
+	2)	I_CARDSTR="AVM DSL-Controller"
+		;;
+	3)	I_CARDSTR="AVM DSL/ISDN-Controller"
+		;;
+esac
+LOG "$I_CARDSTR, $I_FLAGCODE"
+
+# --- public relations ---
+
+if [ "$I_CARD" == "" -o "$I_DRIVER" == "" ]; then
+	ALERT "Card and/or driver name missing!\n"
+	exit 2
+fi
+LOG "Card: $I_CARD\nDriver: $I_DRIVER"
+
+LOG "Startup: `date`\nInstall for $I_CARD, version $I_STACK, build $I_DATE\n"
+if [ "$WELCOMEMSG" != "" ]; then
+	PRINT "$WELCOMEMSG\n"
+else
+	PRINT "Welcome to the $I_CARD driver installation!\n"
+fi
+
+# --- pre-install, common part ---
+
+I_SUSEREL=
+if test -f /etc/SuSE-release; then
+	I_SUSEREL=`cat /etc/SuSE-release|grep VERSION|cut -d" " -f3`
+	LOG "Installing on SuSE Linux $I_SUSEREL\n"
+fi
+I_KERNVER=`uname -r`
+I_ARCH=`uname -i`
+I_SMP=`uname -v | sed -n "s/#[0-9][0-9]* \(SMP\) .*/\1/p"`
+
+LOG "Installing for kernel version $I_KERNVER, architecture: $I_ARCH $I_SMP\n"
+
+if test "$I_ARCH-$I_SMP" = "x86_64-SMP"; then
+	ALERT "This driver is for x86_64 single processor machines only!\n"
+	exit 3
+fi
+
+if test -f install.checks; then
+	LOGPREFIX="CHK:"
+	. ./install.checks
+	if ! do_install_checks; then
+		PRINT "Exit\n"
+		exit 4
+	fi
+	LOGPREFIX=""
+fi
+
+# --- pre-install, controller part ---
+
+if include_check PRE_INST; then
+	LOGPREFIX="PRE:"
+	. $FILE_PRE_INST
+	if ! $PROC_PRE_INST; then
+		PRINT "\nStopped.\n"
+		exit 4
+	fi
+	LOGPREFIX=""
+fi
+
+# --- install ---
+
+if ! include_check MAIN_INST; then
+	ALERT "No installation procedure found!\n"
+	exit 3
+fi
+LOGPREFIX="MAIN:"
+. $FILE_MAIN_INST
+if ! $PROC_MAIN_INST; then
+	PRINT "\nStopped.\n"
+	exit 5
+fi
+LOGPREFIX=""
+
+# --- install RPM updates ---
+
+if [ -n "$I_RPMFILES" ] && [ -n "$I_SUSEREL" ] ; then
+	for rpm in $I_RPMFILES; do
+		if ! test -f $rpm; then
+			ALERT "Expected RPM $rpm missing! Update my be incomplete..."
+			break
+		fi
+		LOG "Installing $rpm..."
+		rpm -U $rpm >> $LOGFILE 2>&1
+	done
+fi
+
+# --- post-install ---
+
+if include_check POST_INST; then
+	LOGPREFIX="POST:"
+	. $FILE_POST_INST
+	if ! $PROC_POST_INST; then
+		PRINT "\nStopped.\n"
+		exit 6
+	fi
+	LOGPREFIX=""
+fi
+
+# --- running card specific scripts ---
+
+if [ -n "$I_SCRIPTS" ]; then
+	export -f save_file LOG
+	export I_BACKUP I_BACKUPFILE I_SUSEREL I_DRIVER LOGFLAG LOGPREFIX LOGFILE
+	for file in $I_SCRIPTS; do
+		if ! test -x $file; then
+			ALERT "Script file $file missing!"
+			break
+		fi
+		./$file
+	done
+	export -n save_file LOG 
+	export -n I_BACKUP I_BACKUPFILE I_SUSEREL I_DRIVER LOGFLAG LOGPREFIX LOGFILE
+fi
+		
+# --- final steps ---
+
+LOGPREFIX=""
+if [ $I_DEBUG -ne 0 ]; then
+	LOG "Install environment:\n"
+	set|grep "^I_"|sed "s/^I_/VAR:/" 2> /dev/null >> $LOGFILE
+fi
+
+# --- last message ---
+if [ $HAVE_LAST_MSG -ne 0 ]; then
+	$PROC_LAST_MSG 
+elif [ -n "$I_SUSEREL" ]; then
+	PRINT "\nThe driver files have been updated, please restart the"
+	PRINT "ISDN package or reboot in order to activate the changes."
+else
+	PRINT "\nThe driver files have been copied."
+fi
+PRINT "\nReady\n"
+
