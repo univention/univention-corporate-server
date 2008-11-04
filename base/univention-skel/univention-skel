@@ -169,7 +169,6 @@ def _lock():
 			fcntl.lockf( lock_fd, fcntl.LOCK_EX | fcntl.LOCK_NB )
 			return True
 		except Exception ,e:
-			print str(e )
 			count -= 1
 			time.sleep( 0.05 ) # 50 milliseconds
 
