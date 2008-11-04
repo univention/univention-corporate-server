@@ -1,3 +1,9 @@
+avm-capi-fcpci-modules (1.0.0-15) unstable; urgency=low
+
+  * removed dependency 
+
+ -- Felix Botner <fbotner@omar.knut.univention.de>  Tue,  4 Nov 2008 17:28:15 +0100
+
 avm-capi-fcpci-modules (1.0.0-14) unstable; urgency=low
 
   * fixed make file
