@@ -7,5 +7,4 @@ Source: avm-capi-fcpci-modules-__KVERS__
 
 Package: avm-capi-fcpci-modules-__KVERS__
 Architecture: i386 amd64
-Depends: srvmagt-modules-__KVERS__
 Description: AVM CAPI modules for FritzCard PCI
