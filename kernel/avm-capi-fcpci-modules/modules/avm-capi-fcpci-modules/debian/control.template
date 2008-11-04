@@ -1,0 +1,11 @@
+Section: univention
+Priority: optional
+Maintainer: __KMAINT__ <__KEMAIL__>
+Build-Depends: debhelper (>> 3.0.0)
+Standards-Version: 3.5.2
+Source: avm-capi-fcpci-modules-__KVERS__
+
+Package: avm-capi-fcpci-modules-__KVERS__
+Architecture: i386 amd64
+Depends: srvmagt-modules-__KVERS__
+Description: AVM CAPI modules for FritzCard PCI

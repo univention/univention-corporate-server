@@ -1,0 +1,73 @@
+Hinweise zum Uebersetzen der Treiberquellen
+(fuer andere Distributionen/Kernels)
+
+
+Im Folgenden wird eine der moeglichen Methoden beschrieben, die Quellen direkt
+unterstuetzter Distributionen und Versionen zu uebersetzen .
+
+Rufen Sie nach dem Auspacken der Treiberarchivdatei im neu entstandenen 
+Verzeichnis "fritz" die Datei "make" auf. Dieser Aufruf wechselt intern in das
+Unterverzeichnis "src" und fuehrt das dort vorhandene "Makefile" aus. 
+Die daraus entstandene .ko Datei muss anschließend in das Unterverzeichnis 
+/lib/modules/`uname -r`/extra kopiert werden. Für den laufenden Kern geschieht 
+dies automatisch mit dem Aufruf "make install".
+
+Im Rahmen der Uebersetzung werden zwei Komponenten zusammengebunden: der 
+mitgelieferte Quellcode zur Systemanbindung und ein binaeres, kernel-
+unabhaengiges Modul im Verzeichnis "fritz/lib".
+
+Waehrend das Hardware-Treibermodul (fXYZ.ko) selbst komplett aus dem 
+Unterverzeichnis "src" uebersetzt werden kann, bedarf es fuer die 
+Portierung des gesamten Treiberarchivs (zusaetzlich bestehend aus den 
+CAPI-Modulen, CAPI-Tools und CAPI-Bibliotheken in eigenen rpm-Archiven) zweier 
+weiterer Teile. Die beiden Teile liegen zwar schon laenger im Quellcode vor, 
+sind aber (auch ihrer Groesse wegen) nicht Teil der Treiberarchivdatei:
+
+- Die CAPI-Module sind Teil der Standard-Linux-Kernel und können mit ihm 
+generiert werden, sofern die richtigen Einstellungen in der Kernel-
+Konfiguration getroffen wurden.
+
+Um den FRITZ!Card Treiber nutzen zu können, werden die Kernel Module capi.ko, 
+kernelcapi.ko und capifs.ko benoetigt. Der Quelltext für diese Module
+ist Teil des Linux Kernels (im Verzeichnis /usr/src/linux/drivers/isdn/capi) 
+und er wird mit dem Kernel uebersetzt, wenn folgende Einstellungen an der 
+Kernelkonfiguration vorgenommen wurden:
+
+        CONFIG_EXPERIMENTAL=y
+
+        CONFIG_ISDN_CAPI=m
+        CONFIG_ISDN_DRV_AVMB1_VERBOSE_REASON=y
+        CONFIG_ISDN_CAPI_MIDDLEWARE=y
+        CONFIG_ISDN_CAPI_CAPI20=m
+        CONFIG_ISDN_CAPI_CAPIFS_BOOL=y
+        CONFIG_ISDN_CAPI_CAPIFS=m
+        CONFIG_ISDN_CAPI_CAPIDRV=m
+
+Nach "make menuconfig" wechseln Sie zum "Device Drivers", "ISDN subsystem" und waehlen:
+
+        ...
+        <M> CAPI2.0 support
+            [*]   Verbose reason code reporting (kernel size +=7K)
+            [*]   CAPI2.0 Middleware support (EXPERIMENTAL)
+            <M>   CAPI2.0 /dev/capi support 
+            [*]     CAPI2.0 filesystem support
+            <M>   CAPI2.0 capidrv interface support
+        ...
+
+Aktivieren Sie bitte zusaetzlich den Eintrag "Prompt for development 
+and/or incomplete code/drivers" im Menü "Code maturity level options".
+
+Nach dem der Kernel kompiliert wurde, finden Sie alle CAPI Module im Verzeichnis 
+/lib/modules/`uname -r`/kernel/drivers/isdn/capi/
+
+- Die CAPI-Tools und -Bibliotheken stammen aus dem capi4k-utils-Paket (in der 
+Datei capi4k-utils-XXXX-YY-ZZ.tar.gz auf ftp://ftp.in-berlin.de/pub/capi4linux/).
+Fuer das capi4k-utils-Paket gibt es detaillierte Installationsanweisungen in 
+der Datei "readme", die sich ebenfalls im genannten Verzeichnis befindet.
+
+Die fertig uebersetzten Module werden von der Installation in das System-
+Verzeichnis /lib/modules/X.Y.Z/extra kopiert und von dem CAPI-Tool "capiinit" 
+geladen. Letzteres erwartet in /etc/capi.conf Angaben darueber, welche Karten 
+bzw. welche Kartentreiber zu laden sind. Der Aufbau der Datei /etc/capi.conf 
+kann beispielhaft aus einem älteren Treiberpaket fuer passive Karten oder direkt 
+dem capi4k-utils Paket entnommen werden.

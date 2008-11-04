@@ -65,9 +65,10 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-
-	chmod a+x debian/build.sh
-	debian/build.sh
+	
+	tar --exclude '.svn' -cjvf debian/avm-capi-fcpci-modules/usr/src/avm-capi-fcpci-modules.tar.bz2 modules
+	#chmod a+x debian/build.sh
+	#debian/build.sh
 
 .PHONY:	configure configure-stamp build build-stamp clean install
 

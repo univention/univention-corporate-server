@@ -1,0 +1,73 @@
+#! /bin/bash
+
+post_install () {
+	local BLACKLIST=/etc/hotplug/blacklist
+	local DOCDIR=/usr/share/doc/CAPI4Linux
+	local FWDIR=/lib/firmware/isdn
+	local DR_BIN_DIR=/usr/sbin
+	local DR_ETC_DIR=/etc/drdsl
+	local HWDIR=/usr/share/hwinfo
+	local HWFILE=ISDN.CDB.txt
+	local HWFILE_ADD=ISDN.CDB.txt.add
+
+
+	# --- blacklist ---
+	
+	if [ $I_BLACKFLAG -ne 0 ]; then
+		LOG "Updating black list:"
+		if ! grep $I_DRIVER $BLACKLIST > /dev/null 2>&1; then
+			LOG "Adding $I_DRIVER.$OBJ to $BLACKLIST"
+			echo -e "\n# $I_CARD ($I_DRIVER.$OBJ)\n$I_DRIVER" >> $BLACKLIST
+		fi
+	fi
+
+	# --- documentation ---
+	
+	LOG "Copying documentation:"
+	if ! test -d $DOCDIR/de; then
+		LOG "Creating $DOCDIR/(de/en)"
+		mkdir -p $DOCDIR/de 
+		mkdir -p $DOCDIR/en
+	fi
+	copy_file install_passive-d.html $DOCDIR/de/install_passive.html
+	copy_file install_passive-e.html $DOCDIR/en/install_passive.html
+
+	# --- firmware ---
+	
+	for FW in $I_FIRMWARE x; do
+		if [ "$FW" != "x" ]; then
+			$I_CKSUM $FW >> $LOGFILE 2>&1
+			copy_file $FW $FWDIR
+		fi
+	done
+
+	# --- drdsl ---
+	
+	if [ $I_DRDSL -ne 0 ]; then
+		LOG "Installing 'drdsl':"
+		if ! test -d $DR_ETC_DIR; then
+			mkdir -p $DR_ETC_DIR
+		fi
+		copy_file drdsl $DR_BIN_DIR/drdsl
+		copy_file drdsl.ini $DR_ETC_DIR/drdsl.ini
+	fi
+
+	# --- SuSE hw patch ---
+
+	if [ -n "$I_SUSEREL" -a -e $HWFILE_ADD ] ; then
+		if [ -f $HWDIR/$HWFILE ] ; then
+			if ! grep "FRITZ\!Card DSL USB|" $HWDIR/$HWFILE &>/dev/null ; then
+				cp $HWDIR/$HWFILE $HWDIR/$HWFILE.old
+				grep -v -e "FRITZ\!Card PCI" -e "FRITZ\!Card PCMCIA" $HWDIR/$HWFILE.old > $HWDIR/$HWFILE
+				cat $HWFILE_ADD >> $HWDIR/$HWFILE
+				/usr/sbin/mk_isdnhwdb >& /dev/null
+				LOG "SuSE ISDN hardware database has been updated."
+			else
+				LOG "SuSE ISDN hardware database has already been updated."
+			fi
+		else
+			ALERT "SuSE ISDN hardware database not found!"
+		fi
+	fi
+}
+

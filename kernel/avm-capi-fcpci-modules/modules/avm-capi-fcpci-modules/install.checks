@@ -1,0 +1,63 @@
+#! /bin/bash
+
+do_install_checks () {
+
+	local MAJOR=`echo $I_KERNVER|cut -d. -f1`
+	local MINOR=`echo $I_KERNVER|cut -d. -f2`
+	local PATCH=`echo $I_KERNVER|cut -d. -f3`
+	I_LINUXVER="$MAJOR.$MINOR"
+	if [ $MAJOR -lt 2 -o $MINOR -lt 6 ]; then
+		ALERT "This driver is for kernel 2.6.x only!"
+		return 1
+	fi
+
+	if [ $UID -ne 0 ]; then
+		ALERT "Only root can install this driver!"
+		return 2
+	fi
+
+	LOG "KERNEL $I_LINUXVER"
+	if [ "$SUSEREL" != "" ]; then
+		if [ "$I_LINUXVER" == "2.6" ]; then
+			I_KERN26=1
+			if   [ "$I_KERNVER" == "$KERNEL_UP" ]; then
+				I_KERN_TYPE=1
+			elif [ "$I_KERNVER" == "$KERNEL_SMP" ]; then
+				I_KERN_TYPE=2
+			else
+				I_KERN_TYPE=
+			fi
+		else
+			I_KERN26=0
+		fi
+	fi
+
+	if [ "$I_KERN_TYPE" == "" ]; then
+		I_CHKPPPD=1
+	fi
+
+	I_PPPD=1
+	I_PPPDVER=
+	if [ $I_CHKPPPD -ne 0 ]; then
+		if ! which pppd > /dev/null 2>&1; then
+			ALERT "pppd not found!"
+			I_PPPD=2
+		else
+			I_PPPDVER=`pppd --version 2>&1|cut -d" " -f3`
+			I_PPPD_V1=`echo $I_PPPDVER|cut -d. -f1`
+			I_PPPD_V2=`echo $I_PPPDVER|cut -d. -f2`
+			I_PPPD_V3=`echo $I_PPPDVER|cut -d. -f3`
+
+			if [ $I_PPPD_V1 -eq 2 -a $I_PPPD_V2 -eq 4 -a $I_PPPD_V3 -ge 1 ]
+			then
+				I_PPPD=0
+			else
+				I_PPPD=3
+			fi
+			LOG "pppd version $I_PPPDVER"
+		fi	
+	fi
+	LOG "pppd version status $I_PPPD"
+
+	true
+}

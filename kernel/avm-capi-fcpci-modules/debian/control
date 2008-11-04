@@ -1,11 +1,10 @@
-Section: univention
+Section: devel
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, linux-source-2.6.18
+Build-Depends: debhelper
 Source: avm-capi-fcpci-modules
 Standards-Version: 3.5.2
 
-Package: avm-capi-fcpci-modules-2.6.18-ucs57-686
-Architecture: i386
-Depends: linux-image-2.6.18-ucs57-686
+Package: avm-capi-fcpci-modules
+Architecture: i386 amd64
 Description: AVM CAPI modules for FritzCard PCI
