@@ -1,3 +1,9 @@
+avm-capi-fcpci-modules (1.0.0-12) unstable; urgency=low
+
+  * addes a build dependency 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  4 Nov 2008 14:12:39 +0100
+
 avm-capi-fcpci-modules (1.0.0-11) unstable; urgency=low
 
   * added debian/dirs 
