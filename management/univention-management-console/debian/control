@@ -8,7 +8,7 @@ XS-Python-Version: 2.4
 
 Package: univention-management-console
 Architecture: all
-Depends: python-xml, python-univention-management-console, univention-webui, univention-management-console-server, univention-management-console-themes, python-pyopenssl, openssl
+Depends: python-xml, python-univention-management-console, univention-webui, univention-management-console-server, univention-management-console-themes, python-pyopenssl, openssl, expect
 Description: Univention Management Console - Web based computer administration tool
  Univention Console is a web based program to manage computers.
  It has an extensible architecture, using modules to implement

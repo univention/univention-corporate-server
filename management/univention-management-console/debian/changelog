@@ -1,3 +1,9 @@
+univention-management-console (0.9.33-7) unstable; urgency=low
+
+  * added a dependency to expect, Closes Bug #12400
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 13:37:47 +0200
+
 univention-management-console (0.9.33-6) unstable; urgency=low
 
   * move the quota umc modul from univention-management-console to the
