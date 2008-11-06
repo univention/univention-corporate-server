@@ -1,0 +1,293 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2007-05-24 13:26+0200\n"
+"PO-Revision-Date: 2007-05-22 14:14+0200\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: unicode\n"
+
+#: __init__.py:51
+msgid "Printer Administration"
+msgstr "Drucker Administration"
+
+#: __init__.py:52
+msgid "Manages printers controlled by the CUPS server"
+msgstr ""
+"Ermöglicht die Administration aller Drucker, die auf dem CUPS Server "
+"konfiguriert sind"
+
+#: __init__.py:57
+msgid "List Printers"
+msgstr "Drucker auflisten"
+
+#: __init__.py:58
+msgid "Lists all available printers"
+msgstr "Liste aller verfügbaren Drucker"
+
+#: __init__.py:67
+msgid "Show Printer"
+msgstr "Druckeransicht"
+
+#: __init__.py:72
+msgid "Printer Quotas"
+msgstr "Druck-Quota"
+
+#: __init__.py:73
+msgid "Show Printer Quotas"
+msgstr "Druck-Quota anzeigen"
+
+#: __init__.py:78
+msgid "Show Quota"
+msgstr "Druckquota anzeigen"
+
+#: __init__.py:83
+msgid "Deactivates Printers"
+msgstr "Deaktiviert Drucker"
+
+#: __init__.py:88
+msgid "Activates Printers"
+msgstr "Aktiviert Drucker"
+
+#: __init__.py:93
+msgid "User Print Quota Settings"
+msgstr "Benutzer Druck-Quota-Einstellungen"
+
+#: __init__.py:94
+msgid "Show print quota settings for a user"
+msgstr "Druck-Quota-Einstellungen für einen Benutzer"
+
+#: __init__.py:100
+msgid "Set/Modify User Print Quota"
+msgstr "Setzen von Benutzer Druck-Quota-Einstellungen"
+
+#: __init__.py:101
+msgid "Modify printer quota settings for a user"
+msgstr "Bearbeiten von Druck-Quota-Einstellungen eines Benutzers"
+
+#: __init__.py:109
+msgid "Reset User Print Quota"
+msgstr "Zurücksetzen von Benutzer Druck-Quota-Einstellungen"
+
+#: __init__.py:110
+msgid "reset printer quota for a user"
+msgstr "Zurücksetzen von Druck-Quota-Einstellungen fr einen Benutzer"
+
+#: __init__.py:116
+msgid "Cancel Print Jobs"
+msgstr "Druckauftrag abbrechen"
+
+#: __init__.py:117
+msgid "Cancels all given print jobs."
+msgstr "Alle ausgewählten Druckaufträge abbrechen"
+
+#: __init__.py:122
+msgid "Move Print Jobs"
+msgstr "Druckauftrag verschieben"
+
+#: __init__.py:123
+msgid "Moves a list of print jobs from one printer to another."
+msgstr "Verschiebt Druckaufträge von einem Drucker zu einem anderen"
+
+#: _printer.py:157
+msgid "Successfully set print quota settings"
+msgstr "Druck-Quota-Einstellungen für einen Benutzer erfolgreich gesetzt"
+
+#: _printer.py:160
+#, python-format
+msgid ""
+"Failed to modify print quota settings for user %(user)s on printer %(printer)"
+"s"
+msgstr ""
+"Das Setzen der Druck-Quota-Einstellungen fÃŒr den Benutzer %(user)s auf dem "
+"Drucker %(printer)s ist fehlgeschlagen"
+
+#: _printer.py:173
+msgid "Successfully reset print quota"
+msgstr "Die Druck-Quota-Einstellungen wurden erfolgreich zurückgesetzt"
+
+#: _printer.py:176
+#, python-format
+msgid "Failed to reset print quota for user %(user)s on printer %(printer)s"
+msgstr ""
+"Das Zurücksetzen der Druck-Quota-Einstellungen für den Benutzer %(user)s auf "
+"dem Drucker %(printer)s ist fehlgeschlagen"
+
+#: _revamp.py:54 _revamp.py:109 _revamp.py:147
+msgid "Server"
+msgstr "Server"
+
+#: _revamp.py:54 _types.py:46
+msgid "Printer"
+msgstr "Drucker"
+
+#: _revamp.py:54 _revamp.py:110 _revamp.py:148
+msgid "Status"
+msgstr "Status"
+
+#: _revamp.py:54
+msgid "Quota"
+msgstr "Druck-Quota"
+
+#: _revamp.py:55 _revamp.py:111 _revamp.py:149 _types.py:42
+msgid "Location"
+msgstr "Standort"
+
+#: _revamp.py:55 _revamp.py:112 _revamp.py:150 _types.py:41
+msgid "Description"
+msgstr "Beschreibung"
+
+#: _revamp.py:64 tools.py:53 tools.py:70
+msgid "inactive"
+msgstr "inaktiv"
+
+#: _revamp.py:70 tools.py:68
+msgid "active"
+msgstr "aktiv"
+
+#: _revamp.py:82
+msgid "Activate Printers"
+msgstr "Aktiviere Drucker"
+
+#: _revamp.py:83
+msgid "Deactivate Printers"
+msgstr "Deaktiviere Drucker"
+
+#: _revamp.py:84 _revamp.py:129 _revamp.py:197
+msgid "Select the Operation"
+msgstr "Auswahl der Operation"
+
+#: _revamp.py:88
+msgid "No printers could be found."
+msgstr "Es wurden keine Drucker gefunden."
+
+#: _revamp.py:91
+msgid "Search Result"
+msgstr "Suchergebnis"
+
+#: _revamp.py:108 _revamp.py:146
+#, python-format
+msgid "Printer: %s"
+msgstr "Drucker: %s"
+
+#: _revamp.py:117
+msgid "Job ID"
+msgstr "Auftragsnummer"
+
+#: _revamp.py:117
+msgid "Owner"
+msgstr "Besitzer"
+
+#: _revamp.py:117
+msgid "Size"
+msgstr "Größe"
+
+#: _revamp.py:117
+msgid "Date"
+msgstr "Datum"
+
+#: _revamp.py:128
+msgid "Cancel Print Job"
+msgstr "Druckauftrag abbrechen"
+
+#: _revamp.py:132
+msgid "No jobs in the queue"
+msgstr "Keine Aufträge in der Warteschlange"
+
+#: _revamp.py:134 _revamp.py:210
+msgid "Information"
+msgstr "Information"
+
+#: _revamp.py:135
+msgid "Print Job List"
+msgstr "Druckauftragsliste"
+
+#: _revamp.py:161 _types.py:51
+msgid "User"
+msgstr "Benutzer"
+
+#: _revamp.py:161
+msgid "Pages used"
+msgstr "Genutzte Seiten"
+
+#: _revamp.py:161
+msgid "Softlimit"
+msgstr "Soft-Limit"
+
+#: _revamp.py:161
+msgid "Hardlimit"
+msgstr "Hard-Limit"
+
+#: _revamp.py:162
+msgid "Lifetime page counter"
+msgstr "Seitenzähler"
+
+#: _revamp.py:185
+#, python-format
+msgid "Edit Print Quota for %(user)s"
+msgstr "Druck-Quota für %(user)s bearbeiten"
+
+#: _revamp.py:196
+msgid "Reset User Quota"
+msgstr "Druck-Quota zurücksetzen"
+
+#: _revamp.py:200
+msgid "No quota settings available"
+msgstr "Keine Druck-Quota-Einstellungen vorhanden"
+
+#: _revamp.py:207
+#, python-format
+msgid "User Quota on %(printer)s"
+msgstr "Benutzer-Quota am Drucker %(printer)s"
+
+#: _revamp.py:208
+msgid "Add Quota Entry"
+msgstr "Quota-Eintrag hinzufügen"
+
+#: _revamp.py:211
+msgid "Print Quota"
+msgstr "Druck-Quota"
+
+#: _revamp.py:220
+#, python-format
+msgid "Modify Print Quota Setting for User '%(user)s' on Printer %(printer)s"
+msgstr ""
+"Bearbeiten der Druck-Quota für den Benutzer '%(user)s' auf dem Drucker '%"
+"(printer)s'"
+
+#: _revamp.py:222
+#, python-format
+msgid "Add Print Quota Entry on printer %(printer)s"
+msgstr "Hinzufügen eines Druck-Quota-Eintrags am Drucker %(printer)s"
+
+#: _types.py:38
+msgid "Search Key"
+msgstr "Eigenschaft"
+
+#: _types.py:41
+msgid "Printer Name"
+msgstr "Druckername"
+
+#: _types.py:49
+msgid "Printer List"
+msgstr "Druckerliste"
+
+#: _types.py:50
+msgid "Job List"
+msgstr "Auftragsliste"
+
+#: _types.py:52
+msgid "Page Quota Soft-Limit"
+msgstr "Seiten-Quota Soft-Limit"
+
+#: _types.py:53
+msgid "Page Quota Hard-Limit"
+msgstr "Seiten-Quota Hard-Limit"
