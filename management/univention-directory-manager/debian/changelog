@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.1-4) unstable; urgency=low
+
+  * Added License import via License-Mail. Bug #12293
+
+ -- Andre Fenske <fenske@univention.de>  Tue, 30 Sep 2008 10:26:31 +0200
+
 univention-directory-manager (5.0.1-3) unstable; urgency=low
 
   * remove new widget-reference from modbrowse

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-25 10:24+0200\n"
+"POT-Creation-Date: 2008-09-30 09:22+0200\n"
 "PO-Revision-Date: 2006-05-17 11:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -157,103 +157,119 @@ msgstr "Bitte melden Sie sich erneut an."
 msgid "A Python Exception has occured:"
 msgstr "Ein Python-Fehler ist aufgetreten:"
 
-#: modabout.py:63 modabout.py:75
+#: modabout.py:64 modabout.py:76
 msgid "No Base DN has been found."
 msgstr "Es wurde keine Basis DN gefunden."
 
-#: modabout.py:65
+#: modabout.py:66
 msgid "More than one Base DN has been defined."
 msgstr "Es wurde mehr als eine Basis definiert."
 
-#: modabout.py:69
+#: modabout.py:70
 #, python-format
 msgid "Wrong Base DN. Expected was %s but %s has been found."
 msgstr "Falsche Basis DN. Erwartet wurde %s, aber %s wurde gefunden."
 
-#: modabout.py:84
+#: modabout.py:85
 msgid "No Base DN has been defined."
 msgstr "Es wurde keine Basis DN definiert."
 
-#: modabout.py:99 modabout.py:131
+#: modabout.py:100 modabout.py:132
 msgid "About"
 msgstr "Über"
 
-#: modabout.py:99
+#: modabout.py:100
 msgid "About Univention Directory Manager"
 msgstr "Über Univention Directory Manager"
 
-#: modabout.py:131 modabout.py:143 unidialog.py:172
+#: modabout.py:132 modabout.py:144 unidialog.py:172
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
 
-#: modabout.py:148
+#: modabout.py:149
 msgid "Version"
 msgstr "Version"
 
-#: modabout.py:153
+#: modabout.py:154
 msgid "Build"
 msgstr "Build"
 
-#: modabout.py:163
+#: modabout.py:164
 msgid "Hostname"
 msgstr "Server"
 
-#: modabout.py:181
+#: modabout.py:182
 msgid "local Installation"
 msgstr "Lokale Installation"
 
-#: modabout.py:182
+#: modabout.py:183
 msgid "Univention Corporate Server"
 msgstr "Univention Corporate Server"
 
-#: modabout.py:190
+#: modabout.py:191
 msgid "Validity date of the SSL certificate"
 msgstr "Gültigkeitsdatum des SSL-Zertifikats"
 
-#: modabout.py:201
+#: modabout.py:202
 msgid "Licence"
 msgstr "Lizenz"
 
-#: modabout.py:255 unidialog.py:113
+#: modabout.py:256 unidialog.py:113
 msgid "License"
 msgstr "Lizenz"
 
-#: modabout.py:263
+#: modabout.py:264
 msgid "no licence found"
 msgstr "Keine Lizenz gefunden."
 
-#: modabout.py:271 modedit.py:1645
+#: modabout.py:272 modedit.py:1645
 msgid "Select a file"
 msgstr "Wählen Sie eine Datei"
 
-#: modabout.py:272 modedit.py:1646
-msgid "Load file"
-msgstr "Datei laden"
-
-#: modabout.py:272 modedit.py:1646
-msgid "Upload selected file"
-msgstr "Ausgewählte Datei hochladen"
-
-#: modabout.py:275
+#: modabout.py:273 modabout.py:291
 msgid "Update License"
 msgstr "Lizenz aktualisieren"
 
-#: modabout.py:288
+#: modabout.py:273 modedit.py:1646
+msgid "Upload selected file"
+msgstr "Ausgewählte Datei hochladen"
+
+#: modabout.py:276
+msgid "Update License via File"
+msgstr "Lizenz über Datei aktualisieren"
+
+#: modabout.py:290
+msgid "Copy the License Code into this field"
+msgstr "Kopieren die die Lizenz in dieses Feld"
+
+#: modabout.py:291
+msgid "Upload the License"
+msgstr "Lizenz aktualisieren"
+
+#: modabout.py:294
+msgid "Update License via Mail"
+msgstr "Lizenz über Mail aktualisieren"
+
+#: modabout.py:306
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modabout.py:300
+#: modabout.py:318
 msgid "ALL RIGHTS RESERVED"
 msgstr "ALL RIGHTS RESERVED"
 
-#: modabout.py:333
-#, fuzzy, python-format
+#: modabout.py:372
+#, python-format
+msgid "The License you have entered is invalid."
+msgstr "Die angegebene Lizenz ist ungültig."
+
+#: modabout.py:376
 msgid "An Error has occured:<br> %s"
 msgstr "Ein LDAP-Fehler ist aufgetreten:"
 
-#: modabout.py:344
+#: modabout.py:387
 msgid "The License has been sucessfully installed. You have to relogin."
-msgstr "Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden"
+msgstr "Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden."
 
 #: modbrowse.py:52
 msgid "Browse"
@@ -751,6 +767,10 @@ msgstr "Wählen Sie ein Profil"
 msgid "select host"
 msgstr "Wählen Sie einen Rechner aus."
 
+#: modedit.py:1646
+msgid "Load file"
+msgstr "Datei laden"
+
 #: modedit.py:1648
 msgid "Delete certificate"
 msgstr "Zertifikat löschen"
@@ -919,7 +939,6 @@ msgid "Add a new Config Registry variable"
 msgstr "Eine neue Config Registry Variable hinzufügen"
 
 #: modedit.py:3095
-#, fuzzy
 msgid "Add the new Config Registry variable"
 msgstr "Die neue Config Registry Variable hinzufügen"
 
@@ -1139,7 +1158,6 @@ msgstr ""
 "korrekt."
 
 #: modrelogin.py:208
-#, fuzzy
 msgid ""
 "Licence not found. During this session add and modify are disabled. You can "
 "install a new License in the About section."
@@ -1154,7 +1172,6 @@ msgid "Login successful"
 msgstr "Anmeldung erfolgreich."
 
 #: modrelogin.py:214
-#, fuzzy
 msgid ""
 "You have too many user accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1163,7 +1180,6 @@ msgstr ""
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:220
-#, fuzzy
 msgid ""
 "You have too many client accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1172,7 +1188,6 @@ msgstr ""
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:226
-#, fuzzy
 msgid ""
 "You have too many desktop accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1181,7 +1196,6 @@ msgstr ""
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:232
-#, fuzzy
 msgid ""
 "You have too many groupware accounts for your licence. During this session "
 "add and modify are disabled. You can install a new License in the About "
@@ -1191,7 +1205,6 @@ msgstr ""
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:238
-#, fuzzy
 msgid ""
 "Your licence is expired. During this session add and modify are disabled. "
 "You can install a new License in the About section."
@@ -1200,7 +1213,6 @@ msgstr ""
 "Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:244
-#, fuzzy
 msgid ""
 "Your licence is not valid for your LDAP-Base. During this session add and "
 "modify are disabled. You can install a new License in the About section."
@@ -1209,7 +1221,6 @@ msgstr ""
 "dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:250
-#, fuzzy
 msgid ""
 "Your licence is not valid. During this session add and modify are disabled. "
 "You can install a new License in the About section."
@@ -1218,7 +1229,6 @@ msgstr ""
 "Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:256
-#, fuzzy
 msgid ""
 "Your licence does not allow modifications. During this session add and "
 "modify are disabled. You can install a new License in the About section."
@@ -1227,7 +1237,6 @@ msgstr ""
 "das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
 #: modrelogin.py:262
-#, fuzzy
 msgid ""
 "Your license status could not be validated. Thus, you are not eligible to "
 "support and maintenance. If you have bought a license, please contact "

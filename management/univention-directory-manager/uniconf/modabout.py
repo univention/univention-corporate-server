@@ -52,8 +52,9 @@ class ldifParser(ldif.LDIFParser):
         dncount = 0
         base = None
         err = ""
-        def __init__(self,input_file,ignored_attr_types=None,max_entries=0,process_url_schemes=None,line_sep='\n' ):
-                ldif.LDIFParser.__init__(self,input_file,ignored_attr_types,max_entries,process_url_schemes,line_sep)
+
+        def __init__(self, input_file, ignored_attr_types=None, max_entries=0, process_url_schemes=None, line_sep='\n' ):
+                ldif.LDIFParser.__init__(self,input_file, ignored_attr_types, max_entries, process_url_schemes,line_sep)
 
         def check(self,base):
                 ldif.LDIFParser.parse(self)
@@ -267,19 +268,36 @@ class modabout(unimodule.unimodule):
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 			]}))
 
-                ##Upload License
+                ##Upload License from Keyfile
                 self.certBrowse = question_file('', {} , {"helptext":_("Select a file")})
-                self.certLoadBtn = button(_("Load file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
+                self.certLoadBtn = button(_("Update License"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
                 rows.append(tablerow("",{},{"obs":[
                                         tablecol("",{'type':'about_layout'},{"obs":[
-                                                header(_("Update License"),{"type":"4"},{})
+                                                header(_("Update License via File"),{"type":"4"},{})
                                         ]}),
                                         tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
                                                 self.certBrowse,
                                                 htmltext('',{},{'htmltext':['<br>']}),
                                                 self.certLoadBtn
                                         ]})
+                        ]}))
+		
+		rows.append(tablerow("",{},{"obs":[
+			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+			]}))
 
+		#Upload License as Text-Copy from License-Mail
+                self.certText =  question_ltext('', {}, {'helptext': _("Copy the License Code into this field")}) 
+                self.certLoadTextBtn = button(_("Update License"),{'icon':'/style/ok.gif'},{"helptext":_("Upload the License")})
+                rows.append(tablerow("",{},{"obs":[
+                                        tablecol("",{'type':'about_layout'},{"obs":[
+                                                header(_("Update License via Mail"),{"type":"4"},{})
+                                        ]}),
+                                        tablecol("",{'colspan':'2','type':'about_layout'},{"obs":[
+                                                self.certText,
+                                                htmltext('',{},{'htmltext':['<br>']}),
+                                                self.certLoadTextBtn
+                                        ]})
                         ]}))
 
 		## Contact
@@ -311,23 +329,48 @@ class modabout(unimodule.unimodule):
 
 	def apply(self):
                 # license import
-                if hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed():
-                        if self.certBrowse.get_input():
+                if (hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed()) or (hasattr(self,'certLoadTextBtn') and self.certLoadTextBtn.pressed()):
+                        if self.certBrowse.get_input() or (self.certText.get_input() and self.certText.get_input() != ""):
                                 import subprocess, tempfile
-                                #read content
-                                certFile = open(self.certBrowse.get_input())
 
-                                #read license from file
-                                ldif_parser = ldifParser(certFile)
+				if self.certBrowse.get_input():
+	                                #read content from license file
+					certFile = open(self.certBrowse.get_input())
+				else:
+					mail_text = ""
+					#remove everythingt which is not part of the lizense
+					found = False
+					mail_text = self.certText.get_input()
+					license_start = mail_text.find("dn: cn=admin,cn=license")
+					license_end = mail_text.find("\n",mail_text.find("univentionLicenseSignature: "))
+					mail_text = mail_text[license_start:license_end]
+					
+					#create license file from mail
+					if mail_text != "":
+						certFileTemp = tempfile.mkstemp()
+						certFile = file("%s" % certFileTemp[1], "w")
+						certFile.write("%s" % mail_text)
+						certFile.close()
+						
+						certFile = file("%s" % certFileTemp[1], "r")
+					else:
+						certFile = None
 
-                                #check license
-                                position = self.save.get('ldap_position')
-                                base = position.getDomain()
-                                res = ldif_parser.check(base)
+				if certFile != None:
+	                                #read license from file
+        	                        ldif_parser = ldifParser(certFile)
 
-                                #close
-                                certFile.close()
+                	                #check license
+                        	        position = self.save.get('ldap_position')
+	                                base = position.getDomain()
+        	                        res = ldif_parser.check(base)
 
+	                                #close
+        	                        certFile.close()
+					os.remove(certFile.name)
+				else:
+					res = _("The License you have entered is invalid.")
+	
                                 #return result
                                 if res != "":
                                         self.usermessage(_("An Error has occured:<br> %s") % res)
