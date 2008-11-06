@@ -1,3 +1,9 @@
+univention-management-console (0.9.33-10) unstable; urgency=low
+
+  * set umc/web/language from locale/default (Bug #12386)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 20 Oct 2008 11:57:03 +0200
+
 univention-management-console (0.9.33-9) unstable; urgency=low
 
   * move the nagios umc wizard from univention-management-console to the
