@@ -1,3 +1,10 @@
+univention-system-setup (1.1.14-2) unstable; urgency=low
+
+  * Fixed: Use "univention-ox-directory-integration/oxae" to check for
+    OXAE (Bug #12420)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue,  4 Nov 2008 16:32:24 +0100
+
 univention-system-setup (1.1.14-1) unstable; urgency=low
 
   * Added check for OXAE to univention-system-setup (Bug #12421)
