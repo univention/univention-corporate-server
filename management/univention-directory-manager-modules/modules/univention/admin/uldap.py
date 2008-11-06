@@ -244,6 +244,7 @@ class access:
 		self.start_tls=start_tls
 		self.require_license=0
 		self.allow_modify=1
+		self.licensetypes = [ 'UCS' ]
 
 
 	def bind(self, binddn, bindpw):
@@ -261,6 +262,11 @@ class access:
 				raise univention.admin.uexceptions.licenseGPLversion
 
 			res=univention.admin.license.init_select(self.lo, 'admin')
+
+			self.licensetypes = univention.admin.license._license.types
+
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'self.licensetypes=%s' % self.licensetypes)
+
 			if res == 1:
 				self.allow_modify=0
 				raise univention.admin.uexceptions.licenseClients

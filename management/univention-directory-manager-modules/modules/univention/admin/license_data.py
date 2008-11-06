@@ -30,6 +30,7 @@
 
 UCS = 'UCS'
 UGS = 'UGS'
+OXUSE = 'OXUSE'
 
 class Attributes:
 	def __init__( self, required_license = None, options = {} ):
@@ -53,7 +54,17 @@ class Attributes:
 	def valid( self, license_type ):
 		if not isinstance( license_type, list ):
 			license_type = list( license_type )
-		return not self.required_license or self.required_license in license_type
+
+		if not self.required_license:
+			return True
+
+		if isinstance ( self.required_license, list ):
+			for rl in self.required_license:
+				if rl in license_type:
+					return True
+			return False
+		else:
+			return self.required_license in license_type
 
 def moreGroupware(license):
 	return False, (license.compare(license.licenses[license.ACCOUNT],
@@ -61,20 +72,20 @@ def moreGroupware(license):
 
 modules = {
 	'computers/managedclient': Attributes( UCS ),
-	'computers/computer': Attributes(),
-	'computers/domaincontroller_backup': Attributes( options =
+	'computers/computer': Attributes( [ UCS, UGS ]),
+	'computers/domaincontroller_backup': Attributes(  [ UCS, UGS ], options =
 				{
 					( UCS, ) : ( ( 'nagios', (False, False) ), ),
 					( UGS, ) : ( ( 'nagios', (True, False) ), ),
 					( UCS, UGS ) : ( ( 'nagios', (False, False) ), ),
 				} ),
-	'computers/domaincontroller_master': Attributes( options =
+	'computers/domaincontroller_master': Attributes( [ UCS, UGS ],options =
 				{
 					( UCS, ) : ( ( 'nagios', (False, False) ), ),
 					( UGS, ) : ( ( 'nagios', (True, False) ), ),
 					( UCS, UGS ) : ( ( 'nagios', (False, False) ), ),
 				} ),
-	'computers/domaincontroller_slave': Attributes( options =
+	'computers/domaincontroller_slave': Attributes( [ UCS, UGS ],options =
 				{
 					( UCS, ) : ( ( 'nagios', (False, False) ), ),
 					( UGS, ) : ( ( 'nagios', (True, False) ), ),
@@ -98,15 +109,15 @@ modules = {
 	'dhcp/shared': Attributes( UCS ),
 	'dhcp/sharedsubnet': Attributes( UCS ),
 	'dhcp/subnet': Attributes( UCS ),
-	'dns/alias': Attributes(),
-	'dns/dns': Attributes(),
-	'dns/forward_zone': Attributes(),
-	'dns/host_record': Attributes(),
-	'dns/ptr_record': Attributes(),
-	'dns/reverse_zone': Attributes(),
-	'dns/srv_record': Attributes(),
-	'dns/zone_mx_record': Attributes(),
-	'dns/zone_txt_record': Attributes(),
+	'dns/alias': Attributes([ UCS, UGS ]),
+	'dns/dns': Attributes([ UCS, UGS ]),
+	'dns/forward_zone': Attributes([ UCS, UGS ]),
+	'dns/host_record': Attributes([ UCS, UGS ]),
+	'dns/ptr_record': Attributes([ UCS, UGS ]),
+	'dns/reverse_zone': Attributes([ UCS, UGS ]),
+	'dns/srv_record': Attributes([ UCS, UGS ]),
+	'dns/zone_mx_record': Attributes([ UCS, UGS ]),
+	'dns/zone_txt_record': Attributes([ UCS, UGS ]),
 	'groups/group': Attributes(),
 	'mail/domain': Attributes( UGS ),
 	'mail/folder': Attributes( UGS ),
@@ -116,11 +127,12 @@ modules = {
 	'nagios/nagios': Attributes( UCS ),
 	'nagios/service': Attributes( UCS ),
 	'nagios/timeperiod': Attributes( UCS ),
-	'policies/admin_container': Attributes(),
-	'policies/admin_user': Attributes(),
+	'policies/admin_container': Attributes([ UCS, UGS ]),
+	'policies/admin_user': Attributes([ UCS, UGS ]),
 	'policies/autostart': Attributes( UCS ),
 	'policies/clientdevices': Attributes( UCS ),
 	'policies/clientpackages': Attributes( UCS ),
+	'policies/console_access': Attributes([ UCS, UGS ]),
 	'policies/desktop': Attributes( UCS ),
 	'policies/dhcp_boot': Attributes( UCS ),
 	'policies/dhcp_dns': Attributes( UCS ),
@@ -131,15 +143,18 @@ modules = {
 	'policies/dhcp_scope': Attributes( UCS ),
 	'policies/dhcp_statements': Attributes( UCS ),
 	'policies/ldapserver': Attributes( UCS ),
-	'policies/mailquota': Attributes(),
+	'policies/mailquota': Attributes([ UCS, UGS ]),
 	'policies/maintenance': Attributes( UCS ),
+	'policies/managedclientpackages': Attributes([ UCS]),
 	'policies/masterpackages': Attributes( UCS ),
 	'policies/memberpackages': Attributes( UCS ),
 	'policies/mobileclientpackages': Attributes( UCS ),
+	'policies/nfsmounts': Attributes([ UCS, UGS ]),
 	'policies/policy': Attributes(),
 	'policies/print_quota': Attributes( UCS ),
 	'policies/printserver': Attributes( UCS ),
 	'policies/pwhistory': Attributes( ),
+	'policies/registry': Attributes([ UCS, UGS ]),
 	'policies/release': Attributes( UCS ),
 	'policies/repositoryserver': Attributes( UCS ),
 	'policies/repositorysync': Attributes( UCS ),
@@ -166,11 +181,11 @@ modules = {
 	'settings/settings': Attributes(),
 	'settings/user': Attributes(),
 	'settings/usertemplate': Attributes(),
-	'settings/xconfig_choices': Attributes(),
+	'settings/xconfig_choices': Attributes([ UCS, UGS ]),
 	'shares/print': Attributes( UCS ),
 	'shares/printer': Attributes( UCS ),
 	'shares/printergroup': Attributes( UCS ),
-	'shares/share': Attributes( UCS ),
+	'shares/share': Attributes( [UCS, OXUSE] ),
 	'users/passwd': Attributes(),
 	'users/user': Attributes( options =
 				{

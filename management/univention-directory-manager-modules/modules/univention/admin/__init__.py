@@ -35,7 +35,7 @@ import univention.debug
 __path__.append("handlers")
 
 class property:
-	def __init__(self, short_description='', long_description='', syntax=None, module_search=None, multivalue=0, one_only=0, parent=None, options=[], required=0, may_change=1, identifies=0, unique=0, default=None, dontsearch=0, show_in_lists=0, editable=1, configObjectPosition=None,configAttributeName=None):
+	def __init__(self, short_description='', long_description='', syntax=None, module_search=None, multivalue=0, one_only=0, parent=None, options=[], license=[], required=0, may_change=1, identifies=0, unique=0, default=None, dontsearch=0, show_in_lists=0, editable=1, configObjectPosition=None,configAttributeName=None):
 		self.short_description=short_description
 		self.long_description=long_description
 		if type(syntax) == types.ClassType:
@@ -47,6 +47,7 @@ class property:
 		self.one_only=one_only
 		self.parent=parent
 		self.options=options
+		self.license=license
 		self.required=required
 		self.may_change=may_change
 		self.identifies=identifies
