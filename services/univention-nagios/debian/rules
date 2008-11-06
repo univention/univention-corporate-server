@@ -31,6 +31,8 @@
 
 export DH_COMPAT=4
 
+PYVERS=$(shell pyversions -vr)
+
 CFLAGS = -Wall -g
 
 ifneq (,$(findstring noopt,$(DEB_BUILD_OPTIONS)))
@@ -59,7 +61,9 @@ clean:
 	rm -rf ${DS} ${DC}
 	dh_clean
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -134,6 +138,11 @@ install: build
 	install -d -m 755 -o root -g root ${DC}/usr/lib/univention-install
 	install -m 755 30univention-nagios-client.inst ${DC}/usr/lib/univention-install/30univention-nagios-client.inst
 
+    # install UMC module
+	make PACKAGE=univention-nagios-server install-modules
+	make PACKAGE=univention-nagios-server install-locales-backend
+	make PACKAGE=univention-nagios-server install-images
+
 	univention-install-config-registry
 	univention-install-config-registry-info
 	univention-install-service-info
@@ -148,6 +157,7 @@ binary-arch: build install
 	dh_installchangelogs
 	dh_installdocs
 	dh_installpam --name=httpd-nagios
+	dh_pycentral
 	dh_link
 	dh_strip
 	dh_compress
