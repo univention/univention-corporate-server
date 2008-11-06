@@ -36,3 +36,9 @@ if [ ! `echo $kernel_modules | grep quota_v2` ]
 	then
 	univention-baseconfig set kernel/modules="$kernel_modules;quota_v2"
 fi
+
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/71univention-quota.inst || true
+fi
+
+exit 0

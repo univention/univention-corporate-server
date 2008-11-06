@@ -1,0 +1,107 @@
+#! /bin/sh
+#
+# Univention Quoat
+#  join script
+#
+# Copyright (C) 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+VERSION=1
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-quota v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+# umc module
+
+# create quota operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota \
+																				 --set description="Quota operations" \
+																				 --append operation="quota/*" \
+																				 --append operation="quota/list" \
+																				 --append operation="quota/partition/*" \
+																				 --append operation="quota/partition/show" \
+																				 --append operation="quota/partition/set" \
+																				 --append operation="quota/user/*" \
+																				 --append operation="quota/user/show" \
+																				 --append operation="quota/user/set"
+
+# create quota acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-all \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/*" \
+																				 --set description="All quota operations"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-list \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/list" \
+																				 --set description="Quota anzeigen"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-partition \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/partition/*" \
+																				 --set description="Activate/deactivate quota"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=quota-user \
+																				 --set category="Quota" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="quota/user/*" \
+																				 --set description="Set user quota"
+
+# policy container
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
+# default policies
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=quota-admin --append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+
+test -n "`grep "univention-quota v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-quota v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
