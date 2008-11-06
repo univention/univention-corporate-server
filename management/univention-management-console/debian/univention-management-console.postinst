@@ -1,5 +1,7 @@
 #!/bin/sh
 
+eval $(univention-config-registry shell)
+
 createLogfile () {
 	if [ ! -e $1 ] ; then
 		touch $1
@@ -21,14 +23,16 @@ test -h /usr/share/univention-management-console/www/index.php || ln -s /usr/sha
 
 test -h /var/www/univention-management-console || ln -s /usr/share/univention-management-console/www /var/www/univention-management-console
 
-
 univention-baseconfig set umc/web/timeout?300
-univention-baseconfig set umc/web/language?de_DE.utf8
+if [ -n "$locale_default" ]
+then
+	univention-config-registry set "umc/web/language?$(echo $locale_default|sed -e 's|:.*||')"
+else
+	univention-config-registry set "umc/web/language?de_DE.utf8"
+fi
 univention-baseconfig set umc/web/debug/level?1
 
 # set memory limit for php processes to 32 (if not already set)
-eval $(univention-baseconfig shell php/memory/limit)
-
 if [ -n "$php_memory_limit" ]; then
         if [ "$php_memory_limit" -lt 32 ]; then
                 univention-baseconfig set php/memory/limit=32
