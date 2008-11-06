@@ -131,6 +131,7 @@ property_descriptions={
 			syntax=univention.admin.syntax.hostDn,
 			multivalue=1,
 			options=['posix'],
+			license=['UGS', 'UCS'],
 			required=0,
 			may_change=1,
 			dontsearch=1,

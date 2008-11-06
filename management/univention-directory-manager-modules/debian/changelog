@@ -1,8 +1,15 @@
-univention-directory-manager-modules (3.0.14-16) unstable; urgency=low
+univention-directory-manager-modules (3.0.14-17) unstable; urgency=low
 
   * removed temporary debug line, Bug #12139
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Sep 2008 19:55:38 +0200
+
+univention-directory-manager-modules (3.0.14-16) unstable; urgency=low
+
+  * enable the mailquota on a OXUSE system and disable the hosts tab in
+    the groups module. Bug #12139
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 17 Sep 2008 06:51:50 +0200
 
 univention-directory-manager-modules (3.0.14-15) unstable; urgency=low
 
