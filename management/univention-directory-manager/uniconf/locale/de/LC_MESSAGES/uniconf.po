@@ -232,9 +232,8 @@ msgid "Groupware Version:"
 msgstr "Groupware Version:"
 
 #: modabout.py:256
-#, fuzzy
 msgid "GUI Version:"
-msgstr "GUI Version"
+msgstr "GUI Version:"
 
 #: modabout.py:260
 msgid "Integration Version:"
@@ -293,9 +292,8 @@ msgid "The License you have entered is invalid."
 msgstr "Die angegebene Lizenz ist ungültig."
 
 #: modabout.py:449
-#, fuzzy, python-format
 msgid "An Error has occured:<br> %s"
-msgstr "Ein LDAP-Fehler ist aufgetreten:"
+msgstr "Ein LDAP-Fehler ist aufgetreten:<br> %s"
 
 #: modabout.py:460
 msgid "The License has been sucessfully installed. You have to relogin."
