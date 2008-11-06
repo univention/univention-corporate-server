@@ -103,19 +103,6 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="service/start" \
 	--append operation="service/stop"
 
-# create quota operations
-univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
-																				 --set name=quota \
-																				 --set description="Quota operations" \
-																				 --append operation="quota/*" \
-																				 --append operation="quota/list" \
-																				 --append operation="quota/partition/*" \
-																				 --append operation="quota/partition/show" \
-																				 --append operation="quota/partition/set" \
-																				 --append operation="quota/user/*" \
-																				 --append operation="quota/user/show" \
-																				 --append operation="quota/user/set"
-
 # create mail server wizard acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 	--set name=wizard-mailserver-all \
@@ -287,34 +274,6 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set command="service/*" \
 																				 --set description="All Operations on Services"
 
-# create quota acls
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=quota-all \
-																				 --set category="Quota" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="quota/*" \
-																				 --set description="All quota operations"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=quota-list \
-																				 --set category="Quota" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="quota/list" \
-																				 --set description="Quota anzeigen"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=quota-partition \
-																				 --set category="Quota" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="quota/partition/*" \
-																				 --set description="Activate/deactivate quota"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=quota-user \
-																				 --set category="Quota" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="quota/user/*" \
-																				 --set description="Set user quota"
 
 
 # policy container
@@ -327,7 +286,6 @@ univention-admin policies/console_access create $@ --ignore_exists \
 
 univention-admin policies/console_access modify $@ --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
-	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=wizard-mailserver-all,cn=acls,cn=console,cn=univention,$ldap_base \
@@ -345,10 +303,6 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=baseconfig-admin \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
-
-univention-admin policies/console_access create $@ --ignore_exists \
-	--position cn=console,cn=policies,$ldap_base \
-	--set name=quota-admin --append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 # join default admin policy to the domain admins
 univention-admin groups/group modify $@ --ignore_exists --dn "cn=Domain Admins,cn=groups,$ldap_base" \
