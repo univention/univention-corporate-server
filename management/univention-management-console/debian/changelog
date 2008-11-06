@@ -1,3 +1,10 @@
+univention-management-console (0.9.33-5) unstable; urgency=low
+
+  * move the cups umc modul from univention-management-console to the
+    univention-printerserver package. Bug #12145
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 17 Oct 2008 22:03:50 +0200
+
 univention-management-console (0.9.33-4) unstable; urgency=low
 
   * now we have three start type on umc services: start yes (automtically), no (never) or manually 
