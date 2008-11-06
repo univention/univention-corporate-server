@@ -1,3 +1,9 @@
+univention-system-setup (1.1.14-1) unstable; urgency=low
+
+  * Added check for OXAE to univention-system-setup (Bug #12421)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 21 Oct 2008 13:43:23 +0200
+
 univention-system-setup (1.1.13-1) unstable; urgency=low
 
   * bug #12001: fixed wrong translation to uppercase of kerberos realm

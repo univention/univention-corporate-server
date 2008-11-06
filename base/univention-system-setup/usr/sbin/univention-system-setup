@@ -293,6 +293,10 @@ class mods:
 		baseConfig=univention_baseconfig.baseConfig()
 		baseConfig.load()
 
+		oxHostcontext = baseConfig.get('ox/hostedcontexts', None)
+		if oxHostcontext:
+			cmdline['edition']='oxuse'
+
 		self.mapping_reverse={}
 		for k in mapping.keys():
 			self.mapping_reverse[mapping[k]]=k
