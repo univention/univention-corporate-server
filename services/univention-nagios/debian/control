@@ -2,12 +2,14 @@ Source: univention-nagios
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>= 4.0.0), univention-config-dev
+Build-Depends: debhelper (>= 4.0.0), univention-config-dev, python, python-all-dev, python-central
 Standards-Version: 3.5.2
+XS-Python-Version: all
 
 Package: univention-nagios-server
 Architecture: any
 Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager, univention-directory-listener
+XB-Python-Version: ${python:Versions}
 Description: UCS: nagios server support
  This package installs the required packages to allow monitoring
  clients by nagios.

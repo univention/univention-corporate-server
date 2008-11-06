@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=1
+VERSION=2
 
 eval `univention-baseconfig shell`
 
@@ -88,6 +88,39 @@ univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,
 univention-admin nagios/service create $@ --ignore_exists --position="cn=nagios,$ldap_base" --set name="UNIVENTION_REPLICATION" --set description="Default Service: check if ldap replication is uptodate" --set checkCommand="check_univention_replication" --set checkArgs="10!50!100" --set useNRPE="1" --set normalCheckInterval="2" --set retryCheckInterval="1" --set maxCheckAttempts="5" --set checkPeriod="24x7" --set notificationOptionWarning="1" --set notificationOptionCritical="1" --set notificationOptionUnreachable="1" --set notificationOptionRecovered="1" --set notificationPeriod="24x7"
 
 /etc/init.d/nagios2 restart 2> /dev/null > /dev/null || true
+
+# create nagios operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-nagios \
+	--set description="Nagios Wizard" \
+	--append operation="wizard/nagios/*"
+
+# create nagios operations
+univention-admin settings/console_operation create $@ --ignore_exists \
+	--position cn=operations,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-basis \
+	--set description="Basis Wizard" \
+	--append operation="wizard/basis/*"
+
+# create nagios wizard acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+	--set name=wizard-nagios-all \
+	--set category="Wizard Nagios" \
+	--set ldapbase="$ldap_base" \
+	--set command="wizard/nagios/*" \
+	--set description="Nagios Wizard"
+
+
+# default policies
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=wizard-nagios-all,cn=acls,cn=console,cn=univention,$ldap_base \
+
 
 test -n "`grep "univention-nagios-server v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-nagios-server v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
