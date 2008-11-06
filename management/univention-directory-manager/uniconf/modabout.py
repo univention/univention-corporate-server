@@ -373,7 +373,7 @@ class modabout(unimodule.unimodule):
 	
                                 #return result
                                 if res != "":
-                                        self.usermessage(_("An Error has occured:<br> %s") % res)
+                                        self.usermessage(_("An Error has occured:<br> %s" % res))
                                 else:
                                         #install license
                                         settings = self.save.get("settings")
