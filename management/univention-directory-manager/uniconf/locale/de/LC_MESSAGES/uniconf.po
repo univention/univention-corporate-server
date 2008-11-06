@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-30 09:22+0200\n"
+"POT-Creation-Date: 2008-09-30 10:55+0200\n"
 "PO-Revision-Date: 2006-05-17 11:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -258,18 +258,19 @@ msgstr "Kontakt"
 msgid "ALL RIGHTS RESERVED"
 msgstr "ALL RIGHTS RESERVED"
 
-#: modabout.py:372
-#, python-format
+#: modabout.py:350 modabout.py:376
 msgid "The License you have entered is invalid."
 msgstr "Die angegebene Lizenz ist ungültig."
 
-#: modabout.py:376
+#: modabout.py:380
+#, fuzzy, python-format
 msgid "An Error has occured:<br> %s"
 msgstr "Ein LDAP-Fehler ist aufgetreten:"
 
-#: modabout.py:387
+#: modabout.py:391
 msgid "The License has been sucessfully installed. You have to relogin."
-msgstr "Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden."
+msgstr ""
+"Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden."
 
 #: modbrowse.py:52
 msgid "Browse"

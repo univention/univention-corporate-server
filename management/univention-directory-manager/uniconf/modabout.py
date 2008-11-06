@@ -344,6 +344,10 @@ class modabout(unimodule.unimodule):
 					license_start = mail_text.find("dn: cn=admin,cn=license")
 					license_end = mail_text.find("\n",mail_text.find("univentionLicenseSignature: "))
 					mail_text = mail_text[license_start:license_end]
+
+					if license_start == -1 or license_end == -1:
+						mail_text = ""
+						res = _("The License you have entered is invalid.")
 					
 					#create license file from mail
 					if mail_text != "":
