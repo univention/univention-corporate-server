@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.1-6) unstable; urgency=low
+
+  * Using Python LDAP to get OX Version. Bug #12422
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 30 Oct 2008 11:12:28 +0100
+
 univention-directory-manager (5.0.1-5) unstable; urgency=low
 
   * OX and OX Integration Versions are now displayed in the about
