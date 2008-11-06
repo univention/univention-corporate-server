@@ -41,4 +41,8 @@ if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domainc
 	/usr/lib/univention-install/71univention-quota.inst || true
 fi
 
+if [ -x /etc/init.d/univention-management-console-server ]; then
+	/etc/init.d/univention-management-console-server crestart
+fi
+
 exit 0
