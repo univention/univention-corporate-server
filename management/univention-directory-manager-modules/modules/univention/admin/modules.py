@@ -304,8 +304,7 @@ def layout(module_name, object=None):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: layout is defined by the module')
 
 	if defining_layout:
-		#if object and hasattr(object, 'options'):
-		if object:
+		if object and hasattr(object, 'options'):
 			layout = []
 			for tab in defining_layout:
 				empty  = True
