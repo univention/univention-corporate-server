@@ -89,4 +89,8 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.18; th
 	/usr/sbin/univention-directory-listener-ctrl resync cups-printers
 fi
 
+if [ -x /etc/init.d/univention-management-console-server ]; then
+	/etc/init.d/univention-management-console-server crestart
+fi
+
 exit 0

@@ -1,3 +1,9 @@
+univention-printserver (1.0.9-5) unstable; urgency=low
+
+  * restart UMC during the installation. Bug #12145
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Oct 2008 08:52:19 +0200
+
 univention-printserver (1.0.9-4) unstable; urgency=low
 
   * added the Makefile for the umc module. Bug #12145
