@@ -196,6 +196,75 @@ class modabout(unimodule.unimodule):
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 			]}))
 
+		## OX
+		rows.append(tablerow("",{},{"obs":[
+			tablecol("",{"colspan":"3",'type':'about_layout'},{"obs":[
+			header(_("Open-Xchange"),{'width':'400', "type":"4"},{})
+			]})
+			]}))
+
+		### get ox context versions
+		ox_contexts = []
+		ox_context_dns = []
+		ldap_search = os.popen("ldapsearch -x \"(&(objectClass=oxContext)(oxHomeServer=%s.%s))\" " % (baseConfig['hostname'], baseConfig['domainname'])).readlines()
+		for line in ldap_search:
+			line = line.strip()
+			if line.startswith("dn:"):
+				ox_context_dns.append(line[4:])
+
+		for ox_context_dn in ox_context_dns:
+			ldap_search = os.popen("ldapsearch -x -b %s" % ox_context_dn).readlines()
+			name = None
+			oxAdminDaemonVersion = _("unknown")
+			oxIntegrationVersion = _("unknown")
+			oxGuiVersion = _("unknown")
+			oxGroupwareVersion = _("unknown")
+			for line in ldap_search:
+				line = line.strip()
+				if line.startswith("cn:"):
+					name = line[4:]
+				elif line.startswith("oxAdminDaemonVersion:"):
+					oxAdminDaemonVersion = line[22:]
+				elif line.startswith("oxIntegrationVersion:"):
+					oxIntegrationVersion = line[22:]
+				elif line.startswith("oxGuiVersion:"):
+					oxGuiVersion = line[14:]
+				elif line.startswith("oxGroupwareVersion:"):
+					oxGroupwareVersion = line[20:]
+
+			ox_contexts.append({	'name':name, 
+						'oxAdminDaemonVersion': oxAdminDaemonVersion,
+						'oxGroupwareVersion' : oxGroupwareVersion,
+						'oxGuiVersion' : oxGuiVersion,
+						'oxIntegrationVersion' : oxIntegrationVersion })
+
+		for ox_context in ox_contexts:
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
+				header(_("Context: %s" % ox_context['name']),{"type":"4"},{})
+				]})
+				]}))			
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Admin Daemon Version:')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context['oxAdminDaemonVersion'] ]})]})
+				]}))
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Groupware Version:')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context['oxGroupwareVersion'] ]})]})
+				]}))
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('GUI Version:')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context['oxGuiVersion'] ]})]})
+				]}))
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Integration Version:')]})]}),
+				tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context['oxIntegrationVersion'] ]})]})
+				]}))
+
+		if len(ox_contexts) > 0:
+			rows.append(tablerow("",{},{"obs":[
+				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+				]}))
 		## Licence
 		rows.append(tablerow("",{},{"obs":[
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[

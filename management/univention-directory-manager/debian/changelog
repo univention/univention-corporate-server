@@ -1,8 +1,9 @@
 univention-directory-manager (5.0.1-5) unstable; urgency=low
 
-  * Small fix. Bug #12293
+  * OX and OX Integration Versions are now displayed in the about
+    Section. Bug #12422
 
- -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu,  6 Nov 2008 16:08:23 +0100
+ -- Andre Fenske <fenske@univention.de>  Tue, 28 Oct 2008 14:17:33 +0100
 
 univention-directory-manager (5.0.1-4) unstable; urgency=low
 
