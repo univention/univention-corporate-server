@@ -3,7 +3,7 @@
 # Univention Print Server
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=2
+VERSION=3
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -54,70 +54,70 @@ if test -e "/etc/univention/ssl/$hostname.$domainname/private.key"; then
 fi
 
 
-# Test, whether a UCS 1.3 joint script has been run successfully
-previous=`grep "univention-printserver successful" /usr/lib/univention-install/.index.txt`
-
-if [ -n "$previous" ]; then
-
-cups_keep_ppds=`univention-baseconfig get cups/keep_ppds`
-if [ "$cups_keep_ppds" != "true" ]; then
-
-# Store a backup copy of the old printer definitions in LDAP
-backupfile=/var/backups/ldap-ppds-`date +"%d-%m-%y-%H-%M-%S"`
-ldapsearch -x 'objectclass=univentionPrinterModels' >  $backupfile
-
-univention-admin settings/printermodel remove $@ --dn cn=Alps,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Anitech,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Apollo,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Apple,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Avery,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Brother,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=CItoh,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Canon,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Citizen,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Compaq,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=DEC,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Dell,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Dymo,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Epson,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Fujitsu,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Generic,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Gestetner,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=HP,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Heidelberg,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Hitachi,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=IBM,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Imagen,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Infotec,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Kodak,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Kyocera,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Lanier,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Lexmark,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Minolta,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Mitsubishi,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=NEC,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=NRG,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Oce,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Okidata,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Olivetti,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=PCPI,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Panasonic,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Pentax,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=QMS,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Raven,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Ricoh,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Samsung,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Savin,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Seiko,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Sharp,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Sony,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Star,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Tally,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Tektronix,cn=cups,cn=univention,$ldap_base
-univention-admin settings/printermodel remove $@ --dn cn=Xerox,cn=cups,cn=univention,$ldap_base
-fi
-
-fi
+# # Test, whether a UCS 1.3 joint script has been run successfully
+# previous=`grep "univention-printserver successful" /usr/lib/univention-install/.index.txt`
+# 
+# if [ -n "$previous" ]; then
+# 
+# cups_keep_ppds=`univention-baseconfig get cups/keep_ppds`
+# if [ "$cups_keep_ppds" != "true" ]; then
+# 
+# # Store a backup copy of the old printer definitions in LDAP
+# backupfile=/var/backups/ldap-ppds-`date +"%d-%m-%y-%H-%M-%S"`
+# ldapsearch -x 'objectclass=univentionPrinterModels' >  $backupfile
+# 
+# univention-admin settings/printermodel remove $@ --dn cn=Alps,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Anitech,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Apollo,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Apple,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Avery,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Brother,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=CItoh,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Canon,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Citizen,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Compaq,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=DEC,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Dell,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Dymo,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Epson,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Fujitsu,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Generic,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Gestetner,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=HP,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Heidelberg,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Hitachi,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=IBM,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Imagen,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Infotec,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Kodak,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Kyocera,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Lanier,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Lexmark,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Minolta,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Mitsubishi,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=NEC,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=NRG,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Oce,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Okidata,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Olivetti,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=PCPI,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Panasonic,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Pentax,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=QMS,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Raven,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Ricoh,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Samsung,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Savin,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Seiko,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Sharp,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Sony,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Star,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Tally,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Tektronix,cn=cups,cn=univention,$ldap_base
+# univention-admin settings/printermodel remove $@ --dn cn=Xerox,cn=cups,cn=univention,$ldap_base
+# fi
+# 
+# fi
 
 univention-admin container/cn create $@ --ignore_exists --position "cn=univention,$ldap_base" --set name=cups
 
@@ -4116,6 +4116,70 @@ univention-admin settings/printermodel create $@ --ignore_exists --position "cn=
 
 
 rm /var/lib/univention-directory-listener/handlers/cups-printers >/dev/null 2>&1|| true
+
+
+# umc module
+
+# create CUPS operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups \
+																				 --set description="CUPS operations" \
+																				 --append operation="cups/*" \
+																				 --append operation="cups/list" \
+																				 --append operation="cups/printer/*" \
+																				 --append operation="cups/printer/show" \
+																				 --append operation="cups/printer/disable" \
+																				 --append operation="cups/printer/enable" \
+																				 --append operation="cups/job/*" \
+																				 --append operation="cups/job/list" \
+																				 --append operation="cups/job/cancel" \
+																				 --append operation="cups/job/move"
+
+# create CUPS acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-all \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/*" \
+																				 --set description="All print server operations"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-list \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/list" \
+																				 --set description="Show printer list"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-printer \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/printer/*" \
+																				 --set description="Start/stop printers"
+
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=cups-jobs \
+																				 --set category="Druckserver" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="cups/job/*" \
+																				 --set description="Display, stop and move print jobs"
+
+# policy container
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
+# default policies
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
+
 
 test -n "`grep "univention-printserver v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-printserver v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
 
