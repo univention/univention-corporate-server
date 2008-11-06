@@ -143,7 +143,7 @@ modules = {
 	'policies/dhcp_scope': Attributes( UCS ),
 	'policies/dhcp_statements': Attributes( UCS ),
 	'policies/ldapserver': Attributes( UCS ),
-	'policies/mailquota': Attributes([ UCS, UGS ]),
+	'policies/mailquota': Attributes(),
 	'policies/maintenance': Attributes( UCS ),
 	'policies/managedclientpackages': Attributes([ UCS]),
 	'policies/masterpackages': Attributes( UCS ),
