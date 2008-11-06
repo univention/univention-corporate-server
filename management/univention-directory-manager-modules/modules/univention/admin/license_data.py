@@ -30,7 +30,7 @@
 
 UCS = 'UCS'
 UGS = 'UGS'
-OXUSE = 'OXUSE'
+OXAE = 'OXAE'
 
 class Attributes:
 	def __init__( self, required_license = None, options = {} ):
@@ -185,7 +185,7 @@ modules = {
 	'shares/print': Attributes( UCS ),
 	'shares/printer': Attributes( UCS ),
 	'shares/printergroup': Attributes( UCS ),
-	'shares/share': Attributes( [UCS, OXUSE] ),
+	'shares/share': Attributes( [UCS, OXAE] ),
 	'users/passwd': Attributes(),
 	'users/user': Attributes( options =
 				{

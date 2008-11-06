@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.14-21) unstable; urgency=low
+
+  * Renaming OXUSE to OXAE. Bug #12453
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 23 Oct 2008 15:37:48 +0200
+
 univention-directory-manager-modules (3.0.14-20) unstable; urgency=low
 
   * Bug #12397: import additional syntax files
