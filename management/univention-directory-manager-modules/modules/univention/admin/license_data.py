@@ -167,7 +167,7 @@ modules = {
 	'settings/admin': Attributes(),
 	'settings/cn': Attributes(),
 	'settings/customattribute': Attributes(),
-	'settings/default': Attributes(),
+	'settings/default': Attributes( [ UCS, UGS ]),
 	'settings/directory': Attributes(),
 	'settings/license': Attributes(),
 	'settings/lock': Attributes(),

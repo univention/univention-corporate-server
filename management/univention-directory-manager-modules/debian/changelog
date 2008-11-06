@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.14-18) unstable; urgency=low
+
+  * fixed a traceback during the layout definition, Bug #12139 and Bug #12335
+  * disable settings/default with an oxae license. Closes Bug #12336
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Oct 2008 07:58:07 +0200
+
 univention-directory-manager-modules (3.0.14-17) unstable; urgency=low
 
   * removed temporary debug line, Bug #12139
