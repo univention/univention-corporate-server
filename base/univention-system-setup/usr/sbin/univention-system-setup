@@ -293,8 +293,8 @@ class mods:
 		baseConfig=univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		oxHostcontext = baseConfig.get('ox/hostedcontexts', None)
-		if oxHostcontext:
+		univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', None)
+		if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
 			cmdline['edition']='oxuse'
 
 		self.mapping_reverse={}
