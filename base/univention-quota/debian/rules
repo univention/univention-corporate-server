@@ -54,6 +54,7 @@ install-ext-%:
 
 	install -m 0755 files/univention-user-quota debian/univention-quota/usr/sbin
 	install -m 0755 files/univention-setquota debian/univention-quota/usr/sbin
+	install -m 0755 71univention-quota.inst debian/univention-quota/usr/lib/univention-install/
 	univention-install-baseconfig
 	#
     # install UMC module
