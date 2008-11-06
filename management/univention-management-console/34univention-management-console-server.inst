@@ -103,21 +103,6 @@ univention-admin settings/console_operation create $@ --ignore_exists \
 	--append operation="service/start" \
 	--append operation="service/stop"
 
-# create CUPS operations
-univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
-																				 --set name=cups \
-																				 --set description="CUPS operations" \
-																				 --append operation="cups/*" \
-																				 --append operation="cups/list" \
-																				 --append operation="cups/printer/*" \
-																				 --append operation="cups/printer/show" \
-																				 --append operation="cups/printer/disable" \
-																				 --append operation="cups/printer/enable" \
-																				 --append operation="cups/job/*" \
-																				 --append operation="cups/job/list" \
-																				 --append operation="cups/job/cancel" \
-																				 --append operation="cups/job/move"
-
 # create quota operations
 univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
 																				 --set name=quota \
@@ -302,36 +287,6 @@ univention-admin settings/console_acl create $@ --ignore_exists --position cn=ac
 																				 --set command="service/*" \
 																				 --set description="All Operations on Services"
 
-# create CUPS acls
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=cups-all \
-																				 --set category="Druckserver" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="cups/*" \
-																				 --set description="All print server operations"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=cups-list \
-																				 --set category="Druckserver" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="cups/list" \
-																				 --set description="Show printer list"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=cups-printer \
-																				 --set category="Druckserver" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="cups/printer/*" \
-																				 --set description="Start/stop printers"
-
-univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
-																				 --set name=cups-jobs \
-																				 --set category="Druckserver" \
-																				 --set ldapbase="$ldap_base" \
-																				 --append command="cups/job/*" \
-																				 --set description="Display, stop and move print jobs"
-
-
 # create quota acls
 univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
 																				 --set name=quota-all \
@@ -372,7 +327,6 @@ univention-admin policies/console_access create $@ --ignore_exists \
 
 univention-admin policies/console_access modify $@ --ignore_exists \
 	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
-	--append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=quota-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base \
 	--append allow=cn=service-all,cn=acls,cn=console,cn=univention,$ldap_base \
@@ -391,10 +345,6 @@ univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
 	--set name=baseconfig-admin \
 	--append allow=cn=baseconfig-all,cn=acls,cn=console,cn=univention,$ldap_base
-
-univention-admin policies/console_access create $@ --ignore_exists \
-	--position cn=console,cn=policies,$ldap_base \
-	--set name=cups-admin --append allow=cn=cups-all,cn=acls,cn=console,cn=univention,$ldap_base
 
 univention-admin policies/console_access create $@ --ignore_exists \
 	--position cn=console,cn=policies,$ldap_base \
