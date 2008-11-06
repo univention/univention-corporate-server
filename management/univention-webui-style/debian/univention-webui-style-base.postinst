@@ -28,7 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA      02110-1301      USA
 
-univention-baseconfig set apache2/startsite?"ucs-overview/de.html"
+eval $(univention-config-registry shell)
+if [ -n "$locale_default" ]
+then
+	univention-config-registry set "apache2/startsite?ucs-overview/$(echo "$locale_default"|head -c 2).html"
+else
+	univention-config-registry set "apache2/startsite?ucs-overview/de.html"
+fi
 
 exit 0
 

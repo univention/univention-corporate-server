@@ -1,3 +1,9 @@
+univention-webui-style (2.0.0-3) unstable; urgency=low
+
+  * set apache2/startsite from locale/default (Bug #12426)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 21 Oct 2008 15:20:41 +0200
+
 univention-webui-style (2.0.0-2) unstable; urgency=low
 
   * changed CSS for better IE6/7 compatibility
