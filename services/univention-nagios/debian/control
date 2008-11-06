@@ -10,6 +10,7 @@ Package: univention-nagios-server
 Architecture: any
 Depends: nagios2, nagios2-common, nagios2-doc, nagios-images, univention-nagios-client, nagios-plugins, nagios-nrpe-plugin, libapache2-mod-auth-pam, python-univention-directory-manager, univention-directory-listener
 XB-Python-Version: ${python:Versions}
+Conflicts: univention-management-console (<<0.9.34-6)
 Description: UCS: nagios server support
  This package installs the required packages to allow monitoring
  clients by nagios.
