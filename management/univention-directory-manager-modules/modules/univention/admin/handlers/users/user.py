@@ -1819,6 +1819,8 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 			newmembers=copy.deepcopy(members)
 			newmembers.append(self.dn)
 			self.lo.modify(self.newPrimaryGroupDn, [('uniqueMember', members, newmembers)])
+		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'users/user: rewrite memberuid in %s' % self.newPrimaryGroupDn)
+		self.__rewrite_member_uid(self.newPrimaryGroupDn)
 		self.save()
 
 	def krb5_principal(self):
