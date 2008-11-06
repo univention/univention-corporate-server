@@ -304,7 +304,8 @@ def layout(module_name, object=None):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.ALL, 'modules.py layout:: layout is defined by the module')
 
 	if defining_layout:
-		if object and hasattr(object, 'options'):
+		#if object and hasattr(object, 'options'):
+		if object:
 			layout = []
 			for tab in defining_layout:
 				empty  = True
@@ -320,8 +321,12 @@ def layout(module_name, object=None):
 						for field in row:
 							prop = module.property_descriptions[field.property]
 							nrow.append(field)
-							if not field.property == 'filler' and (not prop.options or [opt for opt in prop.options if opt in object.options]):
-								empty = False
+							#if not field.property == 'filler' and (not prop.options or [opt for opt in prop.options if opt in object.options]):
+							#	empty = False
+							if not field.property == 'filler':
+								if not prop.options or [opt for opt in prop.options if opt in object.options]:
+									if not prop.license or [license for license in prop.license if license in object.lo.licensetypes]:
+										empty = False
 						if nrow:
 							if single:
 								nrow = nrow[0]

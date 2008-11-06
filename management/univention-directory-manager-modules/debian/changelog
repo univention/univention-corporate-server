@@ -1,3 +1,12 @@
+univention-directory-manager-modules (3.0.14-15) unstable; urgency=low
+
+  * added OXUSE product/license support
+  * added a new property field license, so it is possible to remove a
+    tab on the basis of the license
+    Bug #12139
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Sep 2008 14:48:02 +0200
+
 univention-directory-manager-modules (3.0.14-14) unstable; urgency=low
 
   * fixed broken uid check that discouraged UIDs consisting of digits only. (Bug #12497)
