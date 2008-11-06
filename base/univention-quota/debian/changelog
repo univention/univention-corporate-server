@@ -1,3 +1,10 @@
+univention-quota (2.0.1-2) unstable; urgency=low
+
+  * move the quota umc modul from univention-management-console to the
+    univention-quota package. Bug #12145
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 18 Oct 2008 13:15:23 +0200
+
 univention-quota (2.0.1-1) unstable; urgency=low
 
   * fixed two syntax errors in the setquota script

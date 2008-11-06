@@ -2,12 +2,14 @@ Source: univention-quota
 Section: univention
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper (>> 3.0.0), univention-config-dev, python, python-all-dev, python-central
 
 Package: univention-quota
 Architecture: all
 Pre-Depends: quota (>= 3.14)
 Depends: univention-pam (>> 0.8), univention-config, univention-policy-tools, ldap-utils
+Conflicts: univention-management-console (<<0.9.33-1)
+XB-Python-Version: ${python:Versions}
 Description: UCS - set default-quotas for users
  This package can set default-quotas for a user at login.
  The quotas are set by resolving the shares corresponding
