@@ -265,8 +265,6 @@ class access:
 
 			self.licensetypes = univention.admin.license._license.types
 
-			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'self.licensetypes=%s' % self.licensetypes)
-
 			if res == 1:
 				self.allow_modify=0
 				raise univention.admin.uexceptions.licenseClients
