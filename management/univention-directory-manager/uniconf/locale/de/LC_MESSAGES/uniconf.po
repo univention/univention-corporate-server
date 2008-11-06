@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-30 10:55+0200\n"
+"POT-Creation-Date: 2008-10-28 13:59+0100\n"
 "PO-Revision-Date: 2006-05-17 11:24+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -211,63 +211,93 @@ msgid "Validity date of the SSL certificate"
 msgstr "Gültigkeitsdatum des SSL-Zertifikats"
 
 #: modabout.py:202
+msgid "Open-Xchange"
+msgstr "Open-Xchange"
+
+#: modabout.py:218 modabout.py:219 modabout.py:220 modabout.py:221
+msgid "unknown"
+msgstr "unbekannt"
+
+#: modabout.py:244
+#, python-format
+msgid "Context: %s"
+msgstr "Kontext:"
+
+#: modabout.py:248
+msgid "Admin Daemon Version:"
+msgstr "Admin Daemon Version:"
+
+#: modabout.py:252
+msgid "Groupware Version:"
+msgstr "Groupware Version:"
+
+#: modabout.py:256
+#, fuzzy
+msgid "GUI Version:"
+msgstr "GUI Version"
+
+#: modabout.py:260
+msgid "Integration Version:"
+msgstr "Intergrations Version:"
+
+#: modabout.py:271
 msgid "Licence"
 msgstr "Lizenz"
 
-#: modabout.py:256 unidialog.py:113
+#: modabout.py:325 unidialog.py:113
 msgid "License"
 msgstr "Lizenz"
 
-#: modabout.py:264
+#: modabout.py:333
 msgid "no licence found"
 msgstr "Keine Lizenz gefunden."
 
-#: modabout.py:272 modedit.py:1645
+#: modabout.py:341 modedit.py:1645
 msgid "Select a file"
 msgstr "Wählen Sie eine Datei"
 
-#: modabout.py:273 modabout.py:291
+#: modabout.py:342 modabout.py:360
 msgid "Update License"
 msgstr "Lizenz aktualisieren"
 
-#: modabout.py:273 modedit.py:1646
+#: modabout.py:342 modedit.py:1646
 msgid "Upload selected file"
 msgstr "Ausgewählte Datei hochladen"
 
-#: modabout.py:276
+#: modabout.py:345
 msgid "Update License via File"
 msgstr "Lizenz über Datei aktualisieren"
 
-#: modabout.py:290
+#: modabout.py:359
 msgid "Copy the License Code into this field"
 msgstr "Kopieren die die Lizenz in dieses Feld"
 
-#: modabout.py:291
+#: modabout.py:360
 msgid "Upload the License"
 msgstr "Lizenz aktualisieren"
 
-#: modabout.py:294
+#: modabout.py:363
 msgid "Update License via Mail"
 msgstr "Lizenz über Mail aktualisieren"
 
-#: modabout.py:306
+#: modabout.py:375
 msgid "Contact"
 msgstr "Kontakt"
 
-#: modabout.py:318
+#: modabout.py:387
 msgid "ALL RIGHTS RESERVED"
 msgstr "ALL RIGHTS RESERVED"
 
-#: modabout.py:350 modabout.py:376
+#: modabout.py:419 modabout.py:445
 msgid "The License you have entered is invalid."
 msgstr "Die angegebene Lizenz ist ungültig."
 
-#: modabout.py:380
+#: modabout.py:449
 #, fuzzy, python-format
 msgid "An Error has occured:<br> %s"
 msgstr "Ein LDAP-Fehler ist aufgetreten:"
 
-#: modabout.py:391
+#: modabout.py:460
 msgid "The License has been sucessfully installed. You have to relogin."
 msgstr ""
 "Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden."
