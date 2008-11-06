@@ -28,7 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-package=univention-quota
+PYVERS=$(shell pyversions -vr)
+
+PACKAGE=univention-quota
 
 build: build-stamp
 
@@ -42,8 +44,9 @@ clean:
 	rm -f build-stamp
 	dh_clean
 
-install:
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -52,6 +55,12 @@ install: build
 	install -m 0755 files/univention-user-quota debian/univention-quota/usr/sbin
 	install -m 0755 files/univention-setquota debian/univention-quota/usr/sbin
 	univention-install-baseconfig
+	#
+    # install UMC module
+	make PACKAGE=${PACKAGE} install-modules
+	make PACKAGE=${PACKAGE} install-locales-backend
+	make PACKAGE=${PACKAGE} install-images
+
 
 	dh_install
 
