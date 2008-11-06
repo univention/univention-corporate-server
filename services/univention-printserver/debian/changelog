@@ -1,3 +1,9 @@
+univention-printserver (1.0.9-8) unstable; urgency=low
+
+  * bump version. Bug #12145
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu,  6 Nov 2008 17:25:50 +0100
+
 univention-printserver (1.0.9-5) unstable; urgency=low
 
   * restart UMC during the installation. Bug #12145
