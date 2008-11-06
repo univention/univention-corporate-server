@@ -1,3 +1,10 @@
+univention-quota (2.0.1-3) unstable; urgency=low
+
+  * call dh_pycentral during the package build. Bug #12145
+  * restart UMC during the installation. Bug #12145
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 20 Oct 2008 08:49:40 +0200
+
 univention-quota (2.0.1-2) unstable; urgency=low
 
   * move the quota umc modul from univention-management-console to the
