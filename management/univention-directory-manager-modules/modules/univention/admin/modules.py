@@ -565,4 +565,5 @@ def childModules(module_name):
 	module = get(module_name)
 	return copy.deepcopy( getattr(module, 'childmodules', []) )
 
+univention.admin.syntax.import_syntax_files()
 update()

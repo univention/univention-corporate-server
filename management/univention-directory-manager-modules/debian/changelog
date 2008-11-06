@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.14-20) unstable; urgency=low
+
+  * Bug #12397: import additional syntax files
+    from */site-packages/univention/admin/syntax.d/*.py
+  
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 17 Oct 2008 17:18:24 +0200
+
 univention-directory-manager-modules (3.0.14-19) unstable; urgency=low
 
   * rewrite memberiud in group after change of primaryGroup in user object. Bug #12349

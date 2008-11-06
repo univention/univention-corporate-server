@@ -35,9 +35,28 @@ import univention.admin.uexceptions
 import univention.admin.localization
 import base64
 import copy
+import sys, os
 
 translation=univention.admin.localization.translation('univention/admin')
 _=translation.translate
+
+#
+# load all additional syntax files from */site-packages/univention/admin/syntax.d/*.py
+#
+def import_syntax_files():
+	for dir in sys.path:
+		if os.path.exists( os.path.join( dir, 'univention/admin/syntax.py' ) ):
+			if os.path.isdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
+				for f in os.listdir( os.path.join( dir, 'univention/admin/syntax.d/' ) ):
+					if f.endswith('.py'):
+						fn = os.path.join( dir, 'univention/admin/syntax.d/', f )
+						try:
+							fd = open( fn, 'r' )
+							exec fd in univention.admin.syntax.__dict__
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'admin.syntax.import_syntax_files: importing "%s"' % fn)
+						except:
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'admin.syntax.import_syntax_files: loading %s failed' % fn )
+
 
 choice_update_functions = []
 def __register_choice_update_function(func):
