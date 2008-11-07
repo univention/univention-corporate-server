@@ -1,3 +1,10 @@
+univention-installer (2.0.3-7) unstable; urgency=low
+
+  * install the ox directory integration package from iku during the
+    OXUSE installation, Bug #12141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Sep 2008 14:35:41 +0200
+
 univention-installer (2.0.3-6) unstable; urgency=low
 
   * disable samba on OXUSE by default. Bug #12141
