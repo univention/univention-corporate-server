@@ -1,3 +1,9 @@
+univention-installer (2.0.3-10) unstable; urgency=low
+
+  * deselected desktop environment for OXUSE. Bug #12345
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 09 Oct 2008 15:14:51 +0200
+
 univention-installer (2.0.3-9) unstable; urgency=low
 
   * deselected desktop environment for OXUSE. Bug #12345
