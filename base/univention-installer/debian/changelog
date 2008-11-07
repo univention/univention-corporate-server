@@ -1,3 +1,10 @@
+univention-installer (2.0.3-5) unstable; urgency=low
+
+  * move the services for the oxuse installer to one component this is
+    clearly represented. Bug #12141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Sep 2008 12:09:10 +0200
+
 univention-installer (2.0.3-4) unstable; urgency=low
 
   * modify the service list for the OXUSE edition. Bug #12141
