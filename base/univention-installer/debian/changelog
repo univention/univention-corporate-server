@@ -1,3 +1,9 @@
+univention-installer (2.0.3-13) unstable; urgency=low
+
+  * Changed defaults when selecting other installer language (Bug #12412)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Mon, 20 Oct 2008 14:47:03 +0200
+
 univention-installer (2.0.3-12) unstable; urgency=low
 
   * disable the local repository selection on an oxae dvd. Closes Bug
