@@ -4,7 +4,7 @@
 */
 
 /*!the static number of included public key strings. change the number of public keys here*/
-#define NUM_PUBLIC_KEYS 2
+#define NUM_PUBLIC_KEYS 3
 
 /*! the number of installed public keys */
 int public_keys_installed = 0;
@@ -39,6 +39,7 @@ int univention_license_key_init(void)
 	//setup public key strings
 	/*add here new publicKeys*/
 	/*don't forget to add '\n\' to each line end, and don't reformate the string.*/
+	// _MASTER-KEY
 	public_keys[0] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
 MIIBCgKCAQEA0jQVFvjqhr2mEUPsG5g2kQA58uq7QMb0gFYOfhAQsQgMuhp2sjXs\n\
 dkLG2QSLKhQf9RDZBbgZBffvU3DvRvafWVdX+iAR2AhYGy6pE5Mrj+iXgVcFrlxM\n\
@@ -48,6 +49,7 @@ ZvoZYJYb3sbI0bq3pJxUi/nLi0p1xGYzxSA5nUf5FK53qFN+w9j6OA37URXo19Yj\n\
 Ui0mrXNTr7ZiehGobPvKHBdBBtl7LuYLhQIDAQAB\n\
 -----END RSA PUBLIC KEY-----\n\
 ");
+	// _MASTER-KEY2
 	public_keys[1] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
 MIIBCgKCAQEA06fyc7AmDJg3nzCEB4vPHDBhkTJcMof5fdhWsp049JgQxCcXnbkF\n\
 o10RBHT9TxlMjN4ZJ38QkMwh5E0wTc2A/CRqJkVjghTUllPY/MqciftcSyDI0bEf\n\
@@ -55,6 +57,21 @@ QEi9rUluomMO615+spmLOWBGcnYH3JJUkHwFOF/TYYkqZeFVbBqVtiGBOUXlSWbG\n\
 BGAGVR15TfEuEUt0txjfQReIb+/d7/eiAbX/rgiaq0E1iHOT3Lbqi+sUId31ti6G\n\
 3WmuNVln+b5k0YruC9T5IIoOud/lz6A8XaaAIS3eujulP79Xmw6yP+KVIHSFz2KR\n\
 VGvSnWgKOyhuFR9/3hAyTeaSGFwRplENCQIDAQAB\n\
+-----END RSA PUBLIC KEY-----\n\
+");
+	// _OXUSE-KEY
+	public_keys[2] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
+MIICCgKCAgEA5Nq/HNNreRc5L/wj3tP4c0M/QM/6dmHxlUP5CoYu5XP+28gC4X0b\n\
+bN9jSznJ9elYR7YSO+286mkYAvQd2yBVfnjr0/zlOp91X/95W2f4AEbF7sniCv32\n\
+P8o69QF9vDSP93ACZ2/CS/I0F8w7IYn1o9WQn77G4GmyJMXSP50OXHjH008gIpXw\n\
+bQkOdLj8QemuMf9etZNkLR87XFIrR1jdnBJ1MnH3wkKLvPXEGM35PimMrscU5Tdj\n\
+Y8ZOJsDohXOIY/32VPpDjp+3biYgj3/3aRh0Sf/rmIWZzNHpn9ux2PoLniAPeMh/\n\
+X6edpOaAG2huUSdayt7Do7cTtLql9whX/hUN2qxxIm3k56lOkCxSo6zyC3S3bOZJ\n\
+Yma4wGjK1vmfG8yOQ+XqYUddAywNIG9Ntx/l/ggAlOwu/KRFw7cANcqjCd3qPWlu\n\
+oYV4QYV0KoMznE4QItvFgYcwOx28xiYmS2r9pQQbIwlKS/ghn9Q4tUm0QRKcD8o/\n\
+mPcQtgBDA7SgLM/ZjSOqE51Ik46F8aEEKHOeT31Xe7i7tbUJvbnc/FYU+o0+eGEC\n\
+mTp+dauS/6Iy0plubIIljUiN8qsPdRSywmvzQvPNAhXYaRDVTVb6Lp9Gw0whMpN6\n\
+1hpXyf/hfsSFYffxeVFcM6JXUSypO8MH0mdwqKlOHNBhPBSfAZtdp4MCAwEAAQ==\n\
 -----END RSA PUBLIC KEY-----\n\
 ");
 	
