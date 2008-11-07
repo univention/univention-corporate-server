@@ -41,6 +41,7 @@ PackageList=[
 				{
 					'Name': _('Samba'),
 					'Packages': ['univention-samba', 'samba'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
@@ -109,15 +110,6 @@ PackageList=[
 					'Description': _('Horde Webclient for Kolab 2 for UCS'),
 				},
 				{
-					'Name': _('Open-Xchange'),
-					'Packages': ['univention-ox'],
-					'Edition': [ 'oxuse' ],
-					'Architecture': [ 'x86' ],
-					'Active': ['domaincontroller_master'], 
-					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
-					'Description': _('Open-Xchange Groupware Server)'),
-				},
-				{
 					'Name': _('Standard Mail Services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
 					'Edition': [ 'scalix', 'ugs' ],
@@ -161,6 +153,24 @@ PackageList=[
 	'Description': _("Additional Services"),
 	'Packages':
 			[
+				{
+					'Name': _('Open-Xchange'),
+					'Packages': ['univention-ox'],
+					'Edition': [ 'oxuse' ],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master'], 
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Description': _('Open-Xchange Groupware Server)'),
+				},
+				{
+					'Name': _('Samba'),
+					'Packages': ['univention-samba', 'samba'],
+					'Edition': [ 'oxuse' ],
+					'Architecture': [ 'x86', 'powerpc' ],
+					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
+					'Description': _("Samba Services"),
+				},
 				{
 					'Name': _('Terminalserver'),
 					'Packages': ['univention-application-server'],
