@@ -1,3 +1,13 @@
+univention-installer (2.0.3-12) unstable; urgency=low
+
+  * disable the local repository selection on an oxae dvd. Closes Bug
+    #12205
+  * disable the system role selection on an oxae dvd. Closes Bug #12355
+  * added the key EditionDisable in the packages list, so it is possible
+    to disable a package for a sprecial edition. Closes Bug #12344
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Oct 2008 08:16:24 +0200
+
 univention-installer (2.0.3-11) unstable; urgency=low
 
   * fixed debian/rules. Bug #12343
