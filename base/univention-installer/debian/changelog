@@ -1,3 +1,9 @@
+univention-installer (2.0.3-17) unstable; urgency=low
+
+  * catch an exception in the system settings dialog, Bug #12205
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 23 Oct 2008 09:55:41 +0200
+
 univention-installer (2.0.3-16) unstable; urgency=low
 
   * disable the local repository selection on an oxae dvd. Closes Bug

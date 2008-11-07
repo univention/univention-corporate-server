@@ -85,14 +85,18 @@ class object(content):
 
 	def input(self,key):
 
-		if key in [ 10, 32 ] and self.get_elem('BT_back').get_status():
-			return 'prev'
+		try:
+			if key in [ 10, 32 ] and self.get_elem('BT_back').get_status():
+				return 'prev'
 
-		elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
-			return 'next'
+			elif key in [ 10, 32 ] and self.get_elem('BT_next').get_status():
+				return 'next'
 
-		else:
-			return self.get_elem_by_id(self.current).key_event(key)
+			else:
+				return self.get_elem_by_id(self.current).key_event(key)
+		except AttributeError: 
+			# it might be possible, that the focus is on the textline (OXAE). Bug #12205
+			return
 
 	def incomplete(self):
 		return 0
