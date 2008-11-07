@@ -85,6 +85,13 @@ class object(content):
 			default_value=self.all_results['keymap']
 		else:
 			default_value='de-latin1'
+			lang = ""
+			if os.environ.has_key('LANGUAGE'):
+				lang=os.environ['LANGUAGE']
+			if lang == "en":
+				default_value='us' #"us" is listed after "uk"
+			elif lang == "de":
+				default_value='de-latin1'
 
 		default_line=''
 		for line in range(len(keymap)):

@@ -61,6 +61,13 @@ class object(content):
 			timezone_default=self.all_results['timezone']
 		else:
 			timezone_default="Europe/Berlin"
+			lang = ""
+			if os.environ.has_key('LANGUAGE'):
+				lang=os.environ['LANGUAGE']
+			if lang == "en":
+				timezone_default="US/Eastern"
+			elif lang == "de":
+				timezone_default="Europe/Berlin"
 
 		try:
 			file=open('modules/timezone')

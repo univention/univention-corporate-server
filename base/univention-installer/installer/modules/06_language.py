@@ -72,6 +72,13 @@ class object(content):
 				default_values.append(val.split(':')[0])
 		else:
 			default_values=['de_DE.UTF-8']
+			lang = ""
+			if os.environ.has_key('LANGUAGE'):
+				lang=os.environ['LANGUAGE']
+			if lang == "en":
+				default_values=['en_US.UTF-8']
+			elif lang == "de":
+				default_values=['de_DE.UTF-8']
 		for line in range(len(locales)):
 			sortlist.append(locales[line].strip().split(' '))
 		sortlist.sort()
