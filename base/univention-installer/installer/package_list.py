@@ -167,7 +167,7 @@ PackageList=[
 					'Packages': ['univention-samba', 'samba'],
 					'Edition': [ 'oxuse' ],
 					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
+					'Active': [],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'basesystem'],
 					'Description': _("Samba Services"),
 				},
