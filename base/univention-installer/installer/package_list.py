@@ -49,6 +49,7 @@ PackageList=[
 				{
 					'Name': _('Windows Installer'),
 					'Packages': ['univention-windows-installer'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave' ],
@@ -57,6 +58,7 @@ PackageList=[
 				{
 					'Name': _('Samba PDC on Non-DC Master'),
 					'Packages': ['univention-samba-slave-pdc'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -65,6 +67,7 @@ PackageList=[
 				{
 					'Name': _('Winbind'),
 					'Packages': ['winbind'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'memberserver' ],
 					'Possible': ['all'],
@@ -106,8 +109,18 @@ PackageList=[
 					'Description': _('Horde Webclient for Kolab 2 for UCS'),
 				},
 				{
+					'Name': _('Open-Xchange'),
+					'Packages': ['univention-ox'],
+					'Edition': [ 'oxuse' ],
+					'Architecture': [ 'x86' ],
+					'Active': ['domaincontroller_master'], 
+					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
+					'Description': _('Standard Mail Services with postfix and cyrus (SMTP/POP/IMAP)'),
+				},
+				{
 					'Name': _('Standard Mail Services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
@@ -124,6 +137,7 @@ PackageList=[
 				{
 					'Name': _('DNS'),
 					'Packages': ['univention-bind', 'univention-bind-proxy', 'bind9'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
@@ -132,6 +146,7 @@ PackageList=[
 				{
 					'Name': _('DHCP'),
 					'Packages': ['univention-dhcp', 'dhcp3-server'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -149,6 +164,7 @@ PackageList=[
 				{
 					'Name': _('Terminalserver'),
 					'Packages': ['univention-application-server'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -157,6 +173,7 @@ PackageList=[
 				{
 					'Name': _('Thinclient Environment'),
 					'Packages': ['univention-thin-client'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -165,6 +182,7 @@ PackageList=[
 				{
 					'Name': _('Print Server'),
 					'Packages': ['univention-printserver', 'cupsys'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Possible': ['all'],
@@ -173,6 +191,7 @@ PackageList=[
 				{
 					'Name': _('Print Quota'),
 					'Packages': ['univention-printquota', 'pykota', 'univention-printquotadb'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
@@ -181,6 +200,7 @@ PackageList=[
 				{
 					'Name': _('Nagios Server'),
 					'Packages': ['univention-nagios-server'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_master' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
@@ -189,6 +209,7 @@ PackageList=[
 				{
 					'Name': _('Nagios Client'),
 					'Packages': ['univention-nagios-client'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ],
@@ -205,6 +226,7 @@ PackageList=[
 				{
 					'Name': _('Fax Server'),
 					'Packages': ['univention-fax-server'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -213,6 +235,7 @@ PackageList=[
 				{
 					'Name': _('Squid Proxyserver'),
 					'Packages': ['univention-squid', 'squid'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -229,6 +252,7 @@ PackageList=[
 				{
 					'Name': _('FreeNX Server'),
 					'Packages': ['freenx'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -237,6 +261,7 @@ PackageList=[
 				{
 					'Name': _('VNC Server'),
 					'Packages': ['tightvncserver', 'univention-fonts'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [  ],
 					'Possible': [ 'all' ],
@@ -245,6 +270,7 @@ PackageList=[
 				{
 					'Name': _('Xen hypervisor'),
 					'Packages': ['univention-xen'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -253,6 +279,7 @@ PackageList=[
 				{
 					'Name': _('Xen kernel images'),
 					'Packages': ['univention-kernel-image-2.6.18-xen'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -261,6 +288,7 @@ PackageList=[
 				{
 					'Name': _('UCS Net Installer'),
 					'Packages': ['univention-net-installer'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup'],
 					'Possible': ['all'],
@@ -293,6 +321,7 @@ PackageList=[
 				{
 					'Name': _('Univention Software Monitor'),
 					'Packages': ['univention-pkgdb'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master'],
 					'Possible': ['all'],
@@ -309,6 +338,7 @@ PackageList=[
 				{
 					'Name': _('Unidump'),
 					'Packages': ['unidump'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
@@ -317,6 +347,7 @@ PackageList=[
 				{
 					'Name': _('Remote Backup'),
 					'Packages': ['univention-remote-backup'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
@@ -333,6 +364,7 @@ PackageList=[
 				{
 					'Name': _('Graphical User Interface'),
 					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -341,6 +373,7 @@ PackageList=[
 				{
 					'Name': _('KDE Desktop'),
 					'Packages': ['univention-kde', 'ispell', 'ingerman'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -349,6 +382,7 @@ PackageList=[
 				{
 					'Name': _('OpenOffice.org'),
 					'Packages': ['univention-ooffice2', 'myspell-de-de'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -357,6 +391,7 @@ PackageList=[
 				{
 					'Name': _('Mozilla Firefox'),
 					'Packages': ['univention-mozilla-firefox'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -365,6 +400,7 @@ PackageList=[
 				{
 					'Name': "  %s" % _('Java Plugin/Runtime'),
 					'Packages': ['univention-java'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -373,6 +409,7 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Flash Plugin'),
 					'Packages': ['univention-flashplugin'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -381,6 +418,7 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Mplayer Plugin'),
 					'Packages': ['mozilla-mplayer'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -389,6 +427,7 @@ PackageList=[
 				{
 					'Name': _('Gimp'),
 					'Packages': ['gimp'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -397,6 +436,7 @@ PackageList=[
 				{
 					'Name': _('Acrobat Reader'),
 					'Packages': ['acroread-de'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -405,6 +445,7 @@ PackageList=[
 				{
 					'Name': _('Additional KDE Applications'),
 					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager', 'kdepim', 'kompose' ],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -413,6 +454,7 @@ PackageList=[
 				{
 					'Name': _('Desktop Search (kerry/beagle)'),
 					'Packages': ['kerry' ],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -421,6 +463,7 @@ PackageList=[
 				{
 					'Name': _('Multimedia Applications'),
 					'Packages': ['amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -429,6 +472,7 @@ PackageList=[
 				{
 					'Name': _('Fax Client'),
 					'Packages': ['univention-fax-client'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
@@ -437,6 +481,7 @@ PackageList=[
 				{
 					'Name': _('Evolution'),
 					'Packages': ['evolution'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''],
 					'Possible': ['all'],
@@ -445,6 +490,7 @@ PackageList=[
 				{
 					'Name': _('VNC Viewer'),
 					'Packages': ['xtightvncviewer'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': [ 'all' ],
@@ -453,6 +499,7 @@ PackageList=[
 				{
 					'Name': _('Microsoft Fonts'),
 					'Packages': ['msttcorefonts'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': [ 'all' ],
@@ -477,6 +524,7 @@ PackageList=[
 				{
 					'Name': _('dhcp client'),
 					'Packages': ['dhcp-client'],
+					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': [ 'all' ],
