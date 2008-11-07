@@ -1,3 +1,9 @@
+univention-installer (2.0.3-15) unstable; urgency=low
+
+  * Install CUPS with Samba (Bug #12443)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 22 Oct 2008 13:36:37 +0200
+
 univention-installer (2.0.3-14) unstable; urgency=low
 
   * Added Bacula option in Software list. Bug #12423
