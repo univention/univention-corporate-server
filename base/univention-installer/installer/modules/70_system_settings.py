@@ -59,11 +59,19 @@ class object(content):
 		return True
 
 	def layout(self):
+		oxae = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+			oxae = True
+
 		self.reset_layout()
-		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
+		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ] and not oxae:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))
 		else:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
+
+		if oxae:
+			self.get_elem('create_local_repo').disable()
+
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ]:
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[0]))
 		elif not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):

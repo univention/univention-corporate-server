@@ -72,22 +72,37 @@ class object(content):
 
 
 	def layout(self):
+		oxae = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+			oxae = True
 		self.elements.append(textline(_('System role:'), self.minY, self.minX+2))#2
 		dict={}
 		dict['Domain Controller Master']=['domaincontroller_master',0]
-		dict['Domain Controller Backup']=['domaincontroller_backup',1]
-		dict['Domain Controller Slave']=['domaincontroller_slave',2]
-		dict['Memberserver']=['memberserver',3]
-		dict['Managed Client']=['managed_client',4]
-		dict['Mobile Client']=['mobile_client',5]
-		dict['Basissystem']=['basesystem',6]
+		if not oxae:
+			dict['Domain Controller Backup']=['domaincontroller_backup',1]
+			dict['Domain Controller Slave']=['domaincontroller_slave',2]
+			dict['Memberserver']=['memberserver',3]
+			dict['Managed Client']=['managed_client',4]
+			dict['Mobile Client']=['mobile_client',5]
+			dict['Basissystem']=['basesystem',6]
 
-		list=['domaincontroller_master','domaincontroller_backup','domaincontroller_slave','memberserver','managed_client','mobile_client','basesystem']
-		select=0
-		if self.all_results.has_key('system_role'):
-			select=list.index(self.mapping(self.all_results['system_role']))
+			list=['domaincontroller_master','domaincontroller_backup','domaincontroller_slave','memberserver','managed_client','mobile_client','basesystem']
+			select=0
+			if self.all_results.has_key('system_role'):
+				select=list.index(self.mapping(self.all_results['system_role']))
+		else:
+			select=0
+
 		self.elements.append(radiobutton(dict,self.minY+1,self.minX+2,40,10,[select]))#3
 		self.elements[3].current=select
+
+		if oxae:
+			self.elements.append(textline('[ ] %s' % _('Domain Controller Backup'),self.minY+2,self.minX+2,40,40))#4
+			self.elements.append(textline('[ ] %s' % _('Domain Controller Slave'),self.minY+3,self.minX+2,40,40))#5
+			self.elements.append(textline('[ ] %s' % _('Memberserver'),self.minY+4,self.minX+2,40,40))#6
+			self.elements.append(textline('[ ] %s' % _('Managed Client'),self.minY+5,self.minX+2,40,40))#7
+			self.elements.append(textline('[ ] %s' % _('Mobile Client'),self.minY+6,self.minX+2,40,40))#8
+			self.elements.append(textline('[ ] %s' % _('Basissystem'),self.minY+7,self.minX+2,40,40))#9
 
 
 	def input(self,key):

@@ -168,7 +168,15 @@ class object(content):
 									off=off+1
 							else:
 								if 'all' in NewPackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Active']:
-									on=on+1
+									disable=False
+									if NewPackageList[i]['Packages'][j].has_key('EditionDisable'):
+										for ea in NewPackageList[i]['Packages'][j]['EditionDisable']:
+											if ea in self.parent.cmdline['edition']:
+												disable=True
+									if disable:
+										off=off+1
+									else:
+										on=on+1
 								else:
 									off=off+1
 							found=1
@@ -197,7 +205,15 @@ class object(content):
 									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 0, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 							else:
 								if 'all' in NewPackageList[i]['Packages'][j]['Active'] or self.parent.all_results.has_key( 'system_role' ) and self.parent.all_results['system_role'] in NewPackageList[i]['Packages'][j]['Active']:
-									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 1, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
+									disable=False
+									if NewPackageList[i]['Packages'][j].has_key('EditionDisable'):
+										for ea in NewPackageList[i]['Packages'][j]['EditionDisable']:
+											if ea in self.parent.cmdline['edition']:
+												disable=True
+									if disable:
+										p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 0, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
+									else:
+										p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 1, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 								else:
 									p[NewPackageList[i]['Packages'][j]['Name']]=[NewPackageList[i]['Packages'][j]['Name'], count, 0, NewPackageList[i]['Packages'][j]['Description'], NewPackageList[i]['Packages'][j]['Packages']]
 							count=count+1
