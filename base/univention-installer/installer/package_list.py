@@ -155,7 +155,7 @@ PackageList=[
 			[
 				{
 					'Name': _('Open-Xchange'),
-					'Packages': ['univention-ox', 'univention-ox-directory-integration'],
+					'Packages': ['univention-ox', 'univention-ox-directory-integration', 'univention-oxae'],
 					'Edition': [ 'oxae' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master'], 
