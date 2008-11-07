@@ -1,3 +1,9 @@
+univention-installer (2.0.3-19) unstable; urgency=low
+
+  * Added Package univention-oxae. Bug #12491
+
+ -- Andre Fenske <fenske@univention.de>  Mon, 27 Oct 2008 12:07:11 +0100
+
 univention-installer (2.0.3-18) unstable; urgency=low
 
   * Rename oxuse to oxae. Bug #12453
