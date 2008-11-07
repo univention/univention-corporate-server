@@ -59,7 +59,7 @@ BGAGVR15TfEuEUt0txjfQReIb+/d7/eiAbX/rgiaq0E1iHOT3Lbqi+sUId31ti6G\n\
 VGvSnWgKOyhuFR9/3hAyTeaSGFwRplENCQIDAQAB\n\
 -----END RSA PUBLIC KEY-----\n\
 ");
-	// _OXUSE-KEY
+	// _OXAE-KEY
 	public_keys[2] = strdup("-----BEGIN RSA PUBLIC KEY-----\n\
 MIICCgKCAgEA5Nq/HNNreRc5L/wj3tP4c0M/QM/6dmHxlUP5CoYu5XP+28gC4X0b\n\
 bN9jSznJ9elYR7YSO+286mkYAvQd2yBVfnjr0/zlOp91X/95W2f4AEbF7sniCv32\n\

@@ -1,3 +1,9 @@
+univention-licence (1.0.1-4) unstable; urgency=low
+
+  * Rename OXUSE to OXAE. Bug #12453
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 23 Oct 2008 15:41:34 +0200
+
 univention-licence (1.0.1-3) unstable; urgency=low
 
   * added the OXUSE public key, Bug #12143
