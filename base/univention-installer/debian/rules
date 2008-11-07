@@ -119,6 +119,8 @@ install: build
 	install -m755 scripts/87_locales.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/90_cleanup.sh ${D}/lib/univention-installer-scripts.d/
 	install -m755 scripts/99_reboot.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/95_completemsg.sh ${D}/lib/univention-installer-scripts.d/
+	install -m755 scripts/99_reboot.sh ${D}/lib/univention-installer-scripts.d/
 
 	install -m 755 startup-scripts/S02mount ${D}/lib/univention-installer-startup.d/
 	install -m 755 startup-scripts/S20syslogd ${D}/lib/univention-installer-startup.d/

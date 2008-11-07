@@ -1,3 +1,9 @@
+univention-installer (2.0.3-11) unstable; urgency=low
+
+  * fixed debian/rules. Bug #12343
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 09 Oct 2008 16:22:40 +0200
+
 univention-installer (2.0.3-10) unstable; urgency=low
 
   * deselected desktop environment for OXUSE. Bug #12345
