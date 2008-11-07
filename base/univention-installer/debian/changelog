@@ -1,3 +1,9 @@
+univention-installer (2.0.3-6) unstable; urgency=low
+
+  * disable samba on OXUSE by default. Bug #12141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 16 Sep 2008 13:36:38 +0200
+
 univention-installer (2.0.3-5) unstable; urgency=low
 
   * move the services for the oxuse installer to one component this is
