@@ -154,13 +154,22 @@ PackageList=[
 	'Packages':
 			[
 				{
+					'Name': _('Bacula (Backup)'),
+					'Packages': ['bacula'],
+					'Edition': [ 'oxae' ],
+					'Architecture': [ 'x86' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Network based Backup Software'),
+				},
+				{
 					'Name': _('Open-Xchange'),
 					'Packages': ['univention-ox', 'univention-ox-directory-integration', 'univention-oxae'],
 					'Edition': [ 'oxae' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master'],
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
-					'Description': _('Open-Xchange Groupware Server)'),
+					'Description': _('Open-Xchange Groupware Server'),
 				},
 				{
 					'Name': _('Samba'),
@@ -352,15 +361,6 @@ PackageList=[
 					'Active': [],
 					'Possible': ['all'],
 					'Description': _('Tape Backup Software'),
-				},
-				{
-					'Name': _('Bacula'),
-					'Packages': ['bacula'],
-					'Edition': [ 'oxae' ],
-					'Architecture': [ 'x86' ],
-					'Active': [],
-					'Possible': ['all'],
-					'Description': _('Network based Backup Software'),
 				},
 				{
 					'Name': _('Remote Backup'),
