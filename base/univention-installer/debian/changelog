@@ -1,3 +1,15 @@
+univention-installer (2.0.3-3) unstable; urgency=low
+
+  * remove a lot of services on the OXUSE edition. Bug #12141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 11 Sep 2008 14:54:31 +0200
+
+univention-installer (2.0.3-2) unstable; urgency=low
+
+  * support for the Open-Xchange integration: oxuse
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 Sep 2008 13:47:20 +0200
+
 univention-installer (2.0.3-1) unstable; urgency=low
 
   * use the new UCS 2.1 codename: mountain beech
