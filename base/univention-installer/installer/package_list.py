@@ -115,7 +115,7 @@ PackageList=[
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master'], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
-					'Description': _('Standard Mail Services with postfix and cyrus (SMTP/POP/IMAP)'),
+					'Description': _('Open-Xchange Groupware Server)'),
 				},
 				{
 					'Name': _('Standard Mail Services'),
@@ -279,7 +279,6 @@ PackageList=[
 				{
 					'Name': _('Xen kernel images'),
 					'Packages': ['univention-kernel-image-2.6.18-xen'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': [ ],
 					'Possible': ['all'],
@@ -364,7 +363,6 @@ PackageList=[
 				{
 					'Name': _('Graphical User Interface'),
 					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -373,7 +371,6 @@ PackageList=[
 				{
 					'Name': _('KDE Desktop'),
 					'Packages': ['univention-kde', 'ispell', 'ingerman'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -391,7 +388,6 @@ PackageList=[
 				{
 					'Name': _('Mozilla Firefox'),
 					'Packages': ['univention-mozilla-firefox'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -400,7 +396,6 @@ PackageList=[
 				{
 					'Name': "  %s" % _('Java Plugin/Runtime'),
 					'Packages': ['univention-java'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -409,7 +404,6 @@ PackageList=[
 				{
 					'Name': "  %s" %_('Flash Plugin'),
 					'Packages': ['univention-flashplugin'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
@@ -436,7 +430,6 @@ PackageList=[
 				{
 					'Name': _('Acrobat Reader'),
 					'Packages': ['acroread-de'],
-					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
 					'Possible': ['all'],
