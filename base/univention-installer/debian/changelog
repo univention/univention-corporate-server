@@ -1,3 +1,9 @@
+univention-installer (2.0.3-4) unstable; urgency=low
+
+  * modify the service list for the OXUSE edition. Bug #12141
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Sep 2008 16:26:23 +0200
+
 univention-installer (2.0.3-3) unstable; urgency=low
 
   * remove a lot of services on the OXUSE edition. Bug #12141
