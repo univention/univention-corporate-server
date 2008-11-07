@@ -354,6 +354,15 @@ PackageList=[
 					'Description': _('Tape Backup Software'),
 				},
 				{
+					'Name': _('Bacula'),
+					'Packages': ['bacula'],
+					'Edition': [ 'oxuse' ],
+					'Architecture': [ 'x86' ],
+					'Active': [],
+					'Possible': ['all'],
+					'Description': _('Network based Backup Software'),
+				},
+				{
 					'Name': _('Remote Backup'),
 					'Packages': ['univention-remote-backup'],
 					'Edition': [ 'scalix', 'ugs' ],
