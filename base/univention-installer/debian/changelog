@@ -1,3 +1,9 @@
+univention-installer (2.0.3-8) unstable; urgency=low
+
+  * split installation complete msg and reboot into discrete scripts. Bug #12343
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 09 Oct 2008 13:09:31 +0200
+
 univention-installer (2.0.3-7) unstable; urgency=low
 
   * install the ox directory integration package from iku during the
