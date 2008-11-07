@@ -1,3 +1,9 @@
+univention-installer (2.0.3-21) unstable; urgency=low
+
+  * Fixed Translation. Bug #12423
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 30 Oct 2008 17:13:19 +0100
+
 univention-installer (2.0.3-20) unstable; urgency=low
 
   * Moved Bacula from Backup to Services. Bug #12423
