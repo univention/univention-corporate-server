@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.12-3) unstable; urgency=low
+
+  * fixed hardcoded domainname in postinst (Bug #11584)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 07 Nov 2008 15:28:05 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-2) unstable; urgency=low
 
   * new autostart test in init script

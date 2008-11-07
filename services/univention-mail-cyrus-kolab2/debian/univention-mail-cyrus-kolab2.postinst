@@ -95,7 +95,7 @@ if [ ! -f "/etc/kolab2cal.htpasswd" -a -f /etc/kolab2cal.secret ] ; then
 	touch /etc/kolab2cal.htpasswd
 	chmod 640 /etc/kolab2cal.htpasswd
 	chown root:www-data /etc/kolab2cal.htpasswd
-	echo "kolab2cal@univention.qa:$(mkpasswd -s < /etc/kolab2cal.secret)" > /etc/kolab2cal.htpasswd
+	echo "kolab2cal@${domainname}:$(mkpasswd -s < /etc/kolab2cal.secret)" > /etc/kolab2cal.htpasswd
 fi
 
 if [ "$1" = configure -a -z "$2" ] ; then
