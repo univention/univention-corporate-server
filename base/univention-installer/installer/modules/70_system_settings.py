@@ -64,13 +64,13 @@ class object(content):
 			oxae = True
 
 		self.reset_layout()
-		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ] and not oxae:
+
+		if oxae:
+			self.add_elem('create_local_repo', textline('[ ] %s' % _('Create local repository'), self.minY+1, self.minX+2,40,40,))
+		elif self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))
 		else:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
-
-		if oxae:
-			self.get_elem('create_local_repo').disable()
 
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver' ]:
 			self.add_elem('create_home_share', checkbox({_('Create home share'): 'create_home_share'}, self.minY+3, self.minX+2,30,1,[0]))
@@ -105,10 +105,18 @@ class object(content):
 
 	def result(self):
 		result={}
-		if len(self.get_elem('create_local_repo').selected) > 0:
-			result['local_repository']='true'
-		else:
+
+		oxae = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+			oxae = True
+
+		if oxae:
 			result['local_repository']='false'
+		else:
+			if len(self.get_elem('create_local_repo').selected) > 0:
+				result['local_repository']='true'
+			else:
+				result['local_repository']='false'
 
 		if not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			if len(self.get_elem('create_home_share').selected) > 0:

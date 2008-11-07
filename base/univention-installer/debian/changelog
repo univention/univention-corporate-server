@@ -1,3 +1,10 @@
+univention-installer (2.0.3-16) unstable; urgency=low
+
+  * disable the local repository selection on an oxae dvd. Closes Bug
+    #12205
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 22 Oct 2008 20:56:50 +0200
+
 univention-installer (2.0.3-15) unstable; urgency=low
 
   * Install CUPS with Samba (Bug #12443)
