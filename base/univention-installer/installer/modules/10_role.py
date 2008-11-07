@@ -73,7 +73,7 @@ class object(content):
 
 	def layout(self):
 		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
 			oxae = True
 		self.elements.append(textline(_('System role:'), self.minY, self.minX+2))#2
 		dict={}

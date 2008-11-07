@@ -60,7 +60,7 @@ class object(content):
 
 	def layout(self):
 		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
 			oxae = True
 
 		self.reset_layout()
@@ -111,7 +111,7 @@ class object(content):
 		result={}
 
 		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxuse':
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
 			oxae = True
 
 		if oxae:

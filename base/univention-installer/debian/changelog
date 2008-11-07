@@ -1,3 +1,9 @@
+univention-installer (2.0.3-18) unstable; urgency=low
+
+  * Rename oxuse to oxae. Bug #12453
+
+ -- Andre Fenske <fenske@univention.de>  Thu, 23 Oct 2008 13:00:58 +0200
+
 univention-installer (2.0.3-17) unstable; urgency=low
 
   * catch an exception in the system settings dialog, Bug #12205
