@@ -114,7 +114,8 @@ class handler( umch.simpleHandler, _revamp.Web ):
 			else:
 				var[ 'description' ] = text
 		# categories
-		var[ 'categories' ] = ','.join( options[ 'categories' ] )
+		if options[ 'categories' ]:
+			var[ 'categories' ] = ','.join( options[ 'categories' ] )
 
 		# type
 		var[ 'type' ] = options[ 'type' ]
@@ -139,7 +140,7 @@ class handler( umch.simpleHandler, _revamp.Web ):
 				value = ''
 			arg = [ '%s=%s' % ( object.options[ 'key' ].encode(), value.encode() ) ]
 			univention.config_registry.handler_set( arg )
-			if object.options.get( 'descriptions', '' ) and object.options.get( 'type', '' ) and \
+			if object.options.get( 'descriptions', '' ) or object.options.get( 'type', '' ) or \
 				   object.options.get( 'categories', '' ):
 				self.__create_variable_info( object.options )
 			object.status( 200 )

@@ -1,3 +1,10 @@
+univention-management-console (0.9.34-1) unstable; urgency=low
+
+  * ensure that not all descriptive fields need to be set when changing UCR
+    variables; Bug #8356
+
+ -- Andreas Büsching <buesching@univention.de>  Mon, 10 Nov 2008 15:11:02 +0100
+
 univention-management-console (0.9.33-10) unstable; urgency=low
 
   * set umc/web/language from locale/default (Bug #12386)
