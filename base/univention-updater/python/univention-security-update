@@ -400,5 +400,5 @@ if __name__ == '__main__':
 				fp_debug.close()
 				os.system('rm -Rf %s' % sourcedir)
 				sys.exit(0)
-			write_local_repository_list(sourcedir, vv, vp)
+			write_local_repository_list(sourcedir, vv, vp=0)
 
