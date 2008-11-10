@@ -1,4 +1,4 @@
-univention-management-console (0.9.34-1) unstable; urgency=low
+univention-management-console (0.9.1000-1) unstable; urgency=low
 
   * ensure that not all descriptive fields need to be set when changing UCR
     variables; Bug #8356
