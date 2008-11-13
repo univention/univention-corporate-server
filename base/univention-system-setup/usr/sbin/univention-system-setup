@@ -293,7 +293,7 @@ class mods:
 		baseConfig=univention_baseconfig.baseConfig()
 		baseConfig.load()
 
-		univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', None)
+		univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
 		if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
 			cmdline['edition']='oxuse'
 
