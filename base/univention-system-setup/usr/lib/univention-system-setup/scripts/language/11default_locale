@@ -48,8 +48,18 @@ else
 	short_form=`echo $default_locale | cut -c 1-2`
 
 	univention-config-registry set "locale/default"="$default_locale"
-	univention-config-registry set directory/manager/web/language="$short_form"
-	univention-config-registry set console/web/language="$short_form"
+	univention-config-registry set directory/manager/web/language="$(echo $default_locale | sed -e 's|:.*||')"
+	univention-config-registry set umc/web/language="$default_locale"
+
+	#the default apache site
+	new_site="ucs-overview/${short_form}.html"
+	if [ -e "/var/www/$new_site" ]; then
+		univention-config-registry set apache2/startsite="$new_site"
+		if [ -x /etc/init.d/apache2 ]; then
+			/etc/init.d/apache2 reload
+		fi
+	fi
+
 fi
 
 exit 0
