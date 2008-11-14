@@ -1,3 +1,9 @@
+univention-webui-style (2.0.1-1) unstable; urgency=low
+
+  * fix the apache2/startsite issue, Bug #12425.
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Nov 2008 09:00:11 +0100
+
 univention-webui-style (2.0.0-3) unstable; urgency=low
 
   * set apache2/startsite from locale/default (Bug #12426)
