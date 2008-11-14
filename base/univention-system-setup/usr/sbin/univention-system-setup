@@ -295,7 +295,7 @@ class mods:
 
 		univention_ox_integration_oxae=baseConfig.get('univention-ox-directory-integration/oxae', 'false')
 		if univention_ox_integration_oxae.lower() in ['true', 'yes', '1']:
-			cmdline['edition']='oxuse'
+			cmdline['edition']='oxae'
 
 		self.mapping_reverse={}
 		for k in mapping.keys():
