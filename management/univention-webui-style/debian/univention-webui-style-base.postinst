@@ -1,9 +1,9 @@
 #! /bin/sh
 #
-# Univention Apache
-#  postinst file for the univention-apache debian package
+# Univention Webui
+#  postinst file 
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,13 +28,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA      02110-1301      USA
 
+#DEBHELPER#
+
 eval $(univention-config-registry shell)
-if [ -n "$locale_default" ]
-then
-	univention-config-registry set "apache2/startsite?ucs-overview/$(echo "$locale_default"|head -c 2).html"
-else
-	univention-config-registry set "apache2/startsite?ucs-overview/de.html"
+
+default_site="ucs-overview/en.html"
+
+if [ -n "$locale_default" ]; then
+	new_site="ucs-overview/$(echo "$locale_default"|head -c 2).html"
+	if [ -e "/var/www/$new_site" ]; then
+		default_site="$new_site"
+	fi
 fi
+
+univention-config-registry set apache2/startsite?"$default_site"
 
 exit 0
 
