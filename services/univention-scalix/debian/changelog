@@ -1,3 +1,9 @@
+univention-scalix (2.0.1-2) unstable; urgency=low
+
+  * update to Scalix 11.4.2
+
+ -- Felix Botner <botner@univention.de>  Tue, 18 Nov 2008 17:08:24 +0100
+
 univention-scalix (2.0.1-1) unstable; urgency=low
 
   * update to Scalix 11.4.1
