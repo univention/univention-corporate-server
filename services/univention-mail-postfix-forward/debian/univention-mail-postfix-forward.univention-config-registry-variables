@@ -5,7 +5,7 @@ Type=str
 Categories=Mail
 
 [mail/relay]
-Description[de]=Liste von Mail-Relay-Hosts (haupts‰chlich verwendet von Univention Directory Policy)
+Description[de]=Liste von Mail-Relay-Hosts (haupts√§chlich verwendet von Univention Directory Policy)
 Description[en]=List of mail relay hosts (mainly used by Univention Directory Policy)
 Type=str
 Categories=Mail
