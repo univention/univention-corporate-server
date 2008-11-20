@@ -354,6 +354,7 @@ void call_when_finished ( void ) {
 int run_process ( char ** argv )
 {
   int pid;
+  struct timeval tv;
 
   /*if ( ! initialized ) {
     pthread_mutex_unlock(&mut_process);
@@ -367,9 +368,12 @@ int run_process ( char ** argv )
 
   pid = start_piped ( argv, NULL, NULL, call_when_finished );
 
+  tv.tv_sec = 0;
+  tv.tv_usec = 100000;
+
   while(1){
     // wait for a signal (SIGCHLD)
-    select (0, NULL, NULL, NULL, NULL );
+    select (0, NULL, NULL, NULL, &tv );
     if (has_finished==1){
       pthread_mutex_unlock(&mut_process);
       return 0;
