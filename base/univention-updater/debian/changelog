@@ -1,3 +1,11 @@
+univention-updater (3.0.3-1) unstable; urgency=low
+
+  * added removal of
+    /etc/univention/registry.info/variables/univention-mail-postfix-forward.cfg
+    in postup.sh (Bug: #9668)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 20 Nov 2008 17:39:02 +0100
+
 univention-updater (3.0.2-3) unstable; urgency=low
 
   * all security updates are issued in one sub release, so force -0.

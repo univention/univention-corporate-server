@@ -50,6 +50,15 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 fi
 
 
+# this entry is only valid for update to UCS 2.1-1
+INSTSTATE="$(LANG=POSIX dpkg -l univention-mail-postfix-forward | grep univention-mail-postfix-forward | cut -b1)"
+if [ "$INSTSTATE" = "r" -o "$INSTSTATE" = "p" ] ; then
+  if [ -f "/etc/univention/registry.info/variables/univention-mail-postfix-forward.cfg" ] ; then
+	  rm -f "/etc/univention/registry.info/variables/univention-mail-postfix-forward.cfg"
+  fi
+fi
+
+
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1 
 
 update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1 
