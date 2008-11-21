@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.1-8) unstable; urgency=low
+
+  * Better Lizense Import from Mail.
+
+ -- Andre Fenske <fenske@univention.de>  Fri, 21 Nov 2008 13:12:06 +0100
+
 univention-directory-manager (5.0.1-7) unstable; urgency=low
 
   * bump version. Bug #12422

@@ -373,6 +373,7 @@ class modabout(unimodule.unimodule):
 		self.subobjs.append(table("",{'type':'content_main'},{"obs":rows}))
 
 	def apply(self):
+		bla = "dd"
                 # license import
                 if (hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed()) or (hasattr(self,'certLoadTextBtn') and self.certLoadTextBtn.pressed()):
                         if self.certBrowse.get_input() or (self.certText.get_input() and self.certText.get_input() != ""):
@@ -382,18 +383,29 @@ class modabout(unimodule.unimodule):
 	                                #read content from license file
 					certFile = open(self.certBrowse.get_input())
 				else:
-					mail_text = ""
 					#remove everythingt which is not part of the lizense
-					found = False
 					mail_text = self.certText.get_input()
-					license_start = mail_text.find("dn: cn=admin,cn=license")
-					license_end = mail_text.find("\n",mail_text.find("univentionLicenseSignature: "))
-					mail_text = mail_text[license_start:license_end]
 
-					if license_start == -1 or license_end == -1:
-						mail_text = ""
-						res = _("The License you have entered is invalid.")
-					
+					license_text = []
+					#extrakt license from mail
+					add = False
+					found = False
+					for line in mail_text.split("\n"):
+						line = line.lstrip(" ")
+						if line.startswith("dn: cn=admin,cn=license"):
+							add = True
+
+						if add:
+							license_text.append(line)
+
+						if line.startswith("univentionLicenseSignature:"):
+							found = True
+							break
+					mail_text = ""
+					if found:
+						for line in license_text:
+							mail_text = "%s%s\n" % (mail_text, line)
+
 					#create license file from mail
 					if mail_text != "":
 						certFileTemp = tempfile.mkstemp()
