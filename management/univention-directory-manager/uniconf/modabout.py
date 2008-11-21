@@ -196,50 +196,51 @@ class modabout(unimodule.unimodule):
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 			]}))
 
-		## OX
-		rows.append(tablerow("",{},{"obs":[
-			tablecol("",{"colspan":"3",'type':'about_layout'},{"obs":[
-			header(_("Open-Xchange"),{'width':'400', "type":"4"},{})
-			]})
-			]}))
-
-		### get ox context and integration versions
-		ldap_base = baseConfig['ldap_base']
-		domain_name = "%s.%s" % (baseConfig['hostname'], baseConfig['domainname'])
-		result_set = self.lo.search("(&(objectClass=oxContext)(oxHomeServer=%s))" % domain_name)
-
-		for ox_context in result_set:
-			name = ox_context[0].split(",")[0][3:]
-			ox_context_info = ox_context[1]
+		if baseConfig.get( 'univention-ox-directory-integration/oxae', 'false').lower() in [ 'true', 'yes', '1' ]:
+			## OX
 			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-				header(_("Context: %s" % name),{"type":"4"},{})
+				tablecol("",{"colspan":"3",'type':'about_layout'},{"obs":[
+				header(_("Open-Xchange"),{'width':'400', "type":"4"},{})
 				]})
-				]}))			
-			if ox_context_info.has_key("oxAdminDaemonVersion"):
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Admin Daemon Version:')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxAdminDaemonVersion'][0] ]})]})
-					]}))
-			if ox_context_info.has_key("oxGroupwareVersion"):
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Groupware Version:')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGroupwareVersion'] [0]]})]})
-					]}))
-			if ox_context_info.has_key("oxGuiVersion"):
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('GUI Version:')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGuiVersion'][0] ]})]})
-					]}))
-			if ox_context_info.has_key("oxIntegrationVersion"):
-				rows.append(tablerow("",{},{"obs":[
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Integration Version:')]})]}),
-					tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxIntegrationVersion'][0] ]})]})
-					]}))
-
-			rows.append(tablerow("",{},{"obs":[
-				tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 				]}))
+
+			### get ox context and integration versions
+			ldap_base = baseConfig['ldap_base']
+			domain_name = "%s.%s" % (baseConfig['hostname'], baseConfig['domainname'])
+			result_set = self.lo.search("(&(objectClass=oxContext)(oxHomeServer=%s))" % domain_name)
+
+			for ox_context in result_set:
+				name = ox_context[0].split(",")[0][3:]
+				ox_context_info = ox_context[1]
+				rows.append(tablerow("",{},{"obs":[
+					tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
+					header(_("Context: %s" % name),{"type":"4"},{})
+					]})
+					]}))			
+				if ox_context_info.has_key("oxAdminDaemonVersion"):
+					rows.append(tablerow("",{},{"obs":[
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Admin Daemon Version:')]})]}),
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxAdminDaemonVersion'][0] ]})]})
+						]}))
+				if ox_context_info.has_key("oxGroupwareVersion"):
+					rows.append(tablerow("",{},{"obs":[
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Groupware Version:')]})]}),
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGroupwareVersion'] [0]]})]})
+						]}))
+				if ox_context_info.has_key("oxGuiVersion"):
+					rows.append(tablerow("",{},{"obs":[
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('GUI Version:')]})]}),
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxGuiVersion'][0] ]})]})
+						]}))
+				if ox_context_info.has_key("oxIntegrationVersion"):
+					rows.append(tablerow("",{},{"obs":[
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ _('Integration Version:')]})]}),
+						tablecol("",{'type':'about_layout'},{"obs":[text('',{},{'text':[ ox_context_info['oxIntegrationVersion'][0] ]})]})
+						]}))
+
+				rows.append(tablerow("",{},{"obs":[
+					tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
+					]}))
 
 		## Licence
 		rows.append(tablerow("",{},{"obs":[
