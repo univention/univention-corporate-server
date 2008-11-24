@@ -196,7 +196,8 @@ class modabout(unimodule.unimodule):
 			tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[]})
 			]}))
 
-		if baseConfig.get( 'univention-ox-directory-integration/oxae', 'false').lower() in [ 'true', 'yes', '1' ]:
+		if baseConfig.get( 'univention-ox-directory-integration/oxae', 'false').lower() in [ 'true', 'yes', '1' ] or \
+				baseConfig.get( 'univention-ox-directory-integration/oxse', 'false').lower() in [ 'true', 'yes', '1' ]:
 			## OX
 			rows.append(tablerow("",{},{"obs":[
 				tablecol("",{"colspan":"3",'type':'about_layout'},{"obs":[
