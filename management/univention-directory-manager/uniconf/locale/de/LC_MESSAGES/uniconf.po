@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-10-28 13:59+0100\n"
-"PO-Revision-Date: 2006-05-17 11:24+0200\n"
+"PO-Revision-Date: 2008-11-24 12:15+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -221,7 +221,7 @@ msgstr "unbekannt"
 #: modabout.py:244
 #, python-format
 msgid "Context: %s"
-msgstr "Kontext:"
+msgstr "Kontext: %s"
 
 #: modabout.py:248
 msgid "Admin Daemon Version:"

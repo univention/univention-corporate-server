@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.6-1) unstable; urgency=low
+
+  * fixed translation file (Bug: #12702)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 24 Nov 2008 12:16:19 +0100
+
 univention-directory-manager (5.0.5-1) unstable; urgency=low
 
   * fixed indention (tabs instead of spaces) (Bug: #12701)
