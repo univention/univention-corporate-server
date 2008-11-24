@@ -215,7 +215,7 @@ class modabout(unimodule.unimodule):
 				ox_context_info = ox_context[1]
 				rows.append(tablerow("",{},{"obs":[
 					tablecol("",{"colspan":"2",'type':'about_layout'},{"obs":[
-					header(_("Context: %s" % name),{"type":"4"},{})
+					header(_("Context: %s") % name, {"type":"4"},{})
 					]})
 					]}))			
 				if ox_context_info.has_key("oxAdminDaemonVersion"):
@@ -424,7 +424,7 @@ class modabout(unimodule.unimodule):
 	
                                 #return result
                                 if res != "":
-                                        self.usermessage(_("An Error has occured:<br> %s" % res))
+                                        self.usermessage(_("An Error has occured:<br> %s") % res)
                                 else:
                                         #install license
                                         settings = self.save.get("settings")

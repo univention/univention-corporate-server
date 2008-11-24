@@ -1109,9 +1109,9 @@ class modbrowse(unimodule.unimodule):
 
 	def waitmessage(self):
 		if hasattr(self, 'multidelete_status'):
-			return _('Removed %d/%d objects (%d errors).' % (self.multidelete_status[0], self.multidelete_status[1], self.multidelete_status[2]))
+			return _('Removed %d/%d objects (%d errors).') % (self.multidelete_status[0], self.multidelete_status[1], self.multidelete_status[2])
 		if hasattr(self, 'move_status'):
-			return _('Moved %d/%d objects (%d errors).' % (self.move_status[0], self.move_status[1], self.move_status[2]))
+			return _('Moved %d/%d objects (%d errors).') % (self.move_status[0], self.move_status[1], self.move_status[2])
 
 	def waitcancel(self):
 		self.cancel = 1
