@@ -3077,7 +3077,7 @@ class modedit(unimodule.unimodule):
 
 									if found:
 
-										self.registryinput[v]=question_text(_('Variable: %s' % key_name ),atts,{"helptext":_('Config Registry value for %s' % key_name), 'usertext': '%s' % string.join(v.split('=')[1:])})
+										self.registryinput[v]=question_text( _('Variable: %s') % key_name, atts,{"helptext": _('Config Registry value for %s') % key_name, 'usertext': '%s' % string.join(v.split('=')[1:])})
 
 										registryinput_rows.append(tablerow("",{},{"obs":[\
 													tablecol('',{}, {'obs': [\
@@ -5250,7 +5250,7 @@ class modedit(unimodule.unimodule):
 
 	def waitmessage(self):
 		if hasattr(self, 'multiedit_modify_status'):
-			return _('Modified %d/%d objects (%d errors).' % (self.multiedit_modify_status[0], self.multiedit_modify_status[1], self.multiedit_modify_status[2]))
+			return _('Modified %d/%d objects (%d errors).') % (self.multiedit_modify_status[0], self.multiedit_modify_status[1], self.multiedit_modify_status[2])
 		elif hasattr(self, 'save') and self.save.get('modedit_wait_message','') != '': # there seems to be a case where self.save isn't initialized, maybe if the process just finished
 			waitMessage = self.save.get('modedit_wait_message','')
 			self.save.put('modedit_wait_message', '')
