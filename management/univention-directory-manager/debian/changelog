@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-3) unstable; urgency=low
+
+  * license import fixes, Bug #12293
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Nov 2008 15:47:55 +0100
+
 univention-directory-manager (5.0.7-2) unstable; urgency=low
 
   * some license import fixes, Bug #12293
