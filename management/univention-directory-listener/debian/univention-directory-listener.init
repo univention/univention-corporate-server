@@ -34,9 +34,10 @@ fi
 
 case "$1" in
 	start)
-		eval $(univention-baseconfig shell listener/autostart)
-		if [ -z "$listener_autostart" -o "$listener_autostart" != "yes" ]; then
-			exit 0
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener listener/autostart
 		fi
 		echo -n "Starting univention-directory-listener daemon: "
 		sv up univention-directory-listener
@@ -48,11 +49,21 @@ case "$1" in
 		echo ""
 		;;
 	restart|force-reload)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener listener/autostart
+		fi
 		echo -n "Restarting univention-directory-listener daemon: "
 		sv restart univention-directory-listener
 		echo ""
 		;;
 	crestart)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart listener listener/autostart
+		fi
 		if sv status univention-directory-listener | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart
