@@ -14,12 +14,6 @@
 # check if startup is in progress, need to wait then
 test ! -f /etc/nologin || exit 0
 
-# check ucr autostart setting
-if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-    source "/usr/share/univention-config-registry/init-autostart.lib"
-    check_autostart listener listener/autostart
-fi
-
 cachedir=/var/lib/univention-directory-listener
 moduledir=/usr/lib/univention-directory-listener/system
 
