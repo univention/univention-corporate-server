@@ -85,12 +85,9 @@ class ldifParser(ldif.LDIFParser):
 			self.err = _("No Base DN has been defined.")
 			return
 
-			#create modification list
+		#create modification list
 		for atr in entry:
-			val = ()
-			for v in entry[atr]:
-				val += (v,)
-				self.mod_list.insert(0,(ldap.MOD_REPLACE, atr, val))
+			self.mod_list.insert(0,(ldap.MOD_REPLACE, atr, entry[atr]))
 
 def create(a,b,c):
 	return modabout(a,b,c)
@@ -384,17 +381,28 @@ class modabout(unimodule.unimodule):
 							#read content from license file
 							certFile = open(self.certBrowse.get_input())
 						else:
-							mail_text = ""
 							#remove everythingt which is not part of the lizense
-							found = False
 							mail_text = self.certText.get_input()
-							license_start = mail_text.find("dn: cn=admin,cn=license")
-							license_end = mail_text.find("\n",mail_text.find("univentionLicenseSignature: "))
-							mail_text = mail_text[license_start:license_end]
+							license_text = []
+							#extrakt license from mail
+							license_start = False
+							license_end = False
+							for line in mail_text.split("\n"):
+								line = line.lstrip(" ")
+								if line.startswith("dn: cn=admin,cn=license"):
+									license_start = True
 
-							if license_start == -1 or license_end == -1:
-								mail_text = ""
-								res = _("The License you have entered is invalid.")
+								if license_start:
+									license_text.append(line)
+
+								if line.startswith("univentionLicenseSignature:"):
+									license_end = True
+									break
+							mail_text = ""
+							if license_end:
+								for line in license_text:
+									mail_text = "%s%s\n" % (mail_text, line)
+
 
 							#create license file from mail
 							if mail_text != "":
@@ -423,23 +431,23 @@ class modabout(unimodule.unimodule):
 							res = _("The License you have entered is invalid.")
 
 							#return result
-							if res != "":
-								self.usermessage(_("An Error has occured:<br> %s") % res)
-							else:
-								#install license
-								settings = self.save.get("settings")
-								pwd = self.save.get("pass")
+						if res:
+							self.usermessage(_("An Error has occured:<br> %s") % res)
+						else:
+							#install license
+							settings = self.save.get("settings")
+							pwd = self.save.get("pass")
 
-								ldap_con = ldap.open("localhost")
-								ldap_con.simple_bind_s(settings.userdn, pwd)
-								ldap_con.modify_s(ldif_parser.dn,ldif_parser.mod_list)
-								ldap_con.unbind_s()
+							ldap_con = ldap.open("localhost")
+							ldap_con.simple_bind_s(settings.userdn, pwd)
+							ldap_con.modify_s(ldif_parser.dn,ldif_parser.mod_list)
+							ldap_con.unbind_s()
 
-								self.usermessage(_("The License has been sucessfully installed. You have to relogin."))
-								self.save.put("LOGOUT",1)
-								self.save.put("logout",1)
-								self.save.put("uc_module","relogin")
-								self.save.put("uc_submodule","none")
-							return
+							self.usermessage(_("The License has been sucessfully installed. You have to relogin."))
+							self.save.put("LOGOUT",1)
+							self.save.put("logout",1)
+							self.save.put("uc_module","relogin")
+							self.save.put("uc_submodule","none")
+						return
 
 		self.applyhandlemessages()

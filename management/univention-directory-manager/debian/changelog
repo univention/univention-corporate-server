@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-2) unstable; urgency=low
+
+  * some license import fixes, Bug #12293
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Nov 2008 13:35:12 +0100
+
 univention-directory-manager (5.0.7-1) unstable; urgency=low
 
   * fixed indention (tabs instead of spaces) (Bug: #12701)
