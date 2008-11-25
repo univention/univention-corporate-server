@@ -15,10 +15,4 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
 OPTS="-c /etc/bind/named.conf -p @%@dns/master/port@%@ -u bind -f"
 
-# check ucr autostart setting
-if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-    source "/usr/share/univention-config-registry/init-autostart.lib"
-    check_autostart univention-bind bind/autostart
-fi
-
 exec /usr/sbin/named $OPTS
