@@ -11,11 +11,5 @@
 
 # 0 = start on boot; 1 = don't start on boot
 
-@!@
-val = baseConfig.get('apache2/autostart', 'yes')
-if val.lower() in [ '1', 'true', 'yes' ]:
-	print 'NO_START=0'
-else:
-	print 'NO_START=1'
-@!@
+NO_START=0
 
