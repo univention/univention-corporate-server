@@ -59,17 +59,17 @@ class ldifParser(ldif.LDIFParser):
 	def check(self,base):
 		ldif.LDIFParser.parse(self)
 
-			#count dn
+		#count dn
 		if self.dncount == 0:
 			self.err = _("No Base DN has been found.")
 		elif self.dncount > 1:
 			self.err = _("More than one Base DN has been defined.")
 
-			#check base
-			if self.base != base or base == None:
-				self.err = _("Wrong Base DN. Expected was %s but %s has been found.") % (base,self.base)
+		#check base
+		if self.base != base or base == None:
+			self.err = _("Wrong Base DN. Expected was %s but %s has been found.") % (base,self.base)
 
-			return self.err
+		return self.err
 
 	def handle(self,dn,entry):
 		if dn == None or dn == "":
@@ -387,21 +387,34 @@ class modabout(unimodule.unimodule):
 							#extrakt license from mail
 							license_start = False
 							license_end = False
+							linebreak = False
 							for line in mail_text.split("\n"):
 								line = line.lstrip(" ")
 								if line.startswith("dn: cn=admin,cn=license"):
 									license_start = True
 
+								if linebreak:
+									license_text[-1] = 'univentionLicenseSignature: %s' % line
+									license_end = True
+									break
+
 								if license_start:
 									license_text.append(line)
 
-								if line.startswith("univentionLicenseSignature:"):
+								if line in [ "univentionLicenseSignature:", "univentionLicenseSignature: ", "univentionLicenseSignature:  "]:
+									linebreak=True
+								elif line.startswith("univentionLicenseSignature:"):
 									license_end = True
 									break
+
 							mail_text = ""
 							if license_end:
 								for line in license_text:
-									mail_text = "%s%s\n" % (mail_text, line)
+									try:
+										univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, "XXXX: [%s] : [%s]" % (line.split(':',1)[0].strip(' '),line.split(':',1)[1].strip(' ')))
+										mail_text = "%s%s: %s\n" % (mail_text, line.split(':',1)[0].strip(' '),line.split(':',1)[1].strip(' '))
+									except IndexError:
+										mail_text = "%s%s\n" % (mail_text, line)
 
 
 							#create license file from mail
@@ -448,6 +461,7 @@ class modabout(unimodule.unimodule):
 							self.save.put("logout",1)
 							self.save.put("uc_module","relogin")
 							self.save.put("uc_submodule","none")
+								
 						return
 
 		self.applyhandlemessages()
