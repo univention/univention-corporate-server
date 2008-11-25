@@ -1,3 +1,11 @@
+univention-bind (2.0.5-8) unstable; urgency=low
+
+  * don't check the autostart setting in the runit file otherwise the
+    process will be automatically started after the getty process is
+    available, Bug #9553
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Nov 2008 14:42:43 +0100
+
 univention-bind (2.0.5-7) unstable; urgency=low
 
   * new autostart test in init script
