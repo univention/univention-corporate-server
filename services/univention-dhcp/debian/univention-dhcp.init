@@ -35,6 +35,11 @@ fi
 
 case "$1" in
 	start)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart dhcpd dhcpd/autostart
+		fi
 		echo -n "Starting univention-dhcp daemon: "
 		sv up univention-dhcp
 		echo ""
@@ -45,11 +50,21 @@ case "$1" in
 		echo ""
 		;;
 	restart|force-reload)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart dhcpd dhcpd/autostart
+		fi
 		echo -n "Restarting univention-dhcp daemon: "
 		sv restart univention-dhcp
 		echo ""
 		;;
 	crestart)
+		# check ucr autostart setting
+		if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
+			source "/usr/share/univention-config-registry/init-autostart.lib"
+			check_autostart dhcpd dhcpd/autostart
+		fi
 		if sv status /etc/runit/univention-dhcp | grep ^run: > /dev/null 2>&1
 			then
 			$0 restart

@@ -1,9 +1,4 @@
 #! /bin/sh -e
 
-# check ucr autostart setting
-if [ -f "/usr/share/univention-config-registry/init-autostart.lib" ]; then
-    source "/usr/share/univention-config-registry/init-autostart.lib"
-    check_autostart dhcpd dhcpd/autostart
-fi
 
 exec /usr/sbin/dhcpd3 -q -f >>/var/log/daemon.log
