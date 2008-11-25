@@ -1,3 +1,10 @@
+univention-apache (2.0.15-10) unstable; urgency=low
+
+  * no longer check the default apache2 file, the autostart setting will
+    be checked in the original apache2 init script. Bug #9553
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 25 Nov 2008 14:37:13 +0100
+
 univention-apache (2.0.15-9) unstable; urgency=low
 
   * inherit RewriteOptions in SSL-VirtualHost (used to be inherited by default-VirtualHost)
