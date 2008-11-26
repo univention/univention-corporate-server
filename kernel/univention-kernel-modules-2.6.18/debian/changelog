@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.18 (2.6.18-1) unstable; urgency=low
+
+  * do not try to build avm-capi-fcpci-modules on non-i386-systems
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 26 Nov 2008 17:56:22 +0100
+
 univention-kernel-modules-2.6.18 (2.0.0-4) unstable; urgency=low
 
   * dependency to avm-capi-fcpci-modules only on i386
