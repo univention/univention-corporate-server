@@ -11,3 +11,6 @@ Variables: openoffice/menu/database
 Type: file
 File: usr/lib/openoffice/share/registry/data/org/openoffice/Office/DataAccess.xcu
 Variables: openoffice/database/default
+
+Type: file
+File: etc/openoffice/soffice.sh

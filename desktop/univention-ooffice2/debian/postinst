@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention OpenOffice.Org 2
 #  postinst script for the debian package
@@ -30,9 +30,11 @@
 
 #DEBHELPER#
 
-univention-baseconfig set openoffice/fontscaling?100
-univention-baseconfig set openoffice/usesystemfiledialog?true
-univention-baseconfig set openoffice/database/default?HSQLDB
+univention-config-registry set openoffice/fontscaling?100
+univention-config-registry set openoffice/usesystemfiledialog?true
+univention-config-registry set openoffice/database/default?HSQLDB
+univention-config-registry set openoffice/filelocking?yes
+univention-config-registry set openoffice/opengl?no
 
 if [ -x /usr/bin/fc-cache ] && [ -e /etc/fonts/fonts.conf ]; then
 	echo "Updating fontconfig cache..."
@@ -40,4 +42,3 @@ if [ -x /usr/bin/fc-cache ] && [ -e /etc/fonts/fonts.conf ]; then
 fi
 
 exit 0
-

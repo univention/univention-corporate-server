@@ -1,5 +1,7 @@
 #!/bin/sh
 
+source /etc/openoffice/soffice.sh
+
 if [ -x /usr/sbin/univention-baseconfig ]; then
 	CUPS=`/usr/sbin/univention-baseconfig get openoffice/cups/support`
 	if [ "$CUPS" -a "$CUPS" = "false" ]; then

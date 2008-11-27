@@ -29,6 +29,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+source /etc/openoffice/soffice.sh
+
 exec 0</dev/null
 if [ -x /usr/sbin/univention-baseconfig ]; then
 	CUPS=`/usr/sbin/univention-baseconfig get openoffice/cups/support`

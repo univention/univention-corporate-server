@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention OpenOffice.Org 2
 #  postrm script for the debian package
@@ -42,3 +42,5 @@ dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/ooweb
 dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/bin/oowriter.real /usr/bin/oowriter
 dpkg-divert --package univention-ooffice2 --add --rename --divert /usr/lib/openoffice/program/oosplash.bin.real /usr/lib/openoffice/program/oosplash.bin
 dpkg-divert --package univention-ooffice2 --add --rename --divert /etc/openoffice/soffice.sh.debian /etc/openoffice/soffice.sh
+
+exit 0
