@@ -43,6 +43,8 @@ def handler(baseConfig, changes):
 	relayhost = ""
 	if baseConfig.has_key('mail/sendmail/relayhost'):
 		relayhost = baseConfig['mail/sendmail/relayhost']
+	if not relayhost:
+		return
 
 	relayauth = False
 	if baseConfig.has_key('mail/sendmail/relayauth') and baseConfig['mail/sendmail/relayauth'] in ['yes', 'true']:
@@ -128,7 +130,7 @@ def handler(baseConfig, changes):
 				
 	if changed:
 		fh=open(mcfile, 'w')
-		fh.write( '\n'.join(lines) )
+		fh.write( '\n'.join(lines) + '\n')
 		fh.close()
 
 		os.system('m4 %s > %s' % (mcfile, cffile))

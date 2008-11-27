@@ -70,7 +70,7 @@ def handler(baseConfig, changes):
 		#
 	if changed:
 		fh=open(mcfile, 'w')
-		fh.write( '\n'.join(lines) )
+		fh.write( '\n'.join(lines) + '\n')
 		fh.close()
 
 		os.system('m4 %s > %s' % (mcfile, cffile))
