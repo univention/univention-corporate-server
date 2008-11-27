@@ -1,3 +1,9 @@
+univention-scalix-amavis (1.0.0-8) unstable; urgency=low
+
+  * include trailing newline when modifying sendmail.mc (Bug #12567)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Thu, 27 Nov 2008 09:31:25 +0100
+
 univention-scalix-amavis (1.0.0-7) unstable; urgency=low
 
   * enable spamassassin support during postinst
