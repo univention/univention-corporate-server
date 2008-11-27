@@ -53,26 +53,14 @@ install:
 	dh_clean -k
 	dh_installdirs
 
-	if [ "$(dpkg-architecture -qDEB_BUILD_ARCH)" = "i386" ] ; then \
-		for m in avm-capi-fcpci-modules srvmagt-modules squashfs drbd8  vmware-server-kernel-source vmware-kernel-source; do \
-			for i in /usr/src/linux-headers-*; do \
-				kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
-				m-a -t -l $$kversion prepare; \
-				m-a -f -u /tmp -l $$kversion -t a-b $$m; \
-				mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
-			done \
+	for m in avm-capi-fcpci-modules srvmagt-modules squashfs drbd8  vmware-server-kernel-source vmware-kernel-source; do \
+		for i in /usr/src/linux-headers-*; do \
+			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
+			m-a -t -l $$kversion prepare; \
+			m-a -f -u /tmp -l $$kversion -t a-b $$m; \
+			mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
 		done \
-	fi
-	if [ ! "$(dpkg-architecture -qDEB_BUILD_ARCH)" = "i386" ] ; then \
-		for m in srvmagt-modules squashfs drbd8  vmware-server-kernel-source vmware-kernel-source; do \
-			for i in /usr/src/linux-headers-*; do \
-				kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
-				m-a -t -l $$kversion prepare; \
-				m-a -f -u /tmp -l $$kversion -t a-b $$m; \
-				mv /tmp/usr_src/modules/*.deb ../ || mv /tmp/*.deb ../; \
-			done \
-		done \
-	fi
+	done \
 
 binary-indep: build install
 
