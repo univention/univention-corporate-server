@@ -1,3 +1,9 @@
+avm-capi-fcpci-modules (1.0.0-16) unstable; urgency=low
+
+  * removed "set -e" in postinst
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Nov 2008 09:13:31 +0100
+
 avm-capi-fcpci-modules (1.0.0-15) unstable; urgency=low
 
   * removed dependency 
