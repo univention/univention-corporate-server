@@ -83,6 +83,7 @@ fi
 tmpfile=`mktemp`
 grep ^MAILER /etc/mail/sendmail.mc >$tmpfile
 sed -i 's|^MAILER.*||' /etc/mail/sendmail.mc
+echo "" >>/etc/mail/sendmail.mc
 cat $tmpfile >>/etc/mail/sendmail.mc
 echo "" >>/etc/mail/sendmail.mc
 rm $tmpfile
