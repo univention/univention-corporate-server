@@ -1,3 +1,4 @@
+@%@BCWARNING=# @%@
 # configuration file to set up some environment variables for OOo
 
 # File locking; possible values are:
@@ -7,7 +8,7 @@
 # If the environment variable SAL_ENABLE_FILE_LOCKING is set,
 # the setting if ENABLE_FILE_LOCKING has no effect.
 
-FILE_LOCKING=yes
+export FILE_LOCKING=@%@openoffice/filelocking@%@
 
 # OpenGL support; may cause trouble with the restricted nvidia and fglrx
 # drivers; possible values are:
@@ -18,4 +19,4 @@ FILE_LOCKING=yes
 # If the environment variable SAL_NOOPENGL is set,
 # the setting if OPENGL_SUPPORT has no effect.
 
-OPENGL_SUPPORT=no
+export OPENGL_SUPPORT=@%@openoffice/opengl@%@

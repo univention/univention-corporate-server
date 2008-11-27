@@ -1,3 +1,10 @@
+univention-ooffice2 (1.2.2-1) unstable; urgency=low
+
+  * converted soffice.sh to UCR template
+  * source soffice.sh within oo* scripts
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 27 Nov 2008 16:12:23 +0100
+
 univention-ooffice2 (1.2.1-2) unstable; urgency=low
 
   * merge changes from component to trunk and branch (Bug: #11195)

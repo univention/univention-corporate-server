@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention OpenOffice.Org 2
 #  postrm script for the debian package
@@ -47,3 +47,5 @@ if [ "$1" = "remove" -o "$1" = "purge" ]; then
 fi
 
 #DEBHELPER#
+
+exit 0
