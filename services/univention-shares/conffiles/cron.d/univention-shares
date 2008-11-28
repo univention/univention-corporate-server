@@ -1,2 +1,5 @@
+SHELL=/bin/sh
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
 # Run queue every 15 minutes
-05,20,35,50 *     * * *     /usr/sbin/univention-share-replication
+05,20,35,50 * * * * root /usr/sbin/univention-share-replication

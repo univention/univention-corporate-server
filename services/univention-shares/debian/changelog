@@ -1,3 +1,9 @@
+univention-shares (1.0.0-7) unstable; urgency=low
+
+  * fix broken cron-job Syntax (Bug #6539)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Fri, 28 Nov 2008 10:26:49 +0100
+
 univention-shares (1.0.0-6) unstable; urgency=low
 
   * fixed logfile permissions
