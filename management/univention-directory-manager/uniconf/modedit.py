@@ -3510,7 +3510,13 @@ class modedit(unimodule.unimodule):
 						if name:
 							packages=[]
 							if property.syntax.searchFilter:
-								dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+								try:
+									dns=self.lo.searchDn(property.syntax.searchFilter, base=position.getDomain(), scope='domain', timeout=10, sizelimit=200)
+								except univention.admin.uexceptions.ldapError, msg: #more than 200 results, timeout or whatever
+									too_many_results = 1
+									dns=[]
+
+							if not too_many_results: # Multiselect
 
 								for dn in dns:
 									vals = self.lo.get(dn=dn, attr=[ 'cn', 'aRecord' ] )
