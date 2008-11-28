@@ -1,3 +1,9 @@
+univention-scalix-amavis (1.0.0-9) unstable; urgency=low
+
+  * start amavis-milter in postinst again before restarting sendmail (for Bug #12567)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Fri, 28 Nov 2008 11:06:59 +0100
+
 univention-scalix-amavis (1.0.0-8) unstable; urgency=low
 
   * include trailing newline when modifying sendmail.mc (Bug #12567)
