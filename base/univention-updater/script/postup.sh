@@ -49,15 +49,6 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 	DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install univention-managed-client  >>/var/log/univention/updater.log 2>&1 
 fi
 
-
-# this entry is only valid for update to UCS 2.1-2
-if [ "$nscd_group_size" = "211" ] ; then
-	echo "autoincreasing nscd/group/size from 211 to 3001..." >> /var/log/univention/updater.log 2>&1
-	univention-config-registry set nscd/group/size=3001 >> /var/log/univention/updater.log 2>&1
-	echo "done" >> /var/log/univention/updater.log 2>&1
-fi
-
-
 DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1
 
 update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
