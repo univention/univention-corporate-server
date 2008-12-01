@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-5) unstable; urgency=low
+
+  * make absolute sizelimit configurable via UCR:directory/manager/web/ldap/sizelimit (Bug #12541)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  1 Dec 2008 10:22:53 +0100
+
 univention-directory-manager (5.0.7-4) unstable; urgency=low
 
   * handle sizelimit_exceeded exception for windowsTerminalServer and others (Bug #10548)
