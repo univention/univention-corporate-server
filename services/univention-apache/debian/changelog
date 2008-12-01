@@ -1,4 +1,4 @@
-univention-apache (2.0.16-2) unstable; urgency=low
+univention-apache (2.0.17-1) unstable; urgency=low
 
   * fixed UCR variable registration
 
