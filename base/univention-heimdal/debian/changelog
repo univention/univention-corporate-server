@@ -1,3 +1,9 @@
+univention-heimdal (2.1.2-3) unstable; urgency=low
+
+  * disable telnet in inetd.conf (Bug #11005)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  1 Dec 2008 12:00:30 +0100
+
 univention-heimdal (2.1.2-2) unstable; urgency=low
 
   * new autostart test in init script
