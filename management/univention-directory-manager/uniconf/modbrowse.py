@@ -38,6 +38,7 @@ import univention.admin.uldap
 import univention.admin.modules
 import univention.admin.objects
 import unimodule
+import univention.config_registry
 
 import string
 import ldap
@@ -403,7 +404,9 @@ class modbrowse(unimodule.unimodule):
 		# lookup objects
 		###########################################################################
 
-		max_results=1000 # maximum number of results searched, should be configurable. This is more than the number of results that can be displayed !
+		ucr = univention.config_registry.ConfigRegistry()
+		ucr.load()
+		max_results = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
 		size_limit_reached = 0
 
 		cached = 1
