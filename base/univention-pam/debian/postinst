@@ -40,10 +40,23 @@ univention-config-registry set \
 	auth/admin/methods?"krb5 ldap unix" \
 	auth/admin/services?"ftp gdm login other ppp rlogin screen"
 
-# remove old non-mutlifile template
+# remove old non-multifile template
 if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
     rm /etc/univention/templates/files/etc/pam.d/common-auth
 fi
+
+# As of version 2.0.2-1 the new default value of "nscd/group/size" is 3001.
+# Update nscd/group/size if old versions was smaller than 2.0.2-1 and default
+# value hasn't been changed.
+if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.0.2-1; then
+	eval $(univention-config-registry shell)
+	if [ "$nscd_group_size" = "211" ] ; then
+		echo "autoincreasing nscd/group/size from 211 to 3001..."
+		univention-config-registry set nscd/group/size=3001
+		echo "done"
+	fi
+fi
+
 
 #DEBHELPER#
 
