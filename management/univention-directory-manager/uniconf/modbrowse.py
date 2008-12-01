@@ -45,6 +45,11 @@ import ldap
 import types
 import re
 
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
+max_results = int(directory_manager_web_ldap_sizelimit)
+
 def create(a,b,c):
 	return modbrowse(a,b,c)
 
@@ -404,9 +409,6 @@ class modbrowse(unimodule.unimodule):
 		# lookup objects
 		###########################################################################
 
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-		max_results = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
 		size_limit_reached = 0
 
 		cached = 1

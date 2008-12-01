@@ -49,6 +49,11 @@ import ldap
 import types
 import re
 
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
+directory_manager_web_ldap_sizelimit = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
+max_results = int(directory_manager_web_ldap_sizelimit)
+
 def create(a,b,c):
 	return modwizard(a,b,c)
 
@@ -855,9 +860,6 @@ class modwizard(unimodule.unimodule):
 
 		searchcols=[]
 
-		ucr = univention.config_registry.ConfigRegistry()
-		ucr.load()
-		max_results = ucr.get('directory/manager/web/ldap/sizelimit', 1000) # maximum number of results searched. This is more than the number of results that can be displayed !
 		size_limit_reached = 0
 
 		# check for child modules
