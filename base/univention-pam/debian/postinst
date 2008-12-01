@@ -1,4 +1,4 @@
-#!/bin/sh -e
+#!/bin/sh
 #
 # Univention PAM
 #  postinst script for the debian package
@@ -28,9 +28,9 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-univention-baseconfig set \
+univention-config-registry set \
 	nscd/passwd/size?3001 \
-	nscd/group/size?211 \
+	nscd/group/size?3001 \
 	nscd/hosts/size?3001 \
 	nscd/passwd/positive_time_to_live?600 \
 	nscd/group/positive_time_to_live?3600 \
@@ -46,3 +46,5 @@ if [ -e /etc/univention/templates/files/etc/pam.d/common-auth ]; then
 fi
 
 #DEBHELPER#
+
+exit 0

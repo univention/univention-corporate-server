@@ -4,6 +4,7 @@ Variables: homedir/create
 Variables: homedir/mount
 Variables: quota/userdefault
 Variables: auth/kdeprofile
+Variables: auth/user/methods
 
 Type: subfile
 Multifile: etc/pam.d/common-session
@@ -11,6 +12,7 @@ Subfile: etc/pam.d/common-session.d/10univention-pam_common
 Variables: homedir/create
 Variables: homedir/mount
 Variables: auth/kdeprofile
+Variables: auth/user/methods
 
 Type: file
 File: etc/nscd.conf
@@ -60,6 +62,7 @@ Variables: auth/admin/methods
 Type: file
 File: etc/pam.d/admin-auth-nowrite
 Variables: auth/admin/methods
+Variables: auth/user/methods
 
 Type: file
 File: etc/pam.d/admin-password
@@ -103,6 +106,7 @@ Variables: auth/user/methods
 
 Type: file
 File: etc/pam.d/common-password
+Variables: auth/user/methods
 
 Type: file
 File: etc/pam.d/deny-account

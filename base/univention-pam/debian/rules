@@ -50,7 +50,7 @@ install: build
 	dh_installdirs
 
 	install -m0755 univention-create-homedir debian/univention-pam/usr/sbin/univention-create-homedir
-	univention-install-baseconfig
+	univention-install-config-registry
 	dh_install
 
 binary-indep: build install

@@ -1,3 +1,9 @@
+univention-pam (2.0.1-1) unstable; urgency=low
+
+  * set new default of nscd/group/size to 3001 (old: 211)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Dec 2008 13:34:58 +0100
+
 univention-pam (2.0.0-1) unstable; urgency=low
 
   * added ucr variable nssldap/idle/timelimit for the idle_timelimit in libnss-ldap.conf
@@ -46,7 +52,7 @@ univention-pam (1.2.3-4) unstable; urgency=low
     [success=done new_authtok_reqd=done default=ignore]. On
     top of that we add explicit an explicit condition to deny access if the
     Shadow account has expired: "acct_expired=bad".
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Fri,  9 Nov 2007 09:56:37 +0100
 
 univention-pam (1.2.3-3) unstable; urgency=low
