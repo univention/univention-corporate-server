@@ -3508,6 +3508,8 @@ class modedit(unimodule.unimodule):
 								i+=1
 
 						if name:
+							too_many_results = 0
+
 							packages=[]
 							if property.syntax.searchFilter:
 								try:
