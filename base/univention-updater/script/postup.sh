@@ -50,18 +50,17 @@ elif [ "$server_role" = "fatclient" ] || [ "$server_role" = "managedclient" ]; t
 fi
 
 
-# this entry is only valid for update to UCS 2.1-1
-INSTSTATE="$(LANG=POSIX dpkg -l univention-mail-postfix-forward | grep univention-mail-postfix-forward | cut -b1)"
-if [ "$INSTSTATE" = "r" -o "$INSTSTATE" = "p" ] ; then
-  if [ -f "/etc/univention/registry.info/variables/univention-mail-postfix-forward.cfg" ] ; then
-	  rm -f "/etc/univention/registry.info/variables/univention-mail-postfix-forward.cfg"
-  fi
+# this entry is only valid for update to UCS 2.1-2
+if [ "$nscd_group_size" = "211" ] ; then
+	echo "autoincreasing nscd/group/size from 211 to 3001..." >> /var/log/univention/updater.log 2>&1
+	univention-config-registry set nscd/group/size=3001 >> /var/log/univention/updater.log 2>&1
+	echo "done" >> /var/log/univention/updater.log 2>&1
 fi
 
 
-DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1 
+DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes dist-upgrade >>/var/log/univention/updater.log 2>&1
 
-update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1 
+update-initramfs -u -k all>>/var/log/univention/updater.log 2>&1
 
 exit 0
 

@@ -1,3 +1,9 @@
+univention-updater (3.0.4-1) unstable; urgency=low
+
+  * postup.sh: set nscd/group/size to 3001 if old value is 211 (Bug: #11223)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Dec 2008 13:54:24 +0100
+
 univention-updater (3.0.3-1) unstable; urgency=low
 
   * added removal of
