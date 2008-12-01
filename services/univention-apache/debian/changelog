@@ -1,3 +1,15 @@
+univention-apache (2.0.16-2) unstable; urgency=low
+
+  * fixed UCR variable registration
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Oct 2008 17:47:11 +0200
+
+univention-apache (2.0.16-1) unstable; urgency=low
+
+  * made SSLCertificateFile and SSLCertificateKeyFile customizable by UCR variables
+
+ -- Soenke Schwardt <schwardt@univention.de>  Tue, 14 Oct 2008 17:33:27 +0200
+
 univention-apache (2.0.15-10) unstable; urgency=low
 
   * no longer check the default apache2 file, the autostart setting will
