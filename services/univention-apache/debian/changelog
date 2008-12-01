@@ -1,12 +1,13 @@
-univention-apache (2.0.17-1) unstable; urgency=low
+univention-apache (2.0.17-2) unstable; urgency=low
 
-  * fixed UCR variable registration
+  * fixed UCR variable registration (Bug #12372)
 
  -- Sönke Schwardt <schwardt@univention.de>  Tue, 14 Oct 2008 17:47:11 +0200
 
 univention-apache (2.0.16-1) unstable; urgency=low
 
-  * made SSLCertificateFile and SSLCertificateKeyFile customizable by UCR variables
+  * made SSLCertificateFile and SSLCertificateKeyFile customizable by UCR
+    variables (Bug #12372)
 
  -- Soenke Schwardt <schwardt@univention.de>  Tue, 14 Oct 2008 17:33:27 +0200
 
