@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.19-3) unstable; urgency=low
+
+  * fixed missing translation in UMC module (Bug: 9832)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 01 Dec 2008 12:09:02 +0100
+
 univention-pkgdb (1.0.19-2) unstable; urgency=low
 
   * do dh_pycentral for univention-pkgdb

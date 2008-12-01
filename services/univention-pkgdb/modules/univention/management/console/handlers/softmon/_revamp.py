@@ -234,7 +234,7 @@ class Web( object ):
 
 		version_input = None
 		if current_check == 'outdated_systems':
-			version_input = umcd.TextInput( ( 'outdated_systems_version', umc.String( 'To compare with version' ) ), default = outdated_systems_version )
+			version_input = umcd.TextInput( ( 'outdated_systems_version', umc.String( _( 'To compare with version' ) ) ), default = outdated_systems_version )
 			idlist.append( version_input.id() )
 
 		###################################################
