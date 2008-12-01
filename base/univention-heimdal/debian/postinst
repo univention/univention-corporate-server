@@ -34,8 +34,6 @@ eval `univention-baseconfig shell`
 
 univention-baseconfig set kerberos/autostart?yes
 
-/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
-
 if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
 	/usr/lib/univention-install/11univention-heimdal-init.inst || true
 	/usr/lib/univention-install/15univention-heimdal-kdc.inst || true
@@ -57,6 +55,14 @@ if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 1.25.22;
 	dpkg-divert --rename --divert /etc/logrotate.d/heimdal-kdc.debian --remove /etc/logrotate.d/heimdal-kdc || true
 	dpkg-divert --rename --divert /etc/logrotate.d_heimdal-kdc.debian --add /etc/logrotate.d/heimdal-kdc || true
 	mv /etc/logrotate.d/heimdal-kdc.new /etc/logrotate.d/heimdal-kdc
+fi
+
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 2.1.2-4; then
+	/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
+fi
+
+if [ "$1" = "configure" -a -z "$2" ]; then
+	/usr/sbin/update-inetd --disable telnet		# enabled in heimdal-servers postinst
 fi
 
 if [ "$1" = "configure" ]; then
