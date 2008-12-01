@@ -9,6 +9,8 @@ Variables: interfaces/eth.*/type
 Variables: interfaces/eth.*/address
 Variables: hostname
 Variables: domainname
+Variables: apache2/ssl/certificate
+Variables: apache2/ssl/key
 
 Type: module
 Module: extension.py
