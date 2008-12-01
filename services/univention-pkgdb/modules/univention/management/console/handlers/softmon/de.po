@@ -5,7 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2007-11-07 18:36+0100\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-12-01 12:07+0100\n"
+"PO-Revision-Date: 2008-12-01 12:08+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,7 +43,11 @@ msgid ""
 "Loading system roles and system versions from Univention PKGDB failed. "
 "Please check installation of univention-pkgdb and run \"univention-pkgdb-"
 "check\" and \"univention-pkgdb-scan\"."
-msgstr "Das Laden der Systemrollen und Systemversionen von der Univention Paketstatus-Datenbank ist fehlgeschlagen. Bitte überprüfen Sie Ihre Installation von univention-pkgdb und rufen \"univention-pkgdb-check\" und \"univention-pkgdb-scan\" auf."
+msgstr ""
+"Das Laden der Systemrollen und Systemversionen von der Univention "
+"Paketstatus-Datenbank ist fehlgeschlagen. Bitte überprüfen Sie Ihre "
+"Installation von univention-pkgdb und rufen \"univention-pkgdb-check\" und "
+"\"univention-pkgdb-scan\" auf."
 
 #: _revamp.py:72 _revamp.py:205
 msgid "Results per Page"
@@ -63,7 +69,7 @@ msgstr "Filtermuster"
 msgid "Save Search Filter As"
 msgstr "Suchfilter speichern als:"
 
-#: _revamp.py:119
+#: _revamp.py:119 _revamp.py:213
 msgid "--- Please Select ---"
 msgstr "--- Bitte auswählen ---"
 
@@ -135,6 +141,10 @@ msgstr "Unvollständig installierte Systeme"
 #: _revamp.py:227
 msgid "Select check:"
 msgstr "Überprüfung auswählen:"
+
+#: _revamp.py:237
+msgid "To compare with version"
+msgstr "Vergleichen mit Version"
 
 #: _revamp.py:258
 msgid "Problem Identification"
