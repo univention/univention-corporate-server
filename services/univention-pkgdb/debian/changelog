@@ -1,4 +1,4 @@
-univention-pkgdb (1.0.19-3) unstable; urgency=low
+univention-pkgdb (1.0.20-1) unstable; urgency=low
 
   * fixed missing translation in UMC module (Bug: 9832)
 
