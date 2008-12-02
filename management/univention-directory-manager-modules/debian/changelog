@@ -1,3 +1,13 @@
+univention-directory-manager-modules (3.0.18-2) unstable; urgency=low
+
+  [ Jan Christoph Ebersbach ]
+  * Merged from sfb scope. Bug #10999
+
+  [ Arvid Requate ]
+  * fix splitting of LDAP-filters on equality signs.
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  2 Dec 2008 13:21:56 +0100
+
 univention-directory-manager-modules (3.0.18-1) unstable; urgency=low
 
   * bumped version

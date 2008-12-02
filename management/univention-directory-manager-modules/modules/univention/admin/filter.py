@@ -100,7 +100,7 @@ def parse(filter_s, begin=0, end=-1):
 		return c
 	else:
 		# new expression
-		variable, value=filter_s[begin:end+1].split('=')
+		variable, value=filter_s[begin:end+1].split('=', 1)
 		return expression(variable, value)
 
 def walk(filter, expression_walk_function=None, conjunction_walk_function=None, arg=None):
