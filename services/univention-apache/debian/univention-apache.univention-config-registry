@@ -15,6 +15,8 @@ Variables: apache2/ssl/key
 Type: module
 Module: extension.py
 Variables: php/memory/limit
+Variables: php/limit/filesize
+Variables: php/limit/postsize
 
 Type: file
 File: etc/default/apache2
