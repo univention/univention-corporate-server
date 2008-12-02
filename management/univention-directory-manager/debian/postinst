@@ -46,32 +46,15 @@ if [ "$server_role"  = "domaincontroller_master" ] || [ "$server_role" = "domain
 	/usr/lib/univention-install/25univention-directory-manager.inst || true
 fi
 
-# rename baseconfig variables
-function bc_rename() {
-	old=$1
-	new=$2
-	predefined=$3
-	if [ -n "$old" ]; then
-		univention-config-registry set "${new}?${old}"
-	else
-		univention-config-registry set "${new}?${predefined}"
-	fi
-}
-
 if [ "$1" = configure ]; then
-	bc_rename "$admin_web_debug_level" "directory/manager/web/debug/level" "0"
 	if [ "$admin_web_language" = "de" ]; then
 		admin_web_language="de_DE.utf8"
 	elif [ "$admin_web_language" = "en" ]; then
 		admin_web_language="en_US.utf8"
 	fi
 	if [ -n "$locale_default" ]; then
-		univention-baseconfig set directory/manager/web/language="$(echo $locale_default | sed -e 's|:.*||')"
-	else
-		bc_rename "$admin_web_language" "directory/manager/web/language" "de_DE.utf8"
+		univention-baseconfig set directory/manager/web/language?"$(echo $locale_default | sed -e 's|:.*||')"
 	fi
-
-	bc_rename "$admin_timeout" "directory/manager/timeout" "300"
 
 	if [ -n "$admin_timeout" ]; then
 		univention-baseconfig unset admin/timeout
