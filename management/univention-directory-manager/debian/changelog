@@ -1,3 +1,10 @@
+univention-directory-manager (5.0.7-9) unstable; urgency=low
+
+  * removed old bc_rename function calls in postinst
+  * set directory/manager/web/language only if it's not already set. Bug #12399
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  2 Dec 2008 15:03:17 +0100
+
 univention-directory-manager (5.0.7-8) unstable; urgency=low
 
   * add missing widget in sizelimit_exceeded code for windowsTerminalServer and others (Bug #10548)
