@@ -32,10 +32,19 @@
 import os, sys
 
 def handler(bc,changes):
-	if bc.has_key('php/memory/limit') and bc['php/memory/limit']:
-		memlimit = bc['php/memory/limit']
-		if memlimit[-1:].lower() == 'm':
+	if bc.get('php/memory/limit') or bc.get('php/limit/filesize') or bc.get('php/limit/postsize'):
+		memlimit = bc.get('php/memory/limit')
+		if memlimit and memlimit[-1:].lower() == 'm':
 			memlimit = memlimit[:-1]
+
+		postsize = bc.get('php/limit/postsize')
+		if postsize and postsize[-1:].lower() == 'm':
+			postsize = postsize[:-1]
+
+		filesize = bc.get('php/limit/filesize')
+		if filesize and filesize[-1:].lower() == 'm':
+			filesize = filesize[:-1]
+
 		try:
 			f = open('/etc/php5/apache2/php.ini', 'r')
 		except IOError, e:
@@ -45,8 +54,15 @@ def handler(bc,changes):
 		line = f.readline()
 
 		while line:
-			if line[:15] == 'memory_limit = ':
+			if memlimit and line[:15] == 'memory_limit = ':
 				line = 'memory_limit = %sM  ; Maximum amount of memory a script may consume (8MB)\n' % str(memlimit)
+
+			if postsize and line[:16] == 'post_max_size = ':
+				line = 'post_max_size = %sM  ; Maximum size of POST data that PHP will accept. (8MB)\n' % str(postsize)
+
+			if filesize and line[:22] == 'upload_max_filesize = ':
+				line = 'upload_max_filesize = %sM  ; Maximum allowed size for uploaded files. (2MB)\n' % str(filesize)
+
 			tmp.append(line)
 			line = f.readline()
 

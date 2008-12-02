@@ -1,3 +1,9 @@
+univention-apache (2.0.18-1) unstable; urgency=low
+
+  * post_max_size and upload_max_filesize in php5.ini can now be set by UCR
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  2 Dec 2008 12:06:16 +0100
+
 univention-apache (2.0.17-2) unstable; urgency=low
 
   * fixed UCR variable registration (Bug #12372)
