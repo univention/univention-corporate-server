@@ -915,6 +915,7 @@ def shellEscape(line):
 	escapes = { '/': '_',
 		    '-': '_',
 		    '@':'_',
+		    '.':'_',
 		    '*':'\*',
 		    ' ': '_', }
 	return replaceDict(line, escapes)
@@ -935,7 +936,7 @@ def validateKey(k):
 		return 0
 
 	if len(k) > 0:
-		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\.\:\<\>\\\]');
+		regex = re.compile('[\!\"\§\$\%\&\(\)\[\]\{\}\=\?\`\+\#\'\,\;\:\<\>\\\]');
 		match = regex.search(k);
 
 		if not match:
