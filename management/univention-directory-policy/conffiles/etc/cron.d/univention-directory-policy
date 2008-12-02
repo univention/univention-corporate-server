@@ -10,6 +10,6 @@
 
 @!@
 if configRegistry.has_key('ldap/hostdn') and configRegistry['ldap/hostdn']:
-	print "%s   root   if [ -d /usr/lib/univention-directory-policy ]; then /usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy; fi" % configRegistry['ldap/policy/cron']
+	print "%s   root   if [ -d /usr/lib/univention-directory-policy ]; then /usr/sbin/jitter 300 run-parts /usr/lib/univention-directory-policy > /dev/null; fi" % configRegistry['ldap/policy/cron']
 @!@
 

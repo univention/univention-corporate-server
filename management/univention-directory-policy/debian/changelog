@@ -1,3 +1,9 @@
+univention-directory-policy (2.0.0-2) unstable; urgency=low
+
+  * redirect stdout to dev/null in /etc/cron.d/univention-directory-policy
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  2 Dec 2008 14:06:59 +0100
+
 univention-directory-policy (2.0.0-1) unstable; urgency=low
 
   * set ldap/policy/cron during the update even if ldap_hostdn isn't
