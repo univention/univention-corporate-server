@@ -179,7 +179,7 @@ class question_mselect(question_select):
 	def getselected(self):
 		selected=[]
 		for selection in self.choicelist:
-			if self.xvars.get(selection["name"]):
+			if self.xvars.get(unicode(selection["name"])):
 					if selection["name"]=="ascii-null-escape":
 						selected.append("0")
 					else:
