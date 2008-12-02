@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.18-3) unstable; urgency=low
+
+  * improved error handling for LDAP-filters. Bug #10999
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  2 Dec 2008 14:48:29 +0100
+
 univention-directory-manager-modules (3.0.18-2) unstable; urgency=low
 
   [ Jan Christoph Ebersbach ]

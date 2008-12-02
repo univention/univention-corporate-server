@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import string, types
+import univention.admin.uexceptions
 
 def escapeForLdapFilter(txt):
 	# parenthesis mess up ldap filters - they should be escaped
@@ -99,6 +100,9 @@ def parse(filter_s, begin=0, end=-1):
 		c=conjunction(ftype, expressions)
 		return c
 	else:
+		if filter_s.find ('=') == -1:
+			raise univention.admin.uexceptions.valueInvalidSyntax ()
+
 		# new expression
 		variable, value=filter_s[begin:end+1].split('=', 1)
 		return expression(variable, value)
