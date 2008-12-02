@@ -1148,6 +1148,9 @@ def doit(arglist):
 		except univention.admin.uexceptions.ldapError, errmsg:
 			out.append('%s' %str(errmsg))
 			return out + ["OPERATION FAILED"]
+		except univention.admin.uexceptions.valueInvalidSyntax, errmsg:
+			out.append('%s' %str(errmsg.message))
+			return out + ["OPERATION FAILED"]
 	else:
 		out.append("Unknown or no action defined")
 		out.append('')
