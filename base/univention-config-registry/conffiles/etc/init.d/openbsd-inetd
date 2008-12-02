@@ -27,6 +27,13 @@ DAEMON=/usr/sbin/inetd
 
 . /lib/lsb/init-functions
 
+disablektelnet () {
+  if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s '^telnet[[:space:]].'; then
+    return 0
+  fi
+
+} 
+
 checkportmap () {
   if ! grep -v -s "^ *#" /etc/inetd.conf | grep -q -s 'rpc/'; then
     return 0
