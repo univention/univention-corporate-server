@@ -3492,7 +3492,6 @@ class modedit(unimodule.unimodule):
 
 					elif property.syntax.name in [ 'windowsTerminalServer', 'linuxTerminalServer', 'authenticationServer', 'fileServer' ]:
 						self.minput[name]=[]
-						self.xinput[name]=[]
 						minput_rows=[]
 
 						atts=copy.deepcopy(attributes)
@@ -3533,13 +3532,16 @@ class modedit(unimodule.unimodule):
 									zone = self.lo.get(dn=zoneDNs[0], attr=[ 'zoneName' ] )['zoneName'][0]
 									fqdn="%s.%s" % (cn, zone)
 									packages.append({'name': fqdn, 'description': fqdn})
+								packages.sort(compare_dicts_by_attr('name'))
+								id_select = question_select(property.short_description,atts,{'choicelist':packages,'helptext':''})
+							else: # normal field
+								self.userinfo_append(_("%s: Too many entries for selectbox") % property.short_description)
+								if not property.short_description[-2:] == "ID":
+									property.short_description=property.short_description+" ID"
+								#id_select = question_property('',attributes,{'property': property, 'field': field, 'value': value, 'name': name, 'lo': self.lo})
+								id_select = question_text(property.short_description, attributes, {"helptext":"", "usertext":""})
 
-							packages.sort(compare_dicts_by_attr('name'))
-
-							#minput does not have all needed fields.
-							update_choices=button('lmanusel',{},{'helptext':_('select package list')})
-							self.xinput[name].append(update_choices)
-							self.minput[name].append(question_select(property.short_description,atts,{'choicelist':packages,'helptext':''}))
+							self.minput[name].append(id_select)
 
 							# [1]: add button
 							atts=copy.deepcopy(attributes)

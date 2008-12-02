@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-8) unstable; urgency=low
+
+  * add missing widget in sizelimit_exceeded code for windowsTerminalServer and others (Bug #10548)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Tue,  2 Dec 2008 12:18:39 +0100
+
 univention-directory-manager (5.0.7-7) unstable; urgency=low
 
   * read UCR:directory/manager/web/ldap/sizelimit as integer on module load (Bug #12541)
