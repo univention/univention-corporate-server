@@ -1,3 +1,9 @@
+univention-ldap (3.0.12-3) unstable; urgency=low
+
+  * change EQUALITY and SYNTAX to allow utf8 for some string attributes in shares.schema (Bug #7573)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Tue,  2 Dec 2008 18:17:24 +0100
+
 univention-ldap (3.0.12-2) unstable; urgency=low
 
   * new autostart test in init script 
