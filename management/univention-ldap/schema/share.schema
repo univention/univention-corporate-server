@@ -14,8 +14,8 @@ attributetype ( 1.3.6.1.4.1.10176.1001.1.1.1 NAME 'univentionShareHost'
 
 attributetype ( 1.3.6.1.4.1.10176.1001.1.1.2 NAME 'univentionSharePath'
 	DESC 'path of share on host'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.1.1.3 NAME 'univentionShareWriteable'
 	DESC 'is share writeable'
@@ -33,13 +33,13 @@ attributetype ( 1.3.6.1.4.1.10176.1001.1.1.5 NAME 'univentionShareDirectoryMode'
 
 attributetype ( 1.3.6.1.4.1.10176.1001.1.1.6 NAME 'univentionShareUid'
 	DESC 'owner uid of the shared directory'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.1.1.7 NAME 'univentionShareGid'
 	DESC 'group gid of the shared directory'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE )
 
 objectclass ( 1.3.6.1.4.1.10176.1001.1.2.1 NAME 'univentionShare'
 	STRUCTURAL
@@ -56,8 +56,8 @@ objectclass ( 1.3.6.1.4.1.10176.1001.1.2.2 NAME 'univentionShareReplication'
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.1 NAME 'univentionShareSambaName'
 	DESC 'samba name of share'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.2 NAME 'univentionShareSambaCreateMode'
 	DESC 'create mode'
@@ -151,23 +151,23 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.19 NAME 'univentionShareSambaCscPolic
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.20 NAME 'univentionShareSambaValidUsers'
 	DESC 'user'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.21 NAME 'univentionShareSambaForceUser'
 	DESC 'force user'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.22 NAME 'univentionShareSambaForceGroup'
 	DESC 'force group'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.24 NAME 'univentionShareSambaHideFiles'
 	DESC 'hide files'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.25 NAME 'univentionShareSambaNtAclSupport'
 	DESC 'nt acl support'
@@ -196,8 +196,8 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.29 NAME 'univentionShareSambaWriteabl
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.30 NAME 'univentionShareSambaWriteList'
 	DESC 'write list'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.31 NAME 'univentionShareSambaVFSObjects'
 	DESC 'vfs objects'
@@ -226,8 +226,8 @@ attributetype ( 1.3.6.1.4.1.10176.1001.2.1.35 NAME 'univentionShareSambaHostsDen
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.36 NAME 'univentionShareSambaInvalidUsers'
 	DESC 'user'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
 attributetype ( 1.3.6.1.4.1.10176.1001.2.1.37 NAME 'univentionShareSambaMSDFS'
 	DESC 'is share msfds root'
@@ -323,8 +323,8 @@ objectclass ( 1.3.6.1.4.1.10176.1001.4.1.1 NAME 'univentionShareNFS'
 
 attributetype ( 1.3.6.1.4.1.10176.1001.4.1.1 NAME 'univentionShareWebaccessName'
 	DESC 'Name of the Webaccess Share'
-	EQUALITY caseIgnoreIA5Match
-	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+	EQUALITY caseIgnoreMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE)
 
 attributetype ( 1.3.6.1.4.1.10176.1001.4.1.2 NAME 'univentionShareWebaccessIpaddress'
 	DESC 'IP address of the Webaccess Share'
