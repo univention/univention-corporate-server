@@ -1,3 +1,9 @@
+univention-ldap (3.0.12-4) unstable; urgency=low
+
+  * changed deprecated attr to attrs. Bug #11518
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  3 Dec 2008 10:04:31 +0100
+
 univention-ldap (3.0.12-3) unstable; urgency=low
 
   * change EQUALITY and SYNTAX to allow utf8 for some string attributes in shares.schema (Bug #7573)
