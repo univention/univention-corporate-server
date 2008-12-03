@@ -1,6 +1,6 @@
 <?php
 
-@%@BCWARNING=#@%@
+@%@BCWARNING=// @%@
 
 /**
  * $Horde: nag/config/prefs.php.dist,v 1.51 2007/07/16 22:22:02 chuck Exp $

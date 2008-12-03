@@ -1,6 +1,6 @@
 <?php
 
-@%@BCWARNING=#@%@
+@%@BCWARNING=// @%@
 
 /**
  * $Horde: imp/config/prefs.php.dist,v 1.272 2007/07/22 23:55:23 chuck Exp $

@@ -1,6 +1,6 @@
 <?php
 
-@%@BCWARNING=#@%@
+@%@BCWARNING=// @%@
 
 /**
  * $Horde: ingo/config/prefs.php.dist,v 1.34 2007/04/25 16:30:21 jan Exp $

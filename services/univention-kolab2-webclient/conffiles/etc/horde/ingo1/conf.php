@@ -1,6 +1,6 @@
 <?php
 
-@%@BCWARNING=#@%@
+@%@BCWARNING=// @%@
 
 $conf['menu']['apps'] = array();
 $conf['storage']['driver'] = 'prefs';

@@ -1,6 +1,6 @@
 <?php
 
-@%@BCWARNING=#@%@
+@%@BCWARNING=// @%@
 
 @!@
 	if baseConfig.has_key("horde/hosteddomain"):
