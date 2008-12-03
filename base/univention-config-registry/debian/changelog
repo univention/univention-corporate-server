@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-7) unstable; urgency=low
+
+  * Deactivate internal Kerberos support in OpenSSH, allowing the PAM-Stack to process (for Bug #10830)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon, 20 Oct 2008 10:11:46 +0200
+
 univention-config-registry (3.0.6-6) unstable; urgency=low
 
   * allow dots in UCR variable names (Bug #12501)

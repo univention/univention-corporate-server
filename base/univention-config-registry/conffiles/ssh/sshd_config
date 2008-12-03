@@ -32,7 +32,7 @@ ChallengeResponseAuthentication @%@sshd/challengeresponse@%@
 PasswordAuthentication yes
 
 # Kerberos options
-KerberosAuthentication yes
+KerberosAuthentication no
 KerberosTicketCleanup yes
 GSSAPIAuthentication yes
 GSSAPIKeyExchange yes
