@@ -1,3 +1,9 @@
+univention-pam (2.0.2-2) unstable; urgency=low
+
+  * Give pam_krb5 a chance to update the ticket cache in pam.d/common-session (for Bug #10830)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon, 20 Oct 2008 10:08:38 +0200
+
 univention-pam (2.0.2-1) unstable; urgency=low
 
   * set nscd/group/size to 3001 if old value is 211 (Bug: #11223)

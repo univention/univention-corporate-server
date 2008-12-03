@@ -13,6 +13,8 @@ session    required   pam_unix.so
 methods=filter(lambda(x): x in ['krb5', 'ldap', 'winbind'], baseConfig['auth/user/methods'].split(' '))
 if 'winbind' in methods:
 	print 'session    optional   pam_winbind.so'
+if 'krb5' in methods:
+	print 'session    optional   pam_krb5.so'
 @!@
 session    required   pam_limits.so
 @!@
