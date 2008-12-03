@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.20-2) unstable; urgency=low
+
+  * fixed wrong pkdb update command umc module pkgdb
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  2 Dec 2008 17:52:42 +0100
+
 univention-pkgdb (1.0.20-1) unstable; urgency=low
 
   * fixed missing translation in UMC module (Bug: 9832)
