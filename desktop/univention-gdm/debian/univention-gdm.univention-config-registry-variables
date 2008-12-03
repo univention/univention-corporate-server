@@ -35,7 +35,7 @@ Type=str
 Categories=Desktop
 
 [gdm/session/dir]
-Description[de]=Verzeichnis mit den verf√gbaren Sitzungsbeschreibungen
+Description[de]=Verzeichnis mit den verf√ºgbaren Sitzungsbeschreibungen
 Description[en]=Directory with descriptions of available sessions
 Type=str
 Categories=Desktop
