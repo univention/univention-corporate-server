@@ -1,3 +1,9 @@
+univention-webui-style (2.0.1-4) unstable; urgency=low
+
+  * Small spelling fix.
+
+ -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 15:40:38 +0100
+
 univention-webui-style (2.0.1-3) unstable; urgency=low
 
   * Small spelling fix.

@@ -3,13 +3,13 @@ role = "@%@server/role@%@"
 if role == "domaincontroller_master" or role == "domaincontroller_backup" :
 	print'<tr>'
 	print'<td class="overview"><a href="../ucs-root-ca.crt"><img src="../icon/perms.png" alt="" border="0" /></a></td>'
-	print'<td class="overview"><a href="../ucs-root-ca.crt">import zertificate</a></td>'
-	print'<td class="overview">root zertificate of server</td>'
+	print'<td class="overview"><a href="../ucs-root-ca.crt">import certificate</a></td>'
+	print'<td class="overview">root certificate of server</td>'
 	print'</tr>'
 	print'<tr>'
 	print'<td class="overview"><a href="../ucsCA.crl"><img src="../icon/invalidperms.png" alt="" border="0" /></a></td>'
-	print'<td class="overview"><a href="../ucsCA.crl">reject zertificate</a></td>'
-	print'<td class="overview">invalid zertificates</td>'
+	print'<td class="overview"><a href="../ucsCA.crl">reject certificate</a></td>'
+	print'<td class="overview">invalid certificates</td>'
 	print'</tr>'
 @!@
 <tr>
