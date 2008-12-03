@@ -422,9 +422,12 @@ class Module( base.Page ):
 						self.selected = 0
 
 				if not self.__restore_referrer:
-					req = requests[ -1 ]
-					# is a startup request?
-					self.__startup_request( req )
+					if not len( requests ): # cancel button was pressed on a non-closable dialog?
+						break
+					else:
+						req = requests[ -1 ]
+						# is a startup request?
+						self.__startup_request( req )
 
 				self.active.reset()
 				if len( requests ) > 1:
