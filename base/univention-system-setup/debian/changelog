@@ -1,3 +1,14 @@
+univention-system-setup (1.1.15-3) unstable; urgency=low
+
+  * fix some procedures necessary for a domainname change (Bug #9402):
+    - adjust LDAP servcice principal to new fqdn
+    - modify alias record in old DNS zone to point to the new host fqdn
+    - fix bug in copying procedure for SRV DNS records to new domain
+    - fix bug in procedure for creation of new univentionMailDomainname 
+    - modify associatedDomain of hostdn
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Wed,  3 Dec 2008 16:12:07 +0100
+
 univention-system-setup (1.1.15-2) unstable; urgency=low
 
   * Rename oxuse to oxae. Bug #12453

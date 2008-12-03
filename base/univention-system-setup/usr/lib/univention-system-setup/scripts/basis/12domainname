@@ -71,9 +71,14 @@ bindpwd=`ldap_bindpwd`
 
 service_stop nscd heimdal-kdc univention-directory-notifier
 
+if [ "$server_role" = "fatclient" ]; then
+	server_role="client"
+fi
+
 if [ "$ldap_available" = 1 ]; then
 
-	echo `date` : "Configure Kerberos principal name in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
+	kerberos_realm="`echo $kerberos_realm | tr [[lower]] [[upper]]`"
+	echo `date` : "Configure Kerberos principal name of host in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 	echo "dn: $ldap_hostdn" >/var/cache/univention-system-setup/krb5principal.rename.ldif
 	echo "changetype: modify" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
 	echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
@@ -81,22 +86,18 @@ if [ "$ldap_available" = 1 ]; then
 	ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/krb5principal.rename.ldif
 	rm /var/cache/univention-system-setup/krb5principal.rename.ldif
 
-	kerberos_ldap_dn=$(ldapsearch -x cn="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||')
+	kerberos_ldap_dn=$(ldapsearch -x krb5PrincipalName="ldap/$hostname.$old_domainname@$kerberos_realm" -b cn=kerberos,$ldap_base cn -LLL | ldapsearch-wrapper | grep "^dn: " | sed -e 's|dn: ||')
 	if [ -n "$kerberos_ldap_dn" ]; then
-		echo `date` : "Configure Kerberos principal name in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
+		echo `date` : "Configure Kerberos principal name of LDAP Service in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 		echo "dn: $kerberos_ldap_dn" >/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		echo "changetype: modify" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "replace: sn" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "sn: ldap/$hostname.$new_domainname@$kerberos_realm" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "replace: krb5PrincipalName" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "krb5PrincipalName: ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
-		echo "-" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
+		echo "replace: uid" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
+		echo "uid: ldap/$hostname.$new_domainname" >>/var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		ldapmodify -x -D "$binddn" -w "$bindpwd" -f /var/cache/univention-system-setup/kerberos_ldap_service.ldif
 		rm /var/cache/univention-system-setup/kerberos_ldap_service.ldif
 
-		echo `date` : "Configure Kerberos LDAP DN in LDAP: " ldap/$hostname.$domainname@$kerberos_realm  >> /var/log/univention/setup.log
-		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -r $kerberos_ldap_dn cn=ldap/$hostname.$domainname@$kerberos_realm
+		echo `date` : "Configure Kerberos LDAP DN in LDAP: " ldap/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
+		ldapmodrdn -x -D "$binddn" -w "$bindpwd" -r $kerberos_ldap_dn krb5PrincipalName=ldap/$hostname.$new_domainname@$kerberos_realm
 	fi
 
 	echo `date` : "Configure hostname for groupware account in LDAP: " $hostname.$new_domainname  >> /var/log/univention/setup.log
@@ -326,9 +327,9 @@ if [ "$ldap_available" = 1 ]; then
 		fi
 	done
 
-	univention-directory-manager dns/forward_zone list --filter "zoneName=$old_domainname" | grep "^DN" | sed -e 's|^DN: ||' | while read super; do
+	univention-directory-manager dns/forward_zone list --filter "zoneName=$old_domainname" | grep "^DN" | sed -e 's|^DN: ||' | while read old_super; do
 		res=""
-		names=$(univention-directory-manager dns/host_record list --superordinate "$super"  | grep -i name  | grep -v ^DN | sed -e 's|^ *||;s|name: ||')
+		names=$(univention-directory-manager dns/host_record list --superordinate "$old_super"  | grep -i name  | grep -v ^DN | sed -e 's|^ *||;s|name: ||')
 		for name in $names; do
 			if [ "$name" = "_kerberos" ] || [ "$name" = "$hostname" ]; then
 				continue
@@ -358,12 +359,12 @@ if [ "$ldap_available" = 1 ]; then
 				univention-directory-manager dns/srv_record move --binddn "$binddn" --bindpwd "$bindpwd"  --dn "$srvrecord_dn" --position "zoneName=$new_domainname,cn=dns,$ldap_base"
 			done
 
-			ldapsearch -x -D  "$binddn" -w "$bindpwd" "(&(objectClass=univentionNetworkClass)(univentionDnsForwardZone=$super))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||' | while read dn; do
+			ldapsearch -x -D  "$binddn" -w "$bindpwd" "(&(objectClass=univentionNetworkClass)(univentionDnsForwardZone=$old_super))" | ldapsearch-wrapper | grep ^dn | sed -e 's|dn: ||' | while read dn; do
 				echo `date` : "Configure DNS forward zone :" zoneName=$new_domainname,cn=dns,$ldap_base  >> /var/log/univention/setup.log
 				univention-directory-manager networks/network modify --dn "$dn" --set dnsEntryZoneForward="zoneName=$new_domainname,cn=dns,$ldap_base"
 			done
-			echo `date` : "Remove DNS forward zone :" $super  >> /var/log/univention/setup.log
-			univention-directory-manager dns/forward_zone remove --dn "$super"
+			echo `date` : "Remove DNS forward zone :" $old_super  >> /var/log/univention/setup.log
+			univention-directory-manager dns/forward_zone remove --dn "$old_super"
 
 		else
 			# create the new dns zone
@@ -387,15 +388,17 @@ if [ "$ldap_available" = 1 ]; then
 
 			# Copy DNS Service Records from the old to the new DNS Domain
 			echo `date` : "Copy SRV Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" sRVRecord="* $hostname.$old_domainname." -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$hostname.$old_domainname,|$hostname.$new_domainname,|g;s|$hostname.$old_domainname\.|$hostname.$new_domainname.|g;s|$hostname.$old_domainname\$|$hostname.$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			ldapsearch -x -D "$binddn" -w "$bindpwd" sRVRecord="* $hostname.$old_domainname." -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$hostname.$old_domainname\.|$hostname.$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
 
 			# Copy Alias Records from the old to the new DNS Domain
 			echo `date` : "Copy Alias Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" "(|(cNAMERecord=$hostname)(cNAMERecord=$hostname.$domainname.))" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			ldapsearch -x -D "$binddn" -w "$bindpwd" "(|(cNAMERecord=$hostname)(cNAMERecord=$hostname.$old_domainname.))" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
 
-			# Copy Alias Records from the old to the new DNS Domain
-			echo `date` : "Copy Alias Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" "(|(cNAMERecord=$hostname)(cNAMERecord=$hostname.$domainname.))" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			# Modify Alias Records in the old DNS Domain to point to the new DNS Domain
+			echo `date` : "Modify Alias Records in the old domain to point to the new domain:" $new_domainname  >> /var/log/univention/setup.log
+			univention-directory-manager dns/alias list --binddn "$binddn" --bindpwd "$bindpwd" --filter "(cNAMERecord=$hostname)" --superordinate="zoneName=$old_domainname,cn=dns,$ldap_base" | grep ^DN | sed -e 's|^DN: ||' | while read alias_dn; do
+				univention-directory-manager dns/alias modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$alias_dn" --set cname="$hostname.$new_domainname."
+			done
 
 			# Copy TXT Records from the old to the new DNS Domain
 			echo `date` : "Copy TXT Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
@@ -512,6 +515,7 @@ if [ "$ldap_available" = 1 ]; then
 	admin_replace_name "users/user" "kolabHomeServer" "kolabHomeServer" "1"
 	admin_replace_name "settings/usertemplate" "kolabHomeServer" "kolabHomeServer" "1"
 	admin_replace_name "settings/default" "univentionDefaultKolabHomeServer" "defaultKolabHomeServer" "1"
+	admin_replace_name "computers/$server_role" "associatedDomain" "domain" "1" "1"
 
 	share_container_dn=`univention-directory-manager container/cn list --binddn "$binddn" --bindpwd "$bindpwd" --filter cn=$hostname.$old_domainname | grep DN | sed -e 's|DN: ||'`
 	if [ -n "$share_container_dn" ]; then
@@ -527,7 +531,7 @@ if [ "$ldap_available" = 1 ]; then
 		univention-directory-manager container/cn remove --binddn "$binddn" --bindpwd "$bindpwd" --dn "$share_container_dn"
 	fi
 
-	mail_domain=`univention-directory-manager mail/domain list --binddn "$binddn" --bindpwd "$bindpwd" --filter cn="$old_domainnmae" | grep ^DN | sed -e 's|DN: ||'`
+	mail_domain=`univention-directory-manager mail/domain list --binddn "$binddn" --bindpwd "$bindpwd" --filter cn="$old_domainname" | grep ^DN | sed -e 's|DN: ||'`
 	if [ -n "$mail_domain" ]; then
 		echo `date` : "Configure mail domain:" $new_domainname  >> /var/log/univention/setup.log
 		univention-directory-manager mail/domain create --binddn "$binddn" --bindpwd "$bindpwd" --position "cn=domain,cn=mail,$ldap_base" --set name="$new_domainname"
