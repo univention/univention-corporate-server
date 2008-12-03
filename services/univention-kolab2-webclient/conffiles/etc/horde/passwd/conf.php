@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=// @%@
+
 $conf['menu']['apps'] = array();
 $conf['backend']['backend_list'] = 'hidden';
 $conf['user']['change'] = true;

@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=// @%@
+
 /**
  * $Horde: passwd/config/backends.php.dist,v 1.41.2.1 2007/02/15 18:19:22 jan Exp $
  *

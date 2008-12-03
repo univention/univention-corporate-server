@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=// @%@
+
 /**
  * $Horde: gollem/config/prefs.php.dist,v 1.33 2006/05/01 20:15:01 karsten Exp $
  *
