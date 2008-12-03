@@ -1,3 +1,9 @@
+univention-gdm (3.0.9-4) unstable; urgency=low
+
+  * fixed UTF issue
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed,  3 Dec 2008 09:50:41 +0100
+
 univention-gdm (3.0.9-3) unstable; urgency=low
 
   * added config template etc/init.d/gdm
