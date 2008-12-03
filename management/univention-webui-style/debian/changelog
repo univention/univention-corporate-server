@@ -1,3 +1,9 @@
+univention-webui-style (2.0.1-2) unstable; urgency=low
+
+  * Small spelling fix.
+
+ -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 14:20:09 +0100
+
 univention-webui-style (2.0.1-1) unstable; urgency=low
 
   * fix the apache2/startsite issue, Bug #12425.
