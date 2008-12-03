@@ -1,3 +1,9 @@
+univention-management-console (0.9.1001-2) unstable; urgency=low
+
+  * avoid traceback when hitting a cancel button on a non-closable dialog (Bug #9604)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Wed,  3 Dec 2008 17:53:41 +0100
+
 univention-management-console (0.9.1001-1) unstable; urgency=low
 
   * added missing translations for mailserver wizard and fixed some typos
