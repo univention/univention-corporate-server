@@ -1,3 +1,9 @@
+univention-apache (2.0.18-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 16:03:52 +0100
+
 univention-apache (2.0.18-1) unstable; urgency=low
 
   * post_max_size and upload_max_filesize in php5.ini can now be set by UCR
