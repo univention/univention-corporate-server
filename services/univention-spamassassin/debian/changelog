@@ -1,3 +1,9 @@
+univention-spamassassin (1.0.3-4) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 16:17:31 +0100
+
 univention-spamassassin (1.0.3-3) unstable; urgency=low
 
   * added service info  for umc and "autostart functionality" (Bug: #9953)
