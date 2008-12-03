@@ -65,6 +65,7 @@ install: build
 	
 	univention-install-config-registry
 	univention-install-service-info
+	univention-install-config-registry-info
 
 	dh_install
 
