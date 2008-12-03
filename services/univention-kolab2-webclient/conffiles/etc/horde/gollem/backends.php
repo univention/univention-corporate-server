@@ -1,5 +1,7 @@
 <?php
 
+@%@BCWARNING=#@%@
+
 @!@
 import string
 

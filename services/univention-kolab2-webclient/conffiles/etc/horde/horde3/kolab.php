@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=#@%@
+
 @!@
 	if baseConfig.has_key("horde/hosteddomain"):
 		domains = baseConfig["horde/hosteddomain"]

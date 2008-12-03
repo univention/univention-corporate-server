@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=#@%@
+
 /**
  * Turba Attributes File.
  *

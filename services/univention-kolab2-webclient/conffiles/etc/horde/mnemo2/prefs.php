@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=#@%@
+
 /**
  * $Horde: mnemo/config/prefs.php.dist,v 1.27 2007/07/30 17:53:47 chuck Exp $
  *

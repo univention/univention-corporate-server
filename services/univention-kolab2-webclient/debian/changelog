@@ -1,3 +1,9 @@
+univention-kolab2-webclient (3.0.3-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 16:42:59 +0100
+
 univention-kolab2-webclient (3.0.3-1) unstable; urgency=low
 
   * dependency to whois has been added (Bug 12277)

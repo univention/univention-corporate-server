@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=#@%@
+
 $conf['menu']['apps'] = array();
 $conf['storage']['driver'] = 'prefs';
 $conf['storage']['maxblacklist'] = 0;
