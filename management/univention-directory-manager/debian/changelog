@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-10) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 09:27:19 +0100
+
 univention-directory-manager (5.0.7-9) unstable; urgency=low
 
   * removed old bc_rename function calls in postinst
