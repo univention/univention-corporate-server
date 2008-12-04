@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 # Default settings for openssh-server. This file is sourced by /bin/sh from
 # /etc/init.d/ssh.
 

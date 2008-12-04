@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-8) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 14:25:29 +0100
+
 univention-config-registry (3.0.6-7) unstable; urgency=low
 
   * Deactivate internal Kerberos support in OpenSSH, allowing the PAM-Stack to process (for Bug #10830)
