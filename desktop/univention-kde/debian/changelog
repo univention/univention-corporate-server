@@ -1,3 +1,9 @@
+univention-kde (3.1.4-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 09:40:11 +0100
+
 univention-kde (3.1.4-1) unstable; urgency=low
 
   * attach ucs-kde-menu21 to policy "UCS green 2.1" unless UCR:kde/menu/keep is 'true'
