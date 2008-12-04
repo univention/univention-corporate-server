@@ -1,3 +1,9 @@
+univention-webui (1.3.7-1) unstable; urgency=low
+
+  * fixed LDAP_Search syntax (Bug: #12643)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 04 Dec 2008 17:00:22 +0100
+
 univention-webui (1.3.6-3) stable; urgency=low
 
   * fix encoding bug which prevented mselect lists to handle entries with umlauts (Bug #11592)

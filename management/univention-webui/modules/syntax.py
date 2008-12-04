@@ -289,9 +289,11 @@ class question_syntax(uniconf.uniconf):
 			if self.syntax.name == 'LDAP_Search':
 				obj = self.save.get( 'edit_object', None )
 				filter = self.syntax.filter
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LDAPSEARCH: filter=%s' % str(filter) )
 				if obj:
 					prop = univention.admin.property()
 					filter = prop._replace( filter, obj )
+					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LDAPSEARCH: filter2=%s' % str(filter) )
 				self.syntax._prepare( self.lo, filter )
 				for dn, val, attr in self.syntax.values:
 					attrs = self.lo.get( dn )
@@ -310,10 +312,13 @@ class question_syntax(uniconf.uniconf):
 						except:
 							val = ''
 					else:
-						if attrs.has_key(val):
-							val = attrs[val]
+						if val == 'dn':
+							val = dn
 						else:
-							val = ''
+							if attrs.has_key(val):
+								val = attrs[val]
+							else:
+								val = ''
 
 					if ':' in attr:
 						attr = attr.split( ':', 1 )[ 1 ].strip()
@@ -327,10 +332,13 @@ class question_syntax(uniconf.uniconf):
 						except:
 							attr = ''
 					else:
-						if attrs.has_key(attr):
-							attr = attrs[attr]
+						if attr == 'dn':
+							attr = dn
 						else:
-							attr = ''
+							if attrs.has_key(attr):
+								attr = attrs[attr]
+							else:
+								attr = ''
 
 					# convert val and attr to lists
 					if not isinstance( val, ( list, tuple ) ):
@@ -344,6 +352,8 @@ class question_syntax(uniconf.uniconf):
 
 					# val and attr have same length ==> merge them
 					self.syntax.choices.extend( zip(val, attr) )
+
+				univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'LDAPSEARCH: self.syntax.choices=%s' % str(self.syntax.choices) )
 
 			choicelist=[]
 			if self.search:
