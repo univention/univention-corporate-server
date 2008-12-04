@@ -1,3 +1,9 @@
+univention-heimdal (2.1.2-5) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 13:55:42 +0100
+
 univention-heimdal (2.1.2-4) unstable; urgency=low
 
   * disable telnet in inetd.conf only on new installations and on update to this version (Bug #11005)
