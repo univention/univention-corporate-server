@@ -1,3 +1,9 @@
+univention-mail-postfix (1.0.1-12) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 10:53:15 +0100
+
 univention-mail-postfix (1.0.1-11) unstable; urgency=low
 
   * new init.d script autostart test (Bug: #9555)
