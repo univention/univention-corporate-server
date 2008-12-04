@@ -1,3 +1,9 @@
+univention-management-console (0.9.1001-3) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 10:26:05 +0100
+
 univention-management-console (0.9.1001-2) unstable; urgency=low
 
   * avoid traceback when hitting a cancel button on a non-closable dialog (Bug #9604)

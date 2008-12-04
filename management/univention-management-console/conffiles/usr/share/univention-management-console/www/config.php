@@ -1,4 +1,7 @@
 <?php
+
+@%@BCWARNING=// @%@
+
 # Maximales alter temporärer Dateien in Sekunden. Bei überschreiten wird gelöscht.
 # $temp_age=180;
 $temp_age=800;
