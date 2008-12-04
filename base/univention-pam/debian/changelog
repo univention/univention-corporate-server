@@ -1,3 +1,9 @@
+univention-pam (2.0.2-4) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 14:04:27 +0100
+
 univention-pam (2.0.2-3) unstable; urgency=low
 
   * adjusted ucr-headers in common-session.d and common-auth.d (Bug #8169)
