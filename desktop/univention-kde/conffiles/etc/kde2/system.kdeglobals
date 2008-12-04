@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 [Directories]
 dir_config=/etc/kde2
 dir_html=/usr/share/doc/kde/HTML

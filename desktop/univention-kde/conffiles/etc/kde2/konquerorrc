@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 [FMSettings]
 AlwaysNewWin=false
 DisplayFileSizeInBytes=false
