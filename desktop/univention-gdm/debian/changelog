@@ -1,3 +1,9 @@
+univention-gdm (3.0.9-6) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 11:51:11 +0100
+
 univention-gdm (3.0.9-5) unstable; urgency=low
 
   * install registry info  in rules file
