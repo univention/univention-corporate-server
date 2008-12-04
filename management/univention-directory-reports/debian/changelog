@@ -1,3 +1,9 @@
+univention-directory-reports (1.0.1-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 09:12:29 +0100
+
 univention-directory-reports (1.0.1-1) unstable; urgency=low
 
   * rename files of CSV reports to *.csv instead of *.src
