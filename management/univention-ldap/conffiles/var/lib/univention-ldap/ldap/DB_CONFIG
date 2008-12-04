@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 @!@
 if baseConfig['ldap/database/type'] == "bdb":
 	if baseConfig.has_key('ldap/database/bdb/set_cachesize') and baseConfig['ldap/database/bdb/set_cachesize']:
