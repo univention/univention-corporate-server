@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.12-4) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 12:58:37 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-3) unstable; urgency=low
 
   * fixed hardcoded domainname in postinst (Bug #11584)
