@@ -1,3 +1,9 @@
+univention-mozilla-firefox (2.0.2-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 11:33:06 +0100
+
 univention-mozilla-firefox (2.0.2-1) unstable; urgency=low
 
   * use GTK+ dialog for printing instead of kprinter (settings are ignored by
