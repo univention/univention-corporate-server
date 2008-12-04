@@ -1,4 +1,7 @@
 #!/bin/sh
+
+@%@BCWARNING=# @%@
+
 #
 # Univention Print Client
 #  replacement for the lp command
