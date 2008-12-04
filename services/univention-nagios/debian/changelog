@@ -1,3 +1,9 @@
+univention-nagios (1.0.15-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 11:11:11 +0100
+
 univention-nagios (1.0.15-1) unstable; urgency=low
 
   * moved umc wizard images to correct position (Bug: #12145)
