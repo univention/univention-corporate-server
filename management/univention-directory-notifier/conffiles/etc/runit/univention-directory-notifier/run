@@ -1,5 +1,7 @@
 #!/bin/sh -e
 
+@%@BCWARNING=# @%@
+
 eval `univention-baseconfig shell`
 
 #if [ "$server_role" != "domaincontroller_master" ]; then
