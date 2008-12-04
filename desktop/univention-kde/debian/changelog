@@ -1,3 +1,9 @@
+univention-kde (3.1.4-3) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 12:23:32 +0100
+
 univention-kde (3.1.4-2) unstable; urgency=low
 
   * Added UCR Warning.
