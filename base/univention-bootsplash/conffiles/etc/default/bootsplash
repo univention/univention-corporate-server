@@ -1,3 +1,5 @@
+@%@BCWARNING=# @%@
+
 # Defaults for bootsplash initscript
 # sourced by /etc/init.d/bootsplash
 # installed at /etc/default/bootsplash by the maintainer scripts
