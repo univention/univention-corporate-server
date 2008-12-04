@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener
-import os, time, string, pwd, grp, univention.debug, sys
+import os, time, string, pwd, grp, univention.debug, sys, shutil
 
 name='cyrus-sieve'
 description='Create sieve mail filters'
@@ -51,10 +51,10 @@ def handler(dn, new, old):
 				sieve_path = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
 				listener.setuid(0)
 				if os.path.exists(sieve_path):
-					os.remove(sieve_path)
-				listener.unsetuid()
+					shutil.rmtree(sieve_path)
 			except:
 				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Could not remove Sieve-Script from User: %s' % user_name)
+			listener.unsetuid()
 	else:
 		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig['mail/antispam/globalfolder'].lower():
 
