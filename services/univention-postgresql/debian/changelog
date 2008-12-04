@@ -1,3 +1,9 @@
+univention-postgresql (1.0.2-3) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 13:09:36 +0100
+
 univention-postgresql (1.0.2-2) unstable; urgency=low
 
   * added service info for umc and "autostart functionality" (Bug: #9956)
