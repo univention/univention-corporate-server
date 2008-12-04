@@ -1,3 +1,9 @@
+univention-bootsplash (1.2.2-4) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 14:10:28 +0100
+
 univention-bootsplash (1.2.2-3) unstable; urgency=low
 
   * updated beam to the new colors
