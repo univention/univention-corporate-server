@@ -1,3 +1,9 @@
+univention-kolab2-framework (1.1.4-2) unstable; urgency=low
+
+  * Added UCR Warning.
+
+ -- Andre Fenske <fenske@univention.de>  Thu,  4 Dec 2008 10:39:04 +0100
+
 univention-kolab2-framework (1.1.4-1) unstable; urgency=low
 
   * use /etc/kolab2cal.htpasswd for authenticating kolabmailboxfilter
