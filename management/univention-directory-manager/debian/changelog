@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-11) unstable; urgency=low
+
+  * Added LDAP-Filter to different syntaxes. Bug #12652
+
+ -- Andre Fenske <fenske@univention.de>  Fri,  5 Dec 2008 10:00:58 +0100
+
 univention-directory-manager (5.0.7-10) unstable; urgency=low
 
   * Added UCR Warning.

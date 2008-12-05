@@ -3863,6 +3863,9 @@ class modedit(unimodule.unimodule):
 					elif property.syntax.name == 'groupDn' or property.syntax.name == 'userDn' or property.syntax.name == 'hostDn' or property.syntax.name == 'nagiosServiceDn' or property.syntax.name == 'nagiosHostsEnabledDn':
 
 						fixedFilter=''
+						if hasattr( property.syntax, 'filter' ):
+							fixedFilter=property.syntax.filter
+
 						if property.syntax.name == 'userDn':
 							module_name = 'users/user'
 							dispattr="username"
