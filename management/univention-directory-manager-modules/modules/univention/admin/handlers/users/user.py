@@ -1533,9 +1533,20 @@ class object( univention.admin.handlers.simpleLdap, mungeddial.Support ):
 						if primaryGroupResult:
 							self['primaryGroup']=primaryGroupResult[0]
 						else:
-							self['primaryGroup']=None
+							result=None
+							primaryGroup=None
+							try:
+								result=self.lo.search( filter='(objectClass=univentionDefault)', base='cn=univention,'+self.position.getDomain(), attr=['univentionDefaultGroup'])
+							except:
+								pass
+							if result and result[0] and result[0][1] and result[0][1].has_key("univentionDefaultGroup"):
+								univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'user: could not find primaryGroup, setting primaryGroup to univentionDefaultGroup')
+								primaryGroup=result[0][1]["univentionDefaultGroup"][0]
+
+							self['primaryGroup']=primaryGroup
+							self.newPrimaryGroupDn=primaryGroup
+							self.__primary_group()
 							self.save()
-							raise univention.admin.uexceptions.primaryGroup
 					else:
 						self['primaryGroup']=None
 						self.save()

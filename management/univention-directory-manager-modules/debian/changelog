@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.18-4) unstable; urgency=low
+
+  * if primaryGroup does not exist, set primaryGroup to defaultGroup
+    in user module
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  8 Dec 2008 11:11:01 +0100
+
 univention-directory-manager-modules (3.0.18-3) unstable; urgency=low
 
   * improved error handling for LDAP-filters. Bug #10999
