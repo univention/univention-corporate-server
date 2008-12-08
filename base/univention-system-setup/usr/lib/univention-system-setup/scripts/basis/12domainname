@@ -442,8 +442,9 @@ if [ "$ldap_available" = 1 ]; then
 	done
 
 	univention-directory-manager dns/reverse_zone list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN | sed -e 's|DN: ||' | while read super; do
+		echo `date` : "Configure DNS reverse zone (PTR): $hostname.$new_domainname."  >> /var/log/univention/setup.log
+		univention-directory-manager dns/reverse_zone modify --binddn "$binddn" --bindpwd "$bindpwd" --dn "$super" --set nameserver="$hostname.$new_domainname."
 		univention-directory-manager dns/ptr_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "pTRRecord=$hostname.$old_domainname." | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
-			echo `date` : "Configure DNS reverse zone (PTR):" $hostname.$new_domainname  >> /var/log/univention/setup.log
 			univention-directory-manager dns/ptr_record modify --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --dn "$dn" --set ptr_record="$hostname.$new_domainname."
 		done
 	done
