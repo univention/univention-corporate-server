@@ -1,3 +1,9 @@
+univention-server (3.0.1-2) unstable; urgency=low
+
+  * disable windows/wins-server on DC-Slave server only if not set (Bug #11667)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  8 Dec 2008 14:52:49 +0100
+
 univention-server (3.0.1-1) unstable; urgency=low
 
   * fixed restart of samba on password change of local machine account
