@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-9) unstable; urgency=low
+
+  * Removed UCR Warning. Bug #12657#
+
+ -- Andre Fenske <fenske@univention.de>  Mon,  8 Dec 2008 16:12:54 +0100
+
 univention-config-registry (3.0.6-8) unstable; urgency=low
 
   * Added UCR Warning.
