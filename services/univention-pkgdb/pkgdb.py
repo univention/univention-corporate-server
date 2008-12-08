@@ -49,7 +49,7 @@ def exec_pkgdb(args):
 
 	listener.setuid(0)
 	try:
-		cmd = 'python /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py --db-server=%s.%s %s' % ( hostname, domainname, string.join( args, ' ' ))
+		cmd = '/usr/lib/python2.4/site-packages/univention/pkgdb.py --db-server=%s.%s %s' % ( hostname, domainname, string.join( args, ' ' ))
 		retcode = os.system( cmd )
 	finally:
 		listener.unsetuid()

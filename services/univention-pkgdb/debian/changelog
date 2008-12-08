@@ -1,3 +1,9 @@
+univention-pkgdb (1.0.20-3) unstable; urgency=low
+
+  * fixed permissions of pkkdb tool
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  8 Dec 2008 10:31:01 +0100
+
 univention-pkgdb (1.0.20-2) unstable; urgency=low
 
   * fixed wrong pkdb update command umc module pkgdb
