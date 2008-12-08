@@ -71,7 +71,7 @@ class object(content):
 				elif self.all_results.has_key('eth%d:%d_ip' % (i,j)) and self.all_results['eth%d:%d_ip' % (i,j)] and self.all_results.has_key('eth%d:%d_netmask' % (i,j)) and self.all_results.has_key('eth%d:%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d:%d_network' % (i,j)):
 					self.interfaces.append(['eth%d:%d' % (i,j), self.all_results['eth%d:%d_ip' % (i,j)], self.all_results['eth%d:%d_netmask' % (i,j)], self.all_results['eth%d:%d_broadcast' % (i,j)], self.all_results['eth%d:%d_network' % (i,j)], 'static', 'virtual'])
 				elif self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_ip' % (i,j)) and self.all_results.has_key('eth%d_%d_netmask' % (i,j)) and self.all_results.has_key('eth%d_%d_broadcast' % (i,j)) and self.all_results.has_key('eth%d_%d_network' % (i,j)):
-					self.interfaces.append(['eth%d_%d' % (i,j), self.all_results['eth%d_%d_ip' % (i,j)], self.all_results['eth%d_%d_netmask' % (i,j)], self.all_results['eth%d_%d_broadcast' % (i,j)], self.all_results['eth%d_%d_network' % (i,j)], 'static', 'virtual'])
+					self.interfaces.append(['eth%d:%d' % (i,j), self.all_results['eth%d_%d_ip' % (i,j)], self.all_results['eth%d_%d_netmask' % (i,j)], self.all_results['eth%d_%d_broadcast' % (i,j)], self.all_results['eth%d_%d_network' % (i,j)], 'static', 'virtual'])
 
 		if self.all_results.has_key('gateway'):
 			self.container['Gateway']=[]

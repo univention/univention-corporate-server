@@ -1,3 +1,9 @@
+univention-installer (2.0.5-2) unstable; urgency=low
+
+  * translate virtual interface names from Univention Config Registry into internal syntax (Bug #11614)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  8 Dec 2008 18:51:12 +0100
+
 univention-installer (2.0.5-1) unstable; urgency=low
 
   * bumped version
