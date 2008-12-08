@@ -51,6 +51,9 @@ if [ -z "$2" ]; then
   su - postgres -c "psql -d pkgdb -f /var/lib/postgres/pkgdb.indexes"
 fi
 
+# fix pkgdb helper permissions
+dpkg-statoverride --update --add root root 0755 /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py
+
 # fix permissions (after postgresql sledgehammer-postinst )
 if [ -e /etc/postgresql/pkgdb.secret ] ;then
   chmod ug=r,o= /etc/postgresql/pkgdb.secret
