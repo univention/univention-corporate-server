@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.12-6) unstable; urgency=low
+
+  * fixed new[univentionKolabUserNamespace] dictionary query
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon,  8 Dec 2008 12:15:24 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-5) unstable; urgency=low
 
   * Fixed problem when cyrus-sieve tries to remove sieve skript-folder.

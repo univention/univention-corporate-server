@@ -70,8 +70,8 @@ def handler(dn, new, old, command):
 		pass
 
 	# is this a outlook compatible folder?
-	if ( new and new[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ) or \
-			( old and old[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ):
+	if ( new and new.has_key("univentionKolabUserNamespace") and new[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ) or \
+			( old and old.has_key("univentionKolabUserNamespace") and old[ 'univentionKolabUserNamespace' ][ 0 ] == 'TRUE' ):
 		outlook = '-o'
 	else:
 		outlook = ''
