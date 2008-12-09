@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.18-5) unstable; urgency=low
+
+  * fixed result test after ldap search in user module
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue,  9 Dec 2008 10:42:17 +0100
+
 univention-directory-manager-modules (3.0.18-4) unstable; urgency=low
 
   * if primaryGroup does not exist, set primaryGroup to defaultGroup
