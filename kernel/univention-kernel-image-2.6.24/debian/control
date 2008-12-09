@@ -783,3 +783,30 @@ Description: UCS - Linux kernel
  integrated, directory driven solution for managing
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
+
+Package: univention-drbd-modules-2.6.24
+Architecture: any
+Section: admin
+Priority: optional
+Depends: drbd8-${F:KernelVersion}
+Description: Meta package for proprietary addon kernel module drbd
+ This package provides a meta package to install external kernel
+ addons for a specific versions of the Linux kernel.
+
+Package: univention-drbd-modules-2.6.24-64gb
+Architecture: any
+Section: admin
+Priority: optional
+Depends: drbd8-${F:KernelVersion64}
+Description: Meta package for proprietary addon kernel module drbd
+ This package provides a meta package to install external kernel
+ addons for a specific versions of the Linux kernel.
+
+Package: univention-drbd-modules-2.6.24-xen
+Architecture: any
+Section: admin
+Priority: optional
+Depends: drbd8-${F:KernelVersionXen}
+Description: Meta package for proprietary addon kernel module drbd
+ This package provides a meta package to install external kernel
+ addons for a specific versions of the Linux kernel.
