@@ -60,9 +60,6 @@ fi
 
 fi
 
-# remove statoverride
-dpkg-statoverride   --remove /usr/share/pycentral/python-univention-pkgdb/site-packages/univention/pkgdb.py
-
 #DEBHELPER#
 
 exit 0
