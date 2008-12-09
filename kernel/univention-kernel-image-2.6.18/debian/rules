@@ -366,7 +366,17 @@ binary-arch: build install
 	dh_md5sums -punivention-vmware-player-modules-managedclient-2.6.18-64gb
 	dh_builddeb -punivention-vmware-player-modules-managedclient-2.6.18-64gb
 
+	dh_gencontrol -punivention-drbd-modules-2.6.18 -u-VF:KernelVersion="${KERNELVERSION}"
+	dh_md5sums -punivention-drbd-modules-2.6.18
+	dh_builddeb -punivention-drbd-modules-2.6.18
 
+	dh_gencontrol -punivention-drbd-modules-2.6.18-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
+	dh_md5sums -punivention-drbd-modules-2.6.18-64gb
+	dh_builddeb -punivention-drbd-modules-2.6.18-64gb
+
+	dh_gencontrol -punivention-drbd-modules-2.6.18-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
+	dh_md5sums -punivention-drbd-modules-2.6.18-xen
+	dh_builddeb -punivention-drbd-modules-2.6.18-xen
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure
