@@ -112,6 +112,7 @@ install-ext-%:
 #	 Set package_version
 	install -d debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/
 	cat univention_pkgdb.py| sed -e "s/@%@package_version@%@/${version}/" > debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/pkgdb.py
+	chmod 755 debian/python-univention-pkgdb/usr/lib/python$*/site-packages/univention/pkgdb.py
 
 	install -m 0700 univention-pkgdb-scan ${DT}/usr/sbin
 	install -m 0755 98univention-pkgdb-tools.inst ${DT}/usr/lib/univention-install
