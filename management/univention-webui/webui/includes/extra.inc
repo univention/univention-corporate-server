@@ -1566,6 +1566,7 @@ function wrap_view(){
 	  }
 	return $str;
 }
+}
 
 ###
 # old widgets, replaced by dojo/dijit implementations
@@ -1609,9 +1610,6 @@ class question_select_old extends extra_multi{
 		$str .= "</td></tr>\n</table>\n";
 		return $str;
 	}
-}
-
-
 }
 
 ?>
