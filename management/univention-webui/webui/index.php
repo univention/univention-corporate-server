@@ -49,8 +49,26 @@ include ("includes/translator.inc");	# Übersetzungs-Klasse
 
 $usedtextdomain = textdomain ( 'univention-webui' );
 
+function escape_delimiter($instring) {
+  $delimiter = "|";
+  $outstring = "";
+  $len = strlen( $instring );
+  for ($i = 0; $i < $len; $i++) {
+    if ($instring[$i] == $delimiter) {
+	  $outstring = $outstring . $delimiter;
+	}
+	$outstring = $outstring . $instring[$i];
+  }
+  return $outstring;
+}
+
 if(is_array($_FILES['userfile'])){
-	$usrinput[$file] = $_FILES['userfile']['tmp_name'];
+	$tmp_name = escape_delimiter( $_FILES['userfile']['tmp_name'] );
+	$fname = escape_delimiter( $_FILES['userfile']['name'] );
+	$fsize = escape_delimiter( $_FILES['userfile']['size'] );
+	$ftype = escape_delimiter( $_FILES['userfile']['type'] );
+	$ferror = escape_delimiter( $_FILES['userfile']['error'] );
+	$usrinput[$file] = $tmp_name . "@|@" . $fname . "@|@" . $fsize . "@|@" . $ftype . "@|@" . $ferror;
 	# additional infos:
 	# $userfile[name] - original filename
 	# $userfile[type] - mime-type of uploaded file
