@@ -131,18 +131,17 @@ class webui_container{
 		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></meta>\n";
 		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\"></link>\n";
 		echo "<style type=\"text/css\">\n";
-		#echo "@import \"/unidojo/dijit/themes/dijit.css\";\n";
-		#echo "@import \"/unidojo/dijit/themes/tundra/tundra.css\";\n";
-		echo "@import \"/unidojo/dojo/resources/dojo.css\";\n";
-		#echo "@import \"/DropDownSelect.css\";\n";
+		echo "@import \"/univention-dojo/dojo/resources/dojo.css\";\n";
 		echo "\n</style>\n";
-		echo "<link id=\"themeStyles\" rel=\"stylesheet\" href=\"/unidojo/dijit/themes/tundra/tundra.css\" type=\"text/css\"></link>\n";
+		echo "<link id=\"themeStyles\" rel=\"stylesheet\" href=\"/univention-dojo/dijit/themes/tundra/tundra.css\" type=\"text/css\"></link>\n";
 		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
+		echo "<link rel=\"stylesheet\" href=\"/style/univention-dijit.css\" type=\"text/css\"></link>\n";
 		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
-		echo "<script type=\"text/javascript\" src=\"/unidojo/dojo/dojo.js\" djConfig=\"parseOnLoad: true\"></script>\n";
-		echo "<script type=\"text/javascript\" src=\"/unidojo/unijit/unijit.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"/univention-dojo/dojo/dojo.js\" djConfig=\"parseOnLoad: true\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"/univention-dojo/unijit/unijit.js\"></script>\n";
 		echo "<script type=\"text/javascript\"> \n";
 		echo "\t dojo.require(\"dojo.parser\"); \n";
+		# // import all potetial dijit-elements here?
 #		echo "\t dojo.require(\"unijit.form.ComboBox\"); \n";
 #		echo "\t dojo.require(\"unijit.form.FilteringSelect\"); \n";
 		echo "</script>\n";

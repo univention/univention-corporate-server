@@ -602,48 +602,9 @@ class link extends extra{
 	}
 }
 
-class question_select extends extra_multi{
-	function show(){
-		$appendstr = "";
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr>\n<tr><td>\n";
-        	$str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
-		if($this->warn) $str .= " class=\"select_warn\" ";
-		else $str .= " class=\"select\" ";
-		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
-		if($this->js && isset($this->basket["update"])) $str .= "onchange=\"sendForm(".$this->update_byteindex.")\" ";
-		if ($access != "disabled")
-			$str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
-		$str .= ">\n";
-		if($this->basket["choice"])
-			foreach($this->basket["choice"] as $key=>$val) {
-	        		if(trim($this->basket["var"][$key]["content"])!="") {
-					$is='selected';
-					if ($access == "disabled") {
-						$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-						$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
-					}
-				}
-				for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
-        			$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is >\n";
-				$str .= $space.$this->basket["choice"][$key]["description"];
-				$str .= "</option>\n";
-	        		$is = '';
-				$space = '';
-			}
-        	$str .="</select>\n";
-   		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-		$str .= $appendstr;
-		$str .= "</td></tr>\n</table>\n";
-		return $str;
-	}
-}
 
-// dojo FormFillWidget: allows only one of the given options
-class question_dojo_select extends extra_multi{
+// single select drop-down
+class question_select extends extra_multi{
   function show(){
     $appendstr = "";
     if(isset($this->attribute["passive"])) $access = "disabled";
@@ -1605,6 +1566,52 @@ function wrap_view(){
 	  }
 	return $str;
 }
+
+###
+# old widgets, replaced by dojo/dijit implementations
+###
+
+class question_select_old extends extra_multi{
+	function show(){
+		$appendstr = "";
+		if(isset($this->attribute["passive"])) $access = "disabled";
+		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+		$str .= "</td></tr>\n<tr><td>\n";
+        	$str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+		if($this->warn) $str .= " class=\"select_warn\" ";
+		else $str .= " class=\"select\" ";
+		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+		if($this->js && isset($this->basket["update"])) $str .= "onchange=\"sendForm(".$this->update_byteindex.")\" ";
+		if ($access != "disabled")
+			$str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
+		$str .= ">\n";
+		if($this->basket["choice"])
+			foreach($this->basket["choice"] as $key=>$val) {
+	        		if(trim($this->basket["var"][$key]["content"])!="") {
+					$is='selected';
+					if ($access == "disabled") {
+						$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+						$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
+					}
+				}
+				for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
+        			$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is >\n";
+				$str .= $space.$this->basket["choice"][$key]["description"];
+				$str .= "</option>\n";
+	        		$is = '';
+				$space = '';
+			}
+        	$str .="</select>\n";
+   		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
+		$str .= $appendstr;
+		$str .= "</td></tr>\n</table>\n";
+		return $str;
+	}
+}
+
+
 }
 
 ?>

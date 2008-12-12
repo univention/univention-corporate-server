@@ -1,3 +1,10 @@
+univention-webui (1.5.0-1) stable; urgency=low
+
+  * enable dojo/dijit as default dependency
+  * enable question_select as dojo widget
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Dec 2008 14:28:02 +0100
+
 univention-webui (1.4.5-5) stable; urgency=low
 
   * pass width attribute to table objects (for Bug #12091)
