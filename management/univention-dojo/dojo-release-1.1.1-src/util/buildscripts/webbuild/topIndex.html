@@ -1,0 +1,299 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+
+  
+  <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+
+  
+
+
+  
+  <title>0.4.2 XDomain Web Build Tool</title>
+  <link rel="stylesheet" type="text/css" href="http://dojotoolkit.org/css/common.css" />
+
+
+  
+  <link rel="stylesheet" type="text/css" href="http://dojotoolkit.org/css/text.css" />
+
+
+  
+  <link rel="stylesheet" type="text/css" href="http://dojotoolkit.org/css/index.css" />
+
+
+  
+  <style type="text/css">
+body {
+margin: 2em;
+  </style>
+</head>
+
+
+<body>
+
+
+<h1>Dojo 0.4.2</h1>
+
+
+<br />
+
+
+There are a few ways to use Dojo 0.4.2:<br />
+
+
+<ul>
+
+
+  <li>Use the <a href="#XDomain_Ajax_Build">XDomain
+Ajax Build</a> directly
+from <a href="http://dev.aol.com/dojo">AOL's Content Delivery Network (CDN)</a>.</li>
+
+
+  <li>Create a custom dojo.js build using the <a href="#Web_Build_Tool">web build tool</a>, and use the
+xdomain build on AOL's CDN to load all other modules and associated
+files.</li>
+  <li><a href="#Download_Custom_Build">Download a custom build</a>.</li>
+  <li><a href="#Download_Source">Download Dojo source</a> and make your own build.</li>
+
+
+</ul>
+
+
+<h2><a name="XDomain_Ajax_Build"></a>XDomain
+Ajax Build</h2>
+
+
+To use 0.4.2 from <a href="http://dev.aol.com/dojo">AOL's CDN</a>, just include this script tag in
+your page:<br />
+
+
+<br />
+
+
+<span style="font-weight: bold;">&lt;script
+type="text/javascript"
+src="http://o.aolcdn.com/dojo/0.4.2/dojo.js"&gt;&lt;/script&gt;</span><br />
+
+
+<br />
+
+
+<ul>
+
+	<li><a href="dojo0.4.2sample.html">Here is a sample file that demonstrates correct usage.</a></li>
+
+	<li><a href="TextMateTemplate.html">Here is a template file to use with your editor</a> (created for <a href="http://macromates.com/">TextMate</a>, but can be used with other editors).</li>
+
+</ul>
+
+
+<br />
+
+
+There are some modules that require some special setup to use in the
+xdomain build:<br />
+
+
+<h3>Widget automatic loading</h3>
+
+
+<ul>
+
+
+  <li>xdomain loading does not support <a href="http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book103">automatic
+loading</a>
+of Dojo or custom widgets. You must explicitly include widgets you want
+to use by using dojo.require() statements for widgets you want to use.<span style="font-weight: bold;"></span></li>
+
+
+</ul>
+
+
+<span style="font-weight: bold;"></span>
+<h3>dojo.debugDeep()</h3>
+
+
+<ul>
+
+
+  <li>Save <a href="src/debug/deep.html">src/debug/deep.html</a>
+to your local server and set <span style="font-weight: bold;">djConfig.dojoDebugDeepHtmlUrl</span>
+to the location of that file.</li>
+
+
+</ul>
+
+
+<h3>dojo.flash</h3>
+
+
+<ul>
+
+
+  <li>This module uses document.write(), so you must do a custom
+web build that includes the following modules&nbsp;to use it:</li>
+
+
+  
+  <ul>
+
+
+    <li>dojo.event.*</li>
+
+
+    <li>dojo.flash</li>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<h3>dojo.io.createIFrame()</h3>
+
+
+<ul>
+
+
+  <li>Save <a href="iframe_history.html">iframe_history.html</a>
+to your local server and set <span style="font-weight: bold;">djConfig.dojoIframeHistoryUrl</span>
+to the location of that file.</li>
+
+
+</ul>
+
+
+<h3>dojo.rpc.YahooService</h3>
+
+
+<ul>
+
+
+  <li>Save <a href="src/rpc/yahoo.smd">yahoo.smd</a>
+to your local server and set <span style="font-weight: bold;">djConfig.yahooServiceSmdUrl</span>
+to the location of that file.</li>
+
+
+</ul>
+
+
+<h3>dojo.storage</h3>
+
+
+<ul>
+
+
+  <li>This module uses document.write(), so you must do a custom
+web build that includes the following modules&nbsp;to use it:</li>
+
+
+  
+  <ul>
+
+
+    <li>dojo.event.*</li>
+
+
+    <li>dojo.storage</li>
+
+
+  
+  </ul>
+
+
+</ul>
+
+
+<h3>dojo.undo.browser</h3>
+
+
+<ul>
+
+
+  <li>Save <a href="iframe_history.html">iframe_history.html</a>
+to your local server and set <span style="font-weight: bold;">djConfig.dojoIframeHistoryUrl</span>
+to the location of that file.</li>
+
+
+  <li>If you do a custom build using the web tool and want to use
+dojo.undo.browser, be sure to include it in dojo.js. Do not load it
+after dojo.js loads, otherwise it will not work.</li>
+
+
+</ul>
+
+
+<h3>dojo.widget.GoogleMap</h3>
+
+
+<ul>
+
+
+  <li>Does not seem to work even if you include
+dojo.widget.GoogleMap in a custom build.</li>
+
+
+</ul>
+
+
+<h3>dojo.widget.Editor2, dojo.widget.Editor, dojo.widget.RichText</h3>
+
+
+<ul>
+
+
+  <li>Save <a href="src/widget/templates/richtextframe.html">richtextframe.html</a>
+to your local server and set&nbsp;<span style="font-weight: bold;">djConfig.dojoRichTextFrameUrl </span>to
+the location of that file.</li>
+
+
+</ul>
+
+
+More information on XDomain builds: <a href="http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book48">Cross
+Domain Resource Loading</a>. If you use the dojo.js URL above for
+the xdomain ajax build, you do not need to set any djConfig parameters
+for it to work. You also do not need a local dojo installation on your
+server.<br />
+
+
+<h2><a name="Web_Build_Tool"></a>Web Build Tool</h2>
+
+
+To build a custom dojo.js with the modules you use the most, use the
+<a href="web/buildscripts/webbuild/">Web Build Tool</a>.<br />
+
+
+<br />
+
+
+Save the dojo.js generated from the web build to your server, and for
+any modules that are not in that dojo.js, the AOL CDN
+mentioned above will be used to load them. The special setup for
+specific modules mentioned the <a href="#XDomain_Ajax_Build"><span style="font-weight: bold;">XDomain
+Ajax Build</span></a> section still apply, even if those modules are
+in your dojo.js file.<br />
+<h2><a name="Download_Custom_Build"></a>Download Custom Build</h2>
+Dojo offers some <a href="http://manual.dojotoolkit.org/WikiHome/DojoDotBook/BookDeveloping">custom builds of Dojo</a>
+that are not xdomain dojo builds. The code in these builds must reside
+on your server, and all of the files and directories in the build
+(except the demos and tests directories) must be on your server. You
+cannot just take the dojo.js file.<br />
+<ul>
+  <li><a href="http://download.dojotoolkit.org/release-0.4.2/">Download a custom build</a>.</li>
+</ul>
+<h2><a name="Download_Source"></a>Download Source</h2>
+You can download the full source code and create your own custom build. The source is offered in:<br />
+<ul>
+  <li><a href="http://download.dojotoolkit.org/release-0.4.2/dojo-0.4.2-src.zip">zip format</a></li>
+  <li><a href="http://download.dojotoolkit.org/release-0.4.2/dojo-0.4.2-src.tar.gz">tar.gz format</a></li>
+</ul>
+See the Dojo Book for <a href="http://manual.dojotoolkit.org/WikiHome/DojoDotBook/Book94">build instructions</a>.<br />
+<br />
+
+
+</body>
+</html>

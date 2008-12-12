@@ -1,0 +1,12 @@
+Source: univention-dojo
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Build-Depends: debhelper, sun-java5-bin
+Standards-Version: 3.7.2
+
+Package: univention-dojo
+Architecture: all
+Depends: univention-apache, php5-common
+Description: The Dojo Javascript Toolkit, custom build for Univention
+ This package contains a customized build of the Javascript Toolkit "Dojo" 

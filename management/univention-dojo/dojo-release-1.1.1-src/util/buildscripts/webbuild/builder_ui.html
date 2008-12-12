@@ -1,0 +1,442 @@
+<html>
+<style type='text/css'>
+
+BODY				{	background-color:	#e8dcc1;	}
+
+
+LABEL				{	cursor:pointer;	user-select:none;  -moz-user-select:none; }
+	
+	
+INPUT,
+TEXTAREA,
+.insetBorder		{	
+						border:1px solid; border-color:#746e61 #f8f5ec #f8f5ec#746e61;
+						background:#fefdfc;
+					}
+
+H2,
+SELECT,
+BUTTON,
+.outsetBorder		{	
+						border:1px solid; border-color:#f8f5ec #746e61 #746e61 #f8f5ec;	
+						background:#fefdfc;
+					}
+
+H2					{	color:white;	border-width:2px;	background:#46423a;	padding:10px;}
+
+
+BUTTON,
+SELECT				{	background:#d1c6ae;	}
+
+
+#outerTable			{	width:700px;	}
+
+.emphasize			{	font-weight:bold;	}
+
+
+.labelRow			{	
+						background-color:#aea591; padding:0px;	
+						cursor:pointer;	user-select:none;  -moz-user-select:none;
+					}
+
+.labelRow_table 	{	table-layout:fixed;	}
+.labelRow_toggler	{	width:2em;	text-align:center; }
+.labelRow_title		{	width:10em;	color:#46423a; font-weight:bold;	font-size:120%; vertical-align:top; padding-right:3px;	}
+.labelRow_values	{	width:100%;	color:white;	}
+	
+.toggler			{	
+						border:1px outset #46423a;	
+						color:black; background-color:white;
+						cursor:pointer;
+						width:16px; line-height:16px; 
+						margin-left:5px; margin-right:5px;
+					}
+	
+.rowSpacer			{	height:5px; line-height:5px;	}
+.colSpacer			{	width:3em;	}
+	
+.rowLabel			{	color:#46423a; vertical-align:top;	}
+.overLabel			{	color:#46423a; font-size:75%; 	text-align:center; }
+.underLabel			{	color:#46423a; font-size:75%; 	text-align:center; }
+.note				{	color:#46423a; font-size:75%; 	 }
+	
+.radio				{}
+.radioLabel			{	user-select:none;  -moz-user-select:none;	}
+	
+.field				{}
+.fieldLabel			{	color:#46423a;	}
+	
+.button				{}
+	
+.check				{	text-align:right;	vertical-align:top;}
+.checkLabel			{	
+						color:#46423a; 		vertical-align:top; padding-top:3px;
+					}
+	
+	
+.customName			{	width:10em;	}
+.customLocation		{	width:30em;	}
+
+#version			{	font-size:50%;	font-weight:normal;	padding-left:5px;}
+
+#dependencyList		{	width:100%; height:200px;	
+						border:1px inset #46423a;
+					}
+#treeContainer		{	width:100%;	height:200px;
+						font-family:monospace;
+						border:1px outset #46423a;
+						position:relative;	
+						background: #fefdfc;
+					}
+
+#buildit			{	font-size:150%;	font-weight:bold;padding:5px 20px 5px 20px; }
+
+
+#xdDojoUrlDisplay	{}
+#xdDojoUrl			{	font-weight:bold;	}
+
+</style>	
+<script language='javascript'>
+
+function byId(it) {
+	return (typeof it == "string" ? document.getElementById(it) : it);
+}
+
+function cookie(name, value) {
+	if (value == null) {
+		var idx = document.cookie.lastIndexOf(name+'=');
+		if(idx == -1) { return null; }
+		var value = document.cookie.substring(idx+name.length+1);
+		var end = value.indexOf(';');
+		if(end == -1) { end = value.length; }
+		value = value.substring(0, end);
+		return value; //String
+	} else {
+		value = escape(value);
+		document.cookie = name + "=" + value + ";"	
+	}
+}
+
+
+function toggleRow(rowName, state) {
+	if (state == null) {
+		var row = byId(rowName);
+		state = (row.style.display == "none");
+	}
+	if (state) {
+		showRow(rowName);
+	} else {
+		hideRow(rowName);
+	}
+}
+
+function showRow(rowName) {
+	var row = byId(rowName);
+	row.style.display = (document.all ? "block" : "table-row");
+	var toggler = byId(row.id+"_toggler");
+	if (toggler) toggler.innerHTML = "&ndash;";	
+	cookie(row.id, "true");
+}
+
+function hideRow(rowName) {
+	var row = byId(rowName);
+	row.style.display = "none";
+	var toggler = byId(row.id+"_toggler");
+	if (toggler) toggler.innerHTML = "+";	
+	cookie(row.id, "false");
+}
+
+
+
+// this is pretty ghetto -- only handles up to 10 custom rows
+function addCustomRow(){
+	for (var i = 0; i < 100; i++) {
+		var row = byId("customRow_"+i);
+		if (row && row.style.display == "none") {
+			showRow(row);
+			break;
+		}
+	}
+}
+
+function showLoadButton(clicked) {
+	byId("existingProfile_button_cell").style.display = (clicked == "existing" ? "block" : "none");
+	byId("fileProfile_button_cell").style.display = (clicked == "file" ? "block" : "none");
+}
+
+function startup() {
+	showLoadButton("none");
+	toggleRow("startRow", cookie("startRow") != "false");
+	toggleRow("environmentRow", cookie("environmentRow") == "true");
+	toggleRow("moduleRow", cookie("moduleRow") == "true");
+	toggleRow("dependencyRow", cookie("dependencyRow") != "false");
+	toggleRow("optionsRow", cookie("optionsRow") != "false");
+}
+</script>
+
+<body>	
+<table id='outerTable'>
+	<tr><td colspan=3><h2>Dojo Builder (highly experimental)
+							<div id='version'>for version @VERSION@</div>
+						</h2></td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='startRow_label'  onclick='toggleRow("startRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='startRow_Arrow' class='labelRow_toggler'><div id='startRow_toggler' class='toggler'>&ndash;</div></td>
+				<td id='startRow_Title' class='labelRow_title'>Start with:</td>
+				<td id='startRow_Arrow' class='labelRow_values'>(empty profile)</td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr id='startRow' style='display:none'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table>
+				<tr><td class='radio'><input name='start' type=radio value='new' id='new' CHECKED onclick='showLoadButton("none")'></td>
+					<td class='radioLabel'><label for='new'>Empty profile</label></td>
+				</tr>
+				<tr><td class='radio'><input name='start' type=radio value='existing' id='existing' onclick='showLoadButton("existing")'></td>
+					<td class='radioLabel'><label for='existing'>Standard profile:</label></td>
+					<td class='field'>
+						<select>
+							<option>ajax</option>
+							<option>browserio</option>
+							<option>charting</option>
+							<option>core</option>
+							<option>dashboard</option>
+							<option>dojoWebsite</option>
+							<option>editor</option>
+							<option>event_and_io</option>
+							<option>kitchen_sink</option>
+							<option>lfx</option>
+							<option>minimal</option>
+							<option>moxie</option>
+							<option>storage</option>
+							<option>widget</option>
+						</select>		
+					</td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='button' id='existingProfile_button_cell' style='display:none;'><button class='emphasize'>Load Now</button></td>
+				</tr>
+
+				<tr><td class='radio'><input name='start' type=radio value='existing' id='file' onclick='showLoadButton("file")'></td>
+					<td class='radioLabel'><label for='file'>Profile in file:</label></td>
+					<td class='field'>
+						<input type='file'>
+					</td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='button' id='fileProfile_button_cell' style='display:none'><button  class='emphasize'>Load Now</button></td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='environmentRow_label' onclick='toggleRow("environmentRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='environmentRow_Arrow' class='labelRow_toggler'><div id='environmentRow_toggler' class='toggler'>&ndash;</div></td>
+				<td id='environmentRow_Title' class='labelRow_title'>Environments:</td>
+				<td id='environmentRow_Arrow' class='labelRow_values'>(browser)</td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr id='environmentRow' style='display:none'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table>
+				<tr><td class='check'><input type='checkbox' name='environment' id='environment_browser' value='browser' CHECKED></td>
+					<td class='checkLabel'><label for='environment_browser'>Web Browsers</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_rhino' value='rhino'></td>
+					<td class='checkLabel'><label for='environment_rhino'>Rhino</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_svg' value='svg'></td>
+					<td class='checkLabel'><label for='environment_svg'>SVG</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_jsc' value='jsc'></td>
+					<td class='checkLabel'><label for='environment_jsc'>JSC</label></td>					
+				</tr>			
+				<tr><td class='check'><input type='checkbox' name='environment' id='environment_dashboard' value='dashboard'></td>
+					<td class='checkLabel'><label for='environment_dashboard'>Apple Dashboard</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_spidermonkey' value='spidermonkey'></td>
+					<td class='checkLabel'><label for='environment_spidermonkey'>Spidermonkey</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_wsh' value='wsh'></td>
+					<td class='checkLabel'><label for='environment_wsh'>WSH</label></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input type='checkbox' name='environment' id='environment_adobesvg' value='adobesvg'></td>
+					<td class='checkLabel'><label for='environment_adobesvg'>Adobe SVG</label></td>
+				</tr>			
+			</table>
+		</td>
+		<td class='colSpacer'>&nbsp;</td>
+	</tr>
+
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='moduleRow_label' onclick='toggleRow("moduleRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='moduleRow_Arrow' class='labelRow_toggler'><div id='moduleRow_toggler' class='toggler'>&ndash;</div></td>
+				<td id='moduleRow_Title' class='labelRow_title'>Custom Modules:</td>
+				<td id='moduleRow_Arrow' class='labelRow_values'>(none)</td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr id='moduleRow' style='display:none'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table>
+				<tr><td class='overLabel'>Name</td>
+					<td class='overLabel'>Location (relative to dojo.js)</td>
+				</tr>			
+				<tr id='customRow_0'><td class='field'><input id='custom_name_0'	  class='customName'></td>
+					<td class='field'><input id='custom_location_0' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_1' style='display:none'><td class='field'><input id='custom_name_2'	  class='customName'></td>
+					<td class='field'><input id='custom_location_2' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_2' style='display:none'><td class='field'><input id='custom_name_2'	  class='customName'></td>
+					<td class='field'><input id='custom_location_2' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_3' style='display:none'><td class='field'><input id='custom_name_3'	  class='customName'></td>
+					<td class='field'><input id='custom_location_3' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_4' style='display:none'><td class='field'><input id='custom_name_4'	  class='customName'></td>
+					<td class='field'><input id='custom_location_4' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_5' style='display:none'><td class='field'><input id='custom_name_5'	  class='customName'></td>
+					<td class='field'><input id='custom_location_5' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_6' style='display:none'><td class='field'><input id='custom_name_6'	  class='customName'></td>
+					<td class='field'><input id='custom_location_6' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_7' style='display:none'><td class='field'><input id='custom_name_7'	  class='customName'></td>
+					<td class='field'><input id='custom_location_7' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_8' style='display:none'><td class='field'><input id='custom_name_8'	  class='customName'></td>
+					<td class='field'><input id='custom_location_8' class='customLocation'></td>
+				</tr>			
+				<tr id='customRow_9' style='display:none'><td class='field'><input id='custom_name_9'	  class='customName'></td>
+					<td class='field'><input id='custom_location_9' class='customLocation'></td>
+				</tr>			
+
+				<tr><td class='labelRow_toggler' style='padding-top:5px'><div id='moduleRow_toggler' class='toggler' onclick='addCustomRow()'>+</div></td>
+			</table>
+		</td>
+		<td class='colSpacer'>&nbsp;</td>
+	</tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='dependencyRow_label' onclick='toggleRow("dependencyRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='dependencyRow_Arrow' class='labelRow_toggler'><div id='dependencyRow_toggler' class='toggler'>&ndash;</div></td>
+				<td id='dependencyRow_Title' class='labelRow_title'>Files to load:</td>
+				<td id='dependencyRow_Arrow' class='labelRow_values'></td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr id='dependencyRow'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table>
+				<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+				<tr><td id='xdDojoUrlDisplay' class='fieldLabel'>XDomain Dojo path:</td>
+					<td id="xdDojoUrl" class='field'>blah blah blah</td>
+
+				</tr>
+				<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+			</table>
+			<table width=100%>
+				<tr><td class='textarea'><textarea id='dependencyList'></textarea></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='tree'><div id='treeContainer'></div></td>
+				</tr>			
+				<tr><td class='underLabel'>Enter file names separated by commas. <br> 
+											"Quotes" around file names are optional.</td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='underLabel'>Double click items above to add them to the list.</td>
+				</tr>			
+			</table>
+		</td>
+		<td class='colSpacer'>&nbsp;</td>
+	</tr>
+
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='optionsRow_label' onclick='toggleRow("optionsRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='optionsRow_Arrow' class='labelRow_toggler'><div id='optionsRow_toggler' class='toggler'>&ndash;</div></td>
+				<td id='optionsRow_Title' class='labelRow_title'>Options</td>
+				<td id='optionsRow_Arrow' class='labelRow_values'></td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr id='optionsRow'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table>
+				<tr><td class='fieldLabel'>Profile name:</td>
+					<td class='field'><input id='profileName'></td>
+					<td class='colSpacer'>&nbsp;</td>
+					<td class='check'><input id='tellDojo' type='checkbox'></td>
+					<td class='checkLabel'><label for='tellDojo'>Let dojo know about this profile</label><br>
+																	<span class='note'>(anonymous, for usage pattern info gathering only)</span></td>
+				</tr>			
+
+				<tr><td class='check'><input id='strip' type='checkbox'></td>
+					<td class='checkLabel'><label for='strip'>Strip whitespace</label></td>
+				</tr>			
+
+				<tr><td class='check'><input id='removeComments' type='checkbox'></td>
+					<td class='checkLabel'><label for='removeComments'>Remove comments</label></td>
+				</tr>			
+
+				<tr><td class='check'><input id='compress' type='checkbox'></td>
+					<td class='checkLabel'><label for='compress'>Compress the contents (very slow)</label></td>
+				</tr>			
+<!--
+-->
+			</table>
+		</td>
+		<td class='colSpacer'>&nbsp;</td>
+	</tr>
+	
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='labelRow outsetBorder' id='goRow_label' onclick='toggleRow("goRow")'>
+			<table class='labelRow_table' width=100% cellpadding=1><tr>
+				<td id='goRow_Title' class='labelRow_title'>&nbsp;&nbsp;Go!</td>
+				<td id='goRow_Arrow' class='labelRow_values'></td>
+			</tr></table>
+		</td>
+	</tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr id='goRow'>
+		<td class='colSpacer'>&nbsp;</td>
+		<td>
+			<table width=100%>
+				<tr><td class='button' style='text-align:center'>
+							<button id='buildit'>Build it</button><br><br>
+					</td>
+				</tr>			
+				<tr><td style='text-align:center'>
+							Building can take a while, please be patient.<br>
+							After the build is complete, save the resulting "dojo.js" file and you're done.
+					</td>
+				</tr>			
+
+			</table>
+		</td>
+		<td class='colSpacer'>&nbsp;</td>
+	</tr>
+
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+	<tr><td colspan=3 class='rowSpacer'>&nbsp;</td></tr>
+
+</table>
+
+<script>
+	startup()
+</script>
+</body>
+</html>

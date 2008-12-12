@@ -1,0 +1,41 @@
+Drupal
+======
+
+Installing Drupal
+=================
+
+http://drupal.org/drupal-5.7 (tested on 5.7 at the time of this writing)
+http://drupal.org/getting-started/5/install
+
+Installing Libraries
+====================
+
+Read the EXTERNALS file in jsdoc/lib
+
+Installing the Module
+=====================
+
+http://drupal.org/node/70151
+Drop the jsdoc folder into sites/all/modules
+
+Enable the Module
+=================
+
+Enable in: Administer->Site building->Modules
+
+Configure
+=========
+
+* Fill in the configuration in: Administer->Site configuration->JavaScript Documentation
+** The file should be run from the docscripts directory
+** The file used to parse code is dojo.inc (in the includes directory).
+** Both should be full paths
+** The base is "dojo"
+* Copy one of the files in docscripts/modules (dojox.module is the best) if you want to
+  support your project. Function names should begin with the module name.
+  eg dojo.module's functions start with "dojo"
+
+Run Cron
+========
+
+In the base of your Drupal folder, you'll see cron.php. Run this in the browser
