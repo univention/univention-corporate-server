@@ -60,9 +60,8 @@ install: build-stamp
 	
 	# start the build
 	cd dojo-release-1.1.1-src/util/buildscripts; \
-	./build.sh profile=univention action=release version='1.1.1-reservierung' releaseDir=${D}${INSTDIR} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
+	./build.sh profile=univention action=release version='1.1.1' releaseDir=${D}${INSTDIR} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
 	# provide link
-	echo "${INSTDIR} /var/www/unidojo" > debian/links
 
 binary-indep: build install
 	dh_testdir -i
