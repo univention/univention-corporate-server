@@ -57,12 +57,8 @@ install: build
 	install -m644 icon/submods/*.* $(D)/usr/share/univention-webui-style/icon/submods/
 	install -m644 style/*.* $(D)/usr/share/univention-webui-style/style/
 
-	#univention-webui-style-base
-	install -m644 overview/icon/*.* $(D)-base/usr/share/univention-webui-style/icon/
-	install -m644 overview/style/*.* $(D)-base/usr/share/univention-webui-style/style/
-
 	find ${D} -name CVS | xargs rm -rf
-	
+
 	univention-install-baseconfig
 
 binary-arch: build install

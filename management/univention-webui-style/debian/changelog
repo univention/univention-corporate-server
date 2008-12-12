@@ -1,3 +1,10 @@
+univention-webui-style (2.1.0-1) unstable; urgency=low
+
+  * add dojo/dijit styles
+  * move overview-icons and styles into default directories
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Dec 2008 14:35:43 +0100
+
 univention-webui-style (2.0.1-4) unstable; urgency=low
 
   * Small spelling fix.
