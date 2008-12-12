@@ -2,7 +2,7 @@
 
 /* DEBUG BORDER
 table, tr, td{
-border-width:1px !important;
+border-width:1px !importantx;
 border-style:solid !important;
 border-color:#000000 !important;
 }
@@ -945,6 +945,8 @@ border-style:none;
 
 .date,
 .date_warn,
+.date_widget,
+.date_widget_warn,
 .text,
 .text_warn{
 height:15px;
@@ -968,6 +970,11 @@ height:70px;
 .date,
 .date_warn{
 width:25px;
+}
+
+.date_widget,
+.date_widget_warn{
+width:120px;
 }
 
 .text,
@@ -995,8 +1002,10 @@ width:310px;
 .mselect,
 .select,
 .date_warn,
+.date_widget,
+.date_widget_warn,
 .text_warn,
-i.file_warn,
+.file_warn,
 .longtext_warn,
 .mselect_warn,
 .select_warn{
@@ -1005,6 +1014,7 @@ border-bottom-color:#CCCCCC;
 }
 
 .date,
+.date_widget,
 .text,
 .file,
 .longtext{
@@ -1019,6 +1029,7 @@ border-left-color:#EEEEEE;
 }
 
 .date_warn,
+.date_widget_warn,
 .file_warn,
 .text_warn,
 .longtext_warn,
@@ -1029,6 +1040,8 @@ border-left-color:#CC0033;
 }
 
 
+.date_widget,
+.date_widget_warn,
 .date,
 .date_warn{
 text-align:center;
@@ -1178,6 +1191,11 @@ tr.desktopicon,td.desktopicon {
 	padding: 10px;
 }
 
+.umc_frame .h4 {
+    padding-bottom: 5px;
+    padding-bottom: 5px;
+}
+
 /* cols and rows */
 .umc_list_element,
 .umc_list_element_part_left,
@@ -1186,10 +1204,10 @@ tr.desktopicon,td.desktopicon {
 .umc_list_head_first,
 .umc_list_head_second,
 .umc_list_head {
-	padding-left: 10px;
-	padding-right: 25px;
-	padding-top: 5px;
-	padding-bottom: 5px;
+	padding-left: 8px;
+	padding-right: 15px;
+	padding-top: 3px;
+	padding-bottom: 3px;
 }
 
 .umc_list_element_number {
@@ -1201,7 +1219,8 @@ td.umc_list_head_second {
 	align: center;
 	text-align:left;
     border-bottom: 1px solid white;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
 }
 
 .umc_list_inactive {
@@ -1249,4 +1268,255 @@ td.umc_list_element_part_right {
         font-weight: bold;
         color: #000000;
         margin: 10px 0 10px 0;
+}
+
+/* ############ DOJO-Layout ############### */
+
+/* Calendar*/
+	
+.dijitCalendarIncrementControl {
+	/* next/prev month buttons */
+	width:15px;
+	height:15px;
+
+}
+.dj_ie6 .dijitCalendarIncrementControl {
+	padding:.1em;
+	font-size:.1em;
+}
+
+/*
+.dijitCalendarIncreaseInner,
+.dijitCalendarDecreaseInner {
+	visibility:hidden;
+}
+
+.dijitCalendarDecrease {
+	background:url("images/spriteRoundedIconsSmall.png") no-repeat top left;
+}
+.dj_ie6 .dijitCalendarDecrease {
+	background:url("images/spriteRoundedIconsSmall.gif") no-repeat top left;
+}
+
+.dijitCalendarIncrease {
+	background:url("images/spriteRoundedIconsSmall.png") no-repeat -30px top;
+}
+.dj_ie6 .dijitCalendarIncrease {
+	background:url("images/spriteRoundedIconsSmall.gif") no-repeat -30px top;
+}
+*/
+
+table.dijitCalendarContainer {
+	font-size: 100%;
+	border-spacing: 0;
+	border-collapse: separate;
+	border: 1px solid #ccc;
+	margin: 0;
+}
+
+.dijitCalendarMonthContainer th {
+	/* month header cell */
+	/* background:#d3d3d3 url("images/titleBar.png") repeat-x top; */
+	padding-top:.3em;
+	padding-bottom:.2em;
+	text-align:center;
+}
+.dj_ie6 .dijitCalendarMonthContainer th {
+	padding-top:.1em;
+	padding-bottom:0em;
+}
+
+.dijitCalendarDayLabelTemplate {
+	/* day of week labels */
+	/* background:white url("images/calendarDayLabel.png") repeat-x bottom; */
+	font-weight:normal;
+	padding-top:.15em;
+	padding-bottom:0em;
+	border-top: 1px solid #eeeeee;
+	color:#293a4b;
+	text-align:center;
+}
+
+.dijitCalendarBodyContainer {
+	border-bottom: 1px solid #eeeeee;	
+}
+
+.dijitCalendarMonthLabel {
+	color:#293a4b;
+	font-weight: bold;
+}
+
+.dj_ie7 .dijitCalendarDateTemplate,
+.dj_ie6 .dijitCalendarDateTemplate {
+	font-size: 0.8em;
+}
+
+.dijitCalendarDateTemplate {
+	/* style for each day cell */
+	font-size: 0.9em;
+	font-weight: bold;
+	text-align: center;
+	padding: 0.3em 0.3em 0.05em 0.3em;
+	letter-spacing: 1px;
+}
+
+
+.dijitCalendarPreviousMonth,
+.dijitCalendarNextMonth 		{
+	/* days that are part of the previous or next month */
+	color:#999999;
+	background-color:#f8f8f8 !important;
+}
+
+.dijitCalendarPreviousMonthDisabled,
+.dijitCalendarNextMonthDisabled	{
+	/* days that are part of the previous or next month - disabled*/
+	background-color:#a4a5a6 !important;
+}
+
+.dijitCalendarCurrentMonth {
+	/* days that are part of this month */
+	background-color:white !important;
+}
+
+.dijitCalendarCurrentMonthDisabled {
+	/* days that are part of this month - disabled */	
+	background-color:#bbbbbc !important;
+}
+
+.dijitCalendarCurrentDate {
+	/* cell for today's date */
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.dijitCalendarCurrentDate {
+	/* cell for today's date */
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.dijitCalendarSelectedDate {
+	/* cell for the selected date */
+	background-color:#bbc4d0 !important;
+	color:black !important;
+}
+.dijitCalendarYearContainer {
+	/* footer of the table that contains the year display/selector */
+	/* background:white url("images/calendarYearLabel.png") repeat-x bottom; */
+	border-top:1px solid #ccc;
+}
+
+.dijitCalendarYearLabel {
+	/* container for all of 3 year labels */
+	margin:0;
+	padding:0.4em 0 0.25em 0;
+	text-align:center;
+}
+
+.dijitCalendarSelectedYear {
+	/* label for selected year */
+	color:black;
+	padding:0.2em;
+	padding-bottom:0.1em;
+	background-color:#bbc4d0 !important;
+}
+
+.dijitCalendarNextYear,
+.dijitCalendarPreviousYear {
+	/* label for next/prev years */
+	color:black !important;
+	font-weight:normal;
+}
+/* ############ Customized DOJO-Layout ############### */
+
+.dijitTextBox {
+	background-color:#FFFFFF !important;
+	height:15px;
+	width:120px;
+	border-right-color:#CCCCCC;
+	border-bottom-color:#CCCCCC;
+	border-top-color:#666666;
+	border-left-color:#666666;
+//	    border:0pt none;
+//	    margin:0pt;
+//	    padding:0pt;
+//	    position:absolute;
+//	    width:120px;
+}
+
+table.dijitCalendarContainer {
+        background-color:#EEEEEE !important;
+        height:15px;
+        width:120px;
+	border-width:1px !important;
+	border-style:solid !important;
+        border-right-color:#CCCCCC;
+        border-bottom-color:#CCCCCC;
+        border-top-color:#666666;
+        border-left-color:#666666;
+//          border:0pt none;
+//          margin:0pt;
+//          padding:0pt;
+//          position:absolute;
+//          width:120px;
+}
+
+.dijitCalendarMonthContainer{
+        background-color:#CCCCCC !important;
+        color=#FFFFFF !important;
+        height:15px;
+        width:120px;
+        border-right-color:#CCCCCC;
+        border-bottom-color:#CCCCCC;
+        border-top-color:#666666;
+        border-left-color:#666666;
+}
+.dijitCalendarYearLabel{
+        background-color:#CCCCCC !important;
+        color=#FFFFFF !important;
+        height:15px;
+        width:120px;
+        border-right-color:#CCCCCC;
+        border-bottom-color:#CCCCCC;
+        border-top-color:#666666;
+        border-left-color:#666666;
+}
+
+.dijitCalendarIcon {
+background-image:url(icon-1day.gif);
+background-repeat:no-repeat;
+float:right;
+height:15px;
+width:15px;
+}
+
+// FormFill
+
+//.dijitReset {
+//font-size: 11px;
+//}
+
+.dijitComboBox,
+.dijitValidationIcon,
+.dijitArrowButton,
+.dijitArrowButtonInner {
+height:17px;
+}
+.dijitArrowButton,
+.dijitArrowButtonInner {
+width:12px !important;
+}
+
+.dijitTextBox input, .dijitComboBox input, .dijitSpinner input {
+font-size: 11px;
+}
+
+.tundra .dijitTextBox, 
+.tundra .dijitComboBox, 
+.tundra .dijitSpinner, 
+.tundra .dijitInlineEditor input {
+background:#FFFFFF;
+border:1px solid #B3B3B3;
+line-height:normal;
 }

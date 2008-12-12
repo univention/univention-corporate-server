@@ -10,9 +10,16 @@ univention-webui-style (2.0.1-3) unstable; urgency=low
 
  -- Andre Fenske <fenske@univention.de>  Wed,  3 Dec 2008 14:20:09 +0100
 
+univention-webui-style (2.0.1-2) unstable; urgency=low
+
+  * Add the dijitCalendarIcon (For Bug #12038)
+
+ -- Arvid Requate <requate@univention.de>  Fri, 26 Sep 2008 10:54:52 +0200
+
 univention-webui-style (2.0.1-1) unstable; urgency=low
 
   * fix the apache2/startsite issue, Bug #12425.
+  * add css-options for dojo ComboBox (question_dojo_combobox) and FilteringSelect (question_dojo_select)
 
  -- Stefan Gohmann <gohmann@univention.de>  Fri, 14 Nov 2008 09:00:11 +0100
 
@@ -33,6 +40,13 @@ univention-webui-style (2.0.0-1) unstable; urgency=low
   * add icons for CSV and PDF reports
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jun 2008 08:50:06 +0200
+
+univention-webui-style (1.2.1-1) unstable; urgency=low
+
+  * use https for the link to the DC Master
+  * show the DC Master link if ldap/master is set
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  9 Jun 2008 20:05:55 +0200
 
 univention-webui-style (1.2.1-1) unstable; urgency=low
 
