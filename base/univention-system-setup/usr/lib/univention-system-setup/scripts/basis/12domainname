@@ -77,7 +77,7 @@ fi
 
 if [ "$ldap_available" = 1 ]; then
 
-	kerberos_realm="`echo $kerberos_realm | tr [[lower]] [[upper]]`"
+	kerberos_realm="`echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]'`"
 	echo `date` : "Configure Kerberos principal name of host in LDAP: " host/$hostname.$new_domainname@$kerberos_realm  >> /var/log/univention/setup.log
 	echo "dn: $ldap_hostdn" >/var/cache/univention-system-setup/krb5principal.rename.ldif
 	echo "changetype: modify" >>/var/cache/univention-system-setup/krb5principal.rename.ldif
@@ -207,8 +207,8 @@ eval $(univention-config-registry shell)
 
 echo `date` : "Setting new hostname into effect for Kerberos : $hostname.$new_domainname@$kerberos_realm"  >> /var/log/univention/setup.log
 rm -f /etc/krb5.keytab
-kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])"
-kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr [[:lower:]] [[:upper:]])"
+kadmin -l ext "host/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
+kadmin -l ext "ldap/$hostname.$new_domainname@$(echo $kerberos_realm | tr '[[:lower:]]' '[[:upper:]]')"
 
 if [ "$ldap_available" = 1 ]; then
 
@@ -388,11 +388,11 @@ if [ "$ldap_available" = 1 ]; then
 
 			# Copy DNS Service Records from the old to the new DNS Domain
 			echo `date` : "Copy SRV Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" sRVRecord="* $hostname.$old_domainname." -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$hostname.$old_domainname\.|$hostname.$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			ldapsearch -x -D "$binddn" -w "$bindpwd" sRVRecord="* $hostname.$old_domainname." -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$hostname.$old_domainname\.|$hostname.$new_domainname.|g;s|: $old_domainname\$|: $new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
 
 			# Copy Alias Records from the old to the new DNS Domain
 			echo `date` : "Copy Alias Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" "(|(cNAMERecord=$hostname)(cNAMERecord=$hostname.$old_domainname.))" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			ldapsearch -x -D "$binddn" -w "$bindpwd" "(|(cNAMERecord=$hostname)(cNAMERecord=$hostname.$old_domainname.))" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|: $old_domainname\$|: $new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
 
 			# Modify Alias Records in the old DNS Domain to point to the new DNS Domain
 			echo `date` : "Modify Alias Records in the old domain to point to the new domain:" $new_domainname  >> /var/log/univention/setup.log
@@ -402,7 +402,7 @@ if [ "$ldap_available" = 1 ]; then
 
 			# Copy TXT Records from the old to the new DNS Domain
 			echo `date` : "Copy TXT Records to the new domain:" $new_domainname  >> /var/log/univention/setup.log
-			ldapsearch -x -D "$binddn" -w "$bindpwd" "(tXTRecord=*)" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|$old_domainname\$|$new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
+			ldapsearch -x -D "$binddn" -w "$bindpwd" "(tXTRecord=*)" -LLL -b zoneName=$old_domainname,cn=dns,$ldap_base | sed -e "s|$old_domainname,|$new_domainname,|g;s|$old_domainname\.|$new_domainname.|g;s|: $old_domainname\$|: $new_domainname|g" | ldapadd -x -D "$binddn" -w "$bindpwd"
 		fi
 
 	done
