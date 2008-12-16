@@ -1,3 +1,9 @@
+univention-directory-manager (5.0.7-12) unstable; urgency=low
+
+  * preselect domain in "superordinates search"
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 16 Dec 2008 16:06:17 +0100
+
 univention-directory-manager (5.0.7-11) unstable; urgency=low
 
   * Added LDAP-Filter to different syntaxes. Bug #12652

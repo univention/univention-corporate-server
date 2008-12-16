@@ -774,8 +774,10 @@ class modwizard(unimodule.unimodule):
 
 		path_preselect=self.save.get('wizard_path')
 		if not path_preselect:
-			if pathlist:
+			if pathlist and not hasattr(search_module,"wizardsuperordinates"):
 				path_preselect=allstr
+			elif pathlist and hasattr(search_module,"wizardsuperordinates"):
+				path_preselect=domainstr
 			else:
 				path_preselect=domainstr
 
