@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-30 09:44+0200\n"
-"PO-Revision-Date: 2008-06-30 09:44+0200\n"
+"POT-Creation-Date: 2008-06-16 13:09+0200\n"
+"PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,7 @@ msgstr "Abmeldung erfolgreich"
 #: unidialog.py:119
 #, python-format
 msgid "error while modifying: %s %s"
-msgstr "WÃ€hrend des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
 #: mapping/buttons.py:147
 msgid "Do"
@@ -172,6 +172,26 @@ msgstr "Aktuell"
 #: mapping/dynamics.py:448
 msgid "choose objects to remove"
 msgstr "Wählen Sie die zu entfernenden Objekte aus."
+
+#: mapping/dynamics.py:591
+msgid "Select a file"
+msgstr "Datei auswählen"
+
+#: mapping/dynamics.py:592
+msgid "Upload file"
+msgstr "Datei hochladen"
+
+#: mapping/dynamics.py:592
+msgid "Upload selected file"
+msgstr "Ausgewählte Datei hochladen"
+
+#: mapping/dynamics.py:597
+msgid "Remove"
+msgstr "Entfernen"
+
+#: mapping/dynamics.py:597
+msgid "Delete file"
+msgstr "Datei entfernen"
 
 #: pages/about.py:46
 msgid "About"

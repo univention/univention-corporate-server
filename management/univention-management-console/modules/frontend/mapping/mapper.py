@@ -35,12 +35,15 @@ _mappers = {}
 
 class IMapper( object ):
 	def layout( self, storage, umcp_part ):
+		ud.debug(ud.ADMIN, ud.ERROR, 'mapper.py: no layout function defined!')
 		pass
 
 	def apply( self, storage, umcp_part, params, *args ):
+		ud.debug(ud.ADMIN, ud.ERROR, 'mapper.py: no apply function defined!')
 		return False
 
 	def parse( self, storage, umcp_part, params ):
+		ud.debug(ud.ADMIN, ud.ERROR, 'mapper.py: no parse function defined!')
 		return  None
 
 def add( type, mapper ):
@@ -59,6 +62,7 @@ def layout( type, storage, umcp_part ):
 		else:
 			return _mappers[ type ]( storage, umcp_part )
 
+	ud.debug(ud.ADMIN, ud.ERROR, 'mapper.py: type "%s" in _mappers not found' % type)
 	return  None
 
 def apply( type, storage, umcp_part, parameters, *args ):

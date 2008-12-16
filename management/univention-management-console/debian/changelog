@@ -1,3 +1,9 @@
+univention-management-console (0.9.1002-1) unstable; urgency=low
+
+  * merged file upload widget (Bug #11378)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 16 Dec 2008 11:24:17 +0100
+
 univention-management-console (0.9.1001-3) unstable; urgency=low
 
   * Added UCR Warning.

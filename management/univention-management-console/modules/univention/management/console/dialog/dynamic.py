@@ -157,4 +157,27 @@ class ObjectSelect( input.Input ):
 		self.scope = scope
 		self.save = {}
 
-DynamicTypes = ( type( DynamicList() ), type( MultiValue() ), type( ObjectSelect() ) )
+
+class FileUpload( input.Input ):
+	'''
+		 |-------------------------------------|
+		 | File 1    (X) Remove                |
+		 | File 2    (X) Remove                |
+		 | File ...  (X) Remove                |
+		 | File n    (X) Remove                |
+		 |-------------------------------------|
+		 | <uploadfield with searchbutton>     |
+		 |-------------------------------------|
+		 | <upload-button>                     |
+		 |-------------------------------------|
+
+		 maxfiles = maximum number of files that can be uploaded (0 = unlimited)
+	'''
+	def __init__( self, option = ( None, None ), default = None, maxfiles = 0 ):
+		input.Input.__init__( self, option )	
+		self.maxfiles = maxfiles
+		self.save = {}
+		if default:
+			self.save['uploadFilelist'] = default
+
+DynamicTypes = ( type( DynamicList() ), type( MultiValue() ), type( ObjectSelect() ), type( FileUpload() ) )
