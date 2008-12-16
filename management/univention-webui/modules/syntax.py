@@ -374,7 +374,7 @@ class question_syntax(uniconf.uniconf):
 				self.subfields.append(question_ltext(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
 				self.subobjs.append(self.subfields[0])
 			elif self.syntax.name == 'file' or self.syntax.name == 'binaryfile':
-				self.subfields.append(question_file(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
+				self.subfields.append(question_file(name,self.atts,{"usertext":value,"filename":"","filesize":"","filetype":"","fileerror":"","helptext":self.args.get('helptext', '')}))
 				self.subobjs.append(self.subfields[0])
 			else:
 				self.subfields.append(question_text(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))

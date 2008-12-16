@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 from uniconf import *
+import univention.debug as ud
 	
 class question(uniconf):
 	def mytype(self):
@@ -127,8 +128,8 @@ class question_choice(question):
 				self.choicelist[x]["selected"]="ascii-null-escape"
 		if self.args.has_key("button"):
 			self.subobjs.append(self.args["button"])
- 	def myxvars(self):
- 		v={}
+	def myxvars(self):
+		v={}
 		for c in self.args.get("choicelist",[]):
 			if c.get("name")=='0':
 				c["name"]="ascii-null-escape"
@@ -136,7 +137,7 @@ class question_choice(question):
 				c["selected"]="ascii-null-escape"
 			if c.get("name",None):
 				v[c["name"]]=c.get("selected",None)
- 		return v
+		return v
 
 	def reprchoice(self,xmlob,choice,node):
 		choicetag=xmlob.createElement("choice")
@@ -152,7 +153,7 @@ class question_choice(question):
 
 		if choice.has_key("level"): # is an attr of choice
 			choicetag.setAttribute("level",choice["level"])
-		
+
 		return xmlob
 
 	def getselected(self):
@@ -174,8 +175,7 @@ class question_select(question_choice):
 class question_mselect(question_select):
 	def mytype(self):
 		return "question_mselect"
-	
-	
+
 	def getselected(self):
 		selected=[]
 		for selection in self.choicelist:
@@ -185,11 +185,44 @@ class question_mselect(question_select):
 					else:
 						selected.append(selection["name"])
 		return selected
-		
+
 
 class question_file(question_text):
 
 	def mytype(self):
 		return "question_file"
 
+	def __split_fields(self):
+		text=self.xvars.get("usertext")
+		if text and '@|@' in text:
+			ud.debug(ud.ADMIN, ud.INFO, 'question.py: question_file: usertext=%s' % text)
+			tmpfile, fname, fsize, ftype, ferror = text.split('@|@')
+			self.xvars['usertext'] = tmpfile.replace('||', '|')
+			self.xvars['filename'] = fname.replace('||', '|')
+			self.xvars['filesize'] = fsize.replace('||', '|')
+			self.xvars['filetype'] = ftype.replace('||', '|')
+			self.xvars['fileerror'] = ferror.replace('||', '|')
 
+	def get_filename(self):
+		self.__split_fields()
+		return self.xvars.get("filename")
+
+	# warning: optional value: sometimes value is not set!
+	def get_filesize(self):
+		self.__split_fields()
+		return self.xvars.get("filesize")
+
+	def get_filetype(self):
+		self.__split_fields()
+		return self.xvars.get("filetype")
+
+	def get_fileerror(self):
+		self.__split_fields()
+		return self.xvars.get("fileerror")
+
+	def get_input(self):
+		self.__split_fields()
+		text=self.xvars.get("usertext")
+		if text:
+			return text.strip()
+		return None

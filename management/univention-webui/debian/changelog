@@ -1,3 +1,9 @@
+univention-webui (1.3.7-1) stable; urgency=low
+
+  * added file upload widget
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 12 Jun 2008 10:18:54 +0200
+
 univention-webui (1.3.6-4) stable; urgency=low
 
   * fixed LDAP_Search syntax (Bug: #12643)
