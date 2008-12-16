@@ -119,3 +119,10 @@ def _dnlist_input( option, **kwargs ):
 	return dynamic.ObjectSelect( option, **kwargs )
 
 register( values.ObjectDNList, _dnlist_input )
+
+# FileUpload
+def _fileupload_input( option, **kwargs ):
+	name, syntax = option
+	return dynamic.FileUpload( option, **kwargs )
+
+register( values.FileUploader, _fileupload_input )

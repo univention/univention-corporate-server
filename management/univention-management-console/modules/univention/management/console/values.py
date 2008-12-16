@@ -264,3 +264,7 @@ class IntegerList( MultiValue ):
 class ObjectDNList( StringList ):
 	def __init__( self, label, required = True, may_change = True ):
 		StringList.__init__( self, label, required = required, may_change = may_change )
+
+class FileUploader( StringList ):
+	def __init__( self, label, required = True, may_change = True ):
+		StringList.__init__( self, label, required = required, may_change = may_change )

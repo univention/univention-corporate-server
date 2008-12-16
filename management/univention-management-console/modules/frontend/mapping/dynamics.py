@@ -29,7 +29,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import copy
+import copy, tempfile, os
 
 import mapper
 import buttons
@@ -565,3 +565,101 @@ class ObjectSelectMap( mapper.IMapper ):
 		raise umc.SyntaxError( dyn )
 
 mapper.add( umcd.ObjectSelect, ObjectSelectMap() )
+
+
+
+class FileUploadMap( mapper.IMapper ):
+	def __init__( self ):
+		mapper.IMapper.__init__( self )
+
+	def layout( self, storage, umcp_part ):
+		# |----------------------------------------------------------|
+		# | File 1    (X) Remove                                     |
+		# | File 2    (X) Remove                                     |
+		# | File ...  (X) Remove                                     |
+		# | File n    (X) Remove                                     |
+		# |----------------------------------------------------------|
+		# | <uploadfield with searchbutton>                          |
+		# |----------------------------------------------------------|
+		# | <upload-button>                                          |
+		# |----------------------------------------------------------|
+
+		save = umcp_part.save
+		cols = []
+
+		fileDeleteBtnList = []
+		fileBrowseBtn = question_file( _('Select a file'), {} , {"helptext":_("Select a file")})
+		fileLoadBtn = button(_("Upload file"),{'icon':'/style/ok.gif'},{"helptext":_("Upload selected file")})
+
+		filelist = save.get('uploadFilelist',[])
+		rows = []
+		for entry in filelist:
+			btn = button(_("Remove"),{'icon':'/style/cancel.gif'},{"helptext":_("Delete file")})
+			fileDeleteBtnList.append( btn )
+			rows.append( tablerow("",{},{"obs":[
+									tablecol('',{}, {'obs': [
+										htmltext("",{},{'htmltext':[ entry['filename']]})
+									]}),
+									tablecol('',{}, {'obs': [
+										htmltext("",{},{'htmltext':['&nbsp;']})
+									]}),
+									tablecol('',{}, {'obs': [
+										btn
+									]}),
+								]})
+						)
+		if umcp_part.maxfiles == 0 or len(filelist) < umcp_part.maxfiles:
+			rows.extend( [tablerow("",{},{"obs":[
+										tablecol('',{}, {'obs': [
+											fileBrowseBtn
+										]}),
+									]}),
+							tablerow("",{},{"obs":[
+										tablecol('',{}, {'obs': [
+											#upload button
+											fileLoadBtn
+										]}),
+									]})] )
+		if rows:
+			cols.append(tablecol('',{'type':'tab_layout'}, {'obs': [table("",{'type':'multi'},{"obs":   rows,   })]}))
+
+		storage[ umcp_part.id() ] = ( ( save, fileBrowseBtn, fileLoadBtn, fileDeleteBtnList ), umcp_part )
+
+		return table( '', { 'border' : '0' }, { 'obs' : cols } )
+
+
+	def apply( self, storage, dyn, params ):
+		( save, fileBrowseBtn, fileLoadBtn, fileDeleteBtnList ) = params
+
+		ud.debug(ud.ADMIN, ud.INFO, 'FileUploadMap:apply: fileBrowseBtn=%s' % fileBrowseBtn.__dict__)
+		ud.debug(ud.ADMIN, ud.INFO, 'FileUploadMap:apply: fileLoadBtn=%s' % fileLoadBtn.__dict__)
+		if fileLoadBtn.pressed():
+			if fileBrowseBtn.get_input() and fileBrowseBtn.get_filename():
+				tmpUploadFn=tempfile.mkstemp('.uploadFile.tmp', 'univention-management-console.', '/tmp/webui')[1]
+				os.rename(fileBrowseBtn.get_input(), tmpUploadFn)
+
+				filelist = save.get('uploadFilelist',[])
+				filelist.append( { 'filename': fileBrowseBtn.get_filename(),
+								   'tmpfname': tmpUploadFn } )
+				save['uploadFilelist'] = filelist
+			else:
+				ud.debug(ud.ADMIN, ud.ERROR, 'dynamics.py:FileUploadMap:apply: no (temporary) filename given')
+			return True
+
+		for i in range(len(fileDeleteBtnList)):
+			if fileDeleteBtnList[i].pressed():
+				filelist = save.get('uploadFilelist',[])
+				os.remove( filelist[i]['tmpfname'] )
+				del filelist[i]
+				save['uploadFilelist'] = filelist
+				return True
+
+		return False
+
+
+	def parse( self, storage, dyn, params ):
+		( save, fileBrowseBtn, fileLoadBtn, fileDeleteBtnList ) = params
+		return save.get('uploadFilelist', [])
+
+
+mapper.add( umcd.FileUpload, FileUploadMap() )
