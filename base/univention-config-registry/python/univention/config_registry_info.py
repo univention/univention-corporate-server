@@ -255,3 +255,4 @@ class ConfigRegistryInfo( object ):
 def set_language( lang ):
 	global _locale
 	_locale = lang
+	uit.set_language(lang)

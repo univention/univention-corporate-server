@@ -30,6 +30,7 @@
 
 import operator
 import string
+import locale
 
 import univention.management.console as umc
 import univention.management.console.dialog as umcd
@@ -37,9 +38,15 @@ import univention.management.console.protocol as umcp
 
 import univention.debug as ud
 
-from univention.config_registry_info import ConfigRegistryInfo
+from univention.config_registry_info import ConfigRegistryInfo, set_language
 
 import _types
+
+locale_language_code=locale.getlocale(locale.LC_MESSAGES)[0]
+if len(locale_language_code) >= 2:
+	locale_language_code=locale_language_code[:2] # get ISO 3166-1 alpha-2 code
+	set_language(locale_language_code)
+del locale_language_code
 
 _ = umc.Translation( 'univention.management.console.handlers.baseconfig' ).translate
 
