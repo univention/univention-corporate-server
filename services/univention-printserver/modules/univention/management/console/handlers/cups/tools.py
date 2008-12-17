@@ -94,7 +94,7 @@ def parse_lpstat_o( buffer ):
 	for line in buffer:
 		if not line: continue
 		job, owner, size, date = line.split( None, 3 )
-		job_id = job.split( '-' )[ 1 ]
+		job_id = job.split( '-' )[ -1 ]
 		jobs.append( ( job_id, owner, size, date ) )
 
 	return jobs
