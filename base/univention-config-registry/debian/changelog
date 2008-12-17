@@ -1,3 +1,9 @@
+univention-config-registry (3.0.6-10) unstable; urgency=low
+
+  * Fixed: set_language() (Bug #9894)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Wed, 17 Dec 2008 09:31:29 +0100
+
 univention-config-registry (3.0.6-9) unstable; urgency=low
 
   * Removed UCR Warning. Bug #12657#
