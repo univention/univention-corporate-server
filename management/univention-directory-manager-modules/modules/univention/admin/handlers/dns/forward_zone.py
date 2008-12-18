@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import sys, string
+import re, sys, string
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.localization
@@ -265,7 +265,13 @@ class object(univention.admin.handlers.simpleLdap):
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleLdap._ldap_modlist(self)
 		if self.hasChanged(['nameserver', 'contact', 'serial', 'refresh', 'retry', 'expire', 'ttl']):
-
+			ipaddr = re.compile ('^([0-9]{1,3}\.){3}[0-9]{1,3}$') # matches ip addresses - they shouldn't end with a dot!
+			if len (self['nameserver'][0]) > 0 \
+				and ipaddr.match (self['nameserver'][0]) == None \
+				and self['nameserver'][0].find (':') == -1 \
+				and self['nameserver'][0].find ('.') != -1 \
+				and not self['nameserver'][0][-1] == '.':
+				self['nameserver'][0] = '%s.' % self['nameserver'][0]
 			soa='%s %s %s %s %s %s %s' % (self['nameserver'][0], self['contact'].replace('@','.',1), self['serial'], self['refresh'], self['retry'], self['expire'], self['ttl'])
 			ml.append(('sOARecord', self.oldattr.get('sOARecord', []), [soa]))
 		return ml
