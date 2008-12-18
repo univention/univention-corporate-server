@@ -1,3 +1,9 @@
+univention-directory-reports (1.0.1-3) unstable; urgency=low
+
+  * added a UCR warning for etc/univention/directory/reports/footer.tex. Bug #12657
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 18 Dec 2008 14:31:15 +0100
+
 univention-directory-reports (1.0.1-2) unstable; urgency=low
 
   * Added UCR Warning.
