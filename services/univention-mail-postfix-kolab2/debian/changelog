@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.5-6) unstable; urgency=low
+
+  * added UCR warning for etc/postfix/sasl/smtpd.conf. Bug #12657
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 18 Dec 2008 14:15:14 +0100
+
 univention-mail-postfix-kolab2 (1.0.5-5) unstable; urgency=low
 
   * new autostart test in postfix init script 
