@@ -1,3 +1,9 @@
+univention-management-console (0.9.1007-1) unstable; urgency=low
+
+  * new Parameter 'paged_results' for SearchForm (Bug #12536)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Fri, 31 Oct 2008 17:19:51 +0100
+
 univention-management-console (0.9.1006-1) unstable; urgency=low
 
   * removed debris

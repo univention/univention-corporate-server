@@ -78,8 +78,11 @@ class SearchForm( base.List ):
 		btn.close_dialog = False
 		reset = button.ResetButton( fields = defaults )
 		reset.close_dialog = False
-		num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per Page' ) ) ),
+		if paged_results:
+			num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per Page' ) ) ),
 										   attributes = { 'width' : '100' } )
+		else:
+			num_result = base.Fill(1)
 		btnlst = base.List()
 		btnlst.add_row( [ btn, reset ] )
 		self.add_row( [ num_result, btnlst ] )
