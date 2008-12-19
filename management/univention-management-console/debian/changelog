@@ -1,3 +1,9 @@
+univention-management-console (0.9.1009-1) unstable; urgency=low
+
+  * tell inner_table to expand to width=100% (for Bug #12091)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Fri, 31 Oct 2008 17:22:59 +0100
+
 univention-management-console (0.9.1008-1) unstable; urgency=low
 
   * new Parameter 'search_button_label' for SearchForm (Bug #12535)
