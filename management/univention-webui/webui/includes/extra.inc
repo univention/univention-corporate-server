@@ -1154,6 +1154,18 @@ class table extends webui_translator
 	$space_bottom="<tr><td class=\"content_spacer\">&nbsp;</td></tr>\n";
       }
 
+    if($this->attribute["width"])
+      {
+        if(is_numeric($this->attribute["width"]))
+        {
+          $attrib_str .= "style=\"width:".($this->attribute["width"])."px\" ";
+        }
+        else
+        {
+          $attrib_str .= "style=\"width:".($this->attribute["width"])."\" ";
+        }
+      }
+
     $table = "\n<!-- start table of type ".$type."-->\n";
     $table .= "<table $attrib_str  summary=\"\">\n".$this->conti_ref->show_all().$space_bottom."</table>\n";
     $table .= "<!-- finished table of type ".$type."-->\n\n";
