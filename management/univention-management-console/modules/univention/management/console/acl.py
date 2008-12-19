@@ -163,8 +163,8 @@ class ACLs:
 					if append_rule:
 						new_rule = { 'fromUser': False, 'host': host, 'command': command, 'options': options }
 						# do not add rule multiple times
-						if not new_rule in self.acls[ 'allow' ]:
-							self.acls[ 'allow' ].append( new_rule )
+						if not new_rule in self.acls[ right ]:
+							self.acls[ right ].append( new_rule )
 
 	def _append_allow( self, fromUser, object ): #fromUser, host, command, data ):
 		self.__append( 'allow', 'disallow', fromUser, object )

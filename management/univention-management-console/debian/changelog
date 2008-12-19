@@ -1,3 +1,9 @@
+univention-management-console (0.9.1010-1) unstable; urgency=low
+
+  * fixed prohibition of UMC commands (Bug #12306)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 19 Dec 2008 16:45:21 +0100
+
 univention-management-console (0.9.1009-1) unstable; urgency=low
 
   * tell inner_table to expand to width=100% (for Bug #12091)
