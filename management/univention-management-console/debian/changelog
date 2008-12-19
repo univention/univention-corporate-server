@@ -1,3 +1,21 @@
+univention-management-console (0.9.1006-1) unstable; urgency=low
+
+  * removed debris
+
+ -- Sönke Schwardt <schwardt@univention.de>  Mon, 17 Nov 2008 11:11:34 +0100
+
+univention-management-console (0.9.1005-1) unstable; urgency=low
+
+  * added UCR variable umc/module/watchdog/timeout (default: 3600)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 13 Nov 2008 16:17:14 +0100
+
+univention-management-console (0.9.1004-1) unstable; urgency=low
+
+  * added watchdog timer: cleanup module after one hour of inactivity
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 12 Nov 2008 15:37:01 +0100
+
 univention-management-console (0.9.1003-1) unstable; urgency=low
 
   * bug #12027: SearchForm: dialog does not close if SearchForm button is
