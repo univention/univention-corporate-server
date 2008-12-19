@@ -1,3 +1,9 @@
+univention-management-console (0.9.1008-1) unstable; urgency=low
+
+  * new Parameter 'search_button_label' for SearchForm (Bug #12535)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Fri, 31 Oct 2008 16:39:37 +0100
+
 univention-management-console (0.9.1007-1) unstable; urgency=low
 
   * new Parameter 'paged_results' for SearchForm (Bug #12536)

@@ -71,9 +71,8 @@ class Button( base.Text, image.Image ):
 		self.close_dialog = close_dialog
 
 class SearchButton( Button ):
-	def __init__( self, actions = [], attributes = {} ):
-		Button.__init__( self, _( 'Search' ), 'actions/ok', actions = actions,
-						 attributes = attributes )
+	def __init__( self, actions = [], attributes = {}, label = _( 'Search' ) ):
+		Button.__init__( self, label, 'actions/ok', actions = actions, attributes = attributes )
 
 class SetButton( Button ):
 	def __init__( self, actions = [], attributes = {} ):
