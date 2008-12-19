@@ -99,7 +99,7 @@ class Notebook( object ):
 
 		# layout current page
 		inner_opts = { 'obs': page_layout }
-		inner_table = uniparts.table( '', { 'type' : 'inner_table' }, inner_opts )
+		inner_table = uniparts.table( 'testtesttest', { 'type' : 'inner_table', 'width':'100%' }, inner_opts )
 
 		col1 = uniparts.tablecol( '', {}, { 'obs': [ inner_table ] } )
 		row1 = uniparts.tablerow( '', {}, { 'obs' : [ col1 ] } )
