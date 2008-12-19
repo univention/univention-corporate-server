@@ -15,6 +15,7 @@ eval $( univention-baseconfig shell)
 # debug level for UMC server and module process
 univention-baseconfig set umc/server/debug/level?1
 univention-baseconfig set umc/module/debug/level?1
+univention-config-registry set umc/module/watchdog/timeout?3600
 
 if [ "$umc_title_image" = "themes/images/default/management-console-beta.gif" ]; then
 	univention-baseconfig set umc/title/image=themes/images/default/management-console.gif

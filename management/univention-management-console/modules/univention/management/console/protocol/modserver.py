@@ -36,6 +36,10 @@ from definitions import *
 import univention.management.console.acl as umc_acl
 
 import univention.debug as ud
+import univention.config_registry
+
+configRegistry = univention.config_registry.ConfigRegistry()
+configRegistry.load()
 
 import locale
 import notifier
@@ -54,6 +58,12 @@ class ModuleServer( Server ):
 		self.__acls = None
 		self.__timeout = timeout * 1000
 		self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+		try:
+			self.__watchdog_timeout = 1000 * int( configRegistry.get('umc/module/watchdog/timeout', 3600) )
+		except:
+			self.__watchdog_timeout = 3600 * 1000
+		ud.debug( ud.ADMIN, ud.WARN, "modserver.py: __watchdog_timeout set to %d ms" % self.__watchdog_timeout )
+		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
 		self.__partial_timer = None
 		self.__active_requests = 0
 		self.__check_acls = check_acls
@@ -91,7 +101,20 @@ class ModuleServer( Server ):
 			self.__active_requests -= 1
 		self.response( msg )
 		if not self.__active_requests and self.__timer == None:
+			self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
+
+	def _update_watchdog( self ):
+		if self.__watchdog_timer:
+			notifier.timer_remove( self.__watchdog_timer )
+		self.__watchdog_timer = notifier.timer_add( self.__watchdog_timeout, self._watchdog_timed_out )
+
+	def _watchdog_timed_out( self ):
+		ud.debug( ud.ADMIN, ud.ERROR, "modserver.py: _watchdog_timed_out: commiting suicide" )
+		ud.debug( ud.ADMIN, ud.ERROR, 'modserver.py: __timer = %s' % str(self.__timer) )
+		ud.debug( ud.ADMIN, ud.ERROR, 'modserver.py: __active_requests = %s' % str(self.__active_requests) )
+		self.exit()
+		sys.exit( 0 )
 
 	def _timed_out( self ):
 		ud.debug( ud.ADMIN, ud.INFO, "modserver.py: _timed_out: commiting suicide" )
@@ -104,6 +127,7 @@ class ModuleServer( Server ):
 		notifier.socket_add( self.__comm, self._recv )
 
 	def _recv( self, socket ):
+		self._update_watchdog()
 		if self.__timer:
 			notifier.timer_remove( self.__timer )
 			self.__timer == None
@@ -144,6 +168,7 @@ class ModuleServer( Server ):
 			resp.body = { 'status': 'module %s will shutdown in %dms' % (str(msg.arguments[0]), shutdown_timeout) }
 			resp.status( 200 )
 			self.response( resp )
+			self._update_watchdog()
 			self.__timer = notifier.timer_add( shutdown_timeout, self._timed_out )
 			return
 
@@ -204,6 +229,7 @@ class ModuleServer( Server ):
 				self.response( resp )
 
 		if not self.__active_requests and self.__timer == None:
+			self._update_watchdog()
 			self.__timer = notifier.timer_add( self.__timeout, self._timed_out )
 
 	# TODO: partial response
