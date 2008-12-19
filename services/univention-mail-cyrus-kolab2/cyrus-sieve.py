@@ -29,7 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import listener
-import os, time, string, pwd, grp, univention.debug, sys, shutil
+import os, time, string, pwd, grp, univention.debug, sys
 
 name='cyrus-sieve'
 description='Create sieve mail filters'
@@ -37,24 +37,7 @@ filter='(|(objectClass=kolabInetOrgPerson)(objectClass=univentionMail))'
 
 def handler(dn, new, old):
 	if not new and old:
-		if old.has_key('mailPrimaryAddress') and old['mailPrimaryAddress'][0] and old['mailPrimaryAddress'][0].lower() != listener.baseConfig['mail/antispam/globalfolder'].lower():
-			if old.has_key( 'univentionKolabDisableSieve' ) and old[ 'univentionKolabDisableSieve' ][0].lower( ) in [ 'true', 'yes' ]:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'Do not not remove the sieve script for user: %s' % old['mailPrimaryAddress'][0])
-				return
-			try:
-				user_name = old['mailPrimaryAddress'][0]
-				userpart=user_name.split('@')[0]
-				userpart=string.lower(userpart)
-				userpart=userpart.replace(".", "^")
-				domainpart=user_name.split('@')[1]
-				domainpart=string.lower(domainpart)
-				sieve_path = '/var/spool/cyrus/sieve/domain/%s/%s/%s/%s' % (domainpart[0], domainpart, userpart[0], userpart)
-				listener.setuid(0)
-				if os.path.exists(sieve_path):
-					shutil.rmtree(sieve_path)
-			except:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'Could not remove Sieve-Script from User: %s' % user_name)
-			listener.unsetuid()
+		pass
 	else:
 		if new.has_key('mailPrimaryAddress') and new['mailPrimaryAddress'][0] and new['mailPrimaryAddress'][0].lower() != listener.baseConfig['mail/antispam/globalfolder'].lower():
 
