@@ -75,7 +75,9 @@ class SearchForm( base.List ):
 			self.add_row( line )
 		req = umcp.Command( args = [ command ], opts = opts )
 		btn = button.SearchButton( button.Action( req, ids ) )
+		btn.close_dialog = False
 		reset = button.ResetButton( fields = defaults )
+		reset.close_dialog = False
 		num_result = widget.make_readonly( ( None, umcv.Integer( _( 'Results per Page' ) ) ),
 										   attributes = { 'width' : '100' } )
 		btnlst = base.List()
