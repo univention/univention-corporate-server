@@ -1,3 +1,10 @@
+univention-system-setup (1.1.15-6) unstable; urgency=low
+
+  * make the new shared container to default shared container. Closes
+    Bug #12938
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 19 Dec 2008 13:19:09 +0100
+
 univention-system-setup (1.1.15-5) unstable; urgency=low
 
   * fix copying of SRV, CNAME and TXT records on domainname change (Bug #1794)

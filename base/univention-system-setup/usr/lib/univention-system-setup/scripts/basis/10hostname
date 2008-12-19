@@ -458,7 +458,7 @@ if [ "$ldap_available" = 1 ]; then
 	share_container_dn=`univention-directory-manager container/cn list --binddn "$binddn" --bindpwd "$bindpwd" --filter cn=$old_hostname.$domainname | grep DN | sed -e 's|DN: ||'`
 	if [ -n "$share_container_dn" ]; then
 		echo `date` : "Create share container for LDAP base " $ldap_base ":" $new_hostname.$domainname  >> /var/log/univention/setup.log
-		univention-directory-manager container/cn create --binddn "$binddn" --bindpwd "$bindpwd" --position cn=shares,$ldap_base --set name=$new_hostname.$domainname
+		univention-directory-manager container/cn create --binddn "$binddn" --bindpwd "$bindpwd" --set sharePath=1 --position cn=shares,$ldap_base --set name=$new_hostname.$domainname
 
 		univention-directory-manager shares/share list --binddn "$binddn" --bindpwd "$bindpwd" | grep ^DN: | grep ",cn=$old_hostname.$domainname,cn=shares,$ldap_base" | sed -e 's|DN: ||' | while read dn; do
 			echo `date` : "Move share container :" cn=$new_hostname.$domainname,cn=shares,$ldap_base  >> /var/log/univention/setup.log
