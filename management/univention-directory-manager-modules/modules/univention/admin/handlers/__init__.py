@@ -752,7 +752,9 @@ class simpleLdap(base):
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: added path %s" % i)
 				except Exception, e:
 					univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "loadPolicyObject: invalid path setting: %s does not exist in LDAP" % i)
-					pass
+					continue  # looking for next policy container
+				break # at least one item has been found; so we can stop here since only pathlist[0] is used
+
 		if not pathlist or errors:
 			policy_position=self.position
 		else:

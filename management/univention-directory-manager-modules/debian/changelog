@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.19-1) unstable; urgency=low
+
+  * improved performance by avoiding unused ldap search requests
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 09 Dec 2008 14:13:45 +0100
+
 univention-directory-manager-modules (3.0.18-7) unstable; urgency=low
 
   * utf8 locales in syntax.py
