@@ -1,3 +1,9 @@
+univention-management-console (0.9.1010-2) unstable; urgency=low
+
+  * added xfonts-base and xterm to the dependency. Closes Bug #12401
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 11:22:19 +0100
+
 univention-management-console (0.9.1010-1) unstable; urgency=low
 
   * fixed prohibition of UMC commands (Bug #12306)
