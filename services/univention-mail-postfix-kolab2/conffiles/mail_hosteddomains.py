@@ -31,5 +31,4 @@
 import os
 
 def handler(baseConfig, changes):
-	if baseConfig.get('mail/hosteddomains') and baseConfig.get('mail/hosteddomains'):
-		os.system('/usr/sbin/postmap /etc/postfix/transport')
+	os.system('/usr/sbin/postmap /etc/postfix/transport')

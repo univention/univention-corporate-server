@@ -28,12 +28,12 @@ ldapsharedfolderlocal_scope = sub
 ldapsharedfolderlocal_version = 3
 
 #
-# LDAP Alias support
+# LDAP Alias support (without recipient canonical rewrite)
 #
 
 ldapvirtual_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
 ldapvirtual_search_base = @%@ldap/base@%@
-ldapvirtual_query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s)(uid=%s)))
+ldapvirtual_query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s)(uid=%s))(!(univentionCanonicalRecipientRewriteEnabled=1)))
 ldapvirtual_result_attribute = mailPrimaryAddress
 ldapvirtual_result_filter = %s
 #ldapvirtual_search_timeout = 15
@@ -42,6 +42,22 @@ ldapvirtual_scope = sub
 #ldapvirtual_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
 #ldapvirtual_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
 ldapvirtual_version = 3
+
+#
+# LDAP Alias support (with recipient canonical rewrite)
+#
+
+ldapvirtualwithcanonical_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapvirtualwithcanonical_search_base = @%@ldap/base@%@
+ldapvirtualwithcanonical_query_filter = (&(objectClass=univentionMail)(|(mailAlternativeAddress=%s)(mailPrimaryAddress=%s)(uid=%s))(univentionCanonicalRecipientRewriteEnabled=1))
+ldapvirtualwithcanonical_result_attribute = univentionInternalPrimaryMailAddress
+ldapvirtualwithcanonical_result_filter = %s
+#ldapvirtualwithcanonical_search_timeout = 15
+ldapvirtualwithcanonical_scope = sub
+#ldapvirtualwithcanonical_bind = yes
+#ldapvirtualwithcanonical_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
+#ldapvirtualwithcanonical_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
+ldapvirtualwithcanonical_version = 3
 
 #
 # LDAP Mail Groups
@@ -91,4 +107,41 @@ ldaptransport_scope = sub
 #ldaptransport_bind_dn = cn=nobody,cn=internal,dc=haus,dc=org
 #ldaptransport_bind_pw = MC/QfteBBLgUGGm3GDq/BJm31R8WRElCMitO/AJZ
 ldaptransport_version = 3
+
+#
+# LDAP Transport for multilocation support
+#
+
+ldaphomeservertransport_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldaphomeservertransport_search_base = @%@ldap/base@%@
+ldaphomeservertransport_query_filter = (&(|(mailPrimaryAddress=%s)(mailAlternativeAddress=%s))(!(objectClass=kolabInetOrgPerson))(!(kolabHomeServer=*)))
+ldaphomeservertransport_result_attribute = univentionMailHomeServer
+ldaphomeservertransport_result_filter = smtp:[%s]
+ldaphomeservertransport_search_timeout = 15
+ldaphomeservertransport_scope = sub
+ldaphomeservertransport_version = 3
+
+#
+# LDAP Sender Canonical Maps support
+#
+
+ldapcanonicalsender_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapcanonicalsender_search_base = @%@ldap/base@%@
+ldapcanonicalsender_query_filter = (&(univentionCanonicalSenderRewriteEnabled=1)(|(univentionInternalPrimaryMailAddress=%s)(univentionInternalAlternativeMailAddress=%s)))
+ldapcanonicalsender_result_attribute = univentionPublicPrimaryMailAddress
+ldapcanonicalsender_search_timeout = 15
+ldapcanonicalsender_scope = sub
+ldapcanonicalsender_version = 3
+
+#
+# LDAP Recipient Canonical Maps support
+#
+
+ldapcanonicalrecipient_server_host = ldap://@%@ldap/server/name@%@:@%@ldap/port@%@
+ldapcanonicalrecipient_search_base = @%@ldap/base@%@
+ldapcanonicalrecipient_query_filter = (&(univentionCanonicalRecipientRewriteEnabled=1)(|(univentionPublicPrimaryMailAddress=%s)(univentionPublicAlternativeMailAddress=%s)))
+ldapcanonicalrecipient_result_attribute = univentionInternalPrimaryMailAddress
+ldapcanonicalrecipient_search_timeout = 15
+ldapcanonicalrecipient_scope = sub
+ldapcanonicalrecipient_version = 3
 

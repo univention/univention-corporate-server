@@ -24,9 +24,9 @@ else:
 # mailbox_size_limit limits the max. size of local mailboxes. Default is 51200000
 @!@
 if baseConfig.has_key('mail/localmailboxsizelimit') and not baseConfig['mail/localmailboxsizelimit'] == '':
-        print 'mailbox_size_limit = @%@mail/localmailboxsizelimit@%@'
+	print 'mailbox_size_limit = @%@mail/localmailboxsizelimit@%@'
 else:
-        print '#mailbox_size_limit = 0'
+	print '#mailbox_size_limit = 0'
 @!@
 
 # some basic path definitions
@@ -46,6 +46,12 @@ else:
 	print 'smtp_helo_name = %s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
 @!@
 
+@!@
+if baseConfig.has_key('mail/postfix/dnslookups') and baseConfig['mail/postfix/dnslookups'] in [ '0', 'false', 'no' ]:
+	print 'disable_dns_lookups = yes'
+if baseConfig.has_key('mail/postfix/softbounce') and baseConfig['mail/postfix/softbounce'] in [ '1', 'true', 'yes' ]:
+	print 'soft_bounce = yes'
+@!@
 
 append_dot_mydomain = no
 
@@ -58,12 +64,17 @@ print 'masquerade_exceptions = %s' % baseConfig.get('postfix/masquerade/exceptio
 # therefor are not forwarded to the relay host.
 # if ldap is used, all "own" domains must be given
 # in the transport file with the keyword "virtual".
-transport_maps = hash:/etc/postfix/transport, ldap:ldaptransport
+transport_maps = hash:/etc/postfix/transport, ldap:ldaptransport, ldap:ldaphomeservertransport
 @!@
+all_hosted_domains = ''
+if baseConfig.has_key('mail/hosteddomains'):
+	all_hosted_domains = ', '.join( baseConfig['mail/hosteddomains'].split(' ') ) + ', '
+
 if baseConfig.has_key('mail/postfix/mydomains') and baseConfig['mail/postfix/mydomains']:
-	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, %s, localhost, $transport_maps' % baseConfig['mail/postfix/mydomains']
+	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, %s, %s localhost' % (baseConfig['mail/postfix/mydomains'], all_hosted_domains)
 else:
 	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, localhost, $transport_maps'
+	print 'mydestination = $myhostname.$mydomain, localhost.$mydomain, $mydomain, %s localhost' % all_hosted_domains
 if baseConfig.has_key('mail/postfix/mynetworks') and baseConfig['mail/postfix/mynetworks']:
 	print 'mynetworks = %s' % baseConfig['mail/postfix/mynetworks']
 else:
