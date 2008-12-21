@@ -1,7 +1,13 @@
+univention-ldap (3.0.13-2) unstable; urgency=low
+
+  * added missing file: schema/univention-directory.schema. Closes Bug #12642
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 12:14:50 +0100
+
 univention-ldap (3.0.13-1) unstable; urgency=low
 
-  * added schema for mail routing and canonical maps
-  * added schema for meta directory extension
+  * added schema for mail routing and canonical maps, Bug #12642
+  * added schema for meta directory extension, Bug #12642
 
  -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 12:07:15 +0100
 
