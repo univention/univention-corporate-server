@@ -9,11 +9,20 @@
 #
 
 @!@
+for key in baseConfig.keys():
+	if key.startswith('mail/maps/transport/'):
+		val = baseConfig[key].strip()
+		if ' ' in val:
+			domain, transp = val.split(' ', 1)
+			print '%-30s %s' % (domain, transp)
+		else:
+			print val
+
 fqdn='%s.%s' % (baseConfig['hostname'], baseConfig['domainname'])
 if baseConfig.has_key('mail/hosteddomains'):
 	all_hosted_domains = baseConfig['mail/hosteddomains'].split(' ')
 	for hosted_domain in all_hosted_domains:
-		print '%-30s  kolabmailboxfilter' % (hosted_domain)
+		print '%-30s kolabmailboxfilter' % (hosted_domain)
 	if not fqdn in all_hosted_domains:
 		print '%-30s local' % ( fqdn )
 else:

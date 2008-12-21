@@ -23,6 +23,11 @@ Variables: mail/smtp/helo/name
 Variables: mail/localmailboxsizelimit
 Variables: postfix/masquerade/domains
 Variables: postfix/masquerade/exceptions
+Variables: mail/maps/canonical/sender/enable
+Variables: mail/maps/canonical/sender/classes
+Variables: mail/maps/canonical/recipient/enable
+Variables: mail/postfix/softbounce
+Variables: mail/postfix/dnslookups
 
 Type: subfile
 Multifile: etc/postfix/main.cf
@@ -88,6 +93,7 @@ File: etc/postfix/transport
 Variables: hostname
 Variables: domainname
 Variables: mail/hosteddomains
+Variables: mail/maps/transport/.*
 
 Type: file
 File: etc/init.d/postfix
@@ -111,3 +117,4 @@ Variables: mail/archivefolder
 Type: module
 Module: mail_hosteddomains.py
 Variables: mail/hosteddomains
+Variables: mail/maps/transport/.*

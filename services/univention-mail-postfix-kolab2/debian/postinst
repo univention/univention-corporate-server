@@ -42,6 +42,8 @@ fi
 univention-baseconfig set postfix/masquerade/domains?"\$mydomain"
 univention-baseconfig set postfix/masquerade/exceptions?root
 
+univention-baseconfig set mail/maps/canonical/sender/classes?header_sender
+
 for file in transport virtual canonical access relocated; do
   if [ ! -e /etc/postfix/$file ]; then
       touch /etc/postfix/$file

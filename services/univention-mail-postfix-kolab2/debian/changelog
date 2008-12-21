@@ -1,3 +1,38 @@
+univention-mail-postfix-kolab2 (1.0.6-1) unstable; urgency=low
+
+  * merged from customer trunk: call postmap for /etc/postfix/transport
+    even if mail/hosteddomains was unset. Closes Bug #10273
+  * merged from customer trunk: added possibility to add additional
+    transport map entries via config registry
+    mail/maps/transport/<customid>="<transportmap entry>" e.g.
+    mail/maps/transport/1="somedomain.org smtp:[mail.somedomain.com]". Closes
+    Bug #10274
+  * merged from customer trunk:
+    + enable sender/recipient canonical maps via config registry
+
+     mail/maps/canonical/sender/enable="<list of enabled map types>"
+     mail/maps/canonical/recipient/enable="<list of enabled map types>"
+
+     e.g. mail/maps/canonical/recipient/enable="file ldap"
+
+     currently only "file" and "ldap" are supported
+
+     if "file" is enabled, "/etc/postfix/canonical_sender" resp.
+     "/etc/postfix/canonical_recipient" will be used
+    + Patch update:
+      * specify sender canonical classes via config registry
+      mail/maps/canonical/sender/classes="<list of classes>"
+      (default: "header_sender")
+      * map incoming mail to univentionInternalPrimaryMailAddress instead of
+      mailPrimaryAddress if recipient canonical address is enabled
+
+    Closes Bug #10275
+  * merged from customer trunk: mail/postfix/dnslookups and
+    mail/postfix/softbounce could be set via config registry. Closes Bug
+    #10276
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 13:39:30 +0100
+
 univention-mail-postfix-kolab2 (1.0.5-6) unstable; urgency=low
 
   * added UCR warning for etc/postfix/sasl/smtpd.conf. Bug #12657

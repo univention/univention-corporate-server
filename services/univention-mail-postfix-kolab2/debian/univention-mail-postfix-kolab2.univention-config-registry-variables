@@ -100,3 +100,33 @@ Description[en]=E-Mail addresses tp except from masquerading
 Type=str
 Categories=Mail
 
+[mail/postfix/softbounce]
+Description[de]=Mails nicht abweisen und in lokaler Queue belassen
+Description[en]=Do not bounce mails and keep the in local queues
+Type=str
+Categories=Mail
+
+[mail/postfix/dnslookups]
+Description[de]=Mailserver führt selbständig DNS-Lookups für MX-Records durch
+Description[en]=Mailserver runs dns lookups for mx records
+Type=str
+Categories=Mail
+
+[mail/maps/canonical/sender/enable]
+Description[de]=Liste mit freigeschalteten Quellen für Canonical Sender Maps (ldap, file, ...)
+Description[en]=List of enabled sources for canonical sender maps (ldap, file, ...)
+Type=str
+Categories=Mail
+
+[mail/maps/canonical/recipient/enable]
+Description[de]=Liste mit freigeschalteten Quellen für Canonical Recipient Maps (ldap, file, ...)
+Description[en]=List of enabled sources for canonical recipient maps (ldap, file, ...)
+Type=str
+Categories=Mail
+
+[mail/maps/transport/.*]
+Description[de]=Transport-Map-Eintrag
+Description[en]=Entry for transport map
+Type=str
+Categories=Mail
+
