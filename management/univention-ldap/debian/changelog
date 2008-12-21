@@ -1,3 +1,10 @@
+univention-ldap (3.0.13-1) unstable; urgency=low
+
+  * added schema for mail routing and canonical maps
+  * added schema for meta directory extension
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 21 Dec 2008 12:07:15 +0100
+
 univention-ldap (3.0.12-5) unstable; urgency=low
 
   * Added UCR Warning.

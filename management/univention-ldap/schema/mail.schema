@@ -34,3 +34,68 @@ attributetype ( 1.3.6.1.4.1.10176.1010.1.10 NAME 'mailRelay'
 objectclass ( 1.3.6.1.4.1.10176.1010.2.10 NAME 'univentionMailDomain'
 	DESC 'Univention Mail Domain Prefernces' SUP top AUXILIARY
 	MAY ( mailRelay ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.41 NAME 'univentionCanonicalSenderRewriteEnabled'
+	DESC 'rewrite sender addresses?'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.42 NAME 'univentionCanonicalRecipientRewriteEnabled'
+	DESC 'rewrite recipient addresses?'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{10} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.43 NAME 'univentionInternalPrimaryMailAddress'
+	DESC 'primary mail address of user'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.44 NAME 'univentionInternalAlternativeMailAddress'
+	DESC 'additional mail addresses'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.45 NAME 'univentionPublicPrimaryMailAddress'
+	DESC 'public mail address of user'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.46 NAME 'univentionPublicAlternativeMailAddress'
+	DESC 'additional mail addresses'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.40 NAME 'univentionMailCanonicalMaps'
+	DESC 'data for rewriting mail addresses'
+	SUP top AUXILIARY
+	MAY ( univentionCanonicalSenderRewriteEnabled $ univentionCanonicalRecipientRewriteEnabled $
+	      univentionInternalPrimaryMailAddress $ univentionInternalAlternativeMailAddress $ 
+		  univentionPublicPrimaryMailAddress $ univentionPublicAlternativeMailAddress ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.60 NAME 'univentionMailHomeServer'
+	DESC 'home server of users mailbox'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} SINGLE-VALUE )
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.60 NAME 'univentionMailRouting'
+	DESC 'data for routing mails'
+	SUP top AUXILIARY
+	MAY ( univentionMailHomeServer ) )
+
+attributetype ( 1.3.6.1.4.1.10176.1010.1.70 NAME 'univentionMailserverFQDN'
+	DESC 'list of available mailserver fqdn'
+	EQUALITY caseIgnoreMatch
+	SUBSTR caseIgnoreSubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{256} )
+
+objectclass ( 1.3.6.1.4.1.10176.1010.2.70 NAME 'univentionMailserverList'
+	DESC 'data for routing mails'
+	SUP top AUXILIARY
+	MAY ( univentionMailserverFQDN ) )
