@@ -130,13 +130,28 @@ class webui_container{
 		echo "<title>".$this->site_title."   ".$this->title."</title>\n";
 		echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\"></meta>\n";
 		echo "<link rel=\"SHORTCUT ICON\" href=\"/style/favicon.ico\"></link>\n";
+		echo "<style type=\"text/css\">\n";
+		#echo "@import \"/unidojo/dijit/themes/dijit.css\";\n";
+		#echo "@import \"/unidojo/dijit/themes/tundra/tundra.css\";\n";
+		echo "@import \"/unidojo/dojo/resources/dojo.css\";\n";
+		#echo "@import \"/DropDownSelect.css\";\n";
+		echo "\n</style>\n";
+		echo "<link id=\"themeStyles\" rel=\"stylesheet\" href=\"/unidojo/dijit/themes/tundra/tundra.css\" type=\"text/css\"></link>\n";
 		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
 		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"/unidojo/dojo/dojo.js\" djConfig=\"parseOnLoad: true\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"/unidojo/unijit/unijit.js\"></script>\n";
+		echo "<script type=\"text/javascript\"> \n";
+		echo "\t dojo.require(\"dojo.parser\"); \n";
+#		echo "\t dojo.require(\"unijit.form.ComboBox\"); \n";
+#		echo "\t dojo.require(\"unijit.form.FilteringSelect\"); \n";
+		echo "</script>\n";
+
 		echo "</head>\n\n";
 		if($this->ref_config->refresh)
-			echo"<body onload=\"doRefresh(".($this->ref_config->refresh)."); clear_cached(); \">\n";
+			echo"<body class=\"tundra\" onload=\"doRefresh(".($this->ref_config->refresh)."); clear_cached(); \">\n";
 		else
-			echo"<body onload=\"clear_cached()\">\n";
+			echo"<body class=\"tundra\" onload=\"clear_cached()\">\n";
 		$this->ref_config->debug_show();
 
 		echo "<table class=\"global\" cellspacing=\"0\" cellpadding=\"0\">\n";// table1

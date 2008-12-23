@@ -223,6 +223,34 @@ class question_text extends extra{
 
 }
 
+class question_dojo_date_widget extends extra {
+	function show(){
+		$str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.DateWidget\");</script>\n";
+		if(isset($this->attribute["passive"])) $access = "disabled";
+		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+		if($this->basket["description"]) {
+			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n";
+			$str .= $this->basket["description"];
+			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+			$str .= "</td></tr>\n";
+			}
+		$str .= "<tr><td>\n";
+		$str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
+		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+		if($this->warn) $str .= " class=\"text_warn\" ";
+		else $str .= " class=\"date_widget\" ";
+		$str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"";
+		$str .= " dojoType=\"unijit.form.DateWidget\"";
+		$str .= "></input>\n";
+		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
+		$str .= "</td></tr>\n</table>\n";
+		return $str;
+		return $str;
+	}
+}
+
+
 class question_file extends extra{
 	function show(){
 		if(isset($this->attribute["passive"])) $access = "disabled";
@@ -613,6 +641,110 @@ class question_select extends extra_multi{
 		return $str;
 	}
 }
+
+// dojo FormFillWidget: allows only one of the given options
+class question_dojo_select extends extra_multi{
+  function show(){
+    $appendstr = "";
+    if(isset($this->attribute["passive"])) $access = "disabled";
+	$str .= "\n\n";
+	$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.FilteringSelect\");</script>\n";
+	$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+	$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+	if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	$str .= "</td></tr>\n<tr><td>\n";
+	$str .= "<select dojoType=\"dijit.form.FilteringSelect\" autocomplete=\"true\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+	
+	if($this->warn) 
+	  $str .= " class=\"select_warn\" ";
+	else 
+	  $str .= " class=\"select\" ";
+	
+	if($this->attribute["width"]) 
+	  $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+	
+	if($this->js && isset($this->basket["update"])) 
+	  $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	
+	if ($access != "disabled")
+	  $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
+	$str .= ">\n";
+	if($this->basket["choice"])
+	  foreach($this->basket["choice"] as $key=>$val) {
+	    if(trim($this->basket["var"][$key]["content"])!="") {
+	      $is='selected';
+	      if ($access == "disabled") {
+		$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+		$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
+	      }
+	    }
+	    for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
+	    $str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>";
+	    $str .= $space.$this->basket["choice"][$key]["description"];
+	    $str .= "</option>\n";
+	    $is = '';
+	    $space = '';
+	  }
+	$str .="</select>\n";
+	if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
+	$str .= $appendstr;
+	$str .= "</td></tr>\n</table>\n";
+	return $str;
+  }
+}
+
+// dojo ComboBoxWidget: allows one of the given options or any other
+class question_dojo_comboselect extends extra_multi{
+  function show(){
+    $appendstr = "";
+    if(isset($this->attribute["passive"])) $access = "disabled";
+	$str .= "\n\n";
+	$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.ComboBox\");</script>\n";
+	$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+	$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+	if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	$str .= "</td></tr>\n<tr><td>\n";
+	$str .= "<select dojoType=\"dijit.form.ComboBox\" autocomplete=\"true\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+	
+	if($this->warn) 
+	  $str .= " class=\"select_warn\" ";
+	else 
+	  $str .= " class=\"select\" ";
+	
+	if($this->attribute["width"]) 
+	  $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+	
+	if($this->js && isset($this->basket["update"])) 
+	  $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	
+	// - this breaks the whole page if used with dojo_combobox
+	//if ($access != "disabled")
+	//  $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
+	$str .= ">\n";
+	if($this->basket["choice"])
+	  foreach($this->basket["choice"] as $key=>$val) {
+	    if(trim($this->basket["var"][$key]["content"])!="") {
+	      $is='selected';
+	      if ($access == "disabled") {
+		$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+		$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
+	      }
+	    }
+	    for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
+	    $str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>";
+	    $str .= $space.$this->basket["choice"][$key]["description"];
+	    $str .= "</option>\n";
+	    $is = '';
+	    $space = '';
+	  }
+	$str .="</select>\n";
+	if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
+	$str .= $appendstr;
+	$str .= "</td></tr>\n</table>\n";
+	return $str;
+  }
+}
+
 
 class question_mselect extends extra_multi{
 	function show(){
@@ -1006,8 +1138,11 @@ class question_group{
 				case 'question_ltext': $this->member = new question_ltext($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_mselect': $this->member = new question_mselect($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_select': $this->member = new question_select($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'question_dojo_select': $this->member = new question_dojo_select($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'question_dojo_comboselect': $this->member = new question_dojo_comboselect($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_choice': $this->member = new question_choice($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_group': $this->member = new question_group($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'question_dojo_date_widget': $this->member = new question_dojo_date_widget($tag, $this->conti_ref, $this->config, $attribute);return;
 				default: $tag=""; $close="";
 				}
 			}

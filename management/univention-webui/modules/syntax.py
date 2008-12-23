@@ -384,6 +384,10 @@ class question_syntax(uniconf.uniconf):
 			self.subfields.append(question_date(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
 			self.subobjs.append(self.subfields[0])
 
+		elif self.syntax.type == 'iso8601Date':
+			self.subfields.append(question_dojo_date_widget(name,self.atts,{"usertext":value,"helptext":self.args.get('helptext', '')}))
+			self.subobjs.append(self.subfields[0])
+
 		elif self.syntax.type == 'complex':
 
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'complex syntax')

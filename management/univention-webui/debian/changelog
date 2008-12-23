@@ -1,3 +1,9 @@
+univention-webui (1.3.9-1) stable; urgency=low
+
+  * merged the dojo widgets (Bug #12977)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 09:43:26 +0100
+
 univention-webui (1.3.8-1) stable; urgency=low
 
   * pass width attribute to table objects (for Bug #12091)
