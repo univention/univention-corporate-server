@@ -1,3 +1,9 @@
+univention-webui-style (2.0.2-1) unstable; urgency=low
+
+  * merged dojo date widget; Bug #12977
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 10:11:50 +0100
+
 univention-webui-style (2.0.1-4) unstable; urgency=low
 
   * Small spelling fix.
