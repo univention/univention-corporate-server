@@ -160,14 +160,26 @@ class MultiValueMap( mapper.IMapper ):
 		attributes = utils.attributes( umcp_part )
 		for field in umcp_part.fields:
 			items.append( storage.to_uniparts( field ) )
+		field_tables = []
 		for item in items:
-			input_fields.append( tablerow( '', {}, { 'obs' : [
-				tablecol( '', { 'rowspan' : '2' },
-						  { 'obs' : [ item ] } ),
-				tablecol( '', {},
-						  { 'obs' : [ htmltext( '', {},
-												{ 'htmltext' : [ '&nbsp;' ] } ) ] } ) ] }
-										   ) )
+			field_tables.append( table( '', { 'border' : '0' }, { 'obs' : [
+				tablerow( '', {}, { 'obs' : [
+					tablecol( '', {}, { 'obs' : [
+						item
+						] } )
+					] } )
+				] } )
+			)
+
+		input_fields.append( tablerow( '', {}, { 'obs' : [
+			tablecol( '', { 'rowspan' : '2' }, { 'obs' :
+				field_tables
+				} ),
+			tablecol( '', {}, { 'obs' : [
+				htmltext( '', {}, { 'htmltext' : [ '&nbsp;' ] } )
+				] } ),
+			] }
+		) )
 
 		btn_add = utils.button_add()
 		input_fields.append( tablerow( '', {}, { 'obs' : [
@@ -211,6 +223,9 @@ class MultiValueMap( mapper.IMapper ):
 			for field in dyn.field_ids:
 				uni_item, umcp_item = storage.find_by_umcp_id( field )
 				value = uni_item.get_input()
+				labelID = getattr(umcp_item, 'labelID', None)
+				if labelID and value == labelID:
+					return True
 				if not utils.check_syntax( umcp_item, value ):
 					raise umc.SyntaxError( field )
 				values.append( umcp_item.item( value ) )

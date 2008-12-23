@@ -1,3 +1,9 @@
+univention-management-console (0.9.1011-1) unstable; urgency=low
+
+  * merged dojo date widget; Bug #12977 
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 23 Dec 2008 11:24:38 +0100
+
 univention-management-console (0.9.1010-2) unstable; urgency=low
 
   * added xfonts-base and xterm to the dependency. Closes Bug #12401
