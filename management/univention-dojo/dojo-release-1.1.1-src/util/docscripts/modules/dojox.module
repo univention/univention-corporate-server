@@ -1,0 +1,26 @@
+<?php
+
+function dojox_code_location() {
+	return '../../dojox/';
+}
+
+function dojox_project_name() {
+	return 'dojox';
+}
+
+function dojox_resource_name($namespace, $file) {
+  return $file;
+}
+
+function dojox_package_name($namespace, $file) {
+  //return;
+  $parts = explode('/', $file);
+	$file_parts = explode('.', array_pop($parts));
+	if (in_array('tests', $parts)) return;
+	array_pop($file_parts);
+	array_push($parts, implode('.', $file_parts));
+	array_unshift($parts, $namespace);
+  return implode('.', $parts);
+}
+
+?>
