@@ -96,7 +96,9 @@ def dictonary_lowercase(dict):
 	else:
 		try: # should be string
 			return dict.lower()
-		except:
+		except (ldap.SERVER_DOWN, SystemExit):
+			raise
+		except: # FIXME: which exception is to be caught?
 			pass
 
 def compare_lowercase(val1, val2):
@@ -105,7 +107,9 @@ def compare_lowercase(val1, val2):
 			return True
 		else:
 			return False
-	except:
+	except (ldap.SERVER_DOWN, SystemExit):
+		raise
+	except: # FIXME: which exception is to be caught?
 		return False
 
 # helper classes
@@ -255,7 +259,9 @@ class ucs:
 		if self.baseConfig.has_key('connector/debug/function'):
 			try:
 				function_level=int(self.baseConfig['connector/debug/function'])
-			except:
+			except (ldap.SERVER_DOWN, SystemExit):
+				raise
+			except: # FIXME: which exception is to be caught?
 				function_level = 0
 		else:
 			function_level=0
@@ -384,7 +390,9 @@ class ucs:
 				try:
 					ret.append((self._decode_dn_from_config_option(d1),self._decode_dn_from_config_option(self._get_config_option(config_space, d1))))
 					return_update = True
-				except:
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise				
+				except: # FIXME: which exception is to be caught?
 					count = count + 1
 					d1=d1+" ="
 			ret.append(("failed",self._decode_dn_from_config_option(d1)))
@@ -518,7 +526,9 @@ class ucs:
 						return False
 					else:
 						return True
-				except:
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise
+				except: # FIXME: which exception is to be caught?
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN, "sync failed, saved as rejected")
 					return False
@@ -556,7 +566,9 @@ class ucs:
 			module = self.modules[property_type]
 			ucs_object = univention.admin.objects.get(module, co='', lo=self.lo, position='', dn=searchdn) # does not fail if object doesn't exist
 			ud.debug(ud.LDAP, ud.INFO,"get_ucs_object: object found: %s"%searchdn)
-		except:
+		except (ldap.SERVER_DOWN, SystemExit):
+			raise
+		except: # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO,"get_ucs_object: object search failed: %s"%searchdn)
 			self._debug_traceback(ud.WARN, "get_ucs_object: failure was: \n\t")
 			return None
@@ -609,7 +621,9 @@ class ucs:
 							pass
 						self._remove_rejected_ucs(filename)
 						change_counter += 1
-				except:
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise
+				except: # FIXME: which exception is to be caught?
 					self._save_rejected_ucs(filename, dn)
 					self._debug_traceback(ud.WARN,
 										  "sync failed, saved as rejected \n\t%s" % filename)
@@ -647,7 +661,9 @@ class ucs:
 				if not filename in rejected_files:
 					try:
 						sync_successfull = self.__sync_file_from_ucs(filename)
-					except:
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
+					except: # FIXME: which exception is to be caught?
 						self._save_rejected_ucs(filename, 'unknown')
 						self._debug_traceback(ud.WARN,
 											 "sync failed, saved as rejected \n\t%s" % filename)					
@@ -835,7 +851,9 @@ class ucs:
 				return True
 			else:
 				ud.debug(ud.LDAP, ud.INFO,"move_in_ucs: move object from %s to %s"%(object['olddn'],object['dn']))
-		except:
+		except (ldap.SERVER_DOWN, SystemExit):
+			raise
+		except: # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.INFO,"move_in_ucs: move object in UCS")			
 		ucs_object = univention.admin.objects.get(module, None, self.lo, dn=object['olddn'], position='')
 		ucs_object.open()
@@ -866,7 +884,9 @@ class ucs:
 					if not self.sync_to_ucs(key, subobject):
 						try:
 							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed: %s"% result[0])
-						except:
+						except (ldap.SERVER_DOWN, SystemExit):
+							raise							
+						except: # FIXME: which exception is to be caught?
 							ud.debug(ud.LDAP, ud.WARN,"delete of subobject failed")
 						return False
 
@@ -898,7 +918,9 @@ class ucs:
 		try:
 			ud.debug(ud.LDAP, ud.PROCESS,
 							   'sync to ucs:   [%10s] [%10s] %s' % (property_type,object['modtype'], object['dn']))
-		except:
+		except (ldap.SERVER_DOWN, SystemExit):
+			raise
+		except: # FIXME: which exception is to be caught?
 			ud.debug(ud.LDAP, ud.PROCESS,'sync to ucs...')
 		
 		module = self.modules[property_type]
@@ -939,7 +961,9 @@ class ucs:
 				if object['modtype'] in ['add','modify']:
 					for f in self.property[property_type].post_ucs_modify_functions:
 						f(self, property_type, object)
-			except:
+			except (ldap.SERVER_DOWN, SystemExit):
+				raise
+			except: # FIXME: which exception is to be caught?
 				self._debug_traceback(ud.ERROR,
 									  "failed in post_con_modify_functions")
 				result = False				
@@ -951,17 +975,15 @@ class ucs:
 		except univention.admin.uexceptions.valueInvalidSyntax, msg:
 			try:
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s (%s)" % (msg,object['dn']))
-			except:
+			except: # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.ERROR, "InvalidSyntax: %s" % msg)
 			return False
 		except univention.admin.uexceptions.valueMayNotChange, msg:
 			ud.debug(ud.LDAP, ud.ERROR, "Value may not change: %s (%s)" % (msg,object['dn']))
 			return False
-		except ldap.SERVER_DOWN:
-			raise ldap.SERVER_DOWN
-		except SystemExit:
+		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except:
+		except: # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.ERROR, "Unknown Exception during sync_to_ucs")
 			return False
 
