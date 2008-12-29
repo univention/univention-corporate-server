@@ -327,7 +327,7 @@ class question_file extends extra{
 
 class question_ltext extends extra{
 	function show(){
-	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.Textarea\");</script>\n";
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.SimpleTextarea\");</script>\n";
 	  if (isset($this->attribute["passive"])) 
 	    $access = "disabled";
 	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
@@ -339,7 +339,7 @@ class question_ltext extends extra{
 	      $str .= "</td></tr>\n";
 	    }
 	  $str .= "<tr><td>\n";
-	  $str .= "<textarea dojoType=\"dijit.form.Textarea\" height=\"200\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
+	  $str .= "<textarea dojoType=\"dijit.form.SimpleTextarea\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
 	  if ($this->attribute["width"] || $this->attribute["height"])
 	    {
 	      $str .= "style=\" ";
