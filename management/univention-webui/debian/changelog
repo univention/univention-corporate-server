@@ -1,9 +1,10 @@
 univention-webui (1.5.1-0) stable; urgency=low
 
-  * enable dijit.form.TextForm and optional ValidationTextForm
-  * enable dijit.form.Textarea
+  * enable dijit.form.TextForm and optional ValidationTextForm for question_text
+  * enable dijit.form.Textarea for question_ltext
+  * enable dijit.form.TextForm for question_secure
 
- -- Ingo Steuwer <steuwer@univention.de>  Mon, 29 Dec 2008 14:44:59 +0100
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 29 Dec 2008 14:55:53 +0100
 
 univention-webui (1.5.0-2) stable; urgency=low
 

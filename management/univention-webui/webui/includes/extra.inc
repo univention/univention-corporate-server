@@ -370,22 +370,33 @@ class question_ltext extends extra{
 
 class question_secure extends extra{
 	function show(){
-		if(isset($this->attribute["passive"])) $access = "disabled";
-    		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n".$this->basket["description"];
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr>\n";
-		$str .= "<tr><td><input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
-		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
-		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		if($this->warn) $str .= " class=\"text_warn\" ";
-		else $str .= " class=\"text\" ";
-		$str .= "type=\"password\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
-		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-		$str .= "</td></tr>\n</table>\n";
-		return $str;
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.TextBox\");</script>\n";
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
+	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+	  $str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n".$this->basket["description"];
+	  if ($this->warn) 
+	    $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	  $str .= "</td></tr>\n";
+	  $str .= "<tr><td><input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+	  if ($this->attribute["width"]) 
+	    $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+	  else
+	    $str .= "style=\"width:300px\" ";
+	  if ($this->js && isset($this->basket["update"])) 
+	    $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	  if ($this->warn) 
+	    $str .= " class=\"text_warn\" ";
+	  else 
+	    $str .= " class=\"text\" ";
+	  $str .= "type=\"password\" dojoType=\"dijit.form.TextBox\"";
+	  $str .= " $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
+	  if (isset($this->basket["update"])) 
+	    $str .= $this->basket["update"]."\n";
+	  $str .= "</td></tr>\n</table>\n";
+	  
+	  return $str;
 	}
-
 }
 
 class question_bool extends extra{
