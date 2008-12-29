@@ -98,7 +98,9 @@ def encode_ad_object(ad_object):
 			else:
 				try:
 					ad_object[key]=encode_attriblist(ad_object[key])
-				except:
+				except (ldap.SERVER_DOWN, SystemExit):
+					raise
+				except: # FIXME: which exception is to be caught?
 					ud.debug(ud.LDAP, ud.WARN,
 							       "encode_ad_object: encode attrib %s failed, ignored!" % key)
 		return ad_object
@@ -264,7 +266,7 @@ def samaccountname_dn_mapping(connector, given_object, dn_mapping_stored, ucsobj
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn for key %s:" % dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: olddn: %s" % dn)
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: newdn: %s" % newdn)
-			except:
+			except: # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "samaccount_dn_mapping: dn-print failed")
 
 
@@ -351,7 +353,7 @@ def old_user_dn_mapping(connector, given_object):
 				ud.debug(ud.LDAP, ud.INFO, "newdn for key %s:"%dn_key)
 				ud.debug(ud.LDAP, ud.INFO, "olddn: %s"%dn)
 				ud.debug(ud.LDAP, ud.INFO, "newdn: %s"%newdn)
-			except:
+			except: # FIXME: which exception is to be caught?
 				pass
 
 			object[dn_key]=newdn
@@ -594,7 +596,7 @@ class ad(univention.connector.ucs):
 	def encode(self, string):
 		try:
 			return unicode(string)
-		except:
+		except: # FIXME: which exception is to be caught?
 			return unicode(string, 'Latin-1')
 			
 	def _get_lastUSN(self):
@@ -686,12 +688,12 @@ class ad(univention.connector.ucs):
 			dn, ad_object=self.lo_ad.lo.search_ext_s(compatible_modstring(dn),ldap.SCOPE_BASE,'(objectClass=*)')[0]
 			try:
 				ud.debug(ud.LDAP, ud.INFO,"get_object: got object: %s" % dn)
-			except:
+			except: # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO,"get_object: got object: <print failed>")
 			return encode_ad_object(ad_object)
-		except ldap.SERVER_DOWN:
+		except (ldap.SERVER_DOWN, SystemExit):
 			raise
-		except:			
+		except: # FIXME: which exception is to be caught?
 			pass
 		
 
@@ -750,9 +752,10 @@ class ad(univention.connector.ucs):
 		try:
 			returnObjects = search_ad_changes_by_attribute( 'uSNCreated', lastUSN+1 )
 			returnObjects += search_ad_changes_by_attribute( 'uSNChanged', lastUSN+1 )
-		except ldap.SERVER_DOWN:
+		except (ldap.SERVER_DOWN, SystemExit):		
 			raise
-		except: #AD can`t return > 1000 results, we are going to split the search
+		except: # FIXME: which exception is to be caught?
+		        # AD can`t return > 1000 results, we are going to split the search
 			highestCommittedUSN = self.__get_highestCommittedUSN()
 			tmpUSN=lastUSN
 			ud.debug(ud.LDAP, ud.INFO,
@@ -801,7 +804,7 @@ class ad(univention.connector.ucs):
 			try:
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent (%s) and rdn (%s)"
 						       % (object['attributes']['lastKnownParent'][0], rdn))
-			except:
+			except: # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.INFO, "__dn_from_deleted_object: get DN from lastKnownParent")
  			return rdn + "," + object['attributes']['lastKnownParent'][0]							
  		else:
@@ -1140,9 +1143,9 @@ class ad(univention.connector.ucs):
 			try:
 				if self.lo_ad.get(ad_dn,attr=['cn']): # search only for cn to suppress coding errors
 					ad_members_from_ucs.append(ad_dn.lower())
-			except ldap.SERVER_DOWN:
+			except (ldap.SERVER_DOWN, SystemExit):
 				raise
-			except:
+			except:  # FIXME: which exception is to be caught?
 				self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad, assume object doesn't exist")
 
 		ud.debug(ud.LDAP, ud.INFO,
@@ -1164,9 +1167,9 @@ class ad(univention.connector.ucs):
 						ad_members_from_ucs.append(member_dn.lower())
 						ud.debug(ud.LDAP, ud.INFO,
 								       "group_members_sync_from_ucs: Object ignored in AD [%s], key = [%s]" % (ucs_dn,key))			
-				except ldap.SERVER_DOWN:
+				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except:
+				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_from_ucs: failed to get dn from ad which is groupmember")
 
 		ud.debug(ud.LDAP, ud.INFO,
@@ -1225,9 +1228,9 @@ class ad(univention.connector.ucs):
 
 			try:
 				self.lo_ad.lo.modify_s(compatible_modstring(object['dn']),[(ldap.MOD_REPLACE, 'member', modlist_members)])
-			except ldap.SERVER_DOWN:
+			except (ldap.SERVER_DOWN, SystemExit):
 				raise
-			except:
+			except: # FIXME: which exception is to be caught?
 				ud.debug(ud.LDAP, ud.WARN,
 						       "group_members_sync_from_ucs: failed to sync members: (%s,%s)" % (object['dn'],[(ldap.MOD_REPLACE, 'member', modlist_members)]))
 				raise
@@ -1310,9 +1313,9 @@ class ad(univention.connector.ucs):
 				try:
 					if self.lo.get(ucs_dn):
 						ucs_members_from_ad[key].append(ucs_dn.lower())
-				except ldap.SERVER_DOWN:
+				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except:
+				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs, assume object doesn't exist")
 				
 		# check if members in UCS don't exist in AD, if true they need to be added in UCS
@@ -1335,9 +1338,9 @@ class ad(univention.connector.ucs):
 								ucs_members_from_ad[k].append(member_dn.lower())
 						break
 
-				except ldap.SERVER_DOWN:
+				except (ldap.SERVER_DOWN, SystemExit):
 					raise
-				except:
+				except: # FIXME: which exception is to be caught?
 					self._debug_traceback(ud.INFO, "group_members_sync_to_ucs: failed to get dn from ucs which is groupmember")
 
 		# compare lists and generate modlist
@@ -1533,9 +1536,9 @@ class ad(univention.connector.ucs):
 						mapped_object = self._object_mapping(property_key,object)
 						try:
 							sync_successfull = self.sync_to_ucs(property_key, mapped_object, premapped_ad_dn)
-						except ldap.SERVER_DOWN:
+						except (ldap.SERVER_DOWN, SystemExit):
 							raise
-						except:
+						except: # FIXME: which exception is to be caught?
 							self._debug_traceback(ud.ERROR,
 												  "sync of rejected object failed \n\t%s" % (object['dn']))
 							sync_successfull = False
@@ -1561,9 +1564,9 @@ class ad(univention.connector.ucs):
 		changes = []
 		try:
 			changes = self.__search_ad_changes(show_deleted=show_deleted)
-		except ldap.SERVER_DOWN:
+		except (ldap.SERVER_DOWN, SystemExit):
 			raise		
-		except:
+		except: # FIXME: which exception is to be caught?
 			self._debug_traceback(ud.WARN,"Exception during search_ad_changes")
 
 		print "--------------------------------------"
@@ -1579,7 +1582,7 @@ class ad(univention.connector.ucs):
 					continue
 				old_element = copy.deepcopy(element)
 				object = self.__object_from_element(element)
-			except:
+			except: # FIXME: which exception is to be caught?
 				#ud.debug(ud.LDAP, ud.ERROR, "Exception during poll/object-mapping, tried to map element: %s" % old_element[0])
 				#ud.debug(ud.LDAP, ud.ERROR, "This object will not be synced again!")
 				# debug-trace may lead to a segfault here :(
@@ -1593,8 +1596,8 @@ class ad(univention.connector.ucs):
 					try:
 						mapped_object = self._object_mapping(property_key,object)
 						sync_successfull = self.sync_to_ucs(property_key, mapped_object, object['dn'])
-					except ldap.SERVER_DOWN:
-						raise ldap.SERVER_DOWN
+					except (ldap.SERVER_DOWN, SystemExit):
+						raise
 					except univention.admin.uexceptions.ldapError, msg:
 						ud.debug(ud.LDAP, ud.INFO, "Exception during poll with message (1) %s"%msg)
 						if msg == "Can't contact LDAP server":
@@ -1607,7 +1610,7 @@ class ad(univention.connector.ucs):
 							raise ldap.SERVER_DOWN
 						else:
 							self._debug_traceback(ud.WARN,"Exception during poll")
-					except:
+					except: # FIXME: which exception is to be caught?
 						self._debug_traceback(ud.WARN,
 								"Exception during poll/sync_to_ucs")
 
@@ -1625,7 +1628,9 @@ class ad(univention.connector.ucs):
 						try:
 							GUID = old_element[1]['objectGUID'][0]
 							self._set_DN_for_GUID(GUID,old_element[0])
-						except:
+						except (ldap.SERVER_DOWN, SystemExit):
+							raise
+						except: # FIXME: which exception is to be caught?
 							self._debug_traceback(ud.WARN,
 									      "Exception during set_DN_for_GUID")
 

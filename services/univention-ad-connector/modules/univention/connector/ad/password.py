@@ -135,14 +135,14 @@ def password_sync_ucs(connector, key, object):
 	compatible_modstring = univention.connector.ad.compatible_modstring
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "Object DN=%s" % object['dn'])
-	except:
+	except: # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "Object DN not printable")
 		
 	ucs_object = connector._object_mapping(key, object, 'con')
 
 	try:
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN = %s" % ucs_object['dn'])
-	except:
+	except: # FIXME: which exception is to be caught?
 		ud.debug(ud.LDAP, ud.INFO, "   UCS DN not printable")
 
 	res = connector.lo.lo.search(base=ucs_object['dn'], scope='base', attr=['sambaLMPassword', 'sambaNTPassword','sambaPwdLastSet','sambaPwdMustChange'])
@@ -286,7 +286,7 @@ def password_sync(connector, key, ucs_object):
 					try:
 						expiryInterval=int(pwhistoryPolicy['expiryInterval'])
 						newSambaPwdMustChange = str(long(newSambaPwdLastSet)+(expiryInterval*3600*24) )
-					except:
+					except: # FIXME: which exception is to be caught?
 						# expiryInterval is empty or no legal int-string
 						pwhistoryPolicy['expiryInterval']=''
 						expiryInterval=-1
