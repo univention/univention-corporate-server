@@ -4,8 +4,10 @@ univention-webui (1.5.1-0) stable; urgency=low
   * enable dijit.form.Textarea for question_ltext
   * enable dijit.form.TextForm for question_secure
   * enable dijit.form.ChechBox for question_bool
+  * prepare dijit.form.MultiSelect for question_mselect
+  * enable dijit.form.RadioButton for question_choice (untested)
 
- -- Ingo Steuwer <steuwer@univention.de>  Mon, 29 Dec 2008 15:19:09 +0100
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 29 Dec 2008 15:49:39 +0100
 
 univention-webui (1.5.0-2) stable; urgency=low
 

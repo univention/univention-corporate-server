@@ -793,58 +793,84 @@ class question_dojo_comboselect extends extra_multi{
 
 class question_mselect extends extra_multi{
 	function show(){
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		$str .= "</td></tr><tr><td>\n";
-        	$str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
-		if($this->warn) $str .= " class=\"mselect_warn\" ";
-		else $str .= " class=\"mselect\" ";
-		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		if($this->attribute["width"] || $this->attribute["height"]){
-			$str .= "style=\" ";
-			if($this->attribute["width"]) $str .= "width:".($this->attribute["width"])."px; ";
-			if($this->attribute["height"]) $str .= "height:".($this->attribute["height"])."px";
-			$str .= "\" ";
-			}
-		$str .= "name=\"usrinput[multiple#".$this->tabindex."][]\" multiple size=\"5\">\n";
-        	if($this->basket["choice"])
-			foreach($this->basket["choice"] as $key=>$val)
-		      		{
-				if(trim($this->basket["var"][$key]["content"])!="") $is='selected';
-	 	       		$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>\n";
-				$str .= $this->basket["choice"][$key]["description"];
-				$str .= "</option>\n";
-        			$is = '';
-        			}
-        	$str .="</select>\n";
-		$str .= "</td></tr>\n</table>\n";
-   		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-		return $str;
-	}
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
 
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.MultiSelect\");</script>\n";
+
+	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+	  $str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+	  if ($this->warn) 
+	    $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	  $str .= "</td></tr><tr><td>\n";
+	  $str .= "<select $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+          # FIXME: enabling dojo.form.MultiSelect leads to unusable question_mselect
+	  #$str .= " dojoType=\"dijit.form.MultiSelect\"";
+	  if ($this->warn) 
+	    $str .= " class=\"mselect_warn\" ";
+	  else 
+	    $str .= " class=\"mselect\" ";
+	  if ($this->js && isset($this->basket["update"])) 
+	    $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	  if ($this->attribute["width"] || $this->attribute["height"])
+	    {
+	      $str .= "style=\" ";
+	      if ($this->attribute["width"]) 
+		$str .= "width:".($this->attribute["width"])."px; ";
+	      if ($this->attribute["height"]) 
+		$str .= "height:".($this->attribute["height"])."px";
+	      $str .= "\" ";
+	    }
+	  $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\" multiple size=\"5\">\n";
+	  if ($this->basket["choice"])	    
+	    foreach($this->basket["choice"] as $key=>$val)
+	      {
+		if (trim($this->basket["var"][$key]["content"])!="") 
+		  $is='selected';
+		$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>\n";
+		$str .= $this->basket["choice"][$key]["description"];
+		$str .= "</option>\n";
+		$is = '';
+	      }
+	  $str .="</select>\n";
+	  $str .= "</td></tr>\n</table>\n";
+	  if (isset($this->basket["update"])) 
+	    $str .= $this->basket["update"]."\n";
+	  
+	  return $str;
+	}
 }
 
+# FIXME: nowhere used? dijit-forms are not tested...
 class question_choice extends extra_multi{
 	function show(){
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		$str .= "<div title=\"".$this->basket["helptext"]."\" >\n";
-		if (isset($this->basket["description"]) && trim($this->basket["description"]) != "")
-			$str .= $this->basket["description"]."<br />\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-        	 foreach($this->basket["choice"] as $key=>$val)
-        		{
-        		if(trim($this->basket["var"][$key]["content"])!="")$is='checked';
-      			$str .= "<input tabindex=\"".$this->tabindex."\" class=\"choice\" ";
-			if($this->js && isset($this->basket["update"])) $str .= "onClick=\"sendForm(".$this->update_byteindex.")\" ";
-			$str .= "type=\"radio\" name=\"usrinput[multiple#".$this->tabindex."][]\" $access value=\"".$this->basket["var"][$key]["byteindex"]."\" $is></input>\n";
-        		$str .= $this->basket["choice"][$key]["description"]."<br />\n";
-        		$is='';
-        		}
-        	if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-		$str.="</div>\n";
-		return $str;
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
+	  
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.CeckBox\");</script>\n";
+	
+	  $str .= "<div title=\"".$this->basket["helptext"]."\" >\n";
+	  if (isset($this->basket["description"]) && trim($this->basket["description"]) != "")
+	    $str .= $this->basket["description"]."<br />\n";
+	  if ($this->warn) 
+	    $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	  foreach ($this->basket["choice"] as $key=>$val)
+	    {
+	      if (trim($this->basket["var"][$key]["content"])!="") 
+		$is = 'checked';
+	      $str .= "<input tabindex=\"".$this->tabindex."\" class=\"choice\" dojoType=\"dijit.form.RadioButton\" ";
+	      if ($this->js && isset($this->basket["update"])) 
+		$str .= "onClick=\"sendForm(".$this->update_byteindex.")\" ";
+	      $str .= "type=\"radio\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+	      $str .= "$access value=\"".$this->basket["var"][$key]["byteindex"]."\" $is></input>\n";
+	      $str .= $this->basket["choice"][$key]["description"]."<br />\n";
+	      $is='';
+	    }
+	  if (isset($this->basket["update"])) 
+	    $str .= $this->basket["update"]."\n";
+	  $str .= "</div>\n";
+	  
+	  return $str;
 	}
 }
 
