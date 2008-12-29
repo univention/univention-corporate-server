@@ -221,9 +221,9 @@ class question_text extends extra{
 
           # include dojo
 	  if ($validationbox)
-	    $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.ValidationTextBox\");</script>\n";
+	    $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.ValidationTextBox\");</script>\n";
 	  else
-	    $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.TextBox\");</script>\n";
+	    $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.TextBox\");</script>\n";
 	  
 	  if (isset($this->attribute["passive"])) 
 	    $access = "disabled";
@@ -370,7 +370,7 @@ class question_ltext extends extra{
 
 class question_secure extends extra{
 	function show(){
-	  $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.TextBox\");</script>\n";
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.TextBox\");</script>\n";
 	  if (isset($this->attribute["passive"])) 
 	    $access = "disabled";
 	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
@@ -401,25 +401,35 @@ class question_secure extends extra{
 
 class question_bool extends extra{
 	function show(){
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		if(trim($this->basket["content"])!="") $is='checked';
-		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n";
-		$str .= "<td valign=\"middle\">\n";
-		$str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" class=\"bool\" type=\"checkbox\" $access ";
-		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		$str .= "name=\"usrinput[".$this->byteindex."]\" value=\"checked\" $is></input></td>\n";
-		if(trim($this->basket["description"]) != ''){
-			$str .= "<td class=\"description\" align=\"left\" valign=\"middle\">\n";
-			$str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n";
-			$str .= $this->basket["description"]."\n";
-			$str .= "</td>\n";
-			}
-		$str .= "<td>\n";
-		if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-		if(isset($this->basket["update"])) $str .= $this->basket["update"];
-		$str .= "</td></tr>\n</table>\n";
-		$is='';
-		return $str;
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
+	  if (trim($this->basket["content"])!="") 
+	    $is='checked';
+
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.CheckBox\");</script>\n";
+	  $str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n";
+	  $str .= "<td valign=\"middle\">\n";
+	  $str .= "<input dojoType=\"dijit.form.CheckBox\" title=\"".$this->basket["helptext"]."\"";
+	  $str .= " tabindex=\"".$this->tabindex."\" class=\"bool\" type=\"checkbox\" $access ";
+	  if ($this->js && isset($this->basket["update"])) 
+	    $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	  $str .= "name=\"usrinput[".$this->byteindex."]\" value=\"checked\" $is></input></td>\n";
+	  if (trim($this->basket["description"]) != '')
+	    {
+	      $str .= "<td class=\"description\" align=\"left\" valign=\"middle\">\n";
+	      $str .= "<img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>\n";
+	      $str .= $this->basket["description"]."\n";
+	      $str .= "</td>\n";
+	    }
+	  $str .= "<td>\n";
+	  if ($this->warn) 
+	    $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	  if (isset($this->basket["update"])) 
+	    $str .= $this->basket["update"];
+	  $str .= "</td></tr>\n</table>\n";
+	  $is='';
+	  
+	  return $str;
 	}
 }
 
