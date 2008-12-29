@@ -1,6 +1,6 @@
-univention-webui-style (2.2.0-0) unstable; urgency=low
+univention-webui-style (2.2.0-1) unstable; urgency=low
 
-  * bump version
+  * merge univention-webui-style-base to univention-webui-style
 
  -- Ingo Steuwer <steuwer@univention.de>  Fri, 12 Dec 2008 15:16:35 +0100
 

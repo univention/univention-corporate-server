@@ -7,23 +7,14 @@ Standards-Version: 3.5.5
 
 Package: univention-webui-style
 Architecture: all
-Conflicts: univention-admin (<< 2.16-21), univention-console (<< 1.3-2)
+Conflicts: univention-admin (<< 2.16-21), univention-console (<< 1.3-2), univention-webui-style-base (<< 2.2.0-0)
+Replaces: univention-webui-style-base
+Provides: univention-webui-style-base
 Depends: univention-apache
 Description: Styleset for Univention WebUI - Web based user interfaces
  This packages contains the icons and stylesheet for Univention WebUI,
- a web based user interface for Univention Admin and Univention Console.
- .
- This package is part of Univention Corporate Server (UCS),
- an integrated, directory driven solution for managing
- corporate environments. For more information about UCS,
- refer to: http://www.univention.de/
-
-Package: univention-webui-style-base
-Architecture: all
-Conflicts: univention-webui-style (<< 1.0.4-2)
-Description: Styleset for UCS-OVERVIEW, Welcome Site of Server
- This packages contains the icons and stylesheet for UCS-OVERVIEW,
- a web based Welcome interface for Univention Server.
+ a web based user interface for Univention Admin and Univention Console,
+ and icons and stylesheets for UCS overview pages.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing
