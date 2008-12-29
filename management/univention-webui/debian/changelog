@@ -1,3 +1,10 @@
+univention-webui (1.5.1-0) stable; urgency=low
+
+  * enable dijit.form.TextForm and optional ValidationTextForm
+  * enable dijit.form.Textarea
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 29 Dec 2008 14:44:59 +0100
+
 univention-webui (1.5.0-2) stable; urgency=low
 
   * fix syntax-failure

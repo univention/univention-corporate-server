@@ -327,34 +327,45 @@ class question_file extends extra{
 
 class question_ltext extends extra{
 	function show(){
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		if($this->basket["description"]){
-			$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n".$this->basket["description"];
-			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-			$str .= "</td></tr>\n";
-			}
-		$str .= "<tr><td>\n";
-		$str .= "<textarea $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
-		if($this->attribute["width"] || $this->attribute["height"]){
-			$str .= "style=\" ";
-			if($this->attribute["width"]) $str .= "width:".($this->attribute["width"])."px; ";
-			if($this->attribute["height"]) $str .= "height:".($this->attribute["height"])."px";
-			$str .= "\" ";
-			if(isset($this->attribute["readonly"])) $str .= " readonly=\"\" ";
-			}
-		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		if($this->warn) $str .= "class=\"longtext_warn\"";
-		else $str .= "class=\"longtext\"";
-		$str .= "name=\"usrinput[".$this->byteindex."]\">\n";
-		$str .= $this->basket["content"]."</textarea>\n";
-		$str .= "</td></tr>\n";
-		if(isset($this->basket["update"])) $str .= "<tr><td>\n".$this->basket["update"]."</td></tr>\n";
-		$str .= "</table>\n";
-		return $str;
+	  $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.Textarea\");</script>\n";
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
+	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+	  if ($this->basket["description"])
+	    {
+	      $str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n".$this->basket["description"];
+	      if ($this->warn) 
+		$str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	      $str .= "</td></tr>\n";
+	    }
+	  $str .= "<tr><td>\n";
+	  $str .= "<textarea dojoType=\"dijit.form.Textarea\" height=\"200\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
+	  if ($this->attribute["width"] || $this->attribute["height"])
+	    {
+	      $str .= "style=\" ";
+	      if ($this->attribute["width"]) 
+		$str .= "width:".($this->attribute["width"])."px; ";
+	      if ($this->attribute["height"]) 
+		$str .= "height:".($this->attribute["height"])."px";
+	      $str .= "\" ";
+	      if (isset($this->attribute["readonly"])) 
+		$str .= " readonly=\"\" ";
+	    }
+	  if ($this->js && isset($this->basket["update"])) 
+	    $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	  if ($this->warn) 
+	    $str .= "class=\"longtext_warn\"";
+	  else 
+	    $str .= "class=\"longtext\"";
+	  $str .= "name=\"usrinput[".$this->byteindex."]\">\n";
+	  $str .= $this->basket["content"]."</textarea>\n";
+	  $str .= "</td></tr>\n";
+	  if (isset($this->basket["update"])) 
+	    $str .= "<tr><td>\n".$this->basket["update"]."</td></tr>\n";
+	  $str .= "</table>\n";
 
-	}
-
+	  return $str;	  
+	}	
 }
 
 class question_secure extends extra{
