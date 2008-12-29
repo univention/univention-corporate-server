@@ -200,27 +200,75 @@ class question_date extends extra{
 class question_text extends extra{
 	function show(){
 
-		if(isset($this->attribute["passive"])) $access = "disabled";
-		$str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
-		if($this->basket["description"]) {
-			$str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n";
-			$str .= $this->basket["description"];
-			if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-			$str .= "</td></tr>\n";
-			}
-		$str .= "<tr><td>\n";
-		$str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
-		if($this->attribute["width"]) $str .= "style=\"width:".($this->attribute["width"])."px\" ";
-		if($this->js && isset($this->basket["update"])) $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-		if($this->warn) $str .= " class=\"text_warn\" ";
-		else $str .= " class=\"text\" ";
-		$str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
-		if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-		$str .= "</td></tr>\n</table>\n";
-		return $str;
+	  $validationbox = false;
+	  if ($this->basket["validregex"]) {
+	    $validationbox = true;
+	    $validregex = $this->basket["validregex"];
+	  }
+
+	  $isrequired = false;
+	  if ($this->basket["isrequired"]) {
+	    $isrequired = true;
+	    if (! $validationbox) {
+	      $validationbox = true;
+	      $validregex = ".*"; # allow all
+	    }
+	  }
+
+	  $invalidmessage = false;
+	  if ($this->basket["invalidmessage"])
+	    $invalidmessage = $this->basket["invalidmessage"];
+
+          # include dojo
+	  if ($validationbox)
+	    $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.ValidationTextBox\");</script>\n";
+	  else
+	    $str .= "<script type=\"text/javascript\">dojo.require(\"unijit.form.TextBox\");</script>\n";
+	  
+	  if (isset($this->attribute["passive"])) 
+	    $access = "disabled";
+	  $str .= "<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n";
+	  
+	  if ($this->basket["description"]) 
+	    {
+	      $str .= "<tr><td class=\"description\">\n<img src=\"style/blank_spacer.gif\" height=\"2\" width=\"2\"></img>\n";
+	      $str .= $this->basket["description"];
+	      if ($this->warn) 
+		$str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+	      $str .= "</td></tr>\n";
+	    }
+	  $str .= "<tr><td>\n";
+	  $str .= "<input title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\" ";
+	  if ($this->attribute["width"]) 
+	    $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+	  else
+	    $str .= "style=\"width:300px\" "; # width is interpreted by dojo, 300px seems to be the default in the past
+	  if ($this->js && isset($this->basket["update"])) 
+	    $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+	  if ($this->warn) 
+	    $str .= " class=\"text_warn\" ";
+	  else 
+	    $str .= " class=\"text\" ";
+	  if ($validationbox)
+	    {
+              # enable as dijit.ValidationTextBox
+	      $str .= " dojoType=\"dijit.form.ValidationTextBox\"";
+	      # add regexp
+	      $str .= " regExp=\"".$validregex."\"";
+	      if ($isrequired) # value is required
+		$str .= " required=\"true\"";
+	      if ($invalidmessage) # user defined message for invalid values
+		$str .= " invalidMessage=\"".$invalidmessage."\"";
+	    }
+	  else
+	    # enable as dijit.TextBox
+	    $str .= " dojoType=\"dijit.form.TextBox\"";
+	  $str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
+	  if (isset($this->basket["update"])) 
+	    $str .= $this->basket["update"]."\n";
+	  $str .= "</td></tr>\n</table>\n";
+	  return $str;
 	}
-
-
 }
 
 class question_dojo_date_widget extends extra {
@@ -607,50 +655,54 @@ class link extends extra{
 class question_select extends extra_multi{
   function show(){
     $appendstr = "";
-    if(isset($this->attribute["passive"])) $access = "disabled";
-	$str .= "\n\n";
-	$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.FilteringSelect\");</script>\n";
-	$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-	$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
-	if($this->warn) $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
-	$str .= "</td></tr>\n<tr><td>\n";
-	$str .= "<select dojoType=\"dijit.form.FilteringSelect\" autocomplete=\"true\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
-	
-	if($this->warn) 
-	  $str .= " class=\"select_warn\" ";
-	else 
-	  $str .= " class=\"select\" ";
-	
-	if($this->attribute["width"]) 
-	  $str .= "style=\"width:".($this->attribute["width"])."px\" ";
-	
-	if($this->js && isset($this->basket["update"])) 
-	  $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
-	
-	if ($access != "disabled")
-	  $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
-	$str .= ">\n";
-	if($this->basket["choice"])
-	  foreach($this->basket["choice"] as $key=>$val) {
-	    if(trim($this->basket["var"][$key]["content"])!="") {
-	      $is='selected';
-	      if ($access == "disabled") {
-		$appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
-		$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
-	      }
-	    }
-	    for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) $space .= "&nbsp;";
-	    $str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>";
-	    $str .= $space.$this->basket["choice"][$key]["description"];
-	    $str .= "</option>\n";
-	    $is = '';
-	    $space = '';
+    if(isset($this->attribute["passive"])) 
+      $access = "disabled";
+    $str .= "\n\n";
+    $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.FilteringSelect\");</script>\n";
+    $str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+    $str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+    if($this->warn) 
+      $str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+    $str .= "</td></tr>\n<tr><td>\n";
+    $str .= "<select dojoType=\"dijit.form.FilteringSelect\" autocomplete=\"true\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+    
+    if($this->warn) 
+      $str .= " class=\"select_warn\" ";
+    else 
+      $str .= " class=\"select\" ";
+    
+    if($this->attribute["width"]) 
+      $str .= "style=\"width:".($this->attribute["width"])."px\" ";
+    
+    if($this->js && isset($this->basket["update"])) 
+      $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+    
+    if ($access != "disabled")
+      $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
+    $str .= ">\n";
+    if($this->basket["choice"])
+      foreach($this->basket["choice"] as $key=>$val) {
+	if(trim($this->basket["var"][$key]["content"])!="") {
+	  $is='selected';
+	  if ($access == "disabled") {
+	    $appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+	    $appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
 	  }
-	$str .="</select>\n";
-	if(isset($this->basket["update"])) $str .= $this->basket["update"]."\n";
-	$str .= $appendstr;
-	$str .= "</td></tr>\n</table>\n";
-	return $str;
+	}
+	for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) 
+	  $space .= "&nbsp;";
+	$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>";
+	$str .= $space.$this->basket["choice"][$key]["description"];
+	$str .= "</option>\n";
+	$is = '';
+	$space = '';
+      }
+    $str .="</select>\n";
+    if(isset($this->basket["update"])) 
+      $str .= $this->basket["update"]."\n";
+    $str .= $appendstr;
+    $str .= "</td></tr>\n</table>\n";
+    return $str;
   }
 }
 
