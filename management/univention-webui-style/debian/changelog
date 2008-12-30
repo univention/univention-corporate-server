@@ -1,3 +1,10 @@
+univention-webui-style (2.2.1-0) unstable; urgency=low
+
+  * support dynamic_longtable
+  * add dojo/dijit-specific CSS attributes
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 30 Dec 2008 17:01:55 +0100
+
 univention-webui-style (2.2.0-1) unstable; urgency=low
 
   * merge univention-webui-style-base to univention-webui-style

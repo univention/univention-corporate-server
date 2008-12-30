@@ -55,6 +55,7 @@ table.content_main_menuless,
 table.content_header_menuless,
 table.content_default,
 table.table_default,
+table.table_fullwidth,
 table.content_list,
 table.content_sublist,
 table.content_border,
@@ -102,6 +103,7 @@ table.content_main_menuless,
 table.content_header_menuless,
 table.content_default,
 table.table_default,
+table.table_fullwidth,
 table.content_list,
 table.content_sublist,
 table.content_border,
@@ -182,6 +184,7 @@ table.content_main,
 table.content_main_menuless,
 table.content_default,
 table.table_default,
+table.table_fullwidth,
 table.global_menu{
 vertical-align:top;
 }
@@ -226,6 +229,23 @@ table.content_plain,
 table.border,
 table.plain{
 background-color:#EEEEEE;
+}
+
+table.table_fullwidth,
+table.right-footer,
+table.browse_layout_right
+{
+width: 100%;
+}
+
+table.right-footer,
+tr.right-footer,
+table.browse_layout_right,
+tr.browse_layout_right
+{
+float: right;
+margin-left: auto;
+margin-right: 10px;
 }
 
 /* ################# Rows  ################# */
@@ -448,9 +468,16 @@ td.wizard_layout,
 td.wizard_layout_bottom{
 padding:3px 0px 3px 10px;
 }
-td.browse_layout, td.browse_layout_bottom{
+
+td.browse_layout, 
+td.browse_layout_bottom {
 padding:3px 0px 0px 10px;
 }
+
+td.browse_layout_inner {
+padding:0px 0px 0px 0px;
+}
+
 td.button_link{
 padding-left:5px;
 }
@@ -527,7 +554,9 @@ vertical-align:top;
 
 td.tab_layout_bottom,
 td.wizard_layout_bottom,
-td.browse_layout_bottom{
+td.browse_layout_bottom,
+td.browse_layout_inner,
+td.browse_layout_right {
 vertical-align:bottom;
 }
 
@@ -794,6 +823,7 @@ font-size:11px
 .Stil9,
 .plain,
 .h7,
+.h6,
 .h5,
 .h4,
 .h3,

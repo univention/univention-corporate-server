@@ -160,18 +160,19 @@ table.dijitCalendarContainer {
 
 .dijitTextBox {
 	background-color:#FFFFFF !important;
-	height:15px;
 	width:120px;
 	border-right-color:#CCCCCC;
 	border-bottom-color:#CCCCCC;
 	border-top-color:#666666;
 	border-left-color:#666666;
-//	    border:0pt none;
-//	    margin:0pt;
-//	    padding:0pt;
-//	    position:absolute;
-//	    width:120px;
 }
+/*	height:17px;
+	    border:0pt none;
+	    margin:0pt;
+	    padding:0pt;
+	    position:absolute;
+	    width:120px;
+*/
 
 table.dijitCalendarContainer {
         background-color:#EEEEEE !important;
@@ -183,11 +184,12 @@ table.dijitCalendarContainer {
         border-bottom-color:#CCCCCC;
         border-top-color:#666666;
         border-left-color:#666666;
-//          border:0pt none;
-//          margin:0pt;
-//          padding:0pt;
-//          position:absolute;
-//          width:120px;
+/*         border:0pt none;
+          margin:0pt;
+          padding:0pt;
+          position:absolute;
+          width:120px;
+*/
 }
 
 .dijitCalendarMonthContainer{
@@ -219,11 +221,11 @@ height:15px;
 width:15px;
 }
 
-// FormFill
+/* FormFill  */
 
-//.dijitReset {
-//font-size: 11px;
-//}
+.dijitReset {
+font-size: 11px;
+}
 
 .dijitComboBox,
 .dijitValidationIcon,
@@ -247,4 +249,43 @@ font-size: 11px;
 background:#FFFFFF;
 border:1px solid #B3B3B3;
 line-height:normal;
+}
+
+/* drop-downs need a different padding then textboxes */
+/* this should be checked with other browsers than firefox */
+.select .dijitInputField {
+  padding-left: 7px;
+  padding-top: 2px;
+  height: 18px;
+}
+
+/* ******** Buttons ******* */
+
+
+/* ******** dynamic_longtable (StackContainer) ******* */
+
+.tundra .dynlongtable-buttons {
+  padding: 5px;
+}
+
+.tundra .dynlongtable-buttons .dijitButtonNode,
+.tundra .dynlongtable-buttons .dijitButtonText {
+  font-weight: normal;
+}
+/*
+// to blank the buttons include:
+  border: none;
+  background: none;
+*/
+
+.tundra .dynlongtable-buttons .dijitToggleButtonChecked .dijitButtonNode,
+.tundra .dynlongtable-buttons .dijitToggleButtonChecked .dijitButtonText {
+  color:#CC0033;
+  font-weight:bold;  
+  background: #FCFDFF url(../images/ButtonHover.png) repeat-x scroll center;
+}
+/* to blank the buttons set background: none; */
+
+.tundra .dynlongtable-pane table.table_default {
+  width: 100%;
 }
