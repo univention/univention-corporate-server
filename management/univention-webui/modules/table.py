@@ -77,6 +77,51 @@ class longtable(uniconf):
 		else:
 			return 0
 
+class dynamic_longtable(table):
+	def myinit(self):
+		self.save = self.parent.save
+	def mytype(self):
+		return("dynamic_longtable")
+
+## 	def init(self,input,xmlob,node):
+## 		self.input=input
+
+## 		for ob in self.args["obs"]:
+## 			self.subobjs.append(ob)
+
+## 		uniconf.init(self,input,xmlob,node)
+
+## 		#if self.input and node!=None:
+## 		#	contenttags=getSubnodesByName(node,"content")
+## 		#	if contenttags:
+## 		#		content=self.gettagtext(contenttags[0].childNodes)
+## 		#		self.ivars["content"]=unicode(content)
+
+## 	def myxmlrepr(self, xmlob, node):
+## 		#contenttag=xmlob.createElement("content")
+## 		#node.appendChild(contenttag)
+
+## 		if hasattr(self, "start"): # not needed
+## 			tag=xmlob.createElement("start")
+## 			node.appendChild(tag)
+## 			tagtext=xmlob.createTextNode(self.start)
+## 			tag.appendChild(tagtext)
+
+## 		if hasattr(self, "visible"): # not needed
+## 			tag=xmlob.createElement("visible")
+## 			node.appendChild(tag)
+## 			tagtext=xmlob.createTextNode(self.visible)
+## 			tag.appendChild(tagtext)
+
+## 		return xmlob
+
+## 	def getcontent(self):
+## 		content = self.ivars.get("content",0)
+## 		if content:
+## 			return int(content)
+## 		else:
+## 			return 0
+
 class tablerow(table):
 	def myinit(self):
 		self.save = self.parent.save

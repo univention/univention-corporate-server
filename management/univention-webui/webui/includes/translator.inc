@@ -144,6 +144,7 @@ class webui_translator{
 					case 'question_group': $this->extra = new question_group($tag, $this->conti_ref, $this->config, $attribute, $this->warn); return;
 					case 'question_file': $this->extra = new question_file($tag, $this->conti_ref, $this->config, $attribute, $this->warn); return;
 					case 'long_table': $this->extra = new long_table(new dummy_container($this->config,$this->conti_ref->tabindex), $this->config, $attribute); return;
+					case 'dynamic_longtable': $this->extra = new dynamic_longtable(new dummy_container($this->config,$this->conti_ref->tabindex), $this->config, $attribute); return;
 					case 'table': $this->extra = new table(new dummy_container($this->config,$this->conti_ref->tabindex), $this->config, $attribute); return;
 					case 'tgroup': $this->extra = new tgroup(new dummy_container($this->config,$this->conti_ref->tabindex), $this->config, $attribute); return;
 					case 'row': 	if(isset($this->attribute["border"]) && !isset($attribute["border"])) $attribute["border"]=$this->attribute["border"];

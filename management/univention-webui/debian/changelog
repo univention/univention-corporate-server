@@ -1,3 +1,9 @@
+univention-webui (1.5.2-0) stable; urgency=low
+
+  * add dynamic_longtable as future replacement for longtable for result-pages in javascript
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 30 Dec 2008 17:03:34 +0100
+
 univention-webui (1.5.1-0) stable; urgency=low
 
   * enable dijit.form.TextForm and optional ValidationTextForm for question_text

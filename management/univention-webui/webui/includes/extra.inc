@@ -1247,6 +1247,195 @@ class question_group{
 
 
 ###########################################
+class dynamic_longtable extends webui_translator
+{
+  var $count_row;
+  var $hide;
+
+  function put_start(&$tag, &$attribute, $byteindex)
+  {
+    if ($tag=="row") 
+      $this->conti_ref->next_row();
+    $this->start($tag, $attribute, $byteindex);
+  }
+
+  function put_value(&$value)
+  {
+    if(!$this->hide)
+      $this->value($value);
+  }
+
+  function finish(&$tag)
+  {
+    if ($this->extra)
+      {
+	$this->end($tag);
+      }
+    else
+      {
+	if ($tag=="dynamic_longtable")
+	  return TRUE;
+	else
+	  return FALSE;
+      }
+  }
+
+  function show() {
+
+    $str = "\n<!-- start dynamic_longtable of type ".$type."-->\n";
+    $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.layout.StackContainer\");</script>\n";
+    $str .= "<script type=\"text/javascript\">dojo.require(\"dijit.layout.ContentPane\");</script>\n";
+
+
+    # copy & paste from class table
+    $space_bottom="";
+    if (isset($this->attribute["type"]))
+      {
+	$attrib_str .= " class=\"".$this->attribute["type"]."\"";
+	$type = $this->attribute["type"];
+      }
+    else
+      {
+	$type = "default";
+	$attrib_str .= " class=\"table_default\"";
+      }
+
+    if ($this->attribute["type"] == 'content_main')
+      {
+	$space_bottom="<tr><td class=\"content_spacer\">&nbsp;</td></tr>\n";
+      }
+
+    if($this->attribute["width"])
+      {
+        if(is_numeric($this->attribute["width"]))
+        {
+          $attrib_str .= "style=\"width:".($this->attribute["width"])."px\" ";
+        }
+        else
+        {
+          $attrib_str .= "style=\"width:".($this->attribute["width"])."\" ";
+        }
+      }
+    # -> end of copy&paste from class table
+
+    # config-vars
+    $stackNumber = 1;
+    $totalrows = 0; # the transfered total is the number of "real" entries, without header etc.
+    if (is_numeric($this->attribute['total']))
+      $totalrows = $this->attribute['total'];
+    $headerrows = 0;
+    if (is_numeric($this->attribute['header']))
+      $headerrows = $this->attribute['header'];
+    $displayedrows = 0;
+    $olddisplayedrows = -1;
+    $visiblerows = 0;
+    if (is_numeric($this->attribute['visible']))
+      $visiblerows = $this->attribute['visible'];
+
+
+    ## Buttons
+    $button_str = "";
+    # show buttons only if more than one StackContainer, which means: if total > visible
+    if ( $totalrows > $visiblerows ) {
+      $button_str .="<div class=\"dynlongtable-buttons\" id=\"dynlongtable_buttons\" align=\"center\">\n";
+
+      # back button
+      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">&lt\n";
+      $button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
+      $button_str .= "     dijit.byId(\"longtable\").back()\n";
+      $button_str .= "  </script>\n";
+      $button_str .= "</button>\n";    
+    
+      # direct access buttons
+      $button_str .= "<span class=\"dynlongtable-controller\" dojoType=\"dijit.layout.StackController\" containerId=\"longtable\"></span>\n";
+
+      # forward button
+      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">&gt\n";
+      $button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
+      $button_str .= "     dijit.byId(\"longtable\").forward()\n";
+      $button_str .= "  </script>\n";
+      $button_str .= "</button>\n";
+      
+      $button_str .="</div>\n";
+      ## End Buttons
+	}    	  
+
+    $str .= "<div class=\"dynlongtable-container\" id=\"longtable\" dojoType=\"dijit.layout.StackContainer\" dolayout=\"false\"";
+    #FIXME: define in CSS ?
+    $str .= " style=\"margin:5px, border:none\">\n"; 
+    
+    # buttons - top
+    $str .= $button_str;
+
+    # if totalrows is not correct we will loop forever, so we check also if displayedrows has been changed
+    while ( $totalrows > $displayedrows && $olddisplayedrows != $displayedrows) {
+      $olddisplayedrows = $displayedrows;
+      $str .= "<div class=\"dynlongtable-pane\" dojoType=\"dijit.layout.ContentPane\" title=\"".$stackNumber."\">\n";
+      
+      # Debug-message
+      # $str .= "<h2> Content pane Nr. ".$stackNumber.", shows from element ".$displayedrows." to ".($displayedrows+$visiblerows)."</h2>\n";
+      
+      $str .= "<table $attrib_str  summary=\"\">\n";
+					       
+      $rowsinthispane = 0;
+      $checkedrows = 0;
+      foreach ($this->conti_ref->content as $key => $value) {	
+        # key is a number
+	# $this->config->debug_put("key:".$key); 
+        # value is HTML
+	# $this->config->debug_put("value:".$value); 
+
+        # detect if header, show
+	
+	if ($headerrows && $key <= $headerrows)
+	  $str .= $value;
+	else  # show $displayedrows element up to $displayedrows + $visible
+	  {
+	    $checkedrows += 1; # rows checked without header
+	    if ($rowsinthispane < $visiblerows && $checkedrows > $displayedrows)
+	      {
+		$str .= $value;
+		$rowsinthispane += 1;
+		$displayedrows += 1;
+	      }	    
+            
+	    else # detect if footer		 
+	      if ($key > $totalrows + $headerrows + 1)
+		$str .= $value;	
+	  }
+      }
+      
+      $str .= $space_bottom."</table>\n";      
+      $str .= "</div>\n";
+
+      $stackNumber += 1;
+    }
+    
+    # last pane for debug, should be "false"
+    if (false) {
+      $str .= "<div dojoType=\"dijit.layout.ContentPane\" title=\"debug\">\n";      
+      $str .= "<h2> Debug pane </h2>\n<br>\n";
+      $str .= "visible: ".$this->attribute['visible']."<br>\n";
+      $str .= "total: ".$this->attribute['total']."<br>\n";
+      $str .= "headerrows: ".$headerrows."<br>\n";
+      $str .= "start: ".$this->attribute['start']."<br>\n";
+      $str .= "displayed: ".$displayedrows."<br>\n";    
+      $str .= "</div>\n";
+    }
+
+    # close longtable div
+    $str .= "</div>\n";
+
+    # buttons - foot
+    $str .= $button_str;
+
+
+    $str .= "<!-- finished dynmic_longtable of type ".$type."-->\n\n";
+    return $str;
+  }
+
+}
+
 class long_table extends webui_translator
 {
   var $count_row;
@@ -1333,7 +1522,6 @@ class table extends webui_translator
 
   function show()
   {
-
     if (isset($this->attribute["border"])) // border is deprecated
       {
 	if ($this->attribute["border"]=="1")
@@ -1379,6 +1567,10 @@ class table extends webui_translator
   }
 
 } //table
+
+#class dynamic_longtable extends table
+#{
+#}
 
 class tgroup extends webui_translator{
 function put_start(&$tag, &$attribute, $byteindex){
