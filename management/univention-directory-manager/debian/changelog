@@ -1,3 +1,9 @@
+univention-directory-manager (5.1.0-1) unstable; urgency=low
+
+  * modify modbrowse to make use of dynamic_longtable in search results
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 30 Dec 2008 17:01:10 +0100
+
 univention-directory-manager (5.0.7-12) unstable; urgency=low
 
   * preselect domain in "superordinates search"

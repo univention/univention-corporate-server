@@ -458,13 +458,13 @@ msgstr "In das übergeordnete Verzeichnis wechseln"
 
 #: modbrowse.py:614
 #, python-format
-msgid "%d search result(s) (cached):"
-msgstr "%d Suchergebnis(se) (zwischengespeichert):"
+msgid "%d search result(s) (cached)"
+msgstr "%d Suchergebnis(se) (zwischengespeichert)"
 
 #: modbrowse.py:616
 #, python-format
-msgid "%d search result(s):"
-msgstr "%d Suchergebnis(se):"
+msgid "%d search result(s)"
+msgstr "%d Suchergebnis(se)"
 
 #: modbrowse.py:657
 msgid "(current)"
