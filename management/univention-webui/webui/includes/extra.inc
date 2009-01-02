@@ -710,14 +710,14 @@ class question_select extends extra_multi{
       $str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
     
     if ($access != "disabled")
-      $str .= "name=\"usrinput[multiple#".$this->tabindex."][]\"";
+      $str .= "name=\"usrinput[question_select#".$this->tabindex."][]\"";
     $str .= ">\n";
     if($this->basket["choice"])
       foreach($this->basket["choice"] as $key=>$val) {
 	if(trim($this->basket["var"][$key]["content"])!="") {
 	  $is='selected';
 	  if ($access == "disabled") {
-	    $appendstr = "<input type=\"hidden\" name=\"usrinput[multiple#".$this->tabindex."][]\"";
+	    $appendstr = "<input type=\"hidden\" name=\"usrinput[question_select#".$this->tabindex."][]\"";
 	    $appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
 	  }
 	}

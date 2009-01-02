@@ -1,3 +1,9 @@
+univention-webui (1.5.2-1) stable; urgency=low
+
+  * fix Internet Explorer incompatibility for question_select
+
+ -- Ingo Steuwer <steuwer@univention.de>  Fri,  2 Jan 2009 16:09:26 +0100
+
 univention-webui (1.5.2-0) stable; urgency=low
 
   * add dynamic_longtable as future replacement for longtable for result-pages in javascript

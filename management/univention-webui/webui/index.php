@@ -38,6 +38,19 @@ if (!get_cfg_var(register_globals))
     $$key = $_POST[$key];
 }
 
+/* uncomment the following to debug POST message */
+/*
+function printPostValue($pvalue, $message) {
+        if (is_array($pvalue))
+                foreach($pvalue as $key => $value)
+                        printPostValue($value, $message.$key.": ");
+        else
+                echo $message.$pvalue." <br> \n";
+
+}
+
+printPostValue($_POST, "POST: ");
+*/
 
 include ("includes/config.inc");	# Konfigurations-Klasse
 $config = new webui_config($_SERVER["HTTP_USER_AGENT"], $session_id);
