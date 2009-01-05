@@ -87,3 +87,10 @@ Description[de]=Definiert den Intervall, in der Indexservice squatter Mails indi
 Description[en]=Defines the interval to have the indexservice squatter process mails
 Type=str
 Categories=Mail
+
+[auth/imap/byusername]
+Description[de]=IMAP Authentifikation per Benutzername erlauben
+Description[en]=Allow IMAP authentification by username
+Type=str
+Categories=Mail
+

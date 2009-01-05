@@ -1,3 +1,9 @@
+univention-mail-cyrus-kolab2 (1.0.12-8) unstable; urgency=low
+
+  * allow authentication by username in IMAP PAM stack if UCR:auth/imap/byusername says so (Bug #13007)
+
+ -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  5 Jan 2009 17:44:51 +0100
+
 univention-mail-cyrus-kolab2 (1.0.12-7) unstable; urgency=low
 
   * don't remove the sieve script from the user automatically. Closes
