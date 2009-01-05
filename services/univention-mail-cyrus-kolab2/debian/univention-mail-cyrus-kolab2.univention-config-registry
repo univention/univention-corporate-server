@@ -21,7 +21,6 @@ File: etc/pam.d/imap
 Variables: mail/cyrus/imap/quotawarnpercent
 Variables: mail/cyrus/imap/quotawarnkb
 Variables: mail/cyrus/imap/quota
-Variables: auth/imap/byusername
 
 Type: file
 File: etc/pam.d/pop
