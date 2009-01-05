@@ -9,11 +9,8 @@
 # 
 
 auth    sufficient    pam_unix.so
+auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
 @!@
-if baseConfig.has_key('auth/imap/byusername') and baseConfig['auth/imap/byusername'] == "yes":
-	print "auth	optional      pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
-else:
-	print "auth	requisite     pam_univentionmailcyrus.so ldap_host=@%@ldap/server/name@%@ ldap_base=@%@ldap/base@%@ from_attr=mailPrimaryAddress to_attr=uid
 if baseConfig.has_key('mail/cyrus/imap/quota') and baseConfig['mail/cyrus/imap/quota'] == "yes":
 	print "auth    [success=1 default=ignore]    pam_ldap.so use_first_pass config=/etc/imapd/pam_ldap_imap.conf"
 	print "auth    [success=ok default=die]      pam_krb5.so use_first_pass"
