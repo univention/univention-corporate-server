@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.6-2) unstable; urgency=low
+
+  * added missing UCRV description (Bug #10275)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Jan 2009 17:28:32 +0100
+
 univention-mail-postfix-kolab2 (1.0.6-1) unstable; urgency=low
 
   * merged from customer trunk: call postmap for /etc/postfix/transport
