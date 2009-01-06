@@ -112,6 +112,12 @@ Description[en]=Mailserver runs dns lookups for mx records
 Type=str
 Categories=Mail
 
+[mail/maps/canonical/sender/classes]
+Description[de]=Leerzeichen-getrennte Liste mit Adresstypen, auf die das sender_canonical_maps address mapping angewendet wird
+Description[en]=List of space-delimited address types that are subject to sender_canonical_maps address mapping
+Type=str
+Categories=Mail
+
 [mail/maps/canonical/sender/enable]
 Description[de]=Liste mit freigeschalteten Quellen für Canonical Sender Maps (ldap, file, ...)
 Description[en]=List of enabled sources for canonical sender maps (ldap, file, ...)
