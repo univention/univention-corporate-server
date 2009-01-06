@@ -649,7 +649,12 @@ class FileUploadMap( mapper.IMapper ):
 		for i in range(len(fileDeleteBtnList)):
 			if fileDeleteBtnList[i].pressed():
 				filelist = save.get('uploadFilelist',[])
-				os.remove( filelist[i]['tmpfname'] )
+				tmpfname = filelist[i].get('tmpfname')
+				if tmpfname:
+					try:
+						os.remove( tmpfname )
+					except:
+						ud.debug(ud.ADMIN, ud.ERROR, 'dynamics.py:FileUploadMap:apply: error while os.remove(%s)' % (tmpfname) )
 				del filelist[i]
 				save['uploadFilelist'] = filelist
 				return True
