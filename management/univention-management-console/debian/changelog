@@ -1,3 +1,9 @@
+univention-management-console (0.9.1012-1) unstable; urgency=low
+
+  * merged fix for upload widget from sfb reservation (Bug #11378)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Tue, 06 Jan 2009 09:30:04 +0100
+
 univention-management-console (0.9.1011-1) unstable; urgency=low
 
   * merged dojo date widget; Bug #12977 
