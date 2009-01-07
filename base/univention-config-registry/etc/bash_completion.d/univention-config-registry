@@ -1,27 +1,26 @@
-# bash completion for univention-config-registry
-# bugs: - does not recognize options
+# bash-completion for univention-config-registry
 
-_univention-config-registry()
-{
-	file=/etc/univention/base.conf
+_uniucr () {
+	local cur prev opts
 	COMPREPLY=()
-	cur=${COMP_WORDS[COMP_CWORD]}
-	prev=${COMP_WORDS[COMP_CWORD-1]}
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
 
-	if [ "$prev" = "commit" ]; then
-		_filedir
-	else
-		if [ "$cur" = "" ]; then
-			vars=$(grep -v \# $file | grep -v ^$ | sed "s/:.*//")
-			COMPREPLY=($vars)
-		else
-			vars=$(grep ^$cur $file | sed "s/:.*//")
-			COMPREPLY=($vars)
-		fi
-	fi
+	case "${prev}" in
+		set|get|unset)
+			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- ${cur}) )
+			;;
+		commit)
+			templates=$(cat /etc/univention/templates/info/*.info | egrep 'Multifile: |File: ' | sed -re 's/(Multif|F)ile: /\//')
+			COMPREPLY=($(compgen -W "$templates" -- ${cur}))
+			;;
+		ucr|univention-config-registry|univention-baseconfig)
+			COMPREPLY=($(compgen -W "set get unset commit search" -- ${cur}))
+			;;
+	esac
 	return 0
 }
-
-complete -F _univention-config-registry univention-config-registry
-complete -F _univention-config-registry univention-baseconfig
+complete -F _uniucr ucr
+complete -F _uniucr univention-config-registry
+complete -F _uniucr univention-baseconfig
 
