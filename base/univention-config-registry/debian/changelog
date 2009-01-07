@@ -1,3 +1,9 @@
+univention-config-registry (3.0.7-2) unstable; urgency=low
+
+  * added bash completion for 'ucr set key="currentvalue"' (Bug #5905)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 07 Jan 2009 14:53:24 +0100
+
 univention-config-registry (3.0.7-1) unstable; urgency=low
 
   * added bash_completion (Bug #5905)

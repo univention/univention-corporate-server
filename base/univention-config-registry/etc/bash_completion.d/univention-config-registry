@@ -7,8 +7,13 @@ _uniucr () {
     prev="${COMP_WORDS[COMP_CWORD-1]}"
 
 	case "${prev}" in
-		set|get|unset)
+		get|unset)
 			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- ${cur}) )
+			;;
+		set)
+			# switch IFS to newline so UCR values containing a whitespace won't get split
+			local IFS=$'\n'
+			COMPREPLY=( $(IFS=$'\n' compgen -W "$(/usr/sbin/univention-config-registry dump | sed -re 's/: (.*)$/=\\"\1\\"/')" -- ${cur}) )
 			;;
 		commit)
 			local templates=$(cat /etc/univention/templates/info/*.info | egrep 'Multifile: |File: ' | sed -re 's/(Multif|F)ile: /\//')
