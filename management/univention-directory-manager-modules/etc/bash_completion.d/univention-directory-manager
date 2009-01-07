@@ -1,0 +1,54 @@
+# bash-completion for univention-directory-manager
+
+_uniudm () {
+	local cur prev opts
+	COMPREPLY=()
+    cur="${COMP_WORDS[COMP_CWORD]}"
+    prev="${COMP_WORDS[COMP_CWORD-1]}"
+
+	if [ $COMP_CWORD -gt 2 ] ; then
+		COMPREPLY=( )
+		case "${COMP_WORDS[2]}" in
+		create)
+			if [ $COMP_CWORD -gt 2 ] ; then
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --position --set --superordinate --option --customattribute --policy-reference --tls --ignore_exists" -- ${cur}))
+			fi ;;
+
+		modify)
+			if [ $COMP_CWORD -gt 2 ] ; then
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --arg --set --append --remove --append-option --customattribute --customattribute-remove --policy-reference --policy-dereference --tls" -- ${cur}))
+			fi ;;
+
+		remove)
+			if [ $COMP_CWORD -gt 2 ] ; then
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --superordinate --arg  --filter --tls --remove_referring --recursive" -- ${cur}))
+			fi ;;
+
+		list)
+			if [ $COMP_CWORD -gt 2 ] ; then
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --filter --policies" -- ${cur}))
+			fi ;;
+
+		move)
+			if [ $COMP_CWORD -gt 2 ] ; then
+				COMPREPLY=($(compgen -W "--binddn --bindpwd --dn --position" -- ${cur}))
+			fi ;;
+		esac
+		return 0
+	fi
+
+	case "${prev}" in
+		udm|univention-directory-manager|univention-admin)
+			COMPREPLY=($(compgen -W "$(/usr/sbin/univention-directory-manager modules -h | grep "^ ")" -- ${cur}))
+			;;
+		*)
+			if [ "$COMP_CWORD" = "2" ] ; then
+				COMPREPLY=($(compgen -W "create modify remove list move" -- ${cur}))
+			fi
+			;;
+	esac
+	return 0
+}
+complete -F _uniudm udm
+complete -F _uniudm univention-directory-manager
+complete -F _uniudm univention-admin
