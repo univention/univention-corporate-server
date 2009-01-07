@@ -93,7 +93,7 @@ command_description = {
 		method = 'packages_show',
 		values = {	'package' : umc.String( _( 'Package' ) ),
 					'section': umc.String( _( 'Section' ) ),
-					'installed' : umc.Boolean( 'Installed' ),
+					'installed' : umc.Boolean( _('Installed') ),
 					'description': umc.String(_('Description')),
 					'installedVersion': umc.String(_('Installed Version')),
 					'isUpgradable': umc.Boolean(_('Upgradeable')),
