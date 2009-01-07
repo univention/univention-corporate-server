@@ -84,6 +84,8 @@ install-ext-%:
 
 	install -m755 univention-sync-memberuid $(TOOLS_DEST)/usr/share/univention-directory-manager-tools/univention-sync-memberuid
 
+	install -m 644 etc/bash_completion.d/univention-directory-manager $(TOOLS_DEST)/etc/bash_completion.d/univention-directory-manager
+
 	# install admin modules
 
 	@for i in $(shell find modules/univention/admin/ -name '*.py'); do\
