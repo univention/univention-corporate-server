@@ -11,7 +11,7 @@ _uniucr () {
 			COMPREPLY=( $(compgen -W "$(/usr/sbin/univention-config-registry dump | sed -e 's/: .*$//')" -- ${cur}) )
 			;;
 		commit)
-			templates=$(cat /etc/univention/templates/info/*.info | egrep 'Multifile: |File: ' | sed -re 's/(Multif|F)ile: /\//')
+			local templates=$(cat /etc/univention/templates/info/*.info | egrep 'Multifile: |File: ' | sed -re 's/(Multif|F)ile: /\//')
 			COMPREPLY=($(compgen -W "$templates" -- ${cur}))
 			;;
 		ucr|univention-config-registry|univention-baseconfig)
