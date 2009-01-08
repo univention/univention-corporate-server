@@ -314,9 +314,9 @@ class handler(umch.simpleHandler):
 	def install_security_updates(self, object):
 		_d = ud.function('update.handler.install_security_updates')
 		
-		(returncode, returnstring) = self.__create_at_job('univention-security-update net --updateto %s' % self.next_security_update)
+		(returncode, returnstring) = self.__create_at_job('univention-security-update net' )
 		self.logfile = '/var/log/univention/security-updates.log'
-		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net --updateto %s' % self.next_security_update)
+		ud.debug(ud.ADMIN, ud.PROCESS, 'Created the at job: univention-security-update net' )
 
 		if returncode != 0:
 			self.finished(object.id(), None, returnstring, success = False)
@@ -454,7 +454,7 @@ class handler(umch.simpleHandler):
 		_d = ud.function('update.handler._web_view_logfile')
 		result = umcd.List()
 
-		if self.__is_updater_running():
+		if self.__is_updater_running() or self.__is_security_update_running():
 			log = res.dialog
 			html = '<h2>' + _('The Updater is still in process.') + '</h2>' + '<pre>' + _('Please be patient the update may take a while. Press the refresh button to see the latest log.') + '</pre>' + '<body>' + self.__remove_status_messages(log) + '</body>'
 			result.add_row([ umcd.HTML(html, attributes = { 'colspan' : str(2) })])
