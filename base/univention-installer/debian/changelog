@@ -1,3 +1,9 @@
+univention-installer (3.0.0-2) unstable; urgency=low
+
+  * new test in network module if eth0 is available
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 14:53:56 +0100
+
 univention-installer (3.0.0-1) unstable; urgency=low
 
   * new regexes for domainname and hostname (a-z0-9 with hyphens between characters or letters)
