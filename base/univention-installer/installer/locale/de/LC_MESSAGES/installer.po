@@ -1771,6 +1771,16 @@ msgstr "Bootloader"
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
+#: installer/modules/20_net.py:801
+msgid ""
+"Could not find any network card. \n"
+" If a network is installed please try to load additional kernel modules to "
+"activate the network card."
+msgstr ""
+"Es wurde keine Netzwerkkarte gefunden. \n"
+"Versuchen Sie andere Kernel Module zu laden um die Karte \n"
+"zu aktivierenf (falls eine Karte installiert ist)"
+
 #: installer/modules/20_net.py:147 installer/modules/20_net.py:368
 #: installer/modules/20_net.py:472
 msgid "Gateway"

@@ -796,6 +796,11 @@ class object(content):
 				return 0
 
 		def input(self,key):
+                        if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
+                                self.parent.debug("NETWORK:could not find eth0")
+                                self.warn=warning(_('Could not find any network card. \n If a network is installed please try to load additional kernel modules to activate the network card.'),self.pos_y+25,self.pos_x+90)
+                                self.warn.draw()
+                                return 1
 			if hasattr(self,'warn'):
 				if not self.warn.key_event(key):
 					delattr(self,"warn")

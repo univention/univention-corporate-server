@@ -32,6 +32,11 @@
 
 ifconfig lo 127.0.0.1 up
 
+ifconfig -a | grep eth0
+if [ "$?" -ne 0 ]; then 
+	echo "Warning Networking: no network cards found"
+fi
+
 # setup physical interfaces during first run
 # setup virtual interfaces during second run
 for ifaceregex in "^eth[0-9]+_" "^eth[0-9]+_[0-9]+_" ; do
