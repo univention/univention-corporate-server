@@ -159,6 +159,12 @@ if profile == 1:
 
 cmdline['mode']='installation'
 
+# load "loadmodules"
+if cmdline.has_key('loadmodules'):
+	for m in cmdline.get('loadmodules','').split(','):
+		os.system('/sbin/modprobe %s >/dev/null 2>&1' % m)
+		time.sleep(0.5)
+
 # check architecture
 f=os.popen('/bin/uname -m')
 architecture=f.readlines()[0].strip('\n')
