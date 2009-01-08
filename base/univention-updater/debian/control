@@ -2,11 +2,13 @@ Source: univention-updater
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper, univention-config-dev
+Build-Depends: debhelper, univention-config-dev, python, python-all-dev, python-central
+XS-Python-Version: all
 
 Package: univention-updater
 Architecture: all
 Depends: python, dpkg-dev, univention-config-registry | univention-baseconfig, univention-directory-policy | univention-ldap-policy, univention-security-update, netcat, wget
+XB-Python-Version: ${python:Versions}
 Description: UCS - system upgrading tool
  Univention Updater can upgrade your version of UCS.
  .

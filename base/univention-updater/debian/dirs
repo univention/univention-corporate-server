@@ -3,3 +3,4 @@ usr/lib/univention-directory-policy/
 etc/init.d
 var/lib/univention-updater/
 usr/share/univention-updater
+usr/lib/univention-install/

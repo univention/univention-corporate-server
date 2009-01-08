@@ -3,7 +3,7 @@
 # Univention Updater
 #  repository update
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -55,13 +55,234 @@ def usage(fd=sys.stdout):
 	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-repository-update <net,cdrom,local> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--src <update dir>] [--file <update.tar.gz>]'
+	print >>fd, '  univention-repository-update <net,cdrom> [--device <cdrom device>] [--cdrom <cdrom mount point>] [--iso <iso-image>] [--src <update dir>] [--file <update.tar.gz>]'
 	print >>fd, '  univention-repository-update [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
 	print >>fd, '  -None-'
 	print >>fd, ''
 
+# def proxyAddress():
+# 	baseConfig=univention_baseconfig.baseConfig()
+# 	baseConfig.load()
+# 
+# 	if baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
+# 		return baseConfig['proxy/http'].lower().replace('http://','')
+# 	elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
+# 		return os.environ['http_proxy'].lower().replace('http://','')
+# 	else:
+# 		return ""
+# 
+# def read_packagelist(packagelist):
+# 	try:
+# 		f=open('/var/lib/univention-server-cdrom/packages.list')
+# 		for line in f.readlines():
+# 			packagelist.append(line.strip('\n'))
+# 		f.close
+# 	except:
+# 		pass
+# 
+# def download_deb(conn, file, new_file):
+# 	conn.request("GET", file)
+# 	resp = conn.getresponse()
+# 	if  resp.status != 200:
+# 		print 'failed to download %s' % (file)
+# 		print ' %s: %s' % (resp.status,resp.reason)
+# 		sys.exit(0)
+# 
+# 	
+# 	if not os.path.exists(new_file):
+# 		debfile=open(new_file,'w+')
+# 		mimetools.copybinary(resp,debfile)
+# 		debfile.close()
+# 	else:
+# 		print '%s exists' % new_file
+# 
+# 	conn.close()
+# 
+# 
+# def download_packages(patchlevel, dir_name, packages_list):
+# 
+# 	proxy = proxyAddress()
+# 	prefix = ""
+# 	if not proxy == "":
+# 		conn = httplib.HTTPConnection(proxy)
+# 		prefix = "http://%s" % update_server
+# 	else:
+# 		conn = httplib.HTTPConnection(update_server)
+# 	
+# 	exists=1
+# 
+# 	path = "%s/univention-cdrom/%s/Packages.lock" % (prefix, patchlevel)
+# 
+# 	while exists == 1:
+# 		conn.request("GET", path)
+# 		resp_p = conn.getresponse()
+# 		if  resp_p.status != 200:
+# 			exists=0
+# 		conn.close()
+# 
+# 	path = "%s/univention-cdrom/%s/Packages.gz" % (prefix, patchlevel)
+# 	conn.request("GET", path)
+# 	resp_p = conn.getresponse()
+# 	if  resp_p.status != 200:
+# 		print 'failed to download %s' % path
+# 		print ' %s: %s' % (resp_p.status,resp_p.reason)
+# 		return
+# 
+# 	packages_name=os.path.join(dir_name, 'Packages.gz')
+# 	packages_file=open(packages_name,'w+')
+# 	mimetools.copybinary(resp_p,packages_file)
+# 	packages_file.close()
+# 
+# 	
+# 	gz=gzip.open(packages_name)
+# 	for line in gz.readlines():
+# 		if line.startswith('Filename: '):
+# 			packages_list.append(line.replace('Filename: ','',1).strip('\n'))
+# 	gz.close()
+# 			
+# 
+# def download_sh_files(dir, show_debug=0):
+# 	for sh in ['preup.sh', 'postup.sh']:
+# 		if os.path.exists(os.path.join('/var/lib/univention-server-cdrom', dir, sh)):
+# 			continue
+# 
+# 		proxy = proxyAddress()
+# 		prefix = ""
+# 
+# 		if not proxy == "":
+# 			conn = httplib.HTTPConnection(proxy)
+# 			prefix = "http://%s" % update_server
+# 		else:
+# 			conn = httplib.HTTPConnection(update_server)
+# 		
+# 		path = "%s/univention-cdrom/%s/%s" % ( prefix, dir, sh )
+# 		conn.request("GET", path)
+# 		resp_p = conn.getresponse()
+# 		if  resp_p.status != 200:
+# 			if show_debug:
+# 				print 'failed to download %s' % path
+# 				print ' %s: %s' % (resp_p.status,resp_p.reason)
+# 			continue
+# 		resp_data=resp_p.read()
+# 		conn.close()
+# 		f=open(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 'w+', )
+# 		f.write(resp_data)
+# 		f.close()
+# 		os.chmod(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 0744)
+# 			
+# 
+# def download_txt_files(actual,show_debug=0):
+# 
+# 	proxy = proxyAddress()
+# 	prefix = ""
+# 	if not proxy == "":
+# 		conn = httplib.HTTPConnection(proxy)
+# 		prefix = "http://%s" % update_server
+# 	else:
+# 		conn = httplib.HTTPConnection(update_server)
+# 
+# 	line='ucs_%s.txt' % actual
+# 	print line
+# 	path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
+# 	conn.request("GET", path)
+# 	resp_line = conn.getresponse()
+# 	if  resp_line.status != 200:
+# 		if show_debug:
+# 			print 'failed to download %s' % path
+# 			print ' %s: %s' % (resp_line.status,resp_line.reason)
+# 	else:
+# 		data=resp_line.read()
+# 		f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
+# 		f.write(data)
+# 		f.close()
+# 
+# 	conn.close()
+# 
+# 	path = "%s/univention-cdrom/ucs-updates/index.list" % prefix
+# 	conn.request("GET", path)
+# 	resp_p = conn.getresponse()
+# 	if  resp_p.status != 200:
+# 		if show_debug:
+# 			print 'failed to download %s' % path
+# 			print ' %s: %s' % (resp_p.status,resp_p.reason)
+# 		return
+# 	resp_data=resp_p.read()
+# 	conn.close()
+# 
+# 
+# 	for line in resp_data.split('\n'):
+# 		if line:
+# 			line='ucs_%s.txt' % line
+# 			print line
+# 			path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
+# 			conn.request("GET", path)
+# 			resp_line = conn.getresponse()
+# 			if  resp_line.status != 200:
+# 				if show_debug:
+# 					print 'failed to download %s' % path
+# 					print ' %s: %s' % (resp_line.status,resp_line.reason)
+# 			else:
+# 				data=resp_line.read()
+# 				f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
+# 				f.write(data)
+# 				f.close()
+# 
+# 			conn.close()
+# 
+# def download_sources_list(tempdir):
+# 
+# 	proxy = proxyAddress()
+# 	prefix = ""
+# 	if not proxy == "":
+# 		conn = httplib.HTTPConnection(proxy)
+# 		prefix = "http://%s" % update_server
+# 	else:
+# 		conn = httplib.HTTPConnection(update_server)
+# 
+# 	sources = "%s/univention-cdrom/sources.list" % prefix
+# 	conn.request("GET", sources)
+# 	resp_sources = conn.getresponse()
+# 	if  resp_sources.status != 200:
+# 		print 'failed to download %s' % sources
+# 		print ' %s: %s' % (resp_sources.status,resp_sources.reason)
+# 		sys.exit(0)
+# 
+# 	sources_data = resp_sources.read()
+# 
+# 	sources_list_name = os.path.join(tempdir,'sources.list')
+# 	f = open(sources_list_name,'w+')
+# 	for line in sources_data.split('\n'):
+# 		line = line.split('#')[0]
+# 		if line:
+# 			f.write('%s\n' % line)
+# 			splitline=line.split('/')
+# 			for i in range(0,len(splitline)):
+# 				if splitline[i] == 'univention-cdrom':
+# 					updatedir=splitline[i+1].split(' ')[0]
+# 					updatedir=string.join(splitline[i+1:],'/').split(' ')[0]
+# 			sources_list.append([line,updatedir])
+# 	f.close()
+# 
+# 
+# def scan_packages(dir, packages_orig):
+# 	f_packages=open(os.path.join(dir,'Packages'), 'r')
+# 	for line in f_packages.readlines():
+# 		if line.startswith('Filename: '):
+# 			packages_orig.append(line.replace('Filename: ','',1).strip('\n'))
+# 	f_packages.close()
+# 	
+# 
+# 
+# packagelist=[]
+# cdrom_mount_point='/cdrom'
+# iso=None
+# sourcedir=''
+# file=''
+
+# Put it into a external toolbox
+#######################################################################
 def proxyAddress():
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
@@ -71,219 +292,29 @@ def proxyAddress():
 	elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
 		return os.environ['http_proxy'].lower().replace('http://','')
 	else:
-		return ""
+		return None
 
-def read_packagelist(packagelist):
+
+def net_path_exists (conn, repository_server, repository_port, site):
 	try:
-		f=open('/var/lib/univention-server-cdrom/packages.list')
-		for line in f.readlines():
-			packagelist.append(line.strip('\n'))
-		f.close
+		if not conn:
+			conn = httplib.HTTPConnection(repository_server, int(repository_port))
 	except:
-		pass
+		return False
+	conn.request("GET", site)
+	response = conn.getresponse()
+	if response.status == 200:
+		dprint('The site %s exists' % site )
+		return True
+	dprint('The site %s does not exist' % site )
+	return False
 
-def download_deb(conn, file, new_file):
-	conn.request("GET", file)
-	resp = conn.getresponse()
-	if  resp.status != 200:
-		print 'failed to download %s' % (file)
-		print ' %s: %s' % (resp.status,resp.reason)
-		sys.exit(0)
-
-	
-	if not os.path.exists(new_file):
-		debfile=open(new_file,'w+')
-		mimetools.copybinary(resp,debfile)
-		debfile.close()
-	else:
-		print '%s exists' % new_file
-
-	conn.close()
-
-
-def download_packages(patchlevel, dir_name, packages_list):
-
-	proxy = proxyAddress()
-	prefix = ""
-	if not proxy == "":
-		conn = httplib.HTTPConnection(proxy)
-		prefix = "http://%s" % update_server
-	else:
-		conn = httplib.HTTPConnection(update_server)
-	
-	exists=1
-
-	path = "%s/univention-cdrom/%s/Packages.lock" % (prefix, patchlevel)
-
-	while exists == 1:
-		conn.request("GET", path)
-		resp_p = conn.getresponse()
-		if  resp_p.status != 200:
-			exists=0
-		conn.close()
-
-	path = "%s/univention-cdrom/%s/Packages.gz" % (prefix, patchlevel)
-	conn.request("GET", path)
-	resp_p = conn.getresponse()
-	if  resp_p.status != 200:
-		print 'failed to download %s' % path
-		print ' %s: %s' % (resp_p.status,resp_p.reason)
-		return
-
-	packages_name=os.path.join(dir_name, 'Packages.gz')
-	packages_file=open(packages_name,'w+')
-	mimetools.copybinary(resp_p,packages_file)
-	packages_file.close()
-
-	
-	gz=gzip.open(packages_name)
-	for line in gz.readlines():
-		if line.startswith('Filename: '):
-			packages_list.append(line.replace('Filename: ','',1).strip('\n'))
-	gz.close()
-			
-
-def download_sh_files(dir, show_debug=0):
-	for sh in ['preup.sh', 'postup.sh']:
-		if os.path.exists(os.path.join('/var/lib/univention-server-cdrom', dir, sh)):
-			continue
-
-		proxy = proxyAddress()
-		prefix = ""
-
-		if not proxy == "":
-			conn = httplib.HTTPConnection(proxy)
-			prefix = "http://%s" % update_server
-		else:
-			conn = httplib.HTTPConnection(update_server)
-		
-		path = "%s/univention-cdrom/%s/%s" % ( prefix, dir, sh )
-		conn.request("GET", path)
-		resp_p = conn.getresponse()
-		if  resp_p.status != 200:
-			if show_debug:
-				print 'failed to download %s' % path
-				print ' %s: %s' % (resp_p.status,resp_p.reason)
-			continue
-		resp_data=resp_p.read()
-		conn.close()
-		f=open(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 'w+', )
-		f.write(resp_data)
-		f.close()
-		os.chmod(os.path.join('/var/lib/univention-server-cdrom', dir, sh), 0744)
-			
-
-def download_txt_files(actual,show_debug=0):
-
-	proxy = proxyAddress()
-	prefix = ""
-	if not proxy == "":
-		conn = httplib.HTTPConnection(proxy)
-		prefix = "http://%s" % update_server
-	else:
-		conn = httplib.HTTPConnection(update_server)
-
-	line='ucs_%s.txt' % actual
-	print line
-	path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
-	conn.request("GET", path)
-	resp_line = conn.getresponse()
-	if  resp_line.status != 200:
-		if show_debug:
-			print 'failed to download %s' % path
-			print ' %s: %s' % (resp_line.status,resp_line.reason)
-	else:
-		data=resp_line.read()
-		f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
-		f.write(data)
-		f.close()
-
-	conn.close()
-
-	path = "%s/univention-cdrom/ucs-updates/index.list" % prefix
-	conn.request("GET", path)
-	resp_p = conn.getresponse()
-	if  resp_p.status != 200:
-		if show_debug:
-			print 'failed to download %s' % path
-			print ' %s: %s' % (resp_p.status,resp_p.reason)
-		return
-	resp_data=resp_p.read()
-	conn.close()
-
-
-	for line in resp_data.split('\n'):
-		if line:
-			line='ucs_%s.txt' % line
-			print line
-			path = "%s/univention-cdrom/ucs-updates/%s" % (prefix, line)
-			conn.request("GET", path)
-			resp_line = conn.getresponse()
-			if  resp_line.status != 200:
-				if show_debug:
-					print 'failed to download %s' % path
-					print ' %s: %s' % (resp_line.status,resp_line.reason)
-			else:
-				data=resp_line.read()
-				f=open(os.path.join('/var/lib/univention-server-cdrom', 'ucs-updates', line), 'w+')
-				f.write(data)
-				f.close()
-
-			conn.close()
-
-def download_sources_list(tempdir):
-
-	proxy = proxyAddress()
-	prefix = ""
-	if not proxy == "":
-		conn = httplib.HTTPConnection(proxy)
-		prefix = "http://%s" % update_server
-	else:
-		conn = httplib.HTTPConnection(update_server)
-
-	sources = "%s/univention-cdrom/sources.list" % prefix
-	conn.request("GET", sources)
-	resp_sources = conn.getresponse()
-	if  resp_sources.status != 200:
-		print 'failed to download %s' % sources
-		print ' %s: %s' % (resp_sources.status,resp_sources.reason)
-		sys.exit(0)
-
-	sources_data = resp_sources.read()
-
-	sources_list_name = os.path.join(tempdir,'sources.list')
-	f = open(sources_list_name,'w+')
-	for line in sources_data.split('\n'):
-		line = line.split('#')[0]
-		if line:
-			f.write('%s\n' % line)
-			splitline=line.split('/')
-			for i in range(0,len(splitline)):
-				if splitline[i] == 'univention-cdrom':
-					updatedir=splitline[i+1].split(' ')[0]
-					updatedir=string.join(splitline[i+1:],'/').split(' ')[0]
-			sources_list.append([line,updatedir])
-	f.close()
-
-
-def scan_packages(dir, packages_orig):
-	f_packages=open(os.path.join(dir,'Packages'), 'r')
-	for line in f_packages.readlines():
-		if line.startswith('Filename: '):
-			packages_orig.append(line.replace('Filename: ','',1).strip('\n'))
-	f_packages.close()
-	
-
-
-packagelist=[]
-cdrom_mount_point='/cdrom'
-iso=None
-sourcedir=''
-file=''
+#######################################################################
 
 if __name__ == '__main__':
 
 	os.putenv('PATH', '/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11')
+
 	fp_debug=open('/var/log/univention/repository.log', 'a+')
 	stdout=sys.stdout
 	sys.stdout=fp_debug
@@ -302,8 +333,6 @@ if __name__ == '__main__':
 		command='net'
 	elif sys.argv[1] == 'cdrom':
 		command='cdrom'
-	elif sys.argv[1] == 'local':
-		command='local'
 	else:
 		usage()
 		sys.exit(1)
@@ -332,8 +361,8 @@ if __name__ == '__main__':
 	baseConfig.load()
 
 	if not baseConfig.has_key('local/repository') or (baseConfig['local/repository'] == 'no' or baseConfig['local/repository'] == 'false'):
-		print >>stdout, 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
-		print 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
+		dprint('Error: The local repository is disabled. Try to create', [stdout,sys_stdout])
+		dprint('       a local repository with /usr/sbin/univention-repository-create' [stdout,sys_stdout])
 		sys.exit(1)
 
 	update_server=baseConfig['update/server'].replace('http://','').split('/')[0]
@@ -346,148 +375,218 @@ if __name__ == '__main__':
 			print 'Local server and update server are the same'
 			sys.exit(0)
 
-		print 'Read package list ...'
-		read_packagelist(packagelist)
-		print 'done'
-		print 'Create tempdir ...'
-		tempdir=tempfile.mkdtemp()
-		print 'done'
-		print 'Download sources.list ...'
-		try:
-			download_sources_list(tempdir)
-		except socket.gaierror:
-			print >>stdout, 'Failed to connect to server %s' % update_server
-			sys.exit(1)
-			
-		print 'done'
+		proxy = proxyAddress()
+		proxy_prefix = ''
 
-		for i in range(0,len(sources_list)):
-			dir_name=os.path.join(tempdir,sources_list[i][1])
-			os.makedirs(dir_name)
-			sourcename=os.path.join(dir_name, 'sources.list')
-			f = open(sourcename, 'w+')
-			f.write('%s\n' % (sources_list[i][0]))
-			f.close()
-			if len(packagelist) < 1:
-				packages_new=[]
-				packages_orig=[]
-				to_copy=[]
-				to_remove=[]
-				download_packages(sources_list[i][1], dir_name, packages_new)
+		repository_server = baseConfig.get('repository/online/server', 'apt.univention.de')
+		repository_port = baseConfig.get('repository/online/port', '80')
+		repository_prefix = baseConfig.get('repository/online/prefix', '')
 
-				package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+		dprint('Reposiotry Server: <%s>\nProxy Server: <%s>)' %(repository_server, proxy))
 
-				if os.path.exists(package_path) and os.path.exists(os.path.join(package_path,'Packages')):
-					scan_packages(package_path, packages_orig)
+		if proxy:
+			conn = httplib.HTTPConnection(proxy)
+			proxy_prefix = repository_server
+		else:
+			conn = httplib.HTTPConnection(repository_server)
 
-					for p in packages_new:
-						if not p in packages_orig:
-							to_copy.append(p)
-					for p in packages_orig:
-						if not p in packages_new:
-							to_remove.append(p)
-				else:
-					try:
-						os.makedirs(package_path)
-					except OSError:
-						pass
-					for p in packages_new:
-						to_copy.append(p)
-
-				if len(to_copy) > 0 or len(to_remove) > 0:
-					if len(to_copy) > 0:
-						proxy = proxyAddress()
-						prefix = ""
-						if not proxy == "":
-							conn = httplib.HTTPConnection(proxy)
-							prefix = "http://%s" % update_server
-						else:
-							conn = httplib.HTTPConnection(update_server)
-
-						for package in to_copy:
-							print 'Download: %s' % package.strip('.').strip('/')
-							path = "%s/univention-cdrom/%s/%s" % ( prefix, sources_list[i][1], package )
-							download_deb(conn, path, os.path.join(package_path,package))
-							print '    done'
-					os.chdir(package_path)
-
-					if len(to_remove) > 0:
-						for package in to_remove:
-							try:
-								os.unlink(package)
-							except:
-								pass
-
-					count=0
-					while os.path.exists('Packages.lock') and count < 300:
-						time.sleep(1)
-						count=count+1
-					out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
-					out.readlines()
-					out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
-					out.readlines()
-			else:
-
-				download=None
-				package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+		# check for the local repository
+		latest_rvv_major = 0
+		latest_rvv_minor = 0
+		latest_rvv_patchlevel = 0
+		if os.path.exists('/var/lib/univention-repository'):
+			for directory in os.listdir('/var/lib/univention-repository'):
+				# TODO: is this a valid UCS release?
+				# TODO: components
+				# TOOO: maintained/unmaintained
 				try:
-					os.makedirs(os.path.join(package_path,'partial'))
+					rvv_major = directory.split('-')[0].split('.')[0]
+					rvv_minor = directory.split('-')[0].split('.')[1]
+					rvv_patchlevel = directory.split('-')[1]
 				except:
+					dprint('Invalid version = %s ' % directory )
+					continue
+				if net_path_exists(conn, repository_server, repository_port, '%s/%s/%s/maintained/%s/' % (proxy_prefix, repository_prefix, directory)):
+					# TODO: sync the directory
+					#os.system('')
 					pass
-				count=0
-				while os.path.exists('/var/run/apt-get.lock') and count < 300:
-					time.sleep(1)
-					count=count+1
-				res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s update  >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path))
-				if os.path.exists('/var/run/apt-get.lock'):
-					os.unlink('/var/run/apt-get.lock')
-				if res != 0:
-					dprint('E: Failed to execute apt-get update', [stdout, sys.stdout])
-					sys.exit(res)
+				# save the latest repository version so we could check for the next version
+				if 
+					latest_rvv_major = rvv_major = directory.split('-')[0].split('.')[0]
+					rvv_minor = directory.split('-')[0].split('.')[1]
+					rvv_patchlevel = directory.split('-')[1]
+			# TODO: check for the next update releases
+		else:
+			# the repository does not exits
+			# TODO: give the user some feedback
+			pass
 
-				for p in packagelist:
-					print 'Check: %s' % p
-					count=0
-					while os.path.exists('/var/run/apt-get.lock') and count < 300:
-						time.sleep(1)
-						count=count+1
-					res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s install -d --reinstall --yes %s >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path,p))
-					if os.path.exists('/var/run/apt-get.lock'):
-						os.unlink('/var/run/apt-get.lock')
-					if res != 0:
-						dprint('E: Failed to download package %s' % p, [stdout, sys.stdout])
-						sys.exit(res)
-					elif res == 0:
-						download=1
-				os.rmdir(os.path.join(package_path,'partial'))
-				if download:
-					os.chdir(package_path)
-					for j in os.listdir('.'):
-						if string.find(j,'%3a') > -1:
-							os.system('dpkg-name %s >>/var/log/univention/repository.log 2>&1' % j)
-					count=0
-					while os.path.exists('Packages.lock') and count < 300:
-						time.sleep(1)
-						count=count+1
-					out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
-					out.readlines()
-					out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
-					out.readlines()
+		# check for the reposiotry server
+		# check the repository server structure
+		# which is the oldest version on this repository server
+		# mirror the versions starting by the oldest version
 
-			download_sh_files(sources_list[i][1])
+		# Bis wohin synchronisieren wir das Repository, auf dem Repository Server sind vermutlich auch sehr alte Versionen
+		#   -> normalerweise ist die älteste Repository Version das Limit
+		#   -> Überschreibbar mit UCR
+		#   -> in lokalen Umgebungen könnte man die Synchronisation komplett durchführen
+
+		# Problem, wurde eine Version bereits heruntergeladen, so müssen wir die Synchronisation nochmal starten
+		# Beste Lösung wäre rsync dafür zu verwenden, allerdings dann auch über apt.univention.de
+		# Alternativ geht das ggf. auch über wget
+
+		# kurze wget Tests haben ergeben, dass das funktioniert:
+		#   - wget --no-parent --recursive --level=4  --no-host-directories  --no-cache  --mirror http://korall:81/test/
+		#   # lädt alles herunter
+		#   - wget --no-parent --recursive --level=4  --no-host-directories  --no-cache  --mirror http://korall:81/test/
+		#   # nichts wird geändert
+		#   - touch auf eine Datei auf dem Server
+		#   # die Datei wird erneut heruntergeladen
+		# die Daten werden dezeit lokal nicht gelöscht, wenn diese Remote nicht mehr vorhanden sind
+		#  das müsste allerdings ein Standard-Feature sein
+
+		#print 'Read package list ...'
+		#read_packagelist(packagelist)
+		#print 'done'
+		#print 'Create tempdir ...'
+		#tempdir=tempfile.mkdtemp()
+		#print 'done'
+		#print 'Download sources.list ...'
+		#try:
+		#	download_sources_list(tempdir)
+		#except socket.gaierror:
+		#	print >>stdout, 'Failed to connect to server %s' % update_server
+		#	sys.exit(1)
+		#	
+		#print 'done'
+
+		#for i in range(0,len(sources_list)):
+		#	dir_name=os.path.join(tempdir,sources_list[i][1])
+		#	os.makedirs(dir_name)
+		#	sourcename=os.path.join(dir_name, 'sources.list')
+		#	f = open(sourcename, 'w+')
+		#	f.write('%s\n' % (sources_list[i][0]))
+		#	f.close()
+		#	if len(packagelist) < 1:
+		#		packages_new=[]
+		#		packages_orig=[]
+		#		to_copy=[]
+		#		to_remove=[]
+		#		download_packages(sources_list[i][1], dir_name, packages_new)
+
+		#		package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+
+		#		if os.path.exists(package_path) and os.path.exists(os.path.join(package_path,'Packages')):
+		#			scan_packages(package_path, packages_orig)
+
+		#			for p in packages_new:
+		#				if not p in packages_orig:
+		#					to_copy.append(p)
+		#			for p in packages_orig:
+		#				if not p in packages_new:
+		#					to_remove.append(p)
+		#		else:
+		#			try:
+		#				os.makedirs(package_path)
+		#			except OSError:
+		#				pass
+		#			for p in packages_new:
+		#				to_copy.append(p)
+
+		#		if len(to_copy) > 0 or len(to_remove) > 0:
+		#			if len(to_copy) > 0:
+		#				proxy = proxyAddress()
+		#				prefix = ""
+		#				if not proxy == "":
+		#					conn = httplib.HTTPConnection(proxy)
+		#					prefix = "http://%s" % update_server
+		#				else:
+		#					conn = httplib.HTTPConnection(update_server)
+
+		#				for package in to_copy:
+		#					print 'Download: %s' % package.strip('.').strip('/')
+		#					path = "%s/univention-cdrom/%s/%s" % ( prefix, sources_list[i][1], package )
+		#					download_deb(conn, path, os.path.join(package_path,package))
+		#					print '    done'
+		#			os.chdir(package_path)
+
+		#			if len(to_remove) > 0:
+		#				for package in to_remove:
+		#					try:
+		#						os.unlink(package)
+		#					except:
+		#						pass
+
+		#			count=0
+		#			while os.path.exists('Packages.lock') and count < 300:
+		#				time.sleep(1)
+		#				count=count+1
+		#			out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
+		#			out.readlines()
+		#			out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
+		#			out.readlines()
+		#	else:
+
+		#		download=None
+		#		package_path=os.path.join('/var/lib/univention-server-cdrom/',sources_list[i][1])
+		#		try:
+		#			os.makedirs(os.path.join(package_path,'partial'))
+		#		except:
+		#			pass
+		#		count=0
+		#		while os.path.exists('/var/run/apt-get.lock') and count < 300:
+		#			time.sleep(1)
+		#			count=count+1
+		#		res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s update  >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path))
+		#		if os.path.exists('/var/run/apt-get.lock'):
+		#			os.unlink('/var/run/apt-get.lock')
+		#		if res != 0:
+		#			dprint('E: Failed to execute apt-get update', [stdout, sys.stdout])
+		#			sys.exit(res)
+
+		#		for p in packagelist:
+		#			print 'Check: %s' % p
+		#			count=0
+		#			while os.path.exists('/var/run/apt-get.lock') and count < 300:
+		#				time.sleep(1)
+		#				count=count+1
+		#			res=os.system('touch /var/run/apt-get.lock && apt-get -o Dir::Etc=%s -o Dir::Cache::Archives=%s install -d --reinstall --yes %s >>/var/log/univention/repository.log 2>&1' % (dir_name, package_path,p))
+		#			if os.path.exists('/var/run/apt-get.lock'):
+		#				os.unlink('/var/run/apt-get.lock')
+		#			if res != 0:
+		#				dprint('E: Failed to download package %s' % p, [stdout, sys.stdout])
+		#				sys.exit(res)
+		#			elif res == 0:
+		#				download=1
+		#		os.rmdir(os.path.join(package_path,'partial'))
+		#		if download:
+		#			os.chdir(package_path)
+		#			for j in os.listdir('.'):
+		#				if string.find(j,'%3a') > -1:
+		#					os.system('dpkg-name %s >>/var/log/univention/repository.log 2>&1' % j)
+		#			count=0
+		#			while os.path.exists('Packages.lock') and count < 300:
+		#				time.sleep(1)
+		#				count=count+1
+		#			out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
+		#			out.readlines()
+		#			out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
+		#			out.readlines()
+
+		#	download_sh_files(sources_list[i][1])
 
 
-		vv=baseConfig['version/version']
-		vp=baseConfig['version/patchlevel']
-		actual='%s-%s' % (vv,vp)
+		#vv=baseConfig['version/version']
+		#vp=baseConfig['version/patchlevel']
+		#actual='%s-%s' % (vv,vp)
 
-		download_txt_files(actual)
+		#download_txt_files(actual)
 
-		print 'Remove tempdir ...'
-		res=os.system('rm -Rf "%s" >>/var/log/univention/repository.log 2>&1' % tempdir)
-		if res != 0:
-			dprint('E: Failed to remove tempdir %s' % tempdir, [stdout,sys.stdout])
-			sys.exit(res)
+		#print 'Remove tempdir ...'
+		#res=os.system('rm -Rf "%s" >>/var/log/univention/repository.log 2>&1' % tempdir)
+		#if res != 0:
+		#	dprint('E: Failed to remove tempdir %s' % tempdir, [stdout,sys.stdout])
+		#	sys.exit(res)
 
 	elif command == 'cdrom':
 		if iso:
@@ -520,6 +619,7 @@ if __name__ == '__main__':
 			dprint('E: Failed to umount %s' % cdrom_mount_point, [stdout,sys.stdout])
 			sys.exit(res)
 
+	# local won't be supported
 	elif command == 'local':
 		if len(sourcedir) > 0:
 			dir=sourcedir

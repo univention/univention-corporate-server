@@ -1,3 +1,129 @@
+univention-updater (4.0.0-1) unstable; urgency=low
+
+  * merge the online update patches from the oxae scope and rebuild for UCS
+    2.2. Bug #12242
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Jan 2009 07:20:00 +0100
+
+univention-updater (3.1.2-11) unstable; urgency=low
+
+  * more updates for Bug #12544
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Nov 2008 19:24:09 +0100
+
+univention-updater (3.1.2-10) unstable; urgency=low
+
+  * support for proxy authentication in univention-updater, Bug #12544
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue,  4 Nov 2008 19:14:34 +0100
+
+univention-updater (3.1.2-9) unstable; urgency=low
+
+  * set default port for the HTTP proxy to 3128. Bug #12544
+  * fixed broken HTTP access without proxy. Bug #12544
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  4 Nov 2008 18:47:22 +0100
+
+univention-updater (3.1.2-8) unstable; urgency=low
+
+  * fixed broken proxy authentication. Bug #12544
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  4 Nov 2008 17:11:16 +0100
+
+univention-updater (3.1.2-7) unstable; urgency=low
+
+  * forbid #@:-characters in password. Bug #12512
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  4 Nov 2008 11:47:38 +0100
+
+univention-updater (3.1.2-6) unstable; urgency=low
+
+  * fixed weak username, password and port extraction. Bug #12544
+  * set default port for the HTTP proxy to 8080. Bug #12544
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue,  4 Nov 2008 09:52:37 +0100
+
+univention-updater (3.1.2-5) unstable; urgency=low
+
+  * added proxy authentication. Bug #12544
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  3 Nov 2008 17:02:41 +0100
+
+univention-updater (3.1.2-4) unstable; urgency=low
+
+  * some more UMC fixes. Bug #12512
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Nov 2008 11:38:33 +0100
+
+univention-updater (3.1.2-3) unstable; urgency=low
+
+  * UMC module updates, Bug #12512 and Bug #12513
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Nov 2008 11:13:25 +0100
+
+univention-updater (3.1.2-2) unstable; urgency=low
+
+  * UMC module translation, Bug #12512 and Bug #12513
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Nov 2008 08:56:02 +0100
+
+univention-updater (3.1.2-1) unstable; urgency=low
+
+  * more UMC module updates, Bug #12512 and Bug #12513
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon,  3 Nov 2008 07:37:57 +0100
+
+univention-updater (3.1.1-7) unstable; urgency=low
+
+  * fixed some tracebacks, Bug #12515
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Oct 2008 14:31:49 +0100
+
+univention-updater (3.1.1-6) unstable; urgency=low
+
+  * more online repository updates, Bug #12514
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Oct 2008 11:58:13 +0100
+
+univention-updater (3.1.1-5) unstable; urgency=low
+
+  * remove the unused _revamp file
+  * use an individual server for every component
+  * added a prefix for every component
+  * the local /etc/apt/sources.list will be moved to
+    /etc/apt/sources.list.unused during the update
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 31 Oct 2008 07:16:24 +0100
+
+univention-updater (3.1.1-4) unstable; urgency=low
+
+  * support for username and password for components, Bug #12514
+  * support a diffrent repository style, ../component/ox/ ./, Bug #12514
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 30 Oct 2008 14:45:36 +0100
+
+univention-updater (3.1.1-3) unstable; urgency=low
+
+  * a lot of updates, specially the UMC module and support for the
+    security updates
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 29 Oct 2008 15:49:41 +0100
+
+univention-updater (3.1.1-2) unstable; urgency=low
+
+  * activate the online repository in the postinst via UCR by default.
+    Bug #11991
+  * some package cleanups, UCR headers and so on
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Sep 2008 07:50:54 +0200
+
+univention-updater (3.1.1-1) unstable; urgency=low
+
+  * Added a template mechanism for the sources.list which will check the
+    Online Repoitory. Bug #11991
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Sep 2008 20:12:10 +0200
+
 univention-updater (3.0.5-1) unstable; urgency=low
 
   * moved nscd/group/size changes to univention-pam (Bug: #11223)

@@ -3,7 +3,7 @@
 # Univention Updater
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -152,7 +152,40 @@ if [ -n "$2" ] && dpkg --compare-versions "$2" lt 1.36-42; then
 	update-rc.d -f univention-maintenance remove || true
 fi
 
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/41univention-updater.inst || true
+fi
+
+if [ ! -d /etc/apt/sources.list.d ]; then
+	mkdir -p /etc/apt/sources.list.d
+fi
+
+if [ -n "$2" ] && dpkg --compare-versions "$2" lt 3.1.1-5; then
+	#create an empty sources.list
+	if [ -e "/etc/apt/sources.list" ]; then
+		mv /etc/apt/sources.list /etc/apt/sources.list.unused
+		touch /etc/apt/sources.list
+	fi
+fi
+
+# the UCR debhelper section will be added before the pycentral section,
+# so we added the pycentral section manually
+if which pycentral >/dev/null 2>&1; then
+	pycentral pkginstall univention-updater
+fi
+
 #DEBHELPER#
+
+if [ -x /etc/init.d/univention-management-console-server ]; then
+	/etc/init.d/univention-management-console-server crestart
+fi
+
+# activate the online repository
+univention-config-registry set	repository/online?yes \
+								repository/online/server?apt.univention.de \
+								repository/online/port?80 \
+								repository/online/maintained?yes \
+								repository/online/unmaintained?no
 
 exit 0
 

@@ -32,38 +32,11 @@ import os, string
 import shutil, sys
 import getopt
 import univention_baseconfig
-import httplib
-import mimetools
-import tempfile
 import time
 
-ALREADY_DOWNLOADED="/var/cache/univention-update/already.txt"
-NUM_STARS=40	# for progress dialog
+import univention.management.console.handlers.update.tools
 
-real_stdout=None
-extra_silent=False
-
-def copybinary(input, output, total_length):
-	"Taken from mimetools.copybinary, this also implements a progress bar"
-	BUFSIZE = 8192
-	byte_count=0.0
-	star_count=0
-	old_starcount=0
-	while 1:
-		line = input.read(BUFSIZE)
-		if not line: break
-		output.write(line)
-		if not extra_silent:
-			byte_count+=len(line)
-			star_count=int((byte_count/total_length)*NUM_STARS)
-			# only print new line if num_o_chars changed
-			if star_count!=old_starcount:
-				print >>real_stdout, "*"*star_count , "\r",
-				real_stdout.flush()
-				old_starcount=star_count
-	if not extra_silent:
-		# delete stars, otherwise they might show up in shell prompt (not good)
-		print >>real_stdout, " "*NUM_STARS, "\r",
+updater = univention.management.console.handlers.update.tools.UniventionUpdater()
 
 def dprint(str, fd=[], toStdout=False):
 	if len(fd) < 1:
@@ -74,195 +47,29 @@ def dprint(str, fd=[], toStdout=False):
 	if toStdout and not extra_silent:
 		print >>real_stdout, str
 
+def add_temporary_sources_list ( debline ):
+	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
+	fp = open(filename, 'a+')
+	fp.write(debline+'\n')
+	fp.close()
+
+def remove_temporary_sources_list ():
+	filename = '/etc/apt/sources.list.d/00_ucs_temporary_security_update.list'
+	if os.path.exists(filename):
+		os.remove(filename)
+
 def usage(fd=sys.stdout):
 	print >>fd, 'univention-security-update: tool for include security updates into local repository'
 	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
 	print >>fd, ''
 	print >>fd, 'Syntax:'
-	print >>fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent]'
+	print >>fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
 	print >>fd, '  univention-security-update [--help] '
 	print >>fd, ''
 	print >>fd, 'Known-Bugs:'
 	print >>fd, '  -None-'
 	print >>fd, ''
 
-def download_deb(conn, tempdir, line, file):
-	dprint('download %s' % file, [], True)
-
-	try:
-		conn.request("GET", file)
-	except Exception, msg:
-		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
-		os.system('rm -Rf %s' % sourcedir)
-		sys.exit(1)
-
-	try:
-		resp = conn.getresponse()
-	except:
-		return False
-	
-	if  resp.status != 200:
-		dprint('failed to download %s' % file, [], True)
-		dprint(' %s: %s\n' % (resp.status,resp.reason), [], True)
-		return False
-
-	filepath=tempdir
-	dirlist=line.split('/')[:-1]
-	for dir in dirlist:
-		filepath=os.path.join(filepath,dir)
-		if not os.path.exists(filepath):
-			os.mkdir(filepath)
-	filepath=os.path.join(filepath,file.split('/')[-1])
-	
-	try:
-		debfile=open(filepath,'w+')
-		copybinary(resp,debfile, resp.length)
-		debfile.close()
-	except Exception, msg:
-		dprint("ERROR: File Failed: %s\n"% filepath, [], True)
-		return False
-	return True
-
-def write_local_repository_list(sourcedir, vv, vp):
-	sourcedir_with_path=os.path.join(sourcedir, '%s-%s' % (vv,vp))
-	if not os.path.exists(sourcedir_with_path):
-		return
-	os.system('cd %s; apt-ftparchive packages . >Packages; cd -' % (sourcedir_with_path))
-	source_line='deb file:%s/ ./' % (sourcedir_with_path)
-	f=open('/etc/apt/sources.list', 'r')
-	lines=f.readlines()
-	f.close()
-	found=0
-	for line in lines:
-		if source_line == line.strip(' ').strip('\n'):
-			found=1
-	if not found:
-		f=open('/etc/apt/sources.list', 'w+')
-		f.write(source_line+'\n')
-		for line in lines:
-			f.write(line)
-		f.close()
-
-	debfiles=[]
-	for root, dirs, files in os.walk(sourcedir_with_path):
-		if not dirs == []:
-			for dir in dirs:
-				debfiles += deblist(os.path.join(root, dir))
-
-	f=open(ALREADY_DOWNLOADED, "a")
-	for file in debfiles:
-		f.write("%s\n" % file.split('/')[-1])
-	f.close()
-
-def get_proxy():
-	if baseConfig.has_key('update/security/proxy') and baseConfig['update/security/proxy']:
-		return baseConfig['update/security/proxy'].lower().replace('http://','')
-	elif baseConfig.has_key('proxy/http') and baseConfig['proxy/http']:
-		return baseConfig['proxy/http'].lower().replace('http://','')
-	elif os.environ.has_key('http_proxy') and os.environ['http_proxy']:
-		return os.environ['http_proxy'].lower().replace('http://','')
-	else:
-		return None
-
-def create_download_url(server, *path_components):
-	if get_proxy():
-		print "download url: %s" % os.path.join('http://%s' % server, *path_components)
-		return os.path.join('http://%s' % server, *path_components)
-	else:
-		print "download url: %s" % os.path.join('/', *path_components)
-		return os.path.join('/', *path_components)
-
-def connection(server,tempdir, vv, vp, repository_vv, repository_vp):
-	if get_proxy():
-		print "connect to proxy %s" % get_proxy()
-		conn = httplib.HTTPConnection(get_proxy())
-	else:
-		conn = httplib.HTTPConnection(server)
-	index_file = create_download_url(server, baseConfig['update/security/prefix'], 'index.txt')
-	try:
-		conn.request("GET", index_file)
-	except Exception, msg:	
-		dprint("ERROR: Connection Failed: %s\n"%msg[1],[],True)
-		os.system('rm -Rf %s' % sourcedir)
-		sys.exit(1)
-	
-	print 'indexfile=%s' %index_file
-	resp_index = conn.getresponse()
-	if  resp_index.status != 200:
-		dprint('failed to download %s' % index_file,[],True)
-		dprint(' %s: %s\n' % (resp_index.status,resp_index.reason),[],True)
-		os.system('rm -Rf %s' % sourcedir)
-		sys.exit(0)
-
-	resp_data = resp_index.read()
-
-	for line in resp_data.split('\n'):
-		if line:
-			found=0
-			failed=False
-			too_old=False
-			try:
-				f=open(ALREADY_DOWNLOADED, 'r')
-			except:
-				f=open(ALREADY_DOWNLOADED, 'w+')
-				
-			for fline in f.readlines():
-				if fline:
-					if fline.strip('\n') == line.split('/')[-1]:
-						found=1
-						break
-			f.close()
-			if found:
-				dprint('skipping: %s' % fline.strip('\n'), [], True)
-				continue
-
-			dir=line.split('/')
-			version=dir[0].split('-')
-
-			if len(version) < 2:
-				dprint('skipping (invalid version) %s' % line, [], True)
-				failed=True
-				continue
-
-			# Since UCS 2.0 all security updates are issued for a sub release, i.e.
-			# subsequent updates are issued for 2.0, 2.1 and so on. For releases prior
-			# to 2.0 this isn't true
-
-			if float(version[0]) < float(vv) and float(version[0]) < float(repository_vv):
-				dprint('Skipping old version: %s' % line, [], True)
-				too_old=True
-
-			if not failed and not too_old:
-				filename = create_download_url(server ,baseConfig['update/security/prefix'], line)
-				
-				if not download_deb(conn, tempdir, line, filename):
-					dprint('failed to download %s: Try again' % file, [], True)
-					# try again
-					conn.close()
-					if get_proxy():
-						conn = httplib.HTTPConnection(get_proxy())
-					else:
-						conn = httplib.HTTPConnection(server)
-					if not download_deb(conn, tempdir, line, filename):
-						dprint('failed to download %s' % file, [], True)
-						os.system('rm -Rf %s' % sourcedir)
-						sys.exit(2)
-				conn.close()
-		
-def deblist(directory):
-	"returns a list of all *.deb-file in the given directory"
-
-	try:
-		files = os.listdir(directory)
-	except:
-		return []
-	
-	debfiles = []
-	for file in files:
-		if file[-4:].lower()==".deb":
-			debfiles.append(os.path.join(directory,file))
-	
-	return debfiles
 
 if __name__ == '__main__':
 	# parse options
@@ -271,6 +78,7 @@ if __name__ == '__main__':
 	stdout=sys.stdout
 	real_stdout = sys.stdout
 	sys.stdout=fp_debug
+	call_upgrade=True
 
 	file=''
 
@@ -295,7 +103,7 @@ if __name__ == '__main__':
 		fp_debug.close()
 		sys.exit(1)
 
-	longopts=['file=', 'silent' ]
+	longopts=['file=', 'silent', 'noupdate' ]
 	try:
 		opts, args=getopt.getopt(sys.argv[2:], '', longopts)
 	except getopt.error, msg:
@@ -316,89 +124,57 @@ if __name__ == '__main__':
 
 		if opt == '--silent':
 			extra_silent=True
+		if opt == '--noupdate':
+			call_upgrade=False
 	
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 
 	vv=baseConfig['version/version']
 	vp=baseConfig['version/patchlevel']
-	if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes') and os.path.exists('/var/lib/univention-server-cdrom/ucs-updates/'):
-		#find lowest repository version
-		repository_vv=None
-		repository_vp=None
-		txt_files=os.listdir('/var/lib/univention-server-cdrom/ucs-updates/')
-		for f in txt_files:
-			if f.endswith('.txt') and f.startswith('ucs'):
-				r_vv=f.replace('.txt', '').replace('ucs', '').replace('_', '').split('-')[0]
-				r_vp=f.replace('.txt', '').replace('ucs', '').replace('_', '').split('-')[1]
-				if not repository_vv and  not repository_vp:
-					repository_vv=r_vv
-					repository_vp=r_vp
-				else:
-					if float(r_vv) <= float(repository_vv) and float(r_vp) <= float(repository_vp):
-						repository_vv=r_vv
-						repository_vp=r_vp
-
-
-		sourcedir=tempfile.mkdtemp()
-		if command == 'net':
-			dprint('***Server: %s\n***Version: %s-%s\n***Tmpdir: %s'%(str(baseConfig['update/security/server'].replace('http://','').split('/')[0]), str(vv), str(vp), str(sourcedir)))
-			if not repository_vv and  not repository_vp:
-				repository_vv=vv
-				repository_vp=vp
-			connection(baseConfig['update/security/server'].replace('http://','').split('/')[0],sourcedir, vv, vp, repository_vv, repository_vp)
-
-		elif command == 'local':
-			res=os.system('tar -C %s -xzvf %s >>/var/log/univention/security-updates.log 2>&1' % (sourcedir, file))
-			if res != 0:
-				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
-				fp_debug.close()
-				os.system('rm -Rf %s' % sourcedir)
-				sys.exit(0)
-
-		for dir in os.listdir(sourcedir):
-			ucs_updates=dir.split('_')[0]
-			if not os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates/', ucs_updates)):
-				if os.path.exists(os.path.join('/var/lib/univention-server-cdrom/ucs-updates/', 'ucs_%s.txt' %ucs_updates)):
-					update_dir='packages'
-			else:
-				update_dir='ucs-updates/%s' % ucs_updates
-			
-			for root, dirs, files in os.walk(sourcedir):
-				if not dirs == []:
-					for dir in dirs:
-						if dir == ucs_updates or root[-len(ucs_updates):] == ucs_updates:
-							debfiles = deblist(os.path.join(root, dir))
-							if debfiles != []:
-								command='/usr/sbin/univention-repository-addpackage --dest %s --file %s'%(os.path.join('/var/lib/univention-server-cdrom', update_dir), string.join(debfiles,' '))
-								dprint('Adding packages to  %s'%(os.path.join('/var/lib/univention-server-cdrom', update_dir)), [], True)
-								add=os.system(command)
-								if add == 0:
-									f=open(ALREADY_DOWNLOADED, "a")
-									for file in debfiles:
-										f.write("%s\n" % file.split('/')[-1])
-									f.close()
-						
-		if sourcedir and len(sourcedir) > 1:
-			os.system('rm -Rf %s' % sourcedir)
+	if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
+		# TODO: this should be implemented
+		dprint('Error: A local repository is not yet supported!', [sys.stdout,stdout])
 	else:
-		dprint('no local repository\n')
-
-		sourcedir='/var/lib/univention-security-update'
-		if not os.path.exists(sourcedir):
-			os.makedirs(sourcedir)
 		if command == 'net':
-			dprint('***Server: %s\n***Version: %s-%s\n***Tmpdir: %s'%(str(baseConfig['update/security/server'].replace('http://','').split('/')[0]), str(vv), str(vp), str(sourcedir)))
-			connection(baseConfig['update/security/server'].replace('http://','').split('/')[0],sourcedir, vv, vp, vv, vp)
-			write_local_repository_list(sourcedir, vv, vp)
-			
+			upgraded = False
+			while True:
+				nextupdate = updater.security_update_available()
+
+				# we don't want an endless loop
+				if nextupdate == upgraded:
+					break
+
+				if nextupdate:
+					dprint('Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [sys.stdout,stdout])
+					
+					remove_temporary_sources_list()
+					sources_list_entries = updater.security_update_temporary_sources_list()
+					upgraded = nextupdate
+					if sources_list_entries:
+						for line in sources_list_entries:
+							add_temporary_sources_list(line)
+
+						# Execute the dist-upgrade!
+						if call_upgrade:
+							count=0
+							while os.path.exists('/var/run/apt-get.lock') and count < 300:
+								time.sleep(1)
+								count=count+1
+							resultCode=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/security-updates.log 2>&1; DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade >>/var/log/univention/security-updates.log 2>&1')
+							if os.path.exists('/var/run/apt-get.lock'):
+								os.unlink('/var/run/apt-get.lock')
+							if resultCode != 0:
+								dprint('Failed to execute apt-get -u dist-upgrade', [sys.stdout,stdout])
+								raise UpdateError
+							remove_temporary_sources_list()
+
+				else:
+					if not upgraded:
+						dprint('No Security Update available!', [sys.stdout,stdout])
+					break
 
 		elif command == 'local':
-			res=os.system('tar -C %s -xzvf %s >>/var/log/univention/security-updates.log 2>&1' % (sourcedir, file))
-			if res != 0:
-				dprint('Extract of %s failed' % (file), [sys.stdout,stdout])
-				fp_debug.close()
-				os.system('rm -Rf %s' % sourcedir)
-				sys.exit(0)
-			write_local_repository_list(sourcedir, vv, vp=0)
+			# TODO: this should be implemented
+			dprint('Error: The local installation is not yet supported!. Please use univention-security-update net!', [sys.stdout,stdout])
 

@@ -3,7 +3,7 @@
 # Univention Updater
 #  rules file for the debian package
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,18 +33,19 @@
 version=`dpkg-parsechangelog | grep "Version" | sed -e 's/Version: //'`
 copyrightyear=`date +%Y`
 
+PYVERS=$(shell pyversions -vr)
+
 configure: configure-stamp
 configure-stamp:
 	dh_testdir
 
 	touch configure-stamp
 
-
-build: build-stamp
-
-build-stamp: configure-stamp
+build: configure-stamp build-stamp
+build-stamp: $(PYVERS:%=build-ext-%)
+	touch build-stamp
+build-ext-%:
 	dh_testdir
-
 	touch build-stamp
 
 clean:
@@ -54,7 +55,9 @@ clean:
 
 	dh_clean
 
-install: build
+install: install-stamp
+install-stamp: build-stamp $(PYVERS:%=install-ext-%)
+install-ext-%:
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -102,6 +105,14 @@ install: build
 	
 	test ${copyrightyear} = 2006 && cat script/univention-addon-download | sed -e "s/@%@copyright_lastyear@%@//" > script/univention-addon-download_tmp && install -m 755 script/univention-addon-download_tmp debian/univention-updater/usr/sbin/univention-addon-download && rm script/univention-addon-download_tmp || true
 
+	install -m 0755 41univention-updater.inst debian/univention-updater/usr/lib/univention-install/
+
+    # install UMC module
+	make PACKAGE=univention-updater install-modules
+	make PACKAGE=univention-updater install-locales-backend
+	make PACKAGE=univention-updater install-images
+
+	univention-install-config-registry
 	univention-install-config-registry-info
 
 
@@ -111,6 +122,7 @@ binary-arch: build install
 	dh_testdir
 	dh_testroot
 	dh_installinit --name="univention-maintenance" --no-start --update-rcd-params="defaults 97 05"
+	dh_pycentral
 	dh_fixperms
 	dh_installdeb
 	dh_shlibdeps
