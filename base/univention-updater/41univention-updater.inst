@@ -1,0 +1,80 @@
+#! /bin/sh
+#
+# Univention Updater
+#  join script
+#
+# Copyright (C) 2008 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+VERSION=2
+
+if ! test -e "/usr/share/univention-join/.joined"; then
+	echo "The server has not joined yet"
+	exit 1
+fi
+
+touch /usr/lib/univention-install/.index.txt
+
+test -n "`grep "univention-updater v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
+
+eval `univention-baseconfig shell`
+
+# umc module
+
+# create CUPS operations
+univention-admin settings/console_operation create $@ --ignore_exists --position cn=operations,cn=console,cn=univention,$ldap_base \
+																				 --set name=update \
+																				 --set description="Updater operations" \
+																				 --append operation="update/*" \
+
+# create CUPS acls
+univention-admin settings/console_acl create $@ --ignore_exists --position cn=acls,cn=console,cn=univention,$ldap_base \
+																				 --set name=update-all \
+																				 --set category="Updater" \
+																				 --set ldapbase="$ldap_base" \
+																				 --append command="update/*" \
+																				 --set description="All update operations"
+
+# policy container
+univention-admin container/cn create $@ --ignore_exists --position cn=policies,$ldap_base --set name=console --set policyPath=1
+
+# default policies
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=default-admin
+
+univention-admin policies/console_access modify $@ --ignore_exists \
+	--dn cn=default-admin,cn=console,cn=policies,$ldap_base \
+	--append allow=cn=update-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+univention-admin policies/console_access create $@ --ignore_exists \
+	--position cn=console,cn=policies,$ldap_base \
+	--set name=update-admin --append allow=cn=update-all,cn=acls,cn=console,cn=univention,$ldap_base
+
+
+test -n "`grep "univention-updater v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-updater v${VERSION} successful" >>/usr/lib/univention-install/.index.txt
+
+exit 0
+

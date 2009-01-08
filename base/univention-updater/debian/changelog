@@ -1,3 +1,9 @@
+univention-updater (4.0.0-2) unstable; urgency=low
+
+  * added some missing files from the merge. Bug #12242
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Jan 2009 07:27:57 +0100
+
 univention-updater (4.0.0-1) unstable; urgency=low
 
   * merge the online update patches from the oxae scope and rebuild for UCS

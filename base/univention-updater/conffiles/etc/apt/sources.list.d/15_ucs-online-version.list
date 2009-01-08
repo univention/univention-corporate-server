@@ -1,0 +1,54 @@
+@%@BCWARNING=#@%@
+
+@!@
+
+import univention.management.console.handlers.update.tools
+
+updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+
+if updater.online_repository:
+
+	version=configRegistry['version/version']
+	patchlevel=configRegistry['version/patchlevel']
+
+	version_part_left=int(version.split('.')[0])
+	version_part_right=int(version.split('.')[-1])
+
+	for i in range(0,int(version_part_right)+1):
+		# for example: http://apt.univention.de/2.0/
+		path='/%s.%s/' % (version_part_left, i)
+		if not updater.net_path_exists( path ):
+			continue
+		for part in updater.parts:
+			# for example: http://apt.univention.de/2.0/maintained/
+			path='/%s.%s/%s/' % (version_part_left, i, part)
+			if not updater.net_path_exists(path):
+				continue
+			# I think we won't release more than 20 releases for one UCS release ...
+			for p in range(0, 100):
+				if i >= int(version_part_right) and p > int(patchlevel):
+					# lets set the limit to exactly this version
+					# 	for example we are on a 2.1-1 release, we should add 2.0-2 to the release but not 2.1-2
+					break
+
+				path='/%s.%s/%s/%s.%s-%s/' % (version_part_left, i, part, version_part_left, i , p )
+				if not updater.net_path_exists(path):
+					break
+
+				# the helper variable printed is to be used to print a blank line at the end of a block
+				printed = False
+				for arch in ['all', updater.architecture, 'extern']:
+					# for example: http://apt.univention.de/2.0/maintained/2.0-1
+					path='/%s.%s/%s/%s.%s-%s/%s/' % (version_part_left, i, part, version_part_left, i , p, arch )
+					if not updater.net_path_exists(path):
+						continue
+					printed = True
+					if updater.repository_prefix:
+						print 'deb http://%s/%s/%s.%s/%s/ %s.%s-%s/%s/' % ( updater.repository_server, updater.repository_prefix, version_part_left, i, part, version_part_left, i , p, arch)
+					else:
+						print 'deb http://%s/%s.%s/%s/ %s.%s-%s/%s/' % ( updater.repository_server, version_part_left, i, part, version_part_left, i , p, arch)
+				if printed:
+					print ''
+					printed = False
+
+@!@

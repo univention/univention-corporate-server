@@ -1,0 +1,82 @@
+@%@BCWARNING=#@%@
+@!@
+
+# repository/online/component/openoffice.org/version=current
+# repository/online/component/openoffice.org/version=2.0,2.1
+# repository/online/component/openoffice.org/server=apt.univention.de
+# repository/online/component/openoffice.org/prefix=test
+# repository/online/component/openoffice.org/parts=maintained
+# repository/online/component/openoffice.org/port=80
+# repository/online/component/openoffice.org=true,enabled, yes
+# repository/online/component/openoffice.org/username=
+# repository/online/component/openoffice.org/password=
+
+import os
+import httplib
+
+import univention.management.console.handlers.update.tools
+
+updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+
+
+if updater.online_repository:
+	ucs_version=configRegistry['version/version']
+	patchlevel=configRegistry['version/patchlevel']
+
+	version_part_left=int(ucs_version.split('.')[0])
+	version_part_right=int(ucs_version.split('.')[-1])
+
+	components = []
+	for key in configRegistry.keys():
+		if key.startswith('repository/online/component/'):
+			component_part = key.split('repository/online/component/')[1]
+			if component_part.find('/') == -1 and configRegistry[key].lower() in [ 'true', 'yes', 'enabled', '1']:
+				components.append(component_part)
+				
+	for component in components:
+		repository_server = configRegistry.get('repository/online/component/%s/server' % component, updater.repository_server)
+		repository_port = configRegistry.get('repository/online/component/%s/port' % component, updater.repository_port)
+		repository_prefix = configRegistry.get('repository/online/component/%s/prefix' % component, None)
+		versions = configRegistry.get('repository/online/component/%s/version' % component, ucs_version).split(',')
+		parts = configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
+		username = configRegistry.get('repository/online/component/%s/username' % component, None)
+		password = configRegistry.get('repository/online/component/%s/password' % component, None)
+
+		for version in versions:
+			if version == 'current':
+				version = updater.ucs_version
+			for part in parts:
+				auth_string = ''
+				if username and password:
+					auth_string = '%s:%s@' % (username, password)
+				#2.0/maintained/component/
+				path = '/%s/%s/component/%s/' % ( version, part, component )
+				if not updater.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+					continue
+				printed = False
+				
+				# support a diffrent repository
+				path = '/%s/%s/component/%s/Packages.gz' % ( version, part, component )
+				if updater.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+					if repository_prefix:
+						print 'deb http://%s%s/%s/%s/%s/component/%s/ ./' % ( auth_string, repository_server, repository_prefix, version, part, component)
+					else:
+						print 'deb http://%s%s/%s/%s/component/%s/ ./' % ( auth_string, repository_server, version, part, component)
+					printed = True
+				else:
+					for arch in ['all', updater.architecture, 'extern']:
+						path = '/%s/%s/component/%s/%s/' % ( version, part, component, arch )
+						if not updater.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+							continue
+						printed = True
+						if repository_prefix:
+							print 'deb http://%s%s/%s/%s/%s/ component/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part, component, arch)
+						else:
+							print 'deb http://%s%s/%s/%s/ component/%s/%s/' % ( auth_string, repository_server, version, part, component, arch)
+				if printed:
+					print ''
+					printed = False
+
+@!@
+
+

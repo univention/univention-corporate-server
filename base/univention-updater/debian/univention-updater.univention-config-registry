@@ -1,0 +1,33 @@
+Type: file
+File: etc/apt/sources.list.d/15_ucs-online-version.list
+Preinst: 15_ucs-online-version.py
+Postinst: 15_ucs-online-version.py
+Variables: version/version
+Variables: version/patchlevel
+Variables: repository/online
+Variables: repository/online/server
+Variables: repository/online/port
+Variables: repository/online/maintained
+Variables: repository/online/unmaintained
+
+Type: file
+File: etc/apt/sources.list.d/18_ucs-online-security.list
+Preinst: 18_ucs-online-security.py
+Postinst: 18_ucs-online-security.py
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: repository/online
+Variables: repository/online/server
+Variables: repository/online/port
+Variables: repository/online/maintained
+Variables: repository/online/unmaintained
+
+Type: file
+File: etc/apt/sources.list.d/20_ucs-online-component.list
+Preinst: 20_ucs-online-component.py
+Postinst: 20_ucs-online-component.py
+Variables: version/version
+Variables: version/patchlevel
+Variables: repository/online
+Variables: repository/online/component/.*

@@ -1,0 +1,47 @@
+@%@BCWARNING=#@%@
+
+@!@
+
+import os
+import httplib
+import univention_baseconfig
+
+import univention.management.console.handlers.update.tools
+
+updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+
+if updater.online_repository:
+
+	ucs_version=configRegistry['version/version']
+	patchlevel=configRegistry['version/patchlevel']
+	security_patchlevel=configRegistry['version/security-patchlevel']
+
+
+	# check for the security version for the current version
+	for part in updater.parts:
+		# for example: http://apt.univention.de/2.0/maintained/
+		path='/%s/%s/' % (ucs_version, part)
+		if not updater.net_path_exists(path):
+			continue
+		# I think we won't release more than 100 security releases for one UCS release ...
+		for p in range(1, 100):
+			if p > int(security_patchlevel):
+				break
+
+			path='/%s/%s/sec%s/' % (ucs_version, part, p )
+			if not updater.net_path_exists(path):
+				break
+
+			printed =  False
+			for arch in ['all', updater.architecture, 'extern']:
+				# for example: http://apt.univention.de/2.0/maintained/2.0-1
+				path='/%s/%s/sec%s/%s/' % (ucs_version, part, p, arch )
+				if not updater.net_path_exists(path):
+					continue
+				printed = True
+				print 'deb http://%s/%s/%s/ sec%s/%s/' % ( updater.repository_server, ucs_version, part, p, arch)
+			if printed:
+				print ''
+				printed = False
+
+@!@
