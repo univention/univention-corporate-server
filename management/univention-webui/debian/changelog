@@ -1,3 +1,9 @@
+univention-webui (2.0.0-1) stable; urgency=low
+
+  * show a loading animation during dojo is working. Bug #12849
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Jan 2009 12:01:19 +0100
+
 univention-webui (1.5.2-1) stable; urgency=low
 
   * fix Internet Explorer incompatibility for question_select

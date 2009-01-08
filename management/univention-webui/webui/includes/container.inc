@@ -137,10 +137,26 @@ class webui_container{
 		echo "<link rel=\"stylesheet\" href=\"/style/stylesheet.css\" type=\"text/css\"></link>\n";
 		echo "<link rel=\"stylesheet\" href=\"/style/univention-dijit.css\" type=\"text/css\"></link>\n";
 		echo "<script type=\"text/javascript\" src=\"/style/tip.js\"></script>\n";
-		echo "<script type=\"text/javascript\" src=\"/univention-dojo/dojo/dojo.js\" djConfig=\"parseOnLoad: true\"></script>\n";
+		echo "<script type=\"text/javascript\" src=\"/univention-dojo/dojo/dojo.js\" ></script>\n";
 		echo "<script type=\"text/javascript\" src=\"/univention-dojo/unijit/unijit.js\"></script>\n";
 		echo "<script type=\"text/javascript\"> \n";
+		# Todo: this should be moved into the univention-dojo package
+		echo "\t var hideLoader = function(){ \n";
+		echo "\t\t dojo.style(\"preloader\", \"display\", \"none\"); \n";
+		echo "\t\t dojo.fadeOut({ \n";
+		echo "\t\t\t node:\"preloader\", \n";
+		echo "\t\t\t duration:700, \n";
+		echo "\t\t\t onEnd: function(){ \n";
+		echo "\t\t\t\t dojo.style(\"preloader\", \"display\", \"none\"); \n";
+		echo "\t\t\t } \n";
+		echo "\t\t\t }).play(); \n";
+		echo "\t }\n";
 		echo "\t dojo.require(\"dojo.parser\"); \n";
+		echo "\t dojo.addOnLoad(function(){ \n";
+		echo "\t\t dojo.parser.parse(); \n";
+		echo "\t\t hideLoader(); \n";
+		echo "}); \n";
+
 		# // import all potetial dijit-elements here?
 #		echo "\t dojo.require(\"unijit.form.ComboBox\"); \n";
 #		echo "\t dojo.require(\"unijit.form.FilteringSelect\"); \n";
@@ -152,6 +168,8 @@ class webui_container{
 		else
 			echo"<body class=\"tundra\" onload=\"clear_cached()\">\n";
 		$this->ref_config->debug_show();
+
+		echo "<div id=\"preloader\"></div> \n";
 
 		echo "<table class=\"global\" cellspacing=\"0\" cellpadding=\"0\">\n";// table1
 		echo "  <tr class=\"global_head\">\n"; //line 1

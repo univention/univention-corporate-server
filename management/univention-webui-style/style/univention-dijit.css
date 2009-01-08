@@ -289,3 +289,14 @@ line-height:normal;
 .tundra .dynlongtable-pane table.table_default {
   width: 100%;
 }
+
+#preloader {
+    width:100%; height:100%; margin:0; padding:0;
+    background:#fff
+	url('../icon/loading.gif')
+	no-repeat center center;
+    position:absolute;
+    z-index:999;
+}
+
+

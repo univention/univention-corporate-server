@@ -1,3 +1,9 @@
+univention-webui-style (3.0.0-1) unstable; urgency=low
+
+  * show a loading animation during dojo is working. Bug #12849
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Jan 2009 12:01:11 +0100
+
 univention-webui-style (2.2.1-0) unstable; urgency=low
 
   * support dynamic_longtable
