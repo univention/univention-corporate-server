@@ -1,3 +1,9 @@
+univention-installer (2.0.5-3) unstable; urgency=low
+
+  * new regexes for domainname and hostname (a-z0-9 with hyphens between characters or letters)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 10:52:15 +0100
+
 univention-installer (2.0.5-2) unstable; urgency=low
 
   * translate virtual interface names from Univention Config Registry into internal syntax (Bug #11614)
