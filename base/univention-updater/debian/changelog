@@ -1,3 +1,9 @@
+univention-updater (4.0.0-3) unstable; urgency=low
+
+  * added umc icons for the online update. Bug #12242
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu,  8 Jan 2009 08:14:38 +0100
+
 univention-updater (4.0.0-2) unstable; urgency=low
 
   * added some missing files from the merge. Bug #12242
