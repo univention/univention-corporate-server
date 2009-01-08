@@ -1,0 +1,19 @@
+#!/usr/bin/python2.4
+
+import os
+import time
+
+fh = open("/proc/cmdline", "r")
+cmdline = fh.readlines()
+fh.close
+options = cmdline[0].strip().split(' ')
+
+for option in options:
+	if option.startswith("loadmodules") and option.find("=") != -1:
+		opt, val = option.split('=', 1)
+		val = val.strip('\'"')
+		for m in val.split(','):
+			print "Loading %s" % m
+			os.system('/sbin/modprobe %s >/dev/null 2>&1' % m)
+			time.sleep(0.5)
+
