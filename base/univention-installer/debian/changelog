@@ -1,6 +1,12 @@
-univention-installer (2.0.5-3) unstable; urgency=low
+univention-installer (3.0.0-1) unstable; urgency=low
 
   * new regexes for domainname and hostname (a-z0-9 with hyphens between characters or letters)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 10:55:53 +0100
+
+univention-installer (3.0.0-0) unstable; urgency=low
+
+  * bumped version
 
  -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 10:52:15 +0100
 
