@@ -96,7 +96,7 @@ class UniventionUpdater:
 
 	def close_connection(self):
 		self.connection.close()
-		
+
 
 	def ucr_reinit(self):
 		self.configRegistry=univention.config_registry.ConfigRegistry()
@@ -266,3 +266,166 @@ class UniventionUpdater:
 		#return component
 
 
+	def print_version_repositories( self, clean = False ):
+		repos = ''
+		version_part_left = int( self.version_major )
+		version_part_right = int( self.version_minor )
+
+		if clean:
+			clean = self.configRegistry.get( 'online/repository/clean', False )
+
+		for i in range(0,int(version_part_right)+1):
+			# for example: http://apt.univention.de/2.0/
+			path='/%s.%s/' % (version_part_left, i)
+			if not self.net_path_exists( path ):
+				continue
+			for part in self.parts:
+				# for example: http://apt.univention.de/2.0/maintained/
+				path='/%s.%s/%s/' % (version_part_left, i, part)
+				if not self.net_path_exists(path):
+					continue
+				# I think we won't release more than 20 releases for one UCS release ...
+				for p in range(0, 100):
+					if i >= int(version_part_right) and p > int(self.patchlevel):
+						# lets set the limit to exactly this version
+						# 	for example we are on a 2.1-1 release, we should add 2.0-2 to the release but not 2.1-2
+						break
+
+					path='/%s.%s/%s/%s.%s-%s/' % (version_part_left, i, part, version_part_left, i , p )
+					if not self.net_path_exists(path):
+						break
+
+					# the helper variable printed is to be used to print a blank line at the end of a block
+					printed = False
+					for arch in ['all', self.architecture, 'extern']:
+						# for example: http://apt.univention.de/2.0/maintained/2.0-1
+						path='/%s.%s/%s/%s.%s-%s/%s/' % (version_part_left, i, part, version_part_left, i , p, arch )
+						if not self.net_path_exists(path):
+							continue
+						printed = True
+						if self.repository_prefix:
+							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, version_part_left, i, part )
+						else:
+							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, version_part_left, i, part )
+						repos += 'deb %s %s.%s-%s/%s/\n' % ( path, version_part_left, i , p, arch)
+					if clean:
+						if self.repository_prefix:
+							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, version_part_left, i, part )
+						else:
+							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, version_part_left, i, part )
+						repos += 'clean %s/%s.%s-%s/\n' % ( path, version_part_left, i , p )
+
+					if printed:
+						repos += '\n'
+						printed = False
+
+		return repos
+
+	def print_security_repositories( self, clean = False ):
+		repos = ''
+		if clean:
+			clean = self.configRegistry.get( 'online/repository/clean', False )
+
+		# check for the security version for the current version
+		for part in self.parts:
+			# for example: http://apt.univention.de/2.0/maintained/
+			path='/%s/%s/' % (self.ucs_version, part)
+			if not self.net_path_exists(path):
+				continue
+			# I think we won't release more than 100 security releases for one UCS release ...
+			for p in range(1, 100):
+				if p > int(self.security_patchlevel):
+					break
+
+				path='/%s/%s/sec%s/' % (self.ucs_version, part, p )
+				if not self.net_path_exists(path):
+					break
+
+				printed =  False
+				for arch in ['all', self.architecture, 'extern']:
+					# for example: http://apt.univention.de/2.0/maintained/2.0-1
+					path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, p, arch )
+					if not self.net_path_exists(path):
+						continue
+					printed = True
+					repos += 'deb http://%s/%s/%s/ sec%s/%s/\n' % ( self.repository_server, self.ucs_version, part, p, arch)
+				if clean:
+					repos += 'clean http://%s/%s/%s/sec%s/%s/\n' % ( self.repository_server, self.ucs_version, part, p )
+				if printed:
+					repos += '\n'
+					printed = False
+
+		return repos
+
+	def print_component_repositories( self, clean = False ):
+		repos = ''
+		version_part_left = int( self.version_major )
+		version_part_right = int( self.version_minor )
+		if clean:
+			clean = self.configRegistry.get( 'online/repository/clean', False )
+
+		components = []
+		for key in self.configRegistry.keys():
+			if key.startswith('repository/online/component/'):
+				component_part = key.split('repository/online/component/')[1]
+				if component_part.find('/') == -1 and self.configRegistry[key].lower() in [ 'true', 'yes', 'enabled', '1']:
+					components.append(component_part)
+
+		for component in components:
+			repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
+			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
+			repository_prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, None)
+			versions = self.configRegistry.get('repository/online/component/%s/version' % component, self.ucs_version).split(',')
+			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
+			username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
+			password = self.configRegistry.get('repository/online/component/%s/password' % component, None)
+			if clean:
+				clean = self.configRegistry.get( 'repository/online/component/%s/clean' % component, False )
+
+			for version in versions:
+				if version == 'current':
+					version = self.ucs_version
+				for part in parts:
+					auth_string = ''
+					if username and password:
+						auth_string = '%s:%s@' % (username, password)
+					#2.0/maintained/component/
+					path = '/%s/%s/component/%s/' % ( version, part, component )
+					if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+						continue
+					printed = False
+
+					# support a diffrent repository
+					path = '/%s/%s/component/%s/Packages.gz' % ( version, part, component )
+					if self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+						if repository_prefix:
+							path = 'http://%s%s/%s/%s/%s/component/%s/' % ( auth_string, repository_server, repository_prefix, version, part, component)
+						else:
+							path = 'http://%s%s/%s/%s/component/%s/' % ( auth_string, repository_server, version, part, component)
+						repos += 'deb %s ./ \n' % path
+						if clean:
+							repos += 'clean %s\n' % path
+						printed = True
+					else:
+						for arch in ['all', self.architecture, 'extern']:
+							path = '/%s/%s/component/%s/%s/' % ( version, part, component, arch )
+							if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
+								continue
+							printed = True
+							if repository_prefix:
+								path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
+							else:
+								path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
+							repos += 'deb %s component/%s/%s/\n' % ( path, component, arch )
+					if clean:
+						if repository_prefix:
+							path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
+							repos += 'clean %s/component/%s/\n' % ( path, component )
+						else:
+							path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
+							repos += 'clean %s/component/%s/\n' % ( path, component )
+					if printed:
+						repos += '\n'
+						printed = False
+
+		return repos
