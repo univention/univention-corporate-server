@@ -169,6 +169,7 @@ class webui_out{			# PHP ---> Python
 					$this->input[$type[1]] = $value[0].".".trim($value[1]).".".$value[2];
                                         if(trim($this->input[$type[1]])=="..")$this->input[$type[1]]="";
 					break;
+				case 'language_dojo_select':
 				case 'question_select':
 				  // with enabled dijit.form.FilteringSelect and IE, this array contains not only 
 				  // the selected ID but also the string representation. We need only the ID which 

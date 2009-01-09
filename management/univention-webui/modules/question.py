@@ -226,6 +226,10 @@ class question_dojo_select(question_choice):
 	def mytype(self):
 		return "question_dojo_select"
 
+class language_dojo_select(question_choice):
+	def mytype(self):
+		return "language_dojo_select"
+
 class question_dojo_comboselect(question_choice):
 	def mytype(self):
 		return "question_dojo_comboselect"

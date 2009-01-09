@@ -738,6 +738,146 @@ class question_select extends extra_multi{
   }
 }
 
+class language_dojo_select extends extra_multi{
+	// http://aktuell.de.selfhtml.org/artikel/php/httpsprache/
+	function lang_getfrombrowser ($allowed_languages, $default_language, $lang_variable = null, $strict_mode = true) {
+		// $_SERVER['HTTP_ACCEPT_LANGUAGE'] verwenden, wenn keine Sprachvariable mitgegeben wurde
+		if ($lang_variable === null) {
+			$lang_variable = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
+		}
+
+		// wurde irgendwelche Information mitgeschickt?
+		if (empty($lang_variable)) {
+			// Nein? => Standardsprache zurückgeben
+			return $default_language;
+		}
+
+		// Den Header auftrennen
+		$accepted_languages = preg_split('/,\s*/', $lang_variable);
+
+		// Die Standardwerte einstellen
+		$current_lang = $default_language;
+		$current_q = 0;
+
+		// Nun alle mitgegebenen Sprachen abarbeiten
+		foreach ($accepted_languages as $accepted_language) {
+			// Alle Infos über diese Sprache rausholen
+			$res = preg_match ('/^([a-z]{1,8}(?:-[a-z]{1,8})*)'.
+				'(?:;\s*q=(0(?:\.[0-9]{1,3})?|1(?:\.0{1,3})?))?$/i', $accepted_language, $matches);
+
+			// war die Syntax gültig?
+			if (!$res) {
+				// Nein? Dann ignorieren
+				continue;
+			}
+
+			// Sprachcode holen und dann sofort in die Einzelteile trennen
+			$lang_code = explode ('-', $matches[1]);
+
+			// Wurde eine Qualität mitgegeben?
+			if (isset($matches[2])) {
+				// die Qualität benutzen
+				$lang_quality = (float)$matches[2];
+			} else {
+				// Kompabilitätsmodus: Qualität 1 annehmen
+				$lang_quality = 1.0;
+			}
+
+			// Bis der Sprachcode leer ist...
+			while (count ($lang_code)) {
+				// mal sehen, ob der Sprachcode angeboten wird
+				if (in_array (strtolower (join ('-', $lang_code)), $allowed_languages)) {
+					// Qualität anschauen
+					if ($lang_quality > $current_q) {
+						// diese Sprache verwenden
+						$current_lang = strtolower (join ('-', $lang_code));
+						$current_q = $lang_quality;
+						// Hier die innere while-Schleife verlassen
+						break;
+					}
+				}
+				// Wenn wir im strengen Modus sind, die Sprache nicht versuchen zu minimalisieren
+				if ($strict_mode) {
+					// innere While-Schleife aufbrechen
+					break;
+				}
+				// den rechtesten Teil des Sprachcodes abschneiden
+				array_pop ($lang_code);
+			}
+		}
+
+		// die gefundene Sprache zurückgeben
+		return $current_lang;
+	}
+
+	function show(){
+		$appendstr = "";
+		if(isset($this->attribute["passive"])) 
+			$access = "disabled";
+		$str .= "\n\n";
+		$str .= "<script type=\"text/javascript\">dojo.require(\"dijit.form.FilteringSelect\");</script>\n";
+		$str .= "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
+		$str .= "<tr><td class=\"description\"><img src=\"style/blank_spacer.gif\" width=\"2\" height=\"2\"></img>".$this->basket["description"]."\n";
+		if($this->warn) 
+			$str .= "<img src=\"style/".$this->warn.".gif\" alt=\"\" class=\"warn\"></img>\n";
+		$str .= "</td></tr>\n<tr><td>\n";
+		$str .= "<select dojoType=\"dijit.form.FilteringSelect\" autocomplete=\"true\" $access title=\"".$this->basket["helptext"]."\" tabindex=\"".$this->tabindex."\"";
+
+		if($this->warn) 
+			$str .= " class=\"select_warn\" ";
+		else 
+			$str .= " class=\"select\" ";
+
+		if($this->attribute["width"]) 
+			$str .= "style=\"width:".($this->attribute["width"])."px\" ";
+
+		if($this->js && isset($this->basket["update"])) 
+			$str .= "onChange=\"sendForm(".$this->update_byteindex.")\" ";
+
+		if ($access != "disabled")
+			$str .= "name=\"usrinput[language_dojo_select#".$this->tabindex."][]\"";
+		$str .= ">\n";
+		if($this->basket["choice"]) {
+			$allowed_languages = array ();
+			$default_language = 'de';
+			foreach($this->basket["choice"] as $key=>$val) {
+				// Useful to make everything a bit more dynamic
+				//if (empty ($default_language))
+					//$default_language = $key;
+				array_push ($allowed_languages, $key);
+			}
+			$lang = $this->lang_getfrombrowser ($allowed_languages, $default_language, null, false);
+			foreach($this->basket["choice"] as $key=>$val) {
+				if($key == $lang) {
+					//$is="selected='selected'";
+					$is='selected';
+				}
+				if(trim($this->basket["var"][$key]["content"])!="") {
+					//$is='selected';
+					if ($access == "disabled") {
+						$appendstr = "<input type=\"hidden\" name=\"usrinput[language_dojo_select#".$this->tabindex."][]\"";
+						$appendstr .= " value=\"".$this->basket["var"][$key]["byteindex"]."\"></input>\n";
+					}
+				}
+
+				for($x=0; $x < $this->basket["choice"][$key]["level"]; $x++) 
+					$space .= "&nbsp;";
+				$str .= "<option value=\"".$this->basket["var"][$key]["byteindex"]."\" $is>";
+				$str .= $space.$this->basket["choice"][$key]["description"];
+				$str .= "</option>\n";
+				$is = '';
+				$space = '';
+			}
+		}
+		$str .="</select>\n";
+		if(isset($this->basket["update"])) 
+			$str .= $this->basket["update"]."\n";
+		$str .= $appendstr;
+		$str .= "</td></tr>\n</table>\n";
+		return $str;
+	}
+}
+
 // dojo ComboBoxWidget: allows one of the given options or any other
 class question_dojo_comboselect extends extra_multi{
   function show(){
@@ -1210,6 +1350,7 @@ class question_group{
 				case 'question_mselect': $this->member = new question_mselect($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_select': $this->member = new question_select($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_dojo_select': $this->member = new question_dojo_select($tag, $this->conti_ref, $this->config, $attribute);return;
+				case 'language_dojo_select': $this->member = new language_dojo_select($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_dojo_comboselect': $this->member = new question_dojo_comboselect($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_choice': $this->member = new question_choice($tag, $this->conti_ref, $this->config, $attribute);return;
 				case 'question_group': $this->member = new question_group($tag, $this->conti_ref, $this->config, $attribute);return;
