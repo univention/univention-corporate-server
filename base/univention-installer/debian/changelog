@@ -1,3 +1,9 @@
+univention-installer (3.0.0-6) unstable; urgency=low
+
+  * new test script at the end of the installation to verify the installation (Bug: #12190)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri,  9 Jan 2009 11:12:04 +0100
+
 univention-installer (3.0.0-5) unstable; urgency=low
 
   * installation profile will be copied before joining the system (Bug: #10427)
