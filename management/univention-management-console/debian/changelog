@@ -1,3 +1,11 @@
+univention-management-console (0.9.1012-2) unstable; urgency=low
+
+  * updated translation. Bug #13011
+  * added lazy translation of strings. Bug #13011
+  * added a language selector widget to the login page. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri,  9 Jan 2009 18:38:31 +0100
+
 univention-management-console (0.9.1012-1) unstable; urgency=low
 
   * fixed missing translation (Bug #9832)

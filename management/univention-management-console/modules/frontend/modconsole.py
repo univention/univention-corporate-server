@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, time, string
+import locale, os, sys, time, string
 
 import unimodule
 
@@ -50,6 +50,12 @@ import univention_baseconfig
 
 baseConfig = univention_baseconfig.baseConfig()
 baseConfig.load()
+
+LANG_DE = 'de_DE.utf8'
+#LANG_EN = 'en_EN.utf8'
+LANG_EN = 'C'
+#LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', locale.getdefaultlocale ())
+LANG_DEFAULT = baseConfig.get ('umc/web/language', LANG_EN)
 
 _ = umc.Translation( 'univention.management.console.frontend' ).translate
 
@@ -110,6 +116,16 @@ class modconsole(unimodule.unimodule):
 		univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, 'Function: __login: log on to UMCP server')
 		self.__commonHeader('login_layout')
 
+		# select language
+		# the installed languages can be obtained via locale -a
+		# but I shouldn't check on that but rely on the languages I set
+		# up for this tool
+		langs = [
+				{"level": '0', "name": 'de', "description": "Deutsch"},
+				{"level": '0', "name": 'en', "description": "English"}
+				]
+		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
+
 		self.usernamein=question_text(_("Username"),{'width':'255'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort Login")})
 		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
@@ -124,6 +140,7 @@ class modconsole(unimodule.unimodule):
 
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.passwdin]})]}))
+		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
 
 		#check if http should realy be used
 		if int(os.environ["HTTPS"]) != 1:
@@ -286,15 +303,29 @@ class modconsole(unimodule.unimodule):
 							ldapc.connect( binddn = res[0], bindpw = authPassword )
 
 					# set locale after authentication
-					if baseConfig.has_key('umc/web/language') and baseConfig['umc/web/language']:
-						req = umcp.Request( 'SET', args = ('locale', baseConfig['umc/web/language'] ) )
+					language = None
+					if hasattr(self, 'chooselang'):
+						language = self.chooselang.getselected()
+
+					if language:
+						if language == 'de':
+							language = LANG_DE
+						elif language == 'en':
+							language = LANG_EN
+						else:
+							language = LANG_DEFAULT
+						# WARNING this code could cause an exception maybe it needs to be surrounded by parenthesis
+						os.environ["LC_MESSAGES"] = language
+						locale.setlocale( locale.LC_MESSAGES, language )
+
+						req = umcp.Request( 'SET', args = ('locale', language ) )
 						id = client.request_send( req )
 						response = client.response_wait( id, timeout = 10 )
 						if response:
 							(status, statusinformation) = \
 									 ( response.status(), umcp.status_information( response.status() ) )
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
-												   'modconsole.py: locale set (%s): status: %s (%s)' % (baseConfig['umc/web/language'], status, statusinformation))
+												   'modconsole.py: locale set (%s): status: %s (%s)' % (language, status, statusinformation))
 						else:
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO,
 												   'modconsole.py: setting locale timed out')

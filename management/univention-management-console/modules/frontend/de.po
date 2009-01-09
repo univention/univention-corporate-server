@@ -3,12 +3,12 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#: modconsole.py:133
+#: modconsole.py:150
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-06-16 13:09+0200\n"
+"POT-Creation-Date: 2009-01-09 18:36+0100\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,81 +16,93 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: modconsole.py:113
-msgid "Username"
-msgstr "Benutzername"
+#: pages/about.py:46
+msgid "About"
+msgstr "Über"
 
-#: modconsole.py:113
-msgid "Please enter your uid."
-msgstr "Bitte geben Sie Ihren Benutzernamen ein."
+#: pages/about.py:64
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
 
-#: modconsole.py:114 modconsole.py:156
-msgid "Cancel"
-msgstr "Abbrechen"
+#: pages/about.py:69
+msgid "Version"
+msgstr "Version"
 
-#: modconsole.py:114
-msgid "Abort Login"
-msgstr "Anmeldung abbrechen"
+#: pages/about.py:74
+msgid "Build"
+msgstr "Build"
 
-#: modconsole.py:116 modconsole.py:119
-msgid "Password"
-msgstr "Passwort"
+#: pages/about.py:84
+msgid "Hostname"
+msgstr "Rechnername"
 
-#: modconsole.py:116 modconsole.py:120
-msgid "please enter your password."
-msgstr "Bitte geben Sie Ihr Passwort ein."
+#: pages/about.py:97
+msgid "local Installation"
+msgstr "Lokale Installation"
 
-#: modconsole.py:117 modconsole.py:121
-msgid "OK"
-msgstr "OK"
+#: pages/about.py:98
+msgid "UCS Version"
+msgstr "UCS Version"
 
-#: modconsole.py:117 modconsole.py:121 modconsole.py:143
-msgid "Login"
-msgstr "Anmeldung"
+#: pages/about.py:108
+msgid "Contact"
+msgstr "Kontakt"
 
-#: modconsole.py:134 modconsole.py:135
-msgid "Not using a secure SSL connection. Click to continue."
-msgstr ""
-"Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um "
-"fortzufahren."
+#: pages/about.py:120
+msgid "ALL RIGHTS RESERVED"
+msgstr "ALL RIGHTS RESERVED"
 
-#: modconsole.py:155 modconsole.py:167
-msgid "Logout"
-msgstr "Abmeldung"
+#: pages/about.py:135 pages/overview.py:122
+msgid "Logout from Univention Management Console"
+msgstr "Abmelden von Univention Management Console"
 
-#: modconsole.py:156
-msgid "abort logout"
-msgstr "Anmeldung abbrechen"
+#: pages/startup.py:43
+msgid "Bugreport: Univention Management Console"
+msgstr "Fehlerbericht: Univention Management Console"
 
-#: modconsole.py:160
-msgid "Do you really want to logout?"
-msgstr "Möchten Sie sich wirklich abmelden?"
-
-#: modconsole.py:191
-msgid "Update status"
-msgstr "Status aktualisieren"
-
-#: modconsole.py:223
+#: pages/startup.py:44
 msgid ""
-"Authentication failed: A connection to the UMC daemon could not be "
-"established."
+"\n"
+"Please take a second to provide the following information\n"
+"\n"
+"1) Steps to reproduce the failure\n"
+"\n"
+"2) Expected result\n"
+"\n"
+"3) Actual result\n"
+"\n"
 msgstr ""
-"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
-"hergestellt werden"
+"\n"
+"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
+"einzutragen\n"
+"\n"
+"1) Schritte, um den Fehler zu reproduzieren\n"
+"\n"
+"2) Erwartetes Ergebnis\n"
+"\n"
+"3) Beobachtetes Ergebnis\n"
+"\n"
 
-#: modconsole.py:304
-#, python-format
-msgid "Authentication failed: %s"
-msgstr "Authentisierungsfehler: %s"
+#: pages/startup.py:79
+msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
+msgstr ""
+"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
 
-#: modconsole.py:319
-msgid "Logout successful."
-msgstr "Abmeldung erfolgreich"
+#: pages/startup.py:84
+msgid "An Error has occured"
+msgstr "Ein Fehler ist aufgetreten"
 
-#: unidialog.py:119
-#, python-format
-msgid "error while modifying: %s %s"
-msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
+#: pages/module.py:222
+msgid "Operation still in progress. Please wait ..."
+msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+
+#: pages/module.py:223
+msgid "Information"
+msgstr "Hinweis"
+
+#: pages/overview.py:50
+msgid "Overview"
+msgstr "Überblick"
 
 #: mapping/buttons.py:147
 msgid "Do"
@@ -193,93 +205,89 @@ msgstr "Entfernen"
 msgid "Delete file"
 msgstr "Datei entfernen"
 
-#: pages/about.py:46
-msgid "About"
-msgstr "Über"
+#: unidialog.py:119
+#, python-format
+msgid "error while modifying: %s %s"
+msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
-#: pages/about.py:64
-msgid "Univention Management Console"
-msgstr "Univention Management Console"
+#: modconsole.py:127
+msgid "Language:"
+msgstr ""
 
-#: pages/about.py:69
-msgid "Version"
-msgstr "Version"
+#: modconsole.py:127
+msgid "Choose language for this session"
+msgstr ""
 
-#: pages/about.py:74
-msgid "Build"
-msgstr "Build"
+#: modconsole.py:129
+msgid "Username"
+msgstr "Benutzername"
 
-#: pages/about.py:84
-msgid "Hostname"
-msgstr "Rechnername"
+#: modconsole.py:129
+msgid "Please enter your uid."
+msgstr "Bitte geben Sie Ihren Benutzernamen ein."
 
-#: pages/about.py:97
-msgid "local Installation"
-msgstr "Lokale Installation"
+#: modconsole.py:130 modconsole.py:173
+msgid "Cancel"
+msgstr "Abbrechen"
 
-#: pages/about.py:98
-msgid "UCS Version"
-msgstr "UCS Version"
+#: modconsole.py:130
+msgid "Abort Login"
+msgstr "Anmeldung abbrechen"
 
-#: pages/about.py:108
-msgid "Contact"
-msgstr "Kontakt"
+#: modconsole.py:132 modconsole.py:135
+msgid "Password"
+msgstr "Passwort"
 
-#: pages/about.py:120
-msgid "ALL RIGHTS RESERVED"
-msgstr "ALL RIGHTS RESERVED"
+#: modconsole.py:132 modconsole.py:136
+msgid "please enter your password."
+msgstr "Bitte geben Sie Ihr Passwort ein."
 
-#: pages/about.py:135 pages/overview.py:122
-msgid "Logout from Univention Management Console"
-msgstr "Abmelden von Univention Management Console"
+#: modconsole.py:133 modconsole.py:137
+msgid "OK"
+msgstr "OK"
 
-#: pages/module.py:222
-msgid "Operation still in progress. Please wait ..."
-msgstr "Der Vorgang ist noch nicht abgeschlossen. Bitte gedulden Sie sich ..."
+#: modconsole.py:133 modconsole.py:137 modconsole.py:160
+msgid "Login"
+msgstr "Anmeldung"
 
-#: pages/module.py:223
-msgid "Information"
-msgstr "Hinweis"
+#: modconsole.py:151 modconsole.py:152
+msgid "Not using a secure SSL connection. Click to continue."
+msgstr ""
+"Es wird keine gesicherte SSL Verbindung verwendet. Bitte aktivieren um "
+"fortzufahren."
 
-#: pages/overview.py:50
-msgid "Overview"
-msgstr "Überblick"
+#: modconsole.py:172 modconsole.py:184
+msgid "Logout"
+msgstr "Abmeldung"
 
-#: pages/startup.py:43
-msgid "Bugreport: Univention Management Console"
-msgstr "Fehlerbericht: Univention Management Console"
+#: modconsole.py:173
+msgid "abort logout"
+msgstr "Anmeldung abbrechen"
 
-#: pages/startup.py:44
+#: modconsole.py:177
+msgid "Do you really want to logout?"
+msgstr "Möchten Sie sich wirklich abmelden?"
+
+#: modconsole.py:208
+msgid "Update status"
+msgstr "Status aktualisieren"
+
+#: modconsole.py:240
 msgid ""
-"\n"
-"Please take a second to provide the following information\n"
-"\n"
-"1) Steps to reproduce the failure\n"
-"\n"
-"2) Expected result\n"
-"\n"
-"3) Actual result\n"
-"\n"
+"Authentication failed: A connection to the UMC daemon could not be "
+"established."
 msgstr ""
-"\n"
-"Bitte nehmen Sie sich eine Sekunde Zeit um die folgenden Informationen "
-"einzutragen\n"
-"\n"
-"1) Schritte, um den Fehler zu reproduzieren\n"
-"\n"
-"2) Erwartetes Ergebnis\n"
-"\n"
-"3) Beobachtetes Ergebnis\n"
-"\n"
+"Authentisierungfehler: Eine Verbindung zum UMC-Dämon konnte nicht "
+"hergestellt werden"
 
-#: pages/startup.py:79
-msgid "Report this error to Univention Feedback &lt;feedback@univention.de&gt;"
-msgstr ""
-"Diesen Fehler an Univention Feedback &lt;feedback@univention.de&gt; melden"
+#: modconsole.py:335
+#, python-format
+msgid "Authentication failed: %s"
+msgstr "Authentisierungsfehler: %s"
 
-#: pages/startup.py:84
-msgid "An Error has occured"
-msgstr "Ein Fehler ist aufgetreten"
+#: modconsole.py:350
+msgid "Logout successful."
+msgstr "Abmeldung erfolgreich"
 
 #~ msgid "Favorites"
 #~ msgstr "Favoriten"

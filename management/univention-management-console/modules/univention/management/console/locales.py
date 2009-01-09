@@ -38,22 +38,34 @@ obj = univention.management.console.Translation()
 _ = obj.translate
 '''
 
+class LazyTranslation (str):
+	def __init__ (self, string):
+		self._domain = None
+		self.__orig_str = str (string)
+		self._translations = {}
+		super (str, self).__init__ (self.__orig_str)
+	def __str__ (self):
+		lang = locale.getlocale( locale.LC_MESSAGES )
+		if self._translations.has_key (lang):
+			return self._translations[lang]
+		if lang and lang[0] and gettext.find (self._domain, languages=(lang[0], )):
+			t = gettext.translation(self._domain, languages=(lang[0], ))
+			newval = t.ugettext(self.__orig_str)
+			self._translations[lang] = newval
+		else:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
+					"no translation for %s (%s): %s" % (self.__orig_str, lang, self._domain))
+			newval = self.__orig_str
+		return str (newval)
+	def __repr__ (self):
+		return self.__str__ ()
+
 class Translation:
 	def __init__( self, namespace ):
-		domain = namespace.replace( '/', '-' ).replace( '.', '-' )
-		try:
-			lang = locale.getlocale( locale.LC_MESSAGES )
-			if lang[ 0 ]:
-				self.translation = gettext.translation( domain, languages = ( lang[ 0 ], ) )
-			else:
-				self.translation = None
-		except IOError, e:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
-									'no translation for %s (%s)' % ( namespace, str( e ) ) )
-			self.translation = None
+		self._domain = namespace.replace( '/', '-' ).replace( '.', '-' )
 
 	def translate( self, message ):
-		if self.translation:
-			return self.translation.ugettext( message )
-		else:
-			return message
+		t = LazyTranslation (message)
+		t._domain = self._domain
+		return t
+
