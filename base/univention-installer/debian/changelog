@@ -1,3 +1,9 @@
+univention-installer (3.0.0-5) unstable; urgency=low
+
+  * installation profile will be copied before joining the system (Bug: #10427)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri,  9 Jan 2009 09:29:00 +0100
+
 univention-installer (3.0.0-4) unstable; urgency=low
 
   * modules, defined via the "loadmodules" option, will be loaded automatically at the start of the installation (Bug: #11276)

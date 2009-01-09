@@ -30,9 +30,6 @@
 
 . /tmp/installation_profile
 
-#copy installation profile
-cat /tmp/installation_profile | sed -e "s|root_password=.*|#root_password=''|" | sed -e "s|domain_controller_password=.*|#domain_controller_password=''|" >/instmnt/etc/univention/installation_profile
-
 sync
 
 
