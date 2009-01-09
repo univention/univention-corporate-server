@@ -33,6 +33,7 @@ import os
 import sys
 import time
 import ldap
+import locale
 import string
 import re
 import unimodule
@@ -41,6 +42,14 @@ from local import _
 
 import univention.debug
 import univention_baseconfig
+
+baseConfig=univention_baseconfig.baseConfig()
+baseConfig.load()
+LANG_DE = 'de_DE.utf8'
+#LANG_EN = 'en_EN.utf8'
+LANG_EN = 'C'
+#LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', locale.getdefaultlocale ())
+LANG_DEFAULT = baseConfig.get ('directory/manager/web/language', LANG_EN)
 
 def create(a,b,c):
 	return modrelogin(a,b,c)
@@ -134,6 +143,18 @@ class modrelogin(unimodule.unimodule):
 			self.choosedomain=question_select(_("Login Domain:"),{'width':'265'},{"helptext":_("choose Domain for login"),"choicelist":domainlist})
 			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.choosedomain]})]}))
 
+		# select language
+		# the installed languages can be obtained via locale -a
+		# but I shouldn't check on that but rely on the languages I set
+		# up for this tool
+		langs = [
+				{"level": '0', "name": 'de', "description": "Deutsch"},
+				{"level": '0', "name": 'en', "description": "English"}
+				]
+		if langs:
+			self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
+			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.chooselang]})]}))
+
 		# ok / cancel
 		okcol=tablecol("",{'type':'login_layout'},{"obs":[self.okbut]})
 		cacol=tablecol("",{'type':'login_layout'},{"obs":[self.cabut]})		
@@ -185,6 +206,21 @@ class modrelogin(unimodule.unimodule):
 			position.setLoginDomain(domain)
 			position.setDn(domain)
 			self.save.put('ldap_position', position)
+
+			language = None
+			if hasattr(self, 'chooselang'):
+				language = self.chooselang.getselected()
+
+			if language:
+				if language == 'de':
+					language = LANG_DE
+				elif language == 'en':
+					language = LANG_EN
+				else:
+					language = LANG_DEFAULT
+				# WARNING this code could cause an exception maybe it needs to be surrounded by parenthesis
+				os.environ["LC_MESSAGES"] = language
+				locale.setlocale( locale.LC_MESSAGES, language )
 
 			user=self.save.get("user")
 
