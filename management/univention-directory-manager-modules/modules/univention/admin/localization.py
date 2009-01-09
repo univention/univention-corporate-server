@@ -38,22 +38,40 @@ _=translation.translate
 '''
 import locale
 
-class translation:
-	def __init__( self, namespace ):
-		domain = namespace.replace( '/', '-' ).replace( '.', '-' )
+class LazyTranslation (str):
+	'''
+	NOTE this class exists in univention-directory-manager local.py
+	and univention-direcotry-manager-modules localization.py
+	'''
+	def __init__ (self, string):
+		self._domain = None
+		self.__orig_str = string
+		self._translations = {}
+		super (str, self).__init__ (self.__orig_str)
+	def __str__ (self):
+		lang = locale.getlocale( locale.LC_MESSAGES )
+		if self._translations.has_key (lang):
+			return self._translations[lang]
 		try:
-			lang = locale.getlocale( locale.LC_MESSAGES )
-			if lang[ 0 ]:
-				self.translation = gettext.translation( domain, languages = ( lang[ 0 ], ) )
-			else:
-				self.translation = None
+			t = gettext.translation(self._domain)
+			newval = t.ugettext(self.__orig_str)
+			self._translations[lang] = newval
 		except IOError, e:
 			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
-									'no translation for %s (%s)' % ( namespace, str( e ) ) )
-			self.translation = None
+									'no translation for %s (%s)' % ( lang, str( e ) ) )
+			newval = self.__orig_str
+		except:
+			newval = self.__orig_str
+		return newval
+	def __repr__ (self):
+		return self.__str__ ()
+
+class translation:
+	def __init__( self, namespace ):
+		self.domain = namespace.replace( '/', '-' ).replace( '.', '-' )
 
 	def translate( self, message ):
-		if self.translation:
-			return self.translation.ugettext( message )
-		else:
-			return message
+		t = LazyTranslation (message)
+		t._domain = self.domain
+		return t
+
