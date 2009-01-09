@@ -28,16 +28,41 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import locale
 import gettext
 import sys
+import univention.debug
 
+class LazyTranslation (str):
+	'''
+	NOTE this class exists in univention-directory-manager local.py
+	and univention-direcotry-manager-modules localization.py
+	'''
+	def __init__ (self, string):
+		self._domain = None
+		self.__orig_str = string
+		self._translations = {}
+		super (str, self).__init__ (self.__orig_str)
+	def __str__ (self):
+		lang = locale.getlocale( locale.LC_MESSAGES )
+		if self._translations.has_key (lang):
+			return self._translations[lang]
+		try:
+			t = gettext.translation(self._domain)
+			newval = t.ugettext(self.__orig_str)
+			self._translations[lang] = newval
+		except IOError, e:
+			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
+									'no translation for %s (%s)' % ( lang, str( e ) ) )
+			newval = self.__orig_str
+		except:
+			newval = self.__orig_str
+		return newval
+	def __repr__ (self):
+		return self.__str__ ()
 
 def _(val):
-    try:
-        translationdomain="univention-directory-manager-webfrontend"
-        translation=gettext.translation(translationdomain)
-        newval = translation.ugettext(val)
-    except:
-        newval=val
-    return newval
+	t = LazyTranslation (val)
+	t._domain = "univention-directory-manager-webfrontend"
+	return t
 
