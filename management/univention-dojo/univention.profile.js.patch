@@ -1,0 +1,46 @@
+Index: util/buildscripts/profiles/univention.profile.js
+===================================================================
+--- util/buildscripts/profiles/univention.profile.js	(.../customers/0009_sfb-reservierung/univention-dojo/dojo-release-1.1.1-src)	(Revision 0)
++++ util/buildscripts/profiles/univention.profile.js	(.../ucs/management/univention-dojo/dojo-release-1.1.1-src)	(Revision 8007)
+@@ -0,0 +1,41 @@
++dependencies = {
++	layers: [
++		{
++			name: "../dijit/dijit.js",
++			dependencies: [
++				"dijit.dijit"
++			]
++		},
++		{
++			name: "../dijit/dijit-all.js",
++			layerDependencies: [
++				"../dijit/dijit.js"
++			],
++			dependencies: [
++				"dijit.dijit-all"
++			]
++		},
++		{
++			name: "../dojox/off/offline.js",
++			layerDependencies: [
++			],
++			dependencies: [
++				"dojox.off.offline"
++			]
++		},
++		{
++			name: "../unijit/unijit.js", // copyrightFile: "../unijit/Copyright",
++			layerDependencies: [
++			],
++			dependencies: [
++				"unijit.form.DateWidget" // "dojo.cldr.nls.gregorian"
++			]
++		}
++	],
++
++	prefixes: [
++		[ "dijit", "../dijit" ],
++		[ "dojox", "../dojox" ],
++		[ "unijit", "../../unijit" ]
++	]
++}

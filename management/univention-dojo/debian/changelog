@@ -1,3 +1,10 @@
+univention-dojo (2.0.1-1) unstable; urgency=low
+
+  * update to dojo 1.2.3, Bug #13034
+  * use the tar archive for the build
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sat, 10 Jan 2009 13:37:51 +0100
+
 univention-dojo (2.0.0-1) unstable; urgency=low
 
   * build for UCS 2.2. Bug #12849

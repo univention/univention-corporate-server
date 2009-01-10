@@ -34,6 +34,7 @@ copyrightyear=`date +%Y`
 PACKAGE_NAME=univention-dojo
 D=$(CURDIR)/debian/${PACKAGE_NAME}
 INSTDIR=/usr/share/${PACKAGE_NAME}
+DOJO_VERSION=1.2.3
 
 configure: configure-stamp
 configure-stamp:
@@ -59,8 +60,10 @@ install: build-stamp
 	dh_installdirs 
 	
 	# start the build
-	cd dojo-release-1.1.1-src/util/buildscripts; \
-	./build.sh profile=univention action=release version='1.1.1' releaseDir=${D}${INSTDIR} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
+	tar xzf dojo-release-$(DOJO_VERSION)-src.tar.gz
+	cd dojo-release-${DOJO_VERSION}-src/util/buildscripts; \
+	patch -p2 <../../../univention.profile.js.patch; \
+	./build.sh profile=univention action=release releaseDir=${D}${INSTDIR} version=${DOJO_VERSION} releaseName='' localeList="de-de,en-us" optimize=shrinksafe layerOptimize=shrinksafe
 	# provide link
 
 binary-indep: build install
