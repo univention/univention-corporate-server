@@ -1150,6 +1150,8 @@ class content:
 		else:
 			if self.cmdline.has_key('mode') and self.cmdline['mode'] == 'setup':
 				text=_('F12-Accept changes')
+			elif self.cmdline.has_key('mode') and self.cmdline['mode'] == 'final screen':
+				text=_('F12-To reboot')
 			elif self.cmdline.has_key('recover') and self.cmdline['recover']:
 				text=_('F12-Start Recover Shell')
 			else:

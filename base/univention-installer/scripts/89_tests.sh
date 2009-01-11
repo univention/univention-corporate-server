@@ -31,7 +31,8 @@
 . /tmp/installation_profile
 
 instmnt="/instmnt"
-log="/instmnt/var/log/univention/installation.log"
+log="/tmp/installation_error.log"
+
 
 test_retval () {
 
@@ -42,43 +43,21 @@ test_retval () {
 		return 0
 	fi
 
-	echo "installation error: $msg" >> $log
-	echo "system reboot" >> $log
-
-	clear
-
-
-	echo ""
-	echo "******************************************************************"
-	echo "***   ERROR ERROR ERROR  ERROR ERROR ERROR ERROR ERROR ERROR   ***"
-	echo "***                   INSTALLATION ERROR                       ***"
-	echo "***                                                            ***"
-	echo "******************************************************************"
-	echo ""
-	echo "Error:"
-	echo $msg
-	echo ""
-	echo "The installation was not successsfully. Please try again."
-	echo ""
-
-	if [ -n "$auto_reboot" ] && [ "$auto_reboot" = "Yes" -o "$auto_reboot" = "yes" -o "$auto_reboot" = "True" -o "$auto_reboot" = "true" ]; then
-		reboot
-	else
-	        echo "Please press enter to reboot the system"
-        	read foobar
-		reboot
-	fi
+	echo "Installation error: " >> $log
+	echo -e "$msg" >> $log
+	echo "Installation error: "
+	echo -e "$msg"
 }
 
 # is instmnt mounted
 mount | grep $instmnt >/dev/null 
-test_retval $? "Something wrong with the installation root, it is not mounted."
+test_retval $? "Something wrong with the installation root,\nit is not mounted."
 
 # chroot
 chroot $instmnt << __EOF__
 exit
 __EOF__
-test_retval $? "could not chroot to $instmnt"
+test_retval $? "Could not chroot to $instmnt."
 
 # packages
 chroot $instmnt << __EOF__
@@ -87,16 +66,16 @@ for i in $packages; do
 	dpkg -l \$i | grep "^ii[[:space:]]*\$i" >/dev/null || exit 1
 done
 __EOF__
-test_retval $? "not all software packages were correctly installed"
+test_retval $? "Not all software packages were correctly installed."
 
 # Administrator
 chroot $instmnt << __EOF__
 id Administrator >/dev/null || exit 1
 __EOF__
-test_retval $? "user Administrator was not created"
+test_retval $? "User Administrator was not created."
 
 # Administrator in admin group
 chroot $instmnt << __EOF__
 getent group | grep "Domain Admins" | grep Administrator >/dev/null || exit 1
 __EOF__
-test_retval $? "user Administrator is not member of \"Domain Admins\" group"
+test_retval $? "User Administrator is not member of \"Domain Admins\" group."
