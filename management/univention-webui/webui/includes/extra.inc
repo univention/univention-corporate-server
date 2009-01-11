@@ -262,7 +262,8 @@ class question_text extends extra{
 	    }
 	  else
 	    # enable as dijit.TextBox
-	    $str .= " dojoType=\"dijit.form.TextBox\"";
+	    if (!isset($this->attribute["puretext"])) 
+	       $str .= " dojoType=\"dijit.form.TextBox\"";
 	  $str .= " type=\"text\" $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 	  if (isset($this->basket["update"])) 
 	    $str .= $this->basket["update"]."\n";
@@ -389,7 +390,10 @@ class question_secure extends extra{
 	    $str .= " class=\"text_warn\" ";
 	  else 
 	    $str .= " class=\"text\" ";
-	  $str .= "type=\"password\" dojoType=\"dijit.form.TextBox\"";
+	  if (isset($this->attribute["puretext"])) 
+	    $str .= "type=\"password\"";
+	  else
+	    $str .= "type=\"password\" dojoType=\"dijit.form.TextBox\"";
 	  $str .= " $access name=\"usrinput[".$this->byteindex."]\" value=\"".$this->basket["content"]."\"></input>\n";
 	  if (isset($this->basket["update"])) 
 	    $str .= $this->basket["update"]."\n";

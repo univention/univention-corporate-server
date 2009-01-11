@@ -1,3 +1,11 @@
+univention-management-console (1.0.0-1) unstable; urgency=low
+
+  * disable dojo for the username and password field on the login page,
+    otherwise firefox couldn't save the username and password. Bug
+    #13033
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 11 Jan 2009 13:46:07 +0100
+
 univention-management-console (0.9.1012-2) unstable; urgency=low
 
   * updated translation. Bug #13011

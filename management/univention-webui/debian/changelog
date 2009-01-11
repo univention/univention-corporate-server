@@ -1,3 +1,11 @@
+univention-webui (2.0.1-1) stable; urgency=low
+
+  * disable dojo for the username and password field on the login page,
+    otherwise firefox couldn't save the username and password. Bug
+    #13033
+
+ -- Stefan Gohmann <gohmann@univention.de>  Sun, 11 Jan 2009 13:43:36 +0100
+
 univention-webui (2.0.0-2) stable; urgency=low
 
   * added a language selector widget. Bug #13011
