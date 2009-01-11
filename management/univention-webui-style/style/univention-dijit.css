@@ -233,10 +233,6 @@ font-size: 11px;
 .dijitArrowButtonInner {
 height:17px;
 }
-.dijitArrowButton,
-.dijitArrowButtonInner {
-width:12px !important;
-}
 
 .dijitTextBox input, .dijitComboBox input, .dijitSpinner input {
 font-size: 11px;
