@@ -126,13 +126,13 @@ class modconsole(unimodule.unimodule):
 				]
 		self.chooselang=language_dojo_select(_("Language:"),{'width':'265'},{"helptext":_("Choose language for this session"),"choicelist":langs})
 
-		self.usernamein=question_text(_("Username"),{'width':'255','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
+		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your uid.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("Abort Login")})
 		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
-			self.passwdin=question_secure(_("Password"),{'width':'255','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
 			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
 		else:
-			self.passwdin=question_secure(_("Password"),{'width':'255','passive':'true','puretext': '1'},
+			self.passwdin=question_secure(_("Password"),{'width':'265','passive':'true','puretext': '1'},
 						{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
 			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
 
@@ -148,7 +148,7 @@ class modconsole(unimodule.unimodule):
 			if self.save.get("http") == 1:
 				sel = "selected"
 			self.httpbut = button('httpbut',{},{"helptext":_("")})
-			self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {'width':'255'},
+			self.httpbool= question_bool(   _("Not using a secure SSL connection. Click to continue."), {'width':'265'},
 							{'helptext': _("Not using a secure SSL connection. Click to continue."),'button':self.httpbut,'usertext':sel})
 			use_httpbool=tablecol("",{'colspan':'2','type':'login_layout'},{"obs":[self.httpbool]})
 			rows.append(tablerow("",{},{"obs":[use_httpbool]}))
