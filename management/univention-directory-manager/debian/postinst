@@ -139,8 +139,11 @@ for i in \
 	shares/share \
 	users/user
 do
-	univention-config-registry set udm/modules/${i}/search/default?name
+	 VARIABLES="${VARIABLES} udm/modules/${i}/search/default?name"
 done
+if [ -n "${VARIABLES}" ]; then
+	univention-config-registry set ${VARIABLES}
+fi
 
 for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then

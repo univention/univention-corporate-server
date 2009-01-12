@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-3) unstable; urgency=low
+
+  * improved speed in setting UCR variables. Bug #3363
+  * fixed broken search command for modwizard and modbrowse. Bug #3363
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 12 Jan 2009 16:07:36 +0100
+
 univention-directory-manager (6.0.1-2) unstable; urgency=low
 
   * set default search property for almost all modules. Bug #3363

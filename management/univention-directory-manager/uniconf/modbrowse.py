@@ -385,10 +385,9 @@ class modbrowse(unimodule.unimodule):
 
 			if search_property_name != '*':
 				search_property=search_module.property_descriptions[search_property_name]
-				if tmp_search_property_name == '':
+				search_value=self.save.get('browse_search_value')
+				if tmp_search_property_name == '' and not search_value:
 					search_value = '*'
-				else:
-					search_value=self.save.get('browse_search_value')
 				self.search_input=question_property('',{},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 			else:
 				search_value='*'
