@@ -1,3 +1,9 @@
+univention-webui (2.0.1-2) stable; urgency=low
+
+  * logout leads back to the login screen. Bug #11141
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 12 Jan 2009 16:31:19 +0100
+
 univention-webui (2.0.1-1) stable; urgency=low
 
   * disable dojo for the username and password field on the login page,
