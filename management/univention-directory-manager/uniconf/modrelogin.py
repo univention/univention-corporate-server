@@ -100,13 +100,13 @@ class modrelogin(unimodule.unimodule):
 		self.subobjs.append(self.nbook)
                 
 		# input fields:
-		self.usernamein=question_text(_("Username"),{'width':'255','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
+		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
 		if int(os.environ["HTTPS"]) == 1 or self.save.get("http") == 1:
-			self.passwdin=question_secure(_("Password"),{'width':'255','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
+			self.passwdin=question_secure(_("Password"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
 			self.okbut=button(_("OK"),{'icon':'/style/ok.gif'},{"helptext":_("Login")})
 		else:
-			self.passwdin=question_secure(_("Password"),{'width':'255','passive':'true','puretext': '1'},
+			self.passwdin=question_secure(_("Password"),{'width':'265','passive':'true','puretext': '1'},
 							{"usertext":self.save.get("relogin_passwd"),"helptext":_("please enter your password.")})
 			self.okbut=button(_("OK"),{'passive':'true','icon':'/style/ok.gif'},{"helptext":_("Login")})
 

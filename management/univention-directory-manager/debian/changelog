@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-1) unstable; urgency=low
+
+  * adjust the width for the non dojo widgets on the login page. Bug
+    #13033
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jan 2009 15:07:34 +0100
+
 univention-directory-manager (6.0.0-2) unstable; urgency=low
 
   * made default search property configureable via UCR variables:
