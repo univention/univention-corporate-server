@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.20-6) unstable; urgency=low
+
+  * user and group fields can be excluded from the search via UCR
+    variables udm/modules/MODULE/properties/FIELD/dontsearch. Bug #12876
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 12 Jan 2009 11:38:18 +0100
+
 univention-directory-manager-modules (3.0.20-5) unstable; urgency=low
 
   * the user's firstname can be changed to a required ingredient via UCR

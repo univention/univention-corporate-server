@@ -1047,7 +1047,7 @@ for key, value in mungeddial.properties.items():
 	property_descriptions[ key ] = value
 
 # overwrite properties by UCR variables
-ucr_properties = ['required']
+ucr_properties = ['required', 'dontsearch']
 univention.admin.ucr_overwrite_properties (module, ucr_properties, property_descriptions)
 
 default_property_descriptions=copy.deepcopy(property_descriptions) # for later reset of descriptions

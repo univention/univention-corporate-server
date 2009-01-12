@@ -29,6 +29,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import sys, string, copy, re
+import univention.admin
 import univention.admin.filter
 import univention.admin.handlers
 import univention.admin.allocators
@@ -171,6 +172,10 @@ property_descriptions={
 			identifies=0
 		)
 }
+
+# overwrite properties by UCR variables
+ucr_properties = ['dontsearch']
+univention.admin.ucr_overwrite_properties (module, ucr_properties, property_descriptions)
 
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[
