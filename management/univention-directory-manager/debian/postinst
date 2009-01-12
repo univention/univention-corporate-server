@@ -71,6 +71,77 @@ univention-config-registry set ssl/validity/check?yes
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
 univention-config-registry set directory/reports/cleanup/age?43200
 
+# default search
+univention-config-registry set udm/modules/users/user/search/default?firstname
+univention-config-registry set udm/modules/dhcp/service/search/default?service
+
+for i in \
+	computers/computer \
+	computers/domaincontroller_backup \
+	computers/domaincontroller_master \
+	computers/domaincontroller_slave \
+	computers/ipmanagedclient \
+	computers/macos \
+	computers/managedclient \
+	computers/memberserver \
+	computers/mobileclient \
+	computers/thinclient \
+	computers/trustaccount \
+	computers/windows \
+	dhcp/dhcp \
+	dns/dns \
+	groups/group \
+	mail/domain \
+	mail/folder \
+	mail/lists \
+	mail/mail \
+	nagios/service \
+	networks/network \
+	policies/admin_container \
+	policies/admin_user \
+	policies/autostart \
+	policies/clientdevices \
+	policies/console_access \
+	policies/desktop \
+	policies/dhcp_boot \
+	policies/dhcp_dns \
+	policies/dhcp_dnsupdate \
+	policies/dhcp_leasetime \
+	policies/dhcp_netbios \
+	policies/dhcp_routing \
+	policies/dhcp_scope \
+	policies/dhcp_statements \
+	policies/ldapserver \
+	policies/mailquota \
+	policies/maintenance \
+	policies/managedclientpackages \
+	policies/masterpackages \
+	policies/memberpackages \
+	policies/mobileclientpackages \
+	policies/nfsmounts \
+	policies/policy \
+	policies/print_quota \
+	policies/printserver \
+	policies/pwhistory \
+	policies/registry \
+	policies/release \
+	policies/repositoryserver \
+	policies/repositorysync \
+	policies/share_userquota \
+	policies/slavepackages \
+	policies/sound \
+	policies/thinclient \
+	policies/windowsinstallation \
+	policies/xfree \
+	shares/print \
+	shares/printer \
+	shares/printergroup \
+	shares/share \
+	users/user
+do
+	univention-config-registry set udm/modules/${i}/search/default?name
+done
+
 for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then
 		rm -r $path

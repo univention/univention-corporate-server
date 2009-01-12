@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-2) unstable; urgency=low
+
+  * set default search property for almost all modules. Bug #3363
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 12 Jan 2009 15:50:49 +0100
+
 univention-directory-manager (6.0.1-1) unstable; urgency=low
 
   * adjust the width for the non dojo widgets on the login page. Bug
