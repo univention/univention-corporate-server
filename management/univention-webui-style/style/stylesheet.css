@@ -330,7 +330,7 @@ height:22px;
 /* ################# Cols  ################# */
 td,
 th {
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial, Helvetica, sans-serif !important;
 font-size:10px;
 color:#666666;
 }
@@ -958,7 +958,7 @@ padding-left:7px;
 input,
 select,
 textarea{
-font-family:Arial, Helvetica, sans-serif;
+font-family:Arial, Helvetica, sans-serif !important;
 font-size:11px;
 font-style:normal;
 font-weight:bold;
@@ -1083,7 +1083,7 @@ text-align:center;
 .longtext_warn,
 .mselect,
 .mselect_warn{
-padding:3px 0 0 8px;
+padding:3px 0 0 3px;
 }
 
 /* ################################## */

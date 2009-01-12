@@ -223,16 +223,23 @@ width:15px;
 
 /* FormFill  */
 
-.dijitReset {
+.dijitReset input {
 font-size: 11px;
+font-weight:bold;
 }
 
 .dijitComboBox,
 .dijitValidationIcon,
 .dijitArrowButton,
-.dijitArrowButtonInner {
-height:17px;
+.dijitArrowButtonInner input{
+height:16px;
+padding-bottom: 1px;
 }
+
+.dijitComboBox input {
+padding-left: 3px;
+}
+
 
 .dijitTextBox input, .dijitComboBox input, .dijitSpinner input {
 font-size: 11px;
@@ -245,8 +252,20 @@ font-size: 11px;
 background:#FFFFFF;
 border:1px solid #B3B3B3;
 line-height:normal;
+font-weight:bold;
+font-size: 11px;
+border-width:0 0 1px 1px;
 }
 
+.tundra .dijitLeft input {
+font-weight:bold;
+}
+
+/*
+.text input {
+font-weight:bold;
+}
+*/
 /* drop-downs need a different padding then textboxes */
 /* this should be checked with other browsers than firefox */
 .select .dijitInputField {

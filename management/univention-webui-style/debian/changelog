@@ -1,3 +1,9 @@
+univention-webui-style (3.0.2-1) unstable; urgency=low
+
+  * fixed more css settings for the dojo update. Bug #13034
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 12 Jan 2009 15:13:29 +0100
+
 univention-webui-style (3.0.1-1) unstable; urgency=low
 
   * fixed some css settings for the dojo update. Bug #13034
