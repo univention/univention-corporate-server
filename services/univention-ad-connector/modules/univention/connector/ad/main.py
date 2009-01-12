@@ -214,6 +214,8 @@ def main():
 	while True:
 		try:
 			connect()
+		except SystemExit:
+			raise
 		except:
 			f=open('/var/log/univention/connector-status.log', 'w+')
 			sys.stdout=f

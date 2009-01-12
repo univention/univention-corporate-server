@@ -1,3 +1,9 @@
+univention-ad-connector (2.0.3-2) unstable; urgency=low
+
+  * don't catch SystemExit Exceptions in main.py
+
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 12 Jan 2009 07:57:55 +0100
+
 univention-ad-connector (2.0.3-1) unstable; urgency=low
 
   * don't catch SystemExit Exceptions
