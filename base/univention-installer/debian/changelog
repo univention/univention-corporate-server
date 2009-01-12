@@ -1,3 +1,9 @@
+univention-installer (3.0.0-9) unstable; urgency=low
+
+  * univention-installer fix to run completemsg.sh correctly (Bug: #12190)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 12 Jan 2009 16:39:02 +0100
+
 univention-installer (3.0.0-8) unstable; urgency=low
 
   * added installer module to debian rules (Bug: #12190)
