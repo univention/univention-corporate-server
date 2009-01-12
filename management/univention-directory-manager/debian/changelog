@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.0-2) unstable; urgency=low
+
+  * made default search property configureable via UCR variables:
+    udm/modules/MODULE/search/default=PROPERTY. Bug #3363
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 12 Jan 2009 14:25:09 +0100
+
 univention-directory-manager (6.0.0-1) unstable; urgency=low
 
   * disable dojo for the username and password field on the login page,

@@ -40,11 +40,15 @@ import univention.admin.modules
 import univention.admin.objects
 import univention.admin.syntax
 import univention.admin.uexceptions
+import univention.config_registry
 
 import string, ldap, copy, types, codecs, traceback
 import base64, tempfile, re, operator
 
 from M2Crypto import X509
+
+ucr = univention.config_registry.ConfigRegistry()
+ucr.load()
 
 co=None
 
@@ -3885,11 +3889,25 @@ class modedit(unimodule.unimodule):
 
 						search_module=univention.admin.modules.get( module_name )
 						search_property_name=self.save.get('membership_search_property'+name)
+						tmp_search_property_name = search_property_name
 						filter=None
 						valid=1
 						if not search_module.property_descriptions.has_key(search_property_name):
 							if not search_property_name=="*":
 								search_property_name="_"
+
+						default_search_property = ucr.get ('udm/modules/%s/search/default' % (search_module.module, ), None)
+						for pname, pproperty in search_module.property_descriptions.items():
+							if not (hasattr(pproperty, 'dontsearch') and pproperty.dontsearch==1):
+								if search_property_name in ('*', '_') \
+										and default_search_property != None\
+										and default_search_property == pname:
+									if tmp_search_property_name != search_property_name:
+										search_property_name = pname
+										univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, \
+												"default search: set to '%s' from UCR variable %s" % \
+												(pname, 'udm/modules/%s/search/default' % (search_module.module, )))
+
 						if not search_property_name=="*":
 							membership_search_value=self.save.get("membership_search_value"+name)
 							if not membership_search_value:

@@ -891,15 +891,25 @@ class modwizard(unimodule.unimodule):
 			searchcols.append(tablecol("",{'type':'wizard_layout'},{"obs":[self.child_module_select]}))
 
 		search_property_name=self.save.get('wizard_search_property')
+		tmp_search_property_name = search_property_name
 		if not search_module.property_descriptions.has_key(search_property_name):
 			search_property_name='*'
 
 		search_properties=[]
 		search_properties.append({'name': '*', 'description': _('any')})
 
+		default_search_property = ucr.get ('udm/modules/%s/search/default' % (search_module.module, ), None)
 		for name, property in search_module.property_descriptions.items():
 			if not (hasattr(property, 'dontsearch') and property.dontsearch==1):
 				search_properties.append({'name': name, 'description':property.short_description})
+				if search_property_name == '*' \
+						and default_search_property != None\
+						and default_search_property == name:
+					if tmp_search_property_name != search_property_name:
+						search_property_name = name
+						univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, \
+								"default search: set to '%s' from UCR variable %s" % \
+								(name, 'udm/modules/%s/search/default' % (search_module.module, )))
 
 		search_properties.sort()
 
@@ -909,7 +919,10 @@ class modwizard(unimodule.unimodule):
 
 		if search_property_name != '*':
 			search_property=search_module.property_descriptions[search_property_name]
-			search_value=self.save.get('wizard_search_value')
+			if tmp_search_property_name == '':
+				search_value = '*'
+			else:
+				search_value=self.save.get('wizard_search_value')
 			self.search_input=question_property('',{'width':'200'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 		else:
 			search_value='*'
