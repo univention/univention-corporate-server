@@ -75,6 +75,7 @@ install: build
 	install -m 640 installer/modules/60_software.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/70_system_settings.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/95_overview.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/final_screen.py ${DD}/lib/univention-installer/modules/
 
 
 	install -m 640 installer/modules/kernel-2.4 ${DD}/lib/univention-installer/modules/

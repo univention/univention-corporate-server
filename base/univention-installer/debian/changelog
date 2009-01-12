@@ -1,3 +1,9 @@
+univention-installer (3.0.0-8) unstable; urgency=low
+
+  * added installer module to debian rules (Bug: #12190)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 12 Jan 2009 09:14:38 +0100
+
 univention-installer (3.0.0-7) unstable; urgency=low
 
   * graphical status screen at the end of the installation (Bug: #12190)
