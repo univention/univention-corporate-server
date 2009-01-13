@@ -1,3 +1,9 @@
+univention-mail-postfix-kolab2 (1.0.6-3) unstable; urgency=low
+
+  * version bump for customer prerelease build (for Ticket#: 2009011210000048)
+
+ -- Arvid Requate <requate@univention.de>  Tue, 13 Jan 2009 09:58:06 +0100
+
 univention-mail-postfix-kolab2 (1.0.6-2) unstable; urgency=low
 
   * added missing UCRV description (Bug #10275)
