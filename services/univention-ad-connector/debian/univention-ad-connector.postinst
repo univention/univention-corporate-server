@@ -58,8 +58,21 @@ fi
 /etc/init.d/univention-ad-connector crestart || true
 /etc/init.d/univention-directory-listener crestart || true
 
+eval $(univention-baseconfig shell server/role)
+if [ "$server_role" = "domaincontroller_master" ] || [ "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/42univention-ad-connector.inst || true
+fi
+
 #DEBHELPER#
+
+if [ -x /etc/init.d/univention-management-console-server ]; then
+	/etc/init.d/univention-management-console-server crestart
+fi
 
 if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.3-11; then
     test -f "/var/cache/univention-config/cache" && rm -f "/var/cache/univention-config/cache"
+fi
+
+if [ -x /etc/init.d/apache2 ]; then
+	/etc/init.d/apache2 restart
 fi

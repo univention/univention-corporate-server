@@ -77,6 +77,7 @@ install-ext-%:
 	install -m 0644 modules/univention/connector/ad/mapping.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
 	install -m 0644 modules/univention/connector/ad/password.py debian/python-univention-connector-ad/usr/lib/python$*/site-packages/univention/connector/ad/
 
+	# AD Connector Listener Module
 	install -m 0644 ad-connector.py $(AD_TOOLS_DEST)/usr/lib/univention-directory-listener/system
 
 	#baseconfig metainfo
@@ -87,6 +88,17 @@ install-ext-%:
 
 	# exchange extension
 	install -m644  files/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema $(EXCHANGE_DEST)/usr/share/univention-ad-connector/schema/univention-ad-connector-exchange.schema
+
+	# join script
+	install -m 0755 42univention-ad-connector.inst debian/univention-ad-connector/usr/lib/univention-install/
+
+	# apache config
+	install -m 0644 apache2.conf debian/univention-ad-connector/etc/apache2/conf.d/univention-ad-connector
+
+    # install UMC module
+	make PACKAGE=python-univention-connector-ad install-modules
+	make PACKAGE=python-univention-connector-ad install-locales-backend
+	make PACKAGE=python-univention-connector-ad install-images
 
 	univention-install-config-registry
 	univention-install-config-registry-info
