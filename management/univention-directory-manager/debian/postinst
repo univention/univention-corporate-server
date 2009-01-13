@@ -72,7 +72,7 @@ univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
 univention-config-registry set directory/reports/cleanup/age?43200
 
 # default search
-univention-config-registry set udm/modules/users/user/search/default?firstname
+univention-config-registry set udm/modules/users/user/search/default?username
 univention-config-registry set udm/modules/dhcp/service/search/default?service
 
 for i in \
