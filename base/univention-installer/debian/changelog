@@ -1,3 +1,9 @@
+univention-installer (3.0.0-10) unstable; urgency=low
+
+  * warning if not eth0 was found in network module (Bug: #12444)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed, 14 Jan 2009 10:03:27 +0100
+
 univention-installer (3.0.0-9) unstable; urgency=low
 
   * univention-installer fix to run completemsg.sh correctly (Bug: #12190)

@@ -1771,15 +1771,33 @@ msgstr "Bootloader"
 msgid "Following value is invalid: "
 msgstr "Die folgende Eingabe ist ungültig: "
 
-#: installer/modules/20_net.py:801
-msgid ""
-"Could not find any network card. \n"
-" If a network is installed please try to load additional kernel modules to "
-"activate the network card."
-msgstr ""
-"Es wurde keine Netzwerkkarte gefunden. \n"
-"Versuchen Sie andere Kernel Module zu laden um die Karte \n"
-"zu aktivierenf (falls eine Karte installiert ist)"
+#: installer/modules/20_net.py:406
+msgid "Warning:"
+msgstr "Achtung:"
+
+#: installer/modules/20_net.py:407
+msgid "Could not find any network card."
+msgstr "Es wurde keine Netzwerkkarte gefunden."
+
+#: installer/modules/20_net.py:408
+msgid "The Installation will probably fail."
+msgstr "Die Installation wird nicht gelingen."
+
+#: installer/modules/20_net.py:409
+msgid "You better check your network card."
+msgstr "Bitte installieren Sie eine Netzwerkkarte."
+
+#: installer/modules/20_net.py:410
+msgid "If a network is installed please try"
+msgstr "Sollte eine Netzwerkkarte installiert sein,"
+
+#: installer/modules/20_net.py:411
+msgid "to load additional kernel modules at"
+msgstr "versuchen Sie die entsprechnede Kernel Module"
+
+#: installer/modules/20_net.py:412
+msgid "the beginning of the installation."
+msgstr "zu Begin der Installation einzubinden."
 
 #: installer/modules/20_net.py:147 installer/modules/20_net.py:368
 #: installer/modules/20_net.py:472

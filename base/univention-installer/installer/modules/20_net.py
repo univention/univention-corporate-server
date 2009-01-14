@@ -401,9 +401,20 @@ class object(content):
 				if self.interfaces[i][0].startswith('eth'):
 					init=0
 			if init:
-				self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)
-				self.sub.draw()
-
+				if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
+					self.debug("NETWORK:could not find eth0")
+					msglist=[_('Warning:'),
+						_('Could not find any network card.'),
+						_('The Installation will probably fail.'),
+						_('You better check your network card.'),
+						_('If a network is installed please try'),
+						_('to load additional kernel modules at'),
+						_('the beginning of the installation.')]
+					self.sub=msg_win(self, self.pos_y+4, self.pos_x+4, self.width-6, self.height-13, msglist)
+					self.sub.draw()
+				else:
+					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)
+					self.sub.draw()
 
 	def input(self,key):
 		if hasattr(self,"sub"):
@@ -796,11 +807,6 @@ class object(content):
 				return 0
 
 		def input(self,key):
-                        if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
-                                self.parent.debug("NETWORK:could not find eth0")
-                                self.warn=warning(_('Could not find any network card. \n If a network is installed please try to load additional kernel modules to activate the network card.'),self.pos_y+25,self.pos_x+90)
-                                self.warn.draw()
-                                return 1
 			if hasattr(self,'warn'):
 				if not self.warn.key_event(key):
 					delattr(self,"warn")
