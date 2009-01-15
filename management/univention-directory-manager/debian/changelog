@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-8) unstable; urgency=low
+
+  * increased default timeout to 15 minutes. Bug #11343
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 15:52:08 +0100
+
 univention-directory-manager (6.0.1-7) unstable; urgency=low
 
   * user input is saved and restored on selecting another domain or path. Bug #10277

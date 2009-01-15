@@ -38,9 +38,9 @@ if baseConfig.has_key('directory/manager/timeout'):
         try:
                 time = int(baseConfig['directory/manager/timeout'])
         except:
-                time = 300
+                time = 900
 else:
-        time = 300
+        time = 900
 
 if time  > 2147483647:
         timeout='-t 2147483647 '
