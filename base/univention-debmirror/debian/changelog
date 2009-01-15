@@ -1,3 +1,11 @@
+univention-debmirror (2.0.0-1) unstable; urgency=low
+
+  * add new repository structure
+  * add configuration for apt-mirror
+  * add script to update local repository
+
+ -- Andreas Büsching <buesching@univention.de>  Fri,  9 Jan 2009 15:20:12 +0100
+
 univention-debmirror (1.0.2-1) unstable; urgency=low
 
   * add version number to join script

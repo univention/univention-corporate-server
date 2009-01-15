@@ -1,0 +1,8 @@
+@%@BCWARNING=#@%@
+
+alias /univention-repository @%@repository/mirror/basepath@%@/mirror
+
+<Location @%@repository/mirror/basepath@%@/mirror>
+	order allow,deny
+	allow from all
+</Location>

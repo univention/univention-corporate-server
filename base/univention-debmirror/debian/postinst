@@ -3,7 +3,7 @@
 # Univention Debmirror
 #  postinst script
 #
-# Copyright (C) 2004, 2005, 2006, 2007 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,8 +30,22 @@
 
 #DEBHELPER#
 
-/usr/lib/univention-install/77univention-debmirror.inst || true
+eval $(univention-config-registry shell hostname domainname server/role repository/online/server)
 
-a2ensite univention-cdrom
+if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontroller_backup" ]; then
+	/usr/lib/univention-install/77univention-debmirror.inst || true
+fi
 
-/etc/init.d//apache2 reload || true
+if [ -z "$repository_online_server" ]; then
+	univention-config-registry set "repository/mirror/server?apt.univention.de"
+else
+	univention-config-registry set "repository/mirror/server?$repository_online_server"
+fi
+
+univention-config-registry set "repository/online/server=$hostname.$domainname"
+univention-config-registry set "repository/mirror/prefix=$repository_online_prefix"
+univention-config-registry set "repository/mirror/threads?10"
+univention-config-registry set "repository/mirror/basepath?/var/lib/univention-repository"
+
+a2ensite univention-repository
+/etc/init.d/apache2 reload || true

@@ -1,0 +1,20 @@
+Type: file
+File: etc/apache2/sites-available/univention-repository
+
+Type: file
+File: etc/apt/mirror.list
+Preinst: apt-mirror.py
+Postinst: apt-mirror.py
+Variables: version/version
+Variables: version/patchlevel
+Variables: version/security-patchlevel
+Variables: repository/online
+Variables: repository/online/server
+Variables: repository/online/port
+Variables: repository/online/maintained
+Variables: repository/online/unmaintained
+Variables: repository/online/component/.*
+Variables: repository/mirror/server
+Variables: repository/mirror/cron
+Variables: repository/mirror/basepath
+Variables: repository/mirror/threads

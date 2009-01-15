@@ -3,7 +3,7 @@
 # Univention Debmirror
 #  join script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-VERSION=1
+VERSION=2
 
 if ! test -e "/usr/share/univention-join/.joined"; then
 	echo "The server has not joined yet"
@@ -39,12 +39,14 @@ touch /usr/lib/univention-install/.index.txt
 
 test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" && exit 1
 
-eval `univention-baseconfig shell`
+eval $(univention-config-registry shell hostname domainname local/repository server/role ldap/hostdn ldap/base)
+
+univention-directory-manager container/cn create --ignore_exists $@ --position cn=univention,$ldap_base --set name=services
+univention-directory-manager settings/service create $@ --ignore_exists --position cn=services,cn=univention,$ldap_base --set name=Repository-Server
 
 if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "True" -o "$local_repository" = "yes" ]; then
-
-	/usr/share/univention-admin-tools/univention-dnsedit $@ --ignore-exists --stoptls $domainname add cname univention-repository $hostname
-
+	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists --stoptls $domainname add cname univention-repository $hostname
+	univention-directory-manager computers/$server_role modify $@ --dn $ldap_hostdn --append service="Repository-Server"
 fi
 
 test -n "`grep "univention-debmirror v${VERSION} successful" /usr/lib/univention-install/.index.txt`" || echo "univention-debmirror v${VERSION} successful" >>/usr/lib/univention-install/.index.txt

@@ -7,9 +7,9 @@ Build-Depends: debhelper, univention-config-dev
 
 Package: univention-debmirror
 Architecture: all
-Depends: univention-apache
-Description: UCS - debmirror configuration
- This package contain the debmirror configuration.
+Depends: univention-apache, apt-mirror
+Description: UCS - local repository configuration
+ This package contains the local repository configuration.
  .
  This package is part of Univention Corporate Server (UCS),
  an integrated, directory driven solution for managing

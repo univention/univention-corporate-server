@@ -1,1 +1,3 @@
 usr/lib/univention-install
+var/lib/univention-repository
+usr/sbin
