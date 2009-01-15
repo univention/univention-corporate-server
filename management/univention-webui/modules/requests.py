@@ -166,7 +166,9 @@ def genErrorMailto(messagelines):
 
 class request:
 
-	def __init__(self, save, uaccess, xmlin):
+	def __init__(self, save, uaccess, xmlin, meta={}, session=None):
+		self.meta = meta
+		self.session = session
 		self.save = save
 		self.uaccess = uaccess
 		self.xmlin = xmlin
@@ -211,7 +213,7 @@ class request:
 			else:
 				got_input = 1
 
-			self.dialog = unidialog.unidialog("",{"main":""},{"messagedir":ldir+"messages/"})
+			self.dialog = unidialog.unidialog("",{"main":""},{'req':self, "messagedir":ldir+"messages/"})
 			self.dialog.save = self.save
 			self.dialog.uaccess = self.uaccess
 			self.dialog.init(got_input, self.xmlin, self.xmlin.documentElement)
@@ -220,7 +222,7 @@ class request:
 
 			# we have to reinitialize because of changes in the structure
 			xmlout=Document()
-			self.dialog = unidialog.unidialog("",{"main":None},{"messagedir":ldir+"messages/"})
+			self.dialog = unidialog.unidialog("",{"main":None},{'req':self, "messagedir":ldir+"messages/"})
 			self.dialog.save = self.save # write back the status of the main module
 			self.dialog.uaccess = self.uaccess
 			self.dialog.init(0,xmlout,xmlout.documentElement)
@@ -346,7 +348,7 @@ class session:
 
 	# This method takes the input XML and session number as input and returns
 	# the output XML.
-	def startRequest(self, xmltext, number, ignore_ldap_connection = False, timeout = 2):
+	def startRequest(self, xmltext, number, ignore_ldap_connection = False, timeout = 2, meta={}):
 
 		if not ignore_ldap_connection and not self.uaccess:
 			return genErrorMessage(_("No connection to the LDAP server"),[_("The LDAP server could not be contacted. Please try again later.")])
@@ -372,7 +374,6 @@ class session:
 
 			# background request is running, let's see if it has finished yet
 			if self.background_request:
-
 				if dialog_type == 'waitdialog':
 					# We are done. Exit waiting dialog.
 					done = (self.background_request.result() or self.background_request.exception())
@@ -398,8 +399,7 @@ class session:
 
 			# no background request, start new request
 			if not xmlout:
-
-				req = request(self.save, self.uaccess, xmlin)
+				req = request(self.save, self.uaccess, xmlin, meta=meta, session=self)
 				req.start()
 				if self.save.get('background_request') or not req.wait(timeout = timeout):
 					self.save.put('background_request', '')

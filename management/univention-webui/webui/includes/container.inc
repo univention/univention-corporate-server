@@ -76,38 +76,7 @@ class webui_container{
 		  header("Location: index.php");
 		  break;
 		case '2':
-		  $headertext = _("Invalid credentials");
-		  $maincontent = _("Your credentials are not valid anymore.<br /><br />Please login again.");
-
-		  $htmlcontent = "<table class=\"content_header\"><tr><td>\n";
-		  $htmlcontent .= "</td></tr></table>\n";
-
-		  $htmlcontent .= "<table class=\"tabs\" summary=\"\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		  $htmlcontent .= "<tr><td class=\"notebook_spacer\"></td></tr>\n";
-		  $htmlcontent .= "    <tr><td><table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n";
-		  $htmlcontent .= "     <tr class=\"notebook\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><nobr>\n";
-		  $htmlcontent .= "<td class=\"tab_on\">\n";
-		  $htmlcontent .= "<a class=\"notebook_on\" onClick=\"sendForm(629)\" title=\"".$headertext."\">&nbsp;".$headertext."</a>\n";
-		  $htmlcontent .= "</td>\n";
-		  $htmlcontent .= "<td class=\"tab\"><img class=\"note\" src=\"style/reiter_rot18x24.gif\" alt=\"\"></td>\n";
-		  $htmlcontent .= "</nobr></tr>\n";
-		  $htmlcontent .= "    </table></td></tr><tr><td class=\"notebook_spacer\"></td></tr>\n";
-		  $htmlcontent .= "<tr class=\"notebook_pressed\">\n";
-		  $htmlcontent .= "<td class=\"notebook_pressed\">\n";
-		  $htmlcontent .= "   <table class=\"tabs\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr></tr></table>\n";
-		  $htmlcontent .= "</td></tr><tr><td class=\"notebook_spacer\"></td></tr>\n";
-		  $htmlcontent .= "</table>\n";
-
-		  $htmlcontent .= "<table class=\"content_main\"><tr><td>\n";
-		  $htmlcontent .= "  <table class=\"table_default\"><tr><td class=\"note_layout\">\n";
-		  $htmlcontent .= "  ".$maincontent."\n";
-		  $htmlcontent .= "  </td></tr><tr><td class=\"note_layout\">\n";
-		  $htmlcontent .= "  <a href=\"index.php\">"._("Login")."</a>\n";
-		  $htmlcontent .= "  </td></tr>";
-		  $htmlcontent .= "  <tr><td class=\"content_spacer\">&nbsp;</td></tr></table>\n";
-		  $htmlcontent .= "  </td></tr></table>\n";
-		  $this->content .= $htmlcontent;
-		  $this->show();
+		  header("Location: index.php?sessioninvalid=1");
 		  break;
 		}
 	}

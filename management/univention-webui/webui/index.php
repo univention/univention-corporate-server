@@ -108,6 +108,10 @@ if(!isset($logout))
 	if(isset($opts)){
 		fwrite($pipe, "opts: ".$opts."\n");
 	}
+	# send a notification when the session was caught by the timeout
+	if ($sessioninvalid == '1') {
+		fwrite($pipe, "Sessioninvalid: 1\n");
+	}
 	fwrite($pipe, "Number: -1\n\n\0");
 
 	$fp=fopen($config->session_dir.$config->number, "w");

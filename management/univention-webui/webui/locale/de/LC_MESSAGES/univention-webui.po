@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-01-06 23:21+0100\n"
+"POT-Creation-Date: 2009-01-15 11:31+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,29 +14,25 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: container.inc:39
+#: includes/container.inc:72
 msgid "Session closed"
 msgstr "Sitzung beendet"
 
-#: container.inc:40
+#: includes/container.inc:73
 msgid "Your current session has been closed."
 msgstr "Ihre aktuelle Sitzung wurde beendet."
 
-#: container.inc:45
-msgid "Invalid credentials"
-msgstr "Kennung ungültig"
+#~ msgid "Invalid credentials"
+#~ msgstr "Kennung ungültig"
 
-#: container.inc:46
-msgid ""
-"Your credentials are not valid anymore.<br /><br />Please login "
-"again."
-msgstr ""
-"Ihre aktuelle Kennung ist nicht mehr gültig.<br /><br />Bitte melden Sie "
-"sich erneut an."
+#~ msgid ""
+#~ "Your credentials are not valid anymore.<br /><br />Please login again."
+#~ msgstr ""
+#~ "Ihre aktuelle Kennung ist nicht mehr gültig.<br /><br />Bitte melden Sie "
+#~ "sich erneut an."
 
-#: container.inc:73
-msgid "Login"
-msgstr "Anmelden"
+#~ msgid "Login"
+#~ msgstr "Anmelden"
 
 #~ msgid "<br><br><a href=\"index.php\">Login</a>"
 #~ msgstr "<br><br><a href=\"index.php\">Erneut anmelden</a>"

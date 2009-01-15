@@ -1,3 +1,9 @@
+univention-webui (2.0.1-3) stable; urgency=low
+
+  * after a session timeout the user is forwared to the login screen. Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 11:33:49 +0100
+
 univention-webui (2.0.1-2) stable; urgency=low
 
   * logout leads back to the login screen. Bug #11141
