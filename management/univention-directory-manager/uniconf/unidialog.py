@@ -89,7 +89,7 @@ class unidialog(unimodule.unimodule):
 		if self.save.get("uc_module")!=None and self.save.get("uc_module")!="none" :
 			try:
 				module = __import__("mod%s"%self.save.get("uc_module"))
-				self.mod=module.create("",{},{"messagedir":ldir+"messages/","uaccess":self.uaccess,"submodule":self.save.get("uc_submodule")})#,"ldapdata":self.LDAPDATA
+				self.mod=module.create("",{},{'req':self.req, "messagedir":ldir+"messages/","uaccess":self.uaccess,"submodule":self.save.get("uc_submodule")})#,"ldapdata":self.LDAPDATA
 			except ImportError:
 				pass
 		if self.mod != None:

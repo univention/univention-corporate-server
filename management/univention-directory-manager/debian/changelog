@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-5) unstable; urgency=low
+
+  * after a session timeout the user is forwared to the login screen. Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 11:35:51 +0100
+
 univention-directory-manager (6.0.1-4) unstable; urgency=low
 
   * changed default search for users to the username. Bug #3363

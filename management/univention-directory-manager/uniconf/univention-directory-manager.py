@@ -145,10 +145,12 @@ def main(argv):
 				meta[line[:pos]] = line[pos+2:]
 
 			number = int(meta.get('Number', '-1'))
+			if number != -1 and meta.has_key ('Sessioninvalid'):
+				del meta['Sessioninvalid']
 
 			if debugging >= 2:
 				open('/tmp/xmlin', 'w').write(xmlin)
-			xmlout = session.startRequest(xmlin, number)
+			xmlout = session.startRequest(xmlin, number, meta=meta)
 			if debugging >= 2:
 				open('/tmp/xmlout', 'w').write(xmlout)
 

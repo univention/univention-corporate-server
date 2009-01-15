@@ -98,7 +98,27 @@ class modrelogin(unimodule.unimodule):
 				    )
 		self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
-                
+
+		credentials_invalid_caption = _('Session Timeout')
+		credentials_invalid = _("Your credentials are not valid anymore.")
+		sessioninvalid = ''
+		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
+				and self.req.meta['Sessioninvalid'] == '1':
+					sessioninvalid = _("""<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
+						%s
+						</h1>
+						%s""") % (credentials_invalid_caption, credentials_invalid)
+
+		description_caption = _('Increase Session Timeout')
+		description = _('The session timeout is specified by the value of the Univention Configuration Registry variable <code>directory/manager/timeout</code>. You might increase this value.')
+		login_messagebox = htmltext ('login_messagebox', {}, \
+				{'htmltext': [_("""<div style='border:1px solid black; padding:3px; margin:3px;'>
+					%s
+					<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
+					%s
+					</h1>
+					%s
+					</div>""") % (sessioninvalid, description_caption, description)]})
 		# input fields:
 		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
@@ -112,8 +132,8 @@ class modrelogin(unimodule.unimodule):
 
 		rows=[]
 
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.passwdin]})]}))
+		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'4','type':'login_layout'},{"obs":[login_messagebox]})]}))
+		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2", 'type':'login_layout'},{"obs":[self.passwdin]})]}))
 
                 #check if http should realy be used
                 if int(os.environ["HTTPS"]) != 1:
