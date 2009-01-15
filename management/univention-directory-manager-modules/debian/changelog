@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.20-8) unstable; urgency=low
+
+  * renamed UCR variables to exclude user and group from the search to:
+    directory/manager/web/modules/MODULE/properties/FIELD/dontsearch. Bug #12876
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 16:19:26 +0100
+
 univention-directory-manager-modules (3.0.20-7) unstable; urgency=low
 
   * fixed a problem with %-string-fromatting in LazyTranslation. Bug #13011
