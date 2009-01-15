@@ -3896,7 +3896,7 @@ class modedit(unimodule.unimodule):
 							if not search_property_name=="*":
 								search_property_name="_"
 
-						default_search_property = ucr.get ('udm/modules/%s/search/default' % (search_module.module, ), None)
+						default_search_property = ucr.get ('directory/manager/web/modules/%s/search/default' % (search_module.module, ), None)
 						for pname, pproperty in search_module.property_descriptions.items():
 							if not (hasattr(pproperty, 'dontsearch') and pproperty.dontsearch==1):
 								if search_property_name in ('*', '_') \
@@ -3906,7 +3906,7 @@ class modedit(unimodule.unimodule):
 										search_property_name = pname
 										univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, \
 												"default search: set to '%s' from UCR variable %s" % \
-												(pname, 'udm/modules/%s/search/default' % (search_module.module, )))
+												(pname, 'directory/manager/web/modules/%s/search/default' % (search_module.module, )))
 
 						if not search_property_name=="*":
 							membership_search_value=self.save.get("membership_search_value"+name)

@@ -364,7 +364,7 @@ class modbrowse(unimodule.unimodule):
 			search_properties=[]
 			search_properties.append({'name': '*', 'description': _('any')})
 
-			default_search_property = ucr.get ('udm/modules/%s/search/default' % (search_module.module, ), None)
+			default_search_property = ucr.get ('directory/manager/web/modules/%s/search/default' % (search_module.module, ), None)
 			for name, property in search_module.property_descriptions.items():
 				if not (hasattr(property, 'dontsearch') and property.dontsearch==1):
 					search_properties.append({'name': name, 'description': property.short_description})
@@ -375,7 +375,7 @@ class modbrowse(unimodule.unimodule):
 							search_property_name = name
 							univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, \
 									"default search: set to '%s' from UCR variable %s" % \
-									(name, 'udm/modules/%s/search/default' % (search_module.module, )))
+									(name, 'directory/manager/web/modules/%s/search/default' % (search_module.module, )))
 
 			search_properties.sort()
 

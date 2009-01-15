@@ -82,8 +82,8 @@ do
 done
 
 # default search
-univention-config-registry set udm/modules/users/user/search/default?username
-univention-config-registry set udm/modules/dhcp/service/search/default?service
+univention-config-registry set directory/manager/web/modules/users/user/search/default?username
+univention-config-registry set directory/manager/web/modules/dhcp/service/search/default?service
 
 for i in \
 	computers/computer \
@@ -149,7 +149,7 @@ for i in \
 	shares/share \
 	users/user
 do
-	 VARIABLES="${VARIABLES} udm/modules/${i}/search/default?name"
+	 VARIABLES="${VARIABLES} directory/manager/web/modules/${i}/search/default?name"
 done
 if [ -n "${VARIABLES}" ]; then
 	univention-config-registry set ${VARIABLES}
