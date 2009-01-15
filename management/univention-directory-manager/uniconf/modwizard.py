@@ -1490,6 +1490,8 @@ class modwizard(unimodule.unimodule):
 		# add/search
 		if hasattr(self, 'select_domain_button') and self.select_domain_button.pressed():
 			self.save.put('wizard_domain', self.domain_select.getselected())
+			# preserve the search value on selecting another domain
+			self.save.put('wizard_search_value', self.search_input.get_input ())
 			self.save.put('wizard_superordinate', None)
 			self.save.put('wizard_search_result', None)
 			self.save.put('wizard_selected_dns', {})
@@ -1503,7 +1505,8 @@ class modwizard(unimodule.unimodule):
 
 		if hasattr(self, 'select_path_button') and self.select_path_button.pressed():
 			self.save.put('wizard_path', self.path_select.getselected())
-			self.save.put('wizard_search_value', None)
+			# preserve the search value on selecting another path
+			self.save.put('wizard_search_value', self.search_input.get_input ())
 			self.save.put('wizard_superordinate', None)
 			self.save.put('wizard_search_result', None)
 			self.save.put('wizard_selected_dns', {})
@@ -1512,6 +1515,14 @@ class modwizard(unimodule.unimodule):
 		if hasattr(self, 'child_module_button') and self.child_module_button.pressed():
 			self.save.put('wizard_search_type', self.child_module_select.getselected())
 			self.save.put('wizard_search_value', None)
+			# Enable this to save the search for values when another child module is
+			# selected
+			# WARNING: different child modules have different property types
+			# and they probably expect different input! -
+			# i.e. any = *, Disabled = 0/1 Boolean/Int - if you enable this
+			# without any modifications the user might run into trouble because
+			# he doesn't know what kind of input is expected
+			#self.save.put('wizard_search_value', self.search_input.get_input ())
 			self.save.put('wizard_search_result', None)
 			self.save.put('wizard_selected_dns', {})
 			return
@@ -1519,6 +1530,13 @@ class modwizard(unimodule.unimodule):
 		if hasattr(self, 'search_property_button') and self.search_property_button.pressed():
 			self.save.put('wizard_search_property', self.search_property_select.getselected())
 			self.save.put('wizard_search_value', None)
+			# Enable this to save the search for values when another property type is
+			# selected
+			# WARNING: different property types have expect different input! -
+			# i.e. any = *, Disabled = 0/1 Boolean/Int - if you enable this
+			# without any modifications the user might run into trouble because
+			# he doesn't know what kind of input is expected
+			#self.save.put('wizard_search_value', self.search_input.get_input ())
 			self.save.put('wizard_search_result', None)
 			self.save.put('wizard_selected_dns', {})
 			return
