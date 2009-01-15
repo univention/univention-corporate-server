@@ -81,6 +81,9 @@ do
 	fi
 done
 
+# autosearch
+univention-config-registry set directory/manager/web/modules/autosearch?1
+
 # default search
 univention-config-registry set directory/manager/web/modules/users/user/search/default?username
 univention-config-registry set directory/manager/web/modules/dhcp/service/search/default?service

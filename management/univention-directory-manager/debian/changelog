@@ -1,3 +1,12 @@
+univention-directory-manager (6.0.1-10) unstable; urgency=low
+
+  * made automatic search in the Univention Directory Manager web frontend
+    configurable via Univention Configuration Registry variables:
+    directory/manager/web/modules/autosearch and
+    directory/manager/web/modules/MODULE/search/auto. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 17:05:37 +0100
+
 univention-directory-manager (6.0.1-9) unstable; urgency=low
 
   * renamed default search property UCR variables to:

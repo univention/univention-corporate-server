@@ -974,8 +974,24 @@ class modwizard(unimodule.unimodule):
 		# display search results if any
 		###########################################################################
 
+		# display default search results
+		_off = ('0', 'false', 'off')
+		_on = ('1', 'true', 'on')
+		autosearch = True
+		if ucr.get ('directory/manager/web/modules/autosearch', '0').lower () in _on:
+			# default value MUST be 1 because autosearch is already switched on
+			# and it will be turned off only when there IS a value set for
+			# autosearch AND it IS in _off
+			if ucr.get ('directory/manager/web/modules/%s/search/auto' % search_module.module, '1').lower () in _off:
+				autosearch = False
+		else:
+			if ucr.get ('directory/manager/web/modules/%s/search/auto' % search_module.module, '0').lower () in _on:
+				autosearch = True
+			else:
+				autosearch = False
+
 		nomatches=0
-		if not self.save.get('wizard_search_do'):
+		if not self.save.get('wizard_search_do') and not autosearch:
 			result_list=self.save.get('wizard_search_result')
 			if not result_list:
 				result_list=[]

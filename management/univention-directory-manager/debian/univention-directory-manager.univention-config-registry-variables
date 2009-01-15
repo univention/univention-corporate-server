@@ -34,3 +34,9 @@ Description[en]=Language of the commandline Univention Directory Manager
 Type=str
 Categories=Management
 
+[directory/manager/web/modules/autosearch]
+Description[de]=Automatische Suche im Univention Directory Manager-Webfrontend
+Description[en]=Automatic search for the Univention Directory Manager-Web-frontend
+Type=str
+Categories=Management
+
