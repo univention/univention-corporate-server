@@ -1,3 +1,9 @@
+univention-management-console (1.0.1-2) unstable; urgency=low
+
+  * fixed a problem with %-string-fromatting in LazyTranslation. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Thu, 15 Jan 2009 12:14:56 +0100
+
 univention-management-console (1.0.1-1) unstable; urgency=low
 
   * adjust the width for the non dojo widgets on the login page. Bug
