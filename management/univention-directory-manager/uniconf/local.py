@@ -43,19 +43,22 @@ class LazyTranslation (str):
 		self.__orig_str = str (string)
 		self._translations = {}
 		super (str, self).__init__ (self.__orig_str)
+	def __mod__ (self, y):
+		return str(self) % y
+	def __rmod__ (self, x):
+		return x % str(self)
 	def __str__ (self):
 		lang = locale.getlocale( locale.LC_MESSAGES )
 		if self._translations.has_key (lang):
 			return self._translations[lang]
-		if lang and lang[0] and gettext.find (self._domain, languages=(lang[0], )):
+		if lang and lang[0] and \
+				self._domain != None and gettext.find (self._domain, languages=(lang[0], )):
 			t = gettext.translation(self._domain, languages=(lang[0], ))
 			newval = t.ugettext(self.__orig_str)
-			self._translations[lang] = newval
 		else:
-			univention.debug.debug( univention.debug.ADMIN, univention.debug.INFO,
-					"no translation for %s (%s): %s" % (self.__orig_str, lang, self._domain))
 			newval = self.__orig_str
-		return str (newval)
+		self._translations[lang] = newval
+		return newval
 	def __repr__ (self):
 		return self.__str__ ()
 
