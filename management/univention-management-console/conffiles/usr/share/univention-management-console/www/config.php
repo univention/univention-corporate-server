@@ -41,9 +41,9 @@ if baseConfig.has_key('umc/web/timeout'):
 	try:
 		time = int(baseConfig['umc/web/timeout'])
 	except:
-		time = 300
+		time = 900
 else:
-	time = 300
+	time = 900
 
 if time  > 2147483647:
 	timeout='-t 2147483647 '

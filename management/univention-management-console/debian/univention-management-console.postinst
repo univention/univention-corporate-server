@@ -23,7 +23,18 @@ test -h /usr/share/univention-management-console/www/index.php || ln -s /usr/sha
 
 test -h /var/www/univention-management-console || ln -s /usr/share/univention-management-console/www /var/www/univention-management-console
 
-univention-baseconfig set umc/web/timeout?300
+# change default timeout too 15 minutes
+defaulttimeout=$((15*60))
+timeout_variables="umc/web/timeout"
+for i in $timeout_variables
+do
+	if [ "$(univention-config-registry get $i)" = "300" ]; then
+		univention-config-registry set $i=$defaulttimeout
+	fi
+done
+
+univention-baseconfig set umc/web/timeout?$defaulttimeout
+
 if [ -n "$locale_default" ]
 then
 	univention-config-registry set "umc/web/language?$(echo $locale_default|sed -e 's|:.*||')"
