@@ -53,7 +53,7 @@ read_cmdline = False
 
 if len(sys.argv) > 1:
 
-	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=', 'final_screen']
+	longopts=['profile', 'noprobe', 'floppy', 'usb', 'loadmodules=', 'excludemodules=', 'loadmodule=', 'excludemodule=', 'nfspath=', 'nfsserver=', 'ip=', 'profile_file=', 'simple', 'cmdline', 'version=', 'edition=']
 	try:
 		opts, args=getopt.getopt(sys.argv[1:], '', longopts)
 	except getopt.error, msg:
@@ -86,8 +86,6 @@ if len(sys.argv) > 1:
 			cmdline['profile_file']=val
 		elif opt == '--version' and val:
 			cmdline['version']=val
-		elif opt == '--final_screen':
-			cmdline['final_screen'] = True
 		elif opt == '--edition' and val:
 			cmdline['edition']=[]
 			for e in val.split(','):
@@ -189,11 +187,6 @@ for file in files:
 		if temp[0].split('_')[0].isdigit():
 			modules.append(temp[0])
 	modules.sort()
-
-if cmdline.has_key("final_screen"):
-	modules=["final_screen"]
-	cmdline['lang']="en"
-	cmdline['mode']="final screen"
 
 def exit_curses():
 	stdscr.keypad(0)
@@ -379,9 +372,6 @@ class mods:
 					text = _(' F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit')
 			elif last[1]==1: # not last
 				text = _(' F1-Help | F11-Back | F12-Next | Strg+c-Exit')
-
-		if cmdline.has_key("final_screen"):
-			text="F1-Help | F12-Reboot | Strg+c-Exit"
 
 		return objects.footline(text,max_y/2+12,max_x/2-(len(text)/2))
 

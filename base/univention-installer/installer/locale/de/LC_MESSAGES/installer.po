@@ -15,6 +15,26 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
+#: installer/end.py:86
+msgid "Installation failed!"
+msgstr "Die Installation ist fehlgeschlagen!"
+
+#: installer/end.py:87
+msgid "Please restart the computer and try again."
+msgstr "Bitte starten Sie den Rechner neu."
+
+#: installer/end.py:88
+msgid "Installation Log:"
+msgstr "Installations-Protokoll:"
+
+#: installer/end.py:95
+msgid "Installation succeded!"
+msgstr "Die Installation war erfolgreich."
+
+#: installer/end.py:96
+msgid "Please restart the computer."
+msgstr "Bitte starten Sie den Rechnern neu."
+
 #: installer/main.py:198
 msgid ""
 "Press Ctrl+c to exit or any key to continue. After exiting the installer "

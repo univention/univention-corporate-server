@@ -1,3 +1,9 @@
+univention-installer (3.0.0-11) unstable; urgency=low
+
+  * new status screen at the end of the installation (Bug: #12190)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 16 Jan 2009 10:24:43 +0100
+
 univention-installer (3.0.0-10) unstable; urgency=low
 
   * warning if not eth0 was found in network module (Bug: #12444)
