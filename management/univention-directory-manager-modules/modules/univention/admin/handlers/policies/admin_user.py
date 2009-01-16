@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
+# Univention Directory Manager Modules
 #  admin policy for the user settings
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -43,8 +43,8 @@ _=translation.translate
 class adminFixedAttributes(univention.admin.syntax.select):
         name='adminFixedAttributes'
 	choices=[
-	('univentionAdminListWizards',_('List of Web-Admin Wizards')),
-	('univentionAdminListWebModules',_('List of Admin Modules')),
+	('univentionAdminListWizards',_('List of Web-Directory Manager Wizards')),
+	('univentionAdminListWebModules',_('List of Directory Manager Modules')),
 	('univentionAdminListAttributes', _( 'Show these attributes in search results' )),
 	('univentionAdminListBrowseAttributes', _( 'Show these attributes in the navigation' )),
 	('univentionAdminBaseDN',_('LDAP Base DN')),
@@ -69,8 +69,8 @@ policy_apply_to=["users/user"]
 policy_position_dn_prefix="cn=user,cn=admin"
 usewizard=1
 childs=0
-short_description=_('Policy: Univention Admin View')
-policy_short_description=_('Univention Admin View')
+short_description=_('Policy: Univention Directory Manager View')
+policy_short_description=_('Univention Directory Manager View')
 long_description=''
 options={
 }
@@ -86,7 +86,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'listWizards': univention.admin.property(
-			short_description=_('Visible Web-Admin Wizards'),
+			short_description=_('Visible Web-Directory Manager Wizards'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWizards,
 			multivalue=1,
@@ -96,7 +96,7 @@ property_descriptions={
 			identifies=0
 		),
 	'listWebModules': univention.admin.property(
-			short_description=_('Visible Admin Modules'),
+			short_description=_('Visible Directory Manager Modules'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWebModules,
 			multivalue=1,
@@ -116,8 +116,8 @@ property_descriptions={
 			identifies=0
 		),
 	'mayOverrideSettings': univention.admin.property(
-			short_description=_('Allow Personal Univention Admin Settings'),
-			long_description=_('If this option is set users can be provided with the possibility to create their own personal Univention Admin Settings'),
+			short_description=_('Allow Personal Univention Directory Manager Settings'),
+			long_description=_('If this option is set users can be provided with the possibility to create their own personal Univention Directory Manager Settings'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
@@ -298,7 +298,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('General'),_('Univention Admin Settings'), [
+	univention.admin.tab(_('General'),_('Univention Directory Manager Settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1), univention.admin.field('baseDN')],
 		[univention.admin.field('listWizards'), univention.admin.field('listWebModules')],
 		[univention.admin.field('selfAttributes'), univention.admin.field('listAttributes')],

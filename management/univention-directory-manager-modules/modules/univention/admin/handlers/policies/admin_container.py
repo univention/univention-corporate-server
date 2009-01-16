@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin Modules
+# Univention Directory Manager Modules
 #  admin module for the admin modules
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -43,7 +43,7 @@ _=translation.translate
 class adminFixedAttributes(univention.admin.syntax.select):
         name='adminFixedAttributes'
 	choices=[
-	('univentionAdminListModules',_('List of Admin Modules')),
+	('univentionAdminListModules',_('List of Directory Manager Modules')),
 	]
 
 
@@ -56,8 +56,8 @@ policy_position_dn_prefix="cn=container,cn=admin"
 
 usewizard=1
 childs=0
-short_description=_('Policy: Univention Admin Container Settings')
-policy_short_description=_('Univention Admin Container Settings')
+short_description=_('Policy: Univention Directory Manager Container Settings')
+policy_short_description=_('Univention Directory Manager Container Settings')
 long_description=''
 options={
 }
@@ -73,7 +73,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'listModules': univention.admin.property(
-			short_description=_('Available Univention Admin Modules'),
+			short_description=_('Available Univention Directory Manager Modules'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminModules,
 			multivalue=1,
@@ -124,7 +124,7 @@ property_descriptions={
 		),
 }
 layout=[
-	univention.admin.tab(_('General'),_('Univention Admin Settings'), [
+	univention.admin.tab(_('General'),_('Univention Directory Manager Settings'), [
 		[univention.admin.field('name', hide_in_resultmode=1)],
 		[univention.admin.field('listModules')],
 	]),

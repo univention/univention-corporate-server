@@ -16,16 +16,16 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: admin_container.py:46 admin_user.py:47
-msgid "List of Admin Modules"
-msgstr "Liste der Admin Module"
+msgid "List of Directory Manager Modules"
+msgstr "Liste der Directory Manager Module"
 
 #: admin_container.py:59
-msgid "Policy: Univention Admin Container Settings"
-msgstr "Richtlinie: Univention Admin Container Konfiguration"
+msgid "Policy: Univention Directory Manager Container Settings"
+msgstr "Richtlinie: Univention Directory Manager Container Konfiguration"
 
 #: admin_container.py:60
-msgid "Univention Admin Container Settings"
-msgstr "Univention Admin Container Konfiguration"
+msgid "Univention Directory Manager Container Settings"
+msgstr "Univention Directory Manager Container Konfiguration"
 
 #: admin_container.py:66 admin_user.py:79 autostart.py:64 clientdevices.py:64
 #: console_access.py:65 desktop.py:65 dhcp_boot.py:63 dhcp_dns.py:63
@@ -41,8 +41,8 @@ msgid "Name"
 msgstr "Name"
 
 #: admin_container.py:76
-msgid "Available Univention Admin Modules"
-msgstr "Verfügbare Univention Admin Module"
+msgid "Available Univention Directory Manager Modules"
+msgstr "Verfügbare Univention Directory Manager Module"
 
 #: admin_container.py:86 admin_user.py:250 autostart.py:84 clientdevices.py:84
 #: console_access.py:95 desktop.py:115 dhcp_boot.py:94 dhcp_dns.py:93
@@ -113,8 +113,8 @@ msgid "General"
 msgstr "Allgemein"
 
 #: admin_container.py:127 admin_user.py:301
-msgid "Univention Admin Settings"
-msgstr "Univention Admin Konfiguration"
+msgid "Univention Directory Manager Settings"
+msgstr "Univention Directory Manager Konfiguration"
 
 #: admin_container.py:131 admin_user.py:308 autostart.py:139
 #: clientdevices.py:139 console_access.py:150 desktop.py:172 dhcp_boot.py:149
@@ -131,8 +131,8 @@ msgid "Object"
 msgstr "Objekt"
 
 #: admin_user.py:46
-msgid "List of Web-Admin Wizards"
-msgstr "Liste von Web-Admin Assistenten"
+msgid "List of Web-Directory Manager Wizards"
+msgstr "Liste von Web-Directory Manager Assistenten"
 
 #: admin_user.py:48 admin_user.py:139
 msgid "Show these attributes in search results"
@@ -187,36 +187,36 @@ msgid "Default printers container"
 msgstr "Standard Drucker-Container"
 
 #: admin_user.py:72
-msgid "Policy: Univention Admin View"
-msgstr "Richtlinie: Univention Admin Ansicht"
+msgid "Policy: Univention Directory Manager View"
+msgstr "Richtlinie: Univention Directory Manager Ansicht"
 
 #: admin_user.py:73
-msgid "Univention Admin View"
-msgstr "Univention Admin Ansicht"
+msgid "Univention Directory Manager View"
+msgstr "Univention Directory Manager Ansicht"
 
 #: admin_user.py:89
-msgid "Visible Web-Admin Wizards"
-msgstr "Sichtbare Web-Admin Assistenten"
+msgid "Visible Web-Directory Manager Wizards"
+msgstr "Sichtbare Web-Directory Manager Assistenten"
 
 #: admin_user.py:99
-msgid "Visible Admin Modules"
-msgstr "Sichtbare Admin Module"
+msgid "Visible Directory Manager Modules"
+msgstr "Sichtbare Directory Manager Module"
 
 #: admin_user.py:109
 msgid "LDAP base DN"
 msgstr "LDAP Basis DN"
 
 #: admin_user.py:119
-msgid "Allow Personal Univention Admin Settings"
-msgstr "Erlaube Persönliche Univention Admin Einstellungen"
+msgid "Allow Personal Univention Directory Manager Settings"
+msgstr "Erlaube Persönliche Univention Directory Manager Einstellungen"
 
 #: admin_user.py:120
 msgid ""
 "If this option is set users can be provided with the possibility to create "
-"their own personal Univention Admin Settings"
+"their own personal Univention Directory Manager Settings"
 msgstr ""
 "Wenn diese Option gesetzt ist, dann kann Benutzern die Möglichkeit gegeben "
-"werden persönliche Univention Admin Einstellungen zu erstellen."
+"werden persönliche Univention Directory Manager Einstellungen zu erstellen."
 
 #: admin_user.py:129
 msgid "Accessible User Attributes"
