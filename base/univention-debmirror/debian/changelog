@@ -1,3 +1,10 @@
+univention-debmirror (2.0.1-1) unstable; urgency=low
+
+  * add years to copyright note
+  * minor fix for component repositories
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Jan 2009 15:29:40 +0100
+
 univention-debmirror (2.0.0-1) unstable; urgency=low
 
   * add new repository structure

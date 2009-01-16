@@ -28,7 +28,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os
+import os, re
 import subprocess
 import urllib
 
@@ -38,9 +38,12 @@ class UniventionMirror( UniventionUpdater ):
 	def __init__( self ):
 		UniventionUpdater.__init__( self )
 		self.repository_server = self.configRegistry.get( 'repository/mirror/server', 'apt.univention.de' )
-		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' 		self.repository_prefix =  self.configRegistry.get( 'repository/mirror/prefix', 'univention-repository' )
+		self.repository_path =  self.configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+		self.repository_prefix =  self.configRegistry.get( 'repository/mirror/prefix', '' )
 
 	def retrieve_url( self, path ):
+		'''downloads the given path from the repository server'''
+		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection()
 		site = '%s/%s/%s' % (self.proxy_prefix, self.repository_prefix, path)
 
@@ -73,6 +76,8 @@ class UniventionMirror( UniventionUpdater ):
 		return None
 
 	def copy_script( self, script, repository, directory ):
+		'''retriebes a script from a remote repository and copies it to
+		the local repository'''
 		filename = os.path.join( directory, script )
 		if os.path.exists( filename ):
 			return False
@@ -84,8 +89,12 @@ class UniventionMirror( UniventionUpdater ):
 		fd.close()
 
 	def mirror_repositories( self ):
+		'''uses apt-mirror to copy a repository'''
+		# check if the repository directory structure existis, otherwise create it
 		if not os.path.exists( self.repository_path ):
 			os.makedirs( self.repository_path )
+
+		# these sub-directories are required by apt-mirror
 		for dir in ( 'skel', 'mirror', 'var' ):
 			path = os.path.join( self.repository_path, dir )
 			if not os.path.exists( path ):
@@ -94,6 +103,8 @@ class UniventionMirror( UniventionUpdater ):
 		return subprocess.call( '/usr/bin/apt-mirror', shell = True )
 
 	def mirror_update_scripts( self ):
+		'''mirrors the preup.sh and postup.sh scripts'''
+		# check the main repositories for preup and postup scripts
 		repos = self.print_version_repositories()
 
 		for repo in repos.split( '\n' ):
@@ -107,9 +118,10 @@ class UniventionMirror( UniventionUpdater ):
 			schema, rest = urllib.splittype( uri )
 			host, path = urllib.splithost( rest )
 			for script in ( 'preup.sh', 'postup.sh' ):
-				self.copy_script( script, uri, os.path.join( self.repository_path, path[ 1 : ] ) )
+				self.copy_script( script, path, os.path.join( self.repository_path, 'mirror', path[ 1 : ] ) )
 
 	def run( self ):
+		'''starts the mirror process'''
 		self.mirror_repositories()
 		self.mirror_update_scripts()
 
