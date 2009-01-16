@@ -137,6 +137,7 @@ class UniventionUpdater:
 		self.version_minor = self.ucs_version.split('.')[-1]
 
 	def net_path_exists (self, path, server='', port='', prefix='', username='', password=''):
+		# path MUST NOT contain the schema and hostname
 		proxy_headers = self.open_connection(server=server, port=port)
 		if server: #if we use a diffrent server we should also use a diffrent prefix
 			if prefix:
@@ -374,7 +375,11 @@ class UniventionUpdater:
 		for component in components:
 			repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
 			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
-			repository_prefix = self.configRegistry.get('repository/online/component/%s/prefix' % component, None)
+			prefix_var = 'repository/online/component/%s/prefix' % component
+			if self.configRegistry.has_key( var ):
+				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component )
+			else:
+				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, self.repository_prefix )
 			versions = self.configRegistry.get('repository/online/component/%s/version' % component, self.ucs_version).split(',')
 			parts = self.configRegistry.get('repository/online/component/%s/parts' % component, 'maintained').split(',')
 			username = self.configRegistry.get('repository/online/component/%s/username' % component, None)
@@ -416,7 +421,7 @@ class UniventionUpdater:
 								path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )
 							else:
 								path = 'http://%s%s/%s/%s/' % ( auth_string, repository_server, version, part )
-							repos += 'deb %s component/%s/%s/\n' % ( path, component, arch )
+							repos += 'deb %scomponent %s/%s/\n' % ( path, component, arch )
 					if clean:
 						if repository_prefix:
 							path = 'http://%s%s/%s/%s/%s/' % ( auth_string, repository_server, repository_prefix, version, part )

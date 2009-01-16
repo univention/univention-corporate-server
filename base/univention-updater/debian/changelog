@@ -1,3 +1,9 @@
+univention-updater (4.0.2-1) unstable; urgency=low
+
+  * fixed uri for component repositories (Bug #12575) 
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 16 Jan 2009 14:58:55 +0100
+
 univention-updater (4.0.1-1) unstable; urgency=low
 
   * moved logic from UCR templates to UMC module; this way it can be reused by
