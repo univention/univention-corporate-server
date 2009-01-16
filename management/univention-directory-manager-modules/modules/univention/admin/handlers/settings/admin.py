@@ -43,7 +43,7 @@ module='settings/admin'
 superordinate='settings/cn'
 childs=1
 operations=['search', 'edit']
-short_description=_('Preferences: Univention Admin Global Settings')
+short_description=_('Preferences: Univention Directory Manger Global Settings')
 long_description=''
 options={
 }

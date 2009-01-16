@@ -44,7 +44,7 @@ module='settings/user'
 superordinate='settings/admin'
 childs=0
 operations=['search', 'edit', 'remove']
-short_description=_('Preferences: Univention Admin User Settings')
+short_description=_('Preferences: Univention Directory Manager User Settings')
 long_description=''
 options={
 }
@@ -60,7 +60,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'listWizards': univention.admin.property(
-			short_description=_('Visible Univention Admin Wizards'),
+			short_description=_('Visible Wizards'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWizards,
 			multivalue=1,
@@ -100,7 +100,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'listWebModules': univention.admin.property(
-			short_description=_('Visible Univention Admin Modules'),
+			short_description=_('Visible Modules'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWebModules,
 			multivalue=1,
@@ -221,7 +221,7 @@ property_descriptions={
 		)
 }
 layout=[
-	univention.admin.tab(_('Univention Admin'),_('Univention Admin User Settings'),[
+	univention.admin.tab(_('Univention Directory Manager'),_('Univention Directory Manager User Settings'),[
 		[univention.admin.field("username"), univention.admin.field('baseDN')],
 		[univention.admin.field('listWizards'), univention.admin.field('listWebModules')],
 		[ univention.admin.field( 'selfAttributes' ), univention.admin.field( 'listAttributes' )],

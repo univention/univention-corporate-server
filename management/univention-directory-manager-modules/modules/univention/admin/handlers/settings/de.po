@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-11-28 13:58+0100\n"
+"POT-Creation-Date: 2009-01-16 10:53+0100\n"
 "PO-Revision-Date: 2007-11-28 14:14+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,8 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: admin.py:46
-msgid "Preferences: Univention Admin Global Settings"
-msgstr "Einstellungen: Univention Admin Globale Einstellungen"
+msgid "Preferences: Univention Directory Manger Global Settings"
+msgstr "Einstellungen: Univention Directory Manager Globale Einstellungen"
 
 #: admin.py:52 cn.py:50 console_acl.py:54 console_acl.py:55
 #: console_operation.py:55 console_operation.py:56 customattribute.py:49
@@ -29,24 +29,24 @@ msgstr "Einstellungen: Univention Admin Globale Einstellungen"
 msgid "Name"
 msgstr "Name"
 
-#: admin.py:62
+#: admin.py:62 user.py:63
 msgid "Visible Wizards"
-msgstr "Sichtbare Univention Admin Assistenten"
+msgstr "Sichtbare Assistenten"
 
-#: admin.py:72
+#: admin.py:72 user.py:103
 msgid "Visible Modules"
-msgstr "Sichtbare Univention Admin Module"
+msgstr "Sichtbare Module"
 
 #: admin.py:84 cn.py:61 console_acl.py:121 console_operation.py:89
 #: customattribute.py:171 default.py:164 directory.py:175 lock.py:75
 #: packages.py:76 printermodel.py:76 printeruri.py:76
-#: prohibited_username.py:75 sambaconfig.py:178 sambadomain.py:113
+#: prohibited_username.py:75 sambaconfig.py:179 sambadomain.py:233
 #: service.py:61 syntax.py:142 usertemplate.py:534 xconfig_choices.py:175
 msgid "General"
 msgstr "Allgemein"
 
 #: admin.py:84 cn.py:61 customattribute.py:171 default.py:164 directory.py:175
-#: sambaconfig.py:178 sambadomain.py:113 service.py:61 syntax.py:142
+#: sambaconfig.py:179 sambadomain.py:233 service.py:61 syntax.py:142
 #: usertemplate.py:534
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
@@ -545,75 +545,75 @@ msgstr "Verbotener Benutzername"
 msgid "Prohibited Usernames"
 msgstr "Verbotene Benutzernamen"
 
-#: sambaconfig.py:62
+#: sambaconfig.py:63
 msgid "Settings: Samba Configuration"
 msgstr "Einstellungen: Samba-Konfiguration"
 
-#: sambaconfig.py:67
+#: sambaconfig.py:68
 msgid "Configuration Name"
 msgstr "Konfigurationsname"
 
-#: sambaconfig.py:77
+#: sambaconfig.py:78 sambadomain.py:132
 msgid "Password Length"
 msgstr "Passwort-Länge"
 
-#: sambaconfig.py:87
+#: sambaconfig.py:88 sambadomain.py:142
 msgid "Password History"
 msgstr "Passwort-History"
 
-#: sambaconfig.py:97
+#: sambaconfig.py:98 sambadomain.py:152
 msgid "Minimum Password Age"
 msgstr "Minimales Passwortalter"
 
-#: sambaconfig.py:107
+#: sambaconfig.py:108 sambadomain.py:162
 msgid "Bad Lockout Attempts"
 msgstr "Fehlgeschlagene Anmeldeversuche vor Aussperrung"
 
-#: sambaconfig.py:117
+#: sambaconfig.py:118 sambadomain.py:172
 msgid "User must Logon to Change Password"
 msgstr "Änderung des Passwortes erfordert Anmeldung"
 
-#: sambaconfig.py:127
+#: sambaconfig.py:128 sambadomain.py:182
 msgid "Maximum Password Age"
 msgstr "Maximales Passwortalter"
 
-#: sambaconfig.py:137
+#: sambaconfig.py:138 sambadomain.py:192
 msgid "Lockout Duration Minutes"
 msgstr "Dauer der Aussperrung"
 
-#: sambaconfig.py:147
+#: sambaconfig.py:148 sambadomain.py:202
 msgid "Reset Count Minutes"
 msgstr "Fehlgeschlagene Anmeldeversuche zurücksetzen nach"
 
-#: sambaconfig.py:157
+#: sambaconfig.py:158 sambadomain.py:212
 msgid "Disconnect Time"
 msgstr "Verbindung trennen nach"
 
-#: sambaconfig.py:167
+#: sambaconfig.py:168 sambadomain.py:222
 msgid "Refuse Machine Password Change"
 msgstr "Änderung des Rechnerpasswortes ablehnen"
 
-#: sambadomain.py:53
+#: sambadomain.py:73
 msgid "Settings: Samba Domain"
 msgstr "Einstellungen: Samba-Domäne"
 
-#: sambadomain.py:58
+#: sambadomain.py:78
 msgid "Samba Domain Name"
 msgstr "Samba-Domänenname"
 
-#: sambadomain.py:68
+#: sambadomain.py:88
 msgid "Samba SID"
 msgstr "Samba-SID"
 
-#: sambadomain.py:79
+#: sambadomain.py:99
 msgid "Next User RID"
 msgstr "nächste Benutzer-RID"
 
-#: sambadomain.py:90
+#: sambadomain.py:110
 msgid "Next Group RID"
 msgstr "nächste Gruppen-RID"
 
-#: sambadomain.py:101
+#: sambadomain.py:121
 msgid "Next RID"
 msgstr "nächste RID"
 
@@ -676,16 +676,12 @@ msgstr ""
 "Ein LDAP-Attribut wird benötigt in dem die Informationen gespeichert werden."
 
 #: user.py:47
-msgid "Preferences: Univention Admin User Settings"
-msgstr "Einstellungen: Univention Admin Benutzereinstellungen"
+msgid "Preferences: Univention Directory Manager User Settings"
+msgstr "Einstellungen: Univention Directory Manager Benutzereinstellungen"
 
 #: user.py:53
 msgid "Username"
 msgstr "Benutzername"
-
-#: user.py:63
-msgid "Visible Univention Admin Wizards"
-msgstr "Sichtbare Univention Admin Assistenten"
 
 #: user.py:73
 msgid "Accessible User Attributes"
@@ -699,21 +695,17 @@ msgstr "In Suchergebnissen werden diese Attribute angezeigt"
 msgid "Show these attributes in the navigation"
 msgstr "Zeige diese Attribute in der Navigation"
 
-#: user.py:103
-msgid "Visible Univention Admin Modules"
-msgstr "Sichtbare Univention Admin Module"
-
 #: user.py:113
 msgid "LDAP Base DN"
 msgstr "LDAP Basis-DN"
 
 #: user.py:224
-msgid "Univention Admin"
-msgstr "Univention Admin"
+msgid "Univention Directory Manager"
+msgstr "Univention Directory Manager"
 
 #: user.py:224
-msgid "Univention Admin User Settings"
-msgstr "Einstellungen: Univention Admin Benutzer Einstellungen"
+msgid "Univention Directory Manager User Settings"
+msgstr "Univention Directory Manager Benutzer Einstellungen"
 
 #: usertemplate.py:44
 msgid "Settings: User Template"
@@ -1006,3 +998,12 @@ msgstr "Bildschirm Grösse (mm)"
 #: xconfig_choices.py:175
 msgid "X Configuration Choices"
 msgstr "X Konfiguration Auswahl"
+
+#~ msgid "Visible Univention Admin Wizards"
+#~ msgstr "Sichtbare Univention Admin Assistenten"
+
+#~ msgid "Visible Univention Admin Modules"
+#~ msgstr "Sichtbare Univention Admin Module"
+
+#~ msgid "Univention Admin"
+#~ msgstr "Univention Admin"
