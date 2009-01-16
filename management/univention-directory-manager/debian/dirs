@@ -10,3 +10,4 @@ var/lib/univention-directory-manager/tmp
 var/lib/univention-directory-manager/log
 usr/sbin
 usr/lib/univention-install
+var/www/icon

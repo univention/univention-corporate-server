@@ -126,7 +126,7 @@ class unidialog(unimodule.unimodule):
 				subtables = []
 
 				rows = []
-				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<br><b>',introduction_text,'</b>']})]})]}))
+				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
 				rows.append(tablerow({},{},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[]})]}))
 				subtables.append(table('',{},{'obs':rows}))
 
@@ -135,7 +135,8 @@ class unidialog(unimodule.unimodule):
 
 				rows = []
 				for shorttext, longtext in component_texts:
-					objects = [[tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['<b>',shorttext,'</b>']})]}),
+					objects = [[tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
+						['<table style="padding:3px;"><tr><td><img src="/icon/%s.png" /></td></tr><tr><td><b>%s</b></td></tr></table>' % (shorttext.lower ().replace (' ', '_'), shorttext)]})]}),
 						    emptycol],
 						   [emptycol,
 						    tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':[longtext]})]})],
