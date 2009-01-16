@@ -252,14 +252,14 @@ class modrelogin(unimodule.unimodule):
 				else:
 					userdn=self.uaccess.searchDn("(&(objectClass=posixAccount)(uid=%s))" % user,position.getLoginDomain(),required=1,scope="domain")[0]
 			except univention.admin.uexceptions.noObject, ex:
-				self.usermessage(_("Wrong Username or Password or Domain"))
+				self.usermessage(_("Wrong Username or Password for the selected Domain"))
 				return
 			except Exception,ex:
 				pass
 			try:
 				self.uaccess.bind(userdn, self.save.get("pass"))
 			except univention.admin.uexceptions.authFail,ex:
-				self.usermessage(_("Wrong Username or Password or Domain"))
+				self.usermessage(_("Wrong Username or Password for the selected Domain"))
 			except univention.admin.uexceptions.licenseNotFound:
 				self.usermessage(_('Licence not found. During this session add and modify are disabled. You can install a new License in the About section.'))
 				self.userinfo(_("Login successful"))

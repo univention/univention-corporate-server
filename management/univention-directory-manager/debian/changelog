@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-12) unstable; urgency=low
+
+  * changed meaning of message for failed logins to be consistent with the
+    German translation. Bug #8547
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 16 Jan 2009 11:13:55 +0100
+
 univention-directory-manager (6.0.1-11) unstable; urgency=low
 
   * renamed directory/manager/web/modules/MODULE/search/auto to

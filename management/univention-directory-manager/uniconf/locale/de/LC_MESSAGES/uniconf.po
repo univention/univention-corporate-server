@@ -404,7 +404,7 @@ msgid "You can't login with the admin user"
 msgstr "Sie können sich nicht als Benutzer admin anmelden"
 
 #: modrelogin.py:255 modrelogin.py:262
-msgid "Wrong Username or Password or Domain"
+msgid "Wrong Username or Password for the selected Domain"
 msgstr ""
 "Der Benutzername oder das Passwort sind für die ausgewählte Domäne nicht "
 "korrekt."
