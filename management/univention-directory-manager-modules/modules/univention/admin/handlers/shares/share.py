@@ -664,13 +664,14 @@ layout=[
 			[univention.admin.field('webaccessName'), univention.admin.field('webaccessIpaddress')],
 		]),
 	univention.admin.tab(_('Samba General'),_('General Samba Settings'),[
-			[univention.admin.field('sambaName'), univention.admin.field('sambaWriteable')],
+			[univention.admin.field('sambaName')],
 			[univention.admin.field('sambaBrowseable'), univention.admin.field('sambaPublic')],
 			[univention.admin.field('sambaPostexec'), univention.admin.field('sambaPreexec')],
 			[univention.admin.field('sambaVFSObjects'), univention.admin.field('sambaMSDFSRoot') ],
 			[univention.admin.field('sambaDosFilemode'), univention.admin.field('sambaHideUnreadable') ],
 		]),
 	univention.admin.tab(_('Samba Permissions'),_('Samba Permission Settings'),[
+			[univention.admin.field('sambaWriteable')],
 			[univention.admin.field('sambaForceUser'), univention.admin.field('sambaForceGroup')],
 			[univention.admin.field('sambaValidUsers'), univention.admin.field('sambaInvalidUsers') ],
 			[univention.admin.field('sambaHostsAllow'), univention.admin.field('sambaHostsDeny') ],

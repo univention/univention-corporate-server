@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.20-9) unstable; urgency=low
+
+  * moved sambaWriteable option from Samba General to the Samba Permissions
+    tab. Bug #3782
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 16 Jan 2009 10:28:51 +0100
+
 univention-directory-manager-modules (3.0.20-8) unstable; urgency=low
 
   * renamed UCR variables to exclude user and group from the search to:
