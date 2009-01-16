@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-11) unstable; urgency=low
+
+  * renamed directory/manager/web/modules/MODULE/search/auto to
+    directory/manager/web/modules/MODULE/search/autosearch. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 16 Jan 2009 09:06:06 +0100
+
 univention-directory-manager (6.0.1-10) unstable; urgency=low
 
   * made automatic search in the Univention Directory Manager web frontend
