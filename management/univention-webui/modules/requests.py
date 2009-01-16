@@ -86,7 +86,7 @@ class new_saver:
 def genErrorMessage(head, messagelines, mailto = None, atts = None):
 	# options for a default-layout
 	myatts = {  'layout_type'     : '' ,
-		    'site_title'      : 'Univention Admin' ,
+		    'site_title'      : _('Univention Directory Manager') ,
 		    'header_img'      : 'style/header_admin.gif',
 		    'main_table_type' : 'content_main',
 		    'header_table_type' : 'content_header' }
@@ -145,7 +145,7 @@ def genErrorMailto(messagelines):
 	from urlparse import urlunparse
 	scheme = 'mailto'
 	address = quote('Univention Feedback <feedback@univention.de>')
-	subject = 'Bugreport: Univention Admin Traceback'
+	subject = _('Bugreport: Univention Directory Manager Traceback')
 	body = '''%s:
 1) %s
 2) %s
