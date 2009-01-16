@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# Univention Admin
+# Univention Directory Manager
 #  provides the main dialog class
 #
 # Copyright (C) 2004, 2005, 2006 Univention GmbH
@@ -65,7 +65,7 @@ class new_saver:
 class dialog(unimodule.unimodule):
 
 	def __init__(self,a,b,c):
-		b['site_title']='Univention Admin'
+		b['site_title']='Univention Directory Manager'
 		b['header_img']='style/header_admin.gif'
 		unimodule.unimodule.__init__(self,a,b,c)
 
@@ -118,17 +118,17 @@ class dialog(unimodule.unimodule):
 		if ( self.save.get("uc_module")==None or self.save.get("uc_module")=="none" ) and self.save.get("auth_ok"):
 			if not self.inithandlemessages():
 
-				header_text = _("Welcome to Univention Admin")
+				header_text = _("Welcome to Univention Directory Manager")
 
-				introduction_text = _("Univention Admin enables you to manage all components of your Univention Corporate Server (UCS) Domain.")
+				introduction_text = _("Univention Directory Manager enables you to manage all components of your Univention Corporate Server (UCS) Domain.")
 
 				component_texts = []
 				component_texts.append([_("Wizards"),
 						       _("Common tasks like administration of users, groups, servers, desktops and printers can easily be handled using the wizards.")])
 				component_texts.append([_("Navigation"),
-						       _("Besides everything you can do with the wizards, the navigation provides you also an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Admin itself.")])
+						       _("Besides everything you can do with the wizards, the navigation provides you also an interface for many other settings, including structural extensions like containers, organizational units and connected policies, advanced DNS and DHCP configuration or settings for Univention Directory Manager itself.")])
 				component_texts.append([_("Console"),_("The <a target=parent href=/console/>Univention Console</a> provides the possibilty to configure local settings on every UCS managed machine, e.g. network configuration or local software-installation. A link to the Univention Console for a machine can be found at the UCS object in the computer wizard.")])
-				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Admin and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])
+				component_texts.append([_("Further Information"),_("For more information about UCS, Univention Directory Manager and other Univention Tools take a look at the documentation or the online-forum on <a target=parent href=http://www.univention.de>www.univention.de</a>.")])
 
 
 				rows=[(tablerow({},{},{'obs':[tablecol({},{'colspan':'2'},{"obs":[header(header_text,{"type":"4"},{})]})]}))]
@@ -168,10 +168,10 @@ class dialog(unimodule.unimodule):
 			self.subobjs.insert(0,headertext(_("// logged in as: %s%s")%(self.save.get("user"),logindomain),{},{}))
 			self.subobjs.insert(0,title(_("// logged in as: %s%s")%(self.save.get("user"),logindomain),{},{}))
 		else:
-			self.subobjs.insert(0,title("Univention Admin",{},{}))
+			self.subobjs.insert(0,title("Univention Directory Manager",{},{}))
 
 		# display menu
-		menuheader=text("",{},{"text":[_("Univention Admin")]})
+		menuheader=text("",{},{"text":[_("Univention Directory Manager")]})
 		menuheaderitem=menuitem("",{},{"item":menuheader})
 		menulist=[]
 		self.mbutlist=[]
@@ -364,7 +364,7 @@ def genErrorMailto(messagelines):
 	from urlparse import urlunparse
 	scheme = 'mailto'
 	address = quote('Univention Feedback <feedback@univention.de>')
-	subject = 'Bugreport: Univention Admin Traceback'
+	subject = 'Bugreport: Univention Directory Manager Traceback'
 	body = '''%s:
 1) %s
 2) %s
