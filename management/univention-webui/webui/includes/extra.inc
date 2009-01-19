@@ -201,13 +201,13 @@ class question_text extends extra{
 	function show(){
 
 	  $validationbox = false;
-	  if ($this->basket["validregex"]) {
+	  if (isset($this->attribute["validregex"])) {
 	    $validationbox = true;
-	    $validregex = $this->basket["validregex"];
+	    $validregex = $this->attribute["validregex"];
 	  }
 
 	  $isrequired = false;
-	  if ($this->basket["isrequired"]) {
+	  if (isset($this->attribute["isrequired"])) {
 	    $isrequired = true;
 	    if (! $validationbox) {
 	      $validationbox = true;
@@ -216,8 +216,8 @@ class question_text extends extra{
 	  }
 
 	  $invalidmessage = false;
-	  if ($this->basket["invalidmessage"])
-	    $invalidmessage = $this->basket["invalidmessage"];
+	  if (isset($this->attribute["invalidmessage"]))
+	      $invalidmessage = $this->attribute["invalidmessage"];
 
           # include dojo
 	  if ($validationbox)

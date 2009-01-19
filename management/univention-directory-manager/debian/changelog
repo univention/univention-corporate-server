@@ -1,8 +1,9 @@
 univention-directory-manager (6.0.1-16) unstable; urgency=low
 
   * use dynamic_longtable in modwizard
+  * use valid-regexp in modbrowse/modwizard to validate the number of search results
 
- -- Ingo Steuwer <steuwer@univention.de>  Mon, 19 Jan 2009 21:54:33 +0100
+ -- Ingo Steuwer <steuwer@univention.de>  Mon, 19 Jan 2009 22:32:22 +0100
 
 univention-directory-manager (6.0.1-15) unstable; urgency=low
 

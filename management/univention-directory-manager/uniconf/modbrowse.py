@@ -403,7 +403,8 @@ class modbrowse(unimodule.unimodule):
 		self.search_type_button=button(_('go'),{},{'helptext':_('go')})# TODO helptexs
 		self.search_type_select=question_select(_('type'),{'width':'200'},{"helptext":_('type'),"choicelist":search_types,'button':self.search_type_button})# TODO helptext
 		self.search_button=button(_('show'),{'icon':'/style/ok.gif'},{'helptext':_('show')})# TODO helptext
-		self.search_visible=question_text(_('results per page'), {'width':'100'}, {'usertext': str(visible)})
+		self.search_visible=question_text(_('results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+						  {'usertext': str(visible)})
 
 		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[self.search_type_select]}))
 		searchcols.append(tablecol('',{'type':'browse_layout'},{'obs':[search_property_select]}))

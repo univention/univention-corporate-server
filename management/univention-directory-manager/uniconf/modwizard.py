@@ -935,7 +935,8 @@ class modwizard(unimodule.unimodule):
 
 		rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
 
-		self.search_visible=question_text(_('results per page'), {'width':'100'}, {'usertext': str(visible)})
+		self.search_visible=question_text(_('results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
+						  {'usertext': str(visible)})
 		self.search_button=button(_('search'),{'icon':'/style/ok.gif'},{'helptext':_('Display (new) search results')})
 		self.reset_button=button(_('reset'),{'icon':'/style/cancel.gif'},{'helptext':_("reset search")})
 

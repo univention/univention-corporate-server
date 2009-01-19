@@ -64,23 +64,6 @@ class question_text(question):
 	
 	def mytype(self):
 		return "question_text"
-	
-	def myinit(self):
-		question.myinit(self)
-		if self.args.has_key("validregex"):
-			self.validregex = self.args["validregex"]
-		else:
-			self.validregex = ""
-
-		if self.args.has_key("invalidmessage"):
-			self.invalidmessage = self.args["invalidmessage"]
-		else:
-			self.invalidmessage = ""
-
-		if self.args.has_key("isrequired"):
-			self.isrequired = self.args["isrequired"]
-		else:
-			self.isrequired = ""
 
 	def myxvars(self):
 		v = {}
@@ -92,29 +75,6 @@ class question_text(question):
 			v["usertext"] = None
 
 		return v
-
-	def myxmlrepr(self,xmlob,node):
-		xmlob=question.myxmlrepr(self,xmlob,node)
-
-		if hasattr(self, "validregex"):
-			tag=xmlob.createElement("validregex")
-			node.appendChild(tag)
-			tagtext=xmlob.createTextNode(self.validregex)
-			tag.appendChild(tagtext)
-
-		if hasattr(self, "invalidmessage"):
-			tag=xmlob.createElement("invalidmessage")
-			node.appendChild(tag)
-			tagtext=xmlob.createTextNode(self.invalidmessage)
-			tag.appendChild(tagtext)
-
-		if hasattr(self, "isrequired"):
-			tag=xmlob.createElement("isrequired")
-			node.appendChild(tag)
-			tagtext=xmlob.createTextNode(self.isrequired)
-			tag.appendChild(tagtext)
-
-		return xmlob
 
 
 class question_ltext(question_text):
