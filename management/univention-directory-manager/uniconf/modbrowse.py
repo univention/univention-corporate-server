@@ -801,7 +801,7 @@ class modbrowse(unimodule.unimodule):
 
 
 		###########################################################################
-		# delete, move, edit buttons
+		# delete, move, edit drop-down
 		###########################################################################
 
 		footerCols = []

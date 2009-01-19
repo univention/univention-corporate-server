@@ -2599,15 +2599,31 @@ class modedit(unimodule.unimodule):
 								atts=copy.deepcopy(attributes)
 								id_select=question_select(property.short_description,atts,{'choicelist':id_choicelist,'helptext':_('select attribute')})
 								self.minput[name].append(id_select)
-								self.minput[name].append(question_text(_("Soft-Limit (Pages)"),atts,{"helptext":_("Soft-Limit (Pages)")}))
-								self.minput[name].append(question_text(_("Hard-Limit (Pages)"),atts,{"helptext":_("Hard-Limit (Pages)")}))
-
+								self.minput[name].append(question_text(_("Soft-Limit (Pages)"),
+												       atts,
+												       {"helptext":_("Soft-Limit (Pages)"),
+													"validregex":"\d+",
+													"invalidmessage":"Pflichtfeld, erlaubt sind ganze Zahlen",
+													"isrequired":"1"}))
+								self.minput[name].append(question_text(_("Hard-Limit (Pages)"),
+												       atts,
+												       {"helptext":_("Hard-Limit (Pages)"),
+													"validregex":"\d+",
+													"invalidmessage":"Ungültiger Wert, erlaubt sind ganze Zahlen"}))
 
 							else: # normal field
 								self.userinfo_append(_("%s: Too many entries for selectbox")%property.short_description)
 								self.minput[name].append(question_text(property.short_description,attributes,{"helptext":_("User")}))
-								self.minput[name].append(question_text(_("Soft-Limit (Pages)"),attributes,{"helptext":_("Soft-Limit (Pages)")}))
-								self.minput[name].append(question_text(_("Hard-Limit (Pages)"),attributes,{"helptext":_("Hard-Limit (Pages)")}))
+								self.minput[name].append(question_text(_("Soft-Limit (Pages)"),
+												       attributes,
+												       {"helptext":_("Soft-Limit (Pages)"),
+													"validregex":"\d+",
+													"invalidmessage":"Ungültiger Wert, erlaubt sind ganze Zahlen"}))
+								self.minput[name].append(question_text(_("Hard-Limit (Pages)"),
+												       attributes,
+												       {"helptext":_("Hard-Limit (Pages)"),
+													"validregex":"\d+",
+													"invalidmessage":"Ungültiger Wert, erlaubt sind ganze Zahlen"}))
 
 
 

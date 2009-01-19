@@ -1109,23 +1109,27 @@ class modwizard(unimodule.unimodule):
 		if size_limit_reached:
 			main_rows.append(
 				tablerow("",{},
-					{"obs":[tablecol("",{'type':'wizard_layout'},
-					{"obs":[header(_("More than %d results, please redefine search.")%max_results,{"type":"2"},{})]})]})
+					{"obs":[tablecol("",{'type':'browse_layout_right'},
+					{"obs":[header(_("More than %d results, please redefine search.")%max_results,{"type":"5"},{})]})]})
 				)
 		elif result_list and not nomatches:
 			# header
+			headerCols = []
 			if cache:
-				main_rows.append(
-					tablerow("",{},
-						{"obs":[tablecol("",{'type':'wizard_layout'},
-						{"obs":[header(_("%d Search result(s) (cached):") % len(result_list),{"type":"2"},{})]})]})
-					)
+				headerCols.append(tablecol("",{'type':'browse_layout_right'},
+						{"obs":[header(_("%d Search result(s) (cached)") % len(result_list),{"type":"5"},{})]}))
 			else:
-				main_rows.append(
-					tablerow("",{},
-						{"obs":[tablecol("",{'type':'wizard_layout'},
-						{"obs":[header(_("%d Search result(s):") % len(result_list),{"type":"2"},{})]})]})
-					)
+				headerCols.append(tablecol("",{'type':'browse_layout_right'},
+						{"obs":[header(_("%d Search result(s)") % len(result_list),{"type":"5"},{})]}))					
+			headerTable = table("", {'type':'browse_layout_right'},
+					    {"obs" : [ tablerow("",{'type':'browse_layout_right'},{"obs": headerCols}) ]})
+			searchHeaderTable = table("", {'type' : 'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'browse_layout'},{"obs": [
+				tablecol("",{'type':'browse_layout_bottom'},{"obs" : [headerTable]}) ]})]})
+			
+			main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[searchHeaderTable]})]}))
+						
+			main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[space('',{'size':'1'},{})]})]}))
+
 			###########################################################################
 			# listing head
 			###########################################################################
@@ -1153,7 +1157,7 @@ class modwizard(unimodule.unimodule):
 			# listing objects
 			###########################################################################
 
-			for sub_object in result_list[start:start+visible]:
+			for sub_object in result_list:
 				if not hasattr(sub_object, 'dn') or not sub_object.dn:
 					continue
 
@@ -1230,16 +1234,21 @@ class modwizard(unimodule.unimodule):
 
 				resultsrows.append(tablerow("",{},{"obs":cols})) # 3 or 4 cols
 
+			
+			dynlongtable = dynamic_longtable("",
+							 {'header' : str(1), 'total': str(len(result_list)),
+							  'start': str(start), 'visible': str(visible)},
+							 {"obs":resultsrows})
+			main_rows.append(tablerow("",
+						  {},
+						  {"obs":[tablecol("",{},{"obs":[dynlongtable]})]}))
+
+
 			###########################################################################
-			# commit button
+			# delete, edit, ... drop-down
 			###########################################################################
 
-			list_attributes = settings.getListAttributes(search_type)
-			colspan=2+len(list_attributes)
-			if search_property_name != '*':
-				colspan+=1
-			colspan=str(colspan)
-
+			footerCols = []
 			self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
 			self.selection_select=question_select(_('Do with selected objects...'),{'width':'200'},{"helptext":_("Do with selected objects...."),"choicelist":[
 				{'name': "uidummy098", 'description': "---"},
@@ -1248,16 +1257,12 @@ class modwizard(unimodule.unimodule):
 				{'name': "delete", 'description': _("Delete")},
 				{'name': "recursive_delete", 'description': _("Delete recursively")},
 			],"button":self.selection_commit_button})
-			resultsrows.append(tablerow("",{},{"obs":[
-				tablecol("",{'colspan':colspan,'type':'wizard_layout'},{"obs":[]}),
-				tablecol("",{'colspan':'2','type':'wizard_layout'},{"obs":[self.selection_select]}),
-			]})) # 3 or 4 cols
+			footerCols.append(tablecol("",{ 'type':'wizard_layout'},{"obs":[]}))
+			footerCols.append(tablecol("",{ 'type':'wizard_layout'},{"obs":[self.selection_select]}))
 
-			# generate table
-			self.resultstab=longtable("",{'total': str(len(result_list)), 'start': str(start), 'visible': str(visible)},{"obs":resultsrows})
-			main_rows.append(
-				tablerow("",{},{"obs":[tablecol("",{'type':'wizard_layout'},{"obs":[self.resultstab]})]})
-				)
+			footerTable = table("", {'type':'right-footer'}, {"obs" : [ tablerow("",{'type':'right-footer'},{"obs": footerCols}) ]})
+			main_rows.append(tablerow("", {'type':'right-footer'}, {"obs":[tablecol("",{'type':'right-footer'}, {"obs":[footerTable]},)]}))
+
 
 		if nomatches and not size_limit_reached:
 			main_rows.append(

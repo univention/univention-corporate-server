@@ -1523,13 +1523,13 @@ msgstr ""
 
 #: modwizard.py:1121
 #, python-format
-msgid "%d Search result(s) (cached):"
-msgstr "%d Suchergebnis(se) (zwischengespeichert):"
+msgid "%d Search result(s) (cached)"
+msgstr "%d Suchergebnis(se) (zwischengespeichert)"
 
 #: modwizard.py:1127
 #, python-format
-msgid "%d Search result(s):"
-msgstr "%d Suchergebnis(se):"
+msgid "%d Search result(s)"
+msgstr "%d Suchergebnis(se)"
 
 #: modwizard.py:1244
 msgid "Do with selected objects...."
