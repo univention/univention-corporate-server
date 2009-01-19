@@ -126,7 +126,9 @@ class unidialog(unimodule.unimodule):
 				subtables = []
 
 				rows = []
-				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
+				# TODO: uncomment the next line to enable the welcome logo
+				#rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
+				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':[introduction_text]})]})]}))
 				rows.append(tablerow({},{},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[]})]}))
 				subtables.append(table('',{},{'obs':rows}))
 
