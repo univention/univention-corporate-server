@@ -1,9 +1,15 @@
+univention-directory-manager-modules (3.0.20-12) unstable; urgency=low
+
+  * added overrides for all methods of str to LazyTranslation. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 14:07:49 +0100
+
 univention-directory-manager-modules (3.0.20-11) unstable; urgency=low
 
   * more references to Univention Admin were replaced with Univention
     Directory Manager. Bug #10301
 
- -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 16 Jan 2009 13:46:35 +0100
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 12:06:53 +0100
 
 univention-directory-manager-modules (3.0.20-10) unstable; urgency=low
 
