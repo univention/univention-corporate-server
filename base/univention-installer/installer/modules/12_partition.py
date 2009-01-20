@@ -3119,14 +3119,14 @@ class object(content):
 			self.draw()
 			self.act = self.active(self, _('Write partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()
-			if self.ERROR: return "Error while writing partitions:\n" + self.ERROR
+			if self.ERROR: return _("Error while writing partitions:") + "\n" + self.ERROR
 			if self.container['lvm']['enabled']:
 				self.act = self.active(self, _('Create LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
 				self.act.draw()
-				if self.ERROR: return "Error while creating LVM volumes:\n" + self.ERROR
+				if self.ERROR: return _("Error while creating LVM volumes:") +"\n" + self.ERROR
 			self.act = self.active(self, _('Create Filesystems'), _('Please wait ...'), name='act', action='make_filesystem')
 			self.act.draw()
-			if self.ERROR: return "Error while creating LVM volumes:\n" + self.ERROR
+			if self.ERROR: return _("Error while creating filesystems:") + "\n" + self.ERROR
 			self.draw()
 
 		class active(act_win):
@@ -3142,7 +3142,7 @@ class object(content):
 
 			def run_command(self, command):
 				self.parent.parent.debug('running "%s"' % command)
-				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				proc = subprocess.Popen("aaa"+command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
 				if proc.returncode:
 					self.parent.container['history']=[]

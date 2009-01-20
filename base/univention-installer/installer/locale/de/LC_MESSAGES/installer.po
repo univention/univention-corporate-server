@@ -15,6 +15,18 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
+#: installer/modules/12_partition.py:3122
+msgid "Error while writing partitions:"
+msgstr "Fehler beim Anlegen der Partitionen:"
+
+#: installer/modules/12_partition.py:3126
+msgid "Error while creating LVM volumes:"
+msgstr "Fehler beim Anlegen der LVM Volumes:"
+
+#: installer/modules/12_partition.py:3129
+msgid "Error while creating filesystems:"
+msgstr "Fehler beim Anlegen der Dateisysteme:"
+
 #: installer/end.py:86
 msgid "Installation failed!"
 msgstr "Die Installation ist fehlgeschlagen!"
