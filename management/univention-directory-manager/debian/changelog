@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-19) unstable; urgency=low
+
+  * renamed LazyTranslation.__orig_str to LazyTranslation._orig_str. Bug
+    #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 14:31:46 +0100
+
 univention-directory-manager (6.0.1-18) unstable; urgency=low
 
   * added override for all methods of str to LazyTranslation. Bug #13011
