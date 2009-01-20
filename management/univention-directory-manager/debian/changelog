@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-18) unstable; urgency=low
+
+  * added override for all methods of str to LazyTranslation. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 13:37:42 +0100
+
 univention-directory-manager (6.0.1-17) unstable; urgency=low
 
   * icon text has been moved to the right side of the icon. Bug #8443
