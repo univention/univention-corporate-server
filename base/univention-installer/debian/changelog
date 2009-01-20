@@ -1,3 +1,9 @@
+univention-installer (3.0.0-12) unstable; urgency=low
+
+  * error messages in partition tool (Bug: #10782 #11093) 
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 20 Jan 2009 13:23:05 +0100
+
 univention-installer (3.0.0-11) unstable; urgency=low
 
   * new status screen at the end of the installation (Bug: #12190)

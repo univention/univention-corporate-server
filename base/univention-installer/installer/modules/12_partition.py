@@ -46,6 +46,7 @@ from objects import *
 from local import _
 import os, re, string, curses
 import inspect
+import subprocess
 
 # some autopartitioning config values
 PARTSIZE_BOOT = 96           # size of /boot partition
@@ -1674,6 +1675,8 @@ class object(content):
 
 	class partition(subwin):
 
+		ERROR = False
+
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
@@ -1719,9 +1722,10 @@ class object(content):
 			# reduce all LVM VGs
 			for vgname,vg in self.container['lvm']['vg'].items():
 				self.parent.debug('reducing LVM VG: %s' % vgname)
-				self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
-				self.container['history'].append('/sbin/vgreduce -a %s' % vgname)
-				self.container['history'].append('/sbin/vgremove %s' % vgname)
+				if self.container['lvm']['vg'][ vgname ]['created']:
+					self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
+					self.container['history'].append('/sbin/vgremove %s' % vgname)
+					self.container['lvm']['vg'][ vgname ]['created'] = 0
 
 			# remove all logical partitions, next all extended partitions and finally all primary partitions
 			for parttype in [ PARTTYPE_LOGICAL, PARTTYPE_EXTENDED, PARTTYPE_PRIMARY ]:
@@ -2429,16 +2433,17 @@ class object(content):
 							vg['totalPE'] -= pv['totalPE']
 							vg['size'] = vg['PEsize'] * vg['totalPE'] / 1024.0
 							if vg['freePE'] + vg['allocPE'] != vg['totalPE']:
-								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' %
-												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
+								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							if vg['freePE'] < 0 or vg['allocPE'] < 0 or vg['totalPE'] < 0:
-								self.parent.debug('ASSERTION FAILED: vg[freePE]=%d  vg[allocPE]=%d  vg[totalPE]=%d' %
-												  (vg['freePE'], vg['allocPE'], vg['totalPE']))
+								self.parent.debug('ASSERTION FAILED: vg[freePE]=%d  vg[allocPE]=%d  vg[totalPE]=%d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							# reduce VG
-							self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
-							self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
-#							self.container['history'].append('/sbin/pvscan')
-#							self.container['history'].append('/sbin/vgscan')
+							if self.container['lvm']['vg'][vgname]['created']:
+								self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
+								self.container['history'].append('/sbin/vgremove %s ' % vgname)
+								self.container['lvm']['vg'][ vgname ]['created'] = 0
+								self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
+#								self.container['history'].append('/sbin/pvscan')
+#								self.container['history'].append('/sbin/vgscan')
 			return False
 
 		def part_delete(self,index):
@@ -3099,18 +3104,29 @@ class object(content):
 				return False
 			else:
 				self.parent.debug('WRITE_DEVICES')
-				self.write_devices()
+				error = self.write_devices()
+				if error:
+					self.ERROR = False
+					msg = []
+					for err in error.split('\n'): msg.append(err[:60])
+					self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2,msg)
+					self.parent.start()
+					self.draw()
+					return False
 				return True
 
 		def write_devices(self):
 			self.draw()
 			self.act = self.active(self, _('Write partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()
+			if self.ERROR: return "Error while writing partitions:\n" + self.ERROR
 			if self.container['lvm']['enabled']:
 				self.act = self.active(self, _('Create LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
 				self.act.draw()
+				if self.ERROR: return "Error while creating LVM volumes:\n" + self.ERROR
 			self.act = self.active(self, _('Create Filesystems'), _('Please wait ...'), name='act', action='make_filesystem')
 			self.act.draw()
+			if self.ERROR: return "Error while creating LVM volumes:\n" + self.ERROR
 			self.draw()
 
 		class active(act_win):
@@ -3124,6 +3140,17 @@ class object(content):
 				self.action = action
 				act_win.__init__(self,parent,header,text,name)
 
+			def run_command(self, command):
+				self.parent.parent.debug('running "%s"' % command)
+				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				(stdout, stderr) = proc.communicate()
+				if proc.returncode:
+					self.parent.container['history']=[]
+					self.parent.parent.debug('==> %s %s %s (%s)' % (command, stderr, stdout, proc.returncode))
+					self.parent.ERROR = "%s (%s)\n%s " % (command, proc.returncode, stderr)
+					return 1
+				return 0
+
 			def function(self):
 				if self.action == 'read_lvm':
 					self.parent.parent.debug('Reading LVM config')
@@ -3131,10 +3158,8 @@ class object(content):
 				elif self.action == 'create_partitions':
 					self.parent.parent.debug('Create Partitions')
 					for command in self.parent.container['history']:
-						p=os.popen('%s 2>&1'%command)
-						self.parent.parent.debug('running "%s"'%command)
-						self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
-						p.close()
+						retval = self.run_command(command)
+						if retval != 0: break
 					self.parent.container['history']=[]
 					self.parent.parent.written=1
 				elif self.action == 'make_filesystem':
@@ -3153,10 +3178,7 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								p=os.popen('%s 2>&1' % mkfs_cmd)
-								self.parent.parent.debug('running "%s"' % mkfs_cmd)
-								self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
-								p.close()
+								self.run_command(mkfs_cmd)
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
 					for vgname in self.parent.container['lvm']['vg'].keys():
@@ -3173,10 +3195,7 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								p=os.popen('%s 2>&1' % mkfs_cmd)
-								self.parent.parent.debug('running "%s"' % mkfs_cmd)
-								self.parent.parent.debug('\n=> %s' % p.read().replace('\n','\n=> '))
-								p.close()
+								self.run_command(mkfs_cmd)
 								vg['lv'][lvname]['format'] = 0
 
 				self.parent.layout()
