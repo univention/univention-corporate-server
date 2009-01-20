@@ -1,3 +1,10 @@
+univention-management-console (1.0.1-5) unstable; urgency=low
+
+  * renamed LazyTranslation.__orig_str to LazyTranslation._orig_str. Bug
+    #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 14:34:23 +0100
+
 univention-management-console (1.0.1-4) unstable; urgency=low
 
   * added overrides for all methods of str to LazyTranslation. Bug #13011
