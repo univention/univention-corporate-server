@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-17) unstable; urgency=low
+
+  * icon text has been moved to the right side of the icon. Bug #8443
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 10:44:59 +0100
+
 univention-directory-manager (6.0.1-16) unstable; urgency=low
 
   * use dynamic_longtable in modwizard

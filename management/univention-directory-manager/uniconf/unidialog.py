@@ -138,7 +138,7 @@ class unidialog(unimodule.unimodule):
 				rows = []
 				for shorttext, longtext in component_texts:
 					objects = [[tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
-						['<table style="padding:3px;"><tr><td><img src="/icon/%s.png" /></td></tr><tr><td><b>%s</b></td></tr></table>' % (shorttext.lower ().replace (' ', '_'), shorttext)]})]}),
+						['<table style="padding:3px;"><tr><td><img src="/icon/%s.png" /></td><td style="padding:3px;"><b>%s</b></td></tr></table>' % (shorttext.lower ().replace (' ', '_'), shorttext)]})]}),
 						    emptycol],
 						   [emptycol,
 						    tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':[longtext]})]})],
