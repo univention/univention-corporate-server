@@ -45,9 +45,9 @@ class LazyTranslation (str):
 	'''
 	def __init__ (self, string):
 		self._domain = None
-		self.__orig_str = str (string)
+		self._orig_str = str (string)
 		self._translations = {}
-		super (str, self).__init__ (self.__orig_str)
+		super (str, self).__init__ (self._orig_str)
 
 	def __add__(self, y):
 		return str (self) + str (y)
@@ -101,9 +101,9 @@ class LazyTranslation (str):
 		if lang and lang[0] and \
 				self._domain != None and gettext.find (self._domain, languages=(lang[0], )):
 			t = gettext.translation(self._domain, languages=(lang[0], ))
-			newval = t.ugettext(self.__orig_str)
+			newval = t.ugettext(self._orig_str)
 		else:
-			newval = self.__orig_str
+			newval = self._orig_str
 		self._translations[lang] = newval
 		return newval
 

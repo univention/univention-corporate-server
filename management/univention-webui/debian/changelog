@@ -1,3 +1,10 @@
+univention-webui (2.0.1-7) stable; urgency=low
+
+  * renamed LazyTranslation.__orig_str to LazyTranslation._orig_str. Bug
+    #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 14:34:12 +0100
+
 univention-webui (2.0.1-6) stable; urgency=low
 
   * added overrides for all methods of str to LazyTranslation. Bug #13011
