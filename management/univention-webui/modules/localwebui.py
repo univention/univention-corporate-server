@@ -45,7 +45,7 @@ class LazyTranslation (str):
 	'''
 	def __init__ (self, string):
 		self._domain = None
-		self._orig_str = str (string)
+		self._orig_str = string.__str__ ()
 		self._translations = {}
 		super (str, self).__init__ (self._orig_str)
 
