@@ -43,7 +43,7 @@ class LazyTranslation (str):
 	'''
 	def __init__ (self, string):
 		self._domain = None
-		self._orig_str = str (string)
+		self._orig_str = string.__str__ ()
 		self._translations = {}
 		super (str, self).__init__ (self._orig_str)
 
@@ -252,7 +252,7 @@ def lazyTranslationTest ():
 	'''
 	y = 'bla blub'
 	x = _('foo bar')
-	
+
 	#print x + y
 	#print y + x
 	#assert x + y == y + x # test failed
@@ -311,3 +311,12 @@ def lazyTranslationTest ():
 	#assert x.translate()     == y.translate()
 	assert x.upper()          == y.upper()
 	assert x.zfill(80)        == y.zfill(80)
+
+	class b:
+		def __str__ (self):
+			return _('blub')
+	assert str (b ()) == y
+	assert _(b ()) == y
+
+if __name__ == '__main__':
+	lazyTranslationTest ()
