@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-21) unstable; urgency=low
+
+  * removed default search value for module dns/dns. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 20 Jan 2009 15:57:50 +0100
+
 univention-directory-manager (6.0.1-20) unstable; urgency=low
 
   * fixed recursion in the constructor of LazyTranslation. Bug #13011

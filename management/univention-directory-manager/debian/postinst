@@ -102,7 +102,6 @@ for i in \
 	computers/trustaccount \
 	computers/windows \
 	dhcp/dhcp \
-	dns/dns \
 	groups/group \
 	mail/domain \
 	mail/folder \
