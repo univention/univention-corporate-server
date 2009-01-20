@@ -95,6 +95,10 @@ install-ext-%:
 	# apache config
 	install -m 0644 apache2.conf debian/univention-ad-connector/etc/apache2/conf.d/univention-ad-connector
 
+	# fill WWW dir
+	install -d -m 0710 -o root -g www-data $(AD_TOOLS_DEST)/var/www/univention-ad-connector
+	install -m 0644 files/var/www/univention-ad-connector/index.html $(AD_TOOLS_DEST)/var/www/univention-ad-connector/index.html
+
     # install UMC module
 	make PACKAGE=python-univention-connector-ad install-modules
 	make PACKAGE=python-univention-connector-ad install-locales-backend
@@ -119,7 +123,7 @@ binary-indep: build install
 	dh_link
 	dh_strip
 	dh_compress
-	dh_fixperms
+	dh_fixperms -X/var/www/univention-ad-connector
 	dh_installdeb
 	dh_shlibdeps
 	dh_gencontrol
