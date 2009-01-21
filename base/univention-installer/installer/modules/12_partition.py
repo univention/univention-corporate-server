@@ -348,7 +348,7 @@ class object(content):
 			dev_match=re.search(regex,match.group())
 
 		if dev_match:
-			return '%sp%d' % (dev_match.group(),number)
+			return '%sp%s' % (dev_match.group(),number)
 		else:
 			return '%s%d' % (device,number)
 
@@ -890,6 +890,18 @@ class object(content):
 				if grp[5]:
 					result[1] = int(grp[5])
 		if result[1]:
+			self.debug("XXXXXXXXXXXXXXXXXXXXXXXX result %s" % result)
+			return result
+		# cciss
+		regex = re.compile('/dev/([^/]+)/([a-zA-Z0-9]+)p(\d+)')
+		match = regex.match(entry)
+		if match:
+			grp = match.groups()
+			if grp[0] and grp[1] and grp[2]:
+				result[0] = '/dev/%s/%s' % (grp[0], grp[1])
+				result[1] = grp[2]
+		if result[1]:
+			self.debug("XXXXXXXXXXXXXXXXXXXXXXXX result %s" % result)
 			return result
 		return None
 
@@ -991,9 +1003,9 @@ class object(content):
 				dev_match=re.search(regex,match.group())
 
 			if dev_match:
-				return '%sp%d' % (dev_match.group(),number)
+				return '%sp%s' % (dev_match.group(),number)
 			else:
-				return '%s%d' % (device,number)
+				return '%s%s' % (device,number)
 
 		def run_cmd(self, command, debug=True):
 			self.parent.debug('(profile) run command: %s' % command)
