@@ -3142,11 +3142,11 @@ class object(content):
 
 			def run_command(self, command):
 				self.parent.parent.debug('running "%s"' % command)
-				proc = subprocess.Popen("aaa"+command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
+				self.parent.parent.debug('==> %s %s %s (%s)' % (command, stderr, stdout, proc.returncode))
 				if proc.returncode:
 					self.parent.container['history']=[]
-					self.parent.parent.debug('==> %s %s %s (%s)' % (command, stderr, stdout, proc.returncode))
 					self.parent.ERROR = "%s (%s)\n%s " % (command, proc.returncode, stderr)
 					return 1
 				return 0
@@ -3159,7 +3159,8 @@ class object(content):
 					self.parent.parent.debug('Create Partitions')
 					for command in self.parent.container['history']:
 						retval = self.run_command(command)
-						if retval != 0: break
+						if retval != 0: 
+							return
 					self.parent.container['history']=[]
 					self.parent.parent.written=1
 				elif self.action == 'make_filesystem':
@@ -3178,7 +3179,9 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								self.run_command(mkfs_cmd)
+								retval = self.run_command(mkfs_cmd)
+								if retval != 0:
+									return
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
 					for vgname in self.parent.container['lvm']['vg'].keys():
@@ -3195,7 +3198,9 @@ class object(content):
 									mkfs_cmd='/bin/mkswap %s' % device
 								else:
 									mkfs_cmd='/bin/true %s' % device
-								self.run_command(mkfs_cmd)
+								retval = self.run_command(mkfs_cmd)
+								if retval != 0:
+									return
 								vg['lv'][lvname]['format'] = 0
 
 				self.parent.layout()
