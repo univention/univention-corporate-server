@@ -176,8 +176,6 @@ class handler(umch.simpleHandler):
 					 'hint': [] }
 		self.guessed_baseDN = None
 
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 1' )
-
 		if obj.options.get('action','') == 'save':
 			# if action == "save" then save values to UCR
 
@@ -191,8 +189,6 @@ class handler(umch.simpleHandler):
 			except Exception, e:
 				self.msg['error'].append( _('An error occured while saving .htaccess (filename=%(fn)s ; exception=%(exception)s)') % { 'fn': fn, 'exception': str(e.__class__)})
 				debugmsg( ud.ADMIN, ud.ERROR, 'An error occured while saving .htaccess (filename=%(fn)s ; exception=%(exception)s)' % { 'fn': fn, 'exception': str(e.__class__)} )
-
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 10' )
 
 			for umckey, ucrkey in ( ( 'ad_ldap_host', 'connector/ad/ldap/host' ),
 									( 'ad_ldap_base', 'connector/ad/ldap/base' ),
@@ -224,8 +220,6 @@ class handler(umch.simpleHandler):
 					debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
 					univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
 
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 11' )
-
 			if obj.options.get('ad_ldap_bindpw'):
 				fn = self.configRegistry.get('connector/ad/ldap/bindpwd', FN_BINDPWD)
 				try:
@@ -240,8 +234,6 @@ class handler(umch.simpleHandler):
 				univention.config_registry.handler_set( [ u'connector/ad/ldap/bindpw=%s' % FN_BINDPWD ] )
 
 			self.msg['hint'].append( _('AD connector settings have been saved.') )
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 22' )
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 23' )
 
 		if obj.options.get('action','') == 'save':
 
@@ -267,11 +259,7 @@ class handler(umch.simpleHandler):
 			proc.start()
 
 		else:
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 3' )
 			self.finished(obj.id(), None)
-
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 4' )
-
 
 
 	def _copy_certificate(self, obj, error_if_missing = False):
@@ -311,13 +299,10 @@ class handler(umch.simpleHandler):
 		# namingContexts: DC=DomainDnsZones,DC=ad,DC=univention,DC=de
 		# namingContexts: DC=ForestDnsZones,DC=ad,DC=univention,DC=de
 
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 10' )
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: buffer=%s' % buffer )
 		self.guessed_baseDN = None
 		for line in buffer:
-			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: line="%s"' % line )
+			debugmsg( ud.ADMIN, ud.INFO, 'guess_basedn: line="%s"' % line )
 			if line.startswith('namingContexts: '):
-				debugmsg( ud.ADMIN, ud.INFO, line )
 				dn = line.split(': ',1)[1].strip()
 				if self.guessed_baseDN == None or len(dn) < len(self.guessed_baseDN):
 					self.guessed_baseDN = dn
@@ -529,8 +514,6 @@ class handler(umch.simpleHandler):
 
 		list_id = []
 
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 20' )
-
 		# ask for ldap_host
 		if obj.options.get('action','') == 'guess_basedn':
 			ldaphost = obj.options.get('ad_ldap_host')
@@ -544,8 +527,6 @@ class handler(umch.simpleHandler):
 		req = umcp.Command( args = [ 'adconnector/configure' ], opts = opts )
 		actions = ( umcd.Action( req, [ inp_ldap_host.id() ] ), )
 		btn_guess = umcd.Button( _('Determine BaseDN'), 'actions/ok', actions = actions, close_dialog = False )
-
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 21' )
 
 		# ask for ldap_base and/or display a first guess based on ldapsearch call
 		if obj.options.get('action','') == 'guess_basedn' and self.guessed_baseDN:
@@ -565,8 +546,6 @@ class handler(umch.simpleHandler):
 			binddn = self.configRegistry.get('connector/ad/ldap/binddn', '')
 		inp_ldap_binddn = umcd.make( self['adconnector/configure']['ad_ldap_binddn'], default = binddn )
 		list_id.append( inp_ldap_binddn.id() )
-
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 22' )
 
 		# get bind password if UCR variable is already set and file exists
 		fn = self.configRegistry.get('connector/ad/ldap/bindpw')
@@ -597,7 +576,6 @@ class handler(umch.simpleHandler):
 		# ask for poll_sleep
 		inp_poll_sleep = umcd.make( self['adconnector/configure']['ad_poll_sleep'], default = self.configRegistry.get('connector/ad/poll/sleep', '5') )
 		list_id.append( inp_poll_sleep.id() )
-		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 23' )
 
 		# ask for debug level
 		inp_debug_level = umcd.make( self['adconnector/configure']['debug_level'], default = self.configRegistry.get('connector/debug/level', '_1_') )
@@ -703,8 +681,6 @@ class handler(umch.simpleHandler):
 
 		lst.add_row( [ btn_close ] )
 		res.dialog = [ lst ]
-#		res.dialog.append( umcd.Frame( [lst], '' ) )
-
 
 		self.revamped(obj.id(), res)
 
