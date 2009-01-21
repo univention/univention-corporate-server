@@ -63,9 +63,12 @@ mapper.add( umcd.ImageURL, icon_map )
 def link_map( storage, umcp_part ):
 	attributes = utils.attributes( umcp_part )
 	if umcp_part.get_icon():
-		html = ' <a href="%s" target="_blank"><img class="button_icon" src="/umc/%s" alt="%s"></a>' % \
+		txt = ''
+		if umcp_part.show_icon_and_text():
+			txt = umcp_part.get_text()
+		html = ' <a href="%s" target="_blank"><img class="button_icon" src="/umc/%s" alt="%s">%s</a>' % \
 			   ( umcp_part.get_link(), umc_tools.image_get( umcp_part.get_icon(),
-															umc_tools.SIZE_MEDIUM ), umcp_part.get_text() )
+															umc_tools.SIZE_MEDIUM ), umcp_part.get_text(), txt )
 	else:
 		html = ' <a href="%s" target="_blank">%s</a>' % ( umcp_part.get_link(), umcp_part )
 	text = htmltext( '', attributes, { 'htmltext' : [ html ] } )

@@ -31,10 +31,14 @@
 import base
 
 class Link( base.Text ):
-	def __init__( self, description = '', link = '', icon = None ):
+	def __init__( self, description = '', link = '', icon = None, icon_and_text = False ):
 		base.Text.__init__( self, description )
 		self._link = link
 		self._icon = icon
+		self._icon_and_text = icon_and_text
+
+	def show_icon_and_text( self ):
+		return self._icon_and_text
 
 	def get_icon( self ):
 		return self._icon
