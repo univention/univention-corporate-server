@@ -74,5 +74,7 @@ if [ "$1" = configure -a -n "$2" ] && dpkg --compare-versions "$2" lt 0.3-11; th
 fi
 
 if [ -x /etc/init.d/apache2 ]; then
-	/etc/init.d/apache2 restart
+	/etc/init.d/apache2 restart || true
 fi
+
+exit 0

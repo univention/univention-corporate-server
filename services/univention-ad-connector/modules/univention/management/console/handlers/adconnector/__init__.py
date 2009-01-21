@@ -79,7 +79,7 @@ command_description = {
 		long_description = _('Configure AD Connector'),
 		method = 'configure',
 		values = {
-			'action': umc.String( _('action') ),
+			'action': umc.String( 'action' ),
 			'ad_ldap_host': umc.String( _('Hostname of Active Directory server'), regex = '^([a-z]([a-z0-9-]*[a-z0-9])*[.])+[a-z]([a-z0-9-]*[a-z0-9])*$' ),
 			'ad_ldap_base': umc.String( _('BaseDN of Active Directory') ),
 			'ad_ldap_binddn': umc.String( _('DN of replication user') ),
@@ -104,19 +104,19 @@ command_description = {
 	),
 
 	'adconnector/uploadcert': umch.command(
-		short_description = _('Upload AD Connector Certificate'),
-		long_description = _('Upload AD Connector Certificate'),
+		short_description = _('Upload Active Directory Certificate'),
+		long_description = _('Upload Active Directory Certificate'),
 		method = 'upload_cert',
 		values = {
-			'certfile': umc.FileUploader( _('Please upload Active Directory certificate'), maxfiles=1 ),
+			'certfile': umc.FileUploader( _('Please upload Active Directory certificate') ),
 			},
 		caching = False
 	),
 
-	'adconnector/switchstate': umch.command(
+	'adconnector/setstate': umch.command(
 		short_description = _('Start/Stop AD Connector'),
 		long_description = _('Start/Stop AD Connector'),
-		method = 'start_stop',
+		method = 'setstate',
 		values = {
 			'action': umc.String( 'action' ),
 			},
@@ -210,16 +210,18 @@ class handler(umch.simpleHandler):
 					if umckey in [ 'debug_level', 'debug_function' ]:
 						val = val.strip('_')
 					# Workaroung for Bug #13139 END
-					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (umckey, val) )
+					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 
 			# special handling for connector/ad/windows_version
-			val = obj.options.get('ad_windows_version')
+			umckey = 'ad_windows_version'
+			ucrkey = 'connector/ad/windows_version'
+			val = obj.options.get( umckey )
 			if obj.options.get( val ):
-					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (umckey, val) )
+					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
 					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 			else:
-					debugmsg( ud.ADMIN, ud.INFO, 'unsetting %ss' % (umckey) )
+					debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
 					univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
 
 			debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 11' )
@@ -332,34 +334,94 @@ class handler(umch.simpleHandler):
 		_d = ud.function('adconnector.handler.upload_cert')
 		debugmsg( ud.ADMIN, ud.INFO, 'upload_cert: options=%s' % obj.options )
 
-		files = umcobject.options.get('fileupload',[])
+		self.msg = { 'error': [],
+					 'warn': [],
+					 'hint': [] }
+
+		files = obj.options.get('certfile',[])
 		if len(files) == 1:
 			fileitem = files[0]
 			now = time.strftime( '%Y%m%d_%H%M%S', time.localtime() )
 			fn = '/etc/univention/connector/ad/ad_cert_%s.pem' % now
-			cmd = 'openssl x509 -inform der -outform pem -in %s -out %s' % (fileitem['tmpfname'], fn)
+			cmd = 'openssl x509 -inform der -outform pem -in %s -out %s 2>&1' % (fileitem['tmpfname'], fn)
 
-			debugmsg( ud.ADMIN, ud.INFO, 'determine baseDN of specified system: %s' % cmd )
-			proc = notifier.popen.Shell( cmd, stdout = True )
+			debugmsg( ud.ADMIN, ud.INFO, 'converting certificate into correct format: %s' % cmd )
+			proc = notifier.popen.Shell( cmd, stdout = True, stderr = True )
 			cb = notifier.Callback( self._upload_cert_return, obj, fn )
 			proc.signal_connect( 'finished', cb )
 			proc.start()
 		else:
-			debugmsg( ud.ADMIN, ud.ERROR, 'ERROR: len(files)=%s  files=%s' % (len(files), files) )
+			debugmsg( ud.ADMIN, ud.ERROR, 'len(files)=%s  files=%s' % (len(files), files) )
 			self.finished(obj.id(), None)
 
 
-	def _upload_cert_return( self, pid, status, buffer, obj, fn ):
+	def _upload_cert_return( self, pid, status, bufstdout, bufstderr, obj, fn ):
 		_d = ud.function('adconnector.handler._upload_cert_return')
 		if status == 0:
 			univention.config_registry.handler_set( [ u'connector/ad/ldap/certificate=%s' % fn ] )
 			self.msg['hint'].append( _('Certificate has been uploaded successfully.') )
-			debugmsg( ud.ADMIN, ud.INFO, _('Certificate has been uploaded successfully.') )
+			debugmsg( ud.ADMIN, ud.INFO, 'Certificate has been uploaded successfully. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % (status, '\n'.join(bufstdout), '\n'.join(bufstderr)))
 		else:
-			self.msg['error'].append( _('Certificate upload and conversion failed.') )
-			debugmsg( ud.ADMIN, ud.ERROR, _('Certificate upload and conversion failed. status=%s  output=%s' % (status, buffer)) )
+			self.msg['error'].append( _('Certificate upload or conversion failed.') )
+			debugmsg( ud.ADMIN, ud.ERROR, 'Certificate upload or conversion failed. status=%s\nSTDOUT:\n%s\n\nSTDERR:\n%s' % (status, '\n'.join(bufstdout), '\n'.join(bufstderr)))
 
 		self.finished(obj.id(), None)
+
+
+	def setstate(self, obj):
+		_d = ud.function('adconnector.handler.setstate')
+		debugmsg( ud.ADMIN, ud.INFO, 'setstate: options=%s' % obj.options )
+
+		self.msg = { 'error': [],
+					 'warn': [],
+					 'hint': [] }
+
+		self.__update_status()
+		action = obj.options.get('action')
+
+		debugmsg( ud.ADMIN, ud.INFO, 'action=%s  status_running=%s' % (action, self.status_running) )
+
+		if self.status_running and action == 'start':
+
+			self.msg['hint'].append( _('Univention AD Connector is already running. Nothing to do.') )
+
+		elif not self.status_running and action == 'stop':
+
+			self.msg['hint'].append( _('Univention AD Connector is already stopped. Nothing to do.') )
+
+		elif action in ['start', 'stop']:
+
+			cb = notifier.Callback( self._state_changed, obj )
+			func = notifier.Callback( self._run_it, action )
+			thread = notifier.threads.Simple( 'service', func, cb )
+			thread.run()
+
+		elif len(action):
+			self.msg['error'].append( _('Unknown command ("%s") Please report error to your local administrator') % action )
+			debugmsg( ud.ADMIN, ud.ERROR, 'unknown command: action=%s' % action )
+
+		else:
+			# no action given
+			self.finished(obj.id(), None)
+
+
+	def _run_it( self, action ):
+		_d = ud.function('adconnector.handler._run_it')
+		return os.system( '/etc/init.d/univention-ad-connector %s' % action )
+
+
+	def _state_changed( self, thread, result, obj ):
+		_d = ud.function('adconnector.handler._state_changed')
+		if result:
+			self.msg['error'].append( _('Switching running state of Univention AD Connector failed.') )
+			debugmsg( ud.ADMIN, ud.ERROR, 'Switching running state of Univention AD Connector failed. exitcode=%s' % result )
+		else:
+			if obj.options.get('action') == 'start':
+				self.msg['hint'].append( _('Univention AD Connector has been started.') )
+			else:
+				self.msg['hint'].append( _('Univention AD Connector has been stopped.') )
+		self.finished(obj.id(), None)
+
 
 
 	#######################
@@ -373,8 +435,8 @@ class handler(umch.simpleHandler):
 		return _('no')
 
 
-	def __get_request(self, cmd, title):
-		req = umcp.Command(args=[ cmd ])
+	def __get_request(self, cmd, title, opts = {}):
+		req = umcp.Command(args=[ cmd ], opts = opts)
 
 		req.set_flag('web:startup', True)
 		req.set_flag('web:startup_cache', False)
@@ -392,8 +454,9 @@ class handler(umch.simpleHandler):
 									self.configRegistry.get('connector/ad/ldap/binddn') and \
 									self.configRegistry.get('connector/ad/ldap/bindpw')
 									)
-		self.status_certificate = False
-		self.status_running = self.__is_process_running('python.* /usr/sbin/univention-ad-connector')
+		fn = self.configRegistry.get('connector/ad/ldap/certificate')
+		self.status_certificate = ( fn and os.path.exists(fn) )
+		self.status_running = self.__is_process_running('python.*univention/connector/ad/main.py')
 
 
 	def __is_process_running(self, command):
@@ -427,22 +490,25 @@ class handler(umch.simpleHandler):
 		list_actions.add_row( [ btn_configure ] )
 
 
-		img = umcd.Link( description = _('IMG'),                                       link='/univention-ad-connector/', icon=icon )
+		img = umcd.Link( description = _('IMG'),                                       link='/univention-ad-connector/', icon='actions/download' )
 		btn = umcd.Link( description = _('Download .msi package and UCS certificate'), link='/univention-ad-connector/' )
 		list_actions.add_row( [ (img,btn) ] )
 
 
-		btn_upload_cert = umcd.Button(_('Upload AD certificate'), 'actions/configure',
-									 actions = [ umcd.Action( self.__get_request( 'adconnector/uploadcert', _('Upload AD certificate') ) ) ] )
+		btn_upload_cert = umcd.Button(_('Upload AD certificate'), 'actions/upload',
+									 actions = [ umcd.Action( self.__get_request( 'adconnector/uploadcert', _('Upload AD Certificate') ) ) ] )
 		list_actions.add_row( [ btn_upload_cert ] )
 
 
 		if self.status_running:
-			title = _('Stop AD connector')
+			title = _('Stop Univention AD Connector')
+			opts = { 'action': 'stop' }
 		else:
-			title = _('Start AD connector')
-		btn_startstop = umcd.Button( title, 'actions/configure',
-									actions = [ umcd.Action( self.__get_request( 'adconnector/startstop', title ) ) ] )
+			title = _('Start Univention AD Connector')
+			opts = { 'action': 'start' }
+
+		btn_startstop = umcd.Button( title, 'actions/setstate',
+									actions = [ umcd.Action( self.__get_request( 'adconnector/setstate', title, opts ) ) ] )
 		list_actions.add_row( [ btn_startstop ] )
 
 
@@ -503,8 +569,7 @@ class handler(umch.simpleHandler):
 		debugmsg( ud.ADMIN, ud.ERROR, 'DEBUG: 22' )
 
 		# get bind password if UCR variable is already set and file exists
-		pwd = ''
-		fn = self.configRegistry.get('connector/ad/ldap/bindpwd')
+		fn = self.configRegistry.get('connector/ad/ldap/bindpw')
 		if not fn or not os.path.exists( fn ):
 			self.msg['hint'].append( _('Password of replication user has not been set yet!') )
 			debugmsg( ud.ADMIN, ud.WARN, 'Password of replication user has not been set yet' )
@@ -580,4 +645,66 @@ class handler(umch.simpleHandler):
 
 
 
+
+	def _web_upload_cert(self, obj, res):
+		_d = ud.function('adconnector.handler._web_upload_cert')
+		debugmsg( ud.ADMIN, ud.INFO, 'web_upload_cert: options=%s' % obj.options )
+
+		self.__update_status()
+
+		# ask for debug level
+		inp_certfile = umcd.make( self['adconnector/uploadcert']['certfile'], maxfiles = 1 )
+
+		# create save and close button
+		req = umcp.Command( args = [ 'adconnector/uploadcert' ] )
+		actions = ( umcd.Action( req, [ inp_certfile.id() ] ), )
+		btn_save = umcd.Button( _('Save'), 'actions/ok', actions = actions, close_dialog = False )
+
+		btn_close = umcd.CloseButton()
+
+		# create layout
+		list_items = umcd.List()
+		list_items.add_row( [ _('Please select the file containing the Active Directory certificate.') ] )
+		list_items.add_row( [ inp_certfile ] )
+		list_items.add_row( [ btn_save, btn_close ] )
+		frame = umcd.Frame( [list_items], _('Upload Active Directory Certificate'))
+
+		res.dialog = []
+		if self.msg['error'] or self.msg['warn'] or self.msg['hint']:
+			lst = umcd.List()
+			for key in ( 'error', 'warn', 'hint' ):
+				for msg in self.msg[key]:
+					img = umcd.Image( 'adconnector/%s' % key )
+					txt = umcd.Text( msg )
+					lst.add_row( [ ( img, txt ) ] )
+			res.dialog.append( umcd.Frame( [lst], _('Messages') ) )
+
+		res.dialog.append(frame)
+
+		self.revamped(obj.id(), res)
+
+
+	def _web_setstate(self, obj, res):
+		_d = ud.function('adconnector.handler._web_setstate')
+		debugmsg( ud.ADMIN, ud.INFO, 'web_setstate: options=%s' % obj.options )
+
+		self.__update_status()
+
+		btn_close = umcd.CloseButton()
+
+		res.dialog = []
+		lst = umcd.List()
+		if self.msg['error'] or self.msg['warn'] or self.msg['hint']:
+			for key in ( 'error', 'warn', 'hint' ):
+				for msg in self.msg[key]:
+					img = umcd.Image( 'adconnector/%s' % key )
+					txt = umcd.Text( msg )
+					lst.add_row( [ ( img, txt ) ] )
+
+		lst.add_row( [ btn_close ] )
+		res.dialog = [ lst ]
+#		res.dialog.append( umcd.Frame( [lst], '' ) )
+
+
+		self.revamped(obj.id(), res)
 

@@ -7,298 +7,279 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-11-03 10:57+0100\n"
-"PO-Revision-Date: 2008-11-03 10:32+0100\n"
+"POT-Creation-Date: 2009-01-21 17:27+0100\n"
+"PO-Revision-Date: 2009-01-21 17:43+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 
-#: __init__.py:52
-msgid "Online Updates"
-msgstr "Online-Updates"
+#: __init__.py:54
+msgid "AD Connector"
+msgstr "AD Connector"
 
-#: __init__.py:53
-msgid "Manage system updates"
-msgstr "Verwaltung von System-Updates"
+#: __init__.py:55 __init__.py:78 __init__.py:79 __init__.py:489
+msgid "Configure AD Connector"
+msgstr "AD Connector einrichten"
 
-#: __init__.py:58 __init__.py:59
+#: __init__.py:69 __init__.py:70
 msgid "Overview"
 msgstr "Übersicht"
 
-#: __init__.py:67 __init__.py:68
-msgid "Release Update Settings"
-msgstr "Übersicht der Versionen"
+#: __init__.py:82
+msgid "action"
+msgstr ""
 
-#: __init__.py:71
-msgid "Repository Server"
-msgstr "Repository Server"
+#: __init__.py:83
+msgid "Hostname of Active Directory server"
+msgstr "Rechnername des Active Directory Servers"
 
-#: __init__.py:72
-msgid "Repository Prefix"
-msgstr "Repository Prefix"
+#: __init__.py:84
+msgid "BaseDN of Active Directory"
+msgstr "BasisDN des Active Directorys"
 
-#: __init__.py:77 __init__.py:82
-msgid "Check for updates"
-msgstr "Auf Aktualisierungen prüfen"
+#: __init__.py:85
+msgid "DN of replication user"
+msgstr "DN des Replikationsbenutzers"
 
-#: __init__.py:87 __init__.py:101 __init__.py:106
-msgid "Component settings updates"
-msgstr "Komponenten Einstellungen"
+#: __init__.py:86
+msgid "Password of replication user"
+msgstr "Passwort des Replikationsbenutzers"
+
+#: __init__.py:87
+msgid "Poll Interval (seconds)"
+msgstr "Polling-Intervall (in Sekunden)"
+
+#: __init__.py:88
+msgid "Version of Windows server"
+msgstr "Version des Windows-Servers"
+
+#: __init__.py:89
+msgid "Windows 2000"
+msgstr "Windows 2000"
+
+#: __init__.py:89
+msgid "Windows 2003"
+msgstr "Windows 2003"
 
 #: __init__.py:90
-msgid "Enabled"
-msgstr "Aktiviert"
-
-#: __init__.py:91
-msgid "Server"
-msgstr "Server"
+msgid "Retry interval for rejected objects"
+msgstr "Wiederholungsintervall für abgelehnte Objekte"
 
 #: __init__.py:92
-msgid "Prefix"
-msgstr "Prefix"
+msgid "Debug level of AD Connector"
+msgstr "Debug-Level des AD Connectors"
 
 #: __init__.py:93
-msgid "Name"
-msgstr "Name"
+msgid "0"
+msgstr "0"
 
-#: __init__.py:94
-msgid "Description"
-msgstr "Beschreibung"
+#: __init__.py:93
+msgid "1"
+msgstr "1"
+
+#: __init__.py:93
+msgid "2"
+msgstr "2"
+
+#: __init__.py:93
+msgid "3"
+msgstr "3"
+
+#: __init__.py:93
+msgid "4"
+msgstr "4"
 
 #: __init__.py:95
-msgid "Unmaintained"
-msgstr "Unmaintained"
+msgid "Add debug output for functions"
+msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
-#: __init__.py:96
-msgid "Username"
-msgstr "Benutzername"
+#: __init__.py:96 __init__.py:435
+msgid "no"
+msgstr "nein"
+
+#: __init__.py:96 __init__.py:434
+msgid "yes"
+msgstr "ja"
 
 #: __init__.py:97
-msgid "Password"
-msgstr "Passwort"
+msgid "AD Connector sync mode"
+msgstr "Synchronisationsmodus des AD Connectors"
+
+#: __init__.py:98
+msgid "read (AD --> UCS)"
+msgstr "lesen (AD --> UCS)"
+
+#: __init__.py:99
+msgid "write (UCS --> AD)"
+msgstr "schreiben (UCS --> AD)"
+
+#: __init__.py:100
+msgid "sync (AD <--> UCS)"
+msgstr "sync (AD <--> UCS)"
+
+#: __init__.py:101
+msgid "AD Connector group mapping language"
+msgstr "Verwendete Sprache für Gruppen-Mapping"
+
+#: __init__.py:107 __init__.py:108 __init__.py:670
+msgid "Upload Active Directory Certificate"
+msgstr "Active Directory-Zertifikat hochladen"
 
 #: __init__.py:111
-msgid "View the logfile during the update"
-msgstr "Die Logdatei während des Updates anzeigen"
+msgid "Please upload Active Directory certificate"
+msgstr "Bitte das Active Directory-Zertifikat hochladen."
 
-#: __init__.py:117
-msgid "View an update warning"
-msgstr "Anzeigen einer Update-Warnung"
+#: __init__.py:117 __init__.py:118
+msgid "Start/Stop AD Connector"
+msgstr "AD Connector starten/stoppen"
 
-#: __init__.py:221
-msgid "The following packages will be upgraded:"
-msgstr "Die folgenden Pakete werden aktualisiert:"
-
-#: __init__.py:229
-msgid "The following NEW packages will be installed:"
-msgstr "Die folgenden Pakete werden neu installiert:"
-
-#: __init__.py:344 __init__.py:349
-msgid "View logfile"
-msgstr "Logdatei anzeigen"
-
-#: __init__.py:345 __init__.py:350
-msgid "The Update is still in process"
-msgstr "Das Update ist noch nicht abgeschlossen."
-
-#: __init__.py:358 __init__.py:434
-msgid "Release Settings"
-msgstr "Release-Einstellungen"
-
-#: __init__.py:359
-msgid "UCS Release"
-msgstr "UCS Version"
-
-#: __init__.py:360
-msgid "Security Patchlevel"
-msgstr "Security Patchlevel"
-
-#: __init__.py:363 __init__.py:369
-msgid "Install this update"
-msgstr "Führe das Update durch"
-
-#: __init__.py:364
+#: __init__.py:192
 #, python-format
-msgid "The installed version is %(old)s and %(new)s is available."
-msgstr "Die installierte Version ist %(old)s und verfügbar ist %(new)s."
+msgid ""
+"An error occured while saving .htaccess (filename=%(fn)s ; exception=%"
+"(exception)s)"
+msgstr "Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename=%(fn)s ; exception=%(exception)s)"
 
-#: __init__.py:366
+#: __init__.py:238
 #, python-format
-msgid "The installed version is %s and there is no update available."
-msgstr "Die installierte Version ist %s und es steht kein Update verfügbar."
+msgid "saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
+msgstr "Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; exception=%(exception)s)"
 
-#: __init__.py:370
+#: __init__.py:242
+msgid "AD connector settings have been saved."
+msgstr "AD Connector-Einstellungen wurden gespeichert."
+
+#: __init__.py:291
 #, python-format
-msgid "The installed security release is %(old)s and %(new)s is available"
-msgstr ""
-"Die installierte Security-Version ist %(old)s und verfügbar ist %(new)s"
+msgid "copy of %s/%s to %s/%s failed (exception=%s)"
+msgstr "Das Kopieren von %s/%s nach %s/%s ist fehlgeschlagen (exception=%s)"
 
-#: __init__.py:372
+#: __init__.py:295
 #, python-format
-msgid "The installed security release is %s and there is no update available."
-msgstr ""
-"Die installierte Security-Version ist %s und es steht kein Update zur "
-"Verfügung."
+msgid "creation of certificate failed (%s)"
+msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 
-#: __init__.py:374
+#: __init__.py:326
+msgid ""
+"Could not determine baseDN of given ldap server. Maybe FQDN is wrong or "
+"unresolvable!"
+msgstr "Konnte BasisDN des angegebenen Servers nicht ermitteln. Angegebener FQDN ist ggf. falsch oder nicht auflösbar!"
+
+#: __init__.py:362
+msgid "Certificate has been uploaded successfully."
+msgstr "Zertifikat wurde erfolgreich installiert."
+
+#: __init__.py:365
+msgid "Certificate upload or conversion failed."
+msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
+
+#: __init__.py:386
+msgid "Univention AD Connector is already running. Nothing to do."
+msgstr "Univention AD Connector ist bereits aktiv. Keine Aktion notwendig."
+
+#: __init__.py:390
+msgid "Univention AD Connector is already stopped. Nothing to do."
+msgstr "Univention AD Connector ist bereits gestoppt. Keine Aktion notwendig."
+
+#: __init__.py:400
 #, python-format
-msgid "The installed version is %s."
-msgstr "Die installierte Version ist %s."
+msgid ""
+"Unknown command (\"%s\") Please report error to your local administrator"
+msgstr "Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator melden."
 
-#: __init__.py:375
-#, python-format
-msgid "The installed security release is %s"
-msgstr "Die installierte Security-Version ist %s"
+#: __init__.py:416
+msgid "Switching running state of Univention AD Connector failed."
+msgstr "Starten/Stoppen des AD Connectors ist fehlgeschlagen."
 
-#: __init__.py:379 __init__.py:408 __init__.py:409
-msgid "Check for Updates"
-msgstr "Prüfen auf Updates"
-
-#: __init__.py:394
-#, python-format
-msgid "Modify Component %s"
-msgstr "Modifiziere Komponente %s"
-
-#: __init__.py:396
-msgid "This component is enabled"
-msgstr "Diese Komponente ist aktiviert"
-
-#: __init__.py:398
-msgid "This component is disabled"
-msgstr "Diese Komponente ist deaktiviert"
-
-#: __init__.py:416 __init__.py:417
-msgid "Add a new Component"
-msgstr "Eine neue Komponente hinzufügen"
-
-#: __init__.py:421
-msgid "Release Information"
-msgstr "Versions-Informationen"
+#: __init__.py:420
+msgid "Univention AD Connector has been started."
+msgstr "Univention AD Connector wurde gestartet."
 
 #: __init__.py:422
-msgid "Components"
-msgstr "Komponenten"
+msgid "Univention AD Connector has been stopped."
+msgstr "Univention AD Connector wurde beendet."
 
-#: __init__.py:454
-msgid "The Updater is still in process."
-msgstr "Das Update ist noch nicht abgeschlossen."
+#: __init__.py:477
+msgid "Configured:"
+msgstr "Konfiguration vollständig:"
 
-#: __init__.py:454
+#: __init__.py:478
+msgid "AD certificate installed:"
+msgstr "AD Zertifikat installiert:"
+
+#: __init__.py:479
+msgid "Running:"
+msgstr "Gestartet:"
+
+#: __init__.py:481
+msgid "AD connector status"
+msgstr "AD Connector-Status"
+
+#: __init__.py:488
+msgid "Configure AD connector"
+msgstr "AD Connector einrichten"
+
+#: __init__.py:493
+msgid "IMG"
+msgstr "IMG"
+
+#: __init__.py:494
+msgid "Download .msi package and UCS certificate"
+msgstr "Download des .msi-Pakets und UCS-Zertifikats"
+
+#: __init__.py:498
+msgid "Upload AD certificate"
+msgstr "AD-Zertifikat installieren"
+
+#: __init__.py:499
+msgid "Upload AD Certificate"
+msgstr "AD-Zertifikat installieren"
+
+#: __init__.py:504
+msgid "Stop Univention AD Connector"
+msgstr "Univention AD Connector beenden"
+
+#: __init__.py:507
+msgid "Start Univention AD Connector"
+msgstr "Univention AD Connector starten"
+
+#: __init__.py:515
+msgid "Actions"
+msgstr "Aktionen"
+
+#: __init__.py:546
+msgid "Determine BaseDN"
+msgstr "BasisDN ermitteln"
+
+#: __init__.py:554
+#, python-format
 msgid ""
-"Please be patient the update may take a while. Press the refresh button to "
-"see the latest log."
-msgstr ""
-"Bitte gedulten Sie sich, das Update ist noch nicht abgeschlossen. Durch "
-"einen Klick auf den Aktualisierungs-Buttons werden die aktuellsten "
-"Loginformationen angezeigt."
+"BaseDN of %s has been determined successfully. Suggestion for replication "
+"user has been set."
+msgstr "BasisDN von %s wurde erfolgreich ermittelt. Vorschlag für Replikationsbenutzer wurde automatisch gesetzt."
 
-#: __init__.py:456
-msgid "Refresh"
-msgstr "Aktualisieren"
+#: __init__.py:574
+msgid "Password of replication user has not been set yet!"
+msgstr "Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
 
-#: __init__.py:459 __init__.py:561
-msgid "The Updater finished."
-msgstr "Der Update-Vorgang ist beendet."
+#: __init__.py:615
+msgid "Save Changes"
+msgstr "Änderungen speichern"
 
-#: __init__.py:503
-msgid "Component settings"
-msgstr "Komponenten Einstellungen"
+#: __init__.py:630
+msgid "AD Connector Configuration"
+msgstr "AD Connector-Konfiguration"
 
-#: __init__.py:540 __init__.py:683
-msgid "Confirm the updater warning"
-msgstr "Bestägen der Updater-Warnung"
+#: __init__.py:640 __init__.py:680
+msgid "Messages"
+msgstr "Nachrichten"
 
-#: __init__.py:541 __init__.py:557 __init__.py:584
-msgid "Continue"
-msgstr "Fortfahren"
+#: __init__.py:661
+msgid "Save"
+msgstr "Speichern"
 
-#: __init__.py:545
-msgid "No Updates available"
-msgstr "Es stehen keine Updates zur Verfügung."
-
-#: __init__.py:556
-msgid "Execute the update"
-msgstr "Das Update durchführen"
-
-#: __init__.py:645
-msgid "Attention!"
-msgstr "Warnung!"
-
-#: __init__.py:646
-msgid ""
-"Installing an system update is a significant change to your IT environment."
-"<br>"
-msgstr ""
-"Das Einspielen eines Updates ist ein signifikanter Eingriff in die "
-"vorhandene IT-Infrastruktur.<br>"
-
-#: __init__.py:647
-msgid ""
-"In the normal case, undisturbed use operation cannot be guaranteed during "
-"the update,<br>"
-msgstr ""
-"Im Normallfall ist das stögsfreie Arbeiten von Anwendern wwäend des Updates "
-"nicht gegeben,<br>"
-
-#: __init__.py:648
-msgid ""
-"since system services may need to be restarted. Thus, updates shouldn't be "
-"installed<br>"
-msgstr ""
-"da bspw. Dienste neu gestartet werden.Deshalb sollten Sie das Update<br>"
-
-#: __init__.py:649
-msgid ""
-"on a live system. It is also recommend to evaluate the update in a test "
-"environment<br>"
-msgstr "nicht im laufenden Betrieb einspielen. Tests in einer Testumgebung<br>"
-
-#: __init__.py:650
-msgid "and to create a backup of the system."
-msgstr ""
-"und die Erstellung einer Sicherung des Systems werden ebenfalls empfohlen."
-
-#: __init__.py:652
-msgid ""
-"During setup, the web server may be stopped, leading to a termination of the "
-"HTTP<br>"
-msgstr ""
-"Wähend des Updates kann es vorkommen, dass der Webserver beendet wird und "
-"diese Verbindung<br>"
-
-#: __init__.py:653
-msgid ""
-"connection. Nonetheless, the update proceeds and the update can be monitored "
-"from a<br>"
-msgstr ""
-"unterbrochen wird. Das Update wird trotzdem weiter durchgeführt und in einer "
-"neuen UMC-Sitzung kann der Vorgang des Updates dann"
-
-#: __init__.py:654
-msgid ""
-"new UMC session. Logfiles can be found in the directory /var/log/univention/"
-msgstr ""
-"weiter beobachtet werden. Logdatien könn im Verzeichnis /var/log/univention/ "
-"gefunden werden"
-
-#: __init__.py:656
-msgid ""
-"Please also consider the release notes, changelogs and references posted in "
-"the<br>"
-msgstr ""
-"Bitte beachten Sie auch die Release Notes, Changelogs und Hinweise zu dem "
-"jeweiligen Update in dem<br>"
-
-#: __init__.py:657
-msgid "<a href=http://forum.univention.de>Univention Forum</a>."
-msgstr "<a href=http://forum.univention.de>Univention Forum</a>."
-
-#: __init__.py:659
-msgid "Do you really wish to proceed?"
-msgstr "Wollen Sie wirklich fortfahren?"
-
-#: __init__.py:673
-msgid "Show the update process"
-msgstr "Zeige den Update-Vorgang"
+#: __init__.py:667
+msgid "Please select the file containing the Active Directory certificate."
+msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."
