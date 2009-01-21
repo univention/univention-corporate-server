@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-22) unstable; urgency=low
+
+  * fixed an issue with autosearch which was not working in any case. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 21 Jan 2009 14:28:31 +0100
+
 univention-directory-manager (6.0.1-21) unstable; urgency=low
 
   * removed default search value for module dns/dns. Bug #11463
