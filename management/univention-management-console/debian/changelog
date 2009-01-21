@@ -1,3 +1,9 @@
+univention-management-console (1.0.3-1) unstable; urgency=low
+
+  * removed absolute path in umcd.Link (Bug #13152)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Wed, 21 Jan 2009 16:22:12 +0100
+
 univention-management-console (1.0.2-1) unstable; urgency=low
 
   * added flag to show icon and text while using umcd.Link (Bug #12534)

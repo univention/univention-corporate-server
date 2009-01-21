@@ -66,7 +66,7 @@ def link_map( storage, umcp_part ):
 		txt = ''
 		if umcp_part.show_icon_and_text():
 			txt = umcp_part.get_text()
-		html = ' <a href="%s" target="_blank"><img class="button_icon" src="/umc/%s" alt="%s">%s</a>' % \
+		html = ' <a href="%s" target="_blank"><img class="button_icon" src="%s" alt="%s">%s</a>' % \
 			   ( umcp_part.get_link(), umc_tools.image_get( umcp_part.get_icon(),
 															umc_tools.SIZE_MEDIUM ), umcp_part.get_text(), txt )
 	else:
