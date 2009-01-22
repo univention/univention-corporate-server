@@ -61,10 +61,7 @@ test_retval $? "Could not chroot to $instmnt."
 
 # packages
 chroot $instmnt << __EOF__
-. /etc/univention/installation_profile
-for i in $packages; do
-	dpkg -l \$i | grep "^ii[[:space:]]*\$i" >/dev/null || exit 1
-done
+dpkg -l | egrep "^i[^i]" >/dev/null && exit 1
 __EOF__
 test_retval $? "Not all software packages were correctly installed."
 

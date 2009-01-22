@@ -48,9 +48,13 @@ def exit():
 # defaults
 error_log = "/tmp/installation_error.log"
 language_file = "/tmp/language"
-y_length = 20
-x_length = 60
-border = 5
+y_length = 26
+x_length = 76
+border = 2
+
+# geometry
+text_length = y_length - (2 * border) - 4
+text_width = x_length - (2 * border) - 2
 
 # get and set language
 if os.path.isfile(language_file):
@@ -74,16 +78,16 @@ curses.init_pair(3, curses.COLOR_RED, curses.COLOR_WHITE)
 win = curses.newwin(y_length, x_length, border, border)
 win.bkgd(curses.color_pair(1))
 win.box()
-win.addstr(18,27,"[ OK ]", curses.color_pair(2))
+win.addstr(y_length - border , x_length / 2 - 3,"[ OK ]", curses.color_pair(2))
 
 # installation message
 if os.path.isfile(error_log):
 	win.addstr(2, 2, _("Installation failed!"), curses.color_pair(3))
 	win.addstr(3, 2, _("Please restart the computer and try again."), curses.color_pair(3))
 	win.addstr(5, 2, _("Installation Log:"))
-	for i in xrange(1, 10):
+	for i in xrange(1, text_length):
 		line = linecache.getline(error_log, i)
-		line = line[:50]
+		line = line[:text_width]
 		line = line.replace("\n", " ")
 		win.addstr(5 + i, 5, line)
 else:

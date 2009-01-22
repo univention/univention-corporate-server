@@ -1,3 +1,10 @@
+univention-installer (3.0.0-18) unstable; urgency=low
+
+  * test all installed packages (Bug: #12190)
+  * geometry of end.yp changed (Bug: #12190)
+
+ -- Felix Botner <botner@univention.de>  Thu, 22 Jan 2009 14:51:51 +0100
+
 univention-installer (3.0.0-17) unstable; urgency=low
 
   * fixed bug when removing LVM PV (Bug: #11093)
