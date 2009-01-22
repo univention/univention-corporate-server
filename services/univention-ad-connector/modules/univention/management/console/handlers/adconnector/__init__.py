@@ -57,7 +57,7 @@ categories = ['all', 'system']
 
 class UMC_AD_StaticSelection( umc.StaticSelection ):
 	def __init__( self, required = True, title = '', choices = () ):
-		umc.StaticSelection.__init__( self, unicode( title ), required = required )
+		umc.StaticSelection.__init__( self, title, required = required )
 		self.default_choices_list = choices
 	def choices( self ):
 		return self.default_choices_list

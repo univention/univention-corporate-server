@@ -1,3 +1,9 @@
+univention-ad-connector (2.0.4-4) unstable; urgency=low
+
+  * fixed translation bug for StaticSelection widgets (Bug #8736)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 22 Jan 2009 10:06:09 +0100
+
 univention-ad-connector (2.0.4-3) unstable; urgency=low
 
   * removed unused debug output (Bug #8736)
