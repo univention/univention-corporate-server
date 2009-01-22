@@ -410,7 +410,7 @@ class object(content):
 						_('If a network is installed please try'),
 						_('to load additional kernel modules at'),
 						_('the beginning of the installation.')]
-					self.sub=msg_win(self, self.pos_y+4, self.pos_x+4, self.width-6, self.height-13, msglist)
+					self.sub=msg_win(self, self.pos_y+4, self.pos_x-7, self.width-6, self.height-13, msglist)
 					self.sub.draw()
 				else:
 					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)

@@ -1,3 +1,9 @@
+univention-installer (3.0.0-16) unstable; urgency=low
+
+  * centering network test error message (Bug: #12444)
+
+ -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu, 22 Jan 2009 14:18:02 +0100
+
 univention-installer (3.0.0-15) unstable; urgency=low
 
   * scan cciss devices correctly (Bug: #12529)
