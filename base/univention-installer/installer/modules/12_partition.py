@@ -889,19 +889,18 @@ class object(content):
 				result[0] = '/dev/%s' % grp[4]
 				if grp[5]:
 					result[1] = int(grp[5])
-		if result[1]:
-			self.debug("XXXXXXXXXXXXXXXXXXXXXXXX result %s" % result)
+		if result[0]:
+			self.debug("test_old_device_syntax: result=%s" % result)
 			return result
 		# cciss
 		regex = re.compile('/dev/([^/]+)/([a-zA-Z0-9]+)p(\d+)')
 		match = regex.match(entry)
 		if match:
 			grp = match.groups()
-			if grp[0] and grp[1] and grp[2]:
-				result[0] = '/dev/%s/%s' % (grp[0], grp[1])
-				result[1] = grp[2]
-		if result[1]:
-			self.debug("XXXXXXXXXXXXXXXXXXXXXXXX result %s" % result)
+			result[0] = '/dev/%s/%s' % (grp[0], grp[1])
+			result[1] = grp[2]
+		if result[0]:
+			self.debug("test_old_device_syntax: result=%s" % result)
 			return result
 		return None
 
@@ -1687,12 +1686,11 @@ class object(content):
 
 	class partition(subwin):
 
-		ERROR = False
-
 		def __init__(self,parent,pos_y,pos_x,width,height):
 			self.part_objects = {}
 			subwin.__init__(self,parent,pos_y,pos_x,width,height)
 			self.check_lvm_msg()
+			self.ERROR = False
 
 		def auto_partitioning_question_usbstorage_callback(self, result):
 			self.container['autopart_usbstorage'] = True
@@ -2448,14 +2446,26 @@ class object(content):
 								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							if vg['freePE'] < 0 or vg['allocPE'] < 0 or vg['totalPE'] < 0:
 								self.parent.debug('ASSERTION FAILED: vg[freePE]=%d  vg[allocPE]=%d  vg[totalPE]=%d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
-							# reduce VG
-							if self.container['lvm']['vg'][vgname]['created']:
+							# reduce or remove VG
+							# check if PV is last PV in VG ==> if yes, then call vgremove ==> else call vgreduce
+							vg_cnt = 0
+							for tmppvname, tmppv in self.container['lvm']['pv'].items():
+								if tmppv['vg'] == vgname:
+									vg_cnt += 1
+							self.parent.debug('pv_delete: vgname=%s  vg_cnt=%s' % (vgname, vg_cnt))
+							if vg_cnt > 1:
+								self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
+							elif vg_cnt == 1:
 								self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
 								self.container['history'].append('/sbin/vgremove %s ' % vgname)
 								self.container['lvm']['vg'][ vgname ]['created'] = 0
-								self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
-#								self.container['history'].append('/sbin/pvscan')
-#								self.container['history'].append('/sbin/vgscan')
+							else:
+								self.parent.debug('pv_delete: installer is confused: vg_cnt is 0: doing nothing')
+							pv['vg'] = ''
+
+						# removing LVM PV signature from partition
+						self.container['history'].append('/sbin/pvremove %s %s' % (forceflag, device))
+
 			return False
 
 		def part_delete(self,index):
@@ -3120,7 +3130,8 @@ class object(content):
 				if error:
 					self.ERROR = False
 					msg = []
-					for err in error.split('\n'): msg.append(err[:60])
+					for err in error.split('\n'):
+						msg.append(err[:60])
 					self.sub = msg_win(self,self.pos_y+1,self.pos_x+1,self.width-1,2,msg)
 					self.parent.start()
 					self.draw()
@@ -3131,14 +3142,17 @@ class object(content):
 			self.draw()
 			self.act = self.active(self, _('Write partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()
-			if self.ERROR: return _("Error while writing partitions:") + "\n" + self.ERROR
+			if self.ERROR:
+				return _("Error while writing partitions:") + "\n" + self.ERROR
 			if self.container['lvm']['enabled']:
 				self.act = self.active(self, _('Create LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
 				self.act.draw()
-				if self.ERROR: return _("Error while creating LVM volumes:") +"\n" + self.ERROR
+				if self.ERROR:
+					return _("Error while creating LVM volumes:") +"\n" + self.ERROR
 			self.act = self.active(self, _('Create Filesystems'), _('Please wait ...'), name='act', action='make_filesystem')
 			self.act.draw()
-			if self.ERROR: return _("Error while creating filesystems:") + "\n" + self.ERROR
+			if self.ERROR:
+				return _("Error while creating filesystems:") + "\n" + self.ERROR
 			self.draw()
 
 		class active(act_win):
@@ -3156,12 +3170,13 @@ class object(content):
 				self.parent.parent.debug('running "%s"' % command)
 				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
-				self.parent.parent.debug('==> %s %s %s (%s)' % (command, stderr, stdout, proc.returncode))
+				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDOUT:\n%s\nSTDERR:\n%s' %
+										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
 				if proc.returncode:
 					self.parent.container['history']=[]
 					self.parent.ERROR = "%s (%s)\n%s " % (command, proc.returncode, stderr)
-					return 1
-				return 0
+
+				return proc.returncode
 
 			def function(self):
 				if self.action == 'read_lvm':
@@ -3171,7 +3186,7 @@ class object(content):
 					self.parent.parent.debug('Create Partitions')
 					for command in self.parent.container['history']:
 						retval = self.run_command(command)
-						if retval != 0: 
+						if retval:
 							return
 					self.parent.container['history']=[]
 					self.parent.parent.written=1
@@ -3192,7 +3207,7 @@ class object(content):
 								else:
 									mkfs_cmd='/bin/true %s' % device
 								retval = self.run_command(mkfs_cmd)
-								if retval != 0:
+								if retval:
 									return
 								self.parent.container['disk'][disk]['partitions'][part]['format']=0
 					# create filesystems on logical volumes
@@ -3211,7 +3226,7 @@ class object(content):
 								else:
 									mkfs_cmd='/bin/true %s' % device
 								retval = self.run_command(mkfs_cmd)
-								if retval != 0:
+								if retval:
 									return
 								vg['lv'][lvname]['format'] = 0
 

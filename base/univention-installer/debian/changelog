@@ -1,3 +1,9 @@
+univention-installer (3.0.0-17) unstable; urgency=low
+
+  * fixed bug when removing LVM PV (Bug: #11093)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 22 Jan 2009 14:43:37 +0100
+
 univention-installer (3.0.0-16) unstable; urgency=low
 
   * centering network test error message (Bug: #12444)
