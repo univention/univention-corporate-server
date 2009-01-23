@@ -2446,21 +2446,22 @@ class object(content):
 								self.parent.debug('ASSERTION FAILED: vg[freePE] + vg[allocPE] != vg[totalPE]: %d + %d != %d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
 							if vg['freePE'] < 0 or vg['allocPE'] < 0 or vg['totalPE'] < 0:
 								self.parent.debug('ASSERTION FAILED: vg[freePE]=%d  vg[allocPE]=%d  vg[totalPE]=%d' % (vg['freePE'], vg['allocPE'], vg['totalPE']))
-							# reduce or remove VG
-							# check if PV is last PV in VG ==> if yes, then call vgremove ==> else call vgreduce
-							vg_cnt = 0
-							for tmppvname, tmppv in self.container['lvm']['pv'].items():
-								if tmppv['vg'] == vgname:
-									vg_cnt += 1
-							self.parent.debug('pv_delete: vgname=%s  vg_cnt=%s' % (vgname, vg_cnt))
-							if vg_cnt > 1:
-								self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
-							elif vg_cnt == 1:
-								self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
-								self.container['history'].append('/sbin/vgremove %s ' % vgname)
-								self.container['lvm']['vg'][ vgname ]['created'] = 0
-							else:
-								self.parent.debug('pv_delete: installer is confused: vg_cnt is 0: doing nothing')
+							# reduce or remove VG if VG is still present:
+							#   then check if PV is last PV in VG ==> if yes, then call vgremove ==> else call vgreduce
+							if self.container['lvm']['vg'][ vgname ]['created']:
+								vg_cnt = 0
+								for tmppvname, tmppv in self.container['lvm']['pv'].items():
+									if tmppv['vg'] == vgname:
+										vg_cnt += 1
+								self.parent.debug('pv_delete: vgname=%s	 vg_cnt=%s' % (vgname, vg_cnt))
+								if vg_cnt > 1:
+									self.container['history'].append('/sbin/vgreduce %s %s' % (vgname, device))
+								elif vg_cnt == 1:
+									self.container['history'].append('/sbin/vgreduce -a --removemissing %s' % vgname)
+									self.container['history'].append('/sbin/vgremove %s ' % vgname)
+									self.container['lvm']['vg'][ vgname ]['created'] = 0
+								else:
+									self.parent.debug('pv_delete: installer is confused: vg_cnt is 0: doing nothing')
 							pv['vg'] = ''
 
 						# removing LVM PV signature from partition
@@ -3170,7 +3171,7 @@ class object(content):
 				self.parent.parent.debug('running "%s"' % command)
 				proc = subprocess.Popen(command,bufsize=0,shell=True,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
 				(stdout, stderr) = proc.communicate()
-				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDOUT:\n%s\nSTDERR:\n%s' %
+				self.parent.parent.debug('===(exitcode=%d)====> %s\nSTDOUT:\n=> %s\nSTDERR:\n=> %s' %
 										 (proc.returncode, command, stderr.replace('\n','\n=> '), stdout.replace('\n','\n=> ')))
 				if proc.returncode:
 					self.parent.container['history']=[]

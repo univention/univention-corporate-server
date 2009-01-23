@@ -1,3 +1,9 @@
+univention-installer (3.0.2-1) unstable; urgency=low
+
+  * do not reduce VG if it has been removed (Bug 11093)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Fri, 23 Jan 2009 11:56:25 +0100
+
 univention-installer (3.0.1-1) unstable; urgency=low
 
   * re-write creation of local repository using univention-repository-create (Bug: #12511)
