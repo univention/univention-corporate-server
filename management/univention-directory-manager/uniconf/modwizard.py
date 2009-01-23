@@ -1142,7 +1142,8 @@ class modwizard(unimodule.unimodule):
 			resultsrows=[]
 			cols=[]
 			cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[header(_("Object"),{"type":"6"},{})]}))
-			if search_property_name != '*':
+			if search_property_name != '*' \
+					and not search_module.property_descriptions[search_property_name].identifies:
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[header(search_property.short_description,{"type":"6"},{})]}))
 			list_attributes = settings.getListAttributes(search_type)
 			for list_attribute in list_attributes:
@@ -1181,7 +1182,8 @@ class modwizard(unimodule.unimodule):
 				self.editbuts.append((edit_button, sub_object.dn, sub_object_type, univention.admin.objects.arg(sub_object)))
 				cols.append(tablecol("",{'type':'wizard_layout'},{"obs":[edit_button]}))
 
-				if search_property_name != '*' and sub_object.has_key(search_property_name) and sub_object[search_property_name]:
+				if search_property_name != '*' and sub_object.has_key(search_property_name) and sub_object[search_property_name] \
+					and not search_module.property_descriptions[search_property_name].identifies:
 					tmpvalue=sub_object[search_property_name]
 					if type(tmpvalue) is not types.ListType:
 						displayvalue=[tmpvalue]

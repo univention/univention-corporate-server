@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-24) unstable; urgency=low
+
+  * removed the search property column from the result set if the search
+    property is equal to the identifying property. Bug #13131
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 23 Jan 2009 11:29:31 +0100
+
 univention-directory-manager (6.0.1-23) unstable; urgency=low
 
   * fixed an issue with autosearch that caused result sets of more than 1000
