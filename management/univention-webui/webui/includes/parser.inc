@@ -174,7 +174,9 @@ class webui_out{			# PHP ---> Python
 				  // with enabled dijit.form.FilteringSelect and IE, this array contains not only 
 				  // the selected ID but also the string representation. We need only the ID which 
 				  // is the second value. As we don't know the browser, we just get the last item.
-					$this->input[end($value)] = '1';
+					if (end($value)) { // check if the value is set, see Bug #13063
+						$this->input[end($value)] = '1';
+					}
 					break;					
 				case 'multiple':
 					$value = array_flip($value);
