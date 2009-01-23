@@ -94,7 +94,7 @@ class object(content):
 
 			else:
 				return self.get_elem_by_id(self.current).key_event(key)
-		except AttributeError: 
+		except AttributeError:
 			# it might be possible, that the focus is on the textline (OXAE). Bug #12205
 			return
 
@@ -110,17 +110,8 @@ class object(content):
 	def result(self):
 		result={}
 
-		oxae = False
-		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
-			oxae = True
-
-		if oxae:
-			result['local_repository']='false'
-		else:
-			if len(self.get_elem('create_local_repo').selected) > 0:
-				result['local_repository']='true'
-			else:
-				result['local_repository']='false'
+		# by default no local repository is created
+		result[ 'local_repository' ] = 'false'
 
 		if not (self.all_results.has_key('system_role') and self.all_results['system_role'] in ['basesystem']):
 			if len(self.get_elem('create_home_share').selected) > 0:

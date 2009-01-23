@@ -1,3 +1,11 @@
+univention-installer (3.0.1-1) unstable; urgency=low
+
+  * re-write creation of local repository using univention-repository-create (Bug: #12511)
+  * set default for local repository to no (Bug: #12511)
+  * support repositories with new directory structure (Bug: #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Jan 2009 09:29:00 +0100
+
 univention-installer (3.0.0-18) unstable; urgency=low
 
   * test all installed packages (Bug: #12190)
@@ -33,91 +41,91 @@ univention-installer (3.0.0-13) unstable; urgency=low
 
   * translations for error messages in partition tool (Bug: #10782 #11093)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 20 Jan 2009 13:47:11 +0100
+ -- Felix Botner <fbotner@univention.de>  Tue, 20 Jan 2009 13:47:11 +0100
 
 univention-installer (3.0.0-12) unstable; urgency=low
 
-  * error messages in partition tool (Bug: #10782 #11093) 
+  * error messages in partition tool (Bug: #10782 #11093)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Tue, 20 Jan 2009 13:23:05 +0100
+ -- Felix Botner <fbotner@univention.de>  Tue, 20 Jan 2009 13:23:05 +0100
 
 univention-installer (3.0.0-11) unstable; urgency=low
 
   * new status screen at the end of the installation (Bug: #12190)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri, 16 Jan 2009 10:24:43 +0100
+ -- Felix Botner <fbotner@univention.de>  Fri, 16 Jan 2009 10:24:43 +0100
 
 univention-installer (3.0.0-10) unstable; urgency=low
 
   * warning if not eth0 was found in network module (Bug: #12444)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Wed, 14 Jan 2009 10:03:27 +0100
+ -- Felix Botner <fbotner@univention.de>  Wed, 14 Jan 2009 10:03:27 +0100
 
 univention-installer (3.0.0-9) unstable; urgency=low
 
   * univention-installer fix to run completemsg.sh correctly (Bug: #12190)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 12 Jan 2009 16:39:02 +0100
+ -- Felix Botner <fbotner@univention.de>  Mon, 12 Jan 2009 16:39:02 +0100
 
 univention-installer (3.0.0-8) unstable; urgency=low
 
   * added installer module to debian rules (Bug: #12190)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Mon, 12 Jan 2009 09:14:38 +0100
+ -- Felix Botner <fbotner@univention.de>  Mon, 12 Jan 2009 09:14:38 +0100
 
 univention-installer (3.0.0-7) unstable; urgency=low
 
   * graphical status screen at the end of the installation (Bug: #12190)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Sun, 11 Jan 2009 15:41:45 +0100
+ -- Felix Botner <fbotner@univention.de>  Sun, 11 Jan 2009 15:41:45 +0100
 
 univention-installer (3.0.0-6) unstable; urgency=low
 
   * new test script at the end of the installation to verify the installation (Bug: #12190)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri,  9 Jan 2009 11:12:04 +0100
+ -- Felix Botner <fbotner@univention.de>  Fri,  9 Jan 2009 11:12:04 +0100
 
 univention-installer (3.0.0-5) unstable; urgency=low
 
   * installation profile will be copied before joining the system (Bug: #10427)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Fri,  9 Jan 2009 09:29:00 +0100
+ -- Felix Botner <fbotner@univention.de>  Fri,  9 Jan 2009 09:29:00 +0100
 
 univention-installer (3.0.0-4) unstable; urgency=low
 
   * modules, defined via the "loadmodules" option, will be loaded automatically at the start of the installation (Bug: #11276)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 17:22:42 +0100
+ -- Felix Botner <fbotner@univention.de>  Thu,  8 Jan 2009 17:22:42 +0100
 
 univention-installer (3.0.0-3) unstable; urgency=low
 
   * modules, defined via the "loadmodules" option, will be loaded automatically at the start of the installation (Bug: #11276)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 15:53:18 +0100
+ -- Felix Botner <fbotner@univention.de>  Thu,  8 Jan 2009 15:53:18 +0100
 
 univention-installer (3.0.0-2) unstable; urgency=low
 
   * new test in network module if eth0 is available (Bug: #12444)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 14:53:56 +0100
+ -- Felix Botner <fbotner@univention.de>  Thu,  8 Jan 2009 14:53:56 +0100
 
 univention-installer (3.0.0-1) unstable; urgency=low
 
   * new regexes for domainname and hostname (a-z0-9 with hyphens between characters or letters) (Bug: #12646)
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 10:55:53 +0100
+ -- Felix Botner <fbotner@univention.de>  Thu,  8 Jan 2009 10:55:53 +0100
 
 univention-installer (3.0.0-0) unstable; urgency=low
 
   * bumped version
 
- -- Felix Botner <fbotner@visdalen.knut.univention.de>  Thu,  8 Jan 2009 10:52:15 +0100
+ -- Felix Botner <fbotner@univention.de>  Thu,  8 Jan 2009 10:52:15 +0100
 
 univention-installer (2.0.5-2) unstable; urgency=low
 
   * translate virtual interface names from Univention Config Registry into internal syntax (Bug #11614)
 
- -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  8 Dec 2008 18:51:12 +0100
+ -- Arvid Requate <arequate@univention.de>  Mon,  8 Dec 2008 18:51:12 +0100
 
 univention-installer (2.0.5-1) unstable; urgency=low
 
@@ -558,7 +566,7 @@ univention-installer (1.8.11-1) unstable; urgency=low
 
 univention-installer (1.8.10-2) unstable; urgency=low
 
-  * updated translations for Univention System Setup 
+  * updated translations for Univention System Setup
 
  -- Andreas B�sching <buesching@univention.de>  Sun,  9 Dec 2007 15:37:54 +0100
 
@@ -664,7 +672,7 @@ univention-installer (1.7.8-6) unstable; urgency=low
 univention-installer (1.7.8-5) unstable; urgency=low
 
   * reactivate lvm volume groups in post-installer-scripts
-  * copy installer logs to new system 
+  * copy installer logs to new system
 
  -- Sönke Schwardt <schwardt@univention.de>  Mon, 15 Oct 2007 17:15:05 +0200
 
@@ -852,7 +860,7 @@ univention-installer (1.6.20-1) unstable; urgency=low
 
 univention-installer (1.6.19-1) unstable; urgency=low
 
-  * advanced german translation for aborting installation 
+  * advanced german translation for aborting installation
 
  -- Bastian Neumann <neumann@univention.de>  Thu,  9 Aug 2007 09:58:18 +0200
 
@@ -870,7 +878,7 @@ univention-installer (1.6.17-1) unstable; urgency=low
 
 univention-installer (1.6.16-4) unstable; urgency=low
 
-  * added https proxy support 
+  * added https proxy support
 
  -- Bastian Neumann <neumann@univention.de>  Wed,  8 Aug 2007 14:47:59 +0200
 
@@ -960,9 +968,9 @@ univention-installer (1.6.14-12) unstable; urgency=low
     account within the menu layout.
   * Allow LDAP in strict mode.
   * Restructure security module layout.
-  * Mark menu selections as translatable.	
+  * Mark menu selections as translatable.
   * Update translations.
-	
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 09:51:36 +0200
 
 univention-installer (1.6.14-11) unstable; urgency=low
@@ -1044,7 +1052,7 @@ univention-installer (1.6.13-11) unstable; urgency=low
 
 univention-installer (1.6.13-10) unstable; urgency=low
 
-  * Added handling for https proxies 
+  * Added handling for https proxies
 
  -- Bastian Neumann <neumann@univention.de>  Mon, 30 Jul 2007 16:28:52 +0200
 
@@ -1174,7 +1182,7 @@ univention-installer (1.6.4-1) unstable; urgency=low
 
 univention-installer (1.6.3-1) unstable; urgency=low
 
-  * do not call python with -OO option anymore 
+  * do not call python with -OO option anymore
 
  -- Andreas Büsching <buesching@univention.de>  Sat, 14 Jul 2007 15:28:29 +0200
 
@@ -1186,19 +1194,19 @@ univention-installer (1.6.2-6) unstable; urgency=low
 
 univention-installer (1.6.2-5) unstable; urgency=low
 
-  * advanced end of installation for removing installation media 
+  * advanced end of installation for removing installation media
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 11 Jul 2007 14:44:51 +0200
 
 univention-installer (1.6.2-4) unstable; urgency=low
 
-  * installation device is know unmounted before system reboot 
+  * installation device is know unmounted before system reboot
 
  -- Bastian Neumann <neumann@univention.de>  Wed, 11 Jul 2007 14:07:12 +0200
 
 univention-installer (1.6.2-3) unstable; urgency=low
 
-  * use univention-config-registry instead of univention-baseconfig 
+  * use univention-config-registry instead of univention-baseconfig
 
  -- Andreas Büsching <buesching@univention.de>  Wed, 11 Jul 2007 12:57:06 +0200
 
@@ -1227,7 +1235,7 @@ univention-installer (1.5.9-2) unstable; urgency=low
 
 univention-installer (1.5.9-1) unstable; urgency=low
 
-  * replaced univention-admin with univention-directory-manager 
+  * replaced univention-admin with univention-directory-manager
 
  -- Andreas Büsching <buesching@univention.de>  Tue, 10 Jul 2007 09:55:35 +0200
 
@@ -1677,7 +1685,7 @@ univention-installer (0.6.10) unstable; urgency=low
 
 univention-installer (0.6.7) unstable; urgency=low
 
-  * updated english text and german translation 
+  * updated english text and german translation
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:26:37 +0100
 

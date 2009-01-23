@@ -66,7 +66,7 @@ class object(content):
 			if self.cmdline.has_key('nfsserver') and self.cmdline.has_key('nfspath'):
 				self.container['cdrom_devices'].append('nfs:%s:%s' % (self.cmdline['nfsserver'], self.cmdline['nfspath']))
 			elif self.cmdline.has_key('ip'):
-				self.container['cdrom_devices'].append('nfs:%s:/var/lib/univention-server-cdrom/' % (self.cmdline['ip'].split(':')[1]))
+				self.container['cdrom_devices'].append('nfs:%s:/var/lib/univention-repository/' % (self.cmdline['ip'].split(':')[1]))
 		else:
 			self.activate_network=0
 
@@ -288,7 +288,7 @@ class object(content):
 			self.elements.append(textline(_('Servername'),self.pos_y+4,self.pos_x+3)) #1
 			self.elements.append(input('', self.pos_y+5, self.pos_x+3,40))#2
 			self.elements.append(textline(_('Path'),self.pos_y+7,self.pos_x+3)) #3
-			self.elements.append(input('/var/lib/univention-server-cdrom', self.pos_y+8, self.pos_x+3,40))#4
+			self.elements.append(input('/var/lib/univention-repository', self.pos_y+8, self.pos_x+3,40))#4
 			self.elements.append(button("F12-"+_("Ok"),self.pos_y+11,self.pos_x+34,14)) #5
 			self.elements.append(button("ESC-"+_("Cancel"),self.pos_y+11,self.pos_x+3,16)) #6
 			self.current=2
@@ -408,9 +408,11 @@ class object(content):
 					os.system('cp /mnt/images/runtime.img /tmp')
 					os.mkdir('/tmp/runtime')
 					os.system('/bin/mount -o loop /tmp/runtime.img /tmp/runtime')
-				if os.path.exists('/mnt/script/installer/package_list.py'):
-					os.remove('/lib/univention-installer/package_list.py')
-					os.system('cp /mnt/script/installer/package_list.py /lib/univention-installer/')
+				# copy additional modules
+				for filename in ( 'package_list', 'repository' ):
+					if os.path.exists( '/mnt/script/installer/%s.py' % filename ):
+						os.remove( '/lib/univention-installer/%s.py' % filename )
+						os.system('cp /mnt/script/installer/%s.py /lib/univention-installer/' % filename )
 				if os.path.exists('/mnt/script/installer/modules'):
 					os.system('cp /mnt/script/installer/modules/*.py /lib/univention-installer/modules/ >/dev/null 2>&1')
 				os.system('mkdir -p /usr/share')

@@ -85,6 +85,7 @@ class object(content):
 		def function(self):
 			if self.action == 'preparing-package-list':
 				import package_list
+				import repository
 				filter = True
 				PackagesList = []
 				if not ( self.parent.cmdline.has_key('mode') and self.parent.cmdline['mode'] == 'setup' ):
@@ -97,16 +98,11 @@ class object(content):
 							res = os.system('/bin/mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
 						else:
 							res=os.system('/bin/mount -t iso9660 %s /mnt >/dev/null 2>&1'%cdrom_device)
-					if os.path.exists('/mnt/packages/Packages'):
-						fp = open('/mnt/packages/Packages', 'r')
-						for line in fp.readlines():
-							if line.startswith('Package: '):
-								PackagesList.append(line.split(' ')[1].strip('\r\n'))
-						fp.close()
-					else:
-						PackagesList = 'INVALID'
-					res=os.system('umount /mnt >/dev/null 2>&1')
+					major, minor = self.get_first_version()
 
+					repository.get_package_list( PackagesList )
+					repository.create_sources_list()
+					res=os.system('umount /mnt >/dev/null 2>&1')
 
 				if os.path.exists('/usr/bin/apt-get'):
 					res = os.system('apt-get update >/dev/null 2>&1' )
@@ -146,7 +142,7 @@ class object(content):
 						for j in range(0,len(package_list.PackageList[i]['Packages'])):
 							if not package_list.PackageList[i]['Packages'][j]['Name'] in failed:
 								NewPackageList[position]['Packages'].append(package_list.PackageList[i]['Packages'][j])
-				
+
 			self.stop()
 
 	class packages(subwin):
