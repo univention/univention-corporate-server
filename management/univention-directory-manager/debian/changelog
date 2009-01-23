@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-23) unstable; urgency=low
+
+  * fixed an issue with autosearch that caused result sets of more than 1000
+    items. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Fri, 23 Jan 2009 11:27:19 +0100
+
 univention-directory-manager (6.0.1-22) unstable; urgency=low
 
   * fixed an issue with autosearch which was not working in any case. Bug #11463

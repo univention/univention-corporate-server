@@ -920,7 +920,7 @@ class modwizard(unimodule.unimodule):
 		if search_property_name != '*':
 			search_property=search_module.property_descriptions[search_property_name]
 			search_value=self.save.get('wizard_search_value')
-			if not search_module.property_descriptions.has_key(tmp_search_property_name) and search_value in ('', None):
+			if not search_module.property_descriptions.has_key(tmp_search_property_name) or search_value in (None, ):
 				search_value = '*'
 			self.search_input=question_property('',{'width':'200'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 		else:
