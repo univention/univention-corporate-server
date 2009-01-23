@@ -1,3 +1,9 @@
+univention-updater (4.0.3-2) unstable; urgency=low
+
+  * fixed a typo
+
+ -- Andreas Büsching <buesching@univention.de>  Fri, 23 Jan 2009 09:45:07 +0100
+
 univention-updater (4.0.3-1) unstable; urgency=low
 
   * re-write univention-repository-create: create repositories with the

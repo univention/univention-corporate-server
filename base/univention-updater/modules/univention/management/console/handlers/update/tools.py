@@ -376,7 +376,7 @@ class UniventionUpdater:
 			repository_server = self.configRegistry.get('repository/online/component/%s/server' % component, self.repository_server)
 			repository_port = self.configRegistry.get('repository/online/component/%s/port' % component, self.repository_port)
 			prefix_var = 'repository/online/component/%s/prefix' % component
-			if self.configRegistry.has_key( var ):
+			if self.configRegistry.has_key( prefix_var ):
 				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component )
 			else:
 				repository_prefix = self.configRegistry.get( 'repository/online/component/%s/prefix' % component, self.repository_prefix )
