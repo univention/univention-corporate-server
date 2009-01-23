@@ -1,6 +1,13 @@
+univention-updater (4.0.3-1) unstable; urgency=low
+
+  * re-write univention-repository-create: create repositories with the
+    new directory structure (Bug: #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 22 Jan 2009 14:20:54 +0100
+
 univention-updater (4.0.2-1) unstable; urgency=low
 
-  * fixed uri for component repositories (Bug #12575) 
+  * fixed uri for component repositories (Bug #12575)
 
  -- Andreas Büsching <buesching@univention.de>  Fri, 16 Jan 2009 14:58:55 +0100
 
@@ -637,7 +644,7 @@ univention-updater (2.0.3-2) unstable; urgency=low
 univention-updater (2.0.3-1) unstable; urgency=low
 
   * imported patch make univention-actualise more robust towards non-existing
-  * packages. 
+  * packages.
 
  -- Arne Brix <brix@univention.de>  Mon,  4 Jun 2007 13:52:13 +0200
 
@@ -1160,4 +1167,3 @@ univention-updater (1.0-1) unstable; urgency=low
   * Initial Release.
 
  -- Sven Dreyer <dreyer@univention.de>  Thu, 28 Aug 2003 11:43:45 +0200
-

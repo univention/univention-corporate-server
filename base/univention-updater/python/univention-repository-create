@@ -1,10 +1,10 @@
-#!/bin/sh
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 #
 # Univention Updater
-#  repository create
+#  creates a repository
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -30,81 +30,235 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #
 
-# check directories
-if [ -d "/var/lib/univention-server-cdrom/packages" ] ; then
-	echo "ERROR: /var/lib/univention-server-cdrom/packages does already exist"
-	exit 1
-fi
+import os
+from optparse import OptionParser
+import shutil
+import subprocess
+import sys
 
-# safety check
-echo -n "Are you sure you want to create a local repository? [yN]"
-read answer
-case $answer in
-	Y|y)
-	  ;;
-    *)
-	  echo "Aborted"
-      exit 1
-	  ;;
-esac
+import univention.config_registry as ucr
 
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
 
-# install univention-debmirror
-if [ ! dpkg -l univention-debmirror > /dev/null 2> /dev/null ] ; then
-  echo
-  echo "Please install package univention-debmirror. Aborted."
-  echo
-  exit 1
-fi
-if [ ! "$(dpkg -l univention-debmirror | grep -c ^ii)" = "1" ] ; then
-  echo
-  echo "Please check installation of package univention-debmirror. Aborted."
-  echo
-  exit 1
-fi
+_mirror_base = configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' )
+_repo_base = os.path.join( _mirror_base, 'mirror', configRegistry.get( 'version/version' ), 'maintained', '%s-0' % configRegistry.get( 'version/version' ) )
+_architectures = ( 'i386', 'amd64', 'all', 'extern' )
 
-# set local/repository
-if [ ! "$(univention-config-registry get local/repository)" = "yes" ] ; then
-	univention-config-registry set local/repository=yes
-else
-	echo "WARN: no change required: local/repository=yes"
-fi
+def check_preconditions( options ):
+	# check directories
+	if os.path.exists( os.path.join( _mirror_base, 'mirror' ) ):
+		print >> sys.stderr, 'Warning: The path %s/mirror already exists.' % _mirror_base
 
-# create directory
-if [ ! -d /var/lib/univention-server-cdrom ] ; then
-  mkdir /var/lib/univention-server-cdrom
-fi
+	print "Are you sure you want to create a local repository? [yN] ",
+	if not sys.stdin.readline().startswith( 'y' ):
+		print 'Aborted.'
+		sys.exit( 1 )
 
-# ask user to insert cdrom
-echo
-echo "Please insert UCS CDROM and press Enter"
-read foo
-echo "Mounting /cdrom... "
-mount /cdrom
-echo "done."
+	p = subprocess.Popen( [ 'dpkg-query', '-s', 'univention-debmirror' ], stdout = subprocess.PIPE )
+	output = p.communicate()[ 0 ]
 
-# copy data
-echo
-echo -n "Copying data... please be patient... "
-cp -dpR /cdrom/* /var/lib/univention-server-cdrom/
-cp -dpR /cdrom/.univention_install /var/lib/univention-server-cdrom/
-echo "done."
+	# univention-debmirror is not installed
+	if p.returncode:
+		print >> sys.stderr, "Error: Please install the package univention-debmirror."
 
-chmod o+rwx /var/lib/univention-server-cdrom/profiles
+	# package status of univentionn-debmirror is not ok
+	for line in output:
+		if line.startswith( 'Status: ' ):
+			if line.find( 'install ok installed' ) == -1:
+				print >> sys.stderr, "Please check the installation of the package univention-debmirror (status: %s). Aborted." % line[ 8: ]
 
-eval $(univention-config-registry shell)
-echo "deb http://${hostname}.${domainname}/univention-server-cdrom/packages/ ./" >> /var/lib/univention-server-cdrom/sources.list
+def  prepare( options ):
+	# set local/repository
+	if configRegistry.get( 'local/repository', 'no' ) != 'yes':
+		ucr.handler_set( [ 'local/repository=yes' ] )
+		configRegistry.load()
+	else:
+		print >> sys.stderr, "Warning: Univention Configuration Registry variable local/repository is already set to yes"
 
-. /var/lib/univention-server-cdrom/.univention_install
-mkdir /var/lib/univention-server-cdrom/ucs-updates
-echo "$VERSION-$PATCHLEVEL" >> /var/lib/univention-server-cdrom/ucs-updates/index.list
-echo "nextupdate=none" >> /var/lib/univention-server-cdrom/ucs-updates/ucs_$VERSION-$PATCHLEVEL.txt
+	# create directory structure
+	try:
+		os.makedirs( _repo_base )
+	except OSError, e:
+		# already exists -> ignore
+		if e.errno != 17:
+			raise e
+	for arch in _architectures:
+		try:
+			os.makedirs( os.path.join( _repo_base, arch ) )
+		except OSError, e:
+			# already exists -> ignore
+			if e.errno != 17:
+				raise e
 
-# setup for PXE install
-mkdir /var/lib/univention-server-cdrom/isolinux
-ln -sf /var/lib/univention-server-cdrom/boot/linux26 /var/lib/univention-server-cdrom/isolinux/linux
-ln -sf /var/lib/univention-server-cdrom/boot/linux26.bin /var/lib/univention-server-cdrom/isolinux/linux.bin
+def copy_repository( coptions ):
+	print 'Copying data. Please be patient ...'
 
-echo
-echo "Local repository has been created."
-echo
+	print '  copying version information ...',
+	try:
+		shutil.copy2( os.path.join( options.mount_point, '.univention_install' ), _mirror_base )
+	except:
+		print 'failed.'
+	print 'done.'
+
+	# copy kernel and grub config
+	print '  copying kernel and boot configuration ...',
+	boot_dest = os.path.join( _mirror_base, 'boot' )
+	if os.path.isdir( boot_dest ):
+		shutil.rmtree( boot_dest )
+	try:
+		shutil.copytree( os.path.join( options.mount_point, 'boot' ), boot_dest )
+	except shutil.Error, e:
+		print "failed (%s)." % str( e )
+	else:
+		print 'done.'
+
+	# copy profiles
+	print '  copying profiles ...',
+	profiles_dest = os.path.join( _mirror_base, 'profiles' )
+	if os.path.isdir( profiles_dest ):
+		shutil.rmtree( profiles_dest )
+	try:
+		shutil.copytree( os.path.join( options.mount_point, 'profiles' ), profiles_dest )
+	except shutil.Error, e:
+		print "failed (%s)." % str( e )
+	else:
+		# everyone should be able to read the profiles
+		os.chmod( profiles_dest, 0555 )
+		print 'done.'
+
+	# copy packages to new directory structure
+	print '  copying packages ...',
+	sys.stdout.flush()
+	for filename in os.listdir( os.path.join( options.mount_point, 'packages' ) ):
+		if os.path.isfile( os.path.join( options.mount_point, 'packages', filename ) ) and filename.endswith( '.deb' ):
+			try:
+				arch = filename[ filename.rfind( '_' ) + 1 : -4 ]
+			except:
+				print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
+				continue
+			src = os.path.join( os.path.join( options.mount_point, 'packages' ), filename )
+			src_size = os.stat( src )[ 6 ]
+			dest = os.path.join( _repo_base, arch, filename )
+			# package already exists witg correct size
+			if os.path.isfile( dest ) and os.stat( dest )[ 6 ] == src_size:
+				continue
+			try:
+				shutil.copy2( src, dest )
+			except shutil.Error, e:
+				print >> sys.stderr, "Copying package '%s' failed." % filename
+	print "done."
+
+	# copy dists directory structure
+	print '  copying dists ...',
+	dists_dest = os.path.join( _repo_base, 'dists' )
+	if os.path.isdir( dists_dest ):
+		shutil.rmtree( dists_dest )
+	try:
+		shutil.copytree( os.path.join( options.mount_point, 'packages', 'dists' ), dists_dest )
+	except shutil.Error, e:
+		print "failed (%s)." % str( e )
+	else:
+		print 'done.'
+
+def mount( options ):
+	if options.interactive:
+		# ask user to insert cdrom
+		print 'Please insert a UCS installation medium and press <Enter>',
+		sys.stdin.readline()
+	if options.mount:
+		print "Mounting %s ..." % options.mount_point,
+		ret = subprocess.call( [ 'mount', options.mount_point ] )
+		# if exit code is 0 or 32 (already mounted)
+		if not ret or ret == 32:
+			print 'done.'
+		else:
+			print 'failed.'
+			return False
+
+	print "Checking medium in %s ..." % options.mount_point,
+	if not os.path.isdir( os.path.join( options.mount_point, 'packages' ) ) or not os.path.isdir( os.path.join( options.mount_point, 'profiles' ) ):
+		print 'failed.'
+		print >> sys.stderr, 'Error: This is not an UCS instalation medium.'
+		return False
+
+	print 'ok.'
+	return True
+
+def setup_repository( options ):
+	print 'Creating indexes ...',
+	sys.stdout.flush()
+	for arch in _architectures:
+		print arch,
+		sys.stdout.flush()
+		# create Packages file
+		packages_fd = open( os.path.join( _repo_base, arch, 'Packages' ), 'w' )
+		pwd, child = os.path.split( _repo_base )
+		ret = subprocess.call( [ 'apt-ftparchive', 'packages', os.path.join( child, arch ) ], stdout = packages_fd, cwd = pwd )
+		packages_fd.close()
+
+		if ret:
+			print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( _repo_base, arch )
+			return False
+
+		# create Packages.gz file
+		packages_fd = open( os.path.join( _repo_base, arch, 'Packages' ), 'r' )
+		packagesgz_fd = open( os.path.join( _repo_base, arch, 'Packages.gz' ), 'w' )
+		ret = subprocess.call( [ 'gzip' ], stdout = packagesgz_fd, stdin = packages_fd )
+		packages_fd.close()
+		packagesgz_fd.close()
+
+		if ret:
+			print 'failed.'
+			print >> sys.stderr, "Error: Failed to create Packages.gz file for '%s'" % os.path.join( _repo_path, arch )
+			return False
+	print 'done.'
+	return True
+
+def setup_pxe( options ):
+	'''setup network installation (PXE)'''
+	isodir = '/var/lib/univention-repository/isolinux'
+	bootdir = '/var/lib/univention-repository/boot'
+	if not os.path.isdir( isodir ):
+		os.mkdir( isodir )
+	if not os.path.exists( os.path.join( isodir, 'linux' ) ):
+		os.symlink( os.path.join( bootdir, 'linux26' ), os.path.join( isodir, 'linux' ) )
+	if not os.path.exists( os.path.join( isodir, 'linux.bin' ) ):
+		os.symlink( os.path.join( bootdir, 'linux26.bin' ), os.path.join( isodir, 'linux.bin' ) )
+	pass # TDB
+
+if __name__ == '__main__':
+	parser = OptionParser( usage = "usage: %prog [options]" )
+	parser.add_option( '-n', '--non-interactive', action = 'store_false',
+					   dest = 'interactive', default = True,
+					   help = 'if given no questions are asked.' )
+	parser.add_option( '-N', '--no-mount', action = 'store_false',
+					   dest = 'mount', default = True,
+					   help = 'mounting the installation media is not required' )
+	parser.add_option( '-s', '--silent', action = 'store_true',
+					   dest = 'silent', default = False,
+					   help = 'do not print any information, just errors and warnings' )
+	parser.add_option( '-m', '--mount-point', action = 'store',
+					   dest = 'mount_point', default = '/cdrom',
+					   help = 'devices mount point for CD-ROM' )
+
+	( options, arguments ) = parser.parse_args()
+
+	if options.silent:
+		sys.stdout = open( '/dev/null', 'w' )
+
+	check_preconditions( options )
+	prepare( options )
+	if not mount( options ):
+		print >>sys.stderr, "Error: Failed to mount CD-ROM device at %s" % options.mount_point
+		sys.exit( 1 )
+
+	copy_repository( options )
+	setup_repository( options )
+	setup_pxe( options )
+
+	# set repository server to local system
+	fqdn = '%s.%s' % ( configRegistry.get( 'hostname' ), configRegistry.get( 'domainname' ) )
+	ucr.handler_set( [ 'repository/online/server=%s' % fqdn ] )
+
+	print  "The local repository has been created."
