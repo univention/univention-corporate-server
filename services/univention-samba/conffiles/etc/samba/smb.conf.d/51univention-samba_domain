@@ -1,10 +1,15 @@
 
 	; domain
 @!@
+domain_logons = baseConfig.get('samba/domain/logons', 'auto')
 if baseConfig['server/role'] != 'memberserver':
 	if baseConfig.has_key( 'samba/role' ) and baseConfig[ 'samba/role' ].lower() == 'bdc':
 		print '\tsecurity = user'
-		print '\tdomain logons = yes'
+
+		if not domain_logons in [ 'yes', 'no' ]:
+			domain_logons = 'yes'
+		print '\tdomain logons = %s' % domain_logons
+
 		print '\tdomain master = no'
 		if baseConfig.has_key( 'samba/preferred/master' ):
 			print '\tpreferred master = %s' % baseConfig[ 'samba/preferred/master' ]
@@ -16,7 +21,9 @@ if baseConfig['server/role'] != 'memberserver':
 			print '\tlocal master = yes'
 	else:
 		print '\tsecurity = user'
-		print '\tdomain logons = yes'
+		if not domain_logons in [ 'yes', 'no' ]:
+			domain_logons = 'yes'
+		print '\tdomain logons = %s' % domain_logons
 		if baseConfig['server/role']=='domaincontroller_master' or (baseConfig.has_key('samba/domainmaster') and baseConfig['samba/domainmaster']=='yes'):
 			print '\tdomain master = yes'
 		else:
@@ -31,7 +38,11 @@ if baseConfig['server/role'] != 'memberserver':
 			print '\tlocal master = yes'
 else:
 	print '\tsecurity = domain'
-	print '\tdomain logons = no'
+
+	if not domain_logons in [ 'yes', 'no' ]:
+		domain_logons = 'no'
+	print '\tdomain logons = %s' % domain_logons
+
 	print '\tdomain master = no'
 	print '\tpreferred master = no'
 	print '\tlocal master = no'
