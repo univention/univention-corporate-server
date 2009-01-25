@@ -1,3 +1,9 @@
+univention-management-console (1.0.3-2) unstable; urgency=low
+
+  * fixed traceback after successfull package installation (Bug #12924)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 25 Jan 2009 16:47:31 +0100
+
 univention-management-console (1.0.3-1) unstable; urgency=low
 
   * removed absolute path in umcd.Link (Bug #13152)

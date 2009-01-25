@@ -169,7 +169,7 @@ class Web( object ):
 		if returncode == 0:
 			result.add_row( [ umcd.Image( 'actions/yes', umct.SIZE_LARGE ), umcd.HTML('<h2>' + _( '%s was successful installed!' ) % object.options['package'] + '</h2>') ] )
 		else:
-			result.add_row( [ umcd.Image( 'actions/no', umct.SIZE_LARGE ), umcd.HTML('<h2>' + _( 'Failed to install %s!' ) % object.options['package']) + '</h2>' ] )
+			result.add_row( [ umcd.Image( 'actions/no', umct.SIZE_LARGE ), umcd.HTML('<h2>' + _( 'Failed to install %s!' ) % object.options['package'] + '</h2>') ] )
 		html = '<h2>' + _('Log Message') + '</h2>' + '<pre>' + self.__remove_status_messages(log) + '</pre>'
 		result.add_row( [ umcd.HTML( html, attributes = { 'colspan' : str( 2 ) } ) ] )
 		result.add_row( [ umcd.CloseButton( )] )
