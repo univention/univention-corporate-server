@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.21-1) unstable; urgency=low
+
+  * fixed traceback if policy reference is already present (Bug #11699)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Sun, 25 Jan 2009 17:49:58 +0100
+
 univention-directory-manager-modules (3.0.20-14) unstable; urgency=low
 
   * fixed recursion in the constructor of LazyTranslation. Bug #13011

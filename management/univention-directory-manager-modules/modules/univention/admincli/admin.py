@@ -951,10 +951,17 @@ def doit(arglist):
 					lo.modify(dn,[('objectClass','','univentionPolicyReference')])
 					object_modified+=1
 				modlist=[]
+				upr = lo.search(base=dn, scope='base', attr=['univentionPolicyReference'])[0][1]
+				if not upr.has_key('univentionPolicyReference'):
+					upr['univentionPolicyReference'] = []
 				for el in policy_reference:
-					modlist.append(('univentionPolicyReference','',el))
-				lo.modify(dn,modlist)
-				object_modified+=1
+					if val in upr['univentionPolicyReference']:
+						out.append('WARNING: can not append %s to univentionPolicyReference, value exists' % val)
+					else:
+						modlist.append(('univentionPolicyReference','',el))
+				if modlist:
+					lo.modify(dn,modlist)
+					object_modified+=1
 
 			if policy_dereference:
 				modlist=[]
