@@ -49,7 +49,7 @@ msgstr ""
 "Desktopsystemen können direkt über die Assistenten (Benutzerverwaltung, "
 "Gruppenverwaltung usw.) abgewickelt werden."
 
-#: main.py:128 unidialog.py:109
+#: main.py:128 unidialog.py:109 modbrowse.py:58
 msgid "Navigation"
 msgstr "Navigation"
 
@@ -300,10 +300,6 @@ msgstr "Ein LDAP-Fehler ist aufgetreten:<br> %s"
 msgid "The License has been sucessfully installed. You have to relogin."
 msgstr ""
 "Die Lizenz wurde erfolgreich installiert. Sie müssen sich neu anmelden."
-
-#: modbrowse.py:58
-msgid "Browse"
-msgstr "Navigation"
 
 #: modbrowse.py:58
 msgid "Browse LDAP directory"

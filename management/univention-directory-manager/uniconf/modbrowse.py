@@ -55,7 +55,7 @@ def create(a,b,c):
 
 def myinfo(settings):
 	if settings.listAdminModule('modbrowse'):
-		return unimodule.realmodule("browse", _("Browse"), _("Browse LDAP directory"))
+		return unimodule.realmodule("browse", _("Navigation"), _("Browse LDAP directory"))
 	else:
 		return unimodule.realmodule("browse", "", "")
 
