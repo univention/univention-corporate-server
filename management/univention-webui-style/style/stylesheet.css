@@ -463,6 +463,7 @@ td.wait_layout,
 td.about_layout,
 td.logout_layout,
 td.login_layout,
+td.login_layout_session_timeout,
 td.wizard_layout,
 td.wizard_layout_bottom{
 padding:3px 0px 3px 10px;
@@ -589,6 +590,11 @@ td.content_main,
 td.content_main_menuless {
 vertical-align:top;
 }
+
+td.login_layout_session_timeout {
+vertical-align:middle;
+}
+
 /* height */
 td.global_head_spacer {
 height:19px;
@@ -663,6 +669,7 @@ td.about_layout,
 td.welcome_layout,
 td.logout_layout,
 td.login_layout,
+td.login_layout_session_timeout,
 td.wizard_layout{
 width:auto;
 }

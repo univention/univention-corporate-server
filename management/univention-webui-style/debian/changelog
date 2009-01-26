@@ -1,3 +1,10 @@
+univention-webui-style (3.0.2-3) unstable; urgency=low
+
+  * the session timeout box has been adapted to the layout changes suggested
+  in Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 14:36:43 +0100
+
 univention-webui-style (3.0.2-2) unstable; urgency=low
 
   * adapted layout changes suggested in Bug #8443
