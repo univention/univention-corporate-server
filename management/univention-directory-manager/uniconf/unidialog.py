@@ -128,8 +128,7 @@ class unidialog(unimodule.unimodule):
 				rows = []
 				# TODO: uncomment the next line to enable the welcome logo
 				#rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':['<table><tr><td><img src="/icon/welcome_logo.png" /></td></tr><tr><td><b>%s</b></td></tr></table>'% introduction_text]})]})]}))
-				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':[introduction_text]})]})]}))
-				rows.append(tablerow({},{},{'obs':[tablecol({},{'colspan':'2','type':'welcome_layout'},{"obs":[]})]}))
+				rows.append(tablerow({},{'border':'0'},{'obs':[tablecol({},{'type':'welcome_layout'},{"obs":[htmltext('',{'border':'0'},{'htmltext':[introduction_text]})]})]}))
 				subtables.append(table('',{},{'obs':rows}))
 
 				emptycol = tablecol({},{'type':'welcome_layout'},{"obs":[]})
@@ -137,12 +136,10 @@ class unidialog(unimodule.unimodule):
 
 				rows = []
 				for shorttext, longtext in component_texts:
-					objects = [[tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
-						['<table style="padding:3px;"><tr><td><img src="/icon/%s.png" /></td><td style="padding:3px;"><b>%s</b></td></tr></table>' % (shorttext._orig_str.lower ().replace (' ', '_'), shorttext)]})]}),
-						    emptycol],
-						   [emptycol,
-						    tablecol('',{'type':'welcome_layout'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':[longtext]})]})],
-						   ]
+					objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
+						['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (shorttext._orig_str.lower ().replace (' ', '_'), shorttext)]})]}),
+						   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
+						   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
 					for obj in objects:
 						rows.append(tablerow({},{'border':'0'},{'obs':obj}))
 
