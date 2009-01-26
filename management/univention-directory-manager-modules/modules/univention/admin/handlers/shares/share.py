@@ -211,7 +211,7 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default='0'
+			default='1'
 		),
 	'sambaName': univention.admin.property(
 			short_description=_('Samba Name'),

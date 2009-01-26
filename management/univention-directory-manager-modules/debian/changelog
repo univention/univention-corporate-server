@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.21-2) unstable; urgency=low
+
+  * enabled samba write support by default. Bug #3782
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 16:54:12 +0100
+
 univention-directory-manager-modules (3.0.21-1) unstable; urgency=low
 
   * fixed traceback if policy reference is already present (Bug #11699)
