@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.1-26) unstable; urgency=low
+
+  * the session timeout box has been adapted to the layout changes suggested
+    in Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 13:42:44 +0100
+
 univention-directory-manager (6.0.1-25) unstable; urgency=low
 
   * adapted layout changes suggested in Bug #8443

@@ -99,26 +99,19 @@ class modrelogin(unimodule.unimodule):
 		self.nbook=notebook('', {}, {'buttons': [(_('Login'), _('Login'))], 'selected': 0})
 		self.subobjs.append(self.nbook)
 
-		credentials_invalid_caption = _('Session Timeout')
-		credentials_invalid = _("Your credentials are not valid anymore.")
-		sessioninvalid = ''
+		sessioninvalid = None
 		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
 				and self.req.meta['Sessioninvalid'] == '1':
-					sessioninvalid = _("""<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
-						%s
-						</h1>
-						%s""") % (credentials_invalid_caption, credentials_invalid)
-
-		description_caption = _('Increase Session Timeout')
-		description = _('The session timeout is specified by the value of the Univention Configuration Registry variable <code>directory/manager/timeout</code>. You might increase this value.')
-		login_messagebox = htmltext ('login_messagebox', {}, \
-				{'htmltext': [_("""<div style='border:1px solid black; padding:3px; margin:3px;'>
-					%s
-					<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
-					%s
-					</h1>
-					%s
-					</div>""") % (sessioninvalid, description_caption, description)]})
+					description_caption = _('Session Timeout')
+					description1 = _('To increase the session timeout log into UMC, select the Univention Config Registry module and change the value of <code>directory/manager/timeout</code>.')
+					#description2 = _('As an alternative you can set the UCR variable with the following command line statement <code>univention-config-registry directory/manager/timeout=TIMEOUT_IN_SECONDS</code>.')
+					sessioninvalid = htmltext ('login_messagebox', {}, \
+							{'htmltext': [_("""
+								<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>
+								<img style='float:none;' src='/icon/warning.png' />&nbsp;%s
+								</h1>
+								<p>%s</p>
+								""") % (description_caption, description1)]})
 		# input fields:
 		self.usernamein=question_text(_("Username"),{'width':'265','puretext': '1'},{"usertext":self.save.get("relogin_username"),"helptext":_("Please enter your username.")})
 		self.cabut=button(_("Cancel"),{'icon':'/style/cancel.gif'},{"helptext":_("cancel login procedure")})
@@ -132,7 +125,10 @@ class modrelogin(unimodule.unimodule):
 
 		rows=[]
 
-		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'4','type':'login_layout'},{"obs":[login_messagebox]})]}))
+		if sessioninvalid:
+			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]}), tablecol("",{"colspan":"2","rowspan":'5','type':'login_layout_session_timeout'},{"obs":[sessioninvalid]})]}))
+		else:
+			rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2",'type':'login_layout'},{"obs":[self.usernamein]})]}))
 		rows.append(tablerow("",{},{"obs":[tablecol("",{"colspan":"2", 'type':'login_layout'},{"obs":[self.passwdin]})]}))
 
                 #check if http should realy be used

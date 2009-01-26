@@ -2,11 +2,12 @@
 # Univention GmbH <packages@univention.de>
 # This file is distributed under the same license as the PACKAGE package.
 #
+#: modrelogin.py:139
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-19 22:48+CET\n"
+"POT-Creation-Date: 2009-01-26 14:30+0100\n"
 "PO-Revision-Date: 2009-01-19 22:49+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -14,6 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: unicode\n"
 "Generated-By: pygettext.py 1.3\n"
+
+#: local.py:254
+msgid "foo bar"
+msgstr ""
+
+#: local.py:317
+msgid "blub"
+msgstr ""
 
 #: main.py:121 unidialog.py:102
 msgid "Welcome to Univention Directory Manager"
@@ -76,6 +85,10 @@ msgstr ""
 "den Objekten in der Rechnerverwaltung erfolgen."
 
 #: main.py:131 unidialog.py:114
+msgid "Further Information"
+msgstr "Weitere Informationen"
+
+#: main.py:131 unidialog.py:114
 msgid ""
 "For more information about UCS, Univention Directory Manager and other "
 "Univention Tools take a look at the documentation or the online-forum on <a "
@@ -85,24 +98,23 @@ msgstr ""
 "Univention Tools finden Sie im Handbuch oder im Online Forum auf <a "
 "target=parent href=http://www.univention.de>www.univention.de</a>."
 
-#: main.py:131 unidialog.py:114
-msgid "Further Information"
-msgstr "Weitere Informationen"
-
-#: main.py:166 unidialog.py:167
+#: main.py:166 unidialog.py:164
+#, python-format
 msgid "You are logged in as: %s%s"
 msgstr "Sie sind angemeldet als: %s%s"
 
-#: main.py:168 main.py:169 unidialog.py:169 unidialog.py:170
+#: main.py:168 main.py:169 unidialog.py:166 unidialog.py:167
+#, python-format
 msgid "// logged in as: %s%s"
 msgstr "// angemeldet als: %s%s"
 
-#: main.py:174 modabout.py:129 modabout.py:141 unidialog.py:175
+#: main.py:174 modabout.py:129 modabout.py:141 unidialog.py:172
 msgid "Univention Directory Manager"
 msgstr "Univention Directory Manager"
 
 #: main.py:303 modedit.py:5222 modedit.py:5238 modedit.py:5245
-#: unidialog.py:308
+#: unidialog.py:305
+#, python-format
 msgid "error while modifying: %s %s"
 msgstr "Beim Übernehmen der Änderungen ist ein Fehler aufgetreten: <br> %s %s"
 
@@ -130,12 +142,12 @@ msgid "actual result"
 msgstr "Beobachtetes Ergebnis"
 
 #: main.py:388
-msgid "Is the LDAP-Server started and reachable ?"
-msgstr "Ist der LDAP-Server gestartet und erreichbar ?"
-
-#: main.py:388
 msgid "No LDAP-Connection"
 msgstr "Keine Verbindung zum LDAP-Server."
+
+#: main.py:388
+msgid "Is the LDAP-Server started and reachable ?"
+msgstr "Ist der LDAP-Server gestartet und erreichbar ?"
 
 #: main.py:436
 msgid "Can not process LDAP-Request:"
@@ -162,6 +174,7 @@ msgid "More than one Base DN has been defined."
 msgstr "Es wurde mehr als eine Basis definiert."
 
 #: modabout.py:70
+#, python-format
 msgid "Wrong Base DN. Expected was %s but %s has been found."
 msgstr "Falsche Basis DN. Erwartet wurde %s, aber %s wurde gefunden."
 
@@ -169,13 +182,13 @@ msgstr "Falsche Basis DN. Erwartet wurde %s, aber %s wurde gefunden."
 msgid "No Base DN has been defined."
 msgstr "Es wurde keine Basis DN definiert."
 
-#: modabout.py:97
-msgid "About Univention Directory Manager"
-msgstr "Über Univention Directory Manager"
-
 #: modabout.py:97 modabout.py:129
 msgid "About"
 msgstr "Über"
+
+#: modabout.py:97
+msgid "About Univention Directory Manager"
+msgstr "Über Univention Directory Manager"
 
 #: modabout.py:146
 msgid "Version"
@@ -206,6 +219,7 @@ msgid "Open-Xchange"
 msgstr "Open-Xchange"
 
 #: modabout.py:215
+#, python-format
 msgid "Context: %s"
 msgstr "Kontext: %s"
 
@@ -278,6 +292,7 @@ msgid "The License you have entered is invalid."
 msgstr "Die angegebene Lizenz ist ungültig."
 
 #: modabout.py:448
+#, python-format
 msgid "An Error has occured:<br> %s"
 msgstr "Ein LDAP-Fehler ist aufgetreten:<br> %s"
 
@@ -298,54 +313,57 @@ msgstr "Navigation im LDAP-Verzeichnis"
 msgid "Account Operators"
 msgstr "Account Operators"
 
-#: modbrowse.py:92 modwizard.py:1286
+#: modbrowse.py:92 modwizard.py:1288
 msgid "delete"
 msgstr "Löschen"
 
-#: modbrowse.py:96 modwizard.py:1285
+#: modbrowse.py:96 modwizard.py:1287
+#, python-format
 msgid "%d Object(s) Selected for Removal"
 msgstr "%d Objekte sind zum Löschen ausgewählt"
 
 # modbrowse.py in myinit()
 #: modbrowse.py:98 modbrowse.py:599 modedit.py:4219 modwizard.py:1144
-#: modwizard.py:1292
+#: modwizard.py:1294
 msgid "Object"
 msgstr "Objekt"
 
-#: modbrowse.py:99 modedit.py:420 modwizard.py:1153 modwizard.py:1293
+#: modbrowse.py:99 modedit.py:420 modwizard.py:1154 modwizard.py:1295
 msgid "Location"
 msgstr "Ort"
 
-#: modbrowse.py:100 modwizard.py:1294
+#: modbrowse.py:100 modwizard.py:1296
 msgid "Delete?"
 msgstr "Wirklich löschen?"
 
-#: modbrowse.py:101 modwizard.py:1295
+#: modbrowse.py:101 modwizard.py:1297
 msgid "Delete referring objects?"
 msgstr "Auch zugehörige Objekte löschen?"
 
 # modbrowse.py in myinit()
-#: modbrowse.py:134 modwizard.py:1333
+#: modbrowse.py:134 modwizard.py:1335
+#, python-format
 msgid "%s object"
 msgstr "%s Objekt"
 
-#: modbrowse.py:145 modbrowse.py:152 modbrowse.py:784 modwizard.py:1232
-#: modwizard.py:1344 modwizard.py:1350
+#: modbrowse.py:145 modbrowse.py:152 modbrowse.py:784 modwizard.py:1234
+#: modwizard.py:1346 modwizard.py:1352
+#, python-format
 msgid "select %s"
 msgstr "\"%s\" auswählen"
 
 #: modbrowse.py:168 modedit.py:73 modedit.py:77 modlogout.py:74
-#: modrelogin.py:127 modrelogin.py:131 modwizard.py:1365
+#: modrelogin.py:120 modrelogin.py:124 modwizard.py:1367
 msgid "OK"
 msgstr "OK"
 
-#: modbrowse.py:168 modwizard.py:1365
+#: modbrowse.py:168 modwizard.py:1367
 msgid "Really delete selected objects and referring objects if enabled."
 msgstr ""
 "Ausgewählte und falls aktiviert auch zugehörige Objekte endgültig löschen."
 
 #: modbrowse.py:169 modbrowse.py:811 modedit.py:74 modedit.py:78
-#: modlogout.py:77 modrelogin.py:124 modwizard.py:340 modwizard.py:1366
+#: modlogout.py:77 modrelogin.py:117 modwizard.py:340 modwizard.py:1368
 msgid "Cancel"
 msgstr "Abbrechen"
 
@@ -374,6 +392,7 @@ msgid "select type of object to add"
 msgstr "Gewünschten Objekttyp auswählen"
 
 #: modbrowse.py:311
+#, python-format
 msgid "Select target to move %d object(s) to"
 msgstr "Wählen Sie das Ziel für %d zu verschiebende(s) Objekt(e) aus"
 
@@ -419,18 +438,18 @@ msgid "show"
 msgstr "Anzeigen"
 
 #: modbrowse.py:406 modwizard.py:938
-msgid "Please enter a number."
-msgstr "Bitte geben Sie eine Zahl ein."
-
-#: modbrowse.py:406 modwizard.py:938
 msgid "results per page"
 msgstr "Ergebnisse pro Seite"
+
+#: modbrowse.py:406 modwizard.py:938
+msgid "Please enter a number."
+msgstr "Bitte geben Sie eine Zahl ein."
 
 #: modbrowse.py:600
 msgid "Type"
 msgstr "Typ"
 
-#: modbrowse.py:610 modwizard.py:1154
+#: modbrowse.py:610 modwizard.py:1155
 msgid "Select"
 msgstr "Auswählen"
 
@@ -443,10 +462,12 @@ msgid "switch to parent directory"
 msgstr "In das übergeordnete Verzeichnis wechseln"
 
 #: modbrowse.py:636
+#, python-format
 msgid "%d search result(s) (cached)"
 msgstr "%d Suchergebnis(se) (zwischengespeichert)"
 
 #: modbrowse.py:639
+#, python-format
 msgid "%d search result(s)"
 msgstr "%d Suchergebnis(se)"
 
@@ -455,14 +476,17 @@ msgid "(current)"
 msgstr "(aktuell)"
 
 #: modbrowse.py:714
+#, python-format
 msgid "open \"%s\""
 msgstr "\"%s\" öffnen"
 
-#: modbrowse.py:719 modbrowse.py:722 modwizard.py:1180
+#: modbrowse.py:719 modbrowse.py:722 modwizard.py:1181
+#, python-format
 msgid "edit \"%s\""
 msgstr "\"%s\" bearbeiten"
 
 #: modbrowse.py:801
+#, python-format
 msgid "More than %d results, please refine search filter."
 msgstr ""
 "Es wurden mehr als %d Objekte gefunden, bitte schränken Sie die Suche ein."
@@ -479,31 +503,31 @@ msgstr "Ausgewählte Objekte hierher verschieben"
 msgid "cancel moving object"
 msgstr "Verschieben des Objektes abbrechen"
 
-#: modbrowse.py:814 modwizard.py:1253
+#: modbrowse.py:814 modwizard.py:1255
 msgid "Do"
 msgstr "Ausführen"
 
-#: modbrowse.py:814 modwizard.py:1253
+#: modbrowse.py:814 modwizard.py:1255
 msgid "Do action with selected objects."
 msgstr "Aktion mit ausgewählten Objekte durchführen."
 
-#: modbrowse.py:815 modwizard.py:1254
+#: modbrowse.py:815 modwizard.py:1256
 msgid "Do with selected objects..."
 msgstr "Die ausgewählten Objekte ..."
 
-#: modbrowse.py:817 modwizard.py:1256
+#: modbrowse.py:817 modwizard.py:1258
 msgid "Invert selection"
 msgstr "Auswahl umkehren"
 
-#: modbrowse.py:818 modwizard.py:1257
+#: modbrowse.py:818 modwizard.py:1259
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: modbrowse.py:819 modwizard.py:1258
+#: modbrowse.py:819 modwizard.py:1260
 msgid "Delete"
 msgstr "Löschen"
 
-#: modbrowse.py:820 modwizard.py:1259
+#: modbrowse.py:820 modwizard.py:1261
 msgid "Delete recursively"
 msgstr "Rekursiv löschen"
 
@@ -511,11 +535,13 @@ msgstr "Rekursiv löschen"
 msgid "Move"
 msgstr "Verschieben"
 
-#: modbrowse.py:917 modwizard.py:1471
+#: modbrowse.py:917 modwizard.py:1473
+#, python-format
 msgid "Removing %d/%d selected objects failed: %s"
 msgstr "Das Löschen von %d/%d ausgewählten Objekten ist fehlgeschlagen: %s"
 
-#: modbrowse.py:919 modwizard.py:1473
+#: modbrowse.py:919 modwizard.py:1475
+#, python-format
 msgid "Removed %d/%d objects successfully."
 msgstr "Es wurden %d/%d Objekte erfolgreich gelöscht."
 
@@ -523,11 +549,12 @@ msgstr "Es wurden %d/%d Objekte erfolgreich gelöscht."
 msgid "Position changed."
 msgstr "Position geändert."
 
-#: modbrowse.py:1038 modwizard.py:1618
+#: modbrowse.py:1038 modwizard.py:1620
+#, python-format
 msgid "%d object(s) are selected."
 msgstr "%d Objekt(e) sind markiert."
 
-#: modbrowse.py:1072 modwizard.py:1653
+#: modbrowse.py:1072 modwizard.py:1655
 msgid "Cannot edit multiple objects with different types."
 msgstr ""
 "Es können nicht mehrere Objekte unterschiedlichen Typs bearbeitet werden."
@@ -538,18 +565,22 @@ msgstr ""
 "Die Position hat sich nicht geändert und die Objekte wurden nicht verschoben."
 
 #: modbrowse.py:1130
+#, python-format
 msgid "Moving %d/%d objects failed: %s"
 msgstr "Das Verschieben von %d/%d Objekten ist fehlgeschlagen: %s"
 
 #: modbrowse.py:1132
+#, python-format
 msgid "Moved %d/%d objects successfully."
 msgstr "Es wurden %d/%d ausgewählten Objekten erfolgreich verschoben."
 
 #: modbrowse.py:1154
+#, python-format
 msgid "Removed %d/%d objects (%d errors)."
 msgstr "Es wurden %d/%d Objekte erfolgreich gelöscht (%d Fehler)."
 
 #: modbrowse.py:1156
+#, python-format
 msgid "Moved %d/%d objects (%d errors)."
 msgstr "Es wurden %d/%d Objekten erfolgreich verschoben (%d Fehler)."
 
@@ -558,6 +589,7 @@ msgid "ok"
 msgstr "ok"
 
 #: modedit.py:197
+#, python-format
 msgid ""
 "Error opening Object: %s <br> You may encounter further errors editing this "
 "object."
@@ -566,6 +598,7 @@ msgstr ""
 "Objekts sind Folgefehler nicht auszuschließen."
 
 #: modedit.py:200
+#, python-format
 msgid ""
 "Warning opening Object: <ul>%s</ul> You may encounter further errors editing "
 "this object."
@@ -590,14 +623,14 @@ msgstr "Bearbeiten"
 msgid "objects"
 msgstr "Objekte"
 
+#: modedit.py:307
+msgid "new"
+msgstr "Neues"
+
 # modbrowse.py in myinit()
 #: modedit.py:307
 msgid "-object"
 msgstr "-Objekt"
-
-#: modedit.py:307
-msgid "new"
-msgstr "Neues"
 
 #: modedit.py:375
 msgid "Option"
@@ -625,6 +658,7 @@ msgid "edit policy object"
 msgstr "Richtlinie bearbeiten"
 
 #: modedit.py:485
+#, python-format
 msgid "select %s for disconnection"
 msgstr "\"%s\" zum Trennen auswählen"
 
@@ -637,10 +671,12 @@ msgid "Disconnect selected policies"
 msgstr "Ausgewählte Richtlinien trennen"
 
 #: modedit.py:524
+#, python-format
 msgid "%s for Container %s"
 msgstr "%s für Container %s"
 
 #: modedit.py:526
+#, python-format
 msgid "%s for new Container"
 msgstr "%s für neuen Container"
 
@@ -650,12 +686,12 @@ msgid "apply"
 msgstr "Zuweisen"
 
 #: modedit.py:605
-msgid "Choose a configuration for your object"
-msgstr "Wählen Sie eine Konfiguration für Ihr Objekt"
-
-#: modedit.py:605
 msgid "Select Configuration:"
 msgstr "Konfiguration auswählen:"
+
+#: modedit.py:605
+msgid "Choose a configuration for your object"
+msgstr "Wählen Sie eine Konfiguration für Ihr Objekt"
 
 #: modedit.py:860 modedit.py:1000
 msgid "Select the DNS Forward Zone"
@@ -674,16 +710,9 @@ msgstr "Wählen Sie eine IP-Adresse aus"
 #: modedit.py:2634 modedit.py:2739 modedit.py:2884 modedit.py:3016
 #: modedit.py:3263 modedit.py:3379 modedit.py:3570 modedit.py:3659
 #: modedit.py:3791 modedit.py:4318
+#, python-format
 msgid "Add %s"
 msgstr "%s hinzufügen"
-
-#: modedit.py:880 modedit.py:1020 modedit.py:1182 modedit.py:1535
-#: modedit.py:1742 modedit.py:2246 modedit.py:2387 modedit.py:2492
-#: modedit.py:2636 modedit.py:2741 modedit.py:2886 modedit.py:3018
-#: modedit.py:3266 modedit.py:3381 modedit.py:3572 modedit.py:3661
-#: modedit.py:3793 modedit.py:4320
-msgid "Current entries for '%s'"
-msgstr "Aktuelle Einträge für '%s'"
 
 #: modedit.py:880 modedit.py:1020 modedit.py:1182 modedit.py:1535
 #: modedit.py:1742 modedit.py:2246 modedit.py:2387 modedit.py:2492
@@ -693,11 +722,21 @@ msgstr "Aktuelle Einträge für '%s'"
 msgid "Entries:"
 msgstr "Einträge:"
 
+#: modedit.py:880 modedit.py:1020 modedit.py:1182 modedit.py:1535
+#: modedit.py:1742 modedit.py:2246 modedit.py:2387 modedit.py:2492
+#: modedit.py:2636 modedit.py:2741 modedit.py:2886 modedit.py:3018
+#: modedit.py:3266 modedit.py:3381 modedit.py:3572 modedit.py:3661
+#: modedit.py:3793 modedit.py:4320
+#, python-format
+msgid "Current entries for '%s'"
+msgstr "Aktuelle Einträge für '%s'"
+
 #: modedit.py:882 modedit.py:1022 modedit.py:1184 modedit.py:1537
 #: modedit.py:1744 modedit.py:2248 modedit.py:2389 modedit.py:2494
 #: modedit.py:2638 modedit.py:2743 modedit.py:2888 modedit.py:3020
 #: modedit.py:3268 modedit.py:3383 modedit.py:3574 modedit.py:3663
 #: modedit.py:3795 modedit.py:4322
+#, python-format
 msgid "Remove selected '%s' entrie(s) from list"
 msgstr "Lösche die ausgewählten '%s' Einträge aus der Liste."
 
@@ -729,7 +768,7 @@ msgstr "Wählen Sie eine MAC-Adresse aus"
 
 # usermanger_view.py groupmanager_view.py computermanager_view.py
 #: modedit.py:1275 modedit.py:1310 modedit.py:1365 modedit.py:1390
-#: modedit.py:4232 modwizard.py:274 modwizard.py:839 modwizard.py:1270
+#: modedit.py:4232 modwizard.py:274 modwizard.py:839 modwizard.py:1272
 msgid "None"
 msgstr "Nichts"
 
@@ -749,6 +788,7 @@ msgstr "Wählen Sie ein Attribut aus."
 
 #: modedit.py:1471 modedit.py:1956 modedit.py:2081 modedit.py:2479
 #: modedit.py:2615 modedit.py:3558 modedit.py:3873
+#, python-format
 msgid "%s: Too many entries for selectbox"
 msgstr "%s: zu viele Einträge für eine Auswahlliste"
 
@@ -778,24 +818,24 @@ msgid "select Server"
 msgstr "Server auswählen"
 
 #: modedit.py:1902
-msgid "all"
-msgstr "alles"
-
-#: modedit.py:1902
-msgid "append"
-msgstr "anhängen"
+msgid "read"
+msgstr "lesen"
 
 #: modedit.py:1902
 msgid "post"
 msgstr "senden"
 
 #: modedit.py:1902
-msgid "read"
-msgstr "lesen"
+msgid "append"
+msgstr "anhängen"
 
 #: modedit.py:1902
 msgid "write"
 msgstr "schreiben"
+
+#: modedit.py:1902
+msgid "all"
+msgstr "alles"
 
 # usermanger_view.py groupmanager_view.py computermanager_view.py
 #: modedit.py:1929 modedit.py:2076
@@ -827,32 +867,32 @@ msgid "Always accept"
 msgstr "Immer akzeptieren"
 
 #: modedit.py:2033
-msgid "Always reject"
-msgstr "Immer ablehnen"
-
-#: modedit.py:2033
-msgid "Manual"
-msgstr "Manuell"
+msgid "Reject if conflicts"
+msgstr "Ablehnen wenn Konflikte auftreten"
 
 #: modedit.py:2033
 msgid "Manual if conflicts"
 msgstr "Manuelle Eingabe wenn Konflikte auftreten"
 
 #: modedit.py:2033
-msgid "Reject if conflicts"
-msgstr "Ablehnen wenn Konflikte auftreten"
+msgid "Manual"
+msgstr "Manuell"
+
+#: modedit.py:2033
+msgid "Always reject"
+msgstr "Immer ablehnen"
 
 #: modedit.py:2078
 msgid "E-Mail address"
 msgstr "E-Mail-Adresse"
 
 #: modedit.py:2084
-msgid "E-Mail address of user"
-msgstr "E-Mail-Adresse des Benutzer"
-
-#: modedit.py:2084
 msgid "User "
 msgstr "Benutzer "
+
+#: modedit.py:2084
+msgid "E-Mail address of user"
+msgstr "E-Mail-Adresse des Benutzer"
 
 #: modedit.py:2092
 msgid "Policy"
@@ -915,20 +955,22 @@ msgid "Parameter for the command"
 msgstr "Parameter für das Kommando"
 
 #: modedit.py:3100
-msgid "Config Registry value for %s"
-msgstr "Config Registry Wert für %s"
-
-#: modedit.py:3100
+#, python-format
 msgid "Variable: %s"
 msgstr "Variable: %s"
 
-#: modedit.py:3114
-msgid "Add a new Config Registry variable"
-msgstr "Eine neue Config Registry Variable hinzufügen"
+#: modedit.py:3100
+#, python-format
+msgid "Config Registry value for %s"
+msgstr "Config Registry Wert für %s"
 
 #: modedit.py:3114
 msgid "Name of the new Config Registry variable"
 msgstr "Name der neuen Config Registry Variable"
+
+#: modedit.py:3114
+msgid "Add a new Config Registry variable"
+msgstr "Eine neue Config Registry Variable hinzufügen"
 
 #: modedit.py:3115
 msgid "Add the new Config Registry variable"
@@ -995,24 +1037,12 @@ msgid "choose objects to remove"
 msgstr "Wählen Sie die zu entfernenden Objekte aus."
 
 #: modedit.py:4105
-msgid "Fri"
-msgstr "Fr"
-
-#: modedit.py:4105
-msgid "Mon"
-msgstr "Mo"
-
-#: modedit.py:4105
-msgid "Sat"
-msgstr "Sa"
-
-#: modedit.py:4105
 msgid "Sun"
 msgstr "So"
 
 #: modedit.py:4105
-msgid "Thu"
-msgstr "Do"
+msgid "Mon"
+msgstr "Mo"
 
 #: modedit.py:4105
 msgid "Tue"
@@ -1021,6 +1051,18 @@ msgstr "Di"
 #: modedit.py:4105
 msgid "Wed"
 msgstr "Mi"
+
+#: modedit.py:4105
+msgid "Thu"
+msgstr "Do"
+
+#: modedit.py:4105
+msgid "Fri"
+msgstr "Fr"
+
+#: modedit.py:4105
+msgid "Sat"
+msgstr "Sa"
 
 #: modedit.py:4113
 msgid "Disallowed at:"
@@ -1035,6 +1077,7 @@ msgid "Logon"
 msgstr "Anmeldung"
 
 #: modedit.py:4461
+#, python-format
 msgid "overwrite value %s in all objects"
 msgstr "Überschreibe Wert %s in allen Objekten"
 
@@ -1051,18 +1094,22 @@ msgid "Position changed"
 msgstr "Position geändert"
 
 #: modedit.py:5213
+#, python-format
 msgid "Modifying %d/%d objects failed: %s"
 msgstr "Die Bearbeitung von %d/%d Objekten ist fehlgeschlagen: %s"
 
 #: modedit.py:5215
+#, python-format
 msgid "Modified %d/%d objects successfully."
 msgstr "Die Bearbeitung von %d/%d Objekten war erfolgreich."
 
 #: modedit.py:5247
+#, python-format
 msgid "internal error: %s"
 msgstr "Ein interner Fehler ist aufgetreten: %s"
 
 #: modedit.py:5268
+#, python-format
 msgid "While %s %s: %s<br>"
 msgstr "%s von %s fehlgeschlagen: %s<br>"
 
@@ -1079,6 +1126,7 @@ msgid "Object modified."
 msgstr "Objekt bearbeitet."
 
 #: modedit.py:5300
+#, python-format
 msgid "Modified %d/%d objects (%d errors)."
 msgstr "Es wurden %d/%d Objekte erfolgreich bearbeitet (%d Fehler)."
 
@@ -1094,106 +1142,90 @@ msgstr "Abmelden"
 msgid "Do you really want to logout?"
 msgstr "Möchten Sie sich wirklich abmelden?"
 
-#: modrelogin.py:58 modrelogin.py:61 modrelogin.py:99 modrelogin.py:127
-#: modrelogin.py:131
+#: modrelogin.py:58 modrelogin.py:61 modrelogin.py:99 modrelogin.py:120
+#: modrelogin.py:124
 msgid "Login"
 msgstr "Anmelden"
 
-#: modrelogin.py:102
+#: modrelogin.py:105
 msgid "Session Timeout"
 msgstr "Session-Timeout"
 
-#: modrelogin.py:103
-msgid "Your credentials are not valid anymore."
-msgstr "Ihre aktuelle Kennung ist nicht mehr gültig."
-
-#: modrelogin.py:107
+#: modrelogin.py:106
 msgid ""
-"<h1 style='text-align:center; margin-top:0; top:0; font-weight:bold;'>\n"
-"\t\t\t\t\t\t%s\n"
-"\t\t\t\t\t\t</h1>\n"
-"\t\t\t\t\t\t%s"
+"To increase the session timeout log into UMC, select the Univention Config "
+"Registry module and change the value of <code>directory/manager/timeout</"
+"code>."
+msgstr ""
+"Um den Session-Timeout zu erhöhen, melden Sie sich am UMC an, wählen Sie das "
+"Modul Univention Configuration Registry aus und ändern Sie den Wert von "
+"<code>directory/manager/timeout</code>."
+
+#: modrelogin.py:109
+#, python-format
+msgid ""
+"\n"
+"\t\t\t\t\t\t\t\t<h1 style='text-align:center; margin-top:0; top:0; font-"
+"weight:bold;'>\n"
+"\t\t\t\t\t\t\t\t<img style='float:none;' src='/icon/warning.png' />&nbsp;%s\n"
+"\t\t\t\t\t\t\t\t</h1>\n"
+"\t\t\t\t\t\t\t\t<p>%s</p>\n"
+"\t\t\t\t\t\t\t\t"
 msgstr ""
 
-#: modrelogin.py:112
-msgid "Increase Session Timeout"
-msgstr "Session-Timeout verlängern"
-
-#: modrelogin.py:113
-msgid ""
-"The session timeout is specified by the value of the Univention "
-"Configuration Registry variable <code>directory/manager/timeout</code>. You "
-"might increase this value."
-msgstr ""
-"Der Session-Timeout ist in der Univention Configuration Registry-Variable "
-"<code>directory/manager/timeout</code> festgelegt. Bei Bedarf können Sie "
-"diesen Wert anpassen."
-
-#: modrelogin.py:115
-msgid ""
-"<div style='border:1px solid black; padding:3px; margin:3px;'>\n"
-"\t\t\t\t\t%s\n"
-"\t\t\t\t\t<h1 style='text-align:center; margin-top:0; top:0; font-weight:"
-"bold;'>\n"
-"\t\t\t\t\t%s\n"
-"\t\t\t\t\t</h1>\n"
-"\t\t\t\t\t%s\n"
-"\t\t\t\t\t</div>"
-msgstr ""
-
-#: modrelogin.py:123
-msgid "Please enter your username."
-msgstr "Bitte geben Sie hier Ihren Benutzernamen ein."
-
-#: modrelogin.py:123
+#: modrelogin.py:116
 msgid "Username"
 msgstr "Benutzername"
 
-#: modrelogin.py:124
+#: modrelogin.py:116
+msgid "Please enter your username."
+msgstr "Bitte geben Sie hier Ihren Benutzernamen ein."
+
+#: modrelogin.py:117
 msgid "cancel login procedure"
 msgstr "Abbruch des Anmeldevorgangs."
 
-#: modrelogin.py:126 modrelogin.py:129 modself.py:76
+#: modrelogin.py:119 modrelogin.py:122 modself.py:76
 msgid "Password"
 msgstr "Passwort"
 
-#: modrelogin.py:126 modrelogin.py:130
+#: modrelogin.py:119 modrelogin.py:123
 msgid "please enter your password."
 msgstr "Bitte geben Sie Ihr Passwort ein."
 
-#: modrelogin.py:144 modrelogin.py:145
+#: modrelogin.py:140 modrelogin.py:141
 msgid "Not using a secure SSL connection. Please accept to continue anyway."
 msgstr ""
 "Es wird keine gesicherte SSL Verbindung verwendet. Bitte bestätigen um "
 "dennoch fortzufahren."
 
-#: modrelogin.py:163
+#: modrelogin.py:159
 msgid "Login Domain:"
 msgstr "Domäne für die Anmeldung:"
 
-#: modrelogin.py:163
+#: modrelogin.py:159
 msgid "choose Domain for login"
 msgstr "Bitte wählen Sie die Domäne, an der Sie sich anmelden möchten."
 
-#: modrelogin.py:175
-msgid "Choose language for this session"
-msgstr "Bitte wählen Sie die Sprache für diese Sitzung"
-
-#: modrelogin.py:175
+#: modrelogin.py:171
 msgid "Language:"
 msgstr "Sprache:"
 
-#: modrelogin.py:251
+#: modrelogin.py:171
+msgid "Choose language for this session"
+msgstr "Bitte wählen Sie die Sprache für diese Sitzung"
+
+#: modrelogin.py:247
 msgid "You can't login with the admin user"
 msgstr "Sie können sich nicht als Benutzer admin anmelden"
 
-#: modrelogin.py:255 modrelogin.py:262
+#: modrelogin.py:251 modrelogin.py:258
 msgid "Wrong Username or Password for the selected Domain"
 msgstr ""
 "Der Benutzername oder das Passwort sind für die ausgewählte Domäne nicht "
 "korrekt."
 
-#: modrelogin.py:264
+#: modrelogin.py:260
 msgid ""
 "Licence not found. During this session add and modify are disabled. You can "
 "install a new License in the About section."
@@ -1201,13 +1233,13 @@ msgstr ""
 "Keine Lizenz gefunden. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:265 modrelogin.py:271 modrelogin.py:277 modrelogin.py:283
-#: modrelogin.py:289 modrelogin.py:295 modrelogin.py:301 modrelogin.py:307
-#: modrelogin.py:313 modrelogin.py:341
+#: modrelogin.py:261 modrelogin.py:267 modrelogin.py:273 modrelogin.py:279
+#: modrelogin.py:285 modrelogin.py:291 modrelogin.py:297 modrelogin.py:303
+#: modrelogin.py:309 modrelogin.py:337
 msgid "Login successful"
 msgstr "Anmeldung erfolgreich."
 
-#: modrelogin.py:270
+#: modrelogin.py:266
 msgid ""
 "You have too many user accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1215,7 +1247,7 @@ msgstr ""
 "Sie haben mehr Benutzerkonten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:276
+#: modrelogin.py:272
 msgid ""
 "You have too many client accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1223,7 +1255,7 @@ msgstr ""
 "Sie haben mehr Client Rechner, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:282
+#: modrelogin.py:278
 msgid ""
 "You have too many desktop accounts for your licence. During this session add "
 "and modify are disabled. You can install a new License in the About section."
@@ -1231,7 +1263,7 @@ msgstr ""
 "Sie haben mehr Desktop Rechner, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:288
+#: modrelogin.py:284
 msgid ""
 "You have too many groupware accounts for your licence. During this session "
 "add and modify are disabled. You can install a new License in the About "
@@ -1240,7 +1272,7 @@ msgstr ""
 "Sie haben mehr Groupware Konten, als Ihre Lizenz erlaubt. Während dieser "
 "Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:294
+#: modrelogin.py:290
 msgid ""
 "Your licence is expired. During this session add and modify are disabled. "
 "You can install a new License in the About section."
@@ -1248,7 +1280,7 @@ msgstr ""
 "Die Lizenz ist abgelaufen. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:300
+#: modrelogin.py:296
 msgid ""
 "Your licence is not valid for your LDAP-Base. During this session add and "
 "modify are disabled. You can install a new License in the About section."
@@ -1256,7 +1288,7 @@ msgstr ""
 "Die installierte Linzenz wurde nicht für diese Basis-DN ausgestellt. Während "
 "dieser Sitzung ist das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:306
+#: modrelogin.py:302
 msgid ""
 "Your licence is not valid. During this session add and modify are disabled. "
 "You can install a new License in the About section."
@@ -1264,7 +1296,7 @@ msgstr ""
 "Ihre Lizenz ist nicht gültig. Während dieser Sitzung ist das Hinzufügen und "
 "Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:312
+#: modrelogin.py:308
 msgid ""
 "Your licence does not allow modifications. During this session add and "
 "modify are disabled. You can install a new License in the About section."
@@ -1272,7 +1304,7 @@ msgstr ""
 "Die installierte Lizenz erlaubt keine Änderungen. Während dieser Sitzung ist "
 "das Hinzufügen und Bearbeiten von Objekten nicht möglich."
 
-#: modrelogin.py:318
+#: modrelogin.py:314
 msgid ""
 "Your license status could not be validated. Thus, you are not eligible to "
 "support and maintenance. If you have bought a license, please contact "
@@ -1284,7 +1316,8 @@ msgstr ""
 "WennSie über eine Lizenz verfügen, wenden Sie sich bitte an Univention oder "
 "einen Univention Partner"
 
-#: modrelogin.py:337 modrelogin.py:339
+#: modrelogin.py:333 modrelogin.py:335
+#, python-format
 msgid "Your SSL certificate will expire in %d days."
 msgstr "Das SSL-Zertifikat läuft in %d Tagen ab."
 
@@ -1324,41 +1357,41 @@ msgstr "Vorgang abgeschlossen, die Änderungen wurden übernommen."
 msgid "Wizard"
 msgstr "Assistent"
 
-#: modwizard.py:182
-msgid "Where to create the new object"
-msgstr "Wo soll das neue Objekt erzeugt werden"
-
 #: modwizard.py:182 modwizard.py:707
 msgid "Select Domain:"
 msgstr "Domäne auswählen:"
 
-#: modwizard.py:240
-msgid "Choose a position for your object"
-msgstr "Wählen Sie eine Position für Ihr Objekt."
+#: modwizard.py:182
+msgid "Where to create the new object"
+msgstr "Wo soll das neue Objekt erzeugt werden"
 
 #: modwizard.py:240
 msgid "Select Container:"
 msgstr "Container auswählen:"
+
+#: modwizard.py:240
+msgid "Choose a position for your object"
+msgstr "Wählen Sie eine Position für Ihr Objekt."
 
 #: modwizard.py:243
 msgid "no default path found"
 msgstr "Kein Standard-Container gefunden"
 
 #: modwizard.py:284 modwizard.py:849
-msgid "Superordinate Object"
-msgstr "Übergeordnetes Objekt"
-
-#: modwizard.py:284 modwizard.py:849
 msgid "Superordinate:"
 msgstr "Übergeordnetes Objekt:"
 
-#: modwizard.py:313
-msgid "Choose the desired object type."
-msgstr "Wählen Sie den gewünschten Objekttyp aus."
+#: modwizard.py:284 modwizard.py:849
+msgid "Superordinate Object"
+msgstr "Übergeordnetes Objekt"
 
 #: modwizard.py:313 modwizard.py:890
 msgid "Select Type:"
 msgstr "Typ auswählen:"
+
+#: modwizard.py:313
+msgid "Choose the desired object type."
+msgstr "Wählen Sie den gewünschten Objekttyp aus."
 
 #: modwizard.py:319
 msgid "no template"
@@ -1377,30 +1410,32 @@ msgid "Next"
 msgstr "Weiter"
 
 #: modwizard.py:363
+#, python-format
 msgid "Create %s Reports"
 msgstr "Erstelle %s Reports"
-
-#: modwizard.py:396
-msgid "Select Report"
-msgstr "Report auswählen:"
 
 #: modwizard.py:396
 msgid "Select Report:"
 msgstr "Report auswählen:"
 
-#: modwizard.py:397 modwizard.py:950
-msgid "Create Reports"
-msgstr "Reports erstellen"
+#: modwizard.py:396
+msgid "Select Report"
+msgstr "Report auswählen:"
 
 #: modwizard.py:397 modwizard.py:950
 msgid "create report"
 msgstr "Report erstellen"
+
+#: modwizard.py:397 modwizard.py:950
+msgid "Create Reports"
+msgstr "Reports erstellen"
 
 #: modwizard.py:399
 msgid "Select the report you want to create: "
 msgstr "Wählen Sie den Report, der erstellt werden soll"
 
 #: modwizard.py:440
+#, python-format
 msgid ""
 "Report was created successfully: %(count)d '%(module)s' objects included"
 msgstr ""
@@ -1408,6 +1443,7 @@ msgstr ""
 "eingebunden"
 
 #: modwizard.py:478 modwizard.py:722
+#, python-format
 msgid "all registered %s containers"
 msgstr "Alle registrierten %s-Container"
 
@@ -1420,6 +1456,7 @@ msgid "selected domain including subdomains"
 msgstr "Ausgewählte Domäne und deren Unterdomänen"
 
 #: modwizard.py:579 modwizard.py:1039
+#, python-format
 msgid ""
 "Failed to open object, insufficient or ambiguous values returned from search "
 "(%s)"
@@ -1436,6 +1473,7 @@ msgid "Select Domain"
 msgstr "Wählen Sie die Domäne"
 
 #: modwizard.py:763
+#, python-format
 msgid "only %s"
 msgstr "Nur \"%s\""
 
@@ -1456,12 +1494,12 @@ msgid "choose property"
 msgstr "Wählen Sie die Eigenschaft"
 
 #: modwizard.py:940
-msgid "Display (new) search results"
-msgstr "(Neue) Suchergebnisse anzeigen"
-
-#: modwizard.py:940
 msgid "search"
 msgstr "Suchen"
+
+#: modwizard.py:940
+msgid "Display (new) search results"
+msgstr "(Neue) Suchergebnisse anzeigen"
 
 #: modwizard.py:941
 msgid "reset"
@@ -1472,21 +1510,28 @@ msgid "reset search"
 msgstr "Suche zurücksetzen"
 
 #: modwizard.py:1114
+#, python-format
 msgid "More than %d results, please redefine search."
 msgstr ""
 "Es wurden mehr als %d Objekte gefunden, bitte schränken Sie die Suche ein."
 
 #: modwizard.py:1121
+#, python-format
 msgid "%d Search result(s) (cached)"
 msgstr "%d Suchergebnis(se) (zwischengespeichert)"
 
 #: modwizard.py:1124
+#, python-format
 msgid "%d Search result(s)"
 msgstr "%d Suchergebnis(se)"
 
-#: modwizard.py:1254
+#: modwizard.py:1256
 msgid "Do with selected objects...."
 msgstr "Die ausgewählten Objekten ..."
+
+#: unidialog.py:111
+msgid "Univention Management Console"
+msgstr "Univention Management Console"
 
 #: unidialog.py:111
 msgid ""
@@ -1502,10 +1547,6 @@ msgstr ""
 "Univention Management Console anderer UCS Systeme kann über Verknüpfungen an "
 "den Objekten in der Rechnerverwaltung erfolgen."
 
-#: unidialog.py:111
-msgid "Univention Management Console"
-msgstr "Univention Management Console"
-
 #: unidialog.py:113
 msgid ""
 "You are using the \"Free for personal use\" edition. Find more information "
@@ -1513,6 +1554,25 @@ msgid ""
 msgstr ""
 "Sie verwenden die \"Free for personal use\"-Edition. Weitere Informationen "
 "finden Sie auf der Über-Seite"
+
+#~ msgid "Your credentials are not valid anymore."
+#~ msgstr "Ihre aktuelle Kennung ist nicht mehr gültig."
+
+# usermanger_view.py groupmanager_view.py computermanager_view.py
+#~ msgid "Note"
+#~ msgstr "Hinweis"
+
+#~ msgid "Increase Session Timeout"
+#~ msgstr "Session-Timeout verlängern"
+
+#~ msgid ""
+#~ "As an alternative you can set the UCR variable with the following command "
+#~ "line statement <code>univention-config-registry directory/manager/"
+#~ "timeout=TIMEOUT_IN_SECONDS</code>."
+#~ msgstr ""
+#~ "Alternativ können Sie die UCR Variable mit dem folgenden "
+#~ "Kommandozeilenbefehl setzen <code>univention-config-registry directory/"
+#~ "manager/timeout=TIMEOUT_IN_SEKUNDEN</code>."
 
 #~ msgid "Welcome to Univention Admin"
 #~ msgstr "Willkommen zu Univention Admin"
