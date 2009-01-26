@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-27) unstable; urgency=low
+
+  * added notification icon. Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 14:44:12 +0100
+
 univention-directory-manager (6.0.1-26) unstable; urgency=low
 
   * the session timeout box has been adapted to the layout changes suggested
