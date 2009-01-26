@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-31) unstable; urgency=low
+
+  * enabled autosearch for modedit. Bug #11463
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 18:02:02 +0100
+
 univention-directory-manager (6.0.1-30) unstable; urgency=low
 
   * fixed a typo. Bug #11344
