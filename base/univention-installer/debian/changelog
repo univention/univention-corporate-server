@@ -1,5 +1,11 @@
 univention-installer (3.0.3-1) unstable; urgency=low
 
+  * added 12_expert_partition file (Bug: #13183)
+
+ -- Felix Botner <botner@univention.de>  Mon, 26 Jan 2009 14:19:22 +0100
+
+univention-installer (3.0.3-1) unstable; urgency=low
+
   * new cmd switch for expert partitioning (Bug: #13183)
 
  -- Felix Botner <botner@univention.de>  Mon, 26 Jan 2009 14:13:01 +0100
