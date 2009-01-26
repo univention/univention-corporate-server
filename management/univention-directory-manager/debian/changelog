@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.1-30) unstable; urgency=low
+
+  * fixed a typo. Bug #11344
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 17:02:59 +0100
+
 univention-directory-manager (6.0.1-29) unstable; urgency=low
 
   * added another icon for the wizards. Bug #8443

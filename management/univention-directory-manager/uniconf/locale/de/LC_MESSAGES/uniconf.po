@@ -1149,11 +1149,11 @@ msgstr "Session-Timeout"
 
 #: modrelogin.py:106
 msgid ""
-"To increase the session timeout log into UMC, select the Univention Config "
+"To increase the session timeout log into Univention Management Console, select the Univention Config "
 "Registry module and change the value of <code>directory/manager/timeout</"
 "code>."
 msgstr ""
-"Um den Session-Timeout zu erhöhen, melden Sie sich am UMC an, wählen Sie das "
+"Um den Session-Timeout zu erhöhen, melden Sie sich an der Univention Management Console an, wählen Sie das "
 "Modul Univention Configuration Registry aus und ändern Sie den Wert von "
 "<code>directory/manager/timeout</code>."
 

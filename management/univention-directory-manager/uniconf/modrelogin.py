@@ -103,7 +103,7 @@ class modrelogin(unimodule.unimodule):
 		if self.req and self.req.meta and self.req.meta.has_key ('Sessioninvalid') \
 				and self.req.meta['Sessioninvalid'] == '1':
 					description_caption = _('Session Timeout')
-					description1 = _('To increase the session timeout log into UMC, select the Univention Config Registry module and change the value of <code>directory/manager/timeout</code>.')
+					description1 = _('To increase the session timeout log into Univention Management Console, select the Univention Config Registry module and change the value of <code>directory/manager/timeout</code>.')
 					#description2 = _('As an alternative you can set the UCR variable with the following command line statement <code>univention-config-registry directory/manager/timeout=TIMEOUT_IN_SECONDS</code>.')
 					sessioninvalid = htmltext ('login_messagebox', {}, \
 							{'htmltext': [_("""
