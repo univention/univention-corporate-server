@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-09 18:36+0100\n"
+"POT-Creation-Date: 2009-01-26 09:44+0100\n"
 "PO-Revision-Date: 2008-06-16 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -212,11 +212,11 @@ msgstr "Während des Bearbeitens ist ein Fehler aufgetreten: %s %s"
 
 #: modconsole.py:127
 msgid "Language:"
-msgstr ""
+msgstr "Sprache:"
 
 #: modconsole.py:127
 msgid "Choose language for this session"
-msgstr ""
+msgstr "Bitte wählen Sie eine Sprache für diese Sitzung"
 
 #: modconsole.py:129
 msgid "Username"

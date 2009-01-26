@@ -1,3 +1,9 @@
+univention-management-console (1.0.3-3) unstable; urgency=low
+
+  * added translation for the language selection widget. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 09:46:56 +0100
+
 univention-management-console (1.0.3-2) unstable; urgency=low
 
   * fixed traceback after successfull package installation (Bug #12924)
