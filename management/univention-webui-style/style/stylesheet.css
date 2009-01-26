@@ -461,12 +461,27 @@ td.normal,
 td.note_layout,
 td.wait_layout,
 td.about_layout,
-td.welcome_layout,
 td.logout_layout,
 td.login_layout,
 td.wizard_layout,
 td.wizard_layout_bottom{
 padding:3px 0px 3px 10px;
+}
+
+td.welcome_icon_text {
+	padding-left: 8px;
+}
+
+td.welcome_layout {
+padding:5px 0px 15px 5px;
+}
+
+td.welcome_layout_text {
+padding:0px 0px 15px 0px;
+}
+
+td.height14 {
+height:14px;
 }
 
 td.browse_layout, 
@@ -565,6 +580,7 @@ td.normal,
 td.wait_layout,
 td.about_layout,
 td.welcome_layout,
+td.welcome_layout_text,
 td.logout_layout,
 td.login_layout,
 td.wizard_layout,

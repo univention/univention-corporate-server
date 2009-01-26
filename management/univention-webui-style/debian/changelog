@@ -1,3 +1,9 @@
+univention-webui-style (3.0.2-2) unstable; urgency=low
+
+  * adapted layout changes suggested in Bug #8443
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon, 26 Jan 2009 12:04:47 +0100
+
 univention-webui-style (3.0.2-1) unstable; urgency=low
 
   * fixed more css settings for the dojo update. Bug #13034
