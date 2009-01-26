@@ -34,6 +34,10 @@ title Univention Installer acpi=off
 kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 acpi=off flavor=linux text
 initrd (cd)/boot/linux26.bin
 
+title Univention Installer Expert Partitioner
+kernel (cd)/boot/linux26 root=/dev/ram ro vt.default_utf8=0 vga=785 ramdisk_size=65536 flavor=linux text expert_partition
+initrd (cd)/boot/linux26.bin
+
 title Boot from first harddisk partition
 rootnoverify (hd0)
 chainloader +1

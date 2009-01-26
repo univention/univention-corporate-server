@@ -1,6 +1,7 @@
 #!/bin/sh
 
 recover=`cat /proc/cmdline | grep " recover"`
+expert_partition=`cat /proc/cmdline | grep "expert_partition"`
 params="--cmdline"
 
 # disable console blanking
@@ -22,6 +23,11 @@ fi
 if [ -e /.ucs-version ]; then
 	params="$params --version $(cat /.ucs-version)"
 fi
+
+if [ -n "$expert_partition" ]; then
+	params="$params --expert_partition"
+fi
+
 if [ -n "$recover" ]; then
 
 
