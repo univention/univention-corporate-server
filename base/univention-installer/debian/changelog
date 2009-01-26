@@ -1,4 +1,4 @@
-univention-installer (3.0.3-1) unstable; urgency=low
+univention-installer (3.0.3-2) unstable; urgency=low
 
   * added 12_expert_partition file (Bug: #13183)
 
