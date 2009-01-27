@@ -1,3 +1,10 @@
+univention-webui-style (3.0.4-1) unstable; urgency=low
+
+  * don't overwrite the background colour for input widgets. Closes Bug
+    #13121
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 16:38:38 +0100
+
 univention-webui-style (3.0.3-2) unstable; urgency=low
 
   * change layout of dynamic_longtable buttons
