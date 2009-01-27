@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.23-1) unstable; urgency=low
+
+  * revert the last commit, the groupware tab should be available in the
+    normal dialog. Bug #13182
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 07:48:54 +0100
+
 univention-directory-manager-modules (3.0.22-2) unstable; urgency=low
 
   * show the groupware tab in the advance dialog. Bug #13182
