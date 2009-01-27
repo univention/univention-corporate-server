@@ -3,7 +3,7 @@
 # Univention Updater
 #  read the maintenance settings
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -93,5 +93,3 @@ if baseConfig.has_key('ldap/hostdn') and baseConfig['ldap/hostdn']:
 
 
 sys.exit(0)
-
-

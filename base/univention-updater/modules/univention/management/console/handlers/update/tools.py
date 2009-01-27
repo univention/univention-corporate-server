@@ -239,7 +239,7 @@ class UniventionUpdater:
 		return None
 
 	def release_update_available(self):
-		return self.get_next_version( UCS_Version( self.version_major, self.version_minor, self.patchlevel ) )
+		return self.get_next_version( UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) ) )
 
 	def security_update_temporary_sources_list(self):
 		sources_list = []

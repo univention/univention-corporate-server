@@ -166,10 +166,15 @@ def update_net( options ):
 	if options.sync:
 		mirror.run()
 	else:
+		if options.update_to:
+			ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
+			mirror.run()
+			return
 		nextupddate = mirror.release_update_available()
-		if nextupdate:
+		while nextupdate:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
 			mirror.run()
+			nextupddate = mirror.release_update_available()
 
 if __name__ == '__main__':
 	# FIXME: no clue why we need this
@@ -188,6 +193,9 @@ if __name__ == '__main__':
 	parser.add_option( '-s', '--sync-only', action = 'store_true',
 					   dest = 'sync', default = False,
 					   help = 'if given no new release repositories will be added, just the existing will be updated' )
+	parser.add_option( '-u', '--update-to', action = 'store',
+					   dest = 'update_to', default = '',
+					   help = 'if given the repository is updated to the specified version but not higher' )
 
 	( options, arguments ) = parser.parse_args()
 
