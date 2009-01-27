@@ -1,3 +1,9 @@
+univention-server-installer (2.0.0-1) unstable; urgency=low
+
+  * create new share ucs-repository in join script (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 22 Jan 2009 14:52:27 +0100
+
 univention-server-installer (1.0.1-1) unstable; urgency=low
 
   * set vt.default_utf8 to 0 because the default encoding in 2.6.24 is
@@ -19,14 +25,14 @@ univention-server-installer (0.8) unstable; urgency=low
 
 univention-server-installer (0.7) unstable; urgency=low
 
-  * setting of pxe/append does not require restarting the ldap-listener 
+  * setting of pxe/append does not require restarting the ldap-listener
 
  -- Wolf Wiegand <wolf@anton.knut.univention.de>  Fri,  3 Mar 2006 15:37:18 +0100
 
 univention-server-installer (0.6) unstable; urgency=low
 
   * the append line of the pxe boot files can be set using
-    univention-baseconfig set pxe/append 
+    univention-baseconfig set pxe/append
 
  -- Wolf Wiegand <wolf@anton.knut.univention.de>  Fri,  3 Mar 2006 14:32:11 +0100
 
@@ -59,4 +65,3 @@ univention-server-installer (0.1) unstable; urgency=low
   * Initial Release.
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 15 Mar 2004 08:53:32 +0100
-
