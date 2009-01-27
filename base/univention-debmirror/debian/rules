@@ -43,7 +43,6 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	install -m 0755 77univention-debmirror.inst debian/univention-debmirror/usr/lib/univention-install/
-	install -m 0755 univention-apt-mirror.py debian/univention-debmirror/usr/sbin/univention-apt-mirror
 	univention-install-config-registry
 
 binary-indep: build install
