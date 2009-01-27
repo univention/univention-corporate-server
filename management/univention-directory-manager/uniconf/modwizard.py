@@ -931,9 +931,16 @@ class modwizard(unimodule.unimodule):
 		self.search_property_select=question_select(_('property'),{'width':'200'},{'helptext':_('choose property'),'choicelist':search_properties,'button':self.search_property_button})
 
 		searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_property_select]}))
-		searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
-
-		rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
+		if child_ids:
+			# we have got three widgets, so the last widget should be in the right column, see Bug #13160
+			searchcols2 = []
+			searchcols2.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
+			rows.append(tablerow("",{},{"obs":[	tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols}),]})]}), 
+												tablecol('',{'colspan':'1'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols2}),]})]})
+											]}))
+		else:
+			searchcols.append(tablecol('',{'type':'wizard_layout'},{'obs':[self.search_input]}))
+			rows.append(tablerow("",{},{"obs":[tablecol('',{'colspan':'2'},{'obs':[table('',{},{'obs':[tablerow("",{},{"obs":searchcols})]})]})]}))
 
 		self.search_visible=question_text(_('results per page'), {'width':'100', 'validregex':'\d*', 'invalidmessage':str(_('Please enter a number.'))},
 						  {'usertext': str(visible)})

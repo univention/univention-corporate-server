@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.5-1) unstable; urgency=low
+
+  * arrange the widget in the wizard search. Closes Bug #13160
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 09:46:51 +0100
+
 univention-directory-manager (6.0.4-2) unstable; urgency=low
 
   * added the data to create the composed wizards icons. Bug #8443
