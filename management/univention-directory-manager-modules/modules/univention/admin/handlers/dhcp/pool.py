@@ -138,7 +138,7 @@ layout=[
 		[univention.admin.field('failover_peer'), univention.admin.field('filler')],
 		[univention.admin.field('known_clients'),univention.admin.field('unknown_clients')],
 		[univention.admin.field('dynamic_bootp_clients'),univention.admin.field('all_clients') ]
-	])
+	], advanced = True)
 ]
 
 def rangeMap(old):

@@ -170,20 +170,20 @@ property_descriptions={
 }
 layout=[
 	univention.admin.tab(_('General'),_('Basic Values'),[[univention.admin.field("name")]]),
-	univention.admin.tab(_('Domain Password'),_('Administrator Password for this Domain'),[[univention.admin.field("domainPassword")]]),
+	univention.admin.tab(_('Domain Password'),_('Administrator Password for this Domain'),[[univention.admin.field("domainPassword")]], advanced = True),
 	univention.admin.tab(_('DNS'),_('DNS Zones'),[
 			[univention.admin.field("dnsForwardZone"),univention.admin.field("dnsReverseZone")]
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Samba'),_('Samba Settings'),[
 			[univention.admin.field("sambaDomainName"), univention.admin.field("sambaSID")],
 			[univention.admin.field("sambaNextUserRid"), univention.admin.field("sambaNextGroupRid")]
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Kerberos'), _('Kerberos Settings'),[
 			[univention.admin.field('kerberosRealm')]
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Mail'), _('Mail Settings'),[
 			[univention.admin.field('mailRelay')]
-		]),
+		], advanced = True),
 ]
 
 mapping=univention.admin.mapping.mapping()

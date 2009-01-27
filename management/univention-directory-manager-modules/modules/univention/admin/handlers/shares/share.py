@@ -678,22 +678,22 @@ layout=[
 			[univention.admin.field('sambaWriteList'), univention.admin.field('sambaHideFiles') ],
 			[univention.admin.field('sambaNtAclSupport'), univention.admin.field('sambaInheritAcls')],
 			[univention.admin.field('sambaInheritOwner'), univention.admin.field('sambaInheritPermissions')],
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Samba Extended Permissions'),_('Samba Extended Permission Settings'),[
 			[univention.admin.field('sambaCreateMode'), univention.admin.field('sambaDirectoryMode')],
 			[univention.admin.field('sambaForceCreateMode'), univention.admin.field('sambaForceDirectoryMode')],
 			[univention.admin.field('sambaSecurityMode'), univention.admin.field('sambaDirectorySecurityMode')],
 			[univention.admin.field('sambaForceSecurityMode'), univention.admin.field('sambaForceDirectorySecurityMode')],
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Samba Performance'),_('Samba Performance Settings'),[
 			[univention.admin.field('sambaLocking'), univention.admin.field('sambaBlockingLocks')],
 			[univention.admin.field('sambaStrictLocking'), univention.admin.field('sambaOplocks')],
 			[univention.admin.field('sambaLevel2Oplocks'), univention.admin.field('sambaFakeOplocks')],
 			[univention.admin.field('sambaBlockSize'), univention.admin.field('sambaCscPolicy')],
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Samba Custom Settings'),_('Custom Settings for Samba Shares'), [
 			[univention.admin.field('sambaCustomSettings') , ],
-		]),
+		], advanced = True),
 ]
 
 def boolToString(value):

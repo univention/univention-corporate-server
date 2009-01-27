@@ -1,3 +1,11 @@
+univention-webui (2.0.3-1) stable; urgency=low
+
+  * added a checkbox to show the advanced settings/tabs. By default the
+    advanced settings will be hidden. The advanced tabs could be
+    configured by UCR. Closes Bug #13182
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 26 Jan 2009 17:45:17 +0100
+
 univention-webui (2.0.2-1) stable; urgency=low
 
   * allow empty values in the question_select widget. Closes Bug #13063

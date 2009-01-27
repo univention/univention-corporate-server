@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2009-01-26 14:30+0100\n"
-"PO-Revision-Date: 2009-01-19 22:49+0100\n"
+"PO-Revision-Date: 2009-01-26 17:43+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -627,6 +627,10 @@ msgstr "Neues"
 #: modedit.py:307
 msgid "-object"
 msgstr "-Objekt"
+
+#: modedit.py:311 modedit.py:324
+msgid "Show the advanced settings"
+msgstr "Zeige die erweiterten Einstellungen"
 
 #: modedit.py:375
 msgid "Option"

@@ -343,7 +343,7 @@ tab = univention.admin.tab( _( 'Windows Advanced' ), _( 'Windows Terminal Server
 		[ univention.admin.field( 'CtxShadow' ) ],
 		[ univention.admin.field( 'CtxBrokenSession' ), univention.admin.field( 'CtxReconnectSession' ) ],
 		[ univention.admin.field( 'CtxRASDialin' ) ],
-	] )
+	], advanced = True )
 
 class Support( object ):
 	def __init__( self ):

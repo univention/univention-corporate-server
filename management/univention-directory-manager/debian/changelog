@@ -1,3 +1,11 @@
+univention-directory-manager (6.0.2-1) unstable; urgency=low
+
+  * added a checkbox to show the advanced settings/tabs. By default the
+    advanced settings will be hidden. The advanced tabs could be
+    configured by UCR. Closes Bug #13182
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 07:03:45 +0100
+
 univention-directory-manager (6.0.1-31) unstable; urgency=low
 
   * enabled autosearch for modedit. Bug #11463

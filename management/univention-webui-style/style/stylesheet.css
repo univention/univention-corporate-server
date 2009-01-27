@@ -887,6 +887,13 @@ font-weight:bold;
 font-size:11px;
 }
 
+/* Checkbox im Header */
+
+.header_checkbox {
+width:20px;
+
+}
+
 /* Ueberschrift "Suchergebnisse" */
 .h3 {
 font-size:14px;

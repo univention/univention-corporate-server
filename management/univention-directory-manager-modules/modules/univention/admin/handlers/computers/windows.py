@@ -218,7 +218,7 @@ layout=[
 	univention.admin.tab(_('Machine Account'),_('Machine Account Settings'),[
 			[univention.admin.field("machineAccountGroup")],
 			[univention.admin.field("ntCompatibility")]
-		]),
+		], advanced = True),
 	univention.admin.tab(_('DNS'),_('DNS Forward and Reverse Lookup Zone'),[
 			[univention.admin.field("dnsEntryZoneForward")],
 			[univention.admin.field("dnsEntryZoneReverse")]
@@ -228,10 +228,10 @@ layout=[
 		]),
 	univention.admin.tab(_('Deployment'),_('Deployment'),[
 			[univention.admin.field("reinstall")]
-		]),
+		], advanced = True),
 	univention.admin.tab(_('Groups'),_('Group Memberships'),[
 			[univention.admin.field("groups")],
-		])
+		], advanced = True)
 ]
 
 mapping=univention.admin.mapping.mapping()

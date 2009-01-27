@@ -34,6 +34,7 @@ from localwebui import _
 import types
 import univention.admin
 import univention.admin.modules
+import univention.debug
 
 _options_description = _('Options')
 _options_short_description = '(%s)' % _options_description
@@ -43,13 +44,14 @@ def _format_tab(tab):
 	return (tab.short_description, tab.long_description)
 
 class Tabbing(list):
-	def __init__(self, module = None, object = None, more = False, options = False):
+	def __init__(self, module = None, object = None, more = False, options = False, advanced = True):
 		self._module = None
 		self._object = None
 		self.mod_tabs = []
 		self.pol_tabs = []
 		self.pol_sel = None
 		self.opt_tab = None
+		self.advanced = advanced
 		if object is None:
 			if isinstance(module, types.ModuleType):
 				# "Edit Policy" case
@@ -72,8 +74,23 @@ class Tabbing(list):
 			super(Tabbing, self).__init__(self.__all_tabs())
 
 	def __mk_mod_tabs(self):		
-		return [ (tab, self._module)
-			 for tab in univention.admin.modules.layout(self._module, self._object) ]
+		tab_list = []
+
+		for tab in univention.admin.modules.layout(self._module, self._object):
+			advanced = univention.admin.ucr_overwrite_layout(self._module.module, 'advanced', tab)
+			if advanced == False:
+				value = False
+			elif advanced == None:
+				value = tab.advanced # read the default value from the modul
+			else:
+				value = True
+				
+			if not self.advanced and value:
+				pass
+			else:
+				tab_list.append( (tab, self._module) )
+
+		return tab_list
 
 	def __mk_pol_tabs(self):
 		return [ (univention.admin.tab(shrt, long, fields), module)
@@ -81,6 +98,7 @@ class Tabbing(list):
 			 for module in [univention.admin.modules.get(type)]
 			 for layout in [univention.admin.modules.layout(module)]
 			 if len(layout) > 1
+			 if self.advanced
 			 for short in [univention.admin.modules.policy_short_description(module)]
 			 for shrt in ['[%s]' % short]
 			 for long in [layout[0].long_description]
@@ -95,7 +113,10 @@ class Tabbing(list):
 	def __mk_opt_tab(self):
 		short = _options_short_description
 		long  = _options_description
-		return univention.admin.tab(short, long), self._module
+		if self.advanced:
+			return univention.admin.tab(short, long), self._module
+		else:
+			return None
 
 	def __mk_edt_pol(self):
 		short  = "[%s]" % univention.admin.modules.policy_short_description(self._module)

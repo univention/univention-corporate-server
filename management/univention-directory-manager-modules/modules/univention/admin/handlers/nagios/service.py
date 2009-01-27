@@ -228,12 +228,12 @@ layout=[
 	univention.admin.tab( _('Interval'), _('Check Settings'),
 			[ [ univention.admin.field( "normalCheckInterval" ), univention.admin.field( "retryCheckInterval" ) ],
 			  [ univention.admin.field( "maxCheckAttempts" ), univention.admin.field( "checkPeriod" ) ]
-			  ] ),
+			  ], advanced = True ),
 	univention.admin.tab( _('Notification'), _('Notification Settings'),
 			[ [ univention.admin.field( "notificationInterval" ), univention.admin.field( "notificationPeriod" ) ],
 			  [ univention.admin.field( "notificationOptionWarning" ), univention.admin.field( "notificationOptionCritical" ) ],
 			  [ univention.admin.field( "notificationOptionUnreachable" ), univention.admin.field( "notificationOptionRecovered" ) ]
-			  ] ),
+			  ], advanced = True ),
 	univention.admin.tab( _('Hosts'), _('Assigned Hosts'),
 			[ [ univention.admin.field( "assignedHosts" ) ]
 			  ] )

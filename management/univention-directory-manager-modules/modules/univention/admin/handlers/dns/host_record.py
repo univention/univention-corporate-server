@@ -106,10 +106,10 @@ layout=[
 	]),
 	univention.admin.tab(_('Mail'), _('Mail Exchangers for this Host'), fields=[
 		[univention.admin.field('mx')],
-	]),
+	], advanced = True),
 	univention.admin.tab(_('Text'), _('Optional Text'), fields=[
 		[univention.admin.field('txt')],
-	])
+	], advanced = True)
 ]
 
 

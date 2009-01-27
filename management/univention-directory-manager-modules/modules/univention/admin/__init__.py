@@ -210,14 +210,29 @@ class option:
 				return False
 		return True
 
+def ucr_overwrite_layout (module, ucr_property, tab):
+	"""
+	Overwrite the advanced setting in the layout
+	"""
+	p_v = baseConfig.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, tab.short_description._orig_str, ucr_property), None)
+	if not p_v:
+		return None
+
+	if p_v.lower() in ['0', 'false', 'no', 'off']:
+		return False
+	else:
+		return True
+	
+
 class tab:
-	def __init__(self, short_description='', long_description='', fields=[]):
+	def __init__(self, short_description='', long_description='', fields=[], advanced = False):
 		self.short_description=short_description
 		self.long_description=long_description
 		self.fields=fields
+		self.advanced = advanced
 
 	def __repr__(self):
-		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', fields: [" % (self.short_description, self.long_description)
+		string = " univention.admin.tab: { short_description: '%s', long_description: '%s', advanced: '%s', fields: [" % (self.short_description, self.long_description, self.advanced)
 		for field in self.fields:
 			string = "%s %s," % (string, field)
 		return string + " ] }"

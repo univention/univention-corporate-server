@@ -188,14 +188,15 @@ layout=[
 	] ),
 	univention.admin.tab(_('Host Members'),_('Host Members of this Group'),[
 		[univention.admin.field("hosts")]
-	] ),
+	], advanced = True ),
 	univention.admin.tab(_('Nested Groups'),_('Membership of other Groups'),[
 		[univention.admin.field("nestedGroup")]
-	] ),
+	], advanced = True ),
 	univention.admin.tab(_('Member Of'),_('Membership in other Groups'),[
 			[univention.admin.field("memberOf")]
-	] )
+	], advanced = True )
 ]
+
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)

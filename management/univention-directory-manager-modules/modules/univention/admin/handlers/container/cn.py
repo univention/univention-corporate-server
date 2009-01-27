@@ -198,7 +198,7 @@ layout=[
 			[univention.admin.field("networkPath"), univention.admin.field("sharePath")],
 			[univention.admin.field("printerPath"), univention.admin.field("mailPath")],
 			[ univention.admin.field("licensePath")],
-			])
+			], advanced = True)
 ]
 
 mapping=univention.admin.mapping.mapping()

@@ -184,7 +184,7 @@ layout=[
 		]),
 	univention.admin.tab(_('Groups'),_('Group Memberships'),[
 			[univention.admin.field("groups")],
-		])
+		], advanced = True)
 ]
 
 mapping=univention.admin.mapping.mapping()

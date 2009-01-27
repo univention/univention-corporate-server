@@ -307,6 +307,23 @@ class modedit(unimodule.unimodule):
 				text("",{},{"text":['%s %s "%s"%s' %(_('type:'),_("new"), univention.admin.modules.short_description(module), _("-object"))]})
 				]
 
+		advanced_button = button('change',{},{'helptext':_('change')})
+		head_advanced_text = [ text("",{},{"text":[_("Show the advanced attributes")]})]
+		if self.save.get('advanced_tabs'):
+			advanced_value = self.save.get('advanced_tabs')
+		else:
+			advanced_value = ucr.get ('directory/manager/web/modules/%s/advancedview' % (module.module), None)
+			if not advanced_value:
+				advanced_value = ucr.get ('directory/manager/web/modules/advancedview', None)
+
+		if advanced_value in ['true', 'yes', '1', 'on']:
+			advanced_value = '1'
+		else:
+			advanced_value = None
+
+		self.advanced_checkbox = question_bool('', {},{'helptext': _("Show the advanced attributes"), 'usertext': advanced_value, 'button': advanced_button})
+		head_advanced = [ self.advanced_checkbox ]
+
 		if hasattr(self.object,'link'):
 			linktext=''
 			res=self.object.link()
@@ -328,6 +345,8 @@ class modedit(unimodule.unimodule):
 					[tablecol('',{'type':'content_icon'},{'obs':[head_icon]}),
 					 tablecol('',{},{'obs':head_name}),
 					 tablecol('',{},{'obs':head_type}),
+					 tablecol('',{'type':'header_checkbox'},{'obs':head_advanced}),
+					 tablecol('',{},{'obs':head_advanced_text}),
 					 tablecol('',{'type':'object_links'},{'obs':links})
 					 ]}))
 
@@ -341,14 +360,19 @@ class modedit(unimodule.unimodule):
 		edit_policy = self.save.get('edit_policy')
 		edit_options = False
 		tab = self.save.get('tab')
+		
+		if advanced_value in ['true', 'yes', '1', 'on']:
+			advanced_value = True
+		else:
+			advanced_value = False
 
 		if edit_policy:
-			tabbing = Tabbing(univention.admin.modules.get(edit_policy))
+			tabbing = Tabbing(univention.admin.modules.get(edit_policy, advanced = advanced_value))
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.INFO, "edit_policy: opened module of type: %s" % edit_policy)
 		else:
 			edit_options = hasattr(module, 'options') and module.options \
 				       and (add or [key for key in module.options.keys() if module.options[key].editable])
-			tabbing = Tabbing(module, self.object, not multiedit, edit_options)
+			tabbing = Tabbing(module, self.object, not multiedit, edit_options, advanced = advanced_value)
 
 		new_tab = tabbing.name(tab)
 		if new_tab != tab:
@@ -4553,6 +4577,14 @@ class modedit(unimodule.unimodule):
 				self.usermessage(cancelMessage)
 			return
 
+		# save the advanced setting
+		if hasattr(self, 'advanced_checkbox'):
+			ipt = self.advanced_checkbox.get_input()
+			if ipt == 'checked':
+				self.save.put('advanced_tabs', '1')
+			else:
+				self.save.put('advanced_tabs', '0')
+
 		# read uploaded file...
 		if hasattr(self,'certLoadBtn') and self.certLoadBtn.pressed():
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.ERROR, 'MODEDIT - ADD CERTIFICATE')
@@ -4810,6 +4842,7 @@ class modedit(unimodule.unimodule):
 						self.object.options.append(name)
 					elif not checkbox.get_input() and name in self.object.options:
 						self.object.options.remove(name)
+					
 
 		edit_policy=self.save.get('edit_policy')
 		if edit_policy:
