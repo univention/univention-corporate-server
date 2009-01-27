@@ -1,3 +1,9 @@
+univention-webui (2.0.6-1) stable; urgency=low
+
+  * dynamic_longtable: show buttons only beneath results
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 27 Jan 2009 11:22:36 +0100
+
 univention-webui (2.0.5-1) stable; urgency=low
 
   * based LazyTranslation on the implementation of UserString which

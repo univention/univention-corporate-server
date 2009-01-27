@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.5-3) unstable; urgency=low
+
+  * modify layout of results in modwizard and modbrowse
+  * add defaults for nr of results in UCR
+
+ -- Ingo Steuwer <steuwer@univention.de>  Tue, 27 Jan 2009 11:23:21 +0100
+
 univention-directory-manager (6.0.5-2) unstable; urgency=low
 
   * based LazyTranslation on the implementation of UserString which

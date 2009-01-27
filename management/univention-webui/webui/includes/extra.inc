@@ -1491,7 +1491,8 @@ class dynamic_longtable extends webui_translator
       $button_str .="<div class=\"dynlongtable-buttons\" id=\"dynlongtable_buttons\" align=\"center\">\n";
 
       # back button
-      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">&lt\n";
+      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">\n";
+      $button_str .= "  <img alt=\"&lt;\" style=\"margin: 4px;\" src=\"style/l_ar_small.gif\" />\n";
       $button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
       $button_str .= "     dijit.byId(\"longtable\").back()\n";
       $button_str .= "  </script>\n";
@@ -1501,7 +1502,8 @@ class dynamic_longtable extends webui_translator
       $button_str .= "<span class=\"dynlongtable-controller\" dojoType=\"dijit.layout.StackController\" containerId=\"longtable\"></span>\n";
 
       # forward button
-      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">&gt\n";
+      $button_str .= "<button class=\"dynlongtable-button\" dojoType=\"dijit.form.Button\">\n";
+      $button_str .= "  <img alt=\"&gt;\" style=\"margin: 4px;\" src=\"style/r_ar_small.gif\" />\n";
       $button_str .= "  <script type=\"dojo/method\" event=\"onClick\" args=\"evt\">\n";
       $button_str .= "     dijit.byId(\"longtable\").forward()\n";
       $button_str .= "  </script>\n";
@@ -1515,8 +1517,8 @@ class dynamic_longtable extends webui_translator
     #FIXME: define in CSS ?
     $str .= " style=\"margin:5px, border:none\">\n"; 
     
-    # buttons - top
-    $str .= $button_str;
+    # buttons - top # commented out
+    # $str .= $button_str;
 
     # if totalrows is not correct we will loop forever, so we check also if displayedrows has been changed
     while ( $totalrows > $displayedrows && $olddisplayedrows != $displayedrows) {

@@ -711,7 +711,13 @@ class modwizard(unimodule.unimodule):
 		# select search path
 		###########################################################################
 
-		visible=self.save.get('wizard_search_visible', 20)
+		try:
+			visible_default = int(ucr.get ('directory/manager/web/modwizard/defaults/visible-results', '10'))
+		except:
+			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "modwizard: Failed to parse directory/manager/web/modwizard/defaults/visible-results, maybe it is no integer?")
+			visible_default = 10
+		
+		visible=self.save.get('wizard_search_visible', visible_default)
 		if visible > 1000:
 			visible=1000
 		start=self.save.get('wizard_table_start', 0)
@@ -1121,22 +1127,6 @@ class modwizard(unimodule.unimodule):
 					{"obs":[header(_("More than %d results, please redefine search.")%max_results,{"type":"5"},{})]})]})
 				)
 		elif result_list and not nomatches:
-			# header
-			headerCols = []
-			if cache:
-				headerCols.append(tablecol("",{'type':'browse_layout_right'},
-						{"obs":[header(_("%d Search result(s) (cached)") % len(result_list),{"type":"5"},{})]}))
-			else:
-				headerCols.append(tablecol("",{'type':'browse_layout_right'},
-						{"obs":[header(_("%d Search result(s)") % len(result_list),{"type":"5"},{})]}))					
-			headerTable = table("", {'type':'browse_layout_right'},
-					    {"obs" : [ tablerow("",{'type':'browse_layout_right'},{"obs": headerCols}) ]})
-			searchHeaderTable = table("", {'type' : 'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'browse_layout'},{"obs": [
-				tablecol("",{'type':'browse_layout_bottom'},{"obs" : [headerTable]}) ]})]})
-			
-			main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[searchHeaderTable]})]}))
-						
-			main_rows.append(tablerow("",{},{"obs":[tablecol("",{},{"obs":[space('',{'size':'1'},{})]})]}))
 
 			###########################################################################
 			# listing head
@@ -1259,6 +1249,26 @@ class modwizard(unimodule.unimodule):
 			###########################################################################
 
 			footerCols = []
+
+			# info: number of search results
+			resultinfoCols = []
+			if cache:
+				resultinfoCols.append(tablecol("",{'type':'browse_layout_right'},
+						{"obs":[header(_("%d Search result(s) (cached)") % len(result_list),{"type":"5"},{})]}))
+			else:
+				resultinfoCols.append(tablecol("",{'type':'browse_layout_left'},
+						{"obs":[header(_("%d Search result(s)") % len(result_list),{"type":"5"},{})]}))					
+			footerCols.append(tablecol("",{'type':'browse_layout_left'},
+						   {"obs":[table("",
+								 {'type':'browse_layout_left'},
+								 {"obs" : [ tablerow("",
+										     {'type':'browse_layout_left'},
+										     {"obs": resultinfoCols}) ]
+								  })]
+						    }))
+
+
+			# drop-down: move, edit, ...
 			self.selection_commit_button=button(_("Do"),{},{"helptext":_("Do action with selected objects.")})
 			self.selection_select=question_select(_('Do with selected objects...'),{'width':'200'},{"helptext":_("Do with selected objects...."),"choicelist":[
 				{'name': "uidummy098", 'description': "---"},
@@ -1267,11 +1277,20 @@ class modwizard(unimodule.unimodule):
 				{'name': "delete", 'description': _("Delete")},
 				{'name': "recursive_delete", 'description': _("Delete recursively")},
 			],"button":self.selection_commit_button})
-			footerCols.append(tablecol("",{ 'type':'wizard_layout'},{"obs":[]}))
-			footerCols.append(tablecol("",{ 'type':'wizard_layout'},{"obs":[self.selection_select]}))
 
-			footerTable = table("", {'type':'right-footer'}, {"obs" : [ tablerow("",{'type':'right-footer'},{"obs": footerCols}) ]})
-			main_rows.append(tablerow("", {'type':'right-footer'}, {"obs":[tablecol("",{'type':'right-footer'}, {"obs":[footerTable]},)]}))
+			footerCols.append(tablecol("",{'type':'browse_layout_right'},
+						   {"obs":[table("",
+								 {'type':'browse_layout_right'},
+								 {"obs" : [ tablerow("",
+										     {'type':'browse_layout_right'},
+										     {"obs": [ tablecol("",
+												      {'type':'browse_layout_right'},
+												      {"obs":[self.selection_select]})]
+										      })]
+								  })]
+						    }))
+			footerTable = table("", {'type':'table_fullwidth'}, {"obs" : [ tablerow("",{'type':'table_fullwidth'},{"obs": footerCols}) ]})
+			main_rows.append(tablerow("", {}, {"obs":[tablecol("",{'type':'table_fullwidth'}, {"obs":[footerTable]},)]}))
 
 
 		if nomatches and not size_limit_reached:

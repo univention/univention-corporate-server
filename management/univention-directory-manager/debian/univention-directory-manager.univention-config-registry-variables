@@ -40,3 +40,15 @@ Description[en]=Automatic search for the Univention Directory Manager-Web-fronte
 Type=str
 Categories=Management
 
+[directory/manager/web/modbrowse/defaults/visible-results]
+Description[de]=Default-Anzahl der Sucheregbnisse je Seite im Navigations-Modul des Univention Directory Manager.
+Description[en]=Default amount of results per page in the navigation-module of Univention Directory Manager.
+Type=int
+Categories=Management
+
+[directory/manager/web/modwizard/defaults/visible-results]
+Description[de]=Default-Anzahl der Sucheregbnisse je Seite in den Wizard-Modulen des Univention Directory Manager.
+Description[en]=Default amount of results per page in the wizard-modules of Univention Directory Manager.
+Type=int
+Categories=Management
+

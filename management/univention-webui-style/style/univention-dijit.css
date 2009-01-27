@@ -285,10 +285,12 @@ font-weight:bold;
 
 .tundra .dynlongtable-buttons .dijitButtonNode,
 .tundra .dynlongtable-buttons .dijitButtonText {
-  font-weight: normal;
+  font-size: 11px;
+  border: none;
+  background: none;
 }
 /*
-// to blank the buttons include:
+// to blank the buttons we include:
   border: none;
   background: none;
 */
@@ -297,9 +299,10 @@ font-weight:bold;
 .tundra .dynlongtable-buttons .dijitToggleButtonChecked .dijitButtonText {
   color:#CC0033;
   font-weight:bold;  
-  background: #FCFDFF url(../images/ButtonHover.png) repeat-x scroll center;
 }
-/* to blank the buttons set background: none; */
+/* to blank the buttons we set background: none, orginal was:
+  background: #FCFDFF url(../images/ButtonHover.png) repeat-x scroll center;
+*/
 
 .tundra .dynlongtable-pane table.table_default {
   width: 100%;

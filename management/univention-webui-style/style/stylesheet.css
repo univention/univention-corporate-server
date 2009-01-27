@@ -233,9 +233,18 @@ background-color:#EEEEEE;
 
 table.table_fullwidth,
 table.right-footer,
-table.browse_layout_right
+table.browse_layout_right,
+table.browse_layout_left
 {
 width: 100%;
+}
+
+table.browse_layout_left,
+tr.browse_layout_left
+{
+float: left;
+margin-right: auto;
+margin-left: 10px;
 }
 
 table.right-footer,

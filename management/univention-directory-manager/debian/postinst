@@ -84,6 +84,10 @@ done
 # autosearch
 univention-config-registry set directory/manager/web/modules/autosearch?1
 
+# default nr of results in longtables
+univention-config-registry set directory/manager/web/modwizard/defaults/visible-results?10 
+univention-config-registry set directory/manager/web/modbrowse/defaults/visible-results?10
+
 # default search
 univention-config-registry set directory/manager/web/modules/users/user/search/default?username
 univention-config-registry set directory/manager/web/modules/dhcp/service/search/default?service
