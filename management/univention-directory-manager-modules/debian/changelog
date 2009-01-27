@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.25-1) unstable; urgency=low
+
+  * based LazyTranslation on the implementation of UserString which
+    seems to cause less problems. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 27 Jan 2009 14:19:07 +0100
+
 univention-directory-manager-modules (3.0.24-1) unstable; urgency=low
 
   * show the private contact tab in the normal view. Part of Bug #13121
