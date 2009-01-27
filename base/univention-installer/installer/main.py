@@ -145,6 +145,8 @@ if len(sys.argv) < 1 or read_cmdline:
 			cmdline['product']=val
 		elif opt == 'use_text':
 			cmdline['use_text']=True
+		elif opt == 'expert_partition':
+			cmdline['expert_partition'] = True
 		elif next_profile:
 			if not val:
 				cmdline['profile_file']=opt

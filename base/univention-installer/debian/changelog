@@ -1,3 +1,9 @@
+univention-installer (3.0.6-1) unstable; urgency=low
+
+  * new cmd switch for cmdline mode (Bug: #13183)
+
+ -- Felix Botner <botner@univention.de>  Tue, 27 Jan 2009 17:50:50 +0100
+
 univention-installer (3.0.5-1) unstable; urgency=low
 
   * revert changes from revision 8172
