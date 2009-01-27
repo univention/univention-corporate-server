@@ -1,3 +1,9 @@
+univention-webui (2.0.4-1) stable; urgency=low
+
+  * don't add the last tab when the width is exceeded. Closes Bug #13121
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 14:15:45 +0100
+
 univention-webui (2.0.3-1) stable; urgency=low
 
   * added a checkbox to show the advanced settings/tabs. By default the

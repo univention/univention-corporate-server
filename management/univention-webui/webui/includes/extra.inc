@@ -1172,7 +1172,8 @@ class notebook{
 		$pressed = FALSE;
 		$factor = 7; // pixel per letter
 		$one_line=TRUE;
-		for($i=1; $i < $this->count+1; $i++){ # i is index for button-object-array
+		for($i=1; $i < $this->count+2; $i++){ # i is index for button-object-array
+			# we have to check +2, otherwise the last tab on a new line wouldn't be displayed
 
   		    $itemlength = $factor*(strlen($this->all_notebook[$i]->basket[text]));
 			if ($this->all_notebook[$i]->attribute["closebutton"] == "1") {
@@ -1182,14 +1183,19 @@ class notebook{
 			  $spare = 20; // width pixel between
 			}
 
-			if((($length + $itemlength) > 764) || $i == $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764
-				if($i == $this->count){
+			if((($length + $itemlength + $spare) > 772) || $i > $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764 + 8 (otherwise we got an ugly user view)
+				if((($length + $itemlength + $spare) > 772)){
+					# This tab line is full, print this line an than check the next line!
+					$one_line=FALSE;
+					$end=$i;
+				} else if($i == $this->count) {
 					$end=$i+1;
 					$length += ($itemlength+$spare);
-					}
-				else {	$one_line=FALSE;
+				} else {
+					# This tab line is full, print this line an than check the next line!
+					$one_line=FALSE;
 					$end=$i;
-					}
+				}
 				$all = $end-$j;
 				$first=$j;
 				$space = 0; #round((580-$length*$factor) / ($end-$j));
