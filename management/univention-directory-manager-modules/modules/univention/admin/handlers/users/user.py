@@ -1120,7 +1120,7 @@ layout=[
 		[univention.admin.field('kolabDeliveryToFolderName'), univention.admin.field('kolabDeliveryToFolderActive')],
 		[univention.admin.field("filler"), univention.admin.field("filler")],
 		[univention.admin.field('kolabDelegate')]
-	]),
+	], advanced = True),
 	univention.admin.tab(_('Invitation'),_('Invitation'), [
 		[univention.admin.field('kolabInvitationPolicy')],
 	], advanced = True),
