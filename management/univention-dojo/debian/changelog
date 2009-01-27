@@ -1,3 +1,9 @@
+univention-dojo (2.0.2-1) unstable; urgency=low
+
+  * fixed IE syntax error in the DateWidget widget. Closes Bug #12994
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 16:16:50 +0100
+
 univention-dojo (2.0.1-1) unstable; urgency=low
 
   * update to dojo 1.2.3, Bug #13034

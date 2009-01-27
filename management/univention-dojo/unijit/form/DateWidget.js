@@ -9,6 +9,6 @@ templateString:"<div class=\"dijit dijitReset dijitInlineTable dijitLeft\"\n\tid
 
                 _onFocus: function(/*Event*/ evt){
                         // summary: don't open the TimePicker popup onFocus, open it via dijitCalendarIcon onclick
-                },
+                }
 
 });
