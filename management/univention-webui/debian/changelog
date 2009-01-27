@@ -1,3 +1,10 @@
+univention-webui (2.0.5-1) stable; urgency=low
+
+  * based LazyTranslation on the implementation of UserString which
+    seems to cause less problems. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 27 Jan 2009 14:19:10 +0100
+
 univention-webui (2.0.4-1) stable; urgency=low
 
   * don't add the last tab when the width is exceeded. Closes Bug #13121
