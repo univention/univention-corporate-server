@@ -47,7 +47,7 @@ def myrgroup():
 def mywgroup():
     return ""
 def mymenunum():
-    return 500
+    return 900
 def mymenuicon():
 	return unimodule.selectIconByName( 'exit' )
 

@@ -64,7 +64,7 @@ def myrgroup():
 def mywgroup():
 	return _("Account Operators")
 def mymenunum():
-	return 100
+	return 600
 def mysubmodules():
 	return []
 def mymenuicon():

@@ -78,10 +78,8 @@ def myinfo(settings):
 			submodules.append(unimodule.submodule('settings/user', _("Admin"), _("Edit my Univention Directory Manager settings")))
 		if not submodules:
 			return unimodule.realmodule("self", '')
-		try:
-			name=settings.userentry['cn'][0]
-		except KeyError:
-			name='Myself'
+
+		name=_("My account")
 		virtualmodules=[
 			unimodule.virtualmodule('self', name, _("My personal objects"), submodules)
 		]
@@ -96,7 +94,7 @@ def mywgroup():
 	return ""
 
 def mymenunum():
-	return 101
+	return 700
 
 def mymenuicon():
 	return unimodule.selectIconByName( 'cn', filesystemSubpath = '/icon/settings/' )

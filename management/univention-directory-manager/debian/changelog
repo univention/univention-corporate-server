@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.4-1) unstable; urgency=low
+
+  * change the order in the main menu. Closes Bug #13180
+  * change the display name in modself to My account. Closes Bug #13176
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 08:07:23 +0100
+
 univention-directory-manager (6.0.3-1) unstable; urgency=low
 
   * changed the description for the advanced checkbox. Bug #13182

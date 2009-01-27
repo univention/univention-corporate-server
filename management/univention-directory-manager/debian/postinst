@@ -157,7 +157,7 @@ if [ -n "${VARIABLES}" ]; then
 	univention-config-registry set ${VARIABLES}
 fi
 
-ucr set directory/manager/web/modules/advancedview?"0"
+univention-config-registry set directory/manager/web/modules/advancedview?"0"
 
 for path in /usr/share/univention-directory-manager/www/icon /usr/share/univention-directory-manager/www/style /usr/share/univention-directory-manager/www/includes; do
 	if [ -d $path -a ! -h $path ]; then
