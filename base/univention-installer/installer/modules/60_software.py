@@ -98,8 +98,6 @@ class object(content):
 							res = os.system('/bin/mount -t smbfs %s /profmnt >/dev/null 2>&1' % (cdrom_device.replace('smbfs:', '')))
 						else:
 							res=os.system('/bin/mount -t iso9660 %s /mnt >/dev/null 2>&1'%cdrom_device)
-					major, minor = self.get_first_version()
-
 					repository.get_package_list( PackagesList )
 					repository.create_sources_list()
 					res=os.system('umount /mnt >/dev/null 2>&1')

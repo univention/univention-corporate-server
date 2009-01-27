@@ -86,6 +86,7 @@ install: build
 	install -m 755 installer/network.sh ${DD}/lib/univention-installer/
 	install -m 640 installer/objects.py ${DD}/lib/univention-installer/
 	install -m 640 installer/package_list.py ${DD}/lib/univention-installer/
+	install -m 640 installer/repository.py ${DD}/lib/univention-installer/
 	install -m 755 installer/usb-device.sh ${DD}/lib/univention-installer/
 
 	msgfmt -o installer/locale/de/LC_MESSAGES/installer.mo installer/locale/de/LC_MESSAGES/installer.po

@@ -1,3 +1,9 @@
+univention-installer (3.0.4-1) unstable; urgency=low
+
+  * minor fixes (Bug: #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Jan 2009 12:14:09 +0100
+
 univention-installer (3.0.3-2) unstable; urgency=low
 
   * added 12_expert_partition file (Bug: #13183)
