@@ -1085,7 +1085,7 @@ layout=[
 	univention.admin.tab(_('Private Contact'),_('Private Contact Information'),[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
-	], advanced = True),
+	]),
 	univention.admin.tab(_('Linux/UNIX'),_('Unix Account Settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],

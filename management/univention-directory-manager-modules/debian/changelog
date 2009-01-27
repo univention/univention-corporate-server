@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.24-1) unstable; urgency=low
+
+  * show the private contact tab in the normal view. Part of Bug #13121
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 27 Jan 2009 14:18:16 +0100
+
 univention-directory-manager-modules (3.0.23-1) unstable; urgency=low
 
   * revert the last commit, the groupware tab should be available in the
