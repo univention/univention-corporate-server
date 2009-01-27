@@ -68,7 +68,7 @@ class object(content):
 		if oxae:
 			self.add_elem('create_local_repo', textline('[ ] %s' % _('Create local repository'), self.minY+1, self.minX+2,40,40,))
 		elif self.all_results.has_key('system_role') and self.all_results['system_role'] in ['domaincontroller_master', 'domaincontroller_backup' ]:
-			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[0]))
+			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
 		else:
 			self.add_elem('create_local_repo', checkbox({_('Create local repository'): 'local_repository'}, self.minY+1, self.minX+2,30,1,[]))
 
@@ -109,6 +109,18 @@ class object(content):
 
 	def result(self):
 		result={}
+
+		oxae = False
+		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
+			oxae = True
+
+		if oxae:
+			result['local_repository']='false'
+		else:
+			if len(self.get_elem('create_local_repo').selected) > 0:
+				result['local_repository']='true'
+			else:
+				result['local_repository']='false'
 
 		# by default no local repository is created
 		result[ 'local_repository' ] = 'false'

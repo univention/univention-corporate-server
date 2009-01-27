@@ -1,3 +1,10 @@
+univention-installer (3.0.5-1) unstable; urgency=low
+
+  * revert changes from revision 8172
+  * by default no local repository is created (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Jan 2009 13:12:51 +0100
+
 univention-installer (3.0.4-1) unstable; urgency=low
 
   * minor fixes (Bug: #13159)
