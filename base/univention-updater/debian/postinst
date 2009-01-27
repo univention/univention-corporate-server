@@ -81,7 +81,7 @@ if [ "$1" = "configure" ]; then
 		univention-baseconfig set update/security/prefix?"updates/security-amd64"
 	fi
 	univention-baseconfig set update/security/prefix?"updates/security"
-	
+
 	univention-baseconfig set update/directory?"ucs-updates"
 
 	mkdir -p /var/cache/univention-update
@@ -187,6 +187,13 @@ univention-config-registry set	repository/online?yes \
 								repository/online/maintained?yes \
 								repository/online/unmaintained?no
 
+eval $(univention-config-registry shell repository/online/server repository/online/prefix hostname domainname)
+# initialize mirror configuration, but deactivate it
+univention-config-registry set "repository/mirror/server?$repository_online_server"
+univention-config-registry set "repository/online/server?$hostname.$domainname"
+univention-config-registry set "repository/mirror/prefix?$repository_online_prefix"
+univention-config-registry set "repository/mirror/threads?10"
+univention-config-registry set "repository/mirror/basepath?/var/lib/univention-repository"
+univention-config-registry set "repository/mirror?no"
+
 exit 0
-
-

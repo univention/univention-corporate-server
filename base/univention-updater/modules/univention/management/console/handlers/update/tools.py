@@ -29,18 +29,68 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import re
 import univention.management.console.locales as locales
 
 _ = locales.Translation('univention.management.console.handlers.update').translate
 
 import univention.debug as ud
 
+import re
 import os
 import httplib, base64, string
 import univention.config_registry
 
 HTTP_PROXY_DEFAULT_PORT = 3128
+
+class UCS_Version( object ):
+	# regular expression matching a UCS version X.Y-Z
+	_regexp = re.compile( '(?P<major>[0-9]*)\.(?P<minor>[0-9]*)-(?P<patch>[0-9]*)' )
+
+	def __init__( self, version ):
+		'''version must a string matching the pattern X.Y-Z or a triple
+		with major, minor and patchlevel'''
+
+		if isinstance( version, ( tuple, list ) ) and len( version ) == 3:
+			self.major = int( version[ 0 ] )
+			self.minor = int( version[ 1 ] )
+			self.patchlevel = int( version[ 2 ] )
+		elif isinstance( version, str ):
+			self.set( version )
+
+	def __cmp__( self, right ):
+		'''Compare to UCS versions. The method returns 0 if the versions
+		are equal, -1 if the left is less than the right and 1 of the
+		left is greater than the right'''
+		# major version differ
+		if self.major < right.major:
+			return -1
+		if self.major > right.major:
+			return 1
+		# major is equal, check minor
+		if self.minor < right.minor:
+			return -1
+		if self.minor > right.minor:
+			return 1
+		# minor is equal, check patchlevel
+		if self.patchlevel < right.patchlevel:
+			return -1
+		if self.patchlevel > right.patchlevel:
+			return 1
+
+		return 0
+
+	def set( self, version ):
+		match = UCS_Version._regexp.match( version )
+		if not match:
+			raise AttributeError( 'string does not match UCS version pattern' )
+
+		v = match.groupdict()
+		self.major = int( v[ 'major' ] )
+		self.minor = int( v[ 'minor' ] )
+		self.patchlevel = int( v[ 'patch' ] )
+
+	def __str__( self ):
+		return '%d.%d-%d' % ( self.major, self.minor, self.patchlevel )
 
 class UniventionUpdater:
 
@@ -97,12 +147,11 @@ class UniventionUpdater:
 	def close_connection(self):
 		self.connection.close()
 
-
 	def ucr_reinit(self):
 		self.configRegistry=univention.config_registry.ConfigRegistry()
 		self.configRegistry.load()
 
-		self.architecture=os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1]
+		self.architectures = [ os.popen('dpkg-architecture -qDEB_BUILD_ARCH 2>/dev/null').readline()[:-1] ]
 
 		self.online_repository=self.configRegistry.get('repository/online', 'true')
 
@@ -179,18 +228,18 @@ class UniventionUpdater:
 		self.close_connection()
 		return False
 
+	def get_next_version( self, version ):
+		if self.net_path_exists( '%d.%d/maintained/%d.%d-%d/' % ( version.major, version.minor, version.major, version.minor, version.patchlevel + 1 ) ): #check for x.y-(z+1)
+			return '%d.%d-%d' % ( version.major, version.minor, version.patchlevel + 1 )
+		elif self.net_path_exists( '%d.%d/maintained/%d.%d-0/' % ( version.major, version.minor + 1, version.major, version.minor + 1 ) ): #check for x.y-(z+1)
+			return '%d.%d-0' % ( version.major, version.minor + 1 )
+		elif self.net_path_exists('%d.0/maintained/%d.0-0/' % ( version.major + 1, version.major + 1 ) ): #check for x.y-(z+1)
+			return '%d.0-0' % version.major + 1
+
+		return None
+
 	def release_update_available(self):
-
-		nextupdate = None
-
-		if self.net_path_exists('%s/maintained/%s-%d/' % (self.ucs_version, self.ucs_version, int(self.patchlevel)+1)): #check for x.y-(z+1)
-			nextupdate = '%s-%d' % (self.ucs_version, int(self.patchlevel)+1)
-		elif self.net_path_exists('%s.%d/maintained/%s.%d-0/' % (self.version_major, int(self.version_minor)+1, self.version_major, int(self.version_minor)+1)): #check for x.y-(z+1)
-			nextupdate = '%s.%d-0' % (self.version_major, int(self.version_minor)+1)
-		elif self.net_path_exists('%d.0/maintained/%d.0-0/' % (int(self.version_major)+1, int(self.version_major)+1)): #check for x.y-(z+1)
-			nextupdate = '%d.0-0' % (int(self.version_major)+1)
-
-		return nextupdate
+		return self.get_next_version( UCS_Version( self.version_major, self.version_minor, self.patchlevel ) )
 
 	def security_update_temporary_sources_list(self):
 		sources_list = []
@@ -203,7 +252,7 @@ class UniventionUpdater:
 			next_security_version = int(self.security_patchlevel) + 1
 			path='/%s/%s/sec%s/' % (self.ucs_version, part, next_security_version)
 			if self.net_path_exists(path):
-				for arch in ['all', self.architecture, 'extern']:
+				for arch in ['all', 'extern'] + self.architectures:
 					path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, next_security_version, arch)
 					if self.net_path_exists(path):
 						sources_list.append('deb http://%s/%s/%s/%s/ sec%s/%s/' % (self.repository_server, self.repository_prefix, self.ucs_version, part, next_security_version, arch))
@@ -256,105 +305,133 @@ class UniventionUpdater:
 				component[var] = self.configRegistry[key]
 				pass
 		return component
-		#ud.debug(ud.ADMIN, ud.INFO, 'get_component: name = %s' % name)
-		#component = {}
-		#for key in self.configRegistry.keys():
-		#	ud.debug(ud.ADMIN, ud.INFO, 'get_component: key = %s' % key)
-		#	if key.startswith('repository/online/component/%s/' % name):
-		#		var = key.split('repository/online/component/%s/')[1]
-		#		#if var.find('/') == -1:
-		#		#	component[var] = self.configRegistry[key]
-		#return component
 
-
-	def print_version_repositories( self, clean = False ):
+	def print_version_repositories( self, clean = False, dists = False, start = None, end = None ):
 		repos = ''
-		version_part_left = int( self.version_major )
-		version_part_right = int( self.version_minor )
+		if not start:
+			start = UCS_Version( ( self.version_major, 0, 0 ) )
+
+		if not end:
+			end = UCS_Version( ( self.version_major, self.version_minor, self.patchlevel ) )
 
 		if clean:
 			clean = self.configRegistry.get( 'online/repository/clean', False )
 
-		for i in range(0,int(version_part_right)+1):
+		while start <= end:
 			# for example: http://apt.univention.de/2.0/
-			path='/%s.%s/' % (version_part_left, i)
+			path='/%s.%s/' % (start.major, start.minor)
 			if not self.net_path_exists( path ):
+				start.minor += 1
 				continue
+			if dists:
+				path_base = '/%s.%s/maintained/%s.%s-0' % ( start.major, start.minor, start.major, start.minor )
+				if self.net_path_exists( '%s/dists/' %  path_base ):
+					for arch in self.architectures:
+						path = '%s/dists/univention/main/binary-%s/' % ( path_base, arch )
+						if self.net_path_exists( path ):
+							if self.repository_prefix:
+								repos += 'deb http://%s%s/%s dists/univention/main/binary-%s/\n' % ( self.repository_server, self.repository_prefix, path_base, arch )
+							else:
+								repos += 'deb http://%s%s dists/univention/main/binary-%s/\n' % ( self.repository_server, path_base, arch )
 			for part in self.parts:
 				# for example: http://apt.univention.de/2.0/maintained/
-				path='/%s.%s/%s/' % (version_part_left, i, part)
+				path='/%s.%s/%s/' % (start.major, start.minor, part)
 				if not self.net_path_exists(path):
 					continue
-				# I think we won't release more than 20 releases for one UCS release ...
-				for p in range(0, 100):
-					if i >= int(version_part_right) and p > int(self.patchlevel):
-						# lets set the limit to exactly this version
-						# 	for example we are on a 2.1-1 release, we should add 2.0-2 to the release but not 2.1-2
-						break
-
-					path='/%s.%s/%s/%s.%s-%s/' % (version_part_left, i, part, version_part_left, i , p )
+				patch_inc = UCS_Version( ( start.major, start.minor, 0 ) )
+				# as long as we do just increase the patch level ...
+				while patch_inc.major == start.major and patch_inc.minor == start.minor:
+					path='/%s.%s/%s/%s.%s-%s/' % ( patch_inc.major, patch_inc.minor, part, patch_inc.major, patch_inc.minor, patch_inc.patchlevel )
 					if not self.net_path_exists(path):
 						break
 
 					# the helper variable printed is to be used to print a blank line at the end of a block
 					printed = False
-					for arch in ['all', self.architecture, 'extern']:
+					for arch in ['all', 'extern'] + self.architectures:
 						# for example: http://apt.univention.de/2.0/maintained/2.0-1
-						path='/%s.%s/%s/%s.%s-%s/%s/' % (version_part_left, i, part, version_part_left, i , p, arch )
+						path='/%s.%s/%s/%s.%s-%s/%s/' % ( patch_inc.major, patch_inc.minor, part, patch_inc.major, patch_inc.minor, patch_inc.patchlevel, arch )
 						if not self.net_path_exists(path):
 							continue
 						printed = True
 						if self.repository_prefix:
-							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, version_part_left, i, part )
+							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
 						else:
-							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, version_part_left, i, part )
-						repos += 'deb %s %s.%s-%s/%s/\n' % ( path, version_part_left, i , p, arch)
+							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, patch_inc.major, patch_inc.minor, part )
+						repos += 'deb %s %s.%s-%s/%s/\n' % ( path, patch_inc.major, patch_inc.minor , patch_inc.patchlevel, arch)
+
 					if clean:
 						if self.repository_prefix:
-							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, version_part_left, i, part )
+							path = 'http://%s/%s/%s.%s/%s/' % ( self.repository_server, self.repository_prefix, patch_inc.major, patch_inc.minor, part )
 						else:
-							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, version_part_left, i, part )
-						repos += 'clean %s/%s.%s-%s/\n' % ( path, version_part_left, i , p )
+							path = 'http://%s/%s.%s/%s/' % ( self.repository_server, patch_inc.major, patch_inc.minor, part )
+						repos += 'clean %s/%s.%s-%s/\n' % ( path, patch_inc.major, patch_inc.minor , patch_inc.patchlevel )
 
 					if printed:
 						repos += '\n'
 						printed = False
+					next_version = self.get_next_version( patch_inc )
+					if next_version:
+						patch_inc.set( next_version )
+						if patch_inc > end:
+							break
+					else:
+						break
+
+			start = patch_inc
 
 		return repos
 
-	def print_security_repositories( self, clean = False ):
+	def print_security_repositories( self, clean = False, start = None, end = None ):
 		repos = ''
+		if not start:
+			start = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
+
+		if not end:
+			end = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
+
 		if clean:
 			clean = self.configRegistry.get( 'online/repository/clean', False )
 
-		# check for the security version for the current version
-		for part in self.parts:
-			# for example: http://apt.univention.de/2.0/maintained/
-			path='/%s/%s/' % (self.ucs_version, part)
-			if not self.net_path_exists(path):
-				continue
-			# I think we won't release more than 100 security releases for one UCS release ...
-			for p in range(1, 100):
-				if p > int(self.security_patchlevel):
-					break
-
-				path='/%s/%s/sec%s/' % (self.ucs_version, part, p )
+		while start <=end:
+			# check for the security version for the current version
+			for part in self.parts:
+				# for example: http://apt.univention.de/2.0/maintained/
+				path='/%d.%d/%s/' % ( start.major, start.minor, part)
 				if not self.net_path_exists(path):
-					break
+					continue
+				# I think we won't release more than 100 security releases for one UCS release ...
+				for p in range(1, 100):
+					if start.major == int( self.version_major ) and start.minor == int( self.version_minor )  and p > int( self.security_patchlevel ):
+						break
 
-				printed =  False
-				for arch in ['all', self.architecture, 'extern']:
-					# for example: http://apt.univention.de/2.0/maintained/2.0-1
-					path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, p, arch )
+					path='/%d.%d/%s/sec%s/' % ( start.major, start.minor, part, p )
 					if not self.net_path_exists(path):
-						continue
-					printed = True
-					repos += 'deb http://%s/%s/%s/ sec%s/%s/\n' % ( self.repository_server, self.ucs_version, part, p, arch)
-				if clean:
-					repos += 'clean http://%s/%s/%s/sec%s/%s/\n' % ( self.repository_server, self.ucs_version, part, p )
-				if printed:
-					repos += '\n'
-					printed = False
+						break
+
+					printed =  False
+					for arch in ['all', 'extern'] + self.architectures:
+						# for example: http://apt.univention.de/2.0/maintained/sec1
+						path='/%s/%s/sec%s/%s/' % (self.ucs_version, part, p, arch )
+						if not self.net_path_exists(path):
+							continue
+						printed = True
+						repos += 'deb http://%s/%d.%d/%s/ sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p, arch)
+					if clean:
+						repos += 'clean http://%s/%d.%d/%s/sec%s/%s/\n' % ( self.repository_server, start.major, start.minor, part, p )
+					if printed:
+						repos += '\n'
+						printed = False
+			start.minor += 1
+			# is there a minor version update
+			path='/%d.%d/%s/' % ( start.major, start.minor, 'maintained' )
+			if self.net_path_exists(path):
+				continue
+			start.major += 1
+			start.minor = 0
+			# is there a next major version update
+			path='/%d.%d/%s/' % ( start.major, start.minor, 'maintained' )
+			if not self.net_path_exists(path):
+				break
 
 		return repos
 
@@ -412,7 +489,7 @@ class UniventionUpdater:
 							repos += 'clean %s\n' % path
 						printed = True
 					else:
-						for arch in ['all', self.architecture, 'extern']:
+						for arch in ['all', 'extern'] + self.architectures:
 							path = '/%s/%s/component/%s/%s/' % ( version, part, component, arch )
 							if not self.net_path_exists(path, server=repository_server, port=repository_port, prefix=repository_prefix, username=username, password=password):
 								continue

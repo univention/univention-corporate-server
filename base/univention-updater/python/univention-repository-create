@@ -91,7 +91,7 @@ def  prepare( options ):
 			if e.errno != 17:
 				raise e
 
-def copy_repository( coptions ):
+def copy_repository( options ):
 	print 'Copying data. Please be patient ...'
 
 	print '  copying version information ...',
@@ -137,7 +137,7 @@ def copy_repository( coptions ):
 			except:
 				print >> sys.stderr, "Warning: Could not determine architecture of package '%s'" % filename
 				continue
-			src = os.path.join( os.path.join( options.mount_point, 'packages' ), filename )
+			src = os.path.join( options.mount_point, 'packages', filename )
 			src_size = os.stat( src )[ 6 ]
 			dest = os.path.join( _repo_base, arch, filename )
 			# package already exists witg correct size
@@ -179,7 +179,7 @@ def mount( options ):
 	print "Checking medium in %s ..." % options.mount_point,
 	if not os.path.isdir( os.path.join( options.mount_point, 'packages' ) ) or not os.path.isdir( os.path.join( options.mount_point, 'profiles' ) ):
 		print 'failed.'
-		print >> sys.stderr, 'Error: This is not an UCS instalation medium.'
+		print >> sys.stderr, 'Error: This is not an UCS installation medium.'
 		return False
 
 	print 'ok.'
@@ -240,7 +240,7 @@ if __name__ == '__main__':
 					   help = 'do not print any information, just errors and warnings' )
 	parser.add_option( '-m', '--mount-point', action = 'store',
 					   dest = 'mount_point', default = '/cdrom',
-					   help = 'devices mount point for CD-ROM' )
+					   help = 'devices mount point for CD-ROM drive' )
 
 	( options, arguments ) = parser.parse_args()
 

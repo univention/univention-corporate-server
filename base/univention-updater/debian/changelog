@@ -1,3 +1,10 @@
+univention-updater (4.0.4-1) unstable; urgency=low
+
+  * re-write univention-repository-update: add new repositories via CD-ROM
+    device or repository mirroring (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Tue, 27 Jan 2009 12:08:21 +0100
+
 univention-updater (4.0.3-2) unstable; urgency=low
 
   * fixed a typo
