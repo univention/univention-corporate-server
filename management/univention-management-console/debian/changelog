@@ -1,3 +1,9 @@
+univention-management-console (1.0.3-4) unstable; urgency=low
+
+  * fixed a baseconfig crash related to the localization of UMC. Bug #13184
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 27 Jan 2009 14:08:42 +0100
+
 univention-management-console (1.0.3-3) unstable; urgency=low
 
   * added translation for the language selection widget. Bug #13011

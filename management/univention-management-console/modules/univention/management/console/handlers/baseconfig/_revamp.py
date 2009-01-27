@@ -43,9 +43,11 @@ from univention.config_registry_info import ConfigRegistryInfo, set_language
 import _types
 
 locale_language_code=locale.getlocale(locale.LC_MESSAGES)[0]
-if len(locale_language_code) >= 2:
+if locale_language_code and len(locale_language_code) >= 2:
 	locale_language_code=locale_language_code[:2] # get ISO 3166-1 alpha-2 code
 	set_language(locale_language_code)
+else:
+	set_language('en')
 del locale_language_code
 
 _ = umc.Translation( 'univention.management.console.handlers.baseconfig' ).translate
