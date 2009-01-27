@@ -1,3 +1,10 @@
+univention-management-console (1.0.3-5) unstable; urgency=low
+
+  * based LazyTranslation on the implementation of UserString which
+    seems to cause less problems. Bug #13011
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Tue, 27 Jan 2009 14:19:00 +0100
+
 univention-management-console (1.0.3-4) unstable; urgency=low
 
   * fixed a baseconfig crash related to the localization of UMC. Bug #13184
