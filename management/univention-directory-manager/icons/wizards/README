@@ -1,0 +1,3 @@
+This directory contains the all the data that's needed to generate the
+composed wizards icon icons/var/www/wizards.png. Just customize the
+Makefile run "make" to generate the icon.
