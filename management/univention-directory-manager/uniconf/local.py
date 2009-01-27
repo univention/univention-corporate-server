@@ -30,6 +30,8 @@
 
 import gettext
 import locale
+import sys
+from types import StringTypes
 
 class LazyTranslation (str):
 	'''
@@ -37,61 +39,23 @@ class LazyTranslation (str):
 
 	univention-directory-manager/uniconf/local.py
 		this file contains also test cases for allmost all functions
-	univention-direcotry-manager-modules/modules/univention/admin/localization.py
+	univention-directory-manager-modules/modules/univention/admin/localization.py
 	univention-webui/modules/localwebui.py
 	univention-management-console/modules/univention/management/console/locales.py
 	'''
-	def __init__ (self, string):
+	def __init__(self, seq):
 		self._domain = None
-		self._orig_str = string.__str__ ()
 		self._translations = {}
+
+		if isinstance(seq, StringTypes):
+			self.data = seq
+		elif isinstance(seq, LazyTranslation):
+			self.data = seq.data[:]
+		else:
+			self.data = '%s' % seq
+		# for compatibility reasons
+		self._orig_str = self.data
 		super (str, self).__init__ (self._orig_str)
-
-	def __add__(self, y):
-		return str (self) + str (y)
-
-	def __contains__(self, y):
-		return str (y) in str (self)
-
-	def __eq__(self, y):
-		return str (self) == str (y)
-
-	def __ge__(self, y):
-		return str (self) >= str (y)
-
-	def __getitem__(self, y):
-		return str (self)[y]
-
-	def __getslice__(self, i, j):
-		return str (self)[i:j]
-
-	def __gt__(self, y):
-		return str (self) > str (y)
-
-	def __le__(self, y):
-		return str (self) <= str (y)
-
-	def __len__(self):
-		return len (str (self))
-
-	def __lt__(self, y):
-		return str (self) < str (y)
-
-	def __mul__(self, n):
-		return str (self) * n
-
-	def __rmul__(self, n):
-		return n * str (self)
-
-	def __ne__(self, y):
-		return str (self) != str (y)
-
-	def __mod__ (self, y):
-		return str(self) % y
-
-	def __rmod__ (self, x):
-		return x % str(self)
-
 	def __str__ (self):
 		lang = locale.getlocale( locale.LC_MESSAGES )
 		if self._translations.has_key (lang):
@@ -99,143 +63,135 @@ class LazyTranslation (str):
 		if lang and lang[0] and \
 				self._domain != None and gettext.find (self._domain, languages=(lang[0], )):
 			t = gettext.translation(self._domain, languages=(lang[0], ))
-			newval = t.ugettext(self._orig_str)
+			newval = t.ugettext(self.data)
 		else:
-			newval = self._orig_str
+			newval = self.data
 		self._translations[lang] = newval
 		return newval
+	def __repr__(self): return "'%s'" % self
+	def __int__(self): return int(str (self))
+	def __long__(self): return long( str(self))
+	def __float__(self): return float(str (self))
+	def __complex__(self): return complex(str (self))
+	def __hash__(self): return hash(str (self))
 
-	def __repr__ (self):
-		return "'%s'" % self.__str__ ()
+	def __cmp__(self, string):
+		if isinstance(string, LazyTranslation):
+			return cmp(str (self), str (string))
+		else:
+			return cmp(str (self), string)
+	def __contains__(self, char):
+		return char in str (self)
 
-	def capitalize(self):
-		return str (self).capitalize ()
+	def __len__(self): return len(str (self))
+	def __getitem__(self, index): return str (self)[index]
+	def __getslice__(self, start, end):
+		start = max(start, 0); end = max(end, 0)
+		return str (self)[start:end]
 
-	def center(self, width, fillchar=' '):
-		return str (self).center (width, fillchar)
+	def __add__(self, other):
+		if isinstance(other, LazyTranslation):
+			return str (self) + str (other)
+		elif isinstance(other, StringTypes):
+			return str (self) + other
+		else:
+			return str (self) + str(other)
+	def __radd__(self, other):
+		if isinstance(other, StringTypes):
+			return other + str (self)
+		else:
+			return str(other) + str (self)
+	def __mul__(self, n):
+		return str (self)*n
+	__rmul__ = __mul__
+	def __mod__(self, args):
+		return str (self) % args
 
-	def count(self, sub, start=0, end=-1):
-		return str (self).count (sub, start, end)
+	def __eq__(self, other):
+		return str (self) == str (other)
 
-	def decode(self, encoding=None, error=None):
-		if encoding != None:
-			if error != None:
-				return str (self).decode (encoding, error)
-			return str (self).decode (encoding)
-		return str (self).decode ()
+	def __ge__(self, other):
+		return str (self) >= str (other)
 
-	def encode(self, encoding=None, error=None):
-		if encoding != None:
-			if error != None:
-				return str (self).encode (encoding, error)
-			return str (self).encode (encoding)
-		return str (self).encode ()
+	def __gt__(self, other):
+		return str (self) > str (other)
 
-	def endswith(self, suffix, start=0, end=None):
-		if end != None:
-			return str (self).endswith (suffix, start, end)
-		return str (self).endswith (suffix, start)
+	def __le__(self, other):
+		return str (self) <= str (other)
 
+	def __lt__(self, other):
+		return str (self) < str (other)
+
+	def __ne__(self, other):
+		return str (self) != str (other)
+
+	# the following methods are defined in alphabetical order:
+	def capitalize(self): return str (self).capitalize()
+	def center(self, width, *args):
+		return str (self).center(width, *args)
+	def count(self, sub, start=0, end=sys.maxint):
+		return str (self).count(sub, start, end)
+	def decode(self, encoding=None, errors=None): # XXX improve this?
+		if encoding:
+			if errors:
+				return str (self).decode(encoding, errors)
+			else:
+				return str (self).decode(encoding)
+		else:
+			return str (self).decode()
+	def encode(self, encoding=None, errors=None): # XXX improve this?
+		if encoding:
+			if errors:
+				return str (self).encode(encoding, errors)
+			else:
+				return str (self).encode(encoding)
+		else:
+			return str (self).encode()
+	def endswith(self, suffix, start=0, end=sys.maxint):
+		return str (self).endswith(suffix, start, end)
 	def expandtabs(self, tabsize=8):
-		return str (self).expandtabs (tabsize)
-
-	def find(self, sub, start=0, end=-1):
-		return str (self).find (sub, start, end)
-
-	def index(self, sub, start=0, end=-1):
-		return str (self).index (sub, start, end)
-
-	def isalnum(self):
-		return str (self).isalnum ()
-
-	def isalpha(self):
-		return str (self).isalpha ()
-
-	def isdigit(self):
-		return str (self).isdigit ()
-
-	def islower(self):
-		return str (self).islower ()
-
-	def isspace(self):
-		return str (self).isspace ()
-
-	def istitle(self):
-		return str (self).istitle ()
-
-	def isupper(self):
-		return str (self).isupper ()
-
-	def join(self, sequence):
-		return str (self).join (sequence)
-
-	def ljust(self, width, fillchar=' '):
-		return str (self).ljust (width, fillchar)
-
-	def lower(self):
-		return str (self).lower ()
-
-	def lstrip(self, chars=0):
-		if chars != 0:
-			return str (self).lstrip (chars)
-		return str (self).lstrip ()
-
-	def replace(self, old, new, count=-1):
-		if count != -1:
-			return str (self).replace (old, new, count)
-		return str (self).replace (old, new)
-
-	def rfind(self, sub, start=0, end=-1):
-		return str (self).rfind (sub, start, end)
-
-	def rindex(self, sub, start=0, end=-1):
-		return str (self).rindex (sub, start, end)
-
-	def rjust(self, width, fillchar=' '):
-		return str (self).rjust (width, fillchar)
-
-	def rsplit(self, sep=' ', maxsplit=-1):
-		if maxsplit != -1:
-			return str (self).rsplit (sep, maxsplit)
-		return str (self).rsplit (sep)
-
-	def rstrip(self, chars=0):
-		if chars != 0:
-			return str (self).rstrip (chars)
-		return str (self).rstrip ()
-
-	def split(self, sep=' ', maxsplit=-1):
-		if maxsplit != -1:
-			return str (self).split (sep, maxsplit)
-		return str (self).split (sep)
-
-	def splitlines(self, keepends=False):
-		return str (self).splitlines (keepends)
-
-	def startswith(self, prefix, start=0, end=-1):
-		return str (self).startswith (prefix, start, end)
-
-	def strip(self, chars=0):
-		if chars != 0:
-			return str (self).strip (chars)
-		return str (self).strip ()
-
-	def swapcase(self):
-		return str (self).swapcase ()
-
-	def title(self):
-		return str (self).title ()
-
-	def translate(self, table, deletechars=None):
-		if deletechars:
-			return str (self).translate (table, deletechars)
-		return str (self).translate (table)
-
-	def upper(self):
-		return str (self).upper ()
-
-	def zfill(self, width):
-		return str (self).zfill (width)
+		return str (self).expandtabs(tabsize)
+	def find(self, sub, start=0, end=sys.maxint):
+		return str (self).find(sub, start, end)
+	def index(self, sub, start=0, end=sys.maxint):
+		return str (self).index(sub, start, end)
+	def isalpha(self): return str (self).isalpha()
+	def isalnum(self): return str (self).isalnum()
+	def isdecimal(self): return str (self).isdecimal()
+	def isdigit(self): return str (self).isdigit()
+	def islower(self): return str (self).islower()
+	def isnumeric(self): return str (self).isnumeric()
+	def isspace(self): return str (self).isspace()
+	def istitle(self): return str (self).istitle()
+	def isupper(self): return str (self).isupper()
+	def join(self, seq): return str (self).join(seq)
+	def ljust(self, width, *args):
+		return str (self).ljust(width, *args)
+	def lower(self): return str (self).lower()
+	def lstrip(self, chars=None): return str (self).lstrip(chars)
+	def replace(self, old, new, maxsplit=-1):
+		return str (self).replace(old, new, maxsplit)
+	def rfind(self, sub, start=0, end=sys.maxint):
+		return str (self).rfind(sub, start, end)
+	def rindex(self, sub, start=0, end=sys.maxint):
+		return str (self).rindex(sub, start, end)
+	def rjust(self, width, *args):
+		return str (self).rjust(width, *args)
+	def rstrip(self, chars=None): return str (self).rstrip(chars)
+	def split(self, sep=None, maxsplit=-1):
+		return str (self).split(sep, maxsplit)
+	def rsplit(self, sep=None, maxsplit=-1):
+		return str (self).rsplit(sep, maxsplit)
+	def splitlines(self, keepends=0): return str (self).splitlines(keepends)
+	def startswith(self, prefix, start=0, end=sys.maxint):
+		return str (self).startswith(prefix, start, end)
+	def strip(self, chars=None): return str (self).strip(chars)
+	def swapcase(self): return str (self).swapcase()
+	def title(self): return str (self).title()
+	def translate(self, *args):
+		return str (self).translate(*args)
+	def upper(self): return str (self).upper()
+	def zfill(self, width): return str (self).zfill(width)
 
 def _(val):
 	t = LazyTranslation (val)
