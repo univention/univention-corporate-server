@@ -308,7 +308,7 @@ class modedit(unimodule.unimodule):
 				]
 
 		advanced_button = button('change',{},{'helptext':_('change')})
-		head_advanced_text = [ text("",{},{"text":[_("Show the advanced attributes")]})]
+		head_advanced_text = [ text("",{},{"text":[_("Show the advanced settings")]})]
 		if self.save.get('advanced_tabs'):
 			advanced_value = self.save.get('advanced_tabs')
 		else:
@@ -321,7 +321,7 @@ class modedit(unimodule.unimodule):
 		else:
 			advanced_value = None
 
-		self.advanced_checkbox = question_bool('', {},{'helptext': _("Show the advanced attributes"), 'usertext': advanced_value, 'button': advanced_button})
+		self.advanced_checkbox = question_bool('', {},{'helptext': _("Show the advanced settings"), 'usertext': advanced_value, 'button': advanced_button})
 		head_advanced = [ self.advanced_checkbox ]
 
 		if hasattr(self.object,'link'):
