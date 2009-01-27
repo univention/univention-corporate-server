@@ -36,16 +36,5 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	/usr/lib/univention-install/77univention-debmirror.inst || true
 fi
 
-if [ -z "$repository_online_server" ]; then
-	univention-config-registry set "repository/mirror/server?apt.univention.de"
-else
-	univention-config-registry set "repository/mirror/server?$repository_online_server"
-fi
-
-univention-config-registry set "repository/online/server=$hostname.$domainname"
-univention-config-registry set "repository/mirror/prefix=$repository_online_prefix"
-univention-config-registry set "repository/mirror/threads?10"
-univention-config-registry set "repository/mirror/basepath?/var/lib/univention-repository"
-
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true

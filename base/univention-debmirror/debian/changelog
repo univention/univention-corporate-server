@@ -1,3 +1,10 @@
+univention-debmirror (2.0.2-1) unstable; urgency=low
+
+  * select an existing local repository server as mirror source
+    (Bug: #21511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 22 Jan 2009 14:16:02 +0100
+
 univention-debmirror (2.0.1-1) unstable; urgency=low
 
   * add years to copyright note
@@ -27,7 +34,7 @@ univention-debmirror (1.0.1-2) unstable; urgency=low
 
 univention-debmirror (1.0.1-1) unstable; urgency=low
 
-  * move definition for repository web site to apache2 
+  * move definition for repository web site to apache2
 
  -- Andreas Büsching <buesching@univention.de>  Thu, 05 Jul 2007 16:51:30 +0200
 
@@ -72,4 +79,3 @@ univention-debmirror (0.1.0) unstable; urgency=low
   * initial release
 
  -- Stefan Gohmann <gohmann@univention.de>  Mon, 03 Nov 2003 09:00:40 +0200
-

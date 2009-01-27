@@ -45,6 +45,13 @@ univention-directory-manager container/cn create --ignore_exists $@ --position c
 univention-directory-manager settings/service create $@ --ignore_exists --position cn=services,cn=univention,$ldap_base --set name=Repository-Server
 
 if [ -n "$local_repository" ] && [ "$local_repository" = "true" -o "$local_repository" = "True" -o "$local_repository" = "yes" ]; then
+	# there is already another repository server
+	if host univention-repository.$domainname &> /dev/null; then
+		univention-config-registry set repository/mirror/server=univention-repository.$domainname
+	else
+		univention-config-registry set repository/mirror/server=apt.univention.de
+	fi
+
 	/usr/share/univention-directory-manager-tools/univention-dnsedit $@ --ignore-exists --stoptls $domainname add cname univention-repository $hostname
 	univention-directory-manager computers/$server_role modify $@ --dn $ldap_hostdn --append service="Repository-Server"
 fi
