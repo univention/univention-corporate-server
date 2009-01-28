@@ -2,10 +2,21 @@
 
 @!@
 
+import sys
 import univention.management.console.handlers.update.tools
 
-updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+try:
+	updater = univention.management.console.handlers.update.tools.UniventionUpdater()
 
-if updater.online_repository:
-	print updater.print_version_repositories()
+	if updater.online_repository:
+		print updater.print_version_repositories()
+except:
+	print '# An error occurred during the repository check. The error message:'
+	print '#   %s: %s' % sys.exc_info()[:2]
+	print '#'
+	print ''
+	print '# After fixing this issue, you should rewrite this file with the following command:'
+	print '#   univention-config-registry commit /etc/apt/sources.list.d/15_ucs-online-version.list'
+	print '#'
+	print ''
 @!@

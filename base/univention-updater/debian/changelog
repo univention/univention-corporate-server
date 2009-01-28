@@ -1,3 +1,11 @@
+univention-updater (4.0.7-1) unstable; urgency=low
+
+  * don't write tracebacks to the sources.list files. Bug #11991 and OX
+    Bug http://bugs.open-xchange.com/cgi-
+    bin/bugzilla/show_bug.cgi?id=12493
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jan 2009 08:45:05 +0100
+
 univention-updater (4.0.6-1) unstable; urgency=low
 
   * fixed a bug causing an endless loop when creating the mirror list (Bug #13206)

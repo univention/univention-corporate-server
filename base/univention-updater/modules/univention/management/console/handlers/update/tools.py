@@ -213,17 +213,13 @@ class UniventionUpdater:
 		if proxy_headers:
 			for k, v in proxy_headers.items ():
 				self.connection.putheader (k, v)
-		try:
-			self.connection.endheaders ()
-			response = self.connection.getresponse()
-			response.read()
+		self.connection.endheaders ()
+		response = self.connection.getresponse()
+		response.read()
 
-			if response.status == 200:
-				self.close_connection()
-				return True
-		except:
-			import traceback
-			print traceback.format_exc ()
+		if response.status == 200:
+			self.close_connection()
+			return True
 
 		self.close_connection()
 		return False

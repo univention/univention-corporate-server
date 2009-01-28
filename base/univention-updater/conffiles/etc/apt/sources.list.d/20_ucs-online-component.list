@@ -1,21 +1,22 @@
 @%@BCWARNING=#@%@
+
 @!@
 
-# repository/online/component/openoffice.org/version=current
-# repository/online/component/openoffice.org/version=2.0,2.1
-# repository/online/component/openoffice.org/server=apt.univention.de
-# repository/online/component/openoffice.org/prefix=test
-# repository/online/component/openoffice.org/parts=maintained
-# repository/online/component/openoffice.org/port=80
-# repository/online/component/openoffice.org=true,enabled, yes
-# repository/online/component/openoffice.org/username=
-# repository/online/component/openoffice.org/password=
-
+import sys
 import univention.management.console.handlers.update.tools
 
-updater = univention.management.console.handlers.update.tools.UniventionUpdater()
+try:
+	updater = univention.management.console.handlers.update.tools.UniventionUpdater()
 
-if updater.online_repository:
-   print updater.print_component_repositories()
-
+	if updater.online_repository:
+	   print updater.print_component_repositories()
+except:
+	print '# An error occurred during the repository check. The error message:'
+	print '#   %s: %s' % sys.exc_info()[:2]
+	print '#'
+	print ''
+	print '# After fixing this issue, you should rewrite this file with the following command:'
+	print '#   univention-config-registry commit /etc/apt/sources.list.d/20_ucs-online-component.list'
+	print '#'
+	print ''
 @!@
