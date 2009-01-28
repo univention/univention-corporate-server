@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.5-5) unstable; urgency=low
+
+  * use old value if results per page is set to a non-int value
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 28 Jan 2009 10:10:27 +0100
+
 univention-directory-manager (6.0.5-4) unstable; urgency=low
 
   * visible results per page in modbrowse and modwizard must be greater than 0

@@ -1601,7 +1601,7 @@ class modwizard(unimodule.unimodule):
 			try:
 				self.save.put('wizard_search_visible', int(self.search_visible.get_input()))
 			except:
-				self.save.put('wizard_search_visible', 20)
+				pass # use old value
 
 		if hasattr(self, 'search_button') and self.search_button.pressed():
 			self.save.put('wizard_search_do', '1')

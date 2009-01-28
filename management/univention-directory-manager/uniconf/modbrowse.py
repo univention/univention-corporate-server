@@ -953,7 +953,7 @@ class modbrowse(unimodule.unimodule):
 				try:
 					self.save.put('browse_search_visible', int(visible))
 				except:
-					self.save.put('browse_search_visible', 20)
+					pass # use old value
 		if hasattr(self, 'search_type_button') and self.search_type_button.pressed():
 			self.save.put('browse_search_type', self.search_type_select.getselected())
 			self.save.put('browse_search_property', None)
