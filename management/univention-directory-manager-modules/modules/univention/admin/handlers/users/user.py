@@ -589,7 +589,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'homeShare': univention.admin.property(
-			short_description=_('Home Share'),
+			short_description=_('Alternative Home Share'),
 			long_description=_('Share, the user\'s home directory resides on'),
 			syntax=univention.admin.syntax.module('shares/share'),
 			multivalue=0,
@@ -600,7 +600,7 @@ property_descriptions={
 			identifies=0,
 		),
 	'homeSharePath': univention.admin.property(
-			short_description=_('Home Share Path'),
+			short_description=_('Alternative Home Share Path'),
 			long_description=_('Path on the Home Share'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
@@ -1086,16 +1086,14 @@ layout=[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
 	]),
-	univention.admin.tab(_('Home Share'),_('Home Share Settings'), [
-		[univention.admin.field("homeShare"), univention.admin.field("sambahome")],
-		[univention.admin.field("homeSharePath"), univention.admin.field("homedrive")]
-	], advanced = True),
 	univention.admin.tab(_('Linux/UNIX'),_('Unix Account Settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
+		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],
 		[univention.admin.field("gecos"),]
 	], advanced = True),
 	univention.admin.tab(_('Windows'),_('Windows Account Settings'),[
+		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
 		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")],
 		[univention.admin.field("sambaRID")],
 		[univention.admin.field("sambaLogonHours"), univention.admin.field("sambaUserWorkstations")]

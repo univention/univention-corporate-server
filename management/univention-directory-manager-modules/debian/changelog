@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.25-4) unstable; urgency=low
+
+  * removed Home Share tab and moved options back to their original tabs.
+  * renamed Home Share [Path] to Alternative Home Share [Path]. Bug #12813
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 28 Jan 2009 13:24:34 +0100
+
 univention-directory-manager-modules (3.0.25-3) unstable; urgency=low
 
   * moved Home Share, Home Share Path, Windows Home Path, Windows Home Drive

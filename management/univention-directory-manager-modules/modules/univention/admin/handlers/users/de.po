@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-28 11:01+0100\n"
+"POT-Creation-Date: 2009-01-28 13:22+0100\n"
 "PO-Revision-Date: 2006-09-06 13:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,8 @@ msgstr ""
 msgid "User: Password"
 msgstr "Benutzer: Passwort"
 
-#: passwd.py:55 user.py:144 user.py:1859 user.py:1869
+#: passwd.py:55 user.py:144 user.py:1817 user.py:1827 user.py:1857
+#: user.py:1867
 msgid "Username"
 msgstr "Benutzername"
 
@@ -31,7 +32,7 @@ msgstr "Passwort"
 msgid "Change Password"
 msgstr "Passwort ändern"
 
-#: self.py:54 self.py:115 user.py:1056
+#: self.py:54 self.py:115 user.py:1052 user.py:1056
 msgid "General"
 msgstr "Allgemein"
 
@@ -139,7 +140,7 @@ msgstr "Titel"
 msgid "Description"
 msgstr "Beschreibung"
 
-#: user.py:223 user.py:1078
+#: user.py:223 user.py:1074 user.py:1078
 msgid "Organisation"
 msgstr "Organisation"
 
@@ -255,7 +256,7 @@ msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: user.py:515 user.py:1103
+#: user.py:515 user.py:1097 user.py:1101
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -289,7 +290,7 @@ msgstr "Passwort-History ignorieren"
 msgid "Override Password Length"
 msgstr "Passwort-Länge ignorieren"
 
-#: user.py:592 user.py:1089
+#: user.py:592
 msgid "Home Share"
 msgstr "Heimatverzeichnisfreigabe"
 
@@ -536,114 +537,118 @@ msgstr "Seriennummer"
 msgid "Certificate Serial"
 msgstr "Zertifikatsseriennummer"
 
-#: user.py:1056
+#: user.py:1052 user.py:1056
 msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
-#: user.py:1063
+#: user.py:1059 user.py:1063
 msgid "User Account"
 msgstr "Benutzer-Konto"
 
-#: user.py:1063
+#: user.py:1059 user.py:1063
 msgid "Account Settings"
 msgstr "Konto-Einstellungen"
 
-#: user.py:1068
+#: user.py:1064 user.py:1068
 msgid "Mail"
 msgstr "Mail"
 
-#: user.py:1068
+#: user.py:1064 user.py:1068
 msgid "Mail Preferences"
 msgstr "Maileinstellungen"
 
-#: user.py:1073
+#: user.py:1069 user.py:1073
 msgid "Contact"
 msgstr "Kontakt"
 
-#: user.py:1073
+#: user.py:1069 user.py:1073
 msgid "Contact Information"
 msgstr "Kontaktinformationen"
 
-#: user.py:1078
+#: user.py:1074 user.py:1078
 msgid "Organisational Information"
 msgstr "Organisations-/Mitarbeiterinformationen"
 
-#: user.py:1085
+#: user.py:1081 user.py:1085
 msgid "Private Contact"
 msgstr "Kontakt privat"
 
-#: user.py:1085
+#: user.py:1081 user.py:1085
 msgid "Private Contact Information"
 msgstr "Private Kontaktinformationen"
 
-#: user.py:1089
-msgid "Home Share Settings"
-msgstr "Heimatverzeichnis-Freigabeeinstellungen"
-
-#: user.py:1093
+#: user.py:1085 user.py:1089
 msgid "Linux/UNIX"
 msgstr "Linux/UNIX"
 
-#: user.py:1093
+#: user.py:1085 user.py:1089
 msgid "Unix Account Settings"
 msgstr "UNIX-Kontoeinstellungen"
 
-#: user.py:1098
+#: user.py:1091 user.py:1095
 msgid "Windows"
 msgstr "Windows"
 
-#: user.py:1098
+#: user.py:1091 user.py:1095
 msgid "Windows Account Settings"
 msgstr "Windows-Kontoeinstellungen"
 
-#: user.py:1103
+#: user.py:1097 user.py:1101
 msgid "Group Memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: user.py:1107
+#: user.py:1101 user.py:1105
 msgid "Vacation Notice"
 msgstr "Abwesenheitsnotiz"
 
-#: user.py:1115
+#: user.py:1109 user.py:1113
 msgid "Groupware"
 msgstr "Groupware"
 
-#: user.py:1115
+#: user.py:1109 user.py:1113
 msgid "Groupware Settings"
 msgstr "Groupware-Einstellungen"
 
-#: user.py:1126
+#: user.py:1120 user.py:1124
 msgid "Invitation"
 msgstr "Terminannahme"
 
-#: user.py:1129
+#: user.py:1123 user.py:1127
 msgid "User Certificate"
 msgstr "Benutzerzertifikat"
 
-#: user.py:1901
+#: user.py:1859 user.py:1899
 #, python-format
 msgid "Need one of %s, %s, %s or %s in options to create user."
 msgstr ""
 "Mindestens eine Option aus %s, %s, %s oder %s muss aktiv sein, um einen "
 "neuen Benutzer zu erstellen."
 
-#: user.py:2191
+#: user.py:2136 user.py:2189
 #, python-format
 msgid "The password is too short, at least %d characters!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2197
+#: user.py:2142 user.py:2195
 #, python-format
 msgid "The password is too short, at least %d character!"
 msgstr "Das Passwort ist zu kurz, mindestens %d Zeichen erforderlich!"
 
-#: user.py:2467
+#: user.py:2412 user.py:2465
 msgid "DN given as share is not valid."
 msgstr "Der DN der Freigabe ist nicht zulässig."
 
-#: user.py:2483
+#: user.py:2428 user.py:2481
 msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
+
+#: user.py:592
+msgid "Alternative Home Share"
+msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
+
+#: user.py:603
+msgid "Alternative Home Share Path"
+msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #~ msgid "Employee"
 #~ msgstr "Mitarbeiter"
