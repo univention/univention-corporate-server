@@ -1,3 +1,9 @@
+univention-updater (4.0.6-1) unstable; urgency=low
+
+  * fixed a bug causing an endless loop when creating the mirror list (Bug #13206)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 08:17:15 +0100
+
 univention-updater (4.0.5-1) unstable; urgency=low
 
   * univention-repository-update net retrieves all newer versions unless

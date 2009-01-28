@@ -377,7 +377,8 @@ class UniventionUpdater:
 					else:
 						break
 
-			start = patch_inc
+			# check next minor release
+			start.minor += 1
 
 		return repos
 
