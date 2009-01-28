@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.25-3) unstable; urgency=low
+
+  * moved Home Share, Home Share Path, Windows Home Path, Windows Home Drive
+    to their own tab Home Share. Bug #12813
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 28 Jan 2009 11:07:41 +0100
+
 univention-directory-manager-modules (3.0.25-2) unstable; urgency=low
 
   * made the property _view_referencing_objects non searchable. Bug #13117

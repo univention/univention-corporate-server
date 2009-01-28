@@ -1086,14 +1086,16 @@ layout=[
 		[univention.admin.field("mobileTelephoneNumber"), univention.admin.field("homeTelephoneNumber")],
 		[univention.admin.field("pagerTelephoneNumber"),univention.admin.field("homePostalAddress")]
 	]),
+	univention.admin.tab(_('Home Share'),_('Home Share Settings'), [
+		[univention.admin.field("homeShare"), univention.admin.field("sambahome")],
+		[univention.admin.field("homeSharePath"), univention.admin.field("homedrive")]
+	], advanced = True),
 	univention.admin.tab(_('Linux/UNIX'),_('Unix Account Settings'), [
 		[univention.admin.field("unixhome"), univention.admin.field("shell")],
 		[univention.admin.field("uidNumber"), univention.admin.field("gidNumber")],
-		[univention.admin.field("homeShare"), univention.admin.field("homeSharePath")],
 		[univention.admin.field("gecos"),]
 	], advanced = True),
 	univention.admin.tab(_('Windows'),_('Windows Account Settings'),[
-		[univention.admin.field("sambahome"), univention.admin.field("homedrive")],
 		[univention.admin.field("scriptpath"), univention.admin.field("profilepath")],
 		[univention.admin.field("sambaRID")],
 		[univention.admin.field("sambaLogonHours"), univention.admin.field("sambaUserWorkstations")]
