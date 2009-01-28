@@ -26,7 +26,6 @@ Variables: postfix/masquerade/exceptions
 Variables: mail/maps/canonical/sender/enable
 Variables: mail/maps/canonical/sender/classes
 Variables: mail/maps/canonical/recipient/enable
-Variables: mail/maps/canonical/recipient/classes
 Variables: mail/postfix/softbounce
 Variables: mail/postfix/dnslookups
 
