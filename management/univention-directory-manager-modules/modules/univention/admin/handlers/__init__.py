@@ -1867,6 +1867,7 @@ class simplePolicy(simpleLdap):
 				long_description = '',
 				syntax = ldap_search,
 				multivalue = 1,
+				dontsearch = 1,
 				required = 0,
 				may_change = 0,
 				identifies = 0 )

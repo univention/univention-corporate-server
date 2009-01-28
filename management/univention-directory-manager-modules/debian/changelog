@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.25-2) unstable; urgency=low
+
+  * made the property _view_referencing_objects non searchable. Bug #13117
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 28 Jan 2009 10:35:03 +0100
+
 univention-directory-manager-modules (3.0.25-1) unstable; urgency=low
 
   * based LazyTranslation on the implementation of UserString which
