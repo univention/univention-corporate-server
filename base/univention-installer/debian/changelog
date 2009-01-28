@@ -1,3 +1,10 @@
+univention-installer (3.0.7-1) unstable; urgency=low
+
+  * create APT sources.list files at the end of the installation process
+    (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 09:51:42 +0100
+
 univention-installer (3.0.6-1) unstable; urgency=low
 
   * new cmd switch for cmdline mode (Bug: #13183)

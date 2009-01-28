@@ -40,6 +40,13 @@ if [ -n "$local_repository" ]; then
 	if [ "$local_repository" = "true" ] || [ "$local_repository" = "yes" ]; then
 
 		# call univention-repository-create in non-interactive mode with the /sourcedevice directory as installation medium (-N mount is not required)
-		chroot /instmnt /sr/sbin/univention-repository-create -n -N -m /sourcedevice
+		chroot /instmnt /usr/sbin/univention-repository-create -n -N -m /sourcedevice
 	fi
 fi
+
+# create sources.list
+chroot /intmnt univention-config-registry commit \
+					/etc/apt/sources.list.d/15_ucs-online-version.list \
+					/etc/apt/sources.list.d/18_ucs-online-security.list \
+					/etc/apt/sources.list.d/20_ucs-online-component.list \
+					/etc/apt/mirror.list
