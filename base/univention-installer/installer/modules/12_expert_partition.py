@@ -39,6 +39,10 @@ from objects import *
 from local import _
 
 class object(content):
+
+	def profile_complete(self):
+		return True
+
 	def checkname(self):
 		return ['expert partitioner']
 
