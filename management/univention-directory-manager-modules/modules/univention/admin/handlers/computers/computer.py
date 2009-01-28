@@ -74,6 +74,15 @@ property_descriptions={
 			may_change=1,
 			identifies=1
 		),
+	'description': univention.admin.property(
+			short_description=_('Description'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'mac': univention.admin.property(
 			short_description=_('MAC Address'),
 			long_description='',
@@ -108,6 +117,7 @@ property_descriptions={
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('inventoryNumber', 'univentionInventoryNumber')
 mapping.register('mac', 'macAddress' )
 mapping.register('ip', 'aRecord' )
