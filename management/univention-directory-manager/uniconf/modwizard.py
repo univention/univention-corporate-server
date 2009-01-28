@@ -928,7 +928,20 @@ class modwizard(unimodule.unimodule):
 		if search_property_name != '*':
 			search_property=search_module.property_descriptions[search_property_name]
 			search_value=self.save.get('wizard_search_value')
-			if not search_module.property_descriptions.has_key(tmp_search_property_name) or search_value in (None, ):
+
+			# Test line 1: on change of the search property search_value is None
+			# - it might be '' on other occasions
+
+			# Test line 2: initialy tmp_search_property_name is '' and then
+			# search_value should not be reset - if
+			# tmp_search_property_name is not in ('', None) there might be
+			# a change of the search property
+
+			# Test line 3: there definitively was a change of the search
+			# property
+			if search_value in (None, '') \
+					or (tmp_search_property_name not in ('', None) and search_module.property_descriptions.has_key(tmp_search_property_name)) \
+					and tmp_search_property_name != search_property_name:
 				search_value = '*'
 			self.search_input=question_property('',{'width':'200'},{'property': search_property, 'value': search_value, 'search': '1', 'lo': self.lo})
 		else:
