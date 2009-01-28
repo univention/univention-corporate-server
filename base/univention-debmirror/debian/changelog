@@ -1,3 +1,11 @@
+univention-debmirror (2.0.3-1) unstable; urgency=low
+
+  * set mirror server to en existing local repository server or
+    apt.univention.de and set the repository server to the local system
+    (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 10:10:20 +0100
+
 univention-debmirror (2.0.2-2) unstable; urgency=low
 
   * remove dependency to apt-mirror (Bug #12511)

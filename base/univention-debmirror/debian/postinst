@@ -36,5 +36,20 @@ if [ "$server_role" = "domaincontroller_master" -o "$server_role" = "domaincontr
 	/usr/lib/univention-install/77univention-debmirror.inst || true
 fi
 
+# on installation, definitely set local repository
+if [ "$1" = configure -a -z "$2" ]; then
+	univention-config-registry set repository/online/server="$hostname.$domainname"
+# on update, only if not set already
+else
+	univention-config-registry set repository/online/server?"$hostname.$domainname"
+fi
+
+# set the mirror server
+if host univention-repository.$domainname &> /dev/null; then
+	univention-config-registry set repository/mirror/server="univention-repository.$domainname"
+else
+	univention-config-registry set repository/mirror/server="apt.univention.de"
+fi
+
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true
