@@ -189,8 +189,12 @@ univention-config-registry set	repository/online?yes \
 								repository/mirror/basepath?/var/lib/univention-repository
 
 # set the repository server
-eval $(univention-config-registry shell hostname domainname)
-if host univention-repository.$domainname &> /dev/null; then
+eval $(univention-config-registry shell hostname domainname update/server)
+if [ -n "$update_server" ]; then
+	update_server=`echo "$update_server" | sed -e 's|http://||' | sed -e 's|/.*||'`
+	univention-config-registry set repository/online/server?"$update_server"
+	univention-config-registry unset update/server
+elif host univention-repository.$domainname &> /dev/null; then
 	univention-config-registry set repository/online/server?"univention-repository.$domainname"
 else
 	univention-config-registry set repository/online/server?"apt.univention.de"

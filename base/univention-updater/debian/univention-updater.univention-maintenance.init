@@ -3,7 +3,7 @@
 # Univention Updater
 #  maintenance init script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -91,11 +91,11 @@ case "$1" in
 			fi
 			warning_message="$warning_message$colourend"
 			warning_message="$warning_message\n\r"
-			
+
 			echo -e "$down" > "$ttyname"
 			echo -e "$warning_message" > "$ttyname"
 		}
-		
+
 		/usr/sbin/univention-updater local --check >/dev/null 2>&1
 		upd_local=$?
 		/usr/sbin/univention-updater net --check >/dev/null 2>&1
@@ -113,9 +113,9 @@ case "$1" in
 			fi
 			exit 0
 		fi
-		
+
 		LOCKFILE="/var/lock/univention-maintenance_$RANDOM"
-		
+
 		if echo $update_warning | egrep -i 'yes|true' >/dev/null 2>&1; then
 			if [ -n "$update_warning_tty" ]; then
 				touch "$LOCKFILE"
@@ -130,7 +130,7 @@ case "$1" in
 				done &
 				sleep 4
 			fi
-	
+
 			if [ -c "$SSH_TTY" ]; then
 				issue_warning "$SSH_TTY"
 			fi
@@ -141,7 +141,7 @@ case "$1" in
 				echo "Univention Updater is updating the system."
 			fi
 		fi
-		
+
 		echo -n "Starting Univention Updater: "
 
 		if /bin/netcat -q0 -w4 $ldap_server_name 389 </dev/null >/dev/null 2>&1; then
@@ -162,11 +162,10 @@ case "$1" in
 						/usr/sbin/univention-updater local >>/var/log/univention/updater.log 2>&1
 					fi
 				else
-					update_server=`echo "$update_server" | sed -e 's|http://||' | sed -e 's|/.*||'`
-					if [ -n "$update_server" ]; then
-						ping -c 1 $update_server >/dev/null 2>&1
+					if [ -n "$repository_online_server" ]; then
+						ping -c 1 $repository_online_server >/dev/null 2>&1
 						if [ $? != 0 ]; then
-							echo -n "  update/server not available"
+							echo -n "  repository/online/server not available"
 							exit 1
 						fi
 					fi
@@ -178,7 +177,7 @@ case "$1" in
 						/usr/sbin/univention-updater net >>/var/log/univention/updater.log 2>&1
 					fi
 				fi
-	
+
 				echo -n "  actualise "
 				/usr/sbin/univention-actualise --silent >>/var/log/univention/updater.log 2>&1
 			fi

@@ -1,3 +1,10 @@
+univention-updater (4.0.9-1) unstable; urgency=low
+
+  * replace UCR variable update/server with repository/online/server and
+    repository/mirror/server (Bug #13220)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 13:43:49 +0100
+
 univention-updater (4.0.8-1) unstable; urgency=low
 
   * catch exception when creating mirror.list (Bug #11991)

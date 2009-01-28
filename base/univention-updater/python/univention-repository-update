@@ -220,21 +220,21 @@ if __name__ == '__main__':
 		print >>options.teefile, 'Error: The local repository is disabled. To create a local repository use univention-repository-create.'
 		sys.exit( 1 )
 
-	update_server=configRegistry['update/server'].replace('http://','').split('/')[0]
-	print 'update_server = [%s]' % update_server
+	print 'Mirror Source: %s' % configRegistry['repository/mirror/server']
 
 	if command == 'net':
 		local_server='%s.%s' % (configRegistry['hostname'], configRegistry['domainname'])
 
-		if update_server == local_server:
-			print >> options.teefile, 'Local server and update server are the same'
+		if configRegistry['repository/mirror/server'] == local_server:
+			print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
 			sys.exit(1)
+
 		update_net()
 	elif command == 'cdrom':
 		update_cdrom()
 	else:
 		if command == 'local':
-			print >> options.teefile, 'Error: this mode is not supported anymore'
+			print >> options.teefile, 'Error: This mode is not supported anymore'
 		else:
 			print >> options.teefile, 'Error: Unknown mode %s' % command
 		parser.print_usage()

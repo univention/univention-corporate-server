@@ -3,7 +3,7 @@
 # Univention Updater
 #  security update
 #
-# Copyright (C) 2004, 2005, 2006, 2007, 2008 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -88,7 +88,7 @@ if __name__ == '__main__':
 		usage(stdout)
 		fp_debug.close()
 		sys.exit(1)
-		
+
 	if sys.argv[1] in ['-h', '-?', '--help']:
 		usage(stdout)
 		fp_debug.close()
@@ -116,17 +116,17 @@ if __name__ == '__main__':
 			if command=='net':
 				dprint("Parameter \"--file\" only valid when running locally.")
 				fp_debug.close()
-				sys.exit(1)						
+				sys.exit(1)
 			if not val:
 				dprint("Parameter \"--file\" needs an argument.")
 				fp_debug.close()
-				sys.exit(1)	
+				sys.exit(1)
 
 		if opt == '--silent':
 			extra_silent=True
 		if opt == '--noupdate':
 			call_upgrade=False
-	
+
 	baseConfig=univention_baseconfig.baseConfig()
 	baseConfig.load()
 
@@ -147,7 +147,7 @@ if __name__ == '__main__':
 
 				if nextupdate:
 					dprint('Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [sys.stdout,stdout])
-					
+
 					remove_temporary_sources_list()
 					sources_list_entries = updater.security_update_temporary_sources_list()
 					upgraded = nextupdate
@@ -177,4 +177,3 @@ if __name__ == '__main__':
 		elif command == 'local':
 			# TODO: this should be implemented
 			dprint('Error: The local installation is not yet supported!. Please use univention-security-update net!', [sys.stdout,stdout])
-
