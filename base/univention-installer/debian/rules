@@ -67,6 +67,7 @@ install: build
 	install -m 640 installer/modules/10_role.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/11_basis.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/12_partition.py ${DD}/lib/univention-installer/modules/
+	install -m 640 installer/modules/12_expert_partition.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/15_bootloader.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/20_net.py ${DD}/lib/univention-installer/modules/
 	install -m 640 installer/modules/30_ssl.py ${DD}/lib/univention-installer/modules/
