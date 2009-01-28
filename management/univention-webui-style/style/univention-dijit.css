@@ -236,6 +236,12 @@ height:16px;
 padding-bottom: 1px;
 }
 
+/* if we use padding-left for the IE6,
+ * the drop down will be empty */
+.dj_ie6 .dijitComboBox input {
+padding-left: 0px;
+}
+
 .dijitComboBox input {
 padding-left: 3px;
 }

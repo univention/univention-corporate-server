@@ -1,3 +1,10 @@
+univention-webui-style (3.0.5-1) unstable; urgency=low
+
+  * removed the padding-left statement for a dijitComboBox widget when
+    the IE6 is used. Bug #13121
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 28 Jan 2009 07:00:24 +0100
+
 univention-webui-style (3.0.4-1) unstable; urgency=low
 
   * don't overwrite the background colour for input widgets. Closes Bug
