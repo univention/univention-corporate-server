@@ -394,8 +394,18 @@ class object(univention.admin.handlers.simpleLdap):
 		if old != new:
 			ml.append( ( 'uniqueMember', old, new ) )
 			uids = self.lo.getAttr( self.dn, 'memberUid' )
-			new = map( lambda x: x[ x.find( '=' ) + 1 : x.find( ',' ) ], new )
-			ml.append( ( 'memberUid', uids, new ) )
+			new_uids = []
+			for member in new:
+				if member.startswith('uid='): # UID is stored in DN --> use UID directly
+					new_uids.append( member[ member.find('=') + 1 : member.find(',') ] ) # string between first '=' and first ','
+				else: # UID is not stored in DN --> fetch UID by DN
+					uid_list = self.lo.getAttr(member, 'uid')
+					# a group have no uid attribute, see Bug #12644
+					if len(uid_list) > 0:
+						new_uids.append(uid_list[0])
+						if len(uid_list) > 1:
+							univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, 'groups/group: A groupmember has multiple UIDs (%s %s)' % (member, str(uid_list)))
+			ml.append( ( 'memberUid', uids, new_uids ) )
 		return ml
 
 	def _ldap_post_create(self):
