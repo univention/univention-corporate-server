@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-28 13:22+0100\n"
+"POT-Creation-Date: 2009-01-28 13:42+0100\n"
 "PO-Revision-Date: 2006-09-06 13:12+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -648,6 +648,14 @@ msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
 
 #: user.py:603
 msgid "Alternative Home Share Path"
+msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
+
+#: user.py:593
+msgid "Alternative Share, the user's home directory resides on"
+msgstr "Alternative Freigabe, auf der das Heimatverzeichnis des Benutzers liegt."
+
+#: user.py:604
+msgid "Alternative Path on the Home Share"
 msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #~ msgid "Employee"

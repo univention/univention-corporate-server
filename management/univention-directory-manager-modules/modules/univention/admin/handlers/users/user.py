@@ -590,7 +590,7 @@ property_descriptions={
 		),
 	'homeShare': univention.admin.property(
 			short_description=_('Alternative Home Share'),
-			long_description=_('Share, the user\'s home directory resides on'),
+			long_description=_('Alternative Share, the user\'s home directory resides on'),
 			syntax=univention.admin.syntax.module('shares/share'),
 			multivalue=0,
 			options=['samba', 'posix', 'kerberos' ],
@@ -601,7 +601,7 @@ property_descriptions={
 		),
 	'homeSharePath': univention.admin.property(
 			short_description=_('Alternative Home Share Path'),
-			long_description=_('Path on the Home Share'),
+			long_description=_('Alternative Path on the Home Share'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=['samba', 'posix', 'kerberos' ],

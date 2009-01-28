@@ -1,3 +1,9 @@
+univention-directory-manager-modules (3.0.25-5) unstable; urgency=low
+
+  * improved long description of Alternative Home Share [Path]. Bug #12813
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed, 28 Jan 2009 13:43:37 +0100
+
 univention-directory-manager-modules (3.0.25-4) unstable; urgency=low
 
   * removed Home Share tab and moved options back to their original tabs.
