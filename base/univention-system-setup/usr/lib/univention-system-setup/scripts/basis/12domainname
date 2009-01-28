@@ -246,8 +246,10 @@ echo `date` : "Configure server for Samba home directories  in baseconfig : " $s
 set_baseconfig_variable "samba/homedirserver" "$samba_homedirserver"
 echo `date` : "Configure server for Samba profiles  in baseconfig : " $samba_profileserver  >> /var/log/univention/setup.log
 set_baseconfig_variable "samba/profileserver" "$samba_profileserver"
-echo `date` : "Configure update server  in baseconfig : " $update_server  >> /var/log/univention/setup.log
-set_baseconfig_variable "update/server" "$update_server"
+echo `date` : "Configure online repository server  in baseconfig : " $repository_online_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "repository/online/server" "$repository_online_server"
+echo `date` : "Configure mirror repository server  in baseconfig : " $repository_mirror_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "repository/mirror/server" "$repository_mirror_server"
 
 #set_baseconfig_variable_part "mail/hosteddomains" "$mail_hosteddomains"
 if [ -n "$mail_hosteddomains" ]; then
@@ -411,7 +413,7 @@ if [ "$ldap_available" = 1 ]; then
 
 		# SRV records
 		univention-directory-manager dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super" --filter sRVRecord="* $hostname.$old_domainname*" | grep "^DN: " | sed -e 's|DN: ||' | while read dn; do
-		
+
 			old_location=`univention-directory-manager dns/srv_record list --binddn "$binddn" --bindpwd "$bindpwd" --superordinate "$super"  --filter "$(echo $dn | sed -e 's|,.*||g')" |grep "location.* $hostname.$old_domainname" | sed -e 's|.* location: ||'`
 			if [ -z "$old_location" ]; then
 				continue
@@ -592,4 +594,3 @@ if [ -d "/var/lib/univention-system-setup/domainname.post" ]; then
 fi
 
 exit 0
-

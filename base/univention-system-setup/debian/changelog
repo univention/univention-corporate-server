@@ -1,3 +1,10 @@
+univention-system-setup (1.2.0-1) unstable; urgency=low
+
+  * replace UCR variable update/server with repository/online/server and
+    repository/mirror/server (Bug #13220)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 12:05:00 +0100
+
 univention-system-setup (1.1.15-6) unstable; urgency=low
 
   * make the new shared container to default shared container. Closes
@@ -9,13 +16,13 @@ univention-system-setup (1.1.15-5) unstable; urgency=low
 
   * fix copying of SRV, CNAME and TXT records on domainname change (Bug #1794)
 
- -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon, 15 Dec 2008 15:03:41 +0100
+ -- Arvid Requate <requate@univention.de>  Mon, 15 Dec 2008 15:03:41 +0100
 
 univention-system-setup (1.1.15-4) unstable; urgency=low
 
   * update nameserver also on reverse zone containers during domain name change (Bug #11794)
 
- -- Arvid Requate <arequate@visdalen.knut.univention.de>  Mon,  8 Dec 2008 19:36:48 +0100
+ -- Arvid Requate <requate@univention.de>  Mon,  8 Dec 2008 19:36:48 +0100
 
 univention-system-setup (1.1.15-3) unstable; urgency=low
 
@@ -23,10 +30,10 @@ univention-system-setup (1.1.15-3) unstable; urgency=low
     - adjust LDAP servcice principal to new fqdn
     - modify alias record in old DNS zone to point to the new host fqdn
     - fix bug in copying procedure for SRV DNS records to new domain
-    - fix bug in procedure for creation of new univentionMailDomainname 
+    - fix bug in procedure for creation of new univentionMailDomainname
     - modify associatedDomain of hostdn
 
- -- Arvid Requate <arequate@visdalen.knut.univention.de>  Wed,  3 Dec 2008 16:12:07 +0100
+ -- Arvid Requate <requate@univention.de>  Wed,  3 Dec 2008 16:12:07 +0100
 
 univention-system-setup (1.1.15-2) unstable; urgency=low
 
@@ -88,13 +95,13 @@ univention-system-setup (1.1.10-1) unstable; urgency=low
 
 univention-system-setup (1.1.9-1) unstable; urgency=low
 
-  * updated hostname in Nagios service configuration UNIVENTION_LDAP.cfg 
+  * updated hostname in Nagios service configuration UNIVENTION_LDAP.cfg
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 17:41:37 +0100
 
 univention-system-setup (1.1.8-1) unstable; urgency=low
 
-  * updated domainname in Nagios service configuration UNIVENTION_LDAP.cfg 
+  * updated domainname in Nagios service configuration UNIVENTION_LDAP.cfg
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 10 Dec 2007 17:14:46 +0100
 
@@ -229,13 +236,13 @@ univention-system-setup (1.1.1-3) unstable; urgency=low
 
   * When running the security module, redirect output of the iptables init script
     to the log file
-  * Allow LDAP in strict mode.	 
+  * Allow LDAP in strict mode.
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu,  2 Aug 2007 09:21:15 +0200
 
 univention-system-setup (1.1.1-2) unstable; urgency=low
 
-  * Add a new security module 
+  * Add a new security module
 
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Wed,  1 Aug 2007 15:10:31 +0200
 
@@ -247,7 +254,7 @@ univention-system-setup (1.1.1-1) unstable; urgency=low
 
 univention-system-setup (1.1.0-3) unstable; urgency=low
 
-  * adapt packaging rules to replace old univention-setup packages 
+  * adapt packaging rules to replace old univention-setup packages
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 16 Jul 2007 08:10:49 +0200
 
@@ -331,7 +338,7 @@ univention-setup (0.3.84) unstable; urgency=low
 
 univention-setup (0.3.83) unstable; urgency=low
 
-  * updated english text and german translation 
+  * updated english text and german translation
 
  -- Andreas Büsching <buesching@univention.de>  Mon, 11 Dec 2006 13:28:32 +0100
 
@@ -440,8 +447,8 @@ univention-setup (0.3.61) unstable; urgency=low
 
   * Support boot/setup/modules=all baseconfig setting to run all available modules
   * Allow direct configuration of network interface settings with the new
-    --interface command.	
-	
+    --interface command.
+
  -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Mon,  9 Oct 2006 11:09:24 +0200
 
 univention-setup (0.3.60) unstable; urgency=low
@@ -717,4 +724,3 @@ univention-setup (0.1.2) unstable; urgency=low
   * create packages
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue,  9 May 2006 10:39:25 +0200
-

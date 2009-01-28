@@ -224,8 +224,10 @@ echo `date` : "Configure server for Samba home directories  in baseconfig : " $s
 set_baseconfig_variable "samba/homedirserver" "$samba_homedirserver"
 echo `date` : "Configure server for Samba profiles  in baseconfig : " $samba_profileserver  >> /var/log/univention/setup.log
 set_baseconfig_variable "samba/profileserver" "$samba_profileserver"
-echo `date` : "Configure update server  in baseconfig : " $update_server  >> /var/log/univention/setup.log
-set_baseconfig_variable "update/server" "$update_server"
+echo `date` : "Configure online repository server  in baseconfig : " $repository_online_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "repository/online/server" "$repository_online_server"
+echo `date` : "Configure mirror repository server  in baseconfig : " $repository_mirror_server  >> /var/log/univention/setup.log
+set_baseconfig_variable "repository/mirror/server" "$repository_mirror_server"
 echo `date` : "Configure permitted mail hosts for Postfix in baseconfig : " $postfix_permithosts  >> /var/log/univention/setup.log
 set_baseconfig_variable_part "postfix/permithosts" "$postfix_permithosts"
 
@@ -539,4 +541,3 @@ if [ -d "/var/lib/univention-system-setup/hostname.post" ]; then
 fi
 
 exit 0
-
