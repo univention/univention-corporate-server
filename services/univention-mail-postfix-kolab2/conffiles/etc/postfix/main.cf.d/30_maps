@@ -18,6 +18,9 @@ if 'file' in val:
 if 'ldap' in val:
 	recipient_canonical_maps.append('ldap:ldapcanonicalrecipient')
 if recipient_canonical_maps:
+	val_classes = baseConfig.get('mail/maps/canonical/recipient/classes','').split(' ')
+	if val_classes:
+		print 'recipient_canonical_classes = %s' % ', '.join(val_classes)
 	print 'recipient_canonical_maps = %s' % ', '.join(recipient_canonical_maps)
 
 if 'ldap' in val:

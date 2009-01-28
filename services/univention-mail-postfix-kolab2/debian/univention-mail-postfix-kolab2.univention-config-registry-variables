@@ -130,6 +130,12 @@ Description[en]=List of enabled sources for canonical recipient maps (ldap, file
 Type=str
 Categories=Mail
 
+[mail/maps/canonical/recipient/classes]
+Description[de]=Liste von Adresstypen, auf die das recipient_canonical_maps Addressabbildung angewendet wird (durch Leerzeichen getrennt)
+Description[en]=Address types that are subject to recipient_canonical_maps address mappings (space delimited if more than one value is passed)
+Type=str
+Categories=Mail
+
 [mail/maps/transport/.*]
 Description[de]=Transport-Map-Eintrag
 Description[en]=Entry for transport map

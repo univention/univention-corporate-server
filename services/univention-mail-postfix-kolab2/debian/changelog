@@ -1,3 +1,14 @@
+univention-mail-postfix-kolab2 (1.0.6-4) unstable; urgency=low
+
+  * Add a new Univention Configuration Registry variable
+    mail/maps/canonical/recipient/classes to specify which
+    classes of address information are subject to the
+    recipient_canonical_maps mappings. By default the mappings
+    are applied to both the envelope and the header recipient.
+    (Closes: Bug #13217) 
+  
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 28 Jan 2009 10:06:26 +0100
+
 univention-mail-postfix-kolab2 (1.0.6-3) unstable; urgency=low
 
   * version bump for customer prerelease build (for Ticket#: 2009011210000048)
