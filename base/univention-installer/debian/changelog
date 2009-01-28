@@ -1,3 +1,9 @@
+univention-installer (3.0.7-3) unstable; urgency=low
+
+  * load kernel raid modules if expert_partition is used (Bug: #13197)
+
+ -- Felix Botner <botner@univention.de>  Wed, 28 Jan 2009 14:38:17 +0100
+
 univention-installer (3.0.7-2) unstable; urgency=low
 
   * profile mode for expert_partition (Bug: #13202) 
