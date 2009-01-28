@@ -1,3 +1,11 @@
+univention-updater (4.0.8-1) unstable; urgency=low
+
+  * catch exception when creating mirror.list (Bug #11991)
+  * set repository server for the system to existing local repository
+    server or apt.univention.de (Bug #13159)
+
+ -- Andreas Büsching <buesching@univention.de>  Wed, 28 Jan 2009 10:01:00 +0100
+
 univention-updater (4.0.7-1) unstable; urgency=low
 
   * don't write tracebacks to the sources.list files. Bug #11991 and OX

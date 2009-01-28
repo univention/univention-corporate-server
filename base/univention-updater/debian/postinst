@@ -180,20 +180,20 @@ if [ -x /etc/init.d/univention-management-console-server ]; then
 	/etc/init.d/univention-management-console-server crestart
 fi
 
-# activate the online repository
+# activate the online repository, initialize mirror configuration
 univention-config-registry set	repository/online?yes \
-								repository/online/server?apt.univention.de \
 								repository/online/port?80 \
 								repository/online/maintained?yes \
-								repository/online/unmaintained?no
+								repository/online/unmaintained?no \
+								repository/mirror/threads?10 \
+								repository/mirror/basepath?/var/lib/univention-repository
 
-eval $(univention-config-registry shell repository/online/server repository/online/prefix hostname domainname)
-# initialize mirror configuration, but deactivate it
-univention-config-registry set "repository/mirror/server?$repository_online_server"
-univention-config-registry set "repository/online/server?$hostname.$domainname"
-univention-config-registry set "repository/mirror/prefix?$repository_online_prefix"
-univention-config-registry set "repository/mirror/threads?10"
-univention-config-registry set "repository/mirror/basepath?/var/lib/univention-repository"
-univention-config-registry set "repository/mirror?no"
+# set the repository server
+eval $(univention-config-registry shell hostname domainname)
+if host univention-repository.$domainname &> /dev/null; then
+	univention-config-registry set repository/online/server?"univention-repository.$domainname"
+else
+	univention-config-registry set repository/online/server?"apt.univention.de"
+fi
 
 exit 0

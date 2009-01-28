@@ -10,8 +10,18 @@ set nthreads     @%@repository/mirror/threads@%@
 @!@
 from univention.management.console.handlers.update.mirror import UniventionMirror
 
-mirror = UniventionMirror()
-print mirror.print_version_repositories( clean = True, dists = True )
-print mirror.print_security_repositories( clean = True )
-print mirror.print_component_repositories( clean = True )
+try:
+	mirror = UniventionMirror()
+	print mirror.print_version_repositories( clean = True, dists = True )
+	print mirror.print_security_repositories( clean = True )
+	print mirror.print_component_repositories( clean = True )
+except:
+	print '# An error occurred during the repository check. The error message:'
+	print '#   %s: %s' % sys.exc_info()[:2]
+	print '#'
+	print ''
+	print '# After fixing this issue, you should rewrite this file with the following command:'
+	print '#   univention-config-registry commit /etc/apt/mirror.list'
+	print '#'
+	print ''
 @!@
