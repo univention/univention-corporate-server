@@ -1,4 +1,4 @@
-univention-directory-manager (6.0.5-3) unstable; urgency=low
+univention-directory-manager (6.0.5-6) unstable; urgency=low
 
   * fixed problem with a not save search value in UDM. Bug #11463
 
