@@ -717,10 +717,12 @@ class modwizard(unimodule.unimodule):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "modwizard: Failed to parse directory/manager/web/modwizard/defaults/visible-results, maybe it is no integer?")
 			visible_default = 10
 		
-		visible=self.save.get('wizard_search_visible', visible_default)
+		visible = self.save.get('wizard_search_visible', visible_default)
 		if visible > 1000:
-			visible=1000
-		start=self.save.get('wizard_table_start', 0)
+			visible = 1000
+		if visible < 1:
+			visible = 1
+		start=self.save.get('wizard_table_start', 0) # is this needed anymore with dynamic_longtable?
 
 		search_domain_only=1
 		search_one_level=0

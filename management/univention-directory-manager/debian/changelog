@@ -1,3 +1,9 @@
+univention-directory-manager (6.0.5-4) unstable; urgency=low
+
+  * visible results per page in modbrowse and modwizard must be greater than 0
+
+ -- Ingo Steuwer <steuwer@univention.de>  Wed, 28 Jan 2009 08:24:20 +0100
+
 univention-directory-manager (6.0.5-3) unstable; urgency=low
 
   * modify layout of results in modwizard and modbrowse

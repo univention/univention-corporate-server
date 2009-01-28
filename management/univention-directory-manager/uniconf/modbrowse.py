@@ -329,11 +329,11 @@ class modbrowse(unimodule.unimodule):
 			univention.debug.debug(univention.debug.ADMIN, univention.debug.WARN, "modbrowse: Failed to parse directory/manager/web/modwizard/defaults/visible-results, maybe it is no integer?")
 			visible_default = 10
 		
-
-
-		visible=self.save.get('browse_search_visible', visible_default)
+		visible = self.save.get('browse_search_visible', visible_default)
 		if visible > 1000:
 			visible=1000
+		if visible < 1:
+			visible = 1
 		start=self.save.get('browse_table_start', 0) # is this needed anymore with dynamic_longtable?
 
 		search_type=self.save.get('browse_search_type')
