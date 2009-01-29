@@ -144,10 +144,10 @@ endef
 ifeq ($(ARCH),ia64)
 SRCS           := ipmi.c smbus.c
 else
-ifeq ($(SOURCE_VERSION),2.6.24)
-SRCS           := ipmi.c smbus.c
-else
+ifeq ($(SOURCE_VERSION),2.6.18)
 SRCS           := copa.c ipmi.c smbus.c
+else
+SRCS           := ipmi.c smbus.c
 endif
 endif
 OBJS           := $(SRCS:%.c=%.o)
