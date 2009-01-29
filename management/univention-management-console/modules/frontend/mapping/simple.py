@@ -62,15 +62,15 @@ mapper.add( umcd.ImageURL, icon_map )
 
 def link_map( storage, umcp_part ):
 	attributes = utils.attributes( umcp_part )
+	html =  ' <table class="button"><tr>\n'
 	if umcp_part.get_icon():
-		txt = ''
-		if umcp_part.show_icon_and_text():
-			txt = umcp_part.get_text()
-		html = ' <a href="%s" target="_blank"><img class="button_icon" src="%s" alt="%s">%s</a>' % \
-			   ( umcp_part.get_link(), umc_tools.image_get( umcp_part.get_icon(),
-															umc_tools.SIZE_MEDIUM ), umcp_part.get_text(), txt )
-	else:
-		html = ' <a href="%s" target="_blank">%s</a>' % ( umcp_part.get_link(), umcp_part )
+		html += '<td class="button_icon"><a href="%s" target="_blank" class="nounderline"><img class="button_icon" src="%s" alt="%s"></a></td>\n' % ( umcp_part.get_link(),
+																																				  umc_tools.image_get( umcp_part.get_icon(), umc_tools.SIZE_MEDIUM ),
+																																				  umcp_part.get_text() )
+	if not umcp_part.get_icon() or umcp_part.show_icon_and_text():
+		html += '<td class="button_link"><a href="%s" target="_blank" class="nounderline"><span class="content">%s</span></a></td>\n' % ( umcp_part.get_link(),
+																																	  umcp_part )
+	html += '</tr></table>\n'
 	text = htmltext( '', attributes, { 'htmltext' : [ html ] } )
 	storage[ umcp_part.id() ] = ( text, umcp_part )
 

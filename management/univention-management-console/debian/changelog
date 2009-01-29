@@ -1,3 +1,9 @@
+univention-management-console (1.0.4-1) unstable; urgency=low
+
+  * added "nounderline" class to umcd.Link (Bug: #13234)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 29 Jan 2009 12:29:00 +0100
+
 univention-management-console (1.0.3-5) unstable; urgency=low
 
   * based LazyTranslation on the implementation of UserString which
