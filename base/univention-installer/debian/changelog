@@ -1,3 +1,9 @@
+univention-installer (3.0.7-7) unstable; urgency=low
+
+  * change message in expert partition modul (Bug: #13183)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jan 2009 13:52:51 +0100
+
 univention-installer (3.0.7-6) unstable; urgency=low
 
   * changed layout of warning message in net.py (Bug: #12444)

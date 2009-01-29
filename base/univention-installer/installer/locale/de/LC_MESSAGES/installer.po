@@ -16,44 +16,36 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "This is intended for experts. If you are not"
-msgstr "Dies ist für Experten gedacht. Wenn Sie nicht mit"
+msgid "The Software Raid boot option was chosen and"
+msgstr "Es wurde die Software Raid Boot Option gewählt"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "familiar with hard disks and partitions, please"
-msgstr "dem Konzept von Festplattenpartitionen vertraut sind,"
+msgid "the Expert Partitioner started"
+msgstr "und der Experten Partitionierungsmodus gestart."
 
 #: installer/modules/12_expert_partition.py:47
-msgid "reboot and try the non-expert mode."
-msgstr "benutzen Sie bitte den normalen Installationsmodus."
+msgid "The hard disk has to be partitioned and formatted."
+msgstr "Die Festplatte muss nun partitioniert werden."
 
 #: installer/modules/12_expert_partition.py:47
-msgid "Now, you can partition and format your hard disk(s)."
-msgstr "Partitionieren und formatieren Sie nun Ihre"
+msgid "By pressing"
+msgstr "Durch das Drücken von"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "Press"
-msgstr "Festplatte(n). Drücken Sie"
-
-#: installer/modules/12_expert_partition.py:47
-msgid "to start an interactive shell. Here you can"
-msgstr "um eine interaktive Shell zu starten. Hier können Sie"
+msgid "an interactive shell will be started. Here you can"
+msgstr "wird eine interaktive Shell gestartet. Hier kann unter"
 
 #: installer/modules/12_expert_partition.py:47
 msgid "partition your hard disk using the standard"
-msgstr "unter Verwendung der Standardprogramme wie fdisk,"
+msgstr "Verwendung von Standardprogrammen wie cfdisk, mkfs,"
 
 #: installer/modules/12_expert_partition.py:47
 msgid "tools like fdisk, mkfs, mdadm or lvcreate."
-msgstr "mkfs, mdadm usw. Ihre Festplatten partitionieren."
+msgstr "mdadm usw. die Festplatte eingerichtet werden."
 
 #: installer/modules/12_expert_partition.py:47
-msgid "If you are finished, press"
-msgstr "Wenn Sie fertig sind, drücken Sie bitte"
-
-#: installer/modules/12_expert_partition.py:47
-msgid "to get back to the installation screen."
-msgstr "um die Installation fortzusetzen."
+msgid "the installation will be continued."
+msgstr "kann die Installation fortgesetzt werden."
 
 #: installer/modules/12_expert_partition.py:87
 msgid "Expert Partitioner"

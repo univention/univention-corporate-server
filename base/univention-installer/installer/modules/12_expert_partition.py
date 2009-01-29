@@ -48,24 +48,23 @@ class object(content):
 
 	def layout(self):
 
-		msg = [_('This is intended for experts. If you are not'),
-			_('familiar with hard disks and partitions, please'),
-			_('reboot and try the non-expert mode.'),
+		msg = [_('The Software Raid boot option was chosen and'),
+			_('the Expert Partitioner started'),
+			_('The hard disk has to be partitioned and formatted.'),
 			' ',
-			_('Now, you can partition and format your hard disk(s).'),
-			_('Press'),
+			_('By pressing'),
 			' ',
-			_('[ALT]+[F2]'),
+			_('    [ALT]+[F2]'),
 			' ',
-			_('to start an interactive shell. Here you can'),
+			_('an interactive shell will be started. Here you can'),
 			_('partition your hard disk using the standard'),
 			_('tools like fdisk, mkfs, mdadm or lvcreate.'),
 			' ',
-			_('If you are finished, press'),
+			_('By pressing'),
 			' ',
-			_('[ALT]+[F1]'),
+			_('    [ALT]+[F1]'),
 			' ',
-			_('to get back to the installation screen.'),
+			_('the installation will be continued.'),
 			]
 
 		j = 0
