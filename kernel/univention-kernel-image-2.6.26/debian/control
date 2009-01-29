@@ -1,11 +1,11 @@
-Source: univention-kernel-image-2.6.24
+Source: univention-kernel-image-2.6.26
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Build-Depends: debhelper (>> 3.0.0)
 Standards-Version: 3.5.2
 
-Package: univention-kernel-image-2.6.24
+Package: univention-kernel-image-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
@@ -18,7 +18,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-2.6.24-64gb
+Package: univention-kernel-image-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
@@ -31,7 +31,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-2.6.24
+Package: univention-kernel-headers-2.6.26
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
@@ -42,7 +42,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-2.6.24-64gb
+Package: univention-kernel-headers-2.6.26-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
@@ -53,7 +53,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-2.6.24
+Package: univention-kernel-source-2.6.26
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
@@ -64,7 +64,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-2.6.24-64gb
+Package: univention-kernel-source-2.6.26-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
@@ -75,7 +75,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-avm-capi-fcpci-modules-2.6.24
+Package: univention-avm-capi-fcpci-modules-2.6.26
 Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -86,7 +86,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-2.6.24
+Package: univention-cpqhealth-modules-2.6.26
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -97,7 +97,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-2.6.24-64gb
+Package: univention-cpqhealth-modules-2.6.26-64gb
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -108,7 +108,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-2.6.24
+Package: univention-serverview-modules-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -119,7 +119,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-2.6.24-64gb
+Package: univention-serverview-modules-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -130,7 +130,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-2.6.24
+Package: univention-fsc-srv-modules-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -141,7 +141,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-2.6.24-64gb
+Package: univention-fsc-srv-modules-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -152,10 +152,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-2.6.24
+Package: univention-vmware4-modules-2.6.26
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
-Conflicts: univention-vmware5-modules-2.6.24
+Conflicts: univention-vmware5-modules-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -164,10 +164,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-2.6.24-64gb
+Package: univention-vmware4-modules-2.6.26-64gb
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
-Conflicts: univention-vmware5-modules-2.6.24-64gb
+Conflicts: univention-vmware5-modules-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -176,10 +176,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-2.6.24
+Package: univention-vmware5-modules-2.6.26
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
-Conflicts: univention-vmware4-modules-2.6.24
+Conflicts: univention-vmware4-modules-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -188,10 +188,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-2.6.24-64gb
+Package: univention-vmware5-modules-2.6.26-64gb
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
-Conflicts: univention-vmware4-modules-2.6.24-64gb
+Conflicts: univention-vmware4-modules-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -200,7 +200,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-2.6.24
+Package: univention-vmware-gsx3-modules-2.6.26
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -211,7 +211,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-2.6.24-64gb
+Package: univention-vmware-gsx3-modules-2.6.26-64gb
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -222,7 +222,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-2.6.24
+Package: univention-vmware-server-modules-2.6.26
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -233,7 +233,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-2.6.24-64gb
+Package: univention-vmware-server-modules-2.6.26-64gb
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -244,7 +244,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-2.6.24
+Package: univention-vmware-player-modules-2.6.26
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -255,7 +255,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-2.6.24-64gb
+Package: univention-vmware-player-modules-2.6.26-64gb
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -266,7 +266,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-mobileclient-2.6.24
+Package: univention-kernel-image-mobileclient-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
@@ -278,7 +278,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-mobileclient-2.6.24-64gb
+Package: univention-kernel-image-mobileclient-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
@@ -290,7 +290,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-mobileclient-2.6.24
+Package: univention-kernel-headers-mobileclient-2.6.26
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
@@ -301,7 +301,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-mobileclient-2.6.24-64gb
+Package: univention-kernel-headers-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
@@ -312,7 +312,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-mobileclient-2.6.24
+Package: univention-kernel-source-mobileclient-2.6.26
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
@@ -323,7 +323,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-mobileclient-2.6.24-64gb
+Package: univention-kernel-source-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
@@ -334,7 +334,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-avm-capi-fcpci-modules-mobileclient-2.6.24
+Package: univention-avm-capi-fcpci-modules-mobileclient-2.6.26
 Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -345,7 +345,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-mobileclient-2.6.24
+Package: univention-cpqhealth-modules-mobileclient-2.6.26
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -356,7 +356,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-mobileclient-2.6.24-64gb
+Package: univention-cpqhealth-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -367,7 +367,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-mobileclient-2.6.24
+Package: univention-serverview-modules-mobileclient-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -378,7 +378,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-mobileclient-2.6.24-64gb
+Package: univention-serverview-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -389,7 +389,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-mobileclient-2.6.24
+Package: univention-fsc-srv-modules-mobileclient-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -400,7 +400,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-mobileclient-2.6.24-64gb
+Package: univention-fsc-srv-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -411,10 +411,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-mobileclient-2.6.24
+Package: univention-vmware4-modules-mobileclient-2.6.26
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
-Conflicts: univention-vmware5-modules-mobileclient-2.6.24
+Conflicts: univention-vmware5-modules-mobileclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -423,10 +423,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-mobileclient-2.6.24-64gb
+Package: univention-vmware4-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
-Conflicts: univention-vmware5-modules-mobileclient-2.6.24-64gb
+Conflicts: univention-vmware5-modules-mobileclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -435,10 +435,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-mobileclient-2.6.24
+Package: univention-vmware5-modules-mobileclient-2.6.26
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
-Conflicts: univention-vmware4-modules-mobileclient-2.6.24
+Conflicts: univention-vmware4-modules-mobileclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -447,10 +447,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-mobileclient-2.6.24-64gb
+Package: univention-vmware5-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
-Conflicts: univention-vmware4-modules-mobileclient-2.6.24-64gb
+Conflicts: univention-vmware4-modules-mobileclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -459,7 +459,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-mobileclient-2.6.24
+Package: univention-vmware-gsx3-modules-mobileclient-2.6.26
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -470,7 +470,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-mobileclient-2.6.24-64gb
+Package: univention-vmware-gsx3-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -481,7 +481,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-mobileclient-2.6.24
+Package: univention-vmware-server-modules-mobileclient-2.6.26
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -492,7 +492,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-mobileclient-2.6.24-64gb
+Package: univention-vmware-server-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -503,7 +503,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-mobileclient-2.6.24
+Package: univention-vmware-player-modules-mobileclient-2.6.26
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -514,7 +514,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-mobileclient-2.6.24-64gb
+Package: univention-vmware-player-modules-mobileclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -525,7 +525,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-managedclient-2.6.24
+Package: univention-kernel-image-managedclient-2.6.26
 Architecture: any
 Pre-Depends: univention-initrd, module-init-tools
 Depends: linux-image-${F:KernelVersion}, xfsprogs
@@ -537,7 +537,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-image-managedclient-2.6.24-64gb
+Package: univention-kernel-image-managedclient-2.6.26-64gb
 Architecture: any
 Pre-Depends: univention-initrd
 Depends: linux-image-${F:KernelVersion64}, xfsprogs
@@ -549,7 +549,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-managedclient-2.6.24
+Package: univention-kernel-headers-managedclient-2.6.26
 Architecture: any
 Depends: linux-headers-${F:KernelVersion}
 Description: UCS - Linux kernel headers
@@ -560,7 +560,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-headers-managedclient-2.6.24-64gb
+Package: univention-kernel-headers-managedclient-2.6.26-64gb
 Architecture: any
 Depends: linux-headers-${F:KernelVersion64}
 Description: UCS - Linux kernel headers
@@ -571,7 +571,7 @@ Description: UCS - Linux kernel headers
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-managedclient-2.6.24
+Package: univention-kernel-source-managedclient-2.6.26
 Architecture: any
 Depends: linux-source-${F:KernelVersion}
 Description: UCS - Linux kernel source
@@ -582,7 +582,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-kernel-source-managedclient-2.6.24-64gb
+Package: univention-kernel-source-managedclient-2.6.26-64gb
 Architecture: any
 Depends: linux-source-${F:KernelVersion64}
 Description: UCS - Linux kernel source
@@ -593,7 +593,7 @@ Description: UCS - Linux kernel source
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-avm-capi-fcpci-modules-managedclient-2.6.24
+Package: univention-avm-capi-fcpci-modules-managedclient-2.6.26
 Architecture: any
 Depends: avm-capi-fcpci-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -604,7 +604,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-managedclient-2.6.24
+Package: univention-cpqhealth-modules-managedclient-2.6.26
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -615,7 +615,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-cpqhealth-modules-managedclient-2.6.24-64gb
+Package: univention-cpqhealth-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: cpqhealth-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -626,7 +626,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-managedclient-2.6.24
+Package: univention-serverview-modules-managedclient-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -637,7 +637,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-serverview-modules-managedclient-2.6.24-64gb
+Package: univention-serverview-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -648,7 +648,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-managedclient-2.6.24
+Package: univention-fsc-srv-modules-managedclient-2.6.26
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -659,7 +659,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-fsc-srv-modules-managedclient-2.6.24-64gb
+Package: univention-fsc-srv-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: srvmagt-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -670,10 +670,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-managedclient-2.6.24
+Package: univention-vmware4-modules-managedclient-2.6.26
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion}
-Conflicts: univention-vmware5-modules-managedclient-2.6.24
+Conflicts: univention-vmware5-modules-managedclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -682,10 +682,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware4-modules-managedclient-2.6.24-64gb
+Package: univention-vmware4-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: vmware4-modules-${F:KernelVersion64}
-Conflicts: univention-vmware5-modules-managedclient-2.6.24-64gb
+Conflicts: univention-vmware5-modules-managedclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware4 modules.
  .
@@ -694,10 +694,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-managedclient-2.6.24
+Package: univention-vmware5-modules-managedclient-2.6.26
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion}
-Conflicts: univention-vmware4-modules-managedclient-2.6.24
+Conflicts: univention-vmware4-modules-managedclient-2.6.26
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -706,10 +706,10 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware5-modules-managedclient-2.6.24-64gb
+Package: univention-vmware5-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: vmware5-modules-${F:KernelVersion64}
-Conflicts: univention-vmware4-modules-managedclient-2.6.24-64gb
+Conflicts: univention-vmware4-modules-managedclient-2.6.26-64gb
 Description: UCS - Linux kernel
  This meta-package installs the current vmware5 modules.
  .
@@ -718,7 +718,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-managedclient-2.6.24
+Package: univention-vmware-gsx3-modules-managedclient-2.6.26
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -729,7 +729,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-gsx3-modules-managedclient-2.6.24-64gb
+Package: univention-vmware-gsx3-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-gsx3-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -740,7 +740,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-managedclient-2.6.24
+Package: univention-vmware-server-modules-managedclient-2.6.26
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -751,7 +751,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-server-modules-managedclient-2.6.24-64gb
+Package: univention-vmware-server-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-server-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -762,7 +762,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-managedclient-2.6.24
+Package: univention-vmware-player-modules-managedclient-2.6.26
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion}
 Description: UCS - Linux kernel
@@ -773,7 +773,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-vmware-player-modules-managedclient-2.6.24-64gb
+Package: univention-vmware-player-modules-managedclient-2.6.26-64gb
 Architecture: any
 Depends: vmware-kernel-modules-${F:KernelVersion64}
 Description: UCS - Linux kernel
@@ -784,7 +784,7 @@ Description: UCS - Linux kernel
  corporate environments. For more information about UCS,
  refer to: http://www.univention.de/
 
-Package: univention-drbd-modules-2.6.24
+Package: univention-drbd-modules-2.6.26
 Architecture: any
 Section: admin
 Priority: optional
@@ -793,7 +793,7 @@ Description: Meta package for additional kernel module drbd
  This package provides a meta package to install the kernel
  module drbd for a specific version of the Linux kernel.
 
-Package: univention-drbd-modules-2.6.24-64gb
+Package: univention-drbd-modules-2.6.26-64gb
 Architecture: any
 Section: admin
 Priority: optional
