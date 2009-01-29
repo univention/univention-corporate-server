@@ -1,6 +1,12 @@
+univention-debmirror (2.0.4-1) unstable; urgency=low
+
+  * set local/repository to yes (Bug #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 29 Jan 2009 13:59:06 +0100
+
 univention-debmirror (2.0.3-1) unstable; urgency=low
 
-  * set mirror server to en existing local repository server or
+  * set mirror server to an existing local repository server or
     apt.univention.de and set the repository server to the local system
     (Bug #13159)
 

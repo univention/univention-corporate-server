@@ -51,5 +51,8 @@ else
 	univention-config-registry set repository/mirror/server="apt.univention.de"
 fi
 
+# activate local repository
+univention-config-registry set local/repository?yes
+
 a2ensite univention-repository
 /etc/init.d/apache2 reload || true
