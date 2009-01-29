@@ -51,8 +51,8 @@ DIR_WEB_AD = '/var/www/univention-ad-connector'
 _ = umc.Translation('univention.management.console.handlers.adconnector').translate
 
 icon = 'adconnector/module'
-short_description = _('AD Connector')
-long_description = _('Configure AD Connector')
+short_description = _('Active Directory Connector')
+long_description = _('Configure Active Directory Connector')
 categories = ['all', 'system']
 
 class UMC_AD_StaticSelection( umc.StaticSelection ):
@@ -75,8 +75,8 @@ command_description = {
 		caching = False
 	),
 	'adconnector/configure': umch.command(
-		short_description = _('Configure AD Connector'),
-		long_description = _('Configure AD Connector'),
+		short_description = _('Configure Active Directory Connector'),
+		long_description = _('Configure Active Directory Connector'),
 		method = 'configure',
 		values = {
 			'action': umc.String( 'action' ),
@@ -89,16 +89,16 @@ command_description = {
 													choices = ( ( 'win2000', _( 'Windows 2000' ) ), ( '', _( 'Windows 2003' ) ) ) ),
 			'ad_retry_rejected': umc.String( _('Retry interval for rejected objects'), regex = '^[0-9]+$' ),
 			# Workaround for Bug #13139: '_0_' up to '_4_' is a workaround
-			'debug_level': UMC_AD_StaticSelection( title=_('Debug level of AD Connector'),
+			'debug_level': UMC_AD_StaticSelection( title=_('Debug level of Active Directory Connector'),
 													choices = ( ( '_0_', _( '0' ) ), ( '_1_', _( '1' ) ), ( '_2_', _( '2' ) ), ( '_3_', _( '3' ) ), ( '_4_', _( '4' ) ) ) ),
 			# Workaround for Bug #13139: '_0_' and '_1_' is a workaround
 			'debug_function': UMC_AD_StaticSelection( title=_('Add debug output for functions'),
 													choices = ( ( '_0_', _( 'no' ) ), ( '_1_', _( 'yes' ) ) ) ),
-			'ad_mapping_sync_mode': UMC_AD_StaticSelection( title=_('AD Connector sync mode'),
+			'ad_mapping_sync_mode': UMC_AD_StaticSelection( title=_('Active Directory Connector sync mode'),
 															choices = (	( 'read', _( 'read (AD --> UCS)' ) ),
 																		( 'write', _( 'write (UCS --> AD)' ) ),
 																		( 'sync', _( 'sync (AD <--> UCS)' ) ) ) ),
-			'ad_mapping_group_language': umc.LanguageSelection( _('AD Connector group mapping language') ),
+			'ad_mapping_group_language': umc.LanguageSelection( _('Active Directory Connector group mapping language') ),
 			},
 		caching = False
 	),
@@ -114,8 +114,8 @@ command_description = {
 	),
 
 	'adconnector/setstate': umch.command(
-		short_description = _('Start/Stop AD Connector'),
-		long_description = _('Start/Stop AD Connector'),
+		short_description = _('Start/Stop Active Directory Connector'),
+		long_description = _('Start/Stop Active Directory Connector'),
 		method = 'setstate',
 		values = {
 			'action': umc.String( 'action' ),
@@ -214,11 +214,11 @@ class handler(umch.simpleHandler):
 			ucrkey = 'connector/ad/windows_version'
 			val = obj.options.get( umckey )
 			if obj.options.get( val ):
-					debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
-					univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
+				debugmsg( ud.ADMIN, ud.INFO, 'setting %s=%s' % (ucrkey, val) )
+				univention.config_registry.handler_set( [ u'%s=%s' % (ucrkey, val) ] )
 			else:
-					debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
-					univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
+				debugmsg( ud.ADMIN, ud.INFO, 'unsetting %s' % (ucrkey) )
+				univention.config_registry.handler_unset( [ u'%s' % ucrkey ] )
 
 			if obj.options.get('ad_ldap_bindpw'):
 				fn = self.configRegistry.get('connector/ad/ldap/bindpwd', FN_BINDPWD)
@@ -233,7 +233,7 @@ class handler(umch.simpleHandler):
 					debugmsg( ud.ADMIN, ud.ERROR, 'saving bind password failed (filename=%(fn)s ; exception=%(exception)s)' % { 'fn': fn, 'exception': str(e.__class__)} )
 				univention.config_registry.handler_set( [ u'connector/ad/ldap/bindpw=%s' % FN_BINDPWD ] )
 
-			self.msg['hint'].append( _('AD connector settings have been saved.') )
+			self.msg['hint'].append( _('Active Directory Connector settings have been saved.') )
 
 		if obj.options.get('action','') == 'save':
 
@@ -368,11 +368,11 @@ class handler(umch.simpleHandler):
 
 		if self.status_running and action == 'start':
 
-			self.msg['hint'].append( _('Univention AD Connector is already running. Nothing to do.') )
+			self.msg['hint'].append( _('Active Directory Connector is already running. Nothing to do.') )
 
 		elif not self.status_running and action == 'stop':
 
-			self.msg['hint'].append( _('Univention AD Connector is already stopped. Nothing to do.') )
+			self.msg['hint'].append( _('Active Directory Connector is already stopped. Nothing to do.') )
 
 		elif action in ['start', 'stop']:
 
@@ -398,13 +398,13 @@ class handler(umch.simpleHandler):
 	def _state_changed( self, thread, result, obj ):
 		_d = ud.function('adconnector.handler._state_changed')
 		if result:
-			self.msg['error'].append( _('Switching running state of Univention AD Connector failed.') )
-			debugmsg( ud.ADMIN, ud.ERROR, 'Switching running state of Univention AD Connector failed. exitcode=%s' % result )
+			self.msg['error'].append( _('Switching running state of Active Directory Connector failed.') )
+			debugmsg( ud.ADMIN, ud.ERROR, 'Switching running state of Active Directory Connector failed. exitcode=%s' % result )
 		else:
 			if obj.options.get('action') == 'start':
-				self.msg['hint'].append( _('Univention AD Connector has been started.') )
+				self.msg['hint'].append( _('Active Directory Connector has been started.') )
 			else:
-				self.msg['hint'].append( _('Univention AD Connector has been stopped.') )
+				self.msg['hint'].append( _('Active Directory Connector has been stopped.') )
 		self.finished(obj.id(), None)
 
 
@@ -418,6 +418,11 @@ class handler(umch.simpleHandler):
 		if val:
 			return _('yes')
 		return _('no')
+
+	def bool2icon(self, val):
+		if val:
+			return 'adconnector/yes'
+		return 'adconnector/no'
 
 
 	def __get_request(self, cmd, title, opts = {}):
@@ -459,37 +464,27 @@ class handler(umch.simpleHandler):
 		#### AD Connector Status Frame
 		list_status = umcd.List()
 
-		list_status.add_row( [ umcd.Text( _('Configured:') ), umcd.Text( self.bool2yesno( self.status_configured ) ) ] )
-		list_status.add_row( [ umcd.Text( _('AD certificate installed:') ), umcd.Text( self.bool2yesno( self.status_certificate ) ) ] )
-		list_status.add_row( [ umcd.Text( _('Running:') ), umcd.Text( self.bool2yesno( self.status_running ) ) ] )
+		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_configured ),umct.SIZE_SMALL ), umcd.Text( _('The configuration process has been finished and all required settings\nfor Active Directory Connector are set.') ) ] )
+		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_certificate ), umct.SIZE_SMALL ), umcd.Text( _('The Active Directory certificate has been sucessfully installed.') ) ] )
+		list_status.add_row( [ umcd.Image( self.bool2icon( self.status_running ), umct.SIZE_SMALL ), umcd.Text( _('Running status of Active Directory Connector.') ) ] )
 
-		frame_status = umcd.Frame( [list_status], _('AD connector status'))
+		frame_status = umcd.Frame( [list_status], _('Active Directory Connector status'))
 
 
 		#### AD Connector Actions Frame
 		list_actions = umcd.List()
 
 
-		btn_configure = umcd.Button(_('Configure AD connector'), 'actions/configure',
-									actions = [ umcd.Action( self.__get_request( 'adconnector/configure', _('Configure AD Connector') ) ) ] )
+		btn_configure = umcd.Button(_('Configure Active Directory Connector'), 'actions/configure',
+									actions = [ umcd.Action( self.__get_request( 'adconnector/configure', _('Configure Active Directory Connector') ) ) ] )
 		list_actions.add_row( [ btn_configure ] )
 
 
-		img = umcd.Link( description = _('IMG'),                                       link='/univention-ad-connector/', icon='actions/download' )
-		btn = umcd.Link( description = _('Download .msi package and UCS certificate'), link='/univention-ad-connector/' )
-		list_actions.add_row( [ (img,btn) ] )
-
-
-		btn_upload_cert = umcd.Button(_('Upload AD certificate'), 'actions/upload',
-									 actions = [ umcd.Action( self.__get_request( 'adconnector/uploadcert', _('Upload AD Certificate') ) ) ] )
-		list_actions.add_row( [ btn_upload_cert ] )
-
-
 		if self.status_running:
-			title = _('Stop Univention AD Connector')
+			title = _('Stop Active Directory Connector')
 			opts = { 'action': 'stop' }
 		else:
-			title = _('Start Univention AD Connector')
+			title = _('Start Active Directory Connector')
 			opts = { 'action': 'start' }
 
 		btn_startstop = umcd.Button( title, 'actions/setstate',
@@ -594,18 +589,34 @@ class handler(umch.simpleHandler):
 
 		btn_close = umcd.CloseButton()
 
+		# upload/download certificate buttons
+		btn_download_cert = umcd.Link( description = _('Download ucs-ad-connector.msi and UCS certificate'), link='/univention-ad-connector/', icon='actions/download', icon_and_text=True )
+
+		btn_upload_cert = umcd.Button(_('Upload Active Directory certificate'), 'actions/upload',
+										actions = [ umcd.Action( self.__get_request( 'adconnector/uploadcert', _('Upload Active Directory Certificate') ) ) ] )
+
+		# text hint
+		txt_hint = umcd.Text( _('Hint: all settings become operative after (re)start of Active Directory Connector.'), attributes = { 'colspan' : '2' } )
+
 		# create layout
 		list_items = umcd.List()
 
-		list_items.add_row( [ inp_ldap_host, inp_ldap_base ] )
-		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpwd ] )
-		list_items.add_row( [ inp_windows_version, inp_sync_mode ] )
-		list_items.add_row( [ inp_mapping_language, inp_retry_rejected ] )
-		list_items.add_row( [ inp_debug_level, inp_poll_sleep ] )
-		list_items.add_row( [ inp_debug_function ] )
+		list_items.add_row( [ inp_ldap_host ] )
 		list_items.add_row( [ btn_guess ] )
+		list_items.add_row( [ inp_ldap_base, inp_windows_version ] )
+		list_items.add_row( [ inp_ldap_binddn, inp_ldap_bindpwd ] )
+		list_items.add_row( [ inp_mapping_language, inp_sync_mode ] )
+		list_items.add_row( [ inp_poll_sleep, inp_retry_rejected ] )
+		list_items.add_row( [ inp_debug_level, inp_debug_function ] )
+		list_items.add_row( [ txt_hint ] )
 		list_items.add_row( [ btn_set, btn_close ] )
-		frame = umcd.Frame( [list_items], _('AD Connector Configuration'))
+
+		frame = umcd.Frame( [list_items], _('Active Directory Connector Configuration'))
+
+		list_actions = umcd.List()
+		list_actions.add_row( [ btn_upload_cert, _('After the above configuration values have been set, the Active Directory certificate has to be uploaded to Active Directory Connector.') ] )
+		list_actions.add_row( [ btn_download_cert,_('Finally on the Active Directory Server some files have to be installed for correct function of Active Directory Connector. Press button to get these files.') ] )
+		frame2 = umcd.Frame( [list_actions], _('Additional Configuration Steps'))
 
 		res.dialog = []
 		if self.msg['error'] or self.msg['warn'] or self.msg['hint']:
@@ -615,9 +626,10 @@ class handler(umch.simpleHandler):
 					img = umcd.Image( 'adconnector/%s' % key )
 					txt = umcd.Text( msg )
 					lst.add_row( [ ( img, txt ) ] )
-			res.dialog.append( umcd.Frame( [lst], _('Messages') ) )
+			res.dialog.append( umcd.Frame( [lst], _('Notice') ) )
 
 		res.dialog.append(frame)
+		res.dialog.append(frame2)
 
 		self.revamped(obj.id(), res)
 
@@ -655,7 +667,7 @@ class handler(umch.simpleHandler):
 					img = umcd.Image( 'adconnector/%s' % key )
 					txt = umcd.Text( msg )
 					lst.add_row( [ ( img, txt ) ] )
-			res.dialog.append( umcd.Frame( [lst], _('Messages') ) )
+			res.dialog.append( umcd.Frame( [lst], _('Notice') ) )
 
 		res.dialog.append(frame)
 

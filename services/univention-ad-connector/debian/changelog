@@ -1,3 +1,9 @@
+univention-ad-connector (2.0.5-1) unstable; urgency=low
+
+  * fixed layout of UMC module (Bug #8736)
+
+ -- Sönke Schwardt <schwardt@univention.de>  Thu, 29 Jan 2009 12:30:43 +0100
+
 univention-ad-connector (2.0.4-4) unstable; urgency=low
 
   * fixed translation bug for StaticSelection widgets (Bug #8736)

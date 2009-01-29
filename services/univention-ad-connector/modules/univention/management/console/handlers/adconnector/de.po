@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-01-21 17:27+0100\n"
-"PO-Revision-Date: 2009-01-21 17:43+0100\n"
+"POT-Creation-Date: 2009-01-29 10:42+0100\n"
+"PO-Revision-Date: 2009-01-29 10:44+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,20 +16,17 @@ msgstr ""
 "Content-Transfer-Encoding: unicode\n"
 
 #: __init__.py:54
-msgid "AD Connector"
-msgstr "AD Connector"
+msgid "Active Directory Connector"
+msgstr "Active Directory Connector"
 
-#: __init__.py:55 __init__.py:78 __init__.py:79 __init__.py:489
-msgid "Configure AD Connector"
-msgstr "AD Connector einrichten"
+#: __init__.py:55 __init__.py:78 __init__.py:79 __init__.py:478
+#: __init__.py:479
+msgid "Configure Active Directory Connector"
+msgstr "Active Directory Connector einrichten"
 
 #: __init__.py:69 __init__.py:70
 msgid "Overview"
 msgstr "Übersicht"
-
-#: __init__.py:82
-msgid "action"
-msgstr ""
 
 #: __init__.py:83
 msgid "Hostname of Active Directory server"
@@ -68,8 +65,8 @@ msgid "Retry interval for rejected objects"
 msgstr "Wiederholungsintervall für abgelehnte Objekte"
 
 #: __init__.py:92
-msgid "Debug level of AD Connector"
-msgstr "Debug-Level des AD Connectors"
+msgid "Debug level of Active Directory Connector"
+msgstr "Debug-Level des Active Directory Connectors"
 
 #: __init__.py:93
 msgid "0"
@@ -95,17 +92,17 @@ msgstr "4"
 msgid "Add debug output for functions"
 msgstr "Debug-Ausgaben für Funktionen ausgeben"
 
-#: __init__.py:96 __init__.py:435
+#: __init__.py:96 __init__.py:420
 msgid "no"
 msgstr "nein"
 
-#: __init__.py:96 __init__.py:434
+#: __init__.py:96 __init__.py:419
 msgid "yes"
 msgstr "ja"
 
 #: __init__.py:97
-msgid "AD Connector sync mode"
-msgstr "Synchronisationsmodus des AD Connectors"
+msgid "Active Directory Connector sync mode"
+msgstr "Synchronisationsmodus des Active Directory Connectors"
 
 #: __init__.py:98
 msgid "read (AD --> UCS)"
@@ -120,10 +117,10 @@ msgid "sync (AD <--> UCS)"
 msgstr "sync (AD <--> UCS)"
 
 #: __init__.py:101
-msgid "AD Connector group mapping language"
-msgstr "Verwendete Sprache für Gruppen-Mapping"
+msgid "Active Directory Connector group mapping language"
+msgstr "Verwendete Sprache für das Gruppen-Mapping"
 
-#: __init__.py:107 __init__.py:108 __init__.py:670
+#: __init__.py:107 __init__.py:108 __init__.py:596 __init__.py:659
 msgid "Upload Active Directory Certificate"
 msgstr "Active Directory-Zertifikat hochladen"
 
@@ -132,154 +129,177 @@ msgid "Please upload Active Directory certificate"
 msgstr "Bitte das Active Directory-Zertifikat hochladen."
 
 #: __init__.py:117 __init__.py:118
-msgid "Start/Stop AD Connector"
-msgstr "AD Connector starten/stoppen"
+msgid "Start/Stop Active Directory Connector"
+msgstr "Active Directory Connector starten/stoppen"
 
-#: __init__.py:192
+#: __init__.py:190
 #, python-format
 msgid ""
 "An error occured while saving .htaccess (filename=%(fn)s ; exception=%"
 "(exception)s)"
-msgstr "Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename=%(fn)s ; exception=%(exception)s)"
+msgstr ""
+"Ein Fehler ist beim Speicher der Datei .htaccess aufgetreten (filename=%(fn)"
+"s ; exception=%(exception)s)"
 
-#: __init__.py:238
+#: __init__.py:232
 #, python-format
 msgid "saving bind password failed (filename=%(fn)s ; exception=%(exception)s)"
-msgstr "Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; exception=%(exception)s)"
+msgstr ""
+"Speichern des Replikationspasswortes fehlgeschlagen (filename=%(fn)s ; "
+"exception=%(exception)s)"
 
-#: __init__.py:242
-msgid "AD connector settings have been saved."
-msgstr "AD Connector-Einstellungen wurden gespeichert."
+#: __init__.py:236
+msgid "Active Directory Connector settings have been saved."
+msgstr "Active Directory Connector-Einstellungen wurden gespeichert."
 
-#: __init__.py:291
+#: __init__.py:279
 #, python-format
 msgid "copy of %s/%s to %s/%s failed (exception=%s)"
 msgstr "Das Kopieren von %s/%s nach %s/%s ist fehlgeschlagen (exception=%s)"
 
-#: __init__.py:295
+#: __init__.py:283
 #, python-format
 msgid "creation of certificate failed (%s)"
 msgstr "Erstellung eines neuen Zertifikats fehlgeschlagen (%s)"
 
-#: __init__.py:326
+#: __init__.py:311
 msgid ""
 "Could not determine baseDN of given ldap server. Maybe FQDN is wrong or "
 "unresolvable!"
-msgstr "Konnte BasisDN des angegebenen Servers nicht ermitteln. Angegebener FQDN ist ggf. falsch oder nicht auflösbar!"
+msgstr ""
+"Konnte BasisDN des angegebenen Servers nicht ermitteln. Angegebener FQDN ist "
+"ggf. falsch oder nicht auflösbar!"
 
-#: __init__.py:362
+#: __init__.py:347
 msgid "Certificate has been uploaded successfully."
 msgstr "Zertifikat wurde erfolgreich installiert."
 
-#: __init__.py:365
+#: __init__.py:350
 msgid "Certificate upload or conversion failed."
 msgstr "Zertifikatsinstallation oder -konvertierung fehlgeschlagen."
 
-#: __init__.py:386
-msgid "Univention AD Connector is already running. Nothing to do."
-msgstr "Univention AD Connector ist bereits aktiv. Keine Aktion notwendig."
+#: __init__.py:371
+msgid "Active Directory Connector is already running. Nothing to do."
+msgstr "Der Active Directory Connector ist bereits aktiv. Keine Aktion notwendig."
 
-#: __init__.py:390
-msgid "Univention AD Connector is already stopped. Nothing to do."
-msgstr "Univention AD Connector ist bereits gestoppt. Keine Aktion notwendig."
+#: __init__.py:375
+msgid "Active Directory Connector is already stopped. Nothing to do."
+msgstr "Der Active Directory Connector ist bereits gestoppt. Keine Aktion notwendig."
 
-#: __init__.py:400
+#: __init__.py:385
 #, python-format
 msgid ""
 "Unknown command (\"%s\") Please report error to your local administrator"
-msgstr "Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator melden."
+msgstr ""
+"Unbekanntes Kommando (\"%s\"). Bitte den Fehler beim lokalen Administrator "
+"melden."
 
-#: __init__.py:416
-msgid "Switching running state of Univention AD Connector failed."
-msgstr "Starten/Stoppen des AD Connectors ist fehlgeschlagen."
+#: __init__.py:401
+msgid "Switching running state of Active Directory Connector failed."
+msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
-#: __init__.py:420
-msgid "Univention AD Connector has been started."
-msgstr "Univention AD Connector wurde gestartet."
+#: __init__.py:405
+msgid "Active Directory Connector has been started."
+msgstr "Der Active Directory Connector wurde gestartet."
 
-#: __init__.py:422
-msgid "Univention AD Connector has been stopped."
-msgstr "Univention AD Connector wurde beendet."
+#: __init__.py:407
+msgid "Active Directory Connector has been stopped."
+msgstr "Der Active Directory Connector wurde beendet."
 
-#: __init__.py:477
-msgid "Configured:"
-msgstr "Konfiguration vollständig:"
+#: __init__.py:467
+msgid ""
+"The configuration process has been finished and all required settings\n"
+"for Active Directory Connector are set."
+msgstr "Der Konfigurationsvorgang ist beendet und alle vom Active Directory Connector benötigten Einstellungen sind gesetzt."
 
-#: __init__.py:478
-msgid "AD certificate installed:"
-msgstr "AD Zertifikat installiert:"
+#: __init__.py:468
+msgid "The Active Directory certificate has been sucessfully installed."
+msgstr "Das Active-Directory-Zertifikat wurde erfolgreich installiert."
 
-#: __init__.py:479
-msgid "Running:"
-msgstr "Gestartet:"
+#: __init__.py:469
+msgid "Running status of Active Directory Connector."
+msgstr "Starten/Stoppen des Active Directory Connectors ist fehlgeschlagen."
 
-#: __init__.py:481
-msgid "AD connector status"
-msgstr "AD Connector-Status"
+#: __init__.py:471
+msgid "Active Directory Connector status"
+msgstr "Active Directory Connector-Status"
 
-#: __init__.py:488
-msgid "Configure AD connector"
-msgstr "AD Connector einrichten"
+#: __init__.py:484
+msgid "Stop Active Directory Connector"
+msgstr "Active Directory Connector beenden"
 
-#: __init__.py:493
-msgid "IMG"
-msgstr "IMG"
+#: __init__.py:487
+msgid "Start Active Directory Connector"
+msgstr "Active Directory Connector starten"
 
-#: __init__.py:494
-msgid "Download .msi package and UCS certificate"
-msgstr "Download des .msi-Pakets und UCS-Zertifikats"
-
-#: __init__.py:498
-msgid "Upload AD certificate"
-msgstr "AD-Zertifikat installieren"
-
-#: __init__.py:499
-msgid "Upload AD Certificate"
-msgstr "AD-Zertifikat installieren"
-
-#: __init__.py:504
-msgid "Stop Univention AD Connector"
-msgstr "Univention AD Connector beenden"
-
-#: __init__.py:507
-msgid "Start Univention AD Connector"
-msgstr "Univention AD Connector starten"
-
-#: __init__.py:515
+#: __init__.py:495
 msgid "Actions"
 msgstr "Aktionen"
 
-#: __init__.py:546
+#: __init__.py:524
 msgid "Determine BaseDN"
 msgstr "BasisDN ermitteln"
 
-#: __init__.py:554
+#: __init__.py:530
 #, python-format
 msgid ""
 "BaseDN of %s has been determined successfully. Suggestion for replication "
 "user has been set."
-msgstr "BasisDN von %s wurde erfolgreich ermittelt. Vorschlag für Replikationsbenutzer wurde automatisch gesetzt."
+msgstr ""
+"BasisDN von %s wurde erfolgreich ermittelt. Vorschlag für "
+"Replikationsbenutzer wurde automatisch gesetzt."
 
-#: __init__.py:574
+#: __init__.py:548
 msgid "Password of replication user has not been set yet!"
 msgstr "Passwort des Replikationsbenutzers wurde noch nicht gesetzt!"
 
-#: __init__.py:615
+#: __init__.py:588
 msgid "Save Changes"
 msgstr "Änderungen speichern"
 
-#: __init__.py:630
-msgid "AD Connector Configuration"
-msgstr "AD Connector-Konfiguration"
+#: __init__.py:593
+msgid "Download ucs-ad-connector.msi and UCS certificate"
+msgstr "Download des .msi-Pakets und UCS-Zertifikats"
 
-#: __init__.py:640 __init__.py:680
-msgid "Messages"
-msgstr "Nachrichten"
+#: __init__.py:595
+msgid "Upload Active Directory certificate"
+msgstr "Active Directory-Zertifikat hochladen"
 
-#: __init__.py:661
+#: __init__.py:610
+msgid ""
+"Hint: all settings become operative after (re)start of Active Directory "
+"Connector."
+msgstr "Hinweis: alle Einstellungen werden erst nach dem (Neu)Start des Active Directory Connectors wirksam."
+
+#: __init__.py:613
+msgid "Active Directory Connector Configuration"
+msgstr "Active Directory Connector-Konfiguration"
+
+#: __init__.py:616
+msgid ""
+"After the above configuration values have been set, the Active Directory "
+"certificate has to be uploaded to Active Directory Connector."
+msgstr "Nachdem die oben gemachten Einstellungen speichert wurden, muss das Active-Directory-Zertifikat für den Active Directory Connector hochgeladen werden."
+
+#: __init__.py:617
+msgid ""
+"Finally on the Active Directory Server some files have to be installed for "
+"correct function of Active Directory Connector. Press button to get these "
+"files."
+msgstr "Abschließend müssen auf dem Active Directory Server einige Programme/Dateien für die korrekte Funktion installiert werden. Klicken Sie auf den Button, um diese Dateien herunterzuladen."
+
+#: __init__.py:618
+msgid "Additional Configuration Steps"
+msgstr "Active Directory Connector-Konfiguration"
+
+#: __init__.py:628 __init__.py:669
+msgid "Notice"
+msgstr "Hinweis"
+
+#: __init__.py:650
 msgid "Save"
 msgstr "Speichern"
 
-#: __init__.py:667
+#: __init__.py:656
 msgid "Please select the file containing the Active Directory certificate."
 msgstr "Bitte das Active Directory-Zertifikat auswählen und hochladen."
