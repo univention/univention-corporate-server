@@ -378,7 +378,7 @@ class UniventionUpdater:
 
 		return repos
 
-	def print_security_repositories( self, clean = False, start = None, end = None ):
+	def print_security_repositories( self, clean = False, start = None, end = None, all_security_updates = False ):
 		repos = ''
 		if not start:
 			start = UCS_Version( ( self.version_major, self.version_minor, 0 ) )
@@ -398,7 +398,8 @@ class UniventionUpdater:
 					continue
 				# I think we won't release more than 100 security releases for one UCS release ...
 				for p in range(1, 100):
-					if start.major == int( self.version_major ) and start.minor == int( self.version_minor )  and p > int( self.security_patchlevel ):
+					# the sources.list should just contain the already installed seucurity repos; the mirror list should contain all available security repos
+					if not all_security_updates and start.major == int( self.version_major ) and start.minor == int( self.version_minor )  and p > int( self.security_patchlevel ):
 						break
 
 					path='/%d.%d/%s/sec%s/' % ( start.major, start.minor, part, p )

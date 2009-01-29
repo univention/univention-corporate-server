@@ -165,12 +165,15 @@ def update_net( options ):
 
 	if options.sync:
 		mirror.run()
+	elif options.security_only:
+		ucr.handler_commit( [ '/etc/apt/mirror.list' ] )
+		mirror.run()
 	else:
 		if options.update_to:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % options.update_to ] )
 			mirror.run()
 			return
-		nextupddate = mirror.release_update_available()
+		nextupdate = mirror.release_update_available()
 		while nextupdate:
 			ucr.handler_set( [ 'repository/mirror/version/end=%s' % nextupdate ] )
 			mirror.run()
@@ -193,6 +196,9 @@ if __name__ == '__main__':
 	parser.add_option( '-s', '--sync-only', action = 'store_true',
 					   dest = 'sync', default = False,
 					   help = 'if given no new release repositories will be added, just the existing will be updated' )
+	parser.add_option( '-S', '--security-only', action = 'store_true',
+					   dest = 'security_only', default = False,
+					   help = 'if given only security repositories will be updated' )
 	parser.add_option( '-u', '--update-to', action = 'store',
 					   dest = 'update_to', default = '',
 					   help = 'if given the repository is updated to the specified version but not higher' )
@@ -208,6 +214,7 @@ if __name__ == '__main__':
 		parser.print_usage()
 		sys.exit( 1 )
 
+	command = arguments[ 0 ]
 	# redirect output to logfile
 	options.logfile = open('/var/log/univention/repository.log', 'a+')
 	options.stdout = sys.stdout
@@ -229,9 +236,9 @@ if __name__ == '__main__':
 			print >> options.teefile, 'Error: The local server is configured as mirror source server (repository/mirror/server)'
 			sys.exit(1)
 
-		update_net()
+		update_net( options )
 	elif command == 'cdrom':
-		update_cdrom()
+		update_cdrom( options )
 	else:
 		if command == 'local':
 			print >> options.teefile, 'Error: This mode is not supported anymore'

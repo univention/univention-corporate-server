@@ -9,11 +9,18 @@ set nthreads     @%@repository/mirror/threads@%@
 
 @!@
 from univention.management.console.handlers.update.mirror import UniventionMirror
+from univention.management.console.handlers.update.tools import UCS_Version
 
 try:
 	mirror = UniventionMirror()
-	print mirror.print_version_repositories( clean = True, dists = True )
-	print mirror.print_security_repositories( clean = True )
+	start = configRegistry.get( 'repository/mirror/version/start', None )
+	end = configRegistry.get( 'repository/mirror/version/end', None )
+	if start:
+		start = UCS_Version( start )
+	if end:
+		end = UCS_Version( end )
+	print mirror.print_version_repositories( clean = True, dists = True, start = start, end = end )
+	print mirror.print_security_repositories( clean = True, start = start, end = end, all_security_updates = True )
 	print mirror.print_component_repositories( clean = True )
 except:
 	print '# An error occurred during the repository check. The error message:'

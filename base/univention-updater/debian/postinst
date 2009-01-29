@@ -200,4 +200,15 @@ else
 	univention-config-registry set repository/online/server?"apt.univention.de"
 fi
 
+# define update commands
+univention-config-registry set \
+		update/commands/distupgrade="apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade" \
+		update/commands/update="apt-get update" \
+		update/commands/show="apt-get show" \
+		update/commands/install="apt-get -o DPkg::Options::=--force-confold -y --force-yes install" \
+		update/commands/remove="apt-get --yes remove" \
+		update/commands/configure="dpkg --configure -a" \
+		update/commands/distupgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade" \
+		update/commands/upgrade/simulate="apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade"
+
 exit 0

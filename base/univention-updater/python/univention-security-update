@@ -28,11 +28,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, string
-import shutil, sys
+import os
+import re
+import sys
 import getopt
-import univention_baseconfig
+import univention.config_registry as ucr
 import time
+import subprocess
 
 import univention.management.console.handlers.update.tools
 
@@ -59,16 +61,16 @@ def remove_temporary_sources_list ():
 		os.remove(filename)
 
 def usage(fd=sys.stdout):
-	print >>fd, 'univention-security-update: tool for include security updates into local repository'
-	print >>fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
-	print >>fd, ''
-	print >>fd, 'Syntax:'
-	print >>fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
-	print >>fd, '  univention-security-update [--help] '
-	print >>fd, ''
-	print >>fd, 'Known-Bugs:'
-	print >>fd, '  -None-'
-	print >>fd, ''
+	print >> fd, 'univention-security-update: tool for include security updates into local repository'
+	print >> fd, 'copyright (c) 2004-@%@copyright_lastyear@%@ Univention GmbH, Germany'
+	print >> fd, ''
+	print >> fd, 'Syntax:'
+	print >> fd, '  univention-security-update <net,local> [--file <update.tar.gz>] [--silent] [--noupdate]'
+	print >> fd, '  univention-security-update [--help] '
+	print >> fd, ''
+	print >> fd, 'Known-Bugs:'
+	print >> fd, '  -None-'
+	print >> fd, ''
 
 
 if __name__ == '__main__':
@@ -95,9 +97,9 @@ if __name__ == '__main__':
 		sys.exit(0)
 
 	if sys.argv[1] == 'net':
-		command='net'
+		command = 'net'
 	elif sys.argv[1] == 'local':
-		command='local'
+		command = 'local'
 	else:
 		usage(stdout)
 		fp_debug.close()
@@ -121,59 +123,101 @@ if __name__ == '__main__':
 				dprint("Parameter \"--file\" needs an argument.")
 				fp_debug.close()
 				sys.exit(1)
-
+			file = os.path.abspath( file )
 		if opt == '--silent':
 			extra_silent=True
 		if opt == '--noupdate':
 			call_upgrade=False
 
-	baseConfig=univention_baseconfig.baseConfig()
-	baseConfig.load()
+	configRegistry = ucr.ConfigRegistry()
+	configRegistry.load()
 
-	vv=baseConfig['version/version']
-	vp=baseConfig['version/patchlevel']
-	if baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'true' or baseConfig['local/repository'] == 'yes'):
-		# TODO: this should be implemented
-		dprint('Error: A local repository is not yet supported!', [sys.stdout,stdout])
-	else:
+	local_repository = False
+	# update local repository
+	if configRegistry.get( 'local/repository', 'no' ) in ( 'true', 'yes'):
+		local_repository = True
+		# ... via mirror synchronsiation
 		if command == 'net':
-			upgraded = False
-			while True:
-				nextupdate = updater.security_update_available()
+			dprint( 'Update local repository server ...', [ sys.stdout, stdout ] )
+			ret = subprocess.call( [ 'univention-repository-update', 'net', '--security-only' ] )
+			if ret:
+				dprint( 'Error: Update of local repository server failed', [ sys.stdout, stdout ] )
+				sys.exit( 1 )
+		# ... via tar archive
+		elif command == 'local':
+			regexp_archive_name = re.compile( '.*ucs-security-(?P<version>[0-9]*.[0-9]*)-(?P<patch>[0-9]*)[-.](?P<security>[0-9]*)-(?P<arch>[a-z0-9]*).tgz' )
+			archive = regexp_archive_name.match( file )
+			if not archive:
+				dprint( 'Error: The file %s does not look like a security update archive' % file, [ sys.stdout, stdout ] )
+				sys.exit( 1 )
+			infos = archive.groupdict()
+			repo_path = '%s/mirror/%s/maintained/' % ( configRegistry.get( 'repository/mirror/basepath', '/var/lib/univention-repository' ), infos[ 'version' ] )
+			if not os.path.exists( repo_path ):
+				dprint( 'Error: There is no repository for the UCS version %s. Therefore no security update can be added.' % infos[ 'version' ], [ sys.stdout, stdout ] )
+				sys.exit( 1 )
+			sec_path = '%s/sec%s/' % ( repo_path, infos[ 'security' ] )
+			if os.path.exists( sec_path ):
+				dprint( 'Error: The repository for the security update %s of UCS version %s already exists.' % ( infos[ 'security' ], infos[ 'version' ] ), [ sys.stdout, stdout ] )
+				sys.exit( 1 )
+			ret = subprocess.call( [ 'tar','xzf', file ], cwd = repo_path )
+			if ret:
+				dprint( 'Error: Failed to extract security update repository.' )
+				sys.exit( 1 )
 
-				# we don't want an endless loop
-				if nextupdate == upgraded:
-					break
+	# without a local repository the local mode is not supported
+	elif command == 'local':
+		dprint( 'Error: The local mode can just be used on repository servers', [ sys.stdout, stdout ] )
+		sys.exit( 1 )
 
-				if nextupdate:
-					dprint('Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [sys.stdout,stdout])
+	# install security updates
+	cmd_dist_upgrade = configRegistry.get( 'update/commands/distupgrade', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade' )
+	cmd_update = configRegistry.get( 'update/commands/update', 'apt-get update' )
+
+	upgraded = False
+	while True:
+		nextupdate = updater.security_update_available()
+
+		# we don't want an endless loop
+		if nextupdate == upgraded:
+			break
+
+		if nextupdate:
+			dprint('Update to Security Update %s-%s' % (updater.ucs_version, nextupdate), [sys.stdout,stdout])
+
+			remove_temporary_sources_list()
+			sources_list_entries = updater.security_update_temporary_sources_list()
+			upgraded = nextupdate
+			if sources_list_entries:
+				for line in sources_list_entries:
+					add_temporary_sources_list(line)
+
+				# Execute the dist-upgrade!
+				if call_upgrade:
+					count=0
+					while os.path.exists('/var/run/apt-get.lock') and count < 300:
+						time.sleep(1)
+						count=count+1
+					logfile = open( '/var/log/univention/security-updates.log', 'a' )
+					# create lock file
+					try:
+						fd = open( '/var/run/apt-get.lock', 'w' )
+					except:
+						pass
+					fd.close()
+					# update indices
+					ret = subprocess.call( cmd_update.split( ' ' ), stdout = logfile, stderr = logfile )
+					if ret:
+						dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
+					else:
+						ret = subprocess.call( cmd_distupgrade.split( ' ' ), stdout = logfile, stderr = logfile, env = { 'DEBIAN_FRONTEND' : 'noninteractive' } )
+						if ret:
+							dprint( 'Error: Failed to update APT indices', [ sys.stdout, stdout ] )
 
 					remove_temporary_sources_list()
-					sources_list_entries = updater.security_update_temporary_sources_list()
-					upgraded = nextupdate
-					if sources_list_entries:
-						for line in sources_list_entries:
-							add_temporary_sources_list(line)
-
-						# Execute the dist-upgrade!
-						if call_upgrade:
-							count=0
-							while os.path.exists('/var/run/apt-get.lock') and count < 300:
-								time.sleep(1)
-								count=count+1
-							resultCode=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/security-updates.log 2>&1; DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u dist-upgrade >>/var/log/univention/security-updates.log 2>&1')
-							if os.path.exists('/var/run/apt-get.lock'):
-								os.unlink('/var/run/apt-get.lock')
-							if resultCode != 0:
-								dprint('Failed to execute apt-get -u dist-upgrade', [sys.stdout,stdout])
-								raise UpdateError
-							remove_temporary_sources_list()
-
-				else:
-					if not upgraded:
-						dprint('No Security Update available!', [sys.stdout,stdout])
-					break
-
-		elif command == 'local':
-			# TODO: this should be implemented
-			dprint('Error: The local installation is not yet supported!. Please use univention-security-update net!', [sys.stdout,stdout])
+					if os.path.exists('/var/run/apt-get.lock'):
+						os.unlink('/var/run/apt-get.lock')
+					sys.exit( ret )
+		else:
+			if not upgraded:
+				dprint('No Security Update available!', [sys.stdout,stdout])
+			break

@@ -3,7 +3,7 @@
 # Univention Updater
 #  actualise script
 #
-# Copyright (C) 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2004, 2005, 2006, 2007, 2008, 2009 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -28,18 +28,35 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+# TODO: use UCR variables for update, upgrade, install and remove commands
+
 import os, sys, string, time, tempfile, univention_baseconfig, commands
+import subprocess
+
+class TeeFile( object ):
+	'''Writes the given string to serveral files at once. Could by used
+	with the print statement'''
+	def __init__( self, fds = [] ):
+		if not fds:
+			self.fds = [ sys.stdout ]
+		else:
+			self._fds = fds
+
+	def write( self, str ):
+		for fd in self._fds:
+			print >> fd, str
+			fd.flush()
 
 def usage():
-	print"univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
-	print"                      through policies"
-	print""
-	print"usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
-	print""
-	print"-?, --help	Show this message"
-	print"--dist-upgrade	Perform a dist-upgrade instead of a regular update"
-	print"--silent	Don't show normal output, but error messages only"
-	print"--check	Don't do anything, yust check if there is an update"
+	print "univention-actualise: Perform a (dist-)upgrade and (un-)install packages as set"
+	print "                      through policies"
+	print ""
+	print "usage: univention-actualise [-? || --help] [--dist-upgrade] [--silent] [--check]"
+	print ""
+	print "-?, --help	Show this message"
+	print "--dist-upgrade	Perform a dist-upgrade instead of a regular update"
+	print "--silent	Don't show normal output, but error messages only"
+	print "--check	Don't do anything, yust check if there is an update"
 
 def waitForLock():
 	# Wait for /var/run/apt-get.lock to vanish
@@ -49,11 +66,23 @@ def waitForLock():
 		time.sleep(1)
 		count=count+1
 
-def getUpdate():
+def createLock():
+	try:
+		fd = open( '/var/run/apt-get.lock' )
+	except:
+		pass
+	fd.close()
+
+def getUpdate( baseConfig ):
 	# Small function waiting for apt lockfile to vanish then starts apt-get update
-	print("Running apt-get update")
+	cmd_update = baseConfig.get( 'update/commands/update', 'apt-get update' )
+
+	print "Running apt-get update"
 	waitForLock()
-	res=os.system('touch /var/run/apt-get.lock && apt-get update >>/var/log/univention/actualise.log 2>&1')
+	createLock()
+	logfile = open( '/var/log/univention/actualise.log', 'a' )
+	res = subprocess.call( cmd_update.split( ' ' ), stdout = logfile, stderr = logfile )
+	logfile.close()
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	if res != 0:
@@ -84,20 +113,23 @@ def deactivateSourcesListMethods( methods = [ 'cdrom' ] ):
 		debug_file.write( '   %s\n' % '\n   '.join(deactivated_lines) )
 		debug_file.close()
 
-def check(baseConfig, dist_upgrade=False):
+def check( baseConfig, dist_upgrade = False):
 	# Just probe if there are packages to add or remove
+	cmd_dist_upgrade = baseConfig.get( 'update/commands/distupgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us dist-upgrade' )
+	cmd_upgrade = baseConfig.get( 'update/commands/upgrade/simulate', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes -us upgrade' )
 
 	actualise = False
-	getUpdate()
+	getUpdate( baseConfig )
 
 	# Probe for packages to actualise
 	if dist_upgrade:
-		cmd = 'dist-upgrade'
+		cmd = cmd_dist_upgrade
 	else:
-		cmd = 'upgrade'
+		cmd = cmd_upgrade
 
 	waitForLock()
-	res=commands.getoutput('touch /var/run/apt-get.lock && apt-get -us %s | egrep ".*[0-9] upgraded, [0-9].*"' %cmd)
+	createLock()
+	res=commands.getoutput( '%s | egrep ".*[0-9] upgraded, [0-9].*"' % ( cmd ) )
 	if os.path.exists('/var/run/apt-get.lock'):
 		os.unlink('/var/run/apt-get.lock')
 	sres=res.split()
@@ -214,13 +246,16 @@ def main():
 				sys.exit(res)
 
 
-			debug_file=open('/var/log/univention/actualise.log', 'a+')
-			debug_file.write('***** Starting univention-actualise at %s\n' % time.ctime())
-			debug_file.close()
+			logfile = open( '/var/log/univention/actualise.log', 'a' )
+			logfile.write('***** Starting univention-actualise at %s\n' % time.ctime())
 
 			deactivateSourcesListMethods( methods = [ 'cdrom' ] )
+			cmd_show = baseConfig.get( 'update/commands/show', 'apt-get show' )
+			cmd_config = baseConfig.get( 'update/commands/configure', 'dpkg --configure -a' )
+			cmd_remove = baseConfig.get( 'update/commands/remove', 'apt-get --yes remove' )
+			cmd_install = baseConfig.get( 'update/commands/install', 'apt-get -o DPkg::Options::=--force-confold -y --force-yes install' )
 
-			getUpdate()
+			getUpdate( baseConfig )
 
 			if baseConfig.has_key('pkgdb/scan') and baseConfig['pkgdb/scan']:
 				pkgdb=baseConfig['pkgdb/scan']
@@ -231,10 +266,15 @@ def main():
 			rem_packages=getPackageList(baseConfig, 'remove')
 			for package in rem_packages:
 				waitForLock()
-				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) # check if the package exists 
+
+				# check if the package exists
+				res = subprocess.call( cmd_show.split( ' ' ) + [ package ], stdout = logfile, stderr = logfile )
 				if res == 0:
-					print("Removing packages: %s" % package)
-					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a >>/var/log/univention/actualise.log 2>&1 && DEBIAN_FRONTEND=noninteractive apt-get remove --yes %s >>/var/log/univention/actualise.log 2>&1' % package)
+					print "Removing packages: %s" % package
+					createLock()
+					res = subprocess.call( cmd_config.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+					if not res:
+						res = subprocess.call( cmd_remove.split( ' ' ) + [ package ], env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
 				else:
 					print("The package %s doesn't exists." % package)
 					res=0
@@ -250,11 +290,13 @@ def main():
 			add_packages=getPackageList(baseConfig, 'add')
 			for package in add_packages:
 				waitForLock()
-				res=os.system('apt-cache show "%s" >/dev/null 2>&1' % package) # check if the package exists 
-
+				res = subprocess.call( cmd_show.split( ' ' ) + [ package ] )
 				if res == 0:
-					print("Installing packages: %s" % package)
-					res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes install %s >>/var/log/univention/actualise.log 2>&1' % package)
+					print "Installing packages: %s" % package
+					createLock()
+					res = subprocess.call( cmd_config.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+					if not res:
+						res = subprocess.call( cmd_install.split( ' ' ) + [ package ], env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
 				else:
 					print("The package %s doesn't exists." % package)
 					res=0
@@ -274,22 +316,27 @@ def main():
 			if baseConfig['server/role'] != 'basesystem':
 				print >>sys.stderr, "W: ldap/hostdn is not set - please run univention-join"
 
-		msg = "Upgrading system"
-		cmd = "upgrade"
 		if dist_upgrade:
 			msg = "Dist-upgrading system"
-			cmd = "dist-upgrade"
+			cmd = cmd_distupgrade
+		else:
+			msg = "Upgrading system"
+			cmd = cmd_upgrade
 
 		print(msg)
 		# TODO: use mkstemp and close directly the file descriptor
-		tmpfile = tempfile.mkstemp()
-		os.close( tmpfile[ 0 ] )
-		res=os.system('touch /var/run/apt-get.lock && DEBIAN_FRONTEND=noninteractive dpkg --configure -a && DEBIAN_FRONTEND=noninteractive apt-get -o DPkg::Options::=--force-confold -y --force-yes -u %s 2>&1 | tee -a /var/log/univention/actualise.log %s >/dev/null' % ( cmd, tmpfile[ 1 ] ) )
+		tmpfd, tmpfile = tempfile.mkstemp()
+		teefile = TeeFile( [ logfile, tmpfd ] )
+
+		createLock()
+		res = subprocess.call( cmd_configure.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = logfile, stderr = logfile )
+		if res == 0:
+			res = subprocess.call( cmd.split( ' ' ), env = { 'DEBIAN_FRONTEND' : 'noninteractive' }, stdout = teefile, stderr = teefile )
 
 		if not silent:
 			#TODO: support for more languages
-			os.system( 'egrep "(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)" %s' % tmpfile[ 1 ] )
-		os.unlink( tmpfile[ 1 ] )
+			subprocess.call( [ 'egrep', '(^Get|^Unpacking|^Preparing|^Setting up|packages upgraded)', tmpfile ] )
+		os.unlink( tmpfile )
 		if os.path.exists('/var/run/apt-get.lock'):
 			os.unlink('/var/run/apt-get.lock')
 
