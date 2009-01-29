@@ -50,8 +50,8 @@ endif
 	cp vm-tmp-player/*/*.deb ../; rm -Rf vm-tmp-player
 	make-vmpkg -b vm-tmp-server -s -p server VMware-server-*.tar.gz
 	cp vm-tmp-server/*/*.deb ../; rm -Rf vm-tmp-server
-	make-vmpkg -b vm-tmp-any-any -s -p any-any vmware-any-any*.tar.gz
-	cp vm-tmp-any-any/*/*.deb ../; rm -Rf vm-tmp-any-any
+	#make-vmpkg -b vm-tmp-any-any -s -p any-any vmware-any-any*.tar.gz
+	#cp vm-tmp-any-any/*/*.deb ../; rm -Rf vm-tmp-any-any
 
 build-ext-%:
 	dh_testdir
