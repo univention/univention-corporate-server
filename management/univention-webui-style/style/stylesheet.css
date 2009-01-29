@@ -797,6 +797,9 @@ background-color:#CCCCCC;
 }
 
 /* ################# Links ################# */
+a.nounderline {
+text-decoration: none;
+}
 a:link,
 a:visited {
 color:#CC0033;
