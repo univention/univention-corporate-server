@@ -1,3 +1,9 @@
+vmware (3.0.1-2) unstable; urgency=low
+
+  * rename the vmware-any-any archive. Bug #12912
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Thu, 29 Jan 2009 15:30:31 +0100
+
 vmware (3.0.1-1) unstable; urgency=low
 
   * updates for Kernel 2.6.26 (Bug #12912)
