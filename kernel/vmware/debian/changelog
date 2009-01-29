@@ -1,3 +1,12 @@
+vmware (3.0.1-1) unstable; urgency=low
+
+  * updates for Kernel 2.6.26 (Bug #12912)
+     update to VMware Server 1.0.8
+     added vmware-any-any patch from
+     http://www.it-psycho.de/2008/07/27/vmware-server-106-mit-kernel-2626/
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jan 2009 15:12:35 +0100
+
 vmware (2.0.2-1) unstable; urgency=low
 
   * rename vmware-any-any archive
