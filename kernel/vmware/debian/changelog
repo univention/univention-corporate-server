@@ -1,15 +1,15 @@
-vmware (3.0.1-3) unstable; urgency=low
+vmware (3.0.1-4) unstable; urgency=low
 
   * added the VMware-server-1.0.8-126538-ucs1.patch in the VMware-
     server-1.0.8-126538.tar.gz archive. Bug #12912
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Thu, 29 Jan 2009 16:53:33 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jan 2009 16:53:33 +0100
 
 vmware (3.0.1-2) unstable; urgency=low
 
   * rename the vmware-any-any archive. Bug #12912
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Thu, 29 Jan 2009 15:30:31 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jan 2009 15:30:31 +0100
 
 vmware (3.0.1-1) unstable; urgency=low
 
