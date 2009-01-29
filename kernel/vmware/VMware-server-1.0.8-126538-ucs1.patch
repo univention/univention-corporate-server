@@ -1,0 +1,80 @@
+diff -Nur orig/vmware-any-any-update117/vmmon-only/linux/driver.c itpsycho/vmware-any-any-update117/vmmon-only/linux/driver.c
+--- orig/vmware-any-any-update117/vmmon-only/linux/driver.c	2007-11-28 11:59:26.000000000 +0100
++++ itpsycho/vmware-any-any-update117/vmmon-only/linux/driver.c	2008-07-27 13:46:52.000000000 +0200
+@@ -168,11 +168,11 @@
+ static void LinuxDriverPollTimeout(unsigned long clientData);
+ 
+ static struct vm_operations_struct vmuser_mops = {
+-	.nopage = LinuxDriverNoPage
++//	.nopage = LinuxDriverNoPage
+ };
+ 
+ struct vm_operations_struct vmuser_locked_mops = {
+-	.nopage = LinuxDriverLockedNoPage
++//	.nopage = LinuxDriverLockedNoPage
+ };
+ 
+ static struct file_operations vmuser_fops;
+Binärdateien orig/vmware-any-any-update117/vmmon.tar and itpsycho/vmware-any-any-update117/vmmon.tar sind verschieden.
+diff -Nur orig/vmware-any-any-update117/vmnet-only/bridge.c itpsycho/vmware-any-any-update117/vmnet-only/bridge.c
+--- orig/vmware-any-any-update117/vmnet-only/bridge.c	2007-11-28 11:25:06.000000000 +0100
++++ itpsycho/vmware-any-any-update117/vmnet-only/bridge.c	2008-07-27 13:52:06.000000000 +0200
+@@ -275,7 +275,9 @@
+                         struct net_device *net)  // IN: Network device
+ {
+ #ifdef VMW_NETDEV_HAS_NET
+-   if (net->nd_net != bridge->internalDev->nd_net) {
++//   if (net->nd_net != bridge->internalDev->nd_net) {
++   if (dev_net(net) != dev_net(bridge->internalDev)) {
++
+       return 0;
+    }
+ #endif
+diff -Nur orig/vmware-any-any-update117/vmnet-only/procfs.c itpsycho/vmware-any-any-update117/vmnet-only/procfs.c
+--- orig/vmware-any-any-update117/vmnet-only/procfs.c	2007-05-14 07:57:41.000000000 +0200
++++ itpsycho/vmware-any-any-update117/vmnet-only/procfs.c	2008-07-27 13:49:23.000000000 +0200
+@@ -63,7 +63,8 @@
+ {
+    int retval;
+ 
+-   retval = VNetProc_MakeEntry(&proc_root, "vmnet", S_IFDIR, &base);
++//   retval = VNetProc_MakeEntry(&proc_root, "vmnet", S_IFDIR, &base);
++   retval = VNetProc_MakeEntry(NULL, "vmnet", S_IFDIR, &base);
+    if (retval) {
+       return retval;
+    }
+@@ -95,7 +96,8 @@
+ void
+ VNetProc_Cleanup(void)
+ {
+-   VNetProc_RemoveEntry(base, &proc_root);
++//   VNetProc_RemoveEntry(base, &proc_root);
++   VNetProc_RemoveEntry(base, NULL);
+    base = NULL;
+ }
+ 
+diff -Nur orig/vmware-any-any-update117/vmnet-only/vmnetInt.h itpsycho/vmware-any-any-update117/vmnet-only/vmnetInt.h
+--- orig/vmware-any-any-update117/vmnet-only/vmnetInt.h	2007-11-28 11:25:06.000000000 +0100
++++ itpsycho/vmware-any-any-update117/vmnet-only/vmnetInt.h	2008-07-27 14:01:59.000000000 +0200
+@@ -63,7 +63,7 @@
+ #   define dev_lock_list()    read_lock(&dev_base_lock)
+ #   define dev_unlock_list()  read_unlock(&dev_base_lock)
+ #   ifdef VMW_NETDEV_HAS_NET
+-#      define DEV_GET(x)      __dev_get_by_name((x)->internalDev->nd_net, (x)->name)
++#      define DEV_GET(x)      __dev_get_by_name((dev_net((x)->internalDev)), (x)->name)
+ #   else
+ #      define DEV_GET(x)      __dev_get_by_name((x)->name)
+ #   endif
+@@ -85,8 +85,8 @@
+ 
+ #ifdef VMW_NETDEV_HAS_NET
+ extern struct proto vmnet_proto;
+-#   define compat_sk_alloc(_bri, _pri) sk_alloc((_bri)->internalDev->nd_net, \
+-                                                PF_NETLINK, _pri, &vmnet_proto)
++#   define compat_sk_alloc(_bri, _pri) sk_alloc((dev_net((_bri)->internalDev)), \
++                                                 PF_NETLINK, _pri, &vmnet_proto)
+ #elif defined(VMW_HAVE_SK_ALLOC_WITH_PROTO)
+ extern struct proto vmnet_proto;
+ #   define compat_sk_alloc(_bri, _pri) sk_alloc(PF_NETLINK, _pri, &vmnet_proto, 1)
+Binärdateien orig/vmware-any-any-update117/vmnet.tar and itpsycho/vmware-any-any-update117/vmnet.tar sind verschieden.
+Binärdateien orig/vmware-any-any-update117.tar.gz and itpsycho/vmware-any-any-update117.tar.gz sind verschieden.
