@@ -401,7 +401,7 @@ class object(content):
 				if self.interfaces[i][0].startswith('eth'):
 					init=0
 			if init:
-				if os.system('/bin/ifconfig -a| grep eth2 >/dev/null') != 0:
+				if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
 					self.debug("NETWORK:could not find eth0")
 					msglist=[_('Warning:'),
 						_('Could not find any network card. The Installation will'),

@@ -1,3 +1,9 @@
+univention-installer (3.0.7-8) unstable; urgency=low
+
+  * fix in net.py (Bug: #12444)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jan 2009 14:09:45 +0100
+
 univention-installer (3.0.7-7) unstable; urgency=low
 
   * change message in expert partition modul (Bug: #13183)
