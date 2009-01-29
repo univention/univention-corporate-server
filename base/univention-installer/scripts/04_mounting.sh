@@ -33,51 +33,67 @@
 echo -n "Mounting Partitions: " >>/instmnt/.log
 echo -n "Mounting Partitions: "
 
-# Mount /xxx partitions
-set | egrep "^dev_" | while read line; do
-	name=`echo $line | sed -e 's|=.*||'`
-	var=`echo $line | sed -e 's|.*=.||;s|"||g' | sed -e "s|'||g"`
-	if [ "$name" = "devices" ]; then
-		continue
-	fi
-	# dev_%d = "parttype device type format fstype start end mpoint"
-	device_name=`echo $var | awk '{print $2}'`
-	device_type=`echo $var | awk '{print $3}'`
- 	device_format=`echo $var | awk '{print $4}'`
-	device_fs=`echo $var | awk '{print $5}'`
-	device_start=`echo $var | awk '{print $6}'`
-	device_end=`echo $var | awk '{print $7}'`
-	device_mp=`echo $var | awk '{print $8}'`
+ucr="python2.4 /sbin/univention-config-registry"
+tmp="/tmp/installer.partitions.tmp"
 
-	if [ -n "$device_fs" ]; then
-		if [ "$device_fs" = "linux-swap" ]; then
-			swapon $device_name
-		elif [ -z "$device_mp" ]; then
-			continue;
-		elif [ "$device_mp" = '/' ]; then
-			continue;
-		elif [ "$device_mp" = 'unknown' ]; then
-			continue;
-		elif [ "$device_fs" = 'unknown' ]; then
-			continue;
-		elif [ "$device_fs" = 'None' -o "$device_fs" = "none" ]; then
-			continue;
-		elif [ "$device_mp" = 'None' -o "$device_mp" = "none" ]; then
-			continue;
-		else
-			mkdir -p /instmnt/$device_mp
-			/bin/mount -t $device_fs $device_name /instmnt/$device_mp
-			echo -n "  $device_name ($device_mp)" >>/instmnt/.log
-			echo -n "  $device_name ($device_mp)"
-			if [ "$device_mp" = "/tmp" ]; then
-			    chmod 0777 /instmnt/$device_mp
-			    chmod +t /instmnt/$device_mp
+$ucr search installer > $tmp
+
+while read line; do
+
+	device=$(echo $line | awk -F / {'print $2'})
+
+	if [ "device" = "$device" ]; then
+
+		value=$(echo $line | awk -F : {'print $2'})
+		key=$(echo $line | awk -F : {'print $1'})
+		count=$(echo $key | awk -F / {'print $3'})
+		typ=$(echo $key | awk -F / {'print $4'})
+
+
+		value=$(echo $value | sed 's/\s//g')
+		if [ -z "$value" ]; then
+			value="None"
+		fi
+
+		if [ "name" = "$typ" ]; then
+			name=$value
+		fi
+		if [ "fs" = "$typ" ]; then
+			fs=$value
+		fi
+		if [ "mp" = "$typ" ]; then
+			mp=$value
+		fi
+
+		if [ -n "$name" ] && [ -n "$fs" ] && [ -n "$mp" ]; then
+
+			if [ "$fs" = "linux-swap" ]; then
+				swapon $name
+			elif [ "$fs" = 'None' -o "$fs" = "none" -o "$fs" = 'unknown' ]; then
+				true
+			elif [ "$mp" = 'None' -o "$mp" = "none" -o "$mp" = 'unknown' -o "$mp" = '/' ]; then
+				true
+			else
+				mkdir -p /instmnt/$mp
+				/bin/mount -t $fs $name /instmnt/$mp
+				echo -n "  $name ($mp)" >>/instmnt/.log
+				echo -n "  $name ($mp)"
+				if [ "$mp" = "/tmp" ]; then
+				    chmod 0777 /instmnt/$mp
+				    chmod +t /instmnt/$mp
+				fi
 			fi
+
+			unset name
+			unset fs
+			unset mp
 		fi
 	fi
-done
-echo "" >>/instmnt/.log
-echo ""
+
+
+done < $tmp
+
+rm -f $tmp
 
 mkdir -p /instmnt/tmp
 mkdir -p /tmp/logging

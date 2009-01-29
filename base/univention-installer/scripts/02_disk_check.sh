@@ -178,22 +178,33 @@ set | egrep "^dev_" | while read line; do
 	echo "device_mp=$device_mp"
 
 	if [ "$device_mp" = '/' ]; then
-		/bin/mount -t $device_fs $device_num /instmnt $LOG
-		touch /instmnt/.log
-		python2.4 /sbin/univention-config-registry set installer/device/0/name=$device_num
-		python2.4 /sbin/univention-config-registry set installer/device/0/fs=$device_fs
-		python2.4 /sbin/univention-config-registry set installer/device/0/mp=$device_mp
+		python2.4 /sbin/univention-config-registry set installer/device/0/name?$device_num
+		python2.4 /sbin/univention-config-registry set installer/device/0/fs?$device_fs
+		python2.4 /sbin/univention-config-registry set installer/device/0/mp?$device_mp
 	else
-		python2.4 /sbin/univention-config-registry set installer/device/$count/name=$device_num
-		python2.4 /sbin/univention-config-registry set installer/device/$count/fs=$device_fs
-		python2.4 /sbin/univention-config-registry set installer/device/$count/mp=$device_mp
+		python2.4 /sbin/univention-config-registry set installer/device/$count/name?$device_num
+		python2.4 /sbin/univention-config-registry set installer/device/$count/fs?$device_fs
+		python2.4 /sbin/univention-config-registry set installer/device/$count/mp?$device_mp
 		count=$((count+1))
 	fi
 done
 echo "Done"
 
+# mount root filesystem
+fs=$(python2.4 /sbin/univention-config-registry get installer/device/0/fs)
+dev=$(python2.4 /sbin/univention-config-registry get installer/device/0/name)
+msg=$(/bin/mount -t $fs $dev /instmnt $LOG 2<&1)
+
+# error message if root could not be mounted
+if [ 0 -ne "$?" ]; then
+	echo "could not mount root in $0" >> /tmp/installation_error.log
+	echo $msg >> /tmp/installation_error.log
+fi
+
+touch /instmnt/.log
+
 if [ -n "$bootloader_record" ]; then
-	python2.4 /sbin/univention-config-registry set grub/boot=$bootloader_record
+	python2.4 /sbin/univention-config-registry set grub/boot?$bootloader_record
 else
-	python2.4 /sbin/univention-config-registry set grub/boot=$grub_boot_fallback
+	python2.4 /sbin/univention-config-registry set grub/boot?$grub_boot_fallback
 fi

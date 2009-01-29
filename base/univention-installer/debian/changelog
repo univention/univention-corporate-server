@@ -1,3 +1,10 @@
+univention-installer (3.0.7-9) unstable; urgency=low
+
+  * 02_disk_check: set ucr partition variables only if they are not already set 
+  * 04_mouting: get partition info from ucr not from profile (Bug: #13204)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jan 2009 15:52:05 +0100
+
 univention-installer (3.0.7-8) unstable; urgency=low
 
   * fix in net.py (Bug: #12444)
