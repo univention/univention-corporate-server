@@ -29,6 +29,7 @@
 #include <linux/timer.h>
 #include <linux/pci.h>
 #include <linux/pm.h>
+#include <linux/fs.h>
 #include <asm/io.h>            	/* inb */
 #include <asm/uaccess.h>		/* put_user */
 #ifndef LINUX_VERSION_CODE
