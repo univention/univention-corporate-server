@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Univention GmbH
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), module-assistant, bzip2, srvmagt-modules, drbd8-source, squashfs-source, vmware-any-any-kernel-source, vmware-kernel-source, vmware-server-kernel-source, univention-kernel-headers-2.6.26, univention-kernel-headers-2.6.26-64gb
+Build-Depends: debhelper (>= 5), module-assistant, bzip2, srvmagt-modules, drbd8-source, squashfs-source, vmware-kernel-source, vmware-server-kernel-source, univention-kernel-headers-2.6.26, univention-kernel-headers-2.6.26-64gb, avm-capi-fcpci-modules
 
 Package: univention-kernel-modules-2.6.26
 Architecture: i386 amd64

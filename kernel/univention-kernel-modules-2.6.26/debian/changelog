@@ -1,3 +1,9 @@
+univention-kernel-modules-2.6.26 (3.0.2-1) unstable; urgency=low
+
+  * build the avm-capi-fcpci modules for 2.6.26. Bug #12910
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jan 2009 20:24:35 +0100
+
 univention-kernel-modules-2.6.26 (3.0.1-1) unstable; urgency=low
 
   * update to kernel 2.6.26

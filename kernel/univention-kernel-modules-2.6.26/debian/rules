@@ -54,7 +54,7 @@ install:
 	dh_installdirs
 
 	
-	for m in srvmagt-modules squashfs drbd8 vmware-kernel-source vmware-server-kernel-source; do \
+	for m in avm-capi-fcpci-modules srvmagt-modules squashfs drbd8 vmware-kernel-source vmware-server-kernel-source; do \
 		for i in $$(ls -d /usr/src/linux-headers-* | grep -v "\-common" ); do \
 			kversion=$$(basename $$i | sed -e 's|linux-headers-||'); \
 			m-a -t -l $$kversion prepare; \
