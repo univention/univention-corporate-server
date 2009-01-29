@@ -1,3 +1,10 @@
+univention-updater (4.0.11-1) unstable; urgency=low
+
+  * adapt univention-repository-addpackage to new repositories (Bug
+    #12511)
+
+ -- Andreas Büsching <buesching@univention.de>  Thu, 29 Jan 2009 16:42:29 +0100
+
 univention-updater (4.0.10-1) unstable; urgency=low
 
   * adapt univention-security-update to the new repository structure (Bug

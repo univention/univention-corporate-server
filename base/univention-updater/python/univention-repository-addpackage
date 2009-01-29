@@ -55,17 +55,63 @@ def rewrite_url(url):
 
     return tmp
 
+def create_packages( base_dir, source_dir ):
+	# create Packages file
+	if not os.path.isfile( os.path.join( base_dir, source_dir, 'Packages' ) ):
+		return True
+
+	pkg_file = os.path.join( base_dir, source_dir, 'Packages' )
+	pkg_file_lock = os.path.join( base_dir, source_dir, 'Packages.lock' )
+	pkg_file_gz = os.path.join( base_dir, source_dir, 'Packages.gz' )
+	# create a backup
+	if os.path.exists( pkg_file ):
+		shutil.copyfile( pkg_file, '%s.SAVE' % pkg_file )
+	if os.path.exists( pkg_file_gz ):
+		shutil.copyfile( pkg_file_gz, '%s.SAVE' % pkg_file_gz )
+
+	packages_fd = open( os.path.join( base_dir, source_dir, 'Packages' ), 'w' )
+	try:
+		fd = open( pkg_file_lock, 'w' )
+		fd.close()
+	except:
+		pass
+
+	ret = subprocess.call( [ 'apt-ftparchive', 'packages', source_dir ], stdout = packages_fd, cwd = base_dir )
+	packages_fd.close()
+
+	if ret:
+		print >> sys.stderr, "Error: Failed to create Packages file for '%s'" % os.path.join( base_dir, source_dir )
+		# restore backup
+		if os.path.exists( '%s.SAVE' % pkg_file ):
+			shutil.copyfile( '%s.SAVE' % pkg_file, pkg_file )
+		if os.path.exists( '%s.SAVE' % pkg_file_gz ):
+			shutil.copyfile( '%s.SAVE' % pkg_file_gz, pkg_file_gz )
+		if os.path.exists( pkg_file_lock ):
+			os.unlink( pkg_file_lock )
+		return False
+
+	# create Packages.gz file
+	packages_fd = open( os.path.join( base_dir, source_dir, 'Packages' ), 'r' )
+	packagesgz_fd = open( os.path.join( base_dir, source_dir, 'Packages.gz' ), 'w' )
+	ret = subprocess.call( [ 'gzip' ], stdout = packagesgz_fd, stdin = packages_fd )
+	packages_fd.close()
+	packagesgz_fd.close()
+
+	if os.path.exists( pkg_file_lock ):
+		os.unlink( pkg_file_lock )
+
+	return True
+
 # parse options
 if __name__ == '__main__':
 
 	if len(sys.argv) < 2:
 		usage()
 		sys.exit(1)
-		
+
 	if sys.argv[1] in ['-h', '-?', '--help']:
 		usage()
 		sys.exit(0)
-
 
 	longopts=['dest=', 'file=' ]
 	try:
@@ -103,58 +149,79 @@ if __name__ == '__main__':
 	baseConfig.load()
 
 	if not baseConfig.has_key('local/repository') and (baseConfig['local/repository'] == 'no' or baseConfig['local/repository'] == 'false'):
-		print 'E: The local repository is diabled. Use "univention-baseconfig set local/repository=yes" to activate local repository'
+		print 'Error: The local repository is diabled. Check if univention-debmirror ist installed.'
 		sys.exit(1)
 
+	# cut off trailing '/'
+	if packages_dir[ -1 ] == '/':
+		pacakges_dir = packages_dir[ : -1 ]
+
+	# find repository base directory
+	has_arch_dirs = False
+	has_packages = False
+	for entry in os.listdir( packages_dir ):
+		if os.path.isdir( os.path.join( packages_dir, entry ) ) and entry in ( 'i386', 'all', 'amd64', 'extern' ):
+			has_arch_dirs = True
+		elif os.path.isfile( os.path.join( packages_dir, entry ) ) and entry == 'Packages':
+			has_packages = True
+
+	if not has_arch_dirs:
+		# might not be a repository
+		if not has_packages:
+			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
+			sys.exit( 1 )
+		head, tail = os.path.split( packages_dir )
+		if tail in ( 'i386', 'all', 'amd64', 'extern' ):
+			packages_path = head
+		else:
+			print >> sys.stderr, 'Error: %s does not seem to be a repository.' % packages_dir
+			sys.exit( 1 )
+	else:
+		packages_path = packages_dir
 
 	# if file expansion is used (as in --file /tmp/*.deb), and no such file exists,
 	# we should issue a warning
 	fileProcessed = False
-	
+
+	regexp_arch = re.compile( '.*_([a-z0-9]*).deb' )
 	for file in files:
 		if file.endswith('.deb') and os.path.exists(file):
 			fileProcessed = True
+			match = regexp_arch.match( file )
+			if not match:
+				print >> sys.stderr, 'Warning: Could not determine architecture of package %s. It will not be added' % file
+				continue
+			arch = mach.groups()
 			try:
-				targetfilename=os.path.join(packages_dir, rewrite_url(file.split('/')[-1]))
-				shutil.copyfile(os.path.join(file), targetfilename)
+				targetfilename = os.path.join( packages_path, arch, rewrite_url( file.split( '/' )[ -1 ] ) )
+				shutil.copyfile( os.path.join( file ), targetfilename )
 			except Exception, e:
-				print >>sys.stdout, "Warning: copying of %s failed: %s" % (file, str(e))
+				print >> sys.stderr, "Warning: copying of %s failed: %s" % (file, str(e))
 				if os.path.exists(targetfilename):
 					os.remove(targetfilename) #remove incomplete package file
-					print >>sys.stdout, "Incomplete file removed"
+					print >>sys.stderr, "Warning: Removed incomplete file"
 				if isinstance(e,exceptions.KeyboardInterrupt):
 					out=os.popen('touch Packages.lock')
 					print >>sys.stdout, "Interrupted by user."
 					sys.exit(1)
-	
+
 	os.chdir(packages_dir)
-	
+
 	if not fileProcessed and not os.path.exists('Packages.lock'):
 		print >>sys.stdout, "Warning: No packages found, no packages added"
 		# shortcut exit, since there's nothing left to be done
-		sys.exit(0)		
+		sys.exit(0)
 
 	count=0
 	if os.path.exists('Packages.lock') and count < 300:
 		time.sleep(1)
 		count=count+1
 
-		# these might not exist if creating a new repository
-	if os.path.exists('Packages'):
-		shutil.copyfile('Packages', 'Packages.SAVE')
-	if os.path.exists('Packages.gz'):
-		shutil.copyfile('Packages.gz', 'Packages.gz.SAVE')
+	# these might not exist if creating a new repository
+	create_packages( packages_path, '.' )
+	if packages_path[ -1 ] == '/':
+		packages_path = packages_path[ -1 ]
+	head, tail = os.path.split( packages_path )
 
-	try:
-		out=os.popen('touch Packages.lock && apt-ftparchive packages .>Packages')
-		out.readlines()
-		out=os.popen('gzip -c Packages >Packages.gz; rm Packages.lock')
-		out.readlines()
-	except:
-		if os.path.exists('Packages.SAVE'):
-			shutil.copyfile('Packages.SAVE', 'Packages')
-		if os.path.exists('Packages.gz.SAVE'):
-			shutil.copyfile('Packages.gz.SAVE', 'Packages.gz')
-		if os.path.exists('Packages.lock'):
-			os.remove('Packages.lock')
-
+	for arch in ( 'all', 'i386', 'amd64' ):
+		create_packages( head, '%s/%s' % ( tail, arch ) )
