@@ -23,7 +23,7 @@
 #ifndef __have_driver_h__
 #define __have_driver_h__
 
-#include <linux/config.h>
+
 #include <linux/skbuff.h>
 #include <linux/capi.h>
 #include <linux/list.h>
@@ -98,7 +98,7 @@ extern int fcpcmcia_delcard (unsigned, unsigned);
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
-extern int driver_init (void);
+extern int fritz_driver_init (void);
 extern void driver_exit (void);
 
 /*---------------------------------------------------------------------------*\

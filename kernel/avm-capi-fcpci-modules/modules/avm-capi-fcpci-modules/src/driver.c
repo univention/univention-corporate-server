@@ -107,7 +107,7 @@ static int			card_id			= 0;
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
 static void scheduler (unsigned long data);
-static irqreturn_t irq_handler (int irq, void * args, struct pt_regs * regs);
+static irqreturn_t irq_handler (int irq, void * args);
 
 static DECLARE_TASKLET_DISABLED (scheduler_tasklet, scheduler, 0);
 
@@ -374,9 +374,17 @@ static int install_card (card_t * card) {
 			card->irq, 
 			&irq_handler, 
 #if defined (__fcpci__) || defined (__fcpcmcia__)
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
 			SA_INTERRUPT | SA_SHIRQ, 
 #else
+			IRQF_DISABLED | IRQF_SHARED,
+#endif
+#else
+#if (LINUX_VERSION_CODE < KERNEL_VERSION(2,6,24))
 			SA_INTERRUPT, 
+#else
+			IRQF_DISABLED,
+#endif
 #endif
 			TARGET, 
 			card
@@ -836,11 +844,10 @@ static void scheduler (unsigned long data) {
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
-static irqreturn_t irq_handler (int irq, void * args, struct pt_regs * regs) {
+static irqreturn_t irq_handler (int irq, void * args) {
 	int	res	= IRQ_NONE;
 	
 	UNUSED_ARG (irq);
-	UNUSED_ARG (regs);
 	if (args != NULL) {
 		assert (capi_lib->cm_handle_events != NULL);
 		if (atomic_read (&scheduler_id) == smp_processor_id ()) {
@@ -901,10 +908,10 @@ int fcpcmcia_delcard (unsigned int port, unsigned irq) {
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/
-int driver_init (void) {
+int fritz_driver_init (void) {
 
 	return (NULL != (capi_lib = link_library (NULL)));
-} /* driver_init */
+} /* fritz_driver_init */
 
 /*---------------------------------------------------------------------------*\
 \*---------------------------------------------------------------------------*/

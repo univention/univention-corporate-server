@@ -546,7 +546,7 @@ static int cs_event(event_t event, int priority, event_callback_args_t *args)
 } /* cs_event */
 
 static struct pcmcia_driver cs_driver = {
-	.owner	= THIS_MODULE,
+//	.owner = THIS_MODULE,
 	.drv	= {
 		.name	= "fcpcmcia_cs",
 	},

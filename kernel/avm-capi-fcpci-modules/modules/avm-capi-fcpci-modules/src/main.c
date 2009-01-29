@@ -22,7 +22,7 @@
 
 #include <stdarg.h>
 #include <asm/uaccess.h>
-#include <linux/config.h>
+
 #include <linux/version.h>
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -205,7 +205,7 @@ static int __devinit fritz_probe (
 	NOTE(PRODUCT_LOGO " found: port 0x%04x, irq %u\n", pars.port, pars.irq);
 
 	NOTE("Loading...\n");
-	if (!driver_init ()) {
+	if (!fritz_driver_init ()) {
 		ERROR("Error: Driver library not available.\n");
 		ERROR("Not loaded.\n");
 		return res;
@@ -270,7 +270,7 @@ static int __devinit fritz_probe (
 	NOTE (PRODUCT_LOGO " found: port 0x%04x, irq %u\n", pars.port, pars.irq);
 
 	NOTE("Loading...\n");
-	if (!driver_init ()) {
+	if (!fritz_driver_init ()) {
 		ERROR("Error: Driver library not available.\n");
 		ERROR("Not loaded.\n");
 		return -EBUSY;
@@ -364,7 +364,7 @@ static int __init fritz_init (void) {
 #endif
 
 #if defined (__fcpci__)	
-	if (0 == (err = pci_module_init (&fcpci_driver))) {
+	if (0 == (err = pci_register_driver (&fcpci_driver))) {
 		LOG("PCI driver registered.\n");
 		register_capi_driver (&fritz_capi_driver);
 		LOG("CAPI driver registered.\n");
@@ -378,7 +378,7 @@ static int __init fritz_init (void) {
 	}
 	return err;
 #elif defined (__fcpcmcia__) || defined (__fcclassic__)
-	if (!driver_init ()) {
+	if (!fritz_driver_init ()) {
 		ERROR("Error: Driver library not available.\n");
 		ERROR("Not loaded.\n");
 		return -EBUSY;
