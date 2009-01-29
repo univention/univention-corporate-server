@@ -401,16 +401,16 @@ class object(content):
 				if self.interfaces[i][0].startswith('eth'):
 					init=0
 			if init:
-				if os.system('/bin/ifconfig -a| grep eth0 >/dev/null') != 0:
+				if os.system('/bin/ifconfig -a| grep eth2 >/dev/null') != 0:
 					self.debug("NETWORK:could not find eth0")
 					msglist=[_('Warning:'),
-						_('Could not find any network card.'),
-						_('The Installation will probably fail.'),
-						_('You better check your network card.'),
-						_('If a network is installed please try'),
-						_('to load additional kernel modules at'),
-						_('the beginning of the installation.')]
-					self.sub=msg_win(self, self.pos_y+4, self.pos_x-7, self.width-6, self.height-13, msglist)
+						_('Could not find any network card. The Installation will'),
+						_('probably fail. It is better to check the network card.'),
+						_('If a network card is installed please try to load additional'),
+						_('kernel modules at the beginning of the installation.'),
+						]
+					self.sub=msg_win(self, self.pos_y+4, self.pos_x-16, self.width+12, self.height-18, msglist)
+					self.needs_draw_all = True
 					self.sub.draw()
 				else:
 					self.sub=self.edit(self,self.minY,self.minX+3,self.maxWidth-10,self.maxHeight)

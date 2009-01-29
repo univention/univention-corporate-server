@@ -735,6 +735,11 @@ try:
 	else:
 		while 1:
 			try:
+
+				if hasattr(installer.obj[ installer.current ], "needs_draw_all"):
+					if installer.obj[ installer.current ].needs_draw_all:
+						installer.draw_all()
+
 				c = stdscr.getch()
 				if c == 275: # F11 -> back
 					prev_screen()

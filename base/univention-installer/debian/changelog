@@ -1,3 +1,9 @@
+univention-installer (3.0.7-6) unstable; urgency=low
+
+  * changed layout of warning message in net.py (Bug: #12444)
+
+ -- Felix Botner <botner@univention.de>  Thu, 29 Jan 2009 13:16:08 +0100
+
 univention-installer (3.0.7-5) unstable; urgency=low
 
   * added installer module to debian/rules (Bug: #13197)
