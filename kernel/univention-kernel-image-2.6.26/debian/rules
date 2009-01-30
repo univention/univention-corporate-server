@@ -33,6 +33,7 @@ export DH_COMPAT=4
 AMD64_SOURCE_VERSION=2.6.26
 AMD64_VERSION=2.6.26-bpo.1-amd64
 AMD64_VERSION_64=2.6.26-bpo.1-amd64
+AMD64_VERSION_XEN=2.6.26-bpo.1-amd64
 AMD64_VERSION_MANAGEDCLIENT=2.6.26-bpo.1-amd64
 AMD64_VERSION_MANAGEDCLIENT_64=2.6.26-bpo.1-amd64
 AMD64_VERSION_MOBILECLIENT=2.6.26-bpo.1-amd64
@@ -40,7 +41,7 @@ AMD64_VERSION_MOBILECLIENT_64=2.6.26-bpo.1-amd64
 I386_SOURCE_VERSION=2.6.26
 I386_VERSION=2.6.26-bpo.1-686
 I386_VERSION_64=2.6.26-bpo.1-686-bigmem
-# I386_VERSION_XEN=2.6.26-bpo.1-xen-686
+I386_VERSION_XEN=2.6.26-bpo.1-xen-686
 I386_VERSION_MANAGEDCLIENT=2.6.26-bpo.1-686
 I386_VERSION_MANAGEDCLIENT_64=2.6.26-bpo.1-686-bigmem
 I386_VERSION_MOBILECLIENT=2.6.26-bpo.1-686
@@ -52,6 +53,7 @@ ifneq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
 	SOURCEVERSION=${AMD64_SOURCE_VERSION}
 	KERNELVERSION=${AMD64_VERSION}
 	KERNELVERSION64=${AMD64_VERSION_64}
+	KERNELVERSIONXEN=${AMD64_VERSION_XEN}
 	SOURCEVERSION_MANAGEDCLIENT=${AMD64_SOURCE_VERSION}
 	KERNELVERSION_MANAGEDCLIENT=${AMD64_VERSION_MANAGEDCLIENT}
 	KERNELVERSION_MANAGEDCLIENT64=${AMD64_VERSION_MANAGEDCLIENT_64}
@@ -62,6 +64,7 @@ else
 	SOURCEVERSION=${I386_SOURCE_VERSION}
 	KERNELVERSION=${I386_VERSION}
 	KERNELVERSION64=${I386_VERSION_64}
+	KERNELVERSIONXEN=${I386_VERSION_XEN}
 	SOURCEVERSION_MANAGEDCLIENT=${I386_SOURCE_VERSION}
 	KERNELVERSION_MANAGEDCLIENT=${I386_VERSION_MANAGEDCLIENT}
 	KERNELVERSION_MANAGEDCLIENT64=${I386_VERSION_MANAGEDCLIENT_64}
@@ -189,17 +192,17 @@ binary-arch: build install
 	dh_md5sums -punivention-kernel-image-2.6.26-64gb
 	dh_builddeb -punivention-kernel-image-2.6.26-64gb
 
-	# dh_gencontrol -punivention-kernel-image-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
-	# dh_md5sums -punivention-kernel-image-2.6.26-xen
-	# dh_builddeb -punivention-kernel-image-2.6.26-xen
+	dh_gencontrol -punivention-kernel-image-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
+	dh_md5sums -punivention-kernel-image-2.6.26-xen
+	dh_builddeb -punivention-kernel-image-2.6.26-xen
 
 	dh_gencontrol -punivention-kernel-headers-2.6.26-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-headers-2.6.26-64gb
 	dh_builddeb -punivention-kernel-headers-2.6.26-64gb
 
-	# dh_gencontrol -punivention-kernel-headers-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
-	# dh_md5sums -punivention-kernel-headers-2.6.26-xen
-	# dh_builddeb -punivention-kernel-headers-2.6.26-xen
+	dh_gencontrol -punivention-kernel-headers-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
+	dh_md5sums -punivention-kernel-headers-2.6.26-xen
+	dh_builddeb -punivention-kernel-headers-2.6.26-xen
 
 	dh_gencontrol -punivention-kernel-source-2.6.26-64gb -u-VF:KernelVersion64="${KERNELVERSION64}"
 	dh_md5sums -punivention-kernel-source-2.6.26-64gb
@@ -371,9 +374,9 @@ binary-arch: build install
 	dh_md5sums -punivention-drbd-modules-2.6.26-64gb
 	dh_builddeb -punivention-drbd-modules-2.6.26-64gb
 
-	#dh_gencontrol -punivention-drbd-modules-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
-	#dh_md5sums -punivention-drbd-modules-2.6.26-xen
-	#dh_builddeb -punivention-drbd-modules-2.6.26-xen
+	dh_gencontrol -punivention-drbd-modules-2.6.26-xen -u-VF:KernelVersionXen="${KERNELVERSIONXEN}"
+	dh_md5sums -punivention-drbd-modules-2.6.26-xen
+	dh_builddeb -punivention-drbd-modules-2.6.26-xen
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install configure

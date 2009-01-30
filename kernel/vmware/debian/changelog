@@ -1,15 +1,15 @@
-vmware (3.0.3-1) unstable; urgency=low
+vmware (3.0.3-2) unstable; urgency=low
 
   * added ia32-libs and ia32-libs-gtk to the build dependencies on
     amd64. Bug #12912
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 10:09:17 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2009 10:09:17 +0100
 
 vmware (3.0.2-2) unstable; urgency=low
 
   * * More Kernel 2.6.26 issues (Bug #12912)
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 07:10:00 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2009 07:10:00 +0100
 
 vmware (3.0.2-1) unstable; urgency=low
 
@@ -17,7 +17,7 @@ vmware (3.0.2-1) unstable; urgency=low
       update to vmware-any-any 117d patchset
       integrate the vmware-any-any files into the vmware archives
 
- -- Stefan Gohmann <stefan@omar.knut.univention.de>  Thu, 29 Jan 2009 20:21:13 +0100
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 29 Jan 2009 20:21:13 +0100
 
 vmware (3.0.1-4) unstable; urgency=low
 
