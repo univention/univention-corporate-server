@@ -1,3 +1,10 @@
+univention-kernel-modules-2.6.26 (3.0.4-1) unstable; urgency=low
+
+  * don't build the vmware modules for the xen kernel. Bug #11068 and
+    Bug #12912
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 30 Jan 2009 13:38:14 +0100
+
 univention-kernel-modules-2.6.26 (3.0.3-1) unstable; urgency=low
 
   * added xen meta packages for 2.6.26. Bug #12908
