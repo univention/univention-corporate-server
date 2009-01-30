@@ -1,3 +1,10 @@
+vmware (3.0.4-1) unstable; urgency=low
+
+  * bump the version of the vmware archives, to make our buildsystem
+    happy. Bug #12912
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 15:03:12 +0100
+
 vmware (3.0.3-2) unstable; urgency=low
 
   * added ia32-libs and ia32-libs-gtk to the build dependencies on
