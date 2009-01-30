@@ -1,3 +1,10 @@
+vmware (3.0.3-1) unstable; urgency=low
+
+  * added ia32-libs and ia32-libs-gtk to the build dependencies on
+    amd64. Bug #12912
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 10:09:17 +0100
+
 vmware (3.0.2-2) unstable; urgency=low
 
   * * More Kernel 2.6.26 issues (Bug #12912)

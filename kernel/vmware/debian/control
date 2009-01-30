@@ -3,7 +3,7 @@ Section: devel
 Priority: optional
 Maintainer: Univention GmbH
 Standards-Version: 3.7.2
-Build-Depends: debhelper (>= 5), vmware-package
+Build-Depends: debhelper (>= 5), vmware-package, ia32-libs [amd64], ia32-libs-gtk [amd64]
 
 Package: univention-vmware
 Architecture: i386 amd64
