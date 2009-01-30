@@ -66,6 +66,11 @@ install: build
 	dh_clean -k
 	dh_installdirs
 	
+ifneq (,$(findstring x86_64-linux-gnu,$(DEB_BUILD_GNU_TYPE)))
+	cp modules/avm-capi-fcpci-modules/lib/fcpci-lib-64.o modules/avm-capi-fcpci-modules/lib/fcpci-lib.o
+else
+	cp modules/avm-capi-fcpci-modules/lib/fcpci-lib-32.o modules/avm-capi-fcpci-modules/lib/fcpci-lib.o
+endif
 	tar --exclude '.svn' -cjvf debian/avm-capi-fcpci-modules/usr/src/avm-capi-fcpci-modules.tar.bz2 modules
 	#chmod a+x debian/build.sh
 	#debian/build.sh

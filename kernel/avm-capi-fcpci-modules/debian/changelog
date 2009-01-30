@@ -1,3 +1,10 @@
+avm-capi-fcpci-modules (2.0.2-1) unstable; urgency=low
+
+  * added a amd64 fcpci module from https://belug.de/~lutz/pub/fcpci/.
+    Bug #12910
+
+ -- Stefan Gohmann <stefan@omar.knut.univention.de>  Fri, 30 Jan 2009 08:28:28 +0100
+
 avm-capi-fcpci-modules (2.0.1-1) unstable; urgency=low
 
   * Updates for Kernel 2.6.26. Bug #12910
