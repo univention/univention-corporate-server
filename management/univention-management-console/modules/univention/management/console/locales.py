@@ -45,7 +45,7 @@ class LazyTranslation (str):
 
 	univention-directory-manager/uniconf/local.py
 		this file contains also test cases for allmost all functions
-	univention-direcotry-manager-modules/modules/univention/admin/localization.py
+	univention-directory-manager-modules/modules/univention/admin/localization.py
 	univention-webui/modules/localwebui.py
 	univention-management-console/modules/univention/management/console/locales.py
 	'''
@@ -59,27 +59,19 @@ class LazyTranslation (str):
 			self.data = seq.data[:]
 		else:
 			self.data = '%s' % seq
-		# for compatibility reasons
-		self._orig_str = self.data
-		super (str, self).__init__ (self._orig_str)
+		super (str, self).__init__ (self.data)
 	def __str__ (self):
 		newval = ''
-		dbg = file ('/tmp/debug', 'a')
-		try:
-			lang = locale.getlocale( locale.LC_MESSAGES )
-			if self._translations.has_key (lang):
-				return self._translations[lang]
-			if lang and lang[0] and \
-					self._domain != None and gettext.find (self._domain, languages=(lang[0], )):
-				t = gettext.translation(self._domain, languages=(lang[0], ))
-				newval = t.ugettext(self.data)
-			else:
-				newval = self.data
-			self._translations[lang] = newval
-		except:
-			import traceback
-			dbg.write (traceback.format_exc ())
-		dbg.close ()
+		lang = locale.getlocale( locale.LC_MESSAGES )
+		if self._translations.has_key (lang):
+			return self._translations[lang]
+		if lang and lang[0] and \
+				self._domain != None and gettext.find (self._domain, languages=(lang[0], )):
+			t = gettext.translation(self._domain, languages=(lang[0], ))
+			newval = t.ugettext(self.data)
+		else:
+			newval = self.data
+		self._translations[lang] = newval
 		return newval
 	def __repr__(self): return "'%s'" % self
 	def __int__(self): return int(str (self))
