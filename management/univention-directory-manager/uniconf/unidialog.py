@@ -136,8 +136,11 @@ class unidialog(unimodule.unimodule):
 
 				rows = []
 				for shorttext, longtext in component_texts:
+					tmp = shorttext
+					if hasattr (shorttext, 'data'):
+						tmp = shorttext.data
 					objects = [[tablecol('',{'type':'welcome_layout', 'rowspan':'2'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':
-						['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (shorttext._orig_str.lower ().replace (' ', '_'), shorttext)]})]}),
+						['<table><tr><td><img src="/icon/%s.png" /></td><td class="welcome_icon_text"><strong class="h2">%s</strong></td></tr></table>' % (tmp.lower ().replace (' ', '_'), shorttext)]})]}),
 						   tablecol('',{'type':'height14'},{"obs":[htmltext('', {'border':'0'}, {'htmltext':['&nbsp;']})]})],
 						   [emptycol, tablecol('',{'type':'welcome_layout_text'},{"obs":[htmltext('', {}, {'htmltext':[longtext]})]})],]
 					for obj in objects:
