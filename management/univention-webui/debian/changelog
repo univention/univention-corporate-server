@@ -1,3 +1,10 @@
+univention-webui (2.0.6-2) stable; urgency=low
+
+  * removed old LazyTranslation._orig_str member which only existed for
+    comatibility reasons. Bug #13235
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  2 Feb 2009 10:48:24 +0100
+
 univention-webui (2.0.6-1) stable; urgency=low
 
   * dynamic_longtable: show buttons only beneath results

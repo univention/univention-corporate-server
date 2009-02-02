@@ -39,7 +39,7 @@ class LazyTranslation (str):
 
 	univention-directory-manager/uniconf/local.py
 		this file contains also test cases for allmost all functions
-	univention-direcotry-manager-modules/modules/univention/admin/localization.py
+	univention-directory-manager-modules/modules/univention/admin/localization.py
 	univention-webui/modules/localwebui.py
 	univention-management-console/modules/univention/management/console/locales.py
 	'''
@@ -53,10 +53,9 @@ class LazyTranslation (str):
 			self.data = seq.data[:]
 		else:
 			self.data = '%s' % seq
-		# for compatibility reasons
-		self._orig_str = self.data
-		super (str, self).__init__ (self._orig_str)
+		super (str, self).__init__ (self.data)
 	def __str__ (self):
+		newval = ''
 		lang = locale.getlocale( locale.LC_MESSAGES )
 		if self._translations.has_key (lang):
 			return self._translations[lang]
