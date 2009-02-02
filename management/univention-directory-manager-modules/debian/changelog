@@ -1,3 +1,10 @@
+univention-directory-manager-modules (3.0.26-3) unstable; urgency=low
+
+  * removed old LazyTranslation._orig_str member which only existed for
+    comatibility reasons. Bug #13235
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  2 Feb 2009 10:49:47 +0100
+
 univention-directory-manager-modules (3.0.26-2) unstable; urgency=low
 
   * adapted access to the original translation to the new data attribute.
