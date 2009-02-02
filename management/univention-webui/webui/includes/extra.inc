@@ -1183,8 +1183,8 @@ class notebook{
 			  $spare = 20; // width pixel between
 			}
 
-			if((($length + $itemlength + $spare) > 772) || $i > $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764 + 8 (otherwise we got an ugly user view)
-				if((($length + $itemlength + $spare) > 772)){
+			if((($length + $itemlength + $spare) > 778) || $i > $this->count){ # 780 at all - 14 (right) - 2 (left) -> 764 + 14 (otherwise we got an ugly user view)
+				if((($length + $itemlength + $spare) > 778)){
 					# This tab line is full, print this line an than check the next line!
 					$one_line=FALSE;
 					$end=$i;
