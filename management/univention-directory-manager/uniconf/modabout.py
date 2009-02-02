@@ -105,7 +105,7 @@ def mywgroup():
 	return ""
 
 def mymenunum():
-	return 800
+	return 900
 
 def mymenuicon():
 	return unimodule.selectIconByName( 'about' )
