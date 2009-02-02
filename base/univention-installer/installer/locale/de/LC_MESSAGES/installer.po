@@ -354,6 +354,10 @@ msgstr "X-Window-System Client für Terminal-Dienste"
 msgid "Thinclient Environment"
 msgstr "Thinclient-Umgebung"
 
+#: installer/package_list.py:598
+msgid "Manage Software Raids"
+msgstr "Software Raids verwalten"
+
 #: installer/package_list.py:199
 msgid "Thinclient Infrastructure"
 msgstr "Thinclient-Infrastruktur"

@@ -1,3 +1,9 @@
+univention-installer (3.0.7-10) unstable; urgency=low
+
+  * added mdadm to default software tools (Bug: #13201)
+
+ -- Felix Botner <botner@univention.de>  Mon,  2 Feb 2009 14:02:55 +0100
+
 univention-installer (3.0.7-9) unstable; urgency=low
 
   * 02_disk_check: set ucr partition variables only if they are not already set 
