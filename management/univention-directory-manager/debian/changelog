@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.5-7) unstable; urgency=low
+
+  * removed old LazyTranslation._orig_str member which only existed for
+    comatibility reasons. Bug #13235
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  2 Feb 2009 10:49:10 +0100
+
 univention-directory-manager (6.0.5-6) unstable; urgency=low
 
   * fixed problem with a not save search value in UDM. Bug #11463

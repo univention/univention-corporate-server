@@ -1,3 +1,4 @@
+#!/usr/bin/python2.4
 # -*- coding: utf-8 -*-
 #
 # Univention Diectory Manager
@@ -53,10 +54,9 @@ class LazyTranslation (str):
 			self.data = seq.data[:]
 		else:
 			self.data = '%s' % seq
-		# for compatibility reasons
-		self._orig_str = self.data
-		super (str, self).__init__ (self._orig_str)
+		super (str, self).__init__ (self.data)
 	def __str__ (self):
+		newval = ''
 		lang = locale.getlocale( locale.LC_MESSAGES )
 		if self._translations.has_key (lang):
 			return self._translations[lang]
