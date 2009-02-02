@@ -1136,7 +1136,7 @@ layout=[
 		[univention.admin.field('certificateIssuerMail'), ],
 		[univention.admin.field('certificateDateNotBefore'), univention.admin.field('certificateDateNotAfter') ],
 		[univention.admin.field('certificateVersion'), univention.admin.field('certificateSerial') ],
-	]),
+	], advanced = True),
 ]
 
 # append tab with CTX flags
