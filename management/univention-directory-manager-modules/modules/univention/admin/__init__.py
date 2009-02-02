@@ -214,7 +214,10 @@ def ucr_overwrite_layout (module, ucr_property, tab):
 	"""
 	Overwrite the advanced setting in the layout
 	"""
-	p_v = baseConfig.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, tab.short_description._orig_str, ucr_property), None)
+	desc = tab.short_description
+	if hasattr (tab.short_description, 'data'):
+		desc = tab.short_description.data
+	p_v = baseConfig.get ('directory/manager/web/modules/%s/layout/%s/%s' % (module, desc, ucr_property), None)
 	if not p_v:
 		return None
 

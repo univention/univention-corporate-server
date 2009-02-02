@@ -1,3 +1,11 @@
+univention-directory-manager-modules (3.0.26-2) unstable; urgency=low
+
+  * adapted access to the original translation to the new data attribute.
+  * made data attribute access more robust. Bug #13235
+
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Mon,  2 Feb 2009 10:21:24 +0100
+
 univention-directory-manager-modules (3.0.26-1) unstable; urgency=low
 
   * the memberUid attribute of a group contains only uid of users and
