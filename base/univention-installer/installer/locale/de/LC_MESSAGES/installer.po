@@ -16,40 +16,40 @@ msgstr ""
 "Generated-By: pygettext.py 1.5\n"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "The Software Raid boot option was chosen and"
-msgstr "Es wurde die Software Raid Boot Option gewählt"
+msgid "Univention Installer has been started with the"
+msgstr "Der Univention Installer wurde mit der Software RAID"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "the Expert Partitioner started"
-msgstr "und der Experten Partitionierungsmodus gestart."
+msgid "Software RAID boot option. The hard disk needs"
+msgstr "Boot Option gestartet. Die Festplatte muss manuell"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "The hard disk has to be partitioned and formatted."
-msgstr "Die Festplatte muss nun partitioniert werden."
+msgid "to be partitioned and formatted manually."
+msgstr "partinioniert und formatiert werden."
 
 #: installer/modules/12_expert_partition.py:47
 msgid "By pressing"
 msgstr "Durch das Drücken von"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "an interactive shell will be started. Here you can"
+msgid "an interactive shell will be started, which allows you"
 msgstr "wird eine interaktive Shell gestartet. Hier kann unter"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "partition your hard disk using the standard"
-msgstr "Verwendung von Standardprogrammen wie cfdisk, mkfs,"
+msgid "to partition your hard disks using the standard"
+msgstr "Verwendung von Standardprogrammen wie cfdisk, mdadm,"
 
 #: installer/modules/12_expert_partition.py:47
-msgid "tools like fdisk, mkfs, mdadm or lvcreate."
-msgstr "mdadm usw. die Festplatte eingerichtet werden."
+msgid "tools like cfdisk, mkfs.ext3, mdadm or lvcreate."
+msgstr "mkfs.ext3 usw. die Festplatte eingerichtet werden."
 
 #: installer/modules/12_expert_partition.py:47
 msgid "the installation will be continued."
 msgstr "kann die Installation fortgesetzt werden."
 
 #: installer/modules/12_expert_partition.py:87
-msgid "Expert Partitioner"
-msgstr "Partitionierung"
+msgid "Part. expert mode"
+msgstr "Part. Expert Mode"
 
 #: installer/modules/12_partition.py:3122
 msgid "Error while writing partitions:"

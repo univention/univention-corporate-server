@@ -48,17 +48,18 @@ class object(content):
 
 	def layout(self):
 
-		msg = [_('The Software Raid boot option was chosen and'),
-			_('the Expert Partitioner started'),
-			_('The hard disk has to be partitioned and formatted.'),
+		msg = [
+			_('Univention Installer has been started with the'),
+			_('Software RAID boot option. The hard disk needs'),
+			_('to be partitioned and formatted manually.'),
 			' ',
 			_('By pressing'),
 			' ',
 			_('    [ALT]+[F2]'),
 			' ',
-			_('an interactive shell will be started. Here you can'),
-			_('partition your hard disk using the standard'),
-			_('tools like fdisk, mkfs, mdadm or lvcreate.'),
+			_('an interactive shell will be started, which allows you'),
+			_('to partition your hard disks using the standard'),
+			_('tools like cfdisk, mkfs.ext3, mdadm or lvcreate.'),
 			' ',
 			_('By pressing'),
 			' ',
@@ -87,7 +88,7 @@ class object(content):
 		return _('Expert Partitioner:\n\nCTRL+ALT+F2 interactive shell\nCTRL+ALT+F1 installation screen')
 
 	def modheader(self):
-		return _('Expert Partitioner')
+		return _('Part. expert mode')
 
 	def result(self):
 		result={}
