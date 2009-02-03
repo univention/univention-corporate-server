@@ -1,3 +1,9 @@
+univention-installer (3.0.7-12) unstable; urgency=low
+
+  * install mdadm if necessary and before univention-grub (Bug: #13201) 
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Feb 2009 17:08:39 +0100
+
 univention-installer (3.0.7-11) unstable; urgency=low
 
   * expert partition mode message (Bug: #13183)

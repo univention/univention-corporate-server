@@ -100,7 +100,7 @@ fi
 if [ "$architecture" = "powerpc" ]; then
 	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install initramfs-tools parted
 else
-	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-grub univention-initrd
+	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-initrd
 fi
 
 $PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install $kernel_package
@@ -133,3 +133,20 @@ __EOT__
 
 chmod +x /instmnt/install_kernel.sh
 chroot /instmnt ./install_kernel.sh
+
+# install mdadm if necessary and then grub
+cat >>/instmnt/install_mdadm.sh <<__EOT__
+export DEBIAN_FRONTEND=noninteractive
+
+mount | grep /dev/md 2>&1 1>/dev/null
+if [ 0 -eq \$? ]; then
+	$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install mdadm
+fi
+
+$PIPE apt-get -o APT::Get::AllowUnauthenticated=1 install univention-grub
+
+__EOT__
+
+chmod +x /instmnt/install_mdadm.sh
+chroot /instmnt ./install_mdadm.sh
+
