@@ -1,3 +1,9 @@
+univention-installer (3.0.7-13) unstable; urgency=low
+
+  * removed mdadm from package list (Bug: #13201) 
+
+ -- Felix Botner <botner@univention.de>  Tue,  3 Feb 2009 17:24:08 +0100
+
 univention-installer (3.0.7-12) unstable; urgency=low
 
   * install mdadm if necessary and before univention-grub (Bug: #13201) 

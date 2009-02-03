@@ -590,14 +590,6 @@ PackageList=[
 					'Description': _('Retrieves files from the web'),
 				},
 				{
-					'Name': _('mdadm'),
-					'Packages': ['mdadm'],
-					'Architecture': [ 'x86', 'powerpc' ],
-					'Active': ['all'],
-					'Possible': ['all'],
-					'Description': _('Manage Software Raids'),
-				},
-				{
 					'Name': _('nmap'),
 					'Packages': ['nmap'],
 					'Architecture': [ 'x86', 'powerpc' ],
