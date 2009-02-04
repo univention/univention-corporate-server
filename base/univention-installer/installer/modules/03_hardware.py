@@ -76,7 +76,7 @@ class object(content):
 		else:
 			if self.ignore('cdrom_device'):
 				return
-			self.sub = self.active(self,_('Search CD-ROM-Drive'),_('Please wait ...'))
+			self.sub = self.active(self,_('Search CD-ROM Drive'),_('Please wait ...'))
 			self.sub.action='cdrom-search'
 			self.sub.draw()
 			self.prepare()
@@ -85,13 +85,13 @@ class object(content):
 		if self.ignore('cdrom_device'):
 			return
 
-		self.sub = self.active(self,_('Test CD-ROM-Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Test CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-test-profile'
 		self.sub.draw()
 		self.debug('self.container=%s' % self.container)
 
 		#prepare cdrom
-		self.sub = self.active(self,_('Mount CD-Rom-Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Mount CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-prepare'
 		self.sub.draw()
 		self.debug('self.container=%s' % self.container)
@@ -164,12 +164,12 @@ class object(content):
 	def postrun(self):
 		if self.cdrom_test:
 			#test cdrom
-			self.sub = self.active(self,_('Test CD-ROM-Drive'),_('Please wait ...'))
+			self.sub = self.active(self,_('Test CD-ROM Drive'),_('Please wait ...'))
 			self.sub.action='cdrom-test'
 			self.sub.draw()
 
 			#prepare cdrom
-			self.sub = self.active(self,_('Mount CD-Rom-Drive'),_('Please wait ...'))
+			self.sub = self.active(self,_('Mount CD-ROM Drive'),_('Please wait ...'))
 			self.sub.action='cdrom-prepare'
 			self.sub.draw()
 			self.cdrom_test=0
@@ -221,7 +221,7 @@ class object(content):
 			return _("No valid source found")
 
 	def helptext(self): # All about this Modul - '###' creates a newline
-		return _('Detects the source device. \n \n Please choose \"Add CD ROM device\" or \"Add network device\" if the needed device is missing. \n \n Please use "Rescan" if you want to autodetect devices again.')
+		return _('Detects the source device. \n \n Please select \"Add CD-ROM device\" or \"Add network device\" if the needed device is missing. \n \n Please use "Rescan" if you want to autodetect devices again.')
 
 	def modheader(self):
 		return _('Source Device')
@@ -242,7 +242,7 @@ class object(content):
 		#		self.sub.draw()
 
 		#search cdrom
-		self.sub = self.active(self,_('Search CD-ROM-Drive'),_('Please wait ...'))
+		self.sub = self.active(self,_('Search CD-ROM Drive'),_('Please wait ...'))
 		self.sub.action='cdrom-search'
 		self.sub.draw()
 
@@ -262,7 +262,7 @@ class object(content):
 		def get_devices(self):
 			return self.elements[0].text
 		def modheader(self):
-			return _('Adding cdrom device')
+			return _('Add CD-ROM device')
 		def input(self, key):
 			if ( key in [ 10, 32 ] and self.elements[1].usable() and self.elements[1].get_status() ) or key == 276:
 				return 0

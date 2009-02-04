@@ -56,7 +56,7 @@ class object(content):
 			return {'locales': self.all_results['locales']}
 
 	def layout(self):
-		self.elements.append(textline(_('Choose your system languages:'),self.minY-1,self.minX+2)) #2
+		self.elements.append(textline(_('Select your system languages:'),self.minY-1,self.minX+2)) #2
 		try:
 			file=open('/usr/share/i18n/SUPPORTED')
 		except:
@@ -106,7 +106,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Language \n \n Choose system languages.')
+		return _('Language \n \n Select the system languages.')
 
 	def modheader(self):
 		return _('Language')

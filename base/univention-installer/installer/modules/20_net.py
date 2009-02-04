@@ -149,12 +149,12 @@ class object(content):
 		if not self.all_results['nameserver_1'].strip() == '':
 			if not self.is_ip(self.all_results['nameserver_1']):
 				if not self.ignore('nameserver_1'):
-					self.message=invalid+_("Nameserver")
+					self.message=invalid+_("Name server")
 					return False
 		if not self.all_results['dns_forwarder_1'].strip() == '':
 			if not self.all_results['dns_forwarder_1']:
 				if not self.ignore('dsn_forwarder_1'):
-					self.message=invalid+_("DNS-Forwarder")
+					self.message=invalid+_("DNS Forwarder")
 					return False
 
 		proxy = self.all_results['proxy_http'].strip()
@@ -372,7 +372,7 @@ class object(content):
 			self.elements.append(input('%s'%self.container['Gateway'][0],self.minY+10,self.minX+20,MAXIP+8)) #8
 
 		# - Nameserver
-		self.elements.append(textline(_('Nameserver'),self.minY+12,self.minX+2)) #9
+		self.elements.append(textline(_('Name server'),self.minY+12,self.minX+2)) #9
 		if not self.container.has_key('Nameserver'):
 			self.elements.append(input('',self.minY+12,self.minX+20,MAXIP+8)) #10
 		else:
@@ -380,7 +380,7 @@ class object(content):
 		self.elements.append(button(_('More'),self.minY+12,self.minX+(self.width)-4,align="right")) #11
 
 		# - DNS Forwarder
-		self.elements.append(textline(_('DNS-Forwarder'),self.minY+14,self.minX+2)) #12
+		self.elements.append(textline(_('DNS Forwarder'),self.minY+14,self.minX+2)) #12
 		if not self.container.has_key('DNS-Forwarder'):
 			self.elements.append(input('',self.minY+14,self.minX+20,MAXIP+8)) #13
 		else:
@@ -388,7 +388,7 @@ class object(content):
 		self.elements.append(button(_('More'),self.minY+14,self.minX+(self.width)-4,align="right")) #14
 
 		# - Proxy
-		self.elements.append(textline(_('HTTP-Proxy'),self.minY+16,self.minX+2)) #15
+		self.elements.append(textline(_('HTTP proxy'),self.minY+16,self.minX+2)) #15
 		if not self.container.has_key('http_proxy'):
 			self.elements.append(input('http://',self.minY+16,self.minX+20,MAXIP+8)) #16
 		else:
@@ -456,14 +456,14 @@ class object(content):
 			self.delinterface()
 		elif key in [ 10, 32 ] and self.elements[11].usable() and self.elements[11].get_status():# Enter & Button: More Nameserver
 			if not self.elements[10].result().strip() == '' and self.is_ip(self.elements[10].result().strip()):
-				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("Nameserver"))
+				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("Name server"))
 				self.sub.draw()
 			else:
 				#DNS-Forwarder input is not filled
 				pass
 		elif key in [ 10, 32 ] and self.elements[14].usable() and self.elements[14].get_status():# Enter & Button: More DNS-Forwarder
 			if not self.elements[13].result().strip() == '' and self.is_ip(self.elements[13].result().strip()):
-				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("DNS-Forwarder"))
+				self.sub=self.more(self,self.minY+4,self.minX+3,self.maxWidth-10,self.maxHeight-8, _("DNS Forwarder"))
 				self.sub.draw()
 			else:
 				#DNS-Forwarder input is not filled
@@ -483,10 +483,10 @@ class object(content):
 				return invalid+_("Gateway")
 		if not self.elements[10].result().strip() == '':
 			if not self.is_ip(self.elements[10].result()):
-				return invalid+_("Nameserver")
+				return invalid+_("Name server")
 		if not self.elements[13].result().strip() == '':
 			if not self.is_ip(self.elements[13].result()):
-				return invalid+_("DNS-Forwarder")
+				return invalid+_("DNS Forwarder")
 		if self.elements[16]:
 			proxy = self.elements[16].result().strip()
 			self.debug('PROXY=%s' % proxy)
@@ -499,7 +499,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Network \n \n In this module the network configuration is set. \n \n Mark the button \"New Interface\" to add a new interface. Select \"New Virtual Interface\" to create a new virtual interface. \n \n Interface: \n Choose the interface you want to configure. \n \n Dynamic (DHCP): \n Mark this field if you want this interface to retrieve its IP configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Static: \n Static IP configuration. \n \n Enter IP, netmask, broadcast and network address of this interface. \n\n Gateway: \n Enter gateway which the system should use. \n \n Nameserver: \n Enter the IP address of the primary nameserver, if you are installing a system to an existing domain. \n More: \n Enter more nameservers \n \n DNS-Forwarder: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter more DNS forwarders \n \n HTTP-Proxy: \n Enter the IP address and port number for the HTTP-Proxy (example: http://192.168.1.123:5858)')
+		return _('Network \n \n In this module the network configuration is done. \n \n Select \"New Interface\" to add a new interface. Select \"New Virtual Interface\" to create a new virtual interface. \n \n Interface: \n Select the interface you want to configure. \n \n Dynamic (DHCP): \n Mark this field if you want this interface to retrieve its IP configuration via DHCP (Dynamic Host Configuration Protocol). \n \n Static: \n Mark this field if you want this interface to be configured manually. \n \n Enter IP, netmask, broadcast and network address of this interface. \n\n Gateway: \n Default gateway to be use. \n \n Name server: \n Enter the IP address of the primary name server, if you are adding a system to an existing domain. \n More: \n Enter additional name servers \n \n DNS Forwarder: \n Enter the IP address of a DNS server to forward queries to. \n More: \n Enter additional DNS forwarders \n \n HTTP-Proxy: \n Enter the IP address and port number for the HTTP-Proxy (example: http://192.168.1.123:5858)')
 
 	def modheader(self):
 		return _('Network')

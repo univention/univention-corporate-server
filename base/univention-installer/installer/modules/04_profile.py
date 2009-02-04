@@ -330,11 +330,11 @@ class object(content):
 				file=os.path.join(self.currentpath,self.getfile(self.elements[3].result()[0])[0])
 				return 0
 			else:
-				return _('You have to choose a Profile.')
+				return _('You have to select a Profile.')
 		else:
 			return what
 	def helptext(self): # All about this Modul - '###' creates a newline
-		return _('Profile \n \n Choose a predefined installation profile or enter the position of your own profile. \n \n Please mark the device with the preconfigured profile. \n  \n Press F2 to add a missing device or F3 to browse for the correct path.')
+		return _('Profile \n \n Select a predefined installation profile or enter the position of your own profile. \n \n Please mark the device with the preconfigured profile. \n  \n Press F2 to add a missing device or F3 to browse for the correct path.')
 
 	def modheader(self):
 		return _('Profile')

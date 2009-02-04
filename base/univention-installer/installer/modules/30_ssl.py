@@ -76,11 +76,11 @@ class object(content):
 
 		if self.all_results['ssl_state'].strip() == '':
 			if not self.ignore('ssl_state'):
-				self.message=message+_('State')
+				self.message=message+_('Country')
 				return False
 		if len(self.all_results['ssl_state'].strip()) > 128:
 			if not self.ignore('ssl_state'):
-				self.message=tolongmsg128+_('State')
+				self.message=tolongmsg128+_('Country')
 				return False
 
 		if self.all_results['ssl_locality'].strip() == '':
@@ -103,24 +103,24 @@ class object(content):
 
 		if self.all_results['ssl_organizationalunit'].strip() == '':
 			if not self.ignore('ssl_organizationalunit'):
-				self.message=message+_('Unit')
+				self.message=message+_('Business unit')
 				return False
 		if len(self.all_results['ssl_organizationalunit'].strip()) > 64:
 			if not self.ignore('ssl_organizationalunit'):
-				self.message=tolongmsg64+_('Unit')
+				self.message=tolongmsg64+_('Business unit')
 				return False
 
 		if self.all_results['ssl_email'].strip() == '':
 			if not self.ignore('ssl_email'):
-				self.message=message+_('Mailaddress')
+				self.message=message+_('E-Mail address')
 				return False
 		if len(self.all_results['ssl_email'].strip()) > 64:
 			if not self.ignore('ssl_email'):
-				self.message=tolongmsg64+_('Mailaddress')
+				self.message=tolongmsg64+_('E-Mail address')
 				return False
 		if self.all_results['ssl_email'].find('@') == -1:
 			if not self.ignore('ssl_email'):
-				self.message = _("Please insert a valid mailaddress")
+				self.message = _("Please enter a valid mailaddress")
 				return False
 		return True
 
@@ -132,10 +132,10 @@ class object(content):
 		return {'system_role':['domaincontroller_master']}
 
 	def layout(self):
-		self.elements.append(textline(_('Country Code'),self.minY,self.minX+2)) #2
+		self.elements.append(textline(_('Country code'),self.minY,self.minX+2)) #2
 		self.elements.append(input('',self.minY,self.minX+20,30)) #3
 
-		self.elements.append(textline(_('State'),self.minY+2,self.minX+2)) #4
+		self.elements.append(textline(_('Country'),self.minY+2,self.minX+2)) #4
 		self.elements.append(input('',self.minY+2,self.minX+20,30)) #5
 
 		self.elements.append(textline(_('Location'),self.minY+4,self.minX+2)) #6
@@ -144,10 +144,10 @@ class object(content):
 		self.elements.append(textline(_('Organisation'),self.minY+6,self.minX+2)) #8
 		self.elements.append(input('',self.minY+6,self.minX+20,30)) #9
 
-		self.elements.append(textline(_('Unit'),self.minY+8,self.minX+2)) #10
+		self.elements.append(textline(_('Business unit'),self.minY+8,self.minX+2)) #10
 		self.elements.append(input('',self.minY+8,self.minX+20,30)) #11
 
-		self.elements.append(textline(_('Mailaddress'),self.minY+10,self.minX+2)) #12
+		self.elements.append(textline(_('E-Mail address'),self.minY+10,self.minX+2)) #12
 		if self.all_results.has_key('domainname'):
 			self.elements.append(input('ssl@%s'%self.all_results['domainname'],self.minY+10,self.minX+20,30)) #13
 		else:
@@ -174,10 +174,10 @@ class object(content):
 
 		elif self.elements[5].result().strip() == '':
 			self.move_focus( 5 )
-			return message+_('State')
+			return message+_('Country')
 		elif len(self.elements[5].result().strip()) > 128:
 			self.move_focus( 5 )
-			return tolongmsg128+_('State')
+			return tolongmsg128+_('Country')
 
 		elif self.elements[7].result().strip() == '':
 			self.move_focus( 7 )
@@ -195,24 +195,24 @@ class object(content):
 
 		elif self.elements[11].result().strip() == '':
 			self.move_focus( 11 )
-			return message+_('Unit')
+			return message+_('Business unit')
 		elif len(self.elements[11].result().strip()) > 64:
 			self.move_focus( 11 )
-			return tolongmsg64+_('Unit')
+			return tolongmsg64+_('Business unit')
 
 		if self.elements[13].result().strip() == '':
 			self.move_focus( 13 )
-			return message+_('Mailaddress')
+			return message+_('E-Mail address')
 		elif len(self.elements[13].result().strip()) > 64:
 			self.move_focus( 13 )
-			return tolongmsg64+_('Mailaddress')
+			return tolongmsg64+_('E-Mail address')
 		else:
 			test=self.elements[13].result().split('@')
-			message = _("Please insert a valid mailaddress")
+			message = _("Please enter a valid mailaddress")
 		return 0
 
 	def helptext(self):
-		return _('SSL-Certificate \n \n The installation of a Domain Controller Master requires the creation of a SSL certificate. \n Enter all mandatory details')
+		return _('SSL certificate \n \n The installation of a Domain Controller Master requires the creation of a SSL certificate. \n Please enter the mandatory details.')
 
 	def modheader(self):
 		return _('Certificate')

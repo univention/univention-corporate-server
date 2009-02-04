@@ -74,7 +74,7 @@ class object(content):
 		self.elements.append(textline(_('Hostname:'), self.minY, self.minX+2))#2
 		self.elements.append(input(self.all_results['hostname'], self.minY+1, self.minX+2,30))#3
 
-		self.elements.append(textline(_('Domainname:'), self.minY+3, self.minX+2))#4
+		self.elements.append(textline(_('Domain name:'), self.minY+3, self.minX+2))#4
 		self.elements.append(input(self.all_results['domainname'], self.minY+4, self.minX+2,30))#5
 
 		if self.all_results.has_key('system_role') and self.all_results['system_role'] == 'domaincontroller_master':
@@ -86,15 +86,15 @@ class object(content):
 		else:
 			self.append_spaces=0
 
-		self.elements.append(textline(_('Windows Domain:'), self.minY+6+int(self.append_spaces), self.minX+2))#8
+		self.elements.append(textline(_('Windows domain:'), self.minY+6+int(self.append_spaces), self.minX+2))#8
 		self.elements.append(input(self.all_results['windows_domain'], self.minY+7+int(self.append_spaces), self.minX+2,30))#9
 		if self.all_results.has_key('windows_domain') and self.all_results['windows_domain']:
 			self.guessed[ 'windows_domain' ] = self.all_results['windows_domain']+'already_initialize'
 
-		self.elements.append(textline(_('Password for root:'),self.minY+9+int(self.append_spaces),self.minX+2)) #10
+		self.elements.append(textline(_('Root password:'),self.minY+9+int(self.append_spaces),self.minX+2)) #10
 		self.elements.append(password(self.all_results['root_password'],self.minY+10+int(self.append_spaces),self.minX+2,30)) #11
 
-		self.elements.append(textline(_('Password for root (retype):'),self.minY+12+int(self.append_spaces),self.minX+2)) #12
+		self.elements.append(textline(_('Root password (retype):'),self.minY+12+int(self.append_spaces),self.minX+2)) #12
 		self.elements.append(password(self.all_results['root_password'],self.minY+13+int(self.append_spaces),self.minX+2,30)) #13
 
 	def tab(self):
@@ -173,31 +173,31 @@ class object(content):
 			if not self.ignore('hostname'):
 				if focus:
 					self.move_focus( 3 )
-				return _("Please insert a valid hostname in lowercase.")
+				return _("Please enter a valid hostname in lowercase.")
 		if domainname.strip() == '' or domainname.strip().find(' ') != -1 or not self.syntax_is_domainname(domainname):
 			if not self.ignore('domainname'):
 				if focus:
 					self.move_focus( 5 )
-				return _("Please insert a valid domainname in lowercase.")
+				return _("Please enter a valid domain name in lowercase.")
 		if len(hostname.strip()+domainname.strip()) >= 64:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:
 					self.move_focus( 3 )
-				return _('The length of host and domainname is greater then 64.')
+				return _('The length of host and domain name is greater then 64.')
 		if hostname.strip() == domainname.strip().split('.')[0]:
 			if not self.ignore('hostname') and not self.ignore('domainname'):
 				if focus:
 					self.move_focus( 5 )
-				return _("Hostname is equal to domainname.")
+				return _("Hostname is equal to domain name.")
 		if (ldap_base.strip() == '') and (self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master'):
 			if not self.ignore('ldap_base'):
 				if focus:
 					self.move_focus( 7 )
-				return _("Please insert the LDAP base.")
+				return _("Please enter the LDAP base.")
 		if (ldap_base.strip() != '') and ((self.all_results.has_key( 'system_role' ) and self.all_results['system_role'] == 'domaincontroller_master')) or ldap_base.strip().find(' ') != -1:
 
 			if not self.ignore('ldap_base'):
-				message=_("Syntax-Error. Please insert a LDAP base like this: dc=test,dc=net ")
+				message=_("Syntax-Error. Please enter a LDAP base according to this format: dc=test,dc=net ")
 				for dc in ldap_base.strip().split(','):
 					if len(dc.split('='))>2:
 						if focus:
@@ -226,12 +226,12 @@ class object(content):
 				if not self.ignore('password'):
 					if focus:
 						self.move_focus( password1_position )
-					return _("The Passwords do not match.")
+					return _("Passwords do not match.")
 			if len(root_password1.strip()) < 8:
 				if not self.ignore('password'):
 					if focus:
 						self.move_focus( password1_position )
-					return _("Your password is too short. For security reasons, your password must be at least 8 characters long.")
+					return _("Your password is too short. For security reasons, your password must contain at least 8 characters.")
 			if root_password1.strip().find(" ") != -1:
 				if not self.ignore('password'):
 					if focus:
@@ -285,7 +285,7 @@ class object(content):
 		return self.check_values(self.elements[3].result(), self.elements[5].result(), ldap_base, root_password1, root_password2)
 
 	def helptext(self):
-		return _('Settings  \n \n Set up basic system configuration like hostname, domainname and LDAP base and password')
+		return _('Settings  \n \n Configuration of basic system settings like hostname, domain name and LDAP base and root password')
 
 	def modheader(self):
 		return _('Settings')

@@ -75,7 +75,7 @@ class object(content):
 		oxae = False
 		if self.cmdline.has_key('edition') and self.cmdline['edition'][0] == 'oxae':
 			oxae = True
-		self.elements.append(textline(_('System role:'), self.minY, self.minX+2))#2
+		self.elements.append(textline(_('Select the system role:'), self.minY, self.minX+2))#2
 		dict={}
 		dict['Domain Controller Master']=['domaincontroller_master',0]
 		if not oxae:
@@ -97,12 +97,12 @@ class object(content):
 		self.elements[3].current=select
 
 		if oxae:
-			self.elements.append(textline('[ ] %s' % _('Domain Controller Backup'),self.minY+2,self.minX+2,40,40))#4
-			self.elements.append(textline('[ ] %s' % _('Domain Controller Slave'),self.minY+3,self.minX+2,40,40))#5
-			self.elements.append(textline('[ ] %s' % _('Memberserver'),self.minY+4,self.minX+2,40,40))#6
-			self.elements.append(textline('[ ] %s' % _('Managed Client'),self.minY+5,self.minX+2,40,40))#7
-			self.elements.append(textline('[ ] %s' % _('Mobile Client'),self.minY+6,self.minX+2,40,40))#8
-			self.elements.append(textline('[ ] %s' % _('Basissystem'),self.minY+7,self.minX+2,40,40))#9
+			self.elements.append(textline('[ ] %s' % _('Domain controller Backup'),self.minY+2,self.minX+2,40,40))#4
+			self.elements.append(textline('[ ] %s' % _('Domain controller Slave'),self.minY+3,self.minX+2,40,40))#5
+			self.elements.append(textline('[ ] %s' % _('Member server'),self.minY+4,self.minX+2,40,40))#6
+			self.elements.append(textline('[ ] %s' % _('Managed client'),self.minY+5,self.minX+2,40,40))#7
+			self.elements.append(textline('[ ] %s' % _('Mobile client'),self.minY+6,self.minX+2,40,40))#8
+			self.elements.append(textline('[ ] %s' % _('Base system'),self.minY+7,self.minX+2,40,40))#9
 
 
 	def input(self,key):
@@ -118,7 +118,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('System role \n \n Choose a system role. Different components will be installed. \n \n Domain Controller Master: \n This system keeps the whole LDAP tree and is the core of your UCS domain. \n \n Domain Controller Backup: \n This system keeps a copy of the complete LDAP structure, which cannot be changed manually. \n \n Domain Controller Slave: \n This system includes required LDAP data for a special purpose (i.e. location based). \n \n Memberserver: \n Member of a domain offering specified domainwide services like printing or backup. No LDAP data is stored on such a system. \n \n Managed Client: \n A Linux desktop system. \n \n Mobile Client: \n A managed client with notebook optimizations. \n \n Basesystem: \n A stand-alone server solution for web-server or firewall for example. This system is not a member of any domain.')
+		return _('System role \n \n Select a system role. Depending on the system role different components will be installed. \n \n Domain Controller Master: \n This system keeps the whole LDAP tree and is the core of your UCS domain. \n \n Domain Controller Backup: \n This system keeps a copy of the complete LDAP structure, which cannot be changed manually. \n \n Domain Controller Slave: \n This system includes required LDAP data for a special purpose (i.e. location based). \n \n Memberserver: \n Member of a domain offering specified domainwide services like printing or backup. No LDAP data is stored on such a system. \n \n Managed Client: \n A Linux desktop system. \n \n Mobile Client: \n A managed client with notebook optimizations. \n \n Basesystem: \n A stand-alone server solution for web-server or firewall for example. This system is not a member of any domain.')
 
 	def modheader(self):
 		return _('System role')

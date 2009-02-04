@@ -275,7 +275,7 @@ class lang_win(subwin):
 		except:
 			file=open('/lib/univention-installer/modules/languages')
 		dict={}
-		self.elements.append(textline(_('Available Installer Languages:'),self.pos_y+2,self.pos_x+2)) #0
+		self.elements.append(textline(_('Available Installer languages:'),self.pos_y+2,self.pos_x+2)) #0
 
 		languages=file.readlines()
 		for line in range(len(languages)):

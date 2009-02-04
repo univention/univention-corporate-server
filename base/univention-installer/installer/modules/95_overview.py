@@ -66,9 +66,9 @@ class object(content):
 			role="Basesystem              "
 
 		self.elements.append(textline(_('Press "Start installation" to begin process'), self.minY+1, self.minX+2))
-		self.elements.append(textline(_('Systemrole:    %s') % role , self.minY+3, self.minX+2))
+		self.elements.append(textline(_('System role:    %s') % role , self.minY+3, self.minX+2))
 		self.elements.append(textline('Hostname:      %s' % self.all_results['hostname'] , self.minY+4, self.minX+2))
-		self.elements.append(textline(_('Domainname:    %s') % self.all_results['domainname'] , self.minY+5, self.minX+2))
+		self.elements.append(textline(_('Domain name:    %s') % self.all_results['domainname'] , self.minY+5, self.minX+2))
 		count=0
 		if self.all_results.has_key('eth0_type') and self.all_results['eth0_type'] == 'dynamic':
 			self.elements.append(textline('eth0 Network:  dynamic', self.minY+7, self.minX+2))
@@ -84,7 +84,7 @@ class object(content):
 		nameserver=''
 		if self.all_results.has_key('nameserver_1'):
 			nameserver=self.all_results['nameserver_1']
-		self.elements.append(textline('Nameserver1:   %s' % nameserver , self.minY+9+count, self.minX+2))
+		self.elements.append(textline('%s1:   %s' % (_('Name server'), nameserver) , self.minY+9+count, self.minX+2))
 
 		internet_files=[]
 		if 'msttcorefonts' in self.all_results['packages']:
@@ -98,7 +98,7 @@ class object(content):
 			self.elements.append(textline(_('No package will download files from the internet.'), self.minY+11+count, self.minX+2))
 		else:
 			for p in internet_files:
-				self.elements.append(textline(_('%s will download internet files.') % p , self.minY+11+count, self.minX+2))
+				self.elements.append(textline(_('%s will download files from the internet.') % p , self.minY+11+count, self.minX+2))
 				count=count+1
 
 

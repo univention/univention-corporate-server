@@ -64,8 +64,8 @@ class object(content):
 
 	def layout(self):
 
-		self.elements.append(textline(_('Install the boot loader record on:'),self.minY,self.minX)) #2
-		self.elements.append(checkbox({_('Master Boot Record'): ["mbr", 1]},self.minY+2,self.minX+2,19,1,[0]))#3
+		self.elements.append(textline(_('Select where to install the boot loader:'),self.minY,self.minX)) #2
+		self.elements.append(checkbox({_('Master boot record'): ["mbr", 1]},self.minY+2,self.minX+2,19,1,[0]))#3
 		self.elements.append(textline(_('Device:'),self.minY+4,self.minX+7)) #4
 		if self.all_results.has_key( 'bootloader_record' ) and len(self.all_results[ 'bootloader_record']) > 0:
 			boot_device = self.all_results[ 'bootloader_record' ]
@@ -118,10 +118,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Bootloader \nSelect where you want the boot loader to be installed. \n ')
+		return _('Boot loader \nSelect where you want the boot loader to be installed. \n ')
 
 	def modheader(self):
-		return _('Bootloader')
+		return _('Boot loader')
 
 	def result(self):
 		result={}

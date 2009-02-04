@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-10-30 17:06+0100\n"
+"POT-Creation-Date: 2009-02-04 14:47+0100\n"
 "PO-Revision-Date: 2008-05-06 13:44+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,152 +15,1698 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: pygettext.py 1.5\n"
 
-#: installer/modules/12_expert_partition.py:47
-msgid "Univention Installer has been started with the"
-msgstr "Der Univention Installer wurde mit der Software RAID"
+#
+#: installer/modules/06_language.py:59
+msgid "Select your system languages:"
+msgstr "Wählen Sie die zu verwendenden Systemsprachen:"
 
-#: installer/modules/12_expert_partition.py:47
-msgid "Software RAID boot option. The hard disk needs"
-msgstr "Boot Option gestartet. Die Festplatte muss manuell"
+#: installer/modules/06_language.py:105
+msgid "Please select a valid language"
+msgstr "Bitte wählen Sie eine gültige Sprache"
 
-#: installer/modules/12_expert_partition.py:47
-msgid "to be partitioned and formatted manually."
-msgstr "partinioniert und formatiert werden."
-
-#: installer/modules/12_expert_partition.py:47
-msgid "By pressing"
-msgstr "Durch das Drücken von"
-
-#: installer/modules/12_expert_partition.py:47
-msgid "an interactive shell will be started, which allows you"
-msgstr "wird eine interaktive Shell gestartet. Hier kann unter"
-
-#: installer/modules/12_expert_partition.py:47
-msgid "to partition your hard disks using the standard"
-msgstr "Verwendung von Standardprogrammen wie cfdisk, mdadm,"
-
-#: installer/modules/12_expert_partition.py:47
-msgid "tools like cfdisk, mkfs.ext3, mdadm or lvcreate."
-msgstr "mkfs.ext3 usw. die Festplatte eingerichtet werden."
-
-#: installer/modules/12_expert_partition.py:47
-msgid "the installation will be continued."
-msgstr "kann die Installation fortgesetzt werden."
-
-#: installer/modules/12_expert_partition.py:87
-msgid "Part. expert mode"
-msgstr "Part. Expert Mode"
-
-#: installer/modules/12_partition.py:3122
-msgid "Error while writing partitions:"
-msgstr "Fehler beim Anlegen der Partitionen:"
-
-#: installer/modules/12_partition.py:3126
-msgid "Error while creating LVM volumes:"
-msgstr "Fehler beim Anlegen der LVM Volumes:"
-
-#: installer/modules/12_partition.py:3129
-msgid "Error while creating filesystems:"
-msgstr "Fehler beim Anlegen der Dateisysteme:"
-
-#: installer/end.py:86
-msgid "Installation failed!"
-msgstr "Die Installation ist fehlgeschlagen!"
-
-#: installer/end.py:87
-msgid "Please restart the computer and try again."
-msgstr "Bitte starten Sie den Rechner neu."
-
-#: installer/end.py:88
-msgid "Installation Log:"
-msgstr "Installations-Protokoll:"
-
-#: installer/end.py:95
-msgid "Installation succeded!"
-msgstr "Die Installation war erfolgreich."
-
-#: installer/end.py:96
-msgid "Please restart the computer."
-msgstr "Bitte starten Sie den Rechnern neu."
-
-#: installer/main.py:198
+#
+#: installer/modules/06_language.py:109
 msgid ""
-"Press Ctrl+c to exit or any key to continue. After exiting the installer "
-"please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
+"Language \n"
+" \n"
+" Select the system languages."
 msgstr ""
-"Drücken Sie Strg-C um den Installler zu verlassen oder eine beliebige Taste "
-"um fortzufahren. Nachdem Sie das Installationsprogramm beendet haben, können "
-"Sie das System neu starten oder mittels Strg-Alt-F2 zu einer Shell gelangen."
+"Sprache \n"
+" \n"
+" Wählen Sie die Systemsprachen."
 
-#: installer/main.py:213
-#: ../univention-system-setup/usr/sbin/univention-system-setup:112
+#: installer/modules/06_language.py:112
+msgid "Language"
+msgstr "Sprache"
+
+#: installer/modules/04_timezone.py:58
+msgid "Select a time zone:"
+msgstr "Wählen Sie eine Zeitzone:"
+
+#: installer/modules/04_timezone.py:100
 msgid ""
-"This error message is shown when an unexpected error occures during the "
-"installation process. The best way is to reboot the computer and retry the "
-"installation. Confirming this message will restart the installation process "
-"without rebooting."
+"Time zone \n"
+" \n"
+" Select the time zone your system is located in. "
 msgstr ""
-"The Fehlermeldung wird angezeigt, wenn während der Installation ein "
-"unerwartet Fehler aufgetreten ist. Es wäre sicherer an dieser Stelle den "
-"Rechner neuzustarten und die Installation erneut durchzuführen. Wenn Sie die "
-"Fehlermeldung allerdings bestätigen, wird die Installation ohne Neustart des "
-"Rechner neu initialisiert."
+"Zeitzone \n"
+" \n"
+" Bitte wählen Sie die passende Zeitzone für Ihr System aus. "
 
-#: installer/main.py:232
-#: ../univention-system-setup/usr/sbin/univention-system-setup:131
-msgid "A Python Exception has occured!"
-msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
+#: installer/modules/04_timezone.py:103
+msgid "Time zone"
+msgstr "Zeitzone"
 
-#: installer/main.py:251 installer/main.py:282 installer/objects.py:1720
+#: installer/modules/60_software.py:80
+msgid "Preparing Package List"
+msgstr "Bereite Paketliste vor"
+
+#: installer/modules/60_software.py:80 installer/modules/03_hardware.py:79
+#: installer/modules/03_hardware.py:88 installer/modules/03_hardware.py:94
+#: installer/modules/03_hardware.py:167 installer/modules/03_hardware.py:172
+#: installer/modules/03_hardware.py:245 installer/modules/12_partition.py:208
+#: installer/modules/12_partition.py:976 installer/modules/12_partition.py:979
+#: installer/modules/12_partition.py:982 installer/modules/12_partition.py:985
+#: installer/modules/12_partition.py:988
+#: installer/modules/12_partition.py:1909
+#: installer/modules/12_partition.py:3144
+#: installer/modules/12_partition.py:3149
+#: installer/modules/12_partition.py:3153
+msgid "Please wait ..."
+msgstr "Bitte warten ..."
+
+#: installer/modules/60_software.py:331
+msgid "Components"
+msgstr "Komponenten"
+
+#: installer/modules/60_software.py:332
+msgid "Packages"
+msgstr "Pakete"
+
+#: installer/modules/60_software.py:345 installer/objects.py:1152
+msgid "F12-Accept changes"
+msgstr "F12-Änderungen akzeptieren"
+
+#: installer/modules/60_software.py:348 installer/modules/60_software.py:353
+#: installer/modules/70_system_settings.py:80
+#: installer/modules/50_security.py:94 installer/modules/12_partition.py:2145
+#: installer/objects.py:1159
+msgid "F11-Back"
+msgstr "F11-Zurück"
+
+#: installer/modules/60_software.py:352
+#: installer/modules/70_system_settings.py:81
+#: installer/modules/50_security.py:95 installer/modules/12_partition.py:2146
+#: installer/objects.py:1148
+msgid "F12-Next"
+msgstr "F12-Weiter"
+
+#: installer/modules/60_software.py:457
+msgid "No helptext available."
+msgstr "Keine Hilfe verfügbar"
+
+#: installer/modules/60_software.py:487
+msgid ""
+"Software \n"
+" \n"
+" Select the software components you want to install. You can change details "
+"for some modules in the following steps."
+msgstr ""
+"Software \n"
+" \n"
+" Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
+"können in den folgenden Schritten die Details für manche Module ändern."
+
+#: installer/modules/60_software.py:490
+msgid "Software"
+msgstr "Software"
+
+#: installer/modules/15_bootloader.py:67
+msgid "Select where to install the boot loader:"
+msgstr "Wählen Sie aus, wo der Bootloader installiert wird:"
+
+#: installer/modules/15_bootloader.py:68
+msgid "Master boot record"
+msgstr "Master Boot Record"
+
+#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:620
+msgid "Device:"
+msgstr "Gerät:"
+
+#: installer/modules/15_bootloader.py:84
+msgid "First sector of boot partition"
+msgstr "Erster Sektor der Boot-Partition"
+
+#: installer/modules/15_bootloader.py:85
+msgid "Partition:"
+msgstr "Partition:"
+
+#: installer/modules/15_bootloader.py:121
+msgid ""
+"Boot loader \n"
+"Select where you want the boot loader to be installed. \n"
+" "
+msgstr ""
+"Bootloader \n"
+"Wählen Sie wo der Bootloader installiert werden soll. \n"
+" "
+
+#: installer/modules/15_bootloader.py:124
+msgid "Boot loader"
+msgstr "Bootloader"
+
+#: installer/modules/03_hardware.py:79 installer/modules/03_hardware.py:245
+msgid "Search CD-ROM Drive"
+msgstr "Suche CD-ROM-Laufwerk"
+
+#: installer/modules/03_hardware.py:88 installer/modules/03_hardware.py:167
+msgid "Test CD-ROM Drive"
+msgstr "Teste CD-ROM-Laufwerk"
+
+#: installer/modules/03_hardware.py:94 installer/modules/03_hardware.py:172
+msgid "Mount CD-ROM Drive"
+msgstr "Binde CD-ROM-Laufwerk ein"
+
+#: installer/modules/03_hardware.py:106 installer/modules/03_hardware.py:221
+msgid "No valid source found"
+msgstr "Keine gültige Quelle gefunden"
+
+#: installer/modules/03_hardware.py:147
+msgid "Check devices for UCS CD:"
+msgstr "Suche nach UCS-Medium"
+
+#: installer/modules/03_hardware.py:149 installer/modules/03_hardware.py:155
+#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:363
+msgid "F2-Add"
+msgstr "F2-Neu"
+
+#: installer/modules/03_hardware.py:151
+msgid "F3-Add"
+msgstr "F3-Neu"
+
+#: installer/modules/03_hardware.py:154
+msgid "F4-Rescan"
+msgstr "F4-Suchen"
+
+#: installer/modules/03_hardware.py:155
+msgid "CD-ROM Device"
+msgstr "CD-ROM-Laufwerk"
+
+#: installer/modules/03_hardware.py:157
+msgid "Network Device"
+msgstr "Neue Netzquelle"
+
+#: installer/modules/03_hardware.py:224
+msgid ""
+"Detects the source device. \n"
+" \n"
+" Please select \"Add CD-ROM device\" or \"Add network device\" if the needed "
+"device is missing. \n"
+" \n"
+" Please use \"Rescan\" if you want to autodetect devices again."
+msgstr ""
+"Erkennt das Laufwerk mit dem Installationsmedium. \n"
+" \n"
+" Bitte wählen Sie \"CD-ROM-Laufwerk\" hinzufügen oder \"Netzquelle hinzufügen"
+"\" wenn die richtige Quelle nicht erkannt wurde. \n"
+" \n"
+" Bitte benutzen Sie \"Suchen\" wenn der Installer nochmal die Laufwerke "
+"durchsuchen soll."
+
+#: installer/modules/03_hardware.py:227
+msgid "Source Device"
+msgstr "Quellmedium"
+
 #: installer/modules/03_hardware.py:258 installer/modules/03_hardware.py:292
-#: installer/modules/04_profile.py:54 installer/modules/12_partition.py:3989
-#: installer/modules/12_partition.py:4005 installer/modules/20_net.py:646
-#: installer/modules/20_net.py:873
-#: ../univention-system-setup/usr/sbin/univention-system-setup:143
-#: ../univention-system-setup/usr/sbin/univention-system-setup:170
-#: ../univention-system-setup/usr/sbin/univention-system-setup:189
-#: ../univention-system-setup/usr/sbin/univention-system-setup:209
-#: ../univention-system-setup/usr/sbin/univention-system-setup:555
+#: installer/modules/04_profile.py:54 installer/modules/12_partition.py:4041
+#: installer/modules/12_partition.py:4057 installer/modules/20_net.py:657
+#: installer/modules/20_net.py:884 installer/objects.py:1722
+#: installer/main.py:259 installer/main.py:290
 msgid "Ok"
 msgstr "Ok"
 
-#: installer/main.py:270
-msgid "Available Installer Languages:"
-msgstr "Verfügbare Installer-Sprachen:"
+#: installer/modules/03_hardware.py:259 installer/modules/03_hardware.py:293
+#: installer/modules/04_profile.py:55 installer/modules/01_modules.py:124
+#: installer/modules/12_partition.py:3543
+#: installer/modules/12_partition.py:3590
+#: installer/modules/12_partition.py:3816
+#: installer/modules/12_partition.py:3855 installer/modules/20_net.py:658
+#: installer/modules/20_net.py:885
+msgid "Cancel"
+msgstr "Abbrechen"
 
-#: installer/main.py:354
+#: installer/modules/03_hardware.py:265
+msgid "Add CD-ROM device"
+msgstr "CD-ROM-Laufwerk hinzufügen"
+
+#: installer/modules/03_hardware.py:288
+msgid "Servername"
+msgstr "Servername"
+
+#: installer/modules/03_hardware.py:290
+msgid "Path"
+msgstr "Pfad"
+
+#: installer/modules/03_hardware.py:299
+msgid "Adding network device"
+msgstr "Netzwerklaufwerk hinzufügen"
+
+#: installer/modules/10_role.py:78
+msgid "Select the system role:"
+msgstr "Wählen Sie die Systemrolle:"
+
+#: installer/modules/10_role.py:100
+msgid "Domain controller Backup"
+msgstr "Domain controller Backup"
+
+#: installer/modules/10_role.py:101
+msgid "Domain controller Slave"
+msgstr "Domain controller Slave"
+
+#: installer/modules/10_role.py:102
+msgid "Member server"
+msgstr "Member server"
+
+#: installer/modules/10_role.py:103
+msgid "Managed client"
+msgstr "Managed client"
+
+#: installer/modules/10_role.py:104
+msgid "Mobile client"
+msgstr "Mobile client"
+
+#: installer/modules/10_role.py:105
+msgid "Base system"
+msgstr "Basissystem"
+
+#: installer/modules/10_role.py:121
+msgid ""
+"System role \n"
+" \n"
+" Select a system role. Depending on the system role different components "
+"will be installed. \n"
+" \n"
+" Domain Controller Master: \n"
+" This system keeps the whole LDAP tree and is the core of your UCS domain. \n"
+" \n"
+" Domain Controller Backup: \n"
+" This system keeps a copy of the complete LDAP structure, which cannot be "
+"changed manually. \n"
+" \n"
+" Domain Controller Slave: \n"
+" This system includes required LDAP data for a special purpose (i.e. "
+"location based). \n"
+" \n"
+" Memberserver: \n"
+" Member of a domain offering specified domainwide services like printing or "
+"backup. No LDAP data is stored on such a system. \n"
+" \n"
+" Managed Client: \n"
+" A Linux desktop system. \n"
+" \n"
+" Mobile Client: \n"
+" A managed client with notebook optimizations. \n"
+" \n"
+" Basesystem: \n"
+" A stand-alone server solution for web-server or firewall for example. This "
+"system is not a member of any domain."
+msgstr ""
+"Systemrolle \n"
+" \n"
+" Wählen Sie eine Systemrolle für Ihr System. Verschiedene Komponenten werden "
+"installiert. \n"
+" \n"
+" Domain Controller Master: \n"
+" Dieses System verwaltet alle LDAP Verzeichnisse. Sollten Änderungen daran "
+"vorgenommen werden, werden diese nur auf dem Master geschrieben. Alle "
+"Zertifikate werden hier gespeichert. \n"
+" \n"
+" Domain Controller Backup: \n"
+" Dieses System verwaltet eine Kopie aller LDAP Verzeichnisse und "
+"Zertifikate. Diese Kopie kann nicht manuell geändert werden. \n"
+" \n"
+" Domain Controller Slave: \n"
+" Dieses System verwaltet nur einen bestimmten Teil der LDAP Struktur die für "
+"seine Umgebung nützlich ist (Zweigstellen). \n"
+" \n"
+" Memberserver:  \n"
+" Dieses System bietet bestimmte Dienste z.B. Datensicherung für die Domäne "
+"an. Es werden keine LDAP Daten auf einem Memberserver gespeichert. \n"
+" \n"
+" Managed Client: \n"
+" Ein System mit seiner eigenen Arbeitsumgebung, das Mitglied der Domäne "
+"ist. \n"
+" \n"
+" Mobile Client: \n"
+" siehe Managed Client. Bietet jedoch zusätzlich spezielle Optionen für die "
+"Pflege von Notebook Software. \n"
+" \n"
+" Basesystem: \n"
+" Eine Stand-alone Server Lösung für Web Server oder Firewalls. Dieses System "
+"ist nicht Mitglied der Domäne und kann nicht über das UCS Managementsystem "
+"verwaltet werden."
+
+#: installer/modules/10_role.py:124
+msgid "System role"
+msgstr "Systemrolle"
+
+#: installer/modules/31_join.py:49 installer/modules/31_join.py:136
+#: installer/modules/30_ssl.py:63 installer/modules/30_ssl.py:165
+#: installer/modules/20_net.py:773 installer/modules/20_net.py:910
+msgid "The following value is missing: "
+msgstr "Der folgende Wert fehlt:"
+
+#: installer/modules/31_join.py:58 installer/modules/31_join.py:82
+#: installer/modules/31_join.py:140
+msgid "Join-Account"
+msgstr "Join-Account"
+
+#: installer/modules/31_join.py:63 installer/modules/31_join.py:85
+msgid "Password"
+msgstr "Passwort"
+
+#: installer/modules/31_join.py:73
+msgid "Start join at the end of installation."
+msgstr "Starte den Join-Vorgang am Ende der Installation"
+
+#: installer/modules/31_join.py:77
+msgid "Search DC Master in DNS"
+msgstr "DNS nach DC Master durchsuchen"
+
+#: installer/modules/31_join.py:79 installer/modules/31_join.py:138
+msgid "Hostname of DC Master"
+msgstr "Systemname des DC Master"
+
+#: installer/modules/31_join.py:88
+msgid "Password (retype)"
+msgstr "Passwort (zur Bestätigung bitte nochmal eingeben)"
+
+#: installer/modules/31_join.py:142
+msgid "Password for Root"
+msgstr "Root-Passwort"
+
+#: installer/modules/31_join.py:144
+msgid "Password for Root (retype)"
+msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
+
+#: installer/modules/31_join.py:146
+msgid "Passwords did not match."
+msgstr "Passwörter stimmen nicht überein."
+
+#: installer/modules/31_join.py:150
+msgid ""
+"Join-Settings \n"
+" \n"
+" All settings to join this system into given domain."
+msgstr ""
+"Join-Optionen \n"
+" \n"
+" Alle Optionen die zum Joinen in eine vorkonfigurierte Domäne benötigt "
+"werden."
+
+#: installer/modules/31_join.py:153
+msgid "Join-Settings"
+msgstr "Join-Optionen"
+
+#: installer/modules/11_basis.py:74
+msgid "Hostname:"
+msgstr "Systemname"
+
+#: installer/modules/11_basis.py:77
+msgid "Domain name:"
+msgstr "Domänenname"
+
+#: installer/modules/11_basis.py:82
+msgid "LDAP base:"
+msgstr "LDAP-Basis"
+
+#: installer/modules/11_basis.py:89
+msgid "Windows domain:"
+msgstr "Windows-Domäne"
+
+#: installer/modules/11_basis.py:94
+msgid "Root password:"
+msgstr "Root-Passwort"
+
+#: installer/modules/11_basis.py:97
+msgid "Root password (retype):"
+msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
+
+#: installer/modules/11_basis.py:176
+msgid "Please enter a valid hostname in lowercase."
+msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Systemnamen an."
+
+#: installer/modules/11_basis.py:181
+msgid "Please enter a valid domain name in lowercase."
+msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Domänennamen an."
+
+#: installer/modules/11_basis.py:186
+msgid "The length of host and domain name is greater then 64."
+msgstr "Die Länge von System und Domänennamen ist größer als 64 Zeichen."
+
+#: installer/modules/11_basis.py:191
+msgid "Hostname is equal to domain name."
+msgstr "Systemname ist gleich Domänennamen."
+
+#: installer/modules/11_basis.py:196
+msgid "Please enter the LDAP base."
+msgstr "Bitte geben Sie die LDAP-Basis an."
+
+#: installer/modules/11_basis.py:200
+msgid ""
+"Syntax-Error. Please enter a LDAP base according to this format: dc=test,"
+"dc=net "
+msgstr ""
+"Syntax-Fehler. Bitte geben Sie die LDAP-Basis wie folgt an: dc=test,dc=net "
+
+#: installer/modules/11_basis.py:219
+msgid "Please enter a Password."
+msgstr "Bitte geben Sie ein Passwort an."
+
+#: installer/modules/11_basis.py:224
+msgid "Please retype the Password."
+msgstr "Bitte geben Sie das Passwort nochmal an."
+
+#: installer/modules/11_basis.py:229
+msgid "Passwords do not match."
+msgstr "Die Passwörter stimmen nicht überein."
+
+#: installer/modules/11_basis.py:234
+msgid ""
+"Your password is too short. For security reasons, your password must contain "
+"at least 8 characters."
+msgstr ""
+"Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
+"mindestens 8 Zeichen lang sein."
+
+#: installer/modules/11_basis.py:239 installer/modules/11_basis.py:244
+msgid "Illegal password: A password may not contain blanks."
+msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
+
+#: installer/modules/11_basis.py:249 installer/modules/11_basis.py:254
+msgid "Illegal password: A password may not contain back slashes."
+msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
+
+#: installer/modules/11_basis.py:259 installer/modules/11_basis.py:264
+msgid "Illegal password: A password may not contain quotation marks."
+msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
+
+#: installer/modules/11_basis.py:288
+msgid ""
+"Settings  \n"
+" \n"
+" Configuration of basic system settings like hostname, domain name and LDAP "
+"base and root password"
+msgstr ""
+"Optionen \n"
+" \n"
+" Konfiguration grundlegender Einstellungen wie Hostname, Domänenname, LDAP-"
+"Basis und Root-Passwort"
+
+#: installer/modules/11_basis.py:291
+msgid "Settings"
+msgstr "Optionen"
+
+#: installer/modules/30_ssl.py:64 installer/modules/30_ssl.py:166
+msgid "The following value is too long, only 128 characters allowed: "
+msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: "
+
+#: installer/modules/30_ssl.py:65 installer/modules/30_ssl.py:167
+msgid "The following value is too long, only 64 characters allowed: "
+msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: "
+
+#: installer/modules/30_ssl.py:70 installer/modules/30_ssl.py:79
+#: installer/modules/30_ssl.py:83 installer/modules/30_ssl.py:138
+#: installer/modules/30_ssl.py:170 installer/modules/30_ssl.py:177
+#: installer/modules/30_ssl.py:180
+msgid "Country"
+msgstr "Land"
+
+#: installer/modules/30_ssl.py:74 installer/modules/30_ssl.py:173
+msgid "Please enter a two letter country code."
+msgstr "Bitte geben Sie einen zweistelligen Ländercode ein."
+
+#: installer/modules/30_ssl.py:88 installer/modules/30_ssl.py:92
+#: installer/modules/30_ssl.py:141 installer/modules/30_ssl.py:184
+#: installer/modules/30_ssl.py:187
+msgid "Location"
+msgstr "Ort"
+
+#: installer/modules/30_ssl.py:97 installer/modules/30_ssl.py:101
+#: installer/modules/30_ssl.py:144 installer/modules/30_ssl.py:191
+#: installer/modules/30_ssl.py:194
+msgid "Organisation"
+msgstr "Organisation"
+
+#: installer/modules/30_ssl.py:106 installer/modules/30_ssl.py:110
+#: installer/modules/30_ssl.py:147 installer/modules/30_ssl.py:198
+#: installer/modules/30_ssl.py:201
+msgid "Business unit"
+msgstr "Abteilung"
+
+#: installer/modules/30_ssl.py:115 installer/modules/30_ssl.py:119
+#: installer/modules/30_ssl.py:150 installer/modules/30_ssl.py:205
+#: installer/modules/30_ssl.py:208
+msgid "E-Mail address"
+msgstr "E-Mail-Adresse"
+
+#: installer/modules/30_ssl.py:123 installer/modules/30_ssl.py:211
+msgid "Please enter a valid mailaddress"
+msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an."
+
+#: installer/modules/30_ssl.py:135
+msgid "Country code"
+msgstr "Länderkennung"
+
+#: installer/modules/30_ssl.py:215
+msgid ""
+"SSL certificate \n"
+" \n"
+" The installation of a Domain Controller Master requires the creation of a "
+"SSL certificate. \n"
+" Please enter the mandatory details."
+msgstr ""
+"SSL-Zertifikat \n"
+" \n"
+" Die Installation eines Domain Controller Master setzt die Erstellung eines "
+"SSL-Zertifikates voraus. \n"
+" Geben Sie die benötigten Informationen ein."
+
+#: installer/modules/30_ssl.py:218
+msgid "Certificate"
+msgstr "Zertifikat"
+
+#: installer/modules/04_profile.py:52
+msgid "Please enter the password:"
+msgstr "Bitte geben Sie das Passwort ein:"
+
+#: installer/modules/04_profile.py:155
+msgid "Wrong password"
+msgstr "Falsches Passwort"
+
+#: installer/modules/04_profile.py:256
+msgid "Filename"
+msgstr "Dateiname"
+
+#: installer/modules/04_profile.py:256
+msgid "Size"
+msgstr "Größe"
+
+#: installer/modules/04_profile.py:333
+msgid "You have to select a Profile."
+msgstr "Sie müssen ein Profil auswählen."
+
+#: installer/modules/04_profile.py:337
+msgid ""
+"Profile \n"
+" \n"
+" Select a predefined installation profile or enter the position of your own "
+"profile. \n"
+" \n"
+" Please mark the device with the preconfigured profile. \n"
+"  \n"
+" Press F2 to add a missing device or F3 to browse for the correct path."
+msgstr ""
+"Profil \n"
+" \n"
+" Wählen Sie eines der vorkonfigurierten Installationsprofile oder geben Sie "
+"den Pfad Ihres eigenen Profils an. \n"
+" \n"
+" Bitte markieren Sie das Laufwerk mit dem vorkonfigurierten Profil. \n"
+" \n"
+" Drücken Sie F2, um einen fehlendes Laufwerk, oder F3, um den richtigen Pfad "
+"zu ergänzen."
+
+#: installer/modules/04_profile.py:340
+msgid "Profile"
+msgstr "Profil"
+
+#: installer/modules/04_profile.py:369
+msgid "Loading Modules"
+msgstr "Lade Module"
+
+#: installer/modules/04_profile.py:371
+msgid "Initialize USB Devices"
+msgstr "USB-Geräte initialisieren"
+
+#: installer/modules/04_profile.py:459 installer/modules/05_keyboard.py:61
+#: installer/modules/05_keyboard.py:127 installer/modules/01_modules.py:299
+msgid "Please wait..."
+msgstr "Bitte warten..."
+
+#: installer/modules/05_keyboard.py:61 installer/modules/05_keyboard.py:127
+msgid "Loading Keyset"
+msgstr "Lade Tastaturbelegung"
+
+#: installer/modules/05_keyboard.py:71
+msgid "Select your keyboard layout:"
+msgstr "Bitte wählen Sie die Tastaturbelegung:"
+
+#: installer/modules/05_keyboard.py:119
+msgid ""
+"Keyboard layout \n"
+" \n"
+" Select your keyboard layout."
+msgstr ""
+"Tastaturbelegung \n"
+" \n"
+" Wählen Sie die passende Tastaturbelegung für Ihre Tastatur. "
+
+#: installer/modules/05_keyboard.py:122
+msgid "Keyboard"
+msgstr "Tastatur"
+
+#: installer/modules/07_dl.py:90
+msgid "Select your default system language:"
+msgstr "Wählen Sie die zu verwendende Standardsprache:"
+
+#
+#: installer/modules/07_dl.py:104
+msgid "Please select the default system language"
+msgstr "Bitte wählen Sie die Standardsprache für dieses System"
+
+#: installer/modules/07_dl.py:108
+msgid ""
+"Default Language \n"
+" \n"
+" Select a default system language."
+msgstr ""
+"Standardsprache \n"
+" \n"
+" Wählen Sie die Standardsprache."
+
+#: installer/modules/07_dl.py:111
+msgid "Default Language"
+msgstr "Standardsprache"
+
+#: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
+#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
+msgid "Loading modules"
+msgstr "Lade Module"
+
+#: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
+#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
 #, python-format
-msgid " UCS - %(codename)s (%(version)s)"
-msgstr " UCS - %(codename)s (%(version)s)"
+msgid "Loading module %s"
+msgstr "Lade Modul %s"
 
-#: installer/main.py:356
+#: installer/modules/01_modules.py:115
+msgid "Additional modules to load:"
+msgstr "Weitere zu ladende Module:"
+
+#: installer/modules/01_modules.py:125 installer/modules/12_partition.py:3542
+#: installer/modules/12_partition.py:3589
+#: installer/modules/12_partition.py:3815
+#: installer/modules/12_partition.py:3854
+msgid "Save"
+msgstr "Speichern"
+
+#: installer/modules/01_modules.py:132
+msgid "Modules"
+msgstr "Module"
+
+#: installer/modules/01_modules.py:163
+msgid "The following hardware has been detected:"
+msgstr "Die folgende Hardware wurde gefunden:"
+
+#: installer/modules/01_modules.py:223
+msgid "Add modules"
+msgstr "Module hinzufügen"
+
+#: installer/modules/01_modules.py:272
+msgid ""
+"Hardware detection \n"
+" \n"
+" This module automatically detects your hardware setup. \n"
+" If your hardware is not listed please select \"Add module\" and mark the "
+"missing modules by pressing the space key."
+msgstr ""
+"Hardware-Suche \n"
+" \n"
+" Dieses Modul erkennt automatisch Ihre Hardware Komponenten. \n"
+" Sollte Hardware nicht aufgelistet sein bitte wählen Sie \"Modul hinzufügen"
+"\" und markieren Sie die fehlenden Module durch drücken der 'Space'-Taste."
+
+#: installer/modules/01_modules.py:275 installer/modules/01_modules.py:299
+msgid "Hardware detection"
+msgstr "Hardwareerkennung"
+
+#: installer/modules/70_system_settings.py:69
+#: installer/modules/70_system_settings.py:71
+#: installer/modules/70_system_settings.py:73
+msgid "Create local repository"
+msgstr "Lokales Repository erstellen"
+
+#: installer/modules/70_system_settings.py:76
+#: installer/modules/70_system_settings.py:78
+msgid "Create home share"
+msgstr "Heimatverzeichnis-Freigabe"
+
+#: installer/modules/70_system_settings.py:105
+msgid ""
+"System-Settings  \n"
+" \n"
+" Various system settings"
+msgstr ""
+"System-Optionen \n"
+" \n"
+" Verschiedene System-Einstellungen"
+
+#: installer/modules/70_system_settings.py:108
+msgid "System-Settings"
+msgstr "System-Optionen"
+
+#: installer/modules/50_security.py:70
+msgid "Activate filtering of system services:"
+msgstr "Filterung von Systemdiensten"
+
+#: installer/modules/50_security.py:71
+msgid "These options control how many system services are"
+msgstr "Diese Optionen konfigurieren, welche Systemdienste"
+
+#: installer/modules/50_security.py:72
+msgid "initially blocked by a packet filter (iptables)"
+msgstr "initial durch einen Paketfilter blockiert werden:"
+
+#: installer/modules/50_security.py:75
+msgid "    allowed."
+msgstr "    HTTPS sind erlaubt."
+
+#: installer/modules/50_security.py:78
+msgid "Disabled"
+msgstr "Deaktiviert"
+
+#: installer/modules/50_security.py:79
+msgid "Typical selection of services (recommended)"
+msgstr "Empfohlene Auswahl an Systemdiensten"
+
+#: installer/modules/50_security.py:80
+msgid "Locked-down setup. Only SSH, LDAP and HTTPS are"
+msgstr "Abgesicherte Grundinstallation. Nur SSH, LDAP und"
+
+#: installer/modules/50_security.py:118
+msgid ""
+"Packet filter  \n"
+" \n"
+" Pre-defined packet filter configuration options for various system roles"
+msgstr ""
+"Paketfilter  \n"
+" \n"
+" Vordefinierte Paketfiltereinstellungen für verschiedene Systemrollen."
+
+#: installer/modules/50_security.py:121
+msgid "Packet filter"
+msgstr "Paketfilter"
+
+#: installer/modules/12_partition.py:208
+msgid "Reading LVM config"
+msgstr "Suche LVM-Geräte"
+
+#: installer/modules/12_partition.py:247
 #, python-format
-msgid " Univention Corporate Server %(version)s (%(codename)s)"
-msgstr " Univention Corporate Server %(version)s (%(codename)s)"
+msgid ""
+"Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  "
+"required=%(required)s"
+msgstr ""
+"Nicht genügend Platz für Autopartitionierung: vorhanden=%(disksizeall)s  "
+"benötigt=%(required)s"
 
-#: installer/main.py:362
-msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
-msgstr " F1-Hilfe | F12-Starte Recover Shell | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:265
+#, python-format
+msgid ""
+"cannot autopart disk: /boot or swap does not fit on harddisk (required=%s)"
+msgstr ""
+"Autopart. nicht möglich: /boot oder swap passen nicht auf Festplatte "
+"(benötigt=%s)"
 
-#: installer/main.py:364
-msgid " F1-Help | F12-Start Installation | Strg+c-Exit"
-msgstr " F1-Hilfe | F12-Starte Installation | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:416 installer/modules/12_partition.py:431
+#, python-format
+msgid "Double mount point '%s'"
+msgstr "Doppelter Mount-Point '%s'"
 
-#: installer/main.py:366
-msgid " F1-Help | F12-Next | Strg+c-Exit"
-msgstr " F1-Hilfe | F12-Weiter | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:440
+msgid "Missing '/' as mountpoint"
+msgstr "Fehlender '/' als Mountpoint"
 
-#: installer/main.py:370
-msgid " F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Starte Recover Shell | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:444
+#, python-format
+msgid "Wrong file system type '%s' for mountpoint '/'"
+msgstr "Falsches Dateisystem '%s' für '/'"
 
-#: installer/main.py:372
-msgid " F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:466
+msgid "Unable to create bootable config!"
+msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen!"
 
-#: installer/main.py:374
-msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
+#: installer/modules/12_partition.py:467
+msgid "/-partition is located on LVM and"
+msgstr "/-Partition liegt auf einem LVM und"
+
+#: installer/modules/12_partition.py:468
+msgid "/boot-partition is missing or located"
+msgstr "die /boot-Partition fehlt oder ist auch"
+
+#: installer/modules/12_partition.py:469
+msgid "on LVM too."
+msgstr "auf einem LVM."
+
+#: installer/modules/12_partition.py:502
+msgid "Partitioning"
+msgstr "Partitionierung"
+
+#: installer/modules/12_partition.py:976
+msgid "Deleting LVM volumes"
+msgstr "Lösche LVM-Geräte"
+
+#: installer/modules/12_partition.py:979
+msgid "Deleting partitions"
+msgstr "Lösche Partitionen"
+
+#: installer/modules/12_partition.py:982
+msgid "Creating partitions"
+msgstr "Lösche Partitionen"
+
+#: installer/modules/12_partition.py:985
+msgid "Creating LVM volumes"
+msgstr "Erstelle LVM-Geräte"
+
+#: installer/modules/12_partition.py:988
+msgid "Formatting partitions"
+msgstr "Formatiere Partitionen"
+
+#: installer/modules/12_partition.py:1706
+msgid "Include USB storage devices while auto partitioning?"
+msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
+
+#: installer/modules/12_partition.py:1708
+#: installer/modules/12_partition.py:1929
+msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
+msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
+
+#: installer/modules/12_partition.py:1709
+msgid "partitions on all disks! This includes USB harddisks"
+msgstr "allen Festplatten vor! Das beinhaltet auch USB-Festplatten"
+
+#: installer/modules/12_partition.py:1710
+msgid "and USB sticks. In any case *ALL* LVM LV and LVM VG"
+msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
+
+#: installer/modules/12_partition.py:1711
+msgid "will be deleted!"
+msgstr "gelöscht!"
+
+#: installer/modules/12_partition.py:1805
+#: installer/modules/12_partition.py:1865
+msgid "Not enough disk space found for /boot!"
+msgstr "Nicht genug Speicherplatz für /boot!"
+
+#: installer/modules/12_partition.py:1806
+#: installer/modules/12_partition.py:1837
+#: installer/modules/12_partition.py:1866
+msgid "Auto partitioning aborted."
+msgstr "Automatische Partitionierung abgebrochen."
+
+#: installer/modules/12_partition.py:1836
+msgid "Not enough disk space found!"
+msgstr "Nicht genügend Speicherplatz vorhanden!"
+
+#: installer/modules/12_partition.py:1909
+msgid "Detecting LVM devices"
+msgstr "Suche LVM-Geräte"
+
+#: installer/modules/12_partition.py:1918
+msgid "WARNING: not enough free space for auto partitioning!"
+msgstr "WARNUNG: Nicht genug Platz für Autopartitionierung!"
+
+#: installer/modules/12_partition.py:1919
+msgid "Auto partitioning has been disabled!"
+msgstr "Automatische Partitionierung wurde deaktiviert!"
+
+#: installer/modules/12_partition.py:1927
+msgid "Do you want to use auto-partitioning?"
+msgstr "Soll die automatische Partitionierung verwendet werden? "
+
+#: installer/modules/12_partition.py:1930
+msgid "partitions on all disks! If auto-partition result is"
+msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
+
+#: installer/modules/12_partition.py:1931
+msgid "unsuitable press F5 to restart partitioning."
+msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
+
+#: installer/modules/12_partition.py:1940
+msgid "LVM1 volumes detected. To use LVM1 volumes all"
+msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
+
+#: installer/modules/12_partition.py:1941
+msgid "existing LVM1 snapshots have to be removed!"
+msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
+
+#: installer/modules/12_partition.py:1942
+msgid "Otherwise kernel is unable to mount them!"
+msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
+
+#: installer/modules/12_partition.py:1961
+msgid "No LVM volume group found on current system."
+msgstr "Keine LVM-Gruppe gefunden."
+
+#: installer/modules/12_partition.py:1962
+msgid "Do you want to use LVM2?"
+msgstr "Möchten Sie LVM2 verwenden?"
+
+#: installer/modules/12_partition.py:1981
+msgid " Partitioning dialog "
+msgstr "Partitionierung"
+
+#: installer/modules/12_partition.py:1998 installer/modules/20_net.py:779
+#: installer/modules/20_net.py:781
+msgid "Device"
+msgstr "Gerät"
+
+#: installer/modules/12_partition.py:1999
+msgid "Area(MB)"
+msgstr "Bereich(MB)"
+
+#: installer/modules/12_partition.py:2000
+msgid "Type"
+msgstr "Typ"
+
+#: installer/modules/12_partition.py:2001
+msgid "Form."
+msgstr "Form."
+
+#: installer/modules/12_partition.py:2002
+#: installer/modules/12_partition.py:3573
+#: installer/modules/12_partition.py:3846
+msgid "Mount point"
+msgstr "Mount-Point"
+
+#: installer/modules/12_partition.py:2003
+msgid "Size(MB)"
+msgstr "Größe(MB)"
+
+#: installer/modules/12_partition.py:2017
+msgid "diskdrive"
+msgstr "Festplatte"
+
+#: installer/modules/12_partition.py:2043
+msgid "(unassigned)"
+msgstr "(nicht zugewiesen)"
+
+#: installer/modules/12_partition.py:2069
+msgid "unusable"
+msgstr "unbenutzbar"
+
+#: installer/modules/12_partition.py:2072
+#: installer/modules/12_partition.py:2076
+msgid "free"
+msgstr "frei"
+
+#: installer/modules/12_partition.py:2079
+msgid "unknown"
+msgstr "unbekannt"
+
+#: installer/modules/12_partition.py:2097
+msgid "LVM volume group"
+msgstr "LVM-Medien-Gruppe"
+
+#: installer/modules/12_partition.py:2140
+msgid "F2-Create"
+msgstr "F2-Erstellen"
+
+#: installer/modules/12_partition.py:2141 installer/modules/20_net.py:364
+msgid "F3-Edit"
+msgstr "F3-Editieren"
+
+#: installer/modules/12_partition.py:2142 installer/modules/20_net.py:365
+msgid "F4-Delete"
+msgstr "F4-Löschen"
+
+#: installer/modules/12_partition.py:2143
+msgid "F5-Reset changes"
+msgstr "F5-Änderungen verwerfen"
+
+#: installer/modules/12_partition.py:2144
+msgid "F6-Write partitions"
+msgstr "F6-Änderungen schreiben"
+
+#: installer/modules/12_partition.py:2185
+msgid ""
+"UCS-Partition-Tool \n"
+" \n"
+" This tool is designed for creating, editing and deleting partitions during "
+"the installation. \n"
+" \n"
+" Use \"F2-Create\" to add a new partition. \n"
+" \n"
+" Use \"F3-Edit\" to configure an already existing partition. \n"
+" \n"
+" Use \"F4-Delete\" to remove a partition. \n"
+" \n"
+" Use the \"Reset changes\" button to discard changes to the partition "
+"table. \n"
+" \n"
+" Use the \"Write Partitions\" button to create and/or format your partitions."
+msgstr ""
+"UCS-Partitionierung \n"
+" \n"
+" Dieses Tool ist für das Erstellen, Editieren und Löschen von Partitionen "
+"vor der UCS-Installation zuständig. \n"
+" \n"
+" Bitte wählen Sie \"F2-Erstellen\", um eine neue Partition hinzuzufügen. \n"
+" \n"
+" Bitte wählen Sie \"F3-Editieren\", um eine bestehende Partition zu "
+"verändern. \n"
+" \n"
+" Bitte wählen Sie \"F4-Löschen\", um eine Partition zu entfernen. \n"
+"\n"
+" Bitte benutzen Sie \"Änderungen verwerfen\", um alle Ihre bisherigen "
+"Einstellungen in diesem Fenster zurückzusetzen. \n"
+" \n"
+" Bitte benutzen Sie  \"Änderungen schreiben\", um Ihre Einstellungen nun auf "
+"die Festplatte zu schreiben."
+
+#: installer/modules/12_partition.py:2275
+#: installer/modules/12_partition.py:2322
+#: installer/modules/12_partition.py:2338
+msgid "LVM physical volumes cannot be modified!"
+msgstr "LVM Physikalische Medien können nicht verändert werden!"
+
+#: installer/modules/12_partition.py:2275
+#: installer/modules/12_partition.py:2322
+#: installer/modules/12_partition.py:2338
+msgid "If necessary delete this partition."
+msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
+
+#: installer/modules/12_partition.py:2418
+#: installer/modules/12_partition.py:2429
+msgid "Unable to remove physical volume from"
+msgstr "Das Löschen des physikalischen Mediums der"
+
+#: installer/modules/12_partition.py:2419
+#: installer/modules/12_partition.py:2430
+#, python-format
+msgid "volume group \"%s\"!"
+msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
+
+#: installer/modules/12_partition.py:2420
+#: installer/modules/12_partition.py:2431
+msgid "Physical volume contains physical extents in use!"
+msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
+
+#: installer/modules/12_partition.py:2432
+msgid "Please use \"pvmove\" to move data to other"
+msgstr "Bitte verschieben Sie die Daten mit \"pvmove\""
+
+#: installer/modules/12_partition.py:2433
+msgid "physical volumes."
+msgstr "auf ein anderes phys. Medium."
+
+#: installer/modules/12_partition.py:3108
+msgid "No device files found for following devices. Please"
+msgstr "Keine Gerätedateien für die nachfolgenden Geräte gefunden. Bitte"
+
+#: installer/modules/12_partition.py:3109
+msgid "decrease number of partitions on a single disk or use LVM."
+msgstr ""
+"reduzieren Sie die Anzahl der Partitionen auf einer Festplatte oder nutzen "
+"Sie LVM."
+
+#: installer/modules/12_partition.py:3144
+msgid "Writing partitions"
+msgstr "Schreibe Partitionen"
+
+#: installer/modules/12_partition.py:3147
+msgid "Error while writing partitions:"
+msgstr "Fehler beim Anlegen der Partitionen:"
+
+#: installer/modules/12_partition.py:3149
+msgid "Creating LVM Volumes"
+msgstr "Erstelle LVM-Medien"
+
+#: installer/modules/12_partition.py:3152
+msgid "Error while creating LVM volumes:"
+msgstr "Fehler beim Anlegen der LVM Volumes:"
+
+#: installer/modules/12_partition.py:3153
+msgid "Creating file systems"
+msgstr "Erstelle Dateisysteme"
+
+#: installer/modules/12_partition.py:3156
+msgid "Error while creating file systems:"
+msgstr "Fehler beim Anlegen der Dateisysteme:"
+
+#: installer/modules/12_partition.py:3337
+#: installer/modules/12_partition.py:3395
+#: installer/modules/12_partition.py:3704
+#: installer/modules/12_partition.py:3740
+msgid "The selected file system takes no"
+msgstr "Das gewählte Dateisystem ist nicht nutzbar,"
+
+#: installer/modules/12_partition.py:3338
+#: installer/modules/12_partition.py:3705
+msgid "effect, if format is not selected."
+msgstr "wenn formatieren nicht gewählt wurde."
+
+#: installer/modules/12_partition.py:3340
+#: installer/modules/12_partition.py:3392
+#: installer/modules/12_partition.py:3398
+#: installer/modules/12_partition.py:3707
+#: installer/modules/12_partition.py:3737
+#: installer/modules/12_partition.py:3743
+msgid "Do you want to format this partition?"
+msgstr "Wollen Sie diese Partition formatieren? "
+
+#: installer/modules/12_partition.py:3388
+msgid "This partition is designated as root file system,"
+msgstr "Diese Partition ist als Root-Dateisystem gekennzeichnet,"
+
+#: installer/modules/12_partition.py:3389
+#: installer/modules/12_partition.py:3734
+msgid "but \"format\" is not selected. This can cause"
+msgstr "aber \"Formatieren\" wurde nicht ausgewählt. Dies"
+
+#: installer/modules/12_partition.py:3390
+#: installer/modules/12_partition.py:3735
+msgid "problems with preexisting data on disk!"
+msgstr " kann zu Problemen mit existierende Daten führen!"
+
+#: installer/modules/12_partition.py:3396
+#: installer/modules/12_partition.py:3741
+msgid "effect, if \"format\" is not selected."
+msgstr "wenn \"formatieren\" nicht gewählt wurde."
+
+#: installer/modules/12_partition.py:3479
+msgid "Physical Diskdrive"
+msgstr "Physikalisches Laufwerk"
+
+#: installer/modules/12_partition.py:3480
+#, python-format
+msgid "Device: %s"
+msgstr "Gerät: %s"
+
+#: installer/modules/12_partition.py:3481
+#, python-format
+msgid "Size: %s"
+msgstr "Größe: %s"
+
+#: installer/modules/12_partition.py:3483
+#, python-format
+msgid "Primary Partitions: %s"
+msgstr "Primäre Partitionen: %s"
+
+#: installer/modules/12_partition.py:3483
+#: installer/modules/12_partition.py:3525
+#: installer/modules/12_partition.py:3529
+msgid "primary"
+msgstr "primär"
+
+#: installer/modules/12_partition.py:3484
+#, python-format
+msgid "Logical Partitions: %s"
+msgstr "Logische Partitionen: %s"
+
+#: installer/modules/12_partition.py:3484
+#: installer/modules/12_partition.py:3527
+#: installer/modules/12_partition.py:3530
+msgid "logical"
+msgstr "logisch"
+
+#: installer/modules/12_partition.py:3489
+msgid "Next"
+msgstr "Weiter"
+
+#: installer/modules/12_partition.py:3500
+msgid "New Partition:"
+msgstr "Neue Partition"
+
+#: installer/modules/12_partition.py:3502
+#: installer/modules/12_partition.py:3503
+#: installer/modules/12_partition.py:3505
+#: installer/modules/12_partition.py:3788
+#: installer/modules/12_partition.py:3789
+#: installer/modules/12_partition.py:3791
+msgid "Mount point:"
+msgstr "Mount-Point"
+
+#: installer/modules/12_partition.py:3504
+#: installer/modules/12_partition.py:3790
+msgid "Size (MB):"
+msgstr "Größe (MB)"
+
+#: installer/modules/12_partition.py:3506
+#: installer/modules/12_partition.py:3555
+#: installer/modules/12_partition.py:3792
+#: installer/modules/12_partition.py:3825
+msgid "File system"
+msgstr "Dateisystem"
+
+#: installer/modules/12_partition.py:3533
+#: installer/modules/12_partition.py:3576
+#: installer/modules/12_partition.py:3578
+msgid "bootable"
+msgstr "bootbar"
+
+#: installer/modules/12_partition.py:3535
+#: installer/modules/12_partition.py:3581
+#: installer/modules/12_partition.py:3583
+msgid "PPC PreP"
+msgstr "PPC PreP"
+
+#: installer/modules/12_partition.py:3537
+#: installer/modules/12_partition.py:3539
+#: installer/modules/12_partition.py:3585
+#: installer/modules/12_partition.py:3587
+#: installer/modules/12_partition.py:3813
+#: installer/modules/12_partition.py:3850
+#: installer/modules/12_partition.py:3852
+msgid "format"
+msgstr "formatieren"
+
+#: installer/modules/12_partition.py:3541
+msgid "LVM PV"
+msgstr "LVM PV"
+
+#: installer/modules/12_partition.py:3549
+#, python-format
+msgid "Partition: %s"
+msgstr "Partition: %s"
+
+#: installer/modules/12_partition.py:3551
+msgid "Typ: primary"
+msgstr "Typ: primär"
+
+#: installer/modules/12_partition.py:3553
+msgid "Typ: logical"
+msgstr "Typ: logisch"
+
+#: installer/modules/12_partition.py:3554
+#: installer/modules/12_partition.py:3824
+#, python-format
+msgid "Size: %s MB"
+msgstr "Größe: %s"
+
+#: installer/modules/12_partition.py:3663
+msgid "Please enter volume name!"
+msgstr "Geben Sie den Namen des Medium ein!"
+
+#: installer/modules/12_partition.py:3665
+msgid "Logical volume name contains illegal characters!"
+msgstr "Name des Logischen Mediums enthält nicht erlaubte Zeichen!"
+
+#: installer/modules/12_partition.py:3667
+msgid "Logical volume name is already in use!"
+msgstr "Der Name des logischen Mediums wird bereits verwendet!"
+
+#: installer/modules/12_partition.py:3682
+msgid "Size contains non-digit characters!"
+msgstr "Die Größenangabe enthält nicht nur Ziffern"
+
+#: installer/modules/12_partition.py:3695
+msgid "Not enough free space on volume group!"
+msgstr "Nicht ausreichend Platz in der Medien-Gruppe!"
+
+#: installer/modules/12_partition.py:3733
+msgid "This volume is designated as root filesystem,"
+msgstr "Dieses Medium ist als Root-Dateisystem gekennzeichnet,"
+
+#: installer/modules/12_partition.py:3786
+#: installer/modules/12_partition.py:3787
+msgid "New logical volume:"
+msgstr "Neues Logisches Medium:"
+
+#: installer/modules/12_partition.py:3823
+#, python-format
+msgid "LVM Logical Volume: %s"
+msgstr "LVM Logisches Medium: %s"
+
+#: installer/modules/12_partition.py:3881
+msgid "The selected partition is the extended partition of this disc."
+msgstr "Diese Partition ist die erweiterte Partition dieser Festplatte."
+
+#: installer/modules/12_partition.py:3883
+msgid "The extended partition contains all logical partitions."
+msgstr "Diese Partition verwaltet alle logischen Partitionen."
+
+#: installer/modules/12_partition.py:3885
+msgid "Do you really want to delete all logical partitions?"
+msgstr "Möchten Sie alle logischen Partitionen löschen?"
+
+#: installer/modules/12_partition.py:3888
+#: installer/modules/12_partition.py:4009 installer/objects.py:1673
+msgid "Yes"
+msgstr "Ja"
+
+#: installer/modules/12_partition.py:3889
+#: installer/modules/12_partition.py:4010 installer/objects.py:1674
+msgid "No"
+msgstr "Nein"
+
+#: installer/modules/12_partition.py:3927
+msgid "Found over-sized extended partition."
+msgstr "Zu große erweiterte Partition gefunden"
+
+#: installer/modules/12_partition.py:3929
+msgid "This program will resize them to free unused space"
+msgstr "Die Größe wird angepasst um die Partitionstabelle zu korrigieren."
+
+#: installer/modules/12_partition.py:3932
+#: installer/modules/12_partition.py:3976
+msgid "OK"
+msgstr "OK"
+
+#: installer/modules/12_partition.py:3961
+msgid "UCS Installer supports only one LVM volume group."
+msgstr "UCS Installer unterstützt nur eine LVM-Medien-Gruppe."
+
+#: installer/modules/12_partition.py:3963
+msgid "Please select volume group to use for installation."
+msgstr "Bitte wählen Sie die Medien-Gruppe für die Installation."
+
+#: installer/modules/12_partition.py:3965
+msgid "Volume Group:"
+msgstr "Medien-Gruppe:"
+
+#: installer/modules/12_partition.py:4004
+msgid "Do you really want to write all changes?"
+msgstr "Wollen Sie wirklich alle Änderungen schreiben?"
+
+#: installer/modules/12_partition.py:4006
+msgid "This may destroy all data on modified discs!"
+msgstr "Dadurch können Daten vernichtet werden!"
+
+#: installer/modules/12_partition.py:4036
+msgid "No disk detected!"
+msgstr "Keine Festplatte erkannt!"
+
+#: installer/modules/12_partition.py:4038
+msgid "Please try to load the suitable module and rescan!"
+msgstr ""
+"Bitte versuchen Sie das passende Modul zu laden \n"
+" und es erneut vom Installer erkennen zu lassen!"
+
+#: installer/modules/12_partition.py:4052
+msgid "Wrong file system type for mount point \"/\" !"
+msgstr "Falsches Dateisystem für '/'"
+
+#: installer/modules/12_partition.py:4054
+msgid "Please select another file system."
+msgstr ""
+"Bitte wählen Sie ein anderes \n"
+"Dateisystem."
+
+#: installer/modules/95_overview.py:68
+msgid "Press \"Start installation\" to begin process"
+msgstr "Wählen Sie 'Installation starten', um fortzufahren."
+
+#: installer/modules/95_overview.py:69
+#, python-format
+msgid "System role:    %s"
+msgstr "Systemrolle:   %s"
+
+#: installer/modules/95_overview.py:71
+#, python-format
+msgid "Domain name:    %s"
+msgstr "Domänenname:   %s"
+
+#: installer/modules/95_overview.py:87 installer/modules/20_net.py:152
+#: installer/modules/20_net.py:375 installer/modules/20_net.py:459
+#: installer/modules/20_net.py:486
+msgid "Name server"
+msgstr "Nameserver"
+
+#: installer/modules/95_overview.py:98
+msgid "No package will download files from the internet."
+msgstr "Es werden keine Dateien aus dem Internet geladen"
+
+#: installer/modules/95_overview.py:101
+#, python-format
+msgid "%s will download files from the internet."
+msgstr "%s wird Dateien aus dem Internet laden"
+
+#: installer/modules/95_overview.py:121
+msgid ""
+"Overview \n"
+" \n"
+" Installation settings"
+msgstr ""
+"Überblick \n"
+" \n"
+" Installationseinstellungen"
+
+#: installer/modules/95_overview.py:124
+msgid "Overview"
+msgstr "Überblick"
+
+#: installer/modules/20_net.py:143 installer/modules/20_net.py:480
+msgid "Following value is invalid: "
+msgstr "Die folgende Eingabe ist ungültig: "
+
+#: installer/modules/20_net.py:147 installer/modules/20_net.py:368
+#: installer/modules/20_net.py:483
+msgid "Gateway"
+msgstr "Gateway"
+
+#: installer/modules/20_net.py:157 installer/modules/20_net.py:383
+#: installer/modules/20_net.py:466 installer/modules/20_net.py:489
+msgid "DNS Forwarder"
+msgstr "DNS-Forwarder"
+
+#: installer/modules/20_net.py:166 installer/modules/20_net.py:495
+msgid "Proxy, example http://10.201.1.1:8080"
+msgstr "Proxy, z.B. http://10.201.1.1:8080"
+
+#: installer/modules/20_net.py:196
+msgid "You have to add one or more Network interfaces."
+msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
+
+#: installer/modules/20_net.py:217 installer/modules/20_net.py:218
+#: installer/modules/20_net.py:231 installer/modules/20_net.py:232
+#: installer/modules/20_net.py:323 installer/modules/20_net.py:344
+msgid "New Virtual Device"
+msgstr "Neues virtuelles Interface"
+
+#: installer/modules/20_net.py:234 installer/modules/20_net.py:235
+#: installer/modules/20_net.py:320 installer/modules/20_net.py:342
+msgid "New Device"
+msgstr "Neues Interface"
+
+#: installer/modules/20_net.py:359
+msgid "Device        IP               Netmask"
+msgstr "Interface     IP               Netzmaske"
+
+#: installer/modules/20_net.py:380 installer/modules/20_net.py:388
+msgid "More"
+msgstr "Mehr"
+
+#: installer/modules/20_net.py:391
+msgid "HTTP proxy"
+msgstr "HTTP-Proxy"
+
+#: installer/modules/20_net.py:406
+msgid "Warning:"
+msgstr "Achtung:"
+
+#: installer/modules/20_net.py:407
+msgid "Could not find any network card. The Installation will"
+msgstr "Es wurde keine Netzwerkkarte gefunden. Die Installation wird"
+
+#: installer/modules/20_net.py:408
+msgid "probably fail. It is better to check the network card."
+msgstr "wahrscheinlich nicht gelingen. Bitte die Netzwerkkarte prüfen."
+
+#: installer/modules/20_net.py:409
+msgid "If a network card is installed please try to load additional"
+msgstr "Sollte eine Netzwerkkarte installiert sein, müssen möglicherweise"
+
+#: installer/modules/20_net.py:410
+msgid "kernel modules at the beginning of the installation."
+msgstr "weitere Kernel Module zu Begin der Installation geladen werden."
+
+#: installer/modules/20_net.py:498
+msgid "You have to add one or more network interfaces."
+msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben."
+
+#: installer/modules/20_net.py:502
+msgid ""
+"Network \n"
+" \n"
+" In this module the network configuration is done. \n"
+" \n"
+" Select \"New Interface\" to add a new interface. Select \"New Virtual "
+"Interface\" to create a new virtual interface. \n"
+" \n"
+" Interface: \n"
+" Select the interface you want to configure. \n"
+" \n"
+" Dynamic (DHCP): \n"
+" Mark this field if you want this interface to retrieve its IP configuration "
+"via DHCP (Dynamic Host Configuration Protocol). \n"
+" \n"
+" Static: \n"
+" Mark this field if you want this interface to be configured manually. \n"
+" \n"
+" Enter IP, netmask, broadcast and network address of this interface. \n"
+"\n"
+" Gateway: \n"
+" Default gateway to be use. \n"
+" \n"
+" Name server: \n"
+" Enter the IP address of the primary name server, if you are adding a system "
+"to an existing domain. \n"
+" More: \n"
+" Enter additional name servers \n"
+" \n"
+" DNS Forwarder: \n"
+" Enter the IP address of a DNS server to forward queries to. \n"
+" More: \n"
+" Enter additional DNS forwarders \n"
+" \n"
+" HTTP-Proxy: \n"
+" Enter the IP address and port number for the HTTP-Proxy (example: "
+"http://192.168.1.123:5858)"
+msgstr ""
+"Netzwerk \n"
+" \n"
+" In diesem Modul wird die Netzwerk-Konfiguration eingetragen. \n"
+" \n"
+" Wählen Sie das Feld \"Neues Interface\", um eine neue Netzwerkkarte "
+"hinzuzufügen, oder \"Neues virtuelles Interface\", um eine virtuelle "
+"Netzwerkkarte zu erstellen.\n"
+" \n"
+" Gerät: \n"
+" Wählen Sie das zu konfigurierende Netzwerk-Interface. \n"
+" \n"
+" Dynamisch (DHCP):  \n"
+" Bitte markieren Sie dieses Feld, wenn die IP-Konfiguration via DHCP "
+"zugeteilt werden soll. \n"
+" \n"
+" Statisch: \n"
+" Das System benutzt eine statische IP-Adresse. \n"
+"\n"
+" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn "
+"Sie sich für die statische IP-Adresse entschieden haben.\n"
+"\n"
+" Gateway: \n"
+" Geben Sie eine IP-Adresse für das Gateway ein. \n"
+" \n"
+" Nameserver: \n"
+" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein "
+"neues System in eine bestehende Domäne installieren möchten. \n"
+" Mehr: \n"
+" Geben Sie weitere IP Adressen an, wenn Ihr System mehrere Nameserver nutzen "
+"soll.  \n"
+"  \n"
+" DNS-Forwarder: \n"
+" Geben Sie die IP Adresse für den DNS-Forwarder an. \n"
+" Mehr: \n"
+" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP "
+"Adressen an. \n"
+" \n"
+" HTTP-Proxy: \n"
+" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
+"nutzen. z.B: http://192.168.1.123:3128"
+
+#: installer/modules/20_net.py:505 installer/modules/20_net.py:801
+#: installer/modules/20_net.py:803
+msgid "Network"
+msgstr "Netzwerk"
+
+#: installer/modules/20_net.py:627
+msgid "Dynamic (DHCP)"
+msgstr "Dynamisch (DHCP)"
+
+#: installer/modules/20_net.py:627 installer/modules/20_net.py:630
+msgid "Static"
+msgstr "Statisch"
+
+#: installer/modules/20_net.py:633
+msgid "IP address:"
+msgstr "IP-Adresse:"
+
+#: installer/modules/20_net.py:639
+msgid "Netmask:"
+msgstr "Netzmaske:"
+
+#: installer/modules/20_net.py:645
+msgid "Broadcast:"
+msgstr "Broadcast:"
+
+#: installer/modules/20_net.py:651
+msgid "Network:"
+msgstr "Netzwerk:"
+
+#: installer/modules/20_net.py:759
+msgid " Interface configuration"
+msgstr " Interface Konfiguration"
+
+#: installer/modules/20_net.py:774 installer/modules/20_net.py:911
+msgid "The following value is invalid: "
+msgstr "Die folgende Eingabe ist ungültig: "
+
+#: installer/modules/20_net.py:786 installer/modules/20_net.py:788
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: installer/modules/20_net.py:791 installer/modules/20_net.py:793
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: installer/modules/20_net.py:796 installer/modules/20_net.py:798
+msgid "Broadcast"
+msgstr "Broadcast"
+
+#: installer/modules/20_net.py:859
+#, python-format
+msgid "1. %s"
+msgstr "1. %s"
+
+#: installer/modules/20_net.py:868
+#, python-format
+msgid "2. %s"
+msgstr "2. %s"
+
+#: installer/modules/20_net.py:876
+#, python-format
+msgid "3. %s"
+msgstr "3. %s"
+
+#: installer/modules/20_net.py:892
+#, python-format
+msgid " More %ss"
+msgstr "Weitere %s"
+
+#: installer/modules/12_expert_partition.py:52
+msgid "Univention Installer has been started with the"
+msgstr "Der Univention Installer wurde mit der Software RAID"
+
+#: installer/modules/12_expert_partition.py:53
+msgid "Software RAID boot option, which mandates expert mode."
+msgstr "Boot Option gestartet, die den Expertenmodus voraussetzt."
+
+#: installer/modules/12_expert_partition.py:54
+msgid "The hard disk has to be partitioned and formatted manually."
+msgstr "Die Festplatte muss manuell partitioniert und formatiert werden."
+
+#: installer/modules/12_expert_partition.py:56
+#: installer/modules/12_expert_partition.py:64
+msgid "By pressing"
+msgstr "Durch das Drücken von"
+
+#: installer/modules/12_expert_partition.py:58
+msgid "    [ALT]+[F2]"
+msgstr ""
+
+#: installer/modules/12_expert_partition.py:60
+msgid "an interactive shell will be started, which allows you"
+msgstr "wird eine interaktive Shell gestartet. Hier kann unter"
+
+#: installer/modules/12_expert_partition.py:61
+msgid "to partition your hard disks using the standard"
+msgstr "Verwendung von Standardprogrammen wie cfdisk, mdadm,"
+
+#: installer/modules/12_expert_partition.py:62
+msgid "tools like cfdisk, mkfs.ext3, mdadm or lvcreate."
+msgstr "mkfs.ext3 usw. die Festplatte eingerichtet werden."
+
+#: installer/modules/12_expert_partition.py:66
+msgid "    [ALT]+[F1]"
+msgstr ""
+
+#: installer/modules/12_expert_partition.py:68
+msgid "the installation will be continued."
+msgstr "kann die Installation fortgesetzt werden."
+
+#: installer/modules/12_expert_partition.py:88
+msgid ""
+"Partitioner (export mode):\n"
+"\n"
+"CTRL+ALT+F2 interactive shell\n"
+"CTRL+ALT+F1 installation screen"
+msgstr ""
+
+#: installer/modules/12_expert_partition.py:91
+msgid "Part. expert mode"
+msgstr "Part. Expertenmodus"
 
 #: installer/objects.py:666
 msgid " Help"
@@ -179,16 +1725,6 @@ msgstr " Warnung"
 msgid " End"
 msgstr " Ende"
 
-#: installer/objects.py:1148 installer/modules/12_partition.py:2132
-#: installer/modules/50_security.py:95 installer/modules/60_software.py:358
-#: installer/modules/70_system_settings.py:81
-msgid "F12-Next"
-msgstr "F12-Weiter"
-
-#: installer/objects.py:1152 installer/modules/60_software.py:351
-msgid "F12-Accept changes"
-msgstr "F12-Änderungen akzeptieren"
-
 #: installer/objects.py:1154
 msgid "F12-Start Recover Shell"
 msgstr "F12-Recover Shell starten"
@@ -197,26 +1733,73 @@ msgstr "F12-Recover Shell starten"
 msgid "F12-Start installation"
 msgstr "F12-Installation starten"
 
-#: installer/objects.py:1159 installer/modules/12_partition.py:2131
-#: installer/modules/50_security.py:94 installer/modules/60_software.py:354
-#: installer/modules/60_software.py:359
-#: installer/modules/70_system_settings.py:80
-msgid "F11-Back"
-msgstr "F11-Zurück"
-
-#: installer/objects.py:1237 installer/objects.py:1516
+#: installer/objects.py:1237 installer/objects.py:1518
 msgid "Sorry, no help for this module."
 msgstr "Es existiert keine Hilfe für dieses Modul"
 
-#: installer/objects.py:1671 installer/modules/12_partition.py:3836
-#: installer/modules/12_partition.py:3957
-msgid "Yes"
-msgstr "Ja"
+#: installer/main.py:206
+msgid ""
+"Press Ctrl+c to exit or any key to continue. After exiting the installer "
+"please reboot the system or press Ctrl+Alt+F2 to get an shell prompt."
+msgstr ""
+"Drücken Sie Strg-C um den Installler zu verlassen oder eine beliebige Taste "
+"um fortzufahren. Nachdem Sie das Installationsprogramm beendet haben, können "
+"Sie das System neu starten oder mittels Strg-Alt-F2 zu einer Shell gelangen."
 
-#: installer/objects.py:1672 installer/modules/12_partition.py:3837
-#: installer/modules/12_partition.py:3958
-msgid "No"
-msgstr "Nein"
+#: installer/main.py:221
+msgid ""
+"This error message is shown when an unexpected error occures during the "
+"installation process. The best way is to reboot the computer and retry the "
+"installation. Confirming this message will restart the installation process "
+"without rebooting."
+msgstr ""
+"The Fehlermeldung wird angezeigt, wenn während der Installation ein "
+"unerwartet Fehler aufgetreten ist. Es wäre sicherer an dieser Stelle den "
+"Rechner neuzustarten und die Installation erneut durchzuführen. Wenn Sie die "
+"Fehlermeldung allerdings bestätigen, wird die Installation ohne Neustart des "
+"Rechner neu initialisiert."
+
+#: installer/main.py:240
+msgid "A Python Exception has occured!"
+msgstr "Ein Python-Ausnahmefehler ist aufgetreten!"
+
+#: installer/main.py:278
+msgid "Available Installer languages:"
+msgstr "Verfügbare Installer-Sprachen:"
+
+#: installer/main.py:362
+#, python-format
+msgid " UCS - %(codename)s (%(version)s)"
+msgstr " UCS - %(codename)s (%(version)s)"
+
+#: installer/main.py:364
+#, python-format
+msgid " Univention Corporate Server %(version)s (%(codename)s)"
+msgstr " Univention Corporate Server %(version)s (%(codename)s)"
+
+#: installer/main.py:370
+msgid " F1-Help | F12-Start Recover Shell | Strg+c-Exit"
+msgstr " F1-Hilfe | F12-Starte Recover Shell | Strg+c-Abbruch"
+
+#: installer/main.py:372
+msgid " F1-Help | F12-Start Installation | Strg+c-Exit"
+msgstr " F1-Hilfe | F12-Starte Installation | Strg+c-Abbruch"
+
+#: installer/main.py:374
+msgid " F1-Help | F12-Next | Strg+c-Exit"
+msgstr " F1-Hilfe | F12-Weiter | Strg+c-Abbruch"
+
+#: installer/main.py:378
+msgid " F1-Help | F11-Back | F12-Start Recover Shell | Strg+c-Exit"
+msgstr " F1-Hilfe | F11-Zurück | F12-Starte Recover Shell | Strg+c-Abbruch"
+
+#: installer/main.py:380
+msgid " F1-Help | F11-Back | F12-Start Installation | Strg+c-Exit"
+msgstr " F1-Hilfe | F11-Zurück | F12-Starte Installation | Strg+c-Abbruch"
+
+#: installer/main.py:382
+msgid " F1-Help | F11-Back | F12-Next | Strg+c-Exit"
+msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | Strg+c-Abbruch"
 
 #: installer/package_list.py:36
 msgid "Services for Windows"
@@ -279,7 +1862,7 @@ msgid "Groupware based on Kolab 2"
 msgstr "Groupware basierend auf Kolab 2"
 
 #: installer/package_list.py:104
-msgid "Kolab 2 Webclient"
+msgid "Kolab 2 web client"
 msgstr "Kolab 2 Webclient"
 
 #: installer/package_list.py:110
@@ -287,15 +1870,15 @@ msgid "Horde Webclient for Kolab 2 for UCS"
 msgstr "Horde Webclient für Kolab 2 für UCS"
 
 #: installer/package_list.py:113
-msgid "Standard Mail Services"
+msgid "Standard mail services"
 msgstr "Standard Mail-Dienste"
 
 #: installer/package_list.py:119
-msgid "Standard Mail Services with postfix and cyrus (SMTP/POP/IMAP)"
+msgid "Standard mail services with postfix and cyrus (SMTP/POP/IMAP)"
 msgstr "Standard Mail-Dienste mit Postfix und Cyrus (SMTP/POP/IMAP)"
 
 #: installer/package_list.py:124
-msgid "IP Management"
+msgid "IP management"
 msgstr "IP-Verwaltung"
 
 #: installer/package_list.py:126
@@ -319,8 +1902,8 @@ msgid "DHCP Server"
 msgstr "DHCP-Server"
 
 #: installer/package_list.py:151
-msgid "Services"
-msgstr "Dienste"
+msgid "System services"
+msgstr "Systemdienste"
 
 #: installer/package_list.py:153
 msgid "Additional Services"
@@ -343,7 +1926,7 @@ msgid "Open-Xchange Groupware Server"
 msgstr "Open-Xchange Groupware Server"
 
 #: installer/package_list.py:184
-msgid "Terminalserver"
+msgid "Terminal server"
 msgstr "Terminalserver"
 
 #: installer/package_list.py:190
@@ -351,35 +1934,31 @@ msgid "X-Window-System Client for Terminal Services"
 msgstr "X-Window-System Client für Terminal-Dienste"
 
 #: installer/package_list.py:193
-msgid "Thinclient Environment"
+msgid "Thin client environment"
 msgstr "Thinclient-Umgebung"
-
-#: installer/package_list.py:598
-msgid "Manage Software Raids"
-msgstr "Software Raids verwalten"
 
 #: installer/package_list.py:199
 msgid "Thinclient Infrastructure"
 msgstr "Thinclient-Infrastruktur"
 
 #: installer/package_list.py:202
-msgid "Print Server"
+msgid "Print server"
 msgstr "Druckserver"
 
 #: installer/package_list.py:208
-msgid "Print Server based on cups"
+msgid "Print server based on cups"
 msgstr "Druckserver basierend auf CUPS"
 
 #: installer/package_list.py:211
-msgid "Print Quota"
+msgid "Print quota"
 msgstr "Druck-Quota"
 
 #: installer/package_list.py:217
-msgid "Print Quota Support based on pykota"
+msgid "Print quota support based on pykota"
 msgstr "Druck-Quota-Unterstützung basierend auf Pykota"
 
 #: installer/package_list.py:220
-msgid "Nagios Server"
+msgid "Nagios server"
 msgstr "Nagios-Server"
 
 #: installer/package_list.py:226 installer/package_list.py:235
@@ -387,7 +1966,7 @@ msgid "Host, service and network monitoring program "
 msgstr "Rechner-, Dienste- und Netzwerk-Überwachungsdienst"
 
 #: installer/package_list.py:229
-msgid "Nagios Client"
+msgid "Nagios client"
 msgstr "Nagios-Client"
 
 #: installer/package_list.py:238
@@ -399,15 +1978,15 @@ msgid "Sync users and groups with Active Directory"
 msgstr "Benutzer und Gruppen mit Active Directory synchronisieren"
 
 #: installer/package_list.py:246
-msgid "Fax Server"
+msgid "Fax server"
 msgstr "Fax-Server"
 
 #: installer/package_list.py:252
-msgid "Fax Server based on hylafax"
+msgid "Fax server based on hylafax"
 msgstr "Fax-Server basierend auf hylafax"
 
 #: installer/package_list.py:255
-msgid "Squid Proxyserver"
+msgid "Squid proxy server"
 msgstr "Squid-Proxyserver"
 
 #: installer/package_list.py:261
@@ -415,7 +1994,7 @@ msgid "Web Proxy Services"
 msgstr "Web-Proxy-Dienste"
 
 #: installer/package_list.py:264
-msgid "OpenSSH Server"
+msgid "OpenSSH server"
 msgstr "OpenSSH-Server"
 
 #: installer/package_list.py:269
@@ -423,11 +2002,11 @@ msgid "Secure shell server, an rshd replacement"
 msgstr "Secure Shell-Server, ein rshd Ersatz"
 
 #: installer/package_list.py:272 installer/package_list.py:278
-msgid "FreeNX Server"
+msgid "FreeNX server"
 msgstr "FreeNX-Server"
 
 #: installer/package_list.py:281
-msgid "VNC Server"
+msgid "VNC server"
 msgstr "VNC-Server"
 
 #: installer/package_list.py:287
@@ -458,12 +2037,8 @@ msgstr "UCS Net Installer"
 msgid "Install UCS over the network"
 msgstr "PXE-Installation von UCS"
 
-#: installer/package_list.py:318
-msgid "Administration"
-msgstr "Administration"
-
-#: installer/package_list.py:320
-msgid "Administration Tools"
+#: installer/package_list.py:318 installer/package_list.py:320
+msgid "Administrative tools"
 msgstr "Administrations-Werkzeuge"
 
 #: installer/package_list.py:324
@@ -507,8 +2082,8 @@ msgid "Tape Backup Software"
 msgstr "Bandsicherungssoftware"
 
 #: installer/package_list.py:366
-msgid "Remote Backup"
-msgstr "Remote-Backup"
+msgid "Remote support for Unidump"
+msgstr "Remote-Unterstützung für Unidump"
 
 #: installer/package_list.py:372
 msgid "Backup Software based on rsync"
@@ -523,7 +2098,7 @@ msgid "Desktop Environment packages"
 msgstr "Pakete der Desktop-Umgebung"
 
 #: installer/package_list.py:383
-msgid "Graphical User Interface"
+msgid "Graphical user interface"
 msgstr "Grafische Benutzeroberfläche"
 
 #: installer/package_list.py:389
@@ -531,7 +2106,7 @@ msgid "Core Packages for a Graphical Desktop Environment"
 msgstr "Basispakete für die grafische Desktop-Umgebung"
 
 #: installer/package_list.py:392
-msgid "KDE Desktop"
+msgid "KDE desktop"
 msgstr "KDE-Desktop"
 
 #: installer/package_list.py:398
@@ -555,7 +2130,7 @@ msgid "Firefox Webbrowser"
 msgstr "Firefox Webbrowser"
 
 #: installer/package_list.py:419
-msgid "Java Plugin/Runtime"
+msgid "Java plugin/runtime"
 msgstr "Java-Plugin/Java-Umgebung"
 
 #: installer/package_list.py:425 installer/package_list.py:622
@@ -563,7 +2138,7 @@ msgid "Java Virtual Machine"
 msgstr "Java Virtual Machine"
 
 #: installer/package_list.py:428
-msgid "Flash Plugin"
+msgid "Flash plugin"
 msgstr "Flash-Plugin"
 
 #: installer/package_list.py:434
@@ -571,7 +2146,7 @@ msgid "Flashplugin for webbrowsers"
 msgstr "Flashplugin für Webbrowser"
 
 #: installer/package_list.py:437
-msgid "Mplayer Plugin"
+msgid "Mplayer plugin"
 msgstr "Mplayer-Plugin"
 
 #: installer/package_list.py:444
@@ -595,7 +2170,7 @@ msgid "PDF Viewer"
 msgstr "PDF-Betrachter"
 
 #: installer/package_list.py:465
-msgid "Additional KDE Applications"
+msgid "Additional KDE applications"
 msgstr "Weitere KDE-Anwendungen"
 
 #: installer/package_list.py:471
@@ -607,15 +2182,15 @@ msgstr ""
 "kdetoys oder kdeutils"
 
 #: installer/package_list.py:474
-msgid "Desktop Search (kerry/beagle)"
+msgid "Desktop search (kerry/beagle)"
 msgstr "Desktop-Suche (kerry/beagle)"
 
 #: installer/package_list.py:480
-msgid "Desktop Search with kerry and beagle"
+msgid "Desktop search with kerry and beagle"
 msgstr "Desktop-Suche mit kerry und beagle"
 
 #: installer/package_list.py:483
-msgid "Multimedia Applications"
+msgid "Multimedia applications"
 msgstr "Multimedia-Anwendungen"
 
 #: installer/package_list.py:489
@@ -623,7 +2198,7 @@ msgid "Multimedia applications, like amarok, kmplayer or mplayer"
 msgstr "Multimedia-Anwendungen, wie amarok, kmplayer oder mplayer"
 
 #: installer/package_list.py:492 installer/package_list.py:498
-msgid "Fax Client"
+msgid "Fax client"
 msgstr "Fax-Client"
 
 #: installer/package_list.py:501
@@ -635,7 +2210,7 @@ msgid "The GNOME Mailer"
 msgstr "Das GNOME-Mailprogramm"
 
 #: installer/package_list.py:510
-msgid "VNC Viewer"
+msgid "VNC viewer"
 msgstr "VNC-Betrachter"
 
 #: installer/package_list.py:516
@@ -643,7 +2218,7 @@ msgid "Client for remote desktop Access"
 msgstr "Client für den Zugriff auf entfernte Benutzeroberflächen"
 
 #: installer/package_list.py:519 installer/package_list.py:525
-msgid "Microsoft Fonts"
+msgid "Microsoft fonts"
 msgstr "Microsoft-Schriften"
 
 #: installer/package_list.py:530
@@ -663,7 +2238,7 @@ msgid "Secure shell client, an rlogin/rsh/rcp replacement"
 msgstr "SSH-Client, ein Ersatz für rlogin/rsh/rcp"
 
 #: installer/package_list.py:544
-msgid "dhcp client"
+msgid "DHCP client"
 msgstr "DHCP-Client"
 
 #: installer/package_list.py:550
@@ -731,1704 +2306,110 @@ msgid "eject"
 msgstr "eject"
 
 #: installer/package_list.py:614
-msgid "ejects CDs and operates CD-Changers under Linux"
+msgid "Ejects CDs and operates CD-Changers under Linux"
 msgstr "Programm zum Auswerfen von CDs und Bedienen von CD-Wechslern"
 
 #: installer/package_list.py:617
 msgid "Java"
 msgstr "Java"
 
-#: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
-#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
-msgid "Load modules"
-msgstr "Lade Module"
+#: installer/end.py:85
+msgid "Installation failed!"
+msgstr "Die Installation ist fehlgeschlagen!"
 
-#: installer/modules/01_modules.py:88 installer/modules/01_modules.py:98
-#: installer/modules/01_modules.py:312 installer/modules/01_modules.py:334
-#, python-format
-msgid "Loading module %s"
-msgstr "Lade Modul %s"
+#: installer/end.py:86
+msgid "Please restart the computer and try again."
+msgstr "Bitte starten Sie den Rechner neu."
 
-#: installer/modules/01_modules.py:115
-msgid "Additional modules to load:"
-msgstr "Weitere zu ladende Module:"
+#: installer/end.py:87
+msgid "Installation Log:"
+msgstr "Installations-Protokoll:"
 
-#: installer/modules/01_modules.py:124 installer/modules/03_hardware.py:259
-#: installer/modules/03_hardware.py:293 installer/modules/04_profile.py:55
-#: installer/modules/12_partition.py:3491
-#: installer/modules/12_partition.py:3538
-#: installer/modules/12_partition.py:3764
-#: installer/modules/12_partition.py:3803 installer/modules/20_net.py:647
-#: installer/modules/20_net.py:874
-msgid "Cancel"
-msgstr "Abbrechen"
+#: installer/end.py:94
+msgid "Installation succeded!"
+msgstr "Die Installation war erfolgreich."
 
-#: installer/modules/01_modules.py:125 installer/modules/12_partition.py:3490
-#: installer/modules/12_partition.py:3537
-#: installer/modules/12_partition.py:3763
-#: installer/modules/12_partition.py:3802
-msgid "Save"
-msgstr "Speichern"
+#: installer/end.py:95
+msgid "Please restart the computer."
+msgstr "Bitte starten Sie den Rechnern neu."
 
-#: installer/modules/01_modules.py:132
-msgid "Modules"
-msgstr "Module"
+#~ msgid "Manage Software Raids"
+#~ msgstr "Software Raids verwalten"
 
-#: installer/modules/01_modules.py:163
-msgid "The following hardware was found:"
-msgstr "Die folgende Hardware wurde gefunden:"
+#~ msgid "Press F8 to exit or any key to continue."
+#~ msgstr ""
+#~ "Drücken Sie zum Verlassen F8 oder eine beliebige Taste zum Fortfahren."
 
-#: installer/modules/01_modules.py:223
-msgid "Add modules"
-msgstr "Module hinzufügen"
+#~ msgid " Univention Corporate Server - Setup Tools"
+#~ msgstr " Univention Corporate Server - Setup Tools"
 
-#: installer/modules/01_modules.py:272
-msgid ""
-"Hardware-Scan \n"
-" \n"
-" This module automatically detects your hardware setup. \n"
-" If your hardware is not listed please choose \"Add module\" and mark the "
-"missing module by using the space key."
-msgstr ""
-"Hardware-Suche \n"
-" \n"
-" Dieses Modul erkennt automatisch Ihre Hardware Komponenten. \n"
-" Sollte Hardware nicht aufgelistet sein bitte wählen Sie \"Modul hinzufügen"
-"\" und markieren Sie die fehlende Hardware mit der 'Space'-Taste."
+#~ msgid "Univention Setup has been configured to be run on system start."
+#~ msgstr "Univention Setup wurde zum Start nach dem Booten eingerichtet."
 
-#: installer/modules/01_modules.py:275 installer/modules/01_modules.py:299
-msgid "Hardware-Scan"
-msgstr "Hardware-Suche"
+#~ msgid "It allows you to configure system settings."
+#~ msgstr "Es ermöglicht die Konfiguration von Systemeinstellungen"
 
-#: installer/modules/01_modules.py:299 installer/modules/04_profile.py:459
-#: installer/modules/05_keyboard.py:61 installer/modules/05_keyboard.py:127
-msgid "Please wait..."
-msgstr "Bitte warten..."
+#~ msgid "Currently supported are configuration of the time zone, keyboard"
+#~ msgstr "Zur Zeit wird die Konfiguration von Zeitzonen, Tastaturlayouts"
 
-#: installer/modules/03_hardware.py:79 installer/modules/03_hardware.py:245
-msgid "Search CD-ROM-Drive"
-msgstr "Suche CD-ROM-Laufwerk"
+#~ msgid "layout, language support, the default language, host/LDAP names,"
+#~ msgstr "Sprachen, der Standardsprache, Recher- und LDAP-Namen, Netzwerk-"
 
-#: installer/modules/03_hardware.py:79 installer/modules/03_hardware.py:88
-#: installer/modules/03_hardware.py:94 installer/modules/03_hardware.py:167
-#: installer/modules/03_hardware.py:172 installer/modules/03_hardware.py:245
-#: installer/modules/12_partition.py:207 installer/modules/12_partition.py:964
-#: installer/modules/12_partition.py:967 installer/modules/12_partition.py:970
-#: installer/modules/12_partition.py:973 installer/modules/12_partition.py:976
-#: installer/modules/12_partition.py:1895
-#: installer/modules/12_partition.py:3107
-#: installer/modules/12_partition.py:3110
-#: installer/modules/12_partition.py:3112 installer/modules/60_software.py:80
-msgid "Please wait ..."
-msgstr "Bitte warten ..."
+#~ msgid "network settings and installed software."
+#~ msgstr "einstellungen und installierter Software unterstützt."
 
-#: installer/modules/03_hardware.py:88 installer/modules/03_hardware.py:167
-msgid "Test CD-ROM-Drive"
-msgstr "Teste CD-ROM-Laufwerk"
+#~ msgid "Not all setup modules are enabled in system startup mode."
+#~ msgstr "Im Systemstart-Modus sind nicht alle Module verfügbar."
 
-#: installer/modules/03_hardware.py:94 installer/modules/03_hardware.py:172
-msgid "Mount CD-Rom-Drive"
-msgstr "Binde CD-ROM-Laufwerk ein"
+#~ msgid "The full selection is available through univention-system-setup-all."
+#~ msgstr ""
+#~ "Die komplette Auswahl erreichen Sie mit univention-system-setup-all."
 
-#: installer/modules/03_hardware.py:106 installer/modules/03_hardware.py:221
-msgid "No valid source found"
-msgstr "Keine gültige Quelle gefunden"
+#~ msgid "The LDAP server could not be contacted. You need to join the"
+#~ msgstr "Der LDAP-Server ist nicht erreichbar. Das System muss zu"
 
-#: installer/modules/03_hardware.py:147
-msgid "Check devices for UCS CD:"
-msgstr "Suche nach UCS-Medium"
+#~ msgid "system into the domain with univention-join at a later point."
+#~ msgstr "einem späteren Zeitpunkt mit univention-join beitreten."
 
-#: installer/modules/03_hardware.py:149 installer/modules/03_hardware.py:155
-#: installer/modules/03_hardware.py:157 installer/modules/20_net.py:363
-msgid "F2-Add"
-msgstr "F2-Neu"
+#~ msgid "You are running Univention System Setup on another system role"
+#~ msgstr ""
+#~ "Sie führen Univention System Setup auf einer anderen Systemrolle als"
 
-#: installer/modules/03_hardware.py:151
-msgid "F3-Add"
-msgstr "F3-Neu"
+#~ msgid "than a domaincontroller master or a basesystem."
+#~ msgstr "einem Domaincontroller Master oder einem Basissystem aus."
 
-#: installer/modules/03_hardware.py:154
-msgid "F4-Rescan"
-msgstr "F4-Suchen"
+#~ msgid "Afterwards the system should be re-joined."
+#~ msgstr "Anschließend soll das System neu gejoint werden"
 
-#: installer/modules/03_hardware.py:155
-msgid "CD-ROM Device"
-msgstr "CD-ROM-Laufwerk"
+#~ msgid " F1-Help | F12-Accept changes | F8-Exit"
+#~ msgstr " F1-Hilfe | F12-Übernehmen | F8-Abbruch"
 
-#: installer/modules/03_hardware.py:157
-msgid "Network Device"
-msgstr "Neue Netzquelle"
+#~ msgid " F1-Help | F12-Next | F8-Exit"
+#~ msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
 
-#: installer/modules/03_hardware.py:224
-msgid ""
-"Detects the source device. \n"
-" \n"
-" Please choose \"Add CD ROM device\" or \"Add network device\" if the needed "
-"device is missing. \n"
-" \n"
-" Please use \"Rescan\" if you want to autodetect devices again."
-msgstr ""
-"Erkennt das Laufwerk mit dem Installationsmedium. \n"
-" \n"
-" Bitte wählen Sie \"CD-ROM-Laufwerk\" hinzufügen oder \"Netzquelle hinzufügen"
-"\" wenn die richtige Quelle nicht erkannt wurde. \n"
-" \n"
-" Bitte benutzen Sie \"Suchen\" wenn der Installer nochmal die Laufwerke "
-"durchsuchen soll."
+#~ msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
+#~ msgstr " F1-Hilfe | F11-Zurück | F12-Übernehmen | Strg+c-Abbruch"
 
-#: installer/modules/03_hardware.py:227
-msgid "Source Device"
-msgstr "Quellmedium"
+#~ msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
+#~ msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | F8-Abbruch"
 
-#: installer/modules/03_hardware.py:265
-msgid "Adding cdrom device"
-msgstr "CD-ROM-Laufwerk hinzufügen"
+#~ msgid "LDAP Username"
+#~ msgstr "LDAP-Benutzername"
 
-#: installer/modules/03_hardware.py:288
-msgid "Servername"
-msgstr "Servername"
+#~ msgid "LDAP Password"
+#~ msgstr "LDAP-Passwort"
 
-#: installer/modules/03_hardware.py:290
-msgid "Path"
-msgstr "Pfad"
+#~ msgid "Reset"
+#~ msgstr "Zurücksetzen"
 
-#: installer/modules/03_hardware.py:299
-msgid "Adding network device"
-msgstr "Netzwerklaufwerk hinzufügen"
+#~ msgid "Updating configuration "
+#~ msgstr "Aktualisiere Konfiguration"
 
-#: installer/modules/04_profile.py:52
-msgid "Please enter the password:"
-msgstr "Bitte geben Sie das Passwort ein:"
+#~ msgid "Updating %s configuration"
+#~ msgstr "Aktualisiere %s Konfiguration"
 
-#: installer/modules/04_profile.py:155
-msgid "Wrong password"
-msgstr "Falsches Passwort"
+#~ msgid "Processing postrun scripts "
+#~ msgstr "Verarbeite postrun-Skripte"
 
-#: installer/modules/04_profile.py:256
-msgid "Filename"
-msgstr "Dateiname"
-
-#: installer/modules/04_profile.py:256
-msgid "Size"
-msgstr "Größe"
-
-#: installer/modules/04_profile.py:333
-msgid "You have to choose a Profile."
-msgstr "Sie müssen ein Profil auswählen."
-
-#: installer/modules/04_profile.py:337
-msgid ""
-"Profile \n"
-" \n"
-" Choose a predefined installation profile or enter the position of your own "
-"profile. \n"
-" \n"
-" Please mark the device with the preconfigured profile. \n"
-"  \n"
-" Press F2 to add a missing device or F3 to browse for the correct path."
-msgstr ""
-"Profil \n"
-" \n"
-" Wählen Sie eines der vorkonfigurierten Installationsprofile oder geben Sie "
-"den Pfad Ihres eigenen Profils an. \n"
-" \n"
-" Bitte markieren Sie das Laufwerk mit dem vorkonfigurierten Profil. \n"
-" \n"
-" Drücken Sie F2, um einen fehlendes Laufwerk, oder F3, um den richtigen Pfad "
-"zu ergänzen."
-
-#: installer/modules/04_profile.py:340
-msgid "Profile"
-msgstr "Profil"
-
-#: installer/modules/04_profile.py:369
-msgid "Loading Modules"
-msgstr "Lade Module"
-
-#: installer/modules/04_profile.py:371
-msgid "Initialize USB Devices"
-msgstr "USB-Geräte initialisieren"
-
-#: installer/modules/04_timezone.py:58
-msgid "Choose a timezone:"
-msgstr "Wählen Sie eine Zeitzone:"
-
-#: installer/modules/04_timezone.py:100
-msgid ""
-"Timezone \n"
-" \n"
-" Choose the matching timezone for your system here. "
-msgstr ""
-"Zeitzone \n"
-" \n"
-" Bitte wählen Sie die passende Zeitzone für Ihr System aus. "
-
-#: installer/modules/04_timezone.py:103
-msgid "Timezone"
-msgstr "Zeitzone"
-
-#: installer/modules/05_keyboard.py:61 installer/modules/05_keyboard.py:127
-msgid "Loading Keyset"
-msgstr "Lade Tastaturbelegung"
-
-#: installer/modules/05_keyboard.py:71
-msgid "Choose your keyboard settings:"
-msgstr "Bitte wählen Sie die Tastaturbelegung:"
-
-#: installer/modules/05_keyboard.py:119
-msgid ""
-"Keyboard settings \n"
-" \n"
-" Choose the matching keymap for your keyboard layout."
-msgstr ""
-"Tastaturbelegung \n"
-" \n"
-" Wählen Sie die passende Tastaturbelegung für Ihre Tastatur. "
-
-#: installer/modules/05_keyboard.py:122
-msgid "Keyboard"
-msgstr "Tastatur"
-
-#
-#: installer/modules/06_language.py:59
-msgid "Choose your system languages:"
-msgstr "Wählen Sie die zu verwendenden Systemsprachen:"
-
-#: installer/modules/06_language.py:105
-msgid "Please select a valid language"
-msgstr "Bitte wählen Sie eine gültige Sprache"
-
-#
-#: installer/modules/06_language.py:109
-msgid ""
-"Language \n"
-" \n"
-" Choose system languages."
-msgstr ""
-"Sprache \n"
-" \n"
-" Wählen Sie die Systemsprachen."
-
-#: installer/modules/06_language.py:112
-msgid "Language"
-msgstr "Sprache"
-
-#: installer/modules/07_dl.py:90
-msgid "Choose your default system language:"
-msgstr "Wählen Sie die zu verwendende Standardsprache:"
-
-#
-#: installer/modules/07_dl.py:104
-msgid "Please select a valid default language"
-msgstr "Bitte wählen Sie eine gültige Standardsprache"
-
-#: installer/modules/07_dl.py:108
-msgid ""
-"Default Language \n"
-" \n"
-" Choose a default system language."
-msgstr ""
-"Standardsprache \n"
-" \n"
-" Wählen Sie die Standardsprache."
-
-#: installer/modules/07_dl.py:111
-msgid "Default Language"
-msgstr "Standardsprache"
-
-#: installer/modules/10_role.py:78
-msgid "System role:"
-msgstr "Systemrolle:"
-
-#: installer/modules/10_role.py:100
-msgid "Domain Controller Backup"
-msgstr "Domain Controller Backu"
-
-#: installer/modules/10_role.py:101
-msgid "Domain Controller Slave"
-msgstr "Domain Controller Slave"
-
-#: installer/modules/10_role.py:102
-msgid "Memberserver"
-msgstr "Memberserver"
-
-#: installer/modules/10_role.py:103
-msgid "Managed Client"
-msgstr "Managed Client"
-
-#: installer/modules/10_role.py:104
-msgid "Mobile Client"
-msgstr "Mobile Client"
-
-#: installer/modules/10_role.py:105
-msgid "Basissystem"
-msgstr "Basissystem"
-
-#: installer/modules/10_role.py:121
-msgid ""
-"System role \n"
-" \n"
-" Choose a system role. Different components will be installed. \n"
-" \n"
-" Domain Controller Master: \n"
-" This system keeps the whole LDAP tree and is the core of your UCS domain. \n"
-" \n"
-" Domain Controller Backup: \n"
-" This system keeps a copy of the complete LDAP structure, which cannot be "
-"changed manually. \n"
-" \n"
-" Domain Controller Slave: \n"
-" This system includes required LDAP data for a special purpose (i.e. "
-"location based). \n"
-" \n"
-" Memberserver: \n"
-" Member of a domain offering specified domainwide services like printing or "
-"backup. No LDAP data is stored on such a system. \n"
-" \n"
-" Managed Client: \n"
-" A Linux desktop system. \n"
-" \n"
-" Mobile Client: \n"
-" A managed client with notebook optimizations. \n"
-" \n"
-" Basesystem: \n"
-" A stand-alone server solution for web-server or firewall for example. This "
-"system is not a member of any domain."
-msgstr ""
-"Systemrolle \n"
-" \n"
-" Wählen Sie eine Systemrolle für Ihr System. Verschiedene Komponenten werden "
-"installiert. \n"
-" \n"
-" Domain Controller Master: \n"
-" Dieses System verwaltet alle LDAP Verzeichnisse. Sollten Änderungen daran "
-"vorgenommen werden, werden diese nur auf dem Master geschrieben. Alle "
-"Zertifikate werden hier gespeichert. \n"
-" \n"
-" Domain Controller Backup: \n"
-" Dieses System verwaltet eine Kopie aller LDAP Verzeichnisse und "
-"Zertifikate. Diese Kopie kann nicht manuell geändert werden. \n"
-" \n"
-" Domain Controller Slave: \n"
-" Dieses System verwaltet nur einen bestimmten Teil der LDAP Struktur die für "
-"seine Umgebung nützlich ist (Zweigstellen). \n"
-" \n"
-" Memberserver:  \n"
-" Dieses System bietet bestimmte Dienste z.B. Datensicherung für die Domäne "
-"an. Es werden keine LDAP Daten auf einem Memberserver gespeichert. \n"
-" \n"
-" Managed Client: \n"
-" Ein System mit seiner eigenen Arbeitsumgebung, das Mitglied der Domäne "
-"ist. \n"
-" \n"
-" Mobile Client: \n"
-" siehe Managed Client. Bietet jedoch zusätzlich spezielle Optionen für die "
-"Pflege von Notebook Software. \n"
-" \n"
-" Basesystem: \n"
-" Eine Stand-alone Server Lösung für Web Server oder Firewalls. Dieses System "
-"ist nicht Mitglied der Domäne und kann nicht über das UCS Managementsystem "
-"verwaltet werden."
-
-#: installer/modules/10_role.py:124
-msgid "System role"
-msgstr "Systemrolle"
-
-#: installer/modules/11_basis.py:74
-msgid "Hostname:"
-msgstr "Systemname"
-
-#: installer/modules/11_basis.py:77
-msgid "Domainname:"
-msgstr "Domänenname"
-
-#: installer/modules/11_basis.py:82
-msgid "LDAP base:"
-msgstr "LDAP-Basis"
-
-#: installer/modules/11_basis.py:89
-msgid "Windows Domain:"
-msgstr "Windows-Domäne"
-
-#: installer/modules/11_basis.py:94
-msgid "Password for root:"
-msgstr "Root-Passwort"
-
-#: installer/modules/11_basis.py:97
-msgid "Password for root (retype):"
-msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
-
-#: installer/modules/11_basis.py:176
-msgid "Please insert a valid hostname in lowercase."
-msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Systemnamen an."
-
-#: installer/modules/11_basis.py:181
-msgid "Please insert a valid domainname in lowercase."
-msgstr "Bitte geben Sie einen gültigen, klein-geschriebenen Domänennamen an."
-
-#: installer/modules/11_basis.py:186
-msgid "The length of host and domainname is greater then 64."
-msgstr "Die Länge von System und Domänennamen ist größer als 64 Zeichen."
-
-#: installer/modules/11_basis.py:191
-msgid "Hostname is equal to domainname."
-msgstr "Systemname ist gleich Domänennamen."
-
-#: installer/modules/11_basis.py:196
-msgid "Please insert the LDAP base."
-msgstr "Bitte geben Sie die LDAP-Basis an."
-
-#: installer/modules/11_basis.py:200
-msgid "Syntax-Error. Please insert a LDAP base like this: dc=test,dc=net "
-msgstr ""
-"Syntax-Fehler. Bitte geben Sie die LDAP-Basis wie folgt an: dc=test,dc=net "
-
-#: installer/modules/11_basis.py:219
-msgid "Please enter a Password."
-msgstr "Bitte geben Sie ein Passwort an."
-
-#: installer/modules/11_basis.py:224
-msgid "Please retype the Password."
-msgstr "Bitte geben Sie das Passwort nochmal an."
-
-#: installer/modules/11_basis.py:229
-msgid "The Passwords do not match."
-msgstr "Die Passwörter stimmen nicht überein."
-
-#: installer/modules/11_basis.py:234
-msgid ""
-"Your password is too short. For security reasons, your password must be at "
-"least 8 characters long."
-msgstr ""
-"Ihr Passwort ist zu kurz. Aus Sicherheitsgründen sollte Ihr Passwort "
-"mindestens 8 Zeichen lang sein."
-
-#: installer/modules/11_basis.py:239 installer/modules/11_basis.py:244
-msgid "Illegal password: A password may not contain blanks."
-msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
-
-#: installer/modules/11_basis.py:249 installer/modules/11_basis.py:254
-msgid "Illegal password: A password may not contain back slashes."
-msgstr "Ungültiges Passwort: Leerzeichen nicht möglich"
-
-#: installer/modules/11_basis.py:259 installer/modules/11_basis.py:264
-msgid "Illegal password: A password may not contain quotation marks."
-msgstr "Ungültiges Passwort: Anführungszeichen nicht möglich"
-
-#: installer/modules/11_basis.py:288
-msgid ""
-"Settings  \n"
-" \n"
-" Set up basic system configuration like hostname, domainname and LDAP base "
-"and password"
-msgstr ""
-"Optionen \n"
-" \n"
-" Konfiguration grundlegender Einstellungen wie Hostname, Domänenname, LDAP-"
-"Basis und Root-Passwort"
-
-#: installer/modules/11_basis.py:291
-msgid "Settings"
-msgstr "Optionen"
-
-#: installer/modules/12_partition.py:207
-msgid "Reading LVM config"
-msgstr "Suche LVM-Geräte"
-
-#: installer/modules/12_partition.py:246
-#, python-format
-msgid ""
-"not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  "
-"required=%(required)s"
-msgstr ""
-"Nicht genügend Platz für Autopartitionierung: vorhanden=%(disksizeall)s  "
-"benötigt=%(required)s"
-
-#: installer/modules/12_partition.py:264
-#, python-format
-msgid ""
-"cannot autopart disk: /boot or swap does not fit on harddisk (required=%s)"
-msgstr ""
-"Autopart. nicht möglich: /boot oder swap passen nicht auf Festplatte "
-"(benötigt=%s)"
-
-#: installer/modules/12_partition.py:415 installer/modules/12_partition.py:430
-#, python-format
-msgid "Double Mount-Point '%s'"
-msgstr "Doppelter Mount-Point '%s'"
-
-#: installer/modules/12_partition.py:439
-msgid "Missing '/' as mountpoint"
-msgstr "Fehlender '/' als Mountpoint"
-
-#: installer/modules/12_partition.py:443
-#, python-format
-msgid "Wrong filesystemtype '%s' for mountpoint '/'"
-msgstr "Falsches Dateisystem '%s' für '/'"
-
-#: installer/modules/12_partition.py:465
-msgid "Unable to create bootable config!"
-msgstr "Erstellung bootbarer Konfiguration fehlgeschlagen!"
-
-#: installer/modules/12_partition.py:466
-msgid "/-partition is located on LVM and"
-msgstr "/-Partition liegt auf einem LVM und"
-
-#: installer/modules/12_partition.py:467
-msgid "/boot-partition is missing or located"
-msgstr "die /boot-Partition fehlt oder ist auch"
-
-#: installer/modules/12_partition.py:468
-msgid "on LVM too."
-msgstr "auf einem LVM."
-
-#: installer/modules/12_partition.py:501
-msgid "Partition"
-msgstr "Partition"
-
-#: installer/modules/12_partition.py:964
-msgid "Deleting LVM volumes"
-msgstr "Lösche LVM-Geräte"
-
-#: installer/modules/12_partition.py:967
-msgid "Deleting partitions"
-msgstr "Lösche Partitionen"
-
-#: installer/modules/12_partition.py:970
-msgid "Creating partitions"
-msgstr "Lösche Partitionen"
-
-#: installer/modules/12_partition.py:973
-msgid "Creating LVM volumes"
-msgstr "Erstelle LVM-Geräte"
-
-#: installer/modules/12_partition.py:976
-msgid "Formatting partitions"
-msgstr "Formatiere Partitionen"
-
-#: installer/modules/12_partition.py:1693
-msgid "Include USB storage devices while auto-partitioning?"
-msgstr "USB-Geräte während der Auto-Partitionierung verwenden?"
-
-#: installer/modules/12_partition.py:1695
-#: installer/modules/12_partition.py:1915
-msgid "WARNING: choosing \"Yes\" prepares for deletion of all"
-msgstr "WARNUNG: \"Ja\" bereitet das Löschen aller Partitionen auf"
-
-#: installer/modules/12_partition.py:1696
-msgid "partitions on all disks! This includes USB harddisks"
-msgstr "allen Festplatten vor! Das beinhaltet auch USB-Festplatten"
-
-#: installer/modules/12_partition.py:1697
-msgid "and USB sticks. In any case *ALL* LVM LV and LVM VG"
-msgstr "und USB-Sticks. Es werden alle LVM LV und LVM VG"
-
-#: installer/modules/12_partition.py:1698
-msgid "will be deleted!"
-msgstr "gelöscht!"
-
-#: installer/modules/12_partition.py:1791
-#: installer/modules/12_partition.py:1851
-msgid "Not enough disk space found for /boot!"
-msgstr "Nicht genug Speicherplatz für /boot!"
-
-#: installer/modules/12_partition.py:1792
-#: installer/modules/12_partition.py:1823
-#: installer/modules/12_partition.py:1852
-msgid "Auto-partitioning aborted."
-msgstr "Automatische Partitionierung abgebrochen."
-
-#: installer/modules/12_partition.py:1822
-msgid "Not enough disk space found!"
-msgstr "Nicht genügend Speicherplatz vorhanden!"
-
-#: installer/modules/12_partition.py:1895
-msgid "Detecting LVM devices"
-msgstr "Suche LVM-Geräte"
-
-#: installer/modules/12_partition.py:1904
-msgid "WARNING: not enough free space for auto partitioning!"
-msgstr "WARNUNG: Nicht genug Platz für Autopartitionierung!"
-
-#: installer/modules/12_partition.py:1905
-msgid "Auto partitioning has been disabled!"
-msgstr "Automatische Partitionierung wurde deaktiviert!"
-
-#: installer/modules/12_partition.py:1913
-msgid "Do you want to use auto-partitioning?"
-msgstr "Soll die automatische Partitionierung verwendet werden? "
-
-#: installer/modules/12_partition.py:1916
-msgid "partitions on all disks! If auto-partition result is"
-msgstr "allen Festplatten vor! Wenn der Vorschlag der Auto-Partitionierung"
-
-#: installer/modules/12_partition.py:1917
-msgid "unsuitable press F5 to restart partitioning."
-msgstr "unpassend ist, drücken Sie F5, um alle Änderungen zu verwerfen."
-
-#: installer/modules/12_partition.py:1926
-msgid "LVM1 volumes detected. To use LVM1 volumes all"
-msgstr "LVM1-Medium gefunden. Um LVM1-Medien zu nutzen"
-
-#: installer/modules/12_partition.py:1927
-msgid "existing LVM1 snapshots have to be removed!"
-msgstr "müssen alle LVM1-Snapshots gelöscht werden!"
-
-#: installer/modules/12_partition.py:1928
-msgid "Otherwise kernel is unable to mount them!"
-msgstr "Anderenfalls kann der Kernel sie nicht einbinden!"
-
-#: installer/modules/12_partition.py:1947
-msgid "No LVM volume group found on current system."
-msgstr "Keine LVM-Gruppe gefunden."
-
-#: installer/modules/12_partition.py:1948
-msgid "Do you want to use LVM2?"
-msgstr "Möchten Sie LVM2 verwenden?"
-
-#: installer/modules/12_partition.py:1967
-msgid " Partition dialog "
-msgstr "Partitionierung"
-
-#: installer/modules/12_partition.py:1984 installer/modules/20_net.py:768
-#: installer/modules/20_net.py:770
-msgid "Device"
-msgstr "Gerät"
-
-#: installer/modules/12_partition.py:1985
-msgid "Area(MB)"
-msgstr "Bereich(MB)"
-
-#: installer/modules/12_partition.py:1986
-msgid "Typ"
-msgstr "Typ"
-
-#: installer/modules/12_partition.py:1987
-msgid "Form."
-msgstr "Form."
-
-#: installer/modules/12_partition.py:1988
-#: installer/modules/12_partition.py:3521
-#: installer/modules/12_partition.py:3794
-msgid "Mount-Point"
-msgstr "Mount-Point"
-
-#: installer/modules/12_partition.py:1989
-msgid "Size(MB)"
-msgstr "Größe(MB)"
-
-#: installer/modules/12_partition.py:2003
-msgid "diskdrive"
-msgstr "Festplatte"
-
-#: installer/modules/12_partition.py:2029
-msgid "(unassigned)"
-msgstr "(nicht zugewiesen)"
-
-#: installer/modules/12_partition.py:2055
-msgid "unusable"
-msgstr "unbenutzbar"
-
-#: installer/modules/12_partition.py:2058
-#: installer/modules/12_partition.py:2062
-msgid "free"
-msgstr "frei"
-
-#: installer/modules/12_partition.py:2065
-msgid "unknown"
-msgstr "unbekannt"
-
-#: installer/modules/12_partition.py:2083
-msgid "LVM volume group"
-msgstr "LVM-Medien-Gruppe"
-
-#: installer/modules/12_partition.py:2126
-msgid "F2-Create"
-msgstr "F2-Erstellen"
-
-#: installer/modules/12_partition.py:2127 installer/modules/20_net.py:364
-msgid "F3-Edit"
-msgstr "F3-Editieren"
-
-#: installer/modules/12_partition.py:2128 installer/modules/20_net.py:365
-msgid "F4-Delete"
-msgstr "F4-Löschen"
-
-#: installer/modules/12_partition.py:2129
-msgid "F5-Reset changes"
-msgstr "F5-Änderungen verwerfen"
-
-#: installer/modules/12_partition.py:2130
-msgid "F6-Write partitions"
-msgstr "F6-Änderungen schreiben"
-
-#: installer/modules/12_partition.py:2171
-msgid ""
-"UCS-Partition-Tool \n"
-" \n"
-" This tool is designed for creating, editing and deleting partitions during "
-"the installation. \n"
-" \n"
-" Use \"F2-Create\" to add a new partition. \n"
-" \n"
-" Use \"F3-Edit\" to configure an already existing partition. \n"
-" \n"
-" Use \"F4-Delete\" to remove a partition. \n"
-" \n"
-" Use the \"Reset changes\" button to cancel your changes to the partition "
-"table. \n"
-" \n"
-" Use the \"Write Partitions\" button to create and/or format your partitions."
-msgstr ""
-"UCS-Partitionierung \n"
-" \n"
-" Dieses Tool ist für das Erstellen, Editieren und Löschen von Partitionen "
-"vor der UCS-Installation zuständig. \n"
-" \n"
-" Bitte wählen Sie \"F2-Erstellen\", um eine neue Partition hinzuzufügen. \n"
-" \n"
-" Bitte wählen Sie \"F3-Editieren\", um eine bestehende Partition zu "
-"verändern. \n"
-" \n"
-" Bitte wählen Sie \"F4-Löschen\", um eine Partition zu entfernen. \n"
-"\n"
-" Bitte benutzen Sie \"Änderungen verwerfen\", um alle Ihre bisherigen "
-"Einstellungen in diesem Fenster zurückzusetzen. \n"
-" \n"
-" Bitte benutzen Sie  \"Änderungen schreiben\", um Ihre Einstellungen nun auf "
-"die Festplatte zu schreiben."
-
-#: installer/modules/12_partition.py:2261
-#: installer/modules/12_partition.py:2308
-#: installer/modules/12_partition.py:2324
-msgid "LVM physical volumes cannot be modified!"
-msgstr "LVM Physikalische Medien können nicht verändert werden!"
-
-#: installer/modules/12_partition.py:2261
-#: installer/modules/12_partition.py:2308
-#: installer/modules/12_partition.py:2324
-msgid "If necessary delete this partition."
-msgstr "Wenn es notwendig ist, sollte die Partition gelöscht werden."
-
-#: installer/modules/12_partition.py:2404
-#: installer/modules/12_partition.py:2415
-msgid "Unable to remove physical volume from"
-msgstr "Das Löschen des physikalischen Mediums der"
-
-#: installer/modules/12_partition.py:2405
-#: installer/modules/12_partition.py:2416
-#, python-format
-msgid "volume group \"%s\"!"
-msgstr "Medien-Gruppe \"%s\" ist fehlgeschlagen!"
-
-#: installer/modules/12_partition.py:2406
-#: installer/modules/12_partition.py:2417
-msgid "Physical volume contains used physical extents!"
-msgstr "Physikalisches Medium enthält verwendete Systemdaten!"
-
-#: installer/modules/12_partition.py:2418
-msgid "Please use \"pvmove\" to move data to other"
-msgstr "Bitte verschieben Sie die Daten mit \"pvmove\""
-
-#: installer/modules/12_partition.py:2419
-msgid "physical volumes."
-msgstr "auf ein anderes phys. Medium."
-
-#: installer/modules/12_partition.py:3080
-msgid "No device files found for following devices. Please"
-msgstr "Keine Gerätedateien für die nachfolgenden Geräte gefunden. Bitte"
-
-#: installer/modules/12_partition.py:3081
-msgid "decrease number of partitions on a single disk or use LVM."
-msgstr ""
-"reduzieren Sie die Anzahl der Partitionen auf einer Festplatte oder nutzen "
-"Sie LVM."
-
-#: installer/modules/12_partition.py:3107
-msgid "Write partitions"
-msgstr "Schreibe Partitionen"
-
-#: installer/modules/12_partition.py:3110
-msgid "Create LVM Volumes"
-msgstr "Erstelle LVM-Medien"
-
-#: installer/modules/12_partition.py:3112
-msgid "Create Filesystems"
-msgstr "Erstelle Dateisysteme"
-
-#: installer/modules/12_partition.py:3285
-#: installer/modules/12_partition.py:3343
-#: installer/modules/12_partition.py:3652
-#: installer/modules/12_partition.py:3688
-msgid "The selected filesystem takes no"
-msgstr "Das gewählte Dateisystem ist nicht nutzbar,"
-
-#: installer/modules/12_partition.py:3286
-#: installer/modules/12_partition.py:3653
-msgid "effect, if format is not selected."
-msgstr "wenn formatieren nicht gewählt wurde."
-
-#: installer/modules/12_partition.py:3288
-#: installer/modules/12_partition.py:3340
-#: installer/modules/12_partition.py:3346
-#: installer/modules/12_partition.py:3655
-#: installer/modules/12_partition.py:3685
-#: installer/modules/12_partition.py:3691
-msgid "Do you want to format this partition?"
-msgstr "Wollen Sie diese Partition formatieren? "
-
-#: installer/modules/12_partition.py:3336
-msgid "This partition is designated as root filesystem,"
-msgstr "Diese Partition ist als Root-Dateisystem gekennzeichnet,"
-
-#: installer/modules/12_partition.py:3337
-#: installer/modules/12_partition.py:3682
-msgid "but \"format\" is not selected. This can cause"
-msgstr "aber \"Formatieren\" wurde nicht ausgewählt. Dies"
-
-#: installer/modules/12_partition.py:3338
-#: installer/modules/12_partition.py:3683
-msgid "problems with preexisting data on disk!"
-msgstr " kann zu Problemen mit existierende Daten führen!"
-
-#: installer/modules/12_partition.py:3344
-#: installer/modules/12_partition.py:3689
-msgid "effect, if \"format\" is not selected."
-msgstr "wenn \"formatieren\" nicht gewählt wurde."
-
-#: installer/modules/12_partition.py:3427
-msgid "Physical Diskdrive"
-msgstr "Physikalisches Laufwerk"
-
-#: installer/modules/12_partition.py:3428
-#, python-format
-msgid "Device: %s"
-msgstr "Gerät: %s"
-
-#: installer/modules/12_partition.py:3429
-#, python-format
-msgid "Size: %s"
-msgstr "Größe: %s"
-
-#: installer/modules/12_partition.py:3431
-#, python-format
-msgid "Primary Partitions: %s"
-msgstr "Primäre Partitionen: %s"
-
-#: installer/modules/12_partition.py:3431
-#: installer/modules/12_partition.py:3473
-#: installer/modules/12_partition.py:3477
-msgid "primary"
-msgstr "primär"
-
-#: installer/modules/12_partition.py:3432
-#, python-format
-msgid "Logical Partitions: %s"
-msgstr "Logische Partitionen: %s"
-
-#: installer/modules/12_partition.py:3432
-#: installer/modules/12_partition.py:3475
-#: installer/modules/12_partition.py:3478
-msgid "logical"
-msgstr "logisch"
-
-#: installer/modules/12_partition.py:3437
-msgid "Next"
-msgstr "Weiter"
-
-#: installer/modules/12_partition.py:3448
-msgid "New Partition:"
-msgstr "Neue Partition"
-
-#: installer/modules/12_partition.py:3450
-#: installer/modules/12_partition.py:3451
-#: installer/modules/12_partition.py:3453
-#: installer/modules/12_partition.py:3736
-#: installer/modules/12_partition.py:3737
-#: installer/modules/12_partition.py:3739
-msgid "Mount-Point:"
-msgstr "Mount-Point"
-
-#: installer/modules/12_partition.py:3452
-#: installer/modules/12_partition.py:3738
-msgid "Size (MB):"
-msgstr "Größe (MB)"
-
-#: installer/modules/12_partition.py:3454
-#: installer/modules/12_partition.py:3503
-#: installer/modules/12_partition.py:3740
-#: installer/modules/12_partition.py:3773
-msgid "Filesystem"
-msgstr "Dateisystem"
-
-#: installer/modules/12_partition.py:3481
-#: installer/modules/12_partition.py:3524
-#: installer/modules/12_partition.py:3526
-msgid "bootable"
-msgstr "bootbar"
-
-#: installer/modules/12_partition.py:3483
-#: installer/modules/12_partition.py:3529
-#: installer/modules/12_partition.py:3531
-msgid "PPC PreP"
-msgstr "PPC PreP"
-
-#: installer/modules/12_partition.py:3485
-#: installer/modules/12_partition.py:3487
-#: installer/modules/12_partition.py:3533
-#: installer/modules/12_partition.py:3535
-#: installer/modules/12_partition.py:3761
-#: installer/modules/12_partition.py:3798
-#: installer/modules/12_partition.py:3800
-msgid "format"
-msgstr "formatieren"
-
-#: installer/modules/12_partition.py:3489
-msgid "LVM PV"
-msgstr "LVM PV"
-
-#: installer/modules/12_partition.py:3497
-#, python-format
-msgid "Partition: %s"
-msgstr "Partition: %s"
-
-#: installer/modules/12_partition.py:3499
-msgid "Typ: primary"
-msgstr "Typ: primär"
-
-#: installer/modules/12_partition.py:3501
-msgid "Typ: logical"
-msgstr "Typ: logisch"
-
-#: installer/modules/12_partition.py:3502
-#: installer/modules/12_partition.py:3772
-#, python-format
-msgid "Size: %s MB"
-msgstr "Größe: %s"
-
-#: installer/modules/12_partition.py:3611
-msgid "Please enter volume name!"
-msgstr "Geben Sie den Namen des Medium ein!"
-
-#: installer/modules/12_partition.py:3613
-msgid "Logical volume name contains illegal characters!"
-msgstr "Name des Logischen Mediums enthält nicht erlaubte Zeichen!"
-
-#: installer/modules/12_partition.py:3615
-msgid "Logical volume name is already in use!"
-msgstr "Der Name des logischen Mediums wird bereits verwendet!"
-
-#: installer/modules/12_partition.py:3630
-msgid "Size contains non-digit characters!"
-msgstr "Die Größenangabe enthält nicht nur Ziffern"
-
-#: installer/modules/12_partition.py:3643
-msgid "Not enough free space on volume group!"
-msgstr "Nicht ausreichend Platz in der Medien-Gruppe!"
-
-#: installer/modules/12_partition.py:3681
-msgid "This volume is designated as root filesystem,"
-msgstr "Dieses Medium ist als Root-Dateisystem gekennzeichnet,"
-
-#: installer/modules/12_partition.py:3734
-#: installer/modules/12_partition.py:3735
-msgid "New Logical Volume:"
-msgstr "Neues Logisches Medium:"
-
-#: installer/modules/12_partition.py:3771
-#, python-format
-msgid "LVM Logical Volume: %s"
-msgstr "LVM Logisches Medium: %s"
-
-#: installer/modules/12_partition.py:3829
-msgid "The selected partition is the extended partition of this disc."
-msgstr "Diese Partition ist die erweiterte Partition dieser Festplatte."
-
-#: installer/modules/12_partition.py:3831
-msgid "The extended partition contains all logical partitions."
-msgstr "Diese Partition verwaltet alle logischen Partitionen."
-
-#: installer/modules/12_partition.py:3833
-msgid "Do you really want to delete all logical partitions?"
-msgstr "Möchten Sie alle logischen Partitionen löschen?"
-
-#: installer/modules/12_partition.py:3875
-msgid "Found over-sized extended partition."
-msgstr "Zu große erweiterte Partition gefunden"
-
-#: installer/modules/12_partition.py:3877
-msgid "This program will resize them to free unused space"
-msgstr "Die Größe wird angepasst um die Partitionstabelle zu korrigieren."
-
-#: installer/modules/12_partition.py:3880
-#: installer/modules/12_partition.py:3924
-msgid "OK"
-msgstr "OK"
-
-#: installer/modules/12_partition.py:3909
-msgid "UCS Installer supports only one LVM volume group."
-msgstr "UCS Installer unterstützt nur eine LVM-Medien-Gruppe."
-
-#: installer/modules/12_partition.py:3911
-msgid "Please select volume group to use for installation."
-msgstr "Bitte wählen Sie die Medien-Gruppe für die Installation."
-
-#: installer/modules/12_partition.py:3913
-msgid "Volume Group:"
-msgstr "Medien-Gruppe:"
-
-#: installer/modules/12_partition.py:3952
-msgid "Do you really want to write all changes?"
-msgstr "Wollen Sie wirklich alle Änderungen schreiben?"
-
-#: installer/modules/12_partition.py:3954
-msgid "This may destroy all data on modified discs!"
-msgstr "Dadurch können Daten vernichtet werden!"
-
-#: installer/modules/12_partition.py:3984
-msgid "No disk detected!"
-msgstr "Keine Festplatte erkannt!"
-
-#: installer/modules/12_partition.py:3986
-msgid "Please try to load the suitable module and rescan!"
-msgstr ""
-"Bitte versuchen Sie das passende Modul zu laden \n"
-" und es erneut vom Installer erkennen zu lassen!"
-
-#: installer/modules/12_partition.py:4000
-msgid "Wrong filesystem type for mount-point \"/\" !"
-msgstr "Falsches Dateisystem für '/'"
-
-#: installer/modules/12_partition.py:4002
-msgid "Please choose another filesystem."
-msgstr ""
-"Bitte wählen Sie ein anderes \n"
-"Dateisystem."
-
-#: installer/modules/15_bootloader.py:67
-msgid "Install the boot loader record on:"
-msgstr "Installiere den Bootloader in:"
-
-#: installer/modules/15_bootloader.py:68
-msgid "Master Boot Record"
-msgstr "Master Boot Record"
-
-#: installer/modules/15_bootloader.py:69 installer/modules/20_net.py:609
-msgid "Device:"
-msgstr "Gerät:"
-
-#: installer/modules/15_bootloader.py:84
-msgid "First sector of boot partition"
-msgstr "Erster Sektor der Boot-Partition"
-
-#: installer/modules/15_bootloader.py:85
-msgid "Partition:"
-msgstr "Partition:"
-
-#: installer/modules/15_bootloader.py:121
-msgid ""
-"Bootloader \n"
-"Select where you want the boot loader to be installed. \n"
-" "
-msgstr ""
-"Bootloader \n"
-"Wählen Sie wo der Bootloader installiert werden soll. \n"
-" "
-
-#: installer/modules/15_bootloader.py:124
-msgid "Bootloader"
-msgstr "Bootloader"
-
-#: installer/modules/20_net.py:143 installer/modules/20_net.py:469
-msgid "Following value is invalid: "
-msgstr "Die folgende Eingabe ist ungültig: "
-
-#: installer/modules/20_net.py:406
-msgid "Warning:"
-msgstr "Achtung:"
-
-#: installer/modules/20_net.py:407
-msgid "Could not find any network card. The Installation will"
-msgstr "Es wurde keine Netzwerkkarte gefunden. Die Installation wird"
-
-#: installer/modules/20_net.py:408
-msgid "probably fail. It is better to check the network card."
-msgstr "wahrscheinlich nicht gelingen. Bitte die Netzwerkkarte prüfen."
-
-#: installer/modules/20_net.py:410
-msgid "If a network card is installed please try to load additional"
-msgstr "Sollte eine Netzwerkkarte installiert sein, müssen möglicherweise"
-
-#: installer/modules/20_net.py:411
-msgid "kernel modules at the beginning of the installation."
-msgstr "weitere Kernel Module zu Begin der Installation geladen werden."
-
-#: installer/modules/20_net.py:147 installer/modules/20_net.py:368
-#: installer/modules/20_net.py:472
-msgid "Gateway"
-msgstr "Gateway"
-
-#: installer/modules/20_net.py:152 installer/modules/20_net.py:375
-#: installer/modules/20_net.py:448 installer/modules/20_net.py:475
-msgid "Nameserver"
-msgstr "Nameserver"
-
-#: installer/modules/20_net.py:157 installer/modules/20_net.py:383
-#: installer/modules/20_net.py:455 installer/modules/20_net.py:478
-msgid "DNS-Forwarder"
-msgstr "DNS-Forwarder"
-
-#: installer/modules/20_net.py:166 installer/modules/20_net.py:484
-msgid "Proxy, example http://10.201.1.1:8080"
-msgstr "Proxy, z.B. http://10.201.1.1:8080"
-
-#: installer/modules/20_net.py:196
-msgid "You have to add one or more Network interfaces."
-msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben "
-
-#: installer/modules/20_net.py:217 installer/modules/20_net.py:218
-#: installer/modules/20_net.py:231 installer/modules/20_net.py:232
-#: installer/modules/20_net.py:323 installer/modules/20_net.py:344
-msgid "New Virtual Device"
-msgstr "Neues virtuelles Interface"
-
-#: installer/modules/20_net.py:234 installer/modules/20_net.py:235
-#: installer/modules/20_net.py:320 installer/modules/20_net.py:342
-msgid "New Device"
-msgstr "Neues Interface"
-
-#: installer/modules/20_net.py:359
-msgid "Device        IP               Netmask"
-msgstr "Interface     IP               Netzmaske"
-
-#: installer/modules/20_net.py:380 installer/modules/20_net.py:388
-msgid "More"
-msgstr "Mehr"
-
-#: installer/modules/20_net.py:391
-msgid "HTTP-Proxy"
-msgstr "HTTP-Proxy"
-
-#: installer/modules/20_net.py:487
-msgid "You have to add one or more network interfaces."
-msgstr "Sie müssen ein oder mehrere Netzwerk Interfaces angeben."
-
-#: installer/modules/20_net.py:491
-msgid ""
-"Network \n"
-" \n"
-" In this module the network configuration is set. \n"
-" \n"
-" Mark the button \"New Interface\" to add a new interface. Select \"New "
-"Virtual Interface\" to create a new virtual interface. \n"
-" \n"
-" Interface: \n"
-" Choose the interface you want to configure. \n"
-" \n"
-" Dynamic (DHCP): \n"
-" Mark this field if you want this interface to retrieve its IP configuration "
-"via DHCP (Dynamic Host Configuration Protocol). \n"
-" \n"
-" Static: \n"
-" Static IP configuration. \n"
-" \n"
-" Enter IP, netmask, broadcast and network address of this interface. \n"
-"\n"
-" Gateway: \n"
-" Enter gateway which the system should use. \n"
-" \n"
-" Nameserver: \n"
-" Enter the IP address of the primary nameserver, if you are installing a "
-"system to an existing domain. \n"
-" More: \n"
-" Enter more nameservers \n"
-" \n"
-" DNS-Forwarder: \n"
-" Enter the IP address of a DNS server to forward queries to. \n"
-" More: \n"
-" Enter more DNS forwarders \n"
-" \n"
-" HTTP-Proxy: \n"
-" Enter the IP address and port number for the HTTP-Proxy (example: "
-"http://192.168.1.123:5858)"
-msgstr ""
-"Netzwerk \n"
-" \n"
-" In diesem Modul wird die Netzwerk-Konfiguration eingetragen. \n"
-" \n"
-" Wählen Sie das Feld \"Neues Interface\", um eine neue Netzwerkkarte "
-"hinzuzufügen, oder \"Neues virtuelles Interface\", um eine virtuelle "
-"Netzwerkkarte zu erstellen.\n"
-" \n"
-" Gerät: \n"
-" Wählen Sie das zu konfigurierende Netzwerk-Interface. \n"
-" \n"
-" Dynamisch (DHCP):  \n"
-" Bitte markieren Sie dieses Feld, wenn die IP-Konfiguration via DHCP "
-"zugeteilt werden soll. \n"
-" \n"
-" Statisch: \n"
-" Das System benutzt eine statische IP-Adresse. \n"
-"\n"
-" Bitte geben Sie IP-Adresse, Netzmaske, Broadcast und das Netzwerk an, wenn "
-"Sie sich für die statische IP-Adresse entschieden haben.\n"
-"\n"
-" Gateway: \n"
-" Geben Sie eine IP-Adresse für das Gateway ein. \n"
-" \n"
-" Nameserver: \n"
-" Geben Sie die IP-Adresse für den primären Nameserver an, falls Sie ein "
-"neues System in eine bestehende Domäne installieren möchten. \n"
-" Mehr: \n"
-" Geben Sie weitere IP Adressen an, wenn Ihr System mehrere Nameserver nutzen "
-"soll.  \n"
-"  \n"
-" DNS-Forwarder: \n"
-" Geben Sie die IP Adresse für den DNS-Forwarder an. \n"
-" Mehr: \n"
-" Wenn das System mehrere DNS-Forwarder nutzen soll, geben Sie weitere IP "
-"Adressen an. \n"
-" \n"
-" HTTP-Proxy: \n"
-" Geben Sie die Transportadresse (IP-Adresse:Port) an, um einen HTTP-Proxy zu "
-"nutzen. z.B: http://192.168.1.123:3128"
-
-#: installer/modules/20_net.py:494 installer/modules/20_net.py:790
-#: installer/modules/20_net.py:792
-msgid "Network"
-msgstr "Netzwerk"
-
-#: installer/modules/20_net.py:616
-msgid "Dynamic (DHCP)"
-msgstr "Dynamisch (DHCP)"
-
-#: installer/modules/20_net.py:616 installer/modules/20_net.py:619
-msgid "Static"
-msgstr "Statisch"
-
-#: installer/modules/20_net.py:622
-msgid "IP address:"
-msgstr "IP-Adresse:"
-
-#: installer/modules/20_net.py:628
-msgid "Netmask:"
-msgstr "Netzmaske:"
-
-#: installer/modules/20_net.py:634
-msgid "Broadcast:"
-msgstr "Broadcast:"
-
-#: installer/modules/20_net.py:640
-msgid "Network:"
-msgstr "Netzwerk:"
-
-#: installer/modules/20_net.py:748
-msgid " Interface configuration"
-msgstr " Interface Konfiguration"
-
-#: installer/modules/20_net.py:762 installer/modules/20_net.py:899
-#: installer/modules/30_ssl.py:63 installer/modules/30_ssl.py:165
-#: installer/modules/31_join.py:49 installer/modules/31_join.py:136
-msgid "The following value is missing: "
-msgstr "Der folgende Wert fehlt:"
-
-#: installer/modules/20_net.py:763 installer/modules/20_net.py:900
-msgid "The following value is invalid: "
-msgstr "Die folgende Eingabe ist ungültig: "
-
-#: installer/modules/20_net.py:775 installer/modules/20_net.py:777
-msgid "IP address"
-msgstr "IP-Adresse"
-
-#: installer/modules/20_net.py:780 installer/modules/20_net.py:782
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: installer/modules/20_net.py:785 installer/modules/20_net.py:787
-msgid "Broadcast"
-msgstr "Broadcast"
-
-#: installer/modules/20_net.py:848
-#, python-format
-msgid "1. %s"
-msgstr "1. %s"
-
-#: installer/modules/20_net.py:857
-#, python-format
-msgid "2. %s"
-msgstr "2. %s"
-
-#: installer/modules/20_net.py:865
-#, python-format
-msgid "3. %s"
-msgstr "3. %s"
-
-#: installer/modules/20_net.py:881
-#, python-format
-msgid " More %ss"
-msgstr "Weitere %s"
-
-#: installer/modules/30_ssl.py:64 installer/modules/30_ssl.py:166
-msgid "The following value is too long, only 128 characters allowed: "
-msgstr "Der folgende Wert ist zu lang, es sind nur 128 Zeichen erlaubt: "
-
-#: installer/modules/30_ssl.py:65 installer/modules/30_ssl.py:167
-msgid "The following value is too long, only 64 characters allowed: "
-msgstr "Der folgende Wert ist zu lang, es sind nur 64 Zeichen erlaubt: "
-
-#: installer/modules/30_ssl.py:70 installer/modules/30_ssl.py:170
-msgid "Country"
-msgstr "Land"
-
-#: installer/modules/30_ssl.py:74 installer/modules/30_ssl.py:173
-msgid "Please enter a two letter country code."
-msgstr "Bitte geben Sie einen zweistelligen Ländercode ein."
-
-#: installer/modules/30_ssl.py:79 installer/modules/30_ssl.py:83
-#: installer/modules/30_ssl.py:138 installer/modules/30_ssl.py:177
-#: installer/modules/30_ssl.py:180
-msgid "State"
-msgstr "Staat"
-
-#: installer/modules/30_ssl.py:88 installer/modules/30_ssl.py:92
-#: installer/modules/30_ssl.py:141 installer/modules/30_ssl.py:184
-#: installer/modules/30_ssl.py:187
-msgid "Location"
-msgstr "Ort"
-
-#: installer/modules/30_ssl.py:97 installer/modules/30_ssl.py:101
-#: installer/modules/30_ssl.py:144 installer/modules/30_ssl.py:191
-#: installer/modules/30_ssl.py:194
-msgid "Organisation"
-msgstr "Organisation"
-
-#: installer/modules/30_ssl.py:106 installer/modules/30_ssl.py:110
-#: installer/modules/30_ssl.py:147 installer/modules/30_ssl.py:198
-#: installer/modules/30_ssl.py:201
-msgid "Unit"
-msgstr "Abteilung"
-
-#: installer/modules/30_ssl.py:115 installer/modules/30_ssl.py:119
-#: installer/modules/30_ssl.py:150 installer/modules/30_ssl.py:205
-#: installer/modules/30_ssl.py:208
-msgid "Mailaddress"
-msgstr "E-Mail-Adresse"
-
-#: installer/modules/30_ssl.py:123 installer/modules/30_ssl.py:211
-msgid "Please insert a valid mailaddress"
-msgstr "Bitte geben Sie eine gültige E-Mail-Adresse an."
-
-#: installer/modules/30_ssl.py:135
-msgid "Country Code"
-msgstr "Länderkennung"
-
-#: installer/modules/30_ssl.py:215
-msgid ""
-"SSL-Certificate \n"
-" \n"
-" The installation of a Domain Controller Master requires the creation of a "
-"SSL certificate. \n"
-" Enter all mandatory details"
-msgstr ""
-"SSL-Zertifikat \n"
-" \n"
-" Die Installation eines Domain Controller Master setzt die Erstellung eines "
-"SSL-Zertifikates voraus. \n"
-" Geben Sie die benötigten Informationen ein."
-
-#: installer/modules/30_ssl.py:218
-msgid "Certificate"
-msgstr "Zertifikat"
-
-#: installer/modules/31_join.py:58 installer/modules/31_join.py:82
-#: installer/modules/31_join.py:140
-msgid "Join-Account"
-msgstr "Join-Account"
-
-#: installer/modules/31_join.py:63 installer/modules/31_join.py:85
-msgid "Password"
-msgstr "Passwort"
-
-#: installer/modules/31_join.py:73
-msgid "Start join at the end of installation."
-msgstr "Starte den Join-Vorgang am Ende der Installation"
-
-#: installer/modules/31_join.py:77
-msgid "Search DC Master in DNS"
-msgstr "DNS nach DC Master durchsuchen"
-
-#: installer/modules/31_join.py:79 installer/modules/31_join.py:138
-msgid "Hostname of DC Master"
-msgstr "Systemname des DC Master"
-
-#: installer/modules/31_join.py:88
-msgid "Password (retype)"
-msgstr "Passwort (zur Bestätigung bitte nochmal eingeben)"
-
-#: installer/modules/31_join.py:142
-msgid "Password for Root"
-msgstr "Root-Passwort"
-
-#: installer/modules/31_join.py:144
-msgid "Password for Root (retype)"
-msgstr "Root-Passwort (zur Bestätigung bitte nochmal eingeben)"
-
-#: installer/modules/31_join.py:146
-msgid "Passwords did not match."
-msgstr "Passwörter stimmen nicht überein."
-
-#: installer/modules/31_join.py:150
-msgid ""
-"Join-Settings \n"
-" \n"
-" All settings to join this system into given domain."
-msgstr ""
-"Join-Optionen \n"
-" \n"
-" Alle Optionen die zum Joinen in eine vorkonfigurierte Domäne benötigt "
-"werden."
-
-#: installer/modules/31_join.py:153
-msgid "Join-Settings"
-msgstr "Join-Optionen"
-
-#: installer/modules/50_security.py:70
-msgid "Activate filtering of system services:"
-msgstr "Filterung von Systemdiensten"
-
-#: installer/modules/50_security.py:71
-msgid "These options control how many system services are"
-msgstr "Diese Optionen konfigurieren, welche Systemdienste"
-
-#: installer/modules/50_security.py:72
-msgid "initially blocked by a packet filter (iptables)"
-msgstr "initial durch einen Paketfilter blockiert werden:"
-
-#: installer/modules/50_security.py:75
-msgid "    allowed."
-msgstr "    HTTPS sind erlaubt."
-
-#: installer/modules/50_security.py:78
-msgid "Disabled"
-msgstr "Deaktiviert"
-
-#: installer/modules/50_security.py:79
-msgid "Typical selection of services, recommended"
-msgstr "Empfohlene Auswahl an Systemdiensten"
-
-#: installer/modules/50_security.py:80
-msgid "Locked-down setup. Only SSH, LDAP and HTTPS are"
-msgstr "Abgesicherte Grundinstallation. Nur SSH, LDAP und"
-
-#: installer/modules/50_security.py:118
-msgid ""
-"Security Settings  \n"
-" \n"
-" Pre-defined packet filter configuration options for various system roles"
-msgstr ""
-"Sicherheits-Einstellungen  \n"
-" \n"
-" Vordefinierte Paketfiltereinstellungen für verschiedene Systemrollen."
-
-#: installer/modules/50_security.py:121
-msgid "Security Settings"
-msgstr "Sicherheits-Optionen"
-
-#: installer/modules/60_software.py:80
-msgid "Preparing Package List"
-msgstr "Bereite Paketliste vor"
-
-#: installer/modules/60_software.py:337
-msgid "Components"
-msgstr "Komponenten"
-
-#: installer/modules/60_software.py:338
-msgid "Packages"
-msgstr "Pakete"
-
-#: installer/modules/60_software.py:463
-msgid "No helptext available."
-msgstr "Keine Hilfe verfügbar"
-
-#: installer/modules/60_software.py:493
-msgid ""
-"Software \n"
-" \n"
-" Choose the softwarecomponents you want to install. You can change details "
-"for some modules in the following steps."
-msgstr ""
-"Software \n"
-" \n"
-" Bitte wählen Sie die Softwarekomponenten die Sie installieren möchten. Sie "
-"können in den folgenden Schritten die Details für manche Module ändern."
-
-#: installer/modules/60_software.py:496
-msgid "Software"
-msgstr "Software"
-
-#: installer/modules/70_system_settings.py:69
-#: installer/modules/70_system_settings.py:71
-#: installer/modules/70_system_settings.py:73
-msgid "Create local repository"
-msgstr "Lokales Repository erstellen"
-
-#: installer/modules/70_system_settings.py:76
-#: installer/modules/70_system_settings.py:78
-msgid "Create home share"
-msgstr "Heimatverzeichnis-Freigabe"
-
-#: installer/modules/70_system_settings.py:105
-msgid ""
-"System-Settings  \n"
-" \n"
-" Various system settings"
-msgstr ""
-"System-Optionen \n"
-" \n"
-" Verschiedene System-Einstellungen"
-
-#: installer/modules/70_system_settings.py:108
-msgid "System-Settings"
-msgstr "System-Optionen"
-
-#: installer/modules/95_overview.py:68
-msgid "Press \"Start installation\" to begin process"
-msgstr "Wählen Sie 'Installation starten', um fortzufahren."
-
-#: installer/modules/95_overview.py:69
-#, python-format
-msgid "Systemrole:    %s"
-msgstr "Systemrolle:   %s"
-
-#: installer/modules/95_overview.py:71
-#, python-format
-msgid "Domainname:    %s"
-msgstr "Domänenname:   %s"
-
-#: installer/modules/95_overview.py:98
-msgid "No package will download files from the internet."
-msgstr "Es werden keine Dateien aus dem Internet geladen"
-
-#: installer/modules/95_overview.py:101
-#, python-format
-msgid "%s will download internet files."
-msgstr "%s wird Dateien aus dem Internet laden"
-
-#: installer/modules/95_overview.py:121
-msgid ""
-"Overview \n"
-" \n"
-" Installation settings"
-msgstr ""
-"Überblick \n"
-" \n"
-" Installationseinstellungen"
-
-#: installer/modules/95_overview.py:124
-msgid "Overview"
-msgstr "Überblick"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:92
-msgid "Press F8 to exit or any key to continue."
-msgstr "Drücken Sie zum Verlassen F8 oder eine beliebige Taste zum Fortfahren."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:162
-#: ../univention-system-setup/usr/sbin/univention-system-setup:186
-#: ../univention-system-setup/usr/sbin/univention-system-setup:205
-#: ../univention-system-setup/usr/sbin/univention-system-setup:366
-msgid " Univention Corporate Server - Setup Tools"
-msgstr " Univention Corporate Server - Setup Tools"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:163
-msgid "Univention Setup has been configured to be run on system start."
-msgstr "Univention Setup wurde zum Start nach dem Booten eingerichtet."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:164
-msgid "It allows you to configure system settings."
-msgstr "Es ermöglicht die Konfiguration von Systemeinstellungen"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:165
-msgid "Currently supported are configuration of the time zone, keyboard"
-msgstr "Zur Zeit wird die Konfiguration von Zeitzonen, Tastaturlayouts"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:166
-msgid "layout, language support, the default language, host/LDAP names,"
-msgstr "Sprachen, der Standardsprache, Recher- und LDAP-Namen, Netzwerk-"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:167
-msgid "network settings and installed software."
-msgstr "einstellungen und installierter Software unterstützt."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:168
-msgid "Not all setup modules are enabled in system startup mode."
-msgstr "Im Systemstart-Modus sind nicht alle Module verfügbar."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:169
-msgid "The full selection is available through univention-system-setup-all."
-msgstr "Die komplette Auswahl erreichen Sie mit univention-system-setup-all."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:187
-msgid "The LDAP server could not be contacted. You need to join the"
-msgstr "Der LDAP-Server ist nicht erreichbar. Das System muss zu"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:188
-msgid "system into the domain with univention-join at a later point."
-msgstr "einem späteren Zeitpunkt mit univention-join beitreten."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:206
-msgid "You are running Univention System Setup on another system role"
-msgstr "Sie führen Univention System Setup auf einer anderen Systemrolle als"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:207
-msgid "than a domaincontroller master or a basesystem."
-msgstr "einem Domaincontroller Master oder einem Basissystem aus."
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:208
-msgid "Afterwards the system should be re-joined."
-msgstr "Anschließend soll das System neu gejoint werden"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:371
-msgid " F1-Help | F12-Accept changes | F8-Exit"
-msgstr " F1-Hilfe | F12-Übernehmen | F8-Abbruch"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:373
-msgid " F1-Help | F12-Next | F8-Exit"
-msgstr " F1-Hilfe | F12-Weiter | F8-Abbruch"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:376
-msgid " F1-Help | F11-Back | F12-Accept changes | F8-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Übernehmen | Strg+c-Abbruch"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:378
-msgid " F1-Help | F11-Back | F12-Next | F8-Exit"
-msgstr " F1-Hilfe | F11-Zurück | F12-Weiter | F8-Abbruch"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:550
-msgid "LDAP Username"
-msgstr "LDAP-Benutzername"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:552
-msgid "LDAP Password"
-msgstr "LDAP-Passwort"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:556
-msgid "Reset"
-msgstr "Zurücksetzen"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:862
-msgid "Updating configuration "
-msgstr "Aktualisiere Konfiguration"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:862
-#, python-format
-msgid "Updating %s configuration"
-msgstr "Aktualisiere %s Konfiguration"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:873
-msgid "Processing postrun scripts "
-msgstr "Verarbeite postrun-Skripte"
-
-#: ../univention-system-setup/usr/sbin/univention-system-setup:873
-#, python-format
-msgid "Processing %s "
-msgstr "Verarbeite %s"
+#~ msgid "Processing %s "
+#~ msgstr "Verarbeite %s"

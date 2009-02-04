@@ -87,7 +87,7 @@ class object(content):
 		content.draw( self )
 
 	def layout(self):
-		self.elements.append(textline(_('Choose your default system language:'),self.minY-1,self.minX+2)) #2
+		self.elements.append(textline(_('Select your default system language:'),self.minY-1,self.minX+2)) #2
 
 		self.__create_selection()
 
@@ -101,11 +101,11 @@ class object(content):
 
 	def incomplete(self):
 		if string.join(self.elements[3].result(), ' ').strip(' ') == '':
-			return _('Please select a valid default language')
+			return _('Please select the default system language')
 		return 0
 
 	def helptext(self):
-		return _('Default Language \n \n Choose a default system language.')
+		return _('Default Language \n \n Select a default system language.')
 
 	def modheader(self):
 		return _('Default Language')

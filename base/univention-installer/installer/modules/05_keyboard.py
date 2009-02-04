@@ -68,7 +68,7 @@ class object(content):
 
 	def layout(self):
 		#Headline
-		self.elements.append(textline(_('Choose your keyboard settings:'),self.minY-1,self.minX+2)) #2
+		self.elements.append(textline(_('Select your keyboard layout:'),self.minY-1,self.minX+2)) #2
 
 		try:
 			file=open('modules/keymap')
@@ -116,7 +116,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Keyboard settings \n \n Choose the matching keymap for your keyboard layout.')
+		return _('Keyboard layout \n \n Select your keyboard layout.')
 
 	def modheader(self):
 		return _('Keyboard')

@@ -1,3 +1,9 @@
+univention-installer (3.0.7-15) unstable; urgency=low
+
+  * applied changes to the English translation. Bug #13326
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  4 Feb 2009 14:54:25 +0100
+
 univention-installer (3.0.7-14) unstable; urgency=low
 
   * fix in test script (Bug: #12190) 

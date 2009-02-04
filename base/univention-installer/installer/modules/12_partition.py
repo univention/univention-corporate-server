@@ -244,7 +244,7 @@ class object(content):
 			disksizeall += disksize
 		self.debug('disklist=%s' % disklist)
 		if disksizeall < PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN:
-			result = _('not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  required=%(required)s') % { 'disksizeall': disksizeall,
+			result = _('Not enough space for autopartitioning: sum of disk sizes=%(disksizeall)s  required=%(required)s') % { 'disksizeall': disksizeall,
 																															  'required': (PARTSIZE_BOOT + PARTSIZE_SYSTEM_MIN + PARTSIZE_SWAP_MIN) }
 			self.debug( result)
 			return result
@@ -413,7 +413,7 @@ class object(content):
 				if self.container['disk'][disk]['partitions'][part]['num'] > 0 : # only valid partitions
 					if len(self.container['disk'][disk]['partitions'][part]['mpoint'].strip()):
 						if self.container['disk'][disk]['partitions'][part]['mpoint'] in mpoint_temp:
-							return _('Double Mount-Point \'%s\'') % self.container['disk'][disk]['partitions'][part]['mpoint']
+							return _('Double mount point \'%s\'') % self.container['disk'][disk]['partitions'][part]['mpoint']
 						mpoint_temp.append(self.container['disk'][disk]['partitions'][part]['mpoint'])
 					if self.container['disk'][disk]['partitions'][part]['mpoint'] == '/':
 						if not self.container['disk'][disk]['partitions'][part]['fstype'] in ['xfs','ext2','ext3']:
@@ -428,7 +428,7 @@ class object(content):
 				mpoint = lv['mpoint'].strip()
 				if len(mpoint):
 					if mpoint in mpoint_temp:
-						return _('Double Mount-Point \'%s\'') % mpoint
+						return _('Double mount point \'%s\'') % mpoint
 				mpoint_temp.append(mpoint)
 				if mpoint == '/':
 					if not lv['fstype'] in ['xfs','ext2','ext3']:
@@ -441,7 +441,7 @@ class object(content):
 
 		if root_fs:
 			self.move_focus( 1 )
-			return _('Wrong filesystemtype \'%s\' for mountpoint \'/\'' % root_fs)
+			return _('Wrong file system type \'%s\' for mountpoint \'/\'' % root_fs)
 
 		# check if LVM is enabled, /-partition is LVM LV and /boot is missing
 		rootfs_is_lvm = False
@@ -499,7 +499,7 @@ class object(content):
 		return ""
 
 	def modheader(self):
-		return _('Partition')
+		return _('Partitioning')
 
 	def start(self):
 		self.container={}
@@ -1703,7 +1703,7 @@ class object(content):
 			disk_blacklist = self.parent.get_usb_storage_device_list()
 			if len(disk_blacklist) > 0 and self.container['autopart_usbstorage'] == None:
 				self.parent.debug('requesting user input: use usb storage devices?')
-				msglist=[ _('Include USB storage devices while auto-partitioning?'),
+				msglist=[ _('Include USB storage devices while auto partitioning?'),
 						  '',
 						  _('WARNING: choosing "Yes" prepares for deletion of all'),
 						  _('partitions on all disks! This includes USB harddisks'),
@@ -1803,7 +1803,7 @@ class object(content):
 				self.part_create_generic(targetdisk, targetpart, '/boot', PARTSIZE_BOOT, 'ext3', PARTTYPE_PRIMARY, [], 1)
 			else:
 				msglist = [ _('Not enough disk space found for /boot!'),
-							_('Auto-partitioning aborted.') ]
+							_('Auto partitioning aborted.') ]
 				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
@@ -1834,7 +1834,7 @@ class object(content):
 				self.parent.debug('AUTOPART: not enough disk space for swap (freespacesum=%s  freespacemax=%s  PARTSIZE_SWAP_MIN=%s  PARTSIZE_SYSTEM_MIN=%s' %
 								  (freespacesum, freespacemax, PARTSIZE_SWAP_MIN, PARTSIZE_SYSTEM_MIN))
 				msglist = [ _('Not enough disk space found!'),
-							_('Auto-partitioning aborted.') ]
+							_('Auto partitioning aborted.') ]
 				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
@@ -1863,7 +1863,7 @@ class object(content):
 				self.parent.debug('AUTOPART: no disk space for swap found')
 				self.parent.debug('AUTOPART: DISK=%s' % self.container['disk'])
 				msglist = [ _('Not enough disk space found for /boot!'),
-							_('Auto-partitioning aborted.') ]
+							_('Auto partitioning aborted.') ]
 				self.sub = msg_win(self,self.pos_y+2,self.pos_x+5,self.maxWidth,6, msglist)
 				self.draw()
 				return
@@ -1978,7 +1978,7 @@ class object(content):
 				self.sub.draw()
 
 		def modheader(self):
-			return _(' Partition dialog ')
+			return _(' Partitioning dialog ')
 
 		def layout(self):
 			self.reset_layout()
@@ -1997,9 +1997,9 @@ class object(content):
 
 			head1=self.get_col(_('Device'),col1,'l')
 			head2=self.get_col(_('Area(MB)'),col2)
-			head3=self.get_col(_('Typ'),col3)
+			head3=self.get_col(_('Type'),col3)
 			head4=self.get_col(_('Form.'),col4)
-			head5=self.get_col(_('Mount-Point'),col5,'l')
+			head5=self.get_col(_('Mount point'),col5,'l')
 			head6=self.get_col(_('Size(MB)'),col6)
 			text = '%s %s %s %s %s %s'%(head1,head2,head3,head4,head5,head6)
 			self.add_elem('TXT_0', textline(text,self.minY,self.minX+2)) #0
@@ -2182,7 +2182,7 @@ class object(content):
 
 
 		def helptext(self):
-			return _('UCS-Partition-Tool \n \n This tool is designed for creating, editing and deleting partitions during the installation. \n \n Use \"F2-Create\" to add a new partition. \n \n Use \"F3-Edit\" to configure an already existing partition. \n \n Use \"F4-Delete\" to remove a partition. \n \n Use the \"Reset changes\" button to cancel your changes to the partition table. \n \n Use the \"Write Partitions\" button to create and/or format your partitions.')
+			return _('UCS-Partition-Tool \n \n This tool is designed for creating, editing and deleting partitions during the installation. \n \n Use \"F2-Create\" to add a new partition. \n \n Use \"F3-Edit\" to configure an already existing partition. \n \n Use \"F4-Delete\" to remove a partition. \n \n Use the \"Reset changes\" button to discard changes to the partition table. \n \n Use the \"Write Partitions\" button to create and/or format your partitions.')
 
 		def input(self,key):
 			self.parent.debug('partition.input: key=%d' % key)
@@ -2417,7 +2417,7 @@ class object(content):
 										  (vgname, self.container['lvm']['vg'][ vgname ]['freePE'], pv['totalPE']))
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
-									_('Physical volume contains used physical extents!') ]
+									_('Physical volume contains physical extents in use!') ]
 						self.sub = msg_win(self, self.pos_y+4, self.pos_x+4, self.width-8, self.height-13, msglist)
 						self.draw()
 						return True
@@ -2428,7 +2428,7 @@ class object(content):
 					if len(self.container['lvm']['vg'][ vgname ]['lv']) > 0 and pv['allocPE'] > 0 and not force:
 						msglist = [ _('Unable to remove physical volume from'),
 									_('volume group "%s"!') % pv['vg'],
-									_('Physical volume contains used physical extents!'),
+									_('Physical volume contains physical extents in use!'),
 									_('Please use "pvmove" to move data to other'),
 									_('physical volumes.') ]
 						self.sub = msg_win(self, self.pos_y+3, self.pos_x+4, self.width-8, self.height-13, msglist)
@@ -3141,19 +3141,19 @@ class object(content):
 
 		def write_devices(self):
 			self.draw()
-			self.act = self.active(self, _('Write partitions'), _('Please wait ...'), name='act', action='create_partitions')
+			self.act = self.active(self, _('Writing partitions'), _('Please wait ...'), name='act', action='create_partitions')
 			self.act.draw()
 			if self.ERROR:
 				return _("Error while writing partitions:") + "\n" + self.ERROR
 			if self.container['lvm']['enabled']:
-				self.act = self.active(self, _('Create LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
+				self.act = self.active(self, _('Creating LVM Volumes'), _('Please wait ...'), name='act', action='make_filesystem')
 				self.act.draw()
 				if self.ERROR:
 					return _("Error while creating LVM volumes:") +"\n" + self.ERROR
-			self.act = self.active(self, _('Create Filesystems'), _('Please wait ...'), name='act', action='make_filesystem')
+			self.act = self.active(self, _('Creating file systems'), _('Please wait ...'), name='act', action='make_filesystem')
 			self.act.draw()
 			if self.ERROR:
-				return _("Error while creating filesystems:") + "\n" + self.ERROR
+				return _("Error while creating file systems:") + "\n" + self.ERROR
 			self.draw()
 
 		class active(act_win):
@@ -3334,7 +3334,7 @@ class object(content):
 										'flag':flag,
 										}
 
-							msglist = [ _('The selected filesystem takes no'),
+							msglist = [ _('The selected file system takes no'),
 										_('effect, if format is not selected.'),
 										'',
 										_('Do you want to format this partition?') ]
@@ -3385,14 +3385,14 @@ class object(content):
 							#    format is not set and fstype changed
 							if ( self.parent.container['disk'][path]['partitions'][part]['fstype'] != fstype or rootfs) and not self.get_elem('CB_format').result():
 								if rootfs:
-									msglist = [ _('This partition is designated as root filesystem,'),
+									msglist = [ _('This partition is designated as root file system,'),
 												_('but "format" is not selected. This can cause'),
 												_('problems with preexisting data on disk!'),
 												'',
 												_('Do you want to format this partition?')
 												]
 								else:
-									msglist = [ _('The selected filesystem takes no'),
+									msglist = [ _('The selected file system takes no'),
 												_('effect, if "format" is not selected.'),
 												'',
 												_('Do you want to format this partition?')
@@ -3499,11 +3499,11 @@ class object(content):
 						self.operation='create'
 						self.add_elem('TXT_1', textline(_('New Partition:'),self.pos_y+2,self.pos_x+5)) #0
 
-						self.add_elem('TXT_2', textline(_('Mount-Point:'),self.pos_y+4,self.pos_x+5)) #1
-						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+4,self.pos_x+6+len(_('Mount-Point:')),20)) #2
+						self.add_elem('TXT_2', textline(_('Mount point:'),self.pos_y+4,self.pos_x+5)) #1
+						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+4,self.pos_x+6+len(_('Mount point:')),20)) #2
 						self.add_elem('TXT_3', textline(_('Size (MB):'),self.pos_y+6,self.pos_x+5)) #3
-						self.add_elem('INP_size', input('%s' % int(partition['size']),self.pos_y+6,self.pos_x+6+len(_('Mount-Point:')),20)) #4
-						self.add_elem('TXT_4', textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
+						self.add_elem('INP_size', input('%s' % int(partition['size']),self.pos_y+6,self.pos_x+6+len(_('Mount point:')),20)) #4
+						self.add_elem('TXT_4', textline(_('File system'),self.pos_y+8,self.pos_x+5)) #5
 
 						try:
 							file=open('modules/filesystem')
@@ -3552,7 +3552,7 @@ class object(content):
 						else:
 							self.add_elem('TXT_2', textline(_('Typ: logical'),self.pos_y+4,self.pos_x+5))#1
 						self.add_elem('TXT_3', textline(_('Size: %s MB') % int(partition['size']),self.pos_y+4,self.pos_x+33))#2
-						self.add_elem('TXT_4', textline(_('Filesystem'),self.pos_y+7,self.pos_x+5)) #3
+						self.add_elem('TXT_4', textline(_('File system'),self.pos_y+7,self.pos_x+5)) #3
 
 						try:
 							file=open('modules/filesystem')
@@ -3570,7 +3570,7 @@ class object(content):
 									filesystem_num=line
 						file.close()
 						self.add_elem('SEL_fstype', select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
-						self.add_elem('TXT_5', textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
+						self.add_elem('TXT_5', textline(_('Mount point'),self.pos_y+7,self.pos_x+33)) #5
 						self.add_elem('INP_mpoint', input(partition['mpoint'],self.pos_y+8,self.pos_x+33,20)) #6
 						if 'boot' in partition['flag']:
 							self.add_elem('CB_bootable', checkbox({_('bootable'):'1'},self.pos_y+10,self.pos_x+33,11,1,[0])) #7
@@ -3701,7 +3701,7 @@ class object(content):
 							# data seems to be ok ==> create LVM LV
 							self.parent.lv_create(vgname, lvname, currentLE, format, fstype, '', mpoint)
 
-							msglist = [ _('The selected filesystem takes no'),
+							msglist = [ _('The selected file system takes no'),
 										_('effect, if format is not selected.'),
 										'',
 										_('Do you want to format this partition?') ]
@@ -3737,7 +3737,7 @@ class object(content):
 												_('Do you want to format this partition?')
 												]
 								else:
-									msglist = [ _('The selected filesystem takes no'),
+									msglist = [ _('The selected file system takes no'),
 												_('effect, if "format" is not selected.'),
 												'',
 												_('Do you want to format this partition?')
@@ -3783,13 +3783,13 @@ class object(content):
 							break
 
 					self.operation='create'
-					self.add_elem('TXT_0', textline(_('New Logical Volume:'),self.pos_y+2,self.pos_x+5)) #0
-					self.add_elem('INP_name', input(lvname_proposal,self.pos_y+2,self.pos_x+5+len(_('New Logical Volume:'))+1,20)) #2
-					self.add_elem('TXT_1', textline(_('Mount-Point:'),self.pos_y+4,self.pos_x+5)) #1
-					self.add_elem('INP_mpoint', input('',self.pos_y+4,self.pos_x+5+len(_('Mount-Point:'))+1,20)) #2
+					self.add_elem('TXT_0', textline(_('New logical volume:'),self.pos_y+2,self.pos_x+5)) #0
+					self.add_elem('INP_name', input(lvname_proposal,self.pos_y+2,self.pos_x+5+len(_('New logical volume:'))+1,20)) #2
+					self.add_elem('TXT_1', textline(_('Mount point:'),self.pos_y+4,self.pos_x+5)) #1
+					self.add_elem('INP_mpoint', input('',self.pos_y+4,self.pos_x+5+len(_('Mount point:'))+1,20)) #2
 					self.add_elem('TXT_3', textline(_('Size (MB):'),self.pos_y+6,self.pos_x+5)) #3
-					self.add_elem('INP_size', input('%s' % int(maxsize),self.pos_y+6,self.pos_x+5+len(_('Mount-Point:'))+1,20)) #4
-					self.add_elem('TXT_5', textline(_('Filesystem'),self.pos_y+8,self.pos_x+5)) #5
+					self.add_elem('INP_size', input('%s' % int(maxsize),self.pos_y+6,self.pos_x+5+len(_('Mount point:'))+1,20)) #4
+					self.add_elem('TXT_5', textline(_('File system'),self.pos_y+8,self.pos_x+5)) #5
 
 					try:
 						file=open('modules/filesystem')
@@ -3822,7 +3822,7 @@ class object(content):
 					self.operation='edit'
 					self.add_elem('TXT_0', textline(_('LVM Logical Volume: %s') % lvname,self.pos_y+2,self.pos_x+5))#0
 					self.add_elem('TXT_2', textline(_('Size: %s MB') % int(lv['size']),self.pos_y+4,self.pos_x+5))#2
-					self.add_elem('TXT_3', textline(_('Filesystem'),self.pos_y+7,self.pos_x+5)) #3
+					self.add_elem('TXT_3', textline(_('File system'),self.pos_y+7,self.pos_x+5)) #3
 
 					try:
 						file=open('modules/filesystem')
@@ -3843,7 +3843,7 @@ class object(content):
 								i += 1
 					file.close()
 					self.add_elem('SEL_fstype', select(dict,self.pos_y+8,self.pos_x+4,15,6, filesystem_num)) #4
-					self.add_elem('TXT_5', textline(_('Mount-Point'),self.pos_y+7,self.pos_x+33)) #5
+					self.add_elem('TXT_5', textline(_('Mount point'),self.pos_y+7,self.pos_x+33)) #5
 					self.add_elem('INP_mpoint', input(lv['mpoint'],self.pos_y+8,self.pos_x+33,20)) #6
 
 					if lv['format']:
@@ -4049,9 +4049,9 @@ class object(content):
 
 		class wrong_rootfs(subwin):
 			def layout(self):
-				message=_('Wrong filesystem type for mount-point "/" !')
+				message=_('Wrong file system type for mount point "/" !')
 				self.elements.append(textline(message,self.pos_y+2,self.pos_x+(self.width/2),align="middle")) #0
-				message=_('Please choose another filesystem.')
+				message=_('Please select another file system.')
 				self.elements.append(textline(message,self.pos_y+4,self.pos_x+(self.width/2),align="middle")) #1
 
 				self.elements.append(button(_("Ok"),self.pos_y+7,self.pos_x+(self.width/2),15,align="middle")) #2

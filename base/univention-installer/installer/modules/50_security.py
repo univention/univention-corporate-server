@@ -76,7 +76,7 @@ class object(content):
 
 		dict={}
 		dict[_('Disabled')]=['open',0]
-		dict[_('Typical selection of services, recommended')]=['normal',1]
+		dict[_('Typical selection of services (recommended)')]=['normal',1]
 		dict[_('Locked-down setup. Only SSH, LDAP and HTTPS are')]=['strict',2]
 
 		list=['normal','strict','open']
@@ -115,10 +115,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Security Settings  \n \n Pre-defined packet filter configuration options for various system roles')
+		return _('Packet filter  \n \n Pre-defined packet filter configuration options for various system roles')
 
 	def modheader(self):
-		return _('Security Settings')
+		return _('Packet filter')
 
 	def result(self):
 		result={}

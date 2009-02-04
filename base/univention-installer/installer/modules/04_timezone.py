@@ -55,7 +55,7 @@ class object(content):
 
 	def layout(self):
 
-		self.elements.append(textline(_('Choose a timezone:'),self.minY-1,self.minX+2))#2
+		self.elements.append(textline(_('Select a time zone:'),self.minY-1,self.minX+2))#2
 
 		if self.all_results.has_key('timezone'):
 			timezone_default=self.all_results['timezone']
@@ -97,10 +97,10 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Timezone \n \n Choose the matching timezone for your system here. ')
+		return _('Time zone \n \n Select the time zone your system is located in. ')
 
 	def modheader(self):
-		return _('Timezone')
+		return _('Time zone')
 
 	def result(self):
 		result={}

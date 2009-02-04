@@ -85,7 +85,7 @@ class object(content):
 		self.debug('profile_prerun: loadmodules = %s' % str(self.cmdline.get('loadmodules')))
 		for m in self.cmdline.get('loadmodules','').split(','):
 			if m:
-				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+				self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()
@@ -95,7 +95,7 @@ class object(content):
 				if m in self.cmdline['excludemodules'].split(','):
 					self.debug('profile_prerun: modules "%s" is blacklisted' % m)
 					continue
-			self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+			self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
 			self.sub.action='loadmodule'
 			self.sub.loadmodule=m
 			self.sub.draw()
@@ -160,7 +160,7 @@ class object(content):
 
 		self.elements=[]
 		self.std_button()
-		self.elements.append(textline(_('The following hardware was found:'),self.minY,self.minX+2)) #2
+		self.elements.append(textline(_('The following hardware has been detected:'),self.minY,self.minX+2)) #2
 		selected=[]
 		fixed=[]
 		count=0
@@ -269,10 +269,10 @@ class object(content):
 		return 0
 
 	def helptext(self): # All about this Modul - '###' creates a newline
-		return _('Hardware-Scan \n \n This module automatically detects your hardware setup. \n If your hardware is not listed please choose "Add module" and mark the missing module by using the space key.')
+		return _('Hardware detection \n \n This module automatically detects your hardware setup. \n If your hardware is not listed please select "Add module" and mark the missing modules by pressing the space key.')
 
 	def modheader(self):
-		return _('Hardware-Scan')
+		return _('Hardware detection')
 
 	def result(self):
 		self.debug('ENTER: result')
@@ -296,7 +296,7 @@ class object(content):
 		else:
 			self.debug('start: self.initialized=%s' % self.initialized)
 			if self.initialized:
-				self.sub = self.active(self,_('Hardware-Scan'),_('Please wait...'))
+				self.sub = self.active(self,_('Hardware detection'),_('Please wait...'))
 				self.sub.draw()
 		uname=os.popen('/bin/uname -r')
 		self.container['kernelversion']=uname.readline().strip()
@@ -309,7 +309,7 @@ class object(content):
 		self.debug('postrun: loadmodules = %s' % self.cmdline.get('loadmodules'))
 		for m in self.cmdline.get('loadmodules','').split(','):
 			if m:
-				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+				self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()
@@ -331,7 +331,7 @@ class object(content):
 					self.debug('postrun: module "%s" is blacklisted' % m)
 					continue
 				self.debug('postrun: loading module "%s"' % m)
-				self.sub = self.active(self,_('Load modules'),_('Loading module %s') % m)
+				self.sub = self.active(self,_('Loading modules'),_('Loading module %s') % m)
 				self.sub.action='loadmodule'
 				self.sub.loadmodule=m
 				self.sub.draw()

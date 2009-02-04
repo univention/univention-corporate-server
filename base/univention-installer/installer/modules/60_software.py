@@ -484,7 +484,7 @@ class object(content):
 		return 0
 
 	def helptext(self):
-		return _('Software \n \n Choose the softwarecomponents you want to install. You can change details for some modules in the following steps.')
+		return _('Software \n \n Select the software components you want to install. You can change details for some modules in the following steps.')
 
 	def modheader(self):
 		return _('Software')

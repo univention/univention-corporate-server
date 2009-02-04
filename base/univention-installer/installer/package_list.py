@@ -101,7 +101,7 @@ PackageList=[
 					'Description': _('Groupware based on Kolab 2'),
 				},
 				{
-					'Name': _('Kolab 2 Webclient'),
+					'Name': _('Kolab 2 web client'),
 					'Packages': ['univention-kolab2-webclient'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Edition': [ 'ugs' ],
@@ -110,18 +110,18 @@ PackageList=[
 					'Description': _('Horde Webclient for Kolab 2 for UCS'),
 				},
 				{
-					'Name': _('Standard Mail Services'),
+					'Name': _('Standard mail services'),
 					'Packages': ['univention-mail-postfix', 'univention-mail-cyrus'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [''], 
 					'Possible': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'Basis'],
-					'Description': _('Standard Mail Services with postfix and cyrus (SMTP/POP/IMAP)'),
+					'Description': _('Standard mail services with postfix and cyrus (SMTP/POP/IMAP)'),
 				},
 			],
 },
 {
-	'Category': _('IP Management'),
+	'Category': _('IP management'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 	'Description': _("Several IP Components"),
 	'Packages':
@@ -148,7 +148,7 @@ PackageList=[
 			],
 },
 {
-	'Category': _('Services'),
+	'Category': _('System services'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 	'Description': _("Additional Services"),
 	'Packages':
@@ -181,7 +181,7 @@ PackageList=[
 					'Description': _("Samba Services"),
 				},
 				{
-					'Name': _('Terminalserver'),
+					'Name': _('Terminal server'),
 					'Packages': ['univention-application-server'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -190,7 +190,7 @@ PackageList=[
 					'Description': _('X-Window-System Client for Terminal Services'),
 				},
 				{
-					'Name': _('Thinclient Environment'),
+					'Name': _('Thin client environment'),
 					'Packages': ['univention-thin-client'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -199,25 +199,25 @@ PackageList=[
 					'Description': _('Thinclient Infrastructure'),
 				},
 				{
-					'Name': _('Print Server'),
+					'Name': _('Print server'),
 					'Packages': ['univention-printserver', 'cupsys'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
 					'Possible': ['all'],
-					'Description': _('Print Server based on cups'),
+					'Description': _('Print server based on cups'),
 				},
 				{
-					'Name': _('Print Quota'),
+					'Name': _('Print quota'),
 					'Packages': ['univention-printquota', 'pykota', 'univention-printquotadb'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
-					'Description': _('Print Quota Support based on pykota'),
+					'Description': _('Print quota support based on pykota'),
 				},
 				{
-					'Name': _('Nagios Server'),
+					'Name': _('Nagios server'),
 					'Packages': ['univention-nagios-server'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -226,7 +226,7 @@ PackageList=[
 					'Description': _('Host, service and network monitoring program '),
 				},
 				{
-					'Name': _('Nagios Client'),
+					'Name': _('Nagios client'),
 					'Packages': ['univention-nagios-client'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -243,16 +243,16 @@ PackageList=[
 					'Description': _('Sync users and groups with Active Directory'),
 				},
 				{
-					'Name': _('Fax Server'),
+					'Name': _('Fax server'),
 					'Packages': ['univention-fax-server'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('Fax Server based on hylafax'),
+					'Description': _('Fax server based on hylafax'),
 				},
 				{
-					'Name': _('Squid Proxyserver'),
+					'Name': _('Squid proxy server'),
 					'Packages': ['univention-squid', 'squid'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -261,7 +261,7 @@ PackageList=[
 					'Description': _('Web Proxy Services'),
 				},
 				{
-					'Name': _('OpenSSH Server'),
+					'Name': _('OpenSSH server'),
 					'Packages': ['openssh-server'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ 'all' ],
@@ -269,16 +269,16 @@ PackageList=[
 					'Description': _("Secure shell server, an rshd replacement"),
 				},
 				{
-					'Name': _('FreeNX Server'),
+					'Name': _('FreeNX server'),
 					'Packages': ['freenx'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': ['all'],
-					'Description': _('FreeNX Server'),
+					'Description': _('FreeNX server'),
 				},
 				{
-					'Name': _('VNC Server'),
+					'Name': _('VNC server'),
 					'Packages': ['tightvncserver', 'univention-fonts'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -315,9 +315,9 @@ PackageList=[
 			],
 },
 {
-	'Category': _('Administration'),
+	'Category': _('Administrative tools'),
 	'CategoryShow': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver'],
-	'Description': _('Administration Tools'),
+	'Description': _('Administrative tools'),
 	'Packages':
 			[
 				{
@@ -363,7 +363,7 @@ PackageList=[
 					'Description': _('Tape Backup Software'),
 				},
 				{
-					'Name': _('Remote Backup'),
+					'Name': _('Remote support for Unidump'),
 					'Packages': ['univention-remote-backup'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -380,7 +380,7 @@ PackageList=[
 	'Packages':
 			[
 				{
-					'Name': _('Graphical User Interface'),
+					'Name': _('Graphical user interface'),
 					'Packages': ['univention-x-core', 'univention-gdm', 'univention-gdm-sessions'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
@@ -389,7 +389,7 @@ PackageList=[
 					'Description': _('Core Packages for a Graphical Desktop Environment'),
 				},
 				{
-					'Name': _('KDE Desktop'),
+					'Name': _('KDE desktop'),
 					'Packages': ['univention-kde', 'ispell', 'ingerman'],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['domaincontroller_master', 'domaincontroller_backup', 'domaincontroller_slave', 'memberserver', 'mobile_client', 'managed_client'],
@@ -416,7 +416,7 @@ PackageList=[
 					'Description': _('Firefox Webbrowser'),
 				},
 				{
-					'Name': "  %s" % _('Java Plugin/Runtime'),
+					'Name': "  %s" % _('Java plugin/runtime'),
 					'Packages': ['univention-java'],
 					'Architecture': [ 'x86' ],
 					'EditionDisable': [ 'oxae' ],
@@ -425,7 +425,7 @@ PackageList=[
 					'Description': _('Java Virtual Machine'),
 				},
 				{
-					'Name': "  %s" %_('Flash Plugin'),
+					'Name': "  %s" %_('Flash plugin'),
 					'Packages': ['univention-flashplugin'],
 					'Architecture': [ 'x86' ],
 					'EditionDisable': [ 'oxae' ],
@@ -434,7 +434,7 @@ PackageList=[
 					'Description': _('Flashplugin for webbrowsers'),
 				},
 				{
-					'Name': "  %s" %_('Mplayer Plugin'),
+					'Name': "  %s" %_('Mplayer plugin'),
 					'Packages': ['mozilla-mplayer'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'EditionDisable': [ 'oxae' ],
@@ -462,7 +462,7 @@ PackageList=[
 					'Description': _('PDF Viewer'),
 				},
 				{
-					'Name': _('Additional KDE Applications'),
+					'Name': _('Additional KDE applications'),
 					'Packages': ['k3b', 'k3b-i18n', 'cdrdao', 'kdeartwork-misc', 'kdeartwork-emoticons', 'kdeartwork-style', 'kdeartwork-theme-icon', 'kscreensaver', 'kdewallpapers', 'kdeartwork-theme-window', 'kamera', 'kfax', 'kpdf', 'kview', 'kuickshow', 'ksnapshot', 'ark', 'kcalc', 'kgpg', 'klaptopdaemon', 'kwalletmanager', 'kdepim', 'kompose' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -471,16 +471,16 @@ PackageList=[
 					'Description': _('More KDE applications, like k3b, kdegraphics, kdeadmin, kdeartwork, kdetoys or kdeutils'),
 				},
 				{
-					'Name': _('Desktop Search (kerry/beagle)'),
+					'Name': _('Desktop search (kerry/beagle)'),
 					'Packages': ['kerry' ],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['mobile_client', 'managed_client'],
 					'Possible': ['all'],
-					'Description': _('Desktop Search with kerry and beagle'),
+					'Description': _('Desktop search with kerry and beagle'),
 				},
 				{
-					'Name': _('Multimedia Applications'),
+					'Name': _('Multimedia applications'),
 					'Packages': ['amarok', 'kaffeine', 'kmplayer', 'kdemultimedia', 'mplayer'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -489,13 +489,13 @@ PackageList=[
 					'Description': _('Multimedia applications, like amarok, kmplayer or mplayer'),
 				},
 				{
-					'Name': _('Fax Client'),
+					'Name': _('Fax client'),
 					'Packages': ['univention-fax-client'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [],
 					'Possible': ['all'],
-					'Description': _('Fax Client'),
+					'Description': _('Fax client'),
 				},
 				{
 					'Name': _('Evolution'),
@@ -507,7 +507,7 @@ PackageList=[
 					'Description': _('The GNOME Mailer'),
 				},
 				{
-					'Name': _('VNC Viewer'),
+					'Name': _('VNC viewer'),
 					'Packages': ['xtightvncviewer'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -516,13 +516,13 @@ PackageList=[
 					'Description': _("Client for remote desktop Access"),
 				},
 				{
-					'Name': _('Microsoft Fonts'),
+					'Name': _('Microsoft fonts'),
 					'Packages': ['msttcorefonts'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': [ ],
 					'Possible': [ 'all' ],
-					'Description': _("Microsoft Fonts"),
+					'Description': _("Microsoft fonts"),
 				},
 			],
 },
@@ -541,7 +541,7 @@ PackageList=[
 					'Description': _("Secure shell client, an rlogin/rsh/rcp replacement"),
 				},
 				{
-					'Name': _('dhcp client'),
+					'Name': _('DHCP client'),
 					'Packages': ['dhcp-client'],
 					'Edition': [ 'scalix', 'ugs' ],
 					'Architecture': [ 'x86', 'powerpc' ],
@@ -611,7 +611,7 @@ PackageList=[
 					'Architecture': [ 'x86', 'powerpc' ],
 					'Active': ['all'],
 					'Possible': ['all'],
-					'Description': _('ejects CDs and operates CD-Changers under Linux'),
+					'Description': _('Ejects CDs and operates CD-Changers under Linux'),
 				},
 				{
 					'Name': _('Java'),
