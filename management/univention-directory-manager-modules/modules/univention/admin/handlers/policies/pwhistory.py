@@ -43,9 +43,9 @@ _=translation.translate
 class pwhistoryFixedAttributes(univention.admin.syntax.select):
 	name='pwhistoryFixedAttributes'
 	choices=[
-		('univentionPWHistoryLen',_('History Length')),
-		('univentionPWExpiryInterval',_('Expiry Interval')),
-		('univentionPWLength',_('Password Length'))
+		('univentionPWHistoryLen',_('History length')),
+		('univentionPWExpiryInterval',_('Password expiry interval')),
+		('univentionPWLength',_('Password length'))
 		]
 
 module='policies/pwhistory'
@@ -83,7 +83,7 @@ property_descriptions={
 			identifies=0
 		),
 	'expiryInterval': univention.admin.property(
-			short_description=_('Expiry Interval'),
+			short_description=_('Password expiry interval'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,
@@ -93,7 +93,7 @@ property_descriptions={
 			identifies=0
 		),
 	'pwLength': univention.admin.property(
-			short_description=_('Password Length'),
+			short_description=_('Password length'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,

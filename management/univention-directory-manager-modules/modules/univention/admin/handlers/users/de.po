@@ -21,7 +21,7 @@ msgstr "Benutzer: Passwort"
 
 #: passwd.py:55 user.py:144 user.py:1817 user.py:1827 user.py:1857
 #: user.py:1867
-msgid "Username"
+msgid "User name"
 msgstr "Benutzername"
 
 #: passwd.py:64 user.py:289
@@ -69,11 +69,11 @@ msgid "Add User"
 msgstr "Benutzer hinzufügen"
 
 #: user.py:90
-msgid "Find"
+msgid "Search"
 msgstr "Suchen"
 
 #: user.py:90
-msgid "Find User(s)"
+msgid "Search for user(s)"
 msgstr "Benutzer suchen"
 
 #: user.py:94
@@ -81,23 +81,23 @@ msgid "User"
 msgstr "Benutzer"
 
 #: user.py:99
-msgid "Posix Account"
+msgid "Posix account"
 msgstr "Posix-Konto"
 
 #: user.py:104
-msgid "Samba Account"
+msgid "Samba account"
 msgstr "Samba-Konto"
 
 #: user.py:109
-msgid "Kerberos Principal"
+msgid "Kerberos principal"
 msgstr "Kerberos Prinzipal"
 
 #: user.py:114
-msgid "Mail Account"
+msgid "Mail account"
 msgstr "Mail-Konto"
 
 #: user.py:119
-msgid "Groupware Account"
+msgid "Groupware account"
 msgstr "Groupware-Konto"
 
 #: user.py:125
@@ -105,11 +105,11 @@ msgid "Public Key Infrastructure Account"
 msgstr "Public Key Infrastruktur Konto"
 
 #: user.py:131
-msgid "Personal Information"
+msgid "Personal information"
 msgstr "Persönliche Informationen"
 
 #: user.py:136
-msgid "Simple Authentication Account"
+msgid "Simple authentication account"
 msgstr "Einfaches Authentisierungskonto"
 
 #: user.py:153
@@ -145,7 +145,7 @@ msgid "Organisation"
 msgstr "Organisation"
 
 #: user.py:233
-msgid "Account Expiration Date"
+msgid "Account expiry date"
 msgstr "Konto-Ablaufdatum"
 
 #: user.py:234 user.py:245
@@ -153,11 +153,11 @@ msgid "Enter date as day.month.year."
 msgstr "Datum als Tag.Monat.Jahr eingeben."
 
 #: user.py:244
-msgid "Password Expiration Date"
+msgid "Password expiry date"
 msgstr "Passwort-Ablaufdatum"
 
 #: user.py:256
-msgid "Change Password on Next Login"
+msgid "Change password on next login"
 msgstr "Passwort bei der nächsten Anmeldung ändern"
 
 #: user.py:257
@@ -177,11 +177,11 @@ msgid "Street"
 msgstr "Straße"
 
 #: user.py:310
-msgid "E-Mail Address"
+msgid "E-mail address"
 msgstr "E-Mail-Adresse"
 
 #: user.py:321
-msgid "Postal Code"
+msgid "Postal code"
 msgstr "Postleitzahl"
 
 #: user.py:331
@@ -189,15 +189,15 @@ msgid "City"
 msgstr "Stadt"
 
 #: user.py:341
-msgid "Telephone Number"
+msgid "Telephone number"
 msgstr "Telefonnummer"
 
 #: user.py:351
-msgid "Employee Number"
+msgid "Employee number"
 msgstr "Mitarbeiternummer"
 
 #: user.py:361
-msgid "Room Number"
+msgid "Room number"
 msgstr "Raumnummer"
 
 #: user.py:371
@@ -205,51 +205,51 @@ msgid "Secretary"
 msgstr "Vorgesetzter"
 
 #: user.py:381
-msgid "Department Number"
+msgid "Department number"
 msgstr "Abteilungsnummer"
 
 #: user.py:391
-msgid "Employee Type"
+msgid "Employee type"
 msgstr "Mitarbeiterkategorie"
 
 #: user.py:401
-msgid "Home Postal Address"
+msgid "Private postal address"
 msgstr "Private Adresse"
 
 #: user.py:411
-msgid "Home Telephone Number"
+msgid "Private telephone number"
 msgstr "Telefonnummer Festnetz"
 
 #: user.py:421
-msgid "Mobile Telephone Number"
+msgid "Mobile phone number"
 msgstr "Telefonnummer Mobil"
 
 #: user.py:431
-msgid "Pager Telephone Number"
+msgid "Pager telephone number"
 msgstr "Rufnummer Pager"
 
 #: user.py:441
-msgid "Unix Home Directory"
+msgid "Unix home directory"
 msgstr "UNIX-Heimatverzeichnis"
 
 #: user.py:453
-msgid "Login Shell"
+msgid "Login shell"
 msgstr "Login-Shell"
 
 #: user.py:464
-msgid "Windows Home Path"
+msgid "Windows home path"
 msgstr "Windows-Heimatverzeichnis"
 
 #: user.py:474
-msgid "Windows Script Path"
+msgid "Windows logon script"
 msgstr "Anmeldeskript"
 
 #: user.py:484
-msgid "Windows Profile Path"
+msgid "Windows profile directory"
 msgstr "Profilverzeichnis"
 
 #: user.py:494
-msgid "Windows Home Drive"
+msgid "Windows home drive"
 msgstr "Laufwerk für das Windows-Heimatverzeichnis"
 
 #: user.py:504
@@ -265,11 +265,11 @@ msgid "Primary Group"
 msgstr "Primäre Gruppe"
 
 #: user.py:537
-msgid "Primary E-Mail Address"
+msgid "Primary e-mail address"
 msgstr "Primäre E-Mail-Adresse"
 
 #: user.py:548
-msgid "Use Global Spam Folder"
+msgid "Use global spam folder"
 msgstr "Globalen Spam-Ordner verwenden"
 
 #: user.py:549
@@ -279,15 +279,15 @@ msgstr ""
 "Ordners."
 
 #: user.py:559
-msgid "Alternative E-Mail Addresses"
+msgid "Alternative e-mail addresses"
 msgstr "Alternative E-Mail-Adressen"
 
 #: user.py:570
-msgid "Override Password History"
+msgid "Override password history"
 msgstr "Passwort-History ignorieren"
 
 #: user.py:581
-msgid "Override Password Length"
+msgid "Override password length"
 msgstr "Passwort-Länge ignorieren"
 
 #: user.py:592
@@ -307,7 +307,7 @@ msgid "Path on the Home Share"
 msgstr "Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:615
-msgid "Samba User Workstations"
+msgid "Allowed hosts"
 msgstr "Erlaubte Rechner"
 
 #: user.py:626
@@ -542,7 +542,7 @@ msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
 #: user.py:1059 user.py:1063
-msgid "User Account"
+msgid "User account"
 msgstr "Benutzer-Konto"
 
 #: user.py:1059 user.py:1063
@@ -643,11 +643,11 @@ msgid "Given DN is no share."
 msgstr "Der angegebene DN ist keine Freigabe."
 
 #: user.py:592
-msgid "Alternative Home Share"
+msgid "Alternative home share"
 msgstr "Alternativer Pfad zur Heimatverzeichnisfreigabe"
 
 #: user.py:603
-msgid "Alternative Home Share Path"
+msgid "Alternative home share path"
 msgstr "Alternativer Pfad zum Heimatverzeichnis unterhalb der Freigabe."
 
 #: user.py:593

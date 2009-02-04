@@ -44,11 +44,11 @@ msgid "Group: Group"
 msgstr "Gruppe: Gruppe"
 
 #: group.py:51
-msgid "Posix Group"
+msgid "Posix group"
 msgstr "Posix-Gruppe"
 
 #: group.py:55
-msgid "Samba Group"
+msgid "Samba group"
 msgstr "Samba-Gruppe"
 
 #: group.py:66
@@ -64,7 +64,7 @@ msgid "Relative ID"
 msgstr "Relative ID"
 
 #: group.py:96
-msgid "Samba Group Type"
+msgid "Samba group type"
 msgstr "Samba Gruppentyp"
 
 #: group.py:107
@@ -80,15 +80,15 @@ msgid "Hosts"
 msgstr "enthaltene Rechner"
 
 #: group.py:139
-msgid "Mail Address"
+msgid "Mail address"
 msgstr "Mail-Adresse"
 
 #: group.py:150 group.py:188
-msgid "Member Of"
+msgid "Member of"
 msgstr "Mitglied von"
 
 #: group.py:161
-msgid "Nested Group"
+msgid "Nested group"
 msgstr "enthaltene Gruppe"
 
 #: group.py:174
@@ -108,19 +108,19 @@ msgid "Members of this Group"
 msgstr "Mitglieder dieser Gruppe"
 
 #: group.py:182
-msgid "Host Members"
+msgid "Host members"
 msgstr "enthaltene Rechner"
 
 #: group.py:182
-msgid "Host Members of this Group"
+msgid "Host members of this group"
 msgstr "in dieser Gruppe enthaltene Rechner"
 
 #: group.py:185
-msgid "Nested Groups"
+msgid "Nested groups"
 msgstr "enthaltene Gruppen"
 
 #: group.py:185
-msgid "Membership of other Groups"
+msgid "Membership of other groups"
 msgstr "Mitgliedschaft von weiteren Gruppen"
 
 #: group.py:188

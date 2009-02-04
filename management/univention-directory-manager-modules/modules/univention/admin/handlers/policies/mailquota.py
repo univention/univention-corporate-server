@@ -43,7 +43,7 @@ _=translation.translate
 class mailquotaFixedAttributes(univention.admin.syntax.select):
 	name='mailquotaFixedAttributes'
 	choices=[
-		('univentionMailQuotaMB', _('Quota Limit (MB)')),
+		('univentionMailQuotaMB', _('Quota limit (MB)')),
 		]
 
 module='policies/mailquota'
@@ -71,7 +71,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'MailQuota': univention.admin.property(
-			short_description=_('Quota Limit (MB)'),
+			short_description=_('Quota limit (MB)'),
 			long_description='',
 			syntax=univention.admin.syntax.integer,
 			multivalue=0,

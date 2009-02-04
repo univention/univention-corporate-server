@@ -42,8 +42,8 @@ _=translation.translate
 
 class desktopFixedAttributes(univention.admin.syntax.select):
 	name='desktopFixedAttributes'
-	choices=[(('univentionDesktopLanguage'),_('Desktop Language')),
-			 (('univentionDesktopProfile'),_('Desktop Profile'))
+	choices=[(('univentionDesktopLanguage'),_('Desktop language')),
+			 (('univentionDesktopProfile'),_('Desktop profile'))
 			 ]
 			
 
@@ -72,7 +72,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'language': univention.admin.property(
-			short_description=_('Desktop Language'),
+			short_description=_('Desktop language'),
 			long_description='',
 			syntax=univention.admin.syntax.language,
 			multivalue=0,
@@ -82,7 +82,7 @@ property_descriptions={
 			identifies=0
 		),
 	'profile': univention.admin.property(
-			short_description=_('Desktop Profile'),
+			short_description=_('Desktop profile'),
 			long_description='',
 			syntax=univention.admin.syntax.kdeProfiles,
 			multivalue=1,
@@ -92,7 +92,7 @@ property_descriptions={
 			identifies=0
 		),
 	'logonScripts': univention.admin.property(
-			short_description=_('Logon Scripts'),
+			short_description=_('Logon scripts'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
@@ -102,7 +102,7 @@ property_descriptions={
 			identifies=0
 		),
 	'logoutScripts': univention.admin.property(
-			short_description=_('Logout Scripts'),
+			short_description=_('Logout scripts'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
 			multivalue=1,

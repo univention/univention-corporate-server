@@ -50,11 +50,11 @@ short_description=_('Group: Group')
 long_description=''
 options={
 	'posix': univention.admin.option(
-			short_description=_('Posix Group'),
+			short_description=_('Posix group'),
 			default=1
 		),
 	'samba': univention.admin.option(
-			short_description=_('Samba Group'),
+			short_description=_('Samba group'),
 			default=1
 		)
 }
@@ -95,7 +95,7 @@ property_descriptions={
 			options=['samba']
 		),
 	'sambaGroupType': univention.admin.property(
-			short_description=_('Samba Group Type'),
+			short_description=_('Samba group type'),
 			long_description='',
 			syntax=univention.admin.syntax.sambaGroupType,
 			multivalue=0,
@@ -139,7 +139,7 @@ property_descriptions={
 			identifies=0
 		),
 	'mailAddress': univention.admin.property(
-			short_description=_('Mail Address'),
+			short_description=_('Mail address'),
 			long_description='',
 			syntax=univention.admin.syntax.emailAddress,
 			multivalue=0,
@@ -150,7 +150,7 @@ property_descriptions={
 			identifies=0
 		),
 	'memberOf': univention.admin.property(
-			short_description=_('Member Of'),
+			short_description=_('Member of'),
 			long_description='',
 			syntax=univention.admin.syntax.groupDn,
 			multivalue=1,
@@ -161,7 +161,7 @@ property_descriptions={
 			identifies=0
 		),
 	'nestedGroup': univention.admin.property(
-			short_description=_('Nested Group'),
+			short_description=_('Nested group'),
 			long_description='',
 			syntax=univention.admin.syntax.groupDn,
 			multivalue=1,
@@ -186,13 +186,13 @@ layout=[
 	univention.admin.tab(_('Members'),_('Members of this Group'),[
 		[univention.admin.field("users")]
 	] ),
-	univention.admin.tab(_('Host Members'),_('Host Members of this Group'),[
+	univention.admin.tab(_('Host members'),_('Host Members of this group'),[
 		[univention.admin.field("hosts")]
 	], advanced = True ),
-	univention.admin.tab(_('Nested Groups'),_('Membership of other Groups'),[
+	univention.admin.tab(_('Nested groups'),_('Membership of other groups'),[
 		[univention.admin.field("nestedGroup")]
 	], advanced = True ),
-	univention.admin.tab(_('Member Of'),_('Membership in other Groups'),[
+	univention.admin.tab(_('Member of'),_('Membership in other Groups'),[
 			[univention.admin.field("memberOf")]
 	], advanced = True )
 ]

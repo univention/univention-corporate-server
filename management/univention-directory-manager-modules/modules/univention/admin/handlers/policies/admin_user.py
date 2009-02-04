@@ -86,7 +86,7 @@ property_descriptions={
 			identifies=1,
 		),
 	'listWizards': univention.admin.property(
-			short_description=_('Visible Web-Directory Manager Wizards'),
+			short_description=_('Visible Directory Manager wizards'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWizards,
 			multivalue=1,
@@ -96,7 +96,7 @@ property_descriptions={
 			identifies=0
 		),
 	'listWebModules': univention.admin.property(
-			short_description=_('Visible Directory Manager Modules'),
+			short_description=_('Visible Directory Manager modules'),
 			long_description='',
 			syntax=univention.admin.syntax.univentionAdminWebModules,
 			multivalue=1,

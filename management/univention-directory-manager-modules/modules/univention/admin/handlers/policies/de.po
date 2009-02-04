@@ -195,11 +195,11 @@ msgid "Univention Directory Manager View"
 msgstr "Univention Directory Manager Ansicht"
 
 #: admin_user.py:89
-msgid "Visible Web-Directory Manager Wizards"
+msgid "Visible Directory Manager wizards"
 msgstr "Sichtbare Web-Directory Manager Assistenten"
 
 #: admin_user.py:99
-msgid "Visible Directory Manager Modules"
+msgid "Visible Directory Manager modules"
 msgstr "Sichtbare Directory Manager Module"
 
 #: admin_user.py:109
@@ -321,11 +321,11 @@ msgid "Basic Values"
 msgstr "Grundeinstellungen"
 
 #: desktop.py:45 desktop.py:75
-msgid "Desktop Language"
+msgid "Desktop language"
 msgstr "Desktop-Sprache"
 
 #: desktop.py:46 desktop.py:85
-msgid "Desktop Profile"
+msgid "Desktop profile"
 msgstr "Desktop-Profil"
 
 #: desktop.py:58
@@ -337,11 +337,11 @@ msgid "Desktop Settings"
 msgstr "Desktop-Einstellungen"
 
 #: desktop.py:95
-msgid "Logon Scripts"
+msgid "Logon scripts"
 msgstr "Login-Skripte"
 
 #: desktop.py:105
-msgid "Logout Scripts"
+msgid "Logout scripts"
 msgstr "Logout-Skripte"
 
 #: dhcp_boot.py:42 dhcp_boot.py:73
@@ -756,7 +756,7 @@ msgid "Policy: LDAP Server"
 msgstr "Richtlinie: LDAP-Server"
 
 #: mailquota.py:46 mailquota.py:74
-msgid "Quota Limit (MB)"
+msgid "Quota limit (MB)"
 msgstr "Quota-Limit (MB)"
 
 #: mailquota.py:57
@@ -1001,15 +1001,15 @@ msgid "Policy: Print Server"
 msgstr "Richtlinie: Druckserver"
 
 #: pwhistory.py:46
-msgid "History Length"
+msgid "History length"
 msgstr "History-Länge"
 
 #: pwhistory.py:47 pwhistory.py:86
-msgid "Expiry Interval"
+msgid "Password expiry interval"
 msgstr "Passwort-Ablaufintervall"
 
 #: pwhistory.py:48 pwhistory.py:96
-msgid "Password Length"
+msgid "Password length"
 msgstr "Passwort-Länge"
 
 #: pwhistory.py:59
