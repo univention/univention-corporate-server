@@ -23,13 +23,15 @@ test -h /usr/share/univention-management-console/www/index.php || ln -s /usr/sha
 
 test -h /var/www/univention-management-console || ln -s /usr/share/univention-management-console/www /var/www/univention-management-console
 
+eval $(univention-config-registry shell)
+
 # change default timeout too 15 minutes
 defaulttimeout=$((15*60))
-timeout_variables="umc/web/timeout"
+timeout_variables="umc_web_timeout"
 for i in $timeout_variables
 do
-	if [ "$(univention-config-registry get $i)" = "300" ]; then
-		univention-config-registry set $i=$defaulttimeout
+	if [ "$i" = "300" -o -z "$(eval echo \$$i)" ]; then
+		univention-config-registry set $(echo $i|sed -e 's/_/\//g')=$defaulttimeout
 	fi
 done
 

@@ -1,3 +1,10 @@
+univention-management-console (1.0.4-3) unstable; urgency=low
+
+  * fixed problem with default the timeout UCR variable which is not set in
+    every case. Bug #13306
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  4 Feb 2009 11:46:33 +0100
+
 univention-management-console (1.0.4-2) unstable; urgency=low
 
   * removed old LazyTranslation._orig_str member which only existed for

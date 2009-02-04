@@ -40,15 +40,18 @@ tail='";'
 if baseConfig.has_key('umc/web/timeout'):
 	try:
 		time = int(baseConfig['umc/web/timeout'])
+		if time  > 2147483647:
+			time = 2147483647
+		elif time <= 30:
+			# minimum timeout is 30 seconds
+			time = 900
 	except:
 		time = 900
 else:
 	time = 900
 
-if time  > 2147483647:
-	timeout='-t 2147483647 '
-else:
-	timeout='-t %s '%baseConfig['umc/web/timeout']
+timeout = '-t %d ' % time
+
 
 run=run+" -e $https "
 run=run+debug
