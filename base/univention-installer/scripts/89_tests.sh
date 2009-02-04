@@ -61,9 +61,17 @@ test_retval $? "Could not chroot to $instmnt."
 
 # packages
 chroot $instmnt << __EOF__
-dpkg -l | egrep "^i[^i]" >/dev/null && exit 1
+dpkg -l | egrep "^i[^i]" >/tmp/failed-packages.txt
+if [ 0 -eq $? ]; then
+	exit 1
+else
+	exit 0
+fi
 __EOF__
 test_retval $? "Not all software packages were correctly installed."
+if [ -e "$instmnt/tmp/failed-packages.txt" ]; then
+	cat $instmnt/tmp/failed-packages.txt >> $log
+fi
 
 # Administrator
 chroot $instmnt << __EOF__

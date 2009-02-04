@@ -1,3 +1,9 @@
+univention-installer (3.0.7-14) unstable; urgency=low
+
+  * fix in test script (Bug: #12190) 
+
+ -- Felix Botner <botner@univention.de>  Wed,  4 Feb 2009 09:46:04 +0100
+
 univention-installer (3.0.7-13) unstable; urgency=low
 
   * removed mdadm from package list (Bug: #13201) 
