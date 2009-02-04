@@ -71,13 +71,15 @@ univention-config-registry set ssl/validity/check?yes
 univention-config-registry set directory/reports/cleanup/cron?"0 0 * * *"
 univention-config-registry set directory/reports/cleanup/age?43200
 
+eval $(univention-config-registry shell)
+
 # change default timeout too 15 minutes
 defaulttimeout=$((15*60))
-timeout_variables="directory/manager/cmd/timeout directory/manager/timeout"
+timeout_variables="directory_manager_cmd_timeout directory_manager_timeout"
 for i in $timeout_variables
 do
-	if [ "$(univention-config-registry get $i)" = "300" ]; then
-		univention-config-registry set $i=$defaulttimeout
+	if [ "$i" = "300" -o -z "$(eval echo \$$i)" ]; then
+		univention-config-registry set $(echo $i|sed -e 's/_/\//g')=$defaulttimeout
 	fi
 done
 

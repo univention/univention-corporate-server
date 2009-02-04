@@ -1,3 +1,10 @@
+univention-directory-manager (6.0.6-2) unstable; urgency=low
+
+  * fixed problem with default the timeout UCR variable which is not set in
+    every case. Bug #13306
+
+ -- Jan Christoph Ebersbach <ebersbach@univention.de>  Wed,  4 Feb 2009 11:36:05 +0100
+
 univention-directory-manager (6.0.6-1) unstable; urgency=low
 
   * switch modabout and modlogout. Bug #13180

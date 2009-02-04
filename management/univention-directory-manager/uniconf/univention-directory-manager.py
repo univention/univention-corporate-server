@@ -67,7 +67,12 @@ def main(argv):
 				if socket_filename[-1] == '\n':
 					socket_filename = socket_filename[0:-1]
 		elif opt == '-t':
-			socket_timeout = int(val)
+			tmp = int(val)
+			if tmp <= 30:
+				# the minimum timeout is 30 seconds
+				# set socket_timeout to default timeout
+				tmp = 15*60
+			socket_timeout = tmp
 		elif opt == '-d':
 			debugging = int(val)
 		elif opt == '-l':
